@@ -1,0 +1,69 @@
+/tmp/absorb89-chain-249fc891/src/Absorb89PositiveBranch.lean:73:40: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (↑(p 1) + v 5) - ((v 1 + v 2) * (↑(p 1) + v 5) + v 1))
+in the target expression
+  (1 + k * b) * Bt + b * first = (1 + k * b) * (b * t) + b * first
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 12 → V
+first : V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 12), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+hnorm :
+  let b := v 0 * ↑(p 0);
+  let q := 1 + b;
+  let X := q * v 5;
+  let Y := q * (q * q) * v 6;
+  let k := v 8 + v 9;
+  let ell := X * Y * (Y * k);
+  first * first = 1 + ell * (ell + k)
+hBtpos :
+  let b := v 0 * ↑(p 0);
+  let q := 1 + b;
+  let A := ↑(p 1) + v 5;
+  let Bp := q * A;
+  let Bn := (v 1 + v 2) * A + v 1;
+  0 < q * (Bp - Bn)
+hsign :
+  let b := v 0 * ↑(p 0);
+  let q := 1 + b;
+  let X := q * v 5;
+  let Y := q * (q * q) * v 6;
+  let k := v 8 + v 9;
+  let ell := X * Y * (Y * k);
+  let A := ↑(p 1) + v 5;
+  let Bp := q * A;
+  let Bn := (v 1 + v 2) * A + v 1;
+  let Bt := q * (Bp - Bn);
+  b * (ell + k + v 7) = (1 + k * b) * Bt + b * first
+b : V := v 0 * ↑(p 0)
+q : V := 1 + b
+X : V := q * v 5
+Y : V := q * (q * q) * v 6
+k : V := v 8 + v 9
+Q : V := X * Y * Y
+ell : V := X * Y * (Y * k)
+A : V := ↑(p 1) + v 5
+Bp : V := q * A
+Bn : V := (v 1 + v 2) * A + v 1
+Bt : V := q * (Bp - Bn)
+hb0 : 0 < b
+hq : 0 < q
+hX : 0 < X
+hY : 0 < Y
+hQ1 : 1 ≤ Q
+hkell : k ≤ ell
+hthird : 3 * ell + k < 3 * first
+hgrowth : 3 * v 6 ≤ v 8 + v 9
+t : V
+ht :
+  (1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (↑(p 1) + v 5) - ((v 1 + v 2) * (↑(p 1) + v 5) + v 1)) = v 0 * ↑(p 0) * t
+hbt : 1 ≤ b * t
+⊢ (1 + k * b) * Bt + b * first = (1 + k * b) * (b * t) + b * first
+'Absorb89PositiveBranch.graph_growth' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Absorb89PositiveBranch.positive_branch' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

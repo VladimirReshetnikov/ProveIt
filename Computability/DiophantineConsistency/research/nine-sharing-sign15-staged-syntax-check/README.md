@@ -1,0 +1,5 @@
+# Sign15 staged syntax: source-only client
+
+The sixteen checked stages define 40 shared subtrees, six residuals, a seed and its sum-of-squares zero characterization. A local transcription check expands the rows against the independently audited [external sign15 candidate](../../reviews/nine-sharing-sign15-external-independent/README.md). This is not a Lean JSON-binding theorem. No noncircular natural lift, equivalence or iPRA endpoint is claimed.
+
+No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign15-staged-syntax-prelaunch-independent/README.md) passed; its first checker invocation used a stale directory and was corrected. Author outer session 82930 exited 0 ([receipt](attempt01/outer-result.json)); 0 warning entries, no sorryAx; the [independent terminal audit](../../reviews/nine-sharing-sign15-staged-syntax-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck. Inherited provider ancestry includes point-in-time observations.

@@ -1,0 +1,98 @@
+# A continuation loop for the strict three-field checker
+
+## Result and limits
+
+`checker_loop.py` has **304 significant tokens, 361 AST nodes, and 705 normalized bytes**. Its exact matched control `control_tokens306.py` has **306 / 362 / 668**. Both are complete standalone programs reading a whole JSON document, validating its entire parsed alphabet, validating the native Eq/D public goal, and printing `ACCEPT` on success.
+
+The change is a new small implementation composition: ordinary tail-call elimination applied to the most recent strict three-field checker. It introduces no arithmetic axiom, no new logical rule, and no mathematical simplification of the inherited iPRA basis. It improves the observed strict token coordinate from 306 to 304. It does not improve the current strict AST record 348 or strict byte record 589, and it does not meet the user's below-all-compact-frontier requirement (239 / 255 / 461 from different programs).
+
+## Exact source change
+
+In the control, a successful call either returns immediately at a hypothesis, or processes one packet, possibly recursively proves a major, and finally calls itself on its continuation:
+
+```python
+if i(a) in g:
+    return
+# unchanged packet processing, then k -= 1
+c(g + [i(h, k if s or len(a) % 2 == u else 0)], i(a, [k]), k)
+```
+
+In the candidate, the continuation is a loop:
+
+```python
+while i(a) not in g:
+    # same packet processing, then k -= 1
+    g = g + [i(h, k if s or len(a) % 2 == u else 0)]
+    a = i(a, [k])
+```
+
+The recursive call that verifies a **major premise** remains recursive. Only the final continuation call is replaced. In particular, the logical context extension is **fresh list concatenation**, `g = g + [...]`, not in-place extension `g += [...]`. The latter could export assumptions from a major proof into its caller and is not justified by this argument.
+
+## Lemma: the opener observes only context emptiness
+
+Fix `k`, and consider the opener in either program:
+
+```python
+i = lambda a, t=0j, d=0: [i(b, t, d + 5 - len(a)) for b in a] if a * 0 != 0 and (g or len(a) in (1, 2 + d % 2)) else a or 1 if k <= a < d and (g or d & a % 2) else (d % 2 or not g) and i(t, d=3)
+```
+
+If `g1` and `g2` have the same truth value, opening the same finite raw value with the same image, depth and floor has the same successful result, or fails in both executions.
+
+Proof: `g` occurs only in three conditions: `g or arity_test`, `g or parity_test`, and `not g`. The first two occurrences are tested for truth by conditional expressions, never returned as a raw result. Thus equal emptiness selects the same branch at every node. Induction on the finite traversal, including the separately validated inserted image, proves equality of results and the same success/failure behavior. No object-identity comparison observes the opener function itself or a context object.
+
+This is the point requiring an argument: in the candidate the assignment to `g` happens before the minor-goal opening, whereas the control computes both continuation arguments under the old local `g`.
+
+## Theorem: accepted-certificate equivalence
+
+For every input byte stream, the control and candidate accept exactly the same streams in ideal finite Python execution. On successful streams they consume the same packet sequence and print the same `ACCEPT` output. They may have different physical stack use and exception tracebacks. No equivalence of finite resource limits is asserted.
+
+### Front end
+
+The imports, JSON parser invocation, `str(p).strip('0123456789-[], ')` whole-alphabet test, packet reader binding, initial call, and acceptance print are byte-for-byte unchanged. Any parsing or alphabet failure therefore rejects in both programs before the checking difference can matter.
+
+### Entry and a terminal call
+
+Both programs compute the same initial no-image opening and test membership in the same context. If the result is a retained hypothesis, the control executes `return`; the candidate exits its `while` and reaches the end of the function. Both return `None`, consume no packet, and have no further effect. The public validation phase is the same, because at the outer call both contexts are empty.
+
+### A nonterminal iteration
+
+Both programs first execute `g += b'\x00'`, adding the neutral integer zero. Consequently `g` is nonempty before packet processing and remains nonempty thereafter. They then unpack the same three-field packet and perform the same endpoint test, assignments, major call when required, witness opening and hypothesis construction in the same order. Packet unpacking is ordinary tuple unpacking, so a malformed packet cannot reuse stale field values from an earlier loop iteration.
+
+The recursive major call has the same input context, goal, floor and remaining packet stream. Apply the induction hypothesis to that call. Its only mutation of a list shared with its caller is the inherited addition of neutral zeros. Both programs copy their context when adding a logical hypothesis, so no logical assumption escapes into the caller's context.
+
+Both then decrement `k` once and compute
+
+```python
+b = i(h, k if s or len(a) % 2 == u else 0)
+g1 = g + [b]
+```
+
+under the same old context and new floor. In the control the continuation's goal `i(a,[k])` is computed under old `g`; in the candidate it is computed after rebinding `g` to `g1`. Both contexts are nonempty, so the opener lemma makes these minor goals identical. Therefore the candidate's next loop state is exactly the control's continuation-call state, with the same remaining packet stream.
+
+The candidate reuses its opener closure, whereas the control creates a new one in the continuation call. The closure uses only the current `g` and `k`, and the same fixed missing-image sentinel and depth defaults. These agree at the paired states, so function allocation has no observable effect.
+
+### Termination and rejection
+
+Induct on the number of packets consumed by a finite successful run, distinguishing major calls and continuation edges. A nonterminal iteration consumes one packet before either recursive action, so the induction is well-founded. Replacing a continuation edge by one loop iteration and unfolding an iteration into a continuation edge are inverse simulations. Any uncaught failure before the continuation is shared. Any failure in a later major or continuation has the corresponding failure by the simulation. In ideal executions all input trees and packet streams are finite and all openings are the same partial finite traversals as in the control. Thus there is no new accepting stream.
+
+This equivalence is operational, so the inherited soundness and canonical completeness theorems for the strict three-field checker transfer unchanged. The full iPRA bi-interpretation remains the repository's established bridge, not a new formalization of this Python program.
+
+## Locality and mutation details
+
+- The input tree is acyclic and is produced by `json.load`; no certificate can name a Python function or an internal context object.
+- No checker operation mutates a term/formula tree. The opener constructs new arrays, and assignments to `a`, `s`, `u`, `t` and `h` rebind local names.
+- The context may share old entries with a caller, but the only in-place extension is by the neutral zero. All formula additions allocate a new context list.
+- Context length is not used as the numerical freshness floor. The independent `k` is unchanged, and witness checking still precedes its decrement.
+- There are no `assert` statements, and the programs have the same semantics under ordinary Python and `python -O` apart from resource details.
+
+## Tests and provenance
+
+`three_field_cases.json` is the unchanged 65-case fixture file from the incoming `ipra_validated_three_field_2026-11-13.zip` at ProveIt commit `7a7633980dbca7f599322a5e7f1e65fb1cddb7c8`. It has 16 positive and 49 negative cases, including malformed public syntax, invalid unused alphabet entries, future-witness capture, context leakage, false-goal substitutions, and malformed/missing packets.
+
+`verify_loop.py` ran the exact control and the candidate on all 65 cases in ordinary and optimized Python: **260 isolated executions, zero unexpected results**. `loop_validation.json` contains the detailed receipt and source hashes. Finite tests supplement the operational argument; they do not prove it.
+
+## Novelty boundary
+
+The repository already contains continuation loops in compact checker families. Tail-call elimination itself is ordinary programming technique, not a claimed invention. This particular composition with the current strict whole-input three-field checker is new relative to the pinned inspected corpus. A static scan of all 3,632 tracked/incoming source entries found no identical normalized module. A targeted scan of distinct ACCEPT-printing modules of at most 500 significant tokens found no prior module combining a `while` with the `strip` whole-alphabet gate. This scan is recorded in `strict_loop_prior_art_screen.json`; it is an explicit finite comparison, not a literature-wide novelty theorem.
+
+The same mechanical transformation should **not** be applied unchecked to the 348-node checker using a `match` statement: a failed pattern in a loop can leave local packet fields from an earlier iteration, whereas recursive calls start with fresh local bindings. This candidate avoids that issue by retaining the 306-token control's ordinary unpacking.

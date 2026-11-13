@@ -1,0 +1,5 @@
+# Independent RingVars margin/Kc terminal audit
+
+The state records both dependency scans and Lean compiles exiting 0; the author's separate record reports actual outer session 71529 exit 0. The checker validates both source/object/log sets, 200 direct guards, 1,280 overlay links and exact wt1 and freshly produced margin provider routes. Both axiom reports are `[propext, Classical.choice, Quot.sound]`; no warnings occur. The prelaunch review checks Dm/marg, the Bd carry and Kc=`dvsr*(2*marg−1)` against source indices.
+
+The checked theorems bind symbolic Dm and Kc cuts with opaque d11 rank. They do not establish complete recipe/named-formula equality or JSON binding. No Lean replay was performed. Outer outcome is author-observed; guard observations are point-in-time and sampled monitoring is not a complete dynamic/transitive trace. Earlier A1 independent recursive preflight was interrupted with author's passing preflight recorded; an earlier initial-agreement numeric outer exit is unavailable.

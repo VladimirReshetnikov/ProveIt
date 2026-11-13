@@ -1,0 +1,5 @@
+# Proposed explicit Ring-import retry
+
+This bounded retry adds `Mathlib.Tactic.Ring` to address the two unknown `ring` tactic errors. The generic congruence and conditional gap-sign statements and proof bodies are unchanged; both reports in the failed attempt contained `sorryAx` and are not proofs. The hypotheses remain explicit and do not derive model positivity, gap representation, a zero bridge or an endpoint.
+
+The runner pins source, tool, monitor and 80 direct candidate slots, adding the Ring module's candidates to the previous 60; it checks exact routes and post-run drift. The package snapshot and deeper transitive imports are inherited. Author no-Lean preflight exited 0 and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign26-ordered-ring-retry01-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.

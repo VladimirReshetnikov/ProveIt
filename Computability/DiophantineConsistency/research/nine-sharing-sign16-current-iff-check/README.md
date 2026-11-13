@@ -1,0 +1,5 @@
+# Sign16 current-port seed equivalence: source-only client
+
+The checked theorem specializes the author-checked conditional same-input equivalence to current symbolic ports, using model beta and mask bounds. The [generic iff](../../reviews/nine-sharing-sign16-seed-iff-terminal-independent/README.md) is independently audited. No expression equivalence, external JSON binding or iPRA endpoint is claimed.
+
+The point survey checks an audited historical direct observation of the model-bound provider against its present realpath/hash, with inherited ancestry; it is not rerun postflight, while direct import guards and overlays are. No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign16-current-iff-prelaunch-independent/README.md) passed. Author outer session 94835 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign16-current-iff-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

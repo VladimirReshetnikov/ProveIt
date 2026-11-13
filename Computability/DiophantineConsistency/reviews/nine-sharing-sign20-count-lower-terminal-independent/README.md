@@ -1,0 +1,3 @@
+# Independent terminal audit: sign20 count-based conditional lower bound
+
+The independent checker exited 0. Author-observed outer session 94006 exited 0, with both stages and final postflight successful. Lean checked full seed-axis coefficient 2·(p 0)⁴ and symbolic Fin20 totalDegree ≥20 when p 0 ≠ 0. Both stages' source/object/import/log pins, guards and overlays were checked; four axiom reports, no warnings or sorryAx. The diagonal theorem is a successful child of an explicitly failed grandparent; the count provider shares that ancestry. Exact degree, current-port specialization and external JSON/PDF binding are separate.

@@ -1,0 +1,7 @@
+# Independent scoped prelaunch review: natural block conversion
+
+**GO for one direct-pin author check** with source SHA-256 `b3f2e1f92ff8686d5f2743252fd19bdda095a87f7d0722e068f91ba758b4aed2` and runner SHA-256 `52b818d046e2bd037144ae16acb7a37f1c5acef00bc6560834ba72d2229377a1`. No Lean was run in this review. The independently reviewed source retains exact q and rank-representative hypotheses plus C>0, C<=q, F<q and HP*J>=1 to justify all natural truncated subtractions; it does not assume the reverse guard.
+
+The runner pins the exact source, checked `Trace74DirectFourBlock` object SHA-256 `6e977f68e25e4bbc290d4c6b43f67f429696a500a071cee7b196c955985eb003`, ModelDifferenceRing object SHA-256 `d0fb8f9664675190dbfc25915a687cef203b8362681d9256606f1022a6dbde74`, Lean and Init. Independently reran the actual report parser's 11 mutation controls (test SHA-256 `d63133960c66c8adbed58fbbe8e7f39f0ae8ee8499ff80b59908e4f87e10a0cc`) and, after the other Lean process was reaped, the runner's read-only source/pin/resource preflight; all passed. The runner requires one exact named report with only standard axioms/no axioms, clean diagnostics, a shared lock, 3,000 MiB Lean limit, 120-second timeout and no-other-Lean/8-GiB guard. Capture the actual tool exit.
+
+This is not a full first-resolution or serialized transitive closure check; search-path shadowing and project/package/dynamic ancestry remain inherited. The proposed theorem assumes the natural R and all digit bounds, and does not derive them from a 74 zero or prove a guard or iPRA endpoint.

@@ -1,0 +1,8 @@
+{
+  "command": "ionice -c 3 nice -n 19 python3 Computability/DiophantineConsistency/research/ipra-standard-aq16/historical/run_controls.py",
+  "observed_exit_code": 1,
+  "failed_control": "test_prepare.py",
+  "observed_failure": "test_policy_matches_independent_successful_manifest_and_has_all_reports: AssertionError: 52 != 44",
+  "reason": "The copied AQ17 fixture still expected 44 modules, 109 reports and 34 report-bearing modules. The actual AQ16 manifest has 52 modules, 127 reports and 41 report-bearing modules.",
+  "resolution": "Updated only those policy-count assertions and reran all controls; see control-observation.json and control-receipt.json."
+}

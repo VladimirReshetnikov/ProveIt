@@ -1,0 +1,119 @@
+import Natural79ConcreteUnits
+import DiophantineConsistency.Compact44.ReducedNormSigned
+import DiophantineConsistency.ArithmeticAdaptiveQuotients2011
+
+/-! Source-only proposed 79 main norm and signed quotient at w=0. Graph,
+unit and model imports and all proof scripts remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DiophantineConsistency.Natural79ZeroWMainNormDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open ArithmeticAdaptiveFactorMagnitude2011 ArithmeticAdaptiveQuotients2011
+open Natural79ResidueShapesDraft Natural79ConcreteUnitsDraft
+open FactorResidues74Draft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def q (beta : V) (v : Fin 14 → V) : V := 1+v 0*beta
+def y (beta : V) (v : Fin 14 → V) : V :=
+  q beta v*(q beta v*q beta v)*(v 7+1)
+def k (v : Fin 14 → V) : V := (v 9+1)+(v 10+1)
+def c (beta : V) (v : Fin 14 → V) : V := (v 9+1)+y beta v*k v
+def scale (beta : V) (v : Fin 14 → V) : V := y beta v*(q beta v*q beta v)
+def normRhs (beta : V) (v : Fin 14 → V) : V :=
+  1+(y beta v*y beta v+(4*y beta v+3))*(c beta v*c beta v)
+
+/-- The copied pair-unit evaluation lemma; attribution: Natural79ZeroWJPosDraft. -/
+theorem eval_one_of_pair_unit {σ : Type*} (e : Expr σ) (v : σ → V)
+    (hu : (pairEval e v).1=(pairEval e v).2+1) :
+    e.evalRing (fun j => ι (v j))=1 := by
+  have hu' := congrArg (ι : V →+* DiffRing V) hu
+  simp only [map_add,map_one] at hu'
+  have he := split_evalRing e (fun j => ι (v j))
+  rw [← evalSemiring_map ι, ← evalSemiring_map ι] at he
+  change ι (pairEval e v).1-ι (pairEval e v).2 = e.evalRing (fun j => ι (v j)) at he
+  linarith
+
+
+/-- Main factor's evaluation is its exact literal pattern in the difference
+ring; no represented ports, zero or positivity are assumed in this cut. -/
+theorem main_eval_cut (p : Fin 4 → ℤ) (v : Fin 14 → V) :
+    let w := fun j => ι (v j)
+    let a := (atoms p).a.evalRing w
+    let c := (atoms p).c.evalRing w
+    let U := (atoms p).U.evalRing w
+    let D := (atoms p).Dstar.evalRing w
+    (P79NaturalForcedW.graph p).main.evalRing w =
+      1+(D*D-U*U*(1+((3+4*a)+a*a)*(c*c))) := by
+  rw [Natural79ResidueShapesDraft.main_shape]
+  simp [FactorResidues74Draft.mainPattern, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_ofNat, Expr.evalRing_constant]
+
+/-- At w=0, literal a, c and U are embeddings of the displayed model values.
+Only the beta port must be represented; K0, MC and MF are arbitrary integers. -/
+theorem atoms_at_zero_w (p : Fin 4 → ℤ) (beta : V) (v : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V)=ι beta) (hw : v 6=0) :
+    (atoms p).a.evalRing (fun j => ι (v j))=ι (y beta v) ∧
+    (atoms p).c.evalRing (fun j => ι (v j))=ι (c beta v) ∧
+    (atoms p).U.evalRing (fun j => ι (v j))=ι (scale beta v) := by
+  simp [atoms, q, y, k, c, scale, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hbeta, hw, map_add, map_mul, map_one, map_zero] <;> ring
+
+/-- A 79 own zero with w=0 yields the exact signed main norm. No positive
+beta, J, gamma, K0 or other port premise is used by this statement. -/
+theorem main_norm_of_zero_w_zero (p : Fin 4 → ℤ) (beta : V) (v : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V)=ι beta)
+    (hz : InternalZero (P79NaturalForcedW.graph p).output v) (hw : v 6=0) :
+    let D := (atoms p).Dstar.evalRing (fun j => ι (v j))
+    D*D=ι (scale beta v*scale beta v*normRhs beta v) := by
+  have units := Natural79ConcreteUnitsDraft.units_of_zero_w_zero p v hz hw
+  have hone := eval_one_of_pair_unit (P79NaturalForcedW.graph p).main v units.2.1
+  rw [main_eval_cut] at hone
+  obtain ⟨ha,hc,hU⟩ := atoms_at_zero_w p beta v hbeta hw
+  rw [ha,hc,hU] at hone
+  dsimp [normRhs]
+  simp only [map_add,map_mul,map_one,map_ofNat] at *
+  nlinarith
+
+/-- The positive s shift makes U positive for every natural beta and J. -/
+theorem scale_pos (beta : V) (v : Fin 14 → V) : 0<scale beta v := by
+  have hq : 0<q beta v := by dsimp [q]; exact add_pos_of_pos_of_nonneg (by simp) (by simp)
+  have hy : 0<y beta v := by
+    dsimp [y]
+    exact mul_pos (mul_pos hq (mul_pos hq hq)) (by simp)
+  dsimp [scale]
+  exact mul_pos hy (mul_pos hq hq)
+
+/-- Proposed signed quotient of the actual main root. Both signs are
+retained; no sign or positivity of the root is assumed. -/
+theorem signed_quotient_of_zero_w_zero (p : Fin 4 → ℤ) (beta : V) (v : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V)=ι beta)
+    (hz : InternalZero (P79NaturalForcedW.graph p).output v) (hw : v 6=0) :
+    ∃ d : DiffRing V,
+      (atoms p).Dstar.evalRing (fun j => ι (v j))=ι (scale beta v)*d ∧
+      d*d=ι (normRhs beta v) := by
+  let D := (atoms p).Dstar.evalRing (fun j => ι (v j))
+  obtain ⟨z,hsgn,hz2⟩ := ReducedNormSigned.natural_magnitude_square D
+  have hnorm := main_norm_of_zero_w_zero p beta v hbeta hz hw
+  change D*D=ι (scale beta v*scale beta v*normRhs beta v) at hnorm
+  have hzNat : z*z=scale beta v*scale beta v*normRhs beta v := by
+    apply ι_injective
+    rw [← hz2, hnorm]
+  obtain ⟨t,ht,ht2⟩ := scaled_quotient (scale beta v) z (normRhs beta v)
+    (scale_pos beta v) hzNat
+  rcases hsgn with hp | hn
+  · refine ⟨ι t, ?_, ?_⟩
+    · rw [hp,ht,map_mul]
+    · rw [← map_mul,ht2]
+  · refine ⟨-ι t, ?_, ?_⟩
+    · rw [hn,ht,map_mul]; ring
+    · rw [neg_mul_neg,← map_mul,ht2]
+
+end DiophantineConsistency.Natural79ZeroWMainNormDraft
+
+#print axioms DiophantineConsistency.Natural79ZeroWMainNormDraft.main_norm_of_zero_w_zero
+#print axioms DiophantineConsistency.Natural79ZeroWMainNormDraft.signed_quotient_of_zero_w_zero

@@ -1,0 +1,1955 @@
+{
+  "python": "3.12.14",
+  "implementation": "CPython",
+  "scope": "Finite execution checks and reproducible measurements; no mechanized metatheorem is claimed.",
+  "gzip_recipe": "len(gzip.compress(raw_source, compresslevel=9, mtime=0)); default empty filename header",
+  "examples": 30,
+  "positive_examples": 14,
+  "certificate_and_input_runs": 176,
+  "certificate_and_input_passes": 176,
+  "guard_controls": [
+    {
+      "guard": "major_proof_is_mandatory",
+      "optimized": false,
+      "original": {
+        "accepted": false,
+        "protocol": true,
+        "exit_status": 1
+      },
+      "mutant": {
+        "accepted": true,
+        "protocol": true,
+        "exit_status": 0
+      },
+      "passed": true
+    },
+    {
+      "guard": "major_proof_is_mandatory",
+      "optimized": true,
+      "original": {
+        "accepted": false,
+        "protocol": true,
+        "exit_status": 1
+      },
+      "mutant": {
+        "accepted": true,
+        "protocol": true,
+        "exit_status": 0
+      },
+      "passed": true
+    },
+    {
+      "guard": "eager_predecessor_validation",
+      "optimized": false,
+      "original": {
+        "accepted": false,
+        "protocol": true,
+        "exit_status": 1
+      },
+      "mutant": {
+        "accepted": true,
+        "protocol": true,
+        "exit_status": 0
+      },
+      "passed": true
+    },
+    {
+      "guard": "eager_predecessor_validation",
+      "optimized": true,
+      "original": {
+        "accepted": false,
+        "protocol": true,
+        "exit_status": 1
+      },
+      "mutant": {
+        "accepted": true,
+        "protocol": true,
+        "exit_status": 0
+      },
+      "passed": true
+    },
+    {
+      "guard": "literal_equation_progress_only",
+      "optimized": false,
+      "original": {
+        "accepted": false,
+        "protocol": true,
+        "exit_status": 1
+      },
+      "mutant": {
+        "accepted": true,
+        "protocol": true,
+        "exit_status": 0
+      },
+      "passed": true
+    },
+    {
+      "guard": "literal_equation_progress_only",
+      "optimized": true,
+      "original": {
+        "accepted": false,
+        "protocol": true,
+        "exit_status": 1
+      },
+      "mutant": {
+        "accepted": true,
+        "protocol": true,
+        "exit_status": 0
+      },
+      "passed": true
+    },
+    {
+      "guard": "DI_witness_scope_before_allocation",
+      "optimized": false,
+      "original": {
+        "accepted": false,
+        "protocol": true,
+        "exit_status": 1
+      },
+      "mutant": {
+        "accepted": true,
+        "protocol": true,
+        "exit_status": 0
+      },
+      "passed": true
+    },
+    {
+      "guard": "DI_witness_scope_before_allocation",
+      "optimized": true,
+      "original": {
+        "accepted": false,
+        "protocol": true,
+        "exit_status": 1
+      },
+      "mutant": {
+        "accepted": true,
+        "protocol": true,
+        "exit_status": 0
+      },
+      "passed": true
+    },
+    {
+      "guard": "pass_the_current_scope_to_major_premise",
+      "original": {
+        "accepted": true,
+        "protocol": true,
+        "exit_status": 0
+      },
+      "mutant": {
+        "accepted": false,
+        "protocol": true,
+        "exit_status": 1
+      },
+      "passed": true
+    }
+  ],
+  "metrics": [
+    {
+      "file": "checker.py",
+      "source_tokens": 284,
+      "normalized_tokens": 284,
+      "ast_nodes": 323,
+      "normalized_bytes": 668,
+      "raw_bytes": 668,
+      "sha256": "e3a77de47e95c99d27455b88b219a7d906ab862b0267c321722a87eaf2be8d6b",
+      "core": {
+        "normalized_tokens": 282,
+        "ast_nodes": 321,
+        "normalized_bytes": 655
+      },
+      "gzip9_raw_bytes": 391
+    },
+    {
+      "file": "readable_checker.py",
+      "source_tokens": 320,
+      "normalized_tokens": 320,
+      "ast_nodes": 363,
+      "normalized_bytes": 1426,
+      "raw_bytes": 2354,
+      "sha256": "c768a02854707cb2a02834e170217f5ec19f412c7d8c79d472f96bd8ed552614",
+      "core": {
+        "normalized_tokens": 318,
+        "ast_nodes": 361,
+        "normalized_bytes": 1413
+      },
+      "gzip9_raw_bytes": 1023
+    },
+    {
+      "file": "reference_global.py",
+      "source_tokens": 281,
+      "normalized_tokens": 281,
+      "ast_nodes": 322,
+      "normalized_bytes": 672,
+      "raw_bytes": 672,
+      "sha256": "ee3aee54e66045b41c233f5393b3aff1f7c7694e6a25b71154fe3ebaf7d6aafc",
+      "core": {
+        "normalized_tokens": 279,
+        "ast_nodes": 320,
+        "normalized_bytes": 660
+      },
+      "gzip9_raw_bytes": 397
+    }
+  ],
+  "results": [
+    {
+      "profile": "checker.py",
+      "case": "I0_arbitrary_seed",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "IS_state_used",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "IS_constant_update",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "equality_transport_reflexivity",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "atomic_progress_closure",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "Q_arbitrary_term_specialization",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "compound_case_nested_closure",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "contextual_induction_seed_congruence",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "transport_under_Q",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "forbidden_compound_progress",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "canonical_false",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "failed_major_does_not_fall_through",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "neutral_mismatch_cannot_prove_false",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "free_parameter_in_closed_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "future_parameter_in_inserted_seed",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "missing_seed",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "two_child_counter_constant_update",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "three_child_counter_constant_update",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "invalid_update_mapping",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "arity_four_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "unallocated_DI_witness",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "induction_step_with_base_only_context",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "unallocated_Q_target",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "harmless_seed_alias_at_compound_goal",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "fresh_zero_witness_then_reflexivity",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "DI_fresh_witness_cannot_depend_on_step_parameter",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "free_numerical_parameter_in_computation_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "empty_input",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "broken_json",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_mapping",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_null",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_boolean",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_number",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_string",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "empty_certificate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "missing_instruction",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "string_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "mapping_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "nonfinite_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "infinite_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "extra_json_value",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "I0_arbitrary_seed",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "IS_state_used",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "IS_constant_update",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "equality_transport_reflexivity",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "atomic_progress_closure",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "Q_arbitrary_term_specialization",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "compound_case_nested_closure",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "contextual_induction_seed_congruence",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "transport_under_Q",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "forbidden_compound_progress",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "canonical_false",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "failed_major_does_not_fall_through",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "neutral_mismatch_cannot_prove_false",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "free_parameter_in_closed_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "future_parameter_in_inserted_seed",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "missing_seed",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "two_child_counter_constant_update",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "three_child_counter_constant_update",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "invalid_update_mapping",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "arity_four_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "unallocated_DI_witness",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "induction_step_with_base_only_context",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "unallocated_Q_target",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "harmless_seed_alias_at_compound_goal",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "fresh_zero_witness_then_reflexivity",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "DI_fresh_witness_cannot_depend_on_step_parameter",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "free_numerical_parameter_in_computation_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "empty_input",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "broken_json",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_mapping",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_null",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_boolean",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_number",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "root_string",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "empty_certificate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "missing_instruction",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "string_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "mapping_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "nonfinite_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "infinite_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "checker.py",
+      "case": "extra_json_value",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "I0_arbitrary_seed",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "IS_state_used",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "IS_constant_update",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "equality_transport_reflexivity",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "atomic_progress_closure",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "Q_arbitrary_term_specialization",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "compound_case_nested_closure",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "contextual_induction_seed_congruence",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "transport_under_Q",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "forbidden_compound_progress",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "canonical_false",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "failed_major_does_not_fall_through",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "neutral_mismatch_cannot_prove_false",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "free_parameter_in_closed_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "future_parameter_in_inserted_seed",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "missing_seed",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "two_child_counter_constant_update",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "three_child_counter_constant_update",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "invalid_update_mapping",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "arity_four_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "unallocated_DI_witness",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "induction_step_with_base_only_context",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "unallocated_Q_target",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "harmless_seed_alias_at_compound_goal",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "fresh_zero_witness_then_reflexivity",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "DI_fresh_witness_cannot_depend_on_step_parameter",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "free_numerical_parameter_in_computation_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "empty_input",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "broken_json",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_mapping",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_null",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_boolean",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_number",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_string",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "empty_certificate",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "missing_instruction",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "string_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "mapping_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "nonfinite_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "infinite_goal",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "extra_json_value",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "I0_arbitrary_seed",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "IS_state_used",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "IS_constant_update",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "equality_transport_reflexivity",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "atomic_progress_closure",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "Q_arbitrary_term_specialization",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "compound_case_nested_closure",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "contextual_induction_seed_congruence",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "transport_under_Q",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "forbidden_compound_progress",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "canonical_false",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "failed_major_does_not_fall_through",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "neutral_mismatch_cannot_prove_false",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "free_parameter_in_closed_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "future_parameter_in_inserted_seed",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "missing_seed",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "two_child_counter_constant_update",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "three_child_counter_constant_update",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "invalid_update_mapping",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "arity_four_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "unallocated_DI_witness",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "induction_step_with_base_only_context",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "unallocated_Q_target",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "harmless_seed_alias_at_compound_goal",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "fresh_zero_witness_then_reflexivity",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "protocol": true,
+      "exit_status": 0,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "DI_fresh_witness_cannot_depend_on_step_parameter",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "free_numerical_parameter_in_computation_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "empty_input",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "broken_json",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_mapping",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_null",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_boolean",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_number",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "root_string",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "empty_certificate",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "missing_instruction",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "string_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "mapping_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "nonfinite_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "infinite_goal",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    },
+    {
+      "profile": "readable_checker.py",
+      "case": "extra_json_value",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "protocol": true,
+      "exit_status": 1,
+      "passed": true
+    }
+  ]
+}

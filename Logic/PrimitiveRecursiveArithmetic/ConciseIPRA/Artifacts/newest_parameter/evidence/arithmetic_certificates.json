@@ -1,0 +1,1337 @@
+[
+  {
+    "lemma": "zero_test_partition",
+    "branch": "zero",
+    "lhs": [
+      "add",
+      [
+        "Z",
+        0
+      ],
+      [
+        "Z",
+        [
+          "Z",
+          0
+        ]
+      ]
+    ],
+    "rhs": [
+      "S",
+      0
+    ],
+    "lhs_trace": [
+      {
+        "path": [
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [],
+        "rule": "add_zero"
+      }
+    ],
+    "rhs_trace": []
+  },
+  {
+    "lemma": "zero_test_partition",
+    "branch": "successor",
+    "lhs": [
+      "add",
+      [
+        "Z",
+        [
+          "S",
+          "w"
+        ]
+      ],
+      [
+        "Z",
+        [
+          "Z",
+          [
+            "S",
+            "w"
+          ]
+        ]
+      ]
+    ],
+    "rhs": [
+      "S",
+      0
+    ],
+    "lhs_trace": [
+      {
+        "path": [
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          1
+        ],
+        "rule": "add_zero"
+      }
+    ],
+    "rhs_trace": []
+  },
+  {
+    "lemma": "triple_zero_test",
+    "branch": "zero",
+    "lhs": [
+      "Z",
+      [
+        "Z",
+        [
+          "Z",
+          0
+        ]
+      ]
+    ],
+    "rhs": [
+      "Z",
+      0
+    ],
+    "lhs_trace": [
+      {
+        "path": [
+          1,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [],
+        "rule": "zero_test_zero"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [],
+        "rule": "zero_test_zero"
+      }
+    ]
+  },
+  {
+    "lemma": "triple_zero_test",
+    "branch": "successor",
+    "lhs": [
+      "Z",
+      [
+        "Z",
+        [
+          "Z",
+          [
+            "S",
+            "w"
+          ]
+        ]
+      ]
+    ],
+    "rhs": [
+      "Z",
+      [
+        "S",
+        "w"
+      ]
+    ],
+    "lhs_trace": [
+      {
+        "path": [
+          1,
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [],
+        "rule": "zero_test_succ"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [],
+        "rule": "zero_test_succ"
+      }
+    ]
+  },
+  {
+    "lemma": "ramp_shift",
+    "branch": "zero",
+    "lhs": [
+      "M",
+      [
+        "add",
+        [
+          "add",
+          "g",
+          [
+            "Z",
+            0
+          ]
+        ],
+        [
+          "S",
+          0
+        ]
+      ]
+    ],
+    "rhs": [
+      "C",
+      0,
+      [
+        "j",
+        [
+          "j",
+          [
+            "M",
+            "g"
+          ]
+        ]
+      ],
+      [
+        "j",
+        [
+          "M",
+          "g"
+        ]
+      ]
+    ],
+    "lhs_trace": [
+      {
+        "path": [
+          1,
+          1,
+          2
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          1,
+          1
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          1,
+          1,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          1
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          1,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [],
+        "rule": "cycle_succ"
+      },
+      {
+        "path": [
+          1
+        ],
+        "rule": "cycle_succ"
+      },
+      {
+        "path": [
+          1
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [],
+        "rule": "cycle_step_definition"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          3
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [],
+        "rule": "select_zero"
+      }
+    ]
+  },
+  {
+    "lemma": "ramp_shift",
+    "branch": "successor",
+    "lhs": [
+      "M",
+      [
+        "add",
+        [
+          "add",
+          "g",
+          [
+            "Z",
+            [
+              "S",
+              "w"
+            ]
+          ]
+        ],
+        [
+          "S",
+          0
+        ]
+      ]
+    ],
+    "rhs": [
+      "C",
+      [
+        "S",
+        "w"
+      ],
+      [
+        "j",
+        [
+          "j",
+          [
+            "M",
+            "g"
+          ]
+        ]
+      ],
+      [
+        "j",
+        [
+          "M",
+          "g"
+        ]
+      ]
+    ],
+    "lhs_trace": [
+      {
+        "path": [
+          1,
+          1,
+          2
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          1,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          1
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          1,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [],
+        "rule": "cycle_succ"
+      },
+      {
+        "path": [],
+        "rule": "cycle_step_definition"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          3
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [],
+        "rule": "select_succ"
+      }
+    ]
+  },
+  {
+    "lemma": "ramp_cycle",
+    "branch": "zero",
+    "lhs": [
+      "C",
+      0,
+      [
+        "j",
+        [
+          "j",
+          [
+            "Z",
+            0
+          ]
+        ]
+      ],
+      [
+        "j",
+        [
+          "Z",
+          0
+        ]
+      ]
+    ],
+    "rhs": [
+      "Z",
+      [
+        "Z",
+        0
+      ]
+    ],
+    "lhs_trace": [
+      {
+        "path": [
+          2,
+          1,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          2,
+          1,
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2,
+          1,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2,
+          2
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2,
+          2,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2,
+          2
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          2,
+          1,
+          1
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          2,
+          1,
+          1,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          1
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          1,
+          1,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2,
+          2,
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          2
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          2,
+          1
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          2,
+          1,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          2,
+          2,
+          2,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2,
+          2,
+          2
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          2,
+          2
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          3,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          3
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          3,
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          3,
+          2,
+          1
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          3,
+          2,
+          1,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          3,
+          2,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          3,
+          2,
+          2
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          3,
+          2,
+          2,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          3,
+          2,
+          2
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          3,
+          2
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          3,
+          2,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          3
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          3,
+          1
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          3,
+          1,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [],
+        "rule": "select_zero"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [],
+        "rule": "zero_test_succ"
+      }
+    ]
+  },
+  {
+    "lemma": "ramp_cycle",
+    "branch": "successor",
+    "lhs": [
+      "C",
+      [
+        "S",
+        "w"
+      ],
+      [
+        "j",
+        [
+          "j",
+          [
+            "Z",
+            [
+              "S",
+              "w"
+            ]
+          ]
+        ]
+      ],
+      [
+        "j",
+        [
+          "Z",
+          [
+            "S",
+            "w"
+          ]
+        ]
+      ]
+    ],
+    "rhs": [
+      "Z",
+      [
+        "Z",
+        [
+          "S",
+          "w"
+        ]
+      ]
+    ],
+    "lhs_trace": [
+      {
+        "path": [
+          2,
+          1,
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          2,
+          1,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2,
+          2
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          2,
+          1,
+          2
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          1
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          1,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          2,
+          2,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2,
+          2,
+          2
+        ],
+        "rule": "parity_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          2,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          2,
+          2,
+          2
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          2,
+          2
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          2,
+          2,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          2,
+          1
+        ],
+        "rule": "add_succ"
+      },
+      {
+        "path": [
+          2,
+          1,
+          1
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          3,
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [
+          3
+        ],
+        "rule": "cycle_step_definition"
+      },
+      {
+        "path": [
+          3,
+          1
+        ],
+        "rule": "zero_test_zero"
+      },
+      {
+        "path": [
+          3,
+          2,
+          1
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          3,
+          2,
+          2
+        ],
+        "rule": "parity_zero"
+      },
+      {
+        "path": [
+          3,
+          2
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [
+          3
+        ],
+        "rule": "add_zero"
+      },
+      {
+        "path": [],
+        "rule": "select_succ"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [
+          1
+        ],
+        "rule": "zero_test_succ"
+      },
+      {
+        "path": [],
+        "rule": "zero_test_zero"
+      }
+    ]
+  },
+  {
+    "lemma": "selector_addition",
+    "branch": "zero",
+    "lhs": [
+      "C",
+      0,
+      [
+        "add",
+        "a",
+        "b"
+      ],
+      [
+        "add",
+        "c",
+        "d"
+      ]
+    ],
+    "rhs": [
+      "add",
+      [
+        "C",
+        0,
+        "a",
+        "c"
+      ],
+      [
+        "C",
+        0,
+        "b",
+        "d"
+      ]
+    ],
+    "lhs_trace": [
+      {
+        "path": [],
+        "rule": "select_zero"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [
+          1
+        ],
+        "rule": "select_zero"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "select_zero"
+      }
+    ]
+  },
+  {
+    "lemma": "selector_addition",
+    "branch": "successor",
+    "lhs": [
+      "C",
+      [
+        "S",
+        "w"
+      ],
+      [
+        "add",
+        "a",
+        "b"
+      ],
+      [
+        "add",
+        "c",
+        "d"
+      ]
+    ],
+    "rhs": [
+      "add",
+      [
+        "C",
+        [
+          "S",
+          "w"
+        ],
+        "a",
+        "c"
+      ],
+      [
+        "C",
+        [
+          "S",
+          "w"
+        ],
+        "b",
+        "d"
+      ]
+    ],
+    "lhs_trace": [
+      {
+        "path": [],
+        "rule": "select_succ"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [
+          1
+        ],
+        "rule": "select_succ"
+      },
+      {
+        "path": [
+          2
+        ],
+        "rule": "select_succ"
+      }
+    ]
+  },
+  {
+    "lemma": "selector_diagonal_zero",
+    "branch": "zero",
+    "lhs": [
+      "C",
+      0,
+      0,
+      0
+    ],
+    "rhs": 0,
+    "lhs_trace": [
+      {
+        "path": [],
+        "rule": "select_zero"
+      }
+    ],
+    "rhs_trace": []
+  },
+  {
+    "lemma": "selector_diagonal_zero",
+    "branch": "successor",
+    "lhs": [
+      "C",
+      [
+        "S",
+        "w"
+      ],
+      [
+        "S",
+        "w"
+      ],
+      0
+    ],
+    "rhs": 0,
+    "lhs_trace": [
+      {
+        "path": [],
+        "rule": "select_succ"
+      }
+    ],
+    "rhs_trace": []
+  },
+  {
+    "lemma": "selector_successor",
+    "branch": "zero",
+    "lhs": [
+      "C",
+      0,
+      [
+        "S",
+        "a"
+      ],
+      [
+        "S",
+        "b"
+      ]
+    ],
+    "rhs": [
+      "S",
+      [
+        "C",
+        0,
+        "a",
+        "b"
+      ]
+    ],
+    "lhs_trace": [
+      {
+        "path": [],
+        "rule": "select_zero"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [
+          1
+        ],
+        "rule": "select_zero"
+      }
+    ]
+  },
+  {
+    "lemma": "selector_successor",
+    "branch": "successor",
+    "lhs": [
+      "C",
+      [
+        "S",
+        "w"
+      ],
+      [
+        "S",
+        "a"
+      ],
+      [
+        "S",
+        "b"
+      ]
+    ],
+    "rhs": [
+      "S",
+      [
+        "C",
+        [
+          "S",
+          "w"
+        ],
+        "a",
+        "b"
+      ]
+    ],
+    "lhs_trace": [
+      {
+        "path": [],
+        "rule": "select_succ"
+      }
+    ],
+    "rhs_trace": [
+      {
+        "path": [
+          1
+        ],
+        "rule": "select_succ"
+      }
+    ]
+  }
+]

@@ -1,0 +1,5 @@
+# Gap/tau retry failed on additive orientation
+
+Author-observed outer session `52147` returned numeric exit 1. Retained state SHA-256 `93e5eca15e5a90c959719a11f1566af90bd8440a490eaefc406f42d18d44378e`; pre-run producer survey `8b46dad21aba666f06f77fbb5ed8f268b4baacfcf477baa29474e1dd4e5f901d`. The outer record is an author observation, not an independently observed transcript.
+
+Lean exited 1 with no monitor stop. Its compile log SHA-256 `98715f61b505c928cd0d723d2d97730d1b30f5a73b4ccbda66ba5ed558a3208e` reports that the hypothesis produced by `add_le_add_left` has `alpha+F ≤ q−F+F`, while the attempted rewrite expects `F+(q−F)`; it also reports `le_add_self` has the opposite addition order from `r≤r+2`. The emitted axiom report includes `sorryAx` from the failed declaration and is not proof evidence; no successful object was recorded. Final candidate guard and post-success producer survey were not reached. Point-observation and inherited-provider limitations remain as in the parent README.

@@ -1,0 +1,115 @@
+AN ANCILLARY 288-AST-NODE CHECKER FOR THE EXISTING NATIVE CALCULUS
+
+This is a modest implementation composition, not a new arithmetic theory.
+It does NOT implement the new J increment-or-load arithmetic basis. The
+288-node measurement must not be assigned to that different arithmetic.
+
+Comparison snapshot:
+  VladimirReshetnikov/ProveIt
+  8662bc0a00f4e77e482f7d141d7a4f919f70f9aa
+  Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research
+
+Direct parent checker, reproduced under reference/code:
+  prevalidated_elimination/code/checker_structure.py
+  https://github.com/VladimirReshetnikov/ProveIt/blob/8662bc0a00f4e77e482f7d141d7a4f919f70f9aa/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/prevalidated_elimination/code/checker_structure.py
+
+The input tests under reference/tests are copied from the same package:
+  tests/cases.json, tests/producer.py, tests/build_cases.py,
+  tests/check_ordering.py, tests/check_sentinels.py,
+  tests/reject_false_major_sentinel.json, tests/verify_kernels.py.
+The last two upstream verification programs expect their original package
+layout; use reproduce_288.py for this focused supplement. Their inclusion
+records provenance and the certificate-generation method. The ProveIt MIT-0
+license is retained as reference/ProveIt_LICENSE.txt.
+
+Other exact inspected comparison sources:
+  neutral_scope/code/checker.py: 529 bytes / 266 tokens / 310 AST.
+  coverage_and_kernel/code/checker_ast.py: 613 bytes / 263 tokens / 289 AST.
+The parent prevalidated checker is 576 bytes / 261 tokens / 292 AST.
+The new checker is 604 bytes / 261 tokens / 288 AST, gzip-9 355 bytes,
+under CPython 3.12.14. These are full-module measurements, normalized by
+ast.unparse plus one final newline. Significant tokens exclude comments,
+whitespace, line breaks, and end markers. No docstrings occur in either
+measured checker. Gzip is informational only, with compression level 9 and
+mtime 0. The new program ties the inspected token minimum, improves the
+inspected AST minimum by one node, and is larger than the byte leader.
+
+The exact source SHA-256 of checker_288.py is
+  0a1727556bbf55ec9670a92e50da3e297089d8ae97444e2f2deb3807c9d18684
+
+TRANSFORMATION AND SIMULATION
+
+1. Preserve the parent's global monotonically decreasing fresh-name floor,
+   prevalidation of the equality/closure elimination template, every
+   generated hypothesis, and every opener call. In particular, the mode is
+   the false-valued major field m, not the initializer field u used by the
+   different neutral_scope protocol. Keeping the distinction is essential.
+
+2. Replace the parent's context list g by a tuple with the same entries in
+   the same order. Both membership tests compare the same raw formula
+   values. The extension g + [H] becomes local tuple augmentation g += (H,).
+   Tuples are immutable, so a recursively checked major cannot insert local
+   assumptions into its caller's retained context.
+
+3. Replace the parent's final recursive continuation call by a while loop.
+   If the current goal is retained, both return None. Otherwise both pop
+   the same packet; normalize the potential elimination goal before the
+   major proof; check the same major recursively when m is truthy; generate
+   the same H; decrement k exactly once; and open the same assumption and
+   continuation goal at this updated k. The only order difference is
+   computing the new assumption before the new goal in the loop. The opener
+   neither mutates k nor consumes packets or changes contexts. Therefore
+   these two evaluations commute whenever both terminate successfully.
+   Exceptions reject in either order. A finite successful execution of one
+   program consequently gives a finite successful execution of the other
+   with identical exposed formulas and packet consumption, ignoring fixed
+   machine resource bounds. Induct on nested major subproofs and iterate
+   this invariant over the continuation sequence.
+
+4. Change the missing-image sentinel from 0j to None. Neither is supplied by
+   the JSON reader. An attempt to use either as a numerical image fails the
+   ordered comparison; ignored formula padding never requires that image.
+   Thus their finite successful opener evaluations coincide. The non-real
+   sentinel 1j in the MAJOR MATCHER is retained: replacing it with False is
+   unsound because Python equates numeric zero and False.
+
+The loop's empty initial context exactly matches the parent's empty list.
+No extra truth axiom is introduced. The new checker therefore inherits the
+parent's native-calculus consequence equivalence and its written bridge to
+full intuitionistic first-order PRA. This is a source-level simulation, not
+a new proof-assistant verification of those mathematics.
+
+RAW-INPUT AND RESOURCE QUALIFICATIONS
+
+The generic iterable opener is inherited. Empty strings and objects have
+documented truth/zero aliases. Nonempty strings can cause an unbounded
+recursive unfolding in an ideal interpreter and fail under actual CPython's
+resource limit. The soundness claim is about finite successful executions;
+canonical array/integer certificates remain the completeness interface.
+The new loop removes continuation stack growth but does not remove recursion
+for nested major proofs or syntax traversal. Raw acceptance sets can differ
+under fixed resource limits; that is not a mathematical completeness claim
+at a fixed memory/stack budget.
+
+VALIDATION
+
+validation_288.json records 150 actual subprocess executions with zero
+mismatches: 36 upstream named certificates for both parent and new checker,
+under ordinary Python and -O, plus six attacks using false numeric major
+aliases. The suite covers computation, nonvacuous witnesses, equality
+transport, closure specialization, compound cases, contextual induction,
+scope failures, malformed forms, and forbidden compound progress.
+
+Run:
+  python3 reproduce_288.py
+
+The universal simulation argument above supplies the mathematical scope of
+the claim; these finite tests check the implementation and known attacks.
+
+NOVELTY LIMIT
+
+The source is a new combination of already present techniques: global
+allocation and prevalidation from prevalidated_elimination, and immutable
+tail-loop contexts from later checker profiles. No new axiomatic primitive
+has been removed. No absolute minimality or uniform improvement across all
+coordinates is asserted.

@@ -1,0 +1,5 @@
+Independent post-audit PASS for stated graph implication; no Lean replay.
+
+Actual author session 13073 reported outer exit 0 and reaped. Terminal 2ca1661e88dcc451fede5f55ad2b812a14a0e1635a674a89e7c39c0007b31e5c; source 46df3f58eec99c01aaed191ba1119b3903d11da2b5f96a3d361d4fb55a50ec32; runner 086a47f515e4a2502d01f056d42ec7e70ca81c021515cc00f67c9c0b7a2f7bd7; object b39bfaed11928bc0cafbec180780d638174cc9efae458e95ec090e2a039b8758. Stage exit 0 and the exact single report lists [propext, Classical.choice, Quot.sound], with empty stderr; source, runner, all 24 recorded direct pins, logs and object rehashed. Earlier failed attempt's unresolved abstract 4%2 goal and sorryAx are excluded.
+
+For the same p/v in an IΣ₁ model, under positive beta, positive valuation and 74 value-zero and explicit k=8*firstParam+4, the theorem establishes c=ycoord 3 (A−1). The fifth-growth and odd-ordinate inputs are applied to that same tuple. It does not eliminate the small-k branch or prove the fixed guard, a graph zero, or an endpoint. Direct pin records do not establish full transitive/package/dynamic ancestry or absence of all search-path shadowing.

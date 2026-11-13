@@ -1,0 +1,5 @@
+# Independent ring-variable Cd prelaunch review
+
+The checker pins source, runner, survey and manifest, independently reproduces no-Lean preflight, and checks the conclusion and Fin41 index 40. `RingVars.dvnd=(Q*F+J*(H−C))²` matches the previously independently audited Cd cut; the proposed proof expands the relevant Q/H/J/F and dependent fields plus numeral casts using the symbolic vars imported from the checked Bd module. The runner authenticates the immediate Bd object and guard and reruns its provider survey after successful compilation.
+
+This proposes one cut identity with opaque d11 rank, not complete recipe/named-formula equality or JSON binding. Lean elaboration and axiom reports remain untested. Provider checks are point-in-time, sampled monitoring is not a full dynamic/transitive trace, the earlier A1 independent recursive preflight was interrupted with the author's passing preflight recorded, and an earlier initial-agreement numeric outer exit remains unavailable. No Lean ran in this review.

@@ -1,0 +1,141 @@
+A SHARED LEAF WITH A NATIVE PUBLIC GRAMMAR
+========================================
+Candidate files:
+  checker_strict606.py: 334 tokens, 379 AST nodes, 606 normalized bytes.
+  checker_native579.py: 328 tokens, 373 AST nodes, 579 normalized bytes.
+Compared to smaller_presentations incoming: strict608 and native581.
+Both save two normalized bytes. These are NOT compact all-coordinate records.
+The native exact-integer test inherits CPython 3.12.14's unary-plus identity
+property. Strict uses a whole-input alphabet gate and has no such dependence.
+
+Mathematical status
+-------------------
+These are presentation/encoding changes of the FULL native Eq/D theory,
+including both atomic case introduction and atomic progress introduction.
+They do not delete an arithmetic axiom. Their public numerical zero is raw
+integer 1. Every public numerical expression and formula is nonempty/truthy.
+The ordinary theory and iPRA bi-interpretation are inherited unchanged.
+
+Changes from the current incumbent
+----------------------------------
+1. Computations are direct leaves, fused with hypothesis lookup (the existing
+   shared-leaf theorem). No computation is retained as a new assumption.
+2. The generated zero computation uses raw counter 1, because O+ canonicalizes
+   numerical zero to 1. Its successor case uses [s], with recursive source
+   [s,u,t]. The source flag s=0 is administrative, not numerical zero code.
+3. The membership tuple starts with (v:=0). Python evaluates i(a) first,
+   validating the public goal at v=1; it then sets v=0 before constructing H.
+   That tuple member also supplies the administrative neutral formula 0 at
+   every call, so the initial context can be empty rather than [0].
+4. For introduction only, the seed field u is a mode marker. Progress occurs
+   exactly when the opened matrix has arity two AND u is integer 2. Otherwise
+   it is case introduction. In particular every Q/D compound matrix uses
+   cases, independently of u. A major premise makes the mode irrelevant.
+
+Input contract and public grammar
+---------------------------------
+Strict parses JSON and requires str(p).strip('0123456789-[], ') to be empty.
+On JSON values this excludes strings, booleans, floats, null and dictionaries,
+including unused certificate prefixes. A non-list root cannot supply pop.
+During the initial goal check v=1, k=0. The array condition permits arities
+1 and 2 at formula positions, 1 and 3 at numerical positions. The scalar
+condition requires an odd numerical leaf below the binding depth: 1 denotes
+zero and 3,5,... are protected slots. Formula scalar roots, escaping negative
+parameters, even numerical aliases and malformed arities fail. Thereafter
+v=0, and the inherited raw arity aliases and O+ opener are available.
+
+Every call consumes one four-field packet [m,s,u,t]. Packets are read from
+the end of a JSON array whose last item is the public goal. Success means
+normal process exit and exactly ACCEPT\n. Unused prefixes are allowed, but
+strict checks their alphabet. Resource exhaustion is nonacceptance; proof
+completeness concerns ideal finite runs with unbounded finite resources.
+
+Raw O+ leaf soundness
+--------------------
+The strict incumbent's soundness proof establishes the semantic opening,
+outer-slot exposure and freshness lemmas for O+: retained raw scalar zero
+becomes 1, while a missing even-depth image returns neutral formula 0.
+
+O+ is NOT a literal idempotent retraction on arbitrary raw annotations. For
+example, ignored arity-four annotations can descend to depth 1; retaining
+raw scalar 0 there returns 1, which another no-image pass at depth 1 rejects.
+Do not use the shared_leaf report's O-idempotence lemma verbatim for O+.
+
+The required statement is only about meaningful decoded positions. Starting
+at a formula root, every meaningful numerical position has depth >=3:
+formula D and Q add 4 and 2, equality changes to numerical depth +3, and
+meaningful numerical constructors S/I add 4 and 2. Malformed constructor
+arities are decoded as zero/truth and their descendants are ignored.
+At a meaningful numerical position, replacing a retained 0 by 1 preserves
+its scope and value. A successful no-image opening therefore produces a
+meaningfully scoped term/formula of the same decoded value.
+
+Suppose the validated goal O+(a) literally matches generated H(s,u,t).
+For s falsy (0 or []), H is [[1,u,t],u]. Its right endpoint u is exposed at
+numerical root depth 3. Since it is part of O+(a), every meaningful coordinate
+of u is scoped there. Hence u has the same reading under the dummy slot in
+the left iterator, and H reads I(0,A;v.h)=A.
+
+For s truthy, H is [[[s],u,t],O+(t;[s,u,t],3)]. If t meaningfully uses its
+state, opening t validates the inserted recursive source [s,u,t] at numerical
+root depth 3, before insertion. Thus s and u have consistent readings with
+and without the extra successor dummy slots, and the semantic opening lemma
+identifies the right side with h(I(n,A;v.h)). If t is state-independent, the
+right side is simply h and successor computation holds regardless of those
+extra dummy slots. Occurrences only in ignored annotations can reject a
+certificate but cannot make a successful mathematical reading false.
+This is the inherited direct-computation-leaf argument, restricted to its
+meaningful positions; it does not require a second raw no-image traversal.
+
+Nonleaf soundness
+-----------------
+After a failed leaf lookup, the major m is checked in the OLD context and
+OLD floor. If truthy, m*3 is opened at the next fresh parameter; the existing
+raw exposure lemma gives the native D elimination or its harmless neutral
+cases. If falsy, i(*a,t,2) exposes a D matrix and its supplied witness. For a
+meaningful equation matrix, u=2 chooses progress, whose soundness is literal-
+equation induction; any other u chooses numerical cases. A meaningful D/Q
+matrix always chooses cases. Neutral raw matrices produce a theorem whatever
+the mode. This is exactly the native two-introduction rule basis.
+The optional equality/QE rewrite, old-scope major check, and final successor
+opening are unchanged from the incumbent. New hypotheses are appended
+immutably and the floor is local. A zero formula is supplied only as the
+neutral 0=0 resource; it does not assert a user-defined equation.
+Induction on each finite successful call tree now establishes soundness.
+
+Canonical completeness
+----------------------
+Use canonical zero code 1 (the incumbent's O+ recoding). The compiler uses:
+- Hypothesis or neutral administrative major: packet [0,0,1,1]. Its supplied
+  computation is harmless; membership succeeds on the original resource.
+- I0: [0,0,R(seed),R(body)]. H is its exact canonical zero equation.
+- IS: [0,R(counter),R(seed),R(body)]. All canonical numerical terms, including
+  zero=1, are truthy, so predecessor zero selects successor computation.
+- Equality transport and QE: the inherited four-field packets with recoded
+  expression fields. Source zero for equality is 1; source flag 0 means QE.
+- D elimination: the inherited major packet, followed by its compiled proof
+  and branch proof.
+- Case introduction, witness w: [0,0,0,R(w)].
+- Equation progress introduction, witness w: [0,0,2,R(w)].
+The mode marker never creates a rewrite because its major is scalar 0, whereas
+both potential elimination majors are nonempty lists. Missing computation
+supply nodes are replaced by leaves whenever their computation would have
+been used, using the existing computation-leaves compiler; neither an extra
+assumption nor a parameter is needed. Thus all native Eq/D theorems still
+have finite certificates. Root goal validation accepts exactly the recoded
+native grammar, so no user promise about public syntax is needed in strict.
+
+Evidence and limitations
+------------------------
+translate_and_test.py inserts hypothesis packets, recodes expression zeros,
+and changes only introduction mode markers, by tracing the exact inherited
+direct-leaf checker on existing accepted certificates. Thirteen substantive
+proofs translated successfully, including used induction, compound implication,
+atomic case introduction, old source-zero transport and multiple-scoped proofs.
+verify_new.py runs both candidates normally and with -O: 172 isolated runs,
+no unexpected results. Negatives include meaningful future-parameter capture,
+false goal mutations, bad computation endpoint, invalid public bound slots,
+wrong grammar and whole-input malformed unused prefixes.
+These tests support but do not prove the universal arguments. No new Lean or
+Rocq proof of the Python checker is included. The 606/579 records improve only
+bytes in their own validation classes; gzip, tokens and AST may increase.

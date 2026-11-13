@@ -1,0 +1,222 @@
+THE FULLY VALIDATED NATIVE CHECKER: CONTRACT AND COMPARISON PROOF
+================================================================
+
+Result
+------
+checker.py has 673 normalized UTF-8 bytes, 344 significant Python tokens,
+and 393 AST nodes under CPython 3.12.14. The matched existing exact-type,
+Eq/D public-goal checker has 849 bytes, 370 tokens, and 426 AST nodes.
+The savings are 176 bytes (20.73%), 26 tokens (7.03%), and 33 nodes (7.75%).
+All parsing, type validation, public-goal grammar/scope validation, proof
+checking, and output code are counted. The sole import is Python's json.
+
+This is an implementation reduction of the inherited native axiomatization.
+It deletes no logical or arithmetic axiom. It is not a proof of a global
+minimum and it does not beat the smaller compact profile in every metric.
+The existing arithmetic/logical bi-interpretation is inherited unchanged.
+
+Pinned sources
+--------------
+Repository: VladimirReshetnikov/ProveIt
+Commit: 6ffc49f55d355b548f7a8e1530570aee5de086b3
+
+control849.py is exactly:
+ Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/
+ validated_presentation/code/native_typed_eqd.py
+ Git blob 698c76daf322529ae4b321d67097c7b99c95874d
+
+control656.py is exactly:
+ Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/
+ deterministic_introduction/implementation/code/native.py
+ Git blob 63adc1dc37b6314e2aec53f2558d7242427f7f63
+
+The second source fuses public syntax validation with its first scope scan.
+It checks the goal's types but does not enforce integer/list syntax in all
+inactive certificate data. Its 656-byte size is therefore NOT a matched
+fully typed competitor. PROVENANCE.json records full paths, Git blobs,
+SHA-256 hashes, and the source of every frozen regression fixture.
+
+1. Exact public contract
+------------------------
+Input is one JSON list, consumed from its end as a proof stack. Every node
+in the whole document, including an unused prefix, must be an actual list
+or an actual integer. Booleans, floats, strings, objects, and null reject.
+The final stack item is a closed public formula in the inherited Eq/D slot
+syntax. It is checked both for grammatical shape and variable scope.
+
+At even depth d, a formula list has arity 1 or 2. Arity 1 is a paired D
+binder; arity 2 is an equation. At odd depth d, a term list has arity 1 or 3.
+The child depth is d + 5 - arity. A successful scalar leaf must be 0, or an
+odd integer at least 3 and smaller than d. The initial depth and scope
+floor are both 0, so a public goal has no free negative eigenparameters.
+These are the inherited reserved-slot conventions; distinct raw spellings
+may decode through dummy-zero coordinates. Unique raw spelling is not
+claimed. Q remains available internally as a repeated three-item body.
+
+Only exit status zero together with exactly 'ACCEPT\n' denotes acceptance.
+Every exception rejects. Unused integer/list prefixes are permitted.
+
+2. The whole-document lexical gate
+---------------------------------
+The driver reads p and evaluates
+
+    q = not str(p).strip('0123456789-[], ') and p.pop
+
+before calling q(). For a parsed top-level list, str(p) represents nested
+elements using repr. A nested string contributes a quote or an escape;
+a Boolean or null contributes letters; a float contributes a decimal point,
+an exponent, or letters in nan/inf; an object contributes braces or a colon.
+Each such representation contains a forbidden character. Integer/list
+trees, conversely, use only decimal digits, minus signs, commas, brackets,
+and spaces. Thus the gate is exact on parsed lists.
+
+The predicate alone need not reject a top-level string such as "123".
+This does not invalidate the driver: that string has no pop method, so the
+driver raises before c is reached. A top-level integer likewise fails pop;
+an object fails the alphabet test. Consequently the driver reaches c only
+with an actual list of integer/list trees.
+
+For every finite string, strip(alphabet) is empty exactly when every
+character is in alphabet. A forbidden character cannot be removed by
+stripping an allowed prefix and suffix. This proves equivalence with the
+more explicit set(str(p)) <= set(alphabet) test, without a hidden validator.
+
+3. The initial fused validator
+------------------------------
+The public call sets v=1. On grammatical prefixes, d modulo 2 is exactly
+the current formula/term sort, so the allowed arities are
+
+    len(a) in (1, 2 + d % 2).
+
+The scalar clause requires k <= a < d and, in validation mode, odd d and
+'not a or a > 1 == a % 2'. For integers the latter means zero or an odd
+integer at least three. An invalid scalar at formula depth must reject:
+the fallback (d % 2 or v) and i(t,d=3) visits the default callable sentinel,
+which cannot be multiplied by zero and raises. A list of forbidden arity
+instead falls into a scalar comparison and raises.
+
+The source's explicit type(a) is int check is now redundant. The global
+gate ensures that every original scalar is an integer. An original list
+cannot succeed in the scalar comparison. The default function sentinel
+rejects under either version. Kernel-generated Boolean zeros arise only
+after v becomes zero, where the source had already bypassed that check.
+
+On this input family, the two list discriminators a*0 == [] and a*0 != 0
+are identical: an integer (and a kernel Boolean) gives 0; a list gives [].
+The callable sentinel raises under both. This justifies the final one-byte
+reduction. The two tests would NOT be interchangeable on arbitrary strings;
+the whole-document gate is essential to this particular optimization.
+
+The first valid public formula is a nonempty list and cannot equal the
+initial neutral context item 0. The call therefore sets v=0 before reading
+its first proof packet. Recursive c calls also have v=0. No subsequent
+kernel step performs a new public-goal validation pass.
+
+4. Dispatch may follow the major proof and hypothesis construction
+-----------------------------------------------------------------
+The older control selects a transformed goal before computing h. The
+656-byte source computes h first. If m is truthy, then after its recursive
+proof succeeds, m*3 is truthy. Therefore h is obtained without assigning a.
+The earlier or later goal selection sees the same a. If m is falsy (0 or
+[] on the present alphabet), it cannot equal either nonempty expected-major
+list [s,u] or [t]*3; dispatch leaves a unchanged. In particular, the only
+branch that reassigns a -- introduction -- cannot have triggered an earlier
+elimination dispatch. No list used as a goal, formula, field, or context is
+mutated; only the global proof stack is popped. The caller's k is local.
+This proves the delayed-dispatch equivalence on successful executions.
+
+5. Eager tuple selection
+-----------------------
+After h has been computed, put
+
+    M = s and [s,u] or [t]*3
+    U = i(t,u)
+    R = i(t,s).
+
+The list choice M is exactly the old [s,u] if s else [t]*3: both branches
+are nonempty lists. Over finite integer/list data, structural pair equality
+(m,a)==(M,U) is equivalent to m==M and a==U. The program replaces
+
+    (m==M and U==a and R) or a
+
+by the tuple lookup
+
+    (a,R)[(m,a)==(M,U)].
+
+If the comparison is false, both expressions return a. If it is true and
+R is truthy, both return R. If it is true and R is falsy, the old expression
+returns a and the new one returns R. These are nevertheless equal. At
+formula depth zero, i preserves a list's root arity, so a falsy list result
+is possible only for the empty root list, independently of its image.
+For an integer root at depth zero, the result is independent of the image:
+it is either the retained negative integer or 0. Thus whenever R is falsy,
+the other image U has exactly the same value R. The successful comparison
+asserts U=a, giving R=a.
+
+All i evaluations precede k := ~-k. They see the same original scope floor.
+The eager version may evaluate U or R in a packet where the short-circuit
+source did not. If this extra traversal fails, the new checker rejects.
+Therefore one must not claim equality of all accepted raw certificates.
+Every successful new trace is, however, a successful old trace with the
+same selected goals, hypotheses, packet suffix, and final conclusion.
+
+6. Completeness survives the eager traversals
+--------------------------------------------
+Use the inherited canonical native proof compiler. Its genuine elimination
+templates are well-scoped finite formula templates, and their two supplied
+images are well-scoped numerical terms. Both openings consequently succeed.
+Its computation bodies and introduction witnesses are numerical terms,
+whose list arities are odd (1 or 3). Viewed by i at even depth zero, every
+recursive depth stays even, so these additional traversals cannot inspect
+the substituted image at all; they terminate structurally. Unused fields
+in D-opening packets can be standardized to 0, without changing a native
+rule. Thus every native derivation has a certificate for the eager checker.
+
+The two introduction modes are deliberately preserved. Introduction has
+falsy u. For an equation matrix, u=0 makes len(a)%2 == u true and selects
+progress; u=[] makes the same test false and selects cases. Collapsing 0
+and [] here would lose ordinary atomic case introduction. The present
+checker retains both values and their distinction.
+
+7. The scope-floor spelling
+---------------------------
+The initial k is integer 0 and every recursive call receives an unchanged
+or decremented integer k. Python's ~(-k) equals k-1 on integers. Therefore
+k := ~-k performs the same update at the same evaluation point as the
+source assignment. No certificate can supply a noninteger k.
+
+8. The theorem proved, and its limits
+------------------------------------
+Under the inherited decoder and native-calculus correctness theorem, every
+accepted certificate proves its decoded public formula. Conversely, every
+native theorem in the Eq/D public language has a canonical accepted
+certificate. The native language's logical macros and the arithmetic
+bridge transfer the established bi-interpretation with full first-order
+iPRA; both numerical domains and actual equality are unchanged.
+
+This is a theorem-set equivalence. It is not a claim that every malformed
+or noncanonical certificate accepted by an older permissive implementation
+is accepted by the new one. Inactive noninteger data are now rejected, and
+eager traversal can reject additional improperly scoped inactive fields.
+The exact-type matched control already rejects the first kind of data.
+
+The universal arguments above are written mathematical arguments. The
+candidate has not been newly formalized in Lean or Rocq. The inherited
+formal development is not rebuilt by reproduce.py. Python resource limits
+remain practical implementation limits, as for the source controls; the
+theorem-set comparison idealizes sufficient finite memory and recursion.
+
+9. Executed checks
+------------------
+reproduce.py first checks the Git blob and SHA-256 identities of both
+controls and all 22 fixture files (including the fixture index). It runs
+21 complete certificates against the matched 849-byte control and the
+candidate under ordinary Python and python -O: 42 pairs, 84 processes.
+It checks 22 forbidden inactive-prefix cases, 3 admissible inactive-prefix
+cases, 10 invalid top-level JSON forms, and 972 independent comparisons of
+the lexical gate with a recursive exact-type predicate on parsed lists.
+
+All checks passed on CPython 3.12.14. In particular the local atomic-case
+fixture is accepted, while malformed/false/scope-escape examples reject.
+validation.json records the results. These executions support the source
+comparison; they do not substitute for the universal arguments above.

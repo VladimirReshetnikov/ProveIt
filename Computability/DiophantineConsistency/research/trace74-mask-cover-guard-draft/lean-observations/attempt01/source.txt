@@ -1,0 +1,58 @@
+import DiophantineConsistency.ArithmeticRankForcing
+
+/-! UNCHECKED DRAFT. From the second no-carry condition and mask-sum coverage,
+derive the comparison required by the conditional saturation-to-guard lemma.
+No trace74 zero or fixed-port property is asserted. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace Trace74MaskCoverGuard
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ArithmeticBinaryCarry ArithmeticRankForcing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem compare_from_cover (u q beta MC HP J F : V)
+    (hq : q = Exp.exp u) (hqdef : q = beta*J+1)
+    (hJ : 0<J) (hHPJ : 1≤HP*J) (hcover : beta+1≤MC+HP)
+    (hF : F<q) (hH : HP*J-1<q) (hnc : NoCarry F (HP*J-1)) :
+    F≤MC*J := by
+  have hJ1 : 1≤J := pos_iff_one_le.mp hJ
+  have hmul := mul_le_mul_of_nonneg_right hcover (zero_le J)
+  have hcover' : beta*J+1≤MC*J+HP*J := by
+    calc
+      beta*J+1≤beta*J+J := add_le_add_left hJ1 _
+      _=(beta+1)*J := by ring
+      _≤(MC+HP)*J := hmul
+      _=MC*J+HP*J := by ring
+  have hpred : (HP*J-1)+1=HP*J := tsub_add_cancel_of_le hHPJ
+  have hf' : F<Exp.exp u := by simpa only [hq] using hF
+  have hh' : HP*J-1<Exp.exp u := by simpa only [hq] using hH
+  have hsum := noCarry_add_lt u F hf' (HP*J-1) hh' hnc
+  have hsum1 : F+(HP*J-1)+1≤q := by
+    rw [hq]
+    exact lt_iff_succ_le.mp hsum
+  have htotal : F+(HP*J-1)+1≤MC*J+(HP*J-1)+1 := by
+    calc
+      F+(HP*J-1)+1≤q := hsum1
+      _=beta*J+1 := hqdef
+      _≤MC*J+HP*J := hcover'
+      _=MC*J+(HP*J-1)+1 := by rw [←hpred]; ring
+  exact (add_le_add_iff_right (HP*J-1)).mp ((add_le_add_iff_right (1:V)).mp htotal)
+
+theorem compare_from_mask_bounds (u q beta MC HP J F : V)
+    (hq : q = Exp.exp u) (hqdef : q = beta*J+1)
+    (hJ : 0<J) (hHPJ : 1≤HP*J) (hcover : beta+1≤MC+HP)
+    (hHP : HP≤beta) (hF : F<q) (hnc : NoCarry F (HP*J-1)) :
+    F≤MC*J := by
+  have hH : HP*J-1<q := by
+    calc
+      HP*J-1≤HP*J := tsub_le_self
+      _≤beta*J := mul_le_mul_of_nonneg_right hHP (zero_le J)
+      _<beta*J+1 := lt_add_one _
+      _=q := hqdef.symm
+  exact compare_from_cover u q beta MC HP J F hq hqdef hJ hHPJ hcover hF hH hnc
+
+#print axioms Trace74MaskCoverGuard.compare_from_cover
+#print axioms Trace74MaskCoverGuard.compare_from_mask_bounds
+end Trace74MaskCoverGuard

@@ -1,0 +1,114 @@
+CERTIFICATE FORMAT: ZERO-NORMAL UNIFORM EVALUATION WITH CLAUSES
+
+The standalone acceptance module is code/checker.py. It reads one JSON
+object from standard input, containing exactly the keys "goal" and "proof".
+The public goal is a closed Eq/D formula. Success prints ACCEPT and exits 0;
+exceptions print REJECT and exit 1. Python resource limits can reject very
+large correct certificates. There is no dependency beyond the standard
+library, no imported prover, no evaluated Python certificate, and no use of
+assert for acceptance.
+
+SYNTAX
+
+At a proof-branch scope n and under d local numerical binders:
+
+  0               numerical zero;
+  -n,...,-1       fresh parameters already introduced by proof branches;
+  1,...,d         bound indices, with 1 the innermost binder;
+  [0,t]           successor of t;
+  [c,a,h]         I(c,a;u.h), with only u bound in h.
+
+A numerical term is zero-normal: no iterator has the literal zero as its
+counter. Successor is not normalized away. The displayed iterator counter
+can be a variable, a successor, or an iterator with nonzero literal root.
+The test rejects booleans, floating point numbers, strings, null, loose
+positive indices, future negative parameters, and malformed arrays.
+
+A formula is [s,t] for s=t, or [B] for D_{x,y} B. Inside B, y has local
+index 1 and x has local index 2; enclosing binders shift them in the usual
+way. A formula and a numerical successor can have the same untyped array
+shape, but the syntax checker always supplies the expected sort.
+
+Opening replaces one local bound index by a term and lowers larger local
+indices. It rebuilds iterator nodes and contracts I(0,a;u.h) to a. When
+opening under nested binders, it increments the distinguished index by one
+under an iterator body and by two under D. Substituted witnesses are closed
+with respect to positive indices at their use site. Their free variables
+are negative levels, so no extra shift is required on inserting them below
+local binders. A witness may contain its own internally bound variables.
+
+RULE PACKETS
+
+The calculus has five inference patterns. Refl is a validated leaf; the
+other four have tags. For Refl, a goal [t,t] closes immediately after full
+syntax validation. Its proof field is unused, and can be null. The matched
+controls follow the same policy. Ignoring an irrelevant payload at an
+already proved leaf does not admit an unproved formula.
+
+  ["v", c, b, h, t, major, minor]
+
+Let P be b if c is the literal zero, and [c,b,h] otherwise. This packet
+checks major against P=t and minor against I(S(c),b;u.h)=r, where r is the
+left side of the current goal. The goal must be r=h[t/u], with zero-normal
+opening. Thus the redex is constructed from its predecessor parameters;
+there is no separate equality-only context parameter and no root/zero branch of Eval.
+Both premise goals are fully validated. In particular, the minor checks
+that c and b are terms and h is a one-bound-variable numerical template.
+
+  ["u", index, t, premise]
+
+Contexts are lists of reusable clauses (antecedent, one-bound-variable
+body). The integer index is zero-based, with clauses appended in entry
+order. This packet validates t, checks premise against the selected
+antecedent, and checks that opening the selected body at t equals the goal.
+An ordinary assumption A is stored as (0=0, A), with the body variable
+unused; it is used by this same packet with a reflexivity leaf for 0=0.
+
+  ["e", B, major, branch]
+
+The major proof has goal [B]. At scope n the fresh parameter is -n-1.
+Open B's witness variable x at that fresh parameter, retaining its inner
+coordinate y, and append the clause (B(-n-1,0), y.B(-n-1,y)). The branch
+checks the original goal at scope n+1. The original goal was already
+validated at scope n, which prevents the fresh witness from escaping.
+
+  ["i", t, branch]
+
+The current goal must be [B], and t must be a term at the old scope n.
+Open the witness variable x at t. Set eta=-n-1 exactly when B is literally
+an equation and t is literally zero; otherwise set eta=0. Append the
+ordinary assumption B(t,eta), and check the branch against B(t,S(-n-1))
+at scope n+1. No full-formula induction is admitted. The guard is a test on
+canonical syntax, not a decision about provable equality to zero.
+
+NORMALIZATION EDGE CASE
+
+A nonzero raw witness can normalize to literal zero, changing the guard
+from cases to progress. The proof compiler repairs that case using the
+surviving nonzero syntactic alias Z=I(S(0),0;u.0). Uniform evaluation proves
+Z=0. It transports the old case assumption and conclusion through this
+equality and introduces D at witness Z. The example
+examples/witness_collapse_consumes_base.json exercises this repair with a
+case premise which actually uses its zero-instance assumption.
+
+REPRODUCTION AND COMPARISON
+
+Run python3 reproduce.py from this package directory. It checks each source
+certificate with reference/raw_ce5.py, translates it to code/forward.py,
+checks the goal-oriented certificate with code/checker.py, replays it in
+code/zero_control.py, and translates it into the independent tagged
+Eq/Q/D verifier reference/normalized_e2.py. It also checks the matched raw
+goal protocol. Adversarial public certificates are tested with ordinary
+Python and python -O.
+
+The source examples comprise 32 delivered raw CE5 examples, 32 distinct
+round-tripped certificates of those examples, and two explicit witness
+normalization repairs. They are 66 certificates, not 66 independent
+mathematical phenomena. The additional positive examples exercise literal
+equation induction with a used hypothesis and three closure targets.
+
+Measurements remove a module docstring, normalize the complete module with
+CPython 3.12.14 ast.unparse, and add one LF. They count all parsing,
+validation, substitution, rule checking, exception handling and output.
+Tokens exclude whitespace, indentation, comments and the end marker. Gzip
+uses level 9 and timestamp zero and is informational.

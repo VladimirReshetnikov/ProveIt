@@ -1,0 +1,9 @@
+# Independent review: four-square free-J 88/30 graph
+
+The source-only candidate passes review. Its exact graph edit deletes `Fs=1+g72` and replaces the parent pair-square finalizer by `A0²+A1²+(Fa−1)²+g72²`. The result has 88 live binary operations, with all 13 free-J coordinates and four fixed ports live and no new leaves.
+
+The reviewed parent is `A0²+A1²+(Fa*Fs−1)²`. At a parent zero over integers, all three squares vanish and `Fa*Fs=1`. The previously independently checked global modulo-4 exclusions rule out −1 for both Fa and Fs, so both equal 1 and the new four squares vanish. Conversely, a new zero forces Fa=1 and g72=0, so Fs=1 and the parent vanishes. These are pointwise implications for arbitrary integer inputs and ports; they do not require positivity.
+
+The first residual's source shapes give `Z=M*ell+d`, with `d=M*(k+r−k*Bt)+Y*qm−q3*Bt`. An independent exact integer-polynomial calculation confirms `A0=2*M*ell*d+d²−M²*(1+ell*k)`. The syntactic source bounds `deg(M*ell)≤8` and `deg(d)≤7` give `deg(A0)≤15`; the other residuals have bounds 14, 13 and 10. The complete graph therefore has degree at most 30. P72 compact44 compressed and raw port bytes match their P115 binding hashes. An independent weighted affine ray through the whole graph has nonzero degree-30 coefficient modulo 1,000,000,007, establishing exact degree 30 at those bytes. The author receipt reproduces byte for byte.
+
+Numerical comparisons with named 88/46, 87/51 and 91/30 points are as stated, but free J and P73's `3j+1` are different coordinate encodings; no same-valuation identity between them follows. This review does not prove a global frontier, a new Lean theorem, a paired replay of the inherited endpoint, complete foundational ancestry, or JSON/PDF binding. Run `python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary13-four-square88-30-independent/check.py` from the repository root.

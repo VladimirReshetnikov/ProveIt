@@ -1,0 +1,156 @@
+INDEPENDENT MATHEMATICAL AUDIT: EXACT PUBLIC SYNTAX BY AN AVAILABILITY MASK
+
+Scope and status
+---------------
+This note proves the syntax and operational correspondence of the new availability-mask checkers. It does not give a new arithmetic axiom deletion or a new proof of the inherited iPRA bridge. Its comparison baseline is ProveIt commit e88ebf229bb61bd870bb229b9c97caaa1e044e6e, including the incoming scope_phase and composition_and_dummy_slots packages. The new exact interface is a narrower and fully specified input contract than a sorted-only interface. Comparing its size with the 239-token compact envelope or the 302-token sorted-only envelope as though those interfaces were identical would be incorrect.
+
+Files independently reviewed:
+- candidates/exact_agent/exact_v2.py (positive availability mask)
+- candidates/exact_agent/exact_v3.py (complemented availability mask)
+- candidates/checker_agent/exact_signed.py (sort encoded by sign)
+- candidates/exact_agent/exact_integrated.py (complemented mask fused into byte profile)
+
+New token-oriented implementations developed here:
+- research_math/exact_fused.py (complemented mask, fused into checker_tokens302)
+- research_math/exact_fused_signed.py (signed mask, fused into checker_tokens302)
+
+1. The exact native grammar
+---------------------------
+Public goals are closed Eq/D formulas. The codec uses the numerical zero code 1 and the code 3+2j for slot j, counted from the innermost slot. Environments are finite Boolean lists e=(e_0,...,e_{h-1}) recording which slots are genuine numerical binders. Dummy slots are unavailable.
+
+At a term position:
+- The integer 1 denotes numerical zero.
+- The integer 3+2j is allowed exactly if 0<=j<h and e_j=True.
+- [t] is successor; validate t under (False,False)+e.
+- [n,a,h] is iteration; validate n and a under (False)+e, and h under (True)+e.
+- No other shape is a term.
+
+At a formula position:
+- [B] is D; validate B under (True,True)+e.
+- [s,t] is equality; validate both children as terms under e.
+- No other shape is a formula.
+
+The public root is a formula with the empty environment. No negative rigid parameter occurs in a public closed formula. Negative integers remain legitimate internal proof data under the inherited scope discipline. Q is not a public constructor; Q_y B is expressed as D_{x,y} B with x unused. This is intuitionistically valid because the numerical domain contains zero.
+
+The old sorted-only condition merely imposed the appropriate arities and odd scalar codes below a depth bound. It did not determine whether a slot was genuine. In particular [[5],[1]] passes that weaker test: the left successor reads its second padding slot. Under the advertised zero-padding reading it spells S0=S0, while the incoming composition_and_dummy_slots report proves that no certificate for it is accepted by the old native protocol. The proof uses a uniform alternative reading of that second padding slot as a parameter c. This new note does not claim the padding theorem as its own result.
+
+2. Positive-mask invariant
+--------------------------
+For the Boolean environment e define
+
+  M(e) = 1 + sum_{j=0}^{h-1} e_j * 2^{j+1}.
+
+Bit zero marks the zero constant. Bit j+1 marks the slot whose code is 3+2j. M is always positive and odd. Trailing unavailable slots need not be represented: their bits are zero, just as all bits beyond the finite environment are zero.
+
+The four constructor transitions are:
+
+  D:              M -> 4M+3
+  S:              M -> 4M-3
+  equality:       M -> M, changing formula sort to term sort
+  iterator child: M -> 2M-1+2[j=2].
+
+These identities follow by expanding the sum. They exactly insert, respectively, two genuine slots, two dummy slots, no slot, or one slot whose availability is true only in the update child. For a positive odd leaf a, (M >> (a//2)) & 1 tests precisely the indicated zero/variable availability.
+
+The predicate in exact_v2.py follows these equations, carrying an independent sort s=0 or 1. Its unary branch is 4M+3-6s, its binary branch leaves M unchanged, and its ternary term branch is 2M-1+2[j=2]. Its arity test len(a) in (1,2+s) permits exactly the public constructors. Therefore simultaneous structural induction on terms and formulas proves:
+
+  bool(v(a,M(e),s)) is true if and only if a belongs to the exact grammar
+  at sort s in environment e.
+
+This theorem concerns integer/list trees, as enforced by the separate whole-input gate. It is not an assertion that the bare predicate accepts arbitrary Python objects safely.
+
+3. Complemented-mask invariant
+-------------------------------
+Put m=~M=-M-1. Then the transitions become:
+
+  D:              m -> 4m
+  S:              m -> 4m+6
+  equality:       m -> m
+  iterator child: m -> 2m+2[j<2].
+
+The initial mask is -2. Reading an availability bit becomes
+
+  ~(m >> (a//2)) & (a%2).
+
+For odd nonnegative a this is exactly the positive-mask bit. For even a it vanishes. Negative a causes a negative-shift exception, which rejects the certificate; in the fused public traversal the preliminary lower bound 0<=a already rejects negative a. The masks are always negative even integers. Their complements are finite nonnegative availability masks, so references to any unavailable or out-of-range positive slot vanish.
+
+This establishes the exact_v3 predicate and the public mask update in the repaired, keyword-only-mask versions of exact_integrated.py and exact_fused.py.
+
+4. Signed-mask invariant
+------------------------
+A more economical representation stores the sort in the sign:
+
+  m =  M(e) at a term position;
+  m = -M(e) at a formula position.
+
+The root mask is -1. Both unary constructors now use the same update:
+
+  m -> 4m-3.
+
+For a term this is the successor transition 4M-3. For a formula it is -(4M+3), the D transition with negative sign. Equality changes sign, m -> -m. The iterator has positive input mask and updates by 2m-1+2[j=2]. Signs are preserved by unary constructors; all term masks are positive and all formula masks negative. This proves the correctness of exact_signed.py's independent predicate. In exact_fused_signed.py the inherited traversal depth also records the sort, and its parity supplies the sort test; the mask sign still evolves according to the same invariant.
+
+5. Fusion into the existing traversal
+-------------------------------------
+The inherited traversal uses d=2h at a formula position with h protected slots and d=3+2h at a term position. A list of length r visits every child at depth d+5-r. For the valid public constructors these changes agree exactly with the environment transitions above:
+
+- unary: +4, two slots;
+- equality: +3, formula-to-term change without added slots;
+- iterator: +2, one slot.
+
+In exact_fused_signed.py the initial phase flag v is 1 and the floor k is 0. The list arity test is inherited:
+
+  len(a)**v in (1,2+d%2).
+
+It therefore validates the exact formula or term arities at v=1. The leaf condition is
+
+  k <= a < d and v <= d & (m >> (a//2*v)) & (a%2).
+
+At v=1 this requires a nonnegative, in-scope, odd scalar, at a term position, with its availability bit present. That is precisely the grammar above. On a legal leaf the returned a or 1 equals a. On a legal list the recursion rebuilds the same list. On an illegal public leaf, the fallback invokes the default complex sentinel at term depth and raises a comparison TypeError; an illegal list similarly reaches an invalid integer/list comparison. Thus, for every integer/list tree a,
+
+  initial_i(a) returns normally exactly when a is a canonical closed Eq/D
+  formula; when it returns, its result is exactly a.
+
+The first membership expression evaluates initial_i(a) before evaluating the tuple containing (v := 0). Hence public validation finishes before the checker enters its proof phase. The flag is never subsequently set to 1.
+
+At v=0 the new mask is operationally irrelevant:
+
+- len(a)**0 = 1 for every list length, including zero, as in the old traversal.
+- a//2*v = 0, so no negative shift arises for internal negative parameters.
+- d & (m >> 0) & (a%2) is either 0 or 1; the comparison 0 <= ... is always true.
+- Every mask update is total integer arithmetic and introduces no additional branch or exception on finite integer/list data.
+
+A necessary interface condition is that the new mask be keyword-only. The signature must be lambda a,t=0j,d=0,*,m=-1 (or its complemented analogue), and recursive children must pass m= explicitly. The original function accepted at most three positional arguments. The native call i(*a,t,2) intentionally uses that arity bound: a unary D formula contributes one expanded argument and succeeds, whereas an equation contributes two and must raise TypeError. A fourth positional mask would accidentally make the equation case callable, breaking the inference rule and permitting false 0=S0 goals. This was observed in a failed initial prototype and fixed before final delivery. Merely proving pointwise equality of the old and new three-argument functions is insufficient if their sets of allowed calls differ. The keyword-only signature preserves every original positional arity failure; extra keyword arguments cannot be supplied by JSON certificates.
+
+After suppressing the inert mask computations, and preserving the three-positional-argument interface, the proof-phase function is exactly the incoming checker_tokens302.py traversal. A structural induction on each successful traversal, including a subsidiary induction on an inserted image, gives equal results and equal failures for the old and new opener. The surrounding c function is unchanged. Therefore the two complete checkers accept exactly the same certificates whose public goal is canonical, and the new one rejects all other public goals.
+
+For the byte profile exact_integrated.py the phase flag is the floor k itself. The first i(a) runs while k=0; the tuple then executes k := ~-k, i.e. k := k-1. Every later call has k<0. Consequently the public guards (k or ...) validate only the first goal and short-circuit thereafter. The initial call c([[]],a), the neutral empty-list resource, the stream consumption and all floor updates are exactly those in incoming checker_bytes584.py. The same correspondence proof applies. Initial c([[]],a) is inherited, not an additional admissibility assumption introduced by this proposal.
+
+6. The whole-input gate
+------------------------
+The input is one JSON document p. The expression
+
+  str(p).strip('0123456789-[], ') or p.pop
+
+yields the callable p.pop only if the Python representation contains no character outside that alphabet. Among JSON-decoded objects this permits exactly integers and lists recursively. Every Boolean or null uses letters; every float contains a decimal point or exponent/NaN/infinity spelling; every string has quotation marks; every dictionary has braces. These all leave a nonempty string, and its attempted call rejects. A scalar integer at the root lacks pop; an empty root list cannot supply a goal; both reject. The default JSON parser rejects non-JSON syntax. The gate applies to the whole document, including unused prefixes. The integer/list alphabet property is therefore established before any accepting call.
+
+As usual, the mathematical result allows unbounded finite computation resources. Physical integer digit limits, stack limits or memory limits may reject a sufficiently large valid proof. This is the inherited resource convention, not a new totality or complexity claim.
+
+7. Transfer of the mathematical theory
+--------------------------------------
+Let Enc be the exact canonical encoder from native closed Eq/D formulas, and let Old be the matched incoming checker. The inherited theorem has the form
+
+  K proves A  iff  there exists a certificate p whose public goal is Enc(A)
+                       and Old accepts p.
+
+The new operational correspondence proves, on the same p,
+
+  New accepts p  iff  Old accepts p, whenever its public goal is Enc(A),
+
+and proves that every New-accepted public goal is in the image of Enc. Thus New is a complete exact checker for K's Eq/D presentation. The native mathematical calculus K and its ordinary realization were already proved bi-interpretable and equiconsistent with full first-order iPRA in the repository. None of the mask changes alters terms, axioms, logical readings, numerical domains, actual equality, or the identity comparison graph. The inherited interpretations and both term/formula round trips therefore apply unchanged.
+
+It would be incorrect to call this a new mathematical simplification of iPRA or an absolute lower-bound result. It is a smaller implementation of the exact theorem-checking contract, closing the dummy-slot ambiguity without moving a decoder or a syntax check outside the measured trusted module.
+
+8. Independent validation
+--------------------------
+audit_mask.py compares the positive and complemented standalone predicates with an explicit Boolean-environment grammar, not with one another. It enumerates all constructor paths through depth 6, tries negative/even/odd/out-of-range scalar leaves at every focused position, and probes arities 0..5. It ran 128,125 cases and 256,250 predicate evaluations without disagreement.
+
+audit_fused.py applies the same independent grammar to both fused traversals; compares proof-phase outputs and exception categories with the original opener on 20,000 deterministic arbitrary integer/list cases; and runs the signed token profile on the 112 inherited whole-checker cases plus five exact-syntax attacks, each in ordinary and optimized Python. See fused_audit_results.json for actual outcomes of the repaired keyword-only implementation. The retained unsafe_positional_fused_audit_results.json records 32 expected-outcome failures in the discarded four-positional-argument prototype; it is negative evidence, not validation of a delivered checker. reject_positional_mask_attack.json is a short fixed regression certificate for this boundary. These finite tests support implementation review; the universal correspondence is the induction argument above, not a conclusion extrapolated from tests.

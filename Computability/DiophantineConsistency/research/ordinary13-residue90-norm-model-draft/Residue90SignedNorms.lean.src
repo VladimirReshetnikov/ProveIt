@@ -1,0 +1,62 @@
+import DiophantineConsistency.Compact44.ReducedNormSigned
+import DiophantineConsistency.Compact44.P72Root
+import DiophantineConsistency.ArithmeticAdaptiveQuotients2011
+
+/-! Model-natural witnesses from exact signed squared norms. The graph must
+supply the stated ring equalities; none of this source is Lean elaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Residue90SignedNormsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing ArithmeticSignedPairs
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The signed root may have either sign; its natural magnitude and quotient
+are constructed inside the same ordered IΣ₁ model. -/
+theorem signed_norm_quotient (scale N : V) (z : DiffRing V) (hs : 0<scale)
+    (hn : z*z=(ι scale)*(ι scale)*ι N) :
+    ∃ a t : V, z*z=ι (a*a) ∧ a=scale*t ∧ t*t=N := by
+  obtain ⟨a,_,ha⟩ := ReducedNormSigned.natural_magnitude_square z
+  have hnat : a*a=scale*scale*N := by
+    apply ι_injective
+    simp only [map_mul]
+    calc
+      ι a*ι a=z*z := by simpa only [map_mul] using ha.symm
+      _=ι scale*ι scale*ι N := hn
+  obtain ⟨t,hat,ht⟩ := ArithmeticAdaptiveQuotients2011.scaled_quotient scale a N hs hnat
+  exact ⟨a,t,ha,hat,ht⟩
+
+/-- First-root specialization: only the signed graph equation and a positive
+scale are assumed; positivity of the resulting tau is not required. -/
+theorem first_natural_norm (b m k : V) (z : DiffRing V) (hb : 0<b)
+    (hn : z*z=(ι b)*(ι b)*ι (1+m*(m+1)*k*k)) :
+    ∃ tau : V, tau*tau=1+m*(m+1)*k*k := by
+  obtain ⟨_,tau,_,_,ht⟩ := signed_norm_quotient b (1+m*(m+1)*k*k) z hb hn
+  exact ⟨tau,ht⟩
+
+/-- Reflect the literal signed pair's main squared equation into the
+natural-magnitude norm consumed by `GammaZeroNarrowDraft`. -/
+theorem main_pair_norm (U Delta c P N : V)
+    (hn : (ι P-ι N)*(ι P-ι N) = (ι U)*(ι U)*(1+ι Delta*(ι c*ι c))) :
+    magnitude (P,N)*magnitude (P,N)=U*U*(1+Delta*(c*c)) := by
+  apply ι_injective
+  simp only [map_mul,map_add,map_one]
+  rw [P72Root.ι_magnitude_sq]
+  exact hn
+
+/-- The positive scale then supplies the separate natural main norm needed by
+the first/main Pell bound. -/
+theorem main_natural_norm (U Delta c P N : V) (hU : 0<U)
+    (hn : (ι P-ι N)*(ι P-ι N) = (ι U)*(ι U)*(1+ι Delta*(ι c*ι c))) :
+    ∃ d : V, d*d=1+Delta*c*c := by
+  have hm := main_pair_norm U Delta c P N hn
+  obtain ⟨d,_,hd⟩ := ArithmeticAdaptiveQuotients2011.scaled_quotient
+    U (magnitude (P,N)) (1+Delta*(c*c)) hU hm
+  exact ⟨d,by simpa only [mul_assoc] using hd⟩
+end DiophantineConsistency.Residue90SignedNormsDraft
+#print axioms DiophantineConsistency.Residue90SignedNormsDraft.signed_norm_quotient
+#print axioms DiophantineConsistency.Residue90SignedNormsDraft.first_natural_norm
+#print axioms DiophantineConsistency.Residue90SignedNormsDraft.main_pair_norm
+#print axioms DiophantineConsistency.Residue90SignedNormsDraft.main_natural_norm

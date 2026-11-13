@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 60349 exited 0. Stage/postflight passed; receipt/state/logs, source/object, direct shifted endpoint provider and guarded overlays match. The sole report `guard_count` uses `[propext]` with no warning or `sorryAx`. The runner inherited an endpoint console label; state/source/module/report are ObjectGuard. It establishes the syntax and length of the 14-coordinate guard only; guard semantics, guarded-versus-shifted equivalence, a native guarded endpoint and file/PDF claims are separate. Captured routes are point-in-time. No Lean was run.

@@ -1,0 +1,5 @@
+# Unchecked symbolic-mask isolation probes
+
+These four source-only probes isolate, separately, fixing the radix, fixing the numerical indices, fixing the support, and exposing the actual `lowNat` definition. They are intended to locate which narrow application of the checked generic identity becomes costly before any combined retry. Each is independent; none combines the results into the concrete fixed-mask cover.
+
+The two earlier concrete low-defect attempts timed out with empty logs. The proposed probes are not profiling results and do not identify a cause. The [independent source review](../../reviews/trace74-symbolic-mask-isolation-draft-independent/README.md) found no mathematical blocker and did not run Lean. They need source-pinned guarded runners, compatible captured providers and separate Lean checks. No Lean or all-model, graph-guard, or iPRA claim is made. Retain the 600-second/global memory guards and prior terminal receipts unless a separately reviewed tighter diagnostic is chosen.

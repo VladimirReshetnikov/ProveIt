@@ -1,0 +1,7 @@
+# Independent review: bounded signed-cut search
+
+The retained best has 19 cuts plus 14 inputs (33 witnesses), and an independent two-component syntactic-degree propagation checks degree ≤2 for all 60 source rows under its selected orientations. It identifies the same four nontrivial sign obligations: gap, tau, cTminusR nonnegative and V2minusY2 nonpositive. Keeping qm/q inline and q2 materialized gives the stated first-residual normalization at zero witnesses, conditional on the specified positive port. This is degree bookkeeping, not proof of those signs or an actual residual/model construction.
+
+**Reproducibility issue:** the advertised fixed RNG seed does not make the run deterministic. The initial baseline is built from a Python set; randomized hash iteration changes the order subsequently shuffled by the seeded generator. A fresh independently captured run still reported 33 as its best, but its distribution (1606/3966/426/2 at 33/34/35/36) and 64,996 visited states differ from the retained author's distribution (1338/3895/766/1) and 65,817 states. Both 6,000-run outputs are retained. This finite heuristic did not find a below-33 candidate and proves no lower bound or global optimality.
+
+Checker SHA-256 `10814fa9bcd059eb935ed9840639c08a5d87e8cce635182ae5b2818b3bd4e582`; result SHA-256 `31ebd5c21de5b159f3c57e6e1c7a1e35a3d882d3d5a7a45e1f8c942e14ccce2c`; captured independent replay SHA-256 `03a4e4b42715059d7940173b187d99972eda3ec513c96c1317035734ee835594`.

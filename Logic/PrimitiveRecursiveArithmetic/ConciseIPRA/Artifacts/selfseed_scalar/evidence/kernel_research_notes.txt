@@ -1,0 +1,107 @@
+KERNEL INVESTIGATION: STATUS AND ATTRIBUTION
+==========================================
+
+This directory contains research work for the parent agent. It does not
+establish a significant new axiomatization, nor a single program below all
+three current source metrics. The selected positive results are modest
+compositions of already existing ideas.
+
+CURRENT BASELINE
+---------------
+The pinned repository is VladimirReshetnikov/ProveIt at
+76a2651601d17b34d46753f189ea026a21ce8d29. The baseline.py byte string is the
+explicit-list checker in ipra_certified_zero_2026-11-10/code/checker.py.
+The native arithmetic, logic, arity codec, and certified-zero normalization
+are inherited. Local scopes come from ipra_local_scopes_2026-11-10; the
+generic-traversal and loop forms come from ipra_compact_kernel_2026-11-10.
+
+MEASURED, TESTED COMPOSITIONS
+---------------------------
+                                       bytes tokens AST gzip9
+local_argument.py (explicit lists)        562    267 309   344
+local_argument_bytes.py                   554    267 311   339
+local_context.py                         567    266 313   346
+local_loop_joint.py                      642    263 291   353
+local_loop_joint_separate.py             641    262 293   354
+
+The best existing complete-program coordinate minima were 558 bytes,
+262 tokens, and 296 AST nodes, attained by different files. The 554-byte
+composition improves only bytes. The two loop compositions improve AST
+count, with a byte regression; the separate-driver loop ties tokens.
+There is no new axiom or arithmetic theorem here. Gzip is informational.
+
+The current recursive source corpus contains no exact source/AST match
+for the 554-byte composition (independent corpus-agent check), but its
+ingredients are all inherited. This is not a literature novelty claim.
+
+SCOPE ARGUMENT FOR THE POSITIVE COMPOSITIONS
+------------------------------------------
+At check(a,g,k), the parameter floor k equals minus the number of locally
+retained assumptions, beginning at zero. The opener closes over that
+call's k. A major subproof receives the same g and k, and its local updates
+cannot change the caller's k. A continuation lowers k by one and appends
+one assumption. An input accepted under the old floor cannot contain the
+new negative eigenparameter at a meaningful numerical position.
+
+This is exactly the inherited lexical-scope scheme. A finite canonical
+proof is compiled by alpha-renaming each branch's eigenparameters to
+local negative integers. The nested proof's private labels may be reused
+after it returns. The arity decoder and certified-zero computation rules
+are otherwise unchanged. Ordinary alias qualifications remain unchanged.
+
+The loop variants use an IMMUTABLE tuple for g. An in-place list update
+would leak assumptions from a major subproof into its caller and is not
+an acceptable implementation. Both supplied tested loop files use tuples.
+
+The generic traversal in those loops retains the inherited qualification
+that nonempty malformed strings can rely on the actual Python recursion
+limit to reject. The 562-byte explicit-list program and 554-byte
+zero-product-list program do not have that qualification.
+
+FINITE VERIFICATION
+-------------------
+check_local_composition.py uses the inherited named proof producer with
+a lexical-floor wrapper, without importing a candidate checker. Its 31
+cases include arithmetic, genuine contextual equation induction, nested
+quantifiers, compound transport, and targeted rejection controls. Three
+profiles, ordinary and optimized Python: 186 full CLI expectations passed.
+The two tuple-loop profiles passed another 124 expectations on those
+same cases. See local_composition_validation.json and
+local_loop_validation.json. These finite runs are not formal soundness
+proofs or Lean/Rocq verification.
+
+OTHER EXPERIMENTS, NOT SELECTED
+-----------------------------
+long_names.py removes the global floor by allowing negative free names
+and taking a fresh negative integer larger in magnitude than a decimal
+encoding of the present sequent. It has not received a complete alias
+audit or new producer, grows names rapidly, and is NOT a certified kernel.
+It does not improve metrics (566 bytes, 272 tokens, 317 AST).
+
+axiom_leaf*.py implement a direct computation leaf instead of computation
+supply. The mathematical normalization is ordinary-assumption cut:
+replace each use of the supplied equation by its computation leaf.
+The void version returns [generated_equation].index(goal), so mismatch
+raises. The boolean version propagates failure explicitly. These programs
+need a producer with no allocation at computation leaves and have NOT
+been replayed against such a producer. Their best byte size is 599,
+above the frontier, so they are not selected candidates.
+
+OTHER INVESTIGATED ROUTES
+------------------------
+An opaque-object eigenparameter in the old flat stream cannot be named
+by future JSON packets, so a complete system would need scoped proof
+opening or an environment. That obstruction and an additional float
+collision counterexample were independently established by the corpus
+agent. They are not a new positive construction.
+
+Direct definitional computation would remove an arithmetic dispatcher,
+but a correct normalizer needs binder-aware substitution under protected
+slots, neutral counters, and a reflexivity closure. The current opener
+only fills the exposed single hole; it cannot substitute an inner state
+slot while preserving and lowering outer de Bruijn slots. No smaller
+complete normalizer was obtained.
+
+Hypothesis-only major elimination is already ruled out in the supplied
+adaptive-seed draft: it loses the canonical closed Q_y(0=0) theorem.
+That failed route must not be represented as a novel discovery here.

@@ -1,0 +1,5 @@
+# Independent terminal audit: isolated W and delta
+
+Both single-field clients passed. Their generic commutative-ring statements identify reference node 66 with `Carrier65.core.W` and node 36 with `Carrier65.core.delta`, respectively, for arbitrary ports and coordinates. Each reports `[propext]`; W's compile log has two linter warnings and delta's has one. Neither theorem alone proves the source/static model bridge or an iPRA endpoint.
+
+The independent checker pins frozen/live state, source, runner, object and logs, checks the author-recorded outer successes (sessions 27053 and 84469, exit 0), 150 direct guard slots and 1,067 overlay routes per case, and both direct project producer paths and hashes. It reruns the independent P/Q producer review. Each successful runner's final guard and carrier checks precede its PASS state. The Carrier65 producer is a successful row within a larger failed run; deeper transitive/dynamic provenance remains outside the point checks. Resource observations were sampled. Outer records are author observations rather than independent historical transcripts. No Lean replay was performed.

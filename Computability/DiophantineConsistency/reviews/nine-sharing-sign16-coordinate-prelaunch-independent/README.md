@@ -1,0 +1,3 @@
+# Independent sign16 supplied-gap coordinate prelaunch
+
+Checker session 5412 exited 0. It checks lift/drop indices, removed old row05, supplied-gap zero and recovery statements under represented beta, source/manifest pins, both audited 17-stage seed providers and shared-values/V-lift audits, point union with 17 injected old modules, resource controls and no-Lean preflight. The V representative was established separately under stronger explicit bounds. The union survey is not rerun postflight; direct guards and output overlays are. Lean must still verify this coordinate source; residual transfer and equivalence remain separate.

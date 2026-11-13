@@ -1,0 +1,2880 @@
+{
+  "scope": "Finite CLI verification of complete checkers; not a formal soundness theorem or a certificate of the full arithmetic bootstrap.",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "checker_sha256": {
+    "checker.py": "cc23043c14e094dc3cb745db05f3213187840194534ba2810646dbd21c2ca338",
+    "checker_direct.py": "16895a8d3bf261083caf6af4a9640a238d07c6e82adf2022963f6291126c256b",
+    "checker_ast.py": "c3e95728f7ebad34e078d22baed25a24c15eed7f2c213643689ca256778ef2c8"
+  },
+  "case_count": 36,
+  "canonical_case_count": 33,
+  "positive_cases": 17,
+  "negative_cases": 16,
+  "alias_boundary_cases": 3,
+  "cli_runs": 216,
+  "passed_runs": 216,
+  "failed_runs": [],
+  "mutation_controls": [
+    {
+      "checker": "checker.py",
+      "mutation": "omit_major_proof",
+      "case": "failed_major_does_not_fall_through",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "mutation": "omit_major_proof",
+      "case": "failed_major_does_not_fall_through",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "mutation": "permit_compound_progress",
+      "case": "forbidden_compound_progress",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "mutation": "permit_compound_progress",
+      "case": "forbidden_compound_progress",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "mutation": "omit_recursive_image_validation",
+      "case": "two_child_counter_constant_update",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "mutation": "omit_recursive_image_validation",
+      "case": "two_child_counter_constant_update",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "mutation": "restore_wrong_I0_semantics",
+      "case": "old_I0_equation_is_false_for_J",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "mutation": "restore_wrong_I0_semantics",
+      "case": "old_I0_equation_is_false_for_J",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "mutation": "omit_major_proof",
+      "case": "failed_major_does_not_fall_through",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "mutation": "omit_major_proof",
+      "case": "failed_major_does_not_fall_through",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "mutation": "permit_compound_progress",
+      "case": "forbidden_compound_progress",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "mutation": "permit_compound_progress",
+      "case": "forbidden_compound_progress",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "mutation": "omit_recursive_image_validation",
+      "case": "two_child_counter_constant_update",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "mutation": "omit_recursive_image_validation",
+      "case": "two_child_counter_constant_update",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "mutation": "restore_wrong_I0_semantics",
+      "case": "old_I0_equation_is_false_for_J",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "mutation": "restore_wrong_I0_semantics",
+      "case": "old_I0_equation_is_false_for_J",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "mutation": "omit_major_proof",
+      "case": "failed_major_does_not_fall_through",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "mutation": "omit_major_proof",
+      "case": "failed_major_does_not_fall_through",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "mutation": "permit_compound_progress",
+      "case": "forbidden_compound_progress",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "mutation": "permit_compound_progress",
+      "case": "forbidden_compound_progress",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "mutation": "omit_recursive_image_validation",
+      "case": "two_child_counter_constant_update",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "mutation": "omit_recursive_image_validation",
+      "case": "two_child_counter_constant_update",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "mutation": "restore_wrong_I0_semantics",
+      "case": "old_I0_equation_is_false_for_J",
+      "optimize": false,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "mutation": "restore_wrong_I0_semantics",
+      "case": "old_I0_equation_is_false_for_J",
+      "optimize": true,
+      "expected_mutant_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    }
+  ],
+  "mutation_runs": 24,
+  "passed_mutation_runs": 24,
+  "failed_mutation_runs": [],
+  "results": [
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "J0_arbitrary_seed",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "JS_state_used",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "JS_constant_update",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "J0_nested_initial_value",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "truthy_zero_term_computation",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "equality_transport_reflexivity",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "atomic_progress_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "atomic_progress_nonzero_initializer",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "Q_arbitrary_term_specialization",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "compound_case_nested_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "truthy_zero_witness_used_in_matrix",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "paired_matrix_nested_case",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "contextual_induction_seed_congruence",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "transport_under_Q",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "forbidden_compound_progress",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "canonical_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "failed_major_does_not_fall_through",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "neutral_mismatch_cannot_prove_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "free_parameter_in_closed_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "future_parameter_in_inserted_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "missing_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "two_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "three_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "invalid_update_mapping",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "arity_four_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "old_I0_equation_is_false_for_J",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "unallocated_DI_witness",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "old_zero_witness_now_denotes_one",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "induction_step_with_base_only_context",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "unallocated_Q_target",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "alias_empty_string_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'str'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "alias_empty_object_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "alias_sole_empty_key_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "J0_arbitrary_seed",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "JS_state_used",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "JS_constant_update",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "J0_nested_initial_value",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "truthy_zero_term_computation",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "equality_transport_reflexivity",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "atomic_progress_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "atomic_progress_nonzero_initializer",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "Q_arbitrary_term_specialization",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "compound_case_nested_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "truthy_zero_witness_used_in_matrix",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "paired_matrix_nested_case",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "contextual_induction_seed_congruence",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "transport_under_Q",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "forbidden_compound_progress",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "canonical_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "failed_major_does_not_fall_through",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "neutral_mismatch_cannot_prove_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "free_parameter_in_closed_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "future_parameter_in_inserted_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "missing_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "two_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "three_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "invalid_update_mapping",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "arity_four_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "old_I0_equation_is_false_for_J",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "unallocated_DI_witness",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "old_zero_witness_now_denotes_one",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "induction_step_with_base_only_context",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "unallocated_Q_target",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "alias_empty_string_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'str'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "alias_empty_object_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "alias_sole_empty_key_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "J0_arbitrary_seed",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "JS_state_used",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "JS_constant_update",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "J0_nested_initial_value",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "truthy_zero_term_computation",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "equality_transport_reflexivity",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "atomic_progress_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "atomic_progress_nonzero_initializer",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "Q_arbitrary_term_specialization",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "compound_case_nested_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "truthy_zero_witness_used_in_matrix",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "paired_matrix_nested_case",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "contextual_induction_seed_congruence",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "transport_under_Q",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "forbidden_compound_progress",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "canonical_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "failed_major_does_not_fall_through",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "neutral_mismatch_cannot_prove_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "free_parameter_in_closed_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "future_parameter_in_inserted_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "missing_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "two_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "three_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "invalid_update_mapping",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "arity_four_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "old_I0_equation_is_false_for_J",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "unallocated_DI_witness",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "old_zero_witness_now_denotes_one",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "induction_step_with_base_only_context",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "unallocated_Q_target",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "alias_empty_string_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'str'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "alias_empty_object_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": false,
+      "case": "alias_sole_empty_key_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "J0_arbitrary_seed",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "JS_state_used",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "JS_constant_update",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "J0_nested_initial_value",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "truthy_zero_term_computation",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "equality_transport_reflexivity",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "atomic_progress_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "atomic_progress_nonzero_initializer",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "Q_arbitrary_term_specialization",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "compound_case_nested_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "truthy_zero_witness_used_in_matrix",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "paired_matrix_nested_case",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "contextual_induction_seed_congruence",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "transport_under_Q",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "forbidden_compound_progress",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "canonical_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "failed_major_does_not_fall_through",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "neutral_mismatch_cannot_prove_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "free_parameter_in_closed_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "future_parameter_in_inserted_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "missing_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "two_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "three_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "invalid_update_mapping",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "arity_four_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: index out of range"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "old_I0_equation_is_false_for_J",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "unallocated_DI_witness",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "old_zero_witness_now_denotes_one",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "induction_step_with_base_only_context",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "unallocated_Q_target",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'NoneType'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "alias_empty_string_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'str'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "alias_empty_object_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker_direct.py",
+      "profile": "list",
+      "optimize": true,
+      "case": "alias_sole_empty_key_counter",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'dict'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "J0_arbitrary_seed",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "JS_state_used",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "JS_constant_update",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "J0_nested_initial_value",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "truthy_zero_term_computation",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "equality_transport_reflexivity",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "atomic_progress_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "atomic_progress_nonzero_initializer",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "Q_arbitrary_term_specialization",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "compound_case_nested_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "truthy_zero_witness_used_in_matrix",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "paired_matrix_nested_case",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "contextual_induction_seed_congruence",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "transport_under_Q",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "forbidden_compound_progress",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "canonical_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "failed_major_does_not_fall_through",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "neutral_mismatch_cannot_prove_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "free_parameter_in_closed_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "future_parameter_in_inserted_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "missing_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "two_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "three_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "invalid_update_mapping",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "arity_four_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "old_I0_equation_is_false_for_J",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "unallocated_DI_witness",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "old_zero_witness_now_denotes_one",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "induction_step_with_base_only_context",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "unallocated_Q_target",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "alias_empty_string_counter",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "alias_empty_object_counter",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": false,
+      "case": "alias_sole_empty_key_counter",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "J0_arbitrary_seed",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "JS_state_used",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "JS_constant_update",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "J0_nested_initial_value",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "truthy_zero_term_computation",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "equality_transport_reflexivity",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "atomic_progress_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "atomic_progress_nonzero_initializer",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "Q_arbitrary_term_specialization",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "compound_case_nested_closure",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "nonvacuous_witness_DE_roundtrip",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "truthy_zero_witness_used_in_matrix",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "paired_matrix_nested_case",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "contextual_induction_seed_congruence",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "transport_under_Q",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "neutral_wrong_endpoints_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "neutral_target_mismatch_then_valid_proof",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "forbidden_compound_progress",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "canonical_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "failed_major_does_not_fall_through",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "neutral_mismatch_cannot_prove_false",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "free_parameter_in_closed_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "future_parameter_in_inserted_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "missing_seed",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "two_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "three_child_counter_constant_update",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "invalid_update_mapping",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "arity_four_goal",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "old_I0_equation_is_false_for_J",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "unallocated_DI_witness",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "old_zero_witness_now_denotes_one",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "induction_step_with_base_only_context",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "unallocated_Q_target",
+      "expected_accept": false,
+      "passed": true,
+      "returncode": 1,
+      "stdout": "REJECT",
+      "stderr_last_line": [
+        "TypeError: '<=' not supported between instances of 'int' and 'list'"
+      ]
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "alias_empty_string_counter",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "alias_empty_object_counter",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    },
+    {
+      "checker": "checker_ast.py",
+      "profile": "iterable",
+      "optimize": true,
+      "case": "alias_sole_empty_key_counter",
+      "expected_accept": true,
+      "passed": true,
+      "returncode": 0,
+      "stdout": "ACCEPT",
+      "stderr_last_line": []
+    }
+  ]
+}

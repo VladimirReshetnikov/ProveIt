@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+"""Review conditional scalar-window client and direct providers without Lean."""
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];p=root/'research/nine-sharing-sign15-scalar-window-check';draft=root/'research/nine-sharing-sign15-scalar-window-draft';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest();run=p/'run.py';m=p/'source-manifest.json';assert sha(run)=='b5ed98ffaf54872a3d22e8755a772f3168b57648b00ad4f32ae15b389e4ec73c' and sha(m)=='830a79e6eb3c40c982d5d35c41812b9f7cb043ac932b5d88b822dde0c65b0f4b';row,=json.loads(m.read_text())['rows'];name='Sign15ScalarWindow';src=p/'src/DiophantineConsistency'/(name+'.lean');s=src.read_text();assert sha(src)==row['source_sha256']=='d6aa8e5115cb67537a03b9447e1e55457ddba4a9411ac1eefb3d6f4f72c86c90' and row['module']=='DiophantineConsistency.'+name and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==row['imports']==['DiophantineConsistency.Sign15TransportRow','DiophantineConsistency.ArithmeticPellFirstIndex'];assert not re.search(r'(?m)^\s*(axiom|opaque)\b|\b(sorry|admit)\b',s)
+for t in ('theorem q_bound_of_seed','(hp0 : ((p 0 : ℤ) : DiffRing V) = ι beta)','(hp1 : ((p 1 : ℤ) : DiffRing V) = ι K)','(hb : 0 < beta) (hMC : MC < beta) (hMF : MF < 2 * beta)','(hz : InternalZero (SharingSeed15Degree124.seed p) v)','v 2 + 1 ≤ A beta v','Sign15TransportRow.transport_of_seed','scalar_window'):assert t in s
+assert sha(src)==sha(draft/(name+'.lean'))
+r=run.read_text();survey=p/'provider-survey.py';assert sha(survey)=='517145b2b23cbf9a39fa9492bb558d613c9301a167cf18406025446d4cccc770' and "if local=='ArithmeticPellFirstIndex':" in r and "matches=[x for x in base['rows'] if x['module']==local]" in r and "'-M2800'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r
+for path,pin in [(root/'reviews/nine-sharing-sign15-transport-row-terminal-independent/check.py','61cfb6eb6da3b7147c4ef8f6c2b5a21c59541a3b4496527cdd567ee177233e88'),(root/'reviews/nine-sharing-sign33-windows-retry01-terminal-frontier-independent/check.py','cb43319a1c4a99071d55f00ba03db680b2d206ec59c922410cb2fc1909d17e27')]:
+ assert sha(path)==pin;subprocess.run([sys.executable,'-I','-S','-B',str(path)],capture_output=True,check=True,timeout=120)
+x=subprocess.run([sys.executable,'-I','-S','-B',str(run),'--preflight'],capture_output=True,text=True,timeout=180);assert x.returncode==0 and not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','runner_sha256':sha(run),'scope':'q ≥ F conditional on seed zero, positive beta and MC/MF bounds; no V lift or equivalence'},indent=2,sort_keys=True))

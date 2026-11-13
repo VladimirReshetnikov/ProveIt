@@ -1,0 +1,7 @@
+# Independent review: actual 79 evaluator gauge
+
+`output_move` is an unconditional Lean equality in any commutative ring `R` for an arbitrary integer port tuple `p`, arbitrary ring-valued ten-tuple `v` and arbitrary `t : R`: the actual `(output79 p).evalRing` is unchanged by `move`. Its vector leaves slots 0, 3, 4, 5, 6, 8 and 9 unchanged and updates `F=v 1`, `C=v 2`, and `n=v 7` exactly by `F+b*t`, `C-q*b*t`, and `n-(b*sq+1)*(q*(K+w)+1)*t`, where `b`, `q` and `sq` are the original shared graph values.
+
+The proof obtains both rank and main-carrier identities from the prior checked carrier theorem, uses `new_core` to connect the actual evaluator to `core`, uses `core_decompose` and `shared_move` to bind the same shared values, then rewrites the carrier inside the output. The earlier actual-row review independently checked that `shared` does not inspect any of the three updated slots. `check.py` rehashed the direct provider/source/runner/output/logs and all recorded selected input pins; the retained report is `[propext, Quot.sound]`. No independent Lean replay or enclosing-process exit observation was performed.
+
+This is a ring equality, not a proof that any suitable natural or model `t` exists or that the resulting three coordinates are positive and satisfy the guard. Those strict positivity, guard and existential obligations remain open, as do the unguarded 79/80 zero equivalence and an iPRA endpoint. Historical transitive/package/dynamic ancestry and external JSON/PDF/file binding remain inherited.

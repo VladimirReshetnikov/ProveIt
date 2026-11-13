@@ -1,0 +1,7 @@
+# Conditional 73/75 positive-model transport
+
+For any supported model of IΣ₁ and natural coefficient ports, `Trace73ModelTransfer.from75` takes a positive 75-zero valuation `v` and a supplied positive model element `m` satisfying `ι(v 7) = ι(m) + V² B`, and constructs a positive zero of the literal 73-row ring evaluator. The registers `V` and `B` are computed from the same valuation in the model difference ring. This theorem does not establish that such an `m` exists.
+
+Conversely, `from73` takes a positive 73-zero valuation `v` and a supplied model element `d` satisfying `V² B = ι(d)`, and constructs a positive 75-zero. In particular this premise follows if the shift is nonnegative in the difference ring, but this packet does not prove that sign condition for 73 zeros. No unconditional positive-zero equivalence or iPRA theorem is claimed.
+
+The guarded `observations/attempt01/` accepted both proofs with Lean exit 0, empty stderr and axiom reports `[propext, Classical.choice, Quot.sound]`; the outer runner was observed exiting 0. The result `/tmp/trace73-model-caa17ucr/Trace73ModelTransfer.olean` has SHA-256 `58fbf66066cf550957f7f24378dd943708b97750b26142164e224eaef214c930`. The runner pins direct imported objects, parent 75 source/object and candidate JSON, and forms a fresh project provider union; its transitive project, package and dynamic ancestry is inherited and no independent replay is claimed. The external JSON-to-literal-row check is in `../trace73-literal-bridge/` and is not a formal file-semantics theorem.

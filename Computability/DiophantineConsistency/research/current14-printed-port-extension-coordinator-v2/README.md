@@ -1,0 +1,31 @@
+# Current14 printed-port extension coordinator v2 — failed attempt
+
+**Do not rerun v2.** Its actual supervised extension attempt exited 1 on a duplicated identical Init dependency; the [failure packet](../../reviews/current14-extension-v2-failure/README.md) preserves the evidence. The separately reviewed [v3 retry](../current14-printed-port-extension-coordinator-v3/README.md) addresses this case and uses fresh paths. The operator sequence below is historical for v2.
+
+This coordinator pins the [reviewed v2 extension driver](../current14-printed-port-extension-driver-v2/README.md), its guards and owned-session helper. It is separate from the [v1 coordinator](../current14-printed-port-extension-coordinator/README.md), which remains unsafe to launch. **Do not run the v2 coordinator until the live fresh base has passed, its evidence has been independently audited, and this coordinator has been independently reviewed.** The positive build path is untested.
+
+After preflight it launches the v2 driver once and captures its actual outer exit; a success also requires all 61 expected rows, source and object authentication, logged declared dependencies, logs without detected errors or `sorry`, provider and overlay guards, final preflight checks and unchanged pinned code. It checks each of the 122 per-invocation driver-reported owned-session receipts for a drained session, reaped direct child, zero exit, matching leader/session/group identity and the actual launched driver PID as parent. It authenticates captured `lean --deps` stdout and stderr against the recorded direct paths. These are driver-reported receipt fields bound to reviewed code and terminal files; they are not independently observed process traces. The verifier permits Lean warnings; it does not claim warning-free logs. Error and `sorry` detection follows the regular expression in `verify.py`, so that syntactic check has its own coverage limits.
+
+The outer monitor records disk and memory samples and requires at least 10 GiB available memory and 4 GB free disk before launch. During execution the extension driver itself enforces its time and disk bounds; the memory samples are observational, not a running memory stop. If the outer monitor fails while its driver remains live, it waits for the actual driver exit rather than killing the coordinator group and leaving a separately sessioned Lean process. A forced coordinator or driver death, a child that escapes its session, kernel or `/proc` observation faults, and transient or unguarded transitive provider changes remain outside the guarantee; the driver's passive wait can be indefinite.
+
+`controls-observation.json` contains a passing 61-row synthetic terminal with one nonempty project dependency and targeted refusal controls, including nonzero outer exit, changed source, objects or deps log, wrong parent PID, undrained or unreaped child, inner failure, overlay shadows, failed emergency save and transient wait, and current live-base refusal. It did not invoke Lean or build an extension. Before using real outputs, independently review the source and controls, confirm the terminal fresh-base evidence and recapture all hashes. The 61-module extension is an intermediate dependency only: printed-port assembly and the endpoint join remain separate work.
+
+## Operator sequence after the base finishes
+
+The [independent coordinator review](../../reviews/current14-printed-port-coordinator-v2-independent/README.md) covers the frozen coordinator and verifier hashes; it is not an actual extension run. Keep the live base process and its watchdog running until they really exit. Observe and record the launcher's actual session exit, then inspect `research/current14-standard-fresh-rebuild-preflight/run-observation.json` and `/tmp/current14-standard-fresh-build-20261104/state.json`: require watchdog `PASS` and exit zero, base `PASS`, `CURRENT_AT_FINAL_CHECK`, and empty workspace source drift. A timeout while observing the process is not its exit. Preserve failures and do not restart solely because an observation waits.
+
+Only after those conditions hold, run the [independent fresh-base audit](../../reviews/current14-fresh-base-independent/README.md) as documented there and preserve its actual command exit. Require its `PASS_SINGLE_SOURCE_CURRENT_ARTIFACT_AUDIT` receipt; the audit's positive path has not yet been tested. If it refuses or fails, investigate instead of launching the extension. Recheck that the source and provider pins still match, the independent reviews still name the code being used, the intended output paths do not exist, and no other Lean build occupies the slot. Coordinate the launch with the task owner.
+
+From the repository root, first run the coordinator with `--check` and preserve its actual exit and output:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/research/current14-printed-port-extension-coordinator-v2/coordinator.py --check
+```
+
+After successful preflight and coordination, start the independently reviewed [coordinator-exit supervisor](../current14-structured-endpoint-coherent-runner/README.md) as an observed long-running session and retain its session handle and actual exit; do not interpret an observation timeout as completion:
+
+```sh
+python3 -I -S -B -u Computability/DiophantineConsistency/research/current14-structured-endpoint-coherent-runner/extension_supervisor.py
+```
+
+Monitor `/tmp/current14-printed-port-extension-coordinator-v2-20261104/state.json` and `/tmp/current14-printed-port-extension-20261104/state.json`, the actual processes, free disk and available memory. The coordinator's internal `child_exit` is the v2 driver's actual exit; the supervisor's receipt captures the coordinator's actual exit and binds its state and log. Capture the supervisor's own outer session exit separately. Require all three exits zero, supervisor, coordinator and extension `PASS`, the recorded terminal hashes and a successful independent audit of the final artifacts. Do not start the printed-port assembly or endpoint join on an observation timeout or failure. Even if extension validation passes, the assembly and structured endpoint still require their own coherent builds, axiom reports and reviews.

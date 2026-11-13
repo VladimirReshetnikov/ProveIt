@@ -1,0 +1,3 @@
+# Independent terminal audit: staged sign19 seed and squares
+
+The independent checker exited 0. Author-observed outer session 60102 exited 0, with all 12 Lean children and final postflight successful. It verifies the row, seed assembly and square theorem stage source/object hashes, imports and direct guards, logs, overlays and axiom report; two warnings occur in row modules, with no sorryAx. The square theorem proves the staged symbolic seed vanishes exactly when the residuals vanish. The source correspondence to the external AST was checked separately, not formalized inside Lean; no sign19 model bridge or iPRA endpoint is established by this packet.

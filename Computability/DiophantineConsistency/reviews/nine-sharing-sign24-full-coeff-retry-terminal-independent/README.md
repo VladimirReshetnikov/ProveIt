@@ -1,0 +1,3 @@
+# Independent sign24 full-coefficient retry partial failure audit
+
+Independent checker session 36870 exited 0 against author outer session 69308 (exit 1). Six successful children include the full seed axis eighth-coefficient-one theorem at arbitrary integer ports; its stage has one unused-simp warning. The seventh direct-expression degree-lower module failed on the constant case of diagonal evaluation and reported `sorryAx`; it produced no object, and final postflight was not reached. Source, successful objects, direct guards, overlays and expression provider observations were checked. The seed coefficient is a successful child of a failed enclosing run; the direct-expression lower bound and exact degree are not established here.

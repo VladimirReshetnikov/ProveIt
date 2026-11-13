@@ -1,0 +1,5 @@
+# Independent prelaunch review
+
+PASS. The original local-order source and statement checks were independently repeated on the byte-identical 17-stage manifest, including all 15 boundaries and Fin14 tail. The fresh runner requires every dependency list to include Init, compares its first candidate and realpath/hash to the consistent Init record across the audited 40-stage Fin942 provider, and sets LEAN_NUM_THREADS=1 as well as -j1. Full provider source/object/log/guard/overlay checks and the existing resource limits remain. The corrected no-Lean preflight independently passes. No Lean run was started by this review.
+
+The prior prelaunch was withdrawn before launch over the Init-route/environment qualifications. An intermediate corrected runner was strengthened again to require Init's presence; the author records both hashes. These were guard improvements, not evidence of an incorrect theorem or observed resource breach. The proposed facts remain local and do not by themselves prove global physical rank, K or file binding; the full serial run may take minutes.

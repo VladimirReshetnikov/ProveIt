@@ -1,0 +1,24 @@
+# Independent review: direct-BFS constructed-word packing
+
+The frozen accepted packets support `DirectBFSWordPacking.pack_word` with the explicit hypotheses below and **no remaining high-mask phase hypothesis**. `check.py` rehashes all five accepted sources/copies, runners, Lean binary, output objects and logs; verifies reported inner exits, before/after pins, first-resolved direct imports and recorded chunk receipt hashes; checks all captured axiom reports; and compares selected transitive objects in the final search path. Exact selected paths and hashes are in `check-output.txt`. We did not replay Lean. Each `terminal.json` is written before its runner's final assertions; the author reports outer success but no separately retained outer-exit receipt was found. Project, package, dynamic and historical producer ancestry are inherited.
+
+## Exact conclusion and remaining hypotheses
+
+For an `ORingStructure V` model of IΣ₁, the final theorem takes **one** `row` and `dummy : V → V`, both Σ₁-definable, and one pair `N,s : V`. Its explicit assumptions are `DirectBFSLocalWord.Word row N s`, `dummy 0 % 2 = 0`, `1 < N`, `0 < s`, `s < N`, `(CompactConcreteIncrement.mask : V)+1 < Exp.exp 590069`, `1 ≤ (CompactSymbolicPorts.highNat : V)`, and `(CompactSymbolicPorts.highNat : V) < Exp.exp 590069`. It concludes
+
+```
+PackingInput 590069 kernel CompactConcreteIncrement.mask
+  CompactSymbolicPorts.highNat N s (cellWord row dummy)
+```
+
+with all displayed scalar constants cast into `V`. Here the imported `DirectBFSFourFieldsPacking.kernel` is the model cast of `DirectBFSSymbolicKernel.paramKernel CompactSymbolicKernel.rho`. The theorem uses the same functions and geometry in each phase proof. It **assumes** the local word, definability, dummy parity and scalar bounds; it does not construct a halt-derived word or independently discharge these assumptions. It is not an iPRA derivability theorem, a fixed-file coefficient binding, or a direct-BFS-to-original-order kernel equality.
+
+`pack_from_active` reduces all high-mask work to six active classes, with phase-zero and padding already handled by its checked imports. The final proof supplies each class for every `j<N` and relevant phase: vertical range `1013≤p<1023`; horizontal range `1065≤p<1074`; and phases 2195, 3296, 4393, 5495. The former include the adjacent marker positions 1022 and 1073. All phase lemmas use the same block `blk 590069 (paramKernel rho : V) N s (cellWord row dummy) j` and high mask, with no assumed high-mask disjointness.
+
+The field-high packet derives its two complete ranges from the previously checked field and marker parities and high-digit values. Anchor-high supplies no-carry at 2195 and 3296 using the direct word support and marker parity. Marked-target derives each target block digit at 4393 and 5495 as `1 + Exp.exp 51`, then derives no-carry at both; it uses direct occupied-selector data and excludes foreign/temporal contributions, without assuming graph zero. These prerequisites assume a local word, Σ₁ row/dummy, `1<N`, `s<N` and valid cell index as shown in their source; `0<s`, dummy parity and scalar mask inequalities are needed by the final packing wrapper, not by these phase lemmas.
+
+## Receipts and diagnostic policy
+
+The final direct imports are the retained active-phase object `f857acb162ea08b5c28cf48fd1cc6d0a4263472e333ae5e732cb9233fd092630`, field-high `c3776f135922c9f6653515d59bf02113358e38cd97804f1c2b2ad764e3aee1ca`, and marked-target `15c2bba9cac700db12a6a1536fb6391463f806d10be40e539e6d465d13e862c0`. The target's direct anchor object and the final search path select the same anchor `ee334988dbe381bf8706e15907be36e2e472416b703399af23e171c2ed4fd3e5`. The final path also selects the previously reviewed field/marker parity objects and the high-padding and four-fields objects shown in the check output. First-resolution comparison is post-hoc corroboration of recorded runner pre/post direct snapshots, not a complete closure or producer-time ancestry audit.
+
+The final object SHA-256 is `c1ad37e318c176a0ae9b46e3b0be74b5bcc813ae120a3636d282aaeba5726d86`. All captured reports from the five packets are exactly `[propext, Classical.choice, Quot.sound]`, with empty stderr. Their runners enforce allowed axiom sets for all displayed endpoint reports **except** anchor-high, whose automatic whitelist covers only its final two no-carry reports; its four earlier captured reports were inspected independently. The BFS runners also reject coded warning/error diagnostics and `sorryAx`. Their 59 recorded stage receipt hashes were checked where present, without replaying or recertifying those stages. The failed first final-packing attempt lacked the selected `DirectBFSHighPadding` path; accepted attempt02 selects it, but matching the selected file is not a proof of all transitive provenance.

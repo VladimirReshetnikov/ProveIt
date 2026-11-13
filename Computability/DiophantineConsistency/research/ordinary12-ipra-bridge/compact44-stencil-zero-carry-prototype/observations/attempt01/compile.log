@@ -1,0 +1,21 @@
+/tmp/compact44-stencil-zero-carry-author-z72bowni/CompactStencilZeroCarry.lean:31:2: error: Type mismatch: After simplification, term
+  hv
+ has type
+  ↑(∑ a₁, alignedCoeff selectors copies (Sum.inl (Sum.inl a₁)) +
+            ∑ a₂, alignedCoeff selectors copies (Sum.inl (Sum.inr a₂)) +
+          (∑ a₁, alignedCoeff selectors copies (Sum.inr (Sum.inl (Sum.inl a₁))) +
+              ∑ a₂, alignedCoeff selectors copies (Sum.inr (Sum.inl (Sum.inr a₂))) +
+            ∑ a₂, alignedCoeff selectors copies (Sum.inr (Sum.inr a₂)))) +
+      1 =
+    ↑CompactCoefficientMass.stencilMass
+but is expected to have type
+  ∑ a₁, ↑(alignedCoeff selectors copies (Sum.inl (Sum.inl a₁))) +
+          ∑ a₂, ↑(alignedCoeff selectors copies (Sum.inl (Sum.inr a₂))) +
+        (∑ a₁, ↑(alignedCoeff selectors copies (Sum.inr (Sum.inl (Sum.inl a₁)))) +
+            ∑ a₂, ↑(alignedCoeff selectors copies (Sum.inr (Sum.inl (Sum.inr a₂)))) +
+          ∑ a₂, ↑(alignedCoeff selectors copies (Sum.inr (Sum.inr a₂)))) +
+      1 =
+    ↑CompactCoefficientMass.stencilMass
+'CompactStencilZeroCarry.coeff_mass' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CompactStencilZeroCarry.stencil_mass_room' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CompactStencilZeroCarry.stencil_zero_carry' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

@@ -1,0 +1,53 @@
+/tmp/compact44-word-field-parity-author-oecxjwqu/CompactWordPhysicalFieldParity.lean:43:34: error(lean.unknownIdentifier): Unknown identifier `NoCarry`
+/tmp/compact44-word-field-parity-author-oecxjwqu/CompactWordPhysicalFieldParity.lean:63:12: error(lean.unknownIdentifier): Unknown identifier `mul_mod_right`
+/tmp/compact44-word-field-parity-author-oecxjwqu/CompactWordPhysicalFieldParity.lean:29:32: error: unsolved goals
+V : Type u_1
+inst✝³ : ORingStructure V
+inst✝² : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+row dummy : V → V
+inst✝¹ : 𝚺₁-Function₁ row
+inst✝ : 𝚺₁-Function₁ dummy
+N s j : V
+hw : CompactWord row N s
+hN : 1 < N
+hs : s < N
+hbool : ∀ (j : V), dummy j ≤ 1
+hj : j < N
+u : ℕ
+hu : u < 9
+C : V := packedWord row dummy N
+n : V := 8807 * N
+q : V := ↑(1013 + u)
+k : V := 8807 * j + q
+T : V := temporalWord n (67 * (8807 * s)) C
+hn : 0 < n
+hq : q < 8807
+hi : 8807 * j + q < 8807 * N ∧ (8807 * j + q) % 8807 = q
+hk : k < n
+hp : k % 8807 = ↑(1013 + u)
+hC : C < Exp.exp (67 * n)
+hslots : (x : V) → x < 8807 * N → 0 < x → sorry
+ha : RawParityBands.selectorsAt (8807 * N) C k 4393 = 0
+hb : RawParityBands.selectorsAt (8807 * N) C k 5495 = 0
+hbare : RawColumnBands.bareColumn (8807 * N) C k = dig 67 (rot 67 (8807 * N) C (30 % (8807 * N))) k
+hphysical :
+  dig 67 (blk 590069 (↑(paramKernel rho)) N s (cellWord row dummy) j) q =
+    raw 67 coeff
+      (GenericBandCarryFamily.word (8807 * N) (packedWord row dummy N) (bandOffsets position)
+        (temporalWord (8807 * N) (67 * (8807 * s)) (packedWord row dummy N)))
+      (8807 * j + q)
+hraw :
+  raw 67 (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+        (GenericBandCarryFamily.word n C (bandOffsets position) T) k %
+      2 =
+    (RawParityBands.selectorsAt n C k 4393 + RawParityBands.selectorsAt n C k 5495 + RawColumnBands.bareColumn n C k +
+        dig 67 T k) %
+      2
+heq :
+  dig 67 (packedWord row dummy N) (cyc (8807 * N) (8807 * j + ↑(1013 + u)) 30) =
+    dig 67 (packedWord row dummy N) (cyc (8807 * N) (8807 * j + ↑(1013 + u)) (8807 * s))
+hrot : dig 67 (rot 67 n C (30 % n)) k = dig 67 C (cyc n k 30)
+htemp : dig 67 T k = dig 67 C (cyc n k (8807 * s))
+htwo : dig 67 C (cyc n k (8807 * s)) + dig 67 C (cyc n k (8807 * s)) = dig 67 C (cyc n k (8807 * s)) * 2
+⊢ dig 67 C (cyc n k (8807 * s)) * 2 % 2 = 0
+'CompactWordPhysicalFieldParity.vertical_even' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

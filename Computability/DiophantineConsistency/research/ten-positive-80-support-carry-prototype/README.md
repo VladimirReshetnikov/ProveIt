@@ -1,0 +1,7 @@
+# Compact support and carry for the 80 graph
+
+`Direct80SupportCarry.graph_support_carry` combines actual 80-graph indexed carry with slotwise low-mask support. With explicit equalities to all four compact symbolic ports and a positive graph zero, it supplies one positive N with radix/repunit and residual-power facts, the indexed carry input, origin digit 1, zero outside the designated compact support, and Boolean digits away from the special slot. The two independently obtained N witnesses are proved equal via injectivity of internal exponentiation; they are not assumed equal.
+
+The guarded author check `observations/supportcarry-attempt01/` exited 0 without diagnostics, with printed axioms `propext`, `Classical.choice`, `Quot.sound`; object `/tmp/tenpositive-80supportcarry-pcpkfh4f/Direct80SupportCarry.olean` SHA-256 `89e0813092231df29e0a8eca7a20b536caf80d67dd79a53159e180ddeccb1a07`. Selected inputs and resource samples are pinned, with inherited source/object, package and dynamic-ancestry limits; no independent Lean replay is claimed. The remaining phase-alignment/window/machine, converse, iPRA and external-payload/PDF steps are not asserted.
+
+**Payload boundary:** the explicit hypothesis `p 1 = paramKernel rho` uses the retained-original K. The retained 80-row JSON graph `equation_qcube_V2.json` uses a BFS-renamed K with a different recorded raw hash; no equality or decoding equivalence between them is established here. These results therefore do not yet apply to that JSON graph’s K.

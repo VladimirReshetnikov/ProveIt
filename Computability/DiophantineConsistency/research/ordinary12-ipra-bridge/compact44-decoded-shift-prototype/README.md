@@ -1,0 +1,7 @@
+# Exploratory local occupied-selector propagation
+
+`DecodedOccupied.decoded_occupied` applies the 41-bit mass inequality from `5391b4c838` to any selected compact row, not just row 0. For any model values n, C and k and natural band target T, Boolean copy digits and equality of the copy word to that row's `tileValue` force copy digits 34 through 40 to equal 1.
+
+`DecodedSelectorShift.cyclic_shift` proves the index identity in arbitrary IΣ₁ models, including wrap. `copy_is_shifted_selector` uses it to identify each copy digit with selector 0 at the cyclically shifted column `(k + position j) % n`, under positive n and `position j ≤ T`. Consequently `decoded_occupied_shifts` gives selector 0 equal to 1 at all seven shifted columns from the decoded-row hypotheses when T ≥ 3296. This establishes nonzero selector input there; it does not assert those shifted columns meet local decoder or carry conditions, or that a decoded row exists there.
+
+The source order was `DecodedOccupied`, `DecodedSelectorShift`, over the same author-only overlay as `5391b4c838`. Compiler sessions 39756 and 47969 actually exited 0 without warnings or `sorryAx`; the named reports use `propext`, `Classical.choice` and `Quot.sound`. Earlier shift sessions 96213 and 14861 actually exited 1 due to an arithmetic rewrite/cast and then rewrite direction; their failure-derived `sorryAx` reports, sources and logs are retained. This is exploratory evidence, not a paired replay or independent artifact audit. No graph existence, all-column decoder, row matching or machine semantics is asserted.

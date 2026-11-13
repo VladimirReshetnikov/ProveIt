@@ -1,0 +1,43 @@
+{
+  "status": "PASS_CONDITIONAL_FREEJ_SATURATION_PRELAUNCH_AUDIT",
+  "driver_commit": "37d04291e8",
+  "driver_sha256": "05e5563e0eaf17f7beb6a6e0b5412159b488c12fa615806d85b8678cef917d3f",
+  "real_preflight_source_count": 4,
+  "inherited_objects_per_side": 109,
+  "parent_audit_status": "PASS_INDEPENDENT_FREEJ_POPULATION_CLIENT_AUDIT",
+  "controls": [
+    {
+      "script": "mock_loop.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "good PASS fake_children 10\nmissing_warning PASS fake_children 1\nchanged_warning PASS fake_children 1\nextra_warning PASS fake_children 1\nwrong_report PASS fake_children 5\nmissing_project PASS fake_children 5\nwrong_deps PASS fake_children 1\n"
+    },
+    {
+      "script": "guards.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "PASS_PIN_AND_OUTPUT_AND_OPTIMIZATION_GUARDS\n"
+    },
+    {
+      "script": "warning_policy.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "PASS_EXACT_SATURATION_WARNING_CONTROLS\n"
+    },
+    {
+      "script": "warning_policy.py",
+      "args": [
+        "-O"
+      ],
+      "exit": 1,
+      "stdout": ""
+    },
+    {
+      "script": "test_monitor.py",
+      "args": [],
+      "exit": 0,
+      "stdout": "PASS observed child success and RSS sample\nPASS missing RSS stops verified group and reaps leader\nPASS transient missing RSS requires a subsequent valid sample\nPASS child exit without any RSS observation fails closed\nPASS child exit after prior valid RSS sample resolves exit race\nPASS monitor exception terminates verified group and reaps leader and descendant\nPASS external SIGTERM terminates verified group and reaps leader and descendant\nPASS_DENOMINATOR_MONITOR_NEGATIVE_CONTROLS\n"
+    }
+  ],
+  "scope": "No Lean compilation; exact four linter warnings accepted, no graph premise discharge. Requires clean initial loader and externally protected stable HEAD/sole-Lean window. Point-in-time source/provider checks, unmonitored deps/audits and sampled-resource limits remain."
+}

@@ -1,0 +1,5 @@
+# Independent prelaunch review: three symbolic prefix values
+
+**Pass for bounded launch.** The exact copied source proposes commutative-ring values for last entries of short prefixes `d2`, `d3`, `d4`: `B=base^5`, `q=B^(5^39)` and `N=q^16`, where `base=indexY seed 0+1+a0`. These match the actual named node bodies and use checked `snoc_last` plus the preceding short-prefix values. The large coefficient and powers remain symbolic in the statements; Lean reduction/resource fit and the group size are untested. These do not by themselves transport those entries to the full recipe or prove semantic graph equality.
+
+`check.py` checks exact source/draft, manifest, runner and survey pins, theorem/axiom-report anchors, the audited direct first-prefix provider and fresh no-Lean preflight. The runner binds the direct dependency/guard to the exact producer hash/realpath and repeats checks after success. Provider observations are point-in-time, monitoring sampled and inherited initial-agreement numeric outer exit unavailable. No JSON/document binding or operation count is claimed. Preflight requires a fresh output path and refuses after launch.

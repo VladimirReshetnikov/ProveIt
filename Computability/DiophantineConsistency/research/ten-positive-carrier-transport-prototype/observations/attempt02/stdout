@@ -1,0 +1,48 @@
+/tmp/tenpositive-carrier-transport-izu0m3nd/CarrierTransport.lean:20:44: error: Application type mismatch: The argument
+  hnB
+has type
+  ¬@LE.le K instLE_foundation 0 B
+but is expected to have type
+  ¬@LE.le K inst✝¹.toLE 0 B
+in the application
+  lt_of_not_ge hnB
+/tmp/tenpositive-carrier-transport-izu0m3nd/CarrierTransport.lean:25:26: error: Type mismatch
+  mul_nonneg (le_of_lt (mul_pos hh hm)) ?m.246
+has type
+  @LE.le K instDistribLatticeOfLinearOrder.toSemilatticeInf.toLE 0 (h * m * ?m.233)
+but is expected to have type
+  @LE.le K instLE_foundation 0 (h * m * k)
+/tmp/tenpositive-carrier-transport-izu0m3nd/CarrierTransport.lean:40:60: error: Application type mismatch: The argument
+  hL
+has type
+  @LE.le (DiffRing V) instLEDiffRing 0 L
+but is expected to have type
+  @LE.le (DiffRing V) instLE_foundation 0 L
+in the application
+  nonnegative_of_carrier h H m L B k e z n Z hh hH hm hL
+/tmp/tenpositive-carrier-transport-izu0m3nd/CarrierTransport.lean:40:2: error: Tactic `apply` failed: could not unify the type of `nonnegative_of_carrier h H m L B k e z n Z hh hH hm sorry sorry hn
+  hz he ?m.151 hZ hcarrier`
+  @LE.le (DiffRing V) instLE_foundation 0 B
+with the goal
+  @LE.le (DiffRing V) instLEDiffRing 0 B
+
+V : Type u_2
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+h H m L B k e z n Z : DiffRing V
+hh : 0 < h
+hH : 0 < H
+hm : 0 < m
+hL : 0 ≤ L
+hk : 0 ≤ k
+hn : 0 < n
+hz : 2 * z < L
+he : 2 * e < L * m
+hZ : Z = h * m * H * z
+hcarrier : Z = h * m * (H * (n - L * B) + k) - H * (m * B + h * e)
+⊢ 0 ≤ B
+'TenPositiveCarrierTransport.nonnegative_of_carrier' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'TenPositiveCarrierTransport.model_nonnegative_of_carrier' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

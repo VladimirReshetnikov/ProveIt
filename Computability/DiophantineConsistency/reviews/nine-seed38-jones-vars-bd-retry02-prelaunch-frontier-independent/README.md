@@ -1,0 +1,5 @@
+# Independent RingVars/Bd cast-one retry prelaunch review
+
+The checker pins source, runner, provider survey and manifest, independently reproduces the no-Lean preflight, and verifies the only source change from retry01: unused `Nat.cast_ofNat` is replaced by `Int.cast_one`. The variables and theorem statement are unchanged. Retry01 failed with an unsolved expanded equality displaying casted integer ones and ring ones, and its `sorryAx` report is invalid. The targeted proof change and elaboration remain untested.
+
+The direct terminal-cut provider and guard route is inherited from the original with fresh paths and updated pins. This is one symbolic Bd-to-dvsr cut, not full named-formula equality or JSON binding. Earlier A1 independent recursive preflight was interrupted with the author's passing preflight recorded; an earlier initial-agreement numeric outer exit remains unavailable. Provider checks are point-in-time and sampled monitoring is not a complete dynamic/transitive trace. No Lean ran in this review.

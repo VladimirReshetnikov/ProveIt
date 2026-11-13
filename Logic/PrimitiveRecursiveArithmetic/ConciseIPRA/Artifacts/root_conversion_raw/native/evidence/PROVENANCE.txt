@@ -1,0 +1,20 @@
+Base repository: https://github.com/VladimirReshetnikov/ProveIt
+Pinned revision: 31e1e9220868788a85ca5fea351d7ab4097cfa4a
+Base path: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Artifacts/bounded_head
+
+controls/scalar_bh3_checker.py is a byte-for-byte copy of code/bounded_checker.py
+from that package. The new root_checker.py retains its tagged-tree grammar
+architecture, variable substitution, logical rules, validation and CLI.
+Changes: the recursor body binds counter and state, root contraction opens
+both, and reversible conversion has no address parameter or traversal.
+
+The named producer follows bounded_head/code/build_certificates.py, with
+counter-aware named terms and a new three-row packet. Its symmetry lemma
+uses a fresh reflexive parameter and does not need the earlier zero-alias
+construction. The original parity-based packet is absent.
+
+All source hashes and exact measured sizes are in verification.json.
+The checker has no runtime dependency on the upstream code or repository.
+
+The inherited ProveIt code is licensed under MIT No Attribution; preserve
+the upstream license in the final research package.

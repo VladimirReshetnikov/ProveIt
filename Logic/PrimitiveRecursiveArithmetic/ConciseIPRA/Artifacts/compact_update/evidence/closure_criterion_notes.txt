@@ -1,0 +1,279 @@
+Conditional versus progressive closure: exact criteria
+=====================================================
+
+Status and scope
+----------------
+These are written mathematical observations, not a new smaller iPRA
+axiomatization or a machine-checked proof. They explain exactly when the
+conditional and progressive readings of an atomic binder coincide. The
+standard y=1 obstruction and anchored-progress introduction are already
+present in the inspected corpus; neither is claimed as new. The criteria
+and existential distinction below may be useful as a synthesis or as a
+screening test for new matrix grammars. No literature-wide novelty claim is
+made.
+
+Fix full first-order intuitionistic primitive recursive arithmetic T=iPRA,
+with usual intuitionistic equality and genuine falsity. Write 1=S(0).
+Let E(y,p) be a literal equation, with p a finite tuple of passive
+parameters. All formulas below may retain p; their universal closures are
+theorems whenever the displayed formulas are said to be theorems. Define
+
+  a := E(0,p),
+  U(E) := forall y E(y,p),
+  C(E) := a -> U(E),
+  P(E) := forall y (E(y,p) -> E(S(y),p)).
+
+The argument uses two established facts of iPRA, in exactly these roles:
+
+  (i) a or not a (decidability of numerical equality);
+  (ii) P(E) -> C(E) (contextual induction for the equation E).
+
+It uses no excluded middle for quantified formulas or for an existential
+statement. The corpus supplies the equality-reflection/decidability bridge
+in the inherited equality_reflection.tex. Do not transplant the argument
+into a weakened scalar core before that bridge is established.
+
+1. Exact pointwise criterion
+---------------------------
+Theorem. T proves
+
+  (C(E) <-> P(E)) <-> (not E(0,p) -> P(E)).                 (1)
+
+Equivalently, for every retained context Gamma,
+
+  Gamma |- C(E) <-> P(E)
+       iff
+  Gamma |- not E(0,p) -> P(E).
+
+Proof. First, P(E) -> C(E) is equation induction under an assumed base a.
+It remains to characterize C(E) -> P(E).
+
+Forward: assume C(E) -> P(E) and not a. Under a, obtain falsity and hence
+every E(y,p); discharging a gives C(E). Apply the assumed implication to
+obtain P(E). This direction needs neither decidability nor induction.
+
+Reverse: assume not a -> P(E) and C(E). Decide a.
+* If a holds, C(E) gives U(E). For arbitrary y, U(E) gives E(S(y),p), so
+  E(y,p) -> E(S(y),p), and therefore P(E).
+* If not a holds, use the assumed implication directly.
+Discharge C(E). Combining this implication with P(E) -> C(E) proves (1).
+All case splits are on the one decidable numerical equation a.
+
+A related useful identity, also provable intuitionistically using only
+decidability of a, is
+
+  C(E) <-> (not a or U(E)).                               (2)
+
+For C(E) -> the disjunction, decide a: its false branch gives not a, and
+its true branch gives U(E). Either disjunct conversely implies C(E).
+
+Meaning of (1). A true-base guard is sufficient but not necessary. The
+exact condition is that a false base must itself suffice for progress.
+This says nothing about the checker cost of recognizing the family of
+matrices satisfying that semantic condition.
+
+2. Examples and the sharp obstruction
+-------------------------------------
+2a. True base. If T proves E(0,p), then not E(0,p) implies every formula,
+including P(E). Thus (1) specializes to the familiar guarded equivalence.
+
+2b. Constant false base. For E(y):=(0=1), both C(E) and P(E) are theorems,
+while the base is false. This already shows that a true base is not
+necessary.
+
+2c. Nonconstant false-base example using only the scalar iterator. Put
+
+  Csel(v,a,b) := I(v,a;u.b),
+  H(y) := Csel(y,0,1),
+  E(y) := (H(y)=1).
+
+Computation gives H(0)=0 and H(S(z))=1. Hence T proves not E(0), and it
+also proves E(S(z)) without an induction hypothesis. Consequently P(E)
+and C(E) are both theorems. E is not constantly false: T proves E(1).
+The ordinary standard interpretation is the predicate y>0.
+
+2d. Existing sharp obstruction. For E(y):=(y=1), the base 0=1 is false,
+so C(E) is a theorem. P(E) is false: instantiate its universal quantifier
+at y=1, use 1=1, and obtain 2=1, contradicting successor injectivity and
+separation. Thus T proves not P(E). This is precisely a failure of the
+right side of (1).
+
+This example is NOT new. It is explicitly recorded in
+  baseline/incoming/ipra_deterministic_auxiliary/reference/
+    guarded_implementation.tex
+in the paragraph explaining why the unrestricted raw atomic D calculus
+does not have the claimed guarded formula composites.
+
+2e. Why decidability is an actual hypothesis. For arbitrary predicates in
+intuitionistic logic, the converse implication in (1) need not hold.
+Take a two-world Kripke frame w<v with constant natural-number domain.
+At w force E(1), but not E(0) or E(2); at v force E(n) for every n. Force
+no other E(n) at w. Then at w:
+* C(E) is forced, since every future world forcing E(0) forces all E(n);
+* not E(0) is forced nowhere, so not E(0) -> P(E) is forced vacuously;
+* P(E) is not forced, since E(1) holds at w and E(2) does not.
+This is only a logical counterexample for an arbitrary predicate E, not
+an iPRA model of numerical equality. It identifies the role of equality
+decidability and prevents an unjustified extension to arbitrary formulas.
+
+3. Exact existential criterion and witness changes
+-------------------------------------------------
+Now let E(x,y,p) be an equation, and abbreviate
+
+  C_x := E(x,0,p) -> forall y E(x,y,p),
+  P_x := forall y (E(x,y,p) -> E(x,S(y),p)),
+  D_C := exists x C_x,
+  D_P := exists x P_x,
+  F   := exists x not E(x,0,p).
+
+Theorem. T proves
+
+  (D_C <-> D_P) <-> (F -> D_P).                           (3)
+
+Proof. D_P -> D_C follows by existential elimination and equation
+induction at the selected witness.
+
+For the remaining direction, suppose D_C -> D_P and F. Select a witness
+x with not E(x,0,p). That false base gives C_x by explosion, hence D_C,
+and therefore D_P.
+
+Conversely, suppose F -> D_P and D_C. Select x with C_x and decide the
+single equation E(x,0,p).
+* If it is false, x witnesses F; apply F -> D_P.
+* If it is true, C_x gives forall y E(x,y,p), hence P_x; use x as the
+  existential witness for D_P.
+This proves D_C -> D_P, completing (3).
+
+The same proof can be summarized by the intuitionistically valid form
+
+  D_C <-> ((exists x not E(x,0,p)) or
+           (exists x forall y E(x,y,p))),
+
+where (2) and distribution of exists over a finite disjunction are used.
+The second disjunct always implies D_P. No decision of F is used.
+
+Pointwise criterion versus existential criterion. The condition
+
+  forall x (not E(x,0,p) -> P_x)
+
+is sufficient for (3), but is not necessary. The witness establishing
+D_P after a false-base witness is found may be a different number.
+
+Concrete scalar example. Set
+
+  E(x,y) := (Csel(x,1,y)=1).
+
+At x=0, the matrix is identically 1=1. Therefore C_0 and P_0 are both
+theorems, and T proves both D_C and D_P. In particular their equivalence
+is a theorem. At x=1 the matrix is y=1. Thus not E(1,0) holds while P_1
+is refutable. The pointwise condition fails at x=1 even though the
+existential binders are equivalent. This is an explicit reason not to
+silently pass from a Q-level necessity statement to a D-level one.
+
+4. Base-conjunction normalization
+--------------------------------
+For any equation E(x,y), first consider the quantifier-free matrix
+
+  A(x,y) := E(x,0) and E(x,y).
+
+Then T proves, pointwise in x,
+
+  A(x,0) <-> E(x,0),
+  C(A_x) <-> C(E_x),
+  P(A_x) <-> C(E_x).                                     (4)
+
+For the second equivalence, under E(x,0) the statements forall y A(x,y)
+and forall y E(x,y) are equivalent. For the third:
+* C(E_x) -> P(A_x): from A(x,y) obtain E(x,0); C(E_x) then supplies
+  E(x,S(y)), and the same base gives A(x,S(y)).
+* P(A_x) -> C(E_x): assume E(x,0), hence A(x,0), and use quantifier-free
+  induction on A to obtain forall y A(x,y), then forall y E(x,y).
+Alternatively apply (1) to a literal-equation representation of A:
+if its base fails, every A(x,y) fails, so progress is vacuous.
+
+A can be represented by one literal equation inside iPRA. For example,
+let delta(s,t) be a primitive-recursive Boolean disequality test with
+values 0 and 1 and with delta(s,t)=0 iff s=t. For E(x,y)=(s(x,y)=t(x,y)),
+the equation
+
+  delta(s(x,0),t(x,0)) + delta(s(x,y),t(x,y)) = 0          (5)
+
+represents A(x,y), since a sum of naturals is zero exactly when both
+summands are zero. Alternatively use an injective primitive-recursive
+pairing function pi and the equation
+
+  pi(s(x,0),s(x,y)) = pi(t(x,0),t(x,y)).                  (6)
+
+Equations (5) and (6) are iPRA representations, not new primitive
+function symbols or unproved reflection axioms for the scalar basis.
+The already-established arithmetic compiler can elaborate their fixed
+primitive-recursive descriptions into scalar terms.
+
+Consequently exists x P(A_x) and the old ordinary exists x C(E_x) are
+equivalent, with the same witness. This gives a systematic matrix
+normalization beyond the special case of a literally true base.
+
+Limit. This is not yet a smaller proof kernel. Counting the reflection
+or pairing construction, the normalized matrix may be much larger than
+the existing selector guards. Moreover its direct inference-rule form
+is the corpus's OLD anchored DI:
+
+  Gamma, E(t,0), E(t,z) |- E(t,S(z))
+  --------------------------------
+             Gamma |- D E.
+
+For compound matrices it retains only the base assumption. This rule is
+explicitly displayed as 'Old DI' in inherited_choice_basis.tex, so
+anchored progress must not be presented as a novel simplification.
+
+5. The proposed disjunction E(y) or E(0) does not work
+----------------------------------------------------
+Let B(y):=E(y) or E(0). Its base is equivalent to E(0), and C(B) is
+always a theorem: under E(0), every B(y) follows from the right disjunct.
+Thus this operation destroys the conditional content rather than
+preserving C(E). For E(y):=(y=0), C(E) is false, but C(B) is true.
+It also does not force progress when the base is false: for E(y):=(y=1),
+B reduces to the original counterexample.
+
+The correct disjunctive normalization is instead
+
+  G(y):=not E(0) or E(y),
+
+equivalently E(0)->E(y), using decidability of E(0). Its base is provable,
+and C(G), P(G), and C(E) are equivalent. This is again a true-base guard
+at the level of quantifier-free formulas, requiring an atomic reflection
+if a literal-equation induction interface is demanded.
+
+6. Consequences and non-consequences for restricted induction
+------------------------------------------------------------
+After equality reflection is available, every equation can be encoded by
+a zero-test equation, so induction restricted to s(y)=0 suffices for full
+equation induction. That observation does not supply the missing
+bootstrap for a new scalar theory whose only induction is already
+zero-test induction. The present notes do not prove such a bootstrap.
+
+Likewise, induction restricted to W(s)=W(t) is equivalent to general
+equation induction whenever W has a provably defined left inverse R:
+congruence wraps the premises, restricted induction gives the wrapped
+conclusion, and applying R cancels W. The transparent iterator wrapper
+W(s)=I(0,s;u.0) has this property by computation; that mechanism is
+already used in protected/guarded proposals. Taking W=S requires a
+separate proof of successor cancellation (or a left inverse), and that
+proof cannot simply be assumed in the weakened arithmetic.
+
+Provenance reminders
+--------------------
+* Numerical equality reflection and its dependency order:
+  baseline/incoming/ipra_deterministic_auxiliary/reference/equality_reflection.tex
+* Standard y=1 progressive/conditional counterexample:
+  baseline/incoming/ipra_deterministic_auxiliary/reference/guarded_implementation.tex
+* Old anchored DI, explicitly present in the corpus:
+  baseline/incoming/ipra_deterministic_auxiliary/reference/inherited_choice_basis.tex
+* Whole-domain scalar/iPRA bridge and the compiler dependency order:
+  baseline/incoming/ipra_reversal_core_2026-11-11/reference/arithmetic/inherited_ordinary_bridge.tex
+
+All these local reference sources were obtained from the six incoming
+archives at ProveIt commit a4e5e96c456303cf231eab2aeeb3291d8889833f. The
+archives themselves identify their inherited comparison snapshot as
+1517d9d79ce33f631e0f82960c849427cbba23bf. No claim is made that the newly
+stated criterion has never appeared elsewhere in the larger corpus.

@@ -1,0 +1,5 @@
+# Sign14 current-port seed equivalence: source-only client
+
+The checked specialization uses the independently audited [conditional sign14/sign15 seed iff](../../reviews/nine-sharing-sign14-seed-iff-terminal-independent/README.md) and existing model current-port bounds. No expression iff, JSON binding or endpoint is claimed.
+
+The current-bound provider survey checks a historically audited direct observation against its present realpath/hash; this point-in-time survey is not replayed postflight, while direct guards and overlays are. No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign14-current-iff-prelaunch-independent/README.md) passed. Author outer session 11996 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign14-current-iff-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

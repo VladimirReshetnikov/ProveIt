@@ -1,0 +1,50 @@
+import DirectMainGraph
+
+/-! Exact 90-graph first factor and a factored ring witness. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive90FirstFactor
+open DiophantineConsistency
+variable {R : Type*} [CommRing R]
+
+theorem first_recipe (p : Fin 4 → ℤ) (v : Fin 12 → R) :
+    ((FreeJDirectMainGraph.graph p).first).evalRing v =
+      let b:=v 0*(p 0:R)
+      let q:=1+b
+      let X:=q*v 5
+      let Y:=q*(q*q)*v 6
+      let K:=v 8+v 9
+      let C:=q-v 1-v 2
+      let ell:=X*Y*(Y*K)
+      let Bt:=q*(C*((p 1:R)+v 5)-v 1)
+      let Z:=b*((ell+K+v 7)-K*Bt+v 6)-Bt
+      Z*Z-b*b*(1+ell*(ell+K)) := by
+  simp only [FreeJDirectMainGraph.graph,Expr.evalRing_mul,Expr.evalRing_add,
+    Expr.evalRing_sub,Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    Nat.cast_one,Nat.cast_ofNat]
+
+theorem residual_zero (b q X Y K s0 s t tau : R)
+    (hcoord : tau+q*t*(b*K+1)=(X*Y*Y)*K+K+s+s0)
+    (hnorm : tau*tau=1+(X*Y*Y)*((X*Y*Y)+1)*K*K) :
+    let Bt:=q*(b*t)
+    let ell:=X*Y*(Y*K)
+    let Z:=b*((ell+K+s)-K*Bt+s0)-Bt
+    Z*Z-b*b*(1+ell*(ell+K))=0 := by
+  dsimp only
+  have hz : b*((X*Y*(Y*K)+K+s)-K*(q*(b*t))+s0)-q*(b*t)=b*tau := by
+    calc
+      b*((X*Y*(Y*K)+K+s)-K*(q*(b*t))+s0)-q*(b*t)=
+          b*(((X*Y*Y)*K+K+s+s0)-q*t*(b*K+1)) := by ring
+      _=b*((tau+q*t*(b*K+1))-q*t*(b*K+1)) := by rw [hcoord]
+      _=b*tau := by ring
+  rw [hz]
+  calc
+    b*tau*(b*tau)-b*b*(1+X*Y*(Y*K)*(X*Y*(Y*K)+K)) =
+        b*b*(tau*tau)-b*b*(1+(X*Y*(Y*K))*(X*Y*(Y*K)+K)) := by ring
+    _=0 := by rw [hnorm]; ring
+
+#print axioms TenPositive90FirstFactor.first_recipe
+#print axioms TenPositive90FirstFactor.residual_zero
+end TenPositive90FirstFactor

@@ -1,0 +1,155 @@
+CORRECTNESS AND LIMITS OF THE FOUR CHECKER REFINEMENTS
+
+1. COST MODEL AND BASELINES
+
+All claims concern complete standalone Python modules under the repository's
+CPython 3.12.14 normalization. The older pinned single_binder controls attain
+248 tokens and 270 AST nodes. A later current-ref check found that the incoming
+ipra_absorbing_predecessor_2026-11-12.zip already includes stream checkers of
+244 tokens and 267 AST nodes. Its member sources are included and independently
+hashed in INCOMING_PROVENANCE.json. Those are the CURRENT comparison controls.
+The byte minimum remains immediate_application/code/checker479.py.
+
+The source and fixture Git blobs are checked by verify.py. Minima in different
+coordinates are not added into a fictitious single program. The current
+compact envelope is (244,267,479), and this package changes only the byte
+coordinate to 478. The stream protocol is inherited and is not a novel
+reduction here. Replacing its explicit loads import by json's wildcard import
+saves four bytes but no tokens or AST nodes. Python's standard json exports
+no name that collides with a name used in these checkers; loads is the same
+function. The checker execution is consequently unchanged on the same stream.
+
+2. INHERITED JSON-LINES SIMULATION
+
+Let C=[P_n,...,P_1,A] be any finite parsed certificate array. Define L(C) to
+be the line stream A,P_1,...,P_n, each value independently JSON-encoded on
+one physical line. A may be the public formula and the P_i the instruction
+packets; the argument does not depend on their contents.
+
+The old reader binds q to C.pop. The new reader evaluates loads(input())
+at exactly each old q() location. The import-star form exports loads from
+the same standard json module; none of its other exports collides with an
+identifier used by the checker. Both the initial read and all packet reads
+are changed. The three-field parser, scope opener, hypothesis context,
+eigenparameter handling, and every inference instruction are identical.
+
+Induction on the number of reads proves equality of the sequence of returned
+JSON values. At the first read the two readers return A. If both have made
+j+1 reads, the next old pop and next new input line both return P_(j+1).
+The computational state between reads is therefore identical. If either
+checker stops after a finite successful trace, so does the other. If a
+finite trace asks for more values than supplied, the old IndexError and new
+EOFError are both rejection. Syntax errors in a consumed stream value also
+reject. Thus successful parsed certificate traces correspond, with the
+public goal unchanged and the same global or local eigenparameter scheme.
+
+Conversely, for any finite stream used by a successful run, form the array
+by reversing its consumed values. The original checker reads the same
+values and succeeds. This establishes theorem-set equality in both
+directions relative to the unchanged public-goal contract. No formula or
+proof-theoretic transformation is needed.
+
+The relationship is between well-framed parsed certificates. The old array
+parser validates the syntax of unused prefixes before checking the goal;
+the stream reader never reads unused suffixes. Therefore arbitrary raw
+byte inputs need not have equal acceptance. This is tested explicitly.
+
+3. EAGER MODE SELECTION: SOUNDNESS BY SIMULATION
+
+The compact byte source changes exactly
+
+    bool(m or 3 % len(a))
+
+to
+
+    any((m, 3 % len(a))).
+
+The validating native companion changes exactly
+
+    bool(m or len(a) % 2 == u)
+
+to
+
+    any((m, len(a) % 2 == u)).
+
+For every JSON value m and every defined Boolean/numeric expression e,
+
+    bool(m or e) = any((m,e)).
+
+Both sides are the disjunction of the truth values of m and e. The sole
+operational difference is that tuple construction evaluates e even when m
+is true. The added evaluation consists only of len, integer remainder and,
+in the native companion, JSON equality; it has no state-changing operation.
+The new hypothesis, public goal, context, packet stream and scope floor
+are unaffected by this additional successful evaluation.
+
+In particular the change does not reorder the major-premise check, the
+introduction assignment to a, the floor decrement, or the two subsequent
+scope-sensitive openings. Both selectors are evaluated after constructing
+the raw hypothesis and before the existing floor decrement.
+
+Take any finite successful new execution. Whenever the new mode selector
+was reached, e was defined. Replace that evaluation by the old selector.
+The returned Boolean and all state are identical. Inductively replacing
+every such evaluation, including those in recursive major-premise checks,
+constructs a successful old execution with the same consumed packets.
+Consequently every newly accepted certificate was accepted before. Since
+the old checker is sound on the stated public theory, the new checker is
+sound there. This is a universal operational argument, not a conclusion
+drawn from finite testing.
+
+4. CANONICAL COMPLETENESS OF THE EAGER CHECKERS
+
+The inherited completeness compiler uses finite exact-integer/list syntax.
+Every native formula is a nonempty array: equality has arity two, Q arity
+three, and D arity one. In an introduction, the new a is the instantiated
+native matrix, again a nonempty formula. The literal administrative major
+0 is initially retained and its check returns before a mode selector.
+Other administrative hypotheses produced by canonical elimination have
+nonempty array roots. Canonical proof traces therefore reach a mode selector
+only with a nonempty array as a.
+
+Thus len(a) is defined and positive at every reached selector. The added
+evaluation is total. Applying the same induction as in Section 3 in the
+other direction shows that each canonical baseline trace is accepted by
+the new checker. The inherited compiler supplies such a trace for every
+theorem of the canonical guarded theory (or the full native public
+language for the validating companion). The public theorem sets are
+therefore equal. The full theory-to-iPRA bi-interpretation is inherited;
+the refinements introduce no additional arithmetic or logical axiom.
+
+5. RAW ACCEPTANCE REALLY CAN DIFFER
+
+Set E=[[0,[0],0],[0]], the canonical equation I(0,1;u.0)=1. The array
+
+    [[0,0,0,E], [0,0,[0],0], [E,0,0,0], []]
+
+(with E expanded) is accepted by checker479
+but rejected by checker478. Its goal is the administrative empty
+array. An initial nonzero major lets the old mode selector skip len([]).
+The new selector attempts 3 % len([]) and rejects. Later the old trace can
+use i(*[],t,2)=i(t,2), exploiting the auxiliary zero-arity alias.
+
+The supplied canonical_goal_raw_boundary.json places that empty-goal proof
+as the major subproof of a computation packet and ends with the canonical
+public goal E. checker479 accepts it; checker478 rejects it. The direct
+certificate [[0,0,[0],0],E] is accepted by both, illustrating preservation
+of the theorem despite rejection of the noncanonical auxiliary trace.
+
+Therefore it would be false to claim equal raw-certificate acceptance for
+checker478. Soundness and canonical completeness are exactly the claims
+needed for equality of the public presented theories.
+
+6. WHAT THE REDUCTION ESTABLISHES
+
+The family changes the CURRENT coordinate envelope (244,267,479) to
+(244,267,478). It improves only the byte coordinate and ties tokens and AST
+nodes. Its actual three program vectors are (244,272,604), (249,267,602),
+and (274,304,478). The incoming stream controls already have (244,272,608)
+and (249,267,606). A fully validating native companion has (346,392,636),
+compared with (344,392,637). The changes are implementation refinements.
+There is no deleted mathematical axiom, no smaller absolute optimum, and no
+proof-assistant verification of the Python implementation. The requested
+strict improvement over every current complexity coordinate has not been
+established. The inherited rule inventory and complete ordinary arithmetic
+interpretation must still be stated in the main report.

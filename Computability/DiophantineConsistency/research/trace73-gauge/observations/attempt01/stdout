@@ -1,0 +1,89 @@
+/tmp/trace73-gauge-sud7zafg/Trace73Gauge.lean:18:3: error: Application type mismatch: The argument
+  [v 0, v 1 + h * t, v 2 + h * h * t, v 3, v 4, v 5, v 6, v 7 - step p v * t, v 8, v 9]
+has type
+  List R
+of sort `Type u_1` but is expected to have type
+  Bool
+of sort `Type` in the application
+  ![v 0, v 1 + h * t, v 2 + h * h * t, v 3, v 4, v 5, v 6, v 7 - step p v * t, v 8, v 9]
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/trace73-gauge-sud7zafg/Trace73Gauge.lean:22:52: error: unsolved goals
+R : Type u_1
+inst✝ : CommRing R
+p : Fin 4 → R
+v : Fin 10 → R
+t : R
+⊢ p 0 * sorry () 0 * sorry () 2 * 2 + p 0 * sorry () 0 ^ 2 * p 3 + p 0 ^ 2 * sorry () 0 ^ 2 * 2 -
+                  p 0 ^ 2 * sorry () 0 ^ 2 * sorry () 1 * 2 +
+                p 0 ^ 2 * sorry () 0 ^ 2 * sorry () 2 +
+              p 0 ^ 3 * sorry () 0 ^ 3 * 3 -
+            p 0 ^ 3 * sorry () 0 ^ 3 * sorry () 1 +
+          p 0 ^ 4 * sorry () 0 ^ 4 +
+        sorry () 0 * p 2 +
+      sorry () 0 * p 3 =
+    p 0 * p 3 * v 0 ^ 2 + p 0 * v 0 * v 2 * 2 + p 0 ^ 2 * v 0 ^ 2 * 2 - p 0 ^ 2 * v 0 ^ 2 * v 1 * 2 +
+                p 0 ^ 2 * v 0 ^ 2 * v 2 +
+              p 0 ^ 3 * v 0 ^ 3 * 3 -
+            p 0 ^ 3 * v 0 ^ 3 * v 1 +
+          p 0 ^ 4 * v 0 ^ 4 +
+        p 2 * v 0 +
+      p 3 * v 0
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/trace73-gauge-sud7zafg/Trace73Gauge.lean:27:74: error: unsolved goals
+R : Type u_1
+inst✝ : CommRing R
+p : Fin 4 → R
+v : Fin 10 → R
+t : R
+⊢ p 1 + p 1 * p 0 * sorry () 0 - p 1 * sorry () 1 - p 1 * sorry () 2 + sorry () 5 + sorry () 5 * p 0 * sorry () 0 -
+          sorry () 5 * sorry () 1 -
+        sorry () 5 * sorry () 2 -
+      sorry () 1 =
+    p 1 + p 1 * p 0 * v 0 - p 1 * p 0 * v 0 * t - p 1 * p 0 ^ 2 * v 0 ^ 2 * t - p 1 * v 1 - p 1 * v 2 +
+                    p 0 * v 5 * v 0 -
+                  p 0 * v 5 * v 0 * t -
+                p 0 * v 0 * t -
+              p 0 ^ 2 * v 5 * v 0 ^ 2 * t +
+            v 5 -
+          v 5 * v 1 -
+        v 5 * v 2 -
+      v 1
+/tmp/trace73-gauge-sud7zafg/Trace73Gauge.lean:37:4: error: Tactic `rfl` failed: The left-hand side
+  (regs p (move p v t)).k - (regs p v).rank - 1
+is not definitionally equal to the right-hand side
+  (regs p v).k - (regs p v).rank - 1
+
+R : Type u_1
+inst✝ : CommRing R
+p : Fin 4 → R
+v : Fin 10 → R
+t : R
+hr : (regs p (move p v t)).rank = (regs p v).rank
+hB : (regs p (move p v t)).B = (regs p v).B - (regs p v).h * step p v * t
+⊢ (regs p (move p v t)).k - (regs p v).rank - 1 = (regs p v).k - (regs p v).rank - 1
+/tmp/trace73-gauge-sud7zafg/Trace73Gauge.lean:38:54: error: Type mismatch
+  rfl
+has type
+  ?m.92 = ?m.92
+but is expected to have type
+  (regs p (move p v t)).h = (regs p v).h
+/tmp/trace73-gauge-sud7zafg/Trace73Gauge.lean:51:54: error: Type mismatch
+  rfl
+has type
+  ?m.50 = ?m.50
+but is expected to have type
+  (regs p (move p v t)).Q = (regs p v).Q
+'Trace73Gauge.rank_move' depends on axioms: [propext, sorryAx, Quot.sound]
+'Trace73Gauge.B_move' depends on axioms: [propext, sorryAx, Quot.sound]
+'Trace73Gauge.center_move' depends on axioms: [propext, sorryAx, Quot.sound]
+'Trace73Gauge.graph_move' depends on axioms: [propext, sorryAx, Quot.sound]

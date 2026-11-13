@@ -1,0 +1,59 @@
+import EtaNaturalGraphStrongAux
+import EtaNaturalCompactParity
+
+/-! Source-only composition: prototype signed strong/auxiliary fields to the
+conditional compact eta-zero parity boundary. No Lean build has run. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.EtaNaturalGraphParityDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open EtaNaturalUnitGraphDraft EtaNaturalXPositiveDraft EtaNaturalGapRankDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The compact prototype graph zero and eta=0 would contradict the
+proposed parity boundary. K remains an arbitrary standard natural. The graph,
+all imported model proofs and their provider closure are unelaborated. -/
+theorem eta_zero_impossible (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v)
+    (heta : v 9=0) : False := by
+  let p := Residue90CompactPortBoundsDraft.ports K
+  have hJ := EtaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hgap := EtaNaturalGapRankDraft.gap p v hz hbeta
+  have hFq : v 1+1≤q p v := le_trans (by simp) (le_of_lt hgap)
+  obtain ⟨_,_,hs,_⟩ := EtaNaturalUnitBridgeDraft.signed_norms
+    (EtaNaturalGraphNormsDraft.pp p) v hz
+  rw [EtaNaturalGraphStrongAuxDraft.field_I,EtaNaturalGraphNormsDraft.field_delta,
+    EtaNaturalGraphStrongAuxDraft.field_f] at hs
+  have hstrong : let a:=X p v*Y p v+Y p v; let D:=(3+4*a)+a*a; let c:=Y p v*k v
+      (ι (c*c*(v 4+1)):DiffRing V)*ι (c*c*(v 4+1))=
+        ι D*(ι (v 3)*ι (v 3)-1) := by
+    simpa only [EtaNaturalGraphStrongAuxDraft.i,EtaNaturalGraphNormsDraft.delta,
+      EtaNaturalGraphNormsDraft.a,EtaNaturalGraphNormsDraft.X,X,c,heta,zero_add] using hs
+  have ha := EtaNaturalGraphStrongAuxDraft.direct_auxiliary p v hz hFq
+  have haux : let a:=X p v*Y p v+Y p v; let D:=(3+4*a)+a*a; let c:=Y p v*k v
+      let z:DiffRing V:=ι (v 3*v 3*((v 5+1)*c))-ι (v 3*v 3*rank p v+c)
+      (ι (v 11):DiffRing V)*ι (v 11)-ι D*(ι (v 3)*ι (v 3)-1)*
+        (ι (v 11)*ι (v 11)-z*z)=1 := by
+    simpa only [EtaNaturalGraphStrongAuxDraft.T,EtaNaturalGraphNormsDraft.delta,
+      EtaNaturalGraphNormsDraft.a,EtaNaturalGraphNormsDraft.X,X,c,heta,zero_add] using ha
+  exact EtaNaturalCompactParityDraft.eta_zero_of_represented_factors K v hz heta hstrong haux
+
+/-- The preceding eta-zero contradiction proposes eta>0 for an actual
+compact prototype zero. It is not itself a zero-map or endpoint theorem. -/
+theorem eta_positive (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v) :
+    0<v 9 := by
+  by_contra hn
+  have heta : v 9=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le _)
+  exact eta_zero_impossible K v hz heta
+end DiophantineConsistency.EtaNaturalGraphParityDraft
+#print axioms DiophantineConsistency.EtaNaturalGraphParityDraft.eta_zero_impossible
+#print axioms DiophantineConsistency.EtaNaturalGraphParityDraft.eta_positive

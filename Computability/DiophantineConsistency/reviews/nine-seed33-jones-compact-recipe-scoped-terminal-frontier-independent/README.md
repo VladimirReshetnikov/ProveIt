@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 8270 exited 0. Both source/object/log stages, the exact language and staged recipe producer bindings, 200 guard slots and 1,057 overlay links were checked. The recipe data compiled with an empty log, and recipe_well_scoped proves the Boolean scope target without axioms or warnings.
+
+This is scopedness of the compiled Lean recipe only. It does not prove semantic equality, JSON/parser or human-document binding, degree or operation count. The outer exit is author-recorded; kernel source-to-object and deeper dynamic/transitive provider ancestry remain inherited. No Lean replay was performed.

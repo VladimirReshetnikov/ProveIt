@@ -1,0 +1,5 @@
+# Paired graph-derived symbolic radix and repunit
+
+The protected paired wrapper session 20592 actually exited 0 at HEAD `692b5249e6ec9c0c01b3bf080d03a22138526934`. All six compiler and direct dependency checks passed; both sides matched and final frozen-source, direct-object/companion and parent checks passed. The receipt and six compiler logs are under `evidence`; the receipt SHA-256 is `799f5a7ce3fc8123acb1403eb241122446e7d4ed7ae5f327c65f44d722e11e48`. Independent artifact review is pending.
+
+In an IΣ₁ model, the fixed-symbolic theorem assumes the graph has a zero with all twelve variables positive. For the symbolically constructed beta and masks and arbitrary explicit natural K, it concludes there is an internal N>0 satisfying the derived radix and repunit equations and the stated digit bounds. It does not bind beta, masks or K to retained bytes/decimal tuple, prove machine semantics or a checker, or establish a PRA theorem. Source/object checks are point-in-time observations and cannot exclude transient between-check changes; sampled resource and inherited provider/package limitations remain.

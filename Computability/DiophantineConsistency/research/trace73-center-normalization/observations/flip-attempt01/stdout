@@ -1,0 +1,17 @@
+/tmp/trace75-signflip-z0qundxx/Trace75SignFlip.lean:27:2: error: 'change' tactic failed, pattern
+  (regs p v).Q *
+        (((regs p v).Z + 2 * (regs p v).M * d) ^ 2 -
+          (regs p v).M * (regs p v).M * (regs p v).Gn * ((regs p v).V * (regs p v).V)) +
+      ((regs p v).M * (regs p v).M * (regs p v).Gn - ((regs p v).Z + 2 * (regs p v).M * d) ^ 2) =
+    ?m.183
+is not definitionally equal to target
+  (regs p (move v d)).Q *
+        (((regs p v).Z + 2 * (regs p v).M * d) * ((regs p v).Z + 2 * (regs p v).M * d) -
+          (regs p (move v d)).M * (regs p (move v d)).M * (regs p (move v d)).Gn *
+            ((regs p (move v d)).V * (regs p (move v d)).V)) +
+      ((regs p (move v d)).M * (regs p (move v d)).M * (regs p (move v d)).Gn -
+        ((regs p v).Z + 2 * (regs p v).M * d) * ((regs p v).Z + 2 * (regs p v).M * d)) =
+    (regs p v).Q *
+        ((regs p v).Z * (regs p v).Z - (regs p v).M * (regs p v).M * (regs p v).Gn * ((regs p v).V * (regs p v).V)) +
+      ((regs p v).M * (regs p v).M * (regs p v).Gn - (regs p v).Z * (regs p v).Z)
+'Trace75SignFlip.value_flip' depends on axioms: [propext, sorryAx, Quot.sound]

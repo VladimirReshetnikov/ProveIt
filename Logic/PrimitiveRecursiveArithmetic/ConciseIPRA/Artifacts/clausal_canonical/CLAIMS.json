@@ -1,0 +1,106 @@
+{
+  "title": "Five rules for intuitionistic primitive recursive arithmetic",
+  "date_user_timezone": "2026-11-11",
+  "source_commit": "11be5aabc6b07262046e2553419bc6b05271d178",
+  "theory": {
+    "term_constructors": [
+      "variable",
+      "zero",
+      "canonical successor-seeded recursor R"
+    ],
+    "formula_constructors": [
+      "equality",
+      "paired binder D"
+    ],
+    "context_objects": "antecedent / one-variable consequent clauses",
+    "primitive_inference_schemes": 5,
+    "schemes": [
+      "R successor computation",
+      "one-term crossed transport",
+      "clause use",
+      "D elimination",
+      "witness-directed D introduction"
+    ],
+    "canonical_zero_law_is_charged": true,
+    "equivalent_to_pinned_canonical_six_rule_calculus": true,
+    "equiconsistent_with_full_first_order_ipra": true,
+    "bi_interpretable_with_full_first_order_ipra": true,
+    "both_numerical_domains_whole": true,
+    "interpreted_equality": "actual equality",
+    "numerical_composite_graphs": "x = y",
+    "proof_status": "Written equivalence and composition with the inherited canonical-recursor bridge; not a new proof-assistant formalization"
+  },
+  "complete_primary_checker": {
+    "path": "code/arity_checker.py",
+    "normalized_bytes": 3305,
+    "significant_tokens": 946,
+    "ast_nodes": 1072,
+    "gzip_level_9_mtime_0_bytes": 1073,
+    "normalization_python": "3.12.14",
+    "includes": [
+      "JSON parsing",
+      "strict syntax and scope checks",
+      "canonical opening",
+      "all inference schemes",
+      "final conclusion checking",
+      "CLI error handling"
+    ]
+  },
+  "matched_control": {
+    "path": "comparison/arity_current_control.py",
+    "normalized_bytes": 3820,
+    "significant_tokens": 1107,
+    "ast_nodes": 1266,
+    "gzip_level_9_mtime_0_bytes": 1136,
+    "same_variable_representation": true,
+    "byte_saving": 515,
+    "byte_saving_percent_rounded": 13.48
+  },
+  "exact_shipped_control": {
+    "path": "comparison/canonical_checker.py",
+    "normalized_bytes": 4611,
+    "byte_saving": 1306,
+    "byte_saving_percent_rounded": 28.32,
+    "saving_combines_calculus_and_representation": true
+  },
+  "verification": {
+    "primary_positive_certificates": 33,
+    "primary_negative_certificates": 32,
+    "primary_cli_checks": 260,
+    "primary_reverse_translations_accepted_by_pinned_checker": 33,
+    "control_cli_checks": 120,
+    "independent_named_variable_opening_comparisons": 12000,
+    "additional_adversarial_primary_certificates": 42,
+    "ordinary_and_optimized_checker_execution": true,
+    "isolated_extraction_portability_check": "passed"
+  },
+  "limits": [
+    "No global simplest-presentation or minimal-rule theorem is claimed.",
+    "The construction combines established canonical recursion, clause-context, and one-term-transport ideas.",
+    "Earlier shared openers, negative parameter labels, and neutral-major encodings are acknowledged.",
+    "The historical 516-byte and 788-byte scalar checker profiles remain smaller.",
+    "No new Lean or Rocq verification is claimed.",
+    "Finite testing supplements the written proofs; it is not universal formal verification.",
+    "Smaller verifier size does not imply smaller certificates.",
+    "Python resource limits apply to sufficiently large finite certificates."
+  ],
+  "late_source_check": {
+    "head": "f77135e4aa104b8f60a28e9decd3bded7cb53795",
+    "canonical_comparator_unchanged": true,
+    "zero_normal": {
+      "source_commit": "f77135e4aa104b8f60a28e9decd3bded7cb53795",
+      "source_path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/zero_normal/code/zero_six.py",
+      "path": "comparison/latest_zero_six.py",
+      "raw_bytes": 3127,
+      "sha256": "fa4fff6c5715a696162f40a7aa8d51d3ee33688531f429d5269f5ca9968e7596",
+      "git_blob": "d54e4bb25582238023878e01a2d897b9025c5a16",
+      "normalized_bytes": 3095,
+      "tokens": 1013,
+      "ast_nodes": 1075,
+      "gzip9_bytes": 977,
+      "separate_presentation": "Initialized I with independent S; six rules; full Eq/Q/D formulas",
+      "scope": "Late-source comparison only; not rerun as part of the proof-translation family."
+    },
+    "conclusion": "The five-rule interface is distinct; the late six-rule zero_normal checker is smaller in bytes and gzip, while this checker has fewer rules, tokens, and AST nodes. The matched byte claim is unchanged."
+  }
+}

@@ -1,0 +1,23 @@
+/tmp/compact44-graph-support-join-01/TemporalStraddleWindow.lean:27:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Exp.exp (67 - r) * Exp.exp r
+in the target expression
+  dig 67 X (n - 1) < Exp.exp r * Exp.exp (67 - r)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X n E t r u : V
+hn : 0 < n
+hr0 : 0 < r
+hr : r < 67
+he : E % (67 * n) = 67 * t + r
+hL : 67 * n = E % (67 * n) + (67 - r + u)
+hi : 67 * n - E % (67 * n) + 67 * t = 67 * (n - 1) + (67 - r)
+hX : X < Exp.exp (67 * n)
+hrr : 67 - r < 67
+hb : Exp.exp r * Exp.exp (67 - r) = Exp.exp 67
+hrev : Exp.exp (67 - r) * Exp.exp r = Exp.exp 67
+hn' : n - 1 + 1 = n
+hnext : dig 67 X (n - 1 + 1) = 0
+⊢ dig 67 X (n - 1) < Exp.exp r * Exp.exp (67 - r)
+'TemporalStraddleWindow.straddling' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

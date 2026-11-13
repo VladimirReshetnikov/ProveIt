@@ -1,0 +1,3 @@
+# Restricted prefix-token transcription: whitelist revision
+
+This fresh source draft retains the independently reviewed 22 arithmetic abbreviations, final equation and initial variable/port map. It restricts declaration names to the exact 23 expected identifiers and adds concrete negative controls for reserved/empty names, duplicate names, unknown symbols, trailing tokens, exhausted fuel and malformed line structure. The `quoteSentence_eq` proof uses `all_goals rfl` after rewriting to avoid a no-goals error if rewriting closes it. These proposals are uncompiled; they do not claim general TeX/PDF parsing or bind actual external bytes. Independent delta review precedes any Lean guard.

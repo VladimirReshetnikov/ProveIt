@@ -1,0 +1,15 @@
+# Independent review: Carrier65 retry05 resumption audit
+
+The [resumption audit](../../research/current14-carrier65-retry05-resumption-audit/README.md) accurately distinguishes the historical normalized-quote endpoint from the later incomplete coherent replay within the inspected evidence. Both the original receipt and the independent receipt below reproduce in the retained environment. This is a read-only review of source, recorded results and selected retained files; it is not a Lean replay or proof of complete provider coherence.
+
+The independent checker pins the plan, runner, failed state, outer result, and reviewed audit. It rehashes each of the 239 completed `.olean` outputs and 478 archived dependency/compile logs, verifies the corresponding recorded exit and monitor fields, and confirms the stage-240 `Sign17KWeightAggregateProbe` stub has no recorded child or retained stage object. The minimum recorded free-space sample among completed compile children is 5,104,041,984 bytes; that observation does not identify the unrecorded watchdog-crossing sample. The remaining count is 529 minus 239, or 290 planned modules, plus the separate final audit client.
+
+The runner's inspected source hard-codes the retained output root, calls the default fresh-output preflight, creates owned state, snapshots the selected sources, initializes an empty completed map and iterates from the first stage. The retained root exists. These facts support the conclusion that this runner cannot resume the stopped attempt; they do not show that a separately engineered and independently reviewed continuation is impossible or that a fresh run will succeed. The recorded historical stop and sampled resource guards do not reserve current resources, and any future launch needs its own checks.
+
+The earlier quote endpoint's recorded state is `PASS`, its outer session exited zero, and its retained compile log reports the three listed Lean axioms without `sorryAx` or diagnostics. The fixed source states existence of a parsed `quoteSentence` and a `standardTheory` derivable biconditional with the mapped Gödel–Gentzen translation of `sourceSentence`; the inspected definition identifies the latter with Foundation's ZFC consistency sentence. This supports the audit's narrow *historically checked normalized-quote* claim, conditional on the original provider evidence. It does not prove either side, repeat the historical Lean run, establish a fully coherent transitive package/runtime ancestry, or formally interpret raw TeX or PDF bytes. The original page's checked comparison and the newer compact P72 natural graphs are separate artifacts.
+
+Both receipts depend on retained temporary paths and non-atomic point-in-time reads. They may stop reproducing after those paths change. Run from the repository root:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/reviews/current14-carrier65-retry05-resumption-independent/check.py | cmp - Computability/DiophantineConsistency/reviews/current14-carrier65-retry05-resumption-independent/result.json
+```

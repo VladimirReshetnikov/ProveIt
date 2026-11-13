@@ -1,0 +1,18 @@
+# Historical endpoint audit in an isolated source view
+
+The protected inverse wrapper, session 3421, actually exited 1 before Lean when its unchanged row-match parent rerun failed. Direct read-only reruns traced the chain through table lookup, relabel pair and the endpoint artifact audit to the endpoint closure audit's `workspace source hashes` guard. Exactly one of the 1,145 selected workspace sources differs: `ModelCarrierCurrent.lean` was pinned as SHA-256 `3f76453da57164d06bd338928d0e3d587df46851c77d5cbc4fbf858119719076`, while the later live source was `f0a4898f545a932b135783799ae0d44179fbcbcb08e5d97eaced4515740e990f`. The old bytes match both commit `435062d125` and the endpoint's frozen source snapshot. The live source reflects the later `ModelCarrierSyntax` move; it has not been restored or modified for this experiment.
+
+A fresh shared, sparse temporary clone at HEAD `89dc5054338bba6fcdf742105203148252da2773` was populated with 1,155 selected source/config files and 21 audit/evidence directories. Its sole tracked modification was substitution of those historical bytes for `ModelCarrierCurrent.lean`. The first clone occupied 76 MiB; the disk check showed 4.2 GiB free before creation. In this view, unchanged closure audit session 32303 actually exited 0 and reproduced its full pinned CHECK, SHA `ab2255186de1e61028731a47a1c92e89792835efe7317e4560b86861bc002af7`. The bounded `prepare.py` reproduces the sparse view in a fresh direct `/tmp/ipra-historical-audit-review-*` directory; a second independent preparation actually exited 0 in session 17503.
+
+Merely relocating the unchanged higher audit chain did not work. The clone's row-match session 99008 exited 1, and direct descent reached endpoint-audit session 72419 exit 1 with a `KeyError`: the recorded endpoint receipt uses absolute original-workspace paths, while the relocated audit formed clone-local keys. Both failure traces and the original live failures are retained under `observations/`. A checkout of historical commit `435062d125` alone is insufficient because the later row-match and endpoint audit files did not yet exist at that commit.
+
+The contextual endpoint experiment instead imports the exact original endpoint audit bytes and rebinds **only** its `PARENTAUDIT` global to the sparse view's unchanged closure audit. It continues to check the original frozen sources, provider objects, direct guards, logs and absolute receipt keys. Session 27340 actually exited 0; the packaged wrapper repeated this in session 5108, also exit 0. Both full outputs match the pinned endpoint CHECK byte-for-byte, SHA `50c18ab38d6393cf784e658b5626bb6ec3cb490dc1652f5b5dcfa2b1adca1cce`. This is a contextual rerun, not a successful unchanged full-chain rerun, and it does not validate the newer live source or provide continuous protection of mutable inputs.
+
+For a fresh isolated view and contextual endpoint rerun, from the repository root:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/reviews/historical-endpoint-contextual-audit/prepare.py --output /tmp/ipra-historical-audit-review-NEW
+python3 -I -S -B Computability/DiophantineConsistency/reviews/historical-endpoint-contextual-audit/contextual-endpoint.py --historical-view /tmp/ipra-historical-audit-review-NEW
+```
+
+The scripts use Git's shared-object clone, require a fresh direct `/tmp` path and at least 1 GiB sampled free space, pin the sparse patterns and audit bytes, and launch no Lean. The underlying historical `/tmp` object/provider trees and package inputs must still exist; package-transitive/dynamic ancestry and sampled-resource limitations remain. Existing replay drivers that directly rerun the unchanged live parent audit remain blocked until separately corrected and independently reviewed.

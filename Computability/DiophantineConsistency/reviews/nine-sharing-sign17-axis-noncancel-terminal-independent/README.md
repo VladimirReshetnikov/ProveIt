@@ -1,0 +1,3 @@
+# Independent sign17 axis noncancellation terminal audit
+
+The independent checker exited 0. Author outer session 63895 exited 0; all ten stages and postflight passed despite inherited console label. Sources, objects, logs, direct routes, guards and overlays were checked. Replayed Na stage has two no-op warnings; final noncancellation stage has no warnings or sorryAx and three standard reports. Lean proves the explicit corrected-axis sum of Na squared and the other seven squares has degree 96 when p0≠0. Its equality to the actual seed and the full multivariate lower bound remain separate. No Lean was rerun here.

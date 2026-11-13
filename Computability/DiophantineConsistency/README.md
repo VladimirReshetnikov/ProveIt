@@ -19,6 +19,23 @@ printed derivation is not required. The exact candidate theory and proof
 boundary are specified in [IPRA_AXIOMATIZATION.md](IPRA_AXIOMATIZATION.md)
 and tracked in [IPRA_PROVABILITY_PLAN.md](IPRA_PROVABILITY_PLAN.md).
 
+**Trace75 research candidate (3 November 2026).** A separate
+[decimal display](research/trace75-bfs-decimal-display/equation.pdf) gives a
+ten-positive-variable, 75-operation, degree-402 candidate. Its displayed
+rows, fixed coefficients, liveness and degree have external finite checks,
+including a structural comparison with the Lean evaluator. The fixed-port
+native, standard and equality-only iPRA proof-existence statements have now
+passed a [five-stage final assembly](research/trace75-bfs-ipra-final-assembly-plan/RUNNER.md)
+on the compatible trace, reverse and forward provider, with an independent
+result audit. The statements use the selected mapped native refutation
+negation or the Gödel–Gentzen-translated consistency sentence. The four
+retained baseline objects have a separate [direct-producer audit](research/trace75-baseline-four-provenance/README.md);
+their upstream transitive ancestry, other unrebuilt ancestry, package/dynamic
+inputs and formal external-file semantics remain outside those checks. The
+maintained root equation is
+unchanged. See the [trace75 plan](research/ten-positive-ipra/PLAN.md) for the
+current proof boundary.
+
 **Current proof status (1 November 2026).** Lean has native iPRA proof-existence
 endpoints for the maintained [14-variable degree-150 equation](equation.pdf),
 the [13-variable 86-operation degree-56 equation](equation86.pdf), the
@@ -52,20 +69,260 @@ the [13-variable 86-operation degree-56 equation](equation86.pdf), the
 uses the native negation of Foundation's particular arithmetized ZFC
 refutation predicate. The displayed polynomials, circuit counts and exact
 degrees have separate finite checks; the degree calculations are not Lean
-degree theorems and no global minimum is claimed.
+degree theorems and no global minimum is claimed. Since 3 November 2026 the
+tree also holds native and standard endpoints for the
+[22-variable degree-10](research/adaptive-square-sums22-degree10/equation10-22.pdf),
+[26-variable](research/adaptive-square-sums26-degree8/equation8-26.pdf),
+[27-variable](equation8-27.pdf) and 28-variable degree-8 candidates
+([promotion record](reviews/aq22-28-current-source-promotion/README.md)).
+The 12-variable, 95-operation, degree-70 free-J graph at the compact44 tuple
+`β = 2^590069 − 1` also has native, standard and equality-only endpoints in
+the tree ([`Compact44/IPRAOrdinary12`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12.lean)).
+They rest on its all-model halting calibration, whose 472-module research
+closure was [promoted into `Compact44/`](reviews/compact44-source-promotion/README.md).
+The smaller 12-variable graphs on the same tuple also have all three endpoints
+([`Compact44/IPRAOrdinary12Chain`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary12Chain.lean),
+[record](reviews/ordinary12-chain-source-promotion/README.md)):
+
+| Operations | Exact degree |
+| --- | --- |
+| 94 | 84 |
+| 92 | 164 |
+| 91 | 172 |
+| 90 | 172 |
+| 89 | 172 |
+
+Package 115's 13-positive, 87-operation, degree-51 free-J equation is the
+thirteen-positive 51 / 87 frontier point. It has all three endpoints too
+([`Compact44/IPRAOrdinary13`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary13.lean),
+[record](research/ordinary13-freej87-endpoint/README.md)). They come from an
+all-model reduction to the 95-operation literal.
+Package 72's 13-positive, 98-operation, degree-28 equation P13 is the
+lowest-degree thirteen-positive point. It also has all three endpoints
+([`Compact44/IPRAOrdinary72`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary72.lean),
+[record](research/ordinary13-p72-endpoint/README.md)). These rest on a
+dedicated soundness proof, through the six compact44 leaf facts, and a
+converse from the canonical halt data.
+Its fourteen-positive sibling P14 (101 operations, degree 24) is the
+lowest-degree fourteen-positive point. It has all three endpoints as well
+([`Compact44/IPRAOrdinary72P14`](Lean/DiophantineConsistency/Compact44/IPRAOrdinary72P14.lean),
+[record](research/ordinary13-p72-endpoint/README.md#the-fourteen-positive-sibling-p14)).
+P14 promotes P13's product `E = XY` to an unknown and adds the residual
+`E − XY`, so in every `IΣ₁` model its zeros are exactly P13's.
+Package 65's fourteen-positive 92-operation, degree-26 equation also has all
+three endpoints
+([`Compact44/IPRAPositive65`](Lean/DiophantineConsistency/Compact44/IPRAPositive65.lean),
+[record](research/fourteen-p65-endpoint/README.md)). It reuses P13's generic
+soundness sections, with the exact-index section split so that it accepts 65's
+ordinary strong norm (`P72Exact.exact_ordinary`). Its converse reuses P13's
+extraction of the halt data.
+Package 64's fourteen-positive 83-operation, degree-30 equation has all three
+endpoints too
+([`Compact44/IPRAPositive64`](Lean/DiophantineConsistency/Compact44/IPRAPositive64.lean),
+[record](research/fourteen-p64-endpoint/README.md)). Its finalizer is a sum of
+squares minus one. A local norm minimum (`P64Norm`) shows that this forces the
+auxiliary residual to be `1` and the others to vanish. Its early congruence
+uses the modulus `Y²` with `gcd(Y², H) ∣ 9` (`P64Early`). An independent
+[captured-provider replay](research/fourteen-p64-independent-replay/README.md)
+and [artifact review](reviews/p64-captured-replay-independent/README.md)
+check the eight P64 modules with one import shim. The package’s missing
+pinned source and payload files have been [restored](research/fourteen-p64-payload-provenance/RESTORATION.md);
+file-to-Lean port equality remains external.
+For package 65, an [alternate captured-provider assembly](research/p65-unconditional-ipra-alternate-provider/README.md)
+checks the three unconditional endpoints for the same P65 Lean expression,
+using a separately constructed halt-side witness and a
+[62-module replay](research/p65-reverse-provider/README.md) of the reverse
+direction. A further [30-module captured-provider replay](research/p65-canonical-endpoint-provider/README.md)
+checks the merged canonical endpoint source and has an independent manifest
+and log review. A later [post-merge replay](research/p65-post-merge-replay/README.md)
+recompiled all eight modules in the manifest-visible closure of the changed
+P72 sources, including the endpoint, and passed an independent artifact
+[review](reviews/p65-post-merge-replay-independent/README.md). These replays
+inherit transitive provider ancestry; the external file binding remains
+separate from the Lean checks.
+Package 73's thirteen-positive 92-operation, degree-30 equation has all three
+endpoints
+([`Compact44/IPRAPositive73`](Lean/DiophantineConsistency/Compact44/IPRAPositive73.lean),
+[record](research/thirteen-p73-endpoint/README.md)). Its zeros map to zeros of the
+95-operation free-J literal: the first and main carriers coincide, and the
+normalized strong norm is the ordinary one with index `Δi`. The converse uses
+the halt data.
+Package 62's thirteen-positive 83-operation, degree-114 equation has all three
+endpoints as well
+([`Compact44/IPRAPositive62`](Lean/DiophantineConsistency/Compact44/IPRAPositive62.lean),
+[record](research/thirteen-p62-endpoint/README.md)). They rest on four new pieces:
+a product-unit guard, a centered two-root restoration, an early congruence
+modulo `4q⁴` with `gcd(4q⁴, H) ∣ 3`, and a signed index theorem for the
+ordinary-blank ordinate `c(Tf − 1) − Rf²` (`OrdinaryBlankSignedIndex`).
+Package 57's twelve-positive 89-operation, degree-258 equation followed
+([`Compact44/IPRAPositive57`](Lean/DiophantineConsistency/Compact44/IPRAPositive57.lean),
+[record](research/twelve-p57-endpoint/README.md)). It needs three further
+pieces:
+
+- a four-root restoration of its fused main-and-first carrier;
+- the plus-sign variant of the ordinary-blank index theorem, because its
+  fused strong/auxiliary norm leaves the sign of `f` free;
+- in the converse, the odd-ordinate residue `y_halt ≡ −1 (mod 4(Δic²)²)`.
+
+**CURRENT2011 carrier forms (2 November 2026).** The lower-operation and
+lower-degree carrier forms of the maintained coefficient tuple now also have
+native, standard and equality-only iPRA endpoints. They cover the 14-variable
+67/106, 66/118, 71/80 and 72/68 forms ([`ModelCarrierCurrent`](Lean/DiophantineConsistency/ModelCarrierCurrent.lean),
+[`ModelCarrierSpheres`](Lean/DiophantineConsistency/ModelCarrierSpheres.lean))
+and the 13-variable 69/174, 70/140, 71/128, 73/126, 74/122, 72/124, 77/96,
+76/96, 75/96 and 84/92 forms ([`ModelThirteenCarrier`](Lean/DiophantineConsistency/ModelThirteenCarrier.lean),
+[`ModelThirteenForms`](Lean/DiophantineConsistency/ModelThirteenForms.lean),
+[`ModelThirteenStrong`](Lean/DiophantineConsistency/ModelThirteenStrong.lean),
+[`ModelThirteenSquares`](Lean/DiophantineConsistency/ModelThirteenSquares.lean)).
+The 14-variable 67-operation degree-94 form of
+[package 188](con-zfc-diophantine-forms/188-pell-orientation-exact-projection/native/README.md),
+which uses the ordinary strong norm `(i c²)² = Delta (f² − 1)`, has the same
+three endpoints since 3 November 2026
+([`ModelCarrier94`](Lean/DiophantineConsistency/ModelCarrier94.lean)). Its
+soundness re-proves the maintained index stage for that norm
+([`ArithmeticCarrier94Indices`](Lean/DiophantineConsistency/ArithmeticCarrier94Indices.lean),
+via `relaxed_auxiliary`), after which the maintained power, population and
+window clients apply unchanged; completeness replaces `i` by `Delta i` in a
+maintained zero.
+Each external standard-integer zero-set argument is replayed in every model of
+`𝗜𝚺₁` through the model's ring of differences ([`ModelDifferenceRing`](Lean/DiophantineConsistency/ModelDifferenceRing.lean)).
+The new internal number theory is an internal near-square descent
+([`ModelArithmetic`](Lean/DiophantineConsistency/ModelArithmetic.lean)), an
+internal pigeonhole principle giving a Pell ordinate divisible by any modulus
+([`ArithmeticPellPigeonhole`](Lean/DiophantineConsistency/ArithmeticPellPigeonhole.lean)),
+the signed odd-index Pell residue ([`ArithmeticOddOrdinateResidue`](Lean/DiophantineConsistency/ArithmeticOddOrdinateResidue.lean)),
+and the 14→13 completion with fresh Pell seeds ([`ArithmeticThirteenSeed`](Lean/DiophantineConsistency/ArithmeticThirteenSeed.lean),
+[`ArithmeticThirteenOuter`](Lean/DiophantineConsistency/ArithmeticThirteenOuter.lean)).
+The maintained all-model bridge then transfers to each form. The
+[`ModelCarrierChecks`](Lean/DiophantineConsistency/ModelCarrierChecks.lean),
+[`ModelThirteenCarrierChecks`](Lean/DiophantineConsistency/ModelThirteenCarrierChecks.lean)
+and [`ModelThirteenChecks`](Lean/DiophantineConsistency/ModelThirteenChecks.lean)
+audits report only `propext`, `Classical.choice` and `Quot.sound`. These are
+author builds in the root workspace, not independent replay packets. The
+endpoints are stated for literal `Expr` transcriptions of the forms, whose
+ring evaluations are proved equal to the generic `value` definitions. The
+statement identifying the 14-variable syntax with the accepted
+`MvPolynomial`s (a `ModelCarrierBindings` module importing the
+Foundation-free [`ModelCarrierSyntax`](Lean/DiophantineConsistency/ModelCarrierSyntax.lean))
+is [`ModelCarrierBindings`](Lean/DiophantineConsistency/ModelCarrierBindings.lean)
+(built, `97c0c77cc4`). The analogous 13-variable bindings are not yet written.
+
+**Nine unknowns (2 November 2026).** The 9-variable equation of
+[EXPLICIT_EQUATION.md](EXPLICIT_EQUATION.md) now has native, standard and
+equality-only iPRA endpoints with no hypotheses
+([`IPRAExplicitZFCFinal`](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean));
+its `#print axioms` report lists only `propext`, `Classical.choice` and
+`Quot.sound`. The endpoints are stated for `ExplicitZFCSyntax.expression`,
+which [`ExplicitZFC.expression_eq_syntax`](Lean/DiophantineConsistency/ExplicitZFC.lean)
+identifies with `ExplicitZFC.expression` (the syntax data were moved, names
+unchanged, into Matrix-free modules because Foundation's `Matrix.map`
+collides with Mathlib's). The proof internalizes, in every model of `𝗜𝚺₁`,
+both Jones's 1982 nine-unknowns reduction
+([`ModelJonesNine`](Lean/DiophantineConsistency/ModelJonesNine.lean): an
+elementary two-radicand relation combiner, integer sandwich bounds in place of
+the real ratio estimate, Kummer carries and digit coding) and the
+Diophantine compilation of the enumerator program
+([`ModelRepFinal`](Lean/DiophantineConsistency/ModelRepFinal.lean): Gödel's
+β-function, Matiyasevich's Pell criterion and the Davis–Putnam–Robinson
+bounded quantifier; [`ModelProgramLink`](Lean/DiophantineConsistency/ModelProgramLink.lean)
+for the C222 enumerator). A second nine-unknown equation, Jones applied to the
+maintained equation's quartic gates
+([`IPRANineCurrent`](Lean/DiophantineConsistency/IPRANineCurrent.lean), audit
+[`IPRANineChecks`](Lean/DiophantineConsistency/IPRANineChecks.lean)), has its
+own unconditional endpoints. Module map and plan:
+[research/nine-variable-ipra/PLAN.md](research/nine-variable-ipra/PLAN.md).
+Both endpoints and their named axiom checks have now passed an
+[incremental author-side replay](reviews/nine-variable-ipra-complete-author-ledger/README.md)
+over a historical provider. This is not an independent paired replay or a
+fully authenticated transitive provider closure.
+
+For the maintained 14-variable equation, a [historical paired replay](reviews/ipra-standard-current14-historical-pair-terminal/README.md)
+has matched all 16 added modules, including the standard-iPRA endpoint, and
+passed an independent complete-result audit. The endpoint uses the selected
+mapped and translated Foundation consistency sentence; the separately checked
+PDF binding retains a manual decoder and rank-recipe boundary. A later
+[Lean port assembly](research/current14-literal-port-assembly/README.md)
+joins the separate kernel and mask recipe theorems for all four ports using
+prebuilt mixed providers. It transcribes the mathematical formulas and does
+not formalize TeX/PDF interpretation or authenticate their full ancestry.
+A [source-frontier audit](research/current14-source-frontier/README.md)
+records 13 historical source differences and a 207-module conservative
+reverse closure at its pinned workspace state; it is not a new Lean replay.
+
+For the smaller [14-variable degree-30 direct-square equation](equation30-direct.pdf),
+the native endpoint was compiled in the matched fresh AQ29 parent pair. A
+subsequent [five-module historical author extension](reviews/ipra-standard-direct14-guarded-author/README.md)
+compiled its standard-iPRA endpoint and selected translated consistency
+comparison and passed an independent artifact audit. A subsequent [historical
+paired extension](reviews/ipra-direct14-historical-pair-terminal/README.md)
+matched all five additions and passed an independent complete-result audit. A
+[finite display binding](reviews/direct14-pdf-historical-lean-binding/README.md)
+retains the manual decoder and rank-recipe boundary.
+
+For the 13-variable degree-36 and degree-56 equations, a [joint historical
+author extension](reviews/ipra-standard-13-frontier-guarded-author/README.md)
+compiled native and standard-iPRA endpoint clients and passed an independent
+artifact audit. A later [historical pair](reviews/ipra-frontier13-historical-pair-terminal/README.md)
+matched all eight additions and passed an independent complete-result audit.
+Their [finite display bindings](reviews/frontier13-pdf-historical-lean-binding/README.md)
+have a [separate review](reviews/frontier13-pdf-historical-lean-binding-independent-audit/README.md)
+and retain the manual decoder and rank-recipe boundary.
+
+A [guarded historical author extension](reviews/ipra-selected-verifier-guarded-author/README.md)
+also compiled a primitive-recursive checker for a common bound in the selected
+Foundation refutation encoding, with internal iPRA equivalences linking its
+absence of output 1 to both 13-variable no-zero sentences. Its independent
+artifact audit passed. A [historical paired extension](reviews/ipra-selected-checker-historical-pair-terminal/README.md)
+matched all ten additions and passed an independent complete-result audit.
+It does not identify an
+arbitrary independently specified proof checker with the selected one.
+The [same selected code's native and standard iPRA bit-range proofs](research/ipra-selected-native-bit/README.md)
+also have matched historical builds and an independent complete-result audit.
 
 The smaller 85-operation candidate's reverse implication remains open. Newer
 finite graph searches have produced a [29-variable degree-eight candidate](research/adaptive-square-sums29-degree8/README.md),
 a [28-variable degree-eight candidate](research/adaptive-square-sums28-degree8/README.md),
 a [27-variable degree-eight candidate](research/adaptive-square-sums27-degree8/README.md),
-a [26-variable degree-eight candidate](research/adaptive-square-sums26-degree8/README.md),
+a [26-variable degree-eight candidate](research/adaptive-square-sums26-degree8/README.md)
+with a [base-10 display](research/adaptive-square-sums26-degree8/equation8-26.pdf),
+a [22-variable degree-ten candidate](research/adaptive-square-sums22-degree10/README.md)
+with a [base-10 display](research/adaptive-square-sums22-degree10/equation10-22.pdf),
 and a [40-variable quartic candidate](research/adaptive-square-sums40-quotient-quartic/README.md).
 Their substitutions and degrees have finite checks. The 29-variable candidate
-has a matched model replay; its native transport is undergoing verification.
-The guarded native replay attempt failed before its first module because a
-historical dependency provider contained broken symlinks; it has not passed.
-The 26-variable, 27-variable, 28-variable and 40-variable candidates' model
-and native transports remain open.
+has a matched model replay. Its initial focused native replay failed on broken
+historical provider links; a later fresh project-source pair completed the
+native endpoint, matched all 1,210 rows and passed an independent artifact
+audit. The pair is historical, with 15 workspace-source drifts. A
+standard-iPRA AQ29 extension also
+completed one author run and a separate independent artifact audit; its paired
+Lean replay remains open, with the historical and provider qualifications below.
+The 26-, 27- and 28-variable model transports and native endpoints have a
+separate author-only historical run and independent artifact audit; the
+standard-theory 26-variable client also has one author run and an audit. A
+later historical paired run included these endpoints and the 22-variable model
+transport and native and standard endpoints, matching all 37 added modules.
+Its independent complete-result audit passed. On 3 November 2026 these
+22-, 26-, 27- and 28-variable endpoints, together with the standard AQ26 and
+AQ29 clients, were [promoted byte for byte into the Lean tree](reviews/aq22-28-current-source-promotion/README.md)
+(35 modules) and built there against current sources. Each named endpoint
+reports only `propext`, `Classical.choice` and `Quot.sound`. This is an
+author build, not a paired replay. The
+40-variable candidate's model and native transports have an
+[incremental author-side build](reviews/adaptive-qm40-native-incremental-author/README.md);
+its [standard-presentation client](research/ipra-standard-qm40/author-rebuild/README.md)
+also has an author-side build. An independent paired replay and formal PDF-byte
+binding remain open.
+The [17-variable degree-32 candidate](research/aq22-positive-binding-survey/README.md)
+eliminates five more AQ22 bindings and has independently checked finite
+substitution, positivity and degree calculations. Its Lean transport and iPRA
+endpoints have a guarded historical author run and an independent artifact
+audit. A later historical pair matched all 44 additions and passed an
+independent complete-result audit.
+The [16-variable degree-32 candidate](research/aq17-positive-signed-binding/README.md)
+has independently checked finite algebra and positivity under the actual fixed
+parameter, and a guarded historical author run of the full transport and iPRA
+chain with an independent artifact audit. A later [historical pair](reviews/ipra-aq16-historical-retry-pair-terminal/README.md)
+matched all 52 additions and passed an independent complete-result audit.
 The native endpoints above have matching fixed-source proof replays on
 historical providers, with an author-only ancestor and inherited package and
 dynamically loaded dependency ancestry. A broader 351-module source refresh

@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: r9 growth v2
+
+GO subject to root slot release and fresh locked preflight. Source `a989515bdf9370a79c2a24266fb07772759e4be303a9a28b249727ca373742aa`, runner `1490736ed2d01ecd87c8e098ce51012bdecec5b3154cdec6223f7d7b7c9ddb5c`, policy `31a883fc08d2938d81c84f8699e9f65a3f20d2358880750c6dc5df18c0565619`. No Lean replay. Prior v1 failed deterministic heartbeat in broad combined nlinarith; no object. V2 source retains all theorem statements and replaces broad normalization with explicit nonnegative-sum/ring identities and order transitivity, mathematically matching audited inequality chain. Remaining tactic elaboration/resource behavior untested.
+
+Runner builds in fresh output before pinned package, checks direct source/tool pins pre/post, strict three named reports, empty stderr and locked resources; 15 actual-validator controls pass including path assertion. Generic ordered-ring conditional growth/size only; no graph/guard. Direct pins do not establish full serialized transitive/package ancestry or continuously stable resolution.

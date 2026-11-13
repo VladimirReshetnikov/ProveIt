@@ -1,0 +1,7 @@
+# Independent review of the historical finite replay
+
+PASS within the historical-input scope. Run `python3 -I -S -B check.py` from any directory. This checks the two extracted Lean files byte-for-byte against git commit `4a1fb8565a4a0f41be9eff68e1b6d9fdd70cb702`, and checks the recorded patch against `git diff` for exactly those files. In both files, the live change replaces a local beta-positivity proof with the shared `CurrentMasks2011.beta_pos_int` lemma. The previously saved live-source audit stopped at the source hash mismatch, before checking degree.
+
+The checker reads the 16-input manifest without executing the replay driver, verifies its agreement with the saved receipt, copies the pinned bytes to a fresh temporary tree, and invokes the pinned historical auditor twice in isolated Python (normally and with optimization). Each run reports 14 variables, 67 operations, degree 106, and certificate SHA-256 `16358ce2d453371d2f2d1cad8ab22136ea61ec9ff77200a55264ad56d4a57879`; input hashes are checked again afterward. The first run's result agrees with the saved report. No Lean process is launched.
+
+This is a reproduction of the existing finite auditor, not an independent formal proof of its algorithm, the PDF's interpretation, or the historical compiled provider ancestry. It does not establish that the unmodified historical auditor accepts the live Lean source: it does not. A successful replay here is not a current-source Lean proof or a current-source audit.

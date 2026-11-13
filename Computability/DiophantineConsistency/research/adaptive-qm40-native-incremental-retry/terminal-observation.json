@@ -1,0 +1,28 @@
+{
+  "checks": [
+    {
+      "command": "python3 -I -S -B replay.py --preflight-only --output /tmp/ipra-qm40-incremental-preflight-20261102-b",
+      "exit": 0,
+      "stdout": "READY_INCREMENTAL_QM40_NO_LEAN"
+    },
+    {
+      "command": "python3 -I -S -B controls.py",
+      "exit": 0,
+      "stdout": "PASS_NO_LEAN_GUARD_CONTROLS; new companion, altered link target and altered target content detected"
+    },
+    {
+      "command": "repeat preflight with an already used output directory",
+      "exit": 1
+    },
+    {
+      "command": "preflight with the existing seed directory as output",
+      "exit": 1
+    },
+    {
+      "command": "preflight with optimized Python",
+      "exit": 1
+    }
+  ],
+  "lean_launched": false,
+  "qualification": "Preflight and temporary-file controls only; compiler, timeout and final receipt paths are not exercised."
+}

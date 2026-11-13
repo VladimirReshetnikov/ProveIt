@@ -1,0 +1,3 @@
+# Independent sign17 actual seed axis-degree terminal audit
+
+The independent checker exited 0. Author outer session 48773 exited 0; eleven stages/postflight passed despite inherited console label. Sources, objects, logs, direct routes, guards and overlays were checked. The final stage has two unused-simp warnings and no sorryAx; both reports contain standard axioms. Lean proves the actual staged seed evaluates to the explicit combined sum and has corrected-axis univariate degree 96 when p0≠0. The full multivariate lower bound and current-port specialization remain separate. No Lean was rerun here.

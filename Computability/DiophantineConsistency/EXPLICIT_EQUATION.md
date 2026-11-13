@@ -23,9 +23,14 @@ The exact definitions and proofs are in
 the executable expression. `ConZFC` means precisely
 `¬ BProv ZFCax_s [] Form.fBot`, for the repository's actual ZFC axiom predicate.
 
-This is an external Lean theorem about syntactic ZFC consistency. A
-derivation of the equivalence inside the object-language ZFC calculus is
-still a separate open task. No global simplicity minimum is claimed.
+The theorem above is an external Lean theorem about syntactic ZFC consistency.
+The later [`IPRAExplicitZFCFinal`](Lean/DiophantineConsistency/IPRAExplicitZFCFinal.lean)
+sources also state native, standard and equality-only iPRA derivability of the
+corresponding equivalence. An [incremental author-side replay](reviews/nine-variable-ipra-complete-author-ledger/README.md)
+has now rebuilt the endpoint on a historical provider; a paired replay and
+complete transitive-closure authentication remain open. A derivation in the
+object-language ZFC calculus is a separate statement. No global simplicity
+minimum is claimed.
 
 [`PositiveZFC.lean`](Lean/DiophantineConsistency/PositiveZFC.lean) also gives
 a closed equation on nine strictly positive integers: replace each original

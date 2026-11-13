@@ -1,0 +1,34 @@
+/tmp/aq16-develop/src/DiophantineConsistency/AdaptiveAQ16Transport.lean:36:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  positivePart p v - negativePart p v
+in the target expression
+  sub (positivePart p v) (negativePart p v) + (3 + 4 * (v 6 * v 7 + v 7)) * (v 9 + v 10) =
+    v 7 * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * (v 6 + (v 6 * v 7 + v 7) * (v 9 + v 7 * (v 9 + v 10))) +
+      (3 + 4 * (v 6 * v 7 + v 7)) *
+        (v 7 * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * v 12 + v 6 * v 7 * (1 + v 0 * ↑(p 0)) + (v 13 + 1))
+
+case «15»
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+hp : 2 ≤ p 0
+v : Fin 16 → V
+hv : ∀ (i : Fin 16), 0 < v i
+hpos : negativePart p v < positivePart p v
+d : V := positivePart p v - negativePart p v
+hcancel : positivePart p v = negativePart p v + d
+hd : d = positivePart p v - negativePart p v
+⊢ sub (positivePart p v) (negativePart p v) + (3 + 4 * (v 6 * v 7 + v 7)) * (v 9 + v 10) =
+    v 7 * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * (v 6 + (v 6 * v 7 + v 7) * (v 9 + v 7 * (v 9 + v 10))) +
+      (3 + 4 * (v 6 * v 7 + v 7)) *
+        (v 7 * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * v 12 + v 6 * v 7 * (1 + v 0 * ↑(p 0)) + (v 13 + 1))
+'DiophantineConsistency.AdaptiveAQ16Transport.extend_inputs' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveAQ16Transport.project_inputs' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.AdaptiveAQ16Transport.extend_zero' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.AdaptiveAQ16Transport.project_zero' depends on axioms: [propext, Classical.choice, Quot.sound]

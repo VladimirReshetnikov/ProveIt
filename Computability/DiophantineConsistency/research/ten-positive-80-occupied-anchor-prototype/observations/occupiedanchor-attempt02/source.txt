@@ -1,0 +1,94 @@
+import Direct80CleanCarry
+import DiophantineConsistency.FixedGraphRawBands
+import DiophantineConsistency.ForeignBandsZero
+import DiophantineConsistency.SelectedBandWord
+import DiophantineConsistency.HighMaskLocal
+import DiophantineConsistency.SelectedOriginOccupied
+
+/-! Selected compact row forces occupied anchor slots in the 80 graph. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace Direct80OccupiedAnchor
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic BigOperators
+open DiophantineConsistency AdaptiveEquationSyntax2011
+open CompactFixedBeta CompactSymbolicPorts ArithmeticRepunit ArithmeticWindowDigits ArithmeticCyclicWord ArithmeticBinaryCarry
+open CompactPartialBandRotation CompactPartialBand CompactBitRotation CompactSymbolicKernel CompactSymbolicKernelOpaque
+open CompactGenericAlignedMass CompactConcreteIndexedMass CompactTwoBandFlatten CompactHeterogeneousCarry CleanGeometry FixedGraphSelectedInputs
+open TenPositive80Graph TenPositive80Factors TenPositive80NaturalRank TenPositive80NaturalTransport
+attribute [local irreducible] rho paramKernel CompactFixedBeta.betaNat Nat.ofDigits lowNat highNat
+attribute [local irreducible] Compact943Data.rows selectors copies
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_occupied (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hp0 : p 0=betaNat) (hp1 : p 1=paramKernel rho) (hp2 : p 2=lowNat)
+    (hp3 : p 3=betaNat+highNat) (hv : ∀j,0<v j)
+    (hz : InternalZero (graph (integerPorts p)).output v) :
+    ∀ j : Fin 41, 34≤j.val → dig 67 (Cnat p v) (position j:V)=1 := by
+  obtain ⟨N,t,hN,hJ,hq,_hle,_hw,htcase,_hcarry,hTzero,_hTpred,_hc,hraw⟩ :=
+    Direct80CleanCarry.graph_clean_carry p v hp0 hp1 hp2 hp3 hv hz
+  obtain ⟨N',_hN',_hJ',hq',_hle',_hw',_hcarry',h0,hzero,hbool⟩ :=
+    Direct80SupportCarry.graph_support_carry p v hp0 hp1 hp2 hp3 hv hz
+  obtain ⟨N'',_hN'',_hJ'',hq'',_hC,_h0'',_hslots,hhigh⟩ :=
+    Direct80FixedSlots.graph_fixed_slots p v hp0 hp2 hp3 hv hz
+  have eq1 : N'=N := by
+    apply mul_left_cancel₀ (by norm_num : ((67*8807):V)≠0)
+    exact exp_inj (hq'.symm.trans hq)
+  have eq2 : N''=N := by
+    apply mul_left_cancel₀ (by norm_num : ((67*8807):V)≠0)
+    exact exp_inj (hq''.symm.trans hq)
+  subst N'
+  subst N''
+  let n : V := 8807*N
+  let T := temporalWord n (rankNat p v-67*n) (Cnat p v)
+  have hn : 0<n := mul_pos (by norm_num) hN
+  have hnge : (8807:V)≤n := by
+    have h := mul_le_mul_of_nonneg_left (pos_iff_one_le.mp hN) (by norm_num : (0:V)≤8807)
+    simpa only [n,mul_one] using h
+  have ht1 : (4393:V)<n := lt_of_lt_of_le (by norm_num) hnge
+  have ht2 : (5495:V)<n := lt_of_lt_of_le (by norm_num) hnge
+  have ht : t<n := by
+    rcases htcase with h|h
+    · rw [h]; exact ht1
+    · rw [h]; exact ht2
+  have hqexp : q p v=Exp.exp (67*n) := by dsimp [n]; rw [←mul_assoc]; exact hq
+  have hC : Cnat p v<Exp.exp (67*n) := by
+    dsimp [Cnat]
+    exact BandCarryInputs.source_word_bound (q p v) n (v 1) (v 2) hqexp (hv 1)
+  have hbands := RawColumnBands.decoder_bands position n (Cnat p v) T t hn ht hC
+  rw [hTzero,add_zero] at hbands
+  have hresult : dig 67 (v 1) t=FixedGraphRawBands.decoderBand position 4393 n (Cnat p v) t+
+      FixedGraphRawBands.decoderBand position 5495 n (Cnat p v) t+RawColumnBands.bareColumn n (Cnat p v) t := by
+    rw [hraw]
+    simpa only [FixedGraphRawBands.decoderBand] using hbands
+  obtain ⟨hf1,hf2,hb1,hb2⟩ := ForeignBandsZero.foreign_and_bare N (Cnat p v) hN hC hzero
+  have hd1 : FixedGraphRawBands.decoderBand position 5495 n (Cnat p v) 4393=0 := by
+    have h := band_column position 5495 n (Cnat p v) 4393 hn ht1 hC
+    change columnBand position 5495 n (Cnat p v) 4393 = FixedGraphRawBands.decoderBand position 5495 n (Cnat p v) 4393 at h
+    rw [hf1] at h
+    exact h.symm
+  have hd2 : FixedGraphRawBands.decoderBand position 4393 n (Cnat p v) 5495=0 := by
+    have h := band_column position 4393 n (Cnat p v) 5495 hn ht2 hC
+    change columnBand position 4393 n (Cnat p v) 5495 = FixedGraphRawBands.decoderBand position 4393 n (Cnat p v) 5495 at h
+    rw [hf2] at h
+    exact h.symm
+  have hin1 : Inputs n (Cnat p v) 4393 := SelectedBandWord.bounded n _ 4393 ht1 (by norm_num) hbool
+  have hin2 : Inputs n (Cnat p v) 5495 := SelectedBandWord.bounded n _ 5495 ht2 (by norm_num) hbool
+  have hhigh' : NoCarry (v 1) ((highNat:V)*rep (67*8807) N-1) := by rw [←hJ]; exact hhigh
+  have hlocal := HighMaskLocal.local_nocarry N (v 1) hN hhigh'
+  rcases htcase with ht1eq | ht2eq
+  · rw [ht1eq,hd1,hb1,add_zero,add_zero] at hresult
+    have hnc := hlocal.1
+    rw [hresult] at hnc
+    have hdecode := SelectedBandDecoder.decode n (Cnat p v) 4393 hin1 (by simpa only [Nat.cast_ofNat] using hnc)
+    exact SelectedOriginOccupied.selected_origin_occupied n _ 4393 ht1 (by norm_num) h0 hin1 hdecode
+  · rw [ht2eq,hd2,hb2,zero_add,add_zero] at hresult
+    have hnc := hlocal.2
+    rw [hresult] at hnc
+    have hdecode := SelectedBandDecoder.decode n (Cnat p v) 5495 hin2 (by simpa only [Nat.cast_ofNat] using hnc)
+    exact SelectedOriginOccupied.selected_origin_occupied n _ 5495 ht2 (by norm_num) h0 hin2 hdecode
+
+#print axioms Direct80OccupiedAnchor.graph_occupied
+end Direct80OccupiedAnchor

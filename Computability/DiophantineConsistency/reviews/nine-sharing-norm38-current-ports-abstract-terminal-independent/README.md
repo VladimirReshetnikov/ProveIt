@@ -1,0 +1,5 @@
+# Independent terminal audit: abstract current-port retry
+
+The generic `Fin 4` equality assembly compiled for arbitrary functions, with axiom report `[propext, Classical.choice, Quot.sound]`. Its specialization to the concrete current ports failed at a Lean kernel excessive-memory error under `-M2800`, compile exit 1. The failed `port_casts` report includes the failed declaration itself and is not proof evidence. The final seed/static specialization was unrun.
+
+The checker pins source, runner, manifest, retained/live state, logs and generic object; checks 400 direct guard slots, 1,112 overlay routes and the four successful previous projection producers; and reruns the independent previous split terminal audit. The author-recorded outer session was 21890, exit 1; it is not an independent historical transcript. There was no recorded monitor stop. Final postflight was not reached; resource observations were sampled and transitive/dynamic provider ancestry is outside the point checks. No Lean replay was performed.

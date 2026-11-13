@@ -1,0 +1,21 @@
+# Route audit for the direct main contribution
+
+This records proposed proof steps, not checked graph claims. Let the 91-style witnesses be positive and use `q = 1+J*beta`, `X = q*w`, `Y = q³*s`, `U = Y*q²`, `E = X*Y`, `a = E+Y`, `k = eta+zeta`, `c = eta+Y*k`, and `H = 3+4*a`. The proposed direct contribution replaces `U*(gamma+w)` by `U*G`. The forward witness assignment `G = gamma+w` preserves that contribution and is positive; to turn it into a completeness theorem one must define the modified graph, check each residual and output, verify all witnesses and ports, and prove the assignments and operation count in the intended model. The reverse assignment `gamma = G-w` need not be positive, so existing whole-graph equivalences cannot simply be invoked backwards.
+
+## Existing soundness dependencies
+
+1. `free-j-first-divisibility-prototype/FreeJRootBinding.lean` proves `first_scaled_norm` and `first_factor_forces_Y_divisible` from the literal 95-graph `InternalZero`. `free-j-first-transport-prototype/FreeJFirstTransport.lean` similarly derives the first-factor bounds from that zero. The new graph's first residual must yield suitable independently usable versions. In the proposed graph `Y = q³*s` already supplies the relevant divisibility directly, but this does not supply all the first-factor bounds and Pell norm.
+2. `free-j-main-rank-congruence-prototype/FreeJMainOrientation.lean` extracts and orients the old signed main pair. `DirectMainNorm.direct_main_orientation` here handles the orientation once the exact direct-pair norm is established, but does not extract it from a graph zero.
+3. `free-j-pell-indices-prototype/FreeJPellIndices.lean` invokes the generic first and main Pell classification from the two scaled norms and positivity; the checked conditional `DirectMainPell` lemmas in [PELL.md](PELL.md) now factor out those inputs and connect the direct main norm to both Pell indices. Its original `FreeJIndices` output also records equivalence to the old `core.d` signed pair, so its existing conclusion and its clients are not automatically valid for the direct pair. `free-j-index-comparison-prototype/FreeJIndexComparison.lean` and `free-j-exact-ordinary-prototype/FreeJExactOrdinary.lean` use this chain, auxiliary facts, port bounds, and the old zero; they need suitable generalized interfaces or new proofs.
+4. `free-j-power-projection-prototype/FreeJPowerProjection.lean` uses the old contribution containing `E*q` to derive a divisibility/size step. The proposed substitution already gives `q ∣ X`; the full bounds and downstream power recovery nevertheless have to be proved from the new hypotheses. The conditional `direct_projection` lemma gives a potentially shorter final comparison only after its root balance, Pell projection, and size bounds have all been established.
+5. `free-j-graph-auxiliary-prototype/FreeJGraphAuxiliary.lean`, early-window/size lemmas, and the fixed-port composition also consume old literal zeros in their public interfaces. One must inspect and generalize the parts they really need; identical-looking auxiliary expressions do not by themselves supply those old zero hypotheses.
+
+## A possible rank-congruence bridge
+
+There is a precise algebraic route to reusing the *conditional* `rank_congruence_from_main` theorem. Suppose the direct main balance is
+
+`U*(X+a*c)+H*(U*G+R+1) = H*k+U*main`.
+
+With `X=q*w`, `Y=q³*s`, `U=Y*q²`, and `E=X*Y`, ring algebra gives `U=q⁵*s` and `E*q=U*w`. Moving the latter term to both sides yields the old `FreeJMainCongruence` equation with its gamma input set to `G` and its existential main witness set to `main + H*w`. If the relevant old valuation, positivity, and port representations are constructed, this would give the old rank congruence without recovering `gamma=G-w`. The two algebraic identities have now been checked in `DirectMainTransfer.lean` (see [TRANSFER.md](TRANSFER.md)); applying them to the actual graph, valuation, and old congruence theorem remains open. The adjusted existential witness is not the actual direct Pell root. It must not be substituted for that root in the old `FreeJIndices` statement.
+
+The existing 91-graph model-to-halt theorem and the separate checked conditional lemmas do not prove this route for the modified graph. An internal iPRA proof-existence theorem is a further, currently open, requirement.

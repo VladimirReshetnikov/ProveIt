@@ -1,0 +1,1 @@
+import DiophantineConsistency.Sign26DirectPolynomialBridge

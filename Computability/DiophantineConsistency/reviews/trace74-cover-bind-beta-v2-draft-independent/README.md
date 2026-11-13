@@ -1,0 +1,5 @@
+# Independent source review: beta-bind local opacity draft
+
+Reviewed unchecked `research/trace74-symbolic-cover-bind-beta-draft-v2/Trace74CoverBindBeta.lean` SHA-256 `dd14955b76fa843fa70623cc275bdf3fd0b503e139e66d48acac9f17ae43fe82`. Compared to v1, the sole change adds local irreducibility attributes for `Nat.pow` and `CompactFixedBeta.betaNat` (and an explanatory comment). The theorem statement, proof, direct imports and report directive are unchanged. These local elaborator transparency hints do not add theorem assumptions or change the intended natural inequality; beta is still supplied by the accepted beta identity and low/defect/high remain variables with explicit hypotheses. No exponent threshold is increased.
+
+Whether the attribute is accepted, whether it avoids the observed warning or instead blocks required elaboration, and actual resources remain untested; no Lean was run. The prior Lean-exit-0 attempt was strictly rejected on its warning. A separate guarded provider-compatible retry is required. This draft proves no actual mask cover, model cast, graph guard, file binding or iPRA.

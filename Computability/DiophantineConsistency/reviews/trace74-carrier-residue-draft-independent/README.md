@@ -1,0 +1,7 @@
+# Independent source review: guard-free carrier residue
+
+Reviewed unchecked `research/trace74-carrier-residue-draft/Trace74CarrierResidue.lean` SHA-256 `18b8f0a0551535f37bd0a351f2798c1908e0563b725b91f8aa227ac94530d3b1`. The graph statements retain the same p/v, positive beta/components and actual 74 zero; the generic reduction is over an arbitrary commutative ring. The first graph lemma uses the checked same-tuple Z²=(M tau f y)², factors it in the model difference ring, takes either sign to write Z=M z, and combines M=hDH with the displayed carrier shape to obtain `h ∣ H D B`. The algebra uses no division, cancellation, coprimality or reverse guard.
+
+For q=h+1, its explicit polynomial witnesses correctly give `H≡4s(w+1)−1` and `D≡ws` modulo h, with the coefficient 4 retained. The source then evaluates the same 74-induced C as cast(v2), giving `B=(K0+w)C−F`, and concludes signed difference-ring divisibility `h ∣ (4s(w+1)−1) w s ((K0+w)C−F)`. This does not imply h divides B absent additional hypotheses. No mathematical mismatch or hidden guard found.
+
+Lean elaboration of signed factorization, `linear_combination`, concrete register changes/simp and resource behavior is unchecked; no Lean was run in this review. Provider captures and first-selection/transitive ancestry limitations require separate prelaunch/result audit. The draft does not establish a natural F/C bound, fixed-port guard, full zero existence or iPRA.

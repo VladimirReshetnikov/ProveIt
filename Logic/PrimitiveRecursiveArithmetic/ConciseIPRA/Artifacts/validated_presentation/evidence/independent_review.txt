@@ -1,0 +1,138 @@
+INDEPENDENT ASSISTANT REVIEW: REPRESENTATION-ALPHABET VALIDATION
+
+Review date: 2026-11-11 (America/Los_Angeles).
+Review scope: source inspection and written equivalence argument. This is
+an additional assistant review, not external peer review or a formal proof.
+
+Reviewed candidate:
+  arithmetic_reduction/native_typed_repr.py
+  SHA-256 66c27e071135df7d05244f6550e766106eed56dffda53990ee03691f1096e71e
+Matched control:
+  incoming/ipra_validated_core/code/native_typed_full.py
+  SHA-256 844fe59fcc7235d72daf5e351840ba315938689a3be4b1751ec6ef3375c17e8b
+The control was fetched at ProveIt commit
+42a48d2f04ad72036e8d7e365ea91ea08c76a9e3.
+
+VERDICT
+
+The transformation preserves the exact integer/list certificate contract,
+canonical closed Eq/Q/D goal grammar, and proof-checking kernel, abstracting
+from resource exhaustion. I found no mathematical change or soundness defect
+in this transformation. It is a smaller implementation of an inherited
+presentation. It is not a new axiomatization, a mathematical breakthrough,
+an absolute checker-size record, or an improvement on the 521-byte compact
+checker under that checker's different acceptance contract.
+
+1. RAW TYPE VALIDATION
+
+Let S be the character set of the literal '0123456789[], -'. For any finite
+value returned by the standard json.load call, repr(value).strip(S) is empty
+exactly when value is an integer/list tree with exact built-in integer leaves.
+
+For integers, repr uses decimal digits and possibly a leading minus. For
+lists, repr adds only square brackets, commas and spaces around the recursively
+computed representations. Hence integer/list trees pass, by structural
+induction. Conversely, every other JSON-derived type introduces a forbidden
+character: booleans use True or False, null uses None, strings use quotation
+marks, dictionaries use braces, and finite floats use a decimal point or an
+exponent marker. The parser's accepted nonfinite values have representations
+inf, -inf or nan, which also fail. Such a character remains present in the
+representation of every containing list. No custom repr methods, subclass
+values, cycles, tuples or arbitrary Python objects can be supplied through
+this uncustomized JSON parser.
+
+Although strip removes characters only at the ends, it returns the empty
+string iff every character belongs to S: if a forbidden character occurs,
+the substring from the first to the last forbidden character remains.
+
+The entire parsed value is checked before popping the advertised goal. Thus
+unused prefix elements are still validated. The transformation does not
+silently weaken the control's whole-certificate type contract. A non-list
+top-level integer passes the alphabet filter but fails pop; an empty top-level
+list likewise fails pop. Such inputs are rejected by the control as well.
+
+2. SCOPED GOAL VALIDATION
+
+After the raw filter, a is an exact integer or list everywhere. Therefore
+the new test a*0 == 0 selects integers exactly, and its other branch selects
+lists. Booleans and floats cannot reach this test through input data.
+
+Write V_old(a,D) for the control's validator and V_new(a,d) for the candidate's
+scoped validator. For every integer/list tree and d >= 0, the canonical-mode
+equivalence is V_new(a,d) iff V_old(a,d+2), where exceptions mean rejection.
+The initial old depth is 2 and the new initial depth is 0.
+
+At integer leaves, adding 2 preserves depth parity, and the control's upper
+bound a < D-2 becomes a < d. Both accept numerical zero at odd depth and
+otherwise require an odd coordinate with 2 < a < d. Formula-position scalar
+leaves reject in both.
+
+At lists, the arity conditions depend only on depth parity, so they agree.
+Both permit arities 1 and 2+(depth mod 2), plus a diagonal triple for Q.
+For each child, the respective depths are increased by the same 5-len(a),
+preserving their difference of 2. All successful arities are 1, 2 or 3,
+so the old recursive depth cannot fall back into its raw depth-zero mode.
+Apply structural induction to the children. Empty malformed arrays can
+raise at a[0]; rejection by exception is part of both contracts.
+
+3. KERNEL AND INPUT STATE
+
+An AST comparison confirms that the entire function c is identical between
+control and candidate, including its opener, lower scope bound, the mutable
+k phase, source-selected elimination, computation packets, local hypothesis
+construction, and recursive calls. No rule, freshness condition or induction
+test is changed.
+
+After validation, both programs have the same original goal a and the same
+remaining input list, and set q to that list's pop method. They therefore
+run the identical proof checker on identical data. The candidate merely
+performs its raw validation before popping the goal, rather than validating
+the remaining prefix and the goal separately. The diagnostic string and
+normal-success verdict are retained. Error timing or exception class for
+some malformed top-level inputs need not coincide; acceptance is what the
+equivalence concerns.
+
+4. MEASUREMENTS
+
+Independent measurements on CPython 3.12.14, after ast.unparse with one final
+newline, reproduce:
+                 bytes   significant tokens   AST nodes   gzip-9
+  matched old      897           401               468       505
+  reviewed new     870           383               442       507
+
+Gzip is compresslevel=9, mtime=0 and includes its wrapper. It is informational;
+the compressed size increases by two bytes. The size claim charges the full
+standalone source, including input, validation, proof rules and verdict.
+
+5. PRIOR-ART CHECK WITHIN THE REPOSITORY
+
+A bounded scan fetched 83 distinct Git blobs representing 115 small checker
+paths at the pinned commit: filenames containing 'checker', under the primary
+code, implementation or ancillary directories, with source size below 1600
+bytes and path depth at most three within Research. None contains repr(,
+.strip(, or the decimal alphabet 0123456789. The fully extracted current
+validated_core and one_sided_transport incoming packages were also searched;
+the only strip occurrences in one_sided_transport concern test-output parsing.
+No representation-alphabet type filter was found in the inspected sources.
+This is a bounded repository comparison, not a claim of global novelty or
+an exhaustive search of every historical reference copy, source corpus,
+larger implementation or external work.
+
+6. LIMITATIONS
+
+The equivalence is a mathematical statement about finite input values with
+adequate resources. The new full-tree repr and the old recursive raw validator
+have different temporary memory use and recursion behavior. Fixed interpreter
+limits can therefore reject different unusually large inputs; identical
+resource-exhaustion behavior is not claimed. Neither version is a total
+decision procedure for theoremhood, and finite process checks do not prove
+the inherited native kernel's universal correctness or its iPRA bridge.
+
+The new code relies on the ordinary representations of built-in JSON-derived
+types in the stated Python runtime. It does not evaluate repr as code, import
+an external proof oracle, or omit certificate fields from validation.
+
+The original theorem system, both interpretations, whole numerical domains,
+actual equality and formula round trips are inherited unchanged. Their
+existing proofs remain necessary; this implementation review does not replace
+them or constitute a new Lean/Rocq verification of Python.

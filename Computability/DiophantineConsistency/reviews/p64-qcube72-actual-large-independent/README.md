@@ -1,0 +1,7 @@
+# Independent review of actual-zero main-index and large-c client
+
+**PASS within recorded direct-provider scope.** The no-Lean `check.py` verifies attempt02's successful guarded receipt, source and retained snapshot, runner/helper, object/log hashes, direct input guards and search routing. It links the checked main-root and model-level lower-bound objects to their prior producer receipts, and checks the captured `ArithmeticPellResidueAux` object hash. The theorem reports only `propext`, `Classical.choice`, and `Quot.sound`. The first failed attempt is not used. Transitive/dynamic/between-sample ancestry is inherited, not independently rebuilt.
+
+The checked theorem assumes an `IΣ₁` model `V`, natural ports `p : Fin 4 → ℕ`, a tuple `v : Fin 14 → V` whose entries are all positive, `InternalZero` of the generated 72-graph output, and the explicit additional hypothesis `33≤(p 0 : V)·v 0+1`. For the source-defined `q,Y,U,X,a,H,c`, it supplies model elements `g,m` satisfying the Pell norm, free carrier, both Pell-coordinate equations, `6≤m`, and `(a+2)·delta(a)·delta(a)<c`. The witnesses may be nonstandard. The source uses positive graph variables and the q bound to establish the generic lower lemma's `q≤X` and `3≤Y`, then applies `large_of_six`.
+
+This theorem does not by itself discharge `q≥33` for fixed compact44 ports or establish the remaining signed-half-index window/residuals, `m=R`, the 72-to-76 reverse witness map, or an iPRA endpoint. It assumes an actual zero and does not assert that such a zero exists.

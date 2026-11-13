@@ -1,0 +1,46 @@
+import AQ17Forced104Residuals
+import DiophantineConsistency.AdaptiveQM40Zeros
+
+/-! Proposed all-residual characterization for the 17-variable graph.
+Source only; no theorem in this packet has been Lean checked. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AQ17Forced104ResidualZerosDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ArithmeticSignedPairExpressions
+open ArithmeticAdaptiveFactorMagnitude2011 AdaptiveFoldSquares AdaptiveQM40Zeros
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem all_residuals (p : Fin 4 → ℤ) (v : Fin 17 → V) :
+    InternalZero (AQ17Forced104LiteralDraft.literal p) v ↔
+      ∀ i : Fin 8, InternalZero (AQ17Forced104ResidualsDraft.residuals p i) v := by
+  rw [← AQ17Forced104ResidualsDraft.sum_eq_literal]
+  let r0 := AQ17Forced104ResidualsDraft.residuals p 0
+  let es : List (Expr (Fin 17)) := List.ofFn
+    (fun i : Fin 7 => AQ17Forced104ResidualsDraft.residuals p i.succ)
+  have hf := foldSquares_zero_iff v es (r0*r0) _ (rawSquare_rep r0 v)
+  change InternalZero (AQ17Forced104ResidualsDraft.sum p) v ↔
+    InternalZero (r0*r0) v ∧ ∀ e ∈ es, InternalZero e v at hf
+  rw [AdaptiveQM40Zeros.square_zero] at hf
+  constructor
+  · intro hz i
+    obtain ⟨h0,ht⟩ := hf.mp hz
+    by_cases hi : i.val = 0
+    · have : i = 0 := Fin.ext hi
+      simpa [this] using h0
+    · have hi1 : 0 < i.val := by omega
+      let j : Fin 7 := ⟨i.val-1, by omega⟩
+      have hj : j.succ=i := Fin.ext (by simp [j]; omega)
+      simpa [hj] using ht _ (List.mem_ofFn.mpr ⟨j,rfl⟩)
+  · intro h
+    apply hf.mpr
+    refine ⟨h 0,?_⟩
+    intro e he
+    obtain ⟨i,rfl⟩ := List.mem_ofFn.mp he
+    exact h i.succ
+
+end DiophantineConsistency.AQ17Forced104ResidualZerosDraft
+#print axioms DiophantineConsistency.AQ17Forced104ResidualZerosDraft.all_residuals

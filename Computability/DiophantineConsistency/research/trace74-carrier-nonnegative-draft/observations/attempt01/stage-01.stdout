@@ -1,0 +1,44 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-carrier-nonnegative-draft/Trace74OffsetBound.lean:72:34: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+D : V := delta p v
+U0 : V := U p v
+E0 : V := E p v
+C : V := c p v
+a : V := D * U0 * U0 * E0
+w : Fin 10 → DiffRing V := masked p v
+R : DiffRing V := (regs (ports p) w).rank
+B : DiffRing V := (regs (ports p) w).b
+e : DiffRing V := (regs (ports p) w).e
+vv : DiffRing V := (regs (ports p) w).V
+FF : DiffRing V := ι (1 + 2 * a)
+mm : DiffRing V := (regs (ports p) w).D
+hb0 : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hk : 0 < k v
+hC : 0 < C
+hCk : k v < C
+hD : 0 < delta p v
+hU : 0 < U p v
+hE : 0 < E p v
+_hM : 0 < M p v
+hC1 : 1 ≤ C
+hU1 : 1 ≤ U0
+hCU : C ≤ U0
+hUa : U0 ≤ a
+hCa : C ≤ a
+hCR : 0 < ι C
+hCaR : ι C ≤ ι a
+hF : ι C + 1 < FF
+hT : 1 ≤ ι (v 4)
+hCT : ι C ≤ ι C * ι (v 4)
+hCkR : ι (k v) < ι C
+eeval : e = ι (k v) - R - 1
+⊢ ι (c p v) * masked p v 4 - (regs (ports p) (masked p v)).rank = ι C * ι (v 4) - (regs (ports p) (masked p v)).rank
+'Trace74OffsetBound.graph_offset_bound' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

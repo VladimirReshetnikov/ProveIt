@@ -1,0 +1,5 @@
+# Sign15 first norm: source-only client
+
+The checked theorem derives the first maintained norm from sign15 seed zero and retained tau, under represented ports and beta/MC/MF bounds, with no deleted inner witness. It composes independently audited scalar-bound, rank, other-row and more-shared providers. No natural lift, equivalence or endpoint is claimed.
+
+The point-in-time union survey checks the three additional providers and overlays, with one extra overlay and no mismatches. This and inherited surveys are not replayed postflight; direct guards/overlays are. No-Lean preflight session 61951 exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign15-first-norm-prelaunch-independent/README.md) passed. Author outer session 93034 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign15-first-norm-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

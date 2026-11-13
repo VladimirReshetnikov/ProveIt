@@ -1,7 +1,6 @@
 # Candidate: 40-variable quartic with both scaled-root quotients
 
-This is a conditional candidate, not yet a new consistency endpoint. Starting
-from the 41-variable quartic, replace its positive main root `D` by a positive
+Starting from the 41-variable quartic, replace its positive main root `D` by a positive
 quotient `s`, reconstructing `D=mainScale*s`. Replace the main norm residual
 `D²-mainScale²*(1+deltaProduct)` by `s²-(1+deltaProduct)`, and replace the root
 binding residual by `mainScale*s-DstarComputed`. Remove the redundant positive
@@ -17,7 +16,9 @@ checks are not Lean model or native iPRA theorems.
 
 A positive child witness embeds into the parent using the displayed
 reconstruction. For a positive parent zero, the checked `scaled_quotient`
-theorem gives an integral `s` with `D=mainScale*s` and the reduced norm, once
-the positive scale and old square identity are bound to the literal
-residuals; positivity of D then gives `s>0`. Both model witness maps and the
-native endpoint remain open. No global minimality is claimed.
+theorem gives an integral `s` with `D=mainScale*s` and the reduced norm, and
+positivity of D gives `s>0`. Both model witness maps and the native iPRA
+endpoint have now compiled in an [incremental author-side run](../../reviews/adaptive-qm40-native-incremental-author/README.md).
+The [standard-presentation client](../ipra-standard-qm40/author-rebuild/README.md)
+also compiled in an author-side extension. The paired replay and formal PDF-byte
+binding remain open. No global minimality is claimed.

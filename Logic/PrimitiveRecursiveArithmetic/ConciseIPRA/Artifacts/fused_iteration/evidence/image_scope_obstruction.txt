@@ -1,0 +1,41 @@
+IMAGE VALIDATION CANNOT BE DROPPED, EVEN AFTER FIXING INTRODUCTION WITNESSES
+
+Experiment: replace the opener's O_k(t; missing, 3) with the raw image t.
+This reduces the 479-byte checker to 471 bytes. Restricting its introduction
+witness to the current newest parameter blocks the already-known future-
+witness-capture fixture, but does not repair the following independent flaw.
+
+Define C(z,a,b)=I(z,a;u.b), and
+  B(y)=D_{x,z}(C(z,0,x)=C(z,0,S y)).
+Under the established ordinary reading, B(y) is equivalent to
+  exists x (x=S y),
+because the zero instance of the matrix is 0=0 and every successor instance
+is x=S y. Consequently both B(0) and Q_y B(y) are iPRA theorems.
+
+The canonical raw template for B(y), with y exposed as the hole, is
+  t = [[[5,0,7],[5,0,[13]]]].
+The unvalidated image u=11 refers, after insertion at the occurrence of y,
+to the inner existential witness x. The modified opener therefore computes
+  O'_0(t;11,0) = [[[5,0,7],[5,0,[11]]]],
+which reads as
+  D_{x,z}(C(z,0,x)=C(z,0,S x)),
+and is equivalent to exists x (x=S x). This is false in the standard natural
+numbers. Meanwhile O'_0(t;0,0) is B(0).
+
+The unchecked QE step thus maps the two true premises Q_y B(y), B(0)
+to the false conclusion exists x (x=S x). The original opener rejects u=11,
+since an image must be closed at root term depth 3, so 11 is out of scope.
+The numbers 11 and 13 account for the two slots under D, the iterator state
+slot, and the two dummy slots under S in the repository's raw-tree codec.
+
+This is a local rule counterexample. It does not require compiling the true
+premises into the speculative newest-witness checker: if that checker is
+complete, it can derive the premises and is unsound; if it cannot derive
+them, it is already incomplete. Therefore the 471-byte experiment cannot
+meet both requested conditions, irrespective of its witness restriction.
+
+This argument concerns deletion of image validation only. It establishes
+no universal lower bound on all proof checkers and leaves open replacing the
+raw representation by one in which every inserted image is closed by
+construction. The speculative files newest.py and newest_tokens.py are
+experiments, not certified iPRA checkers.

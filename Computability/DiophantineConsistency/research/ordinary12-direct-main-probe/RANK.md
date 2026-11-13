@@ -1,0 +1,7 @@
+# Rank congruence from a direct graph zero
+
+`DirectMainRank.rank_of_balance` proves a conditional q⁴ divisibility statement from a direct main balance, `Y=q³*s`, the stated coefficient shape, and `q>0`. `graph_rank` discharges those hypotheses from the actual draft output zero, positive beta, and positive witnesses in every IΣ₁ model. With `b=J*beta`, `q=1+b`, `k=eta+zeta`, and `R=(alpha+(q-F)*b)*(q²-1)+J*(MC+MF*q)`, the conclusion is `q⁴ ∣ magnitude(R+1,k)`.
+
+This is a rank congruence, not an exact index relation, proof of the auxiliary residual's consequences, model-to-halt equivalence, or internal iPRA proof-existence. It uses no old 95-graph zero.
+
+`run-rank.py` produced `observations/rank-attempt01/` with exit 0 and no reported warnings. Source SHA-256 is `0f82f4e72359980aba19e1f20bf92eadd324a7b74f4c096f1a3144d6db600b41` and output object is `bf4d176eddc731e0735be39f57440d1ee991d348563e62b8aaa8ecb216f28fef`. The two printed theorem axiom reports list `propext`, `Classical.choice`, and `Quot.sound`. The indices and all ten predecessor objects and selected 1,291-object union were pinned and rechecked; package, dynamic, and source-to-object ancestry remain inherited rather than freshly rebuilt. Imported first and main norm sources locally suppress unused-variable and unused-simp-argument linters. Resource samples and exact pins are in the receipt; temporary paths may disappear.

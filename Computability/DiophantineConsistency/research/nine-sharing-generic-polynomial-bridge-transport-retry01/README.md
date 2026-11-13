@@ -1,0 +1,5 @@
+# Proposed namespace-only generic-transport retry
+
+This candidate removes the unavailable `ModelDifferenceRing` namespace and opens the same provider namespaces used in `HAExpressionAssembly`; imports, theorem statement, hypotheses and proof body are unchanged. It still assumes an all-model zero iff and the second expression's polynomial bridge. The first run's `sorryAx` report is not a theorem. This reviewed retry succeeded as recorded in [attempt01](attempt01/README.md), and the [independent terminal audit](../../reviews/nine-sharing-generic-polynomial-bridge-transport-retry01-terminal-frontier-independent/README.md) passed.
+
+The runner uses the same surveyed successful provider rows within an overall failed build and the same sign28-evaluator overlay as the first attempt; deeper ancestry is inherited. Author no-Lean preflight exited 0. Independent prelaunch is requested. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck. No concrete sign28 bridge, endpoint, Lean degree bound or external JSON/coefficient binding is claimed.

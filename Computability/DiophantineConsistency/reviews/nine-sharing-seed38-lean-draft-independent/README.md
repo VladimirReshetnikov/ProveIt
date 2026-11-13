@@ -1,0 +1,5 @@
+# Independent source audit: 38-witness Lean draft
+
+An independent parser checks all 29 generated Lean residual terms, in order, against the pinned five-norm candidate AST. This includes the five target residuals in their actual order: `N1−1`, `N0−1`, `Nt−1`, `Na−1`, and `scaled_Ns−Delta`. It verifies the port indices `0,1,2,3` correspond to β, K0, MC, MF and the first residual is the `q²` residual that becomes `−(β+1)²` at zero witnesses. The sum-of-squares shape and proposed weighted-degree, polynomial-degree, arbitrary-input normalization statements are present.
+
+The file is explicitly uncompiled. The check verifies syntax transcription, not tactic elaboration or kernel correctness. In particular, it does not prove the candidate's all-model norm bridge, positivity of the fixed ports inside a model, Jones instantiation, iPRA endpoint or file semantics. The five norm targets and source graph were separately audited in `reviews/nine-sharing-quartic65-norm38-independent/`. Run `python3 -I -S -B check.py` for this source-only audit.

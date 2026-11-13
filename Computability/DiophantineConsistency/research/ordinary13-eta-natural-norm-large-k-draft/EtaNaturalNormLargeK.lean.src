@@ -1,0 +1,83 @@
+import MainSquareGap
+import AuxRootBounds
+
+/-! Source-only fact client; the two imported modules are research drafts. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.EtaNaturalNormLargeKDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticPellFirstNorm ModelMainSquareGapDraft AuxRootBoundsModelDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The main square excludes k=2 for eta merely natural and zeta positive. -/
+theorem two_ordinate_impossible (X Y eta zeta Delta d : V)
+    (hX : 0<X) (hY : 0<Y) (hzeta : 0<zeta)
+    (hDelta : (X*Y+Y+2)*(X*Y+Y+2)=Delta+1)
+    (hnorm : d*d=1+Delta*(eta+Y*(eta+zeta))*(eta+Y*(eta+zeta))) :
+    eta+zeta≠2 := by
+  intro hk
+  have hzeta1 : 1≤zeta := pos_iff_one_le.mp hzeta
+  have hetale : eta≤1 := by
+    apply (add_le_add_iff_right (1:V)).mp
+    calc
+      eta+1≤eta+zeta := add_le_add_left hzeta1 eta
+      _=2 := hk
+      _=1+1 := by ring
+  let A : V := X*Y+Y+2
+  let c : V := eta+Y*(eta+zeta)
+  have hA : 0<A := by dsimp [A]; simp
+  have hcEq : c=eta+2*Y := by dsimp [c]; rw [hk]; ring
+  have h2Y : (2:V)≤2*Y := by
+    simpa only [mul_one] using
+      mul_le_mul_of_nonneg_left (pos_iff_one_le.mp hY) (by norm_num : (0:V)≤2)
+  have hc : 1<c := calc
+    1<2 := by norm_num
+    _≤2*Y := h2Y
+    _≤eta+2*Y := le_add_of_nonneg_left (Arithmetic.zero_le eta)
+    _=c := hcEq.symm
+  have hYle : Y≤X*Y+Y := le_add_of_nonneg_left (Arithmetic.zero_le (X*Y))
+  have hcA : c<2*A := calc
+    c=eta+2*Y := hcEq
+    _≤1+2*Y := add_le_add_right hetale _
+    _=2*Y+1 := by ring
+    _<2*Y+4 := add_lt_add_left (by norm_num : (1:V)<4) _
+    _≤2*(X*Y+Y)+4 := add_le_add_right
+      (mul_le_mul_of_nonneg_left hYle (by simp)) _
+    _=2*A := by dsimp [A]; ring
+  apply no_main_square A c Delta d hA hc hcA
+  · simpa only [A] using hDelta
+  · simpa only [c] using hnorm
+
+/-- The first norm excludes k=1; the main square excludes k=2; the separate
+first-norm descent then yields the large lower bound. -/
+theorem large_first_ordinate (X Y eta zeta tau Delta d : V)
+    (hX : 0<X) (hY : 0<Y) (hzeta : 0<zeta)
+    (hDelta : (X*Y+Y+2)*(X*Y+Y+2)=Delta+1)
+    (hfirst : tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*(eta+zeta)*(eta+zeta))
+    (hmain : d*d=1+Delta*(eta+Y*(eta+zeta))*(eta+Y*(eta+zeta))) :
+    2<eta+zeta ∧ 8*X*Y*Y+4≤eta+zeta := by
+  let m : V := X*Y*Y
+  let k : V := eta+zeta
+  have hm : 0<m := mul_pos (mul_pos hX hY) hY
+  have hk : 0<k := by
+    dsimp only [k]
+    exact add_pos_of_nonneg_of_pos (Arithmetic.zero_le eta) hzeta
+  have hm1 : m-1+1=m := tsub_add_cancel_of_le (pos_iff_one_le.mp hm)
+  have hdisc : discriminant (m-1)=m*(m+1) := by
+    unfold discriminant
+    rw [show m-1+2=(m-1+1)+1 by ring,hm1]
+  have hn : tau*tau=1+m*(m+1)*k*k := by simpa only [m,k] using hfirst
+  have hn' : tau*tau=1+discriminant (m-1)*k*k := by rwa [hdisc]
+  have hkge : 2≤k := two_le_ordinate (m-1) tau k hk hn'
+  have hkne : k≠2 := by
+    dsimp only [k]
+    exact two_ordinate_impossible X Y eta zeta Delta d hX hY hzeta hDelta hmain
+  have hkgt : 2<k := lt_of_le_of_ne hkge (Ne.symm hkne)
+  have hlarge := first_ordinate_large m tau k hm hkgt hn
+  constructor
+  · simpa only [k] using hkgt
+  · simpa only [m,k,show 8*(X*Y*Y)=8*X*Y*Y by ring] using hlarge
+
+end DiophantineConsistency.EtaNaturalNormLargeKDraft

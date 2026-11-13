@@ -1,0 +1,28 @@
+/tmp/direct-main-projection-g9vhjn88/DirectMainFirst.lean:17:39: error: unknown namespace `ArithmeticAdaptiveQuotients2011`
+/tmp/direct-main-projection-g9vhjn88/DirectMainFirst.lean:129:13: error(lean.unknownIdentifier): Unknown identifier `unit_square_norm`
+/tmp/direct-main-projection-g9vhjn88/DirectMainFirst.lean:120:86: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 12 → V
+hz : InternalZero (graph (integerPorts p)).output v
+hf :
+  InternalZero ((firstParts (integerPorts p)).1 * (firstParts (integerPorts p)).1 - (firstParts (integerPorts p)).2) v
+hunit :
+  (pairEval (1 + ((firstParts (integerPorts p)).1 * (firstParts (integerPorts p)).1 - (firstParts (integerPorts p)).2))
+        v).1 =
+    (pairEval
+          (1 + ((firstParts (integerPorts p)).1 * (firstParts (integerPorts p)).1 - (firstParts (integerPorts p)).2))
+          v).2 +
+      1
+⊢ let q := 1 + v 0 * ↑(p 0);
+  let X := q * v 5;
+  let Y := q * (q * q) * v 6;
+  let k := v 8 + v 9;
+  let ell := X * Y * (Y * k);
+  let b := v 0 * ↑(p 0);
+  magnitude (pairEval (firstParts (integerPorts p)).1 v) * magnitude (pairEval (firstParts (integerPorts p)).1 v) =
+    b * b * (1 + ell * (ell + k))
+'DirectMainFirst.first_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DirectMainFirst.first_scaled_norm' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

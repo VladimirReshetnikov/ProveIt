@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+"""Bounded author check; this guards direct providers, not their full ancestry."""
+import hashlib
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import time
+
+here = Path(__file__).resolve().parent
+repo = here.parents[3]
+source = here / 'SeedLines.lean'
+project = Path('/tmp/compact12-ipra-expanded-coherent-20261102/lib')
+package = Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib')
+lean = Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean')
+direct = project / 'DiophantineConsistency/DecimalMachine215.olean'
+out = Path('/tmp/current14-seed-lines-20261103')
+out.mkdir(exist_ok=True)
+
+def digest(p):
+    return hashlib.sha256(p.read_bytes()).hexdigest()
+
+def state():
+    ps = subprocess.run(['ps', '-eo', 'pid=,rss=,args='], capture_output=True, text=True, check=True).stdout
+    leans = [x.strip() for x in ps.splitlines() if '/bin/lean -M' in x and 'python' not in x]
+    available = int(next(x for x in Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')).split()[1])
+    return {'time_ns': time.time_ns(), 'available_kib': available, 'lean_processes': leans}
+
+assert direct.is_file() and lean.is_file() and package.is_dir()
+inputs = [source, direct, lean, here / 'run.py']
+before = {str(p): {'sha256': digest(p), 'realpath': str(p.resolve())} for p in inputs}
+pre = state()
+if pre['available_kib'] < 8 * 1024 * 1024 or len(pre['lean_processes']) >= 2:
+    raise RuntimeError('resource guard refused launch')
+env = {'PATH': '/usr/bin:/bin', 'LEAN_PATH': f'{project}:{package}', 'LEAN_NUM_THREADS': '1'}
+cmd = [str(lean), '-M', '2000', '-o', str(out / 'SeedLines.olean'), str(source)]
+p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env, cwd=repo, text=True)
+samples = []
+start = time.monotonic()
+reason = None
+while p.poll() is None:
+    snap = state()
+    samples.append(snap)
+    if snap['available_kib'] < 8 * 1024 * 1024 or len(snap['lean_processes']) > 2:
+        reason = 'resource guard'; p.kill(); break
+    if time.monotonic() - start > 180:
+        reason = 'timeout'; p.kill(); break
+    time.sleep(2)
+stdout, stderr = p.communicate()
+after = {str(p): {'sha256': digest(p), 'realpath': str(p.resolve())} for p in inputs}
+log = stdout + stderr
+result = {'command': cmd, 'lean_path': env['LEAN_PATH'], 'before': before, 'after': after,
+          'preflight': pre, 'samples': samples, 'elapsed_seconds': time.monotonic()-start,
+          'exit': p.returncode, 'reason': reason, 'stdout': stdout, 'stderr': stderr,
+          'object_sha256': digest(out / 'SeedLines.olean') if (out / 'SeedLines.olean').exists() else None}
+(here / 'observation.json').write_text(json.dumps(result, indent=2) + '\n')
+print(json.dumps({'exit': p.returncode, 'reason': reason, 'unchanged': before == after,
+                  'stdout': stdout, 'stderr': stderr, 'elapsed_seconds': result['elapsed_seconds']}))
+if p.returncode != 0 or before != after or 'error:' in log or 'warning:' in log or 'sorryAx' in log:
+    sys.exit(1)

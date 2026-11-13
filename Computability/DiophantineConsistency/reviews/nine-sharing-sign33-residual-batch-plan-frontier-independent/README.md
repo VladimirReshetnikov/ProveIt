@@ -1,0 +1,7 @@
+# Independent review: sign33 residual batch inventory
+
+The independent checker recomputes all 24 row names, kinds, expression-variable and port sets from the pinned candidate JSON and compares them to the retained inventory. It verifies the eight displayed three-row port unions, the 14 positive, five signed and five norm rows, all 19 cut positions and their signs, and the negative-orientation residual `y²−V²` at full coordinate 33. The `Fin 34` distinguished coordinate is 0, each referenced witness coordinate lies in 1–33, and subtracting one maps it to `Fin 33`; the 19 materialized cuts occupy full positions 15–33, hence witness positions 14–32. The first 14 original coordinates are 1–14.
+
+The table's cast sets describe syntactic port occurrence in each batch and the proposed natural-port formulation; this review does not prove those assumptions are mathematically minimal. `MF` is named as the once-shifted source port in the referenced coefficient documentation; this checker does not verify coefficient payload bytes or replay that separate decoder proof.
+
+This is a source-only inventory review using the same candidate JSON as the plan. It does not establish a Lean residual identity, gate replay, signed-witness existence, port-cast equalities, source-zero equivalence or an iPRA endpoint. Correct index arithmetic and finite tree inspection are external checks, not formal Lean proofs.

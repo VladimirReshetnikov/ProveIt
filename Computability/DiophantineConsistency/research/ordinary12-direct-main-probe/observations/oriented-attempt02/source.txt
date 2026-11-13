@@ -1,0 +1,110 @@
+import DirectMainMain
+import DirectMainTransport
+
+/-! Bind the draft main signed pair to nonnegative oriented components. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxHeartbeats 8000000
+noncomputable section
+namespace DirectMainOriented
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency FreeJDirectMainGraph
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ArithmeticSignedPairExpressions
+open ArithmeticAdaptiveFactorMagnitude2011 ArithmeticAdaptiveTransport2011
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem main_root_rep (p : Fin 4 → ℕ) (v : Fin 12 → V)
+    (hq : 1≤1+v 0*(p 0:V)) (hF : v 1≤1+v 0*(p 0:V)) :
+    let b : V := v 0*(p 0:V)
+    let q : V := 1+b
+    let X : V := q*v 5
+    let Y : V := (q*(q*q))*v 6
+    let U : V := Y*(q*q)
+    let k : V := v 8+v 9
+    let c : V := v 8+Y*k
+    let a : V := X*Y+Y
+    let H : V := 3+4*a
+    let R : V := (v 2+(q-v 1)*b)*(q*q-1)+v 0*((p 2:V)+(p 3:V)*q)
+    Equivalent (pairEval (DirectMainMain.mainParts (DirectMainMain.integerPorts p)).1 v)
+      (U*(X+a*c)+H*(U*v 11+R+1),H*k) := by
+  let eB : Expr (Fin 12) := .mul (.var 0) (.constant (p 0))
+  let eQ : Expr (Fin 12) := .add (.constant 1) eB
+  let eX : Expr (Fin 12) := .mul eQ (.var 5)
+  let eY : Expr (Fin 12) := .mul (.mul eQ (.mul eQ eQ)) (.var 6)
+  let eU : Expr (Fin 12) := .mul eY (.mul eQ eQ)
+  let eE : Expr (Fin 12) := .mul eX eY
+  let eK : Expr (Fin 12) := .add (.var 8) (.var 9)
+  let eC : Expr (Fin 12) := .add (.var 8) (.mul eY eK)
+  let eA : Expr (Fin 12) := .add eE eY
+  let eH : Expr (Fin 12) := .add (.constant 3) (.mul (.constant 4) eA)
+  let eR : Expr (Fin 12) := .add
+    (.mul (.add (.var 2) (.mul (.sub eQ (.var 1)) eB)) (.sub (.mul eQ eQ) (.constant 1)))
+    (.mul (.var 0) (.add (.constant (p 2)) (.mul (.constant (p 3)) eQ)))
+  let eD : Expr (Fin 12) := .add
+    (.mul eU (.add eX (.mul eA eC)))
+    (.mul eH (.sub (.mul eU (.var 11)) (.sub (.sub eK eR) (.constant 1))))
+  let b : V := v 0*(p 0:V)
+  let q : V := 1+b
+  let X : V := q*v 5
+  let Y : V := (q*(q*q))*v 6
+  let U : V := Y*(q*q)
+  let k : V := v 8+v 9
+  let c : V := v 8+Y*k
+  let a : V := X*Y+Y
+  let H : V := 3+4*a
+  let R : V := (v 2+(q-v 1)*b)*(q*q-1)+v 0*((p 2:V)+(p 3:V)*q)
+  have hB : SignedRep eB v (natural b) := rep_mul_nat (rep_var v 0) (rep_nat v (p 0))
+  have hQ : SignedRep eQ v (natural q) := rep_add_nat (rep_one v) hB
+  have hX : SignedRep eX v (natural X) := rep_mul_nat hQ (rep_var v 5)
+  have hY : SignedRep eY v (natural Y) := rep_mul_nat (rep_mul_nat hQ (rep_mul_nat hQ hQ)) (rep_var v 6)
+  have hU : SignedRep eU v (natural U) := rep_mul_nat hY (rep_mul_nat hQ hQ)
+  have hE : SignedRep eE v (natural (X*Y)) := rep_mul_nat hX hY
+  have hK : SignedRep eK v (natural k) := rep_add_nat (rep_var v 8) (rep_var v 9)
+  have hC : SignedRep eC v (natural c) := rep_add_nat (rep_var v 8) (rep_mul_nat hY hK)
+  have hA : SignedRep eA v (natural a) := rep_add_nat hE hY
+  have hH : SignedRep eH v (natural H) := rep_add_nat (rep_three v) (rep_mul_nat (rep_four v) hA)
+  have hq2 : (1:V)≤q*q := by simpa only [one_mul] using mul_le_mul hq hq (by simp) (by simp)
+  have hR : SignedRep eR v (natural R) := rep_add_nat
+    (rep_mul_nat (rep_add_nat (rep_var v 2) (rep_mul_nat (rep_tsub hQ (rep_var v 1) hF) hB))
+      (rep_tsub (rep_mul_nat hQ hQ) (rep_one v) hq2))
+    (rep_mul_nat (rep_var v 0) (rep_add_nat (rep_nat v (p 2)) (rep_mul_nat (rep_nat v (p 3)) hQ)))
+  have hneg : SignedRep (.sub (.sub eK eR) (.constant 1)) v (k,R+1) := by
+    have h := rep_sub (rep_sub hK hR) (rep_one v)
+    simpa only [minus,natural,add_zero,zero_add,Nat.cast_one,add_assoc] using h
+  have hshift : SignedRep (.sub (.mul eU (.var 11))
+      (.sub (.sub eK eR) (.constant 1))) v (U*v 11+R+1,k) := by
+    have h := rep_sub (rep_mul_nat hU (rep_var v 11)) hneg
+    simpa only [minus,natural,add_zero,zero_add,add_assoc] using h
+  have hD := rep_add (rep_mul_nat hU (rep_add_nat hX (rep_mul_nat hA hC))) (rep_mul hH hshift)
+  change SignedRep eD v (U*(X+a*c)+H*(U*v 11+R+1),H*k)
+  simpa only [plus,multiply,natural,add_zero,zero_add,mul_zero,zero_mul] using hD
+
+theorem direct_norm (p : Fin 4 → ℕ) (v : Fin 12 → V)
+    (hb : 0<(p 0:V)) (hv : ∀j,0<v j)
+    (hz : InternalZero (graph (DirectMainFirst.integerPorts p)).output v) :
+    let b : V := v 0*(p 0:V)
+    let q : V := 1+b
+    let X : V := q*v 5
+    let Y : V := (q*(q*q))*v 6
+    let U : V := Y*(q*q)
+    let k : V := v 8+v 9
+    let c : V := v 8+Y*k
+    let a : V := X*Y+Y
+    let H : V := 3+4*a
+    let R : V := (v 2+(q-v 1)*b)*(q*q-1)+v 0*((p 2:V)+(p 3:V)*q)
+    magnitude (U*(X+a*c)+H*(U*v 11+R+1),H*k) *
+      magnitude (U*(X+a*c)+H*(U*v 11+R+1),H*k) = U*U*(1+(H+a*a)*(c*c)) := by
+  have hq : 1≤1+v 0*(p 0:V) := by simp
+  have hgap := (DirectMainTransport.transport p v hb hv hz).2
+  have hF : v 1≤1+v 0*(p 0:V) := by
+    have hg : v 1+v 2<1+v 0*(p 0:V) := tsub_pos_iff_lt.mp hgap
+    exact le_trans (by simp : v 1≤v 1+v 2) (le_of_lt hg)
+  have hm := magnitude_equivalent (main_root_rep p v hq hF)
+  have hn := DirectMainMain.main_scaled_norm p v hz
+  rw [hm] at hn
+  exact hn
+
+#print axioms DirectMainOriented.main_root_rep
+#print axioms DirectMainOriented.direct_norm
+end DirectMainOriented

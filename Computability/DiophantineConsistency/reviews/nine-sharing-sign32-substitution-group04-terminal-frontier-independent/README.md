@@ -1,0 +1,5 @@
+# Independent sign32 N1/gap/tau terminal audit
+
+The state records a successful dependency scan and Lean compile; the author's separate record reports actual outer session 8748 exit 0. The checker validates source, object, logs, all 100 direct guards, 1,063 overlay links and the exact group03 provider. Six row-link reports are `[propext]`; three same-valuation evaluation reports are `[propext, Classical.choice, Quot.sound]`. The log contains three linter warnings: two unused `p` binders in the old/new N1 definitions and one unused simp argument in its evaluation proof.
+
+The checked statements identify old/new N1, gap and tau residuals at their exact list positions and show evaluations agree under the proposed lift in an IΣ₁ model. The tau theorem explicitly assumes the port-0 cast equality because old tau uses eliminated coordinate 15; N1 and gap need no such hypothesis. The remaining residual identities, complete zero-set bridge, numeric port binding and endpoint are outside scope. No Lean replay was performed. The outer record is author-observed; guards are point-in-time and sampled monitoring does not establish a complete dynamic or transitive trace.

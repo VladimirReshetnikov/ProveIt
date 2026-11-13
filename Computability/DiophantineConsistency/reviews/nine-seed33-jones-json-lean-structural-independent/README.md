@@ -1,0 +1,5 @@
+# Independent external structural review
+
+PASS. A separate checker renders each of the pinned JSON graph's 45 nodes into the restricted concrete Lean syntax and compares each whole `Dag.snoc` stage with the audited recipe source. It checks backward reference indices, nine input indices, exact stage ordering/output, constant-vs-natural exponent constructors, finite sum binder scope, seed/type and all coefficient-macro metadata. The independently audited compiled recipe source is authenticated. The author's restricted parser reran and rejected its 45 node and four metadata/Lean-source mutations.
+
+The grammar intentionally accepts only the pinned fragment; it is not a verified Lean parser or Lean theorem about JSON, and no coefficient expansion or PDF semantics follows. The first independent checker invocation had a transcription typo in the scoped-provider audit hash, corrected before the successful rerun. Reproduce with `python3 -I -S -B reviews/nine-seed33-jones-json-lean-structural-independent/check.py`.

@@ -1,0 +1,7 @@
+# Retained v6 join attempt 01: namespace-resolution failure
+
+The guarded v6 join was launched after the independent final-manifest and runner reviews. Its preliminary checks matched all 425 producer receipts and the corrected QSchema producer. It scanned 1,605 selected-project modules and 79 directly encountered package/sysroot names in 66 guarded serialized-header batches. It then failed at the **first** rebuild stage, `DiophantineConsistency.IPRASuccessorInduction`; no join stage completed and no iPRA endpoint was proved.
+
+Lean reported that `IPRAOpenDisjunctionWitness.olean` was missing from the fresh output namespace directory. The v6 search path had a partially populated fresh `DiophantineConsistency` directory before the canonical provider; Lean did not fall through to the later directory for that module. The exact command, logs, resource samples, selected paths and source snapshot are retained under `observations/attempt01/`. The stage process exited 1, with no resource-guard stop; the outer session also exited 1.
+
+The immutable v6 runner SHA-256 is `0c1d2e7302ff5a6d8f7c3ab3e5957401dc7efae7488264e47257db419acb5a2c`; its copied runner appears in the observation. The result SHA-256 is `ab5030de91271a6ecb9fd617ff214358adff69718828fdfec9dcc682dc308371`, and stage-01 stdout SHA-256 is `05330977a4091966817e8f1c0a600d07518c751640be937254f9d7283161e1ea`. The current v7 draft addresses this by creating and guarding a single fresh project union; v7 has not yet been launched and requires independent review.

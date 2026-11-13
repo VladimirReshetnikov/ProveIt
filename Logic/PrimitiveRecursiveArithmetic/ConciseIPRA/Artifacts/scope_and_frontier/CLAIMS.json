@@ -1,0 +1,46 @@
+{
+  "title": "iPRA: scope elimination and a frontier audit",
+  "date": "2026-11-12",
+  "upstream_commit": "36d37fc1071fe289371f6bcd7dcfa0eac593a5a6",
+  "requested_target_met": false,
+  "new_arithmetic_axiomatization": false,
+  "observed_compact_envelope": {
+    "significant_tokens": 248,
+    "ast_nodes": 270,
+    "normalized_bytes": 487,
+    "attained_by_one_program": false,
+    "mathematical_lower_bound": false
+  },
+  "positive_result": "Every reachable control invocation satisfies k = 1 - len(g). Reconstructing k at entry and omitting it from recursive calls preserves finite certificate traces exactly, with the local scope-phase decrement retained.",
+  "new_implementation_metrics": [267, 303, 500],
+  "matched_control_metrics": [267, 298, 492],
+  "proof_status": {
+    "scope_invariant": "written proof, independently reviewed against source",
+    "simulation": "written exact operational equivalence proof",
+    "bi_interpretation": "inherited unchanged public calculus and arithmetic bridge",
+    "python_to_calculus_formal_verification": false,
+    "new_lean_or_rocq_build": false
+  },
+  "regression": {
+    "distinct_inputs": 42,
+    "programs": 3,
+    "interpreter_modes": 2,
+    "cli_runs": 252,
+    "discrepancies": 0,
+    "timeouts": 0
+  },
+  "refuted_shortcut": {
+    "path": "implementation/experiments/unsound_inclusive_floor.py",
+    "false_public_goal": "D_{x,y}(C(y,0,x)=C(y,0,y))",
+    "packet_count": 4,
+    "certificate_is_inherited": true,
+    "accepted_in_normal_and_optimized_python": true
+  },
+  "nonclaims": [
+    "No reduction below the surveyed complexity frontier.",
+    "No new mathematical primitive deletion.",
+    "No universal checker-size lower bound or global minimality result.",
+    "No bi-interpretation claim for unrestricted raw administrative syntax.",
+    "No inference of universal correctness from finite regression tests."
+  ]
+}

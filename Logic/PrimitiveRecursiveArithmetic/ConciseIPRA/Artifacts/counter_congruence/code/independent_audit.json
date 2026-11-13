@@ -1,0 +1,139 @@
+{
+  "status": "PASS",
+  "checker_sha256": "2386eda8d133072ce9193d6256e0b6792f463dabd6afac31822e5476e6729b68",
+  "cases": [
+    {
+      "name": "R0_arbitrary_seed",
+      "expected": "ACCEPT",
+      "returncode": 0,
+      "stdout": "ACCEPT"
+    },
+    {
+      "name": "RS_counter_and_state_under_nested_R",
+      "expected": "ACCEPT",
+      "returncode": 0,
+      "stdout": "ACCEPT"
+    },
+    {
+      "name": "RS_swapped_counter_state",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "RS_frozen_counter_in_recursive_body",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "RS_shadowed_update_name",
+      "expected": "ACCEPT",
+      "returncode": 0,
+      "stdout": "ACCEPT"
+    },
+    {
+      "name": "RS_inserted_free_parameter_avoids_same_named_inner_binder",
+      "expected": "ACCEPT",
+      "returncode": 0,
+      "stdout": "ACCEPT"
+    },
+    {
+      "name": "RS_naive_capture_of_inserted_parameter_rejected",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "CC_alpha_equivalent_updates",
+      "expected": "ACCEPT",
+      "returncode": 0,
+      "stdout": "ACCEPT"
+    },
+    {
+      "name": "CC_seed_change_rejected",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "CC_update_role_change_rejected",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "RL_root_endpoint",
+      "expected": "ACCEPT",
+      "returncode": 0,
+      "stdout": "ACCEPT"
+    },
+    {
+      "name": "RL_wrong_target",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "DI_alpha_shadowing_is_not_capture",
+      "expected": "ACCEPT",
+      "returncode": 0,
+      "stdout": "ACCEPT"
+    },
+    {
+      "name": "DI_eigen_collides_with_available_parameter",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "DI_witness_cannot_use_new_eigen",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "DI_compound_progress_rejected",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "Q_top_level_object_rejected",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "Q_cannot_be_proved_by_computation",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "future_free_variable_in_goal_rejected",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "DE_introduces_exact_reusable_Q_clause",
+      "expected": "ACCEPT",
+      "returncode": 0,
+      "stdout": "ACCEPT"
+    },
+    {
+      "name": "DE_eigen_cannot_equal_retained_parameter",
+      "expected": "REJECT",
+      "returncode": 1,
+      "stdout": "REJECT"
+    },
+    {
+      "name": "nested_D_Q_openings_preserve_bound_witnesses",
+      "expected": "MATCH",
+      "result": "MATCH"
+    }
+  ],
+  "case_count": 22,
+  "scope": "Deterministic independent scoping, substitution and rule-boundary checks; not a universal soundness proof."
+}

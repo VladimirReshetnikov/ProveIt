@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 46181 exited 0 with `PASS sign31 current source iff diagnostic`; Lean exited 0. `seed_exists_iff_source` reports `[propext, Classical.choice, Quot.sound]`; the compile log contains no warnings. State, logs and author-recorded outer outcome are retained here; the object remains under `/tmp/nine-sharing-sign31-current-source-iff-check-20261106/lib/DiophantineConsistency/`. This proves a symbolic 31-witness current seed/source existential equivalence in the stated models; it is not yet an iPRA endpoint, a Lean degree theorem, or external coefficient binding.

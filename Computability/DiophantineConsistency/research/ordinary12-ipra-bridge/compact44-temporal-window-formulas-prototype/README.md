@@ -1,0 +1,7 @@
+# Exploratory temporal rotation window formulas
+
+These model lemmas establish actual radix-67 digits of `rot 1 (67*n) X (E%(67*n))` under explicit window equations. For 0<r<67, `TemporalWindowFormula.nonwrap` and `TemporalOtherWindows.wrapped` give the two-source-digit formula in the non-wrapping and wholly wrapped cases. `TemporalStraddleWindow.straddling` gives the splice formula using source digit 0 and digit n−1, under its explicit cut/index equations and word bound; it uses zero padding only for the digit at n. `TemporalOtherWindows.aligned` treats the aligned case using cyclic digit rotation. All parameters are model values.
+
+Final author-only sessions 96727, 28651 and 27269 actually exited 0 without warnings or `sorryAx`; reports use `propext`, `Classical.choice`, `Quot.sound`. Session 67750 exited 0 with one unused-variable warning and was superseded; session 45095 exited 1 on factor order, and its `sorryAx` report proves nothing. Their exact sources and logs are retained. The same author overlay and local sources from commits 9403a827c7, 778847d293, 86e36b4034, ae249d0592 and ffe7765fba were used. This is exploratory evidence, not a paired replay or independent artifact audit.
+
+The formulas retain explicit index and window equations. Their derivation from the selected graph source, their application to both target and predecessor, the half-radix clean bound, graph-column decoding, retained-K binding, and an internal iPRA theorem remain open.

@@ -1,0 +1,5 @@
+# Independent prelaunch review: sign33 Y/E/kY residual cuts
+
+No launch blocker found. The checker pins source, runner, survey and manifest, checks the direct import and four theorem/report names, verifies external row 3–5 names and empty port sets, and reruns the no-Lean preflight. The survey checks selected provider source/object/log hashes, direct guards and shared overlay hashes, while the runner binds the candidate dependency to the recorded square-sum producer. Full postflight requires success; provider observations are point-in-time rather than a complete dynamic or transitive trace.
+
+The three candidate equations match the checked Lean syntax's residuals Y/E/kY at full coordinates 18–20, or witness coordinates 17–19 after `Fin.cons`. They use one valuation, arbitrary symbolic ports and no port-cast hypotheses, with the stated IΣ₁-model and seed-zero assumptions. List reduction, membership proofs and Lean elaboration remain untested. Other rows, graph/source equivalence, JSON binding inside Lean and an iPRA endpoint remain open. This checker is prelaunch-only because the runner requires a fresh output path.

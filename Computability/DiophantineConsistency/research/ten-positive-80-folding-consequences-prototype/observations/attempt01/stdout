@@ -1,0 +1,56 @@
+/tmp/tenpositive-80consequences-6j5l2hv1/Direct80Consequences.lean:43:66: error: Application type mismatch: The argument
+  hgc
+has type
+  xcoord (2 * h + 1) (TenPositive80Factors.delta p v * I - 2) = TenPositive80Factors.delta p v * I * V0
+but is expected to have type
+  SignMod (1 + 2 * (TenPositive80Factors.delta p v * U p v * U p v * E p v)) ?m.493 (c p v)
+in the application
+  sign_symm hgc
+/tmp/tenpositive-80consequences-6j5l2hv1/Direct80Consequences.lean:25:51: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+D : V := TenPositive80Factors.delta p v
+U0 : V := U p v
+E0 : V := E p v
+A0 : V := A p v
+F : V := 1 + 2 * (D * U0 * U0 * E0)
+tau f V0 y I j h : V
+htau : 0 < tau
+hf : 0 < f
+hV : 0 < V0
+hy : 0 < y
+hI : 0 < I
+hj : 0 < j
+ht : E p v = tau * tau
+hf2 : 1 + TenPositive80Factors.delta p v * U p v * U p v * E p v = f * f
+hIeq : I = 2 * U p v * tau * f
+hdiv : c p v * c p v ∣ I
+hjx : xcoord j (A p v - 1) = 1 + 2 * (TenPositive80Factors.delta p v * U p v * U p v * E p v)
+hjy : ycoord j (A p v - 1) = I
+hgc : xcoord (2 * h + 1) (TenPositive80Factors.delta p v * I - 2) = TenPositive80Factors.delta p v * I * V0
+hgu :
+  ycoord (2 * h + 1) (TenPositive80Factors.delta p v * I - 2) = y ∧
+    SignMod (1 + 2 * (TenPositive80Factors.delta p v * U p v * U p v * E p v)) V0 (c p v) ∧
+      SignMod (1 + 2 * (TenPositive80Factors.delta p v * U p v * U p v * E p v)) V0 (ycoord (2 * h + 1) (A p v - 1))
+hF : 0 < F
+hcpos : 0 < c p v
+hcle : c p v ≤ c p v * c p v
+hbound : c p v ≤ I
+⊢ let D := TenPositive80Factors.delta p v;
+  let U0 := U p v;
+  let E0 := E p v;
+  let A0 := A p v;
+  let F := 1 + 2 * (D * U0 * U0 * E0);
+  ∃ I j h,
+    0 < I ∧
+      0 < j ∧
+        c p v ≤ I ∧
+          c p v * c p v ∣ I ∧
+            xcoord j (A0 - 1) = F ∧ ycoord j (A0 - 1) = I ∧ SignMod F (c p v) (ycoord (2 * h + 1) (A0 - 1))
+'TenPositive80Consequences.signed_coordinate' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

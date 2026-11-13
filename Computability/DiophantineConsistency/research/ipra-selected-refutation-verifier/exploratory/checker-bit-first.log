@@ -1,0 +1,36 @@
+/tmp/ipra-selected-verifier-joint/src/DiophantineConsistency/IPRASelectedCheckerConsistency.lean:46:68: error: unsolved goals
+c : Code 1
+hprim : Primrec (eval c)
+hbit : PRA ⊢ PRACharacteristicBit.bitSentence c
+hcorrect :
+  ∀ (e : Fin 1 → Term language ℕ),
+    extended nativeTheory ⊢
+      native ((app (Rew.embSubsts e)) (oneAtom c)) 🡘
+        native ((app (Rew.embSubsts e)) ((Semiformula.lMap embedding) (bnd rho)))
+e : Fin 1 → Term language ℕ
+hv : (fun i => (Rew.embSubsts e) (vars 1 i)) = e
+⊢ (fun x => (Rew.embSubsts e) (vars 1 0)) = e
+/tmp/ipra-selected-verifier-joint/src/DiophantineConsistency/IPRASelectedCheckerConsistency.lean:54:4: error: Type mismatch: After simplification, term
+  hb
+ has type
+  extended nativeTheory ⊢!
+    Semiformulaᵢ.rel Language.ORing.Rel.eq ![Semiterm.func c e, zero] ⋎
+      Semiformulaᵢ.rel Language.ORing.Rel.eq ![Semiterm.func c e, one]
+but is expected to have type
+  extended nativeTheory ⊢!
+    (app (Rew.embSubsts e))
+        (Semiformulaᵢ.rel Language.ORing.Rel.eq ![applyCode c (vars 1), applyCode (Code.zero 0) Fin.elim0]) ⋎
+      (app (Rew.embSubsts e))
+        (Semiformulaᵢ.rel Language.ORing.Rel.eq ![applyCode c (vars 1), applyCode oneCode Fin.elim0])
+/tmp/ipra-selected-verifier-joint/src/DiophantineConsistency/IPRASelectedCheckerConsistency.lean:46:117: warning: This simp argument is unused:
+  hv
+
+Hint: Omit it from the simp argument list.
+  simp [applyCode, Rew.func,
+  ̲  ̲ ̲ ̲ ̲ ̲F̵u̵n̵c̵t̵i̵o̵n̵.̵c̵o̵m̵p̵_̵d̵e̵f̵,̵ ̵h̵v̵]̵F̲u̲n̲c̲t̲i̲o̲n̲.̲c̲o̲m̲p̲_̲d̲e̲f̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'DiophantineConsistency.IPRASelectedCheckerConsistency.selected_checker_endpoints' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

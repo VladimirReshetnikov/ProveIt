@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 89873 exited 0 with `PASS sign32 abstract-port split diagnostic`; all four Lean stages exited 0. The symbolic-port and current-port evaluation theorems report `[propext, Classical.choice, Quot.sound]`; the definition-only stages request no reports. The compile logs contain no warnings. State, logs and author-recorded outer outcome are retained here; objects remain under `/tmp/nine-sharing-sign32-direct-ipra-abstract-split-20261106/lib/DiophantineConsistency/`. This checks the symbolic expression/evaluation and current specialization, not the source-zero composition, iPRA endpoint or a Lean degree bound.

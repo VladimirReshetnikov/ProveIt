@@ -1,0 +1,91 @@
+Scope reuse for the fully typed Eq/Q/D checker
+===========================================
+
+Baseline: docs/incoming/ipra_validated_core_2026-11-11.zip at ProveIt
+commit 56249a4263cae9aad9ba87d23d0ee6d4ff6483bc, Git blob
+63b42195dc702cf115fbb9f472e96355427c9e95. The relevant exact module is
+ipra_validated_core/code/native_typed_full.py.
+
+Change 1: replace the validator's `2 < a < d - 2` by `a > 2`.
+Change 2: replace `q = json.load(open(0)); a = q.pop()` (two lines)
+by `*q, a = json.load(open(0))`.
+The remaining checker, diagnostics, variable names and trusted imports
+are byte-for-byte unchanged. These are implementation changes, not new
+axioms or a new arithmetic theory.
+
+WHY CHANGE 1 PRESERVES ACCEPTANCE
+
+The baseline v(a,2) verifies (i) exact integers and lists, (ii) canonical
+Eq/Q/D and term arities, (iii) that a numerical leaf is zero or an odd
+slot >= 3, and (iv) each positive slot's upper scope bound. The modified
+v retains (i)-(iii) and delegates only (iv).
+
+At the very beginning of c(a), the expression i(a) traverses the complete
+advertised goal, before a proof packet is consumed. The opener's depth e
+and the public validator's depth d always satisfy d = e + 2: both add
+5-len(node) on every edge. At numerical positions e is odd. The initial
+freshness floor is k=0, so i retains a numerical leaf exactly when
+0 <= a < e. Zero always satisfies this at a legal numerical position.
+A positive allowed slot fails the bound exactly when a >= e=d-2. The
+fallback then evaluates i(t,d=3) with the default sentinel t=c. Evaluating
+`c * 0` raises TypeError; the checker rejects. Consequently initial
+opening succeeds exactly for the slots formerly admitted by v.
+
+On a canonical goal with correctly scoped slots, opening retains every
+leaf, so i(a)=a. Thus an accepted old input makes precisely the same
+subsequent kernel calls in the modified checker. An input that passes the
+relaxed validator but violates a scope bound fails before reading a proof
+packet. Entire unused prefixes still undergo exact integer/list typing.
+
+The equality of successful input sets abstracts from physical recursion
+and memory limits. Both versions traverse the goal recursively; a failed
+upper bound can now be reported at a later traversal, but it cannot be
+accepted.
+
+WHY CHANGE 2 PRESERVES ACCEPTANCE
+
+For every nonempty JSON list, starred unpacking produces its prefix q and
+last element a exactly as the two old statements did. All other decoded
+JSON root types reject: numbers, booleans and null fail unpacking; empty
+iterables fail unpacking; strings and dictionaries, if nonempty, supply a
+string as the candidate goal, which fails the unchanged exact goal
+validator. No alternate root type can therefore produce a success.
+
+MEASUREMENTS (CPython 3.12.14)
+
+Profile           normalized bytes  tokens  AST nodes  gzip9 bytes
+baseline                  897          401      468        505
+scope reuse only          889          397      462        501
+scope reuse + unpack      881          393      460        500
+Eq/D baseline             878          390      454        498
+Eq/D scope reuse + unpack  862          382      446        493
+
+Normalization is ast.unparse(ast.parse(source)) plus one LF. Significant
+tokens exclude COMMENT, ENCODING, ENDMARKER, INDENT, DEDENT, NEWLINE and NL.
+AST nodes count ast.walk; gzip is level 9, mtime=0, with the wrapper and is
+reported as information, not optimized. The code's error message is
+retained unchanged, so diagnostic shortening contributes zero savings.
+
+VALIDATION
+
+The final packaged verification is reproduce.py. It checks 13,019
+preflight samples for each public grammar (Eq/Q/D and Eq/D), including
+3,000 generated scoped formulas as well as malformed raw trees. There
+were 3,096 valid full-language samples and 2,233 valid Eq/D samples, with
+zero scope discrepancies. The full and Eq/D old/new checkers and the
+readable full counterpart ran 606 processes under normal and optimized
+Python, with zero failures. Thirty added controls address high positive
+slots, negative scope escapes, bool/float/null equation aliases,
+non-list JSON roots, malformed unused prefixes, and valid inert
+integer/list prefixes. See evidence/validation.json and evidence/metrics.json.
+Finite tests support the structural proof; they do not replace it.
+
+NOVELTY AND LIMITS
+
+Scope reuse already occurs in the incoming checker_native.py Eq/D
+public-goal interface (788 bytes, without the same exact whole-certificate
+type contract). This result composes that idea with the strongest
+incoming fully typed Eq/Q/D interface. It is not a mathematical
+breakthrough, a new compact guarded record, an absolute minimum, or a
+new Lean verification. The inherited mathematical calculus and both
+iPRA interpretation round trips are unchanged.

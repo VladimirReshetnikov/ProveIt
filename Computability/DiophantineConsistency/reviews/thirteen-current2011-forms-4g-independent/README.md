@@ -1,0 +1,7 @@
+# Independent review: checked 13-variable 70/140 and 71/128 forms
+
+Outer session 79419 and both Lean child runs exited 0 for the adapted forms module. It checks `sameZero70` and `sameZero71` in arbitrary IΣ₁ models at the same shifted 13-variable valuation as the checked 13/69 bridge, then obtains native and standard iPRA derivations of no-zero iff negation of the mapped native refutation for each form. It imports the independently reviewed 4-GB carrier object by its exact hash. The compile log retains two linter warnings and no error or `sorryAx`.
+
+The independent graph review was rerun successfully. This check additionally compares the exact `front13` and both `expressionAt70/71` definitions in the newly checked source to those parsed in that graph review. The graph review establishes 70 operations and exact degree 140, and 71 operations and exact degree 128, for its fixed byte coefficients, by external computation; it is not a Lean total-degree theorem. Earlier paired historical checks remain distinct from this fresh-source proof.
+
+The checker verifies the source, state, runner and object pins, all 100 direct guard slots and 1,030 overlay links, logs and sampled resource observations. These guards inherit transitive providers; samples can miss brief spikes or escaped processes, and no full dynamic import trace or clean base rebuild is claimed. The module itself contains no final axiom report; the separate final client must be checked for that. No Lean replay was performed.

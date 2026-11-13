@@ -1,0 +1,5 @@
+# Base-only structured client attempt 01 — failure
+
+The actual guarded runner session 46338 exited 1 while compiling `Current14LiteralPortsMF`. The [observation](observation.json) binds the captured runner, source, dependency output, full compiler log and terminal state; the original temporary output remains preserved. No assembly object or completed runner row was produced, and the structured endpoint client never ran.
+
+The [Lean log](Current14LiteralPortsMF.lean.stdout) shows the `omega_eq` goal left with `geometricInt (↑rho) n` on one side and `G n` on the other. Those two draft definitions expand to the same finite sum, so unfolding them or proving and applying their equality before `ring` is a concrete candidate fix, not yet a checked proof. Lean listed only permitted metatheory axioms for the separately printed `beta_eq`, `mu_eq` and `K_eq` declarations, but reported `sorryAx` for `omega_eq` and `all_ports`; because the module failed, these reports are not an importable compiled assembly artifact. Preserve the failed attempt and use a fresh output path for any reviewed retry.

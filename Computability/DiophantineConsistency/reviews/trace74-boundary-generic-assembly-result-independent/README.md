@@ -1,0 +1,9 @@
+# Independent review: generic model boundary assembly result
+
+PASS for the captured one-stage check. The author reports actual outer tool session 5795 exit 0; retained outer terminal records child exit 0 and PASS, stable pinned inputs and wrapper bytes. We rehashed result `4172c5c24f47dff32dae9c12968f2de3d476d0df11db1d840b6fa6c0ae32e649`, outer terminal `c4e9049257292df510e90788b3f9acc5343830ca3d27efddeea052f73d310609`, source and copy, logs and output bundle. The exact axiom report is `[propext, Classical.choice, Quot.sound]`; object SHA is `abe997f61930500c87329babe8b6dc25c826aa497a757c0359be0b5ecbff694d`.
+
+All 2,029 inherited bundles and companions were checked within the 2,030-object union, together with 1,882 selected project and 81 outside first resolutions and companions, the fresh header and all reused parent headers. We independently reconstructed twelve closure walks and compared eleven inherited closure sets and companion hashes to the parent. This audits captured execution and selections without independently replaying Lean or proving complete source-current ancestry.
+
+`Trace74BoundaryGenericAssembly.zero_of_pell_cast_data` takes one shared model W/S and standard-natural x/y/eta/zeta tuple. It retains explicit positive W/S/eta/zeta, model X/Y equalities to the natural casts, the first-offset subtraction-cast equality, phase, exponential and growth assumptions, and both natural Pell equations at indices 16 and 31. Under those hypotheses it returns one and the same positive 74-zero witness w with w0=w1=w2=1 at the tuple `(1,1,28,0)`. Its cast-transfer and parametric theorem inputs use that same tuple; it does not itself establish concrete seed premises or an unconditional zero. These ports are not the fixed BFS ports.
+
+Four inherited baseline source ancestries, outside/package/dynamic provenance and external equation-file binding remain outside this audit. No fixed-port or iPRA consequence follows from this conditional result.

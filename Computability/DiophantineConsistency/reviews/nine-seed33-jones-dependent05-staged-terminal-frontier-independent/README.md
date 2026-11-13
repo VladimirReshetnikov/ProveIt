@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 81983 exited 0. All three source/object/log stages, exact dependent D and local i-carry/E provider bindings, 300 guard slots and 1,098 overlay links were checked, including replay of the J/Q/D terminal audit. Seven d31–d32 E/F local equations and carries report [propext, Classical.choice, Quot.sound], with no warnings.
+
+These are local prefix results, not full recipe output, semantic equality, degree or JSON binding. Outer exit is author-recorded and deeper ancestry inherited; no Lean replay was performed. Prelaunch is pinned but preflight is not rerun after output creation.

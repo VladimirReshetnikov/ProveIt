@@ -1,0 +1,59 @@
+IDENTITY-FRAME DERIVATION AND EXACT EQUIVALENCE
+
+The baseline terms, formulas, clause contexts, eigenvariable conditions,
+substitution and four non-Eval instruction families are unchanged.
+The retained evaluation cases are:
+
+  V0:  a=t, I(0,a;u.h)=r       => r=t
+  VS:  I(c,a;u.h)=t,
+       I(Sc,a;u.h)=r           => r=h[t/u].
+
+The removed case is:
+
+  Root: s=t, s=r              => r=t.
+
+All displayed premises and conclusions have the same arbitrary retained
+context Gamma. Terms are raw, with ordinary capture-avoiding substitution.
+Refl supplies a=a for every well-scoped numerical term a.
+
+For a fixed source s set W(s)=I(0,s;u.0), with u bound only in the body.
+Given p:s=t and q:s=r, reflexivity gives W(s)=W(s). Applying V0 to q and
+that reflexivity gives W(s)=r. Applying V0 to p and this new equation gives
+r=t. Symbolically:
+
+  Root(p,q) := V0(p, V0(q, Refl(W(s)))).
+
+The two input proof trees occur once each. A Root node is replaced by two
+V0 nodes and one Refl node. No equality congruence, equality symmetry,
+induction, binder operation, normalization, or substitution theorem for
+proofs is used in this derivation. W(s) is well scoped whenever s is.
+
+Induction on a baseline proof tree now replaces every Root node by this
+expansion and copies every other rule unchanged. In a binder branch the
+local clause and scope are identical in the two calculi, so the induction
+hypothesis applies under exactly the same retained context. Therefore
+all clause sequents, including all ordinary-assumption sequents, are
+preserved and their final formulas are literally unchanged.
+
+Conversely every retained rule is a baseline rule, so the reverse
+translation is inclusion. Thus the two calculi prove exactly the same
+sequents, on their full common language, not only their closed theorems.
+Both numerical and formula translations are identities; their composites
+are literally identities. Composing with the baseline's supplied
+bi-interpretation with full first-order intuitionistic primitive recursive
+arithmetic preserves whole numerical domains, actual equality, the
+identity graph x=y, and both formula round trips. Equiconsistency follows.
+
+For a source proof with N nodes, of which k are Root nodes, the displayed
+compiler yields exactly N+2k nodes. This counts inference nodes only.
+Terms stored in the new Refl leaf can have arbitrary finite size, so there
+is no claimed constant bound on added certificate bytes.
+
+NOVELTY BOUNDARY
+
+The raw clause interface is inherited from ipra_raw_clausal_2026-11-11.zip.
+The root-case deletion and identity-frame proof are inherited from
+ipra_equality_from_iteration_2026-11-11.zip. This package combines them
+without changing the raw clause checker's public representation or
+validation. The resulting local improvement is new integration work,
+not an independent new arithmetic or logical reduction.

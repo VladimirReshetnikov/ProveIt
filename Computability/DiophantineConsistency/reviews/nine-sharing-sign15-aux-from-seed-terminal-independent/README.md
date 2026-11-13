@@ -1,0 +1,3 @@
+# Independent terminal audit: sign15 auxiliary norm directly from seed
+
+Checker exit 0. Author outer 92976 exited 0; the stage and final postflight passed. The auxiliary maintained norm follows from staged sign15 seed zero with four represented ports and explicit beta/MC/MF bounds, without a natural deleted inner witness or sign. The theorem reports propext, Classical.choice and Quot.sound, with no warnings or sorryAx. Source, object, logs, four direct producer objects, guards and overlays were checked. The producer union and inherited first-index surveys are point-in-time, not postflight replays. Other maintained norms, full window and natural lift remain separate.

@@ -1,0 +1,5 @@
+# Sign15 conditional coordinate: source-only client
+
+The checked supplied-gap lift uses the abstract signed-inner evaluation, without any port or sign assumptions. It proposes the deleted sign16 row and recovers the coordinate from a sign16 zero. Representative existence is separate. No transfer, model equivalence, external JSON binding or endpoint is claimed.
+
+The point survey checks all stages of the audited sign15/sign16 syntax providers, injects 17 old modules and checks their shared overlay routes. It is not replayed postflight; direct guards/overlays are. No-Lean preflight session 78861 exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign15-coordinate-prelaunch-independent/README.md) passed. Author outer session 19775 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign15-coordinate-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

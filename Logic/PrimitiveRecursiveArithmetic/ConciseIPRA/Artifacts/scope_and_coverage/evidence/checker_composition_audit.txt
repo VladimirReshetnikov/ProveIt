@@ -1,0 +1,100 @@
+INDEPENDENT REVIEW: 529-BYTE LEXICAL NEUTRAL-MAJOR COMPOSITION
+
+Reviewed implementation
+  review/agent_recursion/checker_compact.py
+  SHA-256 19e53c914e72824130b86b9fd35bd99a88a30ef428a9c9e63a0df0bd3210295b
+
+Compared against
+  The global neutral-major checker in ipra_monus_and_neutral_major,
+  its complete theory/neutral_audit.tex argument, and the lexical-floor
+  and Boolean-dispatch checker variants in ipra_uniform_zero.
+
+Conclusion
+  I found no new soundness defect in the composition. The source changes
+  preserve the inherited initialized-iterator / Choice-DI calculus,
+  subject to the attributed sorted-decoder and semantic-opening lemmas.
+  This is an independent review of the composition, not a formal proof
+  of the complete Python program or of those inherited metatheorems.
+
+1. Lexical scope restoration
+  Each c invocation owns its integer k and its closure i. The major call
+  c(m,g,k) receives the old floor, but assignments to k in that callee
+  cannot modify its caller's floor or opener closure. Every context
+  extension uses g + [entry], not mutation of g. Thus neither newly
+  allocated names nor local hypotheses of a major proof can leak into
+  its caller. The parent next decrements its own floor by one. Reusing
+  the corresponding names in disjoint completed scopes is legitimate.
+  The mutable-looking default g=[[]] is not mutated anywhere.
+
+2. The unguarded major matcher
+  The inherited minimal-successful-trace lemma remains valid for every
+  starting floor: no numeric scalar can be successfully proved from
+  list-valued assumptions. Local versus global floors do not enter that
+  induction argument. Both selected profiles recognize only lists as
+  containers; failed JSON strings, dictionaries and null cannot create
+  alternative successfully checked scalar majors. Consequently every
+  successfully checked major at a reached continuation is a list.
+  The only false-valued one is []. It cannot equal the False alternative
+  produced by `not s and [t]*3` when s is true. The formerly dangerous
+  accidental numerical-zero match therefore remains unreachable.
+
+3. Chained Boolean computation dispatch
+  On a reached successful continuation, a nonempty list major has a
+  nonempty m*3. Otherwise the major is []. A true-valued u constructs a
+  two-element list equation, which is nonempty regardless of its contents.
+  Only when m=[] and u is false-valued is the final assignment/opening
+  branch evaluated. Thus the `or` expression has exactly the conditional
+  dispatch's result and side effects on all potentially accepting traces.
+  The early result does not conceal a validation obligation: construction
+  of the selected arithmetic equation retains the same evaluations as
+  the conditional predecessor; the final opener still traverses its
+  complete selected result.
+
+4. Goal substitution and a false-valued replacement
+  The endpoint condition, the check i(t,u)==a, and the source opening
+  are inherited unchanged. A numeric replacement cannot match a list
+  goal through i(t,u). A replacement [] can occur only from an empty
+  template, which would also require target goal []; such a goal already
+  closes against the initial [] assumption before a command is read.
+  More generally, falling back to the old goal when a replacement is
+  false-valued does not license any inference; it retains the obligation
+  to prove the old goal. No new acceptance is produced by this `or`.
+
+5. The introduction mode is u
+  Introduction is reached only with m=[] and false-valued u. No such
+  JSON value equals numeric 1, so an odd-arity compound matrix cannot
+  receive a progress hypothesis. For a literal equation (arity 2), a
+  zero-like numeric u selects progress; u=[] selects its zero instance.
+  A scalar opened matrix cannot survive the subsequent len(a). The
+  unrestricted s field is not consulted as the progress mode. This
+  distinction is necessary and is implemented correctly.
+
+6. Generated arithmetic and zero-instance freshness
+  The original goal is opened before fresh allocation. A matched major
+  and matched target are likewise checked at the old floor; all supplied
+  assumptions already belong to that retained scope. Moving from k to
+  k-1 can admit only finitely many new raw names present in the finite
+  packet, including fractional numeric names in that interval. These
+  names are fresh for the decoded retained goal and context under the
+  inherited opening lemma.
+  The generated arithmetic assumption need not be uniformly true at
+  its fresh names. Its simultaneous zero completion is the inherited
+  I0/IS computation instance. Substitute zero for the new finite family
+  and cut that computation proof into the continuation. This is the
+  correct discharge argument even when a noncanonical initializer makes
+  the mode expression select a fresh opening. Lexical floor reuse does
+  not alter the zero-instance proof or freshness premise.
+
+7. Scope of the conclusion
+  The audit uses the original zero codec, not the `a or 1` normalization
+  in the primary uniform-zero variant. It does not claim that arbitrary
+  raw global-scope certificates have identical operational outcomes
+  after lexicalization: canonical certificates are alpha-renamed by
+  their lexical producer. The explicit-list companion has the same
+  decoded mathematical rules. The 529-byte result is a complete smaller
+  implementation of an inherited theory, not a new arithmetic basis.
+
+No additional tests were introduced by this review. The existing fixture
+and mutation receipts were inspected as corroborating finite evidence;
+the universal composition argument above does not infer soundness from
+their pass count.

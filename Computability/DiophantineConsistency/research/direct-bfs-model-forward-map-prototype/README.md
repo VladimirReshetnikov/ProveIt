@@ -1,0 +1,5 @@
+# Model-valued original-to-direct row map
+
+`DirectBFSModelForwardMap.forward` evaluates the finite original-to-direct row permutation inside any IΣ₁ model. The checked lemmas establish Σ₁ definability, agreement with the finite map on standard inputs, the 943 bound, fixed indices 0 and 1, and representability of the mapped bounded Σ₁ sequence. This is the model-level index/packing prerequisite for original→direct tiling transport; it does not itself construct a direct-BFS packing or a graph zero.
+
+Guarded author attempt `observations/directbfsmodelforward-attempt01/` exited 0 without diagnostics, and the six axiom reports are `[propext, Classical.choice, Quot.sound]`. Every direct source import was resolved to an explicitly pinned object and rechecked. Object `/tmp/direct-bfs-modelforward-6t2sbsnz/DirectBFSModelForwardMap.olean` has SHA-256 `87674b80dd55078ff1038ac8a2b581b5ec995d98174736faa3aa016ebed4fe96`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.

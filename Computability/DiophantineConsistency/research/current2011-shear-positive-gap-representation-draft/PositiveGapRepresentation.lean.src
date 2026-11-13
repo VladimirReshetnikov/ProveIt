@@ -1,0 +1,36 @@
+import DiophantineConsistency.ModelDifferenceRing
+
+/-! SOURCE ONLY. No Lean elaboration or provider validation has occurred. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ShearPositiveGapRepresentationDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- A positive difference-ring element has a successor representative in V. -/
+theorem positive_as_successor (D : DiffRing V) (hD : 0 < D) :
+    ∃ n : V, ι (n+1) = D := by
+  obtain ⟨a,ha⟩ := nonneg_iff.mp (le_of_lt hD)
+  have ha0 : 0 < a := by
+    apply pos_iff_ne_zero.mpr
+    intro h0
+    have hzero : D = 0 := by simpa [h0] using ha
+    exact (ne_of_gt hD) hzero
+  have ha1 : 1 ≤ a := pos_iff_one_le.mp ha0
+  refine ⟨a-1, ?_⟩
+  rw [tsub_add_cancel_of_le ha1]
+  exact ha.symm
+
+/-- Intended forward coordinate: old ordinate strictly exceeds signed V. -/
+theorem positive_gap_as_successor (yParent signedV : DiffRing V)
+    (hgap : signedV < yParent) :
+    ∃ n : V, ι (n+1) = yParent-signedV :=
+  positive_as_successor (yParent-signedV) (sub_pos.mpr hgap)
+
+end DiophantineConsistency.ShearPositiveGapRepresentationDraft
+#print axioms DiophantineConsistency.ShearPositiveGapRepresentationDraft.positive_as_successor
+#print axioms DiophantineConsistency.ShearPositiveGapRepresentationDraft.positive_gap_as_successor

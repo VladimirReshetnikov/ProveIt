@@ -1,0 +1,100 @@
+INDEPENDENT SOURCE AND MATHEMATICAL REVIEW
+12 November 2026
+
+Reviewed sources
+  strict_work/strict632.py
+  theory_work/predecessor51_detailed.tex
+  theory_work/predecessor51.py
+
+This is an independent assistant-agent review of the written proofs and
+source. It is not external peer review and not a Lean/Rocq formalization.
+
+1. STRICT 632-BYTE CHECKER
+
+The only source change from the incoming strict637.py is
+
+  q = not residue and p.pop
+to
+  q = residue or p.pop,
+
+where residue = str(p).strip('0123456789-[], '). The assignment is followed
+immediately by c([0], q(), v=1), and ACCEPT is printed only after that call.
+
+When residue is empty, both assignments evaluate and retain exactly p.pop.
+If accessing p.pop fails, both programs reject at that access. Otherwise
+they execute identical checking code with identical data. When residue is
+nonempty, the old q is False and the new q is a nonempty string. Neither is
+callable, so the next q() rejects in both programs before any checking or
+ACCEPT output. Any failure while evaluating str or strip is shared.
+
+This dichotomy covers all JSON-decoded values, not merely well-typed proof
+certificates. Exception type/messages can differ; accepted finite inputs
+and successful proof traces do not. The standard definition of acceptance
+is normal exit with exactly ACCEPT followed by one newline.
+
+Independent CPython 3.12.14 whole-module measurements:
+  incoming strict637.py: 344 significant tokens, 392 AST nodes, 637 bytes.
+  new strict632.py:      343 significant tokens, 390 AST nodes, 632 bytes.
+The source diff was checked to contain exactly the displayed replacement.
+No mathematical axiom or inference rule is changed.
+
+2. ABSORBING-ORBIT PREDECESSOR
+
+The reviewed term is
+
+  P(m) = I(m,0;u.C(I(SSu,E(m);v.H(v)),u,Su)),
+  H(v) = C(N(v),R(v),0).
+
+The proof that P(0)=0 and P(Sm)=m is valid in the stated equational scalar
+calculus. In particular:
+
+* The ramp invariant M(R(n))=N(n) follows by equation induction and the
+  two-point principle for parity values. Endpoint calculations require no
+  Boolean disjunction or even-number decomposition.
+* The triple-ramp identity R(3n)+N(n)=3R(n) uses addition rearrangement and
+  N(n)+Z(N(n))=1. It uses neither subtraction nor cancellation.
+* H(3u)=3H(u) follows by selector distribution and absorption:
+  C(b,a+b,0)=C(b,a,0) for b=N(u). Both endpoint calculations are valid.
+* Orbit rotation and tripling are ordinary literal-equation inductions.
+  The comparator Lambda(x,y)=Z(O(Sy,E(x))) satisfies all three displayed
+  recurrence equations. The extra successor in P's SSu counter is required
+  and correctly accounts for Lambda(Sm,Su)=Lambda(m,u).
+* The saturation proof first proves W(St,Sm)=S W(t,m) with m fixed, and only
+  then applies a separate diagonal induction. It never changes a passive
+  parameter in an active induction hypothesis.
+* Pointwise equality of the two update terms is lifted by the explicitly
+  supplied equation induction V(t,m)=W(t,m). Iterator-body extensionality
+  is not silently assumed.
+
+No use of order, excluded middle, successor injectivity, pairing, equality
+reflection, or primitive recursion beyond the scalar iterator was found.
+The elementary addition and parity identities are predecessor-free. They
+can be supplied directly by equation induction: first prove Z^2(N(n))=N(n),
+then the two-point principle gives N(n)+Z(N(n))=1; double and triple parity
+follow by unfolding two and three successor steps respectively. Expanding
+this short dependency paragraph would make the report more self-contained.
+
+3. CONSTRUCTOR COUNT
+
+An independent traversal of the expanded constructor trees counted:
+
+                      variables  zero  successor  iterator  total
+  new predecessor          16     11      11         13       51
+  incoming predecessor     18     13      11         15       57
+
+Both trees have exactly the free variable n. The count treats every tree
+occurrence separately; shared Python tuple identity does not save nodes.
+The raw difference is two variable leaves, two zero leaves, and two iterator
+nodes. Thus the reduction is 6/57, approximately 10.53 percent.
+
+4. CLAIM BOUNDARY
+
+The 51-node term improves the size of a derived arithmetic expression; it
+does not itself reduce standalone proof-checker complexity. The 632-byte
+strict checker is an implementation refinement of the inherited theory;
+it is not below the distinct compact checker envelope 244/267/479. Neither
+result proves global minimality or meets a claim of a single new calculus
+whose complete checker beats every compact coordinate.
+
+Verdict: both narrow positive claims are supported by the inspected source
+and written arguments. No necessary mathematical correction was found.

@@ -1,0 +1,3 @@
+# Independent terminal audit: sign15 supplied-gap coordinate
+
+Checker exit 0. Author outer 19775 exited 0; stage and final postflight passed. Four reports cover old-row location, supplied abstract shared31 gap zero, lift/drop, and old-gap recovery. There are 41 linter warnings and no sorryAx. Source, object, logs, both direct syntax providers, guards and overlays were checked. This conditional client has no port/sign assumptions; natural representative existence was established separately under explicit bounded-port hypotheses. The union survey is point-in-time; residual transfer and equivalence remain separate.

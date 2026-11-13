@@ -1,0 +1,9 @@
+# Independent review: positive first root
+
+For every IΣ₁ model with the stated ordered-ring interface, `first_root` takes arbitrary natural ports and valuation, assumes an internal zero of the exact draft graph output and `b = J*beta > 0`, and produces a positive `first` with `magnitude(Z) = b*first` and `first² = 1+Q*(Q+1)*k²`, where `q=1+b`, `X=q*w`, `Y=q³*s`, `Q=(X*Y)*Y`, `k=eta+zeta`, and `Z` is the first-root signed pair. The proof applies the separately reviewed graph first scaled norm and the existing scaled-quotient lemma; a ring identity rewrites `ell = Q*k`. Neither fixed ports nor an old-graph zero is assumed.
+
+This proves one input to the conditional Pell-index classification. Its explicit positive-`b` assumption must be supplied at the eventual application. It does not derive a main norm, alignment, graph-to-halt implication, reverse existence, or an iPRA proof. It does not prove any statement about an external PDF.
+
+The review checks the accepted source, snapshot, runner, Lean binary, output object, complete recorded logs and explicit producer search order. It reruns the independent first-factor audit, which in turn checks the draft graph and 1,291 selected union files against their receipts. The author receipt has exit 0, empty stderr and the reported axioms `propext`, `Classical.choice`, and `Quot.sound`. The source has no local lint suppression; its imported `DirectMainFirst` does suppress unused-variable and unused-simp-argument lints, as recorded in that audit. Resource records are point samples. Package, dynamic and full historical source-to-object ancestry are inherited; no new Lean process ran in this review.
+
+Run `python3 -I -S -B check.py` from this directory; `observations/stdout` records success. Retained `/tmp` providers and objects are required, and file comparisons are external checks.

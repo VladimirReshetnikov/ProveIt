@@ -1,0 +1,81 @@
+UNIFIED LEAF CHECKERS: IMPLEMENTATION SCOPE AND MEASUREMENTS
+
+The mathematical change is a single axiom-reservoir leaf rule. At every call,
+read one packet and accept the leaf when the scope-checked goal belongs to
+Gamma plus that packet's iterator computation equation. Hypothesis leaves
+therefore consume a harmless dummy packet. No hypothesis is permanently
+added merely because the packet was read. No computation or logic axiom is
+deleted. Both computation equations remain instances of the reservoir.
+
+The three complete standalone modules are DIFFERENT implementations of
+that presentation. Their coordinate minima must not be reported as one
+program's vector. In CPython 3.12.14 after ast.unparse plus one LF:
+
+                         tokens   AST nodes   normalized bytes   gzip-9
+checker_tokens.py          242       268             565           331
+checker_ast.py             246       262             556           335
+checker_bytes.py           272       306             469           309
+
+The corresponding direct-computation-leaf controls from the current pinned
+incoming archive have vectors 243/271/616, 248/264/613, and 270/308/474.
+The empirical family envelopes are therefore (243,264,474) and (242,262,469),
+respectively. They are observed upper bounds, never universal lower bounds.
+measure.py reproduces complete-module metrics, gzip sizes and SHA-256 hashes.
+Its token filter uses tokenize's NAMED constants, including the Python 3.12
+NL and COMMENT values; no version-specific integer token IDs are assumed.
+
+Protocol differences are intentional:
+
+* checker_bytes.py reads a whole JSON array backwards, with the final item
+  [public_goal, initial_floor]. The canonical initial_floor is 0. Each packet
+  has four fields [major, source, seed, template]. It uses local freshness
+  floors and an eager image validator. The neutral context entry is []. A
+  harmless hypothesis packet is [[],0,0,0].
+
+* checker_tokens.py reads a public goal on its first JSON line, followed by
+  triples [source, seed, template] in execution order. It uses global fresh
+  negative numerical names and the inherited lazy opener. It starts with no
+  neutral context entry, and omits the neutral-major call at introductions.
+  Every genuine hypothesis leaf gets a [0,0,0] packet.
+
+* checker_ast.py uses the same JSON-line triple alphabet and global
+  freshness convention, but has the neutral entry 0 and checks even the
+  neutral major before an introduction. Those additional neutral calls get
+  dummy [0,0,0] packets. Its valid certificates therefore differ from the
+  token profile's. The root context b'\x00' is the one-element iterable
+  containing the integer 0. It is a source representation of the neutral
+  entry, not compressed code, a hidden axiom, an imported proof checker, or
+  a requirement that user data contain byte strings. Both context uses
+  expand *g, and every non-root continuation builds a normal list.
+
+The AST profile evaluates its recursively checked major and introduction
+witness before decrementing the global floor. It then opens the newly
+supplied hypothesis and the continuation in the new floor. The token profile
+reverses the order of those two final pure openings, at the same fixed
+floor; neither opening changes the floor, stream or context. The byte
+profile follows the inherited local scheduling exactly. Its any selector
+replaces bool(major or 3 % len(goal)); eager evaluation is harmless on the
+successful nonempty-goal traces used by the theorem-preserving translation.
+
+For the byte profile, a successful no-image opening leaves the raw goal
+unchanged. The corresponding stronger all-raw-tree statement is FALSE for
+the lazy token/AST opener: formula padding can be normalized. The lazy
+profiles are justified by the inherited sorted decoder and by canonical
+completeness, not by claiming arbitrary raw-certificate trace identity.
+
+All compact profiles retain the existing promise: finite exact-integer/list
+proof trees and a canonical closed GUARDED Eq/D public formula. They are not
+unrestricted-JSON validators and do not claim to check unguarded native
+formulas with that root-dependent introduction mode. A fully validated
+native interface must be compared separately.
+
+readable_checker.py is an independently executable, straightforward
+expansion of checker_bytes.py's control flow, including evaluation order.
+It imports only Python's standard json module. Its larger complete source
+is measured separately; it is not used by any of the measured candidates.
+readable_validation.json records 76 ordinary/optimized subprocess checks
+of the byte candidate and readable expansion, including actual-use induction,
+logical elimination, scope capture and false public conclusions. Finite
+checks supplement the written proof; they do not establish it.
+
+No new Lean/Rocq formalization of the Python implementations is asserted.

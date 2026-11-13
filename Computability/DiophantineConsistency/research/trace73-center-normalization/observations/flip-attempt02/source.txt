@@ -1,0 +1,36 @@
+import DiophantineConsistency.TenPositiveTrace75
+
+/-! Flip the trace75 carrier sign by changing the n coordinate. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace Trace75SignFlip
+open DiophantineConsistency.TenPositiveTrace75
+variable {R : Type*} [CommRing R]
+
+def move (v : Fin 10 → R) (d : R) : Fin 10 → R := Function.update v 7 (v 7 + 2*d)
+
+theorem Z_move (p : Fin 4 → R) (v : Fin 10 → R) (d : R) :
+    (regs p (move v d)).Z = (regs p v).Z + 2*(regs p v).M*d := by
+  let r := regs p v
+  change r.h*r.D*(r.H*((v 7+2*d)-r.V*r.V*r.B)+r.K)-r.H*(r.D*r.B+r.h*r.e) =
+    (r.h*r.D*(r.H*(v 7-r.V*r.V*r.B)+r.K)-r.H*(r.D*r.B+r.h*r.e))+
+      2*(r.h*r.D*r.H)*d
+  ring
+
+theorem value_flip (p : Fin 4 → R) (v : Fin 10 → R) (d : R)
+    (hZ : (regs p v).Z = -((regs p v).M*d)) :
+    value75 p (move v d) = value75 p v := by
+  simp only [value75]
+  rw [Z_move]
+  have hQ : (regs p (move v d)).Q = (regs p v).Q := rfl
+  have hM : (regs p (move v d)).M = (regs p v).M := rfl
+  have hG : (regs p (move v d)).Gn = (regs p v).Gn := rfl
+  have hV : (regs p (move v d)).V = (regs p v).V := rfl
+  rw [hQ,hM,hG,hV]
+  rw [hZ]
+  ring
+
+#print axioms Trace75SignFlip.value_flip
+end Trace75SignFlip

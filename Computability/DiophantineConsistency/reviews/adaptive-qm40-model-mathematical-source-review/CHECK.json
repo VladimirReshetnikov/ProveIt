@@ -1,0 +1,31 @@
+{
+  "audit_sha256": "95883fbd023978769c0b527bbd0b3da750295dfa738b7deb13c234efeec6fa7f",
+  "reviewed_receipt": "adaptive-qm40-native-bounded-replay/terminal-observation.json",
+  "runs": [
+    {
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/reviews/adaptive-qm40-model-mathematical-source-review/audit.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"external_literal_rows\": 166, \"new_common\": 30, \"old_common\": 30, \"rest_coordinates\": 39, \"sample_quotient\": 3, \"scope\": \"source review and finite checks; no Lean replay or PDF binding\", \"status\": \"PASS_QM40_MODEL_SOURCE_REVIEW\"}\n"
+    },
+    {
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/reviews/adaptive-qm40-model-mathematical-source-review/audit.py"
+      ],
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/adaptive-qm40-model-mathematical-source-review/audit.py\", line 11, in <module>\n    raise RuntimeError('optimized Python is rejected')\nRuntimeError: optimized Python is rejected\n",
+      "stdout": ""
+    }
+  ],
+  "scope": "Point-in-time source hashes and finite external checks; no Lean replay or PDF binding.",
+  "status": "PASS_SOURCE_REVIEW_AND_FINITE_INDEX_CHECK"
+}

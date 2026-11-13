@@ -1,0 +1,7 @@
+# Independent N4 graph exclusion source review
+
+Source-only mathematical review of original SHA `8d98180dd9adef746053fc3cdaf155cc5256a3fd31ebb6fa60a3d6fb9add8cf6` passes, conditional on the as-yet-unaccepted discrete scalar parent. Given β≥31 and the same positive 74 graph tuple with first-Pell index 4, the checked odd-seven client yields the same c=y7. The y4 and subtraction-free y7 identities supply the exact scalar k, ky and c polynomials. Positive v8,v9 yield ky<c<ky+k; q≥32, X≥32, Y≥1 and X=q·v5, Y=q³·v6 hold for that same tuple. The model difference ring supplies the explicit discrete order assumption. Thus the pending scalar contradiction would rule out this first-index-4 antecedent, with no guard or fixed-BFS hypothesis.
+
+Likely Lean elaboration issue: in hhiR, `simp only [map_mul,mul_add,mul_one]` appears to leave the embedded `ι (Y+1)` unreduced; `map_add,map_one` may be needed. Ring-normalization, casts, provider selection and warning policy also remain unchecked. This is a source review, not a Lean or graph result claim; it would exclude only n=4, not all positive graph zeros or prove 74/75 equivalence/iPRA.
+
+The revised source SHA `032b19abc1f7024c40233d3b1f05f0e975610ad5e925e86f2ed0b45e383c6532` adds only `map_add,map_one` in hhiR to address the noted cast risk. Reversing this exact substitution reconstructs the original source hash above. Statements and mathematical review are unchanged; elaboration remains unchecked and the scalar parent remains pending.

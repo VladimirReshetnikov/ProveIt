@@ -1,0 +1,116 @@
+import Trace75MainSize
+
+/-! The trace75 odd auxiliary index is at least five. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace Trace75AuxFive
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ModelDifferenceRing TenPositiveTrace75 ArithmeticPellRecurrence ArithmeticPellHalfIndex
+open Trace75Factors Trace75Fold Trace75MainSize
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_auxiliary_index_ge_five (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hb2 : 2≤(p 0:V)) (hv : ∀j,0<v j)
+    (hz : value75 (ports p) (fun j => ι (v j)) = 0) :
+    ∃ I j h : V, 0<I ∧ 0<j ∧ 2≤h ∧ c p v≤I ∧ c p v*c p v∣I ∧
+      xcoord j (A p v-1)=1+2*(delta p v*U p v*U p v*E p v) ∧
+      ycoord j (A p v-1)=I ∧
+      SignMod (1+2*(delta p v*U p v*U p v*E p v))
+        (c p v) (ycoord (2*h+1) (A p v-1)) := by
+  let D : V := delta p v
+  let A0 : V := A p v
+  let C : V := c p v
+  let F : V := 1+2*(D*U p v*U p v*E p v)
+  have hb : 0<(p 0:V) := lt_of_lt_of_le (by simp : (0:V)<2) hb2
+  obtain ⟨r,j0,I0,_,_,_,_,_,_,hCbound,_,_,_⟩ := graph_main_size p v hb2 hv hz
+  obtain ⟨I,j,h,hI,hj,hCI,hdiv,hjx,hjy,hcong⟩ := signed_coordinate p v hb hv hz
+  have hq : 0<q p v := add_pos (mul_pos hb (hv 0)) (by simp)
+  have hY : 0<Y p v := mul_pos (mul_pos (mul_pos hq hq) hq) (hv 6)
+  have hX : 0<X p v := mul_pos (hv 5) hq
+  have hA2 : 2≤A0 := by
+    have hxy : 1≤X p v*Y p v := pos_iff_one_le.mp (mul_pos hX hY)
+    have hy1 : 1≤Y p v := pos_iff_one_le.mp hY
+    change 2≤X p v*Y p v+Y p v
+    simpa only [show (2:V)=1+1 by ring] using _root_.add_le_add hxy hy1
+  have hD4 : 4≤D := by
+    calc
+      4=(2:V)*2 := by ring
+      _≤A0*2 := mul_le_mul_of_nonneg_right hA2 (by simp)
+      _≤A0*(A0+2) := mul_le_mul_of_nonneg_left (by simp) (by simp)
+      _=D := rfl
+  have hDpos : 0<D := lt_of_lt_of_le (by simp : (0:V)<4) hD4
+  have hsmallpos : 0<4*D+3 := add_pos (mul_pos (by simp) hDpos) (by simp)
+  have hC1 : 1<C := lt_of_le_of_lt (pos_iff_one_le.mp hsmallpos) hCbound
+  have hCpos : 0<C := lt_trans (by simp : (0:V)<1) hC1
+  have hCsq : C*C≤I := Arithmetic.le_of_dvd hI hdiv
+  have hCstrict : C<C*C := by
+    simpa only [mul_one] using mul_lt_mul_of_pos_left hC1 hCpos
+  have hCIstrict : C<I := lt_of_lt_of_le hCstrict hCsq
+  have hApos : 0<A0 := lt_of_lt_of_le (by simp : (0:V)<2) hA2
+  have hA1 : A0-1+1=A0 := tsub_add_cancel_of_le (pos_iff_one_le.mp hApos)
+  have hdelta : ArithmeticPellRecurrence.delta (A0-1)=D := by
+    unfold ArithmeticPellRecurrence.delta
+    have h3 : A0-1+3=(A0-1+1)+2 := by ring
+    rw [h3,hA1]
+    rfl
+  have hnorm : F*F=1+D*I*I := by
+    have h := norm j (A0-1)
+    rw [hdelta,hjx,hjy] at h
+    exact h
+  have hFsize : 2*I<F := by
+    by_contra hn
+    have hle : F≤2*I := le_of_not_gt hn
+    have hsq : F*F≤(2*I)*(2*I) := mul_self_le_mul_self (by simp) hle
+    have hmul : 4*I*I≤D*I*I := mul_le_mul_of_nonneg_right
+      (mul_le_mul_of_nonneg_right hD4 (by simp)) (by simp)
+    have hlt : (2*I)*(2*I)<F*F := by
+      calc
+        (2*I)*(2*I)=4*I*I := by ring
+        _≤D*I*I := hmul
+        _<1+D*I*I := by simp
+        _=F*F := hnorm.symm
+    exact (not_le_of_gt hlt) hsq
+  have h2C : 2*C<F := lt_of_le_of_lt
+    (mul_le_mul_of_nonneg_left (le_of_lt hCIstrict) (by simp)) hFsize
+  have h2one : 2*(1:V)<F := lt_of_le_of_lt
+    (mul_le_mul_of_nonneg_left (le_of_lt hC1) (by simp)) h2C
+  have hzero : h≠0 := by
+    intro h0
+    have hc0 := hcong
+    rw [h0] at hc0
+    simp only [mul_zero,zero_add] at hc0
+    have hy1 : ycoord 1 (A0-1)=1 := by simpa using y_succ (0:V) (A0-1)
+    rw [hy1] at hc0
+    have heq : C=1 := sign_eq_of_half hCpos (by simp) h2C h2one hc0
+    exact (ne_of_gt hC1) heq
+  have hpos : 0<h := pos_iff_ne_zero.mpr hzero
+  have hone : h≠1 := by
+    intro h1
+    have hc1 := hcong
+    rw [h1] at hc1
+    have hi : 2*(1:V)+1=3 := by ring
+    rw [hi] at hc1
+    have hbaseA : A0-1+2=A0+1 := by
+      calc
+        A0-1+2=(A0-1+1)+1 := by ring
+        _=A0+1 := by rw [hA1]
+    have hy3 : ycoord 3 (A0-1)=4*D+3 := by
+      apply add_right_cancel (b := (1:V))
+      calc
+        ycoord 3 (A0-1)+1=4*(A0-1+2)*(A0-1+2) := y_three (A0-1)
+        _=4*(A0+1)*(A0+1) := by rw [hbaseA]
+        _=(4*D+3)+1 := by dsimp [D,A0,Trace75Factors.delta]; ring
+    have hy3pos : 0<ycoord 3 (A0-1) := by rw [hy3]; simp
+    have hy3lt : ycoord 3 (A0-1)<C := by rw [hy3]; exact hCbound
+    have h2y : 2*ycoord 3 (A0-1)<F := lt_of_le_of_lt
+      (mul_le_mul_of_nonneg_left (le_of_lt hy3lt) (by simp)) h2C
+    have heq : C=ycoord 3 (A0-1) := sign_eq_of_half hCpos hy3pos h2C h2y hc1
+    exact (ne_of_lt hy3lt) heq.symm
+  have hgt1 : 1<h := lt_of_le_of_ne (pos_iff_one_le.mp hpos) (Ne.symm hone)
+  have h2 : 2≤h := by simpa only [one_add_one_eq_two] using lt_iff_succ_le.mp hgt1
+  exact ⟨I,j,h,hI,hj,h2,hCI,hdiv,hjx,hjy,hcong⟩
+
+#print axioms Trace75AuxFive.graph_auxiliary_index_ge_five
+end Trace75AuxFive

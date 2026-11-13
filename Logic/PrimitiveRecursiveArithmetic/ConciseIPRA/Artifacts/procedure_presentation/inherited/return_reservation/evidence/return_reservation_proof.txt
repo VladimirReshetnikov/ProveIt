@@ -1,0 +1,183 @@
+# Return reservation: universal checker argument
+
+## What changes
+
+The inherited shared-leaf AST checker keeps a global integer floor `k`, initially
+zero. Negative integers in `[k, 0)` name available numerical parameters. It
+checks a goal, supplies an auxiliary hypothesis, decrements `k`, opens the
+hypothesis and continuation at the new name, and checks the continuation.
+
+The proposed stream checker moves reservation of the next fresh name to the
+successful return of **every** proof-checking call, including a terminal call.
+Thus a call returns with a fresh unused name already reserved for its caller.
+The caller uses that name directly. The neutral major `0` is always checked,
+so an introduction also obtains a reserved name even though it has no genuine
+major premise.
+
+The unchanged raw opening operation is the existing sorted-arity opener. Its
+scope check remains `k <= a < d`; no scope inequality is weakened. The raw
+certificate language, primitive arithmetic theory, and guarded public language
+are unchanged, except that global free-parameter names in proof packets are
+renamed to follow the new allocation schedule.
+
+## Exact evaluation order
+
+In the new checker, the critical expression is
+
+```
+i(s * 3 or (a := i(*a, t, 2)), c(g, s) or k * mode)
+```
+
+for the variant whose `c` returns `None`. Python evaluates the first argument
+before the second, then invokes `i`. Consequently:
+
+1. The goal has already been validated at entry, and any backward
+   substitution has been opened in the existing numerical scope.
+2. If this is an introduction, its supplied witness is opened **before** the
+   major call. No name reserved by that major is available to this witness.
+3. The major call checks its goal in the old context. On successful return,
+   its final decrement reserves a fresh unused parameter.
+4. Only then does `i` open the prepared hypothesis using the reserved name.
+   The continuation goal is opened afterward, with the same name.
+5. After the continuation has succeeded, the current call decrements `k` and
+   returns. This final decrement reserves a name for its own caller.
+
+When `s` is nonzero, preparing `s * 3` before the major proof performs only a
+list repetition and changes no scope. When `s` is zero, the major is the
+neutral hypothesis and the original checker did not change the old floor
+during that terminal call. Thus moving witness opening before that call does
+not disturb any old-scope requirement; it is essential for the new schedule.
+
+## Reservation invariant
+
+At every successful return, the final operation replaces the current floor
+`j` by `j-1`. The returned/current value is therefore strictly below every
+parameter admitted before that final operation. It is fresh for all actual
+free parameters of the caller's validated old context, old goal, and prepared
+matrix. The floor only decreases, and no subsequent operation restores an
+older floor.
+
+This statement concerns free parameters in the sorted reading, not every
+integer occurring in raw certificate annotations. A raw integer outside the
+old scope is a hole or an irrelevant annotation; it is not an admitted
+parameter. The inherited opening and closed-reading lemmas are the reason
+the corresponding arithmetic formulas have the stated support.
+
+The final name has not been inserted anywhere by the returning call: it was
+reserved after that call's entire continuation had finished. A caller can
+therefore use it as its eigenparameter. Every nonterminal caller invokes a
+major proof, including the neutral major, so the reservation operation is
+always present before an eigenparameter is needed.
+
+## Soundness
+
+Use induction on a finite successful call tree. At a terminal call, the goal
+is either a retained assumption or the same generated computation equation
+as in the inherited shared-leaf checker. The trailing reservation does not
+change the theorem proved.
+
+At a nonterminal call, all entry validation, the source/target comparison,
+and witness instantiation are performed in the old scope. By the induction
+hypothesis, the major call proves the same major formula from the same old
+context. Its reserved return name is fresh by the invariant. The prepared
+hypothesis and continuation are then the same instances of the inherited
+Use, Open, or Close rule, with that fresh parameter in place of the old
+checker’s freshly decremented integer. Apply the induction hypothesis to the
+continuation. The current call’s final reservation again changes no conclusion.
+
+The original sorted-reading analysis of administrative truth arrays and
+zero-instance supply is used unchanged. Enlarging the set of available
+parameter names does not change the reading of an already validated closed
+expression; it only permits arbitrary additional parameters. No premise is
+added merely because a name has become available.
+
+Hence every accepted canonical guarded public goal has the same ordinary
+arithmetical consequence as under the inherited checker. In particular, the
+new reservation strategy does not enable a witness to depend on its own
+fresh induction variable.
+
+## Completeness
+
+Take a canonical derivation/certificate supplied by the inherited completeness
+theorem. Translate its finite proof tree recursively while maintaining an
+injective renaming of the negative parameter names already allocated. Keep
+zero, positive protected-slot indices, array constructors, and packet shapes
+unchanged. For each old nonterminal allocation, use the fresh name reserved
+by the translated major call; extend the renaming with that pair. Continue
+with the translated branch. The translated current call reserves another
+name on return, as its implementation specifies.
+
+The reservation invariant guarantees that every extension of the renaming
+is fresh. Renaming preserves literal array equality, all constructor/root
+tests, and ordinary capture-avoiding opening of canonical expressions. The
+old and translated branches therefore select the same logical inference.
+The required fresh name is always available, even for an introduction,
+because its neutral major is checked. Every old derivation thus has a finite
+new certificate of the same public conclusion.
+
+The untrusted producer `frontier_translate.py` implements this ledger for the
+supplied canonical stream certificates. Its finite tests are implementation
+evidence; completeness is the structural fresh-renaming argument. The
+producer is not a measured checker dependency. Exact equality of accepted
+raw byte streams is not claimed: the numbering schedule has changed.
+
+## The two compact stream variants
+
+`frontier_tokens240.py` returns `None` on success. Therefore
+`c(g,s) or k * bool(s or len(a) == 2)` both checks the major and supplies the
+correct fresh image: `k` for a genuine major or a literal-equation matrix,
+and zero for a compound introduction matrix.
+
+`frontier_ast261.py` returns the reserved integer `k`. Its caller uses
+`c(g,s) * (1 if s else len(a) == 2)`. This has the same evaluation order,
+scope state, and continuation images. The returned integer is ignored at
+the root. To save one AST node, its global initialization is performed by
+the function default `d=(k := 0)` when the helper is defined. Python evaluates
+this default once at module definition time, before any checking call; the
+stored default is still zero. This is an implementation factoring of the
+ordinary top-level assignment, not a new arithmetic principle.
+
+The standalone readable expansion uses explicit names, ordinary initialization,
+and an explicit `fresh = check(context, source)` step. It imports neither
+compact checker nor translator.
+
+## Interpretation consequence and claim boundary
+
+Both directions establish the same canonical public theorem set for the
+unchanged guarded scalar presentation. Its existing ordinary realization and
+both interpretation maps to and from full intuitionistic PRA can therefore be
+used literally unchanged. Whole numerical domains, actual equality, the
+identity numerical comparison graphs, and the inherited full formula round
+trips are preserved. Equiconsistency follows through that inherited
+bi-interpretation.
+
+The new contribution is a smaller complete checking presentation and the
+scope/renaming argument above. No logical or arithmetic axiom is deleted,
+no absolute minimum is proved, and no new Lean or Rocq verification of this
+Python correspondence is claimed.
+
+## Reproduced focused evidence
+
+The final focused suite consists of 126 isolated process executions, using
+normal and optimized Python, with no unexpected outcome. It covers seven
+translated positive derivations, a false-public-goal mutation of each, and
+seven supplied rejection controls, for both compact programs and the readable
+expansion. Three additional instrumented boundary traces reject the guarded
+future-witness attack after exactly two JSON lines, before its valid neutral
+major packet is read. Its witness is `S(-1)` while the entry floor is zero.
+
+The genuinely used induction certificate has 281 checking calls, four
+progress introductions, and one actual lookup of a progress assumption. It
+also uses case assumptions and opened closures. Its old final floor is -140;
+the new final floor is -281, consistent with one reservation per successful
+call. The compound-implication-elimination certificate is also included.
+
+Exact CPython 3.12.14 complete-module measurements:
+
+| Program | Tokens | AST | Normalized UTF-8 bytes | gzip-9 |
+|---|---:|---:|---:|---:|
+| `frontier_tokens240.py` | 240 | 266 | 551 | 333 |
+| `frontier_ast261.py` | 242 | 261 | 563 | 333 |
+
+The current inherited minima are 242 tokens and 262 AST nodes, attained by
+different programs. Each new record belongs to its own complete program.

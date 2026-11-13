@@ -1,0 +1,5 @@
+# Independent prelaunch review: concrete first macro node
+
+**Pass for bounded launch.** The exact copied draft proposes that entry zero of the actual compiled 45-node recipe equals `indexY seed 0 + 1 + a 0` over any commutative ring, with casts as stated in the source. We checked the recipe's first `Dag.snoc` entry is exactly fixedY plus integer one plus input zero, and the theorem requests an axiom report. The intended `rfl` reduction and its resource behavior remain untested; no later-node or full semantic equality is asserted.
+
+`check.py` pins source, draft, manifest, runner and survey; checks theorem and actual first-node anchors; replays the exact audited recipe provider; and runs the fresh Lean-free preflight. The runner checks the actual candidate target across all dependency roots and suffixes, binds direct dependency and guard to the exact recipe object hash/realpath and repeats checks after success. Provider checks are point-in-time, resources sampled and the initial-agreement ancestor's numeric outer exit unavailable. No JSON or human document binding follows. Preflight requires a fresh output path and refuses after launch.

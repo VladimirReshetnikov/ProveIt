@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/compact44-supplied-word-prep-01/run.py", line 24, in <module>
+    try:main()
+        ~~~~^^
+  File "/tmp/compact44-supplied-word-prep-01/run.py", line 23, in main
+    code,peak,reason=mon.monitored(command,env,OUT/'compiler.log',timeout=180);text=(OUT/'compiler.log').read_text();obs={'compiler_exit':code,'peak_sampled_rss_bytes':peak,'reason':reason,'compiler_log_sha256':H(OUT/'compiler.log'),'free_disk_after':shutil.disk_usage('/tmp').free};(OUT/'child-result.json').write_text(json.dumps(obs,indent=2,sort_keys=True)+'\n');print(json.dumps(obs),flush=True);need(type(code) is int and code==0 and reason is None,'compiler failed');need(not re.search(r'(?m)^.*(?:error:|warning:)|\bsorryAx\b|\bsorry\b',text),'warning or error'); reports=u.report_inventory(dst.read_text(),text);need(obj.is_file() and not obj.is_symlink(),'missing output');og=u.slots(stem);need(all((v is not None) if p==str(obj) else v is None for p,v in og.items()),'output companions');u.check(guards);u.check(parentguards);need(H(pp)==pre['parent_progress_sha256'] and H(pf)==pre['parent_preflight_sha256'] and H(dst)==pre['source_sha256'],'input changed');obs.update({'status':'PASS_SUPPLIED_MARKED_WORD_AUTHOR_EXPLORATION','object_sha256':H(obj),'axiom_reports':reports,'scope':pre['scope']});(OUT/'RESULT.json').write_text(json.dumps(obs,indent=2,sort_keys=True)+'\n');print(obs['status'],flush=True)
+                                                                                                                                                                                                                                                                                                                                                                                                                ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/compact44-supplied-word-prep-01/run.py", line 7, in need
+    if not x:raise ValueError(m)
+             ^^^^^^^^^^^^^^^^^^^
+ValueError: compiler failed

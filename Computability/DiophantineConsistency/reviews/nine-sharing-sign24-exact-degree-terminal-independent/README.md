@@ -1,0 +1,3 @@
+# Independent sign24 exact-degree terminal audit
+
+Independent checker session 99989 exited 0 against author outer session 88484 (exit 0). The Lean client and final postflight succeeded, proving polynomial `totalDegree = 8` for the sign24 abstract expression at every integer port vector and for its current-port instance. Both reports list `[propext, Classical.choice, Quot.sound]`, with no warnings or `sorryAx`. The checker verified source, object, direct upper/lower bindings, monitored limits, 150 guards, overlay links and both independent bound audits, including the upper provider union. This is an exact degree theorem for the Lean expressions, not a binding to external JSON, coefficients, Jones construction or PDF.

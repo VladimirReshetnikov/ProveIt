@@ -1,0 +1,17 @@
+# Held generic cast-transfer author check
+
+The first single-stage attempt failed and is retained; a separately pinned retry passed its author check and passed independent post-run review. Its [source-reviewed](../../reviews/trace74-boundary-generic-cast-transfer-draft-independent/README.md) draft proposes transferring two finite Pell equations and positivity of the same natural slacks into any IΣ₁ model. It retains the explicit subtraction-cast and both finite-Pell assumptions. It does not instantiate the concrete seed or establish a graph zero.
+
+Preflight checks the [audited natural interval parent](../../reviews/trace74-boundary-natural-seed-result-independent/README.md), 2028 project objects, 81 outside objects, one stage and previously captured closures. Four inherited baseline source-ancestry limitations and outside/package/dynamic and external-file boundaries remain.
+
+- Runner SHA-256 `4c062c4ece52c2370433d0986d1dc17b421271164e98e5294038fa27ddb58a72`.
+- Outer supervisor SHA-256 `529ed7d8b86bf9916fb6c45754043ef35331775a4e29fb8cba0df4e7fee8b155`.
+- Read-only preflight terminal SHA-256 `c7d15e3e830c3252967a9029e9237f26370802ee2f8142ab0c0f4be9dc74b1ea`.
+- Nineteen runner controls SHA-256 `3039a0fb12e0cbed141db1cc6a6d302f3b0bef391a1b913f37831a5577a0afb2`.
+- Six supervisor controls SHA-256 `b969dc0bc71d82f6b00c653f5127ef30ade4c1e5d717db30b099e400169db0f0`.
+
+The [first prelaunch review](../../reviews/trace74-boundary-generic-cast-transfer-prelaunch-independent/README.md) gave scoped GO. Attempt01 returned actual outer exit 1: two rewrites could not match natural casts of 16/31 against model literals. Result SHA-256 `8210671e0ed901172a85a40af812f9d204131fb2c7945a4e8a3aea9b9c93c23f`; outer terminal SHA-256 `97127acb27ecbad1a621ed0e2e2302e17c391dfe160cca1cdce9109b51040b4f`. Its consequential `sorryAx` report is not an accepted theorem.
+
+The v2 source differs only by normalizing casts of 16/31 with `simp only [Nat.cast_ofNat] at hfirst hmain`. Its SHA-256 is `12bf33becbf32c489ea3f5fad836a2ac36c2ef54cd1140f2b4dc734dfb99c168`; fresh source plan SHA-256 `b73ea1937100cf025d289755b4ee296ef5b41c44e2aab2dcc6a89971acf800cd`; runner SHA-256 `ef9b1d390a107eb628284a743aa0218a3382ae1dada06320432fbb787a30cf98`; outer SHA-256 `818c31b17ec5f76fa5f8d57322381fd4be955710e9b90784145cf88101f9d783`. Read-only preflight SHA-256 `5092176abcfc6e6f7b121de9a65ffe2225443c854e01d0bf65e7a469a065609a`; 19 runner controls SHA-256 `b2da7594d5d49565207d1b032378b2a40ea00de5ae0606e84dba92d5735447d3`; six supervisor controls SHA-256 `e9cfbfbd8eada7cd928edc4919b7fab2c6a1c30ca1a51330d38292b7478e56d4`. The retry was subsequently run as described below.
+
+The [v2 prelaunch review](../../reviews/trace74-boundary-generic-cast-transfer-v2-prelaunch-independent/README.md) gave scoped GO. Attempt02 passed: actual outer session 60192 exited 0, with stable inputs/wrapper. Child result SHA-256 `ed4232c251d11d84e531b9d06a79f2e490dd3df8fb40f08e00cca6fcae107865`; outer terminal SHA-256 `027a818b8edadc367943fb6c17321a08e68566d1023649cc1e3e972241b4dfdf`; accepted object SHA-256 `ad8e889da06b36b6a6c906d012ca61c9e1c2cce58298be3c451cfd2108645520`. Lean reported `[propext, Classical.choice, Quot.sound]`. The [independent post-run audit](../../reviews/trace74-boundary-generic-cast-transfer-result-independent/README.md) passed, with the captured closure and provenance boundaries. The theorem remains conditional on the same explicit abstract natural Pell and subtraction-cast assumptions.

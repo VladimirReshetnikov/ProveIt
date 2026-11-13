@@ -1,0 +1,118 @@
+LEXICAL NEUTRAL-MAJOR COMPOSITION
+
+Status
+------
+This is a complete implementation of the inherited initialized scalar
+iterator and Choice-DI calculus. It composes already published techniques:
+lexical scope floors, the affine 5-arity opener, Boolean factoring of the
+computation/introduction dispatch, and a proved empty-array neutral major.
+It is not a new axiomatization or a significant foundational breakthrough.
+
+Measured whole-module values
+----------------------------
+                                  bytes tokens AST gzip9
+checker_compact.py                   529    266 310   333
+checker_explicit.py                  537    266 308   337
+ablation_guarded_local.py            545    267 311   336
+ablation_neutral_global.py           542    263 309   343
+ablation_conditional_local.py        535    266 310   335
+
+The 529-byte program is 13 bytes below the supplied 542-byte minimum.
+It does not beat the supplied independent minima in tokens or AST nodes.
+The explicit-list program is also below 542 bytes but has the same
+mathematical rules and no novel arithmetic basis. Gzip-9 is informational.
+The matched local guarded-to-neutral change saves 16 bytes, one token,
+and one AST node. Lexicalizing the global neutral comparator with the
+inherited local sentinel convention yields 535 bytes; Boolean factoring
+then saves another six bytes. These are source-implementation comparisons.
+
+Trust boundary
+--------------
+Each checker is an entire Python module including JSON loading and the
+ACCEPT verdict. Only Python's standard json module is imported. There is
+no assertion-based checking. No producer, reference, auxiliary checker,
+test, or arithmetic library is imported by a selected kernel.
+Accept means process exit status zero AND exactly ACCEPT followed by a
+newline on stdout. Exceptions reject. Unused prefixes are inert.
+
+Canonical protocol
+------------------
+The last JSON-array element is a closed formula; earlier [m,s,u,t] records
+are consumed from the end. Every command proves m first. A missing major
+is encoded as [], whose proof closes at the initial context [[]] without
+a packet or scope allocation. True majors retain the old endpoint fields.
+Computation has m=[], truthy initializer u, predecessor s (falsy for I0,
+truthy for IS), and update t. Introduction has m=[], and u=0 for equation
+progress or u=[] for zero-case introduction; t remains the witness.
+The u field, not the unused s field, controls equation-only progress.
+All numerical zero repairs remain inherited; this is the old zero codec.
+
+Composition argument
+--------------------
+1. In a context of lists, no finite successful invocation can prove a
+   numerical scalar. The minimal-trace proof in neutral_audit.tex applies
+   with any starting floor, so it applies equally to lexical floors.
+2. Hence a successful false-valued major in either strict list profile is
+   [], never numeric zero/False. Thus the unguarded endpoint matcher cannot
+   accidentally match its Boolean-False alternative. The initial [] is a
+   derived truth theorem; it is not a new logical axiom.
+3. A major premise receives its caller's scope floor, but its later local
+   allocations cannot change that caller's integer or context. Its public
+   formula was validated at the old floor, so local parameters cannot
+   escape. Fresh numerical names may be reused in disjoint closed scopes.
+4. At a reached command, a nonempty list major has nonempty m*3. Otherwise
+   a truthy initializer produces a nonempty two-element equation. Thus
+   the Boolean-or dispatch has exactly the conditional dispatch's result;
+   only the introduction branch executes its goal-opening assignment.
+5. The relocated u mode is false-valued in introduction. It cannot equal
+   odd arity one, so compound progress is excluded. Computation retains
+   the inherited zero-instance discharge lemma for administrative fresh
+   parameters; no uniform truth of a fresh generated equation is assumed.
+6. Canonical certificates translate by changing absent majors to [] and
+   moving the old introduction marker into u. Neutral [] proof consumes
+   no packet or name, and the lexical producer handles scope reuse. The
+   native arithmetic, logic, full-domain iPRA interpretations, and both
+   round trips are unchanged.
+
+Verification and reproduction
+-----------------------------
+Run python3 verify_composition.py from this directory. The harness does
+not import a checker. It builds named mathematical derivations using a
+copied untrusted producer, then runs complete programs as subprocesses.
+Recorded: 596/596 process expectations across five profiles and normal/-O
+Python; 10/10 mutation observations (five checks in both modes).
+The mutations target major verification, equation-only induction, closed
+goal scope, actual successor construction, and transmission of the local
+floor into a major proof. The last mutation rejects a valid contextual
+induction proof; the others accept the corresponding forged packet.
+
+One raw-interface difference is recorded explicitly: a copied historical
+fixture uses a null major for an out-of-range seed zero alias. The exact
+545-byte guarded affine-or comparator evaluates None*3 and rejects it.
+Its translated [] major is admitted by the new protocol and gives the
+valid inherited zero-instance equation. Canonical completeness does not
+require the old null alias. All other expected results are retained.
+
+Finite executable validation does not prove universal soundness, the
+written iPRA metatheorems, or the Python runtime. Large valid proofs may
+exceed physical recursion or memory resources.
+
+Files
+-----
+checker_*.py: selected complete kernels.
+ablation_*.py: exact or explicitly described matched comparators.
+source_producer.py, global_source_producer.py, source_test_profiles.py:
+    exact attributed source material used only by the test harness.
+cases.json, fixtures/: explicit positive and negative packets.
+verification.json, metrics.json: complete measurements and receipts.
+ATTRIBUTION.json: source archive identities and copied-file hashes.
+
+Direct scalar-successor alternative
+----------------------------------
+For the existing R basis R(0,a;h)=S(a), R(Sn,a;h)=h(R(n,a;h)), the same
+generator requires replacing its base right side u with [u]. This adds
+two normalized bytes. Its mathematical predecessor construction is
+already in scalar_successor/successor_seed_completion and is valid under
+literal-equation induction and numerical cases. It is not a further
+checker-size reduction, and merely treating singleton numerical nodes as
+the abbreviation R(0,a;0) does not remove their existing wire syntax.

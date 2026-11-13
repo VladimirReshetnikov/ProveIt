@@ -1,0 +1,5 @@
+# Independent result audit: first index at least six
+
+PASS for captured result. Author reports actual outer session 84186 exit 0/reaped. Terminal `7352176f862150a9ec0512b9010401a59d6055e70180c30e88fe4cb64a971518`; runner `21e02a9c506ce72de2de900776545f0d9cf5beb094c76445355fd5543fb92e13`; object `7b5727a7b3c873d2518522d77800d1be4dd718e844d23c6ed1291657c4346c0c`. Independently rehashed all 105 input pins, object and logs. Lean exit 0; two exact named reports each `[propext, Classical.choice, Quot.sound]`, stderr empty. Prelaunch independently checked parent pin map, configured selection of direct imports and 45 parent pinned oleans.
+
+For the same p/v, beta≥31, positive valuation, actual graph zero and explicit q≥2³⁰, any n satisfying the first-coordinate equation has n≥6. The existential result keeps that same n's coordinate and residue. This is not an unrestricted q theorem, exclusion of n≥6, guard or iPRA endpoint. Direct pins do not authenticate full serialized transitive/package ancestry or continuously stable resolution.

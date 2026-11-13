@@ -1,0 +1,3 @@
+# Independent failure audit: staged sign17 MC literal diagnostic
+
+Checker exit 0. Author outer session 74662 exited 1. Fifteen prerequisite stages and the separate literal declaration/reflexivity stage passed; the latter's report says the reflexivity theorem has no axioms. These 16 successful children were checked as part of a failed parent run. The final comparison compile exited -6 with stack overflow and no monitor stop, at sampled peak RSS 3,775,000,576 bytes. No comparison object, MC equality, or final postflight was produced. The successful literal declaration alone does not bind a Lean theorem to an external file.

@@ -1,0 +1,15 @@
+{
+  "status": "OBSERVED_FAILURE",
+  "tool": "functions.exec_command",
+  "session_id": null,
+  "exit_code": 1,
+  "stdout_prefix": [
+    "FAILED 1 1 PASS actual success and fresh-path guard",
+    "PASS preflight stop",
+    "PASS disk process group terminated",
+    "PASS budget process group terminated"
+  ],
+  "traceback_excerpt": "test_monitor.py line 18: return path.read_text().split(') ', 1)[1].split()[0] == 'Z'\nProcessLookupError: [Errno 3] No such process",
+  "source_sha256": "4852930267c4fb1a9eb7250b511c8bdc46771eb2e4c7492a720c3f82d97a5846",
+  "scope": "First repeated toy monitor control only; no real build. /proc read raced process reaping despite FileNotFoundError handling."
+}

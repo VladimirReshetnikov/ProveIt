@@ -1,0 +1,17 @@
+# Base-10 display of the 36-variable quartic candidate
+
+This separate [TeX file](equation.tex) and [two-page PDF](equation.pdf) present the [36-positive-variable, 153-operation, degree-4 candidate](../adaptive-square-sums36-factored-roots/README.md). They do not modify the maintained `equation.tex` or `equation.pdf`. The 36 input names use distinct descriptive `arg...` prefixes, avoiding collisions with fixed-recipe indices; the `G001` through `G153` symbols are intermediate polynomial abbreviations. The four fixed integers use the same current-2011 base-10 recipe and decimal seed as the maintained page; the fixed-constant section is copied byte for byte from the pinned source page.
+
+The final 155→153 step is an exact external polynomial identity. The prior variable reductions use external positive zero maps, with the 36→37 lift requiring nonnegative beta; the fixed current-2011 beta meets that condition. The historical 40-variable parent has an author-side standard-iPRA endpoint with documented provider qualifications. **The new 36-variable expression and maps have not been proved in Lean**, and neither external text extraction nor a PDF hash establishes formal semantics of document bytes. The formula is a candidate and does not prove ZFC consistency.
+
+`generate.py` derives the TeX gate assignments from the pinned 153-row DAG, assigns readable input names and sequential `G` abbreviations, and copies the existing base-10 constant section. `verify_display.py` independently checks all 153 TeX rows against the DAG and all 153 corresponding equations in extracted PDF text, checks that the 36 declared names are distinct, verifies the inherited constant section and each decimal seed line, and records two PDF pages with no overfull boxes. The local LaTeX run reports small-font size substitutions for the compact fixed-constant formulas. These checks are a source/text comparison, not a verified TeX interpreter or Lean binding.
+
+From this directory:
+
+```sh
+python3 -I -S -B generate.py | cmp - result.json
+pdflatex -no-shell-escape -interaction=nonstopmode -halt-on-error equation.tex
+python3 -I -S -B verify_display.py | cmp - render-result.json
+```
+
+`generate.py` without arguments is read-only; `generate.py --write` deterministically replaces the TeX and source receipt in this candidate directory only. Different LaTeX or PDF-tool versions can produce different PDF bytes or extraction.

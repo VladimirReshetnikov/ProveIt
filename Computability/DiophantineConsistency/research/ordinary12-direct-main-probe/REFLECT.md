@@ -1,0 +1,7 @@
+# Conditional negative-root reflection
+
+`DirectMainReflect.negative_reflection` proves in every IΣ₁ model that if `s≤ell`, `k≤ell`, `first²=1+ell*(ell+k)`, and `b*(ell+k+r)+b*first=(1+k*b)*Bt`, then `rnew=r+2*first` satisfies `s<rnew` and `b*(ell+k+rnew)=(1+k*b)*Bt+b*first`. Thus a negative root can be reflected to a positive root while increasing the witness above `s`. The separate `reflect_square` theorem proves the squared-residual identity over any commutative ring under the exact negative-sign equation.
+
+These are conditional algebraic results. No actual 89-operation graph, proof that its zeros satisfy the hypotheses, positivity-preserving graph transform, or full model equivalence is claimed. The positive branch has its own conditional packet in `PLUSBRANCH.md`.
+
+Attempt 01 failed on a small order inequality and a ring rewrite; it is retained. Attempt 02 passed without reported warnings. Source SHA-256 is `c12efd87915ed24372269689f3285c6cf014f8d66361c8b135ff6d11ff7425ed`, output object is `0af21cb089671d58ef36b4272feff3c0eb7d5441a657e88b0515f8e5314f0afe`. The first axiom report lists `propext`, `Classical.choice`, and `Quot.sound`; the ring identity lists `propext` and `Quot.sound`. The positive-branch and projection objects and selected 1,291-object union were pinned and rechecked. Package, dynamic, and source-to-object ancestry remain inherited rather than freshly rebuilt; resource samples and exact pins are in the receipt, and temporary paths may disappear.

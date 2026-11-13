@@ -1,0 +1,3 @@
+# Independent sign17 staged axis-binding retry terminal audit
+
+The independent checker exited 0. Author outer session 56113 exited 0; all seven stages and postflight passed. The inherited console label is stale; state and manifest list all seven. The audit checks source/object pins, logs, direct guards and overlays. The split modules establish the five stated shared-node identities on the corrected axis (input0=1, coordinate17=0, others X); final root/scale reports have standard axioms, no warnings or sorryAx. Na degree and the full polynomial lower bound remain separate. No Lean was rerun here.

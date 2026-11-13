@@ -1,0 +1,5 @@
+# Independent sign32 final four residuals terminal audit
+
+The state records a successful dependency scan and Lean compile; the author's separate record reports actual outer session 92407 exit 0. The checker validates source, object, logs, all 100 direct guards, 1,066 overlay links and exact group06 provider. Eight row-link reports are `[propext]`; four same-valuation evaluation reports are `[propext, Classical.choice, Quot.sound]`. Twelve linter warnings comprise eight unused `p` binders and four unused simp arguments.
+
+The checked statements identify old/new normalizedS2, V2minusY2, Na and scaledNs residuals at their exact list positions and show their evaluations agree under the lift in an IΣ₁ model. None needs the port-0 cast hypothesis. Together with earlier groups the individual residual identities have been checked, but their assembly, the complete zero-set bridge, numeric port binding and any endpoint remain separate work. No Lean replay was performed. The outer record is author-observed; guards are point-in-time and sampled monitoring does not establish a complete dynamic or transitive trace.

@@ -1,0 +1,7 @@
+# Indexed compact carry for the 80 graph
+
+`Direct80IndexedCarry.graph_indexed_carry` proves the actual positive 80 graph at the four explicit compact symbolic port equalities supplies the same positive N, radix/repunit and residual-power facts and the compact indexed `CarryInput` for the temporal word. The compact symbolic kernel-band identity discharges the preceding generic band theorem's kernel hypothesis. The carry result is an existing generic arithmetic theorem, now bound to the 80 graph's own unscaled v5 witness.
+
+This does not yet prove compact window decoding, the machine halt, converse, iPRA theorem, or the external decimal/PDF correspondence. `observations/indexedcarry-attempt01/` is a guarded author check that exited 0 without diagnostics, printing axioms `propext`, `Classical.choice`, `Quot.sound`. Its object `/tmp/tenpositive-80indexedcarry-whsowcdw/Direct80IndexedCarry.olean` has SHA-256 `017b655561ea6c9d9e16889aa4d3f863b69b39922466c522eaccda2b40419c91`. Selected project inputs and resource samples are pinned; inherited source/object, package and dynamic ancestry have not been independently authenticated, and there has been no independent Lean replay.
+
+**Payload boundary:** the explicit hypothesis `p 1 = paramKernel rho` uses the retained-original K. The retained 80-row JSON graph `equation_qcube_V2.json` uses a BFS-renamed K with a different recorded raw hash; no equality or decoding equivalence between them is established here. These results therefore do not yet apply to that JSON graph’s K.

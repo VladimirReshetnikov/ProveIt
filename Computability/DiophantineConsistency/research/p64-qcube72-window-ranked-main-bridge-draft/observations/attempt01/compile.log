@@ -1,0 +1,63 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-window-ranked-main-bridge-draft/FreeMainWindowRankedMain.lean:67:68: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 14 → V
+hv : ∀ (i : Fin 14), 0 < v i
+hz : InternalZero (P64QCube72Free.graph fun j => ↑(p j)).output v
+hq : 33 ≤ qval p v
+hMC : ↑(p 2) < ↑(p 0)
+hMF : ↑(p 3) < 2 * ↑(p 0)
+q : V := qval p v
+Y : V := yval p v
+X : V := v 8 * q
+a : V := aval p v
+c : V := cval p v
+R : V := FreeMainAuxNorm.rank p v
+hw : 0 < R ∧ ι R + 1 < ι q * (ι q * (ι q * ι q))
+g m : V
+left✝¹ :
+  (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7 *
+        ((↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) *
+      g =
+    (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7 *
+          ((↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) *
+        (v 8 * (↑(p 0) * v 0 + 1) +
+          (v 8 * (↑(p 0) * v 0 + 1) * ((↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) +
+              (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) *
+            ((v 10 + v 11) * ((↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) + v 10)) +
+      (4 *
+            (v 8 * (↑(p 0) * v 0 + 1) * ((↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) +
+              (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) +
+          3) *
+        v 13
+left✝ :
+  xcoord m
+      (v 8 * (↑(p 0) * v 0 + 1) * ((↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) +
+        (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) =
+    g
+right✝ :
+  ycoord m
+      (v 8 * (↑(p 0) * v 0 + 1) * ((↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) +
+        (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) =
+    (v 10 + v 11) * ((↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * (↑(p 0) * v 0 + 1) * v 7) + v 10
+hg : g * g = 1 + delta a * c * c
+Q : DiffRing V := ι q
+YY : DiffRing V := ι Y
+XX : DiffRing V := ι X
+CC : DiffRing V := ι c
+GG : DiffRing V := ι g
+RR : DiffRing V := ι R
+hQ : 0 ≤ Q
+hq1 : 1 ≤ Q
+hw1 : 1 ≤ ι (v 8)
+hs1 : 1 ≤ ι (v 7)
+ht1 : 1 ≤ ι (v 10)
+hu1 : 1 ≤ ι (v 11)
+hX : Q ≤ XX
+hQ3 : 0 ≤ Q * Q * Q
+hY : Q * Q * Q ≤ YY
+hY1 : 1 ≤ YY
+⊢ (ι (v 10) + ι (v 11)) * ι Y + ι (v 10) = (ι (v 10) + ι (v 11)) * YY + ι (v 10)
+'FreeMainWindowRankedMain.main_at_rank' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

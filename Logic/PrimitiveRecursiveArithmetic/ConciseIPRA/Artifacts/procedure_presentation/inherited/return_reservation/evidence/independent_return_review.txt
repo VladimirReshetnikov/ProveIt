@@ -1,0 +1,208 @@
+REVIEW ADDENDUM
+The supplied raw witness is checked only when its exposed slot occurs meaningfully. If unused, the semantic introduction chooses witness0 instead; all freshness claims below concern that effective witness. This qualification was confirmed by the separate report review and is incorporated in report.tex.
+
+# Independent review: reserving a fresh parameter on return
+
+## Reviewed programs and conclusion
+
+Reviewed `research/frontier_return_fresh.py`,
+`research/frontier_tokens240.py`, and `research/frontier_ast262.py`.
+The first two return `None`; the third returns the newly reserved integer.
+The latter two differ in the spelling of the mode expression and the return
+protocol, not in the represented public theorem set.
+
+**Conclusion:** the change has a sound universal proof on finite
+exact-integer/list proof trees, and preserves canonical public completeness
+through a renaming compiler.  It is not an exact identity of arbitrary raw
+certificate languages with the inherited checker: numerical parameter names
+and their allocation schedule change.  No arithmetic axiom is deleted.
+
+The code's initial bytes literal has been inspected through Python's AST:
+its value has length one and its sole element is integer zero.  Unpacking
+it into a context therefore supplies the same neutral formula as `[0]`.
+
+## 1. Operational facts
+
+The opener `i` is unchanged.  Its no-image mode validates meaningful term
+positions against the current global floor.  At a scalar formula position
+an out-of-range value can become zero; that is permitted by the inherited
+sorted reading, in which scalar formulas denote `0=0`.  Ignored annotations
+are not promoted to meaningful terms by this review.
+
+Every successful call of the candidate has this order:
+
+1. Read its three-field packet and evaluate the eager leaf preview at the
+   current floor.  Hypothesis membership and computation membership use
+   precisely the inherited shared-leaf test.
+2. If necessary, perform the goal-directed equality/closure rewrite, still
+   at the current floor.
+3. Prepare `s*3 or (a := i(*a,t,2))` **before** proving the major premise.
+   If `s` is truthy this only repeats syntax.  If `s` is false-valued this
+   opens the introduction at its witness in the old numerical scope.
+4. Run `c(g,s)`.  Its successful return has reserved a new global floor.
+5. With that reserved name as image (or zero in case mode), open the new
+   hypothesis, then open the successor target with `[k]`, and call the
+   continuation in the newly allocated context list.
+6. On every normal return, including a leaf, perform `k -= 1`.
+
+The context is never mutated.  The continuation uses `[*g,H]`, a new list;
+the major proof shares only the old immutable sequence of context elements.
+The only evolving shared state is the input stream and global integer `k`.
+
+In the `None` variant the expression `c(g,s) or k*mode` receives exactly the
+current floor because every normally returning `c` returns `None`.
+In the integer-return variant `c(g,s)*mode` receives the same value because
+the return statement follows the decrement and returns that current `k`.
+No opener changes `k`, so the new hypothesis and successor target use the
+same reserved level.
+
+## 2. Fresh-return invariant
+
+The global floor never increases.  If a call returns normally with value
+`k_out` in the global variable, then `k_out` is strictly less than every
+floor at which a scope-sensitive operation in that call or a descendant
+was performed.  Indeed all such operations precede the call's final
+decrement, and every intervening change was also a decrement.
+
+Therefore the numerical name `k_out` is absent from the meaningful free
+parameters of:
+
+* every previously validated live context formula;
+* the caller's goal, or its already validated rewritten goal;
+* an introduction matrix already opened at its witness at the caller's
+  entry floor;
+* the major formula just proved.
+
+The qualification "meaningful" is essential for arbitrary raw aliases.
+A future negative integer may occur in an ignored annotation or a scalar
+formula, but the sorted reading gives that occurrence no numerical free
+variable.  The standard floor-extension lemma applies: lowering the floor
+does not change the reading of a previously validated expression, outside
+the protected slot explicitly being opened.  At a meaningful term position,
+a future negative integer could not have passed the earlier no-image scan.
+
+This is exactly the freshness needed for the caller to consume `k_out` as
+its eigenparameter.  The extra level reserved after the outermost return
+is unused.  Other extra levels reserved while returning through a completed
+continuation are likewise harmless gaps in the numerical names.
+
+## 3. Soundness for every accepted promised input
+
+Prove soundness by induction on a finite successful call tree, using the
+inherited sorted decoding and auxiliary ordinary reading of the guarded
+calculus.  A call proves its decoded goal from the decoded context; its
+post-return reservation does not add any premise to that mathematical
+derivation.
+
+### Leaves
+
+If the validated goal belongs to the old context, use the hypothesis rule.
+If it equals the computed preview equation, use the inherited computation
+leaf lemma.  Both tests are unchanged.  Eager construction of the preview
+may reject a malformed packet even when a context hypothesis would suffice;
+it cannot turn a false theorem into a true membership.
+
+### Goal-directed equality or closure elimination
+
+The two template instances and the source-selected major are formed at the
+old floor, before proving the major.  The major's induction hypothesis and
+the continuation's induction hypothesis therefore supply the same premises
+as in the inherited proof of source-selected elimination.  The lower floor
+available afterwards preserves their readings.  The fresh-return invariant
+ensures that the newly opened numerical name is absent from the old goal
+and context.  Any neutral retained resource is removed by the inherited
+neutral-resource lemma.
+
+### Opening a paired major
+
+For a unary major `s=[B]`, triplication gives the closure body with one
+protected numerical slot fewer.  The major is proved before that slot is
+opened at the reserved name.  That name is fresh by Section 2, so the
+ordinary existential-elimination argument is valid.  If the raw major is
+not unary, its triplication has the inherited neutral reading; it does not
+create an unproved nontrivial assumption.  This includes true-valued scalar
+aliases, whose formula reading is truth.
+
+### Introduction
+
+For a genuine unary goal, the witness is validated and substituted at the
+entry floor before the neutral-major call.  The latter call may consume
+more input or, for a noncanonical false-valued alias, contain a larger
+successful proof; in every case its returning name is fresh for the
+already prepared matrix and witness.  An equation matrix receives the
+progress hypothesis and every other matrix receives the zero-row case
+hypothesis.  The successor row is then checked in the extended context.
+The inherited progress/cases argument proves the original paired formula.
+
+The false-valued raw sources in the promised alphabet are precisely integer
+zero and the empty list.  If a malformed raw introduction starts from an
+empty array goal, Python's star-call behavior may have a different argument
+shape, but the original goal has the neutral formula reading `0=0`; it
+cannot create a false public theorem.  Other mismatched argument counts or
+attempts to take the length of a scalar reject.  No soundness argument
+assumes that all raw aliases are canonical syntax.
+
+These cases prove that every accepted canonical closed guarded public goal
+has the same ordinary theorem reading as in the inherited checker.  Its
+bi-interpretation with full first-order iPRA therefore transfers on that
+public language.  The proof does not grant correctness for off-contract
+floats, objects, strings, Booleans, or other non-exact-integer/list input.
+
+## 4. Canonical completeness and the renaming compiler
+
+Start with an accepted canonical proof tree for the inherited shared-leaf
+global-floor checker.  Keep its branch structure and meaningful inference
+packets.  At any zero-source introduction use the canonical neutral major
+proof packet `[0,0,0]`; it is a leaf because zero is present in every context.
+
+Traverse the source tree in the actual checking order.  Maintain an injective
+order-preserving map from each previously allocated source negative name to
+its candidate negative name.  Immediately after compiling a major proof,
+the candidate has just returned with a reserved new `k`.  Map the source
+name allocated at the corresponding parent step to this `k`.  All source
+parameters allocated earlier, including parameters from completed subproofs,
+retain their mappings.  Additional candidate return decrements are simply
+unmapped gaps.
+
+Recoding replaces negative parameter leaves through this map, leaves zero
+and positive bound-slot coordinates unchanged, and preserves array shape.
+The map is injective and takes negative integers to negative integers, so
+canonical raw equality tests, source truthiness, constructors, and mode
+tests are preserved.  Opener substitution commutes with this recoding on
+canonical well-scoped inputs and images.  An introduction witness is opened
+before its neutral major; it uses only parameters whose mappings are
+already available.  A truthy major's preparation is only syntactic
+triplication and is independent of the current floor.
+
+Induction on the source tree now shows that the compiled candidate proof
+succeeds with the same public formula.  A closed public goal has no negative
+parameter names, so its final code is literally unchanged.  The compiler
+and its generated certificates are untrusted support artifacts; each
+generated proof must be replayed by the standalone candidate checker.
+
+Thus the new and old checkers represent exactly the same canonical public
+theorem set.  Their arbitrary raw acceptance languages and exact final
+floor values need not coincide.
+
+## 5. Two small implementation factors
+
+Replacing `1 if s else len(a)==2` by `bool(s or len(a)==2)` preserves its
+integer value, zero or one, and short-circuits the length test in precisely
+the same cases.  This equivalence holds for every promised exact-integer/list
+`s` on every successful path, not only for canonical sources.
+
+At module level, replacing the earlier initialization `k=0` and the opener
+default `d=0` by `def i(..., d=(k:=0))` is operationally exact, provided no
+earlier statement reads `k`.  Python evaluates the default once while
+executing the function definition.  It sets the global `k` to zero and
+stores integer zero as the default.  Later calls do not reevaluate that
+assignment.  This is a source-factoring observation, not an arithmetic
+or logical reduction.
+
+## Limits
+
+This is a written universal argument relative to the pinned sorted-decoder,
+leaf, and guarded-calculus soundness/completeness results.  It is not a new
+Lean/Rocq formalization.  Finite regression tests are additional evidence,
+not the proof.  Completeness concerns ideal finite computations without a
+fixed physical recursion-depth, memory, or integer-size cap.

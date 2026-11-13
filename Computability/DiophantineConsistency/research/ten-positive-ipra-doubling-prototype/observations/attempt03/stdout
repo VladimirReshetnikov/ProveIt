@@ -1,0 +1,33 @@
+/tmp/tenpositive-doubling-r1r9imgk/TenPositiveDoubling.lean:83:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  delta * (1 + 4 * a * (1 + a) - 1)
+in the target expression
+  let a := delta * U * U * E;
+  0 < delta * (1 + 4 * a * (1 + a) - 1)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+delta U E V0 d : V
+hq :
+  let a := delta * U * U * E;
+  0 < delta * (1 + 4 * a * (1 + a) - 1)
+hv :
+  let a := delta * U * U * E;
+  0 < delta * (1 + 4 * a * (1 + a) - 1) * V0 * V0
+hd :
+  let a := delta * U * U * E;
+  d ∣ E * (1 + a)
+hp :
+  let a := delta * U * U * E;
+  let Q := delta * (1 + 4 * a * (1 + a) - 1);
+  d ∣ (Q - 1) * (Q * V0 * V0 - 1)
+a : V := delta * U * U * E
+G : V := E * (1 + a)
+t : V := 4 * delta * delta * U * U
+hfactor : delta * (1 + 4 * a * (1 + a) - 1) = G * t
+⊢ d ∣ 1
+'TenPositiveDoubling.doubled_trace' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TenPositiveDoubling.doubled_divisibility_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TenPositiveDoubling.adjacent_unit_certificates' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TenPositiveDoubling.adjacent_product_coprime' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TenPositiveDoubling.doubled_radicands_coprime' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

@@ -1,0 +1,40 @@
+/tmp/free-j-adaptive-lift-author-bod5crnp/FreeJAdaptiveLift.lean:68:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ι (v 5) * ι (v 6) * (1 + Expr.evalRing (fun j => ι (v j)) (core p).qm)
+in the target expression
+  Expr.evalRing (fun j => ι (v j)) (core p).u *
+        (ι (v 5) + Expr.evalRing (fun j => ι (v j)) (core p).a * Expr.evalRing (fun j => ι (v j)) (core p).c) +
+      (↑3 + ↑4 * Expr.evalRing (fun j => ι (v j)) (core p).a) *
+        (Expr.evalRing (fun j => ι (v j)) (core p).u * ι (v 11) +
+            ι (v 5) * ι (v 6) * (↑1 + Expr.evalRing (fun j => ι (v j)) (core p).qm) -
+          Expr.evalRing (fun j => ι (v j)) (shiftExpr p)) =
+    Expr.evalRing (fun j => ι (v j)) (core p).u *
+      (ι (v 5) + Expr.evalRing (fun j => ι (v j)) (core p).a * Expr.evalRing (fun j => ι (v j)) (core p).c +
+        gammaOld * (4 * Expr.evalRing (fun j => ι (v j)) (core p).a + 3))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 12 → V
+w gammaOld : DiffRing V
+hX : ι (v 5) = (1 + Expr.evalRing (fun j => ι (v j)) (core p).qm) * w
+hlift :
+  Expr.evalRing (fun j => ι (v j)) (core p).u * ι (v 11) + Expr.evalRing (fun j => ι (v j)) (core p).u * w =
+    Expr.evalRing (fun j => ι (v j)) (core p).u * gammaOld + Expr.evalRing (fun j => ι (v j)) (shiftExpr p)
+hqE :
+  ι (v 5) * ι (v 6) * (1 + Expr.evalRing (fun j => ι (v j)) (core p).qm) =
+    Expr.evalRing (fun j => ι (v j)) (core p).u * w
+hlift' :
+  Expr.evalRing (fun j => ι (v j)) (core p).u * ι (v 11) + Expr.evalRing (fun j => ι (v j)) (core p).u * w -
+      Expr.evalRing (fun j => ι (v j)) (shiftExpr p) =
+    Expr.evalRing (fun j => ι (v j)) (core p).u * gammaOld
+⊢ Expr.evalRing (fun j => ι (v j)) (core p).u *
+        (ι (v 5) + Expr.evalRing (fun j => ι (v j)) (core p).a * Expr.evalRing (fun j => ι (v j)) (core p).c) +
+      (↑3 + ↑4 * Expr.evalRing (fun j => ι (v j)) (core p).a) *
+        (Expr.evalRing (fun j => ι (v j)) (core p).u * ι (v 11) +
+            ι (v 5) * ι (v 6) * (↑1 + Expr.evalRing (fun j => ι (v j)) (core p).qm) -
+          Expr.evalRing (fun j => ι (v j)) (shiftExpr p)) =
+    Expr.evalRing (fun j => ι (v j)) (core p).u *
+      (ι (v 5) + Expr.evalRing (fun j => ι (v j)) (core p).a * Expr.evalRing (fun j => ι (v j)) (core p).c +
+        gammaOld * (4 * Expr.evalRing (fun j => ι (v j)) (core p).a + 3))
+'FreeJAdaptiveLift.main_lift_identity' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

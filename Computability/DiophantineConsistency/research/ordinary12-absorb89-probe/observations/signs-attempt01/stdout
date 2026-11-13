@@ -1,0 +1,81 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/direct-main-projection-9o8h4qdo/Absorb89Signs.lean:69:34: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 12 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 12), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+b : V := v 0 * ↑(p 0)
+q : V := 1 + b
+X : V := q * v 5
+Y : V := q * (q * q) * v 6
+k : V := v 8 + v 9
+Q : V := X * Y * Y
+ell : V := X * Y * (Y * k)
+W : V := 1 + k * b
+A : V := ↑(p 1) + v 5
+Bp : V := q * A
+Bn : V := (v 1 + v 2) * A + v 1
+Bt : V := q * (Bp - Bn)
+zp : Pair V := (b * (ell + k + v 7) + Bn * (W * q), Bp * (W * q))
+hb0 : 0 < b
+hq : 0 < q
+hBt : Bn < Bp
+hB : Bp = Bn + (Bp - Bn)
+hBtpos : 0 < Bt
+first : V
+hfirst : 0 < first
+hroot : magnitude (pairEval (firstParts (integerPorts p)).1 v) = v 0 * ↑(p 0) * first
+hnorm :
+  first * first =
+    1 +
+      (1 + v 0 * ↑(p 0)) * v 5 * ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * v 6) *
+              ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * v 6) *
+            ((1 + v 0 * ↑(p 0)) * v 5 * ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * v 6) *
+                ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * v 6) +
+              1) *
+          (v 8 + v 9) *
+        (v 8 + v 9)
+hmag : magnitude zp = b * first
+⊢ Bn * W * q + (Bp - Bn) * W * q = Bn * W * q + W * q * (Bn + (Bp - Bn) - Bn)
+/tmp/direct-main-projection-9o8h4qdo/Absorb89Signs.lean:81:30: error: Type mismatch: After simplification, term
+  hh
+ has type
+  b * (v 7 + (k + ell)) + Bn * (W * q) = Bn * (W * q) + (b * first + W * Bt)
+but is expected to have type
+  ?m.701 +
+      v 0 * ↑(p 0) *
+        (v 7 +
+          (v 8 + v 9 +
+            (1 + v 0 * ↑(p 0)) * v 5 * ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * v 6) *
+              ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * v 6 * (v 8 + v 9)))) =
+    ?m.701 +
+      (v 0 * ↑(p 0) * first +
+        (1 + (v 8 + v 9) * (v 0 * ↑(p 0))) *
+          ((1 + v 0 * ↑(p 0)) * ((1 + v 0 * ↑(p 0)) * (↑(p 1) + v 5) - (v 1 + (v 1 + v 2) * (↑(p 1) + v 5)))))
+/tmp/direct-main-projection-9o8h4qdo/Absorb89Signs.lean:86:6: error: Tactic `simp` failed with a nested error:
+(deterministic) timeout at `«Lean.Meta.acLt»`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/tmp/direct-main-projection-9o8h4qdo/Absorb89Signs.lean:82:2: error: (deterministic) timeout at `«tactic execution»`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+/tmp/direct-main-projection-9o8h4qdo/Absorb89Signs.lean:30:8: error: (deterministic) timeout at `isDefEq`, maximum number of heartbeats (200000) has been reached
+
+Note: Use `set_option maxHeartbeats <num>` to set the limit.
+
+Hint: Additional diagnostic information may be available using the `set_option diagnostics true` command.
+'Absorb89Signs.magnitude_cases' depends on axioms: [propext, Classical.choice, Quot.sound]
+/tmp/direct-main-projection-9o8h4qdo/Absorb89Signs.lean:90:14: error(lean.unknownIdentifier): Unknown constant `Absorb89Signs.first_branches`

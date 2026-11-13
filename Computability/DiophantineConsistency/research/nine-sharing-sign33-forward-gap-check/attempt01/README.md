@@ -1,0 +1,7 @@
+# Generic forward gap representative connection checked
+
+Author-observed outer session `75897` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `f14fcd947acbf345ee0a7cac667d6168794bc830a7ee5870f33e3a7b486a94b9`; before and after provider surveys both hash to `343a9ae6bc95dd44da13a941f7cf9a0f9bf7cab005d108d2368fd0f99d36b49f`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ForwardGap` compiled in 5.817 seconds; object SHA-256 `e35f9ca9bc90675ed64d25c28c3abbc4b203ddb3a6e5a3af6abb6e82ab74f795` at `/tmp/nine-sharing-sign33-forward-gap-check-20261106/lib/DiophantineConsistency/Sign33ForwardGap.olean`, compile log `dbaf69c80fbcc53de7964961cd4f0c314eb1bb471abe37dd982b10698d88bdbc`. The axiom report lists `[propext, Classical.choice, Quot.sound]`; four simp/tactic linter warnings were retained. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,916,253,696 bytes and minimum sampled available host memory was 18,926,039,040 bytes; sampling has the stated limitations.
+
+The theorem is conditional on the explicitly stated generic core gap representative. It does not itself apply the current-source representative theorem, prove other signed fields or norms, construct source-to-seed witnesses, prove Lean external JSON binding, or establish a sign33 iPRA endpoint. Inherited provider and numeric-exit limitations remain as in the parent README.

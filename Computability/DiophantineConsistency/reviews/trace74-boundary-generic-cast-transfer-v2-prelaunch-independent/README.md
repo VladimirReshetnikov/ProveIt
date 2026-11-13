@@ -1,0 +1,9 @@
+# Independent prelaunch review: generic cast-transfer retry
+
+Scoped GO for one coordinated retry using `research/trace74-boundary-generic-cast-transfer-rebuild/run-v2.py` SHA `ef9b1d390a107eb628284a743aa0218a3382ae1dada06320432fbb787a30cf98` and `run-outer-v2.py` SHA `818c31b17ec5f76fa5f8d57322381fd4be955710e9b90784145cf88101f9d783`. No Lean replay was performed in this review.
+
+Prior attempt01 result `8210671e0ed901172a85a40af812f9d204131fb2c7945a4e8a3aea9b9c93c23f` and outer terminal `97127acb27ecbad1a621ed0e2e2302e17c391dfe160cca1cdce9109b51040b4f` record Lean exit 1 with two numeral-cast rewrite failures and a rejected `sorryAx` report. The revised source SHA `12bf33becbf32c489ea3f5fad836a2ac36c2ef54cd1140f2b4dc734dfb99c168` differs only by adding `simp only [Nat.cast_ofNat] at hfirst hmain`; theorem assumptions and conclusion remain identical. The failed attempt is retained and excluded.
+
+We checked the audited 2,028-object parent and outer, source plan `b73ea1937100cf025d289755b4ee296ef5b41c44e2aab2dcc6a89971acf800cd`, preflight `5092176abcfc6e6f7b121de9a65ffe2225443c854e01d0bf65e7a469a065609a` (2,028/81/1), direct recurrence provider and all outside companion first selections. Nineteen actual-function controls passed on copies; independent copied-wrapper tests rejected altered runner bytes before creating observations and a stub FAILED child, and accepted a stub PASS. Full union/input/source, no-clobber, resource and ten inherited closure guards remain as reviewed before the first run.
+
+The shared x/y/eta/zeta tuple, eta/zeta positivity, first-offset subtraction-cast premise and two natural Pell equations are explicit. No finite seed, graph zero, fixed port or iPRA conclusion follows from this prelaunch review. Four baseline source ancestries, outside/package/dynamic ancestry and external-file binding remain outside scope; actual execution and independent post-audit remain necessary.

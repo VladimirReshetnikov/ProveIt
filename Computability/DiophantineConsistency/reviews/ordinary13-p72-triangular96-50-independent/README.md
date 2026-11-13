@@ -1,0 +1,9 @@
+# Independent review of the 96/50 and 97/50 triangular residuals
+
+Both proposed graphs pass source-level review. Their schedules have respectively 96 and 97 live binary operations, preserve all 13 positive inputs and four fixed ports, and use the explicitly disclosed extra fixed-derived leaf `L2=L²`. The stated operation counts assume integer leaves derived from fixed ports are free; charging the computation of L² adds one operation. The pinned parent proof identifies the earlier 93-operation, degree-34 P72 predecessor, so these two points are dominated under the stated metric; that predecessor's foundational proof was not rebuilt here.
+
+An independent exact sparse-polynomial check evaluates the actual parent and both proposed graph tails using shared symbolic cuts. It verifies `b² Aa_new = Aa_old + Delta*gap*As_old`, `As_97=As_old`, and `As_96=Delta*As_old`, as well as both factored gap and the complete four-square outputs. Since fixed `b²>0` and `Delta=(a+2)²−1>0` on the positive-input domain, the four residuals vanish simultaneously in either graph exactly when those of the parent vanish, at the same input valuation. A sum of integer squares vanishes exactly when every residual vanishes.
+
+All four fixed ports were checked against their authenticated compressed and raw hashes and interpreted using the stated little-endian convention. Independent syntactic propagation gives degree at most 50 for both graphs. A different weighted affine ray through the 13 variables has nonzero degree-50 coefficient modulo 1,000,000,007 for each complete graph, proving the actual fixed-byte integer degree is exactly 50. The author receipt also reproduces byte for byte.
+
+This is an external graph and algebra check, not a new Lean theorem, proof of the parent foundational ancestry, or JSON/PDF semantics binding. From the repository root run `python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary13-p72-triangular96-50-independent/check.py`.

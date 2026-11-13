@@ -1,0 +1,62 @@
+Independent review of the safe native and strict candidates
+=========================================================
+
+Reviewed source: calculus_work/strict/checker_strict606.py and
+calculus_work/strict/checker_native579.py.
+
+The root goal is traversed with v=1 before the membership tuple assigns v=0.
+This ordering is essential: it validates the public native Eq/D grammar but
+permits the more generous auxiliary raw syntax during proof checking. The
+generated computation is constructed only after this reset. The tuple's new
+scalar zero is a neutral formula, not a new numerical equation.
+
+For the full-input candidate, the printed-form alphabet gate admits only the
+integer/list JSON alphabet. A scalar JSON root has no pop method, and quoted
+strings, objects, booleans, floats, null, NaN and Infinity in a list retain
+characters outside the allowed alphabet. Malformed unused prefixes are
+therefore excluded in this profile. The native candidate has a different
+contract: its goal is checked, but its certificate alphabet is promised.
+
+The compound introduction issue was specifically checked. The selector is
+len(a) == 2 == u; it cannot enable induction on a Q or D matrix. This is the
+full native basis with both equation cases and equation progress, unlike the
+guarded public-language compact programs. The literal mode 2 is proof data,
+not an arithmetic symbol added to the theory. The zero code remains 1.
+
+O+ does not fix arbitrary raw annotations. The candidate's proof correctly
+uses only meaningful decoded positions and the semantic opening lemma.
+When its output matches a generated computation H, numerical positions of
+H inherit valid scope. In the successor branch, any meaningful use of the
+iterator state forces validation of the substituted recursive source; when
+the state is not used, successor computation has the constant right side.
+This avoids the invalid claim that every raw output is an idempotent fixed
+point of O+.
+
+The remaining nonleaf code preserves the old-context major check, local scope
+floor, immutable context, and the source-selected equality/QE replacement.
+Ordinary canonical proof completeness can use the old source compilation,
+direct computation leaves, a harmless computation packet at hypothesis leaves,
+and the explicit marker 2 for literal-equation progress. No new assumption is
+needed to identify numerical zero codes.
+
+Independent execution of verify_new.py reproduced 172 normal/optimized runs
+with zero unexpected outcomes. Independent CPython 3.12.14 measurement gives:
+  strict: 334 tokens, 379 AST nodes, 606 normalized bytes;
+  native: 328 tokens, 373 AST nodes, 579 normalized bytes.
+The exact controls have respectively 334/378/608 and 328/372/581.
+The measurements and normalized hashes are in independent_safe_metrics.json.
+
+These are byte improvements in their respective validation classes. Neither
+improves its control's AST count, and neither beats the separate compact
+469-byte frontier. No universal minimality or new arithmetic axiom deletion
+has been established. The finite tests are evidence, not formal verification
+of the complete Python semantics or of bi-interpretability.
+
+Two tempting compact changes were not accepted:
+1. Replacing the mode by truthiness of a[1:] enables progress on Q matrices.
+   Reading Q as only a root-level clause does not repair it: source-zero Use
+   can have a Q-rooted template, where a vacuous major under that reading
+   would allow an invalid change from Q(B(0)) to Q(B(t)).
+2. Slicing a computation source s[:1] saves one byte, but its empty counter
+   is [] while introduction still supplies the scalar 0. The missing proof
+   of agreement between these raw zero aliases prevents a completeness claim.

@@ -1,0 +1,907 @@
+{
+  "exception": "RuntimeError('stage failed Trace74BoundarySeedConditional')",
+  "headers": [],
+  "inherited_baseline_four": [
+    "DiophantineConsistency.ModelArithmetic",
+    "DiophantineConsistency.ModelExponentialCongruence",
+    "PellOddFold",
+    "PellRecovery"
+  ],
+  "initial_union_sha256": "5e4731ca54875f901b31e9e5c61dc0459d76ab7eec680e3dd047fc13dd6d9135",
+  "inputs": {
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/direct-bfs-80-coherent-rebuild/observations/attempt01/initial-project.json": "a89c775deee5d7f846e85936f2321c1e91d3d5fd51c62b153c2b2dd8e8540f88",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/direct-bfs-80-coherent-rebuild/observations/attempt01/outside-baseline.json": "5ed42b353836c0cae01a838b701347c7a2c9cc84318e893fbe5c4ae0c7c0b777",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/direct-bfs-80-coherent-rebuild/observations/attempt01/result.json": "ca79d2e68509999cb2a6cd43759e31d656796f09719239c0adac259b7cadb559",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact12-ipra-all-project-import-inventory/ReadObjectImports.lean": "886d46d27a94d512e47c4fe571654e4a432ab536f995b52bd1300324678fc10f",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-compatible-rebuild/observations/attempt03/initial-union.json": "51971114f009b6534daf594da16d869ac20b3c71402a9615547dbffa313e838e",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-compatible-rebuild/observations/attempt03/result.json": "aa17ffeb0a2446d44392d986af54a9cd687dd544c67dc145a87c77f600e7a2d3",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-compatible-rebuild/observations/outer-attempt03/terminal.json": "2493accc873ec46391494ef5125de3b61d460b4bef61fb56f54f966ccbc036d0",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-witness-plan/observations/plan-attempt01/result.json": "25c93f7ad9856a589304ae8bc2a693e51c4a5b9fd2aa01c804f434a2aefd4303",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace75-bfs-compatible-provider-plan/observations/plan-attempt01/result.json": "0a53a6330b8c45fa1830f21b2babc3847f9a46014a33f8db56578a8f9da00088",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace75-bfs-compatible-reverse-plan/observations/outside-attempt01/result.json": "8847a09fb7925816ab7ceaab0d61a12c0b814b2a7571daae32ea1f510c779016",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace75-bfs-compatible-reverse-plan/observations/source-plan-attempt01/result.json": "369d06ba5bd50b038d7279324819bcb76bb45e7bc8c0c1ff727eccb3c32c86af",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace75-mask-coordinate-ring-probe/observations/ring-attempt02/source.txt": "83ad7a62d50b10104099d8769c201c5514ed3afdabcf30ce1df8f4bb7774b7f0",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace75-mask-coordinate-ring-probe/observations/ring-attempt02/stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace75-mask-coordinate-ring-probe/observations/ring-attempt02/stdout": "916d40ebaa640125ae59cb04c032c54e7b9ddf81abbc74b8773e5a2a36e7e355",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace75-mask-coordinate-ring-probe/observations/ring-attempt02/terminal.json": "4be85ee6a9e08695c3f67e1d1154108cdb601308ac4c1da46b6f4a24e9559fc9",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/trace74-boundary-compatible-result-independent/README.md": "cfce71fa601910a41c86106b8421ddff024d906a711ae02ab5de3c61abc2e14b",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/trace74-boundary-witness-draft-independent/README.md": "e7b221e58721eefc36f537b84dc1fc5fc9d28ce71df02bee725285682df2a66e",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/trace75-bfs-final-assembly-result-independent/README.md": "d99de3ef2a5bd0b08af624e2421f4cc10f6eb9a9886eb67a94016a237d6b2c6b",
+    "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550"
+  },
+  "output_root": "/tmp/trace74-boundary-witness-88jx_gx6",
+  "postflight": {
+    "lean": [],
+    "mem_available_kib": 18671576,
+    "time_ns": 1793741131320767673
+  },
+  "preflight": {
+    "lean": [],
+    "mem_available_kib": 18632696,
+    "time_ns": 1793740974205493346
+  },
+  "runner_sha256": "14a9268298a5425521dacce7aec1b16524c36e8a27d63d38b9f6fe128c4c9f4c",
+  "scope": "capture-relative 5-stage exploratory witness-preserving draft check; four retained nodes source ancestry, transitive outside/package/dynamic ancestry and external equation-file binding remain unproved; no concrete 74 zero, fixed-port conclusion, or iPRA endpoint",
+  "stage_order": [
+    "Trace74BoundaryParentWitness",
+    "Trace74BoundaryPartsWitness",
+    "Trace74BoundaryNaturalWitness",
+    "Trace74BoundaryGraphWitness",
+    "Trace74BoundarySeedConditional"
+  ],
+  "stages": [
+    {
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/trace74-boundary-witness-88jx_gx6/src",
+        "/tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryParentWitness.lean",
+        "-o",
+        "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean"
+      ],
+      "elapsed": 8.075937948189676,
+      "env": {
+        "LEAN_NUM_THREADS": "1",
+        "LEAN_PATH": "/tmp/trace74-boundary-witness-88jx_gx6/lib:/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+        "PATH": "/usr/bin:/bin"
+      },
+      "exit": 0,
+      "index": 1,
+      "module": "Trace74BoundaryParentWitness",
+      "object": {
+        ".ilean": null,
+        ".ilean.hash": null,
+        ".ir": null,
+        ".ir.hash": null,
+        ".olean": {
+          "link": null,
+          "path": "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean",
+          "resolved": "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean",
+          "sha256": "3c23317ef0c00227cf89a94a9835f0c633cebdf4c8d6e168c22bbf0ae683107b"
+        },
+        ".olean.hash": null,
+        ".olean.private": null,
+        ".olean.private.hash": null,
+        ".olean.server": null,
+        ".olean.server.hash": null
+      },
+      "postflight": {
+        "lean": [],
+        "mem_available_kib": 18687316,
+        "time_ns": 1793741002416040020
+      },
+      "preflight": {
+        "lean": [],
+        "mem_available_kib": 18641608,
+        "time_ns": 1793740994340100372
+      },
+      "reason": null,
+      "samples": [
+        {
+          "lean": [
+            "4033685 lean            1791080 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryParentWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean"
+          ],
+          "mem_available_kib": 18577300,
+          "time_ns": 1793740995348609099
+        },
+        {
+          "lean": [
+            "4033685 lean            2019072 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryParentWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean"
+          ],
+          "mem_available_kib": 18503188,
+          "time_ns": 1793740996356526120
+        },
+        {
+          "lean": [
+            "4033685 lean            2027392 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryParentWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean"
+          ],
+          "mem_available_kib": 18398268,
+          "time_ns": 1793740997365503756
+        },
+        {
+          "lean": [
+            "4033685 lean            2030304 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryParentWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean"
+          ],
+          "mem_available_kib": 18394808,
+          "time_ns": 1793740998373897685
+        },
+        {
+          "lean": [
+            "4033685 lean            2032296 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryParentWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean"
+          ],
+          "mem_available_kib": 18392548,
+          "time_ns": 1793740999385352253
+        },
+        {
+          "lean": [
+            "4033685 lean            2034820 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryParentWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean"
+          ],
+          "mem_available_kib": 18474704,
+          "time_ns": 1793741000393399081
+        },
+        {
+          "lean": [
+            "4033685 lean            2035668 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryParentWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryParentWitness.olean"
+          ],
+          "mem_available_kib": 18473876,
+          "time_ns": 1793741001401461810
+        },
+        {
+          "lean": [
+            "4033685 lean <defunct>      0 [lean] <defunct>"
+          ],
+          "mem_available_kib": 18687316,
+          "time_ns": 1793741002409350439
+        }
+      ],
+      "source": "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-witness-draft/Trace74BoundaryParentWitness.lean",
+      "source_sha256": "dc780057f82b0984ed59c83803d1cef4a457130f9cb4817e73ce4c4eb05d94e3",
+      "status": "PASS",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "40b36bd822082166c3a2311305819c232a4a953dfa8b548ce77c9822dc5bf4b2"
+    },
+    {
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/trace74-boundary-witness-88jx_gx6/src",
+        "/tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryPartsWitness.lean",
+        "-o",
+        "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryPartsWitness.olean"
+      ],
+      "elapsed": 3.032123246230185,
+      "env": {
+        "LEAN_NUM_THREADS": "1",
+        "LEAN_PATH": "/tmp/trace74-boundary-witness-88jx_gx6/lib:/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+        "PATH": "/usr/bin:/bin"
+      },
+      "exit": 0,
+      "index": 2,
+      "module": "Trace74BoundaryPartsWitness",
+      "object": {
+        ".ilean": null,
+        ".ilean.hash": null,
+        ".ir": null,
+        ".ir.hash": null,
+        ".olean": {
+          "link": null,
+          "path": "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryPartsWitness.olean",
+          "resolved": "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryPartsWitness.olean",
+          "sha256": "8db95528d07b2af6097523673121dced31aa29513b32e06573d077b2ea8436d7"
+        },
+        ".olean.hash": null,
+        ".olean.private": null,
+        ".olean.private.hash": null,
+        ".olean.server": null,
+        ".olean.server.hash": null
+      },
+      "postflight": {
+        "lean": [],
+        "mem_available_kib": 18662648,
+        "time_ns": 1793741018447273313
+      },
+      "preflight": {
+        "lean": [],
+        "mem_available_kib": 18647252,
+        "time_ns": 1793741015415148167
+      },
+      "reason": null,
+      "samples": [
+        {
+          "lean": [
+            "4033782 lean            1796072 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryPartsWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryPartsWitness.olean"
+          ],
+          "mem_available_kib": 18554816,
+          "time_ns": 1793741016423768022
+        },
+        {
+          "lean": [
+            "4033782 lean            2021780 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryPartsWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryPartsWitness.olean"
+          ],
+          "mem_available_kib": 18487988,
+          "time_ns": 1793741017431829473
+        },
+        {
+          "lean": [
+            "4033782 lean <defunct>      0 [lean] <defunct>"
+          ],
+          "mem_available_kib": 18662648,
+          "time_ns": 1793741018439554520
+        }
+      ],
+      "source": "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-witness-draft/Trace74BoundaryPartsWitness.lean",
+      "source_sha256": "808a5a1eb21284da2bd634ea2db4bf47f35c9c113fa3883fde3f55fdab8e7592",
+      "status": "PASS",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "32da23b09ac3ebe5fd09d9dbc093902a3a2c3560cebc24c15e8064c04cdfe286"
+    },
+    {
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/trace74-boundary-witness-88jx_gx6/src",
+        "/tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryNaturalWitness.lean",
+        "-o",
+        "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean"
+      ],
+      "elapsed": 9.080924768932164,
+      "env": {
+        "LEAN_NUM_THREADS": "1",
+        "LEAN_PATH": "/tmp/trace74-boundary-witness-88jx_gx6/lib:/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+        "PATH": "/usr/bin:/bin"
+      },
+      "exit": 0,
+      "index": 3,
+      "module": "Trace74BoundaryNaturalWitness",
+      "object": {
+        ".ilean": null,
+        ".ilean.hash": null,
+        ".ir": null,
+        ".ir.hash": null,
+        ".olean": {
+          "link": null,
+          "path": "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean",
+          "resolved": "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean",
+          "sha256": "2a38b0c28d52b517a02878e6412f3c8862710c9329dcc1e4f582301759b32f82"
+        },
+        ".olean.hash": null,
+        ".olean.private": null,
+        ".olean.private.hash": null,
+        ".olean.server": null,
+        ".olean.server.hash": null
+      },
+      "postflight": {
+        "lean": [],
+        "mem_available_kib": 18704400,
+        "time_ns": 1793741040628144610
+      },
+      "preflight": {
+        "lean": [],
+        "mem_available_kib": 18660928,
+        "time_ns": 1793741031547217941
+      },
+      "reason": null,
+      "samples": [
+        {
+          "lean": [
+            "4033800 lean            1865016 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryNaturalWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean"
+          ],
+          "mem_available_kib": 18546580,
+          "time_ns": 1793741032555908518
+        },
+        {
+          "lean": [
+            "4033800 lean            2092764 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryNaturalWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean"
+          ],
+          "mem_available_kib": 18477184,
+          "time_ns": 1793741033564125390
+        },
+        {
+          "lean": [
+            "4033800 lean            2095160 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryNaturalWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean"
+          ],
+          "mem_available_kib": 18476684,
+          "time_ns": 1793741034572576567
+        },
+        {
+          "lean": [
+            "4033800 lean            2097144 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryNaturalWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean"
+          ],
+          "mem_available_kib": 18491428,
+          "time_ns": 1793741035580766341
+        },
+        {
+          "lean": [
+            "4033800 lean            2102248 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryNaturalWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean"
+          ],
+          "mem_available_kib": 18490288,
+          "time_ns": 1793741036588906316
+        },
+        {
+          "lean": [
+            "4033800 lean            2103668 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryNaturalWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean"
+          ],
+          "mem_available_kib": 18484824,
+          "time_ns": 1793741037597066093
+        },
+        {
+          "lean": [
+            "4033800 lean            2105540 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryNaturalWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean"
+          ],
+          "mem_available_kib": 18484068,
+          "time_ns": 1793741038605246671
+        },
+        {
+          "lean": [
+            "4033800 lean            2109384 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryNaturalWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryNaturalWitness.olean"
+          ],
+          "mem_available_kib": 18495324,
+          "time_ns": 1793741039613562852
+        },
+        {
+          "lean": [
+            "4033800 lean <defunct>      0 [lean] <defunct>"
+          ],
+          "mem_available_kib": 18705152,
+          "time_ns": 1793741040621443429
+        }
+      ],
+      "source": "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-witness-draft/Trace74BoundaryNaturalWitness.lean",
+      "source_sha256": "2beb80ae33a4cfa9474de6d59f58e7a382d9278804178674e76f8181ddcce931",
+      "status": "PASS",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1a2b4847ba28b1bf9e8ba0a89663ead9cedf0478d6236c3331314a011a78da35"
+    },
+    {
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/trace74-boundary-witness-88jx_gx6/src",
+        "/tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean",
+        "-o",
+        "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+      ],
+      "elapsed": 39.349009425379336,
+      "env": {
+        "LEAN_NUM_THREADS": "1",
+        "LEAN_PATH": "/tmp/trace74-boundary-witness-88jx_gx6/lib:/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+        "PATH": "/usr/bin:/bin"
+      },
+      "exit": 0,
+      "index": 4,
+      "module": "Trace74BoundaryGraphWitness",
+      "object": {
+        ".ilean": null,
+        ".ilean.hash": null,
+        ".ir": null,
+        ".ir.hash": null,
+        ".olean": {
+          "link": null,
+          "path": "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean",
+          "resolved": "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean",
+          "sha256": "4edbf137489cb725a2a3b696d991d329c62bd720946f383a07685fae2200cad5"
+        },
+        ".olean.hash": null,
+        ".olean.private": null,
+        ".olean.private.hash": null,
+        ".olean.server": null,
+        ".olean.server.hash": null
+      },
+      "postflight": {
+        "lean": [],
+        "mem_available_kib": 18663616,
+        "time_ns": 1793741092955336444
+      },
+      "preflight": {
+        "lean": [],
+        "mem_available_kib": 18673856,
+        "time_ns": 1793741053606324418
+      },
+      "reason": null,
+      "samples": [
+        {
+          "lean": [
+            "4033821 lean            1851656 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18567268,
+          "time_ns": 1793741054614789119
+        },
+        {
+          "lean": [
+            "4033821 lean            2110828 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18489440,
+          "time_ns": 1793741055622818716
+        },
+        {
+          "lean": [
+            "4033821 lean            2113516 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18475208,
+          "time_ns": 1793741056633641947
+        },
+        {
+          "lean": [
+            "4033821 lean            2113728 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18450832,
+          "time_ns": 1793741057641556045
+        },
+        {
+          "lean": [
+            "4033821 lean            2119876 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18463760,
+          "time_ns": 1793741058649694747
+        },
+        {
+          "lean": [
+            "4033821 lean            2121708 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18463504,
+          "time_ns": 1793741059657692148
+        },
+        {
+          "lean": [
+            "4033821 lean            2121516 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18457272,
+          "time_ns": 1793741060665678950
+        },
+        {
+          "lean": [
+            "4033821 lean            2121912 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18457020,
+          "time_ns": 1793741061673625453
+        },
+        {
+          "lean": [
+            "4033821 lean            2121736 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18457020,
+          "time_ns": 1793741062681487556
+        },
+        {
+          "lean": [
+            "4033821 lean            2121904 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18479504,
+          "time_ns": 1793741063689307460
+        },
+        {
+          "lean": [
+            "4033821 lean            2121608 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18477004,
+          "time_ns": 1793741064698094276
+        },
+        {
+          "lean": [
+            "4033821 lean            2121920 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18467844,
+          "time_ns": 1793741065706017584
+        },
+        {
+          "lean": [
+            "4033821 lean            2121672 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18457856,
+          "time_ns": 1793741066713944492
+        },
+        {
+          "lean": [
+            "4033821 lean            2121672 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18457864,
+          "time_ns": 1793741067721901402
+        },
+        {
+          "lean": [
+            "4033821 lean            2121672 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18457864,
+          "time_ns": 1793741068729915914
+        },
+        {
+          "lean": [
+            "4033821 lean            2121672 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18455728,
+          "time_ns": 1793741069737785525
+        },
+        {
+          "lean": [
+            "4033821 lean            2121676 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18455664,
+          "time_ns": 1793741070745754539
+        },
+        {
+          "lean": [
+            "4033821 lean            2121936 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18455664,
+          "time_ns": 1793741071753642053
+        },
+        {
+          "lean": [
+            "4033821 lean            2121808 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18455668,
+          "time_ns": 1793741072761697370
+        },
+        {
+          "lean": [
+            "4033821 lean            2121800 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18465608,
+          "time_ns": 1793741073769705887
+        },
+        {
+          "lean": [
+            "4033821 lean            2121864 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18487272,
+          "time_ns": 1793741074777846808
+        },
+        {
+          "lean": [
+            "4033821 lean            2121672 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18473644,
+          "time_ns": 1793741075785911228
+        },
+        {
+          "lean": [
+            "4033821 lean            2121736 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18466368,
+          "time_ns": 1793741076793918949
+        },
+        {
+          "lean": [
+            "4033821 lean            2121672 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18466144,
+          "time_ns": 1793741077801968672
+        },
+        {
+          "lean": [
+            "4033821 lean            2121992 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18465892,
+          "time_ns": 1793741078809996595
+        },
+        {
+          "lean": [
+            "4033821 lean            2125288 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18491124,
+          "time_ns": 1793741079818113921
+        },
+        {
+          "lean": [
+            "4033821 lean            2128656 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18462692,
+          "time_ns": 1793741080826565352
+        },
+        {
+          "lean": [
+            "4033821 lean            2130156 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18470648,
+          "time_ns": 1793741081835654092
+        },
+        {
+          "lean": [
+            "4033821 lean            2134028 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18468612,
+          "time_ns": 1793741082843841722
+        },
+        {
+          "lean": [
+            "4033821 lean            2135476 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18467100,
+          "time_ns": 1793741083853421170
+        },
+        {
+          "lean": [
+            "4033821 lean            2135528 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18446876,
+          "time_ns": 1793741084865313347
+        },
+        {
+          "lean": [
+            "4033821 lean            2136716 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18445756,
+          "time_ns": 1793741085879301551
+        },
+        {
+          "lean": [
+            "4033821 lean            2137636 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18482224,
+          "time_ns": 1793741086895705485
+        },
+        {
+          "lean": [
+            "4033821 lean            2139568 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18472388,
+          "time_ns": 1793741087905036035
+        },
+        {
+          "lean": [
+            "4033821 lean            2141964 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18455068,
+          "time_ns": 1793741088914860591
+        },
+        {
+          "lean": [
+            "4033821 lean            2142156 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18446300,
+          "time_ns": 1793741089923928840
+        },
+        {
+          "lean": [
+            "4033821 lean            2143460 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundaryGraphWitness.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundaryGraphWitness.olean"
+          ],
+          "mem_available_kib": 18444788,
+          "time_ns": 1793741090932069579
+        },
+        {
+          "lean": [
+            "4033821 lean <defunct>      0 [lean] <defunct>"
+          ],
+          "mem_available_kib": 18603300,
+          "time_ns": 1793741091940530422
+        },
+        {
+          "lean": [
+            "4033821 lean <defunct>      0 [lean] <defunct>"
+          ],
+          "mem_available_kib": 18664620,
+          "time_ns": 1793741092948327958
+        }
+      ],
+      "source": "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-witness-draft/Trace74BoundaryGraphWitness.lean",
+      "source_sha256": "013b77ea41dc550edd2a7bef4cd0d402489854cc6f30da722237aa0b1556725e",
+      "status": "PASS",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "ca351215101742a4b16aecd1f07d921057eb1b97086b10a668b88f9cf8783594"
+    },
+    {
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/trace74-boundary-witness-88jx_gx6/src",
+        "/tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean",
+        "-o",
+        "/tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+      ],
+      "elapsed": 25.210573905147612,
+      "env": {
+        "LEAN_NUM_THREADS": "1",
+        "LEAN_PATH": "/tmp/trace74-boundary-witness-88jx_gx6/lib:/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib",
+        "PATH": "/usr/bin:/bin"
+      },
+      "exit": 1,
+      "index": 5,
+      "module": "Trace74BoundarySeedConditional",
+      "postflight": {
+        "lean": [],
+        "mem_available_kib": 18671576,
+        "time_ns": 1793741131307209108
+      },
+      "preflight": {
+        "lean": [],
+        "mem_available_kib": 18651188,
+        "time_ns": 1793741106096633203
+      },
+      "reason": null,
+      "samples": [
+        {
+          "lean": [
+            "4033895 lean            1864916 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18544516,
+          "time_ns": 1793741107105205065
+        },
+        {
+          "lean": [
+            "4033895 lean            2106648 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18471992,
+          "time_ns": 1793741108113408722
+        },
+        {
+          "lean": [
+            "4033895 lean            2117624 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18468088,
+          "time_ns": 1793741109121742783
+        },
+        {
+          "lean": [
+            "4033895 lean            2117832 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18467348,
+          "time_ns": 1793741110129818041
+        },
+        {
+          "lean": [
+            "4033895 lean            2117888 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18461884,
+          "time_ns": 1793741111137919401
+        },
+        {
+          "lean": [
+            "4033895 lean            2118336 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18461408,
+          "time_ns": 1793741112145891861
+        },
+        {
+          "lean": [
+            "4033895 lean            2150932 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18428980,
+          "time_ns": 1793741113153941622
+        },
+        {
+          "lean": [
+            "4033895 lean            2222064 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18357332,
+          "time_ns": 1793741114162182787
+        },
+        {
+          "lean": [
+            "4033895 lean            2295824 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18297764,
+          "time_ns": 1793741115170406252
+        },
+        {
+          "lean": [
+            "4033895 lean            2365252 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18234392,
+          "time_ns": 1793741116178278515
+        },
+        {
+          "lean": [
+            "4033895 lean            2431996 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18157152,
+          "time_ns": 1793741117186259079
+        },
+        {
+          "lean": [
+            "4033895 lean            2488228 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18100900,
+          "time_ns": 1793741118194399047
+        },
+        {
+          "lean": [
+            "4033895 lean            2572112 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 18033532,
+          "time_ns": 1793741119202449615
+        },
+        {
+          "lean": [
+            "4033895 lean            2637908 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17969944,
+          "time_ns": 1793741120210391282
+        },
+        {
+          "lean": [
+            "4033895 lean            2704124 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17903792,
+          "time_ns": 1793741121218260750
+        },
+        {
+          "lean": [
+            "4033895 lean            2763728 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17841032,
+          "time_ns": 1793741122227369533
+        },
+        {
+          "lean": [
+            "4033895 lean            2841872 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17766972,
+          "time_ns": 1793741123235224503
+        },
+        {
+          "lean": [
+            "4033895 lean            2889028 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17720224,
+          "time_ns": 1793741124243521679
+        },
+        {
+          "lean": [
+            "4033895 lean            2955700 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17653316,
+          "time_ns": 1793741125251199848
+        },
+        {
+          "lean": [
+            "4033895 lean            3015040 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17578872,
+          "time_ns": 1793741126259419125
+        },
+        {
+          "lean": [
+            "4033895 lean            3072008 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17522024,
+          "time_ns": 1793741127267265399
+        },
+        {
+          "lean": [
+            "4033895 lean            3072616 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17522068,
+          "time_ns": 1793741128275643380
+        },
+        {
+          "lean": [
+            "4033895 lean            3072616 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/trace74-boundary-witness-88jx_gx6/src /tmp/trace74-boundary-witness-88jx_gx6/src/Trace74BoundarySeedConditional.lean -o /tmp/trace74-boundary-witness-88jx_gx6/lib/Trace74BoundarySeedConditional.olean"
+          ],
+          "mem_available_kib": 17521332,
+          "time_ns": 1793741129283727558
+        },
+        {
+          "lean": [
+            "4033895 lean <defunct>      0 [lean] <defunct>"
+          ],
+          "mem_available_kib": 18524264,
+          "time_ns": 1793741130291780138
+        },
+        {
+          "lean": [
+            "4033895 lean <defunct>      0 [lean] <defunct>"
+          ],
+          "mem_available_kib": 18672328,
+          "time_ns": 1793741131299693816
+        }
+      ],
+      "source": "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-witness-draft/Trace74BoundarySeedConditional.lean",
+      "source_sha256": "5b04df0029b7575b9ce3b100b8a26c98a4526dade5e264211e5295e50c76bae3",
+      "status": "CHECKING",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "051e470271c1a8250f1bc88cb0db363d80b9ef5143ec33f17cf3c5f9b3568c36"
+    }
+  ],
+  "status": "FAILED",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-witness-rebuild/run.py\", line 182, in <module>\n    need(run['exit']==0 and run['reason'] is None and output.is_file() and not output.is_symlink() and reports_ok((O/(f'stage-{i:02}.stdout')).read_text(),(O/(f'stage-{i:02}.stderr')).read_text(),wanted_report,''),'stage failed '+n)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-boundary-witness-rebuild/run.py\", line 32, in need\n    if not b:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: stage failed Trace74BoundarySeedConditional\n"
+}

@@ -1,0 +1,7 @@
+# Direct-BFS constructed-word packing
+
+`DirectBFSWordPacking.pack_word` proves that the constructed direct-BFS cell word satisfies `PackingInput` in every IΣ₁ model. It combines the two complete field ranges, both anchor phases, both target phases, phase zero, and the padding tail; **no high-mask phase premise remains**. It assumes a direct local word, a definable row and dummy function, `dummy 0 % 2 = 0`, `1 < N`, `0 < s < N`, and the displayed scalar low/high-mask bounds. These assumptions are explicit in the theorem. This is not yet a halt-to-graph theorem or an iPRA provability result: those require the separate choice/calibration of dummy and seed witnesses, fixed symbolic port bindings, and a coherent endpoint join.
+
+Accepted author check: `observations/directbfswordpacking-attempt02/`; Lean and outer runner exited 0 without diagnostics. The captured axiom report lists only `propext`, `Classical.choice`, and `Quot.sound`. Output `/tmp/direct-bfs-wordpacking-jbfyab78/DirectBFSWordPacking.olean`, SHA-256 `c1ad37e318c176a0ae9b46e3b0be74b5bcc813ae120a3636d282aaeba5726d86`. Direct imports and selected additional objects were pinned and rechecked; project, package, dynamic, and historical source-to-object ancestry are inherited limitations, and no independent Lean replay is claimed.
+
+Attempt01 and `run-attempt01.py` are retained: Lean rejected it before elaboration because its path omitted the selected transitive `DirectBFSHighPadding` provider. Attempt02 explicitly pins and adds that provider and its relevant neighboring providers.

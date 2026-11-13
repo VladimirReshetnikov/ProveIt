@@ -1,0 +1,3 @@
+# Independent sign16 auxiliary-from-seed terminal audit
+
+The independent checker exited 0. Author outer session 46905 exited 0; stage and postflight passed. Source/object, logs, both direct provider guards and overlays were checked. The report has standard axioms and no warnings or sorryAx. The theorem derives the natural auxiliary norm without a deleted V witness under staged seed zero, represented ports and explicit beta/MC/MF bounds. Union and inherited surveys were point-in-time and not replayed postflight; direct guards and overlays were rechecked. Other norms and lift remain open. No Lean was rerun here.

@@ -1,0 +1,3 @@
+# Independent sign23 endpoint terminal audit
+
+Independent checker session 20883 exited 0 against author outer session 26160 (exit 0). All three native, standard and GG-translated iPRA derivability stages and final postflight succeeded. Each compiled theorem prints Lean metatheory axioms `[propext, Classical.choice, Quot.sound]`, with no warnings or `sorryAx`. The checker verified source adaptation, objects, logs, direct dependency hashes and guards, monitored resource limits, overlay links and the independent sign23 bridge audit. The result concerns the symbolic Fin23 expression; it does not by itself prove exact degree or bind external JSON, Jones or PDF files. Provider ancestry is point-observed and retains inherited qualifications.

@@ -1,0 +1,7 @@
+# Static review: held trace75/BFS all selected blocks
+
+GO for one coordinated author check with runner SHA-256 `971f249b1158fe0bdd02d21365e6e6737f76847527ac820034aa32c441cdf056` through outer SHA-256 `8424c1141202199ae654b5b5614906777021615c3eb1ee30785ace06a4e99019`. Under the exact four symbolic ports and a positive trace75 zero in a supported IΣ₁ model, the proposed theorem uses the checked spatial base/successor theorem and internal orbit result to seek one `N>0` with the same q/radix and `SelectedBlock N (Cnat p v) h` for every model `h<N`. It remains a candidate until the guarded Lean check completes.
+
+`check.py` independently rehashed the 1,977-object union and 80 outside bundles/targets, twelve regular client roots and twenty-four source/object files, and the captured `InternalOrbit` subtree (299 project/29 outside). It checked the frozen preflight and 18 actual-function controls, exercised same-byte source/object symlink rejection and copied-real-supervisor altered-runner rejection. The runner preserves strict named axiom/direct-header, resource, shadow, source/provider/companion and actual-exit guards. No candidate Lean process was launched in this review.
+
+If accepted, this is a conditional all-selected-block consequence, not yet a machine-halt/iPRA theorem or an external coefficient/PDF binding. Preserve and independently audit the terminal result; historical unrebuilt-source, package/dynamic and external payload provenance remain inherited.

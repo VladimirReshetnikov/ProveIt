@@ -1,0 +1,7 @@
+# Independent source review: generic upper bound on two Pell indices
+
+Source SHA-256 `641256d1eed86da0d46753c22f4db916ef3a07783cda64a764f37dbdb3aa3e32`. The proposed model arithmetic is consistent at the stated scope; no Lean was run. The author revised the `2(Y+1)≤4Y` proof after an earlier source review identified that multiplying `1≤Y` alone did not prove the displayed target; the new version adds `2Y` to both sides and uses ring identities. It is not yet Lean-accepted.
+
+For X≥16,Y≥1,n≥2, let j=n−1>0, a=Y(X+1)−1 and B=2(XY²−1)+1. The cited coefficient-gap theorem has exactly the required `16·2(B+2)<(2a+3)²`; paired comparison and exp≥1 imply `y_n(B)<y_(2j+1)(a)`. From k=eta+zeta with zeta>0, eta<k, so c=kY+eta<2(Y+1)y_n(B). The corrected coefficient bound gives `2(Y+1)≤a+2`; the next Pell recurrence then bounds the right side by `y_(2n)(a)`. If 2n≤r, index monotonicity and the stated c ordinate contradict that strict inequality. This works in the indicated model, not via an external standard-index enumeration.
+
+The source is a generic conditional theorem using the two explicit ordinate identities, c/k relation, positivity and X/Y/n size assumptions. It neither asserts those assumptions follow from a graph zero nor supplies a rank equality, bound on F/C or guard. Let/tsub normalization, ordered-model tactics, `simp`/ring identities and provider compatibility remain Lean/prelaunch risks.

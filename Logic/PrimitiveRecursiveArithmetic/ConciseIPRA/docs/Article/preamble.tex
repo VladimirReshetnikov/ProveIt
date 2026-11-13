@@ -1,0 +1,50 @@
+% Preamble of the article.  Chapter files use only these packages and macros.
+\documentclass[11pt,a4paper]{report}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=2.7cm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{mathrsfs}
+\providecommand{\llbracket}{[\![}
+\providecommand{\rrbracket}{]\!]}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage[nameinlink,capitalise]{cleveref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- names ---
+\newcommand{\iPRA}{\mathsf{iPRA}}            % intuitionistic primitive recursive arithmetic
+\newcommand{\Teq}{\mathsf{T}_{\mathrm{eq}}}  % the ordinary scalar intermediary
+\newcommand{\Nat}{\mathsf{N}}                % the native scalar core (eight-rule kernel)
+\newcommand{\pkg}[1]{\texttt{#1}}            % a research package, e.g. \pkg{witness\_rule}
+\newcommand{\Lean}[1]{\texttt{#1}}           % a Lean declaration or module
+% A rule name, e.g. \rulename{Use}: every letter in small capitals, so that
+% all-capital names such as QE, DE, DI stand apart from ordinary capitals.
+\newcommand{\rulename}[1]{\textsc{\MakeLowercase{#1}}}
+% --- terms and formulas ---
+\newcommand{\It}[4]{I(#1,#2;\,#3.\,#4)}      % the iterator I(n,a;u.h): \It{n}{a}{u}{h}
+\newcommand{\Suc}{S}                         % successor
+\newcommand{\sel}{\operatorname{sel}}        % selector sel(c,a,b) = I(c,a;u.b), u not in b
+\newcommand{\D}[2]{D_{#1,#2}}                % the paired binder D_{x,y}: \D{x}{y}B
+\newcommand{\Q}[1]{Q_{#1}}                   % the closure binder Q_y: \Q{y}B
+\newcommand{\nf}{\operatorname{nf}}          % normal form
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\proves}{\vdash}
+\newcommand{\subst}[2]{[#1/#2]}              % substitution t[s/x]: t\subst{s}{x}
+\newcommand{\defeq}{\mathrel{:=}}
+\newcommand{\iffdef}{\mathrel{:\Leftrightarrow}}
+\newcommand{\infrule}[2]{\dfrac{\;#1\;}{\;#2\;}} % an inference: \infrule{premises}{conclusion}

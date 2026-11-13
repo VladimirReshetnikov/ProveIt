@@ -1,0 +1,3 @@
+# Sign25 forward/backward zero assembly: source-only draft
+
+The forward client enumerates all 17 old residuals, applies the new zero to the q3 and 14 unaffected transfers, discharges ell by the checked product cut, and applies the affected N0 transfer. The reverse client uses the proposed `lift_drop` recovery, enumerates all 16 new residuals and transfers each from old zero. The source-only generator rejects overwrite and emits both clients from explicit index maps; their dependencies and Lean elaboration are unverified. No zero bridge, endpoint, Lean degree or external JSON binding is claimed here.

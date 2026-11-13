@@ -1,0 +1,3 @@
+# Slot00 probe: failed dependent-family inference
+
+The author observed session `70936` exit 1. State SHA-256 `c5ea31d3fde096cb2a7549b57052052152509eb1304f5738a31ec93dd6c58c17`; compile log SHA-256 `91fb654ca2ed2568baaa795db603de7165138d8352cf081458586589fc56470e`. The dependency scan exited 0; Lean exited 1 in 4.257 seconds with no monitor stop. The explicit `Fin.cons_succ` application failed to infer a dependent type family for `w : Fin 38 → V`; warnings are retained in the compile log. No object or slot theorem was produced. Direct guards were recorded before the compile; final post-compile guard checks were not reached. The past outer exit is author-recorded, not independently observed.

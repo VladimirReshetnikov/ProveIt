@@ -1,0 +1,5 @@
+# Independent external positive-coordinate 74-gate review
+
+PASS. The checker independently applies uniform `v[i]=u[i]-1` substitution to the pinned natural-coordinate 86-gate AST, then normalizes the three exact ring identities. It verifies 527 positive-shift cancellations, nine `q-F` rewrites and one `A-F` rewrite, compares all five resulting residual ASTs and row names, and checks all and only variables 1–14 and the four stated arbitrary integer ports occur. The coordinate maps `u=v+1` and `v=u-1` are inverse between naturals and strictly positive integers.
+
+Exact ordered-subtree sharing yields 65 residual and 74 live operations including five squares and their sum: 18 additions, 18 subtractions and 38 multiplications. This is an upper bound under a positive-input convention, not a minimum or a same-interface gate comparison with natural inputs. The substitution and count are external Python evidence; a Lean coordinate bridge, JSON/PDF and fixed-port file correspondence remain separate.

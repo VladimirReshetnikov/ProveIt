@@ -1,0 +1,7 @@
+# Independent post-audit: mask coverage comparison
+
+**PASS at the direct-pin scope.** Author reports actual tool session 67114 exited 0 and was reaped. The retained terminal SHA-256 `e6ea0ad9be0e9188bdf5bebbd116b6719242276f0d7efbd84330517d08eafb5c` records Lean exit 0, no timeout/resource reason and PASS. Rehashed source SHA-256 `66991596012af7ec03a3ac082865fe4bbd367205e36ec45d89070f2977d258d2`, runner SHA-256 `9b57e657ab755d73bfdd742b3681b282f92847a46359afb4235272619b1047bf`, all recorded source/direct pins, stdout/stderr and object SHA-256 `796cc640c35507ac712804ac98ac15a38f607f2d94a7f82261a51b19631f077f`. The two named reports each have `[propext, Classical.choice, Quot.sound]`; stderr is empty.
+
+The first theorem concludes `F<=MC*J` from same-model `q=Exp.exp u=beta*J+1`, positive J, positive HP*J, mask coverage, both strict block bounds and second no-carry. The second replaces the explicit HP block bound by `HP<=beta`. All source parameters and model/IΣ₁ hypotheses are retained. The first two attempts' error/sorryAx outputs were rejected and are not accepted evidence.
+
+No Lean replay, serialized full provider closure or independent outer supervisor was used for this audit. Selected direct `ArithmeticRankForcing` is pinned, but project, outside/package/dynamic and transitive producer ancestry remain inherited. This conditional theorem does not derive mask coverage or no-carry from a 74 zero, bind fixed ports, prove a full graph guard or establish an iPRA endpoint.

@@ -1,0 +1,5 @@
+# Whole-product projection
+
+`Direct80ProjectionProduct.entire_product` is a commutative-ring theorem. With `H=4a+3`, it assumes `d=t+a*c+H*z`, `d²=1+(a²+H)c²`, and `H ∣ b*(H*X*c−2*(X²+2aXc−1))`. It proves `H ∣ b*(X−t)*(tX+1)`. The proof cancels 2 using the explicit odd form of `H`; it does not cancel `b` or assume `X=t`. The exact ring divisibility statement and hypotheses are in the source.
+
+Guarded author `run.py`, `observations/product-attempt03/`, passed in session 16247, output `/tmp/absorb89-chain-gbvs3lwh/lib/Direct80ProjectionProduct.olean`; the receipt pins the source and selected 1,291-object project provider. Attempt01 was deliberately terminated while the broad `Mathlib.Tactic` import consumed substantial memory and I/O; its exact source snapshot, process exit and samples are retained. Attempt02 used the narrow import but failed because `linear_combination` was not imported; attempt03 replaces it with explicit ring calculations. Package-transitive, dynamic and historical source/object ancestry remain inherited; no independent Lean replay, graph binding, height bound or endpoint is asserted by this abstract theorem.

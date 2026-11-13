@@ -1,0 +1,18 @@
+--- reference/current_compact/upstream_one_context_checker.py
++++ reference/one_context_seven.py
+@@ -81,14 +81,9 @@
+             formula(b, n + 2)
+             term(t, n)
+             a = sub(['q', b], t)[1]
+-            h = shift(sub(a, ['z']))
++            h = a if b[0] == '=' and t == ['z'] else shift(sub(a, ['z']))
+             require(infer(p, [h] + [shift(x) for x in g], n + 1) == sub(a, ['s', ['v', 0]], 0))
+             return ['d', b]
+-        case ['qi', e, p]:
+-            formula(e, n + 1)
+-            require(e[0] == '=')
+-            require(infer(p, [e] + [shift(x) for x in g], n + 1) == sub(e, ['s', ['v', 0]], 0))
+-            return ['q', e]
+         case ['tr', a, p, q]:
+             term(a, n + 1)
+             e = infer(p, g, n)

@@ -1,0 +1,7 @@
+# Independent result audit: odd-ordinate k bound
+
+PASS within direct-pin and inherited provider scope. The author reports actual tool session 90044 exited 0 and was reaped. Retained attempt02 terminal SHA-256 `a75200a6fa52d4d6aa478273277bf19e3b381a693c244517a0b90c51ab892e54` records PASS using runner `f49f29d8b940250500a8266507956a4a9de7a0e951d45c46fd30294023574aeb`. Independently rehashed all 15 source/direct-provider/Lean/core pins, output object `beb08bf7c3a4bf3a695f6161ef5a0a884b315378cb7cb50777bd992378ce9ae3`, and stdout/stderr; Lean exited 0 with null monitor reason, empty stderr and the exact named report `[propext, Classical.choice, Quot.sound]`. No Lean replay was run.
+
+For the same p/v, the theorem assumes positive beta, all valuation components positive and actual 74 value zero; it concludes `4*(Y*(X+1)+1)^2≤k*(Y+1)` by combining the independently accepted odd-ordinate c bound with v8<k from v9>0. No individual F/C bound or reverse guard is assumed or concluded. The earlier attempt01 was excluded due to an addition-orientation error and sorryAx.
+
+This is a conditional graph-zero consequence, not a zero existence, fixed-port guard, 74/75 equivalence, external-file binding or iPRA theorem. Direct pins do not establish full transitive project/package/dynamic ancestry, first-selection shadowing or intermediate output stability. The author's actual tool exit is reported separately from the retained terminal.

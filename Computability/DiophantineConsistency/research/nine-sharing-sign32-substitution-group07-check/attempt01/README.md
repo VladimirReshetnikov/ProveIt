@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 92407 exited 0 with `PASS sign32 final four substitution diagnostic`; the Lean stage exited 0. The eight list-row theorems report `[propext]`; the four evaluation identities report `[propext, Classical.choice, Quot.sound]`. The compile log contains twelve linter warnings: eight unused `p` binders and four unused `simp` arguments. State, logs and author-recorded outer outcome are retained here; the object remains under `/tmp/nine-sharing-sign32-substitution-group07-check-20261106/lib/DiophantineConsistency/`. This concludes the individual bounded identities, not their full zero-set assembly or backwards reconstruction.

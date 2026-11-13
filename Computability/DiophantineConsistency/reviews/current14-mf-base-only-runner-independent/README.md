@@ -1,0 +1,5 @@
+# Independent base-only client runner review
+
+The reviewed [runner](../../research/current14-mf-base-only-endpoint/runner.py) authenticates the source-current fresh base and Foundation provider, checks the base output inventory with fail-closed directory traversal, rejects private and base external namespace shadows, routes direct imports to recorded producer/companion guards, retains raw dependency output with the reviewed duplicate-Init policy, and rechecks the inputs and recorded output at the end. Its owned-session helper monitors sampled memory/disk/time and waits on monitor failures within the documented escaped-session and forced-termination limits. Exact source hashes and independently rerun no-Lean synthetic inventory/shadow controls are in [receipt.json](receipt.json).
+
+No concrete additional runner acceptance or lifecycle defect was found within that scope. This is a source review and synthetic control, not evidence that the draft sources elaborate, a proof of resource limits between samples, or authentication of full transitive/dynamic ancestry. No positive Lean run or endpoint theorem is implied by this receipt.

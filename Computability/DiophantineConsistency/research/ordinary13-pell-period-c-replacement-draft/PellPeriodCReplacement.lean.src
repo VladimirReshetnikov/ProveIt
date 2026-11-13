@@ -1,0 +1,47 @@
+import DiophantineConsistency.PellPeriodFinalBodyEval
+import DiophantineConsistency.PellRunExponentialBound
+
+/-! SOURCE ONLY. Formula evaluation, graph interpretation, bound evaluation,
+    and every prospective provider remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellPeriodCReplacementDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence ArithmeticConstructionBoundPell PellRunExponentialBoundDraft
+open PellPeriodFullWBDraft PellPeriodFinalReplacementsDraft PellPeriodFinalBodyEvalDraft
+open PRAWitnessBoundTerms PRAWitnessBoundTerms.BoundTerm
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The represented Pell ordinate is bounded by the specified binary exponential. -/
+theorem ordinate_le_bound (m a : V) :
+    ycoord m a ≤ Exp.exp (2*(a+2)*m) :=
+  le_trans (y_le m a) (power_le_binary_exponential (2*(a+2)) m)
+
+/-- Keep the same c and all five body witnesses. Formula interpretation is explicit. -/
+theorem cReplacement (evalBody : BodyEvaluationBridge) : Replacement bodyC boundC := by
+  intro V _ _ e c hc
+  have original := hc
+  change (∃⁰ (∃⁰ (∃⁰ (∃⁰ (∃⁰ finalBody))))).Eval (c :> e) Empty.elim at hc
+  simp only [Semiformula.eval_ex] at hc
+  obtain ⟨h,x,y,r,t,hfinal⟩ := hc
+  have data := (evalBody V (t :> r :> y :> x :> h :> c :> e)).mp hfinal
+  change BodyData t r y x h c (e 0) (e 1) at data
+  have heq : c = ycoord (e 0) (e 1) := by
+    have hy : yDef.val.Evalb ![c,e 0,e 1] ↔ c = ycoord (e 0) (e 1) :=
+      y_defined.defined ![c,e 0,e 1]
+    exact hy.mp data.1
+  refine ⟨c, ?_, original⟩
+  have hbound := ordinate_le_bound (e 0) (e 1)
+  rw [← heq] at hbound
+  simpa [boundC, PRAWitnessBoundTerms.BoundTerm.vval, numeral_eq_natCast] using hbound
+
+/-- Conditional on the separate, also unelaborated, formula-evaluation draft. -/
+theorem cReplacement_closed : Replacement bodyC boundC :=
+  cReplacement bodyEvaluationBridge
+
+end DiophantineConsistency.PellPeriodCReplacementDraft
+#print axioms DiophantineConsistency.PellPeriodCReplacementDraft.cReplacement
+#print axioms DiophantineConsistency.PellPeriodCReplacementDraft.cReplacement_closed

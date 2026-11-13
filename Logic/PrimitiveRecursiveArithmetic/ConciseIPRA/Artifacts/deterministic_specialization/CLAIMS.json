@@ -1,0 +1,73 @@
+{
+  "title": "Deterministic specialization for iPRA",
+  "baseline_commit": "5d85023b0688e03b75f0ec3a04bb43ef0bb51705",
+  "mathematical_results": [
+    "Clause Use needs no numerical target: newest clause uses 1; all older clauses use newest eigenparameter.",
+    "Exact consequence equivalence with unrestricted zero-normal uniform-Step clause calculus, proved by persistent premise procedures, formula-rank recursion, and source-proof-height recursion.",
+    "Ordinary realization is whole-domain bi-interpretable and equiconsistent with full first-order iPRA; equality is actual equality and numerical composites have graph x=y.",
+    "Refl, Step, Use, DE, DI are the complete primitive rule inventory; zero-normalization and every scope condition are specified."
+  ],
+  "implementation_results": {
+    "primary_normalized_bytes": 2914,
+    "primary_significant_tokens": 819,
+    "primary_ast_nodes": 896,
+    "primary_gzip9_bytes": 997,
+    "matched_explicit_unrestricted": {
+      "bytes": 2950,
+      "tokens": 829,
+      "ast": 902,
+      "gzip9": 1004
+    },
+    "arbitrary_target_removal_delta": {
+      "bytes": -12,
+      "tokens": 0,
+      "ast": 1
+    },
+    "redundant_scope_removal_delta": {
+      "bytes": -24,
+      "tokens": -10,
+      "ast": -7
+    },
+    "separate_unchanged_native_supplement": {
+      "bytes_before": 866,
+      "bytes_after": 820,
+      "tokens_before": 381,
+      "tokens_after": 360,
+      "ast_before": 439,
+      "ast_after": 412,
+      "gzip9_before": 504,
+      "gzip9_after": 493
+    }
+  },
+  "validation": {
+    "forward_translations": 100,
+    "reverse_expansions": 100,
+    "main_cli_runs": 600,
+    "independent_scope_cli_runs": 956,
+    "independent_scope_fixtures": 209,
+    "scope_calls_observed": 25047,
+    "mutations_compared": 1200,
+    "false_conclusions_rejected": 93,
+    "closed_equations_evaluated": 157,
+    "native_entry_comparisons": 22350,
+    "native_cli_runs": 248
+  },
+  "proof_status": "Written universal proofs and independent review with executable tests; no new Lean or Rocq formalization.",
+  "limits": [
+    "No absolute or repository-wide minimum is proved.",
+    "The rule change alone ties tokens and adds one AST node; do not claim Pareto improvement from it alone.",
+    "The 820-byte supplement is the unchanged native Eq/Q/D calculus, not a compact implementation of the new deterministic theory.",
+    "A finite source proof produces a finite target proof, but no polynomial output bound is claimed.",
+    "Largest main fixture: 699 compact JSON bytes to 175640 bytes.",
+    "Whole standalone-checker scope-state equivalence concerns entry at the empty context, not arbitrary external calls to an open helper.",
+    "Interpreter resource bounds may reject sufficiently large valid finite certificates."
+  ],
+  "artifacts": [
+    "report.tex",
+    "report.pdf",
+    "code/checker.py",
+    "code/translate.py",
+    "supplement/scope_fusion/checker.py",
+    "reproduce.py"
+  ]
+}

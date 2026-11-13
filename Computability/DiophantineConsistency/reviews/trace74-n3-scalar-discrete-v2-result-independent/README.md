@@ -1,0 +1,7 @@
+# Independent result review: n3 scalar discrete v2 replay
+
+PASS for author-reported actual outer session 5762 exit 0 and recorded outer exit 0 / child PASS. Terminal SHA-256 `92e15a214c3d33140141c2f30c7b0f0b5f695d5274b44bd313551909f9f9aa70`, child `c56f50101472e542385769a4b8c69715483d3a00c9aa5f439d29be6accceb637`, final object `1cbc0a63ccf24cc5b36f97f970abb3a7b96f26a1cc64b26179e96c8ef655e93a`. The three stages rebuilt shifted upper certificate, upper endpoint and scalar-discrete theorem from reviewed source and selected imports; all exit 0, no warning, empty stderr. All four ordered reports list `[propext, Classical.choice, Quot.sound]` exactly.
+
+The final result is conditional generic ordered-ring arithmetic: explicit discreteness `∀z,0<z→1≤z`, q≥32, X≥32,Y≥1, X=q·w,Y=q³·s, and strict `kY<c<k(Y+1)` imply False, while the companion theorem derives the interval. It does not itself assert any Pell recurrence or graph-zero/fixed-port binding. Prior attempt01 stage3 was rejected for X²/X*X mismatch with sorryAx; v2's targeted fix and old receipts were pinned and independently reviewed.
+
+The accompanying read-only script rehashes supervisor, child, all inputs, stage sources/logs/objects and serialized direct headers; checks the complete 2072-module union including companion presence/bytes/targets and outside bundles; and compares all captured parent closure sets and companion hashes. Earlier exact-warning ancestry and historical source-object, full transitive/package/dynamic and external-binding limits remain. No Lean was run in this audit.

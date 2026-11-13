@@ -1,0 +1,68 @@
+import DiophantineConsistency.ModelRelationCombining
+import DiophantineConsistency.BFS943.Trace75IntegralTransport
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed all-model q³ quotient extraction. The signed-square and
+natural-divisibility lemmas are existing source declarations; their provider
+ancestry and every proof below remain unelaborated for this client. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Ordinary13QCube93ArithmeticDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+def cubeScale {R : Type*} [Add R] [Mul R] [One R] (b : R) : R := (1+b)*((1+b)*(1+b))
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem cubeScale_pos (b : V) : 0<cubeScale b := by
+  have hq : 0<1+b := add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le b)
+  exact mul_pos hq (mul_pos hq hq)
+
+/-- Explicit Bézout identity, valid over every commutative ring. -/
+theorem cube_bezout {R : Type*} [CommRing R] (b : R) :
+    (1+b)^3-b*(b*b+3*b+3)=1 := by ring
+
+/-- The same explicit identity cancels b from h∣Y*b, with h=(1+b)^3. -/
+theorem cube_dvd_of_dvd_mul {R : Type*} [CommRing R] (b y : R)
+    (h : (1+b)^3 ∣ y*b) : (1+b)^3 ∣ y := by
+  obtain ⟨w,hw⟩ := h
+  refine ⟨y-w*(b*b+3*b+3),?_⟩
+  have hb := cube_bezout b
+  linear_combination -y*hb-(b*b+3*b+3)*hw
+
+/-- A signed root with the stated scaled norm forces a positive natural Y
+to contain the full cube factor. All quantified objects are in the same
+IΣ₁ model or its difference ring; the graph must supply both equations. -/
+theorem positive_quotient_of_signed_norm (b y n : V) (hy : 0<y)
+    (z t bt : DiffRing V)
+    (hz : z=ι (cubeScale b)*ι b*t+ι y*ι b-ι (cubeScale b)*bt)
+    (hn : z^2=(ι (cubeScale b)*ι b)^2*ι n) :
+    ∃ s : V, 0<s ∧ y=cubeScale b*s := by
+  have hh : 0<cubeScale b := cubeScale_pos b
+  have hhR : (0 : DiffRing V)<ι (cubeScale b) := by
+    simpa only [map_zero] using (ι_lt_ι.mpr hh)
+  have hsquare : (ι (cubeScale b) : DiffRing V)^2 ∣ z^2 := by
+    refine ⟨(ι b)^2*ι n,?_⟩
+    rw [hn]
+    ring
+  have hzdiv : (ι (cubeScale b) : DiffRing V) ∣ z :=
+    ModelRelationCombining.sq_dvd_sq _ _ (ne_of_gt hhR) hsquare
+  obtain ⟨w,hw⟩ := hzdiv
+  have hyb : (ι (cubeScale b) : DiffRing V) ∣ ι y*ι b := by
+    refine ⟨w-ι b*t+bt,?_⟩
+    linear_combination hw-hz
+  have hcube : (ι (cubeScale b) : DiffRing V)=(1+ι b)^3 := by
+    simp only [cubeScale,map_add,map_mul,map_one]
+    ring
+  rw [hcube] at hyb
+  have hydiv : (1+ι b)^3 ∣ (ι y : DiffRing V) := cube_dvd_of_dvd_mul (ι b) (ι y) hyb
+  rw [←hcube] at hydiv
+  obtain ⟨s,hs⟩ := Trace75IntegralTransport.natural_dvd_of_signed (cubeScale b) y hydiv
+  have hsp : 0<s := pos_of_mul_pos_right (by rw [←hs]; exact hy) (by simp)
+  exact ⟨s,hsp,hs⟩
+end DiophantineConsistency.Ordinary13QCube93ArithmeticDraft
+#print axioms DiophantineConsistency.Ordinary13QCube93ArithmeticDraft.cube_bezout
+#print axioms DiophantineConsistency.Ordinary13QCube93ArithmeticDraft.cube_dvd_of_dvd_mul
+#print axioms DiophantineConsistency.Ordinary13QCube93ArithmeticDraft.positive_quotient_of_signed_norm

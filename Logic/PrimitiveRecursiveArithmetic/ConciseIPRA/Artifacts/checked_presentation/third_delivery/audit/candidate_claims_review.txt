@@ -1,0 +1,96 @@
+INDEPENDENT CLAIMS AND PROVENANCE REVIEW
+======================================
+
+Pinned baseline: 1156099ffe30f7497d2c11ab20271f46cffcd115.
+Reviewed candidate files: research/checker_candidate/fused.py and checker257.py.
+This review concerns their exact contents identified in
+candidate_metrics_independent.json. Subsequent edits require remeasurement.
+
+MEASUREMENTS
+
+                             tokens  AST  normalized bytes
+new token profile              239   261       549
+new AST profile                246   257       589
+exact behavior control         240   266       551
+prior AST-coordinate incumbent  252   259       595
+prior byte incumbent           267   298       462
+
+The new token profile reduces the observed compact token record 240 -> 239.
+The new AST profile reduces the observed compact AST record 259 -> 257.
+The byte record stays 462. The mixed-framing coordinate envelope therefore
+becomes 239/257/462, attained by different programs. No single new program
+is below all three earlier coordinate minima. No new arithmetic or logical
+axiom deletion follows from this source refinement.
+
+PROVENANCE
+
+The exact 240-token control is inherited_tokens240.py inside
+docs/incoming/ipra_procedure_presentation_2026-11-12.zip, member prefix
+ipra_procedure_presentation_2026-11-12/code/. It is byte-for-byte identical to
+inherited/return_reservation/code/checker_tokens.py in that same archive.
+Its normalized SHA256 is
+5becaaeef97522eadfef564d756b1f01ec631d527f0b42992e56452932410d0e.
+
+The former AST-coordinate incumbent is checker_ast_jsonl.py inside
+docs/incoming/ipra_direct_packets_2026-11-12.zip, member prefix
+ipra_direct_packets_2026-11-12/code/checkers/. Its normalized SHA256 is
+4aaea50f5c348178453208a9fecef84505a36c14b997c216c376fce7e5cc4330.
+
+The 259-node program uses an earlier freshness-allocation protocol. It is
+an incumbent for source-size comparison, not the direct trace-matched
+control of the new programs. Successful-return allocation and its certificate
+translation were inherited from the procedure package. The shared public
+theorem set follows from the existing protocol equivalence, not from feeding
+untranslated old certificates to a new checker.
+
+THE NEW SOURCE REWRITE
+
+In the exact 240-token control, the retained-clause opener receives
+
+  c(g,s) or k * bool(s or len(a)==2).
+
+In the 239-token profile it receives
+
+  (c(g,s) or s or len(a)==2) and k.
+
+Both evaluate c(g,s) once before consulting its resulting global k.
+On every successful return c returns None and decrements k exactly once.
+If s is truthy or len(a)==2, both expressions return the resulting integer k.
+Otherwise the old expression returns integer 0 and the new one returns False.
+Consequently a literal state-identity proof would be incorrect; the precise
+invariant uses erasure of False to integer 0 in internal trees.
+
+Let E replace internal False leaves by 0 and preserve integers and array
+structure. The opener's scalar comparisons k<=a<d agree on False and 0;
+attempted traversal fails on either scalar; list traversal, lengths, truth
+values and equality comparisons are preserved. All remaining integer
+arithmetic uses the unchanged integer k,d or exact input packet fields.
+Thus E commutes with each successful opener call and preserves its failure
+status. The two c calls consume the same packets and have the same global
+k, with contexts/goals related by E. Induction on a finite successful call
+trace gives acceptance preservation in both directions on the canonical
+exact-integer/list input contract. The internal Boolean is auxiliary syntax,
+not a changed numerical meaning or an extra public literal.
+
+The AST profile makes two additional presentation changes: k=0 moves into
+the definition-time default d=(k:=0), and three-field assignment becomes
+a JSON array sequence pattern. The initialization is completed before any
+checking call. For a three-element JSON array the pattern binds the same
+s,u,t,r; a failed pattern leaves local names unbound, and the subsequent
+eager leaf expression must consult those names before acceptance. Therefore
+malformed array arities cannot silently reach ACCEPT. These techniques
+already occur individually in the upstream corpus; their application to
+the new selector is a source composition, not a new axiom basis.
+
+LIMITS
+
+The compact programs promise a canonical closed guarded Eq/D public goal,
+the exact-integer/list input alphabet, and their JSON Lines protocol. They
+do not satisfy the fully validated T contract merely because some malformed
+inputs fail. Their numerical reductions must not be compared directly with
+G/T control sizes without stating the contract.
+
+The complete corpus fingerprint check establishes absence of an exact
+normalized-source duplicate among 1,813 normalized modules. This is not a
+claim of mathematical novelty. Existing checker records are upper bounds
+on an unknown optimum, not formal lower bounds on every possible theory.

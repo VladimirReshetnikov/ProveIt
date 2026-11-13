@@ -1,0 +1,113 @@
+import PrintedDecimalSeed
+import PrintedDecimalBlocks
+import Lean.Elab.Tactic.Omega
+import Mathlib.Tactic.NormNum
+import DiophantineConsistency.Compact44.CompactConcreteMask
+import DiophantineConsistency.Compact44.SparseRadix
+import DiophantineConsistency.Compact44.CompactSymbolicKernelOpaque
+import DiophantineConsistency.Compact44.CompactSymbolicPorts
+
+/-! Source-only proposal. No source in this packet has been Lean checked.
+The printed-seed equality is an explicit hypothesis; no enormous compact port
+is expanded, and no file/PDF interpretation is asserted. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace Natural79DecimalSelectorKernelDraft
+open CompactSymbolicKernel CompactSymbolicKernelOpaque
+open scoped BigOperators
+
+def selectorBlocks : List ℕ := List.ofFn (fun i : Fin 943 =>
+  CompactCoefficientMass.selector (Compact943Data.row i))
+
+def symbolicSeed : ℕ := Nat.ofDigits (10^16) selectorBlocks
+
+def block (seed : ℕ) (i : Fin 943) : ℕ := (seed / (10^16)^i.val) % (10^16)
+
+/-- The selector definition gives a uniform bound; no case split over the
+943-entry table is needed. This source proof remains unelaborated. -/
+theorem selector_lt_decimal_base (i : Fin 943) :
+    CompactCoefficientMass.selector (Compact943Data.row i) < 10^16 := by
+  have h : (2^41 : ℕ) - CompactCoefficientMass.value (Compact943Data.row i) ≤ 2^41 :=
+    Nat.sub_le _ _
+  unfold CompactCoefficientMass.selector
+  norm_num at h ⊢
+  omega
+
+theorem selectorBlocks_bounded : ∀ x ∈ selectorBlocks, x < 10^16 := by
+  intro x hx
+  change x ∈ List.ofFn (fun i : Fin 943 =>
+    CompactCoefficientMass.selector (Compact943Data.row i)) at hx
+  obtain ⟨i, rfl⟩ := List.mem_ofFn.mp hx
+  exact selector_lt_decimal_base i
+
+/-- Existing radix-digit extraction recovers each symbolic selector. -/
+theorem symbolic_block (i : Fin 943) :
+    block symbolicSeed i = CompactCoefficientMass.selector (Compact943Data.row i) := by
+  have hi : i.val < selectorBlocks.length := by simpa [selectorBlocks] using i.isLt
+  have h := SparseRadix.digit_ofDigits (10^16) selectorBlocks (by norm_num)
+    selectorBlocks_bounded i.val hi
+  simpa [block, symbolicSeed, selectorBlocks] using h
+
+/-- The displayed K formula, with the seed still a parameter. -/
+def decimalKernel (r seed : ℕ) : ℕ :=
+  r^30+r^62+r^1100+r^2201 +
+  (∑ i : Fin 943, block seed i * (r^(4393-i.val)+r^(5495-i.val))) +
+  (∑ i : Fin 41, (2^(10+i.val):ℕ) * (r^(4393-position i)+r^(5495-position i))) +
+  r^8849
+
+/-- Kernel identity conditional only on recovering the symbolic selectors. -/
+theorem decimalKernel_of_blocks (r seed : ℕ)
+    (hblock : ∀ i : Fin 943,
+      block seed i = CompactCoefficientMass.selector (Compact943Data.row i)) :
+    decimalKernel r seed = paramKernel r := by
+  have hs : (∑ i : Fin 943, block seed i * (r^(4393-i.val)+r^(5495-i.val))) =
+      (∑ i : Fin 943, CompactCoefficientMass.selector (Compact943Data.row i) *
+        (r^(4393-i.val)+r^(5495-i.val))) := by
+    apply Finset.sum_congr rfl
+    intro i _
+    rw [hblock i]
+  have hp : r^8849 = r^8807*r^42 := by
+    simpa only [show (8807 : ℕ)+42=8849 by decide] using (pow_add r 8807 42)
+  simp only [decimalKernel, paramKernel, hs, hp]
+
+theorem symbolic_decimalKernel (r : ℕ) :
+    decimalKernel r symbolicSeed = paramKernel r :=
+  decimalKernel_of_blocks r symbolicSeed symbolic_block
+
+/-- The closed seed check can be factored into two finite obligations:
+packing the literal blocks gives the literal seed, and those blocks are the
+symbolic selector list. Both assumptions are explicit and unproved here. -/
+theorem seed_equality_of_finite_checks
+    (hpack : Natural79PrintedDecimalSeedDraft.printedSeed =
+      Nat.ofDigits (10^16) Natural79PrintedDecimalBlocksDraft.printedBlocks)
+    (hblocks : Natural79PrintedDecimalBlocksDraft.printedBlocks = selectorBlocks) :
+    Natural79PrintedDecimalSeedDraft.printedSeed = symbolicSeed := by
+  exact hpack.trans (congrArg (Nat.ofDigits (10^16)) hblocks)
+
+/-- Crucial remaining finite check: `printedSeed = symbolicSeed`. This theorem
+requires that equality and does not claim it has been proved in Lean. -/
+theorem printed_decimalKernel_of_seed_equality
+    (hseed : Natural79PrintedDecimalSeedDraft.printedSeed = symbolicSeed) :
+    decimalKernel rho Natural79PrintedDecimalSeedDraft.printedSeed = paramKernel rho := by
+  rw [hseed]
+  exact symbolic_decimalKernel rho
+
+/-- The displayed low-port support expression has the existing symbolic
+recipe as its direct source premise, independently of the seed. -/
+def decimalLow : ℕ := (2^67)^8807 - 1 -
+  (∑ j ∈ CompactConcreteMask.support, (2^67)^j) - 2*(2^67)^1063
+
+theorem decimalLow_eq_lowNat : decimalLow = CompactSymbolicPorts.lowNat := by
+  simpa only [decimalLow, CompactSymbolicPorts.lowNat] using
+    CompactConcreteMask.concrete_recipe.symm
+
+end Natural79DecimalSelectorKernelDraft
+#print axioms Natural79DecimalSelectorKernelDraft.selector_lt_decimal_base
+#print axioms Natural79DecimalSelectorKernelDraft.symbolic_block
+#print axioms Natural79DecimalSelectorKernelDraft.decimalKernel_of_blocks
+#print axioms Natural79DecimalSelectorKernelDraft.symbolic_decimalKernel
+#print axioms Natural79DecimalSelectorKernelDraft.seed_equality_of_finite_checks
+#print axioms Natural79DecimalSelectorKernelDraft.printed_decimalKernel_of_seed_equality
+#print axioms Natural79DecimalSelectorKernelDraft.decimalLow_eq_lowNat

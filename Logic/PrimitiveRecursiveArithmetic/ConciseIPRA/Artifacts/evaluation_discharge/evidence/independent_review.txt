@@ -1,0 +1,287 @@
+FINAL PACKAGE NOTE (November 11, 2026)
+======================================
+The historical review below is retained verbatim. Its initial zero-checker
+hash predates removal of a redundant JSON-object guard. The final zero checker
+is zero/code/checker.py, SHA-256:
+f64424bc350ad40f231a7c842cbfc3204051cc5cc82f9c9c3e7c5b9ad1754fe6
+All original and independent fixtures, including non-object JSON rejection,
+were replayed successfully against this final module in the integrated run.
+The later verified compact-codec frontier is 508 normalized bytes (780 for
+its validated public-goal companion), superseding the 516-byte figure in the
+historical review. The raw-checker hash below is unchanged. The independent reviewer reread
+and approved the final zero-checker guard removal. Delivered code is at
+raw/checker.py and zero/code/checker.py; delivered independent fixtures are
+under validation/independent_raw/ and validation/independent_zero/.
+
+INDEPENDENT REVIEW: THREE-FAMILY EVALUATION AT WITNESS DISCHARGE
+
+Reviewed implementation
+-----------------------
+agent_logic/checker.py, SHA-256
+d4aed2e227fd0f018e40215c4cdeda1e2ec62cb6700286fbdd905794807fc842
+
+The earlier goal-directed prototype agent_logic/eval_discharge.py was also
+inspected. This review's concrete checks and hash refer to checker.py, the
+inference-synthesizing version with clause-count scopes.
+
+Conclusion
+----------
+No scope, capture, normalization, or inference-soundness defect was found in
+this review. The proposed fusion has an elementary exact correspondence
+with separate SeedEval and witness elimination. The essential restriction
+is that only the normalized exported formula, after the evaluation map, is
+required to be free of the fresh witness. The checker enforces that order.
+This is a written code/mathematical review and a small adversarial test set,
+not a proof-assistant verification of the implementation.
+
+Mathematical correspondence
+--------------------------
+Let ev_E(F) return F unless E is s=t and F is I(S c,s;u.h)=r. In that
+matching case it returns r=nf(h[I(c,t;u.h)/u]). A fused discharge proves
+D B, opens its witness clause at fresh b, proves E and F in that same
+extended context, and exports ev_E(F) if that formula is b-free.
+
+In the separate calculus the matching branch is one SeedEval application
+inside the opened scope, followed by ordinary witness elimination. In
+the nonmatching branch ordinary elimination applies directly to F. This
+proves soundness in the old calculus and also explains why E may be ANY
+formula, rather than an equation with a mandatory successful match.
+
+Conversely, ordinary witness elimination is recovered by selecting the
+already proved compound major D B as the auxiliary E in its opened scope.
+Weakening is admissible: injective renaming and insertion of an unused
+clause preserve all literal shape tests. Since E has D root, ev_E(F)=F.
+This uses no numerical 0/1 case and no special choice of a mismatching seed.
+
+SeedEval is recovered by opening the closed dummy theorem
+theta = D_{x,y}(0=0). Introduce theta at witness 0: its progressive branch
+has the local ordinary assumption 0=0 and uses that assumption. Thus theta
+does not require the fixed reflexivity axiom clause. Under the dummy opened
+clause, weaken the two supplied SeedEval premises and apply fused discharge.
+Its result is independent of the dummy witness, so discharge is permitted.
+
+Together with unchanged Use and Intro, this gives exact translations of
+finite derivations in both directions. The axiom clause of universal
+reflexivity remains a separately counted assumption of both presentations.
+No rule-count claim should hide it.
+
+Zero-only normalization and substitution
+---------------------------------------
+The representation has integer 0, negative free-variable levels, positive
+bound indices, successor [0,t], iterator [n,a,h], equation [s,t], and D [B].
+Only the iterator's third child adds one binder; the sole D child adds two.
+The recursive walk rebuilds the tree and contracts [0,a,h] to a. It does
+not unfold an iterator whose counter is a successor. In particular this
+is not the full computation normalizer used by earlier Name presentations.
+
+The omission of a shift of an inserted term is correct under the actual
+invariant: every substituted t is an externally well-scoped numerical term
+with no loose positive bound indices. Its own internal bound indices remain
+under their own binders. Inserting it below another binder therefore needs
+no change to its representation. Every substitution site in the checker
+meets this condition:
+
+* Use supplies an externally validated numerical term.
+* Intro and witness opening insert such a term, 0, a fresh negative level,
+  or its successor.
+* SeedEval extracts h from the root iterator of an equation. Thus h has
+  just its own one open iterator variable, and I(c,t;u.h) closes that variable.
+  This inserted iterator has no loose positive index.
+
+The SeedEval optimization uses t directly when c is literally 0, otherwise
+it constructs [c,t,h]. The latter is already zero-normal because c,t,h were
+parts of fully validated normal formulas and c is not 0. Subsequent opening
+of h performs every new surrounding zero contraction.
+
+Scope discipline
+----------------
+The proof starts with exactly one clause (universal reflexivity), so n=1
+means zero free numerical parameters. A retained context of length n has
+the free levels 1-n,...,-1. Each Intro or fused discharge adds exactly one
+clause and creates the fresh parameter b=-n. No other instruction allocates
+a parameter or changes context length. This justifies deriving the scope
+bound from clause count for the closed-theorem certificate interface.
+
+Every recursive prove result is validated by syntax(A,n,True). Consequently
+an exported formula containing b is rejected, whether the evaluation map
+matches or falls back. The public goal is independently validated with n=1.
+The validator checks exact integer types (not bool), formula/term sorts,
+successor's zero tag, constructor arities, bound-index depth, free levels,
+and zero-normality. Returning the normalized tree is not sufficient: it must
+equal the original syntax, so nonnormal raw inputs are rejected.
+
+Intro validates its matrix through the final synthesized result [B0], after
+checking the branch. Its earlier traversal may process malformed material,
+but successful acceptance necessarily reaches and passes that final complete
+matrix check. This delayed validation does not allow an ill-scoped or
+nonnormal matrix to be accepted. For example, a zero-headed iterator erased
+in the branch is still rejected if present in the original matrix B0.
+
+Primitive-recursive certificate relation
+---------------------------------------
+All computational recursion is structural on a finite syntax or proof tree.
+The normalizer only deletes nodes; it never recursively calls itself on a
+newly unfolded successor computation. Substitution traverses the ORIGINAL
+input tree once and inserts the supplied term as a value, without traversing
+that inserted copy again. With tree-node size |.|, a valid substitution has
+the conservative bound
+
+  |sub(a,t)| <= |a| * max(1,|t|).
+
+Zero contraction can only decrease this bound. A SeedEval result constructs
+at most one iterator before one such substitution. Other rule operations
+are validation, comparison, clause lookup, list extension, and finitely many
+substitutions. Each recursive proof call consumes a proper supplied
+subcertificate. A primitive-recursive majorant follows by iterating, for
+example, a sufficiently generous polynomial size/time bound once per proof
+node. This bounds intermediate formula sizes and the cost of their traversals.
+Thus the ideal finite-tree certificate predicate is primitive recursive.
+No uniform numerical evaluator, full-normalizer totality axiom, or supplied
+normalization fuel is needed. Actual Python processes retain their ordinary
+parser, recursion, and memory resource limits.
+
+Independent concrete checks
+---------------------------
+independent_fixtures/ contains six separately constructed certificates and
+results.json. Each was run in both ordinary Python and python -O: 12 expected
+outcomes, all observed. This is a targeted check of the principal remaining
+scope/normalization risks, not a broad statistical claim.
+
+Accepted:
+1. witness_erased_by_evaluation: E is b=b and F is I(1,b;u.0)=0 inside a
+   fresh witness scope. F genuinely mentions b. Evaluation exports 0=0,
+   which is b-free. F itself is proved by an inner dummy discharge on two
+   reflexivities. This tests evaluation BEFORE witness scope exit.
+2. compound_auxiliary_identity: E is a proved D formula, forcing identity
+   fallback and recovering ordinary witness elimination.
+
+Rejected:
+3. fallback_witness_escape: identity fallback attempts to export b=b.
+4. matching_witness_escape: a successful evaluation still leaves b free.
+5. non_normal_matrix: introduction tries to retain a literal-zero iterator
+   in its original matrix, although branch substitution erases it.
+6. unbound_positive_term: an externally supplied term has a loose positive
+   bound index.
+
+Novelty and comparison boundaries
+--------------------------------
+At pinned repository commit 11814771b7490dfbea0ed5fcf0f5b23586334764, the
+filed seed_evaluation and clause_contexts packages already supply the main
+arithmetic interface and four-family clause calculus. The incoming
+substitutive_discharge package combines general equality replacement with
+witness discharge but keeps a separate calculation rule. The incoming
+clause_discharge package has three families but uses full computation normal
+forms (and either explicit Name or inspection of its own witness clause).
+The incoming prefix_clauses package simplifies formula storage, not this
+fusion. The new distinction is three families with deterministic root
+SeedEval at witness discharge and zero-only normalization.
+
+This reduction does not establish a global minimum and cannot be advertised
+as beating every compact checker in the repository. Any source-size claim
+must use the actual measured matched control and state the other distinct
+profiles, including the known compact 516-byte profile. The exact mathematical
+equivalence, rather than the bare count of rule names, is the reliable result.
+
+ADDENDUM: RAW THREE-FAMILY PRESENTATION (NO NORMALIZATION)
+========================================================
+
+Reviewed implementation
+-----------------------
+agent_math/checker_raw.py, SHA-256
+53fea58739a0972806bfeeaeca347c5842e5db91c79810ef5a7974d588f4254f
+
+No defect was found in the raw sibling. It is a particularly clean main
+mathematical presentation, because its separate-rule comparator is exactly
+the raw VPrf calculus already present in NativeUniformClauses.lean. It does
+not require the zero-normalization layer, a full normalizer, or a fuel field.
+The presence of two computation patterns inside one total evaluation map
+should be stated explicitly rather than hidden by the three-family count.
+
+Exact arithmetic patterns
+------------------------
+The raw evaluation map has these disjoint successful cases:
+
+  E = s=t,                 F = I(0,s;u.h)=r :  ev_E(F) = r=t.
+  E = I(c,a;u.h)=t,        F = I(S c,a;u.h)=r : ev_E(F) = r=h[t/u].
+
+Otherwise ev_E(F)=F. These are precisely VPrf.evalZero and VPrf.evalSucc
+in NativeUniformClauses.lean, also EPrf.evalZero and EPrf.evalSucc in
+NativeEval.lean. The guards compare the entire appropriate seed or
+predecessor term, including c,a,h; matching merely an iterator head would
+be unsound, but the implementation performs the required full comparison.
+The two successful patterns cannot overlap because raw 0 is distinct from
+the successor constructor [0,c].
+
+The same generic fusion proof applies without any normalization qualifications:
+in the old VPrf calculus, perform the matched Eval inside the witness scope
+and then eliminate D; in the fallback case directly eliminate D. Conversely,
+recover ordinary elimination with a compound auxiliary and recover each raw
+Eval case by opening theta=D(0=0). Every term and end formula is literally
+unchanged by the translations. Thus the equivalence is on the same raw
+syntax and open consequence relation. Composing with vprf_iff_cprf and the
+repository's native/arithmetic bridge needs no new normalization theorem.
+
+Code and capture checks
+-----------------------
+walk now only rebuilds its input; no constructor is contracted. The
+previous valid substitution invariant is unchanged: inputs inserted by sub
+are externally scoped numerical terms without loose positive indices.
+In the successor case h is the root iterator's body, hence has precisely
+one open external binder to instantiate. The Eq root of F ensures that
+there is no unaccounted surrounding formula binder. Nested iterator binders
+are handled by walk's depth increments. In the zero case h is deliberately
+discarded by the arithmetic inference, not by a syntactic normalizer.
+
+This distinction matters when h mentions the witness: the rule can export
+a witness-free result even when its premise mentions b in the discarded
+body. All premise formulas are still validated before dispatch. The final
+syntax(A,n,True) check prevents witness escape in both successful and
+fallback cases.
+
+The public wrapper no longer insists that type(data) is dict before
+checking its keys. For finite JSON inputs this does not create an acceptance
+gap: non-object inputs either fail set(data)=={'goal','proof'} or fail the
+subsequent string-key access. Acceptance still requires the exact two keys,
+a valid closed goal, and a fully checked derivation. This is an input-wrapper
+observation only, not part of the mathematical reduction.
+
+Raw certificate verification is primitive recursive for the same structural
+reason, now with the simpler substitution bound and no normalization step
+at all. Each successful evaluation performs either no substitution (zero)
+or one ordinary binder-opening substitution (successor). It does not run a
+numerical evaluator for primitive recursive programs.
+
+Independent raw fixtures
+------------------------
+raw_independent_fixtures/ contains 12 independently constructed examples
+and results.json. Each ran under ordinary Python and python -O: all 24
+expected outcomes were observed.
+
+Five accepted examples:
+* Raw zero computation produces I(0,a;u.h)=a while retaining the raw iterator
+  in its conclusion, demonstrating absence of hidden normalization.
+* Successor computation with a nested iterator body checks capture avoidance:
+  h=I(1,u;v.u), with its inner occurrence of outer u at bound index 2.
+* The zero evaluation case removes a witness occurring in its discarded body.
+* The successor evaluation case removes a witness from both its predecessor
+  and successor-iterator premises; the constant body yields 0=0.
+* A compound auxiliary forces the ordinary-elimination fallback.
+
+Seven rejected examples:
+* A mismatching seed attempts to derive the false equation I(0,0;u.0)=1.
+* A mismatching predecessor attempts to derive the false equation
+  I(1,0;u.u)=1.
+* Fallback tries to export the fresh witness.
+* Matching zero evaluation leaves the fresh witness in its result.
+* A term has a loose positive bound index.
+* A Boolean is supplied as a numerical term.
+* A malformed successor has a nonzero tag.
+
+The raw fusion is not the already delivered substitutive_discharge result:
+that presentation retained calculation as an independent family and used
+canonical successor-seeded terms. Here both existing raw computation cases
+are absorbed into witness discharge, with raw ordinary substitution alone.
+The incoming full-normalization Name variants likewise do not implement
+this raw three-family inference basis. This establishes scoped novelty
+against the inspected repository material, not historical priority over
+all possible proof presentations.

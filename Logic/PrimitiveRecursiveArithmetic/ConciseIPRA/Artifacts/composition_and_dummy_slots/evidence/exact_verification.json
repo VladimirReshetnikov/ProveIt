@@ -1,0 +1,897 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "source_audit": {
+    "inference_core_ast_identical_to_byte587": true,
+    "only_import": "standard-library json"
+  },
+  "metrics": {
+    "tokens": 581,
+    "ast_nodes": 641,
+    "normalized_bytes": 1424,
+    "gzip9_bytes": 631,
+    "sha256": "99ef98e79b753f9ff8c84c715265e417b2c295dc41774277a2e47d3f4b8b9732"
+  },
+  "grammar_checks": [
+    {
+      "name": "zero reflexivity",
+      "goal": [
+        1,
+        1
+      ],
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "first successor padding",
+      "goal": [
+        [
+          3
+        ],
+        [
+          1
+        ]
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "second successor padding",
+      "goal": [
+        [
+          5
+        ],
+        [
+          1
+        ]
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "out of range",
+      "goal": [
+        [
+          7
+        ],
+        [
+          1
+        ]
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "genuine D counter",
+      "goal": [
+        [
+          3,
+          3
+        ]
+      ],
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "genuine D witness",
+      "goal": [
+        [
+          5,
+          5
+        ]
+      ],
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "genuine D variable below successor",
+      "goal": [
+        [
+          [
+            7
+          ],
+          [
+            7
+          ]
+        ]
+      ],
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "genuine iterator accumulator",
+      "goal": [
+        [
+          1,
+          1,
+          3
+        ],
+        1
+      ],
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "iterator counter padding",
+      "goal": [
+        [
+          3,
+          1,
+          1
+        ],
+        1
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "iterator seed padding",
+      "goal": [
+        [
+          1,
+          3,
+          1
+        ],
+        1
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "guarded D equation",
+      "goal": [
+        [
+          [
+            5,
+            1,
+            7
+          ],
+          [
+            5,
+            1,
+            7
+          ]
+        ]
+      ],
+      "expected": true,
+      "actual": true
+    },
+    {
+      "name": "Boolean masquerading as zero",
+      "goal": [
+        true,
+        1
+      ],
+      "expected": false,
+      "actual": false
+    },
+    {
+      "name": "free negative parameter",
+      "goal": [
+        -1,
+        -1
+      ],
+      "expected": false,
+      "actual": false
+    }
+  ],
+  "cases": 51,
+  "executions": 102,
+  "failures": [],
+  "results": [
+    {
+      "case": "compound_case_introduction_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "compound_case_introduction_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "compound_implication_elimination_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "compound_implication_elimination_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "computation_successor_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "computation_successor_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "computation_zero_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "computation_zero_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "derived_zero_source_equational_transport_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "derived_zero_source_equational_transport_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "guarded_induction_with_used_hypothesis_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "guarded_induction_with_used_hypothesis_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "guarded_lift_elimination_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "guarded_lift_elimination_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "guarded_literal_equation_introduction_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "guarded_literal_equation_introduction_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "old_atomic_case_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "old_atomic_case_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "transport_reflexivity_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "transport_reflexivity_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "zero_symmetry_all_numbers_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "zero_symmetry_all_numbers_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "zero_symmetry_computable_zero_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "zero_symmetry_computable_zero_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "zero_symmetry_one_local",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "zero_symmetry_one_local",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "direct_zero",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "direct_zero",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "false_zero_equals_one",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_zero_equals_one",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "wrong_compute_endpoint",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "wrong_compute_endpoint",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "future_capture",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: unsupported operand type(s) for *: 'function' and 'int'"
+    },
+    {
+      "case": "future_capture",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: unsupported operand type(s) for *: 'function' and 'int'"
+    },
+    {
+      "case": "public_old_zero",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_old_zero",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_even_alias",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_even_alias",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_free_hole",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_free_hole",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_Q",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_Q",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_empty_term",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_empty_term",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_negative_parameter",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "public_negative_parameter",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "missing_packet",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "missing_packet",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "false_goal_compound_case_introduction_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_compound_case_introduction_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_compound_implication_elimination_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_compound_implication_elimination_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_computation_successor_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_computation_successor_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_computation_zero_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_computation_zero_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_derived_zero_source_equational_transport_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_derived_zero_source_equational_transport_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_guarded_induction_with_used_hypothesis_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_guarded_induction_with_used_hypothesis_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_guarded_lift_elimination_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_guarded_lift_elimination_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_guarded_literal_equation_introduction_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_guarded_literal_equation_introduction_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_old_atomic_case_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_old_atomic_case_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_transport_reflexivity_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_transport_reflexivity_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_zero_symmetry_all_numbers_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_zero_symmetry_all_numbers_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_zero_symmetry_computable_zero_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_zero_symmetry_computable_zero_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_zero_symmetry_one_local",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_zero_symmetry_one_local",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: c.<locals>.<lambda>() takes from 1 to 3 positional arguments but 4 were given"
+    },
+    {
+      "case": "false_goal_direct_zero",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "false_goal_direct_zero",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "IndexError: pop from empty list"
+    },
+    {
+      "case": "unused_forbidden_float",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "unused_forbidden_float",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "unused_forbidden_bool",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "unused_forbidden_bool",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "unused_forbidden_null",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "unused_forbidden_null",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "unused_forbidden_string",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "unused_forbidden_string",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "unused_forbidden_dict",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "unused_forbidden_dict",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "TypeError: 'str' object is not callable"
+    },
+    {
+      "case": "wrapper_rejects_first successor padding",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_first successor padding",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_second successor padding",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_second successor padding",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_out of range",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_out of range",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_iterator counter padding",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_iterator counter padding",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_iterator seed padding",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_iterator seed padding",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_Boolean masquerading as zero",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_Boolean masquerading as zero",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_free negative parameter",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "wrapper_rejects_free negative parameter",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "error": "ValueError: The public goal must be a canonical closed Eq/D formula"
+    },
+    {
+      "case": "actual_accumulator_zero_computation",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    },
+    {
+      "case": "actual_accumulator_zero_computation",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "error": null
+    }
+  ],
+  "claim_boundary": "Exact canonical grammar plus inherited canonical soundness/completeness. No size record. Finite tests do not establish the obstruction theorem."
+}

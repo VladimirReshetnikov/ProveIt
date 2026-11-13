@@ -1,0 +1,23 @@
+/tmp/ipra-compact-low-population-explore/CompactSupportCard.lean:42:34: error: unsolved goals
+A : Finset ℕ := range 943
+B : Finset ℕ := Ico 983 993
+C : Finset ℕ := Ico 1003 1012
+D : Finset ℕ := Ico 1013 1032
+E : Finset ℕ := {1063, 1064, 1095, 2195, 3296}
+U : Finset ℕ := A ∪ B ∪ C ∪ D ∪ E
+hAB : Disjoint A B
+hABC : Disjoint (A ∪ B) C
+hABCD : Disjoint (A ∪ B ∪ C) D
+hABCDE : Disjoint (A ∪ B ∪ C ∪ D) E
+hU : #U = 986
+hone : 1 ∈ U
+j : ℕ
+⊢ (j = 1063 ∨
+        j = 1064 ∨
+          j = 1095 ∨ j = 2195 ∨ j = 3296 ∨ j < 943 ∨ 983 ≤ j ∧ j < 993 ∨ 1003 ≤ j ∧ j < 1012 ∨ 1013 ≤ j ∧ j < 1032) ∧
+      ¬j = 1 ↔
+    ¬j = 1 ∧
+      (j = 1063 ∨
+        j = 1064 ∨
+          j = 1095 ∨ j = 2195 ∨ j = 3296 ∨ j < 943 ∨ 983 ≤ j ∧ j < 993 ∨ 1003 ≤ j ∧ j < 1012 ∨ 1013 ≤ j ∧ j < 1032)
+'CompactSupportCard.support_card' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

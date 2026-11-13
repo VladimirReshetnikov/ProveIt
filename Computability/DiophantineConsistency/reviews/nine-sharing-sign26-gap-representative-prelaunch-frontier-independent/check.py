@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+import hashlib,json,subprocess,sys
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-sharing-sign26-gap-representative-check';H=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'c462f09dc30287998a257c55d51d98db08d677e01d8319d9b8f77a3b17afab09','source-manifest.json':'1add58ad0684bc03518bb80a1d1d9a233676facc3b3228d9747041c7d76b2af2','ordered-survey.py':'83cc1798527982f9875d322ff92e13ba1e70aadcfd863a3d036c3eb4ee64f929','src/DiophantineConsistency/Sign26GapRepresentative.lean':'4dd1a475c13562f8039fa7e1b99f54b0b2a2b08d5c2e5d55e00f3c4649d5c3bf'}.items():assert H(P/n)==h
+m=json.loads((P/'source-manifest.json').read_text())['rows'];assert len(m)==1 and m[0]['imports']==['DiophantineConsistency.SharingSign26Squares','Sign26OrderedRing'];s=(P/'src/DiophantineConsistency/Sign26GapRepresentative.lean').read_text();assert H(D/'research/nine-sharing-sign26-gap-representative-draft/Sign26GapRepresentative.lean')==m[0]['source_sha256']
+for x in ['[V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]','(beta K x1 x2 x3 x4 x9 : V) (hbeta : 1 ≤ beta)','(hNt : (ι K + (ι x9 + 1)) *','∃ gap : V, ι gap =','ι_le_ι.mpr hbeta','ι_nonneg x1','ι_nonneg K','ι_nonneg x9','ι_nonneg x2','ι_nonneg x3','ι_nonneg x4','Sign26OrderedRing.gap_nonneg','nonneg_iff.mp hg','⟨gap, hgap.symm⟩']:assert x in s
+up=D/'reviews/nine-sharing-sign26-ordered-ring-retry01-terminal-frontier-independent/check.py';assert H(up)=='07bbdfd68a4e7821dd75b1ce5b1eb04bb62a2cb8750157e253828c03198555fd';subprocess.run([sys.executable,'-I','-S','-B',str(up)],capture_output=True,check=True,timeout=120)
+r=subprocess.run([sys.executable,'-I','-S','-B',str(P/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not r.stderr and json.loads(r.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_STATIC_AND_NO_LEAN_PREFLIGHT','scope':'natural representative conditional on model beta≥1 and explicit embedded Nt equality; no seed-zero extraction or port cast theorem'},sort_keys=True,indent=2))

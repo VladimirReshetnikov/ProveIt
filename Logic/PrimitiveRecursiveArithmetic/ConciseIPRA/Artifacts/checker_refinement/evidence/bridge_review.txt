@@ -1,0 +1,228 @@
+INDEPENDENT MATHEMATICAL REVIEW
+Pinned source: ProveIt 42fba2a76aea6eb41a8c4acfe7761620f58956ee.
+Reviewed source package:
+baseline_audit/three_field/ipra_three_field_2026-11-12
+
+Scope
+=====
+I read reference/inherited_choice_basis.tex, inherited_ordinary_bridge.tex,
+scalar_predecessor.tex, equality_reflection.tex, primitive_recursion.tex,
+inherited_arity_checker.tex, context_first_audit.tex, and report.tex through
+the interpretation theorem. This is a mathematical review of written
+proofs, not a proof-assistant verification of their statements or of any
+Python checker.
+
+Conclusion
+==========
+I found no material gap in the ordinary arithmetic/logical bi-interpretation
+as stated, provided the explicit separation/falsity bridge is retained and
+the guarded compact checker is claimed complete only for its translated
+public language. The scalar predecessor, equality reflection, and PR
+compiler are substantial inherited dependencies, not consequences of the
+short executable's size. The checker refinements do not delete any
+arithmetic or logical axiom.
+
+1. A complete ordinary first-order theory
+=========================================
+Define T_I in ordinary intuitionistic first-order logic with actual equality
+and genuine falsity. Its staged numerical signature begins with 0 and S.
+For each fixed earlier-stage term h(u,p_1,...,p_r), add a function symbol
+ i_h(n,a,p_1,...,p_r)
+with universally closed defining equations
+ i_h(0,a,p)=a,
+ i_h(Sn,a,p)=h(i_h(n,a,p),p).
+Descriptions are finite external syntax. No object variable ranges over
+programs, and no universal PR evaluator is asserted.
+
+Its other nonlogical principles are exactly:
+ (a) coverage: forall x [x=0 or exists y (x=Sy)];
+ (b) separation: (0=S0) -> bottom;
+ (c) induction for each literal equation E(n,p), equivalently the contextual
+     rule from Gamma |- E(0,p) and Gamma,E(z,p) |- E(Sz,p) infer Gamma |- E(t,p),
+     with z fresh for Gamma, t, and p.
+
+All ordinary intuitionistic logical/equality rules are present in this
+ordinary realization. Native certificates reconstruct them by macros;
+this should not be confused with suppressing the logic from T_I.
+
+2. Complete native inventory and its ordinary reading
+====================================================
+Numerical terms: x, 0, S(t), I(n,a;u.h), where only h binds u.
+Native formula grammar: s=t, Q_y B, D_{x,y} B, with x and y distinct.
+Designated native contradiction: 0=S0.
+Context: finite reusable formula list.
+
+Primitive axioms are I0 and IS, the two iterator equations above.
+Primitive inferences are Hyp; transport from s=t and F(s) to F(t);
+QE from Q_y B and B(0) to B(t); DE from D_{x,y}B and a proof of A under
+Q_y B(b,y), with fresh b, to A; DI_case from a proof of B(t,Sz) under
+B(t,0), with fresh z, to D_{x,y}B; and DI_progress from a proof of
+E(t,Sz) under E(t,z), with fresh z and literal equation E, to D_{x,y}E.
+Assumptions displayed under DI/DE are discharged. Full-formula induction
+is not primitive. The clause-context presentation in inherited_choice_basis
+is equivalent: a clause [A;y.B] means A -> forall y B.
+
+Ordinary readings:
+ (s=t)^o = (s=t),
+ (Q_y B)^o = B^o(0) -> forall y B^o(y),
+ (D_{x,y}B)^o = exists x [B^o(x,0) -> forall y B^o(x,y)].
+Domain formula is x=x; equality is unchanged.
+DI_case is sound using coverage. DI_progress is sound using equation
+induction under an assumed base. QE/DE/transport are standard inferences.
+
+3. Falsity is the most important explicit assumption
+=====================================================
+Native explosion from 0=S0 is valid: with C(v,a,b)=I(v,a;u.b), the assumed
+0=S0 gives a=C(0,a,b)=C(S0,a,b)=b. All equations follow. Case introduction
+and external induction on formula syntax then yield every native formula.
+
+This DOES NOT prove that the ordinary theory consisting only of positive
+iterator equations, coverage, and equation induction has genuine falsity.
+A singleton ordinary structure satisfies all those principles and 0=S0,
+while interpreting genuine falsity as false. Therefore the explicit
+ordinary axiom (0=S0)->bottom is necessary for the stated translation.
+
+With this axiom, native bottom* reads as 0=S0, which is equivalent to
+ordinary bottom by separation in one direction and ordinary explosion in
+the other. Conversely, the ordinary separation axiom translates into the
+native identity implication bottom* ->_* bottom*, hence is derivable.
+There is no circularity here: native explosion and ordinary separation
+perform different roles in the two directions of the interpretation.
+
+4. Logical macros and both formula composites
+=============================================
+Set C(v,a,b)=I(v,a;u.b). Define G_v(s=t) as
+ C(v,0,s)=C(v,0,t), and push G through D. By computation, equality, and
+binder congruence, G_0 A is a theorem and G_{Sz} A is interderivable with A.
+The unused-witness padding D_{r,z}G_z A is interderivable with A.
+
+A selector M_v(A,B) is defined recursively by aligning binder depths using
+that padding, then applying C to the two sides of the terminal equations.
+The mixed-depth clauses in inherited_choice_basis strictly decrease the
+maximum binder depth and give M_0(A,B) <-> A and M_{Sz}(A,B) <-> B.
+
+Let p(z)=I(z,0;u.C(u,1,0)); fixed computations give p(1)=1, p(2)=0.
+The six macros are:
+ A ->_* B = D_{r,z} M_z(A,B),
+ A and_* B = D_{r,z} G_z M_{p(z)}(A,B),
+ exists_*x A = D_{x,y}G_y A,
+ A or_*B = exists_*x M_x(A,B),
+ forall_*x A = A(0) and_* D_{r,z}G_z A(z),
+ bottom* = 0=S0.
+Newly bound r,z,y are fresh; r is unused.
+
+The universal macro needs its explicit A(0) conjunct: the gated paired
+formula alone supplies positive instances. Coverage supplies an arbitrary
+instance from zero and successor instances. Conjunction needs both fixed
+instances 1 and 2. No excluded middle for arbitrary quantified formulas is
+used. Decidability is later derived only for quantifier-free formulas.
+
+The decisive native composite is
+ D_{x,y}B <-> exists_*x [B(x,0) ->_* forall_*y B(x,y)].
+Forward: open D at a fresh witness, use its closure under the base, form
+universal, implication, existential, and discharge the witness.
+Backward: open the existential and use case DI at its witness; its base,
+implication, and universal elimination give the successor premise.
+
+External structural induction gives both formula composites. The displayed
+ordinary readings alone would establish soundness, not both composites;
+the macro derivations and paired composite are the needed extra argument.
+
+5. Arithmetic dependency audit
+===============================
+The supplied dependency order is legitimate:
+ 1. Equation induction + coverage/cases + scalar computation construct P.
+ 2. P(0)=0 and P(Sn)=n imply successor injectivity and strengthen coverage
+    to x=0 or x=S(Px).
+ 3. Monus d(a,b)=I(b,a;u.Pu), selector C, and separation construct a
+    Boolean characteristic of actual equality throughout the domain.
+ 4. External recursion on each finite quantifier-free formula constructs
+    its characteristic equation. Equation induction therefore gives QFI.
+ 5. Only then use QFI to construct pairing/projections and compile general PR.
+
+The scalar predecessor proof is nontrivial, but its displayed inductions
+all have literal equations as invariants. Its case splits on Boolean values
+come from coverage, not an illicit induction on a disjunction. Diagonal
+substitutions are applied to already proved universally parameterized
+identities, not to an active induction hypothesis with altered parameters.
+No pairing or equality characteristic is presupposed in the predecessor.
+
+The equality-reflection appendix initially presents a general PRE language,
+but its opening paragraph explicitly restricts the scalar application to
+terms already available: P,C,addition,monus and their compositions. That
+qualification is essential; otherwise the proof order would appear circular.
+Its residual identity proves d(Sa,b)=1 iff a=b internally. This gives an
+equality characteristic without appealing to equality on standard numerals.
+
+The square-root pairing proof uses only QFI after QFI has been recovered.
+The root invariant is quantifier-free. Surjectivity of pairing is unnecessary
+and is not claimed. Pairing is an internal finite-state device; the original
+numerical domain is not restricted to its range.
+
+6. Both numerical interpretation composites
+============================================
+Interpret every fixed scalar iterator in iPRA by ordinary primitive recursion
+whose update ignores its explicit counter argument. In the reverse direction,
+for f(0,p)=g(p), f(Sn,p)=h(n,f(n,p),p), use
+ V(n,p)=I(n,pi(0,g*(p));u.pi(S L(u),h*(L(u),H(u),p))),
+ f*(n,p)=H(V(n,p)).
+Equation induction proves L(V(n,p))=n; the projection equations establish
+both defining equations of f*.
+
+For each fixed description, two realizations satisfying the same base and
+step equations are equal at all internal counters by equation induction.
+External induction on the finite description therefore proves that its double
+translation equals the original operation. This includes coherence when
+substitution changes the staged syntactic description of an update.
+Consequently x=y is an internally total bijection preserving all operations
+in both composites. This is stronger than standard-model numerical agreement.
+
+7. Guarded compact public language
+===================================
+The compact kernel keeps progress at equation matrices and cases at compound
+matrices. It is not the full native calculus on every raw formula. To make
+its public language faithful, atom matrices under binders have the gate form
+ I(y,0;u.s)=I(y,0;u.t), with u absent from s,t.
+Their zero row is a theorem, so a case premise can be converted to a progress
+premise by supplying that theorem and ignoring the induction hypothesis.
+
+After replacing Q by D with an unused witness, replace each atomic matrix
+immediately beneath an original D by the padding D_{r,z}G_z E. Recursion
+through compound matrices yields guarded innermost equations. The outer
+matrix becomes compound, permitting the original case rule. Original
+progress steps may use unguarded auxiliary atomic progress formulas before
+transferring to the padded public formula. Thus it is permissible for internal
+proof formulas to be broader than public formulas.
+
+Formula round trips use padding equivalence and binder congruence. Missing
+literal-zero-source transport instances require the inherited source-restriction
+recovery theorem; they should not be silently assumed in a direct rule audit.
+The relevant results are referenced in the source and the README, but the
+short main paper is not a new proof of every restricted-source lemma.
+
+In particular, the correct theorem has the shape
+ native Gamma |- A iff compact pub(Gamma) |- pub(A),
+with numerical realization unchanged and formula round trips. A claim
+native Gamma |- A iff compact Gamma |- A for arbitrary raw formulas would
+be false for the root-determined introduction restriction.
+
+8. Complexity and verification limitations to state
+====================================================
+The compact programs do not validate the canonical public grammar. Scalar
+padding and surplus arrays have stipulated semantic meanings (truth or zero).
+Their acceptance is not itself arithmetic unsoundness, but these are aliases,
+not canonical object formulas. Do not advertise a compact profile as rejecting
+all malformed public goals. The fully validated native interface has a separate
+and larger trusted contract.
+
+The inherited arity-checker appendix describes a different earlier protocol
+with both choices at equations. Its broad theorem about canonical native
+sequents cannot simply be quoted as the direct completeness theorem of the
+new guarded-only protocol. Use the explicit guarded translation in report.tex.
+
+Finite-runtime stack/memory rejection may reject valid very large proofs.
+The mathematical checker theorem is for finite certificates with sufficient
+resources. Regression tests establish executable behavior on tested inputs;
+they do not prove interpretation or soundness for all proofs. The source-size
+improvement preserves inherited mathematical dependencies rather than replacing
+them with a new axiomatization.

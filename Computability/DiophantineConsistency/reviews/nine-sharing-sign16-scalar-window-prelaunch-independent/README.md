@@ -1,0 +1,3 @@
+# Independent sign16 scalar-window prelaunch
+
+Checker session 17756 exited 0. It checks the proposed q≥F consequence under staged seed zero, represented beta/K, beta positivity and explicit MC/MF bounds; source/manifest, transport and first-index provider routes, independent provider audits, resource caps and no-Lean preflight were checked. The first-index survey is a point-in-time historic/current direct-object match; direct guard is checked again after compile, but the survey itself is not replayed at postflight. Lean must still verify the proof and the port bounds remain hypotheses. No lift or equivalence is claimed.

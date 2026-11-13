@@ -1,0 +1,42 @@
+/tmp/compact44-graph-support-join-01/RawColumnBands.lean:29:2: error: Type mismatch: After simplification, term
+  h'
+ has type
+  @Eq V
+    (∑ x,
+        ↑(alignedCoeff selectors copies x) *
+          dig 67
+            (rot 67 n C
+              (offsets (selectorOffset 4393) (selectorOffset 5495) (copyOffset pos 4393) (copyOffset pos 5495)
+                  TwoBand.bareOffset x %
+                n))
+            k +
+      dig 67 T k)
+    (∑ i, ↑(selectors i) * dig 67 (rot 67 n C (selectorOffset 4393 i % n)) k +
+            ∑ j, ↑(copies j) * dig 67 (rot 67 n C (copyOffset pos 4393 j % n)) k +
+          (∑ i, ↑(selectors i) * dig 67 (rot 67 n C (selectorOffset 5495 i % n)) k +
+            ∑ j, ↑(copies j) * dig 67 (rot 67 n C (copyOffset pos 5495 j % n)) k) +
+        ∑ i, dig 67 (rot 67 n C (TwoBand.bareOffset i % n)) k +
+      dig 67 T k)
+but is expected to have type
+  @Eq V
+    (∑ x,
+        ↑(alignedCoeff selectors copies x) *
+          dig 67
+            (rot 67 n C
+              (offsets (selectorOffset 4393) (selectorOffset 5495) (copyOffset pos 4393) (copyOffset pos 5495)
+                  TwoBand.bareOffset x %
+                n))
+            k +
+      dig 67 T k)
+    (∑ x,
+              ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                dig 67 (rot 67 n C (selectorOffset 4393 x % n)) k +
+            ∑ x, ↑(2 ^ (10 + ↑x)) * dig 67 (rot 67 n C (copyOffset pos 4393 x % n)) k +
+          (∑ x,
+              ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                dig 67 (rot 67 n C (selectorOffset 5495 x % n)) k +
+            ∑ x, ↑(2 ^ (10 + ↑x)) * dig 67 (rot 67 n C (copyOffset pos 5495 x % n)) k) +
+        ∑ j, dig 67 (rot 67 n C (TwoBand.bareOffset j % n)) k +
+      dig 67 T k)
+'RawColumnBands.flatten' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'RawColumnBands.decoder_bands' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

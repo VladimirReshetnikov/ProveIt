@@ -1,0 +1,236 @@
+[
+  {
+    "file": "zero_computation.json",
+    "expected": {
+      "orbit": true,
+      "native": true,
+      "witness": true
+    },
+    "note": "The zero equation; no logical axiom is supplied externally."
+  },
+  {
+    "file": "successor_computation.json",
+    "expected": {
+      "orbit": true,
+      "native": true,
+      "witness": true
+    },
+    "note": "The successor equation with a state-dependent update."
+  },
+  {
+    "file": "derived_reflexivity.json",
+    "expected": {
+      "orbit": true,
+      "native": true,
+      "witness": true
+    },
+    "note": "Reflexivity derived from computation and equational transport."
+  },
+  {
+    "file": "identity_at_three_orbit.json",
+    "expected": {
+      "orbit": true
+    },
+    "note": "An actual use of the induction hypothesis proves I(3,0;Su)=3."
+  },
+  {
+    "file": "identity_at_three_native.json",
+    "expected": {
+      "native": true
+    },
+    "note": "An actual use of the induction hypothesis proves I(3,0;Su)=3."
+  },
+  {
+    "file": "identity_at_three_witness.json",
+    "expected": {
+      "witness": true
+    },
+    "note": "An actual use of the induction hypothesis proves I(3,0;Su)=3."
+  },
+  {
+    "file": "atomic_introduction_used_hypothesis.json",
+    "expected": {
+      "orbit": true,
+      "native": false,
+      "witness": true
+    },
+    "note": "The progress premise uses the retained equation through transport."
+  },
+  {
+    "file": "closure_extraction_orbit.json",
+    "expected": {
+      "orbit": true
+    },
+    "note": "Q obtained from an unused existential coordinate, or old QI."
+  },
+  {
+    "file": "closure_extraction_native.json",
+    "expected": {
+      "native": true
+    },
+    "note": "Q obtained from an unused existential coordinate, or old QI."
+  },
+  {
+    "file": "closure_extraction_witness.json",
+    "expected": {
+      "witness": true
+    },
+    "note": "Q obtained from an unused existential coordinate, or old QI."
+  },
+  {
+    "file": "nonzero_orbit_source.json",
+    "expected": {
+      "orbit": true
+    },
+    "note": "The new QE rule uses source 1 and seed 1, not its zero-source specialization."
+  },
+  {
+    "file": "compound_case_introduction.json",
+    "expected": {
+      "orbit": true,
+      "native": true,
+      "witness": true
+    },
+    "note": "The compound introduction retains the zero instance, even in the new calculus."
+  },
+  {
+    "file": "compound_eta_ignores_source.json",
+    "expected": {
+      "orbit": true
+    },
+    "note": "At a compound matrix eta selects zero despite the supplied argument 3."
+  },
+  {
+    "file": "old_atomic_case_is_not_progress.json",
+    "expected": {
+      "orbit": false,
+      "native": true,
+      "witness": false
+    },
+    "note": "Its ordinary conditional reading is true, while its progressive reading is false."
+  },
+  {
+    "file": "boxed_old_atomic_case.json",
+    "expected": {
+      "orbit": false,
+      "native": true,
+      "witness": true
+    },
+    "note": "The old witness-dispatched calculus changes mode at a nonliteral zero witness."
+  },
+  {
+    "file": "false_equality.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "A proof of reflexivity does not prove 0=1."
+  },
+  {
+    "file": "wrong_computation_endpoint.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "A caller cannot change a computation equation's endpoint."
+  },
+  {
+    "file": "wrong_orbit_antecedent.json",
+    "expected": {
+      "orbit": false
+    },
+    "note": "The zero-source orbit rule requires E(0), not an unrelated equation."
+  },
+  {
+    "file": "future_witness.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "A DI witness cannot refer to the eigenparameter that the rule will create."
+  },
+  {
+    "file": "unbound_iterator_state.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "At the root an iterator body has exactly one bound state slot."
+  },
+  {
+    "file": "existential_eigenvariable_escape.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "The continuation proves a=a; the declared closed conclusion is not its weakening."
+  },
+  {
+    "file": "noninteger_variable.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "Boolean values are not accepted as variable indices."
+  },
+  {
+    "file": "negative_hypothesis_index.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "Negative Python indexing cannot access an assumption."
+  },
+  {
+    "file": "unknown_rule.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "No caller-supplied axiom or theorem database is available."
+  },
+  {
+    "file": "compound_induction_is_not_primitive.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "The old progress rule requires a literal equation; the new calculus has no primitive ind instruction."
+  },
+  {
+    "file": "compound_transport_is_not_primitive.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "Transport through compound formulas is derived in the paper, not a primitive accepted instruction."
+  },
+  {
+    "file": "open_public_goal.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "The standalone interface requires a closed public goal."
+  },
+  {
+    "file": "malformed_instruction.json",
+    "expected": {
+      "orbit": false,
+      "native": false,
+      "witness": false
+    },
+    "note": "Every instruction has exactly the documented fields."
+  }
+]

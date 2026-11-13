@@ -1,0 +1,5 @@
+# Parametric controller specialization attempt
+
+The retained `attempt01` tried to specialize the checked BFS-residue controller unit directly through a theorem parameterized by the radix, avoiding an intermediate opaque alias. Lean checked the conditional parametric theorem but its kernel exceeded the 3 GiB limit while checking the subsequent closed symbolic specialization. The run exited unsuccessfully and produced no accepted object; no symbolic controller unit or rank calibration is claimed. The exact source, runner, error and resource samples are retained. Project, package, dynamic, and historical source-to-object ancestry were inherited inputs to this failed attempt.
+
+Root authorized a fresh `run-heavy-v2.py` attempt with a ≥12 GiB available-memory preflight, `-M6000`, a 300-second time limit, and an 8 GiB runtime available-memory guard. `observations/directbfsparamunit-attempt02/` records that Lean again reported kernel excessive memory on the closed symbolic specialization and exited unsuccessfully. No accepted object resulted.

@@ -1,0 +1,74 @@
+{
+  "title": "iPRA with inferred witnesses",
+  "baseline_commit": "17898ea7e6a1300dfdcad71040d5daeed67916d4",
+  "meaning_of_iPRA": "Full intuitionistic first-order primitive recursive arithmetic with a symbol for each fixed finite primitive-recursive description and quantifier-free induction with parameters.",
+  "new_mathematical_claims": [
+    {
+      "claim": "The fixed zero/unit naming probe gives a sound opening rule with only a major-proof and branch-proof premise.",
+      "location": "report Section 2.1, Lemma 2.1",
+      "status": "written universal proof"
+    },
+    {
+      "claim": "The new calculus is closed under capture-avoiding simultaneous substitution followed by full normalization, including substitutions which create the naming guard.",
+      "location": "report Section 2.3, Theorem 2.5",
+      "status": "written universal proof"
+    },
+    {
+      "claim": "Ordinary paired-binder elimination and full equality transport are admissible.",
+      "location": "report Section 2, Corollary 2.6 and Theorem 2.7",
+      "status": "written universal proof"
+    },
+    {
+      "claim": "For every canonical clause context and canonical conclusion, derivability is equivalent to derivability in the inherited normalized clause calculus.",
+      "location": "report Theorem 2.8",
+      "status": "written universal proof"
+    },
+    {
+      "claim": "Composition with the inherited arithmetic bridge gives equiconsistency and bi-interpretability with iPRA, on the whole numerical domain with actual equality and identity numerical composites.",
+      "location": "report Corollary 2.9 and Section 4",
+      "status": "new consequence of written equivalence and inherited bridge"
+    }
+  ],
+  "inherited_components": [
+    "Scalar iterator language and full normalization",
+    "Optional-antecedent clause contexts and the fixed reflexivity clause",
+    "Witness-selected paired introduction and the repair of atomic zero-witness case introduction",
+    "Numerical selector packaging, closure rules, and logical macros",
+    "Scalar predecessor, equality reflection, quantifier-free induction, and primitive-recursion compilation",
+    "Whole-domain arithmetic interpretations and both formula/numerical round trips",
+    "The repository already includes three-inference-family proposals"
+  ],
+  "finite_execution_evidence": {
+    "python": "3.12.14",
+    "primary_sha256": "79509b47cbbf20df923cc7b3e86952df33dcb3ce15b71f8e1d798212805a1902",
+    "accepted_certificates": 12,
+    "rejected_adversarial_objects": 38,
+    "cli_checks": 114,
+    "control_translations": 12,
+    "fuel_boundary_checks": 24,
+    "independent_checks": 6292,
+    "independent_failures": 0,
+    "guard_creation_regression": true
+  },
+  "source_size_claim": {
+    "metric": "CPython 3.12.14 ast.unparse after removing a leading module docstring; UTF-8 bytes including one final newline",
+    "selected_complete_checker_bytes": 1990,
+    "incoming_witness_discharge_bytes": 2273,
+    "absolute_reduction": 283,
+    "percent_reduction_rounded": 12.45,
+    "matched_explicit_equality_opening_bytes": 1998,
+    "matched_explicit_equality_output_bytes": 1983,
+    "qualification": "The complete byte saving against incoming code includes conclusion inference. Against matched controls the results are mixed across metrics. Shorter repository compact and public-goal encodings remain shorter."
+  },
+  "not_claimed": [
+    "Absolute minimality over all equivalent theories, languages, encodings, or machine models",
+    "A new reduction from four to three inference families",
+    "A new complete-checker byte record across every repository encoding",
+    "A strict improvement in every matched source metric",
+    "That finite testing proves correctness, consistency, or bi-interpretability",
+    "A new Lean formalization or an executed build of the upstream Lean project",
+    "A primitive-recursive uniform normalization bound for arbitrary finite iterator descriptions",
+    "Induction for all quantified formulas",
+    "A proof by either arithmetic theory of its own consistency"
+  ]
+}

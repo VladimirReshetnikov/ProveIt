@@ -1,0 +1,173 @@
+import Positive81Calibration
+import Positive81ExactIndexCut
+import EtaNaturalGraphStrongAux
+import EtaNaturalNormLargeK
+import AuxGeometryEtaNatural
+import DiophantineConsistency.ArithmeticPellClassification
+
+/-! Source-only positive-eta exact-index and same-oriented-main client.
+All prototype, arithmetic, model and provider sources remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive81ExactMainDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ArithmeticPellRecurrence
+open EtaNaturalUnitGraphDraft EtaNaturalXPositiveDraft EtaNaturalGapRankDraft
+open Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Given an actual positive-eta prototype zero, the exact P72 index and
+oriented main are proposed for the same arbitrary n,w satisfying the early
+index conditions. No 83 graph or reverse graph transport is used. -/
+theorem exact_and_main (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (ports K j:ℤ))).output v)
+    (heta : 0<v 9) (n w : V) (hn : 13≤n)
+    (hny : 2*ycoord n (2*(X (ports K) v*Y (ports K) v*Y (ports K) v-1)+1)=k v)
+    (hks : k v=2*n+4*(X (ports K) v*Y (ports K) v*Y (ports K) v)*w)
+    (hnmod : (2*n)%((q (ports K) v)^4)=rank (ports K) v+1) :
+    2*n=rank (ports K) v+1 ∧ Positive81CalibrationDraft.OrientedMainCut (ports K) v := by
+  let p := ports K
+  let a : V := X p v*Y p v+Y p v
+  let D : V := EtaNaturalGraphNormsDraft.delta p v
+  have hJ := EtaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hgap := EtaNaturalGapRankDraft.gap p v hz hbeta
+  have hFq : v 1+1≤q p v := le_trans (by simp) (le_of_lt hgap)
+  have hq47 : (47:V)≤q p v := by
+    simpa only [q,Residue90GraphNormsDraft.q] using
+      (ResidueCompactQBoundDraft.compact_q_at_least_47 K v hJ)
+  have hq3 : (3:V)≤q p v := le_trans (by norm_num : (3:V)≤47) hq47
+  have hqpos : 0<q p v := lt_of_lt_of_le (by norm_num : (0:V)<3) hq3
+  have hq2 : (2:V)≤q p v := le_trans (by norm_num : (2:V)≤3) hq3
+  have hX : 0<X p v := EtaNaturalXPositiveDraft.X_positive p v hz hbeta
+  have hs : 0<v 7+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hYq : Y p v=q p v*(q p v*q p v)*(v 7+1) := rfl
+  have hY : (q p v)^3≤Y p v := by
+    have he : Y p v=(q p v)^3*(v 7+1) := by dsimp [Y]; ring
+    rw [he]
+    exact le_mul_of_one_le_right (Arithmetic.zero_le _) (pos_iff_one_le.mp hs)
+  have hq8 : (8:V)≤(q p v)^3 := by
+    have hh := pow_le_pow_left₀ (by simp : (0:V)≤2) hq2 3
+    simpa using hh
+  have hY8 : 8≤Y p v := le_trans hq8 hY
+  have hYpos : 0<Y p v := lt_of_lt_of_le (by norm_num : (0:V)<8) hY8
+  have hU : 0<U p v := by dsimp [U]; exact mul_pos hYpos (mul_pos hqpos hqpos)
+  have hzeta : 0<v 10+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hk : k v=v 9+(v 10+1) := by dsimp [k]; ring
+  have hkpos : 0<k v := by rw [hk]; exact add_pos heta hzeta
+  have hR26 := EtaNaturalRankIndexDraft.compact_rank_at_least_26 K v hz
+  have hwindow := EtaNaturalGapRankDraft.compact_rank_window K v hz
+  have hRmu : rank p v+1<(q p v)^4 := by
+    have hp : 0<(q p v)^3+q p v := add_pos (pow_pos hqpos _) hqpos
+    calc
+      rank p v+1<(rank p v+1)+((q p v)^3+q p v) := lt_add_of_pos_right _ hp
+      _=rank p v+(q p v)^3+q p v+1 := by ring
+      _≤(q p v)^4 := hwindow
+  have hD : (X p v*Y p v+Y p v+2)*(X p v*Y p v+Y p v+2)=D+1 := by
+    dsimp [D,EtaNaturalGraphNormsDraft.delta,EtaNaturalGraphNormsDraft.a,
+      EtaNaturalGraphNormsDraft.X,X]; ring
+  have hpairnorm := EtaNaturalGraphEarlyIndexDraft.main_pair_norm p v hz hFq
+  obtain ⟨main,_,hbalance,hnorm⟩ := DirectMainNorm.direct_main_orientation
+    (U p v) (X p v) (Y p v) (k v) (v 9) (v 12) (rank p v) hU hY8 hkpos (by
+      simpa only [EtaNaturalGraphEarlyIndexDraft.P,EtaNaturalGraphEarlyIndexDraft.N,
+        EtaNaturalGraphEarlyIndexDraft.H,EtaNaturalGraphNormsDraft.delta,
+        EtaNaturalGraphNormsDraft.a,EtaNaturalGraphNormsDraft.X,X,c] using hpairnorm)
+  have hdelta : ArithmeticPellRecurrence.delta a=D := by
+    dsimp [ArithmeticPellRecurrence.delta,D,EtaNaturalGraphNormsDraft.delta,
+      EtaNaturalGraphNormsDraft.a,EtaNaturalGraphNormsDraft.X,X,a]; ring
+  have hmain : main*main=1+D*c p v*c p v := by
+    simpa only [D,EtaNaturalGraphNormsDraft.delta,EtaNaturalGraphNormsDraft.a,
+      EtaNaturalGraphNormsDraft.X,X,c,mul_assoc] using hnorm
+  have hg : main*main=1+ArithmeticPellRecurrence.delta a*c p v*c p v := by
+    simpa only [hdelta] using hmain
+  obtain ⟨m,_,hmx,hmy⟩ := ArithmeticPellClassification.solution_index a main (c p v) hg
+  obtain ⟨tau,htau⟩ := EtaNaturalGraphNormsDraft.first_natural_norm p v hz (mul_pos hJ hbeta)
+  have hfirst : tau*tau=1+(X p v*Y p v*Y p v)*(X p v*Y p v*Y p v+1)*
+      (v 9+(v 10+1))*(v 9+(v 10+1)) := by
+    simpa only [EtaNaturalGraphNormsDraft.m,EtaNaturalGraphNormsDraft.X,X,hk] using htau
+  have hmain' : main*main=1+D*(v 9+Y p v*(v 9+(v 10+1)))*
+      (v 9+Y p v*(v 9+(v 10+1))) := by simpa only [c,hk] using hmain
+  have hlarge := EtaNaturalNormLargeKDraft.large_first_ordinate (X p v) (Y p v) (v 9) (v 10+1)
+    tau D main hX hYpos hzeta hD hfirst hmain'
+  have hlarge' : 8*X p v*Y p v*Y p v+4≤k v := by simpa only [hk] using hlarge.2
+  have hgeometry := AuxGeometryEtaNaturalDraft.geometry_of_large_k (X p v) (Y p v) (v 9) (k v) D hYpos hlarge' hD
+  have hc : 1<c p v := by simpa only [c] using hgeometry.2.1
+  have hDpos : 0<D := hgeometry.2.2.1
+  have hDsmall : D<c p v*c p v*c p v := by simpa only [c] using hgeometry.2.2.2
+  obtain ⟨hf,hstrong,u,_,haux⟩ := EtaNaturalGraphStrongAuxDraft.index_hypotheses_of_geometry
+    p v hz hFq hc hDpos hDsmall
+  have hi : 0<v 4+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hcdef : c p v=v 9+Y p v*k v := rfl
+  have hadef : a=X p v*Y p v+Y p v := rfl
+  have hstrong' : ((v 4+1)*c p v*c p v)*((v 4+1)*c p v*c p v)+ArithmeticPellRecurrence.delta a=
+      ArithmeticPellRecurrence.delta a*(v 3*v 3) := by
+    simpa only [EtaNaturalGraphStrongAuxDraft.i,hdelta,D] using hstrong
+  have haux' : ((3+4*a)+a*a)*(v 3*v 3-1)*
+        (ArithmeticPellHalfIndex.absdiff (v 3*v 3*((v 5+1)*c p v)) (v 3*v 3*rank p v+c p v)*
+         ArithmeticPellHalfIndex.absdiff (v 3*v 3*((v 5+1)*c p v)) (v 3*v 3*rank p v+c p v))+
+        ArithmeticPellHalfIndex.absdiff (v 3*v 3*((v 5+1)*c p v)+u) (v 3*v 3*rank p v+c p v)*
+        ArithmeticPellHalfIndex.absdiff (v 3*v 3*((v 5+1)*c p v)+u) (v 3*v 3*rank p v+c p v)=
+      1+((3+4*a)+a*a)*(v 3*v 3-1)*
+        (ArithmeticPellHalfIndex.absdiff (v 3*v 3*((v 5+1)*c p v)+u) (v 3*v 3*rank p v+c p v)*
+         ArithmeticPellHalfIndex.absdiff (v 3*v 3*((v 5+1)*c p v)+u) (v 3*v 3*rank p v+c p v) := by
+    simpa only [EtaNaturalGraphStrongAuxDraft.T,D,EtaNaturalGraphNormsDraft.delta,
+      EtaNaturalGraphNormsDraft.a,EtaNaturalGraphNormsDraft.X,X,a] using haux
+  obtain ⟨hmR,hnR⟩ := Positive81ExactIndexCutDraft.exact_pair
+    (q p v) (X p v) (Y p v) (k v) (rank p v) main (c p v) a (v 7+1)
+    (v 4+1) (v 3) (v 5+1) u n w ((q p v)^4) m (v 9)
+    hq3 hX hs hYq heta hcdef hi hf hadef hR26 hny hks hRmu hnmod hmy hg hstrong' haux'
+  have ha : a=Y p v*(X p v+1) := by dsimp [a]; ring
+  refine ⟨hnR,main,?_,?_,?_⟩
+  · simpa only [hmR,ha] using hmx
+  · simpa only [hmR,ha] using hmy
+  · linear_combination -hbalance
+
+/-- The exact-index cut follows with the same n,w supplied by the caller. -/
+theorem exactIndexCut (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (ports K j:ℤ))).output v) (heta : 0<v 9) :
+    Positive81CalibrationDraft.ExactIndexCut (ports K) v := by
+  intro n w hn hny hks hnmod
+  exact (exact_and_main K v hz heta n w hn hny hks hnmod).1
+
+/-- The oriented-main cut uses the actual early index and the same
+orientation which supplies both the natural main norm and its x-coordinate. -/
+theorem orientedMainCut (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (ports K j:ℤ))).output v) (heta : 0<v 9) :
+    Positive81CalibrationDraft.OrientedMainCut (ports K) v := by
+  obtain ⟨_,n,w,_,hn,_,_,hny,hnmod,_,_,hks⟩ :=
+    EtaNaturalGraphEarlyIndexDraft.compact_early_index K v hz
+  exact (exact_and_main K v hz heta n w hn hny hks hnmod).2
+/-- The one-way positive-81 image has the original positive eta. This is
+an exact predecessor/increment equality, not an eta-forcing theorem. -/
+theorem image85_eta_positive (v : Fin 13 → V) (hv : ∀ i, 0<v i) :
+    0<(Positive80To81TransportDraft.image85 v) 9 := by
+  have h9 : v 9-1+1=v 9 := tsub_add_cancel_of_le (pos_iff_one_le.mp (hv 9))
+  simpa [Positive80To81TransportDraft.image85,Natural89RReplacementDraft.up,
+    Natural89Positive80TransportDraft.lower,EtaUnshift85TransportDraft.raiseEta,
+    W86To87TransportDraft.raiseW,Gamma87To88TransportDraft.raiseGamma,
+    J88To89TransportDraft.raiseJ,h9] using hv 9
+
+/-- Conditional-source 81 calibration after proposing the exact index and
+same-oriented-main proofs. Every imported source and provider remains open. -/
+theorem calibration81_original (K : ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).output v) :
+    (1+v 0*(ports K 0:V))*v 6=
+      Exp.exp (rank (ports K) (Positive80To81TransportDraft.image85 v)) ∧
+    (1+v 0*(ports K 0:V))*(1+v 0*(ports K 0:V))≤
+      (1+v 0*(ports K 0:V))*v 6 := by
+  let e := Positive80To81TransportDraft.image85 v
+  have hz85 := Positive81To83TransportDraft.prototype_zero_of81 (fun j => (ports K j:ℤ)) v hv hz
+  have he := image85_eta_positive v hv
+  exact Positive81CalibrationDraft.calibration81_original K v hv hz
+    (exactIndexCut K e hz85 he) (orientedMainCut K e hz85 he)
+end DiophantineConsistency.Positive81ExactMainDraft
+#print axioms DiophantineConsistency.Positive81ExactMainDraft.exact_and_main
+#print axioms DiophantineConsistency.Positive81ExactMainDraft.exactIndexCut
+#print axioms DiophantineConsistency.Positive81ExactMainDraft.orientedMainCut
+#print axioms DiophantineConsistency.Positive81ExactMainDraft.calibration81_original

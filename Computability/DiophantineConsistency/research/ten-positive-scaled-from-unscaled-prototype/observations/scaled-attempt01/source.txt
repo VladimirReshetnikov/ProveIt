@@ -1,0 +1,112 @@
+import PellSandwichFloor
+import PellScaledSandwich
+import PellScaledUpper
+import DiophantineConsistency.ArithmeticHalfBinomialSandwich
+
+/-! Construct a scaled Pell interval from one unscaled interval. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositiveScaledFromUnscaled
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ModelDifferenceRing
+open ArithmeticPellRecurrence ArithmeticPow ArithmeticHalfBinomialSandwich
+open TenPositivePellSandwichFloor TenPositivePellScaledSandwich TenPositivePellScaledUpper
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem scaled_interval (X Y S r eta zeta : V)
+    (hX : 1≤X) (hY : 1≤Y) (hSY : Y≤S) (hr : 0<r)
+    (hXeq : X=Exp.exp (2*r+1)) (h72 : 72*r<X+1)
+    (heta : 0<eta) (hzeta : 0<zeta)
+    (hck : ycoord (2*r+1) (Y*(X+1))=
+      2*ycoord (r+1) (2*(X*Y*Y-1)+1)*Y+eta)
+    (hk : 2*ycoord (r+1) (2*(X*Y*Y-1)+1)=eta+zeta) :
+    let P:=X*S*S
+    let B:=2*(P-1)+1
+    let a:=S*(X+1)-1
+    let K:=2*ycoord (r+1) B
+    let C:=ycoord (2*r+1) a
+    K*Y<C ∧ C<K*(Y+1) := by
+  let P:=X*S*S
+  let B:=2*(P-1)+1
+  let A0:=S*(X+1)
+  let a:=A0-1
+  let K:=2*ycoord (r+1) B
+  let C:=ycoord (2*r+1) a
+  let N:=power (X+1) (2*r)
+  let D:=power X r
+  have hS : 1≤S := le_trans hY hSY
+  have hXpos : 0<X := lt_of_lt_of_le (by simp) hX
+  have hYpos : 0<Y := lt_of_lt_of_le (by simp) hY
+  have hSpos : 0<S := lt_of_lt_of_le (by simp) hS
+  have hP : 0<P := mul_pos (mul_pos hXpos hSpos) hSpos
+  have hP1 : P-1+1=P := tsub_add_cancel_of_le (pos_iff_one_le.mp hP)
+  have hA : 0<A0 := mul_pos hSpos (add_pos hXpos (by simp))
+  have ha1 : a+1=A0 := tsub_add_cancel_of_le (pos_iff_one_le.mp hA)
+  have hB : B+2=2*X*S*S+1 := calc
+    B+2=2*(P-1+1)+1 := by dsimp [B]; ring
+    _=2*P+1 := by rw [hP1]
+    _=2*X*S*S+1 := rfl
+  have ha : 2*a+3=2*A0+1 := calc
+    2*a+3=2*(a+1)+1 := by ring
+    _=2*A0+1 := by rw [ha1]
+  have hgap : 2*(B+2)*((X+1)*(X+1))<(2*a+3)*(2*a+3)*X := by
+    rw [hB,ha]
+    exact shifted_coefficient X S hX hS
+  have hlow := lower_of_gap X r a B (pos_iff_one_le.mp hr) hgap
+  have h24 : 24*r<X+1 := lt_of_le_of_lt
+    (mul_le_mul_of_nonneg_right (by norm_num : (24:V)≤72) (by simp)) h72
+  have hpert : 2*r*3≤A0 := by
+    have h6 : 2*r*3≤24*r := by
+      simpa only [show 2*r*3=6*r by ring] using
+        mul_le_mul_of_nonneg_right (by norm_num : (6:V)≤24) (by simp)
+    have hXA : X+1≤A0 := le_mul_of_one_le_left (by simp) hS
+    exact le_trans h6 (le_trans (le_of_lt h24) hXA)
+  have hold := sandwich_of_interval X Y r eta zeta hX hY (pos_iff_one_le.mp hr) h72 hck hk hzeta
+  have hsplit := split_floor X Y r eta zeta
+    (2*ycoord (r+1) (2*(X*Y*Y-1)+1)) (ycoord (2*r+1) (Y*(X+1)))
+    hr hXeq hck hk heta hzeta hold.1 hold.2
+  have hN : N<2*(Y+1)*D := by
+    obtain ⟨v,hv,he⟩ := hsplit
+    change v<D at hv
+    change N=2*Y*D+v at he
+    rw [he]
+    calc
+      2*Y*D+v<2*Y*D+D := add_lt_add_of_le_of_lt le_rfl hv
+      _≤2*(Y+1)*D := by
+        have heq : 2*(Y+1)*D=(2*Y*D+D)+D := by ring
+        rw [heq]; simp
+  have hDpos : 0<D := power_pos X r hXpos
+  have hcrude : 2*r*3*N<A0*D := by
+    have hYY : Y+1≤2*Y := by
+      calc
+        Y+1≤Y+Y := by simpa only [add_comm] using _root_.add_le_add_left hY Y
+        _=2*Y := by ring
+    have hra : 24*r*Y<A0 := calc
+      24*r*Y<(X+1)*Y := mul_lt_mul_of_pos_right h24 hYpos
+      _≤(X+1)*S := mul_le_mul_of_nonneg_left hSY (by simp)
+      _=A0 := by dsimp [A0]; ring
+    calc
+      2*r*3*N<2*r*3*(2*(Y+1)*D) := mul_lt_mul_of_pos_left hN (mul_pos (mul_pos (by simp) hr) (by simp))
+      _=12*r*((Y+1)*D) := by ring
+      _≤12*r*((2*Y)*D) := mul_le_mul_of_nonneg_left (mul_le_mul_of_nonneg_right hYY (by simp)) (by simp)
+      _=(24*r*Y)*D := by ring
+      _<A0*D := mul_lt_mul_of_pos_right hra hDpos
+  have hcoeff : (2*(a+2))*(2*(a+2))*X*A0≤(2*B+3)*((X+1)*(X+1))*(A0+3) := by
+    have haa : a+2=A0+1 := by rw [show a+2=(a+1)+1 by ring,ha1]
+    have hBB : 2*B+3=4*X*S*S+1 := by
+      calc
+        2*B+3=4*(P-1+1)+1 := by dsimp [B]; ring
+        _=4*P+1 := by rw [hP1]
+        _=4*X*S*S+1 := by dsimp [P]; ring
+    rw [haa,hBB]
+    exact shifted_upper_coefficient X S hX hS
+  have hup := upper_of_bounds X r a B A0 hA hcoeff hpert hcrude
+  change K*N<2*C*D at hlow
+  change 2*C*D<K*(N+D) at hup
+  exact transfer_floor Y N D K C hsplit hlow hup
+
+#print axioms TenPositiveScaledFromUnscaled.scaled_interval
+end TenPositiveScaledFromUnscaled

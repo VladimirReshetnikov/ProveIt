@@ -1,0 +1,9 @@
+# Sign33 windows name-resolution retry checked
+
+The [prior windows diagnostic](../nine-sharing-sign33-windows-check/attempt01/README.md) failed because `absdiff` was not in scope. This retry adds only `open DiophantineConsistency.ArithmeticPellHalfIndex (absdiff)`, following existing repository examples; the theorem statement, all explicit model hypotheses and proof are unchanged. The theorem compiled; see [attempt01](attempt01/README.md). It does not derive those hypotheses from a current equation zero, establish the remaining sign33 signs or its zero bridge, or prove an iPRA endpoint.
+
+The runner pins the prior failed state and exact name-error log, checks that the original draft theorem body is copied verbatim, uses a fresh output directory, and retains the previous source-built provider survey, direct dependency/guard checks and resource limits. Full guard and survey rechecks occur only after success. Provider observations are point-in-time, resource monitoring is sampled, and deeper transitive/dynamic ancestry remains inherited, including an uncaptured numeric outer exit of an earlier initial-agreement provider.
+
+Candidate source SHA-256 `085fafe11fc49d341a2eeac64a4cc609133f5dd252d049477f6df9187d1ad70b`, manifest `be4a2ef552c7e57ed63fbc1e692691119ee2bf8551c925653f736a3864afab67`, survey `b20bdfa2c26708c6bff944dd5d5917d1b6371cad55a4f528fa01e7551fa41b48`, runner `c5eb6c548eb4bf81205f1cab507835ae096852aa12bbe723dab3bf48c2c007af`. Author no-Lean preflight session 96880 exited 0; independent prelaunch review and a coordinated Lean slot preceded the successful run. Limits remained `-M2800`, 120 seconds per call, sampled 4-GiB session RSS and 10-GiB available-host-memory floor with a 5-GB free-space precheck.
+
+The [independent terminal audit](../../reviews/nine-sharing-sign33-windows-retry01-terminal-frontier-independent/README.md) checked the explicit theorem scope and provider observations without replaying Lean.

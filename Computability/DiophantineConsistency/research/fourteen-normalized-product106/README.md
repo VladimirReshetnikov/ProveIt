@@ -27,8 +27,10 @@ pass with six standard-only axiom reports. Exact degree and paid operation
 count are separate finite-audit results, not new Lean totalDegree theorems.
 
 The [standard-library auditor](audit.py) imports no project or incoming
-code. From this directory, both read-only commands recompute and compare
-the complete artifacts:
+code. On its pinned historical inputs, both read-only commands recompute and
+compare the complete artifacts. They currently reject two refactored workspace
+sources; use the isolated historical replay linked below to reproduce the
+certificate without modifying the workspace:
 
 ```text
 python3 audit.py
@@ -45,8 +47,13 @@ leaders, and rejects twelve structural/formula corruptions.
 This is a genuine tradeoff with14/65/150,14/66/118,14/71/80 and14/72/68,
 not a global minimum or display promotion. The67/106 normalization had
 already appeared as a prospective lead; this packet provides its complete
-current tuple and checked external zero-set binding. No signed13 transfer,
-HA/PA/internal-ZFC proof or actual consistency assertion is supplied.
+current tuple and checked external zero-set binding. A subsequent [focused
+historical-provider Lean check](../normalized106-historical-endpoint-client/README.md)
+confirms the all-model same-zero bridge and standard-iPRA derivability for the
+67/106 syntax. Its [graph/source comparison](../normalized106-graph-syntax-binding/README.md)
+and this packet's coefficient and degree certificates are external checks;
+the focused endpoint inherits historical provider ancestry and does not prove
+a PDF binding or consistency itself. A fresh current-base rebuild remains open.
 
 The author build reused the source-authenticated accepted361-module
 subset of root's469-module merged snapshot, then built only these two
@@ -54,5 +61,8 @@ new leaves. Five subsequently refactored current sources differ from
 that accepted snapshot; no current-refactored-source replay is claimed.
 Detailed pre/post pins, commands, failures and cache boundaries are in
 [the author receipt](../../reviews/fourteen-normalized-product106-author.md)
-and its durable JSON. Existing accepted sources, graphs and displays are
-unchanged by this packet.
+and its durable JSON. A later [source-drift observation](../normalized106-degree-audit-drift/README.md)
+records why the auditor does not run directly on the refactored workspace;
+an [isolated historical-input replay](../normalized106-historical-finite-replay/README.md)
+reproduces the pinned certificate. Existing accepted sources, graphs and
+displays were unchanged by the original packet.

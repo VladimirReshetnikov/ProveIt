@@ -1,0 +1,5 @@
+# Paired fixed-symbolic graph digit result
+
+The protected paired wrapper session 89018 actually exited 0 at HEAD `b1619eb5c62f2820392cac7502429e3cc087c69b`. All twelve compiler and direct dependency checks passed; both sides matched and final source, object and parent checks passed. The receipt and twelve compiler logs are under `evidence`; the receipt SHA-256 is `4186c384fa456685ec6202a035c7baaf08867e62c72302a20a3ac7aaf367648b`. Independent artifact review is pending.
+
+The fixed-symbolic theorem still assumes graph zero, positivity of all variables, N>0, and the explicit radix and repunit equations; K is an arbitrary explicit natural. The symbolic values are not identified here with the retained beta, mask or K bytes or decimal tuple. The result does not establish machine semantics, a checker or a PRA theorem. Direct-object, companion and frozen-source checks are point-in-time observations and cannot exclude transient between-check changes; sampled resource and inherited provider/package limitations remain.

@@ -1,0 +1,5 @@
+# Sign15 symbolic iPRA endpoints: source-only client
+
+The checked native, standard and translated stages apply the endpoint framework to the independently audited [Fin15 symbolic polynomial bridge](../../reviews/nine-sharing-sign15-concrete-polynomial-bridge-terminal-independent/README.md). No exact-degree theorem, external JSON binding or PDF claim is made.
+
+The framework survey ties direct framework objects to earlier successful guarded observations and is rerun postflight along with direct guards. Inherited ancestry includes successful children of failed runs. No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign15-endpoint-prelaunch-independent/README.md) passed; its first checker used a stale output date and was corrected. Author outer session 69557 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign15-endpoint-terminal-independent/README.md) passed. Limits are scoped `-M3600`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

@@ -1,0 +1,68 @@
+{
+  "repository": "VladimirReshetnikov/ProveIt",
+  "commit": "62396b06020f794fa6dc01b4025a6a5db9d4d28a",
+  "scope": "Every .py blob under Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research, including nested reference and evidence copies",
+  "packages": 90,
+  "repository_paths": 5825,
+  "unique_git_blobs": 1380,
+  "python": "3.12.14",
+  "metric_definition": "Recursively remove actual Module, FunctionDef, AsyncFunctionDef and ClassDef docstrings (first Expr Constant str). Insert Pass only in an emptied function or class body. ast.unparse; append one LF; reparse. Count normalized UTF-8 bytes, non-layout/comment tokens, and every node from ast.walk of the normalized program.",
+  "coordinate_envelope": {
+    "tokens": 256,
+    "ast": 276,
+    "bytes": 506
+  },
+  "attaining_sources": [
+    {
+      "coordinate": "tokens",
+      "path": "kernel_refinement/code/checker_tokens.py",
+      "git_blob_sha": "d227bc5b590a387081b888fecee004794a218d85",
+      "metrics": {
+        "bytes": 594,
+        "tokens": 256,
+        "ast": 283
+      }
+    },
+    {
+      "coordinate": "ast",
+      "path": "deterministic_opening/compact/code/ast.py",
+      "git_blob_sha": "6bf0caae9d09a0acf840246c28a42ec31088019a",
+      "metrics": {
+        "bytes": 580,
+        "tokens": 263,
+        "ast": 276
+      }
+    },
+    {
+      "coordinate": "bytes",
+      "path": "deterministic_introduction/implementation/code/compact_optional.py",
+      "git_blob_sha": "a0af7afb236b530eb30c63c5ab788151024271b7",
+      "metrics": {
+        "bytes": 506,
+        "tokens": 267,
+        "ast": 303
+      }
+    }
+  ],
+  "limits": [
+    "The coordinate envelope is attained by three different existing programs; it is not one program with all three scores.",
+    "This is an empirical source-corpus envelope, not a mathematical lower bound on every equivalent presentation.",
+    "No source code was executed by the audit. Existing metatheorem claims are inherited, not formally reverified here.",
+    "Scripts smaller in one coordinate that merely build reports, generate sources, measure code, run tests, or import a local checker are excluded from the standalone-checker classification.",
+    "Compact protocols and fully syntax-validated public formula checkers have different acceptance contracts. Compare matched contracts separately.",
+    "The corpus covers Research Python files at the pinned commit, not contents embedded only in compressed archives or non-Python programs."
+  ],
+  "source_code_execution_policy": "Repository source files are treated as data: SHA-verified, decoded, parsed and normalized, never executed by the corpus audit. Only the new audit/reproduction utilities are executed.",
+  "docs_incoming": {
+    "tree_sha": "d564d0bc3dd917926892c55e3706cc116d5b165e",
+    "entries": [
+      {
+        "path": ".gitkeep",
+        "git_blob_sha": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+      }
+    ],
+    "status": "No unfiled proposal archive at the pinned commit; tree listing independently rechecked."
+  },
+  "classification_file": "subfrontier_exclusions.json",
+  "subfrontier_excluded_utility_count": 106
+}

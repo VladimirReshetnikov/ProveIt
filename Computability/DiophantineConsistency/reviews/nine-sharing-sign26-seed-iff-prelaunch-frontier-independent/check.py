@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+import hashlib,json,subprocess,sys
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-sharing-sign26-seed-iff-check';H=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'1e8b4cf4f00d580ac97e41faa8ea73ef375bfee59edfce553b4e6f65e617960f','source-manifest.json':'aa832aefacb95ec8ee0860c0ce82f57d51970ef1240573b79570d4460f8a588f','src/DiophantineConsistency/Sign26SeedExistential.lean':'b28832ff0682b3a3e0382081b51de65df650ee71eb494aad6e41bc8574a1be05'}.items():assert H(P/n)==h
+m=json.loads((P/'source-manifest.json').read_text())['rows'];assert len(m)==1 and m[0]['imports']==['DiophantineConsistency.Sign26ReverseBridgeRetry'];s=(P/'src/DiophantineConsistency/Sign26SeedExistential.lean').read_text();assert H(D/'research/nine-sharing-sign26-seed-iff-retry01-draft/Sign26SeedExistential.lean')==m[0]['source_sha256']
+for x in ['[V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]','(hp0 : ((p 0 : ℤ) : DiffRing V) = ι beta)','(hp1 : ((p 1 : ℤ) : DiffRing V) = ι K)','(hbeta : 1 ≤ beta)','(∃ v : Fin 27 → V, v 0 = x ∧ InternalZero (SharingSeed26Sextic.seed p) v) ↔','∃ v : Fin 28 → V, v 0 = x ∧ InternalZero (SharingSeed27Sextic.seed p) v','Sign26ZeroBridge.forward p beta K v hp0 hp1 hbeta hz','Sign26ZeroBridge.backward p v hz','Sign26CongruenceCuts.lift gap v','Sign26ZeroBridge.drop v']:assert x in s
+up=D/'reviews/nine-sharing-sign26-zero-bridge-retry02-terminal-frontier-independent/check.py';assert H(up)=='98ab4e8cc57e5f6ff4b974c2a24731d614b3a9ef1dfd2463bad690055e81e318';subprocess.run([sys.executable,'-I','-S','-B',str(up)],capture_output=True,check=True,timeout=120)
+r=subprocess.run([sys.executable,'-I','-S','-B',str(P/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not r.stderr and json.loads(r.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_STATIC_AND_NO_LEAN_PREFLIGHT','scope':'same-input existential sign26/27 iff under IΣ₁ and explicit p0/p1 casts, beta≥1; no Lean replay'},sort_keys=True,indent=2))

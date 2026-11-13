@@ -1,0 +1,3 @@
+# Independent terminal audit: sign17 positive-beta seed iff
+
+The independent checker exited 0. Author-observed outer session 28500 exited 0, with stage and final postflight successful. Lean checked same-input Fin18/Fin19 seed existential equivalence under explicit beta-port representation and beta>0, composing seed-to-gap existence and both conditional zero maps. Source/object/import/log pins, provider union, guards and overlays were checked; one axiom report, no warnings or sorryAx. Current-port specialization, direct-expression iff and iPRA endpoint remain separate; external AST correspondence is not Lean bound.

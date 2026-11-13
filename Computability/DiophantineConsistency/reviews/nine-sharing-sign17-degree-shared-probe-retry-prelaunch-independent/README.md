@@ -1,0 +1,3 @@
+# Independent prelaunch review: sign17 shared-degree probe retry
+
+`python3 -I -S -B check.py` exited 0. It authenticates the manifest and runner, compares both Lean sources byte-for-byte with the failed attempt except the unique `shared03` proof change, rechecks the independent failure and expression-provider audits, verifies direct import routing and resource limits, and runs the author's no-Lean preflight. The proposed closed reduction is left for Lean to check; it does not prove a full degree bound. The prior attempt failed on `shared03` and did not produce a shared-degree object or final postflight. No Lean process was run in this review.

@@ -1,0 +1,5 @@
+# Independent factual audit: beta-and-low cover failure
+
+Attempt01 is failed and excluded. The author reports actual outer session 69040 exited 1 and was reaped. Retained child result SHA-256 `28a49ac4115f3eee6e4631b1aed47ef50f3ba946a77785a1093d60add2ae571d` records stage `Trace74CoverBindLow`, Lean exit 1, no monitor failure reason and 12.105 seconds elapsed. Stdout reports kernel excessive memory consumption at the theorem declaration and its subsequent theorem report lists the theorem's own `cover` axiom, alongside propext, Classical.choice and Quot.sound; the strict runner rejects the stage. Outer terminal SHA-256 `b65a24fd22067b00435ea4453d2dc073654b9881a91a6c6b8f479641776f61dd` records child exit 1/FAILED with stable input/wrapper hashes. Independently verified stage stdout/stderr and outer stdout/stderr hashes; no Lean replay was run.
+
+No beta-and-low theorem is accepted from this attempt. This is a reported Lean kernel memory error, not the runner's timeout or a proved mathematical contradiction. It does not invalidate prior accepted components, or establish a concrete cover, graph guard, external-file binding or iPRA.

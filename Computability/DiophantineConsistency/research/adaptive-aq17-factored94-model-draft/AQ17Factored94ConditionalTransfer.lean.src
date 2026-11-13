@@ -1,0 +1,128 @@
+import AQ17Factored94ResidualZeros
+import AQ20Substituted104ConditionalTransfer
+
+/-! Source-only graph/model transfer: all three graph-map families remain
+explicit assumptions, and none of these declarations has been Lean checked. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AQ17Factored94ConditionalTransferDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+
+/-- Remove AQ20 slots 14, 15 and 19. -/
+def project {V : Type*} (v : Fin 20 → V) (i : Fin 17) : V :=
+  if h : i.val<14 then v ⟨i.val, by omega⟩ else v ⟨i.val+2, by omega⟩
+
+/-- Restore ell, c² and delta as positive expressions of retained inputs. -/
+def extend {V : Type*} [Add V] [Mul V] [OfNat V 3] [OfNat V 4]
+    (v : Fin 17 → V) (i : Fin 20) : V :=
+  if i.val=14 then (v 6*v 7)*(v 7*(v 9+v 10))
+  else if i.val=15 then (v 9+v 7*(v 9+v 10))*(v 9+v 7*(v 9+v 10))
+  else if i.val=19 then 3+4*(v 6*v 7+v 7)+(v 6*v 7+v 7)*(v 6*v 7+v 7)
+  else if h : i.val<14 then v ⟨i.val, by omega⟩ else v ⟨i.val-2, by omega⟩
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem project_pos (v : Fin 20 → V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<project v i := by
+  intro i
+  unfold project
+  split <;> exact hv _
+
+theorem extend_pos (v : Fin 17 → V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<extend v i := by
+  have hk : 0<v 9+v 10 := add_pos (hv 9) (hv 10)
+  have hc : 0<v 9+v 7*(v 9+v 10) := add_pos (hv 9) (mul_pos (hv 7) hk)
+  have ha : 0<v 6*v 7+v 7 := add_pos (mul_pos (hv 6) (hv 7)) (hv 7)
+  intro i
+  unfold extend
+  split
+  · exact mul_pos (mul_pos (hv 6) (hv 7)) (mul_pos (hv 7) hk)
+  · split
+    · exact mul_pos hc hc
+    · split
+      · exact add_pos (add_pos (by simp) (mul_pos (by simp) ha)) (mul_pos ha ha)
+      · split <;> exact hv _
+
+def child : Expr (Fin 17) := AQ17Factored94LiteralDraft.literal CurrentWindowCarry2011.ports
+
+def parent : Expr (Fin 20) := AQ20Substituted104LiteralDraft.literal CurrentWindowCarry2011.ports
+
+/-- Missing graph-zero maps for the fixed ports. The three restored bindings
+and the eight residual comparisons must be established in the model ring. -/
+def GraphZeroObligations : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+    (∀ v : Fin 20 → V, (∀ i, 0<v i) → InternalZero parent v →
+      InternalZero child (project v)) ∧
+    (∀ v : Fin 17 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend v))
+
+theorem shifted_no_zero_iff
+    (hproject : ∀ v : Fin 20 → V, (∀ i, 0<v i) → InternalZero parent v →
+      InternalZero child (project v))
+    (hextend : ∀ v : Fin 17 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend v)) :
+    (∀ v : Fin 17 → V, ¬InternalZero (positiveShift child) v) ↔
+      ∀ v : Fin 20 → V, ¬InternalZero (positiveShift parent) v := by
+  constructor
+  · intro h v hz
+    let old : Fin 20 → V := fun i => v i+1
+    have hp : ∀ i,0<old i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero parent old := (internalZero_positiveShift _ _).mp hz
+    have hnew := hproject old hp hzero
+    have hnewpos := project_pos old hp
+    let shifted : Fin 17 → V := fun i => project old i-1
+    have hs : (fun i => shifted i+1)=project old := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hnewpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hnew
+  · intro h v hz
+    let new : Fin 17 → V := fun i => v i+1
+    have hp : ∀ i,0<new i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero child new := (internalZero_positiveShift _ _).mp hz
+    have hold := hextend new hp hzero
+    have holdpos := extend_pos new hp
+    let shifted : Fin 20 → V := fun i => extend new i-1
+    have hs : (fun i => shifted i+1)=extend new := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (holdpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hold
+
+theorem sameNoZero (h : GraphZeroObligations) :
+    SameNoZero (positiveShift child) (positiveShift parent) := by
+  intro V _ _
+  obtain ⟨hp,he⟩ := h V
+  exact shifted_no_zero_iff (V:=V) hp he
+
+theorem polynomialBridge (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : AQ20Substituted104ConditionalTransferDraft.GraphZeroObligations)
+    (h17 : GraphZeroObligations) : PolynomialBridge (positiveShift child) :=
+  HAExpressionNoZeroEquiv.bridge (positiveShift child) (positiveShift parent)
+    (sameNoZero h17) (AQ20Substituted104ConditionalTransferDraft.polynomialBridge h22 h20)
+
+theorem native_equivalence (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : AQ20Substituted104ConditionalTransferDraft.GraphZeroObligations)
+    (h17 : GraphZeroObligations) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge (positiveShift child) (polynomialBridge h22 h20 h17)
+
+theorem standard_equivalence (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : AQ20Substituted104ConditionalTransferDraft.GraphZeroObligations)
+    (h17 : GraphZeroObligations) : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+      ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 (native_equivalence h22 h20 h17)
+end DiophantineConsistency.AQ17Factored94ConditionalTransferDraft
+#print axioms DiophantineConsistency.AQ17Factored94ConditionalTransferDraft.extend_pos
+#print axioms DiophantineConsistency.AQ17Factored94ConditionalTransferDraft.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AQ17Factored94ConditionalTransferDraft.native_equivalence
+#print axioms DiophantineConsistency.AQ17Factored94ConditionalTransferDraft.standard_equivalence

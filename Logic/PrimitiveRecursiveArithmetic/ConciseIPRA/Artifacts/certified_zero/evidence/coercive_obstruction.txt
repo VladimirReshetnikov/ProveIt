@@ -1,0 +1,66 @@
+INDEPENDENT OBSTRUCTION TO THE DEPTH-ONE COERCIVE PROTOTYPE
+
+Prototype: reference/rejected/coercive_one.py (included unchanged).
+Opener roots have d=1; an exposed scalar is replaced by [i(image),0].
+All child increments are (arity-2)%3 and therefore nonnegative.
+Native numerical successor is represented by a four-element array.
+
+Define a Boolean valuation V on raw formulas as follows:
+
+  V([L,R]) = (R == 0) or (L is a list of length 3).
+  V(F) = true for every other raw shape.
+
+Here == 0 is ordinary numerical equality of admitted JSON scalars; no list
+equals zero. This is an auxiliary syntactic valuation, not the proposed
+arithmetic interpretation.
+
+LEMMA 1: every successful opener call at depth d>=1 preserves V.
+
+For a scalar, a protected value stays scalar, while an exposed value
+becomes [i(image),0], whose V-value is true. Every array preserves its
+outer arity. If the input is binary, the right child is zero after opening
+iff it was zero before: zero is protected because k<=0<d, nonzero protected
+scalars remain nonzero, and substituted scalars become nonzero binary
+arrays. The left child is a ternary array after opening iff it was a
+ternary array before; replacing a scalar makes a binary array, not a
+ternary one. These two facts prove the binary case. The other array arities
+have V=true before and after. Recursive calls retain depth>=1.
+
+LEMMA 2: every finite successful checking trace satisfies
+
+  if every member of g has V=true, then V(a)=true.
+
+Proof by induction on the successful recursive trace. Hypothesis closure
+uses Lemma1. For a major command, the recursive major proof is a smaller
+successful trace. Equality transport or Q specialization changes a from
+i(t,u) to i(t,s), which preserves V by Lemma1. The exported m*3 has arity
+3n for list majors and is scalar for numeric majors, so has V=true; its
+opening has V=true too. Thus the continuation has a V-true context.
+For arithmetic supply, the generated equation's LHS is explicitly a
+ternary array, so its V-value is true and Lemma1 applies to the opening.
+For paired introduction, fixed-arity unpacking requires a unary array
+goal, which already has V=true independently of its premise. All common
+goal openings preserve V. This covers every successful branch.
+
+COROLLARY: every accepted closed goal has V=true.
+
+Let S0=[0,0,0,0]. The well-scoped raw equation [S0,S0] has V=false: its
+right term is not literal zero, and its left term has arity4, not arity3.
+Consequently the checker cannot accept any finite certificate for this
+ordinary numerical reflexivity instance.
+
+The same argument excludes [P,P] for any numeric projection P=[T,0]
+with P != 0: a canonical convention that merely adds an outer projection
+box to every term does not repair this reflexivity failure.
+
+This disproves completeness for the natural unboxed term interface and
+for the simple outer-box interface. It does not prove that no much more
+elaborate interpretation of iPRA into a differently selected raw fragment
+could exist. Such an interpretation would require a new, independently
+proved compilation and round-trip argument; semantic alias decoding alone
+does not supply it.
+
+No claim that the prototype is arithmetically unsound is made here. The
+problem is missing derivations: inserting coercions without projection
+equations can obstruct canonical completeness despite plausible semantic
+soundness.

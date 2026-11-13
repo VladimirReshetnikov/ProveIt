@@ -1,0 +1,76 @@
+/tmp/tenpositive-80to90fullzero-uuhh897s/Direct80To90FullZero.lean:23:8: warning: declaration uses `sorry`
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+r eta zeta gamma h s : V
+hr : 0 < r
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hs : 0 < s
+hR : rankNat p v = 2 * r + 1
+hboth :
+  ∀ (t0 T n : V),
+    0 < t0 →
+      0 < T →
+        0 < n →
+          (∀ (j : Fin 12), 0 < valuation v eta zeta (gamma + h) t0 T n s j) ∧
+            Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+                  (FreeJDirectMainGraph.graph (integerPorts p)).first =
+                0 ∧
+              Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+                  (FreeJDirectMainGraph.graph (integerPorts p)).main =
+                0
+hC : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hphase : rankNat p v % 4 = 3
+a : V := Y p v * (X p v + 1)
+C : V := ycoord (rankNat p v) a
+D : V := ArithmeticPellRecurrence.delta a
+f i T u y t0 n : V
+hf : 1 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hy : 0 < y
+ht : 0 < t0
+hn : 0 < n
+hfEq : f = 1 + t0
+hnEq : n = ArithmeticPellRecurrence.delta a * i + (y - u)
+hyn : y - u + u = y
+hstrong :
+  f * f =
+    1 +
+      ArithmeticPellRecurrence.delta a * (i * ycoord (rankNat p v) a * ycoord (rankNat p v) a) *
+        (i * ycoord (rankNat p v) a * ycoord (rankNat p v) a)
+hlit : f * f * ycoord (rankNat p v) a * T = u + ycoord (rankNat p v) a + f * f * rankNat p v
+haux :
+  ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a *
+            (ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a) *
+          u *
+        u +
+      y * y =
+    1 +
+      ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a *
+            (ArithmeticPellRecurrence.delta a * i * ycoord (rankNat p v) a * ycoord (rankNat p v) a) *
+          y *
+        y
+w : Fin 12 → V := valuation v eta zeta (gamma + h) t0 T n s
+hw : ∀ (j : Fin 12), 0 < valuation v eta zeta (gamma + h) t0 T n s j
+hfirst :
+  Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+      (FreeJDirectMainGraph.graph (integerPorts p)).first =
+    0
+hmain :
+  Expr.evalRing (fun j => ι (valuation v eta zeta (gamma + h) t0 T n s j))
+      (FreeJDirectMainGraph.graph (integerPorts p)).main =
+    0
+⊢ Expr.evalRing (fun j => ι (w j)) (FreeJDirectMainGraph.graph (integerPorts p)).ordinary = 0
+'TenPositive80To90FullZero.graph_factors' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

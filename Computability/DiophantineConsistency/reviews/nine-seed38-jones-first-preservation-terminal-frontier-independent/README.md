@@ -1,0 +1,5 @@
+# Independent terminal review: first full-recipe entry
+
+**Pass for retained Lean evidence**, without Lean replay. Author-observed outer session 34838 exited 0; this is not an independent raw process transcript. `d45_first_eq_d1` proves entry zero survives the 44 prior-node preservation steps; `recipe_first_value` then identifies entry zero of the actual compiled full recipe with symbolic `indexY seed 0 + 1 + a 0` over any commutative ring. Both axiom reports are `[propext, Classical.choice, Quot.sound]`; there are no warnings. The remaining 44 entry values and full recipe semantic equality remain open.
+
+`check.py` verifies the exact source/state/object/logs, 44 preservation-call count, direct first-prefix provider path/hash, all 100 guard slots and 1,169 overlay links, and a fresh provider survey replay. Both Lean children exited 0 with no sampled monitor stop/error. Provider observations are point-in-time; the inherited initial-agreement numeric outer exit is unavailable. No JSON/document binding or arithmetic operation count follows.

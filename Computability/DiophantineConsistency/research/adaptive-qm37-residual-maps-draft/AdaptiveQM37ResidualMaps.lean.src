@@ -1,0 +1,561 @@
+import AdaptiveQM37ConditionalTransfer
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.LinearCombination
+
+/-! Source-only residual comparison and model-map proof proposal; no Lean. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.AdaptiveQM37ResidualMapsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open AdaptiveQM37ConditionalTransferDraft AdaptiveQM37DifferenceWitnessDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Parent residual 0, child residual 0: A0. -/
+theorem same00 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 0).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 0).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 1, child residual 1: A1. -/
+theorem same01 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 1).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 1).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 3, child residual 3: g72. -/
+theorem same03 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 3).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 3).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 5, child residual 5: scaleDifference. -/
+theorem same05 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 5).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 5).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 6, child residual 6: mainScaleDifference. -/
+theorem same06 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 6).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 6).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 7, child residual 7: rankDifference. -/
+theorem same07 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 7).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 7).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 8, child residual 8: ellDifference. -/
+theorem same08 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 8).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 8).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 9, child residual 9: wDifference. -/
+theorem same09 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 9).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 9).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 10, child residual 10: cubeDifference. -/
+theorem same10 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 10).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 10).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 11, child residual 11: productDifference. -/
+theorem same11 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 11).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 11).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 12, child residual 12: fSquareDifference. -/
+theorem same12 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 12).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 12).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 13, child residual 13: cSquareDifference. -/
+theorem same13 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 13).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 13).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 14, child residual 14: zDifference. -/
+theorem same14 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 14).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 14).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 15, child residual 15: dDifference. -/
+theorem same15 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 15).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 15).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 16, child residual 16: vDifference. -/
+theorem same16 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 16).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 16).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 17, child residual 17: deltaDifference. -/
+theorem same17 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 17).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 17).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 18, child residual 18: qSquareDifference. -/
+theorem same18 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 18).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 18).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 19, child residual 19: product2Difference. -/
+theorem same19 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 19).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 19).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 20, child residual 20: scaledIndexDifference. -/
+theorem same20 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 20).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 20).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 22, child residual 21: qSignedDifference. -/
+theorem same21 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 22).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 21).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 23, child residual 22: rankSeedDifference. -/
+theorem same22 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 23).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 22).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 24, child residual 23: ySumDifference. -/
+theorem same23 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 24).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 23).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 25, child residual 24: rootSkewDifference. -/
+theorem same24 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 25).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 24).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 26, child residual 25: offsetDifference. -/
+theorem same25 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 26).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 25).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 27, child residual 26: gammaProductDifference. -/
+theorem same26 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 27).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 26).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent residual 28, child residual 27: timeProductDifference. -/
+theorem same27 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 28).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 27).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent stored-square residual 4 vanishes on extension. -/
+theorem dropped04 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 4).evalRing (fun k => ι (extend v k)) = 0 := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Parent stored-square residual 21 vanishes on extension. -/
+theorem dropped21 (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 21).evalRing (fun k => ι (extend v k)) = 0 := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- The only altered retained residual differs by Q times the new
+positive-difference residual. -/
+theorem aux_relation (p : Fin 4 → ℤ) (v : Fin 37 → V) :
+    (AdaptiveQM38ResidualsDraft.residuals p 2).evalRing (fun k => ι (extend v k)) =
+      (AdaptiveQM37ResidualsDraft.residuals p 2).evalRing (fun k => ι (v k)) +
+        ι (v 30) * (AdaptiveQM37ResidualsDraft.residuals p 4).evalRing (fun k => ι (v k)) := by
+  simp [AdaptiveQM38ResidualsDraft.residuals, AdaptiveQM37ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul] <;> ring
+
+/-- Restoring the squares after projection gives back a parent satisfying the
+parent square residuals. -/
+theorem extend_project (v : Fin 38 → V) (d : V)
+    (hs : v 13=v 25*v 25) (hy : v 30=v 11*v 11) :
+    extend (project v d)=v := by
+  funext i
+  fin_cases i <;> simp [extend, project, hs, hy]
+
+/-- The projected new difference residual is zero under the natural additive
+square-difference equality; no signed natural subtraction is used. -/
+theorem project_difference (p : Fin 4 → ℤ) (v : Fin 38 → V) (d : V)
+    (hd : v 11*v 11=v 25*v 25+d) :
+    InternalZero (AdaptiveQM37ResidualsDraft.residuals p 4) (project v d) := by
+  rw [ModelDifferenceRing.internalZero_iff]
+  have h := congrArg (ι : V →+* DiffRing V) hd
+  simp only [map_add,map_mul] at h
+  simp [AdaptiveQM37ResidualsDraft.residuals, project,
+    Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add, map_mul, map_one] <;> linear_combination -h
+
+/-- A child zero lifts to a parent zero, conditional only on the proposed
+residual identities above, all of which are in this same source. -/
+theorem extend_zero (p : Fin 4 → ℤ) (v : Fin 37 → V)
+    (hz : InternalZero (AdaptiveQM37LiteralDraft.literal p) v) :
+    InternalZero (AdaptiveQM38LiteralDraft.literal p) (extend v) := by
+  have hc := (AdaptiveQM37ResidualZerosDraft.all_residuals p v).mp hz
+  have hd := (ModelDifferenceRing.internalZero_iff _ _).mp (hc 4)
+  apply (AdaptiveQM38ResidualZerosDraft.all_residuals p (extend v)).mpr
+  intro i
+  fin_cases i
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same00 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 0)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same01 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 1)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [aux_relation p v, hd, mul_zero, add_zero]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 2)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same03 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 3)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    exact dropped04 p v
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same05 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 5)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same06 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 6)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same07 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 7)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same08 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 8)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same09 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 9)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same10 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 10)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same11 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 11)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same12 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 12)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same13 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 13)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same14 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 14)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same15 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 15)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same16 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 16)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same17 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 17)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same18 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 18)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same19 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 19)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same20 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 20)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    exact dropped21 p v
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same21 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 21)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same22 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 22)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same23 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 23)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same24 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 24)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same25 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 25)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same26 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 26)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [same27 p v]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 27)
+
+/-- A parent zero and the explicit nonnegative difference project to a child
+zero. Existence of the difference is supplied separately by parent_difference. -/
+theorem project_zero (p : Fin 4 → ℤ) (v : Fin 38 → V) (d : V)
+    (hz : InternalZero (AdaptiveQM38LiteralDraft.literal p) v)
+    (hd : v 11*v 11=v 25*v 25+d) :
+    InternalZero (AdaptiveQM37LiteralDraft.literal p) (project v d) := by
+  have hp := (AdaptiveQM38ResidualZerosDraft.all_residuals p v).mp hz
+  obtain ⟨hs,hy⟩ := parent_square_values p v hz
+  have hlift := extend_project v d hs hy
+  have hdiff := project_difference p v d hd
+  have hdiffR := (ModelDifferenceRing.internalZero_iff _ _).mp hdiff
+  apply (AdaptiveQM37ResidualZerosDraft.all_residuals p (project v d)).mpr
+  intro i
+  fin_cases i
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 0)
+        (extend (project v d)) := by simpa only [hlift] using hp 0
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same00 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 1)
+        (extend (project v d)) := by simpa only [hlift] using hp 1
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same01 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 2)
+        (extend (project v d)) := by simpa only [hlift] using hp 2
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [aux_relation p (project v d), hdiffR, mul_zero, add_zero] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 3)
+        (extend (project v d)) := by simpa only [hlift] using hp 3
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same03 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · exact hdiff
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 5)
+        (extend (project v d)) := by simpa only [hlift] using hp 5
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same05 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 6)
+        (extend (project v d)) := by simpa only [hlift] using hp 6
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same06 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 7)
+        (extend (project v d)) := by simpa only [hlift] using hp 7
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same07 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 8)
+        (extend (project v d)) := by simpa only [hlift] using hp 8
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same08 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 9)
+        (extend (project v d)) := by simpa only [hlift] using hp 9
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same09 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 10)
+        (extend (project v d)) := by simpa only [hlift] using hp 10
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same10 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 11)
+        (extend (project v d)) := by simpa only [hlift] using hp 11
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same11 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 12)
+        (extend (project v d)) := by simpa only [hlift] using hp 12
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same12 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 13)
+        (extend (project v d)) := by simpa only [hlift] using hp 13
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same13 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 14)
+        (extend (project v d)) := by simpa only [hlift] using hp 14
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same14 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 15)
+        (extend (project v d)) := by simpa only [hlift] using hp 15
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same15 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 16)
+        (extend (project v d)) := by simpa only [hlift] using hp 16
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same16 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 17)
+        (extend (project v d)) := by simpa only [hlift] using hp 17
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same17 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 18)
+        (extend (project v d)) := by simpa only [hlift] using hp 18
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same18 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 19)
+        (extend (project v d)) := by simpa only [hlift] using hp 19
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same19 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 20)
+        (extend (project v d)) := by simpa only [hlift] using hp 20
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same20 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 22)
+        (extend (project v d)) := by simpa only [hlift] using hp 22
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same21 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 23)
+        (extend (project v d)) := by simpa only [hlift] using hp 23
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same22 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 24)
+        (extend (project v d)) := by simpa only [hlift] using hp 24
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same23 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 25)
+        (extend (project v d)) := by simpa only [hlift] using hp 25
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same24 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 26)
+        (extend (project v d)) := by simpa only [hlift] using hp 26
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same25 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 27)
+        (extend (project v d)) := by simpa only [hlift] using hp 27
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same26 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AdaptiveQM38ResidualsDraft.residuals p 28)
+        (extend (project v d)) := by simpa only [hlift] using hp 28
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [same27 p (project v d)] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+
+/-- Proposed discharge of the earlier explicit graph obligations. -/
+theorem graphZeroObligations : GraphZeroObligations := by
+  intro V _ _
+  constructor
+  · intro v d _ hz hd
+    exact project_zero CurrentWindowCarry2011.ports v d hz hd
+  · intro v _ hz
+    exact extend_zero CurrentWindowCarry2011.ports v hz
+
+end DiophantineConsistency.AdaptiveQM37ResidualMapsDraft
+#print axioms DiophantineConsistency.AdaptiveQM37ResidualMapsDraft.aux_relation
+#print axioms DiophantineConsistency.AdaptiveQM37ResidualMapsDraft.project_difference
+#print axioms DiophantineConsistency.AdaptiveQM37ResidualMapsDraft.extend_zero
+#print axioms DiophantineConsistency.AdaptiveQM37ResidualMapsDraft.project_zero
+#print axioms DiophantineConsistency.AdaptiveQM37ResidualMapsDraft.graphZeroObligations

@@ -1,0 +1,5 @@
+Independent post-audit PASS for the exact conditional same-tuple graph identity; no Lean replay.
+
+Actual author session 49403 reported outer exit0 and reaped. Terminal f5eec67f4e2245833397d1cd924fa3c38d60e4d2d7ac8edec31e91773e2f6dd7; source c1786c38c7cf89d334dcf3f697b33e12e22d661eeba8e58d61028990c7e168d7; runner 6ef8eb41c2b3547d7bd841897ed3aa904c0899507ca1be7d3129250c3362a88e; object 901529a57f437a838a7217970fae02c08f8001f70b83f57d204e4d3d34c6f60a. Single stage exit0, empty stderr and exact [propext, Classical.choice, Quot.sound] report; all 26 recorded direct pins and source/runner/log/object hashes rechecked. First attempt's unresolved ring goal and sorryAx report excluded.
+
+For the same p/v, explicit positive beta, positive coordinates, value74=0 and k=8*firstParam+4, the stated eta equation is in DiffRing V. No q≥4, guard or individual F/C assumptions are used; the identity alone does not eliminate the small-k branch or prove a graph zero. Full transitive/provider/package/dynamic and search-path histories are not authenticated by direct pins.

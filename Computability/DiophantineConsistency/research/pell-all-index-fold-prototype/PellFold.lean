@@ -1,0 +1,64 @@
+import Direct80Joined
+
+/-! Arbitrary internal Pell indices folded using the strong abscissa. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositivePellFold
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency
+open ArithmeticPellRecurrence ArithmeticPellPeriodicity ArithmeticPellHalfIndex
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem y_antiperiod_identity (n t b : V) :
+    ycoord (2*n+t) b+ycoord t b=2*xcoord n b*ycoord (n+t) b := by
+  calc
+    ycoord (2*n+t) b+ycoord t b=
+        (xcoord (2*n) b+1)*ycoord t b+ycoord (2*n) b*xcoord t b := by
+          rw [(addition (2*n) t b).2]; ring
+    _=2*xcoord n b*ycoord (n+t) b := by
+      rw [double_x_add_one,double_y,(addition n t b).2]
+      ring
+
+theorem y_antiperiod (n t b : V) :
+    SignMod (xcoord n b) (ycoord (2*n+t) b) (ycoord t b) := by
+  right
+  rw [y_antiperiod_identity,show 2*xcoord n b*ycoord (n+t) b=
+    xcoord n b*(2*ycoord (n+t) b) by ring]
+  exact mod_mul_self_right _ _
+
+theorem y_antiperiod_blocks (k n t b : V) :
+    SignMod (xcoord n b) (ycoord (2*n*k+t) b) (ycoord t b) := by
+  have hp : 0<xcoord n b := lt_of_lt_of_le (by simp : (0:V)<1) (one_le_x n b)
+  induction k using ISigma1.sigma1_succ_induction
+  · unfold SignMod
+    definability
+  case zero => left; simp
+  case succ k ih =>
+    have ha := y_antiperiod n (2*n*k+t) b
+    rw [show 2*n*(k+1)+t=2*n+(2*n*k+t) by ring]
+    exact sign_trans hp ha ih
+
+theorem y_reflected_mod (n r b : V) (hr : r≤2*n) :
+    ycoord (2*n-r) b%xcoord n b=ycoord r b%xcoord n b := by
+  have hp : 0<xcoord n b := lt_of_lt_of_le (by simp : (0:V)<1) (one_le_x n b)
+  have key (u : V) (hu : u≤n) :
+      ycoord (2*n-u) b%xcoord n b=ycoord u b%xcoord n b := by
+    have hh := reflection n (n-u) b tsub_le_self
+    rw [tsub_tsub_cancel_of_le hu,
+      show n+(n-u)=2*n-u by rw [two_mul,add_tsub_assoc_of_le hu]] at hh
+    rw [hh,show 2*xcoord n b*ycoord (n-u) b=xcoord n b*(2*ycoord (n-u) b) by ring]
+    exact mod_add_mul' _ _ hp
+  rcases le_total r n with h|h
+  · exact key r h
+  · have hsub : 2*n-r≤n := by
+      apply (tsub_le_iff_right).mpr
+      simpa only [two_mul] using (_root_.add_le_add le_rfl h : n+n≤n+r)
+    have hh := key (2*n-r) hsub
+    rw [tsub_tsub_cancel_of_le hr] at hh
+    exact hh.symm
+
+#print axioms TenPositivePellFold.y_antiperiod_blocks
+#print axioms TenPositivePellFold.y_reflected_mod
+end TenPositivePellFold

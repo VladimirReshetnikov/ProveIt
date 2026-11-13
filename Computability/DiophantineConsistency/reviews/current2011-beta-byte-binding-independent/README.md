@@ -1,0 +1,9 @@
+# Independent review: current2011 beta byte binding
+
+The Lean theorem `decode_beta` is about an explicit Lean list: `31 :: List.replicate 11814 255`, reversed before little-endian `Nat.ofDigits 256`. The general lemma proves the decoding symbolically; the concrete theorem identifies the decoded integer with `CurrentWindowCarry2011.ports 0`, where beta is `(2^47)^2011 − 1`. It does not read, decompress or reason about a filesystem payload.
+
+The separate read-only checker exited 0 and independently decoded both retained beta gzip payloads. For each graph it verified the pinned metadata and compressed/raw hashes, checked all 11,815 bytes equal the stated big-endian list, and computed `int.from_bytes(raw, 'big') = 2^(47*2011) − 1`. It also reran the author's external byte checker with byte-identical output and checked that its observed terminal exit was 0. Together with the checked Lean list theorem, this supplies the stated external beta correspondence; it is not a Lean theorem about the file bytes. It says nothing about the K, MC or MF payloads, the full coefficient table, or the PDF.
+
+The checker revalidated the separate successful outer session 31226 exit 0, the failed session 54621 exit 1 and excluded `sorryAx` log, successful source/object/log and exact axiom reports, all 80 direct/companion/shadow slots and both matching source/base preflights. It reran the frozen independent fresh-base 106 model audit. The source-base/provider checks are point-in-time and retain package-transitive, dynamic and between-observation ancestry limitations. The run had no automatic group-RSS or host-memory stop. No Lean process was run during this review.
+
+SHA-256: `check.py` `4aca153a2f8eac99b104c5aa3f37e7ad7e1cbb9ca2a016ea24dc19203c304f09`; `result.json` `b251f9d607d87ac0368a599d03eda53242053dc4615a8e014ae158989be46689`.

@@ -1,0 +1,111 @@
+# Independent audit of the continuation checkers
+
+Pinned source: ProveIt 12197d86f63e9ec73b2d91399c4de2a8cb0077ee.
+Comparison made by reading exact Python source, not merely benchmark output.
+
+## 1. Stream checker: a universal successful-trace equivalence
+
+Files:
+- audit/incumbents/checker_tokens.py (while-loop incumbent)
+- audit/stream_work/tokens242.py (tail-recursive continuation)
+
+The substitution function i is literally identical in the two files. It reads
+the global k but neither changes k nor reads input. Its evaluation, if successful,
+is therefore a pure function of its three arguments and the current k. We work
+with ideal successful Python executions, ignoring the physical stack and memory
+limits, asynchronous interrupts, and changes to standard builtins. Every c call
+in either program returns None when successful.
+
+The semantic state of a pending proof is (a,g,k,R): goal, ordered tuple of
+retained resources, global allocation floor, and remaining input records. Its
+continuation transformation is:
+
+1. If i(a) belongs to g, finish.
+2. Consume r=(s,u,t).
+3. If a is the generated computation equation H(s,u,t), finish.
+4. If i(t,u)=a, set a:=i(t,s), and replace s by r[:2] if s is true-valued,
+   and by [t]*3 otherwise.
+5. If s is true-valued, recursively prove s from exactly g. This subproof
+   may consume records and lower the global k. After it returns set h:=s*3.
+   Otherwise set a:=i(*a,t,2) and h:=a.
+6. Lower the *current* global k by one. It is crucial that this is the k
+   left by the major-premise subproof, not the value at entry.
+7. Put H:=i(h,(s or len(a)==2) and k), A:=i(a,[k]), and continue with
+   (A, g+(H,), k, remaining records).
+
+The incumbent performs step 7 by assignment and a new loop iteration.
+The candidate performs it by a recursive c call.
+
+There is one change of evaluation order. The incumbent evaluates H before A.
+The candidate evaluates A, expands the existing tuple g, and then evaluates H
+as arguments to c. At this point a, s, h, g and k have the same values in both
+programs. The two i calls do not mutate any of them or consume a record.
+Consequently, whenever both calls succeed, they yield the same H and A in
+either order. If one fails, neither program completes that proof successfully.
+No context-dependent operation takes place between these two evaluations.
+
+**Theorem.** For every finite input stream, one implementation has a successful
+ideal run iff the other does. On success they consume the same prefix of the
+stream and leave the same global k. This includes all admitted raw aliases,
+not just canonical public goals.
+
+**Proof.** Induct on the number of input records consumed by a successful
+derivation, simultaneously for the two directions. A resource hit consumes
+zero records and returns None in both. A computation hit consumes one and
+returns None in both: the candidate implements this by falling through the
+negated comparison. Otherwise both reach exactly the same step-4 state.
+For a true-valued major, apply the induction hypothesis to its recursive
+subproof; it returns the same None, consumes the same records, and leaves
+the same k. Then step 6 is identical. Purity commutes the two evaluations in
+step 7, so apply the induction hypothesis to the residual continuation.
+The residual consumes fewer records than the original call because step 2
+already consumed one. The false-valued-major case has no recursive subproof
+and is immediate by the same continuation argument. The converse proof is
+the same induction beginning with a successful candidate run. No mathematical
+proof normalization or cut elimination is being assumed.
+
+**Runtime limitation.** The while-loop incumbent needs stack frames for nested
+major-premise proofs only. The candidate also uses a stack frame for every
+nonterminal continuation. It therefore can exhaust CPython's recursion limit
+on a certificate accepted by the incumbent at the same runtime settings.
+This does not alter ideal theoremhood, but it is a real implementation tradeoff
+and should be reported. It should not be described as a uniformly faster or
+more robust checker.
+
+## 2. Byte checker: eager truth aggregation
+
+File kernel_work/bytes_any.py replaces
+
+    bool(m or 3 % len(a))
+
+by
+
+    any((m, 3 % len(a))).
+
+When both expressions are defined, their Boolean values agree exactly.
+The latter evaluates len(a) even if m is true-valued. The operation is pure.
+It follows by induction on successful recursive calls that every successful
+candidate run is a successful old run with the same read order and output.
+No new certificate is accepted.
+
+For a canonical proof in the old public Eq/D language, every nonterminal
+formula passed to this expression is a nonempty array: equality has arity 2,
+D has arity 1, and auxiliary Q has arity 3. Hence the new eager calculation is
+defined whenever the old calculation is. The inherited canonical completeness
+compiler therefore still supplies a candidate certificate for every public
+theorem.
+
+This is theorem-language equivalence, not equality of every raw-certificate
+acceptance set. Scalar aliases that the old program could process through a
+short-circuited branch can be rejected by the new program. That stricter behavior
+must not be hidden behind a claim of unconditional trace equivalence.
+
+## 3. What is new, and what is inherited
+
+The stream change is a continuation representation of the same proof system,
+with a source-size saving. The byte change uses a slightly stricter certificate
+protocol for the same public theorem language. Neither deletes a nonlogical
+axiom or lowers the number of mathematical rule families. The bi-interpretation
+does not have to be re-invented: exact preservation of the presented theorem
+language transports the existing interpretation and its two formula round trips.
+

@@ -1,0 +1,3 @@
+# Sign33 d10 carry source-only candidates
+
+These drafts adapt the independently checked sign38 e/ell/lambda/g/theta/B/b preservation identities by namespace replacement only. They relate earlier entries to their d10 values, not the full recipe output or a semantic equality, JSON/human binding, degree, or arithmetic operation count. The [guarded runner](../nine-seed33-jones-prefix-group06-staged-check/README.md) binds the audited group05 provider; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-prefix-group06-staged-terminal-frontier-independent/) passed.

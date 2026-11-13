@@ -1,0 +1,21 @@
+import DiophantineConsistency.Sign17KCoefficientLists07
+
+/-! SOURCE ONLY. Bounded reversal of audited numeric coefficient lists. -/
+set_option autoImplicit false
+set_option maxRecDepth 10000
+noncomputable section
+namespace DiophantineConsistency.Sign17KCoefficientReversed07
+
+theorem block14 :
+    (List.ofFn Sign17KTileCoefficients14.literal).reverse = [19322882, 20373506, 21424130, 22474754, 23525378, 29259778, 32968706, 40306690, 42405890, 44511234, 49195010, 51286018, 60250114, 61300738, 67594242, 68644866, 74907650, 76457986, 77563906, 81223682, 87527426, 93235202, 93790210, 96380930, 100569090, 114200578, 118398978, 124233730, 124694530, 125734914, 153595906, 159889410, 160894978, 163489794, 164048898, 165586946, 191348738, 194496514, 764418050, 1302341634, 1613236226, 1671956482, 2149582850, 2695890946, 2964850690, 2965899266, 3274704898, 3513780226, 4051699714, 4589619202, 5127538690, 5665458178, 5680138242, 5682235394, 5934942210, 6472861698, 6546262018, 7010781186, 7636781058, 7817660418, 7883196418, 8086620162, 8087668738, 8628733954] := by
+  rw [Sign17KCoefficientLists07.block14]
+  decide +kernel
+
+theorem block15 :
+    (List.ofFn Sign17KTileCoefficients15.literal).reverse = [2050, 5666818, 6719490, 7770114, 8296450, 9340930, 9865218, 10391554, 13019138, 14594050, 15118338, 16171010, 17221634, 18272258] := by
+  rw [Sign17KCoefficientLists07.block15]
+  decide +kernel
+
+end DiophantineConsistency.Sign17KCoefficientReversed07
+#print axioms DiophantineConsistency.Sign17KCoefficientReversed07.block14
+#print axioms DiophantineConsistency.Sign17KCoefficientReversed07.block15

@@ -1,0 +1,81 @@
+/tmp/ipra-sparse-radix-generic-01/SparseRadix.lean:64:17: error: unsolved goals
+case cons
+b n : ℕ
+t : ℕ × ℕ
+ts : List (ℕ × ℕ)
+ih : (∀ t ∈ ts, t.1 < n) → ∑ j ∈ range n, coefficientAt ts j * b ^ j = (List.map (fun t => t.2 * b ^ t.1) ts).sum
+hterms : ∀ t_1 ∈ t :: ts, t_1.1 < n
+ht : t.1 < n
+hts : ∀ u ∈ ts, u.1 < n
+⊢ (∑ x ∈ range n,
+      if t.1 = x then (t.2 + (List.map Prod.snd (List.filter (fun t => decide (t.1 = x)) ts)).sum) * b ^ x
+      else (List.map Prod.snd (List.filter (fun t => decide (t.1 = x)) ts)).sum * b ^ x) =
+    t.2 * b ^ t.1 + (List.map (fun t => t.2 * b ^ t.1) ts).sum
+/tmp/ipra-sparse-radix-generic-01/SparseRadix.lean:70:56: warning: This simp argument is unused:
+  List.map_nil
+
+Hint: Omit it from the simp argument list.
+  simp only [apply_ite, List.map_cons, List.sum_cons, L̵i̵s̵t̵.̵m̵a̵p̵_̵n̵i̵l̵,̵ ̵List.sum_nil, Nat.zero_add, add_mul,
+  ̲  ̲ ̲ ̲ ̲ ̲Finset.sum_add_distrib]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/ipra-sparse-radix-generic-01/SparseRadix.lean:70:70: warning: This simp argument is unused:
+  List.sum_nil
+
+Hint: Omit it from the simp argument list.
+  simp only [apply_ite, List.map_cons, List.sum_cons, List.map_nil, L̵i̵s̵t̵.̵s̵u̵m̵_̵n̵i̵l̵,̵Nat.zero_add, add_mul,
+  ̲  ̲ ̲ ̲ ̲ ̲Finset.sum_add_distrib]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/ipra-sparse-radix-generic-01/SparseRadix.lean:71:6: warning: This simp argument is unused:
+  Nat.zero_add
+
+Hint: Omit it from the simp argument list.
+  simp only [apply_ite, List.map_cons, List.sum_cons, List.map_nil, List.sum_nil, N̵a̵t̵.̵z̵e̵r̵o̵_̵a̵d̵d̵,̵ ̵add_mul,
+  ̲  ̲ ̲ ̲ ̲ ̲Finset.sum_add_distrib]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/ipra-sparse-radix-generic-01/SparseRadix.lean:71:20: warning: This simp argument is unused:
+  add_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [apply_ite, List.map_cons, List.sum_cons, List.map_nil, List.sum_nil,
+  ̵  ̵ ̵ ̵ ̵ ̵Nat.zero_add,
+  ̲ a̵d̵d̵_̵m̵u̵l̵,̵  ̲ ̲ ̲ ̲Finset.sum_add_distrib]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/ipra-sparse-radix-generic-01/SparseRadix.lean:71:29: warning: This simp argument is unused:
+  Finset.sum_add_distrib
+
+Hint: Omit it from the simp argument list.
+  simp only [apply_ite, List.map_cons, List.sum_cons, List.map_nil, List.sum_nil, Nat.zero_add,
+  ̲  ̲ ̲ ̲ ̲ ̲a̵d̵d̵_̵m̵u̵l̵,̵ ̵F̵i̵n̵s̵e̵t̵.̵s̵u̵m̵_̵a̵d̵d̵_̵d̵i̵s̵t̵r̵i̵b̵]̵a̲d̲d̲_̲m̲u̲l̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/ipra-sparse-radix-generic-01/SparseRadix.lean:72:10: warning: This simp argument is unused:
+  Finset.sum_ite_eq'
+
+Hint: Omit it from the simp argument list.
+  simp [F̵i̵n̵s̵e̵t̵.̵s̵u̵m̵_̵i̵t̵e̵_̵e̵q̵'̵,̵ ̵ht, ih hts]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/ipra-sparse-radix-generic-01/SparseRadix.lean:72:30: warning: This simp argument is unused:
+  ht
+
+Hint: Omit it from the simp argument list.
+  simp [Finset.sum_ite_eq', h̵t̵,̵ ̵ih hts]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/ipra-sparse-radix-generic-01/SparseRadix.lean:72:34: warning: This simp argument is unused:
+  ih hts
+
+Hint: Omit it from the simp argument list.
+  simp [Finset.sum_ite_eq', ht,̵ ̵i̵h̵ ̵h̵t̵s̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'SparseRadix.ofDigits_map_range' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SparseRadix.digit_ofDigits' depends on axioms: [propext]
+'SparseRadix.digit_finite_sum' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SparseRadix.finite_sum_lt' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SparseRadix.sparse_digit' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SparseRadix.sparse_sum' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

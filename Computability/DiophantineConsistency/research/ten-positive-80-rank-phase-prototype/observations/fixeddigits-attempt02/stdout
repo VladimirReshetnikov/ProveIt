@@ -1,0 +1,67 @@
+/tmp/tenpositive-80rankphase-x7_cifx5/Direct80RankPhase.lean:70:39: error: linarith failed to find a contradiction
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+ho : ↑lowNat % Exp.exp 67 = Exp.exp 67 - 2
+he : Exp.exp 67 = 4 * Exp.exp 65
+h1 : 1 ≤ Exp.exp 65
+h : Exp.exp 65 - 1 + 1 = Exp.exp 65
+a✝ : 4 * Exp.exp 65 < 2
+⊢ False
+failed
+/tmp/tenpositive-80rankphase-x7_cifx5/Direct80RankPhase.lean:73:4: error: linarith failed to find a contradiction
+case h1
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+ho : ↑lowNat % Exp.exp 67 = Exp.exp 67 - 2
+he : Exp.exp 67 = 4 * Exp.exp 65
+h1 : 1 ≤ Exp.exp 65
+h : Exp.exp 65 - 1 + 1 = Exp.exp 65
+h2 : 2 ≤ 4 * Exp.exp 65
+a✝ : 4 * Exp.exp 65 < 4 * (Exp.exp 65 - 1) + 2 + 2
+⊢ False
+failed
+/tmp/tenpositive-80rankphase-x7_cifx5/Direct80RankPhase.lean:77:2: error: `simp` made no progress
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+ho : ↑lowNat % Exp.exp 67 = Exp.exp 67 - 2
+he : Exp.exp 67 = 4 * Exp.exp 65
+h1 : 1 ≤ Exp.exp 65
+ht : Exp.exp 67 - 2 = 4 * (Exp.exp 65 - 1) + 2
+hm : ↑lowNat % Exp.exp (2 * 67) % Exp.exp (2 * 1) = ↑lowNat % Exp.exp (2 * 1)
+he2 : Exp.exp 2 = 4
+⊢ ↑lowNat % 4 = 2
+/tmp/tenpositive-80rankphase-x7_cifx5/Direct80RankPhase.lean:102:2: error: `simp` made no progress
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+h31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+_hodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+N t : V
+hN : 0 < N
+hJ : v 0 = ArithmeticRepunit.rep (67 * 8807) N
+hq : q p v = Exp.exp (67 * 8807 * N)
+hCpos : 0 < Cnat p v
+ht : (↑(p 1) + v 5) * Cnat p v = v 1 + b p v * t
+hzero : dig 67 (Cnat p v) 0 = 1
+hdigits : ∀ j < 8807 * N, dig 67 (Cnat p v) j ≤ 3
+hnc : ArithmeticBinaryCarry.NoCarry (v 1) (↑highNat * v 0 - 1)
+hWL : 2 ≤ 67 * 8807 * N
+hq0 : mod4 (ι (q p v)) = 0
+horig : Cnat p v % Exp.exp 67 = 1
+hm : Cnat p v % Exp.exp (2 * 67) % Exp.exp (2 * 1) = Cnat p v % Exp.exp (2 * 1)
+he2 : Exp.exp 2 = 4
+⊢ rankNat p v % 4 = 3
+'TenPositive80RankPhase.graph_phase' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

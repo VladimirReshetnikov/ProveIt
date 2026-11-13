@@ -1,0 +1,99 @@
+import IndependentKFixedCompactPorts
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed exact child-zero to zero-k facts, with the signed rank's model
+natural representation supplied explicitly. No Lean elaboration. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.IndependentKZeroGraphFactsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open IndependentKUnitGraphDraft IndependentKFixedCompactPortsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def emb (v : Fin 13 → V) : Fin 13 → DiffRing V := fun j => ι (v j)
+def q (v : Fin 13 → V) : V := (natPorts 0:V)*v 0+1
+def X (v : Fin 13 → V) : V := q v*v 6
+def Y (v : Fin 13 → V) : V := q v^3*(v 7+1)
+def U (v : Fin 13 → V) : V := Y v*(q v*q v)
+def a (v : Fin 13 → V) : V := X v*Y v+Y v
+def H (v : Fin 13 → V) : V := 3+4*a v
+
+def rankRing (v : Fin 13 → V) : DiffRing V :=
+  (ι (v 2+1)+(ι (q v)-ι (v 1+1))*(ι (natPorts 0:V)*ι (v 0)))*
+    (ι (q v)*ι (q v)-1)+ι (v 0)*(ι (natPorts 2:V)+ι (q v)*ι (natPorts 3:V))
+
+/-- These are direct field identities of the generated child literal under
+k=0; they do not depend on a natural representation of the rank. -/
+theorem first_fields (v : Fin 13 → V) (hk : v 10=0) :
+    (graph intPorts).b.evalRing (emb v)=ι ((natPorts 0:V)*v 0) ∧
+    (graph intPorts).z.evalRing (emb v)=
+      (ι ((natPorts 0:V)*v 0))*ι (v 8)-
+        ((ι (q v)-ι (v 1+1)-ι (v 2+1))*ι (X v+(natPorts 1:V))-ι (v 1+1)) ∧
+    (graph intPorts).ell.evalRing (emb v)=0 ∧
+    (graph intPorts).k.evalRing (emb v)=0 := by
+  simp [graph,emb,intPorts,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    P72Root.cast_port,q,X,map_add,map_mul,map_one,map_ofNat,hk] <;> ring
+
+/-- Extract the precise zero-k first norm used by the fixed-port client. -/
+theorem first_norm (v : Fin 13 → V)
+    (hz : InternalZero (graph intPorts).output v) (hk : v 10=0) :
+    let b : DiffRing V := ι (natPorts 0:V)*ι (v 0)
+    let C : DiffRing V := ι (q v)-ι (v 1+1)-ι (v 2+1)
+    let B : DiffRing V := C*ι (X v+(natPorts 1:V))-ι (v 1+1)
+    (b*ι (v 8)-B)*(b*ι (v 8)-B)=b*b := by
+  obtain ⟨hf,_,_,_⟩ := IndependentKUnitBridgeDraft.signed_norms intPorts v hz
+  obtain ⟨hb,hz',hell,hk'⟩ := first_fields v hk
+  rw [hb,hz',hell,hk'] at hf
+  simp only [zero_add,mul_zero,add_zero,mul_one,map_mul] at hf
+  exact hf
+
+/-- Direct graph main-root shape, still using the signed rank expression. -/
+theorem main_field (v : Fin 13 → V) (hk : v 10=0) :
+    (graph intPorts).d.evalRing (emb v)=
+      ι (U v)*(ι (X v)+ι (a v)*ι (v 9))+
+      ι (H v)*(ι (U v)*ι (v 12)+rankRing v+1) := by
+  simp [graph,emb,intPorts,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    P72Root.cast_port,q,X,Y,U,a,H,rankRing,map_add,map_mul,map_one,map_ofNat,hk] <;> ring
+
+/-- Extract the main signed-square equation from the child unit bridge. -/
+theorem main_norm (v : Fin 13 → V)
+    (hz : InternalZero (graph intPorts).output v) (hk : v 10=0) :
+    let z := (graph intPorts).d.evalRing (emb v)
+    z*z=ι (U v)*ι (U v)*
+      (1+(ι (H v)+ι (a v)*ι (a v))*(ι (v 9)*ι (v 9))) := by
+  obtain ⟨_,hm,_,_⟩ := IndependentKUnitBridgeDraft.signed_norms intPorts v hz
+  convert hm using 1 <;>
+    simp [graph,emb,intPorts,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+      Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+      P72Root.cast_port,q,X,Y,U,a,H,map_add,map_mul,map_one,map_ofNat,hk] <;> ring
+
+/-- Conditional graph client. Its only extra input is a model-natural R
+whose signed image is the literal's exact rank expression. -/
+theorem zero_k_impossible_of_rank_representation (v : Fin 13 → V) (R : V)
+    (hz : InternalZero (graph intPorts).output v) (hk : v 10=0)
+    (hR : rankRing v=ι R) : False := by
+  have hJ := child_J_positive v hz
+  have hf := first_norm v hz hk
+  have hshape := main_field v hk
+  rw [hR] at hshape
+  have hm := main_norm v hz hk
+  apply zero_k_fact_cut v (q v) R (X v) (Y v)
+    ((graph intPorts).d.evalRing (emb v)) hJ rfl hf
+  · simpa only [rankRing] using hR.symm
+  · rfl
+  · simpa only [U,a,H,map_add,map_mul,map_one,map_ofNat] using hshape
+  · simpa only [U,a,H,map_add,map_mul,map_one,map_ofNat] using hm
+end DiophantineConsistency.IndependentKZeroGraphFactsDraft
+#print axioms DiophantineConsistency.IndependentKZeroGraphFactsDraft.first_fields
+#print axioms DiophantineConsistency.IndependentKZeroGraphFactsDraft.first_norm
+#print axioms DiophantineConsistency.IndependentKZeroGraphFactsDraft.main_field
+#print axioms DiophantineConsistency.IndependentKZeroGraphFactsDraft.main_norm
+#print axioms DiophantineConsistency.IndependentKZeroGraphFactsDraft.zero_k_impossible_of_rank_representation

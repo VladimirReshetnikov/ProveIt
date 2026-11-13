@@ -1,0 +1,11 @@
+# Independent review: direct draft rank congruence
+
+`rank_of_balance` is a conditional theorem in every IΣ₁ model with the stated ordered-ring interface. It assumes `q>0`, `Y=q³*s`, `H=3+4*Y*(X+1)`, and the exact balance `H*(R+1)+q⁵*s*(X+a*c+H*G) = H*k+q⁵*s*main`; it concludes `q⁴ ∣ magnitude(R+1,k)`. Here `magnitude` is the existing nonnegative magnitude of a signed pair, and divisibility is in the model. The proof reduces the balance modulo `q⁵`, obtains `q⁵ ∣ H*magnitude(R+1,k)`, and applies the existing factor-three cancellation theorem. It does not require independent positivity assumptions on all of its variables.
+
+`graph_rank` derives that divisibility from positive beta, all 12 witnesses positive, and internal zero of the exact draft graph output, for arbitrary natural ports. It defines `q=1+J*beta`, `k=eta+zeta` and `R=(alpha+(q-F)*(J*beta))*(q²-1)+J*(MC+MF*q)`, with model truncated subtraction, and obtains the necessary balance from the graph-to-Pell indices theorem. No fixed ports or old graph zero are assumed.
+
+The result is a congruence about the magnitude of `R+1` and `k`. It does not prove an equality or congruence between the Pell indices, prove the auxiliary residual consequences, establish model-to-halt equivalence or reverse existence, or show that iPRA proves the equivalence. It is not an equation-to-PDF binding.
+
+The review matches the accepted source, runner, Lean binary, object and logs, checks all 11 selected producer hashes and search order against the indices receipt, and reruns the independent indices and underlying reviews, including 1,291 selected union files. The accepted source has no local linter suppression; imported first and main norm sources suppress unused-variable and unused-simp-argument linting. The reported Lean axioms for both theorems are `[propext, Classical.choice, Quot.sound]`. Resource samples are point observations. Package, dynamic and full historical source-to-object ancestry are inherited. No Lean process was launched for this audit.
+
+Run `python3 -I -S -B check.py` from this directory; `observations/stdout` captures success. Retained `/tmp` proof objects and providers are required. Source and file comparisons are external checks.

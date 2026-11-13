@@ -1,0 +1,7 @@
+# Independent clean-carry pair artifact audit
+
+The protected wrapper's recorded outer session 57568 exited 0. The two recorded Lean children and their direct-dependency queries exited 0; the two object hashes and both exact named axiom reports agree. The auditor reruns the pinned parent audit without Lean, verifies exact evidence and source/driver bytes, rehashes all 115 inherited objects on each corresponding side, and checks all 70 recorded direct-input, seed and output companion slots against their present contents and resolved paths. It does not replay Lean itself.
+
+The source's `clean_after_bounded_predecessor` theorem assumes an externally finite family, an IΣ₁ model, `CarryInput`, a bounded target index, a predecessor raw-column bound, `t ≤ half`, the strict slack `s + b < half`, and `half + half = exp(w)`; it concludes the predecessor carry is zero and the target digit is the raw sum modulo the radix. `digit_after_bounded_predecessor` adds a target raw-sum bound and concludes the digit equals that sum. These conditions are supplied; neither statement derives them from the retained graph or a fractional rotation, constructs words, proves machine correctness, or gives a PRA/iPRA endpoint.
+
+Checks are point-in-time. The provider's inherited ancestry and package, dynamic-import and between-check boundaries remain. Resource measurements are sampled; the separate dependency query is timeout-bounded but does not use the compiler monitor's full process-group and resource controls.

@@ -1,0 +1,24 @@
+/tmp/compact44-graph-support-join-01/FractionalTemporalEven.lean:36:42: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X n E t : V
+hn : 0 < n
+ht : t < n
+hX : X < Exp.exp (67 * n)
+hcap : ∀ j < n, dig 67 X j ≤ 3
+hr0 : 0 < E % 67
+hr65 : E % 67 ≤ 65
+r : V := E % 67
+j : V := cyc n t (E / 67 % n)
+hr' : r ≤ 65
+hrpos : 0 < r
+hj : j < n
+hjp : cyc n j 1 < n
+h2r : 2 + r ≤ 67
+hdiff : 2 ≤ 67 - r
+hE : 4 ≤ Exp.exp (67 - r)
+hdiv : dig 67 X (cyc n j 1) / Exp.exp (67 - r) = 0
+hm : 2 ∣ Exp.exp 67
+⊢ 2 * Exp.exp (r - 1) = 2 * Exp.exp (r - 1 + 1 - 1)
+'FractionalTemporalEven.even_digit' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

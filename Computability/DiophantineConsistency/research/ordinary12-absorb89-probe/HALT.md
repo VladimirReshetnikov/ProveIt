@@ -1,0 +1,7 @@
+# Fixed-port model halt bridge
+
+`Absorb89Halt.positive_model_iff` proves that, in every indicated IΣ₁ model, a positive zero of the 89-row graph at the symbolic fixed ports exists exactly when the machine's internal halt predicate holds. The shifted-natural and byte-port versions follow in the same file. The proof composes the bounded-port 89/90 existence equivalence with the 90 halt bridge and derives the port bounds from `CompactFixedBeta.bounds` and `DirectPortBounds.bounds`; it does not expand the large fixed numeral.
+
+The guarded author check `run-halt.py` passed in session 76382, exit 0, in fresh output `/tmp/absorb89-chain-wll7uryw`; exact source, command, selected predecessor hashes, resource observations and output appear in `observations/halt-attempt01/`. The check compares the 1,291-object base union and 1,294-object XQ91 halt union against their pinned receipts and checks selected top-level predecessor objects. The full serialized ancestry of the newly combined 89/halt roots, package-transitive and dynamic dependencies, and historical source-to-object ancestry are not independently authenticated by this check. No independent Lean replay has yet been performed. An internal iPRA endpoint and formal PDF-to-graph binding are separate tasks.
+
+The later iPRA author endpoint has passed; its exact theory entailments, selected provider evidence and remaining PDF binding gap are documented in `../ordinary12-absorb89-ipra-join/README.md`.

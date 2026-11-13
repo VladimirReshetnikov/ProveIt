@@ -1,0 +1,111 @@
+{
+  "driver_sha256": "77f9ef885be8d5a22448f694e21929a5ae328037948246034d9322d03ac6564d",
+  "fake_controls_sha256": "9d76b2577ce1ee7a885fd8a2e25684c5a739d129197460ccb6951d435d8c782c",
+  "fake_exit": 0,
+  "fake_log_sha256": "e54f77e7dccbde185794730e078589c6dca1649ac28ef6a2b0df405193502185",
+  "fixed_pin_count": 12,
+  "lean_launched": false,
+  "named_reports": 22,
+  "parent_objects_per_side": 171,
+  "provider": "/tmp/ipra-graph-band-pair-01",
+  "scope": "Source/artifact driver verification by an author of several clients, not independent mathematical proof review; no real preflight or paired build.",
+  "slot_counts": {
+    "external_direct_slots": 60,
+    "package_slots": 20,
+    "target_slots": 140
+  },
+  "source_modules": 7,
+  "source_rows": [
+    {
+      "imports": [
+        "DiophantineConsistency.ArithmeticCyclicWord"
+      ],
+      "module": "DiophantineConsistency.BandCarryInputs",
+      "reports": [
+        "BandCarryInputs.source_word_bound",
+        "BandCarryInputs.aligned_rotation_bounds",
+        "BandCarryInputs.residual_bounds",
+        "BandCarryInputs.normalized_congruence"
+      ],
+      "sha256": "99741977abae45163ecbb94dd4caa03daec0cf1db370dff0ca7ba641dbe29cf5"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.ArithmeticCyclicWord"
+      ],
+      "module": "DiophantineConsistency.CompactBitRotation",
+      "reports": [
+        "CompactBitRotation.temporal_mod",
+        "CompactBitRotation.temporal_word_lt",
+        "CompactBitRotation.temporal_digit_lt",
+        "CompactBitRotation.temporal_digit_le",
+        "CompactBitRotation.replace_temporal"
+      ],
+      "sha256": "898d81f0a75ac14bca36cccc8f3c3db62121e85e20e99a6aacaaadf634256c42"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactBitRotation",
+        "DiophantineConsistency.BandCarryInputs"
+      ],
+      "module": "DiophantineConsistency.ActualTemporalBand",
+      "reports": [
+        "ActualTemporalBand.graph_temporal_word"
+      ],
+      "sha256": "ef5579337f2af02063c63ad6d2aa39dcbe864fbabfcb4512596cc4e0fbe2c1b9"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.SymbolicGraphBand",
+        "DiophantineConsistency.ActualTemporalBand"
+      ],
+      "module": "DiophantineConsistency.FixedGraphTemporal",
+      "reports": [
+        "FixedGraphTemporal.fixed_graph_temporal"
+      ],
+      "sha256": "872b86adfcadf783ee1887043df5a83b479594df1ac55591eac954214394ba82"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.ArithmeticWindowCarry"
+      ],
+      "module": "DiophantineConsistency.CompactDigitBound",
+      "reports": [
+        "CompactDigitBound.scaled_key_bound",
+        "CompactDigitBound.clean_outgoing",
+        "CompactDigitBound.clean_column",
+        "CompactDigitBound.raw_le_scaled",
+        "CompactDigitBound.sum_mod_le_scaled",
+        "CompactDigitBound.mod_le_scaled_rep"
+      ],
+      "sha256": "c7830171030cb85bb5e5b1952aaddaa2539f5c41d39345caf528f372235b3c3a"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.ArithmeticWindowCarry",
+        "DiophantineConsistency.CompactDigitBound"
+      ],
+      "module": "DiophantineConsistency.CompactHeterogeneousCarry",
+      "reports": [
+        "DiophantineConsistency.CompactHeterogeneousCarry.excess_le",
+        "DiophantineConsistency.CompactHeterogeneousCarry.carry_le",
+        "DiophantineConsistency.CompactHeterogeneousCarry.carry_column",
+        "DiophantineConsistency.CompactHeterogeneousCarry.end_around_carry"
+      ],
+      "sha256": "ce587b76912f7a0579a414a16c59c75a37b5e1b3db930ce57ff7a743c3fa7b2e"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.BandCarryInputs",
+        "DiophantineConsistency.CompactHeterogeneousCarry",
+        "Mathlib.Data.Fintype.BigOperators"
+      ],
+      "module": "DiophantineConsistency.GenericBandCarryFamily",
+      "reports": [
+        "GenericBandCarryFamily.carry_input"
+      ],
+      "sha256": "66697812c0cafee3fa8ff6280e13dee866adaa805ebef41a897df30f34952c62"
+    }
+  ],
+  "status": "PASS_NO_LEAN_INDEPENDENT_TEMPORAL_CARRY_DRIVER_REVIEW"
+}

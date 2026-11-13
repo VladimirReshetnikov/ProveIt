@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 56500 exited 0. Stage and postflight passed; receipt/state/logs, source/object, direct RowsInner provider and guarded overlays match. `eval_shift` reports `[propext, Quot.sound]`, with one unused-simp and one sequencing warning, and no `sorryAx`. The inherited console label says SharedD; state/source/module/report are ExpressionBridge. This is generic ring evaluation equality under positive coordinate shift, not yet a positive-model existential equivalence, degree theorem or external file binding. Captured routes are point-in-time. No Lean was run.

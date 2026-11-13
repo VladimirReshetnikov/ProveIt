@@ -1,0 +1,143 @@
+import AQ20Substituted104ResidualZeros
+import AQ22Quotient110ConditionalTransfer
+import DiophantineConsistency.ModelThirteenCarrier
+import DiophantineConsistency.ModelCarrierCurrent
+
+/-! Proposed AQ20→AQ22 transfer; graph maps and the AQ22 graph transfer are
+explicit assumptions. All declarations are source-only and unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AQ20Substituted104ConditionalTransferDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open ModelDifferenceRing PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+
+/-- Delete the two parent scale coordinates, 13 and 14. -/
+def project {V : Type*} (v : Fin 22 → V) (i : Fin 20) : V :=
+  if h : i.val<13 then v ⟨i.val, by omega⟩ else v ⟨i.val+2, by omega⟩
+
+/-- Insert M=q*(q*q)*(J*beta), U=Y*(q*q), q=1+J*beta. -/
+def extend {V : Type*} [Add V] [Mul V] [One V]
+    (beta : V) (v : Fin 20 → V) (i : Fin 22) : V :=
+  if i.val=13 then (1+v 0*beta)*((1+v 0*beta)*(1+v 0*beta))*(v 0*beta)
+  else if i.val=14 then v 7*((1+v 0*beta)*(1+v 0*beta))
+  else if h : i.val<13 then v ⟨i.val, by omega⟩ else v ⟨i.val-2, by omega⟩
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem project_pos (v : Fin 22 → V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<project v i := by
+  intro i
+  unfold project
+  split <;> exact hv _
+
+theorem extend_pos (beta : V) (v : Fin 20 → V) (hb : 0<beta)
+    (hv : ∀ i, 0<v i) : ∀ i, 0<extend beta v i := by
+  have hqm : 0<v 0*beta := mul_pos (hv 0) hb
+  have hq : 0<1+v 0*beta := add_pos (by simp) hqm
+  intro i
+  unfold extend
+  split
+  · exact mul_pos (mul_pos hq (mul_pos hq hq)) hqm
+  · split
+    · exact mul_pos (hv 7) (mul_pos hq hq)
+    · split <;> exact hv _
+
+def child : Expr (Fin 20) :=
+  AQ20Substituted104LiteralDraft.literal CurrentWindowCarry2011.ports
+
+def parent : Expr (Fin 22) :=
+  AQ22Quotient110LiteralDraft.literal CurrentWindowCarry2011.ports
+
+/-- Exact model interface: positive model beta and its image equals the
+integer first port. Both graph-zero implications remain explicit premises. -/
+def GraphZeroObligations : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (beta : V),
+    0<beta → ((CurrentWindowCarry2011.ports 0 : ℤ) : DiffRing V)=ι beta →
+    (∀ v : Fin 22 → V, (∀ i, 0<v i) → InternalZero parent v →
+      InternalZero child (project v)) ∧
+    (∀ v : Fin 20 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend beta v))
+
+/-- Candidate representation and positivity from existing model declarations.
+These dependencies and this application have not been checked for this draft. -/
+theorem current_beta_representation :
+    ((CurrentWindowCarry2011.ports 0 : ℤ) : DiffRing V) =
+      ι (CurrentMasks2011.beta : V) := by
+  exact ModelThirteenCarrier.port0 (V:=V)
+
+theorem current_beta_positive : 0<(CurrentMasks2011.beta : V) := by
+  have hp := ModelCarrierCurrent.beta_pos (V:=V)
+  change (0 : DiffRing V) < ModelThirteenCarrier.ringPorts (V:=V) 0 at hp
+  rw [ModelThirteenCarrier.port0] at hp
+  apply ι_lt_ι.mp
+  simpa only [map_zero] using hp
+
+theorem shifted_no_zero_iff (beta : V) (hb : 0<beta)
+    (hproject : ∀ v : Fin 22 → V, (∀ i, 0<v i) → InternalZero parent v →
+      InternalZero child (project v))
+    (hextend : ∀ v : Fin 20 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend beta v)) :
+    (∀ v : Fin 20 → V, ¬InternalZero (positiveShift child) v) ↔
+      ∀ v : Fin 22 → V, ¬InternalZero (positiveShift parent) v := by
+  constructor
+  · intro h v hz
+    let old : Fin 22 → V := fun i => v i+1
+    have hp : ∀ i,0<old i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero parent old := (internalZero_positiveShift _ _).mp hz
+    have hnew := hproject old hp hzero
+    have hnewpos := project_pos old hp
+    let shifted : Fin 20 → V := fun i => project old i-1
+    have hs : (fun i => shifted i+1)=project old := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hnewpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hnew
+  · intro h v hz
+    let new : Fin 20 → V := fun i => v i+1
+    have hp : ∀ i,0<new i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero child new := (internalZero_positiveShift _ _).mp hz
+    have hold := hextend new hp hzero
+    have holdpos := extend_pos beta new hb hp
+    let shifted : Fin 22 → V := fun i => extend beta new i-1
+    have hs : (fun i => shifted i+1)=extend beta new := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (holdpos i))
+    apply h shifted
+    rw [internalZero_positiveShift,hs]
+    exact hold
+
+theorem sameNoZero (h : GraphZeroObligations) :
+    SameNoZero (positiveShift child) (positiveShift parent) := by
+  intro V _ _
+  obtain ⟨hp,he⟩ := h V (CurrentMasks2011.beta : V)
+    (current_beta_positive (V:=V)) (current_beta_representation (V:=V))
+  exact shifted_no_zero_iff (CurrentMasks2011.beta : V)
+    (current_beta_positive (V:=V)) hp he
+
+theorem polynomialBridge (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : GraphZeroObligations) : PolynomialBridge (positiveShift child) :=
+  HAExpressionNoZeroEquiv.bridge (positiveShift child) (positiveShift parent)
+    (sameNoZero h20) (AQ22Quotient110ConditionalTransferDraft.polynomialBridge h22)
+
+theorem native_equivalence (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : GraphZeroObligations) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge (positiveShift child) (polynomialBridge h22 h20)
+
+theorem standard_equivalence (h22 : AQ22Quotient110ConditionalTransferDraft.GraphZeroObligations)
+    (h20 : GraphZeroObligations) : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+      ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 (native_equivalence h22 h20)
+end DiophantineConsistency.AQ20Substituted104ConditionalTransferDraft
+#print axioms DiophantineConsistency.AQ20Substituted104ConditionalTransferDraft.current_beta_representation
+#print axioms DiophantineConsistency.AQ20Substituted104ConditionalTransferDraft.current_beta_positive
+#print axioms DiophantineConsistency.AQ20Substituted104ConditionalTransferDraft.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AQ20Substituted104ConditionalTransferDraft.native_equivalence
+#print axioms DiophantineConsistency.AQ20Substituted104ConditionalTransferDraft.standard_equivalence

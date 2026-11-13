@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+"""Review conditional lower source and passed/failed partial producer routes."""
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];research=root/'research';p=research/'nine-sharing-sign20-count-lower-check';draft=research/'nine-sharing-sign20-count-lower-draft';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest();m=p/'source-manifest.json';assert sha(m)=='ab43991b415fd17cd7ef8eb71218f117add7ad36f5a2ee320f7187da770de5e1';rows=json.loads(m.read_text())['rows'];names=['Sign20SeedCoefficient','Sign20DegreeLower'];imports=[['DiophantineConsistency.Sign20CountProof'],['DiophantineConsistency.Sign20SeedCoefficient','DiophantineConsistency.Sign20DiagonalDegree']];assert [x['module'] for x in rows]==['DiophantineConsistency.'+n for n in names]
+texts=[]
+for e,n,im in zip(rows,names,imports):
+ src=p/'src/DiophantineConsistency'/(n+'.lean');s=src.read_text();texts.append(s);assert sha(src)==sha(draft/(n+'.lean'))==e['source_sha256'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==e['imports']==im and not re.search(r'(?m)^\s*(axiom|opaque)\b|\b(sorry|admit)\b',s)
+assert 'coeff index20 ((SharingSeed20Degree20.seed p).evalRing axisPoly) = 2 * (p 0)^4' in texts[0] and 'rw [Sign20CountProof.n0_count, Sign20CountProof.dc2_count] at hr' in texts[0]
+assert '(hp : p 0 ≠ 0)' in texts[1] and '20 ≤ (Sign20AbstractExpression.expression p).toPolynomial.totalDegree' in texts[1] and 'diagonal (Sign20AbstractExpression.expression p).toPolynomial =' in texts[1] and 'exact seed_axis_coeff p' in texts[1]
+old=research/'nine-sharing-sign20-full-coeff-retry03-check/src/DiophantineConsistency/Sign20DegreeLower.lean';assert texts[1]==old.read_text()
+base=json.loads((research/'nine-sharing-sign20-count-proof-check/attempt01/state.json').read_text());failed=json.loads((research/'nine-sharing-sign20-full-coeff-retry03-check/attempt01/state.json').read_text());outer=json.loads((research/'nine-sharing-sign20-full-coeff-retry03-check/attempt01/outer-result.json').read_text());assert base['status']=='PASS' and failed['status']=='FAILED' and outer['outer_exit_code']==1 and failed['rows'][1]['module']=='Sign20DiagonalDegree' and failed['rows'][1]['compile']['exit']==0
+q=Path('/tmp/nine-sharing-sign20-count-proof-20261110/lib/DiophantineConsistency/Sign20DiagonalDegree.olean');assert q.is_symlink() and q.exists() and sha(q)==failed['rows'][1]['object_sha256'] and str(q.resolve())==str((Path('/tmp/nine-sharing-sign20-full-coeff-retry03-20261109/lib/DiophantineConsistency/Sign20DiagonalDegree.olean')).resolve()) and base['overlay_links'][str(q)]==str(q.resolve())
+runner=p/'run.py';assert sha(runner)=='1796953a61e1d7a5f717ccf3021b85982df04b006166e9ef9fa74c102ba1b794';r=runner.read_text();assert "partial['status']=='FAILED'" in r and "['outer_exit_code']==1" in r and "if local=='Sign20CountProof':" in r and "elif local=='Sign20DiagonalDegree':" in r and "elif local in ('Sign20SeedCoefficient',):" in r and "'-M3600'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r
+subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews/nine-sharing-sign20-count-proof-terminal-independent/check.py')],check=True,capture_output=True,timeout=120)
+x=subprocess.run([sys.executable,'-I','-S','-B',str(runner),'--preflight'],capture_output=True,text=True,timeout=180);assert x.returncode==0 and not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','runner_sha256':sha(runner),'partial_parent_exit':1,'scope':'proposed coefficient 2*(p 0)^4 and Fin20 degree ≥20 conditional p 0 ≠ 0; no Lean result/external binding'},indent=2,sort_keys=True))

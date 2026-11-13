@@ -1,0 +1,23 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/nine-sharing-sign27-first-cut-check-20261106/src/DiophantineConsistency/Sign27FirstCut.lean:24:35: error: unsolved goals
+V : Type
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+v : Fin 28 → V
+⊢ ι (v 21) * 2 - ι (v 21) * ι 2 = 0
+/tmp/nine-sharing-sign27-first-cut-check-20261106/src/DiophantineConsistency/Sign27FirstCut.lean:26:59: warning: This simp argument is unused:
+  Expr.evalRing_add
+
+Hint: Omit it from the simp argument list.
+  simp [oldN1, lift, Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_v̲ad̵d̵r̲,
+      Expr.evalRing_v̵a̵r̵,̵ ̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵constant, map_add, map_mul]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'DiophantineConsistency.Sign27FirstCut.oldN1_row' depends on axioms: [propext]
+'DiophantineConsistency.Sign27FirstCut.oldN1_zero' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'DiophantineConsistency.Sign27FirstCut.first_eval' depends on axioms: [propext, Classical.choice, Quot.sound]

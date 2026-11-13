@@ -1,0 +1,3 @@
+# Sign25/26 expression zero iff attempt 01
+
+Author-observed outer session 18849 exited 0, including final postflight. Both the finite-cons helper and Fin25/Fin26 zero-existence equivalence report `[propext, Classical.choice, Quot.sound]`. The helper emitted one unused IΣ₁ section-variable warning. The result compares fixed-port direct expressions at input one; no source equivalence, endpoint, Lean degree, or external JSON/port binding is claimed. Monitor observations are sampled; upstream stale success labels, inherited syntax heartbeat and historical sign26 plan README appendix caveats apply.

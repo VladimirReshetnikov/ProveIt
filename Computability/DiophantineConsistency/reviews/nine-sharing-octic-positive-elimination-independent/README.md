@@ -1,0 +1,3 @@
+# Independent audit: finite positive-gate octic search
+
+The independent checker exited 0. It separately enumerates eligible positive direct-variable substitutions on the pinned sign26 AST, maintains original variable labels, enforces residual syntactic degree at most 4 after every step, and compares every ordered state and attempted next gate to the saved result. It finds 19 states, six best orders removing q3, ell and Delta, minimum 23 remaining witnesses, and no search-depth cutoff reached. At the six terminal best states, further kY, normalized_S, E and Y substitutions have residual syntactic bounds 6, 7, 8 and 10. This is only the stated finite syntactic positive-gate search; it is not a general lower bound, exact algebraic-degree proof, model bridge or Lean result.

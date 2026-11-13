@@ -1,0 +1,59 @@
+COMPARISON WITH THE 516-BYTE COMPACT PROFILE
+
+Authenticated against the current Research tree at commit
+831081033253cca2115196cf86bb99c77ed2aeae.
+
+File: canonical_recursors/compact/code/checker_compact_zero.py
+Git blob: 913bc91fa73bde3aad199e17ba42af5a3488b0d6
+Measured: 516 normalized bytes, 265 tokens, 306 AST nodes (CPython3.12.14).
+
+The directory name is easy to misread. This 516-byte program is NOT the
+canonical successor-seeded R calculus introduced in that package. It is a
+separate implementation refinement of the older deterministic auxiliary
+scalar calculus. Its numerical public codec has zero, successor (one-child
+array), initialized iteration (three-child array), and bound numerical
+variables encoded by selected odd positive integers. The guarded public
+formula grammar has equations (two children) and D (one child), with a
+restriction on atomic D matrices. Intermediate proof syntax is the broader
+Eq/Q/D auxiliary grammar; closure triples are explicitly built by m*3 and
+[t]*3 in the kernel. Public and auxiliary grammars are not identical.
+
+Its certificate is a JSON list consumed backwards by pop, not a tagged
+proof tree in a {'goal':...,'proof':...} object. A recursive checker returns
+implicitly on a retained hypothesis; otherwise it consumes a four-field
+packet m,s,u,t. A source-dispatch expression builds the required major,
+combining equality transport and closure specialization.
+Separate arithmetic instructions introduce computation equations, and a
+root-directed introduction handles guarded matrices. These mechanisms
+predate Refl/Eval; there is NO root-equality branch of a three-case Eval
+instruction to delete. Our identity-frame deletion cannot be transplanted
+as a local deletion in this code.
+
+Nor is there a separate public Q constructor/rule branch whose removal
+would yield the same clause-interface saving. Q is already auxiliary in
+this public contract, and Q/transport elimination is already fused by source
+dispatch. Replacing those auxiliary triples by actual clause contexts would
+be a new codec/compiler design requiring a fresh comparison, not removal
+of the same source fragment. No impossibility of a future smaller codec
+is asserted; no such improvement has been demonstrated here.
+
+The 516-byte program does not validate the guarded public-goal grammar or
+validate all raw JSON values as integer/list trees. Its documented contract
+also permits unused prefix data. Example: JSON [0] is accepted because the
+numeric root 0 denotes administrative truth; it is not a public formula.
+The same package explicitly supplies a strict wrapper for public claims.
+
+File: canonical_recursors/compact/code/checker_strict.py
+Git blob: 2c56cce3059802d9707940b20f6ed9fdec724b1a
+Measured: 1376 bytes, 542 tokens, 624 AST nodes.
+It validates the entire integer/list input tree and validates the final
+closed guarded Eq/D goal. It rejects [0] with the public-grammar error.
+It still uses the different guarded language and backwards packet codec.
+
+Thus 2999 bytes versus 3046 bytes is an exact matched improvement for the
+full raw Eq/D clausal proof-tree checker. It is not a new smallest checker
+in the repository. Even the stricter 1376-byte guarded-codec module is
+smaller, so the existence of missing validators in the 516-byte profile
+must not be used to imply that our implementation wins an overall contest.
+The direct comparison controls all syntax, validation, contract and logic;
+comparisons to 516 and 1376 describe different complete interfaces.

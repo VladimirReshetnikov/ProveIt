@@ -1,0 +1,7 @@
+# External structural count for the current Jones seed
+
+This preliminary, source-pinned Python diagnostic parses `ObjectCurrentEquation2011.expressionAt`, applies the literal `positiveShift`, then counts nodes in both natural split trees using the constructors of `Expr`, `splitNatural` and `QuarticCompiler.Gates.count`. It reports 8,446,685 nodes in each natural tree and the resulting `QuarticCompiler.witnessCount` 16,893,385 (`14 + left + right + 1`). A separate independent review is needed before treating these numbers as verified.
+
+The recurrence counts each shifted variable as three nodes on each side, because its replacement `var + 1` splits to two leaves and an addition. Each signed constant produces one leaf on each side. If both sides of each input subtree have the same node count, addition and subtraction give `a+b+1` nodes on each side, and multiplication gives `2a+2b+3` on each side. `Expr.pow` starts with a constant one and expands each power by successive multiplication. The final rename does not change tree size. The checker validates all 14 witness indices and pins the relevant Lean sources.
+
+This is an external syntax-tree calculation; it is not a Lean proof of the numeric equality, an expansion of the seed's coefficients or Jones expression, a nine-variable operation or total-degree count, or a PDF binding. It inherits the recorded source-to-object relationship of the separate checked nine-variable endpoint and does not rebuild its provider. Run `python3 -I -S -B check.py` from this directory.

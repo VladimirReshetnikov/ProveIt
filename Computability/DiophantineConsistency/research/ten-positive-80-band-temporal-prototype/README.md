@@ -1,0 +1,7 @@
+# Kernel-band and temporal rotation from the 80 graph
+
+`Direct80BandTemporal.graph_band_temporal` carries the actual 80-graph fixed-symbolic transport congruence through the existing generic kernel-band and temporal-word lemmas. Under explicit symbolic equalities for ports 0, 2, and 3, an actual positive graph zero, and the explicit port-1 kernel-band equality for the chosen position function, one and the same positive N supplies the repunit/radix and residual power, modulus and F bounds, the temporal band congruence, temporal-word size/digit bounds, and low-mask origin/digit bounds. This uses `v 5` directly as the residual power, respecting the 80 graph's witness convention.
+
+The port-1 band decomposition remains an explicit hypothesis; it can be specialized with the separately checked compact symbolic kernel identity. The theorem does not assert the remaining carry/window decoding, rank phase, machine halt, converse, iPRA endpoint, or external-payload/PDF binding.
+
+The guarded author check `observations/bandtemporal-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`; object `/tmp/tenpositive-80bandtemporal-wfw2x5bt/Direct80BandTemporal.olean` has SHA-256 `18517ca75f60601fd689981c80871d042189642f5efbed286a81ac2ad084fd37`. The runner pins selected project inputs and records resources; inherited source/object, package and dynamic ancestry and independent Lean replay remain outside its claim.

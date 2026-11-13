@@ -1,0 +1,3 @@
+# Merge-sort index attempt failed
+
+`CompactRelabelIndicesSort.lean` proposes proving the 942-index permutation by reducing a merge-sort output to the intended sorted range, then applying `List.mergeSort_perm`. Exploratory session 40062 actually exited 1: `decide +kernel` became stuck reducing the well-founded `List.mergeSort` definition, and the diagnostic printed `sorryAx`. The complete compiler output is retained in `indices-sort-failed.log`. Neither `indices_sort` nor `indices_permutation_fast` is a proved theorem, and this attempt does not change the existing index-bijection or model-transport status.

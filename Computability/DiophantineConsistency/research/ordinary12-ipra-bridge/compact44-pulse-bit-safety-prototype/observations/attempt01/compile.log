@@ -1,0 +1,69 @@
+Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-pulse-bit-safety-prototype/CompactPulseBitSafety.lean:41:4: error: Type mismatch: After simplification, term
+  he
+ has type
+  NoCarry (2 * (a / 2) + 1) b
+but is expected to have type
+  NoCarry (a + 1) b
+Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-pulse-bit-safety-prototype/CompactPulseBitSafety.lean:45:37: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  m
+in the target expression
+  a * Exp.exp k + A + Exp.exp k = (a + 1) * Exp.exp k + A
+
+case e'_4
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+x m k : V
+h : NoCarry x m
+hx : fbit x k = 0
+hm : fbit m k = 0
+a : V := x / Exp.exp k
+b : V := m / Exp.exp k
+A : V := x % Exp.exp k
+B : V := m % Exp.exp k
+hA : A < Exp.exp k
+hB : B < Exp.exp k
+hlow : NoCarry A B
+hhigh : NoCarry a b
+ha0 : a % 2 = 0
+hb0 : b % 2 = 0
+ha : 2 * (a / 2) + 0 = a
+hb : 2 * (b / 2) + 0 = b
+htail : NoCarry (a / 2) (b / 2)
+hhigh' : NoCarry (a + 1) b
+hnc : NoCarry ((a + 1) * Exp.exp k + A) (b * Exp.exp k + B)
+hx' : a * Exp.exp k + A = x
+hm' : b * Exp.exp k + B = m
+⊢ a * Exp.exp k + A + Exp.exp k = (a + 1) * Exp.exp k + A
+Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-pulse-bit-safety-prototype/CompactPulseBitSafety.lean:45:30: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  x
+in the target expression
+  m = b * Exp.exp k + B
+
+case e'_5
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+x m k : V
+h : NoCarry x m
+hx : fbit x k = 0
+hm : fbit m k = 0
+a : V := x / Exp.exp k
+b : V := m / Exp.exp k
+A : V := x % Exp.exp k
+B : V := m % Exp.exp k
+hA : A < Exp.exp k
+hB : B < Exp.exp k
+hlow : NoCarry A B
+hhigh : NoCarry a b
+ha0 : a % 2 = 0
+hb0 : b % 2 = 0
+ha : 2 * (a / 2) + 0 = a
+hb : 2 * (b / 2) + 0 = b
+htail : NoCarry (a / 2) (b / 2)
+hhigh' : NoCarry (a + 1) b
+hnc : NoCarry ((a + 1) * Exp.exp k + A) (b * Exp.exp k + B)
+hx' : a * Exp.exp k + A = x
+hm' : b * Exp.exp k + B = m
+⊢ m = b * Exp.exp k + B
+'CompactPulseBitSafety.pulse_preserves_noCarry' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

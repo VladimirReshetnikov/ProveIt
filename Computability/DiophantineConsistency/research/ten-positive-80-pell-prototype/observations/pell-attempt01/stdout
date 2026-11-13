@@ -1,0 +1,84 @@
+/tmp/tenpositive-80pell-7cpjnzsc/Direct80Pell.lean:64:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  E p v
+in the target expression
+  (1 + 2 * (D * U0 * U0 * E0)) * (1 + 2 * (D * U0 * U0 * E0)) = 1 + D * (2 * U0 * tau * f) * (2 * U0 * tau * f)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+D : V := TenPositive80Factors.delta p v
+U0 : V := U p v
+E0 : V := E p v
+K : V := k v
+P : V := firstParam p v
+C : V := c p v
+aa : V := D * U0 * U0 * E0
+hq : 0 < q p v
+hy : 0 < Y p v
+hx : 0 < X p v
+hmu : 0 < mu p v
+hP : 0 < P
+hK : 0 < K
+hU : 0 < U0
+tau f : V
+htau : 0 < tau
+hf : 0 < f
+ht : E p v = tau * tau
+hf2 : 1 + TenPositive80Factors.delta p v * U p v * U p v * E p v = f * f
+hnorm : tau * tau = 1 + P * (P + 1) * K * K
+n : V
+hnk : n ≤ K
+hnx : xcoord n (2 * (P - 1) + 1) = tau
+hny : 2 * ycoord n (2 * (P - 1) + 1) = K
+hn : 0 < n
+I : V := 2 * U0 * tau * f
+hI : 0 < I
+⊢ (1 + 2 * (D * U0 * U0 * E0)) * (1 + 2 * (D * U0 * U0 * E0)) = 1 + D * (2 * U0 * tau * f) * (2 * U0 * tau * f)
+/tmp/tenpositive-80pell-7cpjnzsc/Direct80Pell.lean:68:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  E p v
+in the target expression
+  D * (4 * (D * U0 * U0 * E0) * (1 + D * U0 * U0 * E0)) = D * (2 * U0 * tau * f) * (D * (2 * U0 * tau * f))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+D : V := TenPositive80Factors.delta p v
+U0 : V := U p v
+E0 : V := E p v
+K : V := k v
+P : V := firstParam p v
+C : V := c p v
+aa : V := D * U0 * U0 * E0
+hq : 0 < q p v
+hy : 0 < Y p v
+hx : 0 < X p v
+hmu : 0 < mu p v
+hP : 0 < P
+hK : 0 < K
+hU : 0 < U0
+tau f : V
+htau : 0 < tau
+hf : 0 < f
+ht : E p v = tau * tau
+hf2 : 1 + TenPositive80Factors.delta p v * U p v * U p v * E p v = f * f
+hnorm : tau * tau = 1 + P * (P + 1) * K * K
+n : V
+hnk : n ≤ K
+hnx : xcoord n (2 * (P - 1) + 1) = tau
+hny : 2 * ycoord n (2 * (P - 1) + 1) = K
+hn : 0 < n
+I : V := 2 * U0 * tau * f
+hI : 0 < I
+hdbl : (1 + 2 * aa) * (1 + 2 * aa) = 1 + D * I * I
+⊢ D * (4 * (D * U0 * U0 * E0) * (1 + D * U0 * U0 * E0)) = D * (2 * U0 * tau * f) * (D * (2 * U0 * tau * f))
+'TenPositive80Pell.first_and_doubled' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

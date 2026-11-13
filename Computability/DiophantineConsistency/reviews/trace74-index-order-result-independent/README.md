@@ -1,0 +1,7 @@
+# Independent result review: guard-free index order
+
+PASS for the author-reported actual outer session 16246 exit 0, consistent with captured attempt02 stage/runner PASS. Terminal SHA-256 `1babb66c4fec1944f29a762189d559e2d5fe4975f26f2acc94e890b0944135ac`, output object `41147d2a21ad53a9027d36bcb4d7a349974894e7f3e4b1ad1b16395dd785920c`. The runner, 22 recorded direct pins, source, object and logs rehash; Lean exit 0, empty stderr and exactly two reports both `[propext, Classical.choice, Quot.sound]`, with no warning.
+
+The first theorem shows n<r given positive beta/v and explicit first/odd ordinate identities. The second obtains the same p/v, a positive first index n, a positive odd index r, those identities, the first-index q⁴ residue, and n<r from an actual 74 zero. It does not identify either index with rank, prove X=exp r, provide F/C bounds or infer a guard. The prior attempt01 terminal `fb6d9246b519a6519f95da55a660df07e233f0ed2c13997f277a4db374fc0e02` failed with missing identifiers, related P errors and sorryAx; it is excluded. Its source/runner were reconstructed afterward and hashed to the original pinned bytes, not contemporaneous snapshots. Attempt02 adds one import and namespace openings, with its new direct provider pinned.
+
+Direct-pin exploratory ancestry limits apply: full project/package/dynamic and historical source-object ancestry and search-path shadowing are not comprehensively monitored. No Lean was run in this audit.

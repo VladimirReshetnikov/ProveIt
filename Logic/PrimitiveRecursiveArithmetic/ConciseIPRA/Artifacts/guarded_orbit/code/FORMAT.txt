@@ -1,0 +1,55 @@
+GUARDED ORBIT CERTIFICATE PROTOCOL
+================================
+
+Public terms: x,0,S(t),I(n,a;u.h), with u bound only in h.
+Public formulas: equations and D_{x,y}B. Atomic matrices directly below D
+must be I(y,0;u.h)=I(y,0;u.k). Compound public matrices are unrestricted within
+this recursive grammar. Public formulas contain no Q; contradiction is 0=S0.
+Equality is actual equality. D reads exists x (B(x,0)->forall y B(x,y)).
+
+Proofs also admit arbitrary Eq/Q/D expressions. Q_yB means B(0)->forall y B(y).
+An orbit D_{r,y}(y=I(y,t;u.Su)) is allowed inside proofs, though not as a public
+goal. The report defines the entire calculus and both interpretations.
+Completeness and round trips are asserted only for guarded public sequents.
+
+A checker reads a JSON array. Its last item is the closed goal; preceding
+four-field instructions are consumed backwards. Unused prefix data is inert.
+Acceptance requires normal exit, code zero, and exact stdout ACCEPT-newline.
+Exceptions reject. Certificate data is never evaluated as Python code.
+
+ARRAYS
+Zero is 0, successor [t], iterator [n,a,h], equality [s,t], D [B], Q [B,B,B].
+Numerical root depth is 3; formula root depth is 0. An arity-r node increments
+depth by 5-r. Slots have width two. Emitters handle dummy zero slots beneath
+successor and in the iterator counter/initializer. Negative labels are rigid
+eigenparameters, available down to the current allocation floor.
+Guarded atomic D has raw pattern [[[5,0,h],[5,0,k]]], recursively. The 5 reads
+the innermost y through the iterator's dummy counter slot. Update bodies can
+use state and passive parameters. The strict program validates the goal;
+compact programs assume the canonical contract. Raw administrative aliases
+have the sorted meanings in reference/inherited_arity_checker.tex.
+
+LOCAL INSTRUCTIONS [m,s,u,t]
+* Every major m is proved. [] is retained neutral truth, read as 0=0.
+* Truthy s selects equality major [s,u]; falsy s selects Q major [t,t,t].
+  The minor is the template opened at s; the target is opened at u.
+  Canonically this excludes equality transport from the literal term 0.
+* A proved unary D major exports Q at a fresh witness. Other arities are
+  neutral in this part of the instruction.
+* Empty m and truthy u select computation. Falsy s selects I0; truthy s
+  constructs the successor of the supplied predecessor for IS. Literal-zero
+  seeds/predecessors use the inherited certified-zero proof expansion.
+* Empty m and falsy u select DI. The witness t is validated BEFORE the new
+  eigenparameter is available. The matrix root selects E(z) at equations or
+  B(0) at compounds. The continuation proves the successor instance.
+
+The old 0-versus-[] introduction-mode choice is removed. Toggling that retired
+field preserves a valid root-selected proof. Scope requirements remain.
+AST/byte/readable/strict profiles use local numbering; the token profile uses
+global numbering and an empty initial context with older falsy-major markers.
+Use separate *_local.json and *_global.json packets. They are not interchangeable.
+
+Only the selected checker is trusted. Producers, tests, and measurement code
+are untrusted support. Named proof audits check nonzero transport sources and
+root-correct DI. The strict interface validates only the public GOAL. Forcing
+every intermediate formula to be public would destroy the orbit bootstrap.

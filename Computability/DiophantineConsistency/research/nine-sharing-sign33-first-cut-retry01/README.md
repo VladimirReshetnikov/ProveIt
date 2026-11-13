@@ -1,0 +1,9 @@
+# First-cut membership retry checked
+
+The [prior first-cut diagnostic](../nine-sharing-sign33-first-cut-check/attempt01/README.md) failed because `List.mem_cons_self` was applied to two arguments even though its parameters are implicit. This retry changes only `(List.mem_cons_self _ _)` to `(List.mem_cons_self)`; both theorem statements, the explicit first-port cast and all other proof text are unchanged. Both theorems compiled; see [attempt01](attempt01/README.md). It does not establish the remaining residual cuts, graph replay, a source bridge or an iPRA endpoint.
+
+The runner pins the prior failed state and exact membership-error log, uses a fresh output directory, and retains the earlier source-built provider survey, direct dependency/guard checks and resource limits. Full guard and survey rechecks occur only after success. Provider observations are point-in-time, resource monitoring is sampled, and deeper transitive/dynamic ancestry remains inherited, including an uncaptured numeric outer exit of an earlier initial-agreement provider. JSON-to-source correspondence remains an external audit boundary.
+
+Candidate source SHA-256 `57cc9442200276eb3e15fb659ea4a729f213e22f1ab17e7402136a7ad8f4e962`, manifest `6d443b7d1dc5d002feca9bcd4a4eb0bd0e5d31b35360361505282982b11830b1`, survey `60b66763bd24df531a7191a914fff34f43f0f3d5b77739e65eb03aedf9de74ba`, runner `4fe3b6a48e13c12594c51d377f1f9c0eccb619de6852a129063e6aca830a37c8`. Author no-Lean preflight session 15757 exited 0; independent prelaunch review and a coordinated Lean slot preceded the successful run. Limits remained `-M2800`, 120 seconds per call, sampled 4-GiB session RSS and 10-GiB available-host-memory floor with a 5-GB free-space precheck.
+
+The [independent terminal audit](../../reviews/nine-sharing-sign33-first-cut-retry01-terminal-frontier-independent/README.md) checked both first-cut theorems and provider observations without replaying Lean.

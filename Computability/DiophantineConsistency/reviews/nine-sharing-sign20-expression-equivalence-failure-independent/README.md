@@ -1,0 +1,3 @@
+# Independent sign20 expression-equivalence setup failure audit
+
+Independent checker session 75895 exited 0 against author outer session 66119 (exit 1). The frozen runner indexed obsolete evaluator family `24` while the surveyed union contains only `20` and `21`; setup raised `KeyError` before state initialization, dependency checks or Lean. No equivalence theorem resulted. The runner also retained obsolete keys in the next injection loop and obsolete module/family mappings in the later direct route. The earlier independent prelaunch checked the survey and no-Lean preflight but missed these post-preflight branches; the failure is a gap in that review. A fresh-path retry must check all three routes before launch.

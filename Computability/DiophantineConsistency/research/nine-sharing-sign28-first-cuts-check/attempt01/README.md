@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 55578 exited 0 with `PASS sign28 three-cut identities diagnostic`; all three Lean stages exited 0. The 13 list-row reports are `[propext]`; the eight zero/evaluation reports are `[propext, Classical.choice, Quot.sound]`. Compile logs contain 15 linter warnings: ten unused `p` binders and five unused `simp` arguments. State, logs and author-recorded outer outcome are retained here; the objects remain under `/tmp/nine-sharing-sign28-first-cuts-check-20261106/lib/DiophantineConsistency/`. X/E/mainRoot retain the explicit beta-port cast. The 14 unaffected rows and whole zero-set bridge remain separate.

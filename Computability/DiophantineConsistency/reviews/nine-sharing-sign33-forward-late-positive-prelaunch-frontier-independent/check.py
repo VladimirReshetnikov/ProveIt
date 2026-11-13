@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+d=Path(__file__).resolve().parents[2];p=d/'research/nine-sharing-sign33-forward-late-positive-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+for n,h in {'run.py':'6252577cda97789b3df18acf6ad5047730a8e652afbc8590e9e14cd4e51257f5','provider_survey.py':'c456900874066185128cc16e631d76594033d3b9b822a47b4033d2e217305399','source-manifest.json':'c68227d39c4c5f89aba2f89044166f58f667a81501848c91583751b77f9f1994','src/DiophantineConsistency/Sign33ForwardLatePositive.lean':'ba221c995acbb20b4bd19ecc3149b96f8b0c922c2caf0f5941a898ca7d47fa13'}.items():assert sha(p/n)==h
+s=(p/'src/DiophantineConsistency/Sign33ForwardLatePositive.lean').read_text();rows=json.loads((p/'source-manifest.json').read_text())['rows'];assert len(rows)==1 and rows[0]['source_sha256']=='ba221c995acbb20b4bd19ecc3149b96f8b0c922c2caf0f5941a898ca7d47fa13';assert re.findall(r'^import ([\w.]+)$',s,re.M)==rows[0]['imports']==['DiophantineConsistency.SharingForward33','DiophantineConsistency.Sign33ResidualAssembly'];assert re.findall(r'^theorem (\w+)',s,re.M)==['constructor_cuts']
+a=(d/'research/nine-sharing-sign33-residual-assembly-check/src/DiophantineConsistency/Sign33ResidualAssembly.lean').read_text();condition=s.split('def condition',1)[1].split('theorem constructor_cuts',1)[0].split(':=',1)[1];parts=[re.sub(r'\s+','',x) for x in condition.split('∧')];batch05=a.split('  batch05 :',1)[1].split('  batch06 :',1)[0].split('∧');batch06=a.split('  batch06 :',1)[1].split('  batch07 :',1)[0].split('∧');assert parts==[re.sub(r'\s+','',batch05[1]),re.sub(r'\s+','',batch06[1]),re.sub(r'\s+','',batch06[2])]
+assert 'Fin.cons (1 : V)' in s and '(gap tau inner value negative : V)' in s
+f=(d/'research/nine-sharing-seed38-weighted-retry/src/DiophantineConsistency/ForwardWitness38.lean').read_text();assert all(f'let w{j} : S :=' in f for j in (30,35,36))
+r=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=300);o=json.loads(r.stdout);assert not r.stderr and o['status']=='PASS_NO_LEAN_PREFLIGHT' and o['stage_count']==1
+print(json.dumps({'status':'PASS','preflight':o,'scope':'forward f² and normalized S/S² cuts source and point-provider review; no Lean replay'},indent=2,sort_keys=True))

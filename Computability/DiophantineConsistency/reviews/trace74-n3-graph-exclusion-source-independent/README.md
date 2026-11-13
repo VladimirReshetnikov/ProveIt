@@ -1,0 +1,7 @@
+# Independent source review: graph binding of n=3 obstruction
+
+Source SHA-256 `3117f8e0e2d1349be759dea7bfb37b53bb032cd2b097b0dbd303521a3f37e12d`. Source mathematics is consistent conditional on the scalar-discrete provider being accepted and compatible; no Lean was run here. The proposed theorem assumes the same positive-v actual 74 zero, explicit beta≥31 and first-index-three ordinate, and concludes False; it is not yet a checked graph exclusion.
+
+Positive J,w and beta≥31 give q≥32 and X=wq≥32; positive s yields Y=q³s≥1. The supplied first coordinate plus ordinate-three formula yields `k=32(XY²)²+32XY²+6` using the explicit truncated-subtraction cancellation. The checked n3/odd-five theorem for the same p/v yields c=y5(A−1); the checked fifth-ordinate formula gives `16A⁴+64A³+84A²+40A+5`, equal in the difference ring to `16(A+1)^4−12(A+1)^2+1`. Positivity of v8,v9 gives `kY<c<k(Y+1)`. The source maps these same q,X,Y,w,s and inequalities into DiffRing V, supplies hdisc using `ModelDifferenceRing.one_le_of_pos`, and applies the conditional discrete scalar theorem. It does not require F/C bounds or a guard.
+
+All casts/order transfers, truncated-subtraction normalization, local let matching, `rw`/`ring` and source/provider reconciliation remain Lean elaboration risks. The scalar provider is pending and cross-producer captured closures/headers/companions need independent checking. If accepted, the stated exclusion remains under explicit beta≥31 and the first-index-three identity; it does not alone prove the 74/75 equivalence or original endpoint.

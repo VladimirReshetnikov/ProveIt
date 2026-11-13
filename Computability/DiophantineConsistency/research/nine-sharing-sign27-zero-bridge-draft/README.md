@@ -1,0 +1,3 @@
+# Proposed sign27/sign28 zero bridge
+
+Source-only three-stage candidate: explicit-predecessor coordinate inverses, forward residual assembly, and reverse assembly using the checked root extraction. Backward returns an existential predecessor with both reconstruction equations; it does not assume a total model predecessor. All 19 old and 18 new residuals are explicitly enumerated. Providers for the residual checks are author-checked; remaining-cuts terminal audit is pending. No Lean elaboration or independent source review has occurred. No endpoint, Lean degree proof or external JSON binding is claimed.

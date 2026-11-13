@@ -1,0 +1,92 @@
+THE UNCHANGED NATIVE CERTIFICATE INTERFACE
+=========================================
+
+This is the inherited arity encoding of the native scalar calculus. The
+new checker changes its administrative validation phase, not this encoding.
+
+INPUT AND VERDICT
+
+A certificate is a JSON list consumed from the right. Its final item is a
+canonical closed Eq/D goal. Each subsequently consumed instruction is a
+four-item list [major, source, initializer, template]. Recursive major-proof
+instructions precede continuation instructions in consumption order. An
+unused left prefix is permitted and has no mathematical force. Acceptance
+means exit status zero and exactly the line ACCEPT.
+
+CANONICAL PUBLIC SYNTAX
+
+Terms represent variables, 0, successor S(t), and scalar iteration
+I(n,a;u.h). Formulas represent s=t and D_{x,y}B, where D has the ordinary
+reading exists x (B(x,0) -> forall y B(x,y)). Internally, Q_y B abbreviates
+B(0) -> forall y B(y).
+
+The same raw array has a sorted reading according to its position:
+
+  Numerical arity 1: [t]           successor
+  Numerical arity 3: [n,a,h]       scalar iteration
+  Formula arity 1: [B]             D with two protected numerical slots
+  Formula arity 2: [s,t]           equality
+  Internal formula arity 3: [P,U,B] Q with one protected slot (P,U inert)
+
+The public validator admits only numerical arities 1/3 and formula arities
+1/2. Numeric zero is scalar 0. Bound numerical coordinates are odd integers
+3,5,7,..., less than the current traversal depth. Rigid internal parameters
+are negative integers between the current floor k and -1. The public closed
+goal has floor0 and therefore admits no rigid negative parameters.
+
+The numerical root depth is3, formula root depth0. Recursing below any list
+adds 5-len(list) to the depth. Each protected numerical slot occupies two
+coordinate positions. Under a successor, two dummy zero slots are prepended.
+Under an iterator, one slot is prepended: its bound state in the update and
+a dummy zero in the counter and initializer. Under D, y is the innermost
+slot (coordinate3), then x (coordinate5). This padding explains why direct
+raw nesting is not ordinary unshifted de Bruijn syntax.
+
+Canonical certificates use integers/lists. The kernel retains the old raw
+auxiliary aliases, including scalar formula padding denoting neutral truth.
+The fixed public validator charges the entire public-goal grammar and scope
+check; it does not require every inert unused prefix item to be an integer
+or list. The original sorted alias interpretation remains part of the
+inherited checker theorem.
+
+INSTRUCTION MEANINGS
+
+If the currently opened goal is retained, it succeeds without an instruction.
+Otherwise [m,s,u,t] is read and m is proved recursively first. If m is a D
+formula, its triple repetition exports its Q resource at a fresh parameter.
+Other truthy majors export only an inert neutral formula.
+
+When m equals [s,u] with s truthy, and the current goal is t opened at u,
+the continuation goal becomes t opened at s. This is backward equality
+transport. When s is false, the expected major is [t,t,t], a Q resource;
+the same mechanism specializes Q by asking for its zero instance.
+
+When m is false and u truthy, the checker introduces the computation equation
+I(S(s),u;t)=t[I(s,u;t)] if s is truthy, or I(0,u;t)=u if s is false.
+The inherited certified-zero compiler handles literal-zero sources/initializers
+through provably zero canonical terms where the raw dispatch requires truthy
+fields. This refinement does not modify that compiler or add an oracle.
+
+When m and u are both false, the current goal must be D B. Its witness is t.
+The field u distinguishes introduction modes even though both values are
+false in Python: u=0 selects progress at a literal equation matrix, whereas
+u=[] selects cases. Compound matrices select cases. This distinction is why
+the native checker supports the full Eq/D public language and differs from
+the smaller guarded compact profiles.
+
+Each non-hypothesis continuation decrements k once before opening the fresh
+hypothesis and the successor instance of its goal. The context-phase change
+does not alter this timing or any parameter number. It only adds redundant
+copies of scalar neutral truth to the context.
+
+EXAMPLES
+
+The files under validation/fixtures/ are unchanged source certificates, with provenance
+and hashes. computation_zero_local.json proves one actual computation;
+guarded_induction_with_used_hypothesis_local.json is a substantial induction
+derivation whose step uses its induction hypothesis. Future-witness capture,
+context leakage, false major and false conclusion examples are rejected.
+
+The fixture ledger was authored for a guarded profile. In this native
+profile, old_atomic_case_local succeeds and unguarded_progressive_alias_local
+fails at public validation. See the explicit native expectations in reproduce.py.

@@ -1,0 +1,7 @@
+# Symbolic compact mask casts
+
+`CompactSymbolicMaskCasts.low_cast` and `high_cast` prove that the model casts of `CompactSymbolicPorts.lowNat` and `highNat` equal `CompactConstructedRank.low` and `high`, respectively, in every IΣ₁ model. These are definitional alias checks for the symbolic finite-list masks. They do not identify the symbolic ports with retained equation bytes or prove a graph zero.
+
+The checked source SHA-256 is `baa0068b0d273330145287de65301bdad8e4315e1d1f6ee402e4337e79de8f4c`. The bounded author check in `observations/attempt01` exited 0, printed `[propext, Classical.choice, Quot.sound]` for both named theorems, preserved direct dependency and companion guards, and produced `/tmp/compact44-symbolic-mask-casts-author-af8tlhs_/CompactSymbolicMaskCasts.olean` with SHA-256 `22ca374ad8a88037b79cf9d916febe760741ff11214451769a6df1ce0395c9af`. The receipt SHA-256 is `f5383734012f2283b53c666f4ff1d176527832326b05990f8e8e574f93f878fb`. Marking the finite-list internals opaque avoids expanding the large mask during definitional comparison.
+
+This is a single-author check with inherited project/package ancestry; direct guards do not authenticate the full transitive or dynamic closure, and no paired replay is claimed. In particular, the symbolic port module imports a namespaced free-J chain; co-import with older top-level free-J objects requires the separately planned coherent module rebuild.

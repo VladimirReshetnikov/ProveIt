@@ -1,0 +1,3 @@
+# Sign33 d18-to-output checkpoint paths source draft
+
+These five drafts adapt the separately checked sign38 d18→d20→d27→d34→d41→d45 typed prefix paths by namespace replacement only. They propose preservation of arbitrary d18 lookups at each checkpoint and final recipe; they do not substitute later-born values, establish final output semantics, or bind JSON/human text. The [guarded runner](../nine-seed33-jones-prefix-path18-45-staged-check/README.md) authenticates the separate final-local and typed-prefix-embedding producers; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-prefix-path18-45-staged-terminal-frontier-independent/) passed.

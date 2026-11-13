@@ -1,0 +1,5 @@
+# The half-binomial identity from an 80-graph zero
+
+`Direct80HalfBinomial.graph_half_binomial` derives the previously missing identity for the **actual scaled 80 graph**: every positive zero in an IΣ₁ model with β ≥ 31, odd β and the symbolic low/high bounds gives r>0 and z with `rankNat=2*r+1`, `X=2^(2*r+1)`, and `2*Y=binom(2*r,r)+z*X`. It joins the same-r scaled/shifted sandwiches to generic rounding; it does not assume a radix exponent or fixed symbolic port equalities. The actual graph-to-population theorem also composes these ingredients separately.
+
+The guarded author check `observations/halfbinomial-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`; object `/tmp/tenpositive-80halfbinomial-z6di12ug/Direct80HalfBinomial.olean` SHA-256 `2a6f43ca690e92ef6a890cc41f94776fd76bfaa5cf72d64c8842558457b0dce2`. Selected inputs and resource samples are pinned; inherited source/object, package and dynamic ancestry have not been independently authenticated, and there is no independent Lean replay. This is not full window decoding, graph-to-halt soundness, a converse, an iPRA endpoint, or a PDF binding.

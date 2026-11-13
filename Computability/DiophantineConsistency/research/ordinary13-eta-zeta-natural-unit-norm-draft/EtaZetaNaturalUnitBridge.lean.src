@@ -1,0 +1,179 @@
+import EtaZetaNaturalUnitGraph
+import DiophantineConsistency.Compact44.FreeJ13
+import Mathlib.Tactic.LinearCombination
+
+/-! Source-only factor-unit and residual proposal for the exact eta/zeta-natural
+prototype. The prototype provider and all proofs remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace EtaZetaNaturalUnitBridgeDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ModelDifferenceRing
+open ArithmeticAdaptiveFactorMagnitude2011 ArithmeticAdaptiveFactorUnits2011
+open EtaZetaNaturalUnitGraphDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The shorter first scale is b, while Y=(1+b)^3*s forces the
+mod-four restriction on ell. -/
+def firstPattern {σ : Type*} (b z x s k : Expr σ) : Expr σ :=
+  let q := 1+b
+  let Y := q*(q*q)*s
+  let ell := (x*Y)*(Y*k)
+  1+(z*z-b*b*(1+ell*(ell+k)))
+
+private theorem first_bad : ∀ b z x s k : ZMod 4,
+    let q := 1+b
+    let Y := q*(q*q)*s
+    let ell := (x*Y)*(Y*k)
+    1+z^2-b^2*(1+ell*(ell+k)) ≠ -1 := by decide
+
+theorem first_ne {σ : Type*} (b z x s k : Expr σ) (v : σ → V) :
+    (pairEval (firstPattern b z x s k) v).1+1 ≠
+      (pairEval (firstPattern b z x s k) v).2 := by
+  intro h
+  have hn := negative_residue h
+  rw [pairEval_residue] at hn
+  let bv := syntaxEval (fun j => residue (v j)) b
+  let zv := syntaxEval (fun j => residue (v j)) z
+  let xv := syntaxEval (fun j => residue (v j)) x
+  let sv := syntaxEval (fun j => residue (v j)) s
+  let kv := syntaxEval (fun j => residue (v j)) k
+  let Yv := (1+bv)*((1+bv)*(1+bv))*sv
+  let ev := (xv*Yv)*(Yv*kv)
+  have he : syntaxEval (fun j => residue (v j)) (firstPattern b z x s k) =
+      1+zv^2-bv^2*(1+ev*(ev+kv)) := by
+    simp only [firstPattern,syntax_add,syntax_sub,syntax_mul,syntax_ofNat,Nat.cast_one]
+    dsimp only [bv,zv,xv,sv,kv,Yv,ev]
+    ring
+  rw [he] at hn
+  exact first_bad bv zv xv sv kv hn
+
+theorem first_pattern (p : Fin 4 → ℤ) : 1+(graph p).first =
+    firstPattern (graph p).b (graph p).z (graph p).x (graph p).s (graph p).k := by rfl
+
+theorem main_pattern (p : Fin 4 → ℤ) : 1+(graph p).main =
+    FreeJ13.mainPattern (graph p).u (graph p).a (graph p).c (graph p).d := by rfl
+
+theorem aux_pattern (p : Fin 4 → ℤ) : (graph p).aux =
+    FreeJ13.auxPattern (graph p).y (graph p).vv (graph p).a (.var 3) := by rfl
+
+theorem strong_pattern (p : Fin 4 → ℤ) : (graph p).strong =
+    FreeJ13.strongPattern (graph p).ii (graph p).a (.var 3) := by rfl
+
+theorem output_eq (p : Fin 4 → ℤ) : (graph p).output =
+    ((1+(graph p).first)*(1+(graph p).main))*(graph p).aux*(graph p).strong-1 := by rfl
+
+private theorem pairEval_mul13 (e f : Expr (Fin 13)) (v : Fin 13 → V) :
+    pairEval (e*f) v = multiply (pairEval e v) (pairEval f v) := rfl
+
+private theorem one_of_zero13 (e : Expr (Fin 13)) (v : Fin 13 → V)
+    (hz : InternalZero (e-1) v) : Equivalent (pairEval e v) (natural (1:V)) := by
+  apply equivalent_one.mpr
+  change (Expr.sub e (Expr.constant 1)).splitNatural.1.evalSemiring v =
+    (Expr.sub e (Expr.constant 1)).splitNatural.2.evalSemiring v at hz
+  simpa [Expr.splitNatural,NatExpr.evalSemiring,pairEval] using hz
+
+/-- Exact prototype output zero forces all four of its signed factors to +1. -/
+theorem factor_units (p : Fin 4 → ℤ) (v : Fin 13 → V)
+    (hz : InternalZero (graph p).output v) :
+    (pairEval (1+(graph p).first) v).1=(pairEval (1+(graph p).first) v).2+1 ∧
+    (pairEval (1+(graph p).main) v).1=(pairEval (1+(graph p).main) v).2+1 ∧
+    (pairEval (graph p).aux v).1=(pairEval (graph p).aux v).2+1 ∧
+    (pairEval (graph p).strong v).1=(pairEval (graph p).strong v).2+1 := by
+  let a := pairEval (1+(graph p).first) v
+  let b := pairEval (1+(graph p).main) v
+  let c := pairEval (graph p).aux v
+  let d := pairEval (graph p).strong v
+  rw [output_eq] at hz
+  have h := one_of_zero13 _ v hz
+  rw [pairEval_mul13,pairEval_mul13,pairEval_mul13] at h
+  have hs : Equivalent (product5 a b c d (natural (1:V))) (natural (1:V)) := by
+    simpa only [product5,multiply_one] using h
+  obtain ⟨ha,hb,hc,hd,_⟩ := product5_magnitudes hs
+  refine ⟨?_,?_,?_,?_⟩
+  · apply equivalent_one.mp (positive_of_magnitude_one ha _)
+    show (pairEval (1+(graph p).first) v).1+1 ≠ (pairEval (1+(graph p).first) v).2
+    rw [first_pattern]; exact first_ne _ _ _ _ _ v
+  · apply equivalent_one.mp (positive_of_magnitude_one hb _)
+    show (pairEval (1+(graph p).main) v).1+1 ≠ (pairEval (1+(graph p).main) v).2
+    rw [main_pattern]; exact FreeJ13.main_ne _ _ _ _ v
+  · apply equivalent_one.mp (positive_of_magnitude_one hc _)
+    show (pairEval (graph p).aux v).1+1 ≠ (pairEval (graph p).aux v).2
+    rw [aux_pattern]; exact FreeJ13.aux_ne _ _ _ _ v
+  · apply equivalent_one.mp (positive_of_magnitude_one hd _)
+    show (pairEval (graph p).strong v).1+1 ≠ (pairEval (graph p).strong v).2
+    rw [strong_pattern]; exact FreeJ13.strong_ne _ _ _ v
+
+/-- The exact residual equations in the model difference ring. -/
+theorem residuals_zero (p : Fin 4 → ℤ) (v : Fin 13 → V)
+    (hz : InternalZero (graph p).output v) :
+    (graph p).first.evalRing (fun j => ι (v j))=0 ∧
+    (graph p).main.evalRing (fun j => ι (v j))=0 ∧
+    (graph p).aux.evalRing (fun j => ι (v j))=1 ∧
+    (graph p).strongResidual.evalRing (fun j => ι (v j))=0 := by
+  obtain ⟨h0,h1,ha,hs⟩ := factor_units p v hz
+  have h0' := (FreeJ13.unit_iff_one (1+(graph p).first) v).mp h0
+  have h1' := (FreeJ13.unit_iff_one (1+(graph p).main) v).mp h1
+  have ha' := (FreeJ13.unit_iff_one (graph p).aux v).mp ha
+  have hs' := (FreeJ13.unit_iff_one (graph p).strong v).mp hs
+  have hstrong : (graph p).strong=1+(graph p).strongResidual := by rfl
+  rw [hstrong] at hs'
+  simp only [Expr.evalRing_add,Expr.evalRing_ofNat,Nat.cast_one] at h0' h1' hs'
+  refine ⟨?_,?_,ha',?_⟩
+  · linear_combination h0'
+  · linear_combination h1'
+  · linear_combination hs'
+
+/-- Structural identities bind the four residuals to the generated fields. -/
+theorem first_shape (p : Fin 4 → ℤ) : (graph p).first =
+    (graph p).z*(graph p).z-(graph p).b*(graph p).b*
+      (1+(graph p).ell*((graph p).ell+(graph p).k)) := by rfl
+
+theorem main_shape (p : Fin 4 → ℤ) : (graph p).main =
+    (graph p).d*(graph p).d-(graph p).u*(graph p).u*
+      (1+(graph p).delta*((graph p).c*(graph p).c)) := by rfl
+
+theorem strong_shape (p : Fin 4 → ℤ) : (graph p).strongResidual =
+    (graph p).ii*(graph p).ii-(graph p).delta*((graph p).f*(graph p).f-1) := by rfl
+
+theorem aux_shape (p : Fin 4 → ℤ) : (graph p).aux =
+    (graph p).y*(graph p).y-(graph p).delta*((graph p).f*(graph p).f-1)*
+      ((graph p).y*(graph p).y-(graph p).vv*(graph p).vv) := by rfl
+
+/-- The four signed norms at the exact prototype valuation; ports remain
+arbitrary integers and no eta positivity is assumed. -/
+theorem signed_norms (p : Fin 4 → ℤ) (v : Fin 13 → V)
+    (hz : InternalZero (graph p).output v) :
+    let e : Fin 13 → DiffRing V := fun j => ι (v j)
+    let z := (graph p).z.evalRing e
+    let b := (graph p).b.evalRing e
+    let ell := (graph p).ell.evalRing e
+    let k := (graph p).k.evalRing e
+    let d := (graph p).d.evalRing e
+    let U := (graph p).u.evalRing e
+    let Delta := (graph p).delta.evalRing e
+    let c := (graph p).c.evalRing e
+    let I := (graph p).ii.evalRing e
+    let f := (graph p).f.evalRing e
+    let y := (graph p).y.evalRing e
+    let vv := (graph p).vv.evalRing e
+    z*z=b*b*(1+ell*(ell+k)) ∧
+    d*d=U*U*(1+Delta*(c*c)) ∧
+    I*I=Delta*(f*f-1) ∧
+    y*y-Delta*(f*f-1)*(y*y-vv*vv)=1 := by
+  obtain ⟨h0,h1,ha,hs⟩ := residuals_zero p v hz
+  rw [first_shape] at h0
+  rw [main_shape] at h1
+  rw [aux_shape] at ha
+  rw [strong_shape] at hs
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_ofNat,Nat.cast_one] at h0 h1 ha hs
+  dsimp only
+  exact ⟨sub_eq_zero.mp h0,sub_eq_zero.mp h1,sub_eq_zero.mp hs,ha⟩
+
+end EtaZetaNaturalUnitBridgeDraft

@@ -1,0 +1,57 @@
+import Trace74Mask
+import DiophantineConsistency.ModelDifferenceRing
+import DiophantineConsistency.ArithmeticGcdNormalization
+
+/-! Guarded positive-model transfer; the guard is not derived from a zero. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace Trace74Guarded
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def q (p : Fin 4 → ℕ) (v : Fin 10 → V) : V := (p 0 : V) * v 0 + 1
+
+def flip (p : Fin 4 → ℕ) (v : Fin 10 → V) : Fin 10 → V :=
+  ![v 0,v 1,q p v-v 1-v 2,v 3,v 4,v 5,v 6,v 7,v 8,v 9]
+
+theorem flip_positive (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hv : ∀j,0<v j) (hmask : v 1+v 2<q p v) : ∀j,0<flip p v j := by
+  have ha : v 2<q p v-v 1 := lt_tsub_iff_right.mpr (by simpa [add_comm] using hmask)
+  have hp : 0<q p v-v 1-v 2 := tsub_pos_of_lt ha
+  intro j
+  fin_cases j <;> simp [flip,hv,hp]
+
+theorem oldVal_cast (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hmask : v 1+v 2<q p v) :
+    Trace74Mask.oldVal (fun j => ((p j:ℕ):DiffRing V)) (fun j => ι (v j)) =
+      fun j => ι (flip p v j) := by
+  have hf : v 1≤q p v := le_trans (by simp) (le_of_lt hmask)
+  have ha : v 2≤q p v-v 1 := le_of_lt (lt_tsub_iff_right.mpr (by simpa [add_comm] using hmask))
+  have hsub {x y : V} (hy : y≤x) : (ι (x-y):DiffRing V)=ι x-ι y := by
+    apply eq_sub_iff_add_eq.mpr
+    rw [←map_add,tsub_add_cancel_of_le hy]
+  have hcast : (ι (q p v-v 1-v 2):DiffRing V)=ι (q p v)-ι (v 1)-ι (v 2) := by
+    rw [hsub ha,hsub hf]
+  funext j
+  fin_cases j <;> try rfl
+  change ((p 0:ℕ):DiffRing V)*ι (v 0)+1-ι (v 1)-ι (v 2) = ι (q p v-v 1-v 2)
+  simpa only [q,map_add,map_mul,map_one,map_natCast] using hcast.symm
+
+theorem guarded_to_old (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hv : ∀j,0<v j) (hmask : v 1+v 2<q p v)
+    (hz : Trace74Mask.value74 (fun j => ((p j:ℕ):DiffRing V)) (fun j => ι (v j)) = 0) :
+    (∀j,0<flip p v j) ∧
+    DiophantineConsistency.TenPositiveTrace75.value75
+      (fun j => ((p j:ℕ):DiffRing V)) (fun j => ι (flip p v j)) = 0 := by
+  refine ⟨flip_positive p v hv hmask, ?_⟩
+  have h := Trace74Mask.coordinate_identity (fun j => ((p j:ℕ):DiffRing V)) (fun j => ι (v j))
+  rw [oldVal_cast p v hmask] at h
+  rw [←h]
+  exact hz
+
+#print axioms Trace74Guarded.guarded_to_old
+end Trace74Guarded

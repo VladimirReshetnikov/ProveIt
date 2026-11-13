@@ -1,0 +1,27 @@
+--- code/baseline_529.py
++++ code/qprogress_guarded.py
+@@ -7,9 +7,9 @@
+     m, s, u, t = q()
+     c(m, g, k)
+     a = m in ([s, u], not s and [t] * 3) and i(t, u) == a and i(t, s) or a
+-    h = m * 3 or (u and [[s and [s], u, t], i(t, [s, u, t], 3) if s else u]) or (a := i(*a, t, 2))
++    h = m * 3 or (u and [[s and [s], u, t], i(t, [s, u, t], 3) if s else u]) or (a := (i(*a, t, 2) if u == [] else len(a[2]) == 2 and a[2] or 0j))
+     k -= 1
+-    c(i(a, [k]), g + [i(h, (m or len(a) % 2 == u) and k)], k)
++    c(i(a, [k]), g + [i(h, (m or u == 0) and k)], k)
+ q = json.load(open(0)).pop
+ c(q())
+ print('ACCEPT')
+
+--- code/baseline_529.py
++++ code/qprogress_extended.py
+@@ -7,7 +7,7 @@
+     m, s, u, t = q()
+     c(m, g, k)
+     a = m in ([s, u], not s and [t] * 3) and i(t, u) == a and i(t, s) or a
+-    h = m * 3 or (u and [[s and [s], u, t], i(t, [s, u, t], 3) if s else u]) or (a := i(*a, t, 2))
++    h = m * 3 or (u and [[s and [s], u, t], i(t, [s, u, t], 3) if s else u]) or (a := (i(*a, t, 2) if u == [] else a[2]))
+     k -= 1
+     c(i(a, [k]), g + [i(h, (m or len(a) % 2 == u) and k)], k)
+ q = json.load(open(0)).pop
+

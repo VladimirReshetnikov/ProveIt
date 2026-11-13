@@ -1,0 +1,5 @@
+# Direct-BFS occupied selector aggregate
+
+`DirectBFSWordOccupied.lean` proves that the direct-BFS payload bits reconstruct the actual tile value, and that each row of a direct local word gives the exact occupied aggregate `1 + 2^51` when weighted by the direct selector/copy coefficients. The IΣ₁-model theorem uses the actual direct-BFS table and does not assume a graph zero, physical transport identity, target-mask no-carry, completeness, or iPRA provability.
+
+Accepted author run `observations/directbfswordoccupied-attempt02/`: Lean and the outer runner exited 0 with no diagnostics and two axiom reports limited to `propext`, `Classical.choice`, and `Quot.sound`. Object `/tmp/direct-bfs-wordoccupied-6ztqc89n/DirectBFSWordOccupied.olean`, SHA-256 `d5ca763bd1c0ae153dd21fd41ee15daca2a4e18125b5b0a1ec836bbfd06628c3`. The runner checks first-resolved direct imports against pins before and after execution. Project, package, dynamic, and historical source-to-object ancestry are inherited limitations; no independent Lean replay is claimed. Attempt01 and its runner snapshot preserve the failed abbreviation rewrite.

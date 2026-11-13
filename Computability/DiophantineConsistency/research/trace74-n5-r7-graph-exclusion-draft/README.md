@@ -1,0 +1,5 @@
+# Exclusion of the n=5, r=7 branch for a positive 74 zero
+
+`Trace74N5R7GraphExclusion.graph_n5_r7_impossible` proves that a positive 74 graph zero cannot simultaneously have first Pell ordinate index 5 and main ordinate index 7 when the same tuple has `q≥2³⁰`. Positive beta and witnesses, the same zero, the q bound, and both ordinate equations are explicit hypotheses. The theorem does not exclude the n=5, r=9 branch, establish a rank sign or guard, or prove an iPRA endpoint.
+
+The proof binds the separately checked same-tuple growth estimate to the graph's reduced r=7 weighted projection and a discrete ordered-ring quotient-size contradiction. The controlled Lean run passed in outer session 33841, exit 0, with terminal SHA-256 `48be59b082bd6fe6f94b169030019a78726c8453fa0d264c1017cfd82c6f410e`. The [independent result audit](../../reviews/trace74-n5-r7-graph-exclusion-result-independent/README.md) verified all 52 recorded direct pins, object, log and report. Complete historical project/package/dynamic ancestry and ongoing search-path selection are not authenticated by this evidence.

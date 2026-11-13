@@ -1,0 +1,3 @@
+# Sign33 final local dependent-prefix source-only candidates
+
+These three drafts adapt the checked sign38 Bd/Cd/Dm/Kc/T/output local node and carry identities by namespace replacement only. They concern d40–d45 in terms of prior-prefix entries, not fully substituted final output, full semantic/JSON/human binding, degree or operation count. The [guarded runner](../nine-seed33-jones-dependent08-staged-check/README.md) binds the audited I/A0/A1/V provider; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-dependent08-staged-terminal-frontier-independent/) passed.

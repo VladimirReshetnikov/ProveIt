@@ -1,0 +1,7 @@
+# Staged WangTiles942Core point-provider feasibility guard
+
+This fresh four-stage probe compiles the three same-namespace staged WangTiles942Core modules and a four-report audit over a point-in-time verified overlay of 398 individually successful objects from the failed coherent parent. It verifies recorded source snapshots, object/companion and direct-route guards, logs and base links against the independently audited failed receipt before and after use. The parent failed and is **not promoted to PASS**; these provider observations do not establish a coherent end-to-end rebuild, and package-transitive/dynamic ancestry remains separate. A later coherent retry must recompile all stages. Original project files remain untouched; module splitting is a source-level refactor.
+
+Unchanged runtime caps: 4 GiB sampled child RSS, `lean -M3600 -j1 -DElab.async=false`, 180 seconds per child, 10 GiB host memory, 5.1 GB sampled disk stop and six-hour global trigger. Forced receipt/log hashing/cleanup may finish later. No existing artifacts are removed. Controls and preflight do not run Lean; independent review and allocation required.
+
+Attempt01 failed: outer session 60488 exited 1 after CoreA passed; CoreB hit a kernel excessive-memory error in the original `target_counts` decision. No CoreB object, later stages or postflight exist. The [independent failure audit](../../reviews/current14-wang942core-staged-failure-independent/) verifies the point-provider routes and frozen evidence. The coherent parent remains FAILED.

@@ -1,0 +1,7 @@
+# Group03 positive forward-constructor cuts checked
+
+Author-observed outer session `73233` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `27cde04c2415fc6d5728da8430b2ee55f140dfb200440fa26bbd796c3ce68152`; before and after provider surveys both hash to `343a9ae6bc95dd44da13a941f7cf9a0f9bf7cab005d108d2368fd0f99d36b49f`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ForwardGroup03Positive` compiled in 3.175 seconds; object SHA-256 `3c9c631307cb74d4ca716fbd5867ab67eb6978122f13434c7f51c33d30e4885e` at `/tmp/nine-sharing-sign33-forward-group03-positive-check-20261106/lib/DiophantineConsistency/Sign33ForwardGroup03Positive.olean`, compile log `5959b11af11205da44fb7086b5232a2204e51e64952705f4a6bbc86b83ae7d8a`. The axiom report lists `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,168,446,976 bytes and minimum sampled available host memory was 18,981,990,400 bytes; sampling has the stated limitations.
+
+For arbitrary signed representatives, the constructor satisfies the c²/Δc² conjunction. The third batch03 source-dependent norm and other AllCuts groups, source-to-seed witness theorem, Lean proof of external JSON binding, and sign33 iPRA endpoint remain open. Inherited provider and numeric-exit limitations remain as in the parent README.

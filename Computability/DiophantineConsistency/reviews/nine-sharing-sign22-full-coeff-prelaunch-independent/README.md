@@ -1,0 +1,3 @@
+# Independent sign22 full coefficient and lower-bound prelaunch review
+
+Independent checker session 97855 exited 0. Four sources replay the audited ingredients. The proposed list-coefficient lemma weights N0 and Dc2 counts by 16 and 256, counts each once, and claims full seed twelfth axis coefficient 272 for arbitrary integer ports. The final source explicitly connects the abstract Fin22 polynomial to the seed axis and proposes total degree at least twelve. Source/imports, provider, scoped heartbeat and resource guards were checked by no-Lean preflight. No compiled lower bound, exact equality or external binding follows.

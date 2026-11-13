@@ -1,0 +1,7 @@
+# Independent source review: root78 slim overlay
+
+The 139 inert snapshots comprise the 138 original root78 modules plus the separately reviewed helper. Every snapshot matches its indexed original byte for byte after only the intended substitutions. Six clients have exactly four direct import replacements and six theorem-reference replacements in total; the helper snapshot is byte-identical to its source draft. Each changed client is in the `DiophantineConsistency` namespace and uses the new nested `CompactPortBoundsSlimDraft.port_bounds` name. Two clients reach the helper through their existing bare-import paths; the other four import it directly.
+
+The independent check reads the actual bare import lines, verifies that every dependency precedes its client, and confirms that all 139 modules are reachable from `Root78Endpoint`. It also replays the author's separate lexical project-source inventory. Run `python3 -I -S -B reviews/ordinary14-root78-slim-overlay-independent/check.py` from `Computability/DiophantineConsistency` and compare to `observation.json`.
+
+This review is a source and graph check. The snapshots are `.lean.src` files, not compiled Lean modules. Name resolution and tactic elaboration in a materialized source root, full dependency and provider compatibility, the endpoint theorem, and the physical equation/PDF binding are not verified. The lexical import inventory is not Lean's dependency resolver and excludes external transitive package and runtime dependencies. No Lean run was performed.

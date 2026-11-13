@@ -1,0 +1,18 @@
+--- upstream/zero_six.py
++++ code/checker.py
+@@ -79,8 +79,8 @@
+             formula(b, n + 2)
+             term(t, n)
+             a = sub(['q', b], t)[1]
+-            h = a if a[0] == '=' and t == ['z'] else shift(sub(a, ['z']))
+-            require(infer(p, [h] + [shift(x) for x in g], n + 1) == sub(a, ['s', ['v', 0]], 0))
++            h = shift(sub(a, ['z']))
++            require(infer(p, [a if h[1:2] == h[2:] else h] + [shift(x) for x in g], n + 1) == sub(a, ['s', ['v', 0]], 0))
+             return ['d', b]
+         case ['tr', a, p, q]:
+             term(a, n + 1)
+@@ -109,3 +109,4 @@
+         sys.exit(1)
+     print('ACCEPT')
+ 
++

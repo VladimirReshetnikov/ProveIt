@@ -1,0 +1,7 @@
+# Direct-witness gap from a graph zero
+
+`DirectMainGap.graph_gap` proves in every IΣ₁ model that an actual direct-draft zero with strictly positive witnesses and natural ports satisfying `0<beta`, `MC<beta`, and `MF<2*beta` has `w<G`. It does **not** assume this gap. The proof uses the earlier checked graph index and rank-window results, the first Pell recurrence square bound, the coarse growth estimate, and the conditional balance lemma. No old whole-graph zero or fixed numeral expansion is used.
+
+This theorem supplies the missing restriction in the separate positive-XQ91 versus restricted-direct existence equivalence. This packet itself does not compose those theorems, prove fixed-port halt equivalence, or prove an internal iPRA derivation.
+
+Attempt 01 failed when a local `let` definition prevented a rewrite; it is retained. Attempt 02 passed without reported warnings. Source SHA-256 is `572fe23b01dcfc4205ca105a7816bdeec572b57f9c97a8800847df376bd0729a` and output object is `29c88e1946a3939de1ea8b4745594f77000a806a6a3bad4930056ac485649409`; the axiom report lists `propext`, `Classical.choice`, and `Quot.sound`. The comparison and its predecessors, the three separate growth/balance objects, and selected 1,291-object union were pinned and rechecked. Package, dynamic, and source-to-object ancestry remain inherited rather than freshly rebuilt; imported first and main norm sources locally suppress unused-variable and unused-simp-argument linters. Exact producer pins and resource samples are in the receipt; temporary paths may disappear.

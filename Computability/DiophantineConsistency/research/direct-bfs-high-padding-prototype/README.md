@@ -1,0 +1,5 @@
+# Direct-BFS transport-block padding digits
+
+`DirectBFSHighPadding.word_padding` proves that for any direct-BFS local word and arbitrary normalized dummy family, every digit at phase 8792 or later in each in-range transport block vanishes. It combines the checked sharp direct-cell and kernel mass bounds with the direct block-size estimate. This discharges the padding-tail hypothesis of the generic high-mask phase reduction; active phase classes other than the separately checked phase zero remain open.
+
+Guarded author attempt `observations/directbfshighpaddingword-attempt01/` exited 0 without diagnostics; both exact axiom reports are `[propext, Classical.choice, Quot.sound]`. Direct imports were pinned and rechecked. Object `/tmp/direct-bfs-highpaddingword-agi23lcj/DirectBFSHighPadding.olean` has SHA-256 `8bcae890b9601d0087572a4e73ef8b3e7ed0a9e190f147f23a6502b5b6402617`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.

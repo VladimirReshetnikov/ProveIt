@@ -1,0 +1,7 @@
+# Independent N5/R9 scalar obstruction audit
+
+PASS for the stated ordinary-integer conditional argument. README `c781075159540372661a14f57bff3943375fd23f27e700b6bad37aa0e8f0f31a`, checker `e735c618adf004bcae190fafe380e6412620fc0c58a79f967ee5604435376035`, receipt `7b9a15e13c7dac01ac99ad90c72e1cf653b93069d50d681de7ac854d6691790b`, stdout `fcc1f020f728b28d50c73541f4e16d1770b27ba2486b0451410ccd5dbb87550a`, empty stderr. Independent prescribed-command rerun matched; no flags, -O and -OO all reject.
+
+The scalar recurrence y₀=0,y₁=1,yₙ₊₁=a yₙ−yₙ₋₁ matches the Pell ordinate at a=2(b+2). With P=xY², t=2Y, first Pell b=2(P−1)+1 gives a=4P+2=xt²+2; the odd ordinate parameter b=Y(x+1)−1 gives a=t(x+1)+2. Also k=2y5 and ky=t y5 indeed satisfy ky=kY. Independently expanded using separate arbitrary-precision bivariate arithmetic: the lower shifted expression has 68 nonzero positive coefficients (minimum 16, constant 832622421193); the upper shifted expression has 226 (minimum 1, constant 8100189547570912192944815788333532142380027910589323973).
+
+For q≥73,x≥32,Y≥1, q|x,q|Y, both strict scalar inequalities force 68<t−B<73, while t−B is a positive q-multiple, impossible. Strictness and constants are correct. This is external ordinary-integer scalar arithmetic only; no Lean graph binding or theorem is established. It does not handle n5/r7 or all n5 cases, graph existence/nonexistence, the reverse guard, 74/75 equivalence or iPRA. No Lean was run in this audit.

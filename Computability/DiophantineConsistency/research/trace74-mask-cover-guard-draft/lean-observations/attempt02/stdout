@@ -1,0 +1,36 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-mask-cover-guard-draft/Trace74MaskCoverGuard.lean:24:27: error: Type mismatch
+  add_le_add_left hJ1 ?m.161
+has type
+  1 + ?m.161 ≤ J + ?m.161
+but is expected to have type
+  beta * J + 1 ≤ beta * J + J
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-mask-cover-guard-draft/Trace74MaskCoverGuard.lean:40:27: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+u q beta MC HP J F : V
+hq : q = Exp.exp u
+hqdef : q = beta * J + 1
+hJ : 0 < J
+hHPJ : 1 ≤ HP * J
+hcover : beta + 1 ≤ MC + HP
+hF : F < q
+hH : HP * J - 1 < q
+hnc : NoCarry F (HP * J - 1)
+hJ1 : 1 ≤ J
+hmul : (beta + 1) * J ≤ (MC + HP) * J
+hcover' : beta * J + 1 ≤ MC * J + HP * J
+hpred : HP * J - 1 + 1 = HP * J
+hf' : F < Exp.exp u
+hh' : HP * J - 1 < Exp.exp u
+hsum : F + (HP * J - 1) < Exp.exp u
+hsum1 : F + (HP * J - 1) + 1 ≤ q
+⊢ 1 + MC * J + (J * HP - 1) = 1 + MC * J + (1 + (J * HP - 1) - 1)
+'Trace74MaskCoverGuard.compare_from_cover' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'Trace74MaskCoverGuard.compare_from_mask_bounds' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

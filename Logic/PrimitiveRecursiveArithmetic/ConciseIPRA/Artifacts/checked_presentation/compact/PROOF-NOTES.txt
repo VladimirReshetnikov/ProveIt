@@ -1,0 +1,126 @@
+THE 502-BYTE GUARDED CHECKER: PRECISE CLAIMS AND PROOF OBLIGATIONS
+================================================================
+
+Pinned repository
+-----------------
+VladimirReshetnikov/ProveIt, commit
+6ffc49f55d355b548f7a8e1530570aee5de086b3.
+Base directory: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA.
+
+The relevant current coordinate envelope is 253 significant Python tokens,
+275 AST nodes, and 506 normalized bytes, achieved by different programs.
+The first two records are in docs/incoming/ipra_smaller_envelope.zip;
+the last is Research/deterministic_introduction/implementation/code/
+compact_optional.py. The previously published 256 / 278 / 516 summary is
+outdated even before the three current incoming archives are considered.
+The orbit_closure incoming archive independently audits all 90 Research
+trees, 5,825 Python paths, and 1,380 distinct Git blobs; its pre-incoming
+corrected envelope is 256 / 276 / 506. Its exact source corpus is preserved
+in that incoming archive. A lower envelope is not a universal lower bound.
+
+The new compact program has 269 tokens, 301 AST nodes and 502 bytes.
+It improves the byte coordinate by four bytes (about 0.79 percent), improves
+its matched base's AST count by two nodes, and increases its matched base's
+token count by two tokens. It is not one program below all three minima.
+It changes no mathematical axiom and establishes no absolute minimality.
+
+Exact change
+------------
+At the point where the 506-byte base computes its next goal, set
+
+    C := (m,a) == (s and [s,u] or [t]*3, i(t,u))
+    R := i(t,s).
+
+Replace `C and R or a` by `(a,R)[C]`. This eagerly checks R and selects it
+without truth-value fallback. Separately replace the introduction selector
+`~len(a) % 2` by `3 % len(a)`.
+Both ideas are already in current incoming reports, but their composition
+with the actual 506-byte incumbent is not among the inspected sources.
+The mathematical novelty of this package must not be overstated: this is
+a checked implementation composition of existing ideas.
+
+Proof of the first transformation
+---------------------------------
+Freeze the caller's k and the current a after h has been computed. The
+recursive major proof c(m,g,k) does not modify this caller-local k. The
+opener is pure. On an integer/list tree it preserves the outer array
+shape, independently of its replacement image.
+
+If C is false and the new evaluation succeeds, both variants choose a.
+If C is true and R is truthy, both choose R. Suppose C is true and R is
+false. If t is a list, false R forces t to be the empty list, and i(t,u)
+is the same empty list. Thus a=R. If t is an integer, the opener at
+formula root depth zero ignores its replacement image: it either preserves
+a negative scoped parameter, which is truthy, or returns zero. Hence
+again i(t,u)=R=0 and C implies a=R. This covers the false cases.
+Therefore every successful use of the new selector chooses exactly the
+old goal. By induction on a finite successful execution, the tuple-only
+variant's accepted raw integer/list traces are included in the base's.
+Extra eager evaluation can reject an old trace. The supplied
+fixtures/eager_control_only.json exhibits that intentional difference.
+
+Canonical completeness for this change uses totality of the additional
+opening on canonical packets. For elimination packets it was already
+needed if C holds. For computation packets, the affected numerical body
+and supplied numerical image are scoped; for introduction packets the
+unused source field is the neutral zero. One can use the canonical packet
+compiler of the inherited presentation, so the possible rejection of a
+noncanonical trace does not remove a canonical theorem.
+
+Proof of the second transformation
+----------------------------------
+For the meaningful formula arities r=1,2,3, the old selector ~r % 2 and
+the new selector 3 % r agree: their values are respectively 0,1,0.
+These are the paired D binder, equality, and conditional Q closure.
+The rule that changes the floor k still does so before opening the next
+goal and new retained hypothesis; its freshness order is unchanged.
+At arity zero the new selector raises, so those traces are rejected.
+At arities at least four the inherited sorted decoder reads the formula
+as the fixed truth 0=0; varying which image is opened changes no meaningful
+formula content. Scalar formula padding is likewise an administrative
+truth, while missing operations can reject it. This establishes semantic
+soundness on the inherited integer/list certificate language.
+Canonical proofs use meaningful arities, so completeness is unchanged.
+
+Do not claim unconditional raw trace inclusion for the combined program:
+surplus arities can take a different mode, even though their decoded
+formulas remain true. The exact claims are semantic soundness and equality
+of the canonical public theorem set. Trace inclusion is valid for the
+tuple-only transformation, or under the arity-at-most-three invariant.
+
+Interpretation and public contracts
+-----------------------------------
+The compact checker assumes the inherited canonical guarded public-goal
+contract; it does not contain a public grammar validator or a complete
+JSON alphabet gate. It must not be advertised as a theorem recognizer on
+arbitrary JSON values. It inherits the guarded/native proof translations
+and the existing ordinary iPRA bi-interpretation. Its numerical domains
+remain whole and equality actual; both numerical composites have graph
+x=y. These mathematical metatheorems are inherited, not newly formalized.
+
+code/checker_guarded_exact.py includes exact integer/list validation of
+the complete JSON certificate, including unused prefixes, and the canonical
+closed guarded Eq/D public-goal grammar. Its own full size is 463 tokens,
+519 AST nodes and 1172 bytes. The matched wrapper around the 506-byte base
+is 461 / 521 / 1176. These are reported separately from compact sizes.
+They are not advertised as globally smallest strict checkers. Repository
+programs with smaller published goal-validation sizes use different
+native or prefix-typing contracts, so comparisons must preserve scope.
+
+All acceptance-critical checks remain active under Python -O.
+An accepted process exits zero and prints exactly ACCEPT plus LF.
+Exceptions reject. All routines require only the Python standard library.
+As in the upstream reference algorithms, theoretical completeness assumes
+unbounded finite time, stack and memory; finite runtime limits can reject
+large certificates and are not mathematical counterexamples.
+
+Validation
+----------
+Run `python3 reproduce.py`. The delivered run used CPython 3.12.14:
+292 standalone subprocess checks, 142 expected acceptances, 150 expected
+rejections, zero discrepancies. The suite covers equality/computation,
+used induction hypotheses, compound introduction and elimination, actual
+zero-source transport, future parameter capture, context leakage, malformed
+public goals and unused prefixes, meaningful and surplus formula arities,
+and the explicit eager-only rejection. Ordinary and optimized Python are
+both exercised. These checks are finite evidence, not a formal proof.

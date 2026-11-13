@@ -1,0 +1,5 @@
+# Independent factual audit: high-digit v3 failure and v4 source
+
+V3 attempt01 is failed and excluded: child result SHA-256 `dc37687bf25317fd8e071652f797b8d3c51dc7e3db2a36ff288bed6cc0acc901` records Lean exit 1, no monitor failure reason and an unsolved `high_split` goal with the two displayed cons/append associations. Its single theorem report contains `sorryAx`. Outer terminal SHA-256 `01e3eafb2f5c40341ed572c836ae50bcd409921a7497c2f354712eca143dfa88` records child exit 1 and FAILED; stdout/stderr hashes independently match. This is neither a timeout nor an accepted theorem.
+
+Unchecked v4 source SHA-256 `09c766a78b193c5b9a0d4fd7a8bb00db46f82723a6639747a12ddd1b58105a16` differs from v3 only by adding `List.cons_append` to the simplification of `high_split`. This addresses the displayed association difference while preserving the digit recipe and exact proposed bound. The tactic's elaboration, warnings and resource behavior are not yet checked; no Lean was run for this review. No high-bound, full mask, graph guard or iPRA result follows from the failed attempt or the source draft.

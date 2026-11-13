@@ -1,0 +1,5 @@
+# Prepared five-norm extraction check
+
+This one-stage check snapshots the independently source-reviewed `Norm38FiveNorms.lean`, SHA-256 `659df3272bc175cad9a3a461d01c52cc3d10a6375f16c351a0e6093a28f383d2`. It uses the successful `Norm38EachSlot` provider, whose prior successful eleven-stage partial-provider chain supplies the five checked slot identities. The runner rechecks the immediate provider source/object/log/direct guards and overlay links; deeper recorded/transitive and dynamic ancestry remains inherited. Its resource and sampling caveats are unchanged.
+
+Manifest SHA-256 `2d8553d1e5219573581b54247be82eb51c965913b962ec20ee4288e980a5472a`, runner `bed3bb21988e7f75afe829adee26af06413d4e70a415df1088b7a63b4c770aec`. Fresh no-Lean preflight exited 0. Independent runner review and coordinated slot release precede any Lean run. A successful client would check only the seed-zero-to-five-static-norms implication, under IΣ₁ and four port-cast equalities; `gatesHold`, source equivalence and iPRA remain separate.

@@ -1,0 +1,3 @@
+# Sign25 remaining-cut transfers attempt 01
+
+Author-observed outer session 35318 exited 0, both stages and final postflight passed. The first residual and 14 evaluation transfers report `[propext, Classical.choice, Quot.sound]`; the 28 old/new row-membership reports use `[propext]`. The two stage logs contain 18 unused `p` binder warnings (8 and 10 respectively). This checks the unaffected transfers only, not the full zero bridge, endpoint, Lean degree, or external JSON/port binding. Monitor observations are sampled; upstream stale success labels, inherited syntax heartbeat and historical sign26 plan README appendix caveats remain documented.

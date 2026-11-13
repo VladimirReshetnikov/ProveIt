@@ -1,0 +1,14 @@
+LO.FirstOrder.Arithmetic.mod_mul_self_right.{u_1} {V : Type u_1} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻] (a b : V) :
+  b * a % b = 0
+LO.FirstOrder.Arithmetic.mod_mul_self_left.{u_1} {V : Type u_1} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻] (a b : V) :
+  a * b % b = 0
+LO.FirstOrder.Arithmetic.mod_add_mul.{u_1} {V : Type u_1} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻] {c : V} (a b : V)
+  (pos : 0 < c) : (a + b * c) % c = a % c
+DiophantineConsistency.ArithmeticModularCancellation.mul_mod_mul.{u_1} {V : Type u_1} [ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {k a b : V} (hk : 0 < k) (hb : 0 < b) : k * a % (k * b) = k * (a % b)
+DiophantineConsistency.ArithmeticModularCancellation.mod_mod_of_dvd.{u_1} {V : Type u_1} [ORingStructure V]
+  [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {m n : V} (hm : 0 < m) (h : m ∣ n) (a : V) : a % n % m = a % m
+LO.FirstOrder.Arithmetic.exp_monotone_le.{u_1} {V : Type u_1} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {a b : V} :
+  Exp.exp a ≤ Exp.exp b ↔ a ≤ b
+LO.FirstOrder.Arithmetic.exp_succ.{u_1} {V : Type u_1} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (a : V) :
+  Exp.exp (a + 1) = 2 * Exp.exp a

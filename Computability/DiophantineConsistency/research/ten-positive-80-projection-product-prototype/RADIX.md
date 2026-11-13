@@ -1,0 +1,5 @@
+# Internal radix alignment for the 80 graph
+
+`Direct80RadixAlignment.graph_radix_alignment` composes the checked 80-graph power theorem with the existing internal exponential-divisor and Mersenne alignment theorem. For an actual positive graph zero it retains the power theorem's assumptions `beta≥31`, odd beta, and the symbolic low/high inequalities, and additionally assumes `d≥2` and `beta+1=2^d`. It produces a positive internal `N` with `q=2^(dN)`, `dN≤rankNat`, and `w=2^(rankNat−dN)`. The subtraction is the model's natural subtraction, after its bound is established. The beta identity and fixed tuple remain separately instantiated; this is not a machine or converse theorem.
+
+Self-pinning guarded author `run-radix.py`, `observations/radix-attempt01/`, passed in session 24009, output `/tmp/tenpositive-80radixalignment-d1yuipmy/Direct80RadixAlignment.olean` SHA-256 `ced81ed3c208a136952a4f5badfc7dddc06a66e46e81fb6e5180546e0427fb39`. The source, selected inputs and resource samples are recorded. Full package/dynamic and historical source/object ancestry remain inherited; no independent Lean replay or file/PDF, halt or iPRA endpoint is claimed.

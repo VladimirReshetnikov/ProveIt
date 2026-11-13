@@ -1,0 +1,33 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/ipra-compact-dummy-explore/CompactDummyBound.lean:30:28: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+x : V
+hx : x < Exp.exp 67
+h : NoCarry x (Exp.exp 67 - 4)
+hplus : Exp.exp 65 - 1 + 1 = Exp.exp 65
+⊢ 4 + (Exp.exp 65 - 1) * 4 = 4 + (1 + (Exp.exp 65 - 1) - 1) * 4
+/tmp/ipra-compact-dummy-explore/CompactDummyBound.lean:46:4: error: Type mismatch: After simplification, term
+  hx
+ has type
+  x < Exp.exp 67
+but is expected to have type
+  x < 2 * Exp.exp 66
+/tmp/ipra-compact-dummy-explore/CompactDummyBound.lean:49:4: error: Type mismatch: After simplification, term
+  hx66
+ has type
+  x / 2 < Exp.exp 66
+but is expected to have type
+  x / 2 < 2 * Exp.exp 65
+/tmp/ipra-compact-dummy-explore/CompactDummyBound.lean:55:4: warning: try 'simp' instead of 'simpa'
+
+Note: This linter can be disabled with `set_option linter.unnecessarySimpa false`
+'CompactDummyBound.forbidden_zero' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CompactDummyBound.ordinary_le_one' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CompactDummyBound.dummy_le_three' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

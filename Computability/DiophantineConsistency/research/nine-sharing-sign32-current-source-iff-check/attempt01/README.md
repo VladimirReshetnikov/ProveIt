@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 53754 exited 0 with `PASS sign32 current source iff diagnostic`; the Lean stage exited 0. Both `exists_cons_iff` and `seed_exists_iff_source` report `[propext, Classical.choice, Quot.sound]`. The compile log contains one unused section-variable warning on the generic cons helper. State, logs and author-recorded outer outcome are retained here; the object remains under `/tmp/nine-sharing-sign32-current-source-iff-check-20261106/lib/DiophantineConsistency/`. This proves a symbolic 32-witness seed/current source existential equivalence in the stated models; it is not a sextic Jones theorem or an external coefficient binding.

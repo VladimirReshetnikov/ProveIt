@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 61275 exited 0 with `PASS sign32 current seed iff diagnostic`; the Lean stage exited 0. `port0`, `pointwise` and `exists_same_input` report `[propext, Classical.choice, Quot.sound]`; the compile log contains no warnings. State, logs and author-recorded outer outcome are retained here; the object remains under `/tmp/nine-sharing-sign32-current-iff-check-20261106/lib/DiophantineConsistency/`. These claims use `CurrentWindowCarry2011.ports` as the symbolic Lean expression. They do not bind external JSON or numerical coefficient bytes to the Lean seed or furnish a Jones reduction for the sextic.

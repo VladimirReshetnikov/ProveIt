@@ -1,0 +1,5 @@
+# Sign28 zero bridge: author-observed run
+
+The reviewed runner reported `PASS sign28 forward and reverse zero bridge diagnostic`; the author observed numeric outer session 40266 exit 0. The retained state SHA-256 is `acbc41b31a5082a4131041627e07781a8de3766247d926b47a87f4764a157b9b`, and the author receipt SHA-256 is `a4369d6dd587ae88452c356a33c35809e68f04a8b09102064a41a3e4bb23488e`. The receipt records the outer outcome rather than an independently replayed exit.
+
+All four stages succeeded. The three recovered coordinates, lift-after-drop under old zero and the beta cast, and both directional zero implications report `[propext, Classical.choice, Quot.sound]`. The two residual-list enumeration identities report `[propext]`. The compile logs contain no warnings. This is a symbolic-port IΣ₁ bridge retaining the explicit beta cast; it is not a current-source or iPRA endpoint, a Lean degree bound, or a machine binding to external JSON/coefficient bytes. The state includes the runner's point-in-time guards and surveys; upstream ancestry remains inherited.

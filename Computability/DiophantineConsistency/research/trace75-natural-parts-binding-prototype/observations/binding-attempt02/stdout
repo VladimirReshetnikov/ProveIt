@@ -1,0 +1,95 @@
+/tmp/trace75-naturalparts-6yg67v84/Trace75NaturalPartsBinding.lean:63:4: error: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+tau f0 y u I : V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hmask : v 1 + v 2 < q p v
+hu : 0 < u
+hE : E p v = tau * tau
+hf0 : f0 * f0 = 1 + delta p v * U p v * U p v * (tau * tau)
+hQ : delta p v * (4 * (delta p v * U p v * U p v * (tau * tau)) * (1 + delta p v * U p v * U p v * (tau * tau))) = I * I
+hV : (oldV (ports p) fun j => ι (v j)) = ι u
+hZ : (oldZ (ports p) fun j => ι (v j)) = (regs (ports p) fun j => ι (v j)).M * (ι tau * ι f0 * ι y)
+haux : I * I * u * u + y * y = 1 + I * I * y * y
+A0 : V := ⋯
+f : V := ⋯
+d : V := ⋯
+z : Fin 10 → DiffRing V := ⋯
+hb0 : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hk : 0 < k v
+hc : 0 < c p v
+hf : 0 < f
+hc' : ι (c p v) = (regs (ports p) z).c
+hr' : ι (rankNat p v) = (regs (ports p) z).rank
+he' : (regs (ports p) z).E = ι tau * ι tau
+ha' : (regs (ports p) z).a = ι A0
+hf' : ι f = (regs (ports p) z).f
+hd' : ι d = 2 * (regs (ports p) z).Delta * ι (v 3) ^ 2 * (regs (ports p) z).c ^ 3 * (regs (ports p) z).E
+hh : ι f0 * ι f0 = 1 + ι (delta p v) * ι (U p v) * ι (U p v) * (ι tau * ι tau)
+⊢ ι A0 - ι (delta p v) * ι (U p v) ^ 2 * ι tau ^ 2 = 0
+/tmp/trace75-naturalparts-6yg67v84/Trace75NaturalPartsBinding.lean:68:4: error: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+tau f0 y u I : V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hmask : v 1 + v 2 < q p v
+hu : 0 < u
+hE : E p v = tau * tau
+hf0 : f0 * f0 = 1 + delta p v * U p v * U p v * (tau * tau)
+hQ : delta p v * (4 * (delta p v * U p v * U p v * (tau * tau)) * (1 + delta p v * U p v * U p v * (tau * tau))) = I * I
+hV : (oldV (ports p) fun j => ι (v j)) = ι u
+hZ : (oldZ (ports p) fun j => ι (v j)) = (regs (ports p) fun j => ι (v j)).M * (ι tau * ι f0 * ι y)
+haux : I * I * u * u + y * y = 1 + I * I * y * y
+A0 : V := ⋯
+f : V := ⋯
+d : V := ⋯
+z : Fin 10 → DiffRing V := ⋯
+hb0 : 0 < b p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hk : 0 < k v
+hc : 0 < c p v
+hf : 0 < f
+hc' : ι (c p v) = (regs (ports p) z).c
+hr' : ι (rankNat p v) = (regs (ports p) z).rank
+he' : (regs (ports p) z).E = ι tau * ι tau
+ha' : (regs (ports p) z).a = ι A0
+hf' : ι f = (regs (ports p) z).f
+hd' : ι d = 2 * (regs (ports p) z).Delta * ι (v 3) ^ 2 * (regs (ports p) z).c ^ 3 * (regs (ports p) z).E
+hf0' : (regs (ports p) z).F0 = ι f0 * ι f0
+hh :
+  ι (delta p v) *
+      (4 * (ι (delta p v) * ι (U p v) * ι (U p v) * (ι tau * ι tau)) *
+        (1 + ι (delta p v) * ι (U p v) * ι (U p v) * (ι tau * ι tau))) =
+    ι I * ι I
+⊢ ι (delta p v) * ι A0 * 4 + ι (delta p v) * ι A0 ^ 2 * 4 - ι (delta p v) ^ 2 * ι (U p v) ^ 2 * ι tau ^ 2 * 4 -
+      ι (delta p v) ^ 3 * ι (U p v) ^ 4 * ι tau ^ 4 * 4 =
+    0
+/tmp/trace75-naturalparts-6yg67v84/Trace75NaturalPartsBinding.lean:62:15: warning: This simp argument is unused:
+  A0
+
+Hint: Omit it from the simp argument list.
+  simp only [A̵0̵,̵map_add, ̲map_one, ̲map_mul] at hh
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/trace75-naturalparts-6yg67v84/Trace75NaturalPartsBinding.lean:67:15: warning: This simp argument is unused:
+  A0
+
+Hint: Omit it from the simp argument list.
+  simp only [A̵0̵,̵map_add, ̲map_one, ̲map_mul, ̲map_ofNat] at hh
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Trace75NaturalPartsBinding.positive_zero_of_natural_parts' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

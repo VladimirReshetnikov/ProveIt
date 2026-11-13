@@ -1,0 +1,7 @@
+# Sign33 AllCuts-to-Carrier65-value bridge checked
+
+Author-observed outer session `93721` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `9644484ac86d0e3a7a260c2df113c28edab5fe9d983a22310b7844e899585139`; before and after provider surveys both hash to `bc52aa182a97be027e2b0b4d65895c249c315c8b26ba728056da9fd8233a1e54`. The outer record is an author observation, not an independently observed transcript.
+
+Both `Sign33LiftTerminals` and `Sign33LiftSourceValue` compiled successfully; state retains their source, object, dependency and monitor records, and this directory their logs. The final object SHA-256 is `272162da4a79b3ab25ac86242ef160ae137447dee9ad0313a6fd2bc845f10acb` at `/tmp/nine-sharing-sign33-lift-source-value-check-20261106/lib/DiophantineConsistency/Sign33LiftSourceValue.olean`, compile log `6690d12c0326704394f7183c232f4234ec5ddce983303e94b977048c38330441`. Both axiom reports list `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Resource readings and sampling limitations are recorded per stage in state.
+
+For one full valuation and model-natural ports, `AllCuts` implies zero `Carrier65.value` on the corresponding 14 shifted inputs. This is a value-level implication, not yet source-syntax transfer, converse witness construction, Lean proof of external JSON binding, or a sign33 iPRA endpoint. Inherited provider and numeric-exit limitations remain as in the parent README.

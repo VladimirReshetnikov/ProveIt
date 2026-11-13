@@ -1,0 +1,239 @@
+PROOF PROTOCOL AND IMPLEMENTATION REDUCTIONS
+==========================================
+
+Comparison snapshot: ProveIt commit
+62396b06020f794fa6dc01b4025a6a5db9d4d28a.
+
+The mathematical native scalar calculus and its arithmetic interpretation
+are inherited.  The contributions here concern the size of its complete
+standalone proof checkers.  None removes a logical or arithmetic axiom,
+claims global minimality, or supplies a new proof-assistant verification.
+
+The compact profiles use the incumbent canonical closed guarded Eq/D public
+contract and admit administrative Eq/Q/D intermediates.  The native public
+validator is separately measured; its contract must not be conflated with
+the compact contract.  Every checker includes its input, opening operation,
+scope state, rules and acceptance output.  The JSON/CPython runtime is shared
+with the frozen controls, exactly as in the comparison corpus.
+
+1. RECONSTRUCT THE ELIMINATION MAJOR
+---------------------------------
+
+Let O_k(T,u) be the incumbent opening operation at the current scope floor.
+A packet has four fields [m,s,u,T].  Set
+
+    M(s,u,T) = [s,u] if s is truthy, and [T,T,T] otherwise.
+
+The old loop kernel uses an elimination only when both tests hold:
+
+    m = M(s,u,T)             O_k(T,u) = A.
+
+It then changes the continuation goal to O_k(T,s), checks m, and proceeds
+with the common continuation machinery.  The new protocol instead says:
+
+    if O_k(T,u) = A:
+        m := M(s,u,T)
+        A := O_k(T,s).
+
+It still checks the resulting major m in the original, unchanged context.
+The first field is therefore redundant at an elimination step.  A producer
+may put zero there.  At a genuine D opening the first field still supplies
+the formula whose witness is to be opened.  This is a finite, deterministic
+change of proof certificate protocol, with no search and no trusted theorem
+oracle.
+
+Soundness by effective-major translation.
+
+Consider any successful finite candidate execution on integer/list data.
+Whenever the new target test succeeds, replace the corresponding packet's
+first field in a copy of the certificate by M(s,u,T).  Leave all other fields
+and all other packets unchanged.  The frozen checker now sees a packet for
+which its first comparison is true, its second comparison is the candidate's
+true target comparison, and its continuation goal is the same O_k(T,s).
+When the candidate target test fails, the old conjunction also fails, so
+the packet and continuation goal remain unchanged in both executions.
+
+Induct on the finite consumed-packet tree.  Major subproofs have the same
+goal, context and scope state, and their recursively translated certificates
+are accepted by the control.  Both implementations then construct the same
+hypothesis, allocate the same fresh name at the same point, and check the
+same continuation in the same extended context.  In the global profile the
+induction also carries the shared scope floor and the remaining packet
+suffix; in the local profile the scope floor is a call argument.  Thus every
+accepted candidate theorem has an accepted control certificate.  The unused
+prefix is copied unchanged.  This translation is implemented independently
+in translate_inferred.py and its output is checked by the frozen executable.
+
+This statement concerns finite integer/list certificate syntax.  It does
+not claim raw Python object identity equivalence for NaN-containing values
+or arbitrary noncanonical JSON aliases.  No such equivalence is needed for
+the inherited canonical mathematical consequence relation.
+
+Completeness on canonical native certificates.
+
+Use the incumbent certificate compiler, choosing the inert fields of each
+D-opening packet so that T=0.  Its genuine elimination packets already
+satisfy m=M and therefore behave identically in the new checker.
+
+In a computation packet T is a numerical update body; in a D-introduction
+packet T is a numerical witness.  A canonical numerical tree has only unary
+and ternary array nodes and integer leaves.  Opening such a tree at formula
+depth zero preserves the absence of binary nodes: every depth increment is
+even, and at a leaf the traversal either retains a scalar or returns zero.
+In particular it never opens the image u.  This is also the totality lemma
+justifying evaluation of O_k(T,u) before checking whether m is the expected
+major.
+
+Every meaningful canonical Eq/Q/D formula has a binary equation node.  It
+therefore cannot be structurally equal to that opened numerical tree.
+The new target test is false at every non-elimination computation or
+introduction packet.  For a D-opening packet T=0 gives scalar formula
+padding, also different from a meaningful formula goal.  Neutral truth
+calls in the local profile close immediately from the initial context; the
+global profile never checks a neutral major.  Hence canonical compiled
+proofs follow exactly their old rule choices.  This proves completeness
+for all native public theorems covered by the incumbent compiler.
+
+The accepted raw certificate language genuinely changes.  The supplied
+inferred_major_local.json and inferred_major_global.json each replace a
+required major by zero in a proof of a reflexive equation.  The new checker
+accepts; its control rejects that same unmodified certificate.  Reconstructing
+the effective major gives a certificate that the control accepts.  This
+demonstrates that the implementation does not simply overlook the major:
+it reconstructs and verifies it.
+
+2. TRUTH-VALUED CHECKING AND SEQUENTIAL TUPLE CONSTRUCTION
+--------------------------------------------------------
+
+The 506-byte control returns None after a successful proof check.  Its
+non-hypothesis path reads one packet, computes a supplied hypothesis h
+(checking a major recursively), and checks the continuation.  Replace its
+return convention by the following expression skeleton:
+
+    return hypothesis_is_retained or [
+        (compute_h, check_continuation)
+        for packet_fields in [read_one_packet()]
+    ]
+
+This is literal eager list construction, not a generator.  The packet list
+has exactly one element.  Python evaluates the tuple's first expression
+before its second expression.  Thus compute_h finishes before the final
+goal opening, fresh-floor update, context extension and continuation check.
+All assignment expressions appear in the comprehension result, not in an
+iterable expression; the source is compiled as well as parsed in verify.py.
+
+Induct on a successful finite control call.  At a retained hypothesis the
+new result is True.  At a non-hypothesis call the recursively checked major
+and continuation succeed by induction, and the new result is a one-element
+list containing a pair.  Every successful new return is therefore truthy.
+Any exception in either eager component still propagates and rejects.
+
+At the major-check point the old expression is
+
+    control_check(m,g,k) or m*3.
+
+The corresponding new expression is
+
+    new_check(m,g,k) and m*3.
+
+Upon success these evaluate to the identical value m*3, because the old
+return is None and the new return is truthy.  If that value is false, the
+same later disjuncts compute a computation equation or an introduction
+matrix.  If either major check raises, both versions reject before reaching
+those disjuncts.  The other data operations are unchanged.
+
+The tuple result binds h at exactly the old assignment point.  In particular
+the goal modification in an introduction is completed before the target
+comparison in the continuation expression, and that comparison still runs
+at the old scope floor.  The floor is then decremented in the first actual
+argument to the continuation check, before its generated goal and hypothesis
+are validated.  The opening lambda closes over the same enclosing k cell;
+assignment expressions for a, h and k in the comprehension result bind the
+enclosing function, as required by Python's assignment-expression rules.
+
+Induction in both directions therefore gives the same finite successful
+executions, packet consumption, contexts, scope floors and public theorem
+certificates as the 506-byte control.  This is a source-level implementation
+equivalence, not a new mathematical inference rule.  The new return values
+retain data instead of discarding them, so resource behavior need not match
+the old program under a fixed memory bound.  As in the corpus, recognition
+is compared under sufficient resources for each finite certificate.
+
+The 503-byte spelling uses the inherited identity ~(-k)=k-1 for integer k.
+The 505-byte companion uses the ordinary subtraction spelling k-1 and has
+the same operational proof.  Both improve on the 506-byte incumbent.  The
+505-byte companion may be preferable when clarity of the displayed source
+matters more than two normalized bytes.
+
+3. VALIDATION AS BOOLEAN ORDER
+-----------------------------
+
+The fully measured native public-goal checker has a private mode bit v.
+The public call has v=1.  Before any proof packet is consumed that call
+sets v=0; recursive calls have the default v=0.  Thus v is always 0 or 1.
+The opening depth d starts at zero and changes by integers 5-len(a), so
+d mod 2 is also always 0 or 1.
+
+For p in {0,1}, the two predicates
+
+    (not v or p)             v <= p
+
+have the same truth value.  The proposed checker uses this order form for
+both validation guards.  Its array predicate is
+
+    len(a) in (1, 2 + d%2).
+
+It is evaluated only after a*0==[] succeeds.  For a value produced by the
+JSON reader, this means a is an actual list, so len(a) is total.  The scalar
+predicate is
+
+    type(a) is int and d%2 and (not a or a > 1 == a%2).
+
+It is evaluated only after the old comparison k<=a<d succeeds.  Its initial
+exact-type test is total and short-circuits for non-integers; for integers
+the remaining arithmetic is total.  Its result is always 0, False or True.
+Consequently the new eager evaluation of these predicates introduces no
+new error on a branch where the old v=0 guard would have short-circuited.
+
+Finally, (d%2 or v) and (d%2 | v) are identical values on these bits.  Thus
+the invalid-scalar fallback still raises at public formula positions when
+v=1, instead of silently accepting scalar padding.  Exact leaf typing and
+all scope checks are unchanged.  Induction on the opening tree gives the
+same successful result or rejection for both scanners.  The recursive proof
+checker is otherwise identical, giving the same whole finite-JSON acceptance
+language and unused prefixes as the 656-byte control, under the shared
+sufficient-resource convention.
+
+4. METRICS AND THEIR LIMITS
+--------------------------
+
+Measurements are of the complete source after ast.unparse plus one final
+LF, with significant tokens excluding encoding, whitespace, comments and
+end markers.  AST counts include every ast.walk node.  These are the corpus
+conventions, not compressed source length or a count of displayed rules.
+
+    Profile                Tokens   AST nodes   Normalized bytes
+    token control             256         283                594
+    reconstructed major       253         280                599
+    AST control               260         278                602
+    reconstructed major       257         275                607
+    byte control              267         303                506
+    truth-valued pair         278         310                503
+    plain decrement           278         309                505
+    native public control     333         379                656
+    Boolean-order guards      327         375                643
+
+The compact coordinate envelope therefore moves from (256,278,506) to
+(253,275,503), using different programs for different coordinates, exactly
+as the incumbent envelope does.  There is no single program having all
+three minimum coordinates.  These compact numbers do not include a separate
+strict public-goal grammar validator.  The native validator improves all
+three coordinates simultaneously within its own matched contract.
+
+All mathematical formulas, language interpretations, and both identity
+domain-composites of the iPRA bi-interpretation remain inherited.  The new
+checkers recognize the same canonical theory by the proofs above.  Finite
+fixture, mutation and scanner tests are useful implementation evidence, but
+they neither establish mathematical minimality nor replace these universal
+simulation arguments or the inherited arithmetic bridge.
+

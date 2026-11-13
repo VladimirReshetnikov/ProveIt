@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 31687 exited 0. Stage and postflight passed; frozen state, source/object/logs, direct lines-decoder provider and guarded overlays match. The four expected reports use `[propext, Quot.sound]` or `[propext, Classical.choice, Quot.sound]`, with no warning or `sorryAx`. The result connects the explicit Lean decimal lines to the Fin430 action list, both target sets, all rail values and the 430 transition rows. The full table/PDF/external-file binding is separate. The numeric outer receipt itself does not hash the state. No Lean was run.

@@ -1,0 +1,5 @@
+# Independent terminal review: current-source core-cut representatives
+
+**Pass for retained Lean evidence**, without Lean replay. Author-observed outer session 64526 exited 0; this is not an independently observed raw process transcript. In an indicated IΣ₁ model, a zero of the maintained positive-shifted current source yields five natural representatives whose difference-ring images are the explicit `Carrier65.core` gap, tau, c*T−rank, V and y²−V² expressions. Lean reports `[propext, Classical.choice, Quot.sound]` with no warnings.
+
+`check.py` verifies source, state, object and child logs, all three direct selected producer bindings, 200 guard slots, 1,172 overlay links, equal before/after surveys and a fresh point-in-time provider survey. Both Lean children exited 0 without sampled monitor stop/error. Provider checks are point observations and the inherited initial-agreement numeric outer exit is unavailable. This does not prove a Lean binding to the external 33-witness JSON seed, construct all its coordinates, establish a seed zero bridge or a new iPRA endpoint.

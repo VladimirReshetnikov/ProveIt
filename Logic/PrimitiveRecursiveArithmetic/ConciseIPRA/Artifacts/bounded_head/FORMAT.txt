@@ -1,0 +1,94 @@
+BOUNDED HEAD CERTIFICATES
+=========================
+
+The standalone acceptance program is code/bounded_checker.py. It reads one
+complete JSON value from standard input and prints exactly ACCEPT followed by
+a newline on successful verification. Any exception rejects. Unused object
+fields are rejected. Every proof leaf is literal JSON null; every nonleaf and
+every active hint is inspected even if its target happens to be reflexive or
+already an assumption.
+
+Top-level object:
+  {"variables": n, "context": [A0, ...], "goal": A, "proof": p}
+
+n is a nonnegative exact integer, excluding JSON Booleans. Free numerical
+parameters are de Bruijn coordinates 0,...,n-1. Entering a numerical binder
+adds a new coordinate zero and increments all older free coordinates.
+
+Terms:
+  ["v", j]            numerical variable, 0 <= j < current scope
+  ["z"]               zero
+  ["s", t]            successor
+  ["i", n, a, h]      iterator; h alone binds one numerical variable
+
+Formulas:
+  ["=", s, t]         equation
+  ["q", B]            B binds one numerical variable
+  ["d", B]            B binds two numerical variables: y is 0, x is 1
+
+Ordinary readings:
+  Q_y B(y)     means B(0) -> forall y B(y).
+  D_x,y B(x,y) means exists x (B(x,0) -> forall y B(x,y)).
+
+The context is a reusable list of formulas. All formulas and terms are raw
+trees: no normal form is required, computed, or compared.
+
+Proofs are checked against an expected target A:
+
+  null
+    A is literally a retained assumption, or A is a literal equation t=t.
+
+  ["vs", j, t, u, major, minor]
+    j names a free parameter. If the target is r = u[t/j], check the major
+    j=t and the minor u=r. Substitution replaces free j exactly once, does
+    not remove a free coordinate, and may have j occurring in t.
+
+  ["qe", B, t, major, base]
+    The target is B(t). Check Q B and B(0). B is validated in scope n+1;
+    the raw specialization term t is validated in scope n before use.
+
+  ["de", B, major, branch]
+    Check D B. Check the shifted target under one fresh numerical parameter
+    and the additional assumption Q B; shift every older assumption. The
+    target is supplied outside that scope, so the fresh parameter cannot
+    escape. B is validated in scope n+2.
+
+  ["di", t, branch]
+    The target must be D B. Substitute t for x without normalizing it.
+    Check B(t,S z) with fresh z. Its additional assumption is B(t,z) when
+    B is a literal equation and t is literally ["z"], and B(t,0) otherwise.
+    In particular a raw nonliteral term provably equal to zero selects cases.
+
+  ["hc", d, previous, branch]
+    The target must be a=r. The depth d is an exact integer from 0 to 3.
+    Check the branch previous=r. One iterator computation at depth d must
+    change previous to a, or change a to previous. The path consists of d
+    consecutive iterator-counter edges, then one contraction:
+      I(0,a;u.h)   -> a
+      I(S n,a;u.h) -> h[I(n,a;u.h)/u]
+    No descent into a seed, body, successor child, or right equation endpoint
+    is permitted. Both directions are primitive. A conversion of the right
+    endpoint must be supplied as a derived proof using symmetry.
+
+The small partial step function can return a tree containing None when a
+counter path is invalid. Such a tree cannot equal a well-formed endpoint.
+The expected endpoint is well formed by the recursive scope invariant; the
+supplied previous endpoint is explicitly validated before step is called.
+No failed step is ever inserted into a proof context.
+
+BUILD AND VERIFY
+  python3 code/build_certificates.py
+  python3 code/verify.py
+  python3 code/bounded_checker.py < tests/transport_symbolic.json
+
+The producer and verifier are untrusted supporting artifacts. The measured
+checker imports only json and sys. Neither a normalizer, theorem database,
+proof generator, nor external mathematics library is imported by it.
+
+CONTROLS
+controls/head_checker_source.py is the exact incoming weak-head source.
+controls/head_checker.py differs only in explicit null-leaf dispatch, so its
+whole proof structure is checked under the same discipline as this checker.
+It still uses weak-head-normal formulas and normalization after substitution.
+tests/head/ contains converted positive certificates for that control. Their
+sequents are head-normalized; raw input-language equality is not claimed.

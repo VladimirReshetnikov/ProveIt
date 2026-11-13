@@ -1,0 +1,16 @@
+# Independent review: natural-79 and direct-BFS Carrier65 composition
+
+The revised [composition draft](../../research/ordinary14-natural79-carrier65-bfs-direct-comparison-draft/README.md) has the intended source-level statement and proof directions. Both the draft's receipt and the independent checker reproduce. This is not a Lean elaboration, a current proof certificate, an axiom audit, or validation of any imported provider closure.
+
+Let `A` denote the native no-zero sentence for the natural-79 expression, `B` the native no-zero sentence for `positiveShift IPRACarrier65BFS943.expression`, `R` the common mapped native refutation, and `C` the mapped Gödel–Gentzen translation of Foundation's selected ZFC consistency sentence. The conditional lemma explicitly assumes native-theory derivations of `A ↔ ∼R` and `B ↔ ∼R`. Its two `K_left`/`K_right` compositions give `A → ∼R → B` and `B → ∼R → A`. The translated theorem uses `zfcEquiv : C ↔ ∼R` in the directions `A → ∼R → C` and `C → ∼R → A`. These are intuitionistic biconditional compositions; no extra classical implication or double-negation elimination appears in the draft. This text check does not certify the imported proof bodies or their axiom closure.
+
+The revised source explicitly opens `AdaptiveEquationSyntax2011`, which defines the intended `positiveShift` by substituting each variable plus one. That namespace was missing when the initial draft was inspected; the source was revised before this receipt was pinned. The input expression's 14 variables and positive shift match the declared direct-BFS Carrier65 native endpoint. The reference adapter takes a native-theory proof and concludes a reference-theory proof of the erased whole formula; the inspected `erase` source recursively preserves conjunction and implication. The correctness of the displayed syntactic reductions and the draft's actual name and instance resolution still require Lean.
+
+This `B` is a **direct-BFS943-port** Carrier65 instance, while the historically checked normalized quote for the displayed page uses separately specified current 2011 ports. The draft proves neither equality of those source expressions and coefficients nor an equivalence with the normalized quote as a direct theorem. Such a comparison can be composed through the respective consistency endpoints once all required derivations are available in a compatible checked context. Neither route formally interprets physical TeX or PDF bytes. The 79 draft, BFS source endpoint and translated/reflected interfaces retain their own proof and provider obligations. All seven `#print axioms` commands in this draft remain unexecuted.
+
+From the repository root:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/research/ordinary14-natural79-carrier65-bfs-direct-comparison-draft/check_source.py | cmp - Computability/DiophantineConsistency/research/ordinary14-natural79-carrier65-bfs-direct-comparison-draft/receipt.json
+python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary14-natural79-carrier65-bfs-comparison-independent/check.py | cmp - Computability/DiophantineConsistency/reviews/ordinary14-natural79-carrier65-bfs-comparison-independent/result.json
+```

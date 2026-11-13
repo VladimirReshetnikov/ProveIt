@@ -1,0 +1,3 @@
+# Independent terminal audit: sign14 supplied-tau coordinate
+
+Checker exit 0. Author outer 1190 exited 0; stage and final postflight passed. Four reports cover old-row location, supplied abstract shared36 tau zero, lift/drop, and old-gap recovery. There are 47 linter warnings and no sorryAx. Source, object, logs, both direct syntax providers, guards and overlays were checked. This conditional client has no port/sign assumptions; natural tau representation was checked separately under explicit bounded-port hypotheses. The union survey is point-in-time; residual transfers and equivalence remain separate.

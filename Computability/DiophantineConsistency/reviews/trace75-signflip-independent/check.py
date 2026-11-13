@@ -1,0 +1,20 @@
+from pathlib import Path
+import hashlib,json,re
+h=Path('/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace73-center-normalization');a=h/'observations/flip-attempt02';t=json.loads((a/'terminal.json').read_text());s=h/'Trace75SignFlip.lean';r=h/'run-flip.py';obj=Path(t['output'])
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def need(b,m):
+ if not b:raise RuntimeError(m)
+need(sha(a/'terminal.json')=='6ac4b60f6a0efa1a417f8ce02dd90271759e1bd155d3a7e7883e745de4ea827a','terminal hash')
+need(t['status']=='PASS' and t['exit']==0 and t['reason'] is None,'terminal status')
+need(sha(s)==sha(a/'source.txt')==sha(obj.with_suffix('.lean'))==t['source_sha256']=='f317cefbd6b42729506548a0936cfa4073fcf8819508822c2c4b87dca2b70d5d','source')
+need(sha(r)==t['runner_sha256']=='ac6961af19320252589ac0112c18cd388289a1e92ce161fe9037acab185af636','runner')
+need(obj.is_file() and not obj.is_symlink() and sha(obj)==t['output_sha256']=='853d9841662ae9ae17388da47c4cc684332e99cbdc3346035564c4997ade70af','object')
+for name in ('stdout','stderr'):need(sha(a/name)==t[name+'_sha256'],'log '+name)
+need((a/'stdout').read_text()=="'Trace75SignFlip.value_flip' depends on axioms: [propext, Quot.sound]\n" and not (a/'stderr').read_bytes(),'diagnostics')
+for p,rec in t['pins'].items():p=Path(p);need(p.is_file() and sha(p)==rec['sha256'] and str(p.resolve())==rec['resolved'],'pin '+str(p))
+roots=[Path(p) for p in t['lean_path'].split(':')];need(len(roots)==2,'roots')
+mod='DiophantineConsistency.TenPositiveTrace75';path=next((x/(mod.replace('.','/')+'.olean') for x in roots if (x/(mod.replace('.','/')+'.olean')).is_file()),None);need(str(path)=='/tmp/trace75-fresh-rebuild-yn60cw_0/lib/DiophantineConsistency/TenPositiveTrace75.olean' and str(path) in t['pins'],'first direct import')
+need(re.findall(r'^import\s+([^\s]+)',s.read_text(),re.M)==[mod],'source imports')
+for snap in [t['preflight'],t['postflight'],*t['samples']]:need(snap['mem_available_kib']>=8*1024**2 and len(snap['lean'])<=2,'resource')
+old=h/'observations/flip-attempt01';ot=json.loads((old/'terminal.json').read_text());need(ot['status']=='FAILED' and ot['exit']!=0,'failed attempt');need('sorryAx' in (old/'stdout').read_text()+(old/'stderr').read_text(),'failed proof disclaimer')
+print('PASS terminal/source/object/logs; 5 direct pins and first import selected; resource samples; failed attempt excluded')

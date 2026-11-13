@@ -1,0 +1,16 @@
+# Structured endpoint runner v3 — client build failed
+
+The [v2 extension attempt failed](../../reviews/current14-extension-v2-failure/README.md) on two identical `Init.olean` lines and produced no extension module. This separate v3 supervisor and client runner point to fresh output paths and the [v3 retry coordinator](../current14-printed-port-extension-coordinator-v3/README.md). The client uses the same narrowly scoped exact-path Init multiplicity policy as the v3 driver and terminal verifier, retaining raw `--deps` logs. The two-client runner has been launched; the assembly passed, but the structured endpoint client failed during import.
+
+The v3 supervisor has been launched. The [point-in-time launch observation](extension-launch-observation.json)
+records supervisor PID 90419, coordinator PID 90421, driver PID 90489, and
+first-module Lean PID 90495 in session 6546. At that observation zero extension
+rows had completed. The supervisor subsequently exited 0; the [terminal observation](extension-terminal-observation.json) and [extension artifact audit](../../reviews/current14-extension-v3-terminal-independent/README.md) record the successful 61-module build. Do not launch another copy.
+
+The supervisor recorded the coordinator's actual process exit. The client requires its PASS receipt, reauthenticates the extension state and providers, then builds the literal-port assembly and structured endpoint in a private client root. It checks exact axiom-report names, rejects warnings and `sorry` patterns, and uses sampled time, disk and memory protections. These are sampled controls, not reservations or guarantees against between-sample events, escaping child sessions, forced process death, dynamic inputs, transitive ancestry or transient mutations.
+
+[controls-observation.json](controls-observation.json) records no-Lean test fixtures and refusal while the v3 supervisor receipt is absent; it does not exercise a successful real extension or client. The [independent policy and wiring review](../../reviews/current14-extension-v3-policy-independent/README.md) covers the frozen v3 sources and synthetic controls. **Do not launch the clients before coordinated resource checks and a successful v3 extension with independently reviewed terminal evidence.** A timeout observing a process is not its exit. The structured endpoint is a Lean-level existential tuple with an iPRA derivation; its compilation would not formalize TeX/PDF bytes or provide a second independent Lean replay.
+
+The two-client preflight actually exited 0 and the client runner was launched. The [point-in-time client launch observation](client-launch-observation.json) records session 5892, runner PID 109728 and first assembly Lean PID 109744, with zero completed rows. The runner later reported failure during the second client, so this is not an endpoint proof; preserve the output and do not relaunch without diagnosing the failure.
+
+The [preserved terminal failure and scoped successful assembly audit](../../reviews/current14-structured-client-v3-failure/README.md) show five assembly recipe reports with the permitted Lean metatheory axioms; the structured endpoint failed while loading conflicting matrix declarations. The assembly row does not prove the joined endpoint.

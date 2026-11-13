@@ -1,0 +1,110 @@
+/tmp/compact44-high-phase-reduction-author-ee92375w/CompactHighPhaseReduction.lean:26:31: error: unsolved goals
+case inl
+n : ℕ
+hn : n < 8792
+h : ¬(n = 0 ∨ 1013 ≤ n ∧ n < 1023 ∨ 1065 ≤ n ∧ n < 1074 ∨ n = 2195 ∨ n = 3296 ∨ n = 4393 ∨ n = 5495)
+hc : 1 ≤ n ∧ n < 1013
+⊢ (List.replicate 1012 0).getD (n - 1) 0 = 0
+
+case inr.inl
+n : ℕ
+hn : n < 8792
+h : ¬(n = 0 ∨ 1013 ≤ n ∧ n < 1023 ∨ 1065 ≤ n ∧ n < 1074 ∨ n = 2195 ∨ n = 3296 ∨ n = 4393 ∨ n = 5495)
+hc : 1023 ≤ n ∧ n < 1065
+⊢ (List.replicate 42 0).getD (n - 1023) 0 = 0
+
+case inr.inr.inl
+n : ℕ
+hn : n < 8792
+h : ¬(n = 0 ∨ 1013 ≤ n ∧ n < 1023 ∨ 1065 ≤ n ∧ n < 1074 ∨ n = 2195 ∨ n = 3296 ∨ n = 4393 ∨ n = 5495)
+hc : 1074 ≤ n ∧ n < 2195
+⊢ (List.replicate 1121 0).getD (n - 1074) 0 = 0
+
+case inr.inr.inr.inl
+n : ℕ
+hn : n < 8792
+h : ¬(n = 0 ∨ 1013 ≤ n ∧ n < 1023 ∨ 1065 ≤ n ∧ n < 1074 ∨ n = 2195 ∨ n = 3296 ∨ n = 4393 ∨ n = 5495)
+hc : 2196 ≤ n ∧ n < 3296
+⊢ (List.replicate 1100 0).getD (n - 2196) 0 = 0
+
+case inr.inr.inr.inr.inl
+n : ℕ
+hn : n < 8792
+h : ¬(n = 0 ∨ 1013 ≤ n ∧ n < 1023 ∨ 1065 ≤ n ∧ n < 1074 ∨ n = 2195 ∨ n = 3296 ∨ n = 4393 ∨ n = 5495)
+hc : 3297 ≤ n ∧ n < 4393
+⊢ (List.replicate 1096 0).getD (n - 3297) 0 = 0
+
+case inr.inr.inr.inr.inr.inl
+n : ℕ
+hn : n < 8792
+h : ¬(n = 0 ∨ 1013 ≤ n ∧ n < 1023 ∨ 1065 ≤ n ∧ n < 1074 ∨ n = 2195 ∨ n = 3296 ∨ n = 4393 ∨ n = 5495)
+hc : 4394 ≤ n ∧ n < 5495
+⊢ (List.replicate 1101 0).getD (n - 4394) 0 = 0
+
+case inr.inr.inr.inr.inr.inr
+n : ℕ
+hn : n < 8792
+h : ¬(n = 0 ∨ 1013 ≤ n ∧ n < 1023 ∨ 1065 ≤ n ∧ n < 1074 ∨ n = 2195 ∨ n = 3296 ∨ n = 4393 ∨ n = 5495)
+hc : 5496 ≤ n ∧ n < 8792
+⊢ (List.replicate 3296 0).getD (n - 5496) 0 = 0
+/tmp/compact44-high-phase-reduction-author-ee92375w/CompactHighPhaseReduction.lean:34:6: warning: This simp argument is unused:
+  List.getD_replicate
+
+Hint: Omit it from the simp argument list.
+  simp (disch :=
+  ̲  ̲ ̲ ̲ ̲ ̲(simp only [List.length_replicate, List.length_cons, List.length_nil, List.length_append,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲Nat.reduceAdd];
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲omega)) only [highDigits,
+  ̲  ̲ ̲ ̲ ̲ ̲List.getD_append_right, List.getD_append, L̵i̵s̵t̵.̵g̵e̵t̵D̵_̵r̵e̵p̵l̵i̵c̵a̵t̵e̵,̵ ̵List.length_replicate, List.length_cons,
+  ̲  ̲ ̲ ̲ ̲ ̲List.length_nil, List.length_append, Nat.reduceAdd, Nat.reduceSub, Nat.reduceLT,
+  ̲  ̲ ̲ ̲ ̲ ̲List.getD_cons_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/compact44-high-phase-reduction-author-ee92375w/CompactHighPhaseReduction.lean:35:41: warning: This simp argument is unused:
+  Nat.reduceSub
+
+Hint: Omit it from the simp argument list.
+  simp (disch :=
+  ̲  ̲ ̲ ̲ ̲ ̲(simp only [List.length_replicate, List.length_cons, List.length_nil, List.length_append,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲Nat.reduceAdd];
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲omega)) only [highDigits,
+  ̲  ̲ ̲ ̲ ̲ ̲List.getD_append_right, List.getD_append, List.getD_replicate, List.length_replicate,
+  ̲  ̲ ̲ ̲ ̲ ̲List.length_cons, List.length_nil, List.length_append, Nat.reduceAdd, N̵a̵t̵.̵r̵e̵d̵u̵c̵e̵S̵u̵b̵,̵ ̵Nat.reduceLT,
+  ̲  ̲ ̲ ̲ ̲ ̲List.getD_cons_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/compact44-high-phase-reduction-author-ee92375w/CompactHighPhaseReduction.lean:35:56: warning: This simp argument is unused:
+  Nat.reduceLT
+
+Hint: Omit it from the simp argument list.
+  simp (disch :=
+  ̲  ̲ ̲ ̲ ̲ ̲(simp only [List.length_replicate, List.length_cons, List.length_nil, List.length_append,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲Nat.reduceAdd];
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲omega)) only [highDigits,
+  ̲  ̲ ̲ ̲ ̲ ̲List.getD_append_right, List.getD_append, List.getD_replicate, List.length_replicate,
+  ̲  ̲ ̲ ̲ ̲ ̲List.length_cons, List.length_nil, List.length_append, Nat.reduceAdd, Nat.reduceSub,
+  ̲  ̲ ̲ ̲ ̲ ̲N̵a̵t̵.̵r̵e̵d̵u̵c̵e̵L̵T̵,̵ ̵List.getD_cons_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/compact44-high-phase-reduction-author-ee92375w/CompactHighPhaseReduction.lean:35:70: warning: This simp argument is unused:
+  List.getD_cons_zero
+
+Hint: Omit it from the simp argument list.
+  simp (disch :=
+  ̲  ̲ ̲ ̲ ̲ ̲(simp only [List.length_replicate, List.length_cons, List.length_nil, List.length_append,
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲Nat.reduceAdd];
+  ̲  ̲ ̲ ̲ ̲ ̲ ̲ ̲omega)) only [highDigits,
+  ̲  ̲ ̲ ̲ ̲ ̲List.getD_append_right, List.getD_append, List.getD_replicate, List.length_replicate,
+  ̲  ̲ ̲ ̲ ̲ ̲List.length_cons, List.length_nil, List.length_append, Nat.reduceAdd, Nat.reduceSub,
+  ̲  ̲ ̲ ̲ ̲ ̲N̵a̵t̵.̵r̵e̵d̵u̵c̵e̵L̵T̵,̵ ̵L̵i̵s̵t̵.̵g̵e̵t̵D̵_̵c̵o̵n̵s̵_̵z̵e̵r̵o̵]̵N̲a̲t̲.̲r̲e̲d̲u̲c̲e̲L̲T̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/compact44-high-phase-reduction-author-ee92375w/CompactHighPhaseReduction.lean:48:2: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+/tmp/compact44-high-phase-reduction-author-ee92375w/CompactHighPhaseReduction.lean:67:11: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+'CompactHighPhaseReduction.zero_natural' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CompactHighPhaseReduction.inactive_digit_zero' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CompactHighPhaseReduction.noCarry_of_active' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

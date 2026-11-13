@@ -1,0 +1,9 @@
+# Sign25 octic Lean syntax and bridge: source-only draft
+
+`SharingSeed25Octic.lean` is generated from the independently audited external 25-witness candidate. Its first q3 residual and 15 remaining residuals are over `Fin 26`, with coordinate zero unused. `check.py` independently parses the generated Lean expressions and compares their ASTs to the pinned JSON; its syntactic degree-four result does not bind external coefficient bytes to the Lean ports or establish a Lean degree theorem. The generated source retains the syntax generator's explicit 4,000,000-heartbeat setting, as in the prior sign26 syntax draft; no Lean was run here.
+
+`SharingSeed25BridgeDraft.lean` describes a natural lift inserting `v17*v18` at old coordinate 19 and the corresponding drop, plus open forward/backward targets. `check_bridge.py` checks the finite textual mapping and three controls. It does not elaborate either file, prove coordinate recovery, residual transfer or the sum-of-squares zero bridge, or establish any iPRA endpoint. The direct sign26 endpoint remains the separately checked predecessor.
+
+From `Computability/DiophantineConsistency`, run `python3 -I -S -B research/nine-sharing-sign25-octic-lean-draft/check.py` and `python3 -I -S -B research/nine-sharing-sign25-octic-lean-draft/check_bridge.py`, comparing stdout to the respective frozen result files. To replay the generator without overwriting its output, create a fresh temporary directory directly under `research`, copy only `generate.py` into it, run it with `python3 -I -S -B`, and compare the resulting source and stdout with `SharingSeed25Octic.lean` and `generation-result.json`. The generator refuses to overwrite an existing output. Independent source audit requested.
+
+Independent source audit: `reviews/nine-sharing-sign25-octic-lean-draft-frontier-independent/`. Packet and source are frozen.

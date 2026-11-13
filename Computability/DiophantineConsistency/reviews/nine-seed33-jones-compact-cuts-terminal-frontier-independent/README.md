@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 88083 exited 0. Both source/object/log sets, exact language/staged provider bindings, 200 direct guard slots and 1,057 overlay links were checked. Four generic snoc/range/star cut theorems and two typed prefix-lookup theorems each report [propext, Classical.choice, Quot.sound], without warnings.
+
+These are generic sign33 macro-language identities; they do not establish concrete recipe values, semantic equality, JSON or human-document binding, degree or operation count. The outer exit is author-recorded and kernel/deeper dynamic/transitive provider ancestry remains inherited. No Lean replay was performed.

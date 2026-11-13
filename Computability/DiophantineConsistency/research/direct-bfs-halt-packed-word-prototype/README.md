@@ -1,0 +1,5 @@
+# Internal halt to a direct-BFS packed selector/copy word
+
+`DirectBFSHaltPackedWord.halt_packed_word` proves that an internal decimal215 halt in any IΣ₁ model yields one direct-BFS local row word and one positive packed selector/copy word at the same explicit power-based length and stride. The packed word is bounded, has Boolean radix digits, and recovers every direct-table selector and payload copy bit. This does not yet establish the direct-family high/low masks, calibrated rank, Pell seeds, or an 80-graph zero.
+
+The guarded author check `observations/directbfshaltpackedword-attempt01/` exited 0 without diagnostics; its axiom report is `[propext, Classical.choice, Quot.sound]`. Every direct import was explicitly pinned and rechecked. Object `/tmp/direct-bfs-haltpackedword-hzunnvtp/DirectBFSHaltPackedWord.olean` has SHA-256 `eafcbf541ff2e66504e55d1b2ff4204110688bb5571f377350a8fc06ef6e60ea`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.

@@ -1,0 +1,126 @@
+Independent focused review: compact476.py
+Date: 2026-11-12
+
+1. Sources and scope
+--------------------
+I inspected the complete compact476.py and control477.py modules in
+agent_lastpass_compact/deliverable, the current head-conversion package's
+theory/compact477_proof.tex and two independent completeness/code audits,
+and the boolean-constancy package's checkers/PROOFS.txt, especially its
+eager-mode-selection and canonical-completeness arguments. This is a
+written mathematical/operational review, not proof-assistant verification
+of Python. The inherited scalar-calculus soundness, canonical compiler and
+iPRA bi-interpretation remain explicit dependencies.
+
+2. Exact change and independently measured size
+-----------------------------------------------
+The sole source change is
+
+    bool(m or 3 % len(a))
+
+to
+
+    any((m, 3 % len(a))).
+
+The complete files are already ast.unparse-normalized with final LF.
+Independent CPython measurement gives:
+
+                   significant tokens   AST nodes   UTF-8 bytes
+    control477.py           272              306         477
+    compact476.py           274              306         476
+
+SHA-256 of control477.py:
+8c4e4ce67c87e9b90ed9e37e1162c9ef801dc77549c738ebcd04b06458746575
+SHA-256 of compact476.py:
+fa42d6bbf935d93b3bcd89306df4b98d0a080abb7afcaab7968689c87a0e8306
+
+This improves only the byte coordinate. It adds two significant tokens
+and preserves the AST count against the byte control. It does not improve
+the independent 244-token or 265-AST records, and it does not establish an
+absolute minimum or a smaller inventory of mathematical axioms.
+
+3. Successful-new-run simulation and soundness
+----------------------------------------------
+Put e = 3 % len(a). Whenever e is defined, both expressions return the
+same Boolean: the disjunction of the truth values of m and e. The new
+expression also evaluates e when m is truthy. Tuple construction, len and
+integer remainder introduce no mutation or packet read. They do not alter
+the current values of a, m, k, g, the substitution closure, or the input
+stack. All objects involved satisfy the inherited exact-integer/list
+promise, so there are no user-defined truth or length methods.
+
+In particular, the expression is still evaluated after the raw hypothesis
+has been constructed (including any earlier assignment to a) and before
+the existing assignment k := (~-k). The construction of the recursive
+continuation and its two openings remains in the same order. The omitted
+image sentinel, the head477 opener and its multiplication branch are
+unchanged.
+
+Take any finite successful new execution under the stated public-goal and
+input contract. At every reached mode selector e is defined, so replace
+that selector by the old expression without changing its returned Boolean
+or the program state. Apply this also to recursive major-premise checks.
+Induction on the successful checking tree gives a successful old477 run
+with the identical goal and consumed packets. Consequently the new
+accepted-certificate set is a subset of the old set, and old477 soundness
+implies new soundness. An eager failure can only reject a trace; it cannot
+add a new accepted trace.
+
+This argument does NOT assert equality of arbitrary raw-certificate
+acceptance. Equality of presented theorem sets needs the next argument.
+
+4. Completeness on canonical compilation
+----------------------------------------
+Use the canonical certificates supplied by the old477 completeness proof.
+They encode genuine Eq/D formulas and the canonical internal Q resource.
+Equality, D and Q all have nonempty array roots. Ordinary computation,
+transport and closure-elimination subgoals therefore have nonempty array
+roots. At an introduction, the assignment a := i(*a,t,2) produces the
+instantiated canonical matrix, also a nonempty formula. Filling numerical
+holes changes term contents, not the root of such a formula.
+
+The one administrative major is the empty array []. The initial context
+is [[]], hence contains [] as a resource. Every subsequent context is
+obtained by retaining the old context and appending a resource; [] is
+never removed. For a call whose active goal is [], the unchanged opener
+returns [], and the initial membership test succeeds before execution can
+reach any mode selector. Thus a neutral-major call never attempts a zero
+denominator in the new remainder expression.
+
+Other resources produced by canonical elimination have nonempty roots.
+The inherited old477 completeness proof already checks the additional
+eager image openings introduced by its predecessor change. The present
+change adds only the mode expression above and introduces no additional
+opening or source/template evaluation.
+
+Therefore every reached selector in a canonical trace has len(a) > 0.
+The added eager evaluation is defined, pure, and returns the same mode.
+Induction over the canonical trace preserves acceptance and the literal
+public goal. Since canonical compilation supplies an old477 certificate
+for every theorem of the public guarded scalar theory, it supplies a
+new476 certificate for every such theorem as well.
+
+5. Mathematical interpretation
+-------------------------------
+Sections 3 and 4 establish equality of the presented public theorem sets:
+new soundness by accepted-trace inclusion and new completeness by
+canonical compilation. The public formula/term language, guarding
+convention and ordinary interpretation do not change. The existing
+whole-domain, actual-equality bi-interpretation with iPRA and both
+term/formula round trips therefore transfer unchanged. This refinement
+neither introduces a new arithmetic axiom nor removes an old one.
+
+6. Verdict and limits
+---------------------
+The one-byte compact-checker improvement is supported under the exact
+inherited contract: finite exact-integer/list trees, a canonical closed
+guarded Eq/D public goal, and the prescribed final [goal,0] header.
+Neither program independently validates that entire promise.
+
+The current exhibited compact byte record is reduced from 477 to 476;
+the coordinatewise envelope becomes (244,265,476), attained by different
+programs. No one program is claimed to attain that vector. This is an
+implementation/presentation refinement, not a claim to have found the
+globally simplest axiomatization. Finite tests are supplementary evidence;
+the operational simulation and canonical-completeness argument are the
+universal justification.

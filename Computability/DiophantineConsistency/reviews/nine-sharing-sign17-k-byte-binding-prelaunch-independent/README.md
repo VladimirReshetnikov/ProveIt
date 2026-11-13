@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the source combines the eight audited slices in descending order with an explicit empty-tail check at offset 2048, then composes fixture radix/byte decoding with the explicit canonical K digits theorem. All eight direct provider objects, source/import/Init/resource guards and no-Lean preflight pass; the separate Python preflight review found 2021 digits on each side. Lean tactic success remains untested. The proposed result identifies symbolic K with the base-256 decoding of an in-Lean list; it makes no Lean claim that external JSON, gzip, files or PDF have those bytes. No Lean was run.

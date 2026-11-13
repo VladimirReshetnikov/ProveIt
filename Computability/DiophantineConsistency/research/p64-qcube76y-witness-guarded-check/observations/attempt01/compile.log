@@ -1,0 +1,25 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube76-independent-y-lemmas-draft/IndependentYWitnessDraft.lean:69:4: error: unsolved goals
+case neg
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 14 → V
+hv : ∀ (i : Fin 14), 0 < v i
+hz : InternalZero (P64QCube77.graph fun j => ↑(p j)).output v
+hne : (P64QCube76YBinding.oldV (fun j => ↑(p j)) fun i => ι (v i)) + ι (v 12) ≠ 0
+pp : Fin 4 → ℤ := fun j => ↑(p j)
+z : Fin 14 → DiffRing V := fun i => ι (v i)
+signed : DiffRing V := P64QCube76YBinding.oldV pp z + ι (v 12)
+y : V
+hy : 0 < y
+hysq : ι y * ι y = signed * signed
+w : Fin 14 → V := Function.update v 12 y
+hw : ∀ (i : Fin 14), 0 < w i
+i : Fin 14
+hi : ¬i = 12
+⊢ ι (v i) = z i
+'IndependentYWitnessDraft.positive_magnitude' depends on axioms: [propext, Classical.choice, Quot.sound]
+'IndependentYWitnessDraft.positive_difference' depends on axioms: [propext, Classical.choice, Quot.sound]
+'IndependentYWitnessDraft.old_to_new_conditional' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'IndependentYWitnessDraft.new_to_old_conditional' depends on axioms: [propext, Classical.choice, Quot.sound]

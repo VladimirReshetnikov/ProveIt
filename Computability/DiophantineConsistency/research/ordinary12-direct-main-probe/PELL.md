@@ -1,0 +1,10 @@
+# Conditional Pell indices for a direct main root
+
+`DirectMainPell.lean` proves two lemmas in every IΣ₁ model with the stated ordered-ring interface. The theorem statements are authoritative about all assumptions.
+
+* `indices_of_norms` takes `Q > 0`, `k > 0`, `c > 0` and the two equations `first² = 1+Q*(Q+1)*k²` and `main² = 1+delta(a)*c²`, where `delta(a)=(a+1)*(a+3)`. It constructs positive indices `n,m` with `n≤k`, `m≤c`, and the four Pell recurrence coordinate equations shown in the source.
+* `direct_indices` takes positive `U`, `X`, `k`, `eta`, the lower bound `8≤Y`, the first norm for `Q=(X*Y)*Y`, and the exact direct signed-pair norm from `DirectMainNorm.direct_main_orientation`. It constructs a positive main root with the explicit direct oriented balance and both positive bounded Pell indices with their coordinate equations. No equivalence to the old `core.d` signed pair is assumed or concluded.
+
+These results generalize the classification step, not the full graph theorem. Neither assumed norm is derived from the proposed graph here; first-factor transport, index alignment, auxiliary conditions, fixed-port halt composition, completeness, and an iPRA proof-existence theorem remain open.
+
+`run-pell.py` produced `observations/pell-attempt01/terminal.json` with source and stdout/stderr snapshots. Lean exited 0 without warnings; both axiom reports list `propext`, `Classical.choice`, and `Quot.sound`. Source SHA-256 is `d50655779bf10d08b7b2586085141d35faea6fa5473075cec04a2146e4f67bb5`; direct norm and projection objects were pinned respectively to `e5f6eae350719a9b1586c21e64b974ffe70048580e2a37adc872d0a76e7965a5` and `e2510b3deeebc7d4067710ad1f3210191e6189050a9b3bfa8641f9a9a2bf3182`, and the new object hash is `753c3774163dd16a835157cdccc71ee05f81ad81bb45ec9eaf2d612cc7710f97`. The selected 1,291-object 92-halt union was unchanged; the receipt records resources. Package, dynamic, and source-to-object ancestry are inherited rather than rebuilt, and temporary paths may disappear.

@@ -1,0 +1,22 @@
+#!/usr/bin/env python3
+"""Read-only finite source and external graph checks; no Lean."""
+from pathlib import Path
+import hashlib,json,re,subprocess,sys
+assert sys.flags.isolated and sys.flags.no_site and sys.dont_write_bytecode
+P=Path(__file__).resolve().parent;D=P.parents[1]
+pins={'research/adaptive-aq17-forced104-j-draft/AQ17Forced104JForce.lean.src': '4362d2baa3ff5056b463d1fb3cef294878a1d9d9809ce556c94a042104f68f96', 'research/adaptive-aq17-forced104-j-draft/AQ17Forced104Literal.lean.src': 'd2ed649e06621b6ae1cdfff6c4f33d5ad1835f2fd73855d4227accd56016f9c0', 'research/adaptive-aq17-forced104-j-draft/AQ17Forced104ResidualZeros.lean.src': '3245b14ff7d92f9159f159ff67a93565b0f638c0456e1a909bc9b8c2bb62bd09', 'research/adaptive-aq17-forced104-j-draft/AQ17Forced104Residuals.lean.src': '35135a822e757b28877cc6c3a0b013349137d20078d67e9a8fbcf3751da4b72a', 'research/adaptive-aq17-forced104-j-draft/AQ17Forced104Transport.lean.src': '6f8a8c649eb59e35776c8c069b95caab7721d07080b28289d1944d0478f0b863', 'research/adaptive-aq17-forced104-j-draft/generate.py': '726894d7c35a6817979743824e2f75e5ebce14921d863a77f5a23dfcbca735b0', 'research/adaptive-aq17-forced104-j-draft/generated.json': '675d9118a7e521c92e5d3678a7f32d46d056d78bdf1f1f7aea132cd31237957e', 'research/adaptive-aq17-forced104-j-draft/generate_transport.py': 'f7715aa6bbd3ad7466361770bda05769494b39a8d61212cefc435b4418405ced', 'research/adaptive-aq17-forced104-j-draft/transport-generated.json': 'a5f6f45a48e057aef8d1d15094d609d75b7dea9472cd3490841eebb22a1da0c3', 'research/adaptive-aq17-forced105-extraction-draft/AQ17Forced105CutExtraction.lean.src': '3aaac2765bebc24bc0c3e08b5a66b704b97183d1fdb981ccf81288bf8e40bc05', 'research/adaptive-aq17-forced105-extraction-draft/AQ17Forced105Endpoint.lean.src': '7395fb0cd9111653070bf55382627df8ccd66c6f8d41148aab47ff056b1ee613', 'research/adaptive-aq17-forced105-extraction-draft/AQ17Forced105Evaluation.lean.src': '6a20d07dd4bf6b2e8f561663260c783e57185107a772baabbbc3fa3295c7f447', 'research/adaptive-aq17-forced105-extraction-draft/check.py': '8c39864cc1a89d980c7cdaa5f34c321e292bb4107416ac656381296eea6bfc3c', 'research/adaptive-aq17-forced105-extraction-draft/receipt.json': '8a942628a32c75475de69b1134fbc592f81b1b63fddfbb0d07bb52e8ec32b698', 'research/adaptive-aq17-forced105-model-draft/AQ17Forced105Arithmetic.lean.src': 'b3057437cfb476170b28114283783bb0bd392a28f1de1ba4a39b6bf264b5e330', 'research/adaptive-aq17-natural-forced104/candidate.json': '1a5f4c54fc5ad2768c676eea1bf875cda7917224e3c4bceebc3d852827fcb55a', 'research/adaptive-aq17-natural-forced104/check.py': '992c45568a234f0fd1d27a730c93edde9450e483c4b862649754a3cc002f5428', 'research/adaptive-aq17-natural-forced104/receipt.json': '73e0cf112535fe6912894a17e39d8dfac7ef3263973b28ee26d5e8c8dd25d12b', 'Lean/DiophantineConsistency/ModelThirteenCarrier.lean': '57f3cf755891aa921e9d97877af373e9194c6aa709a259c47678e4a370fd0185'}
+for f,h in pins.items():assert hashlib.sha256((D/f).read_bytes()).hexdigest()==h,f
+for packet,check,receipt in [('adaptive-aq17-forced104-j-draft','generate.py','generated.json'),('adaptive-aq17-forced104-j-draft','generate_transport.py','transport-generated.json'),('adaptive-aq17-forced105-extraction-draft','check.py','receipt.json'),('adaptive-aq17-natural-forced104','check.py','receipt.json')]:
+ p=D/'research'/packet
+ assert subprocess.check_output([sys.executable,'-I','-S','-B',str(p/check)],cwd=D)==(p/receipt).read_bytes(),packet
+src={x.name:x.read_text() for x in P.glob('*.lean.src')};assert len(src)==5
+for n,s in src.items():assert not re.search(r'\b(?:sorry|admit|axiom|unsafe)\b',s),n
+r=src['AQ17Forced104Residuals.lean.src']
+assert ': Fin 8 → Expr (Fin 17)' in r and len(re.findall(r'^  !\[([^\n]+)\]$',r,re.M)[0].split(','))==8
+j=src['AQ17Forced104JForce.lean.src'];t=src['AQ17Forced104Transport.lean.src']
+for x in ['root_zero_branch','j_positive','current_port1_representation','ModelThirteenCarrier.port1','((p 1 : ℤ) : DiffRing V)=ι k']:
+ assert x in j,x
+assert sorted(re.findall(r'^theorem relation(\d\d)',t,re.M))==[f'{i:02}' for i in range(8)]
+for x in ['current_no_zero_iff','h22','h20','h17','forcingCutExtraction']:
+ assert x in t,x
+print(json.dumps({'scope':'bounded source and external graph checks; no Lean','pinned_files':len(pins),'source_files':len(src),'residual_arity':8,'transport_residual_identities':8,'represented_second_port_explicit':True,'inherited_obligations_explicit':True,'source_sha256':{n:hashlib.sha256(s.encode()).hexdigest() for n,s in sorted(src.items())}},sort_keys=True,indent=2))

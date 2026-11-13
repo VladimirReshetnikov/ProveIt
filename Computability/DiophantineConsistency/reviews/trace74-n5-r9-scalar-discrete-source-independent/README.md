@@ -1,0 +1,3 @@
+# Independent source review: n5/r9 scalar discrete join
+
+Source-only PASS `b3114bc659b62826bca744ebf96ee408878039a3557f5032a3318b84782e00a6`; no Lean replay. Conditional on the pending two endpoint theorems, their exact inequality orientations yield 68 < Z = 2Y−x⁴−8x³−28x²−56x < 73. Substitution x=q w, Y=q³ s gives Z=q T with the displayed T exactly; q≥73 and the explicit discrete order hypothesis force T≥1 and hence Z≥q, contradicting Z<73≤q. The hypotheses hdisc, q≥73, x≥32, Y≥1, both factorisations and both strict scalar inequalities remain explicit. No Pell, graph zero, index exclusion or fixed-port guard follows without further binding. Casts, tactics and provider compatibility are unchecked.

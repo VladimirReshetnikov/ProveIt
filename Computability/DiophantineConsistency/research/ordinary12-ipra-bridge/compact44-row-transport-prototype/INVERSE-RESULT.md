@@ -1,0 +1,7 @@
+# Exploratory exact inverse lookup
+
+The corrected `CompactInverse.lean` defines the model lookup from the exact finite `inverseRows` array. It proves `inverse_forward` for an old model row index <942 and `inverse_image` for a compact model row index <943 and distinct from 1: the inverse is <942 and maps forward to the original compact index. Its `inverseLookup_defined` instance establishes that the inverse lookup itself is Σ₀-definable. It uses the audited matching provider's actual finite roundtrip and bounded row surjectivity.
+
+Author-only exploratory session 78429 actually exited 0 without warnings or `sorryAx`; both named reports were `[propext, Classical.choice, Quot.sound]`. The first attempt `CompactInverseFailed01.lean` exited 1 in session 56256 because an array index bound did not elaborate, and printed `sorryAx`; the successful version supplies the exact index and handles the two defaults explicitly. No objects or raw tool transcripts from these exploratory sessions were retained. The client still needs a coherent paired replay and independent review.
+
+The theorem assumes compact row 1 is absent; it does not prove that actual cyclic compact words exclude row 1. The separate finite forbidden-row result requires a matching left neighbor and a coherent same-provider join before use. Definability of composition with a modeled word, reverse word transport, neighbor/wrap existence, whole-tiling equivalence, calibration and the 12-variable iPRA endpoint are not established here.

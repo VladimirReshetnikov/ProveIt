@@ -1,0 +1,5 @@
+# Remaining low-side source drafts
+
+The raw concrete-support low identity has passed its guarded author check and independent result audit. These separate unchecked clients propose (1) specializing the already checked generic short-digit bound to the actual base, length, index and support, and (2) binding the raw identity to the actual `lowNat` definition. They intentionally remain separate so an expensive elaboration can be isolated.
+
+The [independent source review](../../reviews/trace74-symbolic-mask-low-tail-draft-independent/README.md) found no mathematical blocker and did not run Lean. Each needs a pinned compatible-provider runner and a guarded Lean check. The concrete-bound client's generic and support imports have distinct producer unions; the low-port client's raw identity and symbolic port dependencies likewise need captured first-resolution and closure checks. No strict bound, low-port identity, combined cover, model cast or graph guard follows from these drafts until checked.

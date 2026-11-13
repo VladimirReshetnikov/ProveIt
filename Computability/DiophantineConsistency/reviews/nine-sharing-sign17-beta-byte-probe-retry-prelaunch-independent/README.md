@@ -1,0 +1,3 @@
+# Independent sign17 beta-byte probe retry prelaunch
+
+The final independent checker exited 0. It checks the exact source delta: the current-port statement now explicitly casts the natural decoded value to integers, correcting the earlier inadvertent integer-valued interpretation, plus changes to power rewrites and the beta proof. The prior failure, 16 stages, provider routes, external Python beta-byte observation, controls and no-Lean preflight were checked. No Lean file/gzip/hash/JSON/PDF binding follows. One initial audit run failed because the retry removed one textual pattern occurrence; the count was corrected before the final pass.

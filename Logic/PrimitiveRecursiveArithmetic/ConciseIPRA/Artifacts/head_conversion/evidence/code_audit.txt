@@ -1,0 +1,78 @@
+Independent mathematical/code correspondence audit
+12 November 2026
+
+Audited files:
+  output/ipra_head_conversion_2026-11-12/code/head_checker.py
+  output/ipra_head_conversion_2026-11-12/code/verify_head.py
+
+Conclusion: no mismatch found between the implemented inference rules and
+the six-rule raw-hint calculus in weak_head_calculus.tex. This is a written
+code audit, not proof-assistant verification of the implementation.
+
+NORMALIZER
+normal follows the counter spine of an iterator, contracts a zero/successor
+counter, and otherwise retains the neutral iterator with its original raw
+seed/body. It returns every successor unchanged, including any redex below
+that successor. Equation endpoints are normalized recursively through Q/D.
+This is the specified W, rather than full normalization. The helper sub
+performs raw simultaneous de Bruijn substitution; it does not normalize its
+range or recursively substitute into that range.
+
+VALIDATION
+raw checks exact integer variable indices (booleans excluded), sort, arity,
+and all binding depths. It visits every raw hint before normal is called,
+including the seed/body of an iterator which head reduction will erase.
+formula additionally requires head-normal stored endpoints. Malformed tags,
+arities and non-list syntax reject by require or an exception. A theorem
+already established by hypothesis/reflexivity can ignore its proof field;
+the module consequently does not claim whole-file lexical validation of
+arbitrary unused proof subtrees.
+
+VARIABLE SUBSTITUTION
+The source index j is an exact integer naming one of the current free
+variables. The raw t and u hints are checked before use. The premises are
+exactly [v_j=t] and [u=v], with v read from the canonical first endpoint of
+the target. The target test is W(u[t/v_j])=its second endpoint. Restricting
+v to the canonical target endpoint loses no instance, because v is not
+substituted into any template in this rule. The t and u hints themselves
+are not replaced by their head normal forms.
+
+BINDERS AND INTRODUCTION
+Terms use de Bruijn indices with the nearest variable at index zero.
+An iterator body binds one variable; Q binds one; D binds two, with y at
+zero and x at one. Opening D adds one numerical variable and leaves the
+old D matrix as the body of a Q in that extended scope. Existing context
+and target are shifted; this enforces the existential eigenvariable rule.
+
+For DI, instance(B, shift(t), index=1) removes x while retaining y at zero.
+The intermediate normalization is legitimate by the left coherence law
+W(W(A)[sigma])=W(A[sigma]) with raw substitution ranges. In progressive
+mode, that y is the new free eigenvariable. In case mode, y is replaced by
+zero and the result is shifted under the fresh eigenvariable. The branch
+target replaces y by S(y) with drop=0, preserving that eigenvariable in the
+scope. The mode test compares the ORIGINAL raw t with the literal zero;
+it does not compare normal(t). Formula normalization never changes the
+outer equation/Q/D tag, so the matrix root test on the intermediate b is
+the same as the original matrix root test.
+
+TEST CONSTRUCTION
+The proof generator transport builds the three-row naming packet and
+opens it to the literal variable-source equality and the minor equation.
+Its final VS uses the raw target t and raw template h, as required. cases
+uses a dummy witness 1 (case mode); the mathematical proof instead allows
+dummy-zero progress with an unused hypothesis. Both are valid for the
+independent-branch uses generated here. weak shifts proof hints, source
+indices and nested eigenvariable levels consistently with binder scopes.
+The tested redex-under-successor bridge is a useful check that raw hints
+are retained, and the erased-body attacks test validation before erasure.
+
+INTERFACE BOUNDARY
+The measured module verifies EXPLICIT OPEN OR CLOSED SEQUENTS, using the
+variables/context/goal/proof object. A closed theorem has variables=0 and
+context=[]. ACCEPT on an open input asserts the supplied sequent, not the
+unconditional truth of its conclusion. This profile is appropriate for the
+matched head/full comparison, but must not be described as the same input
+contract as the repository's compact closed-guarded-goal modules.
+
+Finite regression checks supplement the universal mathematical argument.
+They are not the proof of soundness, completeness, or bi-interpretability.

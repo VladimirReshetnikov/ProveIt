@@ -1,0 +1,5 @@
+# Independent R7 quotient-size result audit
+
+PASS in recorded direct-pin scope. Attempt01 terminal `5154b775cd53769378b8e27bda910e02899e0b4788cff386632ef4a78d8765c1` records PASS and Lean exit 0; author reports actual outer session 82070 exit 0 and reaped. I rehashed all 37 pins, logs, source `c17ca8ec2e37bff7212ea887044dd3d0118d22a7d7b35e4b4f8d89cd98c52436`, runner `c9965d135b9b6c8d7c8e8e1fed8d6ef914ad2a44763c003ddeac7384e89e9c77`, and object `8ad40f5967e55cc4cb9186aae15b3be243c6cf1177e20586e425cc5c26b1ebe8`. The sole exact report lists `[propext, Classical.choice, Quot.sound]`; stderr is empty.
+
+The generic discrete ordered-ring theorem assumes q≥32, y≥q³, x>65532(q−1)y and the explicit reduced weighted-product divisibility and concludes False. It derives the bounded positive quotient and invokes the checked quotient obstruction. It does not supply any of these premises from a graph, prove N5 exclusion or a guard. Full transitive/companion/dynamic ancestry and continuous path stability remain outside direct-pin evidence. No Lean was run in this audit.

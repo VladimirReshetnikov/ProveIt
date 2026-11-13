@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];repo=root.parents[1];p=root/'research/nine-sharing-sign14-positive74-object-shift-positive-leaf-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+assert sha(p/'run.py')=='f006c0a28135abd45619bcd9f8b56aead076831c7c50830f17643ee2e1fe71dc' and sha(p/'source-manifest.json')=='bd12211ec5aaa8ab955109c50e9b32641c3ea47b3b46acce6214db8425ec5259'
+e,=json.loads((p/'source-manifest.json').read_text())['rows'];n='Sign14Positive74ObjectShiftPositiveLeaf';q=p/'src/DiophantineConsistency'/(n+'.lean');s=q.read_text();assert e['module']=='DiophantineConsistency.'+n and e['imports']==['DiophantineConsistency.Sign14Positive74ObjectNumeralOne','DiophantineConsistency.IPRAAddOneDirect','DiophantineConsistency.IPRAStandardTheory','DiophantineConsistency.IPRANativeAxiomImage'] and sha(q)==sha(repo/e['source'])==e['source_sha256'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==e['imports'] and not re.search(r'(?m)^\s*(axiom|opaque|partial)\b|\b(sorry|admit|native_decide)\b',s)
+for z in ('fun i => .func .succ (fun _ => v i)','(compiledOpen (.add (.var i) (.constant 1)) v) (compiledOpen (.var i) (succVec v))','oneNormalize v','binaryOpen addCode (v i) t (v i) o','addOneOpen (v i)','simpa only [compiled_add, compiled_var, succVec, t, o]'):assert z in s
+old=(root/'research/nine-sharing-sign14-positive74-object-shift-variable-check/src/DiophantineConsistency/Sign14Positive74ObjectShiftVariable.lean').read_text();assert old.split('def addOneOpen',1)[1].split('end DiophantineConsistency.',1)[0].strip()==s.split('def addOneOpen',1)[1].split('def succVec',1)[0].strip()
+for f in ('nine-sharing-sign14-positive74-object-numeral-one-terminal-independent','nine-sharing-sign14-positive74-object-shift-variable-terminal-independent'):
+ subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews'/f/'check.py')],capture_output=True,check=True,timeout=180)
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'framework-survey.py')],capture_output=True,text=True,check=True,timeout=180);f=json.loads(x.stdout);assert f['status']=='PASS' and f['observed']['IPRAAddOneDirect']['sha256']=='34016e7d69ee2a8a1c7ed44132ef49b9b9cacf06c4117625c543885d26df32c3' and f['observed']['IPRANativeAxiomImage']['sha256']=='55363675d98f4a7f543b1e771a59cd7c9331fcb0643afbdb57e488a52ad54b71' and 'IPRAStandardTheory' in f['observed']
+r=(p/'run.py').read_text();assert "'-M3600'" in r and "LEAN_NUM_THREADS='1'" in r and "'-j1'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r and 'direct producer binding' in r
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','scope':'proposed positive variable leaf at successor assignment; full split and closure separate'},indent=2))

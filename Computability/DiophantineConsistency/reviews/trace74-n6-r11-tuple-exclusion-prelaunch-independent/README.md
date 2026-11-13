@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: n6/r11 tuple exclusion
+
+GO subject to root release and fresh locked preflight. Source `3a5daffef953d2660a73fe8925e053b7a0a35e9898fb6775f72d536b2eccdef4`, runner `e09c2b004e30740c61c66647ff6cc1a104e25a4ff59981046d5cc968692540dc`, policy `0d0ae612770a6330b072c67a974e60eb1527501f9e5676215732f67e220bd9d4`. No Lean replay in review. Positive same p/v, q≥260 and the n6/r11 ordinate equations are explicit; graph zero not required.
+
+Five direct source imports and three immediate scalar certificate/upper/base objects currently each uniquely select expected pinned object on the configured path. Audited scalar join and ordinal identity terminals/objects pinned, including clean lower stage from overall failed timeout run; strict named report, empty stderr, pre/post pins and locked resource guard checked. Thirteen actual-validator controls pass. Point-in-time selection does not establish serialized transitive/package ancestry or continuously stable resolution. No guard or endpoint claim.

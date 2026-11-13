@@ -1,0 +1,159 @@
+CHECKER AUDIT: SHARED VALIDATOR AND ROOT REVERSAL
+================================================
+
+Pinned baseline: 1517d9d79ce33f631e0f82960c849427cbba23bf
+Repository: VladimirReshetnikov/ProveIt
+Directory: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+
+1. Exact validator equivalence
+-----------------------------
+
+Let F_old(a,s) and T_old(a,s) be formula and term from the frozen
+guarded_core/reference/baseline_strict_goal.py. Let V(a,d) be the
+shared validator in code/checker_rev_strict_eqd.py. For every JSON value a and
+every nonnegative integer s:
+
+    F_old(a,s) iff V(a,2s)
+    T_old(a,s) iff V(a,3+2s).
+
+Proof is simultaneous structural induction. Both programs require exact
+Python int/list types; booleans, floats, strings, dictionaries and null
+are rejected. At a numerical leaf, d=3+2s and both predicates admit
+exactly 0 and the odd indices 3 <= a < 3+2s. At a formula leaf, the
+even-depth test rejects all integers, as the old formula predicate does.
+
+At formula depth 2s, unary D increases depth by 4, corresponding to two
+bound slots; binary equality increases it by 3 and enters the numerical
+sort. At numerical depth 3+2s, unary successor increases depth by 4,
+corresponding to two inherited dummy slots; ternary iterator increases
+it by 2, corresponding to one slot. No other list arity is accepted.
+
+For full Eq/Q/D goals, extend the old formula function by admitting
+exact diagonal triples [B,B,B], checking B at s+1. Extend V by admitting
+ternary formula roots and requiring their three entries to be equal.
+The same induction applies: a ternary formula root increases depth by 2.
+
+Finite corroboration in parser_audit.json ran 260500 comparisons across
+malformed trees, canonical generated trees, scopes 0 through 4, and both
+term/formula modes. No mismatches occurred. This is evidence of faithful
+implementation, not a replacement for the structural-induction proof.
+
+2. Whole-program measurements
+----------------------------
+
+Docstrings removed; ast.unparse plus final newline; gzip level 9,
+mtime=0. CPython 3.12.
+
+Program                              Tokens AST  Bytes gzip9
+Frozen old strict Eq/D                 450   521  1109   538
+Source-dispatch + shared Eq/D parser   373   426   824   460
+REV + shared Eq/D parser               379   432   830   466
+Extended old strict Eq/Q/D control     481   560  1189   554
+REV + shared Eq/Q/D parser             405   462   879   482
+
+The full-native old control is a NEW comparison derivative, not an
+upstream-frozen source. The Eq/D old checker is an exact frozen source.
+The compact no-goal-validator source-dispatch baseline is 526 bytes;
+The separate scalar-neutral variant is 525 bytes. Combining scalar-neutral
+truth with root reversal gives 531 bytes. The large strict-profile savings
+arise from one shared validation traversal replacing separate term and
+formula traversals; REV itself costs six bytes. Selected new profiles in
+this table all use the scalar-neutral convention described below.
+
+Recommended whole-certificate typed REV profile:
+    456 tokens / 520 AST nodes / 1055 normalized bytes / gzip9 545.
+Matched whole-certificate typed old control:
+    532 tokens / 618 AST nodes / 1365 normalized bytes / gzip9 614.
+Same new validator and scalar-neutral protocol, but no REV:
+    450 tokens / 514 AST nodes / 1049 normalized bytes / gzip9 540.
+All three additionally reject every non-int/non-list JSON node, including
+booleans, floats, null, strings and dictionaries anywhere in the input.
+This removes reliance on any fractional-variable or exotic-leaf alias.
+Their numerical certificates can still contain noncanonical list arities,
+which receive the explicit administrative readings discussed above.
+
+3. Root reversal and noncanonical ternary formulas
+------------------------------------------------
+
+Under the old raw-alias convention, a ternary formula reads only its
+last child as a Q matrix. Unconditional array reversal is NOT sound
+under that convention: it exchanges the first and last children.
+Canonical public-goal validation alone does not fix this, since internal
+certificate expressions can be noncanonical.
+
+A sound symmetric convention is available. Interpret any ternary formula
+[B0,B1,B2] as the ordinary intuitionistic formula
+
+    Q_y B0 AND Q_y B1 AND Q_y B2,
+
+where Q_y B means B(0) -> forall y B(y). This is a conjunction OF closures;
+it is not the closure of a conjunction. Keep the inherited interpretation
+at all other arities. A canonical triple [B,B,B] remains equivalent to
+Q_y B by conjunction idempotence.
+
+The opening traversal visits the three children at the same depth, so
+capture-free substitution acts componentwise in this reading. Root
+reversal exchanges the first and third conjuncts and is intuitionistically
+an equivalence. At a binary formula it swaps the sides of equality; at a
+unary D formula it is the identity. Other admitted formula arities have
+the inherited constant-truth reading, also invariant under reversal.
+
+Audit of the kernel supply/use cases:
+
+* QE's major matcher uses the exact diagonal [template]*3. Thus its major
+  still supplies Q(template), and the reversed target is equivalent to
+  the ordinary target under the symmetric reading.
+* A proved unary D major exports major*3, an exact diagonal Q resource.
+* A proved nonempty major of arity other than one exports an array of
+  arity at least six, hence only the inherited administrative truth.
+* Equality transport is sound under ordinary equality in every decoded
+  formula; applying root reversal then preserves equivalence.
+* DI by cases is sound for arbitrary decoded matrices by numerical
+  coverage. This includes conjunctions of closures.
+* The progress mode introduces genuine induction assumptions only at
+  binary equations; admitted even padding roots decode to truth.
+* Computation equations and numerical expressions are unchanged.
+
+This is a changed administrative interpretation, and should be stated
+explicitly. The inherited numerical-codec proof still supplies the
+term-opening lemma. The only new formula-opening case is the componentwise
+ternary case just described.
+
+An alternative implementation preserving the old raw-alias convention
+uses a[::len(a)%2 or -1] rather than a[::-1]. It reverses binary equations
+and even truth-padding roots while leaving Q and D roots unchanged. This
+adds 15 normalized bytes. It avoids the symmetric-triple proof obligation.
+
+4. Scalar-neutral administrative truth
+-------------------------------------
+
+The local source-dispatch profiles seed their retained context with the
+empty-array formula []. Replace that administrative truth by scalar 0,
+so the default context becomes [0] or the one-element tuple (0,). The
+opening operation returns 0 at a scalar formula position of even depth.
+Both spellings have the inherited ordinary reading 0=0. Neither is a
+canonical public Eq/Q/D formula, so the native formula language is unchanged.
+
+A canonical proof producer replaces only neutral packet majors [] by 0.
+The introduction mode remains in its original field: initializer_or_mode=[]
+selects cases, and initializer_or_mode=0 selects equation progress. Formula
+or term bodies, numeral zero and all non-neutral majors are unchanged.
+The major matcher cannot mistake 0 for a nonempty equality or Q list.
+All subsequent branch tests give the same effect because both administrative
+markers are falsy. The recursive proof of the neutral major closes at the
+new initial context. Thus the canonical compiler still realizes every
+native rule, and soundness retains exactly the same ordinary truth axiom.
+
+This is not an identity of arbitrary serialized-certificate languages.
+It is a change of one administrative truth representative. The global
+source_dispatch token profile has no initial neutral formula and does not
+benefit from this change. Its 259-token frontier is not improved here.
+
+Frozen four accepted derived examples and one deliberately rejected old
+primitive control were run on original and neutral-zero AST/byte profiles,
+in normal and optimized Python. All 40 expected-verdict checks agreed.
+The transformation and source hashes are recorded separately. The new
+byte figure is 525 versus 526; the AST figure is 282 versus 283, attained
+by different programs. Novelty was checked against the inspected three
+source_dispatch profiles only. No exhaustive historical novelty claim
+or absolute minimality claim follows from these measurements.

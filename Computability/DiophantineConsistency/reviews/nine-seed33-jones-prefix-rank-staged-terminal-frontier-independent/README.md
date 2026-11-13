@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 74994 exited 0. Both source/object/log stages, direct group06 sums/other providers and local raw-rank provider, 250 guard slots and 1,074 overlay links were checked, including replay of the group06 terminal audit. Raw and carried d11 rank statements report [propext, Classical.choice, Quot.sound], without warnings.
+
+These are symbolic short-prefix rank identities, with no rankRaw=rankCode, full output semantic equality, JSON/human binding, degree or operation count. Outer exit is author-recorded; deeper dynamic/transitive ancestry is inherited. No Lean replay was performed. The prelaunch check is pinned but its no-Lean preflight is not rerun after output creation.

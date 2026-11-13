@@ -1,0 +1,158 @@
+Independent mathematical audit
+==============================
+
+Scope of this note
+------------------
+The current corpus already contains the scalar, register, constancy,
+uniqueness, substitution, normalization, naming, and clausal reductions that
+were the most natural mathematical candidates. No new axiom deletion is
+claimed here. The defensible new measured construction is a representation
+of the existing complete calculus. The following checks strengthen its
+correctness argument and clarify the inherited certificate compilation.
+
+1. Exact proof for initialization in a default expression
+-------------------------------------------------------
+
+Control:
+
+    k = 0
+    def i(a, t=0j, d=0):
+        BODY
+
+Candidate:
+
+    def i(a, t=0j, d=(k := 0)):
+        BODY
+
+The definitions occur at module scope. Python evaluates default-argument
+expressions once, while executing the function definition, in its enclosing
+scope. Therefore the candidate first evaluates 0j, evaluates the named
+expression, assigns the integer 0 to the module binding k, stores integer 0
+as the third parameter's default, and creates i. The control has already
+assigned the identical module binding and stores the identical defaults.
+Neither program has read input at this point. The function bodies and the
+remaining module statements are identical.
+
+After the definition, corresponding states agree on every value subsequently
+read by the programs: the reader, k, i's default tuple, the function bodies,
+and all not-yet-read input. Induction on execution steps gives identical
+input consumption, return values, scope allocations and standard output.
+One should ignore source-location information in code objects and tracebacks,
+which the programs never inspect. The definition executes only once; a
+recursive call omitting d uses the stored integer and does not reset k.
+There is no assertion in either module, so the proof is unchanged under -O.
+The statement is about the mathematical execution model with unbounded
+resources, as are the corpus's other size and completeness claims.
+
+In AST accounting, the control has a standalone Assign(Name(Store), Constant)
+with four nodes, as well as the default Constant with one node. The candidate
+has a NamedExpr(Name(Store), Constant) default with four nodes. Thus exactly
+one AST node is removed. Under ast.unparse plus LF, the 259-node match control
+is 252 significant tokens / 259 nodes / 595 bytes, and this composition is
+253 / 258 / 596. It does not improve the separate token or byte minima.
+
+2. A precise opening-retraction lemma
+------------------------------------
+
+For the short-circuit opener O at fixed floor k <= 0 and arbitrary integer
+depth d, with missing image bottom, let a be a finite tree of exact integers
+and lists. If O(a; bottom,d) terminates successfully, then
+
+    O(O(a; bottom,d); bottom,d) = O(a; bottom,d).
+
+This is literal equality of raw trees, including annotations. Proof is by
+structural induction. The list case preserves arity, so both traversals use
+the identical child depth d + 5 - len(a). A scalar in [k,d) is retained. An
+out-of-range scalar at odd depth attempts to open bottom and fails, so it
+cannot occur in a successful opening. At even depth it is changed to 0. A
+second traversal retains 0 when it is in range and otherwise changes it to
+0 again. The argument also covers negative depths beneath long annotations.
+
+For the eager opener E, with the factor d % 2 * E(image; bottom,root), a
+stronger statement holds: E(a; bottom,d), if successful, is literally a.
+An out-of-range scalar invokes the invalid sentinel eagerly even at even
+depth and therefore cannot occur. This distinction matters. O can normalize
+unread annotations to 0; E validates every scalar. Neither lemma permits
+changing the depth or floor between the two traversals.
+
+At positions with a semantic reading, arity 1 adds two protected slots,
+arity 2 changes from formula to term, and arity 3 adds one protected slot.
+The law child_depth = d + 5 - arity is exactly these three cases. Dummy
+slots under successor, iterator counter and iterator initializer read 0.
+Closed inserted terms are opened at root term depth before copying, so
+copying them beneath further binders cannot capture their free parameters.
+The other arities are semantically constant and their children are only
+annotations. Their traversal can make a certificate fail but cannot alter
+the logical meaning of a successful derivation.
+
+This is an explicit proof of the article's retraction invariant, not a new
+axiom of iPRA or a new mathematical reduction.
+
+3. The exact-consumption lemma for early terminal matches
+--------------------------------------------------------
+
+An early terminal match inside a recursive major proof must not be described
+as merely leaving an unused suffix: its parent may subsequently need packets
+for a different continuation. Instead compile with an exact-consumption
+invariant. A standard sufficient invariant is:
+
+  For a finite derivation in the current abstract parameter scope and an
+  incoming allocator floor k, construct a packet word P and outgoing floor l
+  such that Check(goal,context) consumes exactly P, returns at floor l, and
+  leaves every appended word R completely unread.
+
+Use fresh abstract eigenparameters in the mathematical derivation; assign
+their negative integer names only as the compiler traverses the actual call
+tree. At a node choose its locally correct packet and evaluate the terminal
+test in the current state before compiling its children. If it succeeds,
+the node is justified by Hyp or a computation axiom, so emit the one packet
+and prune its unused children. No fresh parameter is allocated. If it fails,
+emit that packet, recursively compile the major if the protocol calls for
+one, obtain its outgoing floor, allocate the next fresh name at exactly the
+point where the checker allocates it, and recursively compile the remaining
+continuation. Concatenate only the packet words actually used.
+
+The proof is induction on the finite derivation skeleton. In a successful
+terminal case the claim is immediate. In a nonterminal case each recursive
+induction hypothesis consumes exactly its own word, and the next word is
+therefore the correct continuation. The freshness invariant is preserved
+because all previously scoped expressions use names >= their incoming
+floor, whereas the newly assigned name is strictly lower. Alpha-renaming a
+subderivation preserves the rules. In a local-floor checker the major's
+outgoing allocation is discarded; in a global-floor checker it is retained.
+
+This lemma is a compiler repair/clarification. It proves existence of
+accepted certificates for the same theorems; it does not assert that an
+unmodified old certificate survives insertion of a new early terminal test.
+For the default-initialization change in section 1 no compiler repair is
+needed, since its entire raw acceptance relation is unchanged.
+
+4. Transfer of the iPRA bi-interpretation
+--------------------------------------
+
+An exact acceptance equivalence immediately transfers the existing public
+theory, but the public/auxiliary distinction must stay visible. In the
+root-selected auxiliary calculus, Q_y B always has conditional-closure
+reading B(0) -> forall y B(y). A D binder with a literal equation matrix E
+has progressive reading exists x forall y(E(x,y) -> E(x,Sy)); a compound
+matrix uses exists x(B(x,0) -> forall y B(x,y)). For a guarded atomic matrix
+I(y,0;u.h) = I(y,0;u.k), the zero instance is provable, and equation induction
+identifies its progressive and conditional readings. This is why the guarded
+public language has the original iPRA reading. One must not give every raw
+auxiliary D formula the conditional reading without qualification.
+
+The existing ordinary scalar bridge has intuitionistic first-order logic
+with actual equality, the two iterator computations, numerical coverage,
+0 != S0, and induction for literal equations with side assumptions. The
+article derives predecessor, reflection of equality, quantifier-free
+induction, pairing and the compiler for every fixed primitive-recursive
+definition. In the other direction each iterator term denotes a primitive
+recursive function in iPRA. Uniqueness by quantifier-free induction proves
+both composites equal on terms; the logical translation supplies both
+formula round trips. Domains remain the whole numerical domain, with
+identity graph x=y and actual equality.
+
+The new checker does not reprove or modify that bridge. Its correctness
+dependency is explicit: existing bridge + existing checker's adequacy + the
+new exact program equivalence. No global minimality theorem follows from a
+new measured coordinate record.

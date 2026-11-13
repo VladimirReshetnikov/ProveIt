@@ -1,0 +1,7 @@
+# Second sign33 forward-constructor cut group checked
+
+Author-observed outer session `25653` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `d3aedeb8261f059ff714def42a7dc56dedf1630c29b9d145832ee7b83ddbe7d2`; before and after provider surveys both hash to `343a9ae6bc95dd44da13a941f7cf9a0f9bf7cab005d108d2368fd0f99d36b49f`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ForwardGroup01` compiled in 3.28 seconds; object SHA-256 `a4f6e2fc5d46f70f3cd6c4e3c0c4a154c7e1592117fcfdae799a2f1d72838542` at `/tmp/nine-sharing-sign33-forward-group01-check-20261106/lib/DiophantineConsistency/Sign33ForwardGroup01.olean`, compile log `41dbedda3c62a7ebbfd62ee277d21ddba6fb0f5ddff5921891951b6d783d0f23`. The axiom report lists `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,166,116,352 bytes and minimum sampled available host memory was 18,957,037,568 bytes; sampling has the stated limitations.
+
+For arbitrary supplied signed representatives, the constructor satisfies the Y/E/kY conjunction. No other AllCuts groups, five norms, source-to-seed witness theorem, Lean proof of external JSON binding, or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.

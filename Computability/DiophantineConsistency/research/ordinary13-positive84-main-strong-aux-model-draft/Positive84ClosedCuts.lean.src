@@ -1,0 +1,16 @@
+import Positive84StrongAux
+
+/-! Source-level composition of the proposed compact 84 cut. This is not
+an elaborated theorem and carries the entire transitive provider/axiom debt. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Positive84ClosedCutsDraft
+
+/-- Proposed all-model positive-84 q-divisibility cut, using only the compact
+source bindings and actual extra-term 84 graph. -/
+theorem divCut (K : ℕ) : DiophantineConsistency.Positive83To84BridgeDraft.DivCut K :=
+  DiophantineConsistency.Positive84RankWindowDraft.divCut K
+    (DiophantineConsistency.Positive84StrongAuxDraft.mainStrongAuxGraphCut K)
+end DiophantineConsistency.Positive84ClosedCutsDraft
+#print axioms DiophantineConsistency.Positive84ClosedCutsDraft.divCut

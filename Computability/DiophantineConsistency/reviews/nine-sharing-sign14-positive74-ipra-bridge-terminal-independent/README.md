@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 21866 exited 0. Stage/postflight passed; frozen receipt/state/logs, source/object, all three direct producer routes, provider object hashes and guarded overlays match. The bridge report is `[propext, Classical.choice, Quot.sound]` with no warnings or `sorryAx`. This establishes a polynomial bridge for positiveShift of Positive74 at the symbolic current ports; explicit positive-witness formulation, iPRA endpoint and external file/PDF binding remain separate. The earlier independent prelaunch checked the 1,125/639 provider union and captured old-bridge direct routes; this is point-in-time, not a full transitive trace. No Lean was run.

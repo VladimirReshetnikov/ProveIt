@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS. Four pinned modules exactly adapt checked sign38 sources by namespace replacement and propose eleven d18 carry identities for b, N, g, G, R, h, s, w, phi, i and j. Every Fin index, cast-successor count and previous-node chain was checked; t is already last at d18 and needs no carry. The runner replays the audited symbolic d11 producer, binds all direct imports to its object/guards, and independent no-Lean preflight passed.
+
+The identities preserve prior prefix values only. Elaboration and resource success are untested; final output semantics, degree and JSON binding remain separate. Deeper ancestry is inherited.

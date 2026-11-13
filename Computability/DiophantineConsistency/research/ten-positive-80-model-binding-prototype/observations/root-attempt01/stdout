@@ -1,0 +1,39 @@
+/tmp/tenpositive-80root-ovaejq03/Direct80Root.lean:47:65: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 10 → V
+delta U E M V0 Z0 : V
+hdelta : 0 < delta
+hU : 0 < U
+hE : 0 < E
+hM : 0 < M
+hV0 : 0 < V0
+hd : Expr.evalRing (fun j => ι (v j)) (graph p).delta = ι delta
+hu : Expr.evalRing (fun j => ι (v j)) (graph p).u = ι U
+he : Expr.evalRing (fun j => ι (v j)) (graph p).e = ι E
+hm : Expr.evalRing (fun j => ι (v j)) (graph p).m = ι M
+hv : Expr.evalRing (fun j => ι (v j)) (graph p).v * Expr.evalRing (fun j => ι (v j)) (graph p).v = ι (V0 * V0)
+hz : Expr.evalRing (fun j => ι (v j)) (graph p).z * Expr.evalRing (fun j => ι (v j)) (graph p).z = ι (Z0 * Z0)
+hzero : InternalZero (graph p).output v
+a : V := delta * U * U * E
+G : V := E * (1 + a)
+Q : V := delta * (4 * a * (1 + a))
+ha : 0 < a
+hQ : 0 < Q
+hQV : 0 < Q * (V0 * V0)
+hqsub : Q - 1 + 1 = Q
+hqvsub : Q * (V0 * V0) - 1 + 1 = Q * (V0 * V0)
+hQcast : ι (Q - 1) = ι Q - 1
+hQVcast : ι (Q * (V0 * V0) - 1) = ι (Q * (V0 * V0)) - 1
+haeval : Expr.evalRing (fun j => ι (v j)) (graph p).a = ι a
+⊢ ι E * (ι a + 1) = ι E * (1 + ι a)
+/tmp/tenpositive-80root-ovaejq03/Direct80Root.lean:62:2: error: 'change' tactic failed, pattern
+  (Q - 1) * (Z0 * Z0) = M * M * (G * (Q * (V0 * V0) - 1))
+is not definitionally equal to target
+  have a := delta * U * U * E;
+  have G := E * (1 + a);
+  have Q := delta * (1 + 4 * a * (1 + a) - 1);
+  (Q - 1) * (Z0 * Z0) = M * M * (G * (Q * V0 * V0 - 1))
+'TenPositive80Root.root_of_representatives' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

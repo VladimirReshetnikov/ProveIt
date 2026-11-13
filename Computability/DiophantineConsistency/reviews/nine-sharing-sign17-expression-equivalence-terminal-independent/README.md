@@ -1,0 +1,3 @@
+# Independent terminal audit: sign17 direct expression iff
+
+The independent checker exited 0. Author-observed outer session 67784 exited 0, with stage and final postflight successful. Lean checked current-port Fin17/Fin18 direct symbolic zero-existence equivalence in the covered model, including the signed gap argument via positive beta. Source/object/import/log pins, evaluator union, guards and overlays were checked; two axiom reports, one unused-section-variable warning, no sorryAx. Current-port ancestry includes successful children of an overall failed historical producer. No iPRA endpoint or external JSON/PDF binding is established here.

@@ -1,0 +1,5 @@
+# Independent terminal review: generated macro recipe
+
+**Pass for retained Lean evidence**, without Lean replay. Author-observed outer session 67174 exited 0; this is not an independently observed raw transcript. Lean elaborated the 45-entry DAG data definition and two proposition definitions `WellScopedTarget` and `SemanticTarget`. Neither proposition has a proof in this module; Lean has not established scopedness, a graph-to-endpoint semantic equality or a JSON/document serialization binding. The compile log is empty: no warnings and no axiom reports requested.
+
+`check.py` verifies source, state, object, child logs, the exact direct macro-language provider, all 100 guard slots, 1,165 overlay links and a fresh producer survey replay. Both child invocations exited 0 without sampled monitor stop/error. Provider checks are point observations; inherited initial-agreement numeric outer exit remains unavailable. The earlier independent source review compares all 45 quoted nodes to JSON but is an unverified manual/decoder boundary.

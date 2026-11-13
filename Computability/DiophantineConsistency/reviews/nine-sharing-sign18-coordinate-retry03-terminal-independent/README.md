@@ -1,0 +1,3 @@
+# Independent terminal audit: sign18 main-root coordinate retry03
+
+The independent checker exited 0. Author-observed outer session 73875 exited 0, with stage and final postflight successful. Lean checked conditional main-root zero, coordinate recovery and lift/drop theorems under explicit beta-port representation. The direct source/object/import/log pins, guards, overlays and both staged syntax providers were checked; three axiom reports, no warnings or sorryAx. The external lift AST correspondence was separately source-audited; no Lean JSON binding, full model bridge or endpoint is established here.

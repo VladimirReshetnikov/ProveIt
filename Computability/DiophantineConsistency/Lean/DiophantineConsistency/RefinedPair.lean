@@ -1,4 +1,5 @@
 import Mathlib.Algebra.BigOperators.Fin
+import DiophantineConsistency.JonesSyntaxCore
 import Diophantine.Common.RefinedRelationCombiningPolynomial
 import Mathlib.Data.Fintype.BigOperators
 import Mathlib.Tactic.FinCases
@@ -18,13 +19,6 @@ namespace DiophantineConsistency.RefinedPair
 
 open Diophantine
 open scoped BigOperators
-
-/-- Literal ordinary-polynomial formula for two radicands. -/
-def value {R : Type*} [Add R] [Sub R] [Mul R] [Pow R ℕ]
-    [OfNat R 1] [OfNat R 2] [OfNat R 4] (A0 A1 V0 V1 n B C D : R) : R :=
-  let K := B * (2 * D - 1)
-  let T := B * n + C - K * (C + V0 * V1)
-  (T ^ 2 + K ^ 2 * A0 - K ^ 2 * V0 ^ 2 * A1) ^ 2 - 4 * T ^ 2 * K ^ 2 * A0
 
 variable {R : Type*} [CommRing R]
 

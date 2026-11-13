@@ -1,0 +1,7 @@
+# Independent review: four-port symbolic decoder tuple
+
+The successful checked source defines four big-endian symbolic lists in the order β, K with the `2^47` recipe, MC and MF with one `rho^2011 − 1` shift. Its `decoded_apply` theorem states that each list is reversed, decoded in natural base 256 and cast to integers. Its `decoded_eq_ports` theorem identifies that entire decoded function with the current `Fin 4 → ℤ` ports. The same four exact list arguments are used in `bigBytes`, `decoded`, and the application of the parametric assembly theorem. The assembly receives β/K pair components first and MC/MF pair components second; the earlier independent review checks the individual indices and β natural-to-integer bridge.
+
+Actual outer session 69659 and its Lean child exited 0. The recorded object and both standard Lean axiom reports are checked. `check.py` also rechecks all 874 recorded guard slots, both source snapshots, log, runner and the exact object hashes of the generic assembly and two pair providers. The direct/nested provider evidence inherits transitive ancestry and is not a full dynamic load trace or independent Lean replay.
+
+This is a Lean theorem about symbolic lists, not file reads, gzip decompression, or PDF contents. The independently checked β, K, MC and MF external byte comparisons have separate scope as described in the earlier precursor review. Run this checker with Python 3; it does not run Lean.

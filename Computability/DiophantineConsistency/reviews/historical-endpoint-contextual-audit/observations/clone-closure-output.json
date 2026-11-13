@@ -1,0 +1,45 @@
+{
+  "status": "PASS_INDEPENDENT_THIRTEEN_ENDPOINT_CLOSURE_AUDIT",
+  "source_commit": "435062d125",
+  "selected": 1145,
+  "new": 49,
+  "changed": 15,
+  "changed_import_lists": 0,
+  "dirty": 338,
+  "reusable": 807,
+  "historical_objects_checked_per_side": 1210,
+  "provider_overlap": 104,
+  "provider_mismatches": [
+    "BusyBeaver.ZFC.KZip",
+    "DiophantineConsistency.ArithmeticBinaryCarry",
+    "DiophantineConsistency.ArithmeticBinomLegendre",
+    "DiophantineConsistency.ArithmeticCyclicWord",
+    "DiophantineConsistency.ArithmeticWindowCarry",
+    "DiophantineConsistency.NaturalExpression"
+  ],
+  "seed_direct_and_output_guards_per_side": 9080,
+  "rebuild_external_modules": 27,
+  "checks": [
+    {
+      "script": "survey.py",
+      "exit": 0,
+      "stdout": "PASS_SOURCE_DECLARED_CLOSURE 1081 parent-boundary 41 missing-external []"
+    },
+    {
+      "script": "compare_historical.py",
+      "exit": 0,
+      "stdout": "PASS_HISTORICAL_COMPARISON 1145 new 49 changed 15 dirty 338 reusable 807 object_findings {'author': {'missing': [], 'symlink': [], 'mismatch_to_record': []}, 'peer': {'missing': [], 'symlink': [], 'mismatch_to_record': []}} sibling_mismatch 0"
+    },
+    {
+      "script": "compare_provider_objects.py",
+      "exit": 0,
+      "stdout": "PASS_PROVIDER_OBJECT_COMPARISON 104 different 6"
+    },
+    {
+      "script": "frontier_plan.py",
+      "exit": 0,
+      "stdout": "PASS_CANDIDATE_FRONTIER 338 reuse 807 guards {'author': {'seed_count': 807, 'direct_and_output_guard_count': 9080, 'external_direct_modules': 101}, 'peer': {'seed_count': 807, 'direct_and_output_guard_count': 9080, 'external_direct_modules': 101}} historical_author_seconds 2381.9"
+    }
+  ],
+  "scope": "Source-declared candidate frontier and point-in-time object/companion checks; not a Lean build, compiled endpoint-binding draft, complete axiom inventory, or iPRA proof."
+}

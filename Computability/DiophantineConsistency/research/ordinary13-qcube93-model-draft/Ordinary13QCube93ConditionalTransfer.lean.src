@@ -1,0 +1,106 @@
+import Ordinary13QCube93Arithmetic
+import Ordinary13QCube93Parent
+import Ordinary13QCube93Child
+import DiophantineConsistency.HAExpressionNoZeroEquiv
+import DiophantineConsistency.IPRAExpressionNative
+
+/-! Conditional model transfer to the compact-parent expression. The graph
+norm and zero maps, fixed-port beta representation, parent polynomial bridge,
+and all provider ancestry are explicit obligations. Source only; no Lean. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.Ordinary13QCube93ConditionalTransferDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Ordinary13QCube93ArithmeticDraft
+
+def b {V : Type*} [Mul V] (beta : V) (v : Fin 13 → V) : V := v 0*beta
+
+def parentVal {V : Type*} [Add V] [Mul V] [Sub V] [One V]
+    (beta : V) (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=7 then cubeScale (b beta v)*(v 7+1)-1 else v i
+
+def childVal {V : Type*} [Sub V] [One V] (v : Fin 13 → V) (s : V) (i : Fin 13) : V :=
+  if i=7 then s-1 else v i
+
+def parent (p : Fin 4 → ℤ) : Expr (Fin 13) := Ordinary13QCube93ParentDraft.literal p
+def child (p : Fin 4 → ℤ) : Expr (Fin 13) := Ordinary13QCube93ChildDraft.literal p
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem parentVal_y (beta : V) (v : Fin 13 → V) :
+    parentVal beta v 7+1=cubeScale (b beta v)*(v 7+1) := by
+  have hp : 0<cubeScale (b beta v)*(v 7+1) :=
+    mul_pos (cubeScale_pos _) (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+  simpa [parentVal] using tsub_add_cancel_of_le (pos_iff_one_le.mp hp)
+
+theorem childVal_y (v : Fin 13 → V) (s : V) (hs : 0<s) : childVal v s 7+1=s := by
+  simpa [childVal] using tsub_add_cancel_of_le (pos_iff_one_le.mp hs)
+
+/-- The unproved graph-facing obligations. The first is the precise signed
+root/norm cut used by `positive_quotient_of_signed_norm`; the second and third
+are the two local zero maps. No port other than p0 receives a sign condition. -/
+def GraphObligations : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+    (p : Fin 4 → ℤ) (beta : V), ((p 0 : ℤ) : DiffRing V)=ι beta →
+    (∀ v : Fin 13 → V, InternalZero (parent p) v →
+      ∃ (z t bt : DiffRing V) (n : V),
+        z=ι (cubeScale (b beta v))*ι (b beta v)*t+ι (v 7+1)*ι (b beta v)-ι (cubeScale (b beta v))*bt ∧
+        z^2=(ι (cubeScale (b beta v))*ι (b beta v))^2*ι n) ∧
+    (∀ v : Fin 13 → V, InternalZero (child p) v → InternalZero (parent p) (parentVal beta v)) ∧
+    (∀ (v : Fin 13 → V) (s : V), InternalZero (parent p) v → 0<s →
+      v 7+1=cubeScale (b beta v)*s → InternalZero (child p) (childVal v s))
+
+/-- This representation is an all-model hypothesis, not yet proved here for
+compact P72/P115 ports. Beta is model-natural and hence nonnegative. -/
+def BetaRepresented (p : Fin 4 → ℤ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+    ∃ beta : V, ((p 0 : ℤ) : DiffRing V)=ι beta
+
+theorem no_zero_iff (p : Fin 4 → ℤ) (beta : V)
+    (hnorm : ∀ v : Fin 13 → V, InternalZero (parent p) v →
+      ∃ (z t bt : DiffRing V) (n : V),
+        z=ι (cubeScale (b beta v))*ι (b beta v)*t+ι (v 7+1)*ι (b beta v)-ι (cubeScale (b beta v))*bt ∧
+        z^2=(ι (cubeScale (b beta v))*ι (b beta v))^2*ι n)
+    (hlift : ∀ v : Fin 13 → V, InternalZero (child p) v → InternalZero (parent p) (parentVal beta v))
+    (hproject : ∀ (v : Fin 13 → V) (s : V), InternalZero (parent p) v → 0<s →
+      v 7+1=cubeScale (b beta v)*s → InternalZero (child p) (childVal v s)) :
+    (∀ v : Fin 13 → V, ¬InternalZero (child p) v) ↔
+      ∀ v : Fin 13 → V, ¬InternalZero (parent p) v := by
+  constructor
+  · intro h v hz
+    obtain ⟨z,t,bt,n,hzform,hn⟩ := hnorm v hz
+    obtain ⟨s,hs,hY⟩ := positive_quotient_of_signed_norm (b beta v) (v 7+1) n
+      (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)) z t bt hzform hn
+    exact h (childVal v s) (hproject v s hz hs hY)
+  · intro h v hz
+    exact h (parentVal beta v) (hlift v hz)
+
+theorem sameNoZero (p : Fin 4 → ℤ) (hb : BetaRepresented p) (hg : GraphObligations) :
+    SameNoZero (child p) (parent p) := by
+  intro V _ _
+  obtain ⟨beta,hrep⟩ := hb V
+  obtain ⟨hn,hl,hp⟩ := hg V p beta hrep
+  exact no_zero_iff p beta hn hl hp
+
+/-- A conditional client only: no parent bridge or compact-port binding is
+constructed or authenticated by this source. -/
+theorem polynomialBridge (p : Fin 4 → ℤ) (hb : BetaRepresented p)
+    (hg : GraphObligations) (hparent : PolynomialBridge (parent p)) :
+    PolynomialBridge (child p) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (sameNoZero p hb hg) hparent
+
+theorem native_equivalence (p : Fin 4 → ℤ) (hb : BetaRepresented p)
+    (hg : GraphObligations) (hparent : PolynomialBridge (parent p)) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (child p) 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge _ (polynomialBridge p hb hg hparent)
+end DiophantineConsistency.Ordinary13QCube93ConditionalTransferDraft
+#print axioms DiophantineConsistency.Ordinary13QCube93ConditionalTransferDraft.parentVal_y
+#print axioms DiophantineConsistency.Ordinary13QCube93ConditionalTransferDraft.childVal_y
+#print axioms DiophantineConsistency.Ordinary13QCube93ConditionalTransferDraft.no_zero_iff
+#print axioms DiophantineConsistency.Ordinary13QCube93ConditionalTransferDraft.native_equivalence

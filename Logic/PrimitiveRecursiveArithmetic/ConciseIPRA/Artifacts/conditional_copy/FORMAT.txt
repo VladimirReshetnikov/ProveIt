@@ -1,0 +1,124 @@
+CERTIFICATE FORMAT
+==================
+The complete ordinary checker accepts one JSON value [goal, proof].
+The fuel checker accepts [goal, proof, fuel], where fuel is an exact JSON
+integer >= 0. Booleans and floats are not integer syntax.
+
+NUMERICAL TERMS
+---------------
+  0           Zero.
+  -1,-2,...   Rigid free numerical parameters, allocated by proof scopes.
+  1,2,...     Positive de Bruijn indices for bound numerical variables.
+  [n,a,h]     R(n,a;i,u.h): i and u bound only in h.
+
+The innermost bound u is index 1; i is index 2. An enclosing binder's
+indices increase by two when entered under this body. S(a) is [0,a,0].
+
+All terms supplied in active syntax must be in full canonical normal form:
+  R(0,a;h)      normalizes to S(a), printed [0,a,0].
+  R(S(n),a;h)   normalizes to h[n/i, R(n,a;h)/u].
+The normalizer first traverses children. Invalid syntax is not rescued by
+being in a computation-erased child. Both bound-variable insertions are
+capture avoiding. In the second rule the two-variable substitution is
+simultaneous (the implementation performs protected sequential openings).
+
+FORMULAS
+--------
+  [s,t]       The equation s=t.
+  [B]         D_{x,y}B, binding x,y throughout B: y index 1, x index 2.
+
+The formula D has ordinary reading exists x (B(x,0) -> forall y B(x,y)).
+Falsehood is [0,[0,0,0]], i.e. 0=S(0). Truth used by mode tests is the
+literal equation [0,0]. A different reflexive equation is not that test.
+Normalizing numerical terms never removes a formula binder.
+
+CONTEXT AND SCOPES
+------------------
+The root context has the single clause ([],[1,1]): universal reflexivity.
+A clause is an internal pair (base,body), where body binds one variable y.
+An empty base [] means no antecedent. A nonempty base is a formula.
+An ordinary assumption A is represented by ([],A), with y unused.
+
+At a proof context of length n, free parameters may be 1-n,...,-1.
+Close or Export opens one new proof scope with parameter b=-n and one
+new clause. At root n=1, no negative parameter is available. The newest
+outer parameter is 1-n; this is 0 in the root's empty numerical environment.
+
+PROOF PACKETS
+-------------
+1. Use: [j,t,q]
+   j is an exact integer clause index with 0 <= j < n.
+   t is a canonical term in the current outer scope.
+   Select clause (A,B). If A is nonempty, q must infer exactly A.
+   Infer N(B[t/y]). If A is empty, q is ignored; use null conventionally.
+   It is still a required syntactic packet field.
+
+2. Close: [B,q]
+   B is the matrix formula of the desired D B, not an instruction tag.
+   Substitute x=1-n, leaving y bound. Let base=N(B(1-n,0)).
+   If base is literally [0,0], append assumption N(B(1-n,b)); otherwise
+   append base itself, where b=-n is the fresh successor parameter.
+   In that extended scope, q must infer N(B(1-n,S(b))).
+   Infer [B]. No witness or mode is supplied.
+
+3. Export: [[],p,q]
+   p must infer a D formula [B]. Open x=b=-n in B.
+   Append the clause (N(B(b,0)), y.N(B(b,y))).
+   Let base=N(B(b,0)), row=N(B(b,1)).
+   If base=[0,0] and row is literally [b,t], infer the replacement t;
+   otherwise the replacement is b.
+   Let F be the formula inferred by q in the extended scope.
+   Infer N(F[replacement/b]), requiring the output to have outer scope.
+   Replacement is simultaneous, once at free occurrences only.
+   No equality proof, replacement term, or formula template is supplied.
+
+The checker validates every inferred formula for exact sort, scope, and
+normality. The final requested goal is compared by its type-exact printed
+representation with the validated inferred formula. Thus Python's numerical
+equality True==1 and 1.0==1 cannot cause goal aliasing. Malformed packets
+reject; a normalizer resource/stack failure also rejects in the implementation.
+
+MINIMAL EXAMPLE
+---------------
+  [[0,0],[0,0,null]]
+is the goal 0=0, proved by using clause 0 at the term 0.
+
+MATCHED LIBERAL CONTROL
+-----------------------
+code/control_witness.py has the same syntax and Export, but its Close packet
+is [B,t,q], with a supplied canonical outer witness t. The selector uses
+N(B(t,0))==[0,0]. code/translate_witness.py converts any validated finite
+closed liberal certificate to a selected-checker certificate of the same goal.
+Its Python function translate additionally handles arbitrary injective
+numerical-scope embeddings and clause-position maps for open proofs.
+
+The explicit-Name control instead has Export packet [[],p,e,q]. Under the
+opened clause, e proves [b,t] and q proves F; it exports N(F[t/b]). It retains
+the selected newest-only Close rule. This is a comparison program, not the
+selected calculus.
+
+BACKWARD NAME VARIANT
+---------------------
+code/checker_backward_name.py is a second complete acceptance checker,
+using the same numerical and formula syntax, initial reflexivity clause,
+newest-parameter Close and exact-zero mode test. It reads [goal,proof].
+Its proof packets are explicitly tagged and check against a supplied goal:
+
+  ['u',j,t,p]                         Use clause j at t.
+  ['i',branch]                        Close the supplied D goal.
+  ['e',B,T,t,major,equality,branch]    Open D B at fresh b, prove b=t and
+                                      NF(T[b/v]), and require NF(T[t/v])
+                                      to equal the supplied outer goal.
+
+T has one implicit template variable v, represented by an additional bound
+index. The equality target t and both endpoint formulas are checked in
+their respective scopes. The template can explicitly mention b, and t can
+contain b. The paper proves that the validated b-free outer endpoint is
+exactly NF(F[t/b]), where F=NF(T[b/v]). Raw auxiliary parameters that erase
+at both endpoints are handled by the template-completion lemma; active
+syntax and child sorting remain checked before erasing reductions.
+
+This is the Name rule with its equality source fixed to the opened witness.
+It retains a replacement, equality proof and template at discharge. Its
+1907/619/686 complete-source measurements improve on the current
+parameter_intro checker's 1925/630/701 in bytes/tokens/AST nodes.

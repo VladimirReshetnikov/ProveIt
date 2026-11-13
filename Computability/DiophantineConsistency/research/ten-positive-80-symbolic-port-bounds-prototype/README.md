@@ -1,0 +1,5 @@
+# Arithmetic conditions from symbolic fixed-port equalities
+
+`Direct80SymbolicPortBounds.fixed_bounds` proves in every IΣ₁ model that the explicit symbolic port equalities `p₀=betaNat`, `p₂=lowNat`, `p₃=betaNat+highNat` imply `beta≥31`, `MC<beta`, `MF<2beta`, and an internal odd-beta witness. The proof uses previously checked symbolic beta identity/bounds and does not expand the giant radix numeral. It places no condition on port `p₁` and does not claim that an external displayed file supplies these equalities.
+
+Guarded author `observations/attempt01/` succeeded without diagnostics, yielding `/tmp/tenpositive-80symbolic-port-bounds-88_8qa_q/Direct80SymbolicPortBounds.olean`, SHA-256 `3fa2f2a2fea1665a6036ce489e3d6b4f9b8ae60925af3f11f72bef7180fe5501`. Printed axioms are `propext`, `Classical.choice`, `Quot.sound`. Selected `CompactFixedBeta`, `CompactSymbolicPorts`, and prototype objects are pinned, not the complete transitive project/package/dynamic and historical source-object ancestry. Resource checks are sampled; no paired replay is claimed. Fixed-port graph soundness, byte-recipe/PDF binding, and iPRA endpoint remain separate.

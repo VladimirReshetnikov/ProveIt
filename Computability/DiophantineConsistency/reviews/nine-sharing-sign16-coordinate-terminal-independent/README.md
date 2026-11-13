@@ -1,0 +1,3 @@
+# Independent sign16 supplied-gap coordinate terminal audit
+
+The independent checker exited 0. Author outer session 1695 exited 0; stage and postflight passed. Source/object, logs, all three direct provider guards and overlays were checked. Five reports use standard axioms or a subset; there is one unused-section-variable warning and no sorryAx. Lean proves the supplied-gap deleted-row zero and recovery under represented beta, together with lift/drop facts. Representative existence is separately proved under stronger hypotheses; residual transfer and full zero equivalence remain separate. The provider union survey is point-in-time and not replayed postflight, while direct guards and overlays were rechecked. No Lean was rerun here.

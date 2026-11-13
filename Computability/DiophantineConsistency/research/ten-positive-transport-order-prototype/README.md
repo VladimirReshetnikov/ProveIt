@@ -1,0 +1,7 @@
+# Ordered-ring negative transport contradiction
+
+`TransportOrder.negative_transport_impossible` proves an abstract ordered-ring contradiction for the denominator-cleared carrier identity. The explicit premises are positive carrier numerator `N`, nonnegative correction `K0`, positive scales `P,Q,W`, `P=Q*m`, nonnegative `L`, negative integral transport bound `B≤-1`, one-sided estimates `2z<L` and `2e<L*m`, and the displayed exact equation. Neither `z` nor `e` is assumed positive. The proof multiplies the one-sided inequalities by positive scales and avoids division.
+
+The lemma is **conditional** and is not yet tied to the exact graph, its signed carrier, discreteness of its difference ring, the missing `Kpos>0`, or the needed magnitude bounds. It does not prove transport positivity, a machine theorem, or an iPRA endpoint.
+
+Guarded author `observations/attempt03/` passed without diagnostics, producing `/tmp/tenpositive-transport-order-wpjgqf72/TransportOrder.olean`, SHA-256 `fe7c1d6446f2b7dcb4eaf1d14a2e20cffe9f2ddfaec63e69d38ce65dbc7364e3`. Attempt01 had an unknown ordered-ring class; attempt02 compiled but was rejected for an unused-variable warning. Printed axioms are `propext`, `Classical.choice`, `Quot.sound`. The runner pins selected prototype objects and one inherited provider, not the complete transitive project/package/dynamic and historical source-object ancestry. Resource checks are sampled; no paired replay is claimed.

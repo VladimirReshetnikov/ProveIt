@@ -1,0 +1,7 @@
+# Conditional nonnegative carrier transport
+
+`CarrierTransport.nonnegative_of_carrier` proves nonnegativity of a signed transport value from the explicit denominator-cleared carrier equation, positive scales and center `n`, nonnegative `L` and correction `k`, the one-sided estimates `2z<L` and `2e<L*m`, and the supplied discrete-negative condition. The stronger `model_nonnegative_of_carrier` theorem discharges discreteness in every IΣ₁ model's difference ring using `ModelDifferenceRing.one_le_of_pos`. No sign is assumed for `z` or `e`.
+
+These are conditional transport lemmas: the actual 80-row graph's carrier identity, the signed integral carrier, correction positivity, and the two estimates still require graph-specific bindings. They do not prove graph soundness or an iPRA endpoint.
+
+The guarded author check `observations/attempt03/` passed without diagnostics, producing `/tmp/tenpositive-carrier-transport-r9_49vrn/CarrierTransport.olean`, SHA-256 `3b7bed88bf6812d99d941d59c065ccb98e225108f7ecd4d7ac3c722bf521e0b1`. Attempt01 checked an earlier weaker source; attempt02 failed from an instance-scope clash. Printed axioms are `propext`, `Classical.choice`, `Quot.sound`. The runner pins selected prototype objects and one inherited provider, not the complete transitive project/package/dynamic inputs or historical source-to-object ancestry. Resource observations are sampled; no paired replay is claimed.

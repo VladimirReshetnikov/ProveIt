@@ -1,0 +1,30 @@
+import Mathlib
+
+/-! Source-only draft: not elaborated or kernel checked. -/
+set_option autoImplicit false
+namespace DiophantineConsistency.ShearNonzeroDraft
+
+variable {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+
+/-- At a sphere zero, the sheared parent's ordinate cannot vanish. -/
+theorem ordinate_ne_zero (A I V y rest : R)
+    (hA : 0 ≤ A) (hI : 2 ≤ I) (hy : 1 ≤ y) (hrest : 0 ≤ rest)
+    (hz : rest + (A*(V^2-(V+y)^2)+(V+y)^2)^2 + (I^2-A)^2 = 2) :
+    V+y ≠ 0 := by
+  intro hyold
+  have hV : V = -y := by linarith
+  have hu : A*(V^2-(V+y)^2)+(V+y)^2 = A*y^2 := by rw [hV]; ring
+  rw [hu] at hz
+  have hi2 : 4 ≤ I^2 := by nlinarith
+  have hy2 : 1 ≤ y^2 := by nlinarith
+  by_cases ha : 2 ≤ A
+  · have hmul : 0 ≤ A*(y^2-1) := mul_nonneg hA (sub_nonneg.mpr hy2)
+    have hu2 : 2 ≤ A*y^2 := by nlinarith
+    have hs : 0 ≤ (I^2-A)^2 := sq_nonneg _
+    nlinarith
+  · have hA2 : A ≤ 2 := le_of_not_ge ha
+    have hh : 2 ≤ I^2-A := by linarith
+    have hs : 0 ≤ (A*y^2)^2 := sq_nonneg _
+    nlinarith
+
+end DiophantineConsistency.ShearNonzeroDraft

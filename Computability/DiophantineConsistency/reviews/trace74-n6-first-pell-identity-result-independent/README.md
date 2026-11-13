@@ -1,0 +1,3 @@
+# Independent result audit: sixth Pell ordinate
+
+PASS for captured result. Author reports actual outer session 86392 exit 0/reaped. Terminal `6b2f2320a233b23b4a4985f578775500bed56ac6c67c3dafb00a81b35a63259c`; runner `21b7c7d55f636b4da274ea35fccc7909db599b619e459481dcfb60fc2f40feac`; object `83f04f2fe4db9edc36aa505f18128e9b07c0668ccea5be32956fa2b54de6e608`. All 45 terminal pins, object and logs independently rehashed; Lean exit 0, exact named report `[propext, Classical.choice, Quot.sound]`, stderr empty. The theorem is the generic model sixth-ordinate identity only; no graph/guard claim. Direct pins do not establish full serialized transitive/package ancestry or continuously stable resolution.

@@ -1,0 +1,5 @@
+# Independent external presentation review
+
+PASS. The author checker and result are hash-bound to the pinned sign14 AST; its 20 ordered cut checks and five exact sparse-ring residual comparisons were rerun. Independently parsed the actual README's 17 displayed polynomial abbreviations and all five residuals, checked each against the checker's symbolic definitions and verified the final sum-of-squares form. The 14 distinct natural `...Input` names and their shorter +1 abbreviations were checked against the AST's coordinate convention. This independent presentation parsing matters because the author checker itself does not parse the displayed README.
+
+The two presentation wording revisions occurred during review; the final reviewed README hash is `ccd1fc27c869904074b223100b39283180f4db3fff5391f94f0695a0e73310b9`. An initial audit invocation stopped on the earlier hash before running the certificate; it was updated to the final hash and rerun successfully. The result is an external exact-ring and presentation audit, not a Lean theorem equating JSON/PDF or fixed-port bytes; no canonical PDF was changed and inherited provenance qualifications remain.

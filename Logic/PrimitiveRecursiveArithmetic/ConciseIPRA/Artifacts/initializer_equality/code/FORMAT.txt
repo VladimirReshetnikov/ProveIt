@@ -1,0 +1,120 @@
+TEMPLATE-FREE INITIALIZER EQUALITY: STRICT CERTIFICATE FORMAT
+==========================================================
+
+The selected complete checker is seed_only.py. The expanded seed_checked.py
+implements the same six rules with explicit equation/iterator shape checks.
+general_context.py is a matched six-rule control whose only different rule
+uses an arbitrary numerical template. All three use ordinary, uncrossed
+equality replacement and ordinary Q elimination.
+
+PUBLIC INTERFACE
+
+Input is one JSON object with exactly the keys "goal" and "proof". The goal
+must be a closed canonical formula. Acceptance requires exit status 0 and
+exact stdout ACCEPT followed by one newline. Rejection is exit status 1 and
+exact stdout REJECT followed by one newline. Exceptions reject. Extra fields,
+unknown tags, and wrong proof-instruction lengths reject. No input is eval'd.
+
+NUMERICAL TERMS AT SCOPE n
+
+  0                       Numerical zero.
+  Exact integers 1,...,n  De Bruijn variables, newest first.
+  [a]                     Successor S(a).
+  [counter,seed,body]      Scalar iterator I(counter,seed;u.body).
+
+Counter and seed have scope n; the body has scope n+1, with its state at
+index 1 and ambient variables shifted by one. A literal-zero iterator
+counter is forbidden in submitted canonical syntax. The smart constructor
+
+  rec(counter,seed,body) = seed if counter == 0 else [counter,seed,body]
+
+is used by internal substitution. Thus zero computation is definitional.
+The constructor is applied after recursively transforming the children:
+nested substitution may expose a zero counter even when the initial node
+was canonical. Positive counter variables remain legitimate counter syntax.
+Booleans, floats, negative or out-of-scope integers, and other arrays reject.
+
+FORMULAS AT SCOPE n
+
+  ["=",s,t]   Equation; both terms have scope n.
+  ["Q",B]     Conditional closure B(0) -> forall y B(y); body scope n+1.
+  ["D",B]     exists x (B(x,0) -> forall y B(x,y)); body scope n+2.
+
+In a D matrix, y has index 1 and x has index 2. Contexts are ordered reusable
+lists; hypothesis index 0 denotes the oldest retained formula. The initial
+context is empty. Neither equality nor Q elimination reverses its result.
+
+THE SIX PROOF INSTRUCTIONS
+
+  ["h",index]
+    Return the indexed retained hypothesis. Index is an exact nonnegative
+    integer below context length.
+
+  ["r",n,a,h]
+    Validate n and a at the current scope, h at scope+1, and conclude
+       I(S(n),a;u.h) = h[I(n,a;u.h)/u].
+    All constructors/substitutions are canonical. At n=0 this gives
+       I(1,a;u.h) = h[a/u].
+
+  ["x",major,minor]                       [selected Seed rule]
+    Derive equations s=t from major and b=r from minor.
+    If b is syntactically s, conclude t=r.
+    Otherwise require b to be an iterator [n,s,h] whose initializer is
+    syntactically s, and conclude [n,t,h]=r. The nonzero canonical counter
+    n and the body h are inferred from the proved minor. They are unchanged.
+    No template, counter, body, or occurrence path is supplied by this rule.
+    This is the uniform schema C(n,s,h)=r -> C(n,t,h)=r, with
+       C(0,a,h)=a,
+       C(n,a,h)=I(n,a;u.h) for nonliteral-zero n.
+
+  ["q",t,major,base]
+    Validate t at the current scope. Derive Q B from major and B[0] from
+    base, and return B[t]. There is no root reversal.
+
+  ["e",A,major,branch]
+    Validate A at the old scope. Derive D B from major. Increase scope by
+    one, shift every old context formula, and append Q B. The branch must
+    conclude shifted A in this extended context; return A. The proposed
+    conclusion is validated before the new witness becomes available.
+
+  ["i",A,t,branch]
+    Validate A=D B and t at the old scope. Introduce fresh z=1 and shift
+    the old context. Append B[t,eta], where eta=z exactly if B is an equation
+    and t is literal zero, and eta=0 otherwise. The branch must conclude
+    B[t,S(z)]. Return A. Simultaneous substitution is capture avoiding.
+
+MATCHED GENERAL-CONTEXT CONTROL
+
+Its sole changed instruction is
+
+  ["x",f,major,minor]
+    Validate f at scope+1. Derive s=t and f[s]=r from the two subproofs.
+    Return f[t]=r. The additional variable in f is index 1.
+
+The numerical language, canonical substitution, other five rules, contexts,
+freshness checks, input/output driver, and goal grammar are identical.
+The controls are new matching implementations of equivalent presentations,
+not unchanged previously delivered sources.
+
+WHY THE SELECTED CHECKER CAN OMIT SOME SHAPE CHECKS
+
+Every successfully derived formula has exactly the validated Eq/Q/D grammar.
+Only equations have array length 3. Unpacking a derived formula as
+(_,s,t) therefore both exposes the endpoints and rejects Q/D by exception.
+This optimization is applied to both the control and the selected Seed
+checker. In Seed's non-root case, a proved left term is an integer, a unary
+successor, or a triple iterator. Accessing left[1] rejects the first two.
+A successful initializer comparison thus identifies a scoped canonical
+iterator; its counter is nonliteral zero, so replacing its middle field
+preserves canonical syntax. PROOF_INVARIANTS.md gives the full argument.
+
+RUN AND REPRODUCE
+
+  python3 seed_only.py < certificates/seed_only/used_induction_hypothesis.json
+  python3 build.py
+  python3 test_seed.py
+
+Each checker is standalone and imports only json and sys. The generator,
+translators, fixtures, tests, and metric scripts are outside its trusted
+acceptance module. Finite implementation resources can reject large valid
+proofs. Universal mathematical statements abstract from those resource limits.

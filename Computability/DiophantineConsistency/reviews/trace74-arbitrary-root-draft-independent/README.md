@@ -1,0 +1,11 @@
+# Independent source review: guard-independent trace74 roots
+
+No mathematical blocker was identified in the three unchecked draft sources: `Trace74ArbitraryRoot.lean` SHA-256 `f99086a72672dabd83b5f1219aabd3d8c8de555b61197df6efe3f830bd1d8a83`; `Trace74ArbitraryRootNonzero.lean` SHA-256 `1d73f93a05df565eb562680fd9f1d472a4d51ba3cf4ad80585e308cf877dcc8b`; `Trace74GraphRoots.lean` SHA-256 `f58087222e706c69fc04baecdeabbb36feb58a411e53e1d580cd9800b34dce14`. No Lean replay or acceptance is asserted.
+
+For arbitrary difference-ring p and w, the first draft explicitly requires positive natural representatives for Δ,U,E,M and a positive representative of V², an unrestricted square representative for Z², and `value75=0`. The ring equation implies `(Q-1)Z0²=M²G(Q*V0²-1)`; Q>0 and Q*V0²>0 supply the natural truncated-subtraction casts needed to invoke the existing doubled-product root theorem. The result is positive τ,f satisfying `E=τ²` and `1+ΔU²E=f²` in the same model.
+
+The second draft proposes square representatives for signed V and Z, and derives V≠0 from the original output: if V=0, it becomes `(Q-1)Z²+M²G=0`, impossible because `Q-1>=0`, `M²G>0` and squares are nonnegative. Thus its V representative is positive, while no positivity of Z or Z's representative is assumed. These argument shapes are mathematically consistent; individual tactic applications and imports remain uncompiled.
+
+The graph client assumes `p 0>0` in V, every original 74 coordinate positive, and actual `value74=0` in the difference ring. It sets w to `oldVal`, which replaces coordinate 2 by `q-F-C` in that ring; the coordinate identity supplies the synthetic 75 zero. The synthetic coordinate is not asserted positive and may be negative. The Δ,U,E,M register definitions do not depend on coordinate 2, so their positive representatives come from the original positive 74 valuation. This source states no reverse mask guard or fixed-port hypothesis, but its source-to-graph rewrite and tactics remain subject to Lean elaboration.
+
+The proposed result extracts two roots only. It does not construct a positive 75 witness, derive a fixed-port guard, establish 74/75 equivalence or bind external equation files; source and provider ancestry must be audited for any future author check.

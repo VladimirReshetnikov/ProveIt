@@ -1,0 +1,3 @@
+Independent source review, no Lean. Source SHA 2b46119e78816972cc7a67af0005da6a7d46cd748a8bfb7df18a33bbb9da7bcd.
+
+The draft applies Nat.cast_le to the pending natural cover theorem in an arbitrary indicated IΣ₁ model V and expands natural casts of additions and one, yielding the corresponding model inequality for the same named symbolic ports. The mathematical transfer is appropriate assuming the model cast order instance and imported theorem resolve; both Lean elaboration and full provider/closure reconciliation remain untested. Accepted beta ancestor warning and any eventual exact warning on the natural parent must be retained. This source does not itself prove a graph-zero guard or endpoint.

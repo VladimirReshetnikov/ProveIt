@@ -1,0 +1,5 @@
+# Independent prelaunch review: sign33 V/S/S² cuts
+
+No launch blocker found. The checker pins source, runner, survey and manifest, checks the direct import, four theorem/report names, external row 18–20 names, kinds and empty port sets, verifies list-membership step counts, and reruns the no-Lean preflight. The survey checks selected provider source/object/log hashes, direct guards and shared overlay hashes; the runner binds the candidate dependency to the recorded square-sum producer. Full postflight requires success; provider observations are point-in-time rather than a complete dynamic or transitive trace.
+
+The proposed V cut has positive coordinate orientation `v30=v28*v29−(v20+(v11+1))`; S and S² are at full positions 31–32. These correspond to witness indices 29–31 after `Fin.cons`. One valuation, arbitrary symbolic ports, no port casts and the stated IΣ₁-model and seed-zero hypotheses are used. List reduction, membership and Lean elaboration remain untested. Other rows, signed-witness existence, source/graph bridge and iPRA endpoint remain open; JSON/source matching is external. This checker is prelaunch-only because the output path must remain absent.

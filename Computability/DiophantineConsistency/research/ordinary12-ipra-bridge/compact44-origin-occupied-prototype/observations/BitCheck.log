@@ -1,0 +1,11 @@
+pow_le_pow_right₀.{u_2} {M₀ : Type u_2} [MonoidWithZero M₀] [Preorder M₀] {a : M₀} {m n : ℕ} [ZeroLEOneClass M₀]
+  [PosMulMono M₀] (ha : 1 ≤ a) (hmn : m ≤ n) : a ^ m ≤ a ^ n
+/tmp/compact44-graph-support-join-01/BitCheck.lean:3:7: error(lean.unknownIdentifier): Unknown identifier `pow_le_pow_right`
+Finset.sum_erase_add.{u_1, u_4} {ι : Type u_1} {M : Type u_4} [AddCommMonoid M] [DecidableEq ι] (s : Finset ι)
+  (f : ι → M) {a : ι} (h : a ∈ s) : ∑ x ∈ s.erase a, f x + f a = ∑ x ∈ s, f x
+Finset.sum_le_sum.{u_1, u_5} {ι : Type u_1} {N : Type u_5} [AddCommMonoid N] [Preorder N] {f g : ι → N} {s : Finset ι}
+  [AddLeftMono N] (h : ∀ i ∈ s, f i ≤ g i) : ∑ i ∈ s, f i ≤ ∑ i ∈ s, g i
+pow_succ.{u_2} {M : Type u_2} [Monoid M] (a : M) (n : ℕ) : a ^ (n + 1) = a ^ n * a
+add_lt_add_of_lt_of_le.{u_1} {α : Type u_1} [Add α] [Preorder α] [AddLeftMono α] [AddRightStrictMono α] {a b c d : α}
+  (h₁ : a < b) (h₂ : c ≤ d) : a + c < b + d
+lt_of_lt_of_le.{u_1} {α : Type u_1} [Preorder α] {a b c : α} (hab : a < b) (hbc : b ≤ c) : a < c

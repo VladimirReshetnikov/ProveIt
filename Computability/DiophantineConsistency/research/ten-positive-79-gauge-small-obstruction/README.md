@@ -1,0 +1,9 @@
+# Small-C obstruction to the proposed gauge step
+
+`Mask79SmallObstruction.only_zero_step` proves in every supported IΣ₁ model that `C≤q*b` and `q*b*t<C` imply `t=0`. Consequently `no_gap_parameter` proves that if the initial valuation is also unguarded (`q≤F+C`), no parameter satisfies both the strict C-positivity bound and the sufficient gap criterion `F+C<q+b²*t`. These are general model inequalities for arbitrary ports and valuations; no graph-zero hypothesis is used.
+
+This identifies a real limitation of this particular gauge-normalization route. It does **not** establish that any positive 79 graph zero has `C≤q*b` and fails the guard, does not refute a different coordinate normalization, and does not prove or disprove unrestricted 79/80 equivalence.
+
+Guarded author `observations/attempt03/` and its enclosing tool session exited 0. Accepted V3 source SHA-256 is `5b1d88501c7680600fc21f83efb120bd68630f7c3d83f3ad3341091b4f0ad23f`; terminal SHA-256 is `a02847013f712b5732bf233c9dcb388167937dc883a1bb9885b2b9ef071d23ca`; output `/tmp/mask79-obstruction-30nstiy5/Mask79SmallObstructionV3.olean` SHA-256 is `09f072e2aa1cd0d267216c5c89e06f00d403e281f527a211598fcd544595b13a`. Attempts 01–02 failed on lemma names/typeclass assumptions; exact sources, runners and receipts are retained. The direct criterion object and selected predecessor objects are pinned; full historical project/package/dynamic ancestry remains inherited. No independent Lean replay or file binding is claimed.
+
+**Later result:** the [signed-gauge obstruction](../ten-positive-79-gauge-signed-obstruction/README.md) proves that the exact corrected gauge cannot turn an unguarded valuation with positive F into a guarded model-natural valuation for either sign of its difference-ring parameter. This does not decide unrestricted 79 equivalence or rule out another transformation.

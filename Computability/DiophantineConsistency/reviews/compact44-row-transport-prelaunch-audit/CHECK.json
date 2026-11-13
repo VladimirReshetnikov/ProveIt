@@ -1,0 +1,32 @@
+{
+  "status": "PASS_CONDITIONAL_COMPACT_ROW_TRANSPORT_PRELAUNCH_AUDIT",
+  "driver_commit": "23bd9093c8",
+  "driver_sha256": "4030748893a24268b76ee70fb97164d9b9649b796acbad1a557e73a0b9feb80a",
+  "source_report_names": [
+    "CompactRowTransport.row_at",
+    "CompactRowTransport.bounded_field_transport",
+    "CompactRowTransport.compactField_cast",
+    "CompactRowTransport.bounded_row_fields",
+    "CompactRowTransport.four_fields",
+    "CompactRowTransport.horizontal_match_iff",
+    "CompactRowTransport.vertical_match_iff",
+    "CompactRowTransport.vertical_bounds",
+    "CompactHorizontalCore.all_rows_bounded",
+    "CompactRowTransport.horizontal_bounds",
+    "CompactRowTransport.horizontal_match_bounded",
+    "CompactRowTransport.vertical_match_bounded"
+  ],
+  "controls": [
+    {
+      "script": "mock_loop.py",
+      "exit": 0,
+      "stdout": "good PASS fake_children 2\nwrong_report PASS fake_children 1\nwarning PASS fake_children 1\nsorry PASS fake_children 1\nwrong_deps PASS fake_children 1\n"
+    },
+    {
+      "script": "guards.py",
+      "exit": 0,
+      "stdout": "PASS_PIN_COMPANION_INTERPRETER_OUTPUT_GUARDS\n"
+    }
+  ],
+  "scope": "No Lean build. Separately observed full parent preflight is in terminal observation. Bounded local field and matching iff only; no global modeled adjacency, tiling, checker or iPRA. Requires trusted initial loader and externally enforced stable-HEAD/sole-Lean window; point-in-time and inherited provider/resource limits remain."
+}

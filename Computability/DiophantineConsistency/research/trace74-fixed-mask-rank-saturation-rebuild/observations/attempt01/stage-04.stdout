@@ -1,0 +1,60 @@
+/tmp/trace74-symbolic-fixed-mask-cover-5jytmej1/src/Trace74FixedRankSaturation.lean:41:4: error: No goals to be solved
+/tmp/trace74-symbolic-fixed-mask-cover-5jytmej1/src/Trace74FixedRankSaturation.lean:43:4: error: Tactic `simp` failed with a nested error:
+maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+/tmp/trace74-symbolic-fixed-mask-cover-5jytmej1/src/Trace74FixedRankSaturation.lean:61:42: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ι (Q - v 1)
+in the target expression
+  (ι (Q * (Q - v 1)) - ι (v 2)) * ι (Q ^ 2 - 1) + (↑lowNat + ι Q * (↑betaNat + ↑highNat)) * ι (v 0) =
+    (ι Q * (ι Q - ι (v 1)) - ι (v 2)) * (ι Q ^ 2 - 1) + (↑lowNat + ι Q * (↑betaNat + ↑highNat)) * ι (v 0)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+K : ℕ
+v : Fin 10 → V
+u : V
+hv : ∀ (j : Fin 10), 0 < v j
+hF : v 1 < q (fixedPorts K) v
+hC : v 2 ≤ q (fixedPorts K) v
+hexp : q (fixedPorts K) v = Exp.exp u
+hLow : ↑lowNat < ↑betaNat
+hHigh : ↑highNat ≤ ↑betaNat
+hHighJ : 1 ≤ ↑highNat * v 0
+hpopulation : population (↑lowNat * v 0 + 1) + population (↑highNat * v 0 - 1) ≤ u + 2
+hrank : 3 * u + 2 ≤ population (rank (q (fixedPorts K) v) (↑lowNat) (↑(betaNat + highNat)) (v 0) (v 1) (v 2))
+Q : V := q (fixedPorts K) v
+R : V := rank Q (↑lowNat) (↑(betaNat + highNat)) (v 0) (v 1) (v 2)
+hQ : Q = ↑betaNat * v 0 + 1
+hR : (regs (Trace75Factors.ports (fixedPorts K)) (masked (fixedPorts K) v)).rank = ι R
+h : v 1 < q (fixedPorts K) v
+hqf : v 1 ≤ Q
+hqfpos : 0 < Q - v 1
+hcmul : v 2 ≤ Q * (Q - v 1)
+hqpos : 0 < Q
+hq2 : 1 ≤ Q ^ 2
+cast_sub : ∀ (a b : V), b ≤ a → ι (a - b) = ι a - ι b
+⊢ (ι (Q * (Q - v 1)) - ι (v 2)) * ι (Q ^ 2 - 1) + (↑lowNat + ι Q * (↑betaNat + ↑highNat)) * ι (v 0) =
+    (ι Q * (ι Q - ι (v 1)) - ι (v 2)) * (ι Q ^ 2 - 1) + (↑lowNat + ι Q * (↑betaNat + ↑highNat)) * ι (v 0)
+/tmp/trace74-symbolic-fixed-mask-cover-5jytmej1/src/Trace74FixedRankSaturation.lean:69:4: error: Type mismatch
+  add_lt_add_right (mul_lt_mul_of_pos_right hLow (hv 0)) 1
+has type
+  1 + ↑lowNat * v 0 < 1 + ↑betaNat * v 0
+but is expected to have type
+  ↑lowNat * v 0 + 1 < ↑betaNat * v 0 + 1
+/tmp/trace74-symbolic-fixed-mask-cover-5jytmej1/src/Trace74FixedRankSaturation.lean:49:31: warning: This simp argument is unused:
+  map_pow
+
+Hint: Omit it from the simp argument list.
+  simp only [map_add, ̲map_mul, ̲map_p̵ow̵,̵m̵a̵p̵_̵o̵ne, ̲map_natCast, ̲Nat.cast_add]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/trace74-symbolic-fixed-mask-cover-5jytmej1/src/Trace74FixedRankSaturation.lean:49:39: warning: This simp argument is unused:
+  map_one
+
+Hint: Omit it from the simp argument list.
+  simp only [map_add, ̲map_mul, ̲map_pow, ̲map_o̵ne̵,̵m̵ap̵_̵n̵a̵tCast, ̲Nat.cast_add]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Trace74FixedRankSaturation.fixed_rank_saturation' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

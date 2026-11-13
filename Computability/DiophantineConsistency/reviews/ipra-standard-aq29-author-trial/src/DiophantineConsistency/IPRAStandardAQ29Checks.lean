@@ -1,0 +1,5 @@
+import DiophantineConsistency.IPRAStandardAQ29
+#print axioms DiophantineConsistency.IPRAStandardTheory.provable_iff
+#print axioms DiophantineConsistency.IPRAStandardAQ29.literal_equivalence
+#print axioms DiophantineConsistency.IPRAStandardAQ29.selected_foundation_consistency
+#print axioms DiophantineConsistency.IPRAStandardAQ29.literal_iff_translated_consistency

@@ -1,0 +1,29 @@
+/tmp/free-j-normalized-tail-bridge-author-4oarl41v/FreeJNormalizedTailBridge.lean:38:5: error: unknown tactic
+/tmp/free-j-normalized-tail-bridge-author-4oarl41v/FreeJNormalizedTailBridge.lean:36:2: error: unsolved goals
+case hu
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 12 → V
+Δ c f i y : DiffRing V
+hq : Expr.evalRing (fun j => ι (v j)) (parts p).q = Δ * (f * f - 1)
+hd : Expr.evalRing (fun j => ι (v j)) (parts p).d = c * c * (c * c)
+hn : Expr.evalRing (fun j => ι (v j)) (parts p).n = Δ * i + (y - Expr.evalRing (fun j => ι (v j)) (parts p).z)
+hstrong : f * f = 1 + Δ * (i * c * c) * (i * c * c)
+haux :
+  Δ * i * c * c * (Δ * i * c * c) * Expr.evalRing (fun j => ι (v j)) (parts p).z *
+        Expr.evalRing (fun j => ι (v j)) (parts p).z +
+      y * y =
+    1 + Δ * i * c * c * (Δ * i * c * c) * y * y
+⊢ (1 - Δ * (1 + Δ * (i * c * c) * (i * c * c) - 1)) *
+            (Expr.evalRing (fun j => ι (v j)) (parts p).z + (y - Expr.evalRing (fun j => ι (v j)) (parts p).z)) *
+          (Expr.evalRing (fun j => ι (v j)) (parts p).z + (y - Expr.evalRing (fun j => ι (v j)) (parts p).z)) +
+        Δ * (1 + Δ * (i * c * c) * (i * c * c) - 1) * Expr.evalRing (fun j => ι (v j)) (parts p).z *
+          Expr.evalRing (fun j => ι (v j)) (parts p).z -
+      1 =
+    0
+'FreeJNormalizedTailBridge.ordinary_unit_of_normalized_seed' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

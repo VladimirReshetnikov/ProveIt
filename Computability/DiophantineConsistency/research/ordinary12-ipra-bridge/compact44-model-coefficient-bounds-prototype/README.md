@@ -1,0 +1,5 @@
+# Exploratory model selector and copy coefficient bounds
+
+For every IΣ₁ model, `selector_bounds` proves that each of the 943 actual table selector coefficients, cast to the model, is positive and less than `Exp.exp 51`. `copy_coefficient_bound` proves that each of the 41 natural copy weights `2^(10+j)`, cast to the model, is less than the same bound. The proof uses the earlier exact model selector identity and payload range; the finite copy-weight check is over just 41 standard indices and does not evaluate K.
+
+Session 98019 actually exited 0 on the same exploratory author overlay used for the finite coefficient decomposition; both named axiom reports list `[propext, Classical.choice, Quot.sound]`, without warnings or `sorryAx`. This is a single-side exploratory result, not a paired replay or independent audit. It does not establish the actual graph column, Boolean selector/copy inputs, NoCarry, any cyclic carry bound or reset, retained K/port equality, machine semantics, or an internal iPRA theorem. Exact source, object, invocation and provider hashes are in the terminal observation.

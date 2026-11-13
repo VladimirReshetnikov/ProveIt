@@ -1,0 +1,3 @@
+# Independent sign17 staged degree prelaunch review
+
+The independent checker exited 0. It pins the runner, manifest and audited two-stage probe; checks all 11 stage sources, direct import topology and routing, the 30 shared-node and eight residual-bound declarations, arbitrary-port and current-port ≤96 conclusion, heartbeat and monitor limits, and no-Lean preflight. The earlier mistyped-pin preflight remains separately retained by the author. These source declarations are candidates until Lean and terminal audit; no complete degree theorem or JSON/PDF binding follows from this prelaunch review.

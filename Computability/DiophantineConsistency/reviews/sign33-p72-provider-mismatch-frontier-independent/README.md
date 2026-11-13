@@ -1,0 +1,5 @@
+# Independent review: P72 and sign33 provider bytes
+
+**Pass for point-in-time byte comparison.** Among the 1,007 paths present in both the P72 lib tree and the retained sign33 survey, exactly `DiophantineConsistency/ModelDifferenceRing.olean` differs: sign33 SHA-256 `cf2b32cb1e4777b7cff73c34ed7334a105f705912fa987e9f7f9a316fef192f0`, P72 `e52ed546fa3f94d9c3b823ad19286c4c906359efa26c1d67543e9dbfc0f2ecf0`. The correct HalfIndex-to-HalfIndex comparison matches SHA-256 `6142ab8eaac6e281c3372817a6f1a8cbc14704717d4f5479c28603c754c3a4d7`; the earlier verbal comparison with the distinct FirstIndex module was invalid and is corrected in the source packet.
+
+`check.py` reruns the corrected author checker and verifies its 300 P72Root/Main/Aux direct-guard slots; independently rehashes both present sides of all 1,007 overlapping paths; and confirms the three live row records byte-match the separately pinned retained stage archive. This is evidence of different compiled bytes, not a proof of semantic incompatibility, a complete transitive/dynamic load trace, or an invalidation of previously checked theorems. No Lean replay or mixed-provider construction is claimed.

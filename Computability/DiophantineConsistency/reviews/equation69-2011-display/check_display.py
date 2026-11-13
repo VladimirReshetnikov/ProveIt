@@ -1,0 +1,153 @@
+#!/usr/bin/env python3
+"""Check the 69-operation 2011 TeX display against the symbolic graph.
+
+Uses exact sparse polynomials at named cuts; the TeX parser handles only this
+arithmetic subset. It does not formalize TeX/PDF semantics or the fixed-port
+recipe's interpretation.
+"""
+import ast
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+import sys
+
+if not __debug__:
+    raise RuntimeError('optimized Python is unsupported')
+HERE = Path(__file__).resolve().parent
+BASE = HERE.parents[1]
+TEX = BASE / 'equation69-2011.tex'
+OLD = BASE / 'equation.tex'
+GRAPH = BASE / 'research/thirteen-variable-independent/polynomial69.json'
+PARSER = BASE / 'research/adaptive-direct-ordinate86/verify_display_tex86.py'
+
+def sha(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+if sha(GRAPH) != '3400069ead0bbf7b85d382c47fdd790bc18d68d9979e049f475d4e1c52d4182f':
+    raise ValueError('69-row source drift')
+graph = json.loads(GRAPH.read_text())
+rows = graph['source']
+if len(rows) != 69 or graph['output'] != 'polynomial':
+    raise ValueError('unexpected graph length or output')
+node = {row[0]: row[1:] for row in rows}
+if len(node) != 69:
+    raise ValueError('duplicate graph names')
+
+# Reuse only the established small parser and sparse-ring class, without
+# executing the other display's checks or expanding this full polynomial.
+syntax = ast.parse(PARSER.read_text(), filename=str(PARSER))
+selected = [n for n in syntax.body if isinstance(n, (ast.ClassDef, ast.FunctionDef))
+            and n.name in {'Poly', 'Parser', 'tokenize'}]
+if {n.name for n in selected} != {'Poly', 'Parser', 'tokenize'}:
+    raise ValueError('parser extraction failed')
+zero = (0,) * 64
+namespace = {'zero': zero, 're': re,
+             'commands': {'alpha','beta','gamma','Delta','eta','ell','mu','omega','tau','zeta'},
+             'token_re': re.compile(r'\s+|\\[A-Za-z]+|[A-Za-z]|[0-9]+|[+\-*^()\[\]{}=]')}
+exec(compile(ast.fix_missing_locations(ast.Module(body=selected, type_ignores=[])), str(PARSER), 'exec'), namespace)
+Poly, Parser = namespace['Poly'], namespace['Parser']
+
+def var(index):
+    exp = list(zero)
+    exp[index] = 1
+    return Poly({tuple(exp): 1})
+
+initial = [('J','J'),('F','F'),('alpha','alpha'),('f','f'),('i','i'),('T','T'),
+           ('s','s'),('w','w'),('n','n'),('eta','eta'),('zeta','zeta'),
+           ('m','m'),('gamma','gamma'),('beta','beta'),('K','K0'),('mu','MC'),('omega','MF')]
+expected = [('b','qm'),('q','q'),('C','C'),('X','X'),('Y','Y'),('E','E'),
+            ('k','k'),('ell','ell'),('c','c'),('a','a'),('H','H'),('Delta','Delta'),
+            ('D','main_root'),('R','R'),('tau','tau'),('V','V'),('G','B'),('y','y'),
+            ('P','N0'),('Q','N1'),('t',None),('S','normalized_S'),('U','Na'),('Z','scaled_Ns')]
+
+def check(text):
+    display = text[:text.index(r'\textbf{The four fixed integers.}')]
+    match = re.search(r'The only unknowns are\s*\\\[(.*?)\\in\\mathbb Z_\{>0\}\.\s*\\\]', display, re.S)
+    if not match:
+        raise ValueError('missing positive-integer unknowns')
+    listed = [x.strip().lstrip('\\') for x in match.group(1).split(',')]
+    want = [x[0] for x in initial[:13]]
+    if listed != want or len(set(listed)) != 13:
+        raise ValueError(('unknowns', listed))
+    group = re.search(r'\\begin\{gathered\}(.*?)\\end\{gathered\}', display, re.S)
+    if not group:
+        raise ValueError('missing displayed definitions')
+    body = group.group(1).strip()
+    if not body.endswith('.'):
+        raise ValueError('missing definition punctuation')
+    defs = [s.strip() for s in body[:-1].replace(r'\quad','').replace('\\\\',',').split(',') if s.strip()]
+    if len(defs) != len(expected):
+        raise ValueError(('definition count', len(defs)))
+    variables = {printed: var(i) for i,(printed,_) in enumerate(initial)}
+    inputs = {internal: variables[printed] for printed,internal in initial}
+    cuts = {}
+    for index, (definition, (label, target)) in enumerate(zip(defs, expected)):
+        parser = Parser(definition, variables)
+        if parser.take() != label or parser.take() != '=':
+            raise ValueError(('unexpected definition', definition))
+        actual = parser.expression()
+        if parser.peek() is not None:
+            raise ValueError(('unparsed tokens', label))
+        memo = {}
+        def value(name):
+            if isinstance(name, int):
+                return Poly.lift(name)
+            if name in inputs:
+                return inputs[name]
+            if name in cuts:
+                return cuts[name]
+            if name not in memo:
+                op,left,right = node[name]
+                x,y = value(left),value(right)
+                memo[name] = {'+':lambda:x+y, '-':lambda:x-y, '*':lambda:x*y}[op]()
+            return memo[name]
+        wanted = variables['b'] * variables['i'] * variables['c'] ** 2 if target is None else value(target)
+        if actual != wanted:
+            raise ValueError(('definition differs from graph', label))
+        # `t` has no graph node; keep its small expression rather than a cut.
+        if target is None:
+            variables[label] = actual
+        else:
+            variables[label] = var(len(initial)+index)
+            cuts[target] = variables[label]
+    boxed = re.search(r'\\boxed\{(.*?)\}', display, re.S)
+    if not boxed:
+        raise ValueError('missing boxed equation')
+    parser = Parser(boxed.group(1).strip().removesuffix('.'), variables)
+    left = parser.expression()
+    if parser.take() != '=' or parser.take() != '0' or parser.peek() is not None:
+        raise ValueError('unexpected boxed equation')
+    if left != variables['P']*variables['Q']*variables['U']*variables['Z']-variables['Delta']:
+        raise ValueError('unexpected boxed factors')
+    if rows[-4:] != [['product0','*','N0','N1'], ['product1','*','product0','Na'],
+                     ['product4','*','product1','scaled_Ns'], ['polynomial','-','product4','Delta']]:
+        raise ValueError('unexpected graph output wiring')
+    return len(defs)
+
+text = TEX.read_text()
+count = check(text)
+# The 2011 constants and their decimal action encoding are byte-identical to
+# the separately audited fourteen-variable display; that older audit retains
+# a manual decoder/ranking interpretation boundary.
+start = r'\textbf{The four fixed integers.}'
+end = r'\normalfont\fontsize{7.7}{8.2}\selectfont'
+old = OLD.read_text()
+if text[text.index(start):text.index(end)] != old[old.index(start):old.index(end)]:
+    raise ValueError('fixed-constant block differs from original display')
+for before, after in [('C=q-F-\\alpha', 'C=q+F-\\alpha'),
+                      ('b(m-V^2G)', 'b(m+V^2G)'),
+                      ('PQUZ-\\Delta=0', 'PQUZ+\\Delta=0')]:
+    changed = text.replace(before, after, 1)
+    if changed == text:
+        raise ValueError(('mutation did not apply', before))
+    try:
+        check(changed)
+    except (ValueError, KeyError):
+        continue
+    raise ValueError(('mutation not detected', before))
+print(f'PASS: {count} exact cut-point definitions, 13 distinct positive unknowns, '
+      'graph output wiring, identical 2011 constants block, three mutation controls')
+print('source SHA256:', sha(TEX))
+print('parser SHA256:', sha(PARSER))

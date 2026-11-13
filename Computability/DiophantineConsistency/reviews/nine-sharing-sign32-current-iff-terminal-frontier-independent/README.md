@@ -1,0 +1,7 @@
+# Independent current-port sign32 seed iff terminal audit
+
+The state records dependency scan and Lean compile exiting 0; the author's separate record reports actual outer session 61275 exit 0. The checker validates source/object/log pins, 150 direct guards, 1,079 overlay links and the exact generic iff and current-data provider observations. It independently reruns the pinned port survey. All three reports (`port0`, `pointwise`, `exists_same_input`) are `[propext, Classical.choice, Quot.sound]`; no compiler warnings occur.
+
+In an IΣ₁ model, the checked local `port0` theorem discharges the generic beta-cast hypothesis for `CurrentWindowCarry2011.ports`. The checked pointwise iff compares sign32 zero at a valuation with sign33 zero at its lift; the existential iff preserves any input coordinate 0. The current high port is the existing `highPort + beta` once-shifted value. The port survey uses successful port-base/port0 rows of an overall-failed split; the failed row is not used, and the current-data object's own deeper ancestry is inherited.
+
+The theorem concerns Lean's current-port seed expressions. It does not establish Lean semantics of the external sign32 JSON or individual numerical coefficient bytes, nor a sextic Jones construction or endpoint. No Lean replay was performed. The outer record is author-observed; guards are point-in-time and sampled monitoring is not a complete dynamic or transitive trace.

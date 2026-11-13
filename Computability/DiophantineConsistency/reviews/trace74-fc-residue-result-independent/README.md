@@ -1,0 +1,5 @@
+Independent post-audit PASS for conditional signed F/C q² residue; no Lean replay.
+
+Actual author session 24872 reported outer exit0 and reaped. Terminal 94fea7c3b694ab6d732b4cf25ca0977fbab20a842de355a57794791f67ee2769; source 42f9d45f3807c4137f288b52860408f052c115668fc7eccf6ec6b305d22e7fc2; runner 3863f22a1889a906bde9edb6d5951a885931ebffac9cecdf60756cb6db9795c1; object bf3a66f8d005f85680f8c25d2ab94c22796e9624387a731d8ed8b170467ef326. Stage exit0, empty stderr; first exact report [propext, Quot.sound] and second [propext, Classical.choice, Quot.sound]. All 47 source/direct/tool/provider pins, runner, logs and object rehashed.
+
+For the same p/v in IΣ₁ under positive beta/valuation, value74=0 and q≥4, the graph theorem produces the same first-Pell n≥3 with its coordinate equation and q² | C+MC*J+q(F+MF*J)+1−2n in DiffRing, with F=v1, C=v2, MC=p2, MF=p3, J=v0. The ring factor and subtraction sign are checked. No F/C bound, coprime cancellation, graph-zero existence, guard or endpoint follows. Direct pins do not authenticate complete transitive/package/dynamic or search-path ancestry.

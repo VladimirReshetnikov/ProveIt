@@ -1,0 +1,5 @@
+# Sign14 pointwise zero assembly: source-only client
+
+The two proposed stages assemble five retained transfers and the deleted tau row into pointwise zero maps, requiring a supplied abstract tau only forward and no port/sign assumptions. Natural tau existence is independently audited; the [transfer provider](../../reviews/nine-sharing-sign14-transfers-terminal-independent/README.md) is independently audited. No Lean zero maps, existential iff, JSON binding or endpoint is claimed.
+
+No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign14-zero-assembly-prelaunch-independent/README.md) passed. Author outer session 58554 exited 1 ([receipt](attempt01/outer-result.json)): forward declaration reached the default 200000-heartbeat limit. No forward object, reverse stage or postflight exists; the [independent failure audit](../../reviews/nine-sharing-sign14-zero-assembly-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck. Inherited surveys are point-in-time.

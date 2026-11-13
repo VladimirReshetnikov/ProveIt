@@ -1,0 +1,7 @@
+# Independent audit: arbitrary-q N5/R7 scalar family
+
+PASS for ordinary integer q≥32, m≥1. This is a separate review of revised README `d11c79bc4dadb5cddbb0de6c31c07e3dcd01287c8b242a4f6deb6befdde05787`, checker `7253fb4c831eec02f1e961dd792878308fb88dbdefdca3fc38523c9591cf8b86`, receipt `7014d6bd840c141dee9f11ee50081caf1875ee9cd750f134e79993c7ce8c4b30`, stdout `23f0e13ab2e040b458d5fe76f6c77a3b932c539c8aa0edcb6b5b38c4ed4863fe`; stderr empty. Independent rerun matched, and no flags / -O / -OO reject. The earlier q32-only review remains pinned to its prior bytes separately.
+
+With a=2q²m, X=a³ and Y=a²/2=2q⁴m², q|X and q³|Y; a≥256. The independent earlier expansion showed c−kY and kY+k−c have 28/29 strictly positive shifted coefficients. Independently, y5(d)=d⁴−3d²+1 for d=a⁷+2, and the expansion of y5(d)−1 at a=256+u has 29 strictly positive coefficients, minimum 1. Thus y5>1 and kY=a²y5>a²=4q⁴m²≥4q⁴>2q⁴. The recurrence scaling and strict carrier interval are unchanged from the earlier independent review.
+
+The distinct q=32,a=256 sample is not a member of the revised parameterization (which has a≥2048 there); it independently has projection remainder 1648680914823 modulo H=2199023386623. It does not decide projection for the general family. The arbitrary-q construction is ordinary-integer scalar arithmetic with no full graph zero, fixed-BFS port binding, guard or iPRA assertion. No Lean was run in this audit.

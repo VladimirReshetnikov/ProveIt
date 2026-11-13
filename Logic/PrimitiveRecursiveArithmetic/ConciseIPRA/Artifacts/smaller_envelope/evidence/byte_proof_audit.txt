@@ -1,0 +1,167 @@
+BYTE REMAINDER SELECTOR: INDEPENDENT AUDIT
+=======================================
+
+Baseline repository: VladimirReshetnikov/ProveIt
+Pinned commit: 62396b06020f794fa6dc01b4025a6a5db9d4d28a
+All repository paths below are relative to
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/.
+
+Candidate
+---------
+checker_bytes_515.py is obtained from the exact file
+canonical_recursors/compact/code/checker_compact_zero.py by replacing
+
+    (m or ~len(a) % 2) and k
+
+with
+
+    (m or 3 % len(a)) and k.
+
+No other expression, reader convention, success marker, scope test,
+substitution, instruction format, or context operation is changed.
+CPython 3.12.14 ast.unparse normalization plus one LF gives:
+
+                                Tokens  AST nodes  Normalized bytes
+Exact pinned control               265        306               516
+Remainder selector                 264        304               515
+
+Candidate SHA-256:
+c2f00ccce73f018b9a5cb489d524868ff5a3dba4d0037c3fdf615bc758a7bdd6
+
+This is a one-byte improvement of a complete implementation of the SAME
+guarded scalar calculus. It is not a new axiom deletion, a mathematical
+breakthrough, or a proof of absolute minimality. It does not itself attain
+the token or AST coordinate records of other programs.
+
+Authoritative decoder and scope sources
+--------------------------------------
+kernel_refinement/reference/foundations/inherited_arity_checker.tex,
+subsection "The complete sorted interpretation of arrays", gives:
+
+  Numerical arrays: arity 0, 2, or >=4 denotes zero; arity 1 is successor;
+  arity 3 is iteration, with its stated protected-slot environments.
+
+  Formula arrays: arity 0 or >=4 denotes the fixed equation 0=0; arity 1
+  is D; arity 2 is equality; arity 3 is Q, read from its last child.
+  Scalar formula padding that is successfully admitted denotes truth.
+
+The same file's subsection "One depth calculation replaces the lookup
+table" explains that children of surplus nodes are semantically ignored,
+although their traversal can still reject a certificate.
+
+Its paragraphs "Paired introduction" and "Induction remains restricted"
+explain that only arity 2 among the meaningful nonconstant formula roots
+can receive progress; D and Q matrices must receive cases. They also
+explicitly justify progress for empty or surplus arrays, since those
+decode to the fixed equation 0=0.
+
+The current guarded-source rule inventory and its mixed auxiliary reading
+are in kernel_refinement/report.tex, sections "The implemented theory" and
+"Why the presentation is exactly iPRA". Its section "A tempting reduction
+introduces full induction" is an important negative control: assigning
+progress to Q, whose arity is 3, would be unsound for this presentation.
+The proposed remainder selector assigns ZERO to arity 3.
+
+Soundness proof of the replacement
+---------------------------------
+Work over the same finite integer/list certificate language and canonical
+guarded public-goal contract as the pinned compact control. The complete
+sorted-array soundness proof remains the inherited one, except for the
+following local verification of the newly selected image.
+
+1. If m is truthy, Python short-circuits the OR before evaluating len(a).
+   Both old and new expressions therefore pass the same image k. This
+   includes the paired-elimination branch. No fresh-parameter condition
+   changes.
+
+2. Suppose m is falsy. If the packet supplies a computation axiom, the
+   hypothesis h is the constructed computation equation. Opening the
+   supplied fields at zero or at the newly allocated rigid parameter k
+   gives an instance of the same computation axiom. Both choices are
+   sound. The goal is opened at S(k) exactly as before. Hence changing
+   the image selected from an administrative goal's arity cannot invent
+   a non-computation hypothesis.
+
+3. The remaining case is paired introduction. For an actual D goal,
+   h=a is the matrix after opening its witness, and the new rule uses:
+
+       matrix root       length L     3 % L       hypothesis image
+       D                     1            0       zero (cases)
+       equality              2            1       k (progress)
+       Q                     3            0       zero (cases)
+
+   These are exactly the permitted modes. In particular quantified
+   matrices still receive cases, not progress.
+
+4. If L>=4, the matrix denotes the fixed true equation 0=0. The new
+   expression selects progress for every such L. Progress of this fixed
+   equation is sound. This does not add an induction schema for arbitrary
+   quantified formulas: their roots are arity 1 or 3, already covered.
+   The opener preserves the surplus root arity. Any ignored children
+   that make the traversal fail merely reject the attempted certificate.
+
+5. If L=0, the new expression raises ZeroDivisionError. This removes an
+   accepting route for a truth alias; it creates no new acceptance.
+   If a is a scalar, len(a) already fails in the control whenever that
+   subexpression is evaluated, and it still fails in the candidate.
+
+These cases exhaust the changed operation. Every other local soundness
+obligation is identical to the pinned control's obligation.
+
+Completeness and the public consequence relation
+-----------------------------------------------
+The inherited compiler of native proofs uses Eq, D, and Q as its actual
+formula goals. Thus every non-neutral goal reaching the changed mode
+selector has arity 1, 2, or 3. The neutral major 0 is discharged by the
+retained neutral resource before the selector is reached. Although the
+checker generates surplus truth entries in contexts by tripling an
+equation or closure, the canonical compiler never needs such an entry
+as an inference goal.
+
+Consequently every canonical compiled native proof follows the identical
+mode choices under both selectors. The candidate is complete for the
+same native guarded public consequences. Combined with the soundness
+argument, it presents the same public theory. The inherited ordinary
+realization, bi-interpretation with full first-order intuitionistic PRA,
+whole numerical domains, actual equality, and identity numerical
+composite x=y therefore remain unchanged.
+
+The public-goal grammar is not validated by either compact module. This
+is the existing compact contract; a fully validated user interface must
+include and count its validator. The claim does not silently substitute
+the 515-byte module for such a fully validated interface.
+
+Raw acceptance is deliberately NOT claimed identical
+----------------------------------------------------
+For example, the JSON certificate
+
+    [[0,0,0,0],[[]]]
+
+is accepted by the control and rejected by the candidate. Its final raw
+formula is a D whose matrix is the empty truth alias. The candidate
+rejects by division by zero. This is outside the canonical public grammar
+and does not lose a public theorem.
+
+Neither the compact baseline nor this argument is an exact-type validator
+for arbitrary JSON. Objects and strings in unused certificate prefixes
+remain inert. Malformed consumed fields and unsupported values can
+reject. The finite negative checks include the inherited floating-name,
+future-witness, scalar-false-sentinel and context-leak attacks. No new
+all-JSON exact-behavior claim is made.
+
+Executable evidence
+-------------------
+byte_remainder_validation.json records 86 paired comparisons on the 43
+JSON files in the pinned compact fixture directory (ordinary Python and
+python -O), with zero mismatches. Its cases include the metadata file and
+the old local neutral spelling as rejection comparisons; the canonical
+zero-profile positive fixtures are the 13 accepting cases in each mode.
+
+byte_remainder_manual_checks.json records purpose-built arity controls,
+the intentional empty-alias difference, unproved 0=1, the inherited four
+adversarial fixtures, and inert malformed-prefix cases. These tests are
+finite checks, not the universal soundness or bi-interpretability proof.
+
+There is no new Lean or Rocq formal verification. The proof above is a
+local written preservation/completeness argument over the inherited
+proved calculus and its documented array interpretation.

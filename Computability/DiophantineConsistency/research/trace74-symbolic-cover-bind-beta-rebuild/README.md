@@ -1,0 +1,7 @@
+# Held beta-only symbolic cover diagnostic
+
+Source-reviewed beta-only application over audited fixed-geometry parent and separately accepted beta provider. The runner compares the beta producer closure, headers and companion bundles before and after a new union; the Nat.Basic outside provider is retained. Preflight and controls do not invoke Lean. Independent prelaunch review and coordinated release are required. Other values and hypotheses remain symbolic; no concrete cover claimed. Capture-relative historical/package ancestry limits remain.
+
+The [independent prelaunch review](../../reviews/trace74-symbolic-cover-bind-beta-prelaunch-independent/README.md) approved one check. Attempt01's actual outer session exited 1 although Lean exited 0: strict policy rejected its warning that exponent 8807 exceeded the safe threshold and was not evaluated. The [child result](observations/attempt01/result.json) SHA-256 is `1587a6ae3dc8466736f8382e6ec330217fda44a044bc120be7c481be62bc744b`; the [outer receipt](observations/outer-attempt01/terminal.json) SHA-256 is `7ff4d6e6aa1fe575a86b195308bee9579eb80954282cdcea33f85e57518568cd`. This attempt is not an accepted theorem. The [v2 local-opacity draft](../trace74-symbolic-cover-bind-beta-draft-v2/README.md) is uncompiled and does not increase the exponentiation threshold.
+
+The [independent factual audit](../../reviews/trace74-cover-bind-beta-warning-independent/README.md) confirms the warning-only rejection.

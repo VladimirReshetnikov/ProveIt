@@ -1,0 +1,5 @@
+# Sign14 direct expression iff: source-only client
+
+The checked theorem combines the current-port sign14/sign15 seed iff with both independently audited expression evaluators. The [current-port iff](../../reviews/nine-sharing-sign14-current-iff-terminal-independent/README.md) is independently audited. No polynomial bridge, external JSON binding or iPRA endpoint is claimed.
+
+The point-in-time union surveys both four-stage evaluator providers and overlays, injecting eight evaluator objects. It and inherited surveys are not replayed postflight; direct guards/overlays are. Inherited successful-child/failed-parent ancestry remains. No-Lean preflight outer 42993 exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign14-expression-equivalence-prelaunch-independent/README.md) passed. Author outer session 35001 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign14-expression-equivalence-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

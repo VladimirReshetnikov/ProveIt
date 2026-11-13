@@ -1,0 +1,56 @@
+COMPOSED CHECKER FORMAT
+
+Canonical formulas: equation [s,t]; paired binder D(x,y).B as [B]; closure
+Q(y).B as [B,B,B]. Canonical terms use scalar0, unary[t] for S(t), and
+[n,a,h] for I(n,a;u.h). Negative labels denote previously allocated rigid
+parameters. At the numerical root, indices3,4 name the first protected slot,
+5,6 the second, and so on; indices0,1,2 mean zero. As a node is crossed,
+the threshold increases by 5 minus its length.
+
+Successor nodes therefore insert two dummy-zero slots before their child;
+iteration counter/seed insert one dummy-zero slot; iteration updates insert
+one state slot. D inserts two actual slots (index y first, witness x second);
+Q inserts its one index slot. See producer.py for the named canonical encoder.
+
+Noncanonical finite arrays have a conservative semantic decoding: empty
+formulas and formula arrays of arity>=4 mean truth; numerical arrays of
+arity0,2 or>=4 mean zero. The first two fields of ternary Q are annotations.
+Scalar formula padding means truth. Traversal still checks annotations, so
+a semantically inert malformed annotation can reject. Only successful
+execution is claimed sound. Completeness is for canonical encodings.
+
+Input is a JSON array whose last item is the requested closed formula and
+whose earlier items are four-field packets [m,s,u,t]. The checker pops from
+the end. An already retained formula closes without a packet. Unread prefix
+packets are harmless. Successful public execution means exit code0 and the
+line ACCEPT. Exceptions reject with nonzero exit; no REJECT line is required.
+
+Packet interpretation:
+- Truthy m is a major to prove first. If m=[s,u] and opening t at u equals
+  the requested goal, prove t opened at s (equality transport). If s is
+  falsy and m=[t,t,t], the same matching request specializes Q from its
+  zero instance. A nonmatching endpoint leaves the original goal unchanged.
+  Appending m*3 exposes Q from unary D at a fresh parameter; from other
+  substantive array shapes it supplies only a truth alias.
+- m=null constructs an arithmetic theorem from predecessor s, seed u,
+  update t. A raw-falsy predecessor supplies I0. A raw-truthy predecessor
+  supplies IS at s; the source counter is the constructed unary[s].
+  The recursive image [s,u,t] is validated at numerical root3 when used.
+  At the common continuation, all exposed slots are completed with0.
+  Newly admitted rigid negative parameters remain arbitrary, not fixed0.
+- m=[] chooses D case introduction. m=0 chooses progress for a
+  literal equation matrix, otherwise case on substantive matrices; even-arity
+  truth aliases may take the same harmless progress branch. The witness is t, including
+  literal0. The raw goal must have unary substantive shape; using a binary
+  equality goal as D fails its positional-argument check. The newly
+  allocated parameter is fresh for the retained goal, matrix and witness.
+
+Ordinary numeric and formula aliases are inherited from the arity-calculus
+proposal; they do not add primitive arithmetic or logical operations. Native
+logic remains equality, Q and D with complementary case/progress introductions.
+
+The explicit-list program is the preferred inspection profile. The compact
+program uses a*0==[] to recognize a JSON list. The guarded AST program uses
+a+[] in a protected traversal, so nonlists cannot recursively masquerade as
+lists; its context is an immutable tuple. All profiles parse data as JSON,
+never execute certificate input, and import no theorem producer or evaluator.

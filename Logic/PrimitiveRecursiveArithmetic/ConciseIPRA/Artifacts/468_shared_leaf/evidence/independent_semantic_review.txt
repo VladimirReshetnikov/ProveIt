@@ -1,0 +1,133 @@
+INDEPENDENT SEMANTIC REVIEW OF checker468.py
+Reviewer task: math_candidate
+Snapshot: 78edba03ee060644464f76e388578584b356520a
+
+Conclusion
+----------
+The proposed 468-byte module is a sound composition of two already established
+changes, subject to its stated compact input contract. It does not delete an
+arithmetic or logical axiom. Its defensible theorem is equality of represented
+canonical guarded theorem sets with the inherited calculus. It is NOT an
+unconditional equivalence of raw accepted inputs with control469.py.
+
+The exact source changes are the even shift of all four explicit opening
+depths, 0/3/3/2 -> 2/5/5/4, and replacement of the initial neutral empty-list
+resource by scalar zero. No runtime branch is added or deleted.
+
+Contract assumptions required
+----------------------------
+The input is a finite exact-integer/list tree; the final record is a two-field
+header [A,0]; A is a canonical closed guarded Eq/D formula in the shifted
+encoding. Each consumed remaining record has exactly four fields [m,s,u,t].
+The checker consumes the outer array backwards. A prefix need not be consumed.
+The model of mathematical acceptance ignores finite machine resource limits.
+It is not a full validator for arbitrary JSON or arbitrary advertised formulas.
+
+What the interpretation must say
+--------------------------------
+At formula root use depth 2; at numerical root use depth 5. Rigid parameters
+are negative integers in the current interval [k,0). Numerical scalar aliases
+0,1,2,3,4 all denote zero. Positive bound slots are shifted by exactly two
+from the old decoder. Descending into an r-ary array still adds 5-r. Thus
+parity, number of protected slots, and actual-versus-dummy slot distinctions
+are unchanged. Dummy slots are interpreted by zero, not by new numerical
+parameters. Ignored annotation subtrees can be traversed and can cause a
+failure; they never contribute an assertion.
+
+The raw formula reading is required on ALL auxiliaries, not only public
+formulas. Scalars and neutral arities read as truth. At a literal equation
+matrix D uses the progressive reading, and at compound matrices it uses the
+conditional closure reading; Q uses conditional closure. The guarded public
+translation identifies the progressive reading with the ordinary one.
+
+Opening and terminal calls
+--------------------------
+Successful no-image scanning proves absence of meaningful unfilled numerical
+holes and future eigenparameters. Scanning may change irrelevant annotations,
+but preserves the decoded formula. On a successful call with a numerical
+image, opening has the usual capture-free substitution meaning. Eager image
+validation at even depth can reject additional raw representatives; it cannot
+add a theorem. Canonical compilation supplies an independently scoped image.
+
+The generated computation preview is inspected even at a hypothesis leaf.
+For a successful terminal call, literal membership says that the scanned goal
+either equals a retained resource or equals the preview. The first is a
+hypothesis. In the second case the inherited direct-leaf lemma applies with
+every depth increased by two. For a state-dependent successor body, insertion
+validates the recursive iterator source at numerical root depth 5. This
+prevents a coordinate that is harmless in a successor's dummy slots from
+escaping as a genuine value in the recursive source. When the state is not
+used, successor computation is valid independently of that source. The zero
+case is an I0 instance. The initial scalar zero has truth reading and is
+directly scan-valid because 0 < 2; it adds no arithmetic assumption.
+
+Nonterminal calls: major and freshness
+--------------------------------------
+First c(g,m,k) is checked at the OLD floor. Its result is a nonempty one-element
+list on every successful return, hence is truthy. The parent then lowers its
+local floor by one. The major subproof's internally allocated parameters do
+not escape and need not be globally disjoint from those in the continuation;
+ordinary eigenvariable renaming separates them if desired.
+
+When m is a unary D formula, m*3 is its Q-shaped opening matrix. Opening it at
+the new rigid parameter adds exactly the appropriate closure assumption. A
+unary major cannot collide with the length-two equality or length-three Q
+major in the elimination test. The parent goal was scanned at the old floor,
+so it contains no new parameter. This is D elimination.
+
+When a truthy m has any other arity, tripling it has a neutral formula
+reading. A scalar major remains neutral. Its added resource is therefore
+truth, regardless of the scanned annotations. The continuation either proves
+the unchanged parent goal under an unused fresh parameter, or supplies the
+minor premise of the selected equality/Q elimination.
+
+The elimination guard is evaluated AFTER lowering k. Therefore it is not
+correct to say that its entire template was validated at the parent floor.
+The template may mention the new parameter. What matters is that both the
+major and parent goal were validated at the old floor. The continuation
+proves the source instance in the enlarged scope; equality transport or Q
+elimination gives the old goal there; the temporary parameter and neutral
+resource can then be discharged. This avoids an unnecessary and false
+stronger invariant about the template.
+
+False major and introduction
+----------------------------
+For a unary goal D B, i(*a,t,4) is the witness opening of B. Its equation root
+selects the progressive hypothesis B(t,z); roots D or Q select the constant
+case hypothesis B(t,0); a neutral positive arity already denotes truth, so
+the mode is immaterial. The final opening uses [k], the successor of the
+fresh parameter. This is exactly the root-selected introduction rule under
+the auxiliary reading. An empty resulting matrix can fail at 3 % len(a),
+which only rejects an input.
+
+MINOR WORDING CORRECTION to the original RESULT.txt: i(*a,t,4) does not succeed
+only for a unary parent goal. If a=[] it is the two-argument call i(t,4), which
+can also succeed. The PARENT goal in this case is already the neutral formula
+truth; soundness is immediate. A scalar parent cannot be starred and a parent
+of array arity >= 2 supplies too many positional arguments. State this harmless
+empty-goal case rather than excluding it syntactically.
+
+Completeness
+------------
+Compile derivations of the inherited guarded calculus, not arbitrary old raw
+certificates. Shift every meaningful positive slot coordinate by two, keep
+zero and negative parameters fixed, and use scalar zero as the neutral
+resource/major. Every returning call, including a neutral-major or hypothesis
+call, consumes a four-field packet because this is the shared-leaf protocol.
+If terminal lookup closes a goal earlier than its original derivation did,
+emit only that leaf's packet. This pruning is performed by an untrusted
+certificate producer; no additional library enters the trusted checker.
+
+The zero-predecessor successor-computation instance still needs the inherited
+nonliteral-zero predecessor repair, because literal scalar zero selects the
+I0 preview. The shift does not change that derivation. Other source rules are
+compiled exactly as in shared_leaf, with the shifted opening interface.
+
+Limits
+------
+This review is a mathematical audit, not a Lean/Rocq formalization. The
+arithmetical bi-interpretation and the guarded-public completeness theorem
+are inherited dependencies. The new composition preserves their domain,
+equality, term translations and formula translations. Its only established
+complexity improvement is one normalized source byte (and one token/node
+against its matched control, not against their separate minima).

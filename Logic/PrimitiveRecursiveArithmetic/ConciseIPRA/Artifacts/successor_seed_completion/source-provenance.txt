@@ -1,0 +1,89 @@
+SOURCE PROVENANCE AND PRECISE ATTRIBUTION
+=======================================
+
+Repository: VladimirReshetnikov/ProveIt
+Inspected commit: 2fdcf5bf988bead821c416649f713f98b7ed8776
+Original directory: docs/drafts/
+The nine ZIPs in sources/ are byte-for-byte copies of its current drafts.
+Their inherited MIT No Attribution license is reproduced in
+reference/PROVEIT_LICENSE.txt; archived copies retain their own provenance.
+
+DECISIVE PRIOR SOURCE
+--------------------
+
+Archive: sources/ipra_shared_continuation_2026-11-10.zip
+Member: ipra_shared_continuation_2026-11-10/report.tex
+Section: "A genuinely smaller numerical grammar: the precise unresolved step"
+TeX label: sec:unresolved
+Source lines: 707-770; related research question starts at 805.
+
+Pinned source URL:
+https://github.com/VladimirReshetnikov/ProveIt/blob/2fdcf5bf988bead821c416649f713f98b7ed8776/docs/drafts/ipra_shared_continuation_2026-11-10.zip
+
+Archive Git blob SHA-1:
+47fbb71169e83bf426fd9c06cce764c9d0c8d06f
+Archive SHA-256:
+a811da9595e05db051605bb83eee60fce3997d1975bea0a5b4b9ab155088e8d5
+Member SHA-256:
+d9c612fd5589271458e42f9d3283b6ccf3627605444b63713f1d1f251b2c2690
+
+That section ALREADY proposes the one-variable successor-seeded basis:
+
+  R(0,a;u.h) = Sa,
+  R(Sn,a;u.h) = h[R(n,a;u.h)/u],
+  Sa := R(0,a;u.0).
+
+It ALREADY gives the conditional initialized-iterator compiler
+
+  I_hat(n,a;u.h) := P(R(n,a;u.S(h[Pu/u]))),
+
+assuming a whole-domain term/proof P(Sa)=a. Renaming its R to J does not
+make either the candidate basis or that compiler new.
+
+Three sentences quoted verbatim from that section (line breaks reflowed):
+
+  "No such left-inverse term and proof were obtained here, and no impossibility
+  theorem for SR is asserted. The existing scalar predecessor appendix
+  cannot be imported as its proof: that appendix already uses ordinary
+  initialized iteration and the unshifted selector."
+
+  "Consequently SR is an explicitly unresolved candidate, not part of the
+  claimed equivalent axiomatization or of the reported size reduction."
+
+The present contribution completes this explicitly named missing obligation:
+a noncircular whole-domain predecessor construction, including shifted
+factor-map/initializer alignment, capped predecessor, and finite correction.
+The predecessor proof is new relative to the inspected corpus; the basis,
+conditional compiler, and ordinary-iterator finite-cycle/factor-map/saturation
+strategy are credited to the prior drafts. This corpus audit does not
+establish global literature priority or an absolute complexity lower bound.
+
+OFFLINE REPRODUCTION
+--------------------
+
+From the package root, run:
+
+  python3 code/audit_novelty.py
+
+This uses only Python's standard library and the bundled sources/. It needs
+no network, git executable, or checkout. Git blob identifiers are recomputed
+as SHA-1 of b"blob " + decimal byte length + NUL + archive bytes; the commit
+above is fixed provenance, not a newly inferred repository state.
+
+The scan recursively includes embedded ZIPs and deduplicates archives and
+TEX/MD/TXT documents by SHA-256. It reproduces:
+
+  9 direct archives; 14 distinct archives including embedded ZIPs;
+  105 distinct TEX/MD documents; 187 distinct TEX/MD/TXT documents;
+  61 documents with a recorded search match; 0 reading/decoding errors.
+
+It writes evidence/reproduced_novelty_scan.json and
+evidence/reproduced_novelty_matches.txt. It also compares the complete direct
+archive records, archive inventory, document inventory, excerpts, and counts
+against evidence/J_novelty_scan.json. Any discrepancy yields nonzero exit.
+That original frozen JSON is left unchanged.
+
+evidence/audit_successor_seed_novelty.py is explicitly marked as the
+historical repository-backed script. The portable entry point above is the
+one intended for the delivered archive. The original narrative audit is
+evidence/J_novelty_audit.txt, including the limited primary-literature check.

@@ -1,0 +1,9 @@
+# Prepared standalone W field projection
+
+The two-field U/W client failed at the interpreter memory limit before emitting a theorem report; see `../nine-sharing-norm38-reference-fields02-check/attempt01/`. This distinct client retains only its exact W statement and proof (`reference p x 66 = (Carrier65.core p x).W`), dropping the earlier U proof and appending only W's axiom report. It does not increase heartbeat, recursion, memory or time limits. This isolated proof compiled as recorded below.
+
+The guarded runner uses the same reference-base and Carrier65 provider checks as the reviewed two-field client, adapted to a fresh path and target; no-Lean preflight passed. Independent prelaunch review and coordinated Lean slot release preceded the run. Source SHA-256 `e46712b893bf85dc33c3a184811c3c477a95bc6fb977bb176e9354ee1178e916`, manifest `8e6f54f21d60651f71629a2cee06d2b312c9b396e67ac04c7c9f566b5a422e0e`, carrier survey `87e1d2eeaf785071884a4c7ee91b109e052039f3d3aa1e5b4344319200eddd14`, runner `903a876c8f16adf6a3452fb6bfacf08d5167280c20d7636acbe0d90b4cb74fe6`. A passing W projection alone is not a model bridge or iPRA endpoint.
+
+Actual outer session 27053 exited 0. The checked `reference_W` report lists `[propext]`; two linter warnings say the `ring` tactic is unused/unreachable after simplification. State `4850cac5e7763883617255c554d743e82a0c91a6f07f2b69d63432ff07b75a96`, object `113d3d8021fe7b40ca19f7fca5eedbecf0b8ae87af6ab5d2de188f777775cbdb`, log `d30e4f6f24e8d7e8af288e7ac74e3f5dba83a0193921aa5a7fc5455e105d3872`, and author-recorded outer exit `216d744991998872160a608fbf00b1a6f1e19465ca6ba289888d780866b906ff` are retained in `attempt01/`; the outer record is not independently observed or a raw transcript. The object remains temporary. This projection alone proves no model bridge.
+
+Independent terminal audit passed at `../../reviews/nine-sharing-norm38-reference-w-delta-terminal-independent/`.

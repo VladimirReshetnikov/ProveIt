@@ -1,0 +1,5 @@
+# Independent sign32 N1/gap/tau prelaunch review
+
+The checker pins source, runner and manifest, independently reproduces the no-Lean preflight, and compares all six old/new expressions against the exact source-list rows. Old positions are 10, 11, 12 in the old remaining list; new positions are 9, 10, 11 in the new list. Old tau uses eliminated coordinate 15 and the proposed tau evaluation explicitly assumes port 0's model-ring cast equals the image of model-natural beta. Old N1 and gap do not use that coordinate and their proposed evaluations have no port-cast assumption. The runner binds successful group03 and checks retained source, logs, guards and overlay; deeper ancestry is inherited.
+
+These are nine local row-link/evaluation claims with symbolic ports and one valuation. Elaboration and axiom reports remain untested; no Lean run occurred. The remaining identities and complete zero-set bridge are outside scope. Provider checks are point-in-time; sampled monitoring does not give a complete transitive or dynamic trace.

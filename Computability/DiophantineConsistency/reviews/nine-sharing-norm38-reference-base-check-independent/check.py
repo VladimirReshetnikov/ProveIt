@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+"""Read-only check of the reduced reference-source split and provider pin."""
+import hashlib,json,os,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site and not sys.flags.optimize
+P=Path(__file__).resolve().parent;D=P.parents[1];q=D/'research/nine-sharing-norm38-reference-base-check';draft=D/'research/nine-sharing-norm38-reference-draft/Norm38Reference.lean';sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+for p,h in [(draft,'14103a5da6245030f2e189aa13869514daf4be668bcdd2f521e1ec132f8c8ff0'),(q/'src/DiophantineConsistency/Norm38ReferenceBase.lean','fe0d49b03be2223027e64b4fa8513088f4971093638ed5004f73dec48d96df7b'),(q/'source-manifest.json','fb7de5d7a9e274e99131768046ac0e37b022101035e0ce555049bb33a797d2a1'),(q/'run.py','95e5ada72800d5e386374201f52e433ac050f889353ccf80bfbae8d994d94596')]:assert sha(p)==h
+src=draft.read_text().replace('import DiophantineConsistency.Norm38SlotExtraction\n','').replace('import FreshModel106\n','');prefix=src.split('/-- Candidate reference equations for every actual gate.',1)[0];suffix='end DiophantineConsistency.Norm38Reference\n\n#print axioms DiophantineConsistency.Norm38Reference.graph_topological\n';assert (q/'src/DiophantineConsistency/Norm38ReferenceBase.lean').read_text()==prefix+suffix
+state=D/'research/nine-sharing-norm38-topology-check/attempt01/state.json';assert sha(state)=='ac766e23a56ec4a7c97b8c17d4703b9d20f9081a4af0681987f7c206a7f2d2a0';s=json.loads(state.read_text());assert s['status']=='PASS' and len(s['rows'])==1 and s['rows'][0]['module']=='SharingTopology38';assert not os.path.lexists('/tmp/nine-sharing-norm38-topology-check-20261105/lib/DiophantineConsistency/Norm38ReferenceBase.olean')
+prior=D/'research/nine-sharing-norm38-reference-draft';r=subprocess.run([sys.executable,'-I','-S','-B',str(prior/'check.py')],capture_output=True);assert r.returncode==0 and not r.stderr and r.stdout==(prior/'result.json').read_bytes()
+print(json.dumps({'status':'PASS_REFERENCE_BASE_SPLIT_REVIEW_ONLY','snapshot_sha256':sha(q/'src/DiophantineConsistency/Norm38ReferenceBase.lean'),'runner_sha256':sha(q/'run.py'),'scope':'Source split and referenced external graph mapping, no Lean compile or full graph/source theorem.'},indent=2,sort_keys=True))

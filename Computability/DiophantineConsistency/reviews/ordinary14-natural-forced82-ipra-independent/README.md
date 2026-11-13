@@ -1,0 +1,17 @@
+# Independent source review: natural-82 iPRA endpoint draft
+
+The [endpoint source](../../research/ordinary14-natural-forced82-ipra-draft/README.md) proposes the expected proof route, conditional on its unelaborated graph, predecessor, model and natural-86 dependencies. The selected source signatures and zero-map directions match that route. The original checker and the independent receipt below reproduce. Neither executes Lean, resolves actual providers, validates the declarations, or proves the endpoint.
+
+`CompactSymbolicModelIff.p` is defined as the integer cast of `ports betaNat ...`, and `ports` places beta in coordinate zero. `CompactFixedBeta.bounds` has first conclusion that the model cast of `betaNat` is positive when given a positive model value for its parameter; the draft instantiates that parameter with one. Thus its proposed beta representation and positivity have the right mathematical content for `GraphPredecessors82Draft.predecessors_of_zero`. The proposed `change`, cast simplifications, model instance, and `simp` argument are still subject to elaboration. The symbolic definition gives no physical coefficient-byte or PDF identification.
+
+The model draft's existential equivalence goes from an 82 zero to an 86 zero and conversely, conditional on three predecessors for any 82 zero. In `sameNoZero`, an 82 no-zero hypothesis rules out an 86 zero by the reverse (`he.mpr`) witness conversion; an 86 no-zero hypothesis rules out an 82 zero by the forward (`he.mp`) conversion. Both directions are correctly oriented and do not require equality at the same valuation. The predecessor source proposes discharging the condition with the beta representation and positivity above. The existing `SameNoZero` transport, `PolynomialBridge` source signature, and native, standard and equality-only adapter signatures are consistent with the stated client chain at the source level.
+
+For the selected symbolic-port facts, the receipt verifies lexical import edges through `Natural86Endpoint`, `IPRAOrdinary12`, the unconditional symbolic model file, and the port-projection files to `CompactSymbolicModelIff`, `CompactSymbolicPorts`, and `CompactFixedBeta`. The other selected direct adapter modules are explicitly imported. **No definite missing import or direction mismatch was found in these bounded paths.** This is not an exhaustive dependency or name-resolution audit. In particular, actual Lean must check all inferred instances and definitional reductions, including the cast `change`, the existential `change`, and whether the reference adapter's `erase` of the entire sentence reduces to the displayed componentwise erased target. Retained object providers, transitive imports and toolchain compatibility remain unverified.
+
+The source now requests five `#print axioms` outputs, covering `sameNoZero`, `polynomialBridge`, and the three endpoints. Those commands have not run and do not themselves certify axiom closure. The all-model interface uses models of `𝗜𝚺₁`; only a successfully elaborated and audited client chain could establish the claimed derivability statements for the selected iPRA presentations, and physical equation binding remains separate.
+
+Run from the repository root:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary14-natural-forced82-ipra-independent/check.py | cmp - Computability/DiophantineConsistency/reviews/ordinary14-natural-forced82-ipra-independent/result.json
+```

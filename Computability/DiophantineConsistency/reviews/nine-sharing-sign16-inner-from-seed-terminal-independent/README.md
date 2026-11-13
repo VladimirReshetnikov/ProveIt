@@ -1,0 +1,3 @@
+# Independent sign16 inner-from-seed terminal audit
+
+The independent checker exited 0. Author outer session 16613 exited 0; stage and postflight passed. Source, object, log, all three direct provider pins, guards and overlays were checked. The theorem report has the standard three axioms and no warnings or sorryAx. Its natural inner equation assumes seed zero, represented beta/K/MC/MF, beta positivity and explicit MC/MF bounds; the V lift remains separate. The union and inherited first-index surveys were point-in-time and not replayed postflight, while direct guards and overlays were checked again. No Lean was rerun here.

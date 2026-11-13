@@ -1,0 +1,15 @@
+# Independent review: natural C-fold, 13 inputs and degree 28
+
+The [candidate](../../research/ordinary13-natural-cfold97-degree28/README.md) gives an external 13-natural-input, 97-operation graph of exact specialized degree 28, with zero-existence equivalence to the reviewed positive 88-operation parent **conditional on the cited sign-free fact-level calibration and parent norm-descent arguments**. The calibrated compact-port conditions `beta>=46`, `K0>=0`, `0<MC<beta` and `0<MF<2*beta` are essential to this inherited argument. This is not an arbitrary-port equivalence, a Lean or iPRA theorem, a PDF/byte-binding theorem, or a minimality claim.
+
+The independent receipt checks the entire graph edit. It adds nine explicit input increments plus `kbase`, removes the parent's `g52`, and rewrites the `k` and `r0` nodes: `eta+(n_zeta+1)=(eta+n_zeta)+1` and `(k−R)−1=kbase−R`. The remaining rows agree after replacing `J`, `f` and `r` by their direct natural inputs. Hence the polynomial identity under the stated affine substitution is exact. The receipt checks all 97 nodes and leaves are live, the sum-of-four-squares output, the first-root and guard shapes, and that the other three residuals do not depend on `r`.
+
+At a natural zero, the four residuals vanish. The shifted non-root inputs are positive. If `f=0`, the strong residual contradicts positivity of `Delta`; if `J=0`, then `q=1`, `M=0`, `C<0` and `Bt<0`, so the first norm would require the positive quantity `−Bt` to be zero. Thus `f,J>0`. For `r=0`, `C<=0` similarly makes `Z>M*(ell+k)`, contradicting the first norm and `(ell+k)^2>1+ell*(ell+k)`. With `C>0`, the first norm gives `M|Z`; reducing modulo the coprime `q^3` and `b` gives `Y=q^3*s` and `Bt=b*t`. The cited calibration applies to the positive non-root coordinates and vanishing residual facts, and yields `X>=q^2`; with `F<=q−2` and `K0>=0`, this makes `Bt−C>=2q−1>0`, so `t>=1`. The cited first-Pell and main-norm argument yields `tau−ell>2*s`. Then `r_plus=(C−1)*k+(tau−ell)−s+t>0`; substituting it into the folded expression gives `Z=M*tau`, preserving the first norm and leaving the other three residuals unchanged. This is a root-switch existence map, not a pointwise inverse on every zero. The sign-free calibration and Pell descent are inherited external mathematical inputs, not reproved by the checker.
+
+The checker independently authenticates all four P72/P115 port bytes and verifies the listed bounds. A 28th finite difference of the all-inputs-equal ray modulo 1,000,000,007 gives nonzero coefficient 59132194. Together with the reviewed positive parent's degree-28 upper bound and the affine substitution, this proves the specialized degree claim. It does not independently replay the cited calibration, compile Lean, authenticate providers or connect the graph to a PDF.
+
+Run from the repository root:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary13-natural-cfold97-degree28-independent/check.py | cmp - Computability/DiophantineConsistency/reviews/ordinary13-natural-cfold97-degree28-independent/result.json
+```

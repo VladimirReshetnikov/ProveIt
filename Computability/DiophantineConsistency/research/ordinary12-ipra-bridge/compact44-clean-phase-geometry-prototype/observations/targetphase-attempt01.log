@@ -1,0 +1,29 @@
+/tmp/compact44-fractional-digits-01/CleanTargetPhase.lean:22:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ↑q % ↑8807
+in the target expression
+  (↑t + 8807 - ↑q % 8807) % 8807 = ↑((t + 8807 - q % 8807) % 8807)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+t q : ℕ
+hle : q % 8807 ≤ t + 8807
+hc : ↑(t + 8807 - q % 8807) = ↑t + 8807 - ↑(q % 8807)
+⊢ (↑t + 8807 - ↑q % 8807) % 8807 = ↑((t + 8807 - q % 8807) % 8807)
+/tmp/compact44-fractional-digits-01/CleanTargetPhase.lean:35:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  cyc 8807 ↑5495 ↑j
+in the target expression
+  cyc 8807 5495 ↑j = (cyc 8807 4393 ↑j + 1102) % 8807
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+q : V
+hq : q % 8807 < 8807
+j : ℕ
+hj : j < 8807
+hjv : q % 8807 = ↑j
+⊢ cyc 8807 5495 ↑j = (cyc 8807 4393 ↑j + 1102) % 8807
+'CleanTargetPhase.finite_relation' depends on axioms: [propext, Quot.sound]
+'CleanTargetPhase.target_relation' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CleanTargetPhase.target_choice' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

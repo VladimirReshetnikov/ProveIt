@@ -1,0 +1,247 @@
+INDEPENDENT PROOF AUDIT: EAGER OPENING AND AN EMPTY-ARRAY TRUTH RESOURCE
+
+Snapshot 798856e4ef2d02b7f9c0f1660828c5ce58f277f2
+Reviewed candidates:
+  agent_checker/variants/strict_eager_context.py (byte profile)
+  agent_checker/variants/checker_strict_tokens317_eager.py (token profile)
+  agent_checker/variants/checker_strict_ast356_eager.py (AST profile)
+
+CONCLUSION
+
+There is a sound mathematical proof route for these three candidates. It does
+NOT assert equality of accepted raw certificates with their controls. Eager
+opening can reject more aliases, and the administrative major is changed from
+integer 0 to the empty array []. The exact invariant is equality of the set of
+accepted canonical closed native Eq/D theorems, together with rejection of
+inputs outside the declared fully validated integer/list and public-goal
+contract. The language and axioms of the theory are unchanged.
+
+The relevant earlier lemmas are in docs/Article/chapters/ch11_cert.tex:
+  cert:def:reading          sorted reading of arbitrary raw trees
+  cert:lem:opening          semantic capture-avoiding opening
+  cert:lem:exposure         exposing the outermost protected slot
+  cert:lem:fresh            the scope floor gives genuinely fresh parameters
+  cert:lem:plus-opening     retained numeric 0 may be returned as 1
+  cert:lem:eager            eager parity multiplication has the same reading
+  cert:lem:closed-leaf      a closed computation candidate is an actual axiom
+  cert:prop:validated-terminal   soundness/completeness of strict direct leaves
+  cert:prop:uzero-native    native checker with uniform-zero canonical syntax
+  cert:lem:zeroinstance / cert:lem:supply  computation supply in token/AST pair
+
+Immediately after cert:lem:eager, the article explicitly treats an eager
+checker with [] as both initial neutral resource and administrative major.
+The present work composes those established semantic facts with native
+public validation and with the context-as-phase implementation. This is a new
+implementation composition, not a new arithmetic principle.
+
+1. SORTED READING AND THE EAGER UNIFORM-ZERO OPENER
+
+For formula positions the depth is d=2p; for term positions d=3+2p. The
+number p is the number of protected slots. The rigid numerical parameters
+have negative integer names in [k,0), with floor k<=0.
+
+At term positions, integers 0,1,2 denote numerical zero; integers 3+2j and
+4+2j denote protected slot j when that slot exists; integers in [k,0)
+denote the corresponding rigid parameters; the remaining integers are the
+one substitution hole. At formula positions every integer denotes the
+formula 0=0.
+
+Array arities are read as follows:
+  arity       term position                 formula position
+  0           0                             0=0
+  1           successor                     D binder
+  2           0                             equality
+  3           scalar iterator               Q binder (last child)
+  >=4         0                             0=0
+Only children used by this reading matter semantically. Other children are
+annotations. The arity law d+5-len(a) supplies the documented protected and
+dummy slots. Dummy slots denote zero. In particular the empty array has the
+same reading as a numeric zero at every position: numerical zero in a term,
+and the true equation 0=0 in a formula.
+
+Write E+_k(a;t,d) for the candidate's proof-phase opener. It traverses
+arrays; it retains an in-range integer a, returning a or 1; and at an
+out-of-range integer it returns
+
+                  (d mod 2) * E+_k(t;missing,3).
+
+The product is the ordinary Python product. If d is odd, this is the opened
+image. If d is even, it is integer 0 when the image is an integer, and []
+when the image is an array. Both even results read as 0=0 at their formula
+position. The missing image is a function, on which the array/numeric test
+fails. Thus the eager evaluation never makes an invalid missing image pass.
+
+Lemma. Whenever E+_k(a;t,d) returns, it is closed at that position and its
+reading is the reading of a with the term read from t substituted without
+capture for the hole. If t is missing, the original a is closed and the
+reading is unchanged. The exposure and freshness lemmas hold for E+.
+
+Proof. Simultaneous structural induction, exactly as in cert:lem:opening.
+At a retained leaf, the only change from the ordinary opener is 0 to 1,
+which has the same sorted reading (cert:lem:plus-opening). At an odd exposed
+leaf the recursively validated image has the same term reading; its own
+bound slots remain protected, so insertion does not capture. At an even
+exposed leaf, the old lazy result was 0, and the eager result is 0 or [],
+all with the true formula reading. Eager validation of an otherwise unused
+image can cause rejection but cannot change a successful reading. A missing
+image fails at every exposed leaf. Children with a reading occur at the
+proper nonnegative depths; traversals through arbitrary annotations may
+reject but do not change the read expression. The exposure and freshness
+arguments use the same range intervals and follow unchanged.
+
+Do not claim E+ with missing image is literally the identity on arbitrary
+raw trees: a retained 0 becomes 1. Its reading is unchanged. It IS the
+identity on canonical uniform-zero expression trees, which have no retained
+0 and no scalar formula holes.
+
+2. FULL PUBLIC VALIDATION IS PRESERVED
+
+The byte candidate and the token/AST pair start at k=0 with g=[]. Until the
+initial traversal of the public goal finishes, g remains empty. In that
+traversal:
+  - at even formula depth only array arities 1 and 2 are allowed;
+  - at odd term depth only array arities 1 and 3 are allowed;
+  - a numeric leaf must satisfy 0<=a<d and d & (a mod 2) != 0.
+Hence numeric leaves occur only at odd term depths and are precisely the
+allowed positive odd indices of the inherited uniform-zero public grammar.
+Every scalar formula leaf, out-of-scope leaf, and wrong-arity array fails.
+For an invalid scalar the eager opener necessarily evaluates its missing
+image and raises an exception, EVEN WHEN d IS EVEN. The earlier failed
+mutation using short-circuit 'and' does not have this property.
+
+The whole-input printed-alphabet check is unchanged. On JSON values it
+permits only exact integers and lists built from them, and rejects Boolean,
+float, null, string and object components, including unused certificate
+prefixes. Any malformed non-list outer container also fails before normal
+success. The original closed native Eq/D grammar is therefore still fully
+validated; no truth atom is added to the public language.
+
+3. CONTEXT EMPTINESS IS A CORRECT PHASE INDICATOR
+
+In the byte candidate the left operand i(a) of membership is evaluated
+before the right operand. The first item of the right operand evaluates
+'g.append([])'. This happens only after the initial goal has passed its
+entire traversal. The context is nonempty before the computation candidate,
+proof-mode substitutions, or recursive calls are evaluated. In the token
+and AST candidates, 'g += [[]]' is executed after the unsuccessful initial
+membership test and before reading/processing the first inference packet.
+At the root, membership cannot succeed because g was empty.
+
+Every later reachable call has nonempty g. Recursive major calls receive
+the same nonempty list; continuations receive g+[h], also nonempty. No code
+removes an item. Thus the expressions 'g or ...' act as validation switches
+exactly where the former explicit phase flag did.
+
+The in-place changes to g add only []. They can propagate back through a
+major call because the list is shared, but they add only duplicate copies
+of the same closed theorem 0=0. Context order, multiplicity, and length
+are used nowhere in the scope calculation, rule choice, or specialization.
+The scope floor is the independent integer k. All genuine new assumptions
+are supplied via g+[h], which creates a fresh list; a branch's hypotheses
+therefore do not leak to an enclosing call. The decoded context is unchanged
+up to weakening by a derivable truth and contraction of duplicate truths.
+
+In the byte candidate g.append returns None, which is an additional item
+of the membership tuple. It cannot be a successful opened goal: an opener
+returns only integer/list trees on the admitted input alphabet. This item
+is semantically and operationally inert.
+
+4. SOUNDNESS FOR ALL ACCEPTED INTEGER/LIST CERTIFICATES
+
+Induct on the finite tree of returning verifier calls, with invariant:
+all retained entries are closed at the current floor, and their readings
+are available hypotheses, together with copies of the theorem 0=0. The
+entry opener establishes closedness of the current goal and preserves its
+reading by section 1. Context mutation preserves the invariant by section 3.
+
+Hypothesis/administrative leaf. A match with a retained entry is Hyp. A
+match with [] has reading 0=0. This is a theorem of the native calculus.
+
+Direct computation leaf (byte profile). A match with the generated
+candidate H makes H literally equal to the opened, closed goal. By
+cert:lem:closed-leaf, using the E+ semantic-opening lemma, H reads as an
+instance of I0 or IS. In the zero case the constructed counter 1 reads as
+0. In the successor case the update's opened image and the left iterator
+share the same raw fields; closedness rules out an escaping state slot,
+so the right endpoint is precisely the successor computation. The lemma
+requires closedness and readings, not literal idempotence on raw aliases.
+
+Major elimination. The major is recursively verified before it is used.
+For equality/closure specialization the existing pattern comparison forces
+the two goal instances to be F(sigma), F(upsilon), or B(0), B(upsilon);
+semantic opening supplies precisely the term substitutions required by Tr
+or QE. For a unary major, triplication creates its Q body and its opening
+at the fresh negative label is DE. For a major of any other array arity,
+triplication has arity >=6 and reads truth; a scalar major also reads truth.
+Those administrative resources add no axiom. Range/freshness arguments are
+unchanged: a fresh label is allocated only after the major proof and the
+witness opening, and the successful equality comparisons give the same
+closed target at the old scope. The earlier proofs of delayed selection
+and local scope apply with E+ because they use its reading and range laws.
+
+Introduction. A false-valued successfully proved administrative major is
+[]; its triplication is empty and selects the same introduction branch as
+old administrative 0. For a unary goal [B], opening at depth 2 instantiates
+the witness before the floor is decreased. The continuation proves
+B(w,S z). Its added hypothesis is B(w,z) only when B is a literal equation
+and the progress marker selects that case; otherwise it is B(w,0). Thus
+only equation induction is used. The byte profile's test len(a)==2==u
+makes this explicit; the supply profiles' older marker discipline is
+unchanged, because only the MAJOR field 0 is recoded to [], never the u
+mode marker. Array roots read as administrative truth in the remaining
+malformed cases, and scalar cases that would call len(scalar) reject.
+
+Computation supply (token/AST profiles). These retain the existing supply
+branch. The generated equation at fresh private parameters has a zero
+specialization which is an actual I0/IS instance (cert:lem:zeroinstance).
+The standard supply lemma discharges that private specialization; its proof
+uses the same semantic opening and fresh-floor properties, so E+ does not
+change it. No new supplied equation is assumed as a global axiom.
+
+All cases of a successful call therefore derive its decoded goal. At the
+root the decoded context contains only truth, and initial validation made
+the public goal the original canonical native formula. Every accepted
+public formula is consequently a theorem of the inherited native calculus,
+hence of its ordinary realization bi-interpretable with iPRA.
+
+5. CANONICAL COMPLETENESS
+
+Start with a finite native derivation, using the upstream canonical compiler
+for the appropriate direct-leaf or supply protocol. Use uniform-zero
+encodings (the literal numerical zero is scalar 1). Replace only each
+administrative major marker m=0 by m=[]. Do not change mode markers in u,
+zero source markers, or expression fields indiscriminately.
+
+On canonical expression trees, all formula leaves are equations, and all
+scalar term leaves are at odd depths. E+ therefore makes exactly the same
+canonical substitutions as O+, after validating the image. Every required
+image is a scoped canonical term. In otherwise unused source/target fields
+choose the canonical zero or raw 0 as allowed by the established compiler;
+its root-term validation returns 1. Every eager preview is then defined.
+A neutral [] major is closed by the retained [] resource, with one dummy
+packet in the byte protocol and no packet in the hypothesis-first pair.
+Duplicate [] resources do not affect canonical goal membership because a
+canonical native formula is a nonempty array.
+
+For the byte profile use the branch-aware compiler of cert:prop:leaf and
+cert:prop:validated-terminal: inspect the terminal tests at each node, and
+if a computation or hypothesis closes it early emit only that node's packet,
+not obsolete packets for discarded subproofs. This matters inside a major
+proof, because an unused suffix there would be consumed by its caller's
+continuation. The token/AST profiles retain their supply compiler. All
+original native rules therefore have canonical certificates in the new
+programs, and every closed native Eq/D theorem is accepted by some finite
+certificate.
+
+6. LIMITS AND EXACT CLAIM
+
+The proof is about ideal finite execution, with host resources unbounded.
+Real Python recursion, integer, input-size and memory limits can reject
+sufficiently large proofs. It is a written proof of the composition, not a
+new Lean/Rocq verification of Python. Tests support the implementation and
+scope checks; they do not replace the universal argument.
+
+The programs preserve the native theory and its existing whole-domain,
+actual-equality bi-interpretation with iPRA. They improve implementation
+size under the strict fully validated contract, not the empirical compact
+promised-grammar floor, and do not delete an arithmetic or logical axiom.

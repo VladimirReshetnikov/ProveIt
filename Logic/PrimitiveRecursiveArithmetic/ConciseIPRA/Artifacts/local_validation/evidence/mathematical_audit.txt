@@ -1,0 +1,110 @@
+INDEPENDENT MATHEMATICAL AUDIT OF exact_fused_json_if.py
+
+Scope: inspected exact_fused_json_if.py, the original exact-binding
+proper_tokens.py, the incoming intrinsic-validation checker and readable
+expansion, and syntax_work/intrinsic_soundness_review.md. This is a written
+audit, not a proof-assistant verification or a claim based on random tests.
+
+1. Public input and sort
+
+At floor k=0 the list guard enforces arity 1 or 2 at formula depths, and
+arity 1 or 3 at numerical depths. At a formula node, 5-len(a) gives the
+existing D/Eq/Q binder increments; Q is excluded at the public root and
+public formula positions by the public arity check. At numerical nodes
+the increments are 0,0,2 for an iterator and 0 for successor. Every
+surviving public scalar is an odd nonnegative integer below its binding
+depth. Boolean true behaves as 1; public false is rejected. There is no
+separate literal guarded-matrix-shape validator; describe the public
+grammar as the inherited sorted native Eq/D grammar, using the appropriate
+existing calculus with its certificate-selected case/progress mode.
+
+2. Active binding and raw annotations
+
+The expression j & 2 equals 2*(j==2) at every active numerical child
+index (0,1,2). It differs at later indexes in overwidth raw nodes.
+Consequently there is NO literal trace equivalence on arbitrary raw
+integer/list inputs with the original proper_tokens.py, whose increment
+is 2*(j==2). For example, at floor -1 and numerical depth 3, opening
+[1,1,1,3] at image 1 gives [1,1,1,3] with j&2, versus [1,1,1,1] with
+2*(j==2).
+
+The change can nevertheless be sound under the inherited total raw
+reading: a numerical list of any nonoperative arity denotes numerical
+zero, with all children annotations; a formula list of nonoperative
+arity denotes administrative truth. At an operative node the two binding
+rules agree, and at a nonoperative node no child's interpretation affects
+that of the parent. The proof therefore needs this erasure argument, or
+must start from the incoming intrinsic-validation checker that already
+uses j&2. Do not silently replace it by a universal trace-equivalence
+claim against proper_tokens.py.
+
+3. No-image scans prohibit forged names
+
+For JSON-decoded data, a*0==[] recognizes lists. Null and objects raise
+on multiplication; strings give an empty string; numerical multiplication
+does not give a list. A scalar float whose value is in the retained
+interval reaches d & (a % 2), which raises TypeError. An out-of-interval
+float reaches the default 0j image, whose comparison raises. Thus a
+successful no-image scan contains no floats, strings, nulls, or objects.
+Booleans are harmless integer aliases. The same statement applies to
+every actually demanded replacement image, which is scanned without an
+image of its own.
+
+4. Template floats are holes, not numerical parameters
+
+In a successful opening with an explicit image, a float can survive only
+as an out-of-interval hole. Replace such an occurrence by the integer
+equal to its current local depth. That integer is also outside the strict
+retained interval, and produces the same opening result. The two openings
+of an equality-elimination template are performed at the same floor and
+depth, before the recursive major proof; hence one local integer/list
+reification suffices for both. This is local to the rule occurrence; it
+does not require a global conversion of all unused JSON data.
+
+5. Computation leaves
+
+Every terminal goal first passes a no-image scan. If it matches the
+constructed computation equation, any scalar aliases in the compared
+candidate must be integral floats or Booleans equal to the corresponding
+integer; they can be replaced by that integer. A falsy source is absent
+from the zero-computation candidate and its exact JSON spelling is
+irrelevant. A truthy source is present in the successor counter and must
+match a pure term. Any demanded iterator image is scanned. If membership
+succeeds instead at an already retained context formula, the unused
+candidate data require no additional interpretation.
+
+6. Freshness and entry reservation
+
+The proof-call goal is scanned BEFORE the current floor is decremented.
+Thus the newly reserved floor cannot appear as a previously validated
+free name. Equality target/source instances and an introduction witness
+are prepared before the recursive major proof. Every major proof,
+including an administrative neutral proof, consumes a packet and strictly
+lowers the floor before returning. The subsequently selected fresh name
+therefore lies strictly below the names that could survive the earlier
+scans. Replacing an out-of-scope template scalar by a hole is not retaining
+that scalar as a free name. These observations are the essential reasons
+that references to future eigenparameters do not become captured.
+
+7. Control-flow fusion
+
+The main expression is an expression statement, not a returned tuple.
+The proof function returns None on every normal completion. On a terminal
+match the right operand of 'or' is skipped. Otherwise the tuple first
+performs the optional target/source assignments and then calls the
+continuation. Both the target opening and the source opening happen
+before the raw major is reconstructed and proved. This preserves the
+intended premise order. Full computation-candidate construction occurs
+before membership even when an earlier context entry will match; its
+eagerness is part of the implemented protocol.
+
+8. Outcome and limits
+
+I found no mechanism in these changes for proving a false closed native
+goal. The local all-JSON reification and freshness arguments are coherent,
+provided the report explicitly retains the inherited total reading of raw
+administrative nodes and starts from the correct intrinsic control or
+supplies the erasure lemma in item 2. The claim is accepted-input
+soundness and canonical completeness for public goals. It is not exact
+typing of the entire document, equality of all raw certificate languages,
+a new mathematical axiom deletion, or a corpus-wide minimum.

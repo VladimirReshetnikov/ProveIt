@@ -1,0 +1,210 @@
+import Direct80Graph
+
+/-! Ring-level coordinate probe; positive inverse is a separate obligation. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive79Mask
+open DiophantineConsistency AdaptiveEquationSyntax2011 TenPositive80Graph
+
+def output79 (p : Fin 4 → ℤ) : Expr (Fin 10) :=
+  let J : Expr (Fin 10) := .var 0
+  let F : Expr (Fin 10) := .var 1
+  let C : Expr (Fin 10) := .var 2
+  let i : Expr (Fin 10) := .var 3
+  let T : Expr (Fin 10) := .var 4
+  let w : Expr (Fin 10) := .var 5
+  let s : Expr (Fin 10) := .var 6
+  let n : Expr (Fin 10) := .var 7
+  let eta : Expr (Fin 10) := .var 8
+  let zeta : Expr (Fin 10) := .var 9
+  let port0 : Expr (Fin 10) := .constant (p 0)
+  let port1 : Expr (Fin 10) := .constant (p 1)
+  let port2 : Expr (Fin 10) := .constant (p 2)
+  let port3 : Expr (Fin 10) := .constant (p 3)
+  let r01 := port0 * J
+  let r02 := r01 + 1
+  let r03 := r02 * r02
+  let r04 := r03 * r02
+  let r05 := r04 * s
+  let r06 := r02 - F
+  let r07 := w * r02
+  let r08 := eta + zeta
+  let r09 := r08 * r05
+  let r10 := r09 + eta
+  let r11 := r03 + 1
+  let r12 := r07 + 1
+  let r13 := r11 * r05
+  let r14 := r13 * r12
+  let r15 := 4 * r14
+  let r16 := r15 - 1
+  let r17 := r14 + 2
+  let r18 := r13 * r13
+  let r19 := r07 * r18
+  let r20 := r19 * r08
+  let r21 := r20 + r08
+  let r22 := r20 * r21
+  let r23 := r22 + 1
+  let r24 := r02 * r06
+  let r25 := r24 - C
+  let r26 := r03 - 1
+  let r27 := r25 * r26
+  let r28 := r02 * port3
+  let r29 := port2 + r28
+  let r30 := r29 * J
+  let r31 := r27 + r30
+  let r32 := r08 - r31
+  let r33 := r32 - 1
+  let r34 := port1 + w
+  let r35 := r34 * C
+  let r36 := r35 - F
+  let r37 := r10 * r10
+  let r38 := i * r37
+  let r39 := r38 * r23
+  let r40 := r14 * r17
+  let r41 := r40 * r39
+  let r42 := r41 * r38
+  let r43 := r42 + 1
+  let r44 := r42 * r43
+  let r45 := 4 * r44
+  let r46 := r45 + 1
+  let r47 := r40 * r45
+  let r48 := r10 * T
+  let r49 := r48 - r31
+  let r50 := r46 * r49
+  let r51 := r50 - r10
+  let r52 := r51 * r51
+  let r53 := r11 * r11
+  let r54 := r01 * r53
+  let r55 := r52 * r36
+  let r56 := n - r55
+  let r57 := r16 * r56
+  let r58 := 3 * r10
+  let r59 := 2 * r07
+  let r60 := r58 - r59
+  let r61 := r07 * r60
+  let r62 := r61 + 2
+  let r63 := r57 + r62
+  let r64 := r54 * r63
+  let r65 := r53 * r36
+  let r66 := r01 * r33
+  let r67 := r65 + r66
+  let r68 := r16 * r67
+  let r69 := r64 - r68
+  let r70 := r54 * r16
+  let r71 := r70 * r70
+  let r72 := r23 * r43
+  let r73 := r69 * r69
+  let r74 := r71 * r72
+  let r75 := r74 * r52
+  let r76 := r73 - r75
+  let r77 := r47 * r76
+  let r78 := r74 - r73
+  let r79 := r77 + r78
+  r79
+
+variable {R : Type*} [CommRing R]
+
+def oldVal (p : Fin 4 → ℤ) (v : Fin 10 → R) : Fin 10 → R :=
+  ![v 0,v 1,((p 0:R)*v 0+((1:ℤ):R))-v 1-v 2,v 3,v 4,v 5,v 6,v 7,v 8,v 9]
+
+def core (p : Fin 4 → ℤ) (v : Fin 10 → R) (C G : R) : R :=
+  let t01 : R := (p 0:R) * (v 0)
+  let t02 : R := t01 + ((1:ℤ):R)
+  let t03 : R := t02 * t02
+  let t04 : R := t03 * t02
+  let t05 : R := t04 * (v 6)
+  let t06 : R := t02 - (v 1)
+  let t07 : R := (v 5) * t02
+  let t08 : R := (v 8) + (v 9)
+  let t09 : R := t08 * t05
+  let t10 : R := t09 + (v 8)
+  let t11 : R := t03 + ((1:ℤ):R)
+  let t12 : R := t07 + ((1:ℤ):R)
+  let t13 : R := t11 * t05
+  let t14 : R := t13 * t12
+  let t15 : R := ((4:ℤ):R) * t14
+  let t16 : R := t15 - ((1:ℤ):R)
+  let t17 : R := t14 + ((2:ℤ):R)
+  let t18 : R := t13 * t13
+  let t19 : R := t07 * t18
+  let t20 : R := t19 * t08
+  let t21 : R := t20 + t08
+  let t22 : R := t20 * t21
+  let t23 : R := t22 + ((1:ℤ):R)
+  let t24 : R := t03 - ((1:ℤ):R)
+  let t25 : R := G * t24
+  let t26 : R := t02 * (p 3:R)
+  let t27 : R := (p 2:R) + t26
+  let t28 : R := t27 * (v 0)
+  let t29 : R := t25 + t28
+  let t30 : R := t08 - t29
+  let t31 : R := t30 - ((1:ℤ):R)
+  let t32 : R := (p 1:R) + (v 5)
+  let t33 : R := t32 * C
+  let t34 : R := t33 - (v 1)
+  let t35 : R := t10 * t10
+  let t36 : R := (v 3) * t35
+  let t37 : R := t36 * t23
+  let t38 : R := t14 * t17
+  let t39 : R := t38 * t37
+  let t40 : R := t39 * t36
+  let t41 : R := t40 + ((1:ℤ):R)
+  let t42 : R := t40 * t41
+  let t43 : R := ((4:ℤ):R) * t42
+  let t44 : R := t43 + ((1:ℤ):R)
+  let t45 : R := t38 * t43
+  let t46 : R := t10 * (v 4)
+  let t47 : R := t46 - t29
+  let t48 : R := t44 * t47
+  let t49 : R := t48 - t10
+  let t50 : R := t49 * t49
+  let t51 : R := t11 * t11
+  let t52 : R := t01 * t51
+  let t53 : R := t50 * t34
+  let t54 : R := (v 7) - t53
+  let t55 : R := t16 * t54
+  let t56 : R := ((3:ℤ):R) * t10
+  let t57 : R := ((2:ℤ):R) * t07
+  let t58 : R := t56 - t57
+  let t59 : R := t07 * t58
+  let t60 : R := t59 + ((2:ℤ):R)
+  let t61 : R := t55 + t60
+  let t62 : R := t52 * t61
+  let t63 : R := t51 * t34
+  let t64 : R := t01 * t31
+  let t65 : R := t63 + t64
+  let t66 : R := t16 * t65
+  let t67 : R := t62 - t66
+  let t68 : R := t52 * t16
+  let t69 : R := t68 * t68
+  let t70 : R := t23 * t41
+  let t71 : R := t67 * t67
+  let t72 : R := t69 * t70
+  let t73 : R := t72 * t50
+  let t74 : R := t71 - t73
+  let t75 : R := t45 * t74
+  let t76 : R := t72 - t71
+  let t77 : R := t75 + t76
+  t77
+
+theorem old_core (p : Fin 4 → ℤ) (v : Fin 10 → R) :
+    ((graph p).output).evalRing (oldVal p v) =
+      core p v (v 2) (((p 0:R)*v 0+((1:ℤ):R))*(((p 0:R)*v 0+((1:ℤ):R))-v 1)-v 2) := by
+  change core p v (((p 0:R)*v 0+((1:ℤ):R))-v 1-(((p 0:R)*v 0+((1:ℤ):R))-v 1-v 2))
+      ((p 0:R)*v 0*(((p 0:R)*v 0+((1:ℤ):R))-v 1)+(((p 0:R)*v 0+((1:ℤ):R))-v 1-v 2)) = _
+  congr 1 <;> ring
+
+theorem new_core (p : Fin 4 → ℤ) (v : Fin 10 → R) :
+    (output79 p).evalRing v =
+      core p v (v 2) (((p 0:R)*v 0+((1:ℤ):R))*(((p 0:R)*v 0+((1:ℤ):R))-v 1)-v 2) := by
+  change core p v (v 2) (((p 0:R)*v 0+((1:ℤ):R))*(((p 0:R)*v 0+((1:ℤ):R))-v 1)-v 2) = _
+  rfl
+
+theorem coordinate_identity (p : Fin 4 → ℤ) (v : Fin 10 → R) :
+    (output79 p).evalRing v = ((graph p).output).evalRing (oldVal p v) := by
+  rw [new_core,old_core]
+
+#print axioms TenPositive79Mask.coordinate_identity
+end TenPositive79Mask

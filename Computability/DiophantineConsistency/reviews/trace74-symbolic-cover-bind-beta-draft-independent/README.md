@@ -1,0 +1,5 @@
+# Independent source review: beta-only cover specialization
+
+Reviewed unchecked `research/trace74-symbolic-cover-bind-beta-draft/Trace74CoverBindBeta.lean` SHA-256 `24249d0d47ded5b8c1ab984230118156ca52758786d95ad4485a06d0de10480b`. It applies the proposed FixedGeometryCover theorem to the retained `betaNat`, using the independently accepted `Trace74BetaPower.beta_plus_one` to discharge only the beta identity. Low, defect and high remain variables with their explicit low identity, strict defect and high lower-bound assumptions. Argument order, exponents and actual sole report directive match; no mathematical mismatch found.
+
+FixedGeometryCover itself is not yet independently accepted, and elaboration, warnings and resource behavior are unchecked; no Lean was run. This contingency makes no inference about the cause of earlier timeouts. A future run must select compatible captured closures for both independent producers. It does not establish a concrete mask cover, model cast, graph guard, external-file binding or iPRA.

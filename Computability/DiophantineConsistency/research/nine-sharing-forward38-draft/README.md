@@ -1,0 +1,5 @@
+# Uncompiled 38-witness natural constructor
+
+`ForwardWitness38.lean` is a draft forward-assignment function for the independently reviewed five-norm 38-witness candidate. It constructs 24 cut coordinates from 14 natural inputs and four semiring port values, using only additions and multiplications. `check.py` compares those 24 right-hand sides and vector order to the exact pinned candidate AST. It deliberately skips the five terminal norm residuals, whose vanishing requires the source equation's all-model norm theorem and positivity hypotheses.
+
+The Lean source has **not** been compiled. No theorem yet proves the generated assignment satisfies even the 24 cut residuals, extracts the norm conditions, constructs the reverse acyclic trace, or identifies the candidate seed with the original 65 expression inside Lean. No Jones/iPRA endpoint or file-content theorem is claimed. It imports the separately uncompiled `SharingGateModel` draft. Run `python3 -I -S -B check.py` for the external transcription check.

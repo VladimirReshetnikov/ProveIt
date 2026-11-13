@@ -1,0 +1,34 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/free-j-model-lift-binding-author-aehq_m7g/FreeJModelLiftBinding.lean:54:15: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 12 → V
+q R X Y eta zeta gamma gammaOld w t : V
+hq : 1 ≤ q
+hX : v 5 = X
+hY : v 6 = Y
+he : v 8 = eta
+hz : v 9 = zeta
+hg : v 11 = gamma
+hbeta : ι (v 0) * ↑(p 0) = ι (q - 1)
+hR : Expr.evalRing (fun j => ι (v j)) (rankExpr p) = ι R
+hXq : X = q * w
+hk : eta + zeta = R + 1 + Y * q ^ 2 * t
+hgamma : gamma + w = gammaOld + t
+hqm : Expr.evalRing (fun j => ι (v j)) (core p).qm = ι (q - 1)
+hqcast : ι (q - 1) + 1 = ι q
+hqplus : 1 + ι (q - 1) = ι q
+hU : Expr.evalRing (fun j => ι (v j)) (core p).u = ι (Y * q ^ 2)
+h : ι eta + ι zeta = ι R + 1 + ι Y * ι q ^ 2 * ι t
+⊢ ι Y * ι q ^ 2 * ι t = ι Y * ι t * ι (q ^ 2)
+'FreeJModelLiftBinding.main_lift_of_model_correction' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

@@ -1,0 +1,11 @@
+# Prepared generic prefix-embedding check
+
+The guarded client checks the [source-only typed path and lookup candidates](../nine-seed38-jones-prefix-embedding-draft/README.md). The theorem is generic over DAGs, ring valuations and indices; it does not itself construct paths for the recipe, prove full-recipe semantics or bind JSON/human text to Lean.
+
+The survey reruns the independent generic-cuts terminal audit and pins the candidate source and exact `Norm38MacroCuts` object. The runner binds its direct dependency and guard hash/realpath to that object and repeats source/provider checks after success. Point checks do not establish a complete dynamic or transitive trace; sampled monitoring can miss transient spikes or escaped descendants. An earlier initial-agreement producer's numeric outer exit was not captured.
+
+No-Lean preflight actual session 69799 exited 0 and reported `PASS_NO_LEAN_PREFLIGHT`; the [record](preflight-author-record.json) is author-recorded rather than an independent raw transcript. The [independent prelaunch review](../../reviews/nine-seed38-jones-prefix-embedding-prelaunch-frontier-independent/README.md) passed. Limits were `-M2800`, 120 seconds per invocation, sampled 4-GiB session RSS and 10-GiB available-host-memory stops, and a 5-GB free-disk precheck.
+
+Actual outer session 18184 exited 0, as did the dependency scan and Lean compile. Both generic lemmas reported `[propext, Classical.choice, Quot.sound]` without warnings. State SHA-256 `9e8939bb926fd5d1e88721240579b4fd5c4eccadacbbb2c4c23f9c4dfeb44a5d`, object `a7f4b4f604505643e057e48a3f30ee5aaba9780348ee3edbb4ce3a58b58218be`, and author-recorded outer exit `fa6b21798e0d2cd9001dc3fe475addd9dd0d4ee1b3acc36dc0c9091b65556e63`. The object remains temporary; the outer record is not an independent raw transcript. The [independent terminal audit](../../reviews/nine-seed38-jones-prefix-embedding-terminal-frontier-independent/README.md) passed without replaying Lean.
+
+SHA-256: source `0e44abd4d3cbc028dac5759b7091c3e861376f42f6327a4db11c1512ede71477`; runner `45b76ca53c0206ab31183ddd7a33b3730ec4b22005d413eea3ba266f8119ae27`; survey `d5d5cdd0329010f925589c9307693f167f0cfdf8ef3a81e97ef6823788f07bad`; manifest `62fb80ef7282c12fcf5e99b30884f34d1f1ae2c50b654c8dd9ceb35abae85009`.

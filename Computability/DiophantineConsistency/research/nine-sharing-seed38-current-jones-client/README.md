@@ -1,0 +1,7 @@
+# Current-port 38-seed Jones client
+
+Source and guarded runner are prepared, not yet checked by Lean. This client specializes the checked arbitrary-port seed degree and normalization theorems to `CurrentWindowCarry2011.ports` and combines them with `NineFreshJones.nine_iff`: in every indicated IΣ₁ model the nine-variable Jones expression has a zero iff the seed has a zero with distinguished input 1 and 38 remaining natural witnesses. It does not prove the seed corresponds to the maintained current equation or provide an iPRA consistency endpoint.
+
+The runner inherits the ten-module weighted-retry provider, rechecks its state, ten source/object/log records, direct guards and overlay links, and creates a fresh overlay with those ten objects. It retains inherited package/dynamic ancestry and sampled-monitor limits. A no-Lean preflight exited 0; independent prelaunch review is pending. Source SHA-256 `3a3c2fdb8e9182b6bb1faf26529a3c88283dd981bebad8afc7a089eb17cdaeb0`, manifest `9a8e3a85c20440199f28c1f857dfd885cffdee87b2028e41c763fdc947a79b78`, runner `1fe708fbcd6b72b4bce8de281fee102aeeb226bd6256a7b280bea6e751b913c3`.
+
+Actual outer session 74639 exited 1: `decide` could not unfold the locally irreducible radix in `current_beta_positive`. Three downstream axiom reports contain `sorryAx`; this attempt proves no accepted endpoint. State, logs and author-recorded terminal exit are retained in `attempt01/`. The explicit-unfold correction is prepared separately at `../nine-sharing-seed38-current-jones-retry01/`.

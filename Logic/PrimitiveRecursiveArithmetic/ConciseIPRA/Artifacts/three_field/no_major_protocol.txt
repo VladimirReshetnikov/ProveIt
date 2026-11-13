@@ -1,0 +1,247 @@
+THREE FIELDS, WITH THE SOURCE REUSED AS THE MAJOR
+Independent protocol audit and implementation proof
+12 November 2026
+
+RESULT AND CONTRACT
+
+The selected new checkers implement the inherited guarded public iPRA theory
+using triples [s,u,t] in place of four-field instructions [m,s,u,t]. They are
+complete standalone Python acceptance modules under the same compact
+integer/list-certificate and canonical guarded-public-formula contract as
+the compact comparators. They contain no external checker import or theorem
+oracle. They do not include a separate public syntax validator.
+
+code/checker_tokens.py: 249 significant tokens, 278 AST nodes, 607 bytes.
+code/checker_ast.py:    255 significant tokens, 271 AST nodes, 606 bytes.
+
+These measurements normalize the whole source using CPython 3.12.14
+ast.unparse, append one LF, and exclude only layout/comments from tokens.
+The token and AST programs use different inherited scope conventions:
+the former has a global freshness counter and initially empty context;
+the latter has local scope floors and an initially retained zero sentinel.
+Use their respective global and local certificate directories.
+
+The new fact is a proved reduction in the data required to describe a proof
+step, together with a complete smaller implementation. No logical or
+arithmetic axiom is deleted. Equiconsistency and both whole-domain
+bi-interpretations with iPRA transfer through equality of the public theorem
+sets. This is not an absolute minimality or theoretical lower-bound theorem.
+
+1. EXACT ALGORITHM
+
+Let O_k(X,T,d) be the inherited scope-checking opener. At a list X it preserves
+the list and recursively opens each child at depth d+5-len(X). At an integer
+it retains a coordinate when k<=coordinate<d; otherwise at even depth it
+produces formula padding 0, and at odd depth it opens the supplied image T
+at numerical depth 3, with no further supplied image. An absent numerical
+image is a rejecting sentinel. Write O_k(X,T)=O_k(X,T,0).
+
+At a goal A not already retained in the context, read [s,u,t], retaining
+its original three entries as the immutable list r. If O_k(t,u)=A:
+
+  A := O_k(t,s);
+  s := r[:2] if the original s is truthy, otherwise [t,t,t];
+  u := 0.
+
+The order matters. The new goal uses the old source. The original r is not
+mutated, so r[:2] reconstructs precisely the old equality major. With a
+falsy old source, the triple [t,t,t] is the old Q major. Setting u to zero
+then selects the major branch below, even when the original target term
+was truthy.
+
+Dispatch using the resulting s,u:
+
+  u truthy: supply the old iterator computation equation determined by r;
+  u falsy, s truthy: check s in the old context, then supply s repeated 3 times;
+  u falsy, s falsy: perform the old D introduction at witness t.
+
+In the local implementation the neutral major check at s=0 is retained;
+it closes immediately from the initial zero sentinel. In the global
+implementation it is omitted, exactly as in the global control.
+
+After construction of the supplied hypothesis H, allocate the next fresh
+negative integer b. Supply O_b(H,b) when s is truthy or the opened current
+goal is an equation; supply O_b(H,0) otherwise. Open the continuation goal
+at the successor [b] in the inherited way. Immutable contexts ensure a
+major subproof cannot leak its local assumptions to its continuation.
+
+The opener, numerical-image validation, positive protected coordinates,
+negative allocated names, and old-scope checking of a major or witness are
+unchanged. No step assumes its major merely because that major is supplied
+in the certificate.
+
+2. AN INTERMEDIATE THREE-FIELD PROTOCOL
+
+For clarity, first retain a temporary effective major m. Set m=0 if u is
+truthy, and m=s otherwise; then run exactly the old inferred-major checker,
+including its optional endpoint reconstruction and old image selector.
+This intermediate checker is exactly simulated by the old four-field
+inferred-major program using
+
+  [s,u,t]  |-->  [0 if u else s, s,u,t].
+
+For an accepted finite execution, expand the consumed triples in place;
+unused prefix cells may be left untouched. The public goal is unchanged.
+Induct on the successful major/continuation call tree, carrying the current
+scope floor and remaining stream. Endpoint tests, effective majors, checked
+premises, contexts, generated goals, and fresh labels are identical. This
+is a soundness simulation for the intermediate protocol; it does not claim
+that every arbitrary old four-field certificate can be shortened by simply
+dropping its first field.
+
+The selected source-reuse protocol differs from this intermediate protocol
+only in the computation supply case described in Section 3. It must not be
+advertised as having exact all-input trace equivalence to the static
+four-field expansion.
+
+3. SOUNDNESS OF REUSING THE SOURCE
+
+After an endpoint match, the selected program puts the reconstructed major
+in s and makes u falsy. It therefore checks exactly the same major and
+uses exactly the same continuation goal as the intermediate program.
+An unmatched D-opening packet has its major in s and u=0 already.
+An introduction packet has falsy s,u, so its old introduction rule and
+root-based mode are unchanged.
+
+For an unmatched computation packet, u stays truthy and the computation
+formula is exactly the old constructed computation. In a successor
+computation whose source is truthy and whose continuation goal is compound,
+the selected program supplies H(b), whereas the intermediate program
+would supply H(0). This is the sole substantive scheduling difference.
+
+The inherited sorted-array correctness theorem gives a proof of H(0) for
+every successful constructed computation, including its documented raw
+administrative aliases. It does not require claiming that H(b) is
+unconditionally true on every such raw alias. The following admissible
+supply rule is enough:
+
+  Gamma |- H(0)       Gamma,H(b) |- F       b fresh for Gamma,F
+  ----------------------------------------------------------
+                         Gamma |- F.
+
+Substitute 0 for the fresh b in the second derivation; then cut in the first.
+The old scope check guarantees freshness of the decoded current context and
+goal. The rule applies to compound as well as atomic F. Consequently either
+0 or b may be chosen as the computation-supply image. It does not grant
+induction for compound formulas: the changed choice is confined to supplying
+a computation equation whose zero instance is already proved.
+
+This uses the inherited lemmas headed "Opening and scope", "Supply with a
+known zero instance", and "Sound constructed computation" in the arity
+checker foundation. Source-image checking at numerical depth 3 is essential
+to the constructed-computation lemma and is retained verbatim.
+
+Induction over a successful finite execution now proves soundness of the
+selected source-reuse checker: use the intermediate simulation for every
+unchanged branch and the admissible supply argument for the changed branch.
+Only the canonical public theorem set is claimed equivalent. Noncanonical
+raw success languages or generated contexts need not be identical.
+
+4. CANONICAL TERM/FORMULA SEPARATION
+
+Every canonical numerical tree contains only integer leaves and array nodes
+of arity 1 or 3 (optional empty numerical-zero arrays are harmless). It has
+no binary node. Every genuine Eq/Q/D formula has a binary equation node:
+at the root for an equation, or beneath its unary D or ternary Q wrappers.
+
+When a numerical tree is opened at formula depth 0, each array increment
+5-arity is even. Numerical leaves are retained or erased to 0; the odd-depth
+image substitution branch is never selected. The result therefore still
+has no binary node and is defined on canonical numerical data. Opening a
+genuine formula preserves each of its list nodes, including a binary one.
+Thus an opened canonical numerical tree cannot equal a genuine formula.
+
+This establishes that the optional endpoint test cannot accidentally fire
+in a canonical introduction or computation: their t field is numerical,
+whereas their current goal is a genuine formula. For a D opening, choose
+t=0; its tested endpoint is scalar 0, also distinct from a genuine formula.
+The argument concerns syntax, not numerical equality or evaluation.
+
+5. CANONICAL COMPILER
+
+Use the inherited native-rule compiler and choose canonical numerical terms,
+genuine formula representatives, and the usual permitted truthy initializer
+for computation. Regenerate each instruction according to its role:
+
+  Mechanism                    Triple
+  ---------------------------  ---------------------------------------
+  D opening with major M       [M,0,0]
+  D introduction, witness w    [0,0,w]
+  Iterator computation         the old [s,u,t], with u truthy
+  Equality transport           the old [s,u,t], endpoint matched
+  Q specialization             [0,u,t], endpoint matched
+
+For D opening the endpoint test fails and the same M is checked. For
+introduction and computation the separation lemma prevents accidental
+matches. For transport and Q specialization the old compiler already
+makes the endpoint literally equal to the conclusion, so the expected
+major is reconstructed and checked.
+
+The truthy-initializer restriction and the nonliteral-zero transport source
+restriction are inherited. Their established derivations using a nonempty
+zero alias recover omitted literal-zero computation/source cases. No new
+restriction of the ordinary mathematical calculus is imposed here.
+
+At a canonical computation step the supplied equation H is already a valid
+closed equation at the old floor, allowing old rigid negative parameters.
+The update's state variable is protected by the iterator binder on the
+left and filled by the recursive iterator on the right. Every positive
+numerical coordinate is protected by a genuine internal binder. Hence the
+old no-image traversal of H succeeds and leaves every scalar unchanged.
+On extending the floor from k to k-1 these coordinates remain protected:
+
+                 O_{k-1}(H,0) = H = O_{k-1}(H,k-1).
+
+Thus the selector change in Section 3 does not even alter canonical
+computation hypotheses as raw trees. The canonical compiler reproduces
+the same contexts, fresh labels, and continuation goals as the intermediate
+protocol. Its correctness is proved by induction on native derivations,
+using the inherited arity compiler's realization of the native rules.
+This is completeness on mathematical formulas, not a blind deletion of a
+field from every permissive raw certificate.
+
+The selected modules implement the compact guarded presentation. A full
+native companion would have to retain its distinct case/progress marker;
+no such companion is inferred just from the compact code. The separately
+supplied fully typed native checker is a different, four-field profile.
+
+6. METATHEOREM AND BI-INTERPRETATIONS
+
+For each canonical closed guarded public formula A, an accepting certificate
+for A exists in either selected three-field checker exactly when the
+inherited guarded presentation proves A. Soundness is Section 3;
+completeness is Sections 4-5 and the inherited native-to-guarded translation.
+
+The numerical term language, actual equality, formula readings, ordinary
+intuitionistic realization, and primitive-recursion compiler are unchanged.
+Compose the equivalence of public theorem sets with the inherited two
+interpretations. Both numerical domains remain whole and both numerical
+composite isomorphisms retain graph x=y. Formula round trips and consistency
+preservation are inherited rather than replaced by a finite experiment.
+No new Lean/Rocq verification is claimed.
+
+7. EXECUTABLE EVIDENCE
+
+Run python3 tests/verify_three_field.py from the delivered package. It checks
+26 regenerated canonical proofs, 13 for each scope convention, against the
+selected checker and against the old inferred-major checker after static
+four-field expansion. It checks that the derivation-aware producer returns
+the same triples from those expansions. The examples contain 9,782 consumed
+instructions: 174 introductions, 158 D openings, 4,716 computations, and
+4,734 equality/Q operations. In particular they exercise substantive nested
+D openings and induction with a used hypothesis.
+
+Seven independent negative payloads cover 0=1, a missing computation, a
+four-field packet supplied to the triple parser, a wrong computation
+endpoint, a future eigenparameter in an introduction witness, context
+leakage, and a missing goal. Both standalone modules and all positive
+control comparisons run under ordinary Python and python -O: 132 CLI
+checks, zero unexpected outcomes; 26 compiler round trips, zero failures.
+Actual measurements and hashes are in evidence/three_field_validation.json
+and evidence/three_field_provenance.json.
+
+These are finite implementation checks. They neither formalize the
+metatheorem nor establish an absolute optimality result. Static expansion
+is tested only for canonical compiled proofs, where Section 5 justifies its
+exact execution behavior despite the general semantic distinction in
+Section 3.

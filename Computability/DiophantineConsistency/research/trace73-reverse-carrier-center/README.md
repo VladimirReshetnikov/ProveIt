@@ -1,0 +1,5 @@
+# Positive center for the existing reverse carrier
+
+`positive_carrier_center` applies the existing `TenPositiveReverseCarrier.positive_carrier` and `TraceCenterPositive.center_positive` to the **same** witness `n`. Under its explicit quotient and positivity assumptions it returns a positive `n`, a positive center `n-u²(b t)`, the original reverse-carrier balance, and the original carrier identity. This is a scalar construction, not yet a theorem that a particular trace75 valuation realizes its parameters, nor an unconditional positive-zero implication for the 73 graph.
+
+The guarded author check in `observations/attempt01/` and outer runner exited 0. Its accepted object `/tmp/trace73-reverse-9ztei492/Trace73ReverseCenter.olean` has SHA-256 `689dda948bf6741250f7c27fd581933b417bda950e41f18b0b8ea8e5e05c0695`. Both direct imported objects are pinned; the inherited transitive project, package and dynamic ancestry has not been independently rebuilt here. See the receipt for exact axiom report and providers.

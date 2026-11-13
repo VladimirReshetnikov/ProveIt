@@ -1,0 +1,3 @@
+# Independent terminal audit: sign14 noncircular tau bound
+
+Checker exit 0. Author outer 51755 exited 0; dependency/compile and postflight passed. From staged sign14 seed zero/Nt, represented beta/K and explicit beta/MC/MF bounds, the two theorems establish `Rank ≤ E*N+k` and the natural truncated-subtraction embedding. Neither assumes N0 or a deleted tau witness. Both reports list propext, Classical.choice and Quot.sound; no warnings or sorryAx occur. Source, object, logs and the three direct provider guards/overlays were checked. The rank/first-index provider survey is point-in-time and inherits an unavailable historical numeric outer exit. Residual transfer, zero equivalence, Lean degree and endpoint remain separate.

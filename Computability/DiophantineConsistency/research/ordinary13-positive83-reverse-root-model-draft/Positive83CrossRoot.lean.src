@@ -1,0 +1,48 @@
+import Positive83ReverseRoot
+import Positive81ForwardCompact
+
+/-! Proposed compact CrossRootCut composition; all imported proofs and their
+providers remain unelaborated. The exact parent 83 bridge remains an input. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Positive83CrossRootDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+/-- Proposed reverse half, using the represented compact beta. -/
+theorem reverse (K : ℕ) (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+    (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output v) :
+    ∃ r : V, 0<r ∧
+      (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).first.evalRing
+        (fun j => ι (Positive81To83TransportDraft.putR v r j))=0 := by
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) (hv 0)
+  have hp0 : (ports K 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(ports K 0:V) := by simpa only [hp0] using hb
+  exact Positive83ReverseRootDraft.reverse_root (ports K) v hv hz hbeta
+
+/-- Source composition of both first-residual cuts. This is not an
+elaborated theorem, and the forward calibration imports remain substantial. -/
+theorem crossRootCut (K : ℕ) : Positive81To83TransportDraft.CrossRootCut K := by
+  intro V _ _ v hv
+  constructor
+  · intro hz
+    exact Positive81ForwardCompactDraft.forward K v hv hz
+  · intro hz
+    exact reverse K V v hv hz
+
+/-- Conditional native client; the exact positive-83 parent bridge is still
+an explicit premise, independently of all unvalidated source providers. -/
+theorem native85 (K : ℕ)
+    (h83 : PolynomialBridge (positiveShift (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output)) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  Positive81To83TransportDraft.native85 K (crossRootCut K) h83
+end DiophantineConsistency.Positive83CrossRootDraft
+#print axioms DiophantineConsistency.Positive83CrossRootDraft.reverse
+#print axioms DiophantineConsistency.Positive83CrossRootDraft.crossRootCut
+#print axioms DiophantineConsistency.Positive83CrossRootDraft.native85

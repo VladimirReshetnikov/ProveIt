@@ -1,0 +1,43 @@
+import GammaDirectRankGap
+import GammaZeroNarrow
+import EtaNaturalNormLargeK
+
+/-! Source-only no-E*q gamma positivity cut. The carrier, two norms,
+rank window and model ports are explicit assumptions. No Lean run. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.GammaNoExtraFactsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticSignedPairs
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem gamma_positive (q X Y eta zeta R U tau d Delta gamma : V)
+    (hq : 2≤q) (hX : 1≤X) (hY : q^3≤Y) (heta : 0<eta) (hzeta : 0<zeta)
+    (hU : 0<U) (hR : R+q^3+q+1≤q^4)
+    (hDelta : (X*Y+Y+2)*(X*Y+Y+2)=Delta+1)
+    (hfirst : tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*(eta+zeta)*(eta+zeta))
+    (hmain : d*d=1+Delta*(eta+Y*(eta+zeta))*(eta+Y*(eta+zeta)))
+    (hcarrier : gamma=0 →
+      let a:=X*Y+Y; let c:=eta+Y*(eta+zeta); let H:=3+4*a
+      let P:=U*(X+a*c)+H*(U*(0:V)+R+1); let N:=H*(eta+zeta)
+      magnitude (P,N)*magnitude (P,N)=U*U*(1+(H+a*a)*(c*c))) : 0<gamma := by
+  by_contra hn
+  have hg : gamma=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le gamma)
+  have hXpos : 0<X := lt_of_lt_of_le (by simp : (0:V)<1) hX
+  have hq8 : (8:V)≤q^3 := by
+    have hh := pow_le_pow_left₀ (by simp : (0:V)≤2) hq 3
+    simpa using hh
+  have hY8 : 8≤Y := le_trans hq8 hY
+  have hYpos : 0<Y := lt_of_lt_of_le (by simp : (0:V)<8) hY8
+  have hkpos : 0<eta+zeta := add_pos heta hzeta
+  have hlarge := EtaNaturalNormLargeKDraft.large_first_ordinate X Y eta zeta tau Delta d
+    hXpos hYpos hzeta hDelta hfirst hmain
+  have hlarge' : 8*(X*Y*Y)+4≤eta+zeta := by simpa only [mul_assoc] using hlarge.2
+  obtain ⟨hgap,hc⟩ := GammaDirectRankGapDraft.direct_rank_gap q X Y (eta+zeta) eta R
+    hq hX hY hlarge' hR
+  exact GammaZeroNarrowDraft.gamma_zero_impossible U X Y (eta+zeta) eta R
+    hU hY8 hkpos hgap hc (hcarrier hg)
+end DiophantineConsistency.GammaNoExtraFactsDraft
+#print axioms DiophantineConsistency.GammaNoExtraFactsDraft.gamma_positive

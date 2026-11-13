@@ -1,0 +1,3 @@
+# Independent terminal audit: sign18 coordinate retry01 failure
+
+The independent checker exited 0 after correcting its own initial stale output-directory date (that initial checker invocation exited 1 before validation). Author-observed outer session 75993 exited 1. Dependency scan passed, but compile reported two errors, no warnings and a sorryAx dependency for root_zero. The printed root_coordinate and lift_drop reports do not contain sorryAx, but no module object or final postflight exists, so they are not claimed as exported checked results. Source/import/log pins, direct guards and overlays were checked.

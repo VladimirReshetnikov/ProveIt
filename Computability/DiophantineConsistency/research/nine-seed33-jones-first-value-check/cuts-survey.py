@@ -1,0 +1,10 @@
+#!/usr/bin/env python3
+"""Authenticate the cuts producer and compare its direct language route."""
+import hashlib,json,os,sys,subprocess
+from pathlib import Path
+P=Path(__file__).resolve().parent;D=P.parents[1];C=Path('/tmp/nine-seed33-jones-compact-cuts-check-20261106');B=Path('/tmp/nine-seed33-jones-named-prefix-check-20261106');sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
+a=D/'reviews/nine-seed33-jones-compact-cuts-terminal-frontier-independent';assert sha(a/'check.py')=='d9cfa2581d78ab6245807406ed7b0732cba7ad0bcfc9787d62e13381b276724a' and sha(a/'result.json')=='a4b150cd4d21f7fd240131f9315c02cb01439b9423cb4dd4bf5dc0f1d7aa06f0';r=subprocess.run([sys.executable,'-I','-S','-B',str(a/'check.py')],capture_output=True,text=True,timeout=120);assert r.returncode==0 and json.loads(r.stdout)['status']=='PASS_TERMINAL_AUDIT'
+p=D/'research/nine-seed33-jones-compact-cuts-check/attempt01/state.json';assert sha(p)=='968ed7b4b3dc81a85d0dafcfb633dea5e033a91bd5b634d73edc8dcdb9e3b054';s=json.loads(p.read_text());row=s['rows'][0];assert row['module']=='Sign33MacroCuts' and row['object_sha256']=='10a3693fb7bbc5fe5798d3db28b9573b7d54ad4a1e363777e915729c1a69f65e';obj=C/'lib/DiophantineConsistency/Sign33MacroCuts.olean';assert sha(obj)==row['object_sha256']
+dep=row['dependencies']['DiophantineConsistency.Sign33MacroLanguage'];q=B/'lib/DiophantineConsistency/Sign33MacroLanguage.olean';assert q.is_file() and str(q.resolve())==dep['realpath'] and sha(q)==dep['sha256']
+for root in (B/'lib',Path('/tmp/current2011-spheres-fresh-base-priority-check02'),Path('/tmp/normalized106-fresh-model-client-20261105'),Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib'),Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean')):assert not os.path.lexists(root/'DiophantineConsistency/Sign33MacroCuts.olean')
+print(json.dumps({'status':'PASS','cut_object_sha256':sha(obj),'cut_object_realpath':str(obj.resolve()),'scope':'Audited cuts object and exact shared direct language route; deeper ancestry inherited.'},sort_keys=True))

@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: n≥5/r7 growth
+
+GO subject to root slot release and fresh locked resource preflight. Source `926d7d74d28f50748d6b6f699bc9507e9566c4a400b71b44583295e01237b48b`, runner `0f858dbfdb4a88229d67bc8cb19119ee6c2a0f6076c4ceddf3157365ebd323be`, policy `0b64b4b9ecede9f844eaa62dc2eb3309c20850ebf4ac4a362c2a8ca3b1bcd42c`. No Lean replay here. Same p/v and n≥5, q≥2³⁰, positive coordinates and first/r7 ordinates are explicit; no graph-zero inference.
+
+Runner pins imported growth, y7, fifth, Pell and direct congruences providers. Reviewed selector compares current direct selections against their producer paths and reran to saved SHA `989889a6a88cd329ca8593893c90c2f9e0fce4a99baf0c277e0cb04d3d4b7ad9`; its join path agrees with actual runner after fresh local output. Selection reruns with pin checks pre/post, strict report and empty stderr, locked resource guard; 13 actual-validator controls pass. Full serialized transitive/package ancestry, producer-time selection and continuously stable path are not established.

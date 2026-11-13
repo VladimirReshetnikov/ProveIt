@@ -1,0 +1,236 @@
+# Shared-witness certificates remove deep head conversion
+
+This is an auxiliary mathematical proposal, not a measured frontier improvement.
+The public theory has precisely the native formula language. Finite bundles are
+allowed inside proof certificates only. This distinction avoids an unnecessary
+formula-roundtrip claim for an enlarged public language.
+
+Let the ordinary scalar terms be x, 0, S(t), I(n,a;u.h). The public formulas
+are s=t, Q_y B, and D_{x,y} B. The auxiliary grammar used inside a proof
+replaces D by the finite-bundle binder
+
+    D_x [ y_1.B_1(x,y_1), ..., y_m.B_m(x,y_m) ]
+
+read as
+
+    exists x. conjunction_i (B_i(x,0) -> forall y_i. B_i(x,y_i)).
+
+The singleton case is native D, and Q_y B retains its native reading
+B(0) -> forall y B(y). A bundle elimination opens one fresh b and
+adds every Q_y_i B_i(b,y_i). Bundle introduction uses one common witness t
+and, separately for each i, a derivation B_i(t,S z_i) from B_i(t,0), or the
+equation-progress hypothesis B_i(t,z_i) when B_i is a literal equation.
+The z_i are fresh. Empty bundles are allowed as exists x truth, though
+they are unnecessary for the argument.
+
+These auxiliary rules are sound under their displayed ordinary readings
+in iPRA. Native D rules are singleton cases. The public derivability
+relation admits a finite auxiliary proof but requires that every bundle
+in its final formula (and initial context) be a singleton. No claim that
+the proof calculus is complete on arbitrary auxiliary bundle sequents is
+needed. The completeness theorem below concerns exactly the native public
+sequents, and yields an identity interpretation there.
+
+Now take Refl, crossed variable substitution, QE, DE for bundles, bundle
+introduction, and reversible root computation of equation endpoints. The
+variable-substitution rule is
+
+    b=t, h(b)=r  ==>  r=h(t)
+
+where b is a variable. Reversible root computation permits either scalar
+iterator equation at the root of one endpoint, in either direction. It
+does not enter iterator counters, seeds, or bodies.
+
+## Derivation of full transport
+
+Given s=t and h(s)=r, define C(y,a)=I(y,0;u.a), with u fresh in a.
+It has root reductions C(0,a)->0 and C(S z,a)->a. Introduce the common
+witness x=s in the two-item bundle
+
+    D_x [ y. C(y,x)=C(y,t), y. C(y,h(x))=C(y,r) ].
+
+For the first component, expand s=t at both endpoint roots to obtain
+C(S z,s)=C(S z,t). For the second do the same to h(s)=r. Each derivation
+ignores its local base/progress hypothesis, so either mode is sound and
+the literal spelling of s is irrelevant.
+
+Choose all displayed auxiliary names outside the ambient numerical scope,
+the context, and the two premise derivations. Open the bundle at fresh b.
+Both zero rows are 0=0 by root computation,
+so reflexivity plus expansion supplies their bases. Specialize both
+clauses at S 0 and contract endpoint roots. This yields b=t and h(b)=r.
+Crossed variable substitution gives r=h(t); eliminate the fresh b.
+
+The proof uses only root conversions. The existing scalar BH_3 proof in
+ch04_comp.tex uses a parity packet and computation at counter depths up
+to three because its single matrix must carry three rows. Here separate
+matrices share the witness, so no parity or predecessor code is needed.
+
+More precisely, the construction adds 21 inference nodes to the two input
+proof trees: 12 root conversions, 2 closure eliminations, 2 hypothesis
+uses, 2 reflexivity steps, one bundle introduction, one bundle elimination,
+and one VSub. Each input proof occurs once (with its hypothesis indices
+weakened). All 12 conversions are at depth zero. This is a node-count
+statement about the displayed compiler, not a constant bound on the bytes
+of its substituted terms.
+
+Only one- and two-matrix bundles are needed for the public completeness
+theorem. Restricting the auxiliary grammar to those two sizes preserves
+the theorem: the native embedding uses singletons, and transport uses a
+pair. The reference implementation accepts arbitrary finite bundles
+because the uniform list implementation is straightforward. Empty and
+larger bundles add no public consequences by the soundness/completeness
+argument below.
+
+With full transport recovered, each raw computation equation follows
+from reflexivity and a root expansion. The native kernel therefore embeds
+on public sequents. Conversely, read every auxiliary bundle as the
+displayed iPRA existential conjunction. Soundness gives an iPRA proof of
+the ordinary reading of any accepted public sequent. The inherited
+native completeness theorem then gives a native proof of that same
+public sequent. This establishes exactly the native consequence relation,
+without assuming that arbitrary bundle formulas can be eliminated inside
+this proof calculus.
+
+## Complete specification of the seven rule families
+
+Judgments are Gamma |- A in an explicitly declared finite numerical scope
+X. Every free variable of Gamma and A belongs to X. Gamma is an ordered
+finite list of auxiliary formulas. Terms and formulas are identified up
+to alpha conversion, and substitution is simultaneous and capture-avoiding.
+
+1. Hyp: select an entry of Gamma.
+2. Refl: infer t=t for any term in scope X.
+3. VSub: from b=t and u=v infer v=u[t/b], where b is a variable in X.
+   The right endpoint v is not substituted by this rule. There is no
+   restriction on whether b occurs in v. Soundness follows by equality
+   substitution in the left endpoint and symmetry.
+4. HC0: in an equation, replace either endpoint by one scalar iterator
+   root contractum, or by a supplied redex whose one root contractum is
+   that endpoint. The two root reductions are I(0,a;u.h)->a and
+   I(S n,a;u.h)->h[I(n,a;u.h)/u]. Nothing under the endpoint root is
+   normalized or reduced.
+5. QE: from Q_y B and B(0) infer B(t), for any t in scope X.
+6. DE*: from D_x[y_i.B_i] and a derivation of A in scope X+b with all
+   Q_y_i B_i(b,y_i) appended to Gamma, infer A in scope X. The same
+   b is used for every matrix; b is outside X and is not free in A.
+7. DI*: choose one term t in scope X for the entire finite bundle. For
+   each matrix B_i choose a fresh z_i outside X and one of two modes.
+   In case mode derive B_i(t,S z_i) from Gamma,B_i(t,0). In progress
+   mode derive B_i(t,S z_i) from Gamma,B_i(t,z_i), and require that B_i
+   be literally an equation. Infer D_x[y_i.B_i]. Each branch has scope
+   X+z_i. The branches are independent, so their eigenvariable names
+   may be reused. Empty bundles have no branches and an arbitrary
+   well-scoped witness t, for example 0.
+
+These are all the rules. In particular there is no ordinary equality
+transport axiom, general congruence rule, general induction rule, hidden
+normalizer, separation axiom, or primitive intuitionistic connective rule.
+They are recovered on the public language through the native equivalence.
+
+For checking a theorem, the public context is empty; free variables of
+the public goal are treated as parameters and universally closed in its
+ordinary reading. For an open sequent theorem, take X to contain the free
+variables of its context and conclusion. Numerical parameters can be
+renamed injectively to avoid every eigenvariable used by the certificate.
+
+## Why soundness uses only iPRA
+
+Refl, VSub and HC0 use ordinary equality and the two iterator equations.
+QE is implication elimination followed by universal elimination. DE*
+is existential elimination, followed by conjunction elimination; freshness
+of the shared b is exactly its eigenvariable condition.
+
+For a DI* component in case mode, assume B_i(t,0). The branch gives every
+successor instance, and numerical coverage gives every instance. Thus
+Q_y_i B_i(t,y_i). This uses coverage and the case branch, not induction on
+the potentially compound B_i. In progress mode the matrix remains a
+literal equation after substituting the witness, so quantifier-free
+induction derives Q_y_i B_i(t,y_i). Form the finite conjunction of these
+closures and introduce the existential with the common t. The empty
+conjunction is truth. Every finite auxiliary derivation therefore has an
+ordinary iPRA reading, uniformly also under arbitrary initial assumptions.
+
+## The public equivalence theorem, including both composites
+
+Let N be the native scalar calculus of the pinned repository. Let H be
+the public theory whose proofs are these auxiliary certificates.
+
+Theorem: for every native public context Gamma and formula A,
+
+    Gamma |-H A   iff   Gamma |-N A.
+
+Left-to-right follows from auxiliary soundness and the repository theorem
+native_iff_pra (NativeBiInterpretation.lean). Right-to-left is by induction
+on the eight constructors of NPrf (Native.lean):
+
+- Hyp, QE, and native DE are respectively Hyp, QE, and singleton DE*.
+- Each iterator computation is Refl at its right-hand side followed by
+  HC0 expansion of the left endpoint.
+- NPrf.trOne is the two-component construction proved above.
+- NPrf.dICase is singleton DI* in case mode.
+- NPrf.qIInd: introduce a singleton bundle with an unused witness variable
+  and witness 0 in progress mode, open it at a fresh b, return the added
+  Q_y E(y) hypothesis, and discharge b. The resulting formula contains no b.
+
+Weakening and injective renaming of auxiliary derivations are admissible
+by induction on their finite trees (fresh eigenvariables are renamed as
+needed). This justifies reusing the two input derivations in the branches
+of the transport construction. The sample compiler explicitly shifts
+hypothesis indices when inserting the local base assumption; it does not
+assume that literal proof-tree reuse preserves those indices.
+
+The two interpretations between H and N are the identity on every term
+and every public formula. Their numerical domains are the whole domain,
+their equality is actual equality, and both composites are literally the
+identity. Composing these identity interpretations with the repository's
+native-to-iPRA and iPRA-to-native interpretations gives H <-> iPRA. The
+formula roundtrips are exactly the inherited native_roundTrip and
+pra_native_roundTrip, transported across the proved consequence equivalence.
+The numerical roundtrip graph remains x=y. Thus the required
+bi-interpretability is stronger than a standard-model equivalence or
+equiconsistency claim. Contradiction is the public equation 0=S(0), so
+equiconsistency also follows immediately.
+
+This is a written mathematical proof depending on the pinned native
+bridge. It is not a new Lean or Rocq formalization, and executing sample
+certificates does not replace that proof.
+
+## Artifact evidence
+
+bundle_checker.py implements the preceding grammar and rules with explicit
+syntax validation, named binders, alpha-equivalence, simultaneous
+capture-avoiding substitution, numerical scopes, and a native public-goal
+gate. Its inputs are JSON proof objects, not ordinary first-order proof
+strings. It never evaluates supplied Python or code strings.
+
+bundle_examples.py constructs root_congruence.json, equation_induction.json,
+induction_then_transport.json, and empty_bundle_auxiliary.json. The first
+recovers successor congruence from I(0,1;u.u)=1 through a nonvariable
+transport source. The third first proves I(n,0;u.u)=0 by genuine equation
+progress and then transports it under successor using a two-matrix bundle.
+It exercises hypothesis-index weakening inside a nested induction proof.
+The empty bundle is exercised only as an auxiliary object; a nonnative
+empty-bundle public goal is rejected.
+
+The reproducible test script also rejects a nonvariable source passed
+directly to VSub, a wrong root expansion, 0=S(0), Boolean variable codes,
+an inconsistent common witness, case mode substituted for the needed
+induction step, a missing bundle component, and eigenvariable escape.
+Additional checks cover simultaneous replacement and capture avoidance.
+
+Measurements on CPython 3.12.14 are recorded in bundle_results.json.
+They count the entire standalone reference module, including its module
+docstring. This reference is much larger than the repository's compact
+frontier. The mathematical result is the elimination of positive-depth
+head conversion in a certificate language with shared-witness bundles,
+not a global reduction of checker size.
+
+## Limits
+
+This is a legitimate new proof interface and a mathematical simplification
+of the root-conversion boundary, but not yet a smaller standalone checker.
+An implementation must count finite-bundle typing, common-witness scope,
+and the traversal of multiple matrices. It must also retain enough
+equation induction: cases alone are insufficient. No token/AST/byte
+minimum or absolute optimality is claimed.

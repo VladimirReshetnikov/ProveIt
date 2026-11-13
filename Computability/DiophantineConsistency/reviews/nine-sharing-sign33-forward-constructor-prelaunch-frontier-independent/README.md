@@ -1,0 +1,5 @@
+# Independent prelaunch review: forward 33-coordinate constructor
+
+The candidate vector takes the 14 source inputs, 14 selected positive coordinates from the existing 38-witness constructor, and five separately supplied natural representatives. The independent checker verifies every vector position, the five signed coordinates and the lift's first and fifth pair orientations; the author's external JSON/source mapping check reproduces its retained result. In particular the last representative corresponds to `y²−V²`, whose lifted signed pair is `(0,negative)`. The author corrected a typo in the review-request hash; the actual mapping result and README bytes were already correct.
+
+The source, manifest, runner and survey pins and guarded no-Lean preflight pass. The survey binds the checked ForwardWitness38 provider. The proposed Lean theorems only project inputs and representatives; neither this source review nor the external JSON check proves the representatives exist, residual or norm equations, source implication, or an iPRA endpoint. Elaboration and complete dynamic provider compatibility remain untested.

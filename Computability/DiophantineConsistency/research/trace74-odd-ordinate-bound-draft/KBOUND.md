@@ -1,0 +1,7 @@
+# Guard-independent k-bound
+
+`Trace74OddOrdinateKBound.graph_k_lower` proves, for the same positive 74 graph zero and positive beta as the odd-ordinate bound, `4*(Y*(X+1)+1)^2 ≤ k*(Y+1)`. The proof uses `c=kY+eta` and `eta<k`, with the same valuation throughout. This is a consequence of the graph zero; it does not establish an individual F or C bound or the reverse guard.
+
+The reviewed author retry, actual tool session 90044, exited 0 with Lean exit 0 and the expected clean axiom report. Its terminal is `k-observations/attempt02/terminal.json` (SHA-256 `a75200a6fa52d4d6aa478273277bf19e3b381a693c244517a0b90c51ab892e54`), and object `/tmp/trace74-odd-ordinate-k-bound-knh866xo/lib/Trace74OddOrdinateKBound.olean` has SHA-256 `beb08bf7c3a4bf3a695f6161ef5a0a884b315378cb7cb50777bd992378ce9ae3`. The independent [result audit](../../reviews/trace74-odd-ordinate-k-bound-result-independent/README.md) SHA-256 `d25fc1706fe2b04121c528a52050fd7c013f0241be74b0910d207ce9c1fdbdcb` passed. Direct-pin, search-path and inherited project/package/dynamic ancestry limitations apply.
+
+Attempt01 was rejected after a final addition-order elaboration error; its graph theorem report contained `sorryAx`. The retained retry changes that proof step using commutativity. The [source review](../../reviews/trace74-odd-ordinate-k-bound-draft-independent/README.md), [prelaunch review](../../reviews/trace74-odd-ordinate-k-bound-prelaunch-independent/README.md), and [retry prelaunch review](../../reviews/trace74-odd-ordinate-k-bound-retry-prelaunch-independent/README.md) are separate.

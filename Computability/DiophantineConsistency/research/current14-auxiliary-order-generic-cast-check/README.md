@@ -1,0 +1,7 @@
+# Auxiliary order generic-cast feasibility guard
+
+This fresh two-stage probe compiles the source-refactored `CurrentAuxiliaryOrder2011` and two-report audit over a point-in-time verified overlay of 417 individually successful objects from the failed coherent parent. It verifies their recorded source snapshots, object/companion and direct-route guards, logs and base links against the independently audited failed receipt before and after use. The parent failed and is **not promoted to PASS**; these provider observations are not a coherent end-to-end rebuild, and package-transitive/dynamic ancestry remains separate. A later coherent retry must recompile all project stages. Original source files remain untouched; this is a proof-only source refactor.
+
+Unchanged runtime caps: 4 GiB sampled child RSS, `lean -M3600 -j1 -DElab.async=false`, 180 seconds per child, 10 GiB host memory, 5.1 GB sampled disk stop and six-hour global trigger. Forced receipt/log hashing/cleanup can finish later. No preexisting artifacts are removed. Controls and preflight do not run Lean; independent review and explicit slot allocation are required.
+
+Attempt01 passed: outer session 61084 exited 0, both stages and postflight passed. The target compiled in 2.682 seconds with sampled peak RSS 3,254,329,344 bytes. The [independent terminal audit](../../reviews/current14-auxiliary-order-generic-cast-terminal-independent/) verified both theorem reports and the point-provider routes. The provider parent remains FAILED; the full coherent rebuild remains separate.

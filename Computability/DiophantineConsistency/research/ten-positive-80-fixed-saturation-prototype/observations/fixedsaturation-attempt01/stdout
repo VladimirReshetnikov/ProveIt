@@ -1,0 +1,22 @@
+/tmp/tenpositive-80fixedsaturation-7i7yz7wb/Direct80FixedSaturation.lean:30:67: error: Tactic `rfl` failed: The left-hand side
+  ↑lowNat
+is not definitionally equal to the right-hand side
+  CompactConcreteIncrement.mask
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+h31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : ↑(p 0) + 1 = Exp.exp (67 * 8807)
+⊢ ↑lowNat = CompactConcreteIncrement.mask
+'Direct80FixedSaturation.graph_fixed_saturation' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

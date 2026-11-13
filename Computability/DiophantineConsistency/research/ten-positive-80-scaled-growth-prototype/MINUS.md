@@ -1,0 +1,5 @@
+# Corrected scaled-base Pell growth
+
+`Direct80ScaledGrowthMinus.coefficient_gap_minus` checks the sharpened recurrence coefficient separation for main parameter `S*(X+1)−1`. `power_bound_scaled_minus` then proves `2^(2r+1)<Y` in every indicated IΣ₁ model from `X≥16`, `S≥1`, `r≥2`, `c=kY+eta`, `k=eta+zeta`, `zeta>0`, and the exact ordinate equations `c=ycoord (2r+1) (S*(X+1)−1)` and `k=2*ycoord (r+1) (2*(X*S*S−1)+1)`. Subtraction is the model's natural truncated subtraction.
+
+This fixes the main-parameter offset noted in README.md. The corrected bound has not yet been applied to an actual graph zero: index alignment and size hypotheses must still be established, and no halt or iPRA conclusion follows. Guarded author `run-minus.py`, `observations/minus-attempt01/`, passed in session 30184 with exit 0, against the 1,291-object selected provider. The retained receipt pins source, output, direct `ArithmeticPellPowerRecovery` object and resource observations; package-transitive, dynamic, and historical source/object ancestry are inherited. No independent Lean replay is claimed.

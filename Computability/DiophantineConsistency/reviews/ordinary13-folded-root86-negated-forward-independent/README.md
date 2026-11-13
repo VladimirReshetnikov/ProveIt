@@ -1,0 +1,11 @@
+# Independent review: general signed-fold forward map
+
+**Result: pass.** For integer ports with `beta>0` and `K0≥0`, any positive zero of the 88/30 parent produces a positive zero of the sign-reversed 86/26 candidate, with `Bt'<0`. No halt premise is needed for this conditional construction. It does not assert a starting zero or prove the unrestricted reverse existence direction, and no Lean or file-semantics theorem was checked.
+
+The parent first residual and prime valuations give `M|Z`, and reducing its carrier modulo the coprime `q³` and `b=q−1` yields `Y=q³s`, `Bt=bt` for integers `s≥1,t`. With `ell=mk`, its positive root satisfies `0<tau<ell+k`: the difference of the relevant squares is `ell*k+k²−1>0`. In fact the starting positive parent zero has `Bt>0`, because `Bt≤0` would force its positive carrier `Z` to exceed `M*(ell+k)`, contradicting its root bound.
+
+The shift `F'=F+b`, `alpha'=alpha+b²` preserves their positivity and the literal scalar `G=b*(q−F)+alpha`; hence the literal rank and the other three residuals remain fixed. It gives `C'=C−qb≤−2`, and `Bt'=Bt−qb*(X+K0*q+1)<0` follows directly from `C'<0`, `X>0`, `K0≥0` and `F'>0`. Since `b|Bt'`, put `t'=Bt'/b<0` and choose `sigma'=ell+k+s−t'−tau>0`. The signed carrier is then `M*tau`, so its first residual also vanishes. This proves the forward existence implication.
+
+At the resulting fixed other twelve inputs, both candidate root values are positive. Any direct parent coordinate for either is `k*Bt'−sigma<0`, so neither is a positive parent first coordinate. Since the first carrier is linear in that coordinate and its norm fixes its two roots, no other positive first coordinate can repair the parent while holding those twelve inputs fixed. A parent zero with different other inputs is not excluded.
+
+The independent checker reproduces the author and earlier signed-fold receipts, verifies the graph dependency cut at `G`, and checks exact free-ring identities for the scalar shift and the chosen root. The finite author control is a first-residual test, not an expanded full zero. Run from `Computability/DiophantineConsistency` with `python3 -I -S -B reviews/ordinary13-folded-root86-negated-forward-independent/check.py`; stdout must match `result.json`. No Lean process was run.

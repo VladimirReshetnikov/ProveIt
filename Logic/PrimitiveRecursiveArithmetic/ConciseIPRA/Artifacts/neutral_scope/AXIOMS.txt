@@ -1,0 +1,37 @@
+COMPLETE INHERITED NATIVE BASIS
+===============================
+Terms: x | 0 | S(t) | I(n,a;v.h), binding v only in h.
+Every description is fixed finite staged syntax, not a program-code variable.
+
+Computation schemas, in every context Gamma:
+ I(0,a;v.h) = a
+ I(Sn,a;v.h) = h[I(n,a;v.h)/v]
+
+Essential formulas: s=t | D_{x,y} B(x,y).
+Administrative closure: Q_y B(y), read B(0) -> forall y B(y),
+equivalently D_{u,y}B(y) with an unused fresh u.
+Contexts are finite collections of reusable formulas/closure resources.
+
+Inference rules:
+ Hyp: A in Gamma implies Gamma |- A.
+ Tr: Gamma |- s=t and Gamma |- F(s) imply Gamma |- F(t).
+ QE: Gamma |- Q_y B(y) and Gamma |- B(0) imply Gamma |- B(t).
+ DE: Gamma |- D_{x,y}B(x,y), and Gamma,Q_yB(a,y) |- F,
+     imply Gamma |- F; a fresh for Gamma,F and fixed matrix parameters.
+ DI-case: Gamma,B(t,0) |- B(t,Sz) implies Gamma |- D_{x,y}B(x,y).
+ DI-progress: Gamma,E(t,z) |- E(t,Sz) implies Gamma |- D_{x,y}E(x,y),
+              ONLY when E is a literal equation at its root.
+ In either DI: z is fresh for Gamma,t and fixed matrix parameters.
+ All displayed local hypotheses are discharged; substitution avoids capture.
+
+There are no additional primitive reflexivity, coverage, separation,
+predecessor, equality-test, pairing, ordinary-connective, or induction axioms.
+The report derives these needed interfaces and the full iPRA interpretation.
+Structural rules and cut are admissible by induction on derivations.
+
+The public checker's sole initial assumption [] means the derived truth 0=0.
+It is conservative. The literal-zero computation restriction is repaired by
+the proved nonempty zero C=I(2,1;v.0), C=0. Both mechanisms are inherited.
+
+This package composes checker implementations of this basis. It does not
+claim that this is a newly discovered basis or an absolute simplest theory.

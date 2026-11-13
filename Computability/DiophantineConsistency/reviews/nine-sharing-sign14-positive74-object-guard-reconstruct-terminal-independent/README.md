@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 93995 exited 0. Stage/postflight passed; frozen receipt/state/logs, source/object, audited predecessor provider and guarded overlays match. Both generic conjunction mapping and 14-coordinate open reconstruction reports are `[propext, Classical.choice, Quot.sound]`, with no warnings or `sorryAx`. This is an intuitionistic object-theory open-term ingredient; connection to the closed guard, expression substitution and endpoint remain separate. Historical direct-object ancestry is inherited; captured routes are point-in-time. No Lean was run.

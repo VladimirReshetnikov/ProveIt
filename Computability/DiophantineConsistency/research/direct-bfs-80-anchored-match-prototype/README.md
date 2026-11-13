@@ -1,0 +1,5 @@
+# Direct-BFS 80-graph anchor and excluded row
+
+`DirectBFS80Anchor.graph_anchor` proves from an actual positive 80-graph zero at the explicit direct-BFS symbolic ports that its selected cyclic row begins at index 0, all internal row indices are below 943, and index 1 is absent. It synchronizes the radix lengths from the direct row-word, all-block and fixed-mask results. This complements the tile-edge matching theorem; it does not yet lift the direct color scheme to the original machine interpretation.
+
+The guarded author check `observations/directbfs80anchor-attempt01/` exited 0 without diagnostics and reports axioms `propext`, `Classical.choice`, and `Quot.sound`. Every direct source import was resolved to an explicitly pinned object and rechecked. Object `/tmp/direct-bfs-80-anchor-fsdk8z_8/DirectBFS80Anchor.olean` has SHA-256 `f2e6f3425f3934eb0c4948aa1a67f54c0fcabaf2a15251bd912b8ad14b86dd15`. Inherited transitive source/object, package and dynamic ancestry remain unverified; no independent Lean replay is claimed. Machine/color lifting, converse, iPRA and formal JSON/file binding remain open.

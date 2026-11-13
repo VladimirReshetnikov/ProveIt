@@ -1,0 +1,5 @@
+# Independent prelaunch review
+
+PASS static and no-Lean preflight. Drop inserts the explicitly supplied predecessor at new coordinate 21 and moves old coordinates 23–28 down one. `lift_drop` requires both old-coordinate equations `v 21 = u + 1` and `v 22 = u * (u + 2)`; the reverse theorem obtains precisely those equations and `u` from the checked predecessor-extraction theorem before applying the same-valuation row identities. The forward theorem enumerates all 19 old rows, including the identically zero eliminated row; reverse enumerates all 18 new rows. No total predecessor or natural/ring subtraction identification is assumed.
+
+Three immediate producer terminal audits replayed and provider union, direct guards and local-stage routes passed no-Lean preflight. This is a proposed existential reverse and forward zero bridge under the stated IΣ₁ model assumptions; it is not an endpoint, degree proof, or JSON binding. No Lean was run; historical plan README-link and earlier ancestry caveats remain.

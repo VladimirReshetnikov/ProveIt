@@ -1,0 +1,2560 @@
+\chapter{Guards and public languages}
+\label{prov:ch:guard}
+\label{guard:ch}
+
+The native scalar core has two introduction rules: \rulename{DI} by cases,
+at every matrix, and \rulename{QI} by progress, at literal equations
+(\cref{base:sec:kernel}).  This chapter treats calculi with a single
+introduction of $\D{}{}$.  Its premise retains one local assumption, the
+instance of the matrix at zero (\emph{cases}) or the instance at the
+eigenvariable (\emph{progress}), and the choice between the two is made by
+the shape of the matrix alone: no certificate bit, no test of the witness.
+At a literal equation the two modes prove different formulas.  They prove
+the same formula when the instance at zero is provable, and a \emph{guard}
+is a literal shape of an equation whose instance at zero is provable by
+computation and into which every equation can be lifted.  The guard is used
+in two ways.  Either the formula language is restricted to a \emph{public
+language} in which every atomic matrix below $\D{}{}$ has the guarded shape,
+and an arbitrary native formula is translated into it; or the full language
+is kept and the progress mode is used exactly at the guarded shape.
+
+The chapter is organized by idea.  \Cref{guard:sec:shapes} defines the
+guarded calculi, the shapes, and what substitution does to them.
+\Cref{guard:sec:bootstrap} recovers numerical cases, implication between
+equations and equation induction from a guard, once for all guards, and
+translates the native language into a public language with both composites.
+\Cref{guard:sec:sources} determines which transport sources are needed: the
+literal $0$ is not.  \Cref{guard:sec:composition} shows that the two
+restrictions together are incomplete in a strictly guarded language, and
+gives four repairs: auxiliary formulas, the administrative orbit, the mirror
+guard, and protected atoms.  \Cref{guard:sec:full} treats the guards that
+work on the full native language, the diagonal guard and the mirror guard
+with six rules.  \Cref{guard:sec:compare} compares the guards, and
+\cref{guard:sec:checkers} records the checkers and their sizes.
+
+Throughout the chapter $1$ abbreviates $\Suc 0$ and $2$ abbreviates
+$\Suc\Suc 0$; $s\equiv t$ is literal identity of terms; a term is
+\emph{iterator-headed} if it has the form $\It{n}{a}{u}{h}$ and
+\emph{successor-headed} if it has the form $\Suc t$; and
+\[
+ W(r)\defeq\It{0}{r}{u}{0}
+\]
+is the \emph{wrapper} of $r$, an iterator-headed term with $W(r)=r$ by the
+first computation equation.  For a calculus $\mathsf K$ and formulas $X$,
+$Y$ of its language, $X\dashv\vdash_{\mathsf K}Y$ means that
+$\Gamma\proves_{\mathsf K}X$ if and only if $\Gamma\proves_{\mathsf K}Y$,
+for every context $\Gamma$ of $\mathsf K$; the subscript is omitted when the
+calculus is clear.
+
+In \crefrange{guard:sec:shapes}{guard:sec:composition} transport is the
+uncrossed rule in a formula template,
+\[
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves F(s)}{\Gamma\proves F(t)},
+\]
+as the packages of those sections state it.  For $\Nat$ it is a derived
+rule (\cref{base:cor:tr}).  It is the rule written $\rulename{Tr}_F$ in
+\cref{kern:sec:dispatch}, and its restriction to the sources
+$s\not\equiv 0$, written $\rulename{Tr}^{-}$ below, is the rule
+$\rulename{Tr}_F^{-}$ of that section, not the crossed rule of
+\cref{kern:def:OM}.  The orientation of the
+conclusion matters as soon as the sources $s$ are restricted
+(\cref{guard:rem:crossed}).  In \cref{guard:sec:full} the equality rule is
+the rule \rulename{Tr} of the kernel.
+
+% ---------------------------------------------------------------------
+\section{Guards as literal shapes}
+\label{guard:sec:shapes}
+
+This section collects the definitions common to \pkg{guarded\_core},
+\pkg{guarded\_source}, \pkg{guarded\_orbit},
+\pkg{deterministic\_auxiliary}, \pkg{mirror\_guard}, \pkg{mirror\_core},
+\pkg{protected\_core} and \pkg{diagonal\_guard}.
+
+\subsection{The root-determined introduction}
+
+\begin{definition}[Root-determined introduction]
+\label{guard:def:root}
+For a matrix $B(x,y)$ put
+\[
+ \eta_B(z)\defeq
+ \begin{cases}
+  z, & B \text{ is a literal equation},\\
+  0, & B \text{ is compound (its root is } \Q{} \text{ or } \D{}{}).
+ \end{cases}
+\]
+The \emph{root-determined introduction} is the rule
+\[
+ \infrule{\Gamma,\ B(t,\eta_B(z))\proves B(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{DI}_{\mathrm{root}},
+\]
+where $z$ is not free in $\Gamma$, in the witness $t$ or in $\D{x}{y}B$, and
+the displayed assumption is discharged.  The rule is in \emph{progress
+mode} at a literal equation and in \emph{case mode} at a compound matrix.
+\end{definition}
+
+The mode is read off the matrix before the witness is substituted, and it is
+the same for every substitution instance of the matrix, because substitution
+of terms for variables preserves and reflects the root of a formula.
+
+\begin{definition}[Guarded calculus]
+\label{guard:def:calculus}
+Let $\mathcal F$ be a set of native formulas, the \emph{proof language}, and
+$\mathcal T\subseteq\mathcal F$ a set of \emph{templates}.  Both contain
+every equation and are closed under substitution of terms for free
+variables; $\mathcal F$ contains $B(t,r)$ and $\Q{y}B(t,y)$ whenever it
+contains $\D{x}{y}B(x,y)$, and $B(t)$ whenever it contains $\Q{y}B(y)$.  Let
+$\mathcal S$ be a set of terms closed under injective renaming of variables,
+the \emph{admissible sources}.  The \emph{guarded calculus}
+$\mathsf K(\mathcal F,\mathcal S)$ derives sequents $\Gamma\proves A$, with
+$\Gamma$ a finite list of formulas of $\mathcal F$ and $A\in\mathcal F$, by
+the following seven rules.
+\begin{gather*}
+ \infrule{A\in\Gamma}{\Gamma\proves A}\ \rulename{Hyp}
+ \qquad
+ \infrule{}{\Gamma\proves\It{0}{a}{u}{h}=a}\ \rulename{I0}
+ \qquad
+ \infrule{}{\Gamma\proves\It{\Suc n}{a}{u}{h}=h\subst{\It{n}{a}{u}{h}}{u}}\
+ \rulename{IS}
+ \\[1.2ex]
+ \infrule{\Gamma\proves s=t\qquad\Gamma\proves F(s)}
+         {\Gamma\proves F(t)}\ \rulename{Tr}_{\mathcal S}
+ \quad (s\in\mathcal S,\ F\in\mathcal T)
+ \qquad
+ \infrule{\Gamma\proves\Q{y}B(y)\qquad\Gamma\proves B(0)}
+         {\Gamma\proves B(t)}\ \rulename{QE}
+ \\[1.2ex]
+ \infrule{\Gamma\proves\D{x}{y}B(x,y)\qquad
+          \Gamma,\ \Q{y}B(b,y)\proves A}
+         {\Gamma\proves A}\ \rulename{DE}
+ \qquad
+ \infrule{\Gamma,\ B(t,\eta_B(z))\proves B(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{DI}_{\mathrm{root}}
+\end{gather*}
+In \rulename{DE} the variable $b$ is not free in $\Gamma$, $A$ or
+$\D{x}{y}B$; in $\rulename{DI}_{\mathrm{root}}$ the conclusion belongs to
+$\mathcal F$ and $z$ is not free in $\Gamma$, $t$ or $\D{x}{y}B$.  There is
+no reflexivity axiom, no successor axiom, no rule of induction, no rule that
+introduces $\Q{}$, and no structural rule.
+\end{definition}
+
+Three classes of sources occur: all terms; the terms $s\not\equiv 0$; and
+the iterator-headed terms.  The condition $s\not\equiv 0$ is a test of
+syntax: a variable, or an iterator whose value is zero, is an admissible
+source.  The rule with the sources $s\not\equiv 0$ is written
+$\rulename{Tr}^{-}$ and the rule with iterator-headed sources
+$\rulename{Tr}_I$.  Two kinds of proof language occur: the full native
+language $\mathcal L$, with $\mathcal T=\mathcal L$; and the proof language
+$\mathcal P^{Q}$ of a public language $\mathcal P$
+(\cref{guard:def:public}), in which $\Q{}$ occurs only at the root of a
+hypothesis and the templates are the equations and the formulas of
+$\mathcal P$.
+
+\begin{remark}[Source-selected elimination]
+\label{guard:rem:se}
+With the sources $s\not\equiv 0$ the two rules $\rulename{Tr}^{-}$ and
+\rulename{QE} are the two branches of the rule \rulename{SE} of
+\cref{kern:sec:dispatch}, whose first premise is $\Q{v}F(v)$ at the source
+$0$ and $s=t$ at every other source.  In this form, which is the one of
+\pkg{guarded\_source}, \pkg{guarded\_orbit} and
+\pkg{deterministic\_auxiliary}, a guarded calculus has six rule patterns:
+the source selects the elimination and the root of the matrix selects the
+introduction.  The calculus $\mathsf Z$ of \cref{kern:def:Z} has
+\rulename{SE} with the two introductions of $\Nat$; the calculi of this
+chapter have it with $\rulename{DI}_{\mathrm{root}}$ alone.
+\end{remark}
+
+\begin{remark}[Clause contexts]
+\label{guard:rem:clauses}
+\pkg{guarded\_core} and \pkg{mirror\_guard} state their calculi with the
+clause contexts of \cref{base:sec:clauses}: \rulename{DE} adds the clause
+$[B(b,0);\,y.\,B(b,y)]$, an assumption is a constant clause, and one rule
+\rulename{Use} infers $B(t)$ from a derivation of $A$ and a clause
+$[A;\,y.\,B(y)]$ of the context.  A hypothesis $\Q{y}B(y)$ used by
+\rulename{Hyp} and \rulename{QE} is the clause $[B(0);\,y.\,B(y)]$ used by
+\rulename{Use}, so the calculi below are the clause calculi of those
+packages for contexts of assumptions and opened clauses.  The statements and
+proofs of this chapter hold verbatim for contexts with arbitrary clauses
+$[A;\,y.\,B(y)]$ of public formulas, with a translation of clauses
+componentwise.
+\end{remark}
+
+\subsection{Structural operations, the kernel, and equality at admissible
+sources}
+
+\begin{lemma}[Structural operations]
+\label{guard:lem:struct}
+In every guarded calculus $\mathsf K(\mathcal F,\mathcal S)$ weakening,
+injective renaming of free variables and cut are admissible: if
+$\Gamma\proves A$ and $\Delta\proves C$ for every $C\in\Gamma$, then
+$\Delta\proves A$.  If $\mathcal S$ is closed under substitution, as are the
+class of all terms and the class of iterator-headed terms, then substitution
+is admissible: $\Gamma\proves A$ implies
+$\Gamma[\theta]\proves A[\theta]$.
+\end{lemma}
+
+\begin{proof}
+Each statement is proved by induction on the derivation, with the
+eigenvariables of \rulename{DE} and $\rulename{DI}_{\mathrm{root}}$ renamed
+away from the data that are inserted, as for $\Nat$
+(\cref{base:sec:structural}).  Weakening and cut do not change the matrix of
+an introduction or the source of a transport, so every inference keeps its
+rule and its mode.  A renaming, and a substitution $\theta$, preserve the
+root of every formula, so an introduction in progress mode remains one in
+progress mode and likewise for case mode; the languages $\mathcal F$ and
+$\mathcal T$ are closed under substitution; and the source $s[\theta]$ of a
+transported equation is admissible when $\mathcal S$ is closed under
+$\theta$, which holds for every injective renaming and, in the two named
+cases, for every substitution.
+\end{proof}
+
+The class of terms $s\not\equiv 0$ is not closed under substitution: a
+variable is an admissible source and its instance $0$ is not.  A derivation
+with $\rulename{Tr}^{-}$ therefore cannot be substituted into rule by rule.
+The arguments of \cref{guard:sec:sources,guard:sec:composition} are arranged
+so that no such substitution is used before the unrestricted rule has been
+recovered.
+
+\begin{lemma}[Inclusion in the kernel]
+\label{guard:lem:incl}
+Every derivation of a guarded calculus $\mathsf K(\mathcal F,\mathcal S)$
+is transformed, rule by rule, into a derivation of the same sequent in
+$\Nat$.
+\end{lemma}
+
+\begin{proof}
+\rulename{Hyp}, \rulename{I0}, \rulename{IS}, \rulename{QE} and \rulename{DE}
+are rules of $\Nat$.  $\rulename{Tr}_{\mathcal S}$ is an instance of
+transport in a formula template (\cref{base:cor:tr}).
+$\rulename{DI}_{\mathrm{root}}$ at a compound matrix is \rulename{DI}, and
+at a literal equation it is the witnessed introduction by progress, which
+$\Nat$ derives (\cref{base:cor:combined}(i)).
+\end{proof}
+
+Consequently every guarded calculus is sound for the ordinary reading
+(\cref{base:sec:reading}): a derivable sequent of
+$\mathsf K(\mathcal F,\mathcal S)$ is derivable in $\Nat$, hence its reading
+is provable in $\Teq$ and in $\iPRA$ (\cref{base:thm:bridge}).
+
+\begin{lemma}[Equality at admissible sources]
+\label{guard:lem:safe}
+Let $\mathsf K=\mathsf K(\mathcal F,\mathcal S)$ and let $\mathcal S$ contain
+every iterator-headed term.  The following hold over every context $\Gamma$,
+by derivations that use only \rulename{I0}, \rulename{IS} and
+$\rulename{Tr}_{\mathcal S}$ in equation templates.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Gamma\proves r=r$ for every term $r$.
+\item If $\Gamma\proves p=q$ and $p\in\mathcal S$, then $\Gamma\proves q=p$;
+ $\Gamma\proves f(p)=f(q)$ for every term template $f(v)$;
+ $\Gamma\proves r=p$ implies $\Gamma\proves r=q$; and $\Gamma\proves E(p)$
+ implies $\Gamma\proves E(q)$ for every equation template $E(v)$.
+\item Every instance of \rulename{I0} and \rulename{IS} can be reversed.
+\item \emph{Join at zero.}  If $p,q\in\mathcal S$, $\Gamma\proves p=0$ and
+ $\Gamma\proves q=0$, then $\Gamma\proves p=q$.
+\item \emph{Lifting.}  Let $p,a,b\in\mathcal S$, let $q\in\mathcal S$ or
+ $q\equiv 0$, and let $\Gamma\proves a=p$ and $\Gamma\proves b=q$.  Then
+ $\Gamma\proves p=q$ if and only if $\Gamma\proves a=b$.  The implication
+ from $a=b$ to $p=q$ needs no condition on $q$.
+\item \emph{Expansion on the right.}  Let $\mathcal S$ contain every term
+ other than the literal $0$, let $q\not\equiv 0$ and $\Gamma\proves q=r$.
+ Then, for every term $s$, $\Gamma\proves s=q$ if and only if
+ $\Gamma\proves s=r$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i)--(iv) For the sources $s\not\equiv 0$ these are
+\cref{kern:lem:zsafe,kern:lem:zjoin}; the wrapper $W(r)$ is the term $J(r)$
+used there.  The derivations given there transport only at the sources $p$
+and $q$ named in each item and at $W(0)$, $W(p)$, $W(q)$ and $W(r)$, and
+the left side of a computation equation is iterator-headed.  Hence they are
+derivations of $\mathsf K$ for every class $\mathcal S$ that contains the
+iterator-headed terms, under the stated conditions $p,q\in\mathcal S$.  No
+equation with the source $0$ is used, and in particular transitivity
+through the literal $0$ is avoided.
+
+(v) Let $\Gamma\proves p=q$.  Transitivity through $p$ gives $a=q$.  If
+$q\in\mathcal S$, reverse $b=q$ at the source $b$ and pass through $q$:
+$a=b$.  If $q\equiv 0$, then $a=0$ and $b=0$, and (iv) gives $a=b$.
+Conversely let $\Gamma\proves a=b$.  Transport along $a=p$ in the template
+$v=b$ gives $p=b$, and transport along $b=q$ in the template $p=v$ gives
+$p=q$; the sources are $a$ and $b$.
+
+(vi) From $s=q$, transport along $q=r$ in the template $s=v$ gives $s=r$.
+Conversely let $\Gamma\proves s=r$.  If $r\not\equiv 0$, reverse $q=r$ at
+the source $q$ and transport at the source $r$ in the template $s=v$.  If
+$r\equiv 0$ and $s\not\equiv 0$, then $s=0$ and $q=0$, and (iv) gives $s=q$.
+If $r\equiv 0$ and $s\equiv 0$, the required equation $0=q$ is the reverse
+of $q=0$ at the source $q$.  The case distinction is on the syntax of the
+terms $r$ and $s$; it is not a case distinction inside the calculus.
+\end{proof}
+
+With all terms as sources, (i) and (ii) are the ordinary equality rules,
+and the calculus has reflexivity, symmetry, transitivity, congruence and
+transport in every equation template.
+
+\subsection{Deleting the choice is not conservative}
+
+The administrative calculus is
+$\mathsf U\defeq\mathsf K(\mathcal L,\text{all terms})$: the full native
+language with the root-determined introduction.  It is the calculus that the
+compact checkers of \pkg{guarded\_core} implement, and by
+\cref{guard:lem:incl} it is a subcalculus of $\Nat$.  It is a proper one.
+
+\begin{definition}[Mixed reading]
+\label{guard:def:mixed}
+The \emph{mixed reading} $A^\dagger$ of a native formula is
+\begin{align*}
+ (s=t)^\dagger &\defeq (s=t),\\
+ (\Q{y}B)^\dagger &\defeq B^\dagger(0)\to\forall y\,B^\dagger(y),\\
+ (\D{x}{y}B)^\dagger &\defeq
+ \begin{cases}
+  \exists x\,\forall y\,\bigl(B(x,y)\to B(x,\Suc y)\bigr),
+    & B \text{ a literal equation},\\
+  \exists x\,\bigl(B^\dagger(x,0)\to\forall y\,B^\dagger(x,y)\bigr),
+    & B \text{ compound}.
+ \end{cases}
+\end{align*}
+\end{definition}
+
+The mixed reading depends on the syntax of the matrix, not on its meaning:
+it is not invariant under the replacement of a matrix by an interderivable
+one.  It commutes with substitution, because substitution preserves the
+root of a matrix.
+
+\begin{lemma}[Soundness for the mixed reading]
+\label{guard:lem:mixed-sound}
+If $\Gamma\proves_{\mathsf U}A$, then $\Teq$ proves $A^\dagger$ from
+$\Gamma^\dagger$.
+\end{lemma}
+
+\begin{proof}
+By induction on the derivation.  \rulename{Hyp}, the computation equations
+and \rulename{QE} are immediate, and transport is sound because the reading
+commutes with substitution.  At an atomic $\rulename{DI}_{\mathrm{root}}$
+the premise proves $B(t,z)\to B(t,\Suc z)$ for a fresh $z$, and
+generalization on $z$ followed by existential introduction gives the
+progressive reading.  At a compound $\rulename{DI}_{\mathrm{root}}$ the
+premise proves $B^\dagger(t,0)\to B^\dagger(t,\Suc z)$, and coverage
+$y=0\vee\exists z\,y=\Suc z$ extends it to
+$B^\dagger(t,0)\to\forall y\,B^\dagger(t,y)$.  For \rulename{DE} at a
+literal equation $E$, fix $x$ with $\forall y\,(E(x,y)\to E(x,\Suc y))$;
+induction for the literal equation $E(x,y)$ in $\Teq$ gives
+$E(x,0)\to\forall y\,E(x,y)$, which is the reading of the hypothesis
+$\Q{y}E(b,y)$ that the rule supplies.  \rulename{DE} at a compound matrix is
+existential elimination.
+\end{proof}
+
+\begin{proposition}[The root-determined introduction alone is weaker]
+\label{guard:prop:strict}
+With $x$ not free in the matrix, $\Nat$ derives $\D{x}{y}(y=1)$ and
+$\mathsf U$ does not.
+\end{proposition}
+
+\begin{proof}
+The rule $\rulename{DI}_{\mathrm{root}}$ is the introduction by cases
+restricted to compound matrices together with the witnessed introduction by
+progress at literal equations.  Hence $\mathsf U$ is the calculus of
+\cref{kern:prop:compoundonly}(ii) with transport in a formula template, and
+the statement is that proposition.  Its interpretation is the truth of the
+mixed reading in the natural numbers, which \cref{guard:lem:mixed-sound}
+strengthens to provability in $\Teq$: the mixed reading
+$\exists x\,\forall y\,(y=1\to\Suc y=1)$ of the formula fails at $y=1$.
+\end{proof}
+
+\begin{remark}
+\label{guard:rem:strict-variants}
+\pkg{guarded\_core} gives the example with the matrix $p(y)=1$, where
+$p(y)\defeq\It{y}{0}{u}{\sel(u,1,0)}$ has the values $0,1,0$ at $0,1,2$: the
+introduction by cases has the base $0=1$, and the progressive reading fails
+between $1$ and $2$.  The formula $\D{x}{y}(y=1)$ is the one of its
+implementation section.  The formula of the proposition shows two readings
+of one raw binder that disagree in the natural numbers, so no formula
+composite can identify the atomic binder of $\mathsf U$ with its ordinary
+reading; no impossibility for other interpretations of $\mathsf U$ is
+claimed.
+\end{remark}
+
+Hence the single introduction is complete only together with a restriction:
+of the language, so that the two readings agree at every atomic matrix; or of
+the progress mode, to matrices at which they agree.
+
+\subsection{The shapes}
+
+\begin{definition}[Guarded shapes]
+\label{guard:def:shapes}
+Let $B(x,y)$ be a literal equation with the distinguished variables $x$ and
+$y$.  It is
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \emph{zero-seeded in $y$} if it is literally
+ $\It{y}{0}{u}{h}=\It{y}{0}{u'}{k}$;
+\item \emph{mirrored in $y$} if it is literally $a=\It{y}{a}{u}{h}$, the
+ left side and the seed being the same raw term $a$;
+\item \emph{diagonal in $y$} if it is literally
+ $\It{y}{y}{u}{h}=\It{y}{y}{u'}{k}$;
+\item an \emph{orbit matrix in $y$} if it is literally
+ $y=\It{y}{a}{u}{\Suc u}$ with $y$ not free in $a$.
+\end{enumerate}
+The bodies $h$ and $k$ are arbitrary: they may contain $x$, $y$, their own
+state variable and further variables; in (b) the term $a$ may contain $x$
+and $y$.  The two state binders of (a) and (c) are independent.  An equation
+$p=q$ is \emph{protected} if $p$ and $q$ are iterator-headed.  For an
+equation $E\equiv(s=t)$ and a term $v$, the \emph{gate} and the \emph{mirror
+gate} of $E$ at $v$ are
+\[
+ G_vE\defeq\bigl(\sel(v,0,s)=\sel(v,0,t)\bigr),
+ \qquad
+ H_vE\defeq\bigl(s=\sel(v,s,t)\bigr),
+\]
+where $G_vE$ is $\operatorname{gate}(v,E)$ of \cref{base:def:gate} at an
+equation; the \emph{wrapped} equation is $W(s)=W(t)$; and for an equation
+$E(y)\equiv(s(y)=t(y))$ the \emph{diagonal lift} is
+\[
+ \Delta_yE\defeq\bigl(\It{y}{y}{u}{s(y)}=\It{y}{y}{u}{t(y)}\bigr),
+ \qquad u\notin\FV(s,t).
+\]
+\end{definition}
+
+For a variable $y$, the gate $G_yE$ is zero-seeded in $y$, the mirror gate
+$H_yE$ is mirrored in $y$ and $\Delta_yE$ is diagonal in $y$, whether or not
+$y$ occurs in $E$; in each the update does not use its state.  Each shape is
+a condition on the syntax.  None asks for an arithmetical equality or for
+the provability of a base case.
+
+\begin{lemma}[Instances at zero]
+\label{guard:lem:zero}
+Let $\mathsf K(\mathcal F,\mathcal S)$ be a guarded calculus whose sources
+include the iterator-headed terms, and let $B(x,y)$ be zero-seeded,
+mirrored or diagonal in $y$.  Then $\Gamma\proves B(t,0)$ for every context
+$\Gamma$ and every term $t$, by \rulename{I0} and transport in equation
+templates at iterator-headed sources.
+\end{lemma}
+
+\begin{proof}
+If $B$ is zero-seeded or diagonal, both sides of $B(t,0)$ have the form
+$\It{0}{0}{u}{h'}$; each is equal to $0$ by \rulename{I0}, and
+\cref{guard:lem:safe}(iv) joins them.  If $B$ is mirrored, $B(t,0)$ is
+$a'=\It{0}{a'}{u}{h'}$, the reverse of an instance of \rulename{I0}
+(\cref{guard:lem:safe}(iii)).
+\end{proof}
+
+An orbit matrix has no such property: its instance at zero is
+$0=\It{0}{a}{u}{\Suc u}$, which is interderivable with $0=a$.
+
+\begin{lemma}[Cases at a matrix with a provable base]
+\label{guard:lem:atomcases}
+Let $B(x,y)$ be a literal equation such that $\D{x}{y}B$ belongs to the
+proof language of a guarded calculus and $\Gamma\proves B(t,0)$ for every
+$\Gamma$ and $t$.  If $\Gamma,B(t,0)\proves B(t,\Suc z)$ with $z$ fresh,
+then $\Gamma\proves\D{x}{y}B$.
+\end{lemma}
+
+\begin{proof}
+Cut the derivation of $B(t,0)$ into the premise: $\Gamma\proves
+B(t,\Suc z)$.  Weaken by $B(t,z)$ and apply $\rulename{DI}_{\mathrm{root}}$
+in progress mode.  The variable $z$ stays fresh because the base that was
+removed does not contain it.
+\end{proof}
+
+\begin{proposition}[Substitution and the shapes]
+\label{guard:prop:subst-shapes}
+Let $\sigma$ be a capture-free substitution of terms for variables other
+than the distinguished $x$ and $y$, with $x$ and $y$ not free in its values.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The root of a formula is preserved and reflected by $\sigma$: $B$ is a
+ literal equation if and only if $B\sigma$ is.
+\item The zero-seeded and the mirrored shape are preserved by $\sigma$.
+ Neither is reflected: for variables $p$ and $q$ the matrix
+ $\It{y}{p}{u}{0}=\It{y}{0}{u}{0}$ is not zero-seeded and becomes
+ zero-seeded under $p\mapsto 0$, and the matrix $p=\It{y}{q}{u}{0}$ is not
+ mirrored and becomes mirrored under $q\mapsto p$.
+\item The diagonal shape is preserved and reflected: $B\sigma$ is diagonal
+ in $y$ if and only if $B$ is.  The same holds for the substitution of a
+ witness for $x$, if $y$ is not free in the witness.
+\item The classes of protected equations and of iterator-headed terms are
+ closed under $\sigma$; the class of terms other than the literal $0$ is
+ not.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(i), (ii) and (iv) are read off the definition of substitution.  In (ii) the
+shapes are preserved because the literal $0$, the variable $y$ and the two
+equal occurrences of $a$ are mapped to $0$, to $y$ and to two equal
+occurrences of $a\sigma$.
+
+(iii) Rename the binders away from the values of $\sigma$.  A
+constructor-headed term remains headed by the same constructor.  A term
+$r\sigma$ is the distinguished variable $y$ if and only if $r$ is $y$:
+another variable that is kept differs from $y$; the value of a substituted
+variable does not contain $y$; and a constructor-headed term does not become
+a variable.  Hence an iterator $\It{n}{a}{u}{h}\sigma$ has the pair $(y,y)$
+as counter and seed if and only if $\It{n}{a}{u}{h}$ has.  A side of the
+equation that is a substituted variable may become iterator-headed, but its
+value has no free $y$, so it does not acquire the shape.  A side that is an
+iterator has the shape after $\sigma$ exactly when it has it before.  The
+bodies are unrestricted and impose no condition.  The substitution of a
+witness is the same argument with $x$ among the substituted variables.
+\end{proof}
+
+The proposition is the reason for the two treatments of a guard.  In a
+public language the progress mode is selected by the root, which is stable,
+and the shape is a requirement on the language, for which preservation
+suffices.  On the full language the progress mode is selected by the shape
+itself, and a shape that substitution can create changes the mode of an
+inference under substitution (\cref{guard:sec:full}).
+
+\subsection{Public languages}
+
+\begin{definition}[Public language and its proof language]
+\label{guard:def:public}
+Let $\mathfrak A$ be a class of equations and $\mathfrak M$ a class of
+atomic matrices, both closed under substitution, with every instance
+$B(t,r)$ of a matrix $B\in\mathfrak M$ in $\mathfrak A$.  The \emph{public
+language} $\mathcal P(\mathfrak A,\mathfrak M)$ is the least set of
+formulas such that
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item every equation of $\mathfrak A$ is public;
+\item $\D{x}{y}B$ is public if $B$ is a compound public formula;
+\item $\D{x}{y}B$ is public if $B(x,y)$ is a matrix of $\mathfrak M$ in $y$.
+\end{enumerate}
+A \emph{matrix of $\mathcal P$ in $y$} is a compound public formula or a
+matrix of $\mathfrak M$ in $y$.  The \emph{proof language}
+$\mathcal P^{Q}$ consists of the public formulas, all equations, and the
+\emph{resources} $\Q{y}B(y)$ for the matrices $B$ of $\mathcal P$ in $y$.
+\end{definition}
+
+A public language has no $\Q{}$.  Clause (3) is the restriction: an atomic
+matrix immediately below $\D{}{}$ has a prescribed literal shape, and no
+decision procedure and no proof is involved in recognizing it.  Compound
+matrices are unrestricted within the grammar.  By
+\cref{guard:prop:subst-shapes} the languages below are closed under
+substitution.  The public languages of the chapter are
+\begin{align*}
+ \mathcal P_0 &\defeq\mathcal P(\text{all equations},\ \text{zero-seeded}),\\
+ \mathcal P_0^{+} &\defeq
+   \mathcal P(\text{all equations},\ \text{zero-seeded or orbit}),\\
+ \mathcal P_m &\defeq\mathcal P(\text{all equations},\ \text{mirrored}),\\
+ \mathcal P_W &\defeq\mathcal P(\text{protected equations},\ \text{zero-seeded}),
+\end{align*}
+and the calculi are listed in \cref{guard:tab:calculi}.  The designated
+contradiction of $\mathcal P_0$, $\mathcal P_0^{+}$ and $\mathcal P_m$ is
+$0=1$; that of $\mathcal P_W$ is $W(0)=W(1)$.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}llll@{}}
+\toprule
+Calculus & Proof language & Sources & Package\\
+\midrule
+$\mathsf G$ & $\mathcal P_0^{Q}$ & all terms & \pkg{guarded\_core}\\
+$\mathsf U$ & $\mathcal L$ & all terms & \pkg{guarded\_core}\\
+$\mathsf U^{-}$ & $\mathcal L$ & $s\not\equiv 0$ &
+ \pkg{guarded\_source}, \pkg{deterministic\_auxiliary}\\
+$\mathsf G^{-}$ & $\mathcal P_0^{Q}$ & $s\not\equiv 0$ &
+ incomplete (\cref{guard:cor:obstruction})\\
+$\mathsf G^{-}_{\mathrm{orb}}$ & $(\mathcal P_0^{+})^{Q}$ &
+ $s\not\equiv 0$ & \pkg{guarded\_orbit}\\
+$\mathsf M$ & $\mathcal P_m^{Q}$ & $s\not\equiv 0$ & \pkg{mirror\_guard}\\
+$\mathsf H$ & $\mathcal P_W^{Q}$ & iterator-headed & \pkg{protected\_core}\\
+\bottomrule
+\end{tabular}
+\caption{The guarded calculi $\mathsf K(\mathcal F,\mathcal S)$ of
+\cref{guard:sec:shapes,guard:sec:bootstrap,guard:sec:sources,guard:sec:composition}.
+Each has the seven rules of \cref{guard:def:calculus}.}
+\label{guard:tab:calculi}
+\end{table}
+
+% ---------------------------------------------------------------------
+\section{The guarded bootstrap and the translation into a public language}
+\label{guard:sec:bootstrap}
+
+This section draws on \pkg{guarded\_core} for the gate, the padding, the
+implication between equations and the translation; on \pkg{mirror\_guard}
+for the form of the induction argument that uses no substitution; on
+\pkg{guarded\_orbit} and \pkg{protected\_core} for the translation of
+$\Q{}$; and on \pkg{deterministic\_auxiliary} for the same translation.  The
+argument is given once, for an arbitrary guard, and is instantiated in
+\cref{guard:sec:core,guard:sec:composition}.
+
+\subsection{Guard schemes}
+
+\begin{definition}[Guard scheme]
+\label{guard:def:scheme}
+Let $\mathsf K=\mathsf K(\mathcal F,\mathcal S)$ be a guarded calculus and
+$\mathcal P=\mathcal P(\mathfrak A,\mathfrak M)$ a public language with
+$\mathcal P^{Q}\subseteq\mathcal F$.  A \emph{guard scheme} for
+$\mathsf K$ and $\mathcal P$ on a class $\mathfrak E\subseteq\mathfrak A$ of
+equations, closed under substitution, consists of
+\begin{itemize}
+\item an equation $\gamma_vU\in\mathfrak E$ for every $U\in\mathfrak E$ and
+ every term $v$, and
+\item a relation of \emph{compatible pairs} on $\mathfrak E$, closed under
+ substitution, with an equation $\mu_w(U,V)\in\mathfrak E$ for every
+ compatible pair $(U,V)$ and every term $w$,
+\end{itemize}
+both commuting with substitution, such that for all $U,V$, all terms $w$
+and all variables $y$:
+\begin{enumerate}[label=\textup{(G\arabic*)}]
+\item $\gamma_yU$ is a matrix of $\mathfrak M$ in $y$, whether or not $y$
+ occurs in $U$;
+\item $\Gamma\proves\gamma_0U$ for every context $\Gamma$, and
+ $\gamma_{\Suc w}U\dashv\vdash U$;
+\item $\mu_0(U,V)\dashv\vdash U$ and $\mu_{\Suc w}(U,V)\dashv\vdash V$;
+\item $(\gamma_yU,\,U)$ is a compatible pair.
+\end{enumerate}
+\end{definition}
+
+Two schemes are used.  The \emph{zero-seeded scheme} has
+\[
+ \gamma_v(s=t)\defeq G_v(s=t)=\bigl(\sel(v,0,s)=\sel(v,0,t)\bigr),
+ \qquad
+ \mu_w(s=t,\ r=q)\defeq\bigl(\sel(w,s,r)=\sel(w,t,q)\bigr),
+\]
+with every pair compatible.  The \emph{mirror scheme} has
+\[
+ \gamma_v(s=t)\defeq H_v(s=t)=\bigl(s=\sel(v,s,t)\bigr),
+ \qquad
+ \mu_w(s=a,\ s=b)\defeq\bigl(s=\sel(w,a,b)\bigr),
+\]
+with $(U,V)$ compatible when $U$ and $V$ have the same left side.  In both,
+(G1) and (G4) hold by inspection: $G_yU$ is zero-seeded and $H_yU$ is
+mirrored in $y$, and $H_y(s=t)$ has the left side $s$.  Conditions (G2) and
+(G3) are statements about a calculus and are verified where the scheme is
+used.
+
+Fix a calculus, a public language and a guard scheme on $\mathfrak E$.  For
+$U\in\mathfrak E$ and a compatible pair $(U,V)$ put
+\[
+ L(U)\defeq\D{a}{v}\gamma_vU,
+ \qquad
+ (U\Rightarrow V)\defeq\D{a}{w}L\bigl(\mu_w(U,V)\bigr),
+\]
+with fresh bound variables, $a$ not occurring in the matrix.  Both are
+compound public formulas, by (G1).  For a formula $A$ that is an equation of
+$\mathfrak E$ or a compound public formula, the \emph{padding} is
+\[
+ P(A)\defeq
+ \begin{cases}
+  L(A), & A\in\mathfrak E,\\
+  A, & A \text{ compound}.
+ \end{cases}
+\]
+$P(A)$ is always compound.
+
+\begin{lemma}[Padding]
+\label{guard:lem:pad}
+$L(U)\dashv\vdash U$ for every $U\in\mathfrak E$, and hence
+$P(A)\dashv\vdash A$.
+\end{lemma}
+
+\begin{proof}
+Let $\Gamma\proves U$.  The matrix $\gamma_vU$ is a literal equation, so the
+introduction of $L(U)$ is in progress mode; with the witness $0$ its premise
+is $\Gamma,\gamma_zU\proves\gamma_{\Suc z}U$, which follows from $U$ by
+(G2) without the local assumption.  Conversely let $\Gamma\proves L(U)$.
+\rulename{DE} adds the resource $\Q{v}\gamma_vU$; its base $\gamma_0U$ is
+derivable by (G2), \rulename{QE} at $1$ gives $\gamma_{1}U$, and (G2) gives
+$U$.  The eigenvariable of \rulename{DE} does not occur in $U$.
+\end{proof}
+
+\begin{lemma}[Numerical cases]
+\label{guard:lem:nc}
+Let $A(y)$ be a compound public formula or an equation of $\mathfrak E$, and
+let $z$ be not free in $\Gamma$ and $A$.  If $\Gamma\proves A(0)$ and
+$\Gamma\proves A(\Suc z)$, then $\Gamma\proves A(t)$ for every term $t$.
+\end{lemma}
+
+\begin{proof}
+Let $A$ be compound.  Introduce $\D{a}{y}A(y)$, with $a$ not free in $A$,
+in case mode with the witness $0$: the premise
+$\Gamma,A(0)\proves A(\Suc z)$ is the second hypothesis, weakened.
+\rulename{DE} adds $\Q{y}A(y)$, and \rulename{QE} with the first hypothesis
+gives $A(t)$.  If $A$ is an equation of $\mathfrak E$, pad the two
+hypotheses by \cref{guard:lem:pad}, apply the compound case to $L(A(y))$,
+and remove the padding of $L(A(t))$.
+\end{proof}
+
+The context of the two hypotheses is the same $\Gamma$ and does not contain
+the case variable.  The lemma is not a rule for a case distinction on a
+variable that occurs in an assumption.
+
+\begin{lemma}[Implication between equations]
+\label{guard:lem:imp}
+For a compatible pair $(U,V)$ the following rules are admissible:
+\[
+ \infrule{\Gamma,\ U\proves V}{\Gamma\proves U\Rightarrow V},
+ \qquad
+ \infrule{\Gamma\proves U\Rightarrow V\qquad\Gamma\proves U}
+         {\Gamma\proves V}.
+\]
+\end{lemma}
+
+\begin{proof}
+Write $\mu_w$ for $\mu_w(U,V)$.  The matrix $L(\mu_w)$ of $U\Rightarrow V$
+is compound, so its introduction is in case mode, with the premise
+$\Gamma,L(\mu_0)\proves L(\mu_{\Suc z})$.  Over $\Gamma,L(\mu_0)$:
+\cref{guard:lem:pad} gives $\mu_0$, (G3) gives $U$, the given derivation and
+cut give $V$, (G3) gives $\mu_{\Suc z}$, and \cref{guard:lem:pad} gives
+$L(\mu_{\Suc z})$.  For the elimination, \rulename{DE} adds
+$\Q{w}L(\mu_w)$; from $U$, (G3) and padding give $L(\mu_0)$; \rulename{QE}
+at $1$ gives $L(\mu_1)$; and padding and (G3) give $V$.  The conversions
+use transport outside the fresh binders only; no congruence of a binder is
+assumed.
+\end{proof}
+
+\begin{theorem}[Equation induction from a guard]
+\label{guard:thm:ei}
+Let $E(y)$ be an equation of $\mathfrak E$ and $z$ a variable not free in
+$\Gamma$ and $E$.  If $\Gamma\proves E(0)$ and
+$\Gamma,E(z)\proves E(\Suc z)$, then $\Gamma\proves E(t)$ for every term
+$t$.  The derivation uses the step premise at its own eigenvariable only:
+no substitution into the given derivations is made.
+\end{theorem}
+
+\begin{proof}
+Put
+\[
+ J(y)\defeq\gamma_yE(y),\qquad \Phi(y)\defeq\bigl(J(y)\Rightarrow E(y)\bigr),
+\]
+which is defined by (G4) and is a compound public formula.
+
+\emph{The implication at every term.}  $\Gamma\proves\Phi(0)$ by the
+introduction rule of \cref{guard:lem:imp}: the base $E(0)$ is derivable
+over $\Gamma$, and the assumption $J(0)$ is not used.  For a fresh $w$,
+$\Gamma\proves\Phi(\Suc w)$ by the same rule: the assumption $J(\Suc w)$ is
+$\gamma_{\Suc w}E(\Suc w)$, which gives $E(\Suc w)$ by (G2).  Both
+derivations are over the context $\Gamma$, which does not contain the case
+variable, so \cref{guard:lem:nc} applies to the compound formula $\Phi$ and
+gives $\Gamma\proves\Phi(v)$ for every term $v$.
+
+\emph{Progress of the guard.}  Over $\Gamma,J(z)$ the elimination rule and
+$\Phi(z)$ give $E(z)$; the step premise and cut give $E(\Suc z)$; and (G2)
+gives $\gamma_{\Suc z}E(\Suc z)$, which is $J(\Suc z)$.  Thus
+$\Gamma,J(z)\proves J(\Suc z)$.
+
+\emph{Conclusion.}  By (G1) the matrix $J(y)$ is atomic and admissible, so
+$\rulename{DI}_{\mathrm{root}}$ in progress mode, with an unused witness
+coordinate $a$ and the witness $0$, gives $\Gamma\proves\D{a}{y}J(y)$.
+\rulename{DE} adds $\Q{y}J(y)$.  The base $J(0)=\gamma_0E(0)$ is derivable by
+(G2), and \rulename{QE} at $t$ gives $J(t)$.  With $\Phi(t)$ the elimination
+rule gives $E(t)$.
+\end{proof}
+
+\begin{remark}[Two forms of the argument]
+\label{guard:rem:ei-forms}
+\pkg{guarded\_core}, \pkg{guarded\_orbit} and \pkg{protected\_core} use the
+implication $J(y)\Rightarrow E(\Suc y)$ in place of $\Phi$.  Its two
+branches then need the step premise at $0$ and at $\Suc w$, that is, a
+substitution into the given derivation, and the conclusion needs a second
+application of numerical cases.  That form is correct wherever substitution
+is admissible: in $\mathsf G$ and $\mathsf H$ by \cref{guard:lem:struct},
+and in $\mathsf G^{-}_{\mathrm{orb}}$ after the unrestricted transport has
+been recovered, where \pkg{guarded\_orbit} performs the substitution in the
+calculus with the derived rule as an inference and then expands that rule.
+The form of the proof above is the one of \pkg{mirror\_guard}, where it is
+needed because substitution is not available under the source restriction;
+it applies to every scheme.  In each form the case distinction is made on a
+compound implication over a context that does not contain the case variable;
+a case distinction made while $J(z)$ is retained would violate the
+eigenvariable condition.
+\end{remark}
+
+\subsection{The translation and its two composites}
+
+\begin{definition}[Translation into a public language]
+\label{guard:def:T}
+Let a guard scheme on $\mathfrak E$ be given, and let $\varepsilon$ map
+every equation to an equation of $\mathfrak E$, commuting with substitution.
+The translation $T$ of native formulas is
+\begin{align*}
+ T(s=t) &\defeq \varepsilon(s=t),\\
+ T(\Q{y}B) &\defeq \D{a}{y}P(TB), \qquad a \text{ fresh},\\
+ T(\D{x}{y}B) &\defeq \D{x}{y}P(TB).
+\end{align*}
+\end{definition}
+
+$T$ leaves every term unchanged outside $\varepsilon$, commutes with
+substitution up to the names of bound variables, and maps every native
+formula to a public formula: every translated matrix is padded, hence
+compound, and the atomic matrices inside a padding are admissible by (G1).
+The embedding $\varepsilon$ is the identity except for protected atoms,
+where it is the wrapping $\varepsilon(s=t)=(W(s)=W(t))$.
+
+\begin{theorem}[The public-language theorem]
+\label{guard:thm:public}
+Let $\mathsf K=\mathsf K(\mathcal F,\mathcal S)$,
+$\mathcal P=\mathcal P(\mathfrak A,\mathfrak M)$ with
+$\mathcal P^{Q}\subseteq\mathcal F$, a guard scheme on $\mathfrak E$ and an
+embedding $\varepsilon$ be given, and assume:
+\begin{enumerate}[label=\textup{(T\arabic*)}]
+\item $\varepsilon(E)\dashv\vdash_{\Nat}E$ for every equation $E$;
+\item $\mathsf K$ derives $\varepsilon(E)$ for every instance $E$ of
+ \rulename{I0} and \rulename{IS}, and $\Gamma\proves\varepsilon(s=t)$ and
+ $\Gamma\proves\varepsilon(h(s)=r)$ imply
+ $\Gamma\proves\varepsilon(r=h(t))$;
+\item $U\dashv\vdash_{\mathsf K}\varepsilon(U)$ for every equation
+ $U\in\mathfrak A$;
+\item $\Gamma\proves_{\mathsf K}B(t,0)$ for every matrix
+ $B\in\mathfrak M$, every $\Gamma$ and every $t$.
+\end{enumerate}
+Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $\Gamma\proves_{\Nat}A$ implies $T\Gamma\proves_{\mathsf K}TA$, for
+ all native $\Gamma$ and $A$;
+\item $A\dashv\vdash_{\Nat}TA$ for every native formula $A$;
+\item $B\dashv\vdash_{\mathsf K}TB$ for every public formula $B$;
+\item for public $\Gamma$ and $B$:
+ $\Gamma\proves_{\mathsf K}B$ if and only if $\Gamma\proves_{\Nat}B$.
+\end{enumerate}
+The transformations of derivations are effective.
+\end{theorem}
+
+\begin{proof}
+For a native matrix $B$, the translated closure is
+$\mathrm{Cl}_yB\defeq\D{a}{y}P(TB)$, so $T(\Q{y}B)=\mathrm{Cl}_yB$.
+
+\emph{(a).}  By induction on the derivation in $\Nat$.
+
+\rulename{Hyp}: $TA\in T\Gamma$.
+
+\rulename{I0}, \rulename{IS}, \rulename{Tr}: these are (T2); the rule
+\rulename{Tr} of $\Nat$ infers $r=h(t)$ from $s=t$ and $h(s)=r$.
+
+\rulename{QE}: the induction hypotheses are
+$T\Gamma\proves\mathrm{Cl}_yB$ and $T\Gamma\proves TB(0)$.  \rulename{DE}
+on the first adds the resource $\Q{y}P(TB)(y)$.  Padding gives $P(TB)(0)$,
+\rulename{QE} at $t$ gives $P(TB)(t)$, and removal of the padding gives
+$TB(t)=T(B(t))$.
+
+\rulename{DE}: the induction hypotheses are
+$T\Gamma\proves\D{x}{y}P(TB)$ and
+$T\Gamma,\mathrm{Cl}_yB(b,y)\proves TA$.  \rulename{DE} in $\mathsf K$ on
+the first adds $\Q{y}P(TB)(b,y)$.  Over this context derive
+$\mathrm{Cl}_yB(b,y)$: its matrix is compound, the introduction is in case
+mode with the witness $0$, and its premise
+$P(TB)(b,0)\proves P(TB)(b,\Suc z)$ is \rulename{QE} on the resource and
+the local base.  Cut $\mathrm{Cl}_yB(b,y)$ into the second hypothesis, which
+gives $TA$, and close \rulename{DE}; $b$ is not free in $T\Gamma$ and $TA$.
+This treats every use of the hypothesis $\Q{y}B(b,y)$ of the native
+derivation, not only its uses as the major premise of \rulename{QE}.
+
+\rulename{DI}: the induction hypothesis is
+$T\Gamma,TB(t,0)\proves TB(t,\Suc z)$.  The matrix $P(TB)$ is compound, so
+the introduction of $\D{x}{y}P(TB)$ is in case mode, with the premise
+$T\Gamma,P(TB)(t,0)\proves P(TB)(t,\Suc z)$: remove the padding of the
+base, cut it into the induction hypothesis, and pad the result.
+
+\rulename{QI}: the induction hypothesis is
+$T\Gamma,\varepsilon E(z)\proves\varepsilon E(\Suc z)$, and the goal is
+$\D{a}{y}L(\varepsilon E(y))$.  Its introduction is in case mode, with the
+premise $T\Gamma,L(\varepsilon E(0))\proves L(\varepsilon E(\Suc z'))$ for a
+fresh $z'$.  Over $T\Gamma,L(\varepsilon E(0))$ the padding gives the base
+$\varepsilon E(0)$; \cref{guard:thm:ei} for the equation
+$\varepsilon E(y)\in\mathfrak E$, with the step premise weakened, gives
+$\varepsilon E(\Suc z')$; and padding gives the goal.
+
+\emph{(b).}  By induction on $A$, using three facts about $\Nat$:
+$\Q{y}B\dashv\vdash\D{a}{y}B$ for $a$ not free in $B$
+(\cref{base:lem:dummy}); interderivable matrices give interderivable
+formulas under $\Q{}$ and under $\D{}{}$ (\cref{base:lem:bindercong}); and
+$L(U)\dashv\vdash_{\Nat}U$.  The third holds because
+(G2) holds in $\Nat$ by \cref{guard:lem:incl} and cut, and the proof of
+\cref{guard:lem:pad} then applies in $\Nat$, where the introduction by cases
+is available at every matrix.  The case of an equation is (T1).  For
+$\Q{y}B$: $\Q{y}B\dashv\vdash\D{a}{y}B\dashv\vdash\D{a}{y}TB\dashv\vdash
+\D{a}{y}P(TB)$.  The case of $\D{x}{y}B$ is the same without the first
+step.
+
+\emph{(c).}  By induction on the number of binders of $B$, for all
+instances of $B$ at once.  For an equation of $\mathfrak A$ this is (T3).
+
+Let $B=\D{x}{y}C$ with $C$ compound.  Then $TC$ is compound and
+$TB=\D{x}{y}TC$.  From $\Gamma\proves\D{x}{y}C$, \rulename{DE} adds
+$\Q{y}C(b,y)$; the introduction of $\D{x}{y}TC$ at the witness $b$ is in
+case mode, and its premise $TC(b,0)\proves TC(b,\Suc z)$ is obtained by
+converting the base to $C(b,0)$ with the induction hypothesis, applying
+\rulename{QE} at $\Suc z$, and converting $C(b,\Suc z)$ to $TC(b,\Suc z)$.
+The converse is symmetric.
+
+Let $B=\D{x}{y}C$ with $C\in\mathfrak M$.  Then $TB=\D{x}{y}L(\varepsilon
+C)$, and every instance of $C$ is an equation of $\mathfrak A$.  From
+$\Gamma\proves\D{x}{y}C$, \rulename{DE} adds $\Q{y}C(b,y)$.  The
+introduction of $\D{x}{y}L(\varepsilon C)$ at the witness $b$ is in case
+mode; its local base is not used: $C(b,0)$ is derivable by (T4),
+\rulename{QE} gives $C(b,\Suc z)$, (T3) gives $\varepsilon C(b,\Suc z)$,
+and padding gives $L(\varepsilon C(b,\Suc z))$.  Conversely, from
+$\Gamma\proves\D{x}{y}L(\varepsilon C)$, \rulename{DE} adds
+$\Q{y}L(\varepsilon C(b,y))$.  The introduction of $\D{x}{y}C$ at the
+witness $b$ is in progress mode; its local assumption $C(b,z)$ is not used:
+$C(b,0)$ is derivable by (T4), (T3) and padding give
+$L(\varepsilon C(b,0))$, \rulename{QE} gives $L(\varepsilon C(b,\Suc z))$,
+and removal of the padding and (T3) give $C(b,\Suc z)$.  This direction uses
+the provable base; it fails for an arbitrary atomic matrix, by
+\cref{guard:prop:strict}.
+
+\emph{(d).}  The implication from left to right is \cref{guard:lem:incl}.
+Conversely let $\Gamma\proves_{\Nat}B$.  By (a),
+$T\Gamma\proves_{\mathsf K}TB$.  By (c), $\Gamma\proves_{\mathsf K}TC$ for
+every $C\in\Gamma$, so cut gives $\Gamma\proves_{\mathsf K}TB$, and (c)
+gives $\Gamma\proves_{\mathsf K}B$.
+\end{proof}
+
+\begin{corollary}[Bi-interpretation]
+\label{guard:cor:biinterp}
+Under the hypotheses of \cref{guard:thm:public}, the theory of the public
+sequents of $\mathsf K$, with the ordinary reading
+$(\D{x}{y}B)^\circ=\exists x\,(B^\circ(x,0)\to\forall y\,B^\circ(x,y))$, is
+bi-interpretable with $\iPRA$.  Both numerical domains are whole, equality
+is equality, both numerical composites have the graph $x=y$, and both
+formula composites are provably equivalent to the identity.  In particular
+$\mathsf K$ derives its contradiction $\varepsilon(0=1)$ if and only if
+$\iPRA$ proves $\bot$.
+\end{corollary}
+
+\begin{proof}
+The inclusion of the public language into the native language and the
+translation $T$ are the identity on the numerical sort and on equality; if
+$\varepsilon$ is the wrapping, the identity graph is expressed by
+$W(x)=W(y)$, which is $x=y$ in $\Nat$ by (T1).  They preserve derivability
+by \cref{guard:lem:incl} and by (a), and their two composites are (b) and
+(c).  Composition with the bi-interpretation of $\Nat$, $\Teq$ and $\iPRA$
+(\cref{base:thm:bridge}) gives the statement.  For the contradiction:
+$\varepsilon(0=1)$ is public, so by (d) it is derivable in $\mathsf K$ if
+and only if it is derivable in $\Nat$, that is, by (T1), if and only if
+$\Nat$ derives $0=1$.
+\end{proof}
+
+The arithmetic of the bridge, that is, the predecessor, the reflection of
+equality, quantifier-free induction, pairing and the compiler for primitive
+recursion (\cref{base:thm:pred,base:thm:reflect,base:thm:primrec}), is not
+redone in any public language: it is transferred by (a) and (d).
+
+\subsection{The guarded core}
+\label{guard:sec:core}
+
+This subsection draws on \pkg{guarded\_core}.  The guarded core is
+$\mathsf G=\mathsf K(\mathcal P_0^{Q},\text{all terms})$: public formulas
+are equations and paired formulas whose atomic matrices are zero-seeded,
+transport is unrestricted, and the one introduction is determined by the
+root.  Its seven rules are those of \cref{guard:def:calculus}.
+
+\begin{theorem}[The guarded core]
+\label{guard:thm:core}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathsf G$ admits weakening, substitution and cut.
+\item The zero-seeded scheme on all equations is a guard scheme for
+ $\mathsf G$ and $\mathcal P_0$.  Hence $\mathsf G$ admits numerical cases
+ for every public formula, implication between equations, and contextual
+ induction for every literal equation.
+\item With $\varepsilon$ the identity, $T$ translates derivations of $\Nat$
+ into derivations of $\mathsf G$; $A\dashv\vdash_{\Nat}TA$ for every native
+ $A$; $B\dashv\vdash_{\mathsf G}TB$ for every $B\in\mathcal P_0$; and for
+ $\Gamma,B$ in $\mathcal P_0$, $\Gamma\proves_{\mathsf G}B$ if and only if
+ $\Gamma\proves_{\Nat}B$.
+\item $\mathsf G$ on $\mathcal P_0$ is bi-interpretable and equiconsistent
+ with $\iPRA$, with whole domains, equality as equality and identity
+ numerical composites.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) is \cref{guard:lem:struct}.  For (ii), all terms are sources, so
+\cref{guard:lem:safe}(i),(ii) give the ordinary equality rules.  The two
+sides of $G_0U$ are equal to $0$ and the two sides of $G_{\Suc w}(s=t)$ are
+equal to $s$ and to $t$, by the selector equations; this is (G2).  The two
+sides of $\mu_0(s=t,r=q)$ are equal to $s$ and $t$, and those of
+$\mu_{\Suc w}$ to $r$ and $q$; this is (G3).  The consequences are
+\cref{guard:lem:nc,guard:lem:imp,guard:thm:ei}.  For (iii) and (iv) the
+hypotheses of \cref{guard:thm:public} hold: (T1) and (T3) are trivial; in
+(T2) the computation equations are axioms and $r=h(t)$ follows from $s=t$
+and $h(s)=r$ by transport in the template $h(v)=r$ and symmetry; (T4) is
+\cref{guard:lem:zero}.  Then apply
+\cref{guard:thm:public,guard:cor:biinterp}.
+\end{proof}
+
+\begin{corollary}[Administrative proofs are conservative]
+\label{guard:cor:admin}
+For $\Gamma$ and $B$ in $\mathcal P_0$,
+\[
+ \Gamma\proves_{\mathsf U}B
+ \iff\Gamma\proves_{\mathsf G}B
+ \iff\Gamma\proves_{\Nat}B .
+\]
+On $\mathcal P_0$ the mixed and the ordinary reading agree: $\Teq$ proves
+$A^\dagger\leftrightarrow A^\circ$ for every $A\in\mathcal P_0$.
+\end{corollary}
+
+\begin{proof}
+A derivation of $\mathsf G$ is a derivation of $\mathsf U$, a derivation of
+$\mathsf U$ is transformed into one of $\Nat$ by \cref{guard:lem:incl}, and
+\cref{guard:thm:core}(iii) closes the circle.  For the readings, at a
+zero-seeded matrix $E(x,y)$ the instance $E(x,0)$ is provable, so with $x$
+fixed $\forall y\,(E(x,y)\to E(x,\Suc y))$ and
+$E(x,0)\to\forall y\,E(x,y)$ are equivalent: from the first, by induction
+for the literal equation $E(x,y)$; from the second, because the base gives
+every instance.  The equivalence passes under the existential quantifier,
+and at a compound matrix the two readings have the same form, so induction
+on $A$ applies.
+\end{proof}
+
+A derivation may therefore use unguarded atomic matrices and $\Q{}$
+formulas as intermediate formulas without changing the public theory.  The
+converse statement fails for $\mathsf U$ as a whole
+(\cref{guard:prop:strict}): the full language of $\mathsf U$ is not claimed
+to be bi-interpretable with $\iPRA$ under either reading.
+
+\begin{remark}[Versions]
+\label{guard:rem:core-versions}
+\pkg{guarded\_core} states the comparison with the calculus of the reports
+on the language of equations and $\D{}{}$ with clause contexts
+(\cref{guard:rem:clauses}); the clause $T(\Q{y}B)=\D{a}{y}P(TB)$ is added in
+\pkg{guarded\_orbit}, \pkg{deterministic\_auxiliary} and
+\pkg{protected\_core}, and \pkg{guarded\_source} first replaces every
+$\Q{y}B$ by $\D{a}{y}B$.  \pkg{guarded\_core} derives conservativity of
+$\mathsf U$ from \cref{guard:lem:mixed-sound} and the agreement of the
+readings, through $\iPRA$; the direct inclusion of \cref{guard:lem:incl} is
+the argument of \pkg{guarded\_orbit} and \pkg{protected\_core}.  In Lean the
+aim of the package, one root-determined introduction, is reached on the
+full language by the witness-selected introduction
+(\cref{kern:thm:witness}, \Lean{wprf\_iff\_nprf}); its own route is formalized in the common form
+described in \cref{guard:rem:lean-public}.
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{Which transport sources are needed}
+\label{guard:sec:sources}
+
+This section draws on \pkg{guarded\_source} for the dependency theorem; on
+\pkg{deterministic\_auxiliary}, \pkg{guarded\_orbit} and \pkg{mirror\_guard},
+each of which reproduces the same numerical argument inside its own
+calculus; and on \pkg{guarded\_orbit} for the observation that the argument
+needs induction at one equation only.  The singleton test, the filter and
+the join at zero are taken by all four from \pkg{source\_dispatch}; they
+are proved in \cref{kern:sec:dispatch} for the calculus $\mathsf Z$, which
+has both introductions of $\Nat$, and are cited from there.  This section
+proves what the guarded calculi need beyond that: the argument goes through
+with two closure conditions in place of the introductions.
+
+Transport with the sources $s\not\equiv 0$ is as strong as unrestricted
+transport, on equations, as soon as a small amount of induction is
+available.  The amount is made explicit, because in
+\cref{guard:sec:composition} it is exactly what a strictly guarded language
+fails to supply.
+
+\begin{definition}[Restricted equational kernel]
+\label{guard:def:rek}
+A \emph{restricted equational kernel} is a relation $\Gamma\proves A$
+between finite contexts and formulas of a language that contains all
+equations, closed under weakening and under the rules \rulename{Hyp} for
+equations, \rulename{I0}, \rulename{IS} and $\rulename{Tr}^{-}$ in equation
+templates: from
+$\Gamma\proves s=t$ with $s\not\equiv 0$ and $\Gamma\proves E(s)$ infer
+$\Gamma\proves E(t)$, for a literal equation template $E(v)$.
+\end{definition}
+
+The derivability relation of every guarded calculus whose sources include
+the terms $s\not\equiv 0$ is a restricted equational kernel, and
+\cref{guard:lem:safe} holds for every restricted equational kernel, since
+its proof uses these rules only.  Consider the following two closure
+conditions on a restricted equational kernel.
+\begin{enumerate}[label=\textup{(\Alph*)},start=3]
+\item \emph{Cases at stable left sides.}  If $E(v)$ is an equation template
+ whose left side is iterator-headed, $z$ is a variable not in $E$, and
+ $\proves E(0)$ and $\proves E(\Suc z)$ in the empty context, then
+ $\proves E(r)$ for every term $r$.
+\end{enumerate}
+\begin{enumerate}[label=\textup{(\Alph*)},start=15]
+\item \emph{One step of an orbit.}  For every term $t\not\equiv 0$ and every
+ context $\Gamma$, if $\Gamma\proves 0=\It{0}{t}{u}{\Suc u}$, then
+ $\Gamma\proves 1=\It{1}{t}{u}{\Suc u}$.
+\end{enumerate}
+
+Define the terms
+\begin{align*}
+ \zeta(v)&\defeq\sel(v,1,0), & \kappa(v)&\defeq\sel(v,0,1), &
+ \chi(v)&\defeq\sel(v,1,2),\\
+ N(n)&\defeq\It{n}{0}{u}{\zeta(u)}, & R(n)&\defeq\It{n}{0}{u}{\chi(u)}, &
+ \lambda(n)&\defeq N(R(n)).
+\end{align*}
+These are the terms $Z$, $K$, $H$, $N$, $R$ and $L$ of
+\cref{kern:sec:dispatch}; three are renamed because $H_v$ and $L(\cdot)$
+denote the mirror gate and the padding in this chapter.  The term $\zeta$
+is the zero test, and $\lambda(\Suc v)$ tests whether $v$ is $0$.
+
+\begin{lemma}[Tests and filter]
+\label{guard:lem:tests}
+In a restricted equational kernel with \textup{(C)}, the following equations
+are derivable over every context, for every term $v$:
+\begin{gather*}
+ \chi(v)=\Suc\kappa(v),\qquad R(1)=1,\qquad R(\Suc\Suc v)=2,\qquad
+ N(1)=1,\qquad N(2)=0,\\
+ \lambda(1)=1,\qquad\lambda(\Suc\Suc v)=0,\qquad
+ \lambda(\Suc v)=\zeta(v),\qquad
+ \sel(\zeta(v),v,0)=v .
+\end{gather*}
+\end{lemma}
+
+\begin{proof}
+The first eight equations are \cref{kern:lem:ztest}.  The derivations given
+there are made over the empty context and use \rulename{I0}, \rulename{IS},
+the operations of \cref{guard:lem:safe}(i)--(iv) at sources that are
+iterator-headed, successor-headed or the numerals $1$ and $2$, and
+numerical cases at the two matrices $\chi(y)=\Suc\kappa(y)$ and
+$\lambda(\Suc y)=\zeta(y)$.  Both matrices have an iterator-headed left
+side, so the two case distinctions are instances of (C), and the
+derivations are valid in every restricted equational kernel with (C).
+
+The filter of \cref{kern:lem:zfilter} is the equation
+$v=\sel(\zeta(v),v,0)$, proved by cases at a matrix whose left side is a
+variable; (C) does not cover it.  In the orientation stated here the left
+side is iterator-headed and (C) applies.  At $0$, replace $\zeta(0)$ by
+$1$; then $\sel(1,0,0)=0$ by \rulename{IS}.  At $\Suc z$, replace
+$\zeta(\Suc z)$ by $0$; then $\sel(0,\Suc z,0)=\Suc z$ by \rulename{I0}.
+Both replacements are congruences at an iterator-headed source.
+\end{proof}
+
+\begin{theorem}[Equational source elimination]
+\label{guard:thm:dependency}
+Let $\proves$ be a restricted equational kernel with \textup{(C)} and
+\textup{(O)}.  Then $\proves$ has unrestricted equality: over every context,
+symmetry, transitivity and congruence hold for all equations, and
+$\Gamma\proves s=t$ and $\Gamma\proves E(s)$ imply $\Gamma\proves E(t)$ for
+every equation template $E(v)$ and every source $s$.  Both \textup{(C)} and
+\textup{(O)} hold if $\proves$ is closed under contextual induction for
+literal equations: from $\Gamma\proves E(0)$ and
+$\Gamma,E(z)\proves E(\Suc z)$, with $z$ fresh, infer $\Gamma\proves E(r)$.
+\end{theorem}
+
+\begin{proof}
+\emph{From induction to \textup{(C)} and \textup{(O)}.}  For (C), weaken the
+derivation of $E(\Suc z)$ by the assumption $E(z)$ and apply induction; the
+induction hypothesis is not used.  For (O), write
+$A(n)\defeq\It{n}{t}{u}{\Suc u}$ and apply induction to the equation
+$n=A(n)$ at the target $1$: the base is the hypothesis of (O), and the step
+$\Gamma,z=A(z)\proves\Suc z=A(\Suc z)$ is the step of the proof of
+\cref{kern:lem:zsym}, whose transports have the sources $z$, $A(\Suc z)$
+and $\Suc A(z)$.
+
+\emph{Symmetry at the source $0$.}  Let $\Gamma\proves 0=t$ with
+$t\not\equiv 0$; the claim is $\Gamma\proves t=0$.  Read the proof of
+\cref{kern:lem:zsym} with the given derivation of $0=t$ in place of the
+hypothesis.  It derives $0=A(0)$ from $0=t$, uses its induction for the
+single conclusion $1=A(1)$, which is (O), and derives $\zeta(t)=1$ from
+$1=A(1)$ by \rulename{IS} and \cref{guard:lem:tests}.  With the filter in
+the orientation of \cref{guard:lem:tests} the last step reads: put
+$q\defeq\sel(\zeta(t),t,0)$; the filter gives $q=t$; the replacement of
+$\zeta(t)$ by $1$ and \rulename{IS} give $q=\sel(1,t,0)=0$; reverse $q=t$
+at the source $q$ and pass through $q$ to obtain $t=0$.
+
+\emph{Unrestricted equality.}  Symmetry, congruence and transitivity at
+every source follow from symmetry at the source $0$ and
+\cref{guard:lem:safe}(ii),(iv) as in the proof of \cref{kern:thm:dispatch},
+which uses nothing else; the cut made there is not needed, because symmetry
+at the source $0$ has been obtained as a derived rule.  For an equation
+template $a(v)=b(v)$, congruence gives $a(s)=a(t)$ and $b(s)=b(t)$, and
+symmetry and transitivity turn $a(s)=b(s)$ into $a(t)=b(t)$.
+\end{proof}
+
+The proof uses induction in two places only: through (C), where the
+induction hypothesis is ignored, and through (O), at the single equation
+$n=\It{n}{t}{u}{\Suc u}$ with $t$ and the context fixed.  The variable
+source $z$ of the step of (O) is never replaced by $0$: the target $1$ is
+supplied by the induction rule, not by a substitution into the step.  No
+logical rule occurs: no binder, no introduction by cases.  This removes the
+apparent circularity between the two reductions, in which the recovery of
+transport at the source $0$ would need logical cases and the recovery of
+logical cases at an equation would need unrestricted transport.
+
+\begin{corollary}[The equational fragment]
+\label{guard:cor:eminus}
+Let $\mathcal E^{-}$ be the calculus whose formulas are the equations and
+whose rules are \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+$\rulename{Tr}^{-}$ in equation templates and contextual induction for
+literal equations.  Unrestricted transport in equation templates is
+admissible in $\mathcal E^{-}$.  The restriction $s\not\equiv 0$ changes
+neither its theorems nor its consequences from hypotheses.
+\end{corollary}
+
+\Cref{kern:thm:dispatch} is the case of \cref{guard:thm:dependency} for the
+calculus $\mathsf Z$, which has \rulename{QI} and hence induction; what
+\cref{guard:thm:dependency} adds is that the two closure conditions
+suffice, which is what the calculi of \cref{guard:sec:composition} need.
+The Lean statements for the fragment, \Lean{ZKernel.trF} and
+\Lean{zprf\_iff\_nprf}, are recorded in \cref{kern:rem:dispatch-sources}.
+
+\begin{proposition}[Transport in public templates]
+\label{guard:prop:pubtr}
+Let $\mathsf K$ be a guarded calculus whose proof language contains
+$\mathcal P^{Q}$ for a public language
+$\mathcal P=\mathcal P(\mathfrak A,\mathfrak M)$.  Assume that $\mathsf K$
+has unrestricted equality in the sense of \cref{guard:thm:dependency}, and
+that for every $B\in\mathfrak M$ either $\Gamma\proves B(t,0)$ for all
+$\Gamma$ and $t$, or $\Gamma\proves\D{x}{y}B'$ for all $\Gamma$ and all
+substitution instances $B'$ of $B$.  Then for every template
+$F(v)\in\mathcal P$,
+\[
+ \Gamma\proves s=t\quad\text{and}\quad\Gamma\proves F(s)
+ \quad\text{imply}\quad\Gamma\proves F(t).
+\]
+\end{proposition}
+
+\begin{proof}
+By induction on the number of binders of $F$, for all contexts and all
+$s,t$.  For an equation this is the hypothesis.  Let
+$F(v)=\D{x}{y}B(v,x,y)$.  If every instance of $\D{x}{y}B$ is derivable,
+nothing is to be done.  Otherwise apply \rulename{DE} to $F(s)$, which adds
+$\Q{y}B(s,b,y)$, and introduce $F(t)$ at the witness $b$.
+
+If $B$ is compound the introduction is in case mode.  From its base
+$B(t,b,0)$ the induction hypothesis, with the reversed equation $t=s$, gives
+$B(s,b,0)$; \rulename{QE} gives $B(s,b,\Suc z)$; and the induction
+hypothesis gives $B(t,b,\Suc z)$.
+
+If $B$ is atomic the introduction is in progress mode and its local
+assumption is not used: $B(s,b,0)$ is derivable, \rulename{QE} gives
+$B(s,b,\Suc z)$, and transport in the equation template gives
+$B(t,b,\Suc z)$.
+\end{proof}
+
+Hence, under the hypotheses of the proposition, a calculus
+$\mathsf K(\mathcal P^{Q},\,s\not\equiv 0)$ derives the same sequents as
+$\mathsf K(\mathcal P^{Q},\,\text{all terms})$: every unrestricted transport
+is replaced by its derivation and the other inferences are kept.  The
+proposition is about public templates.  No transport at the source $0$ is
+asserted in a template that contains an unguarded atomic matrix below a
+binder.
+
+\begin{remark}[The crossed rule]
+\label{guard:rem:crossed}
+The induction of \cref{guard:thm:dependency} is the price of the uncrossed
+conclusion.  For the rule \rulename{Tr} of the kernel the restriction
+$s\not\equiv 0$ costs nothing: \cref{kern:lem:oseq}(ii) reverses an
+equation with the source $0$ in one inference, by a constant template, and
+needs neither the tests nor an induction; the same holds for the reversing
+rule of \cref{kern:thm:reversal}.  The calculi of
+\crefrange{guard:sec:shapes}{guard:sec:composition} have the uncrossed
+rule, and for it the obstruction of \cref{guard:prop:inert} is real.
+\end{remark}
+
+\begin{remark}[Substitution under a source restriction]
+\label{guard:rem:substwording}
+As for the calculi of \cref{kern:rem:ossubst}, substitution is admissible
+in a source-restricted guarded calculus once its equivalence with the
+unrestricted calculus is known, and what fails is the rule-by-rule
+substitution of \cref{guard:lem:struct}; \pkg{guarded\_source},
+\pkg{guarded\_orbit} and \pkg{protected\_core} make the same point.  The
+equivalence must be proved first, and none of the proofs of this chapter
+substitutes into a derivation with $\rulename{Tr}^{-}$ before that point.
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{The failure of composition and its repairs}
+\label{guard:sec:composition}
+
+This section draws on \pkg{mirror\_guard}, \pkg{guarded\_orbit} and
+\pkg{deterministic\_auxiliary} for the obstruction; on \pkg{guarded\_source}
+and \pkg{deterministic\_auxiliary} for the repair by auxiliary formulas; on
+\pkg{guarded\_orbit} for the repair by the orbit; on \pkg{mirror\_guard} for
+the mirror guard; and on \pkg{protected\_core} for protected atoms.
+
+The guarded core removes the choice of the introduction mode
+(\cref{guard:thm:core}), and the source restriction removes the transports
+at the literal $0$ (\cref{guard:thm:dependency}).  The first result is
+stated for unrestricted transport and the second for a calculus with
+induction at arbitrary equations.  In the strictly guarded calculus
+$\mathsf G^{-}=\mathsf K(\mathcal P_0^{Q},\,s\not\equiv 0)$ neither
+hypothesis is available, and the two results do not compose.
+
+\subsection{The obstruction}
+
+An equation is \emph{zero-left} if its left side is the literal $0$.  A
+formula of a proof language $\mathcal P^{Q}$ is \emph{safe} if it is not a
+zero-left equation: it is a public compound formula, a resource, or an
+equation whose left side is not the literal $0$.
+
+\begin{proposition}[An inert zero-left hypothesis]
+\label{guard:prop:inert}
+Let $\mathcal P=\mathcal P(\text{all equations},\mathfrak M)$, where the
+left side of every matrix of $\mathfrak M$ is iterator-headed or
+successor-headed, and let
+$\mathsf K=\mathsf K(\mathcal P^{Q},\,s\not\equiv 0)$.  If $\Gamma$ consists
+of safe formulas, $F$ is safe and $\Gamma,\,0=t\proves_{\mathsf K}F$, then
+$\Gamma\proves_{\mathsf K}F$.
+\end{proposition}
+
+\begin{proof}
+By induction on the derivation, for all safe $\Gamma$ and $F$.  Every
+instance of a matrix of $\mathcal P$ is safe: a compound formula stays
+compound, and the left side of an instance of a matrix of $\mathfrak M$
+keeps its head.
+
+\rulename{Hyp}: the conclusion is safe, so it is not the hypothesis $0=t$
+and belongs to $\Gamma$.  \rulename{I0}, \rulename{IS}: no hypothesis is
+used.
+
+$\rulename{Tr}^{-}$, with the premises $p=q$ and $F(p)$ and the safe
+conclusion $F(q)$: the major premise is safe because $p\not\equiv 0$.  The
+minor premise is safe: if $F$ is compound this is clear; if $F(v)$ is
+$a(v)=b(v)$ and $a(p)\equiv 0$, then $a(v)$ is the constant $0$, because a
+constructor-headed term and the variable $v$ do not become the literal $0$
+when $v$ is replaced by $p\not\equiv 0$; then $a(q)\equiv 0$, against the
+safety of $F(q)$.  The induction hypothesis applies to both premises.
+
+\rulename{QE}, with the premises $\Q{y}B(y)$ and $B(0)$: both are safe, the
+first as a resource and the second as an instance of a matrix.
+
+\rulename{DE}: the major premise is compound; the minor premise has the
+same conclusion and one more hypothesis, the resource $\Q{y}B(b,y)$, which
+is safe.
+
+$\rulename{DI}_{\mathrm{root}}$: the local assumption $B(t',\eta_B(z))$ and
+the conclusion $B(t',\Suc z)$ of the premise are instances of a matrix,
+hence safe.
+\end{proof}
+
+\begin{corollary}[The strictly guarded composition is incomplete]
+\label{guard:cor:obstruction}
+In $\mathsf G^{-}$ the sequents $0=1\proves 1=0$ and $0=x\proves x=0$, for a
+variable $x$, are not derivable.  Both are derivable in $\mathsf G$.  The
+same holds for every calculus of \cref{guard:prop:inert}, for instance with
+the atomic matrices $\sel(y,t,s)=t$.
+\end{corollary}
+
+\begin{proof}
+The conclusions $1=0$ and $x=0$ are safe.  By \cref{guard:prop:inert} a
+derivation would give $\proves 1=0$, respectively $\proves x=0$, in the
+empty context, hence in $\Nat$ by \cref{guard:lem:incl}; both fail in the
+natural numbers.  In $\mathsf G$ symmetry is \cref{guard:lem:safe}(ii).
+\end{proof}
+
+The proposition says where the composition breaks.  Every equation that a
+strictly guarded derivation can obtain from a binder has a stable left
+side: the instances of a zero-seeded matrix, the local assumptions and the
+premises of the introductions.  A transport with a source $s\not\equiv 0$
+cannot turn a zero-left equation into a safe one.  A zero-left hypothesis
+therefore has no path to a safe conclusion.  The proposition does not apply
+to a context with a clause whose antecedent is zero-left and whose
+consequent is safe, and each of the repairs below supplies such a clause or
+removes the zero-left hypotheses from the public language.
+
+\begin{remark}[Versions of the obstruction]
+\label{guard:rem:obstruction-versions}
+\Cref{guard:prop:inert} is stated in \pkg{mirror\_guard}, for every guard
+with a constructor-headed left side, and in \pkg{guarded\_orbit} for the
+hypothesis $0=x$.  \pkg{deterministic\_auxiliary} proves the first sequent
+of \cref{guard:cor:obstruction} underivable by a counterinterpretation over
+the natural numbers: every zero-left equation is read as true, every other
+equation as equality, and the compound formulas by their ordinary reading.
+Every equation below a binder of a formula of $\mathcal P_0^{Q}$ has an
+iterator-headed left side, so it is read as equality and the reading
+commutes with substitution; the computation equations, both modes of the
+introduction and \rulename{QE} and \rulename{DE} are sound; and
+$\rulename{Tr}^{-}$ is sound because its major premise $p=q$ is not
+zero-left and an equation template whose instance at $p$ is zero-left has
+the constant left side $0$, so that its instance at $q$ is true by
+convention.  The hypothesis $0=1$ is true and the conclusion $1=0$ is false.
+In Lean the calculus \Lean{PGPrf} with the root-determined introduction and
+transport at iterator-headed sources does not derive $x=z$ from $x=y$ and
+$y=z$ between variables (\Lean{pgprf\_not\_trans}), by a reading in which a
+value is a number with a colour and equality is not transitive; hence it is
+strictly weaker than the kernel on arbitrary sequents
+(\Lean{pgprf\_strictly\_weaker}).
+\end{remark}
+
+\subsection{First repair: auxiliary formulas}
+\label{guard:sec:aux}
+
+This subsection draws on \pkg{guarded\_source} and
+\pkg{deterministic\_auxiliary}.  The public language remains
+$\mathcal P_0$, and derivations are made in
+$\mathsf U^{-}=\mathsf K(\mathcal L,\,s\not\equiv 0)$: the proof language is
+the full native language, in which an atomic matrix below $\D{}{}$ need not
+be guarded.  A public theorem is a public formula with a derivation in
+$\mathsf U^{-}$; its intermediate formulas need not be public.  This
+convention is part of the calculus.  By \cref{guard:rem:se} its rules are
+\rulename{Hyp}, the two computation equations, \rulename{SE}, \rulename{DE}
+and $\rulename{DI}_{\mathrm{root}}$.
+
+\begin{theorem}[Source selection and root-determined introduction, with
+auxiliary formulas]
+\label{guard:thm:aux}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathsf U^{-}$ admits contextual induction for every literal
+ equation, by a derivation without transport, and numerical cases for every
+ native formula.
+\item $\mathsf U^{-}$ has unrestricted equality and admits transport, at
+ every source, in every template of $\mathcal P_0$.
+\item With the zero-seeded scheme and $\varepsilon$ the identity, $T$
+ translates derivations of $\Nat$ into derivations of $\mathsf U^{-}$, and
+ $B\dashv\vdash_{\mathsf U^{-}}TB$ for every $B\in\mathcal P_0$.
+\item For $\Gamma$ and $B$ in $\mathcal P_0$,
+ \[
+  \Gamma\proves_{\mathsf U^{-}}B
+  \iff\Gamma\proves_{\mathsf G}B
+  \iff\Gamma\proves_{\Nat}B ,
+ \]
+ and $\mathsf U^{-}$ on $\mathcal P_0$ is bi-interpretable and
+ equiconsistent with $\iPRA$, with whole domains, equality as equality and
+ identity numerical composites.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) Let $\Gamma\proves E(0)$ and $\Gamma,E(z)\proves E(\Suc z)$.  The
+formula $\D{a}{y}E(y)$, with $a$ not free in $E$, belongs to $\mathcal L$,
+and its introduction is in progress mode: with the witness $0$ its premise
+is the given step.  \rulename{DE} adds $\Q{y}E(y)$, in which the
+eigenvariable does not occur, and \rulename{QE} with the base gives $E(t)$.
+For numerical cases at an equation, use this induction and ignore the
+induction hypothesis; at a compound formula $A(y)$, introduce
+$\D{a}{y}A(y)$ in case mode and proceed in the same way.
+
+(ii) By (i) and \cref{guard:thm:dependency}, $\mathsf U^{-}$ has
+unrestricted equality; additional hypotheses of the context are passive in
+that proof.  \Cref{guard:prop:pubtr} with \cref{guard:lem:zero} gives the
+transport in public templates.
+
+(iii) and (iv).  With unrestricted equality the zero-seeded scheme
+satisfies (G2) and (G3) in $\mathsf U^{-}$ exactly as in
+\cref{guard:thm:core}, and (T1) to (T4) hold for the same reasons.  Apply
+\cref{guard:thm:public,guard:cor:biinterp}; the middle member of the chain
+is \cref{guard:thm:core}(iii).
+\end{proof}
+
+The induction of (i) is made at an arbitrary literal equation, and the
+matrix $E$ is in general not guarded.  The proof of
+\cref{guard:thm:dependency} uses it at the equation
+$n=\It{n}{t}{u}{\Suc u}$, whose left side is a variable.  By
+\cref{guard:cor:obstruction} this use of an unguarded matrix cannot be
+replaced by guarded ones: the auxiliary formulas are a necessary part of the
+calculus, and they are why the proof language is stated explicitly.  The
+theorem asserts the equivalence and the composites for the public language.
+It asserts neither a formula composite nor transport at the source $0$ for
+all auxiliary formulas; by \cref{guard:prop:strict} the former fails.
+
+\begin{remark}[Versions]
+\label{guard:rem:aux-versions}
+\pkg{guarded\_source} proves \cref{guard:thm:dependency} for the fragment
+$\mathcal E^{-}$ and instantiates it in $\mathsf U^{-}$, with the filter in
+the orientation $v=\sel(\zeta(v),v,0)$; \pkg{deterministic\_auxiliary} runs
+the numerical argument directly in $\mathsf U^{-}$, with the filter as in
+\cref{guard:lem:tests}.  Both prove the implication from $\mathsf U^{-}$ to
+$\mathsf G$ in (iv) through $\iPRA$, by \cref{guard:lem:mixed-sound}, the
+agreement of the readings on $\mathcal P_0$ (\cref{guard:cor:admin}) and the
+faithfulness of the bridge; \cref{guard:lem:incl} gives it directly.  In
+Lean the combination of source selection with a single introduction is
+proved on the full native language, with the witness-selected introduction
+and the crossed rule (the seven-rule calculus of \cref{kern:def:OM},
+\Lean{mprf\_iff\_nprf}); the auxiliary formulas of the
+two packages are not formalized.
+\end{remark}
+
+\subsection{Second repair: the administrative orbit}
+\label{guard:sec:orbit}
+
+This subsection draws on \pkg{guarded\_orbit}.  The auxiliary formulas of
+the first repair are reduced to one family.  The proof language is
+$(\mathcal P_0^{+})^{Q}$: the guarded language together with the paired
+formulas over orbit matrices $y=\It{y}{a}{u}{\Suc u}$, $y$ not free in $a$.
+The calculus is
+$\mathsf G^{-}_{\mathrm{orb}}=\mathsf K((\mathcal P_0^{+})^{Q},\,s\not\equiv
+0)$, with the rules of \cref{guard:def:calculus}; no rule is added for the
+orbit matrices.  The public language remains $\mathcal P_0$.
+
+An equation is \emph{stable-left} if its left side is iterator-headed or
+successor-headed.  The class of stable-left equations is closed under
+substitution, and none of its members is zero-left.
+
+\begin{theorem}[The orbit bootstrap]
+\label{guard:thm:orbit}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item In $\mathsf G^{-}$, hence in $\mathsf G^{-}_{\mathrm{orb}}$, the
+ zero-seeded scheme on the stable-left equations is a guard scheme for
+ $\mathcal P_0$.  Hence numerical cases hold for every compound public
+ formula and every stable-left equation, and condition \textup{(C)} of
+ \cref{guard:sec:sources} holds.
+\item For every term $t$ with $y$ not free in it and every context,
+ $\mathsf G^{-}_{\mathrm{orb}}$ derives the \emph{orbit closure}
+ \[
+  \D{a}{y}\bigl(y=\It{y}{t}{u}{\Suc u}\bigr),
+ \]
+ and condition \textup{(O)} holds.
+\item $\mathsf G^{-}_{\mathrm{orb}}$ has unrestricted equality, admits
+ transport at every source in every template of $\mathcal P_0^{+}$, and
+ derives the same sequents as
+ $\mathsf K((\mathcal P_0^{+})^{Q},\text{all terms})$.
+\item With the zero-seeded scheme on all equations and $\varepsilon$ the
+ identity, $T$ translates derivations of $\Nat$ into derivations of
+ $\mathsf G^{-}_{\mathrm{orb}}$; $B\dashv\vdash TB$ for every
+ $B\in\mathcal P_0$; and for $\Gamma$ and $B$ in $\mathcal P_0$,
+ \[
+  \Gamma\proves_{\mathsf G^{-}_{\mathrm{orb}}}B
+  \iff\Gamma\proves_{\mathsf G}B
+  \iff\Gamma\proves_{\Nat}B .
+ \]
+ The public theory is bi-interpretable and equiconsistent with $\iPRA$,
+ with whole domains, equality as equality and identity numerical
+ composites.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) (G1) and (G4) hold by inspection, and $G_vU$ and $\mu_w(U,V)$ are
+stable-left because their left sides are iterator-headed.  For (G2): the two
+sides of $G_0U$ are iterator-headed and equal to $0$ by \rulename{I0}, so
+\cref{guard:lem:safe}(iv) proves $G_0U$.  For $U\equiv(s=t)$ put
+$a\defeq\sel(\Suc w,0,s)$ and $b\defeq\sel(\Suc w,0,t)$; then $a=s$ and
+$b=t$ by \rulename{IS}, the term $s$ is not the literal $0$ because $U$ is
+stable-left, and \cref{guard:lem:safe}(v) gives $U\dashv\vdash G_{\Suc w}U$.
+(G3) is the same lemma: for $\mu_0(s=t,r=q)$ with $a\defeq\sel(0,s,r)$,
+$b\defeq\sel(0,t,q)$, and for $\mu_{\Suc w}$ with
+$a\defeq\sel(\Suc w,s,r)$, $b\defeq\sel(\Suc w,t,q)$, where $r\not\equiv 0$
+because the second equation is stable-left.  The consequences are
+\cref{guard:lem:nc}, and (C) is its case of an equation with an
+iterator-headed left side over the empty context.
+
+(ii) Write $A(n)\defeq\It{n}{t}{u}{\Suc u}$.  The matrix $y=A(y)$ is an
+orbit matrix, so the formula belongs to $\mathcal P_0^{+}$ and its
+introduction is in progress mode.  With the witness $0$ the premise is
+$\Gamma,z=A(z)\proves\Suc z=A(\Suc z)$, which is the step derived in the
+proof of \cref{guard:thm:dependency}: the source $z$ is a variable.  No base
+is needed.  For (O), let $\Gamma\proves 0=A(0)$.  \rulename{DE} on the orbit
+closure adds $\Q{y}(y=A(y))$, and \rulename{QE} with the base at the target
+$1$ gives $1=A(1)$.
+
+(iii) By (i), (ii) and \cref{guard:thm:dependency} the calculus has
+unrestricted equality.  \Cref{guard:prop:pubtr} applies: a zero-seeded
+matrix has provable instances at zero (\cref{guard:lem:zero}), and every
+paired formula over an orbit matrix is derivable by (ii).
+
+(iv) With unrestricted equality the zero-seeded scheme on all equations
+satisfies (G2) and (G3) as in \cref{guard:thm:core}, and (T1) to (T4) hold.
+Apply \cref{guard:thm:public,guard:cor:biinterp} to the calculus
+$\mathsf G^{-}_{\mathrm{orb}}$ and the public language $\mathcal P_0$.
+\end{proof}
+
+In the derivation of $0=t\proves t=0$ the orbit closure is eliminated with
+the zero-left base $0=A(0)$ and yields the stable-left equation $1=A(1)$.
+This is the clause that \cref{guard:prop:inert} excludes from a strictly
+guarded context, and it is the only use of an unguarded matrix: by (i) the
+cases needed by \cref{guard:lem:tests} are available in $\mathsf G^{-}$
+itself.  The filter must be taken in the orientation of
+\cref{guard:lem:tests}, with the iterator on the left; the equation
+$v=\sel(\zeta(v),v,0)$ is not stable-left.
+
+\begin{remark}[Scope and versions]
+\label{guard:rem:orbit-versions}
+The theorem also holds with $\mathcal P_0^{+}$ as the public language: for
+an orbit matrix $O$ both $\D{x}{y}O$ and its translation $\D{x}{y}L(O)$ are
+derivable, the second in case mode from its base by the elimination of the
+orbit closure, so the two are interderivable.  The mixed reading of
+\cref{guard:def:mixed} agrees with the ordinary reading on
+$\mathcal P_0^{+}$ as well: at an orbit matrix both readings are provable,
+the progressive one by the step of (ii) and the conditional one from it by
+induction, so their agreement does not depend on a provable base.
+\pkg{guarded\_orbit} states
+the calculus with the full native language as proof language, that is
+$\mathsf U^{-}$, and observes that the derivations constructed lie in
+$\mathsf G^{-}_{\mathrm{orb}}$; it proves the induction of
+\cref{guard:thm:ei} in the form discussed in \cref{guard:rem:ei-forms}.
+The named derivation of $0=t\proves t=0$ recorded by the package has
+$326$ distinct nodes, of which $171$ are transports, $122$ computation
+equations and $10$ introductions, exactly one of them at an orbit matrix.
+\end{remark}
+
+\subsection{Third repair: the mirror guard}
+\label{guard:sec:mirror}
+
+This subsection draws on \pkg{mirror\_guard}.  The guard is turned around:
+an atomic matrix below $\D{}{}$ has the mirrored shape $a=\It{y}{a}{u}{h}$,
+with one iterator, the seed repeated on the left.  The calculus is
+$\mathsf M=\mathsf K(\mathcal P_m^{Q},\,s\not\equiv 0)$ and is strictly
+guarded: every formula of a derivation is public or a resource.  The left
+side of a mirrored matrix is arbitrary, so the hypothesis of
+\cref{guard:prop:inert} fails, and a zero-left equation $0=t$ has the mirror
+gate $0=\sel(v,0,t)$, which is again zero-left: it can be padded without a
+transport at the source $0$.
+
+\begin{theorem}[The mirror guard]
+\label{guard:thm:mirror}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The mirror scheme on all equations is a guard scheme for $\mathsf M$
+ and $\mathcal P_m$.  Hence $\mathsf M$ admits numerical cases for every
+ public formula, implication between equations with a common left side, and
+ contextual induction for every literal equation, by derivations that
+ substitute into no given derivation.
+\item $\mathsf M$ has unrestricted equality, admits transport at every
+ source in every template of $\mathcal P_m$, and derives the same sequents
+ as $\mathsf K(\mathcal P_m^{Q},\text{all terms})$.
+\item With the mirror scheme and $\varepsilon$ the identity, $T$ translates
+ derivations of $\Nat$ into derivations of $\mathsf M$;
+ $A\dashv\vdash_{\Nat}TA$ for every native $A$;
+ $B\dashv\vdash_{\mathsf M}TB$ for every $B\in\mathcal P_m$; and for
+ $\Gamma,B$ in $\mathcal P_m$, $\Gamma\proves_{\mathsf M}B$ if and only if
+ $\Gamma\proves_{\Nat}B$.
+\item $\mathsf M$ on $\mathcal P_m$ is bi-interpretable and equiconsistent
+ with $\iPRA$, with whole domains, equality as equality and identity
+ numerical composites.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) (G1) and (G4) hold by inspection.  (G2): $H_0(s=t)$ is
+$s=\sel(0,s,t)$, the reverse of an instance of \rulename{I0}
+(\cref{guard:lem:safe}(iii)).  For $H_{\Suc w}(s=t)$ put
+$q\defeq\sel(\Suc w,s,t)$; then $q\not\equiv 0$ and $q=t$ by
+\rulename{IS}, and \cref{guard:lem:safe}(vi) gives
+$(s=q)\dashv\vdash(s=t)$.  (G3): for $\mu_0(s=a,s=b)$ take
+$q\defeq\sel(0,a,b)$ with $q=a$, and for $\mu_{\Suc w}$ take
+$q\defeq\sel(\Suc w,a,b)$ with $q=b$; \cref{guard:lem:safe}(vi) gives
+$(s=q)\dashv\vdash(s=a)$ and $(s=q)\dashv\vdash(s=b)$.  Only the right side
+of an equation is expanded or contracted; the left side $s$ is never
+touched, and it may be the literal $0$ or a variable.  The consequences are
+\cref{guard:lem:nc,guard:lem:imp,guard:thm:ei}.
+
+(ii) By (i), $\mathsf M$ is closed under induction for literal equations,
+so \cref{guard:thm:dependency} gives unrestricted equality.  A mirrored
+matrix has provable instances at zero (\cref{guard:lem:zero}), so
+\cref{guard:prop:pubtr} gives the transport in public templates and the
+equality of the two consequence relations.
+
+(iii) and (iv).  (G2) and (G3) hold by (i); (T1) and (T3) are trivial; (T2)
+holds by unrestricted equality; (T4) is \cref{guard:lem:zero}.  Apply
+\cref{guard:thm:public,guard:cor:biinterp}.
+\end{proof}
+
+In the induction of \cref{guard:thm:dependency} for the equation
+$n=\It{n}{t}{u}{\Suc u}$, the guard $J(n)$ of \cref{guard:thm:ei} is
+$n=\sel\bigl(n,n,\It{n}{t}{u}{\Suc u}\bigr)$: a mirrored matrix whose left
+side is the induction variable.  The zero-seeded guard has no such matrix,
+which is the content of \cref{guard:prop:inert}; the orbit matrix of the
+second repair supplies one by hand.  The order of the recovery is: equality
+at admissible sources; expansion on the right; padding and cases;
+implication with a common left side; induction; equality at the source $0$;
+transport in public templates; the translation.  The induction is recovered
+before the source restriction is lifted, and it uses the implication
+$J(y)\Rightarrow E(y)$, not $J(y)\Rightarrow E(\Suc y)$
+(\cref{guard:rem:ei-forms}).
+
+\begin{remark}[Scope]
+\label{guard:rem:mirror-scope}
+The mirrored shape shows one iterator where the zero-seeded shape shows
+two, and it repeats the seed; no statement about the length of expanded
+terms is made.  \pkg{mirror\_guard} states the calculus with clause contexts
+and proves its theorem against the calculus of the reports on the language
+of equations and $\D{}{}$ (\cref{guard:rem:clauses,guard:rem:core-versions}).
+\end{remark}
+
+\subsection{Fourth repair: protected atoms}
+\label{guard:sec:protected}
+
+This subsection draws on \pkg{protected\_core}.  The zero-left equations are
+removed from the public language.  A public atom is a protected equation
+$p=q$, both sides iterator-headed, and ordinary equality is expressed by
+the wrapped equation:
+\[
+ s\simeq t\ \defeq\ \bigl(W(s)=W(t)\bigr),\qquad
+ \bot_{W}\ \defeq\ \bigl(W(0)=W(1)\bigr).
+\]
+The public language is $\mathcal P_W$, with zero-seeded atomic matrices,
+and the calculus is
+$\mathsf H=\mathsf K(\mathcal P_W^{Q},\text{iterator-headed terms})$: its
+seven rules are \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+$\rulename{Tr}_I$, \rulename{QE}, \rulename{DE} and
+$\rulename{DI}_{\mathrm{root}}$.  Its proof language contains all
+equations as auxiliary formulas, which are needed for the computation
+equation $W(t)=t$ when $t$ is not iterator-headed; they are not public
+atoms.  The source condition is stronger than $s\not\equiv 0$: a variable is
+not a source.  In return the class of sources is closed under substitution.
+
+\begin{lemma}[Lifting a wrapped equation]
+\label{guard:lem:wlift}
+For all terms $s,t$ and every term template $f(v)$, in $\mathsf H$,
+\[
+ \Gamma\proves W(s)=W(t)\quad\text{implies}\quad
+ \Gamma\proves W(f(s))=W(f(t)).
+\]
+\end{lemma}
+
+\begin{proof}
+Congruence along $W(s)=W(t)$ in the template $W(f(v))$ gives
+$W(f(W(s)))=W(f(W(t)))$.  Congruence along the computation equations
+$W(s)=s$ and $W(t)=t$ in the same template gives
+$W(f(W(s)))=W(f(s))$ and $W(f(W(t)))=W(f(t))$.  All sources and all six
+sides are iterator-headed, so \cref{guard:lem:safe}(ii) reverses the first
+of the last two equations and composes the three.  The argument does not
+depend on whether $s$ is the literal $0$.
+\end{proof}
+
+\begin{theorem}[The protected core]
+\label{guard:thm:protected}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathsf H$ admits weakening, substitution and cut.
+\item The zero-seeded scheme on the protected equations is a guard scheme
+ for $\mathsf H$ and $\mathcal P_W$.  Hence $\mathsf H$ admits numerical
+ cases for every public formula, implication between protected equations,
+ and contextual induction for every protected equation.
+\item With $\varepsilon(s=t)\defeq(W(s)=W(t))$, $T$ translates derivations
+ of $\Nat$ into derivations of $\mathsf H$, all of whose transports have
+ iterator-headed sources; $A\dashv\vdash_{\Nat}TA$ for every native $A$;
+ $B\dashv\vdash_{\mathsf H}TB$ for every $B\in\mathcal P_W$; and for
+ $\Gamma,B$ in $\mathcal P_W$, $\Gamma\proves_{\mathsf H}B$ if and only if
+ $\Gamma\proves_{\Nat}B$.
+\item $\mathsf H$ on $\mathcal P_W$ is bi-interpretable and equiconsistent
+ with $\iPRA$.  Both numerical domains are whole; equality is equality,
+ expressed in the public language by $\simeq$; both numerical composites
+ are the identity, with the graph $x\simeq y$; and
+ \[
+  \proves_{\mathsf H}\bot_W\iff\proves_{\Nat}0=1\iff\iPRA\proves\bot .
+ \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) is \cref{guard:lem:struct}: an iterator-headed source keeps its head
+under substitution, and the zero-seeded shape is preserved.  The argument
+would fail for the sources $s\not\equiv 0$.
+
+(ii) (G1) and (G4) hold by inspection, and the gates and selectors of
+protected equations are protected.  (G2): the two sides of $G_0U$ are
+iterator-headed and equal to $0$, so \cref{guard:lem:safe}(iv) proves
+$G_0U$; and for $U\equiv(p=q)$, \cref{guard:lem:safe}(v) with
+$a\defeq\sel(\Suc w,0,p)$ and $b\defeq\sel(\Suc w,0,q)$ gives
+$U\dashv\vdash G_{\Suc w}U$, since $p$ and $q$ are sources.  (G3) is the
+same lemma applied to $\sel(0,p,r)$, $\sel(0,q,s)$ and to
+$\sel(\Suc w,p,r)$, $\sel(\Suc w,q,s)$.
+
+(iii) and (iv).  (T1): $W(s)=s$ and $W(t)=t$ in $\Nat$.  (T2): for an
+instance $c=d$ of \rulename{I0} or \rulename{IS} the source $c$ is
+iterator-headed and congruence in the template $W(v)$ gives $W(c)=W(d)$;
+and from $W(s)=W(t)$ and $W(h(s))=W(r)$, \cref{guard:lem:wlift} gives
+$W(h(s))=W(h(t))$, and symmetry and transitivity at the source $W(h(s))$
+give $W(r)=W(h(t))$.  (T3): for a protected $p=q$,
+\cref{guard:lem:safe}(v) with $a\defeq W(p)$ and $b\defeq W(q)$ gives
+$(p=q)\dashv\vdash(W(p)=W(q))$.  (T4) is \cref{guard:lem:zero}.  Apply
+\cref{guard:thm:public,guard:cor:biinterp}; the contradiction
+$\varepsilon(0=1)$ is $\bot_W$.
+\end{proof}
+
+The compatibility of the two reductions is obtained here without
+recovering symmetry at the source $0$: every equation that must later act
+as a major premise is represented at stable iterator roots, the zero
+computations are joined through $W(0)$, and the equalities of the native
+derivation are moved by \cref{guard:lem:wlift}.  \Cref{guard:prop:inert}
+does not apply because no public equation is zero-left.  No statement is
+made about an auxiliary hypothesis $0=t$ in $\mathsf H$.
+
+\begin{remark}[The executable extension and the form in Lean]
+\label{guard:rem:lean-public}
+The compact checkers of \pkg{protected\_core}, and those of
+\pkg{guarded\_source}, \pkg{guarded\_orbit},
+\pkg{deterministic\_auxiliary} and \pkg{mirror\_guard}, accept derivations
+of $\mathsf U^{-}$.  Since
+$\mathsf H\subseteq\mathsf U^{-}\subseteq\Nat$ as sets of derivable
+sequents, by inclusion and \cref{guard:lem:incl}, the public consequences
+of $\mathsf U^{-}$ on $\mathcal P_W$ are those of $\mathsf H$
+(\cref{guard:thm:protected}(iii)), and likewise on $\mathcal P_m$ by
+\cref{guard:thm:mirror}(iii).  \pkg{protected\_core} and \pkg{mirror\_guard}
+note that for this inclusion the ordinary reading suffices and the mixed
+reading is not needed.
+
+In Lean the public languages of this section are formalized in a common
+form (\Lean{NativePublic}).  The calculus \Lean{PGPrf} is the kernel with
+the root-determined introduction and with transport at iterator-headed
+sources only.  A gating translation \Lean{pub} replaces every equation
+$s=t$ by the closure of its gate, $\Q{w}G_w(s=t)$, so that every atomic
+matrix is guarded (\Lean{NFm.pub\_guarded}) and the two sides of an opened
+gate are iterators, and
+\Lean{pgprf\_pub\_iff}: $\Lean{PGPrf}\ (\Gamma.\mathrm{map}\ \mathit{pub})\
+(\mathit{pub}\ A)\leftrightarrow\Lean{NPrf}\ \Gamma\ A$.  The theorem is
+proved for any gating of equations (\Lean{Gating}); the mirror gate
+$s=\It{w}{s}{u}{t}$ is a second instance (\Lean{Gating.mirror},
+\Lean{NFm.pub\_mirrored}), with iterator-headed sources, which is stronger
+than the exclusion of the literal $0$ in \cref{guard:thm:mirror}.  The
+variant \Lean{NFm.pubD} uses the paired binder with an unused witness for
+every closure and reaches the grammar of the packages
+(\Lean{pgprf\_pubD\_iff}, \Lean{NFm.pubD\_noQ},
+\Lean{NFm.pubD\_guarded}).  The proofs use neither \Lean{Classical.choice}
+nor the bi-interpretation.  The differences from the packages are: an
+equation at the root is gated, not left bare or wrapped as $W(s)=W(t)$;
+clause contexts and the auxiliary formulas of \cref{guard:sec:aux} and
+\cref{guard:sec:orbit} are not formalized; and the certificate formats are
+not modelled.
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{Guards on the full native language}
+\label{guard:sec:full}
+
+This section draws on \pkg{diagonal\_guard} for the criterion, the diagonal
+guard and the lemmas on cases and implication, and on \pkg{mirror\_core}
+for the mirror selector, its equational decoder, the repair of
+substitution and the six-rule form.  \pkg{mirror\_core} takes the repair of
+substitution from \pkg{reflexive\_base} and the mirrored shape from
+\pkg{mirror\_guard}.
+
+In this section the language is the full native language, the contexts are
+lists of native formulas, and the readings of $\Q{}$ and $\D{}{}$ are the
+ordinary ones.  The progress mode of the single introduction is used at the
+guarded shape and nowhere else, so the atomic matrices that are not guarded
+keep their introduction by cases, and \cref{guard:prop:strict} does not
+arise.  The equality rule is the rule \rulename{Tr} of the kernel.
+
+\subsection{Selectors and the criterion}
+
+\begin{definition}[Selector]
+\label{guard:def:selector}
+A \emph{selector} is a property $P$ of matrices $B(x,y)$ that holds only of
+literal equations, is decided from the syntax of $B$, and is invariant under
+renaming of bound variables and under injective renaming of the variables
+other than $x$ and $y$.  Put $\eta^{P}_B(z)\defeq z$ if $P(B)$ and
+$\eta^{P}_B(z)\defeq 0$ otherwise.  The calculus $\Nat_P$ has the rules
+\rulename{Hyp}, \rulename{I0}, \rulename{IS}, \rulename{Tr}, \rulename{QE}
+and \rulename{DE} of $\Nat$ (\cref{base:sec:kernel}) and the one
+introduction
+\[
+ \infrule{\Gamma,\ B(t,\eta^{P}_B(z))\proves B(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{DI}_{P},
+\]
+with $z$ not free in $\Gamma$, $t$ and $\D{x}{y}B$.  It has seven rules.
+The test $P$ is applied to the matrix before the witness is substituted.
+\end{definition}
+
+\begin{lemma}[Structure and equality in $\Nat_P$]
+\label{guard:lem:np-struct}
+$\Nat_P$ admits weakening, injective renaming of free variables and cut.
+Reflexivity, symmetry, transitivity, congruence and transport in an equation
+template are derivable.
+\end{lemma}
+
+\begin{proof}
+The structural statements are proved by induction on derivations as in
+\cref{guard:lem:struct}: an injective renaming preserves $P$ and its
+negation, and weakening and cut do not change a matrix.  The equality rules
+are \cref{kern:lem:local}(iii): their derivations use \rulename{I0} and
+\rulename{Tr} only.
+\end{proof}
+
+Consider two conditions on a selector.
+\begin{enumerate}[label=\textup{(S\arabic*)}]
+\item If $P(B)$, then $\Gamma\proves B(t,0)$ for every $\Gamma$ and $t$, by
+ \rulename{I0}, \rulename{IS} and \rulename{Tr}.
+\item Every equation template $E(y)$ has a \emph{lift} $\Lambda_E(y)$: an
+ equation with $P(\Lambda_E)$, as a matrix in $y$ with an unused witness
+ coordinate, such that $\Lambda_E(\Suc v)\dashv\vdash E(\Suc v)$ for every
+ term $v$, by \rulename{I0}, \rulename{IS} and \rulename{Tr}.
+\end{enumerate}
+
+\begin{lemma}[Cases from \textup{(S1)}]
+\label{guard:lem:np-cases}
+Let $P$ satisfy \textup{(S1)}.  In $\Nat_P$, for every native matrix $B$ and
+every native formula $F(y)$, with $z$ fresh:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item if $\Gamma,B(t,0)\proves B(t,\Suc z)$, then
+ $\Gamma\proves\D{x}{y}B$;
+\item if $\Gamma,F(0)\proves F(\Suc z)$, then $\Gamma\proves\Q{y}F(y)$;
+\item if $\Gamma\proves F(0)$ and $\Gamma,F(0)\proves F(\Suc z)$, then
+ $\Gamma\proves F(t)$ for every term $t$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) If $P(B)$ fails, this is $\rulename{DI}_P$.  If $P(B)$ holds, cut the
+derivation of $B(t,0)$ given by (S1) into the premise, weaken by $B(t,z)$,
+and apply $\rulename{DI}_P$ in progress mode.  (ii) and (iii) By (i) the
+rule \rulename{DI} is admissible in $\Nat_P$, and the introduction of
+$\Q{}$ by cases and numerical cases follow from \rulename{DI}, \rulename{DE},
+\rulename{Hyp} and \rulename{QE} as in $\Nat$ (\cref{kern:lem:local}(i)).
+\end{proof}
+
+No induction for an equation is used in the lemma.  For equations
+$U\equiv(a=b)$ and $V\equiv(c=d)$ and a fresh $w$ put
+\[
+ (U\Rightarrow_{=}V)\defeq\Q{w}\bigl(\sel(w,a,c)=\sel(w,b,d)\bigr).
+\]
+This is the native implication $U\Rightarrow_*V$ of \cref{base:def:macros}
+at two equations.  Its rules are proved for $\Nat$ in
+\cref{base:sec:structural}; the next lemma derives them in $\Nat_P$, where
+\rulename{QI} is not yet available.
+
+\begin{lemma}[Implication between equations, and cases on a term of the
+context]
+\label{guard:lem:np-imp}
+Let $P$ satisfy \textup{(S1)}.  In $\Nat_P$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item if $\Gamma,U\proves V$, then $\Gamma\proves U\Rightarrow_{=}V$; and
+ $\Gamma\proves U\Rightarrow_{=}V$ and $\Gamma\proves U$ imply
+ $\Gamma\proves V$;
+\item for an equation $E$ and a term $r$, with $v$ not free in $\Gamma$,
+ $r$ and $E$: if $\Gamma,r=0\proves E$ and $\Gamma,r=\Suc v\proves E$, then
+ $\Gamma\proves E$.  The context $\Gamma$ may contain $r$ and its
+ variables.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Let $J(w)$ be the matrix of $U\Rightarrow_{=}V$.  By the selector
+equations $J(0)\dashv\vdash U$ and $J(\Suc z)\dashv\vdash V$.  For the
+introduction, over $\Gamma,J(0)$ convert $J(0)$ to $U$, cut into the given
+derivation, convert $V$ to $J(\Suc z)$, and apply
+\cref{guard:lem:np-cases}(ii).  For the elimination, convert $U$ to $J(0)$,
+apply \rulename{QE} at $1$ and convert $J(1)$ to $V$.
+
+(ii) For a new variable $y$ put $F(y)\defeq\bigl((r=y)\Rightarrow_{=}E\bigr)$.
+By (i) the two hypotheses give $\Gamma\proves F(0)$ and
+$\Gamma\proves F(\Suc v)$.  \Cref{guard:lem:np-cases}(iii) at the target $r$
+gives $(r=r)\Rightarrow_{=}E$, and reflexivity and (i) give $E$.  The
+variable of the case distinction is the new $y$, not a variable of
+$\Gamma$.
+\end{proof}
+
+\begin{theorem}[The selector criterion]
+\label{guard:thm:selector}
+Let $P$ be a selector with \textup{(S1)} and \textup{(S2)}.  Then the rule
+\rulename{QI} of $\Nat$ is admissible in $\Nat_P$, and for every context
+$\Gamma$ and every native formula $A$,
+\[
+ \Gamma\proves_{\Nat_P}A\iff\Gamma\proves_{\Nat}A .
+\]
+Both transformations are effective and change no term, formula or
+assumption.  Hence $\Nat_P$ is bi-interpretable and equiconsistent with
+$\iPRA$ by the interpretations of $\Nat$ (\cref{base:thm:bridge}).
+\end{theorem}
+
+\begin{proof}
+From $\Nat_P$ to $\Nat$: six rules are shared.  An inference
+$\rulename{DI}_P$ at a matrix without $P$ is \rulename{DI}.  At a matrix
+with $P$ the matrix is a literal equation, and the inference is derived as
+in \cref{guard:lem:incl}: \rulename{QI}, \rulename{QE} and \rulename{DI}.
+
+From $\Nat$ to $\Nat_P$: \rulename{DI} is \cref{guard:lem:np-cases}(i), and
+it remains to derive \rulename{QI}.  Let $\Gamma,E(z)\proves E(\Suc z)$
+with $z$ fresh, let $\Lambda$ be the lift of $E$, and put
+$\Delta\defeq\Gamma,E(0)$.
+
+\emph{Decoding the lift.}  $\Delta,\Lambda(z)\proves E(z)$, by
+\cref{guard:lem:np-imp}(ii) for the term $z$.  In the branch $z=0$,
+transport of the hypothesis $E(0)$ along $0=z$ gives $E(z)$.  In the branch
+$z=\Suc w$, transport of $\Lambda(z)$ gives $\Lambda(\Suc w)$, (S2) gives
+$E(\Suc w)$, and transport along $\Suc w=z$ gives $E(z)$.
+
+\emph{Progress of the lift.}  Cut $E(z)$ into the step premise:
+$\Delta,\Lambda(z)\proves E(\Suc z)$, and by (S2)
+$\Delta,\Lambda(z)\proves\Lambda(\Suc z)$.  The variable $z$ is not free in
+$\Delta$.
+
+\emph{Conclusion.}  Since $P(\Lambda)$, the rule $\rulename{DI}_P$ in
+progress mode with the witness $0$ gives $\Delta\proves\D{x}{y}\Lambda(y)$,
+and \rulename{DE} and \rulename{Hyp} give $\Delta\proves\Q{y}\Lambda(y)$.
+With $\Lambda(0)$ from (S1), \rulename{QE} at $\Suc z'$ gives
+$\Lambda(\Suc z')$, and (S2) gives $E(\Suc z')$.  Thus
+$\Gamma,E(0)\proves E(\Suc z')$, and \cref{guard:lem:np-cases}(ii) gives
+$\Gamma\proves\Q{y}E(y)$.
+
+The base $E(0)$ is retained and discharged at the end: the conditional
+closure is never identified with unconditional progress, and the argument
+does not need $E(0)$ to be derivable.
+\end{proof}
+
+\begin{proposition}[Substitution in $\Nat_P$]
+\label{guard:prop:np-subst}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $P$ is preserved and reflected by substitution, then substitution
+ is admissible in $\Nat_P$ by an induction that keeps the rule and the mode
+ of every inference.
+\item If $P$ is preserved by substitution and satisfies \textup{(S1)}, then
+ substitution is admissible in $\Nat_P$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Induct on the derivation, renaming each eigenvariable away from the values
+of the substitution.  All rules other than $\rulename{DI}_P$ commute with
+substitution as in $\Nat$.  For $\rulename{DI}_P$ in progress mode,
+preservation gives the same mode after substitution.  For $\rulename{DI}_P$
+in case mode at $B$: in (i) the substituted matrix does not have $P$, by
+reflection, and the same inference applies; in (ii) the induction hypothesis
+gives the substituted premise by cases, and \cref{guard:lem:np-cases}(i)
+derives the conclusion whether or not the substituted matrix has $P$.
+\end{proof}
+
+\begin{remark}[Versions of the proof]
+\label{guard:rem:selector-versions}
+The criterion is the \emph{guard criterion} of \pkg{diagonal\_guard}.  That
+package derives \rulename{QI} with the implication
+$\Lambda(y)\Rightarrow_{=}E(\Suc y)$, proved by cases on a new variable, and
+needs the step premise at $0$ and at $\Suc v$; it substitutes into the
+derivation of the premise, which is justified for the diagonal selector by
+\cref{guard:prop:np-subst}(i) and, for a selector without the stability
+property, by translating native derivations by induction on their height
+and substituting into the native premise first.  \pkg{mirror\_core} decodes
+the lift by two unconditional equations (\cref{guard:lem:decoder}) and uses
+the step premise at its own eigenvariable.  The proof above takes the order
+of \pkg{mirror\_core} and decodes with \cref{guard:lem:np-imp}(ii), which is
+a lemma of \pkg{diagonal\_guard}; it needs neither a substitution nor a
+special property of the lift.
+\end{remark}
+
+\subsection{The diagonal guard}
+
+\begin{theorem}[The diagonal guard]
+\label{guard:thm:diagonal}
+Let $P$ hold of the matrices that are diagonal in $y$
+(\cref{guard:def:shapes}), and write $\Nat_{\mathrm{diag}}$ for $\Nat_P$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $P$ is a selector that satisfies \textup{(S1)} and \textup{(S2)}, the
+ latter with the diagonal lift $\Delta_yE$.
+\item $\Gamma\proves_{\Nat_{\mathrm{diag}}}A$ if and only if
+ $\Gamma\proves_{\Nat}A$, for all native $\Gamma$ and $A$.
+\item $\Nat_{\mathrm{diag}}$ admits weakening, substitution and cut, and
+ the substitution keeps the rule and the mode of every inference.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) (S1): at $y=0$ both sides of a diagonal matrix have the form
+$\It{0}{0}{u}{h'}$ and are equal to $0$ by \rulename{I0}.  (S2): the lift
+$\Delta_yE$ is diagonal in $y$, and at $y=\Suc v$ its two sides are
+$\It{\Suc v}{\Suc v}{u}{s(\Suc v)}$ and $\It{\Suc v}{\Suc v}{u}{t(\Suc v)}$,
+which are equal to $s(\Suc v)$ and $t(\Suc v)$ by \rulename{IS}, the updates
+being constant.  No identity between arbitrary iterator bodies is asserted.
+(ii) is \cref{guard:thm:selector}.  (iii) By
+\cref{guard:prop:subst-shapes}(iii) the diagonal shape is preserved and
+reflected, so \cref{guard:prop:np-subst}(i) and \cref{guard:lem:np-struct}
+apply.
+\end{proof}
+
+In Lean the calculus is \Lean{GPrf} (\Lean{NativeDiagonal}), with
+\Lean{gprf\_iff\_nprf}, \Lean{gprf\_iff\_iprf} and substitution by direct
+induction (\Lean{GPrf.subst}); the equivalence uses neither
+\Lean{Classical.choice} nor the bi-interpretation.  The formalization
+recovers progress by an equational decoder in place of the implication of
+the package: with $E(y)\equiv(s(y)=t(y))$, numerical cases prove the
+unconditional equation
+\[
+ \sel\bigl(y,\ s(0),\ \It{y}{y}{u}{s(y)}\bigr)=s(y)
+\]
+and the same for $t$, and from $E(0)$ and $\Delta_vE$ they give
+$s(v)=\sel(v,s(0),\It{v}{v}{u}{s(v)})=\sel(v,t(0),\It{v}{v}{u}{t(v)})=t(v)$.
+
+The diagonal guard keeps seven rules, the full language and the readings of
+both binders.  The witness-selected calculus $\mathsf W$
+(\cref{kern:def:W,kern:thm:witness}) also has seven rules on the full
+language, and its mode can change when a substitution turns a witness into
+the literal $0$ (\cref{kern:rem:wsubst}); the calculus with orbit
+elimination (\cref{kern:sec:R}) changes the reading of $\Q{}$ at equations
+and its elimination; and the guarded core restricts the public language.  The
+diagonal guard does none of these.
+
+\subsection{The mirror selector and six rules}
+
+\begin{theorem}[The mirror selector]
+\label{guard:thm:mirror-selector}
+Let $\mathrm{Mir}$ hold of the matrices that are mirrored in $y$, and write
+$\Nat_{\mathrm{mir}}$ for $\Nat_{\mathrm{Mir}}$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathrm{Mir}$ is a selector that satisfies \textup{(S1)} and
+ \textup{(S2)}, the latter with the lift
+ $H_yE(y)=\bigl(s(y)=\sel(y,s(y),r(y))\bigr)$ of $E(y)\equiv(s(y)=r(y))$.
+\item $\Gamma\proves_{\Nat_{\mathrm{mir}}}A$ if and only if
+ $\Gamma\proves_{\Nat}A$.
+\item Substitution is admissible in $\Nat_{\mathrm{mir}}$.  It does not
+ keep the mode of every inference.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) (S1): the instance at zero is $a'=\It{0}{a'}{u}{h'}$, the reverse of an
+instance of \rulename{I0}.  (S2): $\sel(\Suc v,s,r)=r$ by \rulename{IS}.
+(ii) is \cref{guard:thm:selector}.  (iii) The shape is preserved
+(\cref{guard:prop:subst-shapes}(ii)), so \cref{guard:prop:np-subst}(ii)
+applies.  It is not reflected: the matrix $p=\It{y}{q}{u}{u}$ is not
+mirrored for distinct variables $p,q$ and is mirrored after both are
+replaced by one variable, so an introduction by cases at this matrix
+becomes, under that substitution, an instance of
+\cref{guard:lem:np-cases}(i), which cuts the provable base and weakens to
+progress.
+\end{proof}
+
+The selector is tested on the matrix before the witness is substituted: the
+matrix $x=\It{y}{0}{u}{0}$ is not mirrored, although its instance at the
+witness $0$ is $0=\It{y}{0}{u}{0}$.
+
+\begin{lemma}[The equational decoder of the mirror lift]
+\label{guard:lem:decoder}
+Let $E(y)\equiv(s(y)=r(y))$ and $\Lambda(y)\equiv
+\bigl(s(y)=\sel(y,s(y),r(y))\bigr)$.  In $\Nat_{\mathrm{mir}}$, for every
+term $v$, $\Gamma\proves E(0)$ and $\Gamma\proves\Lambda(v)$ imply
+$\Gamma\proves E(v)$, by numerical cases for equations and equality alone.
+\end{lemma}
+
+\begin{proof}
+The equations
+\begin{align*}
+ \sel\bigl(v,\ s(0),\ s(v)\bigr)&=s(v),\\
+ \sel\bigl(v,\ r(0),\ \sel(v,s(v),r(v))\bigr)&=r(v)
+\end{align*}
+are derivable over the empty context by \cref{guard:lem:np-cases}(iii): at
+$0$ both left sides are equal to their seed by \rulename{I0}, and at a
+successor the first uses one application of \rulename{IS} and the second
+two.  They are proved before any assumption about $v$ is retained, and then
+weakened.  From $\Lambda(v)$, congruence in the template $\sel(v,s(0),-)$
+gives $\sel(v,s(0),s(v))=\sel(v,s(0),\sel(v,s(v),r(v)))$, and the base
+$s(0)=r(0)$ changes the seed on the right.  Hence
+\[
+ s(v)=\sel\bigl(v,s(0),s(v)\bigr)
+ =\sel\bigl(v,s(0),\sel(v,s(v),r(v))\bigr)
+ =\sel\bigl(v,r(0),\sel(v,s(v),r(v))\bigr)=r(v).
+\]
+\end{proof}
+
+The lemma replaces the first step of the proof of
+\cref{guard:thm:selector} for the mirror selector, without an implication
+between equations.
+
+\begin{definition}[The six-rule mirror calculus]
+\label{guard:def:m6}
+The calculus $\mathsf M_6$ is the calculus $\mathsf E_2$ of
+\cref{comp:def:e3} with its introduction \rulename{WI} replaced by the
+mirror-selected one: its rules are \rulename{Hyp}, \rulename{Refl}, the two
+cases $\rulename{Eval}_0$ and $\rulename{Eval}_{\Suc}$ of \rulename{Eval},
+\rulename{QE}, \rulename{DE} and
+\[
+ \infrule{\Gamma,\ B(t,\eta^{\mathrm{Mir}}_B(z))\proves B(t,\Suc z)}
+         {\Gamma\proves\D{x}{y}B(x,y)}\ \rulename{DI}_{\mathrm{Mir}} .
+\]
+It has six rule families and seven inference constructors, counted as in
+\cref{comp:rem:counting}.  There is no computation axiom, no transport rule,
+no structural rule and no rule of induction.
+\end{definition}
+
+\begin{theorem}[Six rules with the mirror selector]
+\label{guard:thm:m6}
+For every context $\Gamma$ and every native formula $A$,
+\[
+ \Gamma\proves_{\mathsf M_6}A\iff\Gamma\proves_{\Nat_{\mathrm{mir}}}A
+ \iff\Gamma\proves_{\Nat}A .
+\]
+$\mathsf M_6$ admits weakening, injective renaming, cut and substitution,
+and is bi-interpretable and equiconsistent with $\iPRA$ by the
+interpretations of $\Nat$.
+\end{theorem}
+
+\begin{proof}
+The derivations of symmetry and transitivity, of \rulename{I0} and
+\rulename{IS}, and of \rulename{Tr} in $\mathsf E_2$
+(\cref{comp:lem:evalalg,comp:lem:evalcomp,comp:cor:evaltr}) use
+\rulename{Refl} and the two cases of \rulename{Eval} only, so they are
+derivations of $\mathsf M_6$; the other rules of $\Nat_{\mathrm{mir}}$ are
+rules of $\mathsf M_6$.  Conversely \rulename{Refl} and both cases of
+\rulename{Eval} are derived from \rulename{I0}, \rulename{IS} and
+\rulename{Tr} as in the proof of \cref{comp:thm:eval}, hence in
+$\Nat_{\mathrm{mir}}$.  The second equivalence is
+\cref{guard:thm:mirror-selector}.  Weakening, injective renaming and cut
+are proved for $\mathsf M_6$ as for $\mathsf E_3$ in the proof of \cref{comp:thm:eval}, with the
+observation that an injective renaming preserves and reflects
+$\mathrm{Mir}$.  Substitution is proved as in
+\cref{guard:prop:np-subst}(ii): \rulename{Eval} commutes with substitution
+(\cref{comp:prop:phisubst}), and the derived introduction by cases of
+\cref{guard:lem:np-cases}(i) is available in $\mathsf M_6$ by the first
+equivalence.
+\end{proof}
+
+\begin{remark}[The derivations of \pkg{mirror\_core}]
+\label{guard:rem:m6-versions}
+\pkg{mirror\_core} derives the equality rules of $\mathsf M_6$ directly.
+It joins $s=t$ and $s=r$ to $r=t$ through $\It{0}{s}{u}{u}$ by two
+instances of $\rulename{Eval}_0$, which is the identity frame of
+\cref{comp:lem:frame}, and it derives \rulename{Tr} from the two iterators
+$\It{0}{s}{v}{h(v)}$ and $\It{1}{s}{v}{h(v)}$ by the composition described
+in the remark after \cref{comp:cor:evaltr}.
+\end{remark}
+
+In Lean the seven-rule calculus $\Nat_{\mathrm{mir}}$ is \Lean{MiPrf}
+(\Lean{miprf\_iff\_nprf}) and the six-rule calculus is \Lean{M6Prf}
+(\Lean{m6prf\_iff\_nprf}), in the module \Lean{NativeMirror}.  The
+structural rules proved there are weakening, injective renaming
+(\Lean{MiPrf.ren}) and cut, which suffice for weakening below a binder and
+for the equivalence; the progress of an arbitrary equation uses the lift
+$s=\sel(y,s,t)$.  Relative to the six-rule calculus with the diagonal
+selector (\Lean{SPrf}), the mirror selector shows one iterator where the
+diagonal shows two, and it loses the reflection of the shape.
+
+% ---------------------------------------------------------------------
+\section{Comparison of the guards}
+\label{guard:sec:compare}
+
+This section compares the guards of \pkg{guarded\_core},
+\pkg{protected\_core}, \pkg{mirror\_guard}, \pkg{mirror\_core} and
+\pkg{diagonal\_guard}; \cref{guard:tab:guards} restates results of the
+preceding sections.
+
+\begin{table}[ht]
+\centering
+\small
+\begin{tabular}{@{}p{0.13\linewidth}p{0.2\linewidth}p{0.17\linewidth}p{0.19\linewidth}p{0.2\linewidth}@{}}
+\toprule
+Guard & Atomic matrix & Lift of $s=t$ & Under substitution & Used in\\
+\midrule
+zero-seeded & $\It{y}{0}{u}{h}=\It{y}{0}{u'}{k}$ &
+ $\sel(y,0,s)=\sel(y,0,t)$ &
+ preserved, not reflected &
+ $\mathcal P_0$: $\mathsf G$, $\mathsf U^{-}$,
+ $\mathsf G^{-}_{\mathrm{orb}}$\\
+wrapped & zero-seeded; root atoms protected &
+ $W(s)=W(t)$ at the root &
+ preserved; sources closed &
+ $\mathcal P_W$: $\mathsf H$\\
+mirror & $a=\It{y}{a}{u}{h}$ &
+ $s=\sel(y,s,t)$ &
+ preserved, not reflected &
+ $\mathcal P_m$: $\mathsf M$; full language:
+ $\Nat_{\mathrm{mir}}$, $\mathsf M_6$\\
+diagonal & $\It{y}{y}{u}{h}=\It{y}{y}{u'}{k}$ &
+ $\It{y}{y}{u}{s}=\It{y}{y}{u}{t}$ &
+ preserved and reflected &
+ full language: $\Nat_{\mathrm{diag}}$\\
+\bottomrule
+\end{tabular}
+\caption{The four guards.}
+\label{guard:tab:guards}
+\end{table}
+
+\emph{The base.}  Every guard has an instance at zero that is derivable by
+\rulename{I0} and equality at iterator-headed sources
+(\cref{guard:lem:zero}).  For the mirror guard it is the reverse of one
+computation equation.  For the zero-seeded and the diagonal guard two
+computations are joined; under a source restriction the join passes through
+$W(0)$ (\cref{guard:lem:safe}(iv)).
+
+\emph{The left side.}  The zero-seeded, wrapped and diagonal shapes have an
+iterator on the left.  With the sources $s\not\equiv 0$ and the uncrossed
+transport this makes a zero-left hypothesis inert
+(\cref{guard:prop:inert}): the zero-seeded guard then needs an unguarded
+matrix in the proof language (\cref{guard:thm:aux,guard:thm:orbit}), or
+public atoms that are never zero-left (\cref{guard:thm:protected}).  The
+mirror guard leaves the left side free and is complete in a strictly
+guarded language (\cref{guard:thm:mirror}).
+
+\emph{Sources.}  The guarded core uses all sources.  The mirror guard, and
+the zero-seeded guard with auxiliary or orbit formulas, use the sources
+$s\not\equiv 0$, a class that is not closed under substitution; their
+proofs avoid substitution until equality is unrestricted.  The protected
+core uses iterator-headed sources, a class closed under substitution, and
+pays with a wrapper on every public atom and with a larger validator of the
+public grammar (\cref{guard:sec:checkers}).
+
+\emph{Substitution of the shape.}  In a public language the mode is
+selected by the root and the shape is a condition on the language, so
+preservation is enough.  As a selector on the full language the shape must
+not be created by substitution if the mode of an inference is to be stable:
+the diagonal shape is the only one of the four with this property
+(\cref{guard:prop:subst-shapes}), and for it substitution is a
+rule-preserving induction (\cref{guard:thm:diagonal}).  The mirror selector
+is closed under substitution with a repair
+(\cref{guard:thm:mirror-selector}).  The zero-seeded shape also satisfies
+\textup{(S1)} and \textup{(S2)}, with the gate $G_yE$ as the lift, so by
+\cref{guard:thm:selector,guard:prop:np-subst} it is a selector on the full
+language with the same repair; \pkg{diagonal\_guard} records the matrix
+$\It{y}{p}{u}{0}=\It{y}{0}{u}{0}$ as the witness that its mode is not
+stable.
+
+\emph{Cost of recognition.}  The zero-seeded and the diagonal test inspect
+fixed positions of the two sides.  The mirror test compares two term trees,
+which is linear in their size; \pkg{mirror\_core} notes that its smaller
+checker source does not imply faster checking or shorter proofs.
+
+% ---------------------------------------------------------------------
+\section{Checkers and their sizes}
+\label{guard:sec:checkers}
+
+This section records the programs of \pkg{guarded\_core},
+\pkg{guarded\_source}, \pkg{guarded\_orbit},
+\pkg{deterministic\_auxiliary}, \pkg{mirror\_guard}, \pkg{protected\_core},
+\pkg{mirror\_core} and \pkg{diagonal\_guard}.  Sizes are measured by the
+protocol of \cref{base:sec:measure}.
+
+\paragraph{The compact checkers.}
+\pkg{guarded\_core}, \pkg{guarded\_source}, \pkg{guarded\_orbit},
+\pkg{deterministic\_auxiliary}, \pkg{mirror\_guard} and
+\pkg{protected\_core} modify the arity-coded checkers of the earlier
+packages; the codec is inherited and is not changed.  A formula array of
+length one is $\D{}{}$, of length two an equation, of length three an
+administrative $\Q{}$; a term array of length one is a successor and of
+length three an iterator; the other lengths denote zero or truth.  The
+root-determined introduction replaces the comparison of the parity of the
+matrix with a field of the certificate, \texttt{len(a) \% 2 == u}, by the
+parity alone, \texttt{not len(a) \% 2}: among the meaningful roots only the
+equation has even length, so an equation retains its instance at the
+eigenvariable and a compound matrix its instance at zero.
+\pkg{guarded\_source} writes the test as \texttt{len(a) == 2}, and
+\pkg{deterministic\_auxiliary} has an optional spelling
+\texttt{\textasciitilde len(a) \% 2} that saves three bytes.  The byte
+profile of \pkg{guarded\_core} also moves the check of the major premise
+into the expression that supplies the hypothesis, which preserves every
+successful run.  Source selection is the test
+\texttt{m == ([s, u] if s else [t] * 3)}: the canonical literal $0$ is the
+integer $0$, which is false, and selects the $\Q{}$ major, and every other
+source selects the equation.  Computation packets that cannot have a
+literal $0$ as initializer or as predecessor are obtained from the
+\emph{certified zero} $c_0\defeq\It{2}{1}{u}{0}$, with $c_0=0$, by a
+transport at the iterator-headed source $c_0$, so that no transport at the
+literal $0$ is reintroduced.  The byte and AST profiles use lexical scopes
+and the token profiles a global supply of fresh names; their certificates
+are not interchangeable.
+
+\paragraph{The contract of the compact checkers.}
+A compact checker accepts derivations of $\mathsf U$
+(\pkg{guarded\_core}) or of $\mathsf U^{-}$ (the other five) in the
+administrative syntax.  Each package states that, for a closed public
+formula $A$ in canonical encoding and in the ideal unbounded execution, an
+accepting certificate exists if and only if $A$ is derivable in its
+calculus.  The soundness half rests on the correctness of the inherited
+codec (opening, freshness and the readings of the surplus arities), which
+these packages cite and do not reprove, together with
+\cref{guard:cor:admin,guard:thm:aux,guard:thm:orbit,guard:thm:mirror,guard:thm:protected}
+and \cref{guard:rem:lean-public}; the completeness half encodes a
+derivation with fresh integer names.  A compact checker does not test that
+the goal is public, and it accepts some goals that are not.  Each package
+therefore supplies a \emph{strict} checker, which validates the closed
+public goal and then runs the same kernel, and counts it in full.  The
+strict checker of \pkg{mirror\_guard} compares the two occurrences of the
+seed after raising the left side across the binder of the iterator; a
+comparison of the raw arrays would reject matrices with bound variables.
+One inherited negative control that changes only the retired mode field is
+accepted by the new checkers; an old certificate that introduces an
+unguarded equation by cases is rejected by them, which is
+\cref{guard:prop:strict} and the reason why the raw certificate languages
+of the old and the new checkers are not claimed to coincide.
+
+\paragraph{The typed checkers.}
+\pkg{mirror\_core} and \pkg{diagonal\_guard} measure checkers with tagged
+terms, formulas and proof trees in de Bruijn form, which validate every
+term, formula, scope and proof node of the full native language.  The
+diagonal checker tests, after opening the witness, whether both sides begin
+with an iterator whose counter and seed are the bound index $0$; by
+\cref{guard:prop:subst-shapes}(iii) the test after opening is equivalent to
+the test on the matrix.  The mirror checker tests the matrix before the
+witness is substituted.  The two packages differ from their controls in the
+guard of the introduction only.  The translator of \pkg{diagonal\_guard}
+implements both directions of \cref{guard:thm:diagonal}(ii); three
+translated certificates grow from $485$, $885$ and $1{,}965$ bytes to
+$11{,}506$, $14{,}218$ and $20{,}283$ bytes.  \pkg{mirror\_core} supplies
+the translation from $\mathsf M_6$ to the kernel, the derived introduction
+by cases and the repaired substitution as programs; the translation of
+\rulename{QI} into $\mathsf M_6$ is given by the written proof only.
+
+\paragraph{Recorded runs.}
+The packages record the following executions of their programs on positive
+and negative certificates, in ordinary and optimized Python, all with the
+expected outcome: $800$ (\pkg{guarded\_core}), $150$
+(\pkg{guarded\_source}), $224$ (\pkg{guarded\_orbit}), $242$
+(\pkg{deterministic\_auxiliary}), $480$ (\pkg{mirror\_guard}), $608$
+(\pkg{protected\_core}); for \pkg{mirror\_core}, $92$ command-line checks of
+$23$ fixtures, $36$ replays in the native checker and $72$ replays of
+numerical substitutions; for \pkg{diagonal\_guard}, $192$ processes on $32$
+fixtures, $93$ validations of translated certificates and $240$ finite
+checks of the preservation and reflection of the guard.  The runs test the
+programs and the certificates; the theorems of this chapter are the written
+proofs.
+
+\begin{longtable}{@{}llrrrl@{}}
+\caption{Programs and sizes as the packages state them.  The last column is
+the matched control with its tokens, AST nodes and normalized bytes.  The
+smallest values of one package are attained by different programs.}
+\label{guard:tab:sizes}\\
+\toprule
+Package & Program & Tokens & AST & Bytes & Matched control\\
+\midrule
+\endfirsthead
+\toprule
+Package & Program & Tokens & AST & Bytes & Matched control\\
+\midrule
+\endhead
+\bottomrule
+\endfoot
+\pkg{guarded\_core} & direct & 265 & 308 & 528 & byte profile, 266/310/529\\
+ & byte profile & 266 & 307 & 527 & byte profile, 266/310/529\\
+ & token profile & 260 & 290 & 575 & token profile, 261/292/576\\
+ & AST profile & 263 & 286 & 607 & AST profile, 263/289/613\\
+ & readable & 292 & 336 & 1275 & none\\
+ & strict & 491 & 568 & 1208 & old core with goal parser, 450/521/1109\\
+\midrule
+\pkg{guarded\_source} & token profile & 257 & 285 & 568 &
+ \pkg{source\_dispatch}, 259/289/572\\
+ & AST profile & 261 & 279 & 603 & \pkg{source\_dispatch}, 263/283/607\\
+ & byte profile & 264 & 301 & 522 & \pkg{source\_dispatch}, 266/305/526\\
+ & strict & 490 & 561 & 1202 & \pkg{guarded\_core} strict, 491/568/1208\\
+\midrule
+\pkg{guarded\_orbit} & token profile & 258 & 287 & 571 &
+ \pkg{source\_dispatch}, 259/289/572\\
+ & AST profile & 262 & 281 & 606 & \pkg{source\_dispatch}, 263/283/607\\
+ & byte profile & 265 & 303 & 525 & \pkg{source\_dispatch}, 266/305/526\\
+ & strict & 491 & 563 & 1205 & guarded 491/568/1208; scalar 450/521/1109\\
+\midrule
+\pkg{deterministic\_auxiliary} & direct & 265 & 303 & 525 &
+ \pkg{source\_dispatch}, 266/305/526\\
+ & byte profile & 265 & 303 & 522 & \pkg{source\_dispatch}, 266/305/526\\
+ & AST profile & 262 & 281 & 606 & \pkg{source\_dispatch}, 263/283/607\\
+ & token profile & 258 & 287 & 571 & \pkg{source\_dispatch}, 259/289/572\\
+ & strict & 491 & 563 & 1205 & guarded 491/568/1208; native 450/521/1109\\
+\midrule
+\pkg{mirror\_guard} & token profile & 258 & 287 & 571 &
+ \pkg{source\_dispatch}, 259/289/572\\
+ & AST profile & 262 & 281 & 606 & \pkg{source\_dispatch}, 263/283/607\\
+ & byte profile & 265 & 303 & 525 & \pkg{source\_dispatch}, 266/305/526\\
+ & readable & 279 & 319 & 1272 & none\\
+ & strict & 578 & 661 & 1503 & strict derivative of the source checker,
+ 471/537/1127\\
+\midrule
+\pkg{protected\_core} & token profile & 258 & 287 & 571 &
+ \pkg{source\_dispatch}, 259/289/572\\
+ & AST profile & 262 & 281 & 606 & \pkg{source\_dispatch}, 263/283/607\\
+ & byte profile & 265 & 303 & 525 & \pkg{source\_dispatch}, 266/305/526\\
+ & readable & 284 & 326 & 1301 & none\\
+ & strict & 505 & 582 & 1251 & \pkg{guarded\_core} strict, 491/568/1208\\
+\midrule
+\pkg{mirror\_core} & mirror selector, six rules & 1012 & 1082 & 3109 &
+ diagonal selector, six rules, 1022/1091/3125\\
+\midrule
+\pkg{diagonal\_guard} & diagonal, seven rules & 1069 & 1124 & 3244 &
+ native, eight rules, 1101/1160/3382;\\
+ & & & & & witness-selected, seven rules, 1041/1099/3205\\
+\end{longtable}
+
+The gains recorded in \cref{guard:tab:sizes} are small.  The compact
+profiles of \pkg{guarded\_orbit},
+\pkg{deterministic\_auxiliary}, \pkg{mirror\_guard} and
+\pkg{protected\_core} have the same three sizes, since they share the two
+dispatch tests and differ in the calculus that justifies them and in the
+strict validator.  The strict checkers do not improve on the unrestricted
+control of $1109$ bytes; those of \pkg{mirror\_guard} and
+\pkg{protected\_core} are larger than their matched controls.  The gzip
+size of the byte profile of \pkg{guarded\_orbit},
+\pkg{deterministic\_auxiliary} (direct), \pkg{mirror\_guard} and
+\pkg{protected\_core} is $331$ bytes against $330$ for the control.  The
+diagonal checker is $39$ bytes larger than the witness-selected control; its
+advantage is the stability of the mode under substitution.  The typed
+checkers are not smaller than the compact ones, which have a different
+input contract.
+
+% ---------------------------------------------------------------------
+\section{Further questions}
+\label{guard:sec:questions}
+
+This section collects the open questions and the unproved or negative
+statements of \pkg{guarded\_core}, \pkg{guarded\_source},
+\pkg{guarded\_orbit}, \pkg{deterministic\_auxiliary}, \pkg{mirror\_guard},
+\pkg{protected\_core}, \pkg{mirror\_core} and \pkg{diagonal\_guard}.
+
+\begin{question}[Minimal proof language]
+\label{guard:q:minimal}
+For the zero-seeded public language $\mathcal P_0$ with the sources
+$s\not\equiv 0$, \cref{guard:cor:obstruction} shows that some unguarded
+matrix is needed and \cref{guard:thm:orbit} shows that the orbit matrices
+suffice.  Which substitution-stable families of auxiliary equation
+invariants suffice for the repair of equality and for the arithmetic of the
+bridge?  Is there a comparably short checker that enforces the smaller
+intermediate grammar, with a simpler soundness proof than that of the full
+arity codec?  (\pkg{guarded\_source}, \pkg{guarded\_orbit},
+\pkg{deterministic\_auxiliary}.)
+\end{question}
+
+\begin{question}[The smallest stable guard]
+\label{guard:q:stable}
+Is there a syntactic class of equations that is cheaper to recognize than
+the diagonal shape and has provable instances at zero, a lift of every
+equation, and preservation and reflection under substitution?  What is the
+smallest family of base recognizers that supports an equational decoder for
+every equation?  The mirror and the diagonal shape are two instances;
+neither gives a lower bound.  (\pkg{diagonal\_guard}, \pkg{mirror\_core}.)
+\end{question}
+
+\begin{question}[A public grammar with a small validator]
+\label{guard:q:validator}
+Is there a substitution-stable public grammar that makes the root-determined
+introduction complete, keeps both composites, and has a strict checker no
+larger than the unrestricted control of $1109$ bytes under the same
+complete-input contract?  (\pkg{guarded\_orbit},
+\pkg{deterministic\_auxiliary}; \pkg{guarded\_source} asks whether the
+validator can share more of the kernel.)
+\end{question}
+
+\begin{question}[Zero-source symmetry]
+\label{guard:q:symmetry}
+Can the derivation of $t=0$ from $0=t$ with the uncrossed rule
+(\cref{guard:thm:dependency}) be made shorter than the one through the
+singleton test and the filter?  A shorter uniform derivation would shorten
+certificates without changing a checker.  (\pkg{guarded\_source},
+\pkg{deterministic\_auxiliary}.)
+\end{question}
+
+\begin{question}[Sizes of translated derivations]
+\label{guard:q:proofsize}
+Give explicit bounds for the expansion caused by the join at zero, the
+padding, the implication between equations and the lift of an equation, and
+compare proof trees with a checked format with sharing.  No polynomial bound
+on the size of a translated certificate is claimed.
+(\pkg{guarded\_orbit}, \pkg{diagonal\_guard}.)
+\end{question}
+
+The following items are stated by the packages without proof, or record what
+was not achieved.
+
+\begin{itemize}
+\item \emph{No minimality.}  No package claims a least number of rules, a
+ least checker, or a lower bound for a class of checkers; the observed sizes
+ are upper bounds, and the three smallest coordinates of a package belong
+ to different programs.  Whether one checker improves all three coordinates
+ of its controls at once is open (\pkg{guarded\_source}), as is a lower
+ bound for a precisely specified class of complete checkers
+ (\pkg{mirror\_core}).
+\item \emph{The codec.}  The theorems on the compact checkers are stated
+ relative to the inherited arity codec, whose soundness is cited and not
+ reproved in these packages, and neither the codec nor a certificate format
+ is formalized in a proof assistant.
+\item \emph{Administrative formulas.}  Completeness is not claimed for goals
+ outside the public language, and the full language of $\mathsf U$ or
+ $\mathsf U^{-}$ is not claimed to be bi-interpretable with $\iPRA$; by
+ \cref{guard:prop:strict} the two sound readings of an unguarded atomic
+ binder differ.  No impossibility is claimed for other interpretations of
+ the administrative language (\pkg{guarded\_core}).  Whether the
+ independent choice between cases and progress can be removed on every
+ administrative formula with its ordinary reading and without a validator
+ is asked by \pkg{guarded\_orbit}; the selectors of \cref{guard:sec:full}
+ remove it on the full native language at the cost of a test of the shape.
+\item \emph{Formalization.}  In Lean the dependency theorem
+ (\Lean{ZKernel.trF}), the diagonal guard (\Lean{GPrf}), the mirror
+ selector (\Lean{MiPrf}, \Lean{M6Prf}) and the public languages in the
+ gated form (\Lean{PGPrf}) are proved.  Not formalized: the calculi with
+ clause contexts; the auxiliary formulas of \cref{guard:sec:aux} and the
+ orbit bootstrap of \cref{guard:sec:orbit}, including numerical cases at
+ stable-left equations; the mirror calculus $\mathsf M$ with the sources
+ $s\not\equiv 0$ in the form of \cref{guard:thm:mirror}; and the wrapped
+ root atoms of $\mathsf H$.  \pkg{deterministic\_auxiliary} asks whether
+ the auxiliary progress of an equation can be a separate proof judgment
+ with a smaller derivation datatype, the target being the equality of the
+ public consequence relations and not a round trip for auxiliary formulas;
+ \pkg{mirror\_core} proposes its two unconditional selector equations
+ (\cref{guard:lem:decoder}) as the route with the fewest dependencies.
+ \pkg{mirror\_guard} observes that a
+ formalization of $\mathsf M$ cannot start by restricting the transport
+ rule of the kernel and using its substitution theorem
+ (\cref{guard:rem:substwording}).
+\item \emph{Programs that are not complete translators.}  The proof
+ generators of \pkg{mirror\_guard} and \pkg{protected\_core} are collections
+ of worked constructions; the normalizer of \pkg{protected\_core} rejects an
+ unsupported equation leaf with the source $0$ instead of translating it;
+ \pkg{mirror\_core} has no program for the translation of \rulename{QI}.
+\item \emph{Selectors in the compact interface.}  Whether the mirror or the
+ diagonal selector reduces the size of a compact checker with a complete
+ validator of the goal is not answered (\pkg{mirror\_core},
+ \pkg{diagonal\_guard}); nor is the combination of the diagonal introduction
+ with the crossed one-term transport in a matched typed checker
+ (\pkg{diagonal\_guard}), or a constant-time mirror test by sharing of
+ syntax without a larger trusted reader (\pkg{mirror\_core}).
+\item \emph{Other bases.}  \pkg{guarded\_orbit} asks whether a different
+ numerical basis can remove a constructor or a binding operation without a
+ richer arithmetic axiom or a more complex parser, and notes that the
+ earlier register, tied-seed and zero-start results constrain the answer.
+\end{itemize}

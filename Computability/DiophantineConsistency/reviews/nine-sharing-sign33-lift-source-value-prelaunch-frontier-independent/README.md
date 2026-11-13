@@ -1,0 +1,5 @@
+# Independent prelaunch review: lifted AllCuts to Carrier65 value
+
+The proposed first stage uses the conditional 60 ring-value gates and checked graph topology, initial agreement and reference gates to equate exactly the six terminals in the conditional Carrier65 theorem. The second stage applies that theorem to the checked five norms and translates the lift's first fourteen coordinates to `v (j+1) + 1`. Both stages use the same model-natural ports and valuation and the same AllCuts hypothesis. This is the direction AllCuts implies Carrier65 value zero in an IΣ₁ model's difference ring; it does not by itself establish the converse, connect to a fixed integer source syntax, or prove an iPRA endpoint.
+
+The checker pins both sources, manifest, runner and provider survey, verifies the topology inputs, terminal order, shifted coordinates and direct/local producer bindings, and reruns the no-Lean preflight. No blocker was found within the point-in-time source/provider scope. Lean elaboration and full transitive/dynamic provider compatibility remain untested by this review.

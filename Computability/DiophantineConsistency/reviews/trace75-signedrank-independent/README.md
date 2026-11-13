@@ -1,0 +1,7 @@
+# Independent review of generic signed-rank residue
+
+In every IΣ₁ model, `rank_residue_of_square` takes model elements `c,f,t,rp,rn,u`, a difference-ring x, and explicitly assumes `c>0`, `f mod c = 1 mod c`, `x = ι(f)*(ι(t*c)+ι(rn)−ι(rp))−ι(c)` and `x²=ι(u²)`. It concludes `SignMod c u (absdiff rp rn)`: either the two remainders are equal or their sum is divisible by c. Both signs are retained; this is not equality or a bound on a Pell index.
+
+The preceding lemma treats both orders of `rp,rn` and uses a single multiplier f. The proof rewrites x as a difference of two natural model elements, uses the square hypothesis to identify u with the nonnegative magnitude, then applies the generic residue lemma. The result does not bind these quantities to the graph, derive the multiplier premise, prove a coordinate guard, halt equivalence, iPRA theorem, or external data binding.
+
+`check.py` rechecks source and copied source, author runner, all input pins, selected object/logs, and the three direct imports plus nearby providers selected post hoc from the recorded Lean path. The single printed axiom report is `[propext, Classical.choice, Quot.sound]`; source contains no `sorry` or `admit`. The runner saves its receipt before its final diagnostic guard, and the retained logs support that guard; no separate runner outer-exit receipt exists. No compile-time provider resolution manifest, independent Lean replay or complete project/package/producer/dynamic ancestry is claimed.

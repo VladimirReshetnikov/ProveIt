@@ -1,4 +1,4 @@
-import DiophantineConsistency.QuarticCompiler
+import DiophantineConsistency.QuarticCompilerCore
 
 /-!
 # Remove redundant natural gates before quartic compilation

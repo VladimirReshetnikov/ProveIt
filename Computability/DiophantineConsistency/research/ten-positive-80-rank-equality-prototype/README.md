@@ -1,0 +1,7 @@
+# Conditional equality of graph rank and main index
+
+`Direct80RankEquality.graph_rank_equality_of_small` proves in every IΣ₁ model that a positive zero of the exact Lean 80-row graph with positive beta has a positive odd main index equal to the magnitude of its signed graph rank, **provided** the displayed signed-rank magnitude satisfies `2|R|<c`. The size premise is explicitly quantified over representations of the actual difference-ring rank. The theorem derives the rank's positivity from the graph's signed congruence and the smallness premise; it does not assume a sign for `R` or `V`.
+
+This does not establish the premise. The ordinary route still requires transport positivity and fixed-port mask bounds to show `2|R|<c`; neither graph-to-halt nor an iPRA endpoint follows from this conditional theorem alone.
+
+Guarded author `observations/attempt01/` succeeded without diagnostics, producing `/tmp/tenpositive-80rank-equality-sr8rup_h/Direct80RankEquality.olean`, SHA-256 `b7386dc722d8261f896a69f426bd757107ad1343cd233bf0a320850cf7009172`. Printed axioms are `propext`, `Classical.choice`, `Quot.sound`. The runner pins selected prototype objects and one inherited provider; full transitive project/package/dynamic and historical source-to-object ancestry remain inherited. Resource observations are sampled; no paired replay is claimed. JSON/source and displayed-file correspondence remain separate boundaries.

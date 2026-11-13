@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS. The two pinned modules exactly adapt checked sign38 rank-retry sources via namespace and 5^39→5^34 substitutions. The first proposes the d11 raw polynomial at symbolic d10 entries 0–8; the second substitutes nine checked d10 cuts, keeping sums and remaining expressions symbolic. The runner replays the audited group06 terminal packet, binds both direct first-stage providers and the local raw-stage provider, and checks guards and overlays. Independent no-Lean preflight passed.
+
+Elaboration and resource success are untested. This does not establish rankRaw=rankCode, final recipe output, semantic equality, JSON/human binding or degree. Deeper transitive/dynamic ancestry is inherited.

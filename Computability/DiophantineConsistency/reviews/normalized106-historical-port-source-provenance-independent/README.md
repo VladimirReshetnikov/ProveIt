@@ -1,0 +1,7 @@
+# Independent review: historical 106 port source provenance
+
+The read-only independent checker `check.py` exited 0 and produced `result.json`. It reparses source imports using a separate nested-comment/string-aware lexical scan, traverses all 12 recorded project sources, compares the historical and fresh captured source bytes and the current workspace sources, checks recorded historical/fresh producer and object hashes, and reruns the author's checker with byte-identical output. All 12 project source snapshots matched; all 12 recorded old/fresh object hashes differed. Eight external leaves are identified, not rebuilt. The check also inspected the two historical-overlay resolutions at review time and stage-079 direct receipt links.
+
+The result is a source-level closure and point-in-time object provenance review. The historical overlay **currently** resolves those two modules at the observed paths; this is not a dynamic stage-079 transitive load trace or proof of which paths were historically loaded. Matching source bytes does not authenticate interchangeability of differing object files or establish equality of numeric coefficient bytes with the actual Lean port tuple, the PDF, or the degree. No Lean replay was run.
+
+SHA-256: `check.py` `f5e4de21b581d1b9323bd483a69ae7ee2b2a3a5cd03fd6d5ef46c009f77905b8`; `result.json` `20aa4b28c5e6076237ae9cde3991ad70474a7f1a2a484d54ab0256b6acb5720a`. The reviewed author's checker and result are pinned inside `check.py`.

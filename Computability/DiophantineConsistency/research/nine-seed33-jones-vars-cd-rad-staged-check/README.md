@@ -1,0 +1,9 @@
+# Sign33 RingVars Cd and radicands candidates
+
+This three-stage client checks Cd equals `dvnd` and both radicand entries equal their RingVars fields. It specializes the separately checked sign38 clients to sign33. The rank remains the opaque d11 value; final named-evaluator equality and JSON/human-text binding remain outside this scope.
+
+The runner checks exact source specialization, authenticates the audited Bd provider and separately audited underlying routes, binds direct imports to exact recorded or local objects and guards, and rechecks sources, objects, guards, links and surveys. Earlier ancestry is inherited; checks are point-in-time and do not provide a complete dynamic or transitive trace. Sampled monitoring may miss transient events. Limits are `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.
+
+Author-observed no-Lean preflight session 26074 exited 0 ([record](preflight-author-record.json)); no independently retained raw transcript. [Independent prelaunch review](../../reviews/nine-seed33-jones-vars-cd-rad-staged-prelaunch-frontier-independent/) passed. Author-observed outer session 35966 exited 0; all dependency and compilation stages exited 0. Three reports list `[propext, Classical.choice, Quot.sound]`. [Terminal receipts](attempt01/) are retained. Manifest `4b92a7929b1744345771bbb02bed58bfd75e51472639015c18f5b923da168595`; values survey `ad5a6325247e64dabd6b15c271db6a4163633145acb6381c45d4fad4c869e8fe`; runner `9d7822ba5cffc55e421fe115f146fa8693931e9f67e7168aa51acf3418784e98`.
+
+The later [independent terminal audit](../../reviews/nine-seed33-jones-vars-cd-rad-staged-terminal-independent/README.md) passed. Its checker replays the recorded source, object, log and direct-route observations, rather than rebuilding Lean. The original author observation of outer exit 0 has no independently retained raw terminal transcript; the inherited ancestry qualifications above remain.

@@ -1,0 +1,5 @@
+# Additional sign16 shared values: source-only client
+
+The four checked lemmas identify staged shared expressions with natural first-norm and main/strict norm components under an explicitly represented beta. They use the independently audited [shared-values provider](../../reviews/nine-sharing-sign16-shared-values-terminal-independent/README.md). No maintained norm equations, signed lift, equivalence or iPRA endpoint is claimed.
+
+The no-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign16-more-shared-values-prelaunch-independent/README.md) passed. Author outer session 18460 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign16-more-shared-values-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck. Inherited provider observations are point-in-time, without a complete transitive trace.

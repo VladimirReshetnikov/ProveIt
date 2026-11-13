@@ -1,0 +1,7 @@
+# Late positive forward-constructor cuts checked
+
+Author-observed outer session `94217` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `07b8243a8bb46e1165707e80fc149a90bc8c12b30de6b5ba38f5b68d361fbec7`; before and after provider surveys both hash to `343a9ae6bc95dd44da13a941f7cf9a0f9bf7cab005d108d2368fd0f99d36b49f`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ForwardLatePositive` compiled in 3.384 seconds; object SHA-256 `8d8150a645d643d763cf3fb3e29dfa2bf31f1eb163dcb6a1a96e05f7dd38554d` at `/tmp/nine-sharing-sign33-forward-late-positive-check-20261106/lib/DiophantineConsistency/Sign33ForwardLatePositive.olean`, compile log `eafadfdb24c5232dd296281fec9152f39e9ae08084c9c23f5cd651303a365901`. The axiom report lists `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,165,981,184 bytes and minimum sampled available host memory was 18,967,453,696 bytes; sampling has the stated limitations.
+
+For arbitrary signed representatives, the constructor satisfies f² and normalized S/S². The source norms, signed fields, source-to-seed witness theorem, Lean proof of external JSON binding, and sign33 iPRA endpoint remain open. Inherited provider and numeric-exit limitations remain as in the parent README.

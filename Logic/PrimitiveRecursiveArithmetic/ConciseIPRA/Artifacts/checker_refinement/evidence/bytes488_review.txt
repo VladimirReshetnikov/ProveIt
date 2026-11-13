@@ -1,0 +1,157 @@
+INDEPENDENT REVIEW: bytes488.py AGAINST THE CURRENT 495-BYTE CHECKER
+Date: 2026-11-12
+Scope: implementation equivalence, exact measurements, and novelty boundary.
+Status: written source audit, not proof-assistant verification.
+
+FILES REVIEWED
+Candidate: kernel_innovation/bytes488.py
+SHA-256: 51ae0d17415e5883bcbd27e753d1bde235268a4555e4bc98f5d404adb2bdba00
+Control: baseline_audit/three_field/ipra_three_field_2026-11-12/code/checker_bytes.py
+SHA-256: 9b52f3261a4d3d602da7b77495a9680a71444dd24da3b6ebbc9e9560a507dcef
+The control is from the current pinned incoming ZIP whose Git blob is
+152c09e61c95029a143198d019e94e570898f980.
+
+CONCLUSION
+No defect found in the proposed universal successful-execution simulation.
+Under the common sufficient-finite-resources convention, the candidate and
+control have the same finite JSON acceptance language, consume the same
+packets in the same order, and present the same goals, contexts and scope
+floors to corresponding recursive calls. The candidate changes only the
+successful return convention and the expression form of a non-hypothesis
+branch. In particular it does not change the underlying iPRA calculus.
+
+1. SUCCESSFUL RETURN INVARIANT
+The control returns None on every normal completion: either its explicit
+bare return closes a retained hypothesis, or its final recursive call finishes
+and the function falls off the end.
+
+The candidate returns True on the retained-hypothesis branch. Otherwise it
+eagerly evaluates a list comprehension over the singleton list [q()]. A normal
+completion therefore returns a singleton list, whose sole element is the
+continuation's return value. Every normally completed candidate call is
+truthy. No assumption on the truthiness of that element is needed.
+
+This is a list comprehension, not a generator; the recursive continuation
+must actually complete before the outer list is returned. Exceptions in the
+major or continuation propagate and prevent ACCEPT.
+
+At the major-proof occurrence:
+  control:   control_check(g,m,k) or m*3
+  candidate: candidate_check(g,m,k) and m*3
+a successful call produces exactly m*3 in either expression. This remains
+true when m*3 is false (e.g. m=0 or m=[]), so the following disjuncts make the
+same choices. In particular, no false major proof is silently skipped.
+The other recursive return values are discarded by the control and stored
+only in the candidate's final success list; they do not enter any opening,
+formula comparison, or retained context.
+
+2. PACKET UNPACKING AND CONTEXT
+The original assignment m,s,u,t=q() and the comprehension target
+for m,s,u,t in [q()] perform one q() call and one unpacking of the same object.
+The singleton iterable admits exactly one iteration on success. Invalid
+packet arities are rejected by unpacking in both versions.
+
+The context argument remains a list built by g+[new_hypothesis]. Neither
+implementation mutates g or any parent context. Return lists produced by the
+candidate are separate administrative return values and are never inserted
+into the context. No mutable-default-context issue is introduced: the initial
+[0] is supplied explicitly.
+
+3. EVALUATION ORDER AND THE SCOPE FLOOR
+The order of the body expression is unchanged after replacing the major's
+successful-return convention.
+
+First, the raw new hypothesis is constructed at the old scope floor k:
+  recursive major proof;
+  its m*3 value or the same computation branch;
+  otherwise the same introduction opening and assignment to a.
+
+Next, the second argument of the outer i is evaluated:
+  bool(m or 3%len(a)) * (k := ~-k).
+The selector is computed before the decrement; the decrement occurs even
+when the selector is false. The opening i then sees the decremented floor
+because it closes over the enclosing k cell. This allocates the same fresh
+parameter and opens the same raw hypothesis in both programs.
+
+Only after constructing the first argument g+[opened_hypothesis] does Python
+evaluate the continuation's second argument. Thus the optional elimination
+test and all its openings see the new floor in both programs. The eager tuple
+(a, i(t,s)), its Boolean index, and the final opening at [k] are unchanged.
+The third argument k consequently has the same new value.
+
+Assignment expressions to a and k in the list-comprehension result bind the
+enclosing function, not the comprehension iteration target. Thus the lambda i
+sees precisely the same updated values at the same phase. The control's
+context-first scheduling is preserved, not replaced by the older goal-first
+scheduling.
+
+4. INDUCTION IN BOTH DIRECTIONS
+Induct over the finite tree of completed proof-checking calls. At a retained
+hypothesis, both programs return normally, with results None and True.
+Otherwise they read the same packet. The induction hypothesis applies first
+to the major call at exactly the same (g,m,k) and remaining packet stack.
+The return-value calculation in section 1 makes the same raw hypothesis;
+section 3 makes the same extended context, continuation goal and new floor.
+Apply the induction hypothesis to the continuation. The caller then finishes
+normally in both versions, with None and a singleton list respectively.
+
+The same induction works from either program's finite successful tree. No
+data transformation or certificate compiler is needed. The input/output
+wrapper still reads the same JSON stack and prints ACCEPT only after the
+outer call completes.
+
+5. RAW JSON AND RESOURCE CAVEATS
+Structural comparisons, arithmetic operations and scope opening are not
+reordered. Hence the transformation does not require any newly assumed list
+comparison law or well-typed intermediate syntax. For actual values returned
+by the standard JSON parser, equality and truth tests involve only built-in
+types. There are no user-defined comparison/truth/destructor hooks.
+Malformed JSON syntax fails during the identical initial parse. Noncanonical
+parsed values, unused prefixes, bool/int aliases, and nonstandard NaN/Infinity
+inputs accepted by Python's decoder receive no new mathematical meaning.
+The two checker programs perform the same formula-data operations; the only
+additional truth test is on a result proved to be True or a singleton list.
+
+The candidate allocates [q()] and retains nested return lists, so fixed memory
+or call-stack limits can produce different resource failures. The universal
+equivalence statement must use sufficient resources for each finite run,
+as the existing corpus does. It is not an assertion of identical runtime,
+peak memory, exception text, or behavior under arbitrary injected Python
+objects. The public mathematical soundness contract remains the inherited
+canonical guarded Eq/D contract; the transformation does not add a public
+grammar validator or full certificate alphabet validation.
+
+6. MEASUREMENTS
+Independently recomputed with CPython 3.12.14, ast.unparse plus one LF,
+all AST nodes, significant tokens excluding layout/comments:
+
+                         tokens    AST    bytes
+Current exact control      267     299     495
+Candidate                  271     304     488
+Delta                       +4      +5      -7
+
+This is a new normalized-byte improvement against this exact current
+control. It does not improve the 249-token or 271-node corpus coordinates,
+and does not establish one program below the whole coordinate envelope.
+
+7. NOVELTY AND ATTRIBUTION
+The truth-valued checking idea is already present in
+Research/inferred_major/code/checker_bytes.py and explicitly justified in
+Research/inferred_major/code/PROOFS.txt, section 2, 'Truth-valued checking and
+sequential tuple construction'. That older implementation uses a singleton
+list containing a tuple (compute_h, check_continuation), with an explicit h
+binding, to preserve the older evaluation schedule.
+
+The present candidate applies the same return convention to the newer
+context-first 495-byte source. That source already nests raw hypothesis
+construction into the continuation's first argument. Consequently the
+candidate needs no extra sequencing tuple or h assignment. The claimed
+contribution should therefore be described as a new measured composition
+of established implementation refinements, not as invention of truth-valued
+checking, a new arithmetic axiom deletion, a new certificate protocol, or a
+global minimality theorem.
+
+A complete current-corpus search for the exact 488-byte source was not part
+of this review. The precise support here is the new measured composition
+relative to the current inspected frontier controls and reports.
+

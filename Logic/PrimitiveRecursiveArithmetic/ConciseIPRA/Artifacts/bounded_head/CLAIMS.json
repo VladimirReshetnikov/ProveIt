@@ -1,0 +1,107 @@
+{
+  "title": "Bounded conversion for intuitionistic primitive recursive arithmetic",
+  "date": "2026-11-12",
+  "repository_snapshot": "eb0e0e00147e9f8d29737ff58587852008ecf4c3",
+  "requested_global_checker_size_target_met": false,
+  "new_theory": "BH_3",
+  "primitive_rule_families": [
+    "Hyp",
+    "Refl",
+    "VariableSubstitution",
+    "QE",
+    "DE",
+    "WitnessSelectedDI",
+    "HC_depth_at_most_3_left_endpoint"
+  ],
+  "term_policy": "Raw finite syntax, capture-avoiding substitution, no normalizer.",
+  "theorems": [
+    {
+      "claim": "Exact equivalence with the native N kernel on all raw open sequents",
+      "status": "written proof, independently audited"
+    },
+    {
+      "claim": "Bi-interpretability with full first-order iPRA; both formula round trips; whole numerical domains; actual equality; identity numerical graphs",
+      "status": "composition of the new exact equivalence with the inherited NativeBiInterpretation bridge"
+    },
+    {
+      "claim": "Equiconsistency with iPRA",
+      "status": "effective proof translations preserving contradiction"
+    },
+    {
+      "claim": "Primitive recursive finite-certificate checking for BH_3",
+      "status": "written worklist argument"
+    },
+    {
+      "claim": "No primitive recursive uniform zero test for all closed iterator terms, hence no primitive recursive weak-head normalizer",
+      "status": "written diagonal argument, with attribution of the existing full-normalizer obstruction"
+    }
+  ],
+  "not_claimed": [
+    "Global smallestness",
+    "A checker below every incumbent coordinate",
+    "Minimum possible counter depth",
+    "Minimum possible rule count",
+    "New Lean/Rocq verification",
+    "An external human peer review",
+    "A rebuilt upstream Lean development",
+    "Equality of raw certificate languages with the weak-head control"
+  ],
+  "novelty_scope": "No prior fixed-depth-three left-counter-spine conversion completeness theorem found among the eleven integrated chapters and seven incoming archives at the snapshot. No literature-wide priority claim.",
+  "checker_metrics": [
+    {
+      "file": "code/bounded_checker.py",
+      "significant_tokens": 1056,
+      "ast_nodes": 1127,
+      "normalized_bytes": 3089,
+      "normalized_bytes_with_docstring": 3618,
+      "source_sha256": "9ae39683fd7b1f50246d855c5656c8e586e0777b1e9d4cd4a846da9965a656e2",
+      "normalized_sha256": "b5abc52266810639bc3e9e3c87e279efc6de823b950e9833f6d5e8ba07603341"
+    },
+    {
+      "file": "controls/head_checker.py",
+      "significant_tokens": 1062,
+      "ast_nodes": 1123,
+      "normalized_bytes": 3119,
+      "normalized_bytes_with_docstring": 3353,
+      "source_sha256": "03644a4ed7d0f7f488ec84d8ee6bb659d80ef391c3bd67a5874b95c6eda3c796",
+      "normalized_sha256": "8931bce4e0a9ebe39b1c54e0db9daad1bdb023d5e872e17143347f3f7146666d"
+    },
+    {
+      "file": "controls/head_checker_source.py",
+      "significant_tokens": 1059,
+      "ast_nodes": 1119,
+      "normalized_bytes": 3102,
+      "normalized_bytes_with_docstring": 3336,
+      "source_sha256": "ae42cafb6972d1b4241a7a2a8b40b97d75570170086ac1b259cc5ffb4809effa",
+      "normalized_sha256": "24d6dff503b1bda5d63fe226066886b0895d6417d2885a9715daaf162e04ac72"
+    }
+  ],
+  "finite_verification": {
+    "generated_fixtures": 23,
+    "cli_executions": 68,
+    "cli_failures": 0,
+    "positive_control_translations": 11,
+    "independent_boundary_checks": 18,
+    "independent_boundary_failures": 0
+  },
+  "source_envelopes": {
+    "compact_across_interfaces": [
+      244,
+      265,
+      477
+    ],
+    "native_goal": [
+      321,
+      369,
+      596
+    ],
+    "whole_certificate_alphabet": [
+      330,
+      380,
+      621
+    ]
+  },
+  "envelope_warning": "Different programs and, for compact, different protocols. These are observed minima, not lower bounds.",
+  "runtime_limit": "Mathematical completeness assumes enough resources; a physical Python process may reject large valid certificates on resource exhaustion.",
+  "remote_mutations": false
+}

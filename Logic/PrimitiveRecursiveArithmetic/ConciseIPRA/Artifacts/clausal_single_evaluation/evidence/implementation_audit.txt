@@ -1,0 +1,101 @@
+IMPLEMENTATION AND COMPARISON AUDIT
+
+Reviewed artifact: code/checker.py (the byte-identical portable source).
+Selected normalized source SHA-256:
+f0168f241f7a6252fa7a2eadde6ecbd57570eb74610e3c1a26134a42131ed977
+
+1. IMPLEMENTED CALCULUS
+
+The selected acceptance module implements closed Eq/D theorems of the
+zero-normal clausal calculus with five patterns: reflexivity, uniform
+successor evaluation, clause use, paired elimination, and witness-selected
+paired introduction. It has no direct root-equality branch, no zero-Eval
+branch, no first-class Q formula, and no separate equality-only context
+parameter. The arithmetic packet still supplies h as the iterator update
+body; calling it entirely template-free would be imprecise.
+
+The goal-oriented packet constructs the successor redex I(S(c),b;u.h) and
+its canonical predecessor I(c,b;u.h) from c,b,h. The constructor shape is
+therefore not separately matched after inference. This is a legitimate
+certificate representation of the single inference scheme, and its code
+is fully counted. The matched raw and zero controls use their natural
+packets with an explicit comparison source and root/computation dispatch.
+
+2. TYPING AND FRESHNESS
+
+Every recursive prove call validates its goal before the reflexivity
+shortcut. Eval validates c,b,h through the constructed minor equation and
+t through the major equation. Booleans are excluded by exact int tests.
+Noncanonical iterators are excluded recursively. Clause indices are exact
+integers in range; negative indices cannot exploit Python list indexing.
+
+Numerical witnesses at a use site contain no free positive bound indices.
+Their free parameters are negative levels. This explains why insertion
+under local binders needs no shifting of free variables. The opener still
+increases its distinguished index beneath an iterator body and beneath D.
+A witness may contain internally bound variables, which remain bound.
+
+The fresh negative level -n-1 is available only in the branch. The DE goal
+and DI witness are validated at scope n before scope is extended. Replaying
+a proof under a larger context preserves the meanings of earlier negative
+levels. No detected path permits the fresh witness to escape.
+
+A well-typed reflexive goal closes regardless of the accompanying unused
+proof payload. The same policy is used by both matched controls. Therefore
+claim full validation of goals and every used rule input, not validation
+of all irrelevant payload bytes. Acceptance does not rely on assert.
+
+3. MATHEMATICAL TRANSLATION EVIDENCE
+
+The supplied reproducibility program checks 66 source certificates with
+the archived raw CE5 checker: 32 original examples, 32 distinct round-trip
+certificates of those examples, and two explicit witness-collapse cases.
+It translates them to the zero-normal forward UE calculus and verifies
+the normalized conclusions. It then checks the selected goal-oriented
+certificates and the matched zero-normal control, and replays translated
+proofs in the independently supplied tagged Eq/Q/D E2 verifier.
+
+The witness-collapse repair is necessary when a nonzero raw witness
+normalizes to literal zero. The compiler uses the surviving alias
+I(S(0),0;u.0), transports the old zero-instance assumption to witness zero,
+translates the branch, transports its conclusion back, and applies case
+introduction at the alias. One dedicated case consumes the old base,
+so the context-replacement path is exercised rather than merely present.
+
+The complete portable run reports 70 accepted examples, 20 rejected
+malformed/scope examples, and 180 public process checks, half under
+ordinary Python and half under python -O. An independent audit of the
+same source found no soundness flaw and additionally exercised 17
+malformed/type/scope cases plus valid UE and nested-binder opening.
+These are executable checks of finite instances, not a formal verification
+of all Python inputs or a new Lean/Rocq proof.
+
+4. EXACT METRICS
+
+CPython 3.12.14; remove docstrings from Module/FunctionDef/AsyncFunctionDef/
+ClassDef nodes, then ast.unparse plus one LF. No function or class in the
+measured modules has an additional docstring, so the reproduction script's
+module-docstring removal gives the same result. Significant tokens exclude
+encoding, end marker, whitespace/newline, indentation, and comment tokens.
+Gzip is level 9 with timestamp zero.
+
+                         Tokens   AST   Normalized bytes   Gzip9
+Selected checker           741    826        2283             818
+Matched raw CE5 control    744    842        2416             855
+Matched zero control       765    865        2426             862
+
+Selected readable source: 2717 bytes, gzip9 1036 bytes.
+Raw-control readable source: 2698 bytes, gzip9 984 bytes.
+Zero-control readable source: 2731 bytes, gzip9 1004 bytes.
+
+The selected source strictly improves the three normalized coordinates
+against both matched controls. It saves 133 normalized bytes against the
+raw control (5.50%) and 143 against the zero control (5.89%). Its readable
+file is not smaller than the raw control, because comments/docstrings and
+formatting differ. Gzip is informational and is not a minimized objective.
+
+The independent forward checker is 3022 normalized bytes, 867 tokens and
+1008 AST nodes, versus its raw forward control's 3046/853/993. Thus the
+forward pair does not show coordinatewise improvement. The selected
+comparison must not be silently generalized to every proof encoding.
+Nor does the construction beat the repository's 516-byte compact codec.

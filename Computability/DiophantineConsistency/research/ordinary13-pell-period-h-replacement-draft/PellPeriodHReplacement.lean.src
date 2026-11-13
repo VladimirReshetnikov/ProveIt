@@ -1,0 +1,34 @@
+import DiophantineConsistency.PellPeriodFinalBodyEval
+
+/-! SOURCE ONLY. Quotation interpretation, nested-existential reduction,
+    BoundTerm evaluation and all prospective providers are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellPeriodHReplacementDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PellPeriodFullWBDraft PellPeriodFinalReplacementsDraft PellPeriodFinalBodyEvalDraft
+open PRAWitnessBoundTerms PRAWitnessBoundTerms.BoundTerm
+
+/-- The existing h is exactly the candidate bound. The interpretation
+    of the quotation remains an explicit hypothesis in this theorem. -/
+theorem hReplacement (evalBody : BodyEvaluationBridge) : Replacement bodyH boundH := by
+  intro V _ _ e h hh
+  have original := hh
+  change (∃⁰ (∃⁰ (∃⁰ (∃⁰ finalBody)))).Eval (h :> e) Empty.elim at hh
+  simp only [Semiformula.eval_ex] at hh
+  obtain ⟨x,y,r,t,hfinal⟩ := hh
+  have data := (evalBody V (t :> r :> y :> x :> h :> e)).mp hfinal
+  change BodyData t r y x h (e 0) (e 1) (e 2) at data
+  have heq : h=2*(e 1)*(e 0) := data.2.1
+  refine ⟨h, ?_, original⟩
+  simpa [boundH, PRAWitnessBoundTerms.BoundTerm.vval, numeral_eq_natCast] using le_of_eq heq
+
+/-- Proposed composition with the separately drafted evaluation bridge. -/
+theorem hReplacement_closed : Replacement bodyH boundH :=
+  hReplacement bodyEvaluationBridge
+
+end DiophantineConsistency.PellPeriodHReplacementDraft
+#print axioms DiophantineConsistency.PellPeriodHReplacementDraft.hReplacement
+#print axioms DiophantineConsistency.PellPeriodHReplacementDraft.hReplacement_closed

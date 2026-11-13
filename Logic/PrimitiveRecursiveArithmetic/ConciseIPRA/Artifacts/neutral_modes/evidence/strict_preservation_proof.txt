@@ -1,0 +1,224 @@
+EAGER OPENING IN THE THREE-FIELD NATIVE PRESENTATION
+==================================================
+
+Scope and claim
+---------------
+This is a composition of two existing constructions, not a new arithmetic
+axiom deletion. The three complete modules used as controls are in the pinned
+ConciseIPRA incoming archives at commit
+7a7633980dbca7f599322a5e7f1e65fb1cddb7c8. The three-field certificate protocol
+and the fully validated public syntax come from
+ipra_validated_three_field_2026-11-13. Eager opening and the empty-array
+administrative premise come from ipra_checked_reduction_2026-11-13.
+
+The new measured modules are:
+  checker_tokens304.py   304 tokens, 359 AST nodes, 652 normalized bytes;
+  checker_ast345.py      328 tokens, 345 AST nodes, 665 normalized bytes;
+  checker_joint311.py    311 tokens, 350 AST nodes, 685 normalized bytes.
+The first and third use three-field records. The second uses four-field
+records. They validate the full input alphabet and the initial closed native
+Eq/D goal. Only the first two improve an individual current strict record.
+No one program attains all coordinate minima, and none beats the compact
+promised-grammar family in all coordinates.
+
+The theorem is soundness for every accepted finite parsed input and
+completeness for canonical encodings of the closed native Eq/D theorems.
+The existing full first-order iPRA interpretation is inherited unchanged.
+Exact equality of accepted arbitrary raw certificate languages with the
+controls is NOT asserted. Eager opening can reject aliases on which a lazy
+opener never examines its image. The administrative premise is recoded.
+There is no new Lean or Rocq verification of Python semantics.
+
+1. The two changes
+------------------
+In each matched control, replace the opener's final expression
+
+       (d % 2 or not g) and i(t, d=3)
+
+by
+
+       d % 2 * i(t, d=3).
+
+After the initial goal validation, replace g += b'\x00' by g += [[]].
+All other program syntax is unchanged. In particular the scope inequalities,
+public grammar, substitution order, arithmetic rules, native case/progress
+distinction, and whole-input alphabet check are retained.
+
+The first replacement eagerly checks an image even at an even depth; at an
+even depth the result is numeric 0 or the empty list, according to the
+image's type. Both have the true-formula auxiliary reading. The second
+replacement gives the empty list its established role as an administrative
+truth premise. It is needed because the eager no-image scan rejects the old
+formula-position scalar 0 at depth zero.
+
+2. The sorted reading and the opening lemma
+------------------------------------------
+This is the existing interpretation of raw intermediate expressions, not a
+new unrestricted public grammar. At a formula position depth is 2p; at a
+term position it is 3+2p, where p counts protected slots. Names in [k,0)
+are rigid parameters. At term positions the scalar codes 0,1,2 denote zero,
+and 3+2j and 4+2j denote protected slot j when present. All other scalars
+are the substitution hole. At formula positions every scalar denotes the
+true equation 0=0. Arrays are read by their arity:
+
+  arity     term position                 formula position
+  0         zero                          0=0
+  1         successor                     paired binder D
+  2         zero                          equality
+  3         iterator                      closure Q (last child)
+  >=4       zero                          0=0.
+
+The arity-dependent increment d+5-len(a) supplies the existing genuine and
+dummy slots. Children with no reading are annotations; their traversal can
+reject but does not change the semantic reading. The complete environmental
+definition is ch11_cert.tex, cert:def:reading and cert:def:opener.
+
+Let E(a;t,d) be the new proof-phase opener at a fixed floor k. Whenever E
+returns, its output is closed at the same sorted position and its reading
+is the reading of a with the term read from t substituted for its free hole.
+With the missing image 0j, successful opening preserves the reading and
+establishes closedness of a.
+
+Proof. Induct structurally on the traversed tree, with the usual simultaneous
+argument for validation of the inserted image. At a retained numeric leaf
+the returned value is a or 1; the only changed code is 0 to 1, and both read
+as numerical zero at a term position. At an exposed odd-depth leaf the image
+is validated at root term depth 3 and inserted without capture. At an exposed
+even-depth leaf the eager product is 0 or []; either reads as 0=0. The missing
+image cannot pass validation: 0j reaches an invalid ordered comparison. Array
+cases are the unchanged structural recursion. Consequently extra eager image
+checks may fail, but every successful opening has the same semantic property
+as the old opener. This is exactly the composition of cert:lem:opening,
+cert:lem:plus-opening and cert:lem:eager. The exposure and freshness lemmas
+continue to hold, since their interval and protected-slot conditions are
+unchanged. On canonical uniform-zero expression trees with an admissible
+image, the opener agrees literally with the old canonical substitution.
+
+3. Initial validation and phase
+------------------------------
+The complete input first passes the unchanged test that its Python printed
+form contains only digits, '-', '[', ']', ',', and space. Among parsed JSON
+values this admits exactly finite integer/list trees; strings, objects,
+Booleans, floats and null are rejected, including in unused input prefixes.
+A non-list top-level value cannot provide the required pop operation.
+
+Initially k=0 and g=[]; the first traversal is therefore the strict public
+validator. At an even formula depth it admits only unary D and binary Eq;
+at an odd term depth only unary successor and ternary iterator. A scalar
+must be a positive odd code at an odd depth, within the protected scope.
+These are precisely the control's P_ed_1 goal conditions. Public zero is 1.
+All failed shapes and scope checks reach the eager missing-image failure,
+including an invalid scalar at an even depth. Thus replacing the old explicit
+validation flag inside the fallback has not silently admitted truth atoms.
+
+After the first scan, each expanded context contains []. Subsequent calls
+have a nonempty context and use the auxiliary syntax. Both g += [[]] and
+major calls can append extra copies of []; these are copies of a closed
+theorem. Their number and order are not used to determine scope. Every
+substantive branch assumption is still added by g+[h], which creates a fresh
+list. A proof's local assumptions do not leak to its caller. In the AST
+profile the empty-premise append remains inside the existing matched-record
+case; no syntax of that case has changed.
+
+4. Soundness of the three-field profiles
+---------------------------------------
+Induct on the finite tree of returning calls. Maintain that the current goal
+and every context entry have closed auxiliary readings at the entry floor;
+the readings of context entries are the available assumptions. The opener
+lemma establishes the invariant for all successful scans and substitutions.
+Initial validation separately establishes that the root denotes the actual
+declared closed native formula.
+
+Membership is the hypothesis rule. Matching [] is use of the already
+derivable truth 0=0.
+
+For a nonterminal packet (s,u,t), first compare the target opening i(t,u)
+with the current goal. On equality, replace the goal by i(t,s), reconstruct
+the major [s,u] when s is true-valued and [t,t,t] otherwise, and clear u.
+The reconstructed major is recursively proved. The opening lemma gives the
+two instances of one equation template, or a closure and its zero instance;
+this is the inherited transport/closure-specialization rule. The comparison
+and the witness opening occur at the OLD floor, as in the matched control.
+In particular a later recursive proof cannot make an earlier witness name
+its own future eigenparameter.
+
+If u is false-valued and s is true-valued, the major is recursively proved
+and s*3 is the retained resource. If s is unary, triplication creates its
+Q body; opening at the newly allocated name is paired-binder elimination.
+Every other array arity gives the inherited neutral-reading case. The
+semantic opening and freshness proofs are unchanged.
+
+If u and s are false-valued, the new administrative source [] is closed by
+membership. The goal's matrix is opened at witness t before decreasing k.
+The mode test s or len(A)%2==u is UNCHANGED. For a genuine equation matrix
+(arity 2), u=0 gives equation progress. The literal empty-list marker u=[]
+gives cases. For compound D/Q matrices (arities 1/3), both false-valued
+markers give cases. Arrays of arity at least 4 have the neutral reading;
+an attempted length test on a scalar fails. Thus this composition never
+introduces induction for arbitrary compound formulas.
+
+If u is true-valued, the hypothesis is the inherited computation frame.
+The three-field source reuse can make its image fresh rather than zero.
+The existing zero-instance computation lemma cert:lem:zeroinstance says
+that after setting the newly admitted private names to zero the supplied
+hypothesis is an instance of I0 or IS. The old context and goal contain
+none of those names. Apply the continuation induction hypothesis in the
+ordinary theory T_eq and specialize those names to zero; discharge the
+resulting computation axiom by cert:lem:supply. This argument requires
+only the reading and freshness properties of opening, already proved above.
+It does NOT claim that every raw supplied H(z) is itself an arithmetic axiom.
+
+These cases exhaust every successful call. Hence every accepted root is
+a theorem of the native calculus. The same proof for the four-field AST
+profile is the control's proof with the two opening/neutral-resource changes;
+its major is explicit, and its original computation and mode guards remain.
+
+5. Canonical completeness and certificate translation
+----------------------------------------------------
+Begin with the inherited canonical compiler for the chosen control. Its
+expression trees use zero code 1, have binary equations at every formula
+leaf, and use admissible term images. Therefore every eager image preview
+needed in the new module succeeds and every substantive canonical opening
+has its old literal value. Each administrative [] is already in the context
+and closes immediately. No additional numerical name is allocated there:
+the local floor is advanced at the same inference point as in the control.
+
+For canonical three-field packets, replace a control source s=0 by [] only
+in introductions, where u is false-valued. Preserve the difference between
+u=0 (equation progress) and u=[] (cases). Leave computation rows (u true)
+and closure-specialization rows unchanged. Canonical specialization targets
+are numerical terms and encode zero by 1, so a canonical specialization
+does not accidentally meet this introduction-row recoding. Its source 0 is
+reconstructed into a nonempty Q major before a major proof is called.
+
+For canonical four-field packets simply replace the explicit administrative
+major m=0 by []; do not change sources, images, or mode markers.
+
+All primitive native inferences therefore retain finite certificates in
+the new modules. The word 'canonical' is essential: the simple recoding
+function is not a theorem about all malformed auxiliary inputs. Soundness
+for arbitrary accepted integer/list inputs comes from section 4, separately.
+
+6. Interpretation, evidence and limitations
+-------------------------------------------
+The public native theory, its ordinary realization, and both interpretation
+maps have not changed. Consequently the existing whole-domain actual-equality
+bi-interpretation with full first-order iPRA transfers; both numerical
+comparison graphs remain x=y and the existing formula round trips remain.
+This is a transfer through preservation of the public theorem language, not
+a new independent proof of all arithmetic definitions.
+
+The delivered fixture run consists of 334 isolated executions under CPython
+3.12.14, ordinary and -O: 65 three-field cases on each of two modules, and
+37 four-field cases on the AST module. All expected results were obtained.
+The cases include computations, closure and paired-binder reasoning, used
+induction hypotheses, native atomic cases, false public goals, malformed
+public syntax, future-name capture, and unused invalid JSON data. These
+finite checks support the implementation; sections 2-5 are the universal
+written correctness argument. Resource bounds are not identified between
+implementations; completeness is for ideal finite executions.
+
+The exact new normalized ASTs are separately checked against the frozen
+upstream index and all currently downloaded incoming Python sources. Lack
+of an identical program is not a claim of mathematical priority. In
+particular both semantic devices above are explicitly inherited.

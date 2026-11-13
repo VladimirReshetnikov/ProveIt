@@ -1,0 +1,247 @@
+/tmp/compact44-graph-support-join-01/FixedGraphSelectedDecoder.lean:45:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  4393
+in the target expression
+  NoCarry
+    (FixedGraphRawBands.decoderBand position 4393 (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) ↑4393)
+    (Exp.exp 51 - 2)
+
+case inl
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+v : Fin 12 → V
+hv : ∀ (j : Fin 12), 0 < v j
+hz : InternalZero (literal fun j => ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat j)) v
+N w t : V
+hN : 0 < N
+hq : 1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) = Exp.exp (67 * 8807 * N)
+hJ : v 0 = rep (67 * 8807) N
+hle :
+  67 * 8807 * N ≤
+    ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+            (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+          v 2) *
+        ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+      (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+          (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+            ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+        v 0
+hw :
+  w =
+    Exp.exp
+      (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+              v 2) *
+            ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+          (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+              (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+            v 0 -
+        67 * 8807 * N)
+hv5 : v 5 = (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) * w
+hcarry :
+  CarryInput 67 (8807 * N) (v 1) 1 GenericBandCarryFamily.cap
+    (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+    (GenericBandCarryFamily.word (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2)
+      (bandOffsets position)
+      (temporalWord (8807 * N)
+        (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                  (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+                v 2) *
+              ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+            (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+                (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                  ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+              v 0 -
+          67 * (8807 * N))
+        (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2)))
+hTzero :
+  dig 67
+      (temporalWord (8807 * N)
+        (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                  (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+                v 2) *
+              ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+            (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+                (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                  ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+              v 0 -
+          67 * (8807 * N))
+        (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2))
+      t =
+    0
+hTpred :
+  dig 67
+      (temporalWord (8807 * N)
+        (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                  (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+                v 2) *
+              ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+            (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+                (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                  ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+              v 0 -
+          67 * (8807 * N))
+        (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2))
+      (cyc (8807 * N) t 1) ≤
+    Exp.exp 66
+hc :
+  carry 67 (8807 * N) (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+      (GenericBandCarryFamily.word (8807 * N)
+        (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2)
+        (bandOffsets position)
+        (temporalWord (8807 * N)
+          (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                    (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+                  v 2) *
+                ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+              (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+                  (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                    ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+                v 0 -
+            67 * (8807 * N))
+          (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2)))
+      (cyc (8807 * N) t 1) =
+    0
+ht : t = 4393
+hb :
+  dig 67 (v 1) t =
+    FixedGraphRawBands.decoderBand position 4393 (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) t
+hin :
+  Inputs (8807 * N) (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) 4393
+hnc :
+  NoCarry
+    (FixedGraphRawBands.decoderBand position 4393 (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) t)
+    (Exp.exp 51 - 2)
+⊢ NoCarry
+    (FixedGraphRawBands.decoderBand position 4393 (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) ↑4393)
+    (Exp.exp 51 - 2)
+/tmp/compact44-graph-support-join-01/FixedGraphSelectedDecoder.lean:50:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  5495
+in the target expression
+  NoCarry
+    (FixedGraphRawBands.decoderBand position 5495 (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) ↑5495)
+    (Exp.exp 51 - 2)
+
+case inr
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+v : Fin 12 → V
+hv : ∀ (j : Fin 12), 0 < v j
+hz : InternalZero (literal fun j => ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat j)) v
+N w t : V
+hN : 0 < N
+hq : 1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) = Exp.exp (67 * 8807 * N)
+hJ : v 0 = rep (67 * 8807) N
+hle :
+  67 * 8807 * N ≤
+    ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+            (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+          v 2) *
+        ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+      (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+          (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+            ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+        v 0
+hw :
+  w =
+    Exp.exp
+      (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+              v 2) *
+            ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+          (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+              (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+            v 0 -
+        67 * 8807 * N)
+hv5 : v 5 = (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) * w
+hcarry :
+  CarryInput 67 (8807 * N) (v 1) 1 GenericBandCarryFamily.cap
+    (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+    (GenericBandCarryFamily.word (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2)
+      (bandOffsets position)
+      (temporalWord (8807 * N)
+        (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                  (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+                v 2) *
+              ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+            (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+                (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                  ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+              v 0 -
+          67 * (8807 * N))
+        (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2)))
+hTzero :
+  dig 67
+      (temporalWord (8807 * N)
+        (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                  (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+                v 2) *
+              ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+            (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+                (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                  ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+              v 0 -
+          67 * (8807 * N))
+        (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2))
+      t =
+    0
+hTpred :
+  dig 67
+      (temporalWord (8807 * N)
+        (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                  (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+                v 2) *
+              ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+            (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+                (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                  ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+              v 0 -
+          67 * (8807 * N))
+        (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2))
+      (cyc (8807 * N) t 1) ≤
+    Exp.exp 66
+hc :
+  carry 67 (8807 * N) (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+      (GenericBandCarryFamily.word (8807 * N)
+        (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2)
+        (bandOffsets position)
+        (temporalWord (8807 * N)
+          (((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - 1) *
+                    (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1) +
+                  v 2) *
+                ((1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) ^ 2 - 1) +
+              (↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 2) +
+                  (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0)) *
+                    ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 3)) *
+                v 0 -
+            67 * (8807 * N))
+          (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2)))
+      (cyc (8807 * N) t 1) =
+    0
+ht : t = 5495
+hb :
+  dig 67 (v 1) t =
+    FixedGraphRawBands.decoderBand position 5495 (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) t
+hin :
+  Inputs (8807 * N) (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) 5495
+hnc :
+  NoCarry
+    (FixedGraphRawBands.decoderBand position 5495 (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) t)
+    (Exp.exp 51 - 2)
+⊢ NoCarry
+    (FixedGraphRawBands.decoderBand position 5495 (8807 * N)
+      (1 + v 0 * ↑(ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat 0) - v 1 - v 2) ↑5495)
+    (Exp.exp 51 - 2)
+'FixedGraphSelectedDecoder.graph_selected_decoder' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

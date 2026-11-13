@@ -1,0 +1,18 @@
+/tmp/ipra-compact-selector-explore/CompactSelector.lean:29:47: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?m.242 + Exp.exp 10 * ?m.243) % Exp.exp 10
+in the target expression
+  (n + P * Exp.exp 10) % Exp.exp 10 = n
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+n P : V
+hn : n < Exp.exp 10
+h : NoCarry (n + Exp.exp 10 * P) (Exp.exp 51 - 2)
+S : V := n + Exp.exp 10 * P
+hm : Exp.exp 51 - 2 < Exp.exp 51
+hd : NoCarry (S % Exp.exp 51) (Exp.exp 51 - 2)
+hlow : S % Exp.exp 51 ≤ 1
+hmod : S % Exp.exp 51 % Exp.exp 10 = S % Exp.exp 10
+⊢ (n + P * Exp.exp 10) % Exp.exp 10 = n
+'CompactSelector.selector_at_most_one' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

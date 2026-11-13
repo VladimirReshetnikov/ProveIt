@@ -1,0 +1,108 @@
+INDEPENDENT REVIEW: DETERMINISTIC-WITNESS INTRODUCTION
+
+Status: positive written review of the finite proof translation and raw
+checker simulation. This is not a Lean/Rocq verification or external peer
+review. The change is to the logical presentation of the inherited scalar
+Choice-DI theory; its arithmetic basis is retained.
+
+1. Native rule replacement
+
+For a literal equation matrix E(x,y), witness 0 selects progress:
+    Gamma,E(0,z) |- E(0,Sz)  /  Gamma |- D(x,y).E(x,y).
+For any other witness/matrix combination the rule selects cases:
+    Gamma,A(t,0) |- A(t,Sz)  /  Gamma |- D(x,y).A(x,y).
+The case rule is restricted only when the matrix is an equation and the
+chosen witness is the literal term 0. Usual eigenvariable conditions apply.
+
+Every new rule is an instance of an inherited rule. Conversely:
+
+(a) Progress at a nonzero-syntax witness t is admissible. Put B(y)=E(t,y).
+Use zero-witness progress for D(u,y).B(y), with u unused. Eliminate this D
+to obtain Q(y).B(y). Under a fresh case assumption B(0), specialize at Sz.
+Case-introduce the original D(x,y).E(x,y) with witness t. The newly added
+witness and successor eigenparameters are fresh for the entire source proof.
+
+(b) Equation case introduction at literal witness 0 is admissible. The term
+    C=I(2,1;v.0)
+has a direct computation proof C=0. Under E(C,0), transport to E(0,0), cut
+this proof into the old step derivation, and transport E(0,Sz) to E(C,Sz).
+Case introduction with the nonzero-syntax witness C gives the same original
+D conclusion. This uses only computation, equation transport, derived
+symmetry, ordinary-assumption cut, and an allowed case rule.
+
+Thus the old and new native consequence relations coincide, with the same
+terms, formulas, retained contexts, domains, and actual equality. The
+inherited whole-domain bi-interpretation with full first-order iPRA therefore
+transfers unchanged. No stronger induction principle is introduced.
+
+2. Exact raw soundness simulation
+
+The new final hypothesis image is
+    (m or t == len(a) % 2 == 0) and k.
+The inherited certified-zero image is
+    (m or len(a) % 2 == m) and k.
+For every executed new packet with a falsy major marker, replace the marker
+by numeric 0 when t==0 and by [] otherwise. Leave truthy majors unchanged.
+Then the old and new final images are identical for every goal arity.
+The two dispatchers compute the same goal and assumption before that image.
+This remains true for computation packets, where t denotes the update body.
+
+The Boolean supply expression is sound because supported truthy majors
+have truthy triples, and every generated computation equation is a nonempty
+array. Multiplying an unsupported falsy marker can reject extra raw
+certificates; it cannot create an additional accepting derivation.
+
+The invalid default image 0j is equivalent to None on successful traversals:
+neither is valid in a used numerical comparison, while neither is consulted
+at positions where the opener short circuits. The Python JSON parser cannot
+create a complex-number term. This does not add a numerical constant.
+
+Induction on a finite accepting trace therefore maps every accepted new
+certificate to an old accepted certificate with the same goal and context
+at corresponding recursive calls. Old soundness plus the native rule
+equivalence proves new soundness.
+
+3. Canonical completeness
+
+The untrusted named translator in witness_normalizer.py performs the two
+native derivation transformations above, then the inherited computation
+normalization. Every falsy major marker is serialized as []. Introduction
+behavior is now determined by the witness and literal matrix constructor.
+Canonical computation equations have no free occurrence of the newly minted
+administrative parameter, so opening them at that parameter or at zero is
+identical. The inherited native compiler therefore supplies all computation
+leaves under the new rule.
+
+The named producer uses globally distinct binder names. As usual, an
+arbitrary finite native proof can be alpha-renamed to meet this convention.
+The checker does not trust or import either producer.
+
+4. Executed checks
+
+verify_witness.py regenerates 18 positive cases and five negative controls.
+Three exact-list implementations are executed in ordinary and optimized
+Python, giving 138 complete CLI checks with no mismatches. The positive
+cases include all inherited named examples, direct C=0, literal-zero seed
+normalization, a zero-case step that essentially uses its base assumption,
+and nonzero progress where the witness occurs in the matrix and the step
+essentially uses its induction hypothesis. The last two reject before
+normalization and accept afterward.
+
+Two further executions remove the literal-equation restriction and accept
+a forged compound progress certificate at witness 0. The real checker
+rejects it in both Python modes. This tests the arithmetic-strength guard.
+
+5. Limits and comparison
+
+The zero-product exact-list profile is 555 normalized bytes, 266 tokens,
+312 AST nodes, and gzip-9 size 344 bytes. The type(a) is list profile is
+559 / 266 / 312 / gzip 348. The isinstance profile is 563 / 266 / 310 / gzip 349.
+The byte profile improves the current 558-byte supplied minimum; it does
+not improve the token or AST minima. This is a small rule-presentation and
+implementation improvement, not a large new arithmetic foundation.
+
+Some old raw verdicts intentionally change. Changing an introduction marker
+from 0 to [] no longer changes its mode. A raw arithmetic hypothesis with an
+unbound seed can be instantiated differently when the update is literal zero.
+Use regenerated canonical examples and the new controls, rather than copying
+the entire old raw test expectation table.

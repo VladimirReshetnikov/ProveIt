@@ -1,0 +1,7 @@
+# Independent prelaunch review: high digit v5
+
+Scoped GO for one coordinated check using runner SHA-256 `39aefdea2a7d029474ccf0bf5df0b228f02ad75d2c5dead561b926c8c1b5a5e1` and outer SHA-256 `fa721123aa8ec78ea7339978ca569ba798450a6c10a91421fe18080ee2a23abf`. The source plan pins reviewed v5 source `c20e82182a5bc684ae66c66923194f94bee36b606395d951a1fa403b05f1d58e`; the actual source and planned report both name `Trace74HighDigitBound.high_at_least`. Comparing to the reviewed v4 runner shows only source-plan and source-review pin changes; the two direct project providers and preserved parent closures remain unchanged.
+
+Read-only preflight terminal `7e1e902c328fe6604180468ec78991ca45831ae3a16bfbac2d968c649e4a9d95` records exit 0 and 2035/81/one stage; the 25-case actual-function and six-case outer control receipts report PASS. Outer pins the runner/preflight/policy and requires successful, stable child results. Coordinate slot and capture actual outer exit; no Lean was run in this review.
+
+V4 failed with an empty-list append residual, unused simp warning and sorryAx; v5's sole change replaces that unused simp lemma with `List.nil_append`, as documented in `reviews/trace74-high-digit-v4-failure-v5-draft-independent/README.md` SHA-256 `f0730e0c030af88874be2f8ef5cc8dd160343671bb9ff94e623ddc945d3fe4a2`. No theorem acceptance follows until a successful terminal audit. Four inherited baseline source ancestries, outside/package/dynamic ancestry and external-file binding remain limited; no full mask cover, graph guard or iPRA claim follows.

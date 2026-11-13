@@ -1,0 +1,92 @@
+INDEPENDENT SEMANTIC REVIEW: PREDECESSOR-GENERATED COMPUTATION
+===========================================================
+Reviewed exact file:
+/workspace/scratch/1a00eed7ce85/work/kernel/checker_predecessor.py
+
+Change against flat_computation:
+Old null branch:
+  h = [[s, u, t], i(t, [list(*s), u, t], 1) if s else u]
+New null branch:
+  h = [[s and [s], u, t], i(t, [s, u, t], 1) if s else u]
+All logic, scope, endpoint and context code is unchanged.
+
+VERDICT
+The new arithmetic branch is sound under the inherited zero-completion
+semantics. It is canonically complete for initialized scalar iteration
+using boxing and equality transport. This is a genuine simplification of
+the packet contract: the checker constructs the successor source instead
+of asking the producer for a source and separately guarding its shape.
+It is not a new arithmetic theory, and at current measurement the matched
+flat checker is slightly smaller. Interface simplification and size gain
+must not be conflated.
+
+PROOF
+Let k be the old global floor, w=k-1 the fresh label admitted by the
+common continuation. Null m is neither truthy nor equal to either parity
+0/1, so its local assumption is always opened with literal zero. The
+whole generated equation h is traversed before the recursive call. Thus
+an ignored recursive image does not allow malformed syntax in the source
+to bypass validation.
+
+1. False s.
+Successful traversal makes s denote numerical zero. The generated source
+is I(s,u;t), and the right endpoint is u. The two copies of the seed have
+the same value by the inherited zero-completion lemma (all added external
+positive slots are dummy zero slots). Any admitted negative label has the
+same arbitrary value on both sides. The resulting equation is I0.
+
+2. True s.
+The generated source counter is literally the singleton list [s]. It is
+therefore a successor by construction; no list(*s) guard is needed. Let p
+be the zero-completed predecessor denoted by s under the source's extra
+successor dummy slot. The proposed recursive image is [s,u,t].
+
+If opening t at numerical root uses this image, i first traverses the
+entire image at the old floor k. Meaningful occurrences of w and exposed
+positive coordinates cannot survive this old-floor check. The ordinary
+opening/substitution lemma identifies the generated right side with the
+same update applied to I(p,a;h). The source's extra dummy zero slot leaves
+p and the shared passive data unchanged by zero completion. Therefore the
+generated equality is IS.
+
+If opening t never uses the image, t is independent of its outer recursive
+state. A meaningful occurrence of w at this stage would also trigger the
+substitution branch, so it cannot occur meaningfully in the update. The
+source predecessor and seed may acquire w in final zero completion, but
+IS yields the same state-independent update for every p,a,w. Again the
+equality is a theorem uniformly in the fresh parameter.
+
+The above exhaustive argument is the inherited flat uniform-supply proof
+with its shape-guard paragraph replaced by construction of [s]. Scope
+conditions, actual equality and both logical DI modes are unchanged.
+
+CANONICAL COMPLETENESS
+I0 at any seed/update uses false predecessor s=0. IS at a predecessor
+whose raw syntax is truthy uses it directly. To recover IS at a raw-zero
+predecessor, or to make every instance use one uniform nonempty form, use
+B(p)=I(0,p;v.0). The theorem B(p)=p follows from I0. The box B(p) has
+nonempty syntax and the new branch supplies IS at B(p); transport along
+B(p)=p yields IS at p. This works for arbitrary domain elements, not only
+standard numerals. The rest of the inherited completeness proof is
+unchanged.
+
+MALFORMED AND NONCANONICAL INPUTS
+The public untrusted input remains finite JSON. In this isinstance-based
+opener non-list strings, objects and null cannot survive numerical
+traversal; scalar goals cannot match list-valued context assumptions.
+A numeric false alias is zero. Finite fractional and Boolean aliases
+retain the inherited floor/value interpretation. NaN and infinities cannot
+be retained between the finite integer bounds: if a recursive image
+needs them as exposed numerical data the old-floor image validation
+rejects; if the image is unused, final zero completion maps them to zero.
+No new noncanonical syntax class is added except that a source predecessor
+need no longer itself be list-shaped. All its final numerical syntax is
+still traversed. Context assumptions are appended only after that traversal.
+
+NOTES ON EVIDENCE
+This is a written semantic audit, not a machine formalization. The accepted
+set of the exit-status variant is identical to this variant when rejection
+means any exceptional/nonzero process exit. Its only further change is
+removal of the textual REJECT diagnostic wrapper. Since all other rule code
+is byte-identical to the inherited kernel, broad repetition of unrelated
+logical tests is not evidence for a new mathematical theorem.

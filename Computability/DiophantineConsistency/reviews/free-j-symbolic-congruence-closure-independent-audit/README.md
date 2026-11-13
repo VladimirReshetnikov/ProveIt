@@ -1,0 +1,5 @@
+# Independent same-witness symbolic congruence source-closure review
+
+The source and plan bytes match their pinned commits. The unchanged scan reran successfully and matched its receipt; optimized execution was rejected. Independent checks rehashed 143 corresponding objects on each side and all 40 direct-project companion slots. Those inventories, direct imports and package `Init` agree with the earlier first-root scan. The proposed source intentionally shares the same module name as that original source; a paired build must compile this extended source on fresh graph-derived-radix overlays rather than reuse the earlier object.
+
+The extended statement obtains the radix, repunit, congruence and digit properties for the same `N,w`, with arbitrary natural `K`. This is a point-in-time source/provider inventory review, not a parent audit rerun, Lean compilation or paired build. It does not bind `K` to retained bytes, construct words, derive the needed carry decomposition or prove machine correctness or iPRA equivalence. Full package, transitive, dynamic-import and between-check limits remain.

@@ -1,0 +1,12 @@
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+P=Path(__file__).resolve().parent;D=P.parents[1];R=D/'research';q=R/'nine-sharing-norm38-static-carrier-compose-check';sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();src=q/'src/DiophantineConsistency/Norm38StaticCarrierCompose.lean';man=q/'source-manifest.json';run=q/'run.py';survey=q/'producers_preflight.py'
+assert sha(src)=='3a92fa7a64342374ffd1b31a5e14409363b0c6b81a1fd66a0e05bcae69d375cc' and sha(man)=='29160dba24f910c1160c000f0e02ba8497ceb19355516a8970ece937107f4a75' and sha(survey)=='bd9bb79b11a2a91c998f851e3d955e15f592928958f5104a1cc06216758d409b' and sha(run)=='4902ca4ff028d93d45b281d22bd783d3106aa4c2fa39031c3a629935749ff96c'
+t=src.read_text();m=json.loads(man.read_text())['rows'];assert len(m)==1 and m[0]['source_sha256']==sha(src) and m[0]['imports']==['DiophantineConsistency.Norm38ReferenceTerminals','DiophantineConsistency.Norm38StaticCarrierConditional'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',t,re.M)==m[0]['imports']
+assert '[V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]' in t and '(hg : NormAssignment38.gatesHold ι ports w)' in t and '(hn : NormAssignment38.fiveNorms ι ports w)' in t and 'Carrier65.value (fun j => ι (ports j))' in t and 'Fin.castLE (by decide : 14 ≤ 38)' in t and 'static_terminals_norms_imply_value ports w (static_terminals_agree ports w hg) hn' in t and t.count('#print axioms')==1
+x=subprocess.run([sys.executable,'-I','-S','-B',str(survey)],capture_output=True,text=True,timeout=90);z=json.loads(x.stdout);assert x.returncode==0 and not x.stderr and z['status']=='PASS_STATIC_CARRIER_PRODUCER_SURVEY' and (z['producers'],z['direct_guard_slots'])==(8,1250)
+x=subprocess.run([sys.executable,'-I','-S','-B',str(run),'--preflight'],capture_output=True,text=True,timeout=90);assert x.returncode==0 and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT' and not x.stderr,(x.stdout,x.stderr)
+for name in ('nine-sharing-norm38-reference-terminals-terminal-independent','nine-sharing-norm38-static-carrier-retry02-terminal-independent'):
+ p=D/'reviews'/name;x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'check.py')],capture_output=True,timeout=120);assert x.returncode==0 and not x.stderr and x.stdout==(p/'result.json').read_bytes(),(name,x.stderr)
+print(json.dumps({'status':'PASS_PRELAUNCH_ONLY','source_sha256':sha(src),'runner_sha256':sha(run),'survey_selected_producers':8,'survey_guard_slots':1250,'scope':'No Lean; conditional composition and combined imports untested.'},indent=2,sort_keys=True))

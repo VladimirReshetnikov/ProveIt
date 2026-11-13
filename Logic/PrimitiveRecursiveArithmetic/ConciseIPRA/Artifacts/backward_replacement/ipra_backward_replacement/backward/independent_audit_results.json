@@ -1,0 +1,66 @@
+{
+  "all_passed": true,
+  "checker_sha256": "a803a62dd07adbb26276dcf464669b90f6a7c5157231e962fc71d581b43be2cd",
+  "positive_sequents": 4,
+  "negative_certificates": 2,
+  "driver_runs": 4,
+  "outcomes": [
+    {
+      "name": "free_target_does_not_match_bound_variable",
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "name": "de_uses_actual_appended_witness",
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "name": "closed_zero_name_is_used_and_discharged",
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "name": "qi_keeps_old_parameter_and_uses_new_counter",
+      "expected_accept": true,
+      "accepted": true
+    },
+    {
+      "name": "forged_matching_of_bound_variable_to_free_target",
+      "expected_accept": false,
+      "accepted": false
+    },
+    {
+      "name": "de_old_parameter_cannot_replace_new_witness",
+      "expected_accept": false,
+      "accepted": false
+    }
+  ],
+  "drivers": [
+    {
+      "name": "closed_zero_name_is_used_and_discharged",
+      "optimized": false,
+      "expected_accept": true,
+      "returncode": 0
+    },
+    {
+      "name": "de_uses_actual_appended_witness",
+      "optimized": false,
+      "expected_accept": false,
+      "returncode": 1
+    },
+    {
+      "name": "closed_zero_name_is_used_and_discharged",
+      "optimized": true,
+      "expected_accept": true,
+      "returncode": 0
+    },
+    {
+      "name": "de_uses_actual_appended_witness",
+      "optimized": true,
+      "expected_accept": false,
+      "returncode": 1
+    }
+  ],
+  "status": "Focused finite implementation tests, not formal verification."
+}

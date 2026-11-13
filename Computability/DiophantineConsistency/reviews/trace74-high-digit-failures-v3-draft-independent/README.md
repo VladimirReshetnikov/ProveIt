@@ -1,0 +1,7 @@
+# Independent factual audit: high-digit failures and v3 draft
+
+The two prior author attempts are **FAILED and excluded**. V1 child result SHA-256 `f4ffdb441f4c3bef2deee3a214bd2b6cbf41104234bfd1854e629e55f6ff512c`, outer `513e1c6c63fd3dd65d7f1c0eae0a9e1c14befa08fb8acbe29521705f0e1d50c3` record Lean exit 1 and outer child exit 1; its log includes reserved `prefix` syntax errors, unresolved omega positivity, an unused simp warning and `sorryAx`. V2 result SHA-256 `fcdbdf86d60a48f4c79ecc80bfd6b7f02197634881f66a1fb675f0a36ec801a7`, outer `6c6ed2f28252580b8b22e71dd82cba94ec3226738df99ec3f6cb6cccb9dbf8a2` likewise record Lean exit 1 and outer child exit 1; its log reports maxRecDepth at line 32 and `sorryAx`. V2 is a recorded Lean error, not a timeout. The author reports actual outer sessions 33257 and 70509 exited 1 and were reaped. Stage stdout/stderr hashes match both result records.
+
+Uncompiled v3 source SHA-256 `f3b7b57d52a329f7b8e426ae5792b842bcf0198d597d5d1ddb9c595501ac6924` keeps the same digit recipe and `B^4393<=highNat` statement but names the long suffix tail `highTail`, sets `suffix=mu::highTail`, and updates the split proof accordingly. This may avoid the concrete long-tail expansion in the failed `change`, but Lean elaboration, simp linter behavior and actual resource behavior have not been checked; no cause beyond the recorded maxRecDepth is inferred.
+
+No Lean was run in this audit. There is no accepted high bound, joined mask cover, external-file binding, graph guard or iPRA result from these failed attempts or this source-only draft.

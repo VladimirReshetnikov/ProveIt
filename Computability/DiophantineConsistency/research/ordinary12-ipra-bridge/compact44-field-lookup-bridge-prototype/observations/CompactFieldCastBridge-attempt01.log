@@ -1,0 +1,23 @@
+/tmp/compact44-graph-support-join-01/CompactFieldCastBridge.lean:16:36: error(lean.unknownIdentifier): Unknown constant `List.getElem?_pos`
+/tmp/compact44-graph-support-join-01/CompactFieldCastBridge.lean:17:2: error: Tactic `rfl` failed: The left-hand side
+  ↑(f (Compact943Data.rows[↑i]?.getD (0, 0, 0, 0)))
+is not definitionally equal to the right-hand side
+  ↑(f (Compact943Data.row i))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+f : Quad → ℕ
+lookup : V → V
+hlookup : ∀ (m : ℕ), lookup ↑m = ↑(f (Compact943Data.rows.toArray[m]?.getD (0, 0, 0, 0)))
+i : Fin 943
+hi : ↑i < Compact943Data.rows.length
+⊢ ↑(f (Compact943Data.rows[↑i]?.getD (0, 0, 0, 0))) = ↑(f (Compact943Data.row i))
+/tmp/compact44-graph-support-join-01/CompactFieldCastBridge.lean:16:62: warning: This simp argument is unused:
+  Option.getD_some
+
+Hint: Omit it from the simp argument list.
+  simp only [List.getElem?_toArray, List.getElem?_pos _ _ hi,̵ ̵O̵p̵t̵i̵o̵n̵.̵g̵e̵t̵D̵_̵s̵o̵m̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'CompactFieldCastBridge.lookup_row' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

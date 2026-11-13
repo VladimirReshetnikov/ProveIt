@@ -1,0 +1,5 @@
+# Independent prelaunch review: odd-ordinate lower bound
+
+Scoped GO for one coordinated run with runner SHA-256 `e79410cfc626912a16a95a3c5be0fc8409bc8d0e14a7d5da30107c42254c2713`. Revised source SHA-256 `e5787ff2d287b1659399c67008ae395ea1f1ad43d599c45c93548c7a14fae4ee` matches source review `reviews/trace74-odd-ordinate-bound-draft-independent/README.md` SHA-256 `cb9cf2ab57f49beb8a4e4822b84457eb96d88991d71aef8f13e26955c2056966`; actual two directives match ordered report policy. Checked direct Fold/Joined and related provider pins, shared lock, resource guard and no-clobber; independently ran 13 actual parser controls, all PASS. Fresh locked preflight and shared-slot coordination are required before launch. Capture actual tool exit; no Lean was run here.
+
+The held result proposes a lower bound on c conditional on the same positive 74 zero and beta/valuation assumptions; no F/C bound or reverse guard is assumed or established. Direct pins do not establish complete transitive project/package/dynamic ancestry, search-path first selection or intermediate output stability.

@@ -1,0 +1,17 @@
+/tmp/direct-bfs-kernelbound-qnt740a0/DirectBFSKernelBound.lean:61:18: error: unsolved goals
+r : ℕ
+hr : 2 ^ 67 ≤ r
+hrpos : 0 < r
+P : ℕ := r ^ 8849
+hpow : ∀ n ≤ 8849, r ^ n ≤ P
+hbare : r ^ 30 + r ^ 62 + r ^ 1100 + r ^ 2201 ≤ 4 * P
+hs : ∑ i, selectors i * (r ^ (4393 - ↑i) + r ^ (5495 - ↑i)) ≤ selectorMass * (2 * P)
+hc :
+  ∑ i, copies i * (r ^ (4393 - CompactSymbolicKernel.position i) + r ^ (5495 - CompactSymbolicKernel.position i)) ≤
+    copyMass * (2 * P)
+ht : r ^ 8807 * r ^ 42 = P
+hk : paramKernel r ≤ (2 * selectorMass + 2 * copyMass + 5) * P
+hm : 2 * selectorMass + 2 * copyMass + 5 < r
+hP : 0 < P
+⊢ r ^ 8848 * r * r = r ^ (8849 + 1)
+'DirectBFSKernelBound.kernel_lt' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

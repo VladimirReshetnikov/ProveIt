@@ -1,0 +1,3 @@
+# Independent sign17 exact symbolic degree terminal audit
+
+The independent checker exited 0. Author outer session 36002 exited 0; all fifteen stages and postflight passed despite inherited console label. Source/object pins, logs, direct routes, guards and overlays were checked, with no sorryAx. Replay stages have inherited linter warnings; the final stage has none and four standard axiom reports. Lean proves abstract symbolic Fin17 totalDegree =96 when p0≠0, current-port positivity/nonzero, and current symbolic Fin17 totalDegree =96. No external JSON/PDF binding or new equivalence follows. No Lean was rerun here.

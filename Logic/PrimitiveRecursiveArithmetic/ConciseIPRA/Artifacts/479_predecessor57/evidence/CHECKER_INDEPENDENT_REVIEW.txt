@@ -1,0 +1,157 @@
+INDEPENDENT SOURCE REVIEW: COMPACT 479, NATIVE 607, STRICT 637
+Runtime for measurements: CPython 3.12.14.
+Reviewer role: independent assistant review during this run, not external
+peer review or proof-assistant verification.
+
+SELECTED SOURCES
+
+checker_candidate/compact479.py
+  272 tokens / 304 AST nodes / 479 normalized UTF-8 bytes
+  SHA-256 3c6aff3c403831aa979aa8572770ae5306554c45a9864d03ac005a255d8da59e
+
+checker_candidate/native_mode_lambda_direct.py
+  337 tokens / 383 AST nodes / 607 normalized UTF-8 bytes
+  SHA-256 b1db362308a0142b08a678f36da4e6c8365b91fb5cc0f0c2bc4ba0617d8a6026
+
+checker_candidate/strict_mode_lambda_direct.py
+  344 tokens / 392 AST nodes / 637 normalized UTF-8 bytes
+  SHA-256 c08ef700c290cbf3bb63993ee036d5bdeb9b12e87e04f9592f569980f98ee7fe
+
+1. DIRECT ASSIGNMENT-AND-CALL FUSION
+
+The compact source differs from the exact 487-byte incumbent only by
+
+    (i := lambda ...) and (i(a) in g or R)
+
+becoming
+
+    (i := lambda ...)(a) in g or R.
+
+The value assigned to i is a Python function, which is always truthy. In
+both forms the function object and its defaults are constructed first and
+the assignment binds the same enclosing i cell before its first invocation.
+In the new form that exact function object is invoked directly, in the old
+form it is fetched through i after its harmless truth test. The recursive
+references to i in the scanner resolve to the same cell. No packet is read
+and no mutable numerical state changes between these corresponding events.
+
+Consequently the scans, retained-context membership test, selected branch,
+major checking, floor decrement, context extension, goal opening and input
+consumption are identical. The public contract is inherited: exact integer/
+list syntax and a canonical closed guarded Eq/D goal, not an independently
+validated arbitrary-JSON public interface. The change does not alter this
+contract or remove any mathematical rule.
+
+2. STRICT 637 VERSUS STRICT 646
+
+The strict source is the exact existing strict 646-byte function rewritten
+as an outer lambda, with the scanner assignment fused with its first call.
+The function form begins by assigning i and then returning the existing
+membership-or-singleton-continuation expression. The lambda form performs
+the same assignment before the call as described above. The four formals
+g,a,k,v and the local i cell retain the same closure binding behavior.
+
+In particular, the walrus updates of a, k and v in the comprehension refer
+to the enclosing activation's cells in both forms. The reset v:=0 still
+occurs as an argument to the mandatory major-premise recursive call before
+any proof-kernel scan. The initial public scan still uses v=1. The whole-
+certificate alphabet gate is byte-for-byte unchanged, as are both the
+selector len(a)%2==u and the eager endpoint tuple.
+
+This is exact finite-certificate acceptance equivalence under sufficient
+resources, including the same rejection boundary from the lexical gate.
+The mathematical soundness and completeness remain inherited.
+
+3. NATIVE 607'S EXACT BRIDGE AND ITS LIMIT
+
+Native 607 is obtained from strict 637 by removing the upfront whole-input
+alphabet gate and restoring int(a) is a to the scalar public syntax guard.
+On the inherited finite exact-integer/list certificate domain, the omitted
+gate always passes. Whenever the added int(a) is a expression is reached,
+a is an exact integer: list nodes took the list branch, while invalid
+sentinels failed before reaching this scalar predicate. In CPython 3.12.14,
+int(a) returns the same exact integer object. Thus the new predicate does
+not alter any scan on that domain. At v=1 it prevents Boolean/float leaves
+from masquerading as protected integer coordinates in a submitted goal.
+
+The native source therefore has exact finite-certificate equivalence to
+strict 637 on that integer/list domain. It validates the complete initial
+native Eq/D goal but does not validate the entire certificate alphabet;
+unused prefixes remain inert. This is the same broad interface category
+as the earlier 629-byte native incumbent, not the strict category.
+
+Do not claim literal raw trace equivalence with native 629: that source
+uses conditional evaluation of the source instance i(t,s), whereas native
+607 uses the older eager tuple. On an unmatched endpoint the eager source
+can reject an irrelevant ill-formed annotation that the conditional source
+never evaluates. The inherited canonical compiler has total inert fields,
+so this difference does not change the native public theorem set. The clean
+exact source-equivalence comparator for native 607 is strict 637 with its
+always-passing gate restricted to the stated certificate domain.
+
+4. REVIEW OF THE INTERMEDIATE CONTEXT-REASSIGNMENT CANDIDATES
+
+native_function.py (623 bytes) and native_lambda.py (622 bytes) replace
+the 629-byte incumbent's shared-list mutation g += [0] by a fresh-list
+assignment g := g+[0], and replace None success returns with truthy success.
+
+The original major-premise recursion can mutate a caller's context list
+only by appending copies of the neutral integer 0. Actual derived or
+temporary hypotheses are passed in newly concatenated context lists, so
+none can leak into the caller. The candidate avoids even the shared neutral
+zero mutations. Relate the contexts by equality after deletion of duplicate
+exact zeros, preserving whether they are empty and preserving all nonzero
+entries. Every operation that observes a context uses only emptiness or
+membership, so this relation is sufficient. No scanner reads context length
+or ordering, and no operation tests context identity.
+
+At the root, both contexts are empty while the initial goal is scanned.
+Only after that scan succeeds do they become nonempty. The new comprehension
+pops/unpacks its packet just before assigning the neutral zero, whereas the
+old function assigned zero just before popping. No scanner observes the
+phase between those operations; a pop/unpack error rejects both versions.
+
+Successful old calls return None; successful new calls return True or a
+nonempty singleton list. Hence old_check(...) or m*3 and new_check(...) and
+m*3 produce the same contribution after the same successful major proof.
+No success list is inserted into the syntax. A bidirectional induction over
+finite call trees, carrying the context relation and unconsumed packet
+suffix, proves equivalent successful certificates. Literal list-content
+equality is not the invariant, because shared duplicate zeros differ.
+
+These intermediate variants are valid but are not the shortest selected
+native implementation.
+
+5. EXCLUDED REMAINDER-SELECTOR VARIANTS
+
+The 602-byte native and 632-byte strict experiments replace len(a)%2==u by
+3%len(a). For an atomic introduction, the original u=[] marker selects
+case introduction while the replacement forces progressive introduction.
+This is not an exact optimization. The existing corpus proves that the
+root-determined introduction calculus is strictly weaker on unrestricted
+native formulas (rdprf_not_cases, e.g. D_{x,y}(y=1)). Guarded public-language
+completeness does not imply full native-language completeness.
+
+Both experiments reject the existing old_atomic_case_local fixture in the
+new regression sweep. They are excluded from the authoritative candidates.
+
+6. EXECUTABLE EVIDENCE
+
+The independent source review did not repeat the implementation agent's
+regression sweep. Its receipt checker_candidate/validation.json was read.
+The selected candidate checks have zero mismatches in normal and optimized
+Python:
+
+  compact479.py                    130 process checks
+  native_mode_lambda_direct.py      72 process checks
+  strict_mode_lambda_direct.py     112 process checks
+
+The two intermediate native variants each have 72 checks with no mismatch.
+The full exploration receipt also contains intentionally rejected remainder
+experiments; their failures must not be described as authoritative-candidate
+failures or hidden from an exploration audit.
+
+Finite regressions support these source arguments. They do not prove the
+general arithmetic bi-interpretation. The proofs are relative to the exact
+inherited checking semantics and canonical compilers; no new arithmetic
+axiom deletion, global minimum, or proof-assistant theorem is asserted.

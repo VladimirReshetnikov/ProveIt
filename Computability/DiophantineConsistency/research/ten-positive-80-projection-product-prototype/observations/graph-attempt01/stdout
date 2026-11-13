@@ -1,0 +1,46 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/tenpositive-80graphproduct-nlw80s55/Direct80GraphProduct.lean:51:79: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+a : V := A p v - 1
+H : V := Hnat p v
+C : V := c p v
+T : V := Exp.exp (rankNat p v)
+d z : V
+hd : d = Exp.exp (rankNat p v) + (A p v - 1) * c p v + Hnat p v * z
+hn : d * d = 1 + ((A p v - 1) * (A p v - 1) + Hnat p v) * c p v * c p v
+hdiv : Hnat p v ∣ b p v * Knat p v
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+hmu : 0 < mu p v
+hA : 0 < A p v
+hA1 : a + 1 = A p v
+h4A : 1 ≤ 4 * A p v
+hH1 : H + 1 = 4 * A p v
+hH : H = 4 * a + 3
+hHcast : ι H = 4 * ι a + 3
+hgap : 2 * X p v < 3 * c p v
+hKcast : ι (3 * C - 2 * X p v) = 3 * ι C - 2 * ι (X p v)
+⊢ 2 + ι (X p v) * ι (c p v * 3 - X p v * 2) = 2 + ι (X p v) * ι C * 3 - ι (X p v) ^ 2 * 2
+/tmp/tenpositive-80graphproduct-nlw80s55/Direct80GraphProduct.lean:52:46: warning: This simp argument is unused:
+  hKcast
+
+Hint: Omit it from the simp argument list.
+  simp only [̵K̵n̵a̵t̵,̵m̵a̵p̵_̵a̵d̵d̵,̵m̵a̵p̵_̵m̵u̵l̵,̵m̵a̵p̵_̵o̵f̵N̵a̵t̵,̵h̵K̵c̵a̵s̵t̵]̵[̲K̲n̲a̲t̲,̲ ̲m̲a̲p̲_̲a̲d̲d̲,̲ ̲m̲a̲p̲_̲m̲u̲l̲,̲ ̲m̲a̲p̲_̲o̲f̲N̲a̲t̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'Direct80GraphProduct.graph_entire_product' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

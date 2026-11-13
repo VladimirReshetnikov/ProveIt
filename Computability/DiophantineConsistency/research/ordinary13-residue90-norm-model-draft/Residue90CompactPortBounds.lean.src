@@ -1,0 +1,42 @@
+import DiophantineConsistency.Compact44.CompactFixedBeta
+import DiophantineConsistency.Compact44.CompactSymbolicPorts
+import DiophantineConsistency.Compact44.P72Root
+import DiophantineConsistency.ArithmeticAdaptiveRankWindow2011
+
+/-! Source-only compact-port representation and fact-level rank bound.
+The graph's C>0 and selected K/bytes bindings remain separate obligations. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Residue90CompactPortBoundsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def ports (K : ℕ) : Fin 4 → ℕ :=
+  CompactSymbolicPorts.ports CompactFixedBeta.betaNat K
+    CompactSymbolicPorts.lowNat CompactSymbolicPorts.highNat
+
+theorem cast_port (K : ℕ) (j : Fin 4) :
+    (((ports K j : ℕ) : ℤ) : DiffRing V)=ι (ports K j : V) := by
+  simpa only using (P72Root.cast_port (V:=V) (ports K) j)
+
+/-- No graph claim: hgap is precisely the separate positive-C hypothesis. -/
+theorem compact_rank_window (J F alpha q : V) (hJ : 0<J) (hF : 0<F)
+    (halpha : 0<alpha) (hq : q=(CompactFixedBeta.betaNat:V)*J+1)
+    (hgap : F+alpha<q) :
+    let beta : V := CompactFixedBeta.betaNat
+    let MC : V := CompactConcreteIncrement.mask
+    let MF : V := (CompactFixedBeta.betaNat:V)+(CompactSymbolicPorts.highNat:V)
+    let R : V := ((q-1)*(q-F)+alpha)*(q^2-1)+(MC+q*MF)*J
+    R+q^3+q+1≤q^4 := by
+  obtain ⟨hb,hMC,hMF,_⟩ := CompactFixedBeta.bounds (V:=V) J hJ
+  have h := ArithmeticAdaptiveRankWindow2011.scalar_rank_window q
+    (CompactFixedBeta.betaNat:V) (CompactConcreteIncrement.mask:V)
+    ((CompactFixedBeta.betaNat:V)+(CompactSymbolicPorts.highNat:V)) J F alpha
+    hb hJ hF halpha hMC (by simpa only [CompactSymbolicPorts.highNat] using hMF) hq hgap
+  exact h.2
+end DiophantineConsistency.Residue90CompactPortBoundsDraft
+#print axioms DiophantineConsistency.Residue90CompactPortBoundsDraft.cast_port
+#print axioms DiophantineConsistency.Residue90CompactPortBoundsDraft.compact_rank_window

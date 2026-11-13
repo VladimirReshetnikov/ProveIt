@@ -1,0 +1,5 @@
+# 90-operation iPRA endpoint client
+
+`Direct90IPRAEndpoint.lean` states positive-model bridges and four internal standard/reference and translated consistency equivalences for the direct graph's byte-port expression. Its exact source has now compiled in the guarded author join documented in `../ordinary12-direct90-ipra-join/ATTEMPT03.md`; the source comment calling it unchecked describes its earlier drafting state and has been left unchanged to preserve the checked bytes.
+
+The accepted join reports all six named theorem axiom sets as `propext`, `Classical.choice`, and `Quot.sound`. It checks the selected project closure and direct package/sysroot objects, while package-transitive, dynamic, and complete historical source-to-object ancestry remain outside its audit. The successful join receipt and theorem scope passed independent audit in `../../reviews/ordinary12-direct90-ipra-join-independent/`; that audit did not replay Lean. The external TeX/PDF transcription has finite checks but is not formally bound to the Lean expression by a parser or file theorem.

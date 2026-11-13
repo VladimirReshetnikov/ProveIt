@@ -1,0 +1,33 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-index-upper-draft/Trace74IndexUpper.lean:71:30: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X Y n r k c eta zeta : V
+hX : 16 ≤ X
+hY : 1 ≤ Y
+hn : 2 ≤ n
+hck : c = k * Y + eta
+hkez : k = eta + zeta
+hz : 0 < zeta
+hc : c = ycoord r (Y * (X + 1) - 1)
+hk : k = 2 * ycoord n (2 * (X * Y * Y - 1) + 1)
+a : V := Y * (X + 1) - 1
+B : V := 2 * (X * Y * Y - 1) + 1
+j : V := n - 1
+hn1 : 1 ≤ n
+hj : j + 1 = n
+hjpos : 0 < j
+hX1 : 1 ≤ X
+hQ : 1 ≤ X * Y * Y
+hQe : X * Y * Y - 1 + 1 = X * Y * Y
+hB : B + 2 = 2 * X * Y * Y + 1
+hsep : 16 * (2 * (B + 2)) < (2 * a + 3) * (2 * a + 3)
+hlow : Exp.exp (4 * j) * ycoord (j + 1) B < ycoord (2 * j + 1) a
+hlow' : ycoord n B < ycoord (2 * j + 1) a
+heta : eta < k
+hclt : c < 2 * (Y + 1) * ycoord n B
+hA1 : 1 ≤ Y * (X + 1)
+ha : a + 1 = Y * (X + 1)
+hcoeff : 2 * (Y + 1) ≤ a + 2
+⊢ (a + 2) * (xcoord (2 * j) a + (a + 2) * ycoord (2 * j) a) ≤ ycoord (2 * j + 1 + 1) a
+'Trace74IndexUpper.upper_of_ordinates' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

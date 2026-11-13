@@ -1,0 +1,3 @@
+# Normalized quote to Foundation translated-consistency endpoint
+
+Source-only proposed join from the kernel-checked normalized arithmetic token quote, through the named current-14 sentence and numeral-derived ports, to the existing standard-iPRA derivability of equivalence with Foundation's actual ZFC consistency sentence after language mapping and Gödel–Gentzen translation. The claim is a derivability result, not a proof of either side. The token list is a fixed in-Lean transcription, not raw TeX/PDF interpretation; source-to-file and inherited provider/package provenance remain separate. No Lean run yet.

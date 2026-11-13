@@ -1,0 +1,57 @@
+{
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "8fa5ade009b5cceba7b68f07b6a834fe77cf10c1",
+  "derived_components": [
+    {
+      "component": "R term normalizer and binder traversal",
+      "source": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/parameter_intro/code/checker.py"
+    },
+    {
+      "component": "Constructor-dispatched inferred export",
+      "source": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/first_instance/code/checker.py"
+    },
+    {
+      "component": "Independent named-variable oracle",
+      "source": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/parameter_intro/code/audit.py"
+    }
+  ],
+  "unchanged_comparison_files": [
+    {
+      "delivered": "reference/parameter_intro_checker.py",
+      "source": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/parameter_intro/code/checker.py",
+      "sha256": "78acf131542dd7aaf70ec67eb757d637cca91a5b67157ef3932a4d3e003e00cc"
+    },
+    {
+      "delivered": "reference/uniform_recursion_checker.py",
+      "source": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/uniform_recursion/code/counter_name3_matched.py",
+      "sha256": "a988354ed0a8550866698ba614fd61306f08127cc90d20dacaa4b55e98faa2e1"
+    },
+    {
+      "delivered": "reference/compact508.py",
+      "source": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/uniform_recursion/native/controls/compact508.py",
+      "sha256": "6af87149e7ab9b957f935a9c8e4ecb5fa895922f6202ce7741c3dc511e711f50"
+    }
+  ],
+  "new_mathematical_change": "Equality-free conditional copying composes newest-parameter-only introduction with inferred export; no introduction witness or export equality proof is supplied.",
+  "implementation_contract": "Complete standalone checking module on a [goal,proof] JSON certificate; full normalization counted in the source; checked inferred conclusions with type-exact final-goal comparison.",
+  "limits": [
+    "No absolute minimum claim.",
+    "No new proof-assistant verification.",
+    "The compact 508-byte control has a different proof/input protocol."
+  ],
+  "backward_Name_variant": {
+    "file": "code/checker_backward_name.py",
+    "source": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/parameter_intro/code/checker.py",
+    "changes": [
+      "Force the equality source in discharge to the opened eigenparameter; delete the supplied source field.",
+      "Select progress exactly when the normalized zero row is 0=0 instead of testing arbitrary literal reflexivity."
+    ],
+    "mathematics": "The conditional-copy theorem permits deterministic introduction together with supplied-proof Name. The template-representation lemma identifies the backward instruction with Name, including explicit ambient parameter occurrences and self-containing replacements.",
+    "metrics": {
+      "normalized_bytes": 1907,
+      "significant_tokens": 619,
+      "ast_nodes": 686
+    },
+    "comparison": "The unchanged parameter_intro reference is 1925 bytes, 630 tokens and 701 AST nodes."
+  }
+}

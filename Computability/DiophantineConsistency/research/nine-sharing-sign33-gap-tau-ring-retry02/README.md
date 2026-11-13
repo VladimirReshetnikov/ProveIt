@@ -1,0 +1,9 @@
+# Gap/tau additive-order retry checked
+
+The [prior namespace retry](../nine-sharing-sign33-gap-tau-ring-retry01/attempt01/README.md) failed on two local addition orientations. This retry keeps the theorem and hypotheses unchanged and adjusts only the affected proof steps: it rewrites the actual `(q−F)+F` target and commutes `alpha+F`, then commutes `2+r` to obtain `r≤r+2`. The conditional theorem compiled; see [attempt01](attempt01/README.md). The current equation's concrete rank/subtraction binding, sign33 zero bridge and iPRA endpoint are not established.
+
+The runner pins both previous failed states and exact error logs, uses a fresh output directory, and retains the earlier source-built provider survey, direct dependency/guard checks and resource limits. Full guard and survey rechecks occur only after success. Provider observations are point-in-time, resource monitoring is sampled, and deeper transitive/dynamic ancestry remains inherited, including an uncaptured numeric outer exit of an earlier initial-agreement provider.
+
+Candidate source SHA-256 `7076c3cf798e53a22061a097e932114b585143acd4c123c1947a28480952539f`, manifest `9cf3d60fb925a7e755ef723cbae31ac9e9efa88ad0665cf601e6806bb85e3f92`, survey `3adc88d86f4941fa22513aab35ae6fa987143b357008cf9a76710bf56a078ef7`, runner `d9a39e77991b12ae4bd09b20e79efbcd42ddc74f6e0ce53ec1ba11866d1d17ae`. Author no-Lean preflight session 81286 exited 0; independent prelaunch review and a coordinated Lean slot preceded the successful run. Limits remained `-M2800`, 120 seconds per call, sampled 4-GiB session RSS and 10-GiB available-host-memory floor with a 5-GB free-space precheck.
+
+The [independent terminal audit](../../reviews/nine-sharing-sign33-gap-tau-ring-retry02-terminal-frontier-independent/README.md) checked the conditional theorem and provider observations without replaying Lean.

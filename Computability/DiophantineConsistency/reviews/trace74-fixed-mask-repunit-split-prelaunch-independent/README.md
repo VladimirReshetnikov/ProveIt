@@ -1,0 +1,11 @@
+# Independent prelaunch review: split fixed-mask repunit specialization
+
+Scoped GO for the pinned one-stage check, subject to coordinated resource release. No Lean was run in this review and no theorem acceptance is claimed here.
+
+Runner SHA-256 `457e5318383bccaf01a6825aaaeb9c9fac9596bb294e3563ed265c4b5fdb6ac6`, supervisor `1c9047de292d143118067670ba37ae3ae12b7140db283549579b3f74cf4a1fc8`, source plan `283c985c40e3323dde8991def467bec9aab0dd78f4604b91e3cd00514dfc0c99`, and recorded read-only preflight terminal `5749819d54fcdd33dea7b51616b74239df515939609081e686ba2948eb46dd8a` match the frozen bytes. The preflight records exit 0 and 2059 parent modules, 82 outside selections and one new stage. Its audited population-data parent and generic repunit module are present; all five planned direct project imports match the source and recorded first selections. Source SHA `8c69cb21194cab9a0dafc49ea998e928bb3d4d9a4283da808e20b411d8082958` and its independent source review are pinned.
+
+The runner reconstructs the complete parent union, checks all ten companion types including absence and realpaths, guards outside first selection, refuses output clobber, captures bounded child execution and requires exact source/header/direct selection. It postchecks the existing saved closure sets and captured project/outside companion hashes. The wrapper pins runner/preflight/policy, preserves actual child exit, requires child PASS and checks input/wrapper stability.
+
+Policy terminal `8e05c155485c06e4b0a562d7923a5a6dd8ce860ca5ad0efae630236c9e57dd75` has 25 PASS actual-function controls; supervisor terminal `1057576e082573195832ec445fdc27c9094940264d52212f62a0646e85388931` has six copied-wrapper/stub controls. Their report examples use generic names; a separate read-only exercise of the actual parser accepted the single actual theorem name and rejected duplicate, sorry, warning and name mutations. Fresh stage requires clean exit, empty stderr, no warning/error/sorry, exact named report and allowed axiom subset.
+
+The source retains `N>0` and `J=rep ((67:V)*8807) N`; it does not derive this hypothesis from a graph zero or prove a guard. Earlier exact warnings remain inherited evidence, not allowed fresh stage output. Captured source-to-object, historical ancestry, transitive/package/dynamic and external binding limits remain.

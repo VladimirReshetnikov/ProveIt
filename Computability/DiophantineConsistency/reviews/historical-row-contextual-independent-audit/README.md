@@ -1,0 +1,7 @@
+# Independent contextual row-parent review
+
+A fresh independently prepared sparse historical source view passed session 39193. The contextual row runner then actually exited 0 in session 88042; its full captured output is byte-identical to the pinned row-match CHECK, SHA-256 `db7690d62441f036f8275f5270416b015c8e0b2cc858de8b48ea19a703755df7`. The reviewed runner's target, view, original-audit-hash and interpreter fail-closed controls also exited 0 without Lean. The temporary review clone was removed after capture to restore disk space.
+
+The independent static `audit.py` verifies the exact `fe3084dd85` packet bytes, all five original audit-file hashes, the exact whitelisted nested edge map, the two original-module globals modified by the runner (`subprocess` and, at endpoint, `PARENTAUDIT`), and the captured row output. Its initial local attempt failed with a `KeyError` because it expected a generic `observed_exit` field; it was corrected to use the actual `packaged_guarded_exit` and `hardened_exit` schema, then actually exited 0. `CHECK.json` and the terminal observation record the corrected result. The static check does not recreate the clone when rerun.
+
+This is a contextual historical chain with explicit audited-edge subprocess routing and the endpoint plan-audit path rebound to a historical source view. It is not an unchanged live-chain pass, a current-source/provider validation, a Lean build, an authorization for a differently pinned replay, or an iPRA proof. Existing provider, absolute-path, non-atomic and package/dynamic boundaries remain.

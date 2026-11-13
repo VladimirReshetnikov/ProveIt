@@ -1,0 +1,9 @@
+# Standard-theory AQ26: single-overlay historical author extension
+
+The guarded run completed with **actual tool session 44282 exit 0** and stdout `STANDARD_AQ26_COMBINED_AUTHOR_TRIAL_EXIT=0`. Its [state](state.json) has SHA-256 `4554a47d1432a720f1dd0abde5b6062f0babc910958716f585a49a123522ab96`. All 30 additions compiled afresh together in a single overlay: AQ28 → AQ27 → AQ26 model and native transports, four standard-presentation modules, the AQ26 standard client, and its checks. All 79 exact axiom report names matched and the logs have no `sorryAx`. The final client diagnostics list Lean metatheory axioms `propext`, `Classical.choice`, and `Quot.sound`; these are not object-theory axioms.
+
+The client proves a derivability statement inside `standardTheory`: no zero of the positive-shifted AQ26 literal is equivalent to the negation of the selected mapped Foundation ZFC native refutation predicate. A separate result relates that literal to the Gödel–Gentzen translation of the mapped selected Foundation consistency sentence. This does not assert that the untranslated classical sentence has been derived.
+
+This is one historical **author-only** extension of the independently audited AQ29 author provider; it is not a matched author/peer replay or a current-source or PDF identity claim. The Foundation build wrapper's outer exit was not observed; package-transitive, dynamic and between-observation provenance limitations remain inherited. All additions were rebuilt in one overlay: no separately compiled standard or AQ26 extension object was combined.
+
+This packet preserves the full state, 30 frozen sources, all Lean logs, pinned additions manifest, process log and [terminal observation](terminal-observation.json). Objects and provider paths remain at their recorded `/tmp` locations. A later [independent artifact audit](../ipra-standard-aq26-combined-independent-audit/README.md) verified them; it did not perform a second Lean replay.

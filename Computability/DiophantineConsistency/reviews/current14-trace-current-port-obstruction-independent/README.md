@@ -1,0 +1,5 @@
+# Independent review: actual-beta local trace obstruction
+
+The construction is correct at the stated local arithmetic scope. For odd B, q=2^B implies 3 divides q+1, so D is integral and 8 divides D. Dirichlet applies to the coprime residue class 1 mod D. The resulting p is 1 mod 8; the quadratic-residue criterion implies d=ord_p(2) divides (p−1)/2. If d is odd, the latter quotient is even, so lcm(2,d)=2d still divides it. Thus k≤(p−1)/2 and XY−k≥q³h(q−2)/3. The pinned actual q makes this greater than B+1. Since k is even, both 3 and p divide 2^k−1, giving H=3p | 2^R−X. Also k>0, R is odd and 2^R≠X.
+
+The prior independently reviewed recurrence gives divisibility of the displayed gamma numerator by H, and H is odd. Since R≥3 and a≥X, the Pell ordinate is greater than X, so gamma is strictly positive. The checker independently computes exact (not modular-only) positive integer gamma in two toy prime instances, and reproduces the pinned actual-beta source receipt. It does not construct the enormous actual prime or ordinate. This is not a proof of the rank equation, the norm equations, a full candidate zero, a Lean theorem, or a PDF binding.

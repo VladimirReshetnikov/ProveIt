@@ -1,0 +1,90 @@
+CURRENT FRONTIER AUDIT — ProveIt/ConciseIPRA
+Snapshot: dd308d5d938b20dce41a1150fa5db49fc53c5d4e
+Auditor scope: repository README and unified article; all 19 ZIP archives in docs/incoming; static normalization census of their decoded .py sources. All 3,204 current Artifacts .py/.py.gz occurrences have also been audited byte for byte against the pinned Git tree.
+
+1. What “lower bound” currently means
+
+No general proof-checker-size lower-bound theorem is established by these packages. They report observed minima in a specified source/runtime/interface class. It is incorrect to call a smaller program a violation of a mathematical lower bound, or to infer absolute simplicity from beating those observed minima. The minimum is coordinatewise: different programs attain the token, AST, and byte records.
+
+The repository says CPython 3.12.14; remove leading module/class/function docstrings recursively (repair empty nonmodule bodies with Pass), then normalize the entire source using ast.unparse + LF, significant lexical tokens excluding comments/layout/encoding/endmarkers; AST includes operator/context nodes. Standard Python plus standard-library JSON parser is ambient. Packed execution wrappers are a separate accounting class, and some small modules are partial utilities or explicitly rejected unsound experiments.
+
+2. Current incoming records found, in token / AST / normalized-byte order
+
+Compact guarded public interface:
+  token record: 241 / 267 / 566
+  docs/incoming/ipra_fixed_points_and_checker.zip
+  member ipra_fixed_points_and_checker/code/checker_tokens241.py
+
+  AST record: 246 / 262 / 556
+  docs/incoming/ipra_shared_leaf_2026-11-12.zip
+  member ipra_shared_leaf_2026-11-12/code/checker_ast.py
+
+  byte record: 272 / 306 / 469
+  docs/incoming/ipra_shared_leaf_2026-11-12.zip
+  member ipra_shared_leaf_2026-11-12/code/checker_bytes.py
+
+  Coordinatewise envelope: 241 / 262 / 469; NOT attained by one module.
+
+Native public Eq/D goal validated, proof-data alphabet promised:
+  byte record: 328 / 373 / 579
+  docs/incoming/ipra_validated_leaves_2026-11-12.zip
+  member ipra_validated_leaves_2026-11-12/code/checker_native579.py
+  Earlier control with portable scalar typing: 328 / 369 / 587.
+  Incumbent token / AST coordinates retained in source controls: 317 / 358.
+
+Whole-input exact-integer/list alphabet and native public grammar validated:
+  token record: 322 / 373 / 626
+  AST record: 329 / 364 / 635
+  docs/incoming/ipra_scope_refinement_2026-11-12.zip
+  members ipra_scope_refinement/code/strict_tokens.py and strict_ast.py
+  byte record: 334 / 379 / 606
+  docs/incoming/ipra_validated_leaves_2026-11-12.zip
+  member ipra_validated_leaves_2026-11-12/code/checker_strict606.py
+  Coordinate envelope: 322 / 364 / 606; NOT attained by one module.
+
+3. Important traps
+
+The README table is older than many incoming packages (it mentions 249/271/479). Even the most recently named smaller_presentations report compares an older snapshot and misses records in concurrent incoming packages. Its own 242/264/473 envelope is superseded.
+
+ipra_offset472.zip is valid under its compact promised interface, but its 472 byte result is already worse than shared_leaf's 469. The transformation may combine with shared_leaf: reserve depth coordinates +2, changing neutral [[]] to [0]. This looks like a potential one-byte encoding refinement, not an axiom reduction. Agent kernel_candidate is investigating it.
+
+A 465-byte source is present in ipra_whole_json_refinement_2026-11-12/negative/REJECTED_UNSOUND_no_parity.py. Its filename, report, and tests explicitly exclude it. Do not report an unclassified raw source minimum as a sound checker frontier.
+
+The compact programs have a promised canonical closed GUARDED Eq/D public goal and finite exact-integer/list proof alphabet. They do not validate all these conditions. Comparing a 606-byte whole-input checker directly with a 469-byte compact checker hides trusted interface work. Full validation and compact promised validation are separate classes.
+
+Some accepted proof fixtures use auxiliary Q formulas or unguarded equations. Auxiliary success does not extend the public theorem contract. In particular the guarded source-restricted calculus is strictly weaker on arbitrary open sequents; it is equivalent after the prescribed public translation. README cites native Lean countermodels for the loss of transitivity and atomic case introduction.
+
+4. Scope of bi-interpretability
+
+The repository adopts an unusually strong record convention: whole numerical domains, actual equality, both numerical comparison graphs x=y. The user explicitly allows a different language and domain, requiring only equiconsistency and bi-interpretability. Thus an alternative domain with definable nonidentity round-trip isomorphisms is allowed by the USER, even though it would be outside the existing stricter record convention. Do not accidentally impose the repository convention as an extra user constraint.
+
+Full first-order intuitionistic PRA is the target. Showing only the primitive recursive functions agree, only quantifier-free conservativity, only mutual interpretability, or only equiconsistency is insufficient. A complete proposal must supply formula translations, soundness in both directions, and definable round-trip isomorphisms (or identity when appropriate).
+
+5. Existing mathematical reductions already covered
+
+The corpus has already explored: one D binder; no Q via clause contexts; ordinary formula assumptions encoded as one-body gates; one-term, one-occurrence, all-occurrence, variable-only and newest-variable equality; equality fused with evaluation or discharge; raw, zero-normal and full-normal syntax; computational root conversion; deterministic witnesses and specialization; successor-seeded, counter-aware, self-seeded, no-constant recursors; uniform terminal certificates; scalar uniqueness, successor rigidity, progressive closures; and many negative results for restricted recursors or omitted induction.
+
+The established fewest rule-family calculus is three families (Use, Intro, Name/Open/Discharge) with fixed reflexivity clause and normalization infrastructure. Rule-family count alone is therefore not an honest new complexity record. It is easy to combine arbitrary rules using tags into one family without reducing the checker.
+
+6. Local evidence
+
+research/source/docs-tree.json: pinned Git tree, exact incoming ZIP blob identities.
+research/source/incoming/: all incoming ZIPs extracted safely, original ZIPs retained.
+research/incoming_census.json: 1681 distinct normalized .py modules in this extraction (includes auxiliaries, rejected examples, and controls; duplicates retain all paths).
+research/incoming_checker_census.json: preliminary candidate filter, including excluded utilities and rejected examples; use the classifications in this audit for records.
+research/source/artifacts-recursive-tree.json: pinned current Artifacts tree, 16,993 entries, truncated=false.
+research/current_artifact_coverage.json: current *.py and *.py.gz entries matched by exact Git blob hashes against incoming copies; all 292 missing unique sources fetched and Git-hash verified, completing 3,204/3,204 occurrences.
+
+The retained reports explicitly call their results partial: no mathematical axiom deletion, no global minimum, no one program below all coordinate minima, and no new Lean/Rocq checker proof unless separately stated. Finite tests are supplementary, not a proof of consistency or universal checker soundness.
+
+FINAL CENSUS RESULT
+
+All 19 incoming ZIP Git blob hashes match the pinned tree; total compressed size 29,283,405 bytes. Current Artifacts has 3,204 Python/gzip-Python occurrences, 1,922 distinct Git blobs, and 1,590 normalized modules. Incoming archives supply 1,681 normalized modules, including every .py.gz counterpart (no additional distinct gzip-only module). Union: 1,750 distinct normalized source modules. All parse under CPython 3.12.14; zero parse errors. Source builders with embedded strings are not checkers and explicitly unsound negative examples are not records. The observed qualified compact envelope remains 241/262/469, native envelope317/358/579, whole-input envelope322/364/606.
+
+Additional machine-readable files: research/current_artifact_census.json, research/incoming_provenance.json, research/frontier_summary.json. The audit measures source and checks provenance; the inherited reports supply the mathematical eligibility arguments. It does not newly prove every historical checker sound.
+
+Recursive ZIP extension: the reproducible read-only census also inspects nested reference archives. This adds four previously unextracted manifest/PDF build utilities, for 1,754 distinct normalized modules in the full recursive union (1,685 from incoming packages). No qualified checker record changes. See research/audit_package/measure_corpus.py and census_reproduction.json.
+
+AUTHORITATIVE NORMALIZATION CORRECTION
+
+The unified article removes docstrings before ast.unparse. The reproducible utility now applies that protocol recursively, including async functions and Pass repair. All ten qualified baseline measurements and compact468 remain unchanged because those measured compact programs have no docstrings. Direct current Artifacts normalized modules: 1,505 (formerly 1,590 with docs). Direct incoming normalized modules: 1,599 (formerly 1,681). Direct union: 1,663 (formerly 1,750); full recursive ZIP union: 1,667 (formerly 1,754). The earlier counts above are historical counts with docstrings retained and are superseded for unified-article accounting. The readable companion measures 327 tokens / 391 AST nodes / 1,572 bytes after this correction. The recursive census has zero errors or omissions.

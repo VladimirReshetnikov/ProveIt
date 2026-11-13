@@ -1,0 +1,43 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-natural-norms-draft/FreeMainAuxNorm.lean:88:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ι (absdiff ?x ?y) * ι (absdiff ?x ?y)
+in the target expression
+  ι I * ι I * ι (absdiff L N) * ι (absdiff L N) + ι (v 12) * ι (v 12) = 1 + ι I * ι I * ι (v 12) * ι (v 12)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 14 → V
+hv : ∀ (i : Fin 14), 0 < v i
+hz : InternalZero (P64QCube72Free.graph fun j => ↑(p j)).output v
+pp : Fin 4 → ℤ := fun j => ↑(p j)
+z : Fin 14 → DiffRing V := fun i => ι (v i)
+w : Fin 14 → V := lift p v
+q : V := ↑(p 0) * v 0 + 1
+Y : V := q * q * q * v 7
+X : V := v 8 * q
+a : V := X * Y + Y
+c : V := (v 10 + v 11) * Y + v 10
+R : V := rank p v
+I : V := v 5 * c * c
+L : V := v 4 * v 4 * (v 6 * c)
+N : V := v 4 * v 4 * R + c
+left✝² : Expr.evalRing (fun i => ι (v i)) (P64QCube72Free.graph fun j => ↑(p j)).A0 = 1
+left✝¹ : Expr.evalRing (fun i => ι (v i)) (P64QCube72Free.graph fun j => ↑(p j)).M = 0
+left✝ : Expr.evalRing (fun i => ι (v i)) (P64QCube72Free.graph fun j => ↑(p j)).W = 0
+hlt : Expr.evalRing (fun i => ι (v i)) (P64QCube72Free.graph fun j => ↑(p j)).Lt = 0
+hlt' : InternalZero (P64Graph.graph pp).Lt w
+hwp : ∀ (i : Fin 14), 0 < lift p v i
+hgap : w 1 + w 2 < ↑(p 0) * w 0 + 1
+hF : w 1 ≤ ↑(p 0) * w 0 + 1
+hrank : rankValue pp z = ι R
+hc : cValue pp z = ι c
+ha : aValue pp z = ι a
+hdelta : deltaValue pp z = ι (delta a)
+hV : P64QCube76YBinding.oldV pp z = ι L - ι N
+hs : I * I + delta a = delta a * (v 4 * v 4)
+hI : ι I * ι I = ι (delta a) * (z 4 * z 4 - 1)
+hna : ι I * ι I * ((ι L - ι N) * (ι L - ι N) - z 12 * z 12) + z 12 * z 12 = 1
+⊢ ι I * ι I * ι (absdiff L N) * ι (absdiff L N) + ι (v 12) * ι (v 12) = 1 + ι I * ι I * ι (v 12) * ι (v 12)
+'FreeMainAuxNorm.auxiliary_same' depends on axioms: [propext]
+'FreeMainAuxNorm.auxiliary' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

@@ -1,0 +1,7 @@
+# Static review: held five-stage outer wrapper
+
+The outer template remains **held**; this is not launch approval. Reviewed wrapper SHA-256 `89ad3c1e5f0f2bb9a74d5e065f734cd9966b2fe32f71318635310c8132e20c7e` and test SHA-256 `ccd59f6e130d9714cd7ffef3a7c9766259587cfac5224d81c1fa41594914a63c`. No parent output was read and no Lean was run in this review.
+
+The wrapper refuses unpinned runner/preflight/policy values and existing attempt paths, checks their exact hashes, captures the child process exit and PASS status, input/wrapper before-and-after hashes and output/terminal hashes, and atomically writes its terminal receipt. The independent reviewer reran the copied actual wrapper test with isolated stub children: successful PASS was accepted; a modified input, exit-nonzero child, missing, malformed and FAILED child result were each rejected. The corresponding author control receipt SHA-256 is `a22dedbe4d02508aa3a1f3dbdd5687ed38bd5917313f9e8ab57698bdc3bec4c3`.
+
+No definite static blocker was found in these held bytes. The final wrapper must be separately frozen with exact reviewed final runner/preflight/policy pins, tested and independently reviewed after the terminal forward parent is pinned. Its own hash needs separate launch verification and actual enclosing tool exit retained. An exception before or during child process creation can leave no wrapper terminal receipt; such an outcome must be retained and reported as a failed/incomplete run, not inferred successful. The assembly runner and its provider/ancestry limitations remain independently in scope.

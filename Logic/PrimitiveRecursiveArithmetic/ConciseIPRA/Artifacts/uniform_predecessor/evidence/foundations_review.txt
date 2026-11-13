@@ -1,0 +1,80 @@
+FOUNDATIONAL AUDIT: IPRA DRAFTS, 10 NOVEMBER 2026
+
+Sources inspected: current snapshot 0300a290bedee5019c974291850b798378438b2e;
+scalar_successor, successor_seed_completion, transient_seed,
+counter_congruence, flat_computation, inherited_choice_basis.
+
+1. Choice-DI bridge.
+The native interpretation D_xy A := exists x (A(x,0) -> forall y A(x,y))
+is sound for case DI by zero/successor coverage, and for atomic progress DI
+by contextual equation induction. Full formula round trips use atomic
+case DI in binder congruence and the reverse D composite. The detailed
+selector/gate constructions appear internally coherent. No claimed
+machine formalization follows from this written review.
+
+2. Pre-selector contextual cases.
+NC has an eigenvariable side condition: its retained context must not
+depend on the split variable. A Boolean finite-range statement alone does
+not license splitting a Boolean term while its value occurs in a retained
+induction hypothesis. The older scalar_successor bootstrap uses such cases
+informally. The successor_seed_completion/prelogic.tex explicitly supplies
+finite cancellation and guard constructions to repair this issue, and
+transient_seed also treats it. Any reused proof must carry that repair.
+This is a proof completeness issue, not a discovered countermodel to the
+successor-seeded scalar arithmetic equivalence.
+
+3. Counter congruence.
+The counter_congruence proof is sound on inspection. For arbitrary fixed
+numerical F, H_F(n)=R(n,F(0);u,v.S(F(Su))) and J_F=W o H_F represent F.
+Only root equation replacement, counter congruence, computation, and
+numerical cases occur in the representation. This relies on the recursor
+update receiving the OLD COUNTER u; it cannot simply be applied to the
+scalar successor recursor with only state variable v.
+
+4. Deleting atomic case DI.
+The two-model obstruction in transient_seed is valid for the unrestricted
+public native D language. An equation E(y): y=1 gives vacuously true closure
+but false progress. With atomic progress introduction alone, both closure
+and progress interpretations validate the remaining rules. Thus ordinary
+closure decoding does not furnish the missing native round trip.
+
+5. A restricted-language escape exists, but has no demonstrated size win.
+Restrict every public atomic D matrix E(x,y) to one with a uniform proof
+E(x,0). Then atomic case DI is admissible: cut in its zero theorem, weaken
+by E(t,z), and apply progress. An explicit sufficient grammar is
+E(x,y)=G_y F(x,y), using the ordinary numerical selector gate.
+All finite formulas may be padded by P(A)=D_{u,y}G_y A, with unused u,y in A.
+For an atomic A, forward padding uses progress with the retained A; reverse
+padding opens D, supplies true base, and specializes at 1. Compound cases
+are handled by case introduction and binder congruence. Atomic-target
+binder congruence uses the target's proved true zero slice and does not
+need atomic case introduction. Thus P(A) <-> A is available.
+Numerical cases for an arbitrary A can be compiled by applying compound
+case introduction to P(A(y)), then removing padding.
+For initialized scalar I, ordinary logical macros can be reconstructed
+with padding. Equation induction is then recovered from a gated matrix
+G_y E(y): use implication plus numerical cases to prove its progress
+premise (the zero branch uses E0 plus the old step; the successor branch
+uses the old step), apply atomic progress, and use the original E0 to
+include zero after opening the closure. No predecessor is needed.
+For successor-seeded scalar R, the missing unrestricted selector creates
+a separate prelogic obligation; the above I argument must not be copied
+without repair.
+
+The optimized existing Python code encodes the case/progress choice almost
+for free: comparison len(a)%2 == m distinguishes m=0 from m=[]. Deterministic
+atomic progress still needs an atomic/compound distinction, and checking
+or implicitly constructing the required gate adds new work. Hence the
+restricted grammar is a valid theoretical escape but not yet an actual
+improvement of the measured complete checker.
+
+6. Tied-seed term obstruction versus relational definitions.
+The bounded-coordinate invariant excludes a selector TERM but not a
+relational selector. In full IL with numerical coverage and separation,
+C(n,a,b,z):=(n=0 and z=a) or (n != 0 and z=b) is uniquely total.
+This refutes naive claims that full constructive logic automatically gives
+term extraction into the restricted tied-seed clone. However adding C by
+conservative relational definition does not license an old recursor schema
+with C as its body: the original schema ranges over old finite term bodies.
+Extending recursor formation to arbitrary provably total relations requires
+a separate conservative-closure theorem and adds implementation obligations.

@@ -1,0 +1,85 @@
+Benchmark audit at ProveIt commit 12197d86f63e9ec73b2d91399c4de2a8cb0077ee
+
+Scope and method
+The census parsed all 2,894 Python files under ConciseIPRA using CPython
+3.12.14, including the historical source copies retained by current packages.
+There were zero parse failures. For each source, normalize by ast.unparse plus
+one terminal newline; count significant tokens excluding ENCODING, COMMENT,
+NL, NEWLINE, INDENT, DEDENT and ENDMARKER; count all ast.walk nodes; count UTF-8
+bytes of the normalized source. The census is exhaustive as a source-size
+calculation. It is not an exhaustive correctness proof of those programs.
+
+Eligible benchmark
+The article's current coordinatewise envelopes for a single whole JSON input
+are independently reproduced by the files in benchmark.json:
+  Raw canonical guarded goals: tokens 249, AST nodes 271, bytes 477.
+  Validated native Eq/D goals: tokens 321, AST nodes 369, bytes 596.
+  Exact integer/list input plus validated native Eq/D goals:
+      tokens 330, AST nodes 379, bytes 621.
+No one file attains any of these three coordinatewise envelopes.
+The 477-byte compact programs use a final [goal,initial_floor] header rather
+than the goal alone. The last-element-is-goal convention has a 478-byte best
+program; the usual immediate-application compact checker has 479 bytes.
+
+Excluded from that comparison
+Programs of 248 tokens or 270 AST nodes call loads(input()) on one line and
+ignore subsequent lines. Programs of 244 tokens or 265 AST nodes read one
+JSON value per requested line. These are meaningful interfaces but not the
+single-whole-JSON-value interface. Two 18-token/19-node/459-byte programs
+decode and exec a fixed compressed Python payload; they are explicitly
+accounting illustrations in 502_scope_audit, not mathematical improvements.
+Helpers, measurement programs, build generators, incomplete experiments, and
+known-unsound counterexample controls are not proof-checker incumbents.
+
+Scope and soundness safeguards inspected
+The compact token and AST minima open the goal before checking membership.
+Their opener retains leaves only inside the current lower bound and binder
+depth. Newly introduced negative names are below the previous floor; each
+new name enters the extended context only after the corresponding fresh
+scope is established. Removing this first opening, or changing the fresh
+lower bound to include the next unallocated name, is already refuted by
+counterexamples in 502_scope_audit and scope_and_frontier.
+
+The compact 477-byte source has no public grammar validator: exact integer/
+list trees and a canonical guarded closed goal are part of its input
+contract. Its caller-supplied initial floor is safe in the published proof
+because a canonical guarded goal has a literal zero, forcing a successful
+entry floor to be nonpositive. This argument must not be transferred to a
+different goal grammar without proof. Eager selector variants can reject
+additional raw certificates; their completeness is for canonical compiled
+proofs and does not assert equality of all raw acceptance languages.
+
+The goal-validated native minima validate shape, binder bounds, and exact
+integer leaves on the public goal. They do not validate unused certificate
+prefixes. Their int(a) is a test is specific to the documented CPython reader.
+Their soundness claims retain the exact-integer/list certificate assumption.
+The a*0!=0 array detector also recognizes strings, so ideal runs may diverge
+on active strings outside that contract; physical recursion limits reject.
+
+The typed native minima additionally set q=str(p).strip('0123456789-[], ')
+or p.pop before checking. Nonempty residual text makes q noncallable, so JSON
+values with strings, floats, Booleans, null or objects anywhere in the whole
+certificate reject. The initial empty-context or phase-flag branch validates
+the full closed Eq/D grammar; the proof kernel then takes over. This is a
+different and stronger input contract than the compact one.
+
+The tolerant checker at 315/361/603 uses a*0==[] to recognize arrays, accepts
+numerically equivalent respellings of goal leaves, and claims total ideal
+execution on every JSON-reader value. Its public language encoding and
+certificate contract differ from the exact-integer contracts, so its counts
+do not supersede them coordinate by coordinate.
+
+Proof status and limits
+This audit remeasured sources and inspected the safeguards. It did not newly
+formalize the Python interpreter, parser, opener or whole checker. The
+repository's underlying native/iPRA bridge has Lean proofs; the operational
+checker arguments are written proofs plus finite execution evidence. A
+source-size census is not a mathematical lower bound on any class of all
+possible iPRA presentations. The article explicitly says this and lists
+proving such a bound under a fixed interface as an open question.
+
+Authoritative source
+docs/Article/chapters/ch11_cert.tex, especially cert:def:contracts,
+cert:prop:header, cert:prop:late-compositions, cert:sec:envelope and the
+question titled Lower bounds. The top-level README table is older than the
+merged article and must not be used as the current numerical benchmark.

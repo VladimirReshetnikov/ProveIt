@@ -1,0 +1,137 @@
+[
+  {
+    "file": "zero_computation.json",
+    "expected": {
+      "native": true,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "State-aware zero computation."
+  },
+  {
+    "file": "successor_computation.json",
+    "expected": {
+      "native": true,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "A nested iterator update, with its own bound state."
+  },
+  {
+    "file": "nested_reflexivity.json",
+    "expected": {
+      "native": true,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "Derived equality reflexivity, without a primitive reflexivity rule."
+  },
+  {
+    "file": "guarded_progress_used_hypothesis.json",
+    "expected": {
+      "native": false,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "The induction hypothesis supplies the equality needed by the successor computation; replacing it by the zero instance fails."
+  },
+  {
+    "file": "identity_closure.json",
+    "expected": {
+      "native": false,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "Q_y(I(y,0;Su)=y) is derived from a diagonal-guard induction and conditional closure rules."
+  },
+  {
+    "file": "identity_at_nested_term.json",
+    "expected": {
+      "native": false,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "Closure elimination at a nested numerical iterator."
+  },
+  {
+    "file": "native_identity_induction.json",
+    "expected": {
+      "native": true,
+      "diagonal": false,
+      "witness": false
+    },
+    "note": "The old qi instruction is translated to diagonal-guard induction; it is not a hidden primitive of either seven-rule checker."
+  },
+  {
+    "file": "ordinary_atomic_case_at_zero.json",
+    "expected": {
+      "native": true,
+      "diagonal": true,
+      "witness": false
+    },
+    "note": "The unguarded equation y=1 is introduced by cases at the literal zero witness; the contradictory base is used."
+  },
+  {
+    "file": "compound_D_case.json",
+    "expected": {
+      "native": true,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "A compound D matrix receives its zero instance."
+  },
+  {
+    "file": "compound_Q_case.json",
+    "expected": {
+      "native": true,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "Q is permitted inside D: the public language is the entire native formula grammar."
+  },
+  {
+    "file": "capture_avoiding_witness.json",
+    "expected": {
+      "native": true,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "Substitution of a nested iterator witness beneath the closure and update binders."
+  },
+  {
+    "file": "nonvacuous_existential_elimination.json",
+    "expected": {
+      "native": true,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "The eliminated witness is used in a closure specialization and in the new existential witness."
+  },
+  {
+    "file": "guarded_case_recovered.json",
+    "expected": {
+      "native": true,
+      "diagonal": true,
+      "witness": true
+    },
+    "note": "An ordinary case proof at a guarded matrix is recovered by explicitly proving its zero instance."
+  },
+  {
+    "file": "guarded_old_case_needs_translation.json",
+    "expected": {
+      "native": true,
+      "diagonal": false,
+      "witness": false
+    },
+    "note": "The untouched old case certificate uses H(0), so it must be translated to the guarded progress rule."
+  },
+  {
+    "file": "unguarded_equation_progress_rejected.json",
+    "expected": {
+      "native": false,
+      "diagonal": false,
+      "witness": true
+    },
+    "note": "Atomicity alone does not select progress: the exact diagonal guard is required."
+  }
+]

@@ -1,0 +1,84 @@
+HISTORICAL REVIEW: written before the final native SR bootstrap.
+Any earlier open-status statement is superseded by native_sr_review.txt
+and theory/native_sr_bootstrap.tex. The ordinary arithmetic checks remain valid.
+
+Independent review: tied-seed recursor and iterable opener
+========================================================
+
+1. Bounded-coordinate theorem
+
+I reviewed review/arithmetic_core/binary_recursor_obstruction.tex and
+binary_recursor_bounds.py. The structural proof is valid. The induction
+hypothesis is applied to an update h with its two bound names regarded as
+independent coordinates. There are exactly the stated cases: h bounded
+by a constant; by a passive coordinate; by old counter; by old state.
+The crucial tied-seed fact is that h's state coordinate is zero at the
+initialization, so a state-bound H gives the parameter-independent seed
+bound H(0)+1. No second independent unbounded coordinate enters that
+branch. Monotonicity then lets the bound compose through the counter.
+
+Each chosen bound is nondecreasing and primitive recursive, by ordinary
+composition and bounded primitive recursion. In the old-counter case,
+K(m)=1+H(m) is enough because H is already nondecreasing; this agrees
+with the Python compiler and with the paper's equivalent bounded maximum.
+The proof includes nested recursors, repeated passive variables, and
+capture-free macro expansion. Selector, addition and numerical pairing
+corollaries follow from fixing each candidate bounding coordinate.
+
+The limitation is accurately stated: this is a term-representation
+obstruction over the standard numerical domain. It does not exclude
+relational interpretations, definable unique-existence functions, tuple
+or quotient domains, or all bi-interpretations with iPRA.
+
+The supplied executable diagnostic was rerun successfully: 294 evaluated
+instances across constant, passive, counter, state, predecessor, and mask
+examples. The code is illustrative evidence, not a mechanized proof.
+
+2. Iterable opener
+
+I reviewed experiments/iterable_opener.py. No counterexample was found.
+The additional successful traversed JSON aliases have a simple decoder:
+
+  empty string           -> []
+  empty dictionary       -> []
+  dictionary {"": value} -> [[]], with value ignored
+
+All nonempty strings and all dictionaries with a nonempty key reject
+when traversed. A nonempty string iterates into nonempty single-character
+strings, so recursion cannot return a list; when an exception arises,
+the scalar fallback tries integer/string comparison and also raises.
+A nonempty dictionary with an invalid key similarly fails and its own
+scalar fallback raises. Empty iterables return [] without traversing
+children. Only the empty-string-key dictionary can return a unary list.
+
+These aliases preserve the branch and array-length information that can
+participate in a successful trace. Truthy dictionary majors cannot
+survive m[2:] because dictionaries cannot be sliced; raw dictionary goals
+cannot undergo DI indexing by integer 2. They can become canonical lists
+in the common opening, which is semantically harmless. All entries
+actually inserted in the proof context remain lists.
+
+In arithmetic, a successful source s must still unpack as a three-item
+list and pass traversal. A false counter may be an empty string or empty
+dictionary, each decoding to zero. A true dictionary counter can only be
+{"": value}, decoding to successor zero; starred expansion exposes its
+sole empty key, and eager predecessor opening gives [[],seed,update].
+Thus the same zero-instance argument applies. More than one dictionary
+key or any nonempty-string counter rejects, even with a constant update.
+Dictionary values may hide arbitrary JSON but are not part of the decoded
+term or formula, so they do not introduce hidden numerical parameters.
+
+Independent small tests confirmed that []-alias counters {} and "" accept
+I(0,0;v.1)=0 and reject =1; the unary alias {"":[-1000]} accepts
+I(1,0;v.1)=1 and rejects =0; two-key dictionaries and nonempty strings reject
+both. These tests supplement the successful-trace argument.
+
+Erasing aliases in a whole certificate need not produce an identical
+successful run of the older checker: a previously mismatched raw endpoint
+may match after erasure, changing a formerly neutral branch. Soundness
+should therefore be proved directly by the same inference trace with
+decoded meanings, rather than by asserting verbatim whole-certificate
+normalization preserves operational behavior.
+
+This is a source/codec reduction, not a new logical or arithmetic
+axiomatization. Its extra aliases should be documented explicitly.

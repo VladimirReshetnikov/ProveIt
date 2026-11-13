@@ -1,0 +1,7 @@
+# Independent review of BFS displayed selectors Lean check
+
+The checked Lean theorem states `BFSDisplayedSelectors.values = DirectBFSSymbolicKernel.rows.map CompactCoefficientMass.selector`. Its left side is a literal 943-element natural-number list; the proof uses `decide`, and the captured axiom report is `[propext]`. The selected direct provider is the pinned `DirectBFSSymbolicKernel.olean` in the fresh BFS replay union, SHA `69f4a2f9d32229b6846ec7f0b84fe4b4d69d5eba8de1ff5c9ddb063e1d855c3f`.
+
+`check.py` independently extracts the 943 decimal selector blocks from the pinned BFS PDF, reads the literal list from the Lean source, reconstructs every selector from the ordered BFS Lean source row table, and compares that table to `TILES.json`; all four sequences agree. It rehashes the checked source, author runner, all recorded pins, direct provider, output object and logs, and verifies the accepted receipt. The PDF transcription comparison is an **external** computation: the Lean theorem does not parse or authenticate the PDF, its generator, any coefficient bytes, or a complete endpoint expression.
+
+The author runner pins and rechecks the relevant selected project objects and configures the fresh BFS union first. The provider path's current first resolution is checked post hoc against that recorded configuration; no independently recorded compile-time provider manifest, Lean replay or full historical/source/package/dynamic ancestry audit is claimed. The result remains downstream of the separately reviewed 127-stage base and 65-stage BFS replay.

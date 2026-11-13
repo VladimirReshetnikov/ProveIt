@@ -1,0 +1,7 @@
+# Static review: held trace75/BFS uniform reset
+
+GO for one coordinated author check with runner SHA-256 `a0fcdb3355c1a9c46205c7db2691268aa95734aaff490e96c231ce111dac8c88` through outer SHA-256 `1e718c5b9953590aa5a5053496caafb48c2de28e8a2cda8cdd0d17b87fb33a3e`. The proposed theorem assumes exact four symbolic ports and a positive trace75 zero in a supported IΣ₁ model. It retains one common `N,s`, indexed carry and cell-shift alignment, and seeks uniform predecessor temporal-digit/carry zero for every `k<8807*N` in residues 2195, 3296, 4393 or 5495, plus target temporal zero for the final two residues. This remains a candidate until checked by Lean.
+
+`check.py` independently rehashed the 1,977-object fresh union and 80 outside bundles/targets, all eight regular client roots and sixteen source/object files, and the captured `WholeBlockTemporal` provider subtree (281 project/29 outside). It checked frozen preflight, 18 actual-function controls, same-byte source/object symlink rejection and copied-real-supervisor altered-runner rejection. The reviewed runner retains strict named axiom and serialized direct-header checks, source/provider/companion stability, root-shadow/resource guards and actual exit capture. No candidate Lean process was launched in this review.
+
+A successful check would be a conditional uniform-reset model consequence, not a halt/iPRA theorem or external coefficient/PDF binding. Preserve and independently audit the actual result and terminal; historical unrebuilt-source and package/dynamic ancestry remain inherited.

@@ -1,0 +1,7 @@
+# Independent review of paired replay supervisor
+
+**PASS for source and prelaunch controls; no Lean launched.** The revised supervisor statically pins the first state, workspace client sources, outer exit observation, terminal audit script, receipt and actual audit-execution receipt. It cross-checks their runner/state/audit identities and checks the first source, object, logs, direct guards and allowed axiom reports. The fresh runner differs from the successful one only in its isolated output path; both client source files match exactly. `check.py` independently checks these pins and repeats the pure controls.
+
+The supervisor retains its actual child runner exit and records the log. A PASS requires exit 0, no interruption, a successful fresh state, identical two source/object hashes, direct dependency name-to-hash maps and axiom reports, followed by base/provider and both runs' artifact rechecks. Its own outer exit still requires separate observation. Exception handling waits for a started child rather than relaunching. No false PASS was found in the reviewed code and synthetic failure controls, within inherited resource-monitor and transient/transitive provenance limits.
+
+Strict object-byte equality may reject a valid replay if Lean embeds output-dependent metadata; such a failure is not a proof failure by itself. A completed replay would use the same provider and therefore would not be an independently sourced build or a formal verification of PDF bytes.

@@ -1,0 +1,108 @@
+{
+  "external_direct_slots": 60,
+  "lean_launched": false,
+  "named_reports": 22,
+  "package_slots": 20,
+  "parent_audit_rerun_exit": 0,
+  "parent_audit_sha256": "61837a3a0d01b32f7c7a929fef3945f6fef3f1724c4b9a83c4ce721fd7a7572a",
+  "parent_objects_per_side": 171,
+  "parent_receipt_sha256": "b957b92e181a90f5dd0d1b5aa2adabb12eb7ed8eac463e47c19356e2ca5182a7",
+  "review_scope": "Source/artifact closure verification by an author of several clients, not independent mathematical proof review; no paired build or concrete CarryInput instantiation.",
+  "reviewed_commit": "42ccbf261d",
+  "scan_sha256": "de4d762b2491cc64865a80ef5cb6e237526c689370d749900b4e5cc17906fdf5",
+  "source_modules": 7,
+  "source_rows": [
+    {
+      "imports": [
+        "DiophantineConsistency.ArithmeticCyclicWord"
+      ],
+      "module": "DiophantineConsistency.BandCarryInputs",
+      "reports": [
+        "BandCarryInputs.source_word_bound",
+        "BandCarryInputs.aligned_rotation_bounds",
+        "BandCarryInputs.residual_bounds",
+        "BandCarryInputs.normalized_congruence"
+      ],
+      "sha256": "99741977abae45163ecbb94dd4caa03daec0cf1db370dff0ca7ba641dbe29cf5"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.ArithmeticCyclicWord"
+      ],
+      "module": "DiophantineConsistency.CompactBitRotation",
+      "reports": [
+        "CompactBitRotation.temporal_mod",
+        "CompactBitRotation.temporal_word_lt",
+        "CompactBitRotation.temporal_digit_lt",
+        "CompactBitRotation.temporal_digit_le",
+        "CompactBitRotation.replace_temporal"
+      ],
+      "sha256": "898d81f0a75ac14bca36cccc8f3c3db62121e85e20e99a6aacaaadf634256c42"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.CompactBitRotation",
+        "DiophantineConsistency.BandCarryInputs"
+      ],
+      "module": "DiophantineConsistency.ActualTemporalBand",
+      "reports": [
+        "ActualTemporalBand.graph_temporal_word"
+      ],
+      "sha256": "ef5579337f2af02063c63ad6d2aa39dcbe864fbabfcb4512596cc4e0fbe2c1b9"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.SymbolicGraphBand",
+        "DiophantineConsistency.ActualTemporalBand"
+      ],
+      "module": "DiophantineConsistency.FixedGraphTemporal",
+      "reports": [
+        "FixedGraphTemporal.fixed_graph_temporal"
+      ],
+      "sha256": "872b86adfcadf783ee1887043df5a83b479594df1ac55591eac954214394ba82"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.ArithmeticWindowCarry"
+      ],
+      "module": "DiophantineConsistency.CompactDigitBound",
+      "reports": [
+        "CompactDigitBound.scaled_key_bound",
+        "CompactDigitBound.clean_outgoing",
+        "CompactDigitBound.clean_column",
+        "CompactDigitBound.raw_le_scaled",
+        "CompactDigitBound.sum_mod_le_scaled",
+        "CompactDigitBound.mod_le_scaled_rep"
+      ],
+      "sha256": "c7830171030cb85bb5e5b1952aaddaa2539f5c41d39345caf528f372235b3c3a"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.ArithmeticWindowCarry",
+        "DiophantineConsistency.CompactDigitBound"
+      ],
+      "module": "DiophantineConsistency.CompactHeterogeneousCarry",
+      "reports": [
+        "DiophantineConsistency.CompactHeterogeneousCarry.excess_le",
+        "DiophantineConsistency.CompactHeterogeneousCarry.carry_le",
+        "DiophantineConsistency.CompactHeterogeneousCarry.carry_column",
+        "DiophantineConsistency.CompactHeterogeneousCarry.end_around_carry"
+      ],
+      "sha256": "ce587b76912f7a0579a414a16c59c75a37b5e1b3db930ce57ff7a743c3fa7b2e"
+    },
+    {
+      "imports": [
+        "DiophantineConsistency.BandCarryInputs",
+        "DiophantineConsistency.CompactHeterogeneousCarry",
+        "Mathlib.Data.Fintype.BigOperators"
+      ],
+      "module": "DiophantineConsistency.GenericBandCarryFamily",
+      "reports": [
+        "GenericBandCarryFamily.carry_input"
+      ],
+      "sha256": "66697812c0cafee3fa8ff6280e13dee866adaa805ebef41a897df30f34952c62"
+    }
+  ],
+  "status": "PASS_INDEPENDENT_GRAPH_TEMPORAL_CARRY_SOURCE_CLOSURE",
+  "target_slots": 140
+}

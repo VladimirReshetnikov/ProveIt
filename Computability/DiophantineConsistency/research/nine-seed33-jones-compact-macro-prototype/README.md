@@ -1,0 +1,11 @@
+# Compact macro-DAG prototype for the symbolic 33 seed
+
+An external source-pinned candidate, adapted from the reviewed 38 prototype using ν=33, seed33 and its exact checked named Lean formula/endpoint bytes. It retains nine inputs, 45 live named nodes, finite sums, powers and seed-dependent z/y/pCoefficient as symbolic macros. Its `codingStar`/`codingExpo` arity is 33 with degree parameter 4, L=5^34, the prefix range is 33, and the maximum G exponent is 5^33. The 45 count is named nodes, not arithmetic operations.
+
+Deterministic regeneration and the external structural validator do not prove that JSON denotes the checked Lean RHS: a formally checked macro evaluator and semantic theorem, or an independently audited translator with an explicit trusted boundary, remain necessary. No numerical coefficient expansion, exact degree, operation count or PDF binding is claimed. Independent source and structural review required.
+
+Author no-Lean deterministic regeneration and structural validation each exited 0; retained outputs are `regeneration.json` and `structure.json`. Pins: builder `c529228437b02c15ad1c09ba2694094de312ba32b1009b9df41924758509157e`, structural checker `9b19ba8e228d749ec849e6d13179708d670788d5f069818b47d323821d2e1b26`, recipe `06154f18e49d5ac3ca49add3a9b8bb03717f14590d2ef14f892d04b7dc3a75b3`, regeneration `69e81f3479d1222aa96d1d1a39c0bd9fab18456a3fb9f5d0cb6116c47be697b1`, structure `5a516acfcef0de9ce1e73d92fcbd6ac25755a34ec1933dd56ceffc24d8ac19bd`. The checked Lean named formula is a distinct object and does not consume this JSON.
+
+The [independent macro transcription and structure audit](../../reviews/nine-seed33-jones-compact-macro-frontier-independent/) passed. It checks the external recipe against the separately inspected Lean named RHS; it is not a Lean evaluator theorem or JSON/Lean semantic binding.
+
+Subsequent work checked a distinct [Lean macro recipe and named-expression equality](../nine-seed33-jones-named-equality-memory-retry-check/README.md), with an independent terminal audit. That theorem applies to the Lean recipe over every commutative ring; this JSON is still connected by the external transcription audit, not by a Lean parser or file theorem. The earlier status paragraphs above describe the original prototype checkpoint.

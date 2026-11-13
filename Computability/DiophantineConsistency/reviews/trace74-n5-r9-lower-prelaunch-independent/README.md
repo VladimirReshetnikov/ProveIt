@@ -1,0 +1,7 @@
+# Independent scoped prelaunch: n5/r9 lower interval
+
+GO for the held check, subject to coordinator's slot release. Source certificate SHA-256 `2bbc98feff9a633cfaea2e7a20a287907380322e17b7ad866da3946380ca42c3`, bound `836d85a907bb9d9dbf47cd291e9a111d4c5c465a26b6bbeb16ebf30ea8cef929`, runner `dac6434d5bca3bbeee99a5032dac363fa6e4af70972f620dc7241f09ab3088d3`, policy `f2c24934d94757590735b26c3f36b470f66fb3164604faa4f0f2bbd89ea9cd21`. No Lean replay in this review.
+
+The certificate matches the separately independently expanded 68 positive coefficient polynomial at x=32+u, t=1+v. Assuming its positive remainder, the bound combines its identity with nonnegativity of x^4 t^8(B+68−t) and the strict polynomial gap to contradict t≤B+68. Ordered-ring x≥32, t≥1 and the explicit polynomial inequality remain assumptions; no Pell or graph binding is claimed. Elaboration and computation remain to be checked by Lean.
+
+Runner builds certificate then bound in a fresh local output preceding the pinned Mathlib package; checks all eight direct source/object/tool pins before and after, requires zero exits, exact named reports with allowed axioms, no warning/error/sorryAx, empty stderr, and enforces locked resource guard. Saved preflight and 26 actual-validator controls pass; policy also checks LEAN_PATH AST. Direct pins do not authenticate full transitive/package ancestry or continuous search-path stability. Actual outer exit and all results remain pending.

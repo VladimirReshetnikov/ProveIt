@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/wangtable-highmem-02.py", line 28, in <module>
+    try:main()
+        ~~~~^^
+  File "/tmp/wangtable-highmem-02.py", line 27, in main
+    code,peak,reason=monitor.monitored(command,env,OUT/'compiler.log',timeout=600);output=(OUT/'compiler.log').read_text(); result={'compiler_exit':code,'reason':reason,'peak_sampled_rss_bytes':peak,'log_sha256':H(OUT/'compiler.log'),'free_disk_after':shutil.disk_usage('/tmp').free};(OUT/'child-result.json').write_text(json.dumps(result,indent=2,sort_keys=True)+'\n');print(json.dumps(result),flush=True);need(type(code) is int and code==0 and reason is None,'compiler failed');need(not re.search(r'(?m)^.*(?:error:|warning:)|\bsorryAx\b|\bsorry\b',output),'diagnostic rejected');need(obj.is_file() and not obj.is_symlink(),'missing output');after=slots(Path(str(obj)[:-6]));need(all((v is not None) if k==str(obj) else v is None for k,v in after.items()),'unexpected output companion');check(guards);need(H(dst)==row['source_sha256'],'source drift');result['object_sha256']=H(obj);result['status']='PASS_SINGLE_AUTHOR_WANGTABLE_EXPLORATION';(OUT/'result.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'],flush=True)
+                                                                                                                                                                                                                                                                                                                                                                                                                       ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/wangtable-highmem-02.py", line 8, in need
+    if not c:raise ValueError(m)
+             ^^^^^^^^^^^^^^^^^^^
+ValueError: compiler failed

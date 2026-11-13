@@ -1,0 +1,29 @@
+/tmp/tenpositive-signed-bezout-qi_ui4kn/SignedBezout.lean:20:4: error: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+a m : V
+e : DiffRing V
+hd : ι m ∣ ι a * e
+u v w z : V
+he : 1 + a * u + m * v = a * w + m * z
+hring : 1 + ι a * ι u + ι m * ι v = ι a * ι w + ι m * ι z
+⊢ -2 + ι a * ι w * 2 - ι a * ι u * 2 + ι m * ι z * 2 - ι m * ι v * 2 = 0
+/tmp/tenpositive-signed-bezout-qi_ui4kn/SignedBezout.lean:25:10: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  1
+in the target expression
+  e = ι a * e * (ι w - ι u) + ι m * (e * (ι z - ι v))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+a m : V
+e : DiffRing V
+u v w z : V
+he : 1 + a * u + m * v = a * w + m * z
+hring : 1 + ι a * ι u + ι m * ι v = ι a * ι w + ι m * ι z
+hone : ι a * (ι w - ι u) + ι m * (ι z - ι v) = 1
+t : DiffRing V
+ht : ι a * e = ι m * t
+⊢ e = ι a * e * (ι w - ι u) + ι m * (e * (ι z - ι v))
+'TenPositiveSignedBezout.cancel_signed_factor' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

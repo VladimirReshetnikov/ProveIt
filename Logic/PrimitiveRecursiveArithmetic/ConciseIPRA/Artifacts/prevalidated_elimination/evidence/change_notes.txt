@@ -1,0 +1,143 @@
+CHECKER REDUCTION: EXACT CONTENT AND LIMITS
+=========================================
+
+The mathematical presentation is the inherited initialized-iterator native
+iPRA calculus.  These files introduce no new arithmetic primitive, axiom,
+logical connective, or induction schema.  The contribution is a small
+reduction of complete proof-checker source with a corresponding scope
+argument.  It must not be described as an absolute simplest axiomatization
+or a significant foundational breakthrough.
+
+The original complete comparison program is the unchanged
+reference_certified_zero_bytes.py, from
+ProveIt/docs/drafts/ipra_certified_zero_2026-11-10.zip at commit
+76a2651601d17b34d46753f189ea026a21ce8d29.
+The upstream proposal identifies its own parent snapshot separately.
+
+1. Goal preparation precedes major proof
+---------------------------------------
+Originally an elimination command proves its major, then computes a new
+minor goal when the equality/Q matching conditions hold.  The new program
+performs the matching and goal opening at the old scope, before the major
+proof.  It then proves that major in the same retained context.  Successful
+checking returns None, so
+
+    check(major, context) or major * 3
+
+exports exactly the same hypothesis as before.  A mismatch still requires
+the major proof: it is not an unchecked no-op.
+
+Canonical equality transport and Q elimination use endpoints/templates
+whose passive free variables are already in the old context.  Their
+computed minor is therefore well scoped before proving the major.  Any
+fresh names introduced internally while proving the major are absent from
+the retained conclusion, context, and prepared minor.  The major proof's
+temporary hypotheses are discarded as before.  Consequently its internal
+freshness allocations do not change the decoded meaning of the prepared
+minor.  The ordinary elimination inference followed by the same
+continuation proves the original conclusion.
+
+For raw, noncanonical data this change may reject some packets whose
+endpoint or template relied on a name allocated only during the major
+proof.  Such accidental visibility is not used by canonical completeness.
+The claim is preservation of canonical derivability and decoded soundness,
+not equality of the two programs' accepted JSON languages.
+
+2. An impossible major candidate
+--------------------------------
+The old Q candidate `not source and [template] * 3` becomes False when the
+source is nonzero.  Without an outer truthy-major test, JSON markers 0,
+False, or 0.0 could match that False candidate and perform an unproved goal
+transformation.  The new Q candidate is instead
+
+    source and 1j or [template] * 3.
+
+No JSON-loaded value is the non-real complex number 1j.  This remains true
+for Python's permissive JSON real NaN/Infinity values.  The other candidate
+is a two-element list, and the true Q candidate is a three-element list.
+Thus neither candidate can match a false-valued major.  The separate major
+guard is redundant with this candidate construction.
+
+The file reject_false_major_sentinel.json requests the canonical false
+equation 1=2.  Every candidate rejects it.  The verification script creates
+a temporary unsafe mutation that restores the False candidate while
+leaving the outer guard removed; that mutation accepts the false equation.
+This is an executable demonstration that removing both safeguards would
+be unsound.  The temporary mutant is not a proposed checker.
+
+3. A shorter missing-image sentinel
+----------------------------------
+The numerical opening function's omitted image changes from None to 0j.
+Whenever that omitted image is actually needed at numerical depth three,
+the scope comparison attempts to order an integer and a complex number,
+which raises TypeError.  The value is internal and never produced by JSON.
+The two sentinels have different jobs: 0j must fail ordering; 1j must be
+unequal to all JSON values, including real zero.  Using real zero as the
+missing-image value, or 0j as the impossible equality candidate, would not
+have the same properties.
+
+4. Whole-program measurements
+-----------------------------
+All three measured files are exactly ast.unparse(ast.parse(source)) plus
+one newline under CPython 3.12.14.  The driver, JSON parser import, scope
+checking, arithmetic, logic, and successful verdict are all charged.
+
+                            Bytes   Tokens   AST   Gzip-9
+  Preferred explicit list     547      263   307      347
+  Zero-product list test      539      263   309      342
+  Generic traversal           576      261   292      345
+
+The supplied coordinate envelope is 558 bytes / 262 tokens / 296 AST
+nodes, attained by different programs.  The new envelope is
+539 / 261 / 292, again attained by different programs.  No single delivered
+program is below all three old coordinates.
+
+The byte profile's 19-byte improvement over its 558-byte parent splits as:
+  11 bytes: pre-major preparation and folded major supply;
+   6 bytes: non-real Q sentinel removes the separate falsy-major guard;
+   2 bytes: None becomes 0j for a used missing image.
+These are controlled changes to complete modules; measure.py reproduces
+their individual token/AST/gzip effects as well.
+
+The structure profile uses the previously studied generic try/except
+traversal and has its existing runtime qualification: nonempty strings
+can recurse indefinitely with an ideal unlimited stack.  Actual CPython
+rejects them by recursion-limit failure followed by type failure.  The
+preferred explicit-list and zero-product profiles have structurally
+recursive traversal of accepted finite JSON arrays and do not share that
+qualification.  Ordinary finite-resource limitations on large valid proofs
+remain, as in the baseline.
+
+5. Reproduction and verification status
+--------------------------------------
+  python3 measure.py
+  python3 verify.py
+
+The recorded run passed 288 inherited complete CLI checks: 36 fixtures,
+four implementations including the readable transcription, and ordinary
+plus optimized Python.  There were 144 accepts, 144 rejects, and no
+mismatches.  All 24 additional sentinel controls rejected their false
+goal.  The unsafe sentinel mutation accepted that false goal, and direct
+opening with a missing image raised TypeError.
+
+These finite checks are evidence about implementation and guard behavior.
+They are not a formal verification of the universal metatheory in a proof
+assistant.  Soundness and canonical completeness rely on the written scope
+argument and the inherited arithmetic/logical correspondence.
+
+6. Explored alternatives that were not improvements
+-------------------------------------------------
+* A while-loop continuation was larger in every measured coordinate than
+  the corresponding recursive file (582 bytes / 267 tokens / 314 AST for
+  the zero-product version before the final sentinel change).
+* Direct computation leaves inferred from the goal were larger (at least
+  636 bytes / 277 tokens / 330 AST), even before adding one needed exact
+  equation-shape guard.  They were not advanced as a sound final candidate.
+* Making the I(0,a;h)=a equation a syntactic normalization could remove a
+  computation branch, but deleting the wrapper also deletes a dummy bound
+  slot in the current de Bruijn codec.  Correct lowering of bound indices
+  must be implemented and counted.  No smaller correct normalizer resulted.
+* Private object() eigenvariables still require a way for an external JSON
+  certificate to name earlier eigenvariables.  An environment/index lookup
+  restores the scope mechanism that the proposed shortcut appeared to
+  remove.  This avenue did not yield a completed smaller checker.

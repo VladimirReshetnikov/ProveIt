@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import hashlib,json,subprocess,sys
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-sharing-sign26-seed-gap-check';H=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'65f0780433c605bc26ab6dcd64f9c2a49d88c0f00a2ec448fabf65b62a20cb9d','source-manifest.json':'6a0dc4007753c7f7cb1ff05c9b805b89e2877459ba59cd6eea1849f1be3abbfc','provider-union-survey.py':'d9010e78f21238edd3422f6cfbdef5c999b9cc5fe44a91aa769706345ee29ac9','union.json':'6904b7cdebc978161b3ea190f2ea0951fa0bc77fa89503fede5be9d69ed0e772','src/DiophantineConsistency/Sign26SeedGap.lean':'00ba2c5049f4bf14616d511d7816ab8011e26caab470d68efafde4d70fd43fc8'}.items():assert H(P/n)==h
+m=json.loads((P/'source-manifest.json').read_text())['rows'];assert len(m)==1 and m[0]['imports']==['DiophantineConsistency.Sign26ZeroExtraction','DiophantineConsistency.Sign26GapRepresentative'];s=(P/'src/DiophantineConsistency/Sign26SeedGap.lean').read_text();assert H(D/'research/nine-sharing-sign26-seed-gap-draft/Sign26SeedGap.lean')==m[0]['source_sha256']
+for x in ['(hp0 : ((p 0 : ℤ) : DiffRing V) = ι beta)','(hp1 : ((p 1 : ℤ) : DiffRing V) = ι K)','(hbeta : 1 ≤ beta)','(hz : InternalZero (SharingSeed26Sextic.seed p) v)','∃ gap : V, ι gap =','Sign26ZeroExtraction.nt_eq p v hz','rw [hp0, hp1] at hNt','Sign26GapRepresentative.exists_gap beta K (v 1) (v 2) (v 3) (v 4) (v 9) hbeta hNt','rw [hp0]','exact hgap']:assert x in s
+for n,h in [('nine-sharing-sign26-zero-extraction-terminal-frontier-independent','bad783a7578e21edbcffb029ffc809131be27d72a32609ef590a48849640dade'),('nine-sharing-sign26-gap-representative-terminal-frontier-independent','19ede3fb2184141a459e1047be2d448b97074034355f675a321cf508c99c7a6b')]:
+ p=D/'reviews'/n/'check.py';assert H(p)==h;subprocess.run([sys.executable,'-I','-S','-B',str(p)],capture_output=True,check=True,timeout=120)
+r=subprocess.run([sys.executable,'-I','-S','-B',str(P/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not r.stderr and json.loads(r.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_STATIC_AND_NO_LEAN_PREFLIGHT','scope':'seed-zero implies represented gap only under explicit p0/p1 cast and beta≥1; no residual transfer or Lean replay'},sort_keys=True,indent=2))

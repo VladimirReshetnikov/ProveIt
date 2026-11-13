@@ -1,0 +1,27 @@
+/tmp/nine-sharing-seed38-current-jones-20261105/src/DiophantineConsistency/SharingSeed38CurrentJones.lean:19:20: error: Tactic `decide` failed for proposition
+  1 < CurrentMasks2011.radix
+because its `Decidable` instance
+  Nat.decLt 1 CurrentMasks2011.radix
+did not reduce to `isTrue` or `isFalse`.
+
+After unfolding the instances `instDecidableEqBool`, `Bool.decEq`, `Nat.decLe`, and `Nat.decLt`, reduction got stuck at the `Decidable` instance
+  match (Nat.succ 1).ble CurrentMasks2011.radix, true with
+  | false, false => isTrue ⋯
+  | false, true => isFalse ⋯
+  | true, false => isFalse ⋯
+  | true, true => isTrue ⋯
+'DiophantineConsistency.SharingSeed38CurrentJones.current_beta_positive' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.SharingSeed38CurrentJones.current_degree' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.SharingSeed38CurrentJones.current_normalized' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.SharingSeed38CurrentJones.current_nine_iff' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

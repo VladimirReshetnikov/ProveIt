@@ -1,0 +1,9 @@
+# Independent review: four guarded-input exclusions
+
+**Result: pass under the stated hypotheses.** For the literal proposed guarded four-square system, substituting the additional positive guard input by F, alpha, J or sigma cannot give a positive zero under the individual assumptions in the author packet. This is limited to those four substitutions. It does not prove the guarded graph's separate endpoint, exclude another guard or reparameterization, or establish a global 13-input impossibility. No Lean theorem was run.
+
+At a putative positive integer zero, the guarded sum of squares gives both `Bt=h>0` and the first two residual equations. The reviewed first-norm divisibility gives `b|Bt`, `q³|Y` for `b=J*beta>0`, `q=b+1`. If `K0≥0`, `Bt=(q−F−alpha)*(X+K0*q)−F*q>0` forces `C=q−F−alpha>0`, hence `1≤F,alpha≤b−1`. Neither can equal positive `Bt`, which is a multiple of b. If additionally `beta>1`, `b=J*beta>J`, so positive J cannot equal Bt either.
+
+For `h=sigma`, the earlier reviewed first/main Pell argument gives `k≥8*X*Y²+4>2`. Under the extra `K0<q²`, `C≤b−1` and `Y≥q³` imply `Bt<qX+q⁴<2Xq⁶<k/4`. With `t=Bt/b≤Bt`, the signed carrier at sigma=Bt has `Z/M=ell+k−Bt+s−t>ell+k/2`. But the first norm requires absolute value `tau<ell+k/2`, since `(ell+k/2)²−tau²=k²/4−1>0`. This is a contradiction. The authenticated compact44 beta exceeds 1 and its K0 is below `(beta+1)²`; for every positive J, `q≥beta+1`, so the stated port-specific assumptions hold there.
+
+The checker pins and reruns the author and prior positive-Bt receipts, checks the literal guard and residual wiring, reauthenticates both port bindings and tests the scalar boundary inequality independently. These finite controls do not replace the preceding general proof. Run from `Computability/DiophantineConsistency` with `python3 -I -S -B reviews/ordinary14-guarded-fold89-reuse-exclusions-independent/check.py`; stdout must match `result.json`.

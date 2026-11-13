@@ -1,0 +1,3 @@
+# Sign33 d11 named symbolic rank source-only candidates
+
+These three drafts adapt the independently checked sign38 d10 substitution and d11 symbolic rank proofs to sign33 namespace, `codingStar`/`codingExpo 33 4`, range 33 and exponent `5^34`. Finite sums, powers, and coefficients remain symbolic. They propose a short-prefix d11 identity, not final recipe output or a full semantic/JSON/human binding, degree, or operation count. The [guarded runner](../nine-seed33-jones-prefix-rank-symbolic-check/README.md) binds the audited d11 and e/ell/lambda/g/theta producers; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-prefix-rank-symbolic-terminal-frontier-independent/) passed.

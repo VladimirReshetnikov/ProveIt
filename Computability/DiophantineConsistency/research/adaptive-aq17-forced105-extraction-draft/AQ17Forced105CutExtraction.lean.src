@@ -1,0 +1,103 @@
+import AQ17Forced105ConditionalTransfer
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed graph-to-arithmetic cut extraction. This source is unelaborated;
+its algebra and ordered-model tactics require Lean checking. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.AQ17Forced105CutExtractionDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open AQ17Forced105ConditionalTransferDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def k (v : Fin 17 → V) : V := (v 9+1)+(v 10+1)
+def c (v : Fin 17 → V) : V := (v 9+1)+(v 7+1)*k v
+def a (v : Fin 17 → V) : V := (v 6+1)*(v 7+1)+(v 7+1)
+def delta (v : Fin 17 → V) : V := 3+4*a v+a v*a v
+def ell (v : Fin 17 → V) : V := ((v 6+1)*(v 7+1))*((v 7+1)*k v)
+def integralI (v : Fin 17 → V) : V := c v*c v*(v 4+1)
+def qnat (v : Fin 17 → V) : V := integralI v*integralI v
+
+theorem shifted_pos (v : Fin 17 → V) (i : Fin 17) : 0<v i+1 :=
+  lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+
+theorem c_positive (v : Fin 17 → V) : 0<c v := by
+  have hk : 0<k v := add_pos (shifted_pos v 9) (shifted_pos v 10)
+  exact add_pos (shifted_pos v 9) (mul_pos (shifted_pos v 7) hk)
+
+theorem delta_positive (v : Fin 17 → V) : 0<delta v := by
+  have ha : 0<a v := add_pos (mul_pos (shifted_pos v 6) (shifted_pos v 7)) (shifted_pos v 7)
+  exact add_pos (add_pos (by simp) (mul_pos (by simp) ha)) (mul_pos ha ha)
+
+/-- The shifted eta and Y*k contributions are both at least one, so I≥2
+and q=I²≥4 in the model's natural-number semiring. -/
+theorem qnat_at_least_four (v : Fin 17 → V) : 4≤qnat v := by
+  have hk : 0<k v := add_pos (shifted_pos v 9) (shifted_pos v 10)
+  have hpart : 0<(v 7+1)*k v := mul_pos (shifted_pos v 7) hk
+  have hc2 : 2≤c v := by
+    have h1 := pos_iff_one_le.mp (shifted_pos v 9)
+    have h2 := pos_iff_one_le.mp hpart
+    dsimp [c]
+    omega
+  have hc1 : 1≤c v := pos_iff_one_le.mp (c_positive v)
+  have hcsq : c v≤c v*c v := by
+    simpa using mul_le_mul_of_nonneg_left hc1 (Arithmetic.zero_le (c v))
+  have hi1 : 1≤v 4+1 := pos_iff_one_le.mp (shifted_pos v 4)
+  have hcsqi : c v*c v≤integralI v := by
+    simpa [integralI] using mul_le_mul_of_nonneg_left hi1 (Arithmetic.zero_le (c v*c v))
+  have hi2 : 2≤integralI v := le_trans hc2 (le_trans hcsq hcsqi)
+  have hm := mul_le_mul hi2 hi2 (by simp : (0:V)≤2) (Arithmetic.zero_le (integralI v))
+  simpa [qnat] using hm
+
+/-- The four used residuals yield the exact cut. No port sign is assumed. -/
+theorem cut_of_zero (p : Fin 4 → ℤ) (v : Fin 17 → V)
+    (hz : InternalZero (AQ17Forced105LiteralDraft.literal p) v) : ForcingCut v := by
+  have hr := (AQ17Forced105ResidualZerosDraft.all_residuals p v).mp hz
+  have hfirst := (ModelDifferenceRing.internalZero_iff _ _).mp (hr 0)
+  have hmain := (ModelDifferenceRing.internalZero_iff _ _).mp (hr 1)
+  have haux := (ModelDifferenceRing.internalZero_iff _ _).mp (hr 2)
+  have hstrong := (ModelDifferenceRing.internalZero_iff _ _).mp (hr 3)
+  have htime := (ModelDifferenceRing.internalZero_iff _ _).mp (hr 7)
+  simp [AQ17Forced105ResidualsDraft.residuals, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] at hfirst hmain haux hstrong htime
+  have hn0 : v 14*v 14=1+ell v*(ell v+k v) := by
+    apply ι_injective
+    simp only [map_add,map_mul,map_one]
+    dsimp [ell,k]
+    simp only [map_add,map_mul,map_one]
+    linear_combination hfirst
+  have hn1 : v 15*v 15=1+delta v*(c v*c v) := by
+    apply ι_injective
+    simp only [map_add,map_mul,map_one]
+    dsimp [delta,a,c,k]
+    simp only [map_add,map_mul,map_one,map_ofNat]
+    linear_combination hmain
+  have hqeq : ι (qnat v)=ι (delta v)*((ι (v 3))*(ι (v 3))-1) := by
+    simp only [qnat,integralI,delta,a,c,k,map_add,map_mul,map_one,map_ofNat]
+    linear_combination hstrong
+  have hauxeq : v 11*v 11+qnat v*(v 16*v 16)=1+qnat v*(v 11*v 11) := by
+    apply ι_injective
+    simp only [qnat,integralI,delta,a,c,k,map_add,map_mul,map_one,map_ofNat]
+    linear_combination haux - ((ι (v 11))*(ι (v 11))-(ι (v 16))*(ι (v 16)))*hstrong
+  have hzero : v 11=0 → qnat v*(v 16*v 16)=1 := by
+    intro hy
+    simpa [hy] using hauxeq
+  have htimeeq : ι (v 16)=(ι (v 3))*(ι (v 3))*((ι (v 5))*(ι (c v))-ι (v 13+1))-ι (c v) := by
+    simp only [c,k,map_add,map_mul,map_one]
+    linear_combination htime
+  exact ⟨ell v*(ell v+k v),delta v*(c v*c v),qnat v,delta v,c v,
+    hn0,hn1,qnat_at_least_four v,delta_positive v,c_positive v,hqeq,hauxeq,hzero,htimeeq⟩
+
+theorem forcingCutExtraction : ForcingCutExtraction := by
+  intro V _ _ p v hz
+  exact cut_of_zero p v hz
+end DiophantineConsistency.AQ17Forced105CutExtractionDraft
+#print axioms DiophantineConsistency.AQ17Forced105CutExtractionDraft.qnat_at_least_four
+#print axioms DiophantineConsistency.AQ17Forced105CutExtractionDraft.cut_of_zero
+#print axioms DiophantineConsistency.AQ17Forced105CutExtractionDraft.forcingCutExtraction

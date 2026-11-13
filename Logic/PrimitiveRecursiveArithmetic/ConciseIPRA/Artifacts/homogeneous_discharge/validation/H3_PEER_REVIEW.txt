@@ -1,0 +1,64 @@
+Independent review of the homogeneous partial-discharge construction
+==================================================================
+
+Status: the written mathematical reduction is sound on the stated raw
+term/formula syntax. This is a review, not a proof-assistant verification.
+It does not establish a checker-size record against the full repository.
+
+1. The three rows of partial evaluation have the advertised ordinary
+   arithmetic/logical readings. The first two are exactly the raw Eval
+   rows. The compound-first-premise row exports an already proved F.
+   Requiring the exported result to omit the opened parameter is essential.
+
+2. H3 to H4: an arithmetic discharge expands to Eval within the opened
+   clause followed by Open; a compound discharge expands to Open and drops
+   the unused compound auxiliary proof. Scope side conditions coincide.
+
+3. H4 to H3: Theta = D_xy(0=0) has an Intro+Use proof in every context
+   containing the reflexivity seed. Eval is a discharge of Theta with its
+   two premises weakened into the fresh scope. Open is a compound discharge
+   with a weakened proof of its compound major (or of Theta) as the unused
+   auxiliary. No cut admissibility theorem is presupposed.
+
+4. The diagonal introduction requires a nontrivial adaptation of the
+   homogeneous gate-access proof. To recover A=D B from kappa_1 A, an
+   introduction at a fresh witness can be progressive if B is diagonal.
+   Then B(b,0) follows from zero computations, so it can replace the zero
+   assumption used by the original case-introduction proof. The progressive
+   assumption is ignored. Conversely kappa_1 B itself is not diagonal.
+
+5. The proposed seed-only Use refinement is valid. The fixed first context
+   entry rho(v)=(v=v) may be used without a premise. Every other entry must
+   have an explicit proof of its zero instance. Every D^j(r=r) is derivable
+   by induction on j: use rho at j=0; otherwise Intro at witness 0, ignoring
+   the gate assumption, and recurse on the successor instance, whose leaf
+   is still literally reflexive. This works in either introduction mode.
+   Thus every former omitted-premise Use can be expanded. The reflexive-leaf
+   predicate can be removed from the trusted checker without circularity.
+
+6. The positive de Bruijn implementation was checked independently against
+   its declared binder order. In a D body the indices 1 and 2 are y and x.
+   branch_context lifts ambient parameters while retaining each clause's
+   distinguished index 1. Gate inserts its distinguished parameter outside
+   all nested D binders and shifts the fresh iterator variable correctly.
+   export rejects exactly the newly opened ambient variable, also under
+   binders. Source guards reject noninteger variable aliases.
+
+7. Assertion-based checkers must refuse Python -O. The current modules do
+   so explicitly. Otherwise an Intro whose proof exists only in an assert
+   expression could accept the false ordinary formula D_xy(y=0).
+
+8. h3_independent_audit.py carries out 7,200 deterministic generated checks
+   of export/lift, gate naturality, specialization naturality, gate-zero
+   reflexivity, gate-one computations, and diagonal renaming. It also checks
+   rejection of the false Intro and refusal of optimized execution. These
+   are finite regression checks and do not prove universal correctness.
+
+Remaining limits
+----------------
+The full iPRA interpretation and numerical round trips are inherited from
+the repository's native bridge. The new comparison is a proof translation
+to that native system, not a new mechanization of its arithmetic. A final
+report must distinguish a matched source reduction from the much smaller
+compact/raw/stream validation-contract frontiers in the current repository,
+including the incoming 239-token and 256-node candidates.

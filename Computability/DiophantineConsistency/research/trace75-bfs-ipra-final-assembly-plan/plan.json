@@ -1,0 +1,56 @@
+{
+  "status": "HELD_AWAITING_FORWARD_RESULT_AND_OUTER_EXIT",
+  "parent_result_sha256": "TO_BE_PINNED_AFTER_TERMINAL_AND_AUDIT",
+  "parent_outer_sha256": "TO_BE_PINNED_AFTER_TERMINAL_AND_AUDIT",
+  "canonical_syntax_source": "Lean/DiophantineConsistency/TenPositiveTrace75Syntax.lean",
+  "canonical_syntax_sha256": "6c18ae1ceff5815d4093e6f014fbeaed4ba8de45a1624d88cc9a3ee54306487f",
+  "stages": [
+    {
+      "module": "DiophantineConsistency.TenPositiveTrace75Syntax",
+      "source": "research/trace75-bfs-syntax/TenPositiveTrace75Syntax.lean",
+      "sha256": "46aacc7b43fc5e42095a36265e6ba34853b7aeae70f053b289553ed4dcb18068",
+      "imports": [
+        "DiophantineConsistency.TenPositiveTrace75",
+        "DiophantineConsistency.WeightedExpressionDegree"
+      ]
+    },
+    {
+      "module": "Trace75BFSSyntax",
+      "source": "research/trace75-bfs-syntax/Trace75BFSSyntax.lean",
+      "sha256": "f71d277d0e04a9e516f91df0ebdcd233306f5c82200607faec93e444148ef3c4",
+      "imports": [
+        "DiophantineConsistency.TenPositiveTrace75Syntax",
+        "Trace75Factors"
+      ]
+    },
+    {
+      "module": "Trace75BFSModelIff",
+      "source": "research/trace75-bfs-model-iff-prototype/Trace75BFSModelIff.lean",
+      "sha256": "056683d3dc060692817d8af6d40800417d5c6f254dfa9333577527641e7a388c",
+      "imports": [
+        "Trace75BFSHaltGraph",
+        "Trace75BFSModelHalt",
+        "CompactSymbolicBetaCast",
+        "CompactSymbolicMaskData"
+      ]
+    },
+    {
+      "module": "Trace75BFSIPRA",
+      "source": "research/trace75-bfs-ipra-draft/Trace75BFSIPRA.lean",
+      "sha256": "8f80194ef34f3031bb60b603cc8cd18c8e487083df85957fe846cc2b72a75f89",
+      "imports": [
+        "Trace75BFSModelIff",
+        "Trace75BFSSyntax",
+        "PositiveModelIPRAReferenceTranslated"
+      ]
+    },
+    {
+      "module": "Trace75BFSFixedIPRA",
+      "source": "research/trace75-bfs-ipra-draft/Trace75BFSFixedIPRA.lean",
+      "sha256": "4a9f03a96a10bd2b52cb828506c4d89d97524e06e6180476547554a72262fa8d",
+      "imports": [
+        "Trace75BFSIPRA"
+      ]
+    }
+  ]
+}

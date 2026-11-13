@@ -1,0 +1,72 @@
+INDEPENDENT MATHEMATICAL AUDIT OF POSITIVE ITERATION NOTE
+======================================================
+Source reviewed: theory_positive_iteration.tex (10 November 2026).
+Review status: written mathematical audit by another assistant instance;
+not external human peer review or proof-assistant verification.
+
+Verdict: the displayed theorems and constructions are valid with the stated
+standard-natural-number scope. No counterexample or substantive proof gap
+was found. It is safe to include as a new standard-algebra research section,
+while keeping it separate from the smaller full iPRA checker and from claims
+about arbitrary models of the eager equations.
+
+1. Classification
+The constant/projection/growth alternatives are disjoint and exhaustive by
+the given structural induction. A crucial fact is that in the nonprojection
+state-dependent case, the update is strictly increasing in its state and
+uniformly at least state+1. Thus positive iteration cannot make a seed or
+counter dependency disappear. If a passive coordinate is essential in the
+update, the first update already makes its effect strict; at least one update
+is performed even for counter zero. Extra changes through seed/counter/other
+passive roles only add nondecreasing effects. The set union U_n ∪ U_a ∪ V is
+therefore exact, not merely an upper bound on dependence. The output lower
+bound A+N+1 treats seed/counter coordinates; the final update treats passive
+update coordinates. Constants need not be evaluated for the classification
+algorithm because no branch depends on their exact value. Fixed numerical
+parameters may safely be replaced by their finite numeral terms.
+
+2. Tuple-domain actual-equality obstruction
+For a coordinate i varying on D, a unit law rules out an output coordinate
+function depending on only one whole input tuple. The coordinate function
+is consequently in the growth class. At least one essential left coordinate
+j_i must vary on D; otherwise f_i(z,e) would be constant there. The right
+unit law then gives z_i≥z_j_i+1 for every z∈D. A directed cycle in the finite
+nonempty set of varying coordinates is impossible. This argument does not
+need D to be definable, and the d=0 case is correctly separated. The use of
+actual coordinatewise equality is essential and is not accidentally extended
+to quotient equality.
+
+3. Pairing
+q(a,b)=a+b+1 and d(b)=2b+1. The seed S(d(b)) is 2b+2. Iterating v↦2v+1 exactly
+a+1 times gives π(a,b)+1=2^(a+1)(2b+3). The odd factor recovers b after the
+2-adic valuation recovers a. The numerical examples π(1,0)=11<π(0,2)=13 and
+π(0,1)=9<π(1,0)=11 are correct and separately disprove monotone unary inverse
+terms for the first and second coordinates. No hidden decoder is supplied.
+
+4. Quotient ring
+m(a,b)=F(a,0;u.q(u,b))=(a+1)(b+1). The atomic equivalence q(a,d)=q(c,b) is exactly
+a-b=c-d in standard N. The two coordinate differences in the displayed sum
+and product are respectively (a-b)+(c-d) and (a-b)(c-d); the extra constants
+cancel. The quotient is Z, zero is [(0,0)], and negation swaps coordinates.
+Minor presentational completion suggested: explicitly identify the
+multiplicative unit as [(1,0)]. The nonnegative-difference formula a=b or
+exists r(q(b,r)=a) is exact and invariant under the equivalence.
+
+5. Scope and finite model
+The standard identities do not prove these quotient facts internally in the
+bare eager theory. In the cited two-element monotone-update model, S is
+constant1, q is constant1, the displayed E is universal, and the quotient
+collapses to one element. This correctly explains why the construction does
+not repair the full-theory interpretation obstruction. Adding successor
+injectivity excludes this particular model but is not claimed to prove a
+new iPRA interpretation. No extension to arbitrary relational operations or
+quotient equality is smuggled into the actual-equality obstruction.
+
+Research significance and qualification
+The exact dependence classification is a genuine additional structural result
+relative to the stated weaker standard zero-profile invariant, and the pairing
+and quotient examples sharply delimit the negative result. This is not a
+smaller full iPRA axiomatization and should not be described as resolving the
+requested foundational breakthrough. Literature-wide novelty is not established
+by the local corpus search. All these limitations are already expressed in
+the reviewed note.

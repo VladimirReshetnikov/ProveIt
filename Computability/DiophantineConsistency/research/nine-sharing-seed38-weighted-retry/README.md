@@ -1,0 +1,7 @@
+# Compiled 38-seed degree and normalization checks
+
+Actual outer session `30685` exited 0 after all ten stages and final checks. The seed syntax, generic positive-port normalization, weighted and polynomial degree bounds, generic model helpers and static assignment definitions compiled. Their exact scope and limitations are recorded in `attempt01/`. The earlier prelaunch description follows.
+
+This fresh ten-stage retry preserves the preceding split attempt and its actual weighted-degree failure. It changes only `SharingSeed38Weighted.lean`: three proposed private `rfl` lemmas state weighted degree of overloaded expression addition, subtraction and multiplication, and the existing `simp` call is supplied those lemmas. The public theorem statement and all other nine stage sources are unchanged. The failed log showed exactly these overloaded expressions surviving the original simplification. The proposed repair was subsequently checked in the successful run.
+
+Weighted source SHA-256 is `40fe8bdb068458736ddf9e4c6e0fa7b476ad52ad5e422ab157f41916d4176b7d`; manifest is `9c00d40c96d65f202b76e5fd378ebdf14a9345dd555949e1382395599183420c`, runner `8e1b2963e8dc9f9a406f3bea29ba3cae24fab3cb06e7a16ca3e8e11fe0dbf999`. The reviewed split runner differs only in fresh output path and manifest pin; resource guards and inherited-provider limits are unchanged. No-Lean preflight exited 0. Independent prelaunch review and coordinated slot release preceded the run. The final degree theorem is checked; no all-model zero bridge is asserted.

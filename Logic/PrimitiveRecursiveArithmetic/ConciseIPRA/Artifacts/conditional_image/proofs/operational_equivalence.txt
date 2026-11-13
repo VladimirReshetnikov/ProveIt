@@ -1,0 +1,145 @@
+CONDITIONAL IMAGE SELECTION: EXACT SOURCE-LEVEL PRESERVATION
+=========================================================
+
+Scope and baseline
+------------------
+The exact baseline is the current repository file
+Artifacts/procedure_presentation/code/inherited_tokens240.py at commit
+95d3dd192e97a19bd4f8783c764331ec41126264. Its normalized source is
+240 significant Python tokens / 266 AST nodes / 551 UTF-8 bytes under
+CPython 3.12.14. It implements the inherited guarded scalar iPRA calculus
+with the inherited return-reservation protocol. The present changes alter
+neither axioms nor rules, public formula encoding, certificate framing,
+negative-parameter numbering, or underlying interpretation.
+
+Input domain
+------------
+The first input line is a canonical closed guarded Eq/D formula in the
+unshifted sorted-arity codec. Subsequent consumed lines are JSON lists
+[s,u,t] of exactly three entries. Raw proof trees use exact integers and
+lists; the compact module assumes the public grammar and alphabet rather
+than independently validating them. Unconsumed trailing input is permitted.
+Acceptance is finite normal completion with exactly ACCEPT followed by LF.
+The mathematical completeness statement idealizes resource limits.
+
+The one new transformation
+--------------------------
+In the second argument of the opener, replace
+
+  c(g,s) or k * bool(s or len(a)==2)
+
+by
+
+  k if c(g,s) or s or len(a)==2 else 0.
+
+No other statement changes in checker_tokens239.py. The resulting complete
+module has 239 significant tokens, 261 AST nodes, and 553 normalized bytes.
+
+Successful-return lemma
+-----------------------
+Every finite normal return of c is None. The function contains no return
+statement and its body falls through after the final k-=1. Recursive calls
+are used for their successful completion and their effects on the input
+stream and global floor, not for a value. A failed recursive call propagates
+its exception and prevents normal return.
+
+Conditional-image lemma
+-----------------------
+Fix any reachable invocation of the critical expression and suppose the
+major call c(g,s) returns normally. Let K be the exact integer stored in k
+after that call, including its final name reservation. The preceding first
+argument of i has already been evaluated in both programs; in particular,
+an introduction's witness was opened before this major call.
+
+Both expressions execute this same major call first. By the return lemma,
+its value is None. Let P be the truth value of s or len(a)==2 after that call.
+The baseline expression then returns K*bool(P), which is K when P is true
+and the integer 0 otherwise. The replacement conditional returns exactly
+the same integer in those cases. The condition reads only exact integers,
+lists, len, and equality, so it cannot mutate k or consume a certificate
+line. Thus the difference in when k is read, relative to the pure condition,
+has no observable effect. Short circuiting is also identical: len(a) is
+evaluated precisely when s is false. The preceding call c(g,s) is NEVER
+skipped, even in the zero-image case.
+
+If the major fails, both expressions propagate that failure before choosing
+an image. If the pure guard raises, both reject after the same major call.
+Hence both supply the same image, leave the same global floor, consume the
+same input prefix, and have the same finite successful continuations.
+
+Theorem: exact certificate acceptance
+------------------------------------
+Induction on each finite successful checking call tree, using the conditional
+image lemma at a nonterminal, proves that the old and new programs accept
+exactly the same finite certificates in the promised domain. The argument
+is reversible. All intermediate context/goal trees, packet reads, and floor
+values at corresponding points agree literally. No certificate translator
+or new parameter-renaming schedule is required for this particular change.
+
+This exact-certificate theorem is against the return-reservation control.
+The earlier direct_packets AST profile uses a different allocation schedule;
+one must use its existing translator before comparing its certificates.
+
+Two previously established implementation transformations
+--------------------------------------------------------
+checker_ast257.py composes the new conditional with two techniques already
+present elsewhere in the repository:
+
+1. Remove top-level k=0 and give the opener the default d=(k:=0). Python
+   evaluates this default once, when the function is defined, after importing
+   loads and before the checker is called. Both the global k and stored
+   default d are the same integer zero before any input is consumed.
+
+2. Replace s,u,t=r=loads(input()) by a single sequence pattern:
+
+     match loads(input()):
+         case [s,u,t] as r:
+             pass
+
+   Keep the subsequent membership/computation test OUTSIDE the match. For
+   any valid three-element list, exactly the same values are bound. For a
+   scalar or wrong-length list, the local captures remain unbound; constructing
+   the eagerly evaluated computation alternative reads them and rejects.
+   These are fresh function locals, so no previous call's binding can leak.
+   Exact-integer/list trees are the contract; this proof does not claim
+   arbitrary Python user-defined sequence behavior.
+
+The combined complete source has 246 tokens / 257 AST nodes / 593 bytes.
+Its native rules and theorem set are unchanged. The two older techniques
+are attributed composition components, not new mathematical contributions.
+
+Interpretation consequence
+--------------------------
+The literal public goal and its decoded theory are unchanged, so both
+directions of the inherited bi-interpretation with full first-order iPRA
+are retained without modification. Their whole numerical domains, actual
+equality, identity comparison graphs x=y, and formula round-trip proofs
+transfer. Equiconsistency follows. This transfer relies on the repository's
+arithmetic/logical bridge; the present operational proof is not an independent
+machine formalization of that bridge or of Python.
+
+Comparison and limits
+---------------------
+The identified current compact envelope is (240 tokens,259 AST nodes,462
+bytes), attained by different programs. These two candidates lower its
+token and AST coordinates to 239 and 257. Neither improves 462 bytes; no
+single delivered program beats all three old coordinates simultaneously.
+These attained sizes are upper bounds on an unknown optimum, not a theorem
+that rules out smaller presentations. No new arithmetic axiom deletion,
+global simplest axiomatization, or substantial mathematical breakthrough
+is claimed by this implementation result.
+
+Evidence and dependencies
+-------------------------
+verify_candidates.py checks the exact source transformations and executes
+the baseline and both candidates in isolated ordinary and optimized Python.
+The fixture suite contains the substantial inherited induction certificate
+which uses its inductive hypothesis, implication elimination, computation,
+inferred major selection, false-goal mutations, malformed frames, and the
+future-witness scope attack. The attack must fail before reading its neutral
+major packet. verification.json contains the execution receipt.
+
+The standalone candidates and readable checker import only json.loads.
+The verifier additionally needs its local baseline and eight local reserved
+fixtures. These inputs are research evidence only, not imported proof-kernel
+dependencies. Finite tests supplement the universal argument above.

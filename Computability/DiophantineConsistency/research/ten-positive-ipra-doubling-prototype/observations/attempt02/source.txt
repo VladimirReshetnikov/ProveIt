@@ -1,0 +1,71 @@
+import DiophantineConsistency.ArithmeticGcdNormalization
+
+/-! Pell-doubling identities and unit certificates for the ten-positive
+84/85-operation product-square proposal. This is a component only: it does
+not bind the external graph, prove root recovery or establish an endpoint. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositiveDoubling
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency.ArithmeticGcdNormalization
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The doubled Pell trace is visibly a square, with no positivity hypotheses. -/
+theorem doubled_trace (a : V) : 1+4*a*(1+a)=(1+2*a)*(1+2*a) := by
+  ring
+
+/-- For `a=delta*U²*E` and `G=E*(1+a)`, the positive portion of
+`delta*(Fsq-1)` is a multiple of G, without subtraction or cancellation. -/
+theorem doubled_divisibility_identity (delta U E : V) :
+    let a := delta*U*U*E
+    let G := E*(1+a)
+    delta*(1+4*a*(1+a)) = delta + G*(4*delta*delta*U*U) := by
+  dsimp
+  ring
+
+/-- Each adjacent-minus-one quantity has an explicit signed natural Bézout
+certificate with G. The positivity premises authorize truncated subtraction. -/
+theorem adjacent_unit_certificates (G t V0 : V)
+    (hq : 0<G*t) (hv : 0<G*t*V0*V0) :
+    Bez G (G*t-1) 1 ∧ Bez G (G*t*V0*V0-1) 1 := by
+  constructor
+  · refine ⟨0,1,t,0,?_⟩
+    have h := tsub_add_cancel_of_le (pos_iff_one_le.mp hq)
+    simpa [add_comm] using h
+  · refine ⟨0,1,t*V0*V0,0,?_⟩
+    have h := tsub_add_cancel_of_le (pos_iff_one_le.mp hv)
+    calc
+      1+G*0+(G*t*V0*V0-1)*1 = G*t*V0*V0 := by simpa [add_comm] using h
+      _ = G*(t*V0*V0)+((G*t*V0*V0-1)*0) := by ring
+
+
+/-- Restrict a certificate to a divisor of its first argument. -/
+theorem restrict_certificate {G d a : V} (hd : d∣G) (h : Bez G a 1) :
+    Bez d a 1 := by
+  obtain ⟨t,ht⟩ := hd
+  obtain ⟨u,v,w,z,h⟩ := h
+  refine ⟨t*u,v,t*w,z,?_⟩
+  rw [ht] at h
+  simpa only [mul_assoc] using h
+
+/-- The relevant two adjacent-minus-one factors are jointly coprime to G:
+any common divisor of G and their product divides one. -/
+theorem adjacent_product_coprime (G t V0 d : V)
+    (hq : 0<G*t) (hv : 0<G*t*V0*V0)
+    (hd : d∣G) (hp : d∣(G*t-1)*(G*t*V0*V0-1)) : d∣1 := by
+  obtain ⟨h1,h2⟩ := adjacent_unit_certificates G t V0 hq hv
+  obtain ⟨u,v,w,z,he⟩ := restrict_certificate hd h1
+  have hswap : Bez (G*t-1) d 1 := by
+    refine ⟨v,u,z,w,?_⟩
+    simpa only [add_comm,add_left_comm,add_assoc] using he
+  have hdy : d∣G*t*V0*V0-1 := unit_certificate_cancel hswap hp
+  exact bez_divisor h2 hd hdy
+
+#print axioms TenPositiveDoubling.doubled_trace
+#print axioms TenPositiveDoubling.doubled_divisibility_identity
+#print axioms TenPositiveDoubling.adjacent_unit_certificates
+#print axioms TenPositiveDoubling.adjacent_product_coprime
+end TenPositiveDoubling

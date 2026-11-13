@@ -1,0 +1,5 @@
+# Independent terminal review: ring-value gates 42–47
+
+The retained state records successful dependency and Lean compilation checks; the author observation says session 74209 exited 0. The checker validates source, object and logs, all six reports, lift and NormAssignment38 direct producer bindings, 150 guard slots, 1,193 overlay links and matching before/after surveys. No Lean replay was performed; the author observation is not an independent raw terminal transcript. All reports list `[propext, Classical.choice, Quot.sound]`. Fifteen linter warnings concern unused simp arguments, unreachable or ineffective `ring` tactics, and tactic sequencing.
+
+These are ring-value equations at targets 42–47; target 42 uses the stated AllCuts projection and the others are inline, including subtraction. They share one valuation and model-natural ports. They do not establish the remaining gate equations, five norms, a source bridge or an iPRA endpoint. Provider observations are point-in-time and monitoring is sampled.

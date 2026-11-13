@@ -1,0 +1,7 @@
+# Exploratory fixed-graph safe source selection
+
+`CyclicAnyPhase.cyc_period` proves for every IΣ₁ model, positive m and N and arbitrary k,d that `cyc (m*N) k d % m = cyc m (k%m) d`. Unlike the predecessor-only version, it does not assume d<m.
+
+Under positive graph coordinates and literal graph zero at fixed symbolic ports and `paramKernel rho`, `FixedGraphSafeSource.graph_safe_sources` retains one N,w, the graph power/repunit and w relations, and the indexed b=1 `CarryInput`. For every model D it selects k equal to `cyc (8807*N) 4393 D` or `cyc (8807*N) 5495 D`, with k in range, `dig 67 C k=0`, and the two cyclic predecessor digits at most one. The selected source is not yet shown to yield a clean fractional-temporal output digit or a half-radix predecessor bound.
+
+Author-only sessions 80297 and 63475 actually exited 0 without warnings or `sorryAx`; the named reports use `propext`, `Classical.choice`, `Quot.sound`. Session 95500 actually exited 1 on missing local modular helpers/inference and is retained; its `sorryAx` report proves nothing. Both modules use the same fresh author overlay and prior rebuilds documented in commits 9403a827c7, 778847d293 and 86e36b4034. This is exploratory evidence, not a paired replay or independent artifact audit. It does not bind retained K or ports to bytes, prove clean carry or graph-column decoding, establish machine equivalence or prove an internal iPRA theorem.

@@ -1,0 +1,3 @@
+# Independent source review: compact n6/r11 scalar join
+
+Source-only PASS `ee4aab43eff285cf5332c70f703139942115e028f1a312182cdf6311b48e2bba`; no Lean replay. Compared with the previously reviewed scalar source, only the upper import and hright proof change: the accepted compact upper theorem is applied to the same x,t and explicit lower scalar gap, then its B definition is unfolded. The lower positivity use, qT factorization, discrete contradiction, all q≥260/x≥32/Y≥1/factorisation and both gap assumptions remain unchanged. Parent selection/cast/tactic elaboration are untested. Conditional scalar contradiction only; no graph/guard.

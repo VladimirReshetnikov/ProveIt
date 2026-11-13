@@ -1,0 +1,48 @@
+import Residue89To90Transport
+
+/-! Weaker existential interface for a future root-switch graph client.
+No claim that the original r is positive or that the replacement is proved. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Residue89RootSwitchTransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft Residue89To90TransportDraft
+
+/-- The replacement need not retain the original r. The root-switch proof must
+still produce a zero with positive r in each relevant model. -/
+def PositiveReplacement (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    InternalZero (ResidueFoldP89Draft.literal (fun j => (ports K j:ℤ))) v →
+      ∃ w : Fin 13 → V, InternalZero (ResidueFoldP89Draft.literal (fun j => (ports K j:ℤ))) w ∧ 0<w 8
+
+theorem forced_implies_replacement (K : ℕ) (h : ForcedR K) : PositiveReplacement K := by
+  intro V _ _ v hz
+  exact ⟨v,hz,h V v hz⟩
+
+theorem sameNoZero (K : ℕ) (hr : PositiveReplacement K) : SameNoZero
+    (ResidueFoldP89Draft.literal (fun j => (ports K j:ℤ)))
+    (Residue90LiteralDraft.literal (fun j => (ports K j:ℤ))) := by
+  intro V _ _
+  constructor
+  · intro h v hz
+    exact h (raiseR v) ((zero_iff _ v).mp hz)
+  · intro h v hz
+    obtain ⟨w,hw,hpositive⟩ := hr V v hz
+    have hlift := raise_lower w hpositive
+    apply h (lowerR w)
+    apply (zero_iff _ (lowerR w)).mpr
+    simpa only [hlift] using hw
+
+theorem polynomialBridge (K : ℕ) (hr : PositiveReplacement K)
+    (h82 : PolynomialBridge (positiveShift (Residue82LiteralDraft.literal (fun j => (ports K j:ℤ))))) :
+    PolynomialBridge (ResidueFoldP89Draft.literal (fun j => (ports K j:ℤ))) :=
+  HAExpressionNoZeroEquiv.bridge _ _ (sameNoZero K hr)
+    (Residue90To82TransportDraft.polynomialBridge K h82)
+end DiophantineConsistency.Residue89RootSwitchTransportDraft
+#print axioms DiophantineConsistency.Residue89RootSwitchTransportDraft.forced_implies_replacement
+#print axioms DiophantineConsistency.Residue89RootSwitchTransportDraft.sameNoZero
+#print axioms DiophantineConsistency.Residue89RootSwitchTransportDraft.polynomialBridge

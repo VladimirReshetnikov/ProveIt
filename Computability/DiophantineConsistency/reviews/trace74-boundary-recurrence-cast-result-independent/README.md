@@ -1,0 +1,9 @@
+# Independent review: finite recurrence cast result
+
+PASS for the captured one-stage retry. The author reports actual outer tool session 90521 exit 0; its retained outer terminal records child exit 0 and PASS, stable pinned inputs and wrapper bytes. We rehashed result `cce7b3d8df37a80548e4af08f6942a0c354719b7e130a8ce32eef21e4136c3df`, outer terminal `050c84caa01ec85c80c9b5cd02b8ac8cf3426ef6729c821f03577071b40f83b8`, source and copy, logs and output bundle. The exact report is `[propext, Classical.choice, Quot.sound]`; object SHA is `d2868e4320f829b8d6fbf0f23a2acd902ec852fb3dd8e146ec05968aae5fd857`.
+
+All 2,026 inherited bundles and companions were checked within the 2,027-object union, together with 1,879 selected project and 81 outside first resolutions and companions, the one fresh header and all reused parent headers. We independently reconstructed nine closure walks and compared eight inherited closure sets and companion hashes to the parent. This audits captured execution and selections, without independently replaying Lean or establishing complete source-current ancestry.
+
+`Trace74BoundaryRecurrenceCast.xy_cast` proves that the model's represented x/y coordinates at standard natural n and b equal the casts of the corresponding natural recurrence coordinates. The natural recurrence starts at `(1,0)`, advances with base `b+2` and delta `(b+1)(b+3)`, and is compared in an IΣ₁ model with ordered-ring structure. It is not quantified over arbitrary internal indices. The prior failed attempt containing `sorryAx` is retained and excluded.
+
+This result does not prove a finite seed inequality, specialize the boundary theorem, produce a concrete 74 zero or establish fixed BFS ports. Four inherited baseline source ancestries, outside transitive/package/dynamic provenance and external equation-file binding remain outside this audit.

@@ -1,0 +1,7 @@
+# Current-source core norms checked
+
+Author-observed outer session `34241` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `c3fd69521bec9a0b77c673c8c69ed03653c1fa60b6fd3d54b6c48963d1842ac7`; before and after provider surveys both hash to `343a9ae6bc95dd44da13a941f7cf9a0f9bf7cab005d108d2368fd0f99d36b49f`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33CurrentCoreNorms` compiled in 3.105 seconds; object SHA-256 `494d28f41ea9767d30216bfe5dd4e13026fb10d89cc1559b9ec8d4c8bee62d49` at `/tmp/nine-sharing-sign33-current-core-norms-check-20261106/lib/DiophantineConsistency/Sign33CurrentCoreNorms.olean`, compile log `079c24aae77808a0a9f708b2d6c5b8b409f195aa56020b865f9ee2553fbde083`. The axiom report lists `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,872,061,952 bytes and minimum sampled available host memory was 18,668,474,368 bytes; sampling has the stated limitations.
+
+For the current source on shifted inputs, the five exact core conditions P=Q=U=strong=W=1 hold. Identifying them with 33 constructor fields, source-to-seed witness theorem, Lean proof of external JSON binding, and sign33 iPRA endpoint remain open. Inherited provider and numeric-exit limitations remain as in the parent README.

@@ -1,0 +1,5 @@
+# Independent prelaunch review: generic rank-polynomial link
+
+No launch blocker found. The checker pins source, runner, survey and manifest, checks the direct rank-carry import and exact proposed argument order, and reruns the successful no-Lean preflight. The survey replays the independent rank retry terminal audit; the runner binds the direct dependency and guard to the selected carry object. Full postflight requires success; provider observations are point-in-time and monitoring is sampled. The author's earlier failed setup preflight is reported but its old bytes were not retained.
+
+Manual comparison of the two symbolic definitions confirms the proposed identity after substituting `B=b^5` in `rankRaw` and `x=1` in `rankCode`, with argument order `z,b,e,g,ell,n,q,theta,lam`. This remains an uncompiled generic identity over arbitrary commutative-ring arguments; it does not prove the B/b relation for actual prefixes, full-recipe semantics or JSON/document binding. This checker is prelaunch-only because the output path must remain absent.

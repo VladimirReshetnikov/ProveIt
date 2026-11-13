@@ -1,0 +1,5 @@
+# Independent seventh Pell identity result audit
+
+PASS within the recorded direct-pin scope. Attempt01 terminal `569c5a0287a3f6f0e4b22ca064774fcaa6ea2abf17a8264d4e19b2a25086d262` records PASS and Lean exit 0; author reports actual outer session 5625 exit 0 and reaped. I independently rehashed all 45 pins, logs, source `b3ca5264a265d6b1ed93459651b512cf5839cbcb2f743bcc5fc7543dd8225ce5`, runner `187fd0ed9890179f76a9eeddda65045a26b7c6a9555a28ad446a9aa12f8bceee`, and object `f3b5759e0a64d2a2f0bb7dbd1a49a5973c9d915b01aca36e1ba16ebd51e8e91c`. The sole exact named report lists `[propext, Classical.choice, Quot.sound]`; stderr is empty.
+
+For b in the stated IΣ₁ model, the theorem proves the subtraction-free seventh-ordinate identity y7(b)+5(2(b+2))⁴+1=(2(b+2))⁶+6(2(b+2))². It is a generic recurrence identity, with no graph, index exclusion, guard or iPRA consequence by itself. Full transitive/companion/dynamic ancestry and continuous path monitoring remain outside direct-pin evidence. No Lean was run in this audit.

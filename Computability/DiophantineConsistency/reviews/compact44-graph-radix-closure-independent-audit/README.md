@@ -1,0 +1,7 @@
+# Independent graph-derived-radix closure review
+
+The isolated no-Lean `audit.py` actually exited 0 and reproduced the complete source-scan receipt committed at `374ea9696b`. It independently checks the three exact source hashes and project import topology, verifies that each selected module has exactly one candidate and no existing output on either side, and compares all 140 inherited `.olean` paths, resolved paths and hashes across the corresponding fixed-graph pair. It separately compares the first two exact selected source bytes against the source commits named in their pinned prior independent audit receipts. The fixed-graph parent CHECK hash and status are checked; its audit is not rerun here. Optimized Python was rejected with exit 1.
+
+The inspected fixed-symbolic theorem assumes positivity of all twelve variables and an internal graph zero for the symbolic beta/mask tuple with arbitrary natural K. Its author-side exploratory statement derives a positive internal `N`, the displayed radix and repunit equations, origin digit and digit bound. This review does not compile that theorem or establish its assumptions.
+
+`CHECK.json` and the terminal observation record the independent point-in-time source/object result. No atomic freeze, paired replay, full package/transitive/dynamic ancestry audit, retained tuple or K binding, compact checker, machine proof or PRA theorem follows. A reviewed launcher and independent artifact audit remain necessary.

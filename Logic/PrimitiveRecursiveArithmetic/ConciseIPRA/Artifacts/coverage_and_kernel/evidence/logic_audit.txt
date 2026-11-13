@@ -1,0 +1,41 @@
+LOGICAL AUDIT: current pinned corpus b9c4d74a0018bdafc5bc06e755a0145f4ed2b8d6
+
+Scope audited:
+- Native Eq/Q/D rules in transient_seed AXIOMS.txt and local_scopes report.
+- Sorted arity codec, source-depth checks, and generated-assumption discharge
+  in compact_kernel/theory/composition.tex and reference/arity_codec_proof.tex.
+- Atomic-case deletion obstruction in transient_seed/theory/atomic_case_obstruction.tex.
+- Existing arity/affine and local-scope alternatives.
+
+Findings:
+1. Q is already conservative unused-witness D. Removing its public syntax is
+   not a new logical simplification and does not remove the internal clause
+   machinery needed by the checker.
+2. Forced progress for atomic D and case for compound D has two sound
+   standard-arithmetic interpretations, so its displayed native round trip
+   fails. The witness D_xy(y=1) is true under closure and false under progress.
+   A padding argument silently restoring atomic case is circular.
+3. The generated-assumption rule is sound by simultaneous zero substitution
+   on all freshly admitted labels, including noninteger JSON labels if the
+   decoder accepts them. Merely proving H(0) does not suffice without this
+   retained-context/goal freshness invariant.
+4. Definitional numerical conversion replacing computation supply is already
+   proposed as unresolved research in compact_kernel/theory/validation.tex.
+   It could be a substantive alternative, but a normalization/certificate
+   checker and all its costs must be delivered before claiming improvement.
+5. New diagnostic precision (attached TeX): one D over a numerical equation
+   is exactly the constructive prenex exists-forall quantifier-free class
+   under the established interpretation. Allowing progress on that class
+   already derives all of its induction. The corpus text scan for Sigma_2,
+   Ackermann, one-binder, and depth-one did not reveal this statement.
+   This is a corpus-relative new lemma, not a positive complexity reduction.
+6. The TeX also proves a uniform depth-k encoding of every explicitly prenex
+   exists-forall ... exists-forall quantifier-free formula with k pairs.
+   It uses the existing depth-preserving numerical gate. Progress on matrices
+   of depth k therefore derives that entire prenex induction class. Only an
+   inclusion is claimed above depth one; intuitionistic prenex normalization
+   across quantified antecedents is deliberately not assumed.
+
+No new smaller complete logical axiomatization was established in this
+independent audit. No flaw in the inspected canonical rule correspondence
+was found. This is written mathematical review, not proof-assistant verification.

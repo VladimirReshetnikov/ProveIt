@@ -1,0 +1,13 @@
+/tmp/current2011-mc-byte-binding-v3-20261105/CurrentMCBytes.lean:36:6: error: Type mismatch
+  congrArg (fun n => ↑n) (Nat.ofDigits_digits 256 (Nat.ofDigits rho maskDigits))
+has type
+  ↑(Nat.ofDigits 256 (Nat.digits 256 (Nat.ofDigits rho maskDigits))) = ↑(Nat.ofDigits rho maskDigits)
+but is expected to have type
+  Nat.ofDigits 256 (Nat.digits 256 (Nat.ofDigits rho maskDigits)) = Nat.ofDigits (↑rho) maskDigits
+/tmp/current2011-mc-byte-binding-v3-20261105/CurrentMCBytes.lean:39:6: error: Tactic `rfl` failed: The left-hand side
+  Nat.ofDigits (↑rho) maskDigits
+is not definitionally equal to the right-hand side
+  ↑(Nat.ofDigits rho maskDigits)
+
+⊢ Nat.ofDigits (↑rho) maskDigits = ↑(Nat.ofDigits rho maskDigits)
+'DiophantineConsistency.CurrentMCBytes.decode_mc' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

@@ -1,0 +1,115 @@
+SYNTHESIZED-CONCLUSION EXPERIMENT
+
+Purpose
+=======
+Test whether removing the submitted goal and synthesizing a well-formed
+conclusion from a proof algebra can eliminate the native raw-goal validator.
+The executable synth.py is complete and standalone. Its input is one JSON proof
+tree. Its output is one canonical Eq/Q/D formula, in the encoding below. Normal
+completion is acceptance; an exception is rejection. There is no external
+decoder, axiom table, goal validator, or generator in the trusted module.
+
+This experiment DOES NOT improve the current checker-size frontier. Normalized
+measurements: 875 significant tokens, 1027 AST nodes, 2145 UTF-8 bytes, 739
+deterministic gzip-9 bytes. These are empirical sizes, not impossibility bounds.
+
+Encoding
+========
+A numerical term is an integer variable, [] for zero, [t] for successor, or
+[n,a,h] for I(n,a;u.h). Negative integer -j names rigid proof parameter j.
+Nonnegative integers are de Bruijn indices for numerical binders. Only the
+third child of an iterator binds one variable. At scope n with d local binders,
+the allowed variables are -n,...,-1 and 0,...,d-1.
+
+A formula is [w,s,t], where w is a finite list with entries 1 and 2. The entries
+list the formula's outer-to-inner binders: 1 means Q and 2 means D. The terminal
+equation is s=t, whose terms have sum(w) local binders. For D_{x,y}, y has the
+smaller de Bruijn index and x the larger one. This grammar is exact, without
+dummy padding slots or aliases. Every formula in the native grammar has one
+such structural representation modulo numerical parameter names.
+
+The printout is a syntax code, not a separate semantic declaration: the complete
+checker builds and validates every constructor that can enter the printout.
+
+Primitive proof constructors
+============================
+[0,j]              Hypothesis g[j].
+[1,c,a,h]          I(0,a;u.h)=a; c is validated but otherwise unused.
+[2,c,a,h]          I(S(c),a;u.h)=h[I(c,a;u.h)/u].
+[3,h,p,q]          If p proves s=t and q proves h(s)=a, return a=h(t).
+[4,p,q,t]          If p proves Q_y B and q proves B(0), return B(t).
+[5,p,q]            If p proves D_{x,y}B, prove q under fresh b and hypothesis
+                   Q_y B(b,y); return q's conclusion after checking that b
+                   does not occur freely in it.
+[6,t,B,p]          Prove p under fresh z and hypothesis B(t,0); require its
+                   conclusion to be B(t,S(z)), and return D_{x,y}B.
+[7,E,p]            E is a literal equation. Prove p under fresh z and E(z);
+                   require E(S(z)), and return Q_y E(y).
+
+The counter operand c in constructor 1 can be removed in a routine interface
+cleanup; it was retained to keep the two computation constructor layouts
+uniform. This does not affect any mathematical claim or the negative size
+assessment. There is no unrestricted formula induction.
+
+Substitution lemma
+==================
+sub(a,t,d) opens the variable of index d in a numerical term a, replacing it
+by the closed-in-the-local-binders term t and decrementing larger indices.
+It increases d exactly in the iterator body. Negative rigid names are retained.
+Every replacement t is checked in the current proof scope with zero surrounding
+local binders. Hence t contains no free nonnegative index, so insertion needs
+no lifting. Its internally bound indices remain protected by its own iterator
+binders. Structural induction proves typing and the ordinary substitution law.
+
+opened([w,s,t],*xs) repeatedly applies this lemma at the highest indices of
+the outermost formula binder. Full opening of D takes x followed by y; partial
+opening at x leaves a Q binder at y. Full opening of Q removes its one binder.
+
+Soundness invariant
+===================
+Fix scope n. Assume g is a list of native formulas well formed over rigid
+parameters -n,...,-1. Every successful check(p,g,n) returns a well-formed native
+formula A over those same parameters, and the native eight-rule kernel proves
+g |- A. Prove this by induction on the successful finite execution tree.
+
+The hypothesis and computation cases are immediate. The transport and Q-use
+cases check exactly the required syntactic premise equalities, and their
+outputs have the native rule's conclusion. Both introduction constructors type
+the supplied template and witness at the old scope BEFORE entering n+1; the new
+parameter -(n+1) is therefore fresh for them and g. The equation guard of QI is
+checked explicitly. For D elimination, the major is a typed D formula and the
+continuation has the correct Q hypothesis at the new parameter. Calling formula
+on the synthesized result at scope n rejects any free occurrence of -(n+1).
+Therefore the native eigenvariable condition holds. None of these arguments
+uses a promise about a separately supplied goal.
+
+Completeness invariant
+======================
+Every finite native derivation g |- A, after injectively renaming its active
+parameters to -n,...,-1, compiles recursively to a proof tree whose synthesized
+conclusion is exactly the canonical encoding of A. Each native rule has the
+corresponding constructor. Fresh parameters are renamed to -(n+1) on entry;
+the usual eigenvariable side condition guarantees that DE's export check
+succeeds. The supplied premise templates are ordinary canonical terms and
+formulas. Shared subderivations may be duplicated, since proof length is not
+being minimized. The root theorem set is therefore precisely the closed native
+theorem set. The existing native/iPRA bi-interpretation applies unchanged.
+
+Evidence and limits
+===================
+verify_synth.py runs 14 cases in normal and optimized Python, for 28 isolated
+executions. The successful cases cover all eight constructors, equation
+induction that uses its induction hypothesis, closure use, D elimination that
+uses its major, and compound case introduction. Negative cases cover an
+escaping eigenparameter, a wrong induction step, a future witness, a free
+public parameter, Boolean contamination, and an unknown constructor. All 28
+outcomes agree with expectations. Finite tests support the implementation
+account; they do not establish the structural metatheorems.
+
+No Lean/Rocq verification of this new Python implementation is claimed. The
+prototype is intentionally transparent rather than extensively source-golfed.
+It shows that a genuine synthesis interface is possible, but it retains typing
+for user-supplied iterator bodies, witnesses, and introduction matrices. Merely
+removing the externally supplied goal does not remove those costs. A stronger
+constructor algebra might share them more efficiently; this experiment gives
+no lower bound against such a design.

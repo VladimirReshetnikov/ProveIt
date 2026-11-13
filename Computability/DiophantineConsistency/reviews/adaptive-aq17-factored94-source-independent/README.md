@@ -1,0 +1,9 @@
+# Independent source review: AQ17/94 model and residual maps
+
+This static review checks the conditional model and residual-map source drafts after the author's arity repair. Run `python3 -I -S -B check.py` from any directory and compare with `result.json`; both author source receipts reproduce. The initial source declared 17 AQ17 residuals while providing eight; the repaired source declares `Fin 8`, and this checker verifies both its type and eight-entry vector, together with the corrected AQ20 `Fin 11`. No Lean elaboration, tactic, axiom report or provider closure was checked.
+
+All 94 child literal and residual rows match the pinned graph. Projection removes parent slots 14, 15 and 19; extension restores `(X*Y)*(Y*(eta+zeta))`, `(eta+Y*(eta+zeta))²`, and `3+4*(X*Y+Y)+(X*Y+Y)²` respectively. The source's positivity argument uses only positive retained inputs and imposes no condition on the ports. It retains the upstream AQ20 and AQ22 graph obligations and thus the earlier beta requirement.
+
+Eight common residual signatures map parent indices `[0,1,2,3,4,7,8,9]` to child indices `[0,…,7]`. Parent binding residuals 5, 6 and 10 vanish under extension. The checker verifies all 11 parent and eight child finite-case branches, assuming `fin_cases` uses ascending order, and the proposed recovery of the three bindings through the model embedding. The independently checked graph chain establishes the external polynomial identity; it does not elaborate these source proofs.
+
+The fixed-port graph obligation is proposed in source. Both prior graph obligations remain explicit in the conditional native and standard clients. The 111-row natural syntax, model transfer, endpoint, inherited provider boundary, and physical PDF semantics require separate verification; no internal iPRA theorem is established here.

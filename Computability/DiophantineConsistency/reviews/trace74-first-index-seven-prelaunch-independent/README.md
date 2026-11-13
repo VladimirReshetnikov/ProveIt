@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: first index ≥7
+
+GO subject to root release and fresh locked preflight. Source `11a500e5cd5a3a1bd2dc0a530cb0a6a7cac591c197f929f4a937394c6c3f2086`, corrected runner `084f4af2081ee5ad93f2f47717d554bf7c1025e5db372e2726ee8b25dfd5f7a5`, policy `e89ae421469bd0b1bd97a129505f5bda4011777dbfeda74a691d9bf07a83bfb0`. No Lean replay. Initial runner `ba4b1d9995e7439a5757c26acec8e7a06e74f88e4db505490d90da55faee318a` held for missing FirstIndexSix source pin; preserved as `prelaunch-runner-v1.py`, corrected runner pins it. All 94 n6 and 105 first6 terminal pins now match, embedded n6 map/path match terminal. Four direct imports uniquely resolved; first-selected bytes of all 61 n6 and 68 first6 pinned oleans checked match their saved hashes. Fourteen actual-validator controls passed; strict two reports, pre/post pins and resource lock retained.
+
+Same p/v, beta≥31, positive graph zero and q≥2³⁰ imply supplied first index≥7; existential theorem preserves same n/coordinate/residue. No n≥7 exclusion or guard. Point-in-time direct pins/selections do not authenticate full serialized transitive/package ancestry or continuous resolution.

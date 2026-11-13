@@ -1,0 +1,3 @@
+# Independent sign20 expression-equivalence retry prelaunch review
+
+Independent checker session 18670 exited 0. The fresh retry keeps the source, manifest, provider union and survey byte-identical. It changes both post-preflight injection loops to evaluator keys 20/21, fixes the direct evaluator module and 20/21 route, and uses a fresh output path; the runner has no other delta. The checker re-audited the original setup failure and reran no-Lean preflight, with original resource controls retained. This corrects the earlier review gap, but does not itself execute Lean or establish an equivalence.

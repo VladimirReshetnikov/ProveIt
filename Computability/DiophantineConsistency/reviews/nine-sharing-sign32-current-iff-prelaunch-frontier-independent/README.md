@@ -1,0 +1,5 @@
+# Independent sign32 current-port iff prelaunch review
+
+The checker pins candidate source, manifest, runner and port survey, reproduces the no-Lean preflight, and verifies the local port-0 cast proof and exact invocation of the checked generic pointwise and same-input iff. The proposed theorems are in IΣ₁ models and preserve arbitrary distinguished input 0; the beta-cast assumption is discharged locally. The source `CurrentMasks2011.ports` defines the high port as `highPort + beta`, once shifted.
+
+The survey authenticates successful port-base and port0 rows from an overall-failed split producer, uses no failed row, and binds the observed current-data object/guard route; that object's own deeper provenance is inherited. The runner authenticates both generic iff producer rows, direct routes and candidate guards. This does not prove Lean semantics of the external sign32 JSON or individual numerical bytes, and the quartic Jones theorem does not apply to the sextic seed. Lean elaboration remains untested; no Lean ran. Point checks and sampled monitoring are not a complete dynamic/transitive trace.

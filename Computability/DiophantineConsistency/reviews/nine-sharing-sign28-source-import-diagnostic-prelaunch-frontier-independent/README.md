@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS. The three pinned, declaration-free modules import the successful cons provider alone, the sign31 source provider alone, then both in the failed composition's order. The runner fail-stops, so a failed earlier import prevents later stages. Its partial survey authenticates only the successful first-stage object of the overall-failed retry, its logs and guards; the union survey binds the other source provider and checks overlay bytes/collisions. Independent partial-failure audit and no-Lean preflight passed.
+
+This diagnostic cannot itself prove the source iff or identify the cause of an interpreter exception. No Lean has run for it, and point observations and deeper transitive/dynamic ancestry are inherited.

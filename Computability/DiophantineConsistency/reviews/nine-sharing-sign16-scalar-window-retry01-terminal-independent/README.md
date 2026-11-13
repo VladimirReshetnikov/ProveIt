@@ -1,0 +1,3 @@
+# Independent sign16 scalar-window retry terminal audit
+
+The independent checker exited 0. Author outer session 69390 exited 0; stage and postflight passed. Source, object, logs, direct transport/first-index provider pins, guards and overlays were checked. The theorem report lists standard axioms, no warnings or sorryAx. The first-index survey is a point-in-time historic/current observation and is not replayed postflight, although the direct guard is rechecked after compilation. The Lean conclusion q≥F assumes staged seed zero, beta>0, represented beta/K, and explicit MC/MF bounds; deriving those bounds, the V lift and equivalence remain separate. No Lean was rerun here.

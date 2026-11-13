@@ -1,0 +1,5 @@
+# AQ28 → AQ27 → AQ26: first fresh-author extension attempt
+
+The guarded author-only extension **failed**: actual tool session 53392 exited 1 and printed `AQ26_AUTHOR_TRIAL_EXIT=1`. Its [state](state.json) has SHA-256 `77400eb149b21adf4e04d953956c28b5e791c5e395ebdc912fe85d23779cc96d`; the [terminal observation](terminal-observation.json) binds the exact inputs and process log. Initial parent preflight and the first three AQ28 modules passed. The fourth, `AdaptiveAQ28Transport`, failed because `subst_id` was unknown and the identity-substitution goal remained unsolved. Its log subsequently reports `sorryAx` for declarations affected by the failed proof; this is a failed compilation, not an accepted theorem. No AQ27 or AQ26 module was reached.
+
+This packet preserves the full 24-source frozen draft, all four logs, additions manifest, process log and guarded failure state. The parent was the historical, independently artifact-audited AQ29 author pass, with peer replay in progress. The Foundation builder’s outer exit was unobserved; inherited package-transitive and dynamic provenance remains outside scope. A corrected source and a new guarded run are required.

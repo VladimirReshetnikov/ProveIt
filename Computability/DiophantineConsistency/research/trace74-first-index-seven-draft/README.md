@@ -1,0 +1,5 @@
+# First Pell index at least 7 for the same 74 zero
+
+`Trace74FirstIndexSeven.graph_first_index_ge_seven` proves that any first Pell index satisfying the displayed ordinate equation is at least 7 for the same positive 74 zero and witnesses, under `β≥31` and `q≥2³⁰`. Its existential companion preserves that same index, ordinate equation and first-index residue. These theorems do not prove a guard, an unrestricted index bound or an iPRA endpoint.
+
+The controlled Lean check passed in actual outer session 27878, exit 0; terminal SHA-256 `9bc7fcdc87e0e93c74d5c882dffffbcadad681f91f9025d601970384624ac0d0`. The [independent result audit](../../reviews/trace74-first-index-seven-result-independent/README.md) verified 134 recorded direct pins, object, log and both reports. `prelaunch-runner-v1.py` records the prelaunch HOLD for one omitted parent source pin; the corrected runner was used for the only Lean attempt. Full historical project/package/dynamic ancestry and ongoing search-path selection remain outside this evidence.

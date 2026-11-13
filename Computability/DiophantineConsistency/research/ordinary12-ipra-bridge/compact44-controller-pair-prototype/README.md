@@ -1,0 +1,15 @@
+# Proposed paired compact44 controller replay
+
+This packet is prelaunch-only. The two-module driver has not been independently reviewed and **must not be used for a real build** until its exact bytes, both independent reviews, historical source view and negative controls are reviewed and a protected sole-Lean window is allocated. Its read-only preflight session 76265 actually exited 0 without Lean; the fake wrapper completed four simulated children and rejected sixteen controlled failure modes. The full fake observations are retained separately.
+
+The driver freezes the exact compact44 controller-data and controller-choice sources and builds them in order on separate author and peer overlays of the audited 342-module endpoint successor. It reruns the independently reviewed controller-source closure and the independently reviewed contextual endpoint, using an explicitly supplied sparse historical source view. The contextual parent is not an unchanged live-source audit: it runs exact original endpoint-audit bytes with only the nested plan-audit path rebound to the historical view. The newer live `ModelCarrierCurrent` remains different. The driver checks all source, direct-import, output and companion guards before and after relevant steps, requires each direct `.olean` to exist, validates both source copies and the supplied Git HEAD, and compares paired outputs.
+
+The prior exploratory data compiler output contains exactly one linter warning and three named axiom reports; choice contains exactly two linter warnings and two named reports. The driver compares the complete output of each child with the corresponding pinned exploratory output after replacing only the exact frozen-source path by `<SOURCE>`. Any changed or extra warning, report or output is rejected. Source and output guards, input pins, interpreter mode, output collision and HEAD failure controls are included; the fake wrapper also exercises failed children and mismatched peers. The required source and external objects and their transitive-source survey remain point-in-time checks; full package and dynamic ancestry are outside this packet.
+
+The symbolic controller theorems have explicit size, support and unit hypotheses. This pair would not bind controller positions or coefficients to retained compact44 K, establish a checker or machine equivalence, or prove an iPRA endpoint. The initial native-loader environment must be trusted and cleaned before Python starts; `-I -S` alone does not clean loader variables. Coordinate externally enforced sole-Lean and stable-HEAD protection. The disk and memory checks are sampled; dependency and parent-audit subprocesses are not included in compiler resource monitoring.
+
+Example future invocation after review and coordination (fill in an actual protected HEAD and prepared view):
+
+```sh
+env -u LD_PRELOAD -u LD_LIBRARY_PATH -u LD_AUDIT python3 -I -S -B Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/compact44-controller-pair-prototype/replay.py --output /tmp/ipra-compact-controller-pair-NEW --expected-head FULL_PROTECTED_HEAD --historical-view /tmp/ipra-historical-audit-review-NEW
+```

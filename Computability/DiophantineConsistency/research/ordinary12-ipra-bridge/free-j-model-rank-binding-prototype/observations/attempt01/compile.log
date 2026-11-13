@@ -1,0 +1,58 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/free-j-model-rank-binding-author-f7ywdeh0/FreeJModelRankBinding.lean:49:63: error: unsolved goals
+V : Type u_1
+inst✝² : ORingStructure V
+inst✝¹ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 12 → V
+K N s : V
+X : V → V
+inst✝ : 𝚺₁-Function₁ X
+hpack : PackingInput 590069 K low high N s X
+hJ : v 0 = rep 590069 N
+hF : v 1 = Fw 590069 K N s X
+hA : v 2 = alpha 590069 K N s X
+hbeta : ι (v 0) * ↑(p 0) = ι (Exp.exp (590069 * N) - 1)
+hMC : ↑(p 2) = ι low
+hMF : ↑(p 3) = ι (high + (Exp.exp 590069 - 1))
+q : V := Exp.exp (590069 * N)
+F : V := Fw 590069 K N s X
+A : V := alpha 590069 K N s X
+J : V := rep 590069 N
+hq : 1 ≤ q
+hFq : F ≤ q
+hq1 : ι (q - 1) = ι q - 1
+hqF : ι (q - F) = ι q - ι F
+hq2 : ι (q ^ 2 - 1) = ι q ^ 2 - 1
+hbetaJ : ι J * ↑(p 0) = ι (q - 1)
+⊢ ι (alpha 590069 K N s X) * ι (rep 590069 N) * ↑(p 0) * 2 +
+                      ι (alpha 590069 K N s X) * ι (rep 590069 N) ^ 2 * ↑(p 0) ^ 2 +
+                    ι (rep 590069 N) * ι low +
+                  ι (rep 590069 N) * ι (high + (Exp.exp 590069 - 1)) +
+                ι (rep 590069 N) ^ 2 * ↑(p 0) * ι (high + (Exp.exp 590069 - 1)) +
+              ι (rep 590069 N) ^ 2 * ↑(p 0) ^ 2 * 2 -
+            ι (rep 590069 N) ^ 2 * ↑(p 0) ^ 2 * ι (Fw 590069 K N s X) * 2 +
+          ι (rep 590069 N) ^ 3 * ↑(p 0) ^ 3 * 3 -
+        ι (rep 590069 N) ^ 3 * ↑(p 0) ^ 3 * ι (Fw 590069 K N s X) +
+      ι (rep 590069 N) ^ 4 * ↑(p 0) ^ 4 =
+    ι low * ι J + ι (high + (Exp.exp 590069 - 1)) * ι q * ι J - ι A + ι A * ι q ^ 2 + ι q + ι q * ι F - ι q ^ 2 +
+              ι q ^ 2 * ι F -
+            ι q ^ 3 -
+          ι q ^ 3 * ι F +
+        ι q ^ 4 -
+      ι F
+/tmp/free-j-model-rank-binding-author-f7ywdeh0/FreeJModelRankBinding.lean:51:76: warning: This simp argument is unused:
+  hbetaJ
+
+Hint: Omit it from the simp argument list.
+  simp only [̵r̵a̵n̵k̵E̵x̵p̵r̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵m̵u̵l̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵a̵d̵d̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵s̵u̵b̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵v̵a̵r̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵c̵o̵n̵s̵t̵a̵n̵t̵,̵E̵x̵p̵r̵.̵e̵v̵a̵l̵R̵i̵n̵g̵_̵o̵f̵N̵a̵t̵,̵h̵J̵,̵h̵F̵,̵h̵A̵,̵h̵b̵e̵t̵a̵J̵,̵h̵M̵C̵,̵h̵M̵F̵]̵[̲r̲a̲n̲k̲E̲x̲p̲r̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲m̲u̲l̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲a̲d̲d̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲s̲u̲b̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲v̲a̲r̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲c̲o̲n̲s̲t̲a̲n̲t̲,̲ ̲E̲x̲p̲r̲.̲e̲v̲a̲l̲R̲i̲n̲g̲_̲o̲f̲N̲a̲t̲,̲ ̲h̲J̲,̲ ̲h̲F̲,̲ ̲h̲A̲,̲ ̲h̲M̲C̲,̲ ̲h̲M̲F̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'FreeJModelRankBinding.graph_rank_of_packing' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

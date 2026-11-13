@@ -1,0 +1,5 @@
+# Independent sign32 N0/Nt/f2 terminal audit
+
+The state records a successful dependency scan and Lean compile; the author's separate record reports actual outer session 84568 exit 0. The checker validates source, object, logs, all 100 direct guards, 1,064 overlay links and the exact group04 provider. Six row-link reports are `[propext]`; three same-valuation evaluation reports are `[propext, Classical.choice, Quot.sound]`. The log contains four linter warnings for unused `p` binders in the old/new N0 and f2 definitions.
+
+The checked statements identify old/new N0, Nt and f2 residuals at their exact list positions and show evaluations agree under the proposed lift in an IΣ₁ model. These rows do not use eliminated old coordinate 15, so no port-0 cast equality is needed. Remaining residual identities, the complete zero-set bridge, numeric port binding and any endpoint are outside scope. No Lean replay was performed. The outer record is author-observed; guards are point-in-time and sampled monitoring does not establish a complete dynamic or transitive trace.

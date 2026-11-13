@@ -1,0 +1,5 @@
+# Proposed conditional model gap representative
+
+This guarded candidate assumes `1 ≤ beta` and the explicit embedded Nt equality in an arbitrary IΣ₁ model, derives the ordered-ring bounds, and proposes a natural representative of the gap using `nonneg_iff`. The checked generic ordered-ring lemma supplies the conditional sign. It does not derive Nt from a seed zero, supply port-cast hypotheses, prove a zero bridge or endpoint, or bind external JSON/coefficient bytes.
+
+The runner authenticates both sign26 syntax/square-sum rows and the separately checked standalone ordered-ring provider, including its 80 direct guards and target-collision checks. Deeper ancestry and the historical plan README-link replay caveat are inherited. Author no-Lean preflight exited 0, and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign26-gap-representative-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.

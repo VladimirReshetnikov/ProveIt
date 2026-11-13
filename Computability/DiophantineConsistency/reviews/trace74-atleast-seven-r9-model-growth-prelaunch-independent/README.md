@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: n≥7/r9 model growth
+
+GO subject to root release and fresh locked preflight. Source `a6b95d80f1090afd8f9979531acb0be97fecd1d4d7e367cd6f4991cfbfde24d6`, runner `96960ba2446e8fb792c3233e474e9c224baf0d8d68e01c2b9d1eb3b8679612c8`, policy `996ad2c0f650d26420f1aa256564f1d2f3f4a0454cb1beeed1a935c27fa74b4e`, selector `d84607e5833a6f81448aab2da9eda70ee5cf887975ead54d18630302f310de71`. No Lean replay. Same positive p/v, n≥7,q≥64 and first/ninth ordinate assumptions explicit; no graph-zero/guard inference.
+
+Current direct-source/import selections are compared to accepted growth/y7/y9 producer paths; selector's join path matches runner after fresh output. Reran selector and matched saved `49f50d8e5ba6c2b75bf7b387a6af43816b0842cb667b3cd5076b4ee9108f204f`. Runner rechecks selection/pins pre/post, exact report and empty stderr, locked resource guard; 13 actual-validator controls pass. Direct comparisons do not establish serialized transitive/package ancestry, producer-time selection or continuously stable resolution. Model cast/linear_combination elaboration untested.

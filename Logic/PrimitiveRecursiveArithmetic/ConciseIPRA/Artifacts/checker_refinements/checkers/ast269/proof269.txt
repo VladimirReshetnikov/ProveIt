@@ -1,0 +1,73 @@
+A two-node composition for the whole-input local three-field checker
+==================================================================
+
+The complete candidate has 255 significant tokens, 269 AST nodes and 605
+normalized UTF-8 bytes on CPython 3.12.14. Its matched control has
+255 / 271 / 606. Both parse the entire standard input as one JSON value.
+This is an implementation-level composition of an already established
+transformation, not a new arithmetic axiom deletion or a new mathematical
+foundation.
+
+The only changed AST expression is:
+
+  old: (k := k - 1) and (s or len(a) == 2) and k
+  new: (k := k - 1) * (1 if s else len(a) == 2)
+
+It supplies the image for opening the newly retained hypothesis. In both
+programs the preceding argument, which constructs that raw hypothesis and
+may check a major premise, is evaluated first. The displayed expression
+then decrements k exactly once, before any mode test. Thus the fresh-name
+allocation has not been moved across a premise or made conditional.
+
+Every invocation starts with k <= 0: the initial value is 0; a major call
+receives the current value; and each continuation subtracts 1. Write j for
+the decremented value, so j < 0. If s is truthy, both expressions return j
+and neither evaluates len(a). If s is false-valued and len(a)=2, both return
+j. Otherwise the old expression returns the Boolean False and the new
+expression returns the integer 0. These are the only possible differences.
+
+Relate internal trees by identifying False with 0 (and, harmlessly, True
+with 1), componentwise through lists and context tuples. Initially both
+runs have identical finite integer/list input. Numeric comparison,
+arithmetic, truth tests, equality, membership, slicing, repetition and
+attempted iteration respect this relation. In particular a Boolean and
+its integer representative both cause the opener's attempted iteration
+to take its scalar branch. The program never tests exact types, compares
+identities, hashes internal trees, or serializes them. It emits only the
+fixed success string.
+
+Induction on a finite successful call tree, with inner inductions on loop
+iterations and opener traversals, therefore pairs every step of the two
+executions. They pop the same packets, decrement the same k values, take
+the same branches, and have related goals and contexts. Potentially failing
+len operations are evaluated in the same cases. One program accepts exactly
+when the other does, on the stated finite integer/list contract and with
+sufficient resources. Differences of exception-message text are irrelevant
+to acceptance, defined as normal exit with exactly ACCEPT followed by LF.
+
+Consequently the accepted public theorem set is unchanged. The existing
+guarded public translation and native-iPRA interpretation apply unchanged;
+this result supplies a checker-to-checker simulation, not a fresh proof of
+the underlying arithmetic bridge.
+
+Provenance and novelty scope
+---------------------------
+Control: ProveIt commit 6874c85a4cea45d881de73620284fcc75d740942,
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Artifacts/three_field/code/
+checker_ast.py, Git blob 6b7b3bbba4ffc95f9d10081477096d910be1ace9.
+
+The same expression rewrite and its simulation argument already occur for
+a JSON-line stream checker in Artifacts/fused_iteration/code/
+checker_refinement/. The current composition retains the whole-input parser
+of the three_field control. It improves the main whole-input AST minimum
+reported in the article from 271 to 269, but does not improve the 265-node
+stream profile or the token/byte minima. It does not establish a single
+checker below all incumbent coordinates or absolute minimality.
+
+The verification script proves syntactically that exactly this expression
+changed, checks the expected normalized sizes, verifies every fixture's
+pinned Git blob, and runs both complete programs in ordinary and optimized
+isolated Python. The fixtures include computation, transport, compound
+introduction/elimination, induction using its hypothesis, and concrete
+capture/leak/malformed-input attempts. Finite executions are supplemental
+evidence and are not substituted for the simulation argument above.

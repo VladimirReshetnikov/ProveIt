@@ -1,0 +1,32 @@
+/- Uncompiled follow-up: requires a successfully built same-side ArithmeticWangTable. -/
+import DiophantineConsistency.ArithmeticWangTable
+set_option Elab.async false
+#print axioms DiophantineConsistency.ArithmeticWangTable.rows_goodA
+#print axioms DiophantineConsistency.ArithmeticWangTable.rows_goodB
+#print axioms DiophantineConsistency.ArithmeticWangTable.rows_goodC
+#print axioms DiophantineConsistency.ArithmeticWangTable.tileN_mem
+#print axioms DiophantineConsistency.ArithmeticWangTable.tileN_goodA
+#print axioms DiophantineConsistency.ArithmeticWangTable.tileN_goodB
+#print axioms DiophantineConsistency.ArithmeticWangTable.tileN_goodC
+#print axioms DiophantineConsistency.ArithmeticWangTable.tileN_zero
+#print axioms DiophantineConsistency.ArithmeticWangTable.lookup_eq_actCode
+#print axioms DiophantineConsistency.ArithmeticWangTable.tab_defined
+#print axioms DiophantineConsistency.ArithmeticWangTable.tab_cast
+#print axioms DiophantineConsistency.ArithmeticWangTable.colList_getD
+#print axioms DiophantineConsistency.ArithmeticWangTable.standard_of_lt
+#print axioms DiophantineConsistency.ArithmeticWangTable.tile_index
+#print axioms DiophantineConsistency.ArithmeticWangTable.seam_iff
+#print axioms DiophantineConsistency.ArithmeticWangTable.seam_sides
+#print axioms DiophantineConsistency.ArithmeticWangTable.north_434
+#print axioms DiophantineConsistency.ArithmeticWangTable.east_two
+#print axioms DiophantineConsistency.ArithmeticWangTable.west_three
+#print axioms DiophantineConsistency.ArithmeticWangTable.north_436
+#print axioms DiophantineConsistency.ArithmeticWangTable.west_four
+#print axioms DiophantineConsistency.ArithmeticWangTable.plain_sides
+#print axioms DiophantineConsistency.ArithmeticWangTable.plain_pass
+#print axioms DiophantineConsistency.ArithmeticWangTable.north_438
+#print axioms DiophantineConsistency.ArithmeticWangTable.west_one
+#print axioms DiophantineConsistency.ArithmeticWangTable.east_one
+#print axioms DiophantineConsistency.ArithmeticWangTable.hcV_cast
+#print axioms DiophantineConsistency.ArithmeticWangTable.lookupValue_cast
+#print axioms DiophantineConsistency.ArithmeticWangTable.head_step

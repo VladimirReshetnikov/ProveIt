@@ -1,0 +1,501 @@
+{
+  "parameters": [
+    "a"
+  ],
+  "goal": [
+    "=",
+    [
+      "S",
+      [
+        "R",
+        [
+          "S",
+          [
+            "v",
+            "a"
+          ]
+        ],
+        [
+          "0"
+        ],
+        "source_u",
+        "source_v",
+        [
+          "v",
+          "source_u"
+        ]
+      ]
+    ],
+    [
+      "S",
+      [
+        "v",
+        "a"
+      ]
+    ]
+  ],
+  "proof": {
+    "rule": "RL",
+    "equality": [
+      "=",
+      [
+        "R",
+        [
+          "S",
+          [
+            "v",
+            "a"
+          ]
+        ],
+        [
+          "0"
+        ],
+        "f_ctr",
+        "f_state",
+        [
+          "S",
+          [
+            "v",
+            "f_ctr"
+          ]
+        ]
+      ],
+      [
+        "S",
+        [
+          "R",
+          [
+            "S",
+            [
+              "v",
+              "a"
+            ]
+          ],
+          [
+            "0"
+          ],
+          "source_u",
+          "source_v",
+          [
+            "v",
+            "source_u"
+          ]
+        ]
+      ]
+    ],
+    "major": {
+      "rule": "RL",
+      "equality": [
+        "=",
+        [
+          "R",
+          [
+            "S",
+            [
+              "R",
+              [
+                "S",
+                [
+                  "v",
+                  "a"
+                ]
+              ],
+              [
+                "0"
+              ],
+              "source_u",
+              "source_v",
+              [
+                "v",
+                "source_u"
+              ]
+            ]
+          ],
+          [
+            "0"
+          ],
+          "f_ctr",
+          "f_state",
+          [
+            "S",
+            [
+              "v",
+              "f_ctr"
+            ]
+          ]
+        ],
+        [
+          "R",
+          [
+            "S",
+            [
+              "v",
+              "a"
+            ]
+          ],
+          [
+            "0"
+          ],
+          "f_ctr",
+          "f_state",
+          [
+            "S",
+            [
+              "v",
+              "f_ctr"
+            ]
+          ]
+        ]
+      ],
+      "major": {
+        "rule": "CC",
+        "major": {
+          "rule": "RL",
+          "equality": [
+            "=",
+            [
+              "R",
+              [
+                "v",
+                "a"
+              ],
+              [
+                "0"
+              ],
+              "u_ctr",
+              "u_state",
+              [
+                "S",
+                [
+                  "S",
+                  [
+                    "v",
+                    "u_ctr"
+                  ]
+                ]
+              ]
+            ],
+            [
+              "S",
+              [
+                "R",
+                [
+                  "S",
+                  [
+                    "v",
+                    "a"
+                  ]
+                ],
+                [
+                  "0"
+                ],
+                "source_u",
+                "source_v",
+                [
+                  "v",
+                  "source_u"
+                ]
+              ]
+            ]
+          ],
+          "major": {
+            "rule": "RL",
+            "equality": [
+              "=",
+              [
+                "R",
+                [
+                  "R",
+                  [
+                    "S",
+                    [
+                      "v",
+                      "a"
+                    ]
+                  ],
+                  [
+                    "0"
+                  ],
+                  "source_u",
+                  "source_v",
+                  [
+                    "v",
+                    "source_u"
+                  ]
+                ],
+                [
+                  "0"
+                ],
+                "u_ctr",
+                "u_state",
+                [
+                  "S",
+                  [
+                    "S",
+                    [
+                      "v",
+                      "u_ctr"
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "R",
+                [
+                  "v",
+                  "a"
+                ],
+                [
+                  "0"
+                ],
+                "u_ctr",
+                "u_state",
+                [
+                  "S",
+                  [
+                    "S",
+                    [
+                      "v",
+                      "u_ctr"
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            "major": {
+              "rule": "CC",
+              "major": {
+                "rule": "RS"
+              }
+            },
+            "minor": {
+              "rule": "DE",
+              "paired": [
+                "D",
+                "zcc_xssuccessor",
+                "zcc_yssuccessor",
+                [
+                  "=",
+                  [
+                    "R",
+                    [
+                      "v",
+                      "zcc_yssuccessor"
+                    ],
+                    [
+                      "0"
+                    ],
+                    "u_ctr",
+                    "u_state",
+                    [
+                      "S",
+                      [
+                        "S",
+                        [
+                          "v",
+                          "u_ctr"
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "S",
+                    [
+                      "v",
+                      "zcc_yssuccessor"
+                    ]
+                  ]
+                ]
+              ],
+              "eigen": "zcc_assuccessor",
+              "major": {
+                "rule": "DI",
+                "mode": "case",
+                "witness": [
+                  "0"
+                ],
+                "eigen": "zcc_zssuccessor",
+                "body": {
+                  "rule": "RS"
+                }
+              },
+              "body": {
+                "rule": "QE",
+                "closure": [
+                  "Q",
+                  "zcc_yssuccessor",
+                  [
+                    "=",
+                    [
+                      "R",
+                      [
+                        "v",
+                        "zcc_yssuccessor"
+                      ],
+                      [
+                        "0"
+                      ],
+                      "u_ctr",
+                      "u_state",
+                      [
+                        "S",
+                        [
+                          "S",
+                          [
+                            "v",
+                            "u_ctr"
+                          ]
+                        ]
+                      ]
+                    ],
+                    [
+                      "S",
+                      [
+                        "v",
+                        "zcc_yssuccessor"
+                      ]
+                    ]
+                  ]
+                ],
+                "target": [
+                  "R",
+                  [
+                    "S",
+                    [
+                      "v",
+                      "a"
+                    ]
+                  ],
+                  [
+                    "0"
+                  ],
+                  "source_u",
+                  "source_v",
+                  [
+                    "v",
+                    "source_u"
+                  ]
+                ],
+                "major": {
+                  "rule": "hyp",
+                  "index": 0
+                },
+                "base": {
+                  "rule": "R0"
+                }
+              }
+            }
+          },
+          "minor": {
+            "rule": "DE",
+            "paired": [
+              "D",
+              "zcc_xtsuccessor",
+              "zcc_ytsuccessor",
+              [
+                "=",
+                [
+                  "R",
+                  [
+                    "v",
+                    "zcc_ytsuccessor"
+                  ],
+                  [
+                    "0"
+                  ],
+                  "u_ctr",
+                  "u_state",
+                  [
+                    "S",
+                    [
+                      "S",
+                      [
+                        "v",
+                        "u_ctr"
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "S",
+                  [
+                    "v",
+                    "zcc_ytsuccessor"
+                  ]
+                ]
+              ]
+            ],
+            "eigen": "zcc_atsuccessor",
+            "major": {
+              "rule": "DI",
+              "mode": "case",
+              "witness": [
+                "0"
+              ],
+              "eigen": "zcc_ztsuccessor",
+              "body": {
+                "rule": "RS"
+              }
+            },
+            "body": {
+              "rule": "QE",
+              "closure": [
+                "Q",
+                "zcc_ytsuccessor",
+                [
+                  "=",
+                  [
+                    "R",
+                    [
+                      "v",
+                      "zcc_ytsuccessor"
+                    ],
+                    [
+                      "0"
+                    ],
+                    "u_ctr",
+                    "u_state",
+                    [
+                      "S",
+                      [
+                        "S",
+                        [
+                          "v",
+                          "u_ctr"
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "S",
+                    [
+                      "v",
+                      "zcc_ytsuccessor"
+                    ]
+                  ]
+                ]
+              ],
+              "target": [
+                "v",
+                "a"
+              ],
+              "major": {
+                "rule": "hyp",
+                "index": 0
+              },
+              "base": {
+                "rule": "R0"
+              }
+            }
+          }
+        }
+      },
+      "minor": {
+        "rule": "RS"
+      }
+    },
+    "minor": {
+      "rule": "RS"
+    }
+  }
+}

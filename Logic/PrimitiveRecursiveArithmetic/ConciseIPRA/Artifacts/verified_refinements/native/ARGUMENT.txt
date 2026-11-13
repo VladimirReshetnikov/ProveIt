@@ -1,0 +1,122 @@
+NATIVE PUBLIC-GOAL VALIDATION: A MATCHED IMPLEMENTATION COMPOSITION
+
+Repository snapshot:
+  VladimirReshetnikov/ProveIt,
+  42fba2a76aea6eb41a8c4acfe7761620f58956ee.
+
+Controls:
+  Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Research/context_phase/
+  code/checker_list.py  (Git blob fc91b7f20c111e56d9dfd2ab9d3c354d5ad32e51)
+  code/checker.py       (Git blob 3bc3d7bb66da371af195f7b092ad6a078eff70fd)
+
+The exact downloaded control bytes are included. The verifier recomputes
+their Git blob hashes before doing any test or size comparison.
+
+COMPLETE NORMALIZED SOURCE MEASUREMENTS
+
+CPython 3.12.14; ast.unparse of the whole module plus a final LF:
+
+                  tokens   AST nodes   bytes
+control641.py        325       375       641
+control643.py        327       375       643
+checker.py           324       374       629
+
+The new module improves each coordinate against the smaller matched
+list-context control: one token, one AST node, twelve normalized bytes.
+This is a source implementation composition, not a new logical theory.
+
+THE PRECISE INTERFACE
+
+The program reads a JSON array, consumed from the right. The last item is a
+closed native Eq/D goal. Consumed instructions have four fields [m,s,u,t].
+Acceptance is exit status zero with exactly ACCEPT followed by one newline.
+
+The complete public-goal grammar and its closed scope are checked inside the
+measured program. The public syntax is the full native Eq/D syntax, including
+case introduction for unguarded equation matrices using the u=[] mode marker.
+It is not restricted to the smaller guarded public language.
+
+This is not the stronger whole-certificate alphabet-validation contract:
+unused JSON prefixes may contain other JSON values. The verifier explicitly
+checks five such accepted prefixes against the existing control. The
+universal proof-checker correctness statement is made on the inherited
+finite integer/list certificate domain. No equality of the all-malformed-JSON
+acceptance languages is asserted. A version with an upfront whole-certificate
+alphabet check must charge that extra code separately.
+
+WHY PUBLIC VALIDATION IS PRESERVED
+
+The top-level call uses the empty context and floor zero. The first call of
+i(goal) therefore activates all public syntax checks. At even (formula)
+depth only unary D and binary equality arrays are admitted. At odd
+(numerical) depth only unary successor and ternary iterator arrays are
+admitted. A numerical leaf must be the exact Python integer zero or an odd
+protected coordinate at least three and below the current depth. The
+CPython test int(a) is a accepts exact JSON integers and rejects JSON Boolean
+and floating-point values. Formula leaves and used unbound numerical holes
+reach the rejecting missing-image sentinel. Nonempty strings cannot produce
+a successful traversal (their one-character descendants repeat indefinitely),
+and empty strings, mappings, null, floats, and Booleans do not pass the initial
+public syntax and exact-integer checks.
+
+Only after this initial traversal is neutral truth 0 appended. Every later
+recursive context is nonempty, so the same opener returns to its inherited
+proof-kernel mode. A major subproof may append further copies of 0 to the
+shared list; those are the only additions it can make to the caller's list.
+The actual new hypothesis is passed in a new concatenated list. Thus no
+nontrivial hypothesis leaks from a major proof. This is the existing
+context_phase/checker_list.py phase invariant.
+
+WHY THE CHECKING COMPOSITION PRESERVES THE THEORY
+
+1. On integer/list data, a*0==[] and a*0!=0 have exactly the same value:
+   integer multiplication yields 0, while list multiplication yields [].
+   The opener is therefore unchanged on the stated certificate domain.
+
+2. The construction and recursive checking of the supplied hypothesis take
+   place at the old scope floor. The new floor is allocated while that
+   hypothesis is opened; the target comparison is then evaluated at the new
+   floor. This is the previously audited context-first schedule. Its full
+   written argument is reproduced as context_first_audit.tex. In particular,
+   meaningful occurrences of a newly admitted negative parameter persist
+   under opening. A successful match to an old goal and an old-scope proved
+   major consequently cannot conceal a new free parameter. This proves
+   transport and closure specialization sound; unmatched continuations have
+   the ordinary existing meanings. Canonical compiled proofs never rely on
+   the changed treatment of discarded annotations, so completeness transfers.
+   Raw trace equality is deliberately not claimed.
+
+3. The target is now selected by a conditional expression. If the major and
+   endpoint match, the checker still computes and scope-checks i(t,s). If
+   they do not match, it keeps the old goal. Omitting an unused source-instance
+   traversal in the unmatched branch can avoid an irrelevant rejection, but
+   adds no assumption or inference. It is precisely the unmatched branch in
+   the context-first soundness argument. Canonical inert fields are total,
+   so the canonical compiler's completeness is unchanged.
+
+4. Replacing a positive membership test followed by a bare return with a
+   negative membership test enclosing the remaining body is exact Python
+   control-flow equivalence: the function has no later statements, and an
+   implicit return is None. The newly assigned scope floor is always negative,
+   hence true, and bool(mode)*floor is exactly floor or zero as required.
+
+Together with the inherited arity-decoder and native-rule compilation
+theorems, these observations preserve the canonical native theorem set.
+They leave all term constructors, logical readings, axiom schemes, inference
+rules, numerical domains, and interpretation composites unchanged. Thus
+the established whole-domain bi-interpretation transfers; it is not a new
+proof-assistant formalization or a new arithmetic basis.
+
+EXECUTABLE EVIDENCE AND LIMITS
+
+Run python3 verify.py. The fixture set contains 21 inherited native proofs
+and attacks, ten invalid public roots, and five explicitly inert noncanonical
+prefixes. The first group includes a used induction hypothesis, nested D
+opening, successor and zero computation, old native atomic case introduction,
+future-witness capture, context leakage, and false conclusion attempts.
+The control and candidate run with ordinary Python and python -O.
+
+These finite checks support the implementation composition; universal
+soundness/completeness rests on the written arguments and inherited lemmas.
+This module does not beat the smaller compact coordinate envelope and does
+not establish an absolute smallest axiomatization.

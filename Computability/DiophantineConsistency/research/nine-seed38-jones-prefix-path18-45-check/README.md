@@ -1,0 +1,11 @@
+# Prepared d18 to full-recipe path check
+
+The guarded client checks the [source-only 27-snoc path](../nine-seed38-jones-prefix-path18-45-draft/README.md), its generic d45 lookup and the lookup transfer to the compiled Lean `recipe`. The proposed theorem preserves the first 18 entries through the recipe; it does not identify the final output with the named formula or bind JSON/human text.
+
+The survey reruns the independent d18-to-d41 terminal audit and pins the source and exact prior-path object. The runner matches its direct dependency and guard against that object by hash and real path, and repeats source/provider checks after success. Point observations do not establish complete dynamic or transitive ancestry; sampled monitoring can miss transient spikes or escaped descendants. An earlier initial-agreement producer's numeric outer exit was not captured.
+
+No-Lean preflight actual session 86685 exited 0 and reported `PASS_NO_LEAN_PREFLIGHT`; the [record](preflight-author-record.json) is author-recorded rather than an independent raw transcript. The [independent prelaunch review](../../reviews/nine-seed38-jones-prefix-path18-45-prelaunch-frontier-independent/README.md) passed. Limits were `-M2800`, 120 seconds per invocation, sampled 4-GiB session RSS and 10-GiB available-host-memory stops, and a 5-GB free-disk precheck.
+
+Actual outer session 67998 exited 0, as did the dependency scan and Lean compile. The concrete path reported no axioms; both d45 and recipe lookup reported `[propext, Classical.choice, Quot.sound]`, without warnings. State SHA-256 `cbfeac916fd53fafbb6c0b9619171830cce1c44960d8780f11c1a280a9297309`, object `e745b03d17c4a9ae99452cacda9d98ad8103d902395e56976ba48a37f382ba21`, and author-recorded outer exit `1b948986d6b9be33ae02f16d38b24759b1c9e71b997e17f57c274a37bb399bb3`. The object remains temporary; the outer record is not an independent raw transcript. The [independent terminal audit](../../reviews/nine-seed38-jones-prefix-path18-45-terminal-frontier-independent/README.md) passed without replaying Lean.
+
+SHA-256: source `046e61d86f88b61d713475b1355d3fa9692547a9469928cba09f644d53229c6e`; runner `349b1d0faf57671dce58890e3ac7decd574080ee37b66a89cd7e55c45ce0af4f`; survey `dbda54c9db1abae2033aceda248770b58f60d2128be07d9b0bf010230b9b53f0`; manifest `ae8440e8db19fc0cf203448d1aadf61550b008add8f3ac41d80c4bedc66fdf83`.

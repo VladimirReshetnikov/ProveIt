@@ -1,0 +1,111 @@
+LEXICAL SCOPE TRANSFORMATION
+
+Status. This is an implementation transformation of the inherited generated-
+assumption scalar Choice-DI calculus. It is not a new arithmetic axiomatization,
+an absolute lower-bound result, or a mechanized soundness proof. The existing
+arithmetic and logical interpretation arguments remain necessary.
+
+Trusted boundary. checker.py is a complete standalone program. It reads one
+JSON array from stdin, takes its last cell as the closed goal, and consumes
+four-field instructions from the end. An unused prefix is inert. It prints
+ACCEPT and exits zero only after successful checking. Every caught exception
+prints REJECT, is re-raised, and therefore produces nonzero exit status. Only
+the standard JSON parser is imported; no producer or measurement module is
+trusted. The Python interpreter and ordinary standard-library execution remain
+part of the platform boundary, exactly as for the comparison source.
+
+Scope invariant. At entry to check(a,g,k), k=-len(g). The potential rigid
+integer names are k,k+1,...,-1. Numerical occurrences below k are forbidden;
+positive coordinates are protected local slots or exposed substitution holes,
+as specified by the inherited sorted tree decoder. Every continuation appends
+one context entry and decreases k by one. Thus its newly minted name k-1 is
+absent from the previously validated goal, context, and any used DI witness.
+
+What changes. In the incumbent, k is global and also decreases while a major
+premise is proved. In checker.py it is a function argument, and the opening
+routine is a local closure. A call check(m,g,k) proves the major at the current
+scope but cannot change its caller's k. Its internal eigenparameters disappear
+when that call returns. The caller's continuation then uses its own next name.
+Name reuse in separate proof branches is ordinary alpha-renaming.
+
+Soundness argument. Induct on a finite successful checking trace. Every local
+opening has precisely the old traversal and depth rules, at the frame's current
+floor. The hypothesis branch has its ordinary meaning. The major-premise call
+has an input formula validated at the caller's floor; no eigenparameter minted
+inside that call occurs in its conclusion or the caller's retained context.
+Consequently its proof can be used after those internal names are discharged.
+The remainder of the command is the inherited equality/closure conversion,
+paired introduction, paired elimination, or generated computation assumption.
+Before the common continuation, decreasing the local floor creates a genuinely
+fresh name for this branch. Applying the same old rule correspondence gives
+the continuation judgment. This proves the same mathematical soundness theorem
+as the inherited kernel, under its sorted decoding; it does not add a principle.
+
+Equivalently, unfold a successful canonical lexical trace into a finite proof
+tree. Assign globally distinct names to its individual eigenparameter-binding
+events, and alpha-rename every active occurrence. This yields a derivation of
+the incumbent calculus. Disjoint branches may share local numeric labels in
+the input, but their occurrences refer to distinct binding events in this
+translation. No theory-level quantification over programs is introduced.
+
+Completeness argument. Conversely, take any finite derivation of the inherited
+calculus with its ordinary eigenvariable conditions. At a branch with d context
+entries, map its active eigenparameters to the negative local coordinates
+-1,...,-d (unused administrative entries are permitted). A major proof is
+serialized at the same scope and its private assignments are discarded on
+return. A continuation adds the coordinate -(d+1). The remaining packet fields
+and witness representation conventions are unchanged. Induction on the finite
+derivation therefore serializes it into the lexical kernel. This transfers
+the existing calculus's object-theorem completeness and interpretation results.
+
+Raw certificates are not claimed to be interchangeable. The global allocator
+also leaves names from completed side proofs numerically below its active
+floor; later packets can treat such names as fresh passive parameters. The
+lexical allocator accepts only its local scope. A mathematical translation can
+substitute a fixed numeral for any such inactive passive parameter and rename
+the active ones. It may then prune hypothesis branches that have become
+trivial. The provided producer re-emits named proof trees instead of attempting
+an unrestricted byte-for-byte translator for arbitrary raw input.
+
+Canonical data and inherited aliases. Canonical certificates use integer
+leaves and arrays of arity at most three. Both compact and readable checkers
+retain the incumbent's exact traversal operations and type test. Thus larger
+JSON inputs still have the inherited inert-field and harmless numeric aliases;
+this transformation does not introduce a new strict parser or claim to have
+removed all aliases. Used missing numerical images, wrong constructor arity,
+unallocated used numerical parameters, and unsupported used scalar types raise.
+The initial hypothesis test evaluates the opening traversal even when the
+context is empty, so it performs public-goal validation before any allocation.
+
+Producer. reference_producer.py is an exact attributed copy of the inherited
+untrusted named-syntax constructor and example generator. producer.py changes
+only the allocation discipline, preserving and restoring the named environment
+around recursive calls. It uses context depth, independently of the checker,
+to choose local names. It also supplies a new targeted false DI certificate.
+Neither producer is imported by either checker.
+
+Freshness counterexample. The rejected formula
+
+  D(x,y).(I(y,0;u.S(x)) = y)
+
+has a true zero instance. Its ordinary meaning would imply that every positive
+number has the same value S(x), so it is false in the standard model. A forged
+case-DI instruction chooses x to be the step eigenparameter z. Then its proposed
+step I(S(z),0;u.S(z))=S(z) is a genuine computation. Rejecting the witness before
+allocating z is therefore indispensable. Removing the lower scope bound makes
+this exact forged packet accept; the mutation control checks this in ordinary
+and optimized Python.
+
+Validation. verify.py regenerates thirty examples and runs both complete
+implementations in ordinary and optimized Python, adds malformed-input tests,
+and applies targeted negative controls. verification.json is the execution
+receipt. These tests establish coverage of the inspected implementation paths
+and validate the specific regressions. They do not replace the preceding
+metatheoretic argument or the inherited arithmetic bi-interpretation proofs.
+
+Metrics. source_measure.py is copied verbatim and measures the entire module.
+It strips docstrings, applies ast.unparse, and counts significant Python tokens,
+AST nodes, normalized UTF-8 bytes, and raw bytes. Gzip is informational only:
+len(gzip.compress(raw_source,compresslevel=9,mtime=0)). Its header has no filename
+and a zero timestamp. No compressed-code execution or compression-aware search
+is part of the checker.

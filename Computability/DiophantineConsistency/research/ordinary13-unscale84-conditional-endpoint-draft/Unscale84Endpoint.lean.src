@@ -1,0 +1,44 @@
+import Unscale84LargeK
+import DiophantineConsistency.Compact44.IPRAOrdinary12Chain
+
+/-! Proposed source-only endpoint transfer. The exact positive 87 endpoint
+is an explicit premise; all imported source proofs/providers are untested. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Unscale84EndpointDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open IPRAOrdinary12 (PositiveModelBridge)
+open IPRAOrdinary12Chain (native_of_positive standard_of_positive reference_of_positive)
+open Unscale84ReverseGraphDraft Unscale84LargeKDraft
+
+def expression84 (K : ℕ) : Expr (Fin 13) :=
+  (PositiveUnscale84GraphDraft.graph (portsInt (Residue90CompactPortBoundsDraft.ports K))).output
+def expression87 (K : ℕ) : Expr (Fin 13) :=
+  (PositiveUnscale87GraphDraft.graph (portsInt (Residue90CompactPortBoundsDraft.ports K))).output
+
+/-- The exact 87 positive-zero/halting bridge is a separate input. -/
+theorem positiveBridge84 (K : ℕ) (h87 : PositiveModelBridge (expression87 K)) :
+    PositiveModelBridge (expression84 K) := by
+  intro V _ _
+  exact (compact_positive_zero_iff (V:=V) K).trans (h87 V)
+
+theorem native84 (K : ℕ) (h87 : PositiveModelBridge (expression87 K)) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift (expression84 K)) 🡘
+      ∼mappedNativeRefutation embedding :=
+  native_of_positive _ (positiveBridge84 K h87)
+
+theorem standard84 (K : ℕ) (h87 : PositiveModelBridge (expression87 K)) : IPRAStandardTheory.standardTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift (expression84 K)) 🡘
+      ∼mappedNativeRefutation embedding :=
+  standard_of_positive _ (positiveBridge84 K h87)
+
+theorem reference84 (K : ℕ) (h87 : PositiveModelBridge (expression87 K)) : IPRAEqualityOnlyReference.referenceTheory ⊢
+    IPRAOrderErasure.erase (IPRAExpressionNative.nativeNoZero (positiveShift (expression84 K))) 🡘
+      ∼IPRAOrderErasure.erase (mappedNativeRefutation embedding) :=
+  reference_of_positive _ (positiveBridge84 K h87)
+end DiophantineConsistency.Unscale84EndpointDraft
+#print axioms DiophantineConsistency.Unscale84EndpointDraft.native84

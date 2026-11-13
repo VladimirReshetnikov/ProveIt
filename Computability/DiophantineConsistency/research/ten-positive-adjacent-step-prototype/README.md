@@ -1,0 +1,9 @@
+# One complete adjacent-Pell descent step
+
+`AdjacentStep.adjacent_step` works in every IΣ₁ model with the repository's `ORingStructure` interface. For `B>0`, `m>0`, `v>1`, `Bez r m 1`, and `(1+B)*(m*v)²=m²+B*r²`, it constructs `v',r'` with `0<v'<v`, `Bez r' m 1`, and the same cross-multiplied norm `(1+B)*(m*v')²=m²+B*r'²`.
+
+The proof combines the separately checked denominator divisibility, reducedness of the transformed signed numerator, integrality and strict decrease of the first-coordinate magnitude, and norm preservation in the model difference ring. It proves that the transformed coordinate cannot be zero from the norm and `m>0`. The model represents possible negative transformed coordinates by magnitudes; no sign choice is silently assumed. `magnitude_square_cast` records that a difference-ring square agrees with the square of that model magnitude.
+
+This is **one step**, not yet an internal well-founded induction/least-number proof that `m=1`. It does not bind the hypotheses to an actual 80-row graph zero or establish graph-to-machine equivalence, iPRA derivability or external file semantics.
+
+Author attempt 04 exited 0 without warnings or `sorryAx`; both printed theorem axiom reports list `[propext, Classical.choice, Quot.sound]` (Lean metatheory). Current source SHA-256 is `e5c30484531c173c64a75d917d9fead0f13c0bb0b2ad74613ab64f443e4c9012`; object SHA-256 is `cf3fee46a9e362a5b474f1d983c25e7dc67cb65436b3c4f0625ecf1cf17710a7`. Failed attempts 01–03 and their logs are retained. The accepted runner pins the adjacent-bounds, denominator, preserve and three abstract predecessor objects, selected `ArithmeticGcdNormalization`, source, runner and Lean binary. Other direct project imports, the rest of the provider, package-transitive and dynamic dependencies and full historical source-to-object ancestry are inherited. Resource samples are point observations and temporary objects may disappear. No paired replay is claimed.

@@ -1,0 +1,5 @@
+# Direct-BFS selection in every cyclic block
+
+`DirectBFS80AllBlocks.graph_all_blocks` proves that a positive 80-graph zero at the four explicit direct-BFS symbolic ports gives a positive radix length and a selected direct-BFS tile in every internal block. It applies the IΣ₁ orbit-induction theorem to the checked selected base and successor; the decoder, base and step use the same radix length.
+
+The guarded author check `observations/directbfs80allblocks-attempt01/` exited 0 without diagnostics and reports axioms `propext`, `Classical.choice`, and `Quot.sound`. Every direct source import was resolved to an explicitly pinned object and rechecked. Object `/tmp/direct-bfs-80-allblocks-17332uwb/DirectBFS80AllBlocks.olean` has SHA-256 `12227ebb95f7047dc3f63b5a8e9af6e6b3d9528cb5d54955ac5f1abac1097428`. Inherited transitive source/object, package and dynamic ancestry remain unverified; no independent Lean replay is claimed. This theorem does not yet assert all edge adjacencies, a machine run, the converse, an iPRA derivation, or a formal binding of symbolic ports to JSON bytes.

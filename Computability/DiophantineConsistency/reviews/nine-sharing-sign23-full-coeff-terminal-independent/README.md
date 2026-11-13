@@ -1,0 +1,3 @@
+# Independent sign23 full coefficient and lower-bound terminal audit
+
+Independent checker session 76387 exited 0 against author outer session 69375 (exit 0). All seven stages and postflight succeeded. The Lean source proves the seed axis eighth coefficient is two for arbitrary integer ports and the actual abstract Fin23 expression polynomial has `totalDegree ≥ 8`. Four unused-simp warnings occurred and no `sorryAx` appeared; reports list standard Lean metatheory axioms. Source, objects, direct guards, overlay and expression provider were checked. A separate upper bound exists, but this packet does not combine them into one exact-equality declaration or bind external JSON, coefficients or PDF.

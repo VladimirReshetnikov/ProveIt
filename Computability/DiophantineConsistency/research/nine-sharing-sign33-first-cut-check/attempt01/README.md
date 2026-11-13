@@ -1,0 +1,5 @@
+# First-cut module failed on membership term
+
+Author-observed outer session `98588` returned numeric exit 1. Retained state SHA-256 `67aaa33d6d65abc688af58a9bbca10288015a1223a9f6dc571b5fa1524ee1ed8`; pre-run producer survey `9a2ca4658a8aab0a06cb50cb1ad9fd88912f7af8232e6c2aacf0b4e9d062ef2b`. The outer record is an author observation, not an independently observed transcript.
+
+Lean exited 1 with no monitor stop. Its compile log SHA-256 `17d3bdf864c4d7a4d56cff7d2e8d958b035b2feb22aecdd9e2c86030c860bb26` reports that `List.mem_cons_self` was incorrectly applied as a function. The first residual-evaluation declaration's axiom report lists `[propext, Classical.choice, Quot.sound]`, but the module failed overall and no successful object was recorded. The second theorem's report includes `sorryAx` from the failed declaration and is not proof evidence. Final candidate guard and post-success producer survey were not reached. Point-observation and inherited-provider limitations remain as in the parent README.

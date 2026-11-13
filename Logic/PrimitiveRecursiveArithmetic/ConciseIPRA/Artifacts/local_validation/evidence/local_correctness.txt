@@ -1,0 +1,165 @@
+# Local correctness and comparison notes
+
+## Result and precise limits
+
+The preferred complete source `code/checker_exact.py` has 312 significant
+tokens, 353 Python AST nodes and 588 normalized UTF-8 bytes on CPython 3.12.14.
+It is below each coordinate of the incoming exact-public-syntax figures
+316 / 358 / 591. That triple pools different earlier programs and includes
+different policies for Boolean aliases and unused payload data. The exact
+same intrinsic-validation policy's concrete predecessor is 316 / 360 / 591.
+The two standalone sources use different packet schedules; they are not
+being claimed to accept identical byte strings.
+
+The sorted companion `code/checker.py` has 297 / 336 / 556. Its public parser
+admits legacy padding aliases. Completeness is claimed for canonical
+encodings; therefore the exact checker is the stronger main deliverable.
+
+Neither checker beats the compact promised-input minima 239 / 255 / 460,
+or 238 / 255 / 455 with the seeded-sequent convention. These are observed
+minima in a finite corpus, not proved lower bounds. No arithmetic or logical
+axiom is deleted by this work and no absolutely simplest theory is claimed.
+
+## Changes from the examined sources
+
+1. Start with the eager, three-field, entry-reservation checker of
+   `ipra_validated_phase_2026-11-13`, whose strict token profile is 300 / 346 / 626.
+2. Replace its sequence test `a * 0 != 0` by `a * 0 == []` and delete its
+   whole-document textual alphabet filter. These changes make sequence
+   recognition exact while permitting irrelevant input fields to remain opaque.
+   The existing scalar predicate performs integer validation when a scalar is
+   retained; no additional `| 0` operation is needed.
+3. For the preferred exact checker, replace padded child depths by the genuine
+   binding traversal already developed in `ipra_exact_bindings` and used by
+   `ipra_intrinsic_validation`. A successor binds no variable. In an iterator,
+   only the third child receives the single state binder. D binds two variables.
+4. Fuse the two nested conditional statements into a short-circuit expression
+   and a sequencing tuple. This preserves the proof calls, their argument order,
+   their side effects, and the implicit `None` return of `c`.
+5. Write the numerical decrement as `k - 1`, use the conditional expression
+   `[s] if s else 1`, and use `import json` in the exact profile. These are
+   implementation choices with explicit, elementary equivalence proofs; they
+   are not new mathematics.
+
+The intrinsic-validation mechanism and actual-binding representation are
+inherited. The new result is their particular composition with this three-field
+schedule and its measured complete implementation.
+
+## Public-goal recognition
+
+The initial scope value is k = 0. The complete first traversal happens before
+the assignment k := k - 1. At that stage the array condition permits exactly
+arities 1 and 2 at formula positions, and 1 and 3 at term positions.
+
+At a scalar position the predicate is
+
+    k <= a < d and k < (d & (a % 2)).
+
+At k = 0 this admits exactly positive odd numerical codes below d, at odd
+depth. Booleans are Python integer subclasses: `true` is the explicitly
+permitted alias of code 1, whereas `false` fails the parity test. Every float
+that passes the range comparison raises a TypeError at the bitwise conjunction;
+floats outside the range enter the missing-image case and reject. Strings,
+objects and null fail the array/scalar operations. An array of an invalid
+arity likewise fails rather than being reinterpreted as a scalar.
+
+The exact traversal changes a term child's depth by `j & 2`, where j is its
+index. For the meaningful arities, this is 0 for a successor's child and for
+the counter and seed of an iterator, and 2 for the iterator body. At a formula
+node the old rule `5 - len(a)` makes an equation's children term positions and
+gives D's body two genuine binders. On the public grammar there are no other
+indices. Consequently the accepted root grammar is exactly the canonical
+native Eq/D grammar, allowing `true` in place of numerical-zero code 1.
+
+For internal term arrays of arity at least 4, `j & 2` differs from
+`2 * (j == 2)` at some indices. Such arrays have constant numerical reading
+zero, and all their children are annotations. Their traversal can cause
+rejection but does not alter the reading of any successful run. This is the
+same convention as the preceding intrinsic-validation source.
+
+## Intrinsic validation after entry
+
+Every scalar retained by an opening satisfies the bitwise predicate above.
+The expression is evaluated even when k is negative; the bitwise operation
+therefore excludes in-range floats throughout proof checking. A successful
+no-image traversal consists only of integer/Boolean leaves and arrays.
+
+An opening with a supplied image can erase a noninteger numeric hole without
+retaining it. Nonfinite values fail every range test. Some fields may also
+remain unevaluated, for example a witness image when the formula does not
+depend on that witness. Thus the program must not be described as validating
+all consumed packet fields or the entire input alphabet. Its claim is that
+all accepted public conclusions are sound, with no input promise.
+
+The inherited semantic-opening proof applies at positions actually used by a
+rule. Values replaced as holes have the same reading as an out-of-range
+integer marker at those positions. Every image which actually supplies a
+numerical term is itself validated with a missing image. Unused annotations
+and unused fields do not supply assumptions. The finite-call-tree soundness
+proof checks each computation, hypothesis, transport/specialization,
+elimination and introduction step exactly as in the three-field source.
+The additional independent review supplied with the main report discusses
+the local reification of arbitrary payloads in more detail.
+
+The exact list test also gives termination of every opening on finite parsed
+input: a returning sequence branch traverses a strictly smaller finite list,
+and an image is checked without permitting a second substitution. Proof calls
+consume a packet before making recursive calls. This is a mathematical finite
+execution statement; fixed interpreter resource ceilings can reject large
+proofs.
+
+## Equivalence of the fused control flow
+
+Write L for the original terminal-membership test, including its scope
+reservation and eagerly constructed computation candidate. The old body is
+
+    if not L:
+        if endpoint == a:
+            a = source_instance
+            s = inferred_major
+        c(next_context, next_goal)
+
+The new body is an expression statement
+
+    L or (endpoint != a or ((a := source_instance), (s := inferred_major)),
+          c(next_context, next_goal))
+
+If L is true, neither form evaluates the rest. If it is false, both evaluate
+the endpoint test first, and on equality both assign a before assigning s.
+The tuple then evaluates the recursive call. Built-in parsed-data equality
+and inequality are complementary; there are no certificate-supplied objects
+with overloaded comparison methods. The outer tuple's value is discarded.
+Both functions therefore return None on every successful call. They have
+the same recursive call tree and argument evaluation order.
+
+For integer k, `~(-k)` is k - 1. The only assignments to k initialize it to
+zero and decrement it, so this replacement preserves every execution.
+For every value supplied by the JSON reader, `(s and [s]) or 1` equals
+`[s] if s else 1`, since a singleton list is true-valued and testing these
+values has no side effects. The import spelling changes no executed parser.
+
+## Canonical completeness and reproducing examples
+
+The untrusted compiler first reconstructs an existing native proof tree and
+removes administrative binding positions. It assigns genuine binder indices
+and schedules the same three-field entry-reservation proof. Its previous
+neutral major used scalar 0 with a lazy formula fallback. The eager profile
+uses the empty list, already retained as the initial true resource.
+
+In a compiler-produced record, an introduction is identified by source 0 and
+mode 2 (progress) or mode [] (cases). These mode values cannot be canonical
+numerical target terms in an elimination. Replacing that source by [] changes
+only its neutral major: both values are false-valued and select the same
+introduction. The proof's eigenparameter schedule and every formula code are
+unchanged. A zero computation retains source 0, and a hypothesis packet
+retains `[0, 1, 1]`.
+
+This is a compiler for canonical typed proof trees, not a claim that blindly
+rewriting every zero in arbitrary bytecode preserves acceptance. Fourteen
+independent source examples, including a genuinely used induction hypothesis,
+compound cases and implication elimination, recompile and pass the preferred
+checker. The fixtures and compiler are bundled and never imported by it.
+
+The iPRA bi-interpretation is inherited from the native scalar calculus and its
+ordinary realization. This implementation preserves that calculus's abstract
+theorems. It does not supply a new proof-assistant formalization of Python.

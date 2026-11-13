@@ -1,0 +1,5 @@
+# Independent result review: generic shifted upper certificate
+
+PASS for author-reported actual outer session 56469 exit 0, matching captured PASS and Lean exit 0. Terminal SHA-256 `8b857daa1039024c815b0db0d4f01ad89b719bd295ade84cf27d2d0dee3ebe04`, object `6cb78bc5565c8eafe6a909091972804e949eee95ab40c26c55e344b836ff40ab`. Runner, 27 source/direct pins, both logs and object rehash. The single exact report is `[propext, Classical.choice, Quot.sound]` with empty stderr and no warnings.
+
+The theorem checks positivity of the explicit shifted polynomial for u,w≥0 in a commutative, linearly ordered strict ordered ring. Its expression is the upper endpoint certificate independently expanded into 46 strictly positive terms; it is not itself a Pell identity, graph-zero binding, index-three exclusion or guard. The earlier proposed source using the unavailable LinearOrderedCommRing class was held before launch and revised to explicit classes and pinned imports. Direct-pin package/transitive/dynamic ancestry and historical/future path-shadowing limits remain. No Lean was run in this audit.

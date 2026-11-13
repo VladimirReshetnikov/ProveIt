@@ -1,0 +1,7 @@
+# 67-bit temporal alignment for the 80 graph
+
+`Direct80AlignedShift.graph_aligned_shift` proves that every positive 80-graph zero at the four explicit compact symbolic ports has one positive radix length N, its exact residual power, indexed carry, and temporal shift `E = rankNat − 67*(8807*N)` divisible by 67. It combines the actual 80-graph simple parities and occupied anchors, reconciling the independently constructed radix lengths via exponential injectivity, and invokes the generic fractional-anchor contradiction. No old 12-variable graph zero is assumed.
+
+The guarded author check `observations/alignedshift-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`. Its object `/tmp/tenpositive-80alignedshift-ivg8gbp0/Direct80AlignedShift.olean` has SHA-256 `65aae56a7bb896a1eeb5d604a3dde97127aa9198107d00d5f0b935981119ee14`. Selected imports/resources are recorded; inherited source/object, package and dynamic ancestry remain unverified and no independent Lean replay is claimed. Whole-cell alignment, full window and machine soundness, converse, iPRA and external-payload/PDF binding remain open.
+
+**Payload boundary:** the explicit hypothesis `p 1 = paramKernel rho` uses the retained-original K. The retained 80-row JSON graph `equation_qcube_V2.json` uses a BFS-renamed K with a different recorded raw hash; no equality or decoding equivalence between them is established here. These results therefore do not yet apply to that JSON graph’s K.

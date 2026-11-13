@@ -1,0 +1,5 @@
+# Direct-BFS 80-graph field and marker matching
+
+`DirectBFS80FieldMarkers.graph_field_markers` derives the vertical ten-bit and horizontal nine-bit matching families from a positive 80-graph zero at the four explicit direct-BFS symbolic port equalities. It combines the graph's aligned carry with both ordinary field and additional marker parity and reconciles the independently obtained radix lengths. The equality at horizontal marker offset 1073 supports propagation of occupied blocks.
+
+The guarded author check `observations/directbfs80markers-attempt01/` exited 0 without diagnostics and reports axioms `propext`, `Classical.choice`, and `Quot.sound`. Every direct source import was resolved to an explicitly pinned object and rechecked. Object `/tmp/direct-bfs-80-markers-w0dociet/DirectBFS80FieldMarkers.olean` has SHA-256 `40aef2a948539a6c651dc8a46eb28344b306df8fd8c13c9c0b3c2194b499dc90`. Inherited transitive source/object, package and dynamic ancestry remain unverified; no independent Lean replay is claimed. Full direct tile-window decoding, model-level machine/color conjugacy, converse, iPRA, and formal JSON/file binding remain open.

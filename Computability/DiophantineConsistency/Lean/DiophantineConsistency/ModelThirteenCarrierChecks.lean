@@ -1,0 +1,7 @@
+import DiophantineConsistency.ModelThirteenCarrier
+#print axioms DiophantineConsistency.ArithmeticPellPigeonhole.ordinate_dvd
+#print axioms DiophantineConsistency.ModelThirteenCarrier.complete
+#print axioms DiophantineConsistency.ModelThirteenCarrier.sameNoZero69
+#print axioms DiophantineConsistency.ModelThirteenCarrier.native_equivalence69
+#print axioms DiophantineConsistency.ModelThirteenCarrier.standard_equivalence69
+#print axioms DiophantineConsistency.ModelThirteenCarrier.reference_equivalence69

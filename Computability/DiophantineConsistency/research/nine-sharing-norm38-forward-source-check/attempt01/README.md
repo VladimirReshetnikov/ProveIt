@@ -1,0 +1,7 @@
+# Forward five norms checked; source-to-seed timed out
+
+Author-observed outer session `15055` returned numeric exit 1. Retained state SHA-256 `cab44da16e5312c579738b4367e8d62b701654aff502e529a3bfd0f30744c58c`; pre-run selected-producer survey SHA-256 `38da20ddb5a217a84f615dd0eeed5a074edead53a25f7717550e65be76b6b558`. All dependency/compile logs are retained. Terminal receipt is author-reported, not independently observed.
+
+Stage 1 `Norm38ForwardFiveNorms` compiled successfully in 2.222 seconds with object SHA-256 `e612241ec264e407e02ff13e50a9d8859909f13e461a0282165fa31bbcfc9baa` under `/tmp/nine-sharing-norm38-forward-source-check-20261105/lib/DiophantineConsistency/`. Its one axiom report is `[propext, Classical.choice, Quot.sound]`; no warnings. Under the five original Carrier65 unit-norm hypotheses, it establishes the five static norm targets for the generated witness in each IΣ₁ model. Its direct provider guard was checked after compilation.
+
+Stage 2 `Norm38SourceToSeed` passed its dependency scan but emitted no output before 120 seconds; the monitor terminated Lean with exit `-15`, sampled peak RSS 2,915,557,376 bytes. No source-to-seed object or theorem resulted, and whole-run final guard checks and the post-success producer survey were not reached. Thus stage1 is a checked partial result, while this run establishes no source-to-seed equivalence or iPRA endpoint. Selected provider and sampled-monitor limitations, including the initial-agreement producer's uncaptured numeric outer exit, remain as described in the parent README.

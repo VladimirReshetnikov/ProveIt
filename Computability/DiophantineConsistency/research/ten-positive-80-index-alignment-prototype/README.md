@@ -1,0 +1,9 @@
+# Exact first/main Pell index alignment
+
+`Direct80IndexAlignment.graph_first_main_alignment` proves in every IΣ₁ model that a positive zero of the exact Lean 80-row graph admits a positive first Pell index `n` with the actual first ordinate equation, the actual main ordinate at `rankNat`, `n<rankNat`, and **`2n=rankNat+1`**. The hypotheses are positive beta, `MC<beta`, `MF<2*beta`, and an internal witness that beta is odd; no index equality, rank sign, or carrier sign is assumed.
+
+The proof compares the graph's two actual Pell bases: writing `S=μY` and `P=X S²`, positivity gives `A=S(X+1)≤2P` and hence `A-1≤2(P-1)+1`. If the main index were at most `n`, monotonicity in index and base would imply `c≤k`, contradicting `c>k`. The checked rank window bounds `rankNat+1<μ²`. Together, `n<rankNat` and the independently checked congruence `2n ≡ rankNat+1 (mod μ²)` exclude a nonzero quotient and force equality. The argument is noncircular.
+
+Guarded author `observations/attempt02/` passed without diagnostics, yielding `/tmp/tenpositive-80index-alignment-qtgfwazf/Direct80IndexAlignment.olean`, SHA-256 `7348dce3edf4407a749008b5a8fb9e98c29440fb904e9fb4ff24e6adff64df56`; attempt01 failed during simple order elaboration and is retained. Printed axioms are `propext`, `Classical.choice`, `Quot.sound`. The runner pins selected prototype objects, the inherited first-index provider and one other inherited provider; it does not inventory all transitive project/package/dynamic inputs or historical source-object ancestry. Resource observations are sampled; no paired replay is claimed.
+
+The explicit symbolic port and beta-odd hypotheses still need a separately checked fixed-recipe join. Whole-product projection, graph-to-halt equivalence, the iPRA proof-existence endpoint and external JSON/PDF correspondence remain open.

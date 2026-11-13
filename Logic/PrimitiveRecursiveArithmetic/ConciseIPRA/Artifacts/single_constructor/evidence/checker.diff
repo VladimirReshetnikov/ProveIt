@@ -1,0 +1,40 @@
+--- pinned-inferred-witness/checker.py
++++ counter-R/checker.py
+@@ -10,14 +10,14 @@
+         return f(a, d)
+     need(type(a) is list)
+     size = len(a)
+-    need(form is None or (size in (2, 1 if form else 3) and (form or size == 3 or a[0] == 0)))
+-    a = [walk(b, f, d + (2 if size == 1 else int(size == 3 and i == 2)), size == 1) for i, b in enumerate(a)]
++    need(form is None or (size in (1, 2) if form else size == 3))
++    a = [walk(b, f, d + 2 * (size == 1 or i == 2), size == 1) for i, b in enumerate(a)]
+     if size == 3:
+         c, b, h = a
+         if c == 0:
+-            return b
+-        if type(c) is list and len(c) == 2:
+-            return sub(h, walk([c[1], b, h], lambda i, d: i))
++            return [0, b, 0]
++        if type(c) is list and c[0] == 0:
++            return sub(sub(h, c[1], 1), walk([c[1], b, h], lambda i, d: i))
+     return a
+ 
+ def syntax(a, n, form=False):
+@@ -40,7 +40,7 @@
+         case ['e', q, r]:
+             D, = prove(q, g)
+             B = sub(D, b, 1)
+-            u, E = (sub(B, 0), sub(B, [0, 0]))
++            u, E = (sub(B, 0), sub(B, [0, 0, 0]))
+             t0 = E[1] if u == [0, 0] and E[0] == b else b
+             B = walk(B, lambda i, d: t0 if i == b else i)
+             A = prove(r, g + [(u, B)])
+@@ -48,7 +48,7 @@
+             syntax(t, n)
+             B = sub(B0, t, 1)
+             u = sub(B, b if len(B0) == 2 and (not t) else 0)
+-            need(prove(r, g + [([], u)]) == sub(B, [0, b]))
++            need(prove(r, g + [([], u)]) == sub(B, [0, b, 0]))
+             A = [B0]
+         case _:
+             need(False)

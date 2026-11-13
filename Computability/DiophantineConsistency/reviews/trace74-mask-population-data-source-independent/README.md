@@ -1,0 +1,3 @@
+Independent source review; no Lean. Source SHA 0c4aec7b77b1146b5a7b4f6601e9649628110864bdf954aedb9fbb3d840d5342.
+
+Before local irreducibility the draft proves lowNat equals CompactConcreteIncrement.mask and highNat equals the corresponding highDigits Nat.ofDigits cast by definitional equality. Applying congrArg population to these equalities transports the existing model population results 589083 and 986; their sum is 590069=67*8807. Local irreducibility after the equalities does not change these propositions. It states fixed symbolic data only, with no repunit, graph-zero, guard or endpoint inference. Actual provider compatibility, definitional equality reduction, norm_num performance and warnings remain untested by Lean; separate direct/closure provenance required.

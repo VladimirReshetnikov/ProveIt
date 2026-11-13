@@ -1,0 +1,9 @@
+# Independent scoped prelaunch review: guard-independent Pell client
+
+**GO for one coordinated direct-pin author check** of `Trace74Pell.lean` SHA-256 `55edfaf292f535f477e73e46fd1570858156e34e425020ed5c59410dc711859a` with runner SHA-256 `a9affb18ec2ac95733423b51b8b6eac2f56f68fc5d22c044ea3ddca295fb4b54`. No Lean was run in this review.
+
+The draft assumes the same positive 74 valuation, positive beta and difference-ring 74 zero as the checked `Trace74GraphRoots.graph_roots`; no reverse mask guard occurs. Its first norm uses `P=X*Y²` and `K=eta+zeta`: the actual E register algebraically gives `tau²=1+P*(P+1)*K²`, with P,K positive. The inspected `ArithmeticPellFirstNorm.positive_parameter_solution` has precisely the proposed `2*(P-1)+1` base and yields index at most K; the draft separately excludes index zero. The proposed same-witness I, doubled identities and `c² | I` follow algebraically from positive U, roots and `U=i*c²`. The theorem claims neither repunit/population nor a graph halt or fixed-port guard; tactics and elaboration remain unchecked.
+
+The runner pins the exact three checked root objects and their result receipt, direct `ArithmeticPellFirstNorm` and `Trace75Factors` objects, source, Lean and Init. Independent read-only preflight and all 13 actual report-policy controls (test SHA-256 `e4c0ca0460189388f7d97e4f3715b4fc626ef28799f954c96d1391829c4f337a`) passed. It runs one bounded stage with the shared lock and no-other-Lean/8-GiB available guard, validates the exact named report with only standard axioms, and records outputs. The parent output directory was observed to contain exactly its three root objects at review.
+
+The author must capture actual tool exit. This is not a serialized full-closure check: first-selection shadowing and complete project/package/dynamic and producer ancestry remain inherited; pinned source and direct objects are checked before/after. No external-file or iPRA endpoint follows from a successful stage.

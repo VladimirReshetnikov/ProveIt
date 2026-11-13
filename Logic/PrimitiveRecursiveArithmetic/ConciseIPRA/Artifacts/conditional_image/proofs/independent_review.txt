@@ -1,0 +1,130 @@
+INDEPENDENT REVIEW: CONDITIONAL IMAGE AND THE 239/257 PROFILES
+
+Reference
+source/Artifacts/procedure_presentation/code/inherited_tokens240.py
+
+Candidates
+candidate_checker/checker_tokens239.py
+candidate_checker/checker_ast257.py
+
+Scope
+The reference uses the three-field JSONL return-reservation protocol. These
+new candidates preserve THAT protocol. They are not same-certificate
+refinements of direct_packets/checker_ast_jsonl.py, which allocates floors
+differently. Comparing 257 nodes with the latter's 259 nodes is a comparison
+of complete presentations with the same inherited public theorem set; a
+claim of identical certificate bytes would additionally need the existing
+protocol translator.
+
+Main transformation
+Replace the image argument
+
+    c(g,s) or k * bool(s or len(a)==2)
+
+by
+
+    k if c(g,s) or s or len(a)==2 else 0.
+
+This edit does not remove the proof of the major premise. In the condition
+of the new expression, c(g,s) is still evaluated first, unconditionally.
+Every normally returning call of c returns None: there is no explicit
+return anywhere in its body. Before that implicit return the terminal
+statement k -= 1 has executed. Hence, in both expressions, the major proof
+has completed and its global-floor update has taken place before the
+image is chosen.
+
+Post-major state argument
+Fix an invocation and consider the state immediately after its c(g,s)
+returns normally. Let K be the global integer k in this state. The local
+values of s and a belong to the caller, not the recursive callee. Let H be
+the truth value of s or len(a)==2, if that expression terminates normally.
+
+The old expression has value K * bool(H), namely K when H is true and the
+integer 0 otherwise. The new conditional has exactly these same values and
+types. The old expression reads k just before evaluating its Boolean guard;
+the new expression reads k after that guard when it is true. This movement
+is harmless: under the exact-integer/list certificate contract, testing s
+and computing len(a)==2 invokes no user-defined Python operation, performs
+no recursive checker call, and cannot mutate k. A false guard needs no k
+read in the new expression, which likewise has no observable effect.
+
+Short-circuit cases
+* If the major proof raises or does not return, neither expression reaches
+  the image-producing branch.
+* If s is truthy, neither expression evaluates len(a). The old expression
+  may test the truth of s again inside bool; this is inert for exact lists
+  and integers. Both yield the post-major K.
+* If s is false and len(a)==2 is true, both yield K.
+* If s is false and len(a)==2 is false, both yield integer 0.
+* If s is false and len(a) raises, both reject; the extra prior k read in
+  the old expression does not change any state.
+
+Surrounding evaluation order
+Both programs first evaluate the first argument of the outer i call,
+
+    s*3 or (a := i(*a,t,2)),
+
+and only then evaluate the image expression. That first argument can
+rebind the caller's a; the guard sees the rebound a in both versions.
+The major proof sees the same context, same s, same input position and
+same entering floor. After it returns, the outer i receives the same first
+argument, same image, and same global floor. The subsequent minor goal
+i(a,[k]) is evaluated at the same point. There is therefore no early read
+of the pre-major floor and no capture of a future witness.
+
+Finite-trace equivalence theorem
+For every finite input stream in the inherited compact contract, the
+reference and token candidate have exactly the same accepted certificates
+and consume the same records on corresponding successful calls. Prove
+this by induction on a finite successful checker call tree: the major
+subtree agrees by induction; the post-major argument above gives the same
+image and context extension; the minor subtree then agrees by induction.
+The construction is symmetric. A corresponding operational induction on
+finite prefixes also preserves the points where input exhaustion or type
+operations reject. The theorem concerns ideal finite execution, without
+external resource exhaustion or asynchronous interference.
+
+Composition for the AST profile
+The 257-node candidate also uses two independently understood transforms.
+
+1. Definition-time initialization. Replacing module k=0 by d=(k:=0) in the
+   definition of i leaves k=0 and i.__defaults__=(0j,0) before checking starts.
+   No input or use of k intervenes between the two initialization positions.
+
+2. Sequence-pattern capture. Replacing s,u,t=r=loads(input()) by a match
+   with the single case [s,u,t] as r gives identical bindings for every
+   three-item list. On an integer or a list of another length, the pattern
+   leaves s/u/t unbound in that new function invocation. The following
+   membership expression stays OUTSIDE the match and eagerly constructs
+   the computation alternative, reading these locals, so it raises even
+   if the goal would otherwise be a retained hypothesis. There is no
+   successful silent fallthrough. Each recursive invocation has fresh
+   locals. This proof is for the promised integer/list alphabet and does
+   not identify the string/dictionary behavior of assignment with patterns.
+
+The conditional transformation changes none of these capture or
+initialization facts. Thus the three refinements compose. The final AST
+program and the token reference accept the same compact certificates.
+
+Structural verification
+conditional_review.json records the executed AST audit. Reversing only the
+image expression in checker_tokens239.py reproduces the complete reference
+AST exactly. Reversing that expression, the match capture, and definition-
+time initialization in checker_ast257.py likewise reproduces the complete
+reference AST exactly. The reference c has no return statement and its last
+statement is precisely the global k decrement. No unreviewed fourth edit
+is involved.
+
+Mathematical and metric limits
+These changes alter the Python implementation, not the arithmetic/logical
+rule inventory or interpretation maps. The inherited compact contract,
+guarded public grammar, and native-to-iPRA bridge remain necessary. The
+token and AST records are separate programs and must not be reported as a
+single program with all coordinate minima. Neither program beats the
+462-byte record, and no universal lower bound or globally simplest
+axiomatization has been established. The references' attained source sizes
+are upper bounds on an unknown optimum.
+
+This is an independent written review with structural checks. It is not
+external human peer review, a new Lean/Rocq proof, or an independent full
+proof of the inherited Python checker and arithmetic bridge.

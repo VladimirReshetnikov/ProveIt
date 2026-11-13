@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+d=Path(__file__).resolve().parents[2];p=d/'research/nine-sharing-sign33-abstract-projection22-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+for n,h in {'run.py':'ab077bdeca42f55e9a1f5a79d83c82aeab97c108e8094c8667aa70b486a28f7f','provider_survey.py':'e93e0ae60790a3d94e7fa5dcc43319e962df44972ad865e7989b00f738809f25','source-manifest.json':'1ed09c2db2001f9f26904f01d0cdbc586dbdbb059ff2ea9a114ca87874540b8b'}.items():assert sha(p/n)==h
+rows=json.loads((p/'source-manifest.json').read_text())['rows'];expected=[('Sign33AbstractTuple','57dbacfc5ca4d1b9b1ffc0e054c473e4195657601f06e6c953d99787ce90df6a',['DiophantineConsistency.SharingForward33']),('Sign33AbstractProjection22','6138fb67f7bb3665aeeff04752320f24cc26f915943ac547cb0092495a1c1f43',['DiophantineConsistency.Sign33AbstractTuple'])];assert len(rows)==2
+for row,(n,h,imports) in zip(rows,expected):
+ q=p/'src/DiophantineConsistency'/f'{n}.lean';s=q.read_text();assert row['module']=='DiophantineConsistency.'+n and sha(q)==row['source_sha256']==h and re.findall(r'^import ([\w.]+)$',s,re.M)==row['imports']==imports and s.count('#print axioms ')==1
+a=(p/'src/DiophantineConsistency/Sign33AbstractTuple.lean').read_text();b=(p/'src/DiophantineConsistency/Sign33AbstractProjection22.lean').read_text();f=(d/'research/nine-sharing-sign33-forward-constructor-check/src/DiophantineConsistency/SharingForward33.lean').read_text();vector=lambda x:re.search(r'!\[(.*?)\]',x,re.S).group(1);assert vector(a)==vector(f);vec=[x.strip() for x in vector(a).split(',')];assert len(vec)==33 and vec[21]=='w 21';assert '[One S]' in a and '(21 : Fin 33).succ = (22 : Fin 34)' in a and '22 = w 21' in a;assert '[CommSemiring S]' in b and 'Sign33AbstractTuple.project22 u (SharingForward38.witnessCoordinates ports u) gap tau inner value negative' in b
+run=(p/'run.py').read_text();assert "elif mod in {e['module'] for e in entries}" in run and "need(guard(deps)==row['direct_guard']" in run
+r=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=300);o=json.loads(r.stdout);assert not r.stderr and o['status']=='PASS_NO_LEAN_PREFLIGHT' and o['stage_count']==2
+print(json.dumps({'status':'PASS','preflight':o,'scope':'abstract and concrete coordinate22 projections; no Lean replay'},indent=2,sort_keys=True))

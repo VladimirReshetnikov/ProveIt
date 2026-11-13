@@ -1,0 +1,5 @@
+# Whole-product projection for the actual 80 graph
+
+`Direct80GraphProduct.graph_entire_product` binds the abstract ring theorem to a positive zero of the exact 80-row Lean graph. Under `beta>0`, `low<beta`, and `high<2*beta`, it proves in the model's difference ring that `H ∣ b*(X−2^R)*(2^R*X+1)`, where `H=4A−1`, `b=beta*J`, and `R=rankNat`. It uses the checked same-graph Pell projection/norm, natural projection divisor, and `2X<3c` to represent the natural truncated subtraction correctly. It does **not** cancel `b`, claim the product is small, or conclude `X=2^R`.
+
+Self-pinning guarded author `run-graph.py`, `observations/graph-attempt02/`, passed in session 7584, producing `/tmp/tenpositive-80graphproduct-y3lfqwyz/Direct80GraphProduct.olean` SHA-256 `ebdc44f3556d5889e9e82d1c245243dc339e21bebf4b461256a1543f1dd5a970`. Attempt01 failed on an explicit cast rewrite and is retained. Selected prototype objects, source, tool and resource samples are pinned; full package/dynamic and historical source/object ancestry are inherited. No independent Lean replay, external file/PDF binding, halt or iPRA endpoint is claimed.

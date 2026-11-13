@@ -1,0 +1,59 @@
+/tmp/pell-positive-seed-x26fsvdx/PellPositiveSeed.lean:33:18: error: unexpected token '*'; expected term
+/tmp/pell-positive-seed-x26fsvdx/PellPositiveSeed.lean:33:15: error(lean.synthInstanceFailed): failed to synthesize instance of type class
+  OfNat (Type ?u.234) 0
+numerals are polymorphic in Lean, but the numeral `0` cannot be used in a context where the expected type is
+  Type ?u.234
+due to the absence of the instance above
+
+Hint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.
+/tmp/pell-positive-seed-x26fsvdx/PellPositiveSeed.lean:33:7: error: Missing cases:
+/tmp/pell-positive-seed-x26fsvdx/PellPositiveSeed.lean:24:63: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+a R : V
+hphase : R % 4 = 3
+f i T u y : V
+hf : 0 < f
+hi : 0 < i
+hT : 0 < T
+hu : 0 < u
+hy : 0 < y
+_hfx : f = xcoord (R * ycoord R a) a
+_hyic : ycoord (R * ycoord R a) a = i * ycoord R a * ycoord R a
+hstrong : f * f = 1 + delta a * (i * ycoord R a * ycoord R a) * (i * ycoord R a * ycoord R a)
+hycoord : y = ycoord R (delta a * i * ycoord R a * ycoord R a - 2)
+_hux : xcoord R (delta a * i * ycoord R a * ycoord R a - 2) = delta a * i * ycoord R a * ycoord R a * u
+_huq : u = ArithmeticPellHalfIndex.oddQuotient ((R - 1) / 2) (delta a * i * ycoord R a * ycoord R a - 2)
+_huf : (u + ycoord R a) % (f * f) = 0
+_huc : (u + R) % ycoord R a = 0
+hlit : f * f * ycoord R a * T = u + ycoord R a + f * f * R
+_habs : u = ArithmeticPellHalfIndex.absdiff (f * f * ycoord R a * T) (f * f * R + ycoord R a)
+haux :
+  delta a * i * ycoord R a * ycoord R a * (delta a * i * ycoord R a * ycoord R a) * u * u + y * y =
+    1 + delta a * i * ycoord R a * ycoord R a * (delta a * i * ycoord R a * ycoord R a) * y * y
+c : V := ycoord R a
+D : V := delta a
+I : V := D * i * c * c
+hR : 0 < R
+hc : 0 < c
+hD : 0 < D
+hspos : PrincipalSeg (fun x1 x2 => sorry) fun x1 x2 => sorry
+⊢ let c := ycoord R a;
+  let D := delta a;
+  ∃ f i T u y t n,
+    1 < f ∧
+      0 < i ∧
+        0 < T ∧
+          0 < u ∧
+            0 < y ∧
+              0 < t ∧
+                0 < n ∧
+                  f = 1 + t ∧
+                    n = D * i + (y - u) ∧
+                      y - u + u = y ∧
+                        f * f = 1 + D * (i * c * c) * (i * c * c) ∧
+                          f * f * c * T = u + c + f * f * R ∧
+                            D * i * c * c * (D * i * c * c) * u * u + y * y =
+                              1 + D * i * c * c * (D * i * c * c) * y * y
+'TenPositivePellPositiveSeed.positive_seed' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

@@ -1,0 +1,5 @@
+# Independent N5/R7 ordered-ring growth result audit
+
+PASS within recorded direct-pin scope. Attempt01 terminal `e1084dac4336cc3c2157c0188eefc620a0499296223936d7811501fa97076114` records PASS and Lean exit 0; author reports actual outer session 88793 exit 0 and reaped. I independently rehashed all seven pins, logs, source `ceb1e0e19d670b32677293341dd6188e0dc98e47c90df02e33759759fb851970`, runner `826bb3a2094e26485f310c0c76813f4d78735a2b0e7d0ec0a5c59b3381ec8478`, and object `f5a1dea9abd9674527a3d611d8d8c8dca3ff6d5b884a13155d068d364762080f`. All three exact reports list `[propext, Classical.choice, Quot.sound]`; stderr is empty.
+
+The three generic ordered-ring results prove: x≥32 gives (x+2)⁶≤2x⁶; x≥32,t≥2 and the displayed explicit scalar gap give t³<2x²; q≥2³⁰,x≥32,q³≤y and explicit 4y³<x² give 65532(q−1)y<x. They assume these stated premises and do not bind them to any graph or n5/r7 index. Complete transitive/companion/dynamic package/core ancestry and continuous path stability are outside direct-pin evidence. No Lean was run in this audit.

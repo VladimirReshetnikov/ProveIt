@@ -1,0 +1,274 @@
+[
+  {
+    "name": "new_reflexivity_zero",
+    "meaning": "The new one-X reflexivity derivation, including certified-zero computation normalization.",
+    "accept": true,
+    "goal_kind": "eq",
+    "commands": 11
+  },
+  {
+    "name": "new_reflexivity_two",
+    "meaning": "The computation axiom is used twice as the two premises of one X rule.",
+    "accept": true,
+    "goal_kind": "eq",
+    "commands": 3
+  },
+  {
+    "name": "new_reflexivity_nested",
+    "meaning": "Reflexivity for a term with a genuinely nested iterator body.",
+    "accept": true,
+    "goal_kind": "eq",
+    "commands": 3
+  },
+  {
+    "name": "root_reversal_zero_source",
+    "meaning": "A constant template reverses an equation with nonzero left side into a literal-zero-source equation.",
+    "accept": true,
+    "goal_kind": "eq",
+    "commands": 3
+  },
+  {
+    "name": "conditional_zero_symmetry",
+    "meaning": "Inside a case-DI assumption, extracts 0=1 and derives 1=0 by root reversal; no induction is used.",
+    "accept": true,
+    "goal_kind": "d",
+    "commands": 37
+  },
+  {
+    "name": "new_zero_join",
+    "meaning": "The new common-box proof joins two nonliteral terms both provably zero.",
+    "accept": true,
+    "goal_kind": "eq",
+    "commands": 15
+  },
+  {
+    "name": "zero_source_nested_congruence",
+    "meaning": "Full congruence at a literal-zero major source through nested iterator binders.",
+    "accept": true,
+    "goal_kind": "eq",
+    "commands": 17
+  },
+  {
+    "name": "unrestricted_equation_transport",
+    "meaning": "The derived full equation-transport chain at a literal-zero source.",
+    "accept": true,
+    "goal_kind": "eq",
+    "commands": 43
+  },
+  {
+    "name": "atomic_progress_Q_closure",
+    "meaning": "Witnessed equation progress plus DE obtains Q; the step uses the actual induction hypothesis.",
+    "accept": true,
+    "goal_kind": "q",
+    "commands": 10
+  },
+  {
+    "name": "QX_arbitrary_target",
+    "meaning": "QX specialization at a compound term, followed by root reversal of its atomic result.",
+    "accept": true,
+    "goal_kind": "eq",
+    "commands": 18
+  },
+  {
+    "name": "compound_cases_nested_Q",
+    "meaning": "Case DI above Q, with an outer numerical parameter retained through nested induction.",
+    "accept": true,
+    "goal_kind": "q",
+    "commands": 8
+  },
+  {
+    "name": "nonvacuous_D_elimination",
+    "meaning": "An existential witness is opened, used in QX, and discharged without escaping.",
+    "accept": true,
+    "goal_kind": "d",
+    "commands": 7
+  },
+  {
+    "name": "contextual_atomic_induction",
+    "meaning": "Equation induction with an essential retained equality assumption and a genuine induction hypothesis.",
+    "accept": true,
+    "goal_kind": "d",
+    "commands": 122
+  },
+  {
+    "name": "transport_under_Q",
+    "meaning": "General-template X on a Q formula; rho leaves its outer constructor unchanged.",
+    "accept": true,
+    "goal_kind": "q",
+    "commands": 8
+  },
+  {
+    "name": "transport_under_D",
+    "meaning": "General-template X on a D formula with a constant template.",
+    "accept": true,
+    "goal_kind": "d",
+    "commands": 9
+  },
+  {
+    "name": "forbidden_compound_progress",
+    "meaning": "A forged compound progress step is rejected: the checker supplies the zero case, not an induction hypothesis.",
+    "accept": false,
+    "goal_kind": "d",
+    "commands": 35
+  },
+  {
+    "name": "canonical_false_without_proof",
+    "meaning": "The canonical contradiction 0=1 has no proof instructions.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 0
+  },
+  {
+    "name": "wrong_computation_endpoint",
+    "meaning": "A genuine computation ending in zero cannot close the changed goal ending in one.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 1
+  },
+  {
+    "name": "unproved_elimination_major",
+    "meaning": "The major equation is changed from c=0 to c=1; it must still be proved.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 3
+  },
+  {
+    "name": "induction_hypothesis_replaced_by_base",
+    "meaning": "The genuine induction step loses E(z) when its mode changes to cases supplying E(0).",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 10
+  },
+  {
+    "name": "unallocated_QX_target",
+    "meaning": "A QX target is replaced by a numerical label outside the allocated scope.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 18
+  },
+  {
+    "name": "unallocated_DI_witness",
+    "meaning": "The existential witness of a nonvacuous DI proof is replaced by an unallocated label.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 7
+  },
+  {
+    "name": "free_label_in_closed_goal",
+    "meaning": "A closed public goal cannot contain an unallocated free parameter.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 0
+  },
+  {
+    "name": "out_of_scope_bound_slot",
+    "meaning": "At the root equation there is no numerical binder for slot 3.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 0
+  },
+  {
+    "name": "empty_administrative_goal",
+    "meaning": "Administrative truth is not a public canonical formula.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 0
+  },
+  {
+    "name": "four_child_public_goal",
+    "meaning": "Surplus-arity administrative padding is not a public canonical formula.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 0
+  },
+  {
+    "name": "noncanonical_Q_goal",
+    "meaning": "The public full-Q interface requires three equal copies of its matrix.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 0
+  },
+  {
+    "name": "boolean_goal_alias",
+    "meaning": "Booleans cannot alias numerical integer zero in a canonical goal.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 0
+  },
+  {
+    "name": "float_goal_alias",
+    "meaning": "Floating-point numbers cannot alias numerical integer zero in a canonical goal.",
+    "accept": false,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 0
+  },
+  {
+    "name": "unused_integer_prefix",
+    "meaning": "An unused well-typed integer prefix is inert.",
+    "accept": true,
+    "typed_only": false,
+    "goal_kind": "eq",
+    "commands": 12
+  },
+  {
+    "name": "unused_boolean_prefix",
+    "meaning": "The whole-JSON typed interface rejects this unused non-int/list data; the untyped core intentionally ignores an unused prefix.",
+    "accept": true,
+    "typed_only": true,
+    "goal_kind": "eq",
+    "commands": 12
+  },
+  {
+    "name": "unused_float_prefix",
+    "meaning": "The whole-JSON typed interface rejects this unused non-int/list data; the untyped core intentionally ignores an unused prefix.",
+    "accept": true,
+    "typed_only": true,
+    "goal_kind": "eq",
+    "commands": 12
+  },
+  {
+    "name": "unused_null_prefix",
+    "meaning": "The whole-JSON typed interface rejects this unused non-int/list data; the untyped core intentionally ignores an unused prefix.",
+    "accept": true,
+    "typed_only": true,
+    "goal_kind": "eq",
+    "commands": 12
+  },
+  {
+    "name": "unused_string_prefix",
+    "meaning": "The whole-JSON typed interface rejects this unused non-int/list data; the untyped core intentionally ignores an unused prefix.",
+    "accept": true,
+    "typed_only": true,
+    "goal_kind": "eq",
+    "commands": 12
+  },
+  {
+    "name": "unused_mapping_prefix",
+    "meaning": "The whole-JSON typed interface rejects this unused non-int/list data; the untyped core intentionally ignores an unused prefix.",
+    "accept": true,
+    "typed_only": true,
+    "goal_kind": "eq",
+    "commands": 12
+  },
+  {
+    "name": "unused_nested_boolean_prefix",
+    "meaning": "The whole-JSON typed interface rejects this unused non-int/list data; the untyped core intentionally ignores an unused prefix.",
+    "accept": true,
+    "typed_only": true,
+    "goal_kind": "eq",
+    "commands": 12
+  }
+]

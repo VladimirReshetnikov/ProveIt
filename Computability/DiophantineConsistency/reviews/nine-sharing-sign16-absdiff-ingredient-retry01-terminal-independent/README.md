@@ -1,0 +1,3 @@
+# Independent terminal audit: sign16 absdiff ingredient retry
+
+The independent checker exited 0. Author outer session 5656 exited 0; the generic square-identity and signed auxiliary-norm module and postflight passed. The audit checks source, logs, output object, direct guarded provider, sampled resource observations and overlays. Both axiom reports list propext, Classical.choice and Quot.sound, with no warnings or sorryAx. The theorems require the stated inner-coordinate equality and signed-norm hypothesis; their extraction from sign16 rows, the nonnegative lift and full equivalence remain unproved. No Lean process was run during this audit.

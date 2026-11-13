@@ -1,0 +1,13 @@
+# All ten stages compiled; full zero bridge remains open
+
+The author observed outer session `30685` exit 0 with `PASS norm38 split draft check sequence`; `outer-terminal-author-record.json` is explicitly an author record, not a raw terminal transcript or independent observation. The retained state SHA-256 is `a57517e4d934c36680f4f44524a2c8df822aa06cb8e84ec466248e2eac185534`. The state and all 20 dependency/compile logs are retained here. All ten scans and compiles exited 0, the runner checked final stage source, object, direct-provider and overlay guards, and exact object hashes and monitor observations are recorded in the state. Objects remain under `/tmp/nine-sharing-seed38-weighted-retry-20261105/lib/DiophantineConsistency/` and are not embedded in this packet. Source copies still call the files drafts; this receipt describes the actual completed check.
+
+The following are checked under the captured provider chain:
+
+* The literal seed is defined over 39 expression coordinates: one distinguished Jones input and 38 witnesses. `seed_normalized` shows nonzero evaluation at zero witnesses for every integer distinguished input, assuming first-port positivity. The packet has not separately instantiated this assumption for current β.
+* `seed_weightedDegree` bounds the syntax's unit-weight degree by 4, and `seed_degree` bounds the corresponding integer polynomial's total degree by 4. This is an upper bound, not an exact degree claim or a degree count for the resulting nine-variable Jones equation.
+* Generic pair and gate algebra, the 38-coordinate forward constructor definition, trace/fixed-point and elementary ring square-sum lemmas compile. `seed_zero_iff_residuals` extracts the literal residual zeros in each IΣ₁ model. `NormAssignment38` defines the concrete static pair assignment, 60 gates and five norm targets; it does not prove their connection to those residuals.
+
+There are five retained linter warnings: two unused simp arguments in `SharingGateModel`, one in normalization, one in weighted degree, and an unused section variable in trace. They do not report proof failure. No axiom report is included. Direct import/companion guards cover the runner's observed paths; the base's transitive and dynamic ancestry is inherited, sampling may miss memory spikes or escaped descendants, and point observations cannot preclude between-observation changes.
+
+The residual-to-gate correspondence, ordered graph induction, identification of the five terminal norms, forward witness correctness, fixed β instantiation, Jones representation and iPRA endpoint remain unproved. Hence this is not yet an all-model bridge or a new end-to-end consistency equation.

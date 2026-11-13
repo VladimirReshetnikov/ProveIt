@@ -1,0 +1,133 @@
+import Residue90XZeroGraph
+import ResidueFirstIndexModel
+import DiophantineConsistency.Compact44.FreeJMainOrientation
+import DiophantineConsistency.Compact44.DirectMainNorm
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed actual-residue-main to arithmetic rank congruence wrapper.
+The graph norm and all imported sources remain unelaborated in this client;
+no original free-J graph zero or original first-root identity is assumed. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ResidueMainCongruenceDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ArithmeticSignedPairs
+open Residue90GraphNormsDraft Residue90XZeroGraphDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Only the arithmetic coordinates required by the rank theorem; the
+original 82 graph's r is deliberately absent. -/
+def arithmeticTuple (p : Fin 4 → ℕ) (v : Fin 13 → V) : Fin 12 → V :=
+  ![v 0,v 1+1,v 2+1,v 3,v 4+1,v 6,Y p v,v 5+1,v 9+1,v 10+1,v 11,v 12]
+
+def positivePart (p : Fin 4 → ℕ) (v : Fin 13 → V) : V :=
+  U p v*(v 6+a p v*c p v)+H p v*(U p v*v 12+(rank p v+v 6*Y p v*q p v)+1)
+def negativePart (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := H p v*k v
+
+/-- Connect the actual signed main root to its natural signed pair; F≤q is
+needed only for the represented truncated rank. -/
+theorem main_pair_identity (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hFq : v 1+1≤q p v) :
+    (ι (positivePart p v) : DiffRing V)-ι (negativePart p v)=mainRoot p v := by
+  have hrank : (ι (rank p v) : DiffRing V)=rankRing p v := by
+    simpa only [rankRing] using rank_representation p v hFq
+  simp only [positivePart,negativePart,mainRoot,shiftRing,map_add,map_mul,map_one,map_ofNat,hrank]
+  ring
+
+/-- The actual graph's arbitrary-gamma main norm reflects to the signed pair
+magnitude required by direct orientation. -/
+theorem actual_main_magnitude_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hFq : v 1+1≤q p v) :
+    magnitude (positivePart p v,negativePart p v)*magnitude (positivePart p v,negativePart p v)=
+      U p v*U p v*(1+delta p v*(c p v*c p v)) := by
+  apply Residue90SignedNormsDraft.main_pair_norm
+  rw [main_pair_identity p v hFq]
+  simpa only [delta,map_add,map_mul] using main_ring_norm p v hz
+
+/-- An exact natural pair balance, not any free-J graph zero, supplies the
+existing 12-coordinate arithmetic main congruence. -/
+theorem arithmetic_congruence_of_balance (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (main : V) (hmain : 0<main)
+    (hbalance : positivePart p v=negativePart p v+U p v*main) :
+    FreeJMainOrientation.FreeJMainCongruence p (arithmeticTuple p v) := by
+  let ss : V := v 7+1
+  have hss : 0<ss := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hY : Y p v=(q p v)^3*ss := by dsimp [Y,ss]; ring
+  have hU : U p v=(q p v)^5*ss := by dsimp [U]; rw [hY]; ring
+  have heq : H p v*(v 6*Y p v*q p v+rank p v+1)+
+      (q p v)^5*(ss*(v 6+a p v*c p v+H p v*v 12)) =
+      H p v*k v+(q p v)^5*(ss*main) := by
+    dsimp [positivePart,negativePart] at hbalance
+    rw [hU] at hbalance
+    linear_combination hbalance
+  simp only [FreeJMainOrientation.FreeJMainCongruence,arithmeticTuple,
+    Matrix.cons_val_zero,Matrix.cons_val_succ,pow_two]
+  refine ⟨ss,main,hss,hmain,?_,?_⟩
+  · simpa only [q] using hY
+  · simpa only [q,Y,k,c,a,H,rank,pow_two] using heq
+
+/-- A graph zero plus explicit size/positive-C facts yields the rank
+congruence from the *actual* residue main root. The map to fixed ports,
+these premises, and all graph/provider proofs remain separate. -/
+theorem rank_congruence_of_actual_main (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hU : 0<U p v) (hY8 : 8≤Y p v) (hk : 0<k v)
+    (hFq : v 1+1≤q p v) :
+    (q p v)^4 ∣ magnitude (rank p v+1,k v) := by
+  have hmag := actual_main_magnitude_norm p v hz hFq
+  obtain ⟨main,hmain,hbalance,_⟩ := DirectMainNorm.direct_main_orientation
+    (U p v) (v 6) (Y p v) (k v) (v 9+1) (v 12)
+    (rank p v+v 6*Y p v*q p v) hU hY8 hk (by
+      simpa only [positivePart,negativePart,delta,H,a,c,k] using hmag)
+  have hc := arithmetic_congruence_of_balance p v main hmain (by
+    simpa only [positivePart,negativePart,a,c,H,k] using hbalance)
+  have hr := FreeJMainOrientation.rank_congruence_from_main p (arithmeticTuple p v) hc
+  simpa only [FreeJMainOrientation.FreeJRankCongruence,arithmeticTuple,
+    Matrix.cons_val_zero,Matrix.cons_val_succ,rank,q,Y,k,pow_two] using hr
+/-- Proposed composition with the actual first residual and early recurrence
+wrapper. The rank window, J/X positivity and positive-C gap remain explicit. -/
+theorem early_index_of_actual_graph (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) (hX : 0<v 6)
+    (hgap : (v 1+1)+(v 2+1)<q p v)
+    (hR24 : 24≤rank p v)
+    (hwindow : rank p v+(q p v)^3+q p v+1≤(q p v)^4) :
+    ∃ tau n w : V,
+      tau*tau=1+(m p v)*(m p v+1)*(k v)*(k v) ∧
+      13≤n ∧ n≤k v ∧
+      ArithmeticPellRecurrence.xcoord n (2*(m p v-1)+1)=tau ∧
+      2*ArithmeticPellRecurrence.ycoord n (2*(m p v-1)+1)=k v ∧
+      (2*n)%((q p v)^4)=rank p v+1 ∧ rank p v+1≤2*n ∧
+      rank p v+1≤k v ∧ k v=2*n+4*(m p v)*w := by
+  obtain ⟨hb,hq2,hY,hU⟩ := Residue90CompactGraphGammaDraft.scale_facts p v hJ hbeta
+  have hqpos : 0<q p v := lt_of_lt_of_le (by simp : (0:V)<2) hq2
+  have hq8 : (8:V)≤(q p v)^3 := by
+    have hh := pow_le_pow_left₀ (by simp : (0:V)≤2) hq2 3
+    simpa using hh
+  have hY8 : 8≤Y p v := le_trans hq8 hY
+  have hYpos : 0<Y p v := lt_of_lt_of_le (by simp : (0:V)<8) hY8
+  have hk : 0<k v := add_pos
+    (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+    (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+  have hFq : v 1+1≤q p v := le_trans (by simp) (le_of_lt hgap)
+  have hcong := rank_congruence_of_actual_main p v hz hU hY8 hk hFq
+  obtain ⟨tau,htau⟩ := Residue90SignedNormsDraft.first_natural_norm
+    (v 0*(p 0:V)) (m p v) (k v) (firstRoot p v) hb (first_ring_norm p v hz)
+  have hYeq : Y p v=(q p v)^3*(v 7+1) := by dsimp [Y]; ring
+  obtain ⟨n,w,hn13,hnk,hnx,hny,hnmod,hnlow,hklow,hexact⟩ :=
+    ResidueFirstIndexModelDraft.early_index_of_natural_norm (q p v) (v 6) (Y p v)
+      (k v) (rank p v) tau (v 7+1) hqpos hX hYpos hYeq
+      (by simpa only [m] using htau) hR24 hwindow hcong
+  exact ⟨tau,n,w,htau,hn13,hnk,hnx,hny,hnmod,hnlow,hklow,hexact⟩
+
+end DiophantineConsistency.ResidueMainCongruenceDraft
+#print axioms DiophantineConsistency.ResidueMainCongruenceDraft.main_pair_identity
+#print axioms DiophantineConsistency.ResidueMainCongruenceDraft.actual_main_magnitude_norm
+#print axioms DiophantineConsistency.ResidueMainCongruenceDraft.arithmetic_congruence_of_balance
+#print axioms DiophantineConsistency.ResidueMainCongruenceDraft.rank_congruence_of_actual_main
+#print axioms DiophantineConsistency.ResidueMainCongruenceDraft.early_index_of_actual_graph

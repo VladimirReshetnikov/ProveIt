@@ -1,0 +1,3 @@
+# Sign33 d27-to-output checkpoint values source-only draft
+
+These three drafts adapt checked sign38 d27→d34, d34→d41 and d41→recipe typed paths and phi/N/g/G value substitutions, with namespace and 5^39→5^34, 5^38→5^33 specialization. They do not carry all later-born values, establish final output semantics, or bind JSON/human text. The [guarded runner](../nine-seed33-jones-checkpoints27-45-staged-check/README.md) separately authenticates audited input, live-entry and symbolic-value producers; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-checkpoints27-45-staged-terminal-frontier-independent/) passed.

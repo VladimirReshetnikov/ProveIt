@@ -1,0 +1,5 @@
+# Independent prelaunch review: gap/tau additive-order retry
+
+**Pass for bounded launch.** The full source comparison confirms only the two local proof-step edits: rewrite the available `(q-F)+F=q` and commute `alpha+F`; then commute `2+r` to obtain `r≤r+2`. The theorem statement and hypotheses remain unchanged. These edits target the two explicit errors in the retained prior failure; Lean acceptance is untested.
+
+`check.py` pins source, manifest, runner and survey, verifies the full exact source delta, prior failure state/log, both selected producer objects, target absence and a fresh no-Lean preflight. The runner diff retains bounds and direct guards while using a fresh output path and pinning both prior failures. Provider checks are point observations, resources sampled, and inherited initial-agreement numeric outer exit unavailable. The theorem still assumes natural window inequalities and does not establish a sign33 bridge or iPRA endpoint. Preflight requires a fresh output path and refuses after launch.

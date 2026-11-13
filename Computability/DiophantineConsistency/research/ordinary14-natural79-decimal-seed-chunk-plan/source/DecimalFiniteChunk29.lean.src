@@ -1,0 +1,17 @@
+import DecimalFiniteCommon
+
+/-! Inert source-only suggestion for indices [928, 943). -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+namespace Natural79DecimalSeedChunkDraft
+open Natural79PrintedDecimalBlocksDraft
+
+/-- All 15 proposed equalities are finite; this proof is untested. -/
+theorem chunk29 : ∀ i : Fin 15,
+    printedBlocks.getD (928+i.val) 0 = selectorAt (928+i.val) ∧
+    printedBlocks.getD (928+i.val) 0 = seedBlockAt (928+i.val) := by
+  decide
+
+end Natural79DecimalSeedChunkDraft
+#print axioms Natural79DecimalSeedChunkDraft.chunk29

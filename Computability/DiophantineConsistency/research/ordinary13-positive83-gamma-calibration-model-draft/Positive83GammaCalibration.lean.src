@@ -1,0 +1,127 @@
+import Positive83To84Bridge
+import Positive81ExactMain
+import Positive83CrossRoot
+
+/-! Proposed 83 graph gamma calibration via a positive 81 replacement of r
+and the one-way 81→85 image. Unelaborated; all providers remain open. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive83GammaCalibrationDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticPellRecurrence ModelDifferenceRing
+open Residue90CompactPortBoundsDraft
+open Positive83To84TransportDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def rank83 (p : Fin 4 → ℕ) (v : Fin 13 → V) : V :=
+  ((q p v-1)*(q p v-v 1)+v 2)*(q p v*q p v-1)+
+    ((p 2:V)+q p v*(p 3:V))*v 0
+
+/-- The replacement r is an explicit input; every other original positive
+coordinate is preserved by the prototype image. -/
+theorem calibration_of_root (K : ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveCarrier83GraphDraft.graph (fun j => (ports K j:ℤ))).output v)
+    (r : V) (hr : 0<r)
+    (hfirst : (PositiveSquare81GraphDraft.graph (fun j => (ports K j:ℤ))).first.evalRing
+      (fun i => ι (Positive81To83TransportDraft.putR v r i))=0) :
+    GammaCalibration (ports K) v := by
+  let p := ports K
+  let z := Positive81To83TransportDraft.putR v r
+  let e := Positive80To81TransportDraft.image85 z
+  have hzpos : ∀ i, 0<z i := Positive81To83TransportDraft.positive_putR v hv r hr
+  have hz81 := Positive81To83TransportDraft.zero83_to81 (fun j => (p j:ℤ)) v r hz hfirst
+  have hz85 := Positive81To83TransportDraft.prototype_zero_of81 (fun j => (p j:ℤ)) z hzpos hz81
+  have heta : 0<e 9 := Positive81ExactMainDraft.image85_eta_positive z hzpos
+  have hv1 (i : Fin 13) : v i-1+1=v i := tsub_add_cancel_of_le (pos_iff_one_le.mp (hv i))
+  have he0 : e 0=v 0 := by simp [e,z,Positive80To81TransportDraft.image85,
+    Natural89RReplacementDraft.up,Natural89Positive80TransportDraft.lower,
+    EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ,
+    Positive81To83TransportDraft.putR,hv1]
+  have he1 : e 1+1=v 1 := by simp [e,z,Positive80To81TransportDraft.image85,
+    Natural89RReplacementDraft.up,Natural89Positive80TransportDraft.lower,
+    EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ,
+    Positive81To83TransportDraft.putR,hv1]
+  have he2 : e 2+1=v 2 := by simp [e,z,Positive80To81TransportDraft.image85,
+    Natural89RReplacementDraft.up,Natural89Positive80TransportDraft.lower,
+    EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ,
+    Positive81To83TransportDraft.putR,hv1]
+  have he7 : e 7+1=v 7 := by simp [e,z,Positive80To81TransportDraft.image85,
+    Natural89RReplacementDraft.up,Natural89Positive80TransportDraft.lower,
+    EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ,
+    Positive81To83TransportDraft.putR,hv1]
+  have he9 : e 9=v 9 := by simp [e,z,Positive80To81TransportDraft.image85,
+    Natural89RReplacementDraft.up,Natural89Positive80TransportDraft.lower,
+    EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ,
+    Positive81To83TransportDraft.putR,hv1]
+  have he10 : e 10+1=v 10 := by simp [e,z,Positive80To81TransportDraft.image85,
+    Natural89RReplacementDraft.up,Natural89Positive80TransportDraft.lower,
+    EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ,
+    Positive81To83TransportDraft.putR,hv1]
+  have he6 : e 6=v 6 := by simp [e,z,Positive80To81TransportDraft.image85,
+    Natural89RReplacementDraft.up,Natural89Positive80TransportDraft.lower,
+    EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ,
+    Positive81To83TransportDraft.putR,hv1]
+  have he12 : e 12=v 12 := by simp [e,z,Positive80To81TransportDraft.image85,
+    Natural89RReplacementDraft.up,Natural89Positive80TransportDraft.lower,
+    EtaUnshift85TransportDraft.raiseEta,W86To87TransportDraft.raiseW,
+    Gamma87To88TransportDraft.raiseGamma,J88To89TransportDraft.raiseJ,
+    Positive81To83TransportDraft.putR,hv1]
+  have hq : EtaNaturalXPositiveDraft.q p e=q p v := by simp [EtaNaturalXPositiveDraft.q,q,he0]
+  have hX : EtaNaturalGapRankDraft.X p e=X p v := by simp [EtaNaturalGapRankDraft.X,X,hq,he6]
+  have hY : EtaNaturalXPositiveDraft.Y p e=Y p v := by simp [EtaNaturalXPositiveDraft.Y,Y,hq,he7]
+  have hU : EtaNaturalXPositiveDraft.U p e=U p v := by simp [EtaNaturalXPositiveDraft.U,U,hY,hq]
+  have hk : EtaNaturalXPositiveDraft.k e=k v := by
+    simp only [EtaNaturalXPositiveDraft.k,k,add_assoc,he9,he10]
+  have hc : EtaNaturalXPositiveDraft.c p e=c p v := by simp [EtaNaturalXPositiveDraft.c,c,he9,hY,hk]
+  let R := EtaNaturalGapRankDraft.rank p e
+  have hrank : R=rank83 p v := by
+    simp [R,EtaNaturalGapRankDraft.rank,rank83,hq,he0,he1,he2]
+  have hR26 := EtaNaturalRankIndexDraft.compact_rank_at_least_26 K e hz85
+  have hR3 : 3≤R := le_trans (by norm_num : (3:V)≤26) hR26
+  obtain ⟨_,n,w,_,hn,_,_,hny,hnmod,_,_,hks⟩ :=
+    EtaNaturalGraphEarlyIndexDraft.compact_early_index K e hz85
+  obtain ⟨hnR,main,hmx,hmy,hbal⟩ :=
+    Positive81ExactMainDraft.exact_and_main K e hz85 heta n w hn hny hks hnmod
+  let W : V := 4*(X p v)*(q p v)*(v 7)*w
+  have hproduct : 4*(EtaNaturalGapRankDraft.X p e*EtaNaturalXPositiveDraft.Y p e*
+      EtaNaturalXPositiveDraft.Y p e)*w=U p v*W := by
+    rw [hX,hY]
+    dsimp [W,U,Y]
+    ring
+  have hkW : k v=R+1+U p v*W := by
+    rw [←hk,←hproduct,←hnR]
+    exact hks
+  have hA : EtaNaturalXPositiveDraft.Y p e*(EtaNaturalGapRankDraft.X p e+1)=a p v := by
+    rw [hX,hY]
+    dsimp [a]
+    ring
+  have hx : main=xcoord R (a p v) := by simpa only [R,hA] using hmx.symm
+  have hy : c p v=ycoord R (a p v) := by simpa only [R,hA,hc] using hmy.symm
+  have hb : U p v*main+H p v*k v=U p v*(X p v+a p v*c p v)+H p v*(U p v*v 12+R+1) := by
+    have hh := hbal
+    dsimp only at hh
+    rw [hX,hY,hq,hk,hc,he12] at hh
+    dsimp [H,a,U] at *
+    linear_combination hh
+  exact ⟨R,W,main,hR3,hy,hx,hkW,hb⟩
+
+/-- Proposed compact all-model calibration, using the independently drafted
+83→81 positive root replacement. No q-divisibility conclusion is claimed. -/
+theorem calibrationCut (K : ℕ) : Positive83To84BridgeDraft.CalibrationCut K := by
+  intro V _ _ v hv hz
+  obtain ⟨r,hr,hfirst⟩ := Positive83CrossRootDraft.reverse K V v hv hz
+  exact calibration_of_root K v hv hz r hr hfirst
+end DiophantineConsistency.Positive83GammaCalibrationDraft
+#print axioms DiophantineConsistency.Positive83GammaCalibrationDraft.calibration_of_root
+#print axioms DiophantineConsistency.Positive83GammaCalibrationDraft.calibrationCut

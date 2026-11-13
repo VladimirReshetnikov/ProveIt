@@ -1,0 +1,205 @@
+INDEPENDENT REVIEW: RETAINED TYPING AND LAZY IGNORED FIELDS
+======================================================
+
+Reviewed programs
+  research/root_trials/retained_lazy.py
+  research/root_trials/retained_split.py
+  research/root_trials/retained_checker_tokens300.py
+  research/root_trials/retained_checker_ast337.py
+
+Conclusion
+----------
+The retained-typing change and lazy source-instance selection have a sound
+paper-level proof route. No concrete soundness defect was found. The central
+claim is equality of accepted canonical native theorem sets, with an explicitly
+broader raw certificate language. This is not equality of all accepted input
+strings, a new arithmetic axiom deletion, or formal verification of Python.
+
+Public formula syntax is the actual-binding Eq/D grammar inherited from the
+intrinsic-validation predecessor. Boolean true is its declared alias for the
+zero code 1. Unused data are opaque. These qualifications must remain explicit.
+
+1. Phase arithmetic
+-------------------
+Every reachable scope floor is an integer k <= 0. At k = 0, the expressions
+
+  k | (len(a) in (1, 2 + d % 2))
+  k < d & a % 2
+
+enforce precisely the old public arity and odd-scalar restrictions. At k < 0,
+the first expression is always nonzero; the second is always true WHEN its
+right operand is defined, because d & (a % 2) is 0 or 1 for integer/Boolean a.
+This last evaluation requirement is the new type check and cannot be replaced
+by a short-circuit 'k or ...' expression.
+
+Actual binding is unchanged: at term positions the child increment j & 2 adds
+one slot only in the third child of an iterator; formula transitions handle
+D and equality. At all meaningful term arities, j & 2 equals 2*(j == 2).
+
+2. The two distinct typing lemmas
+--------------------------------
+Let a source come from Python's JSON decoder, including its default NaN and
+infinity extension. On such values, a * 0 == [] selects exactly lists. Objects
+and null fail multiplication; strings fail the subsequent numeric comparison.
+
+MISSING-IMAGE LEMMA. If i(A) returns with the default missing-image sentinel,
+then the entire source A and result are finite integer/Boolean/list trees.
+
+Proof. Recurse through the list comprehension, which visits every child. A
+scalar float cannot pass: if k <= a < d holds, d & (a % 2) raises TypeError;
+if the interval test fails, the eager fallback must scan the missing-image
+sentinel and fails. NaN follows the latter branch. Infinity and negative
+infinity also follow that branch. The fallback is eager even at even depth.
+The function sentinel c fails multiplication. The alternative sentinel 0j
+fails the numeric comparison/bit operations. Neither can return as data.
+
+GENERAL-OPENING LEMMA. If i(A,t,d) returns, the result is an integer/Boolean/
+list tree. Its source A may contain floating leaves, but a floating leaf can
+only select the exposed-hole branch. Every substitution image actually used
+is scanned by a missing-image call at root term depth and is therefore typed
+and closed. Unused image data may be arbitrary JSON.
+
+The general-source-typed lemma of the predecessor is FALSE for this candidate.
+For example, at k=-5, i(100.5,1,3)=1 and i(NaN,[1],3)=[1]. These are accepted
+hole annotations, not numerical variable names. In contrast i(1.0,1,3) rejects.
+
+3. Completion of a template by ordinary integer holes
+----------------------------------------------------
+For each finite family of successful openings of one raw template, choose an
+integer H larger than every traversal depth occurring in that family. Replace
+every floating source leaf by H. Every such float selected the exposed-hole
+branch, and H selects the same branch in every one of the chosen calls. Array
+shapes are unchanged; retained integer/Boolean leaves are unchanged; actually
+used images are already typed by the missing-image lemma. Structural induction
+therefore gives identical outputs for these openings after the replacement.
+
+This is a LOCAL template lemma used when extracting a native inference. It is
+not a claim that every whole raw certificate can be projected to a single old
+certificate with the same trace. Replacing ignored fields can change Python
+truthiness or raw equality tests, so that global claim should not be made.
+
+4. Extraction of the native rules
+--------------------------------
+Every entered proof call scans its goal with a missing image before reserving
+the next scope name. Therefore every successful goal, and every recursively
+verified major, is typed and closed at its entry floor. Every retained new
+context entry is an opener result. The initial [] entry denotes truth.
+
+Hypothesis terminals depend only on membership in that typed context.
+
+At a computation terminal, the candidate must equal the scanned typed goal.
+Any unscanned integral-float or Boolean annotation in the candidate consequently
+has a typed representative supplied by that goal. A fractional float, infinity,
+NaN, string, object or null cannot equal a typed numerical leaf. A used
+substitution image is scanned. These facts give the same I0 or IS computation
+instance as the predecessor, without admitting real-valued eigenvariables.
+
+For equality transport, both required template instances have returned when
+the elimination pattern matches. Complete their floating holes using section 3
+and extract the ordinary native template. If a source or target image was
+unused, the template is independent of it and a typed zero representative
+suffices. The verified major supplies the corresponding typed equality.
+For Q elimination the raw template is also represented in the verified major;
+its missing-image scan rules out floating leaves in that major itself.
+
+D elimination uses a verified typed major. D introduction uses a typed opened
+matrix. If a purported witness was never inspected because the witness slot
+is unused, choose numerical zero as the native witness. If it was used, the
+missing-image lemma already validates it. The mode test only permits equation
+progress for a literal two-child matrix; compound introduction remains cases.
+
+Thus the existing successful-call-tree soundness induction transfers. No new
+mathematical inference is supplied by a floating hole or ignored JSON field.
+
+5. Freshness and future-variable attacks
+---------------------------------------
+Retained scalar leaves are still integers/Booleans in the interval [k,d).
+The next fresh name is below the old floor. Witness preparation is still before
+the recursive major proof changes the floor. A float below the floor may be an
+exposed template hole, but cannot survive a missing-image scan as a name. A
+float numerically equal to an in-scope name fails the eager bit operation if
+scanned; equality with a typed terminal candidate can only give that existing
+typed name. It cannot insert the newly allocated name into an older closed
+public goal or major. The standard future-witness fixture still rejects.
+
+6. Why laziness of ignored fields is sound
+-----------------------------------------
+The old code constructed both possible source goals before choosing between
+them. The candidate computes i(t,s) only after the full elimination comparison
+succeeds. When the comparison fails, the selected goal is the already checked
+old goal a; the source instance has no mathematical role in that inference.
+
+The opener i is pure with respect to q, k and g: it neither consumes a packet,
+changes the scope floor, nor changes the context. Skipping an unused call can
+therefore remove an irrelevant exception but cannot change the proof state.
+When the comparison succeeds, the needed source call is still made. Reordering
+the successful target/source openings is harmless because both are pure at
+the same fixed floor. The split-condition companion additionally skips the
+target opening when the major pattern already mismatches; the same argument
+applies to that unused value.
+
+A concrete newly accepted input replaces the source annotation by JSON null
+in a proof of D of the constant equation I(0,0;u.0)=0. The elimination pattern
+is false, the source instance is never used, and the continuation is justified
+by its retained constant equation. The old eager program rejected only because
+it attempted to scan null as that unused source image. Changing the public
+goal to 0=1 still rejects. Another example uses an unused floating witness;
+its matrix has no occurrence of that witness, so the native witness can be 0.
+
+Completeness on the inherited canonical certificates is preserved: all their
+old opener calls returned; the lazy program makes the same needed calls and
+selects the same branches. This does not assert identical rejection behavior
+for arbitrary raw annotation data.
+
+7. Executable evidence and boundaries
+------------------------------------
+experiments/audit_retained.py performed 37,800 focused opener checks on EACH
+of retained_lazy and retained_split (75,600 total), across JSON scalar classes,
+nested arrays, multiple depths/floors, and missing/provided images. There were
+no violations of the two typing lemmas. The receipt is
+experiments/retained_opener_audit.json.
+
+retained_validation_review.py separately compares the old intrinsic control
+and both candidates on explicit float holes, in-range integral floats,
+missing-image rejection, ignored null/float fields, the future-capture fixture,
+and a false 0=1 goal. It records source hashes. Its receipt is
+retained_validation_receipt.json. It has 4,800 missing-image checks and 42
+complete normal/-O process runs, with zero unexpected outcomes.
+
+The three-field profiles require canonical recompilation. A naive direct
+recoding of the older proper_nodes fixtures failed on five positive proofs:
+those fixtures exploit raw aliases whose lazy formula fallback is scalar 0,
+whereas eager multiplication can produce []. These raw traces are not the
+same interface. The diagnostic is entry_profiles_receipt.json; it is NOT a
+successful verification receipt and must not be counted as one.
+
+compile_entry_three.py instead reconstructs canonical derivation trees from
+the already checked four-field fixtures at the same ENTRY-reserved scope
+schedule, and emits the appropriate three-field packets. At a specialization
+or terminal it keeps [s,u,t]; at a nonmatching D elimination it uses [m,1,1];
+at introduction it uses [[],mode,witness]. The nonmatching D-elimination
+packet uses a constant template: its formula instance is administrative 0,
+which cannot equal a canonical native goal. Its new computation candidate
+cannot equal a canonical goal either, because the native D-major is not a
+numerical term. Thus these rewrites do not accidentally select another rule.
+The omitted explicit major is already determined by the chosen rule.
+
+entry_three_receipt.json records 200 complete normal/-O process runs with
+zero unexpected outcomes: 14 canonical native positives, 28 false-goal
+mutations, the original proper_nodes ENTRY-schedule capture attack, and seven
+opaque-prefix cases, across both three-field profiles. The compiled cases
+are entry_three_fixtures.json. Do not use the proper_tokens fixtures instead:
+that older profile reserves scope names at RETURN, a different schedule.
+
+Finite tests support these specific implementation points. They do not replace
+the universal argument, establish absolute minimality, or verify the inherited
+native/iPRA bi-interpretation anew. That mathematical bridge remains the
+repository's existing theorem on whole numerical domains, actual equality,
+identity numerical composites, and formula round trips.
+
+FINAL PACKAGING ADDENDUM
+The reviewed 309/356/582 candidate is unchanged except that the fixed arity
+membership tuple (1, 2+d%2) is written as a set {1, 2+d%2}. Both members
+are exact integers, so membership is identical; no effect or failure case
+is added. This removes one AST Load node, giving 309/355/582. The final
+packaged source is remeasured and retested; its hash is in measurements.json.

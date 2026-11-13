@@ -1,0 +1,9 @@
+# Strong-norm numeral-conversion retry checked
+
+The [prior diagnostic](../nine-sharing-sign33-strong-f-check/attempt01/README.md) failed because `lt_iff_succ_le.mp hgt` had type `1+1≤f` while the final goal was `2≤f`. This retry keeps the theorem statement, all four hypotheses and the proof unchanged except for replacing the last `simpa` with `simpa only [one_add_one_eq_two]`. Other repository model-arithmetic proofs use the same explicit rewrite. The lemma compiled successfully; see [attempt01](attempt01/README.md). It does not establish a sign33 zero bridge or iPRA endpoint.
+
+The runner pins the failed state and its exact type-mismatch log, verifies the original draft theorem body modulo the single substitution, uses a fresh output directory, and retains the same source-built provider survey, direct dependency/guard checks and limits as the original diagnostic. Full guard and survey rechecks occur only after success. Point-observation and sampled-resource limitations and inherited transitive ancestry remain, including the uncaptured initial-agreement numeric outer exit.
+
+Candidate source SHA-256 `df4419d685971b45d91f3f5ccc6f5f3b841bcf2beeb225a74117cfe46d8bbf1e`, manifest `13f9f73a55994930f6b7e43581dd25dca70aecc1cc49a5247059a3731b5aba68`, survey `75772d73291dbbdbfc03160dea46e73e75b2fc2162b69dcc25b8aa17fefc9f43`, runner `dc29a2628ab57d87bde74ab5663f72ef5f86e57b9cb70d58c260f03a2f3f9d22`. Author no-Lean preflight session 29713 exited 0; independent prelaunch review and a coordinated Lean slot preceded the successful run. The unchanged limits were `-M2800`, 120 seconds per call, sampled 4-GiB session RSS and 10-GiB available-host-memory floor with a 5-GB free-space precheck.
+
+The [independent terminal audit](../../reviews/nine-sharing-sign33-strong-f-retry01-terminal-frontier-independent/README.md) checked the theorem, warning and provider observations without replaying Lean.

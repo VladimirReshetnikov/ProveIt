@@ -1,0 +1,5 @@
+# Independent failure audit
+
+PASS as a failure audit. Author-observed outer session 79111 exited 1; frozen/output state and all six logs match. The `ArithmeticDAG` and `Current14Carrier65DAGCore` stages compiled and produced objects. Core's eight reports show `[propext]` for topology/input/port coverage and `[propext, Classical.choice, Quot.sound]` for the five count/liveness results; none contains `sorryAx`. These results concern the specified circuit alone.
+
+The third stage `Current14Carrier65DAGValue` exited 1 with an unsolved evaluator goal involving list appends and `getD`. Its `value_eq_carrier` report contains `sorryAx`, there is no value object and no successful postflight; it is not a proven semantic bridge. The final stage's direct links to the new core and the historical Carrier65 object, source/object/log hashes, Init, direct guards, overlay links and sampled controls were checked. The numeric outer receipt does not itself hash state. Historical object ancestry remains inherited; no equation gate count, minimality, PDF/file, or degree claim follows from this failed bridge. No Lean replay was performed.

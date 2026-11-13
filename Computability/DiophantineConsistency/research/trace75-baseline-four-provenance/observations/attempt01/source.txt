@@ -1,0 +1,77 @@
+#!/usr/bin/env python3
+"""Read-only, capture-relative audit of four selected producer records."""
+from hashlib import sha256
+from pathlib import Path
+import json,os,re,sys
+
+if not sys.flags.isolated or not sys.flags.no_site or sys.flags.optimize:
+    raise SystemExit('use python3 -I -S -B')
+H=Path(__file__).resolve().parent;D=H.parents[1]
+OLD=D/'research/ten-positive-80-coherent-rebuild/observations/attempt04'
+OLD_OUTER=D/'research/ten-positive-80-coherent-rebuild/observations/outer-attempt04'
+FINAL=D/'research/trace75-bfs-ipra-final-assembly-plan/observations/attempt01'
+FINAL_OUTER=D/'research/trace75-bfs-ipra-final-assembly-plan/observations/outer-attempt01'
+BFS=D/'research/direct-bfs-80-coherent-rebuild/observations/attempt01/initial-project.json'
+WARN=D/'research/ten-positive-80-coherent-rebuild/warning-baseline-modelarithmetic/baseline.txt'
+PINS={OLD/'result.json':'e1ccee0f9c5fdc14cde89368925cb56f41d6acbe5c89a41c9e2bab798184582b',
+      OLD_OUTER/'terminal.json':'6d385d6ced237bedd626daabc047691d49a5314f399b941d3a09c1f71cc9aa96',
+      FINAL/'result.json':'b05b0970cde855c6c65973b9550ae7231b7cca02f8659140a166f206bf51093c',
+      FINAL_OUTER/'terminal.json':'2188db777c5fe442be871c30d29943de70fe0c1d20325d49b00bb9886e56c69d',
+      BFS:'a89c775deee5d7f846e85936f2321c1e91d3d5fd51c62b153c2b2dd8e8540f88',
+      WARN:'6af6ec8ca3ec1f14663f214b53f728a9a88b7b415ea8e68b769b27b197e44f0d'}
+SOURCES={
+ 'DiophantineConsistency.ModelArithmetic':('Lean/DiophantineConsistency/ModelArithmetic.lean','2a713070369ddcc404ad01f0c16d0d7cb9102acc21aac5d7eaef79dfd3182bc6'),
+ 'DiophantineConsistency.ModelExponentialCongruence':('Lean/DiophantineConsistency/ModelExponentialCongruence.lean','e1c432af6305090e792b8f18d9279693ceabf0bcf15e6368b21be42f6eb77704'),
+ 'PellOddFold':('research/pell-all-index-odd-fold-prototype/PellOddFold.lean','5ecd8b100a2bbc9ede5d015ef25de80a0c3f887fefa7e04480c23b0ccde94ad2'),
+ 'PellRecovery':('research/pell-all-index-recovery-prototype/PellRecovery.lean','8c9c824476b9bfc2431a421b2e8a9a405198ee88ff5e6f3f9b55e7268a385c47')}
+def need(b,m):
+    if not b:raise RuntimeError(m)
+def sha(p):return sha256(Path(p).read_bytes()).hexdigest()
+def hashes(record):return {k:None if v is None else v['sha256'] for k,v in record.items()}
+def check_record(record):
+    for suffix,item in record.items():
+        if item is None:continue
+        p=Path(item['path'])
+        need(p.is_file() and str(p.resolve(strict=True))==item['resolved'] and sha(p)==item['sha256'],
+             'captured object drift '+str(p)+suffix)
+for p,h in PINS.items():need(sha(p)==h,'input pin '+str(p))
+old=json.loads((OLD/'result.json').read_text());oo=json.loads((OLD_OUTER/'terminal.json').read_text())
+final=json.loads((FINAL/'result.json').read_text());fo=json.loads((FINAL_OUTER/'terminal.json').read_text());bfs=json.loads(BFS.read_text())
+need(old['status']=='PASS' and len(old['stages'])==127 and oo['exit']==0,'producer status')
+need(oo['runner_sha256_before']==oo['runner_sha256_after'],'producer runner drift')
+need(sha(OLD_OUTER/'stdout')==oo['stdout_sha256'] and sha(OLD_OUTER/'stderr')==oo['stderr_sha256'],'producer outer log drift')
+need(final['status']=='PASS' and fo['exit']==0 and fo['child_status']=='PASS' and fo['child_result_sha256']==PINS[FINAL/'result.json'],'final status')
+stages={s['module']:s for s in old['stages']};records=[]
+for name,(workspace,source_hash) in SOURCES.items():
+    s=stages[name];source=Path(s['command'][5]);target=D/workspace
+    need(s['status']=='RETURNED' and s['exit']==0 and s['reason'] is None,'producer stage failed '+name)
+    need(s['source_sha256']==source_hash and sha(source)==source_hash and sha(target)==source_hash,'source drift '+name)
+    stage_out=OLD/('stage-%03d.stdout'%s['index']);stage_err=OLD/('stage-%03d.stderr'%s['index'])
+    need(sha(stage_out)==s['stdout_sha256'] and sha(stage_err)==s['stderr_sha256'],'producer logs drift '+name)
+    if name=='DiophantineConsistency.ModelArithmetic':
+        need(s['warning_exception']['baseline_sha256']==PINS[WARN] and not stage_err.read_bytes(),'warning record mismatch')
+        need(stage_out.read_text().replace(str(source),'<SOURCE>')==WARN.read_text(),'warning baseline mismatch')
+    else:need(not stage_err.read_bytes() and not re.search(r'(?i)\b(?:error|warning)(?:\([^:\n]*\))?:|\bsorryAx\b',stage_out.read_text()),'unexpected producer diagnostics '+name)
+    out=s['output'];selected=final['selected_project'][name];bfs_selected=bfs[name]
+    need(hashes(out)==hashes(selected)==hashes(bfs_selected),'output companion mismatch '+name)
+    check_record(out);check_record(selected);check_record(bfs_selected)
+    need(not Path(out['.olean']['path']).is_symlink() and os.path.samefile(out['.olean']['path'],selected['.olean']['path']),'producer realpath mismatch '+name)
+    header=old['headers'][name];need(header==final['serialized_headers'][name],'serialized headers differ '+name)
+    imports=re.findall(r'^import\s+([A-Za-z0-9_.]+)\s*$',source.read_text(),re.M)
+    need([x for x in header if x!='Init']==imports,'source/header mismatch '+name)
+    before=s['direct_before'];after=s['direct_after'];need(before==after,'producer direct selection changed '+name)
+    need(set(before)==set(header),'producer direct/header mismatch '+name)
+    direct=[]
+    for dep,producer in before.items():
+        chosen=final['selected_project'].get(dep) or final['selected_outside'].get(dep)
+        need(chosen is not None and hashes(producer)==hashes(chosen),'selected direct companion mismatch '+name+' '+dep)
+        check_record(producer);check_record(chosen)
+        direct.append({'module':dep,'producer':producer['.olean']['resolved'],'sha256':producer['.olean']['sha256'],
+                       'selected':chosen['.olean']['resolved']})
+    records.append({'module':name,'stage':s['index'],'source_sha256':source_hash,'producer_source':str(source),
+                    'workspace_source':str(target),'producer_output':str(Path(out['.olean']['path']).resolve()),
+                    'output_sha256':out['.olean']['sha256'],'direct':direct,
+                    'warning_exception':s.get('warning_exception')})
+for p,h in PINS.items():need(sha(p)==h,'input changed '+str(p))
+print(json.dumps({'status':'PASS','scope':'capture-relative four producers and direct selections only; no Lean replay or transitive ancestry authentication',
+                  'producer_outer_recorded_exit':oo['exit'],'final_outer_recorded_exit':fo['exit'],'records':records},sort_keys=True))

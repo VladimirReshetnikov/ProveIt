@@ -1,0 +1,58 @@
+import OwnZeroUnits74
+import Guard74Strict
+
+/-! Source-only 74 guard strictness. Model discreteness is an explicit
+hypothesis; all graph and factor dependencies are unelaborated drafts. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DiophantineConsistency.OwnZeroGuardStrict74Draft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing DiscreteOrderedRingFacts
+open FirstFactor74Draft OwnZeroUnits74Draft Guard74StrictDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Exact literal guard-factor cut with beta and K port casts explicit. -/
+theorem guard_eval (p : Fin 4 → ℤ) (beta K : V) (v : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V)=ι beta) (hK : (p 1 : DiffRing V)=ι K) :
+    (P74PositiveGuard.graph p).guardFactor.evalRing (fun j => ι (v j)) =
+      (ι (q beta v)-ι (v 1)-ι (v 2))*(ι (X beta v)+ι K)+
+        (ι (q beta v)-ι (v 1))-ι (v 0*beta)*ι (v 13) := by
+  simp [P74PositiveGuard.graph,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,q,X,hbeta,hK,
+    map_add,map_mul,map_one] <;> ring
+
+/-- A positive 74 own zero has h>1, provided its difference ring is discrete. -/
+theorem strict_of_zero (p : Fin 4 → ℤ) (beta K : V) (v : Fin 14 → V)
+    (hd : Discrete (DiffRing V))
+    (hbeta : (p 0 : DiffRing V)=ι beta) (hK : (p 1 : DiffRing V)=ι K)
+    (hb : 0<beta) (hv : ∀ j, 0<v j)
+    (hz : InternalZero (P74PositiveGuard.graph p).output v) : 1<v 13 := by
+  have hp : 1≤v 0*beta := pos_iff_one_le.mp (mul_pos (hv 0) hb)
+  have hq : 0<q beta v := by dsimp [q]; nlinarith
+  have hw1 : 1≤v 6 := pos_iff_one_le.mp (hv 6)
+  have hXq : q beta v≤X beta v := by
+    exact le_mul_of_one_le_right (Arithmetic.zero_le _) hw1
+  have hXp : 0<X beta v := by dsimp [X]; exact mul_pos hq (hv 6)
+  have hF : (0:DiffRing V)<ι (v 1) := by rw [←map_zero ι]; exact ι_lt_ι.mpr (hv 1)
+  have ha : (0:DiffRing V)<ι (v 2) := by rw [←map_zero ι]; exact ι_lt_ι.mpr (hv 2)
+  have hX : (0:DiffRing V)<ι (X beta v) := by rw [←map_zero ι]; exact ι_lt_ι.mpr hXp
+  have hqX : ι (q beta v)≤ι (X beta v) := ι_le_ι.mpr hXq
+  have hh : (1:DiffRing V)≤ι (v 13) := hd _ (by rw [←map_zero ι]; exact ι_lt_ι.mpr (hv 13))
+  have he := guard_factor_one p beta v hbeta hb (hv 0) (hv 6) (hv 7) hz
+  rw [guard_eval p beta K v hbeta hK] at he
+  have hqcast : ι (q beta v)=(1:DiffRing V)+ι (v 0*beta) := by simp [q,map_add,map_one]
+  have hbalance : (ι (q beta v)-ι (v 1)-ι (v 2))*(ι (X beta v)+ι K)-ι (v 1)=
+      ι (v 0*beta)*(ι (v 13)-1) := by
+    rw [hqcast] at he ⊢
+    linear_combination he
+  have hstrict := shifted_guard_gt_one hd (ι (v 1)) (ι (v 2)) (ι (X beta v)) (ι K)
+    (ι (q beta v)) (ι (v 0*beta)) (ι (v 13)) hF ha hX (ι_nonneg K) hqX hh hbalance
+  apply ι_lt_ι.mp
+  simpa only [map_one] using hstrict
+
+end DiophantineConsistency.OwnZeroGuardStrict74Draft
+
+#print axioms DiophantineConsistency.OwnZeroGuardStrict74Draft.strict_of_zero

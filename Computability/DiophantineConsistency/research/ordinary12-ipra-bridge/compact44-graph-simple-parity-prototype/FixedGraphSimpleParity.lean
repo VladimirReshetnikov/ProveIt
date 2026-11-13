@@ -1,0 +1,64 @@
+import DiophantineConsistency.ParityColumns
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace FixedGraphSimpleParity
+open DiophantineConsistency CompactBitRotation CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic BigOperators
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs Ordinary12FreeJ
+open ArithmeticBinaryCarry ArithmeticRepunit ArithmeticWindowDigits ArithmeticCyclicWord CompactHeterogeneousCarry
+open CompactGenericAlignedMass CompactConcreteIndexedMass CompactTwoBandFlatten
+attribute [local irreducible] rho paramKernel CompactFixedBeta.betaNat lowNat highNat
+attribute [local irreducible] Compact943Data.rows selectors copies
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_simple_parity (v : Fin 12 → V)
+    (hv : ∀ j,0<v j)
+    (hz : InternalZero (literal (fun j => (ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat j:ℤ))) v) :
+    let p := ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+    let q : V := 1+v 0*(p 0:V)
+    let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
+    let C : V := q-v 1-v 2
+    let a := GenericBandCarryFamily.coefficient (fun j : Aligned (Fin 943) (Fin 41) => (alignedCoeff selectors copies j:V))
+    ∃ N w : V, 0<N ∧ q=Exp.exp ((67*8807)*N) ∧ v 0=rep (67*8807) N ∧
+      (67*8807)*N≤R ∧ w=Exp.exp (R-(67*8807)*N) ∧ v 5=q*w ∧
+      let T := temporalWord (8807*N) (R-67*(8807*N)) C
+      let X := GenericBandCarryFamily.word (8807*N) C (bandOffsets position) T
+      CarryInput 67 (8807*N) (v 1) 1 (GenericBandCarryFamily.cap (ι:=Aligned (Fin 943) (Fin 41))) a X ∧
+      (∀ t<8807*N, 0<t → (t%8807=2195 ∨ t%8807=3296) →
+        carry 67 (8807*N) a X (cyc (8807*N) t 1)≤1 ∧
+        ((t%8807=2195 → (dig 67 C (cyc (8807*N) t 1100) + dig 67 T t +
+            carry 67 (8807*N) a X (cyc (8807*N) t 1))%2=0) ∧
+         (t%8807=3296 → (dig 67 C (cyc (8807*N) t 2201) + dig 67 T t +
+            carry 67 (8807*N) a X (cyc (8807*N) t 1))%2=0))) := by
+  obtain ⟨N,w,hN,hq,hJ,hle,hw,hv5,hcarry,hpar⟩ := FixedGraphBandParity.graph_band_parity v hv hz
+  obtain ⟨N',w',hN',hq',hJ',hle',hw',hv5',hcarry',h0,hzero,hbool⟩ :=
+    FixedGraphSupportCarry.graph_support_carry v hv hz
+  dsimp only at *
+  have hNN : N'=N := by
+    apply mul_left_cancel₀ (by norm_num : ((67*8807):V)≠0)
+    exact exp_inj (hq'.symm.trans hq)
+  subst N'
+  let p := ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+  let q : V := 1+v 0*(p 0:V)
+  let C : V := q-v 1-v 2
+  let n : V := 8807*N
+  have hqexp : q=Exp.exp (67*n) := by dsimp [n]; rw [←mul_assoc]; exact hq
+  have hC : C<Exp.exp (67*n) := by
+    dsimp [C]
+    exact BandCarryInputs.source_word_bound q n (v 1) (v 2) hqexp (hv 1)
+  refine ⟨N,w,hN,hq,hJ,hle,hw,hv5,hcarry,?_⟩
+  intro t ht ht0 hp
+  obtain ⟨hb,hpar'⟩ := hpar t ht ht0 hp
+  refine ⟨hb,?_,?_⟩
+  · intro htphase
+    obtain ⟨hs1,hs2,hbare⟩ := ParityColumns.at2195 N C t hN ht hC hzero htphase
+    rw [hs1,hs2,hbare] at hpar'
+    simpa only [zero_add] using hpar'
+  · intro htphase
+    obtain ⟨hs1,hs2,hbare⟩ := ParityColumns.at3296 N C t hN ht hC hzero htphase
+    rw [hs1,hs2,hbare] at hpar'
+    simpa only [zero_add] using hpar'
+#print axioms FixedGraphSimpleParity.graph_simple_parity
+end FixedGraphSimpleParity

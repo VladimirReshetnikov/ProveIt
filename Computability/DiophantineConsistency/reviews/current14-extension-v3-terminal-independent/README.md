@@ -1,0 +1,7 @@
+# V3 extension terminal artifact audit
+
+The v3 supervisor's actual session exited 0, as recorded in the [terminal observation](../../research/current14-structured-endpoint-coherent-runner-v3/extension-terminal-observation.json). Its supervisor receipt records coordinator exit 0, and the coordinator records extension-driver exit 0. The reviewed [`audit.py`](audit.py) then actually exited 0; [audit-execution.json](audit-execution.json) records its exit and [receipt.json](receipt.json) reports `PASS_SINGLE_EXTENSION_ARTIFACT_AUDIT`.
+
+The audit checked 61 source/output rows, 204 direct dependency edges, raw dependency logs, routes, producer guards, client-independent owned-process receipt fields and terminal state hashes. Each of the 61 dependency logs contained two identical `Init` entries. It reauthenticated the fresh base and v3 coordinator context at the end. Its [independent source review](../current14-extension-v3-terminal-audit-source-independent/README.md) covers the audit code; the earlier [preterminal refusal](preterminal-refusal.json) records that it would not run before terminal evidence.
+
+This is a single extension build and separate artifact cross-check that reuses the reviewed coordinator verifier. It is not a second Lean replay or an authentication of full package-transitive ancestry, dynamic loading, or transient mutations between observations. The literal-port assembly and structured endpoint clients have not yet been built in this coherent context. Source SHA-256: `572f47d8361b58f342bb1b11725e76c1099a1bc67a0d9996cc00443ff5ec5236`.

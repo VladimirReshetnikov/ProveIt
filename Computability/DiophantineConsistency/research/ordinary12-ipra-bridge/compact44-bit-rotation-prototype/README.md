@@ -1,0 +1,7 @@
+# Exploratory arbitrary-exponent bit rotation
+
+For any IΣ₁ model, define `temporalWord n e C = rot 1 (67*n) C (e % (67*n))`. With `n>0` and positive `M=Exp.exp (67*n)-1`, `temporal_mod` proves `(Exp.exp e*C)%M = temporalWord n e C % M` for arbitrary model-valued e. If `C < Exp.exp (67*n)`, `temporal_word_lt` also bounds the rotated word by that same power. Independently, every 67-bit digit of the rotation is below `Exp.exp 67` and hence at most `Exp.exp 67−1`. `replace_temporal` substitutes this term into an arbitrary modular congruence while leaving every other contribution explicit.
+
+This is a bit rotation: no claim is made that e is divisible by 67 or that the rotated 67-bit digits are at most 3. The congruence and word-bound premises remain explicit. It does not instantiate graph witnesses, identify the weighted graph column, derive a carry reset or decoder NoCarry, bind retained ports/K, establish machine correctness or prove an internal iPRA theorem.
+
+Exploratory single-side session 33773 actually exited 0 with no warnings or `sorryAx`; all five named reports are `[propext, Classical.choice, Quot.sound]`. It used a fresh overlay of the independently audited coefficient-decomposition author provider, importing its `ArithmeticCyclicWord` object without mixing branches. This is not a paired client replay or independent artifact audit; the inherited provider/package/transitive and point-in-time limitations remain. Exact source, invocation, direct object and output hashes and log are retained.

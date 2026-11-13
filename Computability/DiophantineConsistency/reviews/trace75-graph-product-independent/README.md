@@ -1,0 +1,7 @@
+# Independent review of trace75 weighted graph product
+
+For the same arbitrary p,v in any IΣ₁ model, assuming model `31≤beta`, `MC<beta`, `MF<2*beta`, all ten coordinates positive and the actual trace75 difference-ring zero, the checked theorem concludes in the difference ring `H | (h*X)*(X−2^rankNat)*(2^rankNat*X+1)`. K0 is arbitrary. The factor X is retained inside h*X; no X cancellation or power equality is claimed.
+
+The proof uses `graph_rank_exact` on the same p,v to identify c with the main Pell ordinate at rankNat; it obtains the corresponding Pell projection quotient and norm, rewrites the actual graph H,K and consumes the same graph's weighted projection divisibility with weight h*X. The generic `Direct80ProjectionProduct.entire_product` lemma is instantiated with precisely that weight. It proves a necessary graph-zero divisibility, not `X=2^rankNat`, halting/iPRA, fixed-port specialization, or a trace74 reverse guard.
+
+`check.py` rehashes source/copies, runner, all recorded pins, accepted object and logs, checks the three direct and selected nearby provider paths post hoc, and confirms the initial rejected author attempt had errors and a different source. The accepted report is `[propext, Classical.choice, Quot.sound]`. The saved receipt precedes the final diagnostic guard; the retained log satisfies it, but no separate runner outer-exit receipt is supplied. No independent Lean replay, compile-time provider manifest, complete source/package/dynamic ancestry or external file binding is claimed.

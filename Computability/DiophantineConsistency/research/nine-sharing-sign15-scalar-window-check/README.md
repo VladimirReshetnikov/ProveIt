@@ -1,0 +1,5 @@
+# Sign15 scalar window: source-only client
+
+The checked theorem derives q≥F from sign15 seed zero under represented beta/K and explicit beta/MC/MF bounds, using the independently audited [Nt transport](../../reviews/nine-sharing-sign15-transport-row-terminal-independent/README.md) and existing scalar-window provider. It assumes no deleted inner witness. No noncircular lift, equivalence or iPRA endpoint is claimed.
+
+The first-index survey binds a historical audited direct provider observation to its current realpath/hash; it is point-in-time and not rerun postflight, while direct guards and overlays are checked. No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign15-scalar-window-prelaunch-independent/README.md) passed. Author outer session 35202 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign15-scalar-window-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

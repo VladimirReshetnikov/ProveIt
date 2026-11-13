@@ -1,0 +1,3 @@
+import DiophantineConsistency.SymbolicKBandDraft
+#print SymbolicKBandDraft.symbolic_kernel_band_cast
+#print axioms SymbolicKBandDraft.symbolic_kernel_band_cast

@@ -1,0 +1,3 @@
+# Sign25 product first-cut attempt 01
+
+Author-observed outer session 35551 exited 0, including final postflight. The three row-membership reports use `[propext]`; old ell zero and the affected N0 evaluation report `[propext, Classical.choice, Quot.sound]`. There are three unused `p` binder warnings. This checks the product cut and affected residual only, not the remaining residual assembly, zero bridge, endpoint, Lean degree, or JSON/port binding. Monitor observations are sampled. The upstream sign25 syntax runner's stale sign26 labels, inherited syntax heartbeat and historical sign26 plan README appendix caveats remain documented upstream.

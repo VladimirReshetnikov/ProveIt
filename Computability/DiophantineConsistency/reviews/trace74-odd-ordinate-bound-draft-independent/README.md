@@ -1,0 +1,5 @@
+# Independent source review: 74 odd-ordinate lower bound
+
+Reviewed unchecked revised `research/trace74-odd-ordinate-bound-draft/Trace74OddOrdinateBound.lean` SHA-256 `e5787ff2d287b1659399c67008ae395ea1f1ad43d599c45c93548c7a14fae4ee`. The first theorem derives `ycoord 3 b+1=4(b+2)^2` from the stated Pell recurrence and delta=(b+1)(b+3). The graph theorem retains the same ports/valuation, positive beta, all positive components and actual 74 zero. It derives c>2, applies the checked same-tuple odd-ordinate witness, excludes r=1 using y1=1 and r=2 using odd parity, gets r≥3 by model discreteness, and applies monotonicity at the same recurrence base b=A−1. A>0 justifies A−1+2=A+1, yielding `4(A+1)^2≤c+1`.
+
+No reverse guard or individual F/C bound is used, and no apparent mathematical blocker was found. Elaborating `norm_num` on model parity, `change`, strict-monotonicity and recurrence rewrites remains unchecked; no Lean was run. This is a graph-zero implication, not existence or a general F/C bound. Direct provider capture, selected search order and inherited transitive/package/dynamic ancestry require separate guarded run and result audit.

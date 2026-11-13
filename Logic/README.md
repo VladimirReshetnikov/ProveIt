@@ -33,6 +33,11 @@
   Wolfram/Meredith/Sheffer/Huntington Boolean-algebra certificates.
 - [`Interpretability/PAHF/`](Interpretability/PAHF/) proves the deductive
   bi-interpretation of PA with finite-generation hereditary finite set theory.
+- [`PeanoArithmetic/FlexibleOutput/`](PeanoArithmetic/FlexibleOutput/) proves
+  in Lean that there is a partial recursive function `f`, divergent on every
+  input, such that for every input `x` and every `o`, a natural number or
+  `⊥`, the statement `f(x) = o` holds in some model of PA. The paper proof
+  and the delivered scaffold are kept beside it.
 - [`PeanoArithmetic/ListCoding/`](PeanoArithmetic/ListCoding/) gives independent
   Lean and Rocq/Coq natural-number codings of finite lists and genuine PA
   formulae for twenty-five list and number-theoretic predicates,
@@ -41,6 +46,10 @@
   lexicographic order, one-based nth primes, natural powers and prime
   factorizations, canonical base digits and divisor lists, and the exact
   canonical list of distinct permutations.
+- [`PrimitiveRecursiveArithmetic/ConciseIPRA/`](PrimitiveRecursiveArithmetic/ConciseIPRA/)
+  collects the research packages on very small complete presentations of a
+  theory bi-interpretable with intuitionistic primitive recursive arithmetic
+  (one iterator, two binders, six rules), with their Lean formalization.
 
 Deliberate paradoxes and kernel-loophole work — Girard/Hurkens, Coquand-Paulin,
 the sanctioned escape hatches, and the Lean and Rocq kernel defects — grew up

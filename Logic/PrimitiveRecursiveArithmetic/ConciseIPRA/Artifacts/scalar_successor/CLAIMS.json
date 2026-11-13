@@ -1,0 +1,148 @@
+{
+  "schema_version": 1,
+  "title": "Scalar successor-seeded recursion for intuitionistic PRA",
+  "date": "2026-11-10",
+  "snapshot": {
+    "repository": "VladimirReshetnikov/ProveIt",
+    "commit": "4a04139595eadc3e8818f1df2a94838ed4851d83",
+    "directory": "docs/drafts",
+    "url": "https://github.com/VladimirReshetnikov/ProveIt/tree/4a04139595eadc3e8818f1df2a94838ed4851d83/docs/drafts",
+    "top_level_archives": 9,
+    "evidence": [
+      "evidence/repository_snapshot.json",
+      "evidence/corpus_sources.json",
+      "evidence/corpus_classification.json"
+    ]
+  },
+  "primitive_inventory": {
+    "numerical_sorts": 1,
+    "numerical_grammar": "t ::= x | 0 | R(n,a;u.h)",
+    "numerical_constructors": ["0", "R"],
+    "update_bound_variables": ["u"],
+    "old_counter_available_to_update": false,
+    "independent_initializer_parameter": true,
+    "successor_abbreviation": "S(a) := R(0,a;u.0)",
+    "computation_schemas": [
+      "R(0,a;u.h) = S(a)",
+      "R(S(n),a;u.h) = h[R(n,a;u.h)/u]"
+    ],
+    "computation_schema_count": 2,
+    "description_discipline": "Every update is fixed finite earlier syntax with passive numerical parameters and capture-avoiding substitution; there is no numerical function variable or uniform total evaluator.",
+    "native_formula_grammar": "A ::= (s=t) | Q_y A | D_{x,y} A",
+    "native_logical_rules": ["Hyp", "Tr", "QE", "DE", "DI-case", "DI-progress"],
+    "DI_case_matrix_restriction": "none",
+    "DI_progress_matrix_restriction": "literal equation only",
+    "native_absurdity": "0 = S(0)",
+    "additional_native_primitive_axioms": [],
+    "ordinary_realization": "Intuitionistic first-order equality logic with genuine falsity, R0, RS, literal-equation induction, numerical coverage, and (0=S(0))->falsity.",
+    "evidence": ["report.tex", "theory/scalar_successor.tex"]
+  },
+  "mathematical_results": {
+    "status": "written internal proofs, independently audited",
+    "predecessor": {
+      "result": "An explicit finite scalar R term P satisfies P(0)=0 and P(S(x))=x on the entire source domain.",
+      "method": [
+        "Finite swap of zero and one",
+        "Zero-start iteration by conjugation",
+        "Shifted semigroup and affine factor map",
+        "Strict comparator",
+        "Saturated iteration"
+      ],
+      "bootstrap_resources": ["computation", "equality transport", "numerical cases", "literal-equation induction"],
+      "not_assumed_during_bootstrap": [
+        "predecessor",
+        "successor injectivity",
+        "arbitrary initialized iteration",
+        "unrestricted selector",
+        "quantifier-free induction",
+        "ordinary logical connectives"
+      ],
+      "resolved_problem": "The scalar successor-seeded left-inverse problem in ipra_shared_continuation_2026-11-10.zip, Section 9, at the pinned snapshot.",
+      "attribution": "The candidate syntax and conditional initialization compiler are inherited. The finite-swap and affine-comparator predecessor bootstrap supplies the previously missing proof."
+    },
+    "initialized_iteration": "I(n,a;u.h) := P(R(n,a;v.S(h[P(v)/u]))) satisfies I(0,a;h)=a and I(S(n),a;h)=h(I(n,a;h)).",
+    "target_theory": "Full first-order intuitionistic primitive recursive arithmetic with fixed PR descriptions and contextual quantifier-free induction.",
+    "bi_interpretability": true,
+    "equiconsistency": true,
+    "interpretation_domains": "Both are the entire original numerical domain.",
+    "equality": "Actual equality; no quotient or standard-element restriction.",
+    "numerical_composite_isomorphism_graph": "x = y",
+    "formula_round_trips": "The full native Eq/Q/D language and ordinary intuitionistic connectives and quantifiers are covered.",
+    "inherited_components": [
+      "Choice-DI logical reconstruction",
+      "Actual-equality reflection and quantifier-free induction",
+      "Scalar pairing and the compiler for general primitive recursion"
+    ],
+    "evidence": [
+      "theory/scalar_successor.tex",
+      "report.tex",
+      "reference/inherited_choice_basis.tex",
+      "reference/equality_reflection.tex",
+      "reference/primitive_recursion.tex",
+      "evidence/scalar_bootstrap_audit.txt",
+      "evidence/inherited_provenance.json"
+    ]
+  },
+  "complete_checker_measurements": {
+    "runtime": "CPython 3.12.14",
+    "metric": "Complete module including JSON import, public input and verdict driver; genuine docstrings and comments removed; ast.unparse plus final newline; significant tokens, AST nodes, and UTF-8 bytes counted.",
+    "coordinate_order": ["normalized_tokens", "ast_nodes", "normalized_bytes"],
+    "frozen_corpus_envelope": [281, 315, 685],
+    "new_scalar_R_family_envelope": [279, 314, 681],
+    "coordinate_improvements": [2, 1, 4],
+    "programs": [
+      {"path": "code/checker.py", "measurements": [279, 319, 686]},
+      {"path": "code/checker_bytes.py", "measurements": [279, 321, 681]},
+      {"path": "code/checker_ast.py", "measurements": [282, 314, 708]}
+    ],
+    "different_programs_attain_different_coordinates": true,
+    "one_delivered_checker_strictly_beats_all_three_old_minima": false,
+    "matched_controls": [
+      {"path": "reference/old_checker.py", "basis": "initialized I, supplied source", "measurements": [281, 318, 685]},
+      {"path": "reference/scalar_successor_direct.py", "basis": "scalar R, supplied source", "measurements": [283, 320, 687]},
+      {"path": "reference/old_generated_source_matched.py", "basis": "initialized I, generated source", "measurements": [277, 317, 684]},
+      {"path": "reference/old_generated_source_bytes_matched.py", "basis": "initialized I, generated source and byte import", "measurements": [277, 319, 679]}
+    ],
+    "source_savings_attribution": "Generated-source computation packets and ordinary import/driver organization. The same packet improvement also benefits the initialized-I basis. The arithmetic basis reduction itself is not claimed to cause the source-size savings; scalar R costs two extra tokens, two AST nodes, and two bytes in matched I/R protocols.",
+    "envelope_is_universal_lower_bound": false,
+    "evidence": [
+      "evidence/checker_metrics.json",
+      "evidence/checker_comparison.tex",
+      "evidence/MEASURER_PROVENANCE.json",
+      "theory/checker.tex",
+      "code/measure_checkers.py"
+    ]
+  },
+  "verification": {
+    "written_mathematical_audit": "PASS within the recorded arithmetic and interpretation scope",
+    "formal_assistant_verification_of_full_theorem": false,
+    "arithmetic": {
+      "status": "PASS",
+      "checks": 542,
+      "evaluation": "Exact finite R expressions with memoization; no shortcuts for Pred, V, K, or I.",
+      "scope": "Finite evaluation in the standard natural numbers; not a proof of internal derivability, universal correctness, or correctness in nonstandard models.",
+      "evidence": ["code/arithmetic_model.py", "tests/check_arithmetic.py", "evidence/arithmetic_validation.json"]
+    },
+    "checker": {
+      "status": "PASS",
+      "proof_packets": 31,
+      "positive_packets": 16,
+      "negative_packets": 15,
+      "complete_program_runs": 248,
+      "mutation_runs": 6,
+      "scope": "Finite standalone-process and guard-removal checks, including optimized Python. Universal soundness and completeness rely on the written checker argument and semantic audit, not these tests alone.",
+      "evidence": ["tests/run_checker_tests.py", "evidence/checker_validation.json", "evidence/checker_semantic_audit.txt", "theory/checker.tex"]
+    }
+  },
+  "limitations": {
+    "absolute_simplest_axiomatization_established": false,
+    "absolute_shortest_checker_established": false,
+    "worldwide_priority_claim": false,
+    "one_program_domination_of_all_old_coordinates": false,
+    "full_Lean_or_Rocq_formalization": false,
+    "finite_tests_are_a_proof": false,
+    "self_consistency_proof_claim": false,
+    "novelty_scope": "Resolution of an explicitly open arithmetic problem in the inspected pinned corpus; the logical kernel and later completion arguments are inherited.",
+    "complexity_scope": "Small, strict improvements of the three independently attained complete-checker envelope coordinates under the recorded measurement convention."
+  }
+}

@@ -1,0 +1,70 @@
+/tmp/tenpositive-scaledsquare-r89usb1r/ScaledSquare.lean:106:52: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  delta * (z' * z')
+in the target expression
+  z' * (delta * z') = m' * (m' * (G * Dy))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+delta z m G Dy : V
+hm : 0 < m
+hu : Bez G (delta * Dy) 1
+h : delta * (z * z) = m * m * (G * Dy)
+d : V
+hd : GcdCert z m d
+z' : V
+hz : z = d * z'
+m' : V
+hm' : m = d * m'
+hdpos : 0 < d
+hmpos : 0 < m'
+u v w t : V
+he : d + z * u + m * v = z * w + m * t
+hunit : Bez z' m' 1
+heq : delta * (z' * z') = m' * m' * (G * Dy)
+⊢ z' * (delta * z') = m' * (m' * (G * Dy))
+/tmp/tenpositive-scaledsquare-r89usb1r/ScaledSquare.lean:108:53: error: Type mismatch: After simplification, term
+  hdelta1
+ has type
+  m' ∣ delta * z'
+but is expected to have type
+  m' ∣ z' * ?m.414
+/tmp/tenpositive-scaledsquare-r89usb1r/ScaledSquare.lean:112:45: error: Invalid rewrite argument: The pattern to be substituted is a metavariable (`?m.414`) in this equality
+  ?m.414 = m' * e
+/tmp/tenpositive-scaledsquare-r89usb1r/ScaledSquare.lean:115:44: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  e * (z' * z')
+in the target expression
+  z' * (e * z') = m' * (G * Dy)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+delta z m G Dy : V
+hm : 0 < m
+hu : Bez G (delta * Dy) 1
+h : delta * (z * z) = m * m * (G * Dy)
+d : V
+hd : GcdCert z m d
+z' : V
+hz : z = d * z'
+m' : V
+hm' : m = d * m'
+hdpos : 0 < d
+hmpos : 0 < m'
+u v w t : V
+he✝ : d + z * u + m * v = z * w + m * t
+hunit : Bez z' m' 1
+heq : delta * (z' * z') = m' * m' * (G * Dy)
+hdiv : m' ∣ z' * (delta * z')
+hdelta1 : m' ∣ delta * z'
+e : V
+he : ?m.414 = m' * e
+heq' : e * (z' * z') = m' * (G * Dy)
+⊢ z' * (e * z') = m' * (G * Dy)
+/tmp/tenpositive-scaledsquare-r89usb1r/ScaledSquare.lean:118:42: error: Invalid rewrite argument: The pattern to be substituted is a metavariable (`?m.414`) in this equality
+  ?m.414 = m' * e
+'TenPositiveScaledSquare.scaled_square_of_coprime' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TenPositiveScaledSquare.scaled_product_factor_square' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

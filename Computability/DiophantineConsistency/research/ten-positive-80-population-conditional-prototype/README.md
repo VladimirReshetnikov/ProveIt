@@ -1,0 +1,7 @@
+# Conditional population bound for the 80 graph
+
+`Direct80PopulationConditional.graph_population_of_half_binomial` proves, in every IΣ₁ model, that an actual positive 80-graph zero gives the same positive N with `J = rep d N` and `3*d*N+2 ≤ population(rankNat)`, under β ≥ 31, odd β, the symbolic low/high port bounds, d ≥ 2, and β+1=2^d. The theorem additionally **assumes** `rankNat=2*r+1` and the half-binomial identity `2*Y=binom(2*r,r)+z*X` for natural r and z. The latter identity is not currently derived for the scaled and shifted 80-graph Pell parameters; it is the substantive open hypothesis and this theorem does not prove graph-to-halt soundness. The prior index-alignment theorem supplies odd rank, but it does not by itself prove the identity.
+
+The argument uses the same N for the repunit and q, derives `2^(3*d*N) ∣ Y` from the graph definition, derives the size bound from `3*q < rankNat` and `d*N < 2^(d*N)`, and invokes the existing internal population lemma. No literal payload, converse, iPRA endpoint or PDF binding is asserted.
+
+Fresh author check `observations/population-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`. The object `/tmp/tenpositive-80population-9vpboqqq/Direct80PopulationConditional.olean` has SHA-256 `9e31b0951a4859f2900cee07bac547b44a28da4f1bb5e918a7cfa93cfbcc98ef`. The runner pins selected project objects and records resource samples; it inherits the selected providers' source/object, package and dynamic-ancestry limitations and is not an independent Lean replay.

@@ -1,0 +1,81 @@
+A SEVEN-PACKET COUNTEREXAMPLE TO THE UNVALIDATED PACKET-COUNT FLOOR
+
+q := I(0,0;u.0), encoded [0,0,0]. Thus q=0.
+E := q=b, encoded [[0,0,0],-3], with b=-3.
+D E := [E]; Q E := [E,E,E].
+The public root goal is q=S0, encoded [[0,0,0],[0]], and is false.
+
+N counts the whole initial stack, including the root goal. The goal is popped
+first, so the floor is -1 immediately before the root proof call. Each call
+pops a packet before its scope checks.
+
+Proof packets in CONSUMPTION order:
+  1. [0,[0],E]
+  2. [[E],0,0]
+  3. [0,0,0]
+  4. [0,0,0]
+  5. [0,0,0]
+  6. [0,0,0]
+  7. [0,0,0]
+The delivered JSON file reverses these packets and appends the public goal,
+as required by the whole-JSON stack interface.
+
+CALL TRACE
+1. Floor -2, goal q=S0, context {truth}. The first packet selects
+   backward Q-specialization: b=-3 is out of scope and therefore a hole in
+   E. Opening E at S0 gives the public goal; opening E at0 gives q=0.
+   The inferred major is Q E. The pending minor is q=0.
+2. Floor -3, goal Q E, context {truth}. The same b=-3 is now retained as a
+   rigid numerical parameter. The second packet selects D-elimination with
+   major D E. Its promised continuation is Q E.
+3. Floor -4, goal D E, context {truth}. The third packet selects D-introduction
+   at witness0. E has no meaningful witness/index occurrence, so its progress
+   premise and conclusion are both the unchanged equation q=b.
+4. Floor -5, goal the neutral truth0. It closes by context membership.
+5. Floor -6, goal E under the newly added E. It closes by context membership.
+   D E has now been proved.
+6. Floor -7, goal Q E under the clause Q E created by opening D E. It closes
+   by context membership. The root's inferred major Q E is now proved.
+7. Floor -8, goal q=0. It is exactly the zero-computation leaf from[0,0,0].
+   The root returns normally and prints ACCEPT.
+
+ROOT CAUSE
+The template's scope changes between its use to infer a specialization and
+validation of its inferred major. A negative out-of-scope scalar serves as
+a substitution hole at the root, but becomes a fixed parameter in the major.
+The proved major is a closure of a constant equation, not the closure of the
+variable equation whose instances the root uses.
+
+The fact that the later D-elimination eigenparameter is fresh does not repair
+this earlier mismatch. The provisional freshness audit missed this semantic
+drift. Thus its soundness conclusion must be withdrawn.
+
+REPRODUCED RESULTS
+REJECTED_UNSOUND_packet_floor.py accepts the attack both under ordinary Python3.12.14 and under -O.
+The inherited compact_tokens239.py, with the same packets converted to JSON Lines,
+rejects both ordinarily and under -O.
+
+MINIMAL REPAIR OBLIGATION
+The inferred major must be validated at the OLD floor, before its proof call
+consumes a packet. Replacing the major call c(g,s) by c(g,i(s)) evaluates i(s)
+in the old scope, then checks the resulting major after the packet is consumed.
+Keep the original s in the mode selector and the prepared hypothesis; do not
+silently substitute a normalized s everywhere, since that can change whether
+a scalar source is false-valued.
+
+The old-scope semantic-opening lemma then shows that i(s) has the old reading
+of s, closed at the old floor. Future scope extensions preserve that reading.
+The selected eigenparameter at the major return is strictly below that old
+floor, because every major consumes a packet. This restores both the ordinary
+freshness argument and stability of the inferred major across the proof call.
+
+LOCAL_REPAIR_NOT_CERTIFIED.py implements this repair. It rejects the counterexample
+and accepts zero computation, successor computation, and a constant-equation
+D-introduction, each ordinarily and under -O. These focused checks establish
+the local repair behavior, not a complete proof of checker soundness.
+The source has262 tokens,291 AST nodes,563 normalized bytes; no size record.
+
+FILES AND STATUS
+The experimental scripts live in experiments/. The inherited control lives in
+controls/. The replacement has only a local repair claim: it is not certified
+as a sound complete checker, and no new qualifying checker is delivered.

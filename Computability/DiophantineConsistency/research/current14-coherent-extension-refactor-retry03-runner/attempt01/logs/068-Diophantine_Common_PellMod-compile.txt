@@ -1,0 +1,7 @@
+/tmp/current14-coherent490-refactor-retry03-20261110/src/Diophantine/Common/PellMod.lean:205:24: warning: `push_neg` has been deprecated. Prefer using `push Not` instead.
+If you'd rather continue using `push_neg` in your project, you can implement it as follows:
+```
+open Lean.Parser.Tactic in
+macro "push_neg" cfg:optConfig loc:(location)? : tactic =>
+  `(tactic| push $cfg:optConfig Not $[$loc]?)
+```

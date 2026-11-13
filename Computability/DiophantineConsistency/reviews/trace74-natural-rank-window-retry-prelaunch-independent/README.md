@@ -1,0 +1,7 @@
+# Independent partial-result audit and retry prelaunch: conditional rank window
+
+Attempt01 terminal SHA-256 `909001889c84fd90ad108b1b78ad8dbbebd032c994ed9458cb575f9e09fdc599` records overall FAIL. The author reports actual tool session 68934 exited 1 and was reaped. Independently checked source snapshot, direct pins, logs and object: stage1 `Trace74NaturalRankWindow.scalar_window` exited 0, clean `[propext, Classical.choice, Quot.sound]` report, empty stderr, object SHA-256 `0deddd45225a1522fddef89f1505a164c6e88b82dadecd427cebb46fc55b6ca4`. Stage2 exited 1 with `No goals to be solved` at its final `ring`; its two reports are sorry-free, but stage2 and the complete attempt are rejected. No Lean replay was run here.
+
+Scoped GO for one coordinated retry using runner SHA-256 `5bf8bf3542c4fbdc53559131b6398a24ad0cce236789e304fe6fa713dfa8ca84`. Compared against retained attempt01 sources and runner, the sole source change removes the final redundant `ring` tactic, and the sole runner change updates its source pin. All three expected report names match source directives; independently reran 13 policy controls, all PASS. Recheck the locked resource preflight and coordinate the slot before launch; capture actual tool exit and retain full terminal evidence.
+
+The stage1 theorem is a conditional scalar bound requiring its explicit assumptions, not a graph-zero inference. The held binding still assumes F<q and C≤q, and no F+C<q guard. Direct pins do not establish complete transitive project/package/dynamic ancestry, search-path shadowing or intermediate stability.

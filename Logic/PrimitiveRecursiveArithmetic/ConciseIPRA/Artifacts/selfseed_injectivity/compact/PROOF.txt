@@ -1,0 +1,208 @@
+SHIFTED SHARED LEAVES: COMPOSITION AUDIT
+======================================
+
+Claim and boundary
+------------------
+checker468.py independently reconstructs an existing implementation
+composition of the shared-leaf 469-byte checker and the even-depth offset
+used by offset472.py. The mathematical axioms, rules, and guarded public
+theory are unchanged. It saves one normalized source byte, one token and
+one AST node against its exact historical shared-leaf control. This is
+not a new current record and supplies no arithmetic axiom deletion.
+
+The final freshness audit at repository commit
+96c398c189048d713bc692720e6d72416fde40a7 authenticated the incoming archive
+ipra_468_presentation.zip (Git blob
+00ec3419184ad8bc31a4e26d60faca5deecc4e20). Its compact468.py is byte-identical
+to the reconstructed file here. The current combined compact envelope is
+240 tokens / 261 AST nodes / 468 bytes, attained by different programs and
+input framings. The present module ties its byte coordinate and does not
+beat its separate token or AST coordinates. The proof below remains an
+independent audit of that existing representation composition.
+
+Its exact measured vector is 271 tokens / 305 AST nodes / 468 normalized
+UTF-8 bytes / 309 deterministic gzip-9 bytes, on CPython 3.12.14. The last
+coordinate is informational; gzip bytes are never executed. Its exact
+control vector is 272 / 306 / 469 / 309.
+
+The domain of the compact interface is finite exact-integer/list data,
+with a canonical closed guarded Eq/D public goal. An input is a JSON
+array ending in [A,0]; earlier consumed instructions have four fields
+[m,s,u,t], and are popped from right to left. The terminal numerical
+floor is exactly 0. Public grammar and this exact alphabet are promised,
+not independently validated by the compact checker. Exceptions reject;
+normal termination with exactly ACCEPT and LF accepts. Unused prefixes
+are permitted. Actual Python resource limits are separate from finite
+ideal-execution completeness. Do not market this as an arbitrary-JSON
+validated checker.
+
+The shared-leaf source is retained exactly in controls/checker469.py.
+The offset source is retained exactly in controls/offset472.py. Both
+archive identities and source SHA-256 values are in SOURCE_PROVENANCE.json.
+reference/shared_leaf_proofs.tex and reference/OFFSET_PROOF.txt retain
+attributed proofs of the two ingredients. This note audits their
+composition; it does not assert that finite tests establish soundness.
+
+1. Exact source change
+----------------------
+The only source edits to checker469.py are these five textual replacements:
+  d=0:                 -> d=2:
+  d=3)                 -> d=5)
+  [s, u, t], 3)        -> [s, u, t], 5)
+  i(*a, t, 2)          -> i(*a, t, 4)
+  c([[]], *q())        -> c([0], *q())
+All constructors, packet reading, evaluation order, major checks, and
+negative eigenparameter allocation remain identical. The first four
+edits change one digit to one digit. The last removes one pair of square
+brackets and adds one digit, producing the net one-byte saving. The
+normalized source hash is
+  fc938318f33835408bea48f37e52379ce5abe4072e3ac5b0bb61b485fccb69b0.
+
+2. Shifted sorted syntax and the opening lemma
+---------------------------------------------
+At p protected slots, the formula depth is 2+2p and the term depth is
+5+2p. At a term position, scalars 0,1,2,3,4 denote zero. Scalars 5+2j and
+6+2j name protected slot j, provided j<p. A negative integer in [k,0)
+is the rigid parameter with that name. Other scalars denote the one
+substitution hole. Formula-position scalars denote the true equation.
+
+The array decoding is inherited unchanged: at term positions arities
+1 and 3 denote successor and scalar iteration; at formula positions
+arities 1,2,3 denote D, equality and Q. Other arities have constant
+zero/true readings. Unary term nodes protect two dummy zero slots;
+iterator counter/seed children protect one dummy slot and the body
+protects its state slot. D protects two slots; Q protects one. Children
+are traversed at depth d+5-arity. The arity-2 formula transition has
+increment 3 and switches to the term sort. All other meaningful
+increments are even and preserve the sort.
+
+Canonical zero is 0. Canonical bound-slot codes are 5+2j, and negative
+parameters are unchanged. Thus canonical old encodings shift every
+positive slot/hole code upward by two. The added positive aliases 3,4
+are zero aliases, not new variables.
+
+The actual opener is eager. An out-of-scope scalar computes and validates
+the replacement image at depth 5 before multiplication by depth parity.
+The missing replacement is the function c, which fails numeric/tree
+operations. Consequently a successful no-image opening fixes its input
+literally. At an even-depth hole a supplied image yields scalar zero or
+an empty list; either reads as true. The actual partial operation may
+reject extra annotations, and cannot be replaced by a lazy function in
+an acceptance-equivalence claim.
+
+Tree induction proves: successful opening gives a closed reading;
+no-image opening preserves the reading; an actual hole is replaced
+capture-avoidably by the reading of an old-scope root term. A validated
+replacement's indices refer only to its own internal binders, zero and
+old negative parameters, so copying it below additional outer slots does
+not capture it. Lowering depth by two exposes precisely the outermost
+slot. A D matrix has depth 6; opening at depth 4 substitutes its witness
+while retaining its numerical index, and opening at depth 2 substitutes
+that index. Repeating a unary D array three times changes it to a Q
+array and exposes its witness. These are exactly the opener and exposure
+lemmas of OFFSET_PROOF, with their full raw-annotation qualifications.
+
+The floor change k to k-1 is untouched. All previously closed meaningful
+readings use negative names in [k,0), so the new name k-1 is fresh. The
+positive depth shift does not weaken this old-scope condition.
+
+3. Shared-leaf soundness
+-----------------------
+Every call still consumes exactly one packet. It validates its goal and
+generates the same computation expression H(s,u,t), now at shifted
+depths. It closes if the validated goal belongs to g+[H]. Because the
+no-image opener is the identity on its success domain, a successful
+comparison to H is literal equality, exactly as in the eager shared-leaf
+control. A comparison to an old context entry is a hypothesis step.
+
+If s is false-valued, it is 0 or [] and H reads as the zero iteration
+equation. If s is true-valued, H reads as the successor iteration equation.
+In the latter case the right-hand opening substitutes the reading of
+[s,u,t] for the state. If the body does not use its state, the same
+computation holds with a constant update; if it does use its state,
+validation of the image ensures the closed predecessor and seed readings
+agree on both sides. Extra dummy references remain zero. Thus every
+successful computation leaf is sound, including noncanonical internal
+integer/list trees. This is Section 4 of OFFSET_PROOF with an additional
+hypothesis membership alternative, precisely the shared-leaf theorem.
+
+The fresh initial entry 0 has the reading 0=0 and now validates at formula
+root depth 2. It can therefore replace the old [] truth entry. Dummy
+hypothesis packets [0,0,0,0] generate I(0,0;u.0)=0 in every scope.
+
+4. Non-leaf soundness and the important mode boundary
+----------------------------------------------------
+A successful recursive call always returns a nonempty singleton list.
+Therefore the expression c(g,m,k) and m*3 verifies its major before using
+it. As before, a unary major opens D at a fresh negative parameter, a
+binary equality major or ternary closure major supports the source-selected
+backward use, and other accepted major shapes contribute only a true
+administrative context entry. The optional replacement test is evaluated
+in the new scope; the old goal is fresh-parameter free and is recovered
+by equality transport or closure elimination before that parameter is
+discharged. The neutral-major branch opens the witness in the OLD scope,
+then allocates its fresh induction/case parameter. None of this sequencing
+has been changed.
+
+At that introduction the selector 3 % len(a) is true at a literal equation
+(arity 2), false at meaningful compound roots D and Q (arities 1 and 3).
+It therefore supplies E(w,b) for atomic progress, and B(w,0) for cases.
+Replacing the selector by len(a)-1 would incorrectly apply progress to
+auxiliary Q matrices; canonical Eq/D public syntax does not rule out such
+raw auxiliary intermediates. That apparent shortcut is not justified.
+
+For faithful auxiliary interpretation, atomic D is read progressively:
+  D_xy E := exists x forall y (E(x,y) -> E(x,S y));
+compound D is existential conditional closure, and Q is conditional
+closure. The public guarded atomic matrices have provable zero instances,
+so their progressive and ordinary conditional-closure readings coincide.
+The same public arithmetic/logical bridge is inherited unchanged. Merely
+calling every auxiliary D an ordinary closure would require care: this
+reading is sound but not complete for all unguarded auxiliary formulas.
+
+An induction on the finite successful call tree, using these leaves and
+the unchanged non-leaf argument of OFFSET_PROOF, proves soundness for
+every accepted raw certificate in the promised alphabet with a canonical
+public goal. The initial truth entry is discharged as a theorem.
+
+5. Completeness and the two theory interpretations
+--------------------------------------------------
+Compile an arbitrary derivation of the inherited guarded/source-selected
+calculus in canonical shifted syntax. The opening lemma gives the same
+witness substitutions and rule premises. Compile a computation leaf by
+its computation packet, using the inherited nonliteral-zero supply where
+successor computation's predecessor is semantically zero. Compile each
+hypothesis leaf with one dummy packet [0,0,0,0]. This extra packet introduces
+no parameter. Ignore semantically true administrative context entries.
+The neutral major is scalar 0 and always closes against the initial truth
+entry with a dummy packet. Thus every public theorem has a finite accepted
+certificate. This is a canonical completeness argument; it does NOT say
+that arbitrary raw accepted control certificates survive a naive numeric
+shift. The supplied translator is intentionally limited to canonical
+integer/list certificates.
+
+The public source theory and the ordinary realization are unchanged.
+Use the inherited interpretations to and from full first-order intuitionistic
+PRA. All translated axioms and all formula round-trip proofs transfer
+through the unchanged theorem set. Both numerical domains are whole,
+equality is actual equality, and both numerical comparison graphs are
+x=y. Hence bi-interpretability and equiconsistency transfer. Their underlying
+arithmetic/logical bridge is an attributed dependency, not a new proof-assistant
+formalization by this package.
+
+6. Executable evidence and remaining limits
+-------------------------------------------
+verify.py is self-contained and reruns 126 isolated executions: exact
+469-byte control on original fixtures, 468-byte reconstruction on shifted
+fixtures, and its readable expansion on shifted fixtures, in normal and
+-O modes. It includes used induction, compound logical elimination,
+equality transport, computations, false-goal mutations, context leakage
+and future-witness attacks. Every expected result agrees. The detailed
+receipt is evidence/verification.json. This finite evidence checks the
+implementation; the all-certificate claims above depend on the written
+semantic proof and its inherited foundations.
+
+The compact source does not validate arbitrary JSON. No new Lean or Rocq
+verification is claimed. No absolute minimality, mathematical lower-bound
+violation, new current record, or reduction below the separate token/AST
+frontier is claimed.

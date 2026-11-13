@@ -1,0 +1,3 @@
+# Sign25 remaining-cut transfers: source-only draft
+
+These two generated modules propose the q3 first-residual evaluation and 14 surviving row/evaluation transfers after deleting ell and handling the affected N0 row. The generator pins the old and new Lean syntax bytes, verifies that the 14 old expressions do not mention deleted coordinate 19, and refuses to overwrite generated files. It maps each old residual position to its new position after the deleted row. No Lean check, zero bridge, endpoint, or external JSON binding is claimed. The input source heartbeat and historical sign26 plan README appendix caveats apply.

@@ -1,0 +1,21 @@
+/tmp/nine-sharing-sign14-zero-assembly-retry02-check-20261110/src/DiophantineConsistency/Sign14ForwardBridge.lean:37:2: error: Tactic `apply` failed: could not unify the conclusion of `(SharingSign14Squares.seed_zero_iff_residuals p ?m.54).mpr`
+  InternalZero (SharingSeed14Degree124.seed p) ?m.54
+with the goal
+  InternalZero (SharingSeed15Degree124.seed p) (Sign14Coordinate.lift v gap)
+
+Note: The full type of `(SharingSign14Squares.seed_zero_iff_residuals p ?m.54).mpr` is
+  (∀ e ∈ SharingSeed14Degree124.firstResidual p :: SharingSeed14Degree124.remainingResiduals p, InternalZero e ?m.54) →
+    InternalZero (SharingSeed14Degree124.seed p) ?m.54
+
+V : Type
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+v : Fin 15 → V
+gap : V
+hg : ι gap = Expr.evalRing (fun j => ι (v j)) (SharingSeed14Degree124.shared36 p)
+hz : InternalZero (SharingSeed14Degree124.seed p) v
+hn : ∀ e ∈ SharingSeed14Degree124.firstResidual p :: SharingSeed14Degree124.remainingResiduals p, InternalZero e v
+⊢ InternalZero (SharingSeed15Degree124.seed p) (Sign14Coordinate.lift v gap)
+'DiophantineConsistency.Sign14ZeroBridge.old_rows' depends on axioms: [propext]
+'DiophantineConsistency.Sign14ZeroBridge.forward' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

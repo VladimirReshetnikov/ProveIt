@@ -1,0 +1,86 @@
+An exact operational equivalence, up to the indistinguishable values False
+and 0, for the complete-JSON local three-field checker
+
+CONTROL AND CANDIDATE
+
+The only changed expression is the second argument in the opening of a newly
+retained hypothesis. The control uses
+
+    (k := k - 1) and (s or len(a) == 2) and k
+
+and the candidate uses
+
+    (k := k - 1) * (1 if s else len(a) == 2).
+
+The assignment occurs first in both expressions, before the opener i is
+called. The opener closes over the same local k, so every opening sees the
+same floor as in the control. Every other operation, including the initial
+scope scan, the inferred-major test, major proof, construction of the
+retained hypothesis, construction of the continuation, and JSON parsing is
+unchanged.
+
+FLOOR INVARIANT
+
+The root is called at k=0. A recursive major call receives the current k.
+Every iteration decreases its own local k by one; it never increases it.
+Hence k<=0 before the changed expression, and the assigned value j=k-1 is a
+strictly negative integer. This is an induction on the evaluation tree and
+the number of completed loop iterations. It is independent of the truth
+or well-formedness of the supplied proof instructions.
+
+LOCAL IDENTITY
+
+If s is true-valued, both expressions perform the decrement and then return
+j. Neither evaluates len(a). If s is false-valued, both perform the decrement
+and then evaluate the same test b=(len(a)==2). If that operation raises an
+exception, it raises in both. If b is true, both return j. If b is false,
+the control returns False and the candidate returns the integer 0.
+
+Define an equivalence on trees by allowing False and 0 to replace one another
+at any leaf and otherwise requiring identical tree structure and identical
+leaves. Both values have the same truth value, are numerically equal, compare
+identically with every integer, and have the same result under every numeric
+arithmetic operation used by these programs. Both fail to be iterable, so
+the attempted-traversal opener takes the same exception branch. A call of
+len on either fails. Python list and tuple comparison use component equality
+and hence preserve this relation. The checker performs no exact-type test
+that distinguishes these two values, and it does not serialize internal
+trees. Its only success output is the unchanged constant ACCEPT.
+
+SIMULATION
+
+Relate two states when their floors and remaining packet stacks are equal,
+their contexts and goals are related componentwise as above, and their call
+stacks have corresponding continuations. Initial states are related. A
+structural induction on an opening shows that related inputs have related
+outputs, or fail at corresponding operations. The membership test therefore
+has the same truth value. A nonclosing iteration consumes exactly one equal
+packet in both programs. The major-selection test and conditional branches
+agree. Related recursive major calls agree by induction on any finite
+evaluation prefix. The local identity above gives related opening images
+for the new hypothesis; the rest of the iteration is identical. Hence the
+contexts and continuation goals after the iteration are related.
+
+This proves equality of all finite successful runs on the finite exact-
+integer/list input domain, including consumption of the same packets. The
+same simulation preserves failure and every finite prefix of divergence.
+One should use the ideal execution convention of the source article for
+unbounded completeness; actual Python recursion and resource limits are
+not a theorem of the calculus. Ordinary Python and Python -O execute the
+same inference logic, since neither checker uses assert.
+
+CONSEQUENCES
+
+For every canonical closed guarded formula A and every permitted input
+certificate P ending in A, the candidate accepts P iff the control accepts
+P. In particular, A has an accepted candidate certificate iff it has an
+accepted control certificate. Thus the inherited calculus, its ordinary
+realization and its bi-interpretation with iPRA are unchanged. The equivalence
+of full first-order formulas, not merely a coincidence of consistency
+strength, is inherited from the original calculus; it is not reproved by
+these finite tests.
+
+The rewriting itself is already in the repository's fused_iteration package
+and the unified article (cert:prop:stream-rewrites(a)). The present result
+is its application to a full-JSON control. It deletes no logical or arithmetic
+rule, and the sizes 255/269/605 do not meet the simultaneous 249/271/477 target.

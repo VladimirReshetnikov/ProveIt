@@ -1,0 +1,84 @@
+import AdjacentPreserve
+
+/-! Strict inequalities for one adjacent-Pell descent step. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositiveAdjacentBounds
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open DiophantineConsistency.ArithmeticSignedPairs
+open TenPositiveAdjacentPreserve
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- For a positive denominator and first coordinate above one, the adjacent
+norm forces mv < r and B*r < (1+B)*mv. -/
+theorem adjacent_order (B m v r : V) (hm : 0<m) (hv : 1<v)
+    (h : (1+B)*((m*v)*(m*v))=m*m+B*(r*r)) :
+    m*v<r ∧ B*r<(1+B)*(m*v) := by
+  let X : V := m*v
+  have hmX : m<X := by
+    dsimp [X]
+    simpa using mul_lt_mul_of_pos_left hv hm
+  have hXsq : m*m<X*X := mul_self_lt_mul_self (by simp) hmX
+  have hXr : X<r := by
+    by_contra hn
+    have hrX : r≤X := le_of_not_gt hn
+    have hsq : r*r≤X*X := mul_self_le_mul_self (by simp) hrX
+    have hmulsq : B*(r*r)≤B*(X*X) := mul_le_mul_of_nonneg_left hsq (by simp)
+    change (1+B)*(X*X)=m*m+B*(r*r) at h
+    have hle : X*X+B*(X*X)≤m*m+B*(X*X) := calc
+      X*X+B*(X*X)=(1+B)*(X*X) := by ring
+      _=m*m+B*(r*r) := h
+      _≤m*m+B*(X*X) := by simpa only [add_comm] using add_le_add_left hmulsq (m*m)
+    have hXle : X*X≤m*m := (add_le_add_iff_right (B*(X*X))).mp hle
+    exact (not_le_of_gt hXsq) hXle
+  have hs : (B*r)*(B*r) < ((1+B)*X)*((1+B)*X) := by
+    calc
+      (B*r)*(B*r) < (B*r)*(B*r)+(1+B)*(m*m)+B*(r*r) := by
+        have hp : 0<(1+B)*(m*m) := mul_pos (by simp) (mul_pos hm hm)
+        exact lt_of_lt_of_le (lt_add_of_pos_right _ hp) (by simp)
+      _=((1+B)*X)*((1+B)*X) := by
+        change (1+B)*(X*X)=m*m+B*(r*r) at h
+        rw [show ((1+B)*X)*((1+B)*X)=(1+B)*((1+B)*(X*X)) by ring,h]
+        ring
+  have hupper : B*r<(1+B)*X := lt_of_mul_self_lt_mul_self₀ (by simp) hs
+  exact ⟨hXr,hupper⟩
+
+
+/-- If B=m²t is positive, the displayed integer quotient of the transformed
+first coordinate is strictly smaller than v. -/
+theorem adjacent_first_decreases (B m v r t : V)
+    (hB : 0<B) (hm : 0<m) (hv : 1<v) (hBt : B=(m*m)*t)
+    (h : (1+B)*((m*v)*(m*v))=m*m+B*(r*r)) :
+    magnitude ((1+2*B)*v,2*m*t*r)<v := by
+  obtain ⟨hXr,hBr⟩ := adjacent_order B m v r hm hv h
+  have ht : 0<t := pos_of_mul_pos_right (by rw [←hBt]; exact hB) (by simp)
+  have hscale : 0<2*m*t := mul_pos (mul_pos (by simp) hm) ht
+  let L : V := (1+2*B)*v
+  let R : V := 2*m*t*r
+  have hleft : L<R+v := calc
+    L=v+(2*m*t)*(m*v) := by dsimp [L]; rw [hBt]; ring
+    _<v+(2*m*t)*r := by simpa only [add_comm] using (add_lt_add_left (mul_lt_mul_of_pos_left hXr hscale) v)
+    _=R+v := by dsimp [R]; ring
+  have hcancel : m*t*r<(1+B)*v := by
+    apply lt_of_mul_lt_mul_left _ (by simp : (0:V)≤m)
+    calc
+      m*(m*t*r)=B*r := by rw [hBt]; ring
+      _<(1+B)*(m*v) := hBr
+      _=m*((1+B)*v) := by ring
+  have hright : R<L+v := calc
+    R=2*(m*t*r) := by dsimp [R]; ring
+    _<2*((1+B)*v) := mul_lt_mul_of_pos_left hcancel (by simp)
+    _=L+v := by dsimp [L]; ring
+  change magnitude (L,R)<v
+  dsimp [magnitude]
+  rcases le_total L R with hle | hle
+  · rw [tsub_eq_zero_of_le hle,zero_add]
+    exact (tsub_lt_iff_left hle).mpr (by simpa only [add_comm] using hright)
+  · rw [tsub_eq_zero_of_le hle,add_zero]
+    exact (tsub_lt_iff_left hle).mpr (by simpa only [add_comm] using hleft)
+
+#print axioms TenPositiveAdjacentBounds.adjacent_order
+#print axioms TenPositiveAdjacentBounds.adjacent_first_decreases
+end TenPositiveAdjacentBounds

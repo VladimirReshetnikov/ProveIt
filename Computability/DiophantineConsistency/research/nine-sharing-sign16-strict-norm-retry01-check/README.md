@@ -1,0 +1,5 @@
+# Sign16 strict norm retry: source-only client
+
+The [first attempt](../nine-sharing-sign16-strict-norm-check/attempt01/outer-result.json) failed at the ordering of addition in a positivity comparison and at unfolding local coefficient D. This fresh retry changes only those two steps, leaving the statement, assumptions and providers unchanged. The author run checked the strict norm from seed zero and represented beta. No signed lift, equivalence or iPRA endpoint is claimed.
+
+The runner pins the prior failure, same provider point survey and fresh outputs; the survey itself is not rerun postflight, while direct import guards and output overlays are. Author no-Lean preflight session 46038 exited 0 ([receipt](preflight.json)); [Independent retry prelaunch](../../reviews/nine-sharing-sign16-strict-norm-retry01-prelaunch-independent/README.md) passed. Author outer session 56100 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign16-strict-norm-retry01-terminal-independent/README.md) passed. Same `-M2800`, 120-second, sampled 4-GiB RSS, 10-GiB host-memory and 5-GB disk limits apply.

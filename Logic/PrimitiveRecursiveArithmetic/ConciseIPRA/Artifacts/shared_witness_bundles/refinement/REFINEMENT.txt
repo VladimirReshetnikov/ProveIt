@@ -1,0 +1,62 @@
+# A safe implementation refinement (not a mathematical reduction)
+
+The new complete source `checker581.py` is an exact operational refinement of
+`code/checker_bytes584.py` in the pinned incoming archive
+`docs/incoming/ipra_scope_phase_2026-11-13.zip`, at repository commit
+`e88ebf229bb61bd870bb229b9c97caaa1e044e6e`.
+
+Only one condition changes:
+
+```python
+(k or d & a % 2)
+```
+
+becomes
+
+```python
+k < d & a % 2
+```
+
+The condition is used only for its truth value, as an operand in the guard
+of a conditional expression. Every complete parsed certificate is checked
+lexically to contain exact integers and lists. Whenever this leaf condition
+is reached successfully, `a` and `d` are integers. Therefore
+`b = d & (a % 2)` is either 0 or 1. The global floor `k` is initialized to 0
+and is decreased at each procedure entry; it is never increased. If `k=0`,
+both old and new conditions are true exactly when `b=1`. If `k<0`, both are
+true. The new expression evaluates `b` even when `k<0`, whereas the old one
+short-circuits; this additional evaluation is a total, pure integer operation.
+Any non-integer sentinel or malformed array that reaches the leaf arm already
+fails the preceding range comparison `k <= a < d` in both programs. Thus the
+programs follow the same proof-checking control flow and accept the same
+inputs, ignoring physical resource limits. Their exception text or traceback
+line numbers need not agree.
+
+The program still has exactly the interface and metatheoretic limitations of
+its source: its whole-input integer/list validation and sorted public goal
+validation are inherited. In particular, this is not a repair of the
+dummy-slot/canonical-image distinction found in `composition_and_dummy_slots`.
+Its completeness claim concerns the canonical public encoding, not every
+sorted alias admitted by the inexpensive validator.
+
+CPython 3.12.14 measurements (`ast.unparse` plus one LF):
+
+| Source | significant tokens | AST nodes | normalized bytes | gzip level 9, mtime 0 |
+| --- | ---: | ---: | ---: | ---: |
+| pinned control | 311 | 362 | 584 | 375 |
+| new source | 309 | 362 | 581 | 378 |
+
+This lowers only the strict byte record, not the compact 239/255/460
+componentwise frontier. It is implementation cleanup, not a new
+axiomatization or a mathematical breakthrough.
+
+Validation: all 63 packaged cases were replayed under both the control and
+new program, in ordinary Python and `python -O`: 252 isolated executions,
+zero mismatches with expectations. The cases include canonical positive
+proofs, malformed and ill-typed input, false conclusions, and eigenvariable
+capture attempts. The receipt is `floor_compare_validation.json`.
+
+The proposed `checker_top300.py` should not be included as a finished result:
+it changes the public syntax by adding redundant truth formulas, and was not
+developed into a rigorous useful presentation. The unvalidated eager
+three-field composition should likewise be excluded.

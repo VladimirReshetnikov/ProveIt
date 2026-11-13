@@ -1,0 +1,94 @@
+{
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "pinned_revision": "12197d86f63e9ec73b2d91399c4de2a8cb0077ee",
+  "project_path": "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA",
+  "source_urls": [
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/12197d86f63e9ec73b2d91399c4de2a8cb0077ee/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/Article/chapters/ch11_cert.tex",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/12197d86f63e9ec73b2d91399c4de2a8cb0077ee/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/Article/chapters/ch01_base.tex",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/12197d86f63e9ec73b2d91399c4de2a8cb0077ee/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Artifacts/three_field/code/checker_ast.py",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/12197d86f63e9ec73b2d91399c4de2a8cb0077ee/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Artifacts/fused_iteration/code/checker_refinement/checker.py",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/12197d86f63e9ec73b2d91399c4de2a8cb0077ee/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/12197d86f63e9ec73b2d91399c4de2a8cb0077ee/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/ScalarToPRA.lean",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/12197d86f63e9ec73b2d91399c4de2a8cb0077ee/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/RoundTripPRA.lean",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/12197d86f63e9ec73b2d91399c4de2a8cb0077ee/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/Article/chapters/ch04_comp.tex",
+    "https://github.com/VladimirReshetnikov/ProveIt/blob/12197d86f63e9ec73b2d91399c4de2a8cb0077ee/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/Article/chapters/ch06_disch.tex"
+  ],
+  "overall_status": "Partial research result. No construction is established below all three current compact-checker minima.",
+  "comparison_contract": "R/U: raw guarded language with a complete finite JSON input; existing programs need not attain all coordinates together.",
+  "recorded_repository_envelope": {
+    "tokens": 249,
+    "ast_nodes": 271,
+    "normalized_utf8_bytes": 477,
+    "attained_by_one_program": false,
+    "proved_universal_lower_bound": false
+  },
+  "compact_refinement": {
+    "path": "compact/code/checker269.py",
+    "tokens": 255,
+    "ast_nodes": 269,
+    "normalized_utf8_bytes": 605,
+    "status": "Independent implementation composition of an existing rewriting, for the unchanged raw guarded calculus. No axiom deletion.",
+    "control": "compact/controls/checker271.py",
+    "control_metrics": {
+      "tokens": 255,
+      "ast_nodes": 271,
+      "normalized_utf8_bytes": 606
+    },
+    "baseline_git_blob_sha": "6b7b3bbba4ffc95f9d10081477096d910be1ace9",
+    "provenance_details": "compact/PROVENANCE.json"
+  },
+  "selective_reference": {
+    "path": "selective/selective_checker.py",
+    "tokens": 2662,
+    "ast_nodes": 2904,
+    "normalized_utf8_bytes": 13172,
+    "primitive_rules": [
+      "Hyp",
+      "IS",
+      "VSub",
+      "QE",
+      "DE",
+      "WI"
+    ],
+    "status": "Readable standalone reference checker; not a software-size improvement. Reflexivity is derived, not primitive.",
+    "proof_status": "Paper metatheorems plus executable tests; no machine-checked implementation proof and no supplied general derivation compiler."
+  },
+  "recurrence_note": {
+    "path": "notes/recurrence_fusion.txt",
+    "status": "Paper derived-rule refactoring; proposed Lean interface not compiled; no claimed novelty for fold fusion."
+  },
+  "lean_compilation_performed": false,
+  "measurement": {
+    "python": "CPython 3.12.14",
+    "normalization": "ast.unparse(ast.parse(source)) plus one final LF",
+    "token_exclusions": [
+      "ENCODING",
+      "ENDMARKER",
+      "NEWLINE",
+      "NL",
+      "INDENT",
+      "DEDENT",
+      "COMMENT"
+    ],
+    "ast_measure": "Every ast.walk node",
+    "bytes_measure": "UTF-8 length of normalized source"
+  },
+  "reproduce": [
+    "python3 selective/test_selective.py",
+    "python3 compact/verify.py"
+  ],
+  "artifact_sha256": {
+    "selective/selective_checker.py": "4790634cc50ae9046da7b25384eefe2503b7882a47a052bf17d76947020f1845",
+    "selective/test_selective.py": "1bae11887867f54b0e49c15d7b078e20292f33c815591c74d35207a389b27cec",
+    "compact/code/checker269.py": "8ad173d4669dc2f30f33c8fd12f374e52cdb47d20a9b82108079d093c4563723",
+    "compact/controls/checker271.py": "4cb0ee3c3f1610837910e3f1e8984d6e94012ed2fad455d272eeab9b5a2350a7",
+    "compact/verify.py": "ed0320c75d0caf15b4cd2f0488a51ec2ea44161d4522d6e9d435f9e7b7d5be6d",
+    "notes/recurrence_fusion.txt": "eb6475512cd0f1fd6d38507081c856cb851283f0a931c40f2bc6d05bbd65599f"
+  },
+  "report": {
+    "tex": "ipra_selective_normalization.tex",
+    "pdf": "ipra_selective_normalization.pdf",
+    "pages": 12,
+    "visual_inspection": "All pages rendered and inspected; no overfull boxes or unresolved references in the final TeX run."
+  }
+}

@@ -1,0 +1,3 @@
+# Independent sign24 full-coefficient first-attempt failure audit
+
+Independent checker session 89694 exited 0 against author outer session 55760 (exit 1). Four previously audited ingredient stages recompiled successfully. The fifth list-coefficient stage failed on `1 + count = count + 1`, with two unused-simp warnings and `sorryAx` in its failed report. It produced no object; seed coefficient, degree lower bound and final postflight were not reached. The checked children are only a prefix of a failed enclosing run, and do not establish the full coefficient or lower bound. Direct guards, overlays and expression provider observations were checked.

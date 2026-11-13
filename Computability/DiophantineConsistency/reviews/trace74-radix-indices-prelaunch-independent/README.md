@@ -1,0 +1,7 @@
+# Independent prelaunch review: radix and indices isolation
+
+Scoped GO for one coordinated check of runner SHA-256 `b2dbb467334d524dc2b7fdad01045e34fc2863e2d193bbe7e634577cec9f7822` through outer SHA-256 `d556fcc3b5440dddbd4672ee70fdbfbcebd443988672dac35bf4838c24073d35`. No Lean was invoked during this review.
+
+Source SHA-256 `b63f655e9fba3ece1aa971861eec6c6be58b088912d04c7ea649ac3a77b735f9` matches the reviewed draft and its actual sole `#print axioms` matches the planned and runner-enforced `Trace74RadixIndices.low_add_defect`. The direct `Trace74FixedIndices` object `2861e8ade4581abb1eade8b4fb45b738fc9c8a0d59a71ab265532d7b311ef728` and the independently audited parent result, outer receipt and closure inventory are pinned. Comparing the runner to the reviewed FixedIndices runner shows the intended parent/source/report changes and preservation of all parent roots with project/outside companion comparisons, no-clobber and stable-input checks.
+
+Read-only preflight terminal SHA-256 `28990986b2999e412f993760ec274c5e8b916fc28082992a098a2ef54fdbee70` records exit 0 and 2037 parent/81 outside/one stage; 25 actual-function and six isolated outer control receipts report PASS. Coordinate the Lean slot and capture the actual outer exit and terminal result. The stage fixes radix and indices with symbolic support and explicit range hypothesis; it does not establish concrete support, high bound, full mask cover, graph guard or iPRA. Four inherited baseline source ancestries, transitive outside/package/dynamic ancestry and external-file binding remain limited.

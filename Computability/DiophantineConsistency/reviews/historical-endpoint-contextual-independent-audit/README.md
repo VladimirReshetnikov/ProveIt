@@ -1,0 +1,7 @@
+# Independent contextual historical endpoint review
+
+The review independently prepared a fresh sparse historical view using the committed preparer: session 69682 actually exited 0. It then ran the exact original endpoint audit with only `PARENTAUDIT` rebound to that view: session 71389 actually exited 0, and its complete captured output is byte-identical to the pinned endpoint CHECK, SHA-256 `50c18ab38d6393cf784e658b5626bb6ec3cb490dc1652f5b5dcfa2b1adca1cce`. The review removed its own reproducible 76 MiB clone after capturing this output to restore disk space.
+
+The separate static `audit.py` check verifies the reviewed packet's committed bytes, the exact original endpoint audit and preparer pins, the sole `PARENTAUDIT` assignment in the contextual wrapper, the historical Git blob and frozen endpoint source hash, the current live source hash, and all 1,145 selected source hashes. It found exactly one live mismatch, `ModelCarrierCurrent`; its output is `CHECK.json`. It does not recreate the clone when rerun. No Lean was launched in this review.
+
+This reproduces a contextual historical endpoint result with one explicit path rebound. It is **not** an unchanged live full-chain audit pass: that chain remains failing on live source drift, and a fully relocated chain encounters absolute receipt-path keys. It does not validate the current source, prove current-source/provider coherence, authorize a replay driver to bypass historical checks, or establish an iPRA theorem.

@@ -1,0 +1,7 @@
+# Static-constraints-to-seed check: failed
+
+This one-module client copies the source-reviewed `static_implies_seed_zero` theorem and proof from the forward bridge draft. In an IΣ₁ model, assuming four port-cast equalities, `gatesHold` and `fiveNorms`, it proposes the literal 38-seed zero at distinguished input 1. It applies the 24 materialized-component slot identities, five norm slot identities and the checked sum-of-squares equivalence; it does not need source-zero, beta positivity or a proof that a particular witness satisfies the static hypotheses.
+
+The fresh runner checks the immediate successful forward-prefix provider, the successful each-slot producer and all ten successful slot-group producer rows from the earlier overall-failed batch, including source/object/log/direct guards and overlay routes. The failed batch assembly is excluded; deeper source-provider ancestry is inherited. Candidate direct guards are rechecked after a successful compile, while prior checks and resource monitoring remain point observations.
+
+Source SHA-256 `b7dafd1b3d9460ab2385efb8a6fae3d597be258139f98bc29d44e35d4a15a60f`, manifest `a47bdf954ba6520400957a10e71f9c4185f0535499fdf183e54c310146c6ca5d`, runner `3e90ef85260fadd1b09080afb5058562708b9d617cce6ba8f2202981bbd32c82`. No-Lean preflight exited 0; independent review and coordinated slot release preceded session `24644`, which exited 1 at the final list-index rewrite; see `attempt01/`. A successful result would not by itself prove source-to-seed correspondence or the iPRA endpoint.

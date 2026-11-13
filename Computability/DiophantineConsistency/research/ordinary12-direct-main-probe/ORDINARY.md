@@ -1,0 +1,7 @@
+# Unchanged ordinary factor at the transformed valuation
+
+`DirectMainOrdinary.lean` proves in every IΣ₁ model and for arbitrary natural ports that an actual direct-draft output zero implies its ordinary residual is zero. At the explicit composed X and Y valuation transforms, it then proves the old 95-graph ordinary residual is zero and the old ordinary factor is a unit. No positivity or old whole-graph zero is assumed. This is a single-factor binding: it does not establish the old first and main factor units or the old complete zero.
+
+The old auxiliary chain still needs its bound, integrality, denominator, and related hypotheses generalized to the direct graph. Full index alignment, model-to-halt equivalence, and internal iPRA proof-existence remain open.
+
+`run-ordinary.py` produced `observations/ordinary-attempt01/` with exit 0 and no reported warnings. Source SHA-256 is `9dddbb3df3179ce9c4f33245867a0e6d68570e2825f9fb671b675c33522e2ff5` and output object is `fbc40dd756864d13bdb4675432d99f8b6dca57412ef1d877a928a0ee10edf269`; all three theorem axiom reports list `propext`, `Classical.choice`, and `Quot.sound`. The XQ91 model, draft graph, and XQ91 producer objects and selected 1,291-object union were pinned and rechecked. Package, dynamic, and source-to-object ancestry are inherited rather than freshly rebuilt; resource samples and exact pins are in the receipt, and temporary paths may disappear.

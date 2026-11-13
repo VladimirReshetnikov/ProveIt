@@ -1,0 +1,5 @@
+# Independent terminal review: B/q/N short-prefix retry
+
+The retained state records successful dependency and Lean compilation checks, and the separately identified author record says outer session 47674 exited 0. The three reports are each `[propext, Classical.choice, Quot.sound]` and the log contains no warnings. The checker verifies the state, source, object and logs, direct producer binding, 100 recorded guards and 1,169 overlay links against their present filesystem paths. No Lean replay was performed. The outer record is an author's observation rather than an independent raw terminal transcript.
+
+For any commutative ring and nine ring inputs, the checked theorems identify the last values of prefixes d2, d3 and d4 as `base^5`, `(base^5)^(5^39)` and `((base^5)^(5^39))^16`, respectively. These are short-prefix claims, not full-recipe entries or a full semantic/JSON correspondence. Provider observations are point-in-time and the retained ancestor initial-agreement outer numeric exit is unavailable. Sampled resource monitoring cannot exclude transient spikes or escaped descendants.

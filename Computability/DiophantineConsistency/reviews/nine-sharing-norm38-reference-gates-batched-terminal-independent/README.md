@@ -1,0 +1,5 @@
+# Independent terminal audit: reference gate batch
+
+All 13 modules passed: twelve groups cover the 60 reference-gate equations, and the final module proves the universal equation for every gate in `NormAssignment38.gates`, for arbitrary commutative rings, ports and coordinates. Its axiom report is `[propext, Quot.sound]` and its log has two unused-simp-argument linter warnings. The separately frozen prelaunch review checks the 60 source/DAG triples and group mapping. This theorem alone does not establish initial static/reference agreement or the final source/iPRA endpoint.
+
+The checker pins the source manifest, runner, retained/live state, all 13 sources, logs and output objects; verifies all twelve producer routes into the assembly, 1,850 direct guard slots and 1,067 overlay routes; and reruns the independent reference-base terminal review. The successful runner reached final guards and overlay checks. Author-recorded outer session 25860 exited 0; this is not an independent historical transcript. Resource monitoring is sampled and selected provider point checks do not establish complete transitive/dynamic ancestry. No Lean replay was performed.

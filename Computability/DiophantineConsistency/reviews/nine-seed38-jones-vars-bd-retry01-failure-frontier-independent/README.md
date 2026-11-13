@@ -1,0 +1,5 @@
+# Independent RingVars/Bd retry failure audit
+
+The state and logs record dependency scan exit 0 and Lean compile exit 1; the separate author observation records outer session 84263 exit 1. The checker validates source and logs, 100 recorded direct guards, 1,274 overlay links and the exact terminal-output provider. Explicit unfolding left an unsolved equality whose displayed terms include casted integer ones and ring ones. The log has one unused `Nat.cast_ofNat` simp-argument warning. The axiom report contains `sorryAx` after the error and is not evidence of the theorem. No successful object is recorded and final whole-run postflight was not reached.
+
+This is a proof/elaboration failure, not evidence of a mathematical counterexample. No Lean replay was performed. Outer outcome is author-observed; guard checks are point-in-time and sampled monitoring is not a complete dynamic or transitive trace. Earlier A1 independent recursive preflight was interrupted, with the author's successful preflight recorded; the earlier initial-agreement numeric outer exit remains unavailable.

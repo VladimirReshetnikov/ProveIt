@@ -1,0 +1,3 @@
+# Independent prelaunch review: sign17 positive-beta seed iff
+
+The independent no-Lean checker exited 0. The proposed theorem composes audited seed-zero-to-gap existence with the conditional forward zero map and the unconditional backward map, preserving input, for represented beta>0. The gap union survey correctly reads its producer's outer_exit_code schema, checks 1,074 overlapping links and 403 extra entries; both direct provider routes, source pins and bounded guards were reviewed. No Lean existential iff, current-beta specialization, endpoint or external JSON binding is established by this review.

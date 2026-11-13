@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+D=Path(__file__).resolve().parents[2];P=D/'research/nine-sharing-sign32-direct-ipra-check';sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
+for n,h in {'run.py':'2c11e34c103b80453bfe822ba8af0a6fa86e8487915e69dfbc0de31aa227de34','framework-survey.py':'6e46a3e1be8db6e806d03a20ca101feeae2babd7469a45f3edf83efb56bccf72','source-manifest.json':'15aa99302248b549479988eb15b8123fd3d09e2986a389968b12106916e160fe'}.items():assert sha(P/n)==h
+rows=json.loads((P/'source-manifest.json').read_text())['rows'];want=[('Sign32DirectExpression','6a24a8426c051d83a90323951e7768a372a26c38a8c7b3eed6d98d62cec6b683',['Sign32CurrentSourceIff','ModelJonesSyntax'],['eval_expression','zero_iff_current']),('Sign32DirectIPRA','19ab17d951939684d4ef0bcd4fc331884a04269ccf92cb008ada651fbdaf841a',['Sign32DirectExpression','HACurrentEquation2011','IPRAExpressionNative','IPRAStandardTheory'],['polynomialBridge','native_equivalence','standard_equivalence','standard_translated_equivalence'])];assert len(rows)==2
+for r,(n,h,im,ts) in zip(rows,want):
+ p=P/'src/DiophantineConsistency'/f'{n}.lean';s=p.read_text();assert sha(p)==r['source_sha256']==h and r['module']=='DiophantineConsistency.'+n and r['imports']==re.findall(r'^import ([\w.]+)$',s,re.M)==['DiophantineConsistency.'+x for x in im]
+ assert re.findall(r'^theorem (\w+)',s,re.M)==ts and len(re.findall(r'^#print axioms ',s,re.M))==len(ts)
+a=(P/'src/DiophantineConsistency/Sign32DirectExpression.lean').read_text();b=(P/'src/DiophantineConsistency/Sign32DirectIPRA.lean').read_text()
+for x in ['def expression : Expr (Fin 32) :=','(SharingSeed32Sextic.seed CurrentWindowCarry2011.ports).subst','(Fin.cons (.constant 1) (fun i => .var i))','ModelJonesSyntax.evalRing_subst','(fun i => ι (Fin.cons (1 : V) w i))','(∃ w : Fin 32 → V, InternalZero expression w) ↔','∃ u : Fin 14 → V, ObjectCurrentEquation2011.InternalZero ObjectCurrentEquation2011.naturalExpression u','Sign32CurrentSourceIff.seed_exists_iff_source']:assert x in a
+for x in ['abbrev expression := Sign32DirectExpression.expression','HAExpressionAssembly.PolynomialBridge expression','HACurrentEquation2011.polynomialBridge W','Sign32DirectExpression.zero_iff_current','nativeTheory ⊢','IPRAStandardTheory.standardTheory ⊢','IPRAExpressionNative.nativeNoZero expression 🡘 ∼mappedNativeRefutation embedding','(Semiformula.lMap embedding sourceSentence)ᴺ','IPRABoundedRhoZFC.zfcEquiv']:assert x in b
+core=(D/'Lean/DiophantineConsistency/IPRAExpressionNative.lean').read_text();assert 'theorem equivalence_of_bridge {n : ℕ} (e : Expr (Fin n))' in core
+pre=subprocess.run([sys.executable,'-I','-S','-B',str(P/'run.py'),'--preflight'],capture_output=True,text=True,timeout=120,check=True);assert not pre.stderr;x=json.loads(pre.stdout);assert x['status']=='PASS_NO_LEAN_PREFLIGHT' and x['stage_count']==2
+print(json.dumps({'status':'PASS_NO_LEAN','preflight':x,'scope':'32-coordinate current Lean expression; arity-generic iPRA bridge; no Lean or degree/JSON/byte proof'},indent=2,sort_keys=True))

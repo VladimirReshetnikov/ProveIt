@@ -1,0 +1,104 @@
+EXACT IMPLEMENTATION REFINEMENTS, WITH NO CHANGE OF CALCULUS
+==========================================================
+
+These are source refactorings of the five programs under checkers/code in
+the current incoming package ipra_refinement_2026-11-12(1).zip. That package
+is present in ProveIt at commit 2fa4637b3bf922beea0052a5210c22b14482950b.
+Exact controls are included here. Neither refinement removes an axiom,
+changes the primitive recursive function language, changes a certificate,
+or establishes a mathematical minimality theorem.
+
+1. Extending an ordinary list by one zero
+---------------------------------------
+
+In native_tokens.py, native_ast.py and strict_size.py the sole replacement is
+
+    g += [0]
+
+by
+
+    g += b'\x00'
+
+Every reachable g is an ordinary Python list: the root passes [], and every
+recursive argument is a concatenation of such a list and a one-element list.
+An in-place extension of an ordinary list by [0] appends the exact integer 0.
+An in-place extension by the one-byte bytes object b'\x00' does the same:
+iteration of a bytes object yields its byte values as integers, here only 0.
+The list identity is preserved, so aliases of g see exactly the same mutation.
+The only identity test elsewhere is int(a) is a, which is true for every exact
+integer a, and thus cannot distinguish zeros obtained from these two sources.
+
+Induction on a finite successful execution now gives identical contexts,
+goals, floors, packet consumption and branch decisions. A rejected input
+reaches the same failing semantic operation. This includes arbitrary JSON
+inputs, not just canonical proofs, subject to the common sufficient-resource
+convention. The four extra normalized bytes pay for fewer significant tokens
+and AST nodes. This spelling is an implementation experiment, not a claim of
+improved mathematical or cognitive simplicity.
+
+2. The validation flag defaults to the public phase
+-------------------------------------------------
+
+In native_bytes.py and strict_bytes.py the three replacements are:
+
+    k=0, v=0:                    -> k=0, v=1:
+    c([0], q(), v=1)             -> c([0], q())
+    final c(..., k)              -> final c(..., k, 0)
+
+The first call has v=1 in both programs. There are exactly two recursive
+call sites. The major-premise call already passes the explicit fourth
+argument (v := 0), so it has v=0 in both programs and resets the enclosing
+frame's v before any subsequent opening or continuation. The final call
+formerly used the default v=0; it now passes the same literal 0 explicitly.
+Every call therefore receives the identical tuple of arguments. Argument
+evaluation order and every operation inside the function body are unchanged,
+apart from evaluating an effect-free literal at the final call site.
+
+The default value of v is not otherwise observable. The function object c is
+used as an invalid missing-image sentinel, but no program expression reads its
+defaults or any attributes of it: consulting that sentinel raises as before.
+Consequently induction on the finite call tree establishes the same accepted
+input language and the same goal/context/floor/flag/packet traces. Sufficient
+resources are assumed, as for all measured Python checker comparisons.
+
+3. Exact metrics and scope
+--------------------------
+
+The entire module is parsed with CPython 3.12.14, printed by ast.unparse, and
+terminated by one LF. Significant tokens exclude ENCODING, ENDMARKER, NEWLINE,
+NL, INDENT, DEDENT and COMMENT. AST counts use every node yielded by ast.walk.
+JSON input, every checker operation and literal ACCEPT output are counted.
+
+                         control             replacement
+native_tokens.py         321 /371 /618        319 /369 /622
+native_ast.py            323 /369 /622        321 /367 /626
+native_bytes.py          334 /380 /596        332 /379 /594
+strict_size.py           330 /380 /638        328 /378 /642
+strict_bytes.py          340 /385 /621        338 /384 /619
+
+Native profiles validate the public native Eq/D goal but their arithmetic
+soundness contract retains the inherited finite exact-integer/list alphabet
+promise for consumed certificate fields. Strict profiles additionally validate
+the whole input alphabet, including unused prefixes. These are different from
+the compact guarded-public-goal contract. Under that weaker contract, including
+stream programs, the current envelope 244 /265 /477 is NOT improved here.
+
+Among these stronger-interface profiles the coordinatewise exhibited minima
+change from native (321,369,596) to (319,367,594), and from strict
+(330,380,621) to (328,378,619). Each tuple is attained by several programs,
+not one. No proposed single checker dominates the entire compact envelope.
+
+4. Executable evidence
+----------------------
+
+Run python3 verify.py. It checks each exact AST transformation and reruns all
+inherited positive, negative, public-grammar, scope-escape and whole-input
+alphabet fixtures assigned to its interface, in ordinary and optimized Python.
+The delivered verification.json records 880 process executions and zero failed
+expectations. Those finite executions support the two elementary universal
+program arguments above; they do not prove the inherited iPRA interpretation
+from scratch, and no new Lean or Rocq proof is claimed.
+
+This folder is ready to be copied into a deliverable as an optional
+implementation appendix. Its proof checkers do not import this note, the
+controls, the verifier, metrics or any other helper file.

@@ -1,0 +1,159 @@
+A bit selector for actual numerical binding
+==========================================
+
+Claim boundary
+--------------
+This is a small implementation refinement of the exact-binding presentation
+already delivered in ipra_exact_bindings_2026-11-13.zip. It does not delete an
+axiom or change the native mathematical theory. Its bi-interpretation with
+full first-order iPRA, and its proof-checker soundness and canonical
+completeness, are inherited subject to the local preservation argument below.
+It does not beat the existing compact checker frontier. A measured corpus
+minimum is not a mathematical lower bound.
+
+Definitions and the inherited invariant
+---------------------------------------
+The native terms are x,0,S(t),I(n,a;u.h); its public formulas are equations
+and D_{x,y} B, with D read as exists x (B(x,0) -> forall y B(x,y)). The
+auxiliary Q binder is read as B(0) -> forall y B(y).
+
+In the exact-binding codec zero is 1, S(t) is [t], I(n,a;u.h) is [n,a,h],
+an equation is [s,t], and D B is [B]. Q B is internally [B,B,B]. A bound
+slot j, counted from the innermost genuine numerical binder, has code 3+2j;
+negative integers are rigid parameters.
+
+At a formula position below p genuine numerical binders, d=2p; at a term
+position, d=3+2p. Let r=len(a) and let j be a child's index starting at 0.
+The inherited child depth is
+
+  delta(d,r,j) = d + (2*[j=2] if d is odd, else 5-r).
+
+Thus S has child depth d; I has child depths d,d,d+2. At a formula D the
+child depth is d+4, at equality d+3, and at Q d+2. All genuine binders are
+therefore counted, and no administrative dummy slot occurs.
+
+The auxiliary raw reading uses only arity 1 and 3 as numerical constructors:
+any numerical array of any other arity reads as zero, and its children are
+annotations. At a formula position arities 1,2,3 read as D, equality, Q;
+Q uses its last child, and every other array arity reads as truth. Formula
+scalars read as truth. The checker may nevertheless traverse annotations
+and reject them. That operational fact does not give annotations any
+mathematical meaning.
+
+The local change
+----------------
+Replace 2*[j=2] by j & 2, the bitwise AND with 2. Thus
+
+  delta_bit(d,r,j) = d + (j & 2 if d is odd, else 5-r).
+
+For j=0,1,2 one has j & 2 = 0,0,2 = 2*[j=2]. These are exactly all
+children of a meaningful numerical node: S has only j=0, and I has j=0,1,2.
+At formula nodes the child-depth rule is unchanged for every arity and index.
+For an array of another numerical arity the whole reading is zero, so no
+child is meaningful. Although its annotation traversals can now behave
+differently, a successful traversal preserves the zero reading.
+
+Theorem 1 (public grammar and canonical opening)
+------------------------------------------------
+The initial traversal accepts exactly the same canonical closed Eq/D goals
+as the inherited exact-binding traversal, and returns the identical tree.
+On canonical term and formula data, opening has the identical result,
+including its success/failure and its treatment of every genuine binder.
+
+Proof. The initial grammar permits formula arities 1 or 2, numerical arities
+1 or 3, and properly scoped positive odd numerical leaves. At every permitted
+constructor all child-depth increments coincide, by the three-index identity.
+Scalar validation and substitution are unchanged. Simultaneous structural
+induction on terms and formulas proves both assertions. No property of
+annotations is needed because canonical data have no irrelevant arities.
+
+Theorem 2 (soundness on all accepted auxiliary data)
+----------------------------------------------------
+Every successful opening with delta_bit has the inherited semantic opening,
+exposure and freshness properties. Consequently each delivered checker is
+sound on every integer/list input it accepts, including noncanonical proof
+annotations; completeness on canonical native goals is inherited.
+
+Proof. Repeat the inherited simultaneous structural induction on source
+trees and missing-image validation. Scalar cases are unchanged. At a
+meaningful constructor every child receiving a meaningful reading has the
+same sort and depth as before. At any other numerical arity the output keeps
+that arity and hence still reads as zero, regardless of the changed child
+traversals. A successful annotation traversal can impose extra checks but
+cannot change the node's zero reading. Formula arities and their depths
+were not changed at all. This proves semantic substitution at all meaningful
+positions and preservation of the reading by a successful no-image scan.
+
+Exposure continues to hold because delta_bit(d+2,r,j)=delta_bit(d,r,j)+2:
+adding two preserves parity. Closedness uses the same bound cutoffs at
+meaningful leaves, so the floor-decrease freshness argument is unchanged.
+Computation leaves contain only meaningful S/I/equality constructors and
+therefore retain exactly their inherited arithmetic readings.
+
+The proof control is textually unchanged in the three basic profiles. Its
+successful-call induction uses precisely semantic opening, exposure,
+freshness, and the computation leaves; all survive. Canonical compilation
+uses only the meaningful constructor arities, so Theorem 1 preserves every
+compiled certificate and thus proves completeness. This argument establishes
+the same public theorem set, not identical behavior on every malformed raw
+certificate. No monotonicity of raw acceptance is claimed.
+
+Tuple selector
+---------------
+The byte-oriented companion uses (5-r,j&2)[d%2] in place of the conditional.
+Depth d and index j are integers, and d%2 is always 0 or 1, including at
+negative depths in annotations. Both branch expressions are defined integer
+operations once the array traversal is active. Eagerly computing both cannot
+raise a new exception or change state. Thus this replacement is an exact
+operational identity, on arbitrary raw arrays, not just canonical ones.
+
+Expression-input composition
+-----------------------------
+proper_expression.py further composes the already delivered restricted
+expression reader from ipra_nontraditional_inputs_2026-11-13.zip. The allowed
+characters are digits, minus, brackets, comma, and ordinary ASCII whitespace.
+Any other character makes q a nonempty string and the first call fails.
+For allowed characters, Python expressions can only construct integers and
+lists, negate/subtract integers, index the resulting lists, or form comma
+tuples at the expression root or as a multidimensional subscript. A root
+tuple has no pop, and a tuple subscript is rejected by a list. Parentheses
+are unavailable, so a tuple cannot be nested as an element of a list. Any
+ill-typed operation rejects. There are no identifier, string, attribute, call,
+comprehension, multiplication or assignment characters. Thus this reader
+cannot execute supplied executable code beyond those data expressions. A
+successful root must have pop and therefore be a list, whose elements are
+exact integers or recursively such lists. This is the inherited reader
+argument, not a new evaluation device.
+
+Every ordinary canonical JSON certificate uses this alphabet and evaluates
+to the same list under the restricted expression reader. Hence canonical
+completeness is preserved. Soundness follows from the all-integer/list
+soundness established above. The expression profile is a different input
+contract and must be labeled separately from the whole-JSON profiles.
+
+Measurements and evidence
+--------------------------
+CPython 3.12.14, ast.unparse followed by one LF:
+
+                         tokens   AST nodes   normalized UTF-8 bytes
+  inherited proper_tokens 321       373              689
+  proper_tokens.py         317       370              682
+  inherited proper_nodes  333       361              724
+  proper_nodes.py          329       358              717
+  inherited proper_bytes  330       383              627
+  proper_bytes.py          326       380              620
+  proper_bytes_tuple.py    327       383              614
+  proper_expression.py     324       379              605
+
+The JSON envelope improves from 321/361/627 to 317/358/614, attained by
+different complete programs. The expression profile is 605 bytes but is not
+part of that JSON envelope. None of these programs is below the compact
+seeded-sequent records of 238 tokens or 455 bytes.
+
+verify_refinement.py runs all 75 inherited cases in each profile, in normal
+and -O Python: 750 isolated executions, zero mismatches. The cases include
+14 positive native derivations, used equation induction, compound cases,
+false equations, malformed goals, malformed unused data, malformed packets,
+and future-witness capture. These finite checks support the local proof;
+they are not a formal verification of the Python interpreter or the full
+iPRA bridge. No new Lean/Rocq result is claimed.

@@ -1,0 +1,41 @@
+{
+  "runs": [
+    {
+      "command": [
+        "python3",
+        "-I",
+        "-S",
+        "-B",
+        "Computability/DiophantineConsistency/research/p64-qcube76-independent-y-candidate/build.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"degree\": 104, \"modular_graph_samples\": 600, \"operation_counts\": {\"*\": 42, \"+\": 18, \"-\": 16}, \"operations\": 76, \"residual_degrees\": {\"A0\": 22, \"Lt\": 2, \"M\": 34, \"Na\": 30, \"W\": 22}, \"status\": \"PASS_FINITE_AND_SYMBOLIC_CHECKS_ONLY\"}\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-I",
+        "-S",
+        "-B",
+        "Computability/DiophantineConsistency/research/p64-qcube76-independent-y-candidate/generate_lean.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "PASS: 76 generated gate rows; source transcription only, no Lean check\n"
+    },
+    {
+      "command": [
+        "python3",
+        "-I",
+        "-S",
+        "-B",
+        "Computability/DiophantineConsistency/research/p64-qcube76-independent-y-candidate/check_ray.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"degree\": 104, \"graph_sha256\": \"196ef3bdf6805c7ed7d44c278359e32c0f658634db357cc19f0e87464ed6b11c\", \"leading_coefficient\": 640860, \"modulus\": 1000003, \"port_values\": {\"K0\": 5, \"MC\": 7, \"MF\": 11, \"beta\": 3}, \"scope\": \"One modular univariate ray; does not establish general upper degree or zero-equivalence.\", \"script_sha256\": \"76c135711203f3ba4ef5b23364b7980c88948a74bc36776899d415415dfe2806\", \"status\": \"PASS_RAY_ONLY\", \"witness_ray_coefficients\": {\"F\": 2, \"J\": 1, \"T\": 7, \"alpha\": 3, \"eta\": 11, \"f\": 5, \"gamma\": 14, \"i\": 6, \"s\": 8, \"t\": 10, \"w\": 9, \"y\": 13, \"z\": 4, \"zeta\": 12}}\n"
+    }
+  ],
+  "scope": "External symbolic and finite checks only; no Lean check or zero-equivalence"
+}

@@ -1,0 +1,5 @@
+# Historical AQ29 fresh-project paired rebuild
+
+Tool session 58809 returned the actual coordinator exit code 0 and the complete stdout recorded in `terminal-observation.json`: author exit 0, peer exit 0, and `MATCHED_PASS 1210 rows`. The copied `pair-state.json` records the same outcome, and the copied peer state and process log match its recorded hashes. The already-preserved [author state and process log](../fresh-project-pair-author/README.md) likewise match the pair state. Both source audits found 15 workspace source drifts relative to the frozen v2 snapshot, so the matched result concerns historical source.
+
+The two project runs rebuilt the complete 1,210-module source-declared project closure in separate empty object trees against the same fresh Foundation provider. The original Foundation wrapper's outer terminal exit was not captured; its receipt records the inner Lake exit 0, and its separate provider verifier exited 0. Package-transitive and dynamic ancestry remain inherited. This primary packet is not itself an independent validation of the pair: that validation is tracked separately.

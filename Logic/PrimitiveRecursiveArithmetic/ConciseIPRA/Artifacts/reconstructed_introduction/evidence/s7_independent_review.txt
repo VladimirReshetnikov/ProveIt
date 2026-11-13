@@ -1,0 +1,20 @@
+INDEPENDENT REVIEW OF S7
+Reviewed: math_work/synthesized_introduction.tex and math_work/synthesis_checker.py
+Verdict: I found no mathematical gap in the stated equivalence proof and no discrepancy between the readable checker and the seven specified rule families. This is a paper-level and source review, not a new formalization or a proof of Python correctness in a proof assistant.
+
+1. Reconstruction and binders.
+The two abstraction sources w and S(z) cannot overlap because z is absent from w and the only proper subterm of S(z) is z. Fresh placeholders prevent pre-existing occurrences from being substituted accidentally. For the marked inverse, w is larger than the entire B(x,S(z)) template. Every surviving old node is smaller; a node strictly enclosing an inserted w is larger; and a proper subnode of w is smaller. Consequently exactly the inserted w copies are replaced. Locally nameless insertion does not change the raw representation of w below an external binder: w is closed with respect to external bound indices, although it may contain internally bound indices in its iterator body. The code protects ["v",i] nodes and never traverses i as a numerical term. It does not mistake constructor tags for free labels.
+
+2. Structural rules.
+Injective renaming of free parameter labels preserves syntactic equality, the literal-zero witness test, equation roots, and the result of root-first replacement. The generated placeholder labels may change, but closing them produces the same canonical bound-index formula. Thus the eigenparameter renaming needed in weakening and cut is justified. Cutting a retained assumption changes its proof, not the supplied witness, seed, or computed branch endpoint. It therefore preserves the introduction comparisons. The proof does not smuggle arbitrary proof-tree substitution into these preliminaries.
+
+3. Rank induction and circularity.
+The ordering T_0 -> J_0 -> T_1 -> J_1 -> ... is valid. J_r uses transport only in B(w,0) and B(w,S(z)), whose ranks are at most r. Recovering transport in Q(B) and D(B) uses T_r for their matrices and J_r for a case introduction with that matrix. Extracting Q(B) from D_{x,y}B(y) uses paired elimination and hypothesis alone, not higher-rank transport. Equation progress is recovered independently before this induction. The subsequent rule-by-rule translation of a native derivation uses already translated branch proofs; it does not assume source derivability inside S7.
+
+4. Scope and executable rule.
+The checker validates the witness before extending the scope by the eigenparameter. It validates the seed in the extended scope, proves the branch under that fixed seed, and only then synthesizes the matrix and checks the seed comparison. Every result is validated in its return scope. Paired elimination separately rejects escaping eigenparameters. Exact integer tests reject Boolean or floating-point zero witnesses. The progress branch can only be selected by a genuine zero witness and an equation endpoint. The only trust beyond the supplied source is the normal Python/JSON runtime; certificate-supplied code is not evaluated.
+
+5. Qualifications that must remain in the report.
+The new rule is not stable under arbitrary substitution by direct proof-tree replacement; the supplied collision example correctly explains why substitution admissibility is obtained through equivalence with the native calculus. The iPRA bi-interpretation is inherited from the established native/scalar bridge; this appendix proves equality of the open native consequence relations, not the entire bridge anew. The reference implementation is larger than the compact frontier and does not meet the user's global size target. No global minimality, historical priority, or new Lean/Rocq proof should be claimed.
+
+No additional testing was performed for this review; the verdict above is based on the written induction and direct reading of the implementation.

@@ -1,0 +1,7 @@
+# Sign33-lift ring-value gates 60–65 checked
+
+Author-observed outer session `74439` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `901706f4ce0d840d81c6fb6bd4e9be81f0009130b3c7ec905e19f90dcb576c9b`; before and after provider surveys both hash to `792f49ee57956f5097b01a966d6ddb7a322aa5b55d8a86986a9faaa105bba2d6`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33RingGates08` compiled in 12.931 seconds; object SHA-256 `a0727b0568d06c80d49238ab4a169cb988e87d39ed6c493f255c8aba56c37055` at `/tmp/nine-sharing-sign33-ring-gates08-check-20261106/lib/DiophantineConsistency/Sign33RingGates08.olean`, compile log `5074e9b1fb3bff7d4bc7a1cf7280c55ecb365067864647995c78113c91b3b0b9`. All six axiom reports list `[propext, Classical.choice, Quot.sound]`; 17 simplifier/tactic linter warnings were retained. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,196,836,352 bytes and minimum sampled available host memory was 18,862,166,016 bytes; sampling has the stated limitations.
+
+For one full valuation and model-natural ports, these checked equations cover only graph targets 60–65, all inline. No remaining gate equations, five norms, source-zero bridge, Lean proof of external JSON binding, or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.

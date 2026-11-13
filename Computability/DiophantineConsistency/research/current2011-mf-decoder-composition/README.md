@@ -1,0 +1,9 @@
+# Failed MF byte-decoder composition
+
+This attempt composes the separately checked natural-sum and port-cast objects to prove the original once-beta-shifted `bigBytes` decoder theorem. The definitions of `shiftedValue` and `bigBytes` match the original draft modulo whitespace. The retained external byte comparison was independently rechecked before launch; it remains a file comparison outside Lean.
+
+Actual runner session 52217 exited 1: the dependency query succeeded, but Lean's kernel reported excessive memory while checking `natural_decode`. Both printed reports depend on the failed `natural_decode` declaration and are not proof; no successful decoder object was produced. The independently successful natural-sum and port-cast objects remain valid within their recorded provider scopes, but their desired byte-decoder composition is not established here.
+
+The source-pinned runner checked the two predecessor objects and their direct guards, current14 port provider and source/base preflight. It used `-M2800`, one thread, nice 19, idle I/O and a 180-second foreground timeout, without an automatic process-group RSS or host-memory stop. Failed compilation means no successful final postflight is claimed; package-transitive/dynamic ancestry remains inherited. The source, runner, failure state, dependency and compile logs and actual outer observation are retained; the original temporary output was left intact.
+
+SHA-256: source `cfe357e28a98ffb78b3b53863e0af0fe3035307f8dc8d6dfbbbd448715472d0c`; runner `5b2e23ab481e67e5d64da4a37d28136e3fd34881ae60c08e70bb1a824d2fae38`; state `27aa277e0cdb4202598b13cedb9376d1ae1e63509ba3aa61a0e2669225a8a082`; compile `3e3a49f08d032ede516e6540228b704dc10bd09bf3060dbd7d3aada77821d3cb`; outer observation `cd39089fa5b88aa14be7c47642c1ad17e4018345a8e6c72c80cd2f4db4dc0743`.

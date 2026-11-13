@@ -1,0 +1,7 @@
+# Independent post-audit: symbolic low-port definition
+
+**PASS within the selected provider closure.** Author reports actual outer session 89386 exit 0/reaped. Retained outer terminal SHA-256 `eb9cb9d84d870447abbefc9032b1e457e3d9bbe485f277bc8b72b22458643b15` records child exit 0/PASS and stable inputs; child result SHA-256 `7399ca5b440dc883c08c0738aba4b7c681af9bb648322930e646da4f0f6d2bde`. Stage and serialized header reader both report exit 0 and no termination reason.
+
+Selected/copied source SHA-256 `e05dec25774e6f1806b2c85d5f036180a2b20367f2554f7ef35d17f58151d5fe`, output object `ea2cc1c7962d8e1190c8944df85207c9d56a5d6c3e9dca872e1f7ae75166064b`. Exact `Trace74LowNatDefinition.low_nat_definition` report lists `[propext, Classical.choice, Quot.sound]`; stderr empty. Its theorem states the actual `CompactSymbolicPorts.lowNat` is `ofDigits (2^67) (digits (2^67) 8807 1063 support)`. The direct header has two Init entries and `CompactSymbolicPorts`, selected object `69927a2a645ea7c4ba99f7413357bfbbd7a344b2e0a026f08392e67870c8bff5`.
+
+Independent `check.py` rehashed source, inputs, output/logs, 2,036 current union object/companion bundles and 81 outside bundles, and compared all 17 inherited closure sets/companion hashes. No Lean replay was run. Four inherited baseline objects and project/package/dynamic/transitive ancestry retain prior limits. This definitional equality does not establish low-defect specialization, high bound, mask coverage, external file binding, graph guard or iPRA result.

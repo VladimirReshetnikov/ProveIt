@@ -1,0 +1,3 @@
+# Independent sign21 exact-degree terminal audit
+
+Independent checker session 26716 exited 0 against author outer session 3492 (exit 0). The Lean client and postflight succeeded, proving polynomial `totalDegree = 14` for the abstract sign21 Fin21 expression at every integer port vector and for its current-port instance. Both reports list standard Lean metatheory axioms, without warnings or `sorryAx`. The checker verified source, object, direct upper/lower bindings, monitored limits, guards, overlays and both bound audits including the 1,440-link upper union. This is exact degree for the Lean expressions, not an external JSON/Jones/PDF or coefficient-byte binding.

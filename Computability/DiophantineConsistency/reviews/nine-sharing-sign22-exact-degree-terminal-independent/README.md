@@ -1,0 +1,3 @@
+# Independent sign22 exact-degree terminal audit
+
+Independent checker session 61553 exited 0 against author outer session 29568 (exit 0). The Lean client and postflight succeeded, proving polynomial `totalDegree = 12` for the abstract sign22 Fin22 expression at every integer port vector and for its current-port instance. Both reports list standard Lean metatheory axioms, without warnings or `sorryAx`. The checker verified source, object, direct upper/lower bindings, monitored limits, guards, overlays and both bound audits including the 1,426-link upper union. This is exact degree for the Lean expressions, not an external JSON/Jones/PDF or coefficient-byte binding.

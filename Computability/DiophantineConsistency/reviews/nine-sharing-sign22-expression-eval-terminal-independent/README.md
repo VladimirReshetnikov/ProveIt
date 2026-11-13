@@ -1,0 +1,3 @@
+# Independent sign22 expression/evaluation terminal audit
+
+Independent checker exited 0 against author outer session 73074 (exit 0). All four Fin22 expression and input-one evaluation stages and postflight succeeded, with two standard Lean metatheory reports and no warnings or `sorryAx`. Source/object, direct guards, overlay links, squares provider and selected historical partial-provider surveys were checked. The latter remain observations of successful children of failed enclosing runs, not full producer passes. No model-zero bridge, iPRA endpoint, Lean degree or JSON/PDF binding follows from these stages alone.

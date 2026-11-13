@@ -1,0 +1,17 @@
+# Independent review: canonical folded-root sign
+
+**Result: pass, with the source and file-binding qualifications below.** Assuming the standard-natural halt premise, the traced construction supplies a particular positive free-J witness whose direct folded coordinate `rho = r - k*Bt` is strictly negative. This does not show that the machine halts, rule out other witnesses, or establish any unrestricted nonequivalence of the two zero-existence statements. It is an external source review, not a new Lean theorem or PDF/file-binding proof.
+
+The source chain carries the same first-carrier witness `r` into index 7 of the 12-coordinate valuation and index 8 of the 13-coordinate valuation. Packing supplies `0<C<q` and `F>0`; the rank-residue join discharges the additional residue hypotheses and gives `R>2*590069*N`; the halt-length construction gives `N≥2`. The first transport and carrier identities, after cancellation of positive `M=q³(q−1)`, yield
+
+`r−k*Bt = tau−ell−k−sY+q*z`, where `Bt=(q−1)*q*z`.
+
+For `m=X*Y²` and `ell=m*k`, the first Pell identity gives `tau²=1+m(m+1)k²`. The source's recurrence monotonicity and `R>2*590069*N` give `k≥4(2m+1)>8XY²`. Thus `(ell+3k/4)²−tau²=(m/2+9/16)k²−1>0`, so `tau<ell+3k/4`. The symbolic source theorem `CompactCellProductBound.symbolic_kernel_lt` gives `K<2^592884`; since `q≥2^(2*590069)` and `X=2^R>q²`, we have `qK<X`. Transport with `0<C<q` and `F>0` then gives `q*z < q/(q−1)*(qK+X)<4X`. Since `Y≥2`, the recurrence bound gives `k/4>2XY²≥8X>q*z`; consequently `rho<−k/4−sY+q*z<0`. All divisions here are ordinary external real inequalities with positive denominators; the witness construction does not require a new divisibility assumption.
+
+The checker independently reconstructs the algebraic rearrangement and square identity, authenticates the retained P72/P115 port payloads, checks all 87 literal Lean graph rows against the package-115 JSON and confirms the shared coordinate order in the 88 graph. It also reruns the independently reviewed 88/30 graph receipt. The 87→88 transfer has two local changes: the gap `y²−V²` is rewritten exactly as `u*(y+V)` using `y=V+u`, and the final unit product is replaced by four squares. Its all-integer zero equivalence is inherited from that separately reviewed external argument.
+
+The author's initial receipt pinned 11 sources but did not by itself pin every source used in the source trace. This review additionally pins packing, the rank-residue join, recurrence, valuation, model-equivalence and symbolic-kernel bound sources. The physical K0 bit length alone would not bind the symbolic Lean kernel to the physical bytes; the direct symbolic theorem avoids that step in the sign estimate. The retained physical ports are independently authenticated, while symbolic-to-byte correspondence and compiled provider ancestry remain external qualifications. The review concerns the witness supplied by the source construction, which need not be unique or a deterministically chosen canonical witness.
+
+The author's revised pre-link packet now includes those eight source pins, identifies the symbolic kernel bound and its separate physical-byte qualification, and describes both graph rewrites. Its revised checker and receipt are pinned and reproduced by this review. The conclusion and proof scope are unchanged.
+
+Run from `Computability/DiophantineConsistency` with `python3 -I -S -B reviews/ordinary13-folded-root86-canonical-sign-independent/check.py`; its stdout must match the adjacent `result.json`. No Lean process was run.

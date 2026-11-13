@@ -1,0 +1,137 @@
+FIXED-NEWEST CLOSE ON THE RAW ALIAS/BACK CALCULUS
+================================================
+
+This directory contains two matched, complete standalone checkers, an
+untrusted compiler between them, concrete proof certificates, and validation
+receipts. No external Python package is required.
+
+REPRODUCE
+
+    python3 verify.py
+
+Use CPython 3.12.14 to reproduce the exact normalized source measurements.
+The test suite writes the supplied fixtures and evidence/validation.json
+again. To check an individual target certificate:
+
+    python3 code/diagonal_newest.py < tests/newest/nonzero_close_witness.json
+
+Acceptance is normal termination with exactly ACCEPT followed by a newline.
+Rejected certificates print REJECT and exit unsuccessfully. Input is one
+possibly multiline JSON object with exactly the fields goal and proof.
+
+CONTENTS
+
+code/diagonal_control.py
+    Raw Alias/Back calculus with an arbitrary witness in Close. Progress
+    mode is selected from the original diagonal matrix, independently of
+    the witness. Use and Back already select the newest free parameter.
+
+code/diagonal_newest.py
+    Identical to the control except that Close carries no witness. Its
+    witness is the newest numerical parameter, or zero in an empty scope.
+    No normalizer, theorem enumerator, or external proof engine is used.
+
+code/compile_newest.py
+    An untrusted compiler from the control to the newest-only checker.
+    Context entries are represented by proof families that can be rebuilt
+    under later target extensions. Every completed compilation is replayed
+    by the target checker. The compiler is not imported by either checker.
+
+tests/control/, tests/newest/
+    Eighteen source certificates and their eighteen compiled counterparts.
+
+tests/adversarial/
+    Eighteen malformed, scope-violating, or false-conclusion certificates.
+
+verify.py and evidence/validation.json
+    Reproducible standalone runs in normal Python and with -O, plus an
+    open-proof translation under a non-order-preserving variable map and
+    a non-contiguous context embedding.
+
+SYNTAX
+
+Raw terms are zero (integer 0), free parameters (negative integers), bound
+indices (positive integers), successor [0,t], and iterator [n,a,h]. Only h
+binds an iterator variable, at index 1. Equations are [s,t]. A paired formula
+D_{x,y} B is [B], with x at bound index 2 and y at index 1. Nested binders
+increase the indices in the usual way. Terms are not normalized.
+
+In a scope of size n the free parameters are -1,...,-n, with -n newest.
+The root scope and context are empty. Clauses are stored internally as
+(antecedent, body); [] denotes no antecedent. An ordinary assumption A
+is the clause ([],A), whose bound argument is unused.
+
+Proof instructions:
+
+  ["u", clause_index, premise]
+      Use the retained clause at the newest parameter, or zero at the root.
+      The premise proves its antecedent; it is ignored for an antecedent-free
+      clause, where null is the canonical spelling.
+
+  ["c", counter, seed, body]
+      Supply a zero or successor iterator computation equation.
+
+  ["v", goal, equality_proof, minor_proof]
+      Backward substitution for the newest free parameter only.
+
+  ["a", term, branch]
+      Introduce a fresh alias b=term; export the branch result after replacing
+      b by term. This yields reflexivity without a primitive reflexivity rule.
+
+  ["e", goal, paired_proof, branch]
+      Open a paired formula at a fresh parameter and discharge its clause.
+
+  ["i", goal, witness, branch]                 control only
+  ["i", goal, branch]                          newest only
+      Close a paired formula. The diagonal progress selector is true exactly
+      for a matrix I(y,y;u.h)=I(y,y;u.k), read before witness substitution.
+      In this encoding both sides must be ternary lists beginning [1,1].
+      Progress assumes B(t,z); other matrices assume B(t,0). Both branches
+      prove B(t,S(z)), where z is fresh and t is the selected witness.
+
+The public formula, all consumed arithmetic fields, rule shapes, eigenvariable
+scopes, and required premise conclusions are checked. This is not a claim
+that an ignored argument of an antecedent-free Use is lexically restricted.
+The CLI begins with an empty context; the internal derive API presupposes
+a valid supplied context and scope when called directly.
+
+MEASUREMENTS AND RESULTS
+
+Under ast.unparse normalization plus one final newline, with tokenization
+and AST counting performed on that normalized complete source:
+
+    Module                 Tokens    AST nodes    UTF-8 bytes
+    diagonal_control          870         1022          3274
+    diagonal_newest           862         1011          3245
+    Saving                      8           11            29
+
+The validation completed 108 standalone process executions, with zero failed
+checks, plus the general-context embedding example. The progressive fixtures
+consume their actual induction hypothesis; one has a nonreflexive matrix and
+a nonzero witness. No claim is made that their theorems require induction.
+
+LIMITS
+
+This is a matched reduction, not a new global source-size record. The corpus's
+compact frontier of 248 tokens, 270 AST nodes, and 479 bytes is attained by
+different programs under a weaker public-input contract. The newest-only
+module here does not beat those values.
+
+The executable compiler accepts the control's syntax, in which Use and Back
+already select the newest parameter but Close is unrestricted. The written
+mathematical theorem may use a more general temporary calculus. Finite tests
+do not replace the general proof of compiler correctness. No new Lean or
+Rocq formalization is claimed.
+
+PROVENANCE
+
+The raw valid/opening/derive infrastructure is adapted from
+ipra_alias_back_2026-11-12/raw_basis/code/raw_alias.py in the incoming archive
+at ProveIt commit dbe0094df420f93f2d5be366b94a0d0c4318dc5b. The raw Alias/Back
+mathematics, newest Use/Back restriction, scalar iterator, and ordinary iPRA
+bridge are inherited. The diagonal selector is inherited from the repository's
+diagonal_guard mathematics. The added contribution is their combination with
+a fixed-newest Close and its persistent-context compilation proof.
+
+Primary repository:
+https://github.com/VladimirReshetnikov/ProveIt/tree/dbe0094df420f93f2d5be366b94a0d0c4318dc5b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA

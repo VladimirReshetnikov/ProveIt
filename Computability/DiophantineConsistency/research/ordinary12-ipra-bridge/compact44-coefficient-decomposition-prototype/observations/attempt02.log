@@ -1,0 +1,38 @@
+/tmp/compact44-coefficient-decoder-explore/CompactCoefficientDecoder.lean:47:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Exp.exp ↑10
+in the target expression
+  1 + 2 ^ 10 * (2 ^ 41 - Compact943Decoder.tileValue i) = 1 + Exp.exp 10 * (Exp.exp 41 - Compact943Decoder.tileValue i)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+i : Fin 943
+hm : Compact943Data.row i ∈ Compact943Data.rows
+hv :
+  0 < CompactCoefficientMass.value (Compact943Data.row i) ∧ CompactCoefficientMass.value (Compact943Data.row i) < 2 ^ 41
+hle : CompactCoefficientMass.value (Compact943Data.row i) ≤ 2 ^ 41
+hsub :
+  ↑(2 ^ 41 - CompactCoefficientMass.value (Compact943Data.row i)) +
+      ↑(CompactCoefficientMass.value (Compact943Data.row i)) =
+    ↑(2 ^ 41)
+hleV : ↑(CompactCoefficientMass.value (Compact943Data.row i)) ≤ ↑(2 ^ 41)
+hsubV :
+  ↑(2 ^ 41 - CompactCoefficientMass.value (Compact943Data.row i)) =
+    ↑(2 ^ 41) - ↑(CompactCoefficientMass.value (Compact943Data.row i))
+⊢ 1 + 2 ^ 10 * (2 ^ 41 - Compact943Decoder.tileValue i) = 1 + Exp.exp 10 * (Exp.exp 41 - Compact943Decoder.tileValue i)
+/tmp/compact44-coefficient-decoder-explore/CompactCoefficientDecoder.lean:58:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Exp.exp ↑10
+in the target expression
+  ∑ x, f x + ∑ x, Exp.exp 10 * (Exp.exp 41 - Compact943Decoder.tileValue x) * f x + ∑ x, 2 ^ 10 * 2 ^ ↑x * b x =
+    ∑ i, f i + Exp.exp 10 * (∑ i, (Exp.exp 41 - Compact943Decoder.tileValue i) * f i + ∑ j, 2 ^ ↑j * b j)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+f : Fin 943 → V
+b : Fin 41 → V
+⊢ ∑ x, f x + ∑ x, Exp.exp 10 * (Exp.exp 41 - Compact943Decoder.tileValue x) * f x + ∑ x, 2 ^ 10 * 2 ^ ↑x * b x =
+    ∑ i, f i + Exp.exp 10 * (∑ i, (Exp.exp 41 - Compact943Decoder.tileValue i) * f i + ∑ j, 2 ^ ↑j * b j)
+'CompactCoefficientDecoder.cast_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CompactCoefficientDecoder.selector_model' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CompactCoefficientDecoder.finite_decomposition' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

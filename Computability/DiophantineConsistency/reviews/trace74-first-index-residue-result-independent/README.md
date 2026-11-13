@@ -1,0 +1,7 @@
+# Independent post-audit: guard-independent first-index residue
+
+**PASS at direct-pin scope.** Author reports actual tool session 12922 exited 0 and was reaped. Terminal SHA-256 `3c7ed7084bbe5528b768de2084271d0293e7b5fd247410450da59c1d83e0c4f3` records Lean exit 0, PASS and no timeout/resource reason. Independently rehashed the source SHA-256 `5454d0e46d9e89800a96203ff244c23dae6dc2dab2737defa3587b52156fc9ce`, runner SHA-256 `c1f6dfcacf4c283ad1d008db4fa66336ef0aaae4b84cd6ed2d6318bc475d8efb`, recorded parent/direct provider pins, empty stderr, stdout SHA-256 `84c47bc00a688eb13cf0a735c608166e872c9e8f3a2e02faacac3e707b5b5ac4` and object SHA-256 `9155e2a4d9a945750f1edb1af9ce985d4b6f5ff55323b68a82a83ec3724d288f`. The named theorem's only reported axioms are `[propext, Classical.choice, Quot.sound]`.
+
+Conditional on the same positive original 74 valuation, positive beta and 74 zero, the theorem returns a positive n with the actual first Pell ordinate equation and `k mod q⁴=(2n) mod q⁴` for that same n. It does not identify n with a rank, assert rank congruence, assume or prove a reverse guard, or derive a repunit or population bound. The mathematical source and same-witness indexing were reviewed in the prelaunch packet.
+
+No Lean replay, serialized closure audit, compile-time first-resolution capture or separate outer supervisor was performed. Direct object paths are pinned but search shadowing and complete project/package/dynamic/transitive provider ancestry remain inherited. No fixed-port graph guard or iPRA endpoint follows.

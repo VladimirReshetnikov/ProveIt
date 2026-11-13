@@ -2,6 +2,7 @@ import DiophantineConsistency.DirectScalarEnumerator
 import DiophantineConsistency.ScalarPROptimizer
 import DiophantineConsistency.ZFCFromProgram
 import DiophantineConsistency.CompactedJones
+import DiophantineConsistency.ExplicitZFCSyntax
 
 /-!
 # A closed executable nine-variable consistency equation
@@ -38,6 +39,11 @@ theorem sourceWitnessCount_le :
 /-- The requested equation: evaluate this fixed integer arithmetic syntax
 at nine natural numbers and set its value equal to zero. -/
 def expression : Expr (Fin 9) := CompactedJones.expression representation
+
+/-- The equation is the Matrix-free `ExplicitZFCSyntax.expression`: the two
+differ only by the `Rep.ofIff` predicate transport, which changes no syntax. -/
+theorem expression_eq_syntax : expression = ExplicitZFCSyntax.expression :=
+  CompactedJones.expression_ofIff _ (fun _ => exists_haltingTest_eq_one_iff_refutation)
 
 /-- The ordinary integer polynomial denoted by the executable equation.
 Only the Mathlib interpretation, not its coefficient recipe, is noncomputable. -/

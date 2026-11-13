@@ -1,0 +1,3 @@
+Independent source review, no Lean. Source SHA 685a16a9561cb2fe771568343aa8f93390dfbef3a90249f1a5f337258f1a5a04.
+
+For any explicitly supplied first-Pell index n of the same p/v with positive beta/valuation, value74=0, q≥4 and the displayed hcoord, the proof applies checked n≥2. Positivity of P=XY² justifies P−1+1=P; at n=2 the y-coordinate recurrence gives k=8P+4, contradicted by the checked same-tuple small-k exclusion. Discrete order then gives n≥3. The argument does not identify arbitrary unrelated indices or prove guard/equivalence/endpoint. Tactic elaboration and direct/provider compatibility remain untested.

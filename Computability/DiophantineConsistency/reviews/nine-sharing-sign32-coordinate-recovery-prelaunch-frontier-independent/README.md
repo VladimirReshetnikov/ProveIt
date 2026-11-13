@@ -1,0 +1,5 @@
+# Independent sign32 coordinate recovery prelaunch review
+
+The checker pins both sources, runner, manifest and the eight-producer survey, verifies exact ordered imports, and independently reproduces the no-Lean preflight. The first proposed theorem extracts the old q² residual from an old seed zero and uses natural embedding injectivity to recover old coordinate 15 as the model-natural square. The second uses that equality to show `lift beta (drop v)=v`; its drop is byte-identical to the reviewed bridge draft. Both explicitly retain the IΣ₁ model, old seed zero and port-0 cast equality. The runner authenticates the captured group07 object and the local preceding stage, reruns the eight-provider survey after successful compilation, and checks direct guards/overlay links.
+
+These are proposed preparatory coordinate claims, not the reverse zero-set implication. Elaboration and axiom reports remain untested; no Lean ran. Numeric port binding, the sextic Jones construction and an endpoint remain outside scope. Guard checks are point-in-time, and sampled monitoring does not provide a complete transitive or dynamic trace.

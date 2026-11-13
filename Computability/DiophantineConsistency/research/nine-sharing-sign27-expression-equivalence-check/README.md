@@ -1,0 +1,5 @@
+# Proposed sign27/sign28 direct-expression zero iff
+
+This guarded candidate combines the checked same-input seed iff with both input-removal evaluation theorems and a generic cons/tail conversion at input 1. It proposes equivalence of existence of zeros of the two direct expressions in IΣ₁ models. It does not assert a polynomial bridge, endpoint, Lean degree theorem, or external JSON/coefficient binding.
+
+The runner binds the successful sign27 seed iff and all four stages of each sign27 and sign28 evaluator. It surveys direct guards, producer objects and overlay unions: 1,059 byte-matched overlaps with one extra object for sign27 and 1,059 overlaps with 15 extras for sign28. Deeper ancestry and the historical plan README-link caveat are inherited. Author no-Lean preflight exited 0, and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign27-expression-equivalence-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.

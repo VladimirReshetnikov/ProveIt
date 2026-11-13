@@ -1,0 +1,5 @@
+# Fixed-mask saturation from the 74 rank: source draft
+
+This uncompiled source joins the actual 74 rank representative and natural four-block identity to the checked fixed-mask saturation theorem. It assumes positive coordinates, individual `F<q` and `C≤q`, `q=exp u`, three fixed-mask bounds, and both stated population inequalities. It claims the actual signed rank equals the same natural rank, both no-carry conclusions, and `F+C<q`. No graph-zero hypothesis or target guard is assumed, and the source does not derive any of those premises from a graph zero.
+
+The [independent source review](../../reviews/trace74-fixed-rank-saturation-draft-independent/README.md) found no mathematical blocker while noting that cast, truncated-subtraction and fixed-port projection elaboration remain untested. The previously checked rank-binding and natural-block objects come from distinct captured providers; they must be reconciled or rebuilt against the fixed-mask saturation union before an author check. Captured provider ancestry and both inherited unevaluated-exponent warnings remain explicit. No Lean result is claimed for this draft.

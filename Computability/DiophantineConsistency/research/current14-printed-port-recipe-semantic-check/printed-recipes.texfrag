@@ -1,0 +1,82 @@
+\textbf{The four fixed integers.}
+Every index, set, sum, product and floor below defines a constant, not
+another unknown. Put
+\[
+\begin{gathered}
+\rho=2^{47},\quad B=\rho^{2011},\quad\beta=B-1,\\
+G_m(x)=\sum_{j=0}^{m-1}x^j,\quad
+\Lambda=\rho^{1005}.
+\end{gathered}
+\]
+\begin{align*}
+\mu={}&\beta-G_{951}(\rho)\\
+&-\rho^{960}G_{26}(\rho)-\rho^{1004},\\
+\omega={}&\beta+8G_{917}(\rho)-4+(2^{45}-4)\Lambda\\
+&+\rho^{960}G_9(\rho)+\rho^{987}G_8(\rho)
+  +\rho^{1004},\\
+K={}&\rho^{18}+\rho^{1004}+\rho^{2020}\\
+&+2\Lambda\Phi(1/\rho),
+\end{align*}
+where
+\[
+\begin{gathered}
+\chi_i=1+2^{10}(1+w_i+2^8n_i\\
+\qquad+2^{17}p_i+2^{25}s_i)\quad(0\le i\le941),\\
+\pi(0)=0,\quad\pi(i)=1+\sum_{j=1}^{941}
+\fl{\frac{2^{44}-1+\chi_j-\chi_i}{2^{44}}}\quad(1\le i\le941).
+\end{gathered}
+\]
+\[
+\begin{split}
+\Phi(x)={}&\sum_{i=0}^{941}\chi_i x^{\pi(i)}\\
+&+2^{10}x^{969}(x^9+2^{17})G_8(2x)\\
+&+2^{18}x^{942}(x^{18}+2^{17})G_9(2x).
+\end{split}
+\]
+The rational intermediate in K cancels exactly; all four results are positive integers.
+
+\textbf{The 942 indexed fixed tiles.}
+Use the actions $u_j,v_j,d_j$ decoded below. For $d=0,1$, let
+\[
+\begin{gathered}
+h(q,b)=2q+b+2,\quad
+\mathcal S_d=\{u_j:d_j=d,\ 0\le j<430\},\\
+r_{d,q}=205-199d+|\mathcal S_d\cap\rg0{q-1}|.
+\end{gathered}
+\]
+An interval ending at $-1$ is empty. The table defines $t_i$ for
+$0\le i\le941$; all index ranges are fixed:
+\[
+\setlength{\arraycolsep}{1.4pt}\begin{array}{c|l}
+\text{index }i&\text{tile }t_i=(w_i,n_i,p_i,s_i)\\\hline
+0&(2,435,3,1)\\
+j+1\ (j=2q+b<430)&((1-d_j)r_{0,u_j},h(q,b),d_jr_{1,u_j},v_j)\\
+433-2a+b\ (a,b=0,1)&(0,432a+b,0,432a+b)\\
+\substack{423+2r_{d,q}+b\\q\in\mathcal S_d,\ d,b=0,1}&(dr_{d,q},b,(1-d)r_{d,q},h(q,b))\\
+923+2a+b\ (a,b=0,1)&(0,432a+b,0,438)\\
+927&(2,434,2,0)\\
+928&(3,436,4,4)\\
+929&(4,436,4,0)\\
+496+t\ (t=434,435,436)&(1,438,1,t)\\
+933+3a+b\ (a,b=0,1,2)&(a^2,437,b,437)
+\end{array}
+\]
+\textbf{A closed decoder for the 430 actions.}
+Put $D_b(A,k)=\fl{A/b^k}\bmod b$, where
+$a\bmod b=a-b\fl{a/b}$. For $0\le q<215$, $b=0,1$, $j=2q+b$:
+\[
+\begin{gathered}
+\mathcal N=\mathcal A\bmod2^{636},\quad
+\mathcal T=\fl{\mathcal A/2^{636}},\\
+\nu_j=D_2(\mathcal N,j),\quad \kappa_j=(\sigma_j+2)^{1-\nu_j}\quad(0\le j<430),\\
+\sigma_j=\sum_{k=0}^{j-1}\nu_k,\quad
+\Pi_j=\prod_{k=0}^{j-1}\kappa_k\quad(0\le j\le430),\\
+m_q=D_2(\mathcal N,430+q),\quad \tau_q=\sum_{k=0}^{q-1}m_k,\\
+F_q=14+m_q(D_{16}(\fl{\mathcal T/\Pi_{430}},\tau_q)-14),\\
+u_j=(\sigma_{j+1}-(\fl{\mathcal T/\Pi_j}\bmod\kappa_j))\bmod216,\\
+v_j=D_2(F_q,2b),\quad d_j=D_2(F_q,2b+1).
+\end{gathered}
+\]
+Empty sums/products are $0/1$. Here $(v_0,d_0,u_0)=(1,1,1)$; the constructor tile
+uses this actual first target, including its state renaming.
+

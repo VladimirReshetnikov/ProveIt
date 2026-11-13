@@ -1,0 +1,5 @@
+# Independent prelaunch review: double-topology ring agreement
+
+No launch blocker found. The checker pins source, runner, survey and manifest, checks the direct topology import and theorem name, confirms the two calls to the checked topology theorem and the final symmetry/transitivity orientation, and reruns the no-Lean preflight. The candidate uses the same env and gate list in both calls: one reference is env itself with reflexive initial agreement, the other is the supplied reference with its own initial and gate hypotheses. The resulting agreement holds only at completed nodes.
+
+The survey authenticates the checked topology producer and the runner binds its direct dependency and guard to that object. Full postflight requires success; provider observations are point-in-time and monitoring is sampled. The 60 actual ring-value gate equations, five norms, source bridge and iPRA endpoint remain hypotheses or open work. Lean elaboration is untested; this checker is prelaunch-only because its output path must be absent.

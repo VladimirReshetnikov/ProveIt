@@ -1,0 +1,89 @@
+import DiophantineConsistency.ModelDifferenceRing
+import Mathlib.Tactic.Linarith
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
+
+/-! Unelaborated fact-level source proposal. The difference-ring argument is
+adapted from the private `tau_gt` proof in
+`DiophantineConsistency/Compact44/P73Converse.lean` by Vladimir
+Reshetnikov, commit 0b43cf4a7750f861bacc45ab3f18dccd4ec10034.
+No graph zero, norm extraction, model provider, or Lean build is asserted. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.UnscaleFirstMarginDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The general private-P73 inequality, stated for model naturals and
+without positivity assumptions on s. -/
+theorem margin_of_norm (tau ell k s : V)
+    (hnorm : tau*tau=1+ell*(ell+k)) (hk : 3*s≤k) (hs : s≤ell) :
+    ell+s<tau := by
+  have hnR : (ι tau : DiffRing V)*ι tau=1+ι ell*(ι ell+ι k) := by
+    have h := congrArg (ι : V →+* DiffRing V) hnorm
+    simpa only [map_add,map_mul,map_one] using h
+  have hkR : (3 : DiffRing V)*ι s≤ι k := by
+    have h := (ι_le_ι (V:=V)).mpr hk
+    simpa only [map_mul,map_ofNat] using h
+  have hsR : (ι s : DiffRing V)≤ι ell := (ι_le_ι (V:=V)).mpr hs
+  have hmargin : (ι ell : DiffRing V)+ι s<ι tau := by
+    by_contra hnot
+    have hle : (ι tau : DiffRing V)≤ι ell+ι s := le_of_not_gt hnot
+    have hs0 : (0 : DiffRing V)≤ι s := ι_nonneg s
+    have ht0 : (0 : DiffRing V)≤ι tau := ι_nonneg tau
+    have hell0 : (0 : DiffRing V)≤ι ell := le_trans hs0 hsR
+    have hsum0 : (0 : DiffRing V)≤ι ell+ι s := add_nonneg hell0 hs0
+    have hsq := mul_le_mul hle hle ht0 hsum0
+    nlinarith
+  apply (ι_lt_ι (V:=V)).mp
+  simpa only [map_add] using hmargin
+
+/-- Large-k first norm yields the desired margin whenever s≤m.  The same
+statement works for m=0 or s=0; positivity is not assumed here. -/
+theorem margin_of_first_norm (m k s tau : V) (hs : s≤m)
+    (hk : 8*m+4≤k) (hnorm : tau*tau=1+m*(m+1)*k*k) :
+    m*k+s<tau := by
+  have hm0 : 0≤m := Arithmetic.zero_le m
+  have hk1 : 1≤k := by
+    have h4 : (4:V)≤8*m+4 := le_add_of_nonneg_left (Arithmetic.zero_le (8*m))
+    exact le_trans (by norm_num : (1:V)≤4) (le_trans h4 hk)
+  have hsell : s≤m*k := le_trans hs (le_mul_of_one_le_right hm0 hk1)
+  have hk3 : 3*s≤k := calc
+    3*s≤3*m := mul_le_mul_of_nonneg_left hs (by norm_num : (0:V)≤3)
+    _≤8*m := mul_le_mul_of_nonneg_right (by norm_num : (3:V)≤8) hm0
+    _≤8*m+4 := le_add_of_nonneg_right (by norm_num : (0:V)≤4)
+    _≤k := hk
+  have hn : tau*tau=1+(m*k)*(m*k+k) := by
+    calc
+      tau*tau=1+m*(m+1)*k*k := hnorm
+      _=1+(m*k)*(m*k+k) := by ring
+  exact margin_of_norm tau (m*k) k s hn hk3 hsell
+
+/-- q³-unscaling specialization. The positive-coordinate and represented
+quotient hypotheses are explicit; no particular graph is imported. -/
+theorem qcube_margin (q X Y s k tau : V)
+    (hq : 1≤q) (hX : 1≤X) (hs : 0<s) (hY : Y=(q*q*q)*s)
+    (hk : 8*X*Y*Y+4≤k)
+    (hnorm : tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*k*k) :
+    (X*Y*Y)*k+s<tau := by
+  have hq3 : 1≤q*q*q := one_le_mul (one_le_mul hq hq) hq
+  have hsY : s≤Y := by
+    rw [hY]
+    calc
+      s=1*s := by simp
+      _≤(q*q*q)*s := mul_le_mul_of_nonneg_right hq3 (Arithmetic.zero_le s)
+  have hY1 : 1≤Y := le_trans (pos_iff_one_le.mp hs) hsY
+  have hYm : Y≤X*Y*Y := calc
+    Y≤X*Y := by
+      simpa only [one_mul] using (mul_le_mul_of_nonneg_right hX (Arithmetic.zero_le Y))
+    _≤X*Y*Y := le_mul_of_one_le_right (Arithmetic.zero_le (X*Y)) hY1
+  have hsm : s≤X*Y*Y := le_trans hsY hYm
+  have hk' : 8*(X*Y*Y)+4≤k := by simpa only [mul_assoc] using hk
+  exact margin_of_first_norm (X*Y*Y) k s tau hsm hk' hnorm
+end DiophantineConsistency.UnscaleFirstMarginDraft
+#print axioms DiophantineConsistency.UnscaleFirstMarginDraft.margin_of_norm
+#print axioms DiophantineConsistency.UnscaleFirstMarginDraft.margin_of_first_norm
+#print axioms DiophantineConsistency.UnscaleFirstMarginDraft.qcube_margin

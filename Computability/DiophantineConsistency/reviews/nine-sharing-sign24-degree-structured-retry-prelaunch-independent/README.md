@@ -1,0 +1,3 @@
+# Independent structured degree retry prelaunch review
+
+Independent checker session 7442 exited 0. The retry changes only two residual proof steps from `simp` to kernel `decide`; all other Lean sources are unchanged. Runner differences are confined to the fresh output location, manifest pin, and scope/status labels. The two local 4,000,000-heartbeat limits and the existing -M3600, sampled 4 GiB RSS, 10 GiB host floor, 120-second and disk guards are retained. The checker revalidated the provider and no-Lean preflight. The proposed arbitrary-port total-degree upper bound remains unchecked; no exact lower bound or JSON/PDF correspondence is claimed.

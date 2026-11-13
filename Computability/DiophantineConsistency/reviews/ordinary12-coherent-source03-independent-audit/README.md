@@ -1,0 +1,7 @@
+# Independent review: source-03 snapshot
+
+The independent source audit actually exited 0, with its receipt and terminal observation here. The producer's committed evidence `7274110bb1` records actual freezer and source-audit exit codes 0. Their output chunks were 5d9074 and 170138; no session identifiers were issued. The manifest SHA-256 is `9a7059e439bb77ab258808789fd1165cff8a4961c609e132ca0ed2130cb27ded`, and the producer's audit SHA-256 is `62fe3d1f2fee807ba3a81a32b8f8b4c6e918635e2a64fbd028596533dbcd9631`.
+
+The audit independently rehashes all 70 snapshot files, checks their bytes against the frozen Git HEAD `d408c9a2b1b3a9b8cf32183f83b25e114d211c11`, and also checks the then-current Git HEAD `f4feaf353a701a878366319827fee7d33f026c05` and workspace bytes. No source drift was present at that observation. It independently parses the declared source imports, checks the 22 external names, source order and target, and binds the frozen Lake and toolchain configurations. The recorded freezer's bytes are those of revision `d8e97ac5fc`, both at that revision and at the frozen HEAD. This does not claim later workspace state remains unchanged.
+
+This is a source/header survey, not an authoritative compiler dependency graph or a Lean project build. It does not establish package-transitive or dynamic ancestry, signed graph transport, ordinary integrality, or an internal iPRA theorem. Optimized Python mode fails closed as observed.

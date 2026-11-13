@@ -1,0 +1,114 @@
+import Positive81ForwardCarrier
+
+/-! Proposed reverse 83→81 carrier witness, conditional on represented positive
+beta. This file has not been elaborated; inherited provider obligations apply. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive83ReverseRootDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing Positive81ForwardCarrierDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def z83 (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (b p v)*(ι (ell p v)+ι (k v)+ι (v 8)-ι (k v)*Q p v)-Q p v
+
+/-- Exact 83 source first residual and natural-port casts. -/
+theorem first83 (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    (PositiveCarrier83GraphDraft.graph (fun j => (p j:ℤ))).first.evalRing (fun j => ι (v j)) =
+      z83 p v*z83 p v-ι (b p v)*ι (b p v)*(1+ι (ell p v)*(ι (ell p v)+ι (k v))) := by
+  simp [PositiveCarrier83GraphDraft.graph,z83,Q,ell,X,Y,q,b,k,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- Exact 81 target first residual after replacing only r. -/
+theorem first81_update (p : Fin 4 → ℕ) (v : Fin 13 → V) (r : V) :
+    (PositiveSquare81GraphDraft.graph (fun j => (p j:ℤ))).first.evalRing
+      (fun j => ι (Positive81To83TransportDraft.putR v r j)) =
+      (ι (b p v)*(ι (ell p v)+ι (k v)+ι r-ι (k v)*P p v)-P p v)*
+      (ι (b p v)*(ι (ell p v)+ι (k v)+ι r-ι (k v)*P p v)-P p v)-
+      ι (b p v)*ι (b p v)*(1+ι (ell p v)*(ι (ell p v)+ι (k v))) := by
+  simp [PositiveSquare81GraphDraft.graph,Positive81To83TransportDraft.putR,P,ell,X,Y,q,b,k,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- The 83 carrier's strict positivity forces the signed C factor positive,
+using natural K0, q and F. No bound on X is needed for this implication. -/
+theorem gap_of_carrier (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hQ : (0:DiffRing V)<Q p v) : v 1+v 2<q p v := by
+  have hA : (0:DiffRing V)≤ι (X p v)+ι (p 1:V)*ι (q p v) :=
+    add_nonneg (ι_nonneg _) (mul_nonneg (ι_nonneg _) (ι_nonneg _))
+  have hFq : (0:DiffRing V)≤ι (v 1)*ι (q p v) :=
+    mul_nonneg (ι_nonneg _) (ι_nonneg _)
+  have hC : (0:DiffRing V)<ι (q p v)-ι (v 1)-ι (v 2) := by
+    by_contra hn
+    have hc : ι (q p v)-ι (v 1)-ι (v 2)≤(0:DiffRing V) := le_of_not_gt hn
+    have hh := mul_nonpos_of_nonpos_of_nonneg hc hA
+    dsimp only [Q] at hQ
+    linarith
+  have hh : (ι (v 1+v 2):DiffRing V)<ι (q p v) := by
+    simp only [map_add]
+    linarith
+  exact (ι_lt_ι).mp hh
+
+/-- For the actual 83 graph, the source norm and natural port hypotheses
+construct a strictly positive replacement for r in the exact 81 first row. -/
+theorem reverse_root (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveCarrier83GraphDraft.graph (fun j => (p j:ℤ))).output v)
+    (hbeta : 0<(p 0:V)) :
+    ∃ r : V, 0<r ∧
+      (PositiveSquare81GraphDraft.graph (fun j => (p j:ℤ))).first.evalRing
+        (fun j => ι (Positive81To83TransportDraft.putR v r j))=0 := by
+  have hb : 0<b p v := mul_pos (hv 0) hbeta
+  have hq : 0<q p v := by dsimp [q]; exact add_pos_of_pos_of_nonneg (by simp) (le_of_lt hb)
+  have hX : 0<X p v := mul_pos hq (hv 6)
+  have hk : 2≤k v := by
+    have hh := add_le_add (pos_iff_one_le.mp (hv 9)) (pos_iff_one_le.mp (hv 10))
+    simpa only [k,show (1:V)+1=2 by ring] using hh
+  have hsum := (ModelDifferenceRing.internalZero_iff _ _).mp hz
+  rw [Positive81To83TransportDraft.output83] at hsum
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at hsum
+  have hf0 : (PositiveCarrier83GraphDraft.graph (fun j => (p j:ℤ))).first.evalRing (fun j => ι (v j))=0 := by
+    apply mul_self_eq_zero.mp
+    nlinarith [sq_nonneg ((PositiveCarrier83GraphDraft.graph (fun j => (p j:ℤ))).main.evalRing (fun j => ι (v j))),
+      sq_nonneg ((PositiveCarrier83GraphDraft.graph (fun j => (p j:ℤ))).aux.evalRing (fun j => ι (v j))-1),
+      sq_nonneg ((PositiveCarrier83GraphDraft.graph (fun j => (p j:ℤ))).strongResidual.evalRing (fun j => ι (v j)))]
+  rw [first83] at hf0
+  have hnorm : z83 p v*z83 p v=ι (b p v)*ι (b p v)*(1+ι (ell p v)*(ι (ell p v)+ι (k v))) := sub_eq_zero.mp hf0
+  have hform : z83 p v=ι (b p v)*(ι (ell p v)+ι (k v)+ι (v 8)-ι (k v)*Q p v)-Q p v := rfl
+  obtain ⟨Qn,t,_,_,_,hQ,ht,_,_,_⟩ := PositiveCarrierDataDraft.root_data
+    (b p v) (ell p v) (k v) (v 8) (Q p v) (z83 p v) hb hk hform hnorm
+  have hQpos : (0:DiffRing V)<Q p v := PositiveCarrierDataDraft.P_positive
+    (b p v) (ell p v) (k v) (v 8) (Q p v) (z83 p v) hb hk hform hnorm
+  have hQdiv : (ι (b p v):DiffRing V)∣Q p v := by
+    rw [hQ,ht]
+    exact ⟨ι t,by simp only [map_mul]⟩
+  have hgap := gap_of_carrier p v hQpos
+  have hCpos : 0<C p v := tsub_pos_iff_lt.mpr hgap
+  have hCeq : (ι (C p v):DiffRing V)=ι (q p v)-ι (v 1)-ι (v 2) := by
+    have hh := P72Root.ι_tsub (le_of_lt hgap)
+    simpa only [C,map_add,sub_add_eq_sub_sub] using hh
+  have hpos : (0:DiffRing V)<ι (C p v)*(ι (X p v)+ι (p 1:V)*ι (q p v))-ι (v 1)*ι (q p v) := by
+    simpa only [Q,hCeq] using hQpos
+  have hdiv : (ι (b p v):DiffRing V)∣ι (C p v)*(ι (X p v)+ι (p 1:V)*ι (q p v))-ι (v 1)*ι (q p v) := by
+    simpa only [Q,hCeq] using hQdiv
+  have ⟨hPpos,hPdiv⟩ := CompanionCarrierFactsDraft.reduced_companion (q p v) (b p v)
+    (C p v) (v 1) (p 1:V) (X p v) rfl hCpos hX hpos hdiv
+  have hPpos' : (0:DiffRing V)<P p v := by simpa only [P,hCeq] using hPpos
+  have hPdiv' : (ι (b p v):DiffRing V)∣P p v := by simpa only [P,hCeq] using hPdiv
+  obtain ⟨r,hr,hnew⟩ := CompanionCarrierFactsDraft.positive_target
+    (b p v) (ell p v) (k v) (v 8) (Q p v) (z83 p v) (P p v)
+    hb hk hform hnorm hPpos' hPdiv'
+  refine ⟨r,hr,?_⟩
+  rw [first81_update]
+  exact sub_eq_zero.mpr hnew
+end DiophantineConsistency.Positive83ReverseRootDraft
+#print axioms DiophantineConsistency.Positive83ReverseRootDraft.first83
+#print axioms DiophantineConsistency.Positive83ReverseRootDraft.first81_update
+#print axioms DiophantineConsistency.Positive83ReverseRootDraft.gap_of_carrier
+#print axioms DiophantineConsistency.Positive83ReverseRootDraft.reverse_root

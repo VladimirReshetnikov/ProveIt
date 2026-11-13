@@ -1,0 +1,95 @@
+/tmp/tenpositive-80rankphase-f0bsje8o/Direct80RankPhase.lean:117:4: error: Tactic `apply` failed: could not unify the conclusion of `tsub_le_iff_right.mpr`
+  ?m.484 - ?m.485 ≤ ?m.486
+with the goal
+  v 2 ≤ q p v - v 1
+
+Note: The full type of `tsub_le_iff_right.mpr` is
+  ?m.484 ≤ ?m.486 + ?m.485 → ?m.484 - ?m.485 ≤ ?m.486
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+h31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+_hodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+N t : V
+hN : 0 < N
+hJ : v 0 = ArithmeticRepunit.rep (67 * 8807) N
+hq : q p v = Exp.exp (67 * 8807 * N)
+hCpos : 0 < Cnat p v
+ht : (↑(p 1) + v 5) * Cnat p v = v 1 + b p v * t
+hzero : dig 67 (Cnat p v) 0 = 1
+hdigits : ∀ j < 8807 * N, dig 67 (Cnat p v) j ≤ 3
+hnc : ArithmeticBinaryCarry.NoCarry (v 1) (↑highNat * v 0 - 1)
+hWL : 2 ≤ 67 * 8807 * N
+hq0 : mod4 (ι (q p v)) = 0
+horig : Cnat p v % Exp.exp 67 = 1
+he2 : Exp.exp 2 = 4
+hm : 1 % 4 = Cnat p v % 4
+hC4 : Cnat p v % 4 = 1
+hCeq : Cnat p v = 4 * (Cnat p v / 4) + ↑1
+hC1 : mod4 (ι (Cnat p v)) = ↑1
+hmask : v 1 + v 2 < q p v
+hFlt : v 1 ≤ q p v
+⊢ v 2 ≤ q p v - v 1
+/tmp/tenpositive-80rankphase-f0bsje8o/Direct80RankPhase.lean:150:71: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ?f (?x + ?y)
+in the target expression
+  (ι (b p v) * (ι (q p v) - ι (v 1)) + ι (v 2)) * (ι (q p v * q p v) - 1) + ι ((↑(p 2) + q p v * ↑(p 3)) * v 0) =
+    (ι (b p v) * (ι (q p v) - ι (v 1)) + ι (v 2)) * (ι (q p v) * ι (q p v) - 1) +
+      (ι ↑(p 2) + ι (q p v) * ι ↑(p 3)) * ι (v 0)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+h31 : 31 ≤ ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+_hodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+N t : V
+hN : 0 < N
+hJ : v 0 = ArithmeticRepunit.rep (67 * 8807) N
+hq : q p v = Exp.exp (67 * 8807 * N)
+hCpos : 0 < Cnat p v
+ht : (↑(p 1) + v 5) * Cnat p v = v 1 + b p v * t
+hzero : dig 67 (Cnat p v) 0 = 1
+hdigits : ∀ j < 8807 * N, dig 67 (Cnat p v) j ≤ 3
+hnc : ArithmeticBinaryCarry.NoCarry (v 1) (↑highNat * v 0 - 1)
+hWL : 2 ≤ 67 * 8807 * N
+hq0 : mod4 (ι (q p v)) = 0
+horig : Cnat p v % Exp.exp 67 = 1
+he2 : Exp.exp 2 = 4
+hm : 1 % 4 = Cnat p v % 4
+hC4 : Cnat p v % 4 = 1
+hCeq : Cnat p v = 4 * (Cnat p v / 4) + ↑1
+hmask : v 1 + v 2 < q p v
+hFlt : v 1 ≤ q p v
+hAl : v 2 ≤ q p v - v 1
+hCι : ι (Cnat p v) = ι (q p v) - ι (v 1) - ι (v 2)
+hC1 : 0 - mod4 (ι (v 1)) - mod4 (ι (v 2)) = 1
+hMC : mod4 (ι ↑(p 2)) = 2
+hq1 : 1 ≤ q p v
+hbJ : mod4 (ι (b p v)) = -1
+hJodd : 2 * mod4 (ι (v 0)) = 2
+hq2 : 1 ≤ q p v * q p v
+⊢ (ι (b p v) * (ι (q p v) - ι (v 1)) + ι (v 2)) * (ι (q p v * q p v) - 1) + ι ((↑(p 2) + q p v * ↑(p 3)) * v 0) =
+    (ι (b p v) * (ι (q p v) - ι (v 1)) + ι (v 2)) * (ι (q p v) * ι (q p v) - 1) +
+      (ι ↑(p 2) + ι (q p v) * ι ↑(p 3)) * ι (v 0)
+'TenPositive80RankPhase.graph_phase' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

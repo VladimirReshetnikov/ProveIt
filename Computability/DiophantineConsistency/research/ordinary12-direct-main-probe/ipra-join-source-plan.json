@@ -1,0 +1,231 @@
+{
+  "scope": "source plan only, no provider compatibility or Lean compilation asserted",
+  "root": "DirectMainHalt",
+  "modules": [
+    {
+      "name": "DirectMainGraph",
+      "source": "research/ordinary12-direct-main-probe/DirectMainGraph.lean",
+      "sha256": "6e465bd6329d4932b3c75e2984f9b771b5ae99d329f946aebba88abaa283c216",
+      "imports": [
+        "XQ91"
+      ]
+    },
+    {
+      "name": "DirectMainMain",
+      "source": "research/ordinary12-direct-main-probe/DirectMainMain.lean",
+      "sha256": "a3aa8b924dd535be3cc4ff71f8de3f441287a843c82b46af38b6864347845234",
+      "imports": [
+        "DirectMainGraph",
+        "DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011",
+        "DiophantineConsistency.ArithmeticAdaptiveQuotients2011"
+      ]
+    },
+    {
+      "name": "DirectMainFirst",
+      "source": "research/ordinary12-direct-main-probe/DirectMainFirst.lean",
+      "sha256": "8dc77d35d1727e1228a015bc6e9494bc4c155666474a4103b0a1f650f5ce107d",
+      "imports": [
+        "DirectMainGraph",
+        "DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011",
+        "DiophantineConsistency.ArithmeticAdaptiveQuotients2011"
+      ]
+    },
+    {
+      "name": "DirectMainFirstQuotient",
+      "source": "research/ordinary12-direct-main-probe/DirectMainFirstQuotient.lean",
+      "sha256": "a9a05ee1b896045b754f3285759a7163c297fd14d3d5aafc1b20a57566139ccb",
+      "imports": [
+        "DirectMainFirst"
+      ]
+    },
+    {
+      "name": "DirectMainTransport",
+      "source": "research/ordinary12-direct-main-probe/DirectMainTransport.lean",
+      "sha256": "032b363bef81b1815ffce40ae2b8d520e06f74a40296a3bdb70911ebfa05e71f",
+      "imports": [
+        "DirectMainFirstQuotient",
+        "DiophantineConsistency.ArithmeticAdaptiveTransport2011"
+      ]
+    },
+    {
+      "name": "DirectMainOriented",
+      "source": "research/ordinary12-direct-main-probe/DirectMainOriented.lean",
+      "sha256": "1bcffc13a61b2afc5e36e0d437120459bb1582c8f6beea809589ecaab3436a18",
+      "imports": [
+        "DirectMainMain",
+        "DirectMainTransport"
+      ]
+    },
+    {
+      "name": "DirectMainProjection",
+      "source": "research/ordinary12-direct-main-probe/DirectMainProjection.lean",
+      "sha256": "913b54cea53402e9da91b2fb9e5c41dbbf9e5926be9531986fc08fe90163a956",
+      "imports": [
+        "DiophantineConsistency.ArithmeticAdaptiveMainOrientation2011"
+      ]
+    },
+    {
+      "name": "DirectMainNorm",
+      "source": "research/ordinary12-direct-main-probe/DirectMainNorm.lean",
+      "sha256": "738c9a708950bca11bccb1904fe9d79192f85939f76c9bab6a0a549f3af74400",
+      "imports": [
+        "DirectMainProjection"
+      ]
+    },
+    {
+      "name": "DirectMainPell",
+      "source": "research/ordinary12-direct-main-probe/DirectMainPell.lean",
+      "sha256": "d50655779bf10d08b7b2586085141d35faea6fa5473075cec04a2146e4f67bb5",
+      "imports": [
+        "DirectMainNorm",
+        "DiophantineConsistency.ArithmeticAdaptivePellIndices2011"
+      ]
+    },
+    {
+      "name": "DirectMainIndices",
+      "source": "research/ordinary12-direct-main-probe/DirectMainIndices.lean",
+      "sha256": "a9e40ed1b19a6eda1973ed8dfa6f045bd47c415251be11348d42bf7f69d2267f",
+      "imports": [
+        "DirectMainOriented",
+        "DirectMainPell"
+      ]
+    },
+    {
+      "name": "DirectMainRank",
+      "source": "research/ordinary12-direct-main-probe/DirectMainRank.lean",
+      "sha256": "0f82f4e72359980aba19e1f20bf92eadd324a7b74f4c096f1a3144d6db600b41",
+      "imports": [
+        "DirectMainIndices",
+        "DiophantineConsistency.ArithmeticAdaptiveRankCongruence2011"
+      ]
+    },
+    {
+      "name": "DirectMainEarly",
+      "source": "research/ordinary12-direct-main-probe/DirectMainEarly.lean",
+      "sha256": "a00437e30cc44d00c9765ee816f912d022234ae6f163ff2ececb436124866824",
+      "imports": [
+        "DirectMainRank",
+        "DiophantineConsistency.ArithmeticPellCongruences"
+      ]
+    },
+    {
+      "name": "DirectMainWindow",
+      "source": "research/ordinary12-direct-main-probe/DirectMainWindow.lean",
+      "sha256": "ccf1f1fed2c0774ed9b255c0f7d849adbb8ed931f75bb3f58952c750a5609671",
+      "imports": [
+        "DirectMainEarly",
+        "DiophantineConsistency.ArithmeticAdaptiveRankWindow2011"
+      ]
+    },
+    {
+      "name": "DirectMainComparison",
+      "source": "research/ordinary12-direct-main-probe/DirectMainComparison.lean",
+      "sha256": "36bba26b975a3e571cdb1668070dd25eacdd2360491231f539a2e02712516119",
+      "imports": [
+        "DirectMainWindow",
+        "DiophantineConsistency.ArithmeticAdaptiveIndexComparison2011"
+      ]
+    },
+    {
+      "name": "DirectMainGapBalance",
+      "source": "research/ordinary12-direct-main-probe/DirectMainGapBalance.lean",
+      "sha256": "75c3912f85260c07f1b2a9d5922cd89960f9d2362b052056c198b9e1516556c3",
+      "imports": [
+        "DirectMainProjection"
+      ]
+    },
+    {
+      "name": "DirectMainGrowthAlgebra",
+      "source": "research/ordinary12-direct-main-probe/DirectMainGrowthAlgebra.lean",
+      "sha256": "c8fc2d246ef25c2f7f9dd2cc905ceec0d91926309dc7d7cf60a2d321d443a940",
+      "imports": [
+        "DirectMainProjection"
+      ]
+    },
+    {
+      "name": "DirectMainPellGrowth",
+      "source": "research/ordinary12-direct-main-probe/DirectMainPellGrowth.lean",
+      "sha256": "b784c30c5fd69efe9e0837c6d2d7bb3bc2f05ce219be5dc2ab040c5a7231ca03",
+      "imports": [
+        "DirectMainProjection",
+        "DiophantineConsistency.ArithmeticPellPowerRecovery"
+      ]
+    },
+    {
+      "name": "DirectMainGap",
+      "source": "research/ordinary12-direct-main-probe/DirectMainGap.lean",
+      "sha256": "572fe23b01dcfc4205ca105a7816bdeec572b57f9c97a8800847df376bd0729a",
+      "imports": [
+        "DirectMainComparison",
+        "DirectMainGapBalance",
+        "DirectMainGrowthAlgebra",
+        "DirectMainPellGrowth"
+      ]
+    },
+    {
+      "name": "DirectMainForward",
+      "source": "research/ordinary12-direct-main-probe/DirectMainForward.lean",
+      "sha256": "de770e415209f42b1d0222a8e41edb573efe86cf0884ee88b786a6f536f6c491",
+      "imports": [
+        "DirectMainGraph"
+      ]
+    },
+    {
+      "name": "DirectMainRestricted",
+      "source": "research/ordinary12-direct-main-probe/DirectMainRestricted.lean",
+      "sha256": "325c6a956f8a5942b0d5861111d170e2a2b6fe9ab19815c42ec69a2dfb45bbbe",
+      "imports": [
+        "DirectMainForward"
+      ]
+    },
+    {
+      "name": "DirectMainEquivalence",
+      "source": "research/ordinary12-direct-main-probe/DirectMainEquivalence.lean",
+      "sha256": "fa47d935f56421fc923cc847d885ff86710df9b12fba453f214b00a116ad2dbb",
+      "imports": [
+        "DirectMainGap",
+        "DirectMainRestricted"
+      ]
+    },
+    {
+      "name": "DirectPortBounds",
+      "source": "research/ordinary12-direct-main-probe/DirectPortBounds.lean",
+      "sha256": "40a3015bb7b3b526f14e6403121055845ff70d368c789daa5ee48567cfce2ae8",
+      "imports": [
+        "XQ91Halt"
+      ]
+    },
+    {
+      "name": "DirectMainHalt",
+      "source": "research/ordinary12-direct-main-probe/DirectMainHalt.lean",
+      "sha256": "d522a6dda7a6515cece3ac60f0fcad082b361987ee3556962fd8d51fdcdfdc12",
+      "imports": [
+        "DirectMainEquivalence",
+        "XQ91Halt",
+        "DirectPortBounds"
+      ]
+    }
+  ],
+  "direct_external_imports": [
+    "DiophantineConsistency.ArithmeticAdaptiveIndexComparison2011",
+    "DiophantineConsistency.ArithmeticAdaptiveMainOrientation2011",
+    "DiophantineConsistency.ArithmeticAdaptivePellIndices2011",
+    "DiophantineConsistency.ArithmeticAdaptiveQuotients2011",
+    "DiophantineConsistency.ArithmeticAdaptiveRankCongruence2011",
+    "DiophantineConsistency.ArithmeticAdaptiveRankWindow2011",
+    "DiophantineConsistency.ArithmeticAdaptiveScaledNorms2011",
+    "DiophantineConsistency.ArithmeticAdaptiveTransport2011",
+    "DiophantineConsistency.ArithmeticPellCongruences",
+    "DiophantineConsistency.ArithmeticPellPowerRecovery",
+    "XQ91",
+    "XQ91Halt"
+  ],
+  "client": {
+    "source": "research/ordinary12-direct90-ipra-endpoint-draft/Direct90IPRAEndpoint.lean",
+    "sha256": "613a987b593402233521f2abe38973bc37985565a9a3acc82a5ded1c8d72a28e",
+    "imports": [
+      "DirectMainHalt",
+      "PositiveModelIPRAReferenceTranslated"
+    ]
+  }
+}

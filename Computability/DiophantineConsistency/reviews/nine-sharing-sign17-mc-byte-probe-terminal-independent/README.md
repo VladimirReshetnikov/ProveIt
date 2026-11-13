@@ -1,0 +1,3 @@
+# Independent failure audit: sign17 MC literal probe
+
+Checker exit 0. Author outer session 38398 exited 1. All 15 replayed prerequisite stages compiled successfully, and their sources, objects and logs were checked. The final MC module dependency stage passed, but its compile child exited -6 with `Stack overflow detected. Aborting.`; the sampled peak RSS was 3,775,078,400 bytes and the monitor did not report a stop reason. No final MC object, theorem report, or final postflight was produced. Existing symbolic exact-degree results remain separate; no MC literal equality or external file binding follows from this failed run.

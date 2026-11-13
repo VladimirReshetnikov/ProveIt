@@ -1,0 +1,5 @@
+# Independent terminal review: windows from current-source zero
+
+**Pass for retained Lean evidence**, without Lean replay. Author-observed outer session 43875 exited 0; this is not an independent raw process transcript. For a zero of the maintained positive-shifted current source in any indicated IΣ₁ model, `windows_of_current_zero` proves `0<q-w 1-w 2`, `r+2<E` and `2*r<c`, with `w j=v j+1` and the exact q/E/r/c definitions in the source. The fourth port is `highPort+beta` exactly once. Its report is `[propext, Classical.choice, Quot.sound]` with no warnings. This is natural-model window extraction, not a 33-seed witness or zero bridge.
+
+`check.py` verifies source, state, object and child logs, both direct current-carrier and windows producer bindings, 150 guard slots, 1,164 overlay links, equal before/after surveys and a fresh provider survey. Both Lean children exited 0 without sampled monitor stop/error. Provider checks are point observations and the inherited initial-agreement numeric outer exit is unavailable.

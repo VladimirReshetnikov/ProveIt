@@ -1,0 +1,9 @@
+# Conditional guarded 79 zero
+
+`Mask79ConditionalGuard.square_represented` proves that the shared row-52 square has a representative in every supported IΣ₁ model's natural semiring, for arbitrary natural ports and valuations. `guarded_zero_of_parameter` proves that an actual positive 79 zero can be moved to a positive guarded 79 zero if the caller supplies a representative `z`, a model parameter `t`, the two strict subtraction bounds from the [natural lift](../ten-positive-79-gauge-natural-lift/README.md), and the explicit moved-valuation guard inequality. It uses one consistent `z`, `t`, original valuation and moved valuation throughout.
+
+Guarded author `observations/attempt01/` and its enclosing tool session exited 0. Source SHA-256 is `b15be53fa5ad9504515934a7023528184539c2939561a9b5eeb62f3e1224d019`; terminal SHA-256 is `4be1ab63ed7a294be970af56d39e71b4f58edd59edeada4d721382ee69e54af5`; output `/tmp/mask79-condguard-u1lbyzjf/Mask79ConditionalGuard.olean` SHA-256 is `9d5e09a0151470b62f7bc81451f7fb3e110faa892e27e90720693c064c6aecc1`. Direct lift and selected supporting objects are pinned; historical transitive project/package/dynamic ancestry remains inherited. No independent Lean replay or file semantics theorem is claimed.
+
+The square-representative theorem does not supply a useful `t`. The three inequalities are explicit, and no theorem here establishes their simultaneous satisfiability for an arbitrary positive graph zero. In particular, no unrestricted 79-row equivalence or iPRA endpoint follows.
+
+**Later result:** the [signed-gauge obstruction](../ten-positive-79-gauge-signed-obstruction/README.md) proves that this exact gauge cannot turn an unguarded valuation with positive F into any guarded model-natural valuation, for either sign of the difference-ring parameter. The conditional statements above remain valid; the obstruction does not decide unrestricted 79 equivalence or a different transformation.

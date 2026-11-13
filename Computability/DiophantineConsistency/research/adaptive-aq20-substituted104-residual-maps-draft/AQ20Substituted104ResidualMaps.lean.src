@@ -1,0 +1,307 @@
+import AQ20Substituted104ConditionalTransfer
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed AQ20 residual identities and graph maps. No Lean check. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.AQ20Substituted104ResidualMapsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open AQ20Substituted104ConditionalTransferDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Parent residual 0 (A0) after scale extension. -/
+theorem relation00 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 0).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 0).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 1 (A1) after scale extension. -/
+theorem relation01 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 1).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 1).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 2 (auxResidual) after scale extension. -/
+theorem relation02 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 2).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 2).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 3 (g72) after scale extension. -/
+theorem relation03 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 3).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 3).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 6 (rankDifference) after scale extension. -/
+theorem relation04 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 6).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 4).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 7 (ellDifference) after scale extension. -/
+theorem relation05 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 7).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 5).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 8 (cSquareDifference) after scale extension. -/
+theorem relation06 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 8).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 6).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 9 (zDifference) after scale extension. -/
+theorem relation07 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 9).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 7).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 10 (dDifference) after scale extension. -/
+theorem relation08 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 10).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 8).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 11 (vDifference) after scale extension. -/
+theorem relation09 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 11).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 9).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Parent residual 12 (deltaDifference) after scale extension. -/
+theorem relation10 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 12).evalRing (fun k => ι (extend beta v k)) =
+      (AQ20Substituted104ResidualsDraft.residuals p 10).evalRing (fun k => ι (v k)) := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- The removed parent scale-binding residual 4 vanishes after extension. -/
+theorem binding04 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 4).evalRing (fun k => ι (extend beta v k)) = 0 := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- The removed parent scale-binding residual 5 vanishes after extension. -/
+theorem binding05 (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta) :
+    (AQ22Quotient110ResidualsDraft.residuals p 5).evalRing (fun k => ι (extend beta v k)) = 0 := by
+  simp [AQ22Quotient110ResidualsDraft.residuals, AQ20Substituted104ResidualsDraft.residuals,
+    extend, Expr.evalRing_add, Expr.evalRing_sub, Expr.evalRing_mul,
+    Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    hb, map_add, map_mul, map_one] <;> ring
+
+/-- Recover both model scale coordinates from the parent bindings.
+The cast premise identifies the beta occurring in those bindings. -/
+theorem parent_scales (p : Fin 4 → ℤ) (beta : V) (v : Fin 22 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta)
+    (hz : InternalZero (AQ22Quotient110LiteralDraft.literal p) v) :
+    v 13=(1+v 0*beta)*((1+v 0*beta)*(1+v 0*beta))*(v 0*beta) ∧
+    v 14=v 7*((1+v 0*beta)*(1+v 0*beta)) := by
+  have hp := (AQ22Quotient110ResidualZerosDraft.all_residuals p v).mp hz
+  have hs := (ModelDifferenceRing.internalZero_iff _ _).mp (hp 4)
+  have ht := (ModelDifferenceRing.internalZero_iff _ _).mp (hp 5)
+  constructor
+  · apply ι_injective
+    simp only [map_add,map_mul,map_one]
+    simp [AQ22Quotient110ResidualsDraft.residuals, Expr.evalRing_add,
+      Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_var,
+      Expr.evalRing_constant, Expr.evalRing_ofNat, hb] at hs
+    linear_combination hs
+  · apply ι_injective
+    simp only [map_add,map_mul,map_one]
+    simp [AQ22Quotient110ResidualsDraft.residuals, Expr.evalRing_add,
+      Expr.evalRing_sub, Expr.evalRing_mul, Expr.evalRing_var,
+      Expr.evalRing_constant, Expr.evalRing_ofNat, hb] at ht
+    linear_combination ht
+
+/-- Once both parent bindings hold, projection and extension restore it. -/
+theorem extend_project (beta : V) (v : Fin 22 → V)
+    (hs : v 13=(1+v 0*beta)*((1+v 0*beta)*(1+v 0*beta))*(v 0*beta))
+    (ht : v 14=v 7*((1+v 0*beta)*(1+v 0*beta))) :
+    extend beta (project v)=v := by
+  funext i
+  fin_cases i <;> simp [extend, project, ←hs, ←ht]
+
+/-- Extend a child zero using both binding identities and 11 common ones. -/
+theorem extend_zero (p : Fin 4 → ℤ) (beta : V) (v : Fin 20 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta)
+    (hz : InternalZero (AQ20Substituted104LiteralDraft.literal p) v) :
+    InternalZero (AQ22Quotient110LiteralDraft.literal p) (extend beta v) := by
+  have hc := (AQ20Substituted104ResidualZerosDraft.all_residuals p v).mp hz
+  apply (AQ22Quotient110ResidualZerosDraft.all_residuals p (extend beta v)).mpr
+  intro i
+  fin_cases i
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation00 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 0)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation01 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 1)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation02 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 2)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation03 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 3)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    exact binding04 p beta v hb
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    exact binding05 p beta v hb
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation04 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 4)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation05 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 5)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation06 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 6)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation07 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 7)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation08 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 8)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation09 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 9)
+  · apply (ModelDifferenceRing.internalZero_iff _ _).mpr
+    rw [relation10 p beta v hb]
+    exact (ModelDifferenceRing.internalZero_iff _ _).mp (hc 10)
+
+/-- Project any parent zero after recovering its scale bindings. -/
+theorem project_zero (p : Fin 4 → ℤ) (beta : V) (v : Fin 22 → V)
+    (hb : ((p 0 : ℤ) : DiffRing V)=ι beta)
+    (hz : InternalZero (AQ22Quotient110LiteralDraft.literal p) v) :
+    InternalZero (AQ20Substituted104LiteralDraft.literal p) (project v) := by
+  have hp := (AQ22Quotient110ResidualZerosDraft.all_residuals p v).mp hz
+  obtain ⟨hs,ht⟩ := parent_scales p beta v hb hz
+  have hlift := extend_project beta v hs ht
+  apply (AQ20Substituted104ResidualZerosDraft.all_residuals p (project v)).mpr
+  intro i
+  fin_cases i
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 0)
+        (extend beta (project v)) := by simpa only [hlift] using hp 0
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation00 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 1)
+        (extend beta (project v)) := by simpa only [hlift] using hp 1
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation01 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 2)
+        (extend beta (project v)) := by simpa only [hlift] using hp 2
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation02 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 3)
+        (extend beta (project v)) := by simpa only [hlift] using hp 3
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation03 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 6)
+        (extend beta (project v)) := by simpa only [hlift] using hp 6
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation04 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 7)
+        (extend beta (project v)) := by simpa only [hlift] using hp 7
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation05 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 8)
+        (extend beta (project v)) := by simpa only [hlift] using hp 8
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation06 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 9)
+        (extend beta (project v)) := by simpa only [hlift] using hp 9
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation07 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 10)
+        (extend beta (project v)) := by simpa only [hlift] using hp 10
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation08 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 11)
+        (extend beta (project v)) := by simpa only [hlift] using hp 11
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation09 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+  · have hparent : InternalZero (AQ22Quotient110ResidualsDraft.residuals p 12)
+        (extend beta (project v)) := by simpa only [hlift] using hp 12
+    have hr := (ModelDifferenceRing.internalZero_iff _ _).mp hparent
+    rw [relation10 p beta (project v) hb] at hr
+    exact (ModelDifferenceRing.internalZero_iff _ _).mpr hr
+
+/-- Proposed discharge of AQ20 graph obligations; AQ22 obligations remain
+separate premises in the conditional endpoint. -/
+theorem graphZeroObligations : GraphZeroObligations := by
+  intro V _ _ beta _ hb
+  constructor
+  · intro v _ hz
+    exact project_zero CurrentWindowCarry2011.ports beta v hb hz
+  · intro v _ hz
+    exact extend_zero CurrentWindowCarry2011.ports beta v hb hz
+
+end DiophantineConsistency.AQ20Substituted104ResidualMapsDraft
+#print axioms DiophantineConsistency.AQ20Substituted104ResidualMapsDraft.parent_scales
+#print axioms DiophantineConsistency.AQ20Substituted104ResidualMapsDraft.extend_project
+#print axioms DiophantineConsistency.AQ20Substituted104ResidualMapsDraft.extend_zero
+#print axioms DiophantineConsistency.AQ20Substituted104ResidualMapsDraft.project_zero
+#print axioms DiophantineConsistency.AQ20Substituted104ResidualMapsDraft.graphZeroObligations

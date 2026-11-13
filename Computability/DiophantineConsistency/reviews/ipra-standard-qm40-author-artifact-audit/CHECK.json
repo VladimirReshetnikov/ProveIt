@@ -1,0 +1,31 @@
+{
+  "audit_sha256": "8427df8bdf5ea4db2983d99c0c50b702dbecfad4bea17b2652d22cb4901ba026",
+  "result_sha256": "0d77e6da49ebad57c6808fa1f38aefedef7d790ae620f6cc6c61749be705339a",
+  "runs": [
+    {
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/reviews/ipra-standard-qm40-author-artifact-audit/audit.py"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "stdout": "{\"axiom_reports\": 3, \"fixed\": 10, \"guards\": 440, \"matched_baseline_warnings\": 3, \"native_parent_guards\": 240, \"scope\": \"point-in-time author artifacts; no Lean replay or full closure audit\", \"sources\": 5, \"status\": \"PASS_STANDARD_QM40_AUTHOR_ARTIFACT_AUDIT\", \"steps\": 5}\n"
+    },
+    {
+      "command": [
+        "/home/codex/.local/bin/python3",
+        "-O",
+        "-I",
+        "-S",
+        "Computability/DiophantineConsistency/reviews/ipra-standard-qm40-author-artifact-audit/audit.py"
+      ],
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/ipra-standard-qm40-author-artifact-audit/audit.py\", line 11, in <module>\n    raise RuntimeError('optimized Python is rejected')\nRuntimeError: optimized Python is rejected\n",
+      "stdout": ""
+    }
+  ],
+  "scope": "Point-in-time author artifact and direct guard audit; no Lean replay or full transitive provider audit.",
+  "status": "PASS_STANDARD_QM40_AUTHOR_ARTIFACT_AUDIT"
+}

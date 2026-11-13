@@ -1,0 +1,205 @@
+#!/usr/bin/env python3
+"""Bounded, source-pinned experiment; inherits 13-variable provider ancestry."""
+import hashlib,importlib.util,json,os,re,shutil,subprocess,sys
+from pathlib import Path
+if not sys.flags.isolated or not sys.flags.no_site or sys.flags.optimize:raise SystemExit('use python3 -I -S -B')
+P=Path(__file__).resolve().parent;D=P.parents[1];REPO=next(p for p in P.parents if (p/'lakefile.toml').is_file());BASE=Path('/tmp/nine-sharing-sign17-degree-staged-retry-20261110');OUT=Path('/tmp/nine-sharing-sign17-mf-whole-bytes-20261110');SPHERE=Path('/tmp/current2011-spheres-fresh-base-priority-check02');MODEL=Path('/tmp/normalized106-fresh-model-client-20261105');PKG=Path('/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib');LEAN=Path('/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean');TOOL=LEAN.parent.parent/'lib/lean';MON=D/'research/thirteen-current2011-complete-4g-retry/monitor.py';STATE=D/'research/nine-sharing-sign17-degree-staged-retry-check/attempt01/state.json';roots=[OUT/'lib',SPHERE,MODEL,PKG,TOOL];suffixes=['.olean','.olean.private','.olean.server','.ir','.ilean','.olean.hash','.olean.private.hash','.olean.server.hash','.ir.hash','.ilean.hash']
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def need(x,msg):
+ if not x:raise RuntimeError(msg)
+def save():
+ t=OUT/'state.tmp';t.write_text(json.dumps(state,sort_keys=True,indent=2)+'\n');os.replace(t,OUT/'state.json')
+def guard(modules):
+ ret={}
+ for n in modules:
+  for r in roots:
+   for s in suffixes:
+    p=r/(n.replace('.','/')+s)
+    if os.path.lexists(p):need(p.is_file(),'bad candidate '+str(p));ret[str(p)]={'realpath':str(p.resolve()),'sha256':sha(p)}
+    else:ret[str(p)]=None
+ return ret
+def check_external_syntax():
+ global framework
+ need(sha(P/'framework-survey.py')=='953e4e5c493a4195919d4f4e4baac054fa801c09c456d8d0fa6453ea5d08360c','framework survey pin')
+ r=subprocess.run([sys.executable,'-I','-S','-B',str(P/'framework-survey.py')],capture_output=True,timeout=120);need(r.returncode==0 and not r.stderr,'framework survey');framework=json.loads(r.stdout);need(framework['status']=='PASS','framework status')
+check_external_syntax()
+need(sha(D/'research/nine-sharing-sign26-endpoint-retry01/attempt01/state.json')=='8b7490adbdecd01e9d23d3a8978c72d38deb5ef97d931ca1120627acdf2d7003','retry failure receipt')
+need(not OUT.exists(),'output exists');need(sha(MON)=='d6d32747a34269702abd603d600a848266720aa06c0b91653942f316cd6dc1ad','monitor');need(sha(STATE)=='fd086fe7412866bb9d2b9211d99ab4dbb20f2ae13a2babf00019f4ed93a6e9bf','bridge receipt');base=json.loads(STATE.read_text());need(base['status']=='PASS' and len(base['rows'])==11 and base['rows'][10]['module']=='Sign17DegreeCompose','bridge state')
+need(sha(D/'research/nine-sharing-sign17-degree-staged-retry-check/attempt01/outer-result.json')=='6dd071e2a1c0b983f03c8dcc0cb28f98a5c507ee10395477a548a48a613eda16','bridge outer record')
+need(sha(D/'reviews/nine-sharing-sign17-degree-staged-retry-terminal-independent/check.py')=='0510b85b20108976a1cdf627bb9f0cf97f044c033eec83997f541eda46d4399a','bridge terminal audit checker')
+need(json.loads((D/'research/nine-sharing-sign17-degree-staged-retry-check/attempt01/outer-result.json').read_text())['outer_exit_code']==0,'shape outer status')
+need(sha(P/'source-manifest.json')=='078058a4a9e4a096d393a105bf37b9614e8335ec640c84f80723cdc5dafcf2ed','manifest pin');manifest=json.loads((P/'source-manifest.json').read_text());entries=manifest['rows'];names=[x['module'].split('.')[-1] for x in entries];pins=[x['source_sha256'] for x in entries]
+prior_state_path=D/'research/nine-sharing-sign17-univariate-degree-probe-retry02-check/attempt01/state.json'
+prior_outer=D/'research/nine-sharing-sign17-univariate-degree-probe-retry02-check/attempt01/outer-result.json'
+need(sha(prior_state_path)=='6f2b2ff507714a0c4d8f017292c12131e6523838d9518b7336468486c7a99038','univariate state')
+need(sha(prior_outer)=='f3e9611ddbc09841ec54ca39390e78463dd1f5f00235cd56a9cb2509f4ad4ea4' and json.loads(prior_outer.read_text())['outer_exit_code']==0,'univariate outer')
+need(sha(D/'reviews/nine-sharing-sign17-univariate-degree-probe-retry02-terminal-independent/check.py')=='0608299be3e408148c4f56ffe3c05b074798792377bfafffd783c1ca30e8ce53','univariate terminal audit')
+prior=json.loads(prior_state_path.read_text());need(prior['status']=='PASS' and len(prior['rows'])==1 and prior['rows'][0]['source_sha256']==entries[0]['source_sha256'],'univariate source binding')
+axis_state_path=D/'research/nine-sharing-sign17-axis-degree-base-retry-check/attempt01/state.json'
+axis_outer=D/'research/nine-sharing-sign17-axis-degree-base-retry-check/attempt01/outer-result.json'
+need(sha(axis_state_path)=='a167ca0d652e1f309ebe901d655e14f5924f75de7811d42af2e585edfca5381c','axis base state')
+need(sha(axis_outer)=='9afdc9a05cff6104b617c9c17392e7e8946299cca8fc784f71462ad1fff83fa1' and json.loads(axis_outer.read_text())['outer_exit_code']==0,'axis base outer')
+need(sha(D/'reviews/nine-sharing-sign17-axis-degree-base-retry-terminal-independent/check.py')=='c373ed00f7a31cba52daec677ecf305bab35fcbe48261a0ff591e817e045ffef','axis base audit')
+axis=json.loads(axis_state_path.read_text());need(axis['status']=='PASS' and len(axis['rows'])==2 and all(axis['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(2)),'axis base source binding')
+root_state_path=D/'research/nine-sharing-sign17-axis-degree-root-check/attempt01/state.json'
+root_outer=D/'research/nine-sharing-sign17-axis-degree-root-check/attempt01/outer-result.json'
+need(sha(root_state_path)=='8d14be59266cb5f0e8fbe0a0b401738fdf7116f4947295bfb2535d877801669c','root state')
+need(sha(root_outer)=='24fe6ac4b687667e2e6e059af230334270eec37c37bfb0b1450f7b91e63e372b' and json.loads(root_outer.read_text())['outer_exit_code']==0,'root outer')
+need(sha(D/'reviews/nine-sharing-sign17-axis-degree-root-terminal-independent/check.py')=='c1e57e40f4c7626f45f63b8c0917452df1927968f60e06965c1b5b034839bc21','root audit')
+root=json.loads(root_state_path.read_text());need(root['status']=='PASS' and len(root['rows'])==3 and all(root['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(3)),'root source binding')
+scale_state_path=D/'research/nine-sharing-sign17-axis-degree-scale-check/attempt01/state.json'
+scale_outer=D/'research/nine-sharing-sign17-axis-degree-scale-check/attempt01/outer-result.json'
+need(sha(scale_state_path)=='8146b0cca8b83e993b299df7622ec3a7726c8b5b1691cf261f1900f43e867a46','scale state')
+need(sha(scale_outer)=='af9a1b4a145914b2429e3b769ab6a54c870b80cfb3f0c209fd3312f137c49dc9' and json.loads(scale_outer.read_text())['outer_exit_code']==0,'scale outer')
+need(sha(D/'reviews/nine-sharing-sign17-axis-degree-scale-terminal-independent/check.py')=='3658632adea9397d9495fd66aac932e40f46368f3a5a5e53ea258626ccad5741','scale audit')
+scale=json.loads(scale_state_path.read_text());need(scale['status']=='PASS' and len(scale['rows'])==4 and all(scale['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(4)),'scale source binding')
+binding_state_path=D/'research/nine-sharing-sign17-axis-root-binding-staged-retry-check/attempt01/state.json'
+binding_outer=D/'research/nine-sharing-sign17-axis-root-binding-staged-retry-check/attempt01/outer-result.json'
+need(sha(binding_state_path)=='1119c131eee655a2592a321c8339645c4474bdb297c6529d82b2b4c6fe53d6e0','binding state')
+need(sha(binding_outer)=='2c6cbcd7fa8b0c2b81ebc0202bf21dea8c9329774fff566099c949c4e39eee58' and json.loads(binding_outer.read_text())['outer_exit_code']==0,'binding outer')
+need(sha(D/'reviews/nine-sharing-sign17-axis-root-binding-staged-retry-terminal-independent/check.py')=='2c7f04546de5c9537d84e382ff9697f537ab7ce2f744588af7cbf3141b3c4ed3','binding audit')
+binding=json.loads(binding_state_path.read_text());need(binding['status']=='PASS' and len(binding['rows'])==7 and all(binding['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(7)),'binding source binding')
+na_state_path=D/'research/nine-sharing-sign17-axis-na-degree-check/attempt01/state.json'
+na_outer=D/'research/nine-sharing-sign17-axis-na-degree-check/attempt01/outer-result.json'
+need(sha(na_state_path)=='42a5fcba409a7a2feb57a37109cc6dca655c9d1e4223df279224a9a7739f559d','na state')
+need(sha(na_outer)=='4b35718a712fa1ab304430e9b935385e39d1b25a454f99d587c9ef926f4b7bd1' and json.loads(na_outer.read_text())['outer_exit_code']==0,'na outer')
+need(sha(D/'reviews/nine-sharing-sign17-axis-na-degree-terminal-independent/check.py')=='379257743aeeeb76bb9419defe5f0816e24387d0527cc19283f92f41383c69ae','na audit')
+na=json.loads(na_state_path.read_text());need(na['status']=='PASS' and len(na['rows'])==8 and all(na['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(8)),'na source binding')
+other_state_path=D/'research/nine-sharing-sign17-axis-other-degree-check/attempt01/state.json'
+other_outer=D/'research/nine-sharing-sign17-axis-other-degree-check/attempt01/outer-result.json'
+need(sha(other_state_path)=='7461e6e2c7554b729b5e810e4019e83ebf79602466bafaaaee908225f5e21e9e','other state')
+need(sha(other_outer)=='8d2f3f19381d57479db5ad76e10d77381cfc2f679c66559e38ce9ef599838ad2' and json.loads(other_outer.read_text())['outer_exit_code']==0,'other outer')
+need(sha(D/'reviews/nine-sharing-sign17-axis-other-degree-terminal-independent/check.py')=='166370a2365c508982d4897bca8850169a7b3f85e2a9ff9ee15958bce9ea4694','other audit')
+other=json.loads(other_state_path.read_text());need(other['status']=='PASS' and len(other['rows'])==9 and all(other['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(9)),'other source binding')
+nc_state_path=D/'research/nine-sharing-sign17-axis-noncancel-check/attempt01/state.json'
+nc_outer=D/'research/nine-sharing-sign17-axis-noncancel-check/attempt01/outer-result.json'
+need(sha(nc_state_path)=='6716a653df6eb7affe2a97a57afaabd241343e36f503f57ae39ea6c2e51b86ac','noncancel state')
+need(sha(nc_outer)=='8025d34fd9f518265869245fdc5ea46805ad66d5701df8bd84c17af7ab8b31d7' and json.loads(nc_outer.read_text())['outer_exit_code']==0,'noncancel outer')
+need(sha(D/'reviews/nine-sharing-sign17-axis-noncancel-terminal-independent/check.py')=='1beb9e7152d856dad4277650bccd3ef1dc3b9827355ae434d81db8446e784caf','noncancel audit')
+nc=json.loads(nc_state_path.read_text());need(nc['status']=='PASS' and len(nc['rows'])==10 and all(nc['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(10)),'noncancel source binding')
+seed_state_path=D/'research/nine-sharing-sign17-axis-seed-degree-check/attempt01/state.json'
+seed_outer=D/'research/nine-sharing-sign17-axis-seed-degree-check/attempt01/outer-result.json'
+need(sha(seed_state_path)=='7d54a91eb7b6a913cb012fc873e98146f0cdc37dec93e420269acc47c5177669','seed state')
+need(sha(seed_outer)=='d6c595a18c41da1a5320514b1a401114b77e8118c405dd2504b54e611198ea2c' and json.loads(seed_outer.read_text())['outer_exit_code']==0,'seed outer')
+need(sha(D/'reviews/nine-sharing-sign17-axis-seed-degree-terminal-independent/check.py')=='292f7fdc5f0c7cb51fb33f45dc7631f8f86bee8130eee93fa94aaa7fe8b241a5','seed audit')
+seed=json.loads(seed_state_path.read_text());need(seed['status']=='PASS' and len(seed['rows'])==11 and all(seed['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(11)),'seed source binding')
+lower_state_path=D/'research/nine-sharing-sign17-axis-degree-lower-retry-check/attempt01/state.json'
+lower_outer=D/'research/nine-sharing-sign17-axis-degree-lower-retry-check/attempt01/outer-result.json'
+need(sha(lower_state_path)=='17bf5479163f702625235213a564cc06edaa2d3c19d7b192630e322b9b5b1be9','lower state')
+need(sha(lower_outer)=='97853ada3ad2aee72ba10d80203aa1c08faf6d095053a8ad3f5b6e83ee0adbcb' and json.loads(lower_outer.read_text())['outer_exit_code']==0,'lower outer')
+need(sha(D/'reviews/nine-sharing-sign17-axis-degree-lower-retry-terminal-independent/check.py')=='f1ff7ddcbfe3f7c59113fef1fd02833657753c8e046ee975140c1ac9dea60788','lower audit')
+lower=json.loads(lower_state_path.read_text());need(lower['status']=='PASS' and len(lower['rows'])==14 and all(lower['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(14)),'lower source binding')
+exact_state_path=D/'research/nine-sharing-sign17-exact-degree-check/attempt01/state.json'
+exact_outer=D/'research/nine-sharing-sign17-exact-degree-check/attempt01/outer-result.json'
+need(sha(exact_state_path)=='49d72733179d15aa5822143bdae7d9e5470d6899f9edd71289d7a2b5345de4c0','exact state')
+need(sha(exact_outer)=='e04b02950f6acdbfa5c7b312cdfa1fe227f440c9515dd7a98abd911220d778d4' and json.loads(exact_outer.read_text())['outer_exit_code']==0,'exact outer')
+need(sha(D/'reviews/nine-sharing-sign17-exact-degree-terminal-independent/check.py')=='ca5e8446ec5cbd623882721b116bd1c767bbe97afcd1689052cdccd97926a5d1','exact audit')
+exact=json.loads(exact_state_path.read_text());need(exact['status']=='PASS' and len(exact['rows'])==15 and all(exact['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(15)),'exact source binding')
+runs_state_path=D/'research/nine-sharing-sign17-mc-radix-runs-retry02-check/attempt01/state.json'
+runs_outer=D/'research/nine-sharing-sign17-mc-radix-runs-retry02-check/attempt01/outer-result.json'
+need(sha(runs_state_path)=='3f5a4b4ea93fcb4f842ad1fc44c9203693d78469fb7d5b48bf36fab9a064660d','runs state')
+need(sha(runs_outer)=='f1174a579036f14dde73c8c29be758231deceb63695d45294e67607388764bc8' and json.loads(runs_outer.read_text())['outer_exit_code']==0,'runs outer')
+need(sha(D/'reviews/nine-sharing-sign17-mc-radix-runs-retry02-terminal-independent/check.py')=='e5032e47afbe135fb158b39cd445cd8b9d30e99ba3ca9fd403f25105d1a44a6b','runs audit')
+runs=json.loads(runs_state_path.read_text());need(runs['status']=='PASS' and len(runs['rows'])==17 and all(runs['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(17)),'runs source binding')
+chunk_state_path=D/'research/nine-sharing-sign17-mc-chunk-check/attempt01/state.json'
+chunk_outer=D/'research/nine-sharing-sign17-mc-chunk-check/attempt01/outer-result.json'
+need(sha(chunk_state_path)=='904a335c6ad892bf0291217d4b3c78b5cdb90057e17935d40badc99d45ce3a3f','chunk state')
+need(sha(chunk_outer)=='48bb935b4654612da87570f0a3633487ea4a0b9f8f4c3984826e5dff98db386d' and json.loads(chunk_outer.read_text())['outer_exit_code']==0,'chunk outer')
+need(sha(D/'reviews/nine-sharing-sign17-mc-chunk-terminal-independent/check.py')=='58313decc6226206b0d2032f3c65a4194890b3ff99d79c838532bcc839793390','chunk audit')
+chunk=json.loads(chunk_state_path.read_text());need(chunk['status']=='PASS' and len(chunk['rows'])==16 and chunk['rows'][15]['source_sha256']==entries[17]['source_sha256'],'chunk source binding')
+compose_state_path=D/'research/nine-sharing-sign17-mc-compose-core-retry-check/attempt01/state.json'
+compose_outer=D/'research/nine-sharing-sign17-mc-compose-core-retry-check/attempt01/outer-result.json'
+need(sha(compose_state_path)=='0e3ea1a7c9c9921be24963ad1fe5a0f10aa9a9928f5ebd738ca776bd280c73ca','compose state')
+need(sha(compose_outer)=='109872589343a841c2977776009bffe07fdb622c03f4a06e9d69b3ed284ae113' and json.loads(compose_outer.read_text())['outer_exit_code']==0,'compose outer')
+need(sha(D/'reviews/nine-sharing-sign17-mc-compose-core-retry-terminal-independent/check.py')=='faaaf642fd306211ced0477f80fc46a9b6988c16ae6e4d165734d8017bebce67','compose audit')
+compose=json.loads(compose_state_path.read_text());need(compose['status']=='PASS' and len(compose['rows'])==19 and all(compose['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(19)),'compose source binding')
+mfr_state_path=D/'research/nine-sharing-sign17-mf-radix-digits-retry02-check/attempt01/state.json'
+mfr_outer=D/'research/nine-sharing-sign17-mf-radix-digits-retry02-check/attempt01/outer-result.json'
+need(sha(mfr_state_path)=='b0d8b385e44315b2247ff420649373df07e917c563e7e600ca07355df634edfe','MF radix state')
+need(sha(mfr_outer)=='0aeec7e529e0f2535c0fcfdd3ddf1420808a15e3e47b1e4d2b07e9e214a81424' and json.loads(mfr_outer.read_text())['outer_exit_code']==0,'MF radix outer')
+need(sha(D/'reviews/nine-sharing-sign17-mf-radix-digits-retry02-terminal-independent/check.py')=='006ecee0b54059798e718a7d6fbaa4f5568ef8a065f7a0fc41333ca61302797d','MF radix audit')
+mfr=json.loads(mfr_state_path.read_text());need(mfr['status']=='PASS' and len(mfr['rows'])==16 and mfr['rows'][15]['source_sha256']==entries[19]['source_sha256'],'MF radix source binding')
+mfc_state_path=D/'research/nine-sharing-sign17-mf-chunk-check/attempt01/state.json'
+mfc_outer=D/'research/nine-sharing-sign17-mf-chunk-check/attempt01/outer-result.json'
+need(sha(mfc_state_path)=='9f1e8ca5da130f24b577323456d526a126717f84dc67c9e641674dbc604ce878','MF chunks state')
+need(sha(mfc_outer)=='094c67d98968ecb416636fc13641a7cd143cba8f7b9662626a1f933b7b5b34de' and json.loads(mfc_outer.read_text())['outer_exit_code']==0,'MF chunks outer')
+need(sha(D/'reviews/nine-sharing-sign17-mf-chunk-terminal-independent/check.py')=='acebc2a89c2257a84896fabe795cee3eb1d1dd93e9093e64d0a90592d7a713b1','MF chunks audit')
+mfc=json.loads(mfc_state_path.read_text());need(mfc['status']=='PASS' and len(mfc['rows'])==16 and mfc['rows'][15]['source_sha256']==entries[20]['source_sha256'],'MF chunks source binding')
+mfblocks_state_path=D/'research/nine-sharing-sign17-mf-compose-blocks-check/attempt01/state.json'
+mfblocks_outer=D/'research/nine-sharing-sign17-mf-compose-blocks-check/attempt01/outer-result.json'
+need(sha(mfblocks_state_path)=='fcc47c78d9d72d1cd297e9def2717e66529e2e2af558513a17ffc5a3f8a0ec12','MF blocks state')
+need(sha(mfblocks_outer)=='7a915f0a9f67e60fcd1dc58d874563758e0678b1981e7ae481c243ab581a7546' and json.loads(mfblocks_outer.read_text())['outer_exit_code']==0,'MF blocks outer')
+need(sha(D/'reviews/nine-sharing-sign17-mf-compose-blocks-terminal-independent/check.py')=='674cfa5237040adfe2c9e325b76cee45dde3d3c233a0d0895ee1ee5305dbb95e','MF blocks audit')
+mfblocks=json.loads(mfblocks_state_path.read_text());need(mfblocks['status']=='PASS' and len(mfblocks['rows'])==22 and all(mfblocks['rows'][i]['source_sha256']==entries[i]['source_sha256'] for i in range(22)),'MF blocks source binding')
+for row in base['rows']:
+ n=row['module'];need(row['deps']['exit']==0 and row['compile']['exit']==0,'bridge stage '+n);need(sha(BASE/'src/DiophantineConsistency'/(n+'.lean'))==row['source_sha256'] and sha(BASE/'lib/DiophantineConsistency'/(n+'.olean'))==row['object_sha256'],'bridge source/object '+n)
+ for key in ('deps','compile'):need(sha(BASE/(n+'-'+key+'.txt'))==row[key]['log_sha256'],'bridge log '+n)
+ for k,v in row['direct_guard'].items():
+  q=Path(k)
+  if v is None:need(not os.path.lexists(q),'bridge unexpected '+k)
+  else:need(q.is_file() and str(q.resolve())==v['realpath'] and sha(q)==v['sha256'],'bridge guard '+k)
+for k,v in base['overlay_links'].items():need(Path(k).is_symlink() and str(Path(k).resolve())==v,'bridge overlay '+k)
+
+for n in ('Sign17UnivariateDegreeProbe','Sign17AxisDegreeBase','Sign17AxisDegreeRoot','Sign17AxisDegreeScale','Sign17AxisBindingBase','Sign17AxisBindingFactors','Sign17AxisBindingRoot','Sign17AxisNaDegree','Sign17AxisOtherDegree','Sign17AxisNoncancel','Sign17AxisSeedDegree','Sign17AxisDiagonalDegree','Sign17AxisDiagonalBinding','Sign17AxisDegreeLower','Sign17ExactDegree','Sign17MCRadixCore','Sign17MCRadixRuns','Sign17MCChunks','Sign17MCComposeCore','Sign17MFRadixDigits','Sign17MFChunks','Sign17MFComposeBlocks','Sign17MFWholeBytes'):need(not os.path.lexists(BASE/'lib/DiophantineConsistency'/(n+'.olean')),'candidate target collision '+n)
+need(sha(PKG/'Mathlib/Algebra/Ring/GeomSum.olean')=='f7b10e5ff78ec4af74841d77f6d5c4776c3c31c67df7d3dda1d91b79a1ad4ff0','explicit geom module pin')
+need(sha(PKG/'Mathlib/Algebra/MvPolynomial/Equiv.olean')=='fbc9536ad69c177c0029f0bec09046ca307c22d71432d354e9a578eb4530147f','explicit domain module pin')
+for e in entries:
+ src=P/'src/DiophantineConsistency'/(e['module'].split('.')[-1]+'.lean');need(sha(src)==e['source_sha256'],'source pin '+e['module'])
+ need(sha(REPO/e['source'])==e['source_sha256'],'source original '+e['module'])
+# Verify declared dependencies of stages are topologically ordered.
+seen=set()
+for entry in entries:
+ for dep in entry['imports']:
+  if dep in [x['module'] for x in entries]:need(dep in seen,'non-topological '+dep)
+ seen.add(entry['module'])
+if sys.argv[1:]==['--preflight']:
+ print(json.dumps({'status':'PASS_NO_LEAN_PREFLIGHT','stage_count':len(entries),'scope':'Source/provider point checks only; no Lean, complete transitive trace or model proof.'},sort_keys=True));raise SystemExit(0)
+need(not sys.argv[1:],'unexpected arguments')
+for proc in Path('/proc').iterdir():
+ if not proc.name.isdecimal():continue
+ try:need(not ((proc/'comm').read_text().strip()=='lean' and (proc/'stat').read_text().rsplit(')',1)[1].split()[0] not in ('Z','X')),'another Lean process is active')
+ except (FileNotFoundError,ProcessLookupError):continue
+need(shutil.disk_usage('/tmp').free>=5_000_000_000 and int(next(x.split()[1] for x in Path('/proc/meminfo').read_text().splitlines() if x.startswith('MemAvailable:')))*1024>=10*1024**3,'resources')
+spec=importlib.util.spec_from_file_location('monitor',MON);monitor=importlib.util.module_from_spec(spec);spec.loader.exec_module(monitor)
+OUT.mkdir();(OUT/'src/DiophantineConsistency').mkdir(parents=True);(OUT/'lib/DiophantineConsistency').mkdir(parents=True)
+links={}
+for k,v in base['overlay_links'].items():
+ rel=Path(k).relative_to(BASE/'lib');q=OUT/'lib'/rel;q.parent.mkdir(parents=True,exist_ok=True);q.symlink_to(v);links[str(q)]=v
+for row in base['rows']:
+ n=row['module'];q=OUT/'lib/DiophantineConsistency'/(n+'.olean');q.symlink_to((BASE/'lib/DiophantineConsistency'/(n+'.olean')).resolve());links[str(q)]=str(q.resolve())
+for n in names:shutil.copyfile(P/'src/DiophantineConsistency'/(n+'.lean'),OUT/'src/DiophantineConsistency'/(n+'.lean'))
+state={'status':'RUNNING','scope':'Bounded sign17 univariate degree probe using audited staged upper provider on captured Jones provider; no new base rebuild, no project-wide dependency load trace; endpoint outcome depends on stage results. Sampled monitor may miss transient spikes or escaped descendants.','base_state_sha256':sha(STATE),'runner_sha256':sha(__file__),'overlay_links':links,'rows':[]};save()
+try:
+ env=dict(os.environ,LEAN_PATH=':'.join(map(str,roots[:-1])),LEAN_NUM_THREADS='1')
+ for key in ('LEAN_SRC_PATH','LEAN_SYSROOT','LD_LIBRARY_PATH','LD_PRELOAD','LD_AUDIT'):env.pop(key,None)
+ for n,pin,entry in zip(names,pins,entries):
+  src=OUT/'src/DiophantineConsistency'/(n+'.lean');need(sha(src)==pin,'snapshot drift '+n)
+  imports=re.findall(r'^import ([A-Za-z0-9_.]+)$',src.read_text(),re.M);need(imports==entry['imports'],'source imports '+n);prefix=['/usr/bin/ionice','-c','3','/usr/bin/nice','-n','19',str(LEAN),'-M3600','-j1','-DElab.async=false'];row={'module':n,'source_sha256':pin};state['rows'].append(row);save()
+  log=OUT/(n+'-deps.txt');res=monitor.run(prefix+['--deps',str(src)],OUT,env,log,rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1);row['deps']={**res,'log_sha256':sha(log)};save();need(res['exit']==0 and res['stop_reason'] is None and not res['monitor_errors'] and not res['observed_descendant_pids'],'deps failed '+n)
+  deps={};counts={}
+  for line in log.read_text().splitlines():
+   p=Path(line);hits=[r for r in roots if p.is_relative_to(r)];need(p.is_absolute() and p.is_file() and line.endswith('.olean') and len(hits)==1,'bad dep '+line);mod=str(p.relative_to(hits[0]))[:-6].replace('/','.');counts[mod]=counts.get(mod,0)+1;need(mod not in deps or (mod=='Init' and counts[mod]<=2 and deps[mod]['path']==line),'duplicate '+mod);deps[mod]={'path':line,'realpath':str(p.resolve()),'sha256':sha(p)}
+  need(set(deps)-{'Init'}==set(imports)-{'Init'},'dependency set '+n)
+  for mod,rec in deps.items():
+   candidates=[r/(mod.replace('.','/')+'.olean') for r in roots if (r/(mod.replace('.','/')+'.olean')).is_file()];need(candidates and str(candidates[0])==rec['path'],'dependency route '+mod)
+  row['dependencies']=deps;row['direct_guard']=guard(deps)
+  for mod in imports:
+   dep=deps[mod];obs=row['direct_guard'].get(dep['path']);local=mod.split('.')[-1]
+   if local=='Sign17DegreeCompose':expected_hash=base['rows'][10]['object_sha256'];path=BASE/'lib/DiophantineConsistency/Sign17DegreeCompose.olean'
+   elif local in ('Sign17UnivariateDegreeProbe','Sign17AxisDegreeBase','Sign17AxisDegreeRoot','Sign17AxisDegreeScale','Sign17AxisBindingBase','Sign17AxisBindingFactors','Sign17AxisBindingRoot','Sign17AxisNaDegree','Sign17AxisOtherDegree','Sign17AxisNoncancel','Sign17AxisSeedDegree','Sign17AxisDiagonalDegree','Sign17AxisDiagonalBinding','Sign17AxisDegreeLower','Sign17ExactDegree','Sign17MCRadixCore','Sign17MCRadixRuns','Sign17MCChunks','Sign17MCComposeCore','Sign17MFRadixDigits','Sign17MFChunks','Sign17MFComposeBlocks','Sign20DirectNoAliasNative','Sign20DirectNoAliasStandard'):
+    prior=[r for r in state['rows'][:-1] if r['module']==local];need(len(prior)==1,'local producer '+local);expected_hash=prior[0]['object_sha256'];path=OUT/'lib/DiophantineConsistency'/(local+'.olean')
+   elif mod=='Mathlib.Algebra.Ring.GeomSum':expected_hash='f7b10e5ff78ec4af74841d77f6d5c4776c3c31c67df7d3dda1d91b79a1ad4ff0';path=PKG/'Mathlib/Algebra/Ring/GeomSum.olean'
+   elif mod=='Mathlib.Algebra.MvPolynomial.Equiv':expected_hash='fbc9536ad69c177c0029f0bec09046ca307c22d71432d354e9a578eb4530147f';path=PKG/'Mathlib/Algebra/MvPolynomial/Equiv.olean'
+   elif local in framework['observed']:
+    rec=framework['observed'][local];expected_hash=rec['sha256'];path=Path(rec['realpath'])
+   else:need(False,'unexpected import '+mod)
+   need(dep['sha256']==expected_hash and dep['realpath']==str(path.resolve()) and obs is not None and obs['sha256']==dep['sha256'] and obs['realpath']==dep['realpath'],'direct producer binding '+mod)
+  save();log=OUT/(n+'-compile.txt');obj=OUT/'lib/DiophantineConsistency'/(n+'.olean');res=monitor.run(prefix+['--root='+str(OUT/'src'),str(src),'-o',str(obj)],OUT,env,log,rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1);row['compile']={**res,'log_sha256':sha(log)};save();need(res['exit']==0 and res['stop_reason'] is None and not res['monitor_errors'] and not res['observed_descendant_pids'],'compile failed '+n);need(not re.search(r"(?im)^.*(?:error:|error\([^)]*\):|\bsorryAx\b|declaration uses .sorry.).*$",log.read_text()) and obj.is_file(),'errors '+n);need(guard(deps)==row['direct_guard'],'guard drift '+n);row['object_sha256']=sha(obj);save()
+ for entry,row in zip(entries,state['rows']):
+  need(sha(P/'src/DiophantineConsistency'/(row['module']+'.lean'))==entry['source_sha256'] and sha(REPO/entry['source'])==entry['source_sha256'],'final source drift '+row['module'])
+  need(sha(OUT/'lib/DiophantineConsistency'/(row['module']+'.olean'))==row['object_sha256'] and guard(row['dependencies'])==row['direct_guard'],'final provider drift '+row['module'])
+ for k,v in links.items():need(Path(k).is_symlink() and str(Path(k).resolve())==v,'final overlay drift '+k)
+ check_external_syntax()
+ state['status']='PASS';save();print('PASS sign17 univariate degree probe')
+except BaseException as e:
+ state['status']='FAILED';state['failure']=repr(e);save();print('FAILED',repr(e));raise

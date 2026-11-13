@@ -1,0 +1,9 @@
+# Independent review of free-carrier main-index lower bound
+
+The conditional **standard-integer argument** in the packet is valid under its stated root, carrier and size assumptions. The referenced source interfaces were inspected; this review does not assert a new Lean theorem, actual 72-zero extraction, or a nonstandard-model proof.
+
+The `projection_quotient` interface gives `g=Exp.exp(m)+a·c+(4a+3)z`; in standard naturals `Exp.exp(m)=2^m`. With `H=4a+3`, the carrier gives `U·2^m≡U·X (mod H)`. `P72Mu.gcd_cancel` takes modulus `H`, common factor `U`, and the two operands, and returns positive `e,mu` with `H=e·mu`, `e∣U`, and congruence of the operands modulo `mu`. Since `e∣H` and `e∣Y²`, `P64Early.gcd_dvd_nine` yields `e∣9`, hence `e≤9` and `H≤9mu`. With `Y≥3` and `X≥33`, `H=4(X+1)Y+3≥12X+15>9X`; therefore `X<mu`. For **every** `m≤5`, `2^m≤32<X<mu`, so the cancelled congruence would force the impossible equality `2^m=X`. Thus `m≥6`.
+
+The projection, cancellation and gcd lemmas are stated over the repository's `IΣ₁` model interface. The packet's prose argument does not itself establish its adapted model-level Lean theorem; finite bounds on the internal exponential and all source/interface conversions still need checking. In particular, it does not extract the assumptions from a graph zero, identify `m=R`, prove the half-index window, or obtain a 72-to-76 reverse map. The existing Pell-coordinate theorem mentioned as the next step would be needed to turn `m≥6` into the strict large-`c` bound.
+
+The author's checker reproduced 4,080 q-cube parameter cases and all 24,480 associated indices. An independent exact recurrence control in `check.py` tested another 3,400 pairs `33≤X≤100`, `3≤Y≤52`, including values without q-cube divisibility, and all 20,400 indices `m=0,…,5`; it checked the projection quotient, gcd bound, and impossible carrier congruence. Both are finite sanity checks, not proofs of the universal or model-level statement.

@@ -1,0 +1,5 @@
+# Independent prelaunch review: ring-value gate assembly
+
+The checker pins source, runner, manifest and provider survey, verifies all 60 applications in graph order from targets 21 through 80, and checks each referenced source theorem's need for `hc` against its application. All applications use the same `ports` and `v`; the conclusion uses the same lifted assignment. The no-Lean preflight passes. The survey checks the twelve producer states, objects, logs, guards and merged overlay, including the separately documented successful rows from overall-failed predecessor attempts; the runner requires each imported gate object to match its selected hash and realpath under direct guards. No launch blocker was found within this point-in-time scope.
+
+This is not a Lean proof of the assembled theorem; elaboration and resource use remain untested. Even a successful assembly would supply ring-value gates conditional on AllCuts, not the five norms, source bridge or iPRA endpoint. The provider survey does not establish a complete transitive or dynamic trace.

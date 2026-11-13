@@ -1,0 +1,7 @@
+# Independent review of generic Pell rank reduction rebuild
+
+The fresh source differs from the independently hashed historical source and retained repository source by exactly one line: direct `import SignedRankIndex` is replaced by `import DiophantineConsistency.ArithmeticPellResidueAux`. The remainder, including the proof body, is identical. The new direct import is arithmetic-only by name and its selected object hash is pinned; removing the old import directly does not by itself prove the old module absent from the selected provider's transitive ancestry.
+
+`rank_to_main_index` is generic in an IΣ₁ model. It assumes `n>0`, `r≥3`, `c=ycoord r b`, `c² | ycoord n b`, a main signed residue `SignMod (xcoord n b) c (ycoord s b)`, and a rank residue `SignMod c R s`. It concludes `SignMod c R r`, preserving the signed alternative. Its source derives the required divisibility and bounds from these premises; it does not bind an actual graph or identify indices.
+
+`check.py` rehashes both historical source copies, the precise new source and its copies, all recorded input pins, selected direct provider, compiled object, runner and logs. The only printed axiom report is `[propext, Classical.choice, Quot.sound]`. The direct selected path is checked post hoc against the recorded Lean path; no complete selected-header/transitive or historical/package/dynamic ancestry check or independent Lean replay is claimed. The author receipt precedes its final diagnostic guard; captured logs satisfy that guard, but no separate outer runner-exit receipt was supplied.

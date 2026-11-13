@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: the recorded outer session 30021 exited 0. The single stage and postflight passed; frozen state agrees byte-for-byte with the output state, the source/object/log hashes and eight captured alignment providers match, and the sole axiom report is `[propext]` with no warnings or `sorryAx`. The result proves equality of the numeric fixture radix-list and byte-list decodings, including the five-digit / 24-byte tail. It does not link the fixture list to the symbolic K stream or assert anything about external files. The numeric outer receipt itself does not hash the state. No Lean was run in this audit.

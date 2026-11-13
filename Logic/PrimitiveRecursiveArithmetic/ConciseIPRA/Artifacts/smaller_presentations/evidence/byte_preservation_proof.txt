@@ -1,0 +1,49 @@
+SAFE BYTE REFINEMENT
+====================
+
+Frozen incumbent: incoming ipra_computation_leaves/code/checker_bytes.py.
+Proposed file: kernel_work/bytes_any.py.
+Change: bool(m or 3 % len(a)) becomes any((m, 3 % len(a))).
+Everything else is byte-for-byte the normalized incumbent.
+
+Measured using CPython 3.12.14, ast.unparse(ast.parse(source)) + newline:
+Incumbent: 270 significant tokens, 308 AST nodes, 474 UTF-8 bytes, gzip-9 314.
+Proposed:  272 significant tokens, 308 AST nodes, 473 UTF-8 bytes, gzip-9 311.
+The gzip figure must be independently recomputed in the deliverable script.
+
+SOUNDNESS
+For every successful evaluation of the new gate, r=3 % len(a) is defined.
+Then any((m,r)) = bool(m or r), using Python truth values. All preceding
+operations, all mutable values at the gate, and all subsequent operations
+coincide. A successful run of the new checker is therefore a successful run
+of the old checker. A rejecting run can differ because any eagerly evaluates
+len(a), whereas bool(m or ...) skips it when m is true-valued.
+
+COMPLETENESS
+Use the inherited canonical compiler for Eq/D public theorems. At every
+nonterminal recursive call the goal is the canonical encoding of an equation,
+Q formula, or D formula, hence is a nonempty array. After an introduction,
+the new matrix goal is again a nonempty canonical formula array. A neutral
+major [] returns at the initial hypothesis test, before the gate. Thus
+len(a) is a positive integer whenever the gate is reached in canonical
+compiled certificates. The added eager test cannot reject such certificates.
+
+CONTRACT
+As with incumbent, initial input is a reversed finite JSON packet list whose
+last item is [goal, 0]. Proof trees contain exact integers/lists. The public
+goal is promised canonical, closed, and guarded. This compact program is not
+a whole-input validator, and no metric claim should combine it with strict
+validators without stating the different contract. The new expression is a
+previously used implementation technique composed with computation leaves;
+it is not a new arithmetic axiom deletion or a mathematical breakthrough.
+
+VERIFICATION
+204 isolated Python process executions (normal and -O) passed, using all
+inherited byte-profile positive/negative cases, each positive with its final
+goal replaced by 0=1, the direct zero-seed computation, and a new false zero-update equation. Full report:
+kernel_work/bytes_verification.json.
+
+REJECTED TEMPTING CHANGE
+Replacing (i(t,[s,u,t],3) if s else u) by (s and i(t,[s,u,t],3) or u)
+would save another byte but is unsound: a successor update with value scalar
+0 would return a nonzero initializer u instead. Do not use it.

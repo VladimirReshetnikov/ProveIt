@@ -1,0 +1,44 @@
+/tmp/nine-sharing-sign16-v-lift-check-20261110/src/DiophantineConsistency/Sign16VLift.lean:36:2: error: Tactic `apply` failed: could not unify the conclusion of `nonneg_iff.mp`
+  ∃ a, ?m.359 = ι a
+with the goal
+  ∃ gap, ι gap = (ι (v 5) + 1) * (ι (v 5) + 1) * ι (v 16) - ι (C beta v)
+
+Note: The full type of `nonneg_iff.mp` is
+  0 ≤ ?m.359 → ∃ a, ?m.359 = ι a
+
+V : Type
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℤ
+beta K MC MF : V
+v : Fin 17 → V
+hp0 : ↑(p 0) = ι beta
+hp1 : ↑(p 1) = ι K
+hp2 : ↑(p 2) = ι MC
+hp3 : ↑(p 3) = ι MF
+hb : 0 < beta
+hMC : MC < beta
+hMF : MF < 2 * beta
+hz : InternalZero (seed p) v
+hpos : ∀ (x : V), 0 < x + 1
+hc : 0 < C beta v
+hh : 2 * Sign16RankValue.Rank beta MC MF v < C beta v
+hs :
+  have a := E beta v + Y beta v;
+  have D := (a + 1) * (a + 3);
+  have f := v 5 + 1;
+  have i := v 6 + 1;
+  have c := C beta v;
+  f * f = 1 + D * (i * c * c) * (i * c * c)
+hs' :
+  (v 5 + 1) * (v 5 + 1) =
+    1 + delta (E beta v + Y beta v) * ((v 6 + 1) * C beta v * C beta v) * ((v 6 + 1) * C beta v * C beta v)
+hv :
+  0 ≤ ι (C beta v) * ι (v 7 + 1) - ι (Sign16RankValue.Rank beta MC MF v) ∧
+    0 ≤ ι (v 5 + 1) * ι (v 5 + 1) * (ι (C beta v) * ι (v 7 + 1) - ι (Sign16RankValue.Rank beta MC MF v)) - ι (C beta v)
+hi : ι (v 16) = ι (C beta v) * ι (v 7 + 1) - ι (Sign16RankValue.Rank beta MC MF v)
+⊢ ∃ gap, ι gap = (ι (v 5) + 1) * (ι (v 5) + 1) * ι (v 16) - ι (C beta v)
+'DiophantineConsistency.Sign16VLift.exists_v_of_seed' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

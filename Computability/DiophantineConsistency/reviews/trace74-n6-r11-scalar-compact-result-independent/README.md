@@ -1,0 +1,5 @@
+# Independent result audit: compact n6/r11 scalar join
+
+PASS for captured result. Author reports actual outer session 40963 exit 0/reaped. Terminal `79df348d375ebf64365b8a257ce4d7718a065840a2c24212d706e28927d07f43`; runner `4cd470c30f2f4b6fc9e471558cff27952c0ff3335e2cc10431ae03d829a8e88c`; object `ddd4f66d65c8e5affe3618411f162c5cecc35bce46b6b3a0407dd7e0e10c1645`. All 14 terminal pins, object and logs independently rehashed; Lean exit 0, exact named report `[propext, Classical.choice, Quot.sound]`, empty stderr. Direct selector rerun matches saved hash `354453e813c245242a41c456a1eeb8cd1a5e274c63d2cbe45f0411ceaea1b20b`; lower is the clean passed first stage of the overall failed timeout run, while compact upper is independently audited successful result.
+
+The scalar contradiction retains discrete ordered ring, q≥260, x≥32,Y≥1, same q-factorisations and both strict inequalities. No graph/Pell binding or guard is asserted. Direct selections do not establish full serialized transitive/package ancestry or continuously stable resolution.

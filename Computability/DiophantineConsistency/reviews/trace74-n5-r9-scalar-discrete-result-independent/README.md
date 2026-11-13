@@ -1,0 +1,5 @@
+# Independent result audit: n5/r9 scalar discrete contradiction
+
+PASS for the captured result. Author reports actual outer session 34480 exit 0/reaped. Terminal `fda1b476495f901f3c217a616a41a2f316aea9fbb13cca1b5cdc250066e1b865`; runner `34e4c1a55f364c101ca490cea53e2d3e3fdf63dfafa7fa4191b9e85a4475048d`; object `0a338104a9091d4dff6002e47fa466973e7c4406da4b5d33ea2440bcac5ab384`. All 16 terminal pins, object, logs independently rehashed. Lean exit 0; exact named report `[propext, Classical.choice, Quot.sound]`, stderr empty. Reran current direct selection comparison and it matched saved selection SHA `daf527c7a7e13dc311d395f2e85fbfaa970d137d6db6d1f1c08eeecad49dae7b`.
+
+The no-solution theorem assumes explicit discrete ordered ring, q≥73, x≥32, Y≥1, x=q w, Y=q³ s and both strict scalar inequalities. The result is a conditional scalar contradiction, not a graph or Pell binding or guard. Direct source selections do not establish serialized transitive/package ancestry or continuously stable resolution.

@@ -1,0 +1,9 @@
+# Independent review: free-J 88 provider survey
+
+The frozen read-only survey reproduces apart from point-in-time free space. Independent source inspection confirms the two current project sources, five P72 frontier modules and the proposed five-stage order of those sources plus the three uncompiled draft clients. Their explicit import lines are topologically consistent, and the graph retains free J and arbitrary integer ports. This is a line-parsed planning cut, not a Lean dependency trace.
+
+An independent walk of the retained archive and base records verified 616 P72 and 918 base producers, 1,728 and 2,647 recorded direct edges, and 51,840 P72 direct plus 9,180 base output guard slots. It rechecked selected archived rows, workspace and snapshot sources, objects, stage logs and recorded dependency paths. The selected sets are subsets of the prior six-frontier 679-P72/918-base walk, whose independently reviewed inspector is rerun by the author survey. These are historical direct routes; they do not constitute complete package-transitive or dynamic-load ancestry.
+
+The five P72 frontier point objects and Init match their observed hashes. No proposed target artifact was observed among the 13 listed suffixes in the five named existing roots, and their P72 source snapshots were absent. No future output root or effective Lean search path was inspected. The frozen `/tmp` sample was 5,031,112,704 bytes, below the 5,100,000,000-byte stop; the fresh sample is in `result.json` and neither is reserved.
+
+No Lean process or build tree was created. This is not an overlay compatibility proof, a provider closure for a future build, build readiness, an all-signed-integer formalization, or a JSON/PDF binding. The inherited author-side endpoint is not a paired replay. Run `python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary13-freej88-provider-survey-independent/check.py` from the repository root to repeat the read-only checks.

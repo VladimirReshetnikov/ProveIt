@@ -1,0 +1,7 @@
+# Independent prelaunch review: generic index upper v4
+
+Scoped GO after fresh resource preflight and coordinated release; no Lean was run in this review. Revised source SHA-256 `9110bac7f7442ff25431a2e636a9ae318caa68d8962e3d0b197c3a25dbb987e2`, runner `47ecd7b90d5bdab0660e8e01b0f32ab0c2cd04ae064eed1e9d722ee177b1f340`, unchanged 13-case actual parser controls rerun PASS.
+
+Attempt03 terminal `c9bea4c7b995aa9949098776fd6c96c838698bf558a9b7ad7a1dbaed11d82ed9` records exit 1 and rejected sorryAx. Its lone logged unsolved goal shows the untargeted successor rewrite expanded the inner `ycoord (2j+1)` instead of the outer successor. Retained post-exit/pre-edit source and runner copies match the original pins. The source diff changes only that proof step to rewrite `y_succ (2*j+1) a` specifically and derive the inequality from nonnegativity of the x-coordinate; the runner changes only the source pin. This targets the observed failure and leaves theorem assumptions and conclusion intact; successful elaboration is not inferred.
+
+The generic indicated-model theorem explicitly assumes X≥16,Y≥1,n≥2 and the stated c/k/eta/zeta and two ordinate equations; it concludes r<2n, with no graph zero, rank equality or guard claim. Existing direct-pin, fresh output, lock/resource guard and strict report policy remain; future search-path shadowing and full transitive/package/dynamic ancestry are outside the capture.

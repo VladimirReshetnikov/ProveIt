@@ -1,0 +1,36 @@
+import DiophantineConsistency.ModelDifferenceRing
+import Mathlib.Tactic.LinearCombination
+
+/-! Conditional positive target-branch construction in an IΣ₁ model.
+The target carrier's natural positivity and divisibility are explicit. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.CarrierWitnessFactsDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Given a positive target P=b*t and tau>ell, construct the positive
+model-natural first coordinate for which the target root is +b*tau. -/
+theorem positive_target_root (b P t ell k tau : V)
+    (hP : 0<P) (ht : 0<t) (hPt : P=b*t) (htau : ell<tau) :
+    ∃ r : V, 0<r ∧
+      (ι b : DiffRing V)*(ι ell+ι k+ι r-ι k*ι P)-ι P=ι b*ι tau := by
+  have hP1 : 1≤P := pos_iff_one_le.mp hP
+  have hPsub : P-1+1=P := tsub_add_cancel_of_le hP1
+  have htau_sub : tau-ell+ell=tau := tsub_add_cancel_of_le (le_of_lt htau)
+  let r := k*(P-1)+t+(tau-ell)
+  have hr : 0<r := by dsimp [r]; exact add_pos_of_pos_of_nonneg
+    (add_pos_of_nonneg_of_pos (Arithmetic.zero_le _) ht) (Arithmetic.zero_le _)
+  refine ⟨r,hr,?_⟩
+  have hpR := congrArg (ι : V →+* DiffRing V) hPsub
+  have htR := congrArg (ι : V →+* DiffRing V) htau_sub
+  have hPtR := congrArg (ι : V →+* DiffRing V) hPt
+  simp only [map_add,map_mul,map_one] at hpR htR hPtR
+  dsimp [r]
+  simp only [map_add,map_mul]
+  linear_combination ι b*ι k*hpR+ι b*htR-hPtR
+end DiophantineConsistency.CarrierWitnessFactsDraft
+#print axioms DiophantineConsistency.CarrierWitnessFactsDraft.positive_target_root

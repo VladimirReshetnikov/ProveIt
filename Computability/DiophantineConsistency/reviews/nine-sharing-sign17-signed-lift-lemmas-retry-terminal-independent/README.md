@@ -1,0 +1,3 @@
+# Independent terminal audit: sign17 signed-lift ingredients retry
+
+The independent checker exited 0. Author-observed outer session 44638 exited 0 with both stages and final postflight successful. Lean checked generic ordered-ring root and scale positivity and difference nonnegativity, and a model-natural representative under explicit F≥1, S>0 and norm-equation hypotheses. Source/object/import/log pins, direct guards and overlays were checked; four axiom reports, no warnings or sorryAx. These are generic ingredients, not a proof of concrete sign17 row evaluations, its model bridge or its iPRA endpoint.

@@ -1,0 +1,41 @@
+import EtaZetaNaturalGraphNorms
+import ZetaZeroNormLargeK
+
+/-! Proposed graph-to-large-k composition when zeta=0 and eta>0. No Lean
+elaboration, graph zero proof, provider replay or endpoint is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ZetaZeroGraphLargeKDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open EtaZetaNaturalUnitGraphDraft EtaZetaNaturalXPositiveDraft EtaZetaNaturalGraphNormsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Actual probe zero plus positive beta, zeta=0 and eta>0 gives the
+zeta-zero first/main norm large-k conclusion, if imported source proofs check. -/
+theorem large_k (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (pp p)).output v) (hbeta : 0<(p 0:V))
+    (hzeta : v 10=0) (heta : 0<v 9) :
+    2<k v ∧ 8*X p v*Y p v*Y p v+4≤k v := by
+  have hX : 0<X p v := EtaZetaNaturalXPositiveDraft.X_positive p v hz hbeta
+  have hq : 0<q p v := by dsimp [q]; exact add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le _)
+  have hY : 0<Y p v := by
+    dsimp [Y]
+    exact mul_pos (mul_pos hq (mul_pos hq hq)) (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+  have hkeq : k v=v 9 := by simp [k,hzeta]
+  have hk : 0<k v := by rw [hkeq]; exact heta
+  have hDelta : (X p v*Y p v+Y p v+2)*(X p v*Y p v+Y p v+2)=delta p v+1 := by
+    dsimp [delta,a]; ring
+  obtain ⟨⟨tau,htau⟩,g,hg⟩ := natural_norms_of_graph p v hz hbeta
+  have hfirst : tau*tau=1+(X p v*Y p v*Y p v)*(X p v*Y p v*Y p v+1)*k v*k v := by
+    simpa only [m] using htau
+  have hmain : g*g=1+delta p v*(k v+Y p v*k v)*(k v+Y p v*k v) := by
+    simpa only [c,hkeq] using hg
+  exact ZetaZeroNormLargeKDraft.large_first_ordinate (X p v) (Y p v) (k v) tau (delta p v) g
+    hX hY hk hDelta hfirst hmain
+end DiophantineConsistency.ZetaZeroGraphLargeKDraft
+#print axioms DiophantineConsistency.ZetaZeroGraphLargeKDraft.large_k

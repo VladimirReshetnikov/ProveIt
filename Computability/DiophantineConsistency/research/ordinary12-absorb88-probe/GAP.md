@@ -1,0 +1,5 @@
+# Conditional inverse threshold
+
+`Absorb88Divisibility.graph_divisibility` derives `b ∣ Bt` from an actual graph zero under the explicit transport bound `Bn<Bp`. `Absorb88Gap.positive_gap` combines this, positive `Bt`, the positive signed root equation and the first norm to prove `ell+k<r`. These are the exact assumptions needed for this part of the reverse map; the source states them explicitly. In particular the transport bound is assumed, and the counterexamples in the README prevent deriving it from the first factor alone.
+
+The two-stage guarded author check `run-gap.py` passed in session 15344, exit 0, with source snapshots, output, predecessor hashes and resource samples in `observations/gap-attempt01/`. Earlier first-norm source suppresses unused-variable and unused-simp-argument linters. Package-transitive, dynamic, and historical source/object ancestry are inherited; no independent Lean replay is claimed. Reflection, full reverse existence, fixed-port halt, iPRA and PDF binding remain open.

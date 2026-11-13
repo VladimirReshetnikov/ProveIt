@@ -1,0 +1,3 @@
+# Independent source review: n≥7/r9 model growth binding
+
+Source-only PASS `a6b95d80f1090afd8f9979531acb0be97fecd1d4d7e367cd6f4991cfbfde24d6`; no Lean invocation. Same positive p/v, q≥64, n≥7 and explicit first n / main ninth ordinate equations supply K7≤k by same-parameter monotonicity and K7Y<c by positive eta. The subtraction-free seventh/ninth identities cast into DiffRing match x=ιX,t=2ιY, so accepted generic growth gives 16Y⁵<X² and then X>1048572(q−1)Y using Y≥q³. No graph zero or guard is assumed or inferred. Model casts, local B normalization, linear_combination and provider compatibility remain Lean-untested.

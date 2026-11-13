@@ -1,0 +1,267 @@
+{
+  "contract": "Acceptance is normal exit with exactly ACCEPT followed by one newline. Exceptions and resource failures are not acceptance.",
+  "note": "Frozen expectation values come from prior recorded runs or the inherited fixture declarations, not from silently accepting any old/new agreement.",
+  "pairs": [
+    {
+      "name": "compact",
+      "baseline": "reference/checkers/baseline_compact.py",
+      "candidate": "code/checker_compact.py",
+      "cases": [
+        {
+          "file": "tests/guarded/compound_case_introduction_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/compound_implication_elimination_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/computation_successor_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/computation_zero_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/context_leak_attack_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/false_zero_equals_one_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/future_witness_capture_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/guarded_induction_with_used_hypothesis_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/guarded_lift_elimination_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/guarded_literal_equation_introduction_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/missing_computation_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/missing_goal_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/missing_instruction_fields_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/null_goal_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/old_atomic_case_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/transport_reflexivity_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/unguarded_progressive_alias_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/wrong_computation_endpoint_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/zero_transport_compound_D_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/zero_transport_guarded_D_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/zero_transport_guarded_Q_local.json",
+          "expected": true
+        }
+      ]
+    },
+    {
+      "name": "guarded",
+      "baseline": "reference/checkers/baseline_guarded.py",
+      "candidate": "code/checker_guarded.py",
+      "cases": [
+        {
+          "file": "tests/guarded/compound_case_introduction_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/compound_implication_elimination_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/computation_successor_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/computation_zero_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/context_leak_attack_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/false_zero_equals_one_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/future_witness_capture_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/guarded_induction_with_used_hypothesis_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/guarded_lift_elimination_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/guarded_literal_equation_introduction_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/missing_computation_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/missing_goal_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/missing_instruction_fields_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/null_goal_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/old_atomic_case_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/transport_reflexivity_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/unguarded_progressive_alias_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/wrong_computation_endpoint_local.json",
+          "expected": false
+        },
+        {
+          "file": "tests/guarded/zero_transport_compound_D_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/zero_transport_guarded_D_local.json",
+          "expected": true
+        },
+        {
+          "file": "tests/guarded/zero_transport_guarded_Q_local.json",
+          "expected": false
+        }
+      ]
+    },
+    {
+      "name": "native",
+      "baseline": "reference/checkers/baseline_native.py",
+      "candidate": "code/checker_native.py",
+      "cases": [
+        {
+          "file": "tests/native/new_reflexivity_zero.json",
+          "expected": true
+        },
+        {
+          "file": "tests/native/new_reflexivity_two.json",
+          "expected": true
+        },
+        {
+          "file": "tests/native/new_reflexivity_nested.json",
+          "expected": true
+        },
+        {
+          "file": "tests/native/new_zero_join.json",
+          "expected": true
+        },
+        {
+          "file": "tests/native/QX_arbitrary_target.json",
+          "expected": true
+        },
+        {
+          "file": "tests/native/nonvacuous_D_elimination.json",
+          "expected": true
+        },
+        {
+          "file": "tests/native/transport_under_D.json",
+          "expected": true
+        },
+        {
+          "file": "tests/native/unused_null_prefix.json",
+          "expected": true
+        },
+        {
+          "file": "tests/native/canonical_false_without_proof.json",
+          "expected": false
+        },
+        {
+          "file": "tests/native/unproved_elimination_major.json",
+          "expected": false
+        },
+        {
+          "file": "tests/native/out_of_scope_bound_slot.json",
+          "expected": false
+        },
+        {
+          "file": "tests/native/unallocated_DI_witness.json",
+          "expected": false
+        },
+        {
+          "file": "tests/native/unallocated_QX_target.json",
+          "expected": false
+        },
+        {
+          "file": "tests/native/forbidden_compound_progress.json",
+          "expected": false
+        },
+        {
+          "file": "tests/native/boolean_goal_alias.json",
+          "expected": false
+        },
+        {
+          "file": "tests/native/float_goal_alias.json",
+          "expected": false
+        },
+        {
+          "file": "tests/native/empty_administrative_goal.json",
+          "expected": false
+        },
+        {
+          "file": "tests/native/four_child_public_goal.json",
+          "expected": false
+        }
+      ]
+    }
+  ]
+}

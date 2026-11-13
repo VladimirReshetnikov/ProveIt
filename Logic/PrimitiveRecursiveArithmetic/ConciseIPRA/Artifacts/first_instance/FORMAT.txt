@@ -1,0 +1,74 @@
+CERTIFICATE FORMAT FOR code/checker.py
+=====================================
+
+This file describes the unbounded standalone checker. The optional
+code/checker_fuel.py additionally requires the exact nonnegative integer
+key "fuel"; see README.txt and Section 5 of the report.
+
+The input is exactly a JSON object with keys "goal" and "proof".
+
+Numerical terms:
+  integer 0                 zero
+  negative integer -j      free numerical parameter allocated at level j
+  positive integer j       de Bruijn bound index, nearest binder numbered 1
+  [0,t]                    successor
+  [n,a,h]                  initialized iteration; h binds one previous state
+
+Formulas:
+  [s,t]                    equality of terms
+  [B]                      D(x,y).B, inner y index1 and outer x index2
+
+D(x,y).B means exists x (B(x,0) -> forall y B(x,y)). All terms and formulas
+supplied as syntax must already be in full iterator computation normal form.
+Every substitution used by a rule is followed by the same normalization.
+The contradiction is 0=S0, encoded [0,[0,0]]. The formula H is 0=0, encoded
+[0,0]; the numeral ONE has the same raw array shape, disambiguated by its sort.
+
+Every *used* proof node is a triple [code,arg,branch]. The initial context has
+one unconditional clause forall y, y=y, at index zero. At a context of length
+n, free parameters -1,...,-(n-1) are available, and the next fresh parameter
+is -n. This equality between clause depth and scope is maintained by both
+scope-extending instructions.
+
+1. [j,t,p], j a nonnegative integer: clause use
+
+   Select clause j, instantiate its one-bound-variable body at t, and return
+   that formula. If the clause has an antecedent, p must prove it. For an
+   unconditional clause, p is deliberately unused and may be any JSON value;
+   the examples use null. The index and the term t are checked.
+
+2. [B,t,p], B a nonempty formula matrix: paired introduction
+
+   Introduce D(x,y).B at witness t. Let b be the next fresh parameter and
+   C(y)=nf(B(t,y)). Under an unconditional assumption C(eta), p must prove
+   C(Sb). Here eta=b exactly when C is an equation and t is literal0;
+   otherwise eta=0. The result is the original D formula, whose complete
+   syntax and scope are checked before this inference can succeed. Validation
+   visits erased subtrees before it contracts computations.
+
+3. [[],p,q]: deterministic witness discharge
+
+   p must prove D(x,y).B in the outer context. Open x at fresh b and write
+   C(y)=nf(B(b,y)), C0=C(0), and C1=C(1). q proves F under the additional
+   clause C0 -> forall y C(y).
+
+   If C0 is literally H and C1 is literally b=t, replace all free occurrences
+   of b in F by t, in one pass, and normalize. In every other case leave F
+   unchanged. The returned formula must be well formed in the outer scope,
+   so b cannot escape. The target t may itself contain b, but the final
+   normalized result must eliminate every occurrence of b.
+
+   Since formula normalization preserves the outer constructor, C0=H implies
+   C1 is an equation. The implementation therefore needs no separate test
+   for the length of C1. The substitution test is performed on integer leaves
+   only and applies exclusively to the current fresh parameter.
+
+The main simplification is the third instruction. In the selected branch,
+its missing equation proof is reconstructed by using the new clause at ONE
+with reflexivity H. In the default branch it is reflexivity b=b. The new
+proof-to-old-proof compiler implements exactly that expansion.
+
+The matched old control has the same three-field packet format, except its
+Name instruction is [[],p,[e,q]], where e separately proves b=t in the extended
+context. This is the only relevant logical difference between that control
+and the selected checker.

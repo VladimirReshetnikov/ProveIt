@@ -1,0 +1,3 @@
+# Independent sign16 direct expression iff terminal audit
+
+The independent checker exited 0. Author outer session 9305 exited 0; stage and postflight passed. Source/object, logs, all three direct provider guards and overlays were checked. Two standard axiom reports contain no sorryAx; there is one unused-section-variable warning. Lean proves current symbolic Fin16/Fin17 zero-existence iff. Inherited successful-child/failed-parent and uncaptured-numeric-exit ancestry remain; the evaluator union survey is point-in-time and not replayed postflight, while direct guards and overlays were rechecked. Concrete polynomial bridge, external JSON/PDF binding and iPRA endpoint remain separate. No Lean was rerun here.

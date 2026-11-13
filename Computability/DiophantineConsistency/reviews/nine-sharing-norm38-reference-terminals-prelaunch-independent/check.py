@@ -1,0 +1,15 @@
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+P=Path(__file__).resolve().parent;D=P.parents[1];R=D/'research';q=R/'nine-sharing-norm38-reference-terminals-check';sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();src=q/'src/DiophantineConsistency/Norm38ReferenceTerminals.lean';man=q/'source-manifest.json';run=q/'run.py';survey=q/'producers_preflight.py'
+assert sha(src)=='a7054b0ba3426cc055226eecfae6b9777cc6e09fa81b17b9989e211e43d72dd2' and sha(man)=='c7556a684459c4c9d6f4b5efe417f7adca7764352936f93c5a0f82b6722999cd' and sha(survey)=='89b31955062349913e21ae57a1a0c2113e8ee1da9ba5530b4ca1a23f799a70d2' and sha(run)=='4c6e749ffb18fa550da534a39899a7aed5058eb78a7b2ee24391f8f285d80894'
+t=src.read_text();m=json.loads(man.read_text())['rows'];assert len(m)==1 and m[0]['source_sha256']==sha(src) and m[0]['imports']==['DiophantineConsistency.Norm38ReferenceInitialAll','DiophantineConsistency.Norm38ReferenceGatesAll'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',t,re.M)==m[0]['imports']
+d=(R/'nine-sharing-norm38-reference-draft/Norm38Reference.lean').read_text();a=d[d.index('theorem static_terminals_agree'):d.index('/-- P=Q=U=W=1')].strip().replace('reference_gate_equations _ _','reference_gate_equations_batched _ _');b=t[t.index('theorem static_terminals_agree'):t.index('end DiophantineConsistency.Norm38Reference')].strip();assert a==b
+assert 'have hfixed : val = ringRun NormAssignment38.gates val' in t and '(congrFun hfixed i).trans (hrun i hi)' in t
+assert [int(i) for i in re.findall(r'pairValue ι \(v (\d+)\)=ref \d+',t)]==[61,44,78,66,80,36] and [int(i) for i in re.findall(r'heq (\d+) \(by decide\)',t)]==[61,44,78,66,80,36]
+A=(R/'nine-sharing-seed38-weighted-retry/src/DiophantineConsistency/NormAssignment38.lean').read_text();targets=[int(i) for i in re.findall(r'⟨(\d+), \d+, \d+, GateOp\.(?:add|sub|mul)⟩',A)];assert targets==list(range(21,81)) and all(i in targets for i in [61,44,78,66,80,36])
+x=subprocess.run([sys.executable,'-I','-S','-B',str(survey)],capture_output=True,text=True,timeout=90);z=json.loads(x.stdout);assert x.returncode==0 and not x.stderr and z['status']=='PASS_REFERENCE_PRODUCER_SURVEY' and (z['initial_rows'],z['gate_rows'],z['guard_slots'])==(8,13,2950)
+x=subprocess.run([sys.executable,'-I','-S','-B',str(run),'--preflight'],capture_output=True,text=True,timeout=90);assert x.returncode==0 and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT' and not x.stderr,(x.stdout,x.stderr)
+for name in ('nine-sharing-norm38-reference-initial-split-terminal-independent','nine-sharing-norm38-reference-gates-batched-terminal-independent'):
+ p=D/'reviews'/name;x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'check.py')],capture_output=True,timeout=120);assert x.returncode==0 and not x.stderr and x.stdout==(p/'result.json').read_bytes(),(name,x.stderr)
+print(json.dumps({'status':'PASS_PRELAUNCH_ONLY','source_sha256':sha(src),'runner_sha256':sha(run),'producer_stages':21,'producer_guard_slots':2950,'scope':'All six terminal statements and model hypotheses checked as source only; no Lean replay.'},indent=2,sort_keys=True))

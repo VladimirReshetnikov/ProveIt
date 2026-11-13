@@ -1,0 +1,119 @@
+/tmp/ipra-freej-power-projection-explore/FreeJPowerProjection.lean:45:55: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Y
+in the target expression
+  4 * (X * v 6 * v 6) * t = v 6 * (q * q) * (4 * X * q * s * t)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 12 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 12), 0 < v j
+hz : InternalZero (literal fun j => ↑(p j)) v
+b : V := v 0 * ↑(p 0)
+q : V := 1 + b
+X : V := v 5
+Y : V := v 6
+U : V := Y * (q * q)
+E : V := X * Y
+Q : V := E * Y
+k : V := v 8 + v 9
+c : V := v 8 + Y * k
+a : V := E + Y
+H : V := 3 + 4 * a
+R : V := ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) + (↑(p 2) + q * ↑(p 3)) * v 0
+R' : V := (v 2 + (q - v 1) * b) * (q * q - 1) + v 0 * (↑(p 2) + ↑(p 3) * q)
+hq : 0 < q
+hq1 : 1 ≤ q
+hgap : v 1 + v 2 < q
+hF : v 1 ≤ q
+hbq : q - 1 = b
+hRank : R = R'
+s : V
+hs : Y = q ^ 3 * s
+t : V
+hk : k = R + 1 + 4 * Q * t
+main : V
+left✝ : 0 < main
+horient :
+  Equivalent (ArithmeticAdaptiveFactorMagnitude2011.pairEval (core fun j => ↑(p j)).d v)
+    (natural (v 6 * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * main))
+right✝ :
+  main * main =
+    1 +
+      (3 + 4 * (v 5 * v 6 + v 6) + (v 5 * v 6 + v 6) * (v 5 * v 6 + v 6)) *
+        ((v 8 + v 6 * (v 8 + v 9)) * (v 8 + v 6 * (v 8 + v 9)))
+W : V := 4 * X * q * s * t
+⊢ 4 * (X * v 6 * v 6) * t = v 6 * (q * q) * (4 * X * q * s * t)
+/tmp/ipra-freej-power-projection-explore/FreeJPowerProjection.lean:65:49: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Y
+in the target expression
+  3 + 4 * (X * v 6 + v 6) = 3 + q * (4 * (q * q) * s * (X + 1))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 12 → V
+hb : 0 < ↑(p 0)
+hl : ↑(p 2) < ↑(p 0)
+hh : ↑(p 3) < 2 * ↑(p 0)
+hv : ∀ (j : Fin 12), 0 < v j
+hz : InternalZero (literal fun j => ↑(p j)) v
+b : V := v 0 * ↑(p 0)
+q : V := 1 + b
+X : V := v 5
+Y : V := v 6
+U : V := Y * (q * q)
+E : V := X * Y
+Q : V := E * Y
+k : V := v 8 + v 9
+c : V := v 8 + Y * k
+a : V := E + Y
+H : V := 3 + 4 * a
+R : V := ((q - 1) * (q - v 1) + v 2) * (q ^ 2 - 1) + (↑(p 2) + q * ↑(p 3)) * v 0
+R' : V := (v 2 + (q - v 1) * b) * (q * q - 1) + v 0 * (↑(p 2) + ↑(p 3) * q)
+hq : 0 < q
+hq1 : 1 ≤ q
+hgap : v 1 + v 2 < q
+hF : v 1 ≤ q
+hbq : q - 1 = b
+hRank : R = R'
+s : V
+hs : Y = q ^ 3 * s
+t : V
+hk : k = R + 1 + 4 * Q * t
+main : V
+left✝ : 0 < main
+horient :
+  Equivalent (ArithmeticAdaptiveFactorMagnitude2011.pairEval (core fun j => ↑(p j)).d v)
+    (natural (v 6 * ((1 + v 0 * ↑(p 0)) * (1 + v 0 * ↑(p 0))) * main))
+right✝ :
+  main * main =
+    1 +
+      (3 + 4 * (v 5 * v 6 + v 6) + (v 5 * v 6 + v 6) * (v 5 * v 6 + v 6)) *
+        ((v 8 + v 6 * (v 8 + v 9)) * (v 8 + v 6 * (v 8 + v 9)))
+W : V := 4 * X * q * s * t
+hscale : 4 * Q * t = U * W
+hrep :
+  have b := v 0 * ↑(p 0);
+  have q := 1 + b;
+  have U := v 6 * (q * q);
+  have E := v 5 * v 6;
+  have k := v 8 + v 9;
+  have c := v 8 + v 6 * k;
+  have a := E + v 6;
+  have H := 3 + 4 * a;
+  have R := (v 2 + (q - v 1) * b) * (q * q - 1) + v 0 * (↑(p 2) + ↑(p 3) * q);
+  Equivalent (ArithmeticAdaptiveFactorMagnitude2011.pairEval (core fun j => ↑(p j)).d v)
+    (U * (v 5 + a * c) + H * (U * v 11 + E * q + R + 1), H * k)
+hroot : U * (X + a * c) + H * (U * v 11 + E * q + R + 1) = H * (R + 1 + U * W) + U * main
+hcancel : U * (main + H * W) = U * (X + a * c + H * v 11) + H * (E * q)
+hqY : 0 < q * Y
+hqeq : q * (main + H * W) = q * (X + a * c + H * v 11) + H * X
+d : V := 4 * (q * q) * s * (X + 1)
+⊢ 3 + 4 * (X * v 6 + v 6) = 3 + q * (4 * (q * q) * s * (X + 1))
+'FreeJPowerProjection.graph_projection' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

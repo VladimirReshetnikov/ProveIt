@@ -1,0 +1,3 @@
+# Independent terminal audit: sign20 exact degree union
+
+The independent checker exited 0. Author-observed outer session 65100 exited 0, with the stage and final postflight successful. Lean checked symbolic Fin20 totalDegree = 20 under p 0 ≠ 0 and current-port totalDegree = 20 using the separately checked current nonzero theorem. Three direct provider source/object/import/log pins, guards, overlays and both added-provider surveys were checked; two axiom reports, no warnings or sorryAx. The lower provider retains successful-child-of-failed-grandparent ancestry. No external JSON, Jones polynomial or equation.pdf binding is established.

@@ -1,0 +1,95 @@
+ARRAY-TRUTH PROTOCOL REVIEW
+
+Established change
+------------------
+The checker starts with the single list-valued hypothesis []. Under the
+inherited sorted interpretation this is the fixed theorem 0=0. A proof of
+0=0 already exists: use H := I(0,0;v.0)=0 twice in transport with motive
+F(w): w=0. The certified-zero normalization supplies the excluded zero
+initializer in an actual certificate. Adding [] is therefore conservative
+by ordinary assumption cut.
+
+Every packet verifies its major. A canonical absent major is the literal
+empty list, so its proof closes immediately without consuming a packet or
+allocating a parameter. The branch around major-premise verification is
+removed. The original major is still used to select the continuation.
+
+The introduction mode is moved to u, NOT to s. The preceding computation
+branch ensures that u is false-valued at an introduction. Thus
+len(matrix)%2 == u can hold for a literal equation but never for an odd
+compound-matrix arity. Canonical u=0 selects equation progress; u=[] selects
+cases. An attempted u=1 selects computation and cannot enable compound
+induction. The field s remains unused in introduction.
+
+Why the guardless matcher is safe
+--------------------------------
+The inherited matcher contains the value False when s is truthy. A numeric
+major 0 would compare equal to that sentinel. The checker does not grant
+numeric 0 the privilege of the empty-list truth.
+
+For the explicit-list profiles, the following simultaneous finite-trace
+invariant applies: every actual continuation context is list-valued, and
+no numeric goal has a successful proof from such a context. Prove this by
+induction on the size of a successful finite checking trace.
+
+A numeric goal cannot close by membership: its opening is numeric, while
+all context entries are lists. A successful major subproof in a smaller
+trace cannot have a numeric major. Nonempty list majors export lists;
+computation constructs a list. Transport cannot change a numeric goal into
+a list: equality of i(t,u) with a numeric goal forces the successful root
+opening of t to be numeric, and scalar opening at depth zero is independent
+of its image. The continuation goal remains numeric, contradicting the
+smaller-trace induction hypothesis. Introduction at a numeric incoming goal
+fails unpacking. If introduction from an array produces a numeric matrix,
+len(matrix) fails before any continuation context is constructed. Therefore
+it cannot introduce a scalar hypothesis. This also proves context closure.
+
+Consequently a falsy successful major in the strict profiles is []; it is
+unequal to False and to either nonempty matching candidate. Nonempty majors
+use the inherited major rules. No extra major Boolean guard is needed.
+
+For the generic-traversal profile, empty strings and empty mappings can
+open to [], giving additional harmless truth aliases. They are unequal to
+numeric zero and False. A truthy mapping cannot export m*3. Numeric-major
+exclusion is unchanged. The inherited malformed-nonempty-string/runtime
+qualification remains; no ideal all-JSON termination claim is made.
+
+Arithmetic and full logical strength
+------------------------------------
+The continuation image for a computation may now be zero or the fresh
+parameter, depending on u and the goal arity. The inherited known-zero-
+instance supply lemma covers both. It is not claimed that every generated
+hypothesis is uniformly true in its fresh parameter.
+
+All arithmetic equations, paired introduction/elimination, equality
+transport, closure specialization, and the literal-equation induction
+restriction otherwise have their inherited meanings. Canonical old
+certificates are translated by replacing absent majors by [] and, at an
+introduction, moving the old mode from m into u. No new allocation or
+instruction is introduced. The inherited full-domain bi-interpretation is
+therefore retained. This is a written mathematical review, not a
+proof-assistant formalization.
+
+Novelty and size scope
+----------------------
+The exact initial-array-truth/unconditional-major/u-mode protocol was not
+found by searches of the inspected current corpus. Its arithmetic basis,
+arity encoding, certified-zero normalization, and logical reconstruction
+are inherited and attributed. No literature-wide novelty or absolute
+minimality claim follows.
+
+The complete explicit/byte/joint programs measure respectively
+550/263/307, 542/263/309, 578/261/295 in normalized bytes/tokens/AST nodes.
+The attained coordinate envelope is 542/261/295, compared with the current
+corpus envelope 558/262/296, from different programs. No single new program
+is below all three old coordinate minima.
+
+Concrete validation
+-------------------
+The standalone tests cover 46 examples across four independently executable
+files in ordinary and optimized Python: 368 complete-process expectations.
+Two additional mutation runs change only the progress selector from u to s;
+they then accept the otherwise rejected compound-progress attack. This
+shows that the negative certificate exercises the specific restriction.
+All 370 expectations passed. Finite tests support the implementation review;
+they do not replace the universal trace and interpretation arguments.

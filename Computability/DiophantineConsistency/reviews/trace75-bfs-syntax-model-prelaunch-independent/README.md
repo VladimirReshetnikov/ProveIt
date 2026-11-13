@@ -1,0 +1,11 @@
+# Independent prelaunch review: trace75 model-zero syntax
+
+Scoped GO for one author check with source SHA-256 `a43038e641d94e3e670973cba40ee92551ceddf866cd2c6372c2ac473bb6f904`, runner SHA-256 `aa368b858432b6b68b1fdad86b1220b3f4f2c289224f08ab3cdd6c0e3adc3ee3`, and overlay inventory SHA-256 `43f46b4876d7d269212f473746dd5079760d6c20188c575049ed1bf03dc6bcc5`. No Lean run was performed in this review.
+
+The proposed theorem defines the trace75 literal expression at natural ports and states, for arbitrary model-natural v in an IΣ₁ model, that its `InternalZero` is equivalent to actual `value75` zero at the same ports and cast valuation. It derives this from the existing ring-evaluation theorem and `internalZero_iff`. This is a syntax/model-value bridge; it does not itself establish positivity, machine halt, iPRA, or a formal binding to external JSON/PDF/coefficients.
+
+The independent checker verified the source/runner/inventory, all eight pins, both current first-selected direct imports and all 999 inventoried overlay links. Of these, 998 point to the corresponding fresh namespace entries and the new syntax link points to the checked syntax object. The runner rechecks inventory names and symlink text, and rehashes the explicitly pinned inputs before and after; it does not individually pin every overlay link target's bytes. It captures source/runner hashes at launch rather than enforcing these reviewed hashes itself and has no pinned outer wrapper: verify reviewed bytes at launch and retain actual tool exit. The selected fresh trace75 namespace is not established coherent with the BFS reverse provider, and full transitive, historical, package and dynamic ancestry remain outside this review.
+
+## Attempt02 correction
+
+Attempt01 failed with an unsolved port-lambda equality, an unused simp argument warning and `sorryAx`; it is excluded. Revised source SHA-256 `f71d277d0e04a9e516f91df0ebdcd233306f5c82200607faec93e444148ef3c4` changes only that final proof step, removing the warned simp argument and closing the remaining goal by `rfl`; the theorem statement, runner and inventory remain unchanged. **Scoped GO for one attempt02** using these exact revised bytes, with the same launch, tool-exit and ancestry limits.

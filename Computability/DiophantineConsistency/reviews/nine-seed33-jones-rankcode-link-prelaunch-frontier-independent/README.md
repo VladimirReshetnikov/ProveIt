@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS. The pinned source exactly adapts the checked sign38 proof by namespace replacement. It proposes the generic commutative-ring identity rankRaw z b (b^5) q n e ell lam g theta = rankCode 1 z b e g ell n q theta lam; both argument orders were checked. The runner replays the rank terminal audit, binds the exact carried-rank provider, and independent no-Lean preflight passed.
+
+This uncompiled generic identity does not establish an actual prefix substitution, final output semantics, JSON/human binding or degree. Bounded-resource success is untested and deeper ancestry inherited.

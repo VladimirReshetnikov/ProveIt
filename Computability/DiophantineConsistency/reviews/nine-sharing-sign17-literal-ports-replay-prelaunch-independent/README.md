@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the replay source is byte-identical to independently audited attempt02 and retains the five structured beta, mu, omega, rational K and all-ports statements. The original audit and the numeral-derived K terminal audit were rerun; all three currently selected direct overlay objects match pinned paths/hashes, and Init/resource guards and no-Lean preflight pass. This is a replay against captured objects, not a complete dynamic/transitive ancestry audit or TeX/PDF/external-file theorem. The source's old draft header predates its audited attempt02 and is stale. No Lean was run.

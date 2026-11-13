@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the helper now returns proposition-level provability (`⊢`, nonempty derivation), permitting elimination of propositional membership there; the recursive branch and final `nonzeroAt` select a concrete derivation with host-level `Classical.choice`. The resulting object-theory nonzero and reconstruction implications are unchanged and remain intuitionistic formulas; host choice may appear in Lean axiom reports. The previous failure and audited guard provider were rerun, and source/guard/resource pins and no-Lean preflight pass. Elaboration is untested; full closed-sentence equivalence and inherited historical object ancestry remain separate. No Lean was run.

@@ -1,0 +1,77 @@
+SIX-RULE WEAK-HEAD CHECKER
+========================
+
+Run: python3 code/head_checker.py < certificate.json
+
+Input has exactly these keys:
+  {"variables": n, "context": [A0,...], "goal": A, "proof": hint}
+n is an exact nonnegative integer, not a Boolean. Context and goal are
+well-scoped native formulas, already weak-head normal at every equation
+endpoint. Formula binders Q and D remain available. Every raw term hint is
+scope- and sort-checked before any computation can erase part of it.
+
+Term JSON:
+  ["z"]                 zero
+  ["v", i]              de Bruijn variable index i
+  ["s", t]              successor
+  ["i", n, seed, body]   scalar iterator; binds index zero only in body
+
+Formula JSON:
+  ["=", s, t]           equality
+  ["q", B]              one bound variable in B
+  ["d", B]              y=index zero, x=index one in D_{x,y} B
+
+Weak-head conversion leaves S(t) untouched. For an iterator it normalizes
+the counter's head; at zero it continues with the seed, at S(k) it continues
+with the raw update after substitution of I(k,seed,body), and at a neutral
+counter it stops without entering the seed or body. Equations normalize
+both endpoints; formulas recurse through Q and D.
+
+Hypothesis and literal reflexivity are automatic: their proof hint is
+ignored. This is the stated interface, not validation of unused hints.
+Otherwise the available hints are:
+
+  ["vs", j, t, u, p, q]
+    The goal has endpoints v,w. The exact nonnegative integer j identifies
+    a free variable in scope. p proves v_j = W(t); q proves W(u) = v.
+    Require w = W(u[t/v_j]), using the RAW supplied t and u. This substitution
+    does not remove the variable from scope and does not recursively rewrite
+    inside the replacement. t may contain v_j.
+
+  ["qe", B, t, p, q]
+    B is a canonical formula with one additional variable. p proves Q B;
+    q proves normalized B(0). The goal is normalized B(t), with raw t.
+
+  ["de", B, p, q]
+    B is a canonical formula with two additional variables. p proves D B.
+    q proves the shifted goal under fresh variable zero, with Q B as the
+    first hypothesis and all previous hypotheses shifted. The original
+    goal cannot mention the fresh variable.
+
+  ["di", t, p]
+    Goal is D B. t is a RAW well-scoped witness. A fresh z is added.
+    If B is an equation and raw t is literally ["z"], the local assumption
+    is normalized B(t,z); otherwise it is normalized B(t,0).
+    p must prove normalized B(t,Sz). Previous hypotheses are shifted.
+
+Acceptance is normal termination, exit code zero, and exactly ACCEPT on
+standard output. Rejection has nonzero exit code. Explicit requirements
+remain active under python3 -O. Physical stack, time and memory limits can
+reject otherwise valid large finite derivations.
+
+FULL-NORMALIZATION CONTROL
+==========================
+code/full_checker.py uses precisely the same input structure and raw hints,
+with full conversion at equality endpoints. Thus its canonical formula
+language differs by the specified conversion strategy. The checked inference
+families and all scope/error/CLI logic are matched. This is a matched control
+written for this experiment, not an incumbent minimum.
+
+COMPACT PROFILES
+================
+The separately included compact programs implement the inherited guarded
+calculus, not the six-rule weak-head calculus. They assume exact integer/list
+trees and a canonical closed guarded public goal; they do not validate this
+public grammar. Their small byte counts must not be presented as arbitrary
+JSON/native-formula validation counts. The report specifies their framing
+and records the byte-only result separately from token and AST minima.

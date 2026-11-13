@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 46181 exited 0. Source/object/logs, exact sign31 existential and sign32 current-source providers, 150 direct guard slots and 1,296 overlay links were checked. The compiled theorem states that for fixed current ports and leading coordinate 1, existence of Fin31 sign31 witnesses is equivalent to existence of Fin14 current-source witnesses in each indicated IΣ₁ model. Its report is [propext, Classical.choice, Quot.sound] with no warnings.
+
+This packet does not itself establish a direct iPRA endpoint, a Lean degree theorem or external JSON/coefficients binding. The outer exit is author-recorded; deeper dynamic/transitive provider compatibility remains inherited. No Lean replay was performed.

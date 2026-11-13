@@ -1,0 +1,9 @@
+# Auxiliary sign tactic retry checked
+
+The [prior auxiliary sign diagnostic](../nine-sharing-sign33-aux-ring-check/attempt01/README.md) failed because `linear_combination` was unavailable, leaving the mapped norm identity and final sign unsolved. This retry changes only that tactic to `nlinarith [he]`, using the tactic already provided by the imported ordered-ring module; theorem statement, all hypotheses and imports are unchanged. The conditional theorem compiled; see [attempt01](attempt01/README.md). It retains conditional abstract parameters and does not establish the current-source binding, sign33 zero bridge or an iPRA endpoint.
+
+The runner pins the prior failed state and exact missing-tactic log, uses a fresh output directory, and retains the earlier source-built provider survey, direct dependency/guard checks and resource limits. Full guard and survey rechecks occur only after success. Provider observations are point-in-time, resource monitoring is sampled, and deeper transitive/dynamic ancestry remains inherited, including an uncaptured numeric outer exit of an earlier initial-agreement provider.
+
+Candidate source SHA-256 `fd4e20bc73bf0ea3fce0efd8bcd85fe0f34930306ca0eca81c6e743355f0da5d`, manifest `aa5bb677ecfde6f5086fd52f6a86128844bb5c3286b132105b3cc31a474e4b0d`, survey `5647fa1bfb1ebca431e5c4ac15beeff475263fbb7ff426b1d0d9508c3e0fcd32`, runner `3b12db4c61cbcb87aec11f6350e8f3dd504f30e2e4d50810794b6c0eb86f3431`. Author no-Lean preflight session 17272 exited 0; independent prelaunch review and a coordinated Lean slot preceded the successful run. Limits remained `-M2800`, 120 seconds per call, sampled 4-GiB session RSS and 10-GiB available-host-memory floor with a 5-GB free-space precheck.
+
+The [independent terminal audit](../../reviews/nine-sharing-sign33-aux-ring-retry01-terminal-frontier-independent/README.md) checked the conditional theorem and provider observations without replaying Lean.

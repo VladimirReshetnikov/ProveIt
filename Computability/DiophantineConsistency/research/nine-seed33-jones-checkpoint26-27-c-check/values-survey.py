@@ -1,0 +1,13 @@
+#!/usr/bin/env python3
+"""Authenticate C-related producers and their routes into the J checkpoint overlay."""
+import hashlib,json,subprocess,sys
+from pathlib import Path
+P=Path(__file__).resolve().parent;D=P.parents[1];B=Path('/tmp/nine-seed33-jones-checkpoint28-41-j-check-20261106');H=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest();obs={}
+items=[('live18-staged','a0e202c47a4150d11099175971293d7d28c55dda2d380cfc2a7142c6e6f57e13','3e8a840b8e3b9450e1b3b700e809444fea30795b62f75bbca53fbbd1daf685c0','54af31278c3c143b22ae99ab5e2a3a70e0934fd891deb60cda8527ce875cdfc5',['Sign33MacroLive18Group01','Sign33MacroLive18Group02','Sign33MacroLive18Group03']),('prefix-group03-staged','f1769a73743919a3ff52d3637a514592fdbd5d5222669bc17c404ecee33a29d0','ab4237754322f7aa5c7c769ce0068235e656272fc30a2f7e7910ab2559de8c22','7a5f8787056d592aac8507aa66807fe3919af3b570326a483077997258741da2',['Sign33MacroPrefixGlarge']),('prefix-group04-staged','6ea3f558560d46525b13296b76e6f084cd627eaedd9392beb1e928514363fb0b','2bf2589e50859a05a8d4f59bf2645da6d4d78c5dfc5b8f7fa0b7240f099a2f7d','a6a8ce3e368474e50c97ac7b375911a1ba333d122ad07fb5722dd39177e50503',['Sign33MacroPrefixInputsB']),('dependent03-staged','ef9d587daff77a6926fec547e6ca4755244824a3a3230e41dc987493882b6a2e','ffe09bb2427381c09cb02c664975f0f0a95e99d058c92be92b6c4dd70ce7baa6','55f7a275df8c77abb570184b3a3e78f8b3807f56fae22ba1213cedcf71947303',['Sign33MacroDependentW','Sign33MacroDependentC']),('checkpoint20-27-uy','6f45e8aa3bb2a0740a740bf129ae869d35e15d49be109219bb65f3654716d1a0','499b586380e0a79fc23fef946781ef746757d3d90ce543dc7fb80051d8051ede','48397de77fe12973517ad9a20436ca6bc8d9cc61381ce658d9412a282850d824',['Sign33MacroUYInputs'])]
+for group,statehash,checker,result,names in items:
+ audit=D/f'reviews/nine-seed33-jones-{group}-terminal-frontier-independent';assert H(audit/'check.py')==checker and H(audit/'result.json')==result
+ r=subprocess.run([sys.executable,'-I','-S','-B',str(audit/'check.py')],capture_output=True,text=True,timeout=120);assert r.returncode==0 and json.loads(r.stdout)['status']=='PASS_TERMINAL_AUDIT'
+ state=D/f'research/nine-seed33-jones-{group}-check/attempt01/state.json';assert H(state)==statehash;s=json.loads(state.read_text());assert s['status']=='PASS'
+ for n in names:
+  row=next(x for x in s['rows'] if x['module']==n);orig=Path(f'/tmp/nine-seed33-jones-{group}-check-20261106/lib/DiophantineConsistency')/(n+'.olean');q=B/'lib/DiophantineConsistency'/(n+'.olean');assert q.is_file() and q.resolve()==orig.resolve() and H(q)==row['object_sha256'];obs[n]={'sha256':row['object_sha256'],'realpath':str(orig.resolve())}
+print(json.dumps({'status':'PASS','observed':obs,'scope':'Eight audited selected producer routes; deeper ancestry inherited.'},sort_keys=True))

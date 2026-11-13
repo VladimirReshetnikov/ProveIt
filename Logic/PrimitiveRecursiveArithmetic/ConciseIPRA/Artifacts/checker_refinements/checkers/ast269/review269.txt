@@ -1,0 +1,51 @@
+Independent review of the whole-input 269-node composition
+12 November 2026
+
+Reviewed control271.py, checker269.py and proof269.txt, together with the
+integrated article's proposition cert:prop:stream-rewrites. No additional
+regression executions were needed for this proof review.
+
+Conclusion: the proposed finite-execution simulation is valid under the
+finite exact-integer/list input contract and sufficient physical resources.
+The two programs accept exactly the same certificates on that contract.
+
+The single changed expression is the image supplied to i for its second
+argument. Both programs evaluate i's first argument completely before this
+expression. The first argument can construct a computation equation, check
+a recursively supplied major, or assign a to the opened introduction matrix.
+None of those evaluations is reordered by the change.
+
+Every call has k <= 0: this holds at the initial call, is passed unchanged
+to a recursive major call, and is preserved by each continuation decrement.
+In the expression under review the decremented value j is therefore strictly
+negative and truthy. For truthy s, both sides return j and skip len(a). For
+false-valued s, both sides evaluate len(a) == 2. When that result is true,
+both sides return j; when false, the old expression returns False and the
+new expression returns integer zero. Exceptions in evaluating the length
+occur at the same point in both programs.
+
+The only possible persistent distinction is thus False versus 0 inside
+raw trees. Componentwise identification of these values is a congruence for
+every subsequent observation made by this program: numeric comparison,
+truth testing, numeric arithmetic, list/tuple equality and membership,
+sequence repetition, and structural traversal. Both scalars raise on the
+opener's attempted iteration and take the same scalar fallback. Neither
+program tests exact type or object identity, hashes internal values, or
+prints them. Their fixed acceptance output is identical.
+
+Induction over returning calls, loop iterations, and opener traversals gives
+the claimed correspondence. The exception-catching opener is no obstacle:
+corresponding protected scalars and recursive branches either return related
+values or fail in the same way relevant to acceptance. Exception-message
+wording and interpreter resource limits are not acceptance evidence.
+
+The mathematical calculus and its bi-interpretation with iPRA remain the
+existing ones. The formula transformation already appears in fused_iteration
+for its stream checker and in the article's stream-rewrites proposition.
+Its present application is a composition with the unchanged whole-input
+reader. The justified comparison is 271 to 269 AST nodes within that category,
+not a claim to beat the separate 265-node stream program, all three coordinate
+minima, or an absolute proof-checker lower bound.
+
+This is an independent written analysis in the current research run, not
+external human peer review or proof-assistant verification.

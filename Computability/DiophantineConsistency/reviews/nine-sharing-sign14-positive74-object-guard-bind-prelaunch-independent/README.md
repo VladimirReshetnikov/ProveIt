@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the 14-place guard uses the same ordered `finRange` nonzero conjuncts as the audited open guard. The proposed substitution sends each bound variable i to `v i` and preserves zero, then rewrites the audited open reconstruction implication. This is equality of instantiated guard syntax and an open object-theory implication; it is not yet a proof of the full closed sentence or expression substitution. Audited predecessor/conjunction provider, source/guard/resource pins and no-Lean preflight pass; tactic compatibility and inherited historical object ancestry remain unverified. No Lean was run.

@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: extracted the complete `displayedExpr` body and checked byte-for-byte equality, excluding surrounding whitespace, with the current Lean `expressionAt` body. Its 14 named variables map exactly to indices 0–13, and its four port leaves are 0–3; the endpoint uses audited numeral-derived `linePorts`, positiveShift and splitNatural. There are no additional local theorem hypotheses. The audited linePorts endpoint and source/provider/Init/resource guards and no-Lean preflight passed; Lean elaboration remains untested. Mechanical copying does not independently parse or formally interpret the TeX/PDF, and no external-file binding, proof certificate or proof of either biconditional side is claimed. No Lean was run.

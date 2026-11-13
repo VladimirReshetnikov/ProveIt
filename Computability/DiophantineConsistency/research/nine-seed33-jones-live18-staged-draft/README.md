@@ -1,0 +1,3 @@
+# Sign33 d18 live-entry source-only candidates
+
+These four drafts adapt the previously checked sign38 d18 live-entry preservation identities by namespace replacement only. They preserve earlier b/N/g/G/rank/input entries to the d18 checkpoint; no final output or semantic/JSON/human binding, degree, or arithmetic-operation count is claimed. The [guarded runner](../nine-seed33-jones-live18-staged-check/README.md) binds the audited symbolic-rank provider; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-live18-staged-terminal-frontier-independent/) passed.

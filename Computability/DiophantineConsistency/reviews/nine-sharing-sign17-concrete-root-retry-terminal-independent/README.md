@@ -1,0 +1,3 @@
+# Independent terminal audit: sign17 concrete-root retry
+
+The independent checker exited 0. Author-observed outer 45324 exited 0, with both stages and final postflight successful. Lean checked five staged shared-expression evaluations and that actual staged row06 yields a model-natural gap under represented beta, beta>0 and row-zero hypotheses. Source/object/import/log pins, direct guards, overlays and staged union survey were checked; seven axiom reports, no warnings or sorryAx. Full signed-lift zero equivalence and iPRA endpoint remain separate; external AST correspondence is not bound inside Lean.

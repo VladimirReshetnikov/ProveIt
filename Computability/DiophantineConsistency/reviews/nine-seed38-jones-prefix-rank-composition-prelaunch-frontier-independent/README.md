@@ -1,0 +1,5 @@
+# Independent prelaunch review: d11 rankCode composition
+
+No launch blocker found. The checker pins source, runner, survey and manifest, verifies both direct imports, theorem/report names, explicit d10 argument ordering `0,4,7,5,3,2,8,6` and b/B castSucc counts 9/8, and reruns the no-Lean preflight. Those arguments correspond to `b,e,g,ell,n,q,theta,lam` in `rankCode`. The survey reruns both independent terminal audits and checks the B-power overlay is an identical 1,181-path subset of the rank-link overlay. The runner binds both direct dependencies and guards to exact producer objects; postflight requires success.
+
+The proposed commutative-ring theorem identifies the last d11 entry with `rankCode` on symbolic d10 entries via the checked raw evaluation, generic identity and B=b⁵ theorem. Elaboration remains untested. This is a short-prefix theorem, not full-recipe semantics or JSON/document binding. Provider observations are point-in-time and monitoring is sampled; this checker is prelaunch-only because its output path must remain absent.

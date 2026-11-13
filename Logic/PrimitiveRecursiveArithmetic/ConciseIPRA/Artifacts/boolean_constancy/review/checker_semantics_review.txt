@@ -1,0 +1,39 @@
+FINAL FRESHNESS UPDATE: Incoming ipra_absorbing_predecessor_2026-11-12.zip at 7703601c48baf2fb4a051dc74559b0b766ea5a4b already contains the JSON-lines token244 and AST267 programs. Section B below remains a correct inherited simulation, but is not a novel result of this work. Against those current programs, our change is only an equivalent import-star spelling, saving four bytes each and no tokens or AST nodes. The current direct envelope is 244/267/479; our byte refinement changes it to 244/267/478.
+
+Independent semantic review of the proposed checker refinements
+
+Reference: b9aa36102e523213ae956b474ec651bfde3e5665, Artifacts/immediate_application/code/checker479.py, Artifacts/single_binder/code/tokens248.py and ast270.py.
+
+A. Eager any conversion (checker478_any / checker478)
+
+The sole intended replacement is bool(m or 3 % len(a)) by any((m, 3 % len(a))). The unchanged context argument is evaluated before the continuation-goal argument and before the recursive call. The tuple evaluates its second entry even when m is true-valued. Hence it is not a raw-input trace equivalence.
+
+For each terminating execution in which len(a) is defined and positive at a visited replacement site, write r=3 % len(a). The two expressions yield the identical Python bool, because any((m,r)) is true exactly when m or r is true-valued. Here m is a value obtained from ordinary JSON, not an object with effectful __bool__; r is an integer, and len(a) on JSON containers has no side effect. The surrounding k assignment has not moved. Consequently the two executions have identical formula values, contexts, floors, packet consumption and recursive return values on such an execution.
+
+Every successful new execution has satisfied these conditions at all its visited sites, since undefined len or zero length raises before the allocation. Removing the extra eager evaluations gives a successful old execution with the same trace. Thus Acc(new) is a subset of Acc(old) on arbitrary complete JSON stacks (ideal resource bounds). Soundness follows from upstream soundness; no new accepted raw certificate needs a separate interpretation.
+
+Completeness is retained on theorem goals because the upstream compiler can choose native canonical proof traces. At every nonleaf call its goal is an equality (arity 2), Q (arity 3), or D (arity 1); after introduction the opened matrix is again such a formula. The scalar neutral major 0 is retained in the initial context and returns at membership before reaching the replacement. Hence every canonical generated proof uses len only on a nonempty array, and the trace-preservation argument applies. It is not necessary that every raw proof of a theorem survive.
+
+Explicit strictness of the inclusion: fixtures/raw_empty_goal_boundary.json is
+[[0,0,0,[[0,[0],0],[0]]],[0,0,[0],0],[[[0,[0],0],[0]],0,0,0],[]]
+The reference 479-byte checker prints ACCEPT. The candidate rejects with ZeroDivisionError at 3 % len(a) while a=[] and its major is true-valued. This is a neutral raw goal, not a false canonical theorem. Its older successful trace uses the variable-arity call i(*a,t,2) at a=[] as i(t,2), whose default depth is 0, supplying the equation witness as an administrative goal. This confirms that the difference is real.
+
+The same one-way simulation applies to checker636's replacement of bool(m or len(a) % 2 == u) by any((m, len(a) % 2 == u)); there is no modulo-by-zero issue in this expression, but len on a scalar is still evaluated eagerly. Canonical traces satisfy the required type condition.
+
+B. Line-oriented stream conversion (checker244 / checker267)
+
+Let an old finite JSON stack be [P0,...,P(n-1),A]. Serialize the new input as one compact JSON value per line, in the order A, P(n-1),...,P0. Compact serialization must escape embedded newlines in strings. Old q() returns the next value from the end; new loads(input()) returns the next line value. At every request they therefore return structurally equal values. By induction on program transitions, goals, contexts, floor values and packet consumption agree. Recursive calls occur at the same sites, so the proof does not assume a particular traversal other than the actual old code. Old unused prefix corresponds to new unread suffix. If the next packet is absent, IndexError and EOFError both reject.
+
+Conversely any successful finite stream run reads only a finite prefix. Reversing the packet part of that prefix, then appending the first (goal) record, gives a finite old stack that has the same execution. Thus accepted theorem sets agree for the declared encoding. This does not equate the languages of physical input strings. In particular the streaming program does not parse unread suffixes, while the old top-level JSON reader parses the complete old array before checking. The claim is a changed framing with a simple certificate bijection on well-formed finite records, and it must be described as such.
+
+from json import * uses the standard json module's exported names; it supplies loads and does not override c, i, k or any builtin used by these kernels. Its source size is charged. No arithmetic rule or kernel branch is changed. No code-execution facility is introduced.
+
+C. Rejected default-argument reorder
+
+Changing the signature from c(g,a,k=0) to c(a,g=[0],k=0) would itself be safe regarding the default list, because the contexts are extended by g+[h] and never mutated. However the candidate also reverses the argument evaluation order. The original context expression proves the major, may assign a to the opened introduction matrix, and allocates the next floor k before the continuation expression is evaluated. The reordered version computes the continuation at the old a and old k. These are observably different transitions, not a safe signature refactor. checker478_default.py and checker477_default_any.py should not be delivered as proved refinements.
+
+All these results concern ideal Python executions and the stated upstream semantic contracts. They are written simulation arguments, not a Lean verification of the Python programs. None is a new iPRA arithmetic basis or a proof of minimality.
+
+D. Current upstream import-star comparison
+
+The current upstream token244 and AST267 source files differ from our checker244 and checker267 only at the import. On the actual CPython 3.12.14 runtime, json.__all__ is [dump, dumps, load, loads, JSONDecoder, JSONDecodeError, JSONEncoder]. Of those exported identifiers, only loads occurs anywhere in either kernel. Thus importing the extra exports neither shadows a used identifier nor changes loads. The imported module and function object are the same; all remaining source is byte-identical. This proves an exact behavioral equivalence of the current upstream and our two spelling variants (up to resource limits). The measured byte changes are 608 to 604 and 606 to 602, with token/AST vectors 244/272 and 249/267 unchanged.

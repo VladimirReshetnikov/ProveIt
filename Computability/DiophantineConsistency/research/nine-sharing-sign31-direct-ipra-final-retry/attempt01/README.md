@@ -1,0 +1,5 @@
+# Terminal result
+
+Author-observed outer session 52107 exited 0 with `PASS sign31 direct ipra staged endpoint diagnostic`; all four Lean stages exited 0. `polynomialBridge`, `native_equivalence`, `standard_equivalence` and `standard_translated_equivalence` each report `[propext, Classical.choice, Quot.sound]`; compile logs contain no warnings. State, logs and author-recorded outer outcome are retained here; objects remain under `/tmp/nine-sharing-sign31-direct-ipra-final-retry-20261106/lib/DiophantineConsistency/`.
+
+The expression is the checked symbolic current sign31 seed with its distinguished input substituted by 1 and exactly 31 remaining model coordinates. The theorem is the direct arity-generic iPRA expression endpoint, not a nine-variable Jones theorem. A Lean degree bound and a machine-checked equality tying this symbolic syntax to external JSON or concrete coefficient bytes are not established by this run. The inherited source/provider observations and scope are described in the parent README.

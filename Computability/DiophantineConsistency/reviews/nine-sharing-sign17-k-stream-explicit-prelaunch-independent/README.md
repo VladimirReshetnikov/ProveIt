@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: all 17 explicit numeric chunks exactly match the independently audited reversed lists in control, tile15 through tile00 order, totaling 986 entries. Position 984 is coefficient 1 (30099357829122), incremented to 30099357829123; with the 20-digit prefix this is stream position 1004. Both provider terminal audits were rerun; 1,207 overlapping overlay targets and producer-object collisions were independently checked, and source/import/generator/Init/resource pins and no-Lean preflight pass. This proposes in-Lean symbolic K digits only; fixture bytes and external files are separate. Surveys are point-in-time. No Lean was run.

@@ -1,0 +1,5 @@
+# Uncompiled symbolic mask-cover split
+
+These separate source drafts isolate the original proposed fixed-mask proof into a short low-defect stage, a high-list digit lower-bound stage and an abstract successor/cover arithmetic lemma. The original single-stage attempt was deliberately stopped after its strictness gap was identified; see the [retained record](../trace74-symbolic-fixed-mask-cover-rebuild/README.md).
+
+The low/high drafts retain the same symbolic port providers and do not use `decide` on the full fixed mask. The abstract lemma uses only natural arithmetic and explicitly requires `defect<high`. The [independent source review](../../reviews/trace74-symbolic-mask-split-draft-independent/README.md) found no mathematical blocker and records the reviewed source hashes; it did not run Lean. All three drafts need fresh pinned runners and Lean checks; no successful theorem, selected-provider compatibility, fixed-BFS guard or graph consequence is asserted. The model cast and a final source-consistent join remain separate stages.

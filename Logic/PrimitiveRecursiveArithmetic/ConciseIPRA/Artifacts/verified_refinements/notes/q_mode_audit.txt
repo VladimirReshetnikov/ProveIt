@@ -1,0 +1,190 @@
+# Audit of hypothesis-shape mode selection
+
+This note concerns the raw Eq/Q/D scalar language at repository commit
+`42fba2a76aea6eb41a8c4acfe7761620f58956ee`, and the three-field checker
+currently materialized under `baseline/docs/incoming/three_field/`.
+It is a mathematical audit, not a claim of a new minimum-size checker.
+
+## 1. The unsafe replacement yields arbitrary-formula induction
+
+Write
+
+\[
+Q_v B := B(0)\to\forall v B(v),\qquad
+D_{x,y}B:=\exists x(B(x,0)\to\forall y B(x,y)).
+\]
+
+The proposed replacement of the original mode selector by `len(h)>1`
+would use progress when the introduced matrix is a Q formula (arity three),
+as well as when it is an equation (arity two). This is not a harmless
+additional use of induction on a closure.
+
+For an arbitrary native Eq/D formula A(y), let G_v A(y) be the inherited
+gate: on an equation s=t it is
+
+\[
+I(v,0;u.s)=I(v,0;u.t),
+\]
+
+and it commutes recursively with D, after freshening bound variables.
+The baseline calculus proves the zero gate and the successor conversion:
+
+\[
+\vdash G_0 A(y),\qquad G_{S w}A(y)\dashv\vdash A(y).
+\]
+
+Set H(y):=Q_v G_v A(y), with v fresh. Then
+
+\[
+H(y)\dashv\vdash A(y).
+\]
+
+The direction H -> A is QE at 1, using the zero-gate theorem. For A -> H,
+introduce D_{r,v} G_v A with an unused witness r and then eliminate it.
+If the matrix is an equation, progress DI ignores its induction hypothesis
+and uses A to prove the successor gate. If the matrix is compound, case DI
+ignores its base assumption and does the same. The opened closure is H,
+which can be exported because it does not mention r. Thus this construction
+uses the inherited root-determined introduction and does not presuppose the
+new erroneous Q-progress case.
+
+Suppose now that retained-context derivations of A(0) and
+`Gamma,A(z) |- A(Sz)` are given. Convert the latter to
+`Gamma,H(z) |- H(Sz)` by the displayed equivalences. The new Q-progress
+case gives
+
+\[
+\Gamma\vdash D_{r,y}H(y)
+\]
+
+with r unused. The given base gives H(0). DE followed by QE at an arbitrary
+target t yields H(t), and hence A(t). Consequently the modified rule set
+admits contextual induction for **every** Eq/D formula A, not only equations.
+The ordinary logical macros and their inherited bi-interpretation therefore
+translate arbitrary first-order intuitionistic arithmetic induction into the
+modified system.
+
+### Guarded public syntax does not repair this
+
+The final public theorem can be an Eq/D translation of the desired ordinary
+induction instance. The Q formulas occur only as proof intermediates.
+Their absence from the public goal is therefore irrelevant to this argument.
+If every non-hypothesis Q intermediate is still allowed, the extra induction
+can be used before returning to the public language.
+
+### Iterator-only transport does not block the gate argument
+
+The gate conversions use computations whose left sides are iterator-headed,
+e.g. `I(Sw,0;u.s)=s` and `I(0,0;u.s)=0`; these are admissible transport
+sources in the guarded/source-restricted implementation. Compound conversion
+follows through the binders. Alternatively, begin with the public gated
+translation of A throughout. No transport along a bare variable equation is
+required by the gate construction itself. A full code-level certificate for
+the combined variant has not been produced here; this is the explicit
+rule-level obstruction.
+
+## 2. A safe restriction: Q goals may close only by hypothesis
+
+There is a sound way to retain hypothesis-shape selection in the raw typed
+calculus. Impose the following proof restriction:
+
+> Whenever the conclusion of a proof subtree has Q at its root, that subtree
+> must be a hypothesis leaf.
+
+All other Eq/D conclusions remain unrestricted. The Q-progress branch may
+then remain in the implementation, because its only successful instances are
+already admissible as cases.
+
+### Raw substitution rigidity lemma
+
+Let B(y) be a finite raw syntax tree, with z fresh for all passive data.
+If B(Sz) and B(z) are literally the same raw tree, then B contains no free
+occurrence of y. Each free occurrence is replaced by z on one side and by
+Sz on the other, increasing the tree-node count by one. Capture-avoiding
+substitution protects bound occurrences. Similarly, if B(Sz) equals a tree
+not containing z, B has no free y occurrence.
+
+This is a statement about raw syntax. It must not be transferred without
+proof to a normalizing substitution interface or to a language with implicit
+equational equality of syntax.
+
+### Soundness of the additional Q-progress branch
+
+Suppose a Q-matrix introduction uses
+
+\[
+\Gamma,H(t,z)\vdash H(t,Sz)
+\]
+
+where H has Q at its root and z is fresh for Gamma,t. By the proof
+restriction this premise is Hyp. Hence its conclusion is either an old
+member of Gamma, or its new hypothesis H(t,z).
+
+In the first case the conclusion contains no z, and in the second case
+`H(t,Sz)=H(t,z)` literally. The rigidity lemma says in both cases that the
+instantiated matrix H(t,y) is y-vacuous. Consequently
+`H(t,0)=H(t,Sz)` literally. The old **case** introduction derives the very
+same D conclusion using that base assumption by Hyp. Therefore every new
+Q-progress node translates to an old valid case-introduction node.
+
+All other rule cases translate directly. This proves conservativity of the
+restricted typed calculus over the baseline on every conclusion it derives.
+The result is not based on consistency or on standard-model truth.
+
+## 3. Completeness on guarded Eq/D public goals
+
+The restriction does not remove public theorems, subject to the already
+established Eq/D clause translation and source-guard simulation.
+
+Use the clause presentation in which all formula goals are Eq/D. An opened
+paired formula contributes the retained closure clause
+`[B(b,0); y.B(b,y)]`, and clause Use supplies B(t) from B(0). Ordinary local
+assumptions are Eq/D formulas. Computation, atomic equality transport, Intro,
+and Open have Eq/D conclusions. In an implementation using Q formulas for
+clauses, every clause Use proves its required Q major by direct context
+membership. Thus Q goals are needed only as hypothesis leaves.
+
+Starting from an empty context, the only retained clauses needed are the
+ones supplied by D-opening and the ordinary local assumptions. No arbitrary
+external clause with an independently specified antecedent has to be encoded.
+The public Eq/D clause presentation, together with the guarded/source
+translation already proved in the repository, therefore provides derivations
+with the required normal form.
+
+For a complete new theorem about the exact three-field bytecode, a translator
+from those clause derivations should still be supplied or its syntax cases
+written out. The abstract calculus theorem alone is not a verification of an
+arbitrary Python encoding.
+
+## 4. The proposed `q(*a[2:])` implementation gate
+
+For a typed Eq or D goal, the tail `a[2:]` is empty, so this is the existing
+zero-argument pop. For a canonical Q goal `[B,B,B]`, B is a list; the call
+passes B as the list-pop index and raises TypeError. Thus a Q goal succeeds
+only if it was already discharged by the preceding hypothesis-membership
+test.
+
+In the permissive administrative decoder, an arity-three formula may have a
+scalar last child. Then pop can receive an integer index and does not enforce
+the same syntactic gate. That last child, interpreted as a formula, is the
+fixed true equation, so its closure is true; this is a potentially harmless
+exception, but the full admission/decoder proof must explicitly include it.
+Arity at least four passes at least two arguments to pop and rejects after
+hypothesis failure. Scalar root goals reject by slicing unless they already
+close as administrative truth; arity-zero formulas require a separate
+trivial-truth case.
+
+For well-scoped raw integer/list codes, the decoder/substitution lemma should
+transfer the rigidity argument to meaningful free-variable occurrences;
+padding is semantically true or zero and cannot carry an observable fresh
+variable. This last paragraph describes the proof obligation, not an executed
+formal verification of it.
+
+## 5. Claim boundary
+
+The unguarded `len(h)>1` replacement has a concrete mathematical obstruction.
+The Q-hypothesis restriction repairs that obstruction at the abstract raw
+calculus level, and has a plausible compact enforcement mechanism. It is an
+interface/normal-form simplification of the already established clausal
+calculus, not a new iPRA axiom basis. No checker-size improvement or full
+weighted-slot implementation soundness theorem is asserted in this note.

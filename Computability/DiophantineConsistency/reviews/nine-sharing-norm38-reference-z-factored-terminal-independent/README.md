@@ -1,0 +1,5 @@
+# Independent terminal audit: factored Z projection
+
+The checked generic commutative-ring theorem states reference node 80 = `Carrier65.core.Z` for arbitrary ports and coordinates. It uses the separately checked reference-S and reference-delta identities. Its axiom report is `[propext]`, with no warning. This field identity does not establish gate/reference correspondence, the source/model bridge, or an iPRA endpoint.
+
+The checker pins the source, manifest, runner, survey, retained/live state, logs and result object, validates author-recorded session 19917 exit 0, checks 150 direct guard slots and 1,070 overlay routes, verifies the exact two immediate object bindings, and reruns the independent U-factored and delta terminal reviews. The successful runner's final provider and survey checks precede its PASS state. The outer exit is an author observation rather than an independent historical transcript; resource sampling and point checks do not establish continuous resource use or complete transitive/dynamic ancestry. No Lean replay was performed.

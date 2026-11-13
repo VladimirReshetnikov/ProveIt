@@ -1,0 +1,185 @@
+INDEPENDENT MATHEMATICAL REVIEW: RETAINED-VALUE VALIDATION
+
+Reviewed program: research/root_trials/retained_lazy.py
+Reviewed control: the complete checker.py and correctness discussion in
+ipra_intrinsic_validation_2026-11-13/ipra_intrinsic_validation.
+This is an independent mathematical/source review, not a Lean or Rocq
+formalization and not an exhaustive verification of Python execution.
+
+Conclusion
+==========
+The two proposed changes have a valid soundness argument and preserve the
+canonical native theorem set: (1) enforce integer typing in the retained-leaf
+branch rather than before the range decision, and (2) compute the source
+instance of a template only when the elimination test succeeds. The key
+invariant concerns the RESULT of a successful opener. It must not be
+misstated as a claim that every source datum or consumed packet is typed.
+
+1. Retained-value lemma
+======================
+The relevant scalar clause is
+
+    a or 1 if k <= a < d and k < (d & (a % 2))
+    else (d % 2) * i(t, d=3).
+
+Throughout an execution k is an integer at most zero; d is an integer.
+Among scalar values produced by Python's JSON reader, a retained value has
+to be an integer or Boolean. If k <= a < d is true, the expression
+d & (a % 2) is evaluated. A floating-point remainder remains a float, so
+bitwise AND fails for every float, including integral floats. Strings,
+objects and null fail earlier operations. Integers and Booleans support
+the operation. Thus every successfully RETAINED scalar is an integer or
+Boolean. The expression a or 1 replaces a retained zero/false by the
+administrative zero code 1, without changing its numerical reading.
+
+If the range test is false, no claim is made about the type of a. Instead
+the image t is scanned at root numerical depth 3. Its returned value is
+typed by the same argument. Multiplication by d % 2 preserves the class
+of integer/Boolean/list trees (at an even depth it yields a neutral scalar
+or the empty list). Structural induction on successfully traversed lists
+therefore proves:
+
+  Every successfully returned opener value is an integer/Boolean leaf or
+  a finite list of such values.
+
+The array test a * 0 == [] recognizes precisely JSON lists among the
+JSON values for which the multiplication is defined. At k < 0, the
+nonzero integer k | valid_arity has the same truth value as the former
+k or valid_arity. At k = 0 it is exactly the arity bit. Consequently the
+change to this array gate preserves the allowed public constructor shapes.
+
+2. Scans without an image
+========================
+The missing image is the function c, which cannot pass the scalar/list
+opener. If a scalar reaches the hole branch during a no-image scan,
+i(c, d=3) fails. This remains true when d is even: multiplication is eager
+in Python, so 0 * i(c, d=3) does not bypass the scan.
+
+It follows that a successful no-image scan cannot contain any traversed
+foreign scalar, even inside an annotation whose mathematical reading is
+ignored. In particular this applies to the public goal, each recursively
+checked major goal, and any context entry that is the result of opening.
+One must distinguish these facts from irrelevant packet fields and unused
+prefix data, which need not be typed at all.
+
+At the public root k = 0, the arity gate permits Eq/D formulas and the
+genuine-binder numerical grammar of the intrinsic-validation control.
+The scalar condition reduces to a positive odd integer below the current
+term depth. True is the alias of zero code 1; false does not pass the
+public test. Thus the public exact-binding contract is retained.
+
+3. Floats, infinity, NaN, and template holes
+==========================================
+A float lying within the protected interval rejects through the bitwise
+AND. An out-of-range float can instead be an exposed template hole. This
+also covers Infinity and -Infinity. For NaN the chained range test is
+false, so it likewise takes the hole branch. Such a leaf is not copied
+through and is not being admitted as a new numerical constant: a checked
+image replaces it.
+
+This is sufficient for the substitution lemma. Where an elimination
+actually uses a template, its two instances are opened at the same floor
+with checked images, so a foreign exposed leaf denotes the same hole in
+both instances. A protected foreign leaf would make the opening fail.
+The usual no-capture and outermost-slot exposure proofs apply to the
+integer/Boolean trees that no-image scans establish as closed.
+
+There is one further, already inherited distinction. A terminal
+zero-computation candidate is constructed from raw fields and compared
+with a scanned goal. Integral float aliases can occur in this unscanned
+candidate. A successful equality comparison forces the relevant candidate
+tree to have the scanned goal's constructor shape and numerical leaf
+values; I0 is reconstructed from that typed goal. This is not a claim
+that the raw candidate itself passed the opener. The iterator body may be
+chosen from the matched goal, and I0 is valid for every such body.
+
+The JSON implementation's NaN identity behavior does not invalidate this
+argument. A list can compare equal to another list containing the same
+NaN object, even though NaN is not equal to itself numerically. But the
+certified side of each relevant comparison is an integer/Boolean/list
+tree, with no NaN object. No-image scans forbid NaN in checked goals and
+checked majors. Thus this identity shortcut cannot match a NaN to a
+certified numerical leaf.
+
+4. Lazy source-instance computation
+===================================
+The former eager tuple selection computes i(t,s) regardless of whether
+the equality/closure elimination pattern matches. The candidate computes
+it only in the matching branch:
+
+    i(t,s) if elimination_matches else a.
+
+The opener is pure: it reads the current floor but mutates no state,
+consumes no packet, and reserves no name. In the matching branch the
+source instance is still checked and the same inference is extracted.
+In the nonmatching branch the continuation uses a, so no proposition
+from the omitted calculation enters the derivation. Acceptance can grow
+only by ignoring data that is unused by that inference. Therefore exact
+trace equivalence on arbitrary JSON is not the claim; preservation of
+soundness and canonical completeness is the correct claim.
+
+5. Freshness and evaluation order
+================================
+The inherited allocation order must remain explicit in the proof:
+
+  * i(a) scans the current goal before the tuple reserves a new floor.
+  * When introduction is selected, a := i(*a,t,2) opens the witness before
+    evaluation of the major subcall c(g,m).
+  * That subcall reserves at least one further integer name before it
+    returns; its resulting floor is used for the newly opened parameter.
+  * No state-changing call separates the matching template-instance
+    computations i(t,u) and, when needed, i(t,s).
+
+Consequently a witness image cannot mention the final fresh parameter,
+and both instances of a used elimination template have a common scope.
+The changes under review do not reorder these operations.
+
+6. Canonical completeness and the mathematical bridge
+====================================================
+For integer/Boolean leaves, the retained tests agree with the control.
+When k < 0, d & (a % 2) is either 0 or 1, so k < that value is always true;
+the old k or parity condition is also true. At k = 0 the two conditions
+are the same positive-parity test. The array gates also agree. Hence the
+same opener results are obtained on canonical integer certificates.
+The lazy replacement removes only an unused pure evaluation. Every
+canonical certificate accepted by the control therefore remains accepted.
+
+Soundness follows from the successful-result and no-image lemmas above,
+the unchanged freshness order, and the inherited call-tree extraction of
+Hyp, I0, IS, transport/closure use, D elimination, and the two D
+introductions. The complete closed native Eq/D theorem set is unchanged.
+The standard encoding of open consequences as closed implications with
+universal closure consequently remains available.
+
+Bi-interpretability is transferred from the repository's established
+native calculus and its ordinary realization. This is a substantive
+imported theorem, not something proved by the new scalar branch. It uses
+whole numerical domains, actual equality, and identity numerical comparison
+graphs in both composites. The Python change introduces no new arithmetic
+or induction schema and does not replace full intuitionistic iPRA by its
+equational fragment.
+
+7. Independent finite checks and limits
+======================================
+In addition to source inspection, an isolated extraction of the candidate
+opener was checked at floors 0,-1,-2,-7 and depths -5,-2,0,1,2,3,5,7.
+The sample foreign scalars included integral and nonintegral floats,
+signed zero, both infinities, NaN, null, strings, and objects. Direct and
+four nested/list placements gave 2,560 rejected no-image scans. There
+were 1,024 successful sampled foreign-hole openings with checked images;
+every returned result was an integer/Boolean/list tree. These are finite
+implementation checks, not the proof of the universal claims above.
+
+The result is a smaller implementation of the same mathematical basis
+under the exact public-binding interface, with a specified harmless
+Boolean alias and more permissive unused/template data. It is not a new
+axiomatization of lower logical strength, not a proof of absolute
+minimality, and not a crossing of the separately measured compact raw
+checker frontier. The deliverable should report those limitations plainly.
+
+FINAL PACKAGING ADDENDUM
+The reviewed 309/356/582 candidate is unchanged except that the fixed arity
+membership tuple (1, 2+d%2) is written as a set {1, 2+d%2}. Both members
+are exact integers, so membership is identical; no effect or failure case
+is added. This removes one AST Load node, giving 309/355/582. The final
+packaged source is remeasured and retested; its hash is in measurements.json.

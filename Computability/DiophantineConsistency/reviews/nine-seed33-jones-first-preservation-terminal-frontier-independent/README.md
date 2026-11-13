@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 5721 exited 0. Source/object/logs, exact first-value provider, 100 direct guard slots and 1,062 overlay links were checked. The first theorem preserves entry zero across 44 named prefixes, and the second gives the full Lean recipe's first-entry value. Both reports are [propext, Classical.choice, Quot.sound], without warnings.
+
+These statements concern the first entry only, not the output semantic equality or JSON/human binding. The outer exit is author-recorded, deeper dynamic/transitive provider ancestry is inherited, and no Lean replay was performed.

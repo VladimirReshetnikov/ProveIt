@@ -1,0 +1,103 @@
+import DiophantineConsistency.BFS943.OffsetBound
+import DiophantineConsistency.BFS943.Direct80CarrierIdentity
+
+/-! Sign-free offset bound at positive inputs of the actual 80 graph. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80OffsetBound
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open TenPositive80Graph TenPositive80Factors TenPositive80ResidueBinding TenPositive80CarrierIdentity
+open TenPositiveOffsetBound
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_offset_bound (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hb : 0<(p 0:V)) (hv : ∀j,0<v j) :
+    2*(eExpr (integerPorts p)).evalRing (fun j => ι (v j)) <
+      ((graph (integerPorts p)).v.evalRing (fun j => ι (v j))*
+       (graph (integerPorts p)).v.evalRing (fun j => ι (v j)))*
+      ((muExpr (integerPorts p)).evalRing (fun j => ι (v j))*
+       (muExpr (integerPorts p)).evalRing (fun j => ι (v j))) := by
+  let D : V := delta p v
+  let U0 : V := U p v
+  let E0 : V := E p v
+  let C : V := c p v
+  let a : V := D*U0*U0*E0
+  let w : Fin 10 → DiffRing V := fun j => ι (v j)
+  let R : DiffRing V := (rExpr (integerPorts p)).evalRing w
+  let B : DiffRing V := ι C*ι (v 4)-R
+  let e : DiffRing V := (eExpr (integerPorts p)).evalRing w
+  let vv : DiffRing V := (graph (integerPorts p)).v.evalRing w
+  let F2 : DiffRing V := (ι (1+2*a):DiffRing V)*(ι (1+2*a))
+  let mm : DiffRing V := (muExpr (integerPorts p)).evalRing w*(muExpr (integerPorts p)).evalRing w
+  have hb0 : 0<b p v := mul_pos hb (hv 0)
+  have hq : 0<q p v := add_pos hb0 (by simp)
+  have hY : 0<Y p v := mul_pos (mul_pos (mul_pos hq hq) hq) (hv 6)
+  have hk : 0<k v := add_pos (hv 8) (hv 9)
+  have hC : 0<C := add_pos (mul_pos hk hY) (hv 8)
+  have hCk : k v<C := lt_of_le_of_lt (by
+    simpa only [mul_one] using mul_le_mul_of_nonneg_left (pos_iff_one_le.mp hY) (by simp : (0:V)≤k v))
+    (show k v*Y p v<k v*Y p v+v 8 from lt_add_of_pos_right _ (hv 8))
+  obtain ⟨hD,hU,hE,_hM⟩ := factors_positive p v hb hv
+  have hC1 : 1≤C := pos_iff_one_le.mp hC
+  have hU1 : 1≤U0 := pos_iff_one_le.mp hU
+  have hCU : C≤U0 := by
+    calc
+      C≤C*C := by simpa only [mul_one] using mul_le_mul_of_nonneg_left hC1 (by simp : (0:V)≤C)
+      _≤v 3*(C*C) := le_mul_of_one_le_left (by simp) (pos_iff_one_le.mp (hv 3))
+      _=U0 := rfl
+  have hUa : U0≤a := by
+    calc
+      U0≤D*U0 := le_mul_of_one_le_left (by simp) (pos_iff_one_le.mp hD)
+      _≤D*U0*U0 := le_mul_of_one_le_right (by simp) hU1
+      _≤D*U0*U0*E0 := le_mul_of_one_le_right (by simp) (pos_iff_one_le.mp hE)
+      _=a := rfl
+  have hCa : C≤a := le_trans hCU hUa
+  have hCR : (0:DiffRing V)<ι C := by rw [←map_zero (ι : V →+* DiffRing V),ι_lt_ι]; exact hC
+  have hCaR : (ι C:DiffRing V)≤ι a := ι_le_ι.mpr hCa
+  have hF : ι C+1<F2 := by
+    dsimp [F2]
+    simp only [map_add,map_mul,map_one,map_ofNat]
+    nlinarith [mul_self_nonneg (ι a:DiffRing V)]
+  have hT : (1:DiffRing V)≤ι (v 4) := by
+    rw [←map_one (ι : V →+* DiffRing V),ι_le_ι]
+    exact pos_iff_one_le.mp (hv 4)
+  have hCT : (ι C:DiffRing V)≤ι C*ι (v 4) := le_mul_of_one_le_right (le_of_lt hCR) hT
+  have hCkR : (ι (k v):DiffRing V)<ι C := ι_lt_ι.mpr hCk
+  have eeval : e=ι (k v)-R-1 := by
+    dsimp [e,eExpr,R,w,k]
+    simp only [Expr.evalRing_ofNat,Nat.cast_one,map_add]
+  have hEB : e<B := by rw [eeval]; dsimp [B]; linarith
+  have hV : vv=F2*B-ι C := by
+    dsimp [vv,B,R,F2]
+    rw [v_shape]
+    simp only [Expr.evalRing_mul,Expr.evalRing_sub,Expr.evalRing_add,Expr.evalRing_var,
+      Expr.evalRing_ofNat,Nat.cast_one,Nat.cast_ofNat]
+    rw [a_eval,delta_eval,U_eval,E_eval,c_eval]
+    dsimp [a]
+    simp only [map_mul,map_add,map_one,map_ofNat]
+    ring
+  have hq1 : 1≤q p v := pos_iff_one_le.mp hq
+  have hmu2 : 2≤mu p v := by
+    have hqq : 1≤q p v*q p v := pos_iff_one_le.mp (mul_pos hq hq)
+    simpa only [mu,show (2:V)=1+1 by ring,add_comm] using _root_.add_le_add_right hqq (1:V)
+  have hmuR : (2:DiffRing V)≤(muExpr (integerPorts p)).evalRing w := by
+    have heval : (muExpr (integerPorts p)).evalRing w=ι (mu p v) := by
+      simp only [muExpr,qExpr,hExpr,w,mu,q,b,integerPorts,Expr.evalRing_mul,Expr.evalRing_add,
+        Expr.evalRing_constant,Expr.evalRing_var,Expr.evalRing_ofNat,Int.cast_natCast,
+        Nat.cast_one,map_mul,map_add,map_one,map_natCast]
+    rw [heval,←map_ofNat (ι : V →+* DiffRing V),ι_le_ι]
+    exact hmu2
+  have hmm : (2:DiffRing V)≤mm := by
+    have hh : (1:DiffRing V)≤(muExpr (integerPorts p)).evalRing w := le_trans (by norm_num) hmuR
+    calc
+      2≤(muExpr (integerPorts p)).evalRing w := hmuR
+      _≤mm := le_mul_of_one_le_right (by linarith) hh
+  exact offset_bound B (ι C) F2 e vv mm hCR hF hEB hV hmm
+    (fun h => one_le_of_pos (fun x hx => pos_iff_one_le.mp hx) h)
+
+#print axioms TenPositive80OffsetBound.graph_offset_bound
+end TenPositive80OffsetBound

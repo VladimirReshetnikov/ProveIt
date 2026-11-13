@@ -1,0 +1,5 @@
+# First index at least 6 at the fixed symbolic beta
+
+`Trace74FixedFirstIndexSix.fixed_first_index_ge_six` proves that for the same positive 74 graph zero and witnesses, with `p 0=CompactFixedBeta.betaNat`, any first Pell index satisfying the displayed ordinate equation is at least 6. Its existential companion retains the same index, ordinate equation and residue. The other ports remain arbitrary. Neither theorem proves a graph-zero existence result, a guard or an iPRA endpoint.
+
+The controlled Lean check passed in actual outer session 78737, exit 0; terminal SHA-256 `ebbd74297899addf794d9aaeea1375cf851c641de8c9b9a4506e8146bdfdbfe3`. The [independent result audit](../../reviews/trace74-fixed-first-index-six-result-independent/README.md) verified 113 recorded direct pins, object, log and both named reports. The retained `prelaunch-runner-v1.py` documents the prelaunch HOLD for one omitted parent source pin; the corrected runner was used for the only Lean attempt. Full historical project/package/dynamic ancestry and ongoing search-path selection remain outside this evidence.

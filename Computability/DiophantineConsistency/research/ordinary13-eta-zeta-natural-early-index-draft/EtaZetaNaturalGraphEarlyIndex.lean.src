@@ -1,0 +1,97 @@
+import EtaZetaNaturalGraphNorms
+import EtaZetaNaturalRankIndex
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Ring
+
+/-! Proposed exact eta-natural graph to early-index client. All graph,
+provider and fact-level sources are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.EtaZetaNaturalGraphEarlyIndexDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ArithmeticSignedPairs ArithmeticPellRecurrence
+open EtaZetaNaturalUnitGraphDraft EtaZetaNaturalXPositiveDraft EtaZetaNaturalGapRankDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def H (p : Fin 4 → ℕ) (v : Fin 13 → V) : V :=
+  3+4*(X p v*Y p v+Y p v)
+def P (p : Fin 4 → ℕ) (v : Fin 13 → V) : V :=
+  U p v*(X p v+(X p v*Y p v+Y p v)*c p v)+
+    H p v*(U p v*v 12+rank p v+1)
+def N (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := H p v*k v
+
+/-- Bind the literal main signed root to P−N, with the actual eta-natural
+carrier (no extra X*Y*q term). hFq justifies the natural rank's tsub casts. -/
+theorem main_field (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hFq : v 1+1≤q p v) :
+    (graph (EtaZetaNaturalGraphNormsDraft.pp p)).d.evalRing (EtaZetaNaturalGraphNormsDraft.emb v)=
+      ι (P p v)-ι (N p v) := by
+  have hR := EtaZetaNaturalGapRankDraft.rank_representation p v hFq
+  have hraw : (graph (EtaZetaNaturalGraphNormsDraft.pp p)).d.evalRing (EtaZetaNaturalGraphNormsDraft.emb v)=
+      ι (U p v)*(ι (X p v)+ι (X p v*Y p v+Y p v)*ι (c p v))+
+        ι (H p v)*(ι (U p v)*ι (v 12)+rankRing p v+1-ι (k v)) := by
+    simp [graph,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+      Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+      EtaZetaNaturalGraphNormsDraft.pp,EtaZetaNaturalGraphNormsDraft.emb,P72Root.cast_port,
+      rankRing,H,X,U,Y,q,c,k,map_add,map_mul,map_one,map_ofNat] <;> ring
+  rw [hraw,←hR]
+  simp only [P,N,map_add,map_mul,map_one,map_ofNat]
+  ring
+
+/-- Reflect the literal graph's main signed-square norm to the natural pair
+needed by the no-extra-term eta-natural early-index source. -/
+theorem main_pair_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (EtaZetaNaturalGraphNormsDraft.pp p)).output v)
+    (hFq : v 1+1≤q p v) :
+    magnitude (P p v,N p v)*magnitude (P p v,N p v)=
+      U p v*U p v*(1+EtaZetaNaturalGraphNormsDraft.delta p v*(c p v*c p v)) := by
+  obtain ⟨_,hm,_,_⟩ := EtaZetaNaturalUnitBridgeDraft.signed_norms
+    (EtaZetaNaturalGraphNormsDraft.pp p) v hz
+  rw [main_field p v hFq,EtaZetaNaturalGraphNormsDraft.field_U,
+    EtaZetaNaturalGraphNormsDraft.field_delta,EtaZetaNaturalGraphNormsDraft.field_c] at hm
+  exact Residue90SignedNormsDraft.main_pair_norm (U p v)
+    (EtaZetaNaturalGraphNormsDraft.delta p v) (c p v) (P p v) (N p v) hm
+
+/-- Compact natural ports with arbitrary K: preserve the actual first-root
+witness tau, the same Pell index n and its quotient w. The result is an early
+congruence, not an exact index or a graph-zero equivalence. -/
+theorem compact_early_index (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v)
+    (hk1 : 1≤k v) :
+    let p := Residue90CompactPortBoundsDraft.ports K
+    ∃ tau n w : V,
+      tau*tau=1+(X p v*Y p v*Y p v)*(X p v*Y p v*Y p v+1)*k v*k v ∧
+      13≤n ∧ n≤k v ∧
+      xcoord n (2*(X p v*Y p v*Y p v-1)+1)=tau ∧
+      2*ycoord n (2*(X p v*Y p v*Y p v-1)+1)=k v ∧
+      (2*n)%((q p v)^4)=rank p v+1 ∧ rank p v+1≤2*n ∧
+      rank p v+1≤k v ∧ k v=2*n+4*(X p v*Y p v*Y p v)*w := by
+  let p := Residue90CompactPortBoundsDraft.ports K
+  have hJ := EtaZetaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hbpos : 0<v 0*(p 0:V) := mul_pos hJ hbeta
+  have hgap := EtaZetaNaturalGapRankDraft.gap p v hz hbeta hk1
+  have hFq : v 1+1≤q p v := le_trans (by simp) (le_of_lt hgap)
+  obtain ⟨tau,htau⟩ := EtaZetaNaturalGraphNormsDraft.first_natural_norm p v hz hbpos
+  have htau' : tau*tau=1+(X p v*Y p v*Y p v)*(X p v*Y p v*Y p v+1)*k v*k v := by
+    simpa only [EtaZetaNaturalGraphNormsDraft.m,EtaZetaNaturalGraphNormsDraft.X,X] using htau
+  have hm := main_pair_norm p v hz hFq
+  have hm' : let U:=Y p v*(q p v*q p v); let a:=X p v*Y p v+Y p v
+      let c:=v 9+Y p v*k v; let H:=3+4*a
+      let P:=U*(X p v+a*c)+H*(U*v 12+rank p v+1); let N:=H*k v
+      magnitude (P,N)*magnitude (P,N)=U*U*(1+(H+a*a)*(c*c)) := by
+    simpa only [P,N,H,EtaZetaNaturalGraphNormsDraft.delta,EtaZetaNaturalGraphNormsDraft.a,
+      EtaZetaNaturalGraphNormsDraft.X,X,U,c] using hm
+  obtain ⟨n,w,hn,hnk,hnx,hny,hnmod,hnlow,hklow,hks⟩ :=
+    EtaZetaNaturalRankIndexDraft.compact_early_index_of_norms K v tau hz hk1 htau' hm'
+  exact ⟨tau,n,w,htau',hn,hnk,hnx,hny,hnmod,hnlow,hklow,hks⟩
+end DiophantineConsistency.EtaZetaNaturalGraphEarlyIndexDraft
+#print axioms DiophantineConsistency.EtaZetaNaturalGraphEarlyIndexDraft.main_field
+#print axioms DiophantineConsistency.EtaZetaNaturalGraphEarlyIndexDraft.main_pair_norm
+#print axioms DiophantineConsistency.EtaZetaNaturalGraphEarlyIndexDraft.compact_early_index

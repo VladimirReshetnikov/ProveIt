@@ -1,0 +1,5 @@
+# Sign14 zero assembly squares-reference retry: source-only client
+
+The [irreducible-seeds retry](../nine-sharing-sign14-zero-assembly-retry02-check/attempt01/outer-result.json) revealed that the forward proof used the sign14 squares theorem where sign15 was needed; the reverse proof contained the analogous stale reference. This checked retry changes exactly those two old-seed references to `SharingSign15Squares`, preserving the statements, remaining proof, local irreducibility and heartbeat setting. All prior failure records remain pinned. No existential iff, JSON binding or endpoint is claimed.
+
+No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign14-zero-assembly-retry03-prelaunch-independent/README.md) passed. Author outer session 49192 exited 0 ([receipt](attempt01/outer-result.json)); the [independent terminal audit](../../reviews/nine-sharing-sign14-zero-assembly-retry03-terminal-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

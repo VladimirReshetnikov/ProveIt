@@ -1,0 +1,103 @@
+import Residue90FyForce
+import AuxRootBridge
+import DiophantineConsistency.ArithmeticPellHalfIndex
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed actual 90-graph strong/auxiliary witness conversion. The strict
+signed-ordinate bound remains an explicit premise; no Lean elaboration. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ResidueAuxWitnessDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ArithmeticSignedPairs ArithmeticPellHalfIndex
+open Residue90GraphNormsDraft Residue90XZeroGraphDraft Residue90FyForceDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The graph strong residual implies the ordinary strong natural equation
+with i'=i+1; it does not invoke any main index or eta-zero case. -/
+theorem ordinary_strong (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v) :
+    ((v 4+1)*c p v*c p v)*((v 4+1)*c p v*c p v)+delta p v=
+      delta p v*(v 3*v 3) := by
+  have h := strong_identity p v hz
+  simp only [Qnat,integralI,QRing,map_add,map_mul,map_one] at h
+  apply ι_injective
+  simp only [map_add,map_mul]
+  linear_combination h
+
+/-- Natural parts of the graph's signed ordinate. -/
+def leftPart (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 3*v 3*((v 5+1)*c p v)
+def rightPart (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 3*v 3*rank p v+c p v
+
+theorem ordinate_pair (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hFq : v 1+1≤q p v) :
+    (ι (leftPart p v) : DiffRing V)-ι (rightPart p v)=ordinateRing p v := by
+  have hr : (ι (rank p v) : DiffRing V)=rankRing p v := by
+    simpa only [rankRing] using rank_representation p v hFq
+  simp only [leftPart,rightPart,ordinateRing,map_add,map_mul,hr]
+  ring
+
+/-- Actual graph direct y gives the old positive auxiliary u, provided the
+strict signed-ordinate square bound has been proved separately. The result is
+exactly the natural absdiff equation required by P72Exact.indices_ordinary. -/
+theorem old_aux_of_direct_graph (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hFq : v 1+1≤q p v)
+    (hZ : (1 : DiffRing V)<ordinateRing p v*ordinateRing p v) :
+    ∃ u : V, 0<u ∧
+      delta p v*(v 3*v 3-1)*(absdiff (leftPart p v) (rightPart p v)*absdiff (leftPart p v) (rightPart p v))+
+        absdiff (leftPart p v+u) (rightPart p v)*absdiff (leftPart p v+u) (rightPart p v)=
+      1+delta p v*(v 3*v 3-1)*(absdiff (leftPart p v+u) (rightPart p v)*absdiff (leftPart p v+u) (rightPart p v)) := by
+  have hfy := f_y_positive p v hz
+  have hf1 : 1≤v 3*v 3 := one_le_mul (pos_iff_one_le.mp hfy.1) (pos_iff_one_le.mp hfy.1)
+  have hQ4 := Qnat_at_least_four p v
+  have hQpos : (1:V)<Qnat p v := lt_of_lt_of_le (by simp : (1:V)<4) hQ4
+  have hstrong := strong_identity p v hz
+  have hQ : (1 : DiffRing V)<QRing p v := by
+    rw [←hstrong]
+    simpa only [map_one] using (ι_lt_ι.mpr hQpos)
+  have hy : (0 : DiffRing V)<ι (v 11) := by
+    simpa only [map_zero] using (ι_lt_ι.mpr hfy.2)
+  have haux := auxiliary_identity p v hz
+  have haux0 : AuxRootModelDraft.directAux (ordinateRing p v) (QRing p v) (ι (v 11))=0 := by
+    dsimp [AuxRootModelDraft.directAux]
+    linear_combination haux
+  have hsq := AuxRootModelDraft.square_gt_of_aux (ordinateRing p v) (QRing p v) (ι (v 11)) hQ hZ haux0
+  have hzy := AuxRootModelDraft.above_of_positive (ordinateRing p v) (ι (v 11)) hy hsq
+  obtain ⟨u,hu⟩ := nonneg_iff.mp (le_of_lt (sub_pos.mpr hzy))
+  have hup : 0<u := (ι_lt_ι).mp (by rw [map_zero,←hu]; exact sub_pos.mpr hzy)
+  have hyrep : ordinateRing p v+ι u=ι (v 11) := by rw [←hu]; ring
+  let A : V := leftPart p v
+  let B : V := rightPart p v
+  let D : V := delta p v*(v 3*v 3-1)
+  have hAB : (ι A : DiffRing V)-ι B=ordinateRing p v := ordinate_pair p v hFq
+  have hABu : (ι (A+u) : DiffRing V)-ι B=ι (v 11) := by
+    simp only [map_add]
+    rw [←hyrep,←hAB]
+    ring
+  have hV : (ι (absdiff A B) : DiffRing V)*ι (absdiff A B)=ordinateRing p v*ordinateRing p v := by
+    simpa only [absdiff,ArithmeticSignedPairs.magnitude,hAB] using (P72Root.ι_magnitude_sq A B)
+  have hY : (ι (absdiff (A+u) B) : DiffRing V)*ι (absdiff (A+u) B)=ι (v 11)*ι (v 11) := by
+    simpa only [absdiff,ArithmeticSignedPairs.magnitude,hABu] using (P72Root.ι_magnitude_sq (A+u) B)
+  have hD : (ι D : DiffRing V)=QRing p v := by
+    dsimp only [D,QRing]
+    rw [map_mul,P72Root.ι_tsub hf1]
+    simp only [map_mul,map_one]
+  have hbalance : (ι D : DiffRing V)*(ordinateRing p v*ordinateRing p v)+ι (v 11)*ι (v 11)=
+      1+ι D*(ι (v 11)*ι (v 11)) := by
+    rw [hD]
+    linear_combination haux
+  refine ⟨u,hup,?_⟩
+  change D*(absdiff A B*absdiff A B)+absdiff (A+u) B*absdiff (A+u) B=
+    1+D*(absdiff (A+u) B*absdiff (A+u) B)
+  apply ι_injective
+  simpa only [map_add,map_mul,map_one,hV,hY] using hbalance
+end DiophantineConsistency.ResidueAuxWitnessDraft
+#print axioms DiophantineConsistency.ResidueAuxWitnessDraft.ordinary_strong
+#print axioms DiophantineConsistency.ResidueAuxWitnessDraft.ordinate_pair
+#print axioms DiophantineConsistency.ResidueAuxWitnessDraft.old_aux_of_direct_graph

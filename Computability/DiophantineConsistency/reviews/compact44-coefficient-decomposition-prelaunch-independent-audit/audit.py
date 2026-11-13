@@ -1,0 +1,25 @@
+#!/usr/bin/env python3
+"""Static and fake-only exact-byte review; does not rerun Lean or parent audits."""
+import hashlib,importlib.util,json,os,subprocess,sys
+from pathlib import Path
+if not __debug__ or os.environ.get('PYTHONOPTIMIZE') or not sys.flags.isolated or not sys.flags.no_site:raise RuntimeError('requires nonoptimized python3 -I -S')
+HERE=Path(__file__).resolve().parent;BASE=HERE.parents[1];ROOT=BASE.parents[1];PKG=BASE/'research/ordinary12-ipra-bridge/compact44-coefficient-decomposition-pair-prototype';OBS=HERE/'observations'
+PINS={PKG/'replay.py':'604bf5a6e45bc2852fbff3482684479b52517e814503a48617626ff28e0505bf',PKG/'fake-controls.py':'aa4695832e20d87c4c535a85deab0c0fc50177edcd6dca4d836d246709ff5fc4',PKG/'fake-controls-freeze-guard.log':'ab4059cbf3e20521b27ab7143d5387103190dad544f63518ffe91818d5d5ffab',PKG/'preflight-freeze-guard.json':'f17c8780526a5d63d4c26b2e487f56bd5fc77d1bdb1a998f81e8f15d0e48f520',PKG/'preflight-freeze-guard-observation.json':'4581c25738058abfb133d3255c47e0b29eb6c3e54f475c88f7d2f059741d709e',OBS/'replay-reviewed-4d.py':'604bf5a6e45bc2852fbff3482684479b52517e814503a48617626ff28e0505bf',OBS/'seed-companion-check.py':'b4dfdf98516e99e9cad2b0d0c8833b921a7f40b9f7146d74ccbb6b890b0083d1',OBS/'seed-directory-check.py':'15db32bfbe781d2af0273466c1df2dc8f127fced28ac81a698027ce254b6e6f5',OBS/'frozen-directory-check.py':'061b74de950bc6a8fc0f5620b55914f39eab1e81092c19c2661b10fd73a92e48'}
+def H(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def need(ok,msg):
+ if not ok:raise ValueError(msg)
+for p,h in PINS.items():need(H(p)==h,'pin '+str(p))
+for commit,path in [('4d588b060e',PKG/'replay.py'),('4d588b060e',PKG/'fake-controls.py'),('4d588b060e',PKG/'fake-controls-freeze-guard.log'),('99f636f35f',PKG/'preflight-freeze-guard.json'),('99f636f35f',PKG/'preflight-freeze-guard-observation.json')]:
+ blob=subprocess.run(['git','show',commit+':'+path.relative_to(ROOT).as_posix()],cwd=ROOT,capture_output=True,check=True,timeout=30).stdout;need(hashlib.sha256(blob).hexdigest()==H(path),'committed bytes '+str(path))
+spec=importlib.util.spec_from_file_location('driver',PKG/'replay.py');d=importlib.util.module_from_spec(spec);spec.loader.exec_module(d)
+for p,h in (d.PINS|d.CLOSURE_PINS).items():need(Path(p).is_file() and H(p)==h,'driver input pin '+str(p))
+need(d.SOURCE.name=='CompactCoefficientDecoder.lean' and d.REPORTS=={'CompactCoefficientDecoder.cast_value','CompactCoefficientDecoder.selector_model','CompactCoefficientDecoder.finite_decomposition'} and d.AXIOMS=={'propext','Classical.choice','Quot.sound'},'statement/report schema')
+pre=json.loads((PKG/'preflight-freeze-guard.json').read_bytes());po=json.loads((PKG/'preflight-freeze-guard-observation.json').read_bytes())
+need(pre=={'status':'PASS_COEFFICIENT_DECOMPOSITION_PREFLIGHT','driver_sha256':PINS[PKG/'replay.py'],'lean_launched':False} and type(po['observed_exit']) is int and po['observed_exit']==0 and po['session_id']==23392 and po['driver_sha256']==PINS[PKG/'replay.py'] and po['preflight_sha256']==PINS[PKG/'preflight-freeze-guard.json'] and po['lean_launched'] is False and po['output_directory_created'] is False,'recorded real preflight')
+run=subprocess.run([sys.executable,'-I','-S','-B',str(PKG/'fake-controls.py')],cwd=ROOT,capture_output=True,timeout=180);need(run.returncode==0 and not run.stderr and run.stdout==(PKG/'fake-controls-freeze-guard.log').read_bytes(),('full fake loop',run.returncode,run.stderr))
+expected={'seed-companion-check.py':b'seed_copy_companion PASS 0 fake children\n','seed-directory-check.py':b'seed_parent_symlink PASS 0 fake children\n','frozen-directory-check.py':b'frozen_dir_before_copy PASS 0 fake children\n'}
+for name,line in expected.items():
+ r=subprocess.run([sys.executable,'-I','-S','-B',str(OBS/name)],cwd=ROOT,capture_output=True,timeout=60);need(r.returncode==0 and not r.stderr and r.stdout.startswith(line),('independent regression',name,r.returncode,r.stderr,r.stdout))
+opt=subprocess.run([sys.executable,'-O','-I','-S','-B',str(PKG/'replay.py'),'--verify-only','--expected-head','0'*40],cwd=ROOT,capture_output=True,timeout=30);need(opt.returncode==1 and not opt.stdout and b'without optimization' in opt.stderr,'optimized driver rejection')
+for p,h in PINS.items():need(H(p)==h,'post-check pin '+str(p))
+print(json.dumps({'status':'PASS_INDEPENDENT_COEFFICIENT_DECOMPOSITION_PRELAUNCH','reviewed_driver_commit':'4d588b060e','driver_sha256':PINS[PKG/'replay.py'],'author_preflight_commit':'99f636f35f','author_preflight_session':23392,'author_preflight_exit':0,'full_fake_controls_exit':0,'independent_regression_exits':[0,0,0],'optimized_driver_exit':1,'lean_launched':False,'scope':'Exact-byte static and fake-only prelaunch review; source/seed/output guard checks are point-in-time and not atomic. Trusted clean initial loader and stable HEAD required; sampled compiler limits and unmonitored dependency/audit subprocess boundaries remain. No build, graph-column, retained-K, machine or iPRA claim.'},indent=2,sort_keys=True))

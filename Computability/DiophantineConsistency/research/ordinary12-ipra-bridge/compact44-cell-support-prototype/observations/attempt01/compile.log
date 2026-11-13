@@ -1,0 +1,45 @@
+/tmp/compact44-cell-support-author-98tz826z/CompactCellSupport.lean:29:26: error: unsolved goals
+n : ℕ
+h1 : ¬n = 1095
+h2 : ¬n = 2195
+h3 : ¬n = 3296
+h4 : 983 ≤ n
+hn : ¬n < 1032
+hn' : nearCodes.length ≤ n - 983
+hz : nearCodes.getD (n - 983) 0 = 0
+h : ¬nearCodes[n - 983]?.getD 0 = 0
+⊢ False
+/tmp/compact44-cell-support-author-98tz826z/CompactCellSupport.lean:35:41: warning: This simp argument is unused:
+  hz
+
+Hint: Omit it from the simp argument list.
+  simp [naturalCode, h1, h2, h3, h4,̵ ̵h̵z̵] at h
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/compact44-cell-support-author-98tz826z/CompactCellSupport.lean:47:22: error: Invalid `←` modifier: `naturalCode` is a declaration name to be unfolded
+
+Hint: The simplifier cannot "refold" definitions by name. Use `rw` for this instead,
+                      or use the `←` simp modifier with an equational lemma for `naturalCode`.
+/tmp/compact44-cell-support-author-98tz826z/CompactCellSupport.lean:47:13: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+n : ℕ
+hk : ↑n < 8807
+h :
+  ↑(if n = 1095 then 39
+      else if n = 2195 then 40 else if n = 3296 then 41 else if 983 ≤ n then nearCodes.getD (n - 983) 0 else 0) ≠
+    0
+hz : naturalCode n = 0
+⊢ (if n = 1095 then 39
+    else if n = 2195 then 40 else if n = 3296 then 41 else if 983 ≤ n then ↑(nearCodes[n - 983]?.getD 0) else 0) =
+    0
+/tmp/compact44-cell-support-author-98tz826z/CompactCellSupport.lean:47:37: warning: This simp argument is unused:
+  hz
+
+Hint: Omit it from the simp argument list.
+  simp [← naturalCode,̵ ̵h̵z̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'CompactCellSupport.naturalCode_support' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CompactCellSupport.copyCode_supported' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

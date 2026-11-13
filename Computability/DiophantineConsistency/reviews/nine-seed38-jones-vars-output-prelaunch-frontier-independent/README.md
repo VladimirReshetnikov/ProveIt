@@ -1,0 +1,5 @@
+# Independent recipe-to-RingVars output prelaunch review
+
+The checker pins source, runner, survey and manifest, independently reproduces the no-Lean preflight, and checks the exact output theorem and seven cut rewrites: Bd/dvsr, Cd/dvnd, Kc, V0/V1 weights and A0/A1 radicands. It compares the final `RefinedPair.value` algebra to the checked terminal T/output definitions: `K=B*(2*D−1)`, `T=B*n+C−K*(C+V0*V1)`, and the displayed squared expression agree. The d41 indices and t=input8 were checked in the terminal-cut audit. Runner authenticates the immediate Kc provider and direct guard/overlay routes.
+
+The proposed result is recipe output in terms of the symbolic `vars`; its d11 rank remains opaque. Equating these vars to the separate named evaluator, and JSON/document binding, remain separate. Lean elaboration is untested and no Lean ran in this review. Earlier A1 independent recursive preflight was interrupted with author's passing preflight recorded; an earlier initial-agreement numeric outer exit remains unavailable. Guard checks are point-in-time and sampled monitoring is not a complete dynamic/transitive trace.

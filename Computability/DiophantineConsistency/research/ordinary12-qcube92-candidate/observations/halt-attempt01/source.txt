@@ -1,0 +1,67 @@
+import QCube92Existence
+import CompactSymbolicModelUnconditionalIff
+import CompactBytePortsModelIff
+
+/-! Fixed-port all-model halt comparisons for the 92-operation expression. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace FreeJQCube92Halt
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency
+open AdaptiveEquationSyntax2011 Ordinary12FreeJ
+open CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts
+open CompactSymbolicModelIff CompactBytePortsModelIff
+open FreeJQCube92 FreeJQCube92Model FreeJQCube92Existence
+open SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC
+attribute [local irreducible] rho paramKernel CompactFixedBeta.betaNat lowNat highNat
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def naturalPorts : Fin 4 → ℕ :=
+  ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+
+theorem beta_pos : 0 < (naturalPorts 0 : V) := by
+  have h := CompactFixedBeta.bounds (1 : V) (by simp)
+  exact h.1
+
+theorem positive_model_iff :
+    (∃ v : Fin 12 → V, (∀ j, 0 < v j) ∧ InternalZero (graph p).output v) ↔
+      (∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0) := by
+  have h := positive_zero_iff (V:=V) naturalPorts (beta_pos (V:=V))
+  change (∃ v : Fin 12 → V, (∀ j, 0 < v j) ∧ InternalZero (graph p).output v) ↔
+    (∃ v : Fin 12 → V, (∀ j, 0 < v j) ∧ InternalZero (literal p) v) at h
+  exact h.trans (CompactSymbolicModelUnconditionalIff.model_iff (V:=V))
+
+theorem shifted_model_iff :
+    (∃ x : Fin 12 → V, InternalZero (positiveShift (graph p).output) x) ↔
+      (∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0) := by
+  constructor
+  · rintro ⟨x,hx⟩
+    apply (positive_model_iff (V:=V)).mp
+    refine ⟨fun j => x j+1, ?_, ?_⟩
+    · intro j; simp
+    · exact (internalZero_positiveShift _ x).mp hx
+  · intro hh
+    obtain ⟨v,hpos,hzero⟩ := (positive_model_iff (V:=V)).mpr hh
+    let x : Fin 12 → V := fun j => v j-1
+    have hx : (fun j => x j+1)=v := by
+      funext j
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hpos j))
+    refine ⟨x,?_⟩
+    rw [internalZero_positiveShift, hx]
+    exact hzero
+
+theorem shifted_byte_model_iff :
+    (∃ x : Fin 12 → V, InternalZero (positiveShift (graph byteP).output) x) ↔
+      (∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0) := by
+  rw [byteP_eq]
+  exact shifted_model_iff (V:=V)
+
+#print axioms FreeJQCube92Halt.beta_pos
+#print axioms FreeJQCube92Halt.positive_model_iff
+#print axioms FreeJQCube92Halt.shifted_model_iff
+#print axioms FreeJQCube92Halt.shifted_byte_model_iff
+end FreeJQCube92Halt

@@ -1,0 +1,138 @@
+import AdaptiveQM38Literal
+import DiophantineConsistency.IPRAQM40Native
+import DiophantineConsistency.IPRAStandardTheory
+import DiophantineConsistency.IPRAReferenceInductionConversion
+import Mathlib.Tactic.FinCases
+
+/-! Conditional model/no-zero transfer for the exact generated 38 literal.
+The two graph zero-preservation obligations are explicit. This source, the
+literal and their joint providers are unelaborated; no endpoint is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.AdaptiveQM38ConditionalTransferDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+
+/-- Drop the old 29th and 33rd coordinates (zero-based). -/
+def project {V : Type*} (v : Fin 40 → V) (i : Fin 38) : V :=
+  if h : i.val < 29 then v ⟨i.val, by omega⟩
+  else if h : i.val < 32 then v ⟨i.val+1, by omega⟩
+  else v ⟨i.val+2, by omega⟩
+
+/-- Restore ell*(ell+(eta+zeta)) and delta*cSquare in old slots 29 and 33. -/
+def extend {V : Type*} [Add V] [Mul V] (v : Fin 38 → V) (i : Fin 40) : V :=
+  if i.val=29 then v 17*(v 17+(v 9+v 10))
+  else if i.val=33 then v 26*v 22
+  else if h : i.val < 29 then v ⟨i.val, by omega⟩
+  else if h : i.val < 33 then v ⟨i.val-1, by omega⟩
+  else v ⟨i.val-2, by omega⟩
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem project_pos (v : Fin 40 → V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<project v i := by
+  intro i
+  unfold project
+  split <;> (try split) <;> exact hv _
+
+theorem extend_pos (v : Fin 38 → V) (hv : ∀ i, 0<v i) :
+    ∀ i, 0<extend v i := by
+  intro i
+  unfold extend
+  split
+  · exact mul_pos (hv 17) (add_pos (hv 17) (add_pos (hv 9) (hv 10)))
+  · split
+    · exact mul_pos (hv 26) (hv 22)
+    · split <;> (try split) <;> exact hv _
+
+def child : Expr (Fin 38) :=
+  AdaptiveQM38LiteralDraft.literal CurrentWindowCarry2011.ports
+
+def parent : Expr (Fin 40) :=
+  AdaptiveQM40Context.literal CurrentWindowCarry2011.ports
+
+/-- The graph-specific residual calculations are deliberately assumptions.
+Every quantified model satisfies the repository's IΣ₁ model conditions. -/
+def ZeroPreservationObligations : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+    (∀ v : Fin 40 → V, (∀ i, 0<v i) → InternalZero parent v →
+      InternalZero child (project v)) ∧
+    (∀ v : Fin 38 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend v))
+
+/-- Assuming those exact graph maps, positive-shift no-zero statements agree. -/
+theorem shifted_no_zero_iff
+    (hproject : ∀ v : Fin 40 → V, (∀ i, 0<v i) → InternalZero parent v →
+      InternalZero child (project v))
+    (hextend : ∀ v : Fin 38 → V, (∀ i, 0<v i) → InternalZero child v →
+      InternalZero parent (extend v)) :
+    (∀ v : Fin 38 → V, ¬InternalZero (positiveShift child) v) ↔
+      ∀ v : Fin 40 → V, ¬InternalZero (positiveShift parent) v := by
+  constructor
+  · intro h v hz
+    let old : Fin 40 → V := fun i => v i+1
+    have hp : ∀ i, 0<old i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero parent old := (internalZero_positiveShift _ _).mp hz
+    have hnew := hproject old hp hzero
+    have hnewpos := project_pos old hp
+    let shifted : Fin 38 → V := fun i => project old i-1
+    have hs : (fun i => shifted i+1)=project old := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (hnewpos i))
+    apply h shifted
+    rw [internalZero_positiveShift, hs]
+    exact hnew
+  · intro h v hz
+    let new : Fin 38 → V := fun i => v i+1
+    have hp : ∀ i, 0<new i := fun i => lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+    have hzero : InternalZero child new := (internalZero_positiveShift _ _).mp hz
+    have hold := hextend new hp hzero
+    have holdpos := extend_pos new hp
+    let shifted : Fin 40 → V := fun i => extend new i-1
+    have hs : (fun i => shifted i+1)=extend new := by
+      funext i
+      exact tsub_add_cancel_of_le (pos_iff_one_le.mp (holdpos i))
+    apply h shifted
+    rw [internalZero_positiveShift, hs]
+    exact hold
+
+theorem sameNoZero (h : ZeroPreservationObligations) :
+    SameNoZero (positiveShift child) IPRAQM40Native.literalNatural := by
+  intro V _ _
+  obtain ⟨hp, he⟩ := h V
+  simpa [IPRAQM40Native.literalNatural, parent] using
+    (shifted_no_zero_iff (V:=V) hp he)
+
+theorem polynomialBridge (h : ZeroPreservationObligations) :
+    PolynomialBridge (positiveShift child) :=
+  HAExpressionNoZeroEquiv.bridge (positiveShift child) IPRAQM40Native.literalNatural
+    (sameNoZero h) IPRAQM40Native.bridge40
+
+theorem native_equivalence (h : ZeroPreservationObligations) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge (positiveShift child) (polynomialBridge h)
+
+theorem standard_equivalence (h : ZeroPreservationObligations) :
+    IPRAStandardTheory.standardTheory ⊢
+      IPRAExpressionNative.nativeNoZero (positiveShift child) 🡘
+        ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 (native_equivalence h)
+
+theorem reference_equivalence (h : ZeroPreservationObligations) :
+    IPRAEqualityOnlyReference.referenceTheory ⊢
+      IPRAOrderErasure.erase (IPRAExpressionNative.nativeNoZero (positiveShift child)) 🡘
+        ∼IPRAOrderErasure.erase (mappedNativeRefutation embedding) :=
+  IPRAReferenceInductionConversion.nativeToReference (native_equivalence h)
+
+end DiophantineConsistency.AdaptiveQM38ConditionalTransferDraft
+#print axioms DiophantineConsistency.AdaptiveQM38ConditionalTransferDraft.project_pos
+#print axioms DiophantineConsistency.AdaptiveQM38ConditionalTransferDraft.extend_pos
+#print axioms DiophantineConsistency.AdaptiveQM38ConditionalTransferDraft.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveQM38ConditionalTransferDraft.native_equivalence
+#print axioms DiophantineConsistency.AdaptiveQM38ConditionalTransferDraft.standard_equivalence
+#print axioms DiophantineConsistency.AdaptiveQM38ConditionalTransferDraft.reference_equivalence

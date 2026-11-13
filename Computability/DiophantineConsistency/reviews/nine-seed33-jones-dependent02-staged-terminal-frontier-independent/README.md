@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 90623 exited 0. All three source/object/log stages, exact Y and local M/P provider bindings, 300 guard slots and 1,088 overlay links were checked, including replay of the U/Y terminal audit. The seven d21–d23 M/P/K local equations and carries report [propext, Classical.choice, Quot.sound], with no warnings.
+
+These are local prefix results, not full recipe output, semantic equality, degree or JSON binding. Outer exit is author-recorded and deeper ancestry inherited; no Lean replay was performed. Prelaunch is pinned but preflight is not rerun after output creation.

@@ -1,0 +1,3 @@
+# Independent terminal audit: MF symbolic radix digits retry02
+
+Checker exit 0. Author outer 67736 exited 0; all 16 stages and final postflight passed. The final module proves the 2,010-digit tail length, highPort first-digit expansion, highPort+beta radix decoding, and current port3 equality. Reports list propext alone, propext with Quot.sound, or the standard three axioms as appropriate; one unused-simp warning and no sorryAx occur. Sources, objects, direct guards, logs and overlays were checked, with replayed diagonal-binding object pinned to this run. Byte composition and file/gzip/JSON/PDF binding remain separate.

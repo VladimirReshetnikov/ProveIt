@@ -1,0 +1,9 @@
+# Finite permutation lookup in arbitrary arithmetic models
+
+`CompactPermutationInterface` proves two generic finite-list facts: any `List.Perm` yields an equivalence between list indices that preserves lookup, and for a list permuting `List.range n`, the corresponding target index is the listed natural value. More importantly, in every model of IΣ₁, `model_lookup_injective` proves the existing `ArithmeticWangTable.tabValue` lookup is injective on source indices below the list length, and `model_lookup_surjective` proves it reaches every model value below `n`. Its proof uses the existing bounded-element-is-a-numeral and numeral-lookup cast lemmas; it does not assume models contain only standard naturals.
+
+Both statements retain the explicit hypothesis that the standard source list permutes `List.range n`. They do not yet instantiate the exact compact horizontal/vertical arrays, handle the 942-to-943 index with its omitted value, establish matching neighbors or wrap, transport a tiling, calibrate compact44, or prove a 12-variable iPRA endpoint.
+
+Exploratory session 57473 actually exited 0. Paired wrapper session 56475 actually exited 0 with both Lean children and direct-import checks exiting 0 over matched independently audited successor siblings; final parent audit reruns also passed. The receipt SHA-256 is `2efe441ae1d03f9d97fc5ab5e6a4846f26cd1c33706500eab5069ee14be1ab8d`. Four exact named declarations each report Lean metatheoretic axioms `[propext, Classical.choice, Quot.sound]`, not object-theory iPRA axioms. Exact logs, receipt and terminal observation are retained. Independent artifact review remains pending.
+
+The direct-import companion and source guards and inherited Foundation/package-transitive/dynamic boundaries are recorded in the receipt. The compiler monitor is sampled, not a hard quota; dependency queries have leader-only timeouts without group/RSS enforcement.

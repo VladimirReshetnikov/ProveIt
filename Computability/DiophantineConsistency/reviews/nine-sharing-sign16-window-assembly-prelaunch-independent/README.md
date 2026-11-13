@@ -1,0 +1,3 @@
+# Independent sign16 half-window union prelaunch
+
+Checker session 71060 exited 0. It checks the proposed half-window under staged seed zero, represented ports, beta positivity and MC/MF bounds; five producer audits and direct routes, point union survey with four extra overlays, resource limits and no-Lean preflight. The window theorem inherits unavailable numeric outer exit for an earlier provider and a successful child of a failed provider build, as recorded by its audit. Union and inherited surveys are not replayed postflight; direct guards and overlays are checked again. Lean must still verify this client; sign/lift/equivalence remain separate.

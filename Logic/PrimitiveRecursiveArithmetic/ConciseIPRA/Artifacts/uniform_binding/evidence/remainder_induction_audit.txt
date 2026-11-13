@@ -1,0 +1,52 @@
+Independent audit of the counter-aware equality-reflection proof
+
+Result: no use of quantifier-free, disjunctive, or quantified induction is
+needed before the promised reduction from equation induction. The only
+induction instances are literal equations. Coverage provides the case splits.
+
+1. With x fixed, equation induction on y proves
+   p(d(Sx,y)) = d(x,y).
+   Base: p(d(Sx,0)) = p(Sx) = x = d(x,0).
+   Step: p(d(Sx,Sy)) = p(p(d(Sx,y)))
+                         = p(d(x,y)) = d(x,Sy).
+   The middle equality is congruence applied to the equation hypothesis.
+   Hence d(Sx,Sy) = d(x,y) by the defining equation of d.
+
+2. Equation induction on a in d(Sa,a)=1 is valid; it is still one literal
+   equation even though a occurs twice. Base is d(1,0)=1. At the step,
+   d(S(Sa),Sa)=d(Sa,a)=1 by the cancellation equation from item 1.
+
+3. The remainder invariant is the one equation
+   C(sg(d(x,y)), x, y+d(x,y)) = x,
+   with x held fixed and y the induction variable.
+   Base uses d(x,0)=x, 0+x=x (another equation induction), and
+   C(v,x,x)=x. The latter is numerical cases on v, not induction.
+   At the step abbreviate r=d(x,y), r'=p(r)=d(x,Sy).
+   Use coverage on r': either r'=0 or r'=Sz.
+   - If r'=0, sg(r')=0 and the new left side selects x.
+   - If r'=Sz, coverage on r gives either r=0 (impossible because
+     p(0)=0 and no successor equals zero) or r=Sw. Then w=p(r)=r',
+     so r=Sr'. Both sg(r) and sg(r') equal 1. The single old equation
+     becomes y+r=x. The new left side is
+       Sy+r'=S(y+r')=y+Sr'=y+r=x.
+   The two addition identities used here are direct computation in the
+   right argument and an earlier equation induction on that argument.
+   Every existential witness introduced by coverage is discharged normally.
+
+4. If d(Sa,b)=1, the remainder invariant at (Sa,b) gives b+1=Sa.
+   Since b+1=Sb, successor injectivity gives a=b. Conversely a=b uses
+   d(Sa,a)=1 from item 2. No order comparison theorem is assumed.
+
+5. K(n)=C(n,1,p(n)) satisfies K(0)=1 and K(Sz)=z. Coverage and separation
+   therefore prove K(n)=0 iff n=1. Similarly sg(n)=0 iff n=0, and sg is
+   Boolean by coverage. Thus epsilon(a,b)=sg(K(d(Sa,b))) has
+   epsilon(a,b)=0 iff a=b and epsilon(a,b)=0 or epsilon(a,b)=1.
+
+6. Structural induction on each finite quantifier-free formula A constructs
+   b_A and proves b_A=0 iff A. This is metatheoretic syntax induction,
+   not arithmetic induction. The implication case uses only the already
+   proved two Boolean alternatives for b_A. Equation induction on
+   b_A(n)=0 then yields induction for A(n) under unchanged side assumptions.
+
+Scope limitation: this audits the written inherited arithmetic argument.
+It is not a Lean/Rocq verification or an exhaustive checker correctness proof.

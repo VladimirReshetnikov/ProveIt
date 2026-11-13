@@ -1,0 +1,5 @@
+# Independent terminal audit: factored U projection
+
+The successful generic commutative-ring client establishes reference node 71 = `Carrier65.core.V`, node 72 = `core.S`, and node 78 = `core.U`, for arbitrary ports and coordinates. The V and U axiom reports are `[propext, Quot.sound]`; S reports `[propext]`. The compile log has two sequencing linter warnings. This establishes a field identity, not the gate/reference correspondence, source/model bridge, or an iPRA endpoint.
+
+The checker pins source, manifest, runner, carrier survey, retained/live state, logs and result object, validates author-recorded session 58239 exit 0, checks 150 direct guard slots and 1,068 overlay routes, and independently reruns the U-edge and Carrier65 provider reviews. The U-edge object is a successful retry; Carrier65 is a successful row within an overall-failed earlier build. The successful PASS state follows final direct guard, overlay and carrier survey checks. Outer exit is an author observation rather than an independent transcript; sampled resources and transitive/dynamic ancestry remain outside the point checks. No Lean replay was performed.

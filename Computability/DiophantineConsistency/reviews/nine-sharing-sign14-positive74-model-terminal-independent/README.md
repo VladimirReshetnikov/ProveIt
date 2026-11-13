@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 38703 exited 0. Stage and postflight passed; frozen receipt/state/logs, source/object, audited expression-bridge provider and guarded overlays match. Two reports are `[propext, Classical.choice, Quot.sound]` with no warning or `sorryAx`. The console label says SharedD by inheritance; recorded source/module/reports are Positive74Model. Theorems establish IΣ₁ pointwise and existential zero equivalences for `positiveShift` of the positive expression; a separately formulated explicit positive-witness bijection and external file binding are not in this result. Captured routes are point-in-time. No Lean was run.

@@ -1,0 +1,73 @@
+Incoming archive audit at commit 17898ea7e6a1300dfdcad71040d5daeed67916d4
+Repository: VladimirReshetnikov/ProveIt
+Path: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/
+
+All six archives were fetched through GitHub with base64 encoding and decoded.
+Files extracted under audit_work/unpacked/. These are baseline artifacts, not new results.
+
+1. ipra_witness_discharge_2026-11-11.zip
+   Mathematics: Full computation normalization. Formula Eq/D, optional-antecedent clauses.
+   Three families U, I, E_= plus fixed unconditional reflexivity clause.
+   E_=: open D B at fresh b; in same branch prove b=t and F; export nf(F[t/b]) if b-free.
+   t may contain b; t=b recovers ordinary elimination. Two-row naming packet recovers equality transport.
+   Exact contextual equivalence; full-normalization zero-witness case repair via compound envelope.
+   Checker bytes/tokens/AST/gzip9: 2273/732/813/903.
+   Matched separate-rule control: 2362/769/841/917.
+   Fuel variant: 2486/777/868/967; bounds verification, not uniform primitive-recursive normalization.
+
+2. ipra_uniform_binding_2026-11-11.zip
+   Inherited counter-aware successor-seeded recursor R(n,a;i,u.h); R and D bind two in final child.
+   Successor = R(0,a;0). Literal zero counter requires body 0; no successor unfolding.
+   Five families Refl, CE, Use, Open, Close. Scope inferred from context length.
+   Shared sorted walker validates, substitutes, canonicalizes zero-body erasure.
+   Checker: 2238/693/764/866.
+   Exact incoming control: 2283/741/826/818; matched scalar: 2284/699/773/878.
+   Claims implementation reduction; no new arithmetic axiom deletion.
+
+3. ipra_clause_contexts_2026-11-11.zip
+   Four families Use, Step, Open, Close plus fixed universal-reflexivity clause.
+   Zero-only normalization. Mathematically combines earlier uniform_clauses and uniform_step.
+   Selected backwards packet checker consumes pairs from right to left; reflexive goals need no packet.
+   All goals/arguments/scopes checked; final no-unused-input check.
+   Checker: 2282/666/770/774.
+   Most gains attributed to proof protocol/data representation.
+
+4. ipra_clause_guards.zip
+   Raw Eq/D clause calculus with diagonal-selected introduction; no normalization.
+   Five families Refl, Eval (two cases), Use, Open, Intro.
+   Substitution preserves proof shape for diagonal guard; mirror companion repairs guard creation.
+   Diagonal checker: 3056/872/1013 vs native-diagonal 3395/975/1138.
+   Witness-mode prior checker: 2956/837/977; mirror companion 3059/874/1012.
+   Explicitly says the goal of beating every current size frontier was unmet.
+
+5. ipra_mirror_core_2026-11-11.zip
+   Raw Eq/Q/D six-family core; replace two-iterator diagonal by a=I(y,a;u.h).
+   Unrestricted syntax and direct substitution with provable-base repair.
+   Checker: 3109/1012/1082 vs 3125/1022/1091.
+   No rule-count reduction. Equality of all raw contextual consequences claimed on paper.
+
+6. ipra_seed_evaluation_2026-11-11.zip
+   Zero-only normalization, Refl + SeedEval + Use/Open/Intro.
+   New arithmetic scheme a=b, I(S c,a;h)=r => r=nf(h[I(c,b;h)/u]).
+   Exact equivalence to Step in arithmetic fragment without induction/logical rules.
+   Some certificate label saving; no robust source-size breakthrough.
+   Shared forward Seed vs Step: 2802/756/815 vs 2804/758/815.
+   Goal style: equal 2283/741/826; shared style equal 2265/709/787.
+   Unit factorization considered but larger, not selected.
+
+All six disclaim global minimality and new proof-assistant verification.
+None beats historic compact codec (516 normalized bytes, 265 tokens, 306 AST, gzip9 332)
+or the distinct validated-public-goal profile (788 bytes as reported by README).
+Important: compact raw-object, validated-public-goal and fully typed internal checkers
+have different input and intermediate-syntax contracts; compare like for like.
+
+Initial mathematical review of witness_discharge:
+- Ordinary DE uses t=b and reflexivity, no circular equality substitution theorem.
+- Numerical cases derived at unused existential witness 1 before equality reasoning.
+- Two-row packet has literal endpoints due full normalization; no parity range theorem required.
+- Equality export when t contains b is sound if normalized output is b-free.
+- Zero-witness case repair is explicitly supplied; arbitrary substitution is not assumed tag preserving.
+- Whole-domain bi-interpretability is inherited by exact sequent equivalence and cited scalar bridge.
+- Uniform normalization is not primitive recursive; package explicitly separates fuel verifier.
+
+No complete formal proof audit was performed; initial review found no immediate circularity in this route.

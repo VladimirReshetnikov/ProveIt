@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "claim": "finite diagnostics only; the nonstandard theorem uses the written proof",
+  "counts": {
+    "boolean_pairs": 4,
+    "orbit_parameter_pairs": 361,
+    "right_inverse_inputs": 19,
+    "coverage_and_predecessor_inputs": 21,
+    "fixed_point_and_first_marker_inputs": 21,
+    "fixed_prefix_indices": 6,
+    "finite_map_value_cases": 63
+  },
+  "targeted_controls": {
+    "deleted_zero_protection": {
+      "input": 2,
+      "computed_S_pstar_SS0": 5,
+      "required_SS0": 2
+    },
+    "deleted_stop_test": {
+      "input": 2,
+      "computed_S_pstar_SS0": 4,
+      "required_SS0": 2
+    },
+    "deleted_exception_at_zero": {
+      "computed_pstar_zero": 1,
+      "required_predecessor_zero": 0
+    },
+    "deleted_exception_at_one": {
+      "computed_pstar_one": 2,
+      "required_predecessor_one": 0
+    },
+    "wrong_boolean_fixed_point_update": {
+      "update": "epsilon(v,1)",
+      "fixed_point_witness": 0,
+      "computed_at_witness": 0
+    },
+    "deleted_marker_negation": {
+      "computed_F_zero": 1,
+      "required_initial_marker": 2
+    },
+    "corrupted_first_prefix_edge": {
+      "fixed_index": 3,
+      "computed_F_one": 3,
+      "required_first_marker": 2
+    }
+  },
+  "invalid_cancellation_control": {
+    "scope": "successor/right-inverse equations only, not an F/EI model",
+    "m": [
+      "Z",
+      0,
+      2
+    ],
+    "S_m": [
+      "Z",
+      1,
+      1
+    ],
+    "S_S_m": [
+      "Z",
+      2,
+      0
+    ],
+    "p_S_S_m": [
+      "Z",
+      1,
+      0
+    ],
+    "S_p_S_S_m": [
+      "Z",
+      2,
+      0
+    ],
+    "right_inverse_equation_holds": true,
+    "cancelled_equation_fails": true
+  },
+  "unresolved": "F + actual equality + equation induction has not here been proved to imply S injective"
+}

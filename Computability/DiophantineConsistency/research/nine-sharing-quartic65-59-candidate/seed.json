@@ -1,0 +1,2866 @@
+{
+  "coefficient_binding": {
+    "certificate": "../../research/padding-staircase-independent/certificate.json",
+    "certificate_sha256": "fae49c56a9c57d394335c8a47da395f000a0c25cb8267d1330104eddbbc7850f",
+    "ordinary_proof": "../../research/padding-staircase-independent/PROOF.md",
+    "ordinary_proof_sha256": "69ce844ef80894251f4bd9510d9f60468585b4a004f4a624d3b347ce3e144fb8",
+    "path": "coefficients/",
+    "ports": {
+      "K0": {
+        "bits": 94941,
+        "file": "K.bin.gz",
+        "gzip_sha256": "cfc3229f5281580358370e198b433936161b732a7229a1f8dc4f8839a701f4ab",
+        "raw_bytes": 11868,
+        "raw_sha256": "64a62b9e1eb8642492a159fc5c3a2e1c131a99c0e2f1e3b8b90fac9241166ec7"
+      },
+      "MC": {
+        "bits": 94517,
+        "file": "MC.bin.gz",
+        "gzip_sha256": "b178777ae605e6d0073c824c48237e89e9b28911a2583bce7c6689a50ce3cdfd",
+        "raw_bytes": 11815,
+        "raw_sha256": "2b5c9296e32616260e64a051c92892645b9aa1bf0bf4c0d931e464080702ca9f"
+      },
+      "MF": {
+        "bits": 94518,
+        "file": "MF_source.bin.gz",
+        "gzip_sha256": "f04d074f8413c49581f262bcbb030c616f00745935010afc0d30050771627c3a",
+        "raw_bytes": 11815,
+        "raw_sha256": "5c15fc24e4978b878ed531abf30b2dcfe255083372034612b759b65eee1f0c25"
+      },
+      "beta": {
+        "bits": 94517,
+        "file": "beta.bin.gz",
+        "gzip_sha256": "a94c07b25b9c185fa920d5c76ab04ea4de69b0a6a439995cf5ee390be225c719",
+        "raw_bytes": 11815,
+        "raw_sha256": "a22ea3808ae016284c057d90f1bf2b76db1be2d34d11c0856f3315f6577d4b27"
+      }
+    },
+    "raw_bytes": 47313,
+    "schema": "padding_staircase2011_materialized_v1"
+  },
+  "coordinate_count": 60,
+  "domain": "coordinates 1..59 range over natural numbers; distinguished input coordinate arbitrary",
+  "fixed_ports": [
+    "beta",
+    "K0",
+    "MC",
+    "MF"
+  ],
+  "gate_records": [
+    {
+      "kind": "inline",
+      "left": "beta",
+      "name": "qm",
+      "op": "*",
+      "pair_degree": 1,
+      "right": "J"
+    },
+    {
+      "kind": "inline",
+      "left": "qm",
+      "name": "q",
+      "op": "+",
+      "pair_degree": 1,
+      "right": 1
+    },
+    {
+      "kind": "materialized",
+      "left": "q",
+      "name": "q2",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 15,
+      "right": "q"
+    },
+    {
+      "kind": "materialized",
+      "left": "q2",
+      "name": "q3",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 16,
+      "right": "q"
+    },
+    {
+      "kind": "materialized",
+      "left": "w",
+      "name": "X",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 17,
+      "right": "q"
+    },
+    {
+      "kind": "materialized",
+      "left": "s",
+      "name": "Y",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 18,
+      "right": "q3"
+    },
+    {
+      "kind": "materialized",
+      "left": "X",
+      "name": "E",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 19,
+      "right": "Y"
+    },
+    {
+      "kind": "inline",
+      "left": "eta",
+      "name": "k",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "zeta"
+    },
+    {
+      "kind": "materialized",
+      "left": "k",
+      "name": "kY",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 20,
+      "right": "Y"
+    },
+    {
+      "kind": "materialized",
+      "left": "E",
+      "name": "ell",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 21,
+      "right": "kY"
+    },
+    {
+      "kind": "inline",
+      "left": "kY",
+      "name": "c",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "eta"
+    },
+    {
+      "kind": "inline",
+      "left": "E",
+      "name": "a",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "Y"
+    },
+    {
+      "kind": "inline",
+      "left": 4,
+      "name": "four_a",
+      "op": "*",
+      "pair_degree": 1,
+      "right": "a"
+    },
+    {
+      "kind": "inline",
+      "left": "four_a",
+      "name": "H",
+      "op": "+",
+      "pair_degree": 1,
+      "right": 3
+    },
+    {
+      "kind": "materialized",
+      "left": "a",
+      "name": "a2",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 22,
+      "right": "a"
+    },
+    {
+      "kind": "inline",
+      "left": "a2",
+      "name": "Delta",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "H"
+    },
+    {
+      "kind": "materialized",
+      "left": "a",
+      "name": "ac",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 23,
+      "right": "c"
+    },
+    {
+      "kind": "inline",
+      "left": "X",
+      "name": "main_base",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "ac"
+    },
+    {
+      "kind": "materialized",
+      "left": "gamma",
+      "name": "gammaH",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 24,
+      "right": "H"
+    },
+    {
+      "kind": "inline",
+      "left": "main_base",
+      "name": "main_root",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "gammaH"
+    },
+    {
+      "kind": "materialized",
+      "left": "c",
+      "name": "c2",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 25,
+      "right": "c"
+    },
+    {
+      "kind": "materialized",
+      "left": "Delta",
+      "name": "Dc2",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 26,
+      "right": "c2"
+    },
+    {
+      "kind": "materialized",
+      "left": "main_root",
+      "name": "main_square",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 27,
+      "right": "main_root"
+    },
+    {
+      "kind": "inline",
+      "left": "main_square",
+      "name": "N1",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "Dc2"
+    },
+    {
+      "kind": "inline",
+      "left": "q",
+      "name": "qF",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "F"
+    },
+    {
+      "kind": "inline",
+      "left": "qF",
+      "name": "C",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "alpha"
+    },
+    {
+      "kind": "materialized",
+      "left": "qm",
+      "name": "gap_product",
+      "negative_coordinate": 29,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 28,
+      "right": "qF"
+    },
+    {
+      "kind": "inline",
+      "left": "gap_product",
+      "name": "gap",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "alpha"
+    },
+    {
+      "kind": "inline",
+      "left": "q2",
+      "name": "q2minus1",
+      "op": "-",
+      "pair_degree": 1,
+      "right": 1
+    },
+    {
+      "kind": "materialized",
+      "left": "gap",
+      "name": "rproduct",
+      "negative_coordinate": 31,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 30,
+      "right": "q2minus1"
+    },
+    {
+      "kind": "inline",
+      "left": "q",
+      "name": "qMF",
+      "op": "*",
+      "pair_degree": 1,
+      "right": "MF"
+    },
+    {
+      "kind": "inline",
+      "left": "MC",
+      "name": "maskfactor",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "qMF"
+    },
+    {
+      "kind": "materialized",
+      "left": "maskfactor",
+      "name": "mask",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 32,
+      "right": "J"
+    },
+    {
+      "kind": "inline",
+      "left": "rproduct",
+      "name": "R",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "mask"
+    },
+    {
+      "kind": "materialized",
+      "left": "E",
+      "name": "En",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 33,
+      "right": "n"
+    },
+    {
+      "kind": "inline",
+      "left": "En",
+      "name": "tau_partial",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "k"
+    },
+    {
+      "kind": "inline",
+      "left": "tau_partial",
+      "name": "tau",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "R"
+    },
+    {
+      "kind": "materialized",
+      "left": "tau",
+      "name": "tau2",
+      "negative_coordinate": 35,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 34,
+      "right": "tau"
+    },
+    {
+      "kind": "inline",
+      "left": "ell",
+      "name": "ell_plus_k",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "k"
+    },
+    {
+      "kind": "materialized",
+      "left": "ell",
+      "name": "first_product",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 36,
+      "right": "ell_plus_k"
+    },
+    {
+      "kind": "inline",
+      "left": "tau2",
+      "name": "N0",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "first_product"
+    },
+    {
+      "kind": "inline",
+      "left": "K0",
+      "name": "Kw",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "w"
+    },
+    {
+      "kind": "materialized",
+      "left": "Kw",
+      "name": "transport",
+      "negative_coordinate": 38,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 37,
+      "right": "C"
+    },
+    {
+      "kind": "inline",
+      "left": "transport",
+      "name": "transport_partial",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "qF"
+    },
+    {
+      "kind": "materialized",
+      "left": "z",
+      "name": "zqm",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 39,
+      "right": "qm"
+    },
+    {
+      "kind": "inline",
+      "left": "transport_partial",
+      "name": "Nt",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "zqm"
+    },
+    {
+      "kind": "materialized",
+      "left": "f",
+      "name": "f2",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 40,
+      "right": "f"
+    },
+    {
+      "kind": "materialized",
+      "left": "c",
+      "name": "cT",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 41,
+      "right": "T"
+    },
+    {
+      "kind": "inline",
+      "left": "cT",
+      "name": "cTminusR",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "R"
+    },
+    {
+      "kind": "materialized",
+      "left": "f2",
+      "name": "f2inner",
+      "negative_coordinate": 43,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 42,
+      "right": "cTminusR"
+    },
+    {
+      "kind": "inline",
+      "left": "f2inner",
+      "name": "V",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "c"
+    },
+    {
+      "kind": "materialized",
+      "left": "i",
+      "name": "normalized_S",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 44,
+      "right": "Dc2"
+    },
+    {
+      "kind": "materialized",
+      "left": "normalized_S",
+      "name": "normalized_S2",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 45,
+      "right": "normalized_S"
+    },
+    {
+      "kind": "materialized",
+      "left": "V",
+      "name": "V2",
+      "negative_coordinate": 47,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 46,
+      "right": "V"
+    },
+    {
+      "kind": "materialized",
+      "left": "y",
+      "name": "y2",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 48,
+      "right": "y"
+    },
+    {
+      "kind": "inline",
+      "left": "V2",
+      "name": "V2minusY2",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "y2"
+    },
+    {
+      "kind": "materialized",
+      "left": "normalized_S2",
+      "name": "aux_product",
+      "negative_coordinate": 50,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 49,
+      "right": "V2minusY2"
+    },
+    {
+      "kind": "inline",
+      "left": "aux_product",
+      "name": "Na",
+      "op": "+",
+      "pair_degree": 1,
+      "right": "y2"
+    },
+    {
+      "kind": "materialized",
+      "left": "Delta",
+      "name": "scaled_f2",
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 51,
+      "right": "f2"
+    },
+    {
+      "kind": "inline",
+      "left": "scaled_f2",
+      "name": "scaled_Ns",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "normalized_S2"
+    },
+    {
+      "kind": "materialized",
+      "left": "N0",
+      "name": "product0",
+      "negative_coordinate": 53,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 52,
+      "right": "N1"
+    },
+    {
+      "kind": "materialized",
+      "left": "product0",
+      "name": "product1",
+      "negative_coordinate": 55,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 54,
+      "right": "Na"
+    },
+    {
+      "kind": "materialized",
+      "left": "product1",
+      "name": "product3",
+      "negative_coordinate": 57,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 56,
+      "right": "Nt"
+    },
+    {
+      "kind": "materialized",
+      "left": "product3",
+      "name": "product4",
+      "negative_coordinate": 59,
+      "op": "*",
+      "pair_degree": 2,
+      "positive_coordinate": 58,
+      "right": "scaled_Ns"
+    },
+    {
+      "kind": "output",
+      "left": "product4",
+      "name": "polynomial",
+      "op": "-",
+      "pair_degree": 1,
+      "right": "Delta"
+    }
+  ],
+  "input_coordinate": 0,
+  "jones_witness_count": 59,
+  "normalization_witness": "first q2 residual evaluates to -(beta+1)^2 at zero witnesses",
+  "original_coordinates": {
+    "F": 2,
+    "J": 1,
+    "T": 7,
+    "alpha": 3,
+    "eta": 11,
+    "f": 5,
+    "gamma": 14,
+    "i": 6,
+    "n": 10,
+    "s": 8,
+    "w": 9,
+    "y": 13,
+    "z": 4,
+    "zeta": 12
+  },
+  "output": "sum of squares of every residual",
+  "positive_shift": 1,
+  "residuals": [
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          15
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "mul",
+              [
+                "port",
+                "beta"
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  1
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "add",
+            [
+              "mul",
+              [
+                "port",
+                "beta"
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  1
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "q2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          16
+        ],
+        [
+          "mul",
+          [
+            "var",
+            15
+          ],
+          [
+            "add",
+            [
+              "mul",
+              [
+                "port",
+                "beta"
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  1
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "q3",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          17
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              9
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "add",
+            [
+              "mul",
+              [
+                "port",
+                "beta"
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  1
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "X",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          18
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              8
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "var",
+            16
+          ]
+        ]
+      ],
+      "gate": "Y",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          19
+        ],
+        [
+          "mul",
+          [
+            "var",
+            17
+          ],
+          [
+            "var",
+            18
+          ]
+        ]
+      ],
+      "gate": "E",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          20
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "add",
+              [
+                "var",
+                11
+              ],
+              [
+                "num",
+                1
+              ]
+            ],
+            [
+              "add",
+              [
+                "var",
+                12
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ],
+          [
+            "var",
+            18
+          ]
+        ]
+      ],
+      "gate": "kY",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          21
+        ],
+        [
+          "mul",
+          [
+            "var",
+            19
+          ],
+          [
+            "var",
+            20
+          ]
+        ]
+      ],
+      "gate": "ell",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          22
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              19
+            ],
+            [
+              "var",
+              18
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              19
+            ],
+            [
+              "var",
+              18
+            ]
+          ]
+        ]
+      ],
+      "gate": "a2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          23
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              19
+            ],
+            [
+              "var",
+              18
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              20
+            ],
+            [
+              "add",
+              [
+                "var",
+                11
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "ac",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          24
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              14
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "add",
+            [
+              "mul",
+              [
+                "num",
+                4
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  19
+                ],
+                [
+                  "var",
+                  18
+                ]
+              ]
+            ],
+            [
+              "num",
+              3
+            ]
+          ]
+        ]
+      ],
+      "gate": "gammaH",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          25
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              20
+            ],
+            [
+              "add",
+              [
+                "var",
+                11
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              20
+            ],
+            [
+              "add",
+              [
+                "var",
+                11
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "c2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          26
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              22
+            ],
+            [
+              "add",
+              [
+                "mul",
+                [
+                  "num",
+                  4
+                ],
+                [
+                  "add",
+                  [
+                    "var",
+                    19
+                  ],
+                  [
+                    "var",
+                    18
+                  ]
+                ]
+              ],
+              [
+                "num",
+                3
+              ]
+            ]
+          ],
+          [
+            "var",
+            25
+          ]
+        ]
+      ],
+      "gate": "Dc2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          27
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "add",
+              [
+                "var",
+                17
+              ],
+              [
+                "var",
+                23
+              ]
+            ],
+            [
+              "var",
+              24
+            ]
+          ],
+          [
+            "add",
+            [
+              "add",
+              [
+                "var",
+                17
+              ],
+              [
+                "var",
+                23
+              ]
+            ],
+            [
+              "var",
+              24
+            ]
+          ]
+        ]
+      ],
+      "gate": "main_square",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          28
+        ],
+        [
+          "mul",
+          [
+            "mul",
+            [
+              "port",
+              "beta"
+            ],
+            [
+              "add",
+              [
+                "var",
+                1
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ],
+          [
+            "add",
+            [
+              "mul",
+              [
+                "port",
+                "beta"
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  1
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "gap_product",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          29
+        ],
+        [
+          "mul",
+          [
+            "mul",
+            [
+              "port",
+              "beta"
+            ],
+            [
+              "add",
+              [
+                "var",
+                1
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              2
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "gap_product",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          30
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "add",
+              [
+                "var",
+                28
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  3
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ],
+            [
+              "var",
+              15
+            ]
+          ],
+          [
+            "var",
+            29
+          ]
+        ]
+      ],
+      "gate": "rproduct",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          31
+        ],
+        [
+          "add",
+          [
+            "add",
+            [
+              "var",
+              28
+            ],
+            [
+              "add",
+              [
+                "var",
+                3
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              29
+            ],
+            [
+              "var",
+              15
+            ]
+          ]
+        ]
+      ],
+      "gate": "rproduct",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          32
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "port",
+              "MC"
+            ],
+            [
+              "mul",
+              [
+                "add",
+                [
+                  "mul",
+                  [
+                    "port",
+                    "beta"
+                  ],
+                  [
+                    "add",
+                    [
+                      "var",
+                      1
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ]
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ],
+              [
+                "port",
+                "MF"
+              ]
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              1
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "mask",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          33
+        ],
+        [
+          "mul",
+          [
+            "var",
+            19
+          ],
+          [
+            "add",
+            [
+              "var",
+              10
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "En",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          34
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "add",
+              [
+                "add",
+                [
+                  "var",
+                  33
+                ],
+                [
+                  "add",
+                  [
+                    "add",
+                    [
+                      "var",
+                      11
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ],
+                  [
+                    "add",
+                    [
+                      "var",
+                      12
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "var",
+                31
+              ]
+            ],
+            [
+              "add",
+              [
+                "add",
+                [
+                  "var",
+                  33
+                ],
+                [
+                  "add",
+                  [
+                    "add",
+                    [
+                      "var",
+                      11
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ],
+                  [
+                    "add",
+                    [
+                      "var",
+                      12
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "var",
+                31
+              ]
+            ]
+          ],
+          [
+            "mul",
+            [
+              "add",
+              [
+                "var",
+                30
+              ],
+              [
+                "var",
+                32
+              ]
+            ],
+            [
+              "add",
+              [
+                "var",
+                30
+              ],
+              [
+                "var",
+                32
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "tau2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          35
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "add",
+              [
+                "add",
+                [
+                  "var",
+                  33
+                ],
+                [
+                  "add",
+                  [
+                    "add",
+                    [
+                      "var",
+                      11
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ],
+                  [
+                    "add",
+                    [
+                      "var",
+                      12
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "var",
+                31
+              ]
+            ],
+            [
+              "add",
+              [
+                "var",
+                30
+              ],
+              [
+                "var",
+                32
+              ]
+            ]
+          ],
+          [
+            "mul",
+            [
+              "add",
+              [
+                "var",
+                30
+              ],
+              [
+                "var",
+                32
+              ]
+            ],
+            [
+              "add",
+              [
+                "add",
+                [
+                  "var",
+                  33
+                ],
+                [
+                  "add",
+                  [
+                    "add",
+                    [
+                      "var",
+                      11
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ],
+                  [
+                    "add",
+                    [
+                      "var",
+                      12
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ]
+                ]
+              ],
+              [
+                "var",
+                31
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "tau2",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          36
+        ],
+        [
+          "mul",
+          [
+            "var",
+            21
+          ],
+          [
+            "add",
+            [
+              "var",
+              21
+            ],
+            [
+              "add",
+              [
+                "add",
+                [
+                  "var",
+                  11
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  12
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "first_product",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          37
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "port",
+              "K0"
+            ],
+            [
+              "add",
+              [
+                "var",
+                9
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ],
+          [
+            "add",
+            [
+              "mul",
+              [
+                "port",
+                "beta"
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  1
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "transport",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          38
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "port",
+              "K0"
+            ],
+            [
+              "add",
+              [
+                "var",
+                9
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ],
+          [
+            "add",
+            [
+              "add",
+              [
+                "var",
+                2
+              ],
+              [
+                "num",
+                1
+              ]
+            ],
+            [
+              "add",
+              [
+                "var",
+                3
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "transport",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          39
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              4
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "mul",
+            [
+              "port",
+              "beta"
+            ],
+            [
+              "add",
+              [
+                "var",
+                1
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "zqm",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          40
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              5
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              5
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "f2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          41
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              20
+            ],
+            [
+              "add",
+              [
+                "var",
+                11
+              ],
+              [
+                "num",
+                1
+              ]
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              7
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "cT",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          42
+        ],
+        [
+          "mul",
+          [
+            "var",
+            40
+          ],
+          [
+            "add",
+            [
+              "var",
+              41
+            ],
+            [
+              "var",
+              31
+            ]
+          ]
+        ]
+      ],
+      "gate": "f2inner",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          43
+        ],
+        [
+          "mul",
+          [
+            "var",
+            40
+          ],
+          [
+            "add",
+            [
+              "var",
+              30
+            ],
+            [
+              "var",
+              32
+            ]
+          ]
+        ]
+      ],
+      "gate": "f2inner",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          44
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              6
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "var",
+            26
+          ]
+        ]
+      ],
+      "gate": "normalized_S",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          45
+        ],
+        [
+          "mul",
+          [
+            "var",
+            44
+          ],
+          [
+            "var",
+            44
+          ]
+        ]
+      ],
+      "gate": "normalized_S2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          46
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              42
+            ],
+            [
+              "var",
+              42
+            ]
+          ],
+          [
+            "mul",
+            [
+              "add",
+              [
+                "var",
+                43
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  20
+                ],
+                [
+                  "add",
+                  [
+                    "var",
+                    11
+                  ],
+                  [
+                    "num",
+                    1
+                  ]
+                ]
+              ]
+            ],
+            [
+              "add",
+              [
+                "var",
+                43
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  20
+                ],
+                [
+                  "add",
+                  [
+                    "var",
+                    11
+                  ],
+                  [
+                    "num",
+                    1
+                  ]
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "V2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          47
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              42
+            ],
+            [
+              "add",
+              [
+                "var",
+                43
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  20
+                ],
+                [
+                  "add",
+                  [
+                    "var",
+                    11
+                  ],
+                  [
+                    "num",
+                    1
+                  ]
+                ]
+              ]
+            ]
+          ],
+          [
+            "mul",
+            [
+              "add",
+              [
+                "var",
+                43
+              ],
+              [
+                "add",
+                [
+                  "var",
+                  20
+                ],
+                [
+                  "add",
+                  [
+                    "var",
+                    11
+                  ],
+                  [
+                    "num",
+                    1
+                  ]
+                ]
+              ]
+            ],
+            [
+              "var",
+              42
+            ]
+          ]
+        ]
+      ],
+      "gate": "V2",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          48
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              13
+            ],
+            [
+              "num",
+              1
+            ]
+          ],
+          [
+            "add",
+            [
+              "var",
+              13
+            ],
+            [
+              "num",
+              1
+            ]
+          ]
+        ]
+      ],
+      "gate": "y2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          49
+        ],
+        [
+          "mul",
+          [
+            "var",
+            45
+          ],
+          [
+            "var",
+            46
+          ]
+        ]
+      ],
+      "gate": "aux_product",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          50
+        ],
+        [
+          "mul",
+          [
+            "var",
+            45
+          ],
+          [
+            "add",
+            [
+              "var",
+              47
+            ],
+            [
+              "var",
+              48
+            ]
+          ]
+        ]
+      ],
+      "gate": "aux_product",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          51
+        ],
+        [
+          "mul",
+          [
+            "add",
+            [
+              "var",
+              22
+            ],
+            [
+              "add",
+              [
+                "mul",
+                [
+                  "num",
+                  4
+                ],
+                [
+                  "add",
+                  [
+                    "var",
+                    19
+                  ],
+                  [
+                    "var",
+                    18
+                  ]
+                ]
+              ],
+              [
+                "num",
+                3
+              ]
+            ]
+          ],
+          [
+            "var",
+            40
+          ]
+        ]
+      ],
+      "gate": "scaled_f2",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          52
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              34
+            ],
+            [
+              "var",
+              27
+            ]
+          ],
+          [
+            "mul",
+            [
+              "add",
+              [
+                "var",
+                35
+              ],
+              [
+                "var",
+                36
+              ]
+            ],
+            [
+              "var",
+              26
+            ]
+          ]
+        ]
+      ],
+      "gate": "product0",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          53
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              34
+            ],
+            [
+              "var",
+              26
+            ]
+          ],
+          [
+            "mul",
+            [
+              "add",
+              [
+                "var",
+                35
+              ],
+              [
+                "var",
+                36
+              ]
+            ],
+            [
+              "var",
+              27
+            ]
+          ]
+        ]
+      ],
+      "gate": "product0",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          54
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              52
+            ],
+            [
+              "add",
+              [
+                "var",
+                49
+              ],
+              [
+                "var",
+                48
+              ]
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              53
+            ],
+            [
+              "var",
+              50
+            ]
+          ]
+        ]
+      ],
+      "gate": "product1",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          55
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              52
+            ],
+            [
+              "var",
+              50
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              53
+            ],
+            [
+              "add",
+              [
+                "var",
+                49
+              ],
+              [
+                "var",
+                48
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "product1",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          56
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              54
+            ],
+            [
+              "add",
+              [
+                "var",
+                37
+              ],
+              [
+                "add",
+                [
+                  "mul",
+                  [
+                    "port",
+                    "beta"
+                  ],
+                  [
+                    "add",
+                    [
+                      "var",
+                      1
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ]
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              55
+            ],
+            [
+              "add",
+              [
+                "add",
+                [
+                  "var",
+                  38
+                ],
+                [
+                  "add",
+                  [
+                    "var",
+                    2
+                  ],
+                  [
+                    "num",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "var",
+                39
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "product3",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          57
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              54
+            ],
+            [
+              "add",
+              [
+                "add",
+                [
+                  "var",
+                  38
+                ],
+                [
+                  "add",
+                  [
+                    "var",
+                    2
+                  ],
+                  [
+                    "num",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "var",
+                39
+              ]
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              55
+            ],
+            [
+              "add",
+              [
+                "var",
+                37
+              ],
+              [
+                "add",
+                [
+                  "mul",
+                  [
+                    "port",
+                    "beta"
+                  ],
+                  [
+                    "add",
+                    [
+                      "var",
+                      1
+                    ],
+                    [
+                      "num",
+                      1
+                    ]
+                  ]
+                ],
+                [
+                  "num",
+                  1
+                ]
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "product3",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          58
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              56
+            ],
+            [
+              "var",
+              51
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              57
+            ],
+            [
+              "var",
+              45
+            ]
+          ]
+        ]
+      ],
+      "gate": "product4",
+      "kind": "positive"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          59
+        ],
+        [
+          "add",
+          [
+            "mul",
+            [
+              "var",
+              56
+            ],
+            [
+              "var",
+              45
+            ]
+          ],
+          [
+            "mul",
+            [
+              "var",
+              57
+            ],
+            [
+              "var",
+              51
+            ]
+          ]
+        ]
+      ],
+      "gate": "product4",
+      "kind": "negative"
+    },
+    {
+      "expr": [
+        "sub",
+        [
+          "var",
+          58
+        ],
+        [
+          "add",
+          [
+            "var",
+            59
+          ],
+          [
+            "add",
+            [
+              "var",
+              22
+            ],
+            [
+              "add",
+              [
+                "mul",
+                [
+                  "num",
+                  4
+                ],
+                [
+                  "add",
+                  [
+                    "var",
+                    19
+                  ],
+                  [
+                    "var",
+                    18
+                  ]
+                ]
+              ],
+              [
+                "num",
+                3
+              ]
+            ]
+          ]
+        ]
+      ],
+      "gate": "polynomial",
+      "kind": "output"
+    }
+  ],
+  "schema": "sharing-quartic-affine-inline-v1",
+  "source_graph": "../../candidates/one-page-padding-staircase-carrier65-2011/polynomial.json",
+  "source_graph_sha256": "f1f7611842896806fa9e70ad102c6a0e7aa11747a650968f1c74cb169f0e253e",
+  "status": "external candidate; no Lean equivalence or Jones endpoint"
+}

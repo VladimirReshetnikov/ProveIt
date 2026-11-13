@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/tmp/ipra-sparse-k-family-01/run-positions.py", line 8, in <module>
+    cmd=[lean,'-M3000','-j1','-DElab.async=false','--root='+str(srcroot),str(src),'-o',str(obj)];code,peak,reason=mon.monitored(cmd,env,log,timeout=300);print(json.dumps({'module':name,'command':cmd,'deps_exit':dp.returncode,'compiler_exit':code,'peak_sampled_rss_bytes':peak,'reason':reason,'source_sha256':H(src),'log_sha256':H(log)}),flush=True)
+                                                                                                                  ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/free-j-current-denominator-composition/replay.py", line 119, in monitored
+    with log.open('x') as f:
+         ~~~~~~~~^^^^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/pathlib/_local.py", line 537, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: '/tmp/ipra-sparse-k-family-01/ConcreteSparsePositions.log'

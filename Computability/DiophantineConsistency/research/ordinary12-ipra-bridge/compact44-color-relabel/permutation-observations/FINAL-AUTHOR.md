@@ -1,0 +1,5 @@
+# Author-only finite correspondence conjunction
+
+`CompactRelabelFinal.lean` combines the already assembled 942-row list equality, the 250- and 439-color `List.Perm` statements, and the 942-index `List.Perm` statement as `CompactRelabelDraft.finite_table_correspondence`. Author-only sessions 9856 and 24256 compiled the two assembly objects; session 38009 compiled the final conjunction. All three actually exited 0 without warnings or `sorryAx`. The final theorem reports `[propext, Classical.choice, Quot.sound]` as Lean metatheoretic axioms; its exact log is retained.
+
+The theorem uses explicit array literals in `CompactRelabelBase`; separate finite checkers connect those arrays and the inverse to the independently audited external receipt. This is author-only exploratory evidence, not a matched paired replay. It does not yet prove in every arithmetic model that matching tiles can be transported, exclude the extra row at a particular boundary, calibrate compact44, or yield an iPRA endpoint.

@@ -1,0 +1,5 @@
+# Independent RingVars weight terminal audit
+
+The state records both dependency scans and Lean compiles exiting 0; the author's separate record reports actual outer session 70406 exit 0. The checker validates both source/object/log sets, 200 direct guards, 1,278 overlay links and exact rad1 and freshly produced wt0 provider routes. Both axiom reports are `[propext, Classical.choice, Quot.sound]`; no warnings occur. The prelaunch review checks Fin41 indices, prior radicand bindings and `wt k=(rad k)²+2` against the source nodes.
+
+The checked theorems bind symbolic d41 V0 and V1 cuts to `vars.wt 0` and `vars.wt 1` with opaque d11 rank. They do not establish complete recipe/named-formula equality or JSON binding. No Lean replay was performed. Outer outcome is author-observed; guard observations are point-in-time and sampled monitoring is not a complete dynamic/transitive trace. Earlier A1 independent recursive preflight was interrupted with the author's passing preflight recorded; the earlier initial-agreement numeric outer exit is unavailable.

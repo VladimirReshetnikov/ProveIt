@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: ninth Pell ordinate identity
+
+GO subject to root slot release and fresh locked resource preflight. Source `76d5aa95d6a7fc7df9ca7700f459c0e518e815580d1c537c3cf7a2a9719f9f50`, runner `85a73bfca99956a52e913ae97e89bc7aa561e8080a11556f095a196b681121b0`, policy `374150ce7704b184702f36e84c841a2648d68b5443430d26afbfc3926947e1b7`. No Lean invocation by reviewer.
+
+Independent exact polynomial recurrence with x0=1,y0=0, a=b+2, delta=a²−1 yields y9=(2a)^8−7(2a)^6+15(2a)^4−10(2a)^2+1. The source states this subtraction-free in the indicated IΣ₁ model; no graph, index exclusion or guard claim. Explicit step expansions/ring tactic remain untested. The direct Trace74N2FifthGrowth import currently has exactly one provider on the configured path, matching its object pin. Runner uses the pinned parent, strict named-report validator and pre/post pins, fresh output, locked resource check; 13 actual parser controls pass. Direct pins do not prove full transitive/package ancestry or continuously stable search resolution.

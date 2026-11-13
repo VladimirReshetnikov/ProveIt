@@ -1,0 +1,42 @@
+/tmp/compact44-first-transport-seed-author-btk4civx/CompactFirstTransportSeed.lean:38:37: error: `dsimp` made no progress
+/tmp/compact44-first-transport-seed-author-btk4civx/CompactFirstTransportSeed.lean:48:19: error: Application type mismatch: The argument
+  Mathlib.Meta.NormNum.isNat_le_true
+    (Mathlib.Meta.NormNum.isNat_add (Eq.refl HAdd.hAdd) (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 2))
+      (Mathlib.Meta.NormNum.isNat_ofNat V Nat.cast_one) (Eq.refl 3))
+    (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 4)) (Eq.refl true)
+has type
+  2 + 1 ≤ 4
+but is expected to have type
+  1 + 2 ≤ 4
+in the application
+  le_trans
+    (Mathlib.Meta.NormNum.isNat_le_true
+      (Mathlib.Meta.NormNum.isNat_add (Eq.refl HAdd.hAdd) (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 2))
+        (Mathlib.Meta.NormNum.isNat_ofNat V Nat.cast_one) (Eq.refl 3))
+      (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 4)) (Eq.refl true))
+/tmp/compact44-first-transport-seed-author-btk4civx/CompactFirstTransportSeed.lean:58:19: error: Type mismatch: After simplification, term
+  heq
+ has type
+  Exp.exp u ^ 3 *
+        ((sY * (sY * ((eta + zeta) * (Exp.exp (rank K N s X) * (Exp.exp u ^ 3 * Exp.exp u ^ 3)))) + (eta + zeta) + r) *
+          (Exp.exp u - 1)) +
+      sY * (Exp.exp u ^ 3 * (Exp.exp u - 1)) =
+    Exp.exp u ^ 3 *
+        ((Exp.exp u - 1) * (sY * (n * (Exp.exp (rank K N s X) * Exp.exp u ^ 3)) + (eta + zeta) - rank K N s X)) +
+      z * (q * (Exp.exp u ^ 3 * ((Exp.exp u - 1) * (1 + (eta + zeta) * (Exp.exp u - 1)))))
+but is expected to have type
+  Exp.exp (N * 590069) ^ 3 *
+        ((sY *
+                (sY *
+                  ((eta + zeta) * (Exp.exp (rank K N s X) * (Exp.exp (N * 590069) ^ 3 * Exp.exp (N * 590069) ^ 3)))) +
+              (eta + zeta) +
+            r) *
+          (Exp.exp (N * 590069) - 1)) +
+      sY * (Exp.exp (N * 590069) ^ 3 * (Exp.exp (N * 590069) - 1)) =
+    Exp.exp (N * 590069) ^ 3 *
+        ((Exp.exp (N * 590069) - 1) *
+          (sY * (n * (Exp.exp (rank K N s X) * Exp.exp (N * 590069) ^ 3)) + (eta + zeta) - rank K N s X)) +
+      z *
+        (Exp.exp (N * 590069) *
+          (Exp.exp (N * 590069) ^ 3 * ((Exp.exp (N * 590069) - 1) * (1 + (eta + zeta) * (Exp.exp (N * 590069) - 1)))))
+'CompactFirstTransportSeed.first_from_transport' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

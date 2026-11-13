@@ -1,0 +1,5 @@
+# Direct-BFS kernel bands and carry interface
+
+`DirectBFSBandCarry.lean` defines kernel and rotated bands using the direct-BFS selector family. It proves the direct symbolic kernel's all-model band decomposition, modular rotation transport, exact flattening of the aligned coefficient family, and the heterogeneous `CarryInput` theorem from an explicit direct-BFS band congruence. The model carry slack is the separately checked direct-BFS mass, not the retained-original mass.
+
+The guarded author check `observations/directbfsbandcarry-attempt01/` exited 0 without diagnostics, printing axioms `propext`, `Classical.choice`, `Quot.sound` for all four declarations. Its object `/tmp/direct-bfs-band-carry-bpfeym65/DirectBFSBandCarry.olean` SHA-256 `e585f2a52aece195858cdfcbcbe764df2aa8984af9cbebdd018e97a7b1e51e7e`. Selected inputs/resources are pinned, with inherited source/object, package and dynamic ancestry limits and no independent Lean replay. The explicit graph congruence, full decoder, color conjugacy, controller, iPRA endpoint and external graph/file binding are not asserted by this generic arithmetic packet.

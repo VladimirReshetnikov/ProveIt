@@ -1,0 +1,112 @@
+import DiophantineConsistency.Compact44.BooleanEvenSum
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace FixedGraphParityCopy
+open DiophantineConsistency CompactBitRotation CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic BigOperators
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs Ordinary12FreeJ
+open ArithmeticBinaryCarry ArithmeticRepunit ArithmeticWindowDigits ArithmeticCyclicWord CompactHeterogeneousCarry
+open CompactGenericAlignedMass CompactConcreteIndexedMass CompactTwoBandFlatten
+attribute [local irreducible] rho paramKernel CompactFixedBeta.betaNat lowNat highNat
+attribute [local irreducible] Compact943Data.rows selectors copies
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_parity_copy (v : Fin 12 → V)
+    (hv : ∀ j,0<v j)
+    (hz : InternalZero (literal (fun j => (ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat j:ℤ))) v) :
+    let p := ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+    let q : V := 1+v 0*(p 0:V)
+    let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
+    let C : V := q-v 1-v 2
+    let a := GenericBandCarryFamily.coefficient (fun j : Aligned (Fin 943) (Fin 41) => (alignedCoeff selectors copies j:V))
+    ∃ N w s : V, 0<N ∧ q=Exp.exp ((67*8807)*N) ∧ v 0=rep (67*8807) N ∧
+      (67*8807)*N≤R ∧ w=Exp.exp (R-(67*8807)*N) ∧ v 5=q*w ∧
+      let E := R-67*(8807*N)
+      let T := temporalWord (8807*N) E C
+      let X := GenericBandCarryFamily.word (8807*N) C (bandOffsets position) T
+      CarryInput 67 (8807*N) (v 1) 1 (GenericBandCarryFamily.cap (ι:=Aligned (Fin 943) (Fin 41))) a X ∧
+      E%67=0 ∧ s<N ∧ (E/67)%(8807*N)=8807*s ∧
+      (∀ k<8807*N, k%8807=2195 →
+        dig 67 C (cyc (8807*N) k 1100)=dig 67 C (cyc (8807*N) k ((E/67)%(8807*N)))) ∧
+      (∀ k<8807*N, k%8807=3296 →
+        dig 67 C (cyc (8807*N) k 2201)=dig 67 C (cyc (8807*N) k ((E/67)%(8807*N)))) := by
+  obtain ⟨N,w,s,hN,hq,hJ,hle,hw,hv5,hcarry,haligned,hs,hshift,hreset⟩ :=
+    FixedGraphUniformReset.graph_uniform_reset v hv hz
+  obtain ⟨N',w',hN',hq',hJ',hle',hw',hv5',hcarry',hpar⟩ :=
+    FixedGraphSimpleParity.graph_simple_parity v hv hz
+  obtain ⟨N'',w'',hN'',hq'',hJ'',hle'',hw'',hv5'',hcarry'',h0'',hzero,hbool⟩ :=
+    FixedGraphSupportCarry.graph_support_carry v hv hz
+  dsimp only at *
+  have hNN1 : N'=N := by
+    apply mul_left_cancel₀ (by norm_num : ((67*8807):V)≠0)
+    exact exp_inj (hq'.symm.trans hq)
+  subst N'
+  have hNN2 : N''=N := by
+    apply mul_left_cancel₀ (by norm_num : ((67*8807):V)≠0)
+    exact exp_inj (hq''.symm.trans hq)
+  subst N''
+  let p := ports CompactFixedBeta.betaNat (paramKernel rho) lowNat highNat
+  let q : V := 1+v 0*(p 0:V)
+  let R : V := ((q-1)*(q-v 1)+v 2)*(q^2-1)+((p 2:V)+q*(p 3:V))*v 0
+  let C : V := q-v 1-v 2
+  let n : V := 8807*N
+  let E : V := R-67*n
+  let D : V := (E/67)%n
+  let T := temporalWord n E C
+  have hn : 0<n := mul_pos (by norm_num) hN
+  have hqexp : q=Exp.exp (67*n) := by dsimp [n]; rw [←mul_assoc]; exact hq
+  have hC : C<Exp.exp (67*n) := by
+    dsimp [C]
+    exact BandCarryInputs.source_word_bound q n (v 1) (v 2) hqexp (hv 1)
+  have hD : D%8807=0 := by rw [show D=8807*s from hshift,mod_mul_self_right]
+  refine ⟨N,w,s,hN,hq,hJ,hle,hw,hv5,hcarry,haligned,hs,hshift,?_,?_⟩
+  · intro k hk hp
+    have hk0 : 0<k := by
+      by_contra hh
+      have hz0 : k=0 := nonpos_iff_eq_zero.mp (not_lt.mp hh)
+      subst k
+      norm_num at hp
+    have hphase : (cyc n k 1100)%8807=1095 := by
+      have h := UniformBandInputs.source_phase N k 2195 1095 hN (by norm_num) (by norm_num) (by simpa using hp)
+      simpa only [show (2195-1095:ℕ)=1100 by decide,Nat.cast_ofNat] using h
+    have hx : dig 67 C (cyc n k 1100)≤1 := by
+      apply hbool _ (cyc_lt hn _ _)
+      rw [hphase]
+      norm_num
+    have hphaseD : (cyc n k D)%8807=2195 := by
+      rw [WholeBlockPhase.shift_phase N k D hN hD,hp]
+    have hy : dig 67 C (cyc n k D)≤1 := by
+      apply hbool _ (cyc_lt hn _ _)
+      rw [hphaseD]
+      norm_num
+    have hc0 := (hreset k hk (Or.inl hp)).2.1
+    have hp' := (hpar k hk hk0 (Or.inl hp)).2.1 hp
+    rw [hc0,add_zero,AlignedTemporalAnchor.digit C n E k hn hk hC haligned] at hp'
+    exact BooleanEvenSum.eq_of_even _ _ hx hy hp'
+  · intro k hk hp
+    have hk0 : 0<k := by
+      by_contra hh
+      have hz0 : k=0 := nonpos_iff_eq_zero.mp (not_lt.mp hh)
+      subst k
+      norm_num at hp
+    have hphase : (cyc n k 2201)%8807=1095 := by
+      have h := UniformBandInputs.source_phase N k 3296 1095 hN (by norm_num) (by norm_num) (by simpa using hp)
+      simpa only [show (3296-1095:ℕ)=2201 by decide,Nat.cast_ofNat] using h
+    have hx : dig 67 C (cyc n k 2201)≤1 := by
+      apply hbool _ (cyc_lt hn _ _)
+      rw [hphase]
+      norm_num
+    have hphaseD : (cyc n k D)%8807=3296 := by
+      rw [WholeBlockPhase.shift_phase N k D hN hD,hp]
+    have hy : dig 67 C (cyc n k D)≤1 := by
+      apply hbool _ (cyc_lt hn _ _)
+      rw [hphaseD]
+      norm_num
+    have hc0 := (hreset k hk (Or.inr (Or.inl hp))).2.1
+    have hp' := (hpar k hk hk0 (Or.inr hp)).2.2 hp
+    rw [hc0,add_zero,AlignedTemporalAnchor.digit C n E k hn hk hC haligned] at hp'
+    exact BooleanEvenSum.eq_of_even _ _ hx hy hp'
+#print axioms FixedGraphParityCopy.graph_parity_copy
+end FixedGraphParityCopy

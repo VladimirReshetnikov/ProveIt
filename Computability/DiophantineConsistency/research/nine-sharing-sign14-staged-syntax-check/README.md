@@ -1,0 +1,5 @@
+# Sign14 staged syntax: source-only client
+
+The sixteen checked stages define 44 shared subtrees, five residuals, a seed and sum-of-squares zero characterization. A local expansion checker compares rows to the independently audited [external sign14 candidate](../../reviews/nine-sharing-sign14-external-independent/README.md); this is not a Lean JSON-binding theorem. No natural tau lift, equivalence or iPRA endpoint is claimed.
+
+No-Lean preflight exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign14-staged-syntax-prelaunch-independent/README.md) passed. Author outer session 26538 exited 0 ([receipt](attempt01/outer-result.json)); 0 warning entries, no sorryAx; the [independent terminal audit](../../reviews/nine-sharing-sign14-staged-syntax-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck. Inherited provider observations are point-in-time.

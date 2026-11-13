@@ -1,0 +1,71 @@
+import DiophantineConsistency.ModelDifferenceRing
+import DiophantineConsistency.BFS943.Trace75IntegralTransport
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed fact-level signed projection q∣3X. The exact index, oriented
+main balance and graph/port bindings are explicit premises. No Lean check. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.ResidueThreeProjectionDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- With the residue-adjusted main balance and exact-index decomposition,
+the model-natural divisor q divides 3X. No Bézout premise occurs. -/
+theorem q_dvd_threeX (q X Y c k R gamma main s w : V)
+    (hq : 0<q) (hs : 0<s) (hY : Y=q*(q*q)*s)
+    (hindex : k=R+1+4*(X*Y*Y)*w)
+    (hbalance :
+      let a := X*Y+Y
+      let H := 3+4*a
+      let U := Y*(q*q)
+      U*main+H*k=U*(X+a*c)+H*(U*gamma+X*Y*q+R+1)) : q∣3*X := by
+  let a : V := X*Y+Y
+  let H : V := 3+4*a
+  let U : V := Y*(q*q)
+  let S : V := Y*q
+  have hYpos : 0<Y := by rw [hY]; exact mul_pos (mul_pos hq (mul_pos hq hq)) hs
+  have hSpos : 0<S := mul_pos hYpos hq
+  have hSRpos : (0 : DiffRing V)<ι S := by
+    simpa only [map_zero] using (ι_lt_ι.mpr hSpos)
+  have hBalR := congrArg (ι : V →+* DiffRing V) hbalance
+  have hIdxR := congrArg (ι : V →+* DiffRing V) hindex
+  have hYR := congrArg (ι : V →+* DiffRing V) hY
+  simp only [map_add,map_mul,map_one,map_ofNat] at hBalR hIdxR hYR
+  have hYsq : (ι Y : DiffRing V)*ι Y=ι U*ι q*ι s := by
+    dsimp only [U]
+    simp only [map_mul]
+    linear_combination (ι Y)*hYR
+  let witness : DiffRing V := ι main+4*ι H*ι X*ι q*ι s*ι w-ι X-ι a*ι c-ι H*ι gamma
+  have hproduct : (ι H : DiffRing V)*ι X*ι S=ι U*witness := by
+    dsimp only [witness,S]
+    simp only [map_mul]
+    linear_combination -hBalR+ι H*hIdxR+4*ι H*ι X*ι w*hYsq
+  have hUS : (ι U : DiffRing V)=ι S*ι q := by
+    dsimp only [U,S]
+    simp only [map_mul]
+    ring
+  have hHX : (ι q : DiffRing V)∣ι H*ι X := by
+    refine ⟨witness,?_⟩
+    apply mul_left_cancel₀ (ne_of_gt hSRpos)
+    calc
+      ι S*(ι H*ι X)=(ι H*ι X)*ι S := by ring
+      _=ι U*witness := hproduct
+      _=ι S*(ι q*witness) := by rw [hUS]; ring
+  obtain ⟨z,hz⟩ := hHX
+  have hHrep : (ι H : DiffRing V)=3+4*(ι X*(ι q*(ι q*ι q)*ι s)+(ι q*(ι q*ι q)*ι s)) := by
+    dsimp only [H,a]
+    rw [hY]
+    simp only [map_add,map_mul,map_ofNat]
+  have hthree : (ι q : DiffRing V)∣ι (3*X) := by
+    refine ⟨z-4*(ι q*ι q*ι s)*(ι X+1)*ι X,?_⟩
+    rw [hHrep] at hz
+    simp only [map_mul,map_ofNat]
+    linear_combination hz
+  exact Trace75IntegralTransport.natural_dvd_of_signed q (3*X) hthree
+end DiophantineConsistency.ResidueThreeProjectionDraft
+#print axioms DiophantineConsistency.ResidueThreeProjectionDraft.q_dvd_threeX

@@ -1,0 +1,5 @@
+# Isolated fixed-radix low-mask attempts
+
+The three retained attempts try to specialize the checked [variable-radix low-mask identity](../ten-positive-80-bfs-low-generic/README.md) to `rho = 2^67` while isolating it from the iPRA client. Attempt01 uses the explicitly copied support; attempt02 aliases the existing support and avoids rewriting it under the weighted sum. Attempt03 uses the identical support expression on both sides. All three failed under the 3-GiB Lean kernel limit; attempt02 also reported a recursion-depth failure. Their exact sources, runners, diagnostics, resource samples and attempted outputs are retained in `observations/`.
+
+These attempts prove no fixed-radix theorem and do not alter the passing generic identity. The existing `CompactConcreteMask.concrete_recipe` theorem separately states the low-mask finite-sum recipe in its original source; the unresolved task is joining that closed recipe to this client's selected `lowNat` and displayed ports without triggering excessive reduction. PDF and other file semantics remain external.

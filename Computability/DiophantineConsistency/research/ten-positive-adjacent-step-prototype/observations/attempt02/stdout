@@ -1,0 +1,38 @@
+/tmp/tenpositive-adjacent-step-uvv17dp8/AdjacentStep.lean:63:13: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  ((1 + 2 * ι B) * ι r - 2 * (1 + ι B) * ι m * ι v) * ((1 + 2 * ι B) * ι r - 2 * (1 + ι B) * ι m * ι v)
+in the target expression
+  (1 + ι B) * (ι m * ι v' * (ι m * ι v')) =
+    ι m * ι m +
+      ι B * (((1 + 2 * ι B) * ι r - 2 * (1 + ι B) * (ι m * ι v)) * ((1 + 2 * ι B) * ι r - 2 * (1 + ι B) * (ι m * ι v)))
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+B m v r : V
+hB : 0 < B
+hm : 0 < m
+hv : 1 < v
+hu : Bez r m 1
+h✝ : (1 + B) * (m * v * (m * v)) = m * m + B * (r * r)
+t : V
+ht : B = m * m * t
+v' : V := magnitude ((1 + 2 * B) * v, 2 * m * t * r)
+r' : V := magnitude ((1 + 2 * B) * r, 2 * (1 + B) * m * v)
+hlt : v' < v
+hbez : Bez r' m 1
+hx : magnitude ((1 + 2 * B) * (m * v), 2 * B * r) = m * v'
+h : (1 + B) * (m * v * (m * v)) = m * m + B * (r * r)
+hcast : (1 + ι B) * (ι m * ι v * (ι m * ι v)) = ι m * ι m + ι B * (ι r * ι r)
+hrcast :
+  ((1 + 2 * ι B) * ι r - 2 * (1 + ι B) * ι m * ι v) * ((1 + 2 * ι B) * ι r - 2 * (1 + ι B) * ι m * ι v) =
+    ι (magnitude ((1 + 2 * B) * r, 2 * (1 + B) * m * v)) * ι (magnitude ((1 + 2 * B) * r, 2 * (1 + B) * m * v))
+hxcast :
+  ((1 + 2 * ι B) * (ι m * ι v) - 2 * ι B * ι r) * ((1 + 2 * ι B) * (ι m * ι v) - 2 * ι B * ι r) =
+    ι m * ι v' * (ι m * ι v')
+hnorm :
+  (1 + ι B) * (ι m * ι v' * (ι m * ι v')) =
+    ι m * ι m +
+      ι B * (((1 + 2 * ι B) * ι r - 2 * (1 + ι B) * (ι m * ι v)) * ((1 + 2 * ι B) * ι r - 2 * (1 + ι B) * (ι m * ι v)))
+⊢ ∃ v' r', 0 < v' ∧ v' < v ∧ Bez r' m 1 ∧ (1 + B) * (m * v' * (m * v')) = m * m + B * (r' * r')
+'TenPositiveAdjacentStep.magnitude_square_cast' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TenPositiveAdjacentStep.adjacent_step' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

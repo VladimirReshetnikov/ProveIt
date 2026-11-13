@@ -1,0 +1,3 @@
+# Independent terminal audit: sign20 count-shape diagnostic
+
+The independent checker exited 0. Author-observed outer session 18070 exited 0 with the stage and final postflight successful. Lean checked all 18 source inequalities distinguishing N0 and Dc2 from the other residual positions; two selected axiom reports contain propext, with no warnings or sorryAx. Source/object/import/log pins, guards and overlays were checked. The imported provider is a successful child of an overall failed parent, explicitly retained. No count, full coefficient or degree lower bound is established by this packet.

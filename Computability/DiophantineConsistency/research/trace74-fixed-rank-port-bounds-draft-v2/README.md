@@ -1,0 +1,3 @@
+# Symbolic-port bound discharge draft
+
+This source specializes the checked symbolic-port rank/saturation client using the three fixed-mask inequalities supplied by `CompactFixedBeta.bounds` for the same positive `J`. It retains the abstract tuple's three fixed-slot equalities, the individual `F/C` ranges, radix equality and both population hypotheses. It does not derive them from a graph zero. The [independent source review](../../reviews/trace74-fixed-rank-port-bounds-v2-source-independent/README.md) and [guarded check with independent result audit](../trace74-fixed-rank-port-bounds-rebuild/README.md) passed.

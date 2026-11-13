@@ -1,0 +1,5 @@
+# Proposed direct sign28 iPRA endpoint
+
+Three separately compiled stages propose native, standard and translated equivalences for the sign28 direct expression using its checked concrete polynomial bridge and arity-generic endpoint framework. The first stage defines a local expression abbreviation. No Jones reduction is involved. This proposal inherits the sign31 bridge's source ancestry and does not assert a Lean degree bound, nine-variable result or external JSON/coefficient binding.
+
+The runner authenticates the successful concrete bridge provider, surveys previously guarded direct framework objects, and verifies each freshly produced stage and overlay before advancing. Deeper ancestry is inherited. Author no-Lean preflight returned 0 and independent prelaunch passed, but native compilation failed as recorded in [attempt01](attempt01/README.md); the [independent failure audit](../../reviews/nine-sharing-sign28-endpoint-failure-frontier-independent/README.md) passed. No endpoint is credited from this run. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.

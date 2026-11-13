@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 50913 exited 0. Stage and postflight passed; frozen state, source/object/logs, both direct SeedLines and parametric-decoder provider routes and guarded overlays match, including the recorded 1,252-target overlap. The cache and transition-row reports are `[propext, Quot.sound]` and `[propext, Classical.choice, Quot.sound]` respectively; no warning or `sorryAx` appears. The theorems cover the 430 in-Lean action cache and transition rows driven by the explicit decimal lines. Full table/PDF/file binding and complete transitive source ancestry remain separate. The numeric outer receipt itself does not hash the state. No Lean was run.

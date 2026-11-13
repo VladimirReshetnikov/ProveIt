@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS. The pinned source assumes the embedded ring equation ιx·ιx=ιy+1 and proposes a model predecessor u with x=u+1 and y=u(u+2). The intended proof rejects x=0 via nonnegativity and 0<1, uses zero_or_succ, the ring identity, cancellation and ι injectivity. The runner binds the checked sign28 square-sum provider/guards; independent no-Lean preflight passed.
+
+Order lemma names, numeral-cast simplification, elaboration and resource success remain untested. The equation is an explicit hypothesis; extracting it from sign28 seed zero and proving a sign27 zero bridge/endpoint are separate. Deeper ancestry is inherited.

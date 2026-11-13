@@ -1,0 +1,86 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "program": "local_argument_bytes.py",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "returncode": 1,
+      "stdout": ""
+    },
+    {
+      "program": "local_argument_bytes.py",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "returncode": 1,
+      "stdout": ""
+    },
+    {
+      "program": "local_loop_joint.py",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "returncode": 1,
+      "stdout": ""
+    },
+    {
+      "program": "local_loop_joint.py",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "returncode": 1,
+      "stdout": ""
+    },
+    {
+      "program": "UNSOUND_MUTANT_local_loop_joint.py",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "returncode": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "program": "UNSOUND_MUTANT_local_loop_joint.py",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "returncode": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "program": "local_loop_joint_separate.py",
+      "optimized": false,
+      "expected_accept": false,
+      "actual_accept": false,
+      "returncode": 1,
+      "stdout": ""
+    },
+    {
+      "program": "local_loop_joint_separate.py",
+      "optimized": true,
+      "expected_accept": false,
+      "actual_accept": false,
+      "returncode": 1,
+      "stdout": ""
+    },
+    {
+      "program": "UNSOUND_MUTANT_local_loop_joint_separate.py",
+      "optimized": false,
+      "expected_accept": true,
+      "actual_accept": true,
+      "returncode": 0,
+      "stdout": "ACCEPT\n"
+    },
+    {
+      "program": "UNSOUND_MUTANT_local_loop_joint_separate.py",
+      "optimized": true,
+      "expected_accept": true,
+      "actual_accept": true,
+      "returncode": 0,
+      "stdout": "ACCEPT\n"
+    }
+  ],
+  "meaning": "The valid local kernels reject 0=S0. Deliberately mutating their immutable tuple context to an in-place list leaks a private major-proof assumption and accepts the false goal."
+}

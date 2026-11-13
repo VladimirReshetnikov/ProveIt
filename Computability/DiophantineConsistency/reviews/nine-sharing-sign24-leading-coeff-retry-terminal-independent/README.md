@@ -1,0 +1,3 @@
+# Independent sign24 leading-coefficient ingredients terminal audit
+
+Independent checker session 69701 exited 0 against author outer session 49353 (exit 0). All four Lean stages and postflight passed without warnings or `sorryAx`: N0 row/axis identity, diagonal degree nonincrease, arbitrary-port bounds for other residuals, and coefficient one for the isolated N0 square. The final coefficient theorem reports `[propext, Classical.choice, Quot.sound]`; the checker verified source, object, direct guards, overlay and expression provider observations. The full sum's coefficient, overall lower bound and JSON/PDF correspondence remain unproved by these ingredients.

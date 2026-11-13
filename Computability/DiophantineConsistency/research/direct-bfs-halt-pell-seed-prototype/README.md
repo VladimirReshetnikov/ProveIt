@@ -1,0 +1,7 @@
+# Direct-BFS halt to calibrated Pell seeds and positive transport
+
+`DirectBFSHaltPellSeed.halt_seeds_transport` proves in every IΣ₁ model that internal machine-215 halt yields one definable Boolean pulse and the **same** canonical direct-BFS packed word with complete `PackingInput`, calibrated rank, both outer and auxiliary Pell seed families, and a positive shifted-transport witness. It uses the actual BFS symbolic kernel, not the distinct original compact symbolic K. The only hypothesis is the displayed internal halt; all constructed witnesses and their positivity, bounds and equations are in the theorem's conclusion.
+
+This packet does not yet construct the final first-carrier/graph valuation, identify the symbolic K with the external gzip/JSON coefficient inside Lean, prove a full model equivalence, or establish iPRA provability. The endpoint still needs a coherent combined provider audit.
+
+Accepted author check `observations/directbfshaltpell-attempt01/`: Lean and outer runner exited 0 without diagnostics; the enforced axiom report contains only `propext`, `Classical.choice`, and `Quot.sound`. Output `/tmp/direct-bfs-haltpell-8615py5_/DirectBFSHaltPellSeed.olean`, SHA-256 `8d9892b6ff938f9766c042609e1a4bdd78da4769b6b2bd946fb7c275ddcd7762`. Direct imports and selected additional objects were pinned and rechecked. Project, package-transitive, dynamic, and historical source-to-object ancestry remain inherited limitations; no independent Lean replay is claimed.

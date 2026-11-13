@@ -1,0 +1,188 @@
+--- old/main
++++ new/main
+@@ -1,4 +1,4 @@
+-import Natural79ZeroWJPos
++import Natural79ConcreteUnits
+ import DiophantineConsistency.Compact44.ReducedNormSigned
+ import DiophantineConsistency.ArithmeticAdaptiveQuotients2011
+ 
+@@ -13,7 +13,7 @@
+ open scoped LO.FirstOrder.Arithmetic
+ open AdaptiveEquationSyntax2011 ModelDifferenceRing
+ open ArithmeticAdaptiveFactorMagnitude2011 ArithmeticAdaptiveQuotients2011
+-open Natural79ResidueShapesDraft Natural79ConcreteUnitsDraft Natural79ZeroWJPosDraft
++open Natural79ResidueShapesDraft Natural79ConcreteUnitsDraft
+ open FactorResidues74Draft
+ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+ 
+@@ -25,6 +25,18 @@
+ def scale (beta : V) (v : Fin 14 → V) : V := y beta v*(q beta v*q beta v)
+ def normRhs (beta : V) (v : Fin 14 → V) : V :=
+   1+(y beta v*y beta v+(4*y beta v+3))*(c beta v*c beta v)
++
++/-- The copied pair-unit evaluation lemma; attribution: Natural79ZeroWJPosDraft. -/
++theorem eval_one_of_pair_unit {σ : Type*} (e : Expr σ) (v : σ → V)
++    (hu : (pairEval e v).1=(pairEval e v).2+1) :
++    e.evalRing (fun j => ι (v j))=1 := by
++  have hu' := congrArg (ι : V →+* DiffRing V) hu
++  simp only [map_add,map_one] at hu'
++  have he := split_evalRing e (fun j => ι (v j))
++  rw [← evalSemiring_map ι, ← evalSemiring_map ι] at he
++  change ι (pairEval e v).1-ι (pairEval e v).2 = e.evalRing (fun j => ι (v j)) at he
++  linarith
++
+ 
+ /-- Main factor's evaluation is its exact literal pattern in the difference
+ ring; no represented ports, zero or positivity are assumed in this cut. -/
+@@ -67,9 +79,8 @@
+   simp only [map_add,map_mul,map_one,map_ofNat] at *
+   nlinarith
+ 
+-/-- When beta and J are positive, the positive s shift makes U positive. -/
+-theorem scale_pos (beta : V) (v : Fin 14 → V)
+-    (hb : 0<beta) (hJ : 0<v 0) : 0<scale beta v := by
++/-- The positive s shift makes U positive for every natural beta and J. -/
++theorem scale_pos (beta : V) (v : Fin 14 → V) : 0<scale beta v := by
+   have hq : 0<q beta v := by dsimp [q]; exact add_pos_of_pos_of_nonneg (by simp) (by simp)
+   have hy : 0<y beta v := by
+     dsimp [y]
+@@ -80,7 +91,7 @@
+ /-- Proposed signed quotient of the actual main root. Both signs are
+ retained; no sign or positivity of the root is assumed. -/
+ theorem signed_quotient_of_zero_w_zero (p : Fin 4 → ℤ) (beta : V) (v : Fin 14 → V)
+-    (hbeta : (p 0 : DiffRing V)=ι beta) (hb : 0<beta) (hJ : 0<v 0)
++    (hbeta : (p 0 : DiffRing V)=ι beta)
+     (hz : InternalZero (P79NaturalForcedW.graph p).output v) (hw : v 6=0) :
+     ∃ d : DiffRing V,
+       (atoms p).Dstar.evalRing (fun j => ι (v j))=ι (scale beta v)*d ∧
+@@ -93,7 +104,7 @@
+     apply ι_injective
+     rw [← hz2, hnorm]
+   obtain ⟨t,ht,ht2⟩ := scaled_quotient (scale beta v) z (normRhs beta v)
+-    (scale_pos beta v hb hJ) hzNat
++    (scale_pos beta v) hzNat
+   rcases hsgn with hp | hn
+   · refine ⟨ι t, ?_, ?_⟩
+     · rw [hp,ht,map_mul]
+--- old/root
++++ new/root
+@@ -60,12 +60,12 @@
+     _=H*shift := by rw [hroot]; ring
+ 
+ /-- A literal 79 zero at w=0 yields the signed difference-ring divisibility
+-`(4Y+3) ∣ 3q²`, conditional on the explicit represented positive beta
+-and positive J hypotheses used by the signed quotient client. No positivity
+-of gamma or sign of Dstar, nor K0/MC/MF representation, is assumed. -/
++`(4Y+3) ∣ 3q²`, conditional only on the represented natural beta hypothesis used by the
++signed quotient client. No positivity of beta, J or gamma, no sign of Dstar,
++and no K0/MC/MF representation is assumed. -/
+ theorem signed_dvd_three_square_of_zero_w_zero
+     (p : Fin 4 → ℤ) (beta : V) (v : Fin 14 → V)
+-    (hbeta : (p 0 : DiffRing V)=ι beta) (hb : 0<beta) (hJ : 0<v 0)
++    (hbeta : (p 0 : DiffRing V)=ι beta)
+     (hz : InternalZero (P79NaturalForcedW.graph p).output v) (hw : v 6=0) :
+     (4*ι (y beta v)+3 : DiffRing V) ∣
+       3*ι (q beta v)*ι (q beta v) := by
+@@ -76,7 +76,7 @@
+   let H : DiffRing V := 4*Y+3
+   let D : DiffRing V := (atoms p).Dstar.evalRing (fun j => ι (v j))
+   let shift : DiffRing V := (shiftExpr p).evalRing (fun j => ι (v j))
+-  obtain ⟨d,hquot,hnorm⟩ := signed_quotient_of_zero_w_zero p beta v hbeta hb hJ hz hw
++  obtain ⟨d,hquot,hnorm⟩ := signed_quotient_of_zero_w_zero p beta v hbeta hz hw
+   have hroot : D=U*Y*C+H*shift := by
+     simpa [D,U,Y,C,H,shift] using represented_root_zero_w p beta v hbeta hw
+   have hq : D=U*d := by simpa [D,U] using hquot
+--- old/div
++++ new/div
+@@ -1,6 +1,5 @@
+ import Natural79ZeroWRootCut
+ import Natural79ZeroWMainNorm
+-import Natural79ZeroWJPos
+ import NaturalDvdReflectionSlim
+ 
+ /-! Source-only: reflect signed divisibility and contradict its natural
+@@ -15,7 +14,6 @@
+ open scoped LO.FirstOrder.Arithmetic
+ open AdaptiveEquationSyntax2011 ModelDifferenceRing
+ open Natural79ZeroWMainNormDraft Natural79ZeroWRootCutDraft
+-open Natural79ZeroWJPosDraft
+ variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+ 
+ /-- Reflect the particular difference-ring divisor to natural-model values. -/
+@@ -26,9 +24,9 @@
+   simpa only [map_add,map_mul,map_ofNat] using hd
+ 
+ /-- Pure natural-model size contradiction, with the q and Y bounds explicit. -/
+-theorem no_divisor_in_window (Q Y : V) (hq : 2≤Q) (hY : Q*Q*Q≤Y)
++theorem no_divisor_in_window (Q Y : V) (hq : 1≤Q) (hY : Q*Q*Q≤Y)
+     (hd : (4*Y+3) ∣ 3*Q*Q) : False := by
+-  have hQ : 0<Q := lt_of_lt_of_le (by simp : (0:V)<2) hq
++  have hQ : 0<Q := lt_of_lt_of_le (by simp : (0:V)<1) hq
+   have hQ1 : 1≤Q := pos_iff_one_le.mp hQ
+   have hqq : 0<Q*Q := mul_pos hQ hQ
+   have hqqq : Q*Q≤Q*Q*Q := le_mul_of_one_le_right (by simp) hQ1
+@@ -41,19 +39,16 @@
+   have hle : 4*Y+3≤3*Q*Q := Arithmetic.le_of_dvd hpos hd
+   exact (not_le_of_gt hlt) hle
+ 
+-/-- A literal 79 zero cannot have w=0 under represented natural K0 and
+-represented positive beta. This client assumes neither gamma positivity nor
+-any representation or bound for MC and MF. All imported source drafts and
+-this theorem remain unelaborated. -/
+-theorem zero_w_impossible (p : Fin 4 → ℤ) (beta K : V) (v : Fin 14 → V)
+-    (hbeta : (p 0 : DiffRing V)=ι beta) (hK : (p 1 : DiffRing V)=ι K)
+-    (hb : 0<beta) (hz : InternalZero (P79NaturalForcedW.graph p).output v)
++/-- A literal 79 zero cannot have w=0 under represented natural beta.
++K0, MC and MF are arbitrary integer ports; beta and J may be zero.
++All imported source drafts and this theorem remain unelaborated. -/
++theorem zero_w_impossible (p : Fin 4 → ℤ) (beta : V) (v : Fin 14 → V)
++    (hbeta : (p 0 : DiffRing V)=ι beta)
++    (hz : InternalZero (P79NaturalForcedW.graph p).output v)
+     (hw : v 6=0) : False := by
+-  have hJ : 0<v 0 := J_pos_of_zero_w_zero p K v hK hz hw
+-  have hsigned := signed_dvd_three_square_of_zero_w_zero p beta v hbeta hb hJ hz hw
++  have hsigned := signed_dvd_three_square_of_zero_w_zero p beta v hbeta hz hw
+   have hnatural := natural_dvd_three_square (q beta v) (y beta v) hsigned
+-  have hprod : 1≤v 0*beta := pos_iff_one_le.mp (mul_pos hJ hb)
+-  have hq : 2≤q beta v := by dsimp [q]; nlinarith
++  have hq : 1≤q beta v := by dsimp [q]; simp
+   have hY : q beta v*q beta v*q beta v≤y beta v := by
+     dsimp [y]
+     have hs : 1≤v 7+1 := by simp
+@@ -62,14 +57,13 @@
+       _≤(q beta v*(q beta v*q beta v))*(v 7+1) := le_mul_of_one_le_right (by simp) hs
+   exact no_divisor_in_window (q beta v) (y beta v) hq hY hnatural
+ 
+-/-- The target positive-w statement for any ports satisfying the explicit
+-beta and K0 representations and positive-beta hypothesis. -/
+-theorem w_pos_of_zero (p : Fin 4 → ℤ) (beta K : V) (v : Fin 14 → V)
+-    (hbeta : (p 0 : DiffRing V)=ι beta) (hK : (p 1 : DiffRing V)=ι K)
+-    (hb : 0<beta) (hz : InternalZero (P79NaturalForcedW.graph p).output v) : 0<v 6 := by
++/-- Positive w for any literal zero with represented natural beta. -/
++theorem w_pos_of_zero (p : Fin 4 → ℤ) (beta : V) (v : Fin 14 → V)
++    (hbeta : (p 0 : DiffRing V)=ι beta)
++    (hz : InternalZero (P79NaturalForcedW.graph p).output v) : 0<v 6 := by
+   apply pos_iff_ne_zero.mpr
+   intro hw
+-  exact zero_w_impossible p beta K v hbeta hK hb hz hw
++  exact zero_w_impossible p beta v hbeta hz hw
+ 
+ end DiophantineConsistency.Natural79ZeroWDivisibilityDraft
+ 
+--- old/endpoint
++++ new/endpoint
+@@ -31,13 +31,9 @@
+   intro V _ _
+   have hbeta : (CompactSymbolicModelIff.p 0 : DiffRing V)=ι (CompactFixedBeta.betaNat : V) :=
+     Natural82EndpointDraft.symbolic_beta_representation
+-  have hb : 0 < (CompactFixedBeta.betaNat : V) :=
+-    Natural82EndpointDraft.symbolic_beta_positive
+-  have hK : (CompactSymbolicModelIff.p 1 : DiffRing V)=ι (paramKernel rho : V) :=
+-    StrictK0SymbolicDraft.port_one_representation
+   have he := Natural79WShiftDraft.exists_zero_iff_of_positive (V:=V) CompactSymbolicModelIff.p
+     (fun v hv => Natural79ZeroWDivisibilityDraft.w_pos_of_zero CompactSymbolicModelIff.p
+-      (CompactFixedBeta.betaNat : V) (paramKernel rho : V) v hbeta hK hb hv)
++      (CompactFixedBeta.betaNat : V) v hbeta hv)
+   change (∃ v : Fin 14 → V, InternalZero expression v) ↔
+     ∃ w : Fin 14 → V, InternalZero Natural80EndpointDraft.expression w at he
+   constructor

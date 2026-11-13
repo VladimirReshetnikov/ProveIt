@@ -1,0 +1,104 @@
+/tmp/tenpositive-80to90main-_dyr1p3h/Direct80To90Main.lean:23:8: warning: declaration uses `sorry`
+case refine_2.hoff
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp2 : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+r eta zeta gamma h : V
+hr : 0 < r
+heta : 0 < eta
+hzeta : 0 < zeta
+hgamma : 0 < gamma
+hR : rankNat p v = 2 * r + 1
+hC : ycoord (2 * r + 1) (Y p v * (X p v + 1)) = 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) * Y p v + eta
+hK : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = eta + zeta
+hproj :
+  xcoord (2 * r + 1) (Y p v * (X p v + 1)) =
+    X p v + Y p v * (X p v + 1) * ycoord (2 * r + 1) (Y p v * (X p v + 1)) + (4 * (Y p v * (X p v + 1)) + 3) * gamma
+hoff : 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1) = rankNat p v + 1 + Y p v * (q p v * q p v) * h
+h31 : 31 ≤ ↑(p 0)
+_hl : ↑(p 2) < ↑(p 0)
+_hh : ↑(p 3) < 2 * ↑(p 0)
+_hodd : ∃ u, ↑(p 0) = 2 * u + 1
+hb : 0 < ↑(p 0)
+a : V := Y p v * (X p v + 1)
+K : V := 2 * ycoord (r + 1) (2 * (X p v * Y p v * Y p v - 1) + 1)
+C : V := ycoord (2 * r + 1) a
+d : V := xcoord (2 * r + 1) a
+hnorm : d * d = 1 + (a * a + (4 * a + 3)) * C * C
+hnat : Expr.evalRing (fun j => ι (v j)) (TenPositive80ResidueBinding.rExpr (integerPorts p)) = ι (rankNat p v)
+hRank :
+  ι (rankNat p v) =
+    (ι (v 2) + (1 + ι (v 0) * ι ↑(p 0) - ι (v 1)) * (ι (v 0) * ι ↑(p 0))) *
+        ((1 + ι (v 0) * ι ↑(p 0)) * (1 + ι (v 0) * ι ↑(p 0)) - 1) +
+      ι (v 0) * (ι ↑(p 2) + ι ↑(p 3) * (1 + ι (v 0) * ι ↑(p 0)))
+⊢ ι (![v 0, v 1, v 2, 1, 1, v 5, v 6, 1, eta, zeta, 1, gamma + h] 8) +
+      ι (![v 0, v 1, v 2, 1, 1, v 5, v 6, 1, eta, zeta, 1, gamma + h] 9) =
+    (ι (![v 0, v 1, v 2, 1, 1, v 5, v 6, 1, eta, zeta, 1, gamma + h] 2) +
+              (1 + ι (v 0) * ↑(p 0) - ι (v 1)) * (ι (v 0) * ↑(p 0))) *
+            ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0)) - 1) +
+          ι (v 0) * (↑(p 2) + ↑(p 3) * (1 + ι (v 0) * ↑(p 0))) +
+        1 +
+      (1 + ι (v 0) * ↑(p 0)) * ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) *
+            ι (![v 0, v 1, v 2, 1, 1, v 5, v 6, 1, eta, zeta, 1, gamma + h] 6) *
+          ((1 + ι (v 0) * ↑(p 0)) * (1 + ι (v 0) * ↑(p 0))) *
+        ι h
+/tmp/tenpositive-80to90main-_dyr1p3h/Direct80To90Main.lean:60:68: warning: This simp argument is unused:
+  Matrix.cons_val_fin_one
+
+Hint: Omit it from the simp argument list.
+  simp only [̵v̵a̵l̵u̵a̵t̵i̵o̵n̵,̵M̵a̵t̵r̵i̵x̵.̵c̵o̵n̵s̵_̵v̵a̵l̵_̵z̵e̵r̵o̵,̵M̵a̵t̵r̵i̵x̵.̵c̵o̵n̵s̵_̵v̵a̵l̵_̵o̵n̵e̵,̵M̵a̵t̵r̵i̵x̵.̵c̵o̵n̵s̵_̵v̵a̵l̵_̵f̵i̵n̵_̵o̵n̵e̵,̵
+  ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵ ̵M̵a̵t̵r̵i̵x̵.̵c̵o̵n̵s̵_̵v̵a̵l̵_̵s̵u̵c̵c̵,̵i̵n̵t̵e̵g̵e̵r̵P̵o̵r̵t̵s̵,̵I̵n̵t̵.̵c̵a̵s̵t̵_̵n̵a̵t̵C̵a̵s̵t̵,̵m̵a̵p̵_̵n̵a̵t̵C̵a̵s̵t̵,̵m̵a̵p̵_̵a̵d̵d̵,̵m̵a̵p̵_̵m̵u̵l̵,̵m̵a̵p̵_̵o̵n̵e̵]̵[̲v̲a̲l̲u̲a̲t̲i̲o̲n̲,̲ ̲M̲a̲t̲r̲i̲x̲.̲c̲o̲n̲s̲_̲v̲a̲l̲_̲z̲e̲r̲o̲,̲ ̲M̲a̲t̲r̲i̲x̲.̲c̲o̲n̲s̲_̲v̲a̲l̲_̲o̲n̲e̲,̲ ̲M̲a̲t̲r̲i̲x̲.̲c̲o̲n̲s̲_̲v̲a̲l̲_̲s̲u̲c̲c̲,̲
+  ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲ ̲i̲n̲t̲e̲g̲e̲r̲P̲o̲r̲t̲s̲,̲ ̲I̲n̲t̲.̲c̲a̲s̲t̲_̲n̲a̲t̲C̲a̲s̲t̲,̲ ̲m̲a̲p̲_̲n̲a̲t̲C̲a̲s̲t̲,̲ ̲m̲a̲p̲_̲a̲d̲d̲,̲ ̲m̲a̲p̲_̲m̲u̲l̲,̲ ̲m̲a̲p̲_̲o̲n̲e̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/tenpositive-80to90main-_dyr1p3h/Direct80To90Main.lean:61:8: warning: This simp argument is unused:
+  Matrix.cons_val_succ
+
+Hint: Omit it from the simp argument list.
+  simp only [valuation, ̲Matrix.cons_val_zero, ̲Matrix.cons_val_one, ̲Matrix.cons_val_fin_one,
+          M̵a̵t̵r̵ix̵.̵c̵o̵ns̵_̵v̵a̵l̵_̵s̵u̵c̵c̵,̵i̵n̵tegerPorts, ̲Int.cast_natCast, ̲map_natCast, ̲map_add, ̲map_mul, ̲map_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/tenpositive-80to90main-_dyr1p3h/Direct80To90Main.lean:61:59: warning: This simp argument is unused:
+  map_natCast
+
+Hint: Omit it from the simp argument list.
+  simp only [valuation, ̲Matrix.cons_val_zero, ̲Matrix.cons_val_one, ̲Matrix.cons_val_fin_one,
+          Matrix.cons_val_succ, ̲integerPorts, ̲Int.cast_natCast, ̲map_n̵at̵C̵a̵s̵t̵,̵m̵a̵p̵_̵a̵dd, ̲map_mul, ̲map_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/tenpositive-80to90main-_dyr1p3h/Direct80To90Main.lean:61:71: warning: This simp argument is unused:
+  map_add
+
+Hint: Omit it from the simp argument list.
+  simp only [valuation, ̲Matrix.cons_val_zero, ̲Matrix.cons_val_one, ̲Matrix.cons_val_fin_one,
+          Matrix.cons_val_succ, ̲integerPorts, ̲Int.cast_natCast, ̲map_natCast, ̲map_a̵d̵d̵,̵ma̵p̵_̵m̵ul, ̲map_one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/tenpositive-80to90main-_dyr1p3h/Direct80To90Main.lean:61:79: warning: This simp argument is unused:
+  map_mul
+
+Hint: Omit it from the simp argument list.
+  simp only [valuation, ̲Matrix.cons_val_zero, ̲Matrix.cons_val_one, ̲Matrix.cons_val_fin_one,
+          Matrix.cons_val_succ, ̲integerPorts, ̲Int.cast_natCast, ̲map_natCast, ̲map_a̵d̵d̵a̲d̲d̲, ̲map_m̵u̵l̵,̵m̵a̵p̵_̵one]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/tenpositive-80to90main-_dyr1p3h/Direct80To90Main.lean:61:87: warning: This simp argument is unused:
+  map_one
+
+Hint: Omit it from the simp argument list.
+  simp only [valuation, ̲Matrix.cons_val_zero, ̲Matrix.cons_val_one, ̲Matrix.cons_val_fin_one,
+          Matrix.cons_val_succ, ̲integerPorts, ̲Int.cast_natCast, ̲map_natCast, ̲map_add, ̲map_mul,̵m̵a̵p̵_̵o̵n̵e̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/tenpositive-80to90main-_dyr1p3h/Direct80To90Main.lean:41:22: warning: Used `tac1 <;> tac2` where `(tac1; tac2)` would suffice
+
+Note: This linter can be disabled with `set_option linter.unnecessarySeqFocus false`
+'TenPositive80To90Main.graph_main_factor' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

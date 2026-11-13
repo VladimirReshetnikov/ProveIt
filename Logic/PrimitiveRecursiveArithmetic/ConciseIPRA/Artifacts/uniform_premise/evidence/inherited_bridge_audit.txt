@@ -1,0 +1,164 @@
+# Independent audit of the inherited full-iPRA bridge
+
+Sources inspected in the current certified-zero archive:
+
+- `reference/inherited_choice_basis.tex`
+- `reference/scalar_predecessor.tex`
+- `reference/equality_reflection.tex`
+- `reference/primitive_recursion.tex`
+
+This audit verifies the mathematical dependency order on paper. It is not a
+Lean/Rocq formalization, and it does not turn finite implementation tests into a
+proof of the universal interpretation theorem. No circular dependency or false
+calculation was found in the inspected bridge.
+
+## 1. The logical reconstruction precedes the arithmetic bootstrap
+
+The case version of paired introduction, paired elimination, and closure use
+give numerical cases for every fixed native formula. Progress is not required.
+The computation equation r=t, where r=I(0,t;u.0), used as both transport premises
+with the motive v=t, gives t=t. The usual equality laws follow.
+
+The gate and selector constructions recurse externally on finite formula
+syntax. In mixed-depth selector cases, padding an equation leaves an equation
+as the recursive matrix, so the maximum remaining binder depth really drops.
+No universal formula evaluator is introduced. The derived implication,
+conjunction, existential, disjunction, universal, and falsity rules are
+intuitionistic. In particular the universal macro retains a separate zero
+conjunct, and conjunction projection uses only the two fixed computations at
+1 and 2. The disjunction argument uses the already available numerical-cases
+rule, not quantifier-free induction or an assumed equality characteristic.
+
+Under 0=1, the selector gives s=C(0,s,t)=C(1,s,t)=t for all terms s,t.
+External induction on native formula depth then gives falsity elimination.
+This proves the explosion needed by the optional bottom-completion argument.
+
+Progress at a literal equation, with an unused existential coordinate, gives
+contextual equation induction. It does not give induction at arbitrary native
+formulas. Thus the arithmetic argument starts with exactly the resources it
+claims: computation, numerical cases, equality, and literal-equation induction.
+
+## 2. Scalar predecessor does not assume predecessor, pairing, or QFI
+
+The addition identities used in the scalar bootstrap are obtained by literal
+equation induction alone. They require no cancellation or successor
+injectivity. Boolean ranges of Z and N come from numerical cases on their
+arguments or iteration counters, rather than induction on disjunctions.
+
+The crucial factor-map calculation was checked explicitly:
+
+- N has period two, N(2n)=0, N(2n+1)=1, and N(3n)=N(n).
+- The three finite values j(0)=1, j(1)=2, j(2)=0 suffice; no modular-division
+  theorem about M is assumed.
+- M(G(n))=N(n) is one literal equation. Its step uses the two already proved
+  Boolean cases of N(n), applying one or two successor computations of M.
+- G(n+2)=G(n)+3 gives G(2n)=3n.
+- For G(3n)=3G(n)+N(n), the successor left side becomes
+  3G(n)+2N(n)+4, and the successor right side becomes
+  3G(n)+3N(n)+3+Z(N(n)). These agree separately at N(n)=0 and N(n)=1.
+- H(u)=C(N(u),G(u),u) therefore has H(2u)=3u, H(1)=1, and H(3u)=3H(u).
+  This does not assume that arbitrary elements already have even/odd normal
+  forms; it splits the finite characteristic N(u).
+
+The iterator rotation and scaling identities are equation inductions with all
+passive parameters fixed. Their use in the comparator establishes, internally
+at all arguments,
+
+    L(0,y)=1,  L(Sx,0)=0,  L(Sx,Sy)=L(x,y).
+
+The saturated update B_m has B_(Sm)(Su)=S B_m(u) and B_(Sm)(0)=1.
+Induction on t with m fixed yields W(St,Sm)=S W(t,m). Only after proving that
+parameterized theorem is the substitution t=m=n made to obtain W(n,n)=n.
+The extra-step identity W(Sn,n)=n follows from the comparator diagonal.
+
+The final predecessor compares two fixed scalar iterators V(t,m),W(t,m) by
+equation induction at fixed m. It does not assume an independent extensionality
+rule for updates. Substituting t=Sm after that theorem gives P(Sm)=m.
+Successor injectivity is then available by applying P, rather than being used
+to construct P. This dependency order is sound.
+
+## 3. Equality reflection is internal and uses already constructed terms
+
+The equality-reflection appendix is written in a general PRE signature but
+explicitly specializes to scalar terms in its introduction. Every operation
+actually used before QFI is recovered is one of P, C, addition, truncated
+subtraction I(y,x;u.Pu), sign, countdown, or a finite composition of them.
+Consequently its general-PRE wording does not smuggle in a primitive-recursive
+compiler needed later.
+
+The central residual invariant
+
+    C(sg(d(x,y)), x, y+d(x,y))=x
+
+is a single equation. Its induction holds x fixed. In the successor step,
+the zero residual case computes immediately; in the positive case the coverage
+of the previous residual gives r=S(Pr), so the old induction equation and the
+addition identity (Sy)+r'=y+Sr' establish the step. No induction on an
+implication or disjunction is used.
+
+The reflection d(Sa,b)=1 iff a=b is then valid on arbitrary domain elements:
+the residual invariant gives b+1=Sa; addition makes this Sb=Sa; P yields b=a.
+The converse is the earlier diagonal equation. The characteristic
+e(a,b)=sg(K(d(Sa,b))) has range {0,1} and e(a,b)=0 iff actual equality a=b.
+Decidability of actual equality follows from these theorems and separation; it
+is not assumed from standard numerical behavior.
+
+The Boolean compiler for quantifier-free implication is intuitionistically
+valid because each antecedent characteristic has an internally proved
+two-value range. No law of excluded middle for quantified formulas follows.
+Literal-equation induction on b_A(n)=0 recovers each contextual QFI instance,
+including with arbitrary quantified retained assumptions.
+
+## 4. Pairing comes after QFI and does not change the domain
+
+The pairing appendix abbreviates elementary order/semiring inductions as
+standard arguments instead of spelling out every proof tree. Its construction
+is nevertheless within the now-established scalar QFI language; it does not
+invoke an unbounded minimization operator.
+
+For the square-root search, n is fixed throughout induction on the separate
+counter i. The three displayed invariants can be combined into one
+quantifier-free formula. If the update increments, its test contradicts the
+strict-upper-bound alternative, forcing the old state to equal i. If it does
+not increment, the new strict upper bound follows from the failed bounded
+test. Substitution i=n happens only after proving the fixed-n invariant.
+
+The resulting square pairing pi(a,b)=(a+b)^2+a has the two left inverse
+identities L(pi(a,b))=a and H(pi(a,b))=b. Surjectivity is neither claimed nor
+needed. Pairing only stores the fixed finite recursion state; the interpreted
+number domain remains the whole domain.
+
+The standard scalar compiler keeps all passive parameters fixed while
+equation induction proves L(V(n,p))=n. The projection identities then give
+both primitive-recursion equations for H(V(n,p)). This is an external
+construction for each fixed finite description, not a single internal total
+evaluator for all program codes.
+
+## 5. Both composites are stronger than equiconsistency alone
+
+Uniqueness of each fixed recurrence is proved internally by comparing its
+values with a single equation induction. External induction on the finite
+description then proves both numerical double translations equal the original
+operation at all arguments. The domain isomorphism has graph x=y.
+
+For formulas, the paired composite is explicitly reconstructed as
+exists x (B(x,0) implies forall y B(x,y)), using the derived ordinary
+connectives. The reverse implication uses case introduction at the actual
+existential witness, with the base retained. This is a full native-formula
+round trip, not just agreement on equational consequences. Falsity is preserved
+using the explicit 0=1 bridge. Hence the written bridge supports full-domain
+bi-interpretability and equiconsistency, subject to its stated ordinary
+first-order interpretation convention.
+
+## Publication caveats
+
+- Attribute this bridge to the earlier drafts; the mandatory-major result does
+  not invent its arithmetic bootstrap.
+- Describe the new result as equality of canonical native consequence
+  relations plus all-input soundness. Do not infer that arbitrary raw JSON
+  aliases form a separate bi-interpretable object theory.
+- Distinguish the complete checker implementation and its tests from the
+  paper proof of the checker metatheory and the full-iPRA interpretation.
+- The pairing appendix contains routine compressed arithmetic arguments, not
+  a fully expanded mechanically checked derivation. No contrary claim should
+  be made about it.

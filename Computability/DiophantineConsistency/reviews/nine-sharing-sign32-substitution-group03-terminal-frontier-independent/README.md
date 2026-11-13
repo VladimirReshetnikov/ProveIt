@@ -1,0 +1,5 @@
+# Independent sign32 mainRoot/c2/Dc2 terminal audit
+
+The state records a successful dependency scan and Lean compile; the author's separate record reports actual outer session 21496 exit 0. The checker validates source, object, logs, all 100 direct guards, 1,062 overlay links and the exact group02 provider. Six row-link reports are `[propext]`; three same-valuation evaluation reports are `[propext, Classical.choice, Quot.sound]`. The log contains eight linter warnings: six unused `p` binders in the old/new definitions and two unused simp arguments in the Dc2 evaluation proof.
+
+The checked statements identify old/new mainRoot, c2 and Dc2 residuals at the exact list positions and show their evaluations agree under the proposed lift in an IΣ₁ model. They do not use eliminated old coordinate 15, so no port-0 cast equality is needed. They do not prove the remaining residual identities, complete zero-set bridge, numeric port binding or an endpoint. No Lean replay was performed. The outer record is author-observed; guards are point-in-time and sampled monitoring does not establish a complete dynamic or transitive trace.

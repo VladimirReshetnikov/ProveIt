@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 38961 exited 0. Stage/postflight passed; frozen state, source/object/logs, audited numeral-derived table provider and guarded overlays match. The three expected reports use `[propext, Classical.choice, Quot.sound]` without warnings or `sorryAx`. Theorems equate floor-ranks from the in-Lean decimal-derived table with actual ranks, and the reconstructed symbolic K word with the base-256 value of the explicit in-Lean byte list. Existing fixed table constructors remain inherited; PDF, external file/gzip and full equation bindings are separate. The numeric outer receipt itself does not hash the state. No Lean was run.

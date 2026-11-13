@@ -1,0 +1,5 @@
+# Independent prelaunch review: d18 live-entry carries
+
+No launch blocker found. The checker pins runner, survey, manifest and four sources, verifies imports and all 11 theorem/report names, checks each theorem's source/destination prefix indices and all explicit Fin.last/castSucc prefix sizes, and reruns the successful no-Lean preflight. It independently scans the pinned external recipe and finds the same 12 first-18 nodes referenced later: b, N, g, G, R, h, s, w, phi, i, j and t; t is already the last d18 entry, so the candidate has 11 carries. This liveness scan is external and uses the prototype recipe, not a Lean proof of JSON binding.
+
+The survey replays the independent symbolic-d11 terminal audit; each stage binds its direct dependency and guard to that selected object. Full postflight requires success. Provider observations are point-in-time and monitoring is sampled. The proposed equalities preserve named short-prefix values without expanding rank or sums; Lean elaboration remains untested and full-recipe semantics and JSON/document binding are outside scope. This checker is prelaunch-only because the output path must be absent.

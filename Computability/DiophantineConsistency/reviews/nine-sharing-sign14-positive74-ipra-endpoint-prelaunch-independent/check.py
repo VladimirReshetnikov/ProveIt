@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];repo=root.parents[1];p=root/'research/nine-sharing-sign14-positive74-ipra-endpoint-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+assert sha(p/'run.py')=='d84aa22545e0dae1ee0c415bb270da2daec2acdf7f273bbf6cf727f24fade9b2' and sha(p/'framework-survey.py')=='f8efcc4323ed930dc851d55c5f16cb92233f028820289c8fdcdb0e83357c4d75' and sha(p/'source-manifest.json')=='8965e238e9f3534092247561ec7b288df65adb723b4949cc09f9190193b44e3c'
+e,=json.loads((p/'source-manifest.json').read_text())['rows'];q=p/'src/DiophantineConsistency/Sign14Positive74IPRAEndpoint.lean';s=q.read_text();assert e['module']=='DiophantineConsistency.Sign14Positive74IPRAEndpoint' and e['imports']==['DiophantineConsistency.Sign14Positive74IPRABridge','DiophantineConsistency.IPRAExpressionNative','DiophantineConsistency.IPRAStandardTheory'] and sha(q)==sha(repo/e['source'])==e['source_sha256'] and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==e['imports'] and not re.search(r'(?m)^\s*(axiom|opaque|partial)\b|\b(sorry|admit|native_decide)\b',s)
+for t in ('theorem native_equivalence : nativeTheory ⊢','theorem standard_equivalence : IPRAStandardTheory.standardTheory ⊢','theorem standard_translated_equivalence : IPRAStandardTheory.standardTheory ⊢','IPRAExpressionNative.equivalence_of_bridge _ polynomialBridge','(IPRAStandardTheory.provable_iff _).2 native_equivalence','(Semiformula.lMap embedding sourceSentence)ᴺ','IPRABoundedRhoZFC.zfcEquiv'):assert t in s
+assert s.count('IPRAExpressionNative.nativeNoZero (positiveShift (Sign14Positive74.expression CurrentWindowCarry2011.ports))')==3 and s.count('#print axioms')==3
+for f in ('nine-sharing-sign14-positive74-ipra-bridge-terminal-independent','nine-sharing-sign33-ipra-endpoint-terminal-frontier-independent','nine-current-fresh-jones-client-independent'):
+ subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews'/f/'check.py')],capture_output=True,check=True,timeout=180)
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'framework-survey.py')],capture_output=True,text=True,check=True,timeout=180);v=json.loads(x.stdout);assert not x.stderr and v['status']=='PASS' and set(v['observed'])=={'HACurrentEquation2011','IPRAExpressionNative','IPRAStandardTheory','ModelJonesSyntax'}
+base=Path('/tmp/nine-sharing-sign14-positive74-ipra-bridge-check-20261110');state=json.loads((root/'research/nine-sharing-sign14-positive74-ipra-bridge-check/attempt01/state.json').read_text());assert state['status']=='PASS';r,=state['rows'];own=base/'lib/DiophantineConsistency/Sign14Positive74IPRABridge.olean';assert sha(own)==r['object_sha256']
+for mod in e['imports'][1:]:
+ name=mod.split('.')[-1];q=base/'lib/DiophantineConsistency'/(name+'.olean');z=v['observed'][name];assert str(q.resolve())==z['realpath'] and sha(q)==z['sha256'] and state['overlay_links'][str(q)]==z['realpath']
+# The framework survey binds all four observations to their captured producer direct guards; rerun above.
+run=(p/'run.py').read_text();assert "'-M3600'" in run and "LEAN_NUM_THREADS='1'" in run and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in run and 'check_external_syntax()' in run and 'direct producer binding' in run
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);z=json.loads(x.stdout);assert not x.stderr and z['status']=='PASS_NO_LEAN_PREFLIGHT' and z['stage_count']==1
+print(json.dumps({'status':'PASS_PRELAUNCH','framework_direct_observations':sorted(v['observed']),'scope':'proposed shifted Positive74 iPRA endpoints; explicit positive-witness and external file claims separate; inherited framework ancestry'},indent=2))

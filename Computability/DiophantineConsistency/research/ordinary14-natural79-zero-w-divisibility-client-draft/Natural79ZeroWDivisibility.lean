@@ -1,0 +1,78 @@
+import Natural79ZeroWRootCut
+import Natural79ZeroWMainNorm
+import Natural79ZeroWJPos
+import DiophantineConsistency.BFS943.Direct80NaturalProjection
+
+/-! Source-only: reflect signed divisibility and contradict its natural
+size bound. All graph, unit, ring, provider and proof dependencies remain
+unelaborated; no iPRA endpoint or physical binding is asserted. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DiophantineConsistency.Natural79ZeroWDivisibilityDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open Natural79ZeroWMainNormDraft Natural79ZeroWRootCutDraft
+open Natural79ZeroWJPosDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Reflect the particular difference-ring divisor to natural-model values. -/
+theorem natural_dvd_three_square (Q Y : V)
+    (hd : (4*ι Y+3 : DiffRing V) ∣ 3*ι Q*ι Q) :
+    (4*Y+3) ∣ 3*Q*Q := by
+  apply TenPositive80NaturalProjection.natural_dvd_of_signed
+  simpa only [map_add,map_mul,map_ofNat] using hd
+
+/-- Pure natural-model size contradiction, with the q and Y bounds explicit. -/
+theorem no_divisor_in_window (Q Y : V) (hq : 2≤Q) (hY : Q*Q*Q≤Y)
+    (hd : (4*Y+3) ∣ 3*Q*Q) : False := by
+  have hQ : 0<Q := lt_of_lt_of_le (by simp : (0:V)<2) hq
+  have hQ1 : 1≤Q := pos_iff_one_le.mp hQ
+  have hqq : 0<Q*Q := mul_pos hQ hQ
+  have hqqq : Q*Q≤Q*Q*Q := le_mul_of_one_le_right (by simp) hQ1
+  have hsmall : 3*(Q*Q)<4*(Q*Q)+3 := by nlinarith [hqq]
+  have hmid : 4*(Q*Q)+3≤4*(Q*Q*Q)+3 := by nlinarith [hqqq]
+  have hlarge : 4*(Q*Q*Q)+3≤4*Y+3 := by nlinarith [hY]
+  have hlt : 3*Q*Q<4*Y+3 := by nlinarith [hsmall,hmid,hlarge]
+  have hpos : 0<3*Q*Q := by
+    simpa only [mul_assoc] using (mul_pos (by simp : (0:V)<3) hqq)
+  have hle : 4*Y+3≤3*Q*Q := Arithmetic.le_of_dvd hpos hd
+  exact (not_le_of_gt hlt) hle
+
+/-- A literal 79 zero cannot have w=0 under represented natural K0 and
+represented positive beta. This client assumes neither gamma positivity nor
+any representation or bound for MC and MF. All imported source drafts and
+this theorem remain unelaborated. -/
+theorem zero_w_impossible (p : Fin 4 → ℤ) (beta K : V) (v : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V)=ι beta) (hK : (p 1 : DiffRing V)=ι K)
+    (hb : 0<beta) (hz : InternalZero (P79NaturalForcedW.graph p).output v)
+    (hw : v 6=0) : False := by
+  have hJ : 0<v 0 := J_pos_of_zero_w_zero p K v hK hz hw
+  have hsigned := signed_dvd_three_square_of_zero_w_zero p beta v hbeta hb hJ hz hw
+  have hnatural := natural_dvd_three_square (q beta v) (y beta v) hsigned
+  have hprod : 1≤v 0*beta := pos_iff_one_le.mp (mul_pos hJ hb)
+  have hq : 2≤q beta v := by dsimp [q]; nlinarith
+  have hY : q beta v*q beta v*q beta v≤y beta v := by
+    dsimp [y]
+    have hs : 1≤v 7+1 := by simp
+    calc
+      q beta v*q beta v*q beta v = q beta v*(q beta v*q beta v) := by ring
+      _≤(q beta v*(q beta v*q beta v))*(v 7+1) := le_mul_of_one_le_right (by simp) hs
+  exact no_divisor_in_window (q beta v) (y beta v) hq hY hnatural
+
+/-- The target positive-w statement for any ports satisfying the explicit
+beta and K0 representations and positive-beta hypothesis. -/
+theorem w_pos_of_zero (p : Fin 4 → ℤ) (beta K : V) (v : Fin 14 → V)
+    (hbeta : (p 0 : DiffRing V)=ι beta) (hK : (p 1 : DiffRing V)=ι K)
+    (hb : 0<beta) (hz : InternalZero (P79NaturalForcedW.graph p).output v) : 0<v 6 := by
+  apply pos_iff_ne_zero.mpr
+  intro hw
+  exact zero_w_impossible p beta K v hbeta hK hb hz hw
+
+end DiophantineConsistency.Natural79ZeroWDivisibilityDraft
+
+#print axioms DiophantineConsistency.Natural79ZeroWDivisibilityDraft.natural_dvd_three_square
+#print axioms DiophantineConsistency.Natural79ZeroWDivisibilityDraft.no_divisor_in_window
+#print axioms DiophantineConsistency.Natural79ZeroWDivisibilityDraft.w_pos_of_zero

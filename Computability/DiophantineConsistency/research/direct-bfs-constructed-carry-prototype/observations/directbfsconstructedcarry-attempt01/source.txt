@@ -1,0 +1,36 @@
+import DirectBFSBandCarry
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DirectBFSConstructedCarry
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic BigOperators
+open DiophantineConsistency ArithmeticWindowDigits CompactHeterogeneousCarry
+open CompactSymbolicKernel CompactPartialBandRotation CompactGenericAlignedMass CompactTwoBandFlatten
+open DirectBFSBandCarry
+attribute [local irreducible] CompactSymbolicKernel.rho DirectBFSSymbolicKernel.paramKernel
+  DirectBFSModelMass.selectors DirectBFSModelMass.copies
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem symbolic_product_carry (n C T : V) (hn : 0<n) (hM : 0<Exp.exp (67*n)-1)
+    (hC : C<Exp.exp (67*n)) (hcap : ∀ k<n, dig 67 C k≤3)
+    (hT : T<Exp.exp (67*n)) :
+    CarryInput 67 n (((((DirectBFSSymbolicKernel.paramKernel rho:ℕ):V)*C+T) % (Exp.exp (67*n)-1))) 1
+      (GenericBandCarryFamily.cap (ι:=Aligned (Fin 943) (Fin 41)))
+      (GenericBandCarryFamily.coefficient (fun x => (alignedCoeff DirectBFSModelMass.selectors DirectBFSModelMass.copies x:V)))
+      (GenericBandCarryFamily.word n C (bandOffsets position) T) := by
+  let M : V := Exp.exp (67*n)-1
+  let K : V := ((DirectBFSSymbolicKernel.paramKernel rho:ℕ):V)
+  have hK : K=kernelBand position 4393+kernelBand position 5495+TwoBand.bareKernel :=
+    DirectBFSBandCarry.symbolic_kernel_band_cast
+  have hbase := DirectBFSBandCarry.combined_congr position K n C 0 ((K*C)%M) hn hM hK (by simp [M])
+  have hbase' : (rotatedBand position 4393 n C+rotatedBand position 5495 n C+
+      TwoBand.bareRotated n C)%M=(K*C)%M := by simpa using hbase
+  have hgraph := TwoBand.add_congr_mod M _ _ T T hM hbase' rfl
+  have hTcap : ∀ k<n,dig 67 T k≤Exp.exp 67-1 := fun k _ =>
+    le_tsub_of_add_le_right (lt_iff_succ_le.mp (dig_lt 67 T k))
+  exact DirectBFSBandCarry.carry_input position n C T ((K*C+T)%M) hn hM hC hcap hT hTcap
+    (mod_lt _ hM) hgraph
+#print axioms DirectBFSConstructedCarry.symbolic_product_carry
+end DirectBFSConstructedCarry

@@ -1,0 +1,30 @@
+import Natural89RReplacement
+
+/-! Source-only composition. Every dependency is unelaborated and the exact
+positive-80 parent bridge and eta forcing remain explicit hypotheses. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.Natural89MixedBridgeDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+theorem replacement (K : ℕ) : Natural89Positive80TransportDraft.PositiveDirectReplacement K :=
+  Natural89Positive80TransportDraft.replacement_of_cuts K
+    (Natural89DirectFYDraft.directFY K) (Natural89RReplacementDraft.rReplacement K)
+
+theorem bridge89 (K : ℕ)
+    (h80 : PolynomialBridge (positiveShift (PositiveUnit80GraphDraft.literal (fun j => (ports K j:ℤ))))) :
+    PolynomialBridge (JShifted89GraphDraft.literal (fun j => (ports K j:ℤ))) :=
+  Natural89Positive80TransportDraft.bridge89 K (replacement K) h80
+
+theorem native85 (K : ℕ) (heta : EtaUnshift85TransportDraft.ForcedEta K)
+    (h80 : PolynomialBridge (positiveShift (PositiveUnit80GraphDraft.literal (fun j => (ports K j:ℤ))))) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  Natural89Positive80TransportDraft.native85 K heta (replacement K) h80
+end DiophantineConsistency.Natural89MixedBridgeDraft
+#print axioms DiophantineConsistency.Natural89MixedBridgeDraft.replacement
+#print axioms DiophantineConsistency.Natural89MixedBridgeDraft.native85

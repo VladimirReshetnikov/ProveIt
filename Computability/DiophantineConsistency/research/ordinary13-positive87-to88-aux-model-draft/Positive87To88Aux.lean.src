@@ -1,0 +1,108 @@
+import PositiveUnscale87Graph
+import P88FourSquareGraph
+import AuxRootBridge
+import Mathlib.Tactic
+
+/-! Proposed exact graph client for positive auxiliary-coordinate transfer.
+The two strict graph bounds are explicit cuts. No Lean execution, provider
+closure or endpoint theorem is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive87To88AuxDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open AuxRootModelDraft DirectFirstRootModelDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def put (v : Fin 13 → V) (x : V) (i : Fin 13) : V := if i=11 then x else v i
+
+theorem put_self (v : Fin 13 → V) : put v (v 11)=v := by
+  funext i
+  by_cases h : i=11
+  · subst i; simp [put]
+  · simp [put,h]
+
+theorem positive_put (v : Fin 13 → V) (hv : ∀ i, 0<v i) (x : V) (hx : 0<x) :
+    ∀ i, 0<put v x i := by
+  intro i
+  by_cases h : i=11
+  · subst i; simpa [put] using hx
+  · simpa [put,h] using hv i
+
+def first (p : Fin 4 → ℤ) (v : Fin 13 → V) : DiffRing V :=
+  (PositiveUnscale87GraphDraft.graph p).first.evalRing (fun i => ι (v i))
+def main (p : Fin 4 → ℤ) (v : Fin 13 → V) : DiffRing V :=
+  (PositiveUnscale87GraphDraft.graph p).main.evalRing (fun i => ι (v i))
+def strong (p : Fin 4 → ℤ) (v : Fin 13 → V) : DiffRing V :=
+  (PositiveUnscale87GraphDraft.graph p).strong.evalRing (fun i => ι (v i))
+def q (p : Fin 4 → ℤ) (v : Fin 13 → V) : DiffRing V := 1+ι (v 0)*(p 0:DiffRing V)
+def k (v : Fin 13 → V) : DiffRing V := ι (v 9)+ι (v 10)
+def c (v : Fin 13 → V) : DiffRing V := ι (v 9)+ι (v 7)*k v
+def a (v : Fin 13 → V) : DiffRing V := ι (v 6)*ι (v 7)+ι (v 7)
+def delta (v : Fin 13 → V) : DiffRing V := 3+4*a v+a v*a v
+def rank (p : Fin 4 → ℤ) (v : Fin 13 → V) : DiffRing V :=
+  (ι (v 2)+(q p v-ι (v 1))*(q p v-1))*(q p v*q p v-1)+
+    ι (v 0)*((p 2:DiffRing V)+(p 3:DiffRing V)*q p v)
+def z (p : Fin 4 → ℤ) (v : Fin 13 → V) : DiffRing V :=
+  ι (v 3)*ι (v 3)*(ι (v 5)*c v-rank p v)-c v
+def Q (v : Fin 13 → V) : DiffRing V := delta v*(ι (v 3)*ι (v 3)-1)
+
+/-- Both graph outputs at a replaced coordinate, in the generic five-square
+interface. This is an unelaborated exact graph binding proposal. -/
+theorem eval87 (p : Fin 4 → ℤ) (v : Fin 13 → V) (y : V) :
+    (PositiveUnscale87GraphDraft.graph p).output.evalRing (fun i => ι (put v y i)) =
+      fiveSquares (first p v) (main p v) (directAux (z p v) (Q v) (ι y)) (strong p v) 0 := by
+  simp [PositiveUnscale87GraphDraft.graph,put,first,main,strong,z,Q,rank,delta,a,c,k,q,
+    directAux,fiveSquares,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+theorem eval88 (p : Fin 4 → ℤ) (v : Fin 13 → V) (u : V) :
+    (P88FourSquare.graph p).output.evalRing (fun i => ι (put v u i)) =
+      fiveSquares (first p v) (main p v) (oldAux (z p v) (Q v) u) (strong p v) 0 := by
+  simp [P88FourSquare.graph,PositiveUnscale87GraphDraft.graph,put,first,main,strong,z,Q,rank,delta,a,c,k,q,
+    oldAux,fiveSquares,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat] <;> ring
+
+/-- Explicit bound obligation for either actual graph zero at this port tuple.
+No assumptions on the sign or natural representation of z are made. -/
+def BoundsCut (p : Fin 4 → ℤ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) →
+    (InternalZero (PositiveUnscale87GraphDraft.graph p).output v ∨
+      InternalZero (P88FourSquare.graph p).output v) →
+    1<Q v ∧ 1<z p v*z p v
+
+/-- The witness theorem works in the same model and can replace coordinate
+11 in either direction; all other coordinates and ports are unchanged. -/
+theorem positive_zero_iff (p : Fin 4 → ℤ) (hb : BoundsCut p) :
+    (∃ v : Fin 13 → V, (∀ i, 0<v i) ∧ InternalZero (PositiveUnscale87GraphDraft.graph p).output v) ↔
+    (∃ v : Fin 13 → V, (∀ i, 0<v i) ∧ InternalZero (P88FourSquare.graph p).output v) := by
+  constructor
+  · rintro ⟨v,hv,hzero⟩
+    obtain ⟨hQ,hz⟩ := hb V v hv (Or.inl hzero)
+    have hval : fiveSquares (first p v) (main p v) (directAux (z p v) (Q v) (ι (v 11))) (strong p v) 0=0 := by
+      have hh := (internalZero_iff _ _).mp hzero
+      rw [← put_self v,eval87] at hh
+      exact hh
+    obtain ⟨u,hu,hnew⟩ := (positive_aux_coordinate_iff (first p v) (main p v) (strong p v) 0 (z p v) (Q v) hQ hz).mpr
+      ⟨v 11,hv 11,hval⟩
+    refine ⟨put v u,positive_put v hv u hu,(internalZero_iff _ _).mpr ?_⟩
+    rw [eval88]
+    exact hnew
+  · rintro ⟨v,hv,hzero⟩
+    obtain ⟨hQ,hz⟩ := hb V v hv (Or.inr hzero)
+    have hval : fiveSquares (first p v) (main p v) (oldAux (z p v) (Q v) (v 11)) (strong p v) 0=0 := by
+      have hh := (internalZero_iff _ _).mp hzero
+      rw [← put_self v,eval88] at hh
+      exact hh
+    obtain ⟨y,hy,hnew⟩ := (positive_aux_coordinate_iff (first p v) (main p v) (strong p v) 0 (z p v) (Q v) hQ hz).mp
+      ⟨v 11,hv 11,hval⟩
+    refine ⟨put v y,positive_put v hv y hy,(internalZero_iff _ _).mpr ?_⟩
+    rw [eval87]
+    exact hnew
+end DiophantineConsistency.Positive87To88AuxDraft
+#print axioms DiophantineConsistency.Positive87To88AuxDraft.positive_zero_iff

@@ -1,0 +1,120 @@
+Independent mathematical review: fixed-type Church arithmetic
+Date: 2026-11-13
+Reviewer task: /root/mathematical_reduction
+
+Reviewed inputs
+---------------
+work/independent_ideas/church_obstruction.md
+work/independent_ideas/verify_church_obstruction.py
+work/independent_ideas/church_verification.json
+
+Verdict
+-------
+The two obstruction theorems and the no-interpretation corollary are correct
+with the scope stated in the note. They do not supply a smaller iPRA theory,
+do not establish a checker-size lower bound, and do not disprove any proposed
+equiconsistency statement. They show that this particular proposed theory
+cannot meet the mandatory bi-interpretability requirement.
+
+Theory and model scope
+----------------------
+Fix the pure simply typed lambda calculus with one ground type o, arrow
+types, application, abstraction, and no constants. The numerical type is
+N_o=(o->o)->o->o. Every first-order numerical function symbol is represented
+by a closed lambda term N_o^k->N_o; arbitrarily complicated intermediate
+simple types are allowed. All first-order variables range over numbers.
+This is not a first-order theory whose variables range over arbitrary lambda
+syntax, arbitrary polymorphic functions, or all elements of all simple types.
+
+Interpret o by {0,1}, arrows by full finite function sets, and the numerical
+first-order domain by the denotations of the actual Church numerals only.
+That domain has exactly three elements: zero, positive odd, positive even.
+The full semantic carrier of N_o is larger; it must not be substituted for
+this three-element numerical subalgebra.
+
+Closure proof
+-------------
+For each closed M:N_o^k->N_o and each tuple of numeral denotations, choose
+Church numeral representatives. The term M applied to those representatives
+is a closed pure term of type N_o. Strong normalization and eta-long normal
+forms give lambda f x. f^n x: a normal ground term in the context
+f:o->o,x:o is either x or f applied to another such term. Therefore M maps
+the three-element domain to itself. Its set denotation respects equality of
+representatives, so this operation is well-defined.
+
+This closure proof is valid for N_o. It is not asserted for N_tau at every
+compound type tau, where additional closed normal inhabitants can exist.
+The separate arbitrary-tau predecessor theorem does not require closure or
+canonicity and is unaffected by that distinction.
+
+Axioms and induction
+---------------------
+Beta-eta equations are valid by ordinary set-model soundness. Successor is
+the total map 0->1, 1->2, 2->1. Hence every nonzero element is a successor,
+zero is not a successor, and S(0)=S(2) although 0 and 2 are distinct.
+
+Full numerical first-order induction holds, including formulas with arbitrary
+parameters and every numerical symbol in the infinite signature. For any
+parameter assignment, any formula defines a subset P of the three-element
+domain. If 0 is in P and P is closed under S, then 1 and 2 are in P. This
+argument covers all subsets, not only subsets already known to be definable.
+The one-world Kripke model is a model of the intuitionistic theory as well.
+
+An independent enumeration of all eight subsets reproduced the induction
+claim. The finite Python verification checks this model and finite examples
+of the general power identity; it does not verify all lambda terms. The
+closure theorem and the arbitrary-cardinality statement are proved on paper.
+
+Interpretation obstruction
+---------------------------
+An ordinary first-order interpretation with a fixed finite tuple domain in
+this model has a finite domain, and taking a definable subdomain or quotient
+cannot enlarge it. Finitely many source sorts, parameter choices, and finite
+disjoint unions of such tuple domains still produce finite sets. If an
+interpretation requires parameters, its existence condition must be proved
+by the source theory and therefore holds in this model.
+
+Every classical model of iPRA has a nonempty numerical domain, an injective
+total successor, and a zero omitted from its image. On a finite set a total
+injective endomap is surjective, which contradicts the omitted zero.
+Consequently no such interpretation of iPRA in the Church theory exists,
+and in particular there is no bi-interpretation of the required kind.
+
+Do not infer non-equiconsistency from this finite-model argument. In an
+external mathematical sense both theories can of course be consistent; an
+equiconsistency statement needs a specified metatheory and is not settled
+here. Failure of bi-interpretability already excludes the candidate.
+
+Arbitrary fixed simple-type predecessor
+----------------------------------------
+Interpret all ground types by two-element sets. For a fixed simple type tau,
+its full semantic carrier has q>=2 elements. Let m=q-1 and
+L=lcm(1,...,q). Every endomap f on q elements satisfies f^(m+L)=f^m, since
+after m iterations every orbit is on a cycle of length dividing L. Thus
+Church m and Church m+L have equal denotations at N_tau.
+
+The endomap f(i)=min(i+1,q-1), with initial point 0, distinguishes Church
+m-1 and Church m+L-1: their values are q-2 and q-1. A denoted function
+P:N_tau->N_tau cannot map equal arguments to unequal outputs, so no closed
+pure simply typed P can compute predecessor on every numeral at this fixed
+type. Both tested input numerals are positive; no convention for pred(0)
+is needed for the contradiction.
+
+At q=2 this is the particularly short argument Church 1=Church 3 while
+Church 0 differs from Church 2.
+
+Literature and claim limits
+---------------------------
+Same-type Church numeral predecessor nondefinability is established
+literature, also following from the stronger characterization of numerical
+functions by extended polynomials (Schwichtenberg). The package should not
+claim this nondefinability theorem as a new discovery. The explicit three-
+element arithmetic model, including full formula induction and the
+finite-dimensional interpretation consequence, is a self-contained analysis
+of the proposed simplification. No claim of historical novelty is needed.
+
+This does not exclude polymorphism, varying Church types, untyped combinatory
+calculi, additional arithmetic constants or recursors, a different numeral
+representation, or a newly introduced infinite syntax domain. Their added
+mechanisms require a separate soundness and bi-interpretability proof and
+must be included in any complexity accounting.

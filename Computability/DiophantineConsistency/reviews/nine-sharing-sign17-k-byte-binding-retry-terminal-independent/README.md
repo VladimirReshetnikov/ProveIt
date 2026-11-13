@@ -1,0 +1,3 @@
+# Independent terminal audit
+
+PASS: author-observed outer session 12101 exited 0. Stage and postflight passed; frozen state, source/object/logs, all eight comparison provider routes and guarded overlays match. `fixture_digits` reports `[propext]` and `K_bytes` reports `[propext, Classical.choice, Quot.sound]`, with no warning or `sorryAx`. This establishes that symbolic K equals base-256 decoding of the explicit in-Lean fixture byte list. It does not establish that an external JSON, gzip, filesystem or PDF artifact contains those bytes. The numeric outer receipt itself does not hash the state. No Lean was run.

@@ -1,0 +1,25 @@
+/tmp/nine-sharing-sign17-mc-compose-core-20261110/src/DiophantineConsistency/Sign17MCComposeCore.lean:39:37: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  Nat.ofDigits radix (l₁✝.flatten ++ xs)
+in the target expression
+  Nat.ofDigits 256 b✝ +
+      256 ^ 47 * (Nat.ofDigits radix l₁✝.flatten + radix ^ l₁✝.flatten.length * Nat.ofDigits radix xs) =
+    Nat.ofDigits 256 b✝ + 256 ^ 47 * (Nat.ofDigits 256 l₂✝.flatten + 256 ^ l₂✝.flatten.length * Nat.ofDigits 256 ys)
+
+case cons
+as bs : List (List ℕ)
+xs ys : List ℕ
+ht : Nat.ofDigits radix xs = Nat.ofDigits 256 ys
+a✝ b✝ : List ℕ
+l₁✝ l₂✝ : List (List ℕ)
+hrest : List.Forall₂ aligned l₁✝ l₂✝
+ih : Nat.ofDigits radix (l₁✝.flatten ++ xs) = Nat.ofDigits 256 (l₂✝.flatten ++ ys)
+ha : a✝.length = 8
+hb : b✝.length = 47
+hv : Nat.ofDigits radix a✝ = Nat.ofDigits 256 b✝
+⊢ Nat.ofDigits 256 b✝ +
+      256 ^ 47 * (Nat.ofDigits radix l₁✝.flatten + radix ^ l₁✝.flatten.length * Nat.ofDigits radix xs) =
+    Nat.ofDigits 256 b✝ + 256 ^ 47 * (Nat.ofDigits 256 l₂✝.flatten + 256 ^ l₂✝.flatten.length * Nat.ofDigits 256 ys)
+'DiophantineConsistency.Sign17MCComposeCore.radix_alignment' depends on axioms: [propext]
+'DiophantineConsistency.Sign17MCComposeCore.aligned_repeat' depends on axioms: [propext]
+'DiophantineConsistency.Sign17MCComposeCore.aligned_append' depends on axioms: [propext]
+'DiophantineConsistency.Sign17MCComposeCore.flatten_tail' depends on axioms: [propext, sorryAx]

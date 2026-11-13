@@ -1,0 +1,5 @@
+# Independent failed-result and v2 source review: n3 scalar discrete
+
+Attempt01 outer terminal SHA-256 `dc4490de01703b7ea91f0597da01798f94944eb74f69e4b2db27aa5bab97fd9f` and child `22f82c6d42c1e95a54a7e2d3fe042f56f85a509eb24d4f88b25bdc5f190372dd` record outer exit 1 / FAILED. First two stages PASS with exit 0, rehashed logs and objects, each reporting `[propext, Classical.choice, Quot.sound]`. Stage 3 exits 1 with an explicit `X²` versus `X*X` upper-endpoint conclusion mismatch and both reports include sorryAx. The replay is rejected and no scalar theorem is accepted from it.
+
+V2 source SHA `e7771fdb1dd529fcc0d07ad6d1877f41a0581b124171f330fc9f0f453f793670` differs only at the upper-endpoint application: it first supplies the same polynomial hgap, then uses `simpa only [pow_two]` on the result. The theorem statements, hdisc, q/X/Y and strict inequalities are unchanged; the mathematical argument remains the one reviewed in `trace74-n3-scalar-discrete-source-independent`. The change targets the observed mismatch but successful elaboration and a clean guarded replay are not inferred. No Lean was run here.

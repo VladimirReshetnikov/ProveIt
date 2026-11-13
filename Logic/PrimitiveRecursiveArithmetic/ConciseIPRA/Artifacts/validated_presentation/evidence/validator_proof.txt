@@ -1,0 +1,123 @@
+IMPLEMENTATION REFINEMENT: WHOLE-PACKET JSON TYPE VALIDATION BY REPRESENTATION
+
+Scope. This is an implementation refinement of the existing native typed
+proof checker. It does not change the arithmetic axioms, logical rules,
+certificate protocol, arithmetic domain, or interpretations into iPRA.
+The body of the recursive proof-checking function c is AST-identical.
+The comparison excludes implementation resource failures, such as recursion
+limits, memory exhaustion, and interruptions. It concerns finite JSON values
+and successful evaluations of the checkers' validation operations.
+
+1. Exact domain of the JSON decoder
+
+With its default arguments, json.load returns trees whose nodes are exact
+built-in list, dict, str, int, float, bool, or NoneType values. It creates no
+custom subclasses and no cyclic objects. Python's accepted NaN/Infinity
+extensions are float values and are handled by the same argument below.
+
+Let J(a) mean: a is an exact integer, or a is a list all of whose children
+satisfy J. Define the alphabet A = '0123456789[], -'. For a finite string s,
+s.strip(A) is empty if and only if every character of s belongs to A.
+If a forbidden character occurs internally, it remains between the first
+and last forbidden characters, so this equivalence does not assume that
+strip removes internal characters.
+
+For each value a produced by the decoder, provided its repr is computed,
+
+    J(a) iff not repr(a).strip('0123456789[], -').
+
+Proof. Exact integers use decimal digits and an optional minus sign. Lists
+use brackets, commas, spaces, and the representations of their elements.
+Thus structural induction proves the forward direction. For the converse:
+booleans contribute 'True' or 'False'; null contributes 'None'; finite floats
+have a decimal point or exponent notation, and nonfinite floats have letters;
+strings have quote delimiters (also for the empty string); dictionaries have
+brace delimiters (also for the empty dictionary). Each contributes a character
+outside A, retained in every enclosing list representation. Hence any
+noninteger, nonlist node is detected. This is a property of the standard
+Python representations of the built-in decoder result types, not an assumption
+about user-supplied __repr__ methods.
+
+The guard runs on the entire decoded packet BEFORE its last item is popped.
+Consequently it also covers the goal, every consumed instruction, every
+unconsumed prefix, and every nested child. No malformed unused prefix is
+made harmless merely because the proof interpreter will not consume it.
+
+2. Specialization of the canonical-goal validator
+
+The former function V(a,d) combined two independent modes:
+
+    d=0: arbitrary integer/list-tree validation;
+    d>0: public canonical syntax at depth d-2.
+
+After J(q) is established for the whole packet, every subtree inspected by
+the goal validator is already an integer or list. Thus a*0==0 distinguishes
+integer from list without bool-as-int ambiguity: booleans have already been
+rejected. The list-specific a*0==[] check can be removed. There is no longer
+a raw mode, so all 'not d' and 'd and ...' branches can be removed.
+
+Use delta=d-2 as the new depth. The parity is unchanged. The integer scope
+condition becomes
+
+    delta % 2 and (not a or (2 < a < delta and a % 2)).
+
+The list arity conditions remain the matched old conditions. Recursion now
+uses delta+5-len(a), exactly two less than the former child depth. Structural
+induction proves
+
+    V_old(a, delta+2) accepts iff V_new(a, delta) accepts
+
+for every integer/list tree a and every delta>=0, where an exception is
+rejection and 'accepts' means normal truthy return. Starting V_new at zero
+therefore matches starting V_old at two. Empty-list failures remain rejections.
+The full profile retains the existing diagonal-triple alternative; the Eq/D
+profile omits it exactly as the matched old Eq/D validator does.
+
+3. Whole-certificate equivalence
+
+For a nonempty outer list, write p for its instruction prefix and a for its
+last item. Old validation is J(p) together with canonical-goal validation of
+a. Canonical-goal validation itself implies J(a). New validation is J(p+[a])
+together with the specialized canonical-goal validation of a. By sections 1
+and 2, these conditions coincide. Both versions then execute the identical
+proof-checking function on the identical prefix and goal. Non-list roots and
+empty outer lists reject in both presentations. Thus, away from resource
+failures, both versions accept the same certificates and theorem statements.
+
+The exact existing ValueError message is retained. The timing and exception
+classes for rejected packets are not claimed identical: the old validator
+raises TypeError on null/dictionary multiplication; the new guard consistently
+uses the stated ValueError for those type violations. Both guards remain
+active with python -O.
+
+4. Resource behavior and integer limits
+
+The repr guard can accept a deeply nested unused integer/list prefix for which
+the old recursive validator exceeds Python's recursion limit. This is broader
+coverage of the intended certificate language, not a new theorem. For example,
+a valid proof with a 600-level nested unused integer/list prefix is rejected
+by the former implementation with RecursionError and accepted by the new one
+on the tested interpreter. Conversely, no claim is made about all possible
+resource failures or peak memory use: repr materializes another string.
+
+The same default JSON decoder enforces integer literal syntax and the same
+Python integer-conversion digit limit. Integers represented by -0 decode to
+0. Decimal points, exponent notation, NaN, and Infinity yield floats and are
+rejected by the new character guard. The test script checks ordinary large
+integers and values beyond the current digit limit.
+
+5. Measured scope
+
+On CPython 3.12.14, with ast.unparse normalization and one final newline:
+
+                      bytes  tokens  AST nodes  gzip-9, mtime=0
+Full baseline           897     401        468             505
+Full refinement         870     383        442             507
+Eq/D baseline           878     390        454             498
+Eq/D refinement         849     370        426             499
+
+Gzip sizes are informational and increase slightly. These are complete typed,
+validated checker comparisons. They do not beat the repository's 521-byte
+compact checker under its different integer/list-input contract, and no such
+claim is made. The alphabet optimization is implementation work, not a novel
+axiomatization or a proof of an absolute minimum.

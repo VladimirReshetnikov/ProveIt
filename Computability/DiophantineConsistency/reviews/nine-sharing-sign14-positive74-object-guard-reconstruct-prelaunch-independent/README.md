@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the generic conjunction mapper is stated as the intuitionistically valid implication from all `a i` to all `b i` given each `a i→b i`, with empty, singleton and inductive cases. Its specialization ranges over exactly `Fin 14`, mapping each open nonzero term to equality with its successor of predecessor using the audited open predecessor theorem. This is an open-term conjunction; no connection to the closed guard, expression substitution or endpoint is asserted. Provider/guard/resource pins and no-Lean preflight pass; tactic elaboration and inherited historical object ancestry remain unverified. No Lean was run.

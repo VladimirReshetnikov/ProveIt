@@ -1,0 +1,9 @@
+# Conditional fixed-mask saturation replay
+
+The coordinated three-stage replay passed with actual outer exit 0. It recompiled the two historical conditional source clients against the audited model-cover union, then compiled `Trace74FixedMaskSaturationGuard.guard`. The child result is `observations/attempt01/result.json` (SHA-256 `e0c4394107493b89ebde645c4da0724f9a7e380430026f0c76ad1a7b0fddd09c`); `observations/outer-attempt01/terminal.json` has SHA-256 `bff5e72604e647c7993958e2b663c682a260e8997763e25d4bf5fd572ca92def`. The final object SHA-256 is `aa922719f1bd884df30458da4a608b789e0aa46f5e4b7f73dd0029cdef98f6c4`. All three new stages met the strict no-warning policy; the final axiom report lists only `propext`, `Classical.choice`, and `Quot.sound`.
+
+The theorem discharges the symbolic fixed-mask cover premise and concludes two `NoCarry` conditions and `F+C<q`. It retains its stated exponential and radix equations, positivity and size bounds, four-block identity, population bound, and rank-population bound. It does not establish those premises from a 74 graph zero, the fixed-BFS guard, or an endpoint theorem.
+
+The replay pins the historical sources and direct providers and checks the selected serialized project and outside closures, companions, and prior roots. Equality of direct provider hashes alone is not a transitive provenance claim. The previously accepted exact warnings for unevaluated beta and natural-cover exponents remain inherited; the new stages introduce none. Historical source, package, and dynamic ancestry remain capture-relative.
+
+Independent [prelaunch review](../../reviews/trace74-fixed-mask-saturation-conditional-prelaunch-independent/README.md) and [result audit](../../reviews/trace74-fixed-mask-saturation-conditional-result-independent/README.md) passed.

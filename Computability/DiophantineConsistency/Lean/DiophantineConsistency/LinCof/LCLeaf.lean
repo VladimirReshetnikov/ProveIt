@@ -1,0 +1,263 @@
+import DiophantineConsistency.LinCof.LCScale
+import DiophantineConsistency.P138.P138Leaf
+
+/-! # Soundness of the linear-cofactor family: a zero gives the leaf facts, hence a halt
+
+At an integer zero `x` of the output `LCValue.valueK portsR x κ ω Λ ψ wt` in any model `V` of
+`𝗜𝚺₁`, where
+
+* the slots `κ`, `ω`, `Λ` satisfy the slot law (`LCValue.SlotLaw`, exponent `e`),
+* `κ` has an index modulus (`LCWindow.IndexModulus`),
+* the radical weight is an even nonzero square (`LCNorm.Weight`; `1024`, `64`, `4`),
+
+and for every center `ψ`, the soundness layer yields positive
+
+    J, F, α = q − F − C, X = 2^R, Y, η = c − Yk, ζ = k − η
+
+with the main pair `c = ψ_a(R)` (`a = XY + Y`), the first pair `2n = R + 1`,
+`k = 2ψ_bF(n)` (`bF = 2(XY² − 1) + 1`), `η > 0` from the sharpened half-binomial
+(`P138HalfBinomial.eta_pos`), and the scale divisibility `q³ ∣ Y` (`LCScale.Y_odd_mul`). These
+are the six fields of `CompactLeafFacts.LeafFacts Source34Ports.ports` at the valuation
+`![J, F, α, 1, 1, X, Y, 1, η, ζ, 1, 1]`, as in `P138Leaf.leaf_of_zero_k`.
+
+`sound` closes the loop through `Source34Converse.halt_iff_facts`. `sound298` and `sound300` are
+the instances for package 172's 298/146 and 300/144 equations. The sibling forms of the family
+(weights `4` and `64`, other centers) instantiate `sound` with `LCNorm.weight4`/`weight64`. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.LCLeaf
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ModelDifferenceRing LCValue P138Ports LCBootstrap LCSquares LCBudget LCAdjacent LCWindow
+  LCEarlyFold LCRank LCFirstIndex LCOrientation LCScale
+open ArithmeticPellRecurrence
+open SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC
+open P138Adjacent (ι_pos)
+open P138EarlyFold (ι_tsub' pos_of_ι)
+open P138Rank (mod_eq_of_ι_dvd)
+open P138Leaf (port0 port1 port2 port3 natural)
+open LCNorm (Weight weight1024)
+
+attribute [local irreducible] Source34Ports.betaNat Source34Ports.lowNat Source34Ports.highNat
+  Source34Kernel.paramKernel Mixed121Kernel.rho coneA coneB
+
+variable {V : Type} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+section Zero
+variable {x : Fin 11 → DiffRing V} {κ ω Λ : DiffRing V} {e : ℕ} (ψ wt : DiffRing V)
+local notation "𝓡" => regsK (portsR (V := V)) x κ ω Λ ψ wt
+
+set_option maxHeartbeats 4000000 in
+/-- **Soundness, leaf form**, for any slots with the slot law and an index modulus, any center
+and any admissible weight. -/
+theorem leaf_of_zero (h : SlotLaw portsR x κ ω Λ e) (hκ : IndexModulus portsR x κ ω Λ ψ wt e)
+    (hwt : Weight wt) (hz : valueK portsR x κ ω Λ ψ wt = 0) :
+    ∃ v : Fin 12 → V, (∀ j, 0 < v j) ∧ CompactLeafFacts.LeafFacts Source34Ports.ports v := by
+  have hp : PortFacts (portsR (V := V)) := portFacts
+  obtain ⟨E⟩ := early_fold ψ wt hp h hwt hz
+  obtain ⟨M⟩ := main_index ψ wt hp h hκ hwt hz E
+  obtain ⟨Fi⟩ := first_index ψ wt hp h hκ hwt hz E M
+  obtain ⟨O⟩ := oriented ψ wt hp h hwt hz E M Fi
+  obtain ⟨t, ht⟩ := P72ConvArith.odd_of_mod_two M.hodd
+  have hn : Fi.n = t + 1 := by
+    have h' := Fi.hn; rw [ht] at h'
+    apply ι_injective
+    have h'' := congrArg (ι (V := V)) h'
+    simp only [map_add, map_mul, map_ofNat, map_one] at h'' ⊢
+    linarith
+  have hB : 0 < (𝓡).Budget := budget_pos ψ wt hp h hwt hz
+  obtain ⟨hci1, hci2, _⟩ := c_interval ψ wt hp h hB
+  have hs := signs ψ wt hp h hB
+  -- the natural coordinates
+  obtain ⟨Jn, hJn0, hJn⟩ := natural O.hJ
+  obtain ⟨Fn, hFn0, hFn⟩ := natural O.hF
+  obtain ⟨Cn, hCn0, hCn⟩ := natural O.hC
+  obtain ⟨αn, hαn0, hαn⟩ := natural O.hα
+  obtain ⟨Yn, hYn0, hYn⟩ := natural O.hY
+  obtain ⟨Wn, hWn0, hWn⟩ := natural (show 0 < (𝓡).W from
+    (pos_iff_pos_of_mul_pos (show 0 < (𝓡).q * (𝓡).W by
+      rw [← X_def, O.hX]; exact ι_pos (exp_pos _))).mp O.hq)
+  set Xn : V := Exp.exp M.Rn with hXn
+  have hXd : (𝓡).X = ι Xn := O.hX
+  have habsY : |(𝓡).Y| = ι Yn := by rw [hYn, abs_of_nonneg (ι_nonneg _)]
+  -- the first base
+  obtain ⟨⟨ln, hln, hbF⟩, hk0⟩ := Fi.hpos (by rw [hXd]; exact ι_pos (exp_pos _))
+  have hlnXY : ln = Xn * Yn * Yn := by
+    apply ι_injective; rw [hln, hXd, hYn]; simp only [map_mul]; ring
+  rw [hlnXY] at hbF
+  set kk : V := 2 * ycoord Fi.n Fi.bF with hkk
+  have hkd : (𝓡).k = ι kk := by rw [← Fi.hk, abs_of_pos hk0]
+  -- the main base `b = XY + Y`
+  have hb : E.Bn - 2 = Xn * Yn + Yn := by
+    apply ι_injective
+    rw [ι_tsub' (le_trans (by norm_num) E.hB3), map_ofNat, ← O.hA, A_eq, a_eq, hXd, hYn]
+    simp only [map_add, map_mul]; ring
+  have hcmain : E.cn = ycoord M.Rn (Xn * Yn + Yn) := by rw [M.hc, hb]
+  -- `η > 0`
+  have ht12 : (12 : V) ≤ t := by
+    apply ι_le_ι.mp
+    have h4 : (4080 : DiffRing V) ≤ ι M.Rn := by
+      have := R_ge portsR x κ ω Λ ψ wt hp hs; rwa [M.hR] at this
+    rw [ht] at h4; simp only [map_add, map_mul, map_ofNat, map_one] at h4; rw [map_ofNat]
+    linarith
+  have ht5 : (5 : V) ≤ t := le_trans (by norm_num) ht12
+  have hetapos : kk * Yn < E.cn := by
+    refine P138HalfBinomial.eta_pos Xn Yn t E.cn kk ht5 (by rw [hXn, ht]) (pos_iff_one_le.mp hYn0)
+      (by rw [hcmain, ht, show Xn * Yn + Yn = Yn * (Xn + 1) by ring])
+      (by rw [hkk, hn, hbF]) ?_ ?_
+    · apply ι_lt_ι.mp
+      rw [abs_of_pos hk0, hkd, habsY, E.hcn] at hci1
+      simp only [map_add, map_mul, map_ofNat]; nlinarith
+    · apply ι_lt_ι.mp
+      rw [abs_of_pos hk0, hkd, habsY, E.hcn] at hci2
+      simp only [map_add, map_mul, map_ofNat, map_one]; nlinarith
+  have heta : (𝓡).eta = ι E.cn - ι Yn * ι kk := by rw [eta_eq, O.hc, hYn, hkd]
+  have hetap : 0 < (𝓡).eta := by
+    rw [heta]; have := ι_lt_ι.mpr hetapos; rw [map_mul] at this; linarith
+  obtain ⟨ηn, hηn0, hηn⟩ := natural hetap
+  have hzeta : 0 < (𝓡).k - (𝓡).eta := by
+    have h2 := hci2
+    rw [abs_of_pos hk0, hkd, habsY, E.hcn] at h2
+    have hkpos : (0 : DiffRing V) < ι kk := by rw [← hkd]; exact hk0
+    rw [heta, hkd]; nlinarith
+  obtain ⟨ζn, hζn0, hζn⟩ := natural hzeta
+  -- the ports
+  set β : V := ((Source34Ports.ports 0 : ℕ) : V)
+  set K0 : V := ((Source34Ports.ports 1 : ℕ) : V)
+  set MC : V := ((Source34Ports.ports 2 : ℕ) : V)
+  set MF : V := ((Source34Ports.ports 3 : ℕ) : V)
+  set p0R : DiffRing V := portsR (V := V) 0 with hp0R
+  have hp0 : p0R = ι β := port0
+  have hp1 : portsR (V := V) 1 = ι K0 := port1
+  have hp2 : portsR (V := V) 2 = ι MC := port2
+  have hp3 : portsR (V := V) 3 = ι MF := port3
+  have hJb : (𝓡).J * p0R = (𝓡).q - 1 := by rw [mul_comm]; exact beta_J portsR x κ ω Λ ψ wt
+  set qV : V := 1 + Jn * β with hqVdef
+  have hqV : (ι qV : DiffRing V) = (𝓡).q := by
+    rw [hqVdef]; simp only [map_add, map_mul, map_one]; rw [← hJn, ← hp0, hJb]; ring
+  have hq1 : 1 ≤ qV := le_add_of_nonneg_right (by simp)
+  have hFq : Fn ≤ qV := by
+    apply ι_le_ι.mp; rw [hqV, ← hFn]; have := O.hα; have := O.hC; linarith
+  have hq2 : 1 ≤ qV ^ 2 := one_le_pow₀ hq1
+  have hRV : ((qV - 1) * (qV - Fn) + αn) * (qV ^ 2 - 1) + (MC + qV * MF) * Jn = M.Rn := by
+    apply ι_injective
+    have e1 : (ι (qV - 1) : DiffRing V) = (𝓡).q - 1 := by rw [ι_tsub' hq1, map_one, hqV]
+    have e2 : (ι (qV - Fn) : DiffRing V) = (𝓡).q - (𝓡).F := by rw [ι_tsub' hFq, hqV, ← hFn]
+    have e3 : (ι (qV ^ 2 - 1) : DiffRing V) = (𝓡).q ^ 2 - 1 := by
+      rw [ι_tsub' hq2, map_one, map_pow, hqV]
+    simp only [map_add, map_mul]
+    rw [e1, e2, e3, hqV, ← hαn, ← hJn, ← hp2, ← hp3, ← M.hR, R_eq]
+    ring
+  -- the valuation
+  refine ⟨![Jn, Fn, αn, 1, 1, Xn, Yn, 1, ηn, ζn, 1, 1], ?_, ?_⟩
+  · intro i
+    fin_cases i <;> simp [hJn0, hFn0, hαn0, hYn0, hηn0, hζn0, hXn]
+  constructor
+  · -- indices
+    intro _ _ _
+    show ∃ first main j pi : V, 0 < first ∧ 0 < main ∧ 13 ≤ j ∧ j < pi ∧
+      pi = ((qV - 1) * (qV - Fn) + αn) * (qV ^ 2 - 1) +
+        (MC + qV * MF) * Jn ∧
+      2 * j = ((qV - 1) * (qV - Fn) + αn) * (qV ^ 2 - 1) +
+        (MC + qV * MF) * Jn + 1 ∧
+      xcoord j (2 * ((Xn * Yn) * Yn - 1) + 1) = first ∧
+      2 * ycoord j (2 * ((Xn * Yn) * Yn - 1) + 1) = ηn + ζn ∧
+      xcoord pi (Xn * Yn + Yn) = main ∧ ycoord pi (Xn * Yn + Yn) = ηn + Yn * (ηn + ζn)
+    rw [hRV]
+    refine ⟨xcoord Fi.n Fi.bF, xcoord M.Rn (Xn * Yn + Yn), Fi.n, M.Rn,
+      lt_of_lt_of_le (by simp) (one_le_x _ _), lt_of_lt_of_le (by simp) (one_le_x _ _),
+      ?_, ?_, rfl, Fi.hn, by rw [hbF], ?_, rfl, ?_⟩
+    · rw [hn]
+      apply ι_le_ι.mp; have := ι_le_ι.mpr ht12
+      simp only [map_add, map_one, map_ofNat] at this ⊢; linarith
+    · rw [hn, ht]
+      apply ι_lt_ι.mp; have := ι_le_ι.mpr ht5
+      simp only [map_add, map_mul, map_one, map_ofNat] at this ⊢; linarith
+    · rw [← hbF]
+      apply ι_injective
+      rw [map_add, ← hηn, ← hζn, ← hkk, ← hkd]; ring
+    · rw [← hcmain]
+      apply ι_injective
+      simp only [map_add, map_mul]
+      rw [← hηn, ← hζn, ← hYn, ← O.hc, eta_eq]; ring
+  · -- transport
+    intro _
+    show 0 < qV - (Fn + αn)
+    apply pos_of_ι
+    have hle : Fn + αn ≤ qV := by
+      apply ι_le_ι.mp; rw [hqV, map_add, ← hFn, ← hαn]; have := O.hC; linarith
+    rw [ι_tsub' hle, hqV, map_add, ← hFn, ← hαn]; have := O.hC; linarith
+  · -- pairMod
+    intro hb0
+    show ((Fn + αn) * (Xn + K0 * qV) + Fn * qV) % (Jn * β) =
+      (qV * (Xn + K0 * qV)) % (Jn * β)
+    have hbpos : 0 < Jn * β := mul_pos hJn0 hb0
+    apply mod_eq_of_ι_dvd hbpos
+    refine ⟨-(x 2) * (𝓡).q, ?_⟩
+    rw [hqVdef]
+    simp only [map_add, map_mul, map_one]
+    rw [← hJn, ← hp0, ← hFn, ← hαn, ← hp1, ← hXd, hJb, X_def, F_eq]
+    ring
+  · -- power
+    intro _ _ _ _
+    show Xn = Exp.exp (((qV - 1) * (qV - Fn) + αn) * (qV ^ 2 - 1) +
+        (MC + qV * MF) * Jn)
+    rw [hRV, hXn]
+  · -- projection
+    intro _ _ _
+    show qV ∣ 3 * Xn ∧ qV ≤ 3 * Xn
+    have hXW : Xn = qV * Wn := by
+      apply ι_injective; rw [map_mul, hqV, ← hWn, ← hXd, X_def]
+    refine ⟨⟨3 * Wn, by rw [hXW]; ring⟩, ?_⟩
+    rw [hXW]
+    have : 1 ≤ 3 * Wn :=
+      le_trans (pos_iff_one_le.mp hWn0) (le_mul_of_one_le_left (by simp) (by norm_num))
+    calc qV = qV * 1 := (mul_one _).symm
+      _ ≤ qV * (3 * Wn) := mul_le_mul_of_nonneg_left this (by simp)
+      _ = 3 * (qV * Wn) := by ring
+  · -- ydiv: the scale `Y = (2t + 1) q³` is a consequence of the zero here
+    intro _ _
+    show qV ^ 3 ∣ Yn
+    obtain ⟨s, hYs⟩ := Y_odd_mul ψ wt hp h hwt hz M.Rn O.hX
+    have hq3 : 0 < (𝓡).q ^ 3 := pow_pos O.hq 3
+    have hodd : 0 < 2 * s + 1 := by
+      have : 0 < (2 * s + 1) * (𝓡).q ^ 3 := by rw [← hYs]; exact O.hY
+      exact (pos_iff_pos_of_mul_pos this).mpr hq3
+    obtain ⟨on, _, hon⟩ := natural hodd
+    refine ⟨on, ?_⟩
+    apply ι_injective
+    rw [map_mul, map_pow, hqV, ← hon, ← hYn, hYs]; ring
+
+/-- **Soundness** of the linear-cofactor family: a zero in any model of `𝗜𝚺₁` gives an internal
+halt of machine 215. -/
+theorem sound (h : SlotLaw portsR x κ ω Λ e) (hκ : IndexModulus portsR x κ ω Λ ψ wt e)
+    (hwt : Weight wt) (hz : valueK portsR x κ ω Λ ψ wt = 0) :
+    ∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0 :=
+  (Source34Converse.halt_iff_facts).2 (leaf_of_zero ψ wt h hκ hwt hz)
+
+end Zero
+
+section Forms
+variable (x : Fin 11 → DiffRing V)
+
+/-- **Soundness of package 172's 298/146 equation.** -/
+theorem sound298 (hz : value298 portsR x = 0) :
+    ∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0 :=
+  sound (psi298 portsR x) 1024 (slotLaw298 portsR x)
+    (modulus298 portsR x (psi298 portsR x) 1024 portFacts) weight1024 hz
+
+/-- **Soundness of package 172's 300/144 equation.** -/
+theorem sound300 (hz : value300 portsR x = 0) :
+    ∃ T : V, ArithmeticCantor.first (ArithmeticMachineRun215.run T) = 0 :=
+  sound (psi300 portsR x) 1024 (slotLaw300 portsR x)
+    (modulus300 portsR x (psi300 portsR x) 1024) weight1024 hz
+
+end Forms
+
+#print axioms leaf_of_zero
+#print axioms sound
+#print axioms sound298
+#print axioms sound300
+
+end DiophantineConsistency.LCLeaf

@@ -1,0 +1,7 @@
+# Witness-preserving boundary source plan
+
+This read-only plan inventories five unchecked drafts against the independently audited 2,021-object conditional boundary union: four witness-preserving versions of the boundary chain and the small-port source specialization with its exponential and Pell equations still assumed. It records source hashes, exact source-import order and current first-selected direct objects. The selected boundary parent result, outer receipt and independent post-audit are pinned. All six distinct non-stage direct imports currently resolve to parent project objects; no new direct outside input is required.
+
+This is source and direct-import evidence only: none of the five drafts has been elaborated, no R=31 numerical certificate is provided, and no concrete guard-failing zero or fixed-port conclusion follows. The four historical baseline nodes and transitive outside/package/dynamic ancestry remain inherited limits.
+
+`plan-v2.py` and `observations/plan-attempt02/result.json` retain only the four witness-preserving stages through `Trace74BoundaryGraphWitness`. The earlier five-stage attempt is retained: its first four stages passed their stage checks, while the conditional numerical corollary failed elaboration and consumed its kernel memory budget. The four-stage replay must finish its own closure capture and outer receipt before these lemmas are promoted as an audited packet.

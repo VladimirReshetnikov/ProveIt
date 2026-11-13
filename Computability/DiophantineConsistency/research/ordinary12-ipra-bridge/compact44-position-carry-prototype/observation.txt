@@ -1,0 +1,25 @@
+Actual exploratory compiler session 27550 exited 0. Source SHA-256:
+38c19700d6caeadd28bae9d239b0c2302e032ec01011071ea4b4ace52543a675
+Object SHA-256:
+554ecdb62c474fded3a0eb207bc41f5c35b418bab39ca5450180387f517771e4
+Observed compiler output:
+'CompactPositionCarry.increment_digits' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+Actual exploratory compiler session 96628 exited 0. Source SHA-256:
+23ede19121f1691051f8667833b99baf09090af765ecc88c2357a74501cb715c
+Object SHA-256:
+751483125a40941adf388ed0469a7ccbc1d1e876a9a8adb4fbac96da2921cb72
+Observed compiler output:
+'CompactPositionCarry.generic_position_noCarry' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CompactPositionCarry.fixed_position_noCarry' depends on axioms: [propext, Classical.choice, Quot.sound]
+
+Both commands ran from the repository environment with this common prefix:
+env -u LD_PRELOAD -u LD_LIBRARY_PATH -u LD_AUDIT LEAN_PATH=/tmp/ipra-symbolic-saturation-compose-01/lib:/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib timeout 90 /home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean -M3000 -j1 -DElab.async=false --root=/tmp/ipra-position-extract-02/src
+The 27550 suffix was:
+/tmp/ipra-position-extract-02/src/DiophantineConsistency/CompactPositionIncrement.lean -o /tmp/ipra-symbolic-saturation-compose-01/lib/DiophantineConsistency/CompactPositionIncrement.olean
+The 96628 suffix was:
+/tmp/ipra-position-extract-02/src/DiophantineConsistency/CompactPositionGraph.lean -o /tmp/ipra-symbolic-saturation-compose-01/lib/DiophantineConsistency/CompactPositionGraph.olean
+
+The scratch overlay was based on /tmp/ipra-compact-graph-derived-radix-pair-01/author/lib. Its exploratory dependencies CompactSameWitnessSaturation2, CompactSymbolicGraphSaturation and FreeJGraphCongruenceExplore had previously been rebuilt on that same side; the composition source and failure were recorded in commit b3c898e2c4. This is not a full guarded provider replay.
+
+Earlier direct attempt 7128 exited 1 at line 67 with maximum recursion depth and reported sorryAx for the failed fixed theorem. Its retained reconstruction SHA-256 is f2d7a48aecc23bc99bef9b1730d901496af5b62e13ac8b36f0696bc4ea49fc18. The retry added only `set_option maxRecDepth 10000`; session 14373 exited 1 with a Lean kernel excessive-memory error at the 3,000 MB limit, and its retained exact source SHA-256 is 2fb9cded1b83322d4ce382fd7ffc13839876b80c06209ec7158547d868249830. Neither failed report is evidence of a theorem.

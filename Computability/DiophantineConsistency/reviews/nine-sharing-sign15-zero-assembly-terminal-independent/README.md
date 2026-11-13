@@ -1,0 +1,3 @@
+# Independent terminal audit: sign15 pointwise zero assembly
+
+Checker exit 0. Author outer 53749 exited 0; both stages and final postflight passed. Four reports cover old/new row lists and pointwise forward/reverse seed-zero maps; no warnings or sorryAx occur. Forward assumes the supplied abstract inner representative, while reverse recovers it from old zero; neither direction assumes port representation or sign. Sources, objects, logs, six transfer providers, guards and overlays were checked. The inherited provider survey is point-in-time. Existential seed iff and iPRA endpoint remain separate.

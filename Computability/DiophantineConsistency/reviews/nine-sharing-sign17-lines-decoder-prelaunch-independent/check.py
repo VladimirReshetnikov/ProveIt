@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+root=Path(__file__).resolve().parents[2];repo=root.parents[1];p=root/'research/nine-sharing-sign17-lines-decoder-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+assert sha(p/'run.py')=='6570a760ea4be1448cec89d30bff36a3229dc6db33840bdd3ff261ac36952769' and sha(p/'source-manifest.json')=='c2013e80ac54aecc95cb0e3207757896ad0bda4bdc71b8c84b39eeacd5c2b356'
+e,=json.loads((p/'source-manifest.json').read_text())['rows'];n='Sign17LinesDecoder';q=p/'src/DiophantineConsistency'/(n+'.lean');s=q.read_text();imports=['DiophantineConsistency.Sign17SeedLines','DiophantineConsistency.Sign17ParamDecoder'];assert e['module']=='DiophantineConsistency.'+n and e['imports']==imports and sha(q)==sha(repo/e['source'])==e['source_sha256']=='39bec8ca5718fd176f1588bedf3420a7e1e034049fe1fd767c563b693fce4da3' and re.findall(r'^import ([A-Za-z0-9_.]+)$',s,re.M)==imports and not re.search(r'(?m)^\s*(axiom|opaque|partial)\b|\b(sorry|admit|native_decide)\b',s)
+for z in ('def displayedSeed : ℕ := Current14SeedLines.decimalValue Current14SeedLines.digits','theorem cache_from_lines (j : Fin 430)','WangTiles942.action j = Sign17ParamDecoder.actionAt displayedSeed j.val','Current14SeedLines.decimal_lines_eq_seed.2.2','Sign17ParamDecoder.action_seed','WangTiles942.action_eq_decoder j','theorem transition_row_from_lines (j : Fin 430)','(j.val + 1, ⟨(1-d) * WangTiles942.rail false a.2.2,','WangTiles942.headColor (j.val / 2) (j.val % 2)','d * WangTiles942.rail true a.2.2, a.1.toNat⟩)'):assert z in s
+old=(root/'Lean/DiophantineConsistency/WangTiles942TableData.lean').read_text();assert 'let a := action j' in old and '(j.val + 1, ⟨(1-d) * rail false a.2.2, headColor (j.val/2) (j.val%2),' in old and 'd * rail true a.2.2, a.1.toNat⟩)' in old
+basepaths=['nine-sharing-sign17-seed-lines-replay','nine-sharing-sign17-param-decoder'];bases=[Path('/tmp/nine-sharing-sign17-seed-lines-replay-20261110'),Path('/tmp/nine-sharing-sign17-param-decoder-20261110')]
+for name in basepaths:subprocess.run([sys.executable,'-I','-S','-B',str(root/'reviews'/(name+'-terminal-independent')/'check.py')],capture_output=True,check=True,timeout=180)
+states=[json.loads((root/f'research/{name}-check/attempt01/state.json').read_text()) for name in basepaths];maps=[{str(Path(k).relative_to(b/'lib')):v for k,v in st['overlay_links'].items()} for st,b in zip(states,bases)];common=set(maps[0])&set(maps[1]);assert len(common)==1252 and all(maps[0][x]==maps[1][x] for x in common)
+for st,b in zip(states,bases):
+ for row in st['rows']:
+  rel='DiophantineConsistency/'+row['module']+'.olean';target=str((b/'lib'/rel).resolve());assert rel not in maps[0] or maps[0][rel]==target;assert rel not in maps[1] or maps[1][rel]==target
+r=(p/'run.py').read_text();assert "need('Init' in deps" in r and "env['LEAN_NUM_THREADS']='1'" in r and "str(candidates[0])==rec['path']" in r and "rec['realpath']==provider_init['realpath'] and rec['sha256']==provider_init['sha256']" in r and "'-M3600'" in r and "'-j1'" in r and 'rss_limit=4*1024**3,mem_floor=10*1024**3,seconds=120,interval=.1' in r
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=180);assert not x.stderr and json.loads(x.stdout)['status']=='PASS_NO_LEAN_PREFLIGHT'
+print(json.dumps({'status':'PASS_PRELAUNCH','rows':430,'provider_overlap':len(common),'scope':'explicit Lean decimal lines to action cache and transition rows only; full table/PDF/file separate'},indent=2))

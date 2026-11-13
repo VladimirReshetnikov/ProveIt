@@ -1,0 +1,7 @@
+Independent post-audit PASS for conditional fixed-mask saturation; no Lean replay.
+
+Actual outer session reported exit0 and reaped. Child result e0c4394107493b89ebde645c4da0724f9a7e380430026f0c76ad1a7b0fddd09c; outer bff5e72604e647c7993958e2b663c682a260e8997763e25d4bf5fd572ca92def; final object aa922719f1bd884df30458da4a608b789e0aa46f5e4b7f73dd0029cdef98f6c4. Three stages replay MaskCoverGuard, SaturationMaskGuard, and fixed-mask specialization in that order. All exit0 with empty stderr and exact 2/1/1 reports each listing [propext, Classical.choice, Quot.sound]; the fresh stages are warning-free. The two exact warning-bearing beta/natural cover ancestors remain recorded and are not relabeled warning-free.
+
+The final theorem substitutes fixed symbolic beta, low and high and discharges only the mask-cover inequality. It retains explicit q=exp u and q=beta*J+1, J positivity, high-mask bounds, C positivity, C−1/F/mask digit bounds, exact natural four-block equation, population upper and rank population lower bounds. Under those same variables it concludes both NoCarry statements and F+C<q. It does not derive the remaining hypotheses from a 74 zero or establish a fixed-BFS graph guard or endpoint.
+
+check.py rehashes sources, stage logs, objects and exact direct headers, all 2057 union companions, outside selections, and every parent closure/companion. Four inherited baseline source ancestries and external package/dynamic historical limitations remain.

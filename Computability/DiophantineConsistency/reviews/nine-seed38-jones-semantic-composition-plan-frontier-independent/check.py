@@ -1,0 +1,6 @@
+import hashlib,json
+from pathlib import Path
+d=Path(__file__).resolve().parents[2];p=d/'research/nine-seed38-jones-semantic-composition-plan/README.md';assert hashlib.sha256(p.read_bytes()).hexdigest()=='b04653a5e742793d12e6867636118b944387b0283685c09d55e0dd5ae6c488e7'
+path=(d/'research/nine-seed38-jones-prefix-path18-45-check/src/DiophantineConsistency/Norm38MacroPath18to45.lean').read_text();prefix=(d/'research/nine-seed38-jones-named-prefix-check/src/DiophantineConsistency/Norm38MacroPrefixes.lean').read_text();last=(d/'research/nine-seed38-jones-dependent08-staged-check/src/DiophantineConsistency/Norm38MacroDependentOutput.lean').read_text();named=(d/'research/nine-seed38-jones-named-formula-check/src/DiophantineConsistency/Norm38NamedFormula.lean').read_text()
+assert '(i : Fin 18)' in path and 'theorem lookup_recipe18' in path and 'theorem recipe_eq_named : Norm38MacroRecipe.recipe = d45' in prefix and 'theorem prefix_output' in last and 'd45.values a (Fin.last 44)' in last and 'theorem eval_current' in named and 'Norm38IPRAEndpoint.expression.evalRing a =' in named
+print(json.dumps({'status':'PASS_SOURCE_REVIEW','scope':'plan and checked theorem interfaces; no Lean replay, construction or final semantic claim'},indent=2,sort_keys=True))

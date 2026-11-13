@@ -1,0 +1,3 @@
+# Independent sign16 current-port seed iff terminal audit
+
+The independent checker exited 0. Author outer session 94835 exited 0; stage and postflight passed. Source/object, logs, seed-iff and carrier-soundness direct provider guards and overlays were checked. Five standard axiom reports contain no warnings or sorryAx. Lean proves the same-input sign16/sign17 staged seed iff at current symbolic ports, with model bounds discharging the earlier assumptions. The carrier-soundness survey and inherited unions are point-in-time and not replayed postflight; direct guards/overlays were rechecked. Expression iff and endpoint remain separate. No Lean was rerun here.

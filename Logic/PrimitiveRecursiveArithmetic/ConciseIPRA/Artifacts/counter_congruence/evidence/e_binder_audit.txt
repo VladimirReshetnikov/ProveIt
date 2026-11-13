@@ -1,0 +1,109 @@
+AUDIT OF THE PROPOSED E BINDER
+=============================
+
+Proposed ordinary meaning:
+  E_{x,y} B(x,y) = forall y exists x (B(x,0) -> B(x,y)).
+
+Naive introduction rules being audited:
+  Case:     Gamma, B(t(z),0) |- B(t(z),S z)
+            --------------------------------
+            Gamma |- E_{x,y} B(x,y)
+
+  Progress: Gamma, B(t,z) |- B(t,S z)
+            --------------------------------
+            Gamma |- E_{x,y} B(x,y)
+            with B a literal equation and t independent of fresh z.
+
+Here z is fresh for Gamma and fixed parameters; t is supplied as finite
+numerical term syntax at the inference node. The proposed elimination
+instantiates y, then exposes an existential eigenwitness x and its local
+conditional B(x,0)->B(x,y). Ordinary direct Hyp and numerical equality
+transport may remain present.
+
+FINDING: the intended full formula roundtrip is not derivable from these
+rules. The obstacle is the order of witness choice, not merely a missing
+identity lemma.
+
+Counterinterpretation
+---------------------
+Use standard N, actual equality and the usual primitive-recursive meanings
+of numerical terms. Recursively interpret E by
+
+  E_{x,y} B  iff there is a primitive-recursive unary function f such that
+                for every y, B(f(y),0) -> B(f(y),y).
+
+This is an external semantics for the native proof calculus, not an
+additional axiom or an internal uniform evaluator. Passive parameters are
+fixed natural numbers in each valuation. Nested formulas have their
+recursively defined meanings.
+
+All naive primitive rules are sound in this semantics:
+
+1. Case introduction supplies the primitive-recursive selector
+   f(0)=0, f(Sz)=t(z). The implication at 0 is tautological; the premise
+   supplies every successor instance.
+2. Atomic progress uses the constant selector f(y)=t. If B(t,0) holds,
+   ordinary induction on N and the premise give every B(t,y); if the base
+   is false, every required implication is true. Freshness fixes Gamma.
+3. Elimination at a numerical term u chooses the available value f(u), so
+   its ordinary existential continuation is valid.
+4. Hypothesis, equality transport and numerical computation are sound.
+
+The proposed macro families still have their ordinary meanings in this
+counterinterpretation. When x is unused, the PR-selector requirement is
+vacuous (choose constant zero), giving conditional universal closure.
+The existential macro E_{x,y} G_y A(x) holds iff there is an x with A(x):
+one direction uses the selector at y=1; the other uses a constant function.
+Thus implication, conjunction and universal closure encoded with unused
+witness variables retain their ordinary truth values. This is a one-world
+intuitionistic semantics, so classical truth at this metalevel suffices to
+refute derivability of the claimed reverse implication.
+
+Separation of E from its intended ordinary meaning
+------------------------------------------------
+Choose any total recursive function F that is not primitive recursive.
+For complete self-containment, enumerate all unary primitive-recursive
+descriptions with junk interpreted as zero, use the terminating recursive
+description evaluator, and diagonalize F(n)=f_n(n)+1. This is total
+recursive; F cannot equal any enumerated f_e at its own index e.
+
+Fix a Turing program computing F. Let R(n,c) be its primitive-recursive
+finite halting-trace predicate and out(c) its primitive-recursive output
+decoder. R is total in c for each n because F is total. Any primitive-
+recursive choice c(n) satisfying R(n,c(n)) would make out(c(n)) a
+primitive-recursive implementation of F, a contradiction.
+
+Use the native numerical gate to form a literal equation B(x,y) which is
+automatically true at y=0 and, at y=S n, means R(n,x). This is expressible
+by a fixed primitive-recursive characteristic term, predecessor, and the
+zero/successor selector.
+
+Then the intended ordinary reading forall y exists x
+(B(x,0)->B(x,y)) is true in standard N: choose any x at y=0 and a valid
+halting trace at each successor. But E B is false in the counterinterpretation:
+a PR selector f for E would give c(n)=f(Sn), hence a PR implementation
+out(f(Sn)) of F.
+
+Because the ordinary logical macros retain their ordinary meanings, the
+native encoding of the intended ordinary reading is true while the raw
+E formula is false. Therefore the reverse formula composite cannot be a
+theorem of the naive calculus.
+
+Scope and possible repairs
+--------------------------
+This disproves the proposed identity-domain, intended-meaning roundtrip.
+It does not disprove every conceivable bi-interpretation of every theory
+using an E-shaped binder. No such alternative interpretation is supplied.
+
+An explicit repair must permit the witness to be obtained within the
+scope of the newly introduced arbitrary y, after local eliminations.
+A two-stage introduction judgment or continuation can do that, but its
+syntax/checker cost must be charged. Another route restricts native E
+matrices to separated modes: x unused for closure, or y appearing solely
+as a gate around an x-formula for existential introduction. That changes
+the formula grammar and needs a closure and interpretation proof.
+
+The original D = exists x forall y conditional avoids this obstruction:
+its existential witness can be exposed once, before the universal
+introduction. Moving forall before exists creates the uniform-choice
+problem for a single rule with a preselected term witness.

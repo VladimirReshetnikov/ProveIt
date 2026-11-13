@@ -1,0 +1,5 @@
+# Independent review: final 13-variable standard-iPRA axiom reports
+
+Actual outer session 92068 and both Lean runs exited 0. The exact client imports the checked `ModelThirteenForms` provider object and prints the axiom dependencies of `standard_equivalence70` and `standard_equivalence71`. Both reports contain only `propext`, `Classical.choice`, and `Quot.sound`; neither contains `sorryAx`. The separately reviewed forms source states these theorems as standard iPRA derivations of the respective shifted-expression no-zero formula iff negation of the mapped native refutation formula.
+
+This checker verifies the exact client and provider hash, the successful object, both actual exit records and log hashes, both exact axiom reports, all 100 direct guard slots and 1,031 overlay link targets, and sampled monitor records. The direct guards inherit the existing provider base, not a complete dynamic trace or an independently rebuilt base. Sampling may miss spikes or escaped processes. It did not replay Lean. No Gödel–Gentzen endpoint or Lean total-degree theorem is asserted by this axiom-report client.

@@ -1,0 +1,3 @@
+# Independent result audit: eleventh Pell ordinate
+
+PASS for captured result. Author reports actual outer session 82802 exit 0/reaped. Terminal `a8494444e5ba117bb2644d1133e8a0721292535c874d18ef41b03bbb0fd01674`; runner `3f7c217f3f54472e3f270f82b5d0392a1804f1f9d40f8a4b2f72b8b776819f2d`; object `6a18e79e1d7fbcb5fbf8fc443f22789592fc998f7fd5b950c3a954df7660ebaf`. All 45 terminal input pins, object and logs independently rehashed; Lean exit 0, exact named report `[propext, Classical.choice, Quot.sound]`, stderr empty. Generic model identity only; no graph, index exclusion or guard claim. Direct pins do not establish full serialized transitive/package ancestry or continuously stable resolution.

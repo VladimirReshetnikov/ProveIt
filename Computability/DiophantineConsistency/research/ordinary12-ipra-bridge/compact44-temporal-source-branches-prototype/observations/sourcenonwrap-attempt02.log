@@ -1,0 +1,68 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/compact44-graph-support-join-01/TemporalSourceNonwrap.lean:31:32: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X n E t q r : V
+ht : t < n
+hq : q < n
+hqt : q < t
+hr0 : 0 < r
+hr : r < 67
+he : E % (67 * n) = 67 * q + r
+hX : X < Exp.exp (67 * n)
+j : V := t - q
+s : V := j - 1
+u : V := 67 * (n - (t + 1))
+hi0 : 0 < j
+hin : j < n
+hqi : q + j = t
+hsi : s + 1 = j
+hrr : r + (67 - r) = 67
+hti : 67 * t = 67 * q + r + (67 * s + (67 - r))
+htn : t + 1 + (n - (t + 1)) = n
+⊢ 67 + t * 67 + (1 + t + (n - (1 + t)) - (1 + t)) * 67 = 67 + t * 67 + (n - (1 + t)) * 67
+/tmp/compact44-graph-support-join-01/TemporalSourceNonwrap.lean:36:48: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  E % (67 * n) + (67 * s + (67 - r))
+in the target expression
+  67 * t + 67 + u = E % (67 * n) + (67 * s + (67 - r) + 67 + u)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X n E t q r : V
+ht : t < n
+hq : q < n
+hqt : q < t
+hr0 : 0 < r
+hr : r < 67
+he : E % (67 * n) = 67 * q + r
+hX : X < Exp.exp (67 * n)
+j : V := t - q
+s : V := j - 1
+u : V := 67 * (n - (t + 1))
+hi0 : 0 < j
+hin : j < n
+hqi : q + j = t
+hsi : s + 1 = j
+hrr : r + (67 - r) = 67
+hti : 67 * t = 67 * q + r + (67 * s + (67 - r))
+htn : t + 1 + (n - (t + 1)) = n
+hwin : 67 * t + 67 + u = 67 * n
+ht' : 67 * t = E % (67 * n) + (67 * s + (67 - r))
+⊢ 67 * t + 67 + u = E % (67 * n) + (67 * s + (67 - r) + 67 + u)
+/tmp/compact44-graph-support-join-01/TemporalSourceNonwrap.lean:41:2: error: Type mismatch
+  h
+has type
+  dig 67 (rot 1 (67 * n) X (E % (67 * n))) t =
+    dig 67 X (cyc n t q) * Exp.exp r % Exp.exp 67 + dig 67 X (cyc n j 1) / Exp.exp (67 - r)
+but is expected to have type
+  let j := cyc n t q;
+  dig 67 (rot 1 (67 * n) X (E % (67 * n))) t =
+    dig 67 X j * Exp.exp r % Exp.exp 67 + dig 67 X (cyc n j 1) / Exp.exp (67 - r)
+'TemporalSourceNonwrap.nonwrap' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

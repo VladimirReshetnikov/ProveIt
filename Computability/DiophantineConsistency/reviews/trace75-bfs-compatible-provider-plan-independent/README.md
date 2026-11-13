@@ -1,0 +1,11 @@
+# Independent review: BFS-compatible provider plan
+
+PASS for the static plan as recorded, with the important ancestry qualification below. No Lean build was run by this review.
+
+The independent checker reassembled the 1,931-name BFS baseline from its pinned initial project and 65 built objects, and used the captured 208-project-module `Trace75FixedCongruence` closure. It recomputed the affected set from ten seeds: the two original `ArithmeticNegativeNorms`/`ModelRatioBounds` seeds and the eight differing trace75 supplements previously confirmed inside the BFS halt-Pell closure. The plan selects 31 affected `Trace75` modules absent from the BFS baseline for rebuild and identifies four additional affected modules already in that baseline: `DiophantineConsistency.ModelArithmetic`, `DiophantineConsistency.ModelExponentialCongruence`, `PellOddFold`, and `PellRecovery`.
+
+The checker confirmed the four captured baseline and trace75 selected `.olean` hashes match, and rehashed their current baseline paths. This supports the plan's **retention classification**, not an independent proof that their historical source ancestry or dependencies are coherent with all ten chosen seed versions. Whether those four can safely be retained needs provenance/closure evidence or a rebuild; it cannot be settled from equal object hashes alone.
+
+For each of the 31 planned stages the checker rehashed the exact source, producer snapshot, accepted terminal and clean stdout/stderr, compared the selected object hash and source import list to the captured serialized header, and verified all planned stage-to-stage imports occur earlier in the proposed order. The two overlap seed families and 31 stages are not a proof of sufficiency for any later BFS/trace75, iff, syntax or iPRA clients. Full historical, package and dynamic ancestry, actual build behavior and the resulting selected closure remain to be established.
+
+The reviewed `plan.py` SHA-256 is `52b630774d0dd0e1a16cb44af620bcbef4090c53d7049c35cec88b5f58ee24c6` and its result SHA-256 is `0a53a6330b8c45fa1830f21b2babc3847f9a46014a33f8db56578a8f9da00088`. Exact independent checks and four retained hashes are captured in `check.py` and `result.txt`.

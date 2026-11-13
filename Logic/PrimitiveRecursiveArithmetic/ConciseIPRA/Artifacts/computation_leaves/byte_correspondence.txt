@@ -1,0 +1,85 @@
+COMPUTATION LEAVES: BYTE PROFILE
+==============================
+
+The new program code/checker_bytes.py is 270 significant Python tokens,
+308 AST nodes, and 474 normalized UTF-8 bytes on CPython 3.12.14.
+Its matched current incumbent controls/bytes477.py is 272 / 306 / 477.
+The byte coordinate improves by 3. The new program does not improve that
+incumbent's AST coordinate. The coordinatewise family result is separate.
+
+The input is a JSON array, consumed from the end. Its last entry is
+[closed_guarded_public_goal, 0]. Remaining entries have four fields
+[major, source, seed, body]. The neutral administrative major is [].
+The intended exact integer/list syntax and canonical guarded public-goal
+contract are inherited; this compact program is not a general JSON or
+public-grammar validator. Acceptance requires BOTH normal exit and exactly
+ACCEPT followed by LF. Unconsumed prefixes are permitted.
+
+THE CHANGE
+----------
+In the old checker, a computation packet appended a constructed equation
+with a known valid zero instance, allocated an administrative fresh name,
+and continued to check the current goal. It need not be true at every
+value of that fresh name. The new checker compares the already scope-checked
+current goal to that equation and closes the branch if they agree.
+The forward continuation has only introduction and opened-major cases.
+
+No computation equation changes. A computation source is still 0, giving
+I(0,u;t)=u, or a nonliteral-zero source s, giving
+I(S(s),u;t)=t[I(s,u;t)/the bound iterator variable]. The omission of the
+literal-zero successor source is the inherited constructed-computation
+convention, whose recovery uses equality and a term provably equal to 0.
+
+The source expression changes from
+
+  c(g,m,k) and m*3 or (u and computation) or introduction
+
+to
+
+  computation == current_goal or continuation(
+      c(g,m,k) and m*3 or introduction)
+
+with the necessary surrounding lambda/list-comprehension syntax. The
+initial goal scope scan remains before the computation test. Each premise
+proof is still checked at its old scope floor; fresh allocation follows it.
+
+THEOREM-SET ARGUMENT
+-------------------
+A successful leaf is an instance of an unchanged computation axiom.
+All other successful branches use the inherited logical/equality rules.
+Conversely, first specialize the erased supply's private parameters to
+zero, and then replace the resulting assumption by a computation proof.
+Replace every use of that assumption by the corresponding proof leaves,
+rename bound eigenparameters to avoid capture, and remove the supply.
+Parameters allocated only by an erased supply may be specialized to 0.
+This is a statement about the represented theorem set, not equality of
+raw accepted byte strings. The eager preview can reject additional
+noncanonical aliases, and old supply packets generally require conversion.
+The full paper supplies the canonical-template completeness argument.
+
+EXECUTABLE EVIDENCE
+-------------------
+compile_bytes.py is an untrusted proof-tree translator. It parses successful
+upstream traces, reconstructs hypothesis origins, removes supply steps,
+specializes erased fresh parameters, and inserts computation leaves.
+It is not imported by the checker and is not claimed to convert every
+malformed or aliased successful stream. Every produced fixture was checked
+by the standalone candidate. The source public goal is retained literally.
+
+37 inherited positive cases (including several aliases and unused prefixes)
+converted successfully. The principal canonical reductions are:
+
+  old packets  new packets  example
+        328            25  compound case introduction
+        664           100  compound implication elimination
+       1541           268  induction with a used induction hypothesis
+        521            27  derived zero-source transport
+        847           317  zero symmetry for all numbers
+          3             3  transport reflexivity
+          1             1  each computation equation
+
+byte_validation.json records 206 checker executions, under ordinary Python
+and -O, with zero unexpected outcomes: 37 translated positive cases,
+37 versions whose public goal was changed to 0=S(0), and 29 inherited
+negative cases. These finite checks are regression evidence; they do not
+prove soundness, completeness, or bi-interpretability.

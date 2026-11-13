@@ -1,0 +1,80 @@
+import PositiveUnscale84To87
+import DiophantineConsistency.Compact44.P72Root
+
+/-! Proposed literal graph binding for the forward q³ quotient cut, at
+natural ports. It imports unelaborated source drafts and does not discharge
+the reverse root or an endpoint. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive87FirstNormBindingDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing Ordinary13QCube93ArithmeticDraft
+open PositiveUnscale84To87Draft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def intPorts (p : Fin 4 → ℕ) : Fin 4 → ℤ := fun i => (p i : ℤ)
+def b (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 0*(p 0:V)
+def k (v : Fin 13 → V) : V := v 9+v 10
+def ell (v : Fin 13 → V) : V := v 6*v 7*(v 7*k v)
+def radicand (v : Fin 13 → V) : V := 1+ell v*(ell v+k v)
+def bt (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  e87 (intPorts p) v (PositiveUnscale87GraphDraft.graph (intPorts p)).bt
+
+def root (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  e87 (intPorts p) v (PositiveUnscale87GraphDraft.graph (intPorts p)).root
+
+def core (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (ell v)+ι (k v)+ι (v 8)-ι (k v)*bt p v
+
+/-- Literal signed root, including the +Y*b term and the q³-scaled Bt. -/
+theorem root_form (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    root p v=ι (cubeScale (b p v))*ι (b p v)*core p v+
+      ι (v 7)*ι (b p v)-ι (cubeScale (b p v))*bt p v := by
+  simp [root,bt,core,e87,intPorts,PositiveUnscale87GraphDraft.graph,b,k,ell,cubeScale,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- The 87 literal first residual is exactly its signed scaled square norm. -/
+theorem first_form (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    e87 (intPorts p) v (PositiveUnscale87GraphDraft.graph (intPorts p)).first =
+      root p v*root p v-
+      (ι (cubeScale (b p v))*ι (b p v))*(ι (cubeScale (b p v))*ι (b p v))*
+        ι (radicand v) := by
+  simp [e87,root,intPorts,PositiveUnscale87GraphDraft.graph,b,k,ell,radicand,cubeScale,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- A literal 87 zero supplies both fact-level quotient premises. -/
+theorem cut_of_zero (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (PositiveUnscale87GraphDraft.graph (intPorts p)).output v) :
+    ScaledFirstCut (intPorts p) v (p 0:V) (radicand v) := by
+  have h := (internalZero_iff _ _).mp hz
+  rw [output87] at h
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at h
+  obtain ⟨hfirst,_,_,_⟩ := squares_zero _ _ _ _ h
+  change e87 (intPorts p) v (PositiveUnscale87GraphDraft.graph (intPorts p)).first=0 at hfirst
+  rw [first_form] at hfirst
+  dsimp only [ScaledFirstCut]
+  refine ⟨core p v,?_,?_⟩
+  · exact root_form p v
+  · have hh := sub_eq_zero.mp hfirst
+    change root p v^2=(ι (cubeScale (b p v))*ι (b p v))^2*ι (radicand v)
+    simpa only [pow_two] using hh
+
+/-- At natural ports, the actual graph supplies the forward norm-binding
+cut. All source proofs and providers remain unchecked. -/
+theorem forward_norm_binding (p : Fin 4 → ℕ) : ForwardNormBinding (intPorts p) := by
+  intro V _ _ v hv hz
+  refine ⟨(p 0:V),radicand v,?_,cut_of_zero p v hz⟩
+  exact P72Root.cast_port (V:=V) p 0
+
+theorem forward_graph_cut (p : Fin 4 → ℕ) : ForwardGraphCut (intPorts p) :=
+  forward_of_norm_binding (intPorts p) (forward_norm_binding p)
+end DiophantineConsistency.Positive87FirstNormBindingDraft
+#print axioms DiophantineConsistency.Positive87FirstNormBindingDraft.forward_graph_cut

@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 43277 exited 0 and reported `PASS sign32 residual-square diagnostic`. Both recorded Lean stages exited 0. The first object defines the generated symbolic 32-witness seed; the second proves `SharingSign32Squares.seed_zero_iff_residuals` for IΣ₁ models. The reported axioms are `[propext, Classical.choice, Quot.sound]`; the compiler logs contain no warnings. The state, logs and author-recorded outer outcome are retained here, and the objects remain under `/tmp/nine-sharing-sign32-seed-squares-check-20261106/lib/DiophantineConsistency/`. The source/model boundary and inherited provider limitations are those in the parent README. This does not prove the 32↔33 bridge.

@@ -1,0 +1,78 @@
+{
+  "parent_comparison": {
+    "author_state_sha256": "fceb7b4dbdc132fc37c4b0e82633b2547be7b27c0f1b414debfa6796fa114049",
+    "author_workspace_source_drift": [],
+    "manifest_sha256": "9a7059e439bb77ab258808789fd1165cff8a4961c609e132ca0ed2130cb27ded",
+    "peer_state_sha256": "ce847b696f9d9912166f7ca4cc01ba45268732b2c146a88eb73d21dc893e63f4",
+    "peer_workspace_source_drift": [],
+    "provider_receipt_sha256": "7cbd49b6d84497c46520e908fc8c4dc105d7a0070fd1323c6c28e26bf4cf00f6",
+    "rows": 70,
+    "scope": "Two separate project compilations using the same frozen sources, compiler, driver and Foundation provider. Package-transitive and dynamic ancestry remains inherited; this comparison does not replay Lean itself.",
+    "status": "MATCHED_PASS"
+  },
+  "pins": {
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/free-j-current-denominator-composition/replay.py": "2c8a7f848e715a297f8af31e6a2be46747db0d571bc9fa1f104ab06d2db94eb8",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/reduced-model-normalization-prototype/evidence/receipt.json": "802096243e8d668abecaf1a59e9132a3f21b3db9bdde5f847ba1b97fb113aa65",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/reduced-model-normalization-prototype/replay.py": "dd61f7af4871fbe840bef4adbf89901dadc8aeff4406340d7bf67e6579b5ef38",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/ordinary12-ipra-bridge/reduced-model-signed-prototype/ReducedNormSigned.lean": "df5f982306cfa877484581a7e80103d1467f7d32d4905b3a9e9cbcf6689df10f",
+    "/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/reviews/ordinary12-reduced-model-normalization-independent-audit/CHECK.json": "1360057b0ae7d567e9462094dcfec04937d663a47a3cf3b2c15e9bc5bff20346"
+  },
+  "runs": [
+    {
+      "axiom_reports": [
+        "propext, Classical.choice, Quot.sound",
+        "propext, Classical.choice, Quot.sound"
+      ],
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/ipra-reduced-model-signed-pair-01/author/src",
+        "/tmp/ipra-reduced-model-signed-pair-01/author/src/DiophantineConsistency/ReducedNormSigned.lean",
+        "-o",
+        "/tmp/ipra-reduced-model-signed-pair-01/author/ReducedNormSigned.olean"
+      ],
+      "compiler_exit": 0,
+      "deps_exit": 0,
+      "deps_stdout": "/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib/Init.olean\n/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib/Init.olean\n/tmp/ipra-reduced-model-signed-pair-01/author/lib/DiophantineConsistency/ReducedNormNormalization.olean\n",
+      "label": "author",
+      "log_sha256": "ebcb22853e01ad8839e17acbc330c8b175dc5abfd4cc12fd7ea2779ec26408c0",
+      "object_sha256": "e6038c81aa28be30bf0d9709d1b46067c1828b51a37c214c9fe16c2ebd92cef3",
+      "sampled_peak_rss_bytes": 2058297344,
+      "seed_sha256": "9247dd40a71d6ca1c7be0c90e905f175537b16ad3dc3c4b484a93b8d9a627771",
+      "source_sha256": "df5f982306cfa877484581a7e80103d1467f7d32d4905b3a9e9cbcf6689df10f",
+      "stdout": "'ReducedNormSigned.natural_magnitude_square' depends on axioms: [propext, Classical.choice, Quot.sound]\n'ReducedNormSigned.signed_denominator_divides' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "stop_reason": null
+    },
+    {
+      "axiom_reports": [
+        "propext, Classical.choice, Quot.sound",
+        "propext, Classical.choice, Quot.sound"
+      ],
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-M3000",
+        "-j1",
+        "-DElab.async=false",
+        "--root=/tmp/ipra-reduced-model-signed-pair-01/peer/src",
+        "/tmp/ipra-reduced-model-signed-pair-01/peer/src/DiophantineConsistency/ReducedNormSigned.lean",
+        "-o",
+        "/tmp/ipra-reduced-model-signed-pair-01/peer/ReducedNormSigned.olean"
+      ],
+      "compiler_exit": 0,
+      "deps_exit": 0,
+      "deps_stdout": "/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib/Init.olean\n/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib/Init.olean\n/tmp/ipra-reduced-model-signed-pair-01/peer/lib/DiophantineConsistency/ReducedNormNormalization.olean\n",
+      "label": "peer",
+      "log_sha256": "ebcb22853e01ad8839e17acbc330c8b175dc5abfd4cc12fd7ea2779ec26408c0",
+      "object_sha256": "e6038c81aa28be30bf0d9709d1b46067c1828b51a37c214c9fe16c2ebd92cef3",
+      "sampled_peak_rss_bytes": 2058063872,
+      "seed_sha256": "9247dd40a71d6ca1c7be0c90e905f175537b16ad3dc3c4b484a93b8d9a627771",
+      "source_sha256": "df5f982306cfa877484581a7e80103d1467f7d32d4905b3a9e9cbcf6689df10f",
+      "stdout": "'ReducedNormSigned.natural_magnitude_square' depends on axioms: [propext, Classical.choice, Quot.sound]\n'ReducedNormSigned.signed_denominator_divides' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "stop_reason": null
+    }
+  ],
+  "scope": "Paired model-level suffix over matched source-current and reduced-norm parents. Signed model numerator is divisible by nonzero denominator from the cleared norm; no graph binding, iPRA proof, or package-transitive/dynamic ancestry audit.",
+  "status": "PASS_PAIRED_REDUCED_MODEL_SIGNED_INTEGRALITY"
+}

@@ -1,0 +1,13 @@
+# Independent review: recorded project ancestry audit
+
+The [ancestry audit](../../research/ordinary14-root74-recorded-ancestry-audit/README.md) reproduces in the current retained environment and its claims are supported within the documented, bounded scope. The receipt describes a point-in-time traversal of *recorded* edges from the 31 earlier lexical seeds; it does not establish a complete or usable Lean provider closure.
+
+The independent checker pins the audit and its observation, rechecks the six anchored metadata files, and reconstructs the graph with a separate breadth-first traversal of the P72 row files and the base-state records. It independently confirms 627 reached P72 and 919 reached base records, 4,414 recorded direct edges, and 80 distinct external names with one observed path/realpath/hash tuple per name. It verifies the recorded order for P72-to-P72 and base-to-base edges, the independently pinned P72 source snapshot and base links, source and `.olean` hashes for every reached producer, and edge paths, hashes and project-producer targets. It rechecks all 29,860 distinct recorded guard/output slots, including 1,751 present and 28,109 absent, and matches the graph and row-file digests in the original observation. No mismatches were found at the time of this review.
+
+Both audits consume the same retained records and therefore are not independent proof of those records' historical authenticity. In particular, only the final P72 row is pinned by the progress metadata; hashes of earlier reached row files document the present observations. The metadata and files are not read atomically. The P72 recorded edges are classified as project edges by membership in the two retained producer inventories; unmatched names are checked against the allowed external namespaces, but not followed further. The 80 external objects, transitive package/toolchain ancestry, unrecorded outputs and companions, and implicit or runtime imports remain outside this traversal. The presence or absence of a recorded guard slot does not establish Lean's actual search behavior. Neither reproduced hashes nor this review establish provider compatibility, endpoint elaboration, iPRA derivability, or physical-file/PDF binding.
+
+The checks read retained temporary paths and may stop reproducing if those paths change or disappear. Run from the repository root:
+
+```sh
+python3 -I -S -B Computability/DiophantineConsistency/reviews/ordinary14-root74-recorded-ancestry-independent/check.py | cmp - Computability/DiophantineConsistency/reviews/ordinary14-root74-recorded-ancestry-independent/result.json
+```

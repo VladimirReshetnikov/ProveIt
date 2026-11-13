@@ -34,7 +34,7 @@ header=r'''\documentclass[10pt]{article}
 footer=r'''
 \normalfont\fontsize{7.7}{8.2}\selectfont
 The fixed integer $\mathcal A$ above is written in base 10. This equation is a candidate: its model witness transport has been checked,
-but its native intuitionistic PRA equivalence has not passed the guarded replay. Its exact degree is certified by integer-polynomial calculations;
+but its native intuitionistic PRA equivalence has not passed a paired guarded replay. Its exact degree is certified by integer-polynomial calculations;
 the 135-operation count is for the unshifted circuit. Neither count is a
 minimality claim.
 \end{multicols}

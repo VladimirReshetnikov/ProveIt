@@ -1,0 +1,3 @@
+# Independent terminal audit: sign17 concrete polynomial bridge
+
+The independent checker exited 0. Author-observed outer 91454 exited 0, with the stage and final postflight successful at scoped -M3600. Lean checked the PolynomialBridge for the direct symbolic Fin17 current expression via the sign18 model-zero equivalence, including the positive-beta signed-gap chain. Source/object/import/log pins, direct guards, overlays and inherited terminal providers were checked; one axiom report, no warnings or sorryAx. Provider ancestry is point-observed. The iPRA endpoint and external JSON/Jones/PDF binding remain separate.

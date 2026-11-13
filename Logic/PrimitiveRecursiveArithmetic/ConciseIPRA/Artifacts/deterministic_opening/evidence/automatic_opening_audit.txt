@@ -1,0 +1,104 @@
+INDEPENDENT MATHEMATICAL REVIEW: AUTOMATIC WITNESS OPENING
+
+Reviewed construction
+---------------------
+For a major D_{x,y}B, introduce fresh b and compute the canonical rows
+C0 = nf B(b,0) and J = nf B(b,1). If C0 is literally 0=0 and J is literally
+b=t, choose rho=t; otherwise choose rho=b. The single branch proves the
+unchanged, outer-scoped goal A from the clause
+
+  [nf B(rho,0); y.nf B(rho,y)].
+
+The branch retains b as an available numerical parameter even when rho
+contains b. There is no supplied equality proof, replacement term, or
+intermediate conclusion formula.
+
+Soundness, including a self-containing replacement
+-------------------------------------------------
+Ordinary existential elimination of the major supplies C(b), the clause
+B(b,0) -> forall y B(b,y). In the successful case its base is true and its
+first row is b=t, so C(b) proves b=t. Ordinary intuitionistic equality
+substitution transports the entire clause from C(b) to C(t). This is a
+simultaneous substitution, valid also for b=t(b). It does not recursively
+rewrite the inserted t again. The supplied branch proves A from C(t), and
+A has no free b, so existential elimination is valid. In the default case
+C(rho) is just C(b).
+
+The scope n+1 in the implementation is essential even when a successful
+selection occurs: t may still contain the fresh parameter. An occurs check
+would be an unnecessary restriction. The selected target has no loose
+bound indices, because it is the right side of a fully opened, validated
+equation row. Substitution into the original two-bound-variable matrix,
+with depth 1 for the witness coordinate, is the correct capture-free
+operation.
+
+The final implementation recognizes the exact base 0=0 by `not any(base)`.
+This is equivalent only on the validated grammar, which is available here:
+the major [B] is proved and syntax-checked before either row is computed.
+In an equation, the only false immediate term value is integer zero;
+every nonzero integer is true and every successor or iterator is a nonempty
+list. A D formula has a nonempty formula as its sole child. Thus both
+immediate children are false exactly for [0,0]. Neither an empty formula,
+an empty term, nor a Boolean term can pass the prior syntax check. The
+successful conditional can safely select row[1]: its guards imply a literal
+equation row of arity two. This optimization changes no mathematical rule.
+
+Strong substitution and the completeness dependency
+---------------------------------------------------
+Successful selection is preserved under passive normalized substitution.
+The literal base 0=0 stays 0=0, the fresh-parameter left side stays that
+parameter, and the right side becomes its normalized substituted form.
+Thus a successful mode cannot become a default mode. A default mode can
+become successful.
+
+In a structural proof of substitution admissibility, the latter transition
+must be handled by applying the induction hypothesis directly to the
+ORIGINAL smaller branch, using the combined substitution that sends its
+local eigenparameter to the newly selected rho. This produces the required
+branch under C(rho) with the same outer result. Applying induction instead
+to a previously translated, potentially larger proof would not justify
+the induction measure. The successful-to-successful case uses a fresh
+renaming of the local parameter together with passive substitution, and
+normalization coherence identifies its clause with the required C(rho).
+
+Introduction can change from case mode to progress mode when a substituted
+witness normalizes to 0. The inherited compound-envelope repair supplies
+case introduction at 0. Its needed openings are all default: either the
+witness coordinate is unused, so the first row cannot mention the newly
+fresh parameter, or the matrix is D-rooted, so it cannot become an equation
+row. This makes the substitution argument well founded without presuming
+general ordinary opening.
+
+Once strong substitution is established, ordinary opening follows: take
+its branch under C(b), substitute b->rho in that branch, and use the new
+rule. The outer goal is b-free and therefore unchanged. Retained outer
+clauses are b-free as well.
+
+Equality reconstruction
+-----------------------
+The normalizing selector C and parity P give a two-row package
+
+ B(x,y) =
+ C(y,0,C(P(y),h(x),x)) = C(y,0,C(P(y),r,t)),
+
+with B(x,0)=0=0, B(x,1)=x=t, and B(x,2)=nf h(x)=r. From s=t and
+nf h(s)=r, numerical cases introduce D B at witness s, with a step that
+ignores the temporary induction/case assumption. Automatic opening chooses
+t and installs B(t,y), so clause use at 2 immediately gives nf h(t)=r.
+The construction uses no equality inference in order to prove equality.
+
+Scope of the conclusion
+-----------------------
+The soundness review covers arbitrary D nesting and arbitrary retained
+clauses. The completeness argument preserves canonical end sequents and
+composes with the inherited canonical/raw and scalar/iPRA comparisons.
+No new arithmetic axiom, standard-model restriction, quotient equality,
+or object-level uniform evaluator is introduced. The numerical domains,
+actual equality, and identity composite graph x=y are preserved.
+
+This is written mathematical review. The executable evidence has an
+explicitly narrower status: the opening fixtures have matched old proofs
+of the same theorems, independently replayed, but no generic executable
+opening-to-old translator is supplied. The appendix discharge system does
+have such a checked translation. Neither suite is proof-assistant
+verification or a universal soundness/completeness proof.

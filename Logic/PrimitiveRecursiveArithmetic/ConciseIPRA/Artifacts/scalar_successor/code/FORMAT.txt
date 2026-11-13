@@ -1,0 +1,99 @@
+SCALAR-R GENERATED-SOURCE CERTIFICATE FORMAT
+============================================
+
+Input is one JSON array. The final item is a closed formula. Earlier items
+are four-field instructions [m,s,u,t], consumed by pop() from the end.
+Prove the major before its continuation. A goal in context consumes no
+instruction. An unused prefix is inert. ACCEPT and exit 0 means success;
+REJECT and nonzero exit means failure, possibly with a traceback.
+
+RAW TREES
+---------
+Arity   Numerical meaning                  Formula meaning
+0       zero                               truth (0=0)
+1       successor (a defined abbreviation) Q conditional closure
+2       zero with checked annotations      equality
+3       scalar successor-seeded R          paired D closure
+
+Every traversed array has arity at most three. The opening depth increases
+by 2, 1, 4 at unary, binary, ternary nodes respectively. Formula depth 2q
+and numerical depth 2q+1 protect q slots. Positive coordinates 2j-1 and 2j
+alias the j-th protected numerical slot. Zero is zero. Negative labels are
+allocated rigid parameters; the lower floor begins at 0 and decreases by
+one for every non-hypothesis continuation, including arithmetic requests.
+
+A unary numerical node has one dummy-zero slot. Counter and initializer
+children of R have two dummy zeros. Its update has two aliases of ONE
+state variable. They are not two independently bound update arguments.
+For D the protected slots are instead two distinct variables, nearest y,
+then x. Its first two fields are checked padding. Formula Q protects y.
+
+Q_y B means B(0) -> forall y B(y).
+D_xy B means exists x (B(x,0) -> forall y B(x,y)).
+
+OPENING
+-------
+The routine i(a,t,d) retains numerical leaves in [k,d), substitutes t at
+an exposed numerical coordinate, and replaces exposed formula leaves by
+truth. A used image is itself validated at numerical root. Missing used
+images reject. The strict AST profile's exception-based list traversal
+retains the a+[] guard. Strings and mappings used as syntax reject.
+Canonical proofs use integers and arrays; inherited Boolean and finite
+fractional aliases have the documented integer-floor interpretation.
+
+INSTRUCTIONS
+------------
+1. Truthy major m: first prove m in the retained context.
+
+   If m=[s,u] or (s is false and m=[t]), and i(t,u) is the current goal,
+   change the goal to i(t,s). These are equality transport and Q use.
+   The new assumption m[2:] is empty/truth at these arities. If endpoints
+   or the target fail to match, keep the original goal and add only truth.
+   A three-field D major contributes the fresh opened Q clause instead.
+   The major proof is checked even for a neutral endpoint request.
+
+2. Falsy m and truthy original t: introduce D using numerical witness t.
+
+   Open the third formula field with t, leaving the induction coordinate.
+   Marker m=[] chooses the base hypothesis. Marker m=0 chooses the current
+   hypothesis only for a literal equation; at a compound matrix it still
+   chooses the base. The new goal is the fresh successor instance.
+   A truthy zero encoding such as numerical [0,0] can represent witness 0.
+
+3. Falsy m and falsy original t: generate a computation assumption.
+
+   s=[n,a,h] supplies an old scalar recursor; original u is a clause flag.
+   For canonical u=0, generate R(0,a;h)=S(a), ignoring the supplied n.
+   For canonical u=1, generate R(Sn,a;h)=h(R(n,a;h)). The successor source
+   is constructed by the kernel. The old counter n can be ANY numerical
+   term. It need not itself have a successor shape.
+
+   The exact source is:
+       n,t,v=s
+       h=[[u and [n],t,v],i(v,s,1) if u else [t]]
+
+   If the update uses its recursive image, insertion validates the entire
+   old recursor before fresh allocation. If the update ignores it, the
+   generated successor equation does not depend on its value. The common
+   context opening still checks all meaningful generated syntax.
+
+SHARED CONTINUATION AND THE ZERO WITNESS
+---------------------------------------
+Allocate k-1, open the requested induction coordinate to successor [k],
+append one opened local formula, and recurse. The new assumption's image
+is k when m is truthy or len(a)%2==m; otherwise it is zero.
+
+A generated equation H(w) may not hold for every w, but its zero instance
+is a theorem. The old goal and retained context exclude that fresh w.
+Substituting zero and cutting the computation theorem discharges H(w).
+This known-instance rule is proved in the report; there is no theorem
+oracle or numeric evaluator in any checker.
+
+CANONICAL SERIALIZATION
+-----------------------
+R0 leaves use [m=0,s=[0,a,h],u=0,t=0]. RS leaves supply the predecessor
+recursion description [n,a,h] and u=1. All other packets follow the rules
+above. Labels must be regenerated after every shared continuation; copying
+packets from the older supplied-source protocol does not preserve meaning.
+The untrusted named producer reserializes these choices and is tested by
+the complete checkers. It is not a verified universal arithmetic compiler.

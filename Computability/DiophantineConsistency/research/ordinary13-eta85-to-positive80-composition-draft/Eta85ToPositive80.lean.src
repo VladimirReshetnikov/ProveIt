@@ -1,0 +1,37 @@
+import Natural89MixedBridge
+import Eta85ForcedMap
+
+/-! Conditional source-only composition. The positive-80 PolynomialBridge is
+an explicit premise; all other graph, model and provider proofs are imported
+unelaborated drafts, not checked facts. No Lean has run. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Eta85ToPositive80Draft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+/-- The proposed direct f/y and r-replacement clients discharge the mixed
+89/80 witness cut; the separate parity source supplies eta forcing. -/
+theorem polynomialBridge85 (K : ℕ)
+    (h80 : PolynomialBridge (positiveShift (PositiveUnit80GraphDraft.literal (fun j => (ports K j:ℤ))))) :
+    PolynomialBridge (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output := by
+  have h89 := Natural89MixedBridgeDraft.bridge89 K h80
+  have h88 := J88To89TransportDraft.bridge88 K h89
+  have h87 := Gamma87To88TransportDraft.bridge87 K h88
+  have h86 := W86To87TransportDraft.parent86_bridge K h87
+  exact Eta85ForcedMapDraft.polynomialBridge K h86
+
+/-- Only the exact positive-80 parent bridge is an explicit premise. This is
+not a Lean-checked proof until all imported drafts and providers are built. -/
+theorem native85 (K : ℕ)
+    (h80 : PolynomialBridge (positiveShift (PositiveUnit80GraphDraft.literal (fun j => (ports K j:ℤ))))) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  Natural89MixedBridgeDraft.native85 K (Eta85ForcedMapDraft.forcedEta K) h80
+end DiophantineConsistency.Eta85ToPositive80Draft
+#print axioms DiophantineConsistency.Eta85ToPositive80Draft.polynomialBridge85
+#print axioms DiophantineConsistency.Eta85ToPositive80Draft.native85

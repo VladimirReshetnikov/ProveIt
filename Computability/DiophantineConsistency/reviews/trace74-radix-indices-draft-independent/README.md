@@ -1,0 +1,5 @@
+# Independent source review: radix and indices isolation
+
+Reviewed unchecked `research/trace74-symbolic-mask-radix-indices-draft/Trace74RadixIndices.lean` SHA-256 `b63f655e9fba3ece1aa971861eec6c6be58b088912d04c7ea649ac3a77b735f9`. Its sole theorem instantiates the previously accepted `Trace74FixedIndices.low_add_defect` at `B=2^67`, with the same symbolic finite support `S`, its explicit subset-of-range-3297 hypothesis, and fixed indices 3297, 8807 and 1063. The remaining proposed `norm_num` discharges `4≤2^67`; elaboration and resources are unchecked. The source uses the expected existing theorem name and argument order.
+
+No Lean run or provider-compatible check was performed for this draft. If accepted, it would still leave actual support specialization, high-digit bound, symbolic/model mask cover and graph guard unproved. Earlier empty-log timeouts do not establish which expression was responsible. A later check must select the accepted FixedIndices object and compatible ancestry, and report actual diagnostics.

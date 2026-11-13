@@ -1,0 +1,41 @@
+/dev/shm/ipra-two-band-explore-02/TwoBand.lean:37:33: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+pos : Fin 41 → ℕ
+K n C w F : V
+hn : 0 < n
+hM : 0 < Exp.exp (67 * n) - 1
+hK : K = kernelBand pos 4393 + kernelBand pos 5495 + bareKernel
+hgraph : (K + w) * C % (Exp.exp (67 * n) - 1) = F
+M : V := Exp.exp (67 * n) - 1
+h1 : kernelBand pos 4393 * C % (Exp.exp (67 * n) - 1) = rotatedBand pos 4393 n C % (Exp.exp (67 * n) - 1)
+h2 : kernelBand pos 5495 * C % (Exp.exp (67 * n) - 1) = rotatedBand pos 5495 n C % (Exp.exp (67 * n) - 1)
+h3 : bareKernel * C % (Exp.exp (67 * n) - 1) = bareRotated n C % (Exp.exp (67 * n) - 1)
+⊢ ((kernelBand pos 4393 * C + kernelBand pos 5495 * C) % M % (Exp.exp (67 * n) - 1) +
+        bareKernel * C % M % (Exp.exp (67 * n) - 1)) %
+      (Exp.exp (67 * n) - 1) =
+    ((kernelBand pos 4393 * C % M + kernelBand pos 5495 * C % M) % M + bareKernel * C % M) % M
+/dev/shm/ipra-two-band-explore-02/TwoBand.lean:40:36: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (?m.429 % (Exp.exp (67 * n) - 1) + ?m.430 % (Exp.exp (67 * n) - 1)) % (Exp.exp (67 * n) - 1)
+in the target expression
+  (rotatedBand pos 4393 n C % M + rotatedBand pos 5495 n C % M + bareRotated n C) % (Exp.exp (67 * n) - 1) =
+    (rotatedBand pos 4393 n C + rotatedBand pos 5495 n C + bareRotated n C) % M
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+pos : Fin 41 → ℕ
+K n C w F : V
+hn : 0 < n
+hM : 0 < Exp.exp (67 * n) - 1
+hK : K = kernelBand pos 4393 + kernelBand pos 5495 + bareKernel
+hgraph : (K + w) * C % (Exp.exp (67 * n) - 1) = F
+M : V := Exp.exp (67 * n) - 1
+h1 : kernelBand pos 4393 * C % (Exp.exp (67 * n) - 1) = rotatedBand pos 4393 n C % (Exp.exp (67 * n) - 1)
+h2 : kernelBand pos 5495 * C % (Exp.exp (67 * n) - 1) = rotatedBand pos 5495 n C % (Exp.exp (67 * n) - 1)
+h3 : bareKernel * C % (Exp.exp (67 * n) - 1) = bareRotated n C % (Exp.exp (67 * n) - 1)
+⊢ (rotatedBand pos 4393 n C % M + rotatedBand pos 5495 n C % M + bareRotated n C) % (Exp.exp (67 * n) - 1) =
+    (rotatedBand pos 4393 n C + rotatedBand pos 5495 n C + bareRotated n C) % M
+'TwoBand.bare_congr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'TwoBand.combined_congr' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

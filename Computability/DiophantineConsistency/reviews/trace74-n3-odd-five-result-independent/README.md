@@ -1,0 +1,5 @@
+# Independent result review: first index three implies odd ordinate five
+
+PASS for author-reported actual session 6103 exit 0 and captured stage/runner PASS. Terminal SHA-256 `19b99f8e788dd0e60f69332839e04b8a2f9ae212c27db7f0b7fb796a1edc7ad2`, object `96f14503fde3d87a3c60ba57cf92aaab7549ec8849201c39f1da04113a11443d`. Runner, 30 source/direct pins, object and both logs rehash. The single exact report lists `[propext, Classical.choice, Quot.sound]`, Lean exit 0, empty stderr and no warnings.
+
+For the same positive-v actual 74 zero, explicit model beta≥15 and supplied first-index-three ordinate, checked index window and ordinate injectivity identify the same graph n with 3; odd r and 3<r<6 give r=5. The theorem concludes c=ycoord 5(A−1); it does not alone exclude n=3, establish any interval, F/C range or guard. The initial prelaunch runner was held for a missing direct PellCongruences pin; the author added it before this run and revised runner was reviewed. This is direct-pin exploratory provenance, without comprehensive transitive/package/dynamic ancestry or future search-path guarantees. No Lean was run for this audit.

@@ -1,0 +1,74 @@
+{
+  "status": "PASS_INDEPENDENT_BOUNDED_RSS_RETRY_REVIEW",
+  "driver_sha256": "2c8a7f848e715a297f8af31e6a2be46747db0d571bc9fa1f104ab06d2db94eb8",
+  "prior_wrapper_exit": 1,
+  "prior_stopped_compiler_exit": 0,
+  "prior_run_accepted": false,
+  "checks": [
+    {
+      "script": "rss_controls.py",
+      "exit": 0,
+      "result": {
+        "status": "PASS_INDEPENDENT_RSS_RETRY_CONTROLS",
+        "driver_sha256": "2c8a7f848e715a297f8af31e6a2be46747db0d571bc9fa1f104ab06d2db94eb8",
+        "zero_rss_is_unavailable": true,
+        "cases": [
+          {
+            "case": "persistent_missing",
+            "child_exit": -15,
+            "reason": "rss_unavailable_while_unreaped",
+            "elapsed_seconds": 1.023
+          },
+          {
+            "case": "transient_then_valid",
+            "child_exit": 0,
+            "reason": null,
+            "calls": 4,
+            "peak": 8192
+          },
+          {
+            "case": "exit_without_sample",
+            "child_exit": 0,
+            "reason": "no_rss_observation",
+            "peak": 0
+          },
+          {
+            "case": "exit_after_valid_sample",
+            "child_exit": 0,
+            "reason": null,
+            "peak": 8192
+          }
+        ],
+        "scope": "Actual fake leaders and injected RSS observations; no Lean build, continuous bound, process-tree RSS or adversarial race guarantee."
+      }
+    },
+    {
+      "script": "signal_controls.py",
+      "exit": 0,
+      "result": {
+        "status": "PASS_CORRECTED_EXTERNAL_SIGNAL_CONTROLS",
+        "driver_sha256": "2c8a7f848e715a297f8af31e6a2be46747db0d571bc9fa1f104ab06d2db94eb8",
+        "results": [
+          {
+            "signal": 15,
+            "harness_exit": 0,
+            "monitored_child_exit": -15,
+            "reason": "interrupt_signal_15",
+            "leader_reaped": true,
+            "confirmed_term_ignoring_descendant_reaped": true
+          },
+          {
+            "signal": 2,
+            "harness_exit": 0,
+            "monitored_child_exit": -15,
+            "reason": "interrupt_signal_2",
+            "leader_reaped": true,
+            "confirmed_term_ignoring_descendant_reaped": true
+          }
+        ],
+        "scope": "Two temporary same-group controls only; no Lean or real replay. Escape, PID races, forced wrapper SIGKILL, whole-tree RSS and continuous quotas are not covered."
+      }
+    }
+  ],
+  "scope": "Fake-process controls and point-in-time driver snapshot only; no Lean replay, execution-time manifest authentication, aggregate RSS or hard quota."
+}

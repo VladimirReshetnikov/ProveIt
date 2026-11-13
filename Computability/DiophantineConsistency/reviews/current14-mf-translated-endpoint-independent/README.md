@@ -1,0 +1,7 @@
+# Independent translated endpoint client review
+
+The [translated client](../../research/current14-mf-translated-endpoint/TranslatedEndpointMF.lean) uses the same Lean-level existential four-port tuple and recipe equalities as the successfully checked base-only client, and its final iPRA derivation points to the existing `ipra_current_iff_translated_consistency` theorem. Its right side is Foundation's consistency sentence, mapped to the PRA language and Gödel–Gentzen translated. This source review does not assert elaboration or kernel acceptance of the new client.
+
+The [runner](../../research/current14-mf-translated-endpoint/runner.py) reauthenticates the fresh base and provider, pins the prior client state, actual outer-session observation, terminal audit and audit execution, and both staged and workspace prior sources. It verifies prior output and direct input guards, exact library inventories and namespace shadows, and routes new direct inputs to their recorded producers. Its owned-session resource controls have the same sampled and inherited-provider limitations as before. No additional acceptance or lifecycle defect was found within that scope. [receipt.json](receipt.json) records exact reviewed hashes and independently rerun no-Lean synthetic inventory, shadow and axiom-report controls.
+
+A new observed Lean run, its exact axiom report and independent terminal artifact audit are still required. Neither this source review nor a later successful client formalizes TeX/PDF bytes or makes the existential an iPRA formula.

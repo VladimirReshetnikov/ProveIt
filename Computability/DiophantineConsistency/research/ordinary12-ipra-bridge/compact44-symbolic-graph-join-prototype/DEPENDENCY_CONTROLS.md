@@ -1,0 +1,3 @@
+The independent reviewer reported that the previous driver (SHA-256 prefix `bf796274`) accepted a 14-child fake run when the package directory was nonexistent and fake `--deps` output nevertheless named its `Init.olean`. This was a negative-control failure, not a Lean build.
+
+The corrected driver requires `PACKAGE/Init.olean` to be a regular file before comparing direct dependency paths. The no-Lean `dependency_controls.py` run exited 0, accepting a regular file and rejecting missing, directory and dangling-symlink cases. The separate exact-axiom controls also reran exit 0. Independent review must additionally exercise the corrected guard within the full fake-loop driver and test the remaining failure cases.

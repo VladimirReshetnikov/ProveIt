@@ -1,0 +1,7 @@
+# Independent external review: 33-seed Jones degree bound
+
+Pass for the manually transcribed conservative recurrence and arithmetic, not a Lean degree theorem. The propagation body is byte-identical to the independently audited generic 38-seed recurrence; an independent affine-bound propagation confirms `291404*L+860` for every L≥25. The pinned executable source has `L=5^(ν+1)`, a 4L lambda range, l exponents through 5^ν, and ν+2 bounded vector coordinates. With ν=33 the result is `291404*5^34+860 = 169619452208280563354492188360`; the vector range has 5^35 raw candidates and binomial(38,4)=73,815 sum-four vectors, while lambda has 4*5^34 terms. These are construction counts, not arithmetic operation counts.
+
+The exact current 33-seed Lean source bytes have SHA-256 `80218a4396d553da7c49a2d314a0263643b477db7b14d325874cb3dab595f2dd`. The previously independent parser was replayed against all 24 residual ASTs in the symbolic seed JSON SHA-256 `a8cd4d01962b9380065ebbd3d7b75db3ffcadf18969099398bd151c4e2219e75`. These are source/AST fingerprints, not a canonical expanded polynomial coefficient hash or a Lean proof of JSON binding. The bound assumes seed-derived z, y and coefficient leaves are fixed constants and distinguished input is 1; it does not establish exact degree, noncancellation, serialized equation binding, or an optimized operation count.
+
+Checker SHA-256 `eed45cbec4d5bfbadc9f9b2fdd46f885a98544c3bf84f00b0c75a551de477511`; result SHA-256 `2302fd94ce8418c807d930d035989da8b4598f8f20bd6c61fc6015a3b9146e34`.

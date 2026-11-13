@@ -1,0 +1,7 @@
+# Independent post-audit: fixed-radix generic defect
+
+**PASS within the selected provider closure.** Author reports actual outer tool session 66257 exited 0 and was reaped. Retained outer terminal SHA-256 `42f36fac9ed372fe19e717d4a643d3571977eac0c58b4c87a56329073ce8a115` records child exit 0 and PASS, stable inputs and child result SHA-256 `cad5eb2a633c763c79e7e2197caed91cc5aacd3e1bde8f9af738ad7f924011e8`. Stage and serialized header reader record exit 0 and no termination reason.
+
+Selected/copied source SHA-256 `079d6a935908d678212dca47d418aee5ad94ff3ab2c6b164f90f89e2e8778d71`; output object `2232e9d8877bd3b6b854378884d7b5d4df5e62df27d064c1d352f077a931669d`. Exact `Trace74FixedRadix.low_add_defect` report lists `[propext, Classical.choice, Quot.sound]`; stderr is empty. The theorem fixes B=2^67 and retains arbitrary short/long/special/S with explicit length and support bounds. The direct serialized header is two Init entries and the selected `Trace74GenericDefect` object SHA-256 `0aa1257ae2e0885a8e8c4cd1fa78f8442b23510de9c0106533e88bc25e639d90`.
+
+Our independent `check.py` rehashed source, recorded inputs, output/logs, all 2,037 union object/companion bundles and 81 outside bundles, and compared all 18 inherited parent closure sets and companion hashes. No Lean replay was run. Four inherited nodes and outside/package/dynamic/transitive producer ancestry retain prior limits. This isolated fixed-radix diagnostic is not a concrete support specialization, joined mask coverage, model cast, graph guard or iPRA theorem.

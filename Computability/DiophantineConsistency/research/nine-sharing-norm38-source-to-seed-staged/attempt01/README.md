@@ -1,0 +1,7 @@
+# Staged source-to-seed: first stage compiled, second timed out
+
+Author-observed outer session `31838` returned numeric exit 1. Retained state SHA-256 `94bb5144f566046c47841eb77a35b57b752e8f46d0fccd4cf75f4b44fcc7aeae`, pre-run survey `f69de9b5a9dcc2d6bf93d5ac8e4e6a06353d5645ba8f86c5aeda71a6084697a8`. The outer record is an author observation, not an independently observed transcript.
+
+Stage 1 `Norm38SourceCarrierZero` compiled in 2.646 seconds. Its object SHA-256 `1fac54d1bce8d18a18d3865a922aeefdde19833c091293003c8186673c69283c` is at `/tmp/nine-sharing-norm38-source-to-seed-staged-20261105/lib/DiophantineConsistency/Norm38SourceCarrierZero.olean`; the axiom report is `[propext, Classical.choice, Quot.sound]`. Its direct provider guard was checked after compilation. Its statement gives the original source-zero-to-carrier-zero implication under the four port casts.
+
+Stage 2 `Norm38CarrierUnitNorms` passed dependency scan but produced an empty compile log before the 120-second timeout; the monitor terminated it with exit `-15`, sampled peak RSS 2,886,373,376 bytes. No stage 2 object was recorded and stage 3 was not reached. Final all-stage guard checks and the post-success producer survey were not reached. Thus the source-to-seed implication is not established by this attempt. Point-observation and inherited-provider limitations, including the uncaptured numeric exit of the initial-agreement producer, remain as in the parent README.

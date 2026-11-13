@@ -1,0 +1,7 @@
+# Exploratory uniform graph parity-copy relation
+
+`BooleanEvenSum.eq_of_even` proves in an arbitrary IΣ₁ model that two values bounded by 1 are equal if their sum is even. `FixedGraphParityCopy.graph_parity_copy` combines the same fixed-graph N,w,s whole-cell shift, uniform phase reset, source Boolean bounds and the earlier simplified parity equations. At every in-range model k of phase 2195 it proves `C[cyc(n,k,1100)] = C[cyc(n,k,D)]`; at phase 3296 it proves `C[cyc(n,k,2201)] = C[cyc(n,k,D)]`, where `n=8807N`, `D=(E/67)%n=8807s`, and `E=R-67n`. Both terms in each equality are shown Boolean before applying parity. These statements retain exact cyclic model indices and do not assume a clean target at the parity phases.
+
+The theorem assumes positive graph coordinates and literal graph zero at fixed symbolic ports with `paramKernel rho`; it does not assert graph existence or identify s with a semantic spatial/time stride. Explicit block-index translation, nonzero rows in all blocks, a represented global word, retained port/K byte binding, machine semantics and internal iPRA remain separate obligations.
+
+Single-author source order was `BooleanEvenSum`, then `FixedGraphParityCopy`, over the exploratory provider of `0bd45d1177`. Sessions 32049 and 7257 actually exited 0 without warnings or `sorryAx`; exact named axiom reports are retained. This is not a paired replay or independent artifact audit.

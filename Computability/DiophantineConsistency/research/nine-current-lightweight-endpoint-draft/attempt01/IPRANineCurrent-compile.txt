@@ -1,0 +1,114 @@
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:30:61: error(lean.invalidField): Invalid field `rename`: The environment does not contain `DiophantineConsistency.NatExpr.rename`, so it is not possible to project the field `rename` from an expression
+  ObjectCurrentEquation2011.naturalExpression.splitNatural.1
+of type `NatExpr (Fin 14)`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:34:61: error(lean.invalidField): Invalid field `rename`: The environment does not contain `DiophantineConsistency.NatExpr.rename`, so it is not possible to project the field `rename` from an expression
+  ObjectCurrentEquation2011.naturalExpression.splitNatural.2
+of type `NatExpr (Fin 14)`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:44:21: error(lean.invalidField): Invalid field `rename`: The environment does not contain `DiophantineConsistency.NatExpr.rename`, so it is not possible to project the field `rename` from an expression
+  e
+of type `NatExpr σ`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:45:28: error(lean.unknownIdentifier): Unknown constant `DiophantineConsistency.NatExpr.rename`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:45:28: error(lean.unknownIdentifier): Unknown constant `DiophantineConsistency.NatExpr.rename`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:45:28: error(lean.unknownIdentifier): Unknown constant `DiophantineConsistency.NatExpr.rename`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:45:28: error(lean.unknownIdentifier): Unknown constant `DiophantineConsistency.NatExpr.rename`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:44:74: error: unsolved goals
+case constant
+σ : Type u_1
+τ : Type u_2
+R : Type u_3
+inst✝ : Semiring R
+f : σ → τ
+v : τ → R
+value✝ : ℕ
+⊢ sorry () = ↑value✝
+
+case var
+σ : Type u_1
+τ : Type u_2
+R : Type u_3
+inst✝ : Semiring R
+f : σ → τ
+v : τ → R
+index✝ : σ
+⊢ sorry () = v (f index✝)
+
+case add
+σ : Type u_1
+τ : Type u_2
+R : Type u_3
+inst✝ : Semiring R
+f : σ → τ
+v : τ → R
+left✝ right✝ : NatExpr σ
+left_ih✝ : NatExpr.evalSemiring (fun x => v (f x)) right✝ = NatExpr.evalSemiring (fun x => v (f x)) left✝
+right_ih✝ : sorry () = NatExpr.evalSemiring (fun x => v (f x)) left✝
+⊢ NatExpr.evalSemiring (fun x => v (f x)) left✝ =
+    NatExpr.evalSemiring (fun x => v (f x)) left✝ + NatExpr.evalSemiring (fun x => v (f x)) left✝
+
+case mul
+σ : Type u_1
+τ : Type u_2
+R : Type u_3
+inst✝ : Semiring R
+f : σ → τ
+v : τ → R
+left✝ right✝ : NatExpr σ
+left_ih✝ : NatExpr.evalSemiring (fun x => v (f x)) right✝ = NatExpr.evalSemiring (fun x => v (f x)) left✝
+right_ih✝ : sorry () = NatExpr.evalSemiring (fun x => v (f x)) left✝
+⊢ NatExpr.evalSemiring (fun x => v (f x)) left✝ =
+    NatExpr.evalSemiring (fun x => v (f x)) left✝ * NatExpr.evalSemiring (fun x => v (f x)) left✝
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:53:54: error: unsolved goals
+V : Type
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+⊢ (∃ v,
+      NatExpr.evalSemiring v ObjectCurrentEquation2011.naturalExpression.splitNatural.1 =
+        NatExpr.evalSemiring v ObjectCurrentEquation2011.naturalExpression.splitNatural.2) ↔
+    ∃ v, True
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:54:40: warning: This simp argument is unused:
+  evalSemiring_rename
+
+Hint: Omit it from the simp argument list.
+  simp only [InternalZero, left, right, e̵v̵a̵l̵S̵e̵m̵i̵r̵i̵n̵g̵_̵r̵e̵n̵a̵m̵e̵,̵ ̵Sum.elim_comp_inr]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:54:61: warning: This simp argument is unused:
+  Sum.elim_comp_inr
+
+Hint: Omit it from the simp argument list.
+  simp only [InternalZero, left, right, evalSemiring_rename,̵ ̵S̵u̵m̵.̵e̵l̵i̵m̵_̵c̵o̵m̵p̵_̵i̵n̵r̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:54:27: warning: declaration uses `sorry`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:54:33: warning: declaration uses `sorry`
+/tmp/nine-light-endpoint-probe-20261105/src/DiophantineConsistency/IPRANineCurrent.lean:70:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (Semiformula.Evalb ![]) (FoundationHANoZero.classicalNoZero ?e)
+in the target expression
+  (Semiformula.Evalb ![]) FoundationHACurrentNoZero2011.classicalSentence ↔
+    ¬∃ time, SetTheory.BusyBeaver.ZFC.ArithmeticCantor.first (ArithmeticMachineRun215.run time) = 0
+
+V : Type
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+hB :
+  (Semiformula.Evalb ![]) FoundationHACurrentNoZero2011.classicalSentence ↔
+    ¬∃ time, SetTheory.BusyBeaver.ZFC.ArithmeticCantor.first (ArithmeticMachineRun215.run time) = 0
+⊢ (Semiformula.Evalb ![]) (FoundationHANoZero.classicalNoZero expression) ↔
+    ¬∃ time, SetTheory.BusyBeaver.ZFC.ArithmeticCantor.first (ArithmeticMachineRun215.run time) = 0
+'DiophantineConsistency.ModelJonesNine.jonesModel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'DiophantineConsistency.IPRANineCurrent.polynomialBridge' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRANineCurrent.native_equivalence' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRANineCurrent.standard_equivalence' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]
+'DiophantineConsistency.IPRANineCurrent.standard_translated_equivalence' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

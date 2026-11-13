@@ -1,0 +1,119 @@
+import EtaNaturalStrongAux
+import EtaNaturalGapRank
+import EtaNaturalGraphNorms
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Ring
+
+/-! Source-only graph-to-strong/auxiliary binding. The exact graph, model,
+rank representation, geometry and all imported providers remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.EtaNaturalGraphStrongAuxDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ArithmeticPellHalfIndex
+open EtaNaturalUnitGraphDraft EtaNaturalXPositiveDraft EtaNaturalGapRankDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def i (v : Fin 13 → V) : V := v 4+1
+def T (v : Fin 13 → V) : V := v 5+1
+
+/-- The unshifted f, y, and i*c² fields of the actual prototype. -/
+theorem field_f (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    (graph (EtaNaturalGraphNormsDraft.pp p)).f.evalRing (EtaNaturalGraphNormsDraft.emb v)=ι (v 3) := by
+  simp [graph,Expr.evalRing_var,EtaNaturalGraphNormsDraft.emb]
+
+theorem field_y (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    (graph (EtaNaturalGraphNormsDraft.pp p)).y.evalRing (EtaNaturalGraphNormsDraft.emb v)=ι (v 11) := by
+  simp [graph,Expr.evalRing_var,EtaNaturalGraphNormsDraft.emb]
+
+theorem field_I (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    (graph (EtaNaturalGraphNormsDraft.pp p)).ii.evalRing (EtaNaturalGraphNormsDraft.emb v)=
+      ι (c p v*c p v*i v) := by
+  simp [graph,Expr.evalRing_add,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,EtaNaturalGraphNormsDraft.pp,
+    EtaNaturalGraphNormsDraft.emb,P72Root.cast_port,c,k,Y,q,i,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- Exact graph ordinate uses its own signed rank. A natural rank is used only
+under hFq, via the separately proposed rank representation. -/
+theorem field_ordinate (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hFq : v 1+1≤q p v) :
+    (graph (EtaNaturalGraphNormsDraft.pp p)).vv.evalRing (EtaNaturalGraphNormsDraft.emb v)=
+      ι (v 3*v 3*(T v*c p v))-ι (v 3*v 3*rank p v+c p v) := by
+  have hR := EtaNaturalGapRankDraft.rank_representation p v hFq
+  have hraw : (graph (EtaNaturalGraphNormsDraft.pp p)).vv.evalRing (EtaNaturalGraphNormsDraft.emb v)=
+      (ι (v 3)*ι (v 3))*(ι (T v*c p v)-rankRing p v)-ι (c p v) := by
+    simp [graph,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+      Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+      EtaNaturalGraphNormsDraft.pp,EtaNaturalGraphNormsDraft.emb,P72Root.cast_port,
+      rankRing,T,c,k,Y,q,map_add,map_mul,map_one,map_ofNat] <;> ring
+  rw [hraw,←hR]
+  simp only [map_add,map_mul]
+  ring
+
+/-- The graph's signed strong factor supplies the natural strong equation. -/
+theorem ordinary_strong (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (EtaNaturalGraphNormsDraft.pp p)).output v) :
+    (i v*c p v*c p v)*(i v*c p v*c p v)+EtaNaturalGraphNormsDraft.delta p v=
+      EtaNaturalGraphNormsDraft.delta p v*(v 3*v 3) := by
+  obtain ⟨_,_,hs,_⟩ := EtaNaturalUnitBridgeDraft.signed_norms
+    (EtaNaturalGraphNormsDraft.pp p) v hz
+  rw [field_I,EtaNaturalGraphNormsDraft.field_delta,field_f] at hs
+  exact EtaNaturalStrongAuxDraft.ordinary_strong_of_signed (c p v) (i v)
+    (EtaNaturalGraphNormsDraft.delta p v) (v 3) hs
+
+/-- Exact signed direct auxiliary equation, using the same natural rank as
+EtaNaturalGapRankDraft and the early-index client. -/
+theorem direct_auxiliary (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (EtaNaturalGraphNormsDraft.pp p)).output v)
+    (hFq : v 1+1≤q p v) :
+    (ι (v 11):DiffRing V)*ι (v 11)-
+      ι (EtaNaturalGraphNormsDraft.delta p v)*(ι (v 3)*ι (v 3)-1)*
+      (ι (v 11)*ι (v 11)-
+        (ι (v 3*v 3*(T v*c p v))-ι (v 3*v 3*rank p v+c p v))*
+        (ι (v 3*v 3*(T v*c p v))-ι (v 3*v 3*rank p v+c p v)))=1 := by
+  obtain ⟨_,_,_,ha⟩ := EtaNaturalUnitBridgeDraft.signed_norms
+    (EtaNaturalGraphNormsDraft.pp p) v hz
+  rw [field_y,EtaNaturalGraphNormsDraft.field_delta,field_f,field_ordinate p v hFq] at ha
+  exact ha
+
+/-- Conditional graph-level strong/auxiliary exact-index premises. The
+geometry c>1 and 0<Delta<c³ is explicit and may be supplied by separate
+eta-natural first/main-norm/large-k proofs. Eta itself may be zero. -/
+theorem index_hypotheses_of_geometry (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (EtaNaturalGraphNormsDraft.pp p)).output v)
+    (hFq : v 1+1≤q p v)
+    (hc : 1<c p v) (hdelta : 0<EtaNaturalGraphNormsDraft.delta p v)
+    (hsmall : EtaNaturalGraphNormsDraft.delta p v<c p v*c p v*c p v) :
+    0<v 3 ∧
+    (i v*c p v*c p v)*(i v*c p v*c p v)+EtaNaturalGraphNormsDraft.delta p v=
+      EtaNaturalGraphNormsDraft.delta p v*(v 3*v 3) ∧
+    ∃ u : V, 0<u ∧
+      EtaNaturalGraphNormsDraft.delta p v*(v 3*v 3-1)*
+        (absdiff (v 3*v 3*(T v*c p v)) (v 3*v 3*rank p v+c p v)*
+         absdiff (v 3*v 3*(T v*c p v)) (v 3*v 3*rank p v+c p v))+
+      absdiff (v 3*v 3*(T v*c p v)+u) (v 3*v 3*rank p v+c p v)*
+        absdiff (v 3*v 3*(T v*c p v)+u) (v 3*v 3*rank p v+c p v)=
+      1+EtaNaturalGraphNormsDraft.delta p v*(v 3*v 3-1)*
+        (absdiff (v 3*v 3*(T v*c p v)+u) (v 3*v 3*rank p v+c p v)*
+         absdiff (v 3*v 3*(T v*c p v)+u) (v 3*v 3*rank p v+c p v)) := by
+  have hs := ordinary_strong p v hz
+  have hi : 1≤i v := by dsimp [i]; simp
+  have hf := EtaNaturalStrongAuxDraft.f_positive_of_strong (c p v) (i v)
+    (EtaNaturalGraphNormsDraft.delta p v) (v 3) hdelta hs
+  have hbounds := EtaNaturalStrongAuxDraft.strict_bounds_of_strong (c p v) (i v)
+    (EtaNaturalGraphNormsDraft.delta p v) (v 3) (T v) (rank p v) hc hi hdelta hsmall hs
+  obtain ⟨hQ,hZ⟩ := hbounds
+  have haux := direct_auxiliary p v hz hFq
+  exact ⟨hf,hs,EtaNaturalStrongAuxDraft.index_aux_of_direct (c p v)
+    (EtaNaturalGraphNormsDraft.delta p v) (v 3) (T v) (rank p v) (v 11) hf hQ hZ haux⟩
+end DiophantineConsistency.EtaNaturalGraphStrongAuxDraft
+#print axioms DiophantineConsistency.EtaNaturalGraphStrongAuxDraft.field_I
+#print axioms DiophantineConsistency.EtaNaturalGraphStrongAuxDraft.field_ordinate
+#print axioms DiophantineConsistency.EtaNaturalGraphStrongAuxDraft.ordinary_strong
+#print axioms DiophantineConsistency.EtaNaturalGraphStrongAuxDraft.direct_auxiliary
+#print axioms DiophantineConsistency.EtaNaturalGraphStrongAuxDraft.index_hypotheses_of_geometry

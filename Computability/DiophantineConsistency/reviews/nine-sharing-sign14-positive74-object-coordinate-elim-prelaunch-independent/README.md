@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the generic finite conjunction eliminator states that a member follows from the conjunction and uses the intuitionistic left/right projections recursively. Each Fin14 coordinate occurs in the audited open guard, so its nonzero and successor-predecessor reconstruction implications follow by the existing object-theory theorem. The source/provider/guard pins and no-Lean preflight pass; Lean elaboration remains untested. This is an open-term ingredient, not a closed sentence equivalence or iPRA endpoint; historical object ancestry is inherited. No Lean was run.

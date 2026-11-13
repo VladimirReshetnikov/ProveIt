@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 48356 exited 0. The source, object, dependency/compile logs, exact HAExpressionAssembly and AdaptiveEquationSyntax2011 provider bindings, 150 guard slots and 1,078 overlay links were checked; provider survey replayed. The generic bridge-transfer theorem reports [propext, Classical.choice, Quot.sound], with no warnings.
+
+The theorem assumes both all-model zero-existence equivalence and a bridge for the second expression. It does not by itself establish a concrete sign28 bridge, endpoint, degree theorem or JSON binding. The selected provider rows come from an overall-failed earlier build; outer exit is author-recorded, deeper ancestry inherited, and no Lean replay was performed.

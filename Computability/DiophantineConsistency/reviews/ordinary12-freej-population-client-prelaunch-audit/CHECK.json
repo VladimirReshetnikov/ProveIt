@@ -1,0 +1,23 @@
+{
+  "status": "PASS_CONDITIONAL_FREEJ_POPULATION_CLIENT_PRELAUNCH_AUDIT",
+  "driver_commit": "d27dd1f81a",
+  "driver_sha256": "793a6873afd3517b85828e54421ee16cbd6077091b08318fb6bc62611d20de8f",
+  "real_preflight_preferred_sources": 9,
+  "real_preflight_base_objects_per_side": 97,
+  "real_power_parent_audit_status": "PASS_INDEPENDENT_FREEJ_POWER_FINISH_AUDIT",
+  "controls": {
+    "fake_loop": {
+      "exit": 0,
+      "stdout": "good PASS fake_children 22\nwrong_report PASS fake_children 10\nwarning PASS fake_children 1\nmissing_project PASS fake_children 11\nwrong_deps PASS fake_children 1\n"
+    },
+    "guard_controls": {
+      "exit": 0,
+      "stdout": "PASS_PIN_AND_OUTPUT_AND_OPTIMIZATION_GUARDS\n"
+    },
+    "monitor_controls": {
+      "exit": 0,
+      "stdout": "PASS observed child success and RSS sample\nPASS missing RSS stops verified group and reaps leader\nPASS transient missing RSS requires a subsequent valid sample\nPASS child exit without any RSS observation fails closed\nPASS child exit after prior valid RSS sample resolves exit race\nPASS monitor exception terminates verified group and reaps leader and descendant\nPASS external SIGTERM terminates verified group and reaps leader and descendant\nPASS_DENOMINATOR_MONITOR_NEGATIVE_CONTROLS\n"
+    }
+  },
+  "scope": "No Lean compile. Conditional on trusted clean initial loader environment and externally enforced stable HEAD. Frozen inputs and inherited providers are checked at points in time; no continuous integrity, package-transitive/dynamic coverage or hard process-tree quota. --deps and audit subprocesses lack monitored RSS/group bounds."
+}

@@ -1,0 +1,51 @@
+Independent review: selected clause checker
+===========================================
+Source: logic_work/clausal_horn_shared.py
+Verdict: PASS (written mathematical and source audit).
+
+The selected list-premise format repairs the nullable prototype's ignored
+payload. A zero-premise clause requires []; a one-premise clause requires
+[p]. Every supplied proof in that list is recursively checked, and the
+resulting formula list must equal the retained antecedent list exactly.
+There is no ignored proof slot.
+
+The shared syntax validator correctly distinguishes terms from formulas:
+Eq has two term children; D has one formula child and binds two variables;
+an iterator has three term children and binds only its third child;
+successor has two children with literal-zero head. Exact integer typing
+excludes booleans. Outer goals and witnesses are validated before branch
+scopes grow. Thus fresh parameters cannot escape DE or DI.
+
+Opening is capture avoiding: every inserted term is checked at binder
+depth zero, so it has no positive free indices; negative parameter levels
+remain rigid under binders. The inferred-formula/context invariant ensures
+that Eval's length-two nonzero counter is a genuine successor, while an
+iterator counter (length three) is rejected.
+
+A clause ([]; y.B) reads forall y B. A clause ([A]; y.B) reads
+A -> forall y B, with y absent from A. The initial clause is ([]; y=y).
+DI's local assumption is a zero-premise clause whose binder is unused.
+DE's added clause is ([B(b,0)]; y.B(b,y)), with b fresh.
+
+The theorem relation is unchanged from raw CE5. Translate Refl(t) into
+Use of the initial clause at t; translate neutral local assumptions into
+zero-premise clauses and omit their former 0=0 proofs. In reverse, initial
+clause uses become Refl, and local zero-premise uses receive Refl(0) as
+their CE5 neutral premise. DE, DI witnesses, terms and goals are preserved.
+The removed identity-Eval case follows from two zero-Eval steps through
+J=I(0,s;u.u): s=r and J=J give J=r; s=t and J=r give r=t.
+
+No substitution into whole derivations is required. In particular, the
+witness-sensitive DI test must not be called directly substitution-stable:
+a parameter witness can become literal zero and change its mode.
+Local proof translations retain each witness literally.
+
+Counting: FOUR instruction families (Use, Eval, DE, DI), plus ONE fixed
+initial reflexivity axiom. Splitting Eval into its two cases gives FIVE
+inference schemata, plus that axiom. Reflexivity has not been removed.
+
+Terms and Eq/D formulas are unchanged, so the established CE5/native/iPRA
+bridge transfers with the whole numerical domain, actual equality and
+identity numerical composites. This audit is not a Lean/Rocq verification,
+an external human review, or evidence of an absolute minimum.
+

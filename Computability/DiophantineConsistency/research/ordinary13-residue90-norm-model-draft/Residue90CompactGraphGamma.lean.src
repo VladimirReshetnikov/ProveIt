@@ -1,0 +1,69 @@
+import Residue90GraphGamma
+import Residue90CompactPortBounds
+
+/-! Proposed compact-symbolic model gamma client. J>0, X≥1 and C>0 remain
+explicit; K is an arbitrary standard natural, not an authenticated fixed
+kernel. Every source and provider application remains unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+noncomputable section
+namespace DiophantineConsistency.Residue90CompactGraphGammaDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 Residue90GraphNormsDraft Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The literal definitions give all scale and Y bounds once J and beta are
+positive. No rank or carrier norm is used in this fact. -/
+theorem scale_facts (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) :
+    0<v 0*(p 0:V) ∧ 2≤q p v ∧ (q p v)^3≤Y p v ∧ 0<U p v := by
+  have hb : 0<v 0*(p 0:V) := mul_pos hJ hbeta
+  have hq : 0<q p v := by dsimp [q]; exact add_pos (by simp) hb
+  have hq2 : 2≤q p v := by
+    have h := pos_iff_one_le.mp hb
+    dsimp [q]
+    omega
+  have hs : 1≤v 7+1 := pos_iff_one_le.mp (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+  have hY : (q p v)^3≤Y p v := by
+    calc
+      (q p v)^3=q p v*(q p v*q p v) := by ring
+      _≤q p v*(q p v*q p v)*(v 7+1) :=
+        le_mul_of_one_le_right (Arithmetic.zero_le _) hs
+      _=Y p v := rfl
+  have hYpos : 0<Y p v := lt_of_lt_of_le (pow_pos hq 3) hY
+  have hU : 0<U p v := mul_pos hYpos (mul_pos hq hq)
+  exact ⟨hb,hq2,hY,hU⟩
+
+/-- The model gamma implication for the symbolic compact mask tuple, with
+an arbitrary standard K. A graph proof of the three premises and a physical
+port/kernel identification remain separate. -/
+theorem gamma_positive (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (ports K j:ℤ))) v)
+    (hJ : 0<v 0) (hX : 1≤v 6)
+    (hgap : (v 1+1)+(v 2+1)<q (ports K) v) : 0<v 12 := by
+  have hp0 : (ports K 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hp2 : (ports K 2:V)=(CompactConcreteIncrement.mask:V) := rfl
+  have hp3 : (ports K 3:V)=
+      (CompactFixedBeta.betaNat:V)+(CompactSymbolicPorts.highNat:V) := by
+    change ((CompactFixedBeta.betaNat+CompactSymbolicPorts.highNat:ℕ):V)=_
+    exact Nat.cast_add _ _
+  obtain ⟨hbeta,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hb0 : 0<(ports K 0:V) := by simpa only [hp0] using hbeta
+  obtain ⟨hb,hq,hY,hU⟩ := scale_facts (ports K) v hJ hb0
+  have hF : 0<v 1+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have ha : 0<v 2+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hqeq : q (ports K) v=(CompactFixedBeta.betaNat:V)*v 0+1 := by
+    simp only [q,hp0]
+    ring
+  have hrank := compact_rank_window (v 0) (v 1+1) (v 2+1) (q (ports K) v)
+    hJ hF ha hqeq hgap
+  have hR : rank (ports K) v+(q (ports K) v)^3+q (ports K) v+1≤(q (ports K) v)^4 := by
+    simpa only [rank,hp2,hp3,pow_two] using hrank
+  have hFq : v 1+1≤q (ports K) v := le_trans (by simp) (le_of_lt hgap)
+  exact Residue90GraphGammaDraft.gamma_positive_of_graph_facts (ports K) v hz
+    hb hU hq hX hY hFq hR
+end DiophantineConsistency.Residue90CompactGraphGammaDraft
+#print axioms DiophantineConsistency.Residue90CompactGraphGammaDraft.scale_facts
+#print axioms DiophantineConsistency.Residue90CompactGraphGammaDraft.gamma_positive

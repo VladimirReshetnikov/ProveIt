@@ -1,0 +1,11 @@
+# Fixed clean-carry paired driver: no-Lean review
+
+This is an independent verification of the driver and retained artifacts at commit `6ab762ceb4`, not an independent mathematical review. The reviewer authored some earlier clients in the dependency chain. The driver has not yet passed a real parent preflight at the eventual held HEAD, and this review did not run Lean or a paired build.
+
+The check verifies the pinned driver, source/import/report inventory and matching retained author logs: 33 sources and 54 named reports. `CleanGeometry.finite_disjoint` and `CleanTargetPhase.finite_relation` report exactly `propext` and `Quot.sound`; the other 52 reports also include `Classical.choice`. It verifies the 203 parent objects on each side, all 420 external-direct, 660 absent-target and 10 package companion slots, and the four mismatches among 92 overlapping older-provider objects on each side. The side-specific rotation parent is the provider. `/tmp/ipra-compact-clean-carry-pair-01` and `/tmp/compact44-aligned-family-plan/lib` remain read-only audit dependencies, not replay seeds.
+
+The check reruns all 44 fake modes and two aggregate groups, the 30 schema controls, and the 54 retained real-report checks and their targeted mutations. These controls do not substitute for a real preflight and build. File guards and resource checks describe observations at the sampled times; they do not establish continuous filesystem immutability or bound all subprocesses and transitive dependencies.
+
+The candidate clean-carry theorem assumes positive graph coordinates and a literal graph zero for fixed symbolic beta and the distinct `paramKernel rho`. It gives a common graph witness `N, w`, one of the selected targets 4393 or 5495, an indexed `b = 1` carry input, a zero temporal target digit, a predecessor temporal digit bounded by `Exp.exp 66`, zero predecessor carry, and equality between the output digit and the raw indexed target column. It does not identify that column with a local decoder, bind retained coefficients, ports, or displayed equation bytes, establish machine correctness, or prove internal iPRA provability.
+
+Run `python3 -I -S -B check.py` from the repository root. The result depends on the recorded external `/tmp` providers and audit dependencies remaining available with their pinned bytes.

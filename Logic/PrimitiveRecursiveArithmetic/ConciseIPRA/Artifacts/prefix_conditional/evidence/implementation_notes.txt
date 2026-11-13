@@ -1,0 +1,203 @@
+NEW COMPLETE-CHECKER PROFILES
+============================
+
+All five measured programs are complete standalone sources. Their imports,
+input parsing and final ACCEPT marker are included in every measurement.
+No external checker, compressed program, eval, exec, or proof oracle is used.
+All are refinements of the current ConciseIPRA presentations, not new
+arithmetic or logical axiom deletions. Different files attain different
+coordinate minima. The assertion concerns an observed envelope, not a
+proved lower bound or an absolute shortest axiomatization.
+
+1. RESULTS
+
+                               tokens    AST  bytes  gzip9
+checker_tokens239.py              239    261    553    332
+checker_ast257.py                 246    257    593    348
+checker_bytes461.py               267    298    461    313
+checker_tokens244.py              244    269    547    338
+checker_ast261.py                 252    261    593    356
+
+With JSONL streams included, the old coordinate envelope 240/259/462
+becomes 239/257/461. With whole JSON inputs alone, 245/263/462 becomes
+244/261/461. Each column is realized by a different program. Gzip is
+informational and is not claimed to decrease in every profile.
+
+Measurements use ast.unparse(ast.parse(source)) plus one line feed.
+Token kinds excluded are ENCODING, NL, NEWLINE, INDENT, DEDENT, COMMENT,
+ENDMARKER. Every ast.walk node is counted. Gzip uses compresslevel=9,
+mtime=0. Run python3 tools/measure.py to reproduce the figures.
+
+2. INPUT CONTRACTS
+
+The compact profiles use the same finite integer/list certificate promise
+and inherited public guarded Eq/D formula language as their controls. They
+do not advertise complete validation of arbitrary JSON types or a public
+unrestricted Eq/D grammar. The raw arity calculus and its guarded public
+interpretation must remain part of the mathematical specification.
+
+JSONL profiles read the public goal on the first line. Each further
+consumed line is a three-field packet [source, target, template]. Records
+are consumed in preorder of the verification call tree. Unused lines do
+not influence the verification. The new tokens and AST stream profiles share the same return-reservation
+fresh-name protocol and accept the same list-valued instruction records.
+The older direct-allocation AST controls have a different certificate
+protocol; use their inherited translator before comparing executions.
+
+Whole-JSON token/AST profiles use one array as a stack, whose final entry
+is the goal itself; preceding entries are the three-field records in
+reverse consumption order. For a fixed profile, stream-to-whole is just
+reversal of all parsed JSONL values. It does not change proof records.
+
+The 461-byte profile uses a whole-JSON stack with final header [goal, 0].
+Its four-field instruction order is [source, target, template, major].
+This differs from the 462-byte control's [major, source, target, template].
+Only instruction fields are rotated. A nested term, nested formula, and
+the final header are never rotated. The included translator is reversible.
+
+Acceptance is normal termination printing exactly ACCEPT and a line feed.
+Exceptions reject. Resource limits are excluded from the mathematical
+checking relation, as in the controls; actual Python recursion limits can
+reject an otherwise finite derivation. All comparisons are between full
+programs under the same declared contract and framing.
+
+3. CONDITIONAL SELECTION: THE TOKEN REDUCTION
+
+The 240-token control evaluates the second argument of an opening as
+
+    c(g, s) or k * bool(s or len(a) == 2).
+
+The new profile evaluates it as
+
+    k if c(g, s) or s or len(a) == 2 else 0.
+
+Every successful call of c is a procedure and returns None. In both
+expressions, c(g,s) executes first and its None result is false. Both then
+test s for truth; if false, both test len(a)==2. A true test selects the
+current integer k; a false test selects integer zero. The old expression
+obtains these values by multiplication by True or False; the new one uses
+an explicit conditional. If c fails, both fail before selection. If a
+required len operation fails, both fail there. Neither expression evaluates
+len(a) when s is true. The builtin bool of an integer or list has no side
+effects, so deleting that call changes no state.
+
+Most importantly, the FIRST argument of the enclosing opening is unchanged:
+
+    s * 3 or (a := i(*a, t, 2)).
+
+Python completes this argument before the second argument. Thus the
+introduction witness is validated before the major subproof can lower the
+global floor. Moving the major call into the first argument instead would
+not be this transformation and would need a separate freshness proof.
+
+The conditional reads k only after the major subproof, exactly as the
+old multiplication does. Every later context, goal, packet position and
+floor is therefore identical. Induction on a successful finite call tree,
+in both directions, proves exact certificate equivalence. The same proof
+also identifies corresponding failures before any successful top-level
+return. This is the complete new correctness argument for tokens239.
+
+The whole-JSON tokens244 version uses the same code except for input
+framing. Parse each JSONL value and reverse their order into an array.
+Its successive pop calls return exactly the values previously returned by
+loads(input()). The induction just given therefore applies unchanged.
+Its immediate matched whole-JSON control is the same reframing of the
+240-token stream control; the pinned whole-JSON token minimum has a
+different certificate protocol, so exact-certificate equivalence with
+that different minimum is not asserted.
+
+4. PATTERN DESTRUCTURING AND INITIALIZATION: THE AST REDUCTION
+
+Start with the new conditional-selection checker. Replace the assignment
+
+    s,u,t = r = loads(input())
+
+by a sequence pattern followed by the same checking body:
+
+    match loads(input()):
+        case [s,u,t] as r:
+            pass
+
+For JSON arrays, both forms bind the same four local names exactly when the
+record has length three. If it has another length or is a scalar, assignment
+unpacking fails in the first program. In the second, the pattern does not
+bind the local names; the subsequent computation preview necessarily reads
+s, u and t and fails with an unbound local. That preview is constructed as
+part of the membership tuple even when the requested goal is a hypothesis.
+Therefore no malformed-record branch skips verification. Both consume the
+same record and otherwise perform the same operations. This established
+pattern-destructuring technique saves three AST nodes on the new checker.
+It is an implementation composition, not a newly invented logical rule.
+
+Next remove the top-level assignment k=0 and replace the opening helper's
+default d=0 by d=(k:=0). A function definition evaluates its default
+expressions immediately in the surrounding module scope, exactly once.
+Thus the new statement sets the same global k to integer zero and stores
+the same default depth zero. Between the old assignment and this definition
+there was no executable observation of k. No later call resets k: defaults
+are values, not expressions evaluated on every invocation. The relevant
+state before the first checker call and every subsequent function body is
+therefore identical. This removes one further AST node.
+
+The resulting stream checker has 257 AST nodes, below the pinned stream
+minimum of 259. That 259-node program used a different fresh-name allocation
+protocol, so exact certificate equivalence is asserted with the token240
+return-reservation control through the transformations just proved, not
+with the different 259-node allocation protocol.
+
+The whole-JSON companion binds its stack reader in the root call:
+
+    c(b'\x00', (q := load(open(0)).pop)())
+
+The reader is bound before that call enters its body; the final element
+of the array is popped as the goal. Thereafter q() returns precisely the
+reversed stream's successive instruction values. It has 261 AST nodes,
+below the pinned whole-JSON minimum of 263.
+
+The pass statement is deliberately retained. Moving the checker body into
+the matched case without an explicit unmatched-case rejection would accept
+malformed certificates and is not a valid simplification.
+
+5. PREFIX REUSE: THE BYTE REDUCTION
+
+The 462-byte control reads a row [m,s,u,t]. The new checker instead reads
+[s,u,t,m] and retains the row as r. For every successfully unpacked row,
+
+    r[:3] == [s,u,t],       r[:2] == [s,u].
+
+Replace precisely these two list constructions by these prefixes. Both
+are fresh Python lists containing exactly the same elements; no operation
+mutates either result or the record. Raw list equality, traversal, and
+construction depend only on those elements, not object identity. Thus
+the computation preview and inferred major are identical. Their evaluation
+positions are unchanged. None of the mode tests, endpoint tests, image
+validations, freshness allocations, or recursive call order is altered.
+
+The packet transformation rotates four-element top-level instruction rows
+one place left and retains the final header. Its inverse rotates right.
+Malformed consumed rows of other lengths still fail at unpacking. The
+transformer leaves them untouched. Unused prefix rows may be rotated or
+retained without affecting either run. By induction on corresponding
+verification calls, both programs consume corresponding records and produce
+identical contexts and goals at identical floors. Successful return and
+every logical rejection therefore correspond. This proves exact
+certificate conjugacy, stronger than equality of provable public formulas.
+
+One alias binding costs four normalized bytes, reuse of the three-field
+prefix saves four, and reuse of the two-field prefix saves one. The net
+reduction is 462 to 461 normalized bytes. This is a representation-level
+refinement with no change to the underlying calculus.
+
+6. TRUST AND INTERPRETATIONS
+
+The full bi-interpretation with iPRA is inherited from the established
+ordinary realization, public guarded translation, and sorted raw reading.
+The new equivalence proofs above establish equality of accepted public
+theorems (under a trivial certificate bijection where needed). They leave
+the object language, arithmetic terms, interpretations, whole numerical
+domains, actual equality and identity composites unchanged. Equiconsistency
+and the existing bi-interpretation therefore transfer immediately.
+
+These files are executable Python checkers with written metatheoretic
+proofs. They are not a new Lean or Rocq formalization. Test success supports
+the implementation comparison; it does not replace the semantic proof.

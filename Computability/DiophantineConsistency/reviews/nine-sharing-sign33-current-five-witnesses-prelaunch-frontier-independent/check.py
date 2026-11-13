@@ -1,0 +1,12 @@
+import hashlib,json,subprocess,sys
+from pathlib import Path
+assert sys.flags.isolated and sys.flags.no_site
+D=Path(__file__).resolve().parents[2];p=D/'research/nine-sharing-sign33-current-five-witnesses-check'
+def sha(x):return hashlib.sha256(Path(x).read_bytes()).hexdigest()
+pins={'run.py':'d7cdbbaa814a3e93ab4ecf97ff36f14b0e4e78d764b1f9737bbc9f09bcb8e147','provider_survey.py':'2773ef1185f2a39d6da5b22b4c7c532f260ada11bdf483c5c1f82042b69df977','source-manifest.json':'f9e8a1bbb6ec02b4061a10d4655f238d0ce90589f1e56f51ccf7487c6c873e59','src/DiophantineConsistency/Sign33CurrentFiveWitnesses.lean':'e9ee97d30688a955ad586263f446f4b03e8ce3989377397706cc692f6b0ab5ba'}
+for k,h in pins.items():assert sha(p/k)==h,k
+src=(p/'src/DiophantineConsistency/Sign33CurrentFiveWitnesses.lean').read_text()
+for x in ['ObjectCurrentEquation2011.InternalZero ObjectCurrentEquation2011.naturalExpression v','let w : Fin 14 → V := fun j => v j+1','let Y := w 7*q^3','let E := (w 8*q)*Y','let k := w 10+w 11','CurrentMasks2011.highPort+CurrentMasks2011.beta : ℕ','let c := k*Y+w 10','let a := E+Y','let S := delta a*w 5*c*c','let x := w 4*w 4*c*w 6','let z := w 4*w 4*r+c','ι negative = ι (w 12)*ι (w 12)-(ι x-ι z)*(ι x-ι z)','q (w 1) (w 2) E (w 9) k r a c (w 6) (w 4) (w 5) S x z (w 12)','hq hN hgap hr hc (hw 6) (hw 4) (hw 5) hhalf hstrict hS (hw 12) haux']:assert x in src,x
+imports=json.loads((p/'source-manifest.json').read_text())['rows'][0]['imports'];assert imports==['DiophantineConsistency.Sign33CurrentWindows','DiophantineConsistency.Sign33FiveWitnesses','DiophantineConsistency.ArithmeticCarrierSoundness2011'];s=json.loads(subprocess.check_output([sys.executable,'-I','-S','-B',str(p/'provider_survey.py')],timeout=60));assert s['status']=='PASS_POINT_PRODUCER_SURVEY' and all(k in s['selected'] for k in imports) and 'DiophantineConsistency/Sign33CurrentFiveWitnesses.olean' not in s['links'];assert s['selected'][imports[0]]['sha256']=='a2fd0bcecb4cea0625245a5d4bd2949848fe5b39a2f6932f6de095283894e521' and s['selected'][imports[1]]['sha256']=='5e1543945a01464d97340fa1dedf90529ca37f16d1821a9186a613410ff9cee0'
+r=json.loads(subprocess.check_output([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],timeout=60));assert r['status']=='PASS_NO_LEAN_PREFLIGHT' and r['stage_count']==1
+print(json.dumps({'status':'PASS_PRELAUNCH_ONLY','pins':pins,'direct_producers':{k:s['selected'][k] for k in imports},'overlay_links':len(s['links']),'scope':'Proposed current source zero to five representatives; no seed-gate binding or Lean compilation.'},indent=2,sort_keys=True))

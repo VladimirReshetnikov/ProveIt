@@ -1,0 +1,147 @@
+Independent mathematical audit of deterministic clause instantiation
+===================================================================
+
+Reviewed variant
+---------------
+The context is a stack of clauses. Its newest clause is at index 0.
+Use on index 0 instantiates the clause body at numeral 1; Use on any
+older clause instantiates it at the newest numerical parameter.
+The ordinary interpretation of every such instance is valid.
+
+Important correction
+--------------------
+An arbitrary already-built restricted proof cannot be weakened by simply
+increasing its scope and moving its context indices. The selected Use
+target can change. A formula-rank argument which invokes routine weakening
+at that point is incomplete. The corrected proof uses persistent proof
+producers and a separate source-proof-height induction.
+
+State extensions and persistence
+--------------------------------
+A state consists of a finite ordered parameter list and a finite clause
+stack. An extension introduces more parameters and prepends more clauses.
+Source parameters may also be injectively renamed into target parameters,
+and source clauses are tracked by an order-preserving context embedding.
+Preservation of 'newest' is not required of that embedding.
+
+A persistent producer is a construction that, in every such admissible
+extension, returns a checked proof of the renamed same formula. This is a
+metatheoretic interface, not a new kernel inference. It is not presumed
+that arbitrary restricted proof trees are persistent.
+
+Rank-zero arithmetic
+--------------------
+Refl and successor Step derive Pivot, symmetry, transitivity, and numerical
+template congruence without introducing parameters or clauses. Therefore
+they give T_0: transport in a literal-equation template, from an equality
+proof and an arbitrary minor equation proof at the current state. No
+persistence premise is needed for T_0.
+
+The naming formula
+------------------
+For any term t, let
+
+  Name_t := D_(x,y) (C(y,0,x) = C(y,0,t)),
+  C(v,a,b) := I(v,a;u.b).
+
+It has a uniform DI proof at witness t: after substitution of that witness
+the two sides of the successor instance are literally the same term.
+This remains true when t is literal 0, hence selects progress mode. The
+proof uses only reflexivity in the DI branch.
+
+Opening Name_t by DE introduces fresh b and prepends the clause
+
+  [0=0 ; y. C(y,0,b)=C(y,0,t)].
+
+Use of this newest clause is automatically at 1. Two successor computation
+equations and ordinary derived equality yield b=t.
+
+U_0: arbitrary instantiation of an atomic clause
+-----------------------------------------------
+Suppose the retained source clause has atomic body B(y), and suppose its
+antecedent has a persistent producer. Introduce and open Name_t. The
+naming clause is newest, so obtain b=t as above. The source clause is now
+older, so Use instantiates it at the newest parameter b, using the
+antecedent producer at this extended state. Apply T_0 to obtain B(t).
+Close the naming DE. This supplies arbitrary atomic instantiation, with
+no circular appeal to full transport or general weakening.
+
+Persistent naming equality
+--------------------------
+Once the naming clause for b=t is retained, it may later cease to be
+newest. In every extension, apply U_0 to that retained atomic clause at
+the fixed target 1, supplying the persistent Refl(0) producer as its
+antecedent. Arithmetic extraction again gives b=t. Thus there is a
+persistent producer for the naming equality. This uses only the already
+established U_0, irrespective of the rank of the later transported formula.
+
+Rank induction
+--------------
+Write T_r for transport in formulas of D-depth at most r, supplied with a
+persistent equality producer and an arbitrary current-state minor proof.
+Write U_r for arbitrary instantiation of a clause whose body has D-depth
+at most r, supplied with a persistent antecedent producer.
+
+Given T_r, obtain U_r by naming the desired target as above, using the
+persistent naming equality just constructed and applying T_r to the
+source clause's instance at the fresh parameter. For r=0 the direct
+current-state naming equality suffices; the persistent construction can
+also be used without recursion on the same rank.
+
+Given U_r and T_r, transport a formula D_(x,y) G(s,x,y) to its version
+with t, where the matrix G has rank at most r. First DE-eliminate the
+supplied source D proof to a fresh witness b. Retain its canonical clause
+
+  [G(s,b,0) ; y. G(s,b,y)].
+
+DI-introduce the target D formula at witness b. Since b is a variable,
+not the literal 0, this is case mode even when G is an equation. Under
+the local assumption G(t,b,0), use T_r in the reverse equality direction
+to produce G(s,b,0). This base proof is made persistent pointwise: in
+each extension, retrieve the ordinary assumption (whose clause body
+ignores its bound argument), obtain the equality from its producer, and
+run T_r. Apply U_r to the retained source clause at S(z), where z is the
+fresh DI parameter. Apply T_r forward to obtain G(t,b,S(z)). Close DI and
+DE. The conclusion contains neither new parameter.
+
+Thus the rank construction is well founded in the order
+
+  T_0, U_0, T_1, U_1, T_2, U_2, ... .
+
+No separate recovery of atomic case introduction at witness 0 is needed
+inside this transport proof: the transported D's witness is always the
+fresh variable supplied by DE.
+
+Source-proof induction
+----------------------
+After defining the rank operations, translate source proof trees by
+height, strengthening the induction hypothesis to a persistent producer
+under every source-to-target state embedding. Refl and Step translate
+directly. DE and DI invoke the already-translated strict subproofs in
+the extended states. Each unrestricted source Use invokes U_r with the
+already-translated antecedent subproof as a persistent producer. Hence
+the equality/antecedent persistence required by the rank operations is
+constructed rather than assumed. Source parameter renamings preserve
+literal zero and formula root tags, so the DI mode is unchanged.
+
+Resource and endpoint cautions
+-----------------------------
+The transformation can greatly enlarge tree certificates. The written
+metatheorem is not an efficiency claim. Source term substitutions are
+zero-normal, so no uniform full-normalization assertion is used.
+
+The closed checker starts with an empty context and scope 0; every new
+clause comes with a new parameter. Thus an older clause can only occur
+at positive scope. For a more general open-context specification, define
+the distinguished parameter to be 0 when the parameter list is empty;
+the naming construction itself always operates at positive scope.
+
+Finite implementation evidence
+------------------------------
+arith_helpers.py independently constructs the arithmetic and naming
+proof trees. test_arith_helpers.py replays 108 focused checks against the
+standalone deterministic checker, including nested iterator binders,
+nonliteral zero terms, equation transport, naming at witness 0, and an
+explicit check that moving a clause changes its deterministic target.
+These tests supplement the universal written argument and are not a
+proof-assistant verification of the checker or metatheorem.

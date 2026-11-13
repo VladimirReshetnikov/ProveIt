@@ -1,0 +1,7 @@
+# Signed offset is divisible by μ²
+
+`Direct80OffsetDivisibility.graph_offset_divisible` proves in every IΣ₁ model that a positive zero of the exact Lean 80-row graph satisfies `μ² ∣ e` in the difference ring, under explicit natural port hypotheses `beta>0`, `MC<beta`, `MF<2*beta`, and an internal witness that beta is odd. The signed offset `e` is the exact graph expression; no sign for `e` is assumed. The proof first cancels the `H` factor by its explicit inverse modulo μ² and then uses the separately checked even-radix Bézout certificate to cancel `h` from `μ² ∣ h*e`.
+
+Guarded author `observations/attempt03/` passed without diagnostics, yielding `/tmp/tenpositive-80offset-divisibility-m6_e9jfs/Direct80OffsetDivisibility.olean`, SHA-256 `0df1841be5270fdd23696d78537fb0c6069219f13eaf4cf31d91af20c3ab6096`. Attempt01 lacked a search-path object and attempt02 failed during final elaboration; both are retained. Printed axioms are `propext`, `Classical.choice`, `Quot.sound`. Selected prototype objects and one inherited provider are pinned, not the full transitive project/package/dynamic or historical source-object ancestry. Resource checks are sampled; no paired replay is claimed.
+
+The beta oddness and two port inequalities remain explicit here; they require a separate fixed-recipe join. Converting the signed divisibility into first/main index alignment, projection, graph-to-halt and the iPRA endpoint remains open.

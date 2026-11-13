@@ -1,0 +1,5 @@
+# Exclusion of main ordinate 7 for first index at least 5
+
+`Trace74AtLeastFiveR7GraphExclusion.graph_r7_impossible` rules out a main ordinate `c=ycoord 7 (A-1)` for the same positive 74 graph zero and witnesses when a first ordinate has index `n≥5` and `q≥2³⁰`. The proof uses the monotonicity-based same-tuple growth estimate and checked weighted projection and quotient-size contradiction. Positive beta and witnesses, graph zero, q bound, first ordinate and main ordinate are explicit. The theorem does not rule out other main indices, prove a rank sign or guard, or establish an iPRA endpoint.
+
+The controlled Lean run passed in actual outer session 2450, exit 0; terminal SHA-256 `4691ab68822216826edb00b04673a9bb1181d0e87f86212564a5878e1a9b2ea4`. The [independent result audit](../../reviews/trace74-atleast-five-r7-graph-exclusion-result-independent/README.md) verified 52 recorded direct pins, object, log and report. Full historical project/package/dynamic ancestry and ongoing search-path selection remain outside this evidence.

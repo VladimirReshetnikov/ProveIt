@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the proposed pointwise theorem equates `InternalZero (positiveShift positive74) w` with the natural 86 expression at the same model assignment; existential transport uses the same assignments via `exists_congr`. The source uses the audited generic ring equality, the existing shift identity and difference-ring embedding preserving addition and one. Audited expression provider and source/guard/resource pins and no-Lean preflight pass. This is a shifted-expression formulation, not itself a separately proved bijection over explicitly positive witnesses; endpoint, degree and external files remain separate. Tactic compatibility is untested. No Lean was run.

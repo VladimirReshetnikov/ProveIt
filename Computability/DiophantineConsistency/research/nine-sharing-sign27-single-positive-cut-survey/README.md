@@ -1,0 +1,7 @@
+# Restricted one-step survey on the 27-witness sextic
+
+This source-only finite survey considers each displayed positive residual of the exact shape `variable - RHS`, with a self-independent RHS made only of natural variables/ports, nonnegative numerals, addition and multiplication. It substitutes that RHS literally into the other 17 residuals and computes syntactic degree. All seven eligible single cuts raise the largest displayed residual degree above 3: q3→4 in Y; Y→4 in E/Delta; E→6 in Delta; kY→5 in Dc2; ell→4 in N0; Delta→4 in Dc2/scaled_Ns; normalized_S→7 in Na. The root-normalized main_root and Dc2 rows are not of the allowed variable-minus-RHS shape and are excluded.
+
+This is only an obstruction to the listed literal one-step cuts while retaining the syntactic degree bound. It does not rule out algebraic cancellation, replacing or combining equations, other normalized roots, signed or divisibility cuts, different encodings, or a smaller degree-six or quartic polynomial. It proves no model equivalence or Lean theorem. `python3 -I -S -B check.py` reproduced the retained result (exit 0); The [independent source review](../../reviews/nine-sharing-sign27-single-cut-independent/README.md) reproduced the seven cases and verified this restricted scope.
+
+Pins: 27 seed `5bd7f45de28980c6ac9d3974a0087b1d9f8faf9b060b8a115843ea0cc4adff3d`; checker `49662a4614cb18bb8c7447691a2cba1a8f93f99fae5fcb08125989bfdbb79312`; result `508b5252cb1931f1f6083cc794bb3e42ff06d0fb196a75c242af9f419dc09139`.

@@ -1,0 +1,476 @@
+[
+  {
+    "name": "zero_computation",
+    "file": "fixtures/generated/zero_computation.json",
+    "expected": true,
+    "instructions": 23,
+    "original_goal": [
+      "eq",
+      [
+        "i",
+        0,
+        [
+          "s",
+          [
+            "s",
+            0
+          ]
+        ],
+        "_state",
+        [
+          "s",
+          [
+            "v",
+            "_state"
+          ]
+        ]
+      ],
+      [
+        "s",
+        [
+          "s",
+          0
+        ]
+      ]
+    ],
+    "public_goal": [
+      "eq",
+      [
+        "i",
+        [
+          "v",
+          "_PUBLIC_ZERO_ALIAS_"
+        ],
+        [
+          "s",
+          [
+            "s",
+            [
+              "v",
+              "_PUBLIC_ZERO_ALIAS_"
+            ]
+          ]
+        ],
+        "_state",
+        [
+          "s",
+          [
+            "v",
+            "_state"
+          ]
+        ]
+      ],
+      [
+        "s",
+        [
+          "s",
+          [
+            "v",
+            "_PUBLIC_ZERO_ALIAS_"
+          ]
+        ]
+      ]
+    ],
+    "proof_audit": {
+      "distinct_proof_nodes": 20,
+      "forbidden_zero_sources": []
+    }
+  },
+  {
+    "name": "successor_computation",
+    "file": "fixtures/generated/successor_computation.json",
+    "expected": true,
+    "instructions": 25,
+    "original_goal": [
+      "eq",
+      [
+        "i",
+        [
+          "s",
+          0
+        ],
+        [
+          "s",
+          0
+        ],
+        "_state",
+        [
+          "s",
+          [
+            "v",
+            "_state"
+          ]
+        ]
+      ],
+      [
+        "s",
+        [
+          "i",
+          0,
+          [
+            "s",
+            0
+          ],
+          "_state",
+          [
+            "s",
+            [
+              "v",
+              "_state"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "public_goal": [
+      "eq",
+      [
+        "i",
+        [
+          "s",
+          [
+            "v",
+            "_PUBLIC_ZERO_ALIAS_"
+          ]
+        ],
+        [
+          "s",
+          [
+            "v",
+            "_PUBLIC_ZERO_ALIAS_"
+          ]
+        ],
+        "_state",
+        [
+          "s",
+          [
+            "v",
+            "_state"
+          ]
+        ]
+      ],
+      [
+        "s",
+        [
+          "i",
+          [
+            "v",
+            "_PUBLIC_ZERO_ALIAS_"
+          ],
+          [
+            "s",
+            [
+              "v",
+              "_PUBLIC_ZERO_ALIAS_"
+            ]
+          ],
+          "_state",
+          [
+            "s",
+            [
+              "v",
+              "_state"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "proof_audit": {
+      "distinct_proof_nodes": 20,
+      "forbidden_zero_sources": []
+    }
+  },
+  {
+    "name": "reflexivity",
+    "file": "fixtures/generated/reflexivity.json",
+    "expected": true,
+    "instructions": 25,
+    "original_goal": [
+      "eq",
+      [
+        "s",
+        [
+          "s",
+          0
+        ]
+      ],
+      [
+        "s",
+        [
+          "s",
+          0
+        ]
+      ]
+    ],
+    "public_goal": [
+      "eq",
+      [
+        "s",
+        [
+          "s",
+          [
+            "v",
+            "_PUBLIC_ZERO_ALIAS_"
+          ]
+        ]
+      ],
+      [
+        "s",
+        [
+          "s",
+          [
+            "v",
+            "_PUBLIC_ZERO_ALIAS_"
+          ]
+        ]
+      ]
+    ],
+    "proof_audit": {
+      "distinct_proof_nodes": 21,
+      "forbidden_zero_sources": []
+    }
+  },
+  {
+    "name": "induction_uses_hypothesis",
+    "file": "fixtures/generated/induction_uses_hypothesis.json",
+    "expected": true,
+    "instructions": 47,
+    "original_goal": [
+      "d",
+      "_ind_x",
+      "_ind_y",
+      [
+        "eq",
+        [
+          "i",
+          [
+            "v",
+            "_ind_y"
+          ],
+          0,
+          "_ind_u",
+          [
+            "v",
+            "_ind_u"
+          ]
+        ],
+        0
+      ]
+    ],
+    "public_goal": [
+      "d",
+      "_ind_x",
+      "_ind_y",
+      [
+        "eq",
+        [
+          "i",
+          [
+            "v",
+            "_ind_y"
+          ],
+          [
+            "v",
+            "_PUBLIC_ZERO_ALIAS_"
+          ],
+          "_ind_u",
+          [
+            "v",
+            "_ind_u"
+          ]
+        ],
+        [
+          "v",
+          "_PUBLIC_ZERO_ALIAS_"
+        ]
+      ]
+    ],
+    "proof_audit": {
+      "distinct_proof_nodes": 43,
+      "forbidden_zero_sources": []
+    }
+  },
+  {
+    "name": "nested_D_transport",
+    "file": "fixtures/generated/nested_D_transport.json",
+    "expected": true,
+    "instructions": 8,
+    "original_goal": [
+      "d",
+      "_nx",
+      "_ny",
+      [
+        "d",
+        "_nz",
+        "_nw",
+        [
+          "eq",
+          [
+            "i",
+            [
+              "v",
+              "_ny"
+            ],
+            0,
+            "_nu",
+            [
+              "v",
+              "_nx"
+            ]
+          ],
+          [
+            "i",
+            [
+              "v",
+              "_ny"
+            ],
+            0,
+            "_nu",
+            [
+              "v",
+              "_nx"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "public_goal": [
+      "d",
+      "_nx",
+      "_ny",
+      [
+        "d",
+        "_nz",
+        "_nw",
+        [
+          "eq",
+          [
+            "i",
+            [
+              "v",
+              "_ny"
+            ],
+            [
+              "v",
+              "_PUBLIC_ZERO_ALIAS_"
+            ],
+            "_nu",
+            [
+              "v",
+              "_nx"
+            ]
+          ],
+          [
+            "i",
+            [
+              "v",
+              "_ny"
+            ],
+            [
+              "v",
+              "_PUBLIC_ZERO_ALIAS_"
+            ],
+            "_nu",
+            [
+              "v",
+              "_nx"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "proof_audit": {
+      "distinct_proof_nodes": 37,
+      "forbidden_zero_sources": []
+    }
+  },
+  {
+    "name": "nonvacuous_witness",
+    "file": "fixtures/generated/nonvacuous_witness.json",
+    "expected": true,
+    "instructions": 31,
+    "original_goal": [
+      "d",
+      "wit_x",
+      "wit_y",
+      [
+        "eq",
+        [
+          "i",
+          [
+            "v",
+            "wit_y"
+          ],
+          [
+            "s",
+            0
+          ],
+          "_unused_state",
+          [
+            "v",
+            "wit_x"
+          ]
+        ],
+        [
+          "s",
+          0
+        ]
+      ]
+    ],
+    "public_goal": [
+      "d",
+      "wit_x",
+      "wit_y",
+      [
+        "eq",
+        [
+          "i",
+          [
+            "v",
+            "wit_y"
+          ],
+          [
+            "s",
+            [
+              "v",
+              "_PUBLIC_ZERO_ALIAS_"
+            ]
+          ],
+          "_unused_state",
+          [
+            "v",
+            "wit_x"
+          ]
+        ],
+        [
+          "s",
+          [
+            "v",
+            "_PUBLIC_ZERO_ALIAS_"
+          ]
+        ]
+      ]
+    ],
+    "proof_audit": {
+      "distinct_proof_nodes": 33,
+      "forbidden_zero_sources": []
+    }
+  },
+  {
+    "name": "public_zero_reflexivity",
+    "file": "fixtures/generated/public_zero_reflexivity.json",
+    "expected": true,
+    "instructions": 3,
+    "public_goal": [
+      "eq",
+      [
+        "v",
+        "_PUBLIC_ZERO_ALIAS_"
+      ],
+      [
+        "v",
+        "_PUBLIC_ZERO_ALIAS_"
+      ]
+    ]
+  }
+]

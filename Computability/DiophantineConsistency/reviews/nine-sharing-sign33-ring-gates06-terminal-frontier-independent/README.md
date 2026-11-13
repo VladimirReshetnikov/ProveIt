@@ -1,0 +1,5 @@
+# Independent terminal review: ring-value gates 48–53
+
+The retained state records successful dependency and Lean compilation checks; the author observation says session 32805 exited 0. The checker validates source, object and logs, all six reports, lift and NormAssignment38 direct producer bindings, 150 guard slots, 1,193 overlay links and matching before/after surveys. No Lean replay was performed; the author observation is not an independent raw terminal transcript. All reports list `[propext, Classical.choice, Quot.sound]`. Eighteen linter warnings concern unused simp arguments and tactic execution or sequencing.
+
+These are ring-value equations at targets 48–53; target 48 uses the stated AllCuts signed-gap equality, while the others are inline. They share one valuation and model-natural ports. The target 48 theorem is a ring-value identity and does not claim component-level equality of signed pairs. These results do not establish the remaining gate equations, five norms, a source bridge or an iPRA endpoint. Provider observations are point-in-time and monitoring is sampled.

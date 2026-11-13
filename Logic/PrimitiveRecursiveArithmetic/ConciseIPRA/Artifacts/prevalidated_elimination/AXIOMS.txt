@@ -1,0 +1,56 @@
+COMPLETE NATIVE PRESENTATION
+===========================
+Numerical expressions:
+  t ::= variable | 0 | S(t) | I(n,a;v.h).
+Only v in h is bound. Every update is fixed finite earlier-stage syntax.
+Passive parameters remain fixed. There is no numerical universal evaluator.
+
+Native formulas:
+  A ::= (s=t) | Q_y A | D_{x,y} A.
+Designated absurdity: 0=S0.
+Ordinary meanings:
+  Q_y B = B(0) -> forall y B(y).
+  D_{x,y} B = exists x (B(x,0) -> forall y B(x,y)).
+These meanings describe an interpretation, not primitive ordinary connectives.
+
+NONLOGICAL COMPUTATIONS
+  I(0,a;v.h)=a, if a is not syntactically literal zero.
+  I(Sn,a;v.h)=h[I(n,a;v.h)/v], if neither n nor a is literal zero.
+The restrictions are admissible: C=I(2,1;v.0)=0 is a direct allowed
+computation. Replace any forbidden seed or predecessor by C and transport
+C=0 once. This recovers every unrestricted computation instance.
+
+ALL PRIMITIVE LOGICAL RULES
+  Hyp: Gamma |- A when A occurs in Gamma.
+  Tr: Gamma |- s=t and Gamma |- F(s) imply Gamma |- F(t).
+      F is an arbitrary native formula template.
+  QE: Gamma |- Q_y B and Gamma |- B(0) imply Gamma |- B(t).
+  DE: Gamma |- D_{x,y} B and Gamma,Q_y B(a,y) |- A imply Gamma |- A.
+      The witness a is fresh for retained context, conclusion, and parameters.
+  Case DI: Gamma,B(t,0) |- B(t,Sz) implies Gamma |- D_{x,y} B.
+  Progress DI: Gamma,E(t,z) |- E(t,Sz) implies Gamma |- D_{x,y} E,
+      only when E is a literal equation. Compound progress is forbidden.
+      In both introductions z is fresh for Gamma, t, and passive parameters.
+      Local hypotheses are discharged; substitution avoids capture.
+
+IMPLEMENTED COMPUTATION SUPPLY (DERIVED RULE)
+  If H(0,...,0) is one of the generated computation theorems and b are fresh
+  for Gamma,A, a proof Gamma,H(b) |- A yields Gamma |- A by simultaneous
+  zero substitution and cut. The checker implements only its explicit
+  computation generator, not a general theorem recognizer.
+
+DERIVED RESULTS
+  Equality reflexivity/symmetry/transitivity/congruence; numerical cases;
+  contextual equation induction; all ordinary intuitionistic logical rules;
+  predecessor; reflection of numerical equality; quantifier-free induction;
+  pairing and every fixed primitive recursion.
+
+EQUIVALENCE AND LIMIT
+  Both interpretations use the whole numerical domain and actual equality.
+  Numerical return isomorphisms have graph x=y. Q/D formula returns are
+  internally proved. Hence this presentation is equiconsistent and
+  bi-interpretable with full first-order iPRA.
+  The axiomatization is inherited. The present new contribution is a smaller
+  checker via prevalidated elimination and guarded internal sentinels.
+  No absolute minimum or significant new arithmetic foundation is claimed.
+  See the report for complete written proofs and their inherited attribution.

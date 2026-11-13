@@ -1,0 +1,7 @@
+# Independent review of generic variable Pell growth rebuild
+
+The rebuilt source differs from the retained old `PellVariableGrowth.lean` by exactly the first import: `Direct80ProjectionPell` is replaced with `DiophantineConsistency.ArithmeticPellPowerRecovery`. The second direct `ArithmeticPow` import and all remaining source bytes, including theorem bodies, are unchanged. This removes the old name as a **direct** import; it does not by itself prove absence through transitive imports.
+
+In any IΣ₁ model the generic `paired_comparison` assumes the strict coefficient separation `X*2*(b+2)<(2a+3)²` and concludes `X^r*ycoord(r+1,b)≤ycoord(2r+1,a)` for arbitrary model r. `paired_comparison_strict` additionally assumes `r>0` and concludes the strict inequality. The source proves the comparison by internal Σ₁ successor induction; it does not bind a trace75 graph, construct witnesses, or prove a halt/iPRA result.
+
+`check.py` rehashes the old/new sources, all saved source copies, runner, all recorded input pins, compiled object and logs, and checks both direct provider paths post hoc against the recorded Lean path. Both printed axiom reports are `[propext, Classical.choice, Quot.sound]`. The runner writes its receipt before its final diagnostic guard, whose retained logs support acceptance; no separate runner outer-exit receipt exists. No independent Lean replay, compile-time selection manifest, full historical/source/package/dynamic ancestry or external graph binding is claimed.

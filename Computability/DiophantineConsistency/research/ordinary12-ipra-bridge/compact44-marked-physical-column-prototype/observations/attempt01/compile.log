@@ -1,0 +1,55 @@
+/tmp/compact44-marked-physical-column-author-f7mc7l1k/CompactMarkedPhysicalColumn.lean:77:32: error: Type mismatch
+  add_lt_add_left hq ?m.552
+has type
+  q + ?m.552 < 8807 + ?m.552
+but is expected to have type
+  8807 * j + q < 8807 * j + 8807
+/tmp/compact44-marked-physical-column-author-f7mc7l1k/CompactMarkedPhysicalColumn.lean:86:48: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  dig 590069 (bsum 590069 (blk 590069 (↑(paramKernel rho)) N s (cellWord row dummy)) N) j
+in the target expression
+  dig 67 (dig (67 * 8807) (bsum (67 * 8807) (blk (67 * 8807) (↑(paramKernel rho)) N s (cellWord row dummy)) N) j) q =
+    dig 67 (blk (67 * 8807) (↑(paramKernel rho)) N s (cellWord row dummy) j) q
+
+V : Type u_1
+inst✝³ : ORingStructure V
+inst✝² : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+row dummy : V → V
+inst✝¹ : 𝚺₁-Function₁ row
+inst✝ : 𝚺₁-Function₁ dummy
+N s : V
+hw : CompactWord row N s
+hN : 1 < N
+hs : s < N
+hbool : ∀ (j : V), dummy j ≤ 1
+hXeq : cellWord row dummy = perturb (baseCell row) dummy
+hhi : ∀ j < N, ↑(paramKernel rho) * cellWord row dummy j < Exp.exp 590069 * Exp.exp 590069
+hcell : ∀ j < N, cellWord row dummy j + blk 590069 (↑(paramKernel rho)) N s (cellWord row dummy) j < Exp.exp 590069
+horigin : 1 ≤ cellWord row dummy 0
+this : 𝚺₁-Function₁ cellWord row dummy := word_definable row dummy
+ht : TransportInput 590069 (↑(paramKernel rho)) N s (cellWord row dummy)
+hD : 67 * 8807 = 590069
+hCeq : Cw 590069 N (cellWord row dummy) = packedWord row dummy N
+hremainder :
+  (↑(paramKernel rho) + Exp.exp (67 * (8807 * s))) * packedWord row dummy N % (Exp.exp (67 * (8807 * N)) - 1) =
+    Fw 590069 (↑(paramKernel rho)) N s (cellWord row dummy)
+j : V
+hj : j < N
+q : V
+hq : q < 8807
+hk : 8807 * j + q < 8807 * N
+hc :
+  carry 67 (8807 * N) coeff
+        (GenericBandCarryFamily.word (8807 * N) (packedWord row dummy N) (bandOffsets position)
+          (temporalWord (8807 * N) (67 * (8807 * s)) (packedWord row dummy N)))
+        (8807 * j + q) =
+      0 ∧
+    dig 67 ((↑(paramKernel rho) + Exp.exp (67 * (8807 * s))) * packedWord row dummy N % (Exp.exp (67 * (8807 * N)) - 1))
+        (8807 * j + q) =
+      raw 67 coeff
+        (GenericBandCarryFamily.word (8807 * N) (packedWord row dummy N) (bandOffsets position)
+          (temporalWord (8807 * N) (67 * (8807 * s)) (packedWord row dummy N)))
+        (8807 * j + q)
+hb : ∀ j < N, blk 590069 (↑(paramKernel rho)) N s (cellWord row dummy) j < Exp.exp 590069
+⊢ dig 67 (dig (67 * 8807) (bsum (67 * 8807) (blk (67 * 8807) (↑(paramKernel rho)) N s (cellWord row dummy)) N) j) q =
+    dig 67 (blk (67 * 8807) (↑(paramKernel rho)) N s (cellWord row dummy) j) q
+'CompactMarkedPhysicalColumn.marked_physical_column' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

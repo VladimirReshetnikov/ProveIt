@@ -1,0 +1,7 @@
+# Exploratory fixed-graph all-block row word
+
+`FixedGraphAllBlockWord.graph_all_block_word` combines the all-block occupancy result with the uniform decoder and the existing selector-position and packing interface. Under positive coordinates and zero of the fixed symbolic graph it yields the same positive model N and a word W satisfying `Blocks 10 (OrbitRowWord.row C N 1) N W`. For every model block h<N it supplies the selected row index, its selector and copy-word payload equality, and proves the row index is below 943 and is not 1. The stride-one orbit evaluates to h on this range; the statement preserves its definable row function explicitly.
+
+Row 1 is excluded using the exact absent low-mask phase 1 and the graph per-position NoCarry condition, not a finite extrapolation. Model lengths from the relevant graph results are identified by exponential injectivity. The theorem assumes a fixed symbolic graph zero and does not assert its existence, prove field matching or transition semantics, bind retained K/port bytes, or establish iPRA completion.
+
+This is a single-author exploratory check using the same author overlay and guarded foundation provider as the all-block occupancy packet. Lean 4.32.0 ran with a clean loader, `-M3000 -j1 -DElab.async=false` and a 120-second timeout. Session 20598 actually exited 0 with one unnecessary-simpa linter warning; its source and log are retained. Corrected session 98189 actually exited 0 without warnings or `sorryAx`, and its axiom report is retained. No paired replay or independent artifact audit is asserted.

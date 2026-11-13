@@ -1,0 +1,5 @@
+# Independent terminal audit: fixed-current-port unit norms
+
+The successful IΣ₁ model theorem states that `Carrier65.value` zero at the fixed symbolic current ports and arbitrary positive difference-ring coordinates implies the five original unit norms P, Q, U, strong and W. Its axiom report is `[propext, Classical.choice, Quot.sound]`, with no warnings. This fixed-port result does not itself construct a seed witness, prove the full reverse source/seed direction or establish an iPRA endpoint.
+
+The checker pins source, manifest, runner, provider survey, retained/live state, logs and object; validates author-recorded session 60114 exit 0; checks 100 direct guard slots and 1,138 overlay links; verifies the exact FreshCarrierSpheres dependency and guard binding; and reruns the selected-provider point survey. Retained before/after survey bytes match. The initial-agreement ancestor's numeric outer exit was not captured. The outer observation is author-recorded rather than an independent historical transcript; sampling and point checks do not establish complete dynamic/transitive ancestry. No Lean replay was performed.

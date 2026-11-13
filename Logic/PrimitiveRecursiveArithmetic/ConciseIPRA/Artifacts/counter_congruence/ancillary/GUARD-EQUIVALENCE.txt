@@ -1,0 +1,77 @@
+ONE-NODE AST REDUCTION BY INVERTING THE HYPOTHESIS GUARD
+======================================================
+
+Candidate: ast_not_in.py
+SHA-256: d982c002cc0d04774da62f7a6c191d0753956aeb8f2c2a1c7678d593a472ab12
+Baseline: reference/baseline_ast.py
+SHA-256: 3486dcfe3dd5a07321ef4bcefe6cf1881ee82f573429dca411e1f851011e83f3
+
+The only source transformation is inside c(a,g):
+
+  old: global k
+       if i(a) in g:
+           return
+       REMAINING_BODY
+
+  new: global k
+       if i(a) not in g:
+           REMAINING_BODY
+
+Every statement of REMAINING_BODY, including its final recursive continuation,
+is nested under the inverted condition. The opener, arithmetic, inference
+conditions, packet reader, exception handler, and public driver are unchanged.
+
+Behavioral equivalence
+----------------------
+The guard evaluates i(a) exactly once in either program. For the native list
+context g, Python's not-in is the Boolean complement of in. When membership
+succeeds, the old function explicitly returns None and the new function falls
+through to its implicit return of None. Neither executes REMAINING_BODY.
+When membership fails, both execute exactly the same REMAINING_BODY with the
+same local/global environment. The original body also falls through after
+its final recursive call, so its return value remains None. If the opener or
+body raises, both propagate the same exception to the unchanged driver.
+Induction on finite calls therefore preserves every public ACCEPT/REJECT
+verdict and exit status. Nontermination/resource exhaustion is not turned
+into acceptance. Source locations in diagnostic tracebacks can differ.
+
+This is an ordinary control-flow refactoring, not a change of the mathematical
+calculus, proof format, logical strength, or trusted host primitives.
+
+Whole-program source measures
+------------------------------
+Using the unchanged corpus source normalizer under CPython 3.12.14:
+
+                                Tokens   AST   Bytes
+  archived AST profile             283   315     710
+  inverted guard profile           283   314     751
+
+The Return node is removed. In and NotIn each occupy one AST node. The added
+not token balances the removed return token. Extra indentation increases the
+normalized byte count by 41. This lowers the old AST coordinate by exactly
+one node (about 0.32%), and does not lower either token or byte count.
+
+The count covers the entire standalone program, including JSON parsing,
+opening/scope checks, proof rules, rejection, and the public verdict driver.
+No additional helper or producer is imported, and no submitted Python is
+executed. This isolated coordinate improvement is incidental source work,
+not a significant mathematical breakthrough or absolute minimality result.
+
+Executable evidence
+-------------------
+The inherited generated-assumptions witness suite has 14 positive and 14
+negative packets. These plus empty input, malformed JSON, and a non-array
+JSON object were run under ordinary and optimized Python, for both baseline
+and candidate: 62 candidate plus 62 baseline runs, all 124 passing. Public
+verdicts and exit codes matched in every pair.
+
+All three inherited targeted mutation controls also passed. The actual
+candidate rejected each invalid packet; deleting the eager predecessor
+check, deleting the major proof, or allowing compound progress made the
+corresponding invalid packet accepted. The body indentation was retained in
+the major-proof mutation so the experiment changed the intended operation.
+
+metrics.json records exact whole-module measures and hashes.
+validation.json contains all paired runs and mutation receipts.
+The finite tests support the elementary equivalence argument; they are not
+a new universal verification of the inherited iPRA implementation.

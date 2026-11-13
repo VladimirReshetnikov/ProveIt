@@ -1,0 +1,1354 @@
+theorem SymbolicKBandDraft.symbolic_kernel_band_cast.{u_1} : ∀ {V : Type u_1} [inst : LO.ORingStructure V]
+  [inst_1 : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+  ↑(CompactSymbolicKernelOpaque.paramKernel CompactSymbolicKernel.rho) =
+    CompactPartialBandRotation.kernelBand CompactSymbolicKernel.position 4393 +
+        CompactPartialBandRotation.kernelBand CompactSymbolicKernel.position 5495 +
+      TwoBand.bareKernel :=
+fun {V} [⋯] [⋯] =>
+  have hspatial :=
+    Eq.mpr
+      (id (congrArg (fun _a => _a = LO.Exp.exp (67 * 8849)) (Eq.symm (pow_add (↑CompactSymbolicKernel.rho) 8807 42))))
+      (KCast.cast_rho_pow 8849);
+  Eq.mpr
+    (id
+      (congrArg
+        (fun _a =>
+          _a =
+            CompactPartialBandRotation.kernelBand CompactSymbolicKernel.position 4393 +
+                CompactPartialBandRotation.kernelBand CompactSymbolicKernel.position 5495 +
+              TwoBand.bareKernel)
+        (CompactSymbolicKernelOpaque.cast_paramKernel CompactSymbolicKernel.rho)))
+    (Eq.mpr
+      (id
+        (congrArg
+          (fun _a =>
+            ↑CompactSymbolicKernel.rho ^ 30 + ↑CompactSymbolicKernel.rho ^ 62 + ↑CompactSymbolicKernel.rho ^ 1100 +
+                      ↑CompactSymbolicKernel.rho ^ 2201 +
+                    ∑ i,
+                      ↑(CompactCoefficientMass.selector (Compact943Data.row i)) *
+                        (↑CompactSymbolicKernel.rho ^ (4393 - ↑i) + ↑CompactSymbolicKernel.rho ^ (5495 - ↑i)) +
+                  ∑ i,
+                    ↑(2 ^ (10 + ↑i)) *
+                      (↑CompactSymbolicKernel.rho ^ (4393 - CompactSymbolicKernel.position i) +
+                        ↑CompactSymbolicKernel.rho ^ (5495 - CompactSymbolicKernel.position i)) +
+                _a =
+              CompactPartialBandRotation.kernelBand CompactSymbolicKernel.position 4393 +
+                  CompactPartialBandRotation.kernelBand CompactSymbolicKernel.position 5495 +
+                TwoBand.bareKernel)
+          hspatial))
+      (Eq.mpr
+        (id
+          (congrArg
+            (fun _a =>
+              ↑CompactSymbolicKernel.rho ^ 30 + ↑CompactSymbolicKernel.rho ^ 62 + ↑CompactSymbolicKernel.rho ^ 1100 +
+                        ↑CompactSymbolicKernel.rho ^ 2201 +
+                      ∑ i,
+                        ↑(CompactCoefficientMass.selector (Compact943Data.row i)) *
+                          (↑CompactSymbolicKernel.rho ^ (4393 - ↑i) + ↑CompactSymbolicKernel.rho ^ (5495 - ↑i)) +
+                    ∑ i,
+                      ↑(2 ^ (10 + ↑i)) *
+                        (↑CompactSymbolicKernel.rho ^ (4393 - CompactSymbolicKernel.position i) +
+                          ↑CompactSymbolicKernel.rho ^ (5495 - CompactSymbolicKernel.position i)) +
+                  LO.Exp.exp (67 * 8849) =
+                CompactPartialBandRotation.kernelBand CompactSymbolicKernel.position 4393 +
+                    CompactPartialBandRotation.kernelBand CompactSymbolicKernel.position 5495 +
+                  _a)
+            KCast.bare_formula))
+        (Eq.mpr
+          (id
+            (congr
+              (congrArg Eq
+                (congrFun'
+                  (congrArg HAdd.hAdd
+                    (congr
+                      (congrArg HAdd.hAdd
+                        (congr
+                          (congrArg HAdd.hAdd
+                            (congr
+                              (congrArg HAdd.hAdd
+                                (congr
+                                  (congrArg HAdd.hAdd
+                                    (congr (congrArg HAdd.hAdd (KCast.cast_rho_pow 30)) (KCast.cast_rho_pow 62)))
+                                  (KCast.cast_rho_pow 1100)))
+                              (KCast.cast_rho_pow 2201)))
+                          (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                            congrArg (HMul.hMul ↑(CompactCoefficientMass.selector (Compact943Data.row x)))
+                              (congr (congrArg HAdd.hAdd (KCast.cast_rho_pow (4393 - ↑x)))
+                                (KCast.cast_rho_pow (5495 - ↑x))))))
+                      (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                        congrArg (HMul.hMul ↑(2 ^ (10 + ↑x)))
+                          (congr (congrArg HAdd.hAdd (KCast.cast_rho_pow (4393 - CompactSymbolicKernel.position x)))
+                            (KCast.cast_rho_pow (5495 - CompactSymbolicKernel.position x))))))
+                  (LO.Exp.exp (67 * 8849))))
+              (congrFun'
+                (congrArg HAdd.hAdd
+                  (congr
+                    (congrArg HAdd.hAdd
+                      (congr
+                        (congrArg HAdd.hAdd
+                          (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                            Eq.refl
+                              (↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                LO.Exp.exp (67 * ↑(4393 - ↑x)))))
+                        (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                          Eq.refl (↑(2 ^ (10 + ↑x)) * LO.Exp.exp (67 * ↑(4393 - CompactSymbolicKernel.position x))))))
+                    (congr
+                      (congrArg HAdd.hAdd
+                        (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                          Eq.refl
+                            (↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                              LO.Exp.exp (67 * ↑(5495 - ↑x)))))
+                      (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                        Eq.refl (↑(2 ^ (10 + ↑x)) * LO.Exp.exp (67 * ↑(5495 - CompactSymbolicKernel.position x)))))))
+                (LO.Exp.exp (67 * 30) + LO.Exp.exp (67 * 62) + LO.Exp.exp (67 * 1100) + LO.Exp.exp (67 * 2201) +
+                  LO.Exp.exp (67 * 8849)))))
+          (Eq.mpr
+            (id
+              (congrFun'
+                (congrArg Eq
+                  (congrFun'
+                    (congrArg HAdd.hAdd
+                      (congr
+                        (congrArg HAdd.hAdd
+                          (congrArg
+                            (HAdd.hAdd
+                              (LO.Exp.exp (67 * ↑30) + LO.Exp.exp (67 * ↑62) + LO.Exp.exp (67 * ↑1100) +
+                                LO.Exp.exp (67 * ↑2201)))
+                            (Eq.trans
+                              (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                                mul_add (↑(CompactCoefficientMass.selector (Compact943Data.row x)))
+                                  (LO.Exp.exp (67 * ↑(4393 - ↑x))) (LO.Exp.exp (67 * ↑(5495 - ↑x))))
+                              Finset.sum_add_distrib)))
+                        (Eq.trans
+                          (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                            mul_add (↑(2 ^ (10 + ↑x))) (LO.Exp.exp (67 * ↑(4393 - CompactSymbolicKernel.position x)))
+                              (LO.Exp.exp (67 * ↑(5495 - CompactSymbolicKernel.position x))))
+                          Finset.sum_add_distrib)))
+                    (LO.Exp.exp (67 * 8849))))
+                (∑ x, ↑(CompactCoefficientMass.selector (Compact943Data.row x)) * LO.Exp.exp (67 * ↑(4393 - ↑x)) +
+                      ∑ x, ↑(2 ^ (10 + ↑x)) * LO.Exp.exp (67 * ↑(4393 - CompactSymbolicKernel.position x)) +
+                    (∑ x, ↑(CompactCoefficientMass.selector (Compact943Data.row x)) * LO.Exp.exp (67 * ↑(5495 - ↑x)) +
+                      ∑ x, ↑(2 ^ (10 + ↑x)) * LO.Exp.exp (67 * ↑(5495 - CompactSymbolicKernel.position x))) +
+                  (LO.Exp.exp (67 * 30) + LO.Exp.exp (67 * 62) + LO.Exp.exp (67 * 1100) + LO.Exp.exp (67 * 2201) +
+                    LO.Exp.exp (67 * 8849)))))
+            (of_eq_true
+              (Eq.trans
+                (congr
+                  (congrArg Eq
+                    (Eq.trans
+                      (Mathlib.Tactic.Ring.Common.add_congr
+                        (Mathlib.Tactic.Ring.Common.add_congr
+                          (Mathlib.Tactic.Ring.Common.add_congr
+                            (Mathlib.Tactic.Ring.Common.add_congr
+                              (Mathlib.Tactic.Ring.Common.add_congr
+                                (Mathlib.Tactic.Ring.Common.add_congr
+                                  (Mathlib.Tactic.Ring.Common.atom_pf'
+                                    (congrArg LO.Exp.exp
+                                      (Eq.trans
+                                        (Mathlib.Tactic.Ring.Common.mul_congr
+                                          (Mathlib.Tactic.Ring.cast_pos
+                                            (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 67)))
+                                          (Mathlib.Tactic.Ring.cast_pos
+                                            (Mathlib.Meta.NormNum.isNat_natCast 30 30
+                                              (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 30))))
+                                          (Mathlib.Tactic.Ring.Common.add_mul
+                                            (Mathlib.Tactic.Ring.Common.mul_add
+                                              (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw V 67)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw V 30) (Eq.refl 2010)))
+                                              (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 67))
+                                              (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 2010 + 0)))
+                                            (Mathlib.Tactic.Ring.Common.zero_mul (Nat.rawCast 30 + 0))
+                                            (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 2010 + 0))))
+                                        (add_zero 2010)))
+                                    rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a =>
+                                            LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                              LO.Exp.exp 2010 ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.atom_pf'
+                                    (congrArg LO.Exp.exp
+                                      (Eq.trans
+                                        (Mathlib.Tactic.Ring.Common.mul_congr
+                                          (Mathlib.Tactic.Ring.cast_pos
+                                            (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 67)))
+                                          (Mathlib.Tactic.Ring.cast_pos
+                                            (Mathlib.Meta.NormNum.isNat_natCast 62 62
+                                              (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 62))))
+                                          (Mathlib.Tactic.Ring.Common.add_mul
+                                            (Mathlib.Tactic.Ring.Common.mul_add
+                                              (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw V 67)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw V 62) (Eq.refl 4154)))
+                                              (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 67))
+                                              (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 4154 + 0)))
+                                            (Mathlib.Tactic.Ring.Common.zero_mul (Nat.rawCast 62 + 0))
+                                            (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 4154 + 0))))
+                                        (add_zero 4154)))
+                                    rfl
+                                    (Eq.mpr
+                                      (id
+                                        (congrArg
+                                          (fun _a =>
+                                            LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                              LO.Exp.exp 4154 ^ Nat.rawCast 1 * _a)
+                                          (Eq.symm rfl)))
+                                      (Eq.refl (LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                    (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                    (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                      (LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))))
+                                (Mathlib.Tactic.Ring.Common.atom_pf'
+                                  (congrArg LO.Exp.exp
+                                    (Eq.trans
+                                      (Mathlib.Tactic.Ring.Common.mul_congr
+                                        (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 67)))
+                                        (Mathlib.Tactic.Ring.cast_pos
+                                          (Mathlib.Meta.NormNum.isNat_natCast 1100 1100
+                                            (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 1100))))
+                                        (Mathlib.Tactic.Ring.Common.add_mul
+                                          (Mathlib.Tactic.Ring.Common.mul_add
+                                            (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                              (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw V 67)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw V 1100) (Eq.refl 73700)))
+                                            (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 67))
+                                            (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 73700 + 0)))
+                                          (Mathlib.Tactic.Ring.Common.zero_mul (Nat.rawCast 1100 + 0))
+                                          (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 73700 + 0))))
+                                      (add_zero 73700)))
+                                  rfl
+                                  (Eq.mpr
+                                    (id
+                                      (congrArg
+                                        (fun _a =>
+                                          LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                            LO.Exp.exp 73700 ^ Nat.rawCast 1 * _a)
+                                        (Eq.symm rfl)))
+                                    (Eq.refl (LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                  (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                    (LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                    (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                      (LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1 + 0)))))
+                              (Mathlib.Tactic.Ring.Common.atom_pf'
+                                (congrArg LO.Exp.exp
+                                  (Eq.trans
+                                    (Mathlib.Tactic.Ring.Common.mul_congr
+                                      (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 67)))
+                                      (Mathlib.Tactic.Ring.cast_pos
+                                        (Mathlib.Meta.NormNum.isNat_natCast 2201 2201
+                                          (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 2201))))
+                                      (Mathlib.Tactic.Ring.Common.add_mul
+                                        (Mathlib.Tactic.Ring.Common.mul_add
+                                          (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                            (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw V 67)
+                                              (Mathlib.Meta.NormNum.IsNat.of_raw V 2201) (Eq.refl 147467)))
+                                          (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 67))
+                                          (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 147467 + 0)))
+                                        (Mathlib.Tactic.Ring.Common.zero_mul (Nat.rawCast 2201 + 0))
+                                        (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 147467 + 0))))
+                                    (add_zero 147467)))
+                                rfl
+                                (Eq.mpr
+                                  (id
+                                    (congrArg
+                                      (fun _a =>
+                                        LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                          LO.Exp.exp 147467 ^ Nat.rawCast 1 * _a)
+                                      (Eq.symm rfl)))
+                                  (Eq.refl (LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                              (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                  (LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                    (LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                    (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                      (LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))))))
+                            (Mathlib.Tactic.Ring.Common.add_congr
+                              (Mathlib.Tactic.Ring.Common.atom_pf'
+                                (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                                  Eq.trans
+                                    (Mathlib.Tactic.Ring.Common.mul_congr
+                                      (Mathlib.Tactic.Ring.Common.atom_pf
+                                        (↑(CompactCoefficientMass.selector (Compact943Data.row x))) rfl
+                                        (Eq.mpr
+                                          (id
+                                            (congrArg
+                                              (fun _a =>
+                                                ↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^
+                                                      Nat.rawCast 1 *
+                                                    Nat.rawCast 1 =
+                                                  ↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^
+                                                      Nat.rawCast 1 *
+                                                    _a)
+                                              (Eq.symm rfl)))
+                                          (Eq.refl
+                                            (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^ Nat.rawCast 1 *
+                                              Nat.rawCast 1))))
+                                      (Mathlib.Tactic.Ring.Common.atom_pf'
+                                        (congrArg LO.Exp.exp
+                                          (Eq.trans
+                                            (Mathlib.Tactic.Ring.Common.mul_congr
+                                              (Mathlib.Tactic.Ring.cast_pos
+                                                (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 67)))
+                                              (Mathlib.Tactic.Ring.Common.atom_pf (↑(4393 - ↑x)) rfl
+                                                (Eq.mpr
+                                                  (id
+                                                    (congrArg
+                                                      (fun _a =>
+                                                        ↑(4393 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                                          ↑(4393 - ↑x) ^ Nat.rawCast 1 * _a)
+                                                      (Eq.symm rfl)))
+                                                  (Eq.refl (↑(4393 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                              (Mathlib.Tactic.Ring.Common.add_mul
+                                                (Mathlib.Tactic.Ring.Common.mul_add
+                                                  (Mathlib.Tactic.Ring.Common.mul_pf_right (↑(4393 - ↑x))
+                                                    (Nat.rawCast 1)
+                                                    (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                      (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                        (Mathlib.Meta.NormNum.IsNat.of_raw V 67)
+                                                        (Mathlib.Meta.NormNum.IsNat.of_raw V 1) (Eq.refl 67))))
+                                                  (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 67))
+                                                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                    (↑(4393 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 67 + 0)))
+                                                (Mathlib.Tactic.Ring.Common.zero_mul
+                                                  (↑(4393 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                                (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                  (↑(4393 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 67 + 0))))
+                                            (Eq.trans
+                                              (congrFun'
+                                                (congrArg HAdd.hAdd
+                                                  (congrFun'
+                                                    (congrArg HMul.hMul
+                                                      (Eq.trans
+                                                        (congrArg (HPow.hPow ↑(4393 - ↑x))
+                                                          Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                        (pow_one ↑(4393 - ↑x))))
+                                                    67))
+                                                0)
+                                              (add_zero (↑(4393 - ↑x) * 67)))))
+                                        rfl
+                                        (Eq.mpr
+                                          (id
+                                            (congrArg
+                                              (fun _a =>
+                                                LO.Exp.exp (↑(4393 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                                  LO.Exp.exp (↑(4393 - ↑x) * 67) ^ Nat.rawCast 1 * _a)
+                                              (Eq.symm rfl)))
+                                          (Eq.refl (LO.Exp.exp (↑(4393 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                      (Mathlib.Tactic.Ring.Common.add_mul
+                                        (Mathlib.Tactic.Ring.Common.mul_add
+                                          (Mathlib.Tactic.Ring.Common.mul_pf_left
+                                            (↑(CompactCoefficientMass.selector (Compact943Data.row x))) (Nat.rawCast 1)
+                                            (Mathlib.Tactic.Ring.Common.mul_pf_right (LO.Exp.exp (↑(4393 - ↑x) * 67))
+                                              (Nat.rawCast 1)
+                                              (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw V 1)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw V 1) (Eq.refl 1)))))
+                                          (Mathlib.Tactic.Ring.Common.mul_zero
+                                            (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^ Nat.rawCast 1 *
+                                              Nat.rawCast 1))
+                                          (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                            (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^ Nat.rawCast 1 *
+                                                (LO.Exp.exp (↑(4393 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                              0)))
+                                        (Mathlib.Tactic.Ring.Common.zero_mul
+                                          (LO.Exp.exp (↑(4393 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                        (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                          (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^ Nat.rawCast 1 *
+                                              (LO.Exp.exp (↑(4393 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                            0))))
+                                    (Eq.trans
+                                      (congrFun'
+                                        (congrArg HAdd.hAdd
+                                          (Eq.trans
+                                            (Mathlib.Tactic.RingNF.mul_assoc_rev
+                                              (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^
+                                                Nat.rawCast 1)
+                                              (LO.Exp.exp (↑(4393 - ↑x) * 67) ^ Nat.rawCast 1) (Nat.rawCast 1))
+                                            (Eq.trans
+                                              (congr
+                                                (congrArg HMul.hMul
+                                                  (congr
+                                                    (congrArg HMul.hMul
+                                                      (Eq.trans
+                                                        (congrArg
+                                                          (HPow.hPow
+                                                            ↑(CompactCoefficientMass.selector (Compact943Data.row x)))
+                                                          Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                        (pow_one
+                                                          ↑(CompactCoefficientMass.selector (Compact943Data.row x)))))
+                                                    (Eq.trans
+                                                      (congrArg (HPow.hPow (LO.Exp.exp (↑(4393 - ↑x) * 67)))
+                                                        Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                      (pow_one (LO.Exp.exp (↑(4393 - ↑x) * 67))))))
+                                                Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                              (mul_one
+                                                (↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                                  LO.Exp.exp (↑(4393 - ↑x) * 67))))))
+                                        0)
+                                      (add_zero
+                                        (↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                          LO.Exp.exp (↑(4393 - ↑x) * 67)))))
+                                rfl
+                                (Eq.mpr
+                                  (id
+                                    (congrArg
+                                      (fun _a =>
+                                        (∑ x,
+                                                ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                                  LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                              Nat.rawCast 1 *
+                                            Nat.rawCast 1 =
+                                          (∑ x,
+                                                ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                                  LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                              Nat.rawCast 1 *
+                                            _a)
+                                      (Eq.symm rfl)))
+                                  (Eq.refl
+                                    ((∑ x,
+                                          ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                            LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1))))
+                              (Mathlib.Tactic.Ring.Common.atom_pf'
+                                (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                                  Eq.trans
+                                    (Mathlib.Tactic.Ring.Common.mul_congr
+                                      (Mathlib.Tactic.Ring.Common.atom_pf
+                                        (↑(CompactCoefficientMass.selector (Compact943Data.row x))) rfl
+                                        (Eq.mpr
+                                          (id
+                                            (congrArg
+                                              (fun _a =>
+                                                ↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^
+                                                      Nat.rawCast 1 *
+                                                    Nat.rawCast 1 =
+                                                  ↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^
+                                                      Nat.rawCast 1 *
+                                                    _a)
+                                              (Eq.symm rfl)))
+                                          (Eq.refl
+                                            (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^ Nat.rawCast 1 *
+                                              Nat.rawCast 1))))
+                                      (Mathlib.Tactic.Ring.Common.atom_pf'
+                                        (congrArg LO.Exp.exp
+                                          (Eq.trans
+                                            (Mathlib.Tactic.Ring.Common.mul_congr
+                                              (Mathlib.Tactic.Ring.cast_pos
+                                                (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 67)))
+                                              (Mathlib.Tactic.Ring.Common.atom_pf (↑(5495 - ↑x)) rfl
+                                                (Eq.mpr
+                                                  (id
+                                                    (congrArg
+                                                      (fun _a =>
+                                                        ↑(5495 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                                          ↑(5495 - ↑x) ^ Nat.rawCast 1 * _a)
+                                                      (Eq.symm rfl)))
+                                                  (Eq.refl (↑(5495 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                              (Mathlib.Tactic.Ring.Common.add_mul
+                                                (Mathlib.Tactic.Ring.Common.mul_add
+                                                  (Mathlib.Tactic.Ring.Common.mul_pf_right (↑(5495 - ↑x))
+                                                    (Nat.rawCast 1)
+                                                    (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                      (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                        (Mathlib.Meta.NormNum.IsNat.of_raw V 67)
+                                                        (Mathlib.Meta.NormNum.IsNat.of_raw V 1) (Eq.refl 67))))
+                                                  (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 67))
+                                                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                    (↑(5495 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 67 + 0)))
+                                                (Mathlib.Tactic.Ring.Common.zero_mul
+                                                  (↑(5495 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                                (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                  (↑(5495 - ↑x) ^ Nat.rawCast 1 * Nat.rawCast 67 + 0))))
+                                            (Eq.trans
+                                              (congrFun'
+                                                (congrArg HAdd.hAdd
+                                                  (congrFun'
+                                                    (congrArg HMul.hMul
+                                                      (Eq.trans
+                                                        (congrArg (HPow.hPow ↑(5495 - ↑x))
+                                                          Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                        (pow_one ↑(5495 - ↑x))))
+                                                    67))
+                                                0)
+                                              (add_zero (↑(5495 - ↑x) * 67)))))
+                                        rfl
+                                        (Eq.mpr
+                                          (id
+                                            (congrArg
+                                              (fun _a =>
+                                                LO.Exp.exp (↑(5495 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                                  LO.Exp.exp (↑(5495 - ↑x) * 67) ^ Nat.rawCast 1 * _a)
+                                              (Eq.symm rfl)))
+                                          (Eq.refl (LO.Exp.exp (↑(5495 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                      (Mathlib.Tactic.Ring.Common.add_mul
+                                        (Mathlib.Tactic.Ring.Common.mul_add
+                                          (Mathlib.Tactic.Ring.Common.mul_pf_left
+                                            (↑(CompactCoefficientMass.selector (Compact943Data.row x))) (Nat.rawCast 1)
+                                            (Mathlib.Tactic.Ring.Common.mul_pf_right (LO.Exp.exp (↑(5495 - ↑x) * 67))
+                                              (Nat.rawCast 1)
+                                              (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw V 1)
+                                                  (Mathlib.Meta.NormNum.IsNat.of_raw V 1) (Eq.refl 1)))))
+                                          (Mathlib.Tactic.Ring.Common.mul_zero
+                                            (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^ Nat.rawCast 1 *
+                                              Nat.rawCast 1))
+                                          (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                            (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^ Nat.rawCast 1 *
+                                                (LO.Exp.exp (↑(5495 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                              0)))
+                                        (Mathlib.Tactic.Ring.Common.zero_mul
+                                          (LO.Exp.exp (↑(5495 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))
+                                        (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                          (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^ Nat.rawCast 1 *
+                                              (LO.Exp.exp (↑(5495 - ↑x) * 67) ^ Nat.rawCast 1 * Nat.rawCast 1) +
+                                            0))))
+                                    (Eq.trans
+                                      (congrFun'
+                                        (congrArg HAdd.hAdd
+                                          (Eq.trans
+                                            (Mathlib.Tactic.RingNF.mul_assoc_rev
+                                              (↑(CompactCoefficientMass.selector (Compact943Data.row x)) ^
+                                                Nat.rawCast 1)
+                                              (LO.Exp.exp (↑(5495 - ↑x) * 67) ^ Nat.rawCast 1) (Nat.rawCast 1))
+                                            (Eq.trans
+                                              (congr
+                                                (congrArg HMul.hMul
+                                                  (congr
+                                                    (congrArg HMul.hMul
+                                                      (Eq.trans
+                                                        (congrArg
+                                                          (HPow.hPow
+                                                            ↑(CompactCoefficientMass.selector (Compact943Data.row x)))
+                                                          Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                        (pow_one
+                                                          ↑(CompactCoefficientMass.selector (Compact943Data.row x)))))
+                                                    (Eq.trans
+                                                      (congrArg (HPow.hPow (LO.Exp.exp (↑(5495 - ↑x) * 67)))
+                                                        Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                      (pow_one (LO.Exp.exp (↑(5495 - ↑x) * 67))))))
+                                                Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                              (mul_one
+                                                (↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                                  LO.Exp.exp (↑(5495 - ↑x) * 67))))))
+                                        0)
+                                      (add_zero
+                                        (↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                          LO.Exp.exp (↑(5495 - ↑x) * 67)))))
+                                rfl
+                                (Eq.mpr
+                                  (id
+                                    (congrArg
+                                      (fun _a =>
+                                        (∑ x,
+                                                ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                                  LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                              Nat.rawCast 1 *
+                                            Nat.rawCast 1 =
+                                          (∑ x,
+                                                ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                                  LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                              Nat.rawCast 1 *
+                                            _a)
+                                      (Eq.symm rfl)))
+                                  (Eq.refl
+                                    ((∑ x,
+                                          ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                            LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1))))
+                              (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                ((∑ x,
+                                      ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                        LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                  ((∑ x,
+                                          ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                            LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1 +
+                                    0))))
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_lt (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                              (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                (LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                  (LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                    (LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                    (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                      ((∑ x,
+                                              ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                                LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                            Nat.rawCast 1 *
+                                          Nat.rawCast 1 +
+                                        ((∑ x,
+                                                ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                                  LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                              Nat.rawCast 1 *
+                                            Nat.rawCast 1 +
+                                          0))))))))
+                          (Mathlib.Tactic.Ring.Common.add_congr
+                            (Mathlib.Tactic.Ring.Common.atom_pf'
+                              (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                                Eq.trans
+                                  (Mathlib.Tactic.Ring.Common.mul_congr
+                                    (Mathlib.Tactic.Ring.Common.atom_pf'
+                                      (congrArg Nat.cast
+                                        (Eq.trans
+                                          (Mathlib.Tactic.Ring.Common.pow_congr
+                                            (Mathlib.Tactic.Ring.cast_pos
+                                              (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 2)))
+                                            (Mathlib.Tactic.Ring.Common.add_congr
+                                              (Mathlib.Tactic.Ring.cast_pos
+                                                (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 10)))
+                                              (Mathlib.Tactic.Ring.Common.atom_pf (↑x) rfl
+                                                (Eq.mpr
+                                                  (id
+                                                    (congrArg
+                                                      (fun _a =>
+                                                        ↑x ^ Nat.rawCast 1 * Nat.rawCast 1 = ↑x ^ Nat.rawCast 1 * _a)
+                                                      (Eq.symm rfl)))
+                                                  (Eq.refl (↑x ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                              (Mathlib.Tactic.Ring.Common.add_pf_add_lt (Nat.rawCast 10)
+                                                (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                                  (↑x ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))))
+                                            (Mathlib.Tactic.Ring.Common.pow_add
+                                              (Mathlib.Tactic.Ring.Common.single_pow
+                                                (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                  (Mathlib.Meta.NormNum.isNat_pow (Eq.refl HPow.hPow)
+                                                    (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 2)
+                                                    (Mathlib.Meta.NormNum.IsNat.raw_refl 10)
+                                                    (Mathlib.Meta.NormNum.IsNatPowT.run
+                                                      (Mathlib.Meta.NormNum.IsNatPowT.trans
+                                                        (Mathlib.Meta.NormNum.IsNatPowT.trans
+                                                          Mathlib.Meta.NormNum.IsNatPowT.bit0
+                                                          Mathlib.Meta.NormNum.IsNatPowT.bit1)
+                                                        Mathlib.Meta.NormNum.IsNatPowT.bit0)))))
+                                              (Mathlib.Tactic.Ring.Common.pow_add
+                                                (Mathlib.Tactic.Ring.Common.single_pow
+                                                  (Mathlib.Tactic.Ring.Common.pow_prod_atom (Nat.rawCast 2)
+                                                    (↑x ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                                    (Eq.mpr
+                                                      (id
+                                                        (congrArg
+                                                          (fun _a =>
+                                                            (Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                                Nat.rawCast 1 =
+                                                              (Nat.rawCast 2 + 0) ^
+                                                                  (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                                _a)
+                                                          (Eq.symm rfl)))
+                                                      (Eq.refl
+                                                        ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                          Nat.rawCast 1)))))
+                                                (Mathlib.Tactic.Ring.Common.pow_zero (Nat.rawCast 2 + 0) rfl)
+                                                (Mathlib.Tactic.Ring.Common.add_mul
+                                                  (Mathlib.Tactic.Ring.Common.mul_add
+                                                    (Mathlib.Tactic.Ring.Common.mul_pf_left (Nat.rawCast 2 + 0)
+                                                      (↑x ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                                      (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                        (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                          (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 1)
+                                                          (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 1) (Eq.refl 1))))
+                                                    (Mathlib.Tactic.Ring.Common.mul_zero
+                                                      ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                        Nat.rawCast 1))
+                                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                      ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                          Nat.rawCast 1 +
+                                                        0)))
+                                                  (Mathlib.Tactic.Ring.Common.zero_mul (Nat.rawCast 1 + 0))
+                                                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                    ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                        Nat.rawCast 1 +
+                                                      0))))
+                                              (Mathlib.Tactic.Ring.Common.add_mul
+                                                (Mathlib.Tactic.Ring.Common.mul_add
+                                                  (Mathlib.Tactic.Ring.Common.mul_pf_right (Nat.rawCast 2 + 0)
+                                                    (↑x ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                                    (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                      (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                        (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 1024)
+                                                        (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 1) (Eq.refl 1024))))
+                                                  (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 1024))
+                                                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                    ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                        Nat.rawCast 1024 +
+                                                      0)))
+                                                (Mathlib.Tactic.Ring.Common.zero_mul
+                                                  ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                      Nat.rawCast 1 +
+                                                    0))
+                                                (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                  ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                      Nat.rawCast 1024 +
+                                                    0)))))
+                                          (Eq.trans
+                                            (congrFun'
+                                              (congrArg HAdd.hAdd
+                                                (congrFun'
+                                                  (congrArg HMul.hMul
+                                                    (congr (congrArg HPow.hPow (add_zero 2))
+                                                      (Eq.trans
+                                                        (congr
+                                                          (congrArg HMul.hMul
+                                                            (Eq.trans
+                                                              (congrArg (HPow.hPow ↑x)
+                                                                Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                              (pow_one ↑x)))
+                                                          Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                        (mul_one ↑x))))
+                                                  1024))
+                                              0)
+                                            (add_zero (2 ^ ↑x * 1024)))))
+                                      rfl
+                                      (Eq.mpr
+                                        (id
+                                          (congrArg
+                                            (fun _a =>
+                                              ↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                                ↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 * _a)
+                                            (Eq.symm rfl)))
+                                        (Eq.refl (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                    (Mathlib.Tactic.Ring.Common.atom_pf'
+                                      (congrArg LO.Exp.exp
+                                        (Eq.trans
+                                          (Mathlib.Tactic.Ring.Common.mul_congr
+                                            (Mathlib.Tactic.Ring.cast_pos
+                                              (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 67)))
+                                            (Mathlib.Tactic.Ring.Common.atom_pf
+                                              (↑(4393 - CompactSymbolicKernel.position x)) rfl
+                                              (Eq.mpr
+                                                (id
+                                                  (congrArg
+                                                    (fun _a =>
+                                                      ↑(4393 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                          Nat.rawCast 1 =
+                                                        ↑(4393 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 * _a)
+                                                    (Eq.symm rfl)))
+                                                (Eq.refl
+                                                  (↑(4393 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                    Nat.rawCast 1))))
+                                            (Mathlib.Tactic.Ring.Common.add_mul
+                                              (Mathlib.Tactic.Ring.Common.mul_add
+                                                (Mathlib.Tactic.Ring.Common.mul_pf_right
+                                                  (↑(4393 - CompactSymbolicKernel.position x)) (Nat.rawCast 1)
+                                                  (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                    (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                      (Mathlib.Meta.NormNum.IsNat.of_raw V 67)
+                                                      (Mathlib.Meta.NormNum.IsNat.of_raw V 1) (Eq.refl 67))))
+                                                (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 67))
+                                                (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                  (↑(4393 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                      Nat.rawCast 67 +
+                                                    0)))
+                                              (Mathlib.Tactic.Ring.Common.zero_mul
+                                                (↑(4393 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                    Nat.rawCast 1 +
+                                                  0))
+                                              (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                (↑(4393 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                    Nat.rawCast 67 +
+                                                  0))))
+                                          (Eq.trans
+                                            (congrFun'
+                                              (congrArg HAdd.hAdd
+                                                (congrFun'
+                                                  (congrArg HMul.hMul
+                                                    (Eq.trans
+                                                      (congrArg (HPow.hPow ↑(4393 - CompactSymbolicKernel.position x))
+                                                        Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                      (pow_one ↑(4393 - CompactSymbolicKernel.position x))))
+                                                  67))
+                                              0)
+                                            (add_zero (↑(4393 - CompactSymbolicKernel.position x) * 67)))))
+                                      rfl
+                                      (Eq.mpr
+                                        (id
+                                          (congrArg
+                                            (fun _a =>
+                                              LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67) ^
+                                                    Nat.rawCast 1 *
+                                                  Nat.rawCast 1 =
+                                                LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67) ^
+                                                    Nat.rawCast 1 *
+                                                  _a)
+                                            (Eq.symm rfl)))
+                                        (Eq.refl
+                                          (LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67) ^
+                                              Nat.rawCast 1 *
+                                            Nat.rawCast 1))))
+                                    (Mathlib.Tactic.Ring.Common.add_mul
+                                      (Mathlib.Tactic.Ring.Common.mul_add
+                                        (Mathlib.Tactic.Ring.Common.mul_pf_left (↑(2 ^ ↑x * 1024)) (Nat.rawCast 1)
+                                          (Mathlib.Tactic.Ring.Common.mul_pf_right
+                                            (LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67))
+                                            (Nat.rawCast 1)
+                                            (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                              (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw V 1)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw V 1) (Eq.refl 1)))))
+                                        (Mathlib.Tactic.Ring.Common.mul_zero
+                                          (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 * Nat.rawCast 1))
+                                        (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                          (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 *
+                                              (LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67) ^
+                                                  Nat.rawCast 1 *
+                                                Nat.rawCast 1) +
+                                            0)))
+                                      (Mathlib.Tactic.Ring.Common.zero_mul
+                                        (LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67) ^ Nat.rawCast 1 *
+                                            Nat.rawCast 1 +
+                                          0))
+                                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                        (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 *
+                                            (LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67) ^
+                                                Nat.rawCast 1 *
+                                              Nat.rawCast 1) +
+                                          0))))
+                                  (Eq.trans
+                                    (congrFun'
+                                      (congrArg HAdd.hAdd
+                                        (Eq.trans
+                                          (Mathlib.Tactic.RingNF.mul_assoc_rev (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1)
+                                            (LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67) ^
+                                              Nat.rawCast 1)
+                                            (Nat.rawCast 1))
+                                          (Eq.trans
+                                            (congr
+                                              (congrArg HMul.hMul
+                                                (congr
+                                                  (congrArg HMul.hMul
+                                                    (Eq.trans
+                                                      (congrArg (HPow.hPow ↑(2 ^ ↑x * 1024))
+                                                        Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                      (pow_one ↑(2 ^ ↑x * 1024))))
+                                                  (Eq.trans
+                                                    (congrArg
+                                                      (HPow.hPow
+                                                        (LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)))
+                                                      Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                    (pow_one
+                                                      (LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67))))))
+                                              Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                            (mul_one
+                                              (↑(2 ^ ↑x * 1024) *
+                                                LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67))))))
+                                      0)
+                                    (add_zero
+                                      (↑(2 ^ ↑x * 1024) *
+                                        LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)))))
+                              rfl
+                              (Eq.mpr
+                                (id
+                                  (congrArg
+                                    (fun _a =>
+                                      (∑ x,
+                                              ↑(2 ^ ↑x * 1024) *
+                                                LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                            Nat.rawCast 1 *
+                                          Nat.rawCast 1 =
+                                        (∑ x,
+                                              ↑(2 ^ ↑x * 1024) *
+                                                LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                            Nat.rawCast 1 *
+                                          _a)
+                                    (Eq.symm rfl)))
+                                (Eq.refl
+                                  ((∑ x,
+                                        ↑(2 ^ ↑x * 1024) *
+                                          LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1))))
+                            (Mathlib.Tactic.Ring.Common.atom_pf'
+                              (Finset.sum_congr (Eq.refl Finset.univ) fun x a =>
+                                Eq.trans
+                                  (Mathlib.Tactic.Ring.Common.mul_congr
+                                    (Mathlib.Tactic.Ring.Common.atom_pf'
+                                      (congrArg Nat.cast
+                                        (Eq.trans
+                                          (Mathlib.Tactic.Ring.Common.pow_congr
+                                            (Mathlib.Tactic.Ring.cast_pos
+                                              (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 2)))
+                                            (Mathlib.Tactic.Ring.Common.add_congr
+                                              (Mathlib.Tactic.Ring.cast_pos
+                                                (Mathlib.Meta.NormNum.isNat_ofNat ℕ (Eq.refl 10)))
+                                              (Mathlib.Tactic.Ring.Common.atom_pf (↑x) rfl
+                                                (Eq.mpr
+                                                  (id
+                                                    (congrArg
+                                                      (fun _a =>
+                                                        ↑x ^ Nat.rawCast 1 * Nat.rawCast 1 = ↑x ^ Nat.rawCast 1 * _a)
+                                                      (Eq.symm rfl)))
+                                                  (Eq.refl (↑x ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                              (Mathlib.Tactic.Ring.Common.add_pf_add_lt (Nat.rawCast 10)
+                                                (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                                  (↑x ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))))
+                                            (Mathlib.Tactic.Ring.Common.pow_add
+                                              (Mathlib.Tactic.Ring.Common.single_pow
+                                                (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                  (Mathlib.Meta.NormNum.isNat_pow (Eq.refl HPow.hPow)
+                                                    (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 2)
+                                                    (Mathlib.Meta.NormNum.IsNat.raw_refl 10)
+                                                    (Mathlib.Meta.NormNum.IsNatPowT.run
+                                                      (Mathlib.Meta.NormNum.IsNatPowT.trans
+                                                        (Mathlib.Meta.NormNum.IsNatPowT.trans
+                                                          Mathlib.Meta.NormNum.IsNatPowT.bit0
+                                                          Mathlib.Meta.NormNum.IsNatPowT.bit1)
+                                                        Mathlib.Meta.NormNum.IsNatPowT.bit0)))))
+                                              (Mathlib.Tactic.Ring.Common.pow_add
+                                                (Mathlib.Tactic.Ring.Common.single_pow
+                                                  (Mathlib.Tactic.Ring.Common.pow_prod_atom (Nat.rawCast 2)
+                                                    (↑x ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                                    (Eq.mpr
+                                                      (id
+                                                        (congrArg
+                                                          (fun _a =>
+                                                            (Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                                Nat.rawCast 1 =
+                                                              (Nat.rawCast 2 + 0) ^
+                                                                  (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                                _a)
+                                                          (Eq.symm rfl)))
+                                                      (Eq.refl
+                                                        ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                          Nat.rawCast 1)))))
+                                                (Mathlib.Tactic.Ring.Common.pow_zero (Nat.rawCast 2 + 0) rfl)
+                                                (Mathlib.Tactic.Ring.Common.add_mul
+                                                  (Mathlib.Tactic.Ring.Common.mul_add
+                                                    (Mathlib.Tactic.Ring.Common.mul_pf_left (Nat.rawCast 2 + 0)
+                                                      (↑x ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                                      (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                        (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                          (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 1)
+                                                          (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 1) (Eq.refl 1))))
+                                                    (Mathlib.Tactic.Ring.Common.mul_zero
+                                                      ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                        Nat.rawCast 1))
+                                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                      ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                          Nat.rawCast 1 +
+                                                        0)))
+                                                  (Mathlib.Tactic.Ring.Common.zero_mul (Nat.rawCast 1 + 0))
+                                                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                    ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                        Nat.rawCast 1 +
+                                                      0))))
+                                              (Mathlib.Tactic.Ring.Common.add_mul
+                                                (Mathlib.Tactic.Ring.Common.mul_add
+                                                  (Mathlib.Tactic.Ring.Common.mul_pf_right (Nat.rawCast 2 + 0)
+                                                    (↑x ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                                    (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                      (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                        (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 1024)
+                                                        (Mathlib.Meta.NormNum.IsNat.of_raw ℕ 1) (Eq.refl 1024))))
+                                                  (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 1024))
+                                                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                    ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                        Nat.rawCast 1024 +
+                                                      0)))
+                                                (Mathlib.Tactic.Ring.Common.zero_mul
+                                                  ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                      Nat.rawCast 1 +
+                                                    0))
+                                                (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                  ((Nat.rawCast 2 + 0) ^ (↑x ^ Nat.rawCast 1 * Nat.rawCast 1) *
+                                                      Nat.rawCast 1024 +
+                                                    0)))))
+                                          (Eq.trans
+                                            (congrFun'
+                                              (congrArg HAdd.hAdd
+                                                (congrFun'
+                                                  (congrArg HMul.hMul
+                                                    (congr (congrArg HPow.hPow (add_zero 2))
+                                                      (Eq.trans
+                                                        (congr
+                                                          (congrArg HMul.hMul
+                                                            (Eq.trans
+                                                              (congrArg (HPow.hPow ↑x)
+                                                                Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                              (pow_one ↑x)))
+                                                          Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                        (mul_one ↑x))))
+                                                  1024))
+                                              0)
+                                            (add_zero (2 ^ ↑x * 1024)))))
+                                      rfl
+                                      (Eq.mpr
+                                        (id
+                                          (congrArg
+                                            (fun _a =>
+                                              ↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                                ↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 * _a)
+                                            (Eq.symm rfl)))
+                                        (Eq.refl (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                                    (Mathlib.Tactic.Ring.Common.atom_pf'
+                                      (congrArg LO.Exp.exp
+                                        (Eq.trans
+                                          (Mathlib.Tactic.Ring.Common.mul_congr
+                                            (Mathlib.Tactic.Ring.cast_pos
+                                              (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 67)))
+                                            (Mathlib.Tactic.Ring.Common.atom_pf
+                                              (↑(5495 - CompactSymbolicKernel.position x)) rfl
+                                              (Eq.mpr
+                                                (id
+                                                  (congrArg
+                                                    (fun _a =>
+                                                      ↑(5495 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                          Nat.rawCast 1 =
+                                                        ↑(5495 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 * _a)
+                                                    (Eq.symm rfl)))
+                                                (Eq.refl
+                                                  (↑(5495 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                    Nat.rawCast 1))))
+                                            (Mathlib.Tactic.Ring.Common.add_mul
+                                              (Mathlib.Tactic.Ring.Common.mul_add
+                                                (Mathlib.Tactic.Ring.Common.mul_pf_right
+                                                  (↑(5495 - CompactSymbolicKernel.position x)) (Nat.rawCast 1)
+                                                  (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                                    (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                      (Mathlib.Meta.NormNum.IsNat.of_raw V 67)
+                                                      (Mathlib.Meta.NormNum.IsNat.of_raw V 1) (Eq.refl 67))))
+                                                (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 67))
+                                                (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                  (↑(5495 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                      Nat.rawCast 67 +
+                                                    0)))
+                                              (Mathlib.Tactic.Ring.Common.zero_mul
+                                                (↑(5495 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                    Nat.rawCast 1 +
+                                                  0))
+                                              (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                                (↑(5495 - CompactSymbolicKernel.position x) ^ Nat.rawCast 1 *
+                                                    Nat.rawCast 67 +
+                                                  0))))
+                                          (Eq.trans
+                                            (congrFun'
+                                              (congrArg HAdd.hAdd
+                                                (congrFun'
+                                                  (congrArg HMul.hMul
+                                                    (Eq.trans
+                                                      (congrArg (HPow.hPow ↑(5495 - CompactSymbolicKernel.position x))
+                                                        Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                      (pow_one ↑(5495 - CompactSymbolicKernel.position x))))
+                                                  67))
+                                              0)
+                                            (add_zero (↑(5495 - CompactSymbolicKernel.position x) * 67)))))
+                                      rfl
+                                      (Eq.mpr
+                                        (id
+                                          (congrArg
+                                            (fun _a =>
+                                              LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67) ^
+                                                    Nat.rawCast 1 *
+                                                  Nat.rawCast 1 =
+                                                LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67) ^
+                                                    Nat.rawCast 1 *
+                                                  _a)
+                                            (Eq.symm rfl)))
+                                        (Eq.refl
+                                          (LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67) ^
+                                              Nat.rawCast 1 *
+                                            Nat.rawCast 1))))
+                                    (Mathlib.Tactic.Ring.Common.add_mul
+                                      (Mathlib.Tactic.Ring.Common.mul_add
+                                        (Mathlib.Tactic.Ring.Common.mul_pf_left (↑(2 ^ ↑x * 1024)) (Nat.rawCast 1)
+                                          (Mathlib.Tactic.Ring.Common.mul_pf_right
+                                            (LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67))
+                                            (Nat.rawCast 1)
+                                            (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                              (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw V 1)
+                                                (Mathlib.Meta.NormNum.IsNat.of_raw V 1) (Eq.refl 1)))))
+                                        (Mathlib.Tactic.Ring.Common.mul_zero
+                                          (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 * Nat.rawCast 1))
+                                        (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                          (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 *
+                                              (LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67) ^
+                                                  Nat.rawCast 1 *
+                                                Nat.rawCast 1) +
+                                            0)))
+                                      (Mathlib.Tactic.Ring.Common.zero_mul
+                                        (LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67) ^ Nat.rawCast 1 *
+                                            Nat.rawCast 1 +
+                                          0))
+                                      (Mathlib.Tactic.Ring.Common.add_pf_add_zero
+                                        (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1 *
+                                            (LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67) ^
+                                                Nat.rawCast 1 *
+                                              Nat.rawCast 1) +
+                                          0))))
+                                  (Eq.trans
+                                    (congrFun'
+                                      (congrArg HAdd.hAdd
+                                        (Eq.trans
+                                          (Mathlib.Tactic.RingNF.mul_assoc_rev (↑(2 ^ ↑x * 1024) ^ Nat.rawCast 1)
+                                            (LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67) ^
+                                              Nat.rawCast 1)
+                                            (Nat.rawCast 1))
+                                          (Eq.trans
+                                            (congr
+                                              (congrArg HMul.hMul
+                                                (congr
+                                                  (congrArg HMul.hMul
+                                                    (Eq.trans
+                                                      (congrArg (HPow.hPow ↑(2 ^ ↑x * 1024))
+                                                        Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                      (pow_one ↑(2 ^ ↑x * 1024))))
+                                                  (Eq.trans
+                                                    (congrArg
+                                                      (HPow.hPow
+                                                        (LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)))
+                                                      Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                                    (pow_one
+                                                      (LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67))))))
+                                              Mathlib.Tactic.RingNF.nat_rawCast_1)
+                                            (mul_one
+                                              (↑(2 ^ ↑x * 1024) *
+                                                LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67))))))
+                                      0)
+                                    (add_zero
+                                      (↑(2 ^ ↑x * 1024) *
+                                        LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)))))
+                              rfl
+                              (Eq.mpr
+                                (id
+                                  (congrArg
+                                    (fun _a =>
+                                      (∑ x,
+                                              ↑(2 ^ ↑x * 1024) *
+                                                LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)) ^
+                                            Nat.rawCast 1 *
+                                          Nat.rawCast 1 =
+                                        (∑ x,
+                                              ↑(2 ^ ↑x * 1024) *
+                                                LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)) ^
+                                            Nat.rawCast 1 *
+                                          _a)
+                                    (Eq.symm rfl)))
+                                (Eq.refl
+                                  ((∑ x,
+                                        ↑(2 ^ ↑x * 1024) *
+                                          LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1))))
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                              ((∑ x, ↑(2 ^ ↑x * 1024) * LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                  Nat.rawCast 1 *
+                                Nat.rawCast 1)
+                              (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                ((∑ x,
+                                        ↑(2 ^ ↑x * 1024) *
+                                          LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1 +
+                                  0))))
+                          (Mathlib.Tactic.Ring.Common.add_pf_add_lt (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_lt (LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                              (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                (LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                  (LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                    ((∑ x,
+                                          ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                            LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1)
+                                    (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                      ((∑ x,
+                                            ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                              LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                          Nat.rawCast 1 *
+                                        Nat.rawCast 1)
+                                      (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                        ((∑ x,
+                                                ↑(2 ^ ↑x * 1024) *
+                                                  LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                              Nat.rawCast 1 *
+                                            Nat.rawCast 1 +
+                                          ((∑ x,
+                                                  ↑(2 ^ ↑x * 1024) *
+                                                    LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)) ^
+                                                Nat.rawCast 1 *
+                                              Nat.rawCast 1 +
+                                            0))))))))))
+                        (Mathlib.Tactic.Ring.Common.atom_pf'
+                          (congrArg LO.Exp.exp
+                            (Eq.trans
+                              (Mathlib.Tactic.Ring.Common.mul_congr
+                                (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 67)))
+                                (Mathlib.Tactic.Ring.cast_pos (Mathlib.Meta.NormNum.isNat_ofNat V (Eq.refl 8849)))
+                                (Mathlib.Tactic.Ring.Common.add_mul
+                                  (Mathlib.Tactic.Ring.Common.mul_add
+                                    (Mathlib.Meta.NormNum.IsNat.to_raw_eq
+                                      (Mathlib.Meta.NormNum.isNat_mul (Eq.refl HMul.hMul)
+                                        (Mathlib.Meta.NormNum.IsNat.of_raw V 67)
+                                        (Mathlib.Meta.NormNum.IsNat.of_raw V 8849) (Eq.refl 592883)))
+                                    (Mathlib.Tactic.Ring.Common.mul_zero (Nat.rawCast 67))
+                                    (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 592883 + 0)))
+                                  (Mathlib.Tactic.Ring.Common.zero_mul (Nat.rawCast 8849 + 0))
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_zero (Nat.rawCast 592883 + 0))))
+                              (add_zero 592883)))
+                          rfl
+                          (Eq.mpr
+                            (id
+                              (congrArg
+                                (fun _a =>
+                                  LO.Exp.exp 592883 ^ Nat.rawCast 1 * Nat.rawCast 1 =
+                                    LO.Exp.exp 592883 ^ Nat.rawCast 1 * _a)
+                                (Eq.symm rfl)))
+                            (Eq.refl (LO.Exp.exp 592883 ^ Nat.rawCast 1 * Nat.rawCast 1))))
+                        (Mathlib.Tactic.Ring.Common.add_pf_add_lt (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                          (Mathlib.Tactic.Ring.Common.add_pf_add_lt (LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                            (Mathlib.Tactic.Ring.Common.add_pf_add_lt (LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                              (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                (LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                  ((∑ x,
+                                        ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                          LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1)
+                                  (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                    ((∑ x,
+                                          ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                            LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1)
+                                    (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                      ((∑ x,
+                                            ↑(2 ^ ↑x * 1024) *
+                                              LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                          Nat.rawCast 1 *
+                                        Nat.rawCast 1)
+                                      (Mathlib.Tactic.Ring.Common.add_pf_add_lt
+                                        ((∑ x,
+                                              ↑(2 ^ ↑x * 1024) *
+                                                LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)) ^
+                                            Nat.rawCast 1 *
+                                          Nat.rawCast 1)
+                                        (Mathlib.Tactic.Ring.Common.add_pf_zero_add
+                                          (LO.Exp.exp 592883 ^ Nat.rawCast 1 * Nat.rawCast 1 + 0)))))))))))
+                      (Eq.trans
+                        (Mathlib.Tactic.RingNF.add_assoc_rev (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                          (LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                          (LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1 +
+                            (LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1 +
+                              ((∑ x,
+                                      ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                        LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1 +
+                                ((∑ x,
+                                        ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                          LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1 +
+                                  ((∑ x,
+                                          ↑(2 ^ ↑x * 1024) *
+                                            LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1 +
+                                    ((∑ x,
+                                            ↑(2 ^ ↑x * 1024) *
+                                              LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)) ^
+                                          Nat.rawCast 1 *
+                                        Nat.rawCast 1 +
+                                      (LO.Exp.exp 592883 ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))))))))
+                        (Eq.trans
+                          (Mathlib.Tactic.RingNF.add_assoc_rev
+                            (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1 +
+                              LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                            (LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                            (LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1 +
+                              ((∑ x,
+                                      ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                        LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1 +
+                                ((∑ x,
+                                        ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                          LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1 +
+                                  ((∑ x,
+                                          ↑(2 ^ ↑x * 1024) *
+                                            LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1 +
+                                    ((∑ x,
+                                            ↑(2 ^ ↑x * 1024) *
+                                              LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)) ^
+                                          Nat.rawCast 1 *
+                                        Nat.rawCast 1 +
+                                      (LO.Exp.exp 592883 ^ Nat.rawCast 1 * Nat.rawCast 1 + 0)))))))
+                          (Eq.trans
+                            (Mathlib.Tactic.RingNF.add_assoc_rev
+                              (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1 +
+                                  LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1 +
+                                LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                              (LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                              ((∑ x,
+                                      ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                        LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1 +
+                                ((∑ x,
+                                        ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                          LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1 +
+                                  ((∑ x,
+                                          ↑(2 ^ ↑x * 1024) *
+                                            LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast 1 +
+                                    ((∑ x,
+                                            ↑(2 ^ ↑x * 1024) *
+                                              LO.Exp.exp (↑(5495 - CompactSymbolicKernel.position x) * 67)) ^
+                                          Nat.rawCast 1 *
+                                        Nat.rawCast 1 +
+                                      (LO.Exp.exp 592883 ^ Nat.rawCast 1 * Nat.rawCast 1 + 0))))))
+                            (Eq.trans
+                              (Mathlib.Tactic.RingNF.add_assoc_rev
+                                (LO.Exp.exp 2010 ^ Nat.rawCast 1 * Nat.rawCast 1 +
+                                      LO.Exp.exp 4154 ^ Nat.rawCast 1 * Nat.rawCast 1 +
+                                    LO.Exp.exp 73700 ^ Nat.rawCast 1 * Nat.rawCast 1 +
+                                  LO.Exp.exp 147467 ^ Nat.rawCast 1 * Nat.rawCast 1)
+                                ((∑ x,
+                                      ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                        LO.Exp.exp (↑(4393 - ↑x) * 67)) ^
+                                    Nat.rawCast 1 *
+                                  Nat.rawCast 1)
+                                ((∑ x,
+                                        ↑(CompactCoefficientMass.selector (Compact943Data.row x)) *
+                                          LO.Exp.exp (↑(5495 - ↑x) * 67)) ^
+                                      Nat.rawCast 1 *
+                                    Nat.rawCast 1 +
+                                  ((∑ x,
+                                          ↑(2 ^ ↑x * 1024) *
+                                            LO.Exp.exp (↑(4393 - CompactSymbolicKernel.position x) * 67)) ^
+                                        Nat.rawCast 1 *
+                                      Nat.rawCast ⋯ +
+                                    ⋯)))
+                              ⋯))))))
+                  ⋯)
+                ⋯))))))
+'SymbolicKBandDraft.symbolic_kernel_band_cast' depends on axioms: [propext, Classical.choice, Quot.sound]

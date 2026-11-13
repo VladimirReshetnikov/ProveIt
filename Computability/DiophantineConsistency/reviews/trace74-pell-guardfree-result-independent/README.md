@@ -1,0 +1,7 @@
+# Independent post-audit: guard-independent trace74 Pell facts
+
+**PASS at direct-pin scope.** Author reports actual tool session 63735 exited 0 and was reaped. Retained terminal SHA-256 `7f4510e88c09a82d0094ab3b759fdc483994c10c833c99a6ec2e8927ba09c7f8` records Lean exit 0, no timeout/resource reason and PASS. Independently rehashed the exact source SHA-256 `55edfaf292f535f477e73e46fd1570858156e34e425020ed5c59410dc711859a`, runner, all recorded direct provider and parent pins, stage logs and output object SHA-256 `9d4091ba1b0de184e0d454eb3dc1f5f3bf0810e1ddd08d186dfd550cb44fe3d0`. The sole named `Trace74Pell.first_and_doubled` report has `[propext, Classical.choice, Quot.sound]`, with empty stderr.
+
+For the same positive original 74 valuation and positive beta, conditional on actual 74 value zero in the difference ring, the theorem obtains positive τ,f,n and n<=K, the first recurrence at base `2*(P-1)+1` with `P=XY²`, plus positive `I=2Uτf`, the doubled norm and `c²|I`. It does not assume the synthetic old-chart coordinate or reverse mask guard positive. Exact assumptions and algebraic indexing were checked in the source/prelaunch review.
+
+No Lean replay, serialized closure audit, independently captured compile-time search resolution or separate outer supervisor was used. Direct inputs and parent receipt are pinned, while search shadowing, project/package/dynamic and transitive provider ancestry remain inherited. No repunit, population, fixed-port guard, halt equivalence or iPRA endpoint follows.

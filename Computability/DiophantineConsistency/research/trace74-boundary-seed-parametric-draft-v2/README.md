@@ -1,0 +1,3 @@
+# Warning-only parametric seed retry
+
+This source differs from the [independently reviewed draft](../trace74-boundary-seed-parametric-draft/README.md) only by removing the unused `h21` simp argument at the transport step. The first check was rejected because of that warning; see the [runner record](../trace74-boundary-seed-parametric-rebuild/README.md). Its statement and explicit hypotheses are unchanged. The author check passed with the displayed hypotheses; the [independent post-run review](../../reviews/trace74-boundary-seed-parametric-result-independent/README.md) passed. This is not a numerical seed certificate, fixed-port result or iPRA endpoint.

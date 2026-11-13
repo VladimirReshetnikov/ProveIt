@@ -1,0 +1,5 @@
+# Independent review: external liveness inventory
+
+The checker pins and reruns the author's inventory, pins the named Lean prefix source, and independently extracts numeric `.ref` occurrences from each of its 45 named-node lines. The resulting per-entry distinct consumer prefixes agree with all retained rows: 89 distinct source-to-consumer edges. A node born at prefix `i` and last consumed at prefix `j` needs `max(0, j−i−1)` consecutive snoc steps to reach that consumer's preceding prefix under the described fresh shared-per-entry strategy; summing these gives 403. The immediate-consumer and unused-output boundary cases are explicitly checked.
+
+These are external planning figures for that strategy, with repeated occurrences within one consumer deduplicated and no subtraction for previously checked carries. They are not minimum proof counts, Lean theorems, operation counts or degree claims. Both this review's regex scan and the underlying JSON-to-Lean transcription comparison are ordinary external checks, not verified parsers or a kernel-certified byte binding. The proposed generic prefix embedding remains an uncompiled design.

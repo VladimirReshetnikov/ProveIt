@@ -1,0 +1,980 @@
+[
+  {
+    "name": "used_neutral_one",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": true,
+      "strict_bytes": true
+    },
+    "reason": "The actual scalar major1 and its Boolean aliasTrue both read as a neutral formula."
+  },
+  {
+    "name": "used_neutral_true",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        true,
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The actual scalar major1 and its Boolean aliasTrue both read as a neutral formula."
+  },
+  {
+    "name": "unread_null",
+    "data": [
+      null,
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "An unread prefix is not part of the proof used by the candidate."
+  },
+  {
+    "name": "unread_object",
+    "data": [
+      {
+        "unused": "data"
+      },
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "An unread prefix is not part of the proof used by the candidate."
+  },
+  {
+    "name": "unread_string",
+    "data": [
+      "unused",
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "An unread prefix is not part of the proof used by the candidate."
+  },
+  {
+    "name": "unread_float",
+    "data": [
+      0.5,
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "An unread prefix is not part of the proof used by the candidate."
+  },
+  {
+    "name": "unread_false",
+    "data": [
+      false,
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "An unread prefix is not part of the proof used by the candidate."
+  },
+  {
+    "name": "unread_nan",
+    "data": [
+      {
+        "python_json_number": "NaN"
+      },
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "An unread prefix is not part of the proof used by the candidate."
+  },
+  {
+    "name": "unread_infinity",
+    "data": [
+      {
+        "python_json_number": "Infinity"
+      },
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "An unread prefix is not part of the proof used by the candidate."
+  },
+  {
+    "name": "used_neutral_fraction",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        0.5,
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The extra proved scalar major has the neutral formula reading."
+  },
+  {
+    "name": "false_goal_neutral_fraction",
+    "data": [
+      [
+        0.5,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "A neutral major cannot prove the false canonical equation."
+  },
+  {
+    "name": "used_neutral_negative_fraction",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        -0.5,
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The extra proved scalar major has the neutral formula reading."
+  },
+  {
+    "name": "false_goal_neutral_negative_fraction",
+    "data": [
+      [
+        -0.5,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "A neutral major cannot prove the false canonical equation."
+  },
+  {
+    "name": "used_neutral_nan",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        {
+          "python_json_number": "NaN"
+        },
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The extra proved scalar major has the neutral formula reading."
+  },
+  {
+    "name": "false_goal_neutral_nan",
+    "data": [
+      [
+        {
+          "python_json_number": "NaN"
+        },
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "A neutral major cannot prove the false canonical equation."
+  },
+  {
+    "name": "used_neutral_infinity",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        {
+          "python_json_number": "Infinity"
+        },
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The extra proved scalar major has the neutral formula reading."
+  },
+  {
+    "name": "false_goal_neutral_infinity",
+    "data": [
+      [
+        {
+          "python_json_number": "Infinity"
+        },
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "A neutral major cannot prove the false canonical equation."
+  },
+  {
+    "name": "used_neutral_negative_infinity",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        {
+          "python_json_number": "-Infinity"
+        },
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": true,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The extra proved scalar major has the neutral formula reading."
+  },
+  {
+    "name": "false_goal_neutral_negative_infinity",
+    "data": [
+      [
+        {
+          "python_json_number": "-Infinity"
+        },
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        [
+          0
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "A neutral major cannot prove the false canonical equation."
+  },
+  {
+    "name": "active_non_number_empty_string",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        "",
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The exact array discriminator rejects an active nonnumeric scalar."
+  },
+  {
+    "name": "active_non_number_string",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        "x",
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The exact array discriminator rejects an active nonnumeric scalar."
+  },
+  {
+    "name": "active_non_number_null",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        null,
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The exact array discriminator rejects an active nonnumeric scalar."
+  },
+  {
+    "name": "active_non_number_object",
+    "data": [
+      [
+        0,
+        0,
+        [
+          [
+            0
+          ]
+        ],
+        [
+          0
+        ]
+      ],
+      [
+        {},
+        0,
+        0,
+        0
+      ],
+      [
+        [
+          0,
+          [
+            [
+              0
+            ]
+          ],
+          [
+            0
+          ]
+        ],
+        [
+          [
+            0
+          ]
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "The exact array discriminator rejects an active nonnumeric scalar."
+  },
+  {
+    "name": "unproved_false_goal_exact_float",
+    "data": [
+      [
+        0.0,
+        [
+          0.0
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "Numeral aliases do not change a false conclusion."
+  },
+  {
+    "name": "unproved_false_goal_zero_false",
+    "data": [
+      [
+        false,
+        [
+          false
+        ]
+      ]
+    ],
+    "expected": {
+      "candidate": false,
+      "strict_size": false,
+      "strict_bytes": false
+    },
+    "reason": "Numeral aliases do not change a false conclusion."
+  }
+]

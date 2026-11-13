@@ -1,0 +1,5 @@
+# Independent source review: model divisible-window obstruction
+
+Reviewed unchecked `research/trace74-n2-discrete-gap-draft/Trace74N2DiscreteGap.lean` SHA-256 `d466eeccd9c80c3e45b83f19173c997fa56420484c241232745f1674ceef2370`. The generic theorem explicitly assumes q≥4, q|X, q|Y and X<2Y<X+3 in the indicated IΣ₁ model. Writing Y=q*a and X=q*b, X<2Y forces b<2a, then discrete successor and nonnegative q imply X+q≤2Y. Since q≥4 gives X+3<X+q, the second strict window inequality is contradictory. This avoids cancellation and any truncated-subtraction divisibility claim.
+
+The specialization supplies explicit witnesses for q|X=wq and q|Y=q³s on the same p/v and assumes q≥4 and both window inequalities; it assumes no graph zero or reverse guard. Both actual report directives match their theorem names. No mathematical blocker found; quotient witness orientation, abstract-order `simp`/`norm_num` and tactic elaboration remain untested. No Lean was run; a compatible direct provider and captured ancestry need separate review. This is one conditional ingredient, not an n=2 exclusion theorem or fixed-port/iPRA result.

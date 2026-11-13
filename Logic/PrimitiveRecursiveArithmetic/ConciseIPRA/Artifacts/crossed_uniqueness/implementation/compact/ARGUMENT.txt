@@ -1,0 +1,167 @@
+COMPOSITION OF THREE EXISTING COMPACT-CHECKER REFINEMENTS
+======================================================
+
+Scope and status
+----------------
+This is an implementation-level composition on the inherited guarded scalar
+calculus. It deletes no mathematical axiom. The compact acceptance contract
+is a finite integer/list certificate with a canonical closed guarded Eq/D
+goal. The compact program does not validate that input promise; the supplied
+strict companion does, with the complete inherited validator counted.
+Acceptance means normal exit and exactly ACCEPT followed by LF.
+
+The current inspected coordinate envelope is 253 significant tokens,
+275 AST nodes and 506 normalized bytes, attained by three different programs.
+The byte source is the previously overlooked complete checker
+Research/deterministic_introduction/implementation/code/compact_optional.py,
+Git blob a0af7afb236b530eb30c63c5ab788151024271b7. Its frozen contents are
+base506.py. The new module joint502.py has 269 tokens, 301 AST nodes and
+502 normalized bytes on CPython 3.12.14. This changes only the byte coordinate
+of that envelope. No absolute minimality or all-coordinate improvement is
+claimed. The strict companion has 1172 bytes against the inherited 1183-byte
+strict control; see results.json for all coordinates and exact executions.
+
+The individual components were already proposed: delayed elimination in
+compact_optional, tuple selection in ipra_frontier_review, and 3 % len(a)
+in ipra_smaller_envelope. The new contribution is their composition, audit,
+matched implementation, and measurement. None is presented as a novel
+mathematical insight.
+
+1. Why the delayed 506-byte baseline is legitimate
+------------------------------------------------
+The baseline first constructs h, then computes the selected continuation
+goal inside the final recursive call. Compare the earlier order that first
+updates a, then constructs h. Write m,s,u,t for the packet fields.
+
+If m is truthy, the h expression is c(m,g,k) or m*3. The recursive call
+consumes the major proof but returns no value; h depends on m, not a.
+The opener i is pure, consumes no proof packet, and reads only the caller's
+local k. Reordering it around c(m,g,k) cannot change a successful trace,
+because the major call changes neither that k nor the context g. Contexts
+are extended by g+[...], never mutated. If a traversal fails in one order,
+it eventually fails in the other order; no successful call can avoid it.
+
+If m is falsy (integer zero or the empty list), the candidate elimination major is always a nonempty list:
+[s,u] when s is truthy, otherwise [t,t,t]. It can therefore never equal m.
+The elimination test is false before and after h. Although h may assign
+a := i(*a,t,2) in the introduction branch, the delayed test still retains
+that a. The extra traversal i(t,u) is independent of a. This establishes
+the same successful continuation states in the integer/list setting.
+
+Finally Python evaluates i(goal,[(k := ~-k)]) by evaluating goal first,
+then decrementing k, then calling i. Thus the selected goal is computed at
+the old floor, while its successor opening is checked at the new floor.
+The added hypothesis and recursive checker also see the new floor.
+Moving the decrement earlier would not be justified; this expression does
+not do that. The arithmetic identity ~-k = k-1 holds for every Python int.
+
+2. Eager tuple selection, at the old floor
+----------------------------------------
+Let C := ((m,a)==(s and [s,u] or [t]*3, i(t,u))) and R := i(t,s).
+The replacement is
+
+    C and R or a       -->       (a,R)[C].
+
+At root depth zero, i preserves the root length of a list and sends an
+integer t to t if k<=t<0, and to zero otherwise. Therefore, when i(t,s)
+and i(t,u) both complete, a false R implies i(t,u)=R: both are either the
+empty list or scalar zero. If C is true as well, a=i(t,u)=R. Consequently
+the expressions agree whenever the eager replacement completes, including
+the false-replacement case that can make this Python rewrite unsafe in
+general. C is an actual Boolean for integer/list trees.
+
+The opener has no side effects. Thus every accepting execution of eager503
+is an accepting execution of base506 with the same decoded state and the
+same consumed proof suffix. Additional eager errors may reject old raw
+certificates. The fixture eager_control_only.json demonstrates that failure
+of raw acceptance equivalence; the theorem represented by its public goal
+has an ordinary positive proof.
+
+Completeness is preserved by the same canonical compilation as before,
+standardizing otherwise unused s fields to zero. In transport s is a valid
+numerical term, so the image validation in i(t,s) terminates. In closure
+specialization s=0. In computation s is a valid counter. In introduction
+s may be set to zero, and in D-opening s=u=t=0. All extra traversals then
+terminate. This is the inherited canonical compiler argument, now applied
+at the delayed point; h does not change s or t.
+
+3. The mode selector
+--------------------
+The replacement is
+
+    (m or ~len(a)%2) and k       -->       (m or 3%len(a)) and k.
+
+For a meaningful nonconstant formula root of arity one (D), two (Eq), or
+three (Q), both expressions select exactly the same image: zero, k, zero
+when m is falsy, and k when m is truthy. More precisely 3%1=0, 3%2=1,
+3%3=0, while the old selector is 0,1,0.
+
+For truthy m the right operand of or is not evaluated. At falsy m and
+empty a, the new program rejects by division by zero. This loses only an
+administrative truth alias; canonical compiler continuations never require
+an empty formula root. At a surplus root of arity >=4 the decoded formula
+is administrative truth. Indeed the truth value of the selector differs
+only at odd surplus arities >=5; at even surplus arities both are nonzero.
+
+A direct soundness induction on successful checker invocations handles all
+surplus cases without needing the subsequently added hypothesis to match.
+Let A be the goal when this invocation entered, and a the possibly updated
+goal at the mode test. If u is truthy, h's computation branch has not
+assigned a, so A=a has surplus root and is already truth. If u is falsy,
+the only assignment is a := i(*A,t,2). A successful call requires A to
+have length zero or one. At length zero A is truth. At length one, A=[B]
+is a D formula and a=i(B,t,2); the opener preserves list root length,
+so a surplus root of a entails the same surplus root of B. Then B denotes
+truth and A denotes D(true), which is provable using witness zero. Thus in
+every case where the mode differs the goal of the current invocation was
+already a theorem, independently of its recursive continuation. Its local
+context extensions cannot escape the invocation because g is never mutated.
+
+In all remaining cases the selected mode is identical, so the ordinary
+inherited rule-soundness argument and the induction hypotheses apply.
+This proves that no false decoded public theorem is newly accepted. It is
+not a claim that all raw intermediate arrays or raw acceptance languages
+coincide, and no induction on a meaningful compound formula has been added.
+
+Every canonical mathematical continuation has root arity 1,2,3, so its
+image selection is unchanged. That proves canonical completeness for this
+step. The argument applies after eager tuple selection because that step
+preserves the selected goal whenever it succeeds and leaves h unchanged.
+
+4. Composition and interpretation transfer
+-----------------------------------------
+Sections 2 and 3 yield the same canonical guarded public theorem set as the
+sound and complete baseline. The strict companion rejects non-integer/list
+input before executing the kernel and checks the inherited public grammar.
+The theory, its translated formulas, and both numerical interpretations are
+unchanged. Therefore the established whole-domain bi-interpretation with
+iPRA, using actual equality and numerical composite graph x=y, is inherited.
+This does not supply a new independent Lean/Rocq verification of the codec.
+
+The proofs do not claim that iPRA proves its own consistency, and finite
+executions are not substituted for the inherited mathematical metatheorem.
+The program checks finite certificates with ordinary unbounded-resource
+algorithm semantics; implementation recursion or memory limits are not
+mathematical axioms.
+
+5. Focused verification
+-----------------------
+Run python3 reproduce.py. The script measures all six complete modules,
+executes 21 inherited positive and negative certificates against them in
+ordinary and optimized Python, checks strict rejection of malformed unused
+prefixes, and executes the old-only eager certificate. It records all
+outcomes in results.json. These cases cover used induction hypotheses,
+compound introduction/elimination, both computation equations, derived
+zero-source transport, symmetry, context leaks and fresh-variable attacks.
+
+6. Full-normalization experiment: no claimed construction
+---------------------------------------------------------
+The requested shared-traversal full-normalizer has not been implemented
+soundly or measured as a complete candidate. The arity codec represents
+the same integer coordinate differently at numerical and formula depths
+and gives the counter and seed dummy bound slots. A generic 'normalize all
+ternary lists' rewrite would therefore confuse closures with iterators and
+would retain dummy variables when removing an iterator frame. A normalizer
+must track the sorted environment and reindex protected variables, or change
+the codec and reprove its opening lemma. Counting an untyped ten-line
+rewrite without that machinery would not establish the requested record.

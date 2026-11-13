@@ -1,0 +1,5 @@
+# Independent scoped prelaunch: first index ≥6
+
+GO subject to root slot release and fresh locked preflight. Source `d3034a5a2728eb5d36a949a5e2df3f8b9e8c0fb9c2d8a19302cc68a6995ce950`, runner `21e02a9c506ce72de2de900776545f0d9cf5beb094c76445355fd5543fb92e13`, policy `e9d7bcb82ba9791fc1405fa7015dd4136656f0ee612a83bf212e95060cb1930c`. No Lean invocation here. The two statements retain the same p/v, beta≥31, positive graph zero and explicit q≥2³⁰; the existential statement preserves coordinate and residue for the same n. No guard, all-index exclusion or endpoint claimed.
+
+Independently confirmed the embedded first-index-five pin map and path equal its captured terminal exactly and conflict merge checks duplicate pins. All four direct project imports uniquely resolve to their expected objects on the configured current path; for all 45 parent pinned olean selections we checked, first-selected bytes match the saved pin. The runner checks all pins before/after, resource lock and strict two-report policy; 14 controls passed. This point-in-time pin/selection audit does not establish full serialized transitive/package ancestry or continuous path stability. Result pending.

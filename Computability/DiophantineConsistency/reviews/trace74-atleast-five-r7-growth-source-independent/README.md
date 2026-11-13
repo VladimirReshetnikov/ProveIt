@@ -1,0 +1,3 @@
+# Independent source review: n≥5/r7 growth binding
+
+Source-only PASS `926d7d74d28f50748d6b6f699bc9507e9566c4a400b71b44583295e01237b48b`; no Lean replay. The same p/v and first parameter are used throughout. Monotonicity of ycoord and n≥5 give K5=2y5(B)≤k; multiplication by positive Y preserves the inequality, so K5Y≤kY<c. With explicit c=y7 and q≥2³⁰, the previously checked seventh identity and scalar growth yield X>65532(q−1)Y in DiffRing. The q and both first/second ordinate assumptions are explicit; graph zero is not assumed or inferred. All p/v positivity and the model structure remain required. Model casts, monotone application and tactic elaboration/provider selection are untested; no graph exclusion or guard claim.

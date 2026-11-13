@@ -1,0 +1,24 @@
+/tmp/trace74-symbolic-fixed-mask-cover-hpaah_0a/src/Trace74N3ScalarDiscrete.lean:25:4: error: Tactic `apply` failed: could not unify the conclusion of `Trace74N3UpperBound.upper_of_polynomials X Y hX`
+  2 * Y < X * X + 4 * X + 8
+with the goal
+  2 * Y < X ^ 2 + 4 * X + 8
+
+Note: The full type of `Trace74N3UpperBound.upper_of_polynomials X Y hX` is
+  (32 * X ^ 2 * Y ^ 4 + 32 * X * Y ^ 2 + 6) * Y < 16 * (Y * (X + 1) + 1) ^ 4 - 12 * (Y * (X + 1) + 1) ^ 2 + 1 →
+    2 * Y < X * X + 4 * X + 8
+
+R : Type u_1
+inst✝² : CommRing R
+inst✝¹ : LinearOrder R
+inst✝ : IsStrictOrderedRing R
+X Y : R
+hX : 32 ≤ X
+hY : 1 ≤ Y
+hlo : k X Y * Y < c X Y
+hhi : c X Y < k X Y * (Y + 1)
+hX0 : 0 ≤ X
+hleft : X ^ 2 + 4 * X + 4 < 2 * Y
+hk : k X Y = 32 * X ^ 2 * Y ^ 4 + 32 * X * Y ^ 2 + 6
+⊢ 2 * Y < X ^ 2 + 4 * X + 8
+'Trace74N3ScalarDiscrete.interval' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'Trace74N3ScalarDiscrete.no_scalar_solution' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

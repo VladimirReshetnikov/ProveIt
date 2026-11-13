@@ -1,0 +1,130 @@
+SINGLETON ITERABLE IMAGE: EXACT PRESERVATION AND ONE AST NODE
+
+Construction
+============
+Start with the pinned module
+Artifacts/fused_blocks_and_checkers/checkers/code/checker_ast256.py
+at ProveIt commit 798856e4ef2d02b7f9c0f1660828c5ce58f277f2.
+Change its sole occurrence of
+
+    i(a, [k])
+
+to
+
+    i(a, {k})
+
+and change nothing else. The module's JSON reader, output, parameter
+allocation, terminal test, rule selection, and decoder function are identical.
+The set is a temporary Python value internal to the evaluator. It is neither
+certificate syntax nor a new object of the arithmetic theory.
+
+Decoder lemma
+=============
+At a fixed floor K <= 0 the unchanged decoder is
+
+    def i(a, t=0j, d=0):
+        try:
+            return [i(b, t, d + 5 - len(a)) for b in a]
+        except:
+            return a if K <= a < d else d % 2 and i(t, d=3)
+
+Here K is fixed throughout a decoder call: i calls only itself and changes
+no global state. Its default absent image is the unchanged complex sentinel.
+The decoder deliberately accepts an iterable argument via the try branch;
+it does NOT first test a*0 or require the argument to be a list.
+
+Lemma 1. i([K], d=3) and i({K}, d=3) both return the list [K].
+
+Proof. Both inputs have length one, and both iterate over exactly the integer
+K. Their unique child is therefore evaluated at depth 3+5-1=7. An integer
+is not iterable, so its try branch raises and its scalar branch is taken.
+K <= K < 7 holds since K <= 0, hence the child returns K. The outer list
+comprehension returns [K], for either iterable. The default image is never
+visited. The finite integer is hashable; there is exactly one set member,
+so set iteration order has no choice to make. No exceptional path is added
+in ideal finite execution. QED.
+
+Lemma 2. For every finite exact-integer/list tree A, and every integer depth
+d, the computations i(A,[K],d) and i(A,{K},d) have the same return value or
+exceptional behavior, with no state change.
+
+Proof. Induct on A. For an integer, a preserved coordinate returns the same
+integer in both runs. At an unpreserved coordinate of even depth, both return
+zero without inspecting the image. At an unpreserved coordinate of odd
+depth, both evaluate the supplied image at depth 3; Lemma 1 gives the same
+list [K]. For a list, both calculate the same child depth and visit the same
+children in the same order; apply the induction hypothesis. Hence the list
+comprehensions return equal lists, or fail at the same child with the same
+exceptional outcome. The surrounding bare-except fallback also has the same
+input and outcome. This proves the equality including rejected inputs. QED.
+
+Checker simulation
+==================
+The variable k is initially the integer zero. Every assignment during proof
+checking is k -= 1, so every reachable floor is an integer <= 0. At the
+changed call site, Python first evaluates the first argument of the enclosing
+c call, including the recursive major-premise check. It then evaluates the
+image literal [k] or {k} at the resulting CURRENT floor K. Neither image
+construction nor i changes K. Thus Lemma 2 applies at the identical point in
+the two executions, after all earlier major-checking state changes.
+
+Consequently one decoder call is replaced by a call returning the identical
+list/tree. Every subsequent branch test, context value, numerical floor,
+recursive checker call and input read is identical. Induction on a finite
+checker execution establishes exact returning-execution correspondence in
+both directions, including the consumed input prefix, the final floor and
+the ACCEPT output. Exceptional finite executions agree as well. Physical
+memory exhaustion and runtime quotas are excluded just as in the incumbent
+program's mathematical execution model.
+
+In particular, for every input in the SAME compact contract, the two modules
+accept exactly the same certificates. Their canonical public theorem sets
+are identical, so the inherited guarded-source calculus and both iPRA
+interpretations are unchanged. No new axiom deletion or new interpretation
+theorem is asserted.
+
+The compact contract still assumes exact integer/list input trees and a
+canonical closed guarded Eq/D goal. It has NOT been enlarged to permit sets
+in input, nor has the theorem been strengthened to arbitrary-JSON validation.
+
+Measurements
+============
+CPython 3.12.14. Normalize the complete source with ast.unparse(ast.parse(s))
+plus one final LF. Significant tokens omit encoding/end/whitespace/indent/
+newline/comment markers; AST nodes count every node returned by ast.walk.
+
+Control:   245 tokens / 256 AST nodes / 580 normalized UTF-8 bytes.
+Candidate: 245 tokens / 255 AST nodes / 580 normalized UTF-8 bytes.
+
+The source AST changes only ast.List(elts=[Name('k', Load())],ctx=Load())
+to ast.Set(elts=[Name('k',Load())]). A Set node has no context field, so the
+single outer Load node disappears. Both the Name's Load node and every other
+AST node are unchanged. The braces have the same byte width as brackets, and
+the number of significant tokens is unchanged.
+
+The current compact envelope therefore changes from 239 / 256 / 461 to
+239 / 255 / 461, attained by different programs. This candidate does not
+improve the token or byte minimum and is not below all three minima. The
+gain is an implementation representation change, not a mathematical
+breakthrough or an absolute minimality theorem.
+
+Evidence and novelty scope
+==========================
+verify_set_image.py checks the exact one-node structural edit and source
+measurements. It runs the frozen control and candidate on 30 inherited
+fixtures, with ordinary and optimized Python: 120 isolated executions,
+7 positive and 23 negative fixture groups, no mismatch. The fixtures include
+induction using its hypothesis, compound implication elimination, inferred
+major premises, malformed packets and several future-name/capture attacks.
+It also compares consumed-line/final-floor traces for all 30 fixtures and
+1,064 finite decoder-image cases. These finite checks supplement the proof.
+
+The optional census read 3,594 current Artifacts Python/gzip source occurrences
+and Python/gzip members of all five current incoming ZIPs, with no parse
+failures. It found no normalized duplicate of the candidate and no call to
+i with a singleton-set argument. Nested historical ZIPs and source code
+embedded inside generator strings were not recursively expanded. This is
+novelty relative to that audited snapshot, not a literature-wide claim.
+
+The control and fixtures are attributed upstream material and retain the
+included MIT No Attribution license. No remote repository was modified.

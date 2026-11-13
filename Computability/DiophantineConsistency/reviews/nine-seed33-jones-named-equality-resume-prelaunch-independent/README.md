@@ -1,0 +1,5 @@
+# Independent prelaunch review
+
+PASS. The two sources are exact transformations of the pinned sign38 named-tuple/evaluator clients and propose, over every commutative ring and all Fin9 inputs, equality of the macro recipe output and the existing symbolic named endpoint expression. Both selected provider audits are replayed by the survey, whose 1,388-entry union is checked for matching realpaths/hashes and output-name collisions; the no-Lean preflight passes. Initial standalone survey status mismatch, corrected survey and later strengthened collision sweep are recorded in the author preflight receipt.
+
+The runner verifies isolated/nonoptimized Python, fresh output and import resolution, live Lean exclusivity, disk/memory and per-child limits, direct guards, and postflight source/overlay/survey checks. These are point observations with inherited incomplete dynamic/transitive ancestry. This is prelaunch only; external JSON, prose or PDF correspondence is separate. Reproduce before the fresh output path is populated with `python3 -I -S -B reviews/nine-seed33-jones-named-equality-resume-prelaunch-independent/check.py`.

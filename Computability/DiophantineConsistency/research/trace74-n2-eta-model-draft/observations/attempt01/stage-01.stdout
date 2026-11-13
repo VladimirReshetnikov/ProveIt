@@ -1,0 +1,23 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-n2-eta-model-draft/Trace74N2EtaIdentity.lean:41:2: error: ring failed, ring expressions not equal
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (Trace74Mask.value74 (ports p) fun j => ι (v j)) = 0
+hsmall : k v = 8 * firstParam p v + 4
+hq : 0 < q p v
+hY : 0 < Y p v
+hX : 0 < X p v
+hApos : 0 < A p v
+hA1 : A p v - 1 + 1 = A p v
+hA2 : A p v - 1 + 2 = A p v + 1
+hc : c p v = ycoord 3 (A p v - 1)
+hy : (8 * firstParam p v + 4) * Y p v + v 8 + 1 = 4 * (Y p v * (X p v + 1) + 1) ^ 2
+hA : A p v = Y p v * (X p v + 1)
+hcform : c p v = k v * Y p v + v 8
+hi : (8 * ι (X p v * (Y p v * Y p v)) + 4) * ι (Y p v) + ι (v 8) + 1 = 4 * (ι (Y p v) * (ι (X p v) + 1) + 1) ^ 2
+⊢ -(ι (Y p v) * ι (X p v * Y p v * Y p v) * 8) + ι (Y p v) ^ 3 * ι (X p v) * 8 = 0
+'Trace74N2EtaIdentity.graph_eta_identity' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

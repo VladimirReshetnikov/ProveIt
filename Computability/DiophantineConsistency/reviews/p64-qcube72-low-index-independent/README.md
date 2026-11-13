@@ -1,0 +1,7 @@
+# Independent review of conditional low-index analysis
+
+The standard-integer argument in the packet is correct under its explicit hypotheses. In particular, `n,m` are natural Pell indices, `q≥5`, `X,Y` are positive multiples of `q` with `Y≥5`, and `0<eta<k`. The assumptions include both first/main Pell-coordinate equalities; this review does not infer them from an actual graph zero or extend the result to nonstandard models.
+
+For the index comparison, `a=(X+1)Y≤2XY²−1` under the stated positivity bounds. Since `c=kY+eta>k`, monotonicity of the Pell `ycoord` in index and base yields `n<m`. If `n=1`, the first equality gives `k=2`, hence `eta=1` and `c=2Y+1`; monotonicity and `m≥2` instead give `c≥2(a+2)>2Y+1`. If `(n,m)=(2,3)`, direct recurrence expansion gives the packet's exact `eta` polynomial. When `X≥2Y`, its displayed `eta−k` is positive. Otherwise divisibility forces `X≤2Y−q≤2Y−5`; the four positive remainder terms are bounded exactly as stated for `X,Y≥5`, yielding `eta≤−5XY²<0`. Thus `n≥2` and `(n,m)≠(2,3)`, implying `m≥4`. This leaves `m=4,5` open and does not prove the large-`c` premise or a reverse map.
+
+The author's finite checker reproduced its reported 2,880 cases and its source-hash guards. A separate exact Pell-pair checker here examined 7,680 bounded standard q-cube `(q,s,w,n,m)` tuples; none satisfied `0<eta<k`, so its implication checks are vacuous on this sample and do not strengthen the universal argument. Neither finite control is a Lean proof.

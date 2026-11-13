@@ -1,0 +1,5 @@
+# Paired conditional clean-predecessor carry reset
+
+The protected paired wrapper session 57568 actually exited 0 at HEAD `4e975da47ae8ca8a947cf8e16cb84131662086cc`. Both compiler children and direct dependency checks passed; source, object/companion and final parent checks passed, and both outputs matched. The receipt and two compiler logs are under `evidence`; the receipt SHA-256 is `c3252567d1997f9f247c9d144e5b6acb772be0df31bbb27029685877e18cc60c`. Independent artifact review is pending.
+
+The two IΣ₁-model theorems remain conditional on the heterogeneous `CarryInput`, an externally finite index family, a predecessor raw-column bound, the half-radix slack, and (for the exact digit conclusion) a target-column bound. This does not derive those conditions from a graph or fractional rotation, establish a checker or machine simulation, or prove a PRA endpoint. Source/object checks are point-in-time observations and cannot exclude transient between-check changes; sampled resource and inherited provider/package limits remain.

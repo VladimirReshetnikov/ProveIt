@@ -1,0 +1,3 @@
+# Independent terminal audit: sign18 symbolic iPRA endpoint
+
+The independent checker exited 0. Author-observed outer session 13970 exited 0; all three native, standard and Gödel–Gentzen-translated no-alias Lean stages and final postflight passed at scoped -M3600. Source/object/import/log pins, direct guards, overlays and inherited bridge audit were checked; three axiom reports, no warnings or sorryAx. Lean proves derivability for the direct symbolic Fin18 expression. This does not establish its exact degree or binding to external JSON, Jones polynomial or equation.pdf. Provider ancestry is point-observed, with successful children of failed overall producers retaining that qualification.

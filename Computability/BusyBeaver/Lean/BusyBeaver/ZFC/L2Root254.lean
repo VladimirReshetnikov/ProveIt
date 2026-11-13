@@ -123,7 +123,7 @@ theorem fetch_run (s : Enum254.St) :
   · obtain ⟨v, hv⟩ : ∃ v, s.pl = v + 1 := ⟨s.pl - 1, by omega⟩
     have := fetch_pos (toAS s) v (by simp [toAS, hv])
     apply rn_eq this
-    simp [toAS, Enum254.fetch, h, hv]
+    simp [toAS, Enum254.fetch, hv]
 
 /-- The two reads after the fetch. -/
 theorem reads_run (np pl1 tw ws d h : Nat) {X : AS}

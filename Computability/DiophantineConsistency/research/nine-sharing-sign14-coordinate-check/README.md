@@ -1,0 +1,5 @@
+# Sign14 supplied tau coordinate: source-only client
+
+The checked lift appends a supplied abstract signed-tau representative, proves the deleted sign15 row and recovers tau from a sign15 zero, without port/sign assumptions. Natural tau existence is separate. No residual transfer, model equivalence, JSON binding or endpoint is claimed.
+
+The point-in-time survey checks both audited 16-stage syntax providers and injects 16 old modules; shared overlay routes match. It is not replayed postflight; direct guards/overlays are. No-Lean preflight outer 74090 exited 0 ([receipt](preflight.json)); [Independent prelaunch](../../reviews/nine-sharing-sign14-coordinate-prelaunch-independent/README.md) passed. Author outer session 1190 exited 0 ([receipt](attempt01/outer-result.json)); 47 linter warnings/no sorryAx; the [independent terminal audit](../../reviews/nine-sharing-sign14-coordinate-terminal-independent/README.md) passed. Limits are `-M2800`, 120 seconds per child, sampled 4-GiB RSS cap and 10-GiB available-memory floor, and 5-GB free-space precheck.

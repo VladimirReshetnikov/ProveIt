@@ -1,0 +1,5 @@
+# Slot00 conditional identity compiled
+
+The author observed outer session `76831` exit 0; the terminal receipt is explicitly author-recorded. Retained state SHA-256 `dd5e25a6105e036fbe6fb5e367b58bd9426e5704ee793772f0dc1df307e93dd6`, compile log SHA-256 `384ea030065bed48a4ef18b365496fc6c73a703aa45c63b623c484aac3a8f6ee`, and object SHA-256 `8cb455659834533a63352914a2d7d7ad2db302b11d67d1a30adfdc4737c45df0` (object remains under `/tmp/nine-sharing-norm38-slot00-retry02-20261105/lib/DiophantineConsistency/`). Dependency scan and compile exited 0 and final guards passed. Five linter warnings are retained in the compile log; no axiom report was requested.
+
+The theorem is the exact conditional identity for the first `q²` positive-component residual in an IΣ₁ model, assuming the four port-cast equalities. Its proof uses an explicit index equality and `Fin.cons_succ`. This does not establish the remaining 28 identities, final static extraction, source-to-current correspondence or iPRA endpoint. Provider ancestry and sampled-resource caveats are in the main README.

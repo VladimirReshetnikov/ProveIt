@@ -1,0 +1,5 @@
+# Independent sign32 final four residuals prelaunch review
+
+The checker pins source, runner and manifest, independently reproduces the no-Lean preflight, and compares all eight old/new expressions against the exact source-list rows. Old positions are 19 through 22 in the old remaining list; new positions are 18 through 21 in the new list. None uses eliminated old coordinate 15; the checked lift maps the other coordinates as required. The four proposed evaluation identities therefore need no port-0 cast hypothesis. The runner binds the successful immediate group06 object and checks retained source, logs, guards and overlay; deeper ancestry is inherited.
+
+These are twelve local row-link/evaluation claims with symbolic ports and one valuation. Elaboration and axiom reports remain untested; no Lean run occurred. Even if successful, assembling all residual identities and the reverse zero-set bridge remain separate work. Provider checks are point-in-time; sampled resource monitoring does not give a complete transitive or dynamic trace.

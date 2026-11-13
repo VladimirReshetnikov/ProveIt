@@ -1,0 +1,11 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+d=Path(__file__).resolve().parents[2];p=d/'research/nine-sharing-sign33-forward-gap-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+for n,h in {'run.py':'5864a130888fbeb866d1e1710c6db6aa522c11eeb450f58127332962847d201b','provider_survey.py':'2f8864f483e55086df28edf3b66a4836ebe72d6bc4a7abfdf2d1ab94674018fb','source-manifest.json':'c4fb2c5c97cb9dac42c13e49ac88501c0816b4283cd69a950b38af04643da9ec','src/DiophantineConsistency/Sign33ForwardGap.lean':'aaeb6daee8af6c9a675584899f091fbec537a580aa0aa8b4b17aab58884812a7'}.items():assert sha(p/n)==h
+s=(p/'src/DiophantineConsistency/Sign33ForwardGap.lean').read_text();rows=json.loads((p/'source-manifest.json').read_text())['rows'];assert len(rows)==1 and rows[0]['source_sha256']=='aaeb6daee8af6c9a675584899f091fbec537a580aa0aa8b4b17aab58884812a7';assert re.findall(r'^import ([\w.]+)$',s,re.M)==rows[0]['imports']==['DiophantineConsistency.SharingForward33','DiophantineConsistency.Sign33ResidualAssembly','FreshModel106']
+for x in ['Carrier65.core (fun j => ι (ports j)) (fun j => ι (u j+1))','ι gap = (d.q-1)*(d.q-ι (u 1+1))+ι (u 2+1)','Fin.cons (1 : V) (SharingForward33.witnessCoordinates ports u gap tau inner value negative)','ι (v 26) = (Sign33ResidualBatch04.t ports v*(Sign33ResidualBatch04.t ports v+1)+(ι (v 3)+1))-','Sign33ResidualBatch04.t ports v*(ι (v 2)+1)']:assert x in s
+core=(d/'Lean/DiophantineConsistency/Carrier65.lean').read_text();assert 'let b := p 0 * J' in core and 'let q := b + 1' in core and 'let J := v 0' in core
+prior=(d/'research/nine-sharing-sign33-residual-assembly-check/src/DiophantineConsistency/Sign33ResidualAssembly.lean').read_text();assert 'ι (v 26) = (Sign33ResidualBatch04.t ports v*(Sign33ResidualBatch04.t ports v+1)+(ι (v 3)+1))-Sign33ResidualBatch04.t ports v*(ι (v 2)+1)' in prior
+r=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=300);o=json.loads(r.stdout);assert not r.stderr and o['status']=='PASS_NO_LEAN_PREFLIGHT' and o['stage_count']==1
+print(json.dumps({'status':'PASS','preflight':o,'scope':'conditional forward gap cut only; no Lean replay'},indent=2,sort_keys=True))

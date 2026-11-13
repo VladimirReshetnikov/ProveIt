@@ -1,0 +1,94 @@
+Independent review of the 477-byte opener refinement
+12 November 2026
+
+Scope
+  Reviewed the complete compact477.py module, the exact compact478.py
+  control, the proposed compact477_proof.tex section, and the inherited
+  sorted-reading, opener, canonical-opening, and compilation proofs in
+  upstream_certificate_proofs.tex. This is a written proof/code review,
+  not a new proof-assistant verification.
+
+Conclusion
+  No flaw was found in soundness or canonical-certificate completeness
+  under the stated exact-integer/list alphabet and canonical closed guarded
+  Eq/D public-goal contract. The two programs need not accept the same raw
+  auxiliary certificates. The proof correctly does not assert that.
+
+Recommended wording correction
+  Replace the assertion that source and seed are "closed numerical terms"
+  by "numerical terms well scoped at the current floor: their free
+  parameters have names in [k,0), and they contain no free template slot."
+  The inherited definition of "closed at floor k" means absence of the
+  distinguished hole, and permits those rigid parameters. Ordinary readers
+  may otherwise understand closed to mean having no free parameter at all.
+
+Successful-opening lemma
+  Structural evaluation induction is valid even with the missing-image
+  sentinel. At an unprotected scalar of even depth, the new opener checks
+  its image and returns either 0 or []; the old opener returns 0 without
+  checking. At odd depth both check the image at numerical root depth 3.
+  Consequently new success implies old success, and the outputs agree
+  after recursively replacing every empty array by scalar zero.
+
+  This replacement preserves the sorted reading: both spellings denote
+  zero in term position and truth in formula position. Replacing an empty
+  leaf does not change a containing nonempty array's arity. An annotation
+  has no reading. Thus the inherited semantic-opening lemma transfers.
+
+Soundness
+  The new initial resource [] reads as truth. Every retained-resource or
+  elimination-pattern equality is still a literal equality, which implies
+  equality of readings. Computational construction, the source-major flag,
+  the introduction selector, and scope-floor ordering are unchanged.
+  Applying the inherited soundness proof with the new semantic-opening
+  lemma is legitimate; it does not require a raw accepted-trace simulation.
+  New rejection caused by eagerly checking an otherwise unused image cannot
+  invalidate soundness.
+
+Canonical completeness: branch coverage
+  1. Canonical formulas have even formula depths. Equality enters term
+     depth by adding 3. Successor adds 4 and iteration adds 2, so meaningful
+     scalar occurrences in terms have odd depth. D and internal Q preserve
+     the even formula parity. All actual substitution openings therefore
+     agree literally, since their images are well-scoped numerical terms.
+     Canonical goals without a supplied image also validate identically.
+
+  2. A computation packet may eagerly view its numerical update template
+     at formula depth in the automatic-elimination comparison. These are
+     otherwise unused calls. Their additional numerical checks are on the
+     supplied s/u, which are valid at root depth 3 and the active floor.
+     The result cannot enable the comparison: the administrative major []
+     is different from both nonempty reconstructed majors [s,u] and [t]*3.
+     The numerical computation opening itself remains in odd depth.
+
+  3. Real transport and closure elimination use canonical formula templates;
+     their source and target openings remain literally equal to the old
+     openings. Paired elimination keeps the same canonical Q resource.
+
+  4. Introduction opens its canonical matrix at even formula depth 2, then
+     its remaining coordinate at depth 0. Its meaningful term leaves are
+     still odd-depth leaves. The raw major remains false-valued when 0 is
+     changed to [], so the equation/compound mode selector is unchanged.
+
+  5. Tripling a nonunary major generates an ignored administrative truth
+     resource. It is opened at the newly allocated integer parameter. Any
+     extra even-depth check sees this in-scope integer, and multiplication
+     by zero returns exactly the scalar zero returned by the old opener.
+     These resources are not needed as proof goals by the canonical compiler.
+
+  6. The administrative premise is preserved: opening [] returns [], and
+     [] occurs in the new initial context. The canonical compiler otherwise
+     retains the same meaningful formulas and consumes the same packets,
+     changing only administrative major 0 to []. The final [goal,0]
+     framing is shared by the 478- and 477-byte modules.
+
+  The arithmetic seeds/source terms can contain existing eigenparameters.
+  The change in the floor only enlarges the permitted interval for later
+  calls, so previously valid images remain valid. No global closedness
+  assumption about these images is needed.
+
+Limits
+  The result inherits the established guarded scalar calculus and its iPRA
+  interpretation. It is a one-byte implementation improvement, not a new
+  mathematical axiom basis or a proof of global minimality. It does not
+  improve the independent 244-token and 267-AST records.

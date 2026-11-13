@@ -1,0 +1,5 @@
+# Independent result audit: fixed-beta first index ≥6
+
+PASS for captured result. Author reports actual outer session 78737 exit 0/reaped. Terminal `ebbd74297899addf794d9aaeea1375cf851c641de8c9b9a4506e8146bdfdbfe3`; corrected runner `82c01ea07107df913ea6c1971aabbd56292b731b1e684c8d10abf8065e0e12fb`; object `203fbd39ef54623b0285a0efa69747caa850a08dc8e26b5a2e4c111a2184b967`. All 113 terminal pins, object and logs independently rehashed; Lean exit 0, the two expected named reports each `[propext, Classical.choice, Quot.sound]`, stderr empty. Prelaunch held the prior runner until missing parent source pin was corrected; the corrected runner checks all 105 saved index-six parent pins.
+
+Given p0=betaNat, all positive v and the same actual 74 graph zero, the first statement shows any n satisfying the first-coordinate equation is ≥6; the existential result preserves the same n's coordinate and q⁴ residue. Other ports remain arbitrary; there is no exclusion for n≥6, fixed-port guard, or iPRA endpoint. Direct pin/first-selection checks do not authenticate full serialized transitive/package ancestry or continuously stable resolution.

@@ -1,0 +1,34 @@
+{
+  "command": "python3 -I -S -B research/trace74-n5-r9-scalar-obstruction/check.py",
+  "exit": 0,
+  "files": {
+    "check.py": "e735c618adf004bcae190fafe380e6412620fc0c58a79f967ee5604435376035",
+    "stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout.json": "fcc1f020f728b28d50c73541f4e16d1770b27ba2486b0451410ccd5dbb87550a"
+  },
+  "negative_controls": [
+    {
+      "exit": 1,
+      "flags": [],
+      "stderr": "use python3 -I -S -B without optimization"
+    },
+    {
+      "exit": 1,
+      "flags": [
+        "-I",
+        "-S",
+        "-O"
+      ],
+      "stderr": "use python3 -I -S -B without optimization"
+    },
+    {
+      "exit": 1,
+      "flags": [
+        "-I",
+        "-S",
+        "-OO"
+      ],
+      "stderr": "use python3 -I -S -B without optimization"
+    }
+  ]
+}

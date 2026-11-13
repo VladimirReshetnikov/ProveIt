@@ -1,0 +1,5 @@
+Independent post-audit PASS for conditional same-tuple 74 graph implications; no Lean replay.
+
+Actual author session 67953 reported outer exit0 and reaped. Terminal d1b5cc90c44ffad012d861a2b0043d948303337625fee7ce6327d28637846f81; source 2250ea20c121eb16be9024263e17a7c92fa424731e7619f198cc00017dedc4c2; runner e53519f372be38d742e52bd66383614bc14500d54f21e40e8f3f83bf5b426eb8; object 2db6ea6b410f53f113df9f9ea094ba759f6f1f949bf6a7d9944fc5e768e5340f. Stage exit0, empty stderr, exact two named reports each [propext, Classical.choice, Quot.sound]; all 34 direct source/tool/provider/receipt pins, source/runner/logs/object rehashed.
+
+For the same p/v in an IΣ₁ model with positive beta and valuation, value74=0 and q≥4, the first theorem excludes k=8P+4, and the second derives k≥32P²+32P+6 (P=firstParam). This is a conditional graph-zero consequence; it does not establish q≥4 universally, a graph zero, F/C bounds, the fixed mask guard, equivalence or endpoint. Direct pins do not authenticate complete transitive, provider, package/dynamic or search-path ancestry.

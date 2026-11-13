@@ -1,0 +1,7 @@
+# Natural symbolic cover with one exact warning
+
+The [independent prelaunch review](../../reviews/trace74-cover-bind-high-exact-warning-prelaunch-independent/README.md) approved one check under a policy permitting only the observed source-location warning that exponent 4393 was not evaluated, followed by the exact `[propext, Classical.choice, Quot.sound]` report for `Trace74CoverBindHigh.cover_nat`. The threshold was not changed; all other warnings, output, axioms and stderr remained rejected.
+
+Attempt01 completed with actual outer exit 0 and child status PASS under that explicit policy. The [child result](observations/attempt01/result.json) SHA-256 is `1adc8523e61b59941d6a1688b947b63e05c97ba75aca094f4fd0854e59a9e8dd`; the [outer receipt](observations/outer-attempt01/terminal.json) SHA-256 is `7cc307f34635cfe40636518f3e0da902fae99aaf1e60c39a89957d9df3c0ddaf`; object SHA-256 is `7a1c5a48b47287109f6ec343c88cb7c72acf25e09a8a458e66f8932779757527`. The [independent result audit](../../reviews/trace74-cover-bind-high-exact-warning-result-independent/README.md) passed. Both this exact warning and the beta ancestor's accepted warning remain in their captured outputs; the earlier strict-policy rejection is separately retained.
+
+The theorem is the natural inequality `betaNat+1 ≤ lowNat+highNat` for the retained symbolic ports. The all-model cast, external file binding, derivation of no-carry/population premises from a 74 zero and fixed-BFS reverse guard remain separate. Capture-relative historical source, package and dynamic ancestry limitations remain.

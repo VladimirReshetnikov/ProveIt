@@ -1,0 +1,76 @@
+import ForwardIndex
+import RankCast
+
+/-! Source-only draft. Local import names require materializing both draft
+predecessors; none of these declarations has been elaborated. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.ShearCurrentPortCastDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing ModelArithmetic
+open ShearForwardIndexDraft ShearRankCastGenericDraft
+attribute [local irreducible] CurrentKernel2011.K CurrentMasks2011.beta
+  CurrentMasks2011.lowPort CurrentMasks2011.highPort CurrentMasks2011.radix
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def naturalPorts : Fin 4 → V :=
+  ![(CurrentMasks2011.beta:V), (CurrentKernel2011.K:V), (CurrentMasks2011.lowPort:V),
+    ((CurrentMasks2011.highPort+CurrentMasks2011.beta:ℕ):V)]
+
+/-- The fourth coordinate includes the source beta shift exactly once. -/
+theorem currentP_eq_embedded (j : Fin 4) : currentP j = ι (naturalPorts j) := by
+  fin_cases j <;>
+    simp [currentP,naturalPorts,CurrentWindowCarry2011.ports,CurrentMasks2011.ports,
+      Nat.cast_add,Int.cast_natCast,map_natCast,map_add]
+
+theorem core_q_cast (v : Fin 14 → V) :
+    (Carrier65.core currentP (shiftedRing v)).q = ι (ArithmeticCarrierRadix2011.q (shifted v)) := by
+  change currentP 0 * shiftedRing v 0 + 1 = _
+  rw [currentP_eq_embedded]
+  simp [naturalPorts,shiftedRing,ArithmeticCarrierRadix2011.q,map_add,map_mul]
+
+theorem core_c_cast (v : Fin 14 → V) :
+    (Carrier65.core currentP (shiftedRing v)).c = ι (natC (shifted v)) := by
+  change (shiftedRing v 10+shiftedRing v 11) *
+    (shiftedRing v 7*(Carrier65.core currentP (shiftedRing v)).q^3)+shiftedRing v 10 = _
+  rw [core_q_cast]
+  simp [shiftedRing,natC,ArithmeticCarrierRadix2011.Y,map_add,map_mul,map_pow]
+
+/-- Proposed rank cast: its only inequality premise follows from scalar_window. -/
+theorem core_rank_cast (v : Fin 14 → V)
+    (hF : shifted v 1 ≤ ArithmeticCarrierRadix2011.q (shifted v)) :
+    (Carrier65.core currentP (shiftedRing v)).rank =
+      ι (ArithmeticCarrierRadix2011.rank (shifted v)) := by
+  let w := shifted v
+  let q := ArithmeticCarrierRadix2011.q w
+  have hq1 : 1 ≤ q := by
+    dsimp [q,ArithmeticCarrierRadix2011.q]
+    exact le_add_of_nonneg_left (by simp)
+  have hq2 : 1 ≤ q^2 := by simpa only [pow_two] using one_le_mul hq1 hq1
+  have hr := rank_cast q (w 1) (w 2) (CurrentMasks2011.lowPort:V)
+    ((CurrentMasks2011.highPort+CurrentMasks2011.beta:ℕ):V) (w 0) hq1 hF hq2
+  have hqm : ι (CurrentMasks2011.beta:V)*ι (w 0) = ι q-1 := by
+    dsimp [q,ArithmeticCarrierRadix2011.q]
+    simp only [map_add,map_mul,map_one]
+    ring
+  change (currentP 0*shiftedRing v 0*((Carrier65.core currentP (shiftedRing v)).q-shiftedRing v 1)+shiftedRing v 2)*
+      ((Carrier65.core currentP (shiftedRing v)).q^2-1)+
+      (currentP 2+(Carrier65.core currentP (shiftedRing v)).q*currentP 3)*shiftedRing v 0 = _
+  rw [core_q_cast,currentP_eq_embedded,currentP_eq_embedded,currentP_eq_embedded]
+  simp only [naturalPorts,Fin.isValue,Matrix.cons_val_zero,Matrix.cons_val_succ,shiftedRing]
+  rw [hqm]
+  simpa only [ArithmeticCarrierRadix2011.rank,q,w] using hr.symm
+
+/-- Conditional on successful elaboration, both explicit casts are supplied. -/
+theorem ring_half_at_parent_zero (v : Fin 14 → V)
+    (hz : InternalZero (positiveShift
+      (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports)) v) :
+    2*(Carrier65.core currentP (shiftedRing v)).rank <
+      (Carrier65.core currentP (shiftedRing v)).c := by
+  have hF : shifted v 1 ≤ ArithmeticCarrierRadix2011.q (shifted v) :=
+    gap_implies_F_le_q (natural_gap_and_half v hz).1
+  exact ring_half_of_casts v hz (core_rank_cast v hF) (core_c_cast v)
+
+end DiophantineConsistency.ShearCurrentPortCastDraft

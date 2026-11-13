@@ -1,0 +1,57 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-actual-rank-window-split-draft/FreeMainActualRankWindowGeneric.lean:71:8: error(lean.unknownIdentifier): Unknown identifier `P64Root.ι_tsub`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-actual-rank-window-split-draft/FreeMainActualRankWindowGeneric.lean:75:19: error(lean.unknownIdentifier): Unknown identifier `ι_one_le`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-actual-rank-window-split-draft/FreeMainActualRankWindowGeneric.lean:76:20: error(lean.unknownIdentifier): Unknown identifier `ι_one_le`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-actual-rank-window-split-draft/FreeMainActualRankWindowGeneric.lean:77:20: error(lean.unknownIdentifier): Unknown identifier `ι_one_le`
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-actual-rank-window-split-draft/FreeMainActualRankWindowGeneric.lean:78:20: error(lean.unknownIdentifier): Unknown identifier `ι_one_le`
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/p64-qcube72-actual-rank-window-split-draft/FreeMainActualRankWindowGeneric.lean:92:72: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 14 → V
+hv : ∀ (i : Fin 14), 0 < v i
+hz : InternalZero (P64QCube72Free.graph fun j => ↑(p j)).output v
+hMC : ↑(p 2) < ↑(p 0)
+hMF : ↑(p 3) < 2 * ↑(p 0)
+pp : Fin 4 → ℤ := fun j => ↑(p j)
+z : Fin 14 → DiffRing V := fun i => ι (v i)
+w : Fin 14 → V := lift p v
+q : V := ↑(p 0) * v 0 + 1
+R : V := rank p v
+left✝³ : Expr.evalRing (fun i => ι (v i)) (P64QCube72Free.graph fun j => ↑(p j)).A0 = 1
+left✝² : Expr.evalRing (fun i => ι (v i)) (P64QCube72Free.graph fun j => ↑(p j)).M = 0
+left✝¹ : Expr.evalRing (fun i => ι (v i)) (P64QCube72Free.graph fun j => ↑(p j)).W = 0
+left✝ : Expr.evalRing (fun i => ι (v i)) (P64QCube72Free.graph fun j => ↑(p j)).Na = 1
+hlt : Expr.evalRing (fun i => ι (v i)) (P64QCube72Free.graph fun j => ↑(p j)).Lt = 0
+hlt' : InternalZero (P64Graph.graph pp).Lt w
+hwp : ∀ (i : Fin 14), 0 < lift p v i
+hgapW : w 1 + w 2 < ↑(p 0) * w 0 + 1
+hgap : v 1 + v 2 < q
+hF : w 1 ≤ ↑(p 0) * w 0 + 1
+hrank : rankValue pp z = ι R
+Q : DiffRing V := ι q
+F : DiffRing V := ι (v 1)
+A : DiffRing V := ι (v 2)
+C : DiffRing V := ι (q - (v 1 + v 2))
+B : DiffRing V := ι ↑(p 0)
+J : DiffRing V := ι (v 0)
+MC : DiffRing V := ι ↑(p 2)
+MF : DiffRing V := ι ↑(p 3)
+hCeq : C = Q - F - A
+hQ : Q = F + (C + A)
+hC : 1 ≤ C
+hF1 : 1 ≤ F
+hA1 : 1 ≤ A
+hJ1 : 1 ≤ J
+hBJ : B * J = Q - 1
+hMC1 : MC + 1 ≤ B
+hMF1 : MF + 1 ≤ 2 * B
+hwin : ((Q - 1) * (Q - F) + A) * (Q * Q - 1) + (MC + MF * Q) * J + 1 < Q * (Q * (Q * Q))
+⊢ True ∨ ι (v 0) = 0
+'FreeMainActualRankWindowGeneric.actual_window' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

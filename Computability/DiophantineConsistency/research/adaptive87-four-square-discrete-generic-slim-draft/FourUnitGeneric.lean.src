@@ -1,0 +1,79 @@
+import DiophantineConsistency.DiscreteOrderedRingFacts
+import Mathlib.Data.ZMod.Basic
+import Mathlib.Tactic.LinearCombination
+import Mathlib.Tactic.Linarith
+
+/-! Generic source-only factor proof. No Lean elaboration has occurred. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.AdaptiveFourUnitGenericDraft
+open DiscreteOrderedRingFacts
+
+/- The next four finite residue facts are copied from
+   ArithmeticAdaptiveFactorUnits2011; only visibility is changed. -/
+private theorem first_bad : ∀ q z n : ZMod 4, 1+z^2-(q^3*(q-1))^2*n ≠ -1 := by decide
+private theorem main_bad : ∀ u a c d : ZMod 4, 1+d^2-u^2*(1+(a^2+4*a+3)*c^2) ≠ -1 := by decide
+private theorem strong_bad : ∀ a f i : ZMod 4, 1+i^2-(a^2+4*a+3)*(f^2-1) ≠ -1 := by decide
+private theorem aux_bad : ∀ a f v y : ZMod 4,
+  (a^2+4*a+3)*(f^2-1)*v^2+(1-(a^2+4*a+3)*(f^2-1))*y^2 ≠ -1 := by decide
+variable {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+
+theorem unit_one (hd : Discrete R) {a b : R} (hab : a*b=1) (ha : a≠-1) : a=1 :=
+  (eq_one_or_neg_one_of_mul_eq_one hd hab).resolve_right ha
+
+/-- The exact parent association is fs*(fa*(f0*f1))−1. -/
+theorem product_iff_squares (hd : Discrete R) (f0 f1 fa fs : R)
+    (h0 : f0≠-1) (h1 : f1≠-1) (ha : fa≠-1) (hs : fs≠-1) :
+    fs*(fa*(f0*f1))-1=0 ↔
+      (f0-1)^2+(f1-1)^2+(fa-1)^2+(fs-1)^2=0 := by
+  constructor
+  · intro h
+    have hp : fs*(fa*(f0*f1))=1 := sub_eq_zero.mp h
+    have hf0 : f0=1 := unit_one hd (show f0*(fs*fa*f1)=1 by linear_combination hp) h0
+    have hf1 : f1=1 := unit_one hd (show f1*(fs*fa*f0)=1 by linear_combination hp) h1
+    have hfa : fa=1 := unit_one hd (show fa*(fs*f0*f1)=1 by linear_combination hp) ha
+    have hfs : fs=1 := unit_one hd (show fs*(fa*f0*f1)=1 by linear_combination hp) hs
+    simp [hf0,hf1,hfa,hfs]
+  · intro h
+    have h0n := sq_nonneg (f0-1)
+    have h1n := sq_nonneg (f1-1)
+    have han := sq_nonneg (fa-1)
+    have hsn := sq_nonneg (fs-1)
+    have h0s : (f0-1)^2=0 := by nlinarith only [h,h0n,h1n,han,hsn]
+    have h1s : (f1-1)^2=0 := by nlinarith only [h,h0n,h1n,han,hsn]
+    have has : (fa-1)^2=0 := by nlinarith only [h,h0n,h1n,han,hsn]
+    have hss : (fs-1)^2=0 := by nlinarith only [h,h0n,h1n,han,hsn]
+    have hf0 : f0=1 := sub_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp h0s)
+    have hf1 : f1=1 := sub_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp h1s)
+    have hfa : fa=1 := sub_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp has)
+    have hfs : fs=1 := sub_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp hss)
+    simp [hf0,hf1,hfa,hfs]
+
+/-- Local universal ZMod-4 exclusions, mapped from the actual factor shapes. -/
+theorem factor_exclusions (φ : R →+* ZMod 4) (q z n u a c d f I V y : R) :
+    let delta := a^2+4*a+3
+    (1+z^2-(q^3*(q-1))^2*n ≠ -1) ∧
+    (1+d^2-u^2*(1+delta*c^2) ≠ -1) ∧
+    (y^2-delta*(f^2-1)*(y^2-V^2) ≠ -1) ∧
+    (1+I^2-delta*(f^2-1) ≠ -1) := by
+  dsimp only
+  refine ⟨?_,?_,?_,?_⟩
+  · intro h
+    have hm := congrArg φ h
+    simp only [map_add,map_sub,map_mul,map_pow,map_one,map_neg,map_ofNat] at hm
+    exact first_bad _ _ _ hm
+  · intro h
+    have hm := congrArg φ h
+    simp only [map_add,map_sub,map_mul,map_pow,map_one,map_neg,map_ofNat] at hm
+    exact main_bad _ _ _ _ hm
+  · intro h
+    have hm := congrArg φ h
+    simp only [map_add,map_sub,map_mul,map_pow,map_one,map_neg,map_ofNat] at hm
+    apply aux_bad (φ a) (φ f) (φ V) (φ y)
+    linear_combination hm
+  · intro h
+    have hm := congrArg φ h
+    simp only [map_add,map_sub,map_mul,map_pow,map_one,map_neg,map_ofNat] at hm
+    exact strong_bad _ _ _ hm
+
+end DiophantineConsistency.AdaptiveFourUnitGenericDraft

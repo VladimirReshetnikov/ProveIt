@@ -1,0 +1,165 @@
+MATCHED EXECUTION SIMULATIONS FOR THE 488- AND 646-BYTE MODULES
+===========================================================
+
+Scope and attribution
+---------------------
+The two modules implement the inherited native scalar theory and its
+guarded compact presentation. No mathematical axiom or inference rule has
+been deleted. The new result is a measured composition of existing source
+ideas, proved to preserve the incumbent certificate acceptance relations.
+Truth-valued calls and eager singleton comprehensions already occur in
+Research/inferred_major, PROOFS.txt section 2. Context-first scheduling and
+eager endpoint selection occur in the incoming three_field archive. This
+composition removes the earlier comprehension's sequencing tuple and its
+separate temporary hypothesis variable.
+
+The exact source controls are the files code/checker_bytes.py and
+code/checker_native.py inside docs/incoming/ipra_three_field_2026-11-12.zip
+at ProveIt commit 42fba2a76aea6eb41a8c4acfe7761620f58956ee. That archive's
+Git blob SHA is 152c09e61c95029a143198d019e94e570898f980. The included controls
+are exact copies. The inherited source license is included.
+
+Complete-module metrics (tokens, AST nodes, normalized UTF-8 bytes):
+
+  controls/checker_bytes495.py       267, 299, 495
+  code/checker_bytes.py              271, 304, 488
+  controls/checker_native666.py      342, 391, 666
+  code/checker_native.py             343, 392, 646
+
+The normalization is CPython 3.12.14 ast.unparse followed by one LF. Thus the
+byte coordinate improves; token and AST coordinates do not. The compact
+program's public syntax is a contract. The native program separately checks
+the entire JSON payload for the integer/list alphabet, and the initial goal
+for the closed native Eq/D grammar. These obligations must not be compared
+as though they were one profile.
+
+1. Successful-return invariant
+-----------------------------
+The old checker returns None at a retained hypothesis. In the new checker
+this branch returns True. Every other successful call returns the eager
+list comprehension
+
+    [check_the_continuation(...) for fields in [read_packet()]]
+
+whose iterable has exactly one element. Its result is a nonempty list.
+Consequently every successful new call returns a truthy value. A failure
+in packet unpacking, a major subproof, opening, or the continuation raises
+before that list is returned. It does not create a successful false result.
+
+The old major contribution was
+
+    old_check(context, major, floor) or major * 3.
+
+Its new counterpart is
+
+    new_check(context, major, floor) and major * 3.
+
+Both yield precisely major*3 after a successful major proof, and both
+propagate failure. No successful major is trusted without its proof.
+
+2. Evaluation order and local scopes
+-----------------------------------
+Python constructs a list comprehension eagerly. It evaluates the singleton
+iterable [q()], unpacks that one packet, and evaluates the result expression.
+The continuation call evaluates its first argument before its second and
+third. Its first argument is the old immutable context concatenated with
+one newly opened hypothesis. Within the opening call, the first argument
+constructs that hypothesis and checks its major in the old context and at
+the old floor. Only the second argument decrements the floor. Thus the
+original old-scope/new-scope boundary is preserved.
+
+The endpoint comparison and both endpoint openings occur afterwards, just
+as in the exact 495-byte context-first control. The new code keeps that
+control's eager tuple-index selection literally. The continuation goal
+then opens at the new successor parameter. No assumption from checking
+the major escapes its own recursive call.
+
+Assignment expressions inside a comprehension result bind in its enclosing
+function scope. Hence changes to a and k affect exactly the local cells
+captured by i, as in the control. The packet variables are comprehension
+locals, but no closure captures them across a different packet.
+
+Induct on a finite successful execution tree, carrying the unconsumed packet
+suffix, goal, context, and local floor. Retained hypotheses coincide. At a
+non-hypothesis call the same packet is read; the induction hypothesis gives
+the same major success and packet suffix. Section 1 gives the same supplied
+expression; the stated evaluation order gives the same next context, goal,
+and floor. Apply induction to the continuation. The reverse induction is
+identical. Thus finite successful executions and packet consumption agree.
+
+The argument also covers rejection: if either program first fails at an
+expression, the other evaluates the same expression on the same data, apart
+from the major return value whose two expressions were proved identical.
+Unused prefixes remain unused in the compact profile. No certificate
+translation is needed.
+
+3. Native Boolean guards
+------------------------
+The native control has a private mode v. The root is v=1 and every recursive
+call is v=0. If p is a Boolean or a bit, (not v or p) and v<=p have identical
+truth values; d%2 or v and d%2 | v are identical bits.
+
+The new guards evaluate p even at v=0, so totality must be checked. The list
+guard is reached only after a*0!=0. The retained lexical gate restricts all
+payload values to finite lists and integers; for these, this condition
+selects lists exactly. Thus len(a) is defined. The scalar guard is reached
+only after k<=a<d succeeds; a is then an integer. Its test
+
+    d%2 and (not a or a>1==a%2)
+
+is total and returns a Boolean or zero. All depths and floors are integers.
+Therefore evaluating these predicates eagerly introduces neither a new
+success nor a new error. This is the same Boolean-order refinement proved
+in Research/inferred_major, PROOFS.txt section 3.
+
+4. The native validation phase
+------------------------------
+The initial call still has v=1, so its first i(a) performs the full native
+public-goal scope and grammar check. The entire payload still passes the
+unchanged lexical gate before that call. Initial Eq/D formulas cannot equal
+the scalar truth sentinel 0.
+
+The old code next sets v=0, reads a packet, and computes its hypothesis.
+The new code reads and unpacks the same packet, then resets v by the extra
+argument of the mandatory major call:
+
+    c(g, m, k, (v := 0)).
+
+Packet reading and unpacking do not invoke i or inspect v. If they fail,
+both programs reject. If they succeed, the assignment runs before the major
+call and before any computation, witness, or hypothesis expression is
+opened. It changes the enclosing function's v cell, which is the cell i
+captures. The major receives v=0; its continuation receives the default
+v=0. The minor phase shift therefore preserves every successful finite
+execution. The proof of Sections 1-2 now applies without other changes.
+
+5. What the proof does and does not establish
+-------------------------------------------
+The native result preserves the exact accepted finite JSON certificates
+under the incumbent acceptance convention: normal termination with exit
+status zero and stdout exactly ACCEPT followed by one LF. The compact
+result preserves the exact finite raw acceptance relation of its matched
+control; its canonical guarded-public theorem specification is inherited.
+
+The new return values retain successful child-result lists instead of
+discarding None. Stack or memory consumption can differ. The simulations
+use the corpus's convention of sufficient resources for each finite
+certificate, not identical outcomes under a fixed external memory or
+recursion limit. A local resource failure is rejection in either CLI.
+
+The ordinary scalar theory, all logical macros, arithmetic interpretation,
+identity domain graphs, and formula round trips are unchanged. Their
+bi-interpretability and equiconsistency with full first-order intuitionistic
+PRA transfer through the matched acceptance theorem. This is neither a
+new proof of an absolute lower bound nor a theory with fewer axioms.
+
+6. Reproducible evidence
+-----------------------
+Run python3 verify.py. It measures and compiles the complete modules, then
+runs both candidates and both controls on all 121 matched baseline cases,
+in ordinary and optimized isolated Python processes: 484 process executions.
+Cases include used induction hypotheses, nested D openings, computations,
+equality/Q elimination, future-parameter capture, context leakage, false
+sentinels, and strict whole-input lexical boundary examples. No assertions
+occur in the acceptance kernels. Finite tests supplement the universal
+simulation proof; they do not establish that proof by themselves.

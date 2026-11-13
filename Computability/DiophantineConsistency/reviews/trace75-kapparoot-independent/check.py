@@ -1,0 +1,20 @@
+from pathlib import Path
+import hashlib,json,re
+h=Path('/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace73-center-normalization');a=h/'observations/kappa-attempt02';t=json.loads((a/'terminal.json').read_text());s=h/'Trace75KappaRoot.lean';r=h/'run-kappa.py';obj=Path(t['output'])
+def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def need(b,m):
+ if not b:raise RuntimeError(m)
+need(sha(a/'terminal.json')=='d12f8f26a232dd2a1e60a87848e18418c0925ccb526e19f52794f343e2c468be','terminal hash')
+need(t['status']=='PASS' and t['exit']==0 and t['reason'] is None,'terminal status')
+need(sha(s)==sha(a/'source.txt')==sha(obj.with_suffix('.lean'))==t['source_sha256']=='1049e58b90157da78131fec8fbf2d94c4695d08e7b54e4157b4830755501c91c','source')
+need(sha(r)==t['runner_sha256']=='e527d8c3cce52acfb5588bc5002d6c2f6a046a36387a6b7c341d00b280376cc6','runner')
+need(obj.is_file() and not obj.is_symlink() and sha(obj)==t['output_sha256']=='ba694f90388cf52b3b692d4c590d59298fdc1b626c819246de0e228f3f3e10f1','object')
+for name in ('stdout','stderr'):need(sha(a/name)==t[name+'_sha256'],'log '+name)
+need((a/'stdout').read_text()=="'Trace75KappaRoot.quotient_below_root' depends on axioms: [propext, Classical.choice, Quot.sound]\n" and not (a/'stderr').read_bytes(),'diagnostics')
+for p,rec in t['pins'].items():p=Path(p);need(p.is_file() and sha(p)==rec['sha256'] and str(p.resolve())==rec['resolved'],'pin '+str(p))
+roots=[Path(p) for p in t['lean_path'].split(':')];need(len(roots)==2,'roots')
+mod='Trace75Kappa';path=next((x/(mod+'.olean') for x in roots if (x/(mod+'.olean')).is_file()),None);need(str(path)=='/tmp/trace75-fresh-rebuild-yn60cw_0/lib/Trace75Kappa.olean' and str(path) in t['pins'],'first direct import')
+need(re.findall(r'^import\s+([^\s]+)',s.read_text(),re.M)==[mod],'source imports')
+for snap in [t['preflight'],t['postflight'],*t['samples']]:need(snap['mem_available_kib']>=8*1024**2 and len(snap['lean'])<=2,'resource')
+old=h/'observations/kappa-attempt01';ot=json.loads((old/'terminal.json').read_text());need(ot['status']=='FAILED' and ot['exit']!=0,'failed attempt');need('sorryAx' in (old/'stdout').read_text()+(old/'stderr').read_text(),'failed proof disclaimer')
+print('PASS terminal/source/object/logs; 5 direct pins and first import selected; resource samples; failed attempt excluded')

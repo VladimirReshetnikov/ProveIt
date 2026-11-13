@@ -1,0 +1,9 @@
+# Generic seed-to-source checked; concrete specialization failed
+
+Author-observed outer session `3154` returned numeric exit 1; the runner stopped on the second stage. The retained state hashes to `4f03aa9a1581b620688ef516dfe3c5156253dc6cf47be04f1dc348775093f265`; before-survey SHA-256 `135ef97c3cde813cd195237890910430a609c67b4d063892a99bc448d36fd9ea`. The outer record is an author observation, not an independently observed transcript.
+
+The first stage `Sign33SeedSource` compiled in 2.984 seconds with exit 0; object SHA-256 `d1575bc682b709f677efb2a33b562886e87d8b96f384f23a73f55d8b7933fa77` at `/tmp/nine-sharing-sign33-seed-current-source-check-20261106/lib/DiophantineConsistency/Sign33SeedSource.olean`, compile log `ed69664f7b9506cc0556331522435617f705964e7571b9a57bf4d32fdf9d8317`. Its report is `[propext, Classical.choice, Quot.sound]` and no warnings. It proves the generic p0–p3-cast seed-zero-to-source-zero implication.
+
+The second stage `Sign33CurrentSeedSource` terminated with exit −6 after 3.071 seconds, logging an interpreter `lean::memory_exception` under the `-M2800` cap; compile log `48bc2200174632932b9ea98fd0a0c30e6dc353ce535531045f1c7efc7b79940a`. No monitor stop was recorded and no successful concrete theorem/object is claimed. Final full-run guard and after-survey checks were not reached; the first stage's individual direct post-compile guards were checked by the runner. Per-stage resource observations and provider routes are retained in state. The failure does not by itself identify which elaboration term caused memory exhaustion.
+
+This generic one-way result is not a source-to-seed witness construction, concrete specialization, Lean proof of external JSON binding, or sign33 iPRA endpoint. Inherited provider and numeric-exit limitations remain as in the parent README.

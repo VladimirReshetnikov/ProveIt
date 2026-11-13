@@ -1,0 +1,3 @@
+# Independent sign23 exact-degree terminal audit
+
+Independent checker session 74742 exited 0 against author outer session 81634 (exit 0). The Lean client and postflight succeeded, proving polynomial `totalDegree = 8` for the abstract sign23 Fin23 expression at every integer port vector and for its current-port instance. Both reports list standard Lean metatheory axioms, without warnings or `sorryAx`. The checker verified source, object, direct upper/lower bindings, monitored limits, guards, overlays and both independent bound audits including the 1,412-link upper union. This is exact degree for the Lean expressions, not an external JSON/Jones/PDF or coefficient-byte binding.

@@ -1,0 +1,83 @@
+import Residue90XZeroArithmetic
+import Residue90FirstNormJ
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed graph-to-X forcing client. All earlier imports and this file are
+unelaborated; compact fixed-kernel and endpoint evidence remain external. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Residue90XZeroGraphDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open Residue90GraphNormsDraft Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Exact signed graph rank and main-root shift; no rank nonnegativity or
+C>0 has been assumed. -/
+def rankRing (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  (ι (v 2+1)+(ι (q p v)-ι (v 1+1))*ι (v 0*(p 0:V)))*
+    (ι (q p v)*ι (q p v)-1)+ι (v 0)*(ι (p 2:V)+ι (p 3:V)*ι (q p v))
+
+def shiftRing (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (U p v)*ι (v 12)+ι (v 6)*ι (Y p v)*ι (q p v)+rankRing p v+1-ι (k v)
+
+def mainRoot (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (U p v)*(ι (v 6)+ι (a p v)*ι (c p v))+ι (H p v)*shiftRing p v
+
+/-- The actual graph main residual supplies this signed norm without any
+gamma, X, rank-window or root-sign condition. -/
+theorem main_ring_norm (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v) :
+    mainRoot p v*mainRoot p v=ι (U p v)*ι (U p v)*
+      (1+(ι (H p v)+ι (a p v)*ι (a p v))*(ι (c p v)*ι (c p v))) := by
+  have h := (ModelDifferenceRing.internalZero_iff _ _).mp
+    (all_residuals_zero _ v hz 1)
+  simp [Residue90ResidualsDraft.residuals, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    P72Root.cast_port,map_add,map_mul,map_one,map_ofNat] at h
+  simp only [mainRoot,shiftRing,rankRing,U,H,a,c,k,Y,q,map_add,map_mul,map_one,map_ofNat]
+  linear_combination h
+
+/-- J and beta positivity yield the scale bounds; the signed main norm then
+rules out X=0. The port tuple is model-represented by natural casts. -/
+theorem X_positive (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) : 0<v 6 := by
+  by_contra hn
+  have hx : v 6=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le _)
+  obtain ⟨_,hq,hY,_⟩ := Residue90CompactGraphGammaDraft.scale_facts p v hJ hbeta
+  have hshape : mainRoot p v=ι (Y p v*(q p v*q p v))*(ι (Y p v)*ι (c p v))+
+      ι (3+4*Y p v)*shiftRing p v := by
+    simp [mainRoot,U,H,a,hx,map_add,map_mul,map_one,map_ofNat] <;> ring
+  have hnorm : mainRoot p v*mainRoot p v=
+      ι (Y p v*(q p v*q p v))*ι (Y p v*(q p v*q p v))*
+        (1+(ι (3+4*Y p v)+ι (Y p v)*ι (Y p v))*(ι (c p v)*ι (c p v))) := by
+    simpa only [U,H,a,hx,zero_mul,zero_add] using main_ring_norm p v hz
+  exact Residue90XZeroArithmeticDraft.xzero_impossible (q p v) (Y p v) (c p v)
+    (mainRoot p v) (shiftRing p v) hq hY hshape hnorm
+
+/-- Symbolic compact tuple: the first norm supplies J positivity, compact
+beta supplies its positivity, and the main norm excludes X=0. K is arbitrary. -/
+theorem compact_X_positive (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (ports K j:ℤ))) v) : 0<v 6 := by
+  have hJ := Residue90FirstNormJDraft.J_positive (ports K) v hz
+  obtain ⟨hbeta,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (ports K 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hb : 0<(ports K 0:V) := by simpa only [hp0] using hbeta
+  exact X_positive (ports K) v hz hJ hb
+
+/-- Conditional-source composition: both J and X are proposed consequences
+of the graph, with all dependency and historical endpoint limits inherited. -/
+theorem compact_gamma_positive (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (ports K j:ℤ))) v) : 0<v 12 := by
+  have hX := compact_X_positive K v hz
+  exact Residue90FirstNormJDraft.compact_gamma_of_X K v hz (pos_iff_one_le.mp hX)
+end DiophantineConsistency.Residue90XZeroGraphDraft
+#print axioms DiophantineConsistency.Residue90XZeroGraphDraft.main_ring_norm
+#print axioms DiophantineConsistency.Residue90XZeroGraphDraft.X_positive
+#print axioms DiophantineConsistency.Residue90XZeroGraphDraft.compact_X_positive
+#print axioms DiophantineConsistency.Residue90XZeroGraphDraft.compact_gamma_positive

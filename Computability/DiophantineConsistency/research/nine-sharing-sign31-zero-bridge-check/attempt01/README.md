@@ -1,0 +1,3 @@
+# Terminal result
+
+Author-observed outer session 82745 exited 0 with `PASS sign31 forward and reverse zero bridge diagnostic`; all four Lean stages exited 0. The f² coordinate recovery, lift/drop identity, forward and backward zero implications report `[propext, Classical.choice, Quot.sound]`; the old/new list-enumeration reports are `[propext]`. The compile logs contain no warnings. State, logs and author-recorded outer outcome are retained here; objects remain under `/tmp/nine-sharing-sign31-zero-bridge-check-20261106/lib/DiophantineConsistency/`. These are symbolic port-generic directional results without beta-cast hypotheses; pointwise/existential iff, source/endpoint composition, Lean degree and external byte binding remain separate.

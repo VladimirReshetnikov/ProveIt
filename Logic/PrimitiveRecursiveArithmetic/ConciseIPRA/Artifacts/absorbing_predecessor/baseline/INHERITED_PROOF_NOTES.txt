@@ -1,0 +1,145 @@
+CHECKER REFINEMENTS: CONTRACTS AND UNIVERSAL ARGUMENTS
+===================================================
+
+Pinned repository: VladimirReshetnikov/ProveIt at
+ecae4653f69184a25ade2b1aeaa346f7a7817b78.
+
+1. What is and is not new
+------------------------
+The mathematical inference systems and their iPRA interpretations are inherited.
+No arithmetic or logical axiom is removed here. The new compact program has
+272 significant tokens, 304 AST nodes, and 479 normalized bytes. Its frozen
+487-byte predecessor has 276 tokens and 308 AST nodes. Thus all three metrics
+improve against THAT program, while the corpus-wide token and AST minima remain
+248 and 270, attained by other programs. The combined exhibited envelope becomes
+(248, 270, 479), not one program's size and not a proved complexity lower bound.
+
+The native public-goal program has (337,383,607), against (324,374,629).
+The whole-input strict program has (344,392,637), against (343,392,646).
+These two changes improve the byte coordinate only.
+
+All sizes count the complete standalone module, normalized with ast.unparse
+and one final LF, including JSON input and the literal ACCEPT output. Only
+the common standard-library JSON parser and CPython runtime are external.
+
+2. Directly call the newly assigned opener
+-----------------------------------------
+The compact control has the expression
+
+  (i := (lambda ...: BODY)) and (i(a) in g or CONTINUATION)
+
+The candidate has
+
+  (i := (lambda ...: BODY))(a) in g or CONTINUATION
+
+Evaluation of a lambda expression creates an ordinary Python function object,
+which is always truthy. The control therefore binds i and then evaluates i(a).
+The candidate evaluates the assignment expression as the called function,
+binding i before evaluating the actual argument a and before entering i.
+Consequently recursive occurrences of i in BODY resolve to the same newly
+created closure in both versions. This is important: the assignment is not
+postponed until after the recursive opener runs.
+
+In both versions the captured g,a,k cells have the same values; the default
+image t=c is evaluated at the same point; opening traverses the same tree in
+the same order. After that call, membership in the same context is tested.
+If membership succeeds, both return True without reading a packet. Otherwise
+both evaluate exactly the unchanged continuation expression.
+
+Induction over a finite successful recursive execution proves equality of
+the goals, contexts, scope floors, consumed packet suffixes, and returned
+success values. If an operation raises, the corresponding operation raises
+in the other version. This proof concerns arbitrary parsed JSON, not merely
+the positive fixtures, subject to the common sufficient-resource convention.
+There is no theorem-set translation, new decoder, parser change, or new
+certificate convention involved in this compact 487-to-479 reduction.
+
+3. The strict 646-to-637 reduction
+---------------------------------
+The strict predecessor already validates the entire JSON certificate as an
+integer/list tree and validates the full closed native Eq/D public formula.
+It defines c with a def whose body assigns the opener lambda to i and returns
+a Boolean disjunction. Replacing that outer def by
+
+  c = lambda ...: (i := lambda ...)(a) in g or CONTINUATION
+
+performs exactly the same operations in the same order. Assignment expressions
+for a,k,v in its list-comprehension result bind the enclosing function scope,
+as in the predecessor. In particular the v:=0 phase change still occurs only
+after the initial public-goal scan, while the major proof still occurs at the
+old scope floor and the fresh allocation still occurs afterwards.
+
+Every successful return is True or a nonempty eager list, as before. JSON
+loading, the lexical whole-input gate, the packet pop order, default images,
+term/formula arities, the matrix-mode test, eigenvariable management, and
+ACCEPT output are unchanged. The same induction as in Section 2 proves exact
+equality of finite successful parsed-JSON executions.
+
+4. The native 607-byte companion
+--------------------------------
+The native program is obtained from the strict predecessor by removing its
+whole-input lexical gate and restoring exact integer typing to the initial
+public-goal scalar predicate, followed by the transformations of Sections 2-3.
+The predicate is
+
+  int(a) is a and d % 2 and (not a or a > 1 == a % 2).
+
+On JSON-produced objects that pass the preceding bound comparison, int(a) is a
+exactly for integer objects: int returns an int object unchanged; a bool or
+float is a different object from the resulting integer. Dictionaries, lists,
+strings, and null do not pass the scalar numerical comparison. Nonfinite
+floats do not satisfy k <= a < d for finite integer k,d. Thus the scalar gate
+has the same public syntax as the frozen native629 program; it does not use
+CPython small-integer caching or identity against numeric literals.
+
+The phase v is always 0 or 1. For a Boolean b, v <= b means either v=0 or b is
+true. In internal phase v=0 the added exact-type predicate is harmless. For
+finite integer/list certificates int(a) is a is true for scalar coordinates;
+more generally, any JSON number satisfying the prior bound is finite and its
+int conversion is defined. The fallback d%2|v has the same truth value as the
+corresponding phase guard.
+
+On entire integer/list certificates, therefore, native607 has the same
+successful traces as strict637, whose whole-input lexical gate is then true.
+It inherits both soundness and completeness of the strict native presentation.
+Unused noninteger JSON prefix objects are permitted, matching the weaker
+native contract, because they are never inspected. The module validates the
+public goal, not the alphabet of every possible certificate object; for
+arbitrary untrusted input the strict637 module is the recommended interface.
+
+The native629 matched control has a lazy elimination source opening, whereas
+the new companion inherits the strict predecessor's eager source opening.
+It may reject additional noncanonical proof streams. A successfully checked
+candidate source opening can be erased from an inactive control branch,
+giving successful-trace inclusion. The standard compiler's numerical bodies
+and witnesses have only odd-arity constructors, so their depth-zero openings
+are defined; D-opening packets can use zero inert fields. Canonical theorem
+completeness is unchanged. We do NOT claim equality of all malformed or
+noncanonical JSON success languages between native607 and native629.
+
+5. An important rejected optimization
+------------------------------------
+Do not replace the native programs' len(a)%2==u selector by 3%len(a).
+The latter is correct for the COMPACT GUARDED public presentation but loses
+native atomic case introduction. In particular u=[] requests atomic case
+mode in the full native protocol, while 3%len(a) always selects progress for
+an equation matrix. The checked fixture old_atomic_case_local.json uses this
+distinction for D_{x,y}(y=1), whose ordinary reading is valid by separation
+of zero and one. The repository proves nonderivability of this formula in
+the root-determined progress-only calculus. Both native607 and strict637
+preserve the original selector and accept the fixture. The smaller attempted
+remainder variants were excluded.
+
+6. Regression evidence and limits
+---------------------------------
+Run python3 reproduce.py. Fixtures cover both iterator equations, genuinely
+used induction hypotheses, compound introduction and elimination, zero-source
+transport and symmetry, the native atomic-case theorem, scope and context
+leaks, false scalar sentinels, invalid public formulas, and whole-input alphabet
+boundaries including unused prefix values. Every selected control/candidate
+is run normally and with -O, so no acceptance check relies on assert.
+
+The executable results are finite regression evidence. They do not replace
+Sections 2-4, the inherited all-input decoder theorem, the inherited arithmetic
+bi-interpretation, or a proof of any global size minimum. No new Lean or Rocq
+formalization of these Python implementation refinements is claimed.

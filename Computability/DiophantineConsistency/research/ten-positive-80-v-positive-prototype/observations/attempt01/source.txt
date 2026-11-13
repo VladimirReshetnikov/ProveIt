@@ -1,0 +1,104 @@
+import Direct80RankExact
+import Direct80CarrierIdentity
+
+/-! Sign-free offset bound at positive inputs of the actual 80 graph. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80VPositive
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open TenPositive80Graph TenPositive80Factors TenPositive80ResidueBinding TenPositive80CarrierIdentity
+open TenPositive80NaturalRank TenPositive80RankExact Direct80RankSize
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_v_positive (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hb : 0<(p 0:V)) (hl : (p 2:V)<(p 0:V)) (hh : (p 3:V)<2*(p 0:V))
+    (hv : ∀j,0<v j) (hz : InternalZero (graph (integerPorts p)).output v) :
+    0 < (graph (integerPorts p)).v.evalRing (fun j => ι (v j)) := by
+  let D : V := delta p v
+  let U0 : V := U p v
+  let E0 : V := E p v
+  let C : V := c p v
+  let a : V := D*U0*U0*E0
+  let w : Fin 10 → DiffRing V := fun j => ι (v j)
+  let R : DiffRing V := (rExpr (integerPorts p)).evalRing w
+  let B : DiffRing V := ι C*ι (v 4)-R
+  let e : DiffRing V := (eExpr (integerPorts p)).evalRing w
+  let vv : DiffRing V := (graph (integerPorts p)).v.evalRing w
+  let F2 : DiffRing V := (ι (1+2*a):DiffRing V)*(ι (1+2*a))
+  let mm : DiffRing V := (muExpr (integerPorts p)).evalRing w*(muExpr (integerPorts p)).evalRing w
+  have hb0 : 0<b p v := mul_pos hb (hv 0)
+  have hq : 0<q p v := add_pos hb0 (by simp)
+  have hY : 0<Y p v := mul_pos (mul_pos (mul_pos hq hq) hq) (hv 6)
+  have hk : 0<k v := add_pos (hv 8) (hv 9)
+  have hC : 0<C := add_pos (mul_pos hk hY) (hv 8)
+  have hCk : k v<C := lt_of_le_of_lt (by
+    simpa only [mul_one] using mul_le_mul_of_nonneg_left (pos_iff_one_le.mp hY) (by simp : (0:V)≤k v))
+    (show k v*Y p v<k v*Y p v+v 8 from lt_add_of_pos_right _ (hv 8))
+  obtain ⟨hD,hU,hE,_hM⟩ := factors_positive p v hb hv
+  have hC1 : 1≤C := pos_iff_one_le.mp hC
+  have hU1 : 1≤U0 := pos_iff_one_le.mp hU
+  have hCU : C≤U0 := by
+    calc
+      C≤C*C := by simpa only [mul_one] using mul_le_mul_of_nonneg_left hC1 (by simp : (0:V)≤C)
+      _≤v 3*(C*C) := le_mul_of_one_le_left (by simp) (pos_iff_one_le.mp (hv 3))
+      _=U0 := rfl
+  have hUa : U0≤a := by
+    calc
+      U0≤D*U0 := le_mul_of_one_le_left (by simp) (pos_iff_one_le.mp hD)
+      _≤D*U0*U0 := le_mul_of_one_le_right (by simp) hU1
+      _≤D*U0*U0*E0 := le_mul_of_one_le_right (by simp) (pos_iff_one_le.mp hE)
+      _=a := rfl
+  have hCa : C≤a := le_trans hCU hUa
+  have hCR : (0:DiffRing V)<ι C := by rw [←map_zero (ι : V →+* DiffRing V),ι_lt_ι]; exact hC
+  have hCaR : (ι C:DiffRing V)≤ι a := ι_le_ι.mpr hCa
+  have hF : ι C+1<F2 := by
+    dsimp [F2]
+    simp only [map_add,map_mul,map_one,map_ofNat]
+    nlinarith [mul_self_nonneg (ι a:DiffRing V)]
+  have hT : (1:DiffRing V)≤ι (v 4) := by
+    rw [←map_one (ι : V →+* DiffRing V),ι_le_ι]
+    exact pos_iff_one_le.mp (hv 4)
+  have hCT : (ι C:DiffRing V)≤ι C*ι (v 4) := le_mul_of_one_le_right (le_of_lt hCR) hT
+  have hCkR : (ι (k v):DiffRing V)<ι C := ι_lt_ι.mpr hCk
+  have eeval : e=ι (k v)-R-1 := by
+    dsimp [e,eExpr,R,w,k]
+    simp only [Expr.evalRing_ofNat,Nat.cast_one,map_add]
+  have hEB : e<B := by rw [eeval]; dsimp [B]; linarith
+  have hV : vv=F2*B-ι C := by
+    dsimp [vv,B,R,F2]
+    rw [v_shape]
+    simp only [Expr.evalRing_mul,Expr.evalRing_sub,Expr.evalRing_add,Expr.evalRing_var,
+      Expr.evalRing_ofNat,Nat.cast_one,Nat.cast_ofNat]
+    rw [a_eval,delta_eval,U_eval,E_eval,c_eval]
+    dsimp [a]
+    simp only [map_mul,map_add,map_one,map_ofNat]
+    ring
+  have hRle : rankNat p v ≤ (q p v)^4 := by
+    have hw := (graph_rank_exact p v hb hl hh hv hz).2.1
+    calc
+      rankNat p v ≤ rankNat p v+(q p v)^3 := by simp
+      _ ≤ rankNat p v+(q p v)^3+q p v := by simp
+      _ ≤ rankNat p v+(q p v)^3+q p v+1 := by simp
+      _ ≤ (q p v)^4 := hw
+  have hsize : 2*(q p v)^4 < c p v := (graph_rank_size p v hb hv hz).2
+  have hsmall : rankNat p v < C := by
+    have hp : (q p v)^4 ≤ 2*(q p v)^4 := by nlinarith
+    exact lt_of_le_of_lt (le_trans hRle hp) hsize
+  have hnat := (graph_natural_rank p v hb hv hz).1
+  have hsmallR : R < ι C := by
+    change (rExpr (integerPorts p)).evalRing w < ι C
+    rw [hnat]
+    exact ι_lt_ι.mpr hsmall
+  have hB : 0<B := by dsimp [B]; linarith
+  have hB1 : 1≤B := one_le_of_pos (fun x hx => pos_iff_one_le.mp hx) hB
+  have hF0 : 0<F2 := by linarith
+  have hmult : F2≤F2*B := le_mul_of_one_le_right (le_of_lt hF0) hB1
+  rw [hV]
+  linarith
+
+#print axioms TenPositive80VPositive.graph_v_positive
+end TenPositive80VPositive

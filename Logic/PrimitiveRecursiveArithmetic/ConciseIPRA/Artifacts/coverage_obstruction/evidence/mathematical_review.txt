@@ -1,0 +1,97 @@
+INTERNAL INDEPENDENT MATHEMATICAL REVIEW
+This is a separate reasoning review, not external peer review or proof-assistant verification.
+
+# Independent audit of the finite-word-fiber countermodel
+
+Audited draft: the countermodel proof now in sections/coverage.tex.
+The three presentation repairs below were implemented in the delivered text.
+
+## Verdict
+
+I found no fatal mathematical defect. The construction appears to give a
+classical model of SC-minus plus coverage, contextual constancy, fixed
+points, seed shift, term extensionality, and contextual fusion, with
+noninjective successor and enough involutions to obstruct ordinary
+finite-dimensional bi-interpretations with iPRA. This is a handwritten
+mathematical assessment, not a proof-assistant verification.
+
+## Checks of the main risks
+
+1. For each fixed finite suffix-closed support D, the coordinate maps of
+   every fixed term are primitive recursive. Iterator bodies never create
+   colors outside D: zero and delta return the empty color, successor
+   takes a suffix, and iteration stays in the support. Nested iteration
+   therefore creates no uniform-evaluator issue.
+
+2. Coherence under inclusion D -> E follows first on standard inputs by
+   structural induction and finite iteration, and then transfers as a
+   separate first-order identity for each fixed term and fixed pair of
+   supports. A convenient presentation uses one fixed global coding of
+   finite words, so the inclusions do not require relabeling color codes.
+   Arbitrary finite codings also work, with explicit finite relabeling.
+
+3. The level-bound lemma is sufficient for closure of the EXTERNAL domain.
+   If there is any colored input, its minimum colored level is nonstandard;
+   any colored output has at least this level. If all input colors are
+   empty, the uniform bound holds for every internal b, so a colored
+   output is impossible by taking b above its level. Thus internally
+   nonstandard iterations cannot leave M through a low-level colored point.
+
+4. Constancy does not assume external induction along a nonstandard chain.
+   It uses host induction only for the fixed primitive-recursive coordinate
+   maps of f on the canonical copy of N*. Every remaining colored point
+   reaches that copy in |w| externally finite successor steps. Arbitrary
+   formula contexts are handled by fixing a satisfying assignment before
+   applying this semantic implication; they are never transferred into N*.
+
+5. Extensionality/fusion are more delicate than unconditional identities,
+   because their premises may hold on M but not on the larger A_D*. The
+   proposed orbit argument correctly handles this: every internally
+   indexed orbit state h^j(a) is in M by the closure lemma. Consequently the
+   premise gives a first-order statement for ALL internal j, and host
+   induction proves the orbit comparison. This avoids assuming global
+   extensionality on the illegal low-level colored points of A_D*.
+
+6. The color permutation pi_v commutes with deletion of the LEFTMOST bit.
+   Its bit flip is the bit immediately preceding the fixed suffix v; the
+   boundary case bv -> v is important and is correct. Finite-support
+   equivariance then transfers to all internal levels.
+
+7. The automorphism obstruction includes quotient interpretations. Fix
+   source parameters, return-map parameters, and finite representatives of
+   interpreted-side parameters. An automorphism acting trivially on the
+   first interpreted quotient acts trivially on the double interpretation.
+   Definability of the return isomorphism forces it to fix the source
+   pointwise. Finite-dimensionality makes the collected parameter tuple
+   finite. The nonidentity involution fixing this tuple contradicts the
+   absence of finite-order nonidentity automorphisms of a linearly ordered
+   classical iPRA model.
+
+## Small presentation repairs recommended
+
+- In the automorphism proof choose D explicitly to be the suffix closure of
+  C union pi_v(C), where C is the finite set of input and parameter colors.
+  This D is pi_v-invariant because pi_v commutes with taking a suffix.
+  Merely taking an arbitrary support that contains the listed colors and
+  their images would not guarantee invariance of any extra members.
+
+- State once that the ordinary substitution/composition identities for
+  each fixed term also hold in the finite-support interpretations by
+  standard structural induction and elementarity. This makes the
+  equivalence between the binding syntax and the staged first-order
+  symbols completely explicit.
+
+- Display the additional laws with their side conditions, or cite their
+  exact definitions, so that 'fusion' cannot be read as a stronger rule
+  quantifying over arbitrary external functions. The proof establishes
+  the stated schemes for fixed term maps with finite passive parameters.
+
+## Limits that should remain explicit
+
+The result does not show that T is inconsistent, does not exclude
+equiconsistency with iPRA, does not prove a universal checker-size lower
+bound, and does not address nonstandard interpretation notions involving
+infinite parameter sets or non-first-order domains. It rules out the
+specified SC-minus-plus-coverage repair. It can be presented as a negative
+answer to the repository's question disch:q:sc(1), not as the smaller
+axiomatization originally requested.

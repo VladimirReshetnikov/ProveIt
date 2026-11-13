@@ -1,0 +1,55 @@
+import Positive87To88Bounds
+import Unscale84Endpoint
+import P88FourSquareModel
+
+/-! Proposed source-only fixed symbolic tuple composition. Imported model
+and endpoint sources are unelaborated, and provider replay is absent. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Unscale84CompactChainDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open IPRAOrdinary12 (PositiveModelBridge)
+open CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts
+open Residue90CompactPortBoundsDraft
+
+def fixedK : ℕ := paramKernel rho
+
+/-- The selected natural tuple has model-positive beta, by the retained
+compact beta source; no statement about external decimal bytes follows. -/
+theorem compact_beta (K : ℕ) : Positive87To88BoundsDraft.PositiveBeta (ports K) := by
+  intro V _ _
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (1:V) (by simp)
+  have hp0 : (ports K 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  simpa only [hp0] using hb
+
+/-- Transfer an exact same-K 88 positive-model bridge to the 87/36 graph. -/
+theorem positiveBridge87 (K : ℕ)
+    (h88 : PositiveModelBridge ((P88FourSquare.graph
+      (Positive87To88BoundsDraft.portsInt (ports K))).output)) :
+    PositiveModelBridge (Unscale84EndpointDraft.expression87 K) := by
+  intro V _ _
+  have hbounds := Positive87To88BoundsDraft.bounds_cut (ports K) (compact_beta K)
+  exact (Positive87To88AuxDraft.positive_zero_iff
+    (Positive87To88BoundsDraft.portsInt (ports K)) hbounds).trans (h88 V)
+
+/-- Exact symbolic 88 tuple equality; the imported model bridge remains an
+uncompiled source declaration and has its own provider ancestry. -/
+theorem fixed_ports : Positive87To88BoundsDraft.portsInt (ports fixedK)=CompactSymbolicModelIff.p := by rfl
+
+theorem fixed88Bridge : PositiveModelBridge ((P88FourSquare.graph
+    (Positive87To88BoundsDraft.portsInt (ports fixedK))).output) := by
+  rw [fixed_ports]
+  exact P88FourSquareModel.positiveBridge
+
+/-- Proposed fixed-K native endpoint, via the full chain of source-only graph
+and model drafts. The #print command below has not been executed. -/
+theorem native84 : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (positiveShift (Unscale84EndpointDraft.expression84 fixedK)) 🡘
+      ∼mappedNativeRefutation embedding :=
+  Unscale84EndpointDraft.native84 fixedK (positiveBridge87 fixedK fixed88Bridge)
+end DiophantineConsistency.Unscale84CompactChainDraft
+#print axioms DiophantineConsistency.Unscale84CompactChainDraft.native84

@@ -1,0 +1,5 @@
+# Independent prelaunch review: seed zero to current source zero
+
+The first proposed stage combines the forward direction of the checked seed/AllCuts iff with generic AllCuts→source zero under four explicit casts. The second specializes the same full Fin 34 valuation to the checked four current-port projections. Both retain the fourteen shifted source coordinates `v(j+1)+1`; the natural fourth port is `highPort + beta` once. This is seed zero implies current source zero in an IΣ₁ model, not a converse or an iPRA endpoint.
+
+The checker pins both sources, runner, manifest and provider survey, verifies the directions, ports, shifted valuation and no-Lean preflight. The survey authenticates successful producer rows of the overall-failed port-split attempt while explicitly excluding its failed assembly row; the runner guards selected direct imports and the first local object. No launch blocker was found within this point-in-time scope. Lean elaboration and complete transitive/dynamic provider compatibility remain untested, and the inherited initial-agreement numeric outer-exit gap remains.

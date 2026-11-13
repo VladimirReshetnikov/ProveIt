@@ -1,0 +1,3 @@
+# Terminal failure
+
+Author-observed outer session 12321 exited 1 after `FAILED RuntimeError('compile failed Sign32AbstractExpression')`. The first stage dependency check exited 0 but the symbolic-port expression/evaluation Lean compile exited -6; its complete log reports Lean `memory_exception` at `interpreter` under the existing `-M2800` limit. The monitor reported no external stop reason and sampled peak session RSS 2,938,646,528 bytes. The stage contains both the symbolic expression definition and its evaluation theorem, and the log does not isolate the triggering declaration or operation. No stage1 object exists; closed-definition and concrete-evaluation stages did not run. No declaration in this diagnostic is counted as proved. Resource limits were unchanged.

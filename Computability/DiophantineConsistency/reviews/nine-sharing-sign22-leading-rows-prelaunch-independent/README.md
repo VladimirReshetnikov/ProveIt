@@ -1,0 +1,3 @@
+# Independent sign22 lower-bound ingredients prelaunch review
+
+Independent checker session 71049 exited 0. The three proposed modules identify Dc2/N0 rows at offsets 2/4 and their axis identities, give Fin22 diagonal degree nonincrease, and bound remaining residual axis degree by four for arbitrary integer ports. Source, 12 remaining-residual branches, provider survey, resource guards and no-Lean preflight were checked. The packet README retains a stale description of four stages and square-coefficient declarations; the actual manifest contains only three stages and no square-coefficient module. No coefficient, lower bound, exact degree or external binding follows from preflight.

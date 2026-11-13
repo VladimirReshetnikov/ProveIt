@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import hashlib,json,re,subprocess,sys
+from pathlib import Path
+d=Path(__file__).resolve().parents[2];p=d/'research/nine-sharing-sign33-forward-constructor-check';sha=lambda q:hashlib.sha256(q.read_bytes()).hexdigest()
+for n,h in {'run.py':'23f5500c65338d83e604a64ae2acbc086f065b25d366fa460e2dde0c51fd3c3b','provider_survey.py':'c404776970909824a3b1b0ed01df57c7bb9719efe9d914e7f440b99d2504e209','source-manifest.json':'33b5cce0171065fa8651d2b87bedb3f7b00e5bee1776f395582c0e054aca116f','check_mapping.py':'ea2bd392728642bde533dcea8b7650fac6c5239cf74d37fd216645fcdf8aa71b','mapping-result.json':'2518b7fc49c740347b721fe2edcebeb3c3922e136de3ac39a2bc399bb5d905b2','src/DiophantineConsistency/SharingForward33.lean':'a28cf78a396b80908dc9b00e4b1ed452bbe670d93d03de1d0a8198367b24b3ab'}.items():assert sha(p/n)==h
+s=(p/'src/DiophantineConsistency/SharingForward33.lean').read_text();rows=json.loads((p/'source-manifest.json').read_text())['rows'];assert len(rows)==1 and rows[0]['source_sha256']=='a28cf78a396b80908dc9b00e4b1ed452bbe670d93d03de1d0a8198367b24b3ab';assert re.findall(r'^import ([\w.]+)$',s,re.M)==rows[0]['imports']==['DiophantineConsistency.ForwardWitness38'];assert re.findall(r'^theorem (\w+)',s,re.M)==['witness_inputs','witness_signed']
+part=s.split('def witnessCoordinates',1)[1].split('theorem witness_inputs',1)[0];vector=[x.strip() for x in re.search(r'!\[(.*?)\]',part,re.S).group(1).split(',')];assert vector==[f'u {i}' for i in range(14)]+[f'w {i}' for i in range(14,25)]+['gap','tau','w 29','inner','value','w 34','w 35','negative']
+for i,x in [(25,'gap'),(26,'tau'),(28,'inner'),(29,'value'),(32,'negative')]:assert f'negative {i} = {x}' in s
+x=subprocess.run([sys.executable,'-I','-S','-B',str(p/'check_mapping.py')],capture_output=True,check=True,timeout=300);assert not x.stderr and x.stdout==(p/'mapping-result.json').read_bytes()
+lift=(d/'research/nine-sharing-sign33-lift38-check/src/DiophantineConsistency/Sign33Lift38.lean').read_text();assert 'lift v 25 = v 26 ∧ lift v 26 = 0' in lift and 'lift v 36 = 0 ∧ lift v 37 = v 33' in lift
+r=subprocess.run([sys.executable,'-I','-S','-B',str(p/'run.py'),'--preflight'],capture_output=True,text=True,check=True,timeout=300);o=json.loads(r.stdout);assert not r.stderr and o['status']=='PASS_NO_LEAN_PREFLIGHT' and o['stage_count']==1
+print(json.dumps({'status':'PASS','preflight':o,'scope':'constructor vector source and external candidate mapping only; no Lean replay'},indent=2,sort_keys=True))

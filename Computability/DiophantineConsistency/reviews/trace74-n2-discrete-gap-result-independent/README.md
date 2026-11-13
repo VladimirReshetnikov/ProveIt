@@ -1,0 +1,7 @@
+# Independent result audit: discrete q-multiple gap
+
+PASS within direct-pin and inherited provider scope. The author reports actual tool session 60036 exited 0 and was reaped. Retained attempt01 terminal SHA-256 `ac73601a942b2bd8f3d3516acba2276e1421970d21e6ed979b5262536972d675` records PASS using reviewed runner `eeffbe9ae79ccc5278c0d56cfdf3bea66636a7e7bb7ede5cb91ead31f260c8c0`. Independently rehashed all 22 source/direct-provider/Lean/core pins, object `3a5de31a2fa40e9c390143bc9eedf2cac63b6f4fb1d9cb47437b7c7c1bdc5035`, and stdout/stderr; Lean exit 0, null monitor reason, empty stderr and exactly two named reports each `[propext, Classical.choice, Quot.sound]`. No Lean replay was run.
+
+In the indicated IΣ₁ model, the generic theorem shows q≥4, q|X and q|Y contradict X<2Y<X+3. The p/v specialization supplies the two divisibilities using actual X=wq and Y=q³s, while retaining q≥4 and both window inequalities. Neither theorem assumes an actual graph zero or proves those window inequalities; this is one ingredient toward a possible n=2 exclusion, not an exclusion itself.
+
+The result does not establish the fixed-port guard, 74/75 equivalence, external-file binding or iPRA. Direct pins do not establish full transitive project/package/dynamic ancestry, first-selection shadowing or intermediate output stability. The author's actual tool exit is separately reported from the retained terminal.

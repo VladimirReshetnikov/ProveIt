@@ -1,0 +1,7 @@
+# Independent prelaunch review: high-digit named-tail v3
+
+Scoped GO for one coordinated check, runner SHA-256 `d68c5b1eafb8f113432e480a9ffbaddcba0bd324b703f8507a71f65fd6ece268`, outer SHA-256 `1b64ef4b4c37e953442a30bfc3acffc4ed12c03f5cb721f5e686c70688ddfae8`. No Lean was run in this review.
+
+The source plan pins the previously reviewed v3 source `f3b7b57d52a329f7b8e426ae5792b842bcf0198d597d5d1ddb9c595501ac6924` and its actual `#print axioms Trace74HighDigitBound.high_at_least`, along with the two selected direct project modules. The runner differs from the reviewed v2 runner only in its source plan and source-review pins. Read-only preflight records 2035 parent objects, 81 outside objects, one stage and exit 0; its outer pin and the 25-case actual-function policy receipt match. The six-case isolated wrapper receipt matches the outer. Outer requires stable pinned inputs and successful child status; the runner retains no-clobber, source checks, direct selection and retained closure guards.
+
+The two earlier attempts remain failed and excluded as detailed in `reviews/trace74-high-digit-failures-v3-draft-independent/README.md` SHA-256 `f39a432c4b76da114e48d8a682a0c4d7d796a62f41723374b9a185bf061c356a`. This is a held diagnostic, not an accepted high-digit theorem. Capture and audit the actual terminal exit before drawing a conclusion. Four inherited baseline source ancestries and outside/package/dynamic ancestry remain limited; no external-file binding, graph guard or iPRA conclusion follows.

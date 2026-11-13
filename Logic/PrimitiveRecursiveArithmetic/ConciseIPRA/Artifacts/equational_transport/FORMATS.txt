@@ -1,0 +1,80 @@
+RAW SYNTAX
+
+For a scope with n free parameters and local binder depth d:
+
+  0          zero
+  -1..-n     free parameters; -n is newest (fallback zero if n=0)
+  1..d       local bound indices; 1 is nearest
+  [0,t]      successor
+  [n,a,h]    iterator I(n,a;u.h); u has index 1 in h
+
+Formula:
+  [s,t]      equation
+  [B]        D_{x,y} B; x has index 2 and y has index 1 in B
+
+The raw term grammar does not perform normalization. The term test checks the
+literal zero tag of a successor, including when a substitution would erase or
+repair malformed input. An iterator's unused body is still validated.
+
+A context entry (base,body) is [base;y.body], with the bound clause variable
+at index 1 in body. base=[] means no antecedent. Assumption A is ([],A)
+with the clause variable unused. Contexts and scopes are explicit in the
+in-process API, and both are empty at a standalone checker's entry point.
+
+TARGET PROOF NODES
+
+  ["u",index,premise]
+    Use the indexed clause at the newest parameter, or at zero in empty scope.
+    premise proves its antecedent; it is ignored if the clause has none.
+
+  ["c",counter,seed,body]
+    Derive the iterator computation equation at counter 0 or a literal
+    successor [0,n]. Every term component is validated.
+
+  ["v",goal,major,minor]          (equation_back.py)
+    goal must be an equation. major proves b=t with b the newest parameter.
+    minor proves goal[t/b]. Conclude goal.
+
+  ["v",term,major,minor]          (crossed_back.py)
+    term is a term h. major proves b=t with b newest; minor proves h[t/b]=r.
+    Conclude r=h. r is not substituted, and may contain b.
+
+  ["a",target,branch]
+    Append fresh b=-scope-1 and the assumption b=target. The branch derives F.
+    Conclude F[target/b]. target is over the original scope.
+
+  ["e",goal,major,branch]
+    major proves D B. Append fresh b and [B(b,0);y.B(b,y)]. The branch proves
+    goal, which must be over the original scope. Conclude goal.
+
+  ["i",goal,branch]
+    goal is D B. Choose the newest parameter w (zero in empty scope).
+    Append fresh z. The assumption is B(w,z) if raw B is diagonal, and B(w,0)
+    otherwise. The branch proves B(w,Sz). Conclude goal.
+
+Diagonal means that B is an equation and each side is an iterator whose
+counter and seed are the bound y: both raw iterator prefixes are [1,1].
+This is tested before the witness is inserted.
+
+LIBERAL SOURCE PROOF DIFFERENCES
+
+  ["u",index,term,premise]        specialization uses the supplied term
+  ["v",goal,major,minor]          goal may be compound; source may be any
+                                  current free parameter, not just newest
+  ["i",goal,witness,branch]       introduction uses the supplied witness
+
+All other nodes are identical. Source and target use the same raw syntax.
+
+STANDALONE ENVELOPE
+
+  {"goal": <closed native formula>, "proof": <proof node>}
+
+Exactly these keys are required. A successful run prints ACCEPT and exits 0.
+Validation or execution errors print REJECT and exit 1. The checkers are
+standalone; they import only standard-library json and sys.
+
+The compilers require well-formed source contexts when invoked through their
+open-sequent API. Their default command-line entry point validates a closed
+source certificate. Output is a checked target certificate. convert(proof,
+context,scope) in compile_crossed.py can also postprocess an accepted equation
+certificate directly; provide its actual context and scope for open proofs.

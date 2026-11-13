@@ -1,0 +1,3 @@
+# Independent sign22 syntax and squares prelaunch review
+
+Independent checker exited 0. It independently rendered all 13 residual AST rows from the pinned external candidate and compared them with the generated Lean expression, checked source/manifest imports and the generic square-sum instantiation, and reran the no-Lean provider preflight. The runner retains -M2800, sampled 4 GiB RSS, 10 GiB host floor, 120-second and 5 GB disk controls; inherited syntax uses four million heartbeats. This source transcription is not a Lean JSON/coefficient binding, degree proof, model bridge or endpoint. Provider ancestry remains point-observed.

@@ -1,0 +1,9 @@
+# Independent review: refusal-only slim-route preflight
+
+The inspector has no Lean-launch or file-write mode in the reviewed source: it reads and hashes evidence, scans named paths and `/proc`, prints JSON, and exits 1. Its broad inspection-error handler also returns a refusal, and there is no command-line launch branch. A real invocation with `--launch` still refused. The static check detects the listed process and write operations; it is not a sandbox or an audit of Python's runtime and imported standard library.
+
+Independent controls supply synthetic `/tmp` free values at exactly 5,100,000,000 bytes and one byte above, with 10 GiB available memory. The inspector evaluates the disk boundary strictly and still refuses in both cases. These values exercise the decision only; they do not reserve resources or simulate a Lean run. The 4 GiB session RSS limit, six-hour total timeout, 180-second per-child timeout and 0.2-second interval are documented for a future monitor, not enforced by this read-only observer.
+
+The current scan covers 139 overlay names and both proposed qualified FreeJ names across the specified roots and 13 suffixes. It is not a complete candidate search, full package/provider ancestry audit, or check of actual Lean resolution. In particular, `/proc` observations are racy and do not allocate the shared slot; recorded pin matches are point-in-time observations, not immutable ancestry. The author packet explicitly preserves these limitations and refuses launch regardless of the sampled values.
+
+Run `python3 -I -S -B reviews/ordinary14-root78-slim-no-lean-preflight-independent/check.py` from `Computability/DiophantineConsistency` and compare against `observation.json`. It runs only the read-only Python inspector and synthetic Python controls. No Lean process, build tree, retained-evidence mutation or staging was performed.

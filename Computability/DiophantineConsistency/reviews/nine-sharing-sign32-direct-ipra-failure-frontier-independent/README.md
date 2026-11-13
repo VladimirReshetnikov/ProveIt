@@ -1,0 +1,5 @@
+# Independent direct sign32 iPRA failure audit
+
+The state records stage1 dependency scan exit 0 and Lean compile exit −6; the author's separate record reports actual outer session 87971 exit 1. The log is the `lean::memory_exception` at the interpreter under Lean `-M2800`. The sampled monitor reports no stop reason and peak session RSS 2,939,711,488 bytes, below its 4-GiB stop; this is not a monitor timeout. No specific source operation is identified by the log. The checker validates source/log pins, 150 recorded direct guards, 1,285 overlay links and the current-source iff and ModelJonesSyntax direct routes.
+
+No successful stage1 object or axiom report is recorded; stage2 and the final whole-run postflight were unrun. Thus no new direct iPRA endpoint is established by this attempt. No Lean replay was performed. The outer record is author-observed, framework-object producer ancestry is inherited, and point observations and sampled monitoring are not a complete dynamic/transitive trace.

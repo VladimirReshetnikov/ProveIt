@@ -1,0 +1,70 @@
+FINAL FIVE-CHECKER INDEPENDENT AUDIT
+Comparison frozen at 2c7617bb03bbbb15a4534c5468f7df8da22c7ab4.
+Final source directory: agent_checker/parity_refinement/code/.
+
+Verdict: PASS. These are exact accepted-language-preserving refinements of
+their specified controls, with sufficient resources. Every final module is
+the exact AST composition stated in transforms.json. Baseline/candidate
+SHA256 values all match, and the complete measurements were independently
+recomputed under CPython 3.12.14:
+
+  native_tokens.py  321 / 371 / 618
+  native_ast.py     323 / 369 / 622
+  native_bytes.py   334 / 380 / 596
+  strict_size.py    330 / 380 / 638
+  strict_bytes.py   340 / 385 / 621
+
+Metric order: significant tokens, all AST nodes, normalized UTF-8 bytes.
+Source is normalized with ast.unparse plus one LF. Parser and ACCEPT output
+are included; there is no serialized program, eval, exec, or hidden engine.
+
+The new exhibited native envelope is321/369/596, achieved by THREE programs.
+The strict native envelope is330/380/621, achieved by TWO programs. The
+compact promised-guarded envelope remains244/267/478 and is not beaten.
+
+I. PARITY AND PRODUCT
+The earlier independent parity_candidates_audit.txt proves the Boolean
+predicate replacement and the v-phase product implementations. Its proof
+also applies to the final unchanged native_ast and native_bytes programs.
+
+For the context-phase product implementations, the changed predicate lies
+inside `g or ...`. With nonempty g it is skipped. With empty g, validation
+has k=0; the preceding range test gives a>=0. Native validation retains
+`int(a) is a`; strict validation has the unchanged exact integer/list
+whole-input gate. Thus the parity identity is valid at every evaluated
+validation input. Multiplication by d%2 replaces a short-circuit conjunction
+by the same numerical truth value. The newly eager modulo/comparison is
+total on exact integers, and d is always an integer binder coordinate.
+Even on invalid JSON scalar shapes, either an identical earlier operation
+fails or the native exact-integer identity test skips the extra arithmetic.
+
+II. NONCALLABLE REJECTION SENTINEL
+This edit is inherited from the late absorbing_orbit strict632 program and
+must be attributed. Put r=str(p).strip('0123456789-[], '). Both versions
+compute the same string r. If r is empty, both choose the same bound method
+p.pop; if that attribute lookup fails, it fails identically. If r is not
+empty, the old `not r and p.pop` returns False and the new `r or p.pop`
+returns a nonempty string. Both are noncallable. The root immediately
+evaluates q(), so both reject by TypeError before any checking begins.
+Consequently no invalid alphabet can be newly accepted. The particular
+rejection value and error text need not match; successful input language
+does match. The proof does not assume a numerical p or a well-formed goal.
+
+III. COMPOSITION AND EVIDENCE
+Both edits act before or within unchanged deterministic checker execution.
+They have independent phase arguments and compose without changing context
+mutation order, freshness allocation, packet consumption, parser framing,
+or the ACCEPT gate. The entire final suite retains its predecessor's
+syntax contract; strict programs still check the entire parsed alphabet.
+
+The final independent source/hash checks pass for all five programs. Focused
+new boundary tests cover3672 native context-product cases,2970 strict
+context-product cases, and25 raw-JSON rejection-sentinel root-call cases,
+all with zero mismatches. The earlier independent v-phase checks cover the
+other product variant. These checks supplement the general proof and do not
+duplicate the author's880 CLI executions/440 matched comparisons.
+
+Exact hashes, individual measurements, and focused receipts are in
+late_composition_audit.json. Neither these tests nor the source equivalence
+proofs claim a new Lean/Rocq verification, an optimal arithmetic axiom basis,
+or a program below the compact guarded envelope.

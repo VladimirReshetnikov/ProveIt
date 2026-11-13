@@ -1,0 +1,5 @@
+# Conditional gap from the direct balance
+
+`DirectMainGapBalance.gap_of_balance` proves in every IΣ₁ model that `U>0`, `R+1≤k`, the exact direct main balance, `main>(a+1)*c`, and `X+H*w<c` imply `w<G`. The source states the balance explicitly. This result is conditional: the size inequality `X+H*w<c` is not established here, and no assertion is made that all direct-draft zeros satisfy it.
+
+Attempt 01 failed on order-cancellation details; attempt 02 compiled but was rejected by the runner due to an unused-hypothesis warning; both are retained. Attempt 03 removes the unnecessary positivity hypothesis and passed with no reported warnings. Source SHA-256 is `75c3912f85260c07f1b2a9d5922cd89960f9d2362b052056c198b9e1516556c3`, output object is `e27be976b1dca00aecd9f2b8697e45ffe203612abe656724be327c57744f7d61`, and its axiom report lists `propext`, `Classical.choice`, and `Quot.sound`. The accepted projection object and selected 1,291-object union were pinned and rechecked. Package, dynamic, and source-to-object ancestry remain inherited rather than freshly rebuilt; resource samples and exact pins are in the receipt, and temporary paths may disappear.

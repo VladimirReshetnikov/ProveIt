@@ -1,0 +1,3 @@
+# Independent sign23 two-leading-row ingredients terminal audit
+
+Independent checker session 35792 exited 0 against author outer session 66649 (exit 0). All four stages and postflight succeeded: actual N0/Dc2 rows and axis identities, Fin23 diagonal degree nonincrease, other-residual weighted/axis degree at most two at arbitrary ports, and each distinguished square's eighth coefficient one. Reports list standard Lean metatheory axioms or subsets, with no warnings or `sorryAx`. Sources, objects, 400 direct guards, overlays and expression provider were checked. These ingredients do not establish the full seed coefficient two, lower bound, exact degree or JSON/PDF correspondence.

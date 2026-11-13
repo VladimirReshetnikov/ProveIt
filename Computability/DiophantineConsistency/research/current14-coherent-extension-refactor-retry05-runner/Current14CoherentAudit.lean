@@ -1,0 +1,8 @@
+import DiophantineConsistency.Current14QuotedTranslatedEndpoint
+import DiophantineConsistency.CurrentWitnessEquivalence2011
+import DiophantineConsistency.ObjectCurrentEquation2011
+
+/-! Coherent-rebuild audit client; it does not claim a raw TeX/PDF theorem. -/
+#print axioms DiophantineConsistency.Current14QuotedPrefix.quoted_translated_endpoint
+#print axioms DiophantineConsistency.CurrentWitnessEquivalence2011.positive_zero_iff_zfc_refutation
+#print axioms DiophantineConsistency.ObjectCurrentEquation2011.eval_expression

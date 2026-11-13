@@ -1,0 +1,9 @@
+# Explicit cost convention for the 33 macro recipe
+
+This external survey counts the serialized [33 macro recipe](../nine-seed33-jones-compact-macro-prototype/recipe.json), not the literal Lean expression tree. Its deliberately coarse unit-macro convention assigns one unit to each explicitly written ring `+`, `−`, `×`, power, range-sum and star-sum node across the 45 named definitions; named references are shared, each explicit within-node occurrence is counted, and each sum body is counted once. Bound and exponent arithmetic, all leaves, and construction of seed-dependent coefficient constants are free metadata. This is a finite, reproducible syntax metric, not an arithmetic straight-line-program count or the cost of evaluating the sums and powers.
+
+Under that convention the candidate count is **173 explicit macro operators**: 39 additions, 23 subtractions, 64 multiplications, 44 powers, two range sums and one star sum. There are 45 named definitions. The checked Lean named formula and this external JSON have an independently reviewed transcription comparison, but no Lean-verified JSON evaluator/semantic binding. Thus this exact count is only for the pinned external JSON under this stated convention; it is not a verified operation count for the Lean expression or a numeric equation.
+
+Author no-Lean execution exited 0. Checker SHA-256 `7568cb93ec02e890503ce1f40103b43b493d0f3e93a08389647e8461150d2e06`; result SHA-256 `3263084bb0db85043b0c338c41647228bbc9f1915c0fe82840c559261c99dbd7`; recipe SHA-256 `06154f18e49d5ac3ca49add3a9b8bb03717f14590d2ef14f892d04b7dc3a75b3`. Independent arithmetic/source review is required.
+
+The [independent macro-cost audit](../../reviews/nine-seed33-jones-macro-cost-frontier-independent/) passed. This remains the explicitly defined unit-macro count of the external recipe, not a binary arithmetic circuit count or a Lean-verified JSON binding.

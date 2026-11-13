@@ -1,0 +1,39 @@
+import Natural79Endpoint
+
+/-! Source-only reduction of the decimal equation to four numeric port
+identities. This draft, all imports and those identities are unelaborated. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.Natural79DecimalPortBridgeDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 PRALanguage IPRANativeTheory
+open IPRAFoundationZFCMappedNegation
+open CompactSymbolicKernel CompactSymbolicKernelOpaque CompactSymbolicPorts
+
+/-- Instantiate the literal 79 graph at a specified four-integer tuple. -/
+def expression (beta K low shiftedHigh : ℕ) : Expr (Fin 14) :=
+  (P79NaturalForcedW.graph
+    (fun j => ((![beta,K,low,shiftedHigh] : Fin 4 → ℕ) j : ℤ))).output
+
+/-- Four port identities reduce the desired native endpoint to the existing
+natural79 endpoint. This does not prove any of the port identities or tie
+source syntax to a physical document. -/
+theorem native_equivalence_of_port_equalities
+    (beta K low shiftedHigh : ℕ)
+    (hb : beta = CompactFixedBeta.betaNat)
+    (hk : K = paramKernel rho)
+    (hl : low = lowNat)
+    (hh : shiftedHigh = CompactFixedBeta.betaNat + highNat) :
+    nativeTheory ⊢ IPRAExpressionNative.nativeNoZero
+      (expression beta K low shiftedHigh) 🡘 ∼mappedNativeRefutation embedding := by
+  subst beta
+  subst K
+  subst low
+  subst shiftedHigh
+  simpa [expression, Natural79EndpointDraft.expression,
+    CompactSymbolicModelIff.p, CompactSymbolicPorts.ports] using
+      Natural79EndpointDraft.native_equivalence
+
+end DiophantineConsistency.Natural79DecimalPortBridgeDraft
+#print axioms DiophantineConsistency.Natural79DecimalPortBridgeDraft.native_equivalence_of_port_equalities

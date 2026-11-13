@@ -71,7 +71,7 @@ theorem residual_equiv (p : Fin 4 → ℤ) (v : Fin {parent} → V) (w : Fin {n}
     InternalZero (AdaptiveAQ{parent}Zeros.residuals p i) v ↔
     InternalZero ((AdaptiveAQ{parent}Zeros.residuals p i).subst fill) w := by
   have h := subst_equiv_hetero (AdaptiveAQ{parent}Zeros.residuals p i) (fun i => .var i) fill v w hinputs
-  simpa only [subst_id,InternalZero,splitEval] using equivalent_zero_iff h
+  simpa only [DiophantineConsistency.AdaptiveAQ30Transport.subst_id,InternalZero,splitEval] using equivalent_zero_iff h
 
 theorem extend_zero (p : Fin 4 → ℤ) (v : Fin {n} → V)
     (hz : InternalZero (AdaptiveAQ{n}Literal.literal p) v) :

@@ -1,0 +1,3 @@
+# Independent terminal audit: sign16 row premises
+
+The independent checker exited 0. Author outer session 92126 exited 0; the stage and postflight passed. The audit checks the pinned source and object, logs, direct square-provider guard and overlays. Both theorem reports list propext, Classical.choice and Quot.sound, with one unused-variable warning and no sorryAx. The Lean statements extract inner and signed-Na consequences from staged seed zero while leaving shared evaluations abstract. Representability, window premises, natural lift and bridge remain unproved. No Lean process was rerun in this audit.

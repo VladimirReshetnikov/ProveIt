@@ -1,0 +1,54 @@
+/tmp/nine-sharing-sign14-positive74-object-function-binary-check-20261110/src/DiophantineConsistency/Sign14Positive74ObjectFunctionBinary.lean:20:51: error: unsolved goals
+f : language.Func 2
+a b c d : Term language ℕ
+⊢ ((fun i => (Rew.embSubsts ![a, b, c, d]) (![#0, #2] i)) = ![a, c] ∧
+      (fun i => (Rew.embSubsts ![a, b, c, d]) (![#1, #3] i)) = ![b, d]) ∧
+    (fun i =>
+        (Rew.embSubsts ![a, b, c, d])
+          (![Semiterm.func f fun i => #(Fin.castAdd 2 i), Semiterm.func f fun i => #(i.addNat 2)] i)) =
+      ![Semiterm.func f ![a, b], Semiterm.func f ![c, d]]
+/tmp/nine-sharing-sign14-positive74-object-function-binary-check-20261110/src/DiophantineConsistency/Sign14Positive74ObjectFunctionBinary.lean:21:20: warning: This simp argument is unused:
+  rew_matrix_conj
+
+Hint: Omit it from the simp argument list.
+  simp [sourceBody, r̵e̵w̵_̵m̵a̵t̵r̵i̵x̵_̵c̵o̵n̵j̵,̵ ̵Matrix.conj, Matrix.vecTail, eqAt, Semiformulaᵢ.rewAux, Semiformulaᵢ.rew_rel,
+  ̲  ̲ ̲ ̲Rew.func, Function.comp_def]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/nine-sharing-sign14-positive74-object-function-binary-check-20261110/src/DiophantineConsistency/Sign14Positive74ObjectFunctionBinary.lean:22:4: warning: This simp argument is unused:
+  Semiformulaᵢ.rewAux
+
+Hint: Omit it from the simp argument list.
+  simp [sourceBody, rew_matrix_conj, Matrix.conj, Matrix.vecTail, eqAt, S̵e̵m̵i̵f̵o̵r̵m̵u̵l̵a̵ᵢ̵.̵r̵e̵w̵A̵u̵x̵,̵ ̵Semiformulaᵢ.rew_rel,
+  ̲  ̲ ̲ ̲Rew.func, Function.comp_def]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/nine-sharing-sign14-positive74-object-function-binary-check-20261110/src/DiophantineConsistency/Sign14Positive74ObjectFunctionBinary.lean:22:47: warning: This simp argument is unused:
+  Rew.func
+
+Hint: Omit it from the simp argument list.
+  simp [sourceBody, rew_matrix_conj, Matrix.conj, Matrix.vecTail, eqAt,
+  ̵  ̵ ̵ ̵Semiformulaᵢ.rewAux,
+  ̲  ̲ ̲ ̲Semiformulaᵢ.rew_rel, R̵e̵w̵.̵f̵u̵n̵c̵,̵ ̵Function.comp_def]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/nine-sharing-sign14-positive74-object-function-binary-check-20261110/src/DiophantineConsistency/Sign14Positive74ObjectFunctionBinary.lean:22:57: warning: This simp argument is unused:
+  Function.comp_def
+
+Hint: Omit it from the simp argument list.
+  simp [sourceBody, rew_matrix_conj, Matrix.conj, Matrix.vecTail, eqAt, Semiformulaᵢ.rewAux,
+  ̲  ̲ ̲ ̲Semiformulaᵢ.rew_rel, R̵e̵w̵.̵f̵u̵n̵c̵,̵ ̵F̵u̵n̵c̵t̵i̵o̵n̵.̵c̵o̵m̵p̵_̵d̵e̵f̵]̵R̲e̲w̲.̲f̲u̲n̲c̲]̲
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/nine-sharing-sign14-positive74-object-function-binary-check-20261110/src/DiophantineConsistency/Sign14Positive74ObjectFunctionBinary.lean:28:2: error: Type mismatch: After simplification, term
+  functionOpen f ![a, b, c, d]
+ has type
+  extended nativeTheory ⊢! (app (Rew.embSubsts ![a, b, c, d])) (sourceBody f)
+but is expected to have type
+  extended nativeTheory ⊢! eqAt a c ⋏ eqAt b d ⋏ ⊤ 🡒 eqAt (Semiterm.func f ![a, b]) (Semiterm.func f ![c, d])
+'DiophantineConsistency.Sign14Positive74ObjectFunctionBinary.binary_body' depends on axioms: [propext,
+ sorryAx,
+ Quot.sound]
+'DiophantineConsistency.Sign14Positive74ObjectFunctionBinary.binaryOpen' depends on axioms: [propext,
+ sorryAx,
+ Quot.sound]

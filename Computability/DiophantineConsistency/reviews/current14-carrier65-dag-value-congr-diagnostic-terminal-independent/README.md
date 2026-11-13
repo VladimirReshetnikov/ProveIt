@@ -1,0 +1,5 @@
+# Independent terminal audit
+
+PASS. Author-observed outer session 1035 exited 0; one stage and postflight passed. The actual `value_eq_carrier` theorem equates the listed DAG evaluator with `Carrier65.value` for every commutative ring and arbitrary ports and inputs, and reports `[propext]`. Three linter warnings identify unused `mul_one` and an unreachable/no-op `congr 1`; there is no `sorryAx`. The frozen/output state, source/object, both logs, direct core/Carrier65 routes, overlays and sampled guards were checked; the numeric outer receipt does not itself hash state. No Lean replay was performed.
+
+The core provider is the successfully compiled count/liveness child of the independently audited failed original parent, not a successful original parent. Combined with that child's count/liveness, this provides an explicit 65-binary-operation circuit for `Carrier65.value` (16 additions, 12 subtractions, 37 multiplications) under the stated convention. The historical Carrier65 object remains a point pin with inherited ancestry; minimality, degree and formal external PDF/file interpretation are separate.

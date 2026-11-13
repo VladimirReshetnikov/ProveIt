@@ -1,0 +1,324 @@
+{
+  "axiom_reports": {
+    "DiophantineConsistency.DirectScalarArithmetic": [
+      "DiophantineConsistency.DirectScalar.ifEq"
+    ],
+    "DiophantineConsistency.SelectedExternalCheckerComparison": [
+      "DiophantineConsistency.SelectedExternalCheckerComparison.source_nat_iff_no_annotated_certificate",
+      "DiophantineConsistency.SelectedExternalCheckerComparison.explicit_checker_primrec_and_semantics"
+    ]
+  },
+  "order": [
+    "DiophantineConsistency.AnnotatedProofChecker",
+    "DiophantineConsistency.AnnotatedProofCode",
+    "DiophantineConsistency.ScalarPRCode",
+    "DiophantineConsistency.DirectScalarArithmetic",
+    "DiophantineConsistency.ScalarPROptimizer",
+    "DiophantineConsistency.AnnotatedCodeArithmetic",
+    "DiophantineConsistency.AnnotatedRename",
+    "DiophantineConsistency.AnnotatedRenameCode",
+    "DiophantineConsistency.AnnotatedRenameArithmetic",
+    "DiophantineConsistency.AnnotatedRenameLocal",
+    "DiophantineConsistency.NatIterate",
+    "DiophantineConsistency.AnnotatedRenameScan",
+    "DiophantineConsistency.AnnotatedRenameLocalPR",
+    "DiophantineConsistency.AnnotatedRenameScanPR",
+    "DiophantineConsistency.AnnotatedSchemaMaps",
+    "DiophantineConsistency.AnnotatedClosure",
+    "DiophantineConsistency.AnnotatedBound",
+    "DiophantineConsistency.AnnotatedBoundLocal",
+    "DiophantineConsistency.AnnotatedBoundScan",
+    "DiophantineConsistency.AnnotatedSchema",
+    "DiophantineConsistency.AnnotatedReplacement",
+    "DiophantineConsistency.ArithmeticFiniteSwitch",
+    "DiophantineConsistency.AnnotatedAxiomDispatch",
+    "DiophantineConsistency.AnnotatedParents",
+    "DiophantineConsistency.AnnotatedContext",
+    "DiophantineConsistency.AnnotatedContextPR",
+    "DiophantineConsistency.AnnotatedRuleCoordinates",
+    "DiophantineConsistency.AnnotatedRuleSchedules",
+    "DiophantineConsistency.AnnotatedContextLookup",
+    "DiophantineConsistency.AnnotatedRuleSide",
+    "DiophantineConsistency.AnnotatedLine",
+    "DiophantineConsistency.AnnotatedAxiomContext",
+    "DiophantineConsistency.AnnotatedLineScan",
+    "DiophantineConsistency.AnnotatedRefutationPR",
+    "DiophantineConsistency.SelectedExternalCheckerComparison"
+  ],
+  "parent_manifest_sha256": "63b846158674d41beeaa99843d92008465f8e0fe5c45bb9e1fed4b78e1a2ab48",
+  "scope": "Historical author-only source extension: standard-natural metatheoretic checker comparison; not an internal iPRA proof or paired replay.",
+  "source_commit": "07d55c8b2b0921440cce8b38ff96182973407679",
+  "sources": {
+    "DiophantineConsistency.AnnotatedAxiomContext": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedAxiomDispatch",
+        "DiophantineConsistency.AnnotatedLine"
+      ],
+      "sha256": "85e4984e3ec49fc69afa343799377017b9c9fafce163c0b050267a721bf7a2d9",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedAxiomContext.lean"
+    },
+    "DiophantineConsistency.AnnotatedAxiomDispatch": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedReplacement",
+        "DiophantineConsistency.ArithmeticFiniteSwitch",
+        "Mathlib.Tactic.FinCases"
+      ],
+      "sha256": "0ecec9d9223d1f73822546495691cf24abdd3c0158cb007e3a55ec8f21e9f1ab",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedAxiomDispatch.lean"
+    },
+    "DiophantineConsistency.AnnotatedBound": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedClosure",
+        "DiophantineConsistency.AnnotatedRenameScan"
+      ],
+      "sha256": "6efd5239587084571682da9c8f89a2550983cb215953400a9a19010027760bd6",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedBound.lean"
+    },
+    "DiophantineConsistency.AnnotatedBoundLocal": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedBound",
+        "DiophantineConsistency.AnnotatedRenameLocalPR"
+      ],
+      "sha256": "4dd12d3261805173e63dc3368676fadaf88c47c34a88f77bf2535f88a2768ca5",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedBoundLocal.lean"
+    },
+    "DiophantineConsistency.AnnotatedBoundScan": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedBoundLocal",
+        "DiophantineConsistency.AnnotatedRenameScanPR",
+        "DiophantineConsistency.NatIterate"
+      ],
+      "sha256": "c8085384371878ae54edbb2aed400b7a290e9652b748c138bfe6debb1be6ec47",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedBoundScan.lean"
+    },
+    "DiophantineConsistency.AnnotatedClosure": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRenameArithmetic"
+      ],
+      "sha256": "b57ceb87516be3ff3a2c715ddf1fecd190031010d93512ca7b5fdaeb0189b641",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedClosure.lean"
+    },
+    "DiophantineConsistency.AnnotatedCodeArithmetic": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedProofCode",
+        "DiophantineConsistency.DirectScalarArithmetic",
+        "DiophantineConsistency.ScalarPROptimizer"
+      ],
+      "sha256": "7f79e4a88aba24c6107698161de0eb285091809f497e5f889063aecc94b84d35",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedCodeArithmetic.lean"
+    },
+    "DiophantineConsistency.AnnotatedContext": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedSchemaMaps",
+        "DiophantineConsistency.NatIterate"
+      ],
+      "sha256": "1e54fb2322419574c8905681716512e326efd544908e5aa292e9fcb41a3d2a0c",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedContext.lean"
+    },
+    "DiophantineConsistency.AnnotatedContextLookup": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedContextPR"
+      ],
+      "sha256": "d91362be3b4d64f0e1a8115e85f6b1ea144282be6ab667c153d04f16fc5b35cb",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedContextLookup.lean"
+    },
+    "DiophantineConsistency.AnnotatedContextPR": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedContext"
+      ],
+      "sha256": "b4225674731c3d03ec0d7d80205abbb7573e6aca430a88ec7b36e45735897ab9",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedContextPR.lean"
+    },
+    "DiophantineConsistency.AnnotatedLine": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedParents",
+        "DiophantineConsistency.AnnotatedRuleSide"
+      ],
+      "sha256": "41942411bc07eab29d2826fe069d4f59c50036ff9fd111ebbd0b24e1d89a967c",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedLine.lean"
+    },
+    "DiophantineConsistency.AnnotatedLineScan": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedLine",
+        "DiophantineConsistency.NatIterate"
+      ],
+      "sha256": "ba88241e9d5f05986cba277ecadc8cbe371369603d8792a5cac82cba391ad224",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedLineScan.lean"
+    },
+    "DiophantineConsistency.AnnotatedParents": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedSchemaMaps"
+      ],
+      "sha256": "52f9755df96bd59fe8ca54f8ec8fc051bf400c725ff348d6cb2a6dc8c0e40e79",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedParents.lean"
+    },
+    "DiophantineConsistency.AnnotatedProofChecker": {
+      "imports": [
+        "BoundedZFCConsistency.Choice",
+        "FirstOrder.Completeness"
+      ],
+      "sha256": "63e45a8c26813165115efa67623a6774bc11c9227e02300f793cdb347367b267",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofChecker.lean"
+    },
+    "DiophantineConsistency.AnnotatedProofCode": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedProofChecker",
+        "Mathlib.Data.Nat.Pairing"
+      ],
+      "sha256": "18393d6c6f2f59630b72143bc6b705377ac1ba51d1daf6f872d6f0613f712dc6",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedProofCode.lean"
+    },
+    "DiophantineConsistency.AnnotatedRefutationPR": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedAxiomContext",
+        "DiophantineConsistency.AnnotatedLineScan"
+      ],
+      "sha256": "9cc2acf628f9f47e2ac82b9725366ae811c7ace233e9f4a0bdcd8f039501b010",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRefutationPR.lean"
+    },
+    "DiophantineConsistency.AnnotatedRename": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedCodeArithmetic"
+      ],
+      "sha256": "dd58549a67160c470f3eb03acad2120abc71c5728a17ece43f5b779d92d7a95f",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRename.lean"
+    },
+    "DiophantineConsistency.AnnotatedRenameArithmetic": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRenameCode"
+      ],
+      "sha256": "0ece88c11fabd2326385963c9b782d76f91ec61ac6a31f839042f855ec6e34e0",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameArithmetic.lean"
+    },
+    "DiophantineConsistency.AnnotatedRenameCode": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRename"
+      ],
+      "sha256": "ee0682dd2320d2afd91cf69fbf20de2b2aca4bef02cbd226c8a7ed9500a3c3f2",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameCode.lean"
+    },
+    "DiophantineConsistency.AnnotatedRenameLocal": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRenameArithmetic"
+      ],
+      "sha256": "d297096154cdf2b5d06845401a36fc648a028dc2165a26a36eaa607f70383a54",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameLocal.lean"
+    },
+    "DiophantineConsistency.AnnotatedRenameLocalPR": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRenameLocal"
+      ],
+      "sha256": "13d1804e9ac4a574d258e9f8a9c116d8931fa0a9bf3510ec2b650d4542f452bd",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameLocalPR.lean"
+    },
+    "DiophantineConsistency.AnnotatedRenameScan": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRenameLocal",
+        "DiophantineConsistency.NatIterate"
+      ],
+      "sha256": "4399c43e86a5cbe0345e024b186297d8348350ea61466b3169c2399b494c0e4b",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameScan.lean"
+    },
+    "DiophantineConsistency.AnnotatedRenameScanPR": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRenameScan",
+        "DiophantineConsistency.AnnotatedRenameLocalPR"
+      ],
+      "sha256": "c265a49c1d62a73c4779539b5f5b31ae0cbf6d64010bccfa944abb0ab85c01d8",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRenameScanPR.lean"
+    },
+    "DiophantineConsistency.AnnotatedReplacement": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedSchema"
+      ],
+      "sha256": "ebdb37f34a46de1855059da0248a229954e90cafd68beeb67e81a26cfead40fe",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedReplacement.lean"
+    },
+    "DiophantineConsistency.AnnotatedRuleCoordinates": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedContextPR",
+        "DiophantineConsistency.AnnotatedBoundScan"
+      ],
+      "sha256": "4d533be397df1f11e206989b1b113e110e444817a430fcff131af68148711477",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRuleCoordinates.lean"
+    },
+    "DiophantineConsistency.AnnotatedRuleSchedules": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRuleCoordinates",
+        "DiophantineConsistency.ArithmeticFiniteSwitch",
+        "Mathlib.Tactic.FinCases"
+      ],
+      "sha256": "e6dd19a55018a64f5dbf9b1be4699876f58394d1c1eb804876b8a07d1effb43f",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRuleSchedules.lean"
+    },
+    "DiophantineConsistency.AnnotatedRuleSide": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRuleSchedules",
+        "DiophantineConsistency.AnnotatedContextLookup"
+      ],
+      "sha256": "65cd0cfd2bbc44f77bca5899048088ef5d17c92a232113a4f1934556ca6b95cb",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedRuleSide.lean"
+    },
+    "DiophantineConsistency.AnnotatedSchema": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedSchemaMaps",
+        "DiophantineConsistency.AnnotatedBoundScan"
+      ],
+      "sha256": "cd752cd8a70bdc633ee0d70a18c9b927c20752700dbc127c039f2e9d74d4833c",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedSchema.lean"
+    },
+    "DiophantineConsistency.AnnotatedSchemaMaps": {
+      "imports": [
+        "DiophantineConsistency.AnnotatedRenameScanPR"
+      ],
+      "sha256": "4ffa3035573f24b10aa7b5a04f18067cc4200c0017f5b033cbe802c0f06c7138",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/AnnotatedSchemaMaps.lean"
+    },
+    "DiophantineConsistency.ArithmeticFiniteSwitch": {
+      "imports": [
+        "DiophantineConsistency.DirectScalarArithmetic"
+      ],
+      "sha256": "8c969a86d3c526c9800002ffcf773895569fdcdaca1fc7aca4397d03a9b39836",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ArithmeticFiniteSwitch.lean"
+    },
+    "DiophantineConsistency.DirectScalarArithmetic": {
+      "imports": [
+        "DiophantineConsistency.ScalarPRCode"
+      ],
+      "sha256": "ac1cc0cc57eb9c75983ef8dfc53a0b4394d982191c482463c0ce0660bab6aef3",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/DirectScalarArithmetic.lean"
+    },
+    "DiophantineConsistency.NatIterate": {
+      "imports": [
+        "Init"
+      ],
+      "sha256": "c52148b71e86cc8f8713889f92bc321160292cc9ab1b6237ae417fc8f847fb2a",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/NatIterate.lean"
+    },
+    "DiophantineConsistency.ScalarPRCode": {
+      "imports": [
+        "Mathlib.Computability.Primrec.Basic"
+      ],
+      "sha256": "dc54fa803dc6719c1dc8d44513dc6de3d74d4836def43144553d12455c5bf8f8",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ScalarPRCode.lean"
+    },
+    "DiophantineConsistency.ScalarPROptimizer": {
+      "imports": [
+        "DiophantineConsistency.ScalarPRCode",
+        "Mathlib.Tactic.SplitIfs",
+        "Mathlib.Tactic.Linarith"
+      ],
+      "sha256": "7242b3c45d43a79c094733187bb6df7b546963e26f654e6432647db067b211e7",
+      "workspace_path": "Computability/DiophantineConsistency/Lean/DiophantineConsistency/ScalarPROptimizer.lean"
+    },
+    "DiophantineConsistency.SelectedExternalCheckerComparison": {
+      "imports": [
+        "DiophantineConsistency.FoundationZFCConsistencyNat",
+        "DiophantineConsistency.AnnotatedRefutationPR"
+      ],
+      "sha256": "efe358aeb33817193409da013b7ae4b5bb06352cc56570917e3e38587628d53b",
+      "workspace_path": "Computability/DiophantineConsistency/research/ipra-selected-native-bit/draft-src/SelectedExternalCheckerComparison.lean"
+    }
+  },
+  "status": "FROZEN_ADDITIONS"
+}

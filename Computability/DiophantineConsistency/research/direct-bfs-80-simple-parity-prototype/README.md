@@ -1,0 +1,7 @@
+# Direct-BFS 80-graph anchor-column parity
+
+`DirectBFS80SimpleParity.graph_simple_parity` derives the two anchor-column carry parities and incoming-carry bounds from a positive 80-graph zero at the four explicit symbolic ports, with the direct-BFS K and direct selector family. It combines the direct raw parity with the shared low/high mask facts and reconciles radix witnesses by internal exponential injectivity; the original-K selector family is not used.
+
+The guarded author check `observations/directbfs80parity-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`; object `/tmp/direct-bfs-80-parity-kxzxl8ov/DirectBFS80SimpleParity.olean` SHA-256 `e25c0200223427c421a82029ebedb660e95eb3ecb8e413d92bce1e2904901b7a`. Selected inputs/resources are pinned; inherited source/object, package and dynamic ancestry are unverified and no independent Lean replay is claimed. Selected origin, temporal alignment, machine/color conjugacy, converse, iPRA and formal JSON/file binding remain open.
+
+After correcting the coefficient-decoder direct-import pin, frozen `run-v2.py` rebuilt this unchanged source against the new coefficient, raw-column and raw-parity producers: `observations/directbfs80parity-attempt02/` passed at `/tmp/direct-bfs-80-parity-wthaoi17/DirectBFS80SimpleParity.olean`, with bit-identical object SHA `e25c0200223427c421a82029ebedb660e95eb3ecb8e413d92bce1e2904901b7a`. The first receipt remains preserved.

@@ -1,0 +1,3 @@
+# Independent source review: n6 odd ordinate 9 or 11
+
+Source-only PASS `be7f7617feab4a8680f36ccff67966ed06f57447fa4f3a75ebc9500890bbd202`; no Lean invocation. For the same p/v with beta≥15, all positive coordinates, actual graph zero, q≥2³⁰ and supplied first index6 coordinate, strict monotonicity identifies the first-index window witness with 6, so 6<r<12. The checked n≥5/r7 exclusion removes 7; even residues remove 8 and 10, leaving 9 or 11 in the discrete model. The output is the same graph c=y9 or c=y11, not n6 exclusion or fixed-port/guard/endpoint. Numeral tactics, casts and provider compatibility remain untested.

@@ -1,0 +1,120 @@
+/tmp/tenpositive-80cellshift-p8wu5xyu/Direct80CellShift.lean:86:8: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  cyc n 2195 1
+in the target expression
+  ↑(p 1) = kernelBand position 4393 + kernelBand position 5495 + TwoBand.bareKernel
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hp0 : p 0 = betaNat
+hp1✝ : p 1 = paramKernel rho
+hp2✝ : p 2 = lowNat
+hp3 : p 3 = betaNat + highNat
+hv : ∀ (j : Fin 10), 0 < v j
+hz : InternalZero (graph (integerPorts p)).output v
+N : V
+hN : 0 < N
+hJ : v 0 = rep (67 * 8807) N
+hq : q p v = Exp.exp (67 * 8807 * N)
+hle : 67 * 8807 * N ≤ rankNat p v
+hw : v 5 = Exp.exp (rankNat p v - 67 * 8807 * N)
+hcarry :
+  CarryInput 67 (8807 * N) (v 1) 1 GenericBandCarryFamily.cap
+    (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+    (GenericBandCarryFamily.word (8807 * N) (Cnat p v) (bandOffsets position)
+      (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)))
+haligned : (rankNat p v - 67 * (8807 * N)) % 67 = 0
+_hNa : 0 < N
+_hJa : v 0 = rep (67 * 8807) N
+hqa : q p v = Exp.exp (67 * 8807 * N)
+_hlea : 67 * 8807 * N ≤ rankNat p v
+_hwa : v 5 = Exp.exp (rankNat p v - 67 * 8807 * N)
+_hcarrya :
+  CarryInput 67 (8807 * N) (v 1) 1 GenericBandCarryFamily.cap
+    (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+    (GenericBandCarryFamily.word (8807 * N) (Cnat p v) (bandOffsets position)
+      (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)))
+hpar :
+  ∀ t < 8807 * N,
+    0 < t →
+      t % 8807 = 2195 ∨ t % 8807 = 3296 →
+        carry 67 (8807 * N) (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+              (GenericBandCarryFamily.word (8807 * N) (Cnat p v) (bandOffsets position)
+                (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)))
+              (cyc (8807 * N) t 1) ≤
+            1 ∧
+          (t % 8807 = 2195 →
+              (dig 67 (Cnat p v) (cyc (8807 * N) t 1100) +
+                      dig 67 (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)) t +
+                    carry 67 (8807 * N) (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+                      (GenericBandCarryFamily.word (8807 * N) (Cnat p v) (bandOffsets position)
+                        (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)))
+                      (cyc (8807 * N) t 1)) %
+                  2 =
+                0) ∧
+            (t % 8807 = 3296 →
+              (dig 67 (Cnat p v) (cyc (8807 * N) t 2201) +
+                      dig 67 (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)) t +
+                    carry 67 (8807 * N) (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+                      (GenericBandCarryFamily.word (8807 * N) (Cnat p v) (bandOffsets position)
+                        (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)))
+                      (cyc (8807 * N) t 1)) %
+                  2 =
+                0)
+_h0 : dig 67 (Cnat p v) 0 = 1
+_hN' : 0 < N
+_hJ' : v 0 = rep (67 * 8807) N
+hq' : q p v = Exp.exp (67 * 8807 * N)
+_hle' : 67 * 8807 * N ≤ rankNat p v
+_hw' : v 5 = Exp.exp (rankNat p v - 67 * 8807 * N)
+_hcarry' :
+  CarryInput 67 (8807 * N) (v 1) 1 GenericBandCarryFamily.cap
+    (GenericBandCarryFamily.coefficient fun x => ↑(alignedCoeff selectors copies x))
+    (GenericBandCarryFamily.word (8807 * N) (Cnat p v) (bandOffsets position)
+      (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)))
+_hzero : ∀ j < 8807 * N, ¬Bad (j % 8807) → dig 67 (Cnat p v) j = 0
+hbool : ∀ j < 8807 * N, j % 8807 ≠ 1063 → dig 67 (Cnat p v) j ≤ 1
+hocc : FixedGraphSelectedOccupied.Occupied (Cnat p v)
+h1095 : dig 67 (Cnat p v) 1095 = 1
+n : V := 8807 * N
+E : V := rankNat p v - 67 * n
+hn : 0 < n
+hnge : 8807 ≤ n
+ht1 : 2195 < n
+ht2 : 3296 < n
+hphase1 : 2195 % 8807 = 2195
+hphase2 : 3296 % 8807 = 3296
+hc1 : cyc n 2195 1100 = 1095
+hc2 : cyc n 3296 2201 = 1095
+hpar1 :
+  (1 + dig 67 (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)) 2195 +
+        carry 67 (8807 * N) (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+          (GenericBandCarryFamily.word (8807 * N) (Cnat p v) (bandOffsets position)
+            (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)))
+          (cyc (8807 * N) 2195 1)) %
+      2 =
+    0
+hpar2 :
+  (1 + dig 67 (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)) 3296 +
+        carry 67 (8807 * N) (GenericBandCarryFamily.coefficient fun j => ↑(alignedCoeff selectors copies j))
+          (GenericBandCarryFamily.word (8807 * N) (Cnat p v) (bandOffsets position)
+            (temporalWord (8807 * N) (rankNat p v - 67 * (8807 * N)) (Cnat p v)))
+          (cyc (8807 * N) 3296 1)) %
+      2 =
+    0
+hp1 : cyc n 2195 1 = 2194
+hp2 : cyc n 3296 1 = 3295
+hqexp : q p v = Exp.exp (67 * n)
+hC : Cnat p v < Exp.exp (67 * n)
+⊢ ↑(p 1) = kernelBand position 4393 + kernelBand position 5495 + TwoBand.bareKernel
+/tmp/tenpositive-80cellshift-p8wu5xyu/Direct80CellShift.lean:89:62: error: Application type mismatch: The argument
+  hp2
+has type
+  Eq.{u_1 + 1} (cyc n 3296 1) 3295
+but is expected to have type
+  Eq.{1} (p 2) lowNat
+in the application
+  Direct80BandTemporal.graph_band_temporal p v position hp0 hp2
+'Direct80CellShift.graph_cell_shift' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

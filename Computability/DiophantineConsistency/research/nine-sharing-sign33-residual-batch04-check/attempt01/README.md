@@ -1,0 +1,7 @@
+# Sign33 gap, tau and second norm checked
+
+Author-observed outer session `65291` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `c5bf9844cfb813dcabdcadde7438970c97d72bfd37d3081da668f0356a67fa67`; before and after provider surveys both hash to `9dbd8f5b4ec20b051457792a6534a4705acddaf9ee1e193e500a7ad259f37720`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ResidualBatch04` compiled in 3.703 seconds; object SHA-256 `ebfab8778a83272454b7aa164b22e02d5aad1070dcab389001854a41d3adb829` at `/tmp/nine-sharing-sign33-residual-batch04-check-20261106/lib/DiophantineConsistency/Sign33ResidualBatch04.olean`, compile log `044bafa25e351cfc8194171211037c86a6122ded0b4927c20969b6c68dd6c4b4`. All four axiom reports list `[propext, Classical.choice, Quot.sound]`. One unused-simp linter warning was retained. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,157,678,592 bytes and minimum sampled available host memory was 18,995,851,264 bytes; sampling has the stated limitations.
+
+Under the explicitly stated p0/p2/p3 casts, seed zero implies the gap/tau signed cuts and second norm on the same full valuation. No remaining residual/static identities, chronological graph replay, Lean proof of external JSON binding, source-zero bridge or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README, including the source-header erratum.

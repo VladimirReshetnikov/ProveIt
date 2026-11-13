@@ -1,0 +1,73 @@
+import ZetaZeroCompactParity
+import EtaZetaNaturalGraphStrongAux
+import EtaZetaZeroGraphObstruction
+
+/-! Proposed changed-graph compact zeta forcing. The complete source chain
+is unelaborated; no Lean, provider, byte/PDF or endpoint result is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ZetaZeroCompactGraphDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open EtaZetaNaturalUnitGraphDraft EtaZetaNaturalXPositiveDraft EtaZetaNaturalGapRankDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Proposed parity branch for the same actual changed graph, eta>0 and
+zeta=0. Strong and auxiliary signed equations are bound from that graph. -/
+theorem positive_eta_branch (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v)
+    (hzeta : v 10=0) (heta : 0<v 9) : False := by
+  let p := Residue90CompactPortBoundsDraft.ports K
+  have hJ := EtaZetaNaturalJPositiveDraft.J_positive p v hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hkeq : k v=v 9 := by simp [k,hzeta]
+  have hk : 0<k v := by rw [hkeq]; exact heta
+  have hk1 : 1≤k v := pos_iff_one_le.mp hk
+  have hgap := EtaZetaNaturalGapRankDraft.gap p v hz hbeta hk1
+  have hFq : v 1+1≤q p v := le_trans (by simp) (le_of_lt hgap)
+  obtain ⟨_,_,hs,_⟩ := EtaZetaNaturalUnitBridgeDraft.signed_norms
+    (EtaZetaNaturalGraphNormsDraft.pp p) v hz
+  rw [EtaZetaNaturalGraphStrongAuxDraft.field_I,EtaZetaNaturalGraphNormsDraft.field_delta,
+    EtaZetaNaturalGraphStrongAuxDraft.field_f] at hs
+  have hstrong : let a:=X p v*Y p v+Y p v; let D:=(3+4*a)+a*a; let c:=k v+Y p v*k v
+      (ι (c*c*(v 4+1)):DiffRing V)*ι (c*c*(v 4+1))=
+        ι D*(ι (v 3)*ι (v 3)-1) := by
+    simpa only [EtaZetaNaturalGraphStrongAuxDraft.i,EtaZetaNaturalGraphNormsDraft.delta,
+      EtaZetaNaturalGraphNormsDraft.a,EtaZetaNaturalGraphNormsDraft.X,X,c,hkeq] using hs
+  have ha := EtaZetaNaturalGraphStrongAuxDraft.direct_auxiliary p v hz hFq
+  have haux : let a:=X p v*Y p v+Y p v; let D:=(3+4*a)+a*a; let c:=k v+Y p v*k v
+      let z:DiffRing V:=ι (v 3*v 3*((v 5+1)*c))-ι (v 3*v 3*rank p v+c)
+      (ι (v 11):DiffRing V)*ι (v 11)-ι D*(ι (v 3)*ι (v 3)-1)*
+        (ι (v 11)*ι (v 11)-z*z)=1 := by
+    simpa only [EtaZetaNaturalGraphStrongAuxDraft.T,EtaZetaNaturalGraphNormsDraft.delta,
+      EtaZetaNaturalGraphNormsDraft.a,EtaZetaNaturalGraphNormsDraft.X,X,c,hkeq] using ha
+  exact ZetaZeroCompactParityDraft.zeta_zero_of_represented_factors K v hz hzeta heta hstrong haux
+
+/-- Split eta=0 from eta>0; the former uses the signed main-norm modulus
+obstruction and the latter the proposed exact-index parity boundary. -/
+theorem zeta_zero_impossible (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v)
+    (hzeta : v 10=0) : False := by
+  by_cases heta : v 9=0
+  · let p := Residue90CompactPortBoundsDraft.ports K
+    have hJ := EtaZetaNaturalJPositiveDraft.J_positive p v hz
+    obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+    have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+    have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+    exact EtaZetaZeroGraphObstructionDraft.both_zero_impossible p v hz hbeta heta hzeta
+  · exact positive_eta_branch K v hz hzeta (pos_iff_ne_zero.mpr heta)
+
+theorem zeta_positive (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (Residue90CompactPortBoundsDraft.ports K j:ℤ))).output v) :
+    0<v 10 := by
+  by_contra hn
+  have hzeta : v 10=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le _)
+  exact zeta_zero_impossible K v hz hzeta
+end DiophantineConsistency.ZetaZeroCompactGraphDraft
+#print axioms DiophantineConsistency.ZetaZeroCompactGraphDraft.zeta_positive

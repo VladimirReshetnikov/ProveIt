@@ -1,0 +1,3 @@
+# Sign28 remaining unaffected residuals: source draft
+
+These two uncompiled modules propose q³ and thirteen remaining residual reindexing identities using the three-cut lift, plus exact old/new row links. Their old expressions use none of the three eliminated sign31 coordinates 16, 23 or 30, so the identities need no beta cast. `check.py` checks the copied row texts/positions and absence of those old coordinates; its result is source-only and does not check Lean proofs. The first three-cut module family is a future provider, and no guard runner or compiled object for it is assumed here. Full zero-set assembly and reverse coordinate recovery remain open.

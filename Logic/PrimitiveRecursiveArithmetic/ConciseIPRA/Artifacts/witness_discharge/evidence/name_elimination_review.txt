@@ -1,0 +1,82 @@
+INDEPENDENT REVIEW OF ROOT'S NAME-ELIMINATION FUSION
+
+Pinned comparison: 0ebd0c6b358f38bb0ad2883faf775421599c8aae.
+Scope: all filed ConciseIPRA Research papers and six incoming packages.
+
+Rule under review (terms and substitutions fully computation-normalized):
+  Gamma |- D_{x,y} B(x,y)
+  Gamma, [B(b,0); y.B(b,y)] |- b=t
+  Gamma, [B(b,0); y.B(b,y)] |- F
+  ------------------------------------------------ NameE
+  Gamma |- NF(F[t/b])
+where b is fresh for Gamma, the major matrix's passive parameters, and
+the resulting normalized conclusion. The target t may contain b;
+substitution is simultaneous, and inserted copies of t are not traversed.
+
+Soundness:
+  Ordinary DE opens the existential witness b and its conditional closure.
+  Actual equality gives F -> F[t/b] from b=t. Computation normalization is
+  provable equality, so it preserves the formula. The final b-free condition
+  permits existential discharge. Even t=t(b) is sound: the inserted result
+  is proved under b=t(b), then must be independent of b before discharge.
+
+Ordinary DE:
+  Choose t=b, supply Refl(b), and use a b-free F. No substitution principle
+  is required in the derivation; NameE's action is identity here.
+
+Noncircular recovery order:
+  1. DE as above.
+  2. Numerical cases for arbitrary formulas, using a dummy existential
+     coordinate and the nonzero literal witness 1. This always selects the
+     case introduction and is independent of equality transport.
+  3. Recover one-term equality transport using the atomic gated packet below.
+  4. Recover full formula transport by induction on formula structure. In
+     its D case, introduce at a newly opened witness w, a syntactic variable,
+     so primitive case introduction is available without any repair at 0.
+  5. Recover case introduction at witness 0 using a fresh alias b=0, formula
+     transport, introduction at b, and NameE to discharge the alias.
+  6. Compare with the inherited full-normal native calculus, accounting for
+     canonical normal forms and using its proved raw/normal round trips.
+
+Atomic packet (no hidden equality reasoning in construction):
+  Let C(v,a,b)=NF(I(v,a;u.b)). Let p toggle 0/1 by initialized iteration,
+  with p(1)=1 and p(2)=0. Set
+    B(x,y) = C(y,0,C(p(y),x,h(x)))
+             = C(y,0,C(p(y),t,r)).
+  Given s=t and h(s)=r, numerical cases establish the inner selector equality
+  for every control. Hence B(s,Sz) follows and ignores whichever local
+  assumption Intro supplies. Intro at witness s therefore derives D B even
+  when s is literally 0 and selects progress mode. The zero base of B is
+  0=0. Under the opened clause, Use at 1 yields h(b)=r and Use at 2 yields
+  b=t. NameE with F=h(b)=r concludes h(t)=r.
+  Thus ordinary uncrossed one-term transport is derived. Symmetry and
+  transitivity follow using the identity template and reflexivity.
+
+Case-repair packet:
+  D_{x,y}(C(y,0,x)=0) is introduced at 0 by a reflexive successor premise,
+  ignoring the local induction hypothesis. Opening and Use at 1 give b=0.
+  Convert the assumed B(b,0) to B(0,0), apply the old case branch, convert
+  B(0,Sz) to B(b,Sz), and introduce at nonliteral witness b. The resulting
+  D B contains no b, and NameE discharges using b=0 (or ordinary DE).
+
+Implementation cautions:
+  - Check the final normalized goal at the old scope. A syntactically
+    well-formed branch formula can still contain the fresh existential name.
+  - Validate the equality premise as b=t, not merely an arbitrary equation.
+  - Do not recursively substitute within the inserted t, particularly t=b.
+  - If using a supplied bound-variable template F to reuse opening, validate
+    F's scope independently before normalizing its instances. Invalid syntax
+    in a zero iterator or erased successor branch must not evade validation.
+  - If t may contain b, checking t at the old scope is too restrictive and
+    would prohibit the ordinary-DE derivation t=b. Check at extended scope.
+  - Full normalization is part of the trusted specification. Its work is
+    counted in source metrics and its inherited termination/coherence proof
+    is cited; arithmetic computation has not disappeared as a principle.
+
+Novelty boundary:
+  The incoming variable_substitution calculus has separate VSub and E.
+  Full-normalization retains separate Tr and DE. Fresh naming/alias methods,
+  full normalization, and Eq/D clauses are inherited. The proposed fusion of
+  equality substitution with existential discharge was not found in the
+  inspected sources. This is only a scoped repository comparison, not a
+  priority assertion for the general proof-theoretic idea.

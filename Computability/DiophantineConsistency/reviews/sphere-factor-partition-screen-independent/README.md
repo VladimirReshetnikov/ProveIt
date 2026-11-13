@@ -1,0 +1,11 @@
+# Independent review: five-factor sphere partition screen
+
+The checker independently enumerates the five-factor set partitions using restricted-growth strings, obtaining exactly 52 distinct partitions and block-count frequencies 1, 15, 25, 10 and 1. It matches the author's complete optimum-partition sets, not just the optimum numbers. The 62-row prefix is exactly the backward-reachable union of all five factors.
+
+For `k` blocks, the specified unshared construction uses `62 + (5−k) + k + 1 + (k−1) + [k>1]` binary operations: prefix, within-block products, one square per block, one subtraction inside the transport block, additions, and the optional final subtraction. In particular the single-block construction has `62+4+1+1=68` operations; subtracting zero at the end is omitted. The checked block-count profiles `(operations, best degree)` are `(68,212)`, `(70,108)`, `(71,80)`, `(72,68)` and `(73,68)`.
+
+The independent checker obtains exact fixed-byte factor degrees `P=22`, `Q=18`, `U=30`, `W=2`, `Z=34` from syntactic upper bounds and nonzero leading coefficients of their all-witnesses-`t` specializations modulo 1,000,000,007. The upper bound for Q uses the explicit main-norm cancellation recorded in the [sphere review](../current2011-spheres-fresh-base-independent/README.md). Four compressed and raw port payloads are hash-checked. For each block, product degree is the sum of its nonzero factor degrees. The leading component of the whole construction is a nonempty sum of squares of real homogeneous polynomials of maximal degree; it cannot vanish identically. The transport subtraction and the final constant are lower degree. This justifies the reported exact degree formula for these fixed-byte polynomials.
+
+The arithmetic screen is conditional on the specified 62-row prefix, unshared partition construction and operation model. It does **not** prove that any resulting equation has the required zero set, that the numeric bytes are formally equal to Lean ports, or that fewer operations are impossible with different sharing, identities, witness maps or constructions. No Lean process was run.
+
+SHA-256: `check.py` `c1f9846f6ef6851a1a49e0f91548886b424be940565656996fa231c1dc3482da`; `result.json` `2b2882846e575296f1ebb30bec1840279eb288140081054fcc1956fc50635d31`.

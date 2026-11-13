@@ -1,0 +1,9 @@
+# Independent review: historical rational-66 / integer-106 pair
+
+The checked Lean theorem has two conjuncts. The first is an external iff between existence of strictly positive integer zeros of the fixed rational-leaf 66-row evaluator and of the 67/106 integer syntax, using the same historical port tuple; its cited `actual_positive_zero_iff` is derived pointwise for the same valuation. The second states that the repository's standard iPRA derives the equivalence between the positive-shift no-zero sentence for that **integer syntax** and intuitionistic negation of the mapped native ZFC-refutation predicate. It does not provide an internal rational-leaf sentence or a 66-operation integer-leaf equation. It also does not prove either side of the biconditional on its own.
+
+The read-only `check.py` exited 0: it rechecked all 672 recorded before/after direct, stage-078 and stage-079 producer slots, including absence and current symlink targets; the exact 66/67, actual-port and syntax providers; the output/log and allowed axiom report; and the separately observed outer session 40786 exit 0. The receipt records Lean child exit 0 and no sampled resource stop. The recorded stage-079 syntax input and the historical `ModelCarrierSyntax.olean` output both have SHA-256 `9eaaefb9b4121df6d9c8f6f1c5feef1cc837fc38f51a831a005db072bdaaf900`. The recorded search path uses the historical providers, not the fresh current14 base.
+
+These are recorded direct-provider and point-in-time checks, not an independent reconstruction of all historical transitive, package, or dynamic ancestry, and monitoring is sampled. No Lean replay or PDF-transcription proof was run in this review.
+
+SHA-256: `check.py` `d8e76a0b7f10f69be1da785153a80f308855c2cdaa43f7cd0306cd3eb4367042`; `result.json` `b81e2d5576f069ea7160e92082b2f1b1f14bd819f7a64d04a4350d75acf0c60e`.

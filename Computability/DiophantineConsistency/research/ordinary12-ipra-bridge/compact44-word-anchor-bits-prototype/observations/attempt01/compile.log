@@ -1,0 +1,31 @@
+/tmp/compact44-word-anchor-bits-author-n7qn0g1c/CompactWordAnchorBits.lean:13:28: error: unknown namespace `ArithmeticMaskConstants`
+/tmp/compact44-word-anchor-bits-author-n7qn0g1c/CompactWordAnchorBits.lean:18:6: error(lean.unknownIdentifier): Unknown identifier `fbit_eq_div`
+/tmp/compact44-word-anchor-bits-author-n7qn0g1c/CompactWordAnchorBits.lean:17:87: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+a n : ℕ
+⊢ fbit ↑a ↑n = ↑(a / 2 ^ n % 2)
+/tmp/compact44-word-anchor-bits-author-n7qn0g1c/CompactWordAnchorBits.lean:40:53: error(lean.unknownIdentifier): Unknown identifier `cast_exp`
+/tmp/compact44-word-anchor-bits-author-n7qn0g1c/CompactWordAnchorBits.lean:48:6: error(lean.unknownIdentifier): Unknown identifier `fbit_concat_high`
+/tmp/compact44-word-anchor-bits-author-n7qn0g1c/CompactWordAnchorBits.lean:23:74: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+w n e s : V
+hw : w < 256
+hn : n < 512
+he : e < 256
+hs : s < 512
+i : Fin 7
+L : V := w + 256 * n + 131072 * e + 33554432 * s
+h17 : w + 256 * n < 131072
+h25 : w + 256 * n + 131072 * e < 33554432
+h34num : L < 17179869184
+hpow : Exp.exp 34 = 17179869184
+hL : L < Exp.exp 34
+hv : CompactTilePayload.value w n e s = 127 * Exp.exp 34 + L
+hi : 34 ≤ ↑(34 + ↑i)
+⊢ fbit (127 * Exp.exp 34 + L) ↑(34 + ↑i) = 1
+'CompactWordAnchorBits.value_anchor' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CompactWordAnchorBits.row_anchor' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

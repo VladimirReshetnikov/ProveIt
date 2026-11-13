@@ -1,0 +1,23 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace74-carrier-residue-draft/Trace74CarrierResidue.lean:95:56: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+p : Fin 4 → ℕ
+v : Fin 10 → V
+hb : 0 < ↑(p 0)
+hv : ∀ (j : Fin 10), 0 < v j
+hz : (Trace74Mask.value74 (ports p) fun j => ι (v j)) = 0
+rr : Regs (DiffRing V) := regs (ports p) (masked p v)
+hd : rr.h ∣ rr.H * rr.D * rr.B
+hh : rr.h = ι (↑(p 0) * v 0)
+hq : ι (q p v) = ι (↑(p 0) * v 0) + 1
+hD : rr.D = ι (v 5) * ι (v 6) * ι (q p v) ^ 4
+hH : rr.H = 4 * ι (q p v) ^ 3 * ι (v 6) * (ι (v 5) * ι (q p v) + 1) - 1
+hC : rr.C = ι (v 2)
+⊢ (↑(p 1) + masked p v 5) * ι (v 2) - masked p v 1 = (↑(p 1) + ι (v 5)) * ι (v 2) - ι (v 1)
+'Trace74CarrierResidue.graph_carrier_h_divides_HDB' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Trace74CarrierResidue.reduce_carrier_mod_h' depends on axioms: [propext, Quot.sound]
+'Trace74CarrierResidue.graph_explicit_carrier_residue' depends on axioms: [propext,
+ sorryAx,
+ Classical.choice,
+ Quot.sound]

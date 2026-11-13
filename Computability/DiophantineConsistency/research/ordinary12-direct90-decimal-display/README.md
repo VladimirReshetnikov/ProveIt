@@ -1,0 +1,13 @@
+# Twelve-variable direct 90-operation decimal display
+
+`equation.tex` and `equation.pdf` display the direct draft as 90 shared arithmetic operations in twelve distinct positive integer unknowns `a,b,c,d,e,f,g,h,i,j,k,ℓ`. Intermediate registers are abbreviations, and subtraction is integer subtraction. All printed numerical constants and the 943 fixed selectors use base-10 notation. The four fixed integers are specified by formulas and a decimal table, so the display is self-contained. The maintained root `equation.tex` and `equation.pdf` are unchanged.
+
+The pinned graph and Lean source have been externally checked to have 90 live operations (50 multiplications, 23 additions, 17 subtractions); `../ordinary12-direct-main-probe/check-degree.py` separately checks exact degree 172 with a polynomial upper bound and a fixed-payload modular lower witness. These are external checks, not Lean theorems about a parsed PDF.
+
+The associated `DirectMainHalt` theorem proves positive-zero and shifted-natural-zero equivalence to the internal machine halt predicate in every IΣ₁ model. The separate `../ordinary12-direct90-ipra-endpoint-draft/` client has now compiled in the guarded author join described in `../ordinary12-direct90-ipra-join/ATTEMPT03.md`, proving its stated internal standard/reference iPRA equivalences on the selected provider. The join receipt and theorem scope passed independent audit in `../../reviews/ordinary12-direct90-ipra-join-independent/` without a separate Lean replay. A formal binding of this PDF to the Lean expression remains open; package-transitive, dynamic, and complete historical source-to-object ancestry are outside the join audit.
+
+## Reproduction and checks
+
+Run `python3 -I -S -B generate.py --output build01` and the same command for a fresh `build02`; the generator refuses to overwrite a destination. The retained builds have byte-identical TeX and PDF. `check_display.py` compares every printed evaluator row with the digest-pinned graph, all 943 decimal selectors and 41 slots, and the complete four coefficient payloads. `independent_check.py` separately checks PDF-extracted rows, page bounds, selector and constant data, and payloads. `capture_checks.py` records both checks and before/after hashes in `observations/checks01/`; its existing output is immutable and the script refuses to overwrite it. The first PDF page was visually inspected. These are external transcription checks, not a Lean parser or PDF proof.
+
+The canonical TeX SHA-256 is `6a3459c983093d6aea5ed08b42f8bf93b13330b9e7124d2d1e80128e63133736` and PDF SHA-256 is `4b9ef11c494098289cbb8c85e1120f9ff97cebaac33157f9a97c695202e16f69`. Their matching build outputs and verification logs are retained alongside them.

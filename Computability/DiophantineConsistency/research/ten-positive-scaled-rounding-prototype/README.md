@@ -1,0 +1,5 @@
+# Rounding the scaled Pell sandwich
+
+`ScaledPellRounding.extract` derives the internal half-binomial identity `2*Y = binom(2*r,r)+w*X` for some natural w, given `X = 2^(2*r+1)`, positive r, `c = k*Y+eta`, `k = eta+zeta`, positive eta and zeta, and the two explicit strict sandwich inequalities `k*(X+1)^(2*r) < 2*c*X^r < k*((X+1)^(2*r)+X^r)`. It is a generic integer rounding result: it does not assume or prove any 80-graph sandwich, graph zero, machine halt or iPRA endpoint. It factors the rounding part of the existing `ArithmeticHalfBinomial.half_binomial` proof so it can be reused with the 80 graph's shifted/scaled Pell parameters.
+
+The fresh author check `observations/rounding-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`; object `/tmp/tenpositive-scaled-rounding-a03dwmqr/ScaledPellRounding.olean` SHA-256 `5a8bb5a03b79f2399efa340e0a3023b5c6efb10d2564c55351f74aaa25dc74dd`. Its guarded runner pins selected project objects and records resource samples. It inherits source/object, package and dynamic ancestry limitations and is not an independent Lean replay.

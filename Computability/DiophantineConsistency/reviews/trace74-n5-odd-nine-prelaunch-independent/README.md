@@ -1,0 +1,5 @@
+# Independent N5 odd-nine prelaunch review
+
+Scoped GO for source `79f087fdaca286f2d79a4b9336d69a0a14a3ba10f387c59500679622bf305d6c`, runner `b7ecfb5326974356a3460f8f7b1e085a854eecd5337b47e4bcc96a05d6912794`, policy `402b7a64924545213a5a677b92bbe8bcb7ec2f4817ad528dc3e60fcb40550b1d`. All 58 direct pins match and 13 actual report controls pass. All four source imports have unique observed first selections, and the declared roots contain zero duplicate `.olean` relative paths. The runner uses the shared lock, strict single named report and source/runner checks. Full serialized transitive/companion/dynamic package/project ancestry and continuous path stability remain outside this direct-pin evidence.
+
+Under same positive graph tuple p/v, β≥15, q≥2³⁰ and explicit first index-5 coordinate, the source uses the accepted index window and N5/R7 contradiction to conclude c=ycoord9(A−1). This is not an n5/r9 exclusion, graph-zero existence, guard or iPRA claim. Elaboration remains unchecked; no Lean was run in this review.

@@ -183,8 +183,14 @@ theorem provable_falsum_native_of_ZF (h : Provable (𝗭𝗙 : SetTheory) (^⊥ 
   provable_falsum_of_interp good_PN hTermSet zf_obligation NativeFixed.provable_domain h
 
 theorem consistent_ZF_of_native (h : nativeTheory.Consistent V) :
-    (𝗭𝗙 : SetTheory).Consistent V :=
-  InternalInterpretation.consistent_of_falsum_transfer provable_falsum_native_of_ZF h
+    (𝗭𝗙 : SetTheory).Consistent V := by
+  have e : (⌜(⊥ : Sentence ℒₛₑₜ)⌝ : V) = ^⊥ := by
+    simp [LO.FirstOrder.Sentence.quote_def, LO.FirstOrder.Semiformula.quote_def]
+  intro hZF
+  apply h
+  unfold LO.FirstOrder.Theory.Consistent at *
+  rw [e] at hZF ⊢
+  exact provable_falsum_native_of_ZF hZF
 
 end Internal
 

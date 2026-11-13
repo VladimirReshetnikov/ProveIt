@@ -1,0 +1,9 @@
+# Prepared standalone delta field projection
+
+The two-field Z/delta client failed at the interpreter memory limit before emitting a theorem report; see `../nine-sharing-norm38-reference-fields03-check/attempt01/`. This distinct client retains only its exact delta statement and proof (`reference p x 36 = (Carrier65.core p x).delta`), dropping the earlier Z proof and appending only delta's axiom report. It does not increase heartbeat, recursion, memory or time limits. This isolated proof compiled as recorded below.
+
+The guarded runner uses the same reference-base and Carrier65 provider checks as the reviewed two-field client, adapted to a fresh path and target; no-Lean preflight passed. Independent prelaunch review and coordinated Lean slot release preceded the run. Source SHA-256 `f9705206caaa688d1e1665be50446715b8017328d8875585fe92b1c2bc76eef9`, manifest `ec4484285c564dd7a68fe03c1500d150dfe92fc7487625677fab7646b662209a`, carrier survey `c9ff6fbf6011169418be9f4d73fbe7a48768e26cf47554a62d0c738430dc42d5`, runner `de52874280b09577f07fa2c359f4f3e4e53cf166ed3cde161109f9991bbc8d6d`. A passing delta projection alone is not a model bridge or iPRA endpoint.
+
+Actual outer session 84469 exited 0. The checked `reference_delta` report lists `[propext]`; one linter warning concerns sequencing syntax. State `3f4fd6ae49b2a4a3da22e07849205f55ca9012bb14c2ee8c09297907d598aa2b`, object `d43d2cbdd4e19edad31de95b48e51ba1459a4cdc61a286e742d8279e01292a65`, log `8e19603f5adf8a563d5d5df4edf81e69fad30b39a70dd0d4e5bbdd9ae9d196b7`, and author-recorded outer exit `d954c422ee1f8f9aa5564c0b4bc2410e9570c72244f0bd7ea131dcddf607cb2b` are retained in `attempt01/`; the outer record is not independently observed or a raw transcript. The object remains temporary. This projection alone proves no model bridge.
+
+Independent terminal audit passed at `../../reviews/nine-sharing-norm38-reference-w-delta-terminal-independent/`.

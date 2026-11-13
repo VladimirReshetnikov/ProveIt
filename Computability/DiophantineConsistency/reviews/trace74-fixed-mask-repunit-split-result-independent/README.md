@@ -1,0 +1,7 @@
+# Independent result review: split fixed-mask repunit specialization
+
+PASS for the captured author result. The author reports actual outer exit 0; recorded supervisor exit 0 and child PASS agree. Outer SHA-256 `99b300fa09136de3972eaeb69050375ad2290ec8dc5fc409566a4c5c046cd294`, child `4658f7f4ce12299fcb9af6cf76db5af37977f1e817297804e7bd255b76269b1d`, object `cbaa957bcef3b3fc0dde10fea555542053463b8f66197b92997f9398aa408a41`. The source and captured snapshot match reviewed SHA `8c69cb21194cab9a0dafc49ea998e928bb3d4d9a4283da808e20b411d8082958`.
+
+For one indicated IΣ₁ model V, under explicit `N>0` and `J=rep ((67:V)*8807) N`, the single theorem establishes both the fixed-radix equation and the repeated low/high mask population sum with that same N and J. The one exact report lists `[propext, Classical.choice, Quot.sound]`; the stage exits 0, is warning-free and has empty stderr. Nothing derives the repunit from a graph zero, establishes a guard, or proves the endpoint.
+
+The companion read-only script rehashes result, supervisor, pinned inputs, source, stdout/stderr and object; the five serialized direct imports match the plan. It verifies the complete 2060-module output inventory including companion presence, bytes and resolved targets, outside captured bundles, and all saved parent closure sets and bundle hashes. The result is capture-relative; historical source-to-object, transitive/package/dynamic and external binding limitations and earlier exact-warning ancestry remain. No Lean was run for this audit.

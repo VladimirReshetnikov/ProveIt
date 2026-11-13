@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the linePosition formula matches the actual table's floor-rank, including Start special case; `lineExponent` and `lineCoefficient` substitute the numeral-derived tile/position only in the 942-tile branch and retain the original sentinel and control branches. Their weighted sum is proposed equal to K and then to the already audited in-Lean base-256 byte-list value. Both table and byte-binding terminal audits and the source/provider/Init/resource guards were checked; no-Lean preflight passes. This is symbolic construction using existing fixed start/copy/tail/head-color definitions, not an external PDF/file theorem. Lean elaboration is untested. No Lean was run.

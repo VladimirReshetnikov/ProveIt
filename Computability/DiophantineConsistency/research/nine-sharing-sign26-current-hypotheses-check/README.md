@@ -1,0 +1,5 @@
+# Proposed current beta/K hypotheses
+
+This guarded client proposes the current p0/p1 casts to model beta/K and `1 ≤ beta` using the checked `15 ≤ beta` current bound. It imports the checked sign26 seed-gap provider to supply the model difference-ring environment and the current carrier soundness provider for the bound. It does not yet apply these hypotheses to a seed zero, prove q3-dependent row transfers, or establish an endpoint or external JSON binding.
+
+The runner binds the successful seed-gap provider, and surveys a previous successful direct observation of `ArithmeticCarrierSoundness2011` with its source/object/logs/guards and the current overlay route. Deeper provider ancestry and the historical plan README-link caveat are inherited. Author no-Lean preflight exited 0, and the reviewed run succeeded as recorded in [attempt01](attempt01/README.md); the [independent terminal audit](../../reviews/nine-sharing-sign26-current-hypotheses-terminal-frontier-independent/README.md) passed. Limits remain `-M2800`, 120 seconds per call, sampled 4-GiB RSS, 10-GiB available-host-memory floor and 5-GB disk precheck.

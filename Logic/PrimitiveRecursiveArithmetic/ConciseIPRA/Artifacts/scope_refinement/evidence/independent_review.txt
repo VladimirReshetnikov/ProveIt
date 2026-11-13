@@ -1,0 +1,64 @@
+# Independent review of the final 607-byte checker
+
+Reviewed source: `frontier_audit/candidates/strict_shared607.py`.
+SHA-256: `ec470dc9db8be439d7431c02cdd73a953d99c14a3527cec80336a8bd925258b6`.
+
+This review concerns the final source with leaf result `a or 1`, strict leaf guard `v <= d & a % 2`, normalized computation previews, and selector `any((m, len(a) == 2 != u))`. Earlier similarly named sources had material defects; conclusions below do not apply to them.
+
+## Conclusion and limits
+
+The final local rule changes have a sound interpretation in the inherited native calculus. No additional counterexample was found. Both equation progress and equation cases remain available, and compound matrices receive cases only. The readable expansion preserves the evaluation order relevant to the proof and scope checks.
+
+The review is a written mathematical/operational argument supplemented by finite executable evidence. It is not a proof-assistant verification of Python, an independent reconstruction of the entire inherited iPRA bi-interpretation, or a proof of global checker minimality. A final theorem-set equivalence claim should cite the inherited soundness/completeness theorem and explain the canonical proof translation; it should not assert equality of the old and new arbitrary certificate languages.
+
+## 1. Public validation precedes the phase change
+
+The singleton comprehension reads a packet, then defines the opener and calls it on the goal while `v=1`. The comparison's right-hand side sets `v=0` only after this traversal returns. The computation resource is built and opened after that assignment. Recursive calls default to `v=0`.
+
+At `v=1`, the accepted list arities are one/two at formula positions and one/three at numerical positions. The scalar guard is parsed as `v <= (d & (a % 2))`. Since a successful public numerical position has odd depth, its accepted scalar leaves are precisely odd protected spellings below that depth; numerical zero is `1`. Formula scalars are rejected. Thus the root's validated tree equals the input public tree literally. In particular, `[2,1]`, `[1,2]`, a free negative parameter, floats, Booleans, dictionaries, and scalar public goals are rejected.
+
+The previous guard `v <= d & a` did not have this contract: it admitted the numerical zero spelling `2` and some even protected aliases. That guard must not be substituted into the reviewed source.
+
+## 2. Introduction mode and the marker 2
+
+For a non-leaf with neutral major, the opened matrix is `a`.
+
+- If `len(a)==2` and `u != 2`, the hypothesis is the matrix at the fresh parameter: equation progress.
+- If `len(a)==2` and `u == 2`, the hypothesis is its zero instance: equation cases.
+- If the matrix has any other arity, the hypothesis is its zero instance: compound cases (or a harmless truth alias in the broader auxiliary syntax).
+
+Thus the final source does not silently add induction for arbitrary formulas. For non-neutral majors, the old witnessed-opening continuation is selected independently of `u`.
+
+Marker `2` is valid in a lenient numerical preview. It is not accepted as a public zero spelling and need not occur in the public theorem. At an introduction, neutral major `0` cannot equal either list-shaped required elimination major, so changing `u` to `2` cannot accidentally select the transport/specialization target branch. A canonical translation may use `u=0` for progress and `u=2` for cases.
+
+An earlier 606-byte candidate used `len(a)%2 == u` after removing the old computation branch. That allowed `u=1` to request progress on a compound matrix. This was a real rule-strengthening defect, not merely an unhelpful certificate encoding.
+
+## 3. The normalized computation leaf
+
+Let `O` denote the lenient opener with no image. The new resource is the successful output of `O` on one raw computation equation. If the source is false, its raw alphabet leaves only `0` or the empty list, each a numerical zero representation. If the source is true, the left counter is successor-shaped. The existing direct-computation argument applies: when the update meaningfully uses its state, opening that state validates the recursive source; otherwise the constant-update computation is already valid. Validation of duplicated meaningful initializer occurrences rules out an extra dummy-slot dependence.
+
+The further zero-to-one changes preserve the sorted numerical interpretation. At active numerical positions, both 0 and 1 denote numerical zero. At formula positions, scalar administrative spellings denote the neutral true formula. Ignored annotations remain ignored in the numerical interpretation. Therefore a successfully normalized resource still reads as the same I0 or IS theorem. No fresh negative source or initializer is legitimized: meaningful numerical occurrences still fail the no-image scope traversal.
+
+Allowing a direct computation leaf with a false initializer (`0` or `[]`) adds no computation law; it makes an existing I0/IS instance directly available. Canonical old computations and hypothesis leaves have harmless new packets. The arithmetic language, numerical domain, and mathematical iteration equations are unchanged.
+
+## 4. Literal idempotence is false on all raw auxiliary trees
+
+The opener is not a literal retraction on the whole integer/list universe. For example, at `k=0,d=2`, `O(2)=0`, but `O(0)=1`. The first application uses the even-depth out-of-scope fallback; the second treats zero as a protected administrative scalar and replaces it by 1.
+
+Consequently do not state `O(O(a))=O(a)` without a canonical-fragment hypothesis. The required broad lemma is preservation of the sorted interpretation, including the administrative formula-truth aliases. Canonical public Eq/D trees are fixed literally. Canonical numerical term trees with no out-of-scope occurrences are fixed after their zero spellings have been changed to 1. These narrower facts suffice for a canonical theorem translation; arbitrary malformed auxiliary certificates need not translate literally.
+
+## 5. Scope and evaluation order
+
+The major subproof and introduction witness are checked before decrementing the parent's scope floor. The floor is then decremented for every non-leaf continuation, including compound cases. The hypothesis is opened in that new scope. Both candidate minor and target instances are opened eagerly afterward, whether or not their equality comparison selects the minor. Finally the continuation is opened at the successor of the new eigenparameter.
+
+This sequence matters. Moving scope allocation into the progress-only branch would omit freshness in compound cases. Moving it before the old-scope major/witness checks would permit a future-witness reference. The readable expansion keeps the sequence explicitly.
+
+## 6. Readable expansion and evidence
+
+`kernel_work/readable_strict607.py` is standalone, uses only the standard JSON module, and does not import or evaluate compact source. It expands each operation into a named local step. It returns True internally instead of a nested nonempty list; all callers use only truthiness. It retains the whole-input alphabet check, eager computation preview even at a hypothesis leaf, unused-prefix policy, and the final ACCEPT verdict. Exception messages and finite implementation resource thresholds need not match.
+
+The differential suite compared the compact and readable programs on 740 inputs: 16 named positive fixtures, malformed/alphabet/changed-goal and missing-packet cases, and 500 deterministic mutations. No acceptance-outcome difference remained. One initial 0.3-second timing discrepancy was retried with a 3-second limit and both programs accepted.
+
+An independent bounded leaf model tested 55,937 triples. Of these, 17,251 admitted the lenient normalization and 3,172 yielded strict public equality formulas; all 3,172 evaluated equally on both sides. A separate sample evaluated 2,661 numerical normalization cases with no changed numerical value. The same test deliberately exposed 1,708 failures of unrestricted literal idempotence, reinforcing the qualification above.
+
+These finite checks support the implementation review. They are not universal soundness or completeness proofs.

@@ -1,0 +1,51 @@
+COMPACT CERTIFICATE INTERFACE
+
+Run:
+  python3 checker.py < certificate.json
+  python3 -O checker.py < certificate.json
+
+Acceptance is zero exit and exactly ACCEPT followed by LF. Every exception
+rejects. The module uses only the Python standard json library.
+
+The top-level JSON value is a list. Its final item is the public closed goal;
+earlier items form a stack of proof packets consumed from right to left by
+the inherited kernel. Each consumed packet has exactly four entries m,s,u,t.
+Unused prefix entries are allowed, but the whole certificate must still be a
+tree made only of integers and lists. Booleans are not integer aliases here;
+the lexical gate rejects them, including in unused prefixes.
+
+The public goal is the inherited canonical full Eq/Q/D encoding. At formula
+positions, [s,t] is equality, [B] is D, and [B,B,B] is Q with three literally
+identical copies. At numerical positions, 0 is zero, [b] is successor, and
+[n,a,h] is the initialized scalar iterator. Integer coordinates use the
+inherited protected-slot convention. Its complete sorted interpretation is
+given in ../../reference/inherited_arity_checker.tex.
+
+For the public validator the initial raw depth is zero. At a list, each child
+is visited at d+5-len(list). Even depths are formula positions; odd depths are
+term positions. The old canonical integer condition is: at odd depth, zero
+or an odd coordinate a with 2<a<d. Public formulas are closed. Candidate v
+checks the same condition except for a<d, which is now checked immediately
+by the unchanged first traversal of c. See proof.txt for the exact argument.
+
+Internal administrative proof trees have a broader syntax than public goals.
+Surplus nodes have the sorted meanings described in the inherited encoding;
+they do not introduce new arbitrary predicates or numerical operations. The
+four-field instruction semantics and the complete core are unchanged from
+the pinned validated_presentation/native_typed_full.py control. This compact
+program implements that existing conditional Choice-DI calculus, with both
+case and atomic-progress choices; it does not implement scalar UR.
+
+Small accepting example (zero computation):
+  [[0,0,[0],0],[[0,[0],0],[0]]]
+
+An ill-scoped goal rejected by the first kernel traversal:
+  [[0,0,[0],0],[3,3]]
+
+Reproduction:
+  python3 verify.py
+
+The tests directory contains only 24 selected inherited fixtures with their
+frozen hashes and original paths in manifest.json. The verifier additionally
+constructs focused invalid-scope, malformed-JSON, type-gate and recursion-limit
+probes. validation.json records all process outcomes and whole-module metrics.

@@ -1,0 +1,5 @@
+# Independent terminal review: auxiliary norm ring sign
+
+**Pass for retained Lean evidence**, without Lean replay. Author-observed outer session 48441 exited 0; it is not an independent raw process transcript. In an IΣ₁ model, under `0<S`, `0<y`, and the stated natural auxiliary norm `S*S*(absdiff x z)*(absdiff x z)+y*y=1+S*S*y*y`, the theorem derives `(ι x-ι z)*(ι x-ι z)-ι y*ι y≤0` in the difference ring. Lean reports `[propext, Classical.choice, Quot.sound]` and no warnings. Abstract parameters are not yet bound to a current-source zero.
+
+`check.py` verifies source, state, object and child logs, checked absdiff-square and ordered-ring direct producer bindings, 150 guard slots, 1,166 overlay links, equal before/after surveys and a fresh provider survey. Both Lean children exited 0 without sampled monitor stop/error. Provider checks are point observations and the inherited initial-agreement numeric outer exit is unavailable. This is a conditional sign result, not a sign33 zero bridge or iPRA endpoint.

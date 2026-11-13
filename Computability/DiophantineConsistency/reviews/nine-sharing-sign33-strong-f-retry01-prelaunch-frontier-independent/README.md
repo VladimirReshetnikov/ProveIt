@@ -1,0 +1,5 @@
+# Independent prelaunch review: strong-norm numeral-conversion retry
+
+**Pass for bounded launch.** The theorem statement and all hypotheses are unchanged; the only source edit changes the final `simpa` to `simpa only [one_add_one_eq_two]`, targeting the exact `1+1` versus `2` error in the independently reviewed failed run. Elaboration remains untested. The runner's diff was inspected: it changes the output path, manifest pin, explicit prior-failure binding and scope text; the resource limits and two direct-provider guards remain unchanged.
+
+`check.py` pins source, manifest, runner and survey, checks the complete one-line source delta and the failed state/log, rechecks both selected direct producers and target absence, and independently runs the no-Lean preflight; captured output is `result.json`. The survey includes a successful object from an overall-failed prior build and an ancestor with uncaptured numeric outer exit. Checks are point-in-time, not a complete transitive/dynamic trace; monitoring is sampled. The preflight requires a fresh output path and will refuse after launch. No Lean theorem or sign33 zero bridge is claimed here.

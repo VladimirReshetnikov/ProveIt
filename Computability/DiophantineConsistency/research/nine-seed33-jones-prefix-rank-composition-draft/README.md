@@ -1,0 +1,3 @@
+# Sign33 d11 rankCode composition source draft
+
+This source adapts the checked sign38 d11 rankCode composition by namespace replacement only. The guarded check compiled a local d11 equality in terms of d10 prefix values, not the fully substituted named rank or final output. The [guarded candidate](../nine-seed33-jones-prefix-rank-composition-check/README.md) authenticates and joins the audited B-power and generic rankCode providers; the [independent terminal audit](../../reviews/nine-seed33-jones-prefix-rank-composition-terminal-frontier-independent/) passed. No semantic/JSON/human binding, degree or operation count is claimed.

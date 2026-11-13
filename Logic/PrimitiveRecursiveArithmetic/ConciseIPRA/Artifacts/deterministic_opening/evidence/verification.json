@@ -1,0 +1,89 @@
+{
+  "python": "3.12.14",
+  "suites": [
+    {
+      "suite": "deterministic_opening",
+      "positive": 16,
+      "negative": 19,
+      "old_proofs_normal_and_optimized": 16,
+      "all_expected_verdicts": true
+    },
+    {
+      "suite": "deterministic_discharge_appendix",
+      "positive": 17,
+      "negative": 20,
+      "old_proofs_normal_and_optimized": 17,
+      "all_expected_verdicts": true
+    }
+  ],
+  "fresh_checker_processes": 222,
+  "essential_guard_mutations": [
+    {
+      "mutation": "opening_without_left_guard",
+      "attack": "examples_open/negative/essential_left_guard_false_equality.json",
+      "mutant_accepts_normal_and_optimized": true,
+      "correct_checker_rejects": true,
+      "consequence": "False equality 1=0"
+    },
+    {
+      "mutation": "opening_without_base_guard",
+      "attack": "examples_open/negative/essential_base_guard_false_equality.json",
+      "mutant_accepts_normal_and_optimized": true,
+      "correct_checker_rejects": true,
+      "consequence": "False equality 1=0"
+    },
+    {
+      "mutation": "opening_without_goal_scope",
+      "attack": "examples_open/negative/outer_scope_guard_escape.json",
+      "mutant_accepts_normal_and_optimized": true,
+      "correct_checker_rejects": true,
+      "consequence": "A fresh eigenparameter escapes the closed result"
+    },
+    {
+      "mutation": "discharge_without_left_guard",
+      "attack": "examples/negative/essential_left_guard_false_equality.json",
+      "mutant_accepts_normal_and_optimized": true,
+      "correct_checker_rejects": true,
+      "consequence": "False equality 1=0"
+    },
+    {
+      "mutation": "discharge_without_base_guard",
+      "attack": "examples/negative/essential_base_guard_false_closure.json",
+      "mutant_accepts_normal_and_optimized": true,
+      "correct_checker_rejects": true,
+      "consequence": "A false closure with true base and second row 1=0"
+    },
+    {
+      "mutation": "discharge_without_goal_scope",
+      "attack": "examples/negative/outer_scope_guard_escape.json",
+      "mutant_accepts_normal_and_optimized": true,
+      "correct_checker_rejects": true,
+      "consequence": "A fresh eigenparameter escapes the closed result"
+    }
+  ],
+  "open_local_sequents": {
+    "opening": 1,
+    "discharge": 1
+  },
+  "targeted_substitution_transition": {
+    "source": "ACCEPT",
+    "passive_only": "REJECT",
+    "combined_smaller_branch_substitution": "ACCEPT",
+    "process_modes": [
+      "normal",
+      "-O"
+    ]
+  },
+  "independent_old_kernel_replays": {
+    "opening_matched_theorems": 16,
+    "discharge_translations": 17
+  },
+  "opening_translation_limit": "The opening suite supplies matched old proofs of identical theorems, not a generic executable proof translation.",
+  "discharge_translation": "All valid appendix fixtures are checked before a general DD-to-WD producer translates them; old checker and independent inherited kernel both replay the output.",
+  "mathematical_limit": "Finite tests and mutation controls supplement the written proof. They are not proof-assistant verification or a proof of universal soundness/completeness.",
+  "source_hashes": {
+    "code/checker_open.py": "9af751a44a5637633f8f0abe9ac7db8b640765453d29c967cd78c224343f559b",
+    "code/checker.py": "08317ec98b3bd29c60055e2e72a347f92ed2840bbe1b66f15fa26876e063b96c",
+    "reference/witness_discharge_checker.py": "777c764029ce8d2bce10c58f8bcf94624889c53a9c66c4f3504a6f9b3e9f4f40"
+  }
+}

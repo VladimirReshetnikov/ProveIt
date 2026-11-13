@@ -1,0 +1,33 @@
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace73-center-probe/Trace73Center.lean:23:3: error: Application type mismatch: The argument
+  [v 0, v 1, v 2, v 3, v 4, v 5, v 6, v 7 + r.V * r.V * r.B, v 8, v 9]
+has type
+  List R
+of sort `Type u_1` but is expected to have type
+  Bool
+of sort `Type` in the application
+  ![v 0, v 1, v 2, v 3, v 4, v 5, v 6, v 7 + r.V * r.V * r.B, v 8, v 9]
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace73-center-probe/Trace73Center.lean:29:2: error: 'change' tactic failed, pattern
+  r.h * r.D * (r.H * (v 7 + r.V * r.V * r.B - r.V * r.V * r.B) + r.K) - r.H * (r.D * r.B + r.h * r.e) =
+    r.h * r.D * (r.H * v 7 + r.K) - r.H * (r.D * r.B + r.h * r.e)
+is not definitionally equal to target
+  (regs p (lift p v)).Z = centerZ p v
+/home/codex/.codex/worktrees/46be/Proofs/Computability/DiophantineConsistency/research/trace73-center-probe/Trace73Center.lean:36:6: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern
+  (regs ?p (lift ?p ?v)).Z
+in the target expression
+  (have r := regs p (lift p v);
+    r.Q * (r.Z * r.Z - r.M * r.M * r.Gn * (r.V * r.V)) + (r.M * r.M * r.Gn - r.Z * r.Z)) =
+    have r := regs p v;
+    have Z := centerZ p v;
+    r.Q * (Z * Z - r.M * r.M * r.Gn * (r.V * r.V)) + (r.M * r.M * r.Gn - Z * Z)
+
+R : Type u_1
+inst✝ : CommRing R
+p : Fin 4 → R
+v : Fin 10 → R
+⊢ (have r := regs p (lift p v);
+    r.Q * (r.Z * r.Z - r.M * r.M * r.Gn * (r.V * r.V)) + (r.M * r.M * r.Gn - r.Z * r.Z)) =
+    have r := regs p v;
+    have Z := centerZ p v;
+    r.Q * (Z * Z - r.M * r.M * r.Gn * (r.V * r.V)) + (r.M * r.M * r.Gn - Z * Z)
+'Trace73Center.centerZ_shift' depends on axioms: [propext, sorryAx]
+'Trace73Center.substitution' depends on axioms: [propext, sorryAx]

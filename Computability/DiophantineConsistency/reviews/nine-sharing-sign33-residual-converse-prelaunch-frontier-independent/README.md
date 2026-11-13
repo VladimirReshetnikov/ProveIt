@@ -1,0 +1,7 @@
+# Independent prelaunch review: sign33 residual converse
+
+No launch blocker found. The checker pins the manifest, survey, runner and final source, checks all nine source hashes and imports, verifies each three-residual group's ordered indices and batch projection references, and checks all 24 final membership branches use the corresponding group/projection. All groups and the final theorem use the same p, ports, v and four explicit casts. The first group unfolds its own batch00 q when applying the first residual evaluation; the last group preserves the negative y²−V² orientation already checked in its producer.
+
+The no-Lean preflight passes. The survey checks the successful assembly and batch producer states, objects, logs, direct guards and overlay routes; the runner binds each group to the selected assembly and the final eight direct imports to locally produced group objects/guards. It stops at the first failure and performs full postflight only on complete success. Provider observations are point-in-time and monitoring is sampled.
+
+This proposed theorem is `AllCuts ports v → InternalZero seed v` under the stated IΣ₁-model and four-cast hypotheses. It would not show that a source-equation zero supplies `AllCuts`, construct signed witnesses, prove the source/graph bridge or establish an iPRA endpoint; external JSON/source matching remains external. No Lean replay was performed and the list elimination may still fail or exceed bounds. This checker is prelaunch-only because the output path must remain absent.

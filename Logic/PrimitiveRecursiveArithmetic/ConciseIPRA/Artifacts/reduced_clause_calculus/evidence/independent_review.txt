@@ -1,0 +1,134 @@
+INDEPENDENT MATHEMATICAL AND IMPLEMENTATION REVIEW
+Reviewed: evidence/proof_derivation.txt, code/reduced.py, code/baseline.py,
+code/translations.py, reproduce.py, evidence/metrics.json and verification.json.
+Review status: no mathematical or proof-translation gap found in the local
+raw-clausal composition. The result is a small integration of two existing
+reductions, not a new arithmetic breakthrough or an absolute minimum.
+
+1. IDENTITY FRAME AND SEQUENT EQUIVALENCE
+
+The retained V0 rule is a=t, I(0,a;u.h)=r => r=t. Set W(s)=I(0,s;u.0).
+Given p:s=t and q:s=r, V0(q,Refl(W(s))) concludes W(s)=r, and V0 with
+p and that conclusion gives r=t. This is exact syntactic matching and uses
+neither ordinary substitution on proofs nor a previously derived equality
+law. W(s) is well scoped if s is. Each input subtree occurs once.
+
+All other rules preserve their original contexts, scopes and formulas.
+Structural induction on a baseline derivation therefore compiles all clause
+sequents, including arbitrary retained contexts, with literally identical
+end formulas. Every retained inference is a baseline inference. This proves
+both directions of consequence equivalence. Both formula and term maps are
+identity maps; composing this with the existing baseline bi-interpretation
+is legitimate, including its internal formula round trips and identity
+numerical composite graphs.
+
+Rule-count boundary: there are still five serialized instruction families,
+and six mathematical schemas if the two Eval branches are counted separately.
+DI also retains its explicit syntax-directed mode test. Saying 'four rules'
+or claiming the bare five-tag count is an encoding-independent minimum would
+be incorrect.
+
+The exact proof-node overhead is N_new=N_old+2k, where k counts baseline
+Root nodes selected by the Eval dispatch. No constant certificate-byte bound
+follows: the inserted frame contains the derived source term s, which can be
+large compared with the source instruction.
+
+2. DISPATCH OVERLAPS AND REVERSE TRANSLATION
+
+No retained computational Eval instance can be selected as Root by the
+baseline. A zero case would require I(0,a;u.h) to be literally a, impossible
+for a finite raw syntax tree. A successor case would require
+I(S c,a;u.h)=I(c,a;u.h) literally, hence S c=c, likewise impossible.
+This explains both exact reverse inclusion and idempotence of the compiler.
+
+The compiler correctly tests baseline b==s before changing a v node, matching
+the original evaluator's priority. In e and i branches it reconstructs exactly
+the original extended clause context and fresh negative variable level.
+Compiled premises are recursively preserved, so each added frame matches in
+the intended local scope. The compiler is outside the trusted checker and
+both source and target are checked by separate standalone checkers.
+
+3. TYPING AND BINDING AUDIT
+
+The public contract requires exactly keys goal/proof and a closed Eq/D goal.
+term excludes booleans by exact type(a) is int. A successor [0,a] checks
+both entries, so a boolean False cannot masquerade as a numeric zero tag.
+Derived equality premises in v must unpack as pairs; D formulas fail that
+unpacking. The second left term must unpack as an iterator triple. If its
+counter is nonzero, its valid-term invariant and length-two check force it
+to be a successor. Incorrect shapes raise exceptions, and the public entry
+point converts them to rejection. No assertion is used, so optimization
+does not remove checks.
+
+The derivation invariant is that results and context entries are well scoped.
+All explicit goal/witness/reflexivity inputs are validated. Negative levels
+are free variables and positive indices are locally bound. Substituted terms
+have no free positive indices; copying them under a binder therefore does not
+require lifting them. opening tracks the one iterator binder and the two D
+binders. E verifies its final target in the old scope before opening a fresh
+variable; I verifies witness data in the old scope. These checks enforce
+eigenvariable non-escape and absence from old context and passive parameters.
+
+As for the baseline, the mathematical completeness statement is naturally
+read with unbounded finite resources. A particular CPython process has
+recursion, time and memory limits and can reject an otherwise valid oversized
+certificate. Tests are evidence for the implementation, not a replacement for
+the syntactic invariant and mathematical proof.
+
+4. MEASUREMENTS AND NOVELTY
+
+Reported reproducible matched coordinates are baseline 3046 bytes / 853 tokens
+/ 993 AST nodes and reduced 2999 / 848 / 986 under CPython 3.12.14 and the
+stated docstring-removal plus ast.unparse procedure. The normalized diff only
+deletes the b!=s branch and removes its indentation; all validation and binding
+code is unchanged. Existing differently encoded complete checkers remain
+much smaller. The result is a strict local improvement in the same public
+contract, not a new repository-wide lower bound.
+
+The raw clause interface was already in ipra_raw_clausal_2026-11-11.zip.
+The root deletion and identity-frame derivation were already in
+ipra_equality_from_iteration_2026-11-11.zip. Both must be credited plainly.
+No proof-assistant verification of this new integration has been performed.
+
+5. FULL-NORMALIZATION ALTERNATIVE: COST AND BOUNDARY
+
+Normalize both I(0,a;h)->a and I(Sn,a;h)->h[I(n,a;h)/u], on finite scalar
+syntax with well-founded finite body descriptions. A term-level termination
+argument can be supplied by translating to the usual strongly normalizing
+first-order primitive-recursion rewrite system. The uniform evaluator is not
+primitive recursive; closed descriptions can have arbitrarily high primitive
+recursive growth. No uniform total evaluator may be silently postulated
+inside iPRA.
+
+On the quotient/canonical syntax, computations disappear from the rule table,
+but equality still needs reflexivity and a transport principle. With the three
+clause rules this is Refl + Tr + U + E + I: still five families. A one-template
+Tr needs the template in the certificate, validation of that extra binder,
+and two normalized instantiations. All normalization, including substitutions
+that expose new redexes, belongs in the trusted checker and size comparison.
+The current term-inferred VS case cannot simply remain unchanged after full
+normalization, because its identifying successor-iterator expression has
+already contracted. It would need supplied syntax or a different rule.
+There is no demonstrated smaller complete checker from this route here.
+
+6. A PRECISE BOUNDARY FOR THE SR0 RESEARCH QUESTION
+
+The incoming raw-clausal report proves that successor rigidity SR0 implies
+zero-equation induction. The canonical-recursors report supplies a model of
+zero-equation induction with two-point fibers over nonstandard numbers and
+singletons over standard numerals. At nonstandard counters c its identity
+iterator is I(c,a;u.u)=(pi(a),0).
+
+That model does NOT validate SR0. Fix a nonstandard c, and take the finite term
+template f(a)=I(c,a;u.u). In the model, f(0)=0 and f(Sa)=S f(a) for every a,
+because standardness is successor invariant and the iterator resets the label
+to zero. But f(b,1)=(b,0)!=(b,1) for nonstandard b. It violates exactly the
+conclusion of SR0. Thus the existing zero-induction countermodel cannot settle
+whether SR0 recovers full equation induction. This observation is a direct
+check of that known model, not a completed SR0 axiomatization.
+
+A potentially useful SR0-specific target: it would prove predecessor from
+any finite scalar term P satisfying the unconditional equations P(1)=0 and
+P(SSn)=S(P(Sn)), by applying SR0 to f(n)=P(Sn). Existing scalar predecessor
+proofs do not establish that recurrence without more general iteration
+uniqueness or equation induction, so importing them would remain circular.

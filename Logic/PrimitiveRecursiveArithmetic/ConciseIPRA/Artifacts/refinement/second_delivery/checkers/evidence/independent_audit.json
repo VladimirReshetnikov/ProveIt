@@ -1,0 +1,107 @@
+{
+  "runtime": "3.12.14",
+  "final_head": "2c7617bb03bbbb15a4534c5468f7df8da22c7ab4",
+  "source_checks": [
+    {
+      "name": "native_tokens",
+      "path": "agent_checker/parity_refinement/code/native_tokens.py",
+      "exact_ast_composition": true,
+      "baseline_sha_verified": true,
+      "candidate_sha_verified": true,
+      "sha256": "5108b5e06a00b7f5dc4ceb52d519421866578d6cd6aed3be2f2fcdd37ffb9e5d",
+      "metrics": [
+        321,
+        371,
+        618
+      ]
+    },
+    {
+      "name": "native_ast",
+      "path": "agent_checker/parity_refinement/code/native_ast.py",
+      "exact_ast_composition": true,
+      "baseline_sha_verified": true,
+      "candidate_sha_verified": true,
+      "sha256": "3b338822b346beb5ef792bd00c6896163fdd195610f0e89d9950ac42e03fd8cb",
+      "metrics": [
+        323,
+        369,
+        622
+      ]
+    },
+    {
+      "name": "native_bytes",
+      "path": "agent_checker/parity_refinement/code/native_bytes.py",
+      "exact_ast_composition": true,
+      "baseline_sha_verified": true,
+      "candidate_sha_verified": true,
+      "sha256": "b511500010aa09e4955220483d500d7a81933768fa5d6b17093f4fc3aa9eda41",
+      "metrics": [
+        334,
+        380,
+        596
+      ]
+    },
+    {
+      "name": "strict_size",
+      "path": "agent_checker/parity_refinement/code/strict_size.py",
+      "exact_ast_composition": true,
+      "baseline_sha_verified": true,
+      "candidate_sha_verified": true,
+      "sha256": "a29528ec4e3ac976f7b3789272e868dd6b06142facef017dfab0a98b62f1540b",
+      "metrics": [
+        330,
+        380,
+        638
+      ]
+    },
+    {
+      "name": "strict_bytes",
+      "path": "agent_checker/parity_refinement/code/strict_bytes.py",
+      "exact_ast_composition": true,
+      "baseline_sha_verified": true,
+      "candidate_sha_verified": true,
+      "sha256": "17cdb0ae9332e7e973fa21d00ef1eb09243773df726a1bd07a9c9b8262189bf3",
+      "metrics": [
+        340,
+        385,
+        621
+      ]
+    }
+  ],
+  "focused_checks": [
+    {
+      "name": "native_context_product",
+      "cases": 3672,
+      "mismatches": []
+    },
+    {
+      "name": "strict_context_product",
+      "cases": 2970,
+      "mismatches": []
+    },
+    {
+      "name": "sentinel_root_call",
+      "cases": 25,
+      "mismatches": []
+    }
+  ],
+  "prior_vphase_boundary_receipt": "../parity_candidates_audit.json",
+  "general_proof": "Product is truth-equivalent; all extra arithmetic total on exact ints; nonempty g skips it. Lexical remainder is always string; if empty both select same pop, otherwise both choose a noncallable value and reject at initial q().",
+  "final_envelopes": {
+    "native": [
+      321,
+      369,
+      596
+    ],
+    "strict_native": [
+      330,
+      380,
+      621
+    ]
+  },
+  "compact_envelope_still": [
+    244,
+    267,
+    478
+  ]
+}

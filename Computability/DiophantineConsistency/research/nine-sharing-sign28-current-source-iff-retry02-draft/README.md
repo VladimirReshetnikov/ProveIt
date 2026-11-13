@@ -1,0 +1,3 @@
+# Proposed explicit-transitivity retry
+
+This source-only candidate preserves the final theorem statement and all hypotheses from the prior failed source composition, retaining locally irreducible seed and port expressions. It explicitly supplies the model parameter to both checked component iff results and composes them via generic `Iff.trans`. The imports-only diagnostic subsequently compiled the two provider imports under the same limits, but does not identify the earlier exception's trigger. This candidate has not been elaborated or independently reviewed and does not claim an endpoint or external bindings.

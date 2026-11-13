@@ -1,0 +1,7 @@
+# Independent prelaunch review of seed/static equivalence client
+
+PASS for scoped source and provider review. The proposed theorem combines the already checked seed-zero-to-gates and seed-zero-to-norms implications with the static-to-seed implication. Both directions use exactly the same integer tuple `p`, natural model ports, 38-coordinate valuation `w` and four port-cast equalities. It claims an equivalence only between the seed zero at input 1 and `gatesHold ∧ fiveNorms` in an IΣ₁ model; it does not identify the static values with the source equation or produce an iPRA endpoint.
+
+The independent checker verified source/import/manifest pins and the exact orientation of all three theorem applications. It rechecked 14 producer records (ten successful slot groups from the overall-failed batch, each-slot, gates assembly, five-norms and static-to-seed), their source/object/log observations, 2,600 recorded direct guard slots, 1,105 immediate overlay links and each chosen producer route. The timed-out slot assembly is excluded. The fresh no-Lean preflight passed; deeper dynamic/package ancestry is inherited, guards are point observations, and the monitor is sampled. The proposed proof and axiom report remain unchecked in Lean.
+
+Reproduce before the output directory exists with `python3 -I -S -B check.py`. Checker SHA-256 `eb654a7666be24a2790728fb5e178171148558934ff55b4388f236ca7ce622ac`; result `e2d0a80fc081b5660a93a4c84f6349e8a4dc588c97b25450bc6277ddc37769a8`.

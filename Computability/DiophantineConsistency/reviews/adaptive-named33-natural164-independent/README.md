@@ -1,0 +1,9 @@
+# Independent review: named33 natural-shift cancellation
+
+This independent exact external polynomial review checks the 33-variable, 164-operation natural-domain candidate. Run `python3 -I -S -B check.py` from any directory and compare with `result.json`. The author's separate checker and receipt also reproduce. No Lean was run.
+
+The checker substitutes `x+1` for every positive-parent input and expands both full outputs as integer polynomials over 33 inputs and four independently symbolic ports: all 1,638 terms agree exactly. The identity therefore holds for every integer valuation and port tuple; the intended Diophantine domain is nonnegative inputs. All four canceled signed pairs have no other direct parent uses. Candidate rows are topologically evaluable and all 164 operations, inputs and ports reach the output. All 139 parent rows match the pinned Lean literal.
+
+The exact input degree is eight for every fixed integer port tuple: the fully expanded output contains the port-independent monomial `ellVariable⁴ * scaleVariable⁴` with coefficient 1, and no port-dependent term has the same input monomial. There are no larger input degrees. The positive parent has 139 operations; a naive natural shift has 172, reduced here by eight affine cancellations.
+
+The historical parent theorem targets `nativeNoZero (positiveShift (AdaptiveNamedValues33.literal CurrentWindowCarry2011.ports)) ↔ ¬mappedNativeRefutation embedding`. Its documented focused replay inherits provider ancestry; this review does not rerun or strengthen that replay. The new natural graph still needs its own Lean literal, checked evaluation bridge and endpoint client. External equality is not evidence of a new compiled proof, full source closure, or PDF semantics. As documented by the author, the unrelated 27/156/8 natural shift numerically dominates this 33/164/8 candidate but has different endpoint provenance.

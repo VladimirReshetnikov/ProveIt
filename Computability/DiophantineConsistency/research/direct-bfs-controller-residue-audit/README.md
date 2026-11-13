@@ -1,0 +1,7 @@
+# Direct-BFS controller residue: external arithmetic check
+
+`check.py` reads the byte-pinned `ten-positive-qcube-product-square/coefficients/K.bin.gz` payload as a 592884-bit little-endian integer, independently evaluates the direct-BFS source rows and 41 copy slots modulo `L = 590069 * 581197`, and checks the two residues agree. It obtains `K % L = 264033855341`. The original symbolic-kernel controller proof assumes a different residue `284898815895`, so it cannot be applied to this BFS kernel by identifying the two.
+
+For the controller dimensions used by the existing construction, the common residues of `q = 2^(590069*N)` and `2^(590069*s)` are `290226301192`, and the dummy pulse is `298529384010`. Substituting these into `Γ = 2^(67*1063) (q² − 1) (1 + q(K + 2^(590069*s)))` gives `Γ % L = 299052170727`; the script checks `gcd(Γ,L) = 1` and `Γ^581196 % L = 1`. The common q-residue statement in models still needs the existing controller lemmas; this script checks only the finite arithmetic.
+
+Run `python3 check.py` from any directory. The deterministic retained output is `observations/attempt01/result.json` (SHA-256 `4cff247c166ad6dfab20fbb84457d1a112ca43e83edcb349da7fec46c7b469d3`); the script SHA-256 is `10b9042e671c350246169dbbf206cf7241c88a6a8f1737554b04b10ea793b0a4`. The JSON records source and payload hashes. These are **external calculations**, not a Lean proof of either the symbolic residue or the payload-to-symbolic equality, and do not establish rank calibration or iPRA provability.

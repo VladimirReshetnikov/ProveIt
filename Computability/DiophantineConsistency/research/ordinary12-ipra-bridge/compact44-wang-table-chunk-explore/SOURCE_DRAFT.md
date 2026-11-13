@@ -1,0 +1,5 @@
+# Full-chain source draft boundary
+
+The generated files are a candidate 96-module source chain, not a compilation result. The original complete `ArithmeticWangTable` source hash is `8bf620443a3ed74892efba1aeaa6f8c14add5feaff4954dda001a6acf5e36ff2`. `ArithmeticWangTableChunkBase` is its exact prefix before the three table-wide checks, with only the namespace closure appended. The original three theorem statements are reconstructed in their respective aggregate modules. The final `ArithmeticWangTable` module imports those aggregate modules and contains the byte-identical original suffix beginning at `tileN_mem`. This changes module provenance and object hashes; all dependent modules must be rebuilt on the same coherent side.
+
+The manifest pins all generated source bytes. The separate probe evidence does not authenticate the full chain, its inherited objects, or a paired provider. In particular, some table predicates may have different resource behavior in chunks not yet tested, and the generated aggregator proofs may still fail when compiled.

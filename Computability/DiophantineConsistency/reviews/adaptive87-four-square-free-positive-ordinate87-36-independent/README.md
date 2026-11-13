@@ -1,0 +1,21 @@
+# Independent review: positive-ordinate 87/36 candidate
+
+The reviewed circuit was subsequently identified with the existing
+[`adaptive-square-sums` graph](../../research/adaptive-square-sums/candidate.json)
+after input and gate renaming. Its independently recorded
+[historical iPRA endpoint](../ipra-frontier13-historical-pair-independent-audit/README.md)
+has separate source-snapshot and provider qualifications. This review checks
+an alternative ordinary-integer witness argument; it is not a new equation or
+a new Lean proof.
+
+The 87-row circuit is exactly the 88/30 parent with the row `g78 = V+u` removed and `y²` changed to `auxPositive²`, with the input slot renamed accordingly. All 87 operations, thirteen inputs and four ports are live: 48 multiplications, 21 additions and 18 subtractions. The syntactic degree upper bound independently recomputes as 36, and the entire diagonal evaluated at the recorded fixed ports has a nonzero degree-36 coefficient 57192905 modulo 1,000,000,007. Therefore the specialized graph's degree is exactly 36. All four compressed and raw coefficient hashes, lengths and bit lengths match their metadata; the encoded beta is exactly `2^94517−1` and positive. Identification of these bytes with Lean constants remains inherited external evidence.
+
+For either graph at a zero, the sum of four integer squares makes every residual zero. With positive inputs, `B=Y(X+1)+2≥4`, `c=eta+Y(eta+zeta)≥3`, `I=c²i≥c²`, and `U=Y(1+beta J)²>0` for `beta≥0`. From the exact main residual, `U²` divides `Dstar²`, so integer square-divisibility gives `U | Dstar` and an integer square `1+(B²−1)c²`. If `2≤c<2B`, this lies strictly between `(Bc−1)²` and `(Bc)²`, since the two differences are `c(2B−c)` and `c²−1`. Consequently `c≥2B` and `Delta=B²−1<c²`.
+
+If `V=1`, its graph definition gives `f²(Tc−R)=c+1`; the integer factor `Tc−R` must be positive, so `f²−1≤c`. The strong zero yields `I²=Delta(f²−1)≤Delta c<c³≤c⁴≤I²`, a contradiction. This uses no additional sign assumption about the rank or quotient.
+
+For a child zero, the auxiliary residual and `Q=I²` yield `(I²−1)(y²−V²)=V²−1`. If `V<0`, positive `y` exceeds it; `V=0` is impossible from this identity; `V=1` was excluded; and for `V≥2` the identity forces `y²>V²` and hence `y>V`. Thus `u=y−V` is positive and gives the parent exactly the same ordinate and output. Conversely, the parent ordinate cannot be zero: its auxiliary residual would give `I²V²=1`, impossible for integer `V` and `I≥9`. Taking its absolute value gives the child's positive ordinate and preserves its square and all residuals. The maps change one coordinate and prove existential zero equivalence under the stated beta and positivity assumptions.
+
+The receipt independently checks the full row edit, factor wiring, ordinate independence, fixed payloads, operation census, degree bound and leading diagonal coefficient; finite arithmetic controls do not replace the argument above. This is a standard-integer result, not an all-model or checked Lean/iPRA transfer. It inherits the parent equation's separate proof and port-binding limitations and asserts no consistency result or global minimum.
+
+Reproduce with `python3 -I -S -B reviews/adaptive87-four-square-free-positive-ordinate87-36-independent/check.py`. No Lean/build/staging is performed.

@@ -1,0 +1,7 @@
+# Exploratory fixed-graph cyclic block copy
+
+`BlockCyclicIndex` proves model-level within-block reflected indexing and the full cyclic block identity `cyc(8807N, 8807h+j, 8807s) = 8807·cyc(N,h,s)+j` for h,s<N and j<8807, including the h<s wrap case. `FixedGraphBlockCopy.graph_block_copy` combines this with the existing fixed symbolic graph parity-copy relation. Under positive graph coordinates and literal graph zero at the fixed symbolic ports with `paramKernel rho`, it retains the same N,w,s and indexed carry input and proves for every model h<N that `C[8807h+1095]` equals both `C[8807·cyc(N,h,s)+2195]` and `C[8807·cyc(N,h,s)+3296]`.
+
+The result is conditional on graph zero; it does not establish a selected row in every block, a represented global word, a semantic time/space interpretation of s, retained port/K byte binding, machine semantics or internal iPRA. In particular the modular block identity covers cyclic wrap without assuming any coprimality.
+
+Single-author source order was `BlockCyclicIndex`, then `FixedGraphBlockCopy` over the exploratory provider of `f0669f0e54`. Final sessions 49472 and 6299 actually exited 0 without warnings or `sorryAx`; exact named axiom reports are retained. Attempt 49362 exited 1 on an unavailable import and a rewrite; session 77468 exited 0 with an unused-variable warning. Both sources and observations are retained, and the final block source removes the unused argument. These are not paired replays or independent artifact audits.

@@ -1,0 +1,3 @@
+# Independent source review: generic n≥7/r9 growth
+
+Source-only PASS `2e5e55fa8f52c6a9e465932f45af1a9c51569c98dd3d0d91828be4f367e20c85`; no Lean replay. The independently audited coefficient/factor identities yield y7(x t²+2)≥x⁶t¹², y9(z)≤z⁸, z≤t(x+2), and (x+2)⁸≤2x⁸. Under positive x,t, the explicit scalar gap implies t⁵<2x². With t=2Y this yields x²>16Y⁵. The separate size theorem correctly uses 1048572²=1099503239184, 16·64⁷>1048572² and y≥q³ to conclude x>1048572(q−1)y from x²>16y⁵. All x,t/q/y and gap assumptions are explicit; no graph/Pell binding or guard claimed. Broad high-degree nlinarith, positivity and cast/tactic resource behavior are untested; no specific failure predicted.

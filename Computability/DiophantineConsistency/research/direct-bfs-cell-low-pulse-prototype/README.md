@@ -1,0 +1,5 @@
+# Direct-BFS low-mask no-carry for arbitrary dummy inputs
+
+`DirectBFSCellLowPulse.packed_noCarry` strengthens the direct-cell base low-mask result to any Boolean dummy digit, and `normalized_noCarry` covers every model-valued dummy input after reduction modulo two. The only row hypothesis is that the selected row is not 1. The proof uses the same direct-cell support and even mask-digit argument, avoiding a separate one-bit pulse calculation. It is still a local-cell result, not a global packing or graph completeness theorem.
+
+Guarded author attempt `observations/directbfscellowpulse-attempt01/` exited 0 without diagnostics; the three axiom reports are `[propext, Classical.choice, Quot.sound]`. All direct source imports were pinned and rechecked. Object `/tmp/direct-bfs-cellowpulse-pt8d7fdj/DirectBFSCellLowPulse.olean` has SHA-256 `e71116fc1a4e5c054eaef6ed0946d09cc0be21ecf9daf14a9479f0f37483e4c2`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.

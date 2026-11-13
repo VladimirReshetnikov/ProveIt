@@ -1,0 +1,5 @@
+# Independent recipe-to-RingVars output terminal audit
+
+The state records dependency scan and Lean compile exiting 0; the author's separate record reports actual outer session 55387 exit 0. The checker validates source/object/log pins, all 100 direct guards, 1,282 overlay links and exact margin/Kc provider. The theorem reports `[propext, Classical.choice, Quot.sound]`; no warnings occur. The prelaunch review checked seven cut substitutions and `RefinedPair.value` algebra.
+
+The checked ring-generic theorem expresses the checked Lean recipe's output as `RefinedPair.value` of symbolic `vars`; d11 rank remains opaque. Equating these vars to the named evaluator and binding JSON or a human document remain separate. No Lean replay was performed. The outer outcome is author-observed; guards are point-in-time and sampled monitoring is not a complete dynamic/transitive trace. Earlier A1 independent recursive preflight was interrupted with the author's passing preflight recorded; an earlier initial-agreement numeric outer exit is unavailable.

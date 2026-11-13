@@ -1,0 +1,30 @@
+import Direct80CarrierCancelH
+
+/-! Lift a natural Bezout certificate to cancellation with a signed factor. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace TenPositiveSignedBezout
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency.ModelDifferenceRing DiophantineConsistency.ArithmeticGcdNormalization
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem cancel_signed_factor (a m : V) (e : DiffRing V)
+    (hbez : Bez a m 1) (hd : (ι m : DiffRing V)∣ι a*e) : (ι m : DiffRing V)∣e := by
+  obtain ⟨u,v,w,z,he⟩ := hbez
+  have hring : (1:DiffRing V)+ι a*ι u+ι m*ι v=ι a*ι w+ι m*ι z := by
+    have h := congrArg (ι : V →+* DiffRing V) he
+    simpa only [map_add,map_mul,map_one] using h
+  have hone : (ι a:DiffRing V)*(ι w-ι u)+ι m*(ι z-ι v)=1 := by
+    linear_combination hring
+  obtain ⟨t,ht⟩ := hd
+  refine ⟨t*(ι w-ι u)+e*(ι z-ι v),?_⟩
+  calc
+    e=(ι a*e)*(ι w-ι u)+ι m*(e*(ι z-ι v)) := by
+      rw [←hone]; ring
+    _=(ι m*t)*(ι w-ι u)+ι m*(e*(ι z-ι v)) := by rw [ht]
+    _=ι m*(t*(ι w-ι u)+e*(ι z-ι v)) := by ring
+
+#print axioms TenPositiveSignedBezout.cancel_signed_factor
+end TenPositiveSignedBezout

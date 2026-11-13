@@ -1,0 +1,7 @@
+# Direct-BFS raw column decomposition
+
+`DirectBFSRawColumn.lean` proves that each rotated direct-BFS band has the direct table's selector/copy decoder form and that the full indexed raw carry column decomposes into both direct bands, the unchanged bare column and the temporal digit. The proof uses the direct-BFS coefficient-model theorem and generic indexed flattening; it does not substitute retained-original tile values.
+
+Attempt 01 is retained and failed from excessive implicit reduction; corrected guarded author `observations/directbfsrawcolumn-attempt02/` exited 0 without diagnostics, printing axioms `propext`, `Classical.choice`, `Quot.sound` for all three results. Object `/tmp/direct-bfs-rawcolumn-vrc4_xgo/DirectBFSRawColumn.olean` SHA-256 `6f01b26fea7494c9d4da47dc9eb49cf2eefa0989b4bde1d6b55d61a1274aa6c7`. Selected inputs/resources are pinned, with inherited source/object, package and dynamic ancestry limits and no independent Lean replay. Local selector-to-machine conjugacy, 80-graph full decoding, converse, iPRA and formal JSON/file binding remain open.
+
+After correcting the predecessor coefficient-decoder direct-import pin, frozen `run-v2.py` rebuilt this unchanged source against that fresh producer: `observations/directbfsrawcolumn-attempt03/` passed at `/tmp/direct-bfs-rawcolumn-wnhkwnl1/DirectBFSRawColumn.olean`, with bit-identical object SHA `6f01b26fea7494c9d4da47dc9eb49cf2eefa0989b4bde1d6b55d61a1274aa6c7`. Earlier attempts remain preserved.

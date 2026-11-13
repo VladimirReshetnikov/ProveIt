@@ -1,0 +1,3 @@
+# Independent source review: first index at least six
+
+Source-only PASS `d3034a5a2728eb5d36a949a5e2df3f8b9e8c0fb9c2d8a19302cc68a6995ce950`, conditional on pending graph n5 exclusion and compatible providers. No Lean invocation by reviewer. For the same positive p/v and zero, beta≥31 gives the accepted n≥5 result and beta≥15; the pending graph contradiction excludes n=5 under explicit q≥2³⁰, so discreteness gives n≥6. The existential theorem applies this to the very n supplied by the existing first-coordinate/residue result, preserving its residue and equation. It does not eliminate n≥6, derive fixed-port q or assert a guard or iPRA endpoint. Source elaboration and provider selections remain unchecked.

@@ -1,0 +1,9 @@
+# Independent prelaunch review: split natural symbolic cover
+
+Scoped GO for one coordinated run using runner SHA-256 `cd6b147e6eaad347dbc8dd52db94af2b06742fbb7ca8553449f6cca981356116` and outer `bbada9c02bcd9c1c012fc2ec1fe910332e646c3c119a76226e4d8f1f6ad95f1d`. The reviewed natural source and actual one report match the source plan; the low-port parent and five independently pinned producer roots supply its five direct inputs, including generic power cover and its separate AbstractCover dependency.
+
+Checked collision/no-clobber, producer-root regularity and live bundle stability, first-selected direct/outside paths, project/header and outside companion comparisons for each producer closure. Generic→AbstractCover overlap is explicitly compared against the other selected producer's bundle and serialized header, rather than incorrectly requiring it in the low-port parent. Roots are constructed dynamically from the new stage, every parent closure and every producer with uniqueness; post-run checks compare every parent and producer closure, project/header and outside companions. The separately captured Nat.Basic supplies the 82nd outside name.
+
+Corrected read-only preflight02 terminal `6cd8603c97c8c2aa54a4fee29728ed24f264b9ce2a04cc94c4c2c3c80a5994c5` records exit 0, 2041 parent/82 outside/one stage; 25 actual-function and six outer controls pass. The initial preflight01 was rejected before Lean on a stale duplicate audit pin and is retained. Capture actual outer exit and audit result before acceptance; no Lean was run in this review.
+
+This held theorem concerns fixed symbolic natural ports only; model cast, 74-zero block/population/no-carry derivations, fixed-BFS guard, external file binding and iPRA remain separate. Four inherited baseline source ancestries and transitive outside/package/dynamic ancestry remain limited.

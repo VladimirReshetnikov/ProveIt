@@ -1,0 +1,5 @@
+# Independent audit: conditional n6/r11 scalar obstruction
+
+PASS for the exact ordinary-integer argument. README `4994adeb1e42699f5abeec6b4929350bde6555b5c2e86bd08dca770c2c95e0f6`, checker `605f065c2c282ae3db53f528d5bf49d0a8ce3e9053ab452d822985f2c1641703`, receipt `cbd310e88906880341f0adf0c7046aefd111be63c4909ab21dcd79dfc4378267`, stdout `afa413c3f2b21b48f36a2d1b85a6a4c260b1f74f3f92d9dfa88d0022368517ea`, stderr empty SHA `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`. Documented isolated checker reran successfully; no flags, -O and -OO each independently rejected exit 1.
+
+Recurrence gives y6(d)=d⁵−4d³+3d and y11(z)=z¹⁰−9z⁸+28z⁶−35z⁴+15z²−1. Independent direct shifted sparse-recurrence expansion gives 105 strictly positive lower coefficients (minimum 20, constant 1206753097677437), and 397 positive upper coefficients (minimum 1). Under x≥32,t=2Y≥2 and ky<c<ky+k the lower slack and upper positivity imply 250<t−B<260. q|X and q|Y imply q|(t−B), impossible for q≥260. Exact q/X/Y and interval assumptions are retained; ordinary scalar only, no Lean, graph binding, guard or endpoint.

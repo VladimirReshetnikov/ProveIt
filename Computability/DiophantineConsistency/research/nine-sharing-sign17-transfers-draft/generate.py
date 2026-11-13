@@ -1,0 +1,14 @@
+#!/usr/bin/env python3
+"""Generate source-only conditional sign17 staged residual transfers."""
+import hashlib,json,sys
+from pathlib import Path
+if not sys.flags.isolated or not sys.flags.no_site or sys.flags.optimize:raise SystemExit('use python3 -I -S -B')
+here=Path(__file__).resolve().parent;src=here.parent/'nine-sharing-sign17-degree96-vdifference-candidate/seed.json';raw=src.read_bytes();assert hashlib.sha256(raw).hexdigest()=='0323ee371aac07604617495952c6a5e0b7ead5e66697a485a05358fb447689ac';d=json.loads(raw);names=[r['gate'] for r in d['residuals']];assert names==['Dc2','tau','N0','Nt','cTminusR','V','Na','scaled_Ns'];oldidx=[0,1,2,3,4,5,7,8]
+shared=', '.join(f'SharingSeed{fam}.{prefix}{i:02}' for fam,prefix in [('18Degree94','shared'),('17Degree96','shared')] for i in range(35))
+for i,n in enumerate(names):
+ j=oldidx[i];assert n.isidentifier();p=here/f'Sign17Transfer{i:02}.lean'
+ if p.exists():raise SystemExit('refusing overwrite '+str(p))
+ oldclaim=f'SharingSeed18Degree94.firstResidual p = old{n} p' if j==0 else f'((SharingSeed18Degree94.remainingResiduals p).drop {j-1}).head? = some (old{n} p)'
+ newclaim=f'SharingSeed17Degree96.firstResidual p = new{n} p' if i==0 else f'((SharingSeed17Degree96.remainingResiduals p).drop {i-1}).head? = some (new{n} p)'
+ p.write_text(f'''import DiophantineConsistency.Sign17Coordinate\n\n/-! SOURCE-ONLY individual conditional signed residual transfer. -/\nset_option autoImplicit false\nnoncomputable section\nnamespace DiophantineConsistency.Sign17Transfers\nopen LO LO.FirstOrder LO.FirstOrder.Arithmetic ModelDifferenceRing\nopen scoped LO.FirstOrder LO.FirstOrder.Arithmetic\nopen AdaptiveEquationSyntax2011\nvariable {{V : Type}} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]\n\ndef old{n} (p : Fin 4 → ℤ) : Expr (Fin 19) := SharingSeed18Degree94.row{j:02} p\ndef new{n} (p : Fin 4 → ℤ) : Expr (Fin 18) := SharingSeed17Degree96.row{i:02} p\n\ntheorem old_{n}_row (p : Fin 4 → ℤ) :\n    {oldclaim} := by rfl\n\ntheorem new_{n}_row (p : Fin 4 → ℤ) :\n    {newclaim} := by rfl\n\ntheorem {n}_eval (p : Fin 4 → ℤ) (v : Fin 18 → V) (gap : V)\n    (hg : ι gap = (ι (v 13) + 1) * (ι (v 13) + 1) - ι (v 17) * ι (v 17)) :\n    (old{n} p).evalRing (fun j => ι (Sign17Coordinate.lift v gap j)) =\n      (new{n} p).evalRing (fun j => ι (v j)) := by\n  simp [old{n}, new{n}, SharingSeed18Degree94.row{j:02}, SharingSeed17Degree96.row{i:02},\n    {shared}, Sign17Coordinate.lift, Expr.evalRing_sub, Expr.evalRing_mul,\n    Expr.evalRing_add, Expr.evalRing_var, Expr.evalRing_constant, map_add, map_mul,\n    map_ofNat, hg]\nend DiophantineConsistency.Sign17Transfers\n#print axioms DiophantineConsistency.Sign17Transfers.{n}_eval\n''')
+print(json.dumps({'status':'GENERATED_SOURCE_ONLY','transfers':len(names),'scope':'No Lean compilation or representative existence.'},indent=2,sort_keys=True))

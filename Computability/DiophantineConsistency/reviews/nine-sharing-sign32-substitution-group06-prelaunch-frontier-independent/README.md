@@ -1,0 +1,5 @@
+# Independent sign32 cTminusR/V/normalizedS prelaunch review
+
+The checker pins source, runner and manifest, independently reproduces the no-Lean preflight, and compares all six old/new expressions against the exact source-list rows. Old positions are 16, 17, 18 in the old remaining list; new positions are 15, 16, 17 in the new list. Old cTminusR uses eliminated coordinate 15 and its proposed evaluation explicitly assumes port 0's model-ring cast equals the image of model-natural beta. Old V and normalizedS do not use that coordinate and their evaluations have no port-cast assumption. The runner binds successful group05 and checks retained source, logs, guards and overlay; deeper ancestry is inherited.
+
+These are nine local row-link/evaluation claims with symbolic ports and one valuation. Elaboration and axiom reports remain untested; no Lean run occurred. Remaining identities and the complete zero-set bridge are outside scope. Provider checks are point-in-time; sampled monitoring does not give a complete transitive or dynamic trace.

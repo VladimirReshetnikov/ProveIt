@@ -1,0 +1,9 @@
+# Guard-independent odd-ordinate lower bound
+
+`Trace74OddOrdinateBound.graph_ordinate_lower` proves that a positive trace74 graph zero, with the same model, positive beta and positive valuation hypotheses as `Trace74Fold.graph_odd_ordinate`, implies `4*(A+1)^2 ≤ c+1`. It combines the existing graph-zero odd-index witness with strict growth of the Pell ordinate. Its `ordinate_three` theorem establishes `ycoord 3 b+1 = 4*(b+2)^2`. The result asserts no bound on either F or C and assumes no reverse guard. Odd-Pell and first-Pell indices remain distinct.
+
+Reviewed attempt02 passed: actual author tool session 63469 returned outer exit 0, Lean exit 0, and both exact expected axiom reports are clean. The retained terminal is `observations/attempt02/terminal.json` (SHA-256 `833d7fd8dd39cbb38d4f1fad72835e9b07797e9dee95696600d92cd476be9b55`); its object `/tmp/trace74-odd-ordinate-bound-b8rmryeu/lib/Trace74OddOrdinateBound.olean` has SHA-256 `a619576cc62abcde2dc1c57f779fe8a8d6ecf0276180e23f17bc0fdbd6a96caa`. Independent [post-audit](../../reviews/trace74-odd-ordinate-bound-result-independent/README.md) SHA-256 `68186c97a7c2ce39631fc02d4e991fa374e51bbddd836c9b4ce775d82479bc41` passed. Direct pins do not establish complete project, package, search-path or dynamic ancestry.
+
+Retained attempt01 exited 1 on a final addition-order mismatch, and its graph theorem report contained `sorryAx`; it was rejected. Attempt02 changed the affected proof line using commutativity. [Source review](../../reviews/trace74-odd-ordinate-bound-draft-independent/README.md) and [retry prelaunch review](../../reviews/trace74-odd-ordinate-bound-retry-prelaunch-independent/README.md) are separately recorded.
+
+The separate [K-bound client](KBOUND.md) proves `4*(Y*(X+1)+1)^2 ≤ k*(Y+1)` for the same graph zero, using `c=kY+eta` and `eta<k`. Its reviewed author check and independent result audit passed; its runner and controls are separate.

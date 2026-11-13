@@ -1,0 +1,26 @@
+/tmp/ipra-sparse-k-family-01/frozen/SparseAggregateMass.lean:22:6: error: omega could not prove the goal:
+a possible counterexample may satisfy the constraints
+  d ≥ 0
+  c ≥ 0
+  b ≥ 0
+  a ≥ 0
+  a - b ≥ 0
+  a - c + d ≤ -1
+where
+ a := ↑(List.map Prod.snd ts).sum
+ b := ↑(List.map Prod.snd (List.filter (fun t => decide (t.1 = j)) ts)).sum
+ c := ↑(List.map Prod.snd
+      (if false = true then t :: List.filter (fun t => decide (t.1 = j)) ts
+      else List.filter (fun t => decide (t.1 = j)) ts)).sum
+ d := ↑t.2
+/tmp/ipra-sparse-k-family-01/frozen/SparseAggregateMass.lean:21:8: warning: This simp argument is unused:
+  ↓reduceIte
+
+Hint: Omit it from the simp argument list.
+  simp only [SparseRadix.coefficientAt, List.filter_cons, h, decide_false, ↓̵r̵e̵d̵u̵c̵e̵I̵t̵e̵,̵ ̵List.map_cons,
+  ̲  ̲ ̲ ̲ ̲ ̲List.sum_cons] at *
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/ipra-sparse-k-family-01/frozen/SparseAggregateMass.lean:24:8: error: (kernel) excessive memory consumption detected
+'SparseAggregateMass.coefficient_le_total' depends on axioms: [propext, sorryAx, Quot.sound]
+'SparseAggregateMass.kernel_total_mass' depends on axioms: [propext, kernel_total_mass]

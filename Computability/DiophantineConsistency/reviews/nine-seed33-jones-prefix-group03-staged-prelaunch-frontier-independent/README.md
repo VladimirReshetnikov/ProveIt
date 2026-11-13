@@ -1,0 +1,3 @@
+Independent prelaunch review: PASS source/provider checks and no-Lean preflight exit 0. All four modules exactly adapt the checked sign38 carry/g/theta/G stages with sign33 namespace and G exponent 5^33. The runner replays the audited group02 producer, binds each direct or staged producer/guard, and checks successful postflight; earlier dynamic/transitive ancestry remains inherited. Author preflight had no separate retained session ID; independent preflight also passed.
+
+Lean elaboration and resource fit are untested. These are symbolic short-prefix identities, not full output semantics, JSON/human binding, degree or operation count.

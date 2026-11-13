@@ -1,0 +1,108 @@
+import PositiveUnscale84To87
+import UnscalePositiveRoot
+import DiophantineConsistency.Compact44.P72Root
+import Mathlib.Tactic
+
+/-! Proposed reverse 84→87 first-root graph client. A represented positive
+beta and the large-k fact from that same 84 graph zero remain explicit. All
+sources and providers are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Unscale84ReverseGraphDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open PositiveUnscale84To87Draft UnscalePositiveRootDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def portsInt (p : Fin 4 → ℕ) : Fin 4 → ℤ := fun j => (p j : ℤ)
+def b (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := v 0*(p 0:V)
+def q (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := 1+b p v
+def X (v : Fin 13 → V) : V := v 6
+def Y (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := q p v*q p v*q p v*v 7
+def k (v : Fin 13 → V) : V := v 9+v 10
+def ell (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := X v*Y p v*Y p v*k v
+def carrier (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  e84 (portsInt p) v (PositiveUnscale84GraphDraft.graph (portsInt p)).bt
+def root (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  e84 (portsInt p) v (PositiveUnscale84GraphDraft.graph (portsInt p)).root
+
+theorem source_root (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    root p v=ι (b p v)*(ι (ell p v)+ι (k v)+ι (v 8)-ι (k v)*carrier p v)-carrier p v := by
+  simp [root,carrier,e84,portsInt,PositiveUnscale84GraphDraft.graph,b,q,X,Y,k,ell,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+theorem source_first (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    e84 (portsInt p) v (PositiveUnscale84GraphDraft.graph (portsInt p)).first =
+      root p v*root p v-ι (b p v)*ι (b p v)*
+        (1+ι (ell p v)*(ι (ell p v)+ι (k v))) := by
+  simp [root,e84,portsInt,PositiveUnscale84GraphDraft.graph,b,q,X,Y,k,ell,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- Actual target first residual under Y=q³s and arbitrary replacement r. -/
+theorem target_first (p : Fin 4 → ℕ) (v : Fin 13 → V) (r : V) :
+    e87 (portsInt p) (update v (Y p v) r) (PositiveUnscale87GraphDraft.graph (portsInt p)).first =
+      ((ι (q p v)*ι (q p v)*ι (q p v))*
+        (ι (b p v)*(ι (ell p v)+ι (k v)+ι r+ι (v 7)-ι (k v)*carrier p v)-carrier p v))^
+        2-
+      ((ι (q p v)*ι (q p v)*ι (q p v))*ι (b p v))^2*
+        (1+ι (ell p v)*(ι (ell p v)+ι (k v))) := by
+  simp [carrier,e84,e87,update,portsInt,PositiveUnscale84GraphDraft.graph,
+    PositiveUnscale87GraphDraft.graph,b,q,X,Y,k,ell,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- The actual 84 first residual and an explicit large-k graph fact give the
+positive target-root witness; beta's represented strict positivity is explicit. -/
+theorem reverse_root_of_large (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscale84GraphDraft.graph (portsInt p)).output v)
+    (hbeta : 0<(p 0:V)) (hlarge : 8*X v*Y p v*Y p v+4≤k v) :
+    ∃ y r : V, 0<y ∧ 0<r ∧ ScaledY (portsInt p) (update v y r) (v 7) ∧
+      e87 (portsInt p) (update v y r) (PositiveUnscale87GraphDraft.graph (portsInt p)).first=0 := by
+  have hb : 0<b p v := mul_pos (hv 0) hbeta
+  have hq : 1≤q p v := by dsimp [q]; exact le_add_of_nonneg_right (Arithmetic.zero_le _)
+  have hX : 1≤X v := pos_iff_one_le.mp (hv 6)
+  have hY : 0<Y p v := by
+    dsimp [Y]
+    exact mul_pos (mul_pos (mul_pos (lt_of_lt_of_le (by simp) hq)
+      (lt_of_lt_of_le (by simp) hq)) (lt_of_lt_of_le (by simp) hq)) (hv 7)
+  have hsum := (internalZero_iff _ _).mp hz
+  rw [output84] at hsum
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at hsum
+  obtain ⟨hf,_,_,_⟩ := squares_zero _ _ _ _ hsum
+  change e84 (portsInt p) v (PositiveUnscale84GraphDraft.graph (portsInt p)).first=0 at hf
+  rw [source_first] at hf
+  have hnorm := sub_eq_zero.mp hf
+  obtain ⟨tau,r,hr,htau,hroot⟩ := shifted_root_of_qcube
+    (b p v) (q p v) (X v) (Y p v) (v 7) (k v) (v 8) (carrier p v) (root p v)
+    hb hq hX (hv 7) rfl hlarge (source_root p v) hnorm
+  refine ⟨Y p v,r,hY,hr,?_,?_⟩
+  · dsimp [ScaledY,PositiveUnscale84To87Draft.q,update,portsInt,Y,q,b]
+    simp [P72Root.cast_port,map_add,map_mul,map_one] <;> ring
+  · rw [target_first,hroot]
+    have htauR := congrArg (ι : V →+* DiffRing V) htau
+    simp only [map_add,map_mul,map_one] at htauR
+    linear_combination ((ι (q p v)*ι (q p v)*ι (q p v))*ι (b p v))^2*htauR
+
+/-- Explicit model obligation for the exact positive 84 source; it packages
+only beta positivity and large-k, not either graph's zero equivalence. -/
+def ReverseInputs (p : Fin 4 → ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) → InternalZero (PositiveUnscale84GraphDraft.graph (portsInt p)).output v →
+      0<(p 0:V) ∧ 8*X v*Y p v*Y p v+4≤k v
+
+theorem reverse_cut (p : Fin 4 → ℕ) (h : ReverseInputs p) : ReverseRootCut (portsInt p) := by
+  intro V _ _ v hv hz
+  obtain ⟨hb,hk⟩ := h V v hv hz
+  exact reverse_root_of_large p v hv hz hb hk
+end DiophantineConsistency.Unscale84ReverseGraphDraft
+#print axioms DiophantineConsistency.Unscale84ReverseGraphDraft.reverse_cut

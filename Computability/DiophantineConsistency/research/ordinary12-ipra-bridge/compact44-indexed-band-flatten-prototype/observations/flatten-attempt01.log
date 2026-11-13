@@ -1,0 +1,20 @@
+CompactIndexedFlatten.lean:25:25: error: unsolved goals
+V : Type u_1
+ι : Type u_2
+κ : Type u_3
+inst✝³ : ORingStructure V
+inst✝² : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+inst✝¹ : Fintype ι
+inst✝ : Fintype κ
+s : ι → ℕ
+c : κ → ℕ
+es₀ es₁ : ι → V
+ec₀ ec₁ : κ → V
+eb : Fin 5 → V
+r : V → V
+⊢ ∑ x, ↑(s x) * r (es₀ x) + ∑ x, ↑(c x) * r (ec₀ x) +
+      (∑ x, ↑(s x) * r (es₁ x) + ∑ x, ↑(c x) * r (ec₁ x) + ∑ x, r (eb x)) =
+    ∑ x, ↑(s x) * r (es₀ x) + ∑ x, ↑(c x) * r (ec₀ x) + (∑ x, ↑(s x) * r (es₁ x) + ∑ x, ↑(c x) * r (ec₁ x)) +
+      ∑ x, r (eb x)
+'CompactIndexedFlatten.flatten' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]
+'CompactIndexedFlatten.flatten_congr' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

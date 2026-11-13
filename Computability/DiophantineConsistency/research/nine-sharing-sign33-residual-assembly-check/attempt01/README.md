@@ -1,0 +1,7 @@
+# Eight sign33 residual batches assembled
+
+Author-observed outer session `22755` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `689fe69a26c9315785321d7fa1fcf37472fb42380540860e201d94ac98762ca9`; before and after provider surveys both hash to `a6f72c0f1ccf987ab33ab7aea693b4e17d34d38607d1444c8b46d28788fe0c58`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33ResidualAssembly` compiled in 4.232 seconds; object SHA-256 `0306acc92c2199a99d58eb54ce6f78787e61beb2ddb1595d9aaeb36d10a4bef8` at `/tmp/nine-sharing-sign33-residual-assembly-check-20261106/lib/DiophantineConsistency/Sign33ResidualAssembly.olean`, compile log `dfb1eced19eb3e72a26e065b506122864fb19cd7faa6b95387480e7cbb59fb12`. Its axiom report lists `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,157,711,360 bytes and minimum sampled available host memory was 18,994,421,760 bytes; sampling has the stated limitations.
+
+Under the explicitly stated p0–p3 casts, seed zero implies all eight conditions on the same full valuation. No converse, chronological graph replay, Lean proof of external JSON binding, source-zero bridge or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.

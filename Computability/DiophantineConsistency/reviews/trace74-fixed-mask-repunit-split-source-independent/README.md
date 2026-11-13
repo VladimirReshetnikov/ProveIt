@@ -1,0 +1,9 @@
+# Independent source review: split fixed-mask repunit specialization
+
+Source SHA-256 `8c69cb21194cab9a0dafc49ea998e928bb3d4d9a4283da808e20b411d8082958`. The source is mathematically consistent at the stated scope; Lean elaboration and provider reconciliation remain unchecked by this review. No Lean was run.
+
+For an arbitrary indicated IΣ₁ model, the theorem explicitly assumes `N>0` and `J=rep ((67:V)*8807) N`. It then proposes the radix identity `(betaNat:V)*J+1=exp (((67:V)*8807)*N)` and repeated-mask population sum `population (lowNat*J+1)+population (highNat*J-1)=((67:V)*8807)*N+2`. It does not infer a repunit from a 74 zero or establish a graph guard.
+
+The checked abstract generic theorem's parameters are instantiated consistently as `d=67*8807`, `beta=betaNat`, `MC=lowNat`, `HP=highNat`, with the same N and J. Its lower bound, beta identity, both strict mask bounds, low mod 2, high mod 8 and combined population count are supplied explicitly. The two congrArg transports use the correct equality orientation and `.mpr` to transport the known concrete facts back to symbolic low/high; the local irreducibility settings do not alter the statement or increase a numerical threshold. The source-level model facts have the required forms, with `low_eq` bridging the concrete increment mask to the low mask and `high_eq` bridging the high digit value. The `let d` abbreviation is definitionally the same expression in all premises and conclusion.
+
+The prior isolated population-data stage was live when this review was requested; this review does not certify its result. `congrArg`/definitional equality elaboration, `norm_num` for the small scalar bound, model instance and all imported object compatibility require a separately guarded Lean check. Any cross-producer union must reconcile selected closures, headers and companions; direct-import equality alone does not establish transitive producer ancestry.

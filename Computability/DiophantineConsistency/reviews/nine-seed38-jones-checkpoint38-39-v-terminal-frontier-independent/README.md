@@ -1,0 +1,5 @@
+# Independent V0/V1 terminal audit
+
+The frozen state records two successful dependency scans and Lean compiles; the separate author observation records outer session 1442 exit 0. The checker validates source and object pins, both sets of logs, all 300 direct guard entries and 1,264 overlay links, and the audited A1 path, V-node provider, and freshly produced V0 routes. Both axiom reports are `[propext, Classical.choice, Quot.sound]`; neither log contains warnings. The independently checked prelaunch source review verifies that the statements express A0²+2 at d38 and A1²+2 at d39.
+
+The theorems concern symbolic short-prefix values and do not establish the final recipe output or external-document binding. No Lean replay was performed. Provider checks are point-in-time and sampled monitoring is not a complete dynamic or transitive trace. The earlier A1 independent prelaunch recursive replay was interrupted; its author-observed preflight is retained. The still earlier initial-agreement producer's numeric outer exit remains unavailable.

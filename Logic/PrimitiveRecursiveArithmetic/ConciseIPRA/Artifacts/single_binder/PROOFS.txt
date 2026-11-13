@@ -1,0 +1,125 @@
+PRESERVATION ARGUMENTS FOR THE NEW PROFILES
+
+Scope: successful finite executions with sufficient ordinary implementation
+resources. The inherited mathematical soundness, canonical completeness,
+weighted-slot decoding, and bi-interpretation are unchanged. These arguments
+prove only the preservation properties of the stated implementation changes.
+
+1. ONE-LINE INPUT FRAMING
+
+Let X be a finite integer/list certificate. The old reader computes
+json.load on a textual representation of X. The new reader computes
+json.loads on one physical line representing the same X. Both return equal
+finite Python integer/list trees, with the same insertion order and nesting.
+All remaining code in the token and AST candidates is literally unchanged.
+Therefore, from the reader boundary onwards, the execution is identical,
+including acceptance or rejection, instruction consumption and scope updates.
+
+Every finite integer/list value has a one-line JSON representation. The
+translation is json.dumps(X, separators=(',', ':')) plus a newline, or the
+same serializer directly inside the certificate producer. This conversion
+preserves each integer and each list node, is computable, and neither searches
+for nor changes any proof. Hence the recognized canonical theorem set is
+unchanged in both directions.
+
+The admitted byte-stream languages are different: later physical lines are
+ignored by the new reader. We therefore do not claim whole-file language
+identity. We do not count this as a new axiom or calculus. The controls with
+the same framing are identical to the candidates and tie their metrics.
+
+2. TRUTH-VALUED RETURN FOR THE CONTEXT-FIRST BYTE CHECKER
+
+The truth-return mechanism itself is inherited: the unified Article
+ch11_cert.tex, Proposition cert:prop:truthy, states it for an earlier 506-byte
+control. The contribution here is its measured composition with the incoming
+context-first 495-byte control, not invention of the mechanism.
+
+Write C for the pinned 495-byte control and C+ for bytes488.py. At a retained
+hypothesis, C returns None while C+ returns True. Otherwise C reads exactly
+one packet, constructs the next context, recursively checks the continuation,
+and returns None. C+ evaluates this expression:
+
+    retained_hypothesis or [check_continuation(...) for packet in [q()]]
+
+This is an eager list comprehension over a singleton list. If the hypothesis
+is retained, the right side is not evaluated and no packet is read. Otherwise
+q() is evaluated once, the four fields are unpacked exactly once, and the
+continuation expression is evaluated once. There is no search or additional
+trusted oracle. Every successful C+ return is either True or a nonempty
+singleton list, so it is truthy.
+
+At the nested major-premise check, C uses
+
+    C(g,m,k) or m*3.
+
+The new program uses
+
+    C+(g,m,k) and m*3.
+
+If the major check raises, both expressions raise before considering later
+branches. On success, C returns None and C+ returns a truthy value, so both
+expressions yield exactly m*3. The remaining disjuncts therefore receive the
+same value and construct exactly the same hypothesis.
+
+All other expressions are unchanged from the 495-byte control. In particular,
+Python still evaluates the context argument before the continuation-goal
+argument. The embedded introduction finishes before the matrix-arity test;
+the new floor is assigned while opening the context hypothesis; the goal
+opening sees that floor. Assignment expressions inside the comprehension
+bind the enclosing function's cells. This is the same scope-state sequence
+as the control, including its inherited context-first convention.
+
+Induct on the finite call tree of a successful execution. The base case is
+hypothesis retention. At a nonbase call, the major child and continuation
+child have the same initial syntax, context, floor and unconsumed packet
+suffix. By induction they consume the same packets and succeed together.
+The argument above shows that the context and goal delivered to the second
+child are the same. Conversely the same induction reads a successful C+
+execution as a successful C execution. Hence the successful finite traces
+and the accepted input language agree, under the stated resource convention.
+
+This comparison begins with the actual incoming 495-byte checker, which
+already contains the eager tuple selection and remainder selector. No new
+claim about their handling of noncanonical aliases is required here.
+
+3. OUTER LAMBDA
+
+bytes487.py replaces the outer def-and-return pair by one lambda expression.
+Its first action binds i to precisely the former local opening lambda, then
+continues through `and`. A Python function object is truthy, so this guard
+always proceeds. The binding makes i a local cell of the outer lambda, as
+it was a local cell of the outer function; recursive references in the inner
+lambda resolve to that cell. The self-reference c in the default image is
+still the already-bound outer function object at the time of each call.
+Both forms use that object solely as an invalid numerical-image sentinel.
+
+The remaining returned expression is literally the expression of bytes488.py.
+Parameter order, defaults, closure capture and assignment-expression scope
+are unchanged. Thus all successful executions and exceptions match, with the
+same ordinary resource qualification. The size reduction is one normalized
+byte; it does not simplify a mathematical rule and it increases token and
+AST counts.
+
+4. STRICT COMPANION
+
+strict_guarded.py first requires exact int/list data throughout the loaded
+certificate; booleans are excluded by exact type identity. It checks the
+closed guarded Eq/D public grammar with the protected-slot bound explicitly.
+It then calls the unchanged bytes488 proof kernel. Thus every accepted
+strict certificate is also accepted by that kernel and has the advertised
+public syntax. Every canonical integer/list certificate accepted by the
+kernel passes the added checks. The stricter handling of unused malformed
+prefixes is intentional and measured in the larger companion, not hidden
+inside a compact-profile claim.
+
+5. METRIC LIMITS
+
+Under the original multiline framing, the supplied mathematical core retains
+its prior token and AST records of 249 and 271. The new byte record is 487.
+If one-line framing is admitted, the reported envelope becomes (248,270,487),
+using different programs for the three coordinates. The first two improvements
+are inherited controls with a shorter input adapter, and applying the same
+adapter to the controls removes any comparative advantage. The byte change
+is an implementation improvement on the same input contract. None is an
+absolute lower bound, nor evidence that the axiomatic basis is globally
+simplest.

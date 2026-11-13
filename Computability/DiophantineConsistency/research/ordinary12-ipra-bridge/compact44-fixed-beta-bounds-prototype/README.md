@@ -1,0 +1,5 @@
+# Bounds for a symbolic fixed beta: exploratory
+
+In an arbitrary IΣ₁ model, the generic standard-natural identity `((2^n−1):V)+1=Exp.exp(n:V)` specializes to the symbolic natural beta `2^(67*8807)−1` without evaluating its enormous numeral. The same source applies the preceding symbolic-mask bounds theorem: for J>0, this beta is positive, the low symbolic mask is below beta, beta plus the high symbolic mask is below 2*beta, and high*J≥1.
+
+The theorem concerns symbolically constructed natural values. It does not identify beta or either mask with retained bytes or a decimal literal, bind the graph tuple or fixed K, prove machine semantics, or derive a PRA result. The conditional bounds source and its dependencies were compiled on a coherent but author-only exploratory provider. Single-side session 66263 actually exited 0 without warnings, with `[propext, Classical.choice, Quot.sound]` for all three reported declarations. An earlier concrete-exponent attempt failed with a threshold warning and recursion-depth error; its source and observations are retained. No paired replay or independent audit is claimed.

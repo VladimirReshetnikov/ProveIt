@@ -1,0 +1,82 @@
+STANDALONE CHECKER FORMAT
+=========================
+
+Run: python3 checker.py < certificate.json
+Success means exit code 0 and exactly ACCEPT followed by a newline.
+Failure means REJECT followed by a nonzero exit status. Normal and python -O
+execution implement the same checker; the checker contains no assertions.
+
+The input is a JSON object with exactly the keys "goal" and "proof".
+The goal is a closed well-formed formula. All arithmetic and formula syntax
+is validated by the checker, including scope and exact integer leaf types.
+The checker imports only Python's standard json and sys modules.
+
+NUMERICAL TERMS
+
+0              Zero.
+-j, j>=1       Free parameter number j (valid only when j<=scope).
+k, k>=1        Bound index k, counted from the innermost numerical binder.
+[0,t]          Successor S(t).
+[n,a,h]        Iterator I(n,a;u.h). Only h has one additional bound index.
+
+FORMULAS
+
+[s,t]          Equality s=t.
+[B]            D_{x,y}B, read exists x (B(x,0) -> forall y B(x,y)).
+               In B, y has index 1 and x has index 2. Older indices shift by 2.
+
+A clause is a pair (antecedent, body), read antecedent -> forall y body(y).
+The numerical scope and list of clauses begin empty. Each Elim or Intro
+branch allocates the next negative free parameter, -scope-1.
+
+PROOF TREES
+
+["r", t]
+    Reflexivity t=t.
+
+["v", first, second]
+    The premises derive s=t and I(c,a;u.h)=r. If c is literal0 and a=s,
+    the result is r=t. If c is S(n) and I(n,a;u.h)=s, the result is
+    r=h[t/u]. No root-only equality-composition case is primitive.
+
+["u", index, witness, premise]
+    Select the zero-based context clause (antecedent, body). Prove its
+    antecedent and specialize its body at the arbitrary numerical term
+    witness. This is the only logical instruction still taking an
+    arbitrary numerical witness term.
+
+["e", goal, major, branch]
+    Major derives [B]. At fresh b=-scope-1, add the clause
+    (B(b,0), y.B(b,y)), and prove goal in the enlarged scope/context.
+    The goal is validated in the old scope, so b cannot escape.
+
+["i", [B], mode, branch]
+    Decode one bit beta=bool(mode). Canonical certificates use mode 0 or 1.
+    Let a=0 if beta=0; let a=-scope if beta=1 (also0 if scope = 0).
+    Let z=-scope-1. If beta=0 and B is an equality, put eta=z;
+    otherwise put eta=0. Add the clause (0=0, B(a,eta)) and prove
+    B(a,Sz). The result is [B].
+
+MODE PROJECTION
+
+The bit projection is part of the complete standalone checker and is not
+an external precondition or hidden validator. Every parsed JSON value is
+decoded by Python's ordinary truth-value operation. False/null, zero,
+empty strings/arrays/objects select 0; nonzero numbers and nonempty
+strings/arrays/objects select 1. Standard json.load additionally accepts
+NaN and Infinity; these are truthy mode aliases. They are rejected in
+arithmetic syntax. No mode payload is evaluated as code or substituted as
+an arithmetic term. Thus all accepted modes select the specified witness
+and one of the sound rule alternatives. Only0/1 are recommended when
+writing certificates.
+
+When scope = 0 and beta=1, the rule is case introduction at zero. This is a
+sound case rule and is derivable in the native calculus. It is deliberate;
+the checker does not incorrectly pretend that witness 0 selects progress
+in this branch. This avoids a special rule or test for an empty scope.
+
+Substitution/opening is the inherited capture-avoiding operation. It is
+used only after relevant syntax and scope have been checked. The complete
+public goal is checked independently before proof comparison, so Python
+numerical equality cannot let Boolean or floating-point goals masquerade
+as integer syntax.

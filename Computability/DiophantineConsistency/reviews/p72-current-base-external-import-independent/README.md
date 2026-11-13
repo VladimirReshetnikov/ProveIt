@@ -1,0 +1,5 @@
+# Independent review: narrow P72 current-base import probe
+
+Actual outer session 29817 and both Lean child runs exited 0. The source imports the fresh current14 standard endpoint and the three named Mathlib modules, then checks only `True`; its compile output is exactly `True : Prop`. This demonstrates that this one combination of imports compiled in that recorded environment. It does not build the 681 additional P72 source modules or prove an equation theorem.
+
+The checker verifies the source and runner pins, current14 endpoint and Fintype object hashes, direct dependency paths and log, all 150 direct/companion guard entries with matching recorded before/after observations, output object, monitored limits and actual exits. It also binds the earlier preflight output hash to an independently rerun 210-slot `--preflight` result, which does not launch Lean. These are point-in-time direct observations; package-transitive and dynamic ancestry are not independently rebuilt. Resource samples may miss brief spikes or escaped processes, and this review did not replay Lean.

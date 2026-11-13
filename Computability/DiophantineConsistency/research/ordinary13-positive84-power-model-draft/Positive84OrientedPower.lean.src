@@ -1,0 +1,72 @@
+import DiophantineConsistency.ArithmeticPellPowerRecovery
+import Mathlib.Tactic.Ring
+
+/-! Exact source copy of ResidueSignFreePowerDraft.power_of_oriented_balance,
+with its preceding abstract-model omega lemmas omitted. Unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Positive84OrientedPowerDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticPellRecurrence ArithmeticPellPowerRecovery
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem power_of_oriented_balance (q X Y R c main gamma W : V)
+    (hY : Exp.exp R<Y)
+    (hx : xcoord R (Y*(X+1))=main)
+    (hy : ycoord R (Y*(X+1))=c)
+    (hYq : ∃ s : V, Y=q*(q*q)*s)
+    (hbalance : let a:=Y*(X+1); let H:=3+4*a
+      q*(main+H*W)=q*(X+a*c+H*gamma)+H*X) : X=Exp.exp R := by
+  let a := Y*(X+1)
+  let H := 3+4*a
+  obtain ⟨s,hs⟩ := hYq
+  let d := 4*(q*q)*s*(X+1)
+  have hH : H=3+q*d := by dsimp [H,a,d]; rw [hs]; ring
+  have hm : (q*d)*(main+H*W)=(q*d)*(X+a*c+H*gamma)+H*d*X := calc
+    _=d*(q*(main+H*W)) := by ring
+    _=d*(q*(X+a*c+H*gamma)+H*X) := by rw [hbalance]
+    _=_ := by ring
+  have hbal0 : H*(main+H*W)+3*(X+a*c+H*gamma)=
+      3*(main+H*W)+H*(X+a*c+H*gamma)+H*d*X := calc
+    _=3*(main+H*W)+(q*d)*(main+H*W)+3*(X+a*c+H*gamma) := by rw [hH]; ring
+    _=3*(main+H*W)+((q*d)*(X+a*c+H*gamma)+H*d*X)+3*(X+a*c+H*gamma) := by rw [hm]
+    _=_ := by rw [hH]; ring
+  have hbal : 3*(X+a*c)+H*(main+H*W+3*gamma)=
+      3*main+H*(3*W+X+a*c+H*gamma+d*X) := by
+    calc
+      _=H*(main+H*W)+3*(X+a*c+H*gamma) := by ring
+      _=3*(main+H*W)+H*(X+a*c+H*gamma)+H*d*X := hbal0
+      _=_ := by ring
+  have hHp : 0<H := by dsimp [H]; simp
+  have hmod : (3*(X+a*c))%H=(3*main)%H := by
+    have h := congrArg (fun z : V => z%H) hbal
+    rw [mod_add_mul' _ _ hHp,mod_add_mul' _ _ hHp] at h
+    exact h
+  obtain ⟨w,hw⟩ := projection_quotient a R
+  have hproj : main=Exp.exp R+a*c+H*w := by
+    have hh := hw
+    rw [hx,hy] at hh
+    dsimp [H]
+    simpa only [show 3+4*a=4*a+3 by ring] using hh
+  have hres : (3*X+3*a*c)%H=(3*Exp.exp R+3*a*c)%H := calc
+    _=(3*(X+a*c))%H := by congr 1; ring
+    _=(3*main)%H := hmod
+    _=(3*Exp.exp R+3*a*c+H*(3*w))%H := by rw [hproj]; congr 1; ring
+    _=(3*Exp.exp R+3*a*c)%H := mod_add_mul' _ _ hHp
+  have h3mod : (3*X)%H=(3*Exp.exp R)%H := mod_cancel hHp hres
+  have hY1 : 1≤Y := le_trans (one_le_exp R) (le_of_lt hY)
+  have hXa : X<a := lt_of_lt_of_le (lt_add_one X)
+    (le_mul_of_one_le_left (by simp) hY1)
+  have hYa : Y≤a := le_mul_of_one_le_right (by simp) (by simp)
+  have h3a : 3*a<H := calc
+    3*a<3*a+(a+3) := lt_add_of_pos_right _ (by simp)
+    _=H := by dsimp [H]; ring
+  have h3X : 3*X<H := lt_trans (mul_lt_mul_of_pos_left hXa (by simp)) h3a
+  have h3exp : 3*Exp.exp R<H :=
+    lt_trans (mul_lt_mul_of_pos_left (lt_of_lt_of_le hY hYa) (by simp)) h3a
+  rw [mod_eq_self_of_lt h3X,mod_eq_self_of_lt h3exp] at h3mod
+  exact mul_left_cancel₀ (by simp : (3:V)≠0) h3mod
+end DiophantineConsistency.Positive84OrientedPowerDraft
+#print axioms DiophantineConsistency.Positive84OrientedPowerDraft.power_of_oriented_balance

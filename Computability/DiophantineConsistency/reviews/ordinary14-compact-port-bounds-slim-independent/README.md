@@ -1,0 +1,5 @@
+# Independent source review: slim compact port bounds
+
+The theorem statement and proof are byte-identical to `C44Short15Facts.port_bounds`; both files use the same `ORingStructure` and IΣ₁ model context. The four outputs, parameter order, exact beta identity, symbolic mask equalities and arbitrary K are therefore preserved. The body invokes `CompactMaskBoundFinish.bounds` and `ArithmeticStandardCasts.cast_exp`; the named source declarations and `CompactSymbolicPorts` definitions occur in the new direct imports. The helper uses a different namespace, so callers must explicitly update references.
+
+Run `python3 -I -S -B reviews/ordinary14-compact-port-bounds-slim-independent/check.py` from the DiophantineConsistency directory and compare with `observation.json`. This checks exact source blocks, the common model context, direct import files and named declarations, and replays the author's finite-control receipt. The finite controls are not a general-model proof. Source presence does not establish Lean namespace resolution, tactic elaboration, object coherence, a compiled theorem, or any endpoint result. No Lean run was performed for this review.

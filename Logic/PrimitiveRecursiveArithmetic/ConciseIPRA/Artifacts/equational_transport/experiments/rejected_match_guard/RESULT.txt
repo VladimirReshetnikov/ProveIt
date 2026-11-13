@@ -1,0 +1,22 @@
+FOCUSED FINAL FRONTIER ATTEMPT
+
+No qualifying improvement was obtained.
+
+The byte-profile substitutions in focused_attempt_metrics.json either preserve
+461 bytes or increase it; none beats the 239-token or 256-AST records.
+
+The one change that reaches 255 AST nodes folds the main conditional into the
+packet match guard. It is UNSOUND under the existing raw integer/list packet
+contract: a packet of the wrong arity misses the only match arm and the function
+returns success. The included guarded false goal W(0)=W(S(0)), where
+W(t)=I(0,t;u.0), followed by an empty packet is rejected by the pinned checker
+and accepted by REJECTED_match_guard255.py.
+
+Keeping the original external conditional preserves the deliberate unbound-local
+error for malformed packets. A separate default match arm or explicit parsing
+check repairs the reduction but costs more AST nodes than it removes. A promise
+that every packet already has the correct shape changes the input contract and
+is not a comparable result.
+
+This is a concrete limit of the attempted rewrites, NOT a lower-bound theorem
+for all possible implementations or presentations of iPRA.

@@ -1,0 +1,3 @@
+# Proposed abstract normalized-root recovery
+
+This source-only candidate assumes the explicit difference-ring equality `ι x * ι x = ι y + 1` and proposes a predecessor `u` with `x = u + 1` and `y = u * (u + 2)` in an IΣ₁ model. Its zero branch uses embedding nonnegativity and positivity of one; its successor branch uses a ring identity, cancellation and embedding injectivity. It does not yet derive its hypothesis from sign28 zero, construct a seed bridge, or prove a sign27 endpoint. No Lean elaboration or independent review has occurred; the exact namespaces, order lemmas and numeral-cast simplification remain untested.

@@ -1,0 +1,84 @@
+import DiophantineConsistency.ArithmeticAdaptiveFactorThree2011
+import DiophantineConsistency.ArithmeticAdaptiveFirstDivisibility2011
+import DiophantineConsistency.Compact44.DirectMainNorm
+import ResidueFirstIndexModel
+
+/-! Source-only fact-level eta-natural carrier adapter. No graph-zero
+extraction, fixed ports, provider compatibility or Lean checking is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.EtaZeroEarlyCongruenceDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticSignedPairs ArithmeticAdaptiveFactorThree2011
+open ArithmeticAdaptiveFirstDivisibility2011 ArithmeticPellRecurrence
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The actual eta-natural oriented carrier has no E*q term. This conclusion
+requires only positive q, the exact q³ quotient and the displayed balance. -/
+theorem rank_congruence_of_balance (q X Y k R c gamma main s : V)
+    (hq : 0<q) (hY : Y=q^3*s)
+    (hcar : let a:=X*Y+Y; let H:=3+4*a; let U:=Y*(q*q)
+      U*main+H*k=U*(X+a*c)+H*(U*gamma+R+1)) :
+    q^4∣magnitude (R+1,k) := by
+  let a := X*Y+Y
+  let H := 3+4*a
+  let U := Y*(q*q)
+  have hm5 : 0<q^5 := pow_pos hq _
+  have hU : U=q^5*s := by dsimp [U]; rw [hY]; ring
+  have he : H*(R+1)+q^5*(s*(X+a*c+H*gamma)) =
+      H*k+q^5*(s*main) := by
+    rw [hU] at hcar
+    linear_combination -hcar
+  have hemod : (H*(R+1))%(q^5)=(H*k)%(q^5) := by
+    have h := congrArg (fun z : V => z%(q^5)) he
+    rw [mod_add_mul' _ _ hm5,mod_add_mul' _ _ hm5] at h
+    exact h
+  have hdiv : q^5∣H*magnitude (R+1,k) := by
+    have hh := dvd_magnitude_of_mod hm5 hemod
+    have heq : magnitude (H*(R+1),H*k)=H*magnitude (R+1,k) := by
+      dsimp [magnitude]
+      rw [mul_add H ((R+1)-k) (k-(R+1)),mul_tsub H (R+1) k,mul_tsub H k (R+1)]
+    rwa [heq] at hh
+  have hcoef : H=3+4*Y*(X+1) := by dsimp [H,a]; ring
+  rw [hcoef] at hdiv
+  have hYdiv : q^3∣Y := ⟨s,hY⟩
+  exact cancel_factor_three q Y X (magnitude (R+1,k)) hq hYdiv hdiv
+
+/-- Convert the actual natural signed-pair norm directly to the previous
+balance; eta may be zero. The norm must still be extracted from the actual
+prototype graph and its zero-factor proof. -/
+theorem rank_congruence_of_main_norm (q X Y k R eta gamma s : V)
+    (hq : 0<q) (hY : Y=q^3*s) (hY8 : 8≤Y) (hk : 0<k)
+    (hnorm : let U:=Y*(q*q); let a:=X*Y+Y; let c:=eta+Y*k; let H:=3+4*a
+      let P:=U*(X+a*c)+H*(U*gamma+R+1); let N:=H*k
+      magnitude (P,N)*magnitude (P,N)=U*U*(1+(H+a*a)*(c*c))) :
+    q^4∣magnitude (R+1,k) := by
+  have hYpos : 0<Y := lt_of_lt_of_le (by simp : (0:V)<8) hY8
+  have hU : 0<Y*(q*q) := mul_pos hYpos (mul_pos hq hq)
+  obtain ⟨main,_,hbalance,_⟩ := DirectMainNorm.direct_main_orientation
+    (Y*(q*q)) X Y k eta gamma R hU hY8 hk hnorm
+  apply rank_congruence_of_balance q X Y k R (eta+Y*k) gamma main s hq hY
+  linear_combination -hbalance
+
+/-- Compose with the actual-first-norm early-index wrapper. The original
+prototype graph bindings and all factor extraction remain external premises. -/
+theorem early_index_of_actual_carrier (q X Y k R eta gamma s tau : V)
+    (hq : 0<q) (hX : 0<X) (hY : Y=q^3*s) (hY8 : 8≤Y) (hk : 0<k)
+    (hR24 : 24≤R) (hwindow : R+q^3+q+1≤q^4)
+    (hfirst : tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*k*k)
+    (hmain : let U:=Y*(q*q); let a:=X*Y+Y; let c:=eta+Y*k; let H:=3+4*a
+      let P:=U*(X+a*c)+H*(U*gamma+R+1); let N:=H*k
+      magnitude (P,N)*magnitude (P,N)=U*U*(1+(H+a*a)*(c*c))) :
+    ∃ n w : V, 13≤n ∧ n≤k ∧
+      xcoord n (2*(X*Y*Y-1)+1)=tau ∧ 2*ycoord n (2*(X*Y*Y-1)+1)=k ∧
+      (2*n)%(q^4)=R+1 ∧ R+1≤2*n ∧ R+1≤k ∧ k=2*n+4*(X*Y*Y)*w := by
+  have hYpos : 0<Y := lt_of_lt_of_le (by simp : (0:V)<8) hY8
+  have hcong := rank_congruence_of_main_norm q X Y k R eta gamma s hq hY hY8 hk hmain
+  exact ResidueFirstIndexModelDraft.early_index_of_natural_norm q X Y k R tau s
+    hq hX hYpos hY hfirst hR24 hwindow hcong
+end DiophantineConsistency.EtaZeroEarlyCongruenceDraft
+#print axioms DiophantineConsistency.EtaZeroEarlyCongruenceDraft.rank_congruence_of_balance
+#print axioms DiophantineConsistency.EtaZeroEarlyCongruenceDraft.rank_congruence_of_main_norm
+#print axioms DiophantineConsistency.EtaZeroEarlyCongruenceDraft.early_index_of_actual_carrier

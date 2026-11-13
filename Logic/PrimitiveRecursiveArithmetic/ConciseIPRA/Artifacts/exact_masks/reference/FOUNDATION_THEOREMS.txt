@@ -1,0 +1,141 @@
+INSPECTED UPSTREAM FOUNDATION DECLARATIONS
+=========================================
+
+All declarations below were read in the exact pinned source files delivered
+in Lean/. This records source inspection, not a new Lean rebuild. Every full
+name is under the namespace LeanProofs.ConciseIPRA unless stated otherwise.
+
+1. Ordinary interpretations use the entire numerical domain and actual equality.
+
+File: Lean/Interpretation.lean
+
+  TmMorph.f is a family of maps T n -> T' n.
+  TmMorph.f_var fixes every variable.
+  TmMorph.f_subst proves compatibility with substitution by an equality.
+  Fm.map maps an equality to equality of the translated terms and preserves
+  bot, conjunction, disjunction, implication, all, and ex structurally.
+
+There is no domain predicate, quotient relation, or replacement interpretation
+of equality in these definitions. Interp extends TmMorph with proofs that
+translated axioms are theorems. Interp.sound proves preservation of derivability.
+
+The structure BiInterp has fields:
+
+  F : Interp Ax Ax'
+  G : Interp Ax' Ax
+  gf : for every term t, Ax proves t = G(F(t))
+  fg : for every term t, Ax' proves t = F(G(t))
+
+BiInterp.roundTrip proves the corresponding equivalence for every formula.
+BiInterp.iff proves faithfulness for arbitrary sequents. This is the formal
+source of the whole-domain, actual-equality, identity-composite claims.
+
+2. The reference arithmetic is full first-order intuitionistic PRA.
+
+File: Lean/PR.lean
+
+  PRAAx is explicitly inductively defined, with projection and composition
+  equations, both primitive-recursion equations, successor separation,
+  successor injectivity, and induction for every formula with the QF predicate.
+  The underlying first-order natural-deduction derivability is Prf, defined
+  in Lean/Deduction.lean over the formulas of Lean/Syntax.lean.
+
+File: Lean/Scalar.lean
+
+  TeqAx is the scalar ordinary theory whose iterator terms are defined in
+  Lean/Term.lean. It supplies the two computation equations, coverage,
+  zero/one separation, and literal-equation induction.
+
+3. Both ordinary interpretations and numerical term round trips are explicit.
+
+File: Lean/ScalarToPRA.lean
+
+  ToPRA.interp : Interp TeqAx PRAAx
+
+Its f_ax proof handles all five scalar axiom constructors, including coverage
+and equation induction. Its term translation is ToPRA.tau.
+
+File: Lean/PRAToScalar.lean
+
+  FromPRA.interp : Interp PRAAx TeqAx
+
+Its f_ax proof handles every PRAAx constructor, including quantifier-free
+induction. Its term translation is FromPRA.sigma.
+
+File: Lean/RoundTripScalar.lean
+
+  RoundTrip.sigma_tau (t : Tm n) :
+    TeqAx proves FromPRA.sigma (ToPRA.tau t) = t
+
+File: Lean/RoundTripPRA.lean
+
+  RoundTrip.tau_sigma (t : PTm n) :
+    PRAAx proves ToPRA.tau (FromPRA.sigma t) = t
+
+File: Lean/BiInterpretation.lean
+
+  biInterp : BiInterp TeqAx PRAAx
+
+The actual definition sets F := ToPRA.interp, G := FromPRA.interp, and fills
+gf and fg using symmetry of the two preceding term-round-trip theorems.
+The same file declares teq_iff_pra, pra_iff_teq, teq_roundTrip,
+pra_roundTrip, teq_theorem_iff, pra_theorem_iff, and teq_consistent_iff.
+The latter is an equivalence of derivability of contradiction, not an
+assumption that either theory proves its own consistency.
+
+4. The native calculus and its full first-order reading are interderivable.
+
+File: Lean/Native.lean
+
+  NFm has the constructors eq, Q, and D. NFm.toFm reads them as ordinary
+  equality, B(0) -> all y B(y), and ex x (B(x,0) -> all y B(x,y)).
+  NPrf explicitly has eight constructors: hyp, iterZero, iterSucc, trOne,
+  qE, dE, dICase, qIInd. NPrf.sound maps every native derivation to TeqAx.
+
+File: Lean/NativeInherited.lean
+
+  The comparison with the reports' stronger transport and witnessed-progress
+  presentation is stated and proved there. This is a reference dependency
+  when a checker is described using the reports' native calculus rather than
+  the exact eight-constructor Lean kernel.
+
+File: Lean/NativeComposite.lean
+
+  NEquiv.ofFm_toFm (A : NFm n) : NEquiv (NFm.ofFm A.toFm) A
+  NPrf.iff_teq : NPrf Gamma A iff TeqAx derives A.toFm from Gamma.map toFm
+
+File: Lean/NativeRoundTrip.lean
+
+  Teq.iff_toFm_ofFm proves that every ordinary formula is equivalent in TeqAx
+  to the ordinary reading of its native reading.
+  Teq.iff_native proves the converse sequent translation into NPrf.
+
+5. The composed native/iPRA bridge includes both formula round trips.
+
+File: Lean/NativeBiInterpretation.lean
+
+  NFm.toPRA A := A.toFm.map ToPRA.tau
+  NFm.ofPRA phi := NFm.ofFm (phi.map FromPRA.sigma)
+
+The actual theorem declarations are:
+
+  native_iff_pra :
+    NPrf Gamma A iff PRAAx derives A.toPRA from Gamma.map NFm.toPRA
+
+  pra_iff_native :
+    PRAAx derives phi from Gamma iff
+      NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+
+  native_roundTrip (A : NFm n) :
+    NEquiv (NFm.ofPRA A.toPRA) A
+
+  pra_native_roundTrip (phi : Fm PTm n) (Gamma : List (Fm PTm n)) :
+    Gamma proves, in PRAAx, phi iff (NFm.ofPRA phi).toPRA
+
+  native_inconsistent_iff :
+    NPrf [] NFm.bot iff PRAAx derives ordinary bot from the empty context
+
+These are stronger than equiconsistency alone. The new source-code changes
+still require their separate Python-to-native-calculus adequacy argument;
+none of these upstream declarations formally verifies the new Python parser
+or mask implementation.

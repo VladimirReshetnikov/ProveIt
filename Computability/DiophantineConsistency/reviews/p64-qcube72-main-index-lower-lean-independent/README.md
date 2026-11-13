@@ -1,0 +1,7 @@
+# Independent review of checked model-level main-index bound
+
+**PASS within recorded direct-provider scope.** The no-Lean `check.py` verifies the frozen attempt02 receipt and successful exit, unchanged direct guards, source and retained snapshot, runner/helper, object/log hashes, the three captured provider objects and their recorded search routing. The theorem's axiom report contains only `propext`, `Classical.choice`, and `Quot.sound`. The failed attempt01 is not used. Transitive/dynamic/between-sample ancestry is inherited, not independently rebuilt.
+
+The exact checked theorem quantifies `q,X,Y,U,a,H,g,c,h,m : V` in a repository `IΣ₁` model `V`, assuming `33≤q`, `q≤X`, `3≤Y`, `U=Y²`, `a=XY+Y`, `H=4a+3`, `xcoord m a=g`, `ycoord m a=c`, and `Ug=U(X+ac)+Hh`. It concludes `6≤m` in that model, including nonstandard models. There is no q-cube divisibility assumption and no additional explicit positivity premise on `h`. The checked proof implements projection, modular cancellation, common-divisor bound, size comparison, and the finite internal exponential bound. The earlier independent standard-integer plan review, now linked to its historical pre-Lean snapshot, is separate.
+
+This conditional theorem does not itself extract these hypotheses from an actual 72-graph zero, compose the separate `ycoord 6` bound to prove large `c`, identify `m=R`, prove the reverse witness map, or establish a 72 iPRA endpoint.

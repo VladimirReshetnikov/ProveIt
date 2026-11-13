@@ -1,0 +1,7 @@
+# Attempt02 terminal artifact audit
+
+The actual attempt02 runner session 67457 exited 0 after both matrix-free clients compiled; the separately captured [terminal observation](../../research/current14-mf-base-only-endpoint-attempt02/terminal-observation.json) binds the runner PID, session exit and state hash. The independent [`audit.py`](audit.py) subsequently exited 0, recorded in [audit-execution.json](audit-execution.json), and [receipt.json](receipt.json) reports `PASS_RECORDED_CLIENT_ROWS_ARTIFACT_AUDIT` for `Current14LiteralPortsMF` and `StructuredEndpointMF`.
+
+The audit reauthenticated the fresh base and checked the two source and object records, raw direct dependency routes and producer guards, process receipts, logs and six exact axiom reports. All six report only `propext`, `Classical.choice`, and `Quot.sound` as Lean metatheory axioms. The earlier [preterminal refusal](preterminal-refusal.json) correctly refused to create a success receipt before the terminal observation.
+
+The checked endpoint is a **Lean-level existential** four-port tuple satisfying the structured recipe equalities and an iPRA derivation connecting its no-zero sentence to translated ZFC consistency. It does not put that existential into iPRA and does not formalize TeX/PDF file bytes. This is one successful two-client Lean run and a separate artifact cross-check that reuses runner authentication, not a second Lean replay or full package-transitive/dynamic/between-observation provenance. Audit SHA-256: `bcc40391b9d53522542d16f9e7d8c7b0a90008d237d8eefa54221b25788453ee`.

@@ -1,0 +1,3 @@
+# Candidate exact recipe-to-expression evaluator equality
+
+These two stages propose to identify the symbolic RingVars with the tuple in the checked named-evaluator theorem, using the existing d11 symbolic rank theorem, then compose the checked recipe-to-RefinedPair equality with that evaluator. They preserve finite sums and coefficient values symbolically. The first compile failed on an unsolved tuple equality; no named equality was accepted and stage two was not run. The independent failure audit passed. If eventually accepted, the theorem would bind the Lean macro recipe's output to the checked Lean expression evaluation over commutative rings; it would still not verify a parser or connect JSON or human-facing prose to Lean.

@@ -1,0 +1,7 @@
+# Independent review: AQ20 factored root
+
+This read-only external review checks the 20-variable, 103-operation positive graph and its 123-operation natural shift. Run `python3 -I -S -B check.py` from any directory and compare with `result.json`; the author's checker and receipt also reproduce. No Lean, staging or provider audit was performed.
+
+The checker independently expands both complete outputs over all 20 inputs and four symbolic ports. All 3,021 integer polynomial terms match, as do all 11 named residuals. All graph rows, variables and ports are live, and the natural graph is the exact shared positive shift. This establishes the equality for arbitrary integer valuations and ports; it is stronger than a zero-set correspondence. Its local factorization uses distributivity of `q³*qm*firstDelta + Bt*q³`.
+
+The output has input degree 14 after any nonzero integer beta specialization, witnessed by `J¹⁰*X²*eta²` with coefficient `beta¹⁰`. For beta zero, the degree drops to 10, as checked in the [20/104 parent review](../adaptive-aq20-substituted-scales104-independent/README.md). The selected fixed beta is positive. The zero-map requirements and model beta representation are inherited from that parent. Neither this new syntax nor the preceding reduction chain has an elaborated Lean model transport or iPRA endpoint; external equality does not authenticate historical provider ancestry, physical PDF semantics or global minimality.

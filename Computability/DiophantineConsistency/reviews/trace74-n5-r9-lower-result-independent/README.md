@@ -1,0 +1,5 @@
+# Independent result audit: n5/r9 lower endpoint
+
+PASS for the captured two-stage run. Author reports actual outer session 41407 exit 0/reaped. Terminal SHA `ce6946e6ef123eaf721e2a2e86e6b85e62e19e648296e9f36474e2fa2107eb91`; runner `dac6434d5bca3bbeee99a5032dac363fa6e4af70972f620dc7241f09ab3088d3`. Independently rehashed all eight terminal input pins, both stage objects and both stdout/stderr logs. Stage one and two Lean exits are zero; stdout each contains exactly the expected axiom report `[propext, Classical.choice, Quot.sound]`, both stderr empty. Certificate object `c2a509ee1a361c6cf0df30691c9b6423adc1b529145c8bccf3e40e7db21ebb5c`; lower-bound object `519d6f85bcef281857dc75f804aadc3fff31597aae5e68c1ed90dcd8aa8550a5`.
+
+The final ordered-ring theorem assumes x≥32, t≥1 and the explicit strict polynomial inequality, and concludes B(x)+68<t. It is a scalar endpoint, not graph/Pell binding or index exclusion. The direct pins checked here do not establish full transitive/package ancestry or continuous search-path stability.

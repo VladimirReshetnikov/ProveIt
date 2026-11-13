@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: eight exact source statements compare 256-element slices at offsets 0, 256, …, 1792. Independently parsing the symbolic explicit coefficients and fixture alignment blocks in Python yielded equal 2021-element lists; the last slice has 229 elements. That external source observation is not a Lean theorem. Both provider terminal audits, 1,188 matching overlay targets, producer-object collisions, Init/resource guards and no-Lean preflight passed. A Lean length/full-list assembly and external file theorem remain separate; stage compilation remains untested. No Lean was run.

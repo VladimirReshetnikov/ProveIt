@@ -1,0 +1,3 @@
+Independent terminal audit: PASS. Author-recorded session 70623 exited 0. Both source/object/log stages, exact group05 q/N direct provider, 200 guard slots and 1,072 overlay links were checked, including replay of the group05 terminal audit. All seven d10 carry statements report [propext, Classical.choice, Quot.sound], without warnings.
+
+These are equalities to earlier short prefixes, with no full output semantic equality, JSON/human binding, degree or operation count. Outer exit is author-recorded; deeper dynamic/transitive ancestry is inherited. No Lean replay was performed. The prelaunch check is pinned but its no-Lean preflight is not rerun after output creation.

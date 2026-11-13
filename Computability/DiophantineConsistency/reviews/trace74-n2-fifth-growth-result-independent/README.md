@@ -1,0 +1,5 @@
+Independent post-audit: PASS for generic fifth-ordinate facts, no Lean replay.
+
+Actual author session 28123 reported outer exit 0 and reaped. Terminal SHA 8191707c6ced991f0fa886052f4e1d56851387284f73daf45bd6bcc4de2aaf0b, source 92da82be531c1d24a54648a83f929ff400bc2cb754ae10a4731b0c739e82c8a2, runner 4316e53ec90b649c557e5593bd55f47cb6f0730c336b7f39dfe2cf4184428e81, object defa084264b6fdccc0af1130947d29cf187be6010dfb2851cf2a8ef687ff649a. Stage exit 0; stderr empty, both ordered reports list exactly propext, Classical.choice and Quot.sound. Rehashed all 22 recorded pins and stdout/stderr/object. The first attempt's recursion and tactic failures and its sorryAx reports remain excluded.
+
+The two accepted theorems establish the explicit ycoord 5 polynomial and, for positive X,Y in the specified arithmetic model, (8XY²+4)(Y+1)<ycoord 5 (Y(X+1)−1). There is no graph-zero, odd-index, guard or endpoint conclusion here. Direct pin and search path records do not authenticate full transitive/package/dynamic ancestry or rule out all shadowing.

@@ -1,0 +1,5 @@
+# Independent terminal review: gap/tau model-to-ring signs
+
+**Pass for retained Lean evidence**, without a Lean replay. Author-observed outer session 88451 exited 0; this is not an independent raw process transcript. For model values satisfying `1≤q`, `1≤N`, `0<q-F-alpha` and `r+2<E`, the theorem derives exactly `0≤(ι q-1)*(ι q-ι F)+ι alpha` and `0≤ι E*ι N+ι k-ι r` in the difference ring. It assumes these windows; it does not identify `r` with the concrete source rank or derive its hypotheses from a source zero. Its report is `[propext, Classical.choice, Quot.sound]` with no warnings.
+
+`check.py` verifies the exact source, state, object and child logs, both direct producer bindings, 150 direct guard slots and 1,164 overlay links; before/after survey bytes match and a new point-in-time provider survey passes. Both child invocations exited 0 without a sampled monitor stop/error. Provider checks are point observations, resources sampled, and earlier initial-agreement numeric outer exit remains unavailable. This is no complete sign33 zero bridge or iPRA endpoint.

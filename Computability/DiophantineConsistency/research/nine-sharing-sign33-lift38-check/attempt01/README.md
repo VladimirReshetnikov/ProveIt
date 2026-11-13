@@ -1,0 +1,7 @@
+# Sign33-to-38 coordinate lift checked
+
+Author-observed outer session `45574` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `98e91e8236694a2e6531268547b2f6ef45cd0dec2213e06bdf535e2b27d8ebd0`; before and after provider surveys both hash to `ceac796e60595bfd90e19fc5ce60edd4b8524ae4a9222dbbc4e6ae034877e6d0`. The outer record is an author observation, not an independently observed transcript.
+
+`Sign33Lift38` compiled in 3.176 seconds; object SHA-256 `d7ee70d844f40e513e35302eee58eb1de707829b8bd288ba3328284b05aedda3` at `/tmp/nine-sharing-sign33-lift38-check-20261106/lib/DiophantineConsistency/Sign33Lift38.olean`, compile log `76cbf2291f47b035ccc0f0a5fb3aba4a6085e56bdb0f6196681dc3432cfd03d5`. All three axiom reports list `[propext, Classical.choice, Quot.sound]`. Two unused-section-variable warnings were retained on the coordinate lemmas. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Peak sampled session RSS was 2,168,168,448 bytes and minimum sampled available host memory was 18,976,452,608 bytes; sampling has the stated limitations.
+
+The checked lemmas give the first 14 coordinate correspondences, ten signed coordinate placements, and five signed values from `AllCuts`. No implication to the 38 gate equations or norms, source-zero bridge, Lean proof of external JSON binding, or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.

@@ -1,0 +1,3 @@
+# Independent sign17 multivariate degree-lower retry terminal audit
+
+The independent checker exited 0. Author outer session 92249 exited 0; all fourteen stages and postflight passed despite inherited console label. Source/object pins, logs, direct routes, guards and overlays were checked; no sorryAx occurs. The replayed stages contain 15 linter warnings, while the final lower-bound stage has none. Its standard-axiom theorem proves actual abstract Fin17 expression polynomial totalDegree ≥96 when p0≠0. Exact upper/lower union, current-port nonzero and external JSON/PDF binding remain separate. No Lean was rerun here.

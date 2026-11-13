@@ -1,0 +1,3 @@
+# Independent sign24 exact-degree client prelaunch review
+
+Independent checker session 70277 exited 0. The one-stage source combines the separately audited upper and lower bounds using antisymmetry for every integer port vector and specializes to current ports. The checker reran both terminal audits, verified the four upper objects and all 1,398 byte-matched upper/base overlay entries with no extras, inspected the lower provider binding, generator, imports, fresh-output guard and resource controls, and reran no-Lean preflight. The exact equality is still a candidate pending Lean and terminal audit; no external JSON/Jones/PDF correspondence follows.

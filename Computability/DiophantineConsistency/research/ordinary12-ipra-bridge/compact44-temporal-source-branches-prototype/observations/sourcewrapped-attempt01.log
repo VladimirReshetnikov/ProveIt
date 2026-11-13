@@ -1,0 +1,69 @@
+Try this:
+  [apply] ring_nf
+  
+  The `ring` tactic failed to close the goal. Use `ring_nf` to obtain a normal form.
+    
+  Note that `ring` works primarily in *commutative* rings. If you have a noncommutative ring, abelian group or module, consider using `noncomm_ring`, `abel` or `module` instead.
+/tmp/compact44-graph-support-join-01/TemporalSourceWrapped.lean:36:22: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X n E t q r : V
+ht : t < n
+hq : q < n
+htq : t < q
+hr0 : 0 < r
+hr : r < 67
+he : E % (67 * n) = 67 * q + r
+hX : X < Exp.exp (67 * n)
+j : V := n - q + t
+s : V := j - 1
+u : V := 67 * (q - (t + 1)) + r
+hn : 0 < n
+hN : 0 < 67 * n
+hj : cyc n t q = j
+hj0 : 0 < j
+hjn : j < n
+hsi : s + 1 = j
+hrr : r + (67 - r) = 67
+hqe : t + 1 + (q - (t + 1)) = q
+hw : E % (67 * n) = 67 * t + 67 + u
+hnq : q + (n - q) = n
+⊢ q * 67 + (n - q) * 67 + t * 67 = q * 67 + t * 67 + (q + (n - q) - q) * 67
+/tmp/compact44-graph-support-join-01/TemporalSourceWrapped.lean:43:4: error: Tactic `apply` failed: could not unify the conclusion of `add_right_cancel`
+  ?m.710 = E % (67 * n)
+with the goal
+  67 * n - E % (67 * n) + 67 * t = 67 * s + (67 - r)
+
+Note: The full type of `add_right_cancel` is
+  ?m.710 + ?m.711 = E % (67 * n) + ?m.711 → ?m.710 = E % (67 * n)
+
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+X n E t q r : V
+ht : t < n
+hq : q < n
+htq : t < q
+hr0 : 0 < r
+hr : r < 67
+he : E % (67 * n) = 67 * q + r
+hX : X < Exp.exp (67 * n)
+j : V := n - q + t
+s : V := j - 1
+u : V := 67 * (q - (t + 1)) + r
+hn : 0 < n
+hN : 0 < 67 * n
+hj : cyc n t q = j
+hj0 : 0 < j
+hjn : j < n
+hsi : s + 1 = j
+hrr : r + (67 - r) = 67
+hqe : t + 1 + (q - (t + 1)) = q
+hw : E % (67 * n) = 67 * t + 67 + u
+hnq : q + (n - q) = n
+hbase : 67 * n + 67 * t = 67 * q + r + (67 * s + (67 - r))
+heN : E % (67 * n) ≤ 67 * n
+hecancel : 67 * n - E % (67 * n) + E % (67 * n) = 67 * n
+⊢ 67 * n - E % (67 * n) + 67 * t = 67 * s + (67 - r)
+'TemporalSourceWrapped.wrapped' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

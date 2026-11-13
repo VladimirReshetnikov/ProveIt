@@ -1,0 +1,9 @@
+# Independent result review: model-natural gauge sign
+
+PASS for accepted attempt02 with the following scope. No Lean replay was performed in this review.
+
+In an IΣ₁ model, the theorem assumes natural ports and a positive model-natural valuation whose literal trace73 output is zero, plus the explicit difference-ring h≥1, p₁+v₅≥0 and strict `step<ι(v 7)` hypotheses. It applies the conditional ordered-ring gauge theorem and uses nonnegative difference-ring representatives to obtain a positive model-natural valuation at the same ports with negative B and the same literal graph zero. The initial zero and strict step bound are assumptions; no actual zero existence, graph inequivalence, unconditional equivalence, halt or iPRA conclusion is established.
+
+Accepted source SHA-256 `3fabcd4855d35807b053f2a647a139f1fd46bbc8005866b6724846461d6ced7e` and runner SHA-256 `5369625f82d04877f969d32791b31dec31ecc515028d58651e9f34c36817ed50` match reviewed attempt02 bytes. Its `terminal.json` SHA-256 `7aa6777d803be2abd7e6c69ae754933fb4ba902360de4a15ea088666a4e7826e` records Lean exit 0 and object `/tmp/trace73-gaugemodel-rnchgbdr/Trace73GaugeModel.olean` SHA-256 `f7f468617d7925be67c798ba19f82ce9c03508e41b333ff569e10eac76bae65f`. The author separately reports actual tool session 67118 exit 0; this is not a pinned outer receipt.
+
+The independent checker rehashed source/copies, runner, object and logs, all twelve pinned providers and first-selected direct imports, and checked recorded resource samples. Captured stdout has exactly the named `[propext, Classical.choice, Quot.sound]` axiom report; stderr is empty. Attempt01 failed on the representative equality orientation and reported `sorryAx`; it is excluded. This review does not establish complete transitive, historical, package or dynamic ancestry.

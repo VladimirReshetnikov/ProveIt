@@ -1,0 +1,12 @@
+{
+  "reviewed_workflow_commit": "4372c4ad9d",
+  "initial_partial_controls_session": 72931,
+  "initial_partial_controls_observed_exit": 0,
+  "initial_partial_controls_receipt_sha256": "e3b973332f395999b621247957da38363a77a43fda27b53efe2122b907c31ecf",
+  "scope_of_initial_result": "The initial review and toy controls did not compare the production freezer's hardcoded EXPECTED list with the pinned real policy; the result is not a valid full workflow review.",
+  "blocking_finding": "The production freezer required the five product-endpoint names while the selected-checker target policy required one selected-checker name, so the real freezer would reject the intended policy. The toy fixture constructed its policy from the freezer constant and did not reveal this mismatch.",
+  "strengthened_reviewer_session": 67333,
+  "strengthened_reviewer_observed_exit": 1,
+  "strengthened_reviewer_error": "AssertionError: freezer target diagnostic constants do not match task policy",
+  "disposition": "Keep the initial receipt only as partial-controls-receipt.json. Require a corrected committed workflow and repeat the full independent review and controls before any launch."
+}

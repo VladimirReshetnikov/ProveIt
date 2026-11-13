@@ -1,0 +1,66 @@
+{
+  "python": "CPython 3.12.14",
+  "normalization": "ast.unparse(ast.parse(source)) + one LF",
+  "source_changes": [
+    {
+      "candidate": "code/checker.py",
+      "baseline": "source_dispatch/code/checker_bytes.py",
+      "only_AST_change": "len(a) % 2 == u -> not len(a) % 2",
+      "baseline_normalized_sha256": "0c8b962449b2dc65c8526dc47c937f70a2dea7902388e1ea184206e0a337e713",
+      "candidate_normalized_sha256": "447b56a068f3f71939ff8a8338a00728f360ef2037ac8798f1078195bcec7e8b"
+    },
+    {
+      "candidate": "code/checker_ast.py",
+      "baseline": "source_dispatch/code/checker.py",
+      "only_AST_change": "len(a) % 2 == u -> not len(a) % 2",
+      "baseline_normalized_sha256": "7d0b1b8d8adf208140a8b9e3a0c449f2aed9fc16051305763bb93bf42057190b",
+      "candidate_normalized_sha256": "a128867d740e087a032b1932044c59d43c4e276be260025b950699f983bbed0c"
+    },
+    {
+      "candidate": "code/checker_tokens.py",
+      "baseline": "source_dispatch/code/checker_tokens.py",
+      "only_AST_change": "len(a) % 2 == m -> not len(a) % 2",
+      "baseline_normalized_sha256": "1daaba75a5c9f837c5da086ad596152fefb3f63b7a0d204303cf1a9fdbbd3133",
+      "candidate_normalized_sha256": "ef7eb3f41b9c71ad003fa6c0080982b085c46cccb560226478bddd10ed4b3ab6"
+    }
+  ],
+  "parity_check_count": 9252,
+  "measurements": [
+    {
+      "file": "code/checker.py",
+      "normalized_bytes": 525,
+      "significant_tokens": 265,
+      "ast_nodes": 303,
+      "gzip9_bytes": 331
+    },
+    {
+      "file": "code/checker_bytes.py",
+      "normalized_bytes": 522,
+      "significant_tokens": 265,
+      "ast_nodes": 303,
+      "gzip9_bytes": 329
+    },
+    {
+      "file": "code/checker_ast.py",
+      "normalized_bytes": 606,
+      "significant_tokens": 262,
+      "ast_nodes": 281,
+      "gzip9_bytes": 348
+    },
+    {
+      "file": "code/checker_tokens.py",
+      "normalized_bytes": 571,
+      "significant_tokens": 258,
+      "ast_nodes": 287,
+      "gzip9_bytes": 339
+    },
+    {
+      "file": "code/checker_strict.py",
+      "normalized_bytes": 1205,
+      "significant_tokens": 491,
+      "ast_nodes": 563,
+      "gzip9_bytes": 572
+    }
+  ],
+  "strict_validator_AST_identical_to_baseline": true
+}

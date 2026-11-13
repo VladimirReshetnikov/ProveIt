@@ -1,0 +1,62 @@
+import Foundation.FirstOrder.Arithmetic.Exponential.Log
+import Mathlib.Tactic.Ring
+
+/-! Direct rank gap for the no-E*q carrier. No abstract-model omega,
+truncated-subtraction rewrites, graph assumptions or Lean execution. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.GammaDirectRankGapDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem direct_rank_gap (q X Y k eta R : V)
+    (hq : 2≤q) (hX : 1≤X) (hY : q^3≤Y)
+    (hk : 8*(X*Y*Y)+4≤k) (hR : R+q^3+q+1≤q^4) :
+    R+1<k ∧ X<eta+Y*k := by
+  have hq1 : 1≤q := le_trans (by simp : (1:V)≤2) hq
+  have hq2 : q≤q*q := by
+    simpa only [mul_one] using (mul_le_mul_of_nonneg_left hq1 (Arithmetic.zero_le q))
+  have hq3 : q≤q^3 := by
+    calc
+      q≤q*q := hq2
+      _≤(q*q)*q := by
+        simpa only [mul_one] using (mul_le_mul_of_nonneg_left hq1 (Arithmetic.zero_le (q*q)))
+      _=q^3 := by ring
+  have hqY : q≤Y := le_trans hq3 hY
+  have hY1 : 1≤Y := le_trans hq1 hqY
+  have hXY : Y≤X*Y := by
+    calc
+      Y=1*Y := by simp
+      _≤X*Y := mul_le_mul_of_nonneg_right hX (Arithmetic.zero_le Y)
+  have hq4 : q^4≤X*Y*Y := by
+    calc
+      q^4=q*q^3 := by ring
+      _≤Y*Y := mul_le_mul hqY hY (Arithmetic.zero_le (q^3)) (Arithmetic.zero_le Y)
+      _≤X*Y*Y := mul_le_mul_of_nonneg_right hXY (Arithmetic.zero_le Y)
+  have hR1 : R+1≤q^4 := by
+    have hh : R+1≤R+q^3+q+1 := by
+      have h : R≤R+(q^3+q) := le_add_of_nonneg_right (Arithmetic.zero_le (q^3+q))
+      have hh := add_le_add_right h (1:V)
+      simpa only [add_assoc] using hh
+    exact le_trans hh hR
+  have hm8 : X*Y*Y≤8*(X*Y*Y) := by
+    simpa only [one_mul] using mul_le_mul_of_nonneg_right
+      (by simp : (1:V)≤8) (Arithmetic.zero_le (X*Y*Y))
+  have hm_lt : X*Y*Y<k := by
+    have hh : X*Y*Y<8*(X*Y*Y)+4 :=
+      lt_of_le_of_lt hm8 (lt_add_of_pos_right _ (by simp))
+    exact lt_of_lt_of_le hh hk
+  have hXle : X≤X*Y*Y := by
+    calc
+      X≤X*Y := le_mul_of_one_le_right (Arithmetic.zero_le X) hY1
+      _≤X*Y*Y := le_mul_of_one_le_right (Arithmetic.zero_le (X*Y)) hY1
+  have hkY : k≤Y*k := by
+    simpa only [mul_comm] using (le_mul_of_one_le_right (Arithmetic.zero_le k) hY1)
+  constructor
+  · exact lt_of_le_of_lt (le_trans hR1 hq4) hm_lt
+  · exact lt_of_lt_of_le (lt_of_le_of_lt hXle hm_lt)
+      (le_trans hkY (le_add_of_nonneg_left (Arithmetic.zero_le eta)))
+end DiophantineConsistency.GammaDirectRankGapDraft
+#print axioms DiophantineConsistency.GammaDirectRankGapDraft.direct_rank_gap

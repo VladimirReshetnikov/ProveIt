@@ -1,0 +1,7 @@
+# Factored sign33 current seed-to-source implication checked
+
+Author-observed outer session `82810` returned numeric exit 0 and the runner reported PASS. The retained state hashes to `08353455cb5a8e98b891b8bd15e5717c345eec7979f93c01dee4036823f2c783`; before and after provider surveys both hash to `f02750bdc1030911e931aa277b9edc047e7a107ecfcfdfc5a9efb09d4ecb8300`. The outer record is an author observation, not an independently observed transcript.
+
+Both `Sign33SourceFourCasts` and `Sign33CurrentSeedSourceRetry` compiled successfully; state retains their source, object, dependency and monitor records, and this directory their logs. The final object SHA-256 is `0be588190cf45140471a6cca9c58a1246e50313fa81b9e80f1370ee1d94ea009` at `/tmp/nine-sharing-sign33-seed-current-source-retry01-20261106/lib/DiophantineConsistency/Sign33CurrentSeedSourceRetry.olean`, compile log `18886bf05639ab7049b780214059ae3dd64228a0839095332c2d41b1be83d78f`. Both axiom reports list `[propext, Classical.choice, Quot.sound]`, with no warnings. Final guards and selected-provider surveys passed; no monitor stop, sampled descendant or monitor error was recorded. Per-stage resource readings and sampling limitations remain in state.
+
+The concrete current-port theorem maps zero of the 33 seed on a full valuation to zero of the exact current source syntax on its corresponding 14 shifted inputs. No source-to-seed witness construction, Lean proof of external JSON binding, or sign33 iPRA endpoint is established. Inherited provider and numeric-exit limitations remain as in the parent README.

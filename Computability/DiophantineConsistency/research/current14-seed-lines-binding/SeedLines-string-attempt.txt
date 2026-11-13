@@ -1,0 +1,37 @@
+import DiophantineConsistency.DecimalMachine215
+
+/-! Bind the twelve printed decimal lines, including leading zeroes, to
+`DecimalMachine215.seed`. This theorem interprets the explicit Lean strings;
+a separate TeX extraction check relates them to the retained page. -/
+
+namespace DiophantineConsistency.Current14SeedLines
+
+set_option maxRecDepth 100000
+set_option maxHeartbeats 5000000
+
+/-- Twelve consecutive chunks as typeset, read in source order. -/
+def lines : List String := [
+  "12889260410359561746736540743515845134244260640012702033212621",
+  "95398074180784058571518488282119861023093355389406939414042892",
+  "97455773992193784795705001618777025966369137954859764532832722",
+  "75411843410809038713502633204617333246733616940964578272360901",
+  "56186216508504953649192752154519268024509952082950238865468307",
+  "22999632482769253980274091217460707829023970817244790340704449",
+  "09085581271192071656170732004937337082171141082486384269072884",
+  "72778087419663417942892520175630649792329265834490253035577533",
+  "96449689808375788457488971017043689875433162972390177936123032",
+  "89025657757489526342497438772045714099661532481123050235898973",
+  "27443609903800541199351405985754278307227777584454508422717998",
+  "334113564409335346074892680328437"
+]
+
+/-- Concatenation happens before base-ten parsing; no chunk loses zero padding. -/
+def text : String := String.join lines
+
+/-- Kernel-checked decoding of the entire decimal text into the existing seed. -/
+theorem decimal_lines_eq_seed : text.toNat? = some DecimalMachine215.seed := by
+  decide +kernel
+
+#print axioms decimal_lines_eq_seed
+
+end DiophantineConsistency.Current14SeedLines

@@ -1,0 +1,7 @@
+# Clean compact carry column for the 80 graph
+
+`Direct80CleanCarry.graph_clean_carry` proves that an actual positive 80-graph zero at the four explicit compact symbolic ports supplies a single radix length N and one of the two compact band positions t=4393 or 5495 where the temporal word is zero, its preceding temporal digit is bounded, the incoming carry is zero, and the output digit is exactly the raw carry input. The proof adapts the existing generic safe-source, temporal, and clean-carry lemmas to the 80 graph's own witness convention; no old 12-variable graph zero is assumed.
+
+The guarded author check `observations/cleancarry-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`. Object `/tmp/tenpositive-80cleancarry-2uqpz1zl/Direct80CleanCarry.olean` SHA-256 `9b5e5a22cabaacc21d21cdf7d350c487990c78c97159b11ea5078cc5852cb649`. Selected direct objects and resources are pinned; inherited source/object, package and dynamic-ancestry limits remain and no independent Lean replay is claimed. Selected-row decoding, phase alignment, full machine soundness, converse, iPRA and external decimal/PDF binding remain open.
+
+**Payload boundary:** the explicit hypothesis `p 1 = paramKernel rho` uses the retained-original K. The retained 80-row JSON graph `equation_qcube_V2.json` uses a BFS-renamed K with a different recorded raw hash; no equality or decoding equivalence between them is established here. These results therefore do not yet apply to that JSON graph’s K.

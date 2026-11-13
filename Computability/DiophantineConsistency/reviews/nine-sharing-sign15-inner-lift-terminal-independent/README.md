@@ -1,0 +1,3 @@
+# Independent terminal audit: sign15 natural inner representative
+
+Checker exit 0. Author outer 89863 exited 0; dependency/compile and postflight passed. From staged sign15 seed zero and explicitly represented/bounded ports the theorem obtains a natural representative for `C*T−Rank` without a prior deleted witness or sign assumption. The standard axiom report is present with no warnings or sorryAx. Source, object, logs, two direct producer guards and overlays were checked. Union and inherited first-index/windows surveys are point-in-time with their recorded ancestry qualifications. Residual transfer and expression equivalence remain separate.

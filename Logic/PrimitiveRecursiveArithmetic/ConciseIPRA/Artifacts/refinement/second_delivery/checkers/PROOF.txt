@@ -1,0 +1,152 @@
+PUBLIC-COORDINATE PARITY REFINEMENT
+
+1. EXACT SCOPE
+
+The five programs simplify the predicate used to recognize a legal scalar
+coordinate in the native public goal; the strict programs also replace one
+noncallable rejection sentinel by another. They keep every arithmetic axiom,
+logical rule, substitution operation, proof-packet field, hypothesis lookup,
+scope check, eigenparameter allocation, and input/output protocol unchanged.
+The transformations are recorded literally in transforms.json and checked
+modulo Python AST formatting by verify.py.
+
+The native_ast, native_tokens and native_bytes interfaces validate the closed public Eq/D
+goal. Their mathematical checker theorem still has the inherited finite
+integer/list proof-certificate contract. The strict_size and strict_bytes
+interfaces additionally check the entire parsed JSON certificate's alphabet.
+None of these is a reduction of the smaller compact guarded-input envelope.
+
+2. THE ARITHMETIC IDENTITY
+
+For every nonnegative integer a,
+
+    (not a or a > 1 == a % 2)  ==  (a % 2 == (a > 1)).                 (1)
+
+Python chains the left comparison as (a > 1 and 1 == a % 2). At a=0,
+both predicates are true; at a=1 both are false; at a>=2 the Boolean
+(a > 1) has numerical value 1, so both predicates say that a is odd.
+Thus both accept exactly 0 and the odd integers at least 3.
+
+This is not an identity on all integers. At a=-2 the original predicate is
+false and the replacement is true. The phase and range conditions below
+are essential, and neither may be removed from the acceptance program.
+
+3. CONTEXT-PHASE PROGRAMS
+
+In native_ast.py, native_tokens.py and strict_size.py, a false (empty) context g marks the
+initial public-goal validation. The only external call is c([],goal), so
+its floor k is 0. Before either recursive proof call, the program executes
+g += [0]. Every subsequently passed context is therefore nonempty; context
+lists are never shortened. Consequently the scalar predicate affected by
+(1) is evaluated only during the initial phase, where k=0.
+
+The immediately preceding condition k <= a < d implies a>=0. In the native
+program, (int(a) is a) additionally forces an exact JSON integer before
+the changed predicate can run. In the strict program, the whole-input
+alphabet gate has already excluded strings, Boolean values, floats, null,
+and objects. JSON integer literals give exact Python integers. All premises
+of (1) therefore hold wherever the value of its predicate is consulted.
+In the proof phase the nonempty g short-circuits the entire validator test,
+so negative eigenparameters never reach the rewritten predicate.
+
+4. FLAG-PHASE BYTE PROGRAMS
+
+In native_bytes.py and strict_bytes.py, v=1 marks the initial public-goal
+check. Its initial floor is k=0. The first recursive proof call sets v=0,
+and every later call uses the default v=0. The scalar admissibility test is
+an inequality  v <= P, where the old P is Boolean or the integer 0.
+
+When v=1, a scalar passing the preceding range test is nonnegative; in the
+native program the exact-integer identity test remains in place. Thus (1)
+applies. When v=0, both 0<=False and 0<=True hold, so a change between these
+two Boolean values for a negative eigenparameter has no effect at all.
+This establishes the parity replacement in the flag-phase setting as well.
+
+The byte programs, native_tokens.py and strict_size.py also replace a
+conjunction by multiplication. With
+delta=d%2 in {0,1}, and a Boolean P, delta and P and delta*P have the same
+numerical value (0 or 1). Thus either the enclosing comparison v<=...
+or the enclosing truth-value test is unchanged.
+The native replacement is
+
+    d % 2 * (int(a) is a and a % 2 == (a > 1));
+
+the strict replacement is
+
+    d % 2 * (a % 2 == (a > 1)).
+
+Multiplication evaluates its right operand even when delta=0. This eager
+evaluation is safe here, and must be justified: in the strict program a is
+already an exact integer. In the native program the identity check remains
+before the modulo and comparison. JSON Booleans and finite floats fail the
+identity test; its short circuit protects the modulo expression. On exact
+integers, modulo by 2 and comparison with 1 are total. Nonfinite floats
+cannot satisfy 0<=a<d during validation, and int(nonfinite) would fail in
+the original expression as well in any proof-phase position where reached.
+Other JSON scalar types fail unchanged tests before this point. The
+transformation therefore introduces no new successful or failing branch.
+
+5. INHERITED REJECTION-SENTINEL COMPOSITION
+
+The later incoming absorbing_orbit package (ipra_absorbing_orbit_2026-11-12.zip,
+strict632.py, at repository HEAD 2c7617bb03bbbb15a4534c5468f7df8da22c7ab4)
+replaces
+
+    q = not str(p).strip('0123456789-[], ') and p.pop
+
+by
+
+    q = str(p).strip('0123456789-[], ') or p.pop.
+
+We retain its frozen source as reference/late_strict632.py and credit the
+change to that package. If the stripped string is empty, both expressions
+produce the same p.pop bound method (or fail while accessing the same
+nonexistent attribute). If the stripped string is nonempty, the old value
+of q is False and the new value is a nonempty string. Both values are
+noncallable. The very next q() therefore rejects both certificates before
+any proof is checked. This preserves acceptance on every parsed JSON value,
+including malformed root shapes. It changes the wording of a TypeError,
+which is outside the acceptance protocol. Composing it with the coordinate
+refinements gives the final strict_size.py and strict_bytes.py.
+
+6. ACCEPTANCE EQUIVALENCE AND INHERITED MATHEMATICS
+
+Apart from the explicitly proved rejection-sentinel case, all other syntax
+and execution order are identical. Each changed predicate
+has the same effective value wherever it affects a branch, and its eager
+evaluation adds only the total or identically failing operations justified
+above. By induction over a finite execution, the original and transformed
+program consume the same proof packets, allocate the same eigenparameters,
+produce the same opened trees, and make the same recursive calls. They print
+ACCEPT on the same inputs. Source-location details in exception messages
+are irrelevant to the stated acceptance protocol.
+
+In particular every canonical proof accepted by the original has the very
+same accepted certificate in the new program, and conversely. No compiler
+or new completeness argument for proof search is needed. The inherited
+soundness and completeness theorem for each original interface transfers
+directly, together with its gate translation and ordinary whole-domain
+identity bi-interpretation with first-order iPRA. The equivalence proof here
+does not by itself supply an independent formal verification of the original
+Python programs or of the inherited arithmetic bridge.
+
+7. MEASURED IMPROVEMENT
+
+Using CPython 3.12.14, ast.unparse plus one LF, and counting the complete
+standalone module including JSON input and the ACCEPT output:
+
+    name             tokens  AST nodes  normalized UTF-8 bytes
+    native_tokens      321      371              618
+    native_ast         323      369              622
+    native_bytes       334      380              596
+    strict_size        330      380              638
+    strict_bytes       340      385              621
+
+Different programs achieve different coordinates. The resulting native
+envelope is (321,369,596), improving the observed pinned native envelope
+(324,370,607) in every coordinate. The strict envelope is (330,380,621),
+improving (334,386,628) in every coordinate. Neither envelope is attained by
+one program. The compact promised-input envelope (244,267,478) is unchanged.
+No universal minimum or global lower bound is proved. The three later
+incoming packages were also inspected; they do not change those incumbent
+envelopes. The strict sentinel composition is credited above.

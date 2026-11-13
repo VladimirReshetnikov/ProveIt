@@ -1,0 +1,5 @@
+# Replay terminal auditor: independent source review
+
+**PASS, source review only.** The reviewed auditor checks the recorded outer exit, both state hashes, supervisor and child identity, pinned supervisor and earlier first-run evidence, authenticated base equality, exact comparison rows, both staged source/object/log hashes, report names, direct dependency routing to base/external or the correct local producer, complete guarded output inventories, and the child-process parent/session identities. It repeats base authentication, all direct/output guards and log/source checks, supervisor pins, outer state/log hashes and its own source hash before creating a fresh receipt. The actual recorded child PIDs match the stated parent/session checks. No acceptance defect was found within the stated inherited dynamic/transient provenance scope.
+
+This review did not execute the auditor or run Lean. The auditor should be launched once only, with its actual exit observed; its receipt would describe a same-provider replay, not an independently sourced base or a proof of consistency.

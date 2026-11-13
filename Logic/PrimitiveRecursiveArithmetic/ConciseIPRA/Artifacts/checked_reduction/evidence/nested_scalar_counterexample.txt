@@ -1,0 +1,30 @@
+INDEPENDENT VALIDATOR COUNTEREXAMPLE
+
+Control: agent_checker/variants/strict597.py
+Mutation:
+  d % 2 | v and i(t, d=3)
+replaced by
+  d % 2 and i(t, d=3)
+and entry
+  c([], q(), v=1)
+replaced by
+  c([], q()[:], v=1)
+
+Input:
+  [[0,0,0,0],[0,0,0,0],[0,0,0,0],[[0]]]
+
+Control rejects with TypeError. Mutant returns normally and prints ACCEPT.
+This was executed independently by mathematical_route.
+
+Explanation:
+The malformed public goal is [[0]], a two-binder chain with a scalar leaf.
+The relaxed initial traversal maps that leaf to administrative zero and
+allows the outer list. The outer introduction has compound matrix [0];
+after opening it, both the case assumption and successor goal become [1].
+The branch closes by hypothesis. No attempted introduction of the inner
+malformed body is needed. Hence the proposed argument that a scalar leaf
+must eventually encounter len(scalar) is false.
+
+This is a typed-language acceptance failure. It is not a proof of a false
+well-formed arithmetical formula and does not refute the compact checkers
+whose contract promises a canonical public formula.

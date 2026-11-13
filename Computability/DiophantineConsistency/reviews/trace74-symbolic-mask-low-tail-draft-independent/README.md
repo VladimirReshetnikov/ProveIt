@@ -1,0 +1,7 @@
+# Independent source review: remaining low-side drafts
+
+Reviewed the two unchecked drafts in `research/trace74-symbolic-mask-low-tail-draft/`. `Trace74ConcreteDefectBound.lean` SHA-256 `94b6245d26ad1830754a8fc8630bf7d5626543c60721c0660df15bd1b93b6970` applies the checked generic `digits_lt` to the actual support, base 2^67, length 3297 and special index 1063, with only the generic theorem's `4≤base` premise discharged by `norm_num`. The support bound is not needed by this generic digit-bound theorem. The conclusion is the strict short-defect bound `<(2^67)^3297`.
+
+`Trace74LowPortIdentity.lean` SHA-256 `b97f408c7dd0a99a7426ca95da52b6703d6eff464df70099b312bb281facc114` rewrites the actual `lowNat` as the identical raw digits expression in the accepted `Trace74ConcreteLowRaw.low_add_defect` theorem. The separately accepted `Trace74LowNatDefinition.low_nat_definition` confirms the same definitional expression. Both files' actual #print directives match the intended theorem names. No mathematical mismatch was found, but `norm_num`, `rfl`, rewriting, warnings and resource use are unchecked; no Lean was run in this review.
+
+Separate guarded runners must pin and verify each actual selected direct provider and their captured closures/companions across producer unions. These drafts alone prove neither full combined mask cover nor model cast, graph guard, external-file binding or iPRA. Prior timeouts do not establish their cause.

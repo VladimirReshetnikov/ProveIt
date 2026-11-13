@@ -1,0 +1,3 @@
+# Independent prelaunch audit
+
+PASS: the proposed open-term reconstruction instantiates the existing universal object-theory disjunction `x=0 ∨ x=succ(pred x)`. Its second statement derives `¬(x=0) → x=succ(pred x)` by intuitionistic disjunction elimination and ex falso; host `Classical.choice` selects existing proof objects and does not assert a classical object-theory law. The three historical predecessor/stability/instantiation objects and Foundation IntProver are direct hash/realpath point pins, not authenticated from their Lean sources; inherited transitive ancestry remains. Audited ObjectGuard provider, source/resource pins and no-Lean preflight passed. Lean tactic compatibility and the full 14-variable guarded endpoint remain separate. No Lean was run.

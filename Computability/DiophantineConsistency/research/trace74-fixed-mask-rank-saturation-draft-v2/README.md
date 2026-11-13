@@ -1,0 +1,3 @@
+# Fixed-rank saturation correction draft
+
+This is a source-only correction to the rejected first client: remove a tactic after its goal closed, use direct definitional rank binding rather than broad simplification, rewrite multiplication before the inner truncated subtraction, remove unused simp arguments, and normalize addition order. It does not change the theorem statement or its explicit hypotheses. The [independent source audit](../../reviews/trace74-fixed-rank-saturation-v2-draft-independent/README.md) checked that delta. A newly pinned guarded replay is required; no Lean result is claimed.

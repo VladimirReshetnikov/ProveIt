@@ -1,0 +1,7 @@
+# Signed congruence for the 80-operation graph
+
+`Direct80ResidueBinding.graph_signed_residue` proves in every IΣ₁ model that any natural `u` whose embedded square is the square of the actual graph's signed `V` satisfies `SignMod (1+2a) u c`. Here `a` and `c` are the actual graph factors. The theorem needs no positivity, zero, or rank-sign assumption: it uses the syntactic identity `V=(1+2a)²(cT-R)-c` in the model's difference ring and the separately checked signed-square residue lemma. All port values are natural, and the subtraction in `R` remains a ring subtraction.
+
+The accepted guarded run is `observations/attempt02/`, producing object SHA-256 `59abd5fea088f3d884d83c23d23b5086227780c4a2fa6fce0daea2a518650411`; `observations/attempt01/` records a compiled theorem rejected because of lint warnings. Printed Lean axioms are `propext`, `Classical.choice`, and `Quot.sound`. The runner pins the explicitly listed prototype objects, the signed-residue object, and one direct inherited provider. It does not establish a full project, package, dynamic, or source-to-object inventory, and its resource sampling is not continuous. No paired replay is claimed.
+
+This supplies one graph-specific congruence only. It is not by itself an all-index folding lemma, graph-to-halt equivalence, or an internal iPRA proof. The external comparison between the JSON graph and Lean syntax, and any PDF binding, are separate boundaries.

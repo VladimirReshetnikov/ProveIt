@@ -1,0 +1,52 @@
+import DiophantineConsistency.ArithmeticConstructionBoundPell
+import Foundation.FirstOrder.Arithmetic.IOpen.Basic
+
+/-! SOURCE ONLY: proposed paired-state estimate. No Lean run. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellRunExponentialBoundDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open ArithmeticPow ArithmeticPellRecurrence ArithmeticConstructionBoundPell
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- A common coordinate bound controls the actual paired recursion state. -/
+theorem run_le_of_coord_bound (i a F : V)
+    (hx : xcoord i a ≤ F) (hy : ycoord i a ≤ F) :
+    run i a ≤ (2*F+1)*(2*F+1) := by
+  have hp : run i a ≤
+      (xcoord i a+ycoord i a+1)*(xcoord i a+ycoord i a+1) := by
+    simpa [xcoord,ycoord,sq] using pair_polybound (xcoord i a) (ycoord i a)
+  have hs : xcoord i a+ycoord i a+1 ≤ 2*F+1 := by
+    calc
+      xcoord i a+ycoord i a+1 ≤ F+F+1 := add_le_add (add_le_add hx hy) le_rfl
+      _ = 2*F+1 := by ring
+  exact le_trans hp (mul_le_mul hs hs (by simp) (by simp))
+
+/-- A variable-base power is bounded by a binary exponential. -/
+theorem power_le_binary_exponential (B u : V) :
+    power B u ≤ Exp.exp (B*u) := by
+  calc
+    power B u ≤ power (Exp.exp B) u :=
+      power_mono_base B (Exp.exp B) u (le_of_lt (lt_exp B))
+    _ = power (power 2 B) u :=
+      congrArg (fun x => power x u) (power_two B).symm
+    _ = power 2 (B*u) := power_iterate 2 B u
+    _ = Exp.exp (B*u) := power_two _
+
+/-- The proposed history-majorant coordinate bound, for every i ≤ u. -/
+theorem run_le_exponential_horizon (i u a : V) (hi : i ≤ u) :
+    run i a ≤
+      (2*Exp.exp (2*(a+2)*u)+1)*(2*Exp.exp (2*(a+2)*u)+1) := by
+  have hb : 1 ≤ 2*(a+2) := one_le_two_mul_add_two a
+  have hp : power (2*(a+2)) i ≤ power (2*(a+2)) u :=
+    power_mono_exponent _ _ _ hb hi
+  have he := power_le_binary_exponential (2*(a+2)) u
+  exact run_le_of_coord_bound i a _
+    (le_trans (le_trans (x_le i a) hp) he)
+    (le_trans (le_trans (y_le i a) hp) he)
+
+end DiophantineConsistency.PellRunExponentialBoundDraft
+#print axioms DiophantineConsistency.PellRunExponentialBoundDraft.run_le_exponential_horizon

@@ -1,0 +1,52 @@
+/tmp/compact44-graph-support-join-01/FieldWindowColumns.lean:65:51: error: unsolved goals
+V : Type u_1
+inst✝¹ : ORingStructure V
+inst✝ : V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+N C k : V
+u : ℕ
+hu : u < 8
+hN : 0 < N
+hk : k < 8807 * N
+hC : C < Exp.exp (67 * (8807 * N))
+hp : k % 8807 = ↑(1065 + u)
+hslots : ∀ x < 8807 * N, 0 < x → NoCarry (dig 67 C x) (dig 67 (↑lowNat) (x % 8807))
+hn : 0 < 8807 * N
+hs1 : ∀ (j : Fin 943), selectorDigit (8807 * N) C k 4393 j = 0
+hs2 : ∀ (j : Fin 943), selectorDigit (8807 * N) C k 5495 j = 0
+hb : ∀ (j : Fin 5), j ≠ ⟨1, ⋯⟩ → j ≠ ⟨4, ⋯⟩ → dig 67 (rot 67 (8807 * N) C (TwoBand.bareOffset j % (8807 * N))) k = 0
+f : Fin 5 → V
+h0 : f ⟨0, ⋯⟩ = 0
+h2 : f ⟨2, ⋯⟩ = 0
+h3 : f ⟨3, ⋯⟩ = 0
+⊢ f 0 + (f (Fin.succ 0) + (f (Fin.succ 0).succ + (f (Fin.succ 0).succ.succ + f (Fin.succ 0).succ.succ.succ))) =
+    f ⟨1, ⋯⟩ + f ⟨4, ⋯⟩
+/tmp/compact44-graph-support-join-01/FieldWindowColumns.lean:66:51: warning: This simp argument is unused:
+  h0
+
+Hint: Omit it from the simp argument list.
+  simp only [Fin.sum_univ_succ, ̲Fin.sum_univ_zero, ̲h0̵,̵h̵2, ̲h3, ̲zero_add, ̲add_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/compact44-graph-support-join-01/FieldWindowColumns.lean:66:54: warning: This simp argument is unused:
+  h2
+
+Hint: Omit it from the simp argument list.
+  simp only [Fin.sum_univ_succ, ̲Fin.sum_univ_zero, ̲h0, ̲h2̵,̵h̵3, ̲zero_add, ̲add_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/compact44-graph-support-join-01/FieldWindowColumns.lean:66:57: warning: This simp argument is unused:
+  h3
+
+Hint: Omit it from the simp argument list.
+  simp only [Fin.sum_univ_succ, ̲Fin.sum_univ_zero, ̲h0, ̲h2,h̵3̵,̵ ̲zero_add, ̲add_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/tmp/compact44-graph-support-join-01/FieldWindowColumns.lean:66:60: warning: This simp argument is unused:
+  zero_add
+
+Hint: Omit it from the simp argument list.
+  simp only [Fin.sum_univ_succ, ̲Fin.sum_univ_zero, ̲h0, ̲h2, ̲h3,z̵e̵r̵o̵_̵ ̲add,̵a̵d̵d̵_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+'FieldWindowColumns.vertical' depends on axioms: [propext, Classical.choice, Quot.sound]
+'FieldWindowColumns.horizontal' depends on axioms: [propext, sorryAx, Classical.choice, Quot.sound]

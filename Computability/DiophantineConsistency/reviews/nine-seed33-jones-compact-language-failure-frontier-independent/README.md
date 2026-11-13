@@ -1,0 +1,3 @@
+Independent failure audit: author-recorded session 55561 exited 1. The language module dependency scan passed but compile exited −6 with an interpreter memory exception under -M2800; sampled peak session RSS was 2,939,863,040 bytes, and the monitor reported no stop. There is no object, axiom report, or final whole-run postflight. The checker verifies retained source/logs, 100 direct guard slots, the named-formula direct producer binding and 1,268 overlay links. The precise declaration or imported dependency responsible for the memory use is not identified by the log.
+
+The outer result is an author record; this is a point-in-time evidence audit, with no Lean replay or complete dynamic/transitive provider trace. No recipe or semantic result follows.

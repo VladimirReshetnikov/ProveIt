@@ -1,0 +1,10 @@
+import DiophantineConsistency.AdaptiveAQ26
+#print axioms DiophantineConsistency.AdaptiveAQ26Zeros.sum_zero
+#print axioms DiophantineConsistency.AdaptiveAQ26Maps.project_pos
+#print axioms DiophantineConsistency.AdaptiveAQ26Maps.extend_pos
+#print axioms DiophantineConsistency.AdaptiveAQ26Transport.extend_inputs
+#print axioms DiophantineConsistency.AdaptiveAQ26Transport.project_inputs
+#print axioms DiophantineConsistency.AdaptiveAQ26Transport.extend_zero
+#print axioms DiophantineConsistency.AdaptiveAQ26Transport.project_zero
+#print axioms DiophantineConsistency.AdaptiveAQ26.shifted_no_zero_iff
+#print axioms DiophantineConsistency.AdaptiveAQ26.current_no_zero_iff

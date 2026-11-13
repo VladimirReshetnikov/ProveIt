@@ -1,0 +1,5 @@
+# Direct-BFS 80-graph carry and low-mask support
+
+`DirectBFS80Support.graph_support_carry` combines the direct-BFS selector-family carry with compact low-mask support, Boolean digits away from the special slot, origin digit and radix/repunit and residual-power facts for a positive 80-graph zero. All four symbolic port equalities are explicit; p1 uses the direct-BFS symbolic kernel. Independently produced radix lengths are proved equal by internal exponential injectivity. The low/high-mask facts are K-independent and are reused without assuming the retained-original K.
+
+The guarded author check `observations/directbfs80support-attempt01/` exited 0 without diagnostics and printed axioms `propext`, `Classical.choice`, `Quot.sound`; object `/tmp/direct-bfs-80-support-abzlbe46/DirectBFS80Support.olean` SHA-256 `7a601b2c57a6ca4ed28c733c2f4eeca387337da8cd2eab440f8ca8ebac10f9d5`. Selected inputs and resources are pinned, with inherited source/object, package and dynamic ancestry limits; no independent Lean replay is claimed. Selected-column decoding, temporal alignment, machine/color conjugacy, converse, iPRA and formal JSON/file binding remain open.

@@ -1,0 +1,167 @@
+import Positive84EarlyExact
+import PositiveCarrierData
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
+
+/-! Proposed direct positive-84 gap, rank representation and compact rank
+window. All imported source/provider claims remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive84RankWindowDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing Residue90CompactPortBoundsDraft
+open Positive84DivisionDraft Positive84PowerDraft Positive84EarlyExactDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The literal 84 first carrier has this exact natural-port signed form. -/
+theorem carrier_form (p : Fin 4 → ℕ) (v : Fin 13 → V) :
+    Unscale84ReverseGraphDraft.carrier p v=
+      (ι (q84 p v)-ι (v 1)-ι (v 2))*(ι (v 6)+ι (p 1:V)*ι (q84 p v))-
+        ι (v 1)*ι (q84 p v) := by
+  simp [Unscale84ReverseGraphDraft.carrier,PositiveUnscale84To87Draft.e84,
+    Unscale84ReverseGraphDraft.portsInt,PositiveUnscale84GraphDraft.graph,q84,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_var,
+    Expr.evalRing_constant,Expr.evalRing_ofNat,P72Root.cast_port,
+    map_add,map_mul,map_one,map_ofNat] <;> ring
+
+/-- The graph's own first norm forces the signed first carrier to be positive. -/
+theorem carrier_positive (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output v)
+    (hbeta : 0<(p 0:V)) : (0:DiffRing V)<Unscale84ReverseGraphDraft.carrier p v := by
+  have hz' : InternalZero (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).output v := by
+    simpa only [Unscale84ReverseGraphDraft.portsInt,Positive84EarlyExactDraft.same84] using hz
+  have hb : 0<Unscale84ReverseGraphDraft.b p v := mul_pos (hv 0) hbeta
+  have hk : 2≤Unscale84ReverseGraphDraft.k v := by
+    have hh := add_le_add (pos_iff_one_le.mp (hv 9)) (pos_iff_one_le.mp (hv 10))
+    simpa only [Unscale84ReverseGraphDraft.k,show (1:V)+1=2 by ring] using hh
+  have hsum := (internalZero_iff _ _).mp hz'
+  rw [PositiveUnscale84To87Draft.output84] at hsum
+  simp only [Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,Expr.evalRing_ofNat] at hsum
+  obtain ⟨hf,_,_,_⟩ := PositiveUnscale84To87Draft.squares_zero _ _ _ _ hsum
+  change PositiveUnscale84To87Draft.e84 (Unscale84ReverseGraphDraft.portsInt p) v
+    (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).first=0 at hf
+  rw [Unscale84ReverseGraphDraft.source_first] at hf
+  have hnorm := sub_eq_zero.mp hf
+  exact PositiveCarrierDataDraft.P_positive
+    (Unscale84ReverseGraphDraft.b p v) (Unscale84ReverseGraphDraft.ell p v)
+    (Unscale84ReverseGraphDraft.k v) (v 8) (Unscale84ReverseGraphDraft.carrier p v)
+    (Unscale84ReverseGraphDraft.root p v) hb hk (Unscale84ReverseGraphDraft.source_root p v) hnorm
+
+/-- The strictly positive first carrier forces the actual positive-C gap. -/
+theorem gap (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output v)
+    (hbeta : 0<(p 0:V)) : v 1+v 2<q84 p v := by
+  have hP := carrier_positive p v hv hz hbeta
+  rw [carrier_form] at hP
+  have hA : (0:DiffRing V)≤ι (v 6)+ι (p 1:V)*ι (q84 p v) :=
+    add_nonneg (ι_nonneg _) (mul_nonneg (ι_nonneg _) (ι_nonneg _))
+  have hFq : (0:DiffRing V)≤ι (v 1)*ι (q84 p v) :=
+    mul_nonneg (ι_nonneg _) (ι_nonneg _)
+  have hC : (0:DiffRing V)<ι (q84 p v)-ι (v 1)-ι (v 2) := by
+    by_contra hn
+    have hc : ι (q84 p v)-ι (v 1)-ι (v 2)≤(0:DiffRing V) := le_of_not_gt hn
+    have hh := mul_nonpos_of_nonpos_of_nonneg hc hA
+    linarith
+  have hh : (ι (v 1+v 2):DiffRing V)<ι (q84 p v) := by
+    simp only [map_add]
+    linarith
+  exact (ι_lt_ι).mp hh
+
+/-- At the actual gap, model-natural rank casts to the 84 graph's signed
+rank; this justifies every truncated subtraction. -/
+theorem rank_representation (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hgap : v 1+v 2<q84 p v) :
+    (ι (rank84 p v):DiffRing V)=Unscale84LargeKDraft.rank p v := by
+  have hq1 : 1≤q84 p v := by dsimp [q84]; exact le_add_of_nonneg_right (Arithmetic.zero_le _)
+  have hF : v 1≤q84 p v := le_trans (by simp : v 1≤v 1+v 2) (le_of_lt hgap)
+  have hq2 : 1≤q84 p v*q84 p v := one_le_mul hq1 hq1
+  have hb : q84 p v-1=Unscale84ReverseGraphDraft.b p v := by
+    dsimp [q84,Unscale84ReverseGraphDraft.b]; simp [add_comm]
+  have hFcast := P72Root.ι_tsub hF
+  have h2cast := P72Root.ι_tsub hq2
+  simp only [rank84,hb,map_add,map_mul,hFcast,h2cast,map_one,
+    Unscale84LargeKDraft.rank,Unscale84ReverseGraphDraft.q,
+    Unscale84ReverseGraphDraft.b,q84]
+  ring
+
+/-- q≥6 and alpha>0 already give the needed natural-rank lower bound;
+no gap or graph zero is used for this arithmetic lemma. -/
+theorem rank_at_least_26 (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (halpha : 0<v 2) (hq : 6≤q84 p v) : 26≤rank84 p v := by
+  let A : V := (q84 p v-1)*(q84 p v-v 1)+v 2
+  have ha : 1≤A := calc
+    1≤v 2 := pos_iff_one_le.mp halpha
+    _≤A := by dsimp [A]; exact le_add_of_nonneg_left (Arithmetic.zero_le _)
+  have h36 : (36:V)≤q84 p v*q84 p v := by
+    have hh := mul_le_mul hq hq (by simp : (0:V)≤6) (Arithmetic.zero_le (q84 p v))
+    simpa using hh
+  have h1 : (1:V)≤q84 p v*q84 p v := le_trans (by norm_num : (1:V)≤36) h36
+  have hsub : q84 p v*q84 p v-1+1=q84 p v*q84 p v := tsub_add_cancel_of_le h1
+  have h26 : (26:V)≤q84 p v*q84 p v-1 := by
+    apply (add_le_add_iff_right (1:V)).mp
+    rw [hsub]
+    exact le_trans (by norm_num : (26:V)+1≤36) h36
+  have hprod : (26:V)≤A*(q84 p v*q84 p v-1) := calc
+    26=(1:V)*26 := by ring
+    _≤A*(q84 p v*q84 p v-1) := mul_le_mul ha h26 (by simp) (Arithmetic.zero_le A)
+  calc
+    26≤A*(q84 p v*q84 p v-1) := hprod
+    _≤rank84 p v := by dsimp [rank84,A]; exact le_add_of_nonneg_right (Arithmetic.zero_le _)
+
+/-- Compact symbolic tuple, exact once-shifted fourth port, and graph gap
+supply the rank window required by the conditional exact-index client. -/
+theorem compact_rank_window (K : ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output v) :
+    rank84 (ports K) v+(q84 (ports K) v)^3+q84 (ports K) v+1≤(q84 (ports K) v)^4 := by
+  let p := ports K
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) (hv 0)
+  have hp0 : (p 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(p 0:V) := by simpa only [hp0] using hb
+  have hgap := gap p v hv hz hbeta
+  have hqeq : q84 p v=(CompactFixedBeta.betaNat:V)*v 0+1 := by simp only [q84,hp0]; ring
+  have hh := Residue90CompactPortBoundsDraft.compact_rank_window (v 0) (v 1) (v 2)
+    (q84 p v) (hv 0) (hv 1) (hv 2) hqeq hgap
+  have hp2 : (p 2:V)=(CompactConcreteIncrement.mask:V) := rfl
+  have hp3 : (p 3:V)=(CompactFixedBeta.betaNat:V)+(CompactSymbolicPorts.highNat:V) := by
+    change ((CompactFixedBeta.betaNat+CompactSymbolicPorts.highNat:ℕ):V)=_
+    exact Nat.cast_add _ _
+  simpa only [rank84,hp2,hp3,pow_two] using hh
+
+/-- Proposed compact all-model rank-window graph cut. -/
+theorem rankWindowGraphCut (K : ℕ) : Positive84EarlyExactDraft.RankWindowGraphCut K := by
+  intro V _ _ v hv hz
+  have hb : (46:V)≤(ports K 0:V) := by
+    change (46:V)≤(CompactFixedBeta.betaNat:V)
+    exact ResidueCompactQBoundDraft.beta_at_least_46
+  have hj : 1≤v 0 := pos_iff_one_le.mp (hv 0)
+  have hq46 : (46:V)≤q84 (ports K) v := calc
+    46≤(ports K 0:V) := hb
+    _≤v 0*(ports K 0:V) := le_mul_of_one_le_left (Arithmetic.zero_le _) hj
+    _≤1+v 0*(ports K 0:V) := le_add_of_nonneg_left (by simp)
+  have hq6 : (6:V)≤q84 (ports K) v := le_trans (by norm_num : (6:V)≤46) hq46
+  exact ⟨rank_at_least_26 (ports K) v (hv 2) hq6,
+    compact_rank_window K v hv hz⟩
+/-- The rank/window cut is discharged in source; the same-root
+main/strong/auxiliary graph witness remains an explicit assumption. -/
+theorem exactPowerGraphCut (K : ℕ) (hm : Positive84EarlyExactDraft.MainStrongAuxGraphCut K) :
+    Positive84PowerDraft.ExactPowerGraphCut K :=
+  Positive84EarlyExactDraft.exactPowerGraphCut_of_window_and_main K (rankWindowGraphCut K) hm
+
+/-- Proposed q-divisibility client, conditional on the still-open
+same-root graph witness and all imported source/provider obligations. -/
+theorem divCut (K : ℕ) (hm : Positive84EarlyExactDraft.MainStrongAuxGraphCut K) :
+    Positive83To84BridgeDraft.DivCut K :=
+  Positive84PowerDraft.divCut K (exactPowerGraphCut K hm)
+end DiophantineConsistency.Positive84RankWindowDraft
+#print axioms DiophantineConsistency.Positive84RankWindowDraft.carrier_form
+#print axioms DiophantineConsistency.Positive84RankWindowDraft.carrier_positive
+#print axioms DiophantineConsistency.Positive84RankWindowDraft.gap
+#print axioms DiophantineConsistency.Positive84RankWindowDraft.rank_representation
+#print axioms DiophantineConsistency.Positive84RankWindowDraft.compact_rank_window
+#print axioms DiophantineConsistency.Positive84RankWindowDraft.rankWindowGraphCut
+#print axioms DiophantineConsistency.Positive84RankWindowDraft.exactPowerGraphCut
+#print axioms DiophantineConsistency.Positive84RankWindowDraft.divCut

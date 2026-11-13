@@ -1,0 +1,5 @@
+# Compact rank-window specialization attempt03 — failed
+
+This attempt imports the captured `CompactSymbolicMaskData.data` theorem and marks `betaNat`, `lowNat`, and `highNat` locally irreducible, so its proof uses already-established mask bounds rather than simplifying the huge masks. Nevertheless, the [observed guarded check](observations/attempt03/observation.json) exited 1: Lean reported `(kernel) excessive memory consumption detected` at the theorem declaration under `-M2400`; no sampled resource stop occurred. Its axiom report includes `compact_window` itself, so no theorem is accepted. Exact source, log, runner, result and direct captured-provider guards are preserved.
+
+The independently checked generic actual-window theorem still holds given the two port inequalities. This failure does not identify exactly which part of theorem elaboration or kernel reduction exceeded the cap, and it does not disprove the compact specialization. Any further work must investigate the concrete constants and import environment rather than rerun unchanged or simply restate the generic assumptions.

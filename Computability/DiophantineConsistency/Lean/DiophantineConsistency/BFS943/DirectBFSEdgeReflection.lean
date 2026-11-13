@@ -1,0 +1,42 @@
+import DiophantineConsistency.BFS943.DirectBFSRowTransfer
+import DiophantineConsistency.BFS943.DirectBFSColorBounds
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace DirectBFSEdgeReflection
+open DirectBFSConjugacyBase DirectBFSConjugacyLift DirectBFSRowTransfer
+
+theorem original_bounds (i : Fin 943) :
+    (Compact943Data.row i).1<250 ∧ (Compact943Data.row i).2.1<439 ∧
+    (Compact943Data.row i).2.2.1<250 ∧ (Compact943Data.row i).2.2.2<439 := by
+  have hm : Compact943Data.row i ∈ Compact943Data.rows := List.get_mem _ _
+  exact of_decide_eq_true ((List.all_eq_true.mp DirectBFSColorBounds.original_colors) _ hm)
+
+theorem horizontal (a b : Fin 943)
+    (h : (DirectBFSSymbolicKernel.row a).2.2.1=(DirectBFSSymbolicKernel.row b).1) :
+    (Compact943Data.row (rowBackward a)).2.2.1=(Compact943Data.row (rowBackward b)).1 := by
+  have ha := congrArg (fun t => t.2.2.1) (direct_is_renamed_original a)
+  have hb := congrArg (fun t => t.1) (direct_is_renamed_original b)
+  have he : DirectBFSConjugacyBase.horizontal.getD (Compact943Data.row (rowBackward a)).2.2.1 0 =
+      DirectBFSConjugacyBase.horizontal.getD (Compact943Data.row (rowBackward b)).1 0 := by
+    simpa only [rename] using ha.trans (h.trans hb.symm)
+  have hi : horizontalForward ⟨_,(original_bounds (rowBackward a)).2.2.1⟩ =
+      horizontalForward ⟨_,(original_bounds (rowBackward b)).1⟩ := Fin.ext he
+  exact congrArg Fin.val (horizontal_bijective.1 hi)
+
+theorem vertical (a b : Fin 943)
+    (h : (DirectBFSSymbolicKernel.row a).2.2.2=(DirectBFSSymbolicKernel.row b).2.1) :
+    (Compact943Data.row (rowBackward a)).2.2.2=(Compact943Data.row (rowBackward b)).2.1 := by
+  have ha := congrArg (fun t => t.2.2.2) (direct_is_renamed_original a)
+  have hb := congrArg (fun t => t.2.1) (direct_is_renamed_original b)
+  have he : DirectBFSConjugacyBase.vertical.getD (Compact943Data.row (rowBackward a)).2.2.2 0 =
+      DirectBFSConjugacyBase.vertical.getD (Compact943Data.row (rowBackward b)).2.1 0 := by
+    simpa only [rename] using ha.trans (h.trans hb.symm)
+  have hi : verticalForward ⟨_,(original_bounds (rowBackward a)).2.2.2⟩ =
+      verticalForward ⟨_,(original_bounds (rowBackward b)).2.1⟩ := Fin.ext he
+  exact congrArg Fin.val (vertical_bijective.1 hi)
+#print axioms DirectBFSEdgeReflection.original_bounds
+#print axioms DirectBFSEdgeReflection.horizontal
+#print axioms DirectBFSEdgeReflection.vertical
+end DirectBFSEdgeReflection

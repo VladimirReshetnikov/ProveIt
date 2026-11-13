@@ -1,0 +1,7 @@
+# Independent post-audit: conditional natural block conversion
+
+**PASS at direct-pin scope.** Author reports actual tool session 93585 exited 0 and was reaped; a separate operator observation records it. Retained terminal SHA-256 `9c08bc856d21fd487315a4ebd3e65460d4bd64be1a8ff2b9810a582d4f0f2346` records Lean exit 0, PASS and no timeout/resource reason. Independently rehashed the source SHA-256 `49d908e5b290c76613da30d72523670243c66731b474c03634bab30d6b0013f7`, runner SHA-256 `a8937166f3831e6c9a1c8de6201823655589f361fac5fa0f5d1f2869255ca373`, all recorded direct provider pins, empty stderr, stdout and object SHA-256 `63cac4c4534d9c5fb79a5e261f8d236c76be9dbc874c3a06631ba0da62682352`. The exact named report lists `[propext, Classical.choice, Quot.sound]`.
+
+For the same ordered model, the theorem assumes `q=beta*J+1`, `C>0`, `C<=q`, `F<q`, `1<=HP*J`, and an explicit difference-ring equality identifying a natural R with the signed rank expression. It concludes the exact natural four-block equation after justifying each truncated subtraction. It neither assumes nor derives `F+C<q`. The earlier missing-import failure remains excluded.
+
+No Lean replay, serialized complete closure or independently captured first-selection check was performed. Direct files are pinned; search shadowing and project/package/dynamic/transitive producer ancestry remain inherited. The theorem does not derive its bounds or natural rank representative from a 74 zero and does not establish fixed-port guard or iPRA results.

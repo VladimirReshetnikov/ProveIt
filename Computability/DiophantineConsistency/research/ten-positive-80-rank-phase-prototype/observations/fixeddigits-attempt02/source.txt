@@ -1,0 +1,151 @@
+import Direct80FixedDigits
+import DiophantineConsistency.ModelArithmetic
+import DiophantineConsistency.CompactConcreteMask
+
+/-! Mod-four phase from the actual fixed-mask graph digits. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80RankPhase
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open DiscreteOrderedRingFacts ModelArithmetic ArithmeticWindowDigits
+open CompactFixedBeta CompactSymbolicPorts
+open TenPositive80Graph TenPositive80Factors TenPositive80NaturalRank
+open TenPositive80SymbolicPortBounds TenPositive80NaturalTransport
+attribute [local irreducible] CompactFixedBeta.betaNat Nat.ofDigits lowNat highNat
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem ι_tsub {a b : V} (h : b ≤ a) : ι (a - b) = ι a - ι b := by
+  have e := congrArg (ι : V →+* DiffRing V) (tsub_add_cancel_of_le h)
+  rw [map_add] at e
+  linear_combination e
+
+theorem mod4_val {x k : V} {m : ℕ} (h : x = 4*k + m) : mod4 (ι x) = (m : ZMod 4) := by
+  have e : ι x = ((4 : ℕ) : DiffRing V) * ι k + (m : DiffRing V) := by
+    rw [h]; simp only [map_add, map_mul, map_natCast, map_ofNat, Nat.cast_ofNat]
+  rw [e]
+  exact residue_natCast_add model_discrete (model_residues 4) (ι k) m
+
+/-- `mod4 (ι x) = 0` when `4 ∣ x`. -/
+theorem mod4_of_dvd {x : V} (h : 4 ∣ x) : mod4 (ι x) = 0 := by
+  obtain ⟨k, hk⟩ := h
+  have := mod4_val (x := x) (k := k) (m := 0) (by rw [hk]; simp)
+  simpa using this
+
+/-- `x % 4 = r` from the value of `mod4 (ι x)`. -/
+theorem mod_four_of_mod4 {x : V} {r : ℕ} (hr : r < 4) (h : mod4 (ι x) = (r : ZMod 4)) :
+    x % 4 = r := by
+  obtain ⟨m, hm, hxm⟩ := exists_nat_of_lt (x % 4) 4 (mod_lt x (by norm_num))
+  have hx : x = 4*(x/4) + m := by rw [← hxm]; exact (div_add_mod x 4).symm
+  have hv := mod4_val hx
+  rw [h] at hv
+  have hmr : m = r := by
+    have := congrArg ZMod.val hv
+    rw [ZMod.val_natCast, ZMod.val_natCast, Nat.mod_eq_of_lt hm, Nat.mod_eq_of_lt hr] at this
+    exact this.symm
+  rw [hxm, hmr]
+
+theorem four_dvd_exp {e : V} (he : 2 ≤ e) : (4 : V) ∣ Exp.exp e := by
+  obtain ⟨d, rfl⟩ := exists_add_of_le he
+  refine ⟨Exp.exp d, ?_⟩
+  rw [add_comm, show d + 2 = d + 1 + 1 by ring, exp_succ, exp_succ]
+  ring
+
+
+theorem exp67_four : Exp.exp (67:V)=4*Exp.exp 65 := by
+  rw [show (67:V)=65+1+1 by norm_num, exp_succ, exp_succ]
+  ring
+
+theorem low_residue : (lowNat:V)%4=2 := by
+  have ho : (lowNat:V)%Exp.exp 67=Exp.exp 67-2 := by
+    simpa only [lowNat,dig_zero_index] using (CompactConcreteMask.model_origin (V:=V))
+  have he := exp67_four (V:=V)
+  have h1 : 1≤Exp.exp (65:V) := pos_iff_one_le.mp (exp_pos _)
+  have ht : Exp.exp (67:V)-2=4*(Exp.exp 65-1)+2 := by
+    rw [he]
+    have h := tsub_add_cancel_of_le h1
+    have h2 : 2≤4*Exp.exp (65:V) := by nlinarith
+    apply add_right_cancel (b:=2)
+    rw [tsub_add_cancel_of_le h2]
+    nlinarith [h]
+  have hm := mod_mod_of_le (2:V) (lowNat:V) 1 67 (by norm_num)
+  have he2 : Exp.exp (2:V)=4 := by rw [show (2:V)=1+1 by norm_num,exp_succ,exp_one]; norm_num
+  trace_state
+  simp only [one_mul,he2] at hm
+  rw [ho,ht] at hm
+  have hr : (4*(Exp.exp (65:V)-1)+2)%4=2 := by
+    rw [add_comm,mod_add_mul' _ _ (by norm_num)]
+    norm_num
+  rw [hr] at hm
+  exact hm.symm
+
+theorem graph_phase (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hp0 : p 0=betaNat) (hp2 : p 2=lowNat) (hp3 : p 3=betaNat+highNat)
+    (hv : ∀j,0<v j) (hz : InternalZero (graph (integerPorts p)).output v) :
+    rankNat p v % 4 = 3 := by
+  obtain ⟨h31,hl,hh,_hodd⟩ := fixed_bounds (V:=V) p hp0 hp2 hp3
+  have hb : 0<(p 0:V) := lt_of_lt_of_le (by norm_num) h31
+  obtain ⟨N,t,hN,hJ,hq,hCpos,ht,hzero,hdigits,hnc⟩ :=
+    Direct80FixedDigits.graph_fixed_digits p v hp0 hp2 hp3 hv hz
+  have hWL : 2≤(67*8807:V)*N := by
+    calc
+      (2:V)=2*1 := (mul_one 2).symm
+      _≤(67*8807:V)*N := mul_le_mul (by norm_num) (pos_iff_one_le.mp hN) (by simp) (by simp)
+  have hq0 : mod4 (ι (q p v))=0 := mod4_of_dvd (by rw [hq]; exact four_dvd_exp hWL)
+  have horig : Cnat p v % Exp.exp (67:V)=1 := by simpa only [dig_zero_index] using hzero
+  have hm := mod_mod_of_le (2:V) (Cnat p v) 1 67 (by norm_num)
+  have he2 : Exp.exp (2:V)=4 := by rw [show (2:V)=1+1 by norm_num,exp_succ,exp_one]; norm_num
+  trace_state
+  simp only [one_mul,he2] at hm
+  rw [horig] at hm
+  have hC4 : Cnat p v%4=1 := by simpa using hm.symm
+  have hCeq : Cnat p v=4*((Cnat p v)/4)+(1:ℕ) := by
+    have e := (div_add_mod (Cnat p v) 4).symm
+    rw [hC4] at e
+    exact_mod_cast e
+  have hC1 := mod4_val hCeq
+  have hmask : v 1+v 2<q p v := (graph_natural_rank p v hb hv hz).2.2
+  have hFlt : v 1≤q p v := le_trans (by simp) (le_of_lt hmask)
+  have hAl : v 2≤q p v-v 1 := (tsub_le_iff_right).mpr (by simpa [add_comm] using le_of_lt hmask)
+  have hCι : ι (Cnat p v)=ι (q p v)-ι (v 1)-ι (v 2) := by
+    change ι (q p v-v 1-v 2)=_
+    rw [ι_tsub hAl,ι_tsub hFlt]
+  rw [hCι] at hC1
+  simp only [map_sub,hq0,Nat.cast_one] at hC1
+  have hMC : mod4 (ι ((p 2:ℕ):V))=2 := by
+    have hlp : ((p 2:ℕ):V)%4=2 := by rw [hp2]; exact low_residue
+    generalize ((p 2:ℕ):V) = Lp at hlp ⊢
+    have h0 := (div_add_mod Lp 4).symm
+    rw [hlp] at h0
+    have hx : Lp=4*(Lp/4)+((2:ℕ):V) := by exact_mod_cast h0
+    have := mod4_val hx
+    exact_mod_cast this
+  have hq1 : 1≤q p v := by dsimp [q]; simp
+  have hbJ : mod4 (ι (b p v)) = -1 := by
+    have he : b p v=q p v-1 := by dsimp [q]; simp
+    rw [he,ι_tsub hq1,map_sub,hq0,map_one,map_one,_root_.zero_sub]
+  have hJodd : 2*mod4 (ι (v 0))=2 := by
+    dsimp [b] at hbJ
+    rw [map_mul,map_mul] at hbJ
+    revert hbJ
+    generalize mod4 (ι (p 0:V)) = a
+    generalize mod4 (ι (v 0)) = j
+    revert a j; decide
+  have hq2 : 1≤q p v*q p v := pos_iff_one_le.mp (mul_pos (lt_of_lt_of_le (by simp) hq1) (lt_of_lt_of_le (by simp) hq1))
+  have hrank : ι (rankNat p v) =
+      (ι (b p v)*(ι (q p v)-ι (v 1))+ι (v 2))*(ι (q p v)*ι (q p v)-1)+
+        (ι (p 2:V)+ι (q p v)*ι (p 3:V))*ι (v 0) := by
+    unfold rankNat
+    rw [map_add,map_mul,map_add,map_mul,ι_tsub hFlt,ι_tsub hq2,map_one,map_add,map_mul,map_mul]
+  apply mod_four_of_mod4 (by norm_num)
+  rw [hrank]
+  simp only [map_add,map_mul,map_sub,map_one,hq0,hMC,hbJ]
+  have hFα : mod4 (ι (v 1))+mod4 (ι (v 2)) = -1 := by linear_combination -hC1
+  push_cast
+  linear_combination -hFα+hJodd
+
+#print axioms TenPositive80RankPhase.graph_phase
+end TenPositive80RankPhase

@@ -1,0 +1,5 @@
+# Paired conditional two-band rotation
+
+Protected wrapper session 47256 actually exited 0 at HEAD `bc5bf1e4e571e6d6af1588b455e68760a63dc6d5`. All three compiler children on each side exited 0 with matching corresponding objects and reports, no warnings or `sorryAx`. The exact receipt, terminal observation, progress and all six compiler logs are retained under `evidence/`; the receipt records 110 direct/output companion slots. Independent artifact audit is still required.
+
+The resulting model theorem assumes positive period and modulus, the explicit hK equality expressing K as two aligned bands plus five bare terms, and the graph-style modular congruence. It concludes the two-band/five-monomial rotation congruence while keeping `w*C` separate. It does not establish hK for symbolic or retained K, align a potentially fractional temporal shift, identify the full graph column, derive Boolean or decoder NoCarry premises, bind retained bytes/display, establish machine correctness or prove an internal iPRA theorem. Provider ancestry, point-in-time path guards and sampled-resource limitations remain as documented in the prelaunch packet.

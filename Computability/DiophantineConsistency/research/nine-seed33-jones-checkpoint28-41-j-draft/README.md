@@ -1,0 +1,3 @@
+# Sign33 J d41 checkpoint source-only candidates
+
+These two drafts adapt the previously checked sign38 d28→d41 path and J symbolic substitution to sign33 namespace and exponents `5^34`/`5^33`. They concern d41 checkpoint entries, not full output semantic equality or JSON/human binding. The [guarded runner](../nine-seed33-jones-checkpoint28-41-j-check/README.md) authenticates the audited A checkpoint, J-node and later-checkpoint providers; the guarded compilation passed and the [independent terminal audit](../../reviews/nine-seed33-jones-checkpoint28-41-j-terminal-frontier-independent/) passed.

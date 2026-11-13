@@ -1,0 +1,5 @@
+# Independent N5/R7 same-tuple growth binding source review
+
+Source-only mathematical review PASS for SHA `cca6a959da48c38940d5c9a9981d39cfe8a9e2da715866dacd9696b85a038049`. The statement explicitly assumes a model V, one natural p/model v, q(p,v)≥2³⁰, all v positive, first-Pell coordinate n=5 and c=ycoord7(A−1) for the same tuple. It does not assume or infer graph zero. Positivity yields X≥32 and Y≥q³, then the fifth and seventh ordinate identities and firstParam=XY² yield the exact scalar gap t·y5(Xt²+2)<y7(t(X+1)+2) for t=2Y. The checked generic squared-growth and size results give 65532(q−1)Y<X in the model difference ring; q−1=b binds the returned expression. Scaling, constants and strict directions are correct.
+
+The fifth/seventh identities and same tuple must be provided exactly as hypotheses; any graph client must separately supply them. This alone is no N5/R7 exclusion, fixed-port guard, 74/75 equivalence or iPRA theorem. Ring normalization, linear_combination, casts and provider selection remain unchecked; no Lean run in this review.

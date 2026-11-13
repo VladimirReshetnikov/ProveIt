@@ -1,0 +1,3 @@
+# Symbolic-port rank/saturation correction draft
+
+This revision avoids reducing the huge fixed port tuple in the rank binding by taking an arbitrary tuple together with the explicit slot equalities `p0=betaNat`, `p2=lowNat`, and `p3=betaNat+highNat`. It retains all individual range, radix, fixed-mask and population premises and the same tuple and rank conclusion. It also removes the unused simp argument observed in the previous attempt. The [independent source review](../../reviews/trace74-fixed-rank-saturation-v3-draft-independent/README.md) confirms this interface change; the [guarded replay and independent result audit](../trace74-fixed-mask-rank-saturation-v3-rebuild/README.md) passed.

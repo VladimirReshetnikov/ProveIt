@@ -1,0 +1,45 @@
+import Direct80To90SourceData
+import Direct80RankPhase
+import PellPositiveSeed
+import Direct90OrdinaryFactor
+
+/-! One 80 zero supplies all three factors of a fresh 90 valuation. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 16384
+noncomputable section
+namespace TenPositive80To90FullZero
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open DiophantineConsistency AdaptiveEquationSyntax2011 ModelDifferenceRing
+open ArithmeticPellRecurrence
+open CompactFixedBeta CompactSymbolicPorts
+open TenPositive80Graph TenPositive80Factors TenPositive80NaturalRank
+open TenPositive80To90SourceData TenPositive80RankPhase TenPositivePellPositiveSeed
+open TenPositive80SymbolicPortBounds
+attribute [local irreducible] CompactFixedBeta.betaNat Nat.ofDigits lowNat highNat
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem graph_factors (p : Fin 4 → ℕ) (v : Fin 10 → V)
+    (hp0 : p 0=betaNat) (hp2 : p 2=lowNat) (hp3 : p 3=betaNat+highNat)
+    (hv : ∀j,0<v j) (hz : InternalZero (graph (integerPorts p)).output v) :
+    ∃ w : Fin 12 → V, (∀j,0<w j) ∧
+      ((FreeJDirectMainGraph.graph (integerPorts p)).first).evalRing (fun j => ι (w j))=0 ∧
+      ((FreeJDirectMainGraph.graph (integerPorts p)).main).evalRing (fun j => ι (w j))=0 ∧
+      ((FreeJDirectMainGraph.graph (integerPorts p)).ordinary).evalRing (fun j => ι (w j))=0 := by
+  obtain ⟨r,eta,zeta,gamma,h,s,hr,heta,hzeta,hgamma,hs,hR,⟨hC,hK⟩,hboth⟩ :=
+    graph_source_data p v hp0 hp2 hp3 hv hz
+  have hphase := graph_phase p v hp0 hp2 hp3 hv hz
+  let a:=Y p v*(X p v+1)
+  let C:=ycoord (rankNat p v) a
+  let D:=ArithmeticPellRecurrence.delta a
+  obtain ⟨f,i,T,u,y,t0,n,hf,hi,hT,hu,hy,ht,hn,hfEq,hnEq,hyn,hstrong,hlit,haux⟩ :=
+    positive_seed a (rankNat p v) hphase
+  let w:=valuation v eta zeta (gamma+h) t0 T n s
+  obtain ⟨hw,hfirst,hmain⟩ := hboth t0 T n ht hT hn
+  refine ⟨w,hw,hfirst,hmain,?_⟩
+  trace_state
+  sorry
+
+#print axioms TenPositive80To90FullZero.graph_factors
+end TenPositive80To90FullZero

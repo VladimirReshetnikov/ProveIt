@@ -1,0 +1,3 @@
+# Independent terminal audit: sign15 same-input seed iff
+
+Checker exit 0. Author outer 45350 exited 0; dependency/compile and postflight passed. The theorem gives same-input existential sign15/sign16 seed-zero equivalence under four represented ports, beta positivity and MC/MF bounds. It reports propext, Classical.choice and Quot.sound, with no warnings or sorryAx. Exact source, object, logs, all three direct providers, guards and overlays were checked. Provider union and inherited windows/first-index surveys remain point-in-time, with their recorded ancestry qualifications. Current-port specialization, iPRA endpoint and external JSON/PDF binding remain separate.

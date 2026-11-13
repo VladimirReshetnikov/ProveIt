@@ -1,0 +1,5 @@
+# Direct-BFS local cell digits
+
+`DirectBFSCellDigit` defines the model-valued local digit function using the direct-table payload: selector positions carry the row indicator, the dummy position carries its bit, and copy positions carry the corresponding direct payload bits. The proved bounds show all digits are at most one for a Boolean dummy, and `DirectBFSCellDigitUniform.cellDigit_uniform` proves Σ₁ definability jointly in row, dummy and position. These are ingredients for a direct-family represented cell, not yet a packing certificate or graph-completeness theorem.
+
+Guarded author attempt `observations/directbfscelldigit-attempt01/` exited 0 without diagnostics, and all five exact axiom reports are `[propext, Classical.choice, Quot.sound]`. Direct source imports were explicitly pinned and rechecked. Object `/tmp/direct-bfs-celldigit-w95shvxh/DirectBFSCellDigit.olean` has SHA-256 `3d35c896a3a0eac1a8bea616e83437c372561917e67f0ba2697610b69703c1c0`. Inherited project/package/dynamic and source-object ancestry remains unverified; no independent Lean replay is claimed.

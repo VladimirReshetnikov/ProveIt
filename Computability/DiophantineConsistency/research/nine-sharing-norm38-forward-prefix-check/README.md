@@ -1,0 +1,5 @@
+# Forward-constructor prefix check: passed
+
+This checked client copies the `forward_prefix` statement and proof from the separately source-reviewed forward bridge draft. It proposes that the 38-coordinate constructor's first fourteen entries equal its fourteen input coordinates over any commutative semiring. It uses the successful 13-stage forward-gate provider; the runner checks all its stage sources, objects, logs, recorded direct guards and overlay links, including the recorded `ForwardWitness38` object route. Source SHA-256 `9662cd703c6ba4b8e0a164ac57d05223871070bcf1667bfd246c01425c4f6266`, manifest `b208355ea7fff041c05d66644d2104e082682ff18f98f13e777ed5f84261e4c1`, runner `633317d4b99130dd0a09422e73ddc4c268708f8cc094bf844eeee4af7397f7e6`.
+
+No-Lean preflight passed. Independent source/runner review and coordinated slot release preceded actual session `91908`, which exited 0; see `attempt01/`. The checked prefix theorem does not establish source norms, a seed zero or an iPRA endpoint; deeper provider ancestry and sampled monitor limits remain inherited.

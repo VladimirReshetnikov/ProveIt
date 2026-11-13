@@ -1,0 +1,5 @@
+# Independent sign32 X/Y/E substitution prelaunch review
+
+The checker pins source, runner and manifest, independently reproduces the no-Lean preflight, and compares each of the six proposed old/new expressions against the exact source-list row. Old positions are 1, 2, 3 in the old remaining list; new positions are 0, 1, 2 in the new remaining list. None of these old rows uses eliminated old coordinate 15, and the checked lift maps all other coordinates as required. Thus the three proposed evaluation identities need no port-0 cast hypothesis. The runner binds the immediate successful group00 object and verifies retained source, logs, guards and captured overlay; deeper ancestry remains inherited.
+
+The proposed claims are only nine local list-row/evaluation statements for X/Y/E with symbolic ports and a common valuation. Elaboration and axiom reports are untested; no Lean run occurred. The remaining residual identities and complete zero-set bridge are outside scope. Provider checks are point-in-time; sampled resource monitoring does not give a complete transitive or dynamic trace.

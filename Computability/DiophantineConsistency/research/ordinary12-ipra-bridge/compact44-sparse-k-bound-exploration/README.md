@@ -1,0 +1,7 @@
+# Symbolic K coefficient bound and radix digits
+
+For every natural `r ≥ 2^67`, these author-only staged modules prove every aggregated coefficient of the earlier 1,973-term symbolic K list is below `r`. They do so without a distinct-position assumption: each entry is at most `2^51+1`, the list has 1,973 entries, and `1973*(2^51+1) < 2^67`. Generic list aggregation includes duplicate positions. The previously conditional digit theorem consequently holds for every index below 8850, and `paramKernel r < r^8850`; a separate theorem specializes the digit equality to `rho = 2^67`.
+
+The final bounded Lean session 31456 exited 0 without warnings or `sorryAx`. Exact successful stages and unsuccessful memory, recursion, simplification and proof-syntax attempts are retained in `observations/`; error-recovery or failed-kernel reports are not proofs. The abstract exact total-mass identity is checked; its attempted concrete specialization exceeded resource limits and is not asserted. The successful coefficient bound uses the coarser count estimate instead.
+
+This is an author-only natural-number proof over one exploratory provider. The direct-object snapshots were taken after compilation; inherited transitive/package and dynamic ancestry remains unauthenticated. No paired build, concrete `kernelNat` or retained-byte/display equality, model cast, graph conclusion, converse or internal iPRA result is claimed.

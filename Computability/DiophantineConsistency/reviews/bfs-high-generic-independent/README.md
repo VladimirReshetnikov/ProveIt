@@ -1,0 +1,5 @@
+# Independent review of generic high-digit run identities
+
+The two accepted Lean theorems hold for arbitrary natural radix B, length n, digit d and, for the second, any natural list xs. `replicate_value` expresses `Nat.ofDigits B (replicate n d)` as `d*∑_{j<n} B^j`; `run_sum` expresses `Nat.ofDigits B (replicate n d ++ xs)` as that sum plus `B^n*Nat.ofDigits B xs`. No radix bound, digit-range bound or fixed enormous numeral is required. These are generic ingredients, **not** a proof of the complete displayed high-mask expression or its equality to `highNat`.
+
+`check.py` verifies both theorem shapes and unguarded natural arguments, source, runner, all recorded pins, output and both `[propext, Classical.choice, Quot.sound]` reports; it verifies the two direct selected objects post hoc in the coherent BFS union. The author reports the enclosing session exited 0; the saved receipt records successful Lean subprocess/guards. The source-to-PDF, PDF parsing, entire high-mask binding, and full historical/package/dynamic ancestry remain outside scope. No independent Lean replay was performed.
