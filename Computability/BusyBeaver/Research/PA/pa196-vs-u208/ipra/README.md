@@ -81,13 +81,18 @@ The other recognizer subformulas and the complete induction bounds remain open.
 `PA196InductionFvarWitness.lean` bounds the exact positive free-variable-vector
 graph and its enclosing existential, conditional on a bound for the remaining
 Σ₁ conjunct. This does not establish that remaining bound.
+`PA196InductionBodyAll.lean` bounds two exact quantifier-code graphs in the
+induction-body recognizer and their nested existentials, conditional on the
+remaining inner tail's witness bound.
 
 `PA196PAAlphabetBounds.lean` proves both polarities of the witness bounds for
 Foundation's arithmetic function-symbol and relation-symbol recognizers.
 Those base bounds do not yet establish bounds for formula or proof coding.
 `PA196PAFormulaBound.lean` uses the symbol results and fixed-point
 truncation to reduce both bounds for the arithmetic formula recognizer to the
-corresponding term-vector recognizer bounds, which remain hypotheses there.
+corresponding term-vector recognizer bounds. `PA196PATermBounds.lean` proves
+those term and term-vector bounds, and `PA196PAFormulaComplete.lean` composes
+them to prove both formula-recognizer bounds without additional hypotheses.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
