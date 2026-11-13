@@ -2571,9 +2571,15 @@ $\sel(\operatorname{sg}(x\mathbin{\dot-}y),x,y+(x\mathbin{\dot-}y))=x$ and
 the test $\operatorname{sg}(K(\Suc a\mathbin{\dot-}b))$, which takes the
 values $0$ and $1$ only, and it carries the disjunction
 ``$b_\varphi=0\vee b_\varphi=1$'' through the construction below.  The form
-above, which is the one of the Lean modules \Lean{TeqEq} and
-\Lean{TeqReflect}, omits the sign: the selector tests its first argument for
-zero, so a two-valued characteristic is not needed.
+above omits the sign: the selector tests its first argument for zero, so a
+two-valued characteristic is not needed.  The Lean module \Lean{TeqReflect}
+uses the symmetric test
+$\varepsilon'(a,b)\defeq\sel(a\mathbin{\dot-}b,\ b\mathbin{\dot-}a,\ 1)$
+instead, whose reflection needs neither $K$ nor \cref{base:lem:monus}(iv).  If
+$\varepsilon'(a,b)=0$, then $a\mathbin{\dot-}b=0$, since a successor would
+give $1=0$; hence $\varepsilon'(a,b)=b\mathbin{\dot-}a=0$, and
+\cref{base:lem:order}(iii) gives $a=a+(b\mathbin{\dot-}a)=b$.  Conversely
+$\varepsilon'(a,a)=\sel(0,0,1)=0$ by \cref{base:lem:order}(i).
 \end{remark}
 
 \subsection{Induction for quantifier-free formulas}

@@ -23,25 +23,6 @@ open scoped Fm
 
 variable {n m k : ℕ}
 
-namespace Syn
-
-variable {T : ℕ → Type} [Syn T]
-
-/-- Feeding the counter and the previous value to a step weakened under its two
-binders. -/
-theorem subst_cases_up_up_shift (c p : T (n + 1)) (h : T (n + 2)) :
-    subst (Fin.cases c (Fin.cases p var)) (subst (up (up (fun i => var i.succ))) h)
-      = subst (Fin.cases c (repl p)) h := by
-  rw [subst_subst]
-  refine congrArg (fun ρ => subst ρ h) (funext fun j => ?_)
-  refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j
-  · simp only [Fin.cases_zero, up_zero, subst_var]
-  · simp only [Fin.cases_succ, Fin.cases_zero, repl_zero, up_succ, up_zero, shift_var,
-      subst_var]
-  · simp only [Fin.cases_succ, repl_succ, up_succ, shift_var, subst_var]
-
-end Syn
-
 namespace RoundTrip
 
 /-! ### The translation `tau` and the two substitutions of induction -/
@@ -71,14 +52,12 @@ theorem code_prec_succ (f : PR k) (g : PR (k + 2)) :
     [] ⊢[TeqAx] Syn.subst (repl (Tm.succ (Syn.var 0))) (FromPRA.code (.prec f g))
       ≐ Syn.subst (Fin.cases (Syn.var 0) (repl (FromPRA.code (.prec f g))))
           (FromPRA.code g) := by
-  have e1 : Syn.subst (repl (Tm.succ (Syn.var 0))) (FromPRA.code (.prec f g))
-      = Tm.prc (Tm.succ (Syn.var 0)) (shift (FromPRA.code f))
-          (Syn.subst (up (up (fun i => Syn.var i.succ))) (FromPRA.code g)) := by
-    rw [FromPRA.code_prec, Tm.subst_prc, Syn.subst_var, Syn.repl_zero, Syn.subst_repl_shift,
-      Syn.subst_up_up_repl_up_up_shift]
-  rw [e1, ← Syn.subst_cases_up_up_shift (Syn.var 0) (FromPRA.code (.prec f g))
-    (FromPRA.code g)]
-  exact Q.prc_succ _ _ _
+  have h := FromPRA.ax_precSucc f g
+  rw [FromPRA.sigma_app, FromPRA.sigma_repl, FromPRA.sigma_succ, FromPRA.sigma_var,
+    FromPRA.sigma_app] at h
+  convert h using 3
+  funext j
+  refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j <;> simp [FromPRA.sigma_app_var]
 
 /-! ### The code of a function symbol denotes the symbol -/
 
@@ -89,33 +68,6 @@ theorem tau_subst_code {f : PR k}
   have h := e.subst fun j => ToPRA.tau (σ j)
   simp only [Fm.subst_eq, List.map_nil, PTm.subst_app, Syn.subst_var] at h
   exact Prf.eqTrans (ToPRA.tau_subst σ _) h
-
-theorem tau_code_prec_zero (f : PR k) (g : PR (k + 2))
-    (ihf : [] ⊢[PRAAx] ToPRA.tau (FromPRA.code f) ≐ PTm.app f Syn.var)
-    {Γ : List (Fm PTm k)} :
-    Γ ⊢[PRAAx] (ToPRA.tau (FromPRA.code (.prec f g))
-      ≐ PTm.app (.prec f g) Syn.var).subst (inst PTm.zero) := by
-  simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var]
-  exact Prf.eqTrans (tau_subst_inst Tm.zero _)
-    (Prf.eqTrans (Prf.ofNil (ToPRA.interp.sound (code_prec_zero f g)))
-      (Prf.eqTrans (Prf.ofNil ihf) (Prf.eqSymm (PRA.precZero f g Syn.var))))
-
-theorem tau_code_prec_succ (f : PR k) (g : PR (k + 2))
-    (ihg : [] ⊢[PRAAx] ToPRA.tau (FromPRA.code g) ≐ PTm.app g Syn.var)
-    {Γ : List (Fm PTm (k + 1))}
-    (ih : Γ ⊢[PRAAx] ToPRA.tau (FromPRA.code (.prec f g)) ≐ PTm.app (.prec f g) Syn.var) :
-    Γ ⊢[PRAAx] (ToPRA.tau (FromPRA.code (.prec f g))
-      ≐ PTm.app (.prec f g) Syn.var).subst (repl (PTm.succ (Syn.var 0))) := by
-  simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var]
-  refine Prf.eqTrans (tau_subst_repl (Tm.succ (Syn.var 0)) _)
-    (Prf.eqTrans (Prf.ofNil (ToPRA.interp.sound (code_prec_succ f g)))
-      (Prf.eqTrans (Prf.ofNil (tau_subst_code ihg _))
-        (Prf.eqTrans (ToPRA.congr g fun j => ?_)
-          (Prf.eqSymm (Prf.axm (PRAAx.precSucc f g))))))
-  refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j
-  · exact Prf.eqRefl _
-  · exact ih
-  · exact Prf.eqRefl _
 
 /-- The code of a function symbol denotes the symbol, provably in `iPRA`. -/
 theorem tau_code (f : PR k) :
@@ -134,10 +86,15 @@ theorem tau_code (f : PR k) :
     exact Prf.eqTrans (tau_subst_code ihf _)
       (Prf.eqTrans (ToPRA.congr f ihg) (Prf.eqSymm (PRA.comp f gs Syn.var)))
   | prec f g ihf ihg =>
-    refine Prf.allOpen (Γ := []) (PRA.qfInd
-      (ToPRA.tau (FromPRA.code (.prec f g)) ≐ PTm.app (.prec f g) Syn.var) trivial ?_ ?_)
-    · exact tau_code_prec_zero f g ihf
-    · exact tau_code_prec_succ f g ihg Prf.hyp0
+    have h := ToPRA.prec_uniq (σ := Syn.var) (ToPRA.tau (FromPRA.code (.prec f g)))
+      (Prf.eqTrans (tau_subst_inst Tm.zero _)
+        (Prf.eqTrans (ToPRA.interp.sound (code_prec_zero f g)) ihf))
+      (Prf.eqTrans (tau_subst_repl (Tm.succ (Syn.var 0)) _)
+        (Prf.eqTrans (ToPRA.interp.sound (code_prec_succ f g))
+          (Prf.eqTrans (tau_subst_code ihg _) (ToPRA.congr g fun j => by
+            refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun i => ?_) j) j <;>
+              exact Prf.eqRefl _))))
+    rwa [Syn.up_var] at h
 
 /-- The round trip `iPRA → T_eq → iPRA` is provably the identity on terms. -/
 theorem tau_sigma (t : PTm n) : [] ⊢[PRAAx] ToPRA.tau (FromPRA.sigma t) ≐ t := by

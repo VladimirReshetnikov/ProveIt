@@ -62,16 +62,17 @@ theorem subst_subst (A : NFm n) : ∀ {m k : ℕ} (σ : Fin n → Tm m) (τ : Fi
   | Q B ih => rw [subst_Q, subst_Q, ih, up_comp, subst_Q]
   | D B ih => rw [subst_D, subst_D, ih, up_comp, up_comp, subst_D]
 
-theorem shift_subst_up (A : NFm n) (σ : Fin n → Tm m) :
-    A.shift.subst (up σ) = (A.subst σ).shift := by
-  unfold NFm.shift
-  rw [subst_subst, subst_subst]
-  exact A.subst_ext fun i => by simp [Syn.shift]
+/-- Two substitutions in a row, given their composite pointwise. -/
+theorem subst_comp (A : NFm n) {σ : Fin n → Tm m} {τ : Fin m → Tm k} {ρ : Fin n → Tm k}
+    (h : ∀ i, Syn.subst τ (σ i) = ρ i) : (A.subst σ).subst τ = A.subst ρ :=
+  (A.subst_subst σ τ).trans (A.subst_ext h)
 
-@[simp] theorem subst_inst_shift (A : NFm n) (t : Tm n) : A.shift.subst (inst t) = A := by
-  unfold NFm.shift
-  rw [subst_subst]
-  exact A.subst_eq_self fun i => by simp
+theorem shift_subst_up (A : NFm n) (σ : Fin n → Tm m) :
+    A.shift.subst (up σ) = (A.subst σ).shift :=
+  (A.subst_comp fun i => by simp [Syn.shift]).trans (A.subst_comp fun _ => rfl).symm
+
+@[simp] theorem subst_inst_shift (A : NFm n) (t : Tm n) : A.shift.subst (inst t) = A :=
+  (A.subst_comp fun i => by simp).trans A.subst_id
 
 theorem subst_inst (A : NFm (n + 1)) (σ : Fin n → Tm m) (t : Tm n) :
     (A.subst (inst t)).subst σ = (A.subst (up σ)).subst (inst (Syn.subst σ t)) := by
@@ -87,16 +88,14 @@ theorem subst_up_inst (B : NFm (n + 2)) (σ : Fin n → Tm m) (t : Tm n) :
 theorem subst_repl_succ (A : NFm (n + 1)) (σ : Fin n → Tm m) :
     (A.subst (repl (succ (Syn.var 0)))).subst (up σ)
       = (A.subst (up σ)).subst (repl (succ (Syn.var 0))) := by
-  rw [subst_subst, subst_subst]
-  refine A.subst_ext (Fin.cases ?_ fun j => ?_)
-  · simp
-  · rw [repl_succ, Syn.subst_var, up_succ, subst_repl_shift]
+  refine (A.subst_comp fun i => ?_).trans (A.subst_subst _ _).symm
+  refine Fin.cases (by simp) (fun j => ?_) i
+  rw [repl_succ, Syn.subst_var, up_succ, subst_repl_shift]
 
 /-- A dummy second variable disappears when it is instantiated. -/
 theorem subst_dummy_inst (B : NFm (n + 1)) (t : Tm n) :
-    (B.subst (up (fun i => Syn.var i.succ))).subst (up (inst t)) = B := by
-  rw [subst_subst]
-  refine B.subst_eq_self (Fin.cases ?_ fun j => ?_) <;> simp
+    (B.subst (up (fun i => Syn.var i.succ))).subst (up (inst t)) = B :=
+  (B.subst_comp fun i => by refine Fin.cases ?_ (fun j => ?_) i <;> simp).trans B.subst_id
 
 theorem map_shift_subst (Γ : List (NFm n)) (σ : Fin n → Tm m) :
     (Γ.map NFm.shift).map (fun A => A.subst (up σ))

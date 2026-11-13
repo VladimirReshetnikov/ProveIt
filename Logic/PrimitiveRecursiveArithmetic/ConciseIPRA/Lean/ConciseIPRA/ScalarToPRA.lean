@@ -62,15 +62,19 @@ theorem iterSym_zero (a : PR k) (h : PR (k + 1)) (xs : Fin k → PTm n) :
     Γ ⊢[PRAAx] app (iterSym a h) (Fin.cases PTm.zero xs) ≐ app a xs :=
   PRA.precZero a (stepSym h) xs
 
+/-- The step of the simulated iterator passes the previous value and the
+parameters on to its body. -/
+theorem stepSym_app (h : PR (k + 1)) (y p : PTm n) (xs : Fin k → PTm n) :
+    Γ ⊢[PRAAx] app (stepSym h) (Fin.cases y (Fin.cases p xs)) ≐ app h (Fin.cases p xs) := by
+  refine Prf.eqTrans (PRA.comp h _ _) (congr h (Fin.cases ?_ fun l => ?_))
+  · exact PRA.proj 1 _
+  · exact PRA.proj l.succ.succ _
+
 /-- The simulated iterator at a successor. -/
 theorem iterSym_succ (a : PR k) (h : PR (k + 1)) (y : PTm n) (xs : Fin k → PTm n) :
     Γ ⊢[PRAAx] app (iterSym a h) (Fin.cases (PTm.succ y) xs)
-      ≐ app h (Fin.cases (app (iterSym a h) (Fin.cases y xs)) xs) := by
-  refine Prf.eqTrans (PRA.precSucc a (stepSym h) y xs) ?_
-  refine Prf.eqTrans (PRA.comp h _ _) ?_
-  refine congr h (Fin.cases ?_ fun l => ?_)
-  · exact PRA.proj 1 _
-  · exact PRA.proj l.succ.succ _
+      ≐ app h (Fin.cases (app (iterSym a h) (Fin.cases y xs)) xs) :=
+  Prf.eqTrans (PRA.precSucc a (stepSym h) y xs) (stepSym_app h _ _ _)
 
 /-- The function symbol of a term, applied to arguments, is the translation of
 the term with the arguments substituted. -/
@@ -104,8 +108,29 @@ theorem subst_repl_up (s : PTm (m + 1)) (σ : Fin k → PTm m) :
   · simp
   · simp [Syn.shift, Syn.subst_subst]
 
+/-- Uniqueness of primitive recursion: a term satisfying the recursion
+equations of `prec f g` at the parameters `σ` is that recursion.  This is an
+induction inside `iPRA`. -/
+theorem prec_uniq {f : PR k} {g : PR (k + 2)} {σ : Fin k → PTm m} (F : PTm (m + 1))
+    (h0 : [] ⊢[PRAAx] Syn.subst (inst PTm.zero) F ≐ app f σ)
+    (hS : [] ⊢[PRAAx] Syn.subst (repl (PTm.succ (Syn.var 0))) F
+      ≐ app g (Fin.cases (Syn.var 0) (Fin.cases F fun j => Syn.shift (σ j)))) :
+    [] ⊢[PRAAx] F ≐ app (.prec f g) (Syn.up σ) := by
+  refine Prf.allOpen (Γ := []) (PRA.qfInd (F ≐ app (.prec f g) (Syn.up σ)) trivial ?_ ?_)
+  · simp only [Fm.subst_eq, PTm.subst_app]
+    rw [subst_inst_up]
+    exact Prf.eqTrans h0 (Prf.eqSymm (PRA.precZero f g σ))
+  · simp only [Fm.subst_eq, PTm.subst_app]
+    rw [subst_repl_up]
+    refine Prf.eqTrans hS.ofNil (Prf.eqTrans (congr g fun i => ?_)
+      (Prf.eqSymm (PRA.precSucc f g (Syn.var 0) _)))
+    refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun l => ?_) j) i
+    · exact Prf.eqRefl _
+    · exact Prf.hyp0
+    · exact Prf.eqRefl _
+
 /-- Two simulated iterators whose bases and steps agree along a substitution
-agree at every count.  This is an induction inside `iPRA`. -/
+agree at every count, by uniqueness of primitive recursion. -/
 theorem iterSym_ext {a' : PR m} {h' : PR (m + 1)} {a : PR k} {h : PR (k + 1)}
     {σ : Fin k → PTm m}
     (ha : [] ⊢[PRAAx] app a' Syn.var ≐ app a σ)
@@ -114,28 +139,15 @@ theorem iterSym_ext {a' : PR m} {h' : PR (m + 1)} {a : PR k} {h : PR (k + 1)}
       ≐ app (iterSym a h) (Fin.cases t σ) := by
   have e : (repl (Syn.var 0) : Fin (m + 1) → PTm (m + 1)) = Syn.var := by
     refine funext (Fin.cases ?_ fun j => ?_) <;> simp
-  have key : [] ⊢[PRAAx]
-      Fm.all (app (iterSym a' h') Syn.var ≐ app (iterSym a h) (Syn.up σ)) := by
-    refine PRA.qfInd _ trivial ?_ ?_
-    · simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var]
-      rw [subst_inst_up]
-      exact Prf.eqTrans (iterSym_zero a' h' Syn.var)
-        (Prf.eqTrans ha (Prf.eqSymm (iterSym_zero a h σ)))
-    · have hL := iterSym_succ
-        (Γ := [app (iterSym a' h') Syn.var ≐ app (iterSym a h) (Syn.up σ)])
-        a' h' (Syn.var 0) (fun i => Syn.var i.succ)
-      have hM := (hh.subst (repl (app (iterSym a' h') Syn.var))).ofNil
-        (Γ := [app (iterSym a' h') Syn.var ≐ app (iterSym a h) (Syn.up σ)])
-      simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var] at hM ⊢
-      rw [subst_repl_up] at hM ⊢
-      rw [show (Fin.cases (Syn.var 0) fun i => Syn.var i.succ : Fin (m + 1) → PTm (m + 1))
-        = Syn.var from e] at hL
-      refine Prf.eqTrans hL (Prf.eqTrans hM (Prf.eqTrans (congr h (fun i => ?_))
-        (Prf.eqSymm (iterSym_succ a h (Syn.var 0) (fun j => Syn.shift (σ j))))))
-      refine Fin.cases ?_ (fun j => ?_) i
-      · exact Prf.hyp0
-      · exact Prf.eqRefl _
-  have h₁ := Prf.allE t key
+  have hL := iterSym_succ (Γ := []) a' h' (Syn.var 0) (fun i => Syn.var i.succ)
+  rw [show (Fin.cases (Syn.var 0) fun i => Syn.var i.succ : Fin (m + 1) → PTm (m + 1))
+    = Syn.var from e] at hL
+  have hM := (hh.subst (repl (app (iterSym a' h') Syn.var))).ofNil (Γ := [])
+  simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var] at hM
+  rw [subst_repl_up] at hM
+  have h₁ := (prec_uniq (app (iterSym a' h') Syn.var)
+    (Prf.eqTrans (iterSym_zero a' h' Syn.var) ha)
+    (Prf.eqTrans hL (Prf.eqTrans hM (Prf.eqSymm (stepSym_app h _ _ _))))).subst (inst t)
   simp only [Fm.subst_eq, PTm.subst_app, Syn.subst_var] at h₁
   rwa [subst_inst_up] at h₁
 

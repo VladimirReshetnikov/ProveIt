@@ -987,7 +987,7 @@ The main chain (every module except the twenty kernel comparisons,
 `ZeroSeedObstruction`,
 `NativePrefix`, `NativeUniqueness`, `NativeModels`, `NativeWitnessShape`,
 `NativeWitnessComplete`, `EqKernel`, `EqArith`, `EqParity`, `EqCompare`, `EqPred` and
-`TeqClosure`) is 5,091
+`TeqClosure`) is 5,026
 lines; it was 5,984 before the shortening passes. The larger cuts: cut for
 natural deduction is a six-line induction on the context, by implication
 introduction and elimination, instead of an induction over the seventeen
@@ -1017,7 +1017,15 @@ its code (`RoundTrip.sigma_tau`), not a fourth induction on terms; the
 native universal quantifier `all X = X(0) ∧ Q X` is read through the
 conjunction lemma and one propositional step; and case distinctions use
 `Teq.casesOn` in place of coverage followed by an explicit existential
-elimination and weakening. In the
+elimination and weakening. On the iPRA side, uniqueness of primitive
+recursion at a parameter substitution (`ToPRA.prec_uniq`, one
+quantifier-free induction) gives both the extensionality of the simulated
+iterator and the round trip of a recursion symbol, and the successor
+equation of that round trip is the translated axiom `FromPRA.ax_precSucc`
+rather than a second proof of the same recursion equation. The equality test
+of `T_eq` is the symmetric `sel(a ∸ b, b ∸ a, 1)`, whose reflection follows
+from the additive witness of the order in four lines, and nine composition
+lemmas of native substitution are instances of `NFm.subst_comp`. In the
 round trip through `T_eq`, the steps of each chain of equations are composed
 directly instead of being stated twice, and the step shared by three of the
 chains is one lemma (`RoundTrip.tau_subst_code`).
@@ -1237,7 +1245,7 @@ marked as conjectures is proved here.
    `deterministic_opening` (`OCPrf`), of `first_instance` and
    `clause_discharge` (`XCPrf`), and of `variable_substitution` (`VCPrf`)
    are proved equivalent to the kernel.
-8. **A shorter proof of the equivalence.** The main chain is 5,091 lines. A
+8. **A shorter proof of the equivalence.** The main chain is 5,026 lines. A
    dependency-closure computation shows that it contains nothing that the end
    results do not use. Three designs fix most of its size, and no shorter
    replacement for any of them is known: the predecessor of `T_eq` from
@@ -1246,9 +1254,9 @@ marked as conjectures is proved here.
    a parity; and the selector between two formulas by a double recursion on
    their binders. On the iPRA side the extensionality of the simulated
    iterator (`ToPRA.iterSym_ext`) and the round trip of primitive recursion
-   (`RoundTrip.tau_code_prec_succ`) are two inductions with explicit
-   substitutions that have not been brought under one lemma, as their `T_eq`
-   counterparts were (`Q.prc_itG`).
+   are both instances of the uniqueness of primitive recursion
+   (`ToPRA.prec_uniq`), as their `T_eq` counterparts are instances of
+   `Q.prc_itG`.
 9. **Is the public language necessary?** Settled: yes. `PGPrf` is equivalent
    to the kernel on translated sequents (`pgprf_pub_iff`) and strictly weaker
    on arbitrary ones: `x = y, y = z ⊢ x = z` between variables is not
