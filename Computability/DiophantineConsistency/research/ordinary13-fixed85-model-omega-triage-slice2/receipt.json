@@ -1,0 +1,484 @@
+{
+  "finding": "No additional abstract-model omega hazard identified among the selected sites.",
+  "lean_executed": false,
+  "overlap_with_prior_modules": false,
+  "prior_slice_receipt_sha256": "035bc57cbb885f15b02a90356b2c163eb9e64328acba7c53199bca6a65847d87",
+  "records": {
+    "DiophantineConsistency.ArithmeticControlFrame215": {
+      "classification": "finite-control indices, list lengths and natural budgets, even where neighboring values are in V",
+      "path": "Lean/DiophantineConsistency/ArithmeticControlFrame215.lean",
+      "reviewed_sites": [
+        {
+          "line": 65,
+          "text": "rw [if_neg (show \u00ac(number i=0 \u2228 count<number i) by unfold number; change \u00ac(i.val+1=0 \u2228 4751<i.val+1); omega)]"
+        },
+        {
+          "line": 189,
+          "text": "have hn : (source i).1.length+(64-(source i).1.length)=64 := Nat.add_sub_of_le (by have:=source_length i; omega)"
+        },
+        {
+          "line": 269,
+          "text": "exact hv.symm.trans ((bit_drop P d j).trans (hc e d hw (d+j) (by omega)))"
+        },
+        {
+          "line": 270,
+          "text": "have hn:64\u2264budget overflow extra := by unfold budget; omega"
+        },
+        {
+          "line": 271,
+          "text": "have he:=gap_consume P (budget overflow extra-P.length) d (by omega) hz"
+        },
+        {
+          "line": 272,
+          "text": "have hh:P.length+(budget overflow extra-P.length)=budget overflow extra := by omega"
+        },
+        {
+          "line": 290,
+          "text": "have hn:budget overflow extra-Q.length=overflow.toNat+extra+(64-Q.length) := by unfold budget; omega"
+        },
+        {
+          "line": 298,
+          "text": "have hq:(source (resolveControl P)).1.length\u226464 := by have:=source_length (resolveControl P); omega"
+        },
+        {
+          "line": 308,
+          "text": "(le_trans (outgoing_length _ _ _) (by have:=source_length i; omega)) (outgoing_clean i positive hn)"
+        }
+      ],
+      "sha256": "ae84b5cec4b26455f45031882d082edd40b701e5cfe8515e5f5b4f97fdeed1fc"
+    },
+    "DiophantineConsistency.ArithmeticHome215": {
+      "classification": "natural state, run, and scan-bound indices; model tape values are separate",
+      "path": "Lean/DiophantineConsistency/ArithmeticHome215.lean",
+      "reviewed_sites": [
+        {
+          "line": 25,
+          "text": "next_table \u27e8i,by omega\u27e9"
+        },
+        {
+          "line": 49,
+          "text": "rw [Nat.cast_add,Nat.cast_one,run_first,bitPrefix_succ,step_left_facing (next_row i (by omega)),ih (i+1) (by omega),bitPrefix_push]"
+        },
+        {
+          "line": 50,
+          "text": "rw [show i+1+c=i+(c+1) by omega]"
+        },
+        {
+          "line": 98,
+          "text": "exact \u27e8j,hj,by omega,Reach.refl _\u27e9"
+        },
+        {
+          "line": 109,
+          "text": "exact (Reach.of_step (step_left_facing (reset_row j (by omega)) _ R)).trans hr"
+        },
+        {
+          "line": 113,
+          "text": "hc (show j+1\u2264i+1 by omega) L (2*R+digit false)"
+        },
+        {
+          "line": 114,
+          "text": "exact \u27e8j',hb,hlt,(Reach.of_step (step_left_facing (next_row j (by omega)) _ R)).trans hr\u27e9"
+        },
+        {
+          "line": 122,
+          "text": "hc (show j+c\u2264i+c by omega) L (bitPrefix false (c:V) R)"
+        },
+        {
+          "line": 125,
+          "text": "(Reach.trans \u27e8(c:V),scan_zeros_exact j c (by omega) (flatValue gap v k xs L) R\u27e9 hr)"
+        },
+        {
+          "line": 139,
+          "text": "have hbnd : (if c=0 then i else 0)<8 := by split <;> omega"
+        },
+        {
+          "line": 141,
+          "text": "hbnd (show 0\u2264(if c=0 then i else 0) by omega) L (bitPrefix true n R)"
+        },
+        {
+          "line": 142,
+          "text": "exact \u27e8j',hb,hlt,(scan_ones j (by omega) n (flatValue gap v k xs L) R hp).trans hr\u27e9"
+        }
+      ],
+      "sha256": "ce91849e1aa711e0e4b7446f8b9c1597095fa361ba51290f35051801ef1e3d98"
+    },
+    "DiophantineConsistency.ArithmeticMachineTape215": {
+      "classification": "natural sparse machine state q and finite table length",
+      "path": "Lean/DiophantineConsistency/ArithmeticMachineTape215.lean",
+      "reviewed_sites": [
+        {
+          "line": 64,
+          "text": "rw [KBoot215.table215_length]; omega)"
+        }
+      ],
+      "sha256": "b160b6c6133942e3b7100a282f13678bccf265deacc79d11854c2c133e7a30b9"
+    },
+    "DiophantineConsistency.ArithmeticRegisterBoxes215": {
+      "classification": "natural list lengths and finite control offset",
+      "path": "Lean/DiophantineConsistency/ArithmeticRegisterBoxes215.lean",
+      "reviewed_sites": [
+        {
+          "line": 471,
+          "text": "have hn : pre.length+m<8 := by simp only [List.length_cons] at h; omega"
+        },
+        {
+          "line": 473,
+          "text": "rw [show pre.length+1+m=(pre.length+m)+1 by omega,block]"
+        },
+        {
+          "line": 475,
+          "text": "refine (show Reach _ _ from \u27e8v+1,scan_right _ true true (skip_self _ (by omega)) _ _ _\u27e9).trans ?_"
+        },
+        {
+          "line": 476,
+          "text": "exact ih (by omega) _"
+        }
+      ],
+      "sha256": "0c284c721c7243b6bfc74eab1c1505d314d504f1d0b254b6c1c5696970d2e7ca"
+    },
+    "DiophantineConsistency.ArithmeticSymbolicCore215": {
+      "classification": "explicitly ordinary-Nat bitsCode and repeated-list equalities",
+      "path": "Lean/DiophantineConsistency/ArithmeticSymbolicCore215.lean",
+      "reviewed_sites": [
+        {
+          "line": 394,
+          "text": "omega"
+        },
+        {
+          "line": 412,
+          "text": "omega"
+        }
+      ],
+      "sha256": "3fe729e72e1f717a8c51b90bc0812e3d7acb1d7fc1d5789f85602801ddc246d7"
+    },
+    "DiophantineConsistency.ArithmeticTilingTable": {
+      "classification": "Fin or standard natural table indices, with casts to V outside the omega subgoal",
+      "path": "Lean/DiophantineConsistency/ArithmeticTilingTable.lean",
+      "reviewed_sites": [
+        {
+          "line": 93,
+          "text": "have hn : headColor (j.val / 2) (j.val % 2) = j.val + 2 := by unfold headColor; omega"
+        },
+        {
+          "line": 235,
+          "text": "obtain \u27e8q, rfl\u27e9 : \u2203 q, p = q + 1 := \u27e8p - 1, by omega\u27e9"
+        },
+        {
+          "line": 240,
+          "text": "have hj : 2 * q + \u03b2 < 430 := by omega"
+        },
+        {
+          "line": 242,
+          "text": "refine \u27e8by exact_mod_cast (show 2 * q + \u03b2 + 1 < 942 by omega), ?_, ?_\u27e9"
+        }
+      ],
+      "sha256": "f4f0781b71aa9c2e9cb589219488a6b695e60b2d6675cc11d869a0d333b6913d"
+    },
+    "DiophantineConsistency.Compact44.CompactCellSizeBound": {
+      "classification": "standard natural finite-support member n",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactCellSizeBound.lean",
+      "reviewed_sites": [
+        {
+          "line": 21,
+          "text": "omega"
+        }
+      ],
+      "sha256": "f862cf98e351c42f8f917cdaee9caba5c4c0834468b2457c9482bf7b8e54f6ab"
+    },
+    "DiophantineConsistency.Compact44.CompactConcreteMask": {
+      "classification": "standard natural finite mask support and coefficient",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactConcreteMask.lean",
+      "reviewed_sites": [
+        {
+          "line": 23,
+          "text": "omega"
+        },
+        {
+          "line": 51,
+          "text": "omega"
+        }
+      ],
+      "sha256": "f93993e8b4badb6518d8ac6e575d406f322d7205b7d95c17c185103510b474c2"
+    },
+    "DiophantineConsistency.Compact44.CompactConstructedCarryInput": {
+      "classification": "Fin-index/position natural bounds inside exact_mod_cast",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactConstructedCarryInput.lean",
+      "reviewed_sites": [
+        {
+          "line": 90,
+          "text": "rw [packed_digit X N j _ hX hj (by exact_mod_cast (show i.val<8807 by have := i.isLt; omega)), hsel]"
+        },
+        {
+          "line": 92,
+          "text": "rw [packed_digit X N j _ hX hj (by exact_mod_cast (show position i<8807 by have := position_lt_target i; omega)), hcopy]"
+        }
+      ],
+      "sha256": "2054309d5c2367fbc32e7630b42e32aa981cc87766bc7a0f51580970048fbde3"
+    },
+    "DiophantineConsistency.Compact44.CompactConstructedWord": {
+      "classification": "Fin-index/position natural bounds inside exact_mod_cast",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactConstructedWord.lean",
+      "reviewed_sites": [
+        {
+          "line": 58,
+          "text": "rw [word_digit row dummy N j _ hj (by exact_mod_cast (show i.val < 8807 by have := i.isLt; omega))]"
+        },
+        {
+          "line": 64,
+          "text": "rw [word_digit row dummy N j _ hj (by exact_mod_cast (show position i < 8807 by have := position_lt_target i; omega))]"
+        }
+      ],
+      "sha256": "cafef0b87e2ef6b91588c6195ff8a54d52d9e7aab7a450febb78240651dbfa2f"
+    },
+    "DiophantineConsistency.Compact44.CompactHighPhaseReduction": {
+      "classification": "standard natural digit index and list-length comparisons",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactHighPhaseReduction.lean",
+      "reviewed_sites": [
+        {
+          "line": 30,
+          "text": "(5496 \u2264 n \u2227 n < 8792) := by omega"
+        },
+        {
+          "line": 33,
+          "text": "List.length_append, Nat.reduceAdd]; omega)) only [highDigits, List.getD_append_right, List.getD_append,"
+        },
+        {
+          "line": 35,
+          "text": "List.length_append, Nat.reduceAdd] <;> exact List.getD_replicate (0 : \u2115) (by omega)"
+        }
+      ],
+      "sha256": "80ada992bff9e1788de05fcb3fad7d4a5d1bd13f0bf20bf7ab44c0be0682dbe2"
+    },
+    "DiophantineConsistency.Compact44.CompactListMask": {
+      "classification": "standard natural base, index and digit arithmetic",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactListMask.lean",
+      "reviewed_sites": [
+        {
+          "line": 36,
+          "text": "((\u2211 j \u2208 range n, B^j) * (B-1) + 1) + B^n*(B-1) := by omega"
+        },
+        {
+          "line": 46,
+          "text": "have hgeom := geom_identity B (by omega : 1 \u2264 B) len"
+        },
+        {
+          "line": 56,
+          "text": "have he : B-4+3=B-1 := by omega"
+        },
+        {
+          "line": 62,
+          "text": "have he : B-2+1=B-1 := by omega"
+        },
+        {
+          "line": 68,
+          "text": "omega"
+        },
+        {
+          "line": 83,
+          "text": "split_ifs <;> omega"
+        }
+      ],
+      "sha256": "34c4d38c265160155a7fa3f99ea3af692c5f3be10b7b77cac211afc199953d4b"
+    },
+    "DiophantineConsistency.Compact44.CompactLowByteAssembly": {
+      "classification": "standard natural byte indices and range predicates",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactLowByteAssembly.lean",
+      "reviewed_sites": [
+        {
+          "line": 36,
+          "text": "split_ifs <;> omega"
+        },
+        {
+          "line": 41,
+          "text": "split_ifs <;> omega"
+        },
+        {
+          "line": 54,
+          "text": "\u00b7 have hdi : denseIndex j := by unfold denseIndex; omega"
+        },
+        {
+          "line": 55,
+          "text": "have hj0 : j \u2260 0 := by omega"
+        },
+        {
+          "line": 59,
+          "text": "\u00b7 have hdi : denseIndex j := by unfold denseIndex inDenseExtra at *; omega"
+        },
+        {
+          "line": 60,
+          "text": "have hj0 : j \u2260 0 := by unfold inDenseExtra at he; omega"
+        },
+        {
+          "line": 64,
+          "text": "\u00b7 have hdi : \u00ac denseIndex j := by unfold denseIndex inGap at *; omega"
+        },
+        {
+          "line": 65,
+          "text": "have hj0 : j \u2260 0 := by unfold inGap at hg; omega"
+        },
+        {
+          "line": 70,
+          "text": "\u00b7 have hdi : \u00ac denseIndex j := by unfold denseIndex; omega"
+        },
+        {
+          "line": 71,
+          "text": "have hj0 : j \u2260 0 := by omega"
+        },
+        {
+          "line": 88,
+          "text": "omega"
+        }
+      ],
+      "sha256": "ad1e7282418407248a85e45c41a63980eaaa16181ebc8280b105d19f08bbd32f"
+    },
+    "DiophantineConsistency.Compact44.CompactRelabelAssembly": {
+      "classification": "natural list lengths and drop indices",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactRelabelAssembly.lean",
+      "reviewed_sites": [
+        {
+          "line": 35,
+          "text": "simp only [List.length_drop, mapped_length]; omega"
+        },
+        {
+          "line": 37,
+          "text": "simp only [List.length_drop, selected_length]; omega"
+        }
+      ],
+      "sha256": "33dabbd5183599dd6c82fcf675c66ced481a3e1ee8c1df468f99f72e196fd1cc"
+    },
+    "DiophantineConsistency.Compact44.CompactRelabelInverseAssembly": {
+      "classification": "natural list lengths, finite range witnesses and indices",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactRelabelInverseAssembly.lean",
+      "reviewed_sites": [
+        {
+          "line": 34,
+          "text": "simp only [List.length_drop, forward_lengths.1]; omega"
+        },
+        {
+          "line": 36,
+          "text": "simp only [List.length_drop, forward_lengths.2]; omega"
+        },
+        {
+          "line": 94,
+          "text": "refine \u27e8j-2, by omega, ?_\u27e9"
+        },
+        {
+          "line": 95,
+          "text": "omega"
+        }
+      ],
+      "sha256": "db1856267bd611751319910999e5e0fafff245aea89f1baea51725a8398df047"
+    },
+    "DiophantineConsistency.Compact44.CompactRowComplete": {
+      "classification": "natural tile colors and finite table/rail bounds, with model casts outside the selected goals",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactRowComplete.lean",
+      "reviewed_sites": [
+        {
+          "line": 130,
+          "text": "have hn : (tileN m).north < 439 := by omega"
+        },
+        {
+          "line": 131,
+          "text": "have hs : (tileN m).south < 439 := by omega"
+        },
+        {
+          "line": 166,
+          "text": "omega"
+        },
+        {
+          "line": 169,
+          "text": "omega"
+        },
+        {
+          "line": 176,
+          "text": "Nat.one_mul, Nat.zero_mul] at * <;> omega"
+        },
+        {
+          "line": 189,
+          "text": "Nat.one_mul, Nat.zero_mul] at * <;> omega"
+        }
+      ],
+      "sha256": "a8faab7955615e616449989dd979b7d18c7047bbdd93e8d84c771e4f3f6c5dac"
+    },
+    "DiophantineConsistency.Compact44.CompactTableLookup": {
+      "classification": "natural list-range witnesses",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactTableLookup.lean",
+      "reviewed_sites": [
+        {
+          "line": 79,
+          "text": "refine \u27e8m-2, by omega, ?_\u27e9"
+        },
+        {
+          "line": 80,
+          "text": "omega"
+        }
+      ],
+      "sha256": "7e536e7450279e16a493ddf57a1cc4175e256b0d10c29374678ea8cf5608333d"
+    },
+    "DiophantineConsistency.Compact44.CompactWordFieldCyclic": {
+      "classification": "explicit natural offset u before casting into V",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactWordFieldCyclic.lean",
+      "reviewed_sites": [
+        {
+          "line": 40,
+          "text": "exact_mod_cast (show (983+u)+30=1013+u by omega)"
+        },
+        {
+          "line": 41,
+          "text": "have hq : ((1013+u:\u2115):V)<8807 := by exact_mod_cast (show 1013+u<8807 by omega)"
+        },
+        {
+          "line": 42,
+          "text": "have hq30 : (30:V)\u2264((1013+u:\u2115):V) := by exact_mod_cast (show 30\u22641013+u by omega)"
+        },
+        {
+          "line": 58,
+          "text": "exact_mod_cast (show (1003+u)+62=1065+u by omega)"
+        },
+        {
+          "line": 59,
+          "text": "have hq : ((1065+u:\u2115):V)<8807 := by exact_mod_cast (show 1065+u<8807 by omega)"
+        },
+        {
+          "line": 60,
+          "text": "have hq62 : (62:V)\u2264((1065+u:\u2115):V) := by exact_mod_cast (show 62\u22641065+u by omega)"
+        }
+      ],
+      "sha256": "2a7bc3d8748a5621d7941feadfe8f734a6d3e85649845e507618dfcede94d997"
+    },
+    "DiophantineConsistency.Compact44.CompactWordProductColumn": {
+      "classification": "Fin-index/position natural bounds in source_index arguments",
+      "path": "Lean/DiophantineConsistency/Compact44/CompactWordProductColumn.lean",
+      "reviewed_sites": [
+        {
+          "line": 50,
+          "text": "rw [source_index n j T i.val hk (by have := i.isLt; omega), hsel]"
+        },
+        {
+          "line": 53,
+          "text": "rw [source_index n j T (position i) hk (by have := position_lt_target i; omega), hcopy]"
+        }
+      ],
+      "sha256": "3740a21059d8797cac4e18608f6664d870d74c25bbd438887b47f17d929ce62f"
+    },
+    "DiophantineConsistency.Compact44.SparseCountBound": {
+      "classification": "natural list lengths, coefficients and bases",
+      "path": "Lean/DiophantineConsistency/Compact44/SparseCountBound.lean",
+      "reviewed_sites": [
+        {
+          "line": 18,
+          "text": "omega"
+        },
+        {
+          "line": 20,
+          "text": "omega"
+        }
+      ],
+      "sha256": "d83b82110415c80d06a23aea43af6a4f4fbef747fd175b61443b8d1b915c72f1"
+    }
+  },
+  "reviewed_module_count": 20,
+  "reviewed_omega_line_count": 83,
+  "scope": "Bounded source-context triage only; other sites, elaboration, providers, axioms, frontier and endpoint remain open.",
+  "selection_sha256": "f2d2503f011421235874a483b23026b846339bf1d736764b35527a45e02f0d83"
+}
