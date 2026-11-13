@@ -45,7 +45,8 @@ lean -M6000 -j1 Computability/DiophantineConsistency/Lean/DiophantineConsistency
 lean -M6000 -j1 "$bridge/PA196BoundedChecks.lean" | tee "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196Endpoint.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196StandardSemantics.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
-lean -M6000 -j1 "$bridge/PA196ForwardGG.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196ForwardGG.lean" -o "$PA196_TASK_CHECK_DIR/PA196ForwardGG.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196ReverseGG.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 if rg -q "sorryAx" "$PA196_TASK_CHECK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1

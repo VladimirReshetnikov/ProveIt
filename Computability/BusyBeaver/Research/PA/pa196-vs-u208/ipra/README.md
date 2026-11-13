@@ -42,6 +42,21 @@ that native PA refutability implies double-negated halting. The classical PRA
 proof remains a hypothesis. The upstream result is a PA theorem in a different
 coding, so it does not directly supply this hypothesis.
 
+`PA196ReverseGG.lean` provides a corresponding conditional transfer in the
+other direction. It assumes both a classical PRA proof that bounded machine
+halting implies the mapped PA-refutation predicate and a classical PRA
+bounded-witness certificate for that particular predicate. Neither assumption
+is established here. The file proves the bounded-matrix comparison and the
+erasure of the bound needed to use those assumptions in the native iPRA
+endpoint.
+
+For the witness hypothesis, the generic
+`PRAWitnessRefutationOuter.certificate_of_core` reduces the task to bounds on
+both polarities of the PA derivation core. The existing proofs of those bounds
+are specialized to the set-theory language. Reusing them for PA requires, in
+particular, bounds for the actual arithmetic induction-axiom recognizer;
+its Δ₁ definability in IΣ₁ alone does not supply the required PRA certificate.
+
 ## Checking
 
 The check uses Lean 4.32.0 and the root project's Lake environment. It checks
