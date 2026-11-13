@@ -1,0 +1,105 @@
+Independent review of the selected compact refinements
+=====================================================
+
+Candidates:
+  checker_research/checker_tokens239.py: 239 tokens / 261 AST / 549 bytes.
+  checker_research/checker_ast256.py:    245 tokens / 256 AST / 580 bytes.
+
+Control for the Boolean transformation:
+  checker_research/incoming/ipra_procedure_presentation_2026-11-12/
+  ipra_procedure_presentation_2026-11-12/code/inherited_tokens240.py
+
+1. Input and execution contract
+------------------------------
+The public goal is a promised well-formed closed guarded formula. Certificate
+lines are finite trees with exact-integer leaves and list constructors. A
+successful ideal finite execution defines acceptance; machine resource
+exhaustion is not an additional logical rule. These programs do not add a
+validator for arbitrary JSON values. The outer byte-valued initial context
+is an internal iterable containing the integer zero, unchanged in all files.
+
+2. Boolean-erasure relation
+--------------------------
+Let E recursively replace each internally generated False leaf by integer
+zero, leaving all integers, lists, context sequences, and the common no-image
+complex sentinel otherwise unchanged. Input contains no Boolean leaves.
+Relate executions when their remaining input is identical, their global
+integer floor k is identical, and every goal, parameter and retained resource
+agrees after E. No True leaf is introduced by the changed image expression.
+
+On this restricted value class, E preserves truth values, scalar/list
+equality, list membership, list lengths, slicing, sequence construction,
+and the scalar comparisons k <= a < d. Both False and zero are noniterable.
+Integer/list multiplication and the expressions s and [s], s*3, and
+[t]*3 respect E. Consequently a structural induction on successful calls
+to i proves corresponding success/failure and E-related results. If a
+list traversal fails and the broad exception handler attempts scalar
+comparison with that list, the comparison fails on both sides; the common
+nonorderable complex sentinel likewise supplies no extra accepted branch.
+
+3. The changed expression
+-------------------------
+The control computes
+
+    c(g,s) or k * bool(s or len(a) == 2)
+
+and the token candidate computes
+
+    (c(g,s) or s or len(a) == 2) and k.
+
+Both always call c(g,s) first. Every successful call to c returns None,
+after performing its final decrement of k. Therefore the two expressions
+both return the current integer k when s is truthy or len(a)==2. Otherwise
+the old expression returns integer zero and the new one returns False.
+The outputs agree under E. Checking len(a) happens in precisely the same
+short-circuit cases. The old expression reads k just before its pure mode
+test while the new expression reads it just afterwards; the mode test
+performs no input, writes, or recursive verification, so this changes no
+successful state. A failed length operation rejects both.
+
+The first argument s*3 or (a := i(*a,t,2)) of the enclosing i call is
+evaluated before this image expression in both versions. Thus a witness
+is still opened in the old scope, before the major verification's return
+reservation changes k. The continuation goal i(a,[k]) and retained
+resource are then constructed at corresponding floors. The update k -= 1
+at the end of every successful c invocation is unchanged.
+
+Induction on a successful finite recursive call tree now proves the
+simulation in both directions. The opener lemma gives identical leaf and
+elimination decisions. The recursive major call has the same consumed
+records and final k; the image expressions agree under E; the continuation
+calls satisfy the relation. Returning calls consume exactly the same
+records, perform exactly the same integer-floor changes, and return None.
+This proves equality of accepted finite streams under the contract.
+
+4. Additional transformations in checker_ast256.py
+-------------------------------------------------
+Initialization is moved from k=0 before the opener definition into its
+default argument d=(k := 0). Defaults are evaluated once when the function
+is defined. The resulting global k, default d, and all other defaults are
+identical before c is first called; nothing reads k earlier.
+
+The assignment s,u,t = r = loads(input()) is replaced by
+
+    match loads(input()):
+        case [s,u,t] as r:
+            global k
+
+For a length-three list packet the bindings are identical, including r's
+alias to the complete list. Any other permitted packet fails old unpacking
+and fails to bind the new function-local names, so it cannot lead to a
+successful new invocation. A call's locals cannot inherit bindings from
+another invocation. The global declaration is a compile-time directive
+for the entire function, not a runtime operation; its position inside the
+case leaves all accesses to k global. The same accepted-stream result
+therefore transfers to the AST candidate.
+
+5. Scope of the conclusion
+-------------------------
+These transformations preserve the complete inherited checking relation.
+They change no arithmetic axiom, inference rule, public formula language,
+interpretation map or numerical domain. Transferring the control's proved
+interpretation is legitimate; this review does not independently formalize
+that inherited bridge. Finite fixture testing is additional evidence and
+is not substituted for this operational argument. The minima are attained
+by different source files, not jointly by one file.

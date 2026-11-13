@@ -1,0 +1,120 @@
+THE PRECISE STRENGTH OF ITERATOR FUSION
+
+Fusion rule (parameters and a fixed context Gamma permitted; x fresh):
+  from  f(h(x))=k(f(x))
+  infer f(I(n,a;u.h(u)))=I(n,f(a);u.k(u)).
+
+1. Equation induction proves Fusion.
+Under the commuting premise, induct on n in the displayed conclusion. The
+base follows from zero computation. At a successor apply successor computation,
+the commuting equation at I(n,a,h), the induction hypothesis, and congruence.
+
+2. Fusion plus eta implies the existing scalar-uniqueness rule.
+Assume f(S x)=k(f(x)). Apply Fusion with h=S and a=0:
+  f(I(n,0;u.Su))=I(n,f(0);u.k(u)).
+Using eta, I(n,0;u.Su)=n, gives
+  f(n)=I(n,f(0);u.k(u)).
+The repository's scalar_uniqueness bootstrap then supplies its written equivalence
+with equation induction (chapter 2, theorem kern:thm:ur; the arbitrary-update rule
+is UR, not the successor-only SU). The converse UR-to-induction is explicitly not
+Lean-formalized (kern:rem:ur-sources). Its proof derives zero-equation induction,
+then a predecessor, then subtraction and an accumulator, then equality reflection,
+and finally full equation induction. Pairing is not used in the bootstrap.
+This route is not a new smaller rule. Fusion has three
+templates f,h,k and an arbitrary seed, whereas scalar uniqueness has two templates
+f,k and the implicit seed f(0).
+
+Thus, over ordinary intuitionistic first-order equality logic, both computation
+schemas, coverage, and separation, adding Fusion plus eta yields exactly the same
+derivable sequents as adding full literal-equation induction. The forward
+translation follows from equation induction as in part 1 and the analogous
+induction proving eta; the reverse translation factors through UR above. This is
+a positive equivalence theorem using the repository's written UR theorem as a
+dependency, not a newly formalized Lean result.
+
+3. Fusion alone does NOT imply eta, even with numerical coverage, separation,
+successor injectivity, and all standard-numeral-equation induction. Here is an
+explicit countermodel (independently audited by /root/independent_logic).
+
+Take a nonstandard model M of PA with definitions for all primitive recursive
+functions. Externally let
+  D = {(m,m): m is standard} union
+      {(m,n): m and n are both nonstandard}.
+Zero is (0,0); successor acts coordinatewise; actual equality is pair equality.
+Projection p:D->M is the first coordinate and is surjective. The fiber over each
+standard numeral k is the singleton (k,k). Coverage holds: every nonzero standard
+diagonal pair has its diagonal predecessor, and every pair of nonstandard numbers
+has its coordinatewise predecessor still in D. Injectivity and separation hold.
+
+First define scalar terms as primitive recursive pair-valued functions on ALL of
+M^2, under valuations with pairs. Variables, zero and successor have the expected
+meanings. Interpret an iterator with counter n=(n1,n2), initializer a and body h
+by internally iterating the pair-valued function h in M exactly n1 times. The
+second coordinate of the counter is unused. Each fixed term defines such an
+internal primitive recursive pair function, by external induction on syntax.
+
+PROVENANCE LEMMA.
+For each term t(x1,...,xr), there are primitive recursive functions sigma and d
+of the FIRST coordinates alone, with sigma in {0,...,r} and d>=0, such that
+its two output coordinates are
+  (x_sigma,1 + d, x_sigma,2 + d),
+where x_0=(0,0). These identities hold in M for arbitrary pair valuations.
+
+Proof of lemma. A variable chooses its own index and offset zero; zero chooses
+index 0 and offset zero; successor increases the offset by one. For an iterator,
+use the lemma for its initializer and for its body, where the bound state is one
+extra input pair. Track in an ordinary primitive recursion the first state value,
+its provenance index, and its offset. If the body's selected source is its state,
+keep the current index and add the body's offset. If it selects a passive input
+or zero, reset the index and offset accordingly. All decisions and added offsets
+depend on first coordinates alone. PA induction on this internal recursion proves
+the invariant. Evaluate it at the first coordinate of the counter term. QED.
+
+The provenance lemma proves closure of D under every term and under every
+internally M-indexed iteration of a term body from a seed in D. If the source pair
+is standard diagonal, adding the same d keeps it diagonal. If both source
+coordinates are nonstandard, adding nonnegative d keeps both nonstandard. The
+diagonal source 0 is covered by the first case. Thus the above operations restrict
+to a genuine scalar-term structure on D.
+
+Both iterator computation laws hold by the internal primitive recursion and the
+fact that the first coordinate of S(n) is n1+1. The projection of a term is its
+ordinary scalar interpretation on M. Therefore all standard-numeral equations
+t=kbar reflect exactly along p, and their induction rules (with parameters and
+arbitrary fixed contexts) hold by the same singleton-fiber argument as in
+identity_barrier.txt. Identity iteration also holds, by PA induction for a pair
+identity map.
+
+FUSION IS VALID.
+Fix parameters in D and a valuation satisfying Gamma and the commuting premise
+for every x in D. Write a_j=h^j(a) for the internally M-indexed h-orbit. The
+provenance lemma shows a_j in D for EVERY j in M. Hence f(h(a_j))=k(f(a_j)) for
+every j in M. Although D is externally specified, this last assertion, after
+substituting the internal orbit and the internal pair functions, is an ordinary
+internal first-order statement with the fixed parameters, true in M. Internal
+PA induction now proves f(a_j)=k^j(f(a)) for all j in M. Specialize to j=n1.
+This is exactly Fusion on D. No induction over an externally defined predicate
+D is used.
+
+EXTENSIONALITY CHECK.
+If two body terms give the same actual function on D, their internally M-indexed
+orbits from any a in D agree: the first orbit stays in D, so the two updates agree
+at every point of that orbit; the resulting internal universally quantified
+statement and PA induction give equality of their iterates. Thus the iterator
+value depends only on the actual update function restricted to D, despite being
+initially described using a primitive recursive extension to M^2.
+
+FAILURE OF ETA AND EQUATION INDUCTION.
+Take a non-diagonal n=(c,d) in D. Then
+  I(n,0;u.Su)=(c,c) != (c,d)=n.
+Nevertheless the equation E(n): I(n,0;u.Su)=n has a base and a successor step
+provable from the two computation equations and congruence. It is therefore an
+explicit failed instance of full literal-equation induction.
+
+Consequences. Fusion is sound under equation induction but, by itself, is a
+strictly weaker replacement even when supplemented by all numeral-equation
+induction. Adding eta restores the known scalar-uniqueness route. This rules out
+claiming a simpler complete iPRA presentation from bare Fusion. The separate note
+automorphism_barriers.txt strengthens this example to exclude bi-interpretability
+with iPRA even with finite parameters and tuple or quotient domains. Neither
+argument excludes every possible one-way interpretation of the weaker theory.

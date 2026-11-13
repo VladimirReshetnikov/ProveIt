@@ -39,11 +39,13 @@ $0=\Suc 0\to\bot$, induction for literal equations & predecessor, injectivity,
 reflection of equality, quantifier-free induction\\
 $\mathsf{N}_{Bd}$ & native & two equations for $d$ & the same, and the
 ordinary connectives\\
-$\mathsf{T}_F$ & ordinary & injectivity of $\Suc$, $0=\Suc 0\to\bot$, Boolean
+$\mathsf{T}_F$ & ordinary & injectivity of $\Suc$ (redundant by
+\cref{seed:thm:tf-inj}), $0=\Suc 0\to\bot$, Boolean
 equality test, induction for literal equations & coverage, predecessor (as a
 finite-case graph)\\
 $\mathsf{T}_F^{-}$ & ordinary & as $\mathsf{T}_F$ without injectivity &
-coverage, a right predecessor, $\Suc^k a\neq a$ for each fixed $k\geq1$\\
+coverage, $\Suc^k a\neq a$ for each fixed $k\geq1$, injectivity of $\Suc$,
+hence every theorem of $\mathsf{T}_F$ (\cref{seed:cor:tf-same})\\
 \bottomrule
 \end{tabular}
 \caption{Axioms and derived properties of the theories of this chapter.}
@@ -1968,8 +1970,8 @@ bi-interpretation with $\iPRA$ is \cref{seed:cor:tbd-biint}.
 \section{The self-seeded recursor}
 \label{seed:sec:self}
 
-This section draws on \pkg{selfseed\_scalar}, \pkg{scope\_and\_coverage} and
-\pkg{coverage\_and\_kernel}.
+This section draws on \pkg{selfseed\_scalar}, \pkg{scope\_and\_coverage},
+\pkg{coverage\_and\_kernel} and \pkg{selfseed\_injectivity}.
 
 \subsection{The theories}
 
@@ -1991,7 +1993,9 @@ $\Suc x=\Suc y\to x=y$. Coverage is not an axiom of either theory.
 
 The update sees neither an initializer nor the old counter. Compared with
 $\mathsf{T}_{B\varepsilon}$, which derives injectivity from the counter
-argument (\cref{seed:lem:tied-macros}), $\mathsf{T}_F$ postulates it. As in
+argument (\cref{seed:lem:tied-macros}), $\mathsf{T}_F$ postulates it;
+\cref{seed:thm:tf-inj} shows that the postulate is redundant, so that
+$\mathsf{T}_F^{-}$ and $\mathsf{T}_F$ have the same theorems. As in
 \cref{seed:sec:tied}, $\Suc$ can be removed from the signature by
 $\Suc a\defeq F(0;v.a)$. Put
 \[
@@ -2240,7 +2244,8 @@ $\overline{k+1}=\overline{j-1}$; equality with $0$ is excluded by
 
 This is a family of derivations, one for each $k$, and not one theorem that
 quantifies over $k$. It does not exclude a collision
-$\Suc x=\Suc y$, $x\neq y$, over a nonstandard target.
+$\Suc x=\Suc y$, $x\neq y$, over a nonstandard target; \cref{seed:thm:tf-inj}
+does.
 
 \begin{lemma}[An equivalent form of injectivity]\label{seed:lem:tf-retract}
 In the extension by $P$ put $T(n)\defeq P(\Suc n)$. Then
@@ -2266,7 +2271,8 @@ $p_*$; the first derives $n=0\lor n=\Suc(P(n))$ by induction on that formula
 in the extension by $P$, the second by the induction of the proof above.
 \Cref{seed:thm:tf-acyclic,seed:lem:tf-retract} are from the first package
 and \cref{seed:lem:tf-nofix,seed:prop:tf-rigid} from the second. Neither
-derives injectivity. The first package records why a comparison of the
+derives injectivity; \cref{seed:sec:tf-inj} does, with a different orbit. The
+first package records why a comparison of the
 orbits with targets $\Suc n$ and $\Suc^2n$ does not close the gap: for
 $v\neq0$ the term $\Suc(\theta_{\Suc n}(v))$ stops when
 $\Suc v=\Suc n$ and $\theta_{\Suc^2n}(\Suc v)$ stops when
@@ -2275,9 +2281,199 @@ $\Suc^2v=\Suc^2n\to\Suc v=\Suc n$ at the visited states, which is an instance
 of the missing cancellation.
 \end{remark}
 
+\subsection{Injectivity from paired stopping orbits}
+\label{seed:sec:tf-inj}
+
+This subsection draws on \pkg{selfseed\_injectivity}. All statements are
+theorems of $\mathsf{T}_F^{-}$, and no successor is cancelled before
+\cref{seed:thm:tf-inj}.
+
+The protected orbit of \cref{seed:lem:tf-orbit} stops when the successor of
+the state reaches the target. The orbit below stops when the state itself
+reaches the target. For a parameter $a$ define
+\[
+ e_a(v)\defeq\varepsilon(v,0)\lor_B\varepsilon(v,a),\qquad
+ s_a(v)\defeq C(e_a(v),v),\qquad
+ O_a(n)\defeq F(n;v.s_a(v)).
+\]
+After expansion of $C$ and $\lor_B$ these are terms of the original language;
+the body of the recursor in $O_a$ contains no function given by a finite-case
+graph. By reflection, the range axiom and the truth table of $\lor_B$
+(\cref{seed:lem:tf-basic}), $e_a(v)=1$ if $v=0$ or $v=a$, and $e_a(v)=0$ if
+$v\neq0$ and $v\neq a$. With $C(1,v)=v$ and $C(0,v)=\Suc v$ this gives
+\begin{equation}\label{seed:eq:tf-stop}
+ s_a(0)=0,\qquad s_a(a)=a,\qquad
+ v\neq0\land v\neq a\ \to\ s_a(v)=\Suc v,
+\end{equation}
+and \eqref{seed:eq:F} gives
+\begin{equation}\label{seed:eq:tf-O}
+ O_a(0)=\Suc(s_a(0))=1,\qquad O_a(\Suc n)=s_a(O_a(n)).
+\end{equation}
+The value $1$ at $0$ comes from $s_a(0)=0$ and the base equation; no
+initializer is supplied.
+
+\begin{lemma}[Stopping invariant]\label{seed:lem:tf-stop}
+$O_a(n)=\Suc n\lor O_a(n)=a$.
+\end{lemma}
+
+\begin{proof}
+Quantifier-free induction on $n$ with $a$ fixed (\cref{seed:lem:tf-basic}).
+The base is $O_a(0)=1=\Suc 0$. In the step put $v\defeq O_a(n)$ and decide
+$v=a$. If $v=a$, then $O_a(\Suc n)=s_a(a)=a$. If $v\neq a$, the hypothesis
+gives $v=\Suc n$, so $v\neq0$ by \cref{seed:lem:tf-basic}, and
+$O_a(\Suc n)=s_a(v)=\Suc v=\Suc\Suc n$ by \eqref{seed:eq:tf-stop}.
+\end{proof}
+
+\begin{lemma}[Absorption]\label{seed:lem:tf-absorb}
+Let $a\neq0$.
+\begin{enumerate}[label=(\alph*),nosep]
+\item $O_a(a)=a$ and $O_a(\Suc a)=a$.
+\item If $\Suc a=\Suc b$, then $O_a(b)=a$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) By coverage (\cref{seed:thm:tf-coverage}) and $a\neq0$ there is $p$ with
+$a=\Suc p$. Both alternatives of \cref{seed:lem:tf-stop} at $n=p$ give
+$O_a(p)=a$. Hence $O_a(a)=O_a(\Suc p)=s_a(a)=a$ and
+$O_a(\Suc a)=s_a(O_a(a))=s_a(a)=a$.
+
+(b) Put $c\defeq\Suc a$, so that also $c=\Suc b$. By \cref{seed:lem:tf-stop}
+at $n=b$, $O_a(b)=c$ or $O_a(b)=a$. In the first case $c\neq0$ by
+\cref{seed:lem:tf-basic} and $c\neq a$ by \cref{seed:lem:tf-nofix}, so
+\eqref{seed:eq:tf-stop}, \eqref{seed:eq:tf-O} and (a) give
+\[
+ a=O_a(\Suc a)=O_a(\Suc b)=s_a(O_a(b))=s_a(c)=\Suc c=\Suc\Suc a,
+\]
+which contradicts \cref{seed:thm:tf-acyclic} with $k=2$. So the second case
+holds.
+\end{proof}
+
+\begin{theorem}[Injectivity of the successor]\label{seed:thm:tf-inj}
+$\mathsf{T}_F^{-}$ proves $\forall a\,\forall b\,(\Suc a=\Suc b\to a=b)$.
+\end{theorem}
+
+\begin{proof}
+Assume $\Suc a=\Suc b$ and decide $a=b$ (\cref{seed:lem:tf-basic}). If
+$a=b$ there is nothing to prove. Let $a\neq b$; it suffices to derive $\bot$.
+If $a=0$, then $\Suc b=1$, and \cref{seed:prop:tf-rigid} with $k=1$ gives
+$b=0=a$; so $a\neq0$, and in the same way $b\neq0$. \Cref{seed:lem:tf-absorb},
+applied to $a$ with $\Suc a=\Suc b$ and to $b$ with $\Suc b=\Suc a$, gives
+\begin{equation}\label{seed:eq:tf-four}
+ O_a(a)=a,\qquad O_a(b)=a,\qquad O_b(b)=b,\qquad O_b(a)=b.
+\end{equation}
+
+\emph{Each orbit avoids the stop of the other}: for every $n$,
+\begin{equation}\label{seed:eq:tf-avoid}
+ O_a(n)\neq b,\qquad O_b(n)\neq a.
+\end{equation}
+Suppose $O_a(n)=b$. By \cref{seed:lem:tf-stop}, $O_a(n)=\Suc n$ or
+$O_a(n)=a$; the second alternative contradicts $a\neq b$, so $\Suc n=b$.
+Since $b\neq0$ and $b\neq a$, \eqref{seed:eq:tf-stop} and
+\eqref{seed:eq:tf-O} give
+\[
+ O_a(b)=O_a(\Suc n)=s_a(O_a(n))=s_a(b)=\Suc b,
+\]
+and \eqref{seed:eq:tf-four} turns this into $a=\Suc b=\Suc a$, against
+\cref{seed:lem:tf-nofix}. The second inequality follows by exchanging $a$ and
+$b$, which preserves the assumptions.
+
+\emph{The two orbits agree}: apply induction for the literal equation
+\[
+ O_a(n)=O_b(n)
+\]
+in $n$, with the parameters $a,b$ and the side assumptions $\Suc a=\Suc b$ and
+$a\neq b$; the variable $z$ of the step is fresh for them. The base is
+$O_a(0)=1=O_b(0)$. In the step assume $O_a(z)=O_b(z)$ and put
+$v\defeq O_a(z)$. By \eqref{seed:eq:tf-avoid}, derived from the side
+assumptions, $v\neq b$ and $v=O_b(z)\neq a$. Decide $v=0$. If $v=0$, then
+$s_a(v)=0=s_b(v)$. Otherwise $s_a(v)=\Suc v$ by \eqref{seed:eq:tf-stop} with
+$v\neq a$, and $s_b(v)=\Suc v$ with $v\neq b$. In both cases
+\[
+ O_a(\Suc z)=s_a(v)=s_b(v)=s_b(O_b(z))=O_b(\Suc z)
+\]
+by \eqref{seed:eq:tf-O}. The conclusion of the induction at $n=a$ and
+\eqref{seed:eq:tf-four} give $a=O_a(a)=O_b(a)=b$, which contradicts $a\neq b$.
+
+Every case distinction of the proof is a decision of an equation by
+\cref{seed:lem:tf-basic}; no other instance of excluded middle is used.
+\end{proof}
+
+\begin{corollary}\label{seed:cor:tf-same}
+For every context $\Gamma$ and formula $A$, $\Gamma\proves A$ holds in
+$\mathsf{T}_F^{-}$ if and only if it holds in $\mathsf{T}_F$. The identity
+translation of terms and formulas is an interpretation in both directions,
+and the two composites are the identity.
+\end{corollary}
+
+\begin{proof}
+$\mathsf{T}_F$ extends $\mathsf{T}_F^{-}$ by one axiom. Conversely replace
+each instance $\Suc s=\Suc t\to s=t$ of that axiom in a derivation of
+$\mathsf{T}_F$ by the derivation of \cref{seed:thm:tf-inj} followed by two
+universal eliminations at $s$ and $t$; all other axioms and rules are
+shared.
+\end{proof}
+
+\begin{remark}[Where the collision is used]\label{seed:rem:tf-paired}
+The intertwining of \cref{seed:rem:tf-open} relates one orbit to its shift
+and needs a cancellation at every visited state. The proof of
+\cref{seed:thm:tf-inj} uses the collision once, in the cross absorption of
+\cref{seed:lem:tf-absorb}(b). Cross absorption gives the avoidance
+\eqref{seed:eq:tf-avoid}; once neither orbit visits the stop of the other,
+the two updates agree at every state that both orbits reach, and the
+final induction compares two terms by a literal equation, which is the
+strength of the induction rule of $\mathsf{T}_F^{-}$. The proof uses no
+order, no least-number principle, no predecessor and not the compiler of
+\cref{seed:thm:tf-primrec}. Of the results above it uses
+\cref{seed:lem:tf-basic,seed:lem:tf-nofix}, the case $k=2$ of
+\cref{seed:thm:tf-acyclic}, \cref{seed:thm:tf-coverage}, and the case $k=1$
+of \cref{seed:prop:tf-rigid}, all proved without injectivity.
+\end{remark}
+
+\begin{remark}[The version of the package]\label{seed:rem:tf-inj-pkg}
+\pkg{selfseed\_injectivity} restates $\mathsf{T}_F^{-}$ with a complete
+inventory of the natural-deduction rules (hypothesis, elimination of
+$\bot$, introduction and elimination of $\land$, $\lor$, $\to$, $\forall$,
+$\exists$, reflexivity and substitution of equality), which is the ordinary
+logic of \cref{seed:def:tf}, and reproves the preparations it needs. Two of
+them differ from the proofs above. For $\Suc\Suc a\neq a$ it uses, in place
+of the term $c_2$ of \cref{seed:thm:tf-acyclic}, the term
+$H(v)\defeq C\bigl(q(v),C(q(v),\varepsilon(v,0))\bigr)$ with
+$q(v)\defeq Z(\varepsilon(v,1))$, which has the values $H(0)=1$, $H(1)=2$ and
+$H(v)=0$ for $v\neq0,1$, the same three-cycle on $0,1,2$ as $c_2$. For
+$\Suc b=1\to b=0$ it uses, in place of the case $k=1$ of
+\cref{seed:prop:tf-rigid}, cross absorption: if $b\neq0$, then
+\cref{seed:lem:tf-absorb}(b) with $b$ and $0$ in the roles of $a$ and $b$
+gives $b=O_b(0)=1$, so $\Suc b=1=b$, against \cref{seed:lem:tf-nofix}.
+\end{remark}
+
+\begin{remark}[A Lean check of the abstract core]\label{seed:rem:tf-lean}
+\pkg{selfseed\_injectivity} ships the file \texttt{formal/StoppingOrbits.lean},
+which imports nothing and is stated to compile with Lean 4.24.0; it is not
+part of the repository's Lean library. It declares a structure
+\texttt{SelfSeed.StoppingOrbits} over a type $\alpha$ with a zero, a
+successor, a two-argument update and a two-argument orbit, and with fields
+for $\Suc n\neq0$, $\Suc n\neq n$, $\Suc\Suc n\neq n$, coverage, the three
+statements \eqref{seed:eq:tf-stop}, the two equations \eqref{seed:eq:tf-O},
+\cref{seed:lem:tf-stop}, and induction restricted to the equations
+$O_a(n)=O_b(n)$ between two orbits. Assuming decidable equality on $\alpha$,
+\Lean{SelfSeed.successor\_injective} derives
+$\forall a\,b,\ \Suc a=\Suc b\to a=b$ from these fields through absorption,
+the predecessor of $1$ and avoidance, and \texttt{\#print axioms} reports no
+axioms. The fields are the statements derived in $\mathsf{T}_F^{-}$ above, so
+the file checks the argument from \cref{seed:lem:tf-stop} on; the term
+constructions, the derivations of the fields and the logic of
+$\mathsf{T}_F^{-}$ are not formalized.
+\end{remark}
+
+The package also contains a compact checker of $468$ normalized bytes for the
+iterator calculus $\Nat$, which reconstructs byte for byte the existing
+program of \pkg{468\_presentation} and does not check $\mathsf{T}_F^{-}$.
+
 \subsection{With injectivity: predecessor and order}
 
-From here on the theory is $\mathsf{T}_F$.
+From here on the theory is $\mathsf{T}_F$; by \cref{seed:cor:tf-same} every
+result below is also a theorem of $\mathsf{T}_F^{-}$.
 
 \begin{theorem}[Predecessor]\label{seed:thm:tf-pred}
 $\mathsf{T}_F$ proves $p_*(\Suc^2m)=\Suc m$, and for the finite-case
@@ -2722,6 +2918,27 @@ induction on the equation between them identifies them, with
 formulas extends this to all formulas, and falsity is preserved.
 \end{proof}
 
+\begin{corollary}\label{seed:cor:tf-minus-biint}
+$\mathsf{T}_F^{-}$ and $\iPRA$ are bi-interpretable with the data of
+\cref{seed:thm:tf-biint}: whole domains, actual equality, the logic
+translated identically and the identity as isomorphism of both composites.
+They are equiconsistent.
+\end{corollary}
+
+\begin{proof}
+Compose the two interpretations of \cref{seed:thm:tf-biint} with the identity
+interpretations of \cref{seed:cor:tf-same}. The axioms of $\mathsf{T}_F^{-}$
+are axioms of $\mathsf{T}_F$, so their translations are provable in $\iPRA$.
+The translations of the axioms of $\iPRA$ and the equivalences of both round
+trips are proved in $\mathsf{T}_F$, hence in $\mathsf{T}_F^{-}$ by
+\cref{seed:cor:tf-same}; the round trips on the side of $\iPRA$ are those of
+\cref{seed:thm:tf-biint}, since the formula translations are unchanged.
+Preservation of $\bot$ gives equiconsistency.
+\end{proof}
+
+\pkg{selfseed\_injectivity} obtains \cref{seed:cor:tf-minus-biint} in this
+way and does not reprove the compiler of \cref{seed:thm:tf-primrec}.
+
 %======================================================================
 \section{Three observations on the native core}
 \label{seed:sec:core}
@@ -2916,15 +3133,16 @@ alone does not.
 \section{Checker sizes}
 \label{seed:sec:sizes}
 
-All eight packages report sizes of complete standalone checkers under the
+All nine packages report sizes of complete standalone checkers under the
 protocol of \cref{base:sec:measure}. \Cref{seed:tab:sizes} lists them as
 stated, with the control each package measures against. Only the programs
 of the first three packages that are marked $R$ check the successor-seeded
-calculus $\mathsf{N}_R$. All other programs check the calculus $\Nat$ on
+calculus $\mathsf{N}_R$, and only the two programs of
+\pkg{selfseed\_injectivity} check the self-seeded theories $\mathsf{T}_F^{-}$
+and $\mathsf{T}_F$. All other programs check the calculus $\Nat$ on
 iterator terms; no package reports a checker for
-$\mathsf{T}_{B\varepsilon}$, $\mathsf{T}_{Bd}$, $\mathsf{N}_{Bd}$,
-$\mathsf{T}_F$ or $\mathsf{T}_F^{-}$, and the sizes below are not sizes of
-those theories.
+$\mathsf{T}_{B\varepsilon}$, $\mathsf{T}_{Bd}$ or $\mathsf{N}_{Bd}$, and the
+sizes of the iterator programs are not sizes of those theories.
 
 \begin{longtable}{@{}llrrr@{}}
 \caption{Checker sizes as stated by the packages (tokens, AST nodes,
@@ -2993,15 +3211,43 @@ Package & Program & Tokens & AST & Bytes\\
  & control: byte leader & 263 & 309 & 542\\
  & control: token leader & 261 & 295 & 578\\
  & control: AST leader & 263 & 291 & 642\\
+\midrule
+\pkg{selfseed\_injectivity} & \texttt{checker\_without\_injectivity.py}
+($\mathsf{T}_F^{-}$) & 1897 & 2192 & 8698\\
+ & control: \texttt{checker\_with\_injectivity.py} ($\mathsf{T}_F$) & 1947 &
+2247 & 8896\\
 \end{longtable}
 
-In every package the minima over the three coordinates are attained by
-different programs, and each package states that no single one of its
-programs is below all three coordinates of its control, with one exception:
+In every package of iterator or $R$ programs the minima over the three
+coordinates are attained by different programs, and each package states that
+no single one of its programs is below all three coordinates of its control,
+with one exception:
 \texttt{checker\_joint.py} of \pkg{transient\_seed}, at 280/314/684, is
 below 281/315/685, the coordinatewise minimum of its two controls. The
 packages state that these minima are sizes attained in a fixed corpus of
-earlier checkers and not lower bounds.
+earlier checkers and not lower bounds. The checker of
+\pkg{selfseed\_injectivity} for $\mathsf{T}_F^{-}$ is below its matched
+control in all three coordinates, by 50 tokens, 55 AST nodes and 198 bytes,
+because the two programs differ only by the branch for the injectivity axiom
+of $\mathsf{T}_F$; the theorem sets agree by \cref{seed:cor:tf-same}.
+
+\paragraph{Self-seeded checkers.}
+The two programs of \pkg{selfseed\_injectivity} are readable natural-deduction
+checkers, measured on the whole module like all others, with the input
+contract: one JSON object with exactly the keys \texttt{goal} (a closed
+formula) and \texttt{proof} (a proof tree), validated completely by the
+program. Terms and formulas are arrays with de~Bruijn indices; the counter of
+$F$ lies outside its state binder. The proof trees have one node for each
+rule of ordinary intuitionistic natural deduction with equality, one node for
+induction on a literal equation, and axiom nodes for the two computation
+equations, range, reflection and separation; the control alone also accepts
+an axiom node for injectivity. Both programs check the eigenvariable
+conditions of universal introduction and existential elimination and the
+freshness of the induction variable. The package tests them on 35
+certificates and gives a written soundness and completeness argument for the
+implemented calculus; it contains no certificate of
+\cref{seed:thm:tf-inj}, so the control accepts the primitive injectivity
+certificate that the other program rejects.
 
 \paragraph{Successor-seeded checkers.}
 The $R$ programs derive from the checker with generated assumptions of an
@@ -3046,27 +3292,41 @@ reflexivity.
 
 No result of this chapter has a Lean formalization recorded in the
 repository; the packages present written proofs with finite numerical
-checks of the defining terms on standard numbers.
+checks of the defining terms on standard numbers. Outside the repository's
+Lean library, the abstract core of \cref{seed:thm:tf-inj} is checked in the
+Lean file of \pkg{selfseed\_injectivity} described in \cref{seed:rem:tf-lean}.
 
-\begin{question}[Injectivity for the self-seeded recursor]
-Does $\mathsf{T}_F^{-}$ prove $\Suc x=\Suc y\to x=y$? By
-\cref{seed:lem:tf-retract} this is equivalent to the closure under successor
-of the fixed points of $n\mapsto P(\Suc n)$, and by
-\cref{seed:lem:tf-orbit} to the derivation of $p_*(\Suc^2m)=\Suc m$ from
-$\Suc(p_*(\Suc^2m))=\Suc^2m$. \pkg{selfseed\_scalar},
-\pkg{scope\_and\_coverage} and \pkg{coverage\_and\_kernel} leave it open. A
-countermodel has to satisfy all staged recursor equations and all instances
-of induction for literal equations, together with a successor collision; a
-branching successor graph without cycles is not enough. Neither the
-bi-interpretability of $\mathsf{T}_F^{-}$ with $\iPRA$ nor its failure is
-established.
+The question whether $\mathsf{T}_F^{-}$ proves injectivity of the successor,
+left open by \pkg{selfseed\_scalar}, \pkg{scope\_and\_coverage} and
+\pkg{coverage\_and\_kernel}, is answered by \cref{seed:thm:tf-inj}, and its
+bi-interpretability with $\iPRA$ by \cref{seed:cor:tf-minus-biint}.
+
+\begin{question}[Certificates and formalization of the axiom deletion]
+\pkg{selfseed\_injectivity} contains no certificate of \cref{seed:thm:tf-inj}
+for its checker of $\mathsf{T}_F^{-}$, and its Lean file assumes the
+statements of \cref{seed:lem:tf-stop}, coverage, \cref{seed:lem:tf-nofix},
+the case $k=2$ of \cref{seed:thm:tf-acyclic} and the computation of the
+stopping update as fields. The size of a complete natural-deduction
+certificate of injectivity in $\mathsf{T}_F^{-}$, and a formalization that
+derives the fields from the terms of \cref{seed:sec:tf-inj} in a deep
+embedding of $\mathsf{T}_F^{-}$, are not given.
+\end{question}
+
+\begin{question}[A native kernel for the self-seeded terms]
+\pkg{selfseed\_injectivity} names as a next target a native logical interface
+for the terms $x\mid0\mid\Suc t\mid\varepsilon(t,t)\mid F(n;v.h)$, in which
+the equality test and every logical rule are charged in one small kernel, in
+the manner of $\Nat$ for the iterator. Such a calculus, and its relation to
+$\mathsf{T}_F^{-}$, are not given.
 \end{question}
 
 \begin{question}[Uniform rigidity]
-\Cref{seed:prop:tf-rigid,seed:thm:tf-acyclic} are families of derivations
-indexed by a fixed integer. Is there a single derivation with a variable
-index, without a general compiler for primitive recursion in
-$\mathsf{T}_F^{-}$?
+\Cref{seed:thm:tf-acyclic} is a family of derivations indexed by a fixed
+integer. Is there a single derivation with a variable index, without a
+general compiler for primitive recursion in $\mathsf{T}_F^{-}$? For
+\cref{seed:prop:tf-rigid} the uniform statement $\Suc x=\Suc y\to x=y$ is
+\cref{seed:thm:tf-inj}, a single derivation that uses only the cases $k=1$ of
+\cref{seed:prop:tf-rigid} and $k=2$ of \cref{seed:thm:tf-acyclic}.
 \end{question}
 
 \begin{question}[Shorter predecessor terms]
@@ -3153,12 +3413,16 @@ restrictions on the source of transport of \pkg{source\_dispatch}
 
 \begin{question}[Checkers for the new bases]
 No package measures a complete checker for $\mathsf{T}_{B\varepsilon}$,
-$\mathsf{T}_{Bd}$, $\mathsf{N}_{Bd}$ or $\mathsf{T}_F$, in which the
+$\mathsf{T}_{Bd}$ or $\mathsf{N}_{Bd}$, in which the
 equality test or the subtraction equations, the ordinary logic where it is
-used, and the validation of the staged bodies are all charged. Whether any
+used, and the validation of the staged bodies are all charged. For
+$\mathsf{T}_F^{-}$ and $\mathsf{T}_F$ only the readable checkers of
+\pkg{selfseed\_injectivity} are measured, which are several times larger in
+every coordinate than the iterator checkers of \cref{seed:tab:sizes} and
+have a different input contract; no compact checker is measured. Whether any
 of these bases, or $\mathsf{N}_R$, admits a single checker below the
-controls of \cref{seed:tab:sizes} in all three coordinates is open, as are
-lower bounds for a fixed checker language and input grammar.
+iterator controls of \cref{seed:tab:sizes} in all three coordinates is open,
+as are lower bounds for a fixed checker language and input grammar.
 \end{question}
 
 \begin{question}[Formalization]
@@ -3169,6 +3433,7 @@ seed:thm:succ-pred}), the gated complement (\cref{seed:lem:tbd-gc}), cap
 coherence and finite-case elimination
 (\cref{seed:thm:tbe-realize,seed:lem:tbe-graph,seed:lem:tf-cases}), and the
 coverage and rigidity proofs of \cref{seed:thm:tf-coverage,%
-seed:prop:tf-rigid}.
+seed:prop:tf-rigid}; for \cref{seed:thm:tf-inj} see the first question of
+this section.
 \end{question}
 

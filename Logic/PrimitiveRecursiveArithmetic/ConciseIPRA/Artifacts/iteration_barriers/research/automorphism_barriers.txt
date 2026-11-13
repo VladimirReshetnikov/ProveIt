@@ -1,0 +1,129 @@
+AUTOMORPHISM OBSTRUCTIONS TO BI-INTERPRETABILITY
+
+These strengthen the two preceding countermodel results. Both arguments were
+independently checked in parallel mathematical reviews within this work.
+This is not a claim of external peer review or formal mechanization.
+
+A. GENERAL LEMMA
+
+Let N be a classical structure with a parameter-free definable linear order
+on its whole domain.
+Every finite-order automorphism of N is the identity. Indeed, if sigma(a)>a then
+iteration gives a strictly increasing finite cycle, impossible; the case
+sigma(a)<a is analogous. This remains true when the order is defined using
+parameters fixed by the automorphism.
+
+If structures D and N are bi-interpretable, a definable interpretation induces
+an action of Aut(D) on N, and the action is faithful. To see faithfulness, an
+automorphism acting trivially on N acts trivially on the interpretation back in
+N; the definable isomorphism from D to that composite interpretation commutes
+with automorphisms, so the original automorphism must be trivial. For a
+bi-interpretation with parameters A, use Aut(D/A). This reasoning works for
+finite-dimensional interpretations and definable quotient domains as well:
+an automorphism acts on tuples and then on equivalence classes, and definability
+of the composite isomorphism still gives faithfulness.
+
+Every classical model of iPRA has the usual definable linear order, for example
+x<=y iff there exists z with x+z=y. Its linear-order laws are provable in iPRA.
+Consequently a structure whose automorphism group has a nontrivial finite-order
+element cannot be parameter-free bi-interpretable with a model of iPRA. If such
+an element exists in Aut(D/A) for every finite A, no finite-parameter
+bi-interpretation is possible either. Applying a hypothetical intuitionistic
+bi-interpretation to classical models is legitimate: its intuitionistically
+proved translation and round-trip identities are also classically valid.
+
+B. THE FUSION MODEL EXCLUDES EVEN FINITE-PARAMETER BI-INTERPRETABILITY
+
+Use the model D from fusion_barrier.txt: standard diagonal pairs together with
+all pairs of nonstandard elements of a nonstandard PA model M, with iteration
+using the first coordinate of its counter. Fix any finite parameter tuple A in D.
+
+Choose distinct positive standard integers r,s such that no parameter (a,b) in A
+satisfies b=a+r or b=a+s. Only finitely many positive standard differences are
+excluded, so this is possible. On all of M^2 define the primitive recursive map
+  tau(m,n) = (m,m+s), if n=m+r;
+           = (m,m+r), if n=m+s;
+           = (m,n), otherwise.
+
+The two tests are disjoint. The map is an involution, fixes the first coordinate,
+fixes every diagonal pair, fixes A, and commutes with common nonnegative addition:
+  tau(m+d,n+d)=tau(m,n)+(d,d).
+Cancellation in M justifies preservation of the two tests under adding d.
+It preserves D: a standard diagonal pair is fixed, and a swapped pair in D has
+nonstandard first coordinate, so both its old and new second coordinates are
+nonstandard. It is nontrivial on D, since it swaps (m,m+r) and (m,m+s) for any
+nonstandard m.
+
+For every scalar term t, its provenance representation is either a diagonal
+(d,d), or an input pair x_i plus a common offset (d,d), with i and d depending
+only on first coordinates. Applying tau to all inputs leaves i and d unchanged.
+Since tau fixes diagonals and commutes with common addition, it follows that
+  t(tau(x_1),...,tau(x_k))=tau(t(x_1,...,x_k)).
+Thus tau is an automorphism of the full scalar term structure, including every
+staged iterator operation, not merely of its zero/successor reduct. It is a
+nontrivial involution in Aut(D/A).
+
+By the general lemma, D is not bi-interpretable with any model of iPRA, even with
+any finite parameters and even allowing tuple or quotient interpretation domains.
+Therefore the theory consisting of the weak scalar arithmetic axioms, Fusion,
+and all standard-numeral-equation induction is NOT bi-interpretable with iPRA
+in that sense. Adding identity iteration does not change this conclusion since
+the same model already satisfies it. This is stronger than merely observing
+that eta or equation induction is not a theorem. It does not say that this
+weaker theory has no one-way interpretation of arithmetic.
+
+C. AN EQUIVARIANT IDENTITY+ETA COVER EXCLUDES PARAMETER-FREE BI-INTERPRETABILITY
+
+Use the two-fiber set D and projection pi from identity_barrier.txt. Define tau
+to fix every standard numeral and to swap (m,0) with (m,1) at every nonstandard
+m. Then tau commutes with successor, fixes zero, and satisfies pi o tau=pi.
+The class H of actual projection-preserving update functions is stable under
+conjugation h -> tau h tau, with the same projected function f on M.
+
+The iterator paths can be chosen tau-equivariantly. Write a path on a
+nonstandard successor chain C as a function b:C->D satisfying
+  b(S n)=h(b(n))
+and the required projection identity. The involution acts on path problems by
+  (h,a,C) -> (tau h tau, tau(a), tau(C)).
+Its action on these triples is FREE: every nonstandard chain has a fixed label,
+and tau(C) has the opposite label, hence is a different chain. If b solves the
+problem (h,a,C), define its partner on tau(C) by
+  b'(tau(n))=tau(b(n)).
+This solves the conjugate problem. The projection is unchanged and conjugation
+gives the recurrence. Thus one may choose paths for one representative of each
+two-element orbit and define the other by this equation.
+
+The special prescriptions in identity_barrier.txt can be made equivariant first.
+The identity paths b(n)=a are equivariant. The paths at successor body and
+standard numeral seed k, b(n)=S^k(n), are equivariant. For a fixed nonstandard
+b in M put a0=(b,0), a1=(b,1). At successor body, prescribe, for all nonstandard
+counter chains, the following output labels:
+  seed a0:   label 0;
+  seed S a0: label 1;
+  seed a1:   label 1;
+  seed S a1: label 0.
+The first coordinates remain the ordinary successor-iteration values in M.
+The first two prescriptions are exactly those needed to refute the equation
+E(n) in identity_barrier.txt. The last two are their tau-images. These four
+seeds are distinct and nonstandard; they cannot conflict with standard seeds,
+and successor is not the identity update. All four path prescriptions satisfy
+the recurrence since successor preserves labels. Hence the prescribed subset
+of problems is closed under the involution and its prescriptions agree with it.
+Choose all remaining paths orbit by orbit as above.
+
+Standard-counter iterations h^k(a) are automatically equivariant. Therefore
+the entire chosen operation satisfies
+  I(tau(n),tau(a),tau h tau)=tau(I(n,a,h)).
+Structural induction on term syntax proves that tau is an automorphism of the
+full staged scalar structure. It remains a nontrivial involution, fixes all
+standard numerals, and preserves every axiom established in identity_barrier.txt:
+both computations, coverage, separation, successor injectivity, all standard-
+numeral-equation induction, identity iteration, all standard-seed numbering laws,
+and extensionality in the actual update function.
+
+The general lemma now excludes parameter-free bi-interpretability of that theory
+with iPRA, including interpretations with tuple or quotient domains. The same
+argument permits parameters that are standard numerals (or other elements fixed
+by this automorphism). It does NOT prove the corresponding statement for arbitrary
+finite nonstandard parameters: a nonstandard parameter is moved by the global
+flip. No claim about those parameterized interpretations is made here.

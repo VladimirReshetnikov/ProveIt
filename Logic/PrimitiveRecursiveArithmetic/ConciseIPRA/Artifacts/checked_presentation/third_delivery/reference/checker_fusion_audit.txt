@@ -1,0 +1,139 @@
+Independent audit of the 239-token / 257-node candidates
+=======================================================
+
+Exact control
+-------------
+research/checker_candidate/control240.py
+Source: incoming/ipra_procedure_presentation_2026-11-12/
+        ipra_procedure_presentation_2026-11-12/code/inherited_tokens240.py
+
+Fused candidate
+---------------
+research/checker_candidate/fused.py
+
+The only substantive expression replacement is
+
+    c(g, s) or k * bool(s or len(a) == 2)
+
+by
+
+    (c(g, s) or s or len(a) == 2) and k.
+
+These expressions are not literally equal as Python values: in one case the
+control returns integer 0 and the candidate returns boolean False. A proof
+that calls this literal trace equality is incorrect. They are equivalent
+for this checker under the value relation below.
+
+Generated-value relation
+------------------------
+Relate False to integer 0, identical exact integers to themselves, and lists
+componentwise. Keep the complex missing-image sentinel 0j fixed as a separate
+value: it must not be identified with numerical 0 merely because Python's
+equality says they are equal. Contexts are related componentwise; the initial
+byte string b'\\x00' is identical on both sides and iterates to integer 0.
+Control registers k and d are identical integers in corresponding states.
+
+The relation preserves every operation actually used by these programs:
+
+* Truth-value tests: False and 0 are both false-valued.
+* Integer order and arithmetic: False has numerical value 0.
+* Python equality and membership, including recursive list equality:
+  False == 0, and all list constructors preserve associated components.
+* List length, slicing, concatenation, unpacking and iteration: associated
+  lists have the same length and associated elements. False and 0 are both
+  noniterable and do not have lengths, so these operations fail together.
+* Multiplication of a scalar by 3 yields the same integer; multiplication of
+  associated lists replicates their associated elements the same number of
+  times. No negative repetition count differs between the programs.
+
+There is no type(x), repr(x), str(x), 'is' comparison, serialization of
+generated trees, or hash-based dispatch that could distinguish False from 0.
+The tests performed by the JSON reader are on the identical external input,
+not on generated values. The final output is the constant string ACCEPT.
+
+Opening simulation
+------------------
+For related a,a' and related images t,t', at identical floor k and depth d,
+the two calls of i either both fail or return related values. This follows
+by structural induction, with a separate image-validation subcase. Lists
+are traversed at identical child depth d+5-len(a). At a scalar, the range
+test k <= a < d has the same truth value. Retained False may remain False
+where the control retains 0. An out-of-range scalar invokes the same image
+opening at odd depth or returns integer 0 at even depth. The invalid complex
+sentinel causes the same order-comparison failure on both sides. The bare
+except does not inspect the exception value; a failure below a list leads
+to the same attempted scalar fallback and therefore to the same failure.
+No opening changes k, reads a packet or changes an existing list in place.
+
+Continuation simulation
+-----------------------
+On any finite successful call, c returns None: it contains no return
+statement. Both versions first call c(g,s), exactly once. The recursive
+major proof performs exactly the same input reads and global decrements by
+the induction hypothesis, and leaves an identical current integer k.
+
+If s is truthy, both expressions skip len(a) and return this k. If s is
+false-valued, both evaluate len(a) == 2. A true result gives k on both
+sides. A false result gives integer 0 in the control and False in the
+candidate, which are related. If len(a) raises, both reject. The fact that
+the control reads k before evaluating bool(...) while the candidate reads it
+after a successful test has no effect: the test has no side effects.
+
+In the actual call, the first argument to i is evaluated before this second
+argument. It is identical (or related) in both programs, including any
+assignment to a. The outer continuation call evaluates the new context
+before its new goal; this order is unchanged. The concluding k -= 1 of each
+c call is unchanged. Thus the same proof calls occur in the same order,
+consume the same packet stream and reserve exactly the same parameter names.
+
+Induction on the returning recursive call tree proves identical acceptance
+and output on finite promised streams, with generated states related as
+above. The same simulation covers rejection: corresponding dynamic
+operations either fail together or produce related values. Differences in
+traceback source positions and resource limits are outside the mathematical
+certificate model. No claim that every generated raw tree is literally
+identical is needed or made.
+
+Additional transformations in checker257.py
+-------------------------------------------
+1. Initialize global k by d=(k := 0) in the default expression of i and
+   remove the separate k=0. Defaults are evaluated once in module scope;
+   both programs therefore have the same global k and the same defaults
+   before the first input. Recursive calls do not reevaluate the default.
+   This is exact state equivalence, not a False/0 quotient argument.
+
+2. Replace s,u,t = r = loads(input()) by
+
+       match loads(input()):
+           case [s,u,t] as r:
+               pass
+
+   On promised integer/list input, every successful call in either program
+   requires the packet to be a list of length three. In that case both
+   statements bind identical values and bind r to that whole list. If it
+   has another shape, the assignment rejects during unpacking; the match
+   binds none of the local s,u,t,r, and the subsequent eagerly constructed
+   computation candidate necessarily reads s, causing rejection. A fresh
+   c frame has no stale bindings from a previous call. The intermediate
+   opening i(a) does not read input or change k. No malformed packet can
+   reach a recursive call or the final acceptance print. Exception kinds
+   can differ on malformed packets; acceptance does not. The exact-int/list
+   input promise matters: do not claim this match rewrite is equivalent on
+   arbitrary Python iterables or arbitrary JSON object/string alphabets.
+
+The three transformations compose. The 239-token candidate improves the
+240-token corpus minimum, while the composed 257-node candidate improves
+the 259-node corpus minimum. Neither beats the 462-byte record. The claims
+are about alternative complete modules with the same public-goal and input
+contract, not one module below all three minima.
+
+Bi-interpretation consequence
+-----------------------------
+External canonical public goals contain exact integers and lists and are
+identical between control and candidates. The generated bool False has the
+same numerical-zero reading as the integer 0. Hence their accepted public
+theorems coincide. The existing complete scalar-calculus interpretation and
+its two identity-domain round trips transfer without change. This establishes
+the same equiconsistency and bi-interpretability with full first-order iPRA,
+conditional on the explicit inherited adequacy and bridge theorems. It does
+not delete a logical or arithmetic axiom and does not prove global minimality.

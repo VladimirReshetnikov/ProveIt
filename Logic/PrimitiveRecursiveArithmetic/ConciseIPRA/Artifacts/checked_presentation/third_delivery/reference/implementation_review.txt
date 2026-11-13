@@ -1,0 +1,73 @@
+Proof audit: smaller complete iPRA checkers
+=========================================
+
+Matched control: code/control240.py, 240 tokens / 266 AST nodes / 551 bytes.
+Token candidate: code/token239.py, 239 / 261 / 549.
+AST candidate: code/checker.py, 246 / 257 / 589.
+All figures are full-source measurements under the corpus normalization.
+
+1. The new expression is
+
+   (c(g, s) or s or len(a) == 2) and k
+
+   in place of
+
+   c(g, s) or k * bool(s or len(a) == 2).
+
+   The major call remains first and occurs once. c has no explicit return
+   and returns None after every successful finite call. Its final k -= 1
+   remains in place. Thus both expressions see the same current floor.
+   A truthy s selects k and skips len(a) in both. If s is false, the same
+   arity test selects k or the zero value. The only representation change
+   is integer 0 versus bool False in the latter case.
+
+2. The correctness relation identifies False with integer 0, recursively
+   inside lists, but keeps the complex sentinel 0j distinct. This is not
+   literal identity of raw states. Every operation in these specific
+   modules preserves the relation: numeric order/arithmetic, truth tests,
+   equality, membership, length, traversal, slicing, replication, list
+   construction and argument unpacking. False and 0 fail together where
+   a sequence is required. There is no type/identity/printed-form test on
+   generated data. The opener either fails on both related arguments or
+   returns related trees, without changing k or reading input. Induction
+   on successful call trees preserves the exact packet consumption and
+   every scope decrement. The same relation proves rejection equivalence.
+
+3. Moving the module assignment k=0 into the opener default d=(k := 0)
+   is exact startup-state equivalence. The default executes once in module
+   scope. Both modules have global k=0 and the same stored default values
+   before the first input. A call does not reevaluate that expression.
+   This transformation saves one AST node and costs one token and one byte.
+
+4. A fixed-length match [s,u,t] as r binds exactly the same values as the
+   chained unpacking on a length-three list. On the promised integer/list
+   alphabet, any other packet shape makes both reject. The failed match
+   cannot proceed successfully: the following computation-preview tuple
+   reads the unbound local s before any recursive proof call. A fresh c
+   frame cannot inherit stale local bindings. Exception classes may differ.
+   This transformation saves three AST nodes and costs six tokens/39 bytes.
+   It is not advertised as equivalent for arbitrary JSON object/string
+   alphabets or custom Python iterables.
+
+5. The unchanged public goal contains exact integers and lists. Generated
+   False has the ordinary reading of numerical zero. Exact acceptance of
+   the same external certificates transfers the control's theorem set and
+   its established scalar-calculus adequacy and iPRA bi-interpretation.
+   Domains and actual equality are unchanged, and the two return maps
+   still have identity graph x=y. No axiom deletion is claimed.
+
+6. Neither source depends on assert, so -O changes none of these arguments.
+   Resource limits and traceback line numbers are not mathematical proof
+   rules. Finite tests complement the preservation argument; they do not
+   replace it or constitute a machine formalization of the Python kernel.
+
+Reference for language facts: Python 3.12 documentation, Built-in Types
+(truth tests, Boolean operations, numeric comparisons), and Compound
+Statements (default parameter evaluation and fixed-length sequence
+patterns). The report gives their official URLs. The preservation theorem
+and operation audit concern the displayed sources, not arbitrary programs.
+
+Claim boundary: these are new token and AST coordinate records within the
+inspected compact-input contract. No program here beats all three old
+coordinate minima, including the 462-byte minimum. The observed frontier
+is not a proved lower bound on all possible axiomatizations or checkers.

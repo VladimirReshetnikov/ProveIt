@@ -1,0 +1,107 @@
+Independent mathematical review: fused finite logical blocks
+============================================================
+
+Reviewed source: math_result/fused_finite_blocks_note.md.
+Frozen comparison: ProveIt commit 1156099ffe30f7497d2c11ab20271f46cffcd115.
+
+Conclusion
+----------
+The construction is valid in the inherited full native Eq/D calculus,
+under the displayed ordinary reading and with the stated freshness
+conditions. It is a new formula-size refinement of the documented finite
+block compiler. It is not a new axiom deletion or a smaller proof checker.
+
+1. Gate and padding
+-------------------
+Replacing the terminal equation s=t by C(c,0,s)=C(c,0,t) leaves the D
+prefix unchanged. At c=0 the terminal equality is reflexive and every
+outer D is provable by case introduction with witness zero. At c=S(v)
+the terminal equation converts to s=t, so binder congruence gives the
+original formula. If x,y are fresh for A, D_{x,y}G_y(A) is equivalent to A:
+open D and specialize its closure at1 in one direction; introduce by cases
+from A in the other. No induction on a quantified formula is required.
+
+2. Aligned selection
+--------------------
+At common D prefixes, alpha-rename both bound pairs to the same fresh pair
+and recursively select their bodies. Pad a shorter operand by the gate
+construction at every unmatched level. External induction on maximum
+rank proves M_0(A,B) interderivable with A and M_{S(v)}(A,B) with B.
+Numerical coverage therefore gives both common-conclusion elimination
+and introduction from both operands, for every control term.
+
+The exact terminal payload is T(A)+T(B)+2|c|+2+6|r(A)-r(B)|. There are
+two occurrences of the control, two selectors, and precisely one 6-node
+gate per unmatched D level. Fresh renaming prevents a control's free
+variables from being captured by a merged prefix.
+
+3. Let and arithmetic map
+-------------------------
+Putting I(1,a;w.s) and I(1,a;w.t) at the two terminal positions gives
+the capture-avoiding substitution A[a/w] by the two computation laws.
+It contributes exactly 2|a|+6 raw term nodes. The source's fused absorbing
+map H has26 nodes at a variable input, H(2m)=3m, H(2m+1)=0.
+These arithmetic identities are inherited proved dependencies; standard
+numerical behavior alone would not suffice as their justification.
+
+4. New selector and reachability
+-------------------------------
+Sigma_(n+1)(v) = Let_(w=H(v)) M_w(A0,Sigma_n(w;A1,...,An)).
+One level contributes 58 nodes for Let_H and4 for M_w, hence62.
+The recursive syntax is always built at a fresh variable w, so nested
+occurrences do not duplicate an expanded H inside subsequent H bodies.
+This is actual raw-tree syntax with explicit one-step iterator lets,
+not uncharged sharing.
+
+The positive numeral2^j selects Aj. Its route is
+2^j, 3*2^(j-1), ..., 3^j,0.
+Every intermediate even input yields a positive output and selects the
+tail; the final odd input yields zero and selects the current first
+operand. A fully general induction statement permits every positive odd
+multiple of2^j. Restricting those multipliers to closed standard odd
+numerals already suffices for the displayed witness2^j; symbolic odd
+multipliers also follow from the inherited arithmetic identities.
+
+Uniform introduction from all operands and common-conclusion elimination
+are external inductions on the finite list of operands, using numerical
+cases at each node. They assert nothing about termination of the orbit
+of an arbitrary numerical control. At the last leaf the control is ignored.
+
+5. Padding and outer logical block
+---------------------------------
+For descending operand ranks in a right comb, unmatched-depth charges
+telescope to rmax-rmin. Among all binary trees of aligned selectors, a
+path from the root to a minimum-rank leaf has total rank drop rmax-rmin;
+each node's padding charge is at least its contribution to that drop.
+Thus this padding is optimal within that expressly limited construction.
+
+For conjunction use D_(u,z) G_z(Sigma_n(z)), with u unused.
+For disjunction use D_(x,z) G_z(Sigma_n(x)).
+The conjunction closure specializes at the positive code2^j, so excluding
+the zero control by the outer gate loses no operand. The generic
+universal-quantifier macro with a predecessor substitution is NOT needed.
+For disjunction, choose witness2^j for introduction; for elimination open
+at fresh b, specialize the gate closure at1, and use uniform elimination
+on Sigma_n(b). This is intuitionistic and valid over arbitrary contexts.
+
+The rank is rmax+1. Full expanded size is exactly
+
+  sum_j T(Aj) +62(n-1)+6(rmax-rmin)+rmax+8.
+
+The final8 consists of six gate-term nodes, one new D, and the terminal
+equality node. The old D prefix contributes rmax.
+
+6. Comparison nuance
+--------------------
+The source's documented 66-node branch uses the 21-node ceiling ramp.
+Its tail is selected only at even controls. Replacing that ramp by the
+existing20-node floor ramp therefore already gives a valid64-node
+intermediate, since the ramps agree on even inputs. The new absorbing-map
+fusion gives62, hence saves2 beyond that intermediate and4 beyond the
+documented66. No optimality of62 or of overall formula size is proved.
+
+The original66 construction and counts appear as outlined claims in
+ch01_base.tex, question base:q:blocks. Its proof completeness should not
+be overstated; this note supplies full derivations for the new construction.
+Topical searches of the article and non-reference incoming TeX/Markdown
+did not find the62-node absorbing-map finite-block construction.
