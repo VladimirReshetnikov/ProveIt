@@ -1,0 +1,210 @@
+import Positive84Power
+import Unscale84LargeK
+import ResidueFirstIndexModel
+import Positive81ExactIndexCut
+import DiophantineConsistency.Compact44.FreeJMainOrientation
+import Mathlib.Tactic.NormNum
+import Mathlib.Tactic.Ring
+
+/-! Proposed direct 84 first-index and conditional exact-index composition.
+Rank congruence and graph-bound main/strong/auxiliary witnesses remain cuts.
+No elaboration or provider audit. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Positive84EarlyExactDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ArithmeticSignedPairs ArithmeticPellRecurrence
+open ArithmeticPellHalfIndex ModelDifferenceRing Residue90CompactPortBoundsDraft
+open Positive84DivisionDraft Positive84PowerDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def mu (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := (q84 p v)^4
+
+/-- The independently transcribed 84 literals have the same exact output. -/
+theorem same84 (p : Fin 4 → ℤ) :
+    (PositiveUnscaled84GraphDraft.graph p).output=(PositiveUnscale84GraphDraft.graph p).output := by rfl
+
+/-- These are deliberately explicit rank facts for the actual 84 zero. The
+congruence is a signed magnitude divisibility statement, not a sign choice. -/
+def RankFacts (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
+  26≤rank84 p v ∧
+  rank84 p v+(q84 p v)^3+q84 p v+1≤mu p v ∧
+  mu p v∣magnitude (rank84 p v+1,k84 v)
+
+def Early (p : Fin 4 → ℕ) (v : Fin 13 → V) (n w : V) : Prop :=
+  13≤n ∧ 2*ycoord n (2*(v 6*Y84 p v*Y84 p v-1)+1)=k84 v ∧
+  k84 v=2*n+4*(v 6*Y84 p v*Y84 p v)*w ∧
+  (2*n)%(mu p v)=rank84 p v+1
+
+/-- Proposed first-index graph binding; only the represented beta and the
+rank/window/congruence facts remain hypotheses. The exact input first norm
+comes from this 84 literal, not from an 83 zero. -/
+theorem early_of_rank_facts (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hv : ∀ i, 0<v i)
+    (hz : InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (p j:ℤ))).output v)
+    (hbeta : 0<(p 0:V)) (hr : RankFacts p v) : ∃ n w : V, Early p v n w := by
+  have hz' : InternalZero (PositiveUnscale84GraphDraft.graph (Unscale84ReverseGraphDraft.portsInt p)).output v := by
+    simpa only [Unscale84ReverseGraphDraft.portsInt,same84] using hz
+  obtain ⟨tau,_,htau,_⟩ := Unscale84LargeKDraft.norm_roots p v hv hz' hbeta
+  have hq : 0<q84 p v := by dsimp [q84]; exact add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le _)
+  have hY : 0<Y84 p v := by dsimp [Y84]; exact mul_pos (mul_pos hq (mul_pos hq hq)) (hv 7)
+  have hYq : Y84 p v=(q84 p v)^3*v 7 := by dsimp [Y84]; ring
+  have hnorm : tau*tau=1+(v 6*Y84 p v*Y84 p v)*(v 6*Y84 p v*Y84 p v+1)*k84 v*k84 v := by
+    simpa only [Unscale84ReverseGraphDraft.X,Unscale84ReverseGraphDraft.Y,
+      Unscale84ReverseGraphDraft.q,Unscale84ReverseGraphDraft.b,q84,Y84,k84,
+      Unscale84ReverseGraphDraft.k,mul_assoc] using htau
+  obtain ⟨hR26,hwindow,hcong⟩ := hr
+  have hR24 : 24≤rank84 p v := le_trans (by norm_num : (24:V)≤26) hR26
+  obtain ⟨n,w,hn,_,_,hny,hnmod,_,_,hks⟩ :=
+    ResidueFirstIndexModelDraft.early_index_of_natural_norm (q84 p v) (v 6) (Y84 p v)
+      (k84 v) (rank84 p v) tau (v 7) hq (hv 6) hY hYq hnorm hR24 hwindow hcong
+  exact ⟨n,w,hn,hny,hks,hnmod⟩
+
+/-- One main index m, its very same x-coordinate main, and explicit strong
+and auxiliary equations for this graph valuation and rank. -/
+def MainStrongAux (p : Fin 4 → ℕ) (v : Fin 13 → V) : Prop :=
+  ∃ main m u : V,
+    xcoord m (v 6*Y84 p v+Y84 p v)=main ∧
+    ycoord m (v 6*Y84 p v+Y84 p v)=c84 p v ∧
+    main*main=1+delta (v 6*Y84 p v+Y84 p v)*c84 p v*c84 p v ∧
+    (v 4*c84 p v*c84 p v)*(v 4*c84 p v*c84 p v)+delta (v 6*Y84 p v+Y84 p v)=
+      delta (v 6*Y84 p v+Y84 p v)*(v 3*v 3) ∧
+    let a:=v 6*Y84 p v+Y84 p v
+    let R:=rank84 p v
+    ((3+4*a)+a*a)*(v 3*v 3-1)*
+      (absdiff (v 3*v 3*(v 5*c84 p v)) (v 3*v 3*R+c84 p v)*
+       absdiff (v 3*v 3*(v 5*c84 p v)) (v 3*v 3*R+c84 p v))+
+      absdiff (v 3*v 3*(v 5*c84 p v)+u) (v 3*v 3*R+c84 p v)*
+      absdiff (v 3*v 3*(v 5*c84 p v)+u) (v 3*v 3*R+c84 p v)=
+    1+((3+4*a)+a*a)*(v 3*v 3-1)*
+      (absdiff (v 3*v 3*(v 5*c84 p v)+u) (v 3*v 3*R+c84 p v)*
+       absdiff (v 3*v 3*(v 5*c84 p v)+u) (v 3*v 3*R+c84 p v)) ∧
+    let H:=3+4*a
+    let U:=Y84 p v*(q84 p v*q84 p v)
+    U*main+H*k84 v=U*(v 6+a*c84 p v)+
+      H*(U*v 12+v 6*Y84 p v*q84 p v+R+1)
+
+/-- The early index and same main/strong/auxiliary witnesses produce exactly
+all inputs of the conditional 84 power theorem. -/
+theorem exact_of_facts (p : Fin 4 → ℕ) (v : Fin 13 → V) (hv : ∀ i, 0<v i)
+    (hq3 : 3≤q84 p v) (hr : RankFacts p v) (n w : V) (he : Early p v n w)
+    (hm : MainStrongAux p v) : ExactPowerFacts p v := by
+  obtain ⟨hR26,hwindow,_⟩ := hr
+  obtain ⟨hn,hny,hks,hnmod⟩ := he
+  obtain ⟨main,m,u,hx,hy,hmain,hstrong,haux,hbal⟩ := hm
+  have hq : 0<q84 p v := lt_of_lt_of_le (by norm_num : (0:V)<3) hq3
+  have hRmu : rank84 p v+1<mu p v := by
+    have hp : 0<(q84 p v)^3+q84 p v := add_pos (pow_pos hq _) hq
+    calc
+      rank84 p v+1<(rank84 p v+1)+((q84 p v)^3+q84 p v) := lt_add_of_pos_right _ hp
+      _=rank84 p v+(q84 p v)^3+q84 p v+1 := by ring
+      _≤mu p v := hwindow
+  have hcdef : c84 p v=v 9+Y84 p v*k84 v := rfl
+  obtain ⟨hmR,hnR⟩ := Positive81ExactIndexCutDraft.exact_pair
+    (q84 p v) (v 6) (Y84 p v) (k84 v) (rank84 p v) main (c84 p v)
+    (v 6*Y84 p v+Y84 p v) (v 7) (v 4) (v 3) (v 5) u n w (mu p v) m (v 9)
+    hq3 (hv 6) (hv 7) rfl (hv 9) hcdef (hv 4) (hv 3) rfl
+    hR26 hny hks hRmu hnmod hy hmain hstrong haux
+  have ha : v 6*Y84 p v+Y84 p v=Y84 p v*(v 6+1) := by ring
+  refine ⟨rank84 p v,n,main,w,rfl,hn,hnR,?_,?_,?_,?_,hbal⟩
+  · exact hny.symm
+  · simpa only [←hmR,←ha] using hx
+  · simpa only [←hmR,←ha] using hy
+  · rw [←hnR]; exact hks
+/-- An actual oriented extra-term main balance supplies the q⁴ rank
+congruence; it does not require a graph-zero wrapper or q∣X. -/
+theorem rank_congruence_of_main (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hv : ∀ i, 0<v i) (hm : MainStrongAux p v) :
+    mu p v∣magnitude (rank84 p v+1,k84 v) := by
+  obtain ⟨main,m,u,hx,hy,hmain,hstrong,haux,hbal⟩ := hm
+  have hmainpos : 0<main := by
+    by_contra hn
+    have hzero : main=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le _)
+    have hh : (0:V)=1+delta (v 6*Y84 p v+Y84 p v)*c84 p v*c84 p v := by
+      simpa only [hzero,zero_mul] using hmain
+    have hp : (0:V)<1+delta (v 6*Y84 p v+Y84 p v)*c84 p v*c84 p v :=
+      add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le _)
+    exact (ne_of_gt hp) hh.symm
+  let t : Fin 12 → V := ![v 0,v 1,v 2,v 3,v 4,v 6,Y84 p v,v 5,v 9,v 10,v 11,v 12]
+  let a : V := v 6*Y84 p v+Y84 p v
+  let H : V := 3+4*a
+  let U : V := Y84 p v*(q84 p v*q84 p v)
+  have hY : Y84 p v=(q84 p v)^3*v 7 := by dsimp [Y84]; ring
+  have hU : U=(q84 p v)^5*v 7 := by dsimp [U]; rw [hY]; ring
+  have heq : H*(v 6*Y84 p v*q84 p v+rank84 p v+1)+
+      (q84 p v)^5*(v 7*(v 6+a*c84 p v+H*v 12)) =
+      H*k84 v+(q84 p v)^5*(v 7*main) := by
+    have hh := hbal
+    change U*main+H*k84 v=U*(v 6+a*c84 p v)+
+      H*(U*v 12+v 6*Y84 p v*q84 p v+rank84 p v+1) at hh
+    rw [hU] at hh
+    linear_combination -hh
+  have hc : FreeJMainOrientation.FreeJMainCongruence p t := by
+    simp only [FreeJMainOrientation.FreeJMainCongruence,t,Matrix.cons_val_zero,Matrix.cons_val_succ]
+    refine ⟨v 7,main,hv 7,hmainpos,?_,?_⟩
+    · simpa only [q84] using hY
+    · simpa only [q84,Y84,k84,c84,rank84,a,H,pow_two] using heq
+  have hh := FreeJMainOrientation.rank_congruence_from_main p t hc
+  simpa only [FreeJMainOrientation.FreeJRankCongruence,t,Matrix.cons_val_zero,
+    Matrix.cons_val_succ,q84,k84,rank84,mu,pow_two] using hh
+
+/-- The remaining graph obligations are stated for the actual compact tuple:
+rank/window/congruence and a same-root main/strong/auxiliary witness. -/
+def RankGraphCut (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) →
+    InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output v →
+      RankFacts (ports K) v
+
+def MainStrongAuxGraphCut (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) →
+    InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output v →
+      MainStrongAux (ports K) v
+
+/-- Proposed compact graph witness composition; neither graph cut is proved. -/
+theorem exactPowerGraphCut (K : ℕ) (hr : RankGraphCut K) (hm : MainStrongAuxGraphCut K) :
+    Positive84PowerDraft.ExactPowerGraphCut K := by
+  intro V _ _ v hv hz
+  obtain ⟨hb,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) (hv 0)
+  have hp0 : (ports K 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  have hbeta : 0<(ports K 0:V) := by simpa only [hp0] using hb
+  have hb46 : (46:V)≤(ports K 0:V) := by
+    change (46:V)≤(CompactFixedBeta.betaNat:V)
+    exact ResidueCompactQBoundDraft.beta_at_least_46
+  have hj : 1≤v 0 := pos_iff_one_le.mp (hv 0)
+  have hq46 : (46:V)≤q84 (ports K) v := calc
+    46≤(ports K 0:V) := hb46
+    _≤v 0*(ports K 0:V) := le_mul_of_one_le_left (Arithmetic.zero_le _) hj
+    _≤1+v 0*(ports K 0:V) := le_add_of_nonneg_left (by simp)
+  have hq3 : (3:V)≤q84 (ports K) v := le_trans (by norm_num : (3:V)≤46) hq46
+  have hrank := hr V v hv hz
+  obtain ⟨n,w,he⟩ := early_of_rank_facts (ports K) v hv hz hbeta hrank
+  exact exact_of_facts (ports K) v hv hq3 hrank n w he (hm V v hv hz)
+/-- Only the rank lower bound/window and actual main/strong/auxiliary graph
+witness remain explicit; rank congruence is inferred from the latter. -/
+def RankWindowGraphCut (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    (∀ i, 0<v i) →
+    InternalZero (PositiveUnscaled84GraphDraft.graph (fun j => (ports K j:ℤ))).output v →
+      26≤rank84 (ports K) v ∧
+      rank84 (ports K) v+(q84 (ports K) v)^3+q84 (ports K) v+1≤mu (ports K) v
+
+theorem exactPowerGraphCut_of_window_and_main (K : ℕ)
+    (hw : RankWindowGraphCut K) (hm : MainStrongAuxGraphCut K) :
+    Positive84PowerDraft.ExactPowerGraphCut K := by
+  apply exactPowerGraphCut K ?_ hm
+  intro V _ _ v hv hz
+  obtain ⟨hl,hwin⟩ := hw V v hv hz
+  exact ⟨hl,hwin,rank_congruence_of_main (ports K) v hv (hm V v hv hz)⟩
+end DiophantineConsistency.Positive84EarlyExactDraft
+#print axioms DiophantineConsistency.Positive84EarlyExactDraft.same84
+#print axioms DiophantineConsistency.Positive84EarlyExactDraft.early_of_rank_facts
+#print axioms DiophantineConsistency.Positive84EarlyExactDraft.exact_of_facts
+#print axioms DiophantineConsistency.Positive84EarlyExactDraft.exactPowerGraphCut
+#print axioms DiophantineConsistency.Positive84EarlyExactDraft.rank_congruence_of_main
+#print axioms DiophantineConsistency.Positive84EarlyExactDraft.exactPowerGraphCut_of_window_and_main
