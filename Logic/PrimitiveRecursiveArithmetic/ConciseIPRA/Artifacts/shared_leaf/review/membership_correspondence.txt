@@ -1,0 +1,110 @@
+HYPOTHESIS AND COMPUTATION AS ONE LEAF: UNIVERSAL TRACE ARGUMENT
+================================================================
+
+Candidate: membership_bytes.py (270 tokens / 306 AST nodes / 470 bytes).
+Control: incoming ipra_computation_leaves/code/checker_bytes.py
+         (270 / 308 / 474), at the root-pinned repository snapshot.
+Both are complete modules, including JSON loading and ACCEPT output.
+The change is a proof-protocol simplification. It is not deletion of an
+arithmetic axiom, a new full iPRA interpretation, or absolute minimality.
+
+1. Public contract
+------------------
+As in the control, the certificate is a finite JSON array. Its last item
+is [A,0], where A is a canonical closed guarded public Eq/D formula.
+Other consumed entries are exact integer/list four-field packets [m,s,u,t].
+The checker consumes the array backwards. Acceptance means normal exit
+with exactly ACCEPT followed by LF. No checker source depends on this file.
+Unused prefixes are allowed. Arbitrary JSON typing is not validated here.
+
+2. The shared state and transition
+----------------------------------
+A call has immutable context g, goal a, local numerical floor k, and the
+shared packet cursor q. Let I_k(a) denote the no-image eager scope scan,
+and H(s,u,t) the computation equation constructed by the control.
+
+The control first scans a, then:
+  * if I_k(a) is in g, it returns True without consuming a packet;
+  * otherwise it consumes [m,s,u,t], constructs H, and returns successfully
+    if a = H; otherwise it executes its introduction/elimination continuation.
+
+The candidate consumes [m,s,u,t], then scans a, and tests
+
+                         I_k(a) in g + [H(s,u,t)].
+
+Python evaluates the left operand of membership before the right operand.
+Thus its scope scan still occurs before the computation preview H. A match
+returns success; otherwise the continuation is textually unchanged.
+
+3. A useful exact scope lemma
+-----------------------------
+For finite integer/list trees, if the eager no-image scan I_k(a) terminates
+successfully, then I_k(a) = a literally, not just under the mathematical
+decoder. Prove this by induction on a. An array is reconstructed from its
+unchanged children. A scalar is returned unchanged when k <= a < d.
+Otherwise the fallback evaluates i(t,d=3), where the missing-image default
+t is the Python function c. That evaluation fails at function * 0. It is
+evaluated even at even d because the fallback is multiplication, not a
+short-circuit conjunction. Hence a successful scan never takes the fallback.
+
+The same proof applies with c replaced by another Python function, as in the
+untrusted tracing compiler. It also shows why the initial scan cannot simply
+be removed. In particular, no future eigenparameter is admitted by this change.
+
+4. Translation from control to candidate
+----------------------------------------
+Regard a successful control execution as a finite tree of recursive calls.
+Replay it in depth-first packet-consumption order. At a hypothesis leaf,
+insert the packet
+
+                             [[], 0, 0, 0].
+
+Its computation preview is [[0,0,0],0], which is defined at every reachable
+floor k <= 0. The candidate's membership test succeeds through g. At every
+other control call retain its packet and recursively translate its subcalls.
+The shared-state theorem follows by induction on this finite execution tree:
+both systems use the same g,a,k; computation matches agree by the scope lemma;
+continuations append the same hypothesis and allocate the same fresh floor.
+Only hypothesis leaves consume an additional inert packet. They allocate
+no fresh variable and introduce no assumption. The literal public goal and
+all rigid-parameter numbers remain unchanged. This is stronger than merely
+a canonical-template completeness argument: it applies to every successful
+control execution on the finite integer/list contract.
+
+5. Translation from candidate to control
+----------------------------------------
+Replay a successful candidate execution. If its scanned goal is in g,
+delete the packet consumed by that call; the control returns immediately.
+Otherwise keep the packet. By the exact scope lemma, the remaining leaf
+comparison I_k(a)=H is exactly the control's a=H. If neither leaf applies,
+the common continuation has the same state and the induction applies to
+the recursively checked major and continuation. The candidate may have
+computed H eagerly at a hypothesis leaf; successful execution guarantees
+this computation was defined, but the control is free to omit it.
+
+Every successful return is truthy. Candidate hypothesis leaves return a
+nonempty singleton list instead of True, but recursive return values are
+used only as the left operand of 'and'. Consequently their truth-value
+agreement is all the enclosing continuation requires. The transformations
+are primitive recursive on a given finite execution/proof tree. They are
+not claimed to preserve arbitrary invalid raw certificates byte for byte.
+
+6. Scope and mathematical consequence
+-------------------------------------
+The invariant at each local call is k = 1-len(g), beginning with g=[[]],k=0.
+A major proof receives exactly the current floor; the continuation allocates
+k-1 only after it succeeds and adds one context entry. Fusion changes neither
+case. In particular, the old/new scope distinction is intact.
+
+Hence candidate and control represent exactly the same closed public
+theorems. The inherited sorted decoder, guarded-source correspondence,
+equiconsistency, and whole-domain bi-interpretation with iPRA apply without
+a new arithmetic interpretation. At the inference-rule level there is one
+leaf scheme: choose a computation instance C and close a goal lying in
+Gamma union {C}. The other schemes are unchanged. Hypothesis usage is still
+available by choosing the fixed, harmless instance I(0,0;u.0)=0.
+
+The compiler compile_membership.py reconstructs this forward translation
+by tracing the exact control module. It is untrusted; each output must be
+checked separately with membership_bytes.py. Its input success is a useful
+finite trace, not a proof of the universal claims above.

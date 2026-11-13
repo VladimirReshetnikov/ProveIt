@@ -1,0 +1,121 @@
+EAGER SELECTION ON THE COMPUTATION-LEAF CHECKER
+
+This is an implementation composition, not a new mathematical primitive.
+
+Control: the exact complete checker code/checker_bytes.py from the current
+ipra_computation_leaves_2026-11-12.zip archive at ProveIt commit
+12197d86f63e9ec73b2d91399c4de2a8cb0077ee. Its whole-module size is
+270 significant tokens / 308 AST nodes / 474 normalized UTF-8 bytes.
+
+Candidate checker473.py changes exactly one expression:
+
+    bool(m or 3 % len(a))
+
+becomes
+
+    any((m, 3 % len(a)))
+
+The candidate has 272 tokens / 308 AST nodes / 473 normalized bytes.
+The eager-selector technique is inherited from the current 476-byte,
+abstraction-and-refinements and export-specialization packages. The new
+composition applies it to the newer computation-leaf checker. Both
+ingredients are credited existing work. This is a byte-coordinate result
+only. The independently attained 243-token and 264-node records are not
+improved. No global shortestness or theoretical lower bound is claimed.
+
+1. EXACT INPUT AND ACCEPTANCE CONTRACT
+
+Input is a finite JSON array of exact-integer/list trees, read completely
+and consumed right-to-left. The final element is [A,0], where A is a
+closed canonical guarded Eq/D public formula and 0 is the initial floor.
+Consumed instruction packets have four fields [m,s,u,t]. The retained
+administrative neutral resource is []; a canonical unused major is [].
+Unused prefixes are allowed, as in the matched control.
+
+Neither module independently validates the whole promised alphabet or
+public goal grammar. It is therefore inappropriate to compare its size
+with arbitrary-JSON validators without distinguishing the input contract.
+The successful interface is exit status 0 and exactly ACCEPT plus one LF.
+Exceptions reject. Input framing, formula codec, scope tests, arithmetic,
+logic, initial context, and success output are unchanged.
+
+2. SUCCESSFUL-TRACE INCLUSION
+
+Write e = 3 % len(a) at the selector. Whenever e is defined, both original
+and replacement selectors return the same Boolean: truth(m) OR truth(e).
+In particular any((m,e)) constructs the tuple eagerly, so e is evaluated
+even when m is true. The original bool(m or e) skips e in that case.
+These are ordinary integer/list values; len and remainder are pure.
+
+Consider any successful candidate execution on the stated raw data domain.
+At every reached selector its eager e was defined. Replacing that selector
+with the control's selector gives the same Boolean; the control may omit
+a pure calculation but changes no state. Hypothesis construction and the
+recursive major proof precede the selector in both modules. The decrement
+k := k-1 follows it in both modules. No certificate read, assignment to a,
+context extension, scope-sensitive opening, or recursive call is moved.
+Induction on the finite successful evaluation tree, including recursively
+checked majors, therefore supplies a successful control execution on the
+same parsed certificate with the same observable result.
+
+If m is true and a is a scalar, the candidate can raise at len(a), where
+the old short-circuit selector might have continued. If m is true and a
+is an empty list, the candidate can raise at 3 % 0. Those failures do not
+harm the inclusion: they are rejecting candidate traces. They cannot
+create new accepted proofs. No equality of all raw acceptance languages,
+and no strictness of the inclusion, is claimed.
+
+Both modules have the identical computation-leaf short-circuit before the
+recursive continuation. If the current goal matches a computation, that
+branch returns successfully before any mode selector. This branch and all
+its evaluations are unchanged and are covered by the same trace induction.
+
+3. CANONICAL COMPLETENESS
+
+The inherited computation-leaf completeness construction supplies a
+canonical certificate for every theorem of the guarded public calculus.
+Every active formula in such a certificate is a nonempty Eq, D or internal
+Q array of arity 2, 1 or 3. An introduction assigns its instantiated matrix
+to a before the selector, and that matrix is likewise a nonempty formula.
+The unused major [] is already retained, and its recursive proof returns
+at membership before any selector is reached. Computation leaves return
+before the selector in both versions.
+
+Consequently every selector reached by a canonical compiled proof has a
+defined 3 % len(a). The same trace induction in the reverse direction
+shows that each such control proof is accepted unchanged by the candidate.
+Thus the candidate and control have exactly the same canonical public
+theorem set, although their unrestricted raw certificate languages need
+not be equal. This argument covers every finite canonical derivation; it
+is not inferred from the finite test suite.
+
+4. LOGICAL CONSEQUENCE
+
+This relative implementation theorem composes with the inherited soundness
+and canonical completeness of the computation-leaf checker. Its public
+calculus and the ordinary scalar realization remain unchanged. The
+existing interpretations into and from full first-order intuitionistic
+primitive recursive arithmetic therefore remain valid, with the entire
+numerical domains, actual equality, both formula round trips, and both
+numerical comparison graphs x=y. Equiconsistency is inherited as well.
+
+The inherited proof dependency is explicit. The reference fragment quotes
+the computation-leaf package's mathematical rules, its raw leaf lemma,
+canonical completeness argument and bi-interpretation bridge. This package
+does not independently formalize either Python implementation or that
+bridge in Lean/Rocq. Physical resource exhaustion may reject very large
+finite proofs; the mathematical theorem uses unbounded finite execution.
+
+5. REPRODUCIBLE CHECKS
+
+Run python3 verify.py under CPython 3.12.14. The script verifies the exact
+single source edit, measures whole modules, and checks 101 cases with both
+modules under ordinary and optimized Python: 404 independent executions.
+These include nontrivial used-hypothesis induction, logical elimination,
+computation leaves, false-goal replacements, scope capture and malformed
+auxiliary data. The delivered run has zero failed expectations.
+
+SOURCE_AUDIT.json records the pinned repository revision and authenticated
+Git blob and SHA-256 identities for all five current incoming archives.
+It records selected remeasurements and the observed 243/264/474 envelope.
+This is not a new exhaustive semantic census of every file in the project.

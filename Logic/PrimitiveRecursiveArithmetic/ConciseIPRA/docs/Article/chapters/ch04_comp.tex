@@ -75,13 +75,13 @@ $\mathsf{F}$ & full normal & \rulename{Hyp}, \rulename{Refl}, \rulename{Tr}, \ru
 \section{Conventions and shared lemmas}
 \label{comp:sec:conv}
 
-This section fixes the notation common to the twelve packages of the
+This section fixes the notation common to the thirteen packages of the
 chapter (\pkg{computational\_equality}, \pkg{equality\_from\_iteration},
 \pkg{uniform\_step}, \pkg{seed\_evaluation}, \pkg{zero\_normal},
 \pkg{reflexive\_base}, \pkg{initializer\_equality},
 \pkg{full\_normalization}, \pkg{computation\_normal},
 \pkg{atomic\_seed\_refinement}, \pkg{head\_conversion},
-\pkg{bounded\_head}) and proves once the
+\pkg{bounded\_head}, \pkg{bounded\_conversion}) and proves once the
 arguments that several of them repeat.
 
 \subsection{Notation}
@@ -3461,7 +3461,9 @@ raw witness.
 \subsection{Conversion bounded to three counter levels}
 \label{comp:sec:bounded}
 
-This subsection draws on \pkg{bounded\_head}. It removes the normalizer of
+This subsection draws on \pkg{bounded\_head} and on
+\pkg{bounded\_conversion}, which presents the same calculus independently
+(\cref{comp:rem:bcsame}). It removes the normalizer of
 $\mathsf{VH}$ altogether: terms and formulas stay raw, and the conversion
 becomes one primitive rule that performs a single certified contraction, in
 either direction, at a bounded depth of the counter spine of the left
@@ -3513,21 +3515,35 @@ $\leftrightsquigarrow_3$ is admissible.
 \begin{proof}
 The structural operations are proved as in \cref{comp:lem:rawstruct}, with
 the identity as normalizer; an injective renaming sends an instance of
-$\rulename{HC}_3$ to an instance of the same depth. For symmetry, consider
-$\mathcal A\defeq\D{x}{y}\bigl(\sel(y,0,x)=0\bigr)$. \rulename{WI} at the
-witness $0$ is in progress mode, and the conclusion $\sel(\Suc z,0,0)=0$ of
-its premise follows from $0=0$ by one expansion at the root, since
-$\sel(\Suc z,0,0)$ contracts to $0$; so $\proves\mathcal A$. Open
-$\mathcal A$ by \rulename{DE} at a fresh $b$, with the local assumption
-$\Q{y}\bigl(\sel(y,0,b)=0\bigr)$. Its base $\sel(0,0,b)=0$ is an expansion at
-the root of $0=0$; \rulename{QE} at $1$ gives $\sel(1,0,b)=0$, and a
-contraction at the root gives $b=0$. \rulename{VSub} with the source $b$, the
-replacement $0$ and the minor premise $s=t$, weakened, concludes
-$t=s\subst{0}{b}\equiv s$, since $b$ is not free in $s$. \rulename{DE}
-discharges $b$. The last statement follows: symmetry, a conversion of the
-left endpoint, and symmetry again. All conversions in this proof have depth
-$0$.
+$\rulename{HC}_3$ to an instance of the same depth. For symmetry, let $x$ be
+any variable. \rulename{Refl} derives $\Gamma\proves x=x$, and
+\rulename{VSub} with the source $x$, the replacement $x$, the first premise
+$x=x$ and the minor premise $s=t$ concludes
+$\Gamma\proves t=s\subst{x}{x}\equiv t=s$; this holds whether or not $x$
+occurs in $s$. The last statement follows: symmetry, a conversion of the
+left endpoint, and symmetry again. The proof of symmetry uses no conversion.
 \end{proof}
+
+\begin{remark}
+\label{comp:rem:bhsym}
+The derivation of symmetry needs only \rulename{Refl} and \rulename{VSub}
+and holds in every calculus of \cref{comp:def:rawmeta} that has these two
+rules, since a variable is its own normal form by ($\nu$1$^{-}$).
+\pkg{bounded\_head} derives symmetry instead through the formula
+$\D{x}{y}\bigl(\sel(y,0,x)=0\bigr)$, introduced by \rulename{WI} at the
+witness $0$ and opened by \rulename{DE} at a fresh $b$, which yields $b=0$ by
+conversions of depth $0$, and then applies \rulename{VSub} with the
+replacement $0$. \pkg{bounded\_conversion} declares, for every sequent, a
+finite set of free variables in which all terms must be well scoped
+(\cref{comp:rem:bcsame}); when that set is empty no variable is available
+as a source. It then introduces $\D{x}{y}(0=0)$ by \rulename{WI} at the
+witness $0$, in progress mode, from the premise $0=0\proves0=0$ given by
+\rulename{Refl}; opens it by \rulename{DE} at a fresh $b$, which extends the
+set of variables by $b$; applies the derivation above with $x\defeq b$ to the
+weakened premise; and lets \rulename{DE} discharge $b$, which is not free in
+$t=s$. Neither detour uses a conversion of depth greater than $0$, and the
+second uses none.
+\end{remark}
 
 In $\mathsf{VH}$ symmetry is a consequence of transport, because $W$ acts on
 both endpoints; in $\mathsf{BH}_3$ it has to precede transport, since the
@@ -3633,7 +3649,23 @@ checked by tests of literal identity, scope and freshness, by substitutions,
 and, for $\rulename{HC}_3$, by one contraction at a supplied address of
 length at most three, which builds its contractum and evaluates nothing
 further. Each test is primitive recursive, and the number of nodes bounds
-the number of checks.
+the number of checks. The sequents that these tests compare need not be part
+of the certificate: in the checkers of \pkg{bounded\_head} and
+\pkg{bounded\_conversion} a node records its raw metadata only, and the
+sequents of its premises are computed from the sequent of the node and these
+metadata by at most a constant number $k$ of substitutions, shifts of
+variables and one contraction, the context growing by at most one formula.
+An instance of a term or formula of size at most $N$ at terms of size at
+most $N$ has size at most $N^{2}$, and so has a contractum, since the body
+and the recursive iterator are subterms of the redex. If $m$ is the size of
+the input, every formula at a node of depth $d$ therefore has size at most
+$m^{2^{kd}}\le m^{2^{km}}$, and every context has at most $2m$ formulas.
+The length of the whole check and the size of its configurations are thus
+bounded by a primitive recursive function of $m$, and a computation with
+such bounds is primitive recursive; no search for a normal form occurs.
+% ed.: bounded_head does not bound the sizes of the computed intermediate
+% formulas; the bound follows bounded_conversion, made explicit with the
+% squaring estimate of comp:prop:fuel.
 
 For the second statement suppose that $\zeta$ is such a function. Enumerate the
 raw terms with at most the free variable $x$ primitive recursively,
@@ -3656,6 +3688,72 @@ such a normalizer; the checker of $\mathsf{BH}_3$ does not, at the price of
 certificates that list every conversion step. As for \cref{comp:prop:notpr},
 this is a statement about idealized programs without resource limits.
 
+The contrast concerns the derivation relations themselves, and not only the
+normalizer: one inference of $\mathsf{VH}$ with a fixed matrix already
+decides whether a closed term has a positive value.
+
+\begin{proposition}[Checking $\mathsf{VH}$ is not primitive recursive]
+\label{comp:prop:vhnotpr}
+Put $B(y)\defeq\bigl(\sel(y,0,0)=\sel(y,0,1)\bigr)$. For a closed raw term
+$t$ let $c_t$ be the derivation of $\mathsf{VH}$ that consists of one
+instance of $\rulename{QE}^{[W]}$ with the raw matrix $B$ and the raw target
+$t$, whose first premise is closed by \rulename{Hyp} and whose second by
+\rulename{Refl} at $0$. Then $c_t$ is a derivation of the sequent
+\[
+ \Q{y}B(y)\proves0=1
+\]
+exactly when the value of $t$ is positive. Consequently the relation ``the
+finite certificate $c$ is a derivation of the sequent $S$ in $\mathsf{VH}$''
+is not primitive recursive, already for this fixed sequent and certificates
+of this fixed shape.
+\end{proposition}
+
+\begin{proof}
+The endpoints of $B$ are iterators with the counter $y$, hence neutral, so
+$B$, $\Q{y}B$ and $0=1$ are head normal and the sequent is a sequent over
+$W$. The first premise of the instance is $W(\Q{y}B)\equiv\Q{y}B$, which is
+in the context. By the computation of $W(\sel(n,a,b))$ that precedes
+\cref{comp:def:whpacket}, with $b$ equal to $0$ or $1$ and so without the
+state variable,
+\[
+ W(\sel(n,0,0))\equiv0,\qquad
+ W(\sel(n,0,1))\equiv
+ \begin{cases}
+  0, & W(n)\equiv0,\\
+  1, & W(n)\text{ is a successor}.
+ \end{cases}
+\]
+At $n\equiv0$ the second premise is therefore $W(B(0))\equiv(0=0)$, which is
+$W(0)=W(0)$, an instance of \rulename{Refl}. The conclusion of the instance
+is $W(B(t))$, which is determined by its raw metadata. As shown in the proof
+of \cref{comp:prop:bhpr}, $W(t)$ is $0$ or a successor for a closed $t$, and
+$W(t)\equiv0$ exactly when the value of $t$ is $0$. Hence $W(B(t))\equiv(0=0)$
+if the value of $t$ is $0$, and $W(B(t))\equiv(0=1)$ otherwise; $c_t$ derives
+$\Q{y}B(y)\proves0=1$ in the second case only. The map from the code of $t$
+to the codes of $c_t$ and of the sequent is primitive recursive. If the
+relation were primitive recursive, $\zeta(t)\defeq1\mathbin{\dot-}\chi(t)$,
+with $\chi(t)$ the characteristic value of ``$c_t$ derives
+$\Q{y}B(y)\proves0=1$'', would be a primitive recursive function that
+decides for every closed raw term whether its value is $0$, against the
+second statement of \cref{comp:prop:bhpr}.
+\end{proof}
+
+The context $\Q{y}B(y)$ is false in the standard model, since its closure
+at a positive instance gives $0=1$; an open-sequent interface admits such
+contexts, and $c_t$ is sound by \cref{comp:lem:rawsound}. The proposition
+concerns the acceptance of these particular certificates, not the
+derivability of the sequent by some other derivation, and it is not a lower
+bound for the verification of derivations of $\iPRA$ in general: the
+derivation relation of $\mathsf{BH}_3$ is primitive recursive
+(\cref{comp:prop:bhpr}), and by the same argument so are those of $\Nat$ and
+of the conventional presentations of $\iPRA$, whose side conditions perform
+no computation. The
+checker of $\mathsf{VH}$ in \pkg{head\_conversion} compares $W(B(t))$ with
+the goal and so realizes this relation. \pkg{bounded\_conversion} proves the
+proposition by repeating the diagonal argument with the positivity test in
+place of the zero test; the reduction to \cref{comp:prop:bhpr} is the
+article's.
+
 \begin{remark}
 \label{comp:rem:bh}
 \pkg{bounded\_head} states the seven rules, the derived symmetry, the packet
@@ -3669,6 +3767,56 @@ $x=y$ from $\It{0}{x}{u}{u}=y$. A conversion of an endpoint inside an
 equation combines a computation with an equation, which the computation
 equations together with \rulename{VSub} cannot do
 (\cref{comp:thm:rawvsub}). The theorem is not formalized in Lean or Rocq.
+\end{remark}
+
+\begin{remark}[The presentation of \pkg{bounded\_conversion}]
+\label{comp:rem:bcsame}
+\pkg{bounded\_conversion} presents a calculus $\mathcal L_3$ with the seven
+rule families \rulename{Hyp}, \rulename{Refl}, V, Q, E, I and Conv, and
+proves $\Gamma\proves_{\mathcal L_3}A\Leftrightarrow\Gamma\proves_{\Nat}A$
+for all raw open sequents. It is $\mathsf{BH}_3$. V is \rulename{VSub} on
+raw terms, also when the replacement contains the source and with no
+condition on which variable is the source; Q, E and I are \rulename{QE},
+\rulename{DE} and \rulename{WI}, with the selector $\eta_{B,s}$ of
+\cref{comp:def:vh} tested on the raw matrix and the raw witness; and Conv,
+from $H[\ell]=r$ infer $H[\ell']=r$ or conversely, for a counter context $H$
+of depth at most $3$ and a zero or successor contraction
+$\ell\to\ell'$, is $\rulename{HC}_3$. The differences are of presentation.
+\begin{enumerate}[label=(\alph*)]
+\item Every sequent carries a finite set of free variables, its numerical
+ environment, in which all terms and formulas must be well scoped,
+ including every supplied redex and the parts of it that a contraction
+ erases; the eigenvariables of E and I extend the environment of their
+ premises. This affects only the derivation of symmetry
+ (\cref{comp:rem:bhsym}).
+\item The proof of the equivalence follows the same steps as that of
+ \cref{comp:thm:bh}: the structural operations, symmetry, equation progress
+ (\cref{comp:lem:whcases}), the packet of \cref{comp:def:whpacket} with the
+ rows $0=0$, $h(x)=r$ and $x=t$ reached at the counter depths $0$;
+ $0,1,2,1,0$; and $0,1,2,3,2,1,0$ (\cref{comp:lem:bhtr}), transport, the
+ repair at a literal equation and the witness $0$ by the alias
+ $\It{0}{0}{u}{0}$ (\cref{comp:lem:whintro}), and the soundness of Conv by
+ the computation equations, congruence through $H$ and transport. Like the
+ article, it uses no normalization, confluence or strong normalization
+ theorem, and it substitutes no compound term in a derivation. It then
+ composes the equivalence with \cref{base:thm:bridge}, which is the last
+ statement of \cref{comp:thm:bh}.
+\item In its checker a conversion record supplies the depth and one term,
+ which is either the left endpoint of the goal or the left endpoint of the
+ premise; the checker contracts that term at that depth and requires the
+ left endpoint of the goal to be the term or its contractum, so that no
+ direction bit is needed. All other records keep the formats of the checker
+ of $\mathsf{VH}$ in \pkg{head\_conversion}, with raw substitution and raw
+ stored formulas.
+\end{enumerate}
+The symbolic transport certificate of \pkg{bounded\_conversion} derives
+$s=t,\ \Suc(s)=r\proves r=\Suc(t)$ with three free parameters. It has 7\,806
+bytes and uses 34 conversions, two of them at depth $3$, with 36 instances
+of \rulename{DE}, 36 of \rulename{WI}, 35 of \rulename{VSub} and three of
+\rulename{QE}; the package attributes the repeated discharges to the
+symmetry detour of \cref{comp:rem:bhsym}. The symbolic transport certificate
+of \pkg{bounded\_head} uses 76 conversions (\cref{comp:rem:bh}). The
+equivalence is a written proof and is not formalized in Lean or Rocq.
 \end{remark}
 
 \subsection{Raw computation equations do not replace conversion}
@@ -4407,7 +4555,7 @@ an implementation change for an unchanged calculus; its sizes are in
 \section{Checker sizes}
 \label{comp:sec:sizes}
 
-This section collects the measurements of all twelve packages, by the protocol
+This section collects the measurements of all thirteen packages, by the protocol
 of \cref{base:sec:measure}. Every row of \cref{comp:tab:sizes} is a complete
 standalone program, with its input handling, its validation of syntax and
 scope, its substitution and normalization, all rules and its output. The
@@ -4511,6 +4659,10 @@ $\mathsf{VH}$ & 1059 & 1119 & 3102 & --\\
 $\mathsf{VH}$, original interface & 1059 & 1119 & 3102 & --\\
 Matched control: $\mathsf{VH}$ with explicit proof leaves & 1062 & 1123 & 3119 & --\\
 $\mathsf{BH}_3$ & 1056 & 1127 & 3089 & --\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{bounded\_conversion} (open raw sequents with a declared environment, docstrings counted)}\\
+Matched control: checker of $\mathsf{VH}$ of \pkg{head\_conversion} & 1060 & 1121 & 3336 & --\\
+$\mathsf{BH}_3$, presented as $\mathcal L_3$ & 1075 & 1156 & 3522 & --\\
 \end{longtable}
 
 \paragraph{The matched differences.}
@@ -4577,6 +4729,13 @@ everything else, is as follows.
  $\mathsf{VH}$ with the same explicit proof leaves saves 6 tokens and 30
  bytes and has 4 more AST nodes; it does not dominate that control in all
  three coordinates.
+\item \pkg{bounded\_conversion}: its checker of $\mathsf{BH}_3$ is larger
+ than its control, the unchanged checker of $\mathsf{VH}$ from
+ \pkg{head\_conversion} with its docstrings, by 15 tokens, 35 AST nodes and
+ 186 bytes. The control normalizes the terms of its input, while the checker
+ keeps raw syntax and accepts explicit conversions, so the raw certificate
+ languages of the two differ. With docstrings counted, its rows are not
+ comparable with those of \pkg{head\_conversion} and \pkg{bounded\_head}.
 \end{itemize}
 
 \paragraph{The checkers.}
@@ -4651,7 +4810,11 @@ one proof record per rule; a null record closes a goal that is an
 assumption or a reflexivity, and its matched control of $\mathsf{VH}$ uses
 the same explicit leaves. The record of $\rulename{HC}_3$ supplies the depth
 and the old left endpoint, and the checker performs one contraction at that
-depth in the direction that matches.
+depth in the direction that matches. The checker of \pkg{bounded\_conversion}
+reads the same four fields, with the number of free variables as the
+declared environment, and validates the context and the goal before any
+proof is read; its conversion record is described in \cref{comp:rem:bcsame}.
+Every supplied redex is validated in full before it is contracted.
 
 \paragraph{Executed checks.}
 The packages record the following runs, none with an unexpected outcome;
@@ -4689,13 +4852,22 @@ of the stronger laws); and 125\,256 finite checks of the colour reading.
 \pkg{bounded\_head}: 23 certificates and 68 command-line checks in ordinary
 and optimized Python, among them 11 positive certificates translated to the
 control of $\mathsf{VH}$, and 18 checks of the depth, scope and capture
-boundaries.
+boundaries. \pkg{bounded\_conversion}: 37 certificates and 116 command-line
+checks in ordinary and optimized Python, with conversions in both directions
+at every depth from $0$ to $3$, rejections at depth $4$ and of a descent into
+an initializer, scope and type errors in parts of a redex that a contraction
+would erase, a substitution whose replacement contains its source, equation
+progress that uses its hypothesis and a compound case introduction; each
+positive certificate translated, by erasing its conversions and normalizing
+its stored formulas, to a certificate accepted by the control; and 24 runs
+of the control on the certificates $c_t$ of \cref{comp:prop:vhnotpr} for 12
+closed terms $t$, each accepted exactly when $t$ has a positive value.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Further questions}
 \label{comp:sec:questions}
 
-This section collects, from all twelve packages, the questions that they
+This section collects, from all thirteen packages, the questions that they
 leave open, the claims that they state without proof and the results that
 they report as not achieved.
 
@@ -4750,11 +4922,18 @@ they report as not achieved.
  introduction, the fresh-zero lemma and the compound envelope, the fuelled
  relation of \cref{comp:prop:fuel}, the raw-metadata transfer of
  \cref{comp:thm:rawtransfer} and the calculus $\mathsf{A}_6$, the head
- normalizer and $\mathsf{VH}$, $\mathsf{BH}_3$ and \cref{comp:prop:bhpr}, the
+ normalizer and $\mathsf{VH}$, $\mathsf{BH}_3$, \cref{comp:prop:bhpr} and
+ \cref{comp:prop:vhnotpr}, the
  colour reading of \cref{comp:thm:rawvsub}, and any of the Python checkers.
 \item \pkg{bounded\_head} reports that $\mathsf{BH}_3$ does not reach the
  size target either, and claims minimality neither of the depth three nor of
  the seven rule families.
+\item \pkg{bounded\_conversion} reports the same: its checker is larger than
+ its matched control (\cref{comp:sec:sizes}) and than the compact programs
+ of the repository, whose separate minima at its snapshot, 244 tokens, 265
+ AST nodes and 477 bytes, belong to three different programs with different
+ input contracts. It claims no minimum, neither of the depth three nor of
+ the source size.
 \end{itemize}
 
 \subsection{Claims stated without proof}
@@ -4877,7 +5056,25 @@ can be combined with the compact arity coding for a joint improvement of all
 three coordinates. For conversion bounded in depth, is a bound smaller than
 three sufficient, with another parity term or another packet, and does a
 smaller bound shorten the complete checker of $\mathsf{BH}_3$ once the
-longer certificates are accounted for?
+longer certificates are accounted for? \pkg{bounded\_conversion} asks the
+same, and notes that a proof that a smaller bound is incomplete would have to
+cover every encoding of the two rows of the packet. It asks further whether
+the one bounded conversion can be fused with an existing rule, such as
+\rulename{VSub} or \rulename{DE}, while every raw hint is still validated
+before a contraction erases it and the packet is recovered without
+presupposing transport; and whether transport can be recovered with fewer
+explicit conversions and discharges, by shared subderivations or by a
+derived instruction whose verification is counted in the checker.
+\end{question}
+
+\begin{question}[Checking $\mathsf{VH}$ on theorems]
+\Cref{comp:prop:vhnotpr} uses an open sequent whose context is false in the
+standard model. Is the relation ``$c$ is a derivation of $\proves A$ in
+$\mathsf{VH}$'', restricted to the empty context, also not primitive
+recursive? \pkg{bounded\_conversion} states its result for the open-sequent
+interface only. The corresponding questions arise for the derivation
+relations of $\mathsf F$ and $\Nat^{\mathrm f}$, whose checkers contain the
+full normalizer of \cref{comp:prop:notpr}.
 \end{question}
 
 \begin{question}[Classes of provable bases]
@@ -4917,4 +5114,14 @@ the clause calculi with \rulename{Step}, \rulename{SeedEval} and
 forward checkers under common contracts for the validity of syntax, open
 sequents, sharing in certificates and the behavior on errors, so that a
 bound for one encoding is not read as a bound for all presentations.
+\pkg{bounded\_conversion} proposes as a formal target a derivation relation
+with a constructor for bounded conversion in a counter context and the
+equivalence with the derivation relation of $\Nat$, to which the formalized
+bi-interpretation then applies. It notes that \rulename{VSub} is not
+preserved under the substitution of arbitrary terms by an immediate
+induction, so that such a proof should keep the order of
+\cref{comp:thm:bh}: structural operations, symmetry, equation progress,
+packet, transport. It asks for an explicit benchmark suite with a fixed
+reader contract, separating closed guarded formulas, full native formulas,
+open contexts, complete validation of the input and streaming input.
 \end{question}

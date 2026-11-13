@@ -1,0 +1,31 @@
+CPython v3.12.14 Objects/longobject.c
+Source: https://github.com/python/cpython/blob/v3.12.14/Objects/longobject.c
+
+static PyObject *
+long_long(PyObject *v)
+{
+    if (PyLong_CheckExact(v)) {
+        return Py_NewRef(v);
+    }
+    else {
+        return _PyLong_Copy((PyLongObject *)v);
+    }
+}
+
+The following separate excerpt shows the relevant number-method slots:
+
+static PyNumberMethods long_as_number = {
+    (binaryfunc)long_add,       /*nb_add*/
+    (binaryfunc)long_sub,       /*nb_subtract*/
+    (binaryfunc)long_mul,       /*nb_multiply*/
+    long_mod,                   /*nb_remainder*/
+    long_divmod,                /*nb_divmod*/
+    long_pow,                   /*nb_power*/
+    (unaryfunc)long_neg,        /*nb_negative*/
+    long_long,                  /*tp_positive*/
+    (unaryfunc)long_abs,        /*tp_absolute*/
+    (inquiry)long_bool,         /*tp_bool*/
+    (unaryfunc)long_invert,     /*nb_invert*/
+
+Exact ints return Py_NewRef(v) from long_long; the unary-positive slot uses long_long. Subtypes, including bool, are copied to an exact int instead.
+

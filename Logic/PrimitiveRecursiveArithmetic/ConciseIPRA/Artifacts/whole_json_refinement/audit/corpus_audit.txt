@@ -1,0 +1,102 @@
+CORPUS AUDIT: ConciseIPRA
+Pinned repository commit: 6c6a164d211f0af34e913d55c9f46f8ef7cb560f
+Audit date: 12 November 2026 (Pacific)
+
+The current README is not the newest source for benchmark values. It lists
+249 significant tokens / 271 AST nodes / 479 normalized bytes as a compact
+coordinatewise envelope, attained by different programs. The unified
+article's Certificates and checkers chapter lowers its byte coordinate to
+477 and carefully separates whole-JSON from line-stream input contracts.
+The eight current incoming ZIP archives contain later improvements.
+
+Every incoming archive was downloaded at the pinned commit, extracted, and
+checked against its Git blob SHA and byte size. All eight matched.
+See incoming_archive_provenance.json.
+
+CURRENT EXHIBITED COMPLETE-MODULE ENVELOPES
+
+Contract                       Tokens    AST    Normalized bytes
+Whole-JSON compact guarded       249     269          473
+Compact allowing line streams    243     264          473
+Native goal validation           317     358          594
+Whole input + native validation  328     368          616
+
+Every row is coordinatewise; no row is the size of one program.
+The compact programs assume finite exact-integer/list input and a canonical
+closed guarded Eq/D goal. They do not validate the full input alphabet or
+the public goal grammar. The native and strict rows have stronger contracts.
+The line-stream programs read one JSON object per input line; they are not
+interchangeable with readers accepting a complete, possibly multiline JSON
+array. The article deliberately excludes these from its whole-JSON row.
+
+Selected whole-module measurements were independently reproduced using
+CPython 3.12.14, ast.unparse(ast.parse(source)) plus one LF, significant tokens
+excluding comment/encoding/whitespace tokens, and all ast.walk nodes.
+Exact sources, hashes and vectors appear in selected_baseline_metrics.json.
+Important actual programs:
+
+  whole-JSON token record: 249 / 278 / 607
+  whole-JSON AST record:   255 / 269 / 605
+  whole-JSON byte record:  272 / 308 / 473
+  line-stream token:      243 / 271 / 616
+  line-stream AST:        248 / 264 / 613
+
+These are exhibited upper bounds on minimal implementation size. They are
+not proved theoretical lower bounds. Establishing a new coordinate record
+does not establish that one checker is below the old envelope in all three
+coordinates. The incoming packages explicitly acknowledge this distinction.
+
+LATEST INCOMING MATHEMATICS AND LIMITS
+
+1. ipra_computation_leaves: computation equations close a goal as proof
+   leaves rather than being supplied as retained hypotheses. The mathematical
+   guarded calculus is unchanged. Its checker family gives 243/264/474
+   when line streams are allowed. No new primitive axiom is deleted.
+2. ipra_vacuous_specialization: a three-family Use/Close/Export calculus
+   with a fixed reflexivity clause and no arbitrary numerical rule arguments.
+   Export also recognizes a whole matrix equal to its zero instance. Its
+   actual checker is 645/745/1830; it does not reach compact records. A
+   SEPARATE refinement of the computation-leaf byte checker gives 473 bytes.
+3. ipra_476_byte_presentation: 476-byte compact composition is now superseded
+   by 473. Its separate partial evaluation-discharge calculus has
+   678/727/2087, and is larger than existing E3 at643/695/1892.
+4. ipra_ast269_successor_rigidity and ipra_selective_normalization independently
+   compose the same floor-product rewrite into a full-JSON checker, giving
+   255/269/605. They do not improve token or byte records. The successor
+   rigidity presentation is not implemented by that compact checker.
+5. ipra_abstraction_and_refinements: goal-directed conditional-closure
+   elimination AQE has a 1672/1818/7132 checker, larger than its matched
+   1590/1741/6830 control. Separate Python refinements yield the native and
+   strict envelopes shown above. A 45-node predecessor is also independent
+   of checker size.
+6. ipra_bounded_conversion: conversion only on the left equation endpoint,
+   along iterator counter spines of depth at most3; no global normalizer.
+   Its reference checker grows from1060/1121/3336 to1075/1156/3522.
+7. ipra_export_specialization: newest-variable clause Use through existing
+   deterministic Export; smaller matched checker but no compact record.
+
+All incoming universal correspondence and bi-interpretability claims are
+written mathematical proofs with explicitly inherited bridge dependencies.
+None claims a fresh Lean/Rocq verification of the delivered Python module.
+Finite CLI tests are implementation evidence, not universal proofs.
+
+PRIOR WORK COVERAGE
+
+The README already covers replacing equality by evaluation, restricting
+substitution to a parameter or newest variable, removing introduction
+witnesses, deterministic specialization, all-occurrence replacement,
+normalization of zero or all computations, canonical/successor-seeded and
+constantfree recursors, clause contexts, a one-body context, three-rule-family
+calculi, uniqueness in place of equation induction, guarded/diagonal/mirror
+introduction, and multiple independence/obstruction results. Novelty claims
+should be checked against the incoming archives as well as this inventory.
+
+AUDIT SCOPE
+
+Read the README's mathematical inventory and all package summaries, relevant
+article benchmark discussion, all eight incoming claims/READMEs, and selected
+source/proof files. Measured297 distinct unpacked ACCEPT modules under1000
+normalized bytes across the extracted incoming archives, including their
+frozen references. incoming_checker_census.json is a heuristic source census,
+not a new semantic correctness certification of every candidate. No source
+repository changes, commits, issues or publication were performed.

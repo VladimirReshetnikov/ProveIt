@@ -1,0 +1,326 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "internal": {
+    "checks": [
+      "term substitution avoids capture",
+      "term substitution preserves binder distinction",
+      "formula substitution avoids capture",
+      "formula binder is renamed",
+      "normalizer environment avoids capture",
+      "zero row",
+      "one row",
+      "two row",
+      "state-free successor row",
+      "dependency erased by normalizing the body",
+      "three iterations are left unreduced",
+      "unknown-counter constant update stays residual",
+      "alpha-equivalent iterator binders",
+      "VSub acts on a genuine free parameter in an open sequent",
+      "QE specializes an available closure at three",
+      "60 generated terms: idempotence, free variables, call bound and substitution coherence",
+      "540 finite numerical interpretations agree before and after normalization"
+    ],
+    "generated_terms": 60,
+    "finite_numerical_interpretations": 540,
+    "maximum_observed_evaluator_calls": 26
+  },
+  "metrics": {
+    "tokens": 2662,
+    "ast_nodes": 2904,
+    "normalized_utf8_bytes": 13172,
+    "raw_utf8_bytes": 13340,
+    "sha256": "4790634cc50ae9046da7b25384eefe2503b7882a47a052bf17d76947020f1845"
+  },
+  "certificates": [
+    {
+      "name": "closed_all_six_rules",
+      "expected_accept": true,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        {
+          "optimized": true,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      ]
+    },
+    {
+      "name": "closed_general_successor",
+      "expected_accept": true,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        {
+          "optimized": true,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      ]
+    },
+    {
+      "name": "closed_progress_with_used_assumption",
+      "expected_accept": true,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        {
+          "optimized": true,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      ]
+    },
+    {
+      "name": "closed_compound_cases",
+      "expected_accept": true,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        {
+          "optimized": true,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      ]
+    },
+    {
+      "name": "closed_one_iteration",
+      "expected_accept": true,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        {
+          "optimized": true,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      ]
+    },
+    {
+      "name": "closed_two_iterations",
+      "expected_accept": true,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        },
+        {
+          "optimized": true,
+          "accepted": true,
+          "returncode": 0,
+          "diagnostic": ""
+        }
+      ]
+    },
+    {
+      "name": "reject_raw_zero_alias_selecting_progress",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: The target is not an assumption"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: The target is not an assumption"
+        }
+      ]
+    },
+    {
+      "name": "reject_future_witness_capture",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Unbound numerical variable: z"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Unbound numerical variable: z"
+        }
+      ]
+    },
+    {
+      "name": "reject_reused_eigenvariable",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: WI eigenvariable is not fresh"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: WI eigenvariable is not fresh"
+        }
+      ]
+    },
+    {
+      "name": "reject_composite_vsub_source",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: A variable name must be a nonempty string"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: A variable name must be a nonempty string"
+        }
+      ]
+    },
+    {
+      "name": "reject_leaked_free_variable",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Unbound numerical variable: b"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Unbound numerical variable: b"
+        }
+      ]
+    },
+    {
+      "name": "reject_false_equation",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: The target is not an assumption"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: The target is not an assumption"
+        }
+      ]
+    },
+    {
+      "name": "reject_wrong_successor_endpoint",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Rule conclusion does not match its target"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Rule conclusion does not match its target"
+        }
+      ]
+    },
+    {
+      "name": "reject_boolean_zero",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Malformed term"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Malformed term"
+        }
+      ]
+    },
+    {
+      "name": "reject_full_normalization_shortcut",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Rule conclusion does not match its target"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Rule conclusion does not match its target"
+        }
+      ]
+    },
+    {
+      "name": "reject_nonprimitive_refl_rule",
+      "expected_accept": false,
+      "runs": [
+        {
+          "optimized": false,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Unknown proof rule: refl"
+        },
+        {
+          "optimized": true,
+          "accepted": false,
+          "returncode": 1,
+          "diagnostic": "REJECT: Unknown proof rule: refl"
+        }
+      ]
+    }
+  ],
+  "cli_executions": 32,
+  "failed_expectations": 0
+}

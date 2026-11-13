@@ -1,0 +1,89 @@
+PINNED CHECKER FRONTIER AND COMPARISON BOUNDARIES
+==============================================
+
+Repository commit: 2fa4637b3bf922beea0052a5210c22b14482950b
+Subtree: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+Measurement runtime: CPython 3.12.14
+
+The static census covers every .py file in Artifacts and every .py member of
+the seven current docs/incoming ZIPs. It examines 2,891 source occurrences,
+1,677 distinct raw sources. A direct JSON-input/literal-ACCEPT source screen
+finds 1,392 occurrences representing 615 distinct normalized programs.
+No examined candidate source is imported or executed during this census.
+
+Three occurrences of one readable reference cannot be re-parsed after the
+shared removal of docstrings: its Rejection class has a docstring as its sole
+statement. Retaining its docstrings gives 370 tokens, 419 AST nodes and 2,251
+normalized bytes, far above every relevant minimum. The original source is
+valid Python. The ledger records these normalization failures explicitly.
+
+Known unsound experiment paths are marked and excluded from the screened
+minima. The screen is not a general proof of mathematical soundness, and its
+signature deliberately omits packed-source loaders and alternative success
+output protocols. Those belong to different accounting categories. The
+three selected current frontier programs are directly inspected sources
+whose advertised contracts and proofs are in their own packages.
+
+CURRENT BROAD COMPACT ENVELOPE, INCLUDING STREAM INPUT
+
+  tokens 244:
+    docs/incoming/ipra_boolean_constancy.zip
+      !ipra_boolean_constancy/checkers/code/checker244.py
+    full vector 244 /272 /604; same token record is also attained by earlier
+    three-field global-floor stream modules of 608 and 607 bytes.
+
+  AST 265:
+    docs/incoming/ipra_fused_iteration_2026-11-12.zip
+      !ipra_fused_iteration/code/checker_refinement/checker.py
+    full vector 249 /265 /605.
+
+  bytes 477:
+    docs/incoming/ipra_head_conversion_2026-11-12.zip
+      !ipra_head_conversion_2026-11-12/code/compact477.py
+    full vector 272 /306 /477.
+
+Thus (244,265,477) is the coordinatewise envelope of three DIFFERENT
+programs. It is an empirical record of exhibited implementations, not a
+proved universal lower bound. All three assume canonical closed guarded
+Eq/D public goals and finite exact-integer/list certificate data. They do
+not independently validate the public formula grammar. The token and AST
+records use one JSON record per line; the byte record consumes a JSON stack
+whose final element pairs the goal with an initial floor.
+
+The integrated Article reports (249,271,478) for its multiline raw contract
+and (244,267,478) when its stream profiles are admitted. The latest incoming
+packages improve those last two coordinates to 265 and 477. Earlier README
+tables saying (249,271,479) are superseded. The corpus does not contain one
+program at the envelope vector.
+
+STRONGER VALIDATION CONTRACTS
+
+The current incoming ipra_refinement_2026-11-12(1).zip supplies these envelopes:
+
+  native public-goal validation:              (321,369,596)
+  native goal plus entire alphabet validation: (330,380,621)
+
+The native contract retains a finite integer/list promise for consumed proof
+fields. The strict contract checks every field, including unused prefixes.
+Neither should be conflated with the compact guarded-public-goal contract.
+
+The five exact refactorings delivered in this directory change the exhibited
+stronger-contract envelopes to (319,367,594) and (328,378,619), respectively.
+Again these minima are attained by separate programs. The compact envelope
+(244,265,477) is unchanged. These refinements do not supply a new axiom basis,
+do not claim cognitive simplification, and do not meet the user's requested
+complete-checker breakthrough.
+
+REPRODUCE
+
+  python3 audit_frontier.py /path/to/ProveIt
+
+The checkout must be at the commit printed above. The script verifies the
+commit, reads local source and ZIP bytes, computes archive identities and
+source measurements, and writes frontier_census.json. It performs no network
+requests or source execution. Proof checker test reproduction is separate:
+
+  python3 verify.py
+
+That command runs only the five reviewed controls and exact refactorings on
+their inherited positive/negative fixtures; see PROOF.txt and verification.json.

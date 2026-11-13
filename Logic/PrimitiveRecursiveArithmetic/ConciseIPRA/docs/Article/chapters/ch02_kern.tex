@@ -7,14 +7,16 @@ chapter collects the changes of that rule basis which keep the language of
 equations, $\Q{}$ and $\D{}{}$ as it is: there are no clause contexts, no
 restricted class of public formulas and, with the one exception of the
 calculus $\mathsf{U}_{\mathrm{c}}$ in \cref{kern:sec:urforms}, no normal
-forms of terms.  The changes fall into four groups.  \Cref{kern:sec:intro} treats the two
+forms of terms.  The changes fall into five groups.  \Cref{kern:sec:intro} treats the two
 introduction rules: progress may introduce a closure directly or through a
 witnessed $\D{}{}$, and the two introductions may be merged into one rule
 whose mode is read off the matrix and the witness.  \Cref{kern:sec:transport}
 treats the transport rule: the number of templates, the crossing of the
 conclusion, the exclusion of the literal $0$ as a source, the reversal of the
 root equation, replacement with no template in the forward and in the
-backward direction, and replacement of a single occurrence.  \Cref{kern:sec:uniq} replaces induction for equations by
+backward direction, and replacement of a single occurrence.
+\Cref{kern:sec:aqe} replaces the elimination \rulename{QE} of a closure by a
+rule that computes its matrix from the goal.  \Cref{kern:sec:uniq} replaces induction for equations by
 uniqueness of iteration.  \Cref{kern:sec:prog} changes the reading of $\Q{}$
 at a literal equation to progressivity and presents the seven-rule calculi
 that result.  \Cref{kern:sec:recursors} records two results on recursors other
@@ -24,7 +26,8 @@ its presentation rather than a rule: the classes of relations defined by
 native formulas of bounded binder depth, and an obstruction to finite
 ordinary axiomatizations of $\iPRA$.
 
-Every calculus of \cref{kern:sec:intro,kern:sec:transport,kern:sec:uniq}
+Every calculus of
+\cref{kern:sec:intro,kern:sec:transport,kern:sec:aqe,kern:sec:uniq}
 derives exactly the sequents of $\Nat$, on the same formulas.  The calculi of
 \cref{kern:sec:prog} do not; they are equivalent to $\Nat$ through a pair of
 translations with both formula round trips.  \Cref{kern:tab:calculi} at the
@@ -114,7 +117,8 @@ another term.
 The side conditions of the rules below are of four kinds: freshness of an
 eigenvariable; a test on the root of the matrix; a test whether a term of the
 instance is the literal $0$ or a literal successor; and, for the two rules of
-replacement with no template, a syntactic match of subterms.  An injective renaming preserves all four.  For
+replacement with no template and for the rule \rulename{AQE} of
+\cref{kern:sec:aqe}, a syntactic match of subterms.  An injective renaming preserves all four.  For
 weakening, rename the eigenvariables of the derivation away from the added
 formulas and keep the added formulas in every context; each inference is
 still an instance of its rule with the same terms.  For cut, let
@@ -1686,6 +1690,360 @@ at the source $0$ before \cref{kern:thm:dispatch} is available.
 \pkg{reversal\_core} and \pkg{template\_free} use it in their certificate
 producers.  The restricted inventory itself belongs to an earlier package,
 \pkg{certified\_zero}.
+\end{remark}
+
+% ---------------------------------------------------------------------
+\section{Elimination of the closure by abstraction of the goal}
+\label{kern:sec:aqe}
+
+This section draws on \pkg{abstraction\_and\_refinements}.
+
+The rule \rulename{QE} is given a matrix $B(y)$ and a term $t$ and concludes
+$B(t)$.  Its goal-directed form is given the conclusion and the term $t$
+only, and computes the matrix by abstracting every occurrence of $t$ in the
+conclusion.  Together with \rulename{BRep} of \cref{kern:def:B} and
+$\rulename{DI}_{\mathrm{w}}$ of \cref{kern:def:W} this gives a calculus of
+seven rules in which neither the transport rule nor the elimination of a
+closure is given a template: the premises of each are computed from its
+conclusion and one further term or equation.  The difficulty is completeness: an
+abstraction cannot leave chosen occurrences of $t$ in place, and the
+elimination at an arbitrary matrix has to be recovered without assuming the
+transport in compound formulas that it is used to prove.
+
+\subsection{Replacement in formulas and abstraction}
+\label{kern:sec:abstr}
+
+The operation $\operatorname{Rep}_{t}^{s}$ of \cref{kern:sec:brep} extends
+to native formulas by the same traversal.  The bound variables of $\Q{}$ and
+$\D{}{}$ are renamed away from $\FV(s)\cup\FV(t)$, as those of iterators; an
+equation $u_1=u_2$ becomes
+$\operatorname{Rep}_{t}^{s}(u_1)=\operatorname{Rep}_{t}^{s}(u_2)$; and
+$\Q{y}B$ and $\D{x}{y}B$ become $\Q{y}\operatorname{Rep}_{t}^{s}(B)$ and
+$\D{x}{y}\operatorname{Rep}_{t}^{s}(B)$.  Only term nodes are compared with
+$t$, a node identical with $t$ is replaced by $s$ and not traversed further,
+and inserted copies of $s$ are not traversed.  The operation is total, also
+when $s$ contains $t$.  A bound variable of the formula never matches a free
+variable of $t$.
+
+\begin{lemma}[Abstraction]
+\label{kern:lem:abstr}
+Let $C$ be a term or a native formula and $s$, $t$ terms, and let the bound
+variables of $C$ be renamed away from $\FV(s)\cup\FV(t)$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item The occurrences of $t$ that the traversal of $C$ replaces are pairwise
+ disjoint free occurrences, and they depend on $C$ and $t$ only, not on $s$.
+ Replacing them by a fresh variable $v$ gives a template $H(v)$ with
+ $C\equiv H(t)$ and $\operatorname{Rep}_{t}^{s}(C)\equiv H(s)$.
+\item If $y$ is not free in $C$ or in $t$, then
+ \[
+  \operatorname{Rep}_{t}^{y}(C)\subst{t}{y}\equiv C,\qquad
+  \operatorname{Rep}_{t}^{y}(C)\subst{0}{y}\equiv\operatorname{Rep}_{t}^{0}(C).
+ \]
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) At each node the traversal first compares the node with $t$ and descends
+into its children exactly when the comparison fails.  Which nodes are
+compared, and with what result, is therefore determined by $C$ and $t$; the
+term $s$ enters only as the inserted copy, which is not traversed.  The
+traversal does not descend into a replaced occurrence, so two replaced
+occurrences are disjoint.  A replaced occurrence is free in $C$, because the
+bound variables of $C$ are distinct from the variables of $t$.  Put $v$ at
+the replaced occurrences to obtain $H(v)$.  Then $H(t)$ is $C$, and $H(s)$
+is the result of the traversal, in which no variable of $s$ is captured
+because the bound variables of $H$ avoid $\FV(s)$.
+
+(ii) Rename the bound variables of $C$ away from $\FV(t)\cup\{y\}$ and let
+$H$ be the template of (i); by (i) it serves for $s\defeq y$ and for
+$s\defeq 0$, since $\FV(0)$ is empty.  Then
+$\operatorname{Rep}_{t}^{y}(C)\equiv H(y)$ and
+$\operatorname{Rep}_{t}^{0}(C)\equiv H(0)$.  The variable $y$ is not free in
+$C$, so its free occurrences in $H(y)$ are exactly the positions of $v$.
+Hence $H(y)\subst{t}{y}\equiv H(t)\equiv C$, with no capture because the bound
+variables of $H$ avoid $\FV(t)$, and $H(y)\subst{0}{y}\equiv H(0)$.
+\end{proof}
+
+For terms, (i) is the argument of \cref{kern:lem:bsound}.  The identities of
+(ii) are facts about syntax and not derivations of equations.
+
+\begin{lemma}[Exact marking in a formula]
+\label{kern:lem:fmarker}
+Let $C(v)$ be a term template or a formula template, $p$ a term, and let
+the bound variables of $C$ be renamed away from $\FV(p)\cup\{v\}$.  Let $|C|$
+be the number of nodes of $C$, the nodes of its terms and the bodies of its
+iterators included, and put
+\[
+ n\defeq 1+|C|,\qquad K\defeq\It{0}{p}{w}{\Suc^{n}0}.
+\]
+Then the occurrences of $K$ in $C(K)$ are exactly the copies inserted for
+$v$, and $\operatorname{Rep}_{K}^{a}\bigl(C(K)\bigr)\equiv C(a)$ for every
+term $a$.  Moreover $K=p$ is an instance of \rulename{I0} and
+$\FV(K)=\FV(p)$.
+\end{lemma}
+
+\begin{proof}
+The body $\Suc^{n}0$ alone has $n+1$ nodes, so $|K|>n>|C|$.  Only term
+nodes are compared with $K$.  Two term
+occurrences in $C(K)$ are disjoint or nested.  A term occurrence that neither
+contains nor lies inside an inserted copy is an occurrence of a subterm of
+$C$ and has at most $|C|$ nodes; one that lies properly inside an inserted
+copy has fewer nodes than $K$; one that properly contains an inserted copy
+has more.  None of these is identical with $K$, also after the renaming of
+bound variables, which preserves the number of nodes.  So the traversal
+reaches every inserted copy, since no node above it matches, replaces it by
+$a$ and stops there, and changes nothing else.  The result is $C$ with $a$ at
+the positions of $v$, which is $C(a)$.  The last sentence is immediate from
+the form of $K$.
+\end{proof}
+
+\Cref{kern:lem:marker} is the same argument for term templates, with the
+seed $s$ and a larger $n$.  The proof allows several occurrences of $v$, no
+occurrence, and occurrences below any number of iterator, $\Q{}$ and $\D{}{}$
+binders.  The bound is on the template $C$, not on $C(K)$.
+
+\subsection{The rule and the calculus}
+\label{kern:sec:aqerule}
+
+\begin{definition}[The calculus $\mathsf{A}_7$]
+\label{kern:def:A7}
+The rule of elimination by abstraction is
+\[
+ \infrule{\Gamma\proves\Q{y}\operatorname{Rep}_{t}^{y}(A)\qquad
+          \Gamma\proves\operatorname{Rep}_{t}^{0}(A)}
+         {\Gamma\proves A}\ \rulename{AQE},
+\]
+where $y$ is a variable not free in $A$ or in $t$.
+% ed.: the package also asks y fresh for Gamma; y is bound in the first premise, so its name is immaterial.
+$\mathsf{A}_7$ is $\mathsf{B}_7$ with \rulename{QE} replaced by
+\rulename{AQE}; its seven rules are \rulename{Hyp}, \rulename{I0},
+\rulename{IS}, \rulename{BRep}, \rulename{AQE}, \rulename{DE} and
+$\rulename{DI}_{\mathrm{w}}$, with \rulename{BRep} at unrestricted sources,
+the literal $0$ included.
+\end{definition}
+
+For a conclusion $A$ and a term $t$ both premises of \rulename{AQE} are
+determined, up to the name of the bound variable $y$; an instance carries no
+matrix.  The variable $y$ is bound, so the condition on it only ensures that
+abstraction does not identify $y$ with a variable of $A$ or $t$.
+
+\begin{lemma}[\rulename{AQE} in $\Nat$]
+\label{kern:lem:aqesound}
+Every instance of \rulename{AQE} is an instance of \rulename{QE}.
+\end{lemma}
+
+\begin{proof}
+Let $B(y)\defeq\operatorname{Rep}_{t}^{y}(A)$.  By
+\cref{kern:lem:abstr}(ii), $B(0)\equiv\operatorname{Rep}_{t}^{0}(A)$ and
+$B(t)\equiv A$, so the instance is \rulename{QE} with the matrix $B$, the
+premises $\Q{y}B(y)$ and $B(0)$ and the term $t$.
+\end{proof}
+
+The converse fails.  \rulename{QE} with the matrix $y=x$, the premises
+$\Q{y}(y=x)$ and $0=x$ and the term $x$ concludes $x=x$; \rulename{AQE} with
+the conclusion $x=x$ and the term $x$ asks for $\Q{y}(y=y)$ and $0=0$, and no
+other term gives the premise $0=x$, since both sides of $x=x$ are the same
+term and are replaced together.  An abstraction cannot leave a chosen
+occurrence in place; \cref{kern:lem:fmarker} recovers a chosen matrix.
+
+\begin{remark}[Substitution in $\mathsf{A}_7$]
+\label{kern:rem:aqesubst}
+Weakening, injective renaming and cut are admissible in $\mathsf{A}_7$ by
+\cref{kern:lem:struct}: weakening and cut change no term or formula of an
+instance of \rulename{AQE}, and an injective renaming commutes with
+$\operatorname{Rep}$ and so maps an instance to an instance.  Substitution does not map instances to
+instances.  \rulename{AQE} with the conclusion $x=z$, $z\not\equiv x$, and
+the term $x$ has the premises $\Q{y}(y=z)$ and $0=z$.  The substitution of
+$x$ for $z$ maps it to the inference from $\Q{y}(y=x)$ and $0=x$ to $x=x$,
+which by the preceding paragraph is not an instance of \rulename{AQE}.  A
+substitution can also turn a witness of $\rulename{DI}_{\mathrm{w}}$ into the
+literal $0$ (\cref{kern:rem:wsubst}).  For this reason the proofs below use
+no substitution into a derivation, and substitution is admissible in
+$\mathsf{A}_7$ only through \cref{kern:prop:transfer}, after
+\cref{kern:thm:aqe}.
+\end{remark}
+
+\subsection{Introductions before elimination}
+\label{kern:sec:aqeintro}
+
+\begin{lemma}[Rules of $\mathsf{A}_7$ derived without \rulename{AQE}]
+\label{kern:lem:aqeintro}
+The following rules are derivable in $\mathsf{A}_7$ over an arbitrary
+context by derivations that contain no instance of \rulename{AQE}.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Reflexivity, symmetry, transitivity, congruence in every term template,
+ \rulename{Tr}, and transport in an equation template: from $s=t$ and
+ $a(s)=b(s)$ to $a(t)=b(t)$.
+\item \rulename{QI}.
+\item \rulename{DI}, for every matrix and every witness.
+\item Closure by cases: from $\Gamma,B(0)\proves B(\Suc z)$, with $z$ not
+ free in $\Gamma$ or in $\Q{y}B(y)$, to $\Gamma\proves\Q{y}B(y)$, for every
+ native matrix $B$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) \Cref{kern:lem:beq,kern:lem:bcong} derive the equality rules,
+congruence and \rulename{Tr} from \rulename{I0} and \rulename{BRep} alone,
+and transport in an equation template is two applications of \rulename{Tr}
+and the equality rules (\cref{kern:lem:local}(iii)).
+
+(ii) and (iii) The proof of \cref{kern:thm:witness}, from $\Nat$ to
+$\mathsf{W}$, derives \rulename{QI} from $\rulename{DI}_{\mathrm{w}}$ in the
+mode of progress, \rulename{DE} and \rulename{Hyp}, and the remaining case of
+\rulename{DI}, a literal equation with the witness $0$, from
+$\rulename{DI}_{\mathrm{w}}$ in the mode of cases at the witness
+$c=\It{0}{0}{u}{0}$, the equation $c=0$ of \rulename{I0} and its symmetric
+form, transport in an equation template and cut.  These are available by
+(i) and \cref{kern:rem:aqesubst}, and the proof uses no elimination of a
+closure.
+
+(iv) Choose $x$ not free in $B$ or in $\Gamma$, and regard $B(y)$ as a
+matrix in $x$ and $y$ in which $x$ is not used.  At the closed witness $c$,
+$\rulename{DI}_{\mathrm{w}}$ is in the mode of cases, and its premise
+$\Gamma,B(0)\proves B(\Suc z)$ is the given one, since $x$ does not occur;
+$z$ is not free in $c$.  It concludes $\Gamma\proves\D{x}{y}B(y)$.
+\rulename{DE} with a fresh $b$ opens $\Q{y}B(y)$, and its second premise
+$\Gamma,\Q{y}B(y)\proves\Q{y}B(y)$ is \rulename{Hyp}.
+% ed.: the package derives (iv) from the general case introduction; at the witness c no transport is needed.
+\end{proof}
+
+\subsection{Recovery of the ordinary elimination}
+\label{kern:sec:aqerank}
+
+Let $r(A)$ be the binder rank of \cref{base:rem:single-binder-size}, the
+number of occurrences of $\Q{}$ and $\D{}{}$ in $A$.  Substitution of terms
+and replacement $\operatorname{Rep}_{t}^{s}$ leave it unchanged.
+
+\begin{lemma}[Transport and elimination by rank]
+\label{kern:lem:aqerank}
+For every $r\ge 0$ the following hold in $\mathsf{A}_7$, for every context
+$\Gamma$.
+\begin{itemize}
+\item[$(\mathrm L_r)$] If $F(v)$ is a formula template with $r(F)\le r$,
+ $\Gamma\proves s=t$ and $\Gamma\proves F(s)$, then $\Gamma\proves F(t)$.
+\item[$(\mathrm E_r)$] If $B(y)$ is a matrix with $r(B)\le r$,
+ $\Gamma\proves\Q{y}B(y)$ and $\Gamma\proves B(0)$, then
+ $\Gamma\proves B(t)$ for every term $t$.
+\end{itemize}
+\end{lemma}
+
+\begin{proof}
+By induction on $r$, proving $(\mathrm L_r)$ from $(\mathrm L_{r-1})$ and
+$(\mathrm E_{r-1})$, and then $(\mathrm E_r)$ from $(\mathrm L_r)$.  The
+bound variables of $F$ and $B$ and the variable $v$ are chosen fresh for the
+other data.
+
+\emph{$(\mathrm L_r)$, $F$ a literal equation.}  This is transport in an
+equation template, \cref{kern:lem:aqeintro}(i).
+
+\emph{$(\mathrm L_r)$, $F(v)\equiv\Q{y}B(v,y)$.}  Then $r\ge 1$ and
+$r(B)\le r-1$.  Let $z$ be a variable not free in $\Gamma$, $s$, $t$ or $B$,
+and $\Gamma'\defeq\Gamma,B(t,0)$.  Over $\Gamma'$, by weakening: $s=t$ and
+$\Q{y}B(s,y)$; symmetry gives $t=s$; \rulename{Hyp} gives $B(t,0)$;
+$(\mathrm L_{r-1})$ with the template $B(v,0)$ and $t=s$ gives $B(s,0)$;
+$(\mathrm E_{r-1})$ with the matrix $B(s,y)$ and the term $\Suc z$ gives
+$B(s,\Suc z)$; and $(\mathrm L_{r-1})$ with the template $B(v,\Suc z)$ and
+$s=t$ gives $B(t,\Suc z)$.  Hence $\Gamma,B(t,0)\proves B(t,\Suc z)$, and
+closure by cases (\cref{kern:lem:aqeintro}(iv)) gives
+$\Gamma\proves\Q{y}B(t,y)$, which is $F(t)$.
+
+\emph{$(\mathrm L_r)$, $F(v)\equiv\D{x}{y}B(v,x,y)$.}  Then $r(B)\le r-1$.
+Let $b$ and $z$ be distinct variables not free in $\Gamma$, $s$, $t$ or $B$,
+and $\Delta\defeq\Gamma,\Q{y}B(s,b,y)$.  Over $\Delta,B(t,b,0)$ the steps of
+the preceding case, with the templates $B(v,b,0)$ and $B(v,b,\Suc z)$ and the
+matrix $B(s,b,y)$, give $B(t,b,\Suc z)$.  $\rulename{DI}_{\mathrm{w}}$ with
+the matrix $B(t,x,y)$ and the witness $b$, which is not the literal $0$, is
+in the mode of cases and concludes $\Delta\proves\D{x}{y}B(t,x,y)$; $z$ is not
+free in $\Delta$, in $b$ or in the conclusion.  \rulename{DE} with the first
+premise $\Gamma\proves\D{x}{y}B(s,x,y)$ and the eigenvariable $b$, which is
+not free in $\Gamma$, in $\D{x}{y}B(s,x,y)$ or in $\D{x}{y}B(t,x,y)$,
+concludes $\Gamma\proves\D{x}{y}B(t,x,y)$, which is $F(t)$.
+
+These three cases exhaust the formulas of rank at most $r$.  Every
+transport and elimination invoked in the last two acts on a matrix of rank
+at most $r-1$.
+
+\emph{$(\mathrm E_r)$.}  Let $r(B)\le r$, $\Gamma\proves\Q{y}B(y)$,
+$\Gamma\proves B(0)$, and let $t$ be a term.  Let the bound variables of $B$
+avoid $\FV(t)$, let $v$ be fresh and $K\defeq\It{0}{t}{w}{\Suc^{n}0}$ the
+marker of \cref{kern:lem:fmarker} for the template $C(v)\defeq B(v)$ and the
+term $p\defeq t$.  Let $y'$ be a variable not free in $B$ or in $t$.  By
+\cref{kern:lem:fmarker},
+\[
+ \operatorname{Rep}_{K}^{y'}\bigl(B(K)\bigr)\equiv B(y'),\qquad
+ \operatorname{Rep}_{K}^{0}\bigl(B(K)\bigr)\equiv B(0).
+\]
+Hence \rulename{AQE} with the conclusion $B(K)$ and the term $K$ has the
+premises $\Q{y'}B(y')$, which is $\Q{y}B(y)$ up to the name of the bound
+variable, and $B(0)$.  It concludes $\Gamma\proves B(K)$.  \rulename{I0}
+gives $\Gamma\proves K=t$, and $(\mathrm L_r)$ with the template $B(v)$
+gives $\Gamma\proves B(t)$.  For $r=0$ this uses $(\mathrm L_0)$ only.
+\end{proof}
+
+The order $(\mathrm L_0),(\mathrm E_0),(\mathrm L_1),(\mathrm E_1),\dots$ is
+not circular: \cref{kern:lem:aqeintro} uses no elimination of a closure,
+transport at rank $r$ uses elimination at rank $r-1$ only, and elimination at
+rank $r$ uses \rulename{AQE} once, at the marker, and transport at rank $r$.
+No transport of a compound formula enters the derivation of the
+introductions, and no substitution into a derivation is used.
+
+\begin{theorem}[Elimination by abstraction]
+\label{kern:thm:aqe}
+$\mathsf{A}_7$, $\mathsf{B}_7$ and $\Nat$ are equivalent.
+\end{theorem}
+
+\begin{proof}
+$\mathsf{B}_7$ and $\Nat$ are equivalent by \cref{kern:thm:brep}.
+\emph{From $\mathsf{A}_7$ to $\Nat$.}  \rulename{Hyp}, \rulename{I0},
+\rulename{IS} and \rulename{DE} are common; an instance of \rulename{BRep} is
+an instance of \rulename{Tr} (\cref{kern:lem:bsound}), an instance of
+\rulename{AQE} one of \rulename{QE} (\cref{kern:lem:aqesound}), and an instance
+of $\rulename{DI}_{\mathrm{w}}$ is derivable in $\Nat$ (\cref{kern:thm:witness}).
+\emph{From $\Nat$ to $\mathsf{A}_7$.}  By induction on a derivation in
+$\Nat$: \rulename{Hyp}, \rulename{I0}, \rulename{IS} and \rulename{DE} are
+common; \rulename{Tr}, \rulename{QI} and \rulename{DI} are derivable by
+\cref{kern:lem:aqeintro}; and an instance of \rulename{QE} with the matrix
+$B$ is derivable by $(\mathrm E_{r(B)})$ of \cref{kern:lem:aqerank}.  Each
+derived rule acts over the context of the inference it replaces and
+introduces only fresh variables, so the conditions on the eigenvariables of
+enclosing inferences are kept.  Both translations leave terms, formulas,
+contexts and conclusions unchanged.
+\end{proof}
+
+By \cref{kern:prop:transfer}, $\mathsf{A}_7$, $\Teq$ and $\iPRA$ are
+bi-interpretable with whole domains, actual equality and identity numerical
+composites, and $\proves_{\mathsf{A}_7}0=\Suc 0$ holds exactly when $\iPRA$
+is inconsistent.  The translations between $\mathsf{A}_7$ and $\Nat$ are the
+identity on terms and formulas, so the bridge of \cref{base:thm:bridge} is
+used unchanged.
+
+The proof needs \rulename{BRep} at the source $0$.  For the restriction
+$\rulename{BRep}^{-}$ of \cref{kern:thm:bminus} transport in an equation
+template is derived with \rulename{QE} and \rulename{QI}
+(\cref{kern:lem:bmeq}(iii), \cref{kern:lem:bzero}), and here \rulename{QE} is
+recovered only after that transport; the restricted calculus is left open
+(\cref{kern:q:aqeminus}).
+
+\begin{remark}[Sources]
+\label{kern:rem:aqe-sources}
+The section is the abstraction part of \pkg{abstraction\_and\_refinements},
+whose calculus $\mathcal{A}_7$ is $\mathsf{A}_7$; the package takes
+\rulename{BRep}, $\rulename{DI}_{\mathrm{w}}$ and the bridge from this
+chapter and from \cref{base:thm:bridge}, and presents its proof twice, as a
+section and as a bootstrap note.  The package proves the equality bootstrap
+again from \rulename{I0} and \rulename{BRep}; the article cites
+\cref{kern:lem:beq,kern:lem:bcong}.  Its marker has the seed $t$ and
+$N\defeq|C|+1$, as in \cref{kern:lem:fmarker}.  It derives closure by cases
+from the general introduction by cases; the article introduces at the
+witness $c$ directly.  No calculus of the section is formalized in Lean.  The
+tests of the package are finite: 804 checks of abstraction and of open
+inferences, 521 checks of the recovery by the marker, 3 further identities
+of capture avoidance, 28 runs of the driver on closed certificates, and
+1521 independent symbolic checks on 300 generated syntax trees, repeated
+with assertions disabled.  The 45-node predecessor of the package is
+\cref{base:prop:pred45}; its refinements of checkers for inherited
+presentations are reported in the chapter on certificates.
 \end{remark}
 
 % ---------------------------------------------------------------------
@@ -3523,7 +3881,7 @@ calculus with the conditional reading and is summarized in
 \label{kern:sec:table}
 
 \Cref{kern:tab:calculi} lists the calculi of
-\cref{kern:sec:intro,kern:sec:transport,kern:sec:uniq,kern:sec:prog}.  Each
+\cref{kern:sec:intro,kern:sec:transport,kern:sec:aqe,kern:sec:uniq,kern:sec:prog}.  Each
 has \rulename{Hyp}, \rulename{I0}, \rulename{IS} and \rulename{DE}; the
 second column gives its other rules.  The calculus
 $\mathsf{U}_{\mathrm{c}}$ is the exception: it is stated on normal terms and
@@ -3584,6 +3942,8 @@ $\mathsf{L}$ & \rulename{LOR}, \rulename{QE}, \rulename{DI}, \rulename{QI} &
 $\Nat_{\mathrm{u}}$ & uncrossed replacement in a term template,
  \rulename{QE}, \rulename{DI}, \rulename{QI} & 8 & equivalent,
  \cref{kern:thm:onehole} & yes\\
+$\mathsf{A}_{7}$ & \rulename{BRep}, \rulename{AQE},
+ $\rulename{DI}_{\mathrm{w}}$ & 7 & equivalent, \cref{kern:thm:aqe} & no\\
 $\mathsf{U}$ & \rulename{Tr}, \rulename{QE}, \rulename{DI}, \rulename{UR} &
  8 & equivalent, \cref{kern:thm:urnative} & yes\\
 $\mathsf{U}_{\mathrm{o}}$ & \rulename{Tr}, \rulename{QE}, \rulename{DI},
@@ -4195,6 +4555,13 @@ contracts and are not comparable across blocks.  The compact programs of
 \pkg{kernel\_refinement} and of \pkg{scope\_and\_closure} implement calculi
 of other chapters and are reported there; neither package measures a checker
 for the calculi $\mathsf{L}$ and $\mathsf{R}_{F}$ of this chapter.
+The readable complete checker of \pkg{abstraction\_and\_refinements} for
+$\mathsf{A}_7$ has 1672 tokens, 1818 AST nodes and 7132 normalized bytes,
+against 1590 / 1741 / 6830 for its matched control, the same program for
+$\mathsf{B}_7$ with \rulename{QE} and a supplied matrix, so the removal of
+the matrix from the certificate does not make the checker smaller; the other
+programs of that package check calculi of other chapters and are reported
+there.
 
 {\small
 \begin{longtable}{@{}p{0.19\linewidth}p{0.31\linewidth}rrrp{0.2\linewidth}@{}}
@@ -4568,6 +4935,30 @@ unavoidable when a chosen replacement is compiled through the marker of
 (\pkg{backward\_replacement}.)
 \end{question}
 
+\begin{question}[A checker for elimination by abstraction]
+\label{kern:q:aqesize}
+The readable checker for $\mathsf{A}_7$ is larger than its matched control
+for $\mathsf{B}_7$ in all three coordinates: the abstraction traverses
+compound formulas and shifts its patterns below binders.  Can the
+abstraction of \rulename{AQE} share one traversal with \rulename{BRep} and
+with the opening routine, or be combined with another sound protocol of
+certificates, so that one complete checker under a fixed input contract is
+below the compact records of 244 tokens, 265 AST nodes and 477 bytes
+together, with an explicit interpretation?  The package makes no assumption
+that such a combination exists.  (\pkg{abstraction\_and\_refinements}.)
+\end{question}
+
+\begin{question}[Elimination by abstraction with a restricted source]
+\label{kern:q:aqeminus}
+Is $\mathsf{A}_7$ with \rulename{BRep} replaced by $\rulename{BRep}^{-}$
+equivalent to $\Nat$?  The bootstrap of \cref{kern:thm:aqe} needs
+\rulename{BRep} at the source $0$ for transport in an equation template, and
+the bootstrap of \cref{kern:thm:bminus} for $\rulename{BRep}^{-}$ uses
+\rulename{QE}, which in $\mathsf{A}_7$ is recovered only after that
+transport.  A positive answer needs a different bootstrap; the package
+asserts no such restriction.  (\pkg{abstraction\_and\_refinements}.)
+\end{question}
+
 \begin{question}[Replacement of one occurrence in a checker]
 \label{kern:q:lor}
 Does \rulename{LOR} help a readable or a formally verified checker, even
@@ -4744,6 +5135,14 @@ results that were not achieved.
  variables, and replacing a stored scope bound by the length of the context
  has to keep apart the check of a packet at the old scope and the opening of
  a branch at the new one.
+\item \pkg{abstraction\_and\_refinements}: \cref{kern:thm:aqe} is a written
+ proof, reviewed within the package and not formalized in Lean or Rocq; the
+ bridge to $\iPRA$ is the cited \cref{base:thm:bridge}.  The package does
+ not claim that seven rules, the signature, the protocol of certificates or
+ any measured source representation is minimal, and states that the
+ coordinatewise envelope of the corpus is not a lower bound on
+ bi-interpretable presentations.  \rulename{AQE} is a reduction of the data
+ of an inference and not of the size of the checker.
 \item \pkg{uniform\_progress}, \pkg{target\_closure}: neither calculus gives
  a new minimum in any coordinate of the matched comparison; the compact
  minima of other packages are not improved by a checker for $\mathsf{R}$ or

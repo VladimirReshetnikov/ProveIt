@@ -1,0 +1,123 @@
+EXACT SIMULATION FOR THE WHOLE-JSON AST COMPOSITION
+
+1. Construction and inherited scope
+
+The control is Artifacts/three_field/code/checker_ast.py at repository commit
+12197d86f63e9ec73b2d91399c4de2a8cb0077ee. The candidate changes precisely the
+second argument of i in the context-extension operation:
+
+  CONTROL:   (k := (k - 1)) and (s or len(a) == 2) and k
+  CANDIDATE: (k := (k - 1)) * (1 if s else len(a) == 2)
+
+This replacement is the one already proved in the repository's
+fused_iteration package, now used with the control's unchanged whole-JSON
+reader. No input framing, scope convention, rule dispatch, context update,
+equality test, exception handling, or success marker is changed.
+
+The metatheorem here is relative to the inherited correctness and public
+language theorems for the control. In particular, the compact interface
+assumes finite exact-integer/list data and restricts its public theorem claim
+to canonical closed guarded goals. It does not independently recognize that
+public grammar. The statement is not a claim about arbitrary Python objects.
+
+2. Allocation and mode lemma
+
+At entry k=0. A recursive major call receives the caller's current integer k;
+its local updates do not modify the caller's k. Every context extension then
+decreases the local floor by exactly one. Therefore k is an integer at most
+zero immediately before each changed expression. Put j=k-1, so j<0.
+
+Python evaluates arguments from left to right. In both modules the new raw
+hypothesis, the first argument of i, is evaluated completely before this
+second argument. Within the second argument, both modules first assign j to
+k. They then test the truth value of s. If s is true-valued, neither evaluates
+len(a); if s is false-valued, both evaluate len(a)==2 exactly once.
+
+  Condition                         Control value       Candidate value
+  s true-valued                     j                   j
+  s false-valued, len(a)==2          j                   j
+  s false-valued, len(a)!=2          False               0
+
+The decrement is not conditional in either program. It occurs before any
+mode test and before opening the supplied hypothesis or the continuation.
+No fresh name becomes available early, and no name allocation is omitted.
+The potential failing len operation is evaluated, or skipped, in exactly
+the same circumstances.
+
+3. Relation between internal states
+
+Relate two scalar values if they are identical, or if they are the Boolean
+and integer versions of the same value: False with 0, or True with 1. Extend
+this relation componentwise to lists and tuples; preserve list versus tuple
+shape. The initial input trees are identical in both executions. The default
+None image sentinel is also identical in both executions.
+
+Related states have the same remaining certificate stack, the same integer
+floor, and related goals and context entries. All operations actually used
+by the checker preserve this relation and agree on branching or failure:
+
+* Truth tests and numerical comparisons agree on a Boolean and its integer
+  alias. Subtraction, addition, remainder, multiplication and sequence
+  repetition produce equal or related results where they are defined.
+* Both a Boolean and its integer alias are noniterable. Thus the opener's
+  attempted array traversal takes the same exception branch on either.
+* Arrays have the same lengths and are unpacked, sliced and traversed in the
+  same way. An attempted len or unpacking of a scalar fails in both runs.
+* Structural equality and context membership agree, because Python compares
+  each Boolean as equal to its integer alias. Array shapes are not changed.
+* The checker has no type, isinstance, is, repr, str, hashing or serialization
+  operation that distinguishes the related internal scalar values.
+* The only user-visible output is the fixed string ACCEPT after the root
+  call returns; output formatting does not inspect internal values.
+
+The phrase "same failure" concerns rejection, not identical exception text.
+Inputs and failures outside the stated integer/list contract are not needed
+for the mathematical transfer. As with the inherited benchmark, recursion
+and other implementation resources are assumed sufficient for the finite
+certificate execution in question.
+
+4. Simulation theorem
+
+The control and candidate accept exactly the same finite integer/list
+certificate streams under their common whole-JSON interface. On a successful
+execution they consume the same suffix of the stack, allocate exactly the
+same fresh names, and have related internal trees throughout.
+
+Proof. Relate the initial calls as in Section 3. Induct over a finite dynamic
+call tree, with an inner induction over each loop's iterations and the
+opener's structural traversals. The hypothesis-membership test has the same
+outcome and consumes no packet in either program. Otherwise the same packet
+is popped and the same entries are unpacked. The endpoint test, possible
+major call, computation supply or introduction, and all openings before the
+changed expression agree by the induction hypotheses and Section 3. The
+allocation and mode lemma then gives related image arguments and exactly the
+same new floor. The opener, context extension and continuation produce
+related states again. Consequently the two loops return together or fail on
+the same operation. The reasoning works in both directions. It also covers
+arbitrary unused prefix data within the common integer/list contract, since
+neither execution examines a prefix the other leaves unused.
+
+5. Mathematical consequence and limitation
+
+For every canonical closed guarded public goal A, an accepting certificate
+exists for the candidate if and only if one exists for the control. Therefore
+the candidate presents the identical public theorem set. The control's
+existing interpretation into iPRA and reverse interpretation apply unchanged:
+there is no change to the numerical language, actual equality, full numerical
+domains, ordinary formula readings, or the identity graph for the numerical
+composites. The inherited formula round trips and equiconsistency transfer
+through equality of theorem sets.
+
+This is not an independent reconstruction or a new formal verification of
+the arithmetic bridge. It is a reduction of two AST nodes in one complete
+implementation of that bridge's existing presentation. It deletes no logical
+or arithmetic axiom, and it proves no absolute minimum for checker size.
+
+6. Reproduction
+
+Run python3 verify.py from this directory with CPython 3.12.14. The harness
+measures both complete modules and runs 13 inherited positive regressions
+and 7 negative regressions against both programs, normally and with -O:
+80 isolated CLI runs. Positive regressions include auxiliary Q goals as well
+as public goals. The delivered evidence records zero unexpected outcomes.
+These finite checks supplement the proof above; they do not replace it.
