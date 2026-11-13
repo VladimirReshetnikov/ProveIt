@@ -57,6 +57,11 @@ are specialized to the set-theory language. Reusing them for PA requires, in
 particular, bounds for the actual arithmetic induction-axiom recognizer;
 its Δ₁ definability in IΣ₁ alone does not supply the required PRA certificate.
 
+`PA196PRAAssembly.lean` composes the two conditional transfers with the
+intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
+classical PRA hypotheses: the forward reduction, the reverse reduction, and
+the PA-specific witness certificate. All three remain to be proved.
+
 ## Checking
 
 The check uses Lean 4.32.0 and the root project's Lake environment. It checks
