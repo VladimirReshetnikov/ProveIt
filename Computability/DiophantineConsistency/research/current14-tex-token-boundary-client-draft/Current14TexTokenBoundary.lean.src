@@ -1,0 +1,48 @@
+import DiophantineConsistency.Current14QuotedTranslatedEndpoint
+
+/-! SOURCE-ONLY interface. No extractor, parser correctness, or file-reading
+    theorem is claimed. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.Current14TexTokenBoundary
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRALanguage PRATheory PRANoZeroUnary FoundationHANoZero
+open ObjectCurrentEquation2011 IPRAStandardTheory FoundationZFCConsistencyNat
+open Sign17LinesCurrent14Endpoint Sign17ReadableCurrent14Endpoint
+open Current14QuotedPrefix
+
+/-- Apply the existing token compiler to supplied lines.  Its ports are the
+    previously defined numeral-derived linePorts, not values parsed from TeX. -/
+def sentenceFromTokens (lines : List (List String)) : Option (Sentenceᵢ language) := do
+  let env ← compile (initial linePorts) lines
+  let e ← lookup "result" env
+  let e := positiveShift e
+  some (∀⁰* (∼(Semiformulaᵢ.rel Language.ORing.Rel.eq
+    ![Semiterm.lMap embedding (sourceTerm 14 (ArithmeticExpression.term Fin.val e.splitNatural.1)),
+      Semiterm.lMap embedding (sourceTerm 14 (ArithmeticExpression.term Fin.val e.splitNatural.2))])))
+
+/-- The fixed normalized quote uses precisely the existing quote constructor. -/
+theorem sentenceFromTokens_quoted : sentenceFromTokens quoted = quoteSentence := by
+  rfl
+
+/-- A proposed byte extractor is an explicit parameter, not an IO action and
+    not a claim that its output faithfully describes the rendered page. -/
+def sentenceFromBytes (extract : ByteArray → Option (List (List String)))
+    (bytes : ByteArray) : Option (Sentenceᵢ language) := do
+  let lines ← extract bytes
+  sentenceFromTokens lines
+
+/-- Conditional endpoint: proving the extraction equality is a separate task. -/
+theorem endpoint_if_quoted_tokens
+    (extract : ByteArray → Option (List (List String))) (bytes : ByteArray)
+    (hextract : extract bytes = some quoted) :
+    ∃ φ, sentenceFromBytes extract bytes = some φ ∧
+      (standardTheory ⊢ φ 🡘 (Semiformula.lMap embedding sourceSentence)ᴺ) := by
+  obtain ⟨φ, hquote, hproof⟩ := quoted_translated_endpoint
+  refine ⟨φ, ?_, hproof⟩
+  simpa [sentenceFromBytes, hextract, sentenceFromTokens_quoted] using hquote
+
+end DiophantineConsistency.Current14TexTokenBoundary
+#print axioms DiophantineConsistency.Current14TexTokenBoundary.sentenceFromTokens_quoted
+#print axioms DiophantineConsistency.Current14TexTokenBoundary.endpoint_if_quoted_tokens
