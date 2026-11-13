@@ -78,6 +78,9 @@ complete core certificate follows.
 `PA196InductionClosureWitness.lean` proves both witness bounds for the exact
 quantifier-closure graph subformulas of the unrestricted-induction recognizer.
 The other recognizer subformulas and the complete induction bounds remain open.
+`PA196InductionFvarWitness.lean` bounds the exact positive free-variable-vector
+graph and its enclosing existential, conditional on a bound for the remaining
+Σ₁ conjunct. This does not establish that remaining bound.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
