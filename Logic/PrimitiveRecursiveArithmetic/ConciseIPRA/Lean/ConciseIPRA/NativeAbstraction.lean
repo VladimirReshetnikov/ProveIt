@@ -510,18 +510,6 @@ theorem ren (h : APrf Γ A) : ∀ {m : ℕ} (ξ : Fin n → Fin m), Function.Inj
 theorem shift (h : APrf Γ A) : APrf (Γ.map NFm.shift) A.shift :=
   h.ren Fin.succ (Fin.succ_injective _)
 
-/-! ### Closure by cases, at a witness that is not the literal `0` -/
-
-/-- `Q` by cases: from `B(0) ⊢ B(S z)` infer `Q_y B(y)`, for every matrix. -/
-theorem qCases (B : NFm (n + 1))
-    (h : APrf ((B.subst (inst zero)).shift :: Γ.map NFm.shift)
-      (B.subst (repl (succ (Syn.var 0))))) : APrf Γ (.Q B) := by
-  have hD : APrf Γ (.D (B.subst (up (fun i => Syn.var i.succ)))) := by
-    refine .dI _ (iter zero zero zero) ?_
-    rw [NFm.start_iter, NFm.subst_dummy_inst, ← NFm.shift_subst_inst_zero]
-    exact h
-  exact .dE hD hyp0
-
 end APrf
 
 /-! ### Transport and elimination by the number of binders -/
@@ -542,38 +530,90 @@ theorem rk_subst (A : NFm n) : ∀ {m : ℕ} (σ : Fin n → Tm m), (A.subst σ)
 
 end NFm
 
-namespace APrf
+/-- The rules that the recovery of `QE` uses: hypothesis, the two computations,
+transport in an equation template, elimination by abstraction, `DE`, the
+single introduction, and weakening and shifting of derivations.  `A₇` is one
+instance; the calculus with backward replacement restricted to sources other
+than `0` is another (`NativeAbstractionMinus`). -/
+class AKernel (P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop) : Prop where
+  hyp : ∀ {n : ℕ} {Γ : List (NFm n)} {A : NFm n}, A ∈ Γ → P Γ A
+  iterZero : ∀ {n : ℕ} {Γ : List (NFm n)} (a : Tm n) (h : Tm (n + 1)),
+    P Γ (.eq (iter zero a h) a)
+  iterSucc : ∀ {n : ℕ} {Γ : List (NFm n)} (c a : Tm n) (h : Tm (n + 1)),
+    P Γ (.eq (iter (succ c) a h) (Syn.subst (inst (iter c a h)) h))
+  trEq : ∀ {n : ℕ} {Γ : List (NFm n)} (a b : Tm (n + 1)) {s t : Tm n}, P Γ (.eq s t) →
+    P Γ (.eq (Syn.subst (inst s) a) (Syn.subst (inst s) b)) →
+    P Γ (.eq (Syn.subst (inst t) a) (Syn.subst (inst t) b))
+  aqE : ∀ {n : ℕ} {Γ : List (NFm n)} {A : NFm n} (t : Tm n), P Γ (.Q (NFm.abs t A)) →
+    P Γ (NFm.rep t zero A) → P Γ A
+  dE : ∀ {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 2)} {A : NFm n}, P Γ (.D B) →
+    P (.Q B :: Γ.map NFm.shift) A.shift → P Γ A
+  dI : ∀ {n : ℕ} {Γ : List (NFm n)} (B : NFm (n + 2)) (t : Tm n),
+    P ((B.subst (up (inst t))).subst (repl (NFm.start B t)) :: Γ.map NFm.shift)
+      ((B.subst (up (inst t))).subst (repl (succ (Syn.var 0)))) → P Γ (.D B)
+  weaken : ∀ {n : ℕ} {Γ Δ : List (NFm n)} {A : NFm n}, P Γ A → Γ ⊆ Δ → P Δ A
+  shift : ∀ {n : ℕ} {Γ : List (NFm n)} {A : NFm n}, P Γ A → P (Γ.map NFm.shift) A.shift
+
+namespace AKernel
+
+variable {P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop} [AKernel @P] {Γ : List (NFm n)}
+  {A : NFm n}
+
+theorem hyp0 : P (A :: Γ) A := hyp List.mem_cons_self
+
+theorem wk {B : NFm n} (h : P Γ A) : P (B :: Γ) A := weaken h (List.subset_cons_self _ _)
+
+theorem eqRefl (t : Tm n) : P Γ (.eq t t) := by
+  have h := trEq (Γ := Γ) (Syn.var 0) (Syn.shift t) (iterZero t (Syn.var 0))
+    (by simpa using iterZero (P := @P) (Γ := Γ) t (Syn.var 0))
+  simpa using h
+
+theorem eqSymm {s t : Tm n} (h : P Γ (.eq s t)) : P Γ (.eq t s) := by
+  have k := trEq (Syn.var 0) (Syn.shift s) h (by simpa using eqRefl (P := @P) (Γ := Γ) s)
+  simpa using k
+
+/-- `Q` by cases: from `B(0) ⊢ B(S z)` infer `Q_y B(y)`, for every matrix,
+through the introduction at the witness `I(0, 0; u.0)`. -/
+theorem qCases (B : NFm (n + 1))
+    (h : P ((B.subst (inst zero)).shift :: Γ.map NFm.shift)
+      (B.subst (repl (succ (Syn.var 0))))) : P Γ (.Q B) := by
+  have hD : P Γ (.D (B.subst (up (fun i => Syn.var i.succ)))) := by
+    refine dI _ (iter zero zero zero) ?_
+    rw [NFm.start_iter, NFm.subst_dummy_inst, ← NFm.shift_subst_inst_zero]
+    exact h
+  exact dE hD hyp0
 
 /-- Transport in formula templates with at most `r` binders. -/
-def Tr (r : ℕ) : Prop :=
-  ∀ {n : ℕ} {Γ : List (NFm n)} (F : NFm (n + 1)) {s t : Tm n}, F.rk ≤ r →
-    APrf Γ (.eq s t) → APrf Γ (F.subst (inst s)) → APrf Γ (F.subst (inst t))
+def Tr (P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop) (r : ℕ) : Prop :=
+  ∀ (n : ℕ) (Γ : List (NFm n)) (F : NFm (n + 1)) {s t : Tm n}, F.rk ≤ r →
+    P Γ (.eq s t) → P Γ (F.subst (inst s)) → P Γ (F.subst (inst t))
 
 /-- Elimination of closures whose matrix has at most `r` binders. -/
-def El (r : ℕ) : Prop :=
-  ∀ {n : ℕ} {Γ : List (NFm n)} (B : NFm (n + 1)) (t : Tm n), B.rk ≤ r →
-    APrf Γ (.Q B) → APrf Γ (B.subst (inst zero)) → APrf Γ (B.subst (inst t))
+def El (P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop) (r : ℕ) : Prop :=
+  ∀ (n : ℕ) (Γ : List (NFm n)) (B : NFm (n + 1)) (t : Tm n), B.rk ≤ r →
+    P Γ (.Q B) → P Γ (B.subst (inst zero)) → P Γ (B.subst (inst t))
 
 /-- Elimination is `aqE` at the marker of the matrix followed by transport
 along the computation `marker = t`. -/
-theorem el_of_tr {r : ℕ} (hT : Tr r) : El r := by
+theorem el_of_tr {r : ℕ} (hT : Tr @P r) : El @P r := by
   intro n Γ B t hr hQ h0
-  have hK : APrf Γ (B.subst (inst (NFm.mark B t))) := by
-    refine .aqE (NFm.mark B t) ?_ ?_
+  have hK : P Γ (B.subst (inst (NFm.mark B t))) := by
+    refine aqE (NFm.mark B t) ?_ ?_
     · rw [NFm.abs_mark]; exact hQ
     · rw [NFm.rep_mark]; exact h0
-  exact hT B hr (.iterZero t _) hK
+  exact hT _ _ B hr (iterZero t _) hK
 
 /-- The step of a closure transported along `s = t`: from `B(t, 0)` to
 `B(t, S z)`, through `B(s, 0)` and the closure `Q_y B(s, y)`. -/
-theorem qStep {r : ℕ} (hT : Tr r) (hE : El r) {Θ : List (NFm m)} (G : NFm (m + 2))
-    (hG : G.rk ≤ r) {s t : Tm m} (e : APrf Θ (.eq s t))
-    (hQ : APrf Θ (.Q (G.subst (up (inst s))))) :
-    APrf (((G.subst (up (inst t))).subst (inst zero)).shift :: Θ.map NFm.shift)
+theorem qStep {r : ℕ} (hT : Tr @P r) (hE : El @P r) {Θ : List (NFm m)} (G : NFm (m + 2))
+    (hG : G.rk ≤ r) {s t : Tm m} (e : P Θ (.eq s t))
+    (hQ : P Θ (.Q (G.subst (up (inst s))))) :
+    P (((G.subst (up (inst t))).subst (inst zero)).shift :: Θ.map NFm.shift)
       ((G.subst (up (inst t))).subst (repl (succ (Syn.var 0)))) := by
-  have e' : APrf (((G.subst (up (inst t))).subst (inst zero)).shift :: Θ.map NFm.shift)
-      (.eq (Syn.shift s) (Syn.shift t)) := (APrf.shift e).wk
-  have hQ' := (APrf.shift hQ).wk (B := ((G.subst (up (inst t))).subst (inst zero)).shift)
+  have e' : P (((G.subst (up (inst t))).subst (inst zero)).shift :: Θ.map NFm.shift)
+      (.eq (Syn.shift s) (Syn.shift t)) := wk (shift e)
+  have hQ' : P (((G.subst (up (inst t))).subst (inst zero)).shift :: Θ.map NFm.shift)
+      (.Q ((G.subst (up (inst s))).subst (up fun i => Syn.var i.succ))) := wk (shift hQ)
   -- the template of the instances at zero
   have i0 : ∀ x : Tm m, (G.subst (Fin.cases zero (Fin.cases (Syn.var 0)
       fun j => Syn.var j.succ.succ))).subst (inst (Syn.shift x))
@@ -581,7 +621,8 @@ theorem qStep {r : ℕ} (hT : Tr r) (hE : El r) {Θ : List (NFm m)} (G : NFm (m 
     intro x
     simp only [NFm.shift, NFm.subst_subst]
     refine G.subst_ext fun i => ?_
-    refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun l => ?_) j) i <;> first | rfl | simp [Syn.shift, Syn.subst_subst]
+    refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun l => ?_) j) i <;>
+      first | rfl | simp [Syn.shift, Syn.subst_subst]
   -- the template of the instances at `S z`
   have i1 : ∀ x : Tm m, (G.subst (Fin.cases (succ (Syn.var 1)) (Fin.cases (Syn.var 0)
       fun j => Syn.var j.succ.succ))).subst (inst (Syn.shift x))
@@ -589,39 +630,40 @@ theorem qStep {r : ℕ} (hT : Tr r) (hE : El r) {Θ : List (NFm m)} (G : NFm (m 
     intro x
     simp only [NFm.subst_subst]
     refine G.subst_ext fun i => ?_
-    refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun l => ?_) j) i <;> first | rfl | simp [Syn.shift, Syn.subst_subst]
-  have h1 : APrf (((G.subst (up (inst t))).subst (inst zero)).shift :: Θ.map NFm.shift)
+    refine Fin.cases ?_ (fun j => Fin.cases ?_ (fun l => ?_) j) i <;>
+      first | rfl | simp [Syn.shift, Syn.subst_subst]
+  have h1 : P (((G.subst (up (inst t))).subst (inst zero)).shift :: Θ.map NFm.shift)
       (((G.subst (up (inst s))).subst (up fun i => Syn.var i.succ)).subst (inst zero)) := by
     rw [NFm.subst_dummy_up_inst, ← NFm.shift_subst_inst_zero, ← i0 s]
-    exact hT (G.subst (Fin.cases zero (Fin.cases (Syn.var 0) fun j => Syn.var j.succ.succ)))
+    exact hT _ _ (G.subst (Fin.cases zero (Fin.cases (Syn.var 0) fun j => Syn.var j.succ.succ)))
       (by rw [NFm.rk_subst]; exact hG) (eqSymm e') (by rw [i0]; exact hyp0)
-  have h2 := hE ((G.subst (up (inst s))).subst (up fun i => Syn.var i.succ)) (succ (Syn.var 0))
+  have h2 := hE _ _ ((G.subst (up (inst s))).subst (up fun i => Syn.var i.succ)) (succ (Syn.var 0))
     (by rw [NFm.rk_subst, NFm.rk_subst]; exact hG) hQ' h1
   rw [NFm.subst_dummy_up_inst, ← i1] at h2
-  have h3 := hT (G.subst (Fin.cases (succ (Syn.var 1)) (Fin.cases (Syn.var 0)
+  have h3 := hT _ _ (G.subst (Fin.cases (succ (Syn.var 1)) (Fin.cases (Syn.var 0)
       fun j => Syn.var j.succ.succ))) (by rw [NFm.rk_subst]; exact hG) e' h2
   rwa [i1] at h3
 
 /-- **Transport and elimination**, by induction on the number of binders. -/
-theorem trEl : ∀ r, Tr r ∧ El r
+theorem trEl : ∀ r, Tr @P r ∧ El @P r
   | 0 => by
-    have hT : Tr 0 := by
+    have hT : Tr @P 0 := by
       intro n Γ F s t hr e h
       match F, hr with
       | .eq a b, _ => exact trEq a b e h
     exact ⟨hT, el_of_tr hT⟩
   | r + 1 => by
     obtain ⟨hT, hE⟩ := trEl r
-    have hT' : Tr (r + 1) := by
+    have hT' : Tr @P (r + 1) := by
       intro n Γ F s t hr e h
       match F, hr with
       | .eq a b, _ => exact trEq a b e h
       | .Q B, hr =>
         exact qCases _ (qStep hT hE B (by simp only [NFm.rk] at hr; omega) e h)
       | .D B, hr =>
-        refine .dE h ?_
-        show APrf _ (.D ((B.subst (up (up (inst t)))).subst (up (up fun i => Syn.var i.succ))))
-        refine .dI _ (Syn.var 0) ?_
+        refine dE h ?_
+        show P _ (.D ((B.subst (up (up (inst t)))).subst (up (up fun i => Syn.var i.succ))))
+        refine dI _ (Syn.var 0) ?_
         rw [NFm.start_of_not (fun h' => by cases h'.2)]
         -- the instance at the eigenvariable of the reintroduced closure is the matrix itself
         have hτ : ((B.subst (up (up (inst t)))).subst (up (up fun i => Syn.var i.succ))).subst
@@ -646,37 +688,41 @@ theorem trEl : ∀ r, Tr r ∧ El r
           (B.subst (Fin.cases (Syn.var 0) (Fin.cases (Syn.var (Fin.succ (Fin.succ 0)))
             (Fin.cases (Syn.var (Fin.succ 0)) fun j => Syn.var j.succ.succ.succ))))
           (by rw [NFm.rk_subst]; simp only [NFm.rk] at hr; omega)
-          (by exact (APrf.shift e).wk : APrf _ (.eq (Syn.shift s) (Syn.shift t)))
+          (by exact wk (shift e) : P _ (.eq (Syn.shift s) (Syn.shift t)))
           (by rw [gx]; exact hyp0)
         rw [gx, NFm.shift_subst_inst_zero] at hq
         exact hq
     exact ⟨hT', el_of_tr hT'⟩
 
-/-- `QE` is a derived rule of `A₇`. -/
-theorem qE {B : NFm (n + 1)} (t : Tm n) (h₁ : APrf Γ (.Q B)) (h₂ : APrf Γ (B.subst (inst zero))) :
-    APrf Γ (B.subst (inst t)) :=
-  (trEl B.rk).2 B t le_rfl h₁ h₂
+/-- `QE` is a derived rule. -/
+theorem qE {B : NFm (n + 1)} (t : Tm n) (h₁ : P Γ (.Q B)) (h₂ : P Γ (B.subst (inst zero))) :
+    P Γ (B.subst (inst t)) :=
+  (trEl B.rk).2 _ _ B t le_rfl h₁ h₂
 
-end APrf
-
-instance : WKernel @APrf :=
-  ⟨fun h => .hyp h, fun a h => .iterZero a h, fun a b => APrf.trEq a b,
-    fun t h₁ h₂ => APrf.qE t h₁ h₂, fun h₁ h₂ => .dE h₁ h₂, fun B t h => .dI B t h⟩
-
-/-- Every rule of the kernel is a derived rule of `A₇`. -/
-theorem NPrf.toAPrf (h : NPrf Γ A) : APrf Γ A := by
+/-- Every rule of the kernel is a derived rule. -/
+theorem ofNPrf (h : NPrf Γ A) : P Γ A := by
+  haveI : WKernel @P := ⟨hyp, iterZero, trEq, fun t h₁ h₂ => qE t h₁ h₂, dE, dI⟩
   induction h with
-  | hyp h => exact .hyp h
-  | iterZero a h => exact .iterZero a h
-  | iterSucc c a h => exact .iterSucc c a h
-  | trOne h _ _ ih₁ ih₂ => exact APrf.trOne h ih₁ ih₂
-  | qE t _ _ ih₁ ih₂ => exact APrf.qE t ih₁ ih₂
-  | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
+  | hyp h => exact hyp h
+  | iterZero a h => exact iterZero a h
+  | iterSucc c a h => exact iterSucc c a h
+  | @trOne _ Γ h s t u _ _ ih₁ ih₂ =>
+    have k := trEq (Syn.shift u) h ih₁ (by rw [Syn.subst_inst_shift]; exact eqSymm ih₂)
+    rwa [Syn.subst_inst_shift] at k
+  | qE t _ _ ih₁ ih₂ => exact qE t ih₁ ih₂
+  | dE _ _ ih₁ ih₂ => exact dE ih₁ ih₂
   | dICase B t _ ih => exact WKernel.dICase B t ih
   | qIInd s t _ ih => exact WKernel.qInd s t ih
 
+end AKernel
+
+instance : AKernel @APrf :=
+  ⟨fun h => .hyp h, fun a h => .iterZero a h, fun c a h => .iterSucc c a h,
+    fun a b => APrf.trEq a b, fun t h₁ h₂ => .aqE t h₁ h₂, fun h₁ h₂ => .dE h₁ h₂,
+    fun B t h => .dI B t h, fun h s => APrf.weaken h s, fun h => APrf.shift h⟩
+
 /-- **Elimination by abstraction**: `A₇` and the kernel derive the same
 sequents. -/
-theorem aprf_iff_nprf : APrf Γ A ↔ NPrf Γ A := ⟨APrf.toNPrf, NPrf.toAPrf⟩
+theorem aprf_iff_nprf : APrf Γ A ↔ NPrf Γ A := ⟨APrf.toNPrf, AKernel.ofNPrf⟩
 
 end LeanProofs.ConciseIPRA
