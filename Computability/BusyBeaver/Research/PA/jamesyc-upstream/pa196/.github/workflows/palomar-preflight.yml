@@ -1,0 +1,25 @@
+name: Palomar preflight
+run-name: Palomar preflight for ${{ inputs.commit || github.sha }}
+on:
+  workflow_dispatch:
+    inputs:
+      commit:
+        description: Full source commit SHA to verify
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    uses: PalomarRegistry/PalomarSubmission/.github/workflows/submission.yml@14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+    with:
+      repository: ${{ github.repository }}
+      commit: ${{ inputs.commit || github.sha }}
+      pipeline_commit: 14aa8d6b3c2f14a8540605e37144560b9a00e7e7
+      request_id: preflight001
+      mode: full
+      execution_profile: palomar-standard-v1
+      options: >-
+        {"comparator_config_path":"comparator.json",
+         "authorization_relationship":"I am a responsible author or maintainer"}

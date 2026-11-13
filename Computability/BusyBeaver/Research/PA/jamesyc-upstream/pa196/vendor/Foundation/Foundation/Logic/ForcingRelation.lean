@@ -1,0 +1,157 @@
+module
+
+public import Foundation.Logic.LogicSymbol
+public import Foundation.Vorspiel.AdjunctiveSet
+
+/-! # Forcing relation -/
+
+@[expose] public section
+
+namespace FFL
+
+class ForcingRelation (W : Type*) (F : outParam Type*) where
+  Forces : W → F → Prop
+
+infix:45 " ⊩ " => ForcingRelation.Forces
+
+class ForcingExists (W : Type*) (α : outParam Type*) where
+  Forces : W → α → Prop
+
+infix:45 " ⊩↓ " => ForcingExists.Forces
+
+namespace ForcingRelation
+
+variable {W : Type*} {F : Type*} [ForcingRelation W F] [LogicalConnective F] [LogicalNeutral F]
+
+abbrev NotForces (w : W) (φ : F) : Prop := ¬w ⊩ φ
+
+infix:45 " ⊮ " => NotForces
+
+variable (W)
+
+class BasicSemantics where
+  verum (w : W) : w ⊩ ⊤
+  and {φ ψ : F} (w : W) : w ⊩ φ ⋏ ψ ↔ w ⊩ φ ∧ w ⊩ ψ
+  or {φ ψ : F} (w : W) : w ⊩ φ ⋎ ψ ↔ w ⊩ φ ∨ w ⊩ ψ
+
+class Monotone (R : outParam (W → W → Prop)) where
+  monotone {φ : F} {w : W} : w ⊩ φ → ∀ v, R w v → v ⊩ φ
+
+class IntKripke (R : outParam (W → W → Prop)) extends BasicSemantics W, Monotone W R where
+  imply {φ ψ : F} (w : W) : w ⊩ φ 🡒 ψ ↔ (∀ v, R w v → v ⊩ φ → v ⊩ ψ)
+  falsum (w : W) : ¬w ⊩ ⊥
+  not {φ : F} (w : W) : w ⊩ ∼φ ↔ (∀ v, R w v → ¬v ⊩ φ)
+
+variable {W} {φ ψ : F}
+
+attribute [simp, grind .]
+  BasicSemantics.verum BasicSemantics.and
+  BasicSemantics.or
+  IntKripke.falsum
+
+attribute [grind .]
+  IntKripke.imply
+  IntKripke.not
+
+@[simp, grind =]
+lemma iff (w : W) (R : W → W → Prop) [IntKripke W R] :
+    w ⊩ (φ 🡘 ψ) ↔ (∀ v, R w v → (v ⊩ φ ↔ v ⊩ ψ)) := by
+  simp [LogicalConnective.iff, IntKripke.imply]; grind
+
+variable (W)
+
+abbrev AllForces (φ : F) : Prop := ∀ w : W, w ⊩ φ
+
+infix:45 " ∀⊩ " => AllForces
+
+abbrev AllForcesSet {S : Type*} (s : S) [AdjunctiveSet F S] : Prop := ∀ φ ∈ s, W ∀⊩ φ
+
+infix:45 " ∀⊩* " => AllForcesSet
+
+variable {W}
+
+namespace AllForces
+
+@[simp] lemma verum [BasicSemantics W] : W ∀⊩ ⊤ := fun _ ↦ by simp
+
+@[simp] lemma and [BasicSemantics W] : W ∀⊩ φ ⋏ ψ ↔ W ∀⊩ φ ∧ W ∀⊩ ψ := by
+  simp [AllForces]; grind
+
+end AllForces
+
+end ForcingRelation
+
+/-! ### Forcing relation for classical logic -/
+
+class WeakForcingRelation (ℙ : Type*) (F : outParam Type*) where
+  WeaklyForces : ℙ → F → Prop
+
+infix:45 " ⊩ᶜ " => WeakForcingRelation.WeaklyForces
+
+namespace WeakForcingRelation
+
+variable {ℙ : Type*} {F : Type*} [WeakForcingRelation ℙ F] [LogicalConnective F] [LogicalNeutral F]
+
+abbrev NotForces (p : ℙ) (φ : F) : Prop := ¬p ⊩ᶜ φ
+
+infix:45 " ⊮ᶜ " => NotForces
+
+variable (ℙ)
+
+class BasicSemantics where
+  verum (p : ℙ) : p ⊩ᶜ ⊤
+  falsum (p : ℙ) : ¬p ⊩ᶜ ⊥
+  and {φ ψ : F} (p : ℙ) : p ⊩ᶜ φ ⋏ ψ ↔ p ⊩ᶜ φ ∧ p ⊩ᶜ ψ
+
+class ClassicalKripke (R : outParam (ℙ → ℙ → Prop)) extends BasicSemantics ℙ where
+  or {φ ψ : F} (p : ℙ) : p ⊩ᶜ φ ⋎ ψ ↔ ∀ q, R p q → ∃ x, R q x ∧ (x ⊩ᶜ φ ∨ x ⊩ᶜ ψ)
+  not {φ : F} (p : ℙ) : p ⊩ᶜ ∼φ ↔ (∀ q, R p q → ¬q ⊩ᶜ φ)
+  imply {φ ψ : F} (p : ℙ) : p ⊩ᶜ φ 🡒 ψ ↔ (∀ q, R p q → q ⊩ᶜ φ → q ⊩ᶜ ψ)
+  monotone {φ : F} {p : ℙ} : p ⊩ᶜ φ → ∀ q, R p q → q ⊩ᶜ φ
+  generic {φ : F} {p : ℙ} : (∀ q, R p q → ∃ r, R q r ∧ r ⊩ᶜ φ) → p ⊩ᶜ φ
+
+variable {ℙ} {φ ψ : F}
+
+attribute [simp, grind .]
+  BasicSemantics.verum BasicSemantics.falsum BasicSemantics.and
+  ClassicalKripke.or ClassicalKripke.imply ClassicalKripke.not
+
+variable (ℙ)
+
+abbrev AllForces (φ : F) : Prop := ∀ p : ℙ, p ⊩ᶜ φ
+
+infix:45 " ∀⊩ᶜ " => AllForces
+
+abbrev AllForcesSet {S : Type*} (s : S) [AdjunctiveSet F S] : Prop := ∀ φ ∈ s, ℙ ∀⊩ᶜ φ
+
+infix:45 " ∀⊩ᶜ* " => AllForcesSet
+
+variable {ℙ} {φ ψ : F}
+
+namespace AllForces
+
+@[simp] lemma verum [BasicSemantics ℙ] : ℙ ∀⊩ᶜ ⊤ := fun _ ↦ by simp
+
+@[simp] lemma falsum [BasicSemantics ℙ] [Nonempty ℙ] : ¬ℙ ∀⊩ᶜ ⊥ :=
+  fun h ↦ by simpa using h (Classical.choice inferInstance)
+
+@[simp] lemma and [BasicSemantics ℙ] : ℙ ∀⊩ᶜ φ ⋏ ψ ↔ ℙ ∀⊩ᶜ φ ∧ ℙ ∀⊩ᶜ ψ := by
+  simp [AllForces]; grind
+
+/-
+@[simp] lemma or [ClassicalKripke ℙ R] : ℙ ∀⊩ᶜ φ ⋎ ψ ↔ ℙ ∀⊩ᶜ φ ∨ ℙ ∀⊩ᶜ ψ := by
+  simp [AllForces]
+  constructor
+  · intro h
+    by_contra! C
+    rcases C with ⟨⟨p, hp⟩, ⟨q, hq⟩⟩
+-/
+
+end AllForces
+
+
+end WeakForcingRelation
+
+end FFL
+
+end
