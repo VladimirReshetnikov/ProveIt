@@ -1,0 +1,104 @@
+IMPLEMENTATION REVIEW: UNIFORM TERMINAL CERTIFICATES
+===================================================
+
+Reviewed source profiles
+------------------------
+code/checker_tokens.py: 242 significant tokens / 268 AST / 565 bytes.
+code/checker_ast.py:    247 significant tokens / 263 AST / 553 bytes.
+code/checker_bytes.py:  272 significant tokens / 306 AST / 469 bytes.
+These are three different programs, with envelope 242 / 263 / 469.
+The complete reader, proof checker and ACCEPT output are included.
+
+Both stream profiles use global decreasing numerical scopes. The old AST
+record uses local scopes. The global and local controls are both included;
+the supplied corresponding proofs have the same public goals. No raw
+certificate-language equality between these two scope policies is claimed.
+The byte profile uses local scopes and a single JSON array as before.
+
+What the terminal change does
+-----------------------------
+Every recursive checking entry reads a packet, including a retained-hypothesis
+return. The entry succeeds if its checked goal is either a retained resource
+or the computation equation constructed from that packet. If neither matches,
+the unchanged logical instruction runs. Retained-hypothesis leaves receive
+harmless zero packets in the new proof format. The AST stream and byte profile
+also receive such packets at their neutral-major calls. This changes the
+certificate language and simplifies dispatch; it deletes no arithmetic axiom.
+
+No-image projection and arithmetic leaves
+----------------------------------------
+For the short-circuit stream opener, any successful no-image opening is
+idempotent at the same scope floor. This is a structural induction: protected
+integers stay unchanged; an unprotected integer at an even depth becomes zero,
+which remains zero; an unprotected integer at an odd depth would require the
+missing image and fail. Array arities, hence descendant depths, are unchanged.
+Therefore, if the projected goal equals a constructed computation H, a second
+opening of H succeeds. The inherited direct-computation-leaf lemma applies to
+H, while sorted interpretation identifies the goal and its projection.
+
+For the eager byte opener, successful no-image opening is literally the
+identity on exact integer/list trees. Any unprotected integer would eagerly
+open the function sentinel, causing a type error, even at even depth. Thus the
+projected versus raw computation comparison is identical on successful byte
+entries. This observation is independent of whether a resource is retained.
+
+Canonical completeness
+----------------------
+Canonical source proof traces have goal objects that are fixed points of their
+no-image opener. Their computation and logical packets can be reused. A single
+[0,0,0] stream packet, or [0,0,0,0] array packet, is inserted at every hypothesis
+return. The preview from these packets is a well-defined zero computation;
+retained membership succeeds regardless. The AST profile has a retained scalar
+zero neutral resource and hence also inserts a dummy at each neutral-major
+entry. No scope counter changes at these newly explicit leaves.
+
+The supplied untrusted translators check the fixed-point condition at every
+source entry they replay. This is evidence for the concrete fixtures, not a
+substitute for the canonical-compiler induction in the paper. Successful raw
+acceptance languages need not agree; the claim concerns the canonical public
+theorem set and the inherited full iPRA interpretation.
+
+Other source changes
+--------------------
+The stream loop is a recursive continuation. After the major is verified, the
+same fresh scope, hypothesis and next goal are passed to that continuation.
+The token profile opens its next goal before its hypothesis, rather than after;
+these two opens are pure at the already updated scope floor. Neither consumes
+packets nor writes the floor, so reordering does not affect successful finite
+checking. Exceptions reject either execution.
+
+In the AST profile, the default d=(k:=0) is evaluated once while the opener is
+defined, before any proof is checked. It initializes the same module-global k
+and the same default d as a separate k=0 statement. The recursive major check
+happens before the local instruction decrements this global floor.
+
+In the byte profile, every successful call returns a nonempty singleton list.
+The control returns True at a retained resource and a singleton list otherwise.
+Only truthiness of a successful major result is used, so this return-value change
+is immaterial. The eager any selector is the inherited refinement: it has the
+same Boolean value where defined, permits only successful executions of the corresponding uniform-terminal
+bool-selector version, and is defined at every nonempty canonical formula. Empty neutral majors return
+at membership before any selector is evaluated.
+
+Limits and resource model
+-------------------------
+The proofs use ideal unbounded finite execution, as do the compared programs.
+Python recursion limits and host resource exhaustion can reject longer proofs.
+The recursive stream form retains one Python frame per continuation, unlike the
+old while loop. This practical space tradeoff is not included in the requested
+source-size metric and must not be presented as a speed or memory improvement.
+The compact public goal and exact integer/list input alphabet are promised;
+these modules do not implement the stronger full public/input validators.
+
+Independent concrete checks
+---------------------------
+Run python3 tests/verify.py. The supplied run reproduced all six source vectors,
+54 exact proof translations, 3,122 fixed-point checks in those replays, and 584
+isolated checker executions, half under -O. It reported zero failures. Included
+proofs use an induction hypothesis, compound implication elimination, inferred
+majors, shared computations and zero initializers. Negative cases include future
+scope leakage, wrong computations and false mutations, including the canonical
+closed guarded assertion that a number equals its successor. The source/target
+byte equality and process outcomes are recorded in evidence/verification.json.
+No new Lean or Rocq verification is claimed, and finite testing does not prove
+soundness, completeness or bi-interpretability by itself.

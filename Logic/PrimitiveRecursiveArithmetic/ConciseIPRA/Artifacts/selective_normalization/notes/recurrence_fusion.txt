@@ -1,0 +1,158 @@
+# A shared iPRA recurrence lemma
+
+Status: proved on paper as a derived rule of ordinary iPRA. This is a useful
+refactoring of the bridge, not a new axiomatization, a new checker record, or a
+claim of novelty for fold fusion. The Lean interface below is a proposal and
+has not been compiled.
+
+## Sources actually read
+
+Pinned repository revision: `12197d86f63e9ec73b2d91399c4de2a8cb0077ee`.
+
+- `Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean`,
+  in particular `PRA.qfInd` and the constructors of `PRAAx`.
+- `.../ScalarToPRA.lean`, especially `ToPRA.iterSym_ext`.
+- `.../RoundTripPRA.lean`, especially `RoundTrip.tau_code_prec_zero`,
+  `RoundTrip.tau_code_prec_succ`, and the `prec` branch of `tau_code`.
+- Unified article `ch01_base.tex`: labels `base:lem:iota-ext`,
+  `base:prop:termrt`, and open question `base:q:shorter`.
+
+These paths identify files in the pinned repository; those upstream source
+files are not bundled in this archive.
+
+## The most economical shared lemma
+
+Fix primitive recursive terms F(n,p), G(n,p), and H(n,r,p), with fixed
+parameter tuple p. Suppose iPRA proves the following equations, uniformly in
+their displayed free variables:
+
+    F(0,p) = G(0,p)
+    F(S n,p) = H(n,F(n,p),p)
+    G(S n,p) = H(n,G(n,p),p).
+
+Then iPRA proves `forall n, F(n,p) = G(n,p)`.
+
+Proof: apply quantifier-free induction to the single literal equation
+`F(n,p)=G(n,p)`. Its base is the first hypothesis. In the successor step,
+
+    F(S n,p)
+      = H(n,F(n,p),p)
+      = H(n,G(n,p),p)
+      = G(S n,p).
+
+The middle equality is congruence in the previous-value argument, using the
+induction equation. No induction on a quantified formula is used. The
+parameters remain fixed throughout. Universal quantification of the final
+equation is the conclusion of the usual induction schema.
+
+It is enough to have the recurrence hypotheses under a fixed context Gamma
+that does not contain n free. In the formal scope discipline, Gamma is shifted
+under the fresh counter. The empty-context version suffices for both existing
+bridge proofs.
+
+## Proposed internal Lean interface
+
+Here `s,t : PTm (n+1)` have variable 0 as counter, and
+`h : PTm (n+2)` has variables 0 and 1 as counter and previous value. Define
+
+    step h r := Syn.subst (Fin.cases (Syn.var 0) (Syn.repl r)) h
+
+for `r : PTm (n+1)`. This is exactly the substitution already appearing in
+`PRAAx.precSucc` and `RoundTrip.code_prec_succ`.
+
+The intended statement is:
+
+    theorem recurrence_unique (s t : PTm (n+1)) (h : PTm (n+2))
+        (h0 : [] |-PRA (s = t)[inst zero])
+        (hs : [] |-PRA s[repl (succ (var 0))] = step h s)
+        (ht : [] |-PRA t[repl (succ (var 0))] = step h t) :
+        [] |-PRA forall (s = t)
+
+where the displayed proof notation is explanatory rather than literal Lean.
+Use `PRA.qfInd (s ≐ t) trivial h0` and, in its step context `[s ≐ t]`,
+compose `hs.ofNil`, `Prf.eqCongr h`, and `(ht.ofNil).eqSymm`. The arguments
+of the congruence proof are reflexivity for variable 0 (the counter),
+`Prf.hyp0` for variable 1 (the previous value), and reflexivity for all
+remaining variables. This puts the only induction and its counter/previous
+slot bookkeeping in one place.
+
+## Exact specialization: iterator extensionality
+
+`ToPRA.iterSym_ext` assumes
+
+    ha : a'(z) = a(sigma(z))
+    hh : h'(u,z) = h(u,sigma(z)).
+
+Take
+
+    F(n,z) = iterSym(a',h')(n,z),
+    G(n,z) = iterSym(a,h)(n,sigma(z)),
+    H(n,r,z) = h(r,sigma(z)).
+
+The common body ignores the counter. The base follows by
+`iterSym_zero`, `ha`, and the reverse of `iterSym_zero` on the right.
+The left recurrence is `iterSym_succ` followed by `hh` instantiated at
+`u=F(n,z)`; the right recurrence is `iterSym_succ` directly. The existing
+`subst_inst_up` and `subst_repl_up` lemmas normalize these substitutions.
+After recurrence uniqueness, `Prf.allE t` supplies the requested count t.
+
+In source syntax the common body H is the term
+
+    PTm.app h (Fin.cases (Syn.var 1)
+      (fun j => Syn.shift (Syn.shift (sigma j))))
+
+over the variables `(counter, previous, z...)`. This avoids treating the
+parameters as if they were free of all binder shifts.
+
+## Exact specialization: primitive recursion round trip
+
+For fixed codes `f : PR k`, `g : PR (k+2)`, take
+
+    F(n,x) = ToPRA.tau (FromPRA.code (.prec f g)),
+    G(n,x) = PTm.app (.prec f g) Syn.var,
+    H(n,r,x) = PTm.app g Syn.var,
+
+where H is in the enlarged `(n,r,x...)` scope. The base is already the
+statement of `RoundTrip.tau_code_prec_zero f g ihf`.
+
+The left recurrence needs no induction hypothesis. It is the first three
+links in the existing `tau_code_prec_succ` proof:
+
+1. `tau_subst_repl (Tm.succ (Syn.var 0)) _`;
+2. `ToPRA.interp.sound (code_prec_succ f g)`;
+3. `tau_subst_code ihg _`.
+
+These conclude `F(S n,x) = g(n,F(n,x),x)`. The right recurrence is
+`PRAAx.precSucc f g`. Recurrence uniqueness owns the remaining congruence
+under g and the induction. `Prf.allOpen` yields the unquantified equality
+used in the `prec` branch of `tau_code`.
+
+This is a simplification of the *interface of the proof*. It should not be
+claimed to reduce Lean line count until the refactoring is implemented and
+compiled. It does not remove any induction principle from iPRA.
+
+## More general indexed fusion
+
+If desired, one can package the common generalization. Given recurrences
+
+    F(0)=a, F(Sn)=f(n,F(n)),
+    G(0)=b, G(Sn)=g(n,G(n)),
+
+and a term K(n,r), suppose
+
+    K(0,a)=b,
+    K(Sn,f(n,r))=g(n,K(n,r)).
+
+One literal-equation induction gives `K(n,F(n))=G(n)`. This is a schema over
+fixed primitive recursive terms, not quantification over functions. Identity
+K gives recurrence uniqueness. A projection K gives correctness of a paired
+state implementation of primitive recursion. The stronger generality is not
+needed for the two current Lean proofs and may add implementation overhead.
+
+## What this does not establish
+
+- No checker size reduction or new minimum.
+- No deletion of a logical or arithmetic rule.
+- No claim that fusion is mathematically novel.
+- No Lean compilation or formal verification of the proposed interface.
+- No generic statement for higher-type functions or non-primitive-recursive K.

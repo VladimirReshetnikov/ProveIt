@@ -1929,7 +1929,8 @@ reflexive zero gate).
 \section{Fusion: evaluation at the discharge}
 \label{claus:sec:fusion}
 
-This section draws on \pkg{evaluation\_discharge}. The two rows of
+This section draws on \pkg{evaluation\_discharge}, and
+\cref{claus:sec:pd} on \pkg{476\_byte\_presentation}. The two rows of
 \rulename{Eval} and the elimination of $D$ become one rule family, which
 leaves three: \rulename{Use}, \rulename{Intro} and \rulename{Discharge}.
 
@@ -2124,15 +2125,325 @@ formalized calculus with \rulename{SeedEval} has native contexts
 $\mathsf{C}_{\mathrm{Seed}}$ of \cref{comp:thm:seedeval}, which is
 equivalent to $\mathsf{C}^{0}$.
 
+\subsection{Partial evaluation and the diagonal introduction}
+\label{claus:sec:pd}
+
+This subsection draws on \pkg{476\_byte\_presentation}. Two rules of
+$\mathsf{ED}$ have instances that a substitution does not carry to
+instances of the same rule: the introduction selects its mode by the
+witness (\cref{claus:prop:subst}), and the identity case of $\varrho$
+applies to every pair that matches no arithmetic case
+(\cref{claus:rem:total}). The calculus $\mathsf{PD}$ below takes the
+diagonal introduction of $\mathsf{K}$ and restricts the identity case to an
+$E$ with root $D$. It keeps three rule families, and substitution preserves
+its derivation trees.
+
+\begin{definition}[Partial evaluation]
+\label{claus:def:rhoplus}
+For formulas $E$ and $F$ the formula $\varrho^{+}_E(F)$ is
+\begin{align*}
+ \varrho^{+}_{\,s=t}(b=r)&\defeq\bigl(r=\Phi_2(s,t,b)\bigr)
+   \qquad\text{if }\Phi_2(s,t,b)\text{ is defined},\\
+ \varrho^{+}_{\,\D{p}{q}C}(F)&\defeq F,
+\end{align*}
+and $\varrho^{+}_E(F)$ is undefined in every other case.
+\end{definition}
+
+Written out, the first line consists of the zero row and the successor row
+\[
+ \varrho^{+}_{\,s=t}\bigl(\It{0}{s}{u}{h}=r\bigr)\equiv(r=t),\qquad
+ \varrho^{+}_{\,\It{c}{a}{u}{h}=t}\bigl(\It{\Suc c}{a}{u}{h}=r\bigr)
+ \equiv\bigl(r=h\subst{t}{u}\bigr),
+\]
+which are the first two cases of $\varrho$ (\cref{claus:def:rho}); the
+second line, the \emph{row} $D$, is the third case of $\varrho$ restricted
+to an $E$ with root $D$. The three rows are disjoint: in the first two $E$
+is an equation and the counter of the left side of $F$ is $0$,
+respectively a successor, and in row $D$ the formula $E$ has root $D$.
+Hence $\varrho^{+}$ is a partial function, and
+$\varrho^{+}_E(F)\equiv\varrho_E(F)$ wherever $\varrho^{+}_E(F)$ is
+defined. A pair of equations that matches no row of $\Phi_2$ is not in
+its domain.
+
+\begin{definition}[The calculi $\mathsf{K}^{u}$ and $\mathsf{PD}$]
+\label{claus:def:pd}
+$\mathsf{K}^{u}$ is the calculus $\mathsf{V}$ of \cref{claus:def:v} with
+the term $\eta$ of \rulename{Intro} replaced by the term $\eta_B(z)$ of the
+diagonal introduction (\cref{claus:def:k}); its rule families are
+\rulename{Use}, \rulename{Eval}, \rulename{Elim} and \rulename{Intro}.
+$\mathsf{PD}$ has raw terms, contexts of uniform clauses, the rules
+\rulename{Use} and \rulename{Intro} of $\mathsf{K}^{u}$ and
+\[
+ \infrule{\Gamma\proves\D{x}{y}B\quad
+          \Gamma,\mathcal{B}_b\proves E\quad
+          \Gamma,\mathcal{B}_b\proves F}
+         {\Gamma\proves\varrho^{+}_E(F)}\ \rulename{Discharge}
+\]
+where $\mathcal{B}_b\defeq[B(b,0);\,y.\,B(b,y)]$, the formula
+$\varrho^{+}_E(F)$ is defined, and $b$ is fresh for $\Gamma$ and $B$ and
+does not occur free in $\varrho^{+}_E(F)$.
+\end{definition}
+
+$\mathsf{K}^{u}$ stands to $\mathsf{K}$ as $\mathsf{V}$ stands to
+$\mathsf{C}$. The formulas $E$ and $F$ of a \rulename{Discharge} may
+contain $b$. The specification of $\mathsf{PD}$ is the clause
+$\mathcal{R}$ in the initial context of a theorem, \rulename{Use} with zero
+or one premise, \rulename{Intro} with the diagonal test made on the matrix
+before the witness is substituted, and \rulename{Discharge} with the three
+rows of $\varrho^{+}$; there is no reflexivity, computation, transport,
+induction, cut or structural rule. Every \rulename{Discharge} of
+$\mathsf{PD}$ is a \rulename{Discharge} of $\mathsf{ED}$, and the two
+calculi differ in the mode of \rulename{Intro} and in the domain of the
+identity case.
+
+\begin{lemma}[Covariance of $\varrho^{+}$]
+\label{claus:lem:covar}
+Let $\sigma$ be a capture-free substitution of terms for free variables.
+If $\varrho^{+}_E(F)$ is defined, then $\varrho^{+}_{E\sigma}(F\sigma)$ is
+defined by the same row and
+\[
+ \varrho^{+}_{E\sigma}(F\sigma)\equiv\varrho^{+}_E(F)\,\sigma .
+\]
+\end{lemma}
+\begin{proof}
+In the zero and the successor row $E\equiv(s=t)$ and $F\equiv(b=r)$, so
+$E\sigma\equiv(s\sigma=t\sigma)$ and $F\sigma\equiv(b\sigma=r\sigma)$. By
+\cref{comp:prop:phisubst}, $\Phi_2(s\sigma,t\sigma,b\sigma)$ is defined by
+the same row and is $\Phi_2(s,t,b)\sigma$; hence
+$\varrho^{+}_{E\sigma}(F\sigma)\equiv(r\sigma=\Phi_2(s,t,b)\sigma)
+\equiv\varrho^{+}_E(F)\sigma$. In row $D$ the formula $E\sigma$ has root
+$D$ (\cref{guard:prop:subst-shapes}(i)), and both sides are $F\sigma$.
+\end{proof}
+
+Definedness is not reflected: the substitution $x\mapsto 0$ takes the pair
+$(x=0,\ \It{0}{0}{u}{0}=0)$, outside the domain, to a pair in the zero row.
+The theorems below need preservation only.
+
+\begin{remark}[The total identity case is not covariant]
+\label{claus:rem:total}
+Let $E\equiv(x=0)$, $F\equiv(\It{0}{0}{u}{0}=0)$ and $\sigma(x)\defeq 0$.
+No arithmetic case of $\varrho$ matches $(E,F)$: the zero case needs the
+seed $0$ of the iterator to be the left side $x$ of $E$, and the successor
+case needs a successor counter. So $\varrho_E(F)\equiv F$. The pair
+$(E\sigma,F\sigma)\equiv(0=0,\ \It{0}{0}{u}{0}=0)$ matches the zero case,
+so
+\[
+ \varrho_{E\sigma}(F\sigma)\equiv(0=0)\not\equiv
+ \bigl(\It{0}{0}{u}{0}=0\bigr)\equiv\varrho_E(F)\,\sigma .
+\]
+A \rulename{Discharge} of $\mathsf{ED}$ at this pair therefore does not
+become, under $\sigma$, an instance of the same rule with the substituted
+conclusion. This obstructs substitution that preserves the derivation tree
+of $\mathsf{ED}$, not admissibility: for contexts $\mathcal{R},\Gamma$,
+substitution is admissible in $\mathsf{ED}$ through
+\cref{claus:thm:fusion}, \cref{claus:thm:uniform} and
+\cref{claus:prop:subst}, since $(\Gamma\sigma)^{\circ}\equiv
+\Gamma^{\circ}\sigma$. The pair is outside the domain of $\varrho^{+}$.
+\end{remark}
+
+For a substitution $\sigma$, the image of a uniform clause
+$[\Pi;\,y.\,C]$ is $[\Pi\sigma;\,y.\,C\sigma]$, with $y$ renamed away from
+the variables and values of $\sigma$; then
+$(C\subst{t}{y})\sigma\equiv(C\sigma)\subst{t\sigma}{y}$,
+$\langle A\rangle\sigma\equiv\langle A\sigma\rangle$ and
+$\mathcal{R}\sigma\equiv\mathcal{R}$.
+
+\begin{theorem}[Substitution and weakening preserve the derivation tree]
+\label{claus:thm:pdsubst}
+Let $\Gamma\proves_{\mathsf{PD}}A$, let $\sigma$ be a capture-free
+substitution of terms for free variables, and let $\Gamma'$ be a context
+with a map $\iota$ from the occurrences of $\Gamma$ to the occurrences of
+$\Gamma'$ such that $\iota(c)$ is the clause $c\sigma$. Then
+$\Gamma'\proves_{\mathsf{PD}}A\sigma$ by a derivation with the same tree
+of rules, in which every \rulename{Use} selects the image of its
+occurrence, every \rulename{Intro} has the same mode and every
+\rulename{Discharge} the same row of $\varrho^{+}$, after a renaming of
+eigenvariables. In particular substitution ($\Gamma'\defeq\Gamma\sigma$),
+weakening and exchange ($\sigma$ the identity) and injective renaming are
+admissible in $\mathsf{PD}$.
+\end{theorem}
+\begin{proof}
+Induction on the derivation, simultaneously for all $\sigma$, $\Gamma'$
+and $\iota$.
+
+\rulename{Use}: the derivation selects $c\equiv[\Pi;\,y.\,C]$ at the term
+$t$ and has a derivation of $\Gamma\proves A'$ for each $A'$ in $\Pi$. The
+induction hypothesis gives $\Gamma'\proves A'\sigma$ for each member of
+$\Pi\sigma$, and \rulename{Use} of $\iota(c)\equiv[\Pi\sigma;\,y.\,C\sigma]$
+at $t\sigma$ gives $(C\sigma)\subst{t\sigma}{y}\equiv(C\subst{t}{y})\sigma$.
+
+\rulename{Intro}: the premise is
+$\Gamma,\langle B(t,\eta_B(z))\rangle\proves B(t,\Suc z)$ with $z$ fresh
+for $\Gamma$, $t$ and $B$. Choose $z'$ fresh for $\Gamma'$, $t\sigma$ and
+$B\sigma$, and let $\sigma'$ be $\sigma$ with $z\mapsto z'$ in addition.
+Since $z$ does not occur in $\Gamma$, $t$ and $B$, the substitution
+$\sigma'$ acts on them as $\sigma$, so $\iota$ still satisfies the
+hypothesis for $\sigma'$. The diagonal test is preserved and reflected by
+the substitution, lifted under $x$ and $y$
+(\cref{guard:prop:subst-shapes}(iii)), so
+$\eta_B(z)\sigma'\equiv\eta_{B\sigma}(z')$ and the added occurrence has the
+image $\langle(B\sigma)(t\sigma,\eta_{B\sigma}(z'))\rangle$. Extend
+$\iota$ by sending the added occurrence to the occurrence added on the
+right. The induction hypothesis for $\sigma'$ gives
+$\Gamma',\langle(B\sigma)(t\sigma,\eta_{B\sigma}(z'))\rangle\proves
+(B\sigma)(t\sigma,\Suc z')$, and \rulename{Intro} in the same mode with
+the eigenvariable $z'$ gives $\Gamma'\proves\D{x}{y}(B\sigma)\equiv
+(\D{x}{y}B)\sigma$.
+
+\rulename{Discharge}: the premises are $\Gamma\proves\D{x}{y}B$ and
+$\Gamma,\mathcal{B}_b\proves E$, $\Gamma,\mathcal{B}_b\proves F$, with
+$\varrho^{+}_E(F)\equiv R$ and $b$ fresh for $\Gamma$, $B$ and $R$. The
+induction hypothesis for $\sigma$ and $\iota$ gives
+$\Gamma'\proves\D{x}{y}(B\sigma)$. Choose $b'$ fresh for $\Gamma'$,
+$B\sigma$ and $R\sigma$, and let $\sigma'$ be $\sigma$ with $b\mapsto b'$
+in addition. Then $\mathcal{B}_b\sigma'$ is the clause
+$[(B\sigma)(b',0);\,y.\,(B\sigma)(b',y)]$ that opens $\D{x}{y}(B\sigma)$
+at $b'$; extend $\iota$ accordingly. The induction hypothesis for
+$\sigma'$ gives the two branches with the conclusions $E\sigma'$ and
+$F\sigma'$. By \cref{claus:lem:covar},
+$\varrho^{+}_{E\sigma'}(F\sigma')$ is defined by the same row and is
+$R\sigma'\equiv R\sigma$, because $b$ does not occur in $R$. The
+eigenvariable condition holds for $b'$, and \rulename{Discharge} gives
+$\Gamma'\proves R\sigma$.
+
+For the special cases take $\iota$ positional for $\Gamma\sigma$, and for
+weakening and exchange the map that sends each occurrence of $\Gamma$ to
+its copy in $\Gamma'$.
+% ed.: the package renames the eigenvariables first and then applies the
+% induction hypothesis to the renamed branch; extending sigma by z -> z'
+% and b -> b' applies the hypothesis to the branch itself, so no separate
+% renaming lemma is presupposed.
+\end{proof}
+
+No cut, normalization or arithmetic bridge is used. Substitution in
+$\mathsf{K}$ preserves the derivation tree as well
+(\cref{claus:thm:ksubst}); $\mathsf{K}$ has four rule families and an
+explicit \rulename{Refl}, and $\mathsf{PD}$ has three and the clause
+$\mathcal{R}$.
+
+\begin{theorem}[Uniform clauses with the diagonal introduction]
+\label{claus:thm:ku}
+For every context $\Gamma$ of uniform clauses and every formula $A$,
+\[
+ \mathcal{R},\Gamma\proves_{\mathsf{K}^{u}}A\quad\Longleftrightarrow\quad
+ \Gamma^{\circ}\proves_{\mathsf{K}}A .
+\]
+Hence, for $Q$-free $\Delta$ and $F$,
+$\mathcal{R},\langle\Delta\rangle\proves_{\mathsf{K}^{u}}F$ if and only if
+$\Delta\proves_{\Nat}F$.
+\end{theorem}
+\begin{proof}
+The proof of \cref{claus:thm:uniform} applies. Its invariant is that each
+occurrence of the uniform context, other than $\mathcal{R}$, corresponds by
+position to an occurrence of the packed context with the same consequent
+and either the same antecedent or no antecedent in the place of $0=0$,
+and that \rulename{Use} of $\mathcal{R}$ corresponds to \rulename{Refl}.
+It copies every \rulename{Intro} with the same matrix,
+witness and eigenvariable, and the added occurrences
+$\langle B(t,\eta)\rangle$ and $\operatorname{ord}(B(t,\eta))\equiv
+\langle B(t,\eta)\rangle^{\circ}$ correspond. Here $\eta\equiv\eta_B(z)$
+on both sides, since the diagonal test reads the matrix only. An
+\rulename{Elim} adds the same opened occurrence on both sides, which has an
+antecedent. The second statement follows from \cref{claus:thm:k}, that is
+statement (iii) of \cref{claus:thm:five} for $\mathsf{K}$, since
+$\langle\Delta\rangle^{\circ}\equiv\operatorname{ord}(\Delta)$.
+\end{proof}
+
+\begin{theorem}[Partial evaluation at the discharge]
+\label{claus:thm:pd}
+For every context $\Gamma$ of uniform clauses and every formula $A$,
+\[
+ \Gamma\proves_{\mathsf{PD}}A\quad\Longleftrightarrow\quad
+ \Gamma\proves_{\mathsf{K}^{u}}A .
+\]
+The translations leave the end sequent unchanged, and $\mathcal{R}$ need
+not be in $\Gamma$. Hence, for $Q$-free $\Delta$ and $F$,
+$\mathcal{R},\langle\Delta\rangle\proves_{\mathsf{PD}}F$ if and only if
+$\Delta\proves_{\Nat}F$.
+\end{theorem}
+\begin{proof}
+Both directions are inductions on derivations. \rulename{Use} and
+\rulename{Intro} are the same rules in both calculi and are copied.
+
+From left to right translate the three premises of a \rulename{Discharge}
+with major premise $\D{x}{y}B$ and conclusion $R\equiv\varrho^{+}_E(F)$.
+In the zero or the successor row, $E\equiv(s=t)$, $F\equiv(b=r)$ and
+$R\equiv(r=\Phi_2(s,t,b))$; \rulename{Eval} applied to the translated
+derivations of $E$ and $F$ proves $R$ in $\Gamma,\mathcal{B}_b$. In row $D$,
+$R\equiv F$, and the translated derivation of $F$ proves it. Then apply
+\rulename{Elim} to the translated major premise; its eigenvariable
+condition is the condition of \rulename{Discharge} on $b$.
+
+From right to left let $\Theta\equiv\D{x}{y}(0=0)$. In $\mathsf{PD}$ it is
+derivable in every context, also without $\mathcal{R}$, by the two-node
+derivation of \cref{claus:lem:theta}: the matrix $0=0$ is not diagonal, so
+\rulename{Intro} at the witness $0$ is in case mode, its assumption and its
+target are both $0=0$, and \rulename{Use} of $\langle 0=0\rangle$ closes the
+branch. Translate an \rulename{Elim} with major premise $\D{x}{y}B$ and
+branch $\Gamma,\mathcal{B}_b\proves A$ by \rulename{Discharge} with the
+translated major premise, with $E\defeq\Theta$, derived in
+$\Gamma,\mathcal{B}_b$, and with $F\defeq A$; row $D$ gives $A$, and the
+eigenvariable condition is that of \rulename{Elim}. Translate an
+\rulename{Eval} with premises $\Gamma\proves s=t$ and $\Gamma\proves b=r$
+by \rulename{Discharge} with the major premise $\Theta$, opened at a $b_0$
+fresh for $\Gamma$ and the four terms, which adds the occurrence
+$[0=0;\,y.\,0=0]$. Weaken the translated derivations of the two premises
+into $\Gamma,[0=0;\,y.\,0=0]$ by \cref{claus:thm:pdsubst}. The pair
+$(s=t,\ b=r)$ is in the zero or the successor row of $\varrho^{+}$ with the
+value $r=\Phi_2(s,t,b)$, the conclusion of the \rulename{Eval}, in which
+$b_0$ does not occur.
+
+The second statement is \cref{claus:thm:ku}.
+\end{proof}
+
+Under the ordinary reading every rule of $\mathsf{PD}$ is sound in $\Teq$
+directly: \rulename{Discharge} as the discharge of $\mathsf{ED}$ after
+\cref{claus:thm:fusion}, since $\varrho^{+}$ is a restriction of $\varrho$,
+and the diagonal \rulename{Intro} by coverage in case mode and by induction
+for the literal equation under the assumed base in progress mode. By
+\cref{claus:thm:pd}, $\mathsf{PD}$ and $\mathsf{K}^{u}$ are among the
+calculi of \cref{claus:cor:bridge}: through \Lean{kprf\_iff\_nprf\_of\_qfree}
+and \cref{base:thm:bridge} they are bi-interpretable with $\iPRA$ with
+whole domains, actual equality and identity numerical composites, and
+$\mathcal{R}\proves_{\mathsf{PD}}0=\Suc 0$ if and only if $\iPRA$ derives
+falsity.
+
+\begin{remark}
+\label{claus:rem:pdpkgs}
+\pkg{476\_byte\_presentation} states \cref{claus:thm:pdsubst} for
+substitution and, without proof details, for weakening and renaming, and
+proves \cref{claus:thm:pd} through $\mathsf{K}^{u}$ for contexts that
+contain $\mathcal{R}$; the proof above does not use $\mathcal{R}$. Its
+derivation of $\Theta$ is that of \cref{claus:lem:theta}, its derivation of
+the standalone evaluation from \rulename{Discharge} at $\Theta$ is that of
+the proof of \cref{claus:thm:fusion}, and its translation of
+\rulename{Discharge} into \rulename{Eval} and \rulename{Elim} is the
+converse direction of that proof, restricted to the domain of
+$\varrho^{+}$. The one difference is the translation of \rulename{Elim}:
+the proof of \cref{claus:thm:fusion} takes as $E$ the major premise
+weakened into the scope of the witness, and the proof above takes the
+two-node derivation of $\Theta$, which does not copy the derivation of the
+major premise. Both choices are available in either calculus, since the
+weakened major premise also has root $D$. The package also recovers
+reflexivity by \rulename{Use} of $\mathcal{R}$ and, from the derived
+standalone evaluation, the two computation equations, the inference
+\rulename{Root} by the frame $\It{0}{s}{u}{u}$, symmetry, transitivity and
+one-template transport; these are the derivations of \cref{claus:lem:eq}.
+The package compiles certificates in both directions between its checker
+and the matched four-family checker of $\mathsf{K}^{u}$, preserving the
+goal; the compilers are untrusted and their outputs are rechecked.
+\end{remark}
+
 \section{The ordinary realization}
 \label{claus:sec:real}
 
-This section draws on all eleven packages of the chapter:
+This section draws on all twelve packages of the chapter:
 \pkg{raw\_clausal}, \pkg{rootfree\_clausal},
 \pkg{reduced\_clause\_calculus}, \pkg{clausal\_two\_case},
 \pkg{clausal\_single\_evaluation}, \pkg{uniform\_clauses},
 \pkg{clause\_guards}, \pkg{clause\_contexts}, \pkg{prefix\_clauses},
-\pkg{one\_body} and \pkg{evaluation\_discharge}. Each restates the
+\pkg{one\_body}, \pkg{evaluation\_discharge} and
+\pkg{476\_byte\_presentation}. Each restates the
 ordinary realization, the logical macros of the native interface (gate,
 selector and parity term, with $q_y$ in the place of $\Q{y}$) and the
 bridge. These belong to the common core, and the statements reduce to it
@@ -2143,7 +2454,8 @@ as follows.
 Let $\mathsf{X}$ be one of $\mathsf{C}_3$, $\mathsf{C}$, $\mathsf{C}^{0}$,
 $\mathsf{C}^{0}_{\mathrm{b}}$, $\mathsf{V}$, $\mathsf{V}^{0}$,
 $\mathsf{K}$, the mirror calculus, $\mathsf{PF}$, $\mathsf{OB}$,
-$\mathsf{HB}$, $\mathsf{ED}$, $\mathsf{ED}^{0}$, with its fixed
+$\mathsf{HB}$, $\mathsf{ED}$, $\mathsf{ED}^{0}$, $\mathsf{K}^{u}$,
+$\mathsf{PD}$, with its fixed
 reflexivity clause or entry where it has one. Then $\mathsf{X}$ derives
 $0=\Suc 0$ from no assumptions if and only if $\Nat$ does, if and only if
 $\iPRA$ derives falsity. The ordinary realization of $\mathsf{X}$ is
@@ -2259,7 +2571,7 @@ uses.
 \section{Checker sizes}
 \label{claus:sec:checkers}
 
-This section collects the measurements of the eleven packages named in
+This section collects the measurements of the twelve packages named in
 \cref{claus:sec:real}. All of them measure complete standalone Python
 checkers by the protocol of \cref{base:sec:measure}, under CPython
 3.12.14: the module without its
@@ -2324,6 +2636,12 @@ fusion at the discharge saves 103 bytes, 22 tokens and 22 AST nodes on raw
 terms and 21 bytes, 12 tokens and 10 AST nodes on zero-normal terms.
 \pkg{one\_body} also reports a refinement of an existing checker for the
 native calculus on the equation and $D$ language that changes no rule.
+The checker of $\mathsf{PD}$ in \pkg{476\_byte\_presentation} measures
+678 tokens, 727 AST nodes and 2087 bytes, against 688/735/2128 for its
+matched split control (the four families of $\mathsf{K}^{u}$, same strict
+certificate contract) and 643/695/1892 for the inherited checker of
+$\mathsf{ED}$, so it saves 10 tokens, 8 AST nodes and 41 bytes against its
+control and sets no size record.
 
 \begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.15\linewidth}>{\raggedright\arraybackslash}p{0.23\linewidth}rrr>{\raggedright\arraybackslash}p{0.30\linewidth}@{}}
 \caption{Checker sizes as stated by the packages: tokens, AST nodes,
@@ -2429,6 +2747,16 @@ satisfies the conditions of \cref{claus:thm:guard} and is cheaper to test
 than the diagonal shape?
 \end{question}
 
+\begin{question}[Tree-preserving substitution at no cost]
+Does another syntax or certificate design turn the structural property of
+$\mathsf{PD}$ (\cref{claus:thm:pdsubst}) into a complete checker below the
+current minima? The checker of $\mathsf{PD}$ in
+\pkg{476\_byte\_presentation} is smaller than its matched four-family
+control but larger than the inherited checker of $\mathsf{ED}$ and than the
+compact checkers of other packages, and the package claims no size record
+for it.
+\end{question}
+
 \begin{question}[One-body contexts without the cost of the gate]
 Can the antecedent field be removed, as in
 \cref{claus:thm:onebody,claus:thm:homog}, by a representation of
@@ -2442,7 +2770,9 @@ primitive deep reflexivity is larger still (3208 bytes).
 \begin{question}[The identity case of the discharge]
 Can the identity case of $\varrho$ be replaced by a single arithmetic
 pattern that is always active, without a supplied template and without
-enlarging the checker or the arithmetic assumptions?
+enlarging the checker or the arithmetic assumptions? The partial operation
+$\varrho^{+}$ of \cref{claus:sec:pd} keeps the identity case only for an
+$E$ with root $D$; it does not remove the case.
 \end{question}
 
 \begin{question}[Combinations not measured]
@@ -2459,7 +2789,9 @@ calculus to $\mathsf{C}_3$ produced at most nine times as many nodes on
 every executed example; no general bound is proved. No package bounds the
 serialized size of a translated derivation, the cost of closing and
 reopening a closure with an unused witness, or the duplication of the
-major premise in \cref{claus:thm:fusion}. \pkg{rootfree\_clausal},
+major premise in \cref{claus:thm:fusion} (the translation of
+\rulename{Elim} in \cref{claus:thm:pd} avoids that duplication by the
+derivation of $\Theta$). \pkg{rootfree\_clausal},
 \pkg{reduced\_clause\_calculus} and \pkg{evaluation\_discharge} ask
 whether certificates with sharing recover these costs once reference
 validation is charged.
@@ -2483,7 +2815,11 @@ clauses (\cref{claus:thm:guard,claus:prop:mirror}), the support quotient
 (\cref{claus:thm:homog}), the zero-normal fusion
 (\cref{claus:thm:fusionzero}), the propositions
 \cref{claus:prop:threenodes,claus:prop:rows}, the obstruction
-\cref{claus:thm:reflobs}, the theorem \cref{claus:thm:rigidity}, and the
+\cref{claus:thm:reflobs}, the theorem \cref{claus:thm:rigidity}, the
+calculi $\mathsf{K}^{u}$ and $\mathsf{PD}$ with the operation $\varrho^{+}$
+and \cref{claus:lem:covar,claus:thm:pdsubst,claus:thm:ku,claus:thm:pd}
+(\pkg{476\_byte\_presentation} claims no Lean or Rocq verification of
+them or of its proof compilers), and the
 correspondence of each Python checker with its calculus.
 \item \pkg{reduced\_clause\_calculus} implements the translation of
 certificates from raw to zero-normal syntax only; the converse compiler

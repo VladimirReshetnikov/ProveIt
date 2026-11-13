@@ -8,9 +8,11 @@ variable or the literal $0$, then to be the newest numerical parameter of the
 current scope, with $0$ in an empty scope, so that the rule takes no term at
 all.  Every restricted calculus of the chapter derives the same sequents as
 its unrestricted counterpart, on all open sequents and with the identity
-translation of terms and formulas.  The restriction of the witness cannot be
-combined with a restriction of the targets of \rulename{QE}
-(\cref{wit:thm:finite-range}).
+translation of terms and formulas.  In $\Nat$ the restriction of the
+witness cannot be combined with a restriction of the targets of
+\rulename{QE} (\cref{wit:thm:finite-range}); with a discharge that
+substitutes a term read off its major premise, both restrictions hold
+together (\cref{wit:sec:spec}).
 
 The chapter is organized by idea.  \Cref{wit:sec:restricted} states the
 restricted calculi and what they lose: a calculus with variable witnesses is
@@ -26,7 +28,10 @@ alias takes the place of the names.  \Cref{wit:sec:guarded} treats the raw guard
 and without a naming exception.  \Cref{wit:sec:recursor,wit:sec:copy} treat
 two calculi on a recursor whose predecessor computes; the second combines the
 restricted introduction with an inferred discharge by means of conditional
-copy.
+copy.  \Cref{wit:sec:spec} restricts the use of a clause to the newest
+parameter as well: first with an arbitrary witness of the introduction, and
+then, by a vacuous case of the selector, together with the introduction at
+the newest parameter, so that no rule takes a term.
 
 Throughout the chapter $1$ abbreviates $\Suc 0$ and $2$ abbreviates
 $\Suc\Suc 0$.
@@ -3369,15 +3374,578 @@ occurrences of $b$ in $F$ into $v$ represents every instance of
 \rulename{Name}.  The backward representation is therefore exact.
 
 % ---------------------------------------------------------------------
+\section{Specialization at the newest parameter}
+\label{wit:sec:spec}
+
+This section draws on \pkg{export\_specialization} for
+\cref{wit:sec:spec-x} and on \pkg{vacuous\_specialization} for
+\cref{wit:sec:vac,wit:sec:vac-copy}.
+
+In every calculus considered so far the use of a clause takes an arbitrary
+term.  Here it is restricted to the newest parameter, with $0$ in an empty
+scope, so that it takes no term.  The term is delivered instead by an
+inferred discharge, which substitutes a term read off the opened matrix.  In
+\cref{wit:sec:spec-x} the introduction keeps an arbitrary witness, and the
+names introduced at that witness carry the term.  In
+\cref{wit:sec:vac,wit:sec:vac-copy} the introduction is that of
+$\mathsf K$, at the newest parameter, so that no name can be introduced at
+an arbitrary term; a closure whose matrix does not depend on its second
+variable carries the term, and the selector of \rulename{Export} receives
+one additional case.  Neither result needs a primitive alias rule
+(\cref{disch:sec:alias-newest}) or the supplied witness of the
+deterministic specialization (\cref{disch:def:spec}).
+
+\subsection{Newest specialization with the inferred discharge}
+\label{wit:sec:spec-x}
+
+The calculus $\mathcal X$ of \cref{disch:def:inferred} has the rules
+\rulename{Refl}, \rulename{Use}, \rulename{Intro} and \rulename{Export} of
+\cref{disch:def:rules} and \eqref{disch:eq:export}, on full normal forms of
+iterator terms with normalizing substitution, in the convention with
+\rulename{Refl}.  Its scopes are written explicitly as in
+\cref{wit:def:scope}: \rulename{Intro} appends its eigenvariable $z$ and
+\rulename{Export} its parameter $b$.
+
+\begin{definition}[Newest specialization]
+\label{wit:def:xnu}
+$\mathcal X_\nu$ is $\mathcal X$ with \rulename{Use} replaced by
+\[
+ \infrule{\Pi;\Gamma\proves A}{\Pi;\Gamma\proves\nf\bigl(B(\nu(\Pi))\bigr)}
+ \ \rulename{Use}_\nu,
+ \qquad [A;\,y.\,B(y)]\text{ an occurrence in }\Gamma .
+\]
+\rulename{Refl} is kept at every term over $\Pi$, and \rulename{Intro} at
+every witness over $\Pi$, with the mode of \eqref{disch:eq:intro}.
+\end{definition}
+
+A certificate of $\rulename{Use}_\nu$ consists of the occurrence and the
+derivation of its antecedent.  For a term $t$ over $\Pi$ let
+\[
+ \mathrm{Nm}_t\defeq\D{x}{y}\bigl(\sel(y,0,x)=\sel(y,0,t)\bigr),
+\]
+the name of \cref{disch:sec:spec}.
+
+\begin{lemma}[A name without \rulename{Use}]
+\label{wit:lem:x-name}
+In every scope $\Pi$ over which $t$ is a term, and in every context,
+$\mathcal X_\nu$ derives $\mathrm{Nm}_t$ by one \rulename{Intro} and one
+\rulename{Refl}.  \rulename{Export} of $\mathrm{Nm}_t$ at a fresh $b$
+selects $t$.
+\end{lemma}
+
+\begin{proof}
+Introduce $\mathrm{Nm}_t$ at the witness $t$.  The instance asked for is
+$\sel(\Suc z,0,t)=\sel(\Suc z,0,t)$, whose normal form is $t=t$; it is
+proved by \rulename{Refl}, and the assumption of the premise is unused.
+This holds in both modes, in particular for $t\equiv 0$, when the rule is by
+progress.  The normalized rows at a fresh $b$ are $\sel(0,0,b)=\sel(0,0,t)$,
+that is $0=0$, and $\sel(1,0,b)=\sel(1,0,t)$, that is $b=t$; so the selector
+of \cref{disch:def:selector} returns $t$.
+\end{proof}
+
+\begin{theorem}[Newest specialization]
+\label{wit:thm:x-newest}
+For every scope $\Pi$, clause context $\Gamma$ and formula $A$,
+\[
+ \Pi;\Gamma\proves_{\mathcal X_\nu}A
+ \quad\Longleftrightarrow\quad
+ \Pi;\Gamma\proves_{\mathcal X}A ,
+\]
+by effective transformations that leave the end sequent unchanged.  In the
+convention with \rulename{Refl}, a derivation of $\mathcal X$ with $n$
+inference nodes, $u$ of them uses of a clause, is translated into a
+derivation of $\mathcal X_\nu$ with exactly $n+3u$ nodes.
+\end{theorem}
+
+\begin{proof}
+Every instance of $\rulename{Use}_\nu$ is an instance of \rulename{Use}.
+For the converse the following is shown by induction on a derivation $\pi$
+of $\Pi;\Gamma\proves_{\mathcal X}A$: for every injective map $\theta$ of
+$\Pi$ into a scope $\Pi'$, and every context $\Delta$ over $\Pi'$ with an
+injective map of the occurrences of $\Gamma$ to occurrences of $\Delta$ that
+sends each clause to its normalized $\theta$-image, $\mathcal X_\nu$ derives
+$\Pi';\Delta\proves\theta A$.  Further parameters and clauses of $\Delta$
+are arbitrary, and $\theta$ need not preserve which parameter is the newest.
+This is a construction carried out again in each target situation; it is not
+a claim that a derivation of $\mathcal X_\nu$ can be weakened, which is false
+node by node, because an extension of the scope changes the newest
+parameter.
+
+\rulename{Refl} is translated literally.  At \rulename{Intro} extend
+$\theta$ by the eigenvariable sent to a fresh target parameter, extend the
+map of occurrences by the assumption, and translate the premise; an
+injective renaming preserves the root of the matrix and the literal $0$, so
+the mode is unchanged.  At \rulename{Export} translate the major premise,
+open at a fresh target $b'$, extend $\theta$ by $b\mapsto b'$ and the map of
+occurrences by the opened clause, and translate the branch; by
+\cref{disch:lem:selector}(a) the selected term is the image of the source
+selection, and by \eqref{disch:eq:coherence} the exported formula is the
+image of the source conclusion, which does not contain $b'$.
+
+At a \rulename{Use} of the occurrence $[A_0;\,y.\,B(y)]$ at a term $t$, put
+$t'\equiv\theta t$.  Derive $\mathrm{Nm}_{t'}$ by \cref{wit:lem:x-name} and
+apply \rulename{Export} at a fresh $b$, which is the newest parameter of the
+branch.  In the branch apply the induction hypothesis to the source
+derivation of $A_0$, with the same $\theta$ and the same map of occurrences,
+the opened clause and $b$ being extras; this gives $\theta A_0$.
+$\rulename{Use}_\nu$ of the image of the occurrence gives
+$\nf((\theta B)(b))$, and \rulename{Export} concludes
+\[
+ \nf\bigl((\theta B)(b)\subst{t'}{b}\bigr)\equiv\theta\,\nf\bigl(B(t)\bigr)
+\]
+by \eqref{disch:eq:coherence}.  Neither the context nor $t'$ contains $b$,
+so the side condition holds.  For a clause without antecedent the inductive
+call is omitted.  The source derivation of $A_0$ is a proper subderivation
+of $\pi$, and it is translated in the situation where it is used.  The
+identity map gives the equivalence.
+
+For the count, every node other than a \rulename{Use} is copied once with
+its translated premises, and a \rulename{Use} becomes four nodes: the
+\rulename{Export}, the \rulename{Intro} of the name with its \rulename{Refl}
+leaf, and the $\rulename{Use}_\nu$, above the translated antecedent, which
+is translated once.  Induction on the derivation gives $n+3u$.
+\end{proof}
+
+The count is in inference nodes.  A name copies its term, and normalization
+can enlarge formulas, so no bound on the size of certificates in bytes or
+on the time of checking follows.
+
+\begin{corollary}[The bridge for $\mathcal X_\nu$]
+\label{wit:cor:x-bridge}
+$\mathcal X_\nu$ derives the same sequents as the reference calculus
+$\mathcal T$ of \cref{disch:def:reference}; weakening, injective renaming,
+substitution of terms for parameters and cut are admissible in it on
+derivable judgments; and its ordinary reading is bi-interpretable with
+$\iPRA$, with whole domains, equality as equality and the graph $x=y$ in
+both numerical composites, as for $\mathcal X^{\mathcal R}$ in
+\cref{disch:thm:inferred}.
+\end{corollary}
+
+\begin{proof}
+\Cref{wit:thm:x-newest}, \cref{disch:thm:inferred} and, for the two
+conventions, \cref{disch:lem:conventions}.  The admissible
+rules hold for the derivable judgments of $\mathcal X$ and transfer through
+the equivalence; they are not preserved node by node.
+\end{proof}
+
+\begin{remark}[What the proof uses]
+\label{wit:rem:x-uses}
+The name is introduced at the arbitrary witness $t$, and its instance is the
+reflexivity $t=t$ at a compound term.  The proof therefore restricts neither
+the witness of \rulename{Intro} nor \rulename{Refl}.  In the convention with
+the reflexivity clause $\mathcal R=[\ ;\,y.\,y=y]$ the restriction of all
+uses of $\mathcal R$ to $\nu(\Pi)$ would leave only $\nu(\Pi)=\nu(\Pi)$, and
+a derivation of $t=t$ from a name would presuppose the naming lemma; the
+theorem is therefore stated in the convention with \rulename{Refl}, and its
+form $\mathcal X^{\mathcal R}_\nu$ with the reflexivity clause exempts
+$\mathcal R$ from the restriction.  The opened clause of the name is never
+used: \rulename{Export} reads $t$ from its row at $1$.  This is the
+difference from \cref{disch:lem:spec-name}, where $b=t$ is derived from the
+naming clause by $\rulename{Use}_{*}$ at $1$, and from
+\cref{disch:cor:alias-newest}, where a primitive \rulename{Alias} supplies
+the equation.  \Cref{wit:sec:vac} restricts the witness of the introduction
+as well.
+\end{remark}
+
+The same argument applies without a normalizer.  Let $\mathsf{C}$ be the
+five-rule clause calculus of \cref{claus:def:c3}, with \rulename{Refl},
+\rulename{Eval}, \rulename{Use}, \rulename{Elim} and \rulename{Intro} on raw
+terms with ordinary substitution, and with scopes written explicitly.  The
+\emph{raw selector} returns $t$ if the matrix $B(x,y)$ is literally
+$\sel(y,0,x)=\sel(y,0,t)$ with $t$ free of $x$, $y$ and the variables bound
+by the two selectors, and returns $b$ otherwise.  $\rulename{Export}_{\mathrm r}$
+is \eqref{disch:eq:export} with this selector and ordinary substitution,
+the exported formula being required to be over the old scope.
+
+\begin{proposition}[The raw companion]
+\label{wit:prop:x-raw}
+The calculus with the five rule families \rulename{Refl}, \rulename{Eval},
+$\rulename{Use}_\nu$, \rulename{Intro} and $\rulename{Export}_{\mathrm r}$
+derives the same judgments $\Pi;\Gamma\proves A$ as $\mathsf{C}$.
+\end{proposition}
+
+\begin{proof}
+Every instance of $\rulename{Export}_{\mathrm r}$ is derivable in
+$\mathsf{C}$.  If the selector returns $b$, the exported formula is the
+branch formula, which does not contain $b$, and the rule is \rulename{Elim}.
+Otherwise open the major premise by \rulename{Elim} at $b$; the opened clause
+is $[\sel(0,0,b)=\sel(0,0,t);\,y.\,\sel(y,0,b)=\sel(y,0,t)]$.  Both sides of
+its antecedent are equal to $0$ by the computation equations of
+\cref{claus:lem:eq}, so the antecedent is derived by symmetry and
+transitivity; \rulename{Use} at $1$ gives $\sel(1,0,b)=\sel(1,0,t)$, and the
+computation equations give $b=t$.  Transport in the formula $F\subst{v}{b}$
+(\cref{claus:lem:ftransport}) turns the branch conclusion $F$ into
+$F\subst{t}{b}$, and \rulename{Elim} discharges $b$, since $F\subst{t}{b}$
+does not contain it.  $\rulename{Use}_\nu$ is an instance of \rulename{Use}.
+
+Conversely translate a derivation of $\mathsf{C}$ with the induction
+statement of the proof of \cref{wit:thm:x-newest}.  \rulename{Refl},
+\rulename{Eval} and \rulename{Intro} are copied; an injective renaming
+preserves the literal matches of \rulename{Eval}, the root of the matrix and
+the literal $0$.  \rulename{Elim} becomes $\rulename{Export}_{\mathrm r}$:
+its conclusion does not contain $b$, so the substitution of the selected
+term changes nothing.  A \rulename{Use} at $t$ is simulated as before:
+$\mathrm{Nm}_{t'}$ is introduced at $t'$, where the raw instance
+$\sel(\Suc z,0,t')=\sel(\Suc z,0,t')$ has literally equal sides and is
+proved by \rulename{Refl} in either mode; its matrix is the pattern of the
+raw selector, which therefore returns $t'$; the antecedent is translated in
+the branch, $\rulename{Use}_\nu$ gives $(\theta B)(b)$, and
+$\rulename{Export}_{\mathrm r}$ gives $(\theta B)(b)\subst{t'}{b}\equiv
+\theta(B(t))$, since $B$ does not contain $b$.  The pattern and its
+condition on free variables are preserved and reflected by injective
+renaming.
+\end{proof}
+
+No checker of the raw companion is measured.
+
+\subsection{The vacuous selector}
+\label{wit:sec:vac}
+
+Terms, normal forms, the abbreviations $P$, $C$, $J$, formulas, clauses,
+$\top_{*}$, $\bot_{*}$ and the initial clause $\mathsf{Rf}$ are those of
+\cref{wit:sec:recursor,wit:sec:copy}.  For a matrix $B$ and a fresh $b$ write
+\[
+ \widehat B(y)\defeq\nf\bigl(B(b,y)\bigr),\qquad
+ B_0\defeq\nf\bigl(\widehat B(0)\bigr),\qquad
+ B_1\defeq\nf\bigl(\widehat B(1)\bigr).
+\]
+Since normalization introduces no free variable (\cref{wit:sec:recursor}),
+$\widehat B\equiv B_0$ holds exactly when $y$ does not occur in
+$\widehat B$; in that case $\widehat B\equiv B_0\equiv B_1$.
+
+\begin{definition}[The calculus $\mathsf V$]
+\label{wit:def:v}
+$\mathsf V$ has three rule families.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\rulename{Use}_\nu$: for an occurrence $[A;\,y.\,B]$ in $\Gamma$, from
+ $\Pi;\Gamma\proves A$ infer $\Pi;\Gamma\proves\nf(B(\nu(\Pi)))$; for a
+ clause without antecedent the premise is omitted.
+\item \rulename{Close}: the rule \rulename{Close} of $\mathsf K$
+ (\cref{wit:sec:copy}), at $\ell=\nu(\Pi)$, by progress exactly when
+ $\nf(B(\ell,0))\equiv\top_{*}$.
+\item \rulename{Export}: the rule \rulename{Export} of $\mathsf K$ with the
+ selector
+\[
+ r^{\mathsf V}_B\defeq
+ \begin{cases}
+  r,&\text{$B_1\equiv(b=r)$, and $B_0\equiv\top_{*}$ or
+        $\widehat B\equiv B_0$,}\\
+  b,&\text{otherwise,}
+ \end{cases}
+\]
+ in place of $r_B$:
+\[
+ \infrule{\Pi;\Gamma\proves\D{x}{y}B\qquad
+          \Pi,b;\ \Gamma,[B_0;\,y.\,\widehat B(y)]\proves F}
+         {\Pi;\Gamma\proves\nf\bigl(F\subst{r^{\mathsf V}_B}{b}\bigr)}
+ \qquad b\notin\FV\bigl(\nf(F\subst{r^{\mathsf V}_B}{b})\bigr).
+\]
+\end{enumerate}
+There are no other rules; every derivation starts from the context
+$\mathsf{Rf}$.
+\end{definition}
+
+No rule of $\mathsf V$ takes a term: \rulename{Use} takes an occurrence and
+the derivation of its antecedent, \rulename{Close} a matrix and the
+derivation of its premise, \rulename{Export} two derivations.  Terms still
+occur in the matrices supplied to \rulename{Close}; what is removed is the
+separate term argument, not the information it carries.  The first case of
+$r^{\mathsf V}_B$ is $r_B$ of $\mathsf K$; the second is new, and $r$ may
+contain $b$.  The two cases exclude each other, because in the second $B_0$
+is the equation $b=r$, whose left side is a parameter.
+
+\begin{lemma}[Soundness of the vacuous case]
+\label{wit:lem:v-sound}
+Every rule of $\mathsf V$ is valid in $T_R$ under the ordinary reading, also
+when the selected term contains $b$.
+\end{lemma}
+
+\begin{proof}
+$\rulename{Use}_\nu$, \rulename{Close} and the first case of
+\rulename{Export} are covered by \cref{wit:lem:k-sound}.  In the second case
+the opened clause reads $(b=r)\to\forall y\,(b=r)$, with $y$ not free, which
+is a theorem of intuitionistic logic.  Suppose the reading of the branch is
+derivable in $T_R$ from the readings of $\Gamma$ and of this clause; cutting
+the clause gives a derivation of $F$ from
+$\Gamma$ in which $b$ is a free variable not free in $\Gamma$.  Substituting
+the term $r$ for $b$ throughout this derivation gives $F\subst{r}{b}$ from
+$\Gamma$, also when $r$ contains $b$, and $T_R$ proves it equivalent to
+$\nf(F\subst{r}{b})$ by \cref{ctr:lem:normsound}.  This formula does not
+contain $b$.  The major premise is not needed in this case.
+\end{proof}
+
+\begin{lemma}[The vacuous packet]
+\label{wit:lem:v-packet}
+For every scope $\Pi$, context $\Gamma$ and term $t$ over $\Pi$, the formula
+\[
+ \mathsf V_t\defeq\D{x}{y}(x=t)
+\]
+is derived in $\mathsf V$ by one \rulename{Close} and one $\rulename{Use}_\nu$.
+\end{lemma}
+
+\begin{proof}
+\rulename{Close} selects $\ell=\nu(\Pi)$; its matrix at $\ell$ is the
+equation $\ell=t$, which does not contain $y$.  In either mode the
+assumption of the premise and the instance asked for are both $\ell=t$, the
+mode being by progress only when $\ell\equiv t\equiv 0$.
+$\rulename{Use}_\nu$ of the assumption clause $[\ ;\,v.\,\ell=t]$ derives
+the instance.
+\end{proof}
+
+The reading of $\mathsf V_t$ is $\exists x\,\bigl(x=t\to\forall y\,(x=t)\bigr)$,
+a tautology.  It does not assert that an opened witness equals $t$, and its
+opened clause $[b=t;\,y.\,b=t]$ gives no equation $b=t$; it is the selector
+that substitutes $t$ for $b$ in the exported formula.
+
+\begin{lemma}[Specialization at a term]
+\label{wit:lem:v-spec}
+Let $[A;\,y.\,M(y)]$ be an occurrence in $\Gamma$ and $t$ a term over $\Pi$,
+and suppose a derivation of $A$ can be constructed over the scope $\Pi,b$
+and the context $\Gamma,[b=t;\,y.\,b=t]$ for a fresh $b$.  Then $\mathsf V$
+derives $\Pi;\Gamma\proves\nf(M(t))$ by four inferences above that
+derivation: the two of \cref{wit:lem:v-packet}, one \rulename{Export} and one
+$\rulename{Use}_\nu$.  For a clause without antecedent no derivation of $A$
+is needed.
+\end{lemma}
+
+\begin{proof}
+Derive $\mathsf V_t$ by \cref{wit:lem:v-packet} and apply \rulename{Export} at
+the fresh $b$.  The opened matrix is $b=t$, so $\widehat B\equiv B_0\equiv
+B_1\equiv(b=t)$ and $r^{\mathsf V}_B\equiv t$.  In the branch $b$ is the
+newest parameter; $\rulename{Use}_\nu$ of the occurrence, with the given
+derivation of $A$, gives $\nf(M(b))$.  The exported formula is
+$\nf(\nf(M(b))\subst{t}{b})\equiv\nf(M(t))$ by \cref{ctr:lem:nf}, and it does
+not contain $b$ because neither $M$ nor $t$ does.
+\end{proof}
+
+The derivation of $A$ must be constructed in the extended scope: a
+derivation of $A$ over $\Pi$ is in general not a derivation over $\Pi,b$,
+since its uses of clauses and its introductions select $\nu(\Pi)$, which is
+no longer the newest parameter (\cref{wit:ex:weakening}).  The lemma is
+therefore applied to persistent constructions.  Applied to $\mathsf{Rf}$, it
+gives $b=b$ in the branch and $t=t$ as the exported formula: reflexivity at
+every term, in every scope, by four inferences and without a term argument.
+This is the \emph{persistent reflexivity} used below.
+
+\begin{remark}[The obstruction does not apply]
+\label{wit:rem:v-obstruction}
+At the closed root both $\rulename{Use}_\nu$ and \rulename{Close} use $0$,
+and in every scope both use the same parameter.  This does not contradict
+\cref{wit:thm:finite-range}, which concerns the rules of $\Nat$, whose
+elimination \rulename{DE} substitutes nothing.  The validity invariant of
+that proof, which sends every parameter to $0$, is not preserved by the
+vacuous case of \rulename{Export}: the branch is valid at $b\mapsto 0$,
+while the conclusion is the branch formula at the term $r$, whose value can
+be any number.  The restriction of the targets is compensated by a discharge
+that substitutes a term read off the major premise.
+\end{remark}
+
+\subsection{Conditional copy and the removal of both terms}
+\label{wit:sec:vac-copy}
+
+The constructions of \cref{wit:sec:copy-prep} transfer to $\mathsf V$, with
+every use of a clause at a term other than the newest parameter replaced by
+\cref{wit:lem:v-spec} and every reflexivity by the persistent reflexivity.
+The ordinary elimination of $\D{x}{y}B$ is \rulename{Export} with a branch
+conclusion $F$ that does not contain $b$: then $\nf(F\subst{r}{b})\equiv F$
+for every selected $r$, so the extended selector does no harm.  The tower
+$T_0=\top_{*}$ is the persistent reflexivity at $0$, and $T_{d+1}$ is
+derived by \rulename{Close} with an unused witness, whose assumption in
+either mode is $T_d$, the instance asked for.  The closure $q_yA$ is
+introduced as in \cref{wit:sec:copy-prep}, with the persistent reflexivity
+for $A(0)$ when $A(0)\equiv\top_{*}$, and $A(t)$ is obtained from $q_yA$ and
+$A(0)$ by opening $q_yA$ and applying \cref{wit:lem:v-spec} to its clause at
+$t$, with $A(0)$ as the antecedent.
+
+\begin{lemma}[Conditional copy in $\mathsf V$]
+\label{wit:lem:v-copy}
+For every formula $H(x)$ with a distinguished variable and every term $t$
+over $\Pi$, $\mathsf V$ derives $\Delta_t(H)$ of \cref{wit:thm:copy} in every
+scope and context, by a construction that is carried out anew in each
+scope.
+\end{lemma}
+
+\begin{proof}
+The proof of \cref{wit:thm:copy} applies with two changes.  The outer
+introduction of the closure \eqref{wit:eq:copy-closure} is by cases, since
+its instance at $0$ is the tower $T_{d+1}$, where $d$ is the depth of $H$.
+In the branch for $\Suc z$ the conclusion normalizes to $\Delta_z(H)$, and
+$z$ is the newest parameter, so \rulename{Close} for $\Delta_z(H)$ selects
+$z$ and both of its instances are $H(z)$.  If $H(z)\not\equiv\top_{*}$ the
+rule is by cases and $\rulename{Use}_\nu$ of the assumption gives the
+instance; if $H(z)\equiv\top_{*}$ the instance is the persistent reflexivity
+at $0$, the progress assumption being unused; this is the first change.
+Then open the closure at a fresh $d'$; its clause is
+$[T_{d+1};\,v.\,G_v\Delta_{P(v)}(H)]$.  The second change: in place of the
+use of this clause at $\Suc t$, apply \cref{wit:lem:v-spec} at $\Suc t$,
+with the persistent tower $T_{d+1}$ as the antecedent, constructed in the
+scope of its use.  The result is
+$\nf(G_{\Suc t}\Delta_{P(\Suc t)}(H))\equiv\Delta_t(H)$, which contains
+neither $d'$ nor the parameter of the packet, and the ordinary elimination
+discharges $d'$.  The construction is explicit and makes no recursive call
+to a translation of derivations.
+\end{proof}
+
+Let $\mathsf L$ be the liberal calculus of \cref{wit:thm:witness-removal}:
+\rulename{Use} at every term, \rulename{Close} at every witness, and
+\rulename{Export} with $r_B$.
+
+\begin{theorem}[Both terms removed]
+\label{wit:thm:v-equiv}
+For every scope $\Pi$, clause context $\Gamma$ and formula $A$ the calculi
+$\mathsf V$, $\mathsf K$ and $\mathsf L$ derive the same judgments
+$\Pi;\Gamma\proves A$.  The transformations are effective.
+\end{theorem}
+
+\begin{proof}
+$\mathsf K$ and $\mathsf L$ derive the same judgments by
+\cref{wit:thm:witness-removal}.
+
+\emph{From $\mathsf V$ to $\mathsf L$}, by induction on the derivation.
+$\rulename{Use}_\nu$ is \rulename{Use} at $\nu(\Pi)$, \rulename{Close} is
+\rulename{Close} at the witness $\nu(\Pi)$, and an \rulename{Export} whose
+selector is not in the vacuous case is an \rulename{Export} of $\mathsf L$
+with the same conclusion, because then $r^{\mathsf V}_B\equiv r_B$.  In the
+vacuous case the induction hypothesis gives derivations in $\mathsf L$ of
+$\Pi;\Gamma\proves\D{x}{y}B$ and of
+\[
+ \Pi,b;\ \Gamma,[b=r;\,y.\,b=r]\proves F,
+\]
+and $G\defeq\nf(F\subst{r}{b})$ does not contain $b$.  (1) Every use of the
+clause $[b=r;\,y.\,b=r]$ concludes its antecedent $b=r$; replacing each such
+node by the derivation of its premise, and deleting the occurrence from all
+contexts, gives $\Pi,b;\Gamma\proves F$ in $\mathsf L$; no rule of
+$\mathsf L$ depends on the length of the context.  (2) For a fresh $c$, the
+injective renaming $b\mapsto c$ into the scope $\Pi,b,c$ and weakening by a
+clause (\cref{wit:lem:liberal-structural}) give
+$\Pi,b,c;\Gamma,\mathcal{C}\proves F\subst{c}{b}$ for every clause
+$\mathcal C$ over $\Pi,b,c$.  (3) Over $\Pi,b$ the name
+$\D{x}{y}\bigl(C(y,0,x)=C(y,0,r)\bigr)$ is derived by \rulename{Close} at the
+witness $r$: the instance at $0$ is $\top_{*}$, the mode is progress, and
+the instance asked for normalizes to $r=r$, a \rulename{Use} of
+$\mathsf{Rf}$ at $r$.  \rulename{Export} of the name at $c$ has the rows
+$\top_{*}$ and $c=r$, selects $r$, and with the branch of (2), $\mathcal C$
+being the opened clause, concludes
+$\nf(F\subst{c}{b}\subst{r}{c})\equiv G$, which contains neither $c$ nor
+$b$.  (4) Weakening by the clause $[b=r;\,y.\,b=r]$ and \rulename{Export} of
+the given major premise at $b$ with this branch conclude $G$ over $\Pi$,
+since $G$ does not contain $b$.
+% ed.: the package obtains V within L from the soundness of V and the
+% completeness of L for T_R (wit:prop:liberal); the vacuous case is derived
+% here directly in L, which needs neither.
+
+\emph{From $\mathsf L$ to $\mathsf V$}, by induction on a derivation $\pi$
+of $\mathsf L$, with the statement of the proof of
+\cref{wit:thm:witness-removal}: for every injective map $\theta$ of the
+source parameters into a target scope and every map of the source clause
+occurrences to target occurrences whose clauses are literally the
+normalized $\theta$-images, $\mathsf V$ derives the normalized
+$\theta$-image of the conclusion; further parameters and clauses are
+allowed, and $\mathsf{Rf}$ is sent to $\mathsf{Rf}$.  The images of $t$, $B$
+and so on are written with the same letters.
+
+\rulename{Use} at a term $t$: apply \cref{wit:lem:v-spec} at $t$ to the image
+occurrence; the derivation of the antecedent in the extended situation is
+the induction hypothesis for the source derivation of the antecedent, with
+the same maps, the packet parameter and its clause being extras.
+
+\rulename{Export}: translate the major premise and the branch, the source
+eigenvariable sent to the fresh target parameter and the opened clause to
+the opened clause.  An injective renaming preserves and reflects the
+conditions $B_0\equiv\top_{*}$, $B_1\equiv(b=r)$ and $\widehat B\equiv B_0$,
+by \cref{ctr:lem:nf}.  If the source selector succeeds, so does the first
+case of $r^{\mathsf V}$, with the image of the source term.  If neither case
+applies, both fall back.  If the vacuous case applies, the source selector
+falls back, because $B_0$ is the equation $b=r$ and not $\top_{*}$; the
+source branch conclusion therefore does not contain the source
+eigenvariable, its image $F$ does not contain $b$, and
+$\nf(F\subst{r}{b})\equiv F$.  In each case the target conclusion is the
+image of the source conclusion.
+
+\rulename{Close} at a witness $t$ with the matrix $B$ and the premise
+$\Gamma,[\ ;\,v.\,\nf(B(t,\eta))]\proves\nf(B(t,\Suc z_s))$: put
+$H(x)\defeq q_yB(x,y)$ and follow the steps (a) to (e) of the proof of
+\cref{wit:thm:witness-removal}.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Derive $\Delta_t(H)$ by \cref{wit:lem:v-copy} and open it at a fresh
+ $b$, with the clause $[H(t);\,v.\operatorname{Sel}(v,H(t),H(b))]$.
+\item Apply \rulename{Close} to $\D{x}{y}B$; the newest parameter is $b$, so
+ the rule selects $b$; let $z$ be its eigenvariable.
+\item In the premise derive $H(t)$ by a \rulename{Close} with an unused
+ witness and a further eigenvariable $w$.  Its test is the source test at
+ $t$, so its assumption clause is literally the image of the source
+ assumption with $z_s\mapsto w$; the induction hypothesis for the source
+ premise, with these maps, gives $\nf(B(t,\Suc w))$.  This construction is
+ carried out anew wherever $H(t)$ is needed.
+\item Apply \cref{wit:lem:v-spec} at $1$ to the clause of (a), with the
+ construction (c) of $H(t)$, made in the scope of the packet, as the
+ antecedent: this gives $\operatorname{Sel}(1,H(t),H(b))\equiv H(b)$.
+\item Open $H(b)$ at a fresh $d$, with the clause $[B(b,0);\,y.\,B(b,y)]$,
+ and apply \cref{wit:lem:v-spec} at $\Suc z$ to it.  Its antecedent
+ $B(b,0)$ is $\rulename{Use}_\nu$ of the assumption of the \rulename{Close}
+ of (b) if that rule is by cases, and the persistent reflexivity at $0$ if it
+ is by progress, since then $B(b,0)\equiv\top_{*}$.  The result
+ $\nf(B(b,\Suc z))$ does not contain $d$, and the ordinary elimination
+ discharges $d$.
+\end{enumerate}
+The \rulename{Close} of (b) yields $\D{x}{y}B$, which does not contain $b$,
+and the ordinary elimination discharges the opening of (a).  The recursive
+calls are made for the premise of the source \rulename{Close} and for the
+derivation of a source antecedent, both proper subderivations, possibly
+several times and each time in the situation where the result is used; the
+packets, the towers and the conditional copy are explicit constructions,
+which are larger than the source premise but are not sent through the
+translation.  The tests at $t$ and at $b$ may differ, as in
+\cref{wit:rem:mode}.
+\end{proof}
+
+\begin{corollary}[The bridge for $\mathsf V$]
+\label{wit:cor:v-bi}
+$\mathsf V$ is a sound and complete presentation of $T_R$, and its ordinary
+reading is bi-interpretable with $\iPRA$, with whole domains, equality as
+equality, the graph $x=y$ in both numerical composites and a provable
+equivalence of every formula with its double translation.  Hence
+$\mathsf V$ and $\iPRA$ are equiconsistent.
+\end{corollary}
+
+\begin{proof}
+\Cref{wit:thm:v-equiv,wit:thm:k-bi}.  $\mathsf V$ has the formulas, terms
+and readings of $\mathsf K$; only derivations change, so the formula round
+trips of \cref{wit:thm:k-bi} hold unchanged.
+\end{proof}
+
+\begin{remark}[The two packages]
+\label{wit:rem:spec-packages}
+\pkg{export\_specialization} proves \cref{wit:thm:x-newest} and
+\cref{wit:prop:x-raw} and the count of nodes; it keeps the witness of the
+introduction and \rulename{Refl} unrestricted and asks whether both
+restrictions can be combined, and whether arbitrary reflexivity survives a
+restriction of the reflexivity clause.  On the recursor syntax with
+normalization, \pkg{vacuous\_specialization} answers both:
+\cref{wit:thm:v-equiv} restricts the witness, the target of every use,
+including the uses of $\mathsf{Rf}$, and reflexivity at every term is the
+persistent reflexivity.  The conditional copy of \cref{wit:thm:copy} with
+the restricted introduction is from \pkg{conditional\_copy}; the new
+ingredient is the vacuous case of the selector.  The package proves the
+inclusion of $\mathsf V$ in $\mathsf L$ semantically; the proof above
+derives the vacuous case in $\mathsf L$.  On iterator terms no term
+satisfies $P(\Suc z)\equiv z$ by computation, and the combination there is
+open (\cref{wit:q:raw-three}).
+\end{remark}
+
+% ---------------------------------------------------------------------
 \section{Checkers and sizes}
 \label{wit:sec:sizes}
 
 This section draws on the checker reports of \pkg{no\_witness},
 \pkg{parameter\_witness}, \pkg{deterministic\_introduction},
 \pkg{newest\_parameter}, \pkg{uniform\_raw}, \pkg{parameter\_intro},
-\pkg{conditional\_copy} and \pkg{local\_introduction}.  The checker of
-\pkg{constructed\_computation}
-belongs to another chapter.
+\pkg{conditional\_copy}, \pkg{local\_introduction},
+\pkg{export\_specialization} and \pkg{vacuous\_specialization}.  The checker
+of \pkg{constructed\_computation} and the compact checkers of
+\pkg{export\_specialization} and \pkg{vacuous\_specialization}, which check
+the guarded scalar calculus and not the calculi of this chapter, belong to
+another chapter.
 
 All checkers are standalone Python modules that read one JSON certificate,
 validate syntax, scopes and every inference, and accept or reject; none
@@ -3439,6 +4007,15 @@ $\mathsf{K}$ with fuel & 685 & 796 & 1995 & \\
 $\mathsf{A}_{\nu}$ & 862 & 1011 & 3245 &
  $\mathsf{A}_{\nu}$ with a supplied \rulename{Close} witness:
  870 / 1022 / 3274\\
+\multicolumn{5}{@{}l}{\pkg{export\_specialization}}\\
+$\mathcal X_\nu$, \rulename{Refl} primitive & 663 & 748 & 2093 &
+ $\mathcal X$, \rulename{Refl} primitive: 669 / 754 / 2117\\
+$\mathcal X^{\mathcal R}_\nu$, target of $\mathcal R$ read off the goal &
+ 654 & 731 & 2049 &
+ $\mathcal X^{\mathcal R}$ of \pkg{clause\_discharge}: 653 / 729 / 2058\\
+\multicolumn{5}{@{}l}{\pkg{vacuous\_specialization}}\\
+$\mathsf V$ & 645 & 745 & 1830 &
+ $\mathsf K$ of \pkg{conditional\_copy}: 646 / 748 / 1844\\
 \end{longtable}
 
 The packages compare their programs with further programs of the corpus.
@@ -3570,6 +4147,49 @@ runs in the normal and the optimized interpreter mode pass; one open
 example uses an embedding of parameters that does not preserve their order
 and a map of clauses that is not contiguous.
 
+\paragraph{\pkg{export\_specialization}.}
+All four programs are complete closed-theorem checkers of the normalized
+calculus on iterator terms: they read one JSON pair of a closed goal and a
+proof, validate syntax and scopes, normalize, check every inference and
+print \texttt{ACCEPT}; an exception rejects.  The matched pair with
+primitive \rulename{Refl} isolates the restriction of \rulename{Use}: a use
+packet loses its term field and its validation, and the checker
+instantiates at the newest parameter.  The second pair keeps the
+reflexivity clause at context position $0$ as in the control of
+\pkg{clause\_discharge}; a use of position $0$ takes its term from the left
+side of the validated equational goal, and every other use specializes at
+the newest parameter.  This pair saves 9 bytes and adds one token and two
+nodes; the first saves 24 bytes, 6 tokens and 6 nodes.  The validation of
+the witness of \rulename{Intro} is kept in all four.  An untrusted
+translator compiles the nine certificates of \pkg{clause\_discharge}
+(congruence, symmetry, transitivity, induction, nested binders, the repair
+at the witness $0$) to all four protocols and back; five open targets, an
+injective renaming with clauses on both sides of the embedded clause, a
+regression for capture under formula and iterator binders, and thirteen
+negative controls are replayed.
+
+\paragraph{\pkg{vacuous\_specialization}.}
+The checker of $\mathsf V$ and its control, the checker of $\mathsf K$ of
+\pkg{conditional\_copy}, read one JSON pair of a goal and a proof.  Terms
+are $0$, rigid parameters $-1,-2,\dots$, positive de Bruijn indices and
+$[n,a,h]$ for $R(n,a;\,i,u.\,h)$, with $u$ of index $1$ and $i$ of index $2$
+in $h$; formulas are $[s,t]$ and $[B]$ for $\D{x}{y}B$.  The initial
+context is $\mathsf{Rf}$, and a context of length $n$ has the parameters
+$1-n,\dots,-1$, so that $1-n$ is the newest parameter, and $0$ at the root.
+A use is $[j,q]$, a \rulename{Close} is $[B,q]$, an \rulename{Export} is
+$[[\,],p,q]$ and opens at $-n$; the vacuous case compares the whole body of
+the opened matrix with its instance at $0$.  The only differences from the
+control are the deletion of the term of a use with its validation and the
+enlarged selector.  The program \texttt{control\_liberal.py} of the package
+is the checker of $\mathsf L$, the source of an untrusted compiler that implements the
+translation of \cref{wit:thm:v-equiv} and whose outputs are rechecked; 39
+focused checks and 8 command-line checks under normal and optimized
+interpretation pass, among them the packet, reflexivity at a compound term,
+conditional copy at three depths, a used induction hypothesis, nontrivial
+embeddings of parameters and clauses, and the rejection of a surviving
+fresh parameter and of rows at $0$ and $1$ that agree without a constant
+matrix.
+
 The restricted rules reduce the data of a certificate and, except for
 $\mathsf{G}_{\mathrm d}$, the measured checker by a small amount.  They
 increase the length of certificates, because a witness term is replaced by
@@ -3675,14 +4295,62 @@ and does not settle the independence of progress.
 \end{question}
 
 \begin{question}[The specialization term]
-In all calculi of the chapter \rulename{QE}, or \rulename{Use}, still takes
-an arbitrary term; the proofs specialize a closure at $\Suc t$.  By
+In the calculi of the chapter up to \cref{wit:sec:copy}, \rulename{QE}, or
+\rulename{Use}, still takes an arbitrary term; the proofs specialize a
+closure at $\Suc t$.  By
 \cref{wit:thm:finite-range,wit:thm:finite-range-general} the target cannot
 be restricted to a parameter or finitely many numerals together with the
-witness in the identity language.  Whether a differently interpreted theory
-with both restrictions is bi-interpretable with $\iPRA$ is not decided, and
-replacing the specialization by a fixed one needs another way to deliver
-$t$.
+witness in the identity language of $\Nat$, whose elimination substitutes
+nothing.  \Cref{wit:thm:v-equiv} delivers the term by the vacuous case of an
+inferred discharge instead.  Whether a calculus with the native elimination
+\rulename{DE} and both restrictions, differently interpreted, is
+bi-interpretable with $\iPRA$ is not decided.
+\end{question}
+
+\begin{question}[Newest specialization]
+\label{wit:q:spec}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Neither \cref{wit:thm:x-newest} nor \cref{wit:thm:v-equiv} is
+ formalized.  \pkg{export\_specialization} proposes a formalization against
+ \Lean{XCPrf}, and \pkg{vacuous\_specialization} one of its compiler with
+ the invariant on parameter and clause embeddings, beyond the soundness of
+ the vacuous case.  Their translators are untrusted programs whose outputs
+ are rechecked; their correctness is supported by finite tests only.
+\item The size of translated certificates.  \Cref{wit:thm:x-newest} bounds
+ the inference nodes by $n+3u$, but not the size of the normalized terms,
+ the bytes of a certificate or the time of checking.  In $\mathsf V$ a use
+ of a clause costs four inferences before its antecedent, and an
+ introduction at an arbitrary witness invokes conditional copy.  A benchmark
+ that reports proof size and checking time beside checker size is proposed.
+\item Is there a larger class of cheaply recognized tautological closure
+ matrices than those with $\widehat B\equiv B_0$ that keeps the discharge
+ deterministic and makes the complete checker smaller?
+\item Does the raw selector of \cref{wit:prop:x-raw}, with its condition on
+ free variables, cost less in a complete checker than the selector on normal
+ forms?  No raw checker is measured.
+\item Can the newest specialization, or the vacuous selector, be built into
+ the arity-coded compact checkers, so that one program checks the new
+ calculus and is smaller than the compact records?  Can one module improve
+ all three coordinates of the compact envelope at once under a fixed
+ contract?  The packages ask, with \pkg{local\_introduction}, for a
+ representation-stable measure that charges normalization, parsing and all
+ decoding and admits nontrivial lower bounds; neither package proves
+ minimality or a lower bound.
+\item Membership-only majors.  \pkg{export\_specialization} considers the
+ calculus in which the major premise of \rulename{QE} and of \rulename{DE}
+ must be a literal member of the context instead of a derived formula, any
+ computation equation may be added to the context, and all other rules are
+ unchanged.  It argues that this calculus does not derive
+ $\proves\It{v}{0}{u}{u}=0$, which $\Nat$ derives by equation induction:
+ from equation-only contexts an introduction cannot end a derivation of an
+ equation and neither elimination finds a compound major, so only
+ hypotheses, computation equations and transport remain, and the free term
+ algebra modulo the computation equations separates the two sides.  The
+ article does not state this as a theorem; a complete proof would have to
+ fix the induction on derivations and the equational countermodel exactly.
+ It bounds which checker shortcuts preserve the open consequences of $\Nat$,
+ not the size of every certificate design.
+\end{enumerate}
 \end{question}
 
 \begin{question}[Less normalization]
@@ -3694,8 +4362,10 @@ normalization, with its own coherence law in place of \cref{ctr:lem:nf}?
 
 Further remarks of the packages on what is not shown:
 \begin{itemize}
-\item No package proves that its presentation is minimal, and none improves
- the compact programs of the corpus.  Whether the restriction of the witness
+\item No package proves that its presentation is minimal, and no checker of
+ a calculus of the chapter improves the compact programs of the corpus; the
+ compact checkers of \pkg{export\_specialization} and
+ \pkg{vacuous\_specialization} check another calculus.  Whether the restriction of the witness
  improves the compact records under a matched contract is open, and a
  comparison that fixes one validation contract for all competing calculi is
  proposed.  The question of \pkg{deterministic\_introduction} whether the

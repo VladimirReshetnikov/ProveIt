@@ -1,0 +1,237 @@
+# Independent proof audit: uniform_zero_supply.py
+
+Audited exact file: kernel_work/strict_work/uniform_zero_supply.py.
+Matched supply control supplied by the implementation agent:
+kernel_work/strict_work/control616.py.
+Pinned mathematical reference: ProveIt 12197d86f63e9ec73b2d91399c4de2a8cb0077ee,
+Article chapter ch11_cert.tex, labels cert:lem:recoding,
+cert:lem:plus-opening, cert:lem:local, cert:thm:uzero-complete.
+
+## Verdict and scope
+
+The proposed 608-byte checker is sound for the ordinary native calculus A
+and complete for its closed public Eq/D formulas in the new canonical
+encoding. Its public numerical zero is the scalar 1. The entire JSON value
+is still checked to consist of exact integers and arrays. The change is a
+representation change, not a new arithmetic axiom, and it is not an
+all-certificate equivalence with the zero-coded control.
+
+The proof below concerns ideal finite successful runs, as do the inherited
+checker theorems. It does not equate resource-limited CPython executions.
+
+## 1. The whole-input lexical test
+
+For a value p produced by the standard JSON decoder,
+
+    str(p).strip('0123456789-[], ')
+
+is empty precisely when p consists of integers and lists (including the
+possibility of an integer at the top level). Every JSON string has quotation
+marks in its Python representation; objects have braces; floats have a decimal
+point, exponent marker, or nonfinite letters; booleans and null have letters.
+All are excluded even in an unused certificate prefix. A top-level integer
+then fails when p.pop is obtained. Thus every successful run starts with a
+list whose entire recursive content is exact integers and lists. In particular
+Python's bool subclass of int does not escape this gate.
+
+## 2. Exact public-goal validation
+
+During the initial call v=1 and k=0. At formula positions d is even, at
+term positions d is odd. The array predicate
+
+    len(a) in (1, 2 + d % 2)
+
+permits D and equality at formula positions, successor and iteration at term
+positions. The scalar predicate is
+
+    k <= a < d and v <= d & a % 2.
+
+For v=1, it requires d odd and a odd. Together with k=0 and a<d, the permitted
+numerical leaves are 1 and the legal odd bound-slot indices 3,5,... below d.
+In particular scalar 0, scalar 2, negative escaping parameters, and scalars
+at a formula root are rejected. Wrong array arities fail as well: a list
+that is sent to the scalar branch cannot pass the comparison with k.
+
+Thus the initial goal belongs to exactly the inherited public typed grammar
+after recoding its numerical zero 0 as 1. Dummy bound-slot aliases, if admitted
+by the inherited typed grammar, are unchanged. The recoding creates no new
+binding or capture rule. The arity and scope gate is a decoder grammar check,
+not an assumption that the certificate was already well formed.
+
+After initial validation the existing phase assignment v:=0 is performed
+before the major premise is recursively checked and before any other
+proof-phase opening. Every recursive proof call has v=0 by default.
+The complete-input integer/list gate remains in force throughout.
+
+## 3. The proof-phase opener is exactly O+
+
+For v=0 the array restriction is automatic and the scalar gate reduces to
+the original range test. The opener becomes:
+
+    O+_k(a;t,d) =
+       [O+_k(b;t,d+5-len(a)) for b in a], if a is a list;
+       a or 1, if k <= a < d;
+       O+_k(t;missing,3), if the range test fails and d is odd;
+       0, if the range test fails and d is even.
+
+This is the O+ opener in chapter 11. It is not a global rewriting of every
+zero: only a retained scalar zero becomes 1. On numerical positions both
+codes mean numerical zero; on formula positions both mean the neutral truth
+0=0. At all other retained scalars the opener is unchanged.
+
+The semantic-opening theorem, outer-slot exposure theorem, and freshness
+theorem therefore hold verbatim for O+. Inserted terms are still validated
+at the root numerical depth 3 before being copied under binders. That
+validation must not be removed: it is what prevents capture.
+
+For a canonical expression A, let R(A) replace numerical zero leaves by 1.
+Then, for canonical well-scoped expressions and term images,
+
+    O+_k(R(A);R(t),d) = R(O_k(A;t,d)).
+
+Also O+_k(A;0,d)=O+_k(A;1,d) for a canonical template whenever the exposed
+numerical image is used, since both images are validated as 1 at depth 3.
+This is why administrative zero can still mean the zero instance of a matrix.
+
+For arbitrary raw aliases the equation with R need not hold. Soundness uses
+the semantic-opening theorem, not a claim that raw trees commute literally.
+
+## 4. Soundness of every instruction
+
+The induction invariant is the inherited one: a successful check of a closed
+goal at floor k derives its decoded formula from the decoded retained context.
+A retained scalar formula is a neutral truth. Contexts are extended
+immutably, and the local floor decreases only in the continuation; recursive
+major proofs use the caller's floor and cannot change it.
+
+**Resource.** Raw membership of the opened goal in the retained context
+identifies equal decoded formulas. O+ preserves the reading.
+
+**Equality elimination.** If the recorded source s is true-valued, the test
+requires the proved major m to be exactly [s,u], and the old goal to be
+O+(t;u). It replaces that goal by O+(t;s). The major reads as sigma=upsilon.
+Ordinary numerical equality transport in the native calculus gives the
+original goal from the new one. A true-valued scalar source 1 reads as zero;
+this merely permits equality transport with numerical source zero, which is
+sound. The old literal-zero source restriction was a certificate dispatch
+device, not a prohibition in full native arithmetic.
+
+**Closure elimination.** If source s is false-valued, then on typed raw
+inputs s is 0 or the empty list and has numerical reading zero. The major
+test requires m=[t,t,t], the closure of the template. The new goal is its
+zero instance O+(t;s), and the old goal is its instance at u. This is QE.
+An expression zero in u may be encoded by 1; the source marker s remains
+the false-valued 0. These roles are distinct.
+
+**Opening a major.** The threefold repeated major is opened at a new
+parameter. For a D major this exposes its existential witness and retains
+its index binder, producing the corresponding Q assumption. For other
+major shapes the inherited neutral/auxiliary argument applies. The O+
+exposure and freshness lemmas are exactly the hypotheses needed.
+
+**Computation supply.** When m is false-valued and u is true-valued, the
+new resource is the zero or successor computation packet selected by s.
+Its zero specialization in all newly allocated parameters is a genuine
+computation theorem, by the inherited certified-zero supply lemma. That
+lemma is semantic, and remains valid for O+ because codes 0 and 1 have the
+same reading at every numerical position. Since canonical numerical terms
+now all have true-valued representations, a seed whose numerical value is
+zero can be supplied directly as raw 1. The proof does not assume that every
+open supplied equation is universally true.
+
+**Introduction.** When m and u are false-valued, a nonempty raw list goal
+can pass the unpacking call i(*a,t,2) only when its arity is one, so it reads
+as a D formula. The term field t then instantiates its witness. There is
+one additional raw case: if the original goal is the empty list, the same
+expression calls i with two positional arguments rather than failing to
+unpack. That original goal already reads as the theorem 0=0, so any
+successful continuation is sound for it without an introduction inference.
+A scalar goal fails to unpack, and a list of arity at least two supplies too
+many arguments.
+
+For a D goal with a meaningful matrix, u=0 makes len(a)%2==u true at an
+equation matrix (arity two), giving the progressive assumption E(z). At
+compound D or Q matrices (arities one and three), it is false and gives the
+zero assumption B(0). For u=[] the comparison is false and gives case mode,
+including for equations. These are the two introduction rules of A. Both
+use a fresh parameter and conclude the successor instance in the recursive
+continuation. The source field s does not change this conclusion.
+
+For completeness of the raw-alias soundness argument, a matrix can instead
+have arity zero or an arity at least four. Such a raw formula has the
+constant reading 0=0. The parity test also selects progress at the even
+members of this class; it therefore selects exactly equations only among
+the meaningful canonical matrix shapes. In every one of these neutral
+matrix cases the original D goal has reading exists x (true -> forall y
+true), which is itself a theorem. Any successful continuation is consequently
+sound, whatever mode the raw parity test selects. A scalar matrix either
+causes the length test to fail or has a neutral reading; it cannot introduce
+a nontrivial induction instance.
+
+The any((m, len(a)%2==u)) spelling may reject malformed scalar shapes sooner
+than a short-circuited spelling, but any successful evaluation has exactly
+the intended Boolean mode. Therefore it introduces no extra accepted proof.
+
+The induction proves soundness for every successfully parsed JSON input,
+not just for certificates produced by the canonical compiler.
+
+## 5. Canonical completeness
+
+Every canonical numerical term in the new coding is true-valued: zero is
+1, parameters are negative integers, slots are odd integers >=3, and
+constructors are nonempty lists. Canonical formulas are nonempty lists.
+
+The usual recursive compiler from the full native calculus A uses the
+following four-field records. R is applied only to expression fields.
+
+    Transport s=u through F:
+        [ [R(s),R(u)], R(s), R(u), R(F) ]
+
+    QE with closure body B, target u:
+        [ [R(B)]*3, 0, R(u), R(B) ]
+
+    D elimination from D B:
+        [ R(D B), 0, 0, 0 ]
+
+    I0 with seed a and update h:
+        [ 0, 0, R(a), R(h) ]
+
+    IS with predecessor n, seed a and update h:
+        [ 0, R(n), R(a), R(h) ]
+
+    D introduction by cases, witness w:
+        [ 0, 0, [], R(w) ]
+
+    D introduction by equation progress, witness w:
+        [ 0, 0, 0, R(w) ].
+
+A compound case introduction can use either false case marker where the
+mode calculation agrees. Hypothesis steps use no record. The record stream
+is ordered according to the checker's major-first, continuation-second
+traversal and is stored in reverse because q=p.pop.
+
+Zero-source equality transport uses R(0)=1, so it selects the equality branch
+and needs no source-dispatch workaround. Likewise IS at predecessor zero
+uses source 1 and selects successor computation. I0 continues to use the
+administrative source marker 0. There is no ambiguity between those two uses.
+
+The recoding lemma makes all canonical raw comparisons literal equalities.
+For I0 and IS the supplied resource becomes exactly the recoded computation
+equation. Local eigenparameters may be reused in disjoint subderivations,
+as in the inherited local-floor theorem. This proves that every closed
+Eq/D theorem of A has an accepted new certificate.
+
+## 6. Bi-interpretability
+
+R leaves the numerical terms' meanings and all formula readings unchanged.
+Its public inverse sends the distinguished numerical zero code 1 back to 0,
+leaving bound slots and constructors fixed. It neither relativizes the domain
+nor changes equality.
+
+The new public theory is therefore the same full native Eq/D theory, with
+a different canonical spelling and checking presentation. Composing with the
+pinned native/iPRA bridge supplies both formula round trips and both term
+round trips, with the same numerical comparison graph x=y. Consequently
+the new checker presents a theory equiconsistent and bi-interpretable with
+full first-order iPRA.
+

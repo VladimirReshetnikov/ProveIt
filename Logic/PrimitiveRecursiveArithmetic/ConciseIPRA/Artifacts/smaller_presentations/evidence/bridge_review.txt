@@ -1,0 +1,262 @@
+# Bridge synopsis: the guarded public calculus and full first-order iPRA
+
+This is an independently checked synopsis of the existing bridge, not a claim
+that the bridge is new in this package. Source: pinned repository
+12197d86f63e9ec73b2d91399c4de2a8cb0077ee, Article chapters ch01_base.tex and
+ch03_guard.tex. Especially labels base:thm:bridge, base:prop:termrt,
+base:thm:logic, guard:def:T, guard:thm:public, guard:thm:aux.
+
+## A. State the actual calculus, including its public language
+
+Terms are x, 0, S t, I(n,a;u.h), binding u in h only. Substitution is ordinary
+capture-free numerical substitution. Write C(v,a,b)=I(v,a;u.b), with u fresh.
+
+Auxiliary formulas are equations, Q_y B and D_{x,y}B. The *public* formulas
+have Eq and D only. A D matrix that is itself an equation must literally be
+
+    I(y,0;u.h) = I(y,0;v.k),
+
+with y the second variable bound by that D. A compound D matrix is any public
+formula. An unbound equation at the root need not be guarded.
+
+The six rule families are:
+- Hyp: a retained assumption.
+- I0: I(0,a;u.h)=a.
+- IS: I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+- SE: from M(s,t;F) and F(s), infer F(t), where
+  M=Q_v F(v) if s is literally zero, and M=(s=t) otherwise.
+- Open: from D_{x,y}B and a derivation of A under Q_y B(b,y), infer A,
+  with b fresh for the outer context, A, and the parameters of B.
+- Intro: from B(t,eta) |- B(t,Sz) in an arbitrary outer context, infer
+  D_{x,y}B, where eta=z for a literal equation matrix and eta=0 for a
+  compound matrix. z is fresh for the outer context, t, and the parameters
+  of B.
+
+Intermediate formulas may be arbitrary auxiliary formulas, even when the
+goal is public. This is essential. Restricting every intermediate formula to
+the public grammar makes the source restriction and the root-selected
+introduction incompatible without an additional repair.
+
+The contradiction is the public equation 0=S0. A claim about full iPRA refers
+to the theory of *public* sequents. It must not be extended to arbitrary
+unguarded auxiliary D formulas. The repository explicitly proves that such an
+extension fails.
+
+## B. The two bridge spans
+
+The clean bridge has two spans:
+
+    guarded public U <-> native N <-> ordinary T_eq <-> full first-order iPRA.
+
+The native N is the unrestricted Eq/Q/D kernel: the two computation laws,
+equality transport, closure elimination, D elimination, D introduction by
+cases, and equation progress. One can use either full transport or the
+equivalent crossed one-term rule. The ordinary theory T_eq is intuitionistic
+first-order logic with actual equality, the same iterator terms, and:
+1. the two computation equations;
+2. numerical coverage x=0 or exists y x=Sy;
+3. 0=S0 -> bottom;
+4. induction for literal equations, with arbitrary parameters.
+
+Successor injectivity and all quantifier-free induction are theorems of T_eq.
+
+## C. Ordinary readings and logical macros
+
+The native ordinary reading is:
+
+    (s=t)^o := s=t
+    (Q_y B)^o := B^o(0) -> forall y B^o(y)
+    (D_{x,y}B)^o := exists x (B^o(x,0) -> forall y B^o(x,y)).
+
+It leaves the numerical domain whole. There is no quotient and equality is
+actual equality.
+
+The following is an explicit finite definition of the formula selector
+Sel(c,A,B), not a postulated conditional connective. Bound variables are
+always renamed fresh. It is a recursion first on A, and then on B when A is
+an equation:
+
+    Sel(c, s=t, r=w) :=
+        C(c,s,r)=C(c,t,w)
+
+    Sel(c, s=t, Q_y B) :=
+        Q_y Sel(c, C(y,0,s)=C(y,0,t), B)
+
+    Sel(c, s=t, D_{x,y}B) :=
+        D_{x,y} Sel(c, C(y,0,s)=C(y,0,t), B)
+
+    Gate(c,B) := Sel(c,0=0,B)
+
+    Sel(c,Q_y A,B) := Q_y Sel(c,A,Gate(y,B))
+    Sel(c,D_{x,y}A,B) := D_{x,y} Sel(c,A,Gate(y,B)).
+
+The binder depth of unmatched operands cannot simply be padded with a vacuous
+D: D_{x,y}A with both variables unused is a truth, not A. The gate in this
+definition is what makes the padding correct.
+
+Define parity N(n)=I(n,0;u.C(u,1,0)), where 1=S0. Then
+
+    bottom_* := 0=S0
+    A implies_* B := Q_y Sel(y,A,B)
+    A and_* B := Q_y Gate(y,Sel(N(y),A,B))
+    exists_* x A := D_{x,y} Gate(y,A)
+    A or_* B := exists_* x Sel(x,A,B)
+    forall_* x A := A(0) and_* Q_x A.
+
+These are all finite native formulas. Q can subsequently be eliminated by
+the public translation below. The conjunction uses the rows y=1 and y=2:
+N(1)=1 and N(2)=0, while its row at y=0 is a theorem because of Gate.
+
+The native calculus derives:
+- Sel(0,A,B) equivalent to A;
+- Sel(Sz,A,B) equivalent to B;
+- Gate(0,A) is a theorem;
+- Gate(Sz,A) equivalent to A;
+- Q_y Gate(y,A) equivalent to A, when y is fresh;
+- all introduction and elimination rules for the six displayed macros,
+  with the usual eigenvariable conditions.
+
+For example implication introduction is D/Q case introduction using the
+zero row A and successor row B; implication elimination specializes at 1.
+Existential introduction chooses the D witness; existential elimination
+opens that witness and uses the gate closure at 1. Explosion first obtains
+every equation from 0=S0 by transport in C(-,s,t), and then inducts over
+formula structure. These are intuitionistic derivations. No excluded middle
+for arbitrary formulas is introduced.
+
+Writing phi* for replacement of ordinary connectives by these macros:
+N proves exactly the native translations of T_eq consequences, and
+
+    (A^o)* is interderivable with A in N;
+    T_eq proves phi <-> (phi*)^o.
+
+The first is proved by induction on A. For Q, its expansion is
+B(0) implies_* forall_*y B; use Q introduction in one direction and QE in
+the other. For D, combine that Q equivalence with the existential
+introduction/elimination rules. The second is a structural induction using
+the displayed logical rules and the selector laws.
+
+## D. Public translation and its round trips
+
+For an equation E=(s=t), use the zero guard
+
+    gamma_z E := I(z,0;u.s)=I(z,0;u.t).
+
+Put L(E)=D_{a,z} gamma_z E, with fresh a,z, and define Pad(E)=L(E) for an
+equation, Pad(A)=A for compound A. The exact public translation is
+
+    T(s=t)=s=t
+    T(Q_y B)=D_{a,y} Pad(TB), with a fresh
+    T(D_{x,y}B)=D_{x,y} Pad(TB).
+
+Every translated matrix is compound, and every atomic D matrix created by
+L is literally zero-guarded. Thus T maps every native formula to the public
+grammar without adding term constructors. Padding satisfies Pad(A) equivalent
+to A; for an equation this follows because gamma_0 E is the theorem 0=0,
+and gamma_1 E is E by computation.
+
+The U-to-N comparison is not obtained by declaring every auxiliary formula
+to have the ordinary reading. A safe intermediate soundness reading treats
+atomic D matrices progressively, and case matrices conditionally; it agrees
+with the ordinary reading on public formulas because every guarded atomic
+matrix has a provable zero row.
+
+The established public-language theorem gives:
+1. N derivations Gamma |- A translate effectively to U derivations
+   T(Gamma) |- T(A).
+2. N interderives A and T(A), for every native A.
+3. U interderives B and T(B), for every public B.
+4. U and N derive exactly the same public sequents.
+
+These are the two formula round trips for the public interpretation. They
+are stronger than an external equivalence of consistency assertions.
+
+## E. Arithmetic and the term interpretations
+
+The hard inherited arithmetic fact is that scalar iteration plus equation
+induction defines a predecessor P satisfying, throughout every model,
+
+    P(0)=0, P(Sn)=n.
+
+It is not enough to test this on standard natural numbers. The pinned article
+has an equational proof; the incoming P45 package composes two existing
+improvements of the concrete term. The checker reductions do not change P.
+
+With P define truncated subtraction a dotminus b = I(b,a;u.P(u)).
+Let K(u)=C(u,1,P(u)), and epsilon(a,b)=K(Sa dotminus b). T_eq proves
+
+    epsilon(a,b)=0 iff a=b.
+
+Hence atomic equality is decidable in T_eq. For every quantifier-free
+ordinary formula phi, build a numerical term b_phi with b_phi=0 iff phi.
+Using "zero means true", one may take
+
+    b_bottom=1
+    b_(s=t)=epsilon(s,t)
+    b_(A and B)=C(b_A,b_B,1)
+    b_(A or B)=C(b_A,0,b_B)
+    b_(A implies B)=C(b_A,b_B,0).
+
+The equivalence for implication uses the decidability of the relevant
+quantifier-free formulas, not arbitrary excluded middle. Equation induction
+on b_phi=0 proves all quantifier-free induction instances.
+
+The article constructs numerical pairing terms pair, fst, snd and proves
+fst(pair(a,b))=a, snd(pair(a,b))=b. One explicit choice is
+
+    pair(a,b)=2^(a+b)+a
+    fst(w)=w dotminus 2^lg(w)
+    snd(w)=lg(w) dotminus fst(w),
+
+where lg is the scalar-iteration saturation of the binary logarithm. Pairing
+need not be onto: the domain of interpretation remains the whole numerical
+domain, and pairs serve only as internal recursion states.
+
+Compile a counter-aware recursion by
+
+    step_g(w)=pair(S fst(w), g(fst(w),snd(w)))
+    R(n,a;i,u.g)=snd(I(n,pair(0,a);w.step_g(w))).
+
+Equation induction proves fst(I(n,pair(0,a);step_g))=n, and hence the ordinary
+primitive recursion equations for R. Define sigma from each finite PR
+function description by projection, composition, and this R construction.
+This is an external recursion on finite syntax. It is not a universal
+internal evaluator for codes of all primitive recursive functions.
+
+In the other direction tau maps a scalar iterator to the ordinary primitive
+recursive function with base a and step h ignoring its counter, with all
+free variables treated as parameters. Both sigma and tau fix numerical
+variables and 0,S. Tau commutes with substitution up to provable equality;
+sigma does so literally.
+
+Both term round trips are proved internally:
+- T_eq proves sigma(tau(t))=t, by structural induction on scalar terms.
+  The iterator case uses uniqueness of iteration, itself equation induction.
+- iPRA proves tau(sigma(r))=r, by induction on each PR function description.
+  At a primitive recursion, the compiled term and the original function
+  satisfy the same base and step equations. Quantifier-free induction in
+  their equality proves their equality. Structural induction extends the
+  result to all terms.
+
+Thus the domain comparison map in both directions is literally x=y. It is
+total, bijective, and compatible with all operations; no proper definable
+subdomain or quotient is used.
+
+## F. Final precise assertion
+
+For a public U formula B put B^flat = tau(B^o).
+For an iPRA formula phi put phi^sharp = T((sigma(phi))*).
+The inherited bridge and the two round trips yield
+
+    Gamma |-U B iff Gamma^flat |-iPRA B^flat,
+    Delta |-iPRA phi iff Delta^sharp |-U phi^sharp,
+
+with public/native formula round trips and numerical identity composites.
+In particular U derives 0=S0 iff iPRA derives bottom.
+
+The continuation and eager-aggregation checker changes preserve this same
+public theorem language, so this bridge applies to the new checking
+presentations unchanged. There is no new consistency assumption, no appeal
+to the standard model to justify all models, and no additional induction
+schema.
+

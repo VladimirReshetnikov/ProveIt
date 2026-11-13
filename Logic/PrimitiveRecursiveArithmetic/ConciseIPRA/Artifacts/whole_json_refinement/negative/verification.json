@@ -1,0 +1,79 @@
+{
+  "status": "PASS: original rejects, deliberately unsound mutant accepts",
+  "python": "3.12.14",
+  "metrics": [
+    {
+      "file": "control_checker473.py",
+      "tokens": 272,
+      "ast_nodes": 308,
+      "normalized_bytes": 473,
+      "source_sha256": "282c2165b84b96957b12390ebb2f12ba6f24080396f9802ece080d914555c026",
+      "normalized_sha256": "282c2165b84b96957b12390ebb2f12ba6f24080396f9802ece080d914555c026"
+    },
+    {
+      "file": "REJECTED_UNSOUND_no_parity.py",
+      "tokens": 268,
+      "ast_nodes": 301,
+      "normalized_bytes": 465,
+      "source_sha256": "8356ba69f4a16cbf0f0e5ff995539e7c4997c61cdb239b5ace5b360e6bf79a63",
+      "normalized_sha256": "49256c6fe08cb022a32eb3064b9efd6bc0bf1e28986b5f922099fd7a8423a522"
+    }
+  ],
+  "fixture_sha256": "36a6f0cada4d78310903efc56b1a0bc55a8d94d50327459f9cb00c824cc7d380",
+  "exact_integer_list_input": true,
+  "canonical_closed_guarded_goal": true,
+  "false_goal_witness": {
+    "y_zero": [
+      0,
+      0
+    ],
+    "y_one": [
+      0,
+      1
+    ],
+    "x_does_not_occur": true
+  },
+  "runs": [
+    {
+      "program": "control_checker473.py",
+      "optimized": false,
+      "expected_acceptance": false,
+      "accepted": false,
+      "return_code": 1,
+      "stdout": "",
+      "error_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "program": "control_checker473.py",
+      "optimized": true,
+      "expected_acceptance": false,
+      "accepted": false,
+      "return_code": 1,
+      "stdout": "",
+      "error_last_line": [
+        "IndexError: pop from empty list"
+      ]
+    },
+    {
+      "program": "REJECTED_UNSOUND_no_parity.py",
+      "optimized": false,
+      "expected_acceptance": true,
+      "accepted": true,
+      "return_code": 0,
+      "stdout": "ACCEPT\n",
+      "error_last_line": []
+    },
+    {
+      "program": "REJECTED_UNSOUND_no_parity.py",
+      "optimized": true,
+      "expected_acceptance": true,
+      "accepted": true,
+      "return_code": 0,
+      "stdout": "ACCEPT\n",
+      "error_last_line": []
+    }
+  ],
+  "scope": "Four exact process executions plus the explicit standard-model calculation; no universal correctness claim for the original from these tests."
+}

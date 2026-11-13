@@ -1,0 +1,214 @@
+SMALLER VALIDATORS AND CURRENT BYTE-PROFILE COMPOSITIONS FOR iPRA
+=============================================================
+
+Pinned repository: VladimirReshetnikov/ProveIt
+Commit: 167c76930834c17648fcc2509ab16260da4c727d
+Root: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+
+RESULT AND BOUNDARY
+-------------------
+These complete acceptance modules implement the inherited scalar iPRA
+presentation. No logical or arithmetic axiom is deleted. Their ordinary
+interpretation, numerical domain, and identity comparison maps are unchanged.
+The contribution is a smaller implementation of the public-syntax validator
+and exact compositions of existing checker transformations.
+
+The newly exhibited coordinate envelopes are:
+
+                     significant tokens / AST nodes / normalized bytes
+  native public validation                 317 / 358 / 594
+  native + whole-input alphabet            328 / 368 / 616
+
+They strictly improve the corresponding supplied current envelopes
+321/369/596 and 330/380/621. Each envelope combines DIFFERENT programs.
+It must not be reported as one program's size. The compact guarded byte
+profile improves 477 to 476, but the compact token/AST records 244 and 265
+are not improved. No universal complexity lower bound is established.
+
+Candidate vectors, with the complete module counted:
+
+  compact_checker.py        274 / 306 / 476
+  native_tokens_checker.py  317 / 364 / 617
+  native_ast_checker.py     321 / 358 / 622
+  native_bytes_checker.py   332 / 373 / 594
+  strict_tokens_checker.py  328 / 377 / 634
+  strict_ast_checker.py     335 / 368 / 643
+  strict_bytes_checker.py   340 / 382 / 616
+
+The metric is CPython 3.12.14: ast.unparse of the whole source, final LF,
+significant tokens excluding layout/comments/endmarkers, all AST nodes,
+and normalized UTF-8 bytes. Reader, syntax checks, proof kernel, and ACCEPT
+output are included. Only the standard json parser and CPython are external.
+There is no compressed payload, generated checker import, or hidden rule table.
+
+1. EXACT NATIVE SCALAR VALIDATION
+--------------------------------
+The old predicate for a permitted numerical coordinate was
+
+    int(a) is a and a % 2 == (a > 1).
+
+It is replaced by
+
+    a is not False and a & 1 == (a > 1).
+
+This occurs after the ordinary bound test k <= a < d. At the public root
+k=0. Its intended permitted coordinates are precisely the integer 0 and
+odd integers greater than 1. Here is the complete ordinary JSON-atom analysis:
+
+  exact integer 0:    not identical to False; 0 & 1 = 0 = (0 > 1)
+  odd integer > 1:    1 = True, so accepted
+  integer 1:         1 != False, so rejected
+  even integer > 1:  0 != True, so rejected
+  False:             explicitly rejected by identity
+  True:              True & 1 = 1 != (True > 1) = False
+  float:             & with integer 1 raises TypeError, hence rejection
+  null/string/object: the earlier numerical comparison or traversal rejects
+
+Negative coordinates are excluded in the public phase by k=0. The old
+and new predicates also agree on actual integers if a negative depth is
+encountered internally: a & 1 = a % 2 for every integer a. Nonfinite floats
+cannot pass the prior finite bound comparison. Lists are handled by the
+unchanged recursive shape branch.
+
+For the native token/AST profiles the nonempty-context test skips this public
+predicate during proof checking. Thus, at every place where the predicate
+matters, both forms accept exactly the same public scalar. The byte profile
+uses an explicit phase flag; the replacement may reject further noncanonical
+internal floating-point data, but the inherited proof-certificate contract
+is exact-integer/list trees and is unchanged there. No claim is made about
+arbitrary user-defined Python objects or int subclasses: the reader is json.
+
+The new bitwise operation is a direct built-in integer operation. It does not
+evaluate certificate text as code. Unsupported operands cause rejection.
+
+2. BOOLEAN DEPTH GATING
+-----------------------
+For any integer d and Boolean B,
+
+    (d % 2) * B = d & B.
+
+Indeed B=False makes both sides zero; B=True makes both d modulo two.
+This includes negative d, because Python bitwise parity agrees with modulo
+two on all integers. The predicates used as B return Boolean values.
+
+The exact replacement
+
+    d % 2 * (B)    -->    d & (B)
+
+deletes two significant tokens, three AST nodes, and four normalized bytes.
+Both forms evaluate d before B, evaluate B exactly once, and have no side
+effects. This is exact even on all internal negative scope depths that the
+raw arity decoder can create. The strict profiles retain the original
+whole-input alphabet check and use this identity on its integer inputs.
+
+3. EAGER MODE SELECTION
+-----------------------
+The byte profiles also use the already established boolean_constancy change
+on later controls. They replace bool(m or R(a)) by any((m,R(a))), where
+
+  compact: R(a) = 3 % len(a)
+  native/strict: R(a) = len(a) % 2 == u.
+
+The candidate eagerly evaluates R(a). On every successful candidate run it
+is defined, pure, and gives the same Boolean result as the old expression.
+The control either evaluates the same expression or skips it when m is true.
+Both evaluate the hypothesis argument first, the selector next, and only
+then allocate k := k - 1. The same fresh parameter, hypothesis, goal, and
+remaining certificate therefore result. Induction on a successful execution
+gives successful-run inclusion in the matched control. No false canonical
+goal becomes accepted.
+
+Canonical completeness is preserved: every canonical goal or introduction
+matrix at a selector is a nonempty equation, D formula, or closure, of arity
+2, 1, or 3. Hence R(a) is defined there. The compact representation uses []
+as its administrative major, already retained in every context; its proof
+returns at membership before any selector. The other profiles use their
+unchanged neutral resource. Canonical certificates do not need the old
+short-circuit bypass of an undefined len or remainder.
+
+The mechanism was already proved in ipra_boolean_constancy. The new result
+is its composition with compact477 from ipra_head_conversion and the newer
+native596/strict621 controls from ipra_refinement. Raw malformed acceptance
+languages need not be equal; successful-run inclusion and preservation of
+the canonical compiler are the precise assertions.
+
+4. AST-PROFILE EXACT SOURCE TRANSFORMATIONS
+-----------------------------------------
+The AST profiles additionally use these ordinary source changes:
+
+* `from json import load` calls the same standard-library function as
+  `import json` followed by `json.load`; no local name shadows `load`.
+* An assignment immediately followed by its designated read is inlined
+  with a Python assignment expression. For the input list p, evaluation
+  still parses the same JSON before applying str and the alphabet gate.
+  For the pop reader q, q is bound before the initial pop and before the
+  proof checker is called; later recursive reads see the same bound method.
+* The opener assignment is invoked directly as `(i := lambda ...)(a)`.
+  Assignment precedes the call and its recursive lambda body. Recursive
+  references therefore resolve to the same newly created closure as in
+  the separate assignment. Defaults are evaluated at the same point.
+* In the strict AST profile, `if membership: return` followed by the rest
+  of a function is changed into `if not membership: rest`. The original
+  bare return and the new implicit function return both return None.
+
+These are exact control-flow transformations. They do not change packet
+framing, scope updates, numerical term traversal, hypotheses, rule selection,
+or any public validation condition. Each control is included verbatim up
+to the common ast.unparse normalization, so the transformations are reviewable.
+
+5. CONSEQUENCES FOR THE LOGICAL THEORY
+-------------------------------------
+On finite exact-integer/list certificates, the new validators and depth gate
+agree with the controls, and AST-profile transformations execute the same
+operations. The eager mode selector permits only a subset of raw successful
+traces while preserving every canonical compiled proof.
+
+Thus each candidate accepts exactly the same canonical theorem set as its
+control. The established interpretation into iPRA and inverse translation
+can be reused literally; their domains, equality interpretation, and identity
+composites are unchanged. This transfers equiconsistency and bi-interpretability.
+The result depends on the inherited checker-to-calculus correctness and
+calculus-to-iPRA bridge; those are not newly formalized here.
+
+6. INPUT CONTRACTS
+------------------
+compact_checker.py assumes a canonical closed GUARDED Eq/D public formula
+and finite exact-integer/list certificate trees. It does not validate the
+public grammar separately. The last JSON item is [goal,0]; earlier items
+are [major,source,seed,template], consumed right to left. Administrative
+majors are [] as in its matched compact477 control.
+
+native_*_checker.py validate the complete closed NATIVE Eq/D public goal.
+Their proof-certificate soundness contract is finite exact-integer/list trees;
+the alphabet of unused prefix objects is not validated. The final JSON item
+is the goal itself. Earlier proof packets have the inherited four fields.
+
+strict_*_checker.py validate BOTH the whole integer/list certificate alphabet
+and the closed native Eq/D public goal, including unused prefix data. They
+are the appropriate entry points when these complete JSON validation guarantees
+are required. They use the same native four-field proof protocol.
+
+All modules accept only by normal exit with exactly ACCEPT followed by LF.
+Exceptions reject. No inference condition relies on assert or optimized-mode
+behavior. Sufficient host resources are the common implementation convention.
+
+7. REPRODUCIBLE EVIDENCE
+-----------------------
+Run `python3 verify.py`. It reproduces every complete-source metric vector
+and runs the corresponding supplied fixtures against each control/candidate,
+normally and under -O, in isolated Python processes.
+
+The fixture families include zero and successor computation, genuinely used
+induction hypotheses, compound introduction and elimination, zero-source
+transport, native atomic case introduction, false conclusions, future-variable
+capture, context leakage, invalid public atoms and roots, whole-input alphabet
+boundaries, and 120 computation instances paired with corrupted endpoints.
+
+The completed CPython 3.12.14 run has 582 profile/fixture cases and 2,328
+isolated process executions, with zero failed expectations. The 398 distinct
+base cases are reused across the applicable source profiles.
+
+verification.json is the authoritative execution record. Tests support the
+review; the universal correctness claims are the proofs above plus the stated
+inherited dependencies. No new Lean or Rocq proof is claimed.
+

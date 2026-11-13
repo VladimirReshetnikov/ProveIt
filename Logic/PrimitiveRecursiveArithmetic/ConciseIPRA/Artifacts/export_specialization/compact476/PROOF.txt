@@ -1,0 +1,145 @@
+COMPOSING THE EAGER-IMAGE AND EAGER-BOOLEAN CHECKERS
+=================================================
+
+Status and attribution
+----------------------
+This is a one-byte implementation refinement of an existing checking
+presentation. It removes no axiom, inference rule, or term constructor.
+The two constituent techniques are inherited from the incoming packages
+head_conversion (eager images and an empty neutral resource) and
+boolean_constancy (eager Boolean aggregation). Their composition is the
+only implementation claim here. It is not an absolute complexity lower
+bound or an improvement in every measured coordinate.
+
+Exact control and result
+------------------------
+The control is code/compact477.py in ipra_head_conversion_2026-11-12.zip
+under docs/incoming at ProveIt commit
+2fa4637b3bf922beea0052a5210c22b14482950b. It has 272 significant tokens,
+306 AST nodes, and 477 normalized UTF-8 bytes. The candidate replaces
+
+    bool(m or 3 % len(a))
+
+by
+
+    any((m, 3 % len(a)))
+
+and changes nothing else. Its metrics are 274 / 306 / 476. Normalization is
+CPython 3.12.14 ast.unparse(ast.parse(source)) plus one final LF, with the
+complete standalone module charged, including JSON input and ACCEPT output.
+
+Public and certificate contracts
+--------------------------------
+Input is one JSON array consumed from the right. Its last entry is [A,0],
+where A is a canonical closed guarded Eq/D public formula and the second
+component is the fixed initial scope floor. Each preceding consumed packet
+has four fields [m,s,u,t]. The mathematical theorem-checking contract promises
+finite exact-integer/list trees throughout the relevant certificate. The
+initial neutral resource is the empty array []; the canonical compiler
+uses [] for administrative majors. The module does not validate the entire
+input promise and must not be compared as if it were a strict arbitrary-JSON
+validator or a checker for every unguarded native Eq/D goal.
+
+Acceptance means normal termination with exit code zero and exactly
+ACCEPT followed by one LF on stdout. Exceptions reject. Unused prefixes
+are not proof steps. As in the controls, finite proofs are considered with
+sufficient stack and memory resources; a physical resource failure rejects.
+
+The changed operation
+---------------------
+For every finite JSON-derived m and every defined integer r,
+
+    any((m,r)) == bool(m or r).
+
+Tuple construction evaluates r eagerly. Thus the candidate may fail where
+the control avoids 3 % len(a) because m is true. There is no claim of equal
+acceptance for every malformed or noncanonical raw certificate. This is an
+acceptance inclusion followed by canonical theorem completeness.
+
+Lemma 1. Acceptance inclusion
+-----------------------------
+For every finite integer/list input accepted by the candidate, the control
+accepts the identical input and consumes the identical packet suffix.
+
+Proof. Relate states having identical goals a, contexts g, floors k,
+opener closures, and unread packet suffixes. All code is literally identical
+until the replaced expression. On a successful candidate execution,
+len(a) and the remainder are defined there. Evaluating that remainder
+mutates no tree, context, scope floor, or packet source. JSON-derived
+integers and lists have no user-defined truth methods. The displayed
+identity therefore gives the same Boolean result as in the control.
+In particular k := ~-k occurs afterwards, at exactly the same point.
+The opener receives the same image, and all recursive call arguments
+and context extensions coincide. Induct on the finite successful call
+tree. The retained-hypothesis base cases and both recursive call sites
+are unchanged. This proves the claim. An additional failure of the eager
+expression can remove an accepted trace but cannot create one. QED.
+
+Lemma 2. Canonical theorem completeness
+---------------------------------------
+Every public theorem with a canonical compiled certificate for the control
+has a canonical certificate for the candidate with the same public formula.
+
+Proof. Use the inherited canonical derivation compiler for the guarded
+scalar calculus, with administrative major [] and final record [A,0] as
+in head_conversion. At a true-major site the current canonical formula
+has nonempty arity one, two, or three. At an introduction site the changed
+goal a is its canonical matrix, again a nonempty formula. At a computation
+site the outstanding goal is a canonical formula. Administrative neutral
+truth checks use the retained empty array and return in the initial
+membership test, before reaching the changed expression. Thus len(a)
+is defined and nonzero at every affected visit in such a compiled trace.
+The extra remainder calculation cannot fail. The Boolean identity and
+unchanged evaluation order now give the same trace by induction. This
+is an existence claim for canonical certificates, not preservation of
+every possible noncanonical certificate of a well-formed theorem. QED.
+
+Theorem. Unchanged public theorem set
+-------------------------------------
+On the stated public and certificate contracts, compact476.py checks
+exactly the same guarded scalar theory as compact477.py.
+
+Proof. Soundness follows from Lemma 1 and the control's all-raw auxiliary
+decoding theorem. Completeness follows from Lemma 2 and the inherited
+canonical compiler. Consequently the ordinary realization remains
+equiconsistent and bi-interpretable with full first-order iPRA through
+the existing numerical and logical translations. Both numerical domains
+are whole and both numerical comparison graphs remain x=y. No new
+interpretation or new arithmetic theorem is needed for this composition.
+The reasoning is a relative transfer from the control, whose own eager
+opening lemma and canonical compiler are supplied in its upstream report.
+It is not a newly machine-checked proof of that inherited bridge. QED.
+
+Relation to the current comparison table
+----------------------------------------
+The seven currently present incoming archives strengthen the README table.
+The inspected compact envelope is 244 tokens / 265 AST nodes / 477 bytes,
+achieved by different programs and, for tokens/nodes, different framing.
+The candidate changes only its byte coordinate to 476. A global simplicity
+claim below all three coordinates is not established.
+
+The native public-goal envelope is 321 / 369 / 596, and the strict
+whole-input/native-goal envelope is 330 / 380 / 621, again coordinatewise
+and achieved by different modules. Those stronger validation contracts
+must not be collapsed into the compact comparison. No proposed candidate
+here improves their complete metrics.
+
+Evidence
+--------
+verify.py independently parses and measures the complete modules, checks
+the exact one-expression source relation, and runs the 66 inherited head
+fixtures against control and candidate in ordinary and optimized isolated
+CPython processes. Scope leaks, future eigenparameter capture, false
+equations, genuinely used induction hypotheses, both computations, and
+compound introductions/eliminations are included. The detailed receipt
+records 264 process executions. This is finite regression evidence for
+the implementation and does not replace either lemma above.
+
+Further research
+-----------------
+1. Find a mathematical rule deletion that lowers a complete checker with
+   all public-goal and proof-data validation charged.
+2. Formalize the canonical compiler and raw auxiliary decoding directly
+   against these executable modules, including rejection sentinels.
+3. Fix one framing and one validation contract before seeking multi-metric
+   dominance; a coordinatewise envelope is not one program or a lower bound.

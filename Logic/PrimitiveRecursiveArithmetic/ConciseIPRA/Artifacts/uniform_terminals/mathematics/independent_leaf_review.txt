@@ -1,0 +1,120 @@
+INDEPENDENT REVIEW: HYPOTHESIS/COMPUTATION TERMINAL POOL
+
+Reviewed files:
+  experiments/leaf_tuple.py
+  experiments/leaf_regular_list.py
+Control:
+  baseline_audit/incoming/ipra_computation_leaves_2026-11-12/
+    ipra_computation_leaves/code/checker_tokens.py
+
+Verdict
+-------
+The change from two terminal branches (hypothesis and computation) to
+membership of the validated goal in the retained resources plus one
+packet-selected computation is sound under the inherited compact input
+contract and raw sorted-decoder invariant. The change from a == H to
+i(a) == H does require an additional lemma; it is not literally the old
+computation test. That lemma is proved below.
+
+1. The no-image traversal is a partial retraction
+------------------------------------------------
+Fix the current floor k and an arbitrary integer depth d. Write
+N_{k,d}(a) = i(a, t=0j, d=d). A successful N call on finite integer/list
+data preserves every list constructor and changes only scalar leaves.
+At an integer leaf, there are exactly two successful cases:
+  (i) k <= a < d, in which the result is a;
+  (ii) this test fails and d is even, in which the result is 0.
+At odd d an out-of-range leaf demands i(0j,d=3), which fails; the complex
+sentinel cannot pass the numeric comparison. If a child traversal fails,
+the parent list's broad except clause also fails when it compares the
+list with k, so it cannot turn that failed child into a successful list.
+
+Case (i) remains unchanged under a second N call. In case (ii), a second
+call on 0 either retains 0 by its range test or returns 0 by the same
+even-depth branch. Induction over lists proves
+
+  N_{k,d}(N_{k,d}(a)) = N_{k,d}(a)
+
+whenever the first call succeeds, including depths made negative by
+ignored arrays of high arity. No bound on list arity is needed.
+
+The tuple program can inherit internal False values from its old
+zero-image selection expression. Treat False as the integer value 0
+(and True, if encountered internally, as 1). Python's operations here
+make no distinction relevant to the lemma. The certificate alphabet
+itself remains exact integers and lists. Accordingly, equality in this
+statement may be understood as Python equality, or after this harmless
+Boolean-to-integer normalization. Do not call it strict typed-tree
+identity without that convention.
+
+2. No-image traversal preserves the decoded formula
+---------------------------------------------------
+Under the inherited sorted decoder, a meaningful numerical position
+has odd depth. Its scalar leaves cannot be changed by a successful
+no-image traversal; its bound slots and allocated rigid parameters are
+retained. A scalar at a meaningful formula position denotes the neutral
+truth, both before and after replacement by 0. Arrays ignored by the
+decoder retain their shape and still denote numerical zero or neutral
+truth, regardless of changes within their ignored annotations.
+Structural induction through the meaningful constructors therefore gives
+
+  decode(N_{k,0}(a)) = decode(a)
+
+whenever N_{k,0}(a) succeeds. The corresponding statement holds at
+protected depths with the same environment. This argument uses no
+computation equation and no new arithmetic hypothesis.
+
+3. The new computation terminal is sound
+----------------------------------------
+Let H(s,u,t) be exactly the computation equation constructed by the
+control program. In the successor branch its construction includes the
+call i(t,[s,u,t],3); a successful membership test entails that this call
+has succeeded. Suppose the new terminal succeeds through
+
+  N_{k,0}(a) == H(s,u,t).
+
+By the retraction lemma, N_{k,0}(H) succeeds and equals H. Thus H meets
+the validation hypothesis of the control's direct-computation-leaf
+lemma, which proves its sorted reading to be an iterator computation
+theorem. By decoding preservation, a has that same reading. Therefore
+the new leaf closes a valid goal. It does not infer the universal
+validity of an equation from validity at a zero eigenparameter.
+
+If instead the terminal succeeds through a retained resource g, its
+test N_{k,0}(a) in g is exactly the inherited hypothesis test.
+
+4. Eagerness and certificate compilation
+-----------------------------------------
+Both tuple construction and list concatenation construct H eagerly,
+even when the normalized goal will match a retained resource. A compiler
+must therefore supply a harmless packet at every hypothesis call.
+The packet [0,0,0] suffices: it constructs
+
+  H(0,0,0) = [[0,0,0],0]
+
+without invoking an image opener. It cannot fail merely because the
+goal is a hypothesis. The additional input line is a format change and
+must be included by the compiler.
+
+For canonical scoped goals N(a)=a (up to the same zero aliases), so the
+computation and nonterminal records of a canonical control derivation
+remain valid. Insert the harmless record at every hypothesis leaf. The
+tuple version replaces a while continuation by a recursive continuation;
+this changes resource usage but not the finite unbounded proof relation.
+
+The regular-list version additionally calls c(g,0) for the neutral major
+of a canonical introduction. Its starting context contains 0, and the
+compiler inserts [0,0,0] at that neutral call as well. Every successful c
+call returns None, so the or expressions have their intended control
+meaning. Successful noncanonical neutral calls can consume more records
+and more fresh parameters, but they introduce no extra assumptions and
+the globally decreasing floor still guarantees freshness.
+
+5. Scope of this review
+-----------------------
+This proves the new terminal interface and explains canonical
+completeness relative to the inherited raw logical-step and direct-leaf
+soundness lemmas. It does not claim fresh proof-assistant verification of
+the inherited whole checker. Acceptance is normal exit with exactly the
+success output; exceptions are rejection. The established compact
+promise of a canonical closed guarded public root remains essential.

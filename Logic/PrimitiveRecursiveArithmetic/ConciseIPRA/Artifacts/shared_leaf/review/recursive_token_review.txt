@@ -1,0 +1,59 @@
+REVIEW OF recursive_tokens.py (242 / 268 / 565)
+================================================
+
+The source is frontier_work/recursive_tokens.py. It applies the same
+hypothesis/computation membership leaf as membership_bytes.py, with a
+global numerical floor and a recursive continuation in place of the loop.
+
+1. Tail recursion
+-----------------
+After a major proof returns, both variants decrement the same global k.
+The loop computes i(h,mode), extends the immutable tuple context, computes
+i(a,[k]), and repeats. The recursive version computes i(a,[k]), then
+i(h,mode), and invokes c with those same data. Neither opening reads the
+certificate stream, changes k, or mutates g/a/h. Thus their order is
+irrelevant on finite successful runs. The mode uses the original local a
+in both versions. Each successful call returns None, so the source major
+expression c(s,*g) or s*3 is unchanged. This transformation alone has an
+exact finite-execution simulation.
+
+2. Membership with the lazy opener
+----------------------------------
+The separate byte proof's literal I_k(a)=a lemma is false here. The lazy
+opener can replace out-of-range scalars in even-depth ignored/formula
+positions by 0. Successful opening nevertheless preserves the sorted
+ordinary reading. Also I_k(I_k(a)) = I_k(a) whenever I_k(a) is defined:
+prove this structurally; a changed scalar was at even depth and became 0,
+which either satisfies the protected interval or is mapped to 0 again.
+An odd-depth fallback with the absent-image complex sentinel fails.
+
+Consequently a successful leaf matching I_k(a)=H(s,u,t) has a scope-valid
+H. The inherited direct computation lemma proves H; the reading of a
+equals the reading of I_k(a), so the leaf is sound. If membership instead
+succeeds through g, the inherited hypothesis invariant applies.
+
+For completeness use canonical proof compilation: meaningful canonical
+terms/formulas and their capture-free instances are fixed by no-image
+opening. Each canonical computation leaf therefore still matches H. A
+hypothesis leaf gets the inert packet [0,0,0]. Its preview is always
+defined, and the new membership closes via the retained context. The
+same canonical preview-totality argument as in computation_leaves ensures
+that adding the preview at a hypothesis leaf causes no problem. Global
+fresh-number allocation and all root public formulas remain unchanged.
+
+This proves the same canonical public theorem set, hence preserves the
+inherited whole-domain iPRA bi-interpretation. It does NOT claim identical
+raw certificate success languages, or a direct insertion-only translation
+for every noncanonical successful control trace. In particular, a raw zero
+computation with ignored annotations can have unequal normalized copies of
+its seed under the iterator dummy slot and at numerical root depth.
+
+3. Evidence
+------------
+compile_membership_tokens.py instruments every control loop test and
+inserts a [0,0,0] packet at each actual hypothesis leaf. It successfully
+translated the packaged six global positive fixtures. token_validation.json
+records 34 isolated runs in ordinary and -O modes, including used induction,
+logical elimination, shared computation, false-goal mutations, and inherited
+scope/context negative controls, with no unexpected outcomes. These tests
+are finite implementation evidence, separate from the universal argument.

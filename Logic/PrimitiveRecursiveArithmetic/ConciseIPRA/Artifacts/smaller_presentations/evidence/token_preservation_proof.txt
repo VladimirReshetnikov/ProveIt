@@ -1,0 +1,63 @@
+# The 242-token continuation checker
+
+Candidate: `tokens242.py`.
+Control: `../incumbents/checker_tokens.py`, from incoming computation_leaves.
+Reference runtime: CPython 3.12.14.
+
+Whole-module ast.unparse plus LF gives candidate 242 tokens / 269 AST nodes /
+606 normalized bytes / 336 gzip-9 normalized bytes. The control has
+243 / 271 / 616 / 343. No code packing, reader omission, output omission,
+change to the finite integer/list contract, or new syntax oracle is used.
+
+## Universal trace equivalence
+
+The control executes a while loop whose iteration either (a) immediately
+returns on a matching computation equation or (b) performs the unchanged
+elimination test, proves the unchanged major recursively when needed,
+constructs the unchanged resource H, decrements the global scope floor k,
+and continues on the goal O_k(A;[k],0) in the context extended by
+O_k(H;(s or len(A)==2) and k,0).
+
+The candidate uses an if instead of the while. When the computation equation
+matches, the negated computation guard skips the remaining body, and the
+function returns None implicitly. This has precisely the same effects as the
+control's explicit `return`.
+
+For the non-computation branch, all statements through `k -= 1` are unchanged.
+The major subproof may decrease global k; its updated value is used in both
+programs. In the control the two final opener calls occur in resource-then-goal
+order; in the candidate they occur in goal-then-resource order as function
+arguments. Both are pure finite-tree operations at the same fixed k. They
+neither read a proof record nor modify k, the context, or any raw tree. They
+commute whenever both succeed. If either fails, the whole run rejects.
+The candidate then calls c on exactly the state with which the control starts
+its next loop iteration.
+
+Induction on a finite successful execution tree, distinguishing hypothesis,
+computation, major-subproof, and continuation edges, proves that every
+successful control run has a successful candidate run with exactly the same
+input records consumed, global counter evolution, contextual resources, and
+final None result. The reverse induction contracts continuation calls to loop
+iterations. Thus the ideal finite acceptance languages agree, not merely the
+canonical public theorem sets. Reading the common canonical public interface
+therefore preserves the inherited iPRA bi-interpretation.
+
+## Physical resources
+
+Tail recursion in Python uses additional stack space: the control's loop
+continuations consume no new c frame, while the candidate's do. The equality
+above concerns ideal finite executions, as in the existing mathematical
+checker contract. It does not assert equal outcomes under a fixed recursion
+limit, equal running time, or equal stack requirements. Both retain the same
+soundness property for every actual accepting execution.
+
+## Independent checks
+
+Two other agents independently checked the control-flow argument. The kernel
+agent ran 28 inherited stream executions (normal and -O), with no unexpected
+outcomes. Its receipt is `kernel_work/token242_independent_tests.json`.
+The mathematical agent's separate audit is
+`math_work/checker_equivalence_audit.md`.
+
+No changed axiom basis or new mathematical primitive deletion is claimed.
+The reduction is a smaller realization of the inherited checking presentation.

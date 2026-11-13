@@ -1,0 +1,119 @@
+# Independent baseline audit
+
+Snapshot: `VladimirReshetnikov/ProveIt` commit
+`12197d86f63e9ec73b2d91399c4de2a8cb0077ee`.
+Path: `Logic/PrimitiveRecursiveArithmetic/ConciseIPRA`.
+Runtime: CPython 3.12.14.
+
+## Coordinate minima observed
+
+The README is stale relative to the incoming archives. The `computation_leaves`
+archive is the current best direct compact family. Every row below is a complete
+standalone module, with its reader and `ACCEPT` output. Token/AST/byte minima
+are attained by different programs, with different certificate framings.
+
+| Source within `docs/incoming/ipra_computation_leaves_2026-11-12.zip` | Tokens | AST | Normalized bytes | gzip-9 normalized bytes |
+|---|---:|---:|---:|---:|
+| `ipra_computation_leaves/code/checker_tokens.py` | 243 | 271 | 616 | 343 |
+| `ipra_computation_leaves/code/checker_ast.py` | 248 | 264 | 613 | 336 |
+| `ipra_computation_leaves/code/checker_bytes.py` | 270 | 308 | 474 | 314 |
+
+The aggregate compact envelope is therefore **243 / 264 / 474**. No one
+program attains the envelope. This is an observed record, not a mathematical
+lower bound. A report must not silently compare against README's older
+249 / 271 / 479 vector, nor the incoming papers' own previous snapshot
+244 / 265 / 477.
+
+The strictness classes must remain distinct:
+
+* Compact: promised exact-integer/list finite proof trees and a canonical,
+  closed, guarded Eq/D public goal. Entire public grammar is not checked.
+* Native validation: public Eq/D grammar validated, exact proof alphabet
+  still promised. Incoming `abstraction_and_refinements` reports and measured
+  sources attain the envelope 317 / 358 / 594.
+* Whole-input validation: public Eq/D grammar and entire input alphabet
+  validated. The same incoming archive attains 328 / 368 / 616.
+
+Native rows are `(317,364,617)`, `(321,358,622)`, `(332,373,594)`.
+Whole-input rows are `(328,377,634)`, `(335,368,643)`, `(340,382,616)`.
+
+`Artifacts/502_scope_audit/illustrations/checker_packed.py` and its control
+both measure 18 tokens / 19 AST / 459 normalized bytes. These are fixed
+compressed-source execution wrappers, explicitly kept separate in upstream
+accounting; applying the same packing to the old control gives a tie. Do not
+claim a direct-source record over this wrapper without explaining the source
+accounting class. Code compression is not a smaller axiomatization.
+
+## Census method and limits
+
+`census.py` reads every `Artifacts/**/*.py` and `*.py.gz`, and every such
+member of the five current `docs/incoming/*.zip` archives. It never executes
+or imports audited sources. Gzipped Python is measured after decompression.
+It deduplicates decoded raw bytes by SHA-256, parses the whole module, normalizes
+with `ast.unparse` plus one LF, and does **not** remove docstrings. Significant
+tokens exclude ENCODING, ENDMARKER, NEWLINE, NL, INDENT, DEDENT, and COMMENT.
+AST nodes include everything returned by `ast.walk` on the normalized module.
+Gzip uses level 9 and `mtime=0`.
+
+The completed census finds 4,942 source occurrences, 1,788 distinct decoded
+raw sources, 1,664 distinct normalized sources, and zero parse failures.
+`census.json` retains every source identity, all paths, measurements, imports,
+and simple classifier flags. There are 130 nonpacked modules below at least
+one compact record threshold; none contains the `ACCEPT` literal. These are
+build scripts, translators, metric tools, audit drivers, and related helpers,
+not new candidate complete checkers under the documented acceptance contract.
+A bare count or `ACCEPT` search does not prove source eligibility; the record
+claims above were also checked against the five incoming READMEs and CLAIMS
+files and the known compact sources.
+
+## Incoming mathematics that is already prior work
+
+* `computation_leaves`: computation equations close the current goal directly,
+  replacing computation-hypothesis supply. Same guarded scalar calculus.
+* `476_byte_presentation`: partial evaluation/discharge with a diagonal Intro
+  test makes substitution stable on the same inference tree. Three-rule PD
+  checker is 678 / 727 / 2087, larger than existing E3 643 / 695 / 1892.
+* `bounded_conversion`: primitive conversion only at the left side of an
+  equation, along the iterator-counter spine at depth at most three; equivalent
+  raw seven-rule calculus, but checker grows to 1075 / 1156 / 3522.
+* `export_specialization`: newest-variable-only Use in the existing deterministic
+  Export calculus, retaining arbitrary reflexivity and Intro witness. Matched
+  explicit-Refl checker shrinks 2117 to 2093 bytes; it is not a compact record.
+* `abstraction_and_refinements`: AQE reconstructs closure matrices by
+  capture-avoiding all-occurrence abstraction from the goal, with unrestricted
+  crossed replacement. Checker grows; 45-node predecessor and validation
+  refinements are separate.
+
+## Correctness pitfalls to retain in any reduction
+
+1. The initial scope traversal cannot be deleted merely because the root goal
+   is closed. `Artifacts/502_scope_audit/tests/counterexample` gives a canonical
+   false guarded goal, saying some number equals its successor, accepted after
+   this deletion. Major checking can substitute an out-of-scope coordinate
+   and return to a caller that reinterprets the original raw major differently.
+2. A local floor cannot use an inclusive upper endpoint or otherwise admit an
+   eigenparameter into an exported formula; there are named unsound experiments
+   in `scope_and_frontier` that happen to have attractive metric vectors.
+3. Source-selected elimination is not stable under substitution as a literal
+   transformation of inference trees: a source can become zero. Prove the
+   intended reading in the ordinary theory, or establish a separate corrected
+   translation. The same caveat applies to syntax-selected Intro variants.
+4. For a compact atomic matrix, progressive D has the auxiliary reading
+   `exists x forall y (E(x,y) -> E(x,S y))`. The ordinary reading
+   `exists x (E(x,0) -> forall y E(x,y))` agrees on the guarded public syntax;
+   the distinction cannot be dropped on unrestricted auxiliary equations.
+5. Finite fixture tests do not prove soundness, completeness, or
+   bi-interpretability. A relative checker transformation needs a universal
+   trace/preservation argument and a completeness construction.
+6. The existing eight-rule native kernel has an irredundance result, including
+   progress independence proved through a tower of ultrapowers. This gives no
+   lower bound for other calculi, rule fusions, or checker source size.
+
+## Available immediate code composition
+
+The 474-byte incoming direct-leaf source still uses `bool(m or 3 % len(a))`.
+The incoming 476-byte source establishes the safe canonical-theorem-set
+replacement with `any((m, 3 % len(a)))`, preserving accepted-new traces as
+accepted-old traces and canonical completeness. Composing this inherited
+technique with direct leaves suggests 473 bytes. This should be described as
+an implementation composition, not a new arithmetic or logical axiom deletion.

@@ -1,0 +1,92 @@
+Whole-JSON computation-leaf checkers
+==================================
+
+Results and precise scope
+-------------------------
+The two new modules are compositions of two already established devices:
+the computation-leaf inference protocol of the incoming computation_leaves
+package, and the whole-JSON reader used by the filed three-field checkers.
+No logical or nonlogical axiom is deleted. No new bi-interpretation is claimed.
+
+CPython 3.12.14, complete modules, ast.unparse plus final LF:
+
+    program                    tokens   AST nodes   normalized bytes
+    checker_tokens248.py          248         277                615
+    checker_ast268.py             254         268                613
+
+The inspected whole-JSON envelope was 249 tokens /269 nodes /473 bytes,
+with its coordinates attained by different programs. These candidates lower
+its first two coordinates to 248 /268 /473, again by different programs.
+Neither candidate is below every coordinate, and neither improves on the
+243-token or 264-node stream-reading controls. The 473-byte incumbent remains
+smaller in bytes. An exhibited envelope is not a proved complexity lower bound.
+
+The canonical public-goal contract and arity decoder are inherited unchanged:
+finite exact-integer/list trees and a closed canonical guarded Eq/D formula.
+The programs do not separately validate the public grammar or the entire
+certificate alphabet. The opener retains its attempted-iteration convention.
+The correct acceptance event is normal exit with exactly ACCEPT followed by LF;
+exceptions reject. Numerical resource limits are excluded in the mathematical
+simulation theorem, as in the inherited checker definitions.
+
+Universal simulation theorem
+----------------------------
+Let C be either inherited stream checker, and J its paired whole-JSON checker.
+For a finite list sigma = [p_n,...,p_1,A] of integer/list trees, let L(sigma)
+be the line stream A,p_1,...,p_n, each serialized as one JSON value per line.
+Then J accepts the whole-JSON serialization of sigma if and only if C accepts
+L(sigma), and corresponding successful runs make identical kernel operations,
+read the same goal and packet trees in the same order, and terminate after the
+same consumed packet suffix. The whole-JSON input may use arbitrary JSON
+whitespace, including multiple lines; the statement concerns parsed trees.
+
+Proof. Both programs first parse the same goal A. Each future request in C
+parses the next line; the corresponding request in J removes the final value
+of the remaining list. Those values are equal. Maintain the invariant that
+all kernel variables and contexts agree and the as-yet-unread stream begins
+with the reverse of J's remaining array. The next request preserves it.
+Every other operation is unchanged, including scope checks, eigenparameter
+allocation, mode selection, successful computation leaves, and the ordering
+of a major proof before its continuation. The local version's initial q
+binding is evaluated before the first call to c; the global version binds q
+in the immediately preceding statement. Thus q is defined before any packet
+request. Induction over a finite execution proves the claim. Reading past
+either finite input fails before success. Exceptions caused by corresponding
+kernel operations agree. QED.
+
+The converse for arbitrary successful finite stream runs uses exactly the
+consumed records: if the run consumes A,p_1,...,p_r, the array
+[p_r,...,p_1,A] reproduces it. Unused input is not included in this converse.
+Consequently the sets of accepted canonical goals are identical.
+
+This is not a claim that the programs accept the same byte strings. A stream
+checker may ignore arbitrary unread trailing text; a whole-JSON checker parses
+its complete input before beginning the proof. A malformed unused JSON prefix
+therefore affects the two input interfaces differently. The framing theorem
+is stated on finite lists of parsed trees, where it is exact.
+
+Inherited foundations
+---------------------
+The stream controls are copied unchanged from the incoming archive
+ipra_computation_leaves_2026-11-12.zip, directory ipra_computation_leaves/code.
+The native scalar calculus and its whole-domain identity bi-interpretation
+with iPRA are inherited from ProveIt/Logic/PrimitiveRecursiveArithmetic/
+ConciseIPRA/docs/Article/chapters/ch01_base.tex. Computation-leaf soundness is
+inherited from the computation_leaves report, including its arity-sensitive
+malformed-tree argument. This note proves only the input-framing composition.
+
+Repository snapshot: 6c6a164d211f0af34e913d55c9f46f8ef7cb560f.
+The independent audit found no normalized identical candidate among the 297
+small ACCEPT modules in all eight current incoming archives and their frozen
+references. That is a bounded novelty check, not a claim about all programs.
+
+Executable evidence
+-------------------
+Run python3 verify.py. The fixtures are lossless reversals of the 20 inherited
+stream fixtures, covering zero and successor computations (including a zero
+initializer), equation induction with a used induction hypothesis, compound
+implication elimination, retained computation, inferred majors, false goals,
+wrong computation endpoints, context leaks and future-witness/scope attacks.
+The paired controls and candidates run in separate processes, normally and
+with -O; all results and exact normalized hashes are recorded in evidence.
+These are regression checks, not a machine-checked soundness proof.

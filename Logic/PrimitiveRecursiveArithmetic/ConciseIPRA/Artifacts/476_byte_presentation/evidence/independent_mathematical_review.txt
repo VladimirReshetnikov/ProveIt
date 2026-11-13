@@ -1,0 +1,158 @@
+Independent foundations audit: partial evaluation with diagonal introduction
+==========================================================================
+
+VERDICT
+The proposed three-family raw calculus is mathematically sound and equivalent
+to the native scalar kernel, provided that the optional-antecedent context
+conversion is stated explicitly. It has a direct tree-preserving substitution
+theorem. This is a combination/refinement of existing ideas, not a demonstrated
+checker-size improvement. No new Lean verification is claimed.
+
+1. THE ONE NECESSARY PRESENTATIONAL REPAIR
+
+KPrf uses clauses Cl = [A; y.C], with one antecedent; the proposed calculus
+uses UCl = [Delta; y.C], Delta empty or a singleton. Thus it is inaccurate
+to say new derivations and KPrf literally keep the same context objects.
+
+Introduce K^u: same optional-antecedent contexts as the new calculus, but
+with separate Refl, the two positive Eval rows, Use, ordinary Elim, and
+diagonal Intro. There is no added logical axiom. Fix rho=[; y.y=y] when
+comparing ordinary theoremhood. K^u has all the standard structural lemmas
+by direct induction. In particular, empty antecedents can be replaced by
+antecedent 0=0, and conversely, because 0=0 has a Refl derivation in every
+context. A precise general context-translation invariant says that every
+use of every translated source clause can be simulated in the target
+context after the source antecedent (if any) has been proved. This invariant
+is maintained under the local extensions of Intro and Elim.
+
+Map a UCl to Cl by replacing an empty Delta with antecedent 0=0 and leaving
+a singleton antecedent unchanged. K^u -> KPrf is then a direct induction:
+empty Use gets a Refl(0) premise; nonempty Use is unchanged; Intro's empty
+assumption maps exactly to Cl.asm; the Elim clause is unchanged. Conversely,
+KPrf -> K^u maps clauses to singleton antecedents and uses the context
+translation invariant above when Intro introduces an empty assumption
+instead of the encoded [0=0;v.A]. The special translated rho clause can be
+removed in KPrf by replacing every use of [0=0;y.y=y] with Refl(t).
+
+2. EQUIVALENCE OF THE NEW CALCULUS AND K^u
+
+New -> K^u: in an evaluation-discharge, the first or second positive rho row
+is exactly one Eval in the opened branch, followed by Elim. The D-root
+identity row discards the auxiliary branch and performs Elim on F. Use and
+Intro are copied, with the same diagonal mode.
+
+K^u -> new, in contexts containing rho:
+  Refl(t) = Use(rho,t), with no premises.
+  Let T = D_{p,q}(0=0), p,q fresh. T is derivable in every context without
+  needing rho: its matrix is not diagonal, so Intro is in case mode, and
+  the local assumption 0=0 yields the same conclusion by Use.
+  To simulate Elim, retain its major D B and F branch, derive T in that
+  branch as the auxiliary E, and use the D-root identity rho row.
+  To simulate Eval, take T as major. Its opened clause is
+  [0=0;y.0=0]. Weaken the two Eval premises into this branch; since the
+  branch witness is chosen fresh from both premises and the conclusion,
+  discharge with the corresponding positive row. The resulting conclusion
+  is exactly the original Eval conclusion.
+  Use and Intro are primitive.
+These translations do not use cut or the desired iPRA equivalence.
+
+3. DIRECT SUBSTITUTION: EXACT CLAIM
+
+Let sigma replace free numerical variables by raw, well-scoped terms. Choose
+all bound and eigenvariables fresh from its finite support and ranges before
+substitution (alpha conversion). A derivation translates using the same
+three-family tree, same Use clause occurrence, same Intro mode, and same
+positive/identity rho row.
+
+Use: clause antecedents/consequents commute with capture-free substitution;
+its new instantiation term is t sigma. The fixed rho clause is closed and
+unchanged.
+
+Intro: the test is made on B before witness instantiation. The exact shape
+I(y,y;u.h)=I(y,y;v.k) is preserved AND reflected by substitution lifted
+under x,y. A substitution for a free variable cannot introduce the locally
+bound y; all unchanged term constructors retain their root. Thus eta stays
+z in the diagonal case and 0 otherwise. The branch after substitution is
+the required branch, with witness t sigma and fresh z.
+
+Discharge: if partial rho(E,F)=R is defined, then rho(E sigma,F sigma) is
+defined in the same row and equals R sigma. In the zero row, the common
+seed s remains common. In the successor row, the common c,a,h remain
+common, and (h[t/u])sigma = (h sigma)[t sigma/u] after freshening u.
+The two arithmetic rows remain disjoint (literal 0 versus successor as the
+counter of F). The identity row has E root D, which cannot become equality.
+Freshen the discharged b away from sigma's ranges; b absent from Gamma, B,
+and R implies b absent from their substituted versions. The branch clause
+is exactly the substituted opening clause.
+
+No normalization, zero-test on a witness, source restriction or negative
+pattern condition occurs in this proof. Definedness may be CREATED by a
+substitution at an originally undefined pair; that is harmless. Only
+defined instances are primitive rule applications.
+
+4. EXPLICIT OBSTRUCTION FOR THE OLD TOTAL DEFAULT
+
+Let E = (x=0) and F = (I(0,0;u.0)=0), where x is free. For the existing
+total deterministic rho, neither positive row matches, so rho(E,F)=F.
+Let sigma(x)=0. Then E sigma is 0=0 and the zero row DOES match, giving
+rho(E sigma,F sigma)=(0=0). But rho(E,F)sigma=F, a syntactically different
+formula. This disproves literal substitution covariance of the total rho.
+
+It does NOT refute admissibility of substitution in E3Prf by proof repair
+or via equivalence. The new point is a direct row-preserving theorem.
+The same pair is undefined in the new partial rho because E is an equation,
+so the unstable default is absent. The special D-root identity case still
+suffices for every elimination, using T.
+
+5. EXACT INHERITED BRIDGE
+
+Article ch05_claus.tex, definition claus:def:k and theorem claus:thm:k:
+KPrf is equivalent to the native kernel. Direct substitution is
+claus:thm:ksubst. Lean names: kprf_iff_nprf_of_qfree and KPrf.subst in
+NativeClausalDiagonal. The native full bridge is base:thm:bridge in
+ch01_base.tex; both numerical domains are whole, equality is actual,
+the term composites are provably identities, and both formula round trips
+are proved. Lean names include biInterp, teq_iff_pra, pra_iff_teq,
+native_iff_pra, pra_iff_native, native_roundTrip,
+pra_native_roundTrip, native_inconsistent_iff.
+
+All formulas in the new calculus are Eq/D and hence Q-free. A native Q is
+translated to D with an unused witness variable. Optional clauses are read
+as forall y C(y) when empty, and A -> forall y C(y) when singleton.
+The fixed rho reads forall y(y=y), a logical theorem. Ordinary assumptions
+[;v.A] read as A because v is fresh and the domain has 0.
+
+6. EXPLICIT LOGICAL MACROS (Article base:def:macros)
+
+Write C(v,a,b)=I(v,a;u.b), Z(v)=C(v,1,0), P(v)=I(v,0;u.Z(u)). Define Q_y B
+as D_{x,y}B with x unused. The formula selector sel(v,A,B) is defined by
+structural recursion, with all binder variables fresh:
+  sel(v,s=t,r=w) = C(v,s,r)=C(v,t,w).
+  sel(v,s=t,D_{x,y}B) =
+       D_{x,y}sel(v,C(y,0,s)=C(y,0,t),B).
+  gate(v,B)=sel(v,0=0,B).
+  sel(v,D_{x,y}A,B)=D_{x,y}sel(v,A,gate(y,B)).
+For Q syntax the same clauses apply with Q instead of D; in the new syntax
+expand Q into its dummy D definition first.
+
+Then:
+  false* = (0=S0).
+  A =>* B = Q_y sel(y,A,B).
+  A and* B = Q_y gate(y,sel(P(y),A,B)).
+  exists* x A = D_{x,y}gate(y,A).
+  A or* B = exists* x sel(x,A,B).
+  forall* x A = A(0) and* Q_x A.
+These are finite syntax macros, not additional checker rules. The inherited
+natural-deduction theorem supplies all intuitionistic logical rules.
+
+7. LIMITS TO STATE PROMINENTLY
+
+Three rule FAMILIES is not three atomic patterns: Discharge has two
+arithmetic rows and a compound identity row, Use has optional premises,
+and Intro has its specified diagonal selector. The existing E3 calculus
+already had three families. The contribution is the combination with
+diagonal Intro and restriction of the default giving direct substitution.
+No statement about the 244/265/477 measured envelope follows from this.
+The reference checker must charge syntax, clauses, diagonal test, rho,
+scope, parsing, and success/failure handling. Tests do not formalize the
+mathematical equivalence or Python operational semantics.

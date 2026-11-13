@@ -1,0 +1,286 @@
+THREE RULE FAMILIES ON RAW TERMS, WITH DIRECT SUBSTITUTION
+=======================================================
+
+Result and scope
+----------------
+The following calculus P has three rule families, uses raw scalar iterator
+terms, and is closed under arbitrary capture-avoiding numerical substitution
+by a direct induction on derivations. It is equivalent, on the same Eq/D
+sequents, to the native kernel of ConciseIPRA. The equivalence uses the
+already established diagonal clause calculus KPrf, with an explicit bridge
+between its ordinary clauses and the uniform clauses used here.
+
+This is a new combination of existing ingredients and a restriction of the
+evaluation-discharge operator. It does not establish a checker below the
+current repository envelope. The matched split diagonal implementation is
+slightly larger than the fused one, while the older witness-dependent fused
+checker is smaller than both. See evidence/metrics.json.
+
+1. Syntax, assumptions, and the complete rule inventory
+-----------------------------------------------------
+Terms are x, 0, S(t), I(n,a;u.h), with only u bound in h. Terms are raw:
+there is no implicit normalization or conversion test. Formulas are s=t and
+D_{x,y}B. Only x and y are bound by D. Its ordinary first-order reading is
+
+  D_{x,y}B := exists x (B(x,0) -> forall y B(x,y)).
+
+A uniform clause [Delta;y.C(y)] has Delta empty or the singleton {A}; A has
+no occurrence of the clause-bound y. Its reading is forall y C(y) if Delta
+is empty, and A -> forall y C(y) otherwise. Contexts are finite lists of
+such clauses. An ordinary assumption A is [empty;v.A] with v unused.
+Every initial context contains the fixed reflexivity clause
+
+  R := [empty;y.y=y].
+
+The contradiction is 0=S(0). There are no other logical or nonlogical axiom
+schemes, and no implicit equality, computation, conversion, cut, weakening,
+or induction rules. The following are the three primitive rule families.
+
+(U) Use. For a retained clause [Delta;y.C(y)] and an arbitrary term t,
+from a proof of each member of Delta infer C(t). In the empty case this is
+a rule with no premises. In particular R yields t=t.
+
+(I) Diagonal introduction. From
+
+  Gamma, B(t,eta) |- B(t,Sz)
+
+infer Gamma |- D_{x,y}B, where z is fresh for Gamma, t and the free
+parameters of B. Put eta=z exactly when B is literally
+
+  I(y,y;u.h) = I(y,y;v.k),
+
+and eta=0 otherwise. The matrix test precedes witness instantiation. The
+step terms h and k may mention x, y and the other free parameters.
+
+(E) Evaluation with discharge. From
+
+  Gamma |- D_{x,y}B,
+  Gamma,[{B(b,0)};y.B(b,y)] |- E,
+  Gamma,[{B(b,0)};y.B(b,y)] |- F,
+
+infer Gamma |- rho(E,F), provided rho(E,F) is defined and b is fresh for
+Gamma, the free parameters of B, and the result rho(E,F). The parameter b
+may occur in E and F separately. The partial operator rho has exactly the
+following three, pairwise disjoint, positive patterns:
+
+  rho(s=t, I(0,s;u.h)=r) = (r=t);
+
+  rho(I(c,a;u.h)=t, I(Sc,a;u.h)=r) = (r=h[t/u]);
+
+  rho(D_{p,q}C, F) = F.
+
+It is undefined on every other pair. The last row is the only identity
+case. In particular, an unmatched equation E does not select identity.
+
+2. Why the partial operator matters
+----------------------------------
+The inherited E3 operator returns F whenever neither arithmetic pattern
+matches. That total operation is not covariant under substitution. For
+example let E be x=0 and let F be I(0,0;u.0)=0. Before replacing x by 0,
+the total operator returns F. Afterwards its first arithmetic row returns
+0=0. These are different raw formulas.
+
+The present partial operator is undefined on that original pair. The
+required covariance law is only for a defined row:
+
+  if rho(E,F)=A, then rho(E[sigma],F[sigma])=A[sigma].
+
+For the first row, substitution preserves the zero counter and the common
+seed. For the second, it preserves the common counter, seed and body;
+capture-avoiding substitution commutes with h[t/u]. For the third, a
+compound formula retains its D constructor. Each row therefore stays
+defined and produces precisely the substituted conclusion. Definedness
+need not be reflected: an undefined pair may become defined.
+
+The diagonal test is also preserved and reflected by substitution for free
+variables. The tested y is bound, and capture avoidance prevents an image
+of a free variable from becoming that bound occurrence. The two outer
+iterator constructors and their counters and seeds are otherwise unchanged.
+
+3. Direct structural theorems
+----------------------------
+Theorem. If Gamma |-P A and sigma is an arbitrary capture-avoiding
+substitution of terms for the free numerical variables, then
+Gamma[sigma] |-P A[sigma]. Context weakening and injective renaming are
+also admissible.
+
+Proof. Induct on the given finite derivation. Use translates the retained
+clause and its zero or one antecedent proofs; substitution commutes with
+specialization. At introduction, first rename z away from the images of
+sigma. Preservation and reflection of the diagonal test gives the same
+mode after substitution. The induction hypothesis translates the branch.
+At discharge, first rename b away from the images of sigma, extend sigma
+by b -> b in both branches, and apply the induction hypotheses. The
+covariance law for the selected positive rho row gives the required result.
+Since b does not occur in the original result and is fresh for sigma, it
+does not occur in the substituted result. The same induction proves
+weakening; its only extra step is freshening z and b away from the added
+context. Renaming is the variable-valued special case. No cut or
+normalization theorem is used.
+
+4. The correct clause bridge
+----------------------------
+Let K be the existing diagonal clause calculus KPrf. Its clauses are
+[A;y.C(y)], always with one antecedent, and its ordinary assumption is
+[0=0;v.A]. Its rules are Refl, EvalZero, EvalSucc, Use, Elim and the same
+diagonal introduction. EvalZero and EvalSucc form one rule family.
+
+Let V be the uniform-clause version of K: replace explicit Refl by R and
+allow clauses with no antecedent; keep the two standalone evaluations,
+ordinary Elim, Use and diagonal Intro. This V is the semantics implemented
+by control_split.py. The following two translations establish its precise
+relationship with K.
+
+(a) V to K. For a uniform clause c, pack(c) retains its consequent and
+uses its existing antecedent if present, or 0=0 otherwise. Translate the
+context entry by entry, except that the distinguished R is simulated
+directly by K's Refl. A Use of an empty-antecedent clause is a K Use with
+the missing antecedent supplied by Refl(0). The clause introduced by Intro
+then becomes exactly K's ordinary-assumption clause. The clause introduced
+by Elim already has one antecedent, so it is unchanged. Every other rule
+is literally the corresponding K rule. This gives a direct induction.
+
+(b) K to V. Carry through the induction a relation between source and
+target contexts: R belongs to the target, and every source clause has a
+target clause with the same consequent whose antecedent is either the same
+source antecedent or empty. Translate Refl by Use of R. Translate a Use
+by the corresponding target clause; if its antecedent is empty, discard
+the translated antecedent proof, and otherwise use it. This invariant
+extends at Intro because its target ordinary assumption is empty, while
+the source ordinary assumption has antecedent 0=0. It extends at Elim
+with the identical nonempty antecedent B(b,0). The arithmetic rules are
+unchanged. Fresh renaming of bound variables makes all extensions valid.
+
+Therefore, for any Eq/D formulas Gamma and A,
+
+  V (R :: ordinary_assumptions(Gamma)) A
+      iff K (ordinary_assumptions_K(Gamma)) A.
+
+It would be incorrect to identify the two context datatypes without this
+argument. The existing formal theorem kprf_iff_nprf_of_qfree now identifies
+these sequents with those of the native kernel NPrf.
+
+5. Equivalence of the three-family calculus P and V
+------------------------------------------------
+Theorem. P and V derive exactly the same formulas from every uniform
+clause context containing R.
+
+P to V: translate Use and Intro literally. For a discharge, translate its
+major and its two branch proofs. In either arithmetic row apply the
+corresponding standalone evaluation in the opened context and then apply
+Elim. In the compound row ignore E and apply Elim directly to F. The
+freshness condition on rho(E,F) is exactly what Elim requires.
+
+V to P: first derive T := D_{x,y}(0=0) in every P context. Its matrix is
+not diagonal, so its introduction premise is 0=0 |- 0=0; Use of the local
+ordinary assumption proves that premise. This proof needs no Refl.
+
+Ordinary Elim is now a derived P rule. Given its major and branch F,
+derive T in the branch as auxiliary E and use the compound identity row
+of discharge. Standalone EvalZero and EvalSucc are derived as well: use T
+as the major, open it at a fresh b, weaken the two arithmetic premises into
+that context, and use their positive rho row. The new b does not occur in
+the arithmetic result. Weakening is legitimate by Section 3. Use and Intro
+already belong to P. An induction on V derivations replaces each evaluation
+and elimination by these fixed macros. Both directions leave the end
+formula and the original context unchanged.
+
+The executable compiler translations.py realizes these two translations
+for the concrete proof format, with explicit maps for clause indices and
+rigid free levels. Dummy discharges allocate extra free levels; the compiler
+renames branch eigenparameters accordingly. It rechecks every produced
+closed certificate using the target's standalone checker.
+
+6. Bi-interpretation and equiconsistency
+--------------------------------------
+Combining Sections 4 and 5 with kprf_iff_nprf_of_qfree gives
+
+  P (R :: ordinary_assumptions(Gamma)) A iff NPrf Gamma A
+
+for Eq/D sequents. The existing unQ translation, replacing Q by D with an
+unused witness variable, connects this with all native formulas. The
+ordinary realization and the existing native/iPRA bridge consequently
+apply without modification: both number domains are whole, equality is
+actual equality, and both composites have the identity graph x=y. The
+term and formula translations are exactly the inherited ones; only proof
+rules and their certificates have changed. In particular the designated
+contradiction translates to 0=S(0), giving both directions of consistency
+equivalence.
+
+This relies on the repository's established arithmetic and logical bridge,
+including predecessor, equality reflection, quantifier-free induction,
+pairing, primitive-recursion compilation, and the formula round trips. It
+does not claim a new proof of those results or a new Lean verification of
+the Python program.
+
+7. Implementation contract and evidence
+--------------------------------------
+The standalone checker reads one JSON object with exactly the keys goal
+and proof, checks a closed Eq/D goal, and prints ACCEPT only after checking
+the proof. Zero is integer 0, free rigid levels are negative integers,
+bound de Bruijn indices are positive, successor is [0,t], iteration is
+[n,a,h] with its last child binding one variable, equality is [s,t], and
+D is [B] binding two. Numerical booleans are rejected, as are floats,
+strings, dictionaries, malformed arities and escaping free or bound
+variables. Every returned formula and every supplied term witness is
+validated. In Use, the unused proof field must be JSON null when its
+clause has no antecedent. The inherited control treats that field as an
+ignored annotation; the matched split control has the same stricter null
+requirement as the new checker.
+
+The proof nodes are ['u', clause_index, term, antecedent_proof],
+['i', matrix, witness, step_proof], and
+['e', major_proof, auxiliary_proof, result_proof]. The split control uses
+['v', left_proof, right_proof] for evaluation and ['e', major, branch] for
+ordinary elimination. The context-length convention allocates a fresh
+rigid level at each introduced clause and checks that it does not escape.
+
+verify.py constructs 16 positive and 26 negative closed certificates,
+checks both exact-goal compiler directions on every positive example,
+runs all 42 examples through both the readable and normalized command-line
+checkers normally and under Python -O (168 process runs), and checks nine
+free-parameter substitutions and twenty
+diagonal-selector substitution pairs. Two positive examples actively cite
+their introduced hypothesis and are rejected by the old witness-dependent
+checker on the same proof trees; another test records the removal of its
+unmatched-equation identity case. Witness-erasing evaluation and witness
+escape are tested separately. These are finite regression checks, not a
+substitute for the universal proofs above.
+
+8. Measurements and limitations
+------------------------------
+On CPython 3.12.14, measuring each complete literal standalone
+*_normalized.py profile by ast.unparse plus one LF, with no exclusions:
+
+  new fused diagonal checker:        678 tokens / 727 AST / 2087 bytes;
+  matched split diagonal checker:    688 tokens / 735 AST / 2128 bytes;
+  inherited witness-dependent E3:    643 tokens / 695 AST / 1892 bytes.
+
+The fusion saves 10 tokens, 8 AST nodes and 41 bytes against its matched
+split control. It is larger than the inherited E3 checker and much larger
+than the current compact frontier. No claim that this meets the requested
+global simplification target is made. Parser, validator and acceptance
+output are included; proof generators and evidence scripts are not part of
+the trusted checker. The normalization and metrics scripts are supplied.
+The readable counterparts carry leading explanatory docstrings; the measured
+profiles omit those docstrings and formatting only, are independently
+runnable, and import no helper from the archive. The new normalized profile
+passes the same 42 certificates in both ordinary and optimized execution.
+
+Source references
+-----------------
+Pinned repository commit: 2fa4637b3bf922beea0052a5210c22b14482950b.
+Paths below are relative to Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/.
+
+  Lean/ConciseIPRA/NativeClausalDiagonal.lean:
+    KPrf, KPrf.subst, kprf_iff_nprf_of_qfree.
+  Lean/ConciseIPRA/NativeUniformClauses.lean:
+    UCl, UCl.toCl, UCl.ofCl, the optional-antecedent context invariant.
+  Lean/ConciseIPRA/NativeEvalDischarge.lean:
+    E3Prf, Rho, E3Prf.theta, e3prf_iff_vprf.
+  docs/Article/chapters/ch01_base.tex:
+    native arithmetic/logical bridge and both interpretation round trips.
+  Artifacts/evaluation_discharge/raw/checker.py and control.py:
+    inherited implementation and original matched split implementation.
+
+The source-level adaptations and hashes are recorded in PROVENANCE.json.
