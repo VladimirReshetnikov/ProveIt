@@ -69,6 +69,7 @@ the reservation of the fresh name at entry as the phase of validation; direct le
 exact validation of the image of the canonical encoder; the outer dummy slot of a successor as a constant & \cref{cert:sec:validated-terminal,cert:sec:reserved} & \pkg{composition\_and\_dummy\_slots}\\
 retained scalars validated by the leaf test without a typed input; the source instance computed only on a match; a threshold mode; fused control of the three-field programs & \cref{cert:sec:validated-terminal} & \pkg{retained\_validation}, \pkg{local\_validation}; \pkg{exact\_threshold}; \pkg{reconstructed\_introduction}\\
 fresh parameters named by finite trees; strict programs in the shifted encoding & \cref{cert:sec:validated-terminal} & \pkg{structural\_parameters}\\
+the increment chosen from a pair on the intrinsic program; a first-line sorted program; the floor derived from the unread packets; list concatenation in the seeded stream program; fresh names longer than the printed state & \cref{cert:sec:validated-terminal} & \pkg{checker\_research}; \pkg{scope\_free\_audit}; \pkg{stack\_clock}; \pkg{composition}; \pkg{scope\_free\_audit}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -96,7 +97,9 @@ second delivery of \pkg{refinement}, \pkg{offset472},
 \pkg{fused\_blocks\_and\_checkers}, and \pkg{304\_token\_refinement},
 \pkg{neutral\_modes}, \pkg{scope\_phase} and \pkg{composition\_and\_dummy\_slots},
 and \pkg{exact\_threshold}, \pkg{local\_validation}, \pkg{retained\_validation},
-\pkg{structural\_parameters} and the checker part of \pkg{reconstructed\_introduction}
+\pkg{structural\_parameters} and the checker part of \pkg{reconstructed\_introduction}, and
+\pkg{checker\_research}, \pkg{scope\_free\_audit}, \pkg{stack\_clock} and the compact refinement of
+\pkg{composition}
 state that they contain no
 new rule and no new arithmetic; each composes devices of this list, and the
 composition is what is proved. The mathematical part of
@@ -8772,6 +8775,286 @@ $L_{\mathrm f}$. The readable forms (\texttt{code/readable.py} of \pkg{exact\_th
 agreement with the programs is supported by tests and not proved. No package claims a rule
 removed, a program below the compact envelope, or a minimal program.
 
+\subsubsection*{The pair-indexed increment, a first-line sorted program, a derived floor, list contexts and names from the printed length}
+
+This part follows \pkg{checker\_research}, \pkg{scope\_free\_audit}, \pkg{stack\_clock} and the
+compact refinement of \pkg{composition}. The first three start from the revision
+\texttt{65c32fbe47}, which contains the five packages of the previous part as incoming archives
+(\pkg{stack\_clock} adds a check at \texttt{6ce5acc401}); the compact refinement of
+\pkg{composition} starts from \texttt{e0d702b905}. The presentation by programs and environments
+without variable binders of \pkg{composition} concerns the base theories and is not treated in
+this chapter; its reference checker for that presentation (\texttt{code/pointfree\_checker.py})
+has $1687$ tokens, $2085$ nodes and $5184$ bytes.
+
+The following devices are applied to programs of the earlier parts.
+\begin{enumerate}[label=(\roman*),start=18]
+\item The \emph{pair-indexed increment} writes the child depth
+$d+(5-\lvert a\rvert$ if $d$ is even, else $j\mathbin{\&}2)$ of the actual-binding reading as
+$d+(5-\lvert a\rvert,\,j\mathbin{\&}2)[d\bmod 2]$, as $S^{\rho\natural\prime\prime}_{\mathrm e}$ of
+\cref{cert:prop:actual} does.
+\item The \emph{derived floor} $\kappa$ stores no floor: with $P$ the array of unread elements of
+the input and $N$ its length after the removal of the goal, every read of the floor is replaced
+by $\lvert P\rvert-N$; the opening of the goal at the entry of a call is made before the removal
+of its packet; and the decrement at the entry is omitted, together with the decremented floor as
+a member of the entry test.
+\end{enumerate}
+Let $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ and $S^{\natural}_{\mathrm{i},\lambda\beta,\kappa}$
+be $S^{\natural}_{\mathrm{i},\lambda\beta}$ with (xviii) and with (xix). Let
+$S^{3}_{\mathrm{E,i},\phi,\ell}$ be $S^{3}_{\mathrm{E,i},\phi}$ with the arities
+$\{1,2+(d\bmod 2)\}$ as a set, the counter ``$[s]$ if $s$ is true-valued, else $1$'', the decrement
+written $\mathord{\sim}(-k)$, the entry test written as membership in $g+[k',H]$ in place of
+$(k',{*}g,H)$, where $k'$ is the decremented floor and $H$ the computation candidate, the import of
+all public names of the JSON module, and the reader of the first line of the input
+(\cref{cert:sec:representation}). Let $L^{\vdash}_{\mathrm c}$ be the seeded stream variant of
+$L_{\mathrm c}$ of \pkg{nontraditional\_inputs} (after \cref{cert:prop:sequent}), whose root call takes
+its context and goal from the first line $[G,A]$; $L^{\vdash}_{\mathrm{c},+}$ the program
+$L^{\vdash}_{\mathrm c}$ with the entry test written as membership in $g+[H]$ in place of $({*}g,H)$
+and the context of the continuation written $g+[h]$ in place of $[{*}g,h]$;
+$L^{\vdash}_{\mathrm{c},+\sigma}$ the program $L^{\vdash}_{\mathrm{c},+}$ with the image $[k]$ of the
+new goal written as the set $\{k\}$; and $L^{\vdash}_{\mathrm{c},+\lambda}$ the program
+$L^{\vdash}_{\mathrm{c},+}$ with the opener written as an anonymous function that recognizes arrays by
+$a\cdot 0\neq 0$ in place of an attempted traversal.
+
+\begin{proposition}[Rewritings with the same runs]\label{cert:prop:same-runs}
+\begin{enumerate}[label=(\alph*)]
+\item On every JSON document, $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ has exactly the
+runs of $S^{\natural}_{\mathrm{i},\lambda\beta}$.
+\item For every JSON value $v$, $S^{3}_{\mathrm{E,i},\phi,\ell}$ on an input whose first line is a
+JSON text of $v$ has the run of $S^{3}_{\mathrm{E,i},\phi}$ on a one-line JSON text of $v$, and every
+JSON value has a one-line JSON text.
+\item $S^{\natural}_{\mathrm{i},\lambda\beta,\kappa}$ accepts exactly the JSON documents that
+$S^{\natural}_{\mathrm{i},\lambda\beta}$ accepts, with the same calls, goals, contexts and consumed
+packets, and at corresponding points $\lvert P\rvert-N$ is the floor of
+$S^{\natural}_{\mathrm{i},\lambda\beta}$.
+\item On inputs of integers and arrays whose first line is $[G,A]$ with an array $G$,
+$L^{\vdash}_{\mathrm{c},+}$, $L^{\vdash}_{\mathrm{c},+\sigma}$ and $L^{\vdash}_{\mathrm{c},+\lambda}$
+have exactly the runs of $L^{\vdash}_{\mathrm c}$.
+\end{enumerate}
+Hence \cref{cert:prop:intrinsic-forms}(b) and (c) hold for $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$
+and $S^{\natural}_{\mathrm{i},\lambda\beta,\kappa}$ as for $S^{\natural}_{\mathrm{i},\lambda\beta}$, and
+for $S^{3}_{\mathrm{E,i},\phi,\ell}$ as for $S^{3}_{\mathrm{E,i},\phi}$ with certificates written on
+one line; and the programs of (d) accept what $L^{\vdash}_{\mathrm c}$ accepts.
+\end{proposition}
+\begin{proof}
+(a) The pair is formed only in the array branch of the opener, which is entered only for an array
+$a$ (among the values of the JSON reader $a\cdot 0=[\,]$ holds exactly for arrays, proof of
+\cref{cert:lem:local-validation}), with an integer index $j$ from the enumeration. Every depth is
+an integer: the depths passed explicitly are the literals $2$ and $3$ or the default $0$, also in
+the call $O({*}a,t,2)$, whose unpacked elements fill the first two parameters or make the call
+fail, and a child depth adds an integer. So both entries of the pair are integers computed
+without failure and without effect, and $d\bmod 2\in\{0,1\}$ selects the value of the
+conditional. Every other operation is literally the same; induction on the run.
+
+(b) The first-line reader parses the same value $v$ as the whole-input reader on a one-line text
+of $v$; a string of a JSON text contains no unescaped line break, so every value has such a text,
+and later lines are not read. The public names of the JSON module (\texttt{dump}, \texttt{dumps},
+\texttt{load}, \texttt{loads}, \texttt{JSONDecoder}, \texttt{JSONDecodeError},
+\texttt{JSONEncoder}) are not names of the program. As in (a) every depth is an integer, so
+membership of the arity in the set and in the tuple of the same two integers agree. Since $[s]$ is
+true-valued, ``$[s]$ if $s$ else $1$'' and ``$s$ and $[s]$, or $1$'' have the same value, and the
+truth value of a value of the reader is computed without effect. For an integer $k$,
+$\mathord{\sim}(-k)=k-1$. In both entry tests the goal is opened first, then the floor is
+decremented, then $H$ is formed at the decremented floor; the context is an array (the initial
+context $[[\,]]$ and every continuation context are arrays, and no operation of the program changes
+an array in place), so $g+[k',H]$ and $(k',{*}g,H)$ have the same members in another order.
+Membership is the existence of an equal member, and equality between values of the reader and
+trees of the program is computed without failure and without effect, so the order does not change
+the result. Every other operation is literally the same; induction on the run.
+
+(c) Both programs fail together if the input is not an array or has no last element. The
+invariant is: at the entry of a call, before its packet is removed, $\lvert P\rvert-N$ is the floor
+$k$ of $S^{\natural}_{\mathrm{i},\lambda\beta}$; initially both are $0$. The first program removes
+the packet and then opens the goal at $k$; the second opens the goal at $\lvert P\rvert-N=k$ and then
+removes the packet. An opening reads neither the packet nor the input, so the two orders give the
+same opened goal or both reject. Then the first program decrements its floor to $k-1$, and
+$\lvert P\rvert-N=k-1$. From here on every opening is made at the same floor in both programs, since
+no opening removes a packet and every later removal is the removal at the entry of a nested call,
+which the first program accompanies by its decrement; by induction the major call and the
+continuation keep the invariant. The member $k-1$ of the entry test of the first program never
+equals the opened goal: an opened array is not an integer, and a scalar goal at the depth $0$ is
+returned only if the leaf test $k\le a<0$ with $k<0$ holds, which makes it an integer of $[k,0)$
+(a Boolean fails the range test, a floating-point number the bitwise conjunction), and otherwise
+the fallback opens the missing image and fails. So omitting this member changes no entry test, and
+the runs correspond.
+
+(d) The context of the root call is the array $G$, and every later context is a new array; no
+operation changes an array in place. The tuple $({*}g,H)$ and the array $g+[H]$ have the same members
+in the same order. The display $[{*}g,h]$ unpacks $g$ and then evaluates $h$; the sum $g+[h]$
+evaluates $h$ and then concatenates. The evaluation of $h$ contains the major call, reads lines and
+changes the floor, but changes neither $g$ nor a member of $g$, so both give the same array after
+the same evaluation of $h$. The image of the new goal is used only by the opener, which at a hole at
+an odd depth opens it at the depth $3$ with the missing image; $\{k\}$ and $[k]$ have length one and
+yield the integer $k$ once, so both openings return $[k]$, and the set never enters a tree. On
+integers, arrays and the missing image $0j$, the test $a\cdot 0\neq 0$ holds exactly for arrays
+($a\cdot 0$ is $0$ for an integer and $0j=0$ for the missing image); where the traversal profile
+catches the failure of a child, it compares the array with the floor, which fails as well; so the two
+openers return equal values on equal arguments or both fail, and neither reads the input or changes
+the floor. Induction on the run in each case.
+\end{proof}
+% ed.: the packages argue (a), (b) and (d) for the changed expressions and (c) by a commuting
+% argument; the integrality of every depth, the order of the members of the entry test and the
+% omitted member of (c) at a scalar goal are worked out here.
+
+\pkg{checker\_research} delivers $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ ($310/358/576$,
+\texttt{code/checker.py}) against $S^{\natural}_{\mathrm{i},\lambda\beta}$
+(\texttt{controls/retained\_bytes.py}): six bytes fewer, one token and three nodes more.
+\pkg{scope\_free\_audit} delivers $S^{3}_{\mathrm{E,i},\phi,\ell}$ ($295/332/553$,
+\texttt{code/checker\_sorted\_line.py}) against $S^{3}_{\mathrm{E,i},\phi}$
+(\texttt{reference/checker\_sorted\_556.py}), below it in all three coordinates; it reads the first
+line only and carries the double dagger. The package states the program to be below the envelope
+$297/335/556$ of the sorted programs; that envelope takes its nodes from $S^{3}_{\mathrm{e,m},+}$ of
+T/ed$_1^{+2}$, another encoding, and omits the unfused control $S^{3}_{\mathrm{E,i}}$
+($288/331/586$) of G$_{1,\top}$/$\mathcal A^{-}$. \pkg{stack\_clock} delivers
+$S^{\natural}_{\mathrm{i},\lambda\beta,\kappa}$ ($327/378/611$, \texttt{code/checker.py}) against
+$S^{\natural}_{\mathrm{i},\lambda\beta}$, larger in all three coordinates, as the package states. By
+(c), the length of the unread certificate serves as the floor once the goal is opened before its
+packet is removed; this is the second question of \cref{cert:sec:questions} on the scope carried by
+the certificate, answered for the reservation at entry of these programs. The design rejected in
+\cref{cert:sec:notes} allocated at the consumption of the packet the name that the step itself uses,
+before the witness is validated; here the eigenparameter of a step is still the floor after the
+return of its major call, and the derived floor only reproduces it. The compact refinement of
+\pkg{composition} delivers $L^{\vdash}_{\mathrm{c},+}$ ($236/262/545$,
+\texttt{compact\_refinement/code/checker\_tokens236.py}), $L^{\vdash}_{\mathrm{c},+\sigma}$
+($236/261/545$, \texttt{checker\_tokens236\_set.py}) and $L^{\vdash}_{\mathrm{c},+\lambda}$
+($236/270/516$, \texttt{checker\_tokens236\_lambda.py}) against $L^{\vdash}_{\mathrm c}$
+($238/262/545$, \texttt{control\_tokens238.py}); all read one record per line, and the first two
+recognize arrays by attempted traversal. The package states the compact envelope $236/255/455$
+in place of $238/255/455$, admitting the seeded sequent programs, the stream programs and the shifted
+encoding together; none of the three programs attains $255$ nodes or $455$ bytes.
+
+\begin{remark}[Decoded and generated goals]\label{cert:rem:decoded}
+\pkg{checker\_research} records the following interface principle. Let $V$ be a checker for the
+encodings $E(A)$ of closed native formulas, with a certificate $p$ such that $V(E(A),p)$ accepts
+exactly when $A$ is derivable, and let $D$ be a total computable decoder from a set of codes to
+closed formulas with $D(E(A))=A$ for every $A$. Then the checker $V_D(q,p)\defeq V(E(D(q)),p)$ has
+an accepted certificate for the code $q$ exactly when $D(q)$ is derivable, by the assumption applied
+to $D(q)$, and every formula has a code. Likewise, a partial verifier $F$ that returns only derivable
+closed formulas and returns every closed theorem for some input gives the checker that accepts
+$(A,p)$ exactly when $F(p)$ returns $A$. The decoder, the encoder and the comparison of statements
+belong to the measured program. Declaring further raw spellings to denote a formula while the program
+still checks the old goal is not such a decoder, as \cref{cert:cor:second-dummy} shows for the
+padding aliases.
+\end{remark}
+
+\paragraph{Fresh names from the printed length.} \pkg{scope\_free\_audit} removes the floor from the
+stream program $L_{\mathrm f}$ of \cref{cert:prop:returned-floor} in another way than
+\cref{cert:def:opaque}: a fresh name is a negative integer with more decimal digits than the printed
+form of the data for which it must be fresh. The idea is that of an unselected experiment of
+\pkg{selfseed\_scalar} (\texttt{long\_names.py}, $272/317/566$), which records neither a proof nor a
+compiler of certificates. Let $L^{\mathrm n}_{\mathrm f}$ be $L_{\mathrm f}$ with the range test
+$a<d$ in place of $k\le a<d$, without the floor and its decrement, with the name
+$p\defeq-10^{\ell}$ computed after the terminal test and before the replacement test, where $\ell$
+is the number of characters of the printed form of $[g,a,r]$ (decimal integers, the words of the
+Booleans, brackets, commas and spaces) for the context $g$, the goal $a$ and the record $r$ of the
+call, with the image of the hypothesis $(c(g,s)\lor s\lor\lvert a\rvert=2)\land p$ and the new goal
+opened at $[p]$, and with the initial context $[0]$ in place of the byte string whose element is $0$.
+In this part a tree is \emph{closed} if it is closed at a floor below each of its negative scalars;
+by \cref{cert:lem:fresh} the choice of that floor does not matter.
+
+\begin{lemma}[Printed names]\label{cert:lem:printed}
+\begin{enumerate}[label=(\alph*)]
+\item Let $K\le 0$ be below every negative scalar of a finite family of trees of integers, Booleans
+and arrays. On trees of the family, with images that are trees of the family, openings of them, $0$,
+\texttt{False} or the missing image, the opener of $L^{\mathrm n}_{\mathrm f}$ is $O_K$
+(\cref{cert:def:opener}), with the same failures.
+\item Let $\ell$ be the length of the printed form of $[g,a,r]$, for trees of integers, Booleans and
+arrays, and $p=-10^{\ell}$. Then $p$ is not a scalar of $g$, $a$ or $r$, and it is not a parameter of
+the reading of a tree obtained from subtrees of $g$, $a$ and $r$ by openings at images that are such
+subtrees, $0$ or \texttt{False}, and by repetition.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) The range tests $k\le a<d$ and $a<d$ differ only at scalars below $K$. An opening reaches only the
+scalars of its tree and of its image, and inserts only $0$ and validated images, so it meets no scalar
+below $K$; \texttt{False} is $0$ in every comparison. (b) The printed form of an integer $n$ contains
+the decimal digits of $\lvert n\rvert$, so $\lvert n\rvert<10^{\ell}=\lvert p\rvert$; a Boolean is
+not negative. The parameters of the reading of an opening are parameters of its tree or of its image
+(\cref{cert:lem:opening}(c)), and those of a repetition are those of the repeated tree.
+\end{proof}
+
+\begin{proposition}[Fresh names from the printed length]\label{cert:prop:printed}
+Consider streams of integers and arrays whose first line is the canonical encoding of a closed
+public formula.
+\begin{enumerate}[label=(\alph*)]
+\item If a call of $L^{\mathrm n}_{\mathrm f}$ with goal $a$ and context $g$ returns, and $a$ and the
+members of $g$ are closed, then the auxiliary reading of $a$ is derivable in $\Teq$ from the readings
+of the members of $g$. If $L^{\mathrm n}_{\mathrm f}$ accepts, its goal is a theorem of $\mathcal U$.
+\item Every closed public theorem of $\mathcal U$ has a stream certificate that
+$L^{\mathrm n}_{\mathrm f}$ accepts.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Fix a returning call and an integer $K\le 0$ below every negative scalar of its goal, of its
+context, of the records read by it and its nested calls, and of the names they compute; these are
+finitely many. By \cref{cert:lem:printed}(a) every opening of the run is $O_K$, and the readings are
+those at the floor $K$, at which $a$ and the members of $g$ are closed. Argue as in the proof of
+\cref{cert:prop:return-reservation}(a), with the image of \cref{cert:prop:returned-floor}(a) and with
+one floor $K$ throughout, by induction on returning calls. The opening of the goal, the terminal test
+with its candidate, the name $p$, the replacement test with the opening of the source instance, and
+in an introduction the opening of the matrix at the witness, are evaluated before the major call;
+the major call is made with $g$; then the hypothesis and the new goal are opened at $p$. That proof
+uses of its eigenparameter only its freshness for the readings of $a$, of the members of $g$, of the
+major and of the opened matrix, and the closedness of the hypothesis and of the new goal, and it uses
+the floor at which the matrix is opened only to make the eigenparameter fresh for it. The major is
+$s$, $[s,u]$ or $[t,t,t]$ for the record $r=[s,u,t]$, and the opened matrix is $O_K(B;t,2)$ for the
+child $B$ of $a$; so \cref{cert:lem:printed}(b) gives the freshness of $p$, and
+\cref{cert:lem:opening}(a) the closedness, since $p\ge K$. A name computed inside the major call may
+equal $p$; the induction hypothesis for the major call concerns only the reading of its goal, which
+does not mention it. The image \texttt{False} of a case hypothesis is retained at the depth $3$ and
+reads $0$; it prints as a word, which only lengthens later printed forms. The initial member $0$ reads
+$0=0$. At the root the goal is closed, and \cref{cert:rem:imported} concludes.
+
+(b) As in the proof of \cref{cert:prop:opaque}(b): normalize a derivation of the theorem in
+$\mathcal U$ so that every parameter free at a node is the eigenparameter of a rule below it whose
+minor premise or premise contains the node, compile as in the proof of
+\cref{cert:prop:return-reservation}(b), and choose the names online: where $L_{\mathrm r}$ uses the
+floor left by a major call at a step $C$, $L^{\mathrm n}_{\mathrm f}$ uses $p_C$, computed from the
+context, goal and record of $C$, which are fixed when the record is emitted and do not mention the new
+name; later records refer to $p_C$ explicitly. The map $\nu$ from the eigenparameters to these names
+need not be injective, but it is injective on the parameters free at each node: two of them are the
+eigenparameters of steps $C_1$ and $C_2$ with $C_2$ in the continuation of $C_1$; by the
+normalization the eigenparameter of $C_1$ is free in the conclusion of the premise of $C_2$ that
+contains the node, whose context, goal and hypothesis other than the eigenparameter of $C_2$ are
+readings of the context, goal and record of $C_2$; so $p_{C_1}$ is a scalar of these, and
+$p_{C_2}\neq p_{C_1}$ by \cref{cert:lem:printed}(b). Each call compares and opens only trees whose
+parameters are free at its node, and a renaming that is injective on these commutes with the openings
+and preserves equality, membership and the tests of arity. The run of $L_{\mathrm f}$ on the
+certificates of $L_{\mathrm r}$ meets no scalar below its floor, since the floor only decreases and a
+canonical record mentions only names allocated before; so its openings are those without the floor.
+Hence the run of $L^{\mathrm n}_{\mathrm f}$ follows call by call that of $L_{\mathrm f}$, which
+accepts the certificates of $L_{\mathrm r}$ with the same records and calls
+(\cref{cert:prop:returned-floor}(a)).
+\end{proof}
+% ed.: the package proves (a) by a direct case analysis after choosing a floor below the negative
+% leaves, writing the image of a case hypothesis as 0 where the program has False; the reduction to
+% the proof of cert:prop:return-reservation, the treatment of False under printing and the use of
+% the floor at which the matrix is opened are supplied here. For (b) the package keeps an injective
+% environment of names and renames a dormant parameter that already carries the new name; the
+% normalization of cert:prop:opaque(b) is used instead.
+
+\begin{remark}[Two removals of the floor]\label{cert:rem:printed}
+$L^{\mathrm o}_{\mathrm f}$ (\cref{cert:prop:opaque}) and $L^{\mathrm n}_{\mathrm f}$ both remove the
+floor of $L_{\mathrm f}$ and both choose the name of a step from data fixed before the major call.
+The opaque names are arrays that contain those data and are fresh by size; the printed names are
+negative integers, parameters of the sorted reading, and are fresh by their number of digits. The
+package's proof of (b) keeps an injective environment from eigenparameters to names and renames a
+dormant parameter that already carries the new name; it also describes an alternative in which a
+packet $[[b,b],0,0]$ before a step proves $b=b$ and adds the neutral member $[b,b,b,b,b,b]$, whose
+printed form contains every active name $b$. The names grow quickly: the digits of a new name exceed
+the printed length of the state. In the stream of $209$ bytes for an induction with a used
+hypothesis the largest name has $214$ digits; the package's untrusted producer stopped at a limit of
+$2000000$ digits on the larger inherited induction certificate, which was therefore not run. The
+measured runtime refuses by default conversions between decimal text and integers of more than
+$4300$ digits; the package runs the program with this limit removed, a setting outside the measured
+module that, like the recursion limit, bounds physical executions only. The package records that a
+variant with the fixed name $-1$ accepts a false theorem whose witness captures the name, and that
+$L^{\mathrm n}_{\mathrm f}$ rejects it. $L^{\mathrm n}_{\mathrm f}$ ($249/272/549$,
+\texttt{scope\_free/checker.py}) has ten tokens and eleven nodes more than $L_{\mathrm f}$
+(\texttt{scope\_free/control239.py}) and the same bytes, and $L^{\mathrm o}_{\mathrm f}$
+($246/269/546$) is below it in all three coordinates; both read one record per line and recognize
+arrays by attempted traversal.
+\end{remark}
+
 \subsection{The audit of sources}
 
 The audit in \pkg{orbit\_closure} measures every Python source of the ninety
@@ -10510,7 +10793,7 @@ the same with the expression reader\textsuperscript{\ddag} & T/ed$_1^{\natural}$
 \multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{nontraditional\_inputs}: \cref{cert:prop:sequent,cert:lem:reader}}\\
 sequent input, $T^{\rho}_{+,\vdash}$ & R$^{+2}_{\vdash}$/$\mathcal U$ & 265 & 297 & 458 & 266/299/460 ($T^{\rho}_{+,\mathrm n}$, R$^{+2}$/$\mathcal U$)\\
 seeded header (secondary) & R$^{+2}_{\vdash}$/$\mathcal U$ & -- & -- & 455 & 266/299/460 ($T^{\rho}_{+,\mathrm n}$, R$^{+2}$/$\mathcal U$)\\
-seeded header, stream (secondary)\textsuperscript{\dag\ddag} & R$_{\vdash}$/$\mathcal U$ & 238 & 262 & 545 & 239/261/553\textsuperscript{\dag\ddag} ($L_{\mathrm c}$, R/$\mathcal U$)\\
+seeded header, stream (secondary), $L^{\vdash}_{\mathrm c}$\textsuperscript{\dag\ddag} & R$_{\vdash}$/$\mathcal U$ & 238 & 262 & 545 & 239/261/553\textsuperscript{\dag\ddag} ($L_{\mathrm c}$, R/$\mathcal U$)\\
 expression reader on $S^{3}_{\mathrm r}$\textsuperscript{\ddag} & T/ed$_1$ & 299 & 350 & 632 & 302/352/646 ($S^{3}_{\mathrm r}$)\\
 expression reader on $S^{3}_{\mathrm{e,m}}$\textsuperscript{\ddag} & T/ed$_1$ & 311 & 338 & 667 & 314/340/681 ($S^{3}_{\mathrm{e,m}}$)\\
 expression reader on $S^{\rho}_{\mathrm e}$\textsuperscript{\ddag} & T/ed$_1$ & 308 & 358 & 575 & 311/362/584 ($S^{\rho}_{\mathrm e}$)\\
@@ -10538,6 +10821,21 @@ stream, opaque names, $L^{\mathrm o}_{\mathrm f}$\textsuperscript{\dag\ddag} & R
 strict, shifted, three fields, $S^{3}_{\mathrm e,+}$ & T/ed$_1^{+2}$ & 299 & 343 & 633 & 304/349/646 ($S^{3}_{\mathrm e}$, T/ed$_1$, across the encodings)\\
 strict, shifted, structural binding, $S^{3}_{\mathrm{e,m},+}$ & T/ed$_1^{+2}$ & 308 & 335 & 667 & 314/340/681 ($S^{3}_{\mathrm{e,m}}$, T/ed$_1$, across the encodings)\\
 strict, shifted, four fields, $S^{\rho}_{\mathrm e,+}$ & T/ed$_1^{+2}$ & 310 & 361 & 583 & 311/362/584 ($S^{\rho}_{\mathrm e}$, T/ed$_1$, across the encodings)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{checker\_research}: \cref{cert:prop:same-runs}}\\
+pair-indexed increment, $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ & G$^{\natural}_{\top}$/$\mathcal A^{-}$ & 310 & 358 & 576 & 309/355/582 ($S^{\natural}_{\mathrm{i},\lambda\beta}$)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{scope\_free\_audit}: \cref{cert:prop:same-runs,cert:prop:printed}}\\
+sorted three fields, first line, $S^{3}_{\mathrm{E,i},\phi,\ell}$\textsuperscript{\ddag} & G$_{1,\top}$/$\mathcal A^{-}$ & 295 & 332 & 553 & 297/336/556 ($S^{3}_{\mathrm{E,i},\phi}$)\\
+stream, names from the printed length, $L^{\mathrm n}_{\mathrm f}$\textsuperscript{\dag\ddag} & R/$\mathcal U$ & 249 & 272 & 549 & 239/261/549\textsuperscript{\dag\ddag} ($L_{\mathrm f}$)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{stack\_clock}: \cref{cert:prop:same-runs}}\\
+derived floor, $S^{\natural}_{\mathrm{i},\lambda\beta,\kappa}$ & G$^{\natural}_{\top}$/$\mathcal A^{-}$ & 327 & 378 & 611 & 309/355/582 ($S^{\natural}_{\mathrm{i},\lambda\beta}$)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{composition}, compact refinement: \cref{cert:prop:same-runs}}\\
+list concatenations, $L^{\vdash}_{\mathrm{c},+}$\textsuperscript{\dag\ddag} & R$_{\vdash}$/$\mathcal U$ & 236 & 262 & 545 & 238/262/545\textsuperscript{\dag\ddag} ($L^{\vdash}_{\mathrm c}$)\\
+the same with a set image, $L^{\vdash}_{\mathrm{c},+\sigma}$\textsuperscript{\dag\ddag} & R$_{\vdash}$/$\mathcal U$ & 236 & 261 & 545 & 238/262/545\textsuperscript{\dag\ddag} ($L^{\vdash}_{\mathrm c}$)\\
+the same with an anonymous opener, $L^{\vdash}_{\mathrm{c},+\lambda}$\textsuperscript{\ddag} & R$_{\vdash}$/$\mathcal U$ & 236 & 270 & 516 & 238/262/545\textsuperscript{\dag\ddag} ($L^{\vdash}_{\mathrm c}$)\\
 \midrule
 \multicolumn{6}{@{}p{14.6cm}@{}}{Checkers of calculi of other chapters, with their matched controls (contract and calculus of their packages)}\\
 AQE, seven rules (\pkg{abstraction\_and\_refinements}) & other & 1672 & 1818 & 7132 & 1590/1741/6830 (seven rules with QE); 1647/1807/7121 (eight rules)\\
@@ -10855,6 +11153,18 @@ attempted slice; on a string of more than three characters it returns the string
 value, and on a shorter nonempty string an ideal execution does not terminate and an actual one
 rejects through its recursion limit; strings are outside its contract. Sizes after compression, which several of the packages report, are omitted.
 
+For the rows of \pkg{checker\_research}, \pkg{scope\_free\_audit}, \pkg{stack\_clock} and the
+compact refinement of \pkg{composition}: all measure under CPython 3.12.14; the first three compare at
+the revision \texttt{65c32fbe47}, the last at \texttt{e0d702b905}. The matched controls are reproduced
+with identical text, the copy of $L_{\mathrm f}$ in \pkg{scope\_free\_audit} up to final empty lines,
+which the normalization removes. $S^{3}_{\mathrm{E,i},\phi,\ell}$ reads the first line only and is
+compared with its whole-input control as the first-line programs of \pkg{single\_binder} are
+(\cref{cert:sec:representation}). Carrying the double dagger, $S^{3}_{\mathrm{E,i},\phi,\ell}$,
+$L^{\mathrm n}_{\mathrm f}$ and the three programs of \pkg{composition} enter neither the envelope
+nor the list of superseded programs. The readable form of $S^{\natural}_{\mathrm{i},\lambda\beta,\kappa}$
+(\texttt{code/checker\_readable.py} of \pkg{stack\_clock}) has no reported size; its agreement with
+the program is supported by tests and not proved.
+
 Under the raw contract no package claims a program that improves tokens,
 nodes and bytes at once against all programs of its contract, with one
 exception that is qualified: the traversal profile of \pkg{certified\_zero} is
@@ -11071,10 +11381,10 @@ T/ed$_1$, before \cref{cert:sec:validated-terminal} & 331 & 373 & 608 & two prog
 G$_1$/$\mathcal A^{-}$ & 300 & 337 & 573 & three programs: $S^{3}_{\mathrm E}$ and $S^{3}_{\mathrm{E,m}}$ of T/ed$_1$, which satisfy this contract, and $N_{2,\mathrm p}$ of \pkg{procedure\_presentation} ($324/366/573$), whose exact-integer test concerns one runtime; among the programs that validate only the goal $324/366/573$, attained by $N_{2,\mathrm p}$ alone; before \pkg{validated\_phase} $302/340/573$, with $S^{3}_{\mathrm r}$ and $S^{3}_{\mathrm{e,m}}$ in place of $S^{3}_{\mathrm E}$ and $S^{3}_{\mathrm{E,m}}$; before the four packages of \cref{cert:prop:loop-continuation,cert:prop:eager-three,cert:thm:floor-phase} $306/348/573$, with $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm N}_{2,\mathrm m}$ in place of $S^{3}_{\mathrm r}$ and $S^{3}_{\mathrm{e,m}}$; before \pkg{checked\_reduction} and \pkg{validated\_three\_field} $317/356/573$, with $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$ of T/ed$_1$ in place of $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm N}_{2,\mathrm m}$; before \pkg{validated\_arity\_refinement} $319/358/573$, with $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$ in place of $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$; before \pkg{procedure\_presentation} $319/358/579$, with $N_2$ of \pkg{validated\_leaves} ($328/373/579$) in place of $N_{2,\mathrm p}$; before \pkg{checked\_presentations} $322/364/579$, with $S^{\mathrm T}_1$ and $S^{\mathrm N}_1$ in place of $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$; among the programs that validate only the goal, before \pkg{procedure\_presentation}, $328/369/579$, the nodes attained by the program $328/369/587$ of \pkg{smaller\_presentations}; before \cref{cert:sec:validated-terminal} $328/369/581$, from the programs $328/372/581$ and $328/369/587$ of \pkg{smaller\_presentations}; not comparable with G/$\mathcal A^{-}$\\
 T/ed$_1^{\sharp}$ & 358 & 408 & 687 & three programs (\cref{cert:prop:masks}): $X^{\mathrm s}_{3\mathrm r}$ ($358/424/762$) and $X^{\mathrm s}_{3\mathrm m}$ ($368/408/793$) of \pkg{exact\_bindings} and $X^{\mathrm f}_{\rho}$ of \pkg{exact\_masks} ($365/428/687$); with the programs of the double dagger $354/399/667$, attained by $X^{\mathrm f}_{3\mathrm r,\ell}$, $X^{\mathrm f}_{3\mathrm m,\ell}$ and $X^{\mathrm f}_{\rho,\ell}$ of \pkg{exact\_masks}; before \pkg{exact\_bindings} and \pkg{exact\_masks} $581/641/1424$, the one program $S^{\mathrm x}$ of \pkg{composition\_and\_dummy\_slots} (\cref{cert:prop:exact-image}); not comparable with T/ed$_1^{\natural}$\\
 T/ed$_1^{\natural}$ & 317 & 358 & 614 & three programs of \pkg{names\_and\_scopes} (\cref{cert:prop:actual}): $S^{3\natural\prime}_{\mathrm r}$ ($317/370/682$), $S^{3\natural\prime}_{\mathrm{e,m}}$ ($329/358/717$) and $S^{\rho\natural\prime\prime}_{\mathrm e}$ ($327/383/614$); with the programs of the double dagger $317/358/605$; before \pkg{names\_and\_scopes} $321/361/627$, the three programs of \pkg{exact\_bindings} ($321/373/689$, $333/361/724$, $330/383/627$); not comparable with T/ed$_1^{\sharp}$\\
-G$^{\natural}_{\top}$/$\mathcal A^{-}$ & 303 & 338 & 582 & three programs of \pkg{retained\_validation} (\cref{cert:prop:intrinsic-forms}): $S^{3\natural}_{\mathrm{E,i}}$ ($303/345/623$, tokens), $S^{3\natural}_{\mathrm{E,m,i}}$ ($310/338/655$, nodes) and $S^{\natural}_{\mathrm{i},\lambda\beta}$ ($309/355/582$, bytes); among the programs that read four-field packets $309/355/582$, attained by $S^{\natural}_{\mathrm{i},\lambda\beta}$ alone; among the three-field programs $303/338/588$, the bytes attained by $S^{3\natural}_{\mathrm{E,i},\phi}$ of \pkg{local\_validation} ($312/353/588$) and the tokens also by the first spelling of $S^{3\natural}_{\mathrm{E,i}}$ ($303/349/622$); the programs of T/ed$_1^{\natural}$, which satisfy this contract, are larger in every coordinate; before these packages $316/358/591$, attained by $S^{\natural}_{\mathrm i}$ of \pkg{intrinsic\_validation} ($316/360/591$, tokens and bytes) and $S^{3\natural\prime}_{\mathrm{e,m}}$ of T/ed$_1^{\natural}$ ($329/358/717$, nodes); before \pkg{names\_and\_scopes} $316/360/591$, attained by $S^{\natural}_{\mathrm i}$ alone\\
-G$_{1,\top}$/$\mathcal A^{-}$ & 288 & 331 & 556 & two programs of \pkg{local\_validation} (\cref{cert:prop:intrinsic-forms}): the control $S^{3}_{\mathrm{E,i}}$ ($288/331/586$, tokens and nodes) and $S^{3}_{\mathrm{E,i},\phi}$ ($297/336/556$, bytes); without the control $297/336/556$, attained by $S^{3}_{\mathrm{E,i},\phi}$ alone; the programs of T/ed$_1$ and G$_1$/$\mathcal A^{-}$, which satisfy this contract, are larger in every coordinate; not comparable with G$^{\natural}_{\top}$/$\mathcal A^{-}$\\
+G$^{\natural}_{\top}$/$\mathcal A^{-}$ & 303 & 338 & 576 & three programs: $S^{3\natural}_{\mathrm{E,i}}$ ($303/345/623$, tokens) and $S^{3\natural}_{\mathrm{E,m,i}}$ ($310/338/655$, nodes) of \pkg{retained\_validation} (\cref{cert:prop:intrinsic-forms}) and $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ of \pkg{checker\_research} ($310/358/576$, bytes, \cref{cert:prop:same-runs}); among the programs that read four-field packets $309/355/576$, the tokens and nodes attained by $S^{\natural}_{\mathrm{i},\lambda\beta}$ ($309/355/582$) and the bytes by $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$; before \pkg{checker\_research} $303/338/582$, with $S^{\natural}_{\mathrm{i},\lambda\beta}$ in place of $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$, and $309/355/582$ among the four-field programs, attained by $S^{\natural}_{\mathrm{i},\lambda\beta}$ alone; among the three-field programs $303/338/588$, the bytes attained by $S^{3\natural}_{\mathrm{E,i},\phi}$ of \pkg{local\_validation} ($312/353/588$) and the tokens also by the first spelling of $S^{3\natural}_{\mathrm{E,i}}$ ($303/349/622$); the programs of T/ed$_1^{\natural}$, which satisfy this contract, are larger in every coordinate; before \pkg{exact\_threshold}, \pkg{local\_validation}, \pkg{retained\_validation} and \pkg{reconstructed\_introduction} $316/358/591$, attained by $S^{\natural}_{\mathrm i}$ of \pkg{intrinsic\_validation} ($316/360/591$, tokens and bytes) and $S^{3\natural\prime}_{\mathrm{e,m}}$ of T/ed$_1^{\natural}$ ($329/358/717$, nodes); before \pkg{names\_and\_scopes} $316/360/591$, attained by $S^{\natural}_{\mathrm i}$ alone\\
+G$_{1,\top}$/$\mathcal A^{-}$ & 288 & 331 & 556 & two programs of \pkg{local\_validation} (\cref{cert:prop:intrinsic-forms}): the control $S^{3}_{\mathrm{E,i}}$ ($288/331/586$, tokens and nodes) and $S^{3}_{\mathrm{E,i},\phi}$ ($297/336/556$, bytes); without the control $297/336/556$, attained by $S^{3}_{\mathrm{E,i},\phi}$ alone; with the programs of the double dagger $288/331/553$, the bytes attained by $S^{3}_{\mathrm{E,i},\phi,\ell}$ of \pkg{scope\_free\_audit} ($295/332/553$, \cref{cert:prop:same-runs}); the programs of T/ed$_1$ and G$_1$/$\mathcal A^{-}$, which satisfy this contract, are larger in every coordinate; not comparable with G$^{\natural}_{\top}$/$\mathcal A^{-}$\\
 T/ed$_1^{+2}$ & 299 & 335 & 583 & three programs of \pkg{structural\_parameters} (\cref{cert:prop:shifted-strict}): $S^{3}_{\mathrm e,+}$ ($299/343/633$), $S^{3}_{\mathrm{e,m},+}$ ($308/335/667$) and $S^{\rho}_{\mathrm e,+}$ ($310/361/583$); among the three-field programs $299/335/633$, among the four-field programs $310/361/583$, one program; not comparable with T/ed$_1$\\
-R$^{+2}_{\vdash}$/$\mathcal U$ & 265 & 297 & 458 & one program, $T^{\rho}_{+,\vdash}$ of \pkg{nontraditional\_inputs} (\cref{cert:prop:sequent}); the seeded variant has $455$ bytes, and under R$_{\vdash}$/$\mathcal U$ the seeded stream variant has $238/262/545$\textsuperscript{\dag\ddag}; not comparable with R$^{+2}$/$\mathcal U$ or R/$\mathcal U$ (\cref{cert:rem:new-contracts})\\
+R$^{+2}_{\vdash}$/$\mathcal U$ & 265 & 297 & 458 & one program, $T^{\rho}_{+,\vdash}$ of \pkg{nontraditional\_inputs} (\cref{cert:prop:sequent}); the seeded variant has $455$ bytes, and under R$_{\vdash}$/$\mathcal U$ the seeded stream programs, all with the double dagger, have the minima $236/261/516$, attained by the three programs of \pkg{composition} (\cref{cert:prop:same-runs}): $L^{\vdash}_{\mathrm{c},+}$ ($236/262/545$), $L^{\vdash}_{\mathrm{c},+\sigma}$ ($236/261/545$) and $L^{\vdash}_{\mathrm{c},+\lambda}$ ($236/270/516$), and before \pkg{composition} $238/262/545$, the one program $L^{\vdash}_{\mathrm c}$; not comparable with R$^{+2}$/$\mathcal U$ or R/$\mathcal U$ (\cref{cert:rem:new-contracts})\\
 T/eqd & 383 & 442 & 870 & one program, of \pkg{validated\_presentation}\\
 S & 1041 & 1181 & 3467 & one program, of \pkg{guarded\_register}\\
 K & 609 & 699 & 1644 & one program, the two-field stream of \pkg{alias\_back}\\
@@ -11570,6 +11880,28 @@ $546$ bytes are the fewest of the programs of R/$\mathcal U$ that read one recor
 $465$ of R/$\mathcal U$ is that of $T_{\mathrm d}$. Under T/ed$_1$, G$_1$/$\mathcal A^{-}$,
 T/ed$_1^{\sharp}$, T/ed$_1^{\natural}$ and R$^{+2}$/$\mathcal U$ nothing changes. No package claims one
 program below all coordinates of the compact envelope.
+
+\pkg{checker\_research}, \pkg{scope\_free\_audit}, \pkg{stack\_clock} and the compact refinement of
+\pkg{composition} change the envelope as follows. Under G$^{\natural}_{\top}$/$\mathcal A^{-}$,
+$S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ lowers the byte minimum from $582$ to $576$, with one
+token and three nodes more than $S^{\natural}_{\mathrm{i},\lambda\beta}$; the envelope is $303/338/576$,
+attained by three programs, and $309/355/576$ among the four-field programs, attained by two, so that no
+program attains all three minima among the four-field programs any longer; \pkg{checker\_research} states
+$303/338/576$ against $303/338/582$. $S^{\natural}_{\mathrm{i},\lambda\beta,\kappa}$ ($327/378/611$) changes
+nothing. Without the test of the printed form the actual-binding programs of G$^{\natural}_{\top}$ are now
+$15$ tokens, $7$ nodes and $20$ bytes above those of G$_{1,\top}$. Under G$_{1,\top}$/$\mathcal A^{-}$ the
+envelope $288/331/556$ is unchanged; admitting the programs of the double dagger the minima would be
+$288/331/553$. \pkg{scope\_free\_audit} states that $S^{3}_{\mathrm{E,i},\phi,\ell}$ is below the envelope
+$297/335/556$ of the sorted programs, an envelope that pools the shifted program $S^{3}_{\mathrm{e,m},+}$
+of T/ed$_1^{+2}$ and omits the unfused control $S^{3}_{\mathrm{E,i}}$. Under R/$\mathcal U$ nothing
+changes: $L^{\mathrm n}_{\mathrm f}$ carries the double dagger and has ten tokens and eleven nodes more
+than $L_{\mathrm f}$ and the same bytes, as the package states. Under R$_{\vdash}$/$\mathcal U$, whose
+programs all carry the double dagger, the minima become $236/261/516$; \pkg{composition} states the compact
+envelope $236/255/455$ against $238/255/455$, pooling the seeded sequent programs, the stream programs of
+R/$\mathcal U$ and the shifted seeded program of R$^{+2}_{\vdash}$/$\mathcal U$, and none of its programs
+attains $255$ nodes or $455$ bytes. Under the other codes nothing changes. No package claims one program
+below all coordinates of the compact envelope; \pkg{checker\_research} and \pkg{scope\_free\_audit} give
+it as $239/255/460$, or $238/255/455$ with the seeded header.
 
 \paragraph{Superseded programs.} A program of the table is \emph{superseded}
 if another complete program of the table with the same contract code, and
@@ -12249,6 +12581,30 @@ $S^{3}_{\mathrm e}$, $S^{3}_{\mathrm{e,m}}$ and $S^{\rho}_{\mathrm e}$ as
 of those programs. The other programs that the packages carry as controls are unsuperseded programs
 of the table, reproduced with identical text.
 
+With \pkg{checker\_research}, \pkg{scope\_free\_audit}, \pkg{stack\_clock} and the compact refinement of
+\pkg{composition}, newly superseded under G$^{\natural}_{\top}$, among the four-field programs, is, on
+delivery, $S^{\natural}_{\mathrm{i},\lambda\beta,\kappa}$ ($327/378/611$, \texttt{code/checker.py} of
+\pkg{stack\_clock}), by $S^{\natural}_{\mathrm{i},\lambda\beta}$ ($309/355/582$), which is smaller in all
+three coordinates. $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ ($310/358/576$,
+\texttt{code/checker.py} of \pkg{checker\_research}) and $S^{\natural}_{\mathrm{i},\lambda\beta}$ are
+incomparable ($309<310$ tokens, $576<582$ bytes); $S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ is
+below $S^{\natural}_{\mathrm i}$ and $S^{\natural}_{\mathrm{i},\lambda\tau}$ in all three coordinates, but
+both were superseded before. Three-field and four-field programs are not compared, and the comparison would
+change nothing: no remaining three-field program of G$^{\natural}_{\top}$ is no larger than
+$S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ in all three coordinates, or conversely. Under
+G$_{1,\top}$/$\mathcal A^{-}$ and R/$\mathcal U$ nothing is superseded: $S^{3}_{\mathrm{E,i},\phi,\ell}$ and
+$L^{\mathrm n}_{\mathrm f}$ carry the double dagger and are not compared, and their controls
+$S^{3}_{\mathrm{E,i},\phi}$ (\texttt{reference/checker\_sorted\_556.py} of \pkg{scope\_free\_audit}) and
+$L_{\mathrm f}$ (\texttt{scope\_free/control239.py}) keep their status. Under R$_{\vdash}$/$\mathcal U$
+every program carries the double dagger, and nothing is superseded; the control $L^{\vdash}_{\mathrm c}$
+(\texttt{compact\_refinement/code/control\_tokens238.py} of \pkg{composition}) keeps its status. The
+other programs that the packages carry as controls (\texttt{controls/} of \pkg{checker\_research},
+\texttt{reference/} of \pkg{stack\_clock}, \texttt{reference/frontier/} of \pkg{composition}) are programs
+of the table reproduced with identical text and keep their status; among them the copies of
+$S^{\natural}_{\mathrm{i},\lambda\tau}$ (\texttt{controls/exact\_threshold.py} of \pkg{checker\_research})
+and of $S^{\natural}_{\mathrm i}$ (\texttt{reference/frontier/intrinsic\_exact.py} of \pkg{composition}) are
+copies of programs superseded before.
+
 \section{Further questions}\label{cert:sec:questions}
 
 The packages state the following questions, limits and unproved claims. Items
@@ -12289,7 +12645,12 @@ irrelevance of unused fields, in particular that scans without an image are type
 floating-point holes give the same template to both openings; and \pkg{structural\_parameters},
 which asks to connect the opaque opener and the stream protocol, with malformed annotations, the
 replacement of Booleans, parsing and the consumption of a record by an early terminal, to the
-formalized public calculus.)
+formalized public calculus; \pkg{scope\_free\_audit}, which asks for a formal theorem on its stream
+protocol and its compiler of certificates, including the repair of collisions of dormant names;
+\pkg{stack\_clock}, which asks to formalize the opener and the successful call trees of the control and to
+prove the invariant of \cref{cert:prop:same-runs}(c) against a specified execution semantics; and
+\pkg{checker\_research}, whose proof of \cref{cert:prop:same-runs}(a) concerns one expression and
+imports the correctness of its control.)
 \end{question}
 
 \begin{question}[One program for all coordinates]
@@ -12322,7 +12683,11 @@ a retained hypothesis shares; \pkg{exact\_threshold}, which asks for the growth 
 time of checking and the structure of the canonical compiler beside the three coordinates;
 \pkg{local\_validation}, which asks which lower bounds can be proved once the language, the
 primitives of the runtime, the semantic interface and the contract of validation are fixed; and
-\pkg{structural\_parameters}, which asks for a measure on an abstract machine.)
+\pkg{structural\_parameters}, which asks for a measure on an abstract machine; \pkg{checker\_research},
+which asks to fix a finite instruction language and a contract of validation and prove a minimum within
+it; and \pkg{scope\_free\_audit}, which asks for a benchmark that requires a correctness certificate for
+each candidate checker and reports the size of the program, the size of certificates and the time of
+checking separately.)
 \end{question}
 
 \begin{question}[Removing a rule and shrinking a validated checker]
@@ -12344,7 +12709,11 @@ uncounted library does not decide it; \pkg{exact\_threshold}, \pkg{local\_valida
 \pkg{retained\_validation}, \pkg{reconstructed\_introduction} and \pkg{structural\_parameters} state
 that their programs remove no rule, and the first asks for a reduction of the basis that surpasses
 full normalization, deterministic witnesses, variable-only substitution on normal forms and the
-three-family clause presentations rather than renaming them.)
+three-family clause presentations rather than renaming them; \pkg{checker\_research},
+\pkg{scope\_free\_audit} and \pkg{stack\_clock} state that their programs remove no rule and ask
+whether another arithmetic basis can simplify substitution, freshness and the recognition of
+computations together, with both formula round trips and the comparison of domains shown and every
+decoder and validator measured, since fewer displayed axioms need not mean less checking code.)
 \end{question}
 
 \begin{question}[Constructed majors]
@@ -12386,7 +12755,12 @@ Would a tree-shaped certificate that allocates opaque eigenparameters when a
 binder is entered, so that raw input cannot name them, simplify the freshness
 argument at a lower total size? Can the remaining length of the certificate
 serve as the floor if the allocation is given a separate phase?
-(\pkg{compact\_update}, \pkg{prevalidated\_elimination}.)
+(\pkg{compact\_update}, \pkg{prevalidated\_elimination}.) The second question is answered for the
+reservation at entry by \cref{cert:prop:same-runs}(c) (\pkg{stack\_clock}): with the goal opened before
+its packet is removed, the number of unread packets less its initial value is the floor. The program is
+larger than its control in all three coordinates; \pkg{stack\_clock} asks whether another
+representation can use the same invariant and be smaller than one complete control in all three
+coordinates.
 \end{question}
 
 \begin{question}[Terms as atomic assertions]
@@ -12429,7 +12803,7 @@ programs, and under the goal contract, where $317/358/594$ under
 G/$\mathcal A^{-}$ is attained by three programs; under T/ed$_1$
 ($300/337/580$), G$_1$/$\mathcal A^{-}$ ($300/337/573$), T/ed$_1^{\sharp}$ ($358/408/687$)
 and T/ed$_1^{\natural}$ ($317/358/614$) by three programs each, under
-G$^{\natural}_{\top}$/$\mathcal A^{-}$ ($303/338/582$) and T/ed$_1^{+2}$ ($299/335/583$) by three,
+G$^{\natural}_{\top}$/$\mathcal A^{-}$ ($303/338/576$) and T/ed$_1^{+2}$ ($299/335/583$) by three,
 and under G$_{1,\top}$/$\mathcal A^{-}$ ($288/331/556$) by two.
 Under the shifted encoding of \cref{cert:def:offset} there was one program
 ($271/307/472$) when the last question was asked: can the offset be combined with the
@@ -12741,11 +13115,21 @@ R$^{+2}$/$\mathcal U$, or $300/337/580$ under T/ed$_1$ ($309/345/580$ among the
 programs that read four-field packets, $300/337/626$ among the three-field programs) in
 all three coordinates? Under the exact contracts the envelopes are $358/408/687$
 (T/ed$_1^{\sharp}$) and $317/358/614$ (T/ed$_1^{\natural}$); under the goal contracts
-they are $303/338/582$ (G$^{\natural}_{\top}$/$\mathcal A^{-}$), where
-$S^{\natural}_{\mathrm{i},\lambda\beta}$ attains all three minima among the four-field programs
-(and $S^{\natural}_{\mathrm i}$ attained all three minima of the code until the program of $358$
-nodes of \pkg{names\_and\_scopes}), and $288/331/556$ (G$_{1,\top}$/$\mathcal A^{-}$); in the shifted
-encoding $299/335/583$ (T/ed$_1^{+2}$). \pkg{exact\_threshold}, \pkg{local\_validation},
+they are $303/338/576$ (G$^{\natural}_{\top}$/$\mathcal A^{-}$), where among the four-field
+programs $S^{\natural}_{\mathrm{i},\lambda\beta}$ attained all three minima until
+$S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ of \pkg{checker\_research} lowered the bytes to
+$576$ (and $S^{\natural}_{\mathrm i}$ attained all three minima of the code until the program of $358$
+nodes of \pkg{names\_and\_scopes}), and $288/331/556$ (G$_{1,\top}$/$\mathcal A^{-}$, or $288/331/553$
+with the double dagger); in the shifted encoding $299/335/583$ (T/ed$_1^{+2}$).
+\pkg{checker\_research}, \pkg{scope\_free\_audit} and \pkg{stack\_clock} ask for one program with one
+fixed public language, statement interface, parser and convention of acceptance below
+$238/255/455$, or below the envelope of a fixed comparable contract with exact binding and the whole
+trusted boundary charged, and record that their programs do not reach it:
+$S^{\natural\prime\prime}_{\mathrm{i},\lambda\beta}$ improves one coordinate of its control,
+$S^{3}_{\mathrm{E,i},\phi,\ell}$ all three of its control but not the tokens and nodes of the envelope
+of its code, and $L^{\mathrm n}_{\mathrm f}$ and $S^{\natural}_{\mathrm{i},\lambda\beta,\kappa}$ none
+(\cref{cert:prop:same-runs,cert:prop:printed}); \pkg{composition} records that its programs of
+$236$ tokens attain neither $255$ nodes nor $455$ bytes. \pkg{exact\_threshold}, \pkg{local\_validation},
 \pkg{retained\_validation}, \pkg{reconstructed\_introduction} and \pkg{structural\_parameters} ask
 for one program below $239/255/460$, or $238/255/455$ with the seeded header, with its parser,
 binding discipline and public reading charged, and record that they do not reach it;
@@ -12793,7 +13177,8 @@ and checking time compare? (\pkg{468\_presentation}, \pkg{ast261},
 \pkg{shared\_witness\_bundles}, \pkg{exact\_bindings}, \pkg{exact\_masks},
 \pkg{intrinsic\_validation}, \pkg{names\_and\_scopes}, \pkg{nontraditional\_inputs},
 \pkg{exact\_threshold}, \pkg{local\_validation}, \pkg{retained\_validation},
-\pkg{reconstructed\_introduction}, \pkg{structural\_parameters}.)
+\pkg{reconstructed\_introduction}, \pkg{structural\_parameters}, \pkg{checker\_research},
+\pkg{scope\_free\_audit}, \pkg{stack\_clock}, \pkg{composition}.)
 \end{question}
 
 \begin{question}[Exact syntax at the compact frontier]
@@ -12807,7 +13192,8 @@ spelling \texttt{true} of $1$ admitted by $S^{\natural}_{\mathrm i}$ be rejected
 extra pass? Can a parser with an explicit unbounded semantics match the size of the reader
 of \cref{cert:lem:reader} without its fixed limit of nesting? Under the goal contracts,
 without the test of the printed form, the actual-binding encoding costs $15$ tokens, $7$ nodes and
-$26$ bytes above the padded one ($303/338/582$ against $288/331/556$). Can actual binding be
+$20$ bytes above the padded one ($303/338/576$ against $288/331/556$; $26$ bytes before
+\pkg{checker\_research}). Can actual binding be
 represented without the test of the index of a child and without masks of dummy slots, keeping a
 complete public spelling of every admitted formula? \pkg{retained\_validation} reports an
 unsuccessful experiment with a normalization of even codes to the code of zero: a source $0$ then
@@ -12818,9 +13204,29 @@ that checks the inferences, so that every admitted spelling whose reading is a t
 certificate, with every decoder and comparison charged? \pkg{exact\_threshold} records that soundness
 together with completeness for the canonical encodings does not give this, by
 \cref{cert:cor:second-dummy}, and that an interface that outputs the decoded conclusion is
-legitimate only if its decoder is counted. (\pkg{exact\_bindings}, \pkg{exact\_masks},
+legitimate only if its decoder is counted. \pkg{checker\_research} asks for an encoder and a total
+decoder with $D(E(A))=A$ whose decoding is fused with the opening, checking against $E(D(q))$ for every
+finite public code with the decoder measured (\cref{cert:rem:decoded}); \pkg{scope\_free\_audit} asks for a
+small public grammar that is intrinsically typed and complete for every admitted spelling without the cost
+of actual binding, with an explicit quotient by the decoder; and \pkg{stack\_clock} asks for a certificate
+language in which terms and formulas can be built only in their lexical scopes, with the interpreter of the
+construction, the readout of the theorem and every check counted. (\pkg{exact\_bindings}, \pkg{exact\_masks},
 \pkg{intrinsic\_validation}, \pkg{nontraditional\_inputs}, \pkg{exact\_threshold},
-\pkg{local\_validation}, \pkg{retained\_validation}.)
+\pkg{local\_validation}, \pkg{retained\_validation}, \pkg{checker\_research}, \pkg{scope\_free\_audit},
+\pkg{stack\_clock}.)
+\end{question}
+
+\begin{question}[Synthesis of the conclusion with a shared discharge test]
+Can a checker that computes and prints the formula it proves (\cref{cert:rem:decoded}) share the test of
+the inferred successor instance of an introduction with the test that a discharged parameter does not
+escape, with a proof of soundness and a compiler for all native derivations? \pkg{checker\_research} records
+that an experimental synthesis program of the repository, with the comparison against an external goal
+removed and the inferred formula printed, measures $318/374/746$; the completeness of its calculus is not
+established and it is not offered as a checker. The package also records, without delivered programs, that
+a recoding in which the scalar $0$ is again the numerical zero gave no simultaneous improvement, that an
+interface with functions of the host language as input would still need unforgeable proof values, comparison
+modulo renaming and a test of escaping parameters, and that reading malformed aliases as zero without a
+decoder does not give completeness for every spelling. (\pkg{checker\_research}.)
 \end{question}
 
 \begin{question}[Names from finite trees]
@@ -12834,7 +13240,12 @@ below $239/255/460$, and can a measure on an abstract machine show the removal o
 independently of the punctuation of the host language? Is \texttt{[[7],[1]]}, the shifted spelling
 of the goal of \cref{cert:cor:second-dummy}, without a certificate for the programs of
 \cref{cert:prop:shifted-strict}? The package records the spelling and claims no completeness for
-it; no proof for the shifted programs is given. (\pkg{structural\_parameters}.)
+it; no proof for the shifted programs is given. (\pkg{structural\_parameters}.) The printed names of
+\cref{cert:prop:printed} need no tree in the certificate but grow in digits faster than the printed state:
+the package's producer stopped at $2000000$ digits on an inherited induction certificate, which was not
+run. Can one shared traversal perform the substitution, collect a bound for the parameters in scope and
+validate the active input, with less source than a global floor or names of growing length, a bound
+supplied by the certificate being checked and not trusted? (\pkg{scope\_free\_audit}.)
 \end{question}
 
 \begin{question}[Readings modulo annotations]
@@ -13334,6 +13745,16 @@ computation equation and is admissible in $\iPRA$; it is not treated in this cha
 is given for it. The package asks whether the successor equation of forward iteration implies the
 backward one under ordinary induction on equations alone, and whether this induction can be given
 by an inexpensive native binder or packet rule.
+\item The finite tests of \pkg{checker\_research}, \pkg{scope\_free\_audit}, \pkg{stack\_clock} and the
+compact refinement of \pkg{composition} are implementation evidence: $76$ certificate cases and $32$
+executions in the first; $476$ executions of the first-line program and its control and $47$
+expectations of $L^{\mathrm n}_{\mathrm f}$ in the second; $6913$ run comparisons, $6554$ grammar
+comparisons, $17280$ opener comparisons, $4704$ mutated exports and $408$ executions in the third; and
+$35$ cases in $280$ executions in the fourth; each reports no unexpected outcome. The proofs of
+\cref{cert:prop:same-runs,cert:prop:printed} are written proofs for ideal executions; the producer of
+certificates of \pkg{scope\_free\_audit} is untrusted, and no package claims a formalization in a proof
+assistant. Both \pkg{checker\_research} and \pkg{scope\_free\_audit} report finite audits of the sources
+of the repository in which their programs do not occur; these are not claims of priority.
 \item None of the packages claims a minimal program, a simplest
 axiomatization, or a result about the arithmetic basis. The statements of
 \cref{cert:sec:notes} about eager iteration concern the theory
