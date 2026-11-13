@@ -29,6 +29,10 @@ not claimed to enumerate every 196-state file in every archive: research
 catalogs include many exploratory tables, duplicate encodings and rejected
 variants. Graph nonisomorphism alone says nothing about halting behavior.
 
+The [zero-mask certificate prototype](zero-mask/README.md) checks finite
+closure calculations relevant to the four closing-command variants. It does
+not yet prove a reachable-source invariant or equivalence of their machines.
+
 The two rejected tables are important controls: both are 196-working-state
 machines, but both **halt on blank tape**. Their complete finite traces are
 Lean-checked in [rejected196](rejected196/README.md). They must not be treated
