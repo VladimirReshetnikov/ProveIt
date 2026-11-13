@@ -36,3 +36,26 @@ rotations, nor any three-step search. It does not allocate physical tape
 states. A larger source DAG could still admit a better physical layout; this
 negative result is not a lower bound on the state count or on the length of a
 valid PA-consistency proof.
+
+## Both cleanups
+
+The same script can first apply both the zero-transfer and
+[second cleanup](SECOND-CLEANUP.md) patches:
+
+```sh
+python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/source-search/scan_pruned_rotations.py --both-cleanups --output /tmp/pa196-double-pruned-rotations.json
+```
+
+It reruns and compares both checked source-specialization certificates
+before reconstructing the 3,807-leaf, 162-node source. Among its 1,035
+admissible single-occurrence rotations none reduces the DAG count. Its 163
+admissible global single rotations have 162 nodes (61) or 163 nodes (102);
+the script compares all 163 complete ordinal graphs against the two-patch
+source. The invalid root rotation changes the last jump target from 0 to 9.
+Of 26,731 ordered two-global-rotation pairs with the first intermediate at
+most 163 nodes, 3,828 have 162 nodes, 12,453 have 163 and 10,450 have 164.
+No improvement below 162 occurred, so no second-step improvement needed an
+additional CFG comparison. Deterministic results are in
+[double-pruned-rotations-receipt.json](double-pruned-rotations-receipt.json).
+The single-occurrence, two-global, and bounded-search limitations above apply
+equally to this run; neither source variant has a new binary allocation.
