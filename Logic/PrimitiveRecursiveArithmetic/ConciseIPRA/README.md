@@ -836,6 +836,10 @@ equation; literal-zero transport with the equivalence rules stays incomplete) an
 "Clause calculi" (the
 three-rule homogeneous presentation); one checker they supersede and four re-delivered
 copies of earlier superseded checkers were deleted.
+Later that day `checked_reduction` and `validated_three_field` lowered the strict
+envelope further, to 306/348/589 (and the compact node record to 255, chapter
+"Certificates and checkers"); fifteen checker files they supersede, with their
+byte-identical copies and three compressed copies, were deleted.
 `checked_presentation`, `context_phase`, `crossed_uniqueness`,
 `frontier_review`, `inferred_major`, `orbit_closure`, `progress_independence`
 and `smaller_envelope` arrived on 2026-11-12 (commits `1c5ecfe518`,

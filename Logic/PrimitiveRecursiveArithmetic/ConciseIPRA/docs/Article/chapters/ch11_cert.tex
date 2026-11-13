@@ -63,6 +63,7 @@ conditional selection of the source instance; the marker of progress with the op
 packet fields as arguments of the call with a Boolean result; structural binding of a packet & \cref{cert:sec:leaves} & \pkg{direct\_packets}\\
 the checking function as a procedure; the fresh name reserved at the return of every call & \cref{cert:sec:leaves,cert:sec:offset,cert:sec:validated-terminal} & \pkg{procedure\_presentation} (the second through an earlier package)\\
 the mode test fused with the returned floor, or written as a conditional; rotated packets with prefixes & \cref{cert:sec:validated-terminal} & \pkg{fused\_blocks\_and\_checkers}, \pkg{checked\_presentation} (third delivery); \pkg{prefix\_conditional}\\
+arity erasure; the eager opener with the empty neutral on the validated programs, and a singleton image; three-field records and other rewritings of the validated programs & \cref{cert:sec:validated-terminal} & \pkg{validated\_arity\_refinement}; \pkg{checked\_reduction}; \pkg{validated\_three\_field}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -6817,6 +6818,354 @@ envelope of T/ed$_1$ from $319/358/599$ to $317/356/597$ with three different
 programs (\cref{cert:sec:envelope}), that no rule of the calculus is removed, and
 that the compact envelope $239/256/461$ is not reached.
 
+\subsubsection*{Eager opening on the validated programs, a singleton image, and three fields}
+
+This part follows \pkg{checked\_reduction} and \pkg{validated\_three\_field}, both
+at the revision \texttt{798856e4ef}, which contains \pkg{validated\_arity\_refinement}
+as an incoming archive; neither package contains the other. The contract T/ed$_1$
+restricts the accepted goals and the validation of the whole input
+(\cref{cert:def:contracts}), through the statements (a), (b) and (c) of
+\cref{cert:prop:validated-terminal}; it does not fix the certificates, and $S_2$ and
+$S_3$ already use opposite markers. A program that accepts other certificates than
+its control is therefore listed under T/ed$_1$ when it satisfies these three
+statements. Let $E^{+}_k$ be the eager opener $E_k$ of \cref{cert:lem:eager} with
+the retention $a\lor 1$ of $O^{+}_k$.
+\begin{enumerate}[label=(\roman*)]
+\item $S^{\mathrm T}_{2,\mathrm E}$ and $S^{\mathrm N}_{2,\mathrm E}$ are
+$S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$ with the fallback
+``($d\bmod 2$ or the context is empty) and $O(t;\bot,3)$'' of the opener written as
+the product $(d\bmod 2)\cdot O(t;\bot,3)$, and with the extension in place by the
+byte string, which appends the integer $0$, replaced by the extension by $[[\,]]$,
+which appends the empty array.
+\item $S^{\rho}_{2,\mathrm E}$ is $S^{\rho,\mathrm e}_{2,\mathrm p}$ without the flag
+$v$: the arity guard $\lvert a\rvert^{v}\in\{1,2+(d\bmod 2)\}$ is written ``the
+context is nonempty or $\lvert a\rvert\in\{1,2+(d\bmod 2)\}$'', the leaf guard
+$v\le d\mathbin{\&}(a\bmod 2)$ is written ``the context is nonempty or
+$d\mathbin{\&}(a\bmod 2)$'', the fallback ``$(d\bmod 2)\mathbin{|}v$ and
+$O(t;\bot,3)$'' is written $(d\bmod 2)\cdot O(t;\bot,3)$, the first member
+$(v\defeq 0)$ of the tuple of the terminal test is replaced by the appending of
+$[\,]$ to the context, whose value is the null value, and the root call receives
+no flag.
+\item For a certificate $\sigma$ in the format of one of the controls,
+$\nu(\sigma)$ is $\sigma$ with the major field of every consumed packet in which
+it is the integer $0$ replaced by $[\,]$; no other field and not the goal is
+changed.
+\end{enumerate}
+
+\begin{proposition}[Eager opening with the empty neutral, validated]\label{cert:prop:eager-validated}
+Let $P$ be $S^{\mathrm T}_{2,\mathrm E}$, $S^{\mathrm N}_{2,\mathrm E}$ or
+$S^{\rho}_{2,\mathrm E}$, and $P_0$ its control $S^{\mathrm T}_{2,\mathrm b}$,
+$S^{\mathrm N}_{2,\mathrm b}$ or $S^{\rho,\mathrm e}_{2,\mathrm p}$.
+\begin{enumerate}[label=(\alph*)]
+\item The first opening of the goal in the root call of $P$ gives the result of
+that of $P_0$ or fails with it. Hence $P$ accepts only inputs that satisfy $J$ and
+whose goal satisfies $P^{\mathrm{ed}}_{1}(a,0)$.
+\item If $P$ accepts, the reading of the goal, in which the scalar $1$ reads as
+$0$, is a closed theorem of $\mathcal A$.
+\item Let $\sigma$ be a certificate that the compilation in the proof of (c) for
+$P_0$ produces from a derivation in $\mathcal A$ (the packets of
+\cref{cert:prop:uzero-native}(c) for $S^{\mathrm T}_{2,\mathrm b}$ and
+$S^{\mathrm N}_{2,\mathrm b}$; those of $S_2$ in
+\cref{cert:prop:validated-terminal}(c), rotated by $\rho$, for
+$S^{\rho,\mathrm e}_{2,\mathrm p}$). Then $P$ accepts $\nu(\sigma)$. Hence
+statement (c) of \cref{cert:prop:validated-terminal} holds for $P$, with the
+certificates translated by $\nu$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) In $S^{\mathrm T}_{2,\mathrm E}$ and $S^{\mathrm N}_{2,\mathrm E}$ the root call
+receives the empty list and extends it in place after its entry test; a major call
+receives the list of its caller after that extension, and a final call a list
+formed by concatenation with one hypothesis. In $S^{\rho}_{2,\mathrm E}$ the opening
+of the goal is the left operand of the membership test and is evaluated before the
+tuple, whose first member appends $[\,]$ to the list of the call; the candidate, the
+images, the hypothesis and the new goal of the root call are opened afterwards, and
+every other call receives that list or one formed from it by concatenation. So in
+all three programs the context is empty exactly during the first opening of the
+root call, and exactly there the context of $S^{\mathrm T}_{2,\mathrm b}$ and
+$S^{\mathrm N}_{2,\mathrm b}$ is empty and the flag of
+$S^{\rho,\mathrm e}_{2,\mathrm p}$ is $1$
+(\cref{cert:prop:empty-phase,cert:prop:arity-erasure}). During that opening the
+guards of $P$ are those of the first phase of $P_0$; for $S^{\rho}_{2,\mathrm E}$ by
+\cref{cert:lem:arity-erasure} with $v=1$, and because $1\le x$ holds exactly for
+$x=1$ when $x=d\mathbin{\&}(a\bmod 2)\in\{0,1\}$. At the fallback both $P$ and $P_0$
+evaluate the opening of the missing image, since the left factor of $P_0$ is
+true-valued in the first phase; this opening fails, because the missing image is
+the checking function, on which the array test $a\cdot 0\neq 0$ fails. So the two
+openings take the same branches and give the same tree or fail together. The test
+of the printed form is that of $P_0$, and (a) follows from (a) for $P_0$
+(\cref{cert:prop:arity-erasure}).
+
+(b) After the first opening of the root call the context of every opening is
+nonempty, so the guards hold and the opener is $E^{+}_k$. The proof of
+\cref{cert:lem:eager} applies verbatim to $E^{+}_k$ and $O^{+}_k$, with the retained
+scalar $a\lor 1$ on both sides (\cref{cert:lem:plus-opening}): at an even depth the
+eager product is $0$ or $[\,]$ and the lazy fallback $0$ or \texttt{False}, all of
+which read $0=0$. Hence \cref{cert:lem:opening,cert:lem:exposure,cert:lem:fresh},
+\cref{cert:lem:leaves,cert:lem:closed-leaf} and \cref{cert:lem:zeroinstance} hold
+for $E^{+}_k$. The soundness proofs for $P_0$ (\cref{cert:prop:checked-strict}(b)
+and \cref{cert:prop:validated-terminal}(b), through \cref{cert:prop:arity-erasure})
+are inductions on the returning call that use of the opener only these lemmas, of a
+neutral resource only that it is closed and reads $0=0$, and of a major field
+only its truth value and its comparison with the arrays $[s,u]$ and $[t,t,t]$. In
+$P$ the neutral resource is $[\,]$, closed and reading $0=0$ at a formula position
+(\cref{cert:def:reading}), discharged by \cref{cert:lem:neutral-resource}; copies
+appended through a list shared with a major call add only this resource. The empty
+array is false-valued, $3\cdot[\,]=[\,]$, the selectors of the floor treat it as
+$0$, and it is unequal to every array of length $2$ or $3$, so a major field $[\,]$
+takes the branches of the major field $0$. In $S^{\rho}_{2,\mathrm E}$ the null
+value in the tuple is never equal to the opened goal, since an opening returns an
+integer or an array. The induction therefore applies to the runs of $P$, with
+$E^{+}$ in place of $O^{+}$.
+
+(c) Relate a call of $P$ on $\nu(\sigma)$ and a call of $P_0$ on $\sigma$ if their
+goals agree except that a neutral major $0$ of $P_0$ is $[\,]$ in $P$, their floors
+agree, their remaining stacks correspond under $\nu$, and their contexts agree up to
+copies of the neutral resource. In a compiled certificate a scalar of a canonical
+formula occurs only at a term position, that is at an odd depth below the formula
+root, and the openings of templates in the candidate of $S^{\rho}_{2,\mathrm E}$ keep
+all scalars in range (last paragraph of the proof of
+\cref{cert:prop:validated-terminal}(c)). An eager and a lazy opening take different
+branches only at a scalar out of range at an even depth, and on canonical formulas
+there is none. The exceptions in a compiled run are the openings $O(t;u,0)$, and in
+$S^{\rho}_{2,\mathrm E}$ also $O(t;s,0)$, of the comparison with the major at a
+packet whose field $t$ is a canonical term (the witness of an introduction, the
+update of a computation, the scalar $0$ of a \rulename{DE} packet), opened at the
+formula root. There $P$ opens the image $u$ or $s$ at the depth $3$; in the compiled
+packets these fields are $0$, $[\,]$, $2$ or closed canonical terms, whose openings
+are $1$, $[\,]$, $2$ and the term itself (\cref{cert:lem:recoding}), so they are
+defined. The results differ from those of $P_0$ only at even depths and enter only
+the comparison with the major, which fails in both programs, since the major field
+of such a packet is the neutral major or a unary array, or, in
+$S^{\rho}_{2,\mathrm E}$, the discarded member of the pair. A call whose goal is the
+neutral major returns by membership in both programs: in $P_0$ by the opening $0$ or
+\texttt{False} of the scalar $0$, which equals the integer $0$ of its context or
+tuple; in $P$ by the opening $[\,]$ of the empty array, which has been appended to
+the context before the test. It consumes no packet in the first two programs and the
+same dummy packet in the third. Opened goals of a compiled run are nonempty arrays
+and differ from $0$, \texttt{False}, $[\,]$ and the null value, so no other membership
+test changes. Related calls therefore consume the same packets and make related
+major and final calls, and induction on the compiled derivation gives the claim.
+\end{proof}
+
+\Cref{cert:prop:eager-validated} is the composition of the eager opener and the empty
+neutral of the program of $477$ bytes of \pkg{head\_conversion} with the validated
+programs of \cref{cert:prop:arity-erasure}, and in $S^{\rho}_{2,\mathrm E}$ with the
+phase by an empty context of \cref{cert:prop:empty-phase}. The accepted certificates
+change in both directions: an image that a lazy opening skips is validated, and a
+neutral major $0$ is rejected; the accepted goals do not change.
+
+\begin{remark}[The phase cannot simply be dropped]\label{cert:rem:lazy-phase}
+\pkg{checked\_reduction} records that deleting the condition on the phase from the
+lazy fallback, leaving ``$d\bmod 2$ and $O(t;\bot,3)$'', does not validate the
+grammar. In the goal $[[0]]$ the scalar lies at the depth $8$; the lazy fallback
+returns $0$ there without consulting the missing image, so the first opening
+succeeds on a goal outside $P^{\mathrm{ed}}_{1}$, and an introduction by cases
+retains the inner array as a hypothesis and closes the final call by
+\rulename{Hyp}. The reading $\D{x}{y}\D{x'}{y'}(0=0)$ of that goal is a theorem;
+what fails is statement (a). With the product the missing image is opened at every
+depth and the goal is rejected.
+\end{remark}
+
+Let $L''_{\mathrm{f,m}}$ be $L'_{\mathrm{f,m}}$ with the image $[k]$ of the new goal,
+in the final call, written as the set $\{k\}$ with the one element $k$.
+
+\begin{proposition}[A singleton image]\label{cert:prop:singleton-image}
+On inputs whose records are integers and arrays, $L''_{\mathrm{f,m}}$ has exactly
+the runs of $L'_{\mathrm{f,m}}$: the same lines read, calls, goals, contexts and
+floors.
+\end{proposition}
+\begin{proof}
+The opener of both programs uses its image only by passing it on to the openings
+of the children and, at a scalar out of range at an odd depth, by opening it with
+the default image at the depth $3$. The image of the new goal is formed in the
+second argument of the final call, after the first argument, which contains the
+major call, and the opening of the new goal follows at once, with the current floor
+$k_0\le 0$, which the opener does not change. The attempted traversal of the set
+$\{k_0\}$ succeeds; its length is $1$, and its one element $k_0$ is opened at the
+depth $3+5-1=7$, where the attempted traversal of the integer fails and the handler
+retains it, since $k_0\le k_0<7$. The result is the array $[k_0]$, which the opening
+of the array $[k_0]$ also gives, by the same steps. So the opening of the new goal
+with either image takes the same branches and gives the same tree or fails at the
+same point; the set is never returned, stored in a context or compared. Every other
+operation is literally the same, and induction on the consumed records gives the
+claim.
+\end{proof}
+
+The validated part of \pkg{validated\_three\_field} defines the following programs.
+\begin{enumerate}[label=(\roman*),start=4]
+\item $S^{\mathrm N}_{2,\mathrm m}$ is $S^{\mathrm N}_{2,\mathrm b}$ with three
+changes: the missing image, the default of the opener, is the complex number $0j$
+instead of the checking function; the extension by the byte string followed by the
+destructuring $m,s,u,t\defeq q()$ is replaced by ``match the next record: case
+$[m,s,u,t]$: extend the context by the byte string''; and the array
+$s\land[s,u]\lor[t,t,t]$ of the comparison with the major is written ``$[s,u]$ if
+$s$ else $[t,t,t]$''.
+\item $S^{\rho}_{2,\mathrm o}$ is $S^{\rho,\mathrm e}_{2,\mathrm p}$ with the last
+member $H=[[s\land[s]\lor 1,u,t],\,O(t;r[{:}3],3)\text{ if }s\text{ else }u]$ of the
+tuple of the terminal test replaced by $O^{+}_k(H';\bot,0)$, the opening of
+$H'=[[s\land[s],u,t],\,O(t;r[{:}3],3)\text{ if }s\text{ else }u]$ at the depth $0$
+without an image, as in $S_3$.
+\item $S^{\mathrm T}_{3\mathrm f}$ is $S^{\mathrm T}_{2,\mathrm b}$ with the missing
+image $0j$ and, after the entry test and the extension of the context by the byte
+string, the steps of the three-field protocol (\cref{cert:def:three-field}) on its
+validated kernel: the call removes a record $[s,u,t]$; ($3'$) if
+$O^{+}_k(t;u,0)=a$, it replaces $a$ by $O^{+}_k(t;s,0)$, then $s$ by $[s,u]$ if $s$
+is true-valued and by $[t,t,t]$ otherwise, then $u$ by $0$; ($4'$) if $u$ is
+true-valued, $h$ is the computation candidate
+$[[s\land[s],u,t],\,O^{+}_k(t;[s,u,t],3)\text{ if }s\text{ else }u]$; otherwise the
+call runs $\mathrm{Check}(s,g,k)$ and $h$ is $3\cdot s$ if $s$ is true-valued, and if
+not, the goal $a=[B]$ is replaced by $O^{+}_k(B;t,2)$ and $h=a$; ($5'$) the floor is
+decreased to $k-1$, and the final call is
+$\mathrm{Check}(O^{+}_{k-1}(a;[k-1],0),\,g+[O^{+}_{k-1}(h;\iota,0)],\,k-1)$ with
+$\iota=k-1$ if $s$ is true-valued or $\lvert a\rvert\bmod 2=u$, and $\iota=0$
+otherwise. $S^{\mathrm{TN}}_{3\mathrm f}$ is the same program with the opener bound
+by an assignment expression in the entry test, the body placed under the negated
+test, and the reader of $S^{\mathrm N}_{2,\mathrm b}$.
+\end{enumerate}
+
+\begin{proposition}[Validated programs of \pkg{validated\_three\_field}]\label{cert:prop:validated-three}
+\begin{enumerate}[label=(\alph*)]
+\item Executed by CPython 3.12.14, $S^{\mathrm N}_{2,\mathrm m}$ has on every input
+exactly the runs of $S^{\mathrm N}_{2,\mathrm b}$, up to the kind of a failure.
+\item $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm{TN}}_{3\mathrm f}$ have the same
+runs, and the statements (a), (b) and (c) of \cref{cert:prop:validated-terminal}
+hold for them, with the certificates of (c) consisting of the records
+$[R(s),R(u),R(F)]$ for \rulename{Tr}, $[0,R(u),R(B')]$ for \rulename{QE} with matrix
+$B'$, $[R(\D{x}{y}B'),0,0]$ for \rulename{DE}, $[0,R(a),R(h)]$ and $[R(n),R(a),R(h)]$
+for \rulename{I0} and \rulename{IS}, and $[0,[\,],R(w)]$ and $[0,0,R(w)]$ for
+\rulename{DI}-case and \rulename{DI}-progress.
+\item The statements (a), (b) and (c) of \cref{cert:prop:validated-terminal} hold for
+$S^{\rho}_{2,\mathrm o}$, with the certificates of (c) compiled as for
+$S^{\rho,\mathrm e}_{2,\mathrm p}$ by the branch-aware compiler applied to its own
+terminal test.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+The missing image is consulted only at a fallback, in the first phase or at an odd
+depth. There $S^{\mathrm N}_{2,\mathrm b}$ and $S^{\mathrm T}_{2,\mathrm b}$ open the
+checking function and fail at the array test; with $0j$ the product $0j\cdot 0$ is
+$0j$, which equals $0$, so the array test is false, and the range test compares an
+integer with a complex number and fails. A defined opening never consults the missing
+image, so defined openings agree, and no program of this subsection catches a failure.
+
+(a) On an array of length $4$ the pattern binds $m,s,u,t$ as the destructuring does,
+and the context is extended. The extension and the removal of the record act on
+different lists, since the context is formed from the empty list by extensions and
+concatenations and the record is removed from the parsed input, so their order is
+not observable. On any other record the destructuring of the control fails; in the
+measured runtime the pattern fails before it binds a capture name, as in
+\cref{cert:prop:match}(a), and the next step evaluates the major call, whose
+argument $m$ is unbound, so the program rejects before it reads a further record.
+For a true-valued $s$ the conjunction $s\land[s,u]$ is the nonempty array $[s,u]$,
+which the disjunction returns; for a false-valued $s$ both expressions give
+$[t,t,t]$; neither has another effect. Every other operation is literally the same,
+and induction on the tree of calls gives the claim.
+
+(b) The two programs differ in layout only: the opener is defined before its first
+use in both, the body of the negated test is the code that follows the early return,
+and the reader parses the input, tests its printed form and binds the remover before
+the root call in both. The first opening is that of $S^{\mathrm T}_{2,\mathrm b}$ by
+the remark on $0j$, which gives statement (a).
+
+For statement (b), induct on the returning call as in \cref{cert:thm:three-sound}, for contexts
+whose members are closed at the floor, with $O^{+}$ in place of $O$
+(\cref{cert:lem:plus-opening}; \cref{cert:lem:zeroinstance} holds for $O^{+}$, as in
+the proof of \cref{cert:prop:uzero-native}(b)) and with the rules of $\mathcal A$. A
+return at the entry is \rulename{Hyp}; a member of the context is a hypothesis or a
+copy of the integer $0$, which reads $0=0$. If the test of ($3'$) succeeds, the
+major $M^{\circ}$ is proved in the unchanged context at the floor $k$; for a
+true-valued $s$ it reads $\sigma=\upsilon$, the new goal reads $F(\sigma)$ and $a$
+reads $F(\upsilon)$ (\cref{cert:lem:opening}), and the step is \rulename{Tr}; for a
+false-valued $s$ it reads $\Q{y}B(y)$, the new goal, opened at the image $0$, reads
+$B(0)$, and the step is \rulename{QE}; the hypothesis $3\cdot M^{\circ}$ has arity
+$6$ or $9$, reads $0=0$, and is discharged by \cref{cert:lem:neutral-resource}. If
+the test fails and $u$ is true-valued, the opened hypothesis is a computation
+candidate, whose zero instance is an instance of \rulename{I0} or \rulename{IS} for
+both values of $\iota$ (\cref{cert:lem:zeroinstance}); the parameters named $k-1$ are
+fresh for the context and the goal (\cref{cert:lem:fresh}), and
+\cref{cert:lem:supply} discharges the hypothesis. If the test fails and $u$ is
+false-valued, the major call proves $s$; for a unary $s=[B]$ the hypothesis
+$3\cdot s$, opened at the fresh parameter, reads $\Q{y}B(b,y)$ and the step is
+\rulename{DE}; at another arity or a scalar it reads $0=0$. If also $s$ is
+false-valued, the matrix is opened at the witness at the floor $k$, before the
+decrease, so the witness does not contain the new parameter; by $J$ the field $u$ is
+$0$ or $[\,]$, so $\iota=k-1$ exactly when $u=0$ and the opened matrix has even
+arity: at arity $2$ the matrix reads as a literal equation and the step is
+\rulename{DI}-progress, at another even arity the matrix reads $0=0$ and the goal
+$\D{x}{y}(0=0)$ is derivable; otherwise $\iota=0$ and the step is \rulename{DI}-case,
+which $\mathcal A$ has for every matrix. The remaining raw cases of an introduction
+(a goal $[\,]$, an even arity) are those of the proof of
+\cref{cert:prop:uzero-native}(b). The goal of the root call satisfies
+$P^{\mathrm{ed}}_{1}$, and its reading is that of $B^{\sharp}$
+(\cref{cert:lem:recoding}).
+
+For statement (c), compile a derivation in $\mathcal A$ with the records stated, emitting the
+records of the major before those of the continuation, as in
+\cref{cert:thm:three-complete}. At \rulename{Tr} and \rulename{QE} the test succeeds:
+$O^{+}_k(R(F);R(u),0)$ is $R(F(u))$ (\cref{cert:lem:recoding}), the goal; the new goal
+is $R(F(s))$, or $R(B'(0))$, since the image $0$ opens to $1$; and $M^{\circ}$ is the
+encoded major, proved by the records that follow. At \rulename{DE} the test compares
+the opening \texttt{False} of the scalar $0$ at the depth $0$ with an array and
+fails; $s$ is proved and exported with $\iota=k-1$. At an introduction and at a
+computation the field $t$ is a canonical term, and the test is defined and fails by
+\cref{cert:lem:separation}, whose proof holds for $O^{+}$: from the depth $0$ the
+term is traversed at even depths, where a scalar is retained, as itself or as $1$, or
+replaced by \texttt{False}, and the image is not consulted. At an introduction the
+major call on $0$ returns at once, since the opening of $0$ is \texttt{False} and the
+context contains $0$; the matrix is opened at the witness, and $\iota=k-1$ exactly for
+the marker $0$ at an equation. At a computation the initializer $R(a)$ is
+true-valued (\cref{cert:lem:truthy}), and the opening of the candidate at $k-1$ and at
+$0$ is the same tree, $R$ of the instance: the counter $0$ becomes $1$, the other
+scalars are canonical and retained, and the image is not consulted
+(\cref{cert:lem:recoding,cert:lem:stable}). The run follows the compiled derivation;
+canonical certificates satisfy $J$.
+
+(c) The first opening is that of the control, which gives statement (a). For
+statement (b), the induction of \cref{cert:prop:validated-terminal}(b) for $S_2$, carried over by
+\cref{cert:prop:returned-floor}(d) and \cref{cert:prop:arity-erasure}, applies with the
+terminal case of $S_3$: if the opened goal equals $O^{+}_k(H';\bot,0)$, this opening is
+defined, so $H'$ is closed and has its reading (\cref{cert:lem:plus-opening}), and
+\cref{cert:lem:closed-leaf} with the counter $c=s\land[s]$ makes that reading an
+instance of \rulename{I0} or \rulename{IS}. For statement (c), the last paragraph of
+the proof of \cref{cert:prop:validated-terminal}(c) shows that the opening of $H'$ is defined on
+every compiled packet, as for $S_3$; the dummy packet gives
+$O^{+}_k([[0,1,1],1];\bot,0)=[[1,1,1],1]$. At a computation leaf the opening is $R$ of
+the instance, the candidate of the control: the counter $0$ becomes $1$ and the
+canonical fields are retained. The branch-aware compiler emits only the packet of a
+call that the terminal test closes, and every other step is that of the control.
+\end{proof}
+
+The programs are, of \pkg{checked\_reduction}, $S^{\mathrm T}_{2,\mathrm E}$
+($315/365/618$, \texttt{native/code/checker\_tokens315.py}), $S^{\mathrm N}_{2,\mathrm E}$
+($323/353/630$, \texttt{native/code/checker\_ast353.py}), $S^{\rho}_{2,\mathrm E}$
+($324/367/589$, \texttt{native/code/checker\_bytes589.py}) and $L''_{\mathrm{f,m}}$
+($245/255/580$, \texttt{compact/checker\_ast255.py}), against
+$S^{\mathrm T}_{2,\mathrm b}$, $S^{\mathrm N}_{2,\mathrm b}$,
+$S^{\rho,\mathrm e}_{2,\mathrm p}$ and $L'_{\mathrm{f,m}}$, reproduced with identical
+text; and, of \pkg{validated\_three\_field}, $S^{\mathrm T}_{3\mathrm f}$
+($306/362/668$, \texttt{code/checker\_tokens306.py}), $S^{\mathrm{TN}}_{3\mathrm f}$
+($313/353/701$, \texttt{code/checker\_joint.py}), $S^{\mathrm N}_{2,\mathrm m}$
+($330/348/681$, \texttt{code/checker\_ast348.py}) and $S^{\rho}_{2,\mathrm o}$
+($329/372/595$, \texttt{code/checker\_bytes595.py}), against the three programs of
+\pkg{validated\_arity\_refinement}, reproduced with identical text. Each eager program
+is below its control in all three coordinates. In the syntax tree an array display
+has a context child and a set display has none, so $L''_{\mathrm{f,m}}$ saves exactly
+one node; it reads one record per line and carries the double dagger. The three
+changes of $S^{\mathrm N}_{2,\mathrm m}$ save eight nodes together. The packages also
+deliver readable forms (\texttt{native/code/readable\_checker.py}, $368/442/2075$, of
+$S^{\rho}_{2,\mathrm E}$; \texttt{code/readable\_three\_field\_strict.py},
+$363/422/1953$, of the three-field protocol), whose agreement with the programs is
+supported by tests and not proved, and untrusted translators of certificates
+(\texttt{native/translate.py} for $\nu$, \texttt{tools/compile\_three\_field.py}),
+which the proofs do not use. $S^{\mathrm T}_{3\mathrm f}$ tests the endpoint before the
+floor is decreased, whereas $S^{\mathrm T}_{2,\mathrm b}$ compares after the decrease;
+\pkg{validated\_three\_field} claims the equality of the accepted goals and not a
+simulation of the four-field program on arbitrary stacks. Both packages state that no
+rule of the calculus is removed, that no program attains two of the new minima, and
+that the compact envelope ($239/256/461$, or $239/255/461$ with $L''_{\mathrm{f,m}}$)
+is not reached.
+
 \subsection{The audit of sources}
 
 The audit in \pkg{orbit\_closure} measures every Python source of the ninety
@@ -6939,6 +7288,18 @@ contract, the tolerant program of \pkg{tolerant\_certificates}, and finds, befor
 its own programs, the minima $319/358/599$ under the strict contract and $239/256/461$ for the compact
 programs, admitting the stream programs and across the two encodings. Like the
 earlier audits, these are censuses of finite corpora and not lower bounds.
+
+\pkg{checked\_reduction} and \pkg{validated\_three\_field} audit the revision
+\texttt{798856e4ef}, with the five incoming archives. The first screens $3594$
+occurrences of Python sources, members of compressed files and of the archives among
+them, and finds no earlier program with the singleton image and no normalized
+duplicate of its programs; the second compares its four programs with $3247$ sources
+that parse ($1759$ distinct normalized syntax trees) and finds no exact duplicate.
+Both start from the minima $317/356/597$ of the programs of
+\pkg{validated\_arity\_refinement} under T/ed$_1$ and $239/256/461$ for the compact
+programs, admitting the stream programs and across the two encodings. These are
+screens of finite corpora for duplicates; they do not establish the novelty of the
+devices, which both packages credit to earlier packages, and are not lower bounds.
 
 \section{Results on designs that were examined}\label{cert:sec:notes}
 
@@ -7922,7 +8283,7 @@ T/eqd & typed contract for the grammar with equality, $Q$ and $D$, calculus $\ma
 T/ed & typed contract for the grammar with equality and $D$, calculus $\mathcal A^{-}$\\
 T/g & typed contract for canonical closed guarded formulas, calculus $\mathcal U$\\
 Gt/$\mathcal A^{-}$ & tolerant goal contract of \cref{cert:def:tolerant} for the grammar with equality and $D$, calculus $\mathcal A^{-}$\\
-T/ed$_1$ & typed contract for the grammar $P^{\mathrm{ed}}_{1}$ of \cref{cert:def:zero-alias}, public zero encoded by the scalar $1$, calculus $\mathcal A^{-}$ (the program of \pkg{zero\_alias} with the initial context $[0,[1,0]]$, those of \pkg{smaller\_presentations}, \pkg{scope\_refinement}, \pkg{validated\_leaves}, \pkg{checked\_presentations}, \pkg{procedure\_presentation}, \pkg{prefix\_conditional} and \pkg{validated\_arity\_refinement} with $O^{+}$, \cref{cert:prop:uzero-native,cert:prop:validated-terminal,cert:prop:checked-strict,cert:prop:validated-devices,cert:prop:returned-floor,cert:prop:arity-erasure})\\
+T/ed$_1$ & typed contract for the grammar $P^{\mathrm{ed}}_{1}$ of \cref{cert:def:zero-alias}, public zero encoded by the scalar $1$, calculus $\mathcal A^{-}$ (the program of \pkg{zero\_alias} with the initial context $[0,[1,0]]$, those of \pkg{smaller\_presentations}, \pkg{scope\_refinement}, \pkg{validated\_leaves}, \pkg{checked\_presentations}, \pkg{procedure\_presentation}, \pkg{prefix\_conditional}, \pkg{validated\_arity\_refinement} and \pkg{validated\_three\_field} with $O^{+}$, and those of \pkg{checked\_reduction} with $E^{+}$, \cref{cert:prop:uzero-native,cert:prop:validated-terminal,cert:prop:checked-strict,cert:prop:validated-devices,cert:prop:returned-floor,cert:prop:arity-erasure,cert:prop:eager-validated,cert:prop:validated-three}); the contract fixes the accepted goals, not the certificates\\
 G$_1$/$\mathcal A^{-}$ & goal contract for the grammar $P^{\mathrm{ed}}_{1}$, public zero encoded by the scalar $1$, calculus $\mathcal A^{-}$ (\cref{cert:prop:uzero-native,cert:prop:validated-terminal,cert:prop:validated-devices})\\
 S & strict contract of \pkg{guarded\_register}: certificates $[A,\pi]$ with a proof tree $\pi$, every term and the goal validated; its own calculus, see the remarks below\\
 K & strict contract for the conditional-copy calculus $\mathsf K$: every active term and formula and the goal validated, in full normal form; tree or stream certificates (\cref{cert:def:k-stream})\\
@@ -8328,6 +8689,20 @@ byte-string extension, $S^{\mathrm T}_{2,\mathrm b}$ & T/ed$_1$ & 317 & 368 & 63
 byte-string extension, $S^{\mathrm N}_{2,\mathrm b}$ & T/ed$_1$ & 325 & 356 & 646 & 327/358/642 ($S^{\mathrm N}_2$)\\
 arity erasure, $S^{\rho,\mathrm e}_{2,\mathrm p}$ & T/ed$_1$ & 328 & 372 & 597 & 330/372/599 ($S^{\rho}_{2,\mathrm p}$)\\
 \midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{checked\_reduction}: \cref{cert:prop:eager-validated,cert:prop:singleton-image}}\\
+singleton image, $L''_{\mathrm{f,m}}$\textsuperscript{\dag\ddag} & R/$\mathcal U$ & 245 & 255 & 580 & 245/256/580\textsuperscript{\dag\ddag} ($L'_{\mathrm{f,m}}$)\\
+eager opening, empty neutral, $S^{\mathrm T}_{2,\mathrm E}$ & T/ed$_1$ & 315 & 365 & 618 & 317/368/634 ($S^{\mathrm T}_{2,\mathrm b}$)\\
+eager opening, empty neutral, $S^{\mathrm N}_{2,\mathrm E}$ & T/ed$_1$ & 323 & 353 & 630 & 325/356/646 ($S^{\mathrm N}_{2,\mathrm b}$)\\
+eager opening, empty neutral, phase by the context, $S^{\rho}_{2,\mathrm E}$ & T/ed$_1$ & 324 & 367 & 589 & 328/372/597 ($S^{\rho,\mathrm e}_{2,\mathrm p}$)\\
+readable form of $S^{\rho}_{2,\mathrm E}$ & T/ed$_1$ & 368 & 442 & 2075 & none\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{validated\_three\_field}: \cref{cert:prop:validated-three}}\\
+three-field records, $S^{\mathrm T}_{3\mathrm f}$ & T/ed$_1$ & 306 & 362 & 668 & 317/368/634 ($S^{\mathrm T}_{2,\mathrm b}$, four fields)\\
+three-field records, $S^{\mathrm{TN}}_{3\mathrm f}$ & T/ed$_1$ & 313 & 353 & 701 & 317/368/634 and 325/356/646 ($S^{\mathrm T}_{2,\mathrm b}$, $S^{\mathrm N}_{2,\mathrm b}$, four fields)\\
+readable form of the three-field protocol & T/ed$_1$ & 363 & 422 & 1953 & none\\
+sentinel, structural binding, conditional major, $S^{\mathrm N}_{2,\mathrm m}$ & T/ed$_1$ & 330 & 348 & 681 & 325/356/646 ($S^{\mathrm N}_{2,\mathrm b}$)\\
+opened candidate, $S^{\rho}_{2,\mathrm o}$ & T/ed$_1$ & 329 & 372 & 595 & 328/372/597 ($S^{\rho,\mathrm e}_{2,\mathrm p}$)\\
+\midrule
 \multicolumn{6}{@{}p{14.6cm}@{}}{Checkers of calculi of other chapters, with their matched controls (contract and calculus of their packages)}\\
 AQE, seven rules (\pkg{abstraction\_and\_refinements}) & other & 1672 & 1818 & 7132 & 1590/1741/6830 (seven rules with QE); 1647/1807/7121 (eight rules)\\
 PD, three families (\pkg{476\_byte\_presentation}) & other & 678 & 727 & 2087 & 688/735/2128 (four families); 643/695/1892 (inherited E3)\\
@@ -8372,7 +8747,12 @@ control for the two programs of \pkg{context\_order}; by
 \pkg{deterministic\_introduction} ($267/303/506$) and the loop profile of
 \pkg{deterministic\_opening} ($263/276/580$) allocating first. The native
 program of \pkg{three\_field} and its control satisfy the same typed contract
-for the grammar with equality and $D$.
+for the grammar with equality and $D$. Under T/ed$_1$ the programs
+$S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm{TN}}_{3\mathrm f}$ and the readable form of
+\pkg{validated\_three\_field} read three-field records, and their named controls
+four-field packets, so these comparisons are of sizes only; all other rows of
+T/ed$_1$ read four-field packets, those of \pkg{checked\_reduction} with the neutral
+major $[\,]$ (\cref{cert:prop:eager-validated}).
 
 For the rows added from \pkg{retained\_premises} onwards: the control of
 $516$ bytes is the program so named in \cref{cert:sec:later}; the controls of
@@ -8553,6 +8933,18 @@ $L_{\mathrm c}$. The controls of \pkg{validated\_arity\_refinement} are named in
 its rows; its sizes after compression ($398$, $399$ and $392$ against $392$, $391$
 and $391$) are larger than those of the controls, as the package states, and are
 omitted.
+
+For the rows of \pkg{checked\_reduction} and \pkg{validated\_three\_field}: both
+compare at the revision \texttt{798856e4ef}, measure under CPython 3.12.14 and
+reproduce their controls with identical text, \pkg{checked\_reduction} also
+$L'_{\mathrm{f,m}}$ (\texttt{compact/control\_ast256.py}) and
+\pkg{validated\_three\_field} also $L_{\mathrm f}$, $L'_{\mathrm{f,m}}$ and
+$T^{\rho}_{+,\mathrm p}$ as compact references. The eager programs accept the
+certificates translated by $\nu$ and the three-field programs records of three
+fields, so their comparisons with their controls are comparisons of sizes for the
+same accepted goals; $S^{\mathrm N}_{2,\mathrm m}$ and $L''_{\mathrm{f,m}}$ have the runs
+of their controls. \pkg{checked\_reduction} also reports sizes after compression
+($384$, $386$ and $383$ for the eager programs), which are omitted.
 
 Under the raw contract no package claims a program that improves tokens,
 nodes and bytes at once against all programs of its contract, with one
@@ -8743,7 +9135,7 @@ one program only where this is said.
 Contract & Tokens & Nodes & Bytes & Attained by\\
 \midrule
 R/$\mathcal A$ & 261 & 288 & 528 & three programs: the traversal profiles of \pkg{monus\_and\_neutral\_major} and \pkg{prevalidated\_elimination} ($261$ tokens), the loop profile of \pkg{scope\_and\_closure} ($288$ nodes) and its zero-product profile ($528$ bytes)\\
-R/$\mathcal U$ & 244 & 261 & 465 & three programs: the whole-input programs $L^{\mathrm w}_{\mathrm c}$ ($244/269/547$) and $L^{\mathrm w}_{\mathrm{c,m}}$ ($252/261/593$) of \pkg{prefix\_conditional} and the program with packets as arguments $T_{\mathrm d}$ of \pkg{direct\_packets} ($274/303/465$); among programs whose last element is the goal $244/261/478$; among programs that read four-field packets $250/273/465$; with the programs of the double dagger $239/256/465$, the token minimum attained by $L_{\mathrm f}$ ($239/261/549$, \pkg{fused\_blocks\_and\_checkers} and the third delivery of \pkg{checked\_presentation}) and by $L_{\mathrm c}$ ($239/261/553$, \pkg{prefix\_conditional}, delivered again by \pkg{conditional\_image}), the node minimum by $L'_{\mathrm{f,m}}$ of \pkg{fused\_blocks\_and\_checkers} ($245/256/580$) (history below)\\
+R/$\mathcal U$ & 244 & 261 & 465 & three programs: the whole-input programs $L^{\mathrm w}_{\mathrm c}$ ($244/269/547$) and $L^{\mathrm w}_{\mathrm{c,m}}$ ($252/261/593$) of \pkg{prefix\_conditional} and the program with packets as arguments $T_{\mathrm d}$ of \pkg{direct\_packets} ($274/303/465$); among programs whose last element is the goal $244/261/478$; among programs that read four-field packets $250/273/465$; with the programs of the double dagger $239/255/465$, the token minimum attained by $L_{\mathrm f}$ ($239/261/549$, \pkg{fused\_blocks\_and\_checkers} and the third delivery of \pkg{checked\_presentation}) and by $L_{\mathrm c}$ ($239/261/553$, \pkg{prefix\_conditional}, delivered again by \pkg{conditional\_image}), the node minimum by $L''_{\mathrm{f,m}}$ of \pkg{checked\_reduction} ($245/255/580$); before \pkg{checked\_reduction} $239/256/465$, the node minimum by $L'_{\mathrm{f,m}}$ of \pkg{fused\_blocks\_and\_checkers} ($245/256/580$) (history below)\\
 R/$\mathcal U$, before \pkg{fused\_blocks\_and\_checkers}, \pkg{prefix\_conditional} and the third delivery of \pkg{checked\_presentation} & 245 & 263 & 465 & three programs: the whole-input global program $G^{\mathrm w}_{\mathrm b}$ of \pkg{checked\_presentations} ($245/272/591$), the whole-input program with structural binding $L^{\mathrm w}_{\mathrm m}$ of \pkg{direct\_packets} ($258/263/595$) and its program with packets as arguments $T_{\mathrm d}$ ($274/303/465$); among programs whose last element is the goal $245/263/478$; among programs that read four-field packets $250/273/465$; with the programs of the double dagger $240/259/465$, the token minimum attained by $G_{\mathrm b}$ ($240/266/592$) and by $L_{\mathrm r}$ of \pkg{procedure\_presentation} ($240/266/551$), the node minimum by $L_{\mathrm m}$ of \pkg{direct\_packets} ($252/259/595$) (history below)\\
 R/$\mathcal U$, before \pkg{direct\_packets} & 245 & 268 & 469 & three programs: the whole-input global program $G^{\mathrm w}_{\mathrm b}$ of \pkg{checked\_presentations} ($245/272/591$), the whole-input local program with direct leaves of \pkg{whole\_json\_refinement} ($254/268/613$), and the four-field uniform terminal program of \pkg{shared\_leaf} and \pkg{uniform\_terminals} ($272/306/469$); among programs whose last element is the goal $245/268/478$; among programs that read four fields $250/273/469$; with the programs of the double dagger $240/261/469$, the first two attained by the global stream program $G_{\mathrm b}$ of \pkg{checked\_presentations} ($240/266/592$) and by the stream program $L_{\mathrm d}$ of \pkg{ast261} ($247/261/557$) (history below)\\
 R/$\mathcal U$, before \pkg{ast261} and \pkg{checked\_presentations} & 248 & 268 & 469 & three programs: the whole-input global program with direct leaves of \pkg{whole\_json\_refinement} ($248/277/615$), its local program ($254/268/613$), and the program of $469$ bytes; with the programs of the double dagger $241/262/469$, from the local stream programs of \pkg{fixed\_points\_and\_checker} ($241/267/566$) and of \pkg{shared\_leaf} ($246/262/556$)\\
@@ -8758,13 +9150,14 @@ G/$\mathcal A^{-}$, before \cref{cert:sec:leaves} & 321 & 369 & 596 & three prog
 Gt/$\mathcal A^{-}$ & 315 & 361 & 603 & one program, of \pkg{tolerant\_certificates}; not comparable with G/$\mathcal A^{-}$ or T/ed\\
 T/ed & 328 & 368 & 616 & three programs of \pkg{abstraction\_and\_refinements} (\cref{cert:prop:abstraction}): $328/377/634$, $335/368/643$ and $340/382/616$\\
 T/ed, before \cref{cert:sec:leaves} & 330 & 379 & 621 & two programs: the program of \pkg{checked\_reductions} with the phase by an empty context, parity, gate and inverted entry ($330/379/641$), which attains two of the three minima, and the program of \pkg{refinement} with product and gate on the program of $628$ bytes ($340/385/621$)\\
-T/ed$_1$ & 317 & 356 & 597 & three programs of \pkg{validated\_arity\_refinement} (\cref{cert:prop:arity-erasure}): $S^{\mathrm T}_{2,\mathrm b}$ ($317/368/634$), $S^{\mathrm N}_{2,\mathrm b}$ ($325/356/646$) and $S^{\rho,\mathrm e}_{2,\mathrm p}$ ($328/372/597$); not comparable with T/ed\\
+T/ed$_1$ & 306 & 348 & 589 & three programs (\cref{cert:prop:eager-validated,cert:prop:validated-three}): the three-field program $S^{\mathrm T}_{3\mathrm f}$ ($306/362/668$) and $S^{\mathrm N}_{2,\mathrm m}$ ($330/348/681$) of \pkg{validated\_three\_field} and $S^{\rho}_{2,\mathrm E}$ of \pkg{checked\_reduction} ($324/367/589$); among programs that read four-field packets $315/348/589$, the token minimum attained by $S^{\mathrm T}_{2,\mathrm E}$ of \pkg{checked\_reduction} ($315/365/618$); not comparable with T/ed\\
+T/ed$_1$, before \pkg{checked\_reduction} and \pkg{validated\_three\_field} & 317 & 356 & 597 & three programs of \pkg{validated\_arity\_refinement} (\cref{cert:prop:arity-erasure}): $S^{\mathrm T}_{2,\mathrm b}$ ($317/368/634$), $S^{\mathrm N}_{2,\mathrm b}$ ($325/356/646$) and $S^{\rho,\mathrm e}_{2,\mathrm p}$ ($328/372/597$); not comparable with T/ed\\
 T/ed$_1$, before \pkg{validated\_arity\_refinement} & 319 & 358 & 599 & three programs: $S^{\mathrm T}_2$ ($319/370/630$) and $S^{\mathrm N}_2$ ($327/358/642$) of \pkg{checked\_presentations} and $S^{\rho}_{2,\mathrm p}$ of \pkg{prefix\_conditional} ($330/372/599$); not comparable with T/ed\\
 T/ed$_1$, before \pkg{prefix\_conditional} & 319 & 358 & 600 & three programs: $S^{\mathrm T}_2$ ($319/370/630$) and $S^{\mathrm N}_2$ ($327/358/642$) of \pkg{checked\_presentations} and $S_{2,\mathrm p}$ of \pkg{procedure\_presentation} ($330/372/600$); not comparable with T/ed\\
 T/ed$_1$, before \pkg{procedure\_presentation} & 319 & 358 & 605 & three programs of \pkg{checked\_presentations} (\cref{cert:prop:checked-strict}): $S^{\mathrm T}_2$ ($319/370/630$), $S^{\mathrm N}_2$ ($327/358/642$) and $S_4$ ($335/380/605$); not comparable with T/ed\\
 T/ed$_1$, before \pkg{checked\_presentations} & 322 & 364 & 606 & three programs (\cref{cert:prop:validated-terminal}): $S^{\mathrm T}_1$ ($322/373/626$) and $S^{\mathrm N}_1$ ($329/364/635$) of \pkg{scope\_refinement} and $S_2$ of \pkg{validated\_leaves} ($334/379/606$)\\
 T/ed$_1$, before \cref{cert:sec:validated-terminal} & 331 & 373 & 608 & two programs: that of \pkg{zero\_alias} ($331/373/625$) and the strict uniform-zero program of \pkg{smaller\_presentations} ($334/378/608$)\\
-G$_1$/$\mathcal A^{-}$ & 317 & 356 & 573 & three programs: $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$ of T/ed$_1$, which satisfy this contract, and $N_{2,\mathrm p}$ of \pkg{procedure\_presentation} ($324/366/573$), whose exact-integer test concerns one runtime; among the programs that validate only the goal $324/366/573$, attained by $N_{2,\mathrm p}$ alone; before \pkg{validated\_arity\_refinement} $319/358/573$, with $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$ in place of $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$; before \pkg{procedure\_presentation} $319/358/579$, with $N_2$ of \pkg{validated\_leaves} ($328/373/579$) in place of $N_{2,\mathrm p}$; before \pkg{checked\_presentations} $322/364/579$, with $S^{\mathrm T}_1$ and $S^{\mathrm N}_1$ in place of $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$; among the programs that validate only the goal, before \pkg{procedure\_presentation}, $328/369/579$, the nodes attained by the program $328/369/587$ of \pkg{smaller\_presentations}; before \cref{cert:sec:validated-terminal} $328/369/581$, from the programs $328/372/581$ and $328/369/587$ of \pkg{smaller\_presentations}; not comparable with G/$\mathcal A^{-}$\\
+G$_1$/$\mathcal A^{-}$ & 306 & 348 & 573 & three programs: $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm N}_{2,\mathrm m}$ of T/ed$_1$, which satisfy this contract, and $N_{2,\mathrm p}$ of \pkg{procedure\_presentation} ($324/366/573$), whose exact-integer test concerns one runtime; among the programs that validate only the goal $324/366/573$, attained by $N_{2,\mathrm p}$ alone; before \pkg{checked\_reduction} and \pkg{validated\_three\_field} $317/356/573$, with $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$ of T/ed$_1$ in place of $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm N}_{2,\mathrm m}$; before \pkg{validated\_arity\_refinement} $319/358/573$, with $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$ in place of $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$; before \pkg{procedure\_presentation} $319/358/579$, with $N_2$ of \pkg{validated\_leaves} ($328/373/579$) in place of $N_{2,\mathrm p}$; before \pkg{checked\_presentations} $322/364/579$, with $S^{\mathrm T}_1$ and $S^{\mathrm N}_1$ in place of $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$; among the programs that validate only the goal, before \pkg{procedure\_presentation}, $328/369/579$, the nodes attained by the program $328/369/587$ of \pkg{smaller\_presentations}; before \cref{cert:sec:validated-terminal} $328/369/581$, from the programs $328/372/581$ and $328/369/587$ of \pkg{smaller\_presentations}; not comparable with G/$\mathcal A^{-}$\\
 T/eqd & 383 & 442 & 870 & one program, of \pkg{validated\_presentation}\\
 S & 1041 & 1181 & 3467 & one program, of \pkg{guarded\_register}\\
 K & 609 & 699 & 1644 & one program, the two-field stream of \pkg{alias\_back}\\
@@ -9132,6 +9525,35 @@ G$_1$/$\mathcal A^{-}$ the programs $S^{\mathrm T}_{2,\mathrm b}$ and
 $S^{\mathrm N}_{2,\mathrm b}$ give the envelope $317/356/573$, with $N_{2,\mathrm p}$;
 among the programs that validate only the goal it remains $324/366/573$. No package
 of the two claims one program below all coordinates of an envelope.
+
+\pkg{checked\_reduction} and \pkg{validated\_three\_field}, at one revision and each
+without the other, change the envelope as follows. Under R/$\mathcal U$ the programs
+without the double dagger are unchanged. With the double dagger,
+$L''_{\mathrm{f,m}}$ has the tokens and bytes of $L'_{\mathrm{f,m}}$ and one node fewer,
+and the minima are $239/255/465$; \pkg{checked\_reduction} states $239/255/461$
+against $239/256/461$, admitting the stream programs and across the two encodings.
+Under T/ed$_1$ each eager program of \pkg{checked\_reduction} is below its control in
+all three coordinates: $S^{\mathrm T}_{2,\mathrm E}$ and $S^{\mathrm N}_{2,\mathrm E}$
+by two tokens, three nodes and $16$ bytes, $S^{\rho}_{2,\mathrm E}$ by four tokens,
+five nodes and eight bytes; they lower the minima to $315$ tokens, $353$ nodes and
+$589$ bytes. Of the programs of \pkg{validated\_three\_field},
+$S^{\mathrm T}_{3\mathrm f}$ has $11$ tokens and six nodes fewer and $34$ bytes more
+than $S^{\mathrm T}_{2,\mathrm b}$, $S^{\mathrm{TN}}_{3\mathrm f}$ is below both the
+token minimum $317$ and the node minimum $356$ of the earlier envelope, with $701$
+bytes, $S^{\mathrm N}_{2,\mathrm m}$ has five tokens and $35$ bytes more and eight
+nodes fewer than $S^{\mathrm N}_{2,\mathrm b}$, and $S^{\rho}_{2,\mathrm o}$ one token
+more, the nodes of $S^{\rho,\mathrm e}_{2,\mathrm p}$ and two bytes fewer. The combined
+envelope is $306/348/589$: the token minimum from $S^{\mathrm T}_{3\mathrm f}$, the node
+minimum from $S^{\mathrm N}_{2,\mathrm m}$ and the byte minimum from
+$S^{\rho}_{2,\mathrm E}$; no program attains two of the minima. Among the programs
+that read four-field packets it is $315/348/589$, with $S^{\mathrm T}_{2,\mathrm E}$ in
+place of $S^{\mathrm T}_{3\mathrm f}$. The packages state, each from its own programs,
+$315/353/589$ (\pkg{checked\_reduction}) and $306/348/595$
+(\pkg{validated\_three\_field}) against $317/356/597$. Under G$_1$/$\mathcal A^{-}$ the
+programs $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm N}_{2,\mathrm m}$ give the envelope
+$306/348/573$, with $N_{2,\mathrm p}$; among the programs that validate only the goal
+it remains $324/366/573$. Neither package claims one program below all coordinates of
+an envelope.
 
 \paragraph{Superseded programs.} A program of the table is \emph{superseded}
 if another complete program of the table with the same contract code, and
@@ -9608,6 +10030,49 @@ nodes $368$, $370$, $373$, $356$, $358$, $362$, $372$, $364$ and the bytes $634$
 $630$, $626$, $646$, $642$, $639$, $597$, $635$. The two programs of
 \pkg{conditional\_image} carry the double dagger and are not compared.
 
+With \pkg{checked\_reduction} and \pkg{validated\_three\_field}, programs of T/ed$_1$ are
+compared whether their opener is lazy or eager and whatever their neutral major,
+since their accepted goals are the same (\cref{cert:prop:eager-validated}); as under
+R/$\mathcal U$, three-field and four-field programs are not compared, and here the
+comparison would change nothing: no four-field program that remains unsuperseded is
+no larger than a three-field program in all three coordinates, or conversely, since
+each three-field program has fewer tokens than every such four-field program and,
+against each of them, more nodes or more bytes.
+Newly superseded under T/ed$_1$, among the four-field programs,
+are: by $S^{\mathrm T}_{2,\mathrm E}$ ($315/365/618$,
+\texttt{native/code/checker\_tokens315.py} of \pkg{checked\_reduction}),
+$S^{\mathrm T}_{2,\mathrm b}$ ($317/368/634$, \texttt{code/checker\_strict\_tokens317.py}
+of \pkg{validated\_arity\_refinement}, reproduced by both packages), $S^{\mathrm T}_2$
+($319/370/630$, \texttt{code/strict\_tokens.py} of \pkg{checked\_presentations}, again
+\texttt{strict/code/strict\_tokens.py}) and $S^{\mathrm T}_1$ ($322/373/626$,
+\texttt{code/strict\_tokens.py} of \pkg{scope\_refinement}); by
+$S^{\mathrm N}_{2,\mathrm E}$ ($323/353/630$, \texttt{native/code/checker\_ast353.py}),
+$S^{\mathrm N}_{2,\mathrm b}$ ($325/356/646$, \texttt{code/checker\_strict\_ast356.py} of
+\pkg{validated\_arity\_refinement}, reproduced by both packages), $S^{\mathrm N}_2$
+($327/358/642$, \texttt{code/strict\_ast.py} of \pkg{checked\_presentations}, again
+\texttt{strict/code/strict\_ast.py}), $S^{\mathrm N}_{1,\mathrm b}$ ($327/362/639$,
+\texttt{code/checker\_strict\_ast\_iterable.py} of \pkg{procedure\_presentation}, again
+\texttt{validation/validated/code/checker\_strict\_ast\_iterable.py}) and
+$S^{\mathrm N}_1$ ($329/364/635$, \texttt{code/strict\_ast.py} of
+\pkg{scope\_refinement}); by $S^{\rho}_{2,\mathrm E}$ ($324/367/589$,
+\texttt{native/code/checker\_bytes589.py}), $S^{\rho,\mathrm e}_{2,\mathrm p}$
+($328/372/597$, \texttt{code/checker\_strict597.py} of
+\pkg{validated\_arity\_refinement}, reproduced by both packages) and, on delivery,
+$S^{\rho}_{2,\mathrm o}$ ($329/372/595$, \texttt{code/checker\_bytes595.py} of
+\pkg{validated\_three\_field}); and the readable form of $S^{\rho}_{2,\mathrm E}$
+($368/442/2075$, \texttt{native/code/readable\_checker.py}), by each of these three
+programs. Among the three-field programs, the readable form of
+\pkg{validated\_three\_field} ($363/422/1953$,
+\texttt{code/readable\_three\_field\_strict.py}) is superseded by
+$S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm{TN}}_{3\mathrm f}$, which are incomparable
+($306<313$ tokens, $362>353$ nodes). The four four-field programs
+$S^{\mathrm T}_{2,\mathrm E}$, $S^{\mathrm N}_{2,\mathrm E}$, $S^{\rho}_{2,\mathrm E}$ and
+$S^{\mathrm N}_{2,\mathrm m}$ ($330/348/681$, \texttt{code/checker\_ast348.py}) are
+pairwise incomparable: by tokens $315<323<324<330$, with the nodes $365$, $353$, $367$,
+$348$ and the bytes $618$, $630$, $589$, $681$. $L''_{\mathrm{f,m}}$ carries the double
+dagger and is not compared; it has the runs of $L'_{\mathrm{f,m}}$ and one node fewer
+(\cref{cert:prop:singleton-image}).
+
 \section{Further questions}\label{cert:sec:questions}
 
 The packages state the following questions, limits and unproved claims. Items
@@ -9759,7 +10224,7 @@ complete input validation, where the envelope $328/368/616$ under T/ed is
 attained by three programs, and the envelope $419/469/855$ under T/g by two
 programs, and under the goal contract, where $317/358/594$ under
 G/$\mathcal A^{-}$ is attained by three programs; under T/ed$_1$
-($317/356/597$) and G$_1$/$\mathcal A^{-}$ ($317/356/573$) by three programs each.
+($306/348/589$) and G$_1$/$\mathcal A^{-}$ ($306/348/573$) by three programs each.
 Under the shifted encoding of \cref{cert:def:offset} there is one program
 ($271/307/472$); can the offset be combined with the uniform terminals of the
 program of $469$ bytes? No package answers these questions. (\pkg{inferred\_major},
@@ -10051,9 +10516,19 @@ validates all logical rules and induction and refutes transitivity?
 
 \begin{question}[One program below the envelope]
 Is there one complete program, for one fixed public grammar, framing and
-validation contract, below the envelopes $239/256/465$ under R/$\mathcal U$ with
-the double dagger, $244/261/465$ without it, or $317/356/597$ under
-T/ed$_1$ in all three coordinates? (Before \pkg{fused\_blocks\_and\_checkers},
+validation contract, below the envelopes $239/255/465$ under R/$\mathcal U$ with
+the double dagger, $244/261/465$ without it, or $306/348/589$ under
+T/ed$_1$ ($315/348/589$ among the programs that read four-field packets) in all
+three coordinates? \pkg{checked\_reduction} asks it below $239/255/461$, admitting
+the stream programs and across the two encodings, and \pkg{validated\_three\_field}
+for the strict programs; $S^{\mathrm{TN}}_{3\mathrm f}$ is below two coordinates of
+the earlier envelope $317/356/597$ and has $701$ bytes. No package composes the
+devices of \cref{cert:prop:eager-validated,cert:prop:validated-three}: the eager
+opener with three-field records, the sentinel $0j$, the structural binding and the
+conditional major with $S^{\mathrm N}_{2,\mathrm E}$, or the opened candidate with
+$S^{\rho}_{2,\mathrm E}$. (Before \pkg{checked\_reduction} and
+\pkg{validated\_three\_field} the envelopes were $239/256/465$, $244/261/465$ and
+$317/356/597$. Before \pkg{fused\_blocks\_and\_checkers},
 \pkg{prefix\_conditional} and \pkg{validated\_arity\_refinement} these were
 $240/259/465$, $245/263/465$ and $319/358/600$; before \pkg{direct\_packets} and
 \pkg{procedure\_presentation} $240/261/469$, $245/268/469$ and
@@ -10066,7 +10541,8 @@ its uses where a supply was shared; how do certificate length, depth of recursio
 and checking time compare? (\pkg{468\_presentation}, \pkg{ast261},
 \pkg{checked\_presentations}, \pkg{468\_shared\_leaf}, \pkg{shifted\_shared\_leaf},
 \pkg{direct\_packets}, \pkg{procedure\_presentation}, \pkg{conditional\_image},
-\pkg{validated\_arity\_refinement}.)
+\pkg{validated\_arity\_refinement}, \pkg{checked\_reduction},
+\pkg{validated\_three\_field}.)
 \end{question}
 
 \begin{question}[Readings modulo annotations]
@@ -10427,6 +10903,36 @@ elsewhere); its reader admits arbitrary JSON values in the packets, and the guar
 is then also reached for strings, whose length is again a nonnegative integer.
 No package delivers or measures this program, so its effect on the envelope of
 G$_1$/$\mathcal A^{-}$ is not known.
+\item The finite tests of \pkg{checked\_reduction} and \pkg{validated\_three\_field}
+are implementation evidence: $120$ isolated executions, ordinary and optimized, of
+$30$ groups of fixtures ($7$ accepted, $23$ rejected) on $L''_{\mathrm{f,m}}$ and its
+control, $30$ instrumented traces with the same consumption of records and final
+floor, and $1064$ comparisons of the openings of the two images, and $584$ isolated
+executions on the three eager programs, their controls and the readable form, in the
+first; $710$ isolated executions ($320$ comparisons within the four-field family and
+$390$ runs of the three-field programs and their readable form, in suites of $37$,
+$43$ and $65$ cases), in the second. The proofs of
+\cref{cert:prop:eager-validated,cert:prop:singleton-image,cert:prop:validated-three}
+are written proofs for ideal executions, and neither package claims a formalization
+in a proof assistant. \pkg{checked\_reduction} asks for one of the partial semantics
+of the eager opener and of the canonical construction, including the distinction
+between the scalar $0$ and the empty array as neutral truths and the order of
+evaluation at the validation of the public goal; \pkg{validated\_three\_field} for
+one of the early test of the endpoint, the zero-instance supply and the two phases
+of validation, and asks whether the three-field programs admit an exact simulation
+of a four-field control that allocates before it exports, on all stacks, including
+noncanonical annotations; its theorem is the equality of the accepted goals.
+\item \pkg{checked\_reduction} states that reading the scalar formula of
+\cref{cert:rem:lazy-phase} as a new public truth constant does not repair the lazy
+program without the phase: the would-be formula $[0]$ meets the length test of the
+introduction at a scalar, so completeness would need a separate proof. No such
+proof or program is given, and the altered theory is not used. Both packages also
+ask for a change of the native axioms that removes a rule or a scope operation
+while keeping both formula round trips and bringing a validated checker below the
+compact records, for a fixed small language of implementation with a declared
+budget for the parser in which claims of simplicity become less dependent on the
+host syntax, and for encodings that make more malformed inputs impossible without a
+larger decoder; no package gives a result on these questions.
 \item None of the packages claims a minimal program, a simplest
 axiomatization, or a result about the arithmetic basis. The statements of
 \cref{cert:sec:notes} about eager iteration concern the theory
