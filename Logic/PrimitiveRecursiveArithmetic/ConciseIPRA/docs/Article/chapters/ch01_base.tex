@@ -10,8 +10,11 @@ arithmetic with quantifier-free induction.  This chapter states the three
 systems, develops the derived rules of $\Nat$ and the arithmetic of $\Teq$,
 and proves that the three systems are bi-interpretable with whole domains,
 actual equality and identity composites
-(\cref{base:thm:bridge}).  It also fixes the notion of a clause context and
-the protocol by which proof checkers are measured.  The later chapters use
+(\cref{base:thm:bridge}).  Two further bases, forward iteration with tail
+induction and a calculus of programs on environments without numerical
+binders, are compared with them in \cref{base:sec:alt}.  The chapter also
+fixes the notion of a clause context and the protocol by which proof
+checkers are measured.  The later chapters use
 these statements without repeating them.
 
 Notation that is fixed here and used throughout: $1\defeq\Suc 0$,
@@ -4421,6 +4424,1475 @@ universal.  The axioms and rules of $\Nat$, $\Teq$
 and $\iPRA$ are unchanged.
 
 % ---------------------------------------------------------------------
+\section{Two alternative bases}
+\label{base:sec:alt}
+
+This section draws on the note \texttt{tail\_induction.tex} of
+\pkg{local\_validation} and on the report of \pkg{composition}.  It states
+two further presentations of the same arithmetic and compares each with
+$\Teq$ or $\Nat$, and through \cref{base:thm:bridge} with $\iPRA$.  The
+first keeps the terms and the logic of $\Teq$ and replaces the successor
+computation together with the induction rule.  The second has no numerical
+variables in its terms, and its substitutions act on a formula only at the
+root.  The comparisons are written proofs; neither presentation is
+formalized in Lean or Rocq.
+
+\subsection{Forward iteration and tail induction}
+\label{base:sec:tail}
+
+The successor computation \eqref{base:eq:IS} applies the body after the
+iteration.  The \emph{forward computation} applies it to the seed:
+\begin{equation}
+ \It{\Suc n}{a}{u}{h}=\It{n}{h(a)}{u}{h}, \label{base:eq:FT}
+\end{equation}
+where $h(a)$ is $h\subst{a}{u}$.  \Cref{base:cor:rot}(i) derives
+\eqref{base:eq:FT} in $\mathcal E$.  Whether \eqref{base:eq:IS} follows from
+\eqref{base:eq:FT} with the equation induction of $\Teq$ is
+\cref{kern:q:forward}: the induction that suggests itself needs its
+hypothesis at the changed seed $h(a)$.  \pkg{local\_validation} changes the
+induction rule so that it supplies exactly this hypothesis.
+
+\begin{definition}[Tail induction and $T_{\mathrm{tail}}$]
+\label{base:def:tail}
+Let $E(n,a)$ be a literal equation with two distinguished variables, and
+let $h(a)$ be a term with the distinguished variable $a$ in which $n$ is
+not free.  \emph{Tail induction} is the rule
+\[
+ \infrule{\Gamma\proves E(0,a)\qquad\Gamma,\ E(n,h(a))\proves E(\Suc n,a)}
+         {\Gamma\proves E(t,s)}\ \rulename{TI}
+\]
+for all terms $t$ and $s$, where $n$ and $a$ are distinct variables that
+are not free in $\Gamma$.  The other free variables of $E$ and $h$ are
+parameters and are the same in both premises; the hypothesis
+$E(n,h(a))$ is discharged.  $T_{\mathrm{tail}}$ is the theory in
+intuitionistic logic with equality (\cref{base:def:logic}) over the terms of
+\cref{base:def:terms} with the axioms \eqref{base:eq:I0},
+\eqref{base:eq:FT}, coverage (T2) and separation (T3) of
+\cref{base:def:teq}, and with the rule \rulename{TI}.
+\end{definition}
+
+Over the logic, \rulename{TI} is equivalent to the scheme
+\[
+ \Bigl(\forall a\,E(0,a)\ \wedge\ \forall n\,\forall a\,
+   \bigl(E(n,h(a))\to E(\Suc n,a)\bigr)\Bigr)\to\forall n\,\forall a\,E(n,a):
+\]
+the rule applied with the antecedent of the scheme as $\Gamma$, in which
+$n$ and $a$ are bound, gives the scheme; the scheme gives the rule after
+the premises are generalized, which is allowed because $n$ and $a$ are not
+free in $\Gamma$.  If $a$ is not free in $E$ and $h(a)$ is $a$, the rule is
+the contextual equation induction of \cref{base:lem:teqcases}(ii).  In
+particular (T4) is derivable in $T_{\mathrm{tail}}$: over the context
+$E(0),\forall z\,(E(z)\to E(\Suc z))$, the two premises hold by
+\rulename{Hyp} and by $\forall$E and $\to$E, the rule gives $E(z')$ for a
+fresh $z'$, and $\forall$I and $\to$I give (T4).  \rulename{TI} has no
+instance at a compound formula.
+
+\begin{proposition}[The successor computation from the forward one]
+\label{base:prop:tail-back}
+For all terms $n$, $a$ and every body $h$, $T_{\mathrm{tail}}$ proves
+\[
+ h\bigl(\It{n}{a}{u}{h}\bigr)=\It{n}{h(a)}{u}{h}
+ \qquad\text{and}\qquad
+ \It{\Suc n}{a}{u}{h}=h\bigl(\It{n}{a}{u}{h}\bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+Choose distinct variables $n'$ and $a'$ not free in $h$, and apply
+\rulename{TI} with the empty context, the step template $h(a')$ and
+\[
+ E(n',a')\defeq\Bigl(h\bigl(\It{n'}{a'}{u}{h}\bigr)=\It{n'}{h(a')}{u}{h}\Bigr).
+\]
+The base $E(0,a')$ becomes $h(a')=h(a')$ after \eqref{base:eq:I0} on both
+sides.  In the step the hypothesis $E(n',h(a'))$ is
+$h(\It{n'}{h(a')}{u}{h})=\It{n'}{h(h(a'))}{u}{h}$, and \eqref{base:eq:FT}
+with congruence gives
+\[
+ h\bigl(\It{\Suc n'}{a'}{u}{h}\bigr)=h\bigl(\It{n'}{h(a')}{u}{h}\bigr),\qquad
+ \It{\Suc n'}{h(a')}{u}{h}=\It{n'}{h(h(a'))}{u}{h}.
+\]
+The hypothesis joins the two right sides, and symmetry and transitivity give
+$E(\Suc n',a')$.  \rulename{TI} gives the first equation at all terms $n$,
+$a$, and the second follows from it by \eqref{base:eq:FT}.  Iterators nested
+in $h$ need no separate treatment: they are fixed subterms of the instance.
+\end{proof}
+
+\begin{lemma}[Tail induction in $\Teq$]
+\label{base:lem:tail-teq}
+\rulename{TI} is a derived rule of $\Teq$.
+\end{lemma}
+
+\begin{proof}
+Let both premises be derivable in $\Teq$, write $E(n,a)$ as
+$e_1(n,a)=e_2(n,a)$, and choose variables $m$ and $b$ that are not free in
+$\Gamma$, $E$, $h$, $t$ or $s$.  Put
+\[
+ \mathrm{it}(r)\defeq\It{r}{b}{u}{h(u)},\qquad
+ J(k)\defeq\Bigl(\sel\bigl(k\mathbin{\dot-}m,\ e_1(k,\mathrm{it}(m\mathbin{\dot-}k)),\ 0\bigr)
+   =\sel\bigl(k\mathbin{\dot-}m,\ e_2(k,\mathrm{it}(m\mathbin{\dot-}k)),\ 0\bigr)\Bigr),
+\]
+a literal equation in $k$.  Where the gate $k\mathbin{\dot-}m$ is $0$,
+$J(k)$ is equivalent to $E(k,\mathrm{it}(m\mathbin{\dot-}k))$ by
+\eqref{base:eq:sel}; where it is a successor, both sides of $J(k)$ are $0$.
+
+Base.  $0\mathbin{\dot-}m=0$ by \cref{base:lem:order}(i), since $0+m=m$.
+Substituting $\mathrm{it}(m\mathbin{\dot-}0)$ for $a$ in the first premise,
+which is allowed because $a$ is not free in $\Gamma$, gives
+$\Gamma\proves E(0,\mathrm{it}(m\mathbin{\dot-}0))$, hence
+$\Gamma\proves J(0)$.
+
+Step.  Let $k$ be fresh; $J(\Suc k)$ is derived from $\Gamma,J(k)$ by cases
+on $\Suc k\mathbin{\dot-}m$.  If it is $\Suc z$, both sides of $J(\Suc k)$
+are $\sel(\Suc z,\dots,0)=0$.  If it is $0$, that is $\Suc k\le m$, then
+$k\le m$ by \cref{base:lem:order}(iv), so $k\mathbin{\dot-}m=0$ and $J(k)$
+gives $E(k,\mathrm{it}(m\mathbin{\dot-}k))$.  With
+$d\defeq m\mathbin{\dot-}\Suc k$, \cref{base:lem:order}(iii) gives
+$\Suc k+d=m$, so $m\mathbin{\dot-}k=(k+\Suc d)\mathbin{\dot-}k=\Suc d$ by
+\cref{base:lem:add} and \cref{base:lem:order}(i), and
+$\mathrm{it}(m\mathbin{\dot-}k)=\mathrm{it}(\Suc d)=h(\mathrm{it}(d))$ by
+\eqref{base:eq:IS}.  Hence $E(k,h(\mathrm{it}(d)))$.  The second premise
+with $k$ for $n$ and $\mathrm{it}(d)$ for $a$, which is allowed because $n$
+and $a$ are not free in $\Gamma$, gives $E(\Suc k,\mathrm{it}(d))$, that is
+$E(\Suc k,\mathrm{it}(m\mathbin{\dot-}\Suc k))$, and $J(\Suc k)$ follows
+because the gate is $0$.
+
+\Cref{base:lem:teqcases}(ii) gives $\Gamma\proves J(m)$.  Since
+$m\mathbin{\dot-}m=0$ and $\mathrm{it}(0)=b$, this is
+$\Gamma\proves E(m,b)$, and substituting $t$ for $m$ and $s$ for $b$ gives
+$\Gamma\proves E(t,s)$.
+\end{proof}
+
+\begin{theorem}[Tail induction and $\Teq$]
+\label{base:thm:tail}
+$T_{\mathrm{tail}}$ and $\Teq$ derive the same sequents.  Consequently
+\cref{base:thm:bridge} holds with $T_{\mathrm{tail}}$ in place of $\Teq$ and
+with the same translations: $T_{\mathrm{tail}}$ is bi-interpretable with
+$\Nat$ and with $\iPRA$, with whole domains, actual equality and identity
+composites, and $\proves_{T_{\mathrm{tail}}}\bot$ if and only if
+$\proves_{\iPRA}\bot$.
+\end{theorem}
+
+\begin{proof}
+The two theories have the same language and the same logic, so it suffices
+that every axiom and rule of each is derivable in the other; the claim then
+follows by induction on derivations.  In $\Teq$: \eqref{base:eq:I0}, (T2)
+and (T3) are axioms, \eqref{base:eq:FT} is \cref{base:cor:rot}(i) with
+\cref{base:lem:E}(iv), and \rulename{TI} is \cref{base:lem:tail-teq}.  In
+$T_{\mathrm{tail}}$: \eqref{base:eq:I0}, (T2) and (T3) are axioms,
+\eqref{base:eq:IS} is \cref{base:prop:tail-back}, and (T4) is the instance of
+\rulename{TI} noted after \cref{base:def:tail}.  The statements of
+\cref{base:thm:bridge} concern the derivable sequents of $\Teq$, so they
+hold for $T_{\mathrm{tail}}$.  In particular $\tau$ is a term interpretation
+of $T_{\mathrm{tail}}$ in $\iPRA$, because every axiom of $T_{\mathrm{tail}}$,
+with \rulename{TI} as the scheme, is a theorem of $\Teq$ and $\tau$ preserves
+the theorems of $\Teq$ (\cref{base:lem:interp-sound}); and $\sigma$ is one of
+$\iPRA$ in $T_{\mathrm{tail}}$, because condition (iii) of
+\cref{base:def:interp} asks only for theorems.  The translations between
+$T_{\mathrm{tail}}$ and $\Teq$ are the identity, so their composites are
+literally the identity.
+\end{proof}
+
+\begin{remark}[The route of the package]
+\label{base:rem:tail}
+\pkg{local\_validation} proves the admissibility of \rulename{TI} inside
+$\iPRA$, for primitive recursive $E$ and $h$, with the invariant
+$E(\min(k,m),g_h(m\mathbin{\dot-}k,b))$, where $g_h$ is the primitive
+recursive iteration of $h$, and a case split on the decidable comparison of
+$k$ and $m$; it then transports the rule to $\Teq$ through
+\cref{base:thm:bridge}.  The proof of \cref{base:lem:tail-teq} is the same
+invariant inside $\Teq$, with the clamp $\min(k,m)$ replaced by the gate
+$\sel(k\mathbin{\dot-}m,\cdot,0)$, so that it needs no use of the bridge.
+% ed.: the package clamps the counter by min(k,N) and argues in iPRA; the
+% gate keeps the argument in T_eq and uses only base:lem:order.
+Conversely, admissibility in $\iPRA$ follows from \cref{base:lem:tail-teq}
+by \cref{base:thm:bridge}(ii) and \cref{base:lem:faithful}.  The package
+writes the forward iterator as a separate symbol and compares the two
+theories through the renaming of that symbol into the iterator; with one
+symbol the renaming is the identity.  Its direct translation into $\iPRA$,
+which compiles each forward iterator by a primitive recursion on its fixed
+body, is the translation $\tau$ of \cref{base:def:tau}.  The package relates
+the rule to the transformations between generalized, tail and ordinary
+primitive recursion of Sieg and Wainer (\emph{Program Transformation and
+Proof Transformation}, CMU-PHIL-56, 1994) and records that a search of the
+repository and of its incoming archives found no earlier statement of
+\rulename{TI}.  No checker for $T_{\mathrm{tail}}$ is supplied and nothing
+is claimed about its size.  The rule has a fresh parameter, a step
+template and a premise uniform in that parameter, and a checker has to test
+all three.
+\end{remark}
+
+\subsection{Programs on environments}
+\label{base:sec:pf}
+
+This subsection and the next four draw on the report of \pkg{composition}
+and on the two reviews filed with it.  The terms of the calculus
+$\mathsf{PF}$ are words of instructions without numerical variables, and
+every formula is a predicate of one numerical \emph{environment}; a
+substitution of an environment changes a formula only at its root.
+\pkg{composition} also reduces a compact checker of the guarded scalar
+calculus from $238$ to $236$ tokens; that result belongs to the chapter on
+certificates.
+
+\begin{definition}[Programs]
+\label{base:def:pf-programs}
+The \emph{instructions} are $\mathsf Z$, $\mathsf S$, $\mathsf L$,
+$\mathsf R$, the \emph{fork} $\llbracket P,Q\rrbracket$ and the
+\emph{iterator instruction} $\mathsf J_H$, where $P$, $Q$ and $H$ are
+programs.  A \emph{program} is a finite word of instructions;
+$\mathrm{id}$ is the empty word and $P;Q$ the concatenation, $P$ first.
+Programs are generated inductively; two programs are equal only if they are
+the same word, and no program is identified with its value.  The
+\emph{size} of a program is the number of occurrences of instructions in
+it, those inside its forks and iterator instructions included.  Put
+\[
+ \operatorname{lift}(F)\defeq\llbracket\mathsf L,\ \mathsf R;F\rrbracket,\qquad
+ \operatorname{seal}\defeq\llbracket\mathrm{id},\ \mathsf Z\rrbracket,
+\]
+let $\mathsf R^{j}$ be the word of $j$ letters $\mathsf R$, and for programs
+$F_0,\dots,F_{k-1}$ and $G$ let the \emph{tuple}
+$\llbracket F_0,\dots,F_{k-1}\mid G\rrbracket$ be
+$\llbracket F_0,\llbracket F_1,\dots\llbracket F_{k-1},G\rrbracket\dots\rrbracket\rrbracket$,
+which is $G$ for $k=0$.
+\end{definition}
+
+The intended reading over the natural numbers uses the bijection
+$\mathrm{cp}(a,b)=2^{a}(2b+1)-1$ of $\mathbb N^2$ onto $\mathbb N$ and its
+inverse $(\mathrm{cl},\mathrm{cr})$.  The instruction $\mathsf Z$ is the
+constant $0$, $\mathsf S$ the successor, $\mathsf L$ and $\mathsf R$ are
+$\mathrm{cl}$ and $\mathrm{cr}$,
+$\llbracket P,Q\rrbracket(e)=\mathrm{cp}(P(e),Q(e))$,
+$(P;Q)(e)=Q(P(e))$, and
+$\mathsf J_H(\mathrm{cp}(n,\mathrm{cp}(a,e)))=h_e^{\,n}(a)$ with
+$h_e(u)=H(\mathrm{cp}(u,e))$.  The body of an iterator receives the previous
+value paired with a captured environment, not the counter.  Every program
+denotes a primitive recursive function; no program evaluates other
+programs.  The decoding of \cref{base:def:pf-decode} makes this reading
+formal.
+
+\begin{definition}[Formulas and reindexing]
+\label{base:def:pf-formulas}
+The formulas of $\mathsf{PF}$ are
+\[
+ A::=\mathrm{Eq}(P,Q)\mid\mathsf Q[p,B]\mid\mathsf D[p,B],
+\]
+with programs $P$ and $Q$, a \emph{prefix} $p$ and a \emph{body} $B$.  A
+formula $\mathrm{Eq}(P,Q)$ is a \emph{literal equation}, and
+$\mathrm{Eq}(\mathsf Z,\mathsf Z;\mathsf S)$ is the designated
+contradiction.  The \emph{reindexing} of a formula by a program $w$ is
+\[
+ \mathrm{Eq}(P,Q){\downarrow}w\defeq\mathrm{Eq}(w;P,\ w;Q),\qquad
+ \mathsf Q[p,B]{\downarrow}w\defeq\mathsf Q[w;p,\ B],\qquad
+ \mathsf D[p,B]{\downarrow}w\defeq\mathsf D[w;p,\ B].
+\]
+A context $\Gamma$ is a finite list of formulas, $\Gamma{\downarrow}w$
+reindexes each member, and $\Gamma{\uparrow}\defeq\Gamma{\downarrow}\mathsf R$.
+\end{definition}
+
+Under the intended reading a formula is a property of an environment $e$.
+$\mathrm{Eq}(P,Q)$ says $P(e)=Q(e)$; $\mathsf Q[p,B]$ says
+$B(\mathrm{cp}(0,p(e)))\to\forall y\,B(\mathrm{cp}(y,p(e)))$; and
+$\mathsf D[p,B]$ says
+$\exists x\,\bigl(B(\mathrm{cp}(0,\mathrm{cp}(x,p(e))))\to\forall y\,
+B(\mathrm{cp}(y,\mathrm{cp}(x,p(e))))\bigr)$.  The newest variable is the
+first component of the environment of a body, and in $\mathsf D$ the
+witness is the second.  A sequent holds if its conclusion holds at every
+environment at which all members of its context hold, and $A{\downarrow}w$
+holds at $e$ if $A$ holds at $w(e)$.  Reindexing never enters a body.
+
+\begin{lemma}[Reindexing at the root]
+\label{base:lem:pf-root}
+$A{\downarrow}\mathrm{id}=A$ and
+$(A{\downarrow}w){\downarrow}v=A{\downarrow}(v;w)$, as formulas.
+\end{lemma}
+
+\begin{proof}
+In each of the three cases the words at the root are extended on the left;
+concatenation is associative and has the unit $\mathrm{id}$.
+\end{proof}
+
+\begin{definition}[The calculus $\mathsf{PF}$]
+\label{base:def:pf}
+The derivable sequents $\Gamma\proves A$ of $\mathsf{PF}$, with $\Gamma$ a
+context, are generated as follows.  There are nine schemas of equations,
+each derivable in every context, for all programs $P,Q,X,Y,H$:
+\begin{gather*}
+ \mathrm{Eq}(P;\mathsf Z,\ \mathsf Z)\ \rulename{C0}\qquad
+ \mathrm{Eq}(\llbracket P,Q\rrbracket;\mathsf L,\ P)\ \rulename{CL}\qquad
+ \mathrm{Eq}(\llbracket P,Q\rrbracket;\mathsf R,\ Q)\ \rulename{CR}\\
+ \mathrm{Eq}(\llbracket P;\mathsf L,\ P;\mathsf R\rrbracket,\ P)\ \rulename{CE}\qquad
+ \mathrm{Eq}(\llbracket\mathsf Z,\mathsf Z\rrbracket,\ \mathsf Z)\ \rulename{P00}\\
+ \mathrm{Eq}(\llbracket\mathsf Z,\ P;\mathsf S\rrbracket,\
+   \llbracket\mathsf Z,P\rrbracket;\mathsf S;\mathsf S)\ \rulename{P0S}\qquad
+ \mathrm{Eq}(\llbracket P;\mathsf S,\ Q\rrbracket,\
+   \llbracket\mathsf Z,\llbracket P,Q\rrbracket\rrbracket;\mathsf S)\ \rulename{PS}\\
+ \mathrm{Eq}(\llbracket\mathsf Z,\llbracket X,Y\rrbracket\rrbracket;\mathsf J_H,\ X)\ \rulename{J0}\\
+ \mathrm{Eq}\bigl(\llbracket P;\mathsf S,\llbracket X,Y\rrbracket\rrbracket;\mathsf J_H,\
+   \llbracket\llbracket P,\llbracket X,Y\rrbracket\rrbracket;\mathsf J_H,\ Y\rrbracket;H\bigr)\ \rulename{JS}
+\end{gather*}
+and ten rule families, for all programs $W,P,Q,U,V,H,T,p$ and formulas
+$A,B$, with $\Delta=(B_1,\dots,B_m)$ in \rulename{Sub}, a literal equation
+$E$ in \rulename{Ind}, and $q\defeq\llbracket T,p\rrbracket$ in
+\rulename{DI}:
+\begin{gather*}
+ \infrule{A\in\Gamma}{\Gamma\proves A}\ \rulename{Hyp}
+ \qquad
+ \infrule{\Delta\proves A\qquad\Gamma\proves B_1{\downarrow}W\ \ \cdots\ \
+   \Gamma\proves B_m{\downarrow}W}{\Gamma\proves A{\downarrow}W}\ \rulename{Sub}
+ \\[1.2ex]
+ \infrule{\Gamma\proves\mathrm{Eq}(P,Q)\qquad\Gamma\proves\mathrm{Eq}(P;H,U)}
+         {\Gamma\proves\mathrm{Eq}(U,Q;H)}\ \rulename{Post}
+ \qquad
+ \infrule{\Gamma\proves\mathrm{Eq}(P,Q)\qquad\Gamma\proves\mathrm{Eq}(U,V)}
+         {\Gamma\proves\mathrm{Eq}(\llbracket P,U\rrbracket,\llbracket Q,V\rrbracket)}\
+         \rulename{Pair}
+ \\[1.2ex]
+ \infrule{\Gamma\proves\mathrm{Eq}(P,Q)\qquad\Gamma\proves A{\downarrow}P}
+         {\Gamma\proves A{\downarrow}Q}\ \rulename{Transport}
+ \qquad
+ \infrule{\Gamma\proves\mathsf Q[p,B]\qquad
+          \Gamma\proves B{\downarrow}\llbracket\mathsf Z,p\rrbracket}
+         {\Gamma\proves B{\downarrow}\llbracket T,p\rrbracket}\ \rulename{QE}
+ \\[1.2ex]
+ \infrule{\Gamma\proves\mathsf D[p,B]\qquad
+   \Gamma{\uparrow},\ \mathsf Q[\llbracket\mathsf L,\mathsf R;p\rrbracket,B]
+   \proves A{\downarrow}\mathsf R}
+   {\Gamma\proves A}\ \rulename{DE}
+ \\[1.2ex]
+ \infrule{\Gamma{\uparrow},\ B{\downarrow}\llbracket\mathsf Z,\mathsf R;q\rrbracket
+   \proves B{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;q\rrbracket}
+   {\Gamma\proves\mathsf D[p,B]}\ \rulename{DI}
+ \qquad
+ \infrule{\Gamma{\uparrow},\ B{\downarrow}\llbracket\mathsf Z,\mathsf R;p\rrbracket
+   \proves B{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;p\rrbracket}
+   {\Gamma\proves\mathsf Q[p,B]}\ \rulename{QI}
+ \\[1.2ex]
+ \infrule{\Gamma{\uparrow},\ E{\downarrow}\llbracket\mathsf L,\mathsf R;p\rrbracket
+   \proves E{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;p\rrbracket}
+   {\Gamma\proves\mathsf Q[p,E]}\ \rulename{Ind}
+\end{gather*}
+\rulename{Sub} has only its first premise when $\Delta$ is empty.  The
+formulas written after $\Gamma{\uparrow}$ in a premise are discharged.
+\end{definition}
+
+\begin{remark}[The inventory and the comparison with $\Nat$]
+\label{base:rem:pf-inventory}
+The nine schemas and ten rule families are all there is.  There is no
+reflexivity axiom and no other equality rule, no rule that replaces the
+body $H$ of $\mathsf J_H$ under hypotheses, no structural rule besides
+\rulename{Sub}, no connective, and no induction besides \rulename{Ind},
+whose matrix is a literal equation; \rulename{QI} assumes the instance at
+zero and is introduction by cases.  In the premises of \rulename{DE},
+\rulename{DI}, \rulename{QI} and \rulename{Ind} the environment is
+extended to $\mathrm{cp}(z,e)$: $\mathsf L$ reads the new variable $z$ and
+$\mathsf R$ the old environment $e$.  The old context is $\Gamma{\uparrow}$
+and the conclusion of \rulename{DE} is reindexed by $\mathsf R$, so neither
+depends on the new variable; this replaces the freshness conditions of
+$\Nat$.  The witness $T$ of \rulename{DI} is read at the old environment.
+\rulename{Post} corresponds to \rulename{Tr} with the template $H$,
+\rulename{Transport} to transport in a formula, \rulename{Sub} to
+substitution with cut, and \rulename{C0}--\rulename{JS} to the two
+computation equations; substitution under a binder has no counterpart.
+\rulename{QI} is derivable in $\Nat$ (\cref{base:lem:qI}); in $\mathsf{PF}$
+it is primitive and is used for logical naturality
+(\cref{base:lem:pf-logic}), and whether it can be omitted is
+\cref{base:q:pf}(a).  \pkg{composition} observes that \rulename{CL},
+\rulename{CR} and \rulename{CE} are true over the natural numbers for every
+bijection of $\mathbb N^2$ onto $\mathbb N$ and its inverse, also for one
+that is not definable in $\iPRA$; with \rulename{P00}, \rulename{P0S} and
+\rulename{PS} the fork is provably an iteration (\cref{base:lem:pf-pair}).
+\end{remark}
+
+\subsection{Derived rules of \texorpdfstring{$\mathsf{PF}$}{PF}}
+\label{base:sec:pfderived}
+
+In this subsection $\proves$ is derivability in $\mathsf{PF}$,
+$A\dashv\vdash B$ means that $A\proves B$ and $B\proves A$ with no other
+hypothesis, and $P\simeq Q$ means $\proves\mathrm{Eq}(P,Q)$ in the empty
+context.
+
+\begin{lemma}[Structural rules]
+\label{base:lem:pf-struct}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $\Gamma\proves A$, then $\Gamma{\downarrow}W\proves A{\downarrow}W$.
+\item If $\Gamma\proves A$ and $\Delta\proves B$ for every $B\in\Gamma$,
+ then $\Delta\proves A$; in particular weakening, exchange and contraction
+ hold.
+\item If $\proves A$, then $\Gamma\proves A{\downarrow}W$ for all $\Gamma$
+ and $W$.
+\item If $A\dashv\vdash B$, then $A{\downarrow}W\dashv\vdash B{\downarrow}W$,
+ and $A$ and $B$ replace each other as hypotheses and as conclusions of
+ derivable sequents.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) \rulename{Sub} with $\Delta\defeq\Gamma$ and the context
+$\Gamma{\downarrow}W$; its side premises are \rulename{Hyp}.  (ii)
+\rulename{Sub} with $W\defeq\mathrm{id}$ and \cref{base:lem:pf-root}; for
+weakening the side premises are \rulename{Hyp}.  (iii) \rulename{Sub} with
+$\Delta$ empty.  (iv) The first claim is (i), the second is (ii).
+\end{proof}
+
+\begin{lemma}[Equality]
+\label{base:lem:pf-eq}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Gamma\proves\mathrm{Eq}(P,P)$.  If $\Gamma\proves\mathrm{Eq}(P,Q)$,
+ then $\Gamma\proves\mathrm{Eq}(Q,P)$ and
+ $\Gamma\proves\mathrm{Eq}(P;H,Q;H)$; if moreover
+ $\Gamma\proves\mathrm{Eq}(Q,U)$, then $\Gamma\proves\mathrm{Eq}(P,U)$.
+\item $\simeq$ is an equivalence relation.  If $P\simeq Q$, then
+ $\Gamma\proves\mathrm{Eq}(P,Q)$ for every $\Gamma$; $W;P\simeq W;Q$,
+ $P;H\simeq Q;H$, $\llbracket P,U\rrbracket\simeq\llbracket Q,U\rrbracket$
+ and $\llbracket U,P\rrbracket\simeq\llbracket U,Q\rrbracket$; and
+ $A{\downarrow}P\dashv\vdash A{\downarrow}Q$.  If
+ $\Gamma\proves\mathrm{Eq}(P,Q)$, $P\simeq P'$ and $Q\simeq Q'$, then
+ $\Gamma\proves\mathrm{Eq}(P',Q')$.
+\item $F;\llbracket P,Q\rrbracket\simeq\llbracket F;P,F;Q\rrbracket$,
+ $\llbracket\mathsf L,\mathsf R\rrbracket\simeq\mathrm{id}$,
+ $\operatorname{lift}(F);\mathsf L\simeq\mathsf L$,
+ $\operatorname{lift}(F);\mathsf R\simeq\mathsf R;F$,
+ $\llbracket P,Q\rrbracket;\operatorname{lift}(F)\simeq\llbracket P,Q;F\rrbracket$
+ and $\llbracket P,\mathsf Z\rrbracket\simeq P;\operatorname{seal}$.
+\item For $X\defeq\llbracket F_0,\dots,F_{k-1}\mid G\rrbracket$:
+ $X;\mathsf R^{j};\mathsf L\simeq F_j$ for $j<k$, $X;\mathsf R^{k}\simeq G$,
+ $W;X\simeq\llbracket W;F_0,\dots,W;F_{k-1}\mid W;G\rrbracket$, and
+ $\mathrm{Id}_k\defeq\llbracket\mathsf L,\mathsf R;\mathsf L,\dots,
+ \mathsf R^{k-1};\mathsf L\mid\mathsf R^{k}\rrbracket\simeq\mathrm{id}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) \rulename{J0} gives $\mathrm{Eq}(C,P)$ for
+$C\defeq\llbracket\mathsf Z,\llbracket P,\mathrm{id}\rrbracket\rrbracket;
+\mathsf J_{\mathrm{id}}$, in every context.  Since $C;\mathrm{id}=C$,
+\rulename{Post} applied to $\mathrm{Eq}(C,P)$ and
+$\mathrm{Eq}(C;\mathrm{id},P)$ gives $\mathrm{Eq}(P,P;\mathrm{id})$, which
+is $\mathrm{Eq}(P,P)$.  \rulename{Post} applied to $\mathrm{Eq}(P,P)$ and
+$\mathrm{Eq}(P;\mathrm{id},Q)$ gives $\mathrm{Eq}(Q,P)$; applied to
+$\mathrm{Eq}(P,Q)$ and $\mathrm{Eq}(P;H,P;H)$ it gives
+$\mathrm{Eq}(P;H,Q;H)$; applied to $\mathrm{Eq}(Q,P)$ and
+$\mathrm{Eq}(Q;\mathrm{id},U)$ it gives $\mathrm{Eq}(U,P)$, and symmetry
+gives transitivity.
+
+(ii) The first claims follow from (i), \cref{base:lem:pf-struct}(iii) with
+$W\defeq\mathrm{id}$, \cref{base:lem:pf-struct}(iii) with the empty context
+(because $\mathrm{Eq}(P,Q){\downarrow}W$ is $\mathrm{Eq}(W;P,W;Q)$), and
+\rulename{Pair} with reflexivity.  $A{\downarrow}P\proves A{\downarrow}Q$ is
+\rulename{Transport} in the context $A{\downarrow}P$, and the converse is
+the same with symmetry.  The last claim is transitivity.
+
+(iii) Let $K\defeq F;\llbracket P,Q\rrbracket$.  \rulename{CL} and
+\rulename{CR} reindexed by $F$ give $K;\mathsf L\simeq F;P$ and
+$K;\mathsf R\simeq F;Q$; \rulename{Pair} gives
+$\llbracket K;\mathsf L,K;\mathsf R\rrbracket\simeq\llbracket F;P,F;Q\rrbracket$,
+and \rulename{CE} at $K$ gives
+$\llbracket K;\mathsf L,K;\mathsf R\rrbracket\simeq K$.  \rulename{CE} at
+$\mathrm{id}$ is $\llbracket\mathsf L,\mathsf R\rrbracket\simeq\mathrm{id}$.
+The next two are \rulename{CL} and \rulename{CR}.  By distribution,
+$\llbracket P,Q\rrbracket;\operatorname{lift}(F)\simeq
+\llbracket\llbracket P,Q\rrbracket;\mathsf L,\
+\llbracket P,Q\rrbracket;\mathsf R;F\rrbracket\simeq\llbracket P,Q;F\rrbracket$,
+and $P;\operatorname{seal}\simeq\llbracket P,P;\mathsf Z\rrbracket\simeq
+\llbracket P,\mathsf Z\rrbracket$ by \rulename{C0}.
+
+(iv) The first three by induction on $k$ with \rulename{CL}, \rulename{CR}
+and (iii).  $\mathrm{Id}_0=\mathrm{id}$, and
+$\mathrm{Id}_{k+1}\simeq\llbracket\mathsf L,\mathsf R;\mathrm{Id}_k\rrbracket
+\simeq\llbracket\mathsf L,\mathsf R\rrbracket\simeq\mathrm{id}$ by (iii),
+induction and \rulename{CE}.
+\end{proof}
+
+By (ii), an equation between programs derived in the empty context may be
+used in every context and inside every program built by concatenation and
+forks; \cref{base:lem:pf-iter}(ii) adds the bodies of iterator
+instructions.  Chains of $\simeq$ are written below without comment on
+these steps.
+
+\begin{lemma}[Equation induction and uniqueness of iteration]
+\label{base:lem:pf-uniq}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Let $E$ be a literal equation.  If
+ $\Gamma\proves E{\downarrow}\llbracket\mathsf Z,p\rrbracket$ and
+ $\Gamma{\uparrow},E{\downarrow}\llbracket\mathsf L,\mathsf R;p\rrbracket
+ \proves E{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;p\rrbracket$,
+ then $\Gamma\proves E{\downarrow}\llbracket T,p\rrbracket$ for every
+ program $T$.
+\item Let $F$, $X$ and $H$ be programs with
+ $\llbracket\mathsf Z,\mathrm{id}\rrbracket;F\simeq X$ and
+ $\llbracket\mathsf L;\mathsf S,\mathsf R\rrbracket;F\simeq
+ \llbracket F,\mathsf R\rrbracket;H$.  Then
+ $\llbracket T,\mathrm{id}\rrbracket;F\simeq
+ \llbracket T,\llbracket X,\mathrm{id}\rrbracket\rrbracket;\mathsf J_H$ for
+ every program $T$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) \rulename{Ind} and \rulename{QE}.
+
+(ii) Read at the environment $\mathrm{cp}(n,e)$, the hypotheses say that
+$F$ is the $n$-th iterate of $H$ from $X$ with the captured environment
+$e$.  Let
+$V\defeq\llbracket\mathsf L,\llbracket\mathsf R;X,\mathsf R\rrbracket\rrbracket;
+\mathsf J_H$ and $E\defeq\mathrm{Eq}(F,V)$, and apply (i) with
+$p\defeq\mathrm{id}$ and the empty context.  Base:
+$\llbracket\mathsf Z,\mathrm{id}\rrbracket;F\simeq X$, and
+$\llbracket\mathsf Z,\mathrm{id}\rrbracket;V\simeq
+\llbracket\mathsf Z,\llbracket X,\mathrm{id}\rrbracket\rrbracket;\mathsf J_H
+\simeq X$ by \cref{base:lem:pf-eq}(iii) and \rulename{J0}.  Step: since
+$\llbracket\mathsf L,\mathsf R\rrbracket\simeq\mathrm{id}$, the hypothesis
+$E{\downarrow}\llbracket\mathsf L,\mathsf R\rrbracket$ gives
+$\mathrm{Eq}(F,V)$, and \rulename{Pair} with $\mathrm{Eq}(\mathsf R,\mathsf R)$
+and \rulename{Post} with $H$ give
+$\mathrm{Eq}(\llbracket F,\mathsf R\rrbracket;H,\ \llbracket V,\mathsf R\rrbracket;H)$.
+Moreover
+$\llbracket\mathsf L;\mathsf S,\mathsf R\rrbracket;F\simeq\llbracket F,\mathsf R\rrbracket;H$
+by hypothesis, and
+$\llbracket\mathsf L;\mathsf S,\mathsf R\rrbracket;V\simeq
+\llbracket\mathsf L;\mathsf S,\llbracket\mathsf R;X,\mathsf R\rrbracket\rrbracket;
+\mathsf J_H\simeq\llbracket V,\mathsf R\rrbracket;H$ by
+\cref{base:lem:pf-eq}(iii) and \rulename{JS} with $P\defeq\mathsf L$,
+$X\defeq\mathsf R;X$ and $Y\defeq\mathsf R$.  Hence
+$E{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R\rrbracket$.  (i) gives
+$E{\downarrow}\llbracket T,\mathrm{id}\rrbracket$, and
+$\llbracket T,\mathrm{id}\rrbracket;V\simeq
+\llbracket T,\llbracket X,\mathrm{id}\rrbracket\rrbracket;\mathsf J_H$.
+\end{proof}
+
+\begin{lemma}[Iterator instructions]
+\label{base:lem:pf-iter}
+For all programs $T,X,Y,H,K$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \emph{naturality}:
+ $\llbracket T,\llbracket X,Y\rrbracket\rrbracket;\mathsf J_H\simeq
+ \llbracket T,\llbracket X,\mathrm{id}\rrbracket\rrbracket;
+ \mathsf J_{\operatorname{lift}(Y);H}$;
+\item \emph{uniform congruence}: if $H\simeq K$, then
+ $\mathsf J_H\simeq\mathsf J_K$.
+\end{enumerate}
+Consequently $\simeq$ is a congruence for every constructor of programs.
+\end{lemma}
+
+\begin{proof}
+(i) Let
+$F\defeq\llbracket\mathsf L,\llbracket\mathsf R;X,\mathsf R;Y\rrbracket\rrbracket;
+\mathsf J_H$.  Then $\llbracket\mathsf Z,\mathrm{id}\rrbracket;F\simeq
+\llbracket\mathsf Z,\llbracket X,Y\rrbracket\rrbracket;\mathsf J_H\simeq X$
+by \rulename{J0}, and
+$\llbracket\mathsf L;\mathsf S,\mathsf R\rrbracket;F\simeq
+\llbracket\mathsf L;\mathsf S,\llbracket\mathsf R;X,\mathsf R;Y\rrbracket\rrbracket;
+\mathsf J_H\simeq\llbracket F,\mathsf R;Y\rrbracket;H\simeq
+\llbracket F,\mathsf R\rrbracket;\operatorname{lift}(Y);H$ by \rulename{JS}
+and \cref{base:lem:pf-eq}(iii).  \Cref{base:lem:pf-uniq}(ii) with the body
+$\operatorname{lift}(Y);H$ gives
+$\llbracket T,\mathrm{id}\rrbracket;F\simeq
+\llbracket T,\llbracket X,\mathrm{id}\rrbracket\rrbracket;
+\mathsf J_{\operatorname{lift}(Y);H}$, and
+$\llbracket T,\mathrm{id}\rrbracket;F\simeq
+\llbracket T,\llbracket X,Y\rrbracket\rrbracket;\mathsf J_H$.
+
+(ii) First, if $H'\simeq K'$, then
+$\llbracket T,\llbracket X,\mathrm{id}\rrbracket\rrbracket;\mathsf J_{H'}\simeq
+\llbracket T,\llbracket X,\mathrm{id}\rrbracket\rrbracket;\mathsf J_{K'}$
+for all $T$, $X$: for
+$F\defeq\llbracket\mathsf L,\llbracket\mathsf R;X,\mathsf R\rrbracket\rrbracket;
+\mathsf J_{H'}$ one has $\llbracket\mathsf Z,\mathrm{id}\rrbracket;F\simeq X$
+and $\llbracket\mathsf L;\mathsf S,\mathsf R\rrbracket;F\simeq
+\llbracket F,\mathsf R\rrbracket;H'\simeq\llbracket F,\mathsf R\rrbracket;K'$
+by \rulename{J0} and \rulename{JS}, so \cref{base:lem:pf-uniq}(ii) with the
+body $K'$, and with the body $H'$, identifies
+$\llbracket T,\mathrm{id}\rrbracket;F$ with both sides.  Now
+$\llbracket\mathsf L,\llbracket\mathsf R;\mathsf L,\mathsf R;\mathsf R\rrbracket\rrbracket
+=\mathrm{Id}_2\simeq\mathrm{id}$, so by (i)
+\[
+ \mathsf J_H\simeq\llbracket\mathsf L,\llbracket\mathsf R;\mathsf L,
+ \mathsf R;\mathsf R\rrbracket\rrbracket;\mathsf J_H\simeq
+ \llbracket\mathsf L,\llbracket\mathsf R;\mathsf L,\mathrm{id}\rrbracket\rrbracket;
+ \mathsf J_{\operatorname{lift}(\mathsf R;\mathsf R);H},
+\]
+and the same for $K$.  Since
+$\operatorname{lift}(\mathsf R;\mathsf R);H\simeq
+\operatorname{lift}(\mathsf R;\mathsf R);K$, the first step gives
+$\mathsf J_H\simeq\mathsf J_K$.
+\end{proof}
+
+The proofs use only empty-context equations for the bodies.  A hypothesis
+that holds at the current environment does not hold at the other inputs
+at which an iterator calls its body, which is why there is no rule that
+replaces a body under hypotheses.
+
+\begin{lemma}[Doubling and the fork]
+\label{base:lem:pf-pair}
+For all programs $T$ and $Y$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\llbracket\mathsf Z,T\rrbracket\simeq
+ \llbracket T,\llbracket\mathsf Z,\mathrm{id}\rrbracket\rrbracket;
+ \mathsf J_{\mathsf L;\mathsf S;\mathsf S}$;
+\item $\llbracket T,Y\rrbracket\simeq
+ \llbracket T,\llbracket\llbracket\mathsf Z,Y\rrbracket,\mathrm{id}\rrbracket\rrbracket;
+ \mathsf J_{\llbracket\mathsf Z,\mathsf L\rrbracket;\mathsf S}$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Let $F\defeq\llbracket\mathsf Z,\mathsf L\rrbracket$.  Then
+$\llbracket\mathsf Z,\mathrm{id}\rrbracket;F\simeq
+\llbracket\mathsf Z,\mathsf Z\rrbracket\simeq\mathsf Z$ by \rulename{C0},
+\rulename{CL} and \rulename{P00}, and
+$\llbracket\mathsf L;\mathsf S,\mathsf R\rrbracket;F\simeq
+\llbracket\mathsf Z,\mathsf L;\mathsf S\rrbracket\simeq F;\mathsf S;\mathsf S
+\simeq\llbracket F,\mathsf R\rrbracket;\mathsf L;\mathsf S;\mathsf S$ by
+\rulename{P0S} and \rulename{CL}.  \Cref{base:lem:pf-uniq}(ii) gives
+$\llbracket T,\mathrm{id}\rrbracket;F\simeq
+\llbracket T,\llbracket\mathsf Z,\mathrm{id}\rrbracket\rrbracket;
+\mathsf J_{\mathsf L;\mathsf S;\mathsf S}$, and
+$\llbracket T,\mathrm{id}\rrbracket;F\simeq\llbracket\mathsf Z,T\rrbracket$.
+
+(ii) Let $F\defeq\llbracket\mathsf L,\mathsf R;Y\rrbracket$.  Then
+$\llbracket\mathsf Z,\mathrm{id}\rrbracket;F\simeq\llbracket\mathsf Z,Y\rrbracket$,
+and $\llbracket\mathsf L;\mathsf S,\mathsf R\rrbracket;F\simeq
+\llbracket\mathsf L;\mathsf S,\mathsf R;Y\rrbracket\simeq
+\llbracket\mathsf Z,F\rrbracket;\mathsf S\simeq
+\llbracket F,\mathsf R\rrbracket;\llbracket\mathsf Z,\mathsf L\rrbracket;\mathsf S$
+by \rulename{PS}.  \Cref{base:lem:pf-uniq}(ii) gives the claim, since
+$\llbracket T,\mathrm{id}\rrbracket;F\simeq\llbracket T,Y\rrbracket$.
+\end{proof}
+
+Read over the natural numbers, (i) says that $\mathrm{cp}(0,t)$ is $t$-fold
+addition of $2$ to $0$, and (ii) that $\mathrm{cp}(t,y)$ is $t$-fold
+application of $u\mapsto\mathrm{cp}(0,u)+1$ to $\mathrm{cp}(0,y)$.  These
+two lemmas are the pinning of the pairing in \pkg{composition}.
+
+\begin{lemma}[Logical naturality]
+\label{base:lem:pf-logic}
+For all programs $p,p',F,T$ and formulas $B,C$:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathsf Q[\llbracket T,p\rrbracket,B]\proves\mathsf D[p,B]$;
+\item $\mathsf Q[p,B{\downarrow}\operatorname{lift}(F)]\dashv\vdash\mathsf Q[p;F,B]$
+ and $\mathsf D[p,B{\downarrow}\operatorname{lift}(\operatorname{lift}(F))]
+ \dashv\vdash\mathsf D[p;F,B]$;
+\item if $B\dashv\vdash C$, then $\mathsf Q[p,B]\dashv\vdash\mathsf Q[p,C]$ and
+ $\mathsf D[p,B]\dashv\vdash\mathsf D[p,C]$;
+\item if $p\simeq p'$, then $\mathsf Q[p,B]\dashv\vdash\mathsf Q[p',B]$ and
+ $\mathsf D[p,B]\dashv\vdash\mathsf D[p',B]$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Let $q\defeq\llbracket T,p\rrbracket$.  The premise of \rulename{DI} over
+the context $\mathsf Q[q,B]$ is
+$\mathsf Q[\mathsf R;q,B],\ B{\downarrow}\llbracket\mathsf Z,\mathsf R;q\rrbracket
+\proves B{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;q\rrbracket$,
+which is \rulename{QE} with the term $\mathsf L;\mathsf S$.
+
+(ii) By \cref{base:lem:pf-root},
+$(B{\downarrow}\operatorname{lift}(F)){\downarrow}\llbracket T',\mathsf R;p\rrbracket
+=B{\downarrow}(\llbracket T',\mathsf R;p\rrbracket;\operatorname{lift}(F))$, and
+$\llbracket T',\mathsf R;p\rrbracket;\operatorname{lift}(F)\simeq
+\llbracket T',\mathsf R;p;F\rrbracket$ by \cref{base:lem:pf-eq}(iii), so the
+two formulas are interderivable for every $T'$.  For the first claim from
+left to right, apply \rulename{QI}: over the context
+$\mathsf Q[\mathsf R;p,B{\downarrow}\operatorname{lift}(F)]$ the hypothesis
+$B{\downarrow}\llbracket\mathsf Z,\mathsf R;p;F\rrbracket$ becomes
+$(B{\downarrow}\operatorname{lift}(F)){\downarrow}\llbracket\mathsf Z,\mathsf R;p\rrbracket$,
+\rulename{QE} with the term $\mathsf L;\mathsf S$ gives
+$(B{\downarrow}\operatorname{lift}(F)){\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;p\rrbracket$,
+and this becomes $B{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;p;F\rrbracket$.
+From right to left the same steps run backwards over the context
+$\mathsf Q[\mathsf R;p;F,B]$.
+
+For the second claim from left to right, apply \rulename{DE}; the new
+hypothesis is
+$\mathsf Q[\llbracket\mathsf L,\mathsf R;p\rrbracket,
+B{\downarrow}\operatorname{lift}(\operatorname{lift}(F))]$.  The first claim
+for $\operatorname{lift}(F)$ turns it into
+$\mathsf Q[\llbracket\mathsf L,\mathsf R;p\rrbracket;\operatorname{lift}(F),B]$,
+and $\llbracket\mathsf L,\mathsf R;p\rrbracket;\operatorname{lift}(F)\simeq
+\llbracket\mathsf L,\mathsf R;p;F\rrbracket$, so (iv) gives
+$\mathsf Q[\llbracket\mathsf L,\mathsf R;p;F\rrbracket,B]$, and (i) gives
+$\mathsf D[\mathsf R;p;F,B]$, which is $\mathsf D[p;F,B]{\downarrow}\mathsf R$,
+the premise required by \rulename{DE}.  From right to left, \rulename{DE}
+adds $\mathsf Q[\llbracket\mathsf L,\mathsf R;p;F\rrbracket,B]$, which (iv)
+and the first claim turn into $\mathsf Q[\llbracket\mathsf L,\mathsf R;p\rrbracket,
+B{\downarrow}\operatorname{lift}(\operatorname{lift}(F))]$, and (i) gives
+$\mathsf D[\mathsf R;p,B{\downarrow}\operatorname{lift}(\operatorname{lift}(F))]$.
+
+(iii) Over the context $\mathsf Q[p,B]$ apply \rulename{QI} to
+$\mathsf Q[p,C]$: the hypothesis
+$C{\downarrow}\llbracket\mathsf Z,\mathsf R;p\rrbracket$ gives
+$B{\downarrow}\llbracket\mathsf Z,\mathsf R;p\rrbracket$ by
+\cref{base:lem:pf-struct}(iv), \rulename{QE} on
+$\mathsf Q[\mathsf R;p,B]$ gives
+$B{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;p\rrbracket$, and
+\cref{base:lem:pf-struct}(iv) gives
+$C{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;p\rrbracket$.  For
+$\mathsf D$, \rulename{DE} adds $\mathsf Q[\llbracket\mathsf L,\mathsf R;p\rrbracket,B]$,
+the case of $\mathsf Q$ turns it into
+$\mathsf Q[\llbracket\mathsf L,\mathsf R;p\rrbracket,C]$, and (i) gives
+$\mathsf D[\mathsf R;p,C]$.  The converses are symmetric.
+
+(iv) $\mathsf Q[p,B]$ is $\mathsf Q[\mathrm{id},B]{\downarrow}p$, and
+\cref{base:lem:pf-eq}(ii) applies; likewise for $\mathsf D$.
+\end{proof}
+
+These are derived rules; no two bodies that differ as formulas are
+identified.
+
+\subsection{A surjective pairing in \texorpdfstring{$\Teq$}{Teq}}
+\label{base:sec:cp}
+
+The decoding of $\mathsf{PF}$ into $\Nat$ needs terms for the fork and its
+two projections, with the projections inverse to the fork on the whole
+domain; the pairing of \cref{base:thm:pair} is not surjective.
+\pkg{composition} names the arithmetic definitions (bounded division by
+two) and states the identities as provable in $\iPRA$ without a
+derivation; the terms and the proof below are supplied here.
+% ed.: the package asserts the pairing identities in iPRA without proof;
+% the following construction and its derivation in T_eq replace that claim.
+With the parity term $N$, the recursor $R$ of \cref{base:def:rec} and the
+pairing $\langle\cdot,\cdot\rangle$, $\operatorname{fst}$,
+$\operatorname{snd}$ of \cref{base:thm:pair}, put
+\begin{gather*}
+ \mathrm{db}(b)\defeq\It{b}{0}{v}{\Suc\Suc v},\qquad
+ \mathrm{up}(k,m)\defeq\It{k}{m}{u}{\Suc\,\mathrm{db}(u)},\qquad
+ \mathrm{cp}(a,b)\defeq\mathrm{up}\bigl(a,\mathrm{db}(b)\bigr),\\
+ \mathrm{hf}(n)\defeq R\bigl(n,0;\,y\,v.\,v+N(y)\bigr),\qquad
+ \mathrm{ex}(k,m)\defeq R\bigl(k,m;\,y\,v.\,y+\mathrm{db}(v)\bigr),\\
+ \mathrm{st}(w)\defeq\sel\bigl(N(\operatorname{snd}w),\ w,\
+   \langle\Suc\operatorname{fst}w,\ \mathrm{hf}(\operatorname{snd}w)\rangle\bigr),
+ \qquad
+ \mathrm{mc}(j,n)\defeq\It{j}{\langle 0,n\rangle}{w}{\mathrm{st}(w)},\\
+ \mathrm{cl}(n)\defeq\operatorname{fst}\bigl(\mathrm{mc}(\Suc n,n)\bigr),\qquad
+ \mathrm{cr}(n)\defeq\mathrm{hf}\bigl(\operatorname{snd}(\mathrm{mc}(\Suc n,n))\bigr).
+\end{gather*}
+Over the natural numbers $\mathrm{db}$ doubles,
+$\mathrm{up}(k,m)=2^{k}(m+1)-1$, $\mathrm{cp}(a,b)=2^{a}(2b+1)-1$,
+$\mathrm{hf}$ halves, and the machine $\mathrm{st}$ removes a final binary
+digit $1$ from the second component and counts it in the first, until the
+second component is even; $\Suc n$ steps suffice.  Only the following
+equations are used.
+
+\begin{lemma}[The pairing $\mathrm{cp}$]
+\label{base:lem:cp}
+$\Teq$ proves
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\mathrm{db}(x)=x+x$, $N(\mathrm{db}(x))=0$,
+ $N(\Suc\mathrm{db}(x))=1$, $\mathrm{hf}(\mathrm{db}(x))=x$,
+ $\mathrm{hf}(\Suc\mathrm{db}(x))=x$, $m=\mathrm{db}(\mathrm{hf}(m))+N(m)$,
+ and $N(m)=0\vee N(m)=1$;
+\item $\mathrm{up}(\Suc k,m)=\mathrm{up}(k,\Suc\mathrm{db}(m))$ and
+ $\mathrm{up}(k,m)=k+\mathrm{ex}(k,m)$;
+\item $\mathrm{cp}(0,0)=0$, $\mathrm{cp}(0,\Suc b)=\Suc\Suc\mathrm{cp}(0,b)$
+ and $\mathrm{cp}(\Suc a,b)=\Suc\mathrm{cp}(0,\mathrm{cp}(a,b))$;
+\item $\mathrm{cl}(\mathrm{cp}(a,b))=a$ and $\mathrm{cr}(\mathrm{cp}(a,b))=b$;
+\item $\mathrm{cp}(\mathrm{cl}(n),\mathrm{cr}(n))=n$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) $\mathrm{db}(0)=0$ and $\mathrm{db}(\Suc x)=\Suc\Suc\mathrm{db}(x)$ are
+computations.  By induction on $x$: $\mathrm{db}(x)=x+x$, since
+$\Suc x+\Suc x=\Suc\Suc(x+x)$ (\cref{base:lem:add}); $N(\mathrm{db}(x))=0$,
+since $N(\Suc\Suc n)=N(n)$ (\cref{base:lem:parity}); then
+$N(\Suc\mathrm{db}(x))=Z(0)=1$.  By \cref{base:thm:primrec}(i),
+$\mathrm{hf}(0)=0$ and $\mathrm{hf}(\Suc c)=\mathrm{hf}(c)+N(c)$.  Hence
+$\mathrm{hf}(\Suc\mathrm{db}(x))=\mathrm{hf}(\mathrm{db}(x))+0$, and
+$\mathrm{hf}(\mathrm{db}(x))=x$ by induction:
+$\mathrm{hf}(\mathrm{db}(\Suc x))=\mathrm{hf}(\Suc\mathrm{db}(x))+1
+=\mathrm{hf}(\mathrm{db}(x))+1=\Suc x$.  The decomposition is an
+induction on $m$; the base is $0=0+0$.  In the step the right side at
+$\Suc m$ is $\mathrm{db}(\mathrm{hf}(m)+N(m))+Z(N(m))$.  The two-point rule
+(\cref{base:lem:interp}(v)), with $b\defeq N(m)$, for which
+$Z(Z(b))=b$ by \cref{base:lem:parity}, and the templates
+$\mathrm{db}(\mathrm{hf}(m)+v)+Z(v)$ and $\Suc(\mathrm{db}(\mathrm{hf}(m))+v)$,
+which agree at $0$ (both are $\Suc\mathrm{db}(\mathrm{hf}(m))$) and at $1$
+(both are $\Suc\Suc\mathrm{db}(\mathrm{hf}(m))$), turns it into
+$\Suc(\mathrm{db}(\mathrm{hf}(m))+N(m))$, which is $\Suc m$ by the
+induction equation.  For the disjunction argue by cases on $N(m)$: if
+$N(m)=\Suc z$, then $Z(N(m))=0$, and $N(m)+Z(N(m))=1$
+(\cref{base:lem:parity}) gives $N(m)=1$.
+
+(ii) The first equation is rotation (\cref{base:cor:rot}(i)).  The second
+is an induction on $k$: $\mathrm{up}(0,m)=m=0+\mathrm{ex}(0,m)$, and, with
+$f\defeq\mathrm{ex}(k,m)$ and $\mathrm{ex}(\Suc k,m)=k+\mathrm{db}(f)$,
+\[
+ \mathrm{up}(\Suc k,m)=\Suc\mathrm{db}(k+f)=\Suc\bigl(k+(k+\mathrm{db}(f))\bigr)
+ =\Suc k+\mathrm{ex}(\Suc k,m),
+\]
+by (i) and \cref{base:lem:add}.
+
+(iii) Computations: $\mathrm{cp}(0,b)=\mathrm{db}(b)$ by
+\eqref{base:eq:I0}, and $\mathrm{cp}(\Suc a,b)=\Suc\mathrm{db}(\mathrm{cp}(a,b))$
+by \eqref{base:eq:IS}.
+
+(iv) Two properties of the step: for all terms,
+\begin{equation}
+ \mathrm{st}\bigl(\langle k,\mathrm{up}(\Suc j,m)\rangle\bigr)
+   =\langle\Suc k,\mathrm{up}(j,m)\rangle,\qquad
+ \mathrm{st}\bigl(\langle a,\mathrm{db}(b)\rangle\bigr)=\langle a,\mathrm{db}(b)\rangle.
+ \label{base:eq:st}
+\end{equation}
+For the first, $\mathrm{up}(\Suc j,m)=\Suc\mathrm{db}(\mathrm{up}(j,m))$
+has parity $1$ and half $\mathrm{up}(j,m)$ by (i), so the selector returns
+its second branch; \cref{base:thm:pair} computes $\operatorname{fst}$ and
+$\operatorname{snd}$.  For the second, $N(\mathrm{db}(b))=0$.  Now apply
+tail induction, which is derivable in $\Teq$ by \cref{base:lem:tail-teq},
+to
+\[
+ E(j,k)\defeq\Bigl(\It{j}{\langle k,\mathrm{up}(j,m)\rangle}{w}{\mathrm{st}(w)}
+ =\langle k+j,m\rangle\Bigr)
+\]
+with the step template $\Suc k$.  The base is $\langle k,\mathrm{up}(0,m)\rangle
+=\langle k,m\rangle=\langle k+0,m\rangle$.  In the step, rotation and
+\eqref{base:eq:st} give
+$\It{\Suc j}{\langle k,\mathrm{up}(\Suc j,m)\rangle}{w}{\mathrm{st}(w)}=
+\It{j}{\langle\Suc k,\mathrm{up}(j,m)\rangle}{w}{\mathrm{st}(w)}$, which is
+$\langle\Suc k+j,m\rangle=\langle k+\Suc j,m\rangle$ by the hypothesis
+$E(j,\Suc k)$.  At $j\defeq a$, $k\defeq 0$ and $m\defeq\mathrm{db}(b)$:
+\[
+ \It{a}{\langle 0,\mathrm{cp}(a,b)\rangle}{w}{\mathrm{st}(w)}
+ =\langle a,\mathrm{db}(b)\rangle.
+\]
+By equation induction on $c$ with \eqref{base:eq:IS}, the second equation
+of \eqref{base:eq:st} gives
+$\It{c}{\langle a,\mathrm{db}(b)\rangle}{w}{\mathrm{st}(w)}=\langle a,\mathrm{db}(b)\rangle$,
+and by induction on $c$,
+$\It{a+c}{s}{w}{\mathrm{st}(w)}=\It{c}{\It{a}{s}{w}{\mathrm{st}(w)}}{w}{\mathrm{st}(w)}$.
+By (ii),
+$\Suc\mathrm{cp}(a,b)=a+\Suc\mathrm{ex}(a,\mathrm{db}(b))$.  Hence
+$\mathrm{mc}(\Suc\mathrm{cp}(a,b),\mathrm{cp}(a,b))=\langle a,\mathrm{db}(b)\rangle$,
+and $\mathrm{cl}(\mathrm{cp}(a,b))=a$,
+$\mathrm{cr}(\mathrm{cp}(a,b))=\mathrm{hf}(\mathrm{db}(b))=b$.
+
+(v) Let $w_j\defeq\mathrm{mc}(j,n)$.  First,
+$\mathrm{up}(\operatorname{fst}w_j,\operatorname{snd}w_j)=n$, by induction
+on $j$: the base is $\mathrm{up}(0,n)=n$, and the step is
+$\mathrm{up}(\operatorname{fst}\mathrm{st}(w),\operatorname{snd}\mathrm{st}(w))
+=\mathrm{up}(\operatorname{fst}w,\operatorname{snd}w)$ at $w\defeq w_j$.  This
+holds by cases on $N(\operatorname{snd}w)$ (i): if it is $0$, then
+$\mathrm{st}(w)=w$; if it is $1$, then
+$\mathrm{st}(w)=\langle\Suc\operatorname{fst}w,\mathrm{hf}(\operatorname{snd}w)\rangle$,
+$\operatorname{snd}w=\Suc\mathrm{db}(\mathrm{hf}(\operatorname{snd}w))$ by the
+decomposition, and (ii) gives
+$\mathrm{up}(\Suc\operatorname{fst}w,\mathrm{hf}(\operatorname{snd}w))
+=\mathrm{up}(\operatorname{fst}w,\operatorname{snd}w)$.
+Second, $N(\operatorname{snd}w_j)=0\vee\operatorname{fst}w_j=j$, by
+\cref{base:thm:qfi} on $j$: the base is $\operatorname{fst}\langle 0,n\rangle=0$;
+in the step, by cases on $N(\operatorname{snd}w_j)$, either
+$\mathrm{st}(w_j)=w_j$ and the parity stays $0$, or the parity is $1$, the
+first disjunct of the hypothesis gives $0=1$ and a contradiction by (T3),
+and the second gives $\operatorname{fst}\mathrm{st}(w_j)=\Suc j$.
+Third, $n=\Suc(n+y)\to\bot$, by \cref{base:thm:qfi} on $n$ with
+\cref{base:lem:succ}.  At $j\defeq\Suc n$ put $w\defeq w_{\Suc n}$.  If
+$\operatorname{fst}w=\Suc n$, then
+$n=\mathrm{up}(\Suc n,\operatorname{snd}w)=\Suc(n+\mathrm{ex}(\Suc n,\operatorname{snd}w))$
+by (ii), a contradiction.  Hence $N(\operatorname{snd}w)=0$, so
+$\operatorname{snd}w=\mathrm{db}(\mathrm{hf}(\operatorname{snd}w))$, and
+$n=\mathrm{up}(\operatorname{fst}w,\mathrm{db}(\mathrm{hf}(\operatorname{snd}w)))
+=\mathrm{cp}(\mathrm{cl}(n),\mathrm{cr}(n))$.
+\end{proof}
+
+By \cref{base:thm:bridge}(i) the equations (iii)--(v) are also derivable in
+$\Nat$, since the native reading of an equation is the equation itself.
+
+\subsection{Compiling the native core}
+\label{base:sec:pfcompile}
+
+\begin{definition}[Compilation]
+\label{base:def:pf-compile}
+Let $\xi=(x_0,\dots,x_{m-1})$ be a list of distinct variables, and write
+$u\xi$ for $(u,x_0,\dots,x_{m-1})$.  For a term $t$ with free variables in
+$\xi$ the program $\mathcal C_\xi(t)$ is
+\[
+ \mathcal C_\xi(x_j)\defeq\mathsf R^{j};\mathsf L,\quad
+ \mathcal C_\xi(0)\defeq\mathsf Z,\quad
+ \mathcal C_\xi(\Suc t)\defeq\mathcal C_\xi(t);\mathsf S,\quad
+ \mathcal C_\xi(\It{n}{a}{u}{h})\defeq
+ \llbracket\mathcal C_\xi(n),\llbracket\mathcal C_\xi(a),\mathrm{id}\rrbracket\rrbracket;
+ \mathsf J_{\mathcal C_{u\xi}(h)},
+\]
+with $u$ not in $\xi$.  For a native formula with free variables in $\xi$,
+\[
+ \mathcal C_\xi(s=t)\defeq\mathrm{Eq}(\mathcal C_\xi(s),\mathcal C_\xi(t)),\quad
+ \mathcal C_\xi(\Q{y}B)\defeq\mathsf Q[\mathrm{id},\mathcal C_{y\xi}(B)],\quad
+ \mathcal C_\xi(\D{x}{y}B)\defeq\mathsf D[\mathrm{id},\mathcal C_{yx\xi}(B)],
+\]
+with $x,y$ not in $\xi$, and $\mathcal C_\xi(\Gamma)$ compiles each member
+of a context.  The environment of $\mathcal C_\xi$ is read as
+$\mathrm{cp}(x_0,\mathrm{cp}(x_1,\dots\mathrm{cp}(x_{m-1},r)\dots))$ with an
+arbitrary rest $r$.
+\end{definition}
+
+By induction on terms and formulas, the compilation depends only on the
+positions of variables in the list: for an injective renaming $\pi$ of
+variables, $\mathcal C_{\pi(\xi)}(t[\pi])=\mathcal C_\xi(t)$, so the choice
+of bound variables is immaterial; and if the free variables of $t$ lie in
+$\xi$, then $\mathcal C_{\xi\xi'}(t)=\mathcal C_\xi(t)$ for every list
+$\xi\xi'$ that extends $\xi$ at the end.  Both hold for formulas, and both
+are equalities of words.
+
+\begin{lemma}[The compiled pairing]
+\label{base:lem:pf-cp}
+$\mathcal C_{(a,b)}(\mathrm{cp}(a,b))\simeq\llbracket\mathsf L,\mathsf R;\mathsf L\rrbracket$.
+\end{lemma}
+
+\begin{proof}
+By the definitions,
+$\mathcal C_{(a,b)}(\mathrm{cp}(a,b))=\llbracket\mathsf L,\llbracket D,\mathrm{id}\rrbracket\rrbracket;
+\mathsf J_K$ with
+$D\defeq\llbracket\mathsf R;\mathsf L,\llbracket\mathsf Z,\mathrm{id}\rrbracket\rrbracket;
+\mathsf J_{\mathsf L;\mathsf S;\mathsf S}$ and
+$K\defeq\llbracket\mathsf L,\llbracket\mathsf Z,\mathrm{id}\rrbracket\rrbracket;
+\mathsf J_{\mathsf L;\mathsf S;\mathsf S};\mathsf S$.
+\Cref{base:lem:pf-pair}(i) gives $D\simeq\llbracket\mathsf Z,\mathsf R;\mathsf L\rrbracket$
+and $K\simeq\llbracket\mathsf Z,\mathsf L\rrbracket;\mathsf S$, so by
+\cref{base:lem:pf-iter} the program is $\simeq$
+$\llbracket\mathsf L,\llbracket\llbracket\mathsf Z,\mathsf R;\mathsf L\rrbracket,
+\mathrm{id}\rrbracket\rrbracket;\mathsf J_{\llbracket\mathsf Z,\mathsf L\rrbracket;\mathsf S}$,
+which is $\simeq\llbracket\mathsf L,\mathsf R;\mathsf L\rrbracket$ by
+\cref{base:lem:pf-pair}(ii).
+\end{proof}
+
+\begin{lemma}[Weakening]
+\label{base:lem:pf-weak}
+Put $\mathsf w_0\defeq\mathsf R$ and
+$\mathsf w_{i+1}\defeq\operatorname{lift}(\mathsf w_i)$.  If $v$ is not in
+$\xi_1\xi_2$ and the free variables of $t$ lie in $\xi_1\xi_2$, then
+$\mathcal C_{\xi_1v\xi_2}(t)\simeq\mathsf w_i;\mathcal C_{\xi_1\xi_2}(t)$,
+where $i$ is the length of $\xi_1$.
+\end{lemma}
+
+\begin{proof}
+First, $\mathsf w_i;\mathsf R^{j};\mathsf L\simeq\mathsf R^{j};\mathsf L$ for
+$j<i$ and $\simeq\mathsf R^{j+1};\mathsf L$ for $j\ge i$, by induction on
+$i$ with $\operatorname{lift}(F);\mathsf L\simeq\mathsf L$ and
+$\operatorname{lift}(F);\mathsf R\simeq\mathsf R;F$.  This is the case of a
+variable.  For $0$ use \rulename{C0}, and for a successor
+\cref{base:lem:pf-eq}(ii).  For an iterator, the induction hypothesis for
+the body, with $u\xi_1$ in place of $\xi_1$, gives
+$\mathcal C_{u\xi_1v\xi_2}(h)\simeq\operatorname{lift}(\mathsf w_i);
+\mathcal C_{u\xi_1\xi_2}(h)$; with the hypotheses for $n$ and $a$ and
+\cref{base:lem:pf-iter},
+\[
+ \mathcal C_{\xi_1v\xi_2}(\It{n}{a}{u}{h})\simeq
+ \llbracket\mathsf w_i;n',\llbracket\mathsf w_i;a',\mathrm{id}\rrbracket\rrbracket;
+ \mathsf J_{\operatorname{lift}(\mathsf w_i);h'}\simeq
+ \llbracket\mathsf w_i;n',\llbracket\mathsf w_i;a',\mathsf w_i\rrbracket\rrbracket;
+ \mathsf J_{h'}\simeq\mathsf w_i;\llbracket n',\llbracket a',\mathrm{id}\rrbracket\rrbracket;
+ \mathsf J_{h'},
+\]
+where $n'$, $a'$ and $h'$ are the compilations at $\xi_1\xi_2$ and
+$u\xi_1\xi_2$.
+\end{proof}
+
+\begin{lemma}[Substitution]
+\label{base:lem:pf-subst}
+Let $\eta=(y_0,\dots,y_{k-1})$ and $\xi$ be lists of distinct variables,
+$\theta$ a substitution with $\FV(\theta(y_i))\subseteq\xi$ for $i<k$, $G$
+a program, and
+$F\defeq\llbracket\mathcal C_\xi(\theta(y_0)),\dots,\mathcal C_\xi(\theta(y_{k-1}))\mid G\rrbracket$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If the free variables of the term $t$ lie in $\eta$, then
+ $\mathcal C_\xi(t[\theta])\simeq F;\mathcal C_\eta(t)$.
+\item If the free variables of the native formula $B$ lie in $\eta$, then
+ $\mathcal C_\xi(B[\theta])\dashv\vdash\mathcal C_\eta(B){\downarrow}F$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) By induction on $t$, for all $\eta$, $\xi$, $\theta$ and $G$.  A variable
+$y_j$ is \cref{base:lem:pf-eq}(iv), $0$ is \rulename{C0}, and a successor is
+\cref{base:lem:pf-eq}(ii).  Let $t$ be $\It{n}{a}{u}{h}$ with $u$ not in
+$\eta$ or $\xi$ and not free in the $\theta(y_i)$, and let $\theta'$ be
+$\theta$ changed to fix $u$.  The induction hypothesis for $h$, with the
+lists $u\eta$ and $u\xi$ and the tail $\mathsf R;G$, gives
+$\mathcal C_{u\xi}(h[\theta'])\simeq F';\mathcal C_{u\eta}(h)$ with
+$F'\defeq\llbracket\mathsf L,\mathcal C_{u\xi}(\theta(y_0)),\dots\mid\mathsf R;G\rrbracket$.
+By \cref{base:lem:pf-weak} with $i=0$ and \cref{base:lem:pf-eq}(iv),
+$F'\simeq\llbracket\mathsf L,\mathsf R;F\rrbracket=\operatorname{lift}(F)$.
+With the hypotheses for $n$ and $a$ and \cref{base:lem:pf-iter},
+\[
+ \mathcal C_\xi(t[\theta])\simeq
+ \llbracket F;n',\llbracket F;a',\mathrm{id}\rrbracket\rrbracket;
+ \mathsf J_{\operatorname{lift}(F);h'}\simeq
+ \llbracket F;n',\llbracket F;a',F\rrbracket\rrbracket;\mathsf J_{h'}\simeq
+ F;\mathcal C_\eta(t),
+\]
+where $n'$, $a'$ and $h'$ are the compilations of $n$, $a$ and $h$.
+
+(ii) By induction on $B$, for all $\eta$, $\xi$, $\theta$ and $G$.  For an
+equation, (i) and \cref{base:lem:pf-eq}(ii).  Let $B$ be $\Q{z}C$ with $z$
+chosen as $u$ above and $\theta'$ fixing $z$.  The induction hypothesis
+with the tail $\mathsf R;G$ and the argument of (i) give
+$\mathcal C_{z\xi}(C[\theta'])\dashv\vdash
+\mathcal C_{z\eta}(C){\downarrow}\operatorname{lift}(F)$, up to
+\cref{base:lem:pf-eq}(ii) for $F'\simeq\operatorname{lift}(F)$.  By
+\cref{base:lem:pf-logic}(iii) and (ii),
+\[
+ \mathcal C_\xi(B[\theta])=\mathsf Q[\mathrm{id},\mathcal C_{z\xi}(C[\theta'])]
+ \dashv\vdash\mathsf Q[\mathrm{id},\mathcal C_{z\eta}(C){\downarrow}\operatorname{lift}(F)]
+ \dashv\vdash\mathsf Q[F,\mathcal C_{z\eta}(C)]=\mathcal C_\eta(B){\downarrow}F.
+\]
+For $\D{x}{z}C$ the lists are $zx\eta$ and $zx\xi$ with the tail
+$\mathsf R;\mathsf R;G$, and \cref{base:lem:pf-weak} twice gives the prefix
+$\llbracket\mathsf L,\mathsf R;\mathsf L,\mathsf R;\mathsf R;F_0,\dots\mid
+\mathsf R;\mathsf R;G\rrbracket\simeq
+\operatorname{lift}(\operatorname{lift}(F))$, where the $F_i$ are the
+components of $F$; the second part of \cref{base:lem:pf-logic}(ii) applies.
+\end{proof}
+
+\begin{corollary}[Special substitutions]
+\label{base:cor:pf-subst}
+Let $\xi$ have length $m$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $v$ is not in $\xi$, the free variables of $t$ lie in $v\xi$ and
+ those of $s$ in $\xi$, then
+ $\mathcal C_\xi(t\subst{s}{v})\simeq\llbracket\mathcal C_\xi(s),\mathrm{id}\rrbracket;
+ \mathcal C_{v\xi}(t)$, and likewise
+ $\mathcal C_\xi(B\subst{s}{v})\dashv\vdash
+ \mathcal C_{v\xi}(B){\downarrow}\llbracket\mathcal C_\xi(s),\mathrm{id}\rrbracket$
+ for a formula $B$.
+\item If $z$ is not in $\xi$ and the free variables of $B$ lie in $\xi$, then
+ $\mathcal C_{z\xi}(B)\dashv\vdash\mathcal C_\xi(B){\downarrow}\mathsf R$.
+\item For a variable $e$, write $\mathcal C_e$ for $\mathcal C_{(e)}$.  If
+ the free variables of $t$ and $s$ lie in $\{e\}$, then
+ $\mathcal C_e(t\subst{s}{e})\simeq\llbracket\mathcal C_e(s),\mathsf R\rrbracket;
+ \mathcal C_e(t)$.
+\item If the free variables of $s$ lie in $\{e\}$ and $y,z,e$ are distinct,
+ then $\mathcal C_{(y,e)}(\mathrm{cp}(y,s))\simeq\operatorname{lift}(\mathcal C_e(s))$
+ and $\mathcal C_{(y,z,e)}(\mathrm{cp}(y,\mathrm{cp}(z,s)))\simeq
+ \operatorname{lift}(\operatorname{lift}(\mathcal C_e(s)))$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(i) \Cref{base:lem:pf-subst} with $\eta\defeq v\xi$, $\theta(v)\defeq s$,
+$\theta$ the identity on $\xi$, and $G\defeq\mathsf R^{m}$; then
+$F=\llbracket\mathcal C_\xi(s),\mathrm{Id}_m\rrbracket\simeq
+\llbracket\mathcal C_\xi(s),\mathrm{id}\rrbracket$.  (ii) The same lemma with
+$\eta\defeq\xi$, the target list $z\xi$, the identity substitution and
+$G\defeq\mathsf R^{m+1}$; then
+$F=\llbracket\mathsf R;\mathsf L,\dots,\mathsf R^{m};\mathsf L\mid\mathsf R^{m+1}\rrbracket
+\simeq\mathsf R;\mathrm{Id}_m\simeq\mathsf R$.  (iii) The same lemma with
+$\eta=\xi=(e)$ and $G\defeq\mathsf R$.  (iv) The same lemma with the source
+list $(a,b)$, $\theta(a)\defeq y$, $\theta(b)\defeq s$, and any $G$:
+$\mathcal C_{(y,e)}(\mathrm{cp}(y,s))\simeq
+\llbracket\mathsf L,\llbracket\mathcal C_{(y,e)}(s),G\rrbracket\rrbracket;
+\mathcal C_{(a,b)}(\mathrm{cp}(a,b))\simeq\llbracket\mathsf L,\mathcal C_{(y,e)}(s)\rrbracket$
+by \cref{base:lem:pf-cp}, and
+$\mathcal C_{(y,e)}(s)\simeq\mathsf R;\mathcal C_e(s)$ by
+\cref{base:lem:pf-weak}.  The second claim applies the first twice.
+\end{proof}
+
+\begin{proposition}[The native core in $\mathsf{PF}$]
+\label{base:prop:pf-compile}
+If $\Gamma\proves_{\Nat}A$ and the list $\xi$ of distinct variables
+contains the free variables of $\Gamma$ and $A$, then
+$\mathcal C_\xi(\Gamma)\proves\mathcal C_\xi(A)$ in $\mathsf{PF}$.
+\end{proposition}
+
+\begin{proof}
+By induction on the derivation, for all such lists at once.  A premise may
+have free variables outside $\xi$; it is compiled at the list $\xi'$ that
+appends them to $\xi$, and every formula whose free variables lie in $\xi$,
+the context in particular, compiles at $\xi'$ as at $\xi$.  Since the
+compilation depends only on positions, a variable of $\xi$ that is not free
+in $\Gamma$ and $A$ may be renamed in $\xi$ without changing
+$\mathcal C_\xi(\Gamma)$ and $\mathcal C_\xi(A)$; so the eigenvariables of
+\rulename{DE}, \rulename{DI} and \rulename{QI} may be assumed to lie
+outside $\xi$ and $\xi'$.
+
+\rulename{Hyp} is \rulename{Hyp}.  \rulename{I0} compiles to an instance of
+\rulename{J0}.  \rulename{IS}: with $H\defeq\mathcal C_{u\xi}(h)$ and
+$I\defeq\It{n}{a}{u}{h}$, \rulename{JS} gives
+$\mathcal C_\xi(\It{\Suc n}{a}{u}{h})\simeq
+\llbracket\mathcal C_\xi(I),\mathrm{id}\rrbracket;H$, which is
+$\simeq\mathcal C_\xi(h\subst{I}{u})$ by \cref{base:cor:pf-subst}(i).
+
+\rulename{Tr}: the premises compile at $\xi'$ to
+$\mathrm{Eq}(\mathcal C_{\xi'}(s),\mathcal C_{\xi'}(t))$ and
+$\mathrm{Eq}(\mathcal C_{\xi'}(h(s)),\mathcal C_{\xi'}(r))$.  With $v$ not in
+$\xi'$, \cref{base:cor:pf-subst}(i) gives
+$\mathcal C_{\xi'}(h(s))\simeq\llbracket\mathcal C_{\xi'}(s),\mathrm{id}\rrbracket;
+\mathcal C_{v\xi'}(h)$ and the same for $t$.  \rulename{Pair} with
+reflexivity gives $\mathrm{Eq}(\llbracket\mathcal C_{\xi'}(s),\mathrm{id}\rrbracket,
+\llbracket\mathcal C_{\xi'}(t),\mathrm{id}\rrbracket)$, and \rulename{Post}
+with the program $\mathcal C_{v\xi'}(h)$ gives
+$\mathrm{Eq}(\mathcal C_{\xi'}(r),\mathcal C_{\xi'}(h(t)))$.
+
+\rulename{QE}: the premises compile to
+$\mathsf Q[\mathrm{id},\mathcal C_{y\xi}(B)]$ and to
+$\mathcal C_\xi(B(0))\dashv\vdash
+\mathcal C_{y\xi}(B){\downarrow}\llbracket\mathsf Z,\mathrm{id}\rrbracket$, by
+\cref{base:cor:pf-subst}(i); \rulename{QE} with the term
+$\mathcal C_{\xi'}(t)$ gives
+$\mathcal C_{y\xi'}(B){\downarrow}\llbracket\mathcal C_{\xi'}(t),\mathrm{id}\rrbracket
+\dashv\vdash\mathcal C_{\xi'}(B(t))=\mathcal C_\xi(B(t))$.
+
+\rulename{DE}: the first premise compiles at $\xi'$ to
+$\mathsf D[\mathrm{id},\mathcal C_{yx\xi'}(B)]$.  The second compiles at
+$b\xi'$; by the invariance under renaming,
+$\mathcal C_{b\xi'}(\Q{y}B(b,y))=\mathsf Q[\mathrm{id},\mathcal C_{yx\xi'}(B)]$,
+which is interderivable with
+$\mathsf Q[\llbracket\mathsf L,\mathsf R\rrbracket,\mathcal C_{yx\xi'}(B)]$ by
+\cref{base:lem:pf-logic}(iv), and by \cref{base:cor:pf-subst}(ii)
+$\mathcal C_{b\xi'}(\Gamma)$ and $\mathcal C_{b\xi'}(A)$ are interderivable
+with $\mathcal C_{\xi'}(\Gamma){\uparrow}$ and
+$\mathcal C_{\xi'}(A){\downarrow}\mathsf R$.  \rulename{DE} applies.
+
+\rulename{DI}: the premise compiles at $z\xi'$, where $\xi'$ appends the
+free variables of the witness $t$, and $m'$ is the length of $\xi'$.
+\Cref{base:lem:pf-subst}(ii) with the source list $yx\xi'$,
+$\theta(y)\defeq 0$, $\theta(x)\defeq t$, the identity on $\xi'$ and
+$G\defeq\mathsf R^{m'+1}$, together with \cref{base:lem:pf-weak} for
+$\mathcal C_{z\xi'}(t)\simeq\mathsf R;T$, $T\defeq\mathcal C_{\xi'}(t)$,
+gives $\mathcal C_{z\xi'}(B(t,0))\dashv\vdash\mathcal C_{yx\xi'}(B){\downarrow}
+\llbracket\mathsf Z,\mathsf R;q\rrbracket$ with $q\defeq\llbracket T,\mathrm{id}\rrbracket$,
+because $\llbracket\mathsf Z,\mathsf R;T,\mathsf R;\mathsf L,\dots,
+\mathsf R^{m'};\mathsf L\mid\mathsf R^{m'+1}\rrbracket\simeq
+\llbracket\mathsf Z,\mathsf R;\llbracket T,\mathrm{id}\rrbracket\rrbracket$.
+Likewise $\mathcal C_{z\xi'}(B(t,\Suc z))\dashv\vdash\mathcal C_{yx\xi'}(B)
+{\downarrow}\llbracket\mathsf L;\mathsf S,\mathsf R;q\rrbracket$, and the
+context is $\mathcal C_{\xi'}(\Gamma){\uparrow}$.  \rulename{DI} with the
+witness $T$ and $p\defeq\mathrm{id}$ gives
+$\mathsf D[\mathrm{id},\mathcal C_{yx\xi}(B)]=\mathcal C_\xi(\D{x}{y}B)$.
+
+\rulename{QI}: in the same way the premise at $z\xi$ becomes
+$\mathcal C_\xi(\Gamma){\uparrow},\ \mathcal C_{y\xi}(E){\downarrow}
+\llbracket\mathsf L,\mathsf R\rrbracket\proves\mathcal C_{y\xi}(E){\downarrow}
+\llbracket\mathsf L;\mathsf S,\mathsf R\rrbracket$, with
+$\llbracket\mathsf L,\mathsf R\rrbracket\simeq\mathrm{id}$ for the
+hypothesis, and \rulename{Ind} with $p\defeq\mathrm{id}$ applies, since
+$\mathcal C_{y\xi}(E)$ is a literal equation.
+\end{proof}
+
+\subsection{Decoding and the bridge}
+\label{base:sec:pfbridge}
+
+\begin{definition}[Decoding]
+\label{base:def:pf-decode}
+Fix a variable $e$, and write $s(r)$ for $s\subst{r}{e}$.  For a program $P$
+the native term $\widehat P$, whose free variables lie in $\{e\}$, is
+defined by recursion on the size:
+\begin{gather*}
+ \widehat{\mathrm{id}}\defeq e,\qquad
+ \widehat{P;I}\defeq\widehat I(\widehat P)\ \text{for an instruction }I,\qquad
+ \widehat{\mathsf Z}\defeq 0,\quad\widehat{\mathsf S}\defeq\Suc e,\quad
+ \widehat{\mathsf L}\defeq\mathrm{cl}(e),\quad\widehat{\mathsf R}\defeq\mathrm{cr}(e),\\
+ \widehat{\llbracket P,Q\rrbracket}\defeq\mathrm{cp}(\widehat P,\widehat Q),\qquad
+ \widehat{\mathsf J_H}\defeq
+ \It{\mathrm{cl}(e)}{\mathrm{cl}(\mathrm{cr}(e))}{u}{\widehat H\bigl(\mathrm{cp}(u,\mathrm{cr}(\mathrm{cr}(e)))\bigr)}.
+\end{gather*}
+The bound variable $u$ is distinct from $e$.  By \cref{base:lem:subst}(ii),
+$\widehat{P;Q}=\widehat Q(\widehat P)$ for all programs.  The native formula $A^\natural$, with free variables in $\{e\}$,
+is
+\[
+ \mathrm{Eq}(P,Q)^\natural\defeq(\widehat P=\widehat Q),\quad
+ \mathsf Q[p,B]^\natural\defeq\Q{y}\,B^\natural\bigl(\mathrm{cp}(y,\widehat p)\bigr),\quad
+ \mathsf D[p,B]^\natural\defeq\D{z}{y}\,B^\natural\bigl(\mathrm{cp}(y,\mathrm{cp}(z,\widehat p))\bigr),
+\]
+with $y$, $z$ distinct from $e$, and $\Gamma^\natural$ decodes each member.
+For a list $\xi=(x_0,\dots,x_{m-1})$ put
+$t_\xi\defeq\mathrm{cp}(x_0,\mathrm{cp}(x_1,\dots\mathrm{cp}(x_{m-1},0)\dots))$.
+\end{definition}
+
+By the definitions, $(A{\downarrow}W)^\natural=A^\natural(\widehat W)$ as
+formulas, which is \cref{base:lem:pf-root} on the native side.  The
+ordinary reading $(A^\natural)^\circ$ is the intended reading displayed after
+\cref{base:def:pf-formulas}, with $\mathrm{cp}$, $\mathrm{cl}$ and
+$\mathrm{cr}$ the terms of \cref{base:sec:cp}.
+
+\begin{proposition}[Soundness of the decoding]
+\label{base:prop:pf-sound}
+If $\Gamma\proves A$ in $\mathsf{PF}$, then
+$\Gamma^\natural\proves_{\Nat}A^\natural$.
+\end{proposition}
+
+\begin{proof}
+By induction on the derivation.  Write $\widehat P$ for $\widehat P(e)$.
+The equations of \cref{base:lem:cp}(iii)--(v) hold in $\Nat$ at all terms.
+
+Schemas.  \rulename{C0} decodes to $0=0$.  \rulename{CL}, \rulename{CR} and
+\rulename{CE} are \cref{base:lem:cp}(iv), (v) at $\widehat P$, $\widehat Q$;
+\rulename{P00}, \rulename{P0S} and \rulename{PS} are \cref{base:lem:cp}(iii).
+For \rulename{J0} and \rulename{JS} let $c\defeq\mathrm{cp}(\widehat X,\widehat Y)$;
+by \cref{base:lem:cp}(iv) and \cref{base:lem:cong},
+$\widehat{\mathsf J_H}(\mathrm{cp}(r,c))=
+\It{r}{\widehat X}{u}{\widehat H(\mathrm{cp}(u,\widehat Y))}$ for every term
+$r$.  At $r=0$ this is $\widehat X$ by \rulename{I0}.  At
+$r=\Suc\widehat P$, \rulename{IS} gives
+$\widehat H\bigl(\mathrm{cp}(\It{\widehat P}{\widehat X}{u}{\widehat H(\mathrm{cp}(u,\widehat Y))},\widehat Y)\bigr)$,
+which is the decoding of the right side of \rulename{JS} by the case
+$r=\widehat P$.
+
+\rulename{Hyp} is \rulename{Hyp}.  \rulename{Sub}: the induction hypotheses
+are $\Delta^\natural\proves A^\natural$ and
+$\Gamma^\natural\proves B_i^\natural(\widehat W)$;
+\cref{base:lem:struct} with $\subst{\widehat W}{e}$ and \cref{base:lem:cut}
+give $\Gamma^\natural\proves A^\natural(\widehat W)$, which is
+$(A{\downarrow}W)^\natural$.  \rulename{Post} is \rulename{Tr} with the
+template $\widehat H(v)$, since $\widehat{P;H}=\widehat H(\widehat P)$.
+\rulename{Pair} is \cref{base:lem:cong}.  \rulename{Transport} is
+\cref{base:cor:tr} with the template $A^\natural(v)$.  \rulename{QE} is
+\rulename{QE} of $\Nat$ with the matrix $B^\natural(\mathrm{cp}(y,\widehat p))$
+at the term $\widehat T$.
+
+In the premises of the other rules the environment is extended.  Their
+decodings mention $\mathrm{cl}(e)$ and $\mathrm{cr}(e)$, and the
+substitution $\subst{\mathrm{cp}(z,e)}{e}$ with a fresh $z$
+(\cref{base:lem:struct}), followed by the Leibniz rule
+(\cref{base:thm:leibniz}) along $\mathrm{cl}(\mathrm{cp}(z,e))=z$ and
+$\mathrm{cr}(\mathrm{cp}(z,e))=e$, turns them into the premises of the rules
+of $\Nat$.  \rulename{DE}: the second premise becomes
+$\Gamma^\natural,\ \Q{y}B^\natural(\mathrm{cp}(y,\mathrm{cp}(z,\widehat p)))
+\proves A^\natural$, and \rulename{DE} of $\Nat$ with the fresh variable $z$
+applies to the major premise
+$\D{z}{y}B^\natural(\mathrm{cp}(y,\mathrm{cp}(z,\widehat p)))$.
+\rulename{DI}: the premise becomes
+$\Gamma^\natural,\ C(\widehat T,0)\proves C(\widehat T,\Suc z)$ for
+$C(x,y)\defeq B^\natural(\mathrm{cp}(y,\mathrm{cp}(x,\widehat p)))$, and
+\rulename{DI} of $\Nat$ with the witness $\widehat T$ applies.
+\rulename{QI}: the premise becomes
+$\Gamma^\natural,\ C(0)\proves C(\Suc z)$ for
+$C(y)\defeq B^\natural(\mathrm{cp}(y,\widehat p))$, and
+\cref{base:lem:qI} applies.  \rulename{Ind}: the premise becomes
+$\Gamma^\natural,\ C(z)\proves C(\Suc z)$ with the literal equation
+$C(y)\defeq E^\natural(\mathrm{cp}(y,\widehat p))$, and \rulename{QI} of
+$\Nat$ applies.
+\end{proof}
+
+\begin{lemma}[Round trips]
+\label{base:lem:pf-rt}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every program $P$:
+ $P\simeq\operatorname{seal};\mathcal C_e(\widehat P)$.
+\item For every formula $A$ of $\mathsf{PF}$:
+ $A\dashv\vdash\mathcal C_e(A^\natural){\downarrow}\operatorname{seal}$.
+\item For every term $t$ with free variables in $\xi$:
+ $\proves_{\Nat}\widehat{\mathcal C_\xi(t)}(t_\xi)=t$.
+\item For every native formula $B$ with free variables in $\xi$:
+ $\mathcal C_\xi(B)^\natural(t_\xi)\dashv\vdash B$ in $\Nat$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) Write $\lfloor t\rfloor\defeq\operatorname{seal};\mathcal C_e(t)$ for a
+term $t$ with free variables in $\{e\}$.  By \cref{base:cor:pf-subst}(iii)
+and \cref{base:lem:pf-eq}(iii),
+\begin{equation}
+ \lfloor t(s)\rfloor\simeq
+ \llbracket\lfloor s\rfloor,\operatorname{seal};\mathsf R\rrbracket;\mathcal C_e(t)
+ \simeq\llbracket\lfloor s\rfloor,\mathsf Z\rrbracket;\mathcal C_e(t)
+ \simeq\lfloor s\rfloor;\lfloor t\rfloor.
+ \label{base:eq:pf-comp}
+\end{equation}
+The proof is by induction on the size of $P$.  $\lfloor e\rfloor=
+\operatorname{seal};\mathsf L\simeq\mathrm{id}$ by \rulename{CL}.  For a word
+$P;I$ with an instruction $I$ and $P\ne\mathrm{id}$, \eqref{base:eq:pf-comp}
+and the induction hypotheses for $P$ and for the shorter word $I$ give $\lfloor\widehat I(\widehat P)\rfloor\simeq
+\lfloor\widehat P\rfloor;\lfloor\widehat I\rfloor\simeq P;I$.  It remains to
+treat the instructions.  $\lfloor 0\rfloor=\operatorname{seal};\mathsf Z
+\simeq\mathsf Z$ and $\lfloor\Suc e\rfloor=\operatorname{seal};\mathsf L;\mathsf S
+\simeq\mathsf S$.
+
+$\mathsf L$ and $\mathsf R$.  By \cref{base:lem:cp}(iv) and
+\cref{base:prop:pf-compile} at the list $(a,b)$,
+$\mathcal C_{(a,b)}(\mathrm{cl}(\mathrm{cp}(a,b)))\simeq\mathsf L$, and by
+\cref{base:lem:pf-subst}(i), with the tail $\mathsf Z$, and
+\cref{base:lem:pf-cp}, the left side is
+$\simeq\llbracket\llbracket\mathsf L,\mathsf R;\mathsf L\rrbracket,\mathsf Z\rrbracket;
+\mathcal C_e(\mathrm{cl}(e))$.  Precompose with
+$W\defeq\llbracket\mathsf L,\llbracket\mathsf R,\mathsf Z\rrbracket\rrbracket$:
+$W;\llbracket\mathsf L,\mathsf R;\mathsf L\rrbracket\simeq
+\llbracket\mathsf L,\mathsf R\rrbracket\simeq\mathrm{id}$ and
+$W;\mathsf Z\simeq\mathsf Z$, so $\lfloor\mathrm{cl}(e)\rfloor\simeq
+W;\mathsf L\simeq\mathsf L$.  In the same way
+$\lfloor\mathrm{cr}(e)\rfloor\simeq W;\mathsf R;\mathsf L\simeq\mathsf R$.
+
+Fork.  \Cref{base:lem:pf-subst}(i) with the source list $(a,b)$ and
+\cref{base:lem:pf-cp} give
+$\mathcal C_e(\mathrm{cp}(\widehat P,\widehat Q))\simeq
+\llbracket\mathcal C_e(\widehat P),\mathcal C_e(\widehat Q)\rrbracket$, so
+$\lfloor\mathrm{cp}(\widehat P,\widehat Q)\rfloor\simeq
+\llbracket\lfloor\widehat P\rfloor,\lfloor\widehat Q\rfloor\rrbracket\simeq
+\llbracket P,Q\rrbracket$.
+
+Iterator.  By the definitions and \eqref{base:eq:pf-comp},
+$\lfloor\widehat{\mathsf J_H}\rfloor\simeq\llbracket\mathsf L,\llbracket
+\mathsf R;\mathsf L,\operatorname{seal}\rrbracket\rrbracket;\mathsf J_K
+\simeq\llbracket\mathsf L,\llbracket\mathsf R;\mathsf L,\mathrm{id}\rrbracket\rrbracket;
+\mathsf J_{\operatorname{lift}(\operatorname{seal});K}$ with
+$K\defeq\mathcal C_{(u,e)}(\widehat H(\mathrm{cp}(u,\mathrm{cr}(\mathrm{cr}(e)))))$,
+the second step by \cref{base:lem:pf-iter}(i).  By
+\cref{base:lem:pf-subst}(i) with the tail $\mathsf Z$ and
+\cref{base:cor:pf-subst}(iv),
+$K\simeq\llbracket\operatorname{lift}(\mathcal C_e(\mathrm{cr}(\mathrm{cr}(e)))),
+\mathsf Z\rrbracket;\mathcal C_e(\widehat H)$.  Since
+$\operatorname{lift}(\operatorname{seal});\operatorname{lift}(X)\simeq
+\operatorname{lift}(\operatorname{seal};X)$ by \cref{base:lem:pf-eq}(iii),
+$\lfloor\mathrm{cr}(\mathrm{cr}(e))\rfloor\simeq\mathsf R;\mathsf R$ by
+\eqref{base:eq:pf-comp}, and by the induction hypothesis for $H$,
+\[
+ \operatorname{lift}(\operatorname{seal});K\simeq
+ \llbracket\operatorname{lift}(\mathsf R;\mathsf R),\mathsf Z\rrbracket;
+ \mathcal C_e(\widehat H)\simeq\operatorname{lift}(\mathsf R;\mathsf R);
+ \lfloor\widehat H\rfloor\simeq\operatorname{lift}(\mathsf R;\mathsf R);H.
+\]
+By \cref{base:lem:pf-iter}(i) backwards and $\mathrm{Id}_2\simeq\mathrm{id}$,
+$\lfloor\widehat{\mathsf J_H}\rfloor\simeq\llbracket\mathsf L,\llbracket
+\mathsf R;\mathsf L,\mathsf R;\mathsf R\rrbracket\rrbracket;\mathsf J_H\simeq
+\mathsf J_H$.
+
+(ii) By induction on $A$.  For $\mathrm{Eq}(P,Q)$ the right side is
+$\mathrm{Eq}(\lfloor\widehat P\rfloor,\lfloor\widehat Q\rfloor)$, and (i)
+applies.  For $\mathsf Q[p,B]$, \cref{base:lem:pf-subst}(ii) with the
+source list $(e)$, the target list $(y,e)$ and the tail $\mathsf Z$, and
+\cref{base:cor:pf-subst}(iv), give
+\[
+ \mathcal C_{(y,e)}\bigl(B^\natural(\mathrm{cp}(y,\widehat p))\bigr)\dashv\vdash
+ \mathcal C_e(B^\natural){\downarrow}\llbracket\operatorname{lift}(\mathcal C_e(\widehat p)),\mathsf Z\rrbracket
+ \dashv\vdash\bigl(\mathcal C_e(B^\natural){\downarrow}\operatorname{seal}\bigr)
+ {\downarrow}\operatorname{lift}(\mathcal C_e(\widehat p)),
+\]
+which is interderivable with $B{\downarrow}\operatorname{lift}(\mathcal C_e(\widehat p))$
+by the induction hypothesis and \cref{base:lem:pf-struct}(iv).  By
+\cref{base:lem:pf-logic}(iii), (ii) and (iv) and by (i),
+\[
+ \mathcal C_e(\mathsf Q[p,B]^\natural){\downarrow}\operatorname{seal}
+ \dashv\vdash\mathsf Q[\operatorname{seal},B{\downarrow}\operatorname{lift}(\mathcal C_e(\widehat p))]
+ \dashv\vdash\mathsf Q[\operatorname{seal};\mathcal C_e(\widehat p),B]
+ \dashv\vdash\mathsf Q[p,B].
+\]
+For $\mathsf D[p,B]$ the same argument with the target list $(y,z,e)$ and
+$\operatorname{lift}(\operatorname{lift}(\mathcal C_e(\widehat p)))$ applies.
+
+(iii) By induction on $t$, for all $\xi$, with \cref{base:lem:cp}(iv) in
+$\Nat$.  For $x_j$, $\mathrm{cl}(\mathrm{cr}^{j}(t_\xi))=x_j$.  $0$ and the
+successor are immediate.  For $\It{n}{a}{u}{h}$, by the computation in the
+proof of \cref{base:prop:pf-sound}, the decoding at $e$ is
+$\It{\widehat{n'}}{\widehat{a'}}{u}{\widehat{h'}(\mathrm{cp}(u,e))}$, where
+$n'$, $a'$, $h'$ are the compilations of $n$, $a$ at $\xi$ and of $h$ at
+$u\xi$.  At $e\defeq t_\xi$ the counter and the seed are $n$ and $a$ by the
+induction hypothesis, and the body is
+$\widehat{h'}(t_{u\xi})$, since $\mathrm{cp}(u,t_\xi)=t_{u\xi}$; it equals
+$h$ by the induction hypothesis, and \cref{base:cor:rot}(ii) replaces it.
+
+(iv) By induction on $B$.  Equations follow from (iii).  For $\Q{y}C$ the
+left side is $\Q{y}\,\mathcal C_{y\xi}(C)^\natural(t_{y\xi})$, and the
+induction hypothesis with \cref{base:lem:bindercong}(i) applies; for
+$\D{x}{y}C$ the left side is, after renaming the bound variable $z$ to $x$,
+$\D{x}{y}\,\mathcal C_{yx\xi}(C)^\natural(t_{yx\xi})$, and
+\cref{base:lem:bindercong}(ii) applies.
+\end{proof}
+
+\begin{theorem}[$\mathsf{PF}$ and the native core]
+\label{base:thm:pf}
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item $\Gamma\proves A$ in $\mathsf{PF}$ if and only if
+ $\Gamma^\natural\proves_{\Nat}A^\natural$.
+\item For a list $\xi$ that contains the free variables of $\Gamma$ and
+ $B$: $\Gamma\proves_{\Nat}B$ if and only if
+ $\mathcal C_\xi(\Gamma)\proves\mathcal C_\xi(B)$ in $\mathsf{PF}$.
+\item $A\dashv\vdash\mathcal C_e(A^\natural){\downarrow}\operatorname{seal}$
+ in $\mathsf{PF}$, and $\mathcal C_\xi(B)^\natural(t_\xi)\dashv\vdash B$ in
+ $\Nat$.
+\item \emph{Shape.}  The decoding reads the binders of $\mathsf Q[p,\cdot]$
+ and $\mathsf D[p,\cdot]$ as $\Q{y}$ and $\D{z}{y}$ over the whole domain,
+ and $\mathrm{Eq}$ as equality; the compilation reads $\Q{y}$ and
+ $\D{x}{y}$ as $\mathsf Q[\mathrm{id},\cdot]$ and $\mathsf D[\mathrm{id},\cdot]$,
+ whose bound components range over the whole domain, and equality as
+ $\mathrm{Eq}$.  On programs and terms the composites are provably the
+ identity, by \cref{base:lem:pf-rt}(i) and (iii): the environment $e$ of
+ $\mathsf{PF}$ returns as $e$ through $\operatorname{seal}$, and each
+ variable of $\xi$ returns as itself through $t_\xi$.  The definable map
+ between the domain and its double interpretation is the identity, with
+ graph $x=y$.
+\item \emph{Equiconsistency.}
+ $\proves\mathrm{Eq}(\mathsf Z,\mathsf Z;\mathsf S)$ in $\mathsf{PF}$ if and
+ only if $\proves_{\Nat}0=\Suc 0$, if and only if $\proves_{\iPRA}\bot$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(iii) is \cref{base:lem:pf-rt}(ii), (iv).  (i) From left to right,
+\cref{base:prop:pf-sound}.  From right to left,
+\cref{base:prop:pf-compile} at the list $(e)$ gives
+$\mathcal C_e(\Gamma^\natural)\proves\mathcal C_e(A^\natural)$,
+\cref{base:lem:pf-struct}(i) reindexes the sequent by $\operatorname{seal}$,
+and (iii) with \cref{base:lem:pf-struct}(iv) gives $\Gamma\proves A$.  (ii)
+From left to right, \cref{base:prop:pf-compile}.  From right to left,
+\cref{base:prop:pf-sound}, the substitution $\subst{t_\xi}{e}$
+(\cref{base:lem:struct}) and (iii) with \cref{base:lem:cut}.  (iv) holds by
+the definitions and \cref{base:lem:pf-rt}.  (v)
+$\mathrm{Eq}(\mathsf Z,\mathsf Z;\mathsf S)^\natural$ is $0=\Suc 0$, and
+$\mathcal C_{()}(0=\Suc 0)$ is $\mathrm{Eq}(\mathsf Z,\mathsf Z;\mathsf S)$;
+(i), (ii) and \cref{base:thm:bridge}(v) give the claim.
+\end{proof}
+
+\begin{corollary}[$\mathsf{PF}$ and $\iPRA$]
+\label{base:cor:pf-ipra}
+With $\flat$ and $\sharp$ of \cref{base:thm:bridge}(iii), put
+$A^{\iota}\defeq(A^\natural)^{\flat}$ for a formula of $\mathsf{PF}$, a
+formula of $\iPRA$ whose free variables lie in $\{e\}$, and
+$\psi^{\kappa}\defeq\mathcal C_\xi(\psi^{\sharp})$ for a formula $\psi$ of
+$\iPRA$ whose free variables lie in $\xi$.  Then
+$\Gamma\proves A$ in $\mathsf{PF}$ if and only if
+$\Gamma^{\iota}\proves_{\iPRA}A^{\iota}$;
+$\Gamma\proves_{\iPRA}\psi$ if and only if
+$\Gamma^{\kappa}\proves\psi^{\kappa}$ in $\mathsf{PF}$;
+$A\dashv\vdash\mathcal C_e((A^{\iota})^{\sharp}){\downarrow}\operatorname{seal}$
+in $\mathsf{PF}$; and
+$\iPRA\proves\psi\leftrightarrow\bigl((\psi^{\kappa})^\natural(t_\xi)\bigr)^{\flat}$.
+The domains are whole, equality is actual, and the composites are the
+identity, as in \cref{base:thm:pf}(iv).
+\end{corollary}
+
+\begin{proof}
+The equivalences compose \cref{base:thm:pf}(i), (ii) with
+\cref{base:thm:bridge}(iii); the translations do not add free variables
+(\cref{base:def:interp}(i)).  For the first round trip,
+$(A^{\iota})^{\sharp}\dashv\vdash A^\natural$ in $\Nat$ by
+\cref{base:thm:bridge}(iii), so \cref{base:prop:pf-compile} gives
+$\mathcal C_e((A^{\iota})^{\sharp})\dashv\vdash\mathcal C_e(A^\natural)$, and
+\cref{base:lem:pf-struct}(iv) and \cref{base:thm:pf}(iii) apply.  For the
+second, $(\psi^{\kappa})^\natural(t_\xi)\dashv\vdash\psi^{\sharp}$ in $\Nat$
+by \cref{base:thm:pf}(iii); \cref{base:thm:bridge}(iii) turns this into an
+equivalence in $\iPRA$ of the images under $\flat$, and
+$\iPRA\proves\psi\leftrightarrow(\psi^{\sharp})^{\flat}$.
+\end{proof}
+
+\begin{remark}[The proof of the package]
+\label{base:rem:pf-sources}
+\pkg{composition} states \cref{base:thm:pf} and its corollary as a
+comparison theorem with a written proof in outline, through the bridge of
+\cref{base:thm:bridge}; its two reviews, filed as evidence, find no
+counterexample and are not proofs.  The outline is completed here in four
+places.
+% ed.: the package's proof is an outline; the four completions below are
+% the article's.
+First, the decoding of the projections and the surjectivity of the
+pairing are derived in $\Teq$ (\cref{base:lem:cp}); the package names the
+definitions and asserts the identities in $\iPRA$.  Second, the native
+fork term is chosen as an iteration of doubling, so that its compilation
+is identified with the fork by uniqueness of iteration
+(\cref{base:lem:pf-cp}); this is the pinning argument of the package,
+which identifies the fork with $2^{a}(2b+1)-1$ by two equation inductions
+from \rulename{P00}, \rulename{P0S} and \rulename{PS}.  Third, the
+projections are identified with their decodings through the compiled
+equations $\mathrm{cl}(\mathrm{cp}(a,b))=a$ and $\mathrm{cr}(\mathrm{cp}(a,b))=b$
+and the fork, in the proof of \cref{base:lem:pf-rt}(i).  Fourth, the
+iterator case of the substitution lemma needs \cref{base:lem:pf-weak} for
+the substituted terms under the bound variable, and the tail $G$ of the
+substituting tuple is left free; the package states the lemma with the
+tail $\mathsf Z$.  The sealing map, the decoder through native terms of
+fixed programs, iterator naturality, uniform congruence of bodies, logical
+naturality and the order of the arguments are those of the package.  Its
+semantic demonstrator (\texttt{code/environment\_programs.py}, $3377$
+finite checks of pairing, naturality, reindexing and compiler
+substitution) is not a checker and supports no step of the proofs.
+\end{remark}
+
+% ---------------------------------------------------------------------
 \section{Clause contexts}
 \label{base:sec:clauses}
 
@@ -4518,9 +5990,35 @@ calculi or all implementations.  A different Python version can change the
 normalization.  The finite tests that accompany a checker supplement the
 written proofs and are not proofs.
 
-No checker belongs to this chapter: the calculus $\Nat$ and its bridge are
-the common reference, and the sizes of the checkers that implement $\Nat$
-or its variants are listed in the chapters on those variants.
+The calculus $\Nat$ and its bridge are the common reference, and the sizes
+of the checkers that implement $\Nat$ or its variants are listed in the
+chapters on those variants; $T_{\mathrm{tail}}$ has no checker.  The only
+checker of this chapter is the reference checker of $\mathsf{PF}$
+(\cref{base:def:pf}) delivered with \pkg{composition}.  Its input is one
+JSON list of proof nodes [rule, context, formula, arguments, premise
+indices], each index pointing to an earlier node; programs are lists whose
+instructions are the integers $0$ to $3$ for $\mathsf Z,\mathsf S,\mathsf L,
+\mathsf R$, \texttt{[4,P,Q]} for a fork and \texttt{[5,H]} for an iterator
+instruction; formulas are \texttt{[0,P,Q]}, \texttt{[1,p,B]} and
+\texttt{[2,p,B]}; Booleans and floats are rejected as tags.  The checker
+validates every program, formula and reference, recognizes the nine
+schemas and the ten rule families, implements reindexing at the root, has
+no evaluator of programs, requires the empty context at the last node, and
+then prints \texttt{ACCEPT}; the certified theorem is the closure of the
+reading of the last formula.  It has no matched control: the package
+compares it with the compact checkers, which check another calculus under a
+promised syntax and whose best coordinates ($238$ tokens, $255$ nodes,
+$455$ bytes) are attained by different programs, and it is larger in every
+coordinate.  Under \texttt{gzip} at level $9$ it has $1374$ bytes.
+\begin{center}
+\begin{tabular}{@{}lrrrl@{}}
+\toprule
+Program & Tokens & AST nodes & Bytes & Matched control\\
+\midrule
+\texttt{pointfree\_checker.py} ($\mathsf{PF}$, \pkg{composition}) & $1687$ & $2085$ & $5184$ & none\\
+\bottomrule
+\end{tabular}
+\end{center}
 
 % ---------------------------------------------------------------------
 \section{Further questions}
@@ -4734,4 +6232,37 @@ aligned selectors.  The corresponding counts for the stacking selector of
 translation of a block with internal binders into the guarded public goal of
 the compact checkers (\cref{base:rem:blocks}) is not computed.  None of
 \cref{base:sec:blocks} is formalized in Lean or Rocq.
+\end{question}
+
+\begin{question}[Forward iteration with the unchanged induction]
+\label{base:q:tail}
+\pkg{local\_validation} asks two questions about \cref{base:sec:tail}.
+(a) Does \eqref{base:eq:FT}, with the equation induction of $\Teq$ and
+without \rulename{TI}, derive \eqref{base:eq:IS}?  This is
+\cref{kern:q:forward}; \cref{base:thm:tail} changes the induction rule and
+does not answer it.  (b) Can \rulename{TI} be given by an inexpensive
+native binder or packet rule, an analogue of \rulename{QI} whose assumption
+is taken at a changed parameter, so that a complete checker pays for the
+extra parameter, step template and uniform premise of the rule?  No
+checker for $T_{\mathrm{tail}}$ exists, and the package claims no size.
+\end{question}
+
+\begin{question}[The calculus $\mathsf{PF}$]
+\label{base:q:pf}
+(a) Is \rulename{QI} derivable, or admissible, in $\mathsf{PF}$ from the
+other nine rule families?  \pkg{composition} calls it redundant and keeps
+it so that logical naturality has a direct proof; here it is used in
+\cref{base:lem:pf-logic}, hence in the compilation of $\Nat$
+(\cref{base:prop:pf-compile}), and the derivation of its counterpart in
+$\Nat$ (\cref{base:lem:qI,base:lem:dummy}) needs the naturality that it
+serves to prove.  (b) \Cref{base:thm:pf} and \cref{base:cor:pf-ipra} are
+written proofs; the package proposes a Lean formalization of the
+translations and the round trips, which is not done.  (c) Can the
+environment machinery replace enough of the native kernel to give a
+smaller complete checker?  The reference checker of
+\cref{base:sec:measure} is larger in every coordinate than the compact
+checkers; the package records that the removal of numerical binders moves
+the work into the pairing schemas, \rulename{Sub} and explicit program
+identities, and answers neither this question nor whether one direct
+checker can improve all three coordinates of the compact minima at once.
 \end{question}

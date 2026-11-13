@@ -861,6 +861,13 @@ The last five of the day (`exact_threshold`, `local_validation`, `retained_valid
 shifted strict contract 299/335/583, and opaque fresh names from finite trees) and
 "Introduction without a supplied witness" (an introduction whose matrix is reconstructed
 from the premise proof); seven superseded checker files were deleted.
+Then `checker_research`, `scope_free_audit`, `stack_clock` and `composition` went into
+"Certificates and checkers" (exact contract with the `true` alias 303/338/576, fresh names
+printed from the visible proof data, a scope derived from the packet stack) and "The base
+theories and their bridge", which now has a section on two alternative bases: forward
+iteration with tail induction (from `local_validation`) and the binder-free calculus `PF` of
+programs on environments with surjective pairing (from `composition`), each bi-interpretable
+with iPRA; the stack-clock checker, superseded on delivery, was deleted.
 `checked_presentation`, `context_phase`, `crossed_uniqueness`,
 `frontier_review`, `inferred_major`, `orbit_closure`, `progress_independence`
 and `smaller_envelope` arrived on 2026-11-12 (commits `1c5ecfe518`,
