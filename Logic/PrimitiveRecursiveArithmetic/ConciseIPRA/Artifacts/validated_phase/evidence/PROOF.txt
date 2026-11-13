@@ -1,0 +1,236 @@
+INDEPENDENT REVIEW: ORDER TESTS AND THE EAGER THREE-FIELD PRESENTATION
+==================================================================
+
+Scope and status
+----------------
+This review concerns Python checker presentations of the existing ConciseIPRA
+calculus. It does not supply a new arithmetic or logical axiom basis. The
+bi-interpretation with full first-order iPRA, with actual equality and the
+identity numerical round trips, is inherited through the ordinary readings
+and canonical compiler of that calculus. The reasoning below is a written
+mathematical audit; it is not an end-to-end Lean verification of Python.
+
+The inspected controls are the incoming scope_phase package at the pinned
+repository snapshot e88ebf229bb61bd870bb229b9c97caaa1e044e6e:
+  code/checker_ast340.py
+  code/checker_bytes584.py
+Its PROOF_NOTES.txt identifies the earlier validated_three_field and
+checked_reduction packages and these unified-article labels:
+  cert:def:reading, cert:def:opener,
+  cert:lem:opening, cert:lem:exposure, cert:lem:fresh,
+  cert:lem:eager, cert:lem:plus-opening,
+  cert:prop:uzero-native, cert:prop:validated-terminal,
+  cert:prop:return-reservation.
+Its entry_reservation_audit.md and entry_four_field_audit.md give the explicit
+entry-allocation soundness/completeness argument used here. These are the
+inherited results, not results newly established by this package.
+
+1. Two exact predicate equivalences
+----------------------------------
+For every integer k <= 0, every integer d, and every integer a, put
+  p = d & (a % 2).
+Python's remainder a % 2 is either 0 or 1, including for negative a. Hence
+p is either 0 or 1, including for negative d. Consequently
+  bool(k or p) = (k < p).
+Indeed, when k < 0 both sides are true, and when k = 0 both sides are true
+exactly when p = 1. Thus the conditional guard
+  k <= a < d and (k or d & a % 2)
+can be replaced by
+  k <= a < d and k < d & a % 2.
+This removes a pair of parentheses without changing the branch selected.
+
+For every Boolean b and every integer k <= 0,
+  bool(k or b) = bool(k | b).
+For k = 0 both have truth value b. For k < 0, bitwise OR with either 0 or 1
+is still a negative, nonzero integer. Apply this to
+  b = (len(a) in (1, 2 + d % 2))
+at list nodes. It replaces the other conditional guard by
+  a * 0 != 0 and k | (len(a) in (1, 2 + d % 2)).
+The Python precedence is intentional: this is
+  (a * 0 != 0) and (k | (len(a) in ...)).
+
+Evaluation-order check. The second transformation evaluates len(a) when
+k < 0, whereas the old disjunction could skip it. This is harmless here.
+After the whole-input gate, externally supplied objects are integers and
+lists. At an integer the preceding test a*0 != 0 is false; at a list its
+length exists. The internal missing-image objects are a function or 0j.
+The function fails already at a*0, in both programs. For 0j the list test is
+false and the subsequent ordered comparison fails before either changed
+leaf predicate. Internally generated Boolean zero also behaves as an integer
+in these tests. No additional successful or failing branch is introduced.
+For the first transformation, extra arithmetic is evaluated only after the
+ordered integer comparisons have succeeded, and is total on integers.
+
+Reachability invariant. k starts at 0, and its only subsequent assignments
+are k := ~(-k) = k-1. It is therefore always a nonpositive integer. Recursive
+depths d are integers even on malformed list arities. The preceding identities
+therefore cover every reached predicate, not just canonically typed proofs.
+
+The complete JSON claim. The expression
+  str(p).strip('0123456789-[], ')
+is empty precisely when the parsed JSON value uses only integers and lists.
+Booleans, nulls, dictionaries, strings, finite floats and non-finite floats
+leave forbidden characters in their Python representation. In that case the
+packet reader is not callable and both programs reject before the predicates.
+Other parser or packet errors are unchanged. Thus direct substitution of the
+two predicates, with every other statement fixed, preserves acceptance on
+arbitrary JSON input, not merely on the promised integer/list grammar.
+
+Induction on execution now gives exact direct-transform equivalence: corresponding
+calls have the same state, each changed conditional selects the same branch,
+and the same values are subsequently constructed and compared. The numerical
+values of the old and new guard expressions need not agree; their truth values
+agree, and those expressions are used only as guards. Resource exhaustion is
+treated in the same ordinary implementation sense as in the controls.
+
+2. Why entry allocation still enforces freshness
+------------------------------------------------
+Let K be the current floor at entry to c(g,a). Python completely evaluates
+the left operand i(a) of the membership test before its right tuple. Only
+then does the first tuple member set k to K-1. The input goal and context
+therefore have their existing ordinary readings in the older scope.
+
+At the root K=0, so precisely that scan enforces the public Eq/D grammar.
+Every subsequent call has negative k. With the eager missing-image fallback,
+an out-of-range scalar is rejected even at an even formula depth; the product
+evaluates its image before multiplying by zero. This observation is necessary
+for exact public validation and must not be replaced by short-circuiting.
+
+A successfully scanned scalar is an admitted old scalar or the numerical
+zero alias 1, and a successfully scanned list is a list. Neither can equal
+the newly inserted marker K-1. The extra tuple member therefore performs
+allocation only; it is not a new axiom or a new hypothesis-closing case.
+
+For a nonterminal, the witness-instantiated matrix is formed before its
+recursive major call. Every major call reserves at least one lower name,
+including a terminal major. Its returned floor beta is strictly below the
+scope in which that matrix, the exported goal and the old context were fixed.
+It is therefore a valid fresh eigenparameter. Numerical terms are allowed to
+use other parameters admitted by ordinary weakening; no new assumption is
+provided by an unused entry-reservation name.
+
+3. The eager three-field combination
+------------------------------------
+The new three-field profiles combine the already established entry schedule
+and inferred-major protocol with the already established eager opener. Their
+packets are [s,u,t]. This is not literal source-to-source acceptance equivalence
+with the four-field byte control: in the latter the endpoint test is delayed
+until after the major, while in the three-field protocol it is performed
+before the major. They have the same ordinary theorem set by the inherited
+rule interpretation, not necessarily the same accepted raw certificates.
+
+Write O for the eager sorted opener. After terminal checks, if O(t;u)=a the
+three-field checker sets the continuation pregoal to O(t;s) and reconstructs
+the major as [s,u] for truthy s, or [t,t,t] for false s. It subsequently proves
+that reconstructed major. Otherwise it keeps the supplied source as major;
+a false source selects paired introduction, and a unary major selects paired
+elimination. All source/target or witness pre-openings required by this
+protocol occur before the major proof, so the freshness argument above applies.
+
+Soundness is induction on the finite successful call tree, using the inherited
+sorted reading and opening/exposure lemmas. The cases are:
+
+  * A retained hypothesis or a matched computation frame gives its existing
+    native rule. The repaired literal counter `or 1` remains present.
+  * A reconstructed binary major gives equality transport. Its repeated
+    context entry has neutral truth reading and adds no assumption.
+  * A reconstructed ternary major gives closure specialization. Its repeated
+    entry is again neutral truth; its major is actually checked.
+  * A unary major opens its paired binder at the fresh returned floor, and
+    the exported old goal does not depend on that witness.
+  * A false administrative major opens the goal's paired binder at the
+    supplied witness. The hypothesis is progressive only when the exact
+    test `len(a) == 2 == u` holds. Thus progress is restricted to a literal
+    equation, with marker u=2. Every compound matrix uses numerical cases.
+
+For other auxiliary raw arities the inherited neutral readings and exposure
+cases apply. In particular, the argument is not an assertion that arbitrary
+untyped trees are ordinary terms or ordinary equations. The strict public
+grammar is what connects the root result to the stated native theory.
+
+The factor d%2 is retained. Erasing it would permit numerical replacement at
+formula positions and is unsound, even for array-rooted templates. The pinned
+scope_phase nested_template_lemma.md supplies a concrete counterexample to
+that tempting but invalid alteration. Likewise, replacing len(a)==2 with
+the truthiness of a[1:] would wrongly permit progression at Q triples.
+
+4. Canonical completeness and the neutral-major translation
+-----------------------------------------------------------
+Canonical native derivations compile by the existing three-field construction,
+using the actual entry-allocation schedule to assign fresh negative names.
+Progress uses marker 2, cases a false marker, and computation terminals supply
+their predecessor, initializer and body. Term templates are canonically sorted;
+their formula positions do not contain numerical holes. The eager and lazy
+openers therefore agree on all active positions used by this compiler.
+Only the administrative false major needs the empty-array truth spelling []
+instead of the scalar truth spelling 0. An empty array is traversed directly
+and is accepted from the fixed initial context [[]]. Its ordinary reading is
+truth. The extra reservation for this terminal major is still performed.
+
+It is essential to distinguish the two uses of the packet's initial zero.
+At a closure-specialization packet, s=0 is the numerical zero image; it must
+remain 0, which the term scan canonicalizes to the numeral spelling 1. At a
+nonmatching introduction packet, s=0 is the administrative major and becomes
+[]. Replacing every first-field 0 by [] changes some numerical instances and
+is not a valid certificate translator.
+
+A precise untrusted adaptation for the packaged canonical traces is to execute
+the old three-field control, and at every nonterminal after its endpoint
+dispatch mark the current packet if the remaining source is false. Replace
+only those packets' first-field scalar zero by []; leave every other field
+unchanged. This retains packet order, the number of calls, the scope schedule,
+the matrix, the witness, and the progress/case marker. The formerly neutral
+major call then proves [] rather than 0; both are fixed truth resources. For
+canonical templates with no formula holes, all other active substitutions are
+unchanged. The existing canonical compiler can perform this choice directly,
+without executing a control checker. This compiler is not trusted by the
+new checker: its output is independently checked by that checker.
+
+This is a canonical-completeness argument. It is deliberately not a claim
+that all malformed or aliased accepted old traces admit this exact local
+translation, nor an equality of the two raw accepted-input languages.
+
+5. Independently reproduced evidence
+------------------------------------
+Environment: CPython 3.12.14. Whole-module normalization is
+  ast.unparse(ast.parse(source)) + '\n'.
+The measurements count nonlayout/noncomment tokens and all ast.walk nodes;
+gzip is compresslevel=9, mtime=0.
+
+Direct AST-profile rewrite:
+  314 tokens / 340 AST / 681 bytes / gzip-9 411
+  -> 312 tokens / 340 AST / 677 bytes / gzip-9 413.
+Direct byte-profile rewrite:
+  311 tokens / 362 AST / 584 bytes / gzip-9 375
+  -> 309 tokens / 362 AST / 580 bytes / gzip-9 377.
+The two direct predicate rewrites do NOT reduce the AST count, and they make
+these gzip streams two bytes larger. A smaller compressed stream is not claimed.
+
+The separately constructed eager AST profile has 312/337/665/399; after these
+predicate rewrites it has 310/337/661/401. Its AST improvement comes from the
+eager/neutral composition, not from the predicate substitution.
+
+direct_equivalence_receipt.json records 768,690 bounded predicate comparisons;
+112 AST-control fixtures (14 positive, 98 negative); 63 byte-control fixtures
+(14 positive, 49 negative); and 2,536 additional JSON cases for each control.
+The direct variants agreed on acceptance and exception class throughout.
+These finite checks support the general local proof of section 1; they are
+not substitutes for it.
+
+eager_three_traced_receipt.json records all 112 fixture expectations preserved
+after the precise neutral-major adaptation, including all 14 positive cases:
+compound closure specialization, used-hypothesis equation induction, ordinary
+atomic cases, and zero-symmetry examples, together with the malformed and
+witness-capture rejection cases. The first attempt that changed every initial
+zero was rejected by five positive fixtures, and was discarded. The successful
+adaptation is separately reproducible and is the one described in section 4.
+
+6. What this result does not establish
+-------------------------------------
+The validated checker envelope is a comparison among several programs; it is
+not the size of one jointly optimal program. The compact promised-grammar
+frontier has still smaller coordinates and is not beaten by these strict
+programs. No absolute lower bound, globally simplest iPRA axiomatization, new
+mathematical breakthrough, or independent re-proof of the full iPRA bridge is
+claimed. The precise achievement is a smaller fully validated checking
+presentation of the same already established theory.

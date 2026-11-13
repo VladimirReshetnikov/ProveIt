@@ -1,0 +1,73 @@
+INDEPENDENT REVIEW OF THE SIGNED MASK CONSTRUCTION
+
+Reviewed files:
+  candidates/checker_agent/exact_signed.py
+  candidates/checker_agent/exact_integrated_signed.py
+  research_math/exact_fused_signed.py
+
+CORRECTION: Every integrated mask parameter MUST be keyword-only. The original
+three-positional-argument boundary of i(*a,t,2) enforces unary opening;
+adding a fourth positional parameter allows malformed equation opening and
+breaks soundness. The corrected signature is i(a,t=c,d=0,*,m=-1), and
+the recursive mask update is supplied as keyword m=. Review claims below
+apply only to this corrected signature. The standalone validator is unaffected.
+
+The signed context bit mask is correct. Write M>0 for the odd availability
+mask: bit zero is the constant-zero slot, and bit j (j>=1) records whether
+raw leaf 2*j+1 names a real numerical binder. A formula carries -M and a
+term carries +M. The initial formula state is -1.
+
+1. D adds two genuine variables, so M -> 4*M+3 and the signed state
+   -M -> -4*M-3 = 4*(-M)-3.
+2. Successor inserts two dummy coordinates, so
+   M -> 4*(M-1)+1 = 4*M-3.
+   Thus both unary constructors use the same state transition.
+3. Equality turns a formula state -M into term state M without changing
+   the available slots.
+4. Iterator counter and seed insert one dummy coordinate:
+   M -> 2*(M-1)+1 = 2*M-1.
+   Its body inserts one genuine binder: M -> 2*M+1.
+5. The term leaf predicate m>0<a and ((m >> (a//2)) & a & 1) is true
+   exactly at a positive odd available code. Formula leaves are rejected.
+
+On canonical formulas the integrated root opener returns its input
+unchanged. The external integer/list lexical gate is retained. Therefore
+this is an exact public-input validation refinement, not a normalization
+which silently changes the requested formula.
+
+For research_math/exact_fused_signed.py, v=1 initially. At v=1 the leaf
+predicate is the exact signed mask predicate with the existing scope and
+sort checks. After public validation v=0. The shifted exponent is then
+(a//2)*v=0, so no negative shift is evaluated at free negative variables.
+The new condition 0 <= (d & m & a%2) is always true, since its right side
+is either zero or one. Hence the original proof-phase scalar rule is
+unchanged. All additional mask updates are integer arithmetic and remain
+total even on the arbitrary arity internal lists admitted by the prior
+kernel; they do not create a new rejection case. The global k behavior and
+all proof-rule computations and positional-arity checks are unchanged once
+the mask parameter is keyword-only.
+
+For exact_integrated_signed.py, k=0 only while validating the public goal;
+thereafter k<0. The `k or ...` short circuit skips every mask test during the
+proof phase. It must not be replaced by eager bitwise OR: a valid negative
+free variable would then request a negative right shift.
+
+Supporting experiment:
+  205,760 comparisons of the standalone signed validator with the original
+  positive-mask/sort validator, for all odd masks 1..63 on small scalar
+  leaves and 200,000 deterministic random trees (seed 20261113), produced
+  no discrepancy. This finite test supports, and does not replace, the
+  transition proof above.
+
+No structural compact-kernel improvement below the current 239-token /
+255-AST /460-byte coordinate envelope was found in this investigation.
+Removing the ACCEPT print statement merely changes the common output
+contract and equally reduces all controls; it is not a substantive record.
+The signed-mask construction is a valid improvement to exact encoder-image
+checking, with its comparison class stated explicitly.
+
+Additional corrected-API experiment:
+  26,400 deterministic comparisons against the original 584-byte opener,
+  including valid proof-phase k<0, negative depths, arbitrary raw list arities
+  0..6, and positional call arities 0..6, produced identical values or
+  exception classes. The keyword-only mask preserves the old call boundary.

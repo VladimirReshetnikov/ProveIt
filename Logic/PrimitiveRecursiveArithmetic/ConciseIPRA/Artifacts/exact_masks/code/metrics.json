@@ -1,0 +1,62 @@
+{
+  "python": "3.12.14",
+  "normalization": "ast.unparse(ast.parse(source)) followed by one final LF",
+  "source_count": "complete standalone module, including reader and ACCEPT driver",
+  "profiles": [
+    {
+      "file": "checker_json.py",
+      "baseline": "checker_bytes584",
+      "reader": "whole JSON",
+      "purpose": "JSON counterpart; exact canonical goals",
+      "tokens": 365,
+      "ast_nodes": 428,
+      "bytes": 687,
+      "gzip9": 439,
+      "sha256": "595dfb8f0a48235e523ba8c246a813d6039c24b651b753a6eb7359d1dbf71e6b"
+    },
+    {
+      "file": "checker_line.py",
+      "baseline": "checker_bytes584",
+      "reader": "one-line restricted expression",
+      "purpose": "smallest byte count in this family",
+      "tokens": 359,
+      "ast_nodes": 420,
+      "bytes": 667,
+      "gzip9": 428,
+      "sha256": "4d2a9eee951ee3587b7411f46629cef4acd097b10044d93932af8e81f7308d02"
+    },
+    {
+      "file": "checker.py",
+      "baseline": "checker_bytes584",
+      "reader": "whole-document restricted expression",
+      "purpose": "main checker; spaces and newlines allowed",
+      "tokens": 364,
+      "ast_nodes": 424,
+      "bytes": 676,
+      "gzip9": 435,
+      "sha256": "c179e89ff8eb69a4981060a3d6866f7b264c8328946654c8b56ec6e1d9abbe5f"
+    },
+    {
+      "file": "checker_tokens.py",
+      "baseline": "checker_tokens302",
+      "reader": "one-line restricted expression",
+      "purpose": "smallest token count in this family",
+      "tokens": 354,
+      "ast_nodes": 416,
+      "bytes": 734,
+      "gzip9": 451,
+      "sha256": "9987e069553e7e6705517d486d3366f8f18569a2246b6ed5dc3ac11d0ce0287c"
+    },
+    {
+      "file": "checker_ast.py",
+      "baseline": "checker_ast340",
+      "reader": "one-line restricted expression",
+      "purpose": "smallest AST count in this family",
+      "tokens": 361,
+      "ast_nodes": 399,
+      "bytes": 759,
+      "gzip9": 456,
+      "sha256": "a29b5cd424fff5719af6cc81c15470602034f18e3f3ce95695c45016c5b8956f"
+    }
+  ]
+}

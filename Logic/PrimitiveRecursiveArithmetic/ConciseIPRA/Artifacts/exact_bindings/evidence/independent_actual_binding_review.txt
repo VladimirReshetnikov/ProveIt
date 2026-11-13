@@ -1,0 +1,117 @@
+INDEPENDENT REVIEW: OPENER WITH ONLY GENUINE BINDERS
+
+Reviewed candidate:
+  research_math/EXPERIMENTAL_proper_binders.py
+  candidates/proper_agent/proper_bytes.py
+
+The proposed change replaces the old uniform child depth d+5-r by
+  d+5-r                       at formula positions (d even),
+  d+2                         at an iterator body (d odd,r=3,j=2),
+  d                           at every other term child.
+This removes the dummy slots of successor and of iterator counter/seed.
+The change needs a new codec and a new raw-reading argument; it is not
+certificate-by-certificate operational equality with the old checker.
+
+RAW READING
+A formula below p genuine numerical binders has depth 2p; a term has depth
+3+2p. At numerical positions: integers in [k,0) denote rigid parameters;
+0,1,2 denote zero; codes 3+2j and 4+2j denote slot j when j<p; all remaining
+integers denote the substitution hole. Slots are numbered from innermost.
+Scalar formula nodes denote 0=0. An array at a term position denotes:
+  length 1: S(child), with the child below the same p slots;
+  length 3: I(counter,seed;u.body), with counter/seed below p slots and
+            the body below p+1 slots;
+  other length: numerical zero, all children being ignored annotations.
+An array at a formula position denotes:
+  length 1: D_xy(body), with y innermost and x next, below p+2 slots;
+  length 2: equality of its numerical children, below p slots;
+  length 3: Q_y(last child), below p+1 slots; first two children ignored;
+  other length: 0=0, all children ignored.
+
+The raw decoder is total on the integer/list alphabet. The opener may
+reject because it traverses ignored annotations too. Such rejection is
+permitted: no completeness claim for arbitrary raw aliases is needed.
+All semantically meaningful children are traversed at exactly the depth
+specified by this reading. At ignored nodes no semantic claim about the
+child's depth is required; in particular arbitrary arities may produce
+negative depths only in annotations.
+
+SEMANTIC OPENING
+The old structural proof transfers with these explicitly changed binder
+counts. A successful no-image scan closes every active numerical position
+and preserves its reading. A successful image scan replaces the exposed
+numerical hole by the reading of the image validated at root term depth3.
+Copying such an image beneath additional binders causes no capture: it has
+only rigid parameters and variables bound within its own subtrees. At a
+formula-position hole the old parity mechanism still produces neutral
+truth; it never inserts a numerical tree into a formula position.
+
+The outermost-slot exposure lemma also transfers. Lowering an input depth
+by two preserves its parity, and every new child increment depends only
+on parity, arity, and child position, not the absolute depth. Therefore all
+active descendant depths decrease by precisely two, exposing exactly the
+previous outermost numerical slot. The usual freshness lemma is unchanged:
+a no-image scan at floor k has no active parameter name below k; every
+subsequently allocated smaller name is fresh.
+
+COMPUTATION AND OTHER RULES
+A matched computation leaf I(S(s),u;h)=O(h;I(s,u;h),3) validates s and u at
+root term depth3 and h at depth5. Thus the right side opens precisely the
+one state binder. The zero-counter computation has its usual reading.
+Transport and closure elimination use semantic opening; paired elimination
+uses the exposure and freshness lemmas; the two introductions use the same
+lemmas and retain their equation-only progress test. Tripling a unary major
+still produces Q of its body, and tripling every other nonempty array gives
+an ignored neutral formula of arity>=6. Scalar and empty neutral cases keep
+their previous readings. Consequently the raw successful-trace soundness
+proof uses the same inference rules, with only the opener lemma changed.
+
+PUBLIC SYNTAX IS NOW EXACT
+During the initial strict scan, only Eq/D formula arrays and S/I term arrays
+are admitted. At depth3+2p the positive odd scalar range is exactly
+1,3,...,2p+1: zero and the p genuine numerical variables. There are no dummy
+slots to reference. Thus the accepted closed public grammar is precisely
+the encoder image. Decoding and re-encoding a validated public goal returns
+that same tree. This is stronger than the earlier sorted-arity contract,
+which admitted inaccessible dummy-variable aliases.
+
+COMPLETENESS
+Encode a native derivation using only these genuine binder positions.
+Canonical opening is then literal capture-avoiding substitution on its
+encodings. The existing rule-by-rule certificate construction and dynamic
+negative-eigenparameter allocation apply with the new encoder. This proves
+completeness for every formula in the now-exact public grammar. The
+arithmetic and logical calculus, and its inherited iPRA bi-interpretation,
+are unchanged. No new assumption about the standard model is required.
+
+API AND SCHEDULING
+The opener retains exactly three positional arguments. This matters because
+i(*a,t,2) uses Python's argument-count check to exclude opening a binary goal
+as a unary D formula. No extra parameter is added here. The order of goal
+validation, floor reservation, witness preparation, major checking, and
+continuation checking is unchanged from the selected reference profile.
+
+CONCRETE FRESHNESS TEST
+The closed formula D_xy(I(y,0;u.x)=I(y,0;u.y)) has the new code
+  [[[3,1,7],[3,1,5]]].
+Its zero row is true and its rows at1 and2 force x=1 and x=2, so it is false
+in the natural numbers. A malicious packet selects witness S(beta), where
+beta is the future introduction eigenparameter. The correct programs reject.
+Controls which prepare the witness only after checking the neutral major
+accept this false formula. For the return-reservation three-field profile
+beta=-1; for the entry-reservation four-field profile beta=-2.
+
+Artifacts:
+  proper_three_field_capture.json
+  proper_four_field_capture.json
+  proper_capture.py
+  proper_capture_results.json
+  UNSOUND_proper_three_field.py   (negative control only)
+  UNSOUND_proper_four_field.py    (negative control only)
+
+All14 positive canonical fixtures were recoded by proof roles and accepted
+by the three-field candidate, including used-hypothesis equation induction,
+compound case introduction, closure elimination, paired elimination,
+zero-source transport and successor computation. The independent four-field
+suite is maintained by the baseline audit agent. Finite checks support the
+universal argument; they do not replace it.

@@ -1,0 +1,147 @@
+LEXICALLY GATED INTEGER/LIST EXPRESSIONS
+======================================
+
+Scope
+-----
+This is a change of certificate reader, not a new arithmetic axiom basis.
+Every inference, substitution, scope, and public-goal-validation definition
+is AST-identical to its corresponding incoming scope_phase control. The
+shared comparison is the parsed integer/list certificate and the theorem
+it certifies. The accepted raw text language changes.
+
+The measured programs read the whole standard input into p. Let Sigma be
+the ASCII digits, minus sign, square brackets, comma, ordinary space,
+line feed, carriage return, and horizontal tab. They use
+
+    q = p.strip('0123456789-[], \n\r\t') or eval(p).pop
+
+and immediately call q(). The AST-oriented candidate incorporates the same
+expression into the initial checker call. No name from the input is ever
+used as a Python identifier. No data are inserted into the checker source.
+
+Lemma 1: Exact gate
+-------------------
+For any string p, p.strip(Sigma) is empty exactly when every character of p
+belongs to Sigma. If p has an excluded character, removing characters from
+its two ends cannot remove that character. Conversely, if every character
+is permitted, stripping removes the entire string.
+
+When the gate is nonempty, Python's short-circuit or does not evaluate its
+right operand. Then q is a nonempty string, and the subsequent q() raises
+TypeError. In particular no eval call occurs on any text containing an
+excluded character. This is a condition enforced by the measured program,
+not an external promise about the submitted text.
+
+Lemma 2: What the permitted expressions can do
+---------------------------------------------
+In the Python 3.12 expression grammar, the only atomic literals expressible
+with Sigma are decimal integer literals and list displays. Minus supplies
+unary negation and binary subtraction. Square brackets additionally supply
+subscription. Commas delimit list elements and may construct an unparenthesized
+tuple at the outer expression level or an index tuple in a subscription.
+
+The alphabet excludes all identifiers and keywords, quoted or prefixed
+strings, bytes, float and imaginary literals, attribute access, parentheses,
+function calls, comprehensions, dictionary/set displays, lambdas, assignments,
+assignment expressions, imports, slices, comments, and operators other than
+minus. Repeated minus signs denote repeated negation/subtraction, not a new
+operation. Numeric literals with leading zeros are either permitted zero
+spellings or syntax errors; no additional value type results.
+
+Induct on a successfully evaluated non-tuple expression. Its value is an exact
+integer or a finite acyclic tree of exact lists and exact integers:
+
+1. An integer literal has exact type int.
+2. A list display creates an exact list whose element expressions have those
+   types. A bare tuple expression is not a list element: grouping parentheses
+   would be needed, and those are excluded. Comprehensions and starred items
+   are unavailable.
+3. Negation and subtraction succeed only on the integer values available
+   here, and yield exact integers. Applying them to a list raises an exception.
+4. A successful subscription has an exact list as its base and an exact
+   integer as its index. It returns an existing element of that list. An int
+   base, tuple index, list index, or out-of-range index raises an exception.
+
+An outer tuple is possible, but has no pop attribute, so it cannot reach the
+inference checker. There is no syntactic route to place such a tuple inside
+a list or use it as the base of a later subscription without parentheses.
+Thus if eval(p).pop succeeds, it is the bound pop method of an exact list
+whose whole content is a finite tree of exact integers and lists. This covers
+unused proof records as well as records that the inference checker consumes.
+
+Only the indicated built-in arithmetic, list construction, and list lookup
+operations are evaluated. They cannot mutate existing checker objects,
+invoke a payload-selected function, open a file, inspect attributes, import
+a module, create a user-defined object, or form a cyclic object. The claim
+is restricted-expression safety, not the false assertion that unrestricted
+eval is safe or that no expression evaluation occurs.
+
+The lexer/parser and built-in evaluator are part of the host Python runtime,
+just as the previous JSON parser was. They are not a hidden theorem prover.
+This is a different trusted reader, with all its source usage and the lexical
+gate included in the measured module. The proof checker imports no helper,
+translator, external checker, executable payload, or compressed source.
+
+Theorem 3: Preservation of the parsed-certificate acceptance relation
+-------------------------------------------------------------------
+Let K be the unchanged inference kernel. Interpret the readers with arbitrary
+finite resources, including an unbounded parser stack.
+
+(a) If the new complete checker accepts text p, then d = eval(p) is an exact
+integer/list tree with list root by Lemmas 1 and 2. The old checker accepts
+the ordinary JSON literal json.dumps(d), following the same inference run.
+
+(b) If the old checker accepts a JSON text, let d be its parsed value. The old
+whole-alphabet test and successful pop require the same exact integer/list
+data with list root. Its canonical JSON literal is a permitted Python
+integer/list expression with value d. The new checker follows the same
+inference run and accepts this literal.
+
+Proof. After parsing, q in either program is the list's pop method. The proof
+records, initial goal, and every inference definition agree. On the common
+initial data, induction on the execution steps therefore gives the same
+packet consumption, scope floors, substitutions, contexts, branches, and
+acceptance result. The changed p variable is not used by the inference
+kernel; retaining the original text rather than its evaluated list has no
+effect because q retains the list object. In the AST-oriented variant,
+the enclosing initialization has the same property. K's AST equality is
+also checked by verify.py.
+
+Corollary 4: Mathematical consequences
+------------------------------------
+The canonical represented theorem set, inherited soundness, and canonical
+completeness are unchanged. Hence the inherited ordinary realization and its
+whole-domain identity bi-interpretation with full first-order iPRA transfer
+without any change to arithmetic or logic.
+
+The broad sorted validator still admits padding-slot aliases. The known
+incompleteness for certain noncanonical aliases, such as [[5],[1]], is not
+repaired. The precise completeness claim is for canonical encodings, exactly
+as in the controls. This construction does not yield an exact encoder-image
+validator and must not be compared as if it did.
+
+Literal resources and actual Python executions
+----------------------------------------------
+The theorem is deliberately not equality of all physical successful runs.
+CPython imposes a parser nesting budget on eval that differs from the JSON
+reader's budget; an expression with 201 nested list displays is rejected by
+the installed Python parser even when json.loads can parse it. Ordinary stack,
+memory, integer-conversion, and interpreter limits also matter. Runtime_limits
+in evidence records a concrete parser example. The same unbounded-resource
+idealization used for the inherited mathematical completeness must explicitly
+include the parser stack for this reader. There is no claim that adding memory
+alone removes CPython's fixed parser budget.
+
+Not every whitespace spelling accepted by JSON must be accepted by eval.
+The untrusted translator writes a compact canonical literal, for which the
+syntactic correspondence is immediate. Extra safe expressions such as a
+list lookup, a trailing comma, and an integer subtraction are new accepted
+spellings of the same parsed certificate, rather than new arithmetic rules.
+
+Sources for the host expression grammar
+--------------------------------------
+https://docs.python.org/3.12/reference/expressions.html
+https://docs.python.org/3.12/library/functions.html#eval
+These are official language/runtime documentation. The mathematics above is
+the reader argument for this exact alphabet; it is not a claim copied from
+the documentation. Verification was run on CPython 3.12.14.

@@ -1,0 +1,177 @@
+INDEPENDENT REVIEW OF THE INTRINSIC-JSON EXACT CHECKER
+===================================================
+Candidate: checker.py (316 tokens / 360 AST nodes / 591 normalized bytes)
+Pinned mathematical predecessor: exact_bindings/code/proper_bytes.py
+from ProveIt commit fc05b10f0e03f22edbfdde9298a29fb2fee5dc59.
+
+The construction preserves the native scalar calculus. Its new contribution is
+a smaller proof-input contract with validation inside the existing opener.
+It is not a new arithmetic axiom, not a proof of absolute minimality, and not a
+checker below the promised-grammar compact frontier.
+
+A. PUBLIC CLAIM AND READOUT
+--------------------------
+A complete accepted input is an arbitrary JSON value whose outer list's final
+entry is the claimed closed native Eq/D formula. The checker does not presume
+that the JSON value has an integer/list alphabet. Every accepted public goal is
+an actual-binder canonical formula, with the one additional spelling `true` for
+integer code 1 (numerical zero). Replacing each true by 1 gives the exact old
+canonical encoder image. False, floats, strings, null, and objects cannot be
+active public syntax. All native theorem encodings using integers remain
+accepted. The decoder is structural and is already the established actual-
+binder decoder; the only alias is true = 1. The conclusion is this final item,
+never a selected earlier prefix item and never an unproven premise.
+
+Unused prefix data can be arbitrary JSON, and packet fields can contain unused
+annotations. This is deliberately different from demanding an exact alphabet
+for every unused input byte. It does not weaken the logical soundness contract:
+for EVERY accepted input, its designated public formula is a native theorem.
+No external grammar promise is needed.
+
+B. CHANGES WHICH ARE LITERAL INTEGER/LIST EQUIVALENCES
+----------------------------------------------------
+1. On exact integers and lists, `a*0 == []` and `a*0 != 0` make the same choice.
+2. On every integer a, `a | 0` equals a. Thus the new scope test
+   `k <= a | 0 < d` is the old scope test on the inherited alphabet.
+3. `s and [s] or 1` equals `[s] if s else 1`, since [s] is nonempty.
+4. After a four-field list packet is unpacked, r[:2] is nonempty, so
+   `s and r[:2] or [t]*3` equals `r[:2] if s else [t]*3`.
+5. `from json import load` is only a spelling change for the same parser.
+6. `j & 2` and `2*(j==2)` agree for j=0,1,2. These are all meaningful child
+   indices of a numerical constructor: successor has j=0; iterator j=0,1,2.
+   At formula positions the even-depth branch is unchanged. Numerical arrays
+   of arity >=4 have constant zero raw reading, so changing traversal depths
+   in their extra children only changes possible annotation rejection. It
+   cannot change any successful active reading. At every depth the increment
+   remains even in numerical positions and satisfies delta(d+2)=delta(d)+2.
+   Therefore the opening/freshness structural lemmas still hold on arbitrary
+   raw integer/list trees. Canonical compiler output contains only meaningful
+   numerical arities, hence its executions are exactly unchanged.
+
+The source zero-computation terminal has no hidden grammar import. The only
+import in the measured candidate is Python's JSON reader, just as for the
+matched source. All inferred-rule and checking code is included in the size.
+
+C. ACTIVE-DATA TYPE LEMMA (THE MAIN NEW VALIDATION ARGUMENT)
+----------------------------------------------------------
+For a value returned by JSON, `a*0 == []` holds exactly for a list:
+  lists -> []; numbers/bools -> numeric zero or NaN; strings -> empty string;
+  dictionaries and None raise when multiplied.
+If the test is false, the scalar range test evaluates `a | 0` BEFORE deciding
+whether a is in range. On JSON data this succeeds exactly for integers and
+booleans. In particular it rejects all floats, even 1.0, NaN, infinities and
+values that would be exposed holes. It also rejects every string, including
+empty strings, without a self-recursive one-character-string execution.
+
+Consequently, whenever a call i(A,t,d) succeeds, its entire SOURCE A and its
+result are finite trees of ints/bools/lists. Every recursively visited array
+is an exact list. If t is actually needed, it is recursively scanned at root
+term depth, so the same condition holds for that image. If t is not needed,
+its unused value has no effect on the result or its native reading. This
+last possibility was already allowed by the old opener (unused images are
+semantically arbitrary); it does not add a logical witness dependency.
+
+This is stronger and simpler than interpreting fractional floating point
+parameters. NO extended real-valued variable semantics is required for this
+candidate. Arbitrary fractional floats, NaN or Infinity can appear only in
+ignored data or failed branches; they cannot survive an active opener scan.
+
+D. BOOLEAN PROJECTION AND EXACT PUBLIC GRAMMAR
+---------------------------------------------
+On the int/bool/list alphabet, replacing True by 1 and False by 0 preserves
+all operations used by the kernel: numerical order, |0, parity, multiplication,
+truthiness, list equality and arity. The positional-argument and list-shape
+checks are unchanged. Hence successful active opening judgments project to
+the old integer/list judgments (with the already justified j&2 extension on
+inactive annotations).
+
+At k=0 the existing arity/sort check is enabled. Its scalar test requires an
+odd positive value below the appropriate term depth. Thus False is rejected
+and True is the sole additional public alias, exactly for code 1. Formula
+positions are even and admit no scalar. Successor adds no slot; an iterator
+adds a slot only at its third child; D adds two slots. Induction on the public
+tree proves that the goal is canonical after True -> 1, with no dummy slots.
+This is actual-binder grammar, not the weaker old padded sorted grammar.
+
+E. UNCHECKED PACKET FIELDS CANNOT SUPPLY A FALSE PREMISE
+------------------------------------------------------
+Each recursive call c(g,a) begins by scanning its goal a, before reserving the
+next eigenname. Therefore every successful major proof has a typed closed raw
+formula. Every context entry newly retained by c is a result of i and has the
+same property. The final continuation goal is also a result of i. The initial
+context is the unchanged neutral [[]].
+
+Not every raw field of a terminal packet is scanned. This is intentional and
+requires an argument, since an integral float can compare equal to an integer.
+
+* Hypothesis terminal: i(a) equals a retained typed entry (or the neutral
+  administrative entry). The packet's irrelevant fields supply no premise.
+
+* Zero-computation terminal: the candidate equation has the shape
+  [[1,u,t],u]. If it equals the fully scanned goal, its components u,t are
+  structurally equal to typed components. Each scalar equality between a
+  JSON number/bool and a typed integer supplies exactly that integer's value;
+  a string/dictionary/null/NaN cannot equal an integer or a list. Thus choose
+  those typed components as the initializer and body. The goal is exactly
+  I(0,u;h)=u in its ordinary reading. A false branch marker can be any false
+  JSON value: it is ignored and still selects the literal zero computation.
+
+* Successor-computation terminal: the compared left term is [[s],u,t].
+  Equality to the scanned goal supplies typed representatives for s,u,t.
+  The right side is the successful opening i(t,[s,u,t],3). The source t is
+  therefore typed; if the substitution image is used, it is typed as well.
+  If not, the body does not depend on its accumulator. In both cases the
+  opening lemma gives precisely the successor computation for the typed
+  representatives. Integral floats in an unscanned left annotation cannot
+  change the equation, because they equal only their integer representatives.
+
+The absence of a whole-input type gate therefore introduces extra spellings
+of valid computation instances, not extra arithmetic equations.
+
+For a nonterminal elimination, the template i(t,u) has actually succeeded,
+and its paired major is recursively proved. If a source/image field is used,
+it has passed i; if not used, the template is independent of it and any typed
+zero representative may be chosen. Template matching consequently gives the
+same equality transport or Q elimination as before. The major's shape must
+match the actual pair or triple supplied; foreign JSON objects cannot fake
+those shapes by equality.
+
+For D elimination/introduction, every opened body and retained premise is an
+opener result. Repeating a unary major gives its Q closure; any other typed
+true major repeated three times gives the existing neutral raw formula.
+Scalar-major multiplication is on integers/bools, so there is no float overflow.
+The exact three-positional-argument interface of i is unchanged: i(*a,t,2)
+cannot treat a two-entry equation goal as a one-entry D goal. Empty raw goals
+have the neutral truth reading, as in the source. Thus all ordinary rule
+cases are unchanged.
+
+F. FRESHNESS, TOTALITY CONVENTION, AND COMPLETENESS
+-------------------------------------------------
+The new bit test does not relax k<=a<d on any admitted scalar. Witness/source
+preparation still occurs before the recursive major proof lowers k. A newly
+allocated negative integer is therefore absent from the earlier closed goal,
+context and used witness. The source eigenvariable argument is preserved.
+
+The list test removes the nonempty-string recursion issue. For any finite
+parsed input under unbounded finite-resource semantics, each opener recurses
+on finite source/image trees and each proof call consumes a packet. An image
+is scanned with the missing-image sentinel, so exposed holes inside an image
+reject instead of recursively reusing the same image. No cyclic structures
+can be produced by JSON. As usual fixed physical Python recursion/memory
+limits can reject sufficiently large valid certificates; no stronger runtime
+claim is made.
+
+Soundness is induction on the finite successful call tree, using C--F and the
+same native raw-reading theorem as the source. Completeness follows by using
+unchanged canonical actual-binder certificates: every input value is integer/
+list, all meaningful j are <=2, and the old type gate always passed. The
+ordinary native calculus, its whole numerical domain, actual equality and
+identity bi-interpretation with iPRA are therefore preserved.
+
+REVIEW BOUNDARY
+This is a written universal argument and executable audit, not a new formal
+Lean/Rocq verification. The exact-public contract changes by admitting true
+as code 1 and arbitrary unused JSON data. It remains sound for every accepted
+input and complete on all canonical native theorem encodings. These details
+must appear in the final comparison rather than treating the candidate as a
+byte-for-byte same-input-language optimization.

@@ -1,0 +1,171 @@
+ACTUAL BINDERS: AN EXACT NATIVE PRESENTATION WITHOUT PADDING SLOTS
+
+Status and attribution
+----------------------
+The arithmetic and logical calculus is inherited from ProveIt at commit e88ebf229bb61bd870bb229b9c97caaa1e044e6e. The new contribution is a representation and its universal operational correspondence: remove dummy slots from the numerical syntax and make the single opener visit each child at its actual binding depth. This yields an exact public interface without a separate availability mask. No logical or arithmetic axiom is deleted, and no absolute simplicity lower bound is established.
+
+The initially studied signed-mask checkers remain a separately validated fallback. The new checker in research_math/EXPERIMENTAL_proper_binders.py measures 321 significant tokens, 373 AST nodes, and 689 ast.unparse-normalized UTF-8 bytes under CPython 3.12.14. Its byte-oriented companion should be measured separately. These are smaller than the prior exact encoder-image checker (581/641/1424), but they do not beat the smaller programs measured under a promised-canonical or sorted-only interface. All comparative statements must retain this distinction.
+
+The complete module includes JSON parsing, the whole-document integer/list alphabet gate, exact public-goal validation, scope checking, proof checking, and the ACCEPT output. There is no executable payload or imported local kernel. The convenience proof compiler is not part of the trusted boundary.
+
+1. Exact language and encoding
+-------------------------------
+Terms are x,0,S(t),I(n,a;u.h). Formulas are equations, Q_y B, and D_{x,y} B. The meanings are Q_y B = (B(0) -> forall y B(y)) and D_{x,y} B = exists x (B(x,0) -> forall y B(x,y)). The public language uses Eq and D only; Q is retained internally. A public formula is closed.
+
+Zero is encoded by 1. A rigid parameter is encoded by a negative integer. Slot j, counted from the innermost genuine numerical binder, is encoded by 3+2j. Successor is [t], iteration is [n,a,h], equality is [s,t], D is [B], and Q is [B,B,B].
+
+Unlike the prior uniform-arity codec, successor introduces no numerical slots, and neither the iterator counter nor the initializer introduces a slot. Only the update child of an iterator binds its state. D adds two slots, y innermost and x next; Q adds one.
+
+At a formula position below p protected genuine slots the depth is d=2p. At a term position it is d=3+2p. The child-depth function is
+
+  delta(d,r,j) = d + (2*[j=2] if d is odd, else 5-r),
+
+where r is the parent array's length and j is the child index starting at zero. Hence the meaningful cases are:
+
+  parent     child depth             meaning
+  formula D d+4                     two genuine slots
+  formula = d+3                     same slots; change to term sort
+  formula Q d+2                     one genuine slot in its last child
+  term S    d                       no new slot
+  term I    d,d,d+2                 state slot only in update child.
+
+At a term array of any arity other than 1 or 3 the whole array will read as numerical zero; its children are annotations. Therefore allowing its third child to receive depth d+2 is harmless. The depth may change whether a malformed certificate is rejected, but no annotation contributes to the arithmetic meaning of any successful run. This is the justification for omitting a redundant len(a)==3 test in the term branch. It is not an assertion that arbitrary malformed annotations are ignored operationally.
+
+2. Raw reading, including malformed auxiliary syntax
+-----------------------------------------------------
+Fix a floor k<=0. Negative integers in [k,0) name numerical parameters. At a term position below p slots, read an integer r as follows:
+
+  0<=r<3                      numerical zero
+  3+2j<=r<5+2j, j<p           slot j
+  k<=r<0                     the parameter named r
+  otherwise                  a distinguished hole w.
+
+At a formula position every integer reads as truth, 0=0. Arrays have the following readings:
+
+  arity 0:     zero as term; truth as formula
+  arity 1:     successor as term; D as formula
+  arity 2:     zero as term; equality as formula
+  arity 3:     iterator as term; Q of the LAST child as formula
+  arity >=4:   zero as term; truth as formula.
+
+Only the children needed by those readings have arithmetic meaning. In particular the first two children of a Q-shaped array and all children of a zero/truth auxiliary array are annotations. At meaningful children the environments are exactly the genuine-binding environments of Section 1. Slots under a successor are unchanged; counter and seed slots under an iterator are unchanged; the update gets one new innermost state slot.
+
+The closedness of a raw expression means that its reading has no occurrence of w. This is a statement about meaningful positions, not a claim that no unused annotation contains an out-of-range scalar.
+
+3. The actual-binder opener
+---------------------------
+For finite integer/list trees the proof-phase opener O_k(a;t,d), with image t or a missing-image sentinel, is the following partial operation:
+
+- For an array a, recurse on child j at delta(d,len(a),j), preserving arity.
+- For a scalar in k<=a<d, retain it, except normalize retained zero to 1.
+- For any other scalar at odd depth, insert O_k(t;missing,3).
+- For any other scalar at even depth, return the administrative scalar 0.
+
+A missing image is represented in the token checker by 0j. Any numerical comparison with it fails. Thus a used image must itself pass a root-term opening with no further image. On a finite JSON tree there is no recursive image chain: the inserted image is checked with a missing image. Structural recursion on the source and the finite image gives termination whenever the needed comparisons are defined.
+
+LEMMA 1 (semantic opening). At every meaningful position of depth d:
+(a) If O_k(a;t,d) returns, its result is closed at d and k.
+(b) If t is missing and the opener returns, a was closed, and the result has the same reading as a.
+(c) If t is present and a's reading contains the hole, the image is successfully opened at root term depth 3; its reading is a numerical term whose only free variables are parameters in [k,0). The output reads as a with that term substituted for w, without capture. If a's reading contains no hole, the output has the same reading as a.
+
+PROOF. Proceed by structural induction on the source, and apply the missing-image assertion first to an image. At a meaningful term scalar, retention is precisely the condition for reading a constant, a protected slot, or an admissible parameter. Otherwise the scalar is a hole and the image is required. At a formula scalar either retained or returned values read as truth. Normalizing 0 to 1 changes no reading. At a meaningful constructor child, delta is exactly its actual scope depth; apply the induction hypothesis. At an auxiliary constructor the reading is a constant and its arity is preserved, regardless of the traversals through its annotations. Those traversals may reject, but cannot change the reading of a successful output.
+
+For capture freedom, an image opened at term depth 3 may refer only to its own genuine inner binders, zero, and fixed admissible parameters. Below q of its own genuine binders a retained variable lies below 3+2q. Copying that image beneath additional outer binders therefore does not expose a reference to any newly enclosing binder. The image has the same term reading wherever inserted. This proves (c), then (a). No dummy slot argument is used.
+
+LEMMA 2 (exposure). If a is closed at depth d+2, its reading at d exposes its outermost protected slot as w. A successful O_k(a;t,d) substitutes the image for that slot.
+
+PROOF. On meaningful descendants, delta(d+2,r,j)=delta(d,r,j)+2 because adding two preserves parity. Thus every descendant cutoff decreases by exactly two. Scalars below the smaller cutoff keep their interpretation; precisely the scalars for the former outermost slot become out of range and read as w. Use Lemma 1 for substitution. Ignored annotations do not enter this argument.
+
+LEMMA 3 (freshness). If a is closed at floor f, its reading uses only parameters in [f,0). Lowering the floor to k<f preserves that reading, and every name in [k,f) is fresh for it.
+
+PROOF. A parameter smaller than f would have read as a hole at a meaningful term position. Closedness excludes it. The floor does not affect the constants or protected-slot readings.
+
+LEMMA 4 (canonical opening). For canonical data, these operations implement ordinary capture-free substitution for the exposed outermost genuine slot. Opening without an image at its original depth returns the same canonical tree.
+
+PROOF. Canonical variables are precisely the odd codes of their genuine slots. Lemma 2 identifies exactly the exposed codes; all other codes are retained. Canonical images refer only to their own binders and fixed rigid parameters. The constructor shape and its actual binding arity are preserved. Induction on canonical expressions finishes the proof.
+
+4. Exact public syntax, automatically
+-------------------------------------
+At the initial call k=0 and the phase flag v=1. The program permits a list length r precisely when r is 1 or 2+d%2. Thus formulas admit only D and equality; terms admit only successor and iteration. A leaf must satisfy
+
+  0<=a<d and 1<=d & (a%2).
+
+Hence a leaf occurs at a term position and is a positive odd integer. At term depth 3+2p these leaves are exactly 1 (zero) and 3,5,...,2p+1 (the p genuine slots). There are no dummy slots to exclude. Formula scalars, even scalars, negative free parameters, bad constructor arities and out-of-range indices reject.
+
+THEOREM 5 (exact initial traversal). On an integer/list tree a, the initial traversal returns normally if and only if a is the canonical encoding of a closed Eq/D formula in the actual-binder codec. When it returns, its result is exactly a.
+
+PROOF. Simultaneous structural induction on terms and formulas at each actual slot count, using the listed arity and scalar conditions. An invalid scalar reaches the missing complex sentinel and raises; an invalid array reaches an invalid scalar comparison and raises. Valid canonical scalar codes are nonzero and unchanged by a or 1. Therefore the returned tree is identical.
+
+The first i(a) is evaluated before the tuple assignment (v:=0). Every later traversal is proof phase and has the exact opener of Section 3: len(a)**0 is 1 even for an empty array, and 0<=d&(a%2) imposes no additional restriction. The new function retains the original maximum of three positional arguments. This matters at i(*a,t,2): a unary goal yields a valid call, an equation produces four positional arguments and rejects. A zero-length array can invoke a different valid call, but its formula reading is truth, so it cannot threaten soundness. A fourth positional state parameter must not be added: the discarded mask prototype showed that doing so admits false 0=S0 certificates.
+
+The whole-document JSON alphabet gate is unchanged. Among JSON-decoded values, str(p).strip('0123456789-[], ') is empty exactly on recursively nested lists and integers. Boolean/null/float/string/object spellings introduce excluded characters. A root integer lacks pop and an empty root list cannot supply a goal. The gate therefore includes unused prefixes and rejects all such outside-alphabet input before acceptance.
+
+5. Computation leaves become ordinary computation instances
+------------------------------------------------------------
+The terminal candidate formed from packet [s,u,t] is
+
+  K = [[s and [s] or 1, u, t], O_k(t;[s,u,t],3) if s else u].
+
+A successful match with the already opened goal makes K closed at the current floor. If s is false, the left counter is the canonical zero code 1. The initializer u is read at the same root term depth on both sides, and t is read under its state binder. Thus K is exactly I(0,a;u.h)=a.
+
+If s is true, the counter is S(n), where n is the root-term reading of s. Closedness of K's left side already makes s and u closed at their root positions and makes t closed under its single state binder. By Lemma 2, reading t at depth 3 exposes that state. Lemma 1 then makes the right side h(I(n,a;u.h)). If the state is unused, the right side is just the constant update and no image is needed. Either way K is exactly the successor-computation equation.
+
+This is simpler than the padded codec: no copied term has acquired a dummy slot, and no alternative value of such a slot must be controlled. The soundness of these leaves is directly I0 or IS in the inherited native theory.
+
+6. Soundness of the unchanged proof control
+-------------------------------------------
+The three-field checker reads [s,u,t] at every call. Its proof-control function c is textually unchanged from the incoming checker_tokens302.py; only the traversal child depths differ. Acceptance is normal completion followed by ACCEPT. The proof is by induction on the finite successful call tree, using Lemmas 1--3. Context readings remain stable as the global floor decreases.
+
+Terminal cases: the opened goal equals the neutral scalar 0, an entry of the context, or K. These yield truth, a hypothesis, or the computation equation of Section 5. Equal raw trees have equal readings at the same floor.
+
+Matching-template branch: if O_k(t;u,0) is literally the current goal, the checker replaces the working goal by O_k(t;s,0). It also replaces s by the major [s,u] when the original s is true, or [t,t,t] when s is false. It checks that major recursively. Lemma 1 gives, respectively, equality transport from F(s) to F(u), or closure specialization from Q_y F(y) and F(0) to F(u). If an image is unused, F is independent of it, so one may choose the numeral zero in the interpretation. The threefold repetition of an equation or Q major has arity at least six and reads as truth; it is a harmless extra assumption for the minor branch. The transformed working goal was opened before the major proof, so all names allocated by that proof are fresh for it.
+
+Nonmatching branch with a true major: the checker proves s. If s is a unary array [B], its reading is D_{x,y}B, and repeating it three times produces the Q-shaped array [B,B,B]. Opening that at the new parameter b exposes precisely the witness x while retaining the index y (Lemma 2). The new assumption reads Q_y B(b,y). The working conclusion is closed at the old floor, so b is fresh for it. The recursive branch and DE justify the old conclusion. If s is any other true raw shape, its threefold repetition reads as truth, and the branch merely proves the old conclusion under a true auxiliary assumption; the major can be ignored semantically.
+
+Introduction branch: a false s selects the call i(*a,t,2). Successful nontrivial goals must be unary arrays [B]; arrays of length at least two fail the preserved three-positional-argument bound, and an empty array already reads as truth. The opening exposes x and retains y, yielding a matrix M(y). If the witness occurs, Lemma 1 verifies a numerical term for it; if unused, take witness zero. The neutral major proof lowers the floor, producing a fresh b.
+
+The new assumption is M(b) exactly when M is a literal equation (raw arity two) and the supplied mode field is the integer 2. Otherwise it is M(0). The new goal is M(Sb). Therefore the recursive proof is exactly the native DI progress premise for an equation, or the DI case premise for an arbitrary formula. Induction is not applied to a non-equation. The false-major value itself reads as truth and contributes no additional axiom.
+
+At each nonterminal call the name b is the floor after the major proof. That proof decreases the floor at least once. The previous goal and context were closed before it, so Lemma 3 supplies the required eigenvariable condition. The final decrement at each return merely reserves a fresh unused name and does not alter any derivable statement.
+
+THEOREM 6 (universal soundness). Every accepted whole integer/list certificate has an exact canonical public Eq/D goal, and the native calculus proves the formula encoded by that goal.
+
+This theorem applies to arbitrary auxiliary integer/list trees, not just certificates emitted by a compiler. The irrelevant shapes are handled by their zero/truth readings and the opener's definedness. No unproved representative-invariance assertion about padded aliases is used.
+
+7. Completeness and the inherited bi-interpretation
+---------------------------------------------------
+Use the native calculus with Hyp, I0, IS, full equality transport, QE, DE, DI by cases, and DI by equation progress. This is the inherited Choice-DI presentation; the one-term-transport/QI kernel derives the same sequents. Canonical terms contain no arity-two node. Canonical formulas contain an equality node below their finite Q/D prefix. Consequently a canonical numerical witness cannot accidentally match a canonical formula in the template-selection test.
+
+Translate a native proof tree by induction, assigning fresh negative integers whenever a major subproof returns. Hypothesis leaves consume a harmless packet such as [0,1,1]. Computation leaves consume the corresponding zero/successor packet, whose candidate is now exactly the intended canonical equation. Transport and QE supply the canonical formula template and the checked major, then translate their minor derivation in the harmlessly enlarged context. DE supplies its D major and translates its branch under the opened Q clause. DI supplies its witness and mode, proves the neutral major by a harmless packet, and translates its case or progress premise under the newly introduced fresh variable. Lemma 4 supplies every required syntactic equality, and Lemma 3 supplies freshness.
+
+All canonical numerical terms are true-valued, including zero, whose code is 1. Hence transport at the actual numerical zero uses the ordinary equality-major branch. The false scalar source 0 remains an administrative marker selecting closure specialization or introduction; it is not the canonical code of a zero term.
+
+An internal Q introduction can be represented by first introducing D_{x,y}B(y), with x unused, and eliminating it; the opened Q premise then supplies the desired Q conclusion. Thus the public Eq/D restriction loses no theorem of the native presentation. Every ordinary first-order formula has the inherited Eq/D encoding through the native selector macros.
+
+THEOREM 7 (exact completeness). For every native closed Eq/D formula A,
+
+  the native calculus proves A
+    if and only if
+  some finite certificate is accepted with public goal Enc_actual(A).
+
+The forward direction is the proof-tree compiler just described. The reverse direction is Theorem 6. The actual-binder canonical encoder is a bijection between native closed Eq/D syntax and the accepted public syntax, by Theorem 5. Hence there is no weaker promise about only some syntactically admitted aliases.
+
+The theory's terms, formulas, rules and ordinary readings are unchanged. The repository's inherited interpretations between its ordinary scalar-iterator realization and full first-order iPRA therefore apply verbatim: whole numerical domains, actual equality, and identity comparison graph x=y; both term and formula round trips are inherited. This transfers equiconsistency and bi-interpretability. It is not a new Lean verification of Python, nor a change to the mathematical strength of induction.
+
+8. Executable evidence and provenance
+--------------------------------------
+research_math/proper_examples contains independently hand-built examples for zero computation, successor computation, a vacuous case introduction, and equation induction whose step uses both its induction hypothesis and the successor iterator equation. They all accept under the actual-binder checker. Two direct false-zero-equals-one controls reject; one is the short positional-mask attack found while testing an earlier discarded prototype.
+
+The baseline audit agent has adapted the inherited typed proof-tree compiler rather than blindly replacing integers in a flat proof stream. This distinction is necessary: a terminal computation update is a numerical term under its state binder; an elimination template is a formula with an exposed numerical hole; an introduction field is a numerical witness. The roles differ even when raw list shapes coincide. The adapted compiler drops only dummy slots, preserves actual numerical binders and negative parameters, and schedules the resulting proof tree for the selected checker. It has compiled all fourteen inherited positive native proofs for the token and byte schedules, including compound cases and used induction. The final validation receipt should give the exact normal/-O counts and negative tests.
+
+Finite process checks and grammar audits are evidence for the implementation. The universal theorem is the raw-reading and call-tree argument above. No new formal proof-assistant build should be claimed.
+
+9. Entry-allocation and eager byte variants
+-------------------------------------------
+The byte and node profiles use entry allocation: the initial goal traversal runs while k=0, then the membership tuple decrements k. All later calls therefore have k<0, so the guards (k or ...) disable public sorting after exactly one traversal. This order is essential: Python evaluates the membership expression's left operand before constructing its right-hand tuple.
+
+Relative to the return-allocation proof, entry allocation reserves one additional arbitrary parameter before checking the major. A major may use that parameter, but it is fresh for the old conclusion and context by their previous closedness. Its proof is uniform in that new parameter. The witness name chosen after the major subproof is strictly newer again and is fresh for the major, old conclusion and context. The same eigenvariable argument therefore applies. No interpretation equates these new parameters with zero.
+
+The node profile has a lazy formula fallback in proof mode and a strict fallback while k=0; its byte-string initial context contains the integer zero, which reads as truth. The byte profile instead starts with the empty-list neutral resource and uses an eager expression d%2*i(t,d=3). Even at formula depth this evaluates the image before multiplying its value by zero. Thus it may reject an auxiliary call that the ideal lazy opener would allow. Every successful call still has precisely the reading asserted by Lemmas 1--4: additional traversal failure cannot invalidate a successful reading. Its canonical compiler must and does supply the inherited empty-list neutral packets and well-scoped image fields to satisfy these extra checks. The three complete profiles need not accept identical arbitrary raw certificate strings; they prove exactly the same abstract native closed formulas through their respective encoders and compilers.
+
+The byte control also evaluates both alternatives of its tuple-selected template replacement. Once again, extra evaluation can reject a raw certificate but cannot manufacture a false theorem. Canonical compilation supplies safe fields even in unused alternatives. When the comparison selects replacement, the equality/closure-major match and semantic-opening lemma give the same transport or specialization proof; otherwise the working goal's reading is unchanged. The general major is the separately supplied field m, so its opening is D elimination when m is unary and a truth resource otherwise, just as in the three-field proof.

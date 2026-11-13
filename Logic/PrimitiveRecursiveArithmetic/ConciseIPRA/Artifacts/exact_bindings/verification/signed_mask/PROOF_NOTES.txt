@@ -1,0 +1,124 @@
+EXACT CANONICAL MASK INTEGRATION
+
+This note proves the new syntax and operational claims. Arithmetic and logical
+adequacy of the unchanged native calculus is inherited from ConciseIPRA at
+e88ebf229bb61bd870bb229b9c97caaa1e044e6e. The note does not assert a new
+arithmetic axiom deletion or a global checker-size optimum.
+
+1. Canonical public trees
+
+The numeral zero is the integer 1. A variable in slot j, counting from zero,
+has integer code 3+2j. A unary term [t] is successor. A ternary term [n,a,h]
+is the iterator. An equation is the pair [s,t], and a unary formula [B] is
+the paired binder D. The term/formula sort determines the meaning of a unary
+array. A root goal is a closed formula.
+
+The compact uniform traversal introduces administrative slots even where the
+mathematical syntax introduces no variable: successor prepends two dummy
+slots; the iterator's counter and seed each prepend one dummy slot; its body
+prepends one genuine accumulator slot; D prepends two genuine slots. Equality
+changes from formula sort to term sort without adding a numerical slot.
+Canonical variable occurrences may refer only to genuine slots.
+
+Let n be the number of slots currently in scope, and let U be the subset of
+genuine slots. Define the positive integer
+
+    A = 1 + sum(2**(j+1) for j in U).
+
+Its bit zero represents numerical zero. Its other set bits represent exactly
+the permitted variable codes. The signed mask is M=-A at formula sort and
+M=A at term sort. Initially M=-1. For a term scalar a, canonical admissibility
+is exactly: a is positive and odd, and bit a//2 of A is one.
+
+2. The update identity
+
+The four constructor updates are:
+
+    D:          -A -> -(4A+3)
+    successor:   A ->   4A-3
+    equality:   -A ->   A
+    iterator:    A ->   2A-1  in counter/seed,
+                              2A+1  in body.
+
+Thus both unary constructors use the same expression 4M-3. A non-unary
+formula is an equation and uses -M. A non-unary term is an iterator and uses
+2M+2[j=2]-1, with j the child index. These are precisely the expressions
+in the extended opener. The sign records the syntactic sort only during
+public validation; that invariant is not required for arbitrary proof data.
+
+3. Exact public validation
+
+At the beginning of a root call, the scope floor is k=0. The inherited arity
+test permits array lengths 1 and 2 at even traversal depth d (formulas), and
+lengths 1 and 3 at odd depth (terms). Its scalar guard is strengthened by
+the indicated mask bit. At formula positions d=2n; at term positions
+d=2n+3. Consequently a genuine scalar code automatically satisfies the
+existing upper bound a<d, and its lower bound k<=a excludes negatives.
+The factor d & (a % 2) excludes scalars at formula positions and excludes
+even integers at term positions. The additional bit test excludes exactly
+dummy-slot references and references beyond the available variables.
+
+An induction on public trees, using the update identity, proves:
+
+    The first opener call is defined exactly on the canonical closed
+    Eq/D encoder image, and on that image its return value is the input.
+
+Failure paths consult the invalid default image (the checking function in
+the byte profile, a complex scalar in the node profile) and raise; malformed
+array shapes likewise fail. The whole-input lexical test is unchanged and
+rejects every parsed JSON value outside the exact integer/list alphabet,
+including unused entries. The mask proof assumes that alphabet; the reader
+enforces it before the root opener is reached.
+
+4. Preservation during proof checking
+
+After public validation the entry-reservation profiles make k negative and
+never restore it to zero. The guard `k or ...` therefore bypasses the mask
+bit test in every subsequent opener call. The added mask computations are
+integer additions, multiplications, comparisons, and sign changes; they are
+defined on every finite auxiliary tree. They have no side effects and do
+not change the opener's returned tree or its original failure behavior.
+Resetting the mask when an image is opened is harmless in this phase.
+
+There is one essential qualification. The mask is KEYWORD-ONLY. The existing
+core calls i(*a,t,2) to open a paired binder. A unary a supplies three
+positional arguments, as required. An equation a supplies four and must
+raise. Making the mask a fourth positional argument destroys this arity
+check and admits a proof of 0=S0. The explicit keyword-only marker in the
+final checkers preserves the old three-positional-argument interface. Every
+new internal recursive call passes its mask by keyword.
+
+The command and certificate interface, allocation order, retained context,
+computation frame, and recursive proof-checking function are unchanged from
+the corresponding scope_phase source. Induction over ideal finite execution
+therefore proves equality of accepted raw certificates between each new
+program and its source program preceded by the canonical predicate. The
+predicate-wrapped controls shipped in controls/ express exactly that claim.
+
+5. Consequences for the arithmetic presentation
+
+The source completeness theorem supplies a finite certificate for every
+canonical encoding of a native theorem. The exact mask admits every such
+encoding. Conversely, every accepted goal is canonical and the unchanged
+source checker certifies its native reading. Thus the new checker accepts
+exactly the canonical encodings of native theorems (with existential
+quantification over finite certificate supplies).
+
+The native language, rules, formula interpretation, and arithmetic
+interpretation are unchanged. In particular, the inherited whole-domain,
+actual-equality bi-interpretation with full first-order iPRA, including both
+formula round trips and identity numerical comparison graphs, applies.
+The new mask is proof-certificate syntax validation, not an object-language
+axiom. This is a smaller complete realization of the exact canonical input
+contract. It does not beat the compact cross-contract envelope or establish
+an absolute simplicity minimum.
+
+6. Scope of the evidence
+
+verify.py compares the exact grammar against the upstream explicit
+availability-list predicate, compares proof-phase openings against the
+unmodified source, and runs the final complete programs and matched exact
+wrappers on inherited positive and adversarial certificates with ordinary
+and optimized Python. The finite evidence detected the positional-parameter
+mistake and verifies its repair on the supplied cases. It supplements,
+rather than replaces, the preceding universal invariants.

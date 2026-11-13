@@ -1,0 +1,90 @@
+## Audit of the proposed joint alias boundary
+
+Reviewed `review/math_notes.md` against the existing incoming
+`equational_transport/proofs/theorem_fragment.tex` and article Chapter 6,
+`disch:thm:alias-rank` and `disch:thm:alias-atomic`.
+
+No fatal mathematical issue was found in the stated joint-restriction result.
+The finite growing-domain evaluation is deliberately not an ordinary FO Kripke
+model: numerical terms can denote values outside the active quantifier domain.
+That is legitimate for a proof-calculus invariant because every restricted rule
+was separately checked. Equation Alias moves to a larger world containing its
+defining value, then pulls back an equation whose truth is world independent.
+This argument fails for compound naming conclusions exactly as required.
+
+The positive Name-Alias repair is noncircular. Its premise Name(b) follows
+directly from Close at the newest b and constant-body successor computation.
+Atomic specialization is available before the rank induction via Equation Alias;
+that gives persistent extraction b=t from an opened naming clause. In the
+compound transport construction, the local source derivation is consumed as
+the major of Open at its original scope before any new scope is introduced.
+Only persistent families are used in later extensions. This avoids illicit
+weakening of deterministic newest-parameter derivations.
+
+The rank construction should explicitly invoke symmetry when transporting
+B(t,c,0) back to B(s,c,0), and explicitly define a persistent clause realizer:
+at every extension and every term r over that extension, it maps a persistent
+proof of the antecedent (if any) to a persistent proof of the body at r.
+
+Novelty must be bounded. The T_r/S_r/L_r rank method and naming-clause extraction
+already appear in Chapter 6 for arbitrary Close witnesses. The new contribution
+is the joint restriction, the obstruction, and the fact that one fixed rank-one
+export shape restores completeness with deterministic Close. The positive proof
+adapts the old rank method and the newer diagonal-zero-row argument.
+
+## Further optional strengthening: finite naming-template repairs
+
+This is an independently developed proof outline, not a tested checker result.
+
+Fix finitely many raw numerical term templates t_1,...,t_m. Add to K0 the schemes
+Name(t_j(a_1,...,a_r)), where the a_i are scope parameters (allowing repetitions),
+not arbitrary compound terms. Even including successor among these templates,
+the resulting calculus fails some open naming theorem. Arbitrary term
+instantiation is an essential exclusion: allowing it for the identity template
+would already give the full naming scheme.
+
+Choose a monotone primitive-recursive unary f with f(x)>x and f(x)>t_j(vec a)
+whenever every argument in vec a is at most x. This can be built using bounded
+maxima of the finite collection, with an x+1 summand. Work in a nonstandard model
+M of PA expanded by its primitive-recursive functions, choose a nonstandard
+c, and define the external initial cut
+
+    I = { a in M : a < f^k(c) for some standard natural k }.
+
+This cut contains c, 0, and every standard numeral; it is successor closed and
+closed under every t_j. Let H(n,x)=f iterated n times from x, a primitive-recursive
+function represented by the raw iterator term I(n,x;u.f(u)). Since c exceeds
+every standard k and f is strictly increasing along its iterates,
+
+    d = H(c,c)
+
+lies outside I.
+
+Use the two forcing worlds with active domains I and M, ordered by inclusion,
+while all arithmetic terms are evaluated in M. Formulas and clauses have the
+same active-domain forcing as in the finite obstruction. They are monotone.
+Computation, equality, Back, Use, Open and cases Close are sound as before.
+Equation Alias can always move to the M world and pull back the exported equation.
+
+For progress Close, only literal-equation progress is asserted. At a fixed
+world with active target q, every M-element k<q is active by initiality. The
+sound step premise therefore gives, in M, the bounded statement
+forall k<q (E(k)->E(k+1)). PA's induction in M yields E(q) from E(0). This is
+valid even when q is nonstandard. Unlike the finite model, no claim is made
+for progress on arbitrary compound formulas, whose forcing may not be definable
+inside M.
+
+Each added Name(t_j(params)) is forced because its numerical value lies in the
+current active domain. Its selector row is constantly true at that witness;
+PA proves C(y,a,a)=a for every y, including nonstandard y. But with the scope
+parameter taking value c, Name(H(c,c)) fails at I: any available witness a in I
+is different from d, and the y=1 row forces a=d. The ordinary iPRA realization
+of this open naming theorem is provable. Thus finitely many fixed numerical
+name operations do not supply the full name scheme under these restrictions.
+
+This is not a lower bound for arbitrary theories or encodings. It is a
+calculus-specific obstruction to replacing full term naming by finitely many
+parameter-instantiated term templates.
+
+
+Root review: both arguments were checked against their exact rule restrictions; the finite-template statement additionally received a separate mathematical review.

@@ -1,0 +1,171 @@
+OPEN SEQUENTS WITH A BUILT-IN NEUTRAL TERMINAL
+============================================
+
+Status: a small certificate-interface refinement of the existing calculus.
+It deletes no mathematical axiom or inference rule. It is not a solution
+below all three current compact source-size minima.
+
+1. Files and measured result
+----------------------------
+checker_sequent458.py: 265 significant tokens, 297 AST nodes, 458 normalized
+UTF-8 bytes. The matched incoming checker_bytes460.py has 266 / 299 / 460.
+All measurements use CPython 3.12.14, ast.unparse plus one final newline.
+The new checker improves all three coordinates of THAT matched control.
+It improves only the byte coordinate of the componentwise compact frontier
+239 / 255 / 460; the separate old token and AST records remain smaller.
+
+2. Precisely changed statement and input contract
+------------------------------------------------
+The existing checker reads a whole JSON stack. Its last element, consumed
+first, is [A, k]. For closed public theorems, k is the literal integer 0.
+The remaining elements are the existing four-field packets [s,u,t,m].
+
+The new checker changes only that header to [Gamma, A, k], where Gamma is a
+finite list of assumptions. The public contract for this report is:
+
+  * k is the literal integer 0;
+  * every member of Gamma and the goal A is the 1-shifted canonical encoding
+    of a CLOSED public guarded formula of the upstream calculus U;
+  * packets use the same integer/list contract and ordinary resource
+    convention as the matched compact checker.
+
+The ordinary reading of [Gamma,A,0] is the sequent Gamma |- A, or equivalently
+(the conjunction of Gamma) -> A, with the empty conjunction interpreted as
+truth. Numerical parameters do NOT occur free in the initial Gamma or A.
+Bound variables under D and iteration remain allowed. In particular, a run
+accepting [ [0=1], 0=1, 0 ] certifies (0=1)->(0=1), not the assertion 0=1.
+
+As with the compact baseline, the public grammar is a promise; this module
+does not validate it. The new context-closedness promise is essential to
+freshness. No statement about raw out-of-contract contexts is claimed.
+
+The public formulas are equations, and nested paired binders D whose final
+atomic matrix has the guarded form I(y,0;u.h)=I(y,0;u.j). Ordinary Q formulas
+may still occur as auxiliary formulas inside a proof, as upstream permits.
+
+3. Exact local simulation
+------------------------
+Write C(g,a,k) for the incoming 460-byte checker body, with the packet reader
+held as an explicit common state. Write S(g,a,k) for the new checker body.
+Their only internal source difference is the terminal membership test:
+
+       old:  i(a) in g + [Computation]
+       new:  i(a) in [0, *g, Computation].
+
+The recursive body, opener, order of evaluations, source selection,
+introduction mode, floor decrement, and packet consumption are unchanged.
+
+For every finite list g, the invariant is
+
+                S(g,a,k)  ~  C([0]+g,a,k).
+
+Both sides have equal remaining packet stacks. The opener does not consult
+g, so its calls have exactly equal values, exceptions, and effects. The
+terminal lists are literally equal. If the call continues, major recursive
+calls preserve the invariant. If the newly produced hypothesis is H, the
+continuation contexts satisfy
+
+        [0] + (g + [H]) = ([0] + g) + [H].
+
+They therefore preserve the invariant too. All other expressions are equal.
+Induction on finite evaluation prefixes gives the same verdict, the same
+packet consumption, and the same floor values, even for rejected inputs
+where the root header does have the required list shape. There is no
+assumption about the truth of Gamma in this simulation.
+
+The old root call C([0],A,0) corresponds exactly to S([],A,0), with no change
+to any proof packet. Thus the compiler from every old theorem certificate
+merely changes its final header [A,0] to [[],A,0]. The included executable
+compiler performs exactly that transformation and no proof search.
+
+4. Soundness and completeness on the public contract
+-----------------------------------------------------
+Soundness follows from the upstream local soundness theorem for C with
+arbitrary in-scope assumptions. If S(Gamma,A,0) succeeds, the simulation
+gives C([0]+Gamma,A,0). The scalar formula 0 is the auxiliary truth 0=0,
+so the upstream soundness induction yields Gamma |- A. Each initial
+assumption is closed, so the unchanged negative fresh names occur in none
+of them. On guarded public formulas the auxiliary and ordinary readings
+are equivalent, by the upstream guarded-source theorem.
+
+Completeness for open public sequents is the parameterized form of the
+existing canonical-certificate compiler. If U proves Gamma |- A, compile
+that derivation into C with initial context [0]+Gamma. The compiler's
+induction on derivations already carries a context; adding the fixed closed
+Gamma changes none of its scope arithmetic. Hypothesis leaves close by
+membership, computation leaves and source-selected eliminations are the
+same, and introductions and D eliminations use the same fresh-name schedule.
+The branch-aware terminal convention remains necessary: a node closed early
+must not leave the discarded subproof packets for a caller. This produces a
+certificate for C([0]+Gamma,A,0), hence for S(Gamma,A,0) by the simulation.
+
+Equivalently, one can retain the canonical compiler's finite-context
+parameter throughout its usual proof rather than specialize it initially to
+[0]. No new arithmetic or logical admissibility result is required.
+
+5. Relation to iPRA and the extent of the improvement
+-----------------------------------------------------
+The ordinary realization is the SAME guarded native calculus U, now
+presented as finite-context consequences. Its closed theorems, obtained by
+Gamma=[], are exactly the old closed theorems. The ordinary realization
+therefore inherits the established whole-domain bi-interpretation with
+full first-order intuitionistic PRA; equality is actual equality and both
+numerical composites have graph x=y. The sequent readout uses the existing
+intuitionistic conjunction and implication macros and adds no axiom.
+Consistency is unchanged because a proof of contradiction with empty Gamma
+is exactly a proof in the old presentation.
+
+The code reduction is a change of interface, not a mathematical reduction
+of the axiom basis. It replaces a fixed top-level initial context by a
+context argument and moves the same neutral truth into the terminal test.
+It is legitimate only when an accepted object is explicitly read as a
+sequent. It must never be advertised as accepting its consequent alone.
+No theorem of absolute minimality is claimed. The finite-program frontier
+is not a proven lower bound on possible implementations.
+
+6. Header-only variants and why they are secondary
+--------------------------------------------------
+If the original body is left unchanged and only its initial call is changed
+to c(*q()), the normalized byte count is 455. Similarly, changing the
+239-token stream program's final call to c(*loads(input())) gives 238 tokens
+(262 AST nodes, 545 bytes). These variants have a canonical root context
+beginning with the explicit administrative entry 0. They move the neutral
+seed into the certificate grammar and do not establish completeness for
+every literal context representation lacking that seed. Their accurate
+comparison must charge or disclose that additional representation convention.
+They are not the preferred general-context construction above.
+
+7. Evidence
+-----------
+verify_sequents.py executes the matched old checker, the candidate, and an
+explicit old-body context adapter. Thirty inherited fixtures and eight
+additional context/scope cases give 212 executions in ordinary and -O
+Python, with zero failures. Cases whose stated verdict is rejection test
+the supplied certificate; an invalid certificate need not mean its sequent
+is unprovable (particularly under an inconsistent context).
+
+The additional semantic false-sequent checks are [] |- 0=1 and [0=0] |- 0=1.
+Both are rejected. Other checks cover identity at a false assumption,
+transport using two assumptions, absent proof premises, and a future
+parameter in the goal. These tests support, and do not replace, the proof.
+
+An exact normalized-AST scan of 3314 parseable extracted Python files found
+no duplicate of checker_sequent458.py. That is a finite corpus check, not
+a claim of mathematical novelty or an exhaustive history search.
+
+8. Source attribution
+---------------------
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Snapshot: e88ebf229bb61bd870bb229b9c97caaa1e044e6e
+Subproject: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+Baseline: docs/incoming/ipra_neutral_modes_2026-11-13.zip,
+          ipra_neutral_modes_2026-11-13/code/checker_bytes460.py
+Normalized baseline SHA256:
+8c9fd9e3d8d31efe7da848c9dd7ef5cb8cbcd93508692137fb393a42fb3741da
+
+Relevant inherited results are in docs/Article/chapters/ch11_cert.tex:
+cert:def:U, cert:rem:imported, cert:def:reading, cert:lem:opening,
+cert:lem:fresh, cert:thm:shifted-terminal and its canonical compilation
+argument. The neutral-mode replacement itself is inherited from the pinned
+incoming package. The mathematical bi-interpretation is inherited, not
+reproved or newly checked in Lean by this interface experiment.

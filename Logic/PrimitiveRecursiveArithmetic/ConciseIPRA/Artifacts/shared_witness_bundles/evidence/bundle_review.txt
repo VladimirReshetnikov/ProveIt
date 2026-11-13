@@ -1,0 +1,97 @@
+# Independent audit of the common-witness bundle proposal
+
+Reviewed `research_math/bundles.md`, `bundle_checker.py`, and
+`bundle_examples.py` on 2026-11-13.
+
+The revised delivery keeps the native language as its public statement
+language and permits nonsingleton bundles only inside certificates. The
+checker now enforces this public-goal condition recursively. Consequently
+the result under review is exact native public-sequent equivalence. No
+full-auxiliary-language definitional-roundtrip claim is made or used.
+
+## Mathematical result
+
+The two-row construction recovers the native crossed one-template equality
+transport without circularly using arbitrary transport. Given derivations
+of s=t and h(s)=r, let C(y,a)=I(y,0;u.a), with u absent from a. The two
+matrices C(y,x)=C(y,t) and C(y,h(x))=C(y,r) share the witness x=s. Their
+successor rows follow by expanding the two endpoints of the existing
+equations at their roots. The local DI hypotheses are unused. Thus CASE
+introduction suffices for these rows, independently of the equation-progress
+rule used elsewhere in the calculus.
+
+After the bundle is opened at fresh b, each zero row follows from 0=0 by
+two root expansions. QE at S0 followed by root contractions yields b=t
+and h(b)=r. The variable-source crossed substitution rule yields r=h(t).
+The final equation contains no b, so bundle elimination discharges it.
+
+In particular, the construction does not:
+
+- identify a common witness from independently obtained existential witnesses;
+- normalize inside an iterator argument or body;
+- transport through a compound formula;
+- assume an equality-congruence rule that it is intended to recover.
+
+## Native-kernel recovery and public consequence equivalence
+
+Reflexivity plus one root expansion supplies each computation equation. The
+new transport lemma supplies the native one-template crossed rule. Native
+DE and case-DI are singleton bundle instances. Native direct QI for a literal
+equation E(y) follows by a singleton progressive bundle with an unused shared
+witness x, then DE: its opened assumption is literally Q_y E(y).
+
+These derived rules translate every native derivation into an auxiliary
+certificate with the same public assumptions and conclusion.
+
+For the converse, interpret a shared-witness bundle in ordinary iPRA as
+exists x. conjunction_i (B_i(x,0) -> forall y_i B_i(x,y_i)). This is an
+external ordinary reading, not a claim that native macros can be applied
+inside the auxiliary calculus to arbitrary bundle formulas. Every primitive
+rule is sound under this reading:
+variable-source transport and root conversion use equality and computation;
+CASE uses numerical coverage; PROGRESS is literal-equation induction; the
+bundle elimination is ordinary existential elimination plus conjunction
+elimination. A common introduction witness proves all conjuncts for that one
+witness. The empty conjunction is truth.
+
+Thus an accepted native public sequent has an ordinary iPRA derivation of its
+native reading. The repository's native completeness bridge returns a native
+derivation of that same public sequent. Together with the first translation,
+this proves exact native public-sequent equivalence. Between the public
+theory and the native calculus, both interpretations are the identity on
+terms and formulas. The numerical domains are whole, equality is actual,
+and both composites are identities. Composing these interpretations with the
+established native/iPRA bridge gives the required whole-domain
+bi-interpretability and equiconsistency, without any auxiliary-formula
+roundtrip assertion.
+
+## Reference-checker review
+
+The syntax checks reject Booleans as variables, ensure positive bound names,
+and enforce that the shared binder differs from each local binder. The
+simultaneous substitutions are capture avoiding; inserted replacement terms
+are not substituted into again. Alpha comparison is implemented with bound
+name stacks and respects the shared binder. Every synthesized formula is
+checked against the ambient numerical scope.
+
+The variable-transport instruction requires the left side of its major to be
+an actual in-scope variable. Root contraction/expansion touches only a whole
+equation endpoint. Bundle opening introduces a name outside the ambient scope
+and prevents it from occurring free in the exported formula. Every introduction
+row is checked under its own local seed and a fresh numerical parameter; all
+rows use the same explicit witness. These conditions match the written rules.
+
+One compiler-contract issue was found and sent to the mathematics agent:
+`transport` originally selected fresh names only from its premise proofs and
+explicit terms, not from unused ambient-context variables. It should accept
+an ambient scope/reserved-name parameter when advertised as an arbitrary-context
+proof compiler. This was fixed by adding `scope=()` and documenting that the
+caller must provide the whole ambient scope. A regression test with an unused
+context variable now passes. The supplied closed examples were unaffected.
+This was an untrusted compiler completeness issue, not a checker soundness
+issue.
+
+The main limitation remains quantitative: the readable bundle checker is not
+a new size record. This result simplifies a proof of equality recovery at the
+root-conversion boundary; it does not establish the requested smallest
+axiomatization or a universal complexity lower bound.
