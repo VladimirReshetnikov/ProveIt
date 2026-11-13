@@ -1,0 +1,179 @@
+INDEPENDENT MATHEMATICAL REVIEW
+13 November 2026
+
+Reviewed objects
+----------------
+The point-free environment calculus in report.tex, including its final
+y-first D convention, the structural Sub rule, explicit QI-by-cases,
+equation-only Ind, canonical pairing equations, and seal=<Id,Z>.
+The final native decoder explicitly represents ordinary program functions by
+fixed native iterator terms, retains the native Q/D constructors, and
+substitutes those terms into their bodies. The formula round trip now uses
+this native decoder before the native-to-point-free compiler.
+
+Verdict
+-------
+No mathematical counterexample or remaining circularity was found in the
+corrected calculus. The root reindexing theorem has a direct complete proof.
+The soundness interpretation and the two-direction comparison now have a
+coherent written, scheme-level argument through the existing native kernel.
+This is not a machine-checked proof of the new metatheorem or of the Python
+implementation. The finite example/tests do not establish bi-interpretability.
+
+The full requested optimization goal remains unmet. The compact modification
+improves one source-size coordinate, 238 to 236 significant tokens, under the
+same seeded-list contract. It does not beat the existing 255-node or 455-byte
+coordinates, does not simplify the mathematical axiom basis, and does not
+establish an absolute simplest presentation. The new point-free checker is a
+larger reference implementation with a distinct validation contract.
+
+1. Root reindexing and freshness
+------------------------------
+With P;Q interpreted as Q after P, the three root cases give
+
+  read(A down W)(e) = read(A)(W(e)),
+  A down Id = A,
+  (A down W) down V = A down (V;W).
+
+The second and third identities are literal word/list identities. They do not
+use a Cartesian normal form or an evaluator. Bound bodies remain unchanged.
+
+The y-first D interpretation is essential to the simple written DE rule. At
+branch environment pair(b,e), Q[<L,R;p>,B] means exactly the closure in D[p,B]
+at witness b. Its exported goal A down R and all old assumptions ignore b.
+DI's witness and prefix likewise depend only on the old tail. Thus the
+freshness conditions are enforced by constructed projections, rather than
+being omitted.
+
+2. The explicit structural rule repairs an earlier proof issue
+-------------------------------------------------------------
+An exact-context Reindex rule alone does not make weakening/cut admissible by
+an automatic induction: an arbitrary additional hypothesis need not have a
+preimage under a noninvertible environment map. The final Sub rule explicitly
+supplies every substituted source hypothesis. Reindex, weakening, exchange,
+contraction and cut are then honest instances of Sub and Hyp. This removes the
+earlier circular structural argument, at a real and disclosed checker cost.
+
+3. Equality and the additional programs
+-------------------------------------
+Post is sound pointwise. J0 supplies C=P, and Post applied to two copies with
+the empty postfix derives P=P. Symmetry, transitivity and postcomposition
+congruence follow. Pair congruence then preserves the old environment when a
+replacement depends on external parameters. Predicate Transport is ordinary
+substitution of equal input values in a predicate.
+
+There is correctly no arbitrary congruence rule inside J_H from a conditional
+pointwise equation H=K. An iterator invokes H at inputs other than the current
+one. The uniform-body lemma instead assumes an empty-context identity, uses
+Sub to instantiate it at each state/environment input, and proves equality of
+iterates by equation induction. CE then covers every triple-coded input.
+
+C0 and generalized CE must be retained as written. Cartesian distribution
+F;<P,Q>=<F;P,F;Q> follows from reindexed CL/CR, Pair, and CE; it is not literal
+syntax. The report charges these arithmetic schemes instead of hiding them
+inside normalization.
+
+4. Canonical pairing and nonstandard models
+-----------------------------------------
+Projection and reconstruction alone do not pin a computable pairing. The
+three extra recurrence schemes do. First P00/P0S give
+
+  pair(0,b)=2b
+
+by equation induction on b. Then PS gives
+
+  pair(a+1,b)=2 pair(a,b)+1,
+
+so a second equation induction identifies pair with 2^a(2b+1)-1. One can avoid
+relying on exponentiation notation by taking the canonical native definition
+to be iteration of u |-> 2u+1 from seed 2b. This uniqueness argument is inside
+the arithmetic and therefore applies to nonstandard models as well.
+
+The elementary PR arithmetic of bounded division and 2-adic valuation gives
+the canonical inverses. After pairing is identified, CL/CR/CE identify L and R
+with those inverses. Programs remain finite metasyntactic descriptions of
+individual PR functions; there is no quantified function sort and no asserted
+uniform total PR evaluator. These distinctions are required for the claimed
+bi-interpretation.
+
+5. Iterator naturality and the numerical compiler
+------------------------------------------------
+The displayed iterator naturality equation is correct with
+H_F=<L,R;F>;H. Its base is J0. At a successor, JS reduces the two sides to H
+applied to the respective previous state and F(e); Pair and postcomposition
+carry the induction hypothesis. This proof precedes and does not use native
+compiler completeness.
+
+The finite substitution tuple in the compiler lemma can be made precise as
+follows. Choose m greater than every source-variable index occurring in t.
+For substituted terms theta(0),...,theta(m-1), form
+
+  F=<theta(0)^b,<theta(1)^b,...<theta(m-1)^b,Z>...>>.
+
+Under a new iterator variable, use lift(F)=<L,R;F>. Variable cases follow from
+the projection equations, zero from C0, and successor from postcomposition.
+The iterator case uses the counter/seed induction hypotheses, the lifted body
+hypothesis, uniform body congruence and iterator naturality. No substitution
+inside an iterator body is being justified by mere syntactic concatenation.
+
+6. Logical naturality: the retained QI rule closes the gap
+---------------------------------------------------------
+Explicit QI-by-cases is a sound addition: its hypothesis is the zero row,
+while its conclusion covers successor rows; it does not permit induction on
+an arbitrary formula. Retaining it permits a direct proof of
+
+  Q[p,B down lift(F)]  <-->  Q[p;F,B].
+
+To introduce either target, QI supplies its zero-row assumption. Cartesian
+conversion and Transport turn that assumption into the source zero row; QE
+gives the source successor row; the reverse conversion supplies the target
+successor row. This does not use a formula round-trip theorem.
+
+For D, opening the left side supplies
+
+  Q[q,B down lift(lift(F))],  q=<L,R;p>.
+
+The Q result with F replaced by lift(F) converts this to Q[q;lift(F),B].
+Cartesian equations identify q;lift(F) with <L,R;p;F>. Direct witnessed D
+introduction at L then gives the right target under the branch, and DE exports
+it. Reversing these steps proves the converse. The general body-congruence
+argument uses the supplied B-to-C and C-to-B derivations through Sub at the
+zero and successor inputs. Thus logical naturality is now supported without
+silently identifying different raw bodies.
+
+7. Sealing and the two formula round trips
+-----------------------------------------
+The raw compiler maps source x_0 to L, not to Id. Consequently the correct
+unary-program comparison is
+
+  P = <Id,Z> ; compile(P_native(x_0)).
+
+Without this sealing map the identity program would already give a false
+round-trip claim. The final seal has seal;L=Id by CL. The direct native decoder
+mentioned above makes the formula expression (A^natural)^b well typed: the
+compiler is defined on native syntax, not directly on arbitrary ordinary
+first-order syntax.
+
+For n source free variables, the explicit tuple readout recovers all n values
+by projection. For a sentence, the compiled predicate is independent of the
+ambient tail; nonemptiness handles closure. There is no use of an impossible
+bijection N^0=N. On the ordinary realization, the added functions have their
+fixed native/iPRA definitions and the individual numerical domain stays whole.
+The identity numerical comparison graph is therefore consistent with the
+context-level use of tuples.
+
+Atoms use the sealed program identities. For Q/D, prefix changes use
+Transport, while body changes and lifted parameter maps use the already
+proved logical congruence/naturality lemmas. The order of the corrected
+arguments is noncircular: arithmetic and logical naturality first, compiler
+substitution second, native embedding third, fixed-program and formula round
+trips last.
+
+8. Evidence boundaries
+----------------------
+This review concerns the mathematics and the stated comparison. Another audit
+checks the executable schema recognizers. Finite semantic checks, positive
+proof fixtures, rejection cases, source counts, and an independent code review
+are useful supporting evidence but are not proofs of the universal metatheorem.
+The work should be delivered as the reported partial result, with the full
+minimization target explicitly left open.

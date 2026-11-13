@@ -1,0 +1,47 @@
+{
+  "review": "Independent six-change simulation and finite-corpus normalized duplicate audit",
+  "runtime": "CPython 3.12.14",
+  "source_commit": "65c32fbe4730bfe5a064502b0b95ebc798c732fa",
+  "baseline": {
+    "path": "sources/incoming/ipra_local_validation_2026-11-13/code/checker_sorted.py",
+    "source_sha256": "cdeb74c7e49776c85f380d46f950fcc6452ed885fe05f487308b9a69c62aaf55",
+    "normalized_sha256": "cdeb74c7e49776c85f380d46f950fcc6452ed885fe05f487308b9a69c62aaf55",
+    "tokens": 297,
+    "ast_nodes": 336,
+    "normalized_bytes": 556
+  },
+  "candidate": {
+    "path": "sources/frontier_audit/sorted_line_refined.py",
+    "source_sha256": "9aa690abf127c59eb89f9e408593c39a1435da5607f460fec28220bbf09155fa",
+    "normalized_sha256": "9aa690abf127c59eb89f9e408593c39a1435da5607f460fec28220bbf09155fa",
+    "tokens": 295,
+    "ast_nodes": 332,
+    "normalized_bytes": 553
+  },
+  "same_parsed_object_acceptance_under_unbounded_finite_resources": true,
+  "same_raw_stream_acceptance": false,
+  "framing_change": "Whole JSON document to one physical JSON line; later lines ignored. A textual whitespace conversion preserves the parsed certificate.",
+  "sorted_coordinate_envelope": [
+    297,
+    335,
+    556
+  ],
+  "candidate_below_all_sorted_coordinates": true,
+  "compact_global_target_met": false,
+  "exact_actual_binding_grammar": false,
+  "canonical_completeness_inherited": true,
+  "new_axiom_deletion": false,
+  "new_formal_verification": false,
+  "six_transformations": [
+    "Tuple arity-membership to a set of distinct integers.",
+    "Wildcard standard-library json import, with no global name collision.",
+    "Whole-document json.load(open(0)) to line-framed json.loads(input()).",
+    "Reorder pure sequence membership, moving decrement sentinel after context.",
+    "Boolean choice s and [s] or 1 to conditional [s] if s else 1.",
+    "Integer decrement k-1 to ~(-k)."
+  ],
+  "corpus_source_occurrences": 3776,
+  "normalized_duplicates": [],
+  "proof": "sorted_refinement_review.txt",
+  "regression_receipt": "Owned by parent task; not fabricated or counted by this independent review."
+}

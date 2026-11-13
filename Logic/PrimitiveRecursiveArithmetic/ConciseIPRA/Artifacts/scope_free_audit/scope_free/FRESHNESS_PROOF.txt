@@ -1,0 +1,137 @@
+LOCAL DECIMAL DOMINATION AND CERTIFICATE COMPILATION
+==================================================
+
+1. Finite-tree bound
+
+Let g be a finite context of finite integer/list trees (the root context is
+[0]), a a finite integer/list goal, and r=[s,u,t] the current packet. Write
+
+    L = len(str([g,a,r])),       nu = -10^L.
+
+Python's ordinary decimal rendering of every integer leaf n of those trees
+contains all decimal digits of |n|. The rendering of [g,a,r] contains that
+rendering as a substring and also punctuation. If d is the number of decimal
+digits of |n|, then d <= L and |n| < 10^d <= 10^L = |nu|. Hence nu is distinct
+from every integer leaf in all three old objects. This uses finite acyclic
+trees only, as supplied by JSON. It does not use a probability estimate,
+hash collision assumption, memory address, or global uniqueness promise.
+
+The rule dispatcher computes nu before changing a or checking a major
+subproof. All current input fields s,u,t occur inside r, so they need not
+appear separately in the bound. Temporary variables from a completed major
+subproof do not occur in the caller's state. Their names may be reused in
+another branch without violating the local eigenvariable conditions.
+
+2. Why absence as a leaf gives semantic freshness
+
+In the inherited sorted arity reading, every negative integer leaf denotes
+the free numerical parameter with that name, whenever the leaf is in a
+meaningful term position. No constructor invents a free parameter not
+already among the negative leaves of its raw tree. Arrays or coordinates
+ignored by the sorted reading can only reduce that support. Thus absence
+of nu from every leaf of g,a,r entails absence from the free-variable
+supports of every corresponding formula and term.
+
+The scalar opener retains all negative leaves, since a negative integer is
+less than every meaningful nonnegative binder depth. It fills only the
+exposed positive coordinate. Therefore the usual capture-free opening lemma
+is the baseline opening lemma with negative numerical names treated as
+unrestricted free parameters rather than checked against a lower floor.
+Malformed surplus arities require the inherited auxiliary sorted-reading
+lemma, not a claim that every accepted internal tree is canonical syntax.
+
+3. Rule-by-rule use of the bound
+
+Hypothesis and computation leaves allocate nothing. Their meaningful
+arithmetic and logical rules are unchanged.
+
+In an equality or Q elimination, both source/target and template already
+occur in r. The checked major has exactly its required meaning; a subsequent
+administrative continuation may use nu, but all required transported terms
+are free of it before opening.
+
+For D elimination, the major D formula occurs in r and the target is a.
+The context, major, and exported conclusion are all free of nu. The branch
+may therefore open the existential witness at nu under the usual local
+eigenvariable condition. Names used strictly inside the proof of the major
+are not exported and are irrelevant to this condition.
+
+For D introduction, the body and any remaining free variables occur in a,
+and the chosen witness occurs in r. Thus nu is fresh for the context,
+matrix's parameters, and witness. In the equation branch the retained
+premise is E(nu) and the target is E(S nu); literal-equation induction gives
+the required closure. In the compound branch the premise is B(0) and the
+target B(S nu); the inherited numerical-case rule gives the closure.
+
+The rest of the proof is the existing scalar calculus's soundness argument,
+including its interpretation of raw aliases. This note proves the new local
+freshness obligation; it does not replace or silently assume the nontrivial
+iPRA bi-interpretation theorem.
+
+4. Completeness is alpha-renaming, not identical raw traces
+
+Start with a finite derivation in the typed scalar calculus. At a rule that
+requires a fresh numerical parameter, first encode its current context,
+conclusion, and packet under the names already chosen in outer scopes.
+Compute nu from these finite values. By (1)--(3), nu meets that rule's
+freshness condition. Alpha-rename its bound branch parameter to nu and
+continue compiling the premises. The current packet never contains its
+own not-yet-introduced eigenparameter, so this construction is well-founded.
+
+Hypothesis and computation packets compile directly. Equality and closure
+elimination compile their typed major and minor premises; D introduction
+adds a neutral major packet and compiles its branch under the new assumption;
+D elimination compiles the major and then the witness branch. Packet order
+is the checker's actual recursive order. Every object is finite and the
+integer 10^L exists for every finite L, so this is a total mathematical
+construction on finite typed proofs in an unbounded-resource model.
+
+A compiler that tracks a larger outer numerical scope may first retain a
+harmless proven major p=p for each active parameter whose name would otherwise
+be absent from the raw context. The nonmatching neutral packet [Eq(p,p),0,0]
+proves that reflexive equation and continues toward the same typed goal with
+Eq(p,p)*3 added. This array has the administrative truth reading but retains
+p literally. Generated names satisfy p < -1, so the raw opening of that
+six-entry array preserves its p leaves. Reflexivity is derived from the
+zero computation and transport. Such neutral padding can remember every
+active outer label before local allocation; it is untrusted proof production
+and adds no kernel rule. The new bound then avoids the entire active scope.
+
+Alternatively, additional parameters absent from a local sequent may be
+renamed or instantiated within that subproof. Accordingly, one must NOT claim literal
+acceptance equivalence on every arbitrary raw input stream under a naive
+global replacement map. Untyped inference-selection coincidences can change
+under such a map. The translator in this directory is an explicitly bounded,
+execution-guided fixture tool; it refuses unsupported encounters. Its seven
+successful cases are evidence for implementation, not the universal compiler
+theorem or a test of every alias case.
+
+5. Fixed-name falsification
+
+The public formula
+
+    D_{x,y}(I(y,0;u.x) = I(y,0;u.y))
+
+has base 0=0. At y=1 it forces x=1, and at y=2 it forces x=2, so its ordinary
+arithmetical reading is false. A checker that always chooses eigenname -1
+can be attacked by supplying the witness S(-1): its alleged successor case
+then captures that fixed parameter and collapses to reflexivity. The supplied
+six-line attack makes that deliberately unsound control accept. The genuine
+checker chooses a negative number larger in magnitude than the occurrence
+of -1 in the witness packet, so that collapse cannot occur; it rejects the
+same stream. Both ordinary and optimized Python executions are recorded.
+
+6. What is and is not established
+
+The implementation deletes a mutable scope floor and replaces its role by
+an explicit locally dominating name. The negative integers now represent
+free parameters without a numeric lower-bound promise. This changes proof
+representation, not the inherited numerical domain, actual equality, or
+the defining arithmetic and logical clauses. Bi-interpretability and
+equiconsistency transfer only after the rule-level soundness and typed
+completeness argument above is combined with the repository's full bridge.
+
+This construction is attributed to the repository's earlier long_names
+experiment. Its measured complete source ties the matched control's bytes
+and uses more tokens and AST nodes. It is not a new complexity record,
+a proof of optimality, or a claim to have met the requested global target.

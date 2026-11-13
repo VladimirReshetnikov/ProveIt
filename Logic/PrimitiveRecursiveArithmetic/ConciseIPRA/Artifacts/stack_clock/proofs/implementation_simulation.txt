@@ -1,0 +1,93 @@
+EXACT SIMULATION OF AN ENTRY-RESERVATION COUNTER BY INPUT CONSUMPTION
+
+Source control: reference/retained_control.py, frozen from the incoming
+retained_validation package in ProveIt at commit
+65c32fbe4730bfe5a064502b0b95ebc798c732fa.
+
+The source keeps a global integer k, initially 0. Every check call removes one
+packet, scans its goal using the old k, then decreases k once before forming
+the computation candidate. No other operation changes k or removes a packet,
+except a recursive check call. The candidate instead fixes N equal to the
+number of packets after the public goal has been removed and reads
+
+                         floor = len(packets) - N.
+
+The compact driver computes N as one less than the parsed array length,
+immediately before removing the public goal; this is the same fixed value.
+It scans the goal BEFORE removing its packet. This ordering is essential.
+The packet removal then decreases the derived floor by exactly one.
+The candidate never independently mutates or passes a freshness counter.
+In the compact module k is a pure query function. The readable companion
+uses local floor/fresh snapshots of the same input-derived value.
+
+1. Reader and initial state
+The two readers parse the same whole JSON value, remove the same last item
+as the public goal, and keep the same remaining list. If the reader or initial
+pop fails, both reject. Initially len(packets)=N, so the candidate's floor is
+0, equal to the source counter. Actual public bindings and parity checks are
+unchanged; unavailable variables, padding slots, and retained floating-point
+values are rejected as in the source. The public true value is the same
+explicit zero-code alias. Unused prefix entries may be arbitrary JSON data.
+
+2. Opening is a pure operation
+For a fixed list length R, the candidate's opening function performs exactly
+the source opening operations at counter k=R-N. The recursive calls of opening
+never consume packets. Thus every recursive child sees the same floor; the
+same intermediate arithmetic, bounds, parity, shape, and substitution tests
+occur. This proves simultaneous success with equal values, and simultaneous
+failure. The source missing-image sentinel is the function c; the compact
+candidate uses the same kind of sentinel. The readable companion's object
+sentinel fails in the same missing-image cases.
+
+3. Commuting the entry scan with packet removal
+Relate the source state just before a check call to the candidate state with
+identical context, raw goal, and packet stack, and source k=R-N. The source
+removes the packet and scans at its still-unchanged counter; the candidate
+scans at its still-unchanged stack length and then removes the same packet.
+The scan reads neither the packet fields nor the reader. If both operations
+succeed, the source next decrements k and the two floors agree again at
+R-1-N. If either operation fails, both complete checkers reject; the order of
+exceptions and the discarded record on a rejecting run need not coincide.
+
+4. Omission of the allocation marker
+The source's terminal-membership tuple contains the new counter k_new as its
+first element. A successful old-floor scan cannot equal k_new=k_old-1.
+If its result is an array, it is unequal to an integer. If its result is a
+retained scalar, it is at least k_old, except that numerical zero is normalized
+to 1, also not k_new. The eager missing-image scan cannot produce a successful
+out-of-range scalar. Therefore the marker never discharges a proof and may
+be omitted. The other membership candidates are identical.
+
+5. Nonterminal order and recursive calls
+The source first prepares h=3m or the witness-opened introduction matrix;
+only then does it check the compulsory major m. The compact candidate preserves the expression and that order literally.
+Every successfully returning source call returns None; the readable companion
+may therefore move the major call from its disjunction into its own statement
+without changing a value.
+Relate its recursive call by induction. On its return the source's counter
+again equals remaining-N; the candidate snapshots that value as fresh.
+Both form the same hypothesis, using progress only for literal equations and
+the same explicit mode marker. Both perform the same delayed endpoint test,
+the same lazy selected-source opening, and the same final substitution, in the
+same order, before making corresponding continuation calls. No opening or
+context operation changes the stack length.
+
+Induction on a finite successful call tree, in either direction, proves:
+
+  The candidate accepts exactly the same finite JSON certificates as the
+  control, preserving the public goal, retained context, consumed packets,
+  unused prefix, and corresponding scope values.
+
+The theorem concerns mathematical finite executions with sufficient resources.
+Physical stack/memory limits and Python implementation details remain the same
+sort of limitations as for the control; the new shape of Python call frames
+can change the precise resource threshold. It does not assert identical error
+messages, rejecting execution traces, or wall-clock performance.
+
+6. Arithmetic consequence
+Because the accepted certificate relation itself is preserved, the exact
+public theorem set is unchanged. The inherited full first-order iPRA
+bi-interpretation therefore transfers with the same whole numerical domains,
+actual equality, formula translations and round trips, and identity numerical
+comparison graphs. This argument makes no new claim about the foundational
+arithmetic proof or the global minimum checker size.

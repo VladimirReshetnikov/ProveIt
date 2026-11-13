@@ -1,0 +1,142 @@
+INDEPENDENT MATHEMATICAL AND IMPLEMENTATION REVIEW
+=================================================
+
+Reviewed candidate: clock_work/fused_function.py
+SHA-256: 370417468eaed2fd9eaeabe7b5253e4d3f595875ee301605a460f0cb598fe390
+Measured normalized source:328 significant tokens /380 AST nodes /613 bytes.
+Matched retained-validation control:309 /355 /582.
+
+Recommendation: the derived-floor transformation is correct under the same
+unbounded finite-execution convention as the inherited checker. It is a
+new representation/implementation result, not a smaller complete checker
+than the current records. No arithmetic or logical axiom has been deleted.
+
+1. State relation
+-----------------
+
+Let P be the list of unread proof packets after the public conclusion has
+been removed, and let N be its initial length. In the candidate the floor
+is the expression f(P)=len(P)-N. In the control the floor is the mutable
+integer k initially0, decreased once by every proof call.
+
+At every corresponding point after r packet pops,
+    k=-r=len(P)-N=f(P).
+This equality is independent of arbitrary unused prefix records. Such a
+prefix increases both len(P) and N by the same amount and cancels exactly.
+
+The initial N is computed from the parsed list; it is not a certificate
+promise or an unchecked claimed length. No theorem prover or proof search
+is hidden in this value.
+
+2. Why the goal scan moves before pop
+------------------------------------
+
+The control reads/unpacks the packet, then scans its goal while k still
+has its old value, and only then decrements k. A packet pop alone does not
+change the control's k.
+
+In the candidate a packet pop changes f(P) immediately. Therefore the scan
+MUST happen before pop. Its result b=i(a) is computed with f(P)=old k. The
+subsequent pop makes f(P)=old k-1, exactly the control's new floor.
+
+For JSON-built data the opener is pure: it traverses lists, compares and
+maps scalars, builds lists, and raises an exception on unsupported values.
+It never pops P or mutates an input tree. Thus moving the scan past the
+packet read does not alter any successful result or later packet value.
+If either the scan or packet read/unpack fails, the candidate and control
+both reject. Their error timing/exception text need not agree.
+
+3. Why the phantom terminal entry can be deleted
+-----------------------------------------------
+
+The old terminal tuple contains its newly assigned floor k_new. This entry
+can never equal the result of the preceding successful goal scan.
+
+A successful scan without a supplied image returns either a list or a
+retained scalar. A list does not equal an integer in JSON/Python built-in
+semantics. Every retained scalar is an int/bool: parity with the integer
+depth rejects a float, while unsupported types fail earlier. A retained
+negative scalar is at least k_old. A retained zero normalizes to1, and a
+positive scalar is also not k_new. Since k_new=k_old-1<k_old, no scalar
+result equals k_new.
+
+The default image is the checker function, which cannot be successfully
+opened; hence a missing-image path cannot manufacture a contrary scalar.
+
+Consequently deleting only that membership entry leaves the terminal
+verdict unchanged. Its old assignment side effect is already supplied by
+the candidate's pop through f(P).
+
+4. The rest of each instruction
+------------------------------
+
+After pop, the computation candidate uses the same source, initializer,
+body, and substitution as the control and sees the same floor.
+
+On a nonterminal call, the expression that forms
+    major*3 or (goal := opening(*goal,template,2))
+is evaluated before the compulsory major proof in both programs. Thus the
+introduction witness is checked before that proof can consume packets and
+make later parameter names available.
+
+The major call returns None on every successful path in both programs.
+The same retained context formula is then opened at the same current
+floor. Context construction is evaluated before the continuation endpoint
+expression in both programs. The source/target match, lazy source
+instance, and subsequent successor opening are otherwise unchanged.
+
+The next recursive call therefore has identical context, goal, unread
+packet list, and related floors. Induction on a finite successful call
+tree proves identical success and identical unread suffix. Conversely the
+same argument starting from a successful candidate call proves control
+success. Rejection may occur at a different intermediate operation, but
+neither program has an accepting branch absent from the other.
+
+5. Public syntax and freshness
+------------------------------
+
+At the root f(P)=0. The public traversal is identical to the control's:
+successor does not bind, an iterator binds only in its body, and D binds
+two variables. The formula grammar is exactly actual-binding Eq/D, with
+true as the declared zero-code alias1. Floats, false, free root variables,
+dummy-slot references, and malformed constructors cannot survive the
+public scan.
+
+After a successful major proof at least one packet has been consumed, so
+the newly used floor is strictly lower than the floor at witness/endpoint
+validation. Old scoped data cannot mention that new name. The original
+DI/DE eigenvariable argument therefore transfers without a new logical
+admissibility principle.
+
+6. Independent implementation evidence
+--------------------------------------
+
+fused_clock_independent_checks.json records:
+  *99 differential cases with no verdict or successful-suffix mismatch;
+  *14 positive native fixtures under three different unused-prefix sizes;
+  *the repaired future-capture false-theorem certificate under padding;
+  *the counter-shaped-computation false-theorem attack;
+  *malformed public goals, consumed packets and outer documents, including
+   booleans, floats, NaN, infinity, strings, objects and empty lists;
+  *6000 independently generated public-grammar comparisons, zero mismatch.
+
+These checks support the universal argument above; they are not a formal
+semantics verification. The inherited Lean native/iPRA bridge does not
+constitute a Lean proof of this Python transformation.
+
+7. Scope of the conclusion
+--------------------------
+
+The candidate preserves the exact parsed-certificate acceptance relation
+and therefore inherits the control's canonical theorem set, exact public
+grammar, and iPRA bi-interpretation. Its source is31 bytes larger than the
+matched control. The current best exact-binding bytes remain582 unless
+the independent threshold-selector refinement is counted, in which case
+581 is obtained by a different program.
+
+The record triples are empirical finite-corpus upper bounds on the unknown
+optimum, never universal complexity lower bounds. Neither the derived
+clock nor the one-byte selector experiment establishes the user's requested
+global minimization. Fixed hardware, parser, stack or memory cutoffs are
+excluded from the mathematical equivalence claim, as they are for the
+inherited completeness theorem.
