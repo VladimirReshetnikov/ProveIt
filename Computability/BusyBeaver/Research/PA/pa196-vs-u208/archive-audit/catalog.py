@@ -26,6 +26,7 @@ TABLES = [
  ('candidate','conpa_tm_comparison_and_search.zip','conpa_tm_study/research196/accepted196_register_swap/pa196_register_AD_swap.tm','3968e6733b30e0812b595062dc4c7e8355df74f42a61177af54917d873465625',0,196),
  ('candidate','pa_consistency_reduction.zip','pa_consistency_reduction/comparison/audit/rebracketed196_dense.tm','e212e359837cff6d1b3ab665855b0e9b4a2b471d23e77db447680d494d943b80',0,196),
  ('candidate','pa_consistency_reduction.zip','pa_consistency_reduction/comparison/audit/h_catalan_node170_3_133_37.tm','5e7e8daf0fbd91d27389de054023bc5959e0246f4001c0ec1381dc3f53a55dac',0,196),
+ ('candidate','pa_consistency_research_2026-11-13 (2).zip','pa_consistency_research_2026-11-13/rotated196/machine.tm','b9873b89df4189414d0f443922ca9227bf2f76d8c81a0d0951c06cd608d6a90b',0,196),
 ]
 
 def need(ok, message):
