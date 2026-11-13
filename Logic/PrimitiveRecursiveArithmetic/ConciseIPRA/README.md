@@ -848,6 +848,13 @@ witness" (`equational_transport`: Back on equations only, answering `wit:q:ab-ba
 "Obstructions" (`induction_boundary`, `frontier_church`); fifteen checker files they
 supersede, seven compressed copies and eight re-delivered copies of earlier superseded
 checkers were deleted.
+The next seven (`validated_phase`, `nontraditional_inputs`, `exact_bindings`, `exact_masks`,
+`intrinsic_validation`, `names_and_scopes`, `shared_witness_bundles`) went into "Certificates
+and checkers" (strict envelope 300/337/580; exact, actual-binding and sequent-input
+contracts), "Introduction without a supplied witness" (equation-only aliases with one
+naming scheme, and why the scheme is needed) and "Discharge of a witness and restricted
+equality rules" (root conversion with a shared witness); twenty-six checker files they
+supersede and two compressed copies were deleted.
 `checked_presentation`, `context_phase`, `crossed_uniqueness`,
 `frontier_review`, `inferred_major`, `orbit_closure`, `progress_independence`
 and `smaller_envelope` arrived on 2026-11-12 (commits `1c5ecfe518`,

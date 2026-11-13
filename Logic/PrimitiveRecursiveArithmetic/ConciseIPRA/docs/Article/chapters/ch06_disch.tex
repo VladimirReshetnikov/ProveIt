@@ -19,7 +19,9 @@ supplied: both are read off two rows of the matrix. In
 syntax, where no normalization is available and reflexivity is derived. In
 \cref{disch:sec:restricted} the equality rule substitutes for a variable
 only, for the newest variable only, or, on raw terms, for a free parameter;
-an obstruction shows that unary congruence is not enough. In
+on raw terms it also suffices together with conversion at the root of an
+endpoint, once a certificate may bind one witness for two matrices; an
+obstruction shows that unary congruence is not enough. In
 \cref{disch:sec:spec} the use of a clause takes no term argument. In
 \cref{disch:sec:alias} a primitive fresh alias, whose discharge substitutes
 into the conclusion, and substitution for a parameter in the backward
@@ -1526,7 +1528,8 @@ canonical recursor syntax are not formalized.
 
 This section draws on \pkg{variable\_substitution}
 (\cref{disch:sec:vsub,disch:sec:newest}), \pkg{parameter\_substitution}
-(\cref{disch:sec:param}), \pkg{substitutive\_discharge}
+(\cref{disch:sec:param}), \pkg{shared\_witness\_bundles}
+(\cref{disch:sec:bundle}), \pkg{substitutive\_discharge}
 (\cref{disch:sec:unary}) and \pkg{coverage\_obstruction}
 (\cref{disch:sec:zero-refl}).
 
@@ -2091,6 +2094,400 @@ the witness $s$ and eliminated at $y=1$ (\Lean{PPrf.aliasE}), and the
 calculus is closed under injective renaming (\Lean{PPrf.ren}). The five
 families of $\mathcal P$, which combine the rule with clause contexts and
 the introduction with a mode, are not formalized together.
+\end{remark}
+
+\subsection{Root conversion with a shared witness}
+\label{disch:sec:bundle}
+
+This subsection draws on \pkg{shared\_witness\_bundles}. Terms are the raw
+iterator terms of \cref{base:sec:terms}, with capture-avoiding substitution,
+and nothing is normalized, as in \cref{disch:sec:param}.
+
+On full normal forms the rows of the packet of \cref{disch:def:packet} are
+literal, and \rulename{VSub} is the only equality rule needed
+(\cref{disch:thm:vsub-transport}). On raw iterator terms the rows of one
+matrix are reached by conversion. The calculus $\mathsf{BH}_3$ converts at
+depths up to three inside the counter of a selector, because its single
+matrix carries the three rows $0=0$, $x=t$ and $h(x)=r$ through a parity
+term (\cref{comp:lem:bhtr}). On the counter-aware recursor one step at the
+root suffices (\cref{ctr:thm:roottransport}); whether it suffices on the
+iterator terms is open (\cref{ctr:q:root}). The calculus of this subsection
+keeps the iterator terms and the steps at the root, and lets a certificate
+bind one witness for two matrices. Each matrix then carries a single row,
+selected by the counter $0$ or a successor, and no parity is computed.
+
+\begin{definition}[Root steps on iterator terms]
+\label{disch:def:rootstep}
+For terms $p,p'$ write $p\to_0p'$ if, for some terms $n,a,h$, either
+$p\equiv\It{0}{a}{u}{h}$ and $p'\equiv a$, or
+$p\equiv\It{\Suc n}{a}{u}{h}$ and $p'\equiv h\subst{\It{n}{a}{u}{h}}{u}$;
+write $p\leftrightarrow_0p'$ if $p\to_0p'$ or $p'\to_0p$.
+\end{definition}
+
+These are the instances of \eqref{base:eq:I0} and \eqref{base:eq:IS}, read
+as one step at the root; on the iterator terms embedded by
+\eqref{ctr:eq:rhabbrev} they are the root steps of \cref{ctr:def:rootstep}.
+There is no step below a successor, in the counter, seed or body of an
+iterator, or below a formula binder, and $\leftrightarrow_0$ is one step,
+not its closure.
+
+\begin{definition}[Bundles]
+\label{disch:def:bundle}
+The \emph{auxiliary formulas} are
+\[
+ F ::= (s=t)\mid\Q{y}F\mid\mathsf B_x[\,y_1.F_1,\dots,y_m.F_m\,],
+ \qquad m\geq0 .
+\]
+In a \emph{bundle} $\mathsf B_x[y_1.F_1,\dots,y_m.F_m]$ the variable $x$ is
+bound in every row $F_i$, the variable $y_i$ is bound in $F_i$ only, and
+$x\neq y_i$; the instance of the row $F_i(x,y_i)$ at terms $t,r$ is written
+$F_i(t,r)$. A \emph{public formula} is an auxiliary formula all of whose
+bundles have exactly one row. The public formula $\mathsf B_x[y.B]$ is
+identified with $\D{x}{y}B$, so that the public formulas are the native
+formulas of \cref{base:def:formulas}. The ordinary reading of
+\cref{base:def:reading} is extended by
+\[
+ \bigl(\mathsf B_x[y_1.F_1,\dots,y_m.F_m]\bigr)^\circ\defeq
+ \exists x\,\bigwedge_{i=1}^{m}
+ \bigl(F_i^\circ(x,0)\to\forall y_i\,F_i^\circ(x,y_i)\bigr),
+\]
+where the empty conjunction is $0=0$ and a conjunction of one member is
+that member.
+\end{definition}
+
+On public formulas the extended reading is that of
+\cref{base:def:reading}, and it commutes with substitution, by the
+induction that proves \eqref{base:eq:reading-subst}. The witness is common
+to the rows: the reading of $\mathsf B_x[y_1.F_1,y_2.F_2]$ is not the
+conjunction of the readings of $\D{x}{y_1}F_1$ and $\D{x}{y_2}F_2$, whose
+witnesses may differ.
+
+\begin{definition}[The calculus $\mathcal H$]
+\label{disch:def:bundle-calc}
+A sequent of $\mathcal H$ is $\Gamma\proves_XF$, where the \emph{scope} $X$
+is a finite set of variables, $\Gamma$ is a finite list of auxiliary
+formulas, and every free variable of $\Gamma$ and $F$ is in $X$. Every term
+that a rule supplies has its free variables in the scope of its sequent.
+The rules are the following seven families.
+\begin{gather*}
+ \infrule{F\in\Gamma}{\Gamma\proves_XF}\ \rulename{Hyp}
+ \qquad
+ \infrule{}{\Gamma\proves_Xt=t}\ \rulename{Refl}
+ \qquad
+ \infrule{\Gamma\proves_Xb=t\qquad\Gamma\proves_Xu=v}
+         {\Gamma\proves_Xv=u\subst{t}{b}}\ \rulename{VSub}
+ \\[1.2ex]
+ \infrule{\Gamma\proves_Xp=q}{\Gamma\proves_Xp'=q}\ \rulename{Root}
+ \qquad
+ \infrule{\Gamma\proves_Xq=p}{\Gamma\proves_Xq=p'}\ \rulename{Root}
+ \qquad(p\leftrightarrow_0p')
+ \\[1.2ex]
+ \infrule{\Gamma\proves_X\Q{y}F(y)\qquad\Gamma\proves_XF(0)}
+         {\Gamma\proves_XF(t)}\ \rulename{QE}
+ \\[1.2ex]
+ \infrule{\Gamma,\ F_i(t,\eta_i)\proves_{X,z_i}F_i(t,\Suc z_i)
+          \quad(1\leq i\leq m)}
+         {\Gamma\proves_X\mathsf B_x[y_1.F_1,\dots,y_m.F_m]}\ \rulename{BI}
+ \\[1.2ex]
+ \infrule{\Gamma\proves_X\mathsf B_x[y_1.F_1,\dots,y_m.F_m]\qquad
+          \Gamma,\ \Q{y_1}F_1(b,y_1),\dots,\Q{y_m}F_m(b,y_m)\proves_{X,b}A}
+         {\Gamma\proves_XA}\ \rulename{BE}
+\end{gather*}
+Side conditions. In \rulename{VSub} the \emph{source} $b$ is a variable of
+$X$; the terms $t,u,v$ are arbitrary, $b$ may occur in $t$ and in $v$, and
+only the left endpoint $u$ is substituted, simultaneously and once. In
+\rulename{Root} one whole endpoint is replaced by one root step, as a
+contraction or as an expansion; an expansion supplies the redex, which is
+checked by one contraction. In \rulename{BI} the witness $t$ is one term,
+with its free variables in $X$, for all rows; for each $i$ the variable
+$z_i$ is not in $X$; row $i$ is in \emph{case mode}, $\eta_i\equiv0$, or in
+\emph{progress mode}, $\eta_i\equiv z_i$, the latter only if $F_i$ is a
+literal equation. The modes are chosen by the certificate, independently
+for the rows; the premise of row $i$ has its own assumption only; for
+$m=0$ the rule has no premise. In \rulename{BE} the variable $b$ is not in
+$X$, and the same $b$ is used for every row. The displayed assumptions are
+discharged.
+\end{definition}
+
+These are all the rules. There is no transport, congruence, symmetry or
+transitivity, no computation axiom, no conversion below the root, no case
+rule, no induction other than the progress mode of a row that is a literal
+equation, no separation axiom and no rule for a connective. \rulename{Root}
+is one family with two patterns, two directions and two endpoints, and
+\rulename{BI} one family with two modes; the count of families is not the
+size measure of \cref{base:sec:measure}. Unlike \rulename{Intro} of
+\cref{disch:def:rules}, the mode of a row does not depend on the spelling of
+the witness. The package names the rules Hyp, Refl, VSub, HC0, QE,
+$\mathrm{DI}^*$ and $\mathrm{DE}^*$.
+
+\begin{lemma}[Renaming and weakening]
+\label{disch:lem:bundle-struct}
+Let $\Gamma\proves_XF$ be derivable in $\mathcal H$. Then
+$\Gamma\iota\proves_{X'}F\iota$ is derivable for every injective map
+$\iota$ of $X$ into a finite set $X'$, and $\Gamma'\proves_{X'}F$ is
+derivable for every finite $X'\supseteq X$ and every list $\Gamma'$ over
+$X'$ that contains every member of $\Gamma$.
+\end{lemma}
+
+\begin{proof}
+By induction on the derivation, after the eigenvariables $z_i$ of
+\rulename{BI} and $b$ of \rulename{BE} have been renamed away from $X'$.
+An injective renaming sends a variable to a variable, so the source of
+\rulename{VSub} remains a variable of the scope; it commutes with
+capture-avoiding substitution, so it sends a root step to a root step and
+an instance of \rulename{QE}, \rulename{BI} or \rulename{BE} to an instance;
+and it sends literal equations to literal equations, so the condition of
+the progress mode is kept. Under weakening a member of $\Gamma$ is a member
+of $\Gamma'$, and the other rules keep their premises and conclusions.
+\end{proof}
+
+The lemma substitutes no compound term into a derivation. Such a
+substitution can turn the source of \rulename{VSub} into a compound term,
+and its admissibility on public sequents follows only from
+\cref{disch:thm:bundle} below.
+
+For a term $a$ and a variable $u$ not free in $a$ put
+$C(y,a)\defeq\sel(y,0,a)\equiv\It{y}{0}{u}{a}$ (\cref{base:def:sel}). Since
+$u$ is not free in $a$, for every term $n$
+\begin{equation}
+ C(0,a)\to_00,\qquad C(\Suc n,a)\to_0a .
+ \label{disch:eq:gate}
+\end{equation}
+The second step does not inspect $n$: the body is the constant term $a$.
+
+\begin{theorem}[Transport from root steps and a shared witness]
+\label{disch:thm:bundle-transport}
+For all terms $s,t,r$ and every term template $h(w)$, if
+$\Gamma\proves_Xs=t$ and $\Gamma\proves_Xh(s)=r$ are derivable in
+$\mathcal H$, then so is $\Gamma\proves_Xr=h(t)$. The derivation contains
+each of the two given derivations once, weakened, and adds $21$
+inferences: $12$ instances of \rulename{Root}, all at the root of an
+endpoint, of which $8$ are expansions and $4$ contractions; two of
+\rulename{Refl}; two of \rulename{Hyp}; two of \rulename{QE}; one
+\rulename{BI} with two rows in case mode; one \rulename{BE}; and one
+\rulename{VSub}. It uses no progress mode.
+\end{theorem}
+
+\begin{proof}
+Let $z$ and $b$ be variables not in $X$ and different from $w$, let the
+bound variables $x,y,u$ be pairwise distinct and outside $X\cup\{w,z,b\}$,
+and take the gate \eqref{disch:eq:gate} with this $u$. Since $h(s)$ is in
+the scope $X$, every free variable of $h$ other than $w$ is in $X$. Put
+\[
+ P\defeq\mathsf B_x\bigl[\,y.\ C(y,x)=C(y,t),\ \ y.\ C(y,h(x))=C(y,r)\,\bigr],
+\]
+with the rows $F_1(x,y)\equiv\bigl(C(y,x)=C(y,t)\bigr)$ and
+$F_2(x,y)\equiv\bigl(C(y,h(x))=C(y,r)\bigr)$. Since $x$ is not free in
+$h,t,r$ and $u$ is not free in $s$, for every term $c$
+\[
+ F_1(s,c)\equiv\bigl(C(c,s)=C(c,t)\bigr),\qquad
+ F_2(s,c)\equiv\bigl(C(c,h(s))=C(c,r)\bigr),
+\]
+and the same holds with $b$ in place of $s$.
+
+\emph{Introduction.} Apply \rulename{BI} to $P$ with the witness $s$, both
+rows in case mode and $z_1=z_2=z$. The premise of row $1$ is
+$\Gamma,F_1(s,0)\proves_{X,z}F_1(s,\Suc z)$. The given derivation of $s=t$,
+weakened by \cref{disch:lem:bundle-struct}, proves
+$\Gamma,F_1(s,0)\proves_{X,z}s=t$. \rulename{Root} at the left endpoint, as
+the expansion $C(\Suc z,s)\to_0s$ of \eqref{disch:eq:gate}, gives
+$C(\Suc z,s)=t$, and \rulename{Root} at the right endpoint, as the expansion
+$C(\Suc z,t)\to_0t$, gives $C(\Suc z,s)=C(\Suc z,t)$, which is
+$F_1(s,\Suc z)$. In the same way the weakened derivation of $h(s)=r$ and the
+expansions $C(\Suc z,h(s))\to_0h(s)$ and $C(\Suc z,r)\to_0r$ give
+$F_2(s,\Suc z)$. The assumptions of the rows are not used. The witness $s$
+has its free variables in $X$, and $z\notin X$. This gives
+$\Gamma\proves_XP$ with four expansions.
+
+\emph{Elimination.} Apply \rulename{BE} to $P$ at $b$. The branch has the
+scope $X,b$ and the context
+$\Gamma,\ \Q{y}F_1(b,y),\ \Q{y}F_2(b,y)$. \rulename{Refl} gives $0=0$; the
+expansions $C(0,b)\to_00$ at the left endpoint and $C(0,t)\to_00$ at the
+right endpoint give $F_1(b,0)$. In the same way \rulename{Refl} and the
+expansions $C(0,h(b))\to_00$ and $C(0,r)\to_00$ give $F_2(b,0)$. \rulename{Hyp}
+and \rulename{QE} at the term $\Suc 0$ give
+$C(\Suc 0,b)=C(\Suc 0,t)$, and the contractions $C(\Suc 0,b)\to_0b$ at the
+left endpoint and $C(\Suc 0,t)\to_0t$ at the right endpoint give $b=t$.
+\rulename{Hyp}, \rulename{QE} at $\Suc 0$ and the contractions
+$C(\Suc 0,h(b))\to_0h(b)$ and $C(\Suc 0,r)\to_0r$ give $h(b)=r$.
+\rulename{VSub} with the source $b$, which is in the scope $X,b$, the major
+premise $b=t$ and the minor premise $h(b)=r$ concludes
+\[
+ r=h(b)\subst{t}{b}\equiv r=h(t),
+\]
+since $b$ occurs in $h(b)$ only at the places of $w$. The conclusion has its
+free variables in $X$, so \rulename{BE} concludes $\Gamma\proves_Xr=h(t)$.
+
+\emph{Count.} The introduction has $4$ expansions; the two bases have $2$
+instances of \rulename{Refl} and $4$ expansions; the two recovered rows have
+$2$ of \rulename{Hyp}, $2$ of \rulename{QE} and $4$ contractions; and
+\rulename{BI}, \rulename{BE} and \rulename{VSub} are $3$ more. The total is
+$4+6+8+3=21$.
+\end{proof}
+
+The rows of the introduction ignore their assumptions, so the derivation is
+valid also with either row in progress mode, and it is uniform in $s$,
+including $s\equiv0$ and compound iterator terms. It uses no predecessor, no
+parity term, no case analysis inside the gate and no conversion below the
+root. The count is one of inferences; the displayed terms are copied and
+substitution can enlarge them, so it is not a bound on the size of a
+serialized certificate, and no optimality of the count is claimed. The
+common witness is what the proof needs: after \rulename{BE} both equations
+concern the same variable $b$, which is the form that \rulename{VSub} uses.
+Two paired formulas opened at $b$ and $c$ would give $b=t$ and $h(c)=r$, and
+nothing relates $b$ and $c$. In $\mathsf{BH}_3$ the three rows share the
+witness because they are rows of one matrix, which costs the conversions
+inside the parity counter of \cref{comp:lem:bhtr}. The sequent
+$\It{0}{x}{u}{u}=y\proves x=y$, which separates substitution for a variable
+alone from $\Nat$ on raw terms (\cref{comp:thm:rawvsub}), is derived by one
+contraction at the left endpoint of the assumption.
+
+\begin{lemma}[Ordinary soundness]
+\label{disch:lem:bundle-sound}
+If $\Gamma\proves_XF$ is derivable in $\mathcal H$, then
+$\Gamma^\circ\proves_{\Teq}F^\circ$, with the reading of
+\cref{disch:def:bundle}.
+\end{lemma}
+
+\begin{proof}
+By induction on the derivation; the variables of $X$ are free variables of
+the derivation in $\Teq$ (\cref{base:def:logic}). \rulename{Hyp} is the
+hypothesis rule and \rulename{Refl} the reflexivity rule of the logic.
+
+\rulename{VSub}: from $u=v$ the Leibniz rule with the formula $w'=u$ and
+reflexivity $u=u$ gives $v=u$. Let $w$ be a variable not free in $u,v,t$
+and different from $b$, and let $\varphi(w)\defeq\bigl(v=u\subst{w}{b}\bigr)$.
+Then $\varphi(b)\equiv(v=u)$ and $\varphi(t)\equiv\bigl(v=u\subst{t}{b}\bigr)$
+by \cref{base:lem:subst}, and the Leibniz rule with $b=t$ gives the
+conclusion.
+
+\rulename{Root}: the equation between $p$ and $p'$ is an instance of the
+axiom (T1) or its symmetric form, and symmetry and transitivity, which the
+Leibniz rule gives, turn the premise into the conclusion.
+
+\rulename{QE}: the reading of the major premise is
+$F^\circ(0)\to\forall y\,F^\circ(y)$; implication elimination with the minor
+premise and universal elimination at $t$ give $F^\circ(t)$, which is
+$(F(t))^\circ$.
+
+\rulename{BI}: fix a row $i$. In case mode the induction hypothesis is
+$\Gamma^\circ,F_i^\circ(t,0)\proves F_i^\circ(t,\Suc z_i)$, where $z_i$ is not
+free in $\Gamma$, $t$ or $F_i(t,0)$, since these lie in $X$. With the
+hypothesis $F_i^\circ(t,0)$ in the context, \cref{base:lem:teqcases}(i)
+applied to $\varphi(y)\defeq F_i^\circ(t,y)$ gives $\forall y\,F_i^\circ(t,y)$,
+and implication introduction gives
+$\Gamma^\circ\proves F_i^\circ(t,0)\to\forall y\,F_i^\circ(t,y)$. In
+progress mode $F_i$ is a literal equation $E_i$, the induction hypothesis
+is $\Gamma^\circ,E_i(t,z_i)\proves E_i(t,\Suc z_i)$, and
+\cref{base:lem:teqcases}(ii) in the context $\Gamma^\circ,E_i(t,0)$, with a
+fresh variable as the target and universal and implication introduction,
+gives the same formula. Conjunction introduction over the rows, or $0=0$ by
+reflexivity if $m=0$, and existential introduction at the witness $t$ give
+the reading of the bundle. No induction for a compound formula is used.
+
+\rulename{BE}: the reading of the major premise is an existential
+formula. In its elimination at the eigenvariable $b$, which is not free in
+$\Gamma^\circ$, $A^\circ$ or the bundle, conjunction elimination gives each
+$F_i^\circ(b,0)\to\forall y_i\,F_i^\circ(b,y_i)$, which is
+$(\Q{y_i}F_i(b,y_i))^\circ$; cut with the induction hypothesis for the
+minor premise gives $A^\circ$.
+\end{proof}
+
+\begin{lemma}[The native rules in $\mathcal H$]
+\label{disch:lem:bundle-embed}
+Let $\Gamma\proves_{\Nat}A$ and let $X$ be a finite set that contains the
+free variables of $\Gamma$ and $A$. Then $\Gamma\proves_XA$ is derivable in
+$\mathcal H$.
+\end{lemma}
+
+\begin{proof}
+Rename the eigenvariables of the given derivation in $\Nat$ apart from one
+another and from $X$, and replace every other free variable that is not in
+$X$ by $0$ throughout. The side conditions of the rules of $\Nat$ concern
+eigenvariables only, and the matrix of \rulename{QI} stays a literal
+equation, so every inference remains an instance of its rule; the end
+sequent is unchanged. Now every sequent of the derivation has its free
+variables in $X$ together with the eigenvariables of the inferences below
+it, and the translation proceeds by induction on the derivation, with that
+scope at each sequent.
+
+\rulename{Hyp} and \rulename{QE} are rules of $\mathcal H$. \rulename{I0},
+$\It{0}{a}{u}{h}=a$, is \rulename{Refl} at $a$ followed by the expansion
+$\It{0}{a}{u}{h}\to_0a$ at the left endpoint; \rulename{IS} is
+\rulename{Refl} at $h\subst{\It{n}{a}{u}{h}}{u}$ followed by one expansion
+at the left endpoint. \rulename{Tr} is
+\cref{disch:thm:bundle-transport}. \rulename{DI} is \rulename{BI} for the
+singleton bundle in case mode, and \rulename{DE} is \rulename{BE} for the
+singleton bundle, whose added assumption is the assumption $\Q{y}B(b,y)$ of
+\rulename{DE}.
+
+\rulename{QI}: let $\Gamma,E(z)\proves E(\Suc z)$ with $E$ a literal
+equation. Take $x$ not free in $E$ and apply \rulename{BI} to
+$\mathsf B_x[y.E(y)]$ at the witness $0$ in progress mode; its premise is
+$\Gamma,E(z)\proves_{X,z}E(\Suc z)$, the translated premise. Apply
+\rulename{BE} at a fresh $b$: the added assumption is $\Q{y}E(y)$ itself,
+\rulename{Hyp} proves it, and since $b$ does not occur in it \rulename{BE}
+concludes $\Gamma\proves_X\Q{y}E(y)$.
+\end{proof}
+
+\begin{theorem}[$\mathcal H$ has exactly the native consequences]
+\label{disch:thm:bundle}
+For every finite list $\Gamma$ of native formulas, every native formula $A$
+and every finite set $X$ that contains their free variables,
+\[
+ \Gamma\proves_XA\ \text{in}\ \mathcal H
+ \quad\Longleftrightarrow\quad
+ \Gamma\proves_{\Nat}A .
+\]
+\end{theorem}
+
+\begin{proof}
+From right to left this is \cref{disch:lem:bundle-embed}. From left to
+right, \cref{disch:lem:bundle-sound} gives
+$\Gamma^\circ\proves_{\Teq}A^\circ$, where $\Gamma^\circ$ and $A^\circ$ are
+the readings of \cref{base:def:reading}, since $\Gamma$ and $A$ are public,
+and \cref{base:thm:bridge}(i) gives $\Gamma\proves_{\Nat}A$. The bundles of
+the derivation in $\mathcal H$ occur only in its interior; the bridge is
+applied to the native end sequent only.
+\end{proof}
+
+\begin{corollary}[Bridge for $\mathcal H$]
+\label{disch:cor:bundle-ipra}
+The statements of \cref{base:thm:bridge}(iii)--(v) hold with $\mathcal H$,
+on public sequents, in place of $\Nat$, with the same translations. Hence
+$\mathcal H$ is bi-interpretable with $\iPRA$, with whole numerical
+domains, equality read as equality and numerical composites with the graph
+$x=y$, every public formula is interderivable in $\mathcal H$ with its
+double translation, and $\proves_{\emptyset}0=\Suc 0$ in $\mathcal H$ if
+and only if $\iPRA\proves\bot$.
+\end{corollary}
+
+\begin{proof}
+By \cref{disch:thm:bundle} the two interpretations between $\mathcal H$
+and $\Nat$ that are the identity on terms and on public formulas preserve
+and reflect every public consequence, also with hypotheses, and their
+composites are literally the identity. Composing them with the
+interpretations of \cref{base:thm:bridge}(iii) gives the statement; an
+interderivability $A\dashv\vdash A'$ in $\Nat$ consists of two native
+sequents and is carried to $\mathcal H$ by \cref{disch:lem:bundle-embed}.
+The contradiction $0=\Suc 0$ is public, and \cref{base:thm:bridge}(v)
+gives equiconsistency.
+\end{proof}
+
+\begin{remark}[Which bundles are needed]
+\label{disch:rem:bundle}
+The proof of \cref{disch:lem:bundle-embed} uses bundles of one row, and
+\cref{disch:thm:bundle-transport} one bundle of two rows. Restricting the
+auxiliary formulas to bundles of one and two rows therefore preserves
+\cref{disch:thm:bundle}, and empty or larger bundles, which are sound by
+\cref{disch:lem:bundle-sound}, add no public consequence. Soundness is
+proved for every auxiliary sequent, completeness and the formula round trips
+for public sequents only; no statement is made about the derivability of an
+auxiliary sequent whose reading $\Teq$ proves
+(\cref{disch:q:bundle}). The package gives the proof of
+\cref{disch:thm:bundle} in writing, on the native bridge of the repository
+(\Lean{NPrf.iff\_teq}, \Lean{native\_iff\_pra}); $\mathcal H$ and the
+theorems of this subsection are not formalized in Lean or Rocq.
 \end{remark}
 
 \subsection{Unary congruence does not suffice}
@@ -4826,8 +5223,8 @@ This section summarizes the programs of \pkg{witness\_discharge},
 \pkg{first\_instance}, \pkg{clause\_discharge},
 \pkg{substitutive\_discharge}, \pkg{variable\_substitution},
 \pkg{parameter\_substitution}, \pkg{deterministic\_specialization},
-\pkg{alias\_back} and \pkg{equation\_aliases}. Sizes are in
-\cref{disch:sec:sizes}.
+\pkg{alias\_back}, \pkg{equation\_aliases} and
+\pkg{shared\_witness\_bundles}. Sizes are in \cref{disch:sec:sizes}.
 
 \emph{Common contract.} Every checker is a standalone Python module that
 reads one JSON value, verifies a closed theorem, prints \texttt{ACCEPT}
@@ -4943,6 +5340,33 @@ are the checkers of \pkg{alias\_back}, which accept the certificates with
 compound \rulename{Alias} and \rulename{Back} that the new checkers
 reject.
 
+\emph{\pkg{shared\_witness\_bundles}.} A readable reference checker of
+$\mathcal H$ (\cref{disch:def:bundle-calc}), outside the common contract.
+Its input is one JSON pair of a goal and a proof. Terms are $0$, a positive
+integer for a named variable, \texttt{["s",t]} and
+\texttt{["i",n,a,u,h]} with a named binder $u$; formulas are
+\texttt{["=",s,t]}, \texttt{["q",y,B]} and \texttt{["d",x,[[y1,B1],...]]};
+Booleans, unknown constructors, wrong arities and variables outside the
+current scope are rejected. Binders are named, with alpha-equivalence and
+simultaneous capture-avoiding substitution, and every sequent carries its
+scope. The proof tags are one for each of \rulename{Hyp}, \rulename{Refl},
+\rulename{VSub}, \rulename{QE}, \rulename{BI} and \rulename{BE} and two for
+\rulename{Root}, a contraction and an expansion that supplies its redex. The
+public goal must be a public formula; its free variables are parameters, the
+initial context is empty, and the initial scope is the set of free variables
+of the goal, so completeness for closed and open public theorems uses the
+replacement of the other free variables by $0$ in the proof of
+\cref{disch:lem:bundle-embed}. An untrusted producer compiles
+\cref{disch:thm:bundle-transport}; it must be given the whole ambient scope.
+Four positive certificates are checked: $\Suc(\It{0}{\Suc 0}{u}{u})=\Suc\Suc 0$
+by a transport whose source is not a variable, $\It{n}{0}{u}{u}=0$ by a row
+in progress mode whose assumption is used, $\Suc(\It{n}{0}{u}{u})=\Suc 0$,
+which combines the two, and $0=0$ through an empty bundle in the interior.
+Nine certificates are rejected, among them a compound source of
+\rulename{VSub}, a wrong expansion, $0=\Suc 0$, an inconsistent witness, case
+mode in place of a needed progress mode, a missing row, an escaping
+eigenvariable and a public goal with an empty bundle.
+
 Three statements about programs, independent of the rules, are proved in
 the packages.
 
@@ -5022,7 +5446,7 @@ checker.
 \section{Checker sizes}
 \label{disch:sec:sizes}
 
-This section lists the sizes reported by the eleven packages named at the
+This section lists the sizes reported by the twelve packages named at the
 beginning of \cref{disch:sec:impl}. All figures follow the protocol of
 \cref{base:sec:measure} and are those stated by the packages. A control is
 matched if it shares the term and
@@ -5123,6 +5547,11 @@ $\mathcal A$, readable & 843 & 989 & 3,215 &
  825 / 966 / 3,149\\
 $\mathcal A$, scope from context & 791 & 939 & 2,969 &
  $\mathcal B_{\nu}$, scope from context: 773 / 916 / 2,903\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{shared\_witness\_bundles}}\\
+$\mathcal H$, readable reference with module docstring & 2,413 & 2,753 &
+ 7,782 & unmatched: pooled compact envelope 239 / 255 / 460, attained by
+ different programs\\
 \end{longtable}
 
 The comparisons are local. In its matched pair, \rulename{Name} against
@@ -5167,13 +5596,22 @@ recorded in \cref{cert:chapter}. \pkg{coverage\_constancy} and
 compact contracts and $319/358/599$ for the strict native contract, each
 triple attained by different programs, and agree with the figures recorded
 there. The uncertified program of \cref{disch:rem:packet-floor} is not a
-checker and has no size record.
+checker and has no size record. The checker of $\mathcal H$ of
+\pkg{shared\_witness\_bundles} has no matched control: its contract, with
+named binders, explicit scopes and a public goal of native shape
+(\cref{disch:sec:impl}), differs from those of the compact and the sorted
+native envelopes of \cref{cert:chapter}, $239/255/460$ and $300/337/580$,
+each triple attained by different programs; its deterministic gzip size at
+level $9$ is $2{,}295$ bytes, and the package states that it is not a size
+improvement. The package also lowers an existing sorted-input checker of
+\cref{cert:chapter} from $584$ to $581$ bytes by an exact replacement of one
+guard; that program is recorded there.
 
 \section{Further questions}
 \label{disch:sec:further}
 
 This section collects the questions, limits and unproved claims stated by
-the eleven packages named at the beginning of \cref{disch:sec:impl}, by
+the twelve packages named at the beginning of \cref{disch:sec:impl}, by
 \pkg{boolean\_constancy}, \pkg{scalar\_constancy},
 \pkg{coverage\_constancy} and \pkg{coverage\_obstruction}, and one
 conjecture recorded in the repository.
@@ -5202,6 +5640,38 @@ of $\psi$ is a reversal. Is there a smaller total operation that expresses
 exactly the needed instances without a larger test on syntax? An answer
 has to account for arbitrary equations between closed terms as
 assumptions, and not only for the computation equations.
+\end{question}
+
+\begin{question}[Root conversion and shared witnesses]
+\label{disch:q:bundle}
+\begin{enumerate}
+\item \emph{One matrix.} Is $\mathcal H$ with bundles of one row only, that
+ is, with the native $\D{x}{y}$, still complete for native sequents?
+ \Cref{disch:thm:bundle-transport} locates the difficulty in carrying the
+ three rows of transport in one matrix on iterator terms; this is item~1 of
+ \cref{ctr:q:root}, here with conversion at both endpoints and with modes
+ chosen by the certificate.
+\item \emph{Contractions only.} The derivation of
+ \cref{disch:thm:bundle-transport} uses $8$ expansions and $4$
+ contractions. Is $\mathcal H$ complete when \rulename{Root} performs
+ contractions only? The package does not address this (compare item~2 of
+ \cref{ctr:q:root}).
+\item \emph{Auxiliary sequents.} \Cref{disch:lem:bundle-sound} covers every
+ auxiliary sequent, \cref{disch:thm:bundle} public sequents only. Is every
+ auxiliary sequent whose reading $\Teq$ proves derivable in $\mathcal H$,
+ and is every auxiliary formula interderivable with a public formula? The
+ package claims neither and needs neither.
+\item \emph{A smaller checker.} The reference checker of $\mathcal H$ is far
+ larger than the compact envelope (\cref{disch:sec:sizes}). The package
+ notes that an implementation has to pay for the typing of bundles, the
+ scope of the common witness and the traversal of several matrices, and
+ has to keep the progress mode, since numerical cases alone do not give the
+ induction. Does a complete checker of $\mathcal H$, or of its restriction
+ to bundles of one and two rows, become smaller than a matched checker of
+ the native rules? The package states no reason to expect that it beats
+ the compact envelope.
+\end{enumerate}
+(\pkg{shared\_witness\_bundles}.)
 \end{question}
 
 \begin{question}[Unary congruence on full normal forms]
@@ -5385,7 +5855,11 @@ The following are stated by the packages as not achieved or not claimed.
  \cref{disch:thm:sc-obs,disch:thm:sc-cov} and the two structures of
  \cref{disch:sec:scalar-cov}, \cref{disch:prop:zero-refl}, and the
  calculi $\Nat_{\mathrm{AB}}$, $\mathcal B_{\nu}$ and $\mathcal A$ with the
- compilers of \cref{disch:thm:alias-compiler,disch:thm:alias-rank,disch:thm:alias-atomic}.
+ compilers of \cref{disch:thm:alias-compiler,disch:thm:alias-rank,disch:thm:alias-atomic},
+ and the calculus $\mathcal H$ with
+ \cref{disch:thm:bundle-transport,disch:thm:bundle}, whose proof
+ \pkg{shared\_witness\_bundles} gives in writing on the formalized native
+ bridge, without rebuilding the Lean development.
  \pkg{alias\_back} and \pkg{equation\_aliases} ask for one formalization of
  the compiler with arbitrary parameter embeddings and occurrence maps,
  reusable for restrictions to the newest parameter, and of the distinction
@@ -5415,7 +5889,12 @@ The following are stated by the packages as not achieved or not claimed.
  improvements in every coordinate. The checkers of \pkg{alias\_back} and
  \pkg{equation\_aliases} are larger than their matched controls in every
  coordinate; the packages claim a smaller equality and specialization
- interface with a proof of completeness, not a smaller checker.
+ interface with a proof of completeness, not a smaller checker. The same
+ holds for \pkg{shared\_witness\_bundles}: its result moves the
+ computation that must be primitive to the root of an endpoint, and the
+ package states that the presentation below the compact envelope that it
+ aimed at was not obtained and that its node count of
+ \cref{disch:thm:bundle-transport} is not a bound on certificate size.
 \item \emph{Arithmetic.} The restrictions of this chapter change the
  equality interface and the use of clauses. They do not weaken the
  arithmetic: the construction of the predecessor and the reflection of

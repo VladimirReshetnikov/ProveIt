@@ -24,7 +24,9 @@ derivability of a name for every term, and \cref{wit:sec:packet} derives the
 names from a formula proved by numerical cases.  \Cref{wit:sec:newest} treats
 the newest parameter, where derivations must be regenerated instead of
 weakened; in the Alias/Back calculus (\cref{wit:sec:aliasback}) a fresh
-alias takes the place of the names.  \Cref{wit:sec:guarded} treats the raw guarded clause calculus, with
+alias takes the place of the names, and when \rulename{Alias} as well as
+\rulename{Back} exports equations only, one naming scheme is needed and
+suffices (\cref{wit:sec:ns}).  \Cref{wit:sec:guarded} treats the raw guarded clause calculus, with
 and without a naming exception.  \Cref{wit:sec:recursor,wit:sec:copy} treat
 two calculi on a recursor whose predecessor computes; the second combines the
 restricted introduction with an inferred discharge by means of conditional
@@ -1960,7 +1962,8 @@ export of \rulename{Alias}, the mode tested on the raw matrix, the
 retention of old parameters in an extension, effective realizers quantified
 over all extensions, and capture-avoiding simultaneous substitution.  The
 theorem is not formalized in Lean or Rocq.  The first assumption is removed
-by \cref{wit:thm:eqback}.
+by \cref{wit:thm:eqback}; the second is reduced to the export of equations
+and one naming scheme by \cref{wit:thm:ns-complete}.
 \end{remark}
 
 \subsection{Backward substitution in equations only}
@@ -2017,6 +2020,7 @@ the template $h\subst{q}{b}$.  It is not an instance of \rulename{Back} when
 $r$ contains $b$, and it is compared with $\mathsf{A}_{\ast}$ through derived
 rules below.  Both restrictions concern backward substitution only:
 \rulename{Alias} still exports arbitrary formulas through substitution.
+\Cref{wit:sec:ns} restricts \rulename{Alias} as well.
 
 For $\mathsf{C}$ one of $\mathsf{A}^{=}_{\nu}$ and $\mathsf{A}^{\times}_{\nu}$,
 \emph{persistent families} and \emph{persistent realizers} of $\mathsf{C}$,
@@ -2305,6 +2309,700 @@ step of the package's compiler from $\mathsf{A}^{=}_{\nu}$ to
 $\mathsf{A}^{\times}_{\nu}$.  An independent mathematical review in
 the package checks the order of the lemmas and the absence of a weakening of
 completed derivations.  The theorem is not formalized in Lean or Rocq.
+\end{remark}
+
+\subsection{Equation-only aliases and one naming scheme}
+\label{wit:sec:ns}
+
+This subsection draws on \pkg{names\_and\_scopes}.
+
+\Cref{wit:thm:eqback} restricts \rulename{Back} to equations and keeps the
+export of an arbitrary formula by \rulename{Alias}.  \Cref{disch:thm:alias-atomic}
+restricts both \rulename{Back} and \rulename{Alias} to equations and keeps a
+supplied witness of \rulename{Close}, which derives the name of every term
+(\cref{disch:lem:alias-name}(a)).  The two restrictions together with the
+introduction at the newest parameter lose completeness: the closed formula
+$\mathrm{Name}(1)$ below is no longer derivable
+(\cref{wit:thm:ns-obstruction}).  One axiom scheme of rank one, the name of
+a term by its alias matrix $\mathrm{Al}_t$ of \cref{wit:def:naming},
+restores every open consequence (\cref{wit:thm:ns-complete}); finitely many
+naming templates instantiated at parameters do not
+(\cref{wit:thm:ns-templates}).
+
+\begin{definition}[The calculi $\mathsf{A}^{\mathrm e}_{\nu}$ and
+$\mathsf{A}^{\mathrm n}_{\nu}$]
+\label{wit:def:ns}
+$\mathsf{A}^{\mathrm e}_{\nu}$ has the syntax, judgments and mode
+$\epsilon_B$ of \cref{wit:def:ab} and exactly the following seven rule
+patterns: \rulename{I0}, \rulename{IS}, \rulename{Use} at the newest
+parameter, \rulename{Open} and \rulename{Close} at the newest parameter, as
+in $\mathsf{A}_{\nu}$; \rulename{EqBack} of \cref{wit:def:eqback}; and, in
+place of \rulename{Alias},
+\begin{itemize}
+\item \rulename{EqAlias}: if $b\notin\Pi$, $t$ is over $\Pi$ and $E$ is an
+ equation over $\Pi,b$, from $\Pi,b;\ \Gamma,b=t\proves E$ infer
+ $\Pi;\Gamma\proves E\subst{t}{b}$.
+\end{itemize}
+$\mathsf{A}^{\mathrm n}_{\nu}$ is $\mathsf{A}^{\mathrm e}_{\nu}$ together
+with the axiom scheme
+\[
+ \Pi;\Gamma\proves\mathrm{Name}(t)\quad\text{for every term $t$ over $\Pi$},
+ \qquad
+ \mathrm{Name}(t)\defeq\D{x}{y}\bigl(\sel(y,t,x)=t\bigr),
+\]
+called \rulename{Names}; the bound variables $x$, $y$ and the bound variable
+of the selector are not free in $t$.  For a parameter $b$ not in $t$ put
+\[
+ \mathcal N_{b,t}\defeq[\sel(0,t,b)=t;\ y.\ \sel(y,t,b)=t].
+\]
+\end{definition}
+
+The lists are exhaustive: there is no reflexivity, transport, weakening,
+cut or induction rule, and \rulename{Use} and \rulename{Close} take no term.
+\rulename{EqAlias} is $\rulename{Alias}^{=}$
+of \cref{disch:def:alias}, and $\mathsf{A}^{\mathrm e}_{\nu}$ is the calculus
+$\mathcal A$ of \cref{disch:def:alias-atomic} with \rulename{Close} at the
+newest parameter in the mode $\epsilon_B$.  $\mathrm{Name}(t)$ is the name
+$\D{x}{y}\mathrm{Al}_t$ of \cref{wit:def:naming} and the formula
+$\mathrm{Name}(t)$ of \cref{disch:lem:alias-name}; its rank is one, and its
+opening by \rulename{Open} at a fresh $b$ adds the clause
+$\mathcal N_{b,t}$.  Its matrix $\sel(y,t,x)=t$ is not diagonal, since its
+right side $t$ does not contain $y$; an introduction of a name is in the
+case mode.  Its ordinary reading is equivalent to $\exists x\,(x=t)$
+(\cref{wit:def:naming}).  Every rule of $\mathsf{A}^{\mathrm e}_{\nu}$ is a
+rule of $\mathsf{A}^{=}_{\nu}$, since \rulename{EqAlias} is the instance of
+\rulename{Alias} with an equation as its conclusion.
+
+\begin{lemma}[One compound export]
+\label{wit:lem:ns-shape}
+Let $\mathsf{A}^{\mathrm e+}_{\nu}$ be $\mathsf{A}^{\mathrm e}_{\nu}$ with
+the instance of \rulename{Alias} whose premise concludes a name of the
+alias:
+\[
+ \infrule{\Pi,b;\ \Gamma,b=t\proves\mathrm{Name}(b)}
+         {\Pi;\Gamma\proves\mathrm{Name}(t)}\ \rulename{NameAlias}
+ \qquad b\notin\Pi,\ t\text{ over }\Pi .
+\]
+Then $\mathsf{A}^{\mathrm e+}_{\nu}$ and $\mathsf{A}^{\mathrm n}_{\nu}$
+derive the same judgments.
+\end{lemma}
+
+\begin{proof}
+Replace each \rulename{NameAlias} of a derivation of
+$\mathsf{A}^{\mathrm e+}_{\nu}$ by the axiom $\Pi;\Gamma\proves\mathrm{Name}(t)$
+and delete the derivation of its premise.  Conversely, an instance
+$\Pi;\Gamma\proves\mathrm{Name}(t)$ of \rulename{Names} is derived in
+$\mathsf{A}^{\mathrm e+}_{\nu}$ as follows.  In the scope $\Pi,b$ the
+parameter $b$ is the newest, so \rulename{Close} for the matrix
+$\sel(y,b,x)=b$ selects $b$; the matrix is not diagonal, and the premise asks,
+in the scope $\Pi,b,z$ and from the unused assumption $\sel(0,b,b)=b$, for
+$\sel(\Suc z,b,b)=b$, which is \rulename{IS} with the constant body $b$.  This
+derives $\Pi,b;\ \Gamma,b=t\proves\mathrm{Name}(b)$, and \rulename{NameAlias}
+gives $\mathrm{Name}(b)\subst{t}{b}\equiv\mathrm{Name}(t)$.  Neither direction
+uses another compound export or a compound backward substitution.
+\end{proof}
+
+Thus the scheme \rulename{Names} is the same as allowing \rulename{Alias} to
+export compound formulas of one fixed shape.  It restricts the shape of the
+conclusions an alias may export, not the number of rule patterns.
+
+\begin{theorem}[Equation-only aliases and the newest witness]
+\label{wit:thm:ns-obstruction}
+$\mathsf{A}^{\mathrm e}_{\nu}$ does not derive
+$\varnothing;\varnothing\proves\mathrm{Name}(1)$, which $\mathsf{A}_{\ast}$
+derives.  More generally, let $K\ge 0$, write $\overline{k}$ for the numeral
+$\Suc^k0$, and let $\mathsf{A}^{\mathrm e}_{K}$ have the rules
+\rulename{I0}, \rulename{IS}, \rulename{Open} and \rulename{EqAlias}, and
+\begin{itemize}
+\item \rulename{Use} at a parameter of $\Pi$ or at a numeral $\overline{k}$
+ with $k\le K$;
+\item transport in every formula: for terms $s$, $t$ over $\Pi$ and a formula
+ $F$ with a distinguished variable $q$, from $\Pi;\Gamma\proves s=t$ and
+ $\Pi;\Gamma\proves F\subst{t}{q}$ infer $\Pi;\Gamma\proves F\subst{s}{q}$, and
+ from $\Pi;\Gamma\proves s=t$ and $\Pi;\Gamma\proves F\subst{s}{q}$ infer
+ $\Pi;\Gamma\proves F\subst{t}{q}$;
+\item \rulename{Close} at a witness $w$ that is a parameter of $\Pi$ or a
+ numeral $\overline{k}$ with $k\le K$, for every matrix with either of the
+ premises $\Pi,z;\ \Gamma,B(w,0)\proves B(w,\Suc z)$ (cases) and
+ $\Pi,z;\ \Gamma,B(w,z)\proves B(w,\Suc z)$ (progress).
+\end{itemize}
+Then $\mathsf{A}^{\mathrm e}_{K}$ does not derive
+$\varnothing;\varnothing\proves\mathrm{Name}(\overline{K+1})$.  Every rule of
+$\mathsf{A}^{\mathrm e}_{\nu}$ is a rule of $\mathsf{A}^{\mathrm e}_{0}$.
+\end{theorem}
+
+\begin{proof}
+The last statement: $\nu(\Pi)$ is a parameter or the numeral $0$;
+\rulename{EqBack} with the major premise $b=t$ is transport in the template
+$F\defeq E\subst{q}{b}$ from $F\subst{t}{q}\equiv E\subst{t}{b}$ to
+$F\subst{b}{q}\equiv E$; and \rulename{Close} in the mode $\epsilon_B$ has one
+of the two premises.  In $\mathsf{A}_{\ast}$, \rulename{Close} at the witness
+$1$ for the matrix $\sel(y,1,x)=1$ has the premise $\sel(\Suc z,1,1)=1$, an
+instance of \rulename{IS}.
+
+\emph{The evaluation.}  The \emph{worlds} are the integers $n\ge K$, ordered
+by $\le$; the \emph{active domain} of $n$ is $A_n=\{0,1,\dots,n\}$.  An
+environment $\rho$ assigns a natural number to every variable, and
+$\llbracket t\rrbracket_\rho\in\mathbb{N}$ is the standard value of a term; it may
+exceed $n$.  For a world $n$ and an environment $\rho$ define
+\begin{align*}
+ n,\rho\Vdash s=t &\iffdef \llbracket s\rrbracket_\rho=\llbracket t\rrbracket_\rho,\\
+ n,\rho\Vdash\D{x}{y}B &\iffdef \text{for some $a\in A_n$ and all $m\ge n$:
+   if $m,\rho[x\mapsto a,y\mapsto 0]\Vdash B$, then}\\
+ &\qquad\ \ \ell,\rho[x\mapsto a,y\mapsto c]\Vdash B
+   \text{ for all $\ell\ge m$ and $c\in A_\ell$},
+\end{align*}
+and for clauses
+\begin{align*}
+ n,\rho\Vdash[A;\,y.B] &\iffdef \text{for all $m\ge n$ with $m,\rho\Vdash A$,
+   all $\ell\ge m$ and $c\in A_\ell$: } \ell,\rho[y\mapsto c]\Vdash B,\\
+ n,\rho\Vdash[\ ;\,y.B] &\iffdef \text{for all $\ell\ge n$ and $c\in A_\ell$: }
+   \ell,\rho[y\mapsto c]\Vdash B .
+\end{align*}
+These are the increasing-domain forcing clauses of the ordinary readings,
+with existential witnesses from the current domain and universal
+quantifiers over the domains of all later worlds, except that terms are
+evaluated in the natural numbers and not in the active domain.  The
+evaluation is an invariant of derivations and not a Kripke model of a
+first-order theory, since a term with active arguments may have a value
+outside the active domain, as $\Suc n$ at the world $n$.
+The following facts hold, each by induction on formulas.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item Monotonicity: if $n\le n'$ and $n,\rho\Vdash A$, then $n',\rho\Vdash A$;
+ the same for clauses.  Equations do not depend on the world; for
+ $\D{x}{y}B$ the witness $a\in A_n\subseteq A_{n'}$ is kept, and the
+ condition at $n'$ quantifies over fewer worlds $m$.
+\item Forcing depends only on the values of the free variables.
+\item Substitution: $n,\rho\Vdash F\subst{t}{b}$ if and only if
+ $n,\rho[b\mapsto\llbracket t\rrbracket_\rho]\Vdash F$, the bound variables of
+ $F$ being renamed away from $t$.  The forcing relation is defined for all
+ environments, also those with values outside the active domain, so the
+ induction needs no condition on $\llbracket t\rrbracket_\rho$.
+\item By (a), $n,\rho\Vdash[\ ;\,v.F]$ if and only if $n,\rho\Vdash F$, for
+ $v$ not in $F$.
+\end{enumerate}
+A judgment $\Pi;\Gamma\proves A$ is \emph{valid} if for every world $n$ and
+every environment $\rho$ with $\rho(p)\in A_n$ for all $p\in\Pi$: if
+$n,\rho$ forces every clause of $\Gamma$, then $n,\rho\Vdash A$.
+
+\emph{Every rule of $\mathsf{A}^{\mathrm e}_{K}$ preserves validity.}  Let
+$n$ and $\rho$ be as in the definition, with $\Gamma$ forced at $n,\rho$.
+The values of all parameters of $\Pi$, and of all numerals $\overline{k}$
+with $k\le K\le n$, lie in $A_n$.
+\begin{itemize}
+\item \rulename{I0} and \rulename{IS} are true equations of $\mathbb{N}$.
+\item \rulename{Use} of $[A;\,y.B]$ at $w$: the premise gives $n,\rho\Vdash A$;
+ with $m=\ell=n$ and $c=\llbracket w\rrbracket_\rho\in A_n$ the clause gives
+ $n,\rho[y\mapsto c]\Vdash B$, which is $n,\rho\Vdash B(w)$ by (c).  The
+ clause without antecedent is the same.
+\item Transport: $\llbracket s\rrbracket_\rho=\llbracket t\rrbracket_\rho$, and
+ by (c) $F\subst{s}{q}$ and $F\subst{t}{q}$ are forced together.
+\item \rulename{EqAlias} with the premise $\Pi,b;\ \Gamma,b=t\proves E$: put
+ $a=\llbracket t\rrbracket_\rho$, $m=\max(n,a)$ and $\rho'=\rho[b\mapsto a]$.
+ Then $\rho'$ sends $\Pi,b$ into $A_m$; $\Gamma$ is forced at $m,\rho$ by (a)
+ and at $m,\rho'$ by (b), because $b$ is not free in $\Gamma$; and
+ $m,\rho'\Vdash b=t$, because $b$ is not in $t$.  Validity of the premise
+ gives $m,\rho'\Vdash E$.  $E$ is an equation, so $n,\rho'\Vdash E$, and
+ $n,\rho\Vdash E\subst{t}{b}$ by (c).  The world is changed only for an
+ equation; a compound conclusion forced at $m$ need not be forced at $n$.
+\item \rulename{Open} with the major premise $\D{x}{y}B$ and the fresh $b$:
+ let $a\in A_n$ be a witness of the major premise and
+ $\rho'=\rho[b\mapsto a]$, which sends $\Pi,b$ into $A_n$.  By (b) and (c),
+ $n,\rho'$ forces $\Gamma$ and the opened clause $[B(b,0);\,y.B(b,y)]$, whose
+ forcing condition is literally the condition on the witness $a$.  The branch
+ gives $n,\rho'\Vdash A$, and $n,\rho\Vdash A$ since $b$ is not in $A$.
+\item \rulename{Close} at $w$ with the eigenvariable $z$: put
+ $a=\llbracket w\rrbracket_\rho\in A_n$; it is shown that $a$ witnesses
+ $\D{x}{y}B$ at $n,\rho$.  Let $m\ge n$ with
+ $m,\rho[x\mapsto a,y\mapsto 0]\Vdash B$, and let $\ell\ge m$ and
+ $c\in A_\ell$.  For $j\in A_\ell$ let $\rho_j=\rho[z\mapsto j]$; it sends
+ $\Pi,z$ into $A_\ell$, forces $\Gamma$ at $\ell$ by (a) and (b), and by (c)
+ and (d) forces the assumption $B(w,e)$ at $\ell$ exactly when
+ $\ell,\rho[x\mapsto a,y\mapsto\llbracket e\rrbracket_{\rho_j}]\Vdash B$.
+ In the case mode: for $c=0$ the claim is monotonicity; for $c>0$ take
+ $j=c-1\in A_\ell$, where the assumption $B(w,0)$ is forced by monotonicity,
+ and the premise gives $\ell,\rho_j\Vdash B(w,\Suc z)$, that is,
+ $\ell,\rho[x\mapsto a,y\mapsto c]\Vdash B$.  In the progress mode: by
+ induction on $j\le c$ in the metatheory, $\ell,\rho[x\mapsto a,y\mapsto j]\Vdash B$;
+ the base is monotonicity, and for $j<c$ the number $j$ lies in $A_\ell$, the
+ assumption $B(w,z)$ is forced at $\ell,\rho_j$, and the premise gives the
+ instance at $j+1$.  This holds for an arbitrary matrix $B$.
+\end{itemize}
+By induction on derivations every judgment derivable in
+$\mathsf{A}^{\mathrm e}_{K}$ is valid.
+
+\emph{The name of $K+1$.}  At the world $K$, with the empty scope and
+context, let $a\in A_K$ be a proposed witness of
+$\mathrm{Name}(\overline{K+1})$.  Its row at $y=0$, $\sel(0,K+1,a)=K+1$, is
+true, so the condition applies at $m=K$; at $\ell=\max(K,1)$ and $c=1$ the
+row $\sel(1,K+1,a)=K+1$ says $a=K+1$, which is false because $a\le K$.  So
+$\mathrm{Name}(\overline{K+1})$ is not forced at $K$, the judgment is not
+valid and not derivable.  For $K=0$ this is the statement on
+$\mathsf{A}^{\mathrm e}_{\nu}$.
+\end{proof}
+
+\begin{remark}[What the obstruction uses]
+\label{wit:rem:ns-obstruction}
+The evaluation validates neither unrestricted operation of the complete
+calculi.  \rulename{Close} of $\mathsf{A}_{\ast}$ may take a witness whose
+value is outside the active domain, and \rulename{Alias} of
+$\mathsf{A}_{\nu}$ may export a compound formula that is forced only after
+the domain has grown: $\mathrm{Name}(b)$ is forced at the world
+$\max(n,\llbracket t\rrbracket_\rho)$ under $b\mapsto\llbracket t\rrbracket_\rho$,
+and its export $\mathrm{Name}(t)$ need not be forced at $n$.  Unlike the
+invariants of \cref{wit:thm:finite-range,wit:thm:finite-range-general},
+which bound the quantifiers by a fixed finite set and restrict the target of
+the elimination, this one lets the domain grow and restricts which
+conclusions may be pulled back to an earlier world.  The growing domains
+separate the restricted rule systems only; they are not the domains of the
+bridge of \cref{wit:cor:ns-bridge}, and the theorem does not exclude that a
+differently interpreted theory with the rules of $\mathsf{A}^{\mathrm e}_{\nu}$
+is bi-interpretable with $\iPRA$.
+\end{remark}
+
+For the positive result, persistent families, persistent realizers and
+$w\Vdash A$ are defined for $\mathsf{A}^{\mathrm n}_{\nu}$ as in
+\cref{wit:def:ab-family}, with derivations of $\mathsf{A}^{\mathrm n}_{\nu}$
+in place of derivations of $\mathsf{A}_{\nu}$, and $q$ denotes a
+distinguished template variable as in \cref{wit:sec:eqback}.  The
+construction of \cref{disch:sec:alias-atomic} is carried out with the
+introduction at the newest parameter; where the supplied witness of that
+section introduces a name or an opened clause, a \rulename{Names} axiom is
+opened, and the progress mode of a target introduction is handled by the
+diagonal zero rows of \cref{wit:lem:eqb-zero}.
+
+\begin{lemma}[The equational base and the names]
+\label{wit:lem:ns-base}
+In $\mathsf{A}^{\mathrm n}_{\nu}$, let $w$ be a world.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If an assumption $[\ ;\,v.F]$ occurs in $\Gamma_w$, then $w\Vdash F$.
+\item The statements (ii)--(iv) of \cref{wit:lem:eqb-atomic} and
+ \cref{wit:lem:eqb-zero} hold.
+\item $(\mathrm S_0)$ If $[A;\,y.E(y)]$ occurs in $\Gamma_w$ with $E$ an
+ equation and $w\Vdash A$ (no condition for a clause without antecedent),
+ then $w\Vdash E(r)$ for every term $r$ over $\Pi_w$.  Hence such a clause
+ has a persistent realizer at $w$.
+\item Every instance of \rulename{Names} over $\Pi_w$ has a persistent
+ family at $w$.  If $\mathcal N_{b,t}$ occurs in $\Gamma_w$, at any position,
+ and $b$ is a parameter of $\Pi_w$ not in $t$, then $w\Vdash b=t$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) In every $w'\succeq w$, \rulename{Use} of the clause at
+$\nu(\Pi_{w'})$ gives $F$, because $v$ is not in $F$.  No \rulename{Alias}
+is used.
+
+(ii) The proofs for $\mathsf{A}^{=}_{\nu}$ in \cref{wit:lem:eqb-atomic}
+apply \rulename{Alias} only with the conclusions $t=t$ in (ii), $E(s)$ in
+(iii), where $E$ is an equation, and $t=s$ through (iii) in (iv); these are
+applications of \rulename{EqAlias}.  Their other rules are \rulename{Use} at
+the newest parameter and \rulename{EqBack}, and the alias assumption is used
+through \rulename{Use} of the last clause.  The proof of
+\cref{wit:lem:eqb-zero} uses \rulename{I0} and these statements only.
+
+(iii) Let $w'\succeq w$, choose $c\notin\Pi_{w'}$ and work in
+$w'_c=(\Pi_{w'},c;\ \Gamma_{w'},c=r)$, which extends $w$.  The member of the
+family for $A$ at $w'_c$ is the premise of \rulename{Use} of the clause at
+the newest parameter $c$, which gives $E(c)$; \rulename{EqAlias} gives
+$E(c)\subst{r}{c}\equiv E(r)$ at $w'$.  The clause is a clause of every
+$w'\succeq w$, so the construction at $w'$ is a realizer.
+
+(iv) The instance is an axiom in every extension.  For the second statement
+follow \cref{disch:lem:alias-name}(b).  The antecedent $\sel(0,t,b)=t$ is an
+instance of \rulename{I0} and has a persistent family; (iii) at the term $1$
+gives $w\Vdash\sel(1,t,b)=t$; \rulename{IS} gives $\sel(1,t,b)=b$ in every
+world, the bound variable of the selector not being $b$; and the symmetry and
+transport of (ii) in the template $q=b$ give $w\Vdash t=b$ and then
+$w\Vdash b=t$.  The specialization of (iii) opens its own alias, so neither
+the clause nor $b$ needs to be the newest.
+\end{proof}
+
+\begin{theorem}[Transport and specialization by rank]
+\label{wit:thm:ns-rank}
+For every $k\ge 0$ and every world $w$ the following hold in
+$\mathsf{A}^{\mathrm n}_{\nu}$.  The rank of a formula is its number of
+binders $\D{}{}$.
+\begin{itemize}
+\item[$(\mathrm T_k)$] For terms $s$, $t$ over $\Pi_w$ and a formula $H(q)$
+ of rank at most $k$ over $\Pi_w$ and $q$: if $w\Vdash s=t$ and
+ $w\Vdash H(s)$, then $w\Vdash H(t)$.
+\item[$(\mathrm S_k)$] If $[A;\,y.F(y)]$ occurs in $\Gamma_w$ with $F$ of
+ rank at most $k$, and $w\Vdash A$ (no condition for a clause without
+ antecedent), then $w\Vdash F(r)$ for every term $r$ over $\Pi_w$.
+\item[$(\mathrm L_k)$] For $k>0$ and $H(q)$ of rank exactly $k$: from a
+ derivation of $\Pi_w;\Gamma_w\proves H(s)$ and $w\Vdash s=t$ a derivation
+ of $\Pi_w;\Gamma_w\proves H(t)$ is constructed.
+\end{itemize}
+\end{theorem}
+
+\begin{proof}
+$(\mathrm T_0)$ is \cref{wit:lem:eqb-atomic}(iv) and $(\mathrm S_0)$ is
+\cref{wit:lem:ns-base}(iii), both in $\mathsf{A}^{\mathrm n}_{\nu}$ by
+\cref{wit:lem:ns-base}(ii).  Let $k>0$ and assume $(\mathrm T_{k-1})$ and
+$(\mathrm S_{k-1})$.
+
+\emph{$(\mathrm L_k)$.}  Write $H(q)=\D{x}{y}B(q,x,y)$, with $B$ of rank
+$k-1$.  Choose $c\notin\Pi_w$.  The given derivation of $H(s)$ is the major
+premise of \rulename{Open} at $c$, whose branch has the world
+\[
+ w_c=\bigl(\Pi_w,c;\ \Gamma_w,\mathcal C\bigr),\qquad
+ \mathcal C\defeq[B(s,c,0);\,y.B(s,c,y)],
+\]
+and the goal $H(t)$, which is over $\Pi_w$.  The given derivation is used
+once, in the world in which it is given.  In $w_c$ apply \rulename{Close} to
+$\D{x}{y}C$ with $C(x,y)\defeq B(t,x,y)$; the newest parameter is $c$, so the
+rule selects $c$.  With its eigenvariable $z$ the premise is to be derived in
+\[
+ w_z=\bigl(\Pi_w,c,z;\ \Gamma_w,\mathcal C,C(c,\epsilon_C(z))\bigr)
+\]
+with the goal $B(t,c,\Suc z)$.  The world $w_z$ extends $w$, so $w_z\Vdash s=t$
+by restriction and $w_z\Vdash t=s$ by symmetry.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $w_z\Vdash B(t,c,0)$.  If $\epsilon_C(z)=0$, the last clause of $w_z$
+ is the assumption $B(t,c,0)$, and \cref{wit:lem:ns-base}(i) applies.  If
+ $\epsilon_C(z)=z$, the matrix $C$ is diagonal, and \cref{wit:lem:eqb-zero}
+ gives $w_z\Vdash C(c,0)$; the assumption $C(c,z)$ is not used.
+\item $w_z\Vdash B(s,c,0)$, by $(\mathrm T_{k-1})$ for the template
+ $B(q,c,0)$ and the equation $t=s$.
+\item $w_z\Vdash B(s,c,\Suc z)$, by $(\mathrm S_{k-1})$ for the clause
+ $\mathcal C$ of $\Gamma_{w_z}$, whose body has rank $k-1$, at the term
+ $\Suc z$ and with the antecedent (b).
+\item $w_z\Vdash B(t,c,\Suc z)$, by $(\mathrm T_{k-1})$ for the template
+ $B(q,c,\Suc z)$ and the equation $s=t$.
+\end{enumerate}
+The member of (d) at $w_z$ is the premise of \rulename{Close}, which gives
+$H(t)$ in $w_c$; $H(t)$ does not contain $c$, and \rulename{Open} gives
+$\Pi_w;\Gamma_w\proves H(t)$.
+
+\emph{$(\mathrm T_k)$.}  Templates of rank below $k$ are covered by
+$(\mathrm T_{k-1})$.  For rank $k$ and $w'\succeq w$, the member at $w'$ of
+the family for $H(s)$ is a derivation of $H(s)$ at $w'$, the family for
+$s=t$ restricts to $w'$, and $(\mathrm L_k)$ at $w'$ gives the member for
+$H(t)$.
+
+\emph{$(\mathrm S_k)$.}  Bodies of rank below $k$ are covered by
+$(\mathrm S_{k-1})$.  For rank $k$ and $w'\succeq w$: \rulename{Names} gives
+$\Pi_{w'};\Gamma_{w'}\proves\mathrm{Name}(r)$; choose $b\notin\Pi_{w'}$ and
+open the name at $b$, which gives the world
+$w_b=(\Pi_{w'},b;\ \Gamma_{w'},\mathcal N_{b,r})$, where $w_b\Vdash b=r$ by
+\cref{wit:lem:ns-base}(iv).  The member of the family for $A$ at $w_b$ is
+the premise of \rulename{Use} of the clause at the newest parameter $b$, which
+gives a derivation of $F(b)$ in $w_b$; $(\mathrm L_k)$ at $w_b$ turns it into
+a derivation of $F(r)$ in $w_b$; and $F(r)$ does not contain $b$, so
+\rulename{Open} gives $F(r)$ at $w'$.
+
+The recursion is well founded: $(\mathrm L_k)$ uses
+$(\mathrm T_{k-1})$, $(\mathrm S_{k-1})$ and
+\cref{wit:lem:ns-base,wit:lem:eqb-zero}; $(\mathrm T_k)$ uses
+$(\mathrm L_k)$; $(\mathrm S_k)$ uses $(\mathrm L_k)$ and the extraction of
+the name, which uses rank $0$ only.  Every derivation is built in the world
+where it is required; no derivation is moved to another world or receives a
+substitution.
+\end{proof}
+
+By $(\mathrm S_k)$, applied in every $w'\succeq w$, every clause of
+$\Gamma_w$ has a persistent realizer at $w$ in $\mathsf{A}^{\mathrm n}_{\nu}$,
+whatever the rank of its body; and by $(\mathrm T_k)$ and the symmetry of
+\cref{wit:lem:ns-base}(ii) the two statements of
+\cref{wit:lem:eqb-transport} hold for $\mathsf{A}^{\mathrm n}_{\nu}$.  These
+replace \cref{wit:lem:ab-eq}(i) and (iii), (iv) in the translation below.
+
+\begin{theorem}[One naming scheme suffices]
+\label{wit:thm:ns-complete}
+For every scope $\Pi$, clause context $\Gamma$ and formula $A$ over $\Pi$,
+\[
+ \Pi;\Gamma\proves_{\mathsf{A}^{\mathrm n}_{\nu}}A
+ \iff \Pi;\Gamma\proves_{\mathsf{A}^{=}_{\nu}}A
+ \iff \Pi;\Gamma\proves_{\mathsf{A}_{\nu}}A
+ \iff \Pi;\Gamma\proves_{\mathsf{A}_{\ast}}A ,
+\]
+by effective transformations of derivations that leave the terms, formulas
+and clauses of the judgment unchanged.  In particular full \rulename{Alias},
+\rulename{Back} on every formula, \rulename{Use} at every term and
+\rulename{Close} at every witness are admissible in
+$\mathsf{A}^{\mathrm n}_{\nu}$.
+\end{theorem}
+
+\begin{proof}
+The last two equivalences are \cref{wit:thm:eqback}.
+
+\emph{From $\mathsf{A}^{\mathrm n}_{\nu}$ to $\mathsf{A}^{=}_{\nu}$.}  Every
+rule of $\mathsf{A}^{\mathrm e}_{\nu}$ is a rule of $\mathsf{A}^{=}_{\nu}$.
+An instance $\Pi;\Gamma\proves\mathrm{Name}(t)$ of \rulename{Names} is
+derived in $\mathsf{A}^{=}_{\nu}$ by the second half of the proof of
+\cref{wit:lem:ns-shape}, with \rulename{Alias} in place of
+\rulename{NameAlias}.
+
+\emph{From $\mathsf{A}_{\ast}$ to $\mathsf{A}^{\mathrm n}_{\nu}$.}  The
+induction statement of the proof of \cref{wit:thm:ab-newest} is proved with
+families and realizers of $\mathsf{A}^{\mathrm n}_{\nu}$: for every world
+$w$, every injective map $\theta$ from $\Pi$ into $\Pi_w$ and every
+assignment of a persistent realizer at $w$ of $\theta C$ to each clause $C$
+of $\Gamma$, $w\Vdash\theta A$.  The computations and \rulename{Use} are
+treated as there.  \rulename{Back} is treated as there with
+\cref{wit:lem:eqb-transport}(i), which holds for
+$\mathsf{A}^{\mathrm n}_{\nu}$ by $(\mathrm T_k)$ and symmetry.
+\rulename{Open} is treated as there, the opened clause being realized by
+$(\mathrm S_k)$ instead of \cref{wit:lem:ab-eq}(i).  The cases of
+\rulename{Alias} and \rulename{Close} in that proof end with an
+\rulename{Alias} that exports a compound formula and are replaced as
+follows; $w'\succeq w$ is the world at which a member is constructed.
+
+\emph{Alias} with the parameter $b$, the term $t$ and the branch
+$\Pi,b;\ \Gamma,b=t\proves F$.  \rulename{Names} gives
+$\mathrm{Name}(\theta t)$ at $w'$.  Choose $c\notin\Pi_{w'}$ and open it at
+$c$; the branch has the world
+$w_c=(\Pi_{w'},c;\ \Gamma_{w'},\mathcal N_{c,\theta t})$, and
+$w_c\Vdash c=\theta t$ by \cref{wit:lem:ns-base}(iv).  The map
+$\theta'=\theta[b\mapsto c]$ is injective; the clauses of $\Gamma$ keep their
+realizers, restricted to $w_c$, and the source assumption $b=t$, whose image
+is $c=\theta t$, is realized by the family for $c=\theta t$ (a family for an
+equation is a realizer of the assumption, after \cref{wit:def:ab-family}).
+The induction hypothesis gives $w_c\Vdash\theta'F$.  With
+$H(q)\defeq(\theta'F)\subst{q}{c}$ one has $H(c)\equiv\theta'F$ and
+$H(\theta t)\equiv\theta(F\subst{t}{b})$, and $(\mathrm T_k)$ gives
+$w_c\Vdash\theta(F\subst{t}{b})$.  Its member at $w_c$ does not contain $c$
+in its conclusion, and \rulename{Open} with the major premise
+$\mathrm{Name}(\theta t)$ gives $\theta(F\subst{t}{b})$ at $w'$.
+
+\emph{Close} at the witness $t$ with the matrix $B$ and the premise
+$\Pi,z;\ \Gamma,B(t,\epsilon_B(z))\proves B(t,\Suc z)$.  \rulename{Names}
+gives $\mathrm{Name}(\theta t)$ at $w'$; choose $b\notin\Pi_{w'}$ and open it
+at $b$, which gives $w_b=(\Pi_{w'},b;\ \Gamma_{w'},\mathcal N_{b,\theta t})$.
+In $w_b$ apply \rulename{Close} to $\D{x}{y}\theta B$; the newest parameter is
+$b$, so the rule selects $b$; let $z'$ be its eigenvariable.  Its premise is
+to be derived in
+\[
+ w_z=\bigl(\Pi_{w'},b,z';\ \Gamma_{w'},\ \mathcal N_{b,\theta t},\
+ \theta B(b,\epsilon_B(z'))\bigr).
+\]
+Put $\theta'=\theta[z\mapsto z']$.  The clauses of $\Gamma$ keep their
+realizers, restricted to $w_z$.  By \cref{wit:lem:ns-base}(iv) and (i),
+$w_z\Vdash b=\theta t$ and $w_z\Vdash\theta B(b,\epsilon_B(z'))$, and
+$(\mathrm T_k)$ for the template $\theta B(q,\epsilon_B(z'))$ gives
+$w_z\Vdash\theta B(\theta t,\epsilon_B(z'))$; this family realizes the source
+assumption.  The induction hypothesis for the premise gives
+$w_z\Vdash\theta B(\theta t,\Suc z')$, and $(\mathrm T_k)$ with the
+symmetric equation $\theta t=b$ gives $w_z\Vdash\theta B(b,\Suc z')$.  Its
+member at $w_z$ is the premise of the target \rulename{Close}, whose mode
+is $\epsilon_{\theta B}=\epsilon_B$.  The conclusion $\D{x}{y}\theta B$ does
+not contain $b$, and \rulename{Open} with the major premise
+$\mathrm{Name}(\theta t)$ gives it at $w'$.
+
+The induction is well founded as in \cref{wit:thm:eqback}:
+\cref{wit:lem:ns-base,wit:thm:ns-rank} are constructed before and
+independently of it, every call of the induction hypothesis concerns a
+proper subderivation, and the realizers of the new assumptions in the cases
+of \rulename{Alias} and \rulename{Close} are built from the actual clauses of
+$w_c$ and $w_z$ without calling the translation.  The required derivation is
+the member at $(\Pi;\Gamma)$ of the family for the identity map and the
+realizers given by $(\mathrm S_k)$.
+\end{proof}
+
+\begin{corollary}[The naming calculus and $\iPRA$]
+\label{wit:cor:ns-bridge}
+With $\Gamma^{\circ}$ as in \cref{wit:cor:ab-bridge},
+$\Pi;\Gamma\proves_{\mathsf{A}^{\mathrm n}_{\nu}}A$ if and only if
+$\Gamma^{\circ}\proves_{\mathsf{K}}A$.  The ordinary realization of
+$\mathsf{A}^{\mathrm n}_{\nu}$ is bi-interpretable and equiconsistent with
+full first-order $\iPRA$, with whole numerical domains, actual equality, the
+identity graph $x=y$ in both numerical composites, provable formula round
+trips in both directions, and the contradiction $0=\Suc 0$.
+\end{corollary}
+
+\begin{proof}
+By \cref{wit:thm:ns-complete}, $\mathsf{A}^{\mathrm n}_{\nu}$ derives exactly
+the judgments of $\mathsf{A}_{\ast}$ on the same terms, formulas and clause
+contexts, by effective translations; \cref{wit:cor:ab-bridge} gives the rest
+unchanged.  The growing domains of \cref{wit:thm:ns-obstruction} play no role
+here.
+\end{proof}
+
+\begin{remark}[\rulename{XBack} in place of \rulename{EqBack}]
+\label{wit:rem:ns-xback}
+The proofs of \cref{wit:lem:ns-base,wit:thm:ns-rank,wit:thm:ns-complete} use
+\rulename{EqBack} only through \cref{wit:lem:eqb-atomic}(ii)--(iv).  The
+construction of these statements for $\mathsf{A}^{\times}_{\nu}$ in the proof
+of \cref{wit:lem:eqb-atomic} applies \rulename{Alias} only with the
+equations $a(s)=d(s)$ and $t=s$ as conclusions.  Hence the calculus with
+\rulename{XBack} in place of \rulename{EqBack}, \rulename{EqAlias} and
+\rulename{Names} also derives the judgments of $\mathsf{A}_{\ast}$.  The
+article draws this consequence; \pkg{names\_and\_scopes} states the theorem
+for \rulename{EqBack} only.
+\end{remark}
+
+\begin{remark}[Comparison with the other naming results]
+\label{wit:rem:ns-compare}
+The scheme \rulename{Names} is the axiom scheme of $\Nat_{\mathrm v}^{+}$ in
+\cref{wit:thm:named}, $\D{x}{y}\mathrm{Al}_a$ for every term $a$, which the
+Lean module \Lean{NativeNamedWitness} uses for the calculus \Lean{DNPrf} with
+variable witnesses and the native elimination (\Lean{dnprf\_iff\_nprf}).
+There renaming, weakening and cut are admissible
+(\cref{wit:lem:structural-0v}), transport is a primitive rule, and the name
+serves only the introduction.  In $\mathsf{A}^{\mathrm n}_{\nu}$ none of these
+is available: the same scheme also replaces the export of compound formulas
+by \rulename{Alias} and the specialization of clauses at compound terms, and
+the proof needs the persistent families and the induction on rank.
+Compared with \cref{disch:thm:alias-rank}, the names are axioms instead of
+introductions at the supplied witness $t$, and the target introduction of
+$(\mathrm L_k)$ is in the mode $\epsilon_B$, so its zero row comes from
+\cref{wit:lem:eqb-zero} when the matrix is diagonal.  The naming exception
+of $\mathsf{G}_{\mathrm d}$ (\cref{wit:sec:guarded}) uses the naming matrix
+$\mathrm{Nm}_r$ and a guarded calculus with a primitive transport.
+\end{remark}
+
+\begin{theorem}[Finitely many naming templates do not suffice]
+\label{wit:thm:ns-templates}
+Let $t_1,\dots,t_p$ be fixed raw terms, $t_j$ with free variables among
+$x_1,\dots,x_{r_j}$.  Let $\mathsf{A}^{\mathrm e}_{\mathcal T}$ have the
+rules \rulename{I0}, \rulename{IS}, \rulename{Open}, \rulename{EqAlias} and
+the transport in every formula of \cref{wit:thm:ns-obstruction}, together
+with
+\begin{itemize}
+\item \rulename{Use} at a parameter of $\Pi$ or at any numeral;
+\item \rulename{Close} at a witness that is a parameter of $\Pi$ or a
+ numeral, in the case mode for every matrix, and in the progress mode for
+ every matrix that is a literal equation;
+\item the axioms $\Pi;\Gamma\proves\mathrm{Name}\bigl(t_j(p_1,\dots,p_{r_j})\bigr)$
+ for $j\le p$ and parameters $p_1,\dots,p_{r_j}$ of $\Pi$, not necessarily
+ distinct.
+\end{itemize}
+Then there is a raw term $H(n,a)$ such that $\mathsf{A}^{\mathrm e}_{\mathcal T}$
+does not derive
+\[
+ \varnothing;\varnothing\proves U_H,\qquad
+ U_H\defeq\D{d}{z}\mathrm{Name}\bigl(H(z,z)\bigr),\quad d\text{ unused}.
+\]
+$\mathsf{A}^{\mathrm n}_{\nu}$ derives $U_H$, and $\iPRA$ proves its ordinary
+reading.  Every rule of $\mathsf{A}^{\mathrm e}_{\nu}$ is a rule of
+$\mathsf{A}^{\mathrm e}_{\mathcal T}$.
+\end{theorem}
+
+The instances of the templates are restricted to parameters.  With
+arbitrary terms in place of the $p_i$ the single template $t(x)=x$ would
+give every instance of \rulename{Names}.
+
+\begin{proof}
+The last statement holds as in \cref{wit:thm:ns-obstruction}; in the mode
+$\epsilon_B$ the progress mode occurs only for diagonal matrices, which are
+literal equations.  In $\mathsf{A}^{\mathrm n}_{\nu}$, \rulename{Close} in the
+empty scope selects $0$ for the matrix $\mathrm{Name}(H(z,z))$, which is not
+an equation, so the mode is $0$, and its premise
+$z;\ \mathrm{Name}(H(0,0))\proves\mathrm{Name}(H(\Suc z,\Suc z))$ is an
+instance of \rulename{Names}.  In $\iPRA$, $\mathrm{Name}(H(z,z))$ holds for
+every $z$ with the witness $H(z,z)$, since $\sel(y,a,a)=a$ for all $y$ by
+quantifier-free induction; hence the reading of $U_H$ holds.
+
+\emph{The term $H$.}  Let $\bar t_j$ be the standard function of $t_j$ and
+\[
+ f(b)\defeq b+1+\sum_{j\le p}\max\bigl\{\bar t_j(a_1,\dots,a_{r_j}):
+   a_1,\dots,a_{r_j}\le b\bigr\},
+\]
+with the single value for $r_j=0$.  The function $f$ is primitive recursive,
+$f(b)>b$, $f$ is strictly increasing, and $\bar t_j(\vec a)<f(b)$ whenever
+all $a_i\le b$.  By \cref{base:thm:primrec}, and the soundness of $\Teq$ in
+$\mathbb{N}$, there is a raw term $F(u)$ whose standard function is $f$.  Put
+$H(n,a)\defeq\It{n}{a}{u}{F(u)}$; then $H(n,a)\ge H(n',a)$ whenever $n\ge n'$,
+and $H(k,a)$ is the $k$-fold iterate $f^k(a)$.
+
+\emph{A nonstandard structure.}  Let $L^{*}$ have the order relation $<$ and,
+for every raw term $t$ and every list $\vec x$ of distinct variables
+containing its free variables, a function symbol interpreted in $\mathbb{N}$ as
+the standard function of $t$ in the arguments $\vec x$.  Let $M$ be a proper
+elementary extension of this standard $L^{*}$-structure, and let the value
+$\llbracket t\rrbracket_\rho\in M$ of a term under an assignment $\rho$ in $M$
+be the interpretation in $M$ of its symbol.  By elementarity:
+\begin{enumerate}[label=\textup{(M\arabic*)}]
+\item the computation equations, $\sel(y,a,a)=a$, and the identity
+ $\llbracket t\subst{s}{b}\rrbracket_\rho=\llbracket t\rrbracket_{\rho[b\mapsto\llbracket s\rrbracket_\rho]}$
+ hold in $M$, being universal sentences true in $\mathbb{N}$;
+\item $<$ is a discrete linear order with least element $0$ in which every
+ nonzero element is a successor, the numerals are its standard elements, and
+ the properties of $f$, $H$ and $\bar t_j$ stated above, which are
+ $L^{*}$-sentences, hold for the functions of $F$, $H$ and $t_j$ in $M$,
+ written $f$, $H$ and $\bar t_j$ again;
+\item for every equation $E(y)$ and every assignment, if $E$ holds at $y=0$
+ and its truth at $y=j$ implies its truth at $y=j+1$ for all $j\in M$, then
+ $E$ holds at every $j\in M$, because this instance of induction is true in
+ $\mathbb{N}$.
+\end{enumerate}
+% ed.: the package takes a nonstandard model of PA and a raw term for f; the
+% properties of that term in the model then require a PA proof that the term
+% computes f.  An elementary extension of the standard structure with a
+% symbol for every raw term gives (M1)--(M3) without that proof.
+Fix a nonstandard $c\in M$ and put
+\[
+ J\defeq\{a\in M:\ a<f^k(c)\text{ for some standard }k\},
+\]
+with the iterates taken in the metatheory.  $J$ is an initial segment of
+$M$; it contains every numeral and $c<f(c)$.  It is closed under successor
+and under $f$: if $a<f^k(c)$, then $a+1\le f^k(c)<f^{k+1}(c)$ and
+$f(a)<f^{k+1}(c)$.  It is closed under every $\bar t_j$: if all $a_i<f^k(c)$,
+then $\bar t_j(\vec a)<f(f^k(c))=f^{k+1}(c)$.  But
+$h\defeq\llbracket H(c,c)\rrbracket\notin J$: for every standard $k$, $k<c$,
+so $f^k(c)=\llbracket H(\overline k,c)\rrbracket\le h$ by (M1) and (M2).
+
+\emph{The evaluation.}  Take two worlds $J\le M$ with the active domains $J$
+and $M$, evaluate all terms in $M$, also at the world $J$, and define forcing
+and validity by the clauses of the proof of \cref{wit:thm:ns-obstruction},
+with these worlds and domains.  Monotonicity, dependence on free variables
+only, substitution (by (M1)) and the reading of assumptions hold as there.
+
+\emph{Every rule of $\mathsf{A}^{\mathrm e}_{\mathcal T}$ preserves
+validity.}  The computations hold by (M1), transport by substitution, and
+\rulename{Use} and \rulename{Open} as before, since parameters take active
+values and numerals are standard, hence in $J$.  For \rulename{EqAlias} move
+to the world $M$, where the value of the defining term is active; the equation
+obtained there pulls back, because its truth does not depend on the world.
+\rulename{Close} in the case mode is sound as before, because both domains
+contain $0$ and the predecessor of each of their nonzero elements ($J$ is an
+initial segment of $M$, and every nonzero element of $M$ is a successor).
+For \rulename{Close} in the progress mode the matrix is an equation $E(x,y)$;
+let $a$ be the value of the witness, suppose that $E$ holds at $x=a$, $y=0$,
+and that the context is forced at the current world.  The context is forced at
+$M$, and for every $j\in M$ the assignment $z\mapsto j$ is active there; so
+the premise turns the truth of $E$ at $y=j$ into its truth at $y=j+1$, for
+every $j\in M$.  By (M3), $E$ holds at $x=a$ for every $y\in M$, and hence at
+every later world and every active value.  This uses induction in $M$ for one
+fixed equation, not induction over $J$ or over the forcing relation.  Finally
+an axiom $\mathrm{Name}(t_j(\vec p))$ is forced: at $J$ the value
+$v=\bar t_j(\rho\vec p)$ lies in $J$ by closure and witnesses the name,
+because $\sel(y,v,v)=v$ for every $y\in M$ by (M1); at $M$ every value is
+active.
+
+\emph{$U_H$ is not forced at $J$.}  $\llbracket H(0,0)\rrbracket=0$ by (M1),
+and $\mathrm{Name}(0)$ is forced at $J$ with the witness $0$.  So for every
+witness $d\in J$ of $U_H$ the condition applies at the world $J$, and
+$\mathrm{Name}(H(c,c))$, the instance at the active value $z\mapsto c$, would
+have to be forced at $J$.  Its row at $y=0$ is true for every witness, and its
+row at $y=1$ requires the witness to equal $h$, which is not in $J$.  Hence
+$\varnothing;\varnothing\proves U_H$ is not valid and not derivable.
+\end{proof}
+
+\begin{remark}[Scope of the template theorem]
+\label{wit:rem:ns-templates}
+The theorem admits all numerals as targets and witnesses, and so covers
+names of $0$ and of successors of parameters, and every fixed finite set of
+primitive recursive operations.  It does not contradict
+\cref{wit:thm:ns-complete}: the full scheme names the term $H(z,z)$ itself.
+Its argument does not show soundness of the progress mode for compound
+matrices in the two-world evaluation; that the matrix is an equation, whose
+truth does not depend on the world, is essential to the step that uses (M3).
+Like \cref{wit:thm:ns-obstruction} it separates the consequence relations of
+the stated calculi and is not an obstruction to every interpretation of them.
+\end{remark}
+
+\begin{remark}[The package]
+\label{wit:rem:ns-package}
+\pkg{names\_and\_scopes} states the calculi as $\mathcal K_0$ and
+$\mathcal K_1$, gives \cref{wit:lem:ns-shape}, the evaluation of
+\cref{wit:thm:ns-obstruction} with the generalization to numerals up to $K$,
+the proof of \cref{wit:thm:ns-complete} by the persistent families and the
+induction on rank, which it credits to \pkg{equation\_aliases} and
+\pkg{equational\_transport}, the bridge, and \cref{wit:thm:ns-templates}.  An
+independent mathematical review is included.  None of the theorems is
+formalized in Lean or Rocq.
 \end{remark}
 
 % ---------------------------------------------------------------------
@@ -4303,12 +5001,14 @@ This section draws on the checker reports of \pkg{no\_witness},
 \pkg{parameter\_witness}, \pkg{deterministic\_introduction},
 \pkg{newest\_parameter}, \pkg{uniform\_raw}, \pkg{parameter\_intro},
 \pkg{conditional\_copy}, \pkg{local\_introduction},
-\pkg{equational\_transport}, \pkg{export\_specialization} and
+\pkg{equational\_transport}, \pkg{names\_and\_scopes},
+\pkg{export\_specialization} and
 \pkg{vacuous\_specialization}.  The checker
 of \pkg{constructed\_computation} and the compact checkers of
 \pkg{export\_specialization} and \pkg{vacuous\_specialization}, which check
 the guarded scalar calculus and not the calculi of this chapter, belong to
-another chapter.
+another chapter, as do the exact-binding refinements of the native scalar
+checker in \pkg{names\_and\_scopes}.
 
 All checkers are standalone Python modules that read one JSON certificate,
 validate syntax, scopes and every inference, and accept or reject; none
@@ -4375,6 +5075,9 @@ $\mathsf{A}^{=}_{\nu}$, \rulename{EqBack} & 869 & 1021 & 3263 &
  $\mathsf{A}_{\nu}$ of \pkg{local\_introduction}: 862 / 1011 / 3245\\
 $\mathsf{A}^{\times}_{\nu}$, \rulename{XBack} & 867 & 1022 & 3267 &
  $\mathsf{A}_{\nu}$ of \pkg{local\_introduction}: 862 / 1011 / 3245\\
+\multicolumn{5}{@{}l}{\pkg{names\_and\_scopes}}\\
+$\mathsf{A}^{\mathrm n}_{\nu}$, readable module with documentation strings
+ & 928 & 1087 & 3767 & none stated\\
 \multicolumn{5}{@{}l}{\pkg{export\_specialization}}\\
 $\mathcal X_\nu$, \rulename{Refl} primitive & 663 & 748 & 2093 &
  $\mathcal X$, \rulename{Refl} primitive: 669 / 754 / 2117\\
@@ -4545,6 +5248,35 @@ $\mathsf{A}^{\times}_{\nu}$ converter traversed the ignored premise field of
 a \rulename{Use} of a clause without antecedent; the final converter drops
 it.
 
+\paragraph{\pkg{names\_and\_scopes}.}
+The checker of $\mathsf{A}^{\mathrm n}_{\nu}$ reads a JSON object with
+exactly the keys \texttt{goal} and \texttt{proof}; the goal is a closed
+well-formed formula, and the checker prints \texttt{ACCEPT} only after the
+inferred conclusion equals the goal.  The encoding is that of the chapter,
+with $[0,t]$ for $\Suc t$, $[n,a,h]$ for an iterator, $[s,t]$ for an equation
+and $[B]$ for $\D{x}{y}B$, so that $\mathrm{Name}(t)$ is
+$[[[1,t,3],t]]$; the term $t$ is validated at bound depth zero.  The proof
+tags are one each for the computations, \rulename{Use}, \rulename{EqBack},
+\rulename{EqAlias}, \rulename{Open}, \rulename{Close} and \rulename{Names};
+both equation restrictions are checked, and the source of \rulename{EqBack}
+must be the newest parameter.  The unused premise of a \rulename{Use} of a
+clause without antecedent is an opaque annotation.  The module is a
+readable reference implementation and is not compared with a matched
+control; it is larger than the checkers of $\mathsf{A}^{=}_{\nu}$ and
+$\mathsf{A}^{\times}_{\nu}$ of \pkg{equational\_transport}.  An untrusted
+compiler implements the proof of \cref{wit:thm:ns-complete} from the liberal
+calculus $\mathsf{A}_{\ast}$, with persistent families, the transport of
+\cref{wit:thm:ns-rank} and the translations of \rulename{Close} and of full
+\rulename{Alias}; it is not imported by the checker, which replays every
+output.  Nineteen inherited closed fixtures, two further closed translations,
+a direct certificate of $\mathrm{Name}(1)$ and thirteen open translations
+(formula ranks $1$ to $3$, both modes, self-containing \rulename{Back}
+replacements and an embedding that does not preserve the order of
+parameters) pass in 60 runs under normal and optimized interpretation,
+which also reject a compound \rulename{Alias}, false goals, malformed names
+and scope escapes; a separate audit of binders checks 240 terms and 1440
+conditions.  The largest generated open certificate has 24113 bytes.
+
 \paragraph{\pkg{export\_specialization}.}
 All four programs are complete closed-theorem checkers of the normalized
 calculus on iterator terms: they read one JSON pair of a closed goal and a
@@ -4609,7 +5341,7 @@ fragment (\cref{wit:sec:packet}).  It does not formalize the deterministic
 selection of the witness, the newest parameter or $0$ in an empty scope,
 with the regeneration of derivations under an extension of the scope.
 Hence none of
-\cref{wit:thm:newest,wit:thm:diagonal,wit:thm:R-newest,wit:thm:clause-bit,wit:thm:ab-newest,wit:thm:eqback,wit:thm:weakening,wit:thm:gd,wit:thm:guarded-uniform}
+\cref{wit:thm:newest,wit:thm:diagonal,wit:thm:R-newest,wit:thm:clause-bit,wit:thm:ab-newest,wit:thm:eqback,wit:thm:ns-complete,wit:thm:weakening,wit:thm:gd,wit:thm:guarded-uniform}
 is formalized, and nothing in \cref{wit:sec:recursor,wit:sec:copy} on the
 counter-aware recursor is formalized, in particular
 \cref{wit:thm:recursor,wit:thm:copy,wit:thm:witness-removal}.  A
@@ -4742,6 +5474,35 @@ bi-interpretable with $\iPRA$ is not decided.
 \end{enumerate}
 \end{question}
 
+\begin{question}[Names and scopes]
+\label{wit:q:ns}
+\pkg{names\_and\_scopes} asks the following.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Can \rulename{Names} be encoded through the same mechanism as the
+ computations, so that replacing full \rulename{Alias} by
+ \rulename{EqAlias} and \rulename{Names} makes a complete checker smaller?
+ A restriction of the rules alone does not; the readable checker of
+ $\mathsf{A}^{\mathrm n}_{\nu}$ is not a compact program.
+\item Can \rulename{EqAlias} be absorbed into the names and \rulename{Open}
+ without an equally general operation elsewhere?  The extraction of
+ $b=t$ from $\mathcal N_{b,t}$ (\cref{wit:lem:ns-base}(iv)) specializes a
+ clause at $1$ through \rulename{EqAlias}, so a removal needs another
+ bootstrap.
+\item Can the evaluations of \cref{wit:thm:ns-obstruction,wit:thm:ns-templates},
+ the reduction of \cref{wit:thm:ns-complete} and its compiler be formalized
+ against the Lean development?  The persistent families give the induction
+ structure; no part is machine-checked.
+\item What is the smallest exact public grammar whose encoder has a total,
+ explicit inverse on accepted goals?  A broader sorted grammar admits
+ padding aliases whose derivability need not agree with that of the
+ canonical spelling.
+\end{enumerate}
+The negative theorems are separations of the stated consequence relations.
+Whether a calculus with equation-only \rulename{Back} and \rulename{Alias},
+the introduction at the newest parameter and some other finite addition, or
+a different interpretation, presents $\iPRA$ is not decided by them.
+\end{question}
+
 \begin{question}[Less normalization]
 The proofs of \cref{wit:sec:recursor,wit:sec:copy} use the literal
 identities $P(\Suc t)\equiv t$ and the two instances of the selector.  Is
@@ -4793,6 +5554,16 @@ Further remarks of the packages on what is not shown:
  limits of the rewrites tried, not lower bounds.  Whether the equational
  interface of \rulename{XBack} can be built into a smaller complete checker
  is open.
+\item \pkg{names\_and\_scopes} records that its target, a single complete
+ checker below the whole current envelope, is not attained: the checker of
+ $\mathsf{A}^{\mathrm n}_{\nu}$ is a readable reference module of
+ 928 / 1087 / 3767, and its separate refinements of the exact-binding
+ native checker do not reach the compact incumbents under their own
+ contracts: 238 tokens and 455 bytes for two different seeded-sequent
+ programs and 255 nodes for a compact theorem-input stream.  Whether one program can improve all three
+ coordinates under a fixed input, output and validation contract, with the
+ size of certificates and the time of checking reported, is open.  Its
+ compiler is untrusted and checked by the replay of its outputs only.
 \item \pkg{deterministic\_introduction} supplies a complete elaborator from
  certificates of $\mathsf{G}_{\mathrm d}$ to certificates of $\mathsf{G}$
  and illustrates the converse by one translated pair; \pkg{uniform\_raw}

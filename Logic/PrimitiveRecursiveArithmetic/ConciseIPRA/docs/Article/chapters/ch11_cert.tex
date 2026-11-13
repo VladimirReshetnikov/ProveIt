@@ -7779,6 +7779,552 @@ program is supported by tests and not proved. Each package states that no rule i
 removed, that no single program is below all coordinates of an envelope, and that the
 compact envelope is not reached in all coordinates.
 
+\subsubsection*{Phase tests by order, exact validators, actual binding and other input interfaces}
+
+This part follows \pkg{validated\_phase}, the checker refinement of
+\pkg{shared\_witness\_bundles}, \pkg{exact\_bindings}, \pkg{exact\_masks},
+\pkg{intrinsic\_validation}, the checker part of \pkg{names\_and\_scopes} and
+\pkg{nontraditional\_inputs}. All but \pkg{intrinsic\_validation} and
+\pkg{names\_and\_scopes} start from the revision \texttt{e88ebf229b}, which contains the
+four packages of the previous part as incoming archives; those two start from
+\texttt{fc05b10f0e}, which also contains
+\pkg{exact\_bindings}, \pkg{exact\_masks} and \pkg{nontraditional\_inputs}. The mathematical
+result of \pkg{shared\_witness\_bundles}, a common witness for two closures that recovers
+one-term transport from variable-source substitution and computation at the root, is
+\cref{disch:sec:bundle}; the naming calculus of \pkg{names\_and\_scopes} is
+\cref{wit:sec:ns}. The following programs are defined.
+\begin{enumerate}[label=(\roman*),start=11]
+\item The \emph{phase tests by order} $\pi$ rewrite the two guards of the first phase of
+a program with a global floor $k$: the leaf guard ``$k$ or $d\mathbin{\&}(a\bmod 2)$''
+becomes $k<d\mathbin{\&}(a\bmod 2)$, and the arity guard ``$k$ or
+$\lvert a\rvert\in\{1,2+(d\bmod 2)\}$'' becomes $k\mathbin{|}(\lvert a\rvert\in
+\{1,2+(d\bmod 2)\})$, the Boolean being read as $0$ or $1$; $\pi_1$ rewrites the leaf
+guard only.
+\item $S^{3}_{\mathrm E}$ and $S^{3}_{\mathrm{E,m}}$ are $S^{3}_{\mathrm e}$ and
+$S^{3}_{\mathrm{e,m}}$ with the fallback ``($d\bmod 2$ or $k=0$) and $O(t;\bot,3)$''
+written as the product $(d\bmod 2)\cdot O(t;\bot,3)$, with the initial context, the byte
+string whose element is $0$, replaced by $[[\,]]$, and with $\pi$.
+$S^{\rho}_{\mathrm e,\pi}$ and $S^{\rho}_{\mathrm e,\pi_1}$ are $S^{\rho}_{\mathrm e}$
+with $\pi$ and with $\pi_1$.
+\end{enumerate}
+For a certificate $\sigma$ of $S^{3}_{\mathrm e}$ compiled as in
+\cref{cert:thm:floor-phase}(c), let $\nu_{\mathrm e}(\sigma)$ be $\sigma$ with the field
+$s=0$ of the records $[0,2,R(w)]$ and $[0,0,R(w)]$ of the introductions replaced by
+$[\,]$; no other field is changed.
+
+\begin{lemma}[Phase tests by order]\label{cert:lem:phase-guards}
+Let $k\le 0$ and $d$ be integers.
+\begin{enumerate}[label=(\alph*)]
+\item For every integer or Boolean $a$, the value $x\defeq d\mathbin{\&}(a\bmod 2)$ is
+$0$ or $1$, and ``$k$ or $x$'' is true-valued exactly when $k<x$.
+\item For $b\in\{0,1\}$, ``$k$ or $b$'' is true-valued exactly when
+$k\mathbin{|}b\neq 0$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+The remainder modulo $2$ is $0$ or $1$ also for negative operands, and the bitwise
+conjunction of an integer with $0$ or $1$ is $0$ or $1$, also for negative $d$. If $k=0$,
+both sides of (a) hold exactly when $x=1$ and both sides of (b) exactly when $b=1$. If
+$k<0$, both sides of (a) hold, and $k\mathbin{|}b$ is negative, hence nonzero.
+\end{proof}
+
+\begin{proposition}[Phase tests by order on the validated programs]\label{cert:prop:phase-guards}
+\begin{enumerate}[label=(\alph*)]
+\item On every input, $S^{\rho}_{\mathrm e,\pi}$ and $S^{\rho}_{\mathrm e,\pi_1}$ have
+exactly the runs of $S^{\rho}_{\mathrm e}$.
+\item The statements (a), (b) and (c) of \cref{cert:prop:validated-terminal} hold for
+$S^{3}_{\mathrm E}$, with the certificates $\nu_{\mathrm e}(\sigma)$ in (c). Executed by
+CPython 3.12.14, $S^{3}_{\mathrm{E,m}}$ has exactly the runs of $S^{3}_{\mathrm E}$ on
+inputs that pass the test of the printed form; so the three statements hold for it with
+the same certificates.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) The floor is initially $0$ and changes only by decrements, so it is a nonpositive
+integer at every evaluation of a guard. An input with a value other than an exact
+integer or array is rejected by the test of the printed form before any guard is
+evaluated (\cref{cert:thm:repr}). Depths are formed from $0$, $2$ and $3$ by integer
+arithmetic, so $d$ is an integer. The leaf guard is evaluated only after $k\le a<d$ has
+succeeded, so $a$ is an integer or the internal \texttt{False}; the arity guard only
+after the array test $a\cdot 0\neq 0$ has succeeded, so $a$ is an array and its length
+is defined; the missing image, the checking function, fails at the array test, before
+either guard. Hence the operands of \cref{cert:lem:phase-guards} are defined, each
+rewritten guard selects the branch of the original, and the evaluations that the
+original short-circuits are defined and have no effect. Every other operation is
+literally the same, and induction on the run gives the claim.
+
+(b) The same argument shows that $\pi$ does not change the runs of $S^{3}_{\mathrm e}$ or
+$S^{3}_{\mathrm{e,m}}$ with the eager fallback, whose floors obey
+\cref{cert:lem:floor-phase} and whose missing image $0j$ fails at the range test (proof of
+\cref{cert:prop:validated-three}); so it suffices to treat the eager fallback and the
+neutral resource $[\,]$. By \cref{cert:lem:floor-phase} the floor is $0$ exactly during
+the first opening of the root call. There the lazy fallback of $S^{3}_{\mathrm e}$
+consults the missing image, since $k=0$, and so does the product; the opening of $0j$
+fails. So the first openings coincide, and statement (a) is that of
+\cref{cert:thm:floor-phase}.
+
+For statement (b), the induction of the proof of \cref{cert:thm:floor-phase}(b) applies
+with $E^{+}$ in place of $O^{+}$, whose lemmas hold by the proof of
+\cref{cert:prop:eager-validated}(b). The members of a context are hypotheses and copies
+of $[\,]$, which is closed and reads $0=0$ (\cref{cert:lem:neutral-resource}). A
+false-valued field $s$ is $0$ or $[\,]$ on inputs that satisfy $J$, and both values are
+treated alike, as in the proof of \cref{cert:prop:eager-three}(b).
+
+For statement (c), relate a call of $S^{3}_{\mathrm E}$ on $\nu_{\mathrm e}(\sigma)$ and a
+call of $S^{3}_{\mathrm e}$ on $\sigma$ if their goals agree, except that a neutral major
+$0$ of the second is $[\,]$ in the first, their floors agree, their remaining stacks
+correspond under $\nu_{\mathrm e}$, and their contexts agree up to the initial member,
+$0$ in the second and $[\,]$ in the first. A neutral major consumes the dummy record
+$[0,0,0]$ in both programs, whose candidate $[[1,0,0],0]$ is formed without an opening,
+and returns at the entry test: the lazy opening of $0$ at the depth $0$ and a negative
+floor is \texttt{False}, equal to the member $0$, and the eager opening of $[\,]$ is
+$[\,]$, a member of every context, since contexts are formed from $[[\,]]$ by
+concatenation. At the record of an introduction the field $s=[\,]$ is false-valued and
+$3\cdot[\,]=[\,]$, so the matrix is opened at the witness, and the image of the
+hypothesis is the returned floor under the same condition $\lvert a\rvert=2=u$. The
+replacement test opens the canonical witness at the formula root with the image $u\in
+\{0,2\}$; the eager opening consults $u$, whose opening at the depth $3$ is $1$ or $2$,
+so it is defined, and the test fails in both programs by \cref{cert:lem:separation}.
+At every other record the fields are those of $\sigma$; canonical trees have no scalar
+at a position of formula sort and all their scalars at term positions are in range, so
+the eager and the lazy opener give the same trees (\cref{cert:lem:stable}). Related
+calls therefore consume the same records and make related calls, and induction on the
+compiled derivation gives the claim.
+
+The last statement is the last statement of \cref{cert:thm:floor-phase}: the two
+programs differ in the structural binding of the record, the declaration of the global
+name in a case, the initialization of the floor in a default of the opener and the
+binding of the reader in the root call, and in nothing that $\pi$ or the eager fallback
+touches.
+\end{proof}
+% ed.: the package proves (a) as stated and proves (b) by a reference to the inherited
+% lemmas and an untrusted translator; the induction of (b) and the relation of runs under
+% nu_e are supplied here from the proofs cited.
+
+The translation $\nu_{\mathrm e}$ must not replace every field $s=0$: at a record of
+\rulename{QE} the scalar $0$ is the numerical image of the new goal. \pkg{validated\_phase}
+records that a translator replacing every such field fails on five positive fixtures.
+It also records, without a delivered program, that $\pi$ applied to $S^{3}_{\mathrm{e,m}}$
+alone gives $312/340/677$. \pkg{shared\_witness\_bundles} delivers
+$S^{\rho}_{\mathrm e,\pi_1}$ with the proof of (a) for $\pi_1$.
+
+\paragraph{Actual binding.} \pkg{exact\_bindings} removes the dummy slots from the
+encoding instead of testing them.
+
+\begin{definition}[Actual-binding reading and encoding]\label{cert:def:actual}
+The \emph{actual-binding reading} is the reading of \cref{cert:def:reading} in which the
+child of a unary term array is read below the same slots as the array, the children $n$
+and $a$ of a ternary term array below the same slots, and the child $h$ below one
+additional slot, the state; positions of formula sort are read as before. A child depth
+function $\delta$ is \emph{admissible} if $\delta(d,r,j)=d+5-r$ for even $d$, and for
+odd $d$, $\delta(d,1,0)=\delta(d,3,0)=\delta(d,3,1)=d$, $\delta(d,3,2)=d+2$, and
+$\delta(d,r,j)-d$ depends only on $r$ and $j$ otherwise. Examples are the increments
+$2[j=2]$ and $j\mathbin{\&}2$ at odd depths. The opener $O^{\natural}$ is that of
+\cref{cert:def:opener}, with the child $j$ of an array of arity $r$ at the depth $d$
+opened at $\delta(d,r,j)$; $O^{\natural+}$ and $E^{\natural}$ are obtained in the same way
+from $O^{+}$ and the eager opener. The \emph{actual-binding encoding} $B^{\natural}$ of a
+closed formula of the language with equality and $D$ is that of \cref{cert:def:enc},
+with $0$ written as the scalar $1$ and the slots counted through genuine binders only.
+\end{definition}
+
+\begin{lemma}[The actual-binding codec]\label{cert:lem:actual}
+\begin{enumerate}[label=(\alph*)]
+\item \Cref{cert:lem:opening,cert:lem:exposure,cert:lem:canonical,cert:lem:fresh,cert:lem:plus-opening,cert:lem:eager,cert:lem:recoding,cert:lem:separation,cert:lem:closed-leaf}
+hold for the actual-binding reading, the openers of \cref{cert:def:actual} with any
+admissible $\delta$, and the encoding $B^{\natural}$.
+\item At the floor $0$ with the guards of the first phase of $S^{3}_{\mathrm r}$,
+$S^{3}_{\mathrm e}$, $S^{3}_{\mathrm{e,m}}$ or $S^{\rho}_{\mathrm e}$ and a missing image
+whose opening fails, the opening at the depth $0$ of a tree that satisfies $J$ is defined
+exactly when the tree is $B^{\natural}$ for a closed formula $B$ of the language with
+equality and $D$, and then returns the tree.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) The proofs of these lemmas are inductions on the tree that use the child depths in
+two ways only: every child that has a reading is opened at the depth of its position,
+and the depth of a child increases by $2$ when that of its parent does, which yields the
+exposure of the outermost slot. The first holds by admissibility and the definition of
+the reading, the second since $\delta(d+2,r,j)=\delta(d,r,j)+2$; annotations have no
+reading, so their depths do not matter. The proof of \cref{cert:lem:separation}
+traverses canonical terms from the depth $0$ at even depths, where $\delta$ is unchanged.
+In \cref{cert:lem:closed-leaf} the dummy slots disappear: in
+$H=[[c,u,t],O(t;[s,u,t],3)]$, read at the formula root, the trees $c$ and $u$ lie at the
+term depth $3$, the child $s$ of $c=[s]$ also at the depth $3$, and $t$ at the depth $5$
+below the state; in the image $[s,u,t]$, opened at the depth $3$, the trees $s,u,t$ lie
+at the same depths. So the image reads as $\It{\sigma}{\upsilon}{u}{\eta}$ with the
+readings of the same raw trees, and the two cases of the proof of \cref{cert:lem:leaves}
+apply without \cref{cert:lem:dummy-erasure}.
+
+(b) By induction on the tree, as in \cref{cert:lem:scope}: the arity guard admits the
+arities $1$ and $2$ at even depths and $1$ and $3$ at odd depths; the leaf guard at the
+term depth $3+2p$ admits the odd scalars in $[0,3+2p)$, which are $1$ and the codes
+$3+2j$ of the $p$ genuine slots; every other scalar consults the missing image and fails;
+and the children are opened at the depths of their positions in $B^{\natural}$. Every tree
+of this form decodes to a closed formula whose encoding it is, since no slot is a dummy
+slot; the scalars admitted are retained, so the opening returns the tree.
+\end{proof}
+
+For $S\in\{S^{3}_{\mathrm r},S^{3}_{\mathrm{e,m}},S^{\rho}_{\mathrm e}\}$ let $S^{\natural}$
+be $S$ with the child depths of the increment $2[j=2]$ at odd depths
+(\pkg{exact\_bindings}), and $S^{\natural\prime}$ with the increment $j\mathbin{\&}2$
+(\pkg{names\_and\_scopes}); let $S^{\rho\natural\prime\prime}_{\mathrm e}$ be
+$S^{\rho\natural\prime}_{\mathrm e}$ with the choice of the increment written as the pair
+$(5-\lvert a\rvert,\,j\mathbin{\&}2)$ indexed by $d\bmod 2$.
+
+\begin{proposition}[Actual binding]\label{cert:prop:actual}
+Each of the seven programs $S^{\natural}$, $S^{\natural\prime}$ and
+$S^{\rho\natural\prime\prime}_{\mathrm e}$ accepts only inputs that satisfy $J$ and whose
+goal is $B^{\natural}$ for a closed formula $B$ of the language with equality and $D$; if
+it accepts, $B$ is a theorem of $\mathcal A$; and for every closed theorem $B$ of
+$\mathcal A$ it accepts a certificate with goal $B^{\natural}$, compiled as in
+\cref{cert:thm:floor-phase}(c) with the encoding $B^{\natural}$.
+\end{proposition}
+\begin{proof}
+The test of the printed form gives $J$ (\cref{cert:thm:repr}) and
+\cref{cert:lem:actual}(b) the goal. The proof of \cref{cert:thm:floor-phase}(b) and (c)
+uses the encoding only through the lemmas of \cref{cert:lem:actual}(a), and the
+recoding $R$ is now the encoding $B^{\natural}$ with $0$ written as $1$; so it applies.
+In $S^{\rho\natural\prime\prime}_{\mathrm e}$ both entries of the pair are defined
+integers wherever the pair is formed (on an array, with an integer index), and
+$d\bmod 2\in\{0,1\}$, so the pair has the value of the conditional, and the program has
+exactly the runs of $S^{\rho\natural\prime}_{\mathrm e}$.
+\end{proof}
+% ed.: the packages give the reading and the transfer in outline; the reduction of each
+% lemma to the two properties of the child depths, and the treatment of the computation
+% candidate without dummy slots, are written out here.
+
+The actual-binding encoding is a new encoding of the public goals: certificates of the
+earlier programs must be recompiled, and the indices of their variables change. The
+accepted goals are exactly the encodings of the closed theorems, as for
+$S^{\mathrm x}$ of \cref{cert:prop:exact-image}, but in another encoding.
+
+\begin{proposition}[Intrinsic validation]\label{cert:prop:intrinsic}
+Let $S^{\natural}_{\mathrm i}$ be $S^{\rho\natural\prime}_{\mathrm e}$ without the test of
+the printed form, with the reader removing records from the parsed input directly, the
+array test $a\cdot 0=[\,]$, the range test $k\le(a\mathbin{|}0)<d$, the counter
+$[s]$ if $s$ is true-valued and $1$ otherwise, and the candidate $r[{:}2]$ if $s$ is
+true-valued and $[t,t,t]$ otherwise.
+\begin{enumerate}[label=(\alph*)]
+\item If $S^{\natural}_{\mathrm i}$ accepts a JSON document, its last element is a tree of
+integers, Booleans and arrays that becomes $B^{\natural}$ for a closed formula $B$ when
+every \texttt{true} is replaced by $1$, and $B$ is a theorem of $\mathcal A$.
+\item For every closed theorem $B$ of $\mathcal A$, $S^{\natural}_{\mathrm i}$ accepts the
+certificates of $S^{\rho\natural\prime}_{\mathrm e}$ of \cref{cert:prop:actual} with goal
+$B^{\natural}$, and also these certificates with any leaf $1$ of the goal written
+\texttt{true}.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Among the values of the JSON reader, the product with $0$ is the empty array exactly for
+arrays (a string gives a string, a number or Boolean a number, and the other values
+fail), and $a\mathbin{|}0$ is defined exactly for integers and Booleans. Every leaf of a
+tree whose opening is defined reaches the range test, so such a tree consists of integers,
+Booleans and arrays; images are opened before they are inserted; hence every opening
+result is such a tree. On these trees every operation of the program treats a Boolean
+as its integer (comparison, arithmetic, bitwise operations, truth value, equality,
+membership), except that the retained scalar $a\lor 1$ is \texttt{true} itself, which
+equals $1$; readings are taken with Booleans as $0$ and $1$ (\cref{cert:def:raw}).
+
+(a) At the floor $0$, \texttt{true} passes the leaf guard as $1$ and \texttt{false} fails
+it, since $0$ is even; so by \cref{cert:lem:actual}(b) the first opening succeeds exactly on
+the stated goals. For soundness, run the induction of \cref{cert:prop:actual}, with one
+addition: every raw value on which an inference depends is opened, or is compared for
+equality with an opened tree, or is used only as a truth value or as the mode. The major
+$m$ is the goal of the major call, opened there before that call returns. The field $t$
+is opened in the replacement test, which every nonterminal call evaluates. The fields
+$s$ and $u$ are images of openings of $t$; the eager opener consults an image at every
+out-of-range scalar, so they are opened whenever the hole occurs in $t$. If the hole does
+not occur, the openings of $t$ at $s$ and at $u$ are the same tree, so the new goal equals
+the old goal, the generated hypothesis is the threefold repetition of the major, which
+reads $0=0$, and the step is derivable whatever $s$ and $u$ are. In the candidate $H$ the
+raw $s$ and $u$ occur unopened; $H$ decides the entry test only by equality with the
+opened goal, which forces every unopened leaf of $H$ to be numerically equal to an integer
+leaf of that goal (a string, an object or the null value equals no integer or array, a
+floating-point number may equal an integer), and the reading of a numeric tree depends
+only on the values of its scalars, so \cref{cert:lem:closed-leaf} applies to $H$; a
+false-valued $s$ of any type gives the counter $1$. The mode enters only through
+$\lvert a\rvert=2=u$, and progress is taken only at a binary matrix, a literal
+equation. A record that is not an array is either rejected at its first use or, if it
+is a four-key object whose first key is the empty string, used only to form a candidate
+of strings, which matches no opened goal, at a call that returns by membership. With
+these facts every case of the induction is as before.
+
+(b) On inputs of integers and arrays the program and $S^{\rho\natural\prime}_{\mathrm e}$
+differ only in the spelling of operations that have the same values there (the test of
+the printed form passes, the two array tests agree, $a\mathbin{|}0=a$, and $[s]$ and
+$r[{:}2]$ are nonempty when $s$ is true-valued). So the runs on these certificates are
+the same. A goal leaf \texttt{true} in place of $1$ behaves as $1$ in every operation and
+remains \texttt{true} in the opened trees, which compare equal to the trees with $1$; so
+every branch is taken as before, and the run accepts.
+\end{proof}
+% ed.: the package states the argument for unused and equality-matched values in prose;
+% the case of a hole-free template, the unopened fields of the candidate and the
+% non-array records are worked out here.
+
+\pkg{intrinsic\_validation} first compared the increment $j\mathbin{\&}2$ with $2[j=2]$ on
+the compiled certificates, where every array traversed at an odd depth has arity at most
+$3$; with \cref{cert:def:actual} the comparison is not needed. The accepted inputs are
+not those of a typed contract: unused records may hold arbitrary JSON values, and the
+goal may spell zero as \texttt{true}. The accepted closed theorems are the same.
+
+\paragraph{Exact validation in the padded encoding.} \pkg{exact\_bindings} and
+\pkg{exact\_masks} keep the encoding of \cref{cert:def:enc} and test the dummy slots
+during the first opening. For a tuple $\varsigma$ of slots, innermost first, each genuine
+or dummy, let
+\[
+F(\varsigma)\defeq\sum_{\varsigma_j\ \text{dummy}}2^{j+1},\qquad
+M(\varsigma)\defeq 1+\sum_{\varsigma_j\ \text{genuine}}2^{j+1},\qquad
+F_{\infty}(\varsigma)\defeq F(\varsigma)-2^{\lvert\varsigma\rvert+1}.
+\]
+The \emph{signed state} is $-M$ at a position of formula sort and $M$ at a term position.
+
+\begin{lemma}[Masks of slots]\label{cert:lem:masks}
+\begin{enumerate}[label=(\alph*)]
+\item Extending $\varsigma$ by two genuine slots, two dummy slots, one dummy slot and one
+genuine slot maps $F$ to $4F$, $4F+6$, $2F+2$, $2F$, the same for $F_{\infty}$, and $M$ to
+$4M+3$, $4M-3$, $2M-1$, $2M+1$. Hence the signed state of the child of an array of arity
+$r$ with index $j$ is $4m-3$ for $r=1$, $-m$ for $r=2$ at a formula, and $2m-1+2[j=2]$ for
+$r=3$ at a term; and $F$ of that child is
+$\bigl(F\ll((r+1)\bmod 3)\bigr)+(d\bmod 2)\bigl(\lfloor 6/r\rfloor-2\lfloor j/2\rfloor\bigr)$
+for the arities and parities admitted by the arity guard.
+\item Let $d=3+2\lvert\varsigma\rvert$ and $0\le a<d$ an integer. Each of
+$d\mathbin{\&}a\mathbin{\&}(\mathord{\sim}F\gg\lfloor a/2\rfloor)\mathbin{\&}1$ and
+$d\mathbin{\&}(a\bmod 2)\mathbin{\&}(M\gg\lfloor a/2\rfloor)$ is nonzero exactly when
+$a=1$ or $a=3+2j$ with $\varsigma_j$ genuine. At an even $d$ both are $0$.
+\item For every integer $a\ge 0$ and odd $d$,
+$d\mathbin{\&}a\mathbin{\&}(\mathord{\sim}F_{\infty}\gg\lfloor a/2\rfloor)\mathbin{\&}1$ is
+nonzero exactly when $a=1$ or $a=3+2j$ with $j<\lvert\varsigma\rvert$ and $\varsigma_j$
+genuine; for $a<0$ the shift fails.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Prepending $q$ slots multiplies the old part by $2^{q}$; two dummy slots add $2+4$,
+one adds $2$, genuine slots add nothing to $F$ and the same amounts to $M-1$; and
+$F_{\infty}$ gains the factor $2^{q}$ in its last term as well. At $r=1$ the shift is $2$
+and the increment $6$ exactly at a term; at $r=2$ (a formula) neither; at $r=3$ (a term)
+the shift is $1$ and the increment $2,2,0$ for $j=0,1,2$. The signed state changes sign
+exactly at equality, the change of sort. (b) Both expressions require $d$ and $a$ odd,
+$a=1+2r'$; bit $r'$ of $\mathord{\sim}F$ and of $M$ is set exactly when $r'=0$ or slot
+$r'-1$ is genuine, and $a<d$ gives $r'\le\lvert\varsigma\rvert$. (c) The bits of
+$F_{\infty}$ up to $\lvert\varsigma\rvert$ are those of $F$, and all higher bits are set,
+so the bound $a<d$ is supplied by the mask; a negative shift count fails.
+\end{proof}
+
+The programs are the following. $X^{\mathrm s}_{3\mathrm r}$, $X^{\mathrm s}_{3\mathrm m}$
+and $X^{\mathrm s}_{\rho}$ (\pkg{exact\_bindings}) are $S^{3}_{\mathrm r}$,
+$S^{3}_{\mathrm{e,m}}$ and $S^{\rho}_{\mathrm e}$ with a keyword-only argument $m$ of the
+opener, initially $-1$, passed to the children as in \cref{cert:lem:masks}(a), and with the
+leaf guard of the first phase extended by the second test of (b) (in
+$X^{\mathrm s}_{3\mathrm r}$ the shift count is multiplied by the flag $v$).
+$X^{\mathrm f}_{\rho}$ (\pkg{exact\_masks}) is $S^{\rho}_{\mathrm e}$ with a keyword-only
+argument $f$, initially $0$, passed to the children as $k$ if $k\neq 0$ and otherwise by
+the expression of (a), and with the leaf guard of the first phase extended by the first
+test of (b); $X^{\mathrm f}_{\rho,\mathrm x}$ and $X^{\mathrm f}_{\rho,\ell}$ are
+$X^{\mathrm f}_{\rho}$ with the reader of \cref{cert:lem:reader} below, on the whole input
+and on its first line; $X^{\mathrm f}_{3\mathrm r,\ell}$ is the same change of
+$S^{3}_{\mathrm r}$ (the argument being \texttt{True} after the first phase), with the
+first-line reader; $X^{\mathrm f}_{3\mathrm m,\ell}$ is that of $S^{3}_{\mathrm{e,m}}$ with
+the initial argument $-2=F_{\infty}(\,)$ and the leaf test of the first phase replaced by
+the test of (c), with the first-line reader; and $X^{\mathrm f}_{\sharp}$ is
+$S^{\rho}_{2,\mathrm{E,o}}$, the kernel of $S^{\mathrm x}$, with the phase by an empty
+context, the mask passed as the context if it is nonempty and otherwise by the cases of
+(a), and the first test of (b) in the leaf guard of the first phase.
+
+\begin{proposition}[Masks fused into the first opening]\label{cert:prop:masks}
+Let $X$ be one of these programs and $K$ its kernel ($S^{3}_{\mathrm r}$,
+$S^{3}_{\mathrm{e,m}}$, $S^{\rho}_{\mathrm e}$, or for $X^{\mathrm f}_{\sharp}$ the
+program $S^{\rho}_{2,\mathrm{E,o}}$). On inputs of integers and arrays, $X$
+accepts exactly when $K$ accepts and the goal satisfies $F(\,)$ of
+\cref{cert:prop:exact-image}. Hence the accepted goals of $X$ are exactly the encodings
+$B^{\sharp}$ of the closed theorems of $\mathcal A$, with the certificates of $K$.
+\end{proposition}
+\begin{proof}
+In the first phase (floor $0$, flag $1$ or empty context) the guards of $X$ are those of
+$K$ conjoined with the mask test; the mask of a child is computed only for an array that
+passed the arity guard, so (a) applies, and by induction on the tree with (b) or (c) the
+first opening is defined exactly on the trees satisfying $F(\,)$, which satisfy
+$P^{\mathrm{ed}}_{1}$, and then returns the tree, as the opening of $K$ does. After the
+first phase the mask test is short-circuited: the leaf guard has the form ``phase over
+or $\ldots$'', and the argument passed to the children is the floor, \texttt{True} or the
+context, except in $X^{\mathrm s}$, where the state is still computed by $4m-3$, $-m$ and
+$2m\pm 1$, total on integers and never read. The positional arguments of every call of the
+opener are those of $K$; since the new argument is keyword-only, the call $O(\ast a,t,2)$
+on a binary goal still fails with four positional arguments. Every other operation is
+literally that of $K$, so the runs agree from the end of the first opening on, and the
+last statement follows as in \cref{cert:prop:exact-image}, by \cref{cert:thm:floor-phase}
+and \cref{cert:prop:eager-three}(c).
+\end{proof}
+
+\pkg{exact\_bindings} records that a fourth \emph{positional} argument would remove the
+failure of $O(\ast a,t,2)$ at a binary goal and that, according to its replay, a variant
+with it accepts the three-field certificate
+\texttt{[[0,0,1],[0,0,1],[0,[],1],[1,[1]]]} of the false equation $0=\Suc 0$; the variant
+is not delivered as a checker.
+
+\paragraph{Readers of restricted expressions.} \pkg{exact\_masks},
+\pkg{nontraditional\_inputs} and \pkg{names\_and\_scopes} read the certificate as a Python
+expression after a test of its characters.
+
+\begin{lemma}[Restricted data expressions]\label{cert:lem:reader}
+Let $\Sigma$ consist of the ten digits, the minus sign, the square brackets, the comma, the
+space and a set of whitespace characters (the line feed, or the line feed, the carriage
+return and the tab). For a text $p$, the removal of characters of $\Sigma$ from both ends
+of $p$ leaves the empty text exactly when every character of $p$ lies in $\Sigma$. If the
+evaluation of such a text as an expression yields an array, the array satisfies $J$, and
+the evaluation has no other effect. Every array satisfying $J$ is the value of its JSON
+text.
+\end{lemma}
+\begin{proof}
+A character outside $\Sigma$ stops the removal from both sides and remains. The reader
+evaluates $p$ only when the remainder is empty; otherwise the remainder, a nonempty text,
+is used as the remover, and its method lookup or call fails. Over $\Sigma$ the tokens are
+decimal integer literals, the minus sign, brackets and commas; so the expressions are
+integer literals, list displays, negations, subtractions, subscriptions and, at the top
+level only, tuples, since there are no parentheses. No name, call, attribute, string,
+other literal, comprehension, slice or assignment can be formed, so nothing is looked
+up. By induction on a successfully evaluated expression other than a top-level tuple, its
+value is an exact integer or a finite tree of exact lists and integers: negation and
+subtraction succeed only on integers, a subscription only on a list with an integer
+index, returning an element, and a display builds a list of such values. A tuple has no
+method for removal. The last statement holds since a JSON text of integers and arrays is
+such an expression.
+\end{proof}
+
+Consequently a program with this reader, applied to a text $p$, has after reading the run
+of the program with the JSON reader and the test of the printed form on the JSON text of
+the value of $p$, and conversely; the first-line variants read the first line only. The
+accepted texts include spellings such as \texttt{[3-2,1]} or \texttt{[C][0]} of the same
+value; the accepted values are those of the JSON program. The correspondence is one of
+ideal executions: CPython's parser limits the nesting of list displays in an expression
+(\pkg{nontraditional\_inputs} records the rejection of $201$ nested displays that the JSON
+reader parses), in addition to the limits shared with the JSON reader. These programs do
+not read their input as one JSON value and carry the double dagger.
+
+\paragraph{Sequent input.} \pkg{nontraditional\_inputs} changes the header of
+$T^{\rho}_{+,\mathrm n}$ from $[A,0]$ to $[\Gamma,A,0]$. Let $T^{\rho}_{+,\vdash}$ be
+$T^{\rho}_{+,\mathrm n}$ whose root call takes its context, goal and floor from the header
+and whose entry test is membership in $[0,{*}g,H]$ in place of $g+[H]$.
+
+\begin{proposition}[Sequent input]\label{cert:prop:sequent}
+\begin{enumerate}[label=(\alph*)]
+\item For every list $g$, goal $a$, floor $k$ and stack, the call of $T^{\rho}_{+,\vdash}$
+on $(g,a,k)$ and the call of $T^{\rho}_{+,\mathrm n}$ on $([0]+g,a,k)$ consume the same
+records, make calls with the same goals and floors and contexts related in the same way,
+and return or fail together.
+\item If $T^{\rho}_{+,\vdash}$ accepts an input of integers and arrays with header
+$[\Gamma,A,0]$, where $A$ and the members of $\Gamma$ are $1$-shifted canonical encodings
+of closed public formulas, then the reading of $A$ is derivable in $\Teq$ from the readings
+of the members of $\Gamma$.
+\item If $\mathcal U$ derives the public sequent $\Gamma\proves A$ with closed $\Gamma$ and
+$A$, then $T^{\rho}_{+,\vdash}$ accepts a certificate with header $[\Gamma,A,0]$. A theorem
+certificate of $T^{\rho}_{+,\mathrm n}$ with header $[A,0]$ is accepted with header
+$[[\,],A,0]$, and conversely.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) The opener does not consult the context, and the lists of the entry tests are equal,
+$([0]+g)+[H]=[0,{*}g,H]$. The major call keeps the relation, and the continuation context
+satisfies $[0]+(g+[h])=([0]+g)+[h]$. Every other expression is the same; induction on the
+run. (b) By (a) and \cref{cert:prop:parity-dispatch}(a) with the context $[0]+\Gamma$, whose
+members are closed at the floor $0$ and of which $0$ reads $0=0$, the auxiliary reading of
+$A$ is derivable from those of $\Gamma$; on public formulas the auxiliary and the ordinary
+readings are equivalent in $\Teq$ (\cref{cert:rem:imported}). (c) The compilation of the
+proof of \cref{cert:prop:parity-dispatch}(b) is an induction on derivations whose
+hypotheses are members of the context of the call; started with the context
+$[0]+\Gamma$ in place of $[0]$, a hypothesis leaf whose formula lies in $\Gamma$ closes by
+membership, and the names reserved below the floor $0$ are fresh for the closed members of
+$\Gamma$ (\cref{cert:lem:fresh}). By (a) the certificate is accepted by
+$T^{\rho}_{+,\vdash}$. The last statement is (a) with $g=[\,]$.
+\end{proof}
+% ed.: the package states the completeness for sequents through "the parameterized
+% canonical compiler"; the use of the context of the compilation and the freshness of
+% the reserved names for the closed assumptions are made explicit here.
+
+Acceptance of $[\Gamma,A,0]$ means $\Gamma\proves A$: the input
+$[[0=\Suc 0],\,0=\Suc 0,\,0]$ is accepted with a hypothesis leaf, and it does not certify
+$0=\Suc 0$. \pkg{nontraditional\_inputs} also delivers two \emph{seeded} variants that keep
+the body of their control and take the initial context from the header: of
+$T^{\rho}_{+,\mathrm n}$ ($455$ bytes; tokens and nodes are not reported) and of the stream
+program $L_{\mathrm c}$; they are complete only for contexts that contain the neutral
+seed $0$ (respectively the byte string), which the certificate must then supply.
+
+\begin{remark}[Input contracts of these programs]\label{cert:rem:new-contracts}
+The programs of this part fall under six contracts, which the table keeps apart.
+\begin{itemize}
+\item $S^{3}_{\mathrm E}$, $S^{3}_{\mathrm{E,m}}$, $S^{\rho}_{\mathrm e,\pi}$ and
+$S^{\rho}_{\mathrm e,\pi_1}$ satisfy T/ed$_1$, the sorted grammar $P^{\mathrm{ed}}_{1}$
+with the typed whole input; completeness holds for canonical goals, not for the aliases
+of \cref{cert:cor:second-dummy}.
+\item The mask programs satisfy T/ed$_1^{\sharp}$, the exact image of the padded encoding.
+\item The programs of \cref{cert:prop:actual} satisfy the exact contract for the encoding
+$B^{\natural}$ (T/ed$_1^{\natural}$). Like the shifted encoding of \cref{cert:def:offset}
+against that of \cref{cert:def:enc}, it is another encoding of the same goals, and its
+programs are not compared with those of T/ed$_1^{\sharp}$; comparisons across the two
+encodings are stated as such.
+\item $S^{\natural}_{\mathrm i}$ satisfies a goal contract for the encoding $B^{\natural}$
+with the spelling \texttt{true} of $1$ and no condition on unused data
+(G$^{\natural}_{\top}$). The programs of T/ed$_1^{\natural}$ satisfy this weaker contract,
+so its envelope pools them, as the line of T/g bounds G/$\mathcal U$.
+\item The readers of \cref{cert:lem:reader} keep the contracts of their JSON programs for
+the parsed values but change the accepted texts; they carry the double dagger.
+\item $T^{\rho}_{+,\vdash}$ and the seeded variants accept sequents
+(R$^{+2}_{\vdash}$/$\mathcal U$, and R$_{\vdash}$/$\mathcal U$ for the unshifted stream
+program). They are not compared with programs that accept theorems: a program of a theorem
+contract may accept a goal only if it is a theorem, and $T^{\rho}_{+,\vdash}$ accepts
+$[[A],A,0]$ for every $A$; read as a theorem checker it needs the further promise that the
+context in the header is empty, which no program of R$^{+2}$/$\mathcal U$ requires, since
+those programs form their initial context themselves. The saving of two bytes moves the
+neutral seed from the initial call into the entry test, and that of the seeded variants
+moves it into the certificate. \pkg{intrinsic\_validation} and \pkg{names\_and\_scopes}
+include the sequent and seeded programs in a compact frontier ($239/255/458$, or
+$238/255/455$ with the seeded header); the article does not.
+\end{itemize}
+\end{remark}
+
+The programs are, of \pkg{validated\_phase}, $S^{3}_{\mathrm E}$ ($300/346/626$,
+\texttt{code/checker\_tokens300.py}, again \texttt{validation/checker\_candidate300.py}),
+$S^{3}_{\mathrm{E,m}}$ ($310/337/661$, \texttt{code/checker\_ast337.py}) and
+$S^{\rho}_{\mathrm e,\pi}$ ($309/362/580$, \texttt{code/checker\_bytes580.py}), against
+$S^{3}_{\mathrm e}$, $S^{3}_{\mathrm{e,m}}$ and $S^{\rho}_{\mathrm e}$; of
+\pkg{shared\_witness\_bundles}, $S^{\rho}_{\mathrm e,\pi_1}$ ($309/362/581$,
+\texttt{refinement/checker581.py}) against $S^{\rho}_{\mathrm e}$; of \pkg{exact\_bindings},
+$S^{3\natural}_{\mathrm r}$ ($321/373/689$, \texttt{code/proper\_tokens.py}),
+$S^{3\natural}_{\mathrm{e,m}}$ ($333/361/724$, \texttt{code/proper\_nodes.py}) and
+$S^{\rho\natural}_{\mathrm e}$ ($330/383/627$, \texttt{code/proper\_bytes.py}), and the
+signed-mask programs $X^{\mathrm s}_{3\mathrm r}$ ($358/424/762$,
+\texttt{code/checker\_tokens.py}), $X^{\mathrm s}_{3\mathrm m}$ ($368/408/793$,
+\texttt{code/checker\_ast.py}) and $X^{\mathrm s}_{\rho}$ ($365/430/696$,
+\texttt{code/checker\_bytes.py}), all against $S^{\mathrm x}$; of \pkg{exact\_masks},
+$X^{\mathrm f}_{\rho}$ ($365/428/687$, \texttt{code/checker\_json.py}),
+$X^{\mathrm f}_{\sharp}$ ($383/438/691$, \texttt{code/checker\_matched\_json.py}),
+$X^{\mathrm f}_{\rho,\mathrm x}$ ($364/424/676$, \texttt{code/checker.py}),
+$X^{\mathrm f}_{\rho,\ell}$ ($359/420/667$, \texttt{code/checker\_line.py}),
+$X^{\mathrm f}_{3\mathrm r,\ell}$ ($354/416/734$, \texttt{code/checker\_tokens.py}),
+$X^{\mathrm f}_{3\mathrm m,\ell}$ ($361/399/759$, \texttt{code/checker\_ast.py}) and the
+expression readers of $X^{\mathrm f}_{\sharp}$ ($377/430/671$ on the first line and
+$382/434/684$ on the whole input, \texttt{reference/reader\_companions/}), against
+$S^{\mathrm x}$ and the sorted programs of their kernels; of \pkg{intrinsic\_validation},
+$S^{\natural}_{\mathrm i}$ ($316/360/591$, \texttt{code/checker.py}) against
+$S^{\rho\natural}_{\mathrm e}$; of \pkg{names\_and\_scopes},
+$S^{3\natural\prime}_{\mathrm r}$ ($317/370/682$, \texttt{exact\_bindings/proper\_tokens.py}),
+$S^{3\natural\prime}_{\mathrm{e,m}}$ ($329/358/717$, \texttt{exact\_bindings/proper\_nodes.py}),
+$S^{\rho\natural\prime}_{\mathrm e}$ ($326/380/620$, \texttt{exact\_bindings/proper\_bytes.py}),
+$S^{\rho\natural\prime\prime}_{\mathrm e}$ ($327/383/614$,
+\texttt{exact\_bindings/proper\_bytes\_tuple.py}) and its expression reader ($324/379/605$,
+\texttt{exact\_bindings/proper\_expression.py}), against the three programs of
+\pkg{exact\_bindings}; and, of \pkg{nontraditional\_inputs}, $T^{\rho}_{+,\vdash}$
+($265/297/458$, \texttt{sequent\_input/checker\_sequent458.py}) against
+$T^{\rho}_{+,\mathrm n}$, the seeded variants
+(\texttt{sequent\_input/checker\_seeded\_sequent455.py};
+\texttt{checker\_tokens239\_seeded\_sequent.py}, $238/262/545$, against $L_{\mathrm c}$), and
+the expression readers of $S^{3}_{\mathrm r}$, $S^{3}_{\mathrm{e,m}}$ and
+$S^{\rho}_{\mathrm e}$ ($299/350/632$, $311/338/667$, $308/358/575$,
+\texttt{expression\_input/code/}). The controls are reproduced with identical text. The
+readable forms (\texttt{code/readable\_tokens.py} of \pkg{validated\_phase},
+\texttt{code/checker\_readable.py} of \pkg{intrinsic\_validation}) have no reported size;
+their agreement with the programs is supported by tests and not proved. No package claims
+a rule removed, a program below the compact envelope, or a minimal program.
+
 \subsection{The audit of sources}
 
 The audit in \pkg{orbit\_closure} measures every Python source of the ninety
@@ -7929,6 +8475,19 @@ candidates among $1781$ paths, members of the archives included; neither finds a
 duplicate. \pkg{scope\_phase} remeasures the programs that attain the earlier minima.
 These screens do not establish the novelty of the devices, which the packages credit
 to earlier packages, and are not lower bounds.
+
+\pkg{validated\_phase}, \pkg{shared\_witness\_bundles}, \pkg{exact\_bindings},
+\pkg{exact\_masks} and \pkg{nontraditional\_inputs} start from the revision
+\texttt{e88ebf229b} with its seven incoming archives and state the minima
+$239/255/460$ for the compact programs (admitting the stream programs and across the two
+encodings), $302/340/584$ under T/ed$_1$ and $581/641/1424$ for the exact program.
+\pkg{exact\_masks} matches $3542$ Python entries of the artifacts and $131$ members of the
+archives to their hashes; \pkg{nontraditional\_inputs} finds no normalized duplicate of
+the sequent program among $3314$ parseable files. \pkg{intrinsic\_validation}, at
+\texttt{fc05b10f0e} with ten incoming archives, screens $681$ distinct sources of fewer
+than $1800$ bytes and audits the archives completely; \pkg{names\_and\_scopes}, at the same
+revision, remeasures the incumbent programs it compares with. These are censuses and screens of
+finite corpora, not lower bounds.
 
 \section{Results on designs that were examined}\label{cert:sec:notes}
 
@@ -9021,8 +9580,11 @@ T/eqd & typed contract for the grammar with equality, $Q$ and $D$, calculus $\ma
 T/ed & typed contract for the grammar with equality and $D$, calculus $\mathcal A^{-}$\\
 T/g & typed contract for canonical closed guarded formulas, calculus $\mathcal U$\\
 Gt/$\mathcal A^{-}$ & tolerant goal contract of \cref{cert:def:tolerant} for the grammar with equality and $D$, calculus $\mathcal A^{-}$\\
-T/ed$_1$ & typed contract for the grammar $P^{\mathrm{ed}}_{1}$ of \cref{cert:def:zero-alias}, public zero encoded by the scalar $1$, calculus $\mathcal A^{-}$ (the program of \pkg{zero\_alias} with the initial context $[0,[1,0]]$, those of \pkg{smaller\_presentations}, \pkg{scope\_refinement}, \pkg{validated\_leaves}, \pkg{checked\_presentations}, \pkg{procedure\_presentation}, \pkg{prefix\_conditional}, \pkg{validated\_arity\_refinement}, \pkg{validated\_three\_field} and \pkg{304\_token\_refinement} with $O^{+}$, those of \pkg{checked\_reduction}, \pkg{neutral\_modes} and \pkg{composition\_and\_dummy\_slots} with $E^{+}$, and those of \pkg{scope\_phase} with a global floor, \cref{cert:prop:uzero-native,cert:prop:validated-terminal,cert:prop:checked-strict,cert:prop:validated-devices,cert:prop:returned-floor,cert:prop:arity-erasure,cert:prop:eager-validated,cert:prop:validated-three,cert:prop:loop-continuation,cert:prop:eager-three,cert:thm:floor-phase}); the contract fixes the accepted goals, not the certificates; it admits goals that refer to dummy slots, for which completeness fails (\cref{cert:cor:second-dummy})\\
-T/ed$_1^{\sharp}$ & the contract T/ed$_1$ with the goal restricted to the exact image $B^{\sharp}$ of the canonical encoder (\cref{cert:prop:exact-image}), calculus $\mathcal A^{-}$\\
+T/ed$_1$ & typed contract for the grammar $P^{\mathrm{ed}}_{1}$ of \cref{cert:def:zero-alias}, public zero encoded by the scalar $1$, calculus $\mathcal A^{-}$ (the program of \pkg{zero\_alias} with the initial context $[0,[1,0]]$, those of \pkg{smaller\_presentations}, \pkg{scope\_refinement}, \pkg{validated\_leaves}, \pkg{checked\_presentations}, \pkg{procedure\_presentation}, \pkg{prefix\_conditional}, \pkg{validated\_arity\_refinement}, \pkg{validated\_three\_field} and \pkg{304\_token\_refinement} with $O^{+}$, those of \pkg{checked\_reduction}, \pkg{neutral\_modes} and \pkg{composition\_and\_dummy\_slots} with $E^{+}$, and those of \pkg{scope\_phase}, \pkg{validated\_phase} and \pkg{shared\_witness\_bundles} with a global floor, \cref{cert:prop:uzero-native,cert:prop:validated-terminal,cert:prop:checked-strict,cert:prop:validated-devices,cert:prop:returned-floor,cert:prop:arity-erasure,cert:prop:eager-validated,cert:prop:validated-three,cert:prop:loop-continuation,cert:prop:eager-three,cert:thm:floor-phase,cert:prop:phase-guards}); the contract fixes the accepted goals, not the certificates; it admits goals that refer to dummy slots, for which completeness fails (\cref{cert:cor:second-dummy})\\
+T/ed$_1^{\sharp}$ & the contract T/ed$_1$ with the goal restricted to the exact image $B^{\sharp}$ of the canonical encoder (\cref{cert:prop:exact-image,cert:prop:masks}), calculus $\mathcal A^{-}$\\
+T/ed$_1^{\natural}$ & typed contract with the goal restricted to the exact image $B^{\natural}$ of the actual-binding encoder of \cref{cert:def:actual} (\cref{cert:prop:actual}), calculus $\mathcal A^{-}$; another encoding than T/ed$_1^{\sharp}$, not compared with it\\
+G$^{\natural}_{\top}$/$\mathcal A^{-}$ & goal contract for the exact image $B^{\natural}$, with \texttt{true} admitted as a spelling of the scalar $1$ and no condition on unused data (\cref{cert:prop:intrinsic}), calculus $\mathcal A^{-}$; the programs of T/ed$_1^{\natural}$ satisfy it\\
+R$^{+2}_{\vdash}$/$\mathcal U$, R$_{\vdash}$/$\mathcal U$ & raw contract for sequents: last element $[\Gamma,A,0]$ (or $[\Gamma,A]$) with closed canonical guarded $A$ and members of $\Gamma$, in the $1$-shifted encoding or in that of \cref{cert:def:enc}; acceptance means $\Gamma\proves A$ (\cref{cert:prop:sequent}); not compared with the theorem contracts (\cref{cert:rem:new-contracts})\\
 G$_1$/$\mathcal A^{-}$ & goal contract for the grammar $P^{\mathrm{ed}}_{1}$, public zero encoded by the scalar $1$, calculus $\mathcal A^{-}$ (\cref{cert:prop:uzero-native,cert:prop:validated-terminal,cert:prop:validated-devices})\\
 S & strict contract of \pkg{guarded\_register}: certificates $[A,\pi]$ with a proof tree $\pi$, every term and the goal validated; its own calculus, see the remarks below\\
 K & strict contract for the conditional-copy calculus $\mathsf K$: every active term and formula and the goal validated, in full normal form; tree or stream certificates (\cref{cert:def:k-stream})\\
@@ -9035,7 +9597,8 @@ that recognizes arrays by attempted traversal and carries the qualification
 on nonempty strings stated after \cref{cert:def:opener}. A double dagger marks
 a program that does not read its whole input as one JSON value: it reads only
 the first line, or one record per line as the run requests
-(\cref{cert:sec:representation}); such a program is compared only with its
+(\cref{cert:sec:representation}), or it evaluates its input as a restricted
+expression (\cref{cert:lem:reader}); such a program is compared only with its
 control of the same or of the one-line framing, and enters neither the
 envelope nor the list of superseded programs. The packages also
 report sizes after compression; these are informational in every package and
@@ -9459,6 +10022,50 @@ three fields, direct leaves, reservation at entry, $S^{3}_{\mathrm e}$ & T/ed$_1
 the same with structural binding, $S^{3}_{\mathrm{e,m}}$ & T/ed$_1$ & 314 & 340 & 681 & 330/348/681 ($S^{\mathrm N}_{2,\mathrm m}$, sizes only)\\
 four fields, eager opening, reservation at entry, $S^{\rho}_{\mathrm e}$ & T/ed$_1$ & 311 & 362 & 584 & 324/367/589 ($S^{\rho}_{2,\mathrm E}$, sizes only)\\
 \midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{validated\_phase}: \cref{cert:prop:phase-guards}}\\
+three fields, eager opening, phase tests by order, $S^{3}_{\mathrm E}$ & T/ed$_1$ & 300 & 346 & 626 & 304/349/646 ($S^{3}_{\mathrm e}$)\\
+the same with structural binding, $S^{3}_{\mathrm{E,m}}$ & T/ed$_1$ & 310 & 337 & 661 & 314/340/681 ($S^{3}_{\mathrm{e,m}}$)\\
+four fields, phase tests by order, $S^{\rho}_{\mathrm e,\pi}$ & T/ed$_1$ & 309 & 362 & 580 & 311/362/584 ($S^{\rho}_{\mathrm e}$)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{shared\_witness\_bundles}, checker refinement: \cref{cert:prop:phase-guards}(a)}\\
+leaf phase test by order, $S^{\rho}_{\mathrm e,\pi_1}$ & T/ed$_1$ & 309 & 362 & 581 & 311/362/584 ($S^{\rho}_{\mathrm e}$)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{exact\_bindings}: \cref{cert:prop:actual,cert:prop:masks}}\\
+actual binding, $S^{3\natural}_{\mathrm r}$ & T/ed$_1^{\natural}$ & 321 & 373 & 689 & 581/641/1424 ($S^{\mathrm x}$, across the encodings)\\
+actual binding, $S^{3\natural}_{\mathrm{e,m}}$ & T/ed$_1^{\natural}$ & 333 & 361 & 724 & 581/641/1424 ($S^{\mathrm x}$, across the encodings)\\
+actual binding, $S^{\rho\natural}_{\mathrm e}$ & T/ed$_1^{\natural}$ & 330 & 383 & 627 & 581/641/1424 ($S^{\mathrm x}$, across the encodings)\\
+signed mask, $X^{\mathrm s}_{3\mathrm r}$ & T/ed$_1^{\sharp}$ & 358 & 424 & 762 & 581/641/1424 ($S^{\mathrm x}$)\\
+signed mask, $X^{\mathrm s}_{3\mathrm m}$ & T/ed$_1^{\sharp}$ & 368 & 408 & 793 & 581/641/1424 ($S^{\mathrm x}$)\\
+signed mask, $X^{\mathrm s}_{\rho}$ & T/ed$_1^{\sharp}$ & 365 & 430 & 696 & 581/641/1424 ($S^{\mathrm x}$)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{exact\_masks}: \cref{cert:prop:masks,cert:lem:reader}}\\
+forbidden-slot mask, whole JSON, $X^{\mathrm f}_{\rho}$ & T/ed$_1^{\sharp}$ & 365 & 428 & 687 & 581/641/1424 ($S^{\mathrm x}$)\\
+the same on the kernel of $S^{\mathrm x}$, $X^{\mathrm f}_{\sharp}$ & T/ed$_1^{\sharp}$ & 383 & 438 & 691 & 581/641/1424 ($S^{\mathrm x}$)\\
+$X^{\mathrm f}_{\rho,\mathrm x}$, expression, whole input\textsuperscript{\ddag} & T/ed$_1^{\sharp}$ & 364 & 424 & 676 & 581/641/1424 ($S^{\mathrm x}$); 311/362/584 ($S^{\rho}_{\mathrm e}$, T/ed$_1$)\\
+$X^{\mathrm f}_{\rho,\ell}$, expression, first line\textsuperscript{\ddag} & T/ed$_1^{\sharp}$ & 359 & 420 & 667 & 311/362/584 ($S^{\rho}_{\mathrm e}$, T/ed$_1$)\\
+$X^{\mathrm f}_{3\mathrm r,\ell}$, expression, first line\textsuperscript{\ddag} & T/ed$_1^{\sharp}$ & 354 & 416 & 734 & 302/352/646 ($S^{3}_{\mathrm r}$, T/ed$_1$)\\
+$X^{\mathrm f}_{3\mathrm m,\ell}$, infinite mask, expression, first line\textsuperscript{\ddag} & T/ed$_1^{\sharp}$ & 361 & 399 & 759 & 314/340/681 ($S^{3}_{\mathrm{e,m}}$, T/ed$_1$)\\
+$X^{\mathrm f}_{\sharp}$, expression, first line\textsuperscript{\ddag} & T/ed$_1^{\sharp}$ & 377 & 430 & 671 & 383/438/691 ($X^{\mathrm f}_{\sharp}$)\\
+$X^{\mathrm f}_{\sharp}$, expression, whole input\textsuperscript{\ddag} & T/ed$_1^{\sharp}$ & 382 & 434 & 684 & 383/438/691 ($X^{\mathrm f}_{\sharp}$)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{intrinsic\_validation}: \cref{cert:prop:intrinsic}}\\
+intrinsic validation, $S^{\natural}_{\mathrm i}$ & G$^{\natural}_{\top}$/$\mathcal A^{-}$ & 316 & 360 & 591 & 330/383/627 ($S^{\rho\natural}_{\mathrm e}$, T/ed$_1^{\natural}$)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{names\_and\_scopes}, checker part: \cref{cert:prop:actual}}\\
+increment $j\mathbin{\&}2$, $S^{3\natural\prime}_{\mathrm r}$ & T/ed$_1^{\natural}$ & 317 & 370 & 682 & 321/373/689 ($S^{3\natural}_{\mathrm r}$)\\
+increment $j\mathbin{\&}2$, $S^{3\natural\prime}_{\mathrm{e,m}}$ & T/ed$_1^{\natural}$ & 329 & 358 & 717 & 333/361/724 ($S^{3\natural}_{\mathrm{e,m}}$)\\
+increment $j\mathbin{\&}2$, $S^{\rho\natural\prime}_{\mathrm e}$ & T/ed$_1^{\natural}$ & 326 & 380 & 620 & 330/383/627 ($S^{\rho\natural}_{\mathrm e}$)\\
+the increment chosen from a pair, $S^{\rho\natural\prime\prime}_{\mathrm e}$ & T/ed$_1^{\natural}$ & 327 & 383 & 614 & 330/383/627 ($S^{\rho\natural}_{\mathrm e}$)\\
+the same with the expression reader\textsuperscript{\ddag} & T/ed$_1^{\natural}$ & 324 & 379 & 605 & 327/383/614 ($S^{\rho\natural\prime\prime}_{\mathrm e}$)\\
+\midrule
+\multicolumn{6}{@{}p{14.6cm}@{}}{\pkg{nontraditional\_inputs}: \cref{cert:prop:sequent,cert:lem:reader}}\\
+sequent input, $T^{\rho}_{+,\vdash}$ & R$^{+2}_{\vdash}$/$\mathcal U$ & 265 & 297 & 458 & 266/299/460 ($T^{\rho}_{+,\mathrm n}$, R$^{+2}$/$\mathcal U$)\\
+seeded header (secondary) & R$^{+2}_{\vdash}$/$\mathcal U$ & -- & -- & 455 & 266/299/460 ($T^{\rho}_{+,\mathrm n}$, R$^{+2}$/$\mathcal U$)\\
+seeded header, stream (secondary)\textsuperscript{\dag\ddag} & R$_{\vdash}$/$\mathcal U$ & 238 & 262 & 545 & 239/261/553\textsuperscript{\dag\ddag} ($L_{\mathrm c}$, R/$\mathcal U$)\\
+expression reader on $S^{3}_{\mathrm r}$\textsuperscript{\ddag} & T/ed$_1$ & 299 & 350 & 632 & 302/352/646 ($S^{3}_{\mathrm r}$)\\
+expression reader on $S^{3}_{\mathrm{e,m}}$\textsuperscript{\ddag} & T/ed$_1$ & 311 & 338 & 667 & 314/340/681 ($S^{3}_{\mathrm{e,m}}$)\\
+expression reader on $S^{\rho}_{\mathrm e}$\textsuperscript{\ddag} & T/ed$_1$ & 308 & 358 & 575 & 311/362/584 ($S^{\rho}_{\mathrm e}$)\\
+\midrule
 \multicolumn{6}{@{}p{14.6cm}@{}}{Checkers of calculi of other chapters, with their matched controls (contract and calculus of their packages)}\\
 AQE, seven rules (\pkg{abstraction\_and\_refinements}) & other & 1672 & 1818 & 7132 & 1590/1741/6830 (seven rules with QE); 1647/1807/7121 (eight rules)\\
 PD, three families (\pkg{476\_byte\_presentation}) & other & 678 & 727 & 2087 & 688/735/2128 (four families); 643/695/1892 (inherited E3)\\
@@ -9730,6 +10337,29 @@ other program; its row records the cost of the exact validator. Sizes after
 compression, which \pkg{neutral\_modes}, \pkg{composition\_and\_dummy\_slots} and
 \pkg{scope\_phase} report, are omitted.
 
+For the rows of \pkg{validated\_phase}, \pkg{shared\_witness\_bundles},
+\pkg{exact\_bindings}, \pkg{exact\_masks}, \pkg{intrinsic\_validation},
+\pkg{names\_and\_scopes} and \pkg{nontraditional\_inputs}: all measure under CPython
+3.12.14; \pkg{intrinsic\_validation} and \pkg{names\_and\_scopes} compare at the revision
+\texttt{fc05b10f0e}, the others at \texttt{e88ebf229b}. $S^{\rho}_{\mathrm e,\pi}$ and $S^{\rho}_{\mathrm e,\pi_1}$
+have the runs of their control; the other comparisons with controls are comparisons of
+sizes for the same accepted goals, or, against $S^{\mathrm x}$ for the programs of
+T/ed$_1^{\natural}$ and $S^{\natural}_{\mathrm i}$, across encodings and contracts, as the
+packages state them. The packages state the improvements $302\to 300$, $340\to 337$ and
+$584\to 580$ (\pkg{validated\_phase}), $584\to 581$ bytes and $311\to 309$ tokens
+(\pkg{shared\_witness\_bundles}), $581/641/1424\to 321/361/627$ for the three actual-binding
+programs together (\pkg{exact\_bindings}), $581/641/1424\to 364/424/676$ and the family
+minima $354/399/667$ (\pkg{exact\_masks}), $321/361/627\to 316/360/591$ for one program
+(\pkg{intrinsic\_validation}), $321/361/627\to 317/358/614$ for the programs that read
+the whole input as JSON (\pkg{names\_and\_scopes}), and $302/340/584\to 299/338/575$ for
+the expression readers and $266/299/460\to 265/297/458$ for the sequent input
+(\pkg{nontraditional\_inputs}). The matched controls of the mask programs that their
+packages construct, $S^{3}_{\mathrm{e,m}}$ and $S^{\rho}_{\mathrm e}$ preceded by a separate
+exact validator (\texttt{verification/signed\_mask/controls/} of \pkg{exact\_bindings}),
+have no reported size and no row. Sizes after compression, which several of the packages
+report, are omitted; for $S^{\rho}_{\mathrm e,\pi}$ and $S^{\rho}_{\mathrm e,\pi_1}$ they
+are larger than for their control ($377$ and $378$ against $375$).
+
 Under the raw contract no package claims a program that improves tokens,
 nodes and bytes at once against all programs of its contract, with one
 exception that is qualified: the traversal profile of \pkg{certified\_zero} is
@@ -9934,7 +10564,8 @@ G/$\mathcal A^{-}$, before \cref{cert:sec:leaves} & 321 & 369 & 596 & three prog
 Gt/$\mathcal A^{-}$ & 315 & 361 & 603 & one program, of \pkg{tolerant\_certificates}; not comparable with G/$\mathcal A^{-}$ or T/ed\\
 T/ed & 328 & 368 & 616 & three programs of \pkg{abstraction\_and\_refinements} (\cref{cert:prop:abstraction}): $328/377/634$, $335/368/643$ and $340/382/616$\\
 T/ed, before \cref{cert:sec:leaves} & 330 & 379 & 621 & two programs: the program of \pkg{checked\_reductions} with the phase by an empty context, parity, gate and inverted entry ($330/379/641$), which attains two of the three minima, and the program of \pkg{refinement} with product and gate on the program of $628$ bytes ($340/385/621$)\\
-T/ed$_1$ & 302 & 340 & 584 & three programs of \pkg{scope\_phase} (\cref{cert:thm:floor-phase}): $S^{3}_{\mathrm r}$ ($302/352/646$), $S^{3}_{\mathrm{e,m}}$ ($314/340/681$) and $S^{\rho}_{\mathrm e}$ ($311/362/584$); among programs that read four-field packets $311/345/584$, the tokens and bytes attained by $S^{\rho}_{\mathrm e}$ and the nodes by $S^{\mathrm N}_{2,\mathrm{m,E}}$ of \pkg{neutral\_modes} ($328/345/665$); among programs that read three-field records $302/340/646$, the bytes attained by $S^{3}_{\mathrm r}$ and by $S^{3}_{\mathrm e}$ ($304/349/646$); with reservation at entry only $304/340/584$; not comparable with T/ed\\
+T/ed$_1$ & 300 & 337 & 580 & three programs of \pkg{validated\_phase} (\cref{cert:prop:phase-guards}): $S^{3}_{\mathrm E}$ ($300/346/626$), $S^{3}_{\mathrm{E,m}}$ ($310/337/661$) and $S^{\rho}_{\mathrm e,\pi}$ ($309/362/580$); among programs that read four-field packets $309/345/580$, the tokens and bytes attained by $S^{\rho}_{\mathrm e,\pi}$ and the nodes by $S^{\mathrm N}_{2,\mathrm{m,E}}$ of \pkg{neutral\_modes} ($328/345/665$); among programs that read three-field records $300/337/626$, attained by $S^{3}_{\mathrm E}$ and $S^{3}_{\mathrm{E,m}}$; with the programs of the double dagger $299/337/575$, the tokens and bytes attained by the expression readers of \pkg{nontraditional\_inputs} ($299/350/632$, $308/358/575$); not comparable with T/ed\\
+T/ed$_1$, before \pkg{validated\_phase} and \pkg{shared\_witness\_bundles} & 302 & 340 & 584 & three programs of \pkg{scope\_phase} (\cref{cert:thm:floor-phase}): $S^{3}_{\mathrm r}$ ($302/352/646$), $S^{3}_{\mathrm{e,m}}$ ($314/340/681$) and $S^{\rho}_{\mathrm e}$ ($311/362/584$); among programs that read four-field packets $311/345/584$, the tokens and bytes attained by $S^{\rho}_{\mathrm e}$ and the nodes by $S^{\mathrm N}_{2,\mathrm{m,E}}$ of \pkg{neutral\_modes} ($328/345/665$); among programs that read three-field records $302/340/646$, the bytes attained by $S^{3}_{\mathrm r}$ and by $S^{3}_{\mathrm e}$ ($304/349/646$); with reservation at entry only $304/340/584$; not comparable with T/ed\\
 T/ed$_1$, before \pkg{304\_token\_refinement}, \pkg{neutral\_modes}, \pkg{scope\_phase} and \pkg{composition\_and\_dummy\_slots} & 306 & 348 & 589 & three programs (\cref{cert:prop:eager-validated,cert:prop:validated-three}): the three-field program $S^{\mathrm T}_{3\mathrm f}$ ($306/362/668$) and $S^{\mathrm N}_{2,\mathrm m}$ ($330/348/681$) of \pkg{validated\_three\_field} and $S^{\rho}_{2,\mathrm E}$ of \pkg{checked\_reduction} ($324/367/589$); among programs that read four-field packets $315/348/589$, the token minimum attained by $S^{\mathrm T}_{2,\mathrm E}$ of \pkg{checked\_reduction} ($315/365/618$); not comparable with T/ed\\
 T/ed$_1$, before \pkg{checked\_reduction} and \pkg{validated\_three\_field} & 317 & 356 & 597 & three programs of \pkg{validated\_arity\_refinement} (\cref{cert:prop:arity-erasure}): $S^{\mathrm T}_{2,\mathrm b}$ ($317/368/634$), $S^{\mathrm N}_{2,\mathrm b}$ ($325/356/646$) and $S^{\rho,\mathrm e}_{2,\mathrm p}$ ($328/372/597$); not comparable with T/ed\\
 T/ed$_1$, before \pkg{validated\_arity\_refinement} & 319 & 358 & 599 & three programs: $S^{\mathrm T}_2$ ($319/370/630$) and $S^{\mathrm N}_2$ ($327/358/642$) of \pkg{checked\_presentations} and $S^{\rho}_{2,\mathrm p}$ of \pkg{prefix\_conditional} ($330/372/599$); not comparable with T/ed\\
@@ -9942,8 +10573,11 @@ T/ed$_1$, before \pkg{prefix\_conditional} & 319 & 358 & 600 & three programs: $
 T/ed$_1$, before \pkg{procedure\_presentation} & 319 & 358 & 605 & three programs of \pkg{checked\_presentations} (\cref{cert:prop:checked-strict}): $S^{\mathrm T}_2$ ($319/370/630$), $S^{\mathrm N}_2$ ($327/358/642$) and $S_4$ ($335/380/605$); not comparable with T/ed\\
 T/ed$_1$, before \pkg{checked\_presentations} & 322 & 364 & 606 & three programs (\cref{cert:prop:validated-terminal}): $S^{\mathrm T}_1$ ($322/373/626$) and $S^{\mathrm N}_1$ ($329/364/635$) of \pkg{scope\_refinement} and $S_2$ of \pkg{validated\_leaves} ($334/379/606$)\\
 T/ed$_1$, before \cref{cert:sec:validated-terminal} & 331 & 373 & 608 & two programs: that of \pkg{zero\_alias} ($331/373/625$) and the strict uniform-zero program of \pkg{smaller\_presentations} ($334/378/608$)\\
-G$_1$/$\mathcal A^{-}$ & 302 & 340 & 573 & three programs: $S^{3}_{\mathrm r}$ and $S^{3}_{\mathrm{e,m}}$ of T/ed$_1$, which satisfy this contract, and $N_{2,\mathrm p}$ of \pkg{procedure\_presentation} ($324/366/573$), whose exact-integer test concerns one runtime; among the programs that validate only the goal $324/366/573$, attained by $N_{2,\mathrm p}$ alone; before the four packages of \cref{cert:prop:loop-continuation,cert:prop:eager-three,cert:thm:floor-phase} $306/348/573$, with $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm N}_{2,\mathrm m}$ in place of $S^{3}_{\mathrm r}$ and $S^{3}_{\mathrm{e,m}}$; before \pkg{checked\_reduction} and \pkg{validated\_three\_field} $317/356/573$, with $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$ of T/ed$_1$ in place of $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm N}_{2,\mathrm m}$; before \pkg{validated\_arity\_refinement} $319/358/573$, with $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$ in place of $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$; before \pkg{procedure\_presentation} $319/358/579$, with $N_2$ of \pkg{validated\_leaves} ($328/373/579$) in place of $N_{2,\mathrm p}$; before \pkg{checked\_presentations} $322/364/579$, with $S^{\mathrm T}_1$ and $S^{\mathrm N}_1$ in place of $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$; among the programs that validate only the goal, before \pkg{procedure\_presentation}, $328/369/579$, the nodes attained by the program $328/369/587$ of \pkg{smaller\_presentations}; before \cref{cert:sec:validated-terminal} $328/369/581$, from the programs $328/372/581$ and $328/369/587$ of \pkg{smaller\_presentations}; not comparable with G/$\mathcal A^{-}$\\
-T/ed$_1^{\sharp}$ & 581 & 641 & 1424 & one program, $S^{\mathrm x}$ of \pkg{composition\_and\_dummy\_slots} (\cref{cert:prop:exact-image})\\
+G$_1$/$\mathcal A^{-}$ & 300 & 337 & 573 & three programs: $S^{3}_{\mathrm E}$ and $S^{3}_{\mathrm{E,m}}$ of T/ed$_1$, which satisfy this contract, and $N_{2,\mathrm p}$ of \pkg{procedure\_presentation} ($324/366/573$), whose exact-integer test concerns one runtime; among the programs that validate only the goal $324/366/573$, attained by $N_{2,\mathrm p}$ alone; before \pkg{validated\_phase} $302/340/573$, with $S^{3}_{\mathrm r}$ and $S^{3}_{\mathrm{e,m}}$ in place of $S^{3}_{\mathrm E}$ and $S^{3}_{\mathrm{E,m}}$; before the four packages of \cref{cert:prop:loop-continuation,cert:prop:eager-three,cert:thm:floor-phase} $306/348/573$, with $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm N}_{2,\mathrm m}$ in place of $S^{3}_{\mathrm r}$ and $S^{3}_{\mathrm{e,m}}$; before \pkg{checked\_reduction} and \pkg{validated\_three\_field} $317/356/573$, with $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$ of T/ed$_1$ in place of $S^{\mathrm T}_{3\mathrm f}$ and $S^{\mathrm N}_{2,\mathrm m}$; before \pkg{validated\_arity\_refinement} $319/358/573$, with $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$ in place of $S^{\mathrm T}_{2,\mathrm b}$ and $S^{\mathrm N}_{2,\mathrm b}$; before \pkg{procedure\_presentation} $319/358/579$, with $N_2$ of \pkg{validated\_leaves} ($328/373/579$) in place of $N_{2,\mathrm p}$; before \pkg{checked\_presentations} $322/364/579$, with $S^{\mathrm T}_1$ and $S^{\mathrm N}_1$ in place of $S^{\mathrm T}_2$ and $S^{\mathrm N}_2$; among the programs that validate only the goal, before \pkg{procedure\_presentation}, $328/369/579$, the nodes attained by the program $328/369/587$ of \pkg{smaller\_presentations}; before \cref{cert:sec:validated-terminal} $328/369/581$, from the programs $328/372/581$ and $328/369/587$ of \pkg{smaller\_presentations}; not comparable with G/$\mathcal A^{-}$\\
+T/ed$_1^{\sharp}$ & 358 & 408 & 687 & three programs (\cref{cert:prop:masks}): $X^{\mathrm s}_{3\mathrm r}$ ($358/424/762$) and $X^{\mathrm s}_{3\mathrm m}$ ($368/408/793$) of \pkg{exact\_bindings} and $X^{\mathrm f}_{\rho}$ of \pkg{exact\_masks} ($365/428/687$); with the programs of the double dagger $354/399/667$, attained by $X^{\mathrm f}_{3\mathrm r,\ell}$, $X^{\mathrm f}_{3\mathrm m,\ell}$ and $X^{\mathrm f}_{\rho,\ell}$ of \pkg{exact\_masks}; before \pkg{exact\_bindings} and \pkg{exact\_masks} $581/641/1424$, the one program $S^{\mathrm x}$ of \pkg{composition\_and\_dummy\_slots} (\cref{cert:prop:exact-image}); not comparable with T/ed$_1^{\natural}$\\
+T/ed$_1^{\natural}$ & 317 & 358 & 614 & three programs of \pkg{names\_and\_scopes} (\cref{cert:prop:actual}): $S^{3\natural\prime}_{\mathrm r}$ ($317/370/682$), $S^{3\natural\prime}_{\mathrm{e,m}}$ ($329/358/717$) and $S^{\rho\natural\prime\prime}_{\mathrm e}$ ($327/383/614$); with the programs of the double dagger $317/358/605$; before \pkg{names\_and\_scopes} $321/361/627$, the three programs of \pkg{exact\_bindings} ($321/373/689$, $333/361/724$, $330/383/627$); not comparable with T/ed$_1^{\sharp}$\\
+G$^{\natural}_{\top}$/$\mathcal A^{-}$ & 316 & 358 & 591 & two programs: $S^{\natural}_{\mathrm i}$ of \pkg{intrinsic\_validation} ($316/360/591$, tokens and bytes) and $S^{3\natural\prime}_{\mathrm{e,m}}$ of T/ed$_1^{\natural}$ ($329/358/717$, nodes), which satisfies this contract; before \pkg{names\_and\_scopes} $316/360/591$, attained by $S^{\natural}_{\mathrm i}$ alone\\
+R$^{+2}_{\vdash}$/$\mathcal U$ & 265 & 297 & 458 & one program, $T^{\rho}_{+,\vdash}$ of \pkg{nontraditional\_inputs} (\cref{cert:prop:sequent}); the seeded variant has $455$ bytes, and under R$_{\vdash}$/$\mathcal U$ the seeded stream variant has $238/262/545$\textsuperscript{\dag\ddag}; not comparable with R$^{+2}$/$\mathcal U$ or R/$\mathcal U$ (\cref{cert:rem:new-contracts})\\
 T/eqd & 383 & 442 & 870 & one program, of \pkg{validated\_presentation}\\
 S & 1041 & 1181 & 3467 & one program, of \pkg{guarded\_register}\\
 K & 609 & 699 & 1644 & one program, the two-field stream of \pkg{alias\_back}\\
@@ -10367,6 +11001,44 @@ G$_1$/$\mathcal A^{-}$ the envelope is $302/340/573$, with $N_{2,\mathrm p}$; am
 programs that validate only the goal it remains $324/366/573$. Under the new code
 T/ed$_1^{\sharp}$ there is one program. None of the four packages claims one program
 below all coordinates of an envelope.
+
+\pkg{validated\_phase}, \pkg{shared\_witness\_bundles}, \pkg{exact\_bindings},
+\pkg{exact\_masks}, \pkg{intrinsic\_validation}, \pkg{names\_and\_scopes} and
+\pkg{nontraditional\_inputs} change the envelope as follows. Under T/ed$_1$ the phase tests
+by order save two tokens and four bytes on $S^{\rho}_{\mathrm e}$ with its nodes
+($S^{\rho}_{\mathrm e,\pi}$), and the leaf test alone two tokens and three bytes
+($S^{\rho}_{\mathrm e,\pi_1}$); the eager opening with the empty neutral and the phase tests
+give $S^{3}_{\mathrm E}$, below $S^{3}_{\mathrm e}$ by four tokens, three nodes and $20$
+bytes and below $S^{3}_{\mathrm r}$ in all three coordinates, and $S^{3}_{\mathrm{E,m}}$,
+below $S^{3}_{\mathrm{e,m}}$ by four tokens, three nodes and $20$ bytes. The envelope is
+$300/337/580$, attained by three programs, of which none attains two of the minima; it is
+$309/345/580$ among the four-field programs and $300/337/626$ among the three-field
+programs, as \pkg{validated\_phase} states against $302/340/584$;
+\pkg{shared\_witness\_bundles} states $581$ bytes against $584$. Admitting the expression
+readers of \pkg{nontraditional\_inputs}, each below its control in all three coordinates,
+the minima would be $299/337/575$; the package states $299/338/575$ against $302/340/584$,
+without the programs of \pkg{validated\_phase}. Under G$_1$/$\mathcal A^{-}$ the envelope
+is $300/337/573$, with $N_{2,\mathrm p}$. Under T/ed$_1^{\sharp}$ every program of
+\pkg{exact\_bindings} and \pkg{exact\_masks} is below $S^{\mathrm x}$ in all three
+coordinates; the envelope is $358/408/687$, attained by three programs, and $354/399/667$
+with the double dagger, which \pkg{exact\_masks} states as the minima of its family;
+\pkg{exact\_masks} states $364/424/676$ for its main program, which reads an expression.
+Under the new code T/ed$_1^{\natural}$ the three programs of \pkg{exact\_bindings} give
+$321/361/627$, which that package states against $581/641/1424$ across the two encodings;
+the increment $j\mathbin{\&}2$ saves four tokens, three nodes and seven bytes on each of
+them, and the pair saves six further bytes on the byte program at the cost of one token
+and three nodes, so the envelope is $317/358/614$, attained by three programs, as
+\pkg{names\_and\_scopes} states. Under the new code G$^{\natural}_{\top}$/$\mathcal A^{-}$,
+$S^{\natural}_{\mathrm i}$ ($316/360/591$) is below all three coordinates of $321/361/627$,
+as \pkg{intrinsic\_validation} states, so at that revision one program attained all
+minima of its code; with the program of $358$ nodes of \pkg{names\_and\_scopes}, which
+satisfies the stronger contract T/ed$_1^{\natural}$, the envelope is $316/358/591$,
+attained by two programs. Under R$^{+2}$/$\mathcal U$ and R/$\mathcal U$ nothing changes: the sequent
+program $T^{\rho}_{+,\vdash}$ ($265/297/458$) is below $T^{\rho}_{+,\mathrm n}$ in all
+three coordinates, but under its own code (\cref{cert:rem:new-contracts}).
+\pkg{intrinsic\_validation} and \pkg{names\_and\_scopes} state $239/255/458$, or
+$238/255/455$ with the seeded header, admitting the sequent programs. No package claims one
+program below all coordinates of the compact envelope.
 
 \paragraph{Superseded programs.} A program of the table is \emph{superseded}
 if another complete program of the table with the same contract code, and
@@ -10938,6 +11610,69 @@ readable form of $T^{\rho}_{+,\mathrm n}$ has no reported size, and the unsound
 variants of \cref{cert:rem:floor-order} and of the end of \cref{cert:sec:validated}
 are not programs of the table.
 
+With \pkg{validated\_phase}, \pkg{shared\_witness\_bundles}, \pkg{exact\_bindings},
+\pkg{exact\_masks}, \pkg{intrinsic\_validation}, \pkg{names\_and\_scopes} and
+\pkg{nontraditional\_inputs}, newly superseded are the following. Under T/ed$_1$, among the
+three-field programs: $S^{3}_{\mathrm r}$ ($302/352/646$, \texttt{code/checker\_tokens302.py}
+of \pkg{scope\_phase}, again \texttt{baseline/strict\_tokens302.py} of
+\pkg{shared\_witness\_bundles}) and $S^{3}_{\mathrm e}$ ($304/349/646$,
+\texttt{code/checker\_entry\_tokens304.py}), by $S^{3}_{\mathrm E}$ ($300/346/626$,
+\texttt{code/checker\_tokens300.py} of \pkg{validated\_phase}); and $S^{3}_{\mathrm{e,m}}$
+($314/340/681$, \texttt{code/checker\_ast340.py}, again \texttt{baseline/strict\_ast340.py}
+of \pkg{shared\_witness\_bundles}), by $S^{3}_{\mathrm{E,m}}$ ($310/337/661$,
+\texttt{code/checker\_ast337.py}). Among the four-field programs: $S^{\rho}_{\mathrm e}$
+($311/362/584$, \texttt{code/checker\_bytes584.py} of \pkg{scope\_phase}, again
+\texttt{refinement/control584.py} and \texttt{baseline/strict\_bytes584.py} of
+\pkg{shared\_witness\_bundles}) and, on delivery, $S^{\rho}_{\mathrm e,\pi_1}$
+($309/362/581$, \texttt{refinement/checker581.py}), by $S^{\rho}_{\mathrm e,\pi}$
+($309/362/580$, \texttt{code/checker\_bytes580.py}). The three-field programs
+$S^{3}_{\mathrm E}$ and $S^{3}_{\mathrm{E,m}}$ are incomparable ($300<310$ tokens,
+$346>337$ nodes), and the four-field programs $S^{\rho}_{\mathrm e,\pi}$,
+$S^{\mathrm N}_{2,\mathrm E}$ ($323/353/630$) and $S^{\mathrm N}_{2,\mathrm{m,E}}$
+($328/345/665$) are pairwise incomparable: by tokens $309<323<328$, with the nodes $362$,
+$353$, $345$ and the bytes $580$, $630$, $665$. Three-field and four-field programs are not
+compared; this time the comparison would change something: $S^{3}_{\mathrm E}$ is below
+$S^{\mathrm N}_{2,\mathrm E}$, and $S^{3}_{\mathrm{E,m}}$ below $S^{\mathrm N}_{2,\mathrm{m,E}}$,
+in all three coordinates, for certificates of another format. Under T/ed$_1^{\sharp}$: $S^{\mathrm x}$ ($581/641/1424$,
+\texttt{code/checker\_exact.py} of \pkg{composition\_and\_dummy\_slots}, again
+\texttt{baseline/exact\_canonical1424.py} of \pkg{shared\_witness\_bundles}), by every mask
+program that reads the whole input as JSON; $X^{\mathrm s}_{\rho}$ ($365/430/696$,
+\texttt{code/checker\_bytes.py} of \pkg{exact\_bindings}, again
+\texttt{verification/signed\_mask/exact\_bytes.py}) and $X^{\mathrm f}_{\sharp}$
+($383/438/691$, \texttt{code/checker\_matched\_json.py} of \pkg{exact\_masks}), by
+$X^{\mathrm f}_{\rho}$ ($365/428/687$, \texttt{code/checker\_json.py}), which has the tokens
+of the first and fewer nodes and bytes than both; programs of T/ed$_1^{\sharp}$ are compared
+whatever their kernel, since their accepted goals are the same
+(\cref{cert:prop:masks}). The three programs $X^{\mathrm s}_{3\mathrm r}$ ($358/424/762$,
+\texttt{code/checker\_tokens.py}), $X^{\mathrm f}_{\rho}$ and $X^{\mathrm s}_{3\mathrm m}$
+($368/408/793$, \texttt{code/checker\_ast.py}, again
+\texttt{verification/signed\_mask/exact\_ast.py}) are pairwise incomparable: by tokens
+$358<365<368$, with the nodes $424$, $428$, $408$ and the bytes $762$, $687$, $793$. The
+expression readers carry the double dagger and are not compared. Under
+T/ed$_1^{\natural}$: $S^{3\natural}_{\mathrm r}$ ($321/373/689$, \texttt{code/proper\_tokens.py}
+of \pkg{exact\_bindings}), by $S^{3\natural\prime}_{\mathrm r}$ ($317/370/682$,
+\texttt{exact\_bindings/proper\_tokens.py} of \pkg{names\_and\_scopes});
+$S^{3\natural}_{\mathrm{e,m}}$ ($333/361/724$, \texttt{code/proper\_nodes.py}), by
+$S^{3\natural\prime}_{\mathrm{e,m}}$ ($329/358/717$, \texttt{exact\_bindings/proper\_nodes.py});
+and $S^{\rho\natural}_{\mathrm e}$ ($330/383/627$, \texttt{code/proper\_bytes.py}), by
+$S^{\rho\natural\prime}_{\mathrm e}$ ($326/380/620$, \texttt{exact\_bindings/proper\_bytes.py})
+and by $S^{\rho\natural\prime\prime}_{\mathrm e}$ ($327/383/614$,
+\texttt{exact\_bindings/proper\_bytes\_tuple.py}); the three superseded programs are also
+carried with identical text as \texttt{verification/actual\_binding/proper\_*.py} of
+\pkg{exact\_bindings}, \texttt{reference/proper\_*.py} of \pkg{intrinsic\_validation} and
+\texttt{exact\_bindings/controls/proper\_*.py} of \pkg{names\_and\_scopes}. The four
+programs $S^{3\natural\prime}_{\mathrm r}$, $S^{\rho\natural\prime}_{\mathrm e}$,
+$S^{\rho\natural\prime\prime}_{\mathrm e}$ and $S^{3\natural\prime}_{\mathrm{e,m}}$ are
+pairwise incomparable: by tokens $317<326<327<329$, with the nodes $370$, $380$, $383$,
+$358$ and the bytes $682$, $620$, $614$, $717$. Under G$^{\natural}_{\top}$/$\mathcal A^{-}$
+there is one program, and programs of T/ed$_1^{\natural}$ are not compared with it, as
+programs of T/g are not compared with those of G/$\mathcal U$. Under
+R$^{+2}_{\vdash}$/$\mathcal U$ the program of $455$ bytes has no reported tokens or nodes
+and is not compared, and nothing is superseded; under R$^{+2}$/$\mathcal U$ nothing is
+superseded. The copies of $T^{\rho}_{+,\mathrm n}$, $T^{\rho}_{+,\mathrm p}$,
+$L''_{\mathrm{f,m}}$ and the stream programs that the packages carry as references keep the
+status of those programs.
+
 \section{Further questions}\label{cert:sec:questions}
 
 The packages state the following questions, limits and unproved claims. Items
@@ -11100,7 +11835,9 @@ complete input validation, where the envelope $328/368/616$ under T/ed is
 attained by three programs, and the envelope $419/469/855$ under T/g by two
 programs, and under the goal contract, where $317/358/594$ under
 G/$\mathcal A^{-}$ is attained by three programs; under T/ed$_1$
-($302/340/584$) and G$_1$/$\mathcal A^{-}$ ($302/340/573$) by three programs each.
+($300/337/580$), G$_1$/$\mathcal A^{-}$ ($300/337/573$), T/ed$_1^{\sharp}$ ($358/408/687$)
+and T/ed$_1^{\natural}$ ($317/358/614$) by three programs each, and under
+G$^{\natural}_{\top}$/$\mathcal A^{-}$ ($316/358/591$) by two.
 Under the shifted encoding of \cref{cert:def:offset} there was one program
 ($271/307/472$) when the last question was asked: can the offset be combined with the
 uniform terminals of the program of $469$ bytes? $T_{+}$ of
@@ -11407,22 +12144,31 @@ validates all logical rules and induction and refutes transitivity?
 Is there one complete program, for one fixed public grammar, framing and
 validation contract, below the envelopes $239/255/465$ under R/$\mathcal U$ with
 the double dagger, $244/261/465$ without it, $266/298/460$ under
-R$^{+2}$/$\mathcal U$, or $302/340/584$ under T/ed$_1$ ($311/345/584$ among the
-programs that read four-field packets, $302/340/646$ among the three-field programs) in
-all three coordinates? \pkg{checked\_reduction} asks it below $239/255/461$, admitting
+R$^{+2}$/$\mathcal U$, or $300/337/580$ under T/ed$_1$ ($309/345/580$ among the
+programs that read four-field packets, $300/337/626$ among the three-field programs) in
+all three coordinates? Under the exact contracts the envelopes are $358/408/687$
+(T/ed$_1^{\sharp}$) and $317/358/614$ (T/ed$_1^{\natural}$); under
+G$^{\natural}_{\top}$/$\mathcal A^{-}$ the program $S^{\natural}_{\mathrm i}$ attained all
+three minima of its code until the program of $358$ nodes of \pkg{names\_and\_scopes}.
+\pkg{validated\_phase}, \pkg{exact\_bindings}, \pkg{exact\_masks},
+\pkg{intrinsic\_validation}, \pkg{names\_and\_scopes} and \pkg{nontraditional\_inputs} ask
+it for one program below the compact envelope under a fixed theorem or sequent contract,
+with every reader and decoder charged, and record that they do not reach it.
+(Before these packages the envelope under T/ed$_1$ was $302/340/584$, $311/345/584$
+among the four-field programs and $302/340/646$ among the three-field programs.) \pkg{checked\_reduction} asks it below $239/255/461$, admitting
 the stream programs and across the two encodings, and \pkg{validated\_three\_field}
 for the strict programs; \pkg{neutral\_modes} asks it below $239/255/460$,
 \pkg{scope\_phase} for one strict program below $306/348/589$ or below the new
 envelope, and \pkg{304\_token\_refinement} and \pkg{composition\_and\_dummy\_slots}
-record that they do not reach it. $S^{\rho}_{\mathrm e}$ attains two of the minima
-among the four-field programs and is below $S^{\rho}_{2,\mathrm E}$ in all three
-coordinates. \pkg{neutral\_modes} and \pkg{composition\_and\_dummy\_slots} compose the
+record that they do not reach it. $S^{\rho}_{\mathrm e,\pi}$ attains two of the minima
+among the four-field programs, as $S^{\rho}_{\mathrm e}$ did before it. \pkg{neutral\_modes} and \pkg{composition\_and\_dummy\_slots} compose the
 eager opener with the three-field records and with the sentinel, the structural binding
 and the conditional major, and \pkg{composition\_and\_dummy\_slots} the opened
 candidate with $S^{\rho}_{2,\mathrm E}$ (\cref{cert:prop:eager-three}); the loop of
 \cref{cert:prop:loop-continuation} and the reservation at entry of
-\cref{cert:thm:floor-phase} are not composed with each other or with the eager
-three-field programs. (Before these four packages the envelopes were $239/255/465$,
+\cref{cert:thm:floor-phase} are not composed with each other; \pkg{validated\_phase}
+composes the reservation at entry with the eager opener
+(\cref{cert:prop:phase-guards}), and no package composes the loop with it. (Before these four packages the envelopes were $239/255/465$,
 $244/261/465$, $267/298/461$ and $306/348/589$, $315/348/589$ among the four-field
 programs. Before \pkg{checked\_reduction} and
 \pkg{validated\_three\_field} the envelopes were $239/256/465$, $244/261/465$ and
@@ -11441,7 +12187,22 @@ and checking time compare? (\pkg{468\_presentation}, \pkg{ast261},
 \pkg{direct\_packets}, \pkg{procedure\_presentation}, \pkg{conditional\_image},
 \pkg{validated\_arity\_refinement}, \pkg{checked\_reduction},
 \pkg{validated\_three\_field}, \pkg{304\_token\_refinement}, \pkg{neutral\_modes},
-\pkg{scope\_phase}, \pkg{composition\_and\_dummy\_slots}.)
+\pkg{scope\_phase}, \pkg{composition\_and\_dummy\_slots}, \pkg{validated\_phase},
+\pkg{shared\_witness\_bundles}, \pkg{exact\_bindings}, \pkg{exact\_masks},
+\pkg{intrinsic\_validation}, \pkg{names\_and\_scopes}, \pkg{nontraditional\_inputs}.)
+\end{question}
+
+\begin{question}[Exact syntax at the compact frontier]
+The exact contract of the actual-binding encoding costs $17$ tokens, $21$ nodes and $34$
+bytes above the sorted contract in the envelopes ($317/358/614$ against $300/337/580$), and
+that of the padded encoding more ($358/408/687$). Can a codec make every admitted slot genuine with a capture-avoiding opening as
+short as the present one, so that no mask or separate validator is needed; can a cheaper
+total normalization identify the padding aliases of \cref{cert:cor:second-dummy} with
+their canonical spellings and keep completeness for every admitted spelling; and can the
+spelling \texttt{true} of $1$ admitted by $S^{\natural}_{\mathrm i}$ be rejected without an
+extra pass? Can a parser with an explicit unbounded semantics match the size of the reader
+of \cref{cert:lem:reader} without its fixed limit of nesting? (\pkg{exact\_bindings},
+\pkg{exact\_masks}, \pkg{intrinsic\_validation}, \pkg{nontraditional\_inputs}.)
 \end{question}
 
 \begin{question}[Readings modulo annotations]
@@ -11874,6 +12635,44 @@ cheaply than the parity of depths without moving it into an uncounted decoder: t
 counterexample at the end of \cref{cert:sec:validated} shows that arrays at the root
 of templates and at the positions of formula sort of goals and hypotheses do not
 suffice.
+\item The finite tests of \pkg{validated\_phase}, \pkg{shared\_witness\_bundles},
+\pkg{exact\_bindings}, \pkg{exact\_masks}, \pkg{intrinsic\_validation},
+\pkg{names\_and\_scopes} and \pkg{nontraditional\_inputs} are implementation evidence:
+$768690$ bounded comparisons of the guards, $287$ isolated runs of $112$ three-field and
+$63$ four-field fixtures and a boundary suite of $236$ executions in the first; $252$
+executions of $63$ cases in the second; $30456$ grammar comparisons and $450$ executions
+for the actual-binding programs, and $45124$ grammar comparisons, $12000$ opener
+comparisons and $764$ executions for the signed masks, in the third; $224880$ grammar
+comparisons and $1006$ executions in the fourth; $12742$ grammar comparisons, $13120$
+opener checks, $10866$ mutated goals and $232$ executions in the fifth; $750$ executions in
+the sixth; $212$ executions of the sequent program and $1454$ of the expression readers in
+the seventh; each reports no unexpected outcome. The proofs of
+\cref{cert:prop:phase-guards,cert:prop:actual,cert:prop:intrinsic,cert:prop:masks,cert:lem:reader,cert:prop:sequent}
+are written proofs for ideal executions, and no package claims a formalization in a proof
+assistant or a new build of the Lean development.
+\item \pkg{validated\_phase} records that deleting the factor $d\bmod 2$ of the eager
+fallback, which would admit numerical replacement at positions of formula sort, is
+unsound, citing a counterexample of \pkg{scope\_phase}, and that weakening the test
+$\lvert a\rvert=2$ to the truth value of $a[1{:}]$ grants progress at closures
+(\cref{cert:prop:closure-progress}). It and \pkg{exact\_bindings} report diagnostics in
+which the witness is opened after the major call and a future parameter is captured, as in
+\cref{cert:rem:floor-order}; these variants are not programs of the table.
+\item \pkg{exact\_bindings} asks for a formalization of the actual-binding reading and of
+the opener with its contract on positional arguments, and for measures of certificate
+length, time and memory besides source size; \pkg{exact\_masks} asks whether the mask and
+the floor can share one coordinate and whether cyclic or shared proof representations can
+remove a rule family with a local trace condition that keeps exactly quantifier-free
+induction; \pkg{intrinsic\_validation} asks for a formal semantics of the partial opener
+over the evaluation of the host language, including Boolean equality and exceptions;
+\pkg{nontraditional\_inputs} asks whether an environment representation can merge
+iteration with opening and remove the computation leaves. No package gives a result on
+these questions. \pkg{exact\_masks} also notes that a total primitive recursive evaluator
+of all primitive recursive programs is impossible by diagonalization, so it is not a
+route to a smaller basis.
+\item \pkg{nontraditional\_inputs} states that the seeded variants are complete only for
+contexts that contain the neutral seed; no completeness statement for other
+representations of the context is given. The extension of \cref{cert:prop:sequent} to
+contexts with free parameters, which would need a common initial scope, is not treated.
 \item None of the packages claims a minimal program, a simplest
 axiomatization, or a result about the arithmetic basis. The statements of
 \cref{cert:sec:notes} about eager iteration concern the theory
