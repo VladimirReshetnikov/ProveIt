@@ -36,6 +36,12 @@ semantics is claimed.
    `HAAdaptiveFactor87.polynomialBridge` states that parent interface, but
    this packet does not instantiate or replay it.
 
+An independent source review found that the initial model source lacked a
+direct import of `DiophantineConsistency.ModelArithmetic`. The current
+snapshot adds it; that module also imports `ModelDifferenceRing`. Source
+pins and the receipt were refreshed. This resolves the identified lexical
+dependency only, not elaboration or provider compatibility.
+
 The separate [external 88/30 packet](../adaptive87-four-square-current88-30/README.md)
 and its [independent review](../../reviews/adaptive87-four-square-current88-30-independent/README.md)
 prove/check the standard-integer zero argument, graph and fixed-port degree

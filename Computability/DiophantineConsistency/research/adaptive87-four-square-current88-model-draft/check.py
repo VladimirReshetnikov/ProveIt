@@ -11,12 +11,13 @@ PINS={
  'research/adaptive87-four-square-current88-model-draft/generate.py':'aeaabfaef3c270696633155fcea55045e193d69a68d8bf5b0b4ca93a4b6d8d71',
  'research/adaptive87-four-square-current88-model-draft/AdaptiveFourSquare88Graph.lean.src':'5908a3a7329135658af7f653a4cf81856016c7015006235a94992c3550c0894d',
  'research/adaptive87-four-square-current88-model-draft/FourUnitGeneric.lean.src':'50218ec01fc5e93bb78c31aaa9c8b21eae24a52c8ca524eaec36ef7219ee23d3',
- 'research/adaptive87-four-square-current88-model-draft/FourSquare88Model.lean.src':'a0684adbf49c8e3edddfc7151619ed3b3981c72dbbe8870067fbeb4dcd9e6ba7',
+ 'research/adaptive87-four-square-current88-model-draft/FourSquare88Model.lean.src':'973598a229e178097b3150169f0246d69bd7923d6026ee411f1e93bc1bbec45b',
  'research/adaptive87-four-square-current88-30/graph.json':'293dac5175d4924812177a1e73a316bf5cc16bf1b5cef636388d9e110eebb7ed',
  'research/adaptive87-four-square-current88-30/result.json':'be3cf8c4ca971f78326095cb126a39b2739989efd11bfa3619d3e916ac67d14d',
  'Lean/DiophantineConsistency/AdaptiveFirstRootFactor87Literal.lean':'c870a43ab38e37d0985c5a57a3fd090f2e64efed479d81b4665623802e8928e3',
  'Lean/DiophantineConsistency/ArithmeticAdaptiveFactorUnits2011.lean':'9e80ae52f5dddd21d50684ebb6ca6556e95ac37905277bc476d251b7bf59f5a4',
  'Lean/DiophantineConsistency/ModelCarrierScaled.lean':'8fe67fb1c7840f1a915fc1d34bdc26953573a62bcceaef1622e478f41ae90134',
+ 'Lean/DiophantineConsistency/ModelArithmetic.lean':'2a713070369ddcc404ad01f0c16d0d7cb9102acc21aac5d7eaef79dfd3182bc6',
  'Lean/DiophantineConsistency/HAExpressionSameZero.lean':'6a17db77b715aedf0ed87c19952ac61792a131c069d30eb96adb586d3e58ab28',
  'Lean/DiophantineConsistency/HAAdaptiveFactor87.lean':'710768bbb3f75a9f700f8d5407d9ab9fdff5d50088c43779123d200975a2ffc2',
 }
@@ -43,7 +44,7 @@ if parsed_rows(cut)!=parent['source']: raise RuntimeError('parent Lean source ro
 generic=(HERE/'FourUnitGeneric.lean.src').read_text();model=(HERE/'FourSquare88Model.lean.src').read_text()
 for marker in ('theorem product_iff_squares','theorem factor_exclusions','first_bad','main_bad','aux_bad','strong_bad'):
  if marker not in generic: raise RuntimeError('generic interface missing: '+marker)
-for marker in ('theorem unshifted_same_zero','theorem sameZero','theorem bridge (hp :','theorem native_equivalence (hp :','factor_exclusions (mod4 (V:=V))','parent_eq'):
+for marker in ('import DiophantineConsistency.ModelArithmetic','theorem unshifted_same_zero','theorem sameZero','theorem bridge (hp :','theorem native_equivalence (hp :','factor_exclusions (mod4 (V:=V))','parent_eq'):
  if marker not in model: raise RuntimeError('model interface missing: '+marker)
 if 'let parent := (1+g72)*(Fa*((1+A0)*(1+A1)))-1' not in source or 'theorem parent_eq' not in source: raise RuntimeError('missing exact parent association')
 print(json.dumps({'scope':'static direct source/row markers and generator replay; no Lean or provider authentication',
