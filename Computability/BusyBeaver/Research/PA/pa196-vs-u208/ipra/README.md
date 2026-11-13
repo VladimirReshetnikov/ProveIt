@@ -60,6 +60,12 @@ its Δ₁ definability in IΣ₁ alone does not supply the required PRA certific
 refutation predicate. Its two all-model core bounds are explicit hypotheses
 and remain unproved.
 
+`PA196PAMinusWitness.lean` proves the positive and negative bounds for the
+finite PA-minus component of Foundation's actual PA axiom recognizer. It also
+shows that bounds for the unrestricted induction-schema component suffice
+for the complete axiom recognizer. Those induction-schema bounds, the rest
+of the derivation-core bounds, and the machine reductions remain open.
+
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
 classical PRA hypotheses: the forward reduction, the reverse reduction, and
