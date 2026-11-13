@@ -1,0 +1,112 @@
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.NormNum
+import Residue90XZeroGraph
+import AQ17Forced105Arithmetic
+import DiophantineConsistency.Compact44.ReducedNormSigned
+import Mathlib.Tactic.LinearCombination
+
+/-! Proposed graph-specific f/y forcing. Both graph identities and model
+arithmetic are source-only, with no Lean elaboration or provider replay. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Residue90FyForceDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open Residue90GraphNormsDraft Residue90XZeroGraphDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def integralI (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := c p v*c p v*(v 4+1)
+def Qnat (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := integralI p v*integralI p v
+
+def ordinateRing (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (v 3)*ι (v 3)*(ι (v 5+1)*ι (c p v)-rankRing p v)-ι (c p v)
+def QRing (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (delta p v)*(ι (v 3)*ι (v 3)-1)
+
+theorem q_positive (p : Fin 4 → ℕ) (v : Fin 13 → V) : 0<q p v := by
+  dsimp [q]
+  exact add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le _)
+
+theorem c_at_least_two (p : Fin 4 → ℕ) (v : Fin 13 → V) : 2≤c p v := by
+  have hq := q_positive p v
+  have hs : 0<v 7+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have hY : 0<Y p v := mul_pos (mul_pos hq (mul_pos hq hq)) hs
+  have hk : 0<k v := add_pos
+    (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+    (lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _))
+  have hyk : 0<Y p v*k v := mul_pos hY hk
+  have he := pos_iff_one_le.mp (lt_of_le_of_lt (Arithmetic.zero_le (v 9)) (lt_add_one _))
+  have hk' := pos_iff_one_le.mp hyk
+  have hh := add_le_add he hk'
+  simpa only [c,show (1:V)+1=2 by ring] using hh
+
+theorem Qnat_at_least_four (p : Fin 4 → ℕ) (v : Fin 13 → V) : 4≤Qnat p v := by
+  have hc2 := c_at_least_two p v
+  have hc1 : 1≤c p v := le_trans (by simp : (1:V)≤2) hc2
+  have hcsq : c p v≤c p v*c p v := by
+    simpa using mul_le_mul_of_nonneg_left hc1 (Arithmetic.zero_le (c p v))
+  have hi1 : 1≤v 4+1 := by simp
+  have hcsqi : c p v*c p v≤integralI p v := by
+    simpa [integralI] using mul_le_mul_of_nonneg_left hi1 (Arithmetic.zero_le (c p v*c p v))
+  have hi2 : 2≤integralI p v := le_trans hc2 (le_trans hcsq hcsqi)
+  have hm := mul_le_mul hi2 hi2 (by simp : (0:V)≤2) (Arithmetic.zero_le (integralI p v))
+  simpa [Qnat] using hm
+
+theorem delta_positive (p : Fin 4 → ℕ) (v : Fin 13 → V) : 0<delta p v := by
+  have hH : 0<H p v := by
+    dsimp [H]
+    exact add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le _)
+  exact add_pos_of_pos_of_nonneg hH (Arithmetic.zero_le _)
+
+/-- Strong residual 3 identifies the signed Q with the square of I. -/
+theorem strong_identity (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v) :
+    ι (Qnat p v)=QRing p v := by
+  have h := (ModelDifferenceRing.internalZero_iff _ _).mp (all_residuals_zero _ v hz 3)
+  simp [Residue90ResidualsDraft.residuals, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    P72Root.cast_port,map_add,map_mul,map_one,map_ofNat] at h
+  simp only [Qnat,integralI,QRing,delta,H,a,c,k,Y,q,map_add,map_mul,map_one,map_ofNat]
+  linear_combination h
+
+/-- Auxiliary residual 2, with the actual signed graph ordinate and Q. -/
+theorem auxiliary_identity (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v) :
+    ι (v 11)*ι (v 11)-QRing p v*(ι (v 11)*ι (v 11)-ordinateRing p v*ordinateRing p v)=1 := by
+  have h := (ModelDifferenceRing.internalZero_iff _ _).mp (all_residuals_zero _ v hz 2)
+  simp [Residue90ResidualsDraft.residuals, Expr.evalRing_add, Expr.evalRing_sub,
+    Expr.evalRing_mul, Expr.evalRing_var, Expr.evalRing_constant, Expr.evalRing_ofNat,
+    P72Root.cast_port,map_add,map_mul,map_one,map_ofNat] at h
+  simp only [ordinateRing,QRing,rankRing,delta,H,a,c,k,Y,q,map_add,map_mul,map_one,map_ofNat]
+  linear_combination h
+
+/-- These two forced coordinates use no positive beta, J, X or gamma premise. -/
+theorem f_y_positive (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v) :
+    0<v 3 ∧ 0<v 11 := by
+  have hfour := Qnat_at_least_four p v
+  have hqpos : 0<Qnat p v := lt_of_lt_of_le (by simp : (0:V)<4) hfour
+  have hstrong := strong_identity p v hz
+  have hf : 0<v 3 := AQ17Forced105ArithmeticDraft.f_pos (v 3) (delta p v) (Qnat p v)
+    (delta_positive p v) hqpos (by simpa only [QRing] using hstrong)
+  obtain ⟨z,_,hzsq⟩ := ReducedNormSigned.natural_magnitude_square (ordinateRing p v)
+  have haux := auxiliary_identity p v hz
+  have hqrep : QRing p v=ι (Qnat p v) := hstrong.symm
+  rw [hqrep,hzsq] at haux
+  have hnat : v 11*v 11+Qnat p v*(z*z)=1+Qnat p v*(v 11*v 11) := by
+    apply ι_injective
+    simp only [map_add,map_mul,map_one]
+    linear_combination haux
+  have hyzero : v 11=0 → Qnat p v*(z*z)=1 := by
+    intro hy
+    simpa [hy] using hnat
+  have hy := AQ17Forced105ArithmeticDraft.y_pos_of_zero_product (v 11) z (Qnat p v) hfour hyzero
+  exact ⟨hf,hy⟩
+end DiophantineConsistency.Residue90FyForceDraft
+#print axioms DiophantineConsistency.Residue90FyForceDraft.strong_identity
+#print axioms DiophantineConsistency.Residue90FyForceDraft.auxiliary_identity
+#print axioms DiophantineConsistency.Residue90FyForceDraft.f_y_positive

@@ -1,0 +1,107 @@
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.NormNum
+import DiophantineConsistency.ModelDifferenceRing
+import DiophantineConsistency.ArithmeticAdaptiveQuotients2011
+import Mathlib.Tactic.Linarith
+
+/-! Proposed arithmetic components of zero forcing; these lemmas do not
+extract their hypotheses from the graph, and have not been Lean checked. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.AQ17Forced105ArithmeticDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ModelDifferenceRing
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Applies independently to either quotient norm. -/
+theorem positive_of_square_one_add (a n : V) (h : a*a=1+n) : 0<a := by
+  have ha : 0<a*a := by
+    rw [h]
+    exact add_pos_of_pos_of_nonneg (by simp) (Arithmetic.zero_le n)
+  exact pos_of_mul_pos_right ha (by simp)
+
+/-- If the strong residual has identified Q with a positive natural and the
+auxiliary residual has the displayed additive form, its ordinate is positive. -/
+theorem ordinate_pos (y z q : V) (hq : 1≤q)
+    (h : y*y+q*(z*z)=1+q*(y*y)) : 0<z := by
+  by_contra hn
+  have hz : z=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le z)
+  have hy : y*y≤q*(y*y) := by
+    simpa using mul_le_mul_of_nonneg_right hq (Arithmetic.zero_le (y*y))
+  simp [hz] at h
+  have hlt : q*(y*y)<1+q*(y*y) := lt_add_of_pos_left _ (by simp)
+  rw [←h] at hlt
+  exact (not_lt_of_ge hy) hlt
+
+/-- The y=0 branch of the auxiliary residual would assert q*z²=1;
+q≥4 excludes that equation, independently of the value of z. -/
+theorem y_pos_of_zero_product (y z q : V) (hq : 4≤q)
+    (hy : y=0 → q*(z*z)=1) : 0<y := by
+  by_contra hn
+  have hy0 : y=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le y)
+  have he := hy hy0
+  by_cases hz : z=0
+  · simp [hz] at he
+  · have hzpos : 0<z := lt_of_le_of_ne (Arithmetic.zero_le z) (Ne.symm hz)
+    have hz1 : 1≤z := pos_iff_one_le.mp hzpos
+    have hz2 : 1≤z*z := by
+      simpa using mul_le_mul hz1 hz1 (by simp : (0:V)≤1) (Arithmetic.zero_le z)
+    have hm := mul_le_mul hq hz2 (by simp : (0:V)≤4) (Arithmetic.zero_le q)
+    have hfour : (4:V)≤q*(z*z) := by simpa using hm
+    have hbad : (4:V)≤1 := by simpa only [he] using hfour
+    exact (not_lt_of_ge hbad) (by norm_num : (1:V)<4)
+
+/-- The reconstructed ordinate expression is negative at T=0. -/
+theorem time_pos (f time z rank c : V) (hc : 0<c)
+    (h : ι z=(ι f)*(ι f)*((ι time)*(ι c)-ι rank)-ι c) : 0<time := by
+  by_contra hn
+  have ht : time=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le time)
+  have hcR : (0 : DiffRing V)<ι c := by
+    simpa only [map_zero] using (ι_lt_ι.mpr hc)
+  have hzR : (0 : DiffRing V)≤ι z := ι_nonneg z
+  have hmul : (0 : DiffRing V)≤(ι f)*(ι f)*ι rank :=
+    mul_nonneg (mul_nonneg (ι_nonneg f) (ι_nonneg f)) (ι_nonneg rank)
+  simp [ht] at h
+  nlinarith
+
+/-- If the strong residual supplies a positive natural Q and the signed
+Q expression, f cannot be zero. -/
+theorem f_pos (f delta q : V) (hd : 0<delta) (hq : 0<q)
+    (h : ι q=(ι delta)*((ι f)*(ι f)-1)) : 0<f := by
+  by_contra hn
+  have hf : f=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le f)
+  have hdR : (0 : DiffRing V)<ι delta := by simpa only [map_zero] using (ι_lt_ι.mpr hd)
+  have hqR : (0 : DiffRing V)<ι q := by simpa only [map_zero] using (ι_lt_ι.mpr hq)
+  simp [hf] at h
+  linarith
+
+/-- Optional seventh coordinate: the displayed zero-branch equation is a
+separate premise to be extracted from the J=0 root residual. `k : V` supplies
+a nonnegative representation of the signed second port. -/
+theorem j_pos_of_root_branch (p : Fin 4 → ℤ) (j f alpha x z k : V)
+    (hrep : ((p 1 : ℤ) : DiffRing V)=ι k) (hf : 0<f)
+    (hzero : j=0 → ι z=(1-ι f-ι alpha)*(ι x+ι k)-ι f) : 0<j := by
+  by_contra hn
+  have hj : j=0 := le_antisymm (le_of_not_gt hn) (Arithmetic.zero_le j)
+  have hF : (1 : DiffRing V)≤ι f := by
+    simpa only [map_one] using (ι_le_ι.mpr (pos_iff_one_le.mp hf))
+  have hFp : (0 : DiffRing V)<ι f := by
+    simpa only [map_zero] using (ι_lt_ι.mpr hf)
+  have hcoef : (1 : DiffRing V)-ι f-ι alpha≤0 := by
+    have := ι_nonneg alpha
+    linarith
+  have hproduct := mul_nonpos_of_nonpos_of_nonneg hcoef
+    (add_nonneg (ι_nonneg x) (ι_nonneg k))
+  have hz := ι_nonneg z
+  have he := hzero hj
+  linarith
+
+end DiophantineConsistency.AQ17Forced105ArithmeticDraft
+#print axioms DiophantineConsistency.AQ17Forced105ArithmeticDraft.positive_of_square_one_add
+#print axioms DiophantineConsistency.AQ17Forced105ArithmeticDraft.ordinate_pos
+#print axioms DiophantineConsistency.AQ17Forced105ArithmeticDraft.y_pos_of_zero_product
+#print axioms DiophantineConsistency.AQ17Forced105ArithmeticDraft.time_pos
+#print axioms DiophantineConsistency.AQ17Forced105ArithmeticDraft.f_pos
+#print axioms DiophantineConsistency.AQ17Forced105ArithmeticDraft.j_pos_of_root_branch

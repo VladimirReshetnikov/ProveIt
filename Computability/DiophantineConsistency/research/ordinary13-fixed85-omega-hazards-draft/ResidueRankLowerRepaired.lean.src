@@ -1,0 +1,80 @@
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.NormNum
+import Residue90GraphNorms
+import Mathlib.Tactic.Linarith
+
+/-! Proposed fact-level stronger rank lower bound. It derives no graph zero,
+positive-C gap, compact port identity, provider provenance or Lean proof. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ResidueRankLowerDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open Residue90GraphNormsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- The scalar rank is at least 40 when F, alpha>0 and F+alpha<q.
+All arithmetic, including the subtractions, is in the model naturals. -/
+theorem scalar_rank_at_least_40 (q F alpha MC MF J : V)
+    (hF : 0<F) (ha : 0<alpha) (hgap : F+alpha<q) :
+    40≤((q-1)*(q-F)+alpha)*(q*q-1)+(MC+q*MF)*J := by
+  have hF1 : 1≤F := pos_iff_one_le.mp hF
+  have ha1 : 1≤alpha := pos_iff_one_le.mp ha
+  have hq3 : (3:V)≤q := by
+    have h2 : (2:V)≤F+alpha := by
+      have hh := add_le_add hF1 ha1
+      simpa only [show (1:V)+1=2 by ring] using hh
+    have hh : (2:V)<q := lt_of_le_of_lt h2 hgap
+    simpa only [show (2:V)+1=3 by ring] using lt_iff_succ_le.mp hh
+  have hq1 : (1:V)≤q := le_trans (by simp : (1:V)≤3) hq3
+  have hqminus : q-1+1=q := tsub_add_cancel_of_le hq1
+  have hqm2 : (2:V)≤q-1 := by
+    apply (add_le_add_iff_right (1:V)).mp
+    rw [hqminus]
+    simpa only [show (2:V)+1=3 by ring] using hq3
+  have hFq : F≤q := le_trans (by simp : F≤F+alpha) (le_of_lt hgap)
+  have hqF : q-F+F=q := tsub_add_cancel_of_le hFq
+  have haF : alpha<q-F := by
+    apply (add_lt_add_iff_right F).mp
+    rw [hqF,add_comm alpha F]
+    exact hgap
+  have hqF2 : (2:V)≤q-F := by
+    have hh : (1:V)<q-F := lt_of_le_of_lt ha1 haF
+    simpa only [show (1:V)+1=2 by ring] using lt_iff_succ_le.mp hh
+  have h4 : (4:V)≤(q-1)*(q-F) := by
+    have h := mul_le_mul hqm2 hqF2 (by simp : (0:V)≤2) (Arithmetic.zero_le (q-1))
+    simpa using h
+  have h5 : (5:V)≤(q-1)*(q-F)+alpha := by
+    have hh := add_le_add h4 ha1
+    simpa only [show (4:V)+1=5 by ring] using hh
+  have hq2 : (9:V)≤q*q := by
+    have h := mul_le_mul hq3 hq3 (by simp : (0:V)≤3) (Arithmetic.zero_le q)
+    simpa using h
+  have hq2one : (1:V)≤q*q := le_trans (by simp : (1:V)≤9) hq2
+  have hq2minus : q*q-1+1=q*q := tsub_add_cancel_of_le hq2one
+  have h8 : (8:V)≤q*q-1 := by
+    apply (add_le_add_iff_right (1:V)).mp
+    rw [hq2minus]
+    simpa only [show (8:V)+1=9 by ring] using hq2
+  have h40 : (40:V)≤((q-1)*(q-F)+alpha)*(q*q-1) := by
+    have h := mul_le_mul h5 h8 (by simp : (0:V)≤5)
+      (Arithmetic.zero_le ((q-1)*(q-F)+alpha))
+    simpa using h
+  exact le_trans h40 (by simp)
+
+/-- Exact literal-rank specialization; the graph-to-gap theorem is a
+separate, currently unelaborated input. -/
+theorem graph_rank_at_least_40 (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hgap : (v 1+1)+(v 2+1)<q p v) : 40≤rank p v := by
+  have hF : 0<v 1+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  have ha : 0<v 2+1 := lt_of_le_of_lt (Arithmetic.zero_le _) (lt_add_one _)
+  simpa only [rank] using scalar_rank_at_least_40 (q p v) (v 1+1) (v 2+1)
+    (p 2:V) (p 3:V) (v 0) hF ha hgap
+
+theorem graph_rank_at_least_26 (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hgap : (v 1+1)+(v 2+1)<q p v) : 26≤rank p v :=
+  le_trans (by simp : (26:V)≤40) (graph_rank_at_least_40 p v hgap)
+end DiophantineConsistency.ResidueRankLowerDraft
+#print axioms DiophantineConsistency.ResidueRankLowerDraft.scalar_rank_at_least_40
+#print axioms DiophantineConsistency.ResidueRankLowerDraft.graph_rank_at_least_26

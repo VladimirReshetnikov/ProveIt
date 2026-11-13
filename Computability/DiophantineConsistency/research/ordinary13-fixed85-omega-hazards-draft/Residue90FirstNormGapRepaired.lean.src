@@ -1,0 +1,114 @@
+import Mathlib.Tactic.Ring
+import Mathlib.Tactic.NormNum
+import Residue90GraphNorms
+import Residue90CompactGraphGamma
+import Mathlib.Tactic.Linarith
+
+/-! Proposed model proof that the residue graph's first norm forces C>0.
+Every source, tactic, import and provider used here is unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.Residue90FirstNormGapDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open Residue90GraphNormsDraft Residue90CompactPortBoundsDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- Under the literal first norm, a positive b=J*beta forces the positive
+C branch. The natural port tuple explicitly represents all four signed ports;
+only beta and K0 enter this local argument. -/
+theorem first_norm_gap (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) :
+    (v 1+1)+(v 2+1)<q p v := by
+  by_contra hn
+  have hqle : q p v≤(v 1+1)+(v 2+1) := le_of_not_gt hn
+  have hc : (ι (q p v) : DiffRing V)-ι (v 1+1)-ι (v 2+1)≤0 := by
+    have h : (ι (q p v) : DiffRing V)≤ι (v 1+1)+ι (v 2+1) := by
+      simpa only [map_add] using (ι_le_ι.mpr hqle)
+    linarith
+  have hxk : (0 : DiffRing V)≤ι (v 6)+ι (p 1:V) :=
+    add_nonneg (ι_nonneg (v 6)) (ι_nonneg (p 1:V))
+  have hcp := mul_nonpos_of_nonpos_of_nonneg hc hxk
+  have hF : (0 : DiffRing V)<ι (v 1+1) := by
+    have h := lt_of_le_of_lt (Arithmetic.zero_le (v 1)) (lt_add_one (v 1))
+    simpa only [map_zero] using (ι_lt_ι.mpr h)
+  have hBt : Bt p v<0 := by
+    dsimp only [Bt]
+    linarith
+  have hb : 0<v 0*(p 0:V) := mul_pos hJ hbeta
+  have hbR : (0 : DiffRing V)<ι (v 0*(p 0:V)) := by
+    simpa only [map_zero] using (ι_lt_ι.mpr hb)
+  have hk2 : (2:V)≤k v := by
+    have h9 : (1:V)≤v 9+1 := by simp
+    have h10 : (1:V)≤v 10+1 := by simp
+    have hh := add_le_add h9 h10
+    simpa only [k,show (1:V)+1=2 by ring] using hh
+  have hkR : (2 : DiffRing V)≤ι (k v) := by
+    simpa only [map_ofNat] using (ι_le_ι.mpr hk2)
+  have hk0 : (0 : DiffRing V)≤ι (k v) := ι_nonneg (k v)
+  have hell : (0 : DiffRing V)≤ι (m p v*k v) := ι_nonneg (m p v*k v)
+  have hr : (0 : DiffRing V)<ι (v 8+1) := by
+    have h := lt_of_le_of_lt (Arithmetic.zero_le (v 8)) (lt_add_one (v 8))
+    simpa only [map_zero] using (ι_lt_ι.mpr h)
+  have hnegBt : (0 : DiffRing V)< -Bt p v := neg_pos.mpr hBt
+  have hkt : (0 : DiffRing V)≤ι (k v)*(-Bt p v) := mul_nonneg hk0 (le_of_lt hnegBt)
+  have hinner : (0 : DiffRing V)<ι (v 8+1)-ι (k v)*Bt p v := by nlinarith
+  have hmul : (0 : DiffRing V)<ι (v 0*(p 0:V))*(ι (v 8+1)-ι (k v)*Bt p v) :=
+    mul_pos hbR hinner
+  have hrootshape : firstRoot p v =
+      ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v))+
+      ι (v 0*(p 0:V))*(ι (v 8+1)-ι (k v)*Bt p v)-Bt p v := by
+    dsimp only [firstRoot]
+    ring
+  have hrootgt : ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v))<firstRoot p v := by
+    rw [hrootshape]
+    linarith
+  have hbase0 : (0 : DiffRing V)≤ι (v 0*(p 0:V))*(ι (m p v*k v)+ι (k v)) :=
+    mul_nonneg (le_of_lt hbR) (add_nonneg hell hk0)
+  have hsq := mul_self_lt_mul_self hbase0 hrootgt
+  have hkk : (1 : DiffRing V)<ι (k v)*ι (k v) := by nlinarith
+  have hellk : (0 : DiffRing V)≤ι (m p v*k v)*ι (k v) := mul_nonneg hell hk0
+  have hidentity :
+      (ι (m p v*k v)+ι (k v))*(ι (m p v*k v)+ι (k v))-
+        (1+ι (m p v)*(ι (m p v)+1)*ι (k v)*ι (k v)) =
+      ι (m p v*k v)*ι (k v)+ι (k v)*ι (k v)-1 := by
+    simp only [map_mul]
+    ring
+  have hsmall :
+      1+ι (m p v)*(ι (m p v)+1)*ι (k v)*ι (k v)<
+        (ι (m p v*k v)+ι (k v))*(ι (m p v*k v)+ι (k v)) := by
+    linarith
+  have hb2 : (0 : DiffRing V)<ι (v 0*(p 0:V))*ι (v 0*(p 0:V)) := mul_pos hbR hbR
+  have hscaled := mul_lt_mul_of_pos_left hsmall hb2
+  have hnorm := first_ring_norm p v hz
+  simp only [map_add,map_mul,map_one] at hnorm
+  nlinarith [hsq,hscaled,hnorm]
+
+/-- Explicit ring form of C>0, equivalent here to the natural inequality. -/
+theorem first_norm_C_pos (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (p j:ℤ))) v)
+    (hJ : 0<v 0) (hbeta : 0<(p 0:V)) :
+    (0 : DiffRing V)<ι (q p v)-ι (v 1+1)-ι (v 2+1) := by
+  have h : (ι (v 1+1) : DiffRing V)+ι (v 2+1)<ι (q p v) := by
+    simpa only [map_add] using (ι_lt_ι.mpr (first_norm_gap p v hz hJ hbeta))
+  linarith
+
+/-- Proposed compact-symbolic gamma client after deriving C>0 from its own
+first norm. X and J positivity and the fixed physical kernel are still open. -/
+theorem compact_gamma_of_JX (K : ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (Residue90LiteralDraft.literal (fun j => (ports K j:ℤ))) v)
+    (hJ : 0<v 0) (hX : 1≤v 6) : 0<v 12 := by
+  have hp0 : (ports K 0:V)=(CompactFixedBeta.betaNat:V) := rfl
+  obtain ⟨hbeta,_,_,_⟩ := CompactFixedBeta.bounds (V:=V) (v 0) hJ
+  have hb : 0<(ports K 0:V) := by simpa only [hp0] using hbeta
+  exact Residue90CompactGraphGammaDraft.gamma_positive K v hz hJ hX
+    (first_norm_gap (ports K) v hz hJ hb)
+end DiophantineConsistency.Residue90FirstNormGapDraft
+#print axioms DiophantineConsistency.Residue90FirstNormGapDraft.first_norm_gap
+#print axioms DiophantineConsistency.Residue90FirstNormGapDraft.first_norm_C_pos
+#print axioms DiophantineConsistency.Residue90FirstNormGapDraft.compact_gamma_of_JX
