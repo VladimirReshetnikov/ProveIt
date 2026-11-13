@@ -19,7 +19,10 @@ computations, by a tower of ultrapowers, in which the progress rule fails, and a
 refinement in which preservation of fixed points and seed shift hold as well;
 it ends with two covers of a nonstandard model of arithmetic which show that
 neither iterator fusion nor the successor numbering law suffices alone, even
-with induction against fixed numerals. The packages that
+with induction against fixed numerals, and a three-label cover which shows that
+no finite parameters make the numbering theory bi-interpretable with $\iPRA$.
+\Cref{obs:sec:church} gives a three-element model of pure simply typed Church
+arithmetic. The packages that
 prove the obstructions also contain positive statements about the presentations
 that the obstructions are measured against; these are
 in \cref{obs:sec:progressive,obs:sec:cc,obs:sec:sources,obs:sec:partial}.
@@ -85,8 +88,18 @@ scheme & \rulename{Fusion} together with $\It{n}{0}{u}{\Suc u}=n$, which gives
 induction\\
 \Cref{obs:cor:barrier-biinterp} & bi-interpretation with $\iPRA$ of the fusion
 theory with finite parameters, and of the numbering theory with standard
-parameters & nonstandard parameters for the numbering theory, one-way
-interpretations, equiconsistency\\
+parameters & one-way interpretations, equiconsistency\\
+\Cref{obs:thm:numbering-parameters,obs:cor:numbering-parameters} &
+bi-interpretation with $\iPRA$ of the numbering theory, also with (FP) and
+induction for quantified constant-target formulas, with arbitrary finite
+parameters; recovery of equation induction there, by a parameter-free witness
+& one-way interpretations on a definable quotient, equiconsistency\\
+\Cref{obs:thm:church-finite,obs:cor:church-nointerp,obs:thm:church-pred} &
+every finite-dimensional interpretation of $\iPRA$ in pure simply typed
+arithmetic on Church numerals of ground type, with all closed numeric
+operations and full induction; a uniform predecessor at any fixed simple type
+& polymorphic numerals, type-changing translations, added constants or
+recursors, untyped combinators, equiconsistency\\
 \end{longtable}
 
 \section{Conventions and the presentations under test}
@@ -1963,6 +1976,189 @@ $\mathsf{R}^{+}(n,a;v.h)$, which would allow a uniform predecessor expansion in
 place of a zero/successor conditional. The theorem shows that this encoding
 cannot inherit the term compiler or the selector-based logical bootstrap.
 
+\section{Pure simply typed Church numerals}
+\label{obs:sec:church}
+
+This section draws on \pkg{frontier\_church}. It examines the proposal to let
+$\lambda$-abstraction and $\beta\eta$-conversion replace the iterator, with
+numbers represented by Church numerals of one fixed simple type. At the ground
+type a three-element structure of numeral denotations satisfies every closed
+numeric operation, coverage, separation and induction for all formulas, and it
+excludes every finite-dimensional interpretation of $\iPRA$, not only
+bi-interpretations. A separate finite-set argument shows that no fixed simple
+type carries a uniform predecessor.
+
+\begin{definition}[Typed Church arithmetic]
+\label{obs:def:church}
+Simple types are generated from one ground type $o$ by $\sigma\to\tau$. Terms
+are variables, applications and abstractions with the usual typing rules and no
+constants; $=_{\beta\eta}$ is $\beta\eta$-conversion. For a type $\tau$ put
+\[
+\mathbb{N}_\tau\defeq(\tau\to\tau)\to\tau\to\tau,\qquad
+\overline{n}_\tau\defeq\lambda f^{\tau\to\tau}.\,\lambda x^{\tau}.\,f^{n}x,
+\]
+with $f^{n}x$ the $n$-fold application; write $\overline{n}$ for
+$\overline{n}_o$. The numerical signature has a $k$-ary function symbol $F_M$
+for every closed term $M$ of type
+$\mathbb{N}_o\to\dots\to\mathbb{N}_o\to\mathbb{N}_o$ with $k$ arguments. The
+$\lambda$-expansion of a numerical term replaces every $F_M$ by $M$ and every
+numerical variable by a variable of type $\mathbb{N}_o$. Zero is
+$F_{\overline{0}}$ and the successor is $F_{\mathsf{succ}}$ with
+$\mathsf{succ}\defeq\lambda n^{\mathbb{N}_o}.\,\lambda f^{o\to o}.\,\lambda
+x^{o}.\,f(n\,f\,x)$. The theory $\mathsf{C}_o$ has intuitionistic first-order
+logic with equality over this signature, every universally closed equation
+between numerical terms whose $\lambda$-expansions are $\beta\eta$-convertible,
+the axioms $\forall x\,(\Suc x=0\to\bot)$ and
+$\forall x\,(x=0\vee\exists y\,x=\Suc y)$, and induction for every first-order
+formula with parameters.
+\end{definition}
+
+Successor injectivity is not an axiom: it is one of the facts that a
+replacement of $\iPRA$ has to recover. Full induction and the whole signature
+only strengthen the results below, which apply to every theory true in the
+structure of \cref{obs:thm:church-finite}, in particular to subtheories of
+$\mathsf{C}_o$ and to reducts to fewer operations.
+
+Interpret $o$ by $X=\{0,1\}$ and every arrow type by the set of all functions
+between the carriers, with the usual application and abstraction. This set
+interpretation is sound for $\beta\eta$-conversion, and
+$[\![\overline{n}_\tau]\!]$ is the map $f\mapsto f^{n}$.
+
+\begin{lemma}[Three numeral denotations]
+\label{obs:lem:church-three}
+The denotations of the numerals $\overline{n}$ take exactly three values:
+$d_0$ for $n=0$, $d_1$ for odd $n$ and $d_2$ for even $n>0$.
+\end{lemma}
+
+\begin{proof}
+The self-maps of $X$ are the two constant maps, the identity and the
+exchange. Every map has the identity as its power $0$. A constant map is
+equal to all its positive powers, the identity to all its powers, and the
+positive powers of the exchange are the exchange for odd exponents and the
+identity for even ones. So $f^{n}$ depends only on whether $n$ is $0$, odd or
+even and positive. The three classes are distinct: a constant map separates
+$0$ from every positive exponent, and the exchange separates the two positive
+parities.
+\end{proof}
+
+Let $D=\{d_0,d_1,d_2\}$; it is a subset of the carrier of $\mathbb{N}_o$, not
+the whole carrier.
+
+\begin{lemma}[Closure under the closed operations]
+\label{obs:lem:church-closure}
+For every closed $M$ of type $\mathbb{N}_o\to\dots\to\mathbb{N}_o$ with $k$
+arguments, $[\![M]\!]$ restricts to a function $D^{k}\to D$.
+\end{lemma}
+
+\begin{proof}
+Choose numerals $\overline{n_1},\dots,\overline{n_k}$ denoting the arguments.
+The closed term $M\,\overline{n_1}\cdots\overline{n_k}$ of type $\mathbb{N}_o$
+has, by normalization and confluence of the simply typed calculus, a
+$\beta$-normal $\eta$-long form $\lambda f^{o\to o}.\,\lambda x^{o}.\,u$ with $u$
+of type $o$, $\beta$-normal and $\eta$-long, and free variables among $f$ and
+$x$. Such a $u$ is a head variable applied to $\eta$-long arguments, so it is
+$x$ or $f\,v$ with $v$ of the same kind; by induction on $u$, $u=f^{n}x$ for some
+$n\in\mathbb{N}$. By soundness the value of $[\![M]\!]$ at the arguments is
+$[\![\overline{n}]\!]\in D$. It depends only on the denotations of the
+arguments, since $[\![M]\!]$ is a function.
+\end{proof}
+
+\begin{theorem}[A three-element model]
+\label{obs:thm:church-finite}
+The set $D$, with $F_M$ interpreted by the restriction of $[\![M]\!]$ and with
+actual equality, is a classical model of $\mathsf{C}_o$. Its successor is
+$\Suc d_0=d_1$, $\Suc d_1=d_2$, $\Suc d_2=d_1$, and it is not injective.
+\end{theorem}
+
+\begin{proof}
+By induction on numerical terms, the value of a term in $D$ at a valuation is
+the denotation of its $\lambda$-expansion at the same valuation. If two
+expansions are $\beta\eta$-convertible, soundness gives equal denotations at
+every valuation of the carrier of $\mathbb{N}_o$, in particular at every
+valuation into $D$; so the conversion equations hold. Since
+$\mathsf{succ}\,\overline{n}=_{\beta}\overline{n+1}$, the successor maps the
+class of $0$ to the odd class, the odd class to the even positive class and
+the even positive class to the odd class, which is the displayed table. Hence
+$d_0$ is not a successor and every element is $d_0$ or a successor. Let
+$A(x,\vec a)$ be a formula with its parameters fixed in $D$, and let
+$P\subseteq D$ be its truth set. If $d_0\in P$ and $P$ is closed under the
+successor, then $d_1=\Suc d_0\in P$ and $d_2=\Suc d_1\in P$, so $P=D$; this is
+the induction instance. Finally $\Suc d_0=\Suc d_2$ and $d_0\ne d_2$. A
+classical structure is a one-node Kripke model, so the structure is a model of
+the intuitionistic theory.
+\end{proof}
+
+\begin{corollary}[No finite-dimensional interpretation]
+\label{obs:cor:church-nointerp}
+There is no ordinary interpretation of $\iPRA$, in the sense of
+\cref{obs:def:biinterp}, in $\mathsf{C}_o$ or in any theory true in the model
+of \cref{obs:thm:church-finite}: of any finite dimension, with arbitrary
+definable domains and quotient equality, finitely many sorts and finite
+parameter tuples, provided the parameters can be chosen in that model; this
+covers a parameter condition that the theory proves inhabited. A fortiori no
+such theory is bi-interpretable with $\iPRA$.
+\end{corollary}
+
+\begin{proof}
+Apply a hypothetical interpretation in the model. Its numerical domain is a
+quotient of a subset of $D^{d}$, hence finite, and it is nonempty, since it
+contains the interpreted zero. It is a classical model of $\iPRA$, so its
+successor is injective and omits zero, which is impossible for a self-map of a
+finite nonempty set.
+\end{proof}
+
+\begin{theorem}[No uniform predecessor at a fixed type]
+\label{obs:thm:church-pred}
+For no simple type $\tau$ is there a closed term $P$ of type
+$\mathbb{N}_\tau\to\mathbb{N}_\tau$ with
+$P\,\overline{n+1}_\tau=_{\beta\eta}\overline{n}_\tau$ for every
+$n\in\mathbb{N}$.
+\end{theorem}
+
+\begin{proof}
+Use the set interpretation with $|o|=2$. The carrier of $\tau$ has a finite
+cardinality $q\ge 2$, by induction on $\tau$ from $|o|=2$ and
+$|\sigma\to\rho|=|\rho|^{|\sigma|}$. Put $m=q-1$ and
+$L=\operatorname{lcm}(1,\dots,q)$. Let $f$ be a self-map of the carrier and $x$
+a point. Among $x,f(x),\dots,f^{q}(x)$ two terms coincide, say
+$f^{i}(x)=f^{j}(x)$ with $i<j\le q$ and $i$ least; then $i\le q-1=m$, the cycle
+length $\ell=j-i\le q$ divides $L$, and $f^{r+\ell}(x)=f^{r}(x)$ for every
+$r\ge i$. Hence $f^{m+L}=f^{m}$ for every $f$, that is
+$[\![\overline{m+L}_\tau]\!]=[\![\overline{m}_\tau]\!]$. Identify the carrier
+with $\{0,\dots,q-1\}$ and let $g(i)=\min(i+1,q-1)$. Then
+$g^{m-1}(0)=q-2$ and $g^{m+L-1}(0)=q-1$, since $m+L-1\ge q-1$; so
+$[\![\overline{m+L-1}_\tau]\!]\ne[\![\overline{m-1}_\tau]\!]$. If $P$ existed,
+soundness would give
+$[\![\overline{m+L-1}_\tau]\!]=[\![P]\!]\bigl([\![\overline{m+L}_\tau]\!]\bigr)
+=[\![P]\!]\bigl([\![\overline{m}_\tau]\!]\bigr)=[\![\overline{m-1}_\tau]\!]$,
+a contradiction; here $m\ge 1$.
+\end{proof}
+
+\begin{remark}[Scope]
+\label{obs:rem:church-scope}
+At the ground type, $q=2$, $m=1$ and $L=2$: the argument reduces to
+$[\![\overline{1}]\!]=[\![\overline{3}]\!]$ and
+$[\![\overline{0}]\!]\ne[\![\overline{2}]\!]$. The nondefinability of the
+predecessor at a fixed Church type is classical: it follows from
+Schwichtenberg's characterization (1976) of the functions representable on
+$\mathbb{N}_o$, which Blum and Ong recall as Theorem~1 of their paper on the
+safe $\lambda$-calculus (2007); the finite-set proof does not need that
+characterization, and the package claims no priority. Both theorems concern
+one fixed type for input and output. They do not concern polymorphic numerals,
+a predecessor from $\mathbb{N}_\sigma$ to $\mathbb{N}_\tau$ with
+$\sigma\ne\tau$ or other type-changing translations, added arithmetic
+constants, an added recursor, or untyped combinators, and
+\cref{obs:cor:church-nointerp} does not concern a change of logic, an added
+syntax sort or a proof translation that is not an ordinary interpretation.
+None of the results excludes equiconsistency. In contrast with
+\cref{obs:thm:symmetry}, which leaves one-way interpretations open, the
+finiteness of the model excludes every interpretation, but only for this
+candidate. The package checks the finite facts exhaustively (the four
+self-maps of $X$, the eight subsets of $D$, and the power identity and the
+separating map for $q=2,3,4,5$); these checks are supplementary to the written
+proofs, and no Lean or Rocq verification is claimed.
+\end{remark}
+
 \section{Rule-level obstructions}
 \label{obs:sec:rules}
 
@@ -3365,8 +3561,10 @@ of the homomorphism gives a contradiction.
 \end{proof}
 
 The automorphism $\tau$ of $\mathcal{D}$ moves every nonstandard element, so
-(ii) says nothing about bi-interpretations that need a nonstandard parameter.
-Neither part excludes equiconsistency or a one-way interpretation.
+(ii) says nothing about bi-interpretations that need a nonstandard parameter;
+\cref{obs:cor:numbering-parameters} excludes those as well, by a three-label
+refinement of $\mathcal{D}$. Neither part excludes equiconsistency or a one-way
+interpretation.
 
 The witness of \cref{obs:thm:fusion-barrier} is parameter-free and its step
 needs no auxiliary law, which settles the question left open in
@@ -3456,6 +3654,320 @@ classical metamathematics with a nonstandard model of Peano arithmetic and,
 for $\mathcal{D}$, the axiom of choice and \cref{ctr:lem:path}; none of these
 principles enters the object theories. No Lean or Rocq verification is
 claimed, and the package's test suites concern inherited checkers only.
+\end{remark}
+
+\subsection{Finite parameters for the numbering theory}
+\label{obs:sec:numbering-parameters}
+
+This subsection draws on \pkg{induction\_boundary}. It replaces the two labels
+of the structure $\mathcal{D}$ of \cref{obs:thm:numbering-barrier} by three,
+so that the exchange of labels on a single chain, and not only one global
+involution, is an automorphism. The resulting structure validates
+$T_{\mathrm{cal}}$ with further laws, and every finite tuple of it is fixed by
+an automorphism of order two; this decides the parameter question left open
+by \cref{obs:cor:barrier-biinterp}(ii) negatively. The base model, the class
+$\mathscr{H}$, \cref{ctr:lem:path} and the automorphism argument of
+\cref{obs:lem:aut,obs:lem:rigid} are those used before. The new ingredient is
+an equivariant choice of paths whose values are fixed by the stabilizers of
+their data.
+
+\begin{definition}[Constant-target formulas]
+\label{obs:def:constant-target}
+A \emph{constant-target atom} is an equation $t=\overline{k}$ or
+$\overline{k}=t$, where $t$ is a native term and $k\in\mathbb{N}$ is fixed in
+the metatheory and may differ between occurrences. $\mathcal{F}_{\mathrm{ct}}$
+is the class of formulas built from constant-target atoms and $\bot$ by
+$\wedge$, $\vee$ and $\to$, and $\mathcal{F}^{\mathrm{FO}}_{\mathrm{ct}}$ is the
+class built from them by all connectives and both quantifiers. For a class
+$\mathcal{F}$ of formulas the contextual induction rule
+$\mathrm{Ind}_{\mathcal{F}}$ is
+\[
+\infrule{\Gamma\proves A(0,\vec p)\qquad
+\Gamma,\ A(z,\vec p)\proves A(\Suc z,\vec p)}
+{\Gamma\proves A(t,\vec p)}\qquad(A\in\mathcal{F}),
+\]
+with $z$ fresh for $\Gamma$, $t$ and $\vec p$; the context $\Gamma$ is
+arbitrary.
+\end{definition}
+
+The numeral induction rule of $T_{\mathrm{num}}$ is $\mathrm{Ind}$ for the atoms
+$t=\overline{k}$. The scheme (FP) of \cref{obs:sec:fixed-points} is read for
+native bodies, universally closed: $h[a/u]=a\to\It{n}{a}{u}{h}=a$. Write
+$\overline{1}=\Suc 0$, $\overline{2}=\Suc\Suc 0$, and put
+\[
+H(u)\defeq\Suc\sel(u,\overline{1},u),\qquad
+E_{*}(n)\defeq\bigl(\It{\Suc n}{0}{u}{H(u)}=\Suc\Suc n\bigr).
+\]
+$E_{*}$ is a literal equation without parameters.
+
+\begin{theorem}[Numbering with arbitrary finite parameters]
+\label{obs:thm:numbering-parameters}
+There is a classical structure $\mathcal{D}_3$ for the staged language, with
+actual equality, such that:
+\begin{enumerate}[label=(\roman*)]
+\item $\mathcal{D}_3$ validates $T_{\mathrm{cal}}$, every instance of (FP) and
+the rule $\mathrm{Ind}_{\mathcal{F}^{\mathrm{FO}}_{\mathrm{ct}}}$;
+\item for every finite tuple $\vec d$ of $\mathcal{D}_3$ there is an
+automorphism of $\mathcal{D}_3$ of order two, of the full staged language, that
+fixes $\vec d$;
+\item $\mathsf{B}$ proves $E_{*}(0)$ and $E_{*}(n)\to E_{*}(\Suc n)$ from the
+computation equations and equality reasoning alone, and $\forall n\,E_{*}(n)$
+is false in $\mathcal{D}_3$;
+\item there are $a\ne a'$ and $n$ in $\mathcal{D}_3$ with
+$\It{n}{a}{u}{\Suc u}=\It{n}{a'}{u}{\Suc u}$.
+\end{enumerate}
+Hence $T_{\mathrm{cal}}$ with (FP) and
+$\mathrm{Ind}_{\mathcal{F}^{\mathrm{FO}}_{\mathrm{ct}}}$ does not prove
+$\forall n\,E_{*}(n)$, and induction for literal equations is not admissible in
+it, already for one parameter-free equation.
+\end{theorem}
+
+\emph{The carrier and the flips.} Let $M$, $\pi$, $0_D$, $\Suc_D$, $\mathscr{H}$
+and $\operatorname{It}_f$ be as in the proof of \cref{ctr:thm:zeroind}, with the
+fiber $A_m=\{0,1,2\}$ in place of $\{0,1\}$ over every nonstandard $m$; the
+fiber over a standard numeral is still $\{0\}$. Write $D_3$ for the carrier.
+As there, $\pi$ is surjective and preserves zero and successor, $\Suc_D$ is
+injective, $0_D$ is not a successor, and coverage holds: a nonstandard $(m,j)$
+has the predecessor $(m-1,j)$ and a nonzero standard numeral its usual
+predecessor. Two nonstandard elements of $M$ lie in the same \emph{chain} if
+they differ by a standard number; let $\mathcal{C}$ be the set of chains. For
+$C\in\mathcal{C}$ let $\tau_C$ exchange $(m,1)$ and $(m,2)$ for every $m\in C$
+and fix every other point, in particular every point of label $0$. The maps
+$\tau_C$ are commuting involutions that preserve $\pi$, fix $0_D$ and commute
+with $\Suc_D$; let $G\cong\bigoplus_{C\in\mathcal{C}}\mathbb{Z}/2\mathbb{Z}$ be
+the group they generate. Every $g\in G$ fixes the points of label $0$, and on
+the fibers over one chain it is either the identity or the exchange of the
+labels $1$ and $2$. The set $\mathcal{C}$ is infinite: for nonstandard $b$ the
+elements $b,2b,3b,\dots$ lie in pairwise different chains, since $jb-ib=(j-i)b$
+is nonstandard for $i<j$. For $h\in\mathscr{H}$ with projected function $f$ and
+$g\in G$, also $ghg^{-1}\in\mathscr{H}$ with the same $f$, because $\pi g=\pi$.
+
+\emph{Data and stabilizers.} A nonstandard chain $X$ of $D_3$ is a set
+$\{(m,j):m\in C\}$ for some $C\in\mathcal{C}$ and a fixed label $j$, since
+$\Suc_D$ keeps the label. A \emph{datum} is a triple $\delta=(h,a,X)$ with
+$h\in\mathscr{H}$, $a\in D_3$ and $X$ a nonstandard chain; a \emph{path} for
+$\delta$ is a family $(b_n)_{n\in X}$ with
+$\pi(b_n)=\operatorname{It}_f(\pi(n),\pi(a))$ and $b_{\Suc_Dn}=h(b_n)$. The
+group acts by $g\delta=(ghg^{-1},ga,gX)$; let $G_\delta$ be the stabilizer. If
+$gX=X$ then $g$ fixes $X$ pointwise, since $g$ acts uniformly on the fibers over
+one chain. Hence every $k\in G_\delta$ fixes every point of $X$, fixes $a$ and
+commutes with $h$.
+
+\begin{lemma}[Stabilizer-fixed paths]
+\label{obs:lem:stabilizer-path}
+Every datum $\delta$ has a path whose values are fixed by every element of
+$G_\delta$.
+\end{lemma}
+
+\begin{proof}
+Let $\delta=(h,a,X)$ with projected function $f$, and for $n\in X$ let $B_n$ be
+the set of points of $\pi^{-1}\bigl(\operatorname{It}_f(\pi(n),\pi(a))\bigr)$
+fixed by every element of $G_\delta$. It contains the point of label $0$ and
+has at most three elements. The map $h$ sends $B_n$ into $B_{\Suc_Dn}$: by
+\eqref{ctr:eq:projection} and the computation law of $\operatorname{It}_f$ in
+$M$, $\pi(h(x))=f\bigl(\operatorname{It}_f(\pi(n),\pi(a))\bigr)
+=\operatorname{It}_f(\pi(\Suc_Dn),\pi(a))$, and $k(h(x))=h(k(x))=h(x)$ for
+$k\in G_\delta$. Enumerate $X$ as $(n_j)_{j\in\mathbb{Z}}$ with
+$n_{j+1}=\Suc_Dn_j$ and apply \cref{ctr:lem:path}.
+\end{proof}
+
+\begin{proof}[Proof of \cref{obs:thm:numbering-parameters}]
+\emph{Prescribed paths.} Let $h_{*}\colon D_3\to D_3$ be $h_{*}(0_D)=\overline{2}_D$
+and $h_{*}(x)=\Suc_Dx$ for $x\ne 0_D$. Since $x\ne 0_D$ exactly when
+$\pi(x)\ne 0$, $h_{*}\in\mathscr{H}$ with projected function $f_{*}(0)=2$,
+$f_{*}(m+1)=m+2$; it commutes with $G$, which fixes $0_D$ and
+$\overline{2}_D$ and commutes with $\Suc_D$. On every nonstandard chain $X$
+prescribe:
+\begin{enumerate}[label=(\alph*)]
+\item for every $h$ and $a$ with $h(a)=a$, the constant path $b_n=a$;
+\item for $h=\Suc_D$ and the seed $\overline{k}_D$, $k\in\mathbb{N}$, the path
+$b_n=\Suc_D^{k}n$;
+\item for $h=h_{*}$ and the seed $0_D$, the path $b_n=(\Suc_M\pi(n),0)$.
+\end{enumerate}
+These are paths. In (a) $f(\pi(a))=\pi(a)$, so induction in $M$ gives
+$\operatorname{It}_f(m,\pi(a))=\pi(a)$ for every $m\in M$. In (b) the projected
+iteration is $k+\pi(n)=\pi(\Suc_D^{k}n)$, and $\Suc_D$ commutes with
+$\Suc_D^{k}$. In (c) induction in $M$ gives $\operatorname{It}_{f_{*}}(m,0)=m+1$
+for $m\ge 1$, and $\pi(n)$ is nonstandard, so $(\Suc_M\pi(n),0)\ne 0_D$ and
+$h_{*}$ sends it to $(\Suc_M\pi(n)+1,0)=b_{\Suc_Dn}$. The prescribed values are
+fixed by $G_\delta$: in (a) since $G_\delta$ fixes $a$, in (b) since $G_\delta$
+fixes $n\in X$ and commutes with $\Suc_D$, in (c) since the label is $0$. The
+three sets of data are $G$-invariant, and the prescriptions are equivariant:
+the value prescribed for $g\delta$ at $gn$ is $g$ applied to the value
+prescribed for $\delta$ at $n$; in (a) because $ghg^{-1}$ fixes $ga$, in (b)
+because $g\Suc_Dg^{-1}=\Suc_D$, $g\overline{k}_D=\overline{k}_D$ and
+$\Suc_D^{k}(gn)=g(\Suc_D^{k}n)$, in (c) because $gh_{*}g^{-1}=h_{*}$,
+$g0_D=0_D$ and $(\Suc_M\pi(gn),0)=g(\Suc_M\pi(n),0)$. The three families are
+disjoint: $\Suc_D$ has no fixed point, since $\Suc_Mm\ne m$; $h_{*}$ has none,
+since $h_{*}(0_D)\ne 0_D$; and $h_{*}\ne\Suc_D$ at $0_D$.
+
+\emph{The remaining paths.} For every $G$-orbit of data that is not prescribed
+choose a representative $\delta=(h,a,X)$ and a path $p_\delta$ by
+\cref{obs:lem:stabilizer-path}, and for $g\in G$ put
+$p_{g\delta}(n)=g\bigl(p_\delta(g^{-1}n)\bigr)$ for $n\in gX$. This does not
+depend on $g$: if $g\delta=g'\delta$ then $k=g^{-1}g'\in G_\delta$, and
+$g'p_\delta(g'^{-1}n)=gk\,p_\delta(k^{-1}g^{-1}n)=gk\,p_\delta(g^{-1}n)
+=g\,p_\delta(g^{-1}n)$, since $k^{-1}$ fixes the point $g^{-1}n$ of $X$ and $k$
+fixes the values of $p_\delta$. It is a path for $g\delta$: the projected
+function of $ghg^{-1}$ is $f$, $\pi(ga)=\pi(a)$ and $\pi g=\pi$, and
+$p_{g\delta}(\Suc_Dn)=g\,h\,p_\delta(g^{-1}n)=(ghg^{-1})\,p_{g\delta}(n)$.
+Define $\mathcal{I}(n,a,h)$ as $h^{q}(a)$ at a standard counter
+$\overline{q}_D$, and at a counter $n$ of a nonstandard chain $X$ as the value
+at $n$ of the prescribed or chosen path for $(h,a,X)$. Then $\mathcal{I}$
+satisfies the three displayed equations of the proof of \cref{ctr:thm:zeroind},
+and
+\begin{equation}
+\label{obs:eq:equivariant3}
+\mathcal{I}(gn,ga,ghg^{-1})=g\,\mathcal{I}(n,a,h)\qquad
+(g\in G,\ n,a\in D_3,\ h\in\mathscr{H}),
+\end{equation}
+at standard counters because $g\overline{q}_D=\overline{q}_D$ and
+$(ghg^{-1})^{q}(ga)=g(h^{q}(a))$, and at nonstandard counters by the
+equivariance of the prescriptions and by the transport. In particular, if
+$g$ fixes $n$ and $a$ and commutes with $h$, then $g$ fixes
+$\mathcal{I}(n,a,h)$.
+
+\emph{Terms and automorphisms.} Interpret terms as in the proof of
+\cref{ctr:thm:zeroind}. Equation \eqref{ctr:eq:termproj} holds by the same induction,
+every body function lies in $\mathscr{H}$, the substitution lemma and both
+computation schemas hold, and since $\mathcal{I}$ depends only on the actual
+body function, $\mathsf{Ext}$ holds. The induction on terms of part (iii) of the
+proof of \cref{obs:thm:numbering-barrier}, with \eqref{obs:eq:equivariant3} in
+place of \eqref{obs:eq:equivariant}, gives
+$g[\![t]\!]_\rho=[\![t]\!]_{g\circ\rho}$ for every $g\in G$; so every element
+of $G$ is an automorphism of the staged language.
+
+\emph{(i)} Injectivity, separation and coverage were shown above. If a body
+function $h$ satisfies $h(a)=a$, then $\mathcal{I}(n,a,h)=a$ at standard
+counters by finite iteration and at nonstandard ones by (a); this is (FP), and
+$\mathsf{Id}$ is its instance for the body $u$. $\mathsf{N}_k$ holds at
+$\overline{q}_D$ since $\Suc_D^{q}\overline{k}_D=\Suc_D^{k}\overline{q}_D$, and
+at nonstandard counters by (b). For induction: every standard numeral has a
+one-element fiber, so by \eqref{ctr:eq:termproj}
+$[\![t]\!]_\rho=\overline{k}_D$ holds exactly when
+$[\![t]\!]_{M,\pi\circ\rho}=\overline{k}$. By induction on the formula, for every
+$A\in\mathcal{F}^{\mathrm{FO}}_{\mathrm{ct}}$,
+\begin{equation}
+\label{obs:eq:truth3}
+\mathcal{D}_3\models A[\rho]\iff M\models A^{M}[\pi\circ\rho],
+\end{equation}
+where $A^{M}$ reads every iterator term by its iteration in $M$: the
+connectives are classical on both sides, and a quantifier is handled by
+surjectivity of $\pi$. $A^{M}$ is a formula of the definitional expansion of
+Peano arithmetic, so $M$ satisfies induction for it. For the rule, let $\rho$
+satisfy $\Gamma$. The premises, with $z$ fresh, give $A(0,\vec p)$ and, for every
+value $x$ of $z$, $A(x,\vec p)\to A(\Suc_Dx,\vec p)$ in $\mathcal{D}_3$ at
+$\rho$. By \eqref{obs:eq:truth3} and surjectivity of $\pi$ the base and the step
+hold in $M$ at $\pi\circ\rho$, induction in $M$ gives $A^{M}$ at every element,
+in particular at the projection of the value of $t$, and \eqref{obs:eq:truth3}
+gives $A(t,\vec p)$ at $\rho$. The formulas of $\Gamma$ are not transferred.
+Numeral induction is the case of an atom $t=\overline{k}$.
+
+\emph{(ii)} Let $\vec d$ be a finite tuple. Only finitely many chains contain the
+first coordinate of a component of $\vec d$ of nonzero label; choose
+$C\in\mathcal{C}$ different from all of them. Then $\tau_C$ fixes every
+component of $\vec d$, it exchanges $(m,1)$ and $(m,2)$ for $m\in C$, so it is
+not the identity, and it has order two.
+
+\emph{(iii)} The selector computations give $\sel(0,\overline{1},v)=\overline{1}$
+and $\sel(\Suc y,\overline{1},v)=v$, so $H(0)=\overline{2}$ and
+$H(\Suc y)=\Suc\Suc y$. Then
+$\It{\Suc 0}{0}{u}{H(u)}=H(\It{0}{0}{u}{H(u)})=H(0)=\overline{2}$, which is
+$E_{*}(0)$, and under $E_{*}(n)$
+\[
+\It{\Suc\Suc n}{0}{u}{H(u)}=H\bigl(\It{\Suc n}{0}{u}{H(u)}\bigr)
+=H(\Suc\Suc n)=\Suc\Suc\Suc n,
+\]
+which is $E_{*}(\Suc n)$; only computation equations and equality reasoning are
+used. In $\mathcal{D}_3$ the same computations and coverage show that the body
+function of $u.H(u)$ is $h_{*}$, whatever the paths chosen for other data. Let
+$b\in M$ be nonstandard and $n=(b,1)$. The counter $\Suc_Dn=(b+1,1)$ is
+nonstandard, so by (c) the left side of $E_{*}(n)$ is $(b+2,0)$, while the
+right side is $(b+2,1)$.
+
+\emph{(iv)} Let $b$ be nonstandard, $a=(b,1)$, $a'=(b,2)$, and let $n$ be any
+nonstandard counter, $c=\pi(n)$. The chain $C'$ of $b+c$ differs from the chain
+of $b$ and from the chain of $c$, since $c$ and $b$ are nonstandard. Hence
+$\tau_{C'}$ fixes $a$, $a'$ and $n$ and commutes with $\Suc_D$, so it fixes
+$\mathcal{I}(n,a,\Suc_D)$ and $\mathcal{I}(n,a',\Suc_D)$. Both values lie over
+$\operatorname{It}_{\Suc_M}(c,b)=b+c\in C'$, where the only point fixed by
+$\tau_{C'}$ is $(b+c,0)$. So both iterators equal $(b+c,0)$, and $a\ne a'$.
+\end{proof}
+
+\begin{corollary}[No finite parameters rescue the numbering theory]
+\label{obs:cor:numbering-parameters}
+No theory validated by $\mathcal{D}_3$, in particular neither $T_{\mathrm{cal}}$
+nor $T_{\mathrm{cal}}$ with (FP) and
+$\mathrm{Ind}_{\mathcal{F}^{\mathrm{FO}}_{\mathrm{ct}}}$, is bi-interpretable
+with $\iPRA$ in the sense of \cref{obs:def:biinterp}, with arbitrary definable
+domains, quotient equality, finite dimension and finite parameter tuples,
+provided the interpretations and the return isomorphism exist in
+$\mathcal{D}_3$; this covers a parameter condition that the theory proves
+inhabited.
+\end{corollary}
+
+\begin{proof}
+As the proof of \cref{obs:cor:barrier-biinterp}(i), with
+\cref{obs:thm:numbering-parameters}(ii) in place of
+\cref{obs:thm:fusion-barrier}.
+\end{proof}
+
+Part (iii) also has a native form. $\Nat^{-}$ derives $E_{*}(0)$ and the
+sequent $E_{*}(z)\proves E_{*}(\Suc z)$, by the derivations of part (iii) and
+the equality rules of \cref{base:lem:eq}. The seven rules of $\Nat^{-}$ are
+sound in $\mathcal{D}_3$ by the argument of part (ii) of the proof of
+\cref{obs:thm:progress-independence}, which uses actual equality, the
+computation equations, the substitution lemma and coverage; the leaves
+$\Gamma\proves\It{n}{a}{u}{u}=a$ and
+$\Gamma\proves\It{n}{\overline{k}}{u}{\Suc u}=\Suc^{k}n$ hold by part (i), and
+\rulename{QI} restricted to matrices $t(y)=\overline{k}$ is sound by numeral
+induction, as in part (ii) of the proof of \cref{obs:cor:qi-identity}. The
+conclusion $\Q{y}E_{*}(y)$ is false in $\mathcal{D}_3$. This is a
+parameter-free counterpart of the witness $E(p,n)$ of
+\cref{obs:thm:numbering-barrier}, which needs a parameter.
+
+\begin{remark}[Comparison and scope]
+\label{obs:rem:numbering-parameters}
+In $\mathcal{D}$ the involution $\tau$ exchanges the labels over all
+nonstandard elements at once, and its action on data has no fixed point, so a
+path can be chosen on one datum of each two-element orbit and copied to the
+other. The flips $\tau_C$ fix many data, and the path of a datum must then be
+fixed by its stabilizer; choosing a path arbitrarily and transporting it is
+not well defined. With two labels a flipped chain has no fixed point in its
+fibers, so such a path need not exist; the third label, fixed by all of $G$,
+supplies \cref{obs:lem:stabilizer-path}.
+
+The proof of \cref{ctr:cor:noreflection} applies to $\mathcal{D}_3$ verbatim,
+since it uses only \eqref{ctr:eq:termproj}, the one-element fiber over zero
+and two distinct points with a common projection; hence no theory validated by
+$\mathcal{D}_3$ proves $e(x,y)=0\leftrightarrow x=y$ for a term $e$. By
+\eqref{obs:eq:truth3} every formula of $\mathcal{F}^{\mathrm{FO}}_{\mathrm{ct}}$
+is decided by the projections of its arguments, whereas actual equality
+distinguishes labels; adding quantifiers to constant-target induction does not
+remove the obstruction. Part (iv) refutes the cancellation law
+$\It{n}{a}{u}{\Suc u}=\It{n}{a'}{u}{\Suc u}\to a=a'$, which $\Teq$ proves,
+and with it contextual induction for the quantifier-free formula
+$\It{n}{a}{u}{\Suc u}=\It{n}{a'}{u}{\Suc u}\to\bot$ in the context
+$a=a'\to\bot$: the base is the context after the zero computations, and the
+step follows from the successor computations and injectivity.
+
+The other direction is unaffected. $T_{\mathrm{cal}}$ with (FP) and
+$\mathrm{Ind}_{\mathcal{F}_{\mathrm{ct}}}$ is a subtheory of $\Teq$: (FP)
+follows by equation induction on $\It{n}{a}{u}{h}=a$ under the hypothesis
+$h[a/u]=a$, and $\mathcal{F}_{\mathrm{ct}}$ consists of quantifier-free
+formulas, for which $\Teq$ has induction; so it is interpreted in $\iPRA$
+through \cref{base:thm:bridge}. This is not asserted for
+$\mathrm{Ind}_{\mathcal{F}^{\mathrm{FO}}_{\mathrm{ct}}}$, which was added only
+to strengthen the model statement. The corollary excludes the definable
+recovery of the source structure, not an interpretation of $\iPRA$ in
+$T_{\mathrm{cal}}$ on a definable quotient, and not equiconsistency; the
+projection $\pi$ is external and is not claimed to be definable in
+$\mathcal{D}_3$. The construction is classical metamathematics with a
+nonstandard model of Peano arithmetic, compactness and the axiom of choice;
+none of these enters the object theories. The package supplies a written
+proof with a separate review and finite checks of small instances of the
+fixed-point and ordered-involution facts; no Lean or Rocq verification is
+claimed.
 \end{remark}
 
 \subsection{No successor cycle without progress}
@@ -4576,7 +5088,18 @@ different programs, for \pkg{adaptive\_seed}, \pkg{research},
 \pkg{checker\_and\_barriers} and \pkg{compact\_kernel}; 281, 315 and 685 for
 \pkg{constructed\_computation} and \pkg{counter\_congruence}. These minima are
 attained sizes, hence upper bounds on an unknown optimum; they are not lower
-bounds.
+bounds. \pkg{induction\_boundary} delivers no new program either; it
+re-measures six unchanged controls, three compact programs as copied in
+\pkg{coverage\_constancy} and three strict programs of
+\pkg{validated\_arity\_refinement}, under CPython 3.12.14. Its input contracts
+are the compact interface above for the first three (the two stream profiles
+with JSON lines, an unshifted encoding and a global freshness floor; the byte
+profile with whole-input framing, a shifted encoding and local floors) and,
+for the last three, validation of the alphabet and of the native Eq/$D$ public
+goal grammar. The envelopes are $239/256/461$ and $317/356/597$, each attained
+by three different programs. \pkg{frontier\_church} re-measures eight such
+inherited programs, with the same envelopes, and adds gzip sizes; its
+accounting belongs to \cref{prov:ch:cert}.
 
 \begingroup\small
 \begin{longtable}{@{}p{0.33\linewidth}rrrp{0.40\linewidth}@{}}
@@ -4644,6 +5167,14 @@ whole input, AST profile (\pkg{whole\_json\_refinement}) & 254 & 268 & 613 & ---
 whole input, byte profile (\pkg{shared\_leaf}) & 272 & 306 & 469 & --- (no new program)\\
 JSON-line stream, token profile (\pkg{shared\_leaf}) & 242 & 268 & 565 & --- (no new program)\\
 JSON-line stream, AST profile (\pkg{shared\_leaf}) & 246 & 262 & 556 & --- (no new program)\\
+\midrule
+\multicolumn{5}{@{}l}{\pkg{induction\_boundary} (unchanged inherited programs, re-measured)}\\
+compact JSON-line stream, token profile & 239 & 261 & 549 & --- (no new program)\\
+compact JSON-line stream, AST profile & 245 & 256 & 580 & --- (no new program)\\
+compact whole input, shifted byte profile & 267 & 298 & 461 & --- (no new program)\\
+strict native, token profile (\pkg{validated\_arity\_refinement}) & 317 & 368 & 634 & --- (no new program)\\
+strict native, AST profile (\pkg{validated\_arity\_refinement}) & 325 & 356 & 646 & --- (no new program)\\
+strict native, byte profile (\pkg{validated\_arity\_refinement}) & 328 & 372 & 597 & --- (no new program)\\
 \end{longtable}
 \endgroup
 
@@ -4717,7 +5248,8 @@ observed minima, no new checker and no minimality statement is obtained; the
 positive equivalence of \rulename{Fusion} with $\It{n}{0}{u}{\Suc u}=n$ and
 equation induction is \cref{obs:prop:fusion} and rests on the written proof of
 \cref{kern:thm:ur}. \Cref{obs:cor:barrier-biinterp}(ii) does not address
-bi-interpretations with nonstandard parameters, and neither part excludes
+bi-interpretations with nonstandard parameters (they are excluded by
+\cref{obs:cor:numbering-parameters} of \pkg{induction\_boundary}), and neither part excludes
 equiconsistency or one-way interpretations. \Cref{obs:thm:numbering-barrier}
 concerns the identity law for the designated iterator, not the stronger rule
 that every term satisfying a constant-step recurrence is constant, and it
@@ -4758,6 +5290,22 @@ Lean or Rocq verification of it is claimed. It is a term-definability
 obstruction and does not exclude interpretations of $\iPRA$ whose operations
 are defined by formulas or finite-case graphs. The package deletes no
 arithmetic axiom, and its checkers do not go below the compact minima.
+\item \pkg{induction\_boundary}: the positive presentation of $\iPRA$ below the
+observed minima that the package set out to find is not obtained, and no new
+checker, no minimality statement and no lower bound on checker size is
+claimed. \Cref{obs:thm:numbering-parameters} excludes one way of restricting
+induction, with several proposed repairs; it does not exclude other term
+languages, logical bases or arithmetic principles, it is not a separation of
+consistency strength over a weak metatheory, and it does not exclude every
+one-way interpretation of arithmetic in $T_{\mathrm{cal}}$. The model
+construction is a written proof with a separate review; it is not formalized.
+\item \pkg{frontier\_church}: no new presentation of $\iPRA$, no checker record
+and no minimality statement is obtained. The results of \cref{obs:sec:church}
+exclude one typed candidate and do not show that a simpler presentation is
+impossible. An exhaustive search of the package over the $11\,898$ unary native
+terms of at most nine nodes for an update with a three-cycle through zero finds
+the known update $\It{\Suc v}{v}{u}{\It{u}{\Suc v}{w}{0}}$ at size nine; it is
+recorded as a failed reduction experiment and adds no result.
 \end{itemize}
 
 \begin{question}[Relational escapes]
@@ -4921,19 +5469,39 @@ every $\It{n}{\overline{k}}{u}{\Suc u}=\Suc^{k}n$, the identity law,
 extensionality and numeral induction does not either
 (\cref{obs:thm:numbering-barrier}). The question therefore concerns fragments
 of \rulename{Fusion} taken together with the scheme
-(\pkg{iteration\_barriers}).
+(\pkg{iteration\_barriers}). Which fragment of \rulename{Fusion}, added to
+$T_{\mathrm{cal}}$, suffices? The model of \cref{obs:thm:numbering-parameters}
+refutes cancellativity of a nonstandard successor iterate in its seed
+(part (iv)); adjoining that cancellation law excludes the model but is not
+shown to recover induction (\pkg{induction\_boundary}).
+\end{question}
+
+\begin{question}[Other typed and combinatory encodings]
+\Cref{obs:sec:church} excludes pure simply typed arithmetic on Church numerals
+of one fixed type. Does a presentation of $\iPRA$ with polymorphic numerals, a
+type-changing translation of numerals, an added arithmetic constant or
+recursor, or untyped combinators give a smaller complete checker, with both
+interpretations and their round trips proved and the added syntax counted
+(\pkg{frontier\_church})?
 \end{question}
 
 \begin{question}[Parameters for the numbering theory]
-Is $T_{\mathrm{cal}}$ of \cref{obs:sec:barriers} bi-interpretable with $\iPRA$
-by a bi-interpretation that uses nonstandard parameters? The involution of
-\cref{obs:thm:numbering-barrier} moves every nonstandard element, so
-\cref{obs:cor:barrier-biinterp}(ii) does not decide this; a model of
-$T_{\mathrm{cal}}$ with involutions fixing arbitrary finite tuples, as for
-$T_{\mathrm{fus}}$, would. Do $T_{\mathrm{cal}}$ and $T_{\mathrm{fus}}$
-interpret $\iPRA$ at all, and are they equiconsistent with it? Both are
-subtheories of $\Teq$, so they are interpreted in $\iPRA$; the converse is not
-addressed (\pkg{iteration\_barriers}).
+\pkg{iteration\_barriers} asked whether $T_{\mathrm{cal}}$ of
+\cref{obs:sec:barriers} is bi-interpretable with $\iPRA$ by a
+bi-interpretation that uses nonstandard parameters. This part is settled
+negatively by \cref{obs:cor:numbering-parameters} (\pkg{induction\_boundary}):
+the model of \cref{obs:thm:numbering-parameters} has involutions fixing
+arbitrary finite tuples, also with (FP) and induction for quantified
+constant-target formulas added. Still open: do $T_{\mathrm{cal}}$ and
+$T_{\mathrm{fus}}$ interpret $\iPRA$ at all, for instance on a definable
+quotient, and are they equiconsistent with it? Both are subtheories of $\Teq$,
+so they are interpreted in $\iPRA$; the converse is not addressed, and the
+obstructions exclude only the definable recovery of the whole source
+structure. Can an iterator principle smaller than induction for literal
+equations force actual equality to be detected by zero tests? By
+\cref{obs:rem:numbering-parameters} a candidate must eliminate the nonstandard
+labels as actual elements, not only recover an arithmetical quotient
+(\pkg{induction\_boundary}).
 \end{question}
 
 \begin{question}[Counter congruence and the reversed binder]
@@ -4954,7 +5522,12 @@ proved correct; the derivation transformer for $J_F=F$ of
 \cref{obs:lem:cc-rep}, without use of the ambient equality substitution; the
 sorted codec with its opener, freshness conditions and input contract; and a
 proved decoder that connects the arity checker with the Lean semantics of the
-native core. None is supplied.
+native core. None is supplied. \pkg{induction\_boundary} adds the
+stabilizer-fixed path lemma (\cref{obs:lem:stabilizer-path}), the staged
+interpretation of \cref{obs:thm:numbering-parameters} and the faithful action
+of the flips on an interpreted quotient; the main obligations are
+compatibility of the choices, substitution for body parameters and the
+equivariance \eqref{obs:eq:equivariant3}.
 \end{question}
 
 \begin{question}[Metric]
@@ -4966,5 +5539,8 @@ as $3^r$ in closure depth, and the protocol charges checker source only; how
 should certificate size and checking time enter the comparison? The empirical
 target left by \pkg{checker\_and\_barriers} is one structurally terminating
 complete program below 593 bytes, 264 tokens and 297 nodes under matched
-drivers.
+drivers. \pkg{induction\_boundary} asks the same for the later envelopes: can
+one complete program, under an explicitly fixed input grammar and verdict
+convention, be below all three coordinates $239/256/461$ of the compact
+profiles?
 \end{question}

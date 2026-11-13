@@ -1941,7 +1941,8 @@ $\theta B(0,z')$, and the proof does not apply.  Replacing the witness by
 the newest parameter while keeping that mode is not justified by it; the
 one-bit rule of \cref{wit:sec:bit} is a different repair.  The proof uses
 \rulename{Back} on compound formulas, in the two transports of the case of
-\rulename{Close}, when $B$ has a binder.
+\rulename{Close}, when $B$ has a binder; \cref{wit:thm:eqback} removes this
+use.
 \end{remark}
 
 \begin{remark}[The package]
@@ -1958,7 +1959,352 @@ the proof needs: \rulename{Back} on compound formulas, the substitutive
 export of \rulename{Alias}, the mode tested on the raw matrix, the
 retention of old parameters in an extension, effective realizers quantified
 over all extensions, and capture-avoiding simultaneous substitution.  The
-theorem is not formalized in Lean or Rocq.
+theorem is not formalized in Lean or Rocq.  The first assumption is removed
+by \cref{wit:thm:eqback}.
+\end{remark}
+
+\subsection{Backward substitution in equations only}
+\label{wit:sec:eqback}
+
+This subsection draws on \pkg{equational\_transport}.
+
+The proof of \cref{wit:thm:ab-newest} obtains transport in every formula
+from \rulename{Back} on compound formulas (\cref{wit:lem:ab-eq}(iii)).  If
+\rulename{Back} acts on equations only, formula transport has to be
+recovered first, and two shortcuts are unavailable.  A completed derivation
+cannot be moved to an extension of its world, since its next \rulename{Use}
+or \rulename{Close} would select a different newest parameter; and the
+transport needed in the case of \rulename{Close} cannot be obtained by
+translating a derivation of $\mathsf{A}_{\ast}$ that uses compound
+\rulename{Back}, which would be circular.  The construction below proceeds
+in the order: realizers of clauses, transport in equations, zero rows of
+diagonal matrices, transport in every formula by induction on the number of
+binders, and only then the translation of derivations.
+
+\begin{definition}[The calculi $\mathsf{A}^{=}_{\nu}$ and
+$\mathsf{A}^{\times}_{\nu}$]
+\label{wit:def:eqback}
+$\mathsf{A}^{=}_{\nu}$ and $\mathsf{A}^{\times}_{\nu}$ have the syntax,
+judgments and mode $\epsilon_B$ of \cref{wit:def:ab}, and the rules
+\rulename{I0}, \rulename{IS}, \rulename{Use}, \rulename{Alias},
+\rulename{Open} and \rulename{Close} of $\mathsf{A}_{\nu}$, with
+\rulename{Use} and \rulename{Close} at the newest parameter.  In place of
+\rulename{Back}, $\mathsf{A}^{=}_{\nu}$ has
+\begin{itemize}
+\item \rulename{EqBack}: if $\Pi$ is not empty, $b=\nu(\Pi)$ and $E$ is an
+ equation, from $\Pi;\Gamma\proves b=t$ and $\Pi;\Gamma\proves E\subst{t}{b}$
+ infer $\Pi;\Gamma\proves E$.  The term $t$ may contain $b$;
+\end{itemize}
+and $\mathsf{A}^{\times}_{\nu}$ has
+\begin{itemize}
+\item \rulename{XBack}: if $\Pi$ is not empty, $b=\nu(\Pi)$ and $h$, $r$, $t$
+ are terms over $\Pi$,
+ \[
+  \infrule{\Pi;\Gamma\proves b=t\qquad \Pi;\Gamma\proves h\subst{t}{b}=r}
+          {\Pi;\Gamma\proves r=h}.
+ \]
+ Only $h$ is substituted; $r$ and $t$ may contain $b$.
+\end{itemize}
+Each calculus has seven rule patterns.
+\end{definition}
+
+\rulename{EqBack} is the instance of \rulename{Back} of $\mathsf{A}_{\nu}$
+whose conclusion is an equation, so $\mathsf{A}^{=}_{\nu}$ is a subcalculus of
+$\mathsf{A}_{\nu}$.  \rulename{XBack} has a term template in place of a
+formula template; it is \rulename{Tr} of \cref{base:sec:kernel} with the
+major premise reversed, the source restricted to the newest parameter and
+the template $h\subst{q}{b}$.  It is not an instance of \rulename{Back} when
+$r$ contains $b$, and it is compared with $\mathsf{A}_{\ast}$ through derived
+rules below.  Both restrictions concern backward substitution only:
+\rulename{Alias} still exports arbitrary formulas through substitution.
+
+For $\mathsf{C}$ one of $\mathsf{A}^{=}_{\nu}$ and $\mathsf{A}^{\times}_{\nu}$,
+\emph{persistent families} and \emph{persistent realizers} of $\mathsf{C}$,
+and $w\Vdash_{\mathsf{C}}A$, are defined as in \cref{wit:def:ab-family} with
+derivations of $\mathsf{C}$ in place of derivations of $\mathsf{A}_{\nu}$;
+the remarks after that definition hold unchanged.  The index $\mathsf{C}$ is
+omitted when it is fixed.  In this subsection $q$ denotes a distinguished
+template variable, distinct from every parameter and bound variable named.
+
+\begin{lemma}[Equality in equations on families]
+\label{wit:lem:eqb-atomic}
+Let $\mathsf{C}$ be $\mathsf{A}^{=}_{\nu}$ or $\mathsf{A}^{\times}_{\nu}$, $w$ a
+world, $s$, $t$ terms over $\Pi_w$, and $E(q)$ an equation over $\Pi_w$ and
+$q$, in which $q$ may occur any number of times.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item Every clause of $\Gamma_w$ has a persistent realizer at $w$.
+\item $w\Vdash t=t$.
+\item If $w\Vdash s=t$ and $w\Vdash E(t)$, then $w\Vdash E(s)$.
+\item If $w\Vdash s=t$, then $w\Vdash t=s$; if moreover $w\Vdash E(s)$, then
+ $w\Vdash E(t)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(i) and (ii) are proved as \cref{wit:lem:ab-eq}(i) and (ii), whose
+constructions use \rulename{Use} at the newest parameter and
+\rulename{Alias} only.
+
+For $\mathsf{A}^{=}_{\nu}$, (iii) and (iv) are proved as
+\cref{wit:lem:ab-eq}(iii) and (iv) with $H\defeq E$: the two applications of
+\rulename{Back} in (iii) are at the newest parameter $c$ of $w'_c$ and have
+the conclusions $c=t$ and $E(c)$, which are equations, so they are
+applications of \rulename{EqBack}; (iv) applies (iii) to the equation $t=q$.
+
+For $\mathsf{A}^{\times}_{\nu}$, write $E(q)$ as $a(q)=d(q)$ with terms
+$a(q)$, $d(q)$.  For (iii) let $w'\succeq w$, choose a parameter $b$ not in
+$\Pi_{w'}$, and work in $w'_b=(\Pi_{w'},b;\ \Gamma_{w'},b=s)$, which extends
+$w$ and has the newest parameter $b$.  Since $b$ occurs in none of $s$, $t$,
+$a(q)$, $d(q)$, the substitution identities $b\subst{s}{b}\equiv s$,
+$t\subst{s}{b}\equiv t$, $a(b)\subst{t}{b}\equiv a(t)$ and
+$d(b)\subst{t}{b}\equiv d(t)$ hold literally.  The following derivations are
+made in $w'_b$:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item $b=s$, by \rulename{Use} of the last clause;
+\item $t=b$, by \rulename{XBack} with the major premise (1), $h\defeq b$, and
+ the minor premise $s=t$, the member at $w'_b$ of the first family;
+\item $b=t$, by \rulename{XBack} with the major premise (1), $h\defeq t$, and
+ the minor premise (2); here $r\equiv b$ contains $b$;
+\item $d(t)=a(b)$, by \rulename{XBack} with the major premise (3),
+ $h\defeq a(b)$, and the minor premise $a(t)=d(t)$, the member at $w'_b$ of
+ the second family;
+\item $a(b)=d(b)$, by \rulename{XBack} with the major premise (3),
+ $h\defeq d(b)$, and the minor premise (4); here $r\equiv a(b)$ contains $b$
+ and is not substituted.
+\end{enumerate}
+\rulename{Alias} gives $(a(b)=d(b))\subst{s}{b}\equiv(a(s)=d(s))$ at $w'$.
+For the first statement of (iv), (1), (2) and \rulename{Alias} give
+$(t=b)\subst{s}{b}\equiv(t=s)$ at $w'$; the second statement is (iii)
+applied to $t=s$ and $E(s)$.
+
+In both calculi every backward substitution is at the newest parameter of
+the auxiliary world, its premises are members of the given families at that
+world itself, and no derivation is moved to another world or receives a
+substitution.  No computation, induction or \rulename{Close} is used.
+\end{proof}
+
+\begin{lemma}[Diagonal zero rows]
+\label{wit:lem:eqb-zero}
+Let $\mathsf{C}$ be as in \cref{wit:lem:eqb-atomic}, and let $B(x,y)$ be
+diagonal in $y$, that is, literally $\It{y}{y}{u}{h}=\It{y}{y}{v}{k}$.  For
+every world $w$ and every term $r$ over $\Pi_w$ such that $B(r,0)$ is over
+$\Pi_w$, $w\Vdash B(r,0)$.
+\end{lemma}
+
+\begin{proof}
+$B(r,0)$ is $\It{0}{0}{u}{h'}=\It{0}{0}{v}{k'}$, where $h'$ and $k'$ are $h$
+and $k$ with $r$ for $x$ and $0$ for $y$.  The instances
+$\It{0}{0}{u}{h'}=0$ and $\It{0}{0}{v}{k'}=0$ of \rulename{I0} are derivable in
+every world, so they have persistent families.  \Cref{wit:lem:eqb-atomic}(iv)
+gives $w\Vdash 0=\It{0}{0}{v}{k'}$, and \cref{wit:lem:eqb-atomic}(iii) with
+$s\defeq\It{0}{0}{u}{h'}$, $t\defeq 0$ and the equation
+$q=\It{0}{0}{v}{k'}$ gives $w\Vdash B(r,0)$.  Neither formula transport nor
+\rulename{Close} is used.
+\end{proof}
+
+\begin{lemma}[Transport in every formula]
+\label{wit:lem:eqb-transport}
+Let $\mathsf{C}$ be as in \cref{wit:lem:eqb-atomic}.  For every world $w$,
+all terms $s$, $t$ over $\Pi_w$ and every formula $H(q)$ over $\Pi_w$ and $q$,
+in which $q$ may occur any number of times and below binders:
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item if $w\Vdash s=t$ and $w\Vdash H(t)$, then $w\Vdash H(s)$;
+\item if $w\Vdash s=t$ and $w\Vdash H(s)$, then $w\Vdash H(t)$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(ii) follows from (i) and the symmetry of \cref{wit:lem:eqb-atomic}(iv).
+Statement (i) is proved, simultaneously for all worlds and terms, by
+induction on the number $d(H)$ of binders $\D{}{}$ in $H$; substituting a
+term for $q$ does not change this number.  If $d(H)=0$, $H$ is an equation
+and (i) is \cref{wit:lem:eqb-atomic}(iii).
+
+Let $H(q)=\D{x}{y}B(q,x,y)$, so that $d(B)=d(H)-1$, and let $w'\succeq w$.
+The member at $w'$ of the family for $H(t)$ is a derivation of
+$\D{x}{y}B(t,x,y)$.  Choose $b\notin\Pi_{w'}$ and apply \rulename{Open} with
+this major premise; its branch is to be derived in
+\[
+ w_b=\bigl(\Pi_{w'},b;\ \Gamma_{w'},[B(t,b,0);\,y.B(t,b,y)]\bigr)
+\]
+with the goal $H(s)$, which is over $\Pi_{w'}$.  Put $C(x,y)\defeq B(s,x,y)$,
+so that $H(s)\equiv\D{x}{y}C$.  In $w_b$ apply \rulename{Close} to
+$\D{x}{y}C$; the newest parameter of $w_b$ is $b$, so the rule selects $b$.
+With its eigenvariable $z\notin\Pi_{w_b}$ the premise is $C(b,\Suc z)\equiv
+B(s,b,\Suc z)$, to be derived in
+\[
+ w_z=\bigl(\Pi_{w'},b,z;\ \Gamma_{w'},[B(t,b,0);\,y.B(t,b,y)],\
+ C(b,\epsilon_C(z))\bigr).
+\]
+The world $w_z$ extends $w$, so $w_z\Vdash s=t$ by restriction.
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $w_z\Vdash B(s,b,0)$.  If $\epsilon_C(z)=0$, the last clause of $w_z$
+ is the assumption $C(b,0)\equiv B(s,b,0)$, and its realizer of
+ \cref{wit:lem:eqb-atomic}(i), at any term, is a family for it (the remark
+ after \cref{wit:def:ab-family}).  If $\epsilon_C(z)=z$, the
+ matrix $C$ is diagonal and \cref{wit:lem:eqb-zero} gives $w_z\Vdash C(b,0)$;
+ the assumption $C(b,z)$ is not used.
+\item $w_z\Vdash B(t,b,0)$, by the induction hypothesis (ii) for the template
+ $B(q,b,0)$, which has $d(H)-1$ binders, applied to (a).
+\item $w_z\Vdash B(t,b,\Suc z)$: the opened clause $[B(t,b,0);\,y.B(t,b,y)]$
+ is a clause of $\Gamma_{w_z}$, and its realizer of
+ \cref{wit:lem:eqb-atomic}(i), at the term $\Suc z$ and with the family of
+ (b), gives this family.
+\item $w_z\Vdash B(s,b,\Suc z)$, by the induction hypothesis (i) for the
+ template $B(q,b,\Suc z)$, applied to (c).
+\end{enumerate}
+The member at $w_z$ of the family (d) is the premise of the
+\rulename{Close}, which yields $H(s)$ in $w_b$.  $H(s)$ does not contain $b$,
+and \rulename{Open} yields $H(s)$ at $w'$.  The construction is uniform in
+$w'\succeq w$, so $w\Vdash H(s)$.
+
+Every backward substitution occurs in \cref{wit:lem:eqb-atomic}, on
+equations.  The recursive calls concern templates with fewer binders.  Only
+the mode of the target matrix $C$ is used, and only through
+\cref{wit:lem:eqb-zero}; the clause opened by \rulename{Open} has the same
+shape in either mode, so the modes of $B(t,x,y)$ and $B(s,x,y)$ are never
+compared.  The auxiliary parameters opened by \cref{wit:lem:eqb-atomic} above
+$w_b$ and $w_z$ are discharged by \rulename{Alias} before a member at the
+requested world is returned, so they do not change the parameter that the
+\rulename{Close} in $w_b$ selects.  No derivation is moved to another world
+or receives a substitution, and the lemma does not use
+\cref{wit:thm:eqback}.
+\end{proof}
+
+\begin{theorem}[Equation-only and one-term \rulename{Back}]
+\label{wit:thm:eqback}
+For every scope $\Pi$, clause context $\Gamma$ and formula $A$ over $\Pi$,
+\[
+ \Pi;\Gamma\proves_{\mathsf{A}^{=}_{\nu}}A
+ \iff \Pi;\Gamma\proves_{\mathsf{A}^{\times}_{\nu}}A
+ \iff \Pi;\Gamma\proves_{\mathsf{A}_{\nu}}A
+ \iff \Pi;\Gamma\proves_{\mathsf{A}_{\ast}}A ,
+\]
+by effective transformations of derivations that leave the terms, formulas
+and clauses of the judgment unchanged.
+\end{theorem}
+
+\begin{proof}
+The last equivalence is \cref{wit:thm:ab-newest}.  Let $\mathsf{C}$ be
+$\mathsf{A}^{=}_{\nu}$ or $\mathsf{A}^{\times}_{\nu}$.
+
+\emph{From $\mathsf{C}$ to $\mathsf{A}_{\ast}$.}  Every rule of
+$\mathsf{A}^{=}_{\nu}$ is a rule of $\mathsf{A}_{\nu}$, hence of
+$\mathsf{A}_{\ast}$.  Every rule of $\mathsf{A}^{\times}_{\nu}$ other than
+\rulename{XBack} is a rule of $\mathsf{A}_{\ast}$.  By the proof of
+\cref{wit:cor:ab-bridge}, reflexivity, symmetry, transitivity and transport in
+every formula are derived rules of $\mathsf{A}_{\ast}$ over every scope and
+context.  Given derivations of $\mathsf{A}_{\ast}$ of $\Pi;\Gamma\proves b=t$
+and $\Pi;\Gamma\proves h\subst{t}{b}=r$, let $q$ be a variable occurring in
+none of $h$, $t$, $r$, $\Pi$, and put
+$G(q)\defeq\bigl(h\subst{q}{b}=h\subst{t}{b}\bigr)$.  Then
+$G(t)\equiv(h\subst{t}{b}=h\subst{t}{b})$, an instance of reflexivity, and
+$G(b)\equiv(h=h\subst{t}{b})$; transport along $b=t$ gives
+$h=h\subst{t}{b}$, transitivity with the minor premise gives $h=r$, and
+symmetry gives $r=h$.  Replacing each \rulename{XBack} by this derivation
+translates $\mathsf{A}^{\times}_{\nu}$ into $\mathsf{A}_{\ast}$.
+
+\emph{From $\mathsf{A}_{\ast}$ to $\mathsf{C}$.}  The proof of
+\cref{wit:thm:ab-newest} is repeated with families and realizers of
+$\mathsf{C}$.  That proof applies \rulename{Alias}, \rulename{Open},
+\rulename{Close} and the computations directly, and \rulename{Back} only
+through \cref{wit:lem:ab-eq}: part (i) for the realizers of clauses, part
+(iii) in the case of \rulename{Back}, with the template
+$(\theta F)\subst{q}{\theta b}$, and parts (iii) and (iv) in the case of
+\rulename{Close}, with the templates $\theta B(q,\epsilon_B(z'))$ and
+$\theta B(q,\Suc z')$, which are compound when $B$ has a binder.  Part (i)
+is replaced by \cref{wit:lem:eqb-atomic}(i), and parts (iii) and (iv) by
+\cref{wit:lem:eqb-transport}(i) and (ii), which hold for $\mathsf{C}$.  All
+other steps are unchanged; in particular the case of \rulename{Back} at a
+source $b$ with a replacement $t$ that contains $b$ uses
+$H(\theta t)\equiv\theta(F\subst{t}{b})$, which holds because substitution
+is simultaneous and inserts each replacement once.  The induction is well
+founded as before: \cref{wit:lem:eqb-atomic,wit:lem:eqb-zero,wit:lem:eqb-transport}
+are constructed before and independently of it, by recursion on the number
+of binders of a template, and the realizer of the source assumption in the
+case of \rulename{Close} is built from the actual clauses of $w_z$ by
+\cref{wit:lem:eqb-transport}, without a call of the translation of the
+premise.  The derivation of $\Pi;\Gamma\proves A$ is the member at
+$(\Pi;\Gamma)$ of the family for the identity map and the realizers of
+\cref{wit:lem:eqb-atomic}(i).
+\end{proof}
+
+\begin{remark}[Two steps of \rulename{XBack} for one \rulename{EqBack}]
+\label{wit:rem:eqback-sim}
+A translation from $\mathsf{A}^{=}_{\nu}$ to $\mathsf{A}^{\times}_{\nu}$ that
+does not pass through families replaces an \rulename{EqBack} with the
+conclusion $a=d$, the major premise $b=t$ and the minor premise
+$a\subst{t}{b}=d\subst{t}{b}$ by two applications of \rulename{XBack} in the
+same world and with the same major premise: with $h\defeq a$ and
+$r\defeq d\subst{t}{b}$ it gives $d\subst{t}{b}=a$, and then with $h\defeq d$
+and $r\defeq a$ it gives $a=d$.  This holds when $t$ contains $b$, because
+only $h$ is substituted.  The derivation of the major premise is repeated.
+\end{remark}
+
+\begin{corollary}[The restricted Alias/Back calculi and $\iPRA$]
+\label{wit:cor:eqback-bridge}
+With $\Gamma^{\circ}$ as in \cref{wit:cor:ab-bridge},
+\[
+ \Pi;\Gamma\proves_{\mathsf{A}^{=}_{\nu}}A
+ \iff \Pi;\Gamma\proves_{\mathsf{A}^{\times}_{\nu}}A
+ \iff \Gamma^{\circ}\proves_{\mathsf{K}}A .
+\]
+The ordinary realizations of $\mathsf{A}^{=}_{\nu}$ and
+$\mathsf{A}^{\times}_{\nu}$ are bi-interpretable and equiconsistent with
+$\iPRA$, with whole numerical domains, actual equality, the identity graph
+$x=y$ in both numerical composites, provable formula round trips in both
+directions, and the contradiction $0=\Suc 0$.
+\end{corollary}
+
+\begin{proof}
+By \cref{wit:thm:eqback} both calculi derive exactly the judgments of
+$\mathsf{A}_{\ast}$, on the same terms, formulas and clause contexts, by
+effective translations.  \Cref{wit:cor:ab-bridge} gives the comparison with
+$\mathsf{K}$ and the bridge for $\mathsf{A}_{\ast}$; its translations, the
+derivations of both formula round trips and the preservation of $0=\Suc 0$
+transfer unchanged.
+\end{proof}
+
+The equivalence is one of open consequence relations, on every scope and
+clause context, and not only of closed theorems or of consistency.  The
+recursion on formulas in \cref{wit:lem:eqb-transport} is a recursion of the
+metatheory that constructs derivations; no induction on compound arithmetic
+formulas enters the calculi.
+
+\begin{remark}[What the proof uses of the mode]
+\label{wit:rem:eqback-mode}
+\Cref{wit:lem:eqb-transport} uses the mode only through the target matrix of
+a \rulename{Close}, and only in this form: every matrix whose mode selects
+$z$ has a zero row that is derivable on families without formula transport.
+The translation of \cref{wit:thm:eqback} uses in addition
+$\epsilon_{\theta B}=\epsilon_B$ for injective renamings $\theta$
+(\cref{wit:rem:ab-mode}).  The same proof therefore restricts
+\rulename{Back} to equations, or to \rulename{XBack}, for every mode
+$\epsilon_B(z)\in\{0,z\}$ determined by the uninstantiated matrix, preserved
+and reflected by injective renaming, such that every matrix of mode $z$ is a
+literal equation whose zero row follows from the computations and
+\cref{wit:lem:eqb-atomic}.  The mirror guard of \cref{claus:prop:mirror}
+qualifies: the zero row of $a=\It{y}{a}{u}{h}$ is $a'=\It{0}{a'}{u}{h'}$,
+which is \rulename{I0} and symmetry.  As in \cref{wit:rem:ab-mode} this is a
+statement of relative derivability; soundness and arithmetic adequacy of the
+mode are separate obligations.  It does not extend to modes that select $z$
+for arbitrary progressive equations, whose zero rows need not be derivable.
+\end{remark}
+
+\begin{remark}[The package]
+\label{wit:rem:eqback-package}
+\pkg{equational\_transport} proves \cref{wit:thm:eqback} in the order of
+this subsection, states \cref{wit:lem:eqb-transport} with the selector
+condition of \cref{wit:rem:eqback-mode}, and gives both the two-step
+simulation of \cref{wit:rem:eqback-sim} and the direct construction of
+\cref{wit:lem:eqb-atomic}(iii) for $\mathsf{A}^{\times}_{\nu}$, with four
+applications of \rulename{XBack}.  The proof above uses the direct
+construction, so that \cref{wit:thm:eqback} holds for
+$\mathsf{A}^{\times}_{\nu}$ without the simulation; the simulation is the
+step of the package's compiler from $\mathsf{A}^{=}_{\nu}$ to
+$\mathsf{A}^{\times}_{\nu}$.  An independent mathematical review in
+the package checks the order of the lemmas and the absence of a weakening of
+completed derivations.  The theorem is not formalized in Lean or Rocq.
 \end{remark}
 
 % ---------------------------------------------------------------------
@@ -3957,7 +4303,8 @@ This section draws on the checker reports of \pkg{no\_witness},
 \pkg{parameter\_witness}, \pkg{deterministic\_introduction},
 \pkg{newest\_parameter}, \pkg{uniform\_raw}, \pkg{parameter\_intro},
 \pkg{conditional\_copy}, \pkg{local\_introduction},
-\pkg{export\_specialization} and \pkg{vacuous\_specialization}.  The checker
+\pkg{equational\_transport}, \pkg{export\_specialization} and
+\pkg{vacuous\_specialization}.  The checker
 of \pkg{constructed\_computation} and the compact checkers of
 \pkg{export\_specialization} and \pkg{vacuous\_specialization}, which check
 the guarded scalar calculus and not the calculi of this chapter, belong to
@@ -4023,6 +4370,11 @@ $\mathsf{K}$ with fuel & 685 & 796 & 1995 & \\
 $\mathsf{A}_{\nu}$ & 862 & 1011 & 3245 &
  $\mathsf{A}_{\nu}$ with a supplied \rulename{Close} witness:
  870 / 1022 / 3274\\
+\multicolumn{5}{@{}l}{\pkg{equational\_transport}}\\
+$\mathsf{A}^{=}_{\nu}$, \rulename{EqBack} & 869 & 1021 & 3263 &
+ $\mathsf{A}_{\nu}$ of \pkg{local\_introduction}: 862 / 1011 / 3245\\
+$\mathsf{A}^{\times}_{\nu}$, \rulename{XBack} & 867 & 1022 & 3267 &
+ $\mathsf{A}_{\nu}$ of \pkg{local\_introduction}: 862 / 1011 / 3245\\
 \multicolumn{5}{@{}l}{\pkg{export\_specialization}}\\
 $\mathcal X_\nu$, \rulename{Refl} primitive & 663 & 748 & 2093 &
  $\mathcal X$, \rulename{Refl} primitive: 669 / 754 / 2117\\
@@ -4163,6 +4515,36 @@ runs in the normal and the optimized interpreter mode pass; one open
 example uses an embedding of parameters that does not preserve their order
 and a map of clauses that is not contiguous.
 
+\paragraph{\pkg{equational\_transport}.}
+Both checkers have the input contract and the code of the checker of
+$\mathsf{A}_{\nu}$ of \pkg{local\_introduction}, which is their matched
+control, except for the backward node.  For \rulename{EqBack} it is
+\texttt{['v', equation, major, minor]}; for \rulename{XBack} it is
+\texttt{['v', h, major, minor]}: the checker infers $b=t$ from the major
+premise and $\ell=r$ from the minor premise, requires $b$ to be the newest
+parameter and $\ell\equiv h\subst{t}{b}$, and returns $r=h$ without
+substituting in $r$.  The template $h$ is validated before the comparison,
+because in this encoding a malformed list $[b,0]$ becomes the valid
+successor $[0,0]$ after the substitution of $0$ for $b$.  \rulename{EqBack}
+adds 7 tokens, 10 nodes and 18 bytes to the control and \rulename{XBack} 5
+tokens, 11 nodes and 22 bytes; the gzip sizes at level 9 are 1044 for the
+control, 1053 for \rulename{EqBack} and 1058 for \rulename{XBack}.  The checker of the source calculus
+$\mathsf{A}_{\ast}$ measures 880 / 1035 / 3324, gzip 1048.  An untrusted
+compiler implements \cref{wit:thm:eqback} from $\mathsf{A}_{\ast}$ to
+$\mathsf{A}^{=}_{\nu}$, and a second one applies \cref{wit:rem:eqback-sim};
+every output is replayed by the target checker.  Nineteen closed and
+thirteen open translations, among them older and self-containing
+\rulename{Back} sources, non-order-preserving embeddings, nested binders and
+both modes, together with four open \rulename{XBack} instances, five
+simulations of \rulename{EqBack} and adversarial certificates, pass in 174
+checker runs under normal and optimized interpretation.  In one example 47
+source inference nodes become 329 nodes of $\mathsf{A}^{=}_{\nu}$ and
+148404 nodes of $\mathsf{A}^{\times}_{\nu}$, counted as occurrences in the
+expanded tree.  An implementation review found that the first
+$\mathsf{A}^{\times}_{\nu}$ converter traversed the ignored premise field of
+a \rulename{Use} of a clause without antecedent; the final converter drops
+it.
+
 \paragraph{\pkg{export\_specialization}.}
 All four programs are complete closed-theorem checkers of the normalized
 calculus on iterator terms: they read one JSON pair of a closed goal and a
@@ -4227,7 +4609,7 @@ fragment (\cref{wit:sec:packet}).  It does not formalize the deterministic
 selection of the witness, the newest parameter or $0$ in an empty scope,
 with the regeneration of derivations under an extension of the scope.
 Hence none of
-\cref{wit:thm:newest,wit:thm:diagonal,wit:thm:R-newest,wit:thm:clause-bit,wit:thm:ab-newest,wit:thm:weakening,wit:thm:gd,wit:thm:guarded-uniform}
+\cref{wit:thm:newest,wit:thm:diagonal,wit:thm:R-newest,wit:thm:clause-bit,wit:thm:ab-newest,wit:thm:eqback,wit:thm:weakening,wit:thm:gd,wit:thm:guarded-uniform}
 is formalized, and nothing in \cref{wit:sec:recursor,wit:sec:copy} on the
 counter-aware recursor is formalized, in particular
 \cref{wit:thm:recursor,wit:thm:copy,wit:thm:witness-removal}.  A
@@ -4249,20 +4631,6 @@ $\mathsf{A}_{\nu}$ with ordered scopes and the induction statement of
 \cref{wit:thm:ab-newest} over clause realizers, kept apart from the
 invariant of closed certificates that the scope and the context have the
 same length.
-\end{question}
-
-\begin{question}[Equation-only \rulename{Back} with the newest
-\rulename{Close}]
-\label{wit:q:ab-back}
-The proof of \cref{wit:thm:ab-newest} transports the assumption and the
-conclusion of a \rulename{Close}, which are compound when the matrix has a
-binder, by \rulename{Back} on compound formulas
-(\cref{wit:rem:ab-mode}).  \pkg{alias\_back} states that its presentation
-with a supplied witness admits the restriction of \rulename{Back} to
-equations.  Is $\mathsf{A}_{\nu}$ with \rulename{Back} restricted to
-equations still equivalent to $\mathsf{A}_{\ast}$?  A positive answer needs
-a noncircular recovery of formula transport from equational
-\rulename{Back}, the newest \rulename{Use} and the newest \rulename{Close}.
 \end{question}
 
 \begin{question}[Three families on raw iterator terms]
@@ -4300,6 +4668,11 @@ directed acyclic graph reduces it without enlarging the trusted rules.
 \pkg{local\_introduction} asks the same for the repeated production of
 persistent families in the proof of \cref{wit:thm:ab-newest}, and whether
 the sharing can be checked without erasing the saving of the interface.
+The translations of \cref{wit:thm:eqback} grow faster still: in an example
+of \pkg{equational\_transport} 47 source nodes become 329 nodes of
+$\mathsf{A}^{=}_{\nu}$ and 148404 of $\mathsf{A}^{\times}_{\nu}$, because
+\cref{wit:lem:eqb-transport} recurses on the binders of the template and the
+simulation of \cref{wit:rem:eqback-sim} repeats the major premise.
 \end{question}
 
 \begin{question}[Modes without a guard]
@@ -4400,6 +4773,26 @@ Further remarks of the packages on what is not shown:
  language, the input contract, the accounting of dependencies, the
  convention for success and the resource model; the measured envelope and
  the obstruction theorems of the article do not provide one.
+\item \pkg{equational\_transport} records that its target, a complete
+ checker below the current envelope, is not attained: both restricted
+ checkers are larger than their control (\cref{wit:tab:sizes}), since
+ \rulename{Alias} still needs substitution in formulas and \rulename{XBack}
+ must destructure its minor premise.  Its remeasured compact
+ representatives, under their own contracts, are 239 / 261 / 549,
+ 245 / 256 / 580, 244 / 269 / 547, 252 / 261 / 593, 274 / 303 / 465,
+ 267 / 298 / 461 with a shifted depth encoding, and 330 / 372 / 599 with
+ the native goal validated; the minima 239, 256 and 461 belong to different
+ programs.  A compact variant with 255 nodes, obtained by folding a
+ conditional into a pattern guard, is unsound: it accepts the false guarded
+ goal $W(0)=W(\Suc 0)$, $W(t)=\It{0}{t}{u}{0}$, with an empty packet of
+ the wrong arity, and the package includes it only as a rejected
+ experiment.  The package argues that simple changes of the depth offset of
+ the compact traversal lose the no-capture property of the opening, and that
+ totalizing decoders which admit malformed syntax lose the formula round
+ trips unless a normalization is added to the checking contract; these are
+ limits of the rewrites tried, not lower bounds.  Whether the equational
+ interface of \rulename{XBack} can be built into a smaller complete checker
+ is open.
 \item \pkg{deterministic\_introduction} supplies a complete elaborator from
  certificates of $\mathsf{G}_{\mathrm d}$ to certificates of $\mathsf{G}$
  and illustrates the converse by one translated pair; \pkg{uniform\_raw}
