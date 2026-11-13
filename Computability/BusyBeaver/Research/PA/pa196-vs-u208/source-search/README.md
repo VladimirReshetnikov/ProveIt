@@ -44,6 +44,27 @@ The script reports:
   all-occurrences rotation of a structurally equal subtree. None of the
   resulting 26,083 ordered two-rotation pairs has fewer than 159 nodes.
 
+An optional third-rotation extension is also reproducible:
+
+```sh
+python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/source-search/scan_rotations.py --verify-graphs --third-return-to-baseline --output /tmp/pa196-third.json
+```
+
+It considers distinct two-step *global* variants with exactly 159 internal
+nodes that are different from both the original and any one-step variant.
+From each it tests all eligible third global rotations. This covers 1,955
+intermediate variants and 314,692 third rotations; none reduces the source
+DAG below 159 nodes. First intermediate trees are allowed to have 160 nodes;
+second intermediate trees must return to 159. The extension took about one
+minute in the original run; the deterministic results are in
+[`third-receipt.json`](third-receipt.json). With `--verify-graphs`, the same
+161 first-step full CFG comparisons and invalid-rotation control described
+above are run. A source graph comparison of an improving third-step variant
+would be required by the script before reporting it; no such variant was
+found, so no third-step full CFGs were checked. This is not an exhaustive
+three-step search: second intermediate trees with more than 159 nodes, and
+single-occurrence or mixed edits, are excluded.
+
 The single-occurrence and global searches are different: a single occurrence
 can leave other occurrences intact, while a global replacement rewrites each
 occurrence of the selected equal subtree. Proper occurrences of the same

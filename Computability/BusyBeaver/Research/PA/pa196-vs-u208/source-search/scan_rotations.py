@@ -118,6 +118,7 @@ if __name__=='__main__':
  ap=argparse.ArgumentParser(description='Bounded PA196 source reassociation screen')
  ap.add_argument('--output',type=Path)
  ap.add_argument('--verify-graphs',action='store_true',help='compare full ordinal control graphs for each shared single rotation')
+ ap.add_argument('--third-return-to-baseline',action='store_true',help='also screen third rotations from new two-step variants with 159 nodes')
  args=ap.parse_args(); start=time.monotonic()
  occurrences=Counter();occ_costs=Counter()
  for path,t in node_occurrences(root):
@@ -144,18 +145,32 @@ if __name__=='__main__':
    if graph(x)!=baseline_graph:raise ValueError(f'ordinal graph mismatch after {desc}')
    graph_checked+=1
   if cost<=160:first.setdefault(x,desc)
- found=[];second=0
+ found=[];second=0;second_base={}
  for x,d1 in first.items():
   for y,d2 in allrot(x):
    second+=1;cost=metric(y)
    if cost<159:
     if args.verify_graphs and graph(y)!=baseline_graph:raise ValueError('two-step ordinal graph mismatch')
     found.append({'nodes':cost,'first':d1,'second':d2})
+   if args.third_return_to_baseline and cost==159 and y!=root and y not in first:
+    second_base.setdefault(y,(d1,d2))
+ third=0;third_found=[]
+ if args.third_return_to_baseline:
+  for y,(d1,d2) in second_base.items():
+   for z,d3 in allrot(y):
+    third+=1;cost=metric(z)
+    if cost<159:
+     if args.verify_graphs and graph(z)!=baseline_graph:raise ValueError('three-step ordinal graph mismatch')
+     third_found.append({'nodes':cost,'first':d1,'second':d2,'third':d3})
  result={'source_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
          'leaves':len(list(leaf_occurrences(root))),'baseline_unique_internal_nodes':159,
          'single_occurrence_direction_counts':dict(occurrences),'single_occurrence_cost_counts':dict(occ_costs),
          'global_single_cost_counts':dict(counts),'unique_first_with_at_most_160_nodes':len(first),
          'two_global_rotation_pairs':second,'two_step_improvements':found,
          'single_global_full_graphs_checked':graph_checked,'elapsed_seconds':round(time.monotonic()-start,3)}
+ if args.third_return_to_baseline:
+  result.update({'third_return_intermediates':len(second_base),'third_global_rotation_pairs':third,
+                 'three_step_improvements':third_found})
+ result['elapsed_seconds']=round(time.monotonic()-start,3)
  out=json.dumps(result,indent=2,sort_keys=True)+'\n';print(out,end='')
  if args.output:args.output.write_text(out)
