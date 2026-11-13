@@ -160,9 +160,14 @@ conversions, total proof-producing substitution/fresh-variable/comprehension
 templates and their PA-internal correctness, and (2) extraction of a native
 refutation from an **arbitrary model-length literal halting trace**, including
 startup, totalized halting behavior, nonhalting intermediate macro states and
-coded sequence bounds. Its conditional theorem assumes these machine contracts
-in PA-verifiable form. The existing forward physical refinement and external
-HF soundness do not automatically discharge those hypotheses. A finite test
+coded sequence bounds. That extraction must also handle the non-injective
+stack convention `pair(0,0)=0`: a zero stack and a pushed zero with zero tail
+share a numeric code. The external `SoundStack.pop` already handles both
+cases, but the proposed internal parallel proof-stack encoding and updates
+still need a corresponding all-model argument. The conditional theorem
+assumes the machine contracts in PA-verifiable form. The existing forward
+physical refinement and external HF soundness do not automatically discharge
+those hypotheses. A finite test
 of the gate or selected machine traces is not an all-model proof. No concrete
 logical counterexample to the written gate cases was found in this review;
 that is not a verification of the full claimed primitive-recursive translation
