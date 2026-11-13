@@ -25,5 +25,19 @@ def consistency_iff_nonhalting
   consistency_iff_nonhalting_of_reductions PA196Bounded.haltSentence
     refutation_implies_halt halt_implies_not_not_refutation
 
+/-- Both reductions may instead have double-negated conclusions; no
+    double-negation elimination is needed for the negative equivalence. -/
+def consistency_iff_nonhalting_of_double_negated_reductions
+    (refutation_implies_not_not_halt :
+      standardTheory ⊢! nativePARefutation 🡒 ∼∼PA196Bounded.haltSentence)
+    (halt_implies_not_not_refutation :
+      standardTheory ⊢! PA196Bounded.haltSentence 🡒 ∼∼nativePARefutation) :
+    standardTheory ⊢! nativePAConsistency 🡘 ∼PA196Bounded.haltSentence := by
+  unfold nativePAConsistency
+  exact Entailment.K_intro
+    (Entailment.C_trans Entailment.dni (Entailment.contra halt_implies_not_not_refutation))
+    (Entailment.C_trans Entailment.dni (Entailment.contra refutation_implies_not_not_halt))
+
 #print axioms consistency_iff_nonhalting
+#print axioms consistency_iff_nonhalting_of_double_negated_reductions
 end PA196Endpoint

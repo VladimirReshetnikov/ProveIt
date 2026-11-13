@@ -22,7 +22,9 @@ intuitionistic reading of the PA-consistency formula. Its conclusion is an
 iPRA derivation, but it explicitly assumes iPRA derivations of both
 machine-specific implications: PA refutability implies halting, and halting
 implies double-negated PA refutability. Neither implication is established
-here. The comparison of this native consistency formula with the separately
+here. A second conditional endpoint weakens the first hypothesis to PA
+refutability implying double-negated halting; it still needs both reductions
+to be proved in iPRA. The comparison of this native consistency formula with the separately
 defined Gödel–Gentzen reading also remains conditional.
 
 ## Checking
