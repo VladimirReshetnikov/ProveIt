@@ -13,16 +13,18 @@ From the repository root, with Python 3.10+ and a C++17 `g++`:
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/replay.py --output /tmp/pa196-helper.json
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/adverse.py --output /tmp/pa196-helper-adverse.json
 python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/blank_prefix.py --steps 100000000 --output /tmp/pa196-helper-prefix.json
+python3 -B Computability/BusyBeaver/Research/PA/pa196-vs-u208/search/helper-row/source_witness.py --output /tmp/pa196-helper-source.json
 ```
 
 The outputs match [receipt.json](receipt.json),
-[adverse-receipt.json](adverse-receipt.json), and
-[blank-prefix-receipt.json](blank-prefix-receipt.json), respectively. All
-three commands pin the literal PA196 input by SHA-256
+[adverse-receipt.json](adverse-receipt.json),
+[blank-prefix-receipt.json](blank-prefix-receipt.json), and
+[source-witness-receipt.json](source-witness-receipt.json), respectively. All
+four commands pin the literal PA196 input by SHA-256
 `e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8`.
-They compile their C++ helpers in temporary directories and leave this
-research tree unchanged. The last command checks a **finite** run prefix; it
-must not be treated as a nonhalting or consistency proof.
+The first three compile C++ helpers in temporary directories, and all leave
+this research tree unchanged. The third command checks a **finite** run prefix;
+it must not be treated as a nonhalting or consistency proof.
 
 ## Exhaustive screen within the template
 
@@ -90,8 +92,39 @@ checker confirms projected matching at every parent boundary; state 45 occurs
 uses five child steps. The corresponding child prefix has 100,016,084 steps.
 This does not prove that state 184 or its adverse window is unreachable later,
 that the infinite runs agree, or that the machine has the required PA
-consistency equivalence. A sharper source-site/decoder invariant or a different
-simulation may still decide this candidate.
+consistency equivalence.
+
+### An invariant-admitted source-frame witness
+
+[source_witness.py](source_witness.py) checks an exact, well-formed source
+frame at site 604. Its path is `1010100110010010100101100011000`, the head
+is at position 0 in state 75, the left marker is at -1, and the right marker
+is at 48; all positions between the end of the path and the right marker are
+zero. The unary physical file is `[1,0,1,0,0,0,1,0,0]` followed by 26 ones,
+encoded as `0 1^(v+1)` for each entry `v`. Cells outside the finite frame are
+zero. The site's logical-register positivity mask is 7. The separate
+[joint-mask invariant](../../source-search/JOINT-MASK.md) admits this
+site/mask pair, although that abstract admission does **not** establish that
+this exact frame occurs in the actual blank run.
+
+From this frame, both machines reach state 184 reading 1 with five-cell mask
+6 at step 31. In 414 steps, the original reaches the exact frame for site
+605 with right marker 49 and file `[0,0,1,0,0,0,1,0,0]` followed by 26
+ones. This is the expected positive branch of site 604's decrement of logical
+register 2. In 664 steps the candidate instead reaches an exact frame for
+site 615, with right marker 48 and file `[1,0,1,0,0,0,1,0,1]` followed by
+27 ones. The candidate does not reach the original's exact endpoint during
+those 664 steps. A return to state 75 at head position 0 alone is not a
+source-frame endpoint: intermediate tapes can still have a dirty path.
+
+The script reconstructs the joint-mask fixed point, checks its closure and
+the mask's membership, and compares entire finite-support tapes, head, and
+state for both endpoints. The deterministic
+[source-witness receipt](source-witness-receipt.json) gives both complete
+endpoint tapes, affected-state visits, source paths, and hashes of the full
+traces. This is a counterexample to a general source-cycle preservation
+argument for the candidate; it is not an actual blank-run counterexample and
+does not rule out a later rejoining or a different proof of equivalence.
 
 The screen allows only one changed row total, not two changed helper rows,
 multistep parent matching, a different tape/head representation, or state
