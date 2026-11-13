@@ -1,0 +1,173 @@
+EXACT-BINDING INTRINSIC THREE-FIELD CHECKER
+
+Candidate: code/checker.py
+CPython 3.12.14: 313 significant tokens /357 AST nodes /590 normalized
+UTF-8 bytes /370 bytes under gzip level9 (mtime0).
+
+This is a composition/refinement of the current native presentation, not a
+new arithmetic axiom basis. It is below the observed exact-binding envelope
+316 /358 /591, by3 tokens,1 AST node and1 byte. The envelope is attained by
+different predecessor programs; this is one program below all three.
+It remains larger than the compact promised-grammar envelope238 /255 /455.
+
+PUBLIC SYNTAX
+-------------
+With p genuine enclosing numerical binders, use:
+
+  term(p) = 1 | True | 3+2j (0 <= j < p)
+            | [term(p)]
+            | [term(p), term(p), term(p+1)].
+  formula(p) = [term(p), term(p)] | [formula(p+2)].
+
+The public goal is formula(0). Code1 and True denote zero. Singleton terms
+denote successor. Ternary terms denote iteration, whose third child alone
+binds its update variable. Binary formulas are equations; unary formulas
+are D. Positive slots count genuine binders from the innermost outward.
+The declared goal is the final element of a JSON list. Earlier elements
+are proof records consumed by pop; unused earlier records are irrelevant.
+
+The standard JSON decoder is used directly. No certificate source is
+executed and no theorem library, rule table, or compiler is imported by
+the measured program. Exceptions and resource exhaustion reject. Success
+is normal exit with exactly ACCEPT and a newline. Completeness uses the
+usual unbounded-finite-execution idealization.
+
+VALIDATION LEMMA
+----------------
+The active list test a*0==[] recognizes lists among JSON values. Scalars
+must support a|0 before a range or substitution decision is made, hence are
+integers or Booleans. Images actually substituted are recursively checked
+at numerical root depth3. By induction, every successful opener returns
+an integer/Boolean/list tree and copies no foreign active JSON scalar.
+
+At the initial floor0, the allowed list arities are1 or2+(d mod2), and a
+scalar must be positive, odd, and below d at an odd depth. The child-depth
+increment is j&2 at odd depths and5-arity at even depths. At meaningful
+numerical constructors its increments are0 for successor and(0,0,2) for
+iteration. Thus d=2p for formulas and d=3+2p for terms. Induction proves
+that this first scan accepts exactly formula(0), including the explicit
+True alias and excluding public False. No dummy numerical slots remain.
+
+For nonpublic auxiliary arities, use the inherited raw reading: numerical
+arity0,2,or>=4 means zero; numerical arities1,3 are successor and iterator;
+formula arities1,2,3 are D, Eq, Q (the last child of Q is its body), and
+other formula shapes are truth. Unused children are annotations. The j&2
+increment agrees with the original2*[j=2] at every meaningful numerical
+child. Its different behavior on annotations can only change rejection of
+irrelevant raw data, not the reading of a successful opening. The identity
+delta(d+2,r,j)=delta(d,r,j)+2 gives the usual exposure lemma.
+
+RESERVATION AND INFERENCE EXTRACTION
+-----------------------------------
+The candidate uses the existing entry-reservation three-field protocol.
+Each call scans its goal before decrementing the global floor. Its newly
+reserved parameter is therefore fresh for that scanned goal. An introduced
+witness is opened before the recursive major check; the continuation's
+eigenparameter is read after that check. This order is preserved literally.
+
+The checked goal is tested against the retained context and a computation
+candidate. These yield hypothesis or one of the two iterator computation
+axioms. A matching template endpoint reconstructs its equality/closure
+major, checks that major, and specializes the same template. It therefore
+extracts the inherited transport or closure-elimination inference. A unary
+major adds its fresh opened closure through its triple repetition, giving
+D elimination. A neutral major opens the D goal's witness and checks the
+successor instance under its zero or progressive seed, giving the two D
+introduction modes. The exact-binding opening lemma and decreasing-floor
+invariant give the same eigenvariable side conditions as before.
+
+Removing a whole-document alphabet test does not mean that every field
+has been type checked. Any used datum either passes the opener, appears in
+a candidate that must equal a checked tree, or is inert. Equality with a
+checked tree forces the same list shape and numerical values at relevant
+leaves. An unscanned integral float may equal an integer in such a candidate;
+it contributes exactly that integer value. Any image actually substituted
+is separately scanned and then rejects floats. Nonintegral floats, NaN,
+infinities, strings, null and objects cannot create an integer-matched leaf.
+Inert values contribute no proposition or axiom.
+
+A three-key dictionary with empty first key can be an inert terminal
+record. Accordingly, the argument extracts native inferences directly from
+successful calls; it does not assert that every consumed record is a list
+or that arbitrary JSON traces have a globally identical integer-only
+coercion. It also does not turn unused input prefixes into assumptions.
+
+SMALL SOURCE IDENTITIES
+-----------------------
+The parent synthesis replaces
+
+  if checked_goal not in terminals:
+      specialize()
+      recurse()
+
+by the expression
+
+  checked_goal in terminals or (specialize(), recurse()).
+
+The tuple is evaluated left to right only in the nonterminal case; it is
+discarded. The function still has no explicit return and returns None on
+success. Specialization itself is the equivalent short-circuit assignment
+
+  i(t,u)!=a or ((a:=i(t,s)), (s:=r[:2] if s else [t]*3)).
+
+The second assignment uses the old s, just as in the predecessor's two
+statements. The conditional [s] if s else1 equals s and[s] or1. Contexts
+are always lists, so g+[H] equals [*g,H]. These replacements preserve the
+exception behavior and the state/input evaluation order in ideal execution.
+
+COMPLETENESS
+------------
+Use the existing canonical actual-binding entry certificates, with the
+three-field specialization protocol. Replace source0 by[] ONLY on a
+nonmatching introduction record. This is the existing phase compiler's
+zero-sentinel conversion. A neutral major is consequently an explicit
+empty-list truth from the initial context[[]]. The numerical zero code,
+zero computations, and closure-specialization sources are unchanged.
+All canonical active values are integers/lists, so the new active type
+checks accept them. The genuine child depths and all scope decisions are
+unchanged. Every canonical actual-binding proof therefore compiles to an
+accepted certificate with the same declared native formula.
+
+The soundness extraction plus this completeness construction identify the
+canonical public theorem set with the native Eq/D calculus. Ordinary
+intuitionistic formulas and open sequents use the inherited logical macros
+and universal closure/implication encoding. The existing whole-domain
+iPRA interpretations, with actual equality and identity round trips, carry
+over. No new proof of the underlying large native/iPRA bridge is claimed.
+
+REPRODUCTION AND EVIDENCE
+-------------------------
+The package includes a readable expansion, an untrusted actual-binding
+compiler, the pinned source fixtures, compiled examples, and focused tests.
+Run python3 tests/verify.py. The receipt records:
+
+ *14 canonical positives, including compound implication elimination,
+  used-hypothesis equation induction, and all-number symmetry;
+ *43 positive/false-goal/capture regression cases in total;
+ *14 Boolean-alias positives;
+ *4,350 independent exact-public-grammar checks;
+ *504 active scalar type checks;
+ *22 normal/-O complete process executions;
+ *zero failures.
+
+The readable expansion additionally agrees on all43 regression cases.
+The largest listed positive has331 proof calls. These are supporting
+checks; the universal claims rely on the arguments above and the inherited
+native-calculus proof, not on the number of examples tested.
+
+SOURCE PIN
+----------
+ProveIt commit e0d702b905c74b74a23d045f8289b151bb8ebcff, under
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/:
+
+ *ipra_exact_bindings_2026-11-13.zip supplies actual-binding entry
+  fixtures, the baseline proper_nodes checker, and the codec/compiler.
+ *ipra_names_and_scopes_2026-11-13.zip supplies the j&2 reduction and
+  the358-node reference frontier point.
+ *ipra_intrinsic_validation_2026-11-13.zip supplies active JSON typing,
+  the Boolean alias convention, and the316/360/591 predecessor.
+ *ipra_validated_phase_2026-11-13.zip supplies the separate-state-free
+  entry protocol and its canonical source0-to[] conversion.
+
+The new measured Python checker has not been formally verified in Lean or
+Rocq. There is no minimality theorem, and no global-frontier success claim.

@@ -1,0 +1,192 @@
+# Review of the intrinsic sorted checker
+
+Candidate: `validated_phase/checker_tokens300.py`, change the array test to
+`a * 0 == []`, delete the whole-input `str(...).strip(...)` gate, and set
+`q = load(open(0)).pop`. Retain the scalar predicate
+`k <= a < d and k < d & a % 2` and default image `0j`.
+
+## 1. Successful opening outputs
+
+Let P be the finite trees whose leaves are exact Python integers or Booleans
+and whose internal nodes are lists. For all JSON-originated arguments, every
+successful opening returns an element of P. This is structural induction on
+the actual recursive call tree:
+
+* `a * 0 == []` recognizes lists exactly among JSON values. Null and objects
+  fail multiplication, strings give `''`, numbers give numeric zero or NaN.
+* The scalar retained branch cannot return a float: the expression
+  `d & (a % 2)` is evaluated whenever `k <= a < d` holds, and its floating
+  right operand raises TypeError. Only ints/Booleans can survive that branch.
+* A hole returns `d % 2 * i(t, d=3)`, hence an integer/Boolean/list tree if
+  the recursive image scan succeeds. The recursive call uses default image
+  `0j`, because `t` becomes its first argument, not its second.
+
+## 2. Successful no-image scans
+
+If `i(a)` succeeds then a itself lies in P. Each leaf is visited. A float in
+range raises at the bitwise operation; a float outside the range recurses
+to the default complex image, whose ordering comparison raises. The same
+argument excludes strings/null/objects. Lists are traversed completely.
+In particular every actual proof-call goal, and every retained major proof
+goal, lies in P. No fractional eigenparameter is ever retained.
+
+At public phase k=0, the same traversal enforces the inherited sorted Eq/D
+goal grammar. `true` is a spelling of scalar 1. `false` cannot survive a
+public numerical leaf: its parity test fails and the sentinel raises.
+The root grammar still admits the inherited padded-slot spellings; the
+old exact-canonical-input claims must not be substituted for this contract.
+
+## 3. Auxiliary template reification
+
+For an equality elimination the two relevant calls are `i(t,u)` and
+`i(t,s)` at the same floor and initial depth. Their traversal of the raw
+template t follows the same list shape. Any float they encounter must be
+outside the retained interval, hence is an opening hole. At each such
+occurrence, replace that float by the integer equal to the current depth.
+That integer also lies outside the strict interval. This yields a single
+integer/list template T with exactly the same two opening results.
+Booleans may be identified with 0 and 1. Strings/null/objects cannot occur
+in a successfully traversed template. The reification is local to a rule
+application; it does not assert a global identity-preserving translation of
+every unused JSON occurrence.
+
+The major equality `[s,u]` is itself recursively checked, so successful
+execution forces its endpoints into P. Existing raw integer/list opening
+soundness now applies to T. In the closure case the recursively checked
+major is `[t,t,t]`, so t itself is already in P.
+
+## 4. Unused images and witnesses
+
+Whenever an image is actually demanded, opening invokes `i(image,d=3)`
+without a replacement image, so Lemma 2 validates it. If an image is never
+demanded, replace it by a canonical numerical zero: all actual opening
+results are unchanged. This handles arbitrary unused witnesses and closure
+targets. The progress-marker comparison `u == 2` also admits `2.0`; it is
+only a selector and selects the same sound equation-progress rule as 2.
+
+## 5. Computation leaves
+
+Every terminal goal has first passed a no-image scan. If the retained goal
+matches the constructed computation candidate, Python structural equality
+forces every compared scalar in that candidate to be an integer, Boolean,
+or a finite integral float equal to the corresponding integer. Replace
+these aliases by their integer values. A falsy source (possibly null,
+empty string, empty object, false, or 0.0) selects the zero-computation
+equation, and its value is absent from that constructed equation. A truthy
+source occurs in the successor counter and therefore must match a genuine
+integer/list tree. Nonintegral floats, infinity, NaN, strings and objects
+cannot match such a scalar. For successor computation the output opening
+is pure by Lemma 1; if its recursive image is demanded, the entire r is
+checked by Lemma 2. This reduces the leaf to the inherited I0/IS argument.
+
+If membership instead succeeds at an earlier retained-context entry, the
+computation candidate is irrelevant to the proof of that terminal fact.
+Do not claim that all its unused fields must have passed validation.
+
+## 6. Termination and limits
+
+On finite acyclic JSON, an opening descends through a finite list tree. At
+a hole it makes a no-image scan, which either descends finitely or rejects
+at sentinel 0j. A proof call consumes a packet before any recursive proof
+call; a finite input stack bounds the number of such calls. Thus the
+idealized algorithm terminates with acceptance or an error. Real CPython
+resource failures are rejection and retain the ordinary unbounded-resource
+completeness qualification.
+
+The result is accepted-input soundness plus canonical completeness. It is
+not whole-document type validation, not an exact canonical-image validator,
+not a new arithmetic axiom basis, and not a reduction below the compact
+promised-syntax frontier. A source measurement must keep those contracts
+separate.
+
+## 7. Review of phase_fused_binop.py
+
+The exact new expression parses as
+
+    terminal_test or (
+        target_mismatch or (assign_new_goal, assign_new_source),
+        continuation_call,
+    )
+
+It is an expression statement. Its value is discarded, so `c` still
+returns None on every normal return. The outer tuple does NOT escape as
+the function result. If the terminal test is true, the complete right
+side is skipped. Otherwise the tuple elements are evaluated left-to-right:
+first the optional two assignments, then the continuation. The inner
+assignment tuple is always truthy, but that truth value is not used for
+any further branch. The negated equality is complementary to equality
+for the produced integer/Boolean/list trees. No overloaded user object
+can enter those comparisons.
+
+This is exactly the control flow of the nested `if` implementation, not
+a newly assumed logical rule. In particular:
+
+1. The public no-image scan is performed before the first decrement of k.
+2. The decrement occurs while constructing the right operand of membership.
+3. The complete computation candidate is evaluated before membership is
+   tested, even if membership will match an earlier retained formula.
+4. The target template opening precedes both assignments.
+5. The minor instance is computed before its source is replaced by the
+   reconstructed major formula.
+6. In the continuation's first argument, its first opening argument is
+   evaluated before the recursive proof of the major; the major can lower
+   global k, and the outer opening uses that lowered value exactly as in
+   the control.
+7. The continuation's second argument uses the same resulting global k.
+
+The update `k - 1` is exactly `~-k` for every Python integer. k starts at
+zero and is only updated in that way, so no float or Boolean floor can
+arise. The tuple fusion and ordinary subtraction preserve successful
+traces, consumed packets, final k, and exception behavior on the old
+integer/list contract. The extension to arbitrary JSON is justified by
+the earlier lemmas, not by asserting old whole-alphabet acceptance.
+
+An opaque JSON object cannot forge a computation match with a pure scanned
+goal: a dict, string, or null is unequal to every list, integer and Boolean
+at that location. The only additional scalar equality aliases are finite
+integral floats. NaN shared-object identity cannot help, because a scanned
+goal has no NaN leaf at all.
+
+## 8. Actual-binding variant exact_fused_json_if.py
+
+Replace the child-depth law by
+
+    d + (j & 2 if d % 2 else 5 - len(a))
+
+At all semantically live positions the law is exactly the genuine binder
+law: successor's only child adds 0; iterator children 0 and 1 add 0 and its
+state body at child 2 adds 2; equation children move from formula depth 2p
+to term depth 3+2p; D adds two slots and Q adds one. Therefore a public
+integer/list tree satisfying the phase-zero test uses exactly the actual
+bound variables, not dummy padded slots. The only numerical zero spelling
+allowed there is 1 (and its Boolean alias true).
+
+The expression `j & 2` differs from `2 * (j == 2)` when j>=3. These child
+indices occur at a term position only inside arrays of arity >=4. Such
+arrays have the constant-zero reading and all their children are ignored
+annotations. Thus the difference can change raw rejection/acceptance but
+does not change any semantically live binder law. This is not a claim of
+raw trace equivalence to the earlier proper_tokens opener. The incoming
+intrinsic_validation checker already uses `j & 2` exactly, and is the
+matched source for this aspect of the proposed checker.
+
+Lemmas 1-6 apply unchanged: they use only deterministic list traversal,
+integer depths, the exact list detector, and the scalar predicate. In the
+local reification lemma replace each floated hole by its current depth
+under this new law. The two calls on an elimination template use the same
+initial depth, floor and tree shape, so one reification serves both.
+
+For a directly checked public goal, the genuine grammar is:
+
+* At even depth, only Eq (arity 2) or D (arity 1).
+* At odd depth, only S (arity 1), I (arity 3), and odd integers 1<=a<d.
+* The term depth is 3+2p for p real binders. Scalar 1 is zero; scalar 3+2j
+  is the j-th bound variable. There are no dummy slots to audit separately.
+
+Canonical completeness transfers from the actual-binding calculus and its
+three-field certificate compiler. It should not be asserted solely from
+identity of this new three-field program with the four-field intrinsic
+control: they have different packet languages. The opening lemmas and
+three-field protocol theorem, plus the actual-binding compiler, are the
+appropriate proof obligations. A checked finite fixture supports the
+compiler but does not replace that general argument.

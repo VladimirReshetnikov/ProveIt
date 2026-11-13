@@ -1,0 +1,406 @@
+{
+  "sources": {
+    "control": {
+      "path": "reference/control_intrinsic.py",
+      "sha256": "e8f3f5c30990d5d70b7efe3e19d72c22c15323d68be778e734796d86337ae0ab"
+    },
+    "retained_lazy": {
+      "path": "code/checker.py",
+      "sha256": "0d835a941492df14ab18c734765607f7d3e8ce5691410df51434c0d4b7eacdc5"
+    }
+  },
+  "opener": [
+    {
+      "source": "100.5",
+      "image": 1,
+      "depth": 3,
+      "floor": -5,
+      "outcomes": {
+        "control": {
+          "accepted": false,
+          "exception": "TypeError"
+        },
+        "retained_lazy": {
+          "accepted": true,
+          "typed_output": true,
+          "value": 1
+        }
+      }
+    },
+    {
+      "source": "-100.5",
+      "image": 1,
+      "depth": 3,
+      "floor": -5,
+      "outcomes": {
+        "control": {
+          "accepted": false,
+          "exception": "TypeError"
+        },
+        "retained_lazy": {
+          "accepted": true,
+          "typed_output": true,
+          "value": 1
+        }
+      }
+    },
+    {
+      "source": "nan",
+      "image": 1,
+      "depth": 3,
+      "floor": -5,
+      "outcomes": {
+        "control": {
+          "accepted": false,
+          "exception": "TypeError"
+        },
+        "retained_lazy": {
+          "accepted": true,
+          "typed_output": true,
+          "value": 1
+        }
+      }
+    },
+    {
+      "source": "inf",
+      "image": 1,
+      "depth": 3,
+      "floor": -5,
+      "outcomes": {
+        "control": {
+          "accepted": false,
+          "exception": "TypeError"
+        },
+        "retained_lazy": {
+          "accepted": true,
+          "typed_output": true,
+          "value": 1
+        }
+      }
+    },
+    {
+      "source": "-inf",
+      "image": 1,
+      "depth": 3,
+      "floor": -5,
+      "outcomes": {
+        "control": {
+          "accepted": false,
+          "exception": "TypeError"
+        },
+        "retained_lazy": {
+          "accepted": true,
+          "typed_output": true,
+          "value": 1
+        }
+      }
+    },
+    {
+      "source": "-1.0",
+      "image": 1,
+      "depth": 3,
+      "floor": -5,
+      "outcomes": {
+        "control": {
+          "accepted": false,
+          "exception": "TypeError"
+        },
+        "retained_lazy": {
+          "accepted": false,
+          "exception": "TypeError"
+        }
+      }
+    },
+    {
+      "source": "0.0",
+      "image": 1,
+      "depth": 3,
+      "floor": -5,
+      "outcomes": {
+        "control": {
+          "accepted": false,
+          "exception": "TypeError"
+        },
+        "retained_lazy": {
+          "accepted": false,
+          "exception": "TypeError"
+        }
+      }
+    },
+    {
+      "source": "1.0",
+      "image": 1,
+      "depth": 3,
+      "floor": -5,
+      "outcomes": {
+        "control": {
+          "accepted": false,
+          "exception": "TypeError"
+        },
+        "retained_lazy": {
+          "accepted": false,
+          "exception": "TypeError"
+        }
+      }
+    },
+    {
+      "source": "2.0",
+      "image": 1,
+      "depth": 3,
+      "floor": -5,
+      "outcomes": {
+        "control": {
+          "accepted": false,
+          "exception": "TypeError"
+        },
+        "retained_lazy": {
+          "accepted": false,
+          "exception": "TypeError"
+        }
+      }
+    }
+  ],
+  "missing_image": {
+    "control": {
+      "checks": 1600,
+      "unexpected_acceptance": []
+    },
+    "retained_lazy": {
+      "checks": 1600,
+      "unexpected_acceptance": []
+    }
+  },
+  "processes": [
+    {
+      "case": "canonical_constant_D",
+      "checker": "control",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "canonical_constant_D",
+      "checker": "control",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "canonical_constant_D",
+      "checker": "retained_lazy",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "canonical_constant_D",
+      "checker": "retained_lazy",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "ignored_null_source",
+      "checker": "control",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "ignored_null_source",
+      "checker": "control",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "ignored_null_source",
+      "checker": "retained_lazy",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "ignored_null_source",
+      "checker": "retained_lazy",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "ignored_float_source",
+      "checker": "control",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "ignored_float_source",
+      "checker": "control",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "ignored_float_source",
+      "checker": "retained_lazy",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "ignored_float_source",
+      "checker": "retained_lazy",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "unused_float_witness",
+      "checker": "control",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "unused_float_witness",
+      "checker": "control",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "unused_float_witness",
+      "checker": "retained_lazy",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "unused_float_witness",
+      "checker": "retained_lazy",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "unused_nan_witness",
+      "checker": "control",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "unused_nan_witness",
+      "checker": "control",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "unused_nan_witness",
+      "checker": "retained_lazy",
+      "optimized": false,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "unused_nan_witness",
+      "checker": "retained_lazy",
+      "optimized": true,
+      "expected": true,
+      "accepted": true,
+      "exit_code": 0
+    },
+    {
+      "case": "future_capture",
+      "checker": "control",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "future_capture",
+      "checker": "control",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "future_capture",
+      "checker": "retained_lazy",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "future_capture",
+      "checker": "retained_lazy",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "ignored_data_cannot_prove_zero_one",
+      "checker": "control",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "ignored_data_cannot_prove_zero_one",
+      "checker": "control",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "ignored_data_cannot_prove_zero_one",
+      "checker": "retained_lazy",
+      "optimized": false,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    },
+    {
+      "case": "ignored_data_cannot_prove_zero_one",
+      "checker": "retained_lazy",
+      "optimized": true,
+      "expected": false,
+      "accepted": false,
+      "exit_code": 1
+    }
+  ],
+  "failures": [],
+  "summary": {
+    "opener_cases": 9,
+    "missing_image_checks": 3200,
+    "complete_process_runs": 28,
+    "unexpected_outcomes": 0
+  }
+}

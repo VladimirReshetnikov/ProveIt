@@ -1,0 +1,174 @@
+INTRINSIC VALIDATION WITH ENTRY RESERVATION
+
+Scope of result
+---------------
+code/checker.py is a new composition of two existing constructions, not a
+new arithmetic axiom basis. It combines the entry-reservation three-field
+checker of ipra_validated_phase with the active JSON type checks of
+ipra_intrinsic_validation. It retains the sorted public Eq/D grammar with
+padding slots of the former. It does NOT enforce the actual-binding grammar
+of the latter. JSON True is an explicit alias for positive code 1 (zero).
+
+All sources are from ProveIt commit e0d702b905c74b74a23d045f8289b151bb8ebcff,
+Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/incoming/.
+The relevant archives are ipra_validated_phase_2026-11-13.zip,
+ipra_intrinsic_validation_2026-11-13.zip, and, for comparison,
+ipra_nontraditional_inputs_2026-11-13.zip.
+
+On canonical integer/list public encodings the checker accepts exactly the
+same closed native theorems as the entry-reservation control. The native
+calculus has the existing whole-domain iPRA bi-interpretation. The present
+change does not supply a new formal verification of the Python interpreter
+or the proof-checker source.
+
+Measurements (CPython 3.12.14, ast.unparse + one final LF)
+-------------------------------------------------------
+Candidate:                 298 tokens, 336 AST nodes, 573 bytes, gzip9 358.
+Matched 3-field control:   300 tokens, 346 AST nodes, 626 bytes, gzip9 393.
+Sorted-input envelope:     299 tokens, 337 AST nodes, 575 bytes.
+
+The last line is attained by DIFFERENT prior programs. The token and byte
+records use a restricted Python-expression input reader; the AST record
+uses JSON. The candidate is one JSON-reading program below all three
+observed sorted-input coordinates. The input contracts are not byte-for-byte
+identical: True aliases and arbitrary unused JSON records are intentional.
+
+The unrestricted requested target is NOT attained. The compact promised-
+grammar envelope, allowing seeded sequent headers, is 238/255/455 and the
+candidate is larger in every coordinate. Removing the ACCEPT diagnostic,
+putting fixed axioms into an uncounted library, and compressing executable
+source were not used.
+
+1. Exact execution-preserving source changes
+------------------------------------------
+Before changing validation, take reference/checker_tokens300.py.
+
+(a) The module assignment k=0 moves into the default value d=(k:=0) of i.
+It is evaluated exactly once when the lambda is defined, still before any
+input is checked. The default argument remains the integer zero.
+
+(b) The conditional
+    if i(t,u) == a:
+        a=i(t,s)
+        s=r[:2] if s else [t]*3
+becomes
+    i(t,u) != a or ((a:=i(t,s)), (s:=r[:2] if s else [t]*3))
+For JSON values on which this step is reached, equality and inequality are
+complementary. If unequal, both versions leave a,s unchanged. If equal,
+both evaluate i(t,s) before changing s, then evaluate and assign the same
+replacement to s. The nonempty tuple is discarded. This preserves the
+evaluation order relevant to the global floor, context, and input stream.
+
+(c) s and [s] or 1 becomes [s] if s else 1. The nonempty singleton list is
+truthy, so these return identical values on every JSON value s.
+
+(d) [*g,H] becomes g+[H]. Initially g=[[]], and recursive calls extend it
+by a list, so g is always a list. The contexts and evaluation order agree.
+
+(e) The standard JSON import spelling changes only. The sole success
+diagnostic remains print('ACCEPT'). No assert is used.
+
+2. Active type validation
+-------------------------
+The whole-document lexical gate is removed. Two local operations take its
+place: the iterable test is a*0==[], and every scalar scope test starts with
+k <= (a|0) < d. Among ordinary JSON values, multiplication by zero equals
+the empty list exactly for a list. Integers/Booleans give integer zero;
+floats give floating zero; strings give the empty string. Null and objects
+raise. Thus strings cannot enter the recursive list branch.
+
+The bitwise operation a|0 is defined only on JSON integers and Booleans.
+It is evaluated before a scalar is retained or a substitution is chosen.
+It rejects integral and nonintegral floats equally, including NaN and
+infinities. No Python integer-cache identity convention is involved.
+
+Successful-opening lemma: every normally returned value of i is an
+integer/Boolean leaf or a finite list of those values. Every visited source
+leaf has that type. Proof is induction on the successfully traversed list
+and on any used substitution image. The image itself is recursively scanned
+at numerical root depth 3. Multiplication by d%2 leaves either this typed
+image or a neutral zero/empty value.
+
+3. Public input grammar and scope
+--------------------------------
+The initial floor is k=0. On a list at depth d, only arities 1 and
+2+(d mod 2) pass. Every child is visited at d+5-arity. A scalar must be an
+integer/Boolean with 0<=a<d and (d & (a mod 2)) nonzero. Thus it is a positive
+odd code at numerical (odd) depth. True is allowed exactly as code 1;
+False fails at the public root. At formula depth, scalar goals fail.
+
+The depth rule is UNIFORM in the child position. It is the predecessor's
+padded codec, not the exact iterator binding codec. Numerical zero is code
+1; successor is a unary array; iteration is ternary. An equation is a
+binary array and D is unary. Canonical native encodings use only genuine
+slots inside this padded scheme. The inherited raw reading gives auxiliary
+arities neutral readings and supplies the opening/substitution lemma.
+
+No validation step was postponed: each goal is scanned at the current floor
+BEFORE that floor is decremented in the terminal candidate tuple. In an
+introduction, the witness is opened before the recursive major check, while
+the fresh continuation parameter is read after it. The two evaluation
+orders are necessary for freshness and are unchanged.
+
+4. Unvisited and equality-matched input values
+--------------------------------------------
+Do not claim that every consumed packet is an integer/list tree. For
+example, a three-key JSON object can unpack as a record; it can be inert at
+a hypothesis leaf when its first key is the empty string. This is harmless
+but prevents a naive statement of complete document typing.
+
+A value used by an accepting run is in one of three classes:
+
+ * It is scanned by i: the successful-opening lemma applies.
+ * It occurs in a candidate which must equal a checked tree: the list
+   structure and every mathematically relevant leaf then agree. A Boolean
+   or an integral float can compare equal to an integer in an unscanned
+   candidate, but its value is exactly that integer. It cannot create a
+   new numerical name or an additional axiom.
+ * It is never used in an accepted inference: it contributes no hypothesis.
+
+Null, strings and objects cannot equal a checked numerical leaf or list.
+Nonintegral floats, NaN and infinities cannot supply an integer-matched
+leaf. Substitution images actually used are scanned independently. Unused
+prefix records are not assumptions.
+
+The soundness proof is DIRECT EXTRACTION of a native derivation from the
+successful call tree. It is not a claim that arbitrary JSON traces can be
+coerced globally to the old byte-level certificate language with identical
+control flow. Such a coercion can change irrelevant truth tests.
+
+5. Soundness and completeness
+-----------------------------
+The initial context contains only the neutral truth. For each finite
+successful call, context membership is hypothesis; an equality-matched
+computation candidate is one of the two iterator computations. The
+specialization branch checks its major and both instances of its template,
+giving equality transport or closure elimination. A unary major supplies D
+elimination through its triple repetition and fresh opening. A neutral
+major opens the goal's witness and yields DI by cases, or equation progress
+when the matrix is binary and the mode field is 2. The inherited opening
+lemma and strictly decreasing floor establish the eigenvariable conditions.
+The preceding type lemma covers all actively read expressions; the matching
+argument covers the remaining computation-candidate fields. This proves
+the same native inference at each successful branch.
+
+For completeness, use the existing canonical certificate construction for
+the entry-reservation three-field checker. All its active values are finite
+integer/list trees. The new list and scalar tests accept those values; the
+scope, depth and substitution operations are exactly the same. Changes
+1(a)-(e) preserve values and order. Hence every such certificate is accepted
+unchanged. Native/iPRA soundness, completeness, and the existing two
+interpretations carry over. The proof is relative to the mathematical
+correctness of the existing padded native decoder and canonical compiler;
+tests do not replace those theorems.
+
+6. Reproducible evidence
+-----------------------
+Run python3 tests/verify.py from any working directory. It checks 103
+inherited cases (with intentional acceptance of irrelevant JSON prefixes),
+14 Boolean-alias positives, 4,350 public-grammar examples, 504 active scalar
+scans, and 22 complete process executions, including optimized Python.
+The process cases include equation induction with a used hypothesis,
+compound implication elimination, and future-witness capture rejection.
+The receipt records no failures. These finite checks are supporting
+evidence, not universal verification or a proof of minimality.
