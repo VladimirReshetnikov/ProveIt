@@ -1,0 +1,72 @@
+import OrdinarySphere7160Generic
+import OrdinarySphere7160Literal
+import ShearOrder
+
+/-! Source-only draft; predecessor names are local materialization targets. -/
+set_option autoImplicit false
+noncomputable section
+namespace DiophantineConsistency.ShearForwardNormOrderDraft
+open Carrier65 FreshCarrierSpheres ShearOrderDraft
+
+variable {R : Type*} [CommRing R] [LinearOrder R] [IsStrictOrderedRing R]
+
+/-- The checked 71/60 sphere structure supplies the hypotheses of the
+elementary positive-shear lemma once the signed half-bound is provided. -/
+theorem value_positive_shear (F : Facts R) (p : Fin 4 → R) (v : Fin 14 → R)
+    (hb : 0 < p 0) (hv : ∀ j, 0 < v j)
+    (hhalf : 2*(core p v).rank < (core p v).c)
+    (hz : OrdinarySphere7160Generic.value71 p v = 0) :
+    (core p v).V < (core p v).y := by
+  let d := core p v
+  let I := d.i*d.c^2
+  let A := d.delta*(d.f^2-1)
+  have hp : 1 ≤ d.P^2 := square_ge_one F (first_ne_zero F p v hb hv)
+  have hu : 1 ≤ (auxiliary d)^2 := square_ge_one F (auxiliary_ne_zero F p v hb hv)
+  have hq := sq_nonneg (d.Q*d.W-1)
+  have hs := sq_nonneg (I^2-A)
+  change d.P^2+(auxiliary d)^2+(d.Q*d.W-1)^2+(I^2-A)^2-2 = 0 at hz
+  have hus : (auxiliary d)^2=1 := by nlinarith only [hz,hp,hu,hq,hs]
+  have hss : (I^2-A)^2=0 := by nlinarith only [hz,hp,hu,hq,hs]
+  have he : I^2=A := sub_eq_zero.mp (pow_eq_zero_iff two_ne_zero |>.mp hss)
+  have hUeq : auxiliary d=I^2*(d.V^2-d.y^2)+d.y^2 := by
+    unfold auxiliary
+    rw [he]
+  have hUneg : auxiliary d ≠ -1 := by
+    rw [hUeq]
+    exact square_aux_ne_neg_one F _ _ _
+  have hU : auxiliary d=1 := sq_one hUneg hus
+  have hcpos : 0 < d.c := c_pos F p v hb hv
+  have hipos : 0 < d.i := by change 0 < v 5; exact hv 5
+  have hIpos : 0 < I := mul_pos hipos (pow_pos hcpos 2)
+  have hApos : 0 < A := by rw [←he]; exact pow_pos hIpos 2
+  have hA : 1 ≤ A := F.discrete _ hApos
+  have hc : 1 ≤ d.c := F.discrete _ hcpos
+  have hy : 1 ≤ d.y := F.discrete _ (by change 0 < v 12; exact hv 12)
+  have hT : 1 ≤ v 6 := F.discrete _ (hv 6)
+  have hfpos : 0 < d.f := by change 0 < v 4; exact hv 4
+  have hfne : d.f ≠ 1 := by
+    intro hf
+    dsimp [A] at hApos
+    rw [hf] at hApos
+    simp at hApos
+  have hf2 : 2 ≤ d.f := by
+    have h1 : 1 ≤ d.f := F.discrete _ hfpos
+    have hgt : 1 < d.f := lt_of_le_of_ne h1 (Ne.symm hfne)
+    have hd := F.discrete (d.f-1) (by linarith)
+    linarith
+  have hvne : d.V ≠ 1 := graph_carrier_ne_one p v hc hf2 hT hhalf
+  have hnorm : A*(d.V^2-d.y^2)+d.y^2 = 1 := by
+    simpa only [auxiliary,A] using hU
+  exact positive_shear A d.V d.y hA hy hnorm hvne
+
+/-- Literal evaluator interface; it does not build a natural witness. -/
+theorem literal_positive_shear (F : Facts R) (p : Fin 4 → ℤ) (v : Fin 14 → R)
+    (hb : 0 < (p 0 : R)) (hv : ∀ j, 0 < v j)
+    (hhalf : 2*(core (fun j => (p j : R)) v).rank < (core (fun j => (p j : R)) v).c)
+    (hz : (OrdinarySphere7160Literal.expressionAt p).evalRing v = 0) :
+    (core (fun j => (p j : R)) v).V < (core (fun j => (p j : R)) v).y := by
+  rw [OrdinarySphere7160Literal.eval_expression] at hz
+  change OrdinarySphere7160Generic.value71 (fun j => (p j : R)) v = 0 at hz
+  exact value_positive_shear F _ v hb hv hhalf hz
+
+end DiophantineConsistency.ShearForwardNormOrderDraft
