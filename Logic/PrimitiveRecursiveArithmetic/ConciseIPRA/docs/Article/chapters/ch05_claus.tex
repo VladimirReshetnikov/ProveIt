@@ -2396,6 +2396,24 @@ $b_0$ does not occur.
 The second statement is \cref{claus:thm:ku}.
 \end{proof}
 
+\begin{remark}[The Lean modules]
+\label{claus:rem:pdlean}
+\Lean{NativePartialDischarge} formalizes $\varrho^{+}$ (\Lean{RhoPlus}, with
+$\varrho^{+}\subseteq\varrho$ as \Lean{RhoPlus.toRho}), $\mathsf{K}^{u}$
+(\Lean{KUPrf}) and $\mathsf{PD}$ (\Lean{PDPrf}), and proves
+\cref{claus:thm:pd} for every clause context (\Lean{pdprf\_iff\_kuprf}),
+\cref{claus:thm:ku} with the reflexivity clause (\Lean{kuprf\_iff\_kprf}),
+and the bridge on $Q$-free sequents (\Lean{pdprf\_iff\_nprf\_of\_qfree}).
+The proofs follow those of the evaluating discharge (\Lean{E3Prf}) and of
+uniform clauses (\Lean{VPrf}): the diagonal start of the introduction
+depends on the matrix only and commutes with substitution
+(\Lean{NFm.dstart\_subst}), and the row $D$ takes the place of the identity
+case.  The translation from $\mathsf{K}^{u}$ carries an injective renaming
+and an extension of the context through the induction instead of a
+separate substitution lemma, so \cref{claus:thm:pdsubst} is not needed
+for it and is not formalized.
+\end{remark}
+
 Under the ordinary reading every rule of $\mathsf{PD}$ is sound in $\Teq$
 directly: \rulename{Discharge} as the discharge of $\mathsf{ED}$ after
 \cref{claus:thm:fusion}, since $\varrho^{+}$ is a restriction of $\varrho$,
@@ -2816,10 +2834,11 @@ clauses (\cref{claus:thm:guard,claus:prop:mirror}), the support quotient
 (\cref{claus:thm:fusionzero}), the propositions
 \cref{claus:prop:threenodes,claus:prop:rows}, the obstruction
 \cref{claus:thm:reflobs}, the theorem \cref{claus:thm:rigidity}, the
-calculi $\mathsf{K}^{u}$ and $\mathsf{PD}$ with the operation $\varrho^{+}$
-and \cref{claus:lem:covar,claus:thm:pdsubst,claus:thm:ku,claus:thm:pd}
-(\pkg{476\_byte\_presentation} claims no Lean or Rocq verification of
-them or of its proof compilers), and the
+covariance \cref{claus:lem:covar} and the tree-preserving substitution
+\cref{claus:thm:pdsubst} (\pkg{476\_byte\_presentation} claims no Lean
+or Rocq verification of its results or of its proof compilers;
+\cref{claus:thm:ku,claus:thm:pd} are formalized in this repository, see
+\cref{claus:rem:pdlean}), and the
 correspondence of each Python checker with its calculus.
 \item \pkg{reduced\_clause\_calculus} implements the translation of
 certificates from raw to zero-normal syntax only; the converse compiler
