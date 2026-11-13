@@ -1,0 +1,73 @@
+import OrdinarySphere7160IPRA
+import DiophantineConsistency.HAExpressionNoZeroEquiv
+import DiophantineConsistency.Shear72Literal
+
+/-! SOURCE ONLY. The literal import is prospective; no theorem in this
+    client or its selected provider combination has been elaborated here. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.Shear72ConditionalIPRADraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation FoundationZFCConsistencyNat
+
+/-- Both expressions use the current four integer ports and positive shift. -/
+def child : Expr (Fin 14) :=
+  positiveShift (Shear72LiteralDraft.expressionAt CurrentWindowCarry2011.ports)
+def parent : Expr (Fin 14) :=
+  positiveShift (OrdinarySphere7160Literal.expressionAt CurrentWindowCarry2011.ports)
+
+/-- Each direction may change the valuation; no same-witness assertion. -/
+def ParentToChild : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+    ∀ v : Fin 14 → V, InternalZero parent v → ∃ w : Fin 14 → V, InternalZero child w
+
+def ChildToParent : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁],
+    ∀ v : Fin 14 → V, InternalZero child v → ∃ w : Fin 14 → V, InternalZero parent w
+
+/-- Both valuation-changing maps yield the required all-model no-zero equivalence. -/
+theorem same_no_zero (forward : ParentToChild) (reverse : ChildToParent) :
+    SameNoZero child parent := by
+  intro V _ _
+  constructor
+  · intro hc v hv
+    obtain ⟨w,hw⟩ := forward V v hv
+    exact hc w hw
+  · intro hp v hv
+    obtain ⟨w,hw⟩ := reverse V v hv
+    exact hp w hw
+
+/-- The bridge transports the checked parent polynomial endpoint. -/
+theorem bridge72 (forward : ParentToChild) (reverse : ChildToParent) :
+    PolynomialBridge child :=
+  HAExpressionNoZeroEquiv.bridge child parent (same_no_zero forward reverse)
+    OrdinarySphere7160IPRA.bridge71
+
+theorem native_equivalence72 (forward : ParentToChild) (reverse : ChildToParent) :
+    nativeTheory ⊢ IPRAExpressionNative.nativeNoZero child 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge child (bridge72 forward reverse)
+
+theorem standard_equivalence72 (forward : ParentToChild) (reverse : ChildToParent) :
+    IPRAStandardTheory.standardTheory ⊢ IPRAExpressionNative.nativeNoZero child 🡘
+      ∼mappedNativeRefutation embedding :=
+  (IPRAStandardTheory.provable_iff _).2 (native_equivalence72 forward reverse)
+
+theorem standard_translated_equivalence72 (forward : ParentToChild) (reverse : ChildToParent) :
+    IPRAStandardTheory.standardTheory ⊢ IPRAExpressionNative.nativeNoZero child 🡘
+      (Semiformula.lMap embedding sourceSentence)ᴺ := by
+  apply (IPRAStandardTheory.provable_iff _).2
+  obtain ⟨h⟩ := native_equivalence72 forward reverse
+  have z := IPRABoundedRhoZFC.zfcEquiv
+  exact ⟨Entailment.K_intro
+    (Entailment.C_trans (Entailment.K_left h) (Entailment.K_right z))
+    (Entailment.C_trans (Entailment.K_left z) (Entailment.K_right h))⟩
+
+end DiophantineConsistency.Shear72ConditionalIPRADraft
+#print axioms DiophantineConsistency.Shear72ConditionalIPRADraft.bridge72
+#print axioms DiophantineConsistency.Shear72ConditionalIPRADraft.native_equivalence72
+#print axioms DiophantineConsistency.Shear72ConditionalIPRADraft.standard_equivalence72
+#print axioms DiophantineConsistency.Shear72ConditionalIPRADraft.standard_translated_equivalence72
