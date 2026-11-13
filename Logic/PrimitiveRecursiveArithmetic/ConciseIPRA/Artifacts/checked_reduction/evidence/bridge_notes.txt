@@ -1,0 +1,145 @@
+BASELINE AND BRIDGE AUDIT
+Pinned commit: 798856e4ef2d02b7f9c0f1660828c5ce58f277f2
+Repository path: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA
+
+1. EMPIRICAL BASELINES
+
+The current qualified compact coordinate envelope is 239 significant Python
+tokens / 256 AST nodes / 461 normalized UTF-8 bytes, attained by different
+programs. It is not a mathematical lower bound, and no one baseline attains
+all three coordinates.
+
+Artifacts/fused_blocks_and_checkers/checkers/code/checker_tokens239.py:
+239 / 261 / 549, JSONL, global floor, three fields.
+Artifacts/fused_blocks_and_checkers/checkers/code/checker_ast256.py:
+245 / 256 / 580, JSONL, global floor, three fields.
+Artifacts/prefix_conditional/code/checker_bytes461.py:
+267 / 298 / 461, whole JSON, shifted syntax, four fields.
+
+All assume a canonical closed GUARDED Eq/D public goal and finite exact
+integer/list certificate trees. They do not validate these entire promises.
+Unconsumed certificate data are permitted. Success is normal exit with the
+exact ACCEPT line. Ideal finite execution is the mathematical execution model.
+
+Latest incoming fully validated native Eq/D profiles (whole alphabet and goal
+grammar checked) give a different envelope 317 / 356 / 597:
+docs/incoming/ipra_validated_arity_refinement_2026-11-13.zip
+code/checker_strict_tokens317.py: 317 / 368 / 634
+code/checker_strict_ast356.py: 325 / 356 / 646
+code/checker_strict597.py: 328 / 372 / 597
+
+See qualified_baselines.json for exact normalized hashes, and census.json for
+the static read-only source screen. This is source measurement, not a new
+universal semantic certification. The only screened source shorter than
+461 bytes is an explicitly unsound 460-byte parity-deletion mutant. Shorter
+token/node entries are build, measurement, and verification helpers.
+
+2. EXACT GUARDED CALCULUS
+
+Primary concise source: docs/Article/chapters/ch11_cert.tex,
+cert:def:U, cert:def:Aminus, cert:rem:imported.
+Primary proof source: docs/Article/chapters/ch03_guard.tex,
+guard:thm:aux, guard:thm:public, guard:cor:biinterp.
+
+Terms: x | 0 | S(t) | I(n,a;u.h), binding u in h only.
+Native formulas: s=t | Q_y B | D_xy B.
+Ordinary reading: Q_y B = B(0) -> forall y B(y),
+D_xy B = exists x (B(x,0) -> forall y B(x,y)).
+
+Public formulas contain Eq and D only. An atomic matrix immediately under D
+must have the literal shape I(y,0;u.h)=I(y,0;u.k). Compound public matrices
+are otherwise unrestricted recursively. Internal derivations may use ALL
+native formulas, including Q and unguarded atomic D matrices.
+
+Six primitive rule families:
+Hyp: A in Gamma => Gamma |- A.
+I0: Gamma |- I(0,a;u.h)=a.
+IS: Gamma |- I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+SE: Gamma |- M(s,t;F), Gamma |- F(s) => Gamma |- F(t),
+where M=Q_v F(v) when s is literally 0 and M=(s=t) otherwise.
+DE: Gamma |- D_xy B, Gamma,Q_y B(b,y) |- A => Gamma |- A,
+where b is fresh for Gamma, A and D_xy B.
+DI: Gamma,B(t,eta_B(z)) |- B(t,Sz) => Gamma |- D_xy B,
+where z is fresh for Gamma,t,D_xy B and eta_B(z)=z at literal equations,
+eta_B(z)=0 at compound matrices.
+
+CRITICAL CAVEATS:
+- The root-selected introduction is weaker than unrestricted native case
+  introduction on all auxiliary formulas. The theorem is for public sequents.
+- The stronger internal soundness invariant uses mixed/auxiliary reading
+  exists x forall y (E(x,y)->E(x,Sy)); Q retains conditional-closure reading.
+  Its ordinary reading agrees on public guarded formulas because their zero
+  instances are theorems. Ordinary reading is ALSO sound for all auxiliaries,
+  since this calculus is a subcalculus of the native one. What must not be
+  claimed is ordinary-reading completeness or both interpretation round trips
+  for every unguarded auxiliary D.
+- Restricting all internal formulas to the guarded grammar while retaining
+  source-selected transport loses equality completeness (0=t need not give
+  t=0). Auxiliary unguarded progress matrices repair this.
+- Numerical substitution may turn a nonzero literal source into literal 0;
+  rule-by-rule substitution of derivations cannot be assumed. Checker soundness
+  uses the ordinary theory T_eq, where contextual substitution is admissible.
+- Mode selection must not enable progress for compound formulas: that would
+  yield unrestricted induction, beyond iPRA's quantifier-free induction.
+
+3. PUBLIC TRANSLATION AND BI-INTERPRETATION
+
+Let C(v,a,b)=I(v,a;u.b) with u not in FV(b).
+Let gamma_v(s=t) be C(v,0,s)=C(v,0,t).
+Let L(E)=D_av gamma_v E with a,v fresh.
+Let P(E)=L(E) for an equation; P(B)=B for compound B.
+Define T(E)=E, T(Q_y B)=D_ay P(TB) with a unused, and
+T(D_xy B)=D_xy P(TB). Every T(A) is public.
+The native calculus derives A <-> T(A); the guarded-source calculus derives
+B <-> T(B) for public B. Public consequence relations agree. The maps on
+terms are identity; both formula composites are internally derivable.
+
+Compose this with the native scalar bridge in ch01_base.tex,
+base:thm:bridge, to obtain full first-order iPRA bi-interpretability.
+The numerical domains are whole, equality is actual numerical equality,
+and both numerical comparison graphs are x=y. This is stronger than merely
+mutual consistency or mutual derivability of one contradiction.
+
+4. ORDINARY REALIZATION T_eq AND LOGICAL MACROS
+
+T_eq is intuitionistic first-order equality logic over the scalar terms with:
+both computation equations; coverage x=0 or exists y x=Sy;
+separation 0=S0 -> false; induction for literal equations, allowing arbitrary
+side assumptions. Native derivability and T_eq ordinary readings correspond.
+Predecessor, equality reflection, quantifier-free induction, pairing and the
+compiler for all primitive recursive functions are DERIVED, not extra axioms.
+In the opposite direction each fixed iterator body is primitive recursive;
+there is no universal evaluation function for arbitrary PR codes in iPRA.
+See ch01_base.tex base:def:teq, base:sec:arith, base:def:tau,
+base:prop:sigma, base:prop:termrt, base:thm:bridge.
+
+Set Z(c)=C(c,1,0), N(n)=I(n,0;u.Z(u)).
+Native connectives (ch01_base.tex base:def:macros):
+bottom_* := 0=S0;
+A =>_* B := Q_y Sel(y,A,B);
+A and_* B := Q_y gate(y,Sel(N(y),A,B));
+exists_* x A := D_xy gate(y,A);
+A or_* B := exists_* x Sel(x,A,B);
+forall_* x A := A(0) and_* Q_x A.
+
+Formula selector Sel is not simply a pointwise term operation at mismatched
+binders. The full recursion is base:def:gate:
+Sel(v,s=t,r=w):=C(v,s,r)=C(v,t,w).
+Sel(v,s=t,Q_y B):=Q_y Sel(v,C(y,0,s)=C(y,0,t),B).
+Sel(v,s=t,D_xy B):=D_xy Sel(v,C(y,0,s)=C(y,0,t),B).
+gate(v,B):=Sel(v,0=0,B).
+Sel(v,Q_y A,B):=Q_y Sel(v,A,gate(y,B)).
+Sel(v,D_xy A,B):=D_xy Sel(v,A,gate(y,B)).
+Bound variables are renamed fresh for v and the other operand.
+The resulting native macros must then be translated by T for guarded public
+goals. Formula composites follow from the displayed selector/gate laws and
+the term round trips, not merely from external equality of theorem sets.
+
+5. FORMAL STATUS
+
+The upstream Lean bridge and guarded public translation are formalized, but
+their compilation has not been rerun in this audit. Upstream Python sources
+have written correctness arguments; this audit has not formalized Python
+semantics or established all-certificate correctness from finite tests.
+Any new kernel rewrite must prove its own exact successful-execution or
+canonical theorem-existence relation and retain its input contract.

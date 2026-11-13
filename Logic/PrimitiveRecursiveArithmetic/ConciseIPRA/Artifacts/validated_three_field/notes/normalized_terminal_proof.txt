@@ -1,0 +1,111 @@
+NORMALIZED COMPUTATION TERMINALS: 595-BYTE STRICT COMPOSITION
+
+Status: written proof of soundness and canonical-goal completeness, by composition
+of already-proved repository devices. This is not a new arithmetic axiom deletion,
+not an exact raw-certificate equivalence, and not a new proof-assistant result.
+
+Reference snapshot: VladimirReshetnikov/ProveIt,
+798856e4ef2d02b7f9c0f1660828c5ce58f277f2.
+Reference article: Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/docs/Article/
+chapters/ch11_cert.tex, in particular cert:sec:validated-terminal,
+cert:lem:plus-opening, cert:lem:closed-leaf, cert:lem:recoding,
+and cert:prop:validated-terminal (the existing normalized-terminal program S3).
+Matched implementation: incoming ipra_validated_arity_refinement_2026-11-13,
+code/checker_strict597.py. The new complete module is
+code/checker_bytes595.py.
+
+1. Exact source change
+
+Replace the last member of the terminal tuple
+
+  [[s and [s] or 1, u, t], i(t, r[:3], 3) if s else u]
+
+by
+
+  i([[s and [s], u, t], i(t, r[:3], 3) if s else u]).
+
+All other code is unchanged. In particular the complete input alphabet is
+validated, the closed native Eq/D public grammar is validated in phase v=1,
+the phase is reset to v=0 before the candidate is evaluated, scopes are unchanged,
+and the introduction selector remains that of the matched S2 implementation:
+progress exactly when the opened matrix has arity 2 and u=2, unless a true major
+already selects the eigenparameter image.
+
+The opener in the proof phase is the repository's O_k^+ (uniform zero): it sends
+an in-range zero scalar to 1. Thus the external manual `or 1` at the zero counter
+can be removed: opening the entire candidate supplies the same canonical zero.
+
+2. Soundness
+
+Write H_k(s,u,t) for the raw candidate before its final no-image opening. For a
+true-valued s it is [[[s],u,t], O_k^+(t;[s,u,t],3)]. For a false-valued s (on the
+validated integer/list alphabet this means 0 or []) it is [[s,u,t],u]. This is
+exactly an allowed candidate in cert:lem:closed-leaf, with the false counter c=s.
+
+If O_k^+(H_k;missing,0) is defined, cert:lem:plus-opening gives closedness of H_k
+and preservation of its sorted reading. By cert:lem:closed-leaf, that reading is
+an instance of the zero or successor iterator computation equation. If the
+opened goal equals this opened candidate, the goal therefore has a derivable
+computation reading. Membership of 0 or an existing context entry is unchanged.
+Every nonterminal branch is identical to S2, whose soundness proof in
+cert:prop:validated-terminal(b) applies unchanged. Induction on the successful
+call tree proves soundness. The root syntax and alphabet gates are unchanged,
+so the public conclusion is a closed native formula with the same interpretation.
+
+No idempotence of O_k^+ on arbitrary raw trees is assumed. The article explicitly
+warns that such idempotence fails. The argument uses only semantic preservation,
+closedness, and the closed-candidate lemma, exactly as its proof for S3 does.
+
+3. Canonical-goal completeness
+
+Use the canonical compiler of cert:prop:validated-terminal(c), with the existing
+S2 mode markers: u=0 for case introduction and u=2 for atomic progress. (The
+article's S3 implementation uses the opposite marker convention; that is an
+independent selector choice and does not enter the terminal proof.)
+
+For a hypothesis or a neutral-major call use S2's dummy packet [m,s,u,t]=[0,0,1,1],
+rotated to the current packet layout [s,u,t,m]. Its opened candidate is defined.
+Zero computation has packet fields (s,u,t)=(0,R(a),R(h)); opening its candidate
+changes only the source-counter zero to 1 and yields the desired canonical
+uniform-zero equation. Successor computation has fields (R(n),R(a),R(h)); the
+uniform-zero recoding represents numerical zero by the true scalar 1, so the
+successor instance with predecessor zero needs no special repair. The recoding
+lemma identifies the opened candidate with the requested computation equation.
+
+The last paragraph of cert:prop:validated-terminal(c) verifies the needed
+definedness for every canonical logical packet: a closed numerical field occurs
+at depth at least the root term depth, and a template or matrix at depth at least
+3 above its formula root. All canonical scalar references remain in range, the
+candidate's substitution image consists of closed canonical fields in these
+positions, and the additional opening of the entire candidate is defined.
+The constants 0 and 2 used as introduction markers are also in range at all term
+positions where the candidate places them. The logical continuation is the
+unchanged S2 continuation with its original markers.
+
+As in cert:prop:leaf(b) and cert:prop:validated-terminal(c), use branch-aware
+compilation: form the current packet, evaluate the terminal test, and omit the
+subderivations if that test already succeeds. This matters inside a major proof;
+one may not merely leave unused packets there, since the caller would consume
+them. With this compiler every recursive call consumes exactly its intended
+stack. Thus every canonical closed theorem has an accepted certificate.
+
+4. What is and is not new
+
+The normalized-candidate mechanism and its mathematical proof are already the
+S3 construction in the article. The new item is its composition with the most
+recent complete S2 implementation (arity-exponent validation, procedure form,
+rotated prefix packets and S2's marker convention). Remeasurement in CPython
+3.12.14 gives 329 significant tokens / 372 AST nodes / 595 normalized UTF-8 bytes,
+against 328 / 372 / 597. The byte coordinate improves by 2; the token coordinate
+increases by 1. It does not beat the compact unchecked-interface envelope.
+
+The accepted raw certificate sets need not agree: the new program scans the
+entire candidate even when it is irrelevant and may canonicalize additional
+aliases. Its claimed equivalence is equality of the represented closed theorem
+set, on the same fully validated public grammar, not exact execution equivalence.
+
+5. Executable evidence
+
+All 43 inherited strict cases had their expected outcomes in the candidate's
+normal-mode run. The test receipt is evidence/family_validation.json.
+This finite evidence supplements the proof above and does not prove it.
