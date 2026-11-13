@@ -82,4 +82,4 @@ Thus the stated Cal conclusion holds from the four norm hypotheses and port boun
 
 ## Reproduction and scope
 
-`python3 -I -S -B research/adaptive87-current-cfold-cal-fact-replay/check.py` reproduces `receipt.json`. It pins and checks the actual graph's 50 relevant rows and source theorem-interface markers, and verifies the carrier and q⁴-divisibility polynomial identities exactly. These finite checks do not verify the universal theorem applications, quotient/exponent behavior in models, or Lean elaboration; no Lean/build/staging is run.
+`python3 -I -S -B research/adaptive87-current-cfold-cal-fact-replay/check.py` reproduces `receipt.json`. It pins and checks the actual graph's complete 88-row wiring and source theorem-interface markers, and verifies the carrier and q⁴-divisibility polynomial identities exactly. These finite checks do not verify the universal theorem applications, quotient/exponent behavior in models, or Lean elaboration; no Lean/build/staging is run.
