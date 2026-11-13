@@ -1,0 +1,60 @@
+import EtaZetaNaturalJPositive
+import ZeroOrdinateMainObstruction
+import Mathlib.Tactic.Ring
+
+/-! Proposed actual-probe eta=zeta=0 graph client. All unit, positivity,
+difference-ring and provider obligations remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.EtaZetaZeroGraphObstructionDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing
+open EtaZetaNaturalUnitGraphDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+def q (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := 1+v 0*(p 0:V)
+def Y (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := q p v*(q p v*q p v)*(v 7+1)
+def U (p : Fin 4 → ℕ) (v : Fin 13 → V) : V := Y p v*(q p v*q p v)
+def rank (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  (ι (v 2+1)+(ι (q p v)-ι (v 1+1))*ι (v 0*(p 0:V)))*
+    (ι (q p v)*ι (q p v)-1)+ι (v 0)*(ι (p 2:V)+ι (p 3:V)*ι (q p v))
+def shift (p : Fin 4 → ℕ) (v : Fin 13 → V) : DiffRing V :=
+  ι (U p v)*ι (v 12)+rank p v+1
+
+/-- Under represented beta>0, the actual probe has no output zero with
+both eta and zeta zero, conditional on all imported source proofs checking. -/
+theorem both_zero_impossible (p : Fin 4 → ℕ) (v : Fin 13 → V)
+    (hz : InternalZero (graph (fun j => (p j:ℤ))).output v)
+    (hbeta : 0<(p 0:V)) (heta : v 9=0) (hzeta : v 10=0) : False := by
+  have hJ := EtaZetaNaturalJPositiveDraft.J_positive p v hz
+  have hb : 0<v 0*(p 0:V) := mul_pos hJ hbeta
+  have hq1 : 1<q p v := by dsimp [q]; exact lt_add_of_pos_right 1 hb
+  have hq : 2≤q p v := by
+    simpa only [show (1:V)+1=2 by ring] using lt_iff_succ_le.mp hq1
+  have hYeq : Y p v=(q p v)^3*(v 7+1) := by dsimp [Y]; ring
+  have hY : (q p v)^3≤Y p v := by
+    rw [hYeq]
+    exact le_mul_of_one_le_right (Arithmetic.zero_le _) (by simp)
+  let pp : Fin 4 → ℤ := fun j => (p j:ℤ)
+  let e : Fin 13 → DiffRing V := fun j => ι (v j)
+  let z : DiffRing V := (graph pp).d.evalRing e
+  have hshape : z=ι (Y p v*(q p v*q p v))*ι (q p v*v 6)+
+      ι (3+4*Y p v*(q p v*v 6+1))*shift p v := by
+    simp [z,graph,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+      Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,e,pp,
+      P72Root.cast_port,heta,hzeta,shift,rank,U,Y,q,map_add,map_mul,map_one,map_ofNat] <;> ring
+  have hnorms := EtaZetaNaturalUnitBridgeDraft.signed_norms pp v hz
+  obtain ⟨_,hmain,_,_⟩ := hnorms
+  have hnorm : z*z=ι (Y p v*(q p v*q p v))*ι (Y p v*(q p v*q p v)) := by
+    simpa [z,graph,Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+      Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,e,pp,
+      P72Root.cast_port,heta,hzeta,U,Y,q,map_add,map_mul,map_one,map_ofNat]
+      using hmain
+  exact ZeroOrdinateMainObstructionDraft.zero_ordinate_impossible
+    (q p v) (Y p v) (q p v*v 6) (v 6) z (shift p v) hq hY rfl hshape hnorm
+end DiophantineConsistency.EtaZetaZeroGraphObstructionDraft
+#print axioms DiophantineConsistency.EtaZetaZeroGraphObstructionDraft.both_zero_impossible

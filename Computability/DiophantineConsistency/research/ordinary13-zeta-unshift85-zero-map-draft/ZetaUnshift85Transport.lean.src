@@ -1,0 +1,93 @@
+import EtaNaturalUnitGraph
+import EtaZetaNaturalUnitGraph
+import ZetaZeroCompactGraph
+import DiophantineConsistency.HAExpressionNoZeroEquiv
+import DiophantineConsistency.IPRAExpressionNative
+import Mathlib.Tactic.Ring
+
+/-! Proposed exact zeta-coordinate transfer. Both graphs have 85 rows.
+All source, graph-forcing, provider and endpoint obligations are unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+set_option maxRecDepth 100000
+set_option maxHeartbeats 16000000
+noncomputable section
+namespace DiophantineConsistency.ZetaUnshift85TransportDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.Entailment
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open AdaptiveEquationSyntax2011 ModelDifferenceRing HAExpressionAssembly HAExpressionNoZeroEquiv
+open PRALanguage IPRANativeTheory IPRAFoundationZFCMappedNegation
+open Residue90CompactPortBoundsDraft
+
+def raiseZeta {V : Type*} [Add V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=10 then v i+1 else v i
+def lowerZeta {V : Type*} [Sub V] [One V] (v : Fin 13 → V) (i : Fin 13) : V :=
+  if i=10 then v i-1 else v i
+
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+theorem raise_lower (v : Fin 13 → V) (h : 0<v 10) : raiseZeta (lowerZeta v)=v := by
+  funext i
+  fin_cases i <;> simp [raiseZeta,lowerZeta,tsub_add_cancel_of_le (pos_iff_one_le.mp h)]
+
+/-- The original eta-natural 85 graph at v equals the changed eta/zeta
+probe at raiseZeta v, including the extra −1 in the probe's signed r0. -/
+theorem evaluation (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    (EtaNaturalUnitGraphDraft.graph p).output.evalRing (fun j => ι (v j)) =
+      (EtaZetaNaturalUnitGraphDraft.graph p).output.evalRing (fun j => ι (raiseZeta v j)) := by
+  simp [EtaNaturalUnitGraphDraft.graph,EtaZetaNaturalUnitGraphDraft.graph,raiseZeta,
+    Expr.evalRing_add,Expr.evalRing_sub,Expr.evalRing_mul,
+    Expr.evalRing_var,Expr.evalRing_constant,Expr.evalRing_ofNat,
+    map_add,map_mul,map_one] <;> ring
+
+theorem zero_iff (p : Fin 4 → ℤ) (v : Fin 13 → V) :
+    InternalZero (EtaNaturalUnitGraphDraft.graph p).output v ↔
+      InternalZero (EtaZetaNaturalUnitGraphDraft.graph p).output (raiseZeta v) := by
+  rw [ModelDifferenceRing.internalZero_iff,ModelDifferenceRing.internalZero_iff,evaluation p v]
+
+/-- Explicit positive-zeta cut, for exactly the changed graph and same K. -/
+def ForcedZeta (K : ℕ) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] (v : Fin 13 → V),
+    InternalZero (EtaZetaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output v → 0<v 10
+
+theorem compact_no_zero_iff (K : ℕ)
+    (hforce : ∀ v : Fin 13 → V,
+      InternalZero (EtaZetaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output v → 0<v 10) :
+    (∀ v : Fin 13 → V, ¬InternalZero (EtaZetaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output v) ↔
+      ∀ v : Fin 13 → V, ¬InternalZero (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output v := by
+  constructor
+  · intro h v hz
+    exact h (raiseZeta v) ((zero_iff _ v).mp hz)
+  · intro h v hz
+    have hp := hforce v hz
+    have he := raise_lower v hp
+    apply h (lowerZeta v)
+    apply (zero_iff _ (lowerZeta v)).mpr
+    simpa only [he] using hz
+
+theorem compact_sameNoZero (K : ℕ) (hforce : ForcedZeta K) : SameNoZero
+    (EtaZetaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output
+    (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output := by
+  intro V _ _
+  exact compact_no_zero_iff K (hforce V)
+
+/-- The parent bridge remains a premise even after the proposed source
+forcing client is composed. -/
+theorem polynomialBridge (K : ℕ) (hforce : ForcedZeta K)
+    (hparent : PolynomialBridge (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output) :
+    PolynomialBridge (EtaZetaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output :=
+  HAExpressionNoZeroEquiv.bridge _ _ (compact_sameNoZero K hforce) hparent
+
+theorem proposed_forcing (K : ℕ) : ForcedZeta K := by
+  intro V _ _ v hz
+  exact ZetaZeroCompactGraphDraft.zeta_positive K v hz
+
+theorem native_equivalence (K : ℕ)
+    (hparent : PolynomialBridge (EtaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output) : nativeTheory ⊢
+    IPRAExpressionNative.nativeNoZero (EtaZetaNaturalUnitGraphDraft.graph (fun j => (ports K j:ℤ))).output 🡘
+      ∼mappedNativeRefutation embedding :=
+  IPRAExpressionNative.equivalence_of_bridge _ (polynomialBridge K (proposed_forcing K) hparent)
+end DiophantineConsistency.ZetaUnshift85TransportDraft
+#print axioms DiophantineConsistency.ZetaUnshift85TransportDraft.evaluation
+#print axioms DiophantineConsistency.ZetaUnshift85TransportDraft.compact_no_zero_iff
+#print axioms DiophantineConsistency.ZetaUnshift85TransportDraft.native_equivalence
