@@ -1,0 +1,80 @@
+import DiophantineConsistency.PellCoordinateWB
+import DiophantineConsistency.PellPeriodBounded
+
+/-! SOURCE ONLY: all six witness-replacement and hierarchy claims are explicit
+    hypotheses. Quotation matching and the body WB proof remain unelaborated. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.PellPeriodFullWBDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder LO.FirstOrder.Arithmetic
+open PRAFiniteFunctionCodes PRALanguage PRATheory
+open ArithmeticPellRecurrence PRAWitnessCalculus PRAWitnessPR
+open PRAWitnessBoundTerms PRAWitnessBoundTerms.BoundTerm
+open PellCoordinateWBDraft PellPeriodBoundedDraft
+
+/-- After all six period existentials: [t,r,y,x,h,c,m,a]. -/
+def finalBody : ArithmeticSemisentence 8 :=
+  “t r y x h c m a. !yDef c m a ∧ h=2*m*c ∧
+    !xDef x h a ∧ !yDef y h a ∧ x=1+c*c*r ∧ y=t*c*c”
+def bodyR : ArithmeticSemisentence 7 := ∃⁰ finalBody
+def bodyY : ArithmeticSemisentence 6 := ∃⁰ bodyR
+def bodyX : ArithmeticSemisentence 5 := ∃⁰ bodyY
+def bodyH : ArithmeticSemisentence 4 := ∃⁰ bodyX
+def bodyC : ArithmeticSemisentence 3 := ∃⁰ bodyH
+
+/-- Candidate bounds, each in the environment *before* its witness is added. -/
+def boundC : BoundTerm 2 := exp2 (poly ‘2 * (#1 + 2) * #0’) (poly ‘0’)
+def boundH : BoundTerm 3 := poly ‘2 * #1 * #0’
+def boundX : BoundTerm 4 := exp2 (poly ‘2 * (#3 + 2) * #0’) (poly ‘0’)
+def boundY : BoundTerm 5 := exp2 (poly ‘2 * (#4 + 2) * #1’) (poly ‘0’)
+def boundR : BoundTerm 6 := poly ‘#1’
+def boundT : BoundTerm 7 := poly ‘#1’
+
+/-- Exact input shape of `wb_exs_bt'`; no replacement is proved here. -/
+def Replacement {n : ℕ} (ψ : ArithmeticSemisentence (n+1)) (T : BoundTerm n) : Prop :=
+  ∀ (V : Type) [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+    (e : Fin n → V) (x : V), ψ.Eval (x :> e) Empty.elim →
+      ∃ x' ≤ T.vval e, ψ.Eval (x' :> e) Empty.elim
+
+section Models
+variable {M : Type} [Nonempty M] [Structure language M] [Structure.Eq language M]
+  [M↓[language] ⊧* PRA]
+local instance : Zero M := ⟨Structure.func (L := language) (Code.zero 0) Fin.elim0⟩
+local instance : One M := ⟨Structure.func (L := language) oneCode Fin.elim0⟩
+local instance : Add M := ⟨fun x y => Structure.func (L := language) addCode ![x,y]⟩
+local instance : Mul M := ⟨fun x y => Structure.func (L := language) mulCode ![x,y]⟩
+local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
+
+/-- Proposed body closure using the two coordinate-WB clients. -/
+theorem finalBody_wb : WB M finalBody := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := PRAModelIOpenPairing.standardModelIOpen
+  letI : M↓[ℒₒᵣ] ⊧* 𝗣𝗔⁻ := models_of_subtheory (U := 𝗜𝗢𝗽𝗲𝗻) inferInstance
+  have := xDef_wb (M := M)
+  have := yDef_wb (M := M)
+  unfold finalBody
+  wb_auto
+
+/-- Exact conditional six-existential composition. The hierarchy and
+    replacement obligations are separate hypotheses, not completed proofs. -/
+theorem period_wb_of_replacements
+    (hcS : Hierarchy 𝚺 1 bodyC) (hhS : Hierarchy 𝚺 1 bodyH)
+    (hxS : Hierarchy 𝚺 1 bodyX) (hyS : Hierarchy 𝚺 1 bodyY)
+    (hrS : Hierarchy 𝚺 1 bodyR) (htS : Hierarchy 𝚺 1 finalBody)
+    (hc : Replacement bodyC boundC) (hh : Replacement bodyH boundH)
+    (hx : Replacement bodyX boundX) (hy : Replacement bodyY boundY)
+    (hr : Replacement bodyR boundR) (ht : Replacement finalBody boundT) :
+    WB M periodDef.val := by
+  have hT : WB M bodyR := wb_exs_bt' finalBody htS boundT ht (finalBody_wb (M := M))
+  have hR : WB M bodyY := wb_exs_bt' bodyR hrS boundR hr hT
+  have hY : WB M bodyX := wb_exs_bt' bodyY hyS boundY hy hR
+  have hX : WB M bodyH := wb_exs_bt' bodyX hxS boundX hx hY
+  have hH : WB M bodyC := wb_exs_bt' bodyH hhS boundH hh hX
+  change WB M (∃⁰ bodyC)
+  exact wb_exs_bt' bodyC hcS boundC hc hH
+
+end Models
+end DiophantineConsistency.PellPeriodFullWBDraft
+#print axioms DiophantineConsistency.PellPeriodFullWBDraft.finalBody_wb
+#print axioms DiophantineConsistency.PellPeriodFullWBDraft.period_wb_of_replacements
