@@ -1,0 +1,63 @@
+import MainSquareGap
+import AuxRootBounds
+
+/-! Proposed fact-level zeta-zero k=2 exclusion and first-norm descent.
+No graph binding, Lean run, provider replay or endpoint is claimed. -/
+set_option autoImplicit false
+set_option Elab.async false
+noncomputable section
+namespace DiophantineConsistency.ZetaZeroNormLargeKDraft
+open LO LO.FirstOrder LO.FirstOrder.Arithmetic
+open scoped LO.FirstOrder.Arithmetic
+open ArithmeticPellFirstNorm ModelMainSquareGapDraft AuxRootBoundsModelDraft
+variable {V : Type*} [ORingStructure V] [V↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+
+/-- For zeta=0 and k=eta=2, the exact main ordinate lies strictly
+between the consecutive-square bounds, so its main norm is impossible. -/
+theorem two_ordinate_impossible (X Y k Delta d : V)
+    (hY : 0<Y)
+    (hDelta : (X*Y+Y+2)*(X*Y+Y+2)=Delta+1)
+    (hmain : d*d=1+Delta*(k+Y*k)*(k+Y*k)) : k≠2 := by
+  intro hk
+  let A : V := X*Y+Y+2
+  let c : V := k+Y*k
+  have hA : 0<A := by dsimp [A]; simp
+  have hcEq : c=2+2*Y := by dsimp [c]; rw [hk]; ring
+  have hc : 1<c := by
+    rw [hcEq]
+    exact lt_of_lt_of_le (by norm_num : (1:V)<2)
+      (le_add_of_nonneg_right (Arithmetic.zero_le (2*Y)))
+  have hcA : c<2*A := by
+    rw [hcEq]
+    dsimp only [A]
+    have hxy := Arithmetic.zero_le (X*Y)
+    nlinarith
+  apply no_main_square A c Delta d hA hc hcA
+  · simpa only [A] using hDelta
+  · simpa only [c] using hmain
+
+/-- With k>0, the first norm excludes k=1, the zeta-zero main norm excludes
+k=2, and the ordinary first Pell descent yields the large lower bound. -/
+theorem large_first_ordinate (X Y k tau Delta d : V)
+    (hX : 0<X) (hY : 0<Y) (hk : 0<k)
+    (hDelta : (X*Y+Y+2)*(X*Y+Y+2)=Delta+1)
+    (hfirst : tau*tau=1+(X*Y*Y)*(X*Y*Y+1)*k*k)
+    (hmain : d*d=1+Delta*(k+Y*k)*(k+Y*k)) :
+    2<k ∧ 8*X*Y*Y+4≤k := by
+  let m : V := X*Y*Y
+  have hm : 0<m := mul_pos (mul_pos hX hY) hY
+  have hm1 : m-1+1=m := tsub_add_cancel_of_le (pos_iff_one_le.mp hm)
+  have hdisc : discriminant (m-1)=m*(m+1) := by
+    unfold discriminant
+    rw [show m-1+2=(m-1+1)+1 by ring,hm1]
+  have hn : tau*tau=1+m*(m+1)*k*k := by simpa only [m] using hfirst
+  have hn' : tau*tau=1+discriminant (m-1)*k*k := by rwa [hdisc]
+  have hkge : 2≤k := two_le_ordinate (m-1) tau k hk hn'
+  have hkne : k≠2 := two_ordinate_impossible X Y k Delta d hY hDelta hmain
+  have hkgt : 2<k := lt_of_le_of_ne hkge (Ne.symm hkne)
+  have hlarge := first_ordinate_large m tau k hm hkgt hn
+  constructor
+  · exact hkgt
+  · simpa only [m,show 8*(X*Y*Y)=8*X*Y*Y by ring] using hlarge
+end DiophantineConsistency.ZetaZeroNormLargeKDraft
+#print axioms DiophantineConsistency.ZetaZeroNormLargeKDraft.large_first_ordinate
