@@ -160,7 +160,10 @@ The recursion's global bound remains open.
 shows that an appropriate majorant absorbs them in one tower step.
 `PA196PASubstitutionConstructorGrowth.lean` proves corresponding local bounds
 for the four non-atomic constructors, assuming bounds for their children.
-Uniform recursive output and global stage bounds remain open.
+`PA196PASubstitutionGraphStep.lean` combines these results into a one-node
+bound for actual graph outputs, conditional on bounds for the relevant smaller
+children at the two recursive parameter values. Uniform recursive output and
+global stage bounds remain open.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
