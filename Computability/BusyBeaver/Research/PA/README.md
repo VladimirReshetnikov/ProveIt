@@ -188,9 +188,10 @@ gate seed. The [distinct-label endpoint](pa194-distinct-gate-endpoint/README.md)
 discharges the equal-label gate case and narrows the premise to the remaining
 distinct-label separation tails. The model-length
 [universal-opening endpoint](pa195-calibration/PA194OpeningEndpoint.md) is
-now identified even for nonstandard codes; the required closed induction
-axiom bodies and distinct-label comprehension remain open. Neither result
-supplies the physical-machine connection.
+now identified even for nonstandard codes, and the resulting
+[internal induction theorem](pa195-calibration/PA194FullInternalInduction.md)
+constructs the required closed induction axiom bodies. Distinct-label bounded
+comprehension and the physical-machine connection remain open.
 
 For the physical simulation needed in both directions, the
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
