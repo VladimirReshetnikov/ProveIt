@@ -7,3 +7,6 @@
 The theorem **assumes** such a sequence and certifying bodies; it neither constructs an opening sequence for a given `qqAlls` axiom nor identifies its endpoint with `subst (fvarVec m) b`. It also does not construct the induction-axiom recognizer witnesses, prove the PA comprehension schema, discharge the gate, or establish a result in iPRA.
 
 The author focused replay uses the pinned Foundation overlay and `check-iterated-free.sh`; printed axioms are `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`.
+
+An independent complete standalone replay rebuilt the theorem from the pinned
+Foundation overlay and passed without `sorryAx`.
