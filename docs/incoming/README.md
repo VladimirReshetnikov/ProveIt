@@ -22,54 +22,55 @@ one directory per archive. That README gives the layout, the wrapper directory o
 archive, and the members that are not placed: copies of the imported upstream snapshots,
 nested copies of sibling archives, and files matched by `.gitignore`.
 
-Twenty of the archives are removed from this directory. Twenty-one stay, marked
-"kept here" below, because tracked scripts and READMEs under
-`Computability/BusyBeaver/Research/PA` open them at this path and several check the digest
-of the archive file. Remove them once those references read the placed files instead.
+All forty-one archives are removed from this directory. Twenty-one of them were kept at
+first, because scripts under `Computability/BusyBeaver/Research/PA` open them at this path
+and several check the digest of the archive file; they were removed on Vladimir's
+instruction of 13 November 2026. The placement README says how to restore an archive file
+from the history.
 
-| Archive | Arrived | Placement | This directory |
-|---|---|---|---|
-| `pa_unary_power_cover.zip` | 2026-10-28 | [pa_unary_power_cover](../../Computability/BusyBeaver/Research/PA/docs/pa_unary_power_cover/) | removed |
-| `U208_ConPA_Conditional_Context_2026-10-29.zip` | 2026-10-29 | [U208_ConPA_Conditional_Context_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/U208_ConPA_Conditional_Context_2026-10-29/) | removed |
-| `U208_ConPA_Entry_Context_2026-10-29.zip` | 2026-10-29 | [U208_ConPA_Entry_Context_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/U208_ConPA_Entry_Context_2026-10-29/) | removed |
-| `U208_ConPA_History_2026-10-29.zip` | 2026-10-29 | [U208_ConPA_History_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/U208_ConPA_History_2026-10-29/) | removed |
-| `U208_ConPA_2026-10-29.zip` | 2026-10-29 | [U208_ConPA_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/U208_ConPA_2026-10-29/) | kept here |
-| `u208_research_2026-10-29.zip` | 2026-10-29 | [u208_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/u208_research_2026-10-29/) | removed |
-| `Below_U208_Research_2026-10-29.zip` | 2026-10-29 | [Below_U208_Research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/Below_U208_Research_2026-10-29/) | removed |
-| `u208_comparison_research_2026-10-29.zip` | 2026-10-29 | [u208_comparison_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/u208_comparison_research_2026-10-29/) | removed |
-| `ConPA_below208_research_2026-10-29.zip` | 2026-10-29 | [ConPA_below208_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/ConPA_below208_research_2026-10-29/) | removed |
-| `pa_consistency_research_2026-10-29.zip` | 2026-10-29 | [pa_consistency_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research_2026-10-29/) | kept here |
-| `pa208_research_2026-10-29.zip` | 2026-10-29 | [pa208_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/pa208_research_2026-10-29/) | kept here |
-| `pa_tm_research_2026-11-13.zip` | 2026-11-13 | [pa_tm_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_tm_research_2026-11-13/) | kept here |
-| `pa_consistency_research_2026-11-13.zip` | 2026-11-13 | [pa_consistency_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research_2026-11-13/) | kept here |
-| `conpa_tm_comparison_and_reduction_search.zip` | 2026-11-13 | [conpa_tm_comparison_and_reduction_search](../../Computability/BusyBeaver/Research/PA/docs/conpa_tm_comparison_and_reduction_search/) | kept here |
-| `pa196_research_2026-11-13.zip` | 2026-11-13 | [pa196_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa196_research_2026-11-13/) | removed |
-| `pa_consistency_research.zip` | 2026-11-13 | [pa_consistency_research](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research/) | kept here |
-| `pa_tm_comparison_and_reductions.zip` | 2026-11-13 | [pa_tm_comparison_and_reductions](../../Computability/BusyBeaver/Research/PA/docs/pa_tm_comparison_and_reductions/) | kept here |
-| `pa_tm_extended_research_2026-11-13.zip` | 2026-11-13 | [pa_tm_extended_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_tm_extended_research_2026-11-13/) | kept here |
-| `conpa_tm_comparison_and_search.zip` | 2026-11-13 | [conpa_tm_comparison_and_search](../../Computability/BusyBeaver/Research/PA/docs/conpa_tm_comparison_and_search/) | kept here |
-| `pa_consistency_reduction.zip` | 2026-11-13 | [pa_consistency_reduction](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_reduction/) | kept here |
-| `pa_consistency_comparison_2026_11_13.zip` | 2026-11-13 | [pa_consistency_comparison_2026_11_13](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_comparison_2026_11_13/) | removed |
-| `PA_consistency_TM_research_2026-11-13.zip` | 2026-11-13 | [PA_consistency_TM_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/PA_consistency_TM_research_2026-11-13/) | removed |
-| `pa_consistency_research_2026-11-13 (2).zip` | 2026-11-13 | [pa_consistency_research_2026-11-13_2](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research_2026-11-13_2/) | kept here |
-| `conpa_tm_study_2026-11-13.zip` | 2026-11-13 | [conpa_tm_study_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/conpa_tm_study_2026-11-13/) | kept here |
-| `pa_below196_research.zip` | 2026-11-13 | [pa_below196_research](../../Computability/BusyBeaver/Research/PA/docs/pa_below196_research/) | removed |
-| `pa_consistency_comparison_and_new196_2026-11-13.zip` | 2026-11-13 | [pa_consistency_comparison_and_new196_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_comparison_and_new196_2026-11-13/) | kept here |
-| `pa_tm_research_2026-11-13 (2).zip` | 2026-11-13 | [pa_tm_research_2026-11-13_2](../../Computability/BusyBeaver/Research/PA/docs/pa_tm_research_2026-11-13_2/) | kept here |
-| `pa_consistency_cross_archive.zip` | 2026-11-13 | [pa_consistency_cross_archive](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_cross_archive/) | removed |
-| `pa195_conpa_2026-11-13.zip` | 2026-11-13 | [pa195_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa195_conpa_2026-11-13/) | kept here |
-| `pa_consistency_reduction_audit_2026-11-14.zip` | 2026-11-13 | [pa_consistency_reduction_audit_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_reduction_audit_2026-11-14/) | removed |
-| `pa_consistency_research_2026-11-14.zip` | 2026-11-13 | [pa_consistency_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research_2026-11-14/) | removed |
-| `PA195_ConPA_research_2026-11-14.zip` | 2026-11-13 | [PA195_ConPA_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/PA195_ConPA_research_2026-11-14/) | kept here |
-| `pa195_followup_research.zip` | 2026-11-13 | [pa195_followup_research](../../Computability/BusyBeaver/Research/PA/docs/pa195_followup_research/) | kept here |
-| `pa194_conpa_2026-11-13.zip` | 2026-11-13 | [pa194_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13/) | kept here |
-| `pa194_conpa_2026-11-13 (2).zip` | 2026-11-13 | [pa194_conpa_2026-11-13_2](../../Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13_2/) | kept here |
-| `pa195_diagonal_combined_2026-11-13.zip` | 2026-11-13 | [pa195_diagonal_combined_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa195_diagonal_combined_2026-11-13/) | kept here |
-| `pa194C_conpa_2026-11-13 (2).zip` | 2026-11-13 | [pa194C_conpa_2026-11-13_2](../../Computability/BusyBeaver/Research/PA/docs/pa194C_conpa_2026-11-13_2/) | removed |
-| `pa194_new_designs_2026-11-13.zip` | 2026-11-13 | [pa194_new_designs_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194_new_designs_2026-11-13/) | removed |
-| `pa194c_conpa.zip` | 2026-11-13 | [pa194c_conpa](../../Computability/BusyBeaver/Research/PA/docs/pa194c_conpa/) | removed |
-| `pa194c_conpa_2026-11-13 (1).zip` | 2026-11-13 | [pa194c_conpa_2026-11-13_1](../../Computability/BusyBeaver/Research/PA/docs/pa194c_conpa_2026-11-13_1/) | removed |
-| `pa194c_conpa_2026-11-13.zip` | 2026-11-13 | [pa194c_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194c_conpa_2026-11-13/) | removed |
+| Archive | Arrived | Placement |
+|---|---|---|
+| `pa_unary_power_cover.zip` | 2026-10-28 | [pa_unary_power_cover](../../Computability/BusyBeaver/Research/PA/docs/pa_unary_power_cover/) |
+| `U208_ConPA_Conditional_Context_2026-10-29.zip` | 2026-10-29 | [U208_ConPA_Conditional_Context_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/U208_ConPA_Conditional_Context_2026-10-29/) |
+| `U208_ConPA_Entry_Context_2026-10-29.zip` | 2026-10-29 | [U208_ConPA_Entry_Context_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/U208_ConPA_Entry_Context_2026-10-29/) |
+| `U208_ConPA_History_2026-10-29.zip` | 2026-10-29 | [U208_ConPA_History_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/U208_ConPA_History_2026-10-29/) |
+| `U208_ConPA_2026-10-29.zip` | 2026-10-29 | [U208_ConPA_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/U208_ConPA_2026-10-29/) |
+| `u208_research_2026-10-29.zip` | 2026-10-29 | [u208_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/u208_research_2026-10-29/) |
+| `Below_U208_Research_2026-10-29.zip` | 2026-10-29 | [Below_U208_Research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/Below_U208_Research_2026-10-29/) |
+| `u208_comparison_research_2026-10-29.zip` | 2026-10-29 | [u208_comparison_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/u208_comparison_research_2026-10-29/) |
+| `ConPA_below208_research_2026-10-29.zip` | 2026-10-29 | [ConPA_below208_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/ConPA_below208_research_2026-10-29/) |
+| `pa_consistency_research_2026-10-29.zip` | 2026-10-29 | [pa_consistency_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research_2026-10-29/) |
+| `pa208_research_2026-10-29.zip` | 2026-10-29 | [pa208_research_2026-10-29](../../Computability/BusyBeaver/Research/PA/docs/pa208_research_2026-10-29/) |
+| `pa_tm_research_2026-11-13.zip` | 2026-11-13 | [pa_tm_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_tm_research_2026-11-13/) |
+| `pa_consistency_research_2026-11-13.zip` | 2026-11-13 | [pa_consistency_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research_2026-11-13/) |
+| `conpa_tm_comparison_and_reduction_search.zip` | 2026-11-13 | [conpa_tm_comparison_and_reduction_search](../../Computability/BusyBeaver/Research/PA/docs/conpa_tm_comparison_and_reduction_search/) |
+| `pa196_research_2026-11-13.zip` | 2026-11-13 | [pa196_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa196_research_2026-11-13/) |
+| `pa_consistency_research.zip` | 2026-11-13 | [pa_consistency_research](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research/) |
+| `pa_tm_comparison_and_reductions.zip` | 2026-11-13 | [pa_tm_comparison_and_reductions](../../Computability/BusyBeaver/Research/PA/docs/pa_tm_comparison_and_reductions/) |
+| `pa_tm_extended_research_2026-11-13.zip` | 2026-11-13 | [pa_tm_extended_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_tm_extended_research_2026-11-13/) |
+| `conpa_tm_comparison_and_search.zip` | 2026-11-13 | [conpa_tm_comparison_and_search](../../Computability/BusyBeaver/Research/PA/docs/conpa_tm_comparison_and_search/) |
+| `pa_consistency_reduction.zip` | 2026-11-13 | [pa_consistency_reduction](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_reduction/) |
+| `pa_consistency_comparison_2026_11_13.zip` | 2026-11-13 | [pa_consistency_comparison_2026_11_13](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_comparison_2026_11_13/) |
+| `PA_consistency_TM_research_2026-11-13.zip` | 2026-11-13 | [PA_consistency_TM_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/PA_consistency_TM_research_2026-11-13/) |
+| `pa_consistency_research_2026-11-13 (2).zip` | 2026-11-13 | [pa_consistency_research_2026-11-13_2](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research_2026-11-13_2/) |
+| `conpa_tm_study_2026-11-13.zip` | 2026-11-13 | [conpa_tm_study_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/conpa_tm_study_2026-11-13/) |
+| `pa_below196_research.zip` | 2026-11-13 | [pa_below196_research](../../Computability/BusyBeaver/Research/PA/docs/pa_below196_research/) |
+| `pa_consistency_comparison_and_new196_2026-11-13.zip` | 2026-11-13 | [pa_consistency_comparison_and_new196_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_comparison_and_new196_2026-11-13/) |
+| `pa_tm_research_2026-11-13 (2).zip` | 2026-11-13 | [pa_tm_research_2026-11-13_2](../../Computability/BusyBeaver/Research/PA/docs/pa_tm_research_2026-11-13_2/) |
+| `pa_consistency_cross_archive.zip` | 2026-11-13 | [pa_consistency_cross_archive](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_cross_archive/) |
+| `pa195_conpa_2026-11-13.zip` | 2026-11-13 | [pa195_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa195_conpa_2026-11-13/) |
+| `pa_consistency_reduction_audit_2026-11-14.zip` | 2026-11-13 | [pa_consistency_reduction_audit_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_reduction_audit_2026-11-14/) |
+| `pa_consistency_research_2026-11-14.zip` | 2026-11-13 | [pa_consistency_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research_2026-11-14/) |
+| `PA195_ConPA_research_2026-11-14.zip` | 2026-11-13 | [PA195_ConPA_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/PA195_ConPA_research_2026-11-14/) |
+| `pa195_followup_research.zip` | 2026-11-13 | [pa195_followup_research](../../Computability/BusyBeaver/Research/PA/docs/pa195_followup_research/) |
+| `pa194_conpa_2026-11-13.zip` | 2026-11-13 | [pa194_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13/) |
+| `pa194_conpa_2026-11-13 (2).zip` | 2026-11-13 | [pa194_conpa_2026-11-13_2](../../Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13_2/) |
+| `pa195_diagonal_combined_2026-11-13.zip` | 2026-11-13 | [pa195_diagonal_combined_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa195_diagonal_combined_2026-11-13/) |
+| `pa194C_conpa_2026-11-13 (2).zip` | 2026-11-13 | [pa194C_conpa_2026-11-13_2](../../Computability/BusyBeaver/Research/PA/docs/pa194C_conpa_2026-11-13_2/) |
+| `pa194_new_designs_2026-11-13.zip` | 2026-11-13 | [pa194_new_designs_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194_new_designs_2026-11-13/) |
+| `pa194c_conpa.zip` | 2026-11-13 | [pa194c_conpa](../../Computability/BusyBeaver/Research/PA/docs/pa194c_conpa/) |
+| `pa194c_conpa_2026-11-13 (1).zip` | 2026-11-13 | [pa194c_conpa_2026-11-13_1](../../Computability/BusyBeaver/Research/PA/docs/pa194c_conpa_2026-11-13_1/) |
+| `pa194c_conpa_2026-11-13.zip` | 2026-11-13 | [pa194c_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194c_conpa_2026-11-13/) |
 
 ## Sub-exponential 3-SAT (ETH) reports
 

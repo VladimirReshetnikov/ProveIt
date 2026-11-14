@@ -131,7 +131,7 @@ source comparison and the remaining proof obligations.
 
 ## Review of the incoming direct translation, 13 November 2026
 
-The later incoming [PA-TM research archive](../../../../../docs/incoming/pa_tm_research_2026-11-13.zip),
+The later incoming [PA-TM research archive](../docs/pa_tm_research_2026-11-13/),
 member `pa_tm_research_2026-11-13/report/pa_reverse_translation.tex`, proposes
 a more direct route than recoding PA196 into the older native syntax. It
 interprets PA196 membership as arithmetic bit membership `B(u,v)` and

@@ -2,7 +2,7 @@
 
 This screen applies the directional source reassociation criterion from
 `analysis/directional_associativity.md` in the incoming
-[PA208 research archive](../../../../../../docs/incoming/pa208_research_2026-10-29.zip)
+[PA208 research archive](../../docs/pa208_research_2026-10-29/)
 to the source tree in the imported
 [PA196 program](../../jamesyc-upstream/pa196/PA196/Program.lean). It looks for
 reduced **source DAG** size, not a direct physical state deletion. The input

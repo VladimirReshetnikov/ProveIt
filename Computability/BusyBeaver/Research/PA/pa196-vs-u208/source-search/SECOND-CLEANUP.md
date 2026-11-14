@@ -19,7 +19,7 @@ are:
 | 9 | `breakTo 1` | 11 |
 
 This is a source-level reduction related to the three-category cleanup in the
-incoming [PA208 optimization dossier](../../../../../../docs/incoming/pa_consistency_research_2026-10-29.zip).
+incoming [PA208 optimization dossier](../../docs/pa_consistency_research_2026-10-29/).
 No physical machine has been allocated from the edited source. The increase
 in DAG nodes is evidence that fewer source sites do not directly imply fewer
 binary machine states.

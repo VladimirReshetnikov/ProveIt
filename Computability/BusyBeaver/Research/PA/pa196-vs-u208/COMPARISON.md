@@ -29,7 +29,7 @@ starts in state 0 on a two-way infinite, all-zero tape.
   nonhalting-to-consistency result. PA196's paper identifies it as the direct
   predecessor and records a reduction of 13 working states. Its program has
   3,948 sites, versus PA196's 3,812.
-* The incoming [U208 archive](../../../../../docs/incoming/U208_ConPA_2026-10-29.zip)
+* The incoming [U208 archive](../docs/U208_ConPA_2026-10-29/)
   contains `U208_ConPA_2026-10-29/report.tex`, `machine/u208.tm`, and the
   parent `baseline/u209.native.tm`. The dense U208 table has 208 working
   states and 416 rows, with halt 208. Its report states the intended
@@ -38,7 +38,7 @@ starts in state 0 on a two-way infinite, all-zero tape.
   contains **no new end-to-end exported PA, Lean, Rocq, or MM0 certificate**
   for that endpoint. It remains an external submission in
   [`docs/incoming`](../../../../../docs/incoming/README.md), not an imported
-  proof of the PA196 endpoint. The [separate review dossier](../../../../../docs/incoming/pa_consistency_research_2026-10-29.zip)
+  proof of the PA196 endpoint. The [separate review dossier](../docs/pa_consistency_research_2026-10-29/)
   reports 3,909 source primitives for its U208 classes. Its U209 parent is
   **not** thereby identified with James Chang's distinct PA209 machine.
 

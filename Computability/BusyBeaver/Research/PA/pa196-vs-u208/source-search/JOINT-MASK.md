@@ -1,6 +1,6 @@
 # Nine-register zero/positive invariant for PA196
 
-The U208 [source optimization dossier](../../../../../../docs/incoming/pa_consistency_research_2026-10-29.zip)
+The U208 [source optimization dossier](../../docs/pa_consistency_research_2026-10-29/)
 uses a joint zero/positive abstraction of all nine registers. We apply the
 same kind of abstraction to the imported PA196 source from its clean seed
 `commandConfig 25 2 0 0 zeroStore`, whose register vector is
