@@ -44,8 +44,12 @@ is equivalent to that source program in standard finite-run semantics, and
 [its clock composition](pa194-command-clock/README.md) connects the initial
 scheduler state to the machine clocks. Parts of the literal register scanner
 are also proved as native iPRA equalities; see the
-[source-file engine](pa194/ipra/machine-code/SOURCE-FILE-ENGINE.md). Both
-machine-specific consistency reductions remain unproved.
+[source-file engine](pa194/ipra/machine-code/SOURCE-FILE-ENGINE.md). In standard
+Lean semantics, [the calculus/clock composition](pa194-calculus-clock/README.md)
+proves that either clock reaches 1 exactly when the displayed separate-diagonal
+numerical calculus has a finite derivation of contradiction. Its calibration
+to PA and its internalization in iPRA remain open, as do both machine-specific
+consistency reductions.
 
 ## Original 195-state candidate
 
