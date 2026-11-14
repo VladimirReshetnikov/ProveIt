@@ -31,3 +31,8 @@ The four target-side modules passed ordered suffix checks against the
 retained PA196 prerequisites and audited project and Foundation objects; the
 printed axioms contain no `sorryAx`. The generated wrapper was syntax-checked;
 the full prerequisite-prefix replay remains pending.
+
+An independent ordered suffix replay rebuilt all four PAeq shift, qVec and
+paired-trace modules against the separately checked arithmetic qVec ceiling
+and retained formula/prerequisite overlays. It passed without `sorryAx`; this
+was not a full prerequisite replay.
