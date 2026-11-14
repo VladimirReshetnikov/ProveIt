@@ -3,6 +3,10 @@
 `PA194SeedBridge.parent_blank_iff_source` proves that the exact unfolded
 parent machine halts from its blank tape if and only if the formal PA194
 source program halts from site 25 and the complete seeded register file.
+`PA194SeedFacts.lean` independently checks that the physical seed has 35
+blocks and represents logical register N = 2 with the remaining logical
+registers equal to zero.
+
 Both the per-site `Coverage` proof and exact blank-to-seed-frame reachability
 are explicit hypotheses. The theorem combines the source/parent simulation
 with deterministic prefix comparison, and is a standard-Lean result rather

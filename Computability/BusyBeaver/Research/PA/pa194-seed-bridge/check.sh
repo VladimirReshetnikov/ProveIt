@@ -44,4 +44,5 @@ lean -M6000 -j1 -o "$task_dir/PA194SourceHalting.olean" "$base/pa194-source-halt
 python3 "$base/pa194-source-tree/generate.py" "$task_dir/PA194SourceTree.lean"
 lean -M6000 -j1 --root="$task_dir" -o "$task_dir/PA194SourceTree.olean" "$task_dir/PA194SourceTree.lean"
 lean -M6000 -j1 -o "$task_dir/PA194SourceProgram.olean" "$base/pa194-coverage/PA194SourceProgram.lean"
-lean -M6000 -j1 "$base/pa194-seed-bridge/PA194SeedBridge.lean"
+lean -M6000 -j1 -o "$task_dir/PA194SeedBridge.olean" "$base/pa194-seed-bridge/PA194SeedBridge.lean"
+lean -M6000 -j1 "$base/pa194-seed-bridge/PA194SeedFacts.lean"
