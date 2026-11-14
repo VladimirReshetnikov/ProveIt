@@ -1,0 +1,119 @@
+\section{PA194R: a reassociated 194-state decoder}
+\label{sec:pa194r}
+
+PA194R combines the final-emitter decrement proved above with a different
+binary association of the axiom-emitter program. It has 194 working
+states and 388 transition rows. The complete primitive instruction
+graph is identical to PA194F, but 1,111 of its 3,646 source addresses
+change. These addresses are the binary paths physically processed by
+the decoder, so the construction changes the encoded program and its
+shared decoder graph. It is more than a relabeling of PA194F's controls.
+The known-zero closing principle and symmetric cached controller remain
+the explicitly attributed inherited components.
+
+Of the 67 axiom-reader subtree types, 23 are shared with PA194F and
+44 are replaced by different types. The maximum complete source-address
+length remains 37. Thus the claim of a different decoder is supported
+both by its changed sharing structure and by the separate control-graph
+isomorphism check, not merely by a different printed numbering.
+
+The new association retains 67 distinct axiom-reader states before
+folding. Together with the 135 fixed controls, the unfolded machine has
+202 working states. Seven contextual folds in the axiom reader and the
+retained symmetric-controller fold give
+\[
+                         135+67-7-1=194.
+\]
+The physical state savings therefore survive the changed program
+association. The construction and fold records are reproducible from
+\texttt{construction/build\_reassociated.py}; the final machine and
+its source paths are retained in \texttt{machines/PA194R/}.
+
+The dense table's SHA-256 is
+\begin{quote}\small\ttfamily
+\nolinkurl{8a9a8a30773f73b638a7c51da1afca9c9921371aea819d6a21f02d742f673a4e},
+\end{quote}
+and the native table's SHA-256 is
+\begin{quote}\small\ttfamily
+\nolinkurl{24539448def6e974d636052dbcb56eeb61d8e06ad0e9924d734c3bd4f0e01aa8}.
+\end{quote}
+
+\subsection{Exact source equality and independent literal verification}
+
+Preserving a flattened instruction word would not be sufficient here:
+breaks and continues depend on the surrounding binary program structure.
+The independent verifier instead parses the delivered source paths and
+resolves every successor twice, using the arithmetic-path and interval
+algorithms. The results agree at all 3,646 sites, and agree exactly with
+PA194F's resolved graph, including both targets of every decrement.
+The primitive operation and register operand also agree at every site.
+Thus the change is in physical source addresses and decoding; it makes
+no change to the already-proved primitive source machine $P_F$.
+
+The standalone verifier
+\texttt{verification/check\_reassociated.py} reads the delivered native
+transition table directly. It does not import the construction compiler
+or use an arithmetic-register oracle. It rederives the four register-list
+lemmas from the literal rows and checks all 4,746 primitive outcomes,
+including the positive branch at the final emitter decrement. Each
+contract quantifies over arbitrary natural register values, an arbitrary
+source gap, and an arbitrary finite nonempty list of arbitrary natural
+spare values. The contracts certify complete frame transformations and
+positive physical durations, with no intermediate halt in a nonhalting
+instruction segment.
+
+A separate simulator stores the finite set of tape cells containing one,
+so the exterior is exactly the infinite zero tape. From native start
+control 74 it reaches the complete clean source frame after 57,768
+transitions: native control 84, head $-2$, source site 25, logical
+registers $(2,0,0,0,0,0,0,0,0)$, and the recorded 26 spare registers.
+The entire finite tape support is compared with the frame encoding,
+not just the decoded logical registers. The source path at site 25 is
+unchanged by reassociation. The dense table is checked to be the exact
+breadth-first renaming of the native table, with dense start 0 and
+halting target 194.
+
+Receipts, all symbolic contracts, the rederived list lemmas, the complete
+blank seed and the list of changed source addresses are retained in
+\texttt{verification/recorded/PA194R/}. The verifier supports
+\texttt{--output} for replay into a fresh directory and rejects Python's
+optimized mode, which would disable its assertions.
+
+\begin{theorem}[Consistency calibration of PA194R]
+For the delivered binary table with its specified blank start,
+\[
+ \mathrm{PA}\vdash
+ H_{\mathrm{PA194R}}
+ \ \longleftrightarrow\ H_{P_F}
+ \ \longleftrightarrow\
+ \exists p\,\operatorname{Prf}_{\mathrm{PA}}
+                         (p,\ulcorner0=1\urcorner).
+\]
+Consequently
+\[
+ \mathrm{PA}\vdash
+ \neg H_{\mathrm{PA194R}}\ \longleftrightarrow\
+                       \operatorname{Con}(\mathrm{PA}).
+\]
+\end{theorem}
+\begin{proof}
+Exact graph equality identifies PA194R's source machine with $P_F$.
+Its independently checked startup supplies the same logical seed.
+Concatenating the total positive instruction contracts maps a finite
+source halt to a finite literal halt. Conversely, a literal halt at
+time $T$ cannot coexist with $T+1$ nonhalting source instructions:
+their positive physical segments, preceded by startup, would extend a
+deterministic nonhalting literal execution beyond time $T$. This is the
+same bounded converse argument established for PA194F. The source
+equivalence and inherited syntactic PA calibration then give the displayed
+biconditionals. All finite checks and run inductions have the ordinary
+mathematical PA-provability scope explained in the preceding sections.
+\end{proof}
+
+The changed association need not preserve physical running times or
+spare-list lengths. Each complete-frame contract accounts for its own
+effects; source equality is what transfers the logical calibration.
+As with PA194F, the new result is supported by ordinary proofs and
+complete symbolic verification, with the inherited calibration and
+symbolic-rule soundness dependencies stated explicitly. No new
+end-to-end proof-assistant kernel theorem is asserted.

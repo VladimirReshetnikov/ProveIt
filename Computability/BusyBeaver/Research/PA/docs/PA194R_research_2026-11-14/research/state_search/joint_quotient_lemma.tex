@@ -1,0 +1,39 @@
+\subsection{A broader bounded quotient screen}
+The new search permits both rows of a retained control to be synthesized jointly,
+including intermediate returns to that retained control.  Earlier independent-row
+screens stopped when such a return occurred.  A partial assignment of one row
+is rejected only if a required local trajectory fails before consulting the
+unassigned row.  Surviving pairs of assignments are then checked together.
+This is a discovery procedure; no smaller machine survived it.
+
+The sufficient mathematical criterion is the following.  Let $M$ be the parent
+machine, $M'$ its proposed quotient, and $E$ the specified configuration encoding.
+For each working control $q$, let $A_q$ be a finite set of radius-$r$ windows
+that overapproximates all parent configurations reachable from the initial tape.
+Suppose that for every window in every $A_q$, the parent and proposed quotient
+have positive finite trajectory segments, of lengths between $1$ and $B$, whose
+endpoints satisfy $E$.  Both segments must be checked on the complete input
+window, and must preserve every exterior cell.  The encoded initial configuration
+must be the quotient's initial configuration.  Halt is terminal and is related
+only to halt.  Then the two machines have the same blank-tape halting behavior.
+
+Indeed, concatenate the certified segments along the parent computation.  At each
+join the parent again lies in the overapproximated reachable set, so the next
+certificate applies.  Positive progress on both sides prevents infinitely many
+parent steps from being represented by finitely many quotient steps.  Conversely,
+a terminal halt cannot be crossed by a certified segment, so a finite halting
+computation on either side must end at a halting join.  A parent halting trace of
+length $t$ gives a quotient halting trace of length at most $Bt$; the converse has
+the same bound.  The construction and these finite inductions are formalizable
+in PA.  Here this general statement describes the search criterion, rather than
+claiming a newly kernel-checked theorem or a successful quotient.
+
+The identity encoding identifies one removed control with one retained control.
+Additional experiments used a fixed two-cell head displacement or a toggle of
+the cell just written on entry, whenever all external arrivals to the removed
+control had the same direction.  Incoming transition actions were changed
+accordingly, and the endpoint relation included the displacement and toggle.
+The two-sided screen may advance the parent as well as the quotient before
+checking the join.  Its bounds remain genuine restrictions: it excludes valid
+simulations that require larger windows, longer segments, more changed controls,
+or a different tape encoding.

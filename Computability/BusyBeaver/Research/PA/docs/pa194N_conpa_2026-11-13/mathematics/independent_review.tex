@@ -1,0 +1,177 @@
+\section{Independent review of the no-push command interface}
+\label{sec:nopush-independent-review}
+
+This review concerns the new command semantics, independently of the
+literal-tape verification. Let $I(a,b)=4p(a,b)$, where $p$ is Cantor
+pairing, and write $[a;w]=p(a,w)$. Its total projections satisfy
+$\operatorname{hd}[a;w]=a$, $\operatorname{tl}[a;w]=w$, and
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$.
+The identity $[0;0]=0$ is therefore retained throughout; no free-list
+constructor assumption is made.
+
+The state is $\langle t,w,d,h\rangle$. The no-push controller retains
+the original Shift:
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}
+  \mathsf{halt},&t+h=1,\\
+  \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&t+h\ne1.
+ \end{cases}
+\]
+For $y=d+x$, it uses
+\[
+ \mathrm{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+  \langle y,w,y,0\rangle,&I(t,y)=h,\\
+  \langle0,w,y,0\rangle,&I(t,y)\ne h.
+ \end{cases}
+\]
+Thus successful MP retains its consequent in T and D and preserves the
+underlying stack. This differs both from the original controller, which
+pushes a dummy zero on success, and from the cached controller, which
+returns the consequent in H and clears D.
+
+The unchanged AX interface is
+\[
+ \mathrm{AX}_{c,x,y}\langle t,w,d,h\rangle
+ =\langle K(h+y,d+x,c),[q_1,\ldots,q_9,t;w],0,0\rangle.
+\]
+Here $q_1$ is the separately emitted diagonal head, $q_2,\ldots,q_7$
+are the six logical heads in reverse emission order, $q_8$ is the
+restricted implication axiom, and $q_9=U(d,h)$.
+The gate and $q_1,\ldots,q_8$ are multiples of four; $q_9$ has residue
+two and is at least two. The gate is zero when its guard fails.
+
+\subsection{Two useful total operations}
+
+On any store with $d=0$, both branches of $\mathrm{MP}_0$ have exactly
+the same output:
+\[
+ \mathrm{MP}_0\langle t,w,0,h\rangle=\langle0,w,0,0\rangle.
+\]
+This holds for arbitrary $t,h$, without deciding whether the equality
+test succeeds. In particular, a single command gives a uniform
+\emph{Discard} operation on normalized stores. The ability to coalesce
+these branches is a real change in the command algebra: the old
+push-on-success controller does not have this contract.
+
+Let $A_0=\mathrm{AX}_{0,0,0}$ and compose commands from left to right.
+Then
+\[
+ \mathrm{Push}=A_0;S^9;\mathrm{MP}_0,
+ \qquad
+ \mathrm{Pop}=A_0;S^{11}
+\]
+have the exact contracts
+\begin{align*}
+ \mathrm{Push}\langle t,w,d,h\rangle
+   &=\langle0,[t;w],0,0\rangle,\\
+ \mathrm{Pop}\langle t,[a;w],d,h\rangle
+   &=\langle t,w,0,a\rangle.
+\end{align*}
+Both are total, including $t=1$. To verify this, AX first clears its
+visible cache and offset. The first nine Shifts only test the gate or
+adjacent generated heads; the stated residues exclude a sum of one.
+After those nine Shifts, the top is $q_8$, the cache is $q_9$, and the
+stack is $[t;w]$, so the final $\mathrm{MP}_0$ gives Push.
+For Pop, the tenth Shift leaves $q_9$ in T and the saved $t$ in H.
+The eleventh tests $q_9+t\ge2$, and therefore continues even when the
+saved top is the contradiction code. This last inequality is essential:
+one must not substitute the cached-controller Pop proof, whose final
+guard tests only the cache and can halt at $t=1$.
+
+These arguments use projection identities, so they also cover $w=0$,
+$t=0$, and arbitrarily many written zero entries that collapse under
+Cantor pairing. They do not require a syntactically distinguished stack
+bottom.
+
+\subsection{Axioms, generalization, and modus ponens}
+
+The offset operation can be taken to be $\mathrm{MP}_i$ for every
+$i\ge0$ on $\langle0,w,0,0\rangle$:
+\[
+ \mathrm{MP}_i\langle0,w,0,0\rangle=\langle0,w,i,0\rangle.
+\]
+For $i=0$ both branches coincide; for $i>0$, $I(0,i)>0$ forces the
+failure branch. Hence
+\[
+ \mathrm{Gen}_i=
+ \mathrm{Push};\mathrm{MP}_i;S;\mathrm{AX}_{i,0,0};S^{10}
+\]
+maps $\langle a,w,0,0\rangle$ to
+$\langle U(i,a),w,0,0\rangle$ for every $a$, including $a=1$.
+The Shift before AX tests two zero registers and retrieves $a$;
+AX then clears that cache before further testing.
+
+Starting with Discard, the ordinary separate-head selectors remain
+valid. For $1\le j\le7$, use
+\[
+ \mathrm{Discard};\mathrm{AX}_{A,D,H};S^{j+1};\mathrm{Pop}^{9-j}.
+\]
+It returns $q_j$ in T and leaves $w$ unchanged, with D and H zero.
+The last prescribed Pop consumes the deliberately saved zero, not an
+element of the arbitrary underlying stack. The restricted implication
+axiom with $u\le a$ uses
+\[
+ \mathrm{Discard};\mathrm{MP}_u;
+ \mathrm{AX}_{b,a-u,c};S^9;\mathrm{Pop},
+\]
+and the guarded gate uses
+\[
+ \mathrm{Discard};\mathrm{AX}_{c,b,a};\mathrm{Pop}^{10}.
+\]
+For a genuine gate axiom its guard is satisfied. The formulas generated
+by the remaining heads are never code one, so these selectors do not
+introduce an unaccounted early halt.
+
+Suppose the recursive compiler already handles proofs of $a$ and
+$I(a,b)$, uniformly over the incoming top and stack and with D and H
+zero. Write their command words as $C_a$ and $C_{I(a,b)}$.
+Compile the MP node by
+\[
+ \mathrm{Discard};\mathrm{Push};
+ C_{I(a,b)};\mathrm{Push};C_a;\mathrm{Push};
+ S;S;\mathrm{MP}_b;\mathrm{Pop}.
+\]
+Unless a premise computation has already halted, the three pushes
+prepare $\langle0,[a,I(a,b),0;w],0,0\rangle$.
+The next two Shifts halt if $a=1$, which is an acceptable early
+refutation. Otherwise they reach
+$\langle a,[0;w],0,I(a,b)\rangle$.
+Successful MP then gives
+$\langle b,[0;w],b,0\rangle$.
+The total Pop contract finally yields
+$\langle b,w,0,0\rangle$, including when $b=1$.
+The dummy zero is necessary to clear the outgoing H while preserving
+the arbitrary tail $w$; deleting it would invalidate the compiler.
+
+Induction on a numerical proof therefore supplies a primitive-recursive
+word $C_p$ that halts or returns its conclusion in T with the original
+underlying stack and zero D,H. If $p$ is a refutation, then
+\[
+             A_0;C_p;S
+\]
+halts from \emph{every} incoming store. The first AX normalizes D,H;
+the recursive compiler accepts its arbitrary resulting top and stack;
+the last Shift sees $t+h=1$ if an earlier halt did not occur. This
+uniformity is what permits the existing exhaustive scheduler to carry
+its store between trials.
+
+\subsection{The converse invariant and the PA boundary}
+
+For soundness, annotate T, H, and the canonical finite live stack by
+numerical proofs. The zero tail carries the fixed truth proof. AX
+preserves the annotation using its axiom suppliers and generalization.
+A successful no-push MP obtains the proof of $y$ from the annotated
+$t$ and $I(t,y)=h$ and places it in T; retaining $y$ in D is harmless,
+because D has no theoremhood requirement. A failed MP returns truth.
+At a Shift halt, natural-number arithmetic gives either $(t,h)=(1,0)$
+or $(t,h)=(0,1)$, so an annotated refutation is available.
+
+Every displayed command identity and compiler induction concerns finite
+syntax and natural arithmetic and is formalizable in PA. Together with
+the inherited numerical-calculus calibration, exhaustive enumeration,
+and the separately checked positive physical simulations, these
+identities provide the two directions of the requested ordinary
+mathematical PA theorem. This review does not assert an independent
+end-to-end Lean/Rocq elaboration or close the repository's iPRA endpoint.
