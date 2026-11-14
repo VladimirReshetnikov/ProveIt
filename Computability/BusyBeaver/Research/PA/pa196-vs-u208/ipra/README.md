@@ -112,6 +112,11 @@ substitution and shift graphs still need separate bounds.
 `PA196PAQVecGraph.lean` uses the term-shift-vector bound to establish the
 arithmetic substitution-vector helper graph bound without a shift-growth
 assumption.
+`PA196PASubstitutionClauses.lean` proves the ten positive constructor-clause
+witness bounds for arithmetic formula substitution, and
+`PA196PASubstitutionNegative.lean` proves six negative constructor clauses.
+The relation clauses, quantifier-parameter growth, and the recursion's global
+bound remain open.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
