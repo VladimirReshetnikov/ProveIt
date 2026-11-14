@@ -34,3 +34,7 @@ The final module passed a fresh suffix check against retained qVec,
 substitution-witness, and output-growth prerequisites and the audited project
 and Foundation overlays. Its printed axioms contain no `sorryAx`. The full
 prerequisite-prefix replay remains pending.
+
+An independent suffix replay rebuilt the output-bound module against the
+separately checked substitution and qVec ceilings and retained PA196
+prerequisites. It passed without `sorryAx`; this was not a full nested replay.
