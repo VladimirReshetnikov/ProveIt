@@ -333,3 +333,14 @@ remains open. Recheck with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-var-vector-code.sh
 ```
+
+`PA194RelCode.lean` implements Foundation's exact relation-formula constructor
+as an explicit ternary primitive-recursive code from arity, relation-symbol
+code, and argument-vector code. Candidate PRA proves its `qqRelDef` graph,
+and the model theorem applies to nonstandard inputs. Connecting it to the
+two-variable vector and recursively decoding PA194 formulas remain open.
+Recheck with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-rel-code.sh
+```
