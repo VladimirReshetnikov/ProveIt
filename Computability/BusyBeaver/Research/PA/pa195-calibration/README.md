@@ -386,3 +386,15 @@ bit formula. Check with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-canonical-atom.sh
 ```
+
+`PA194EqAtomCode.lean` binds the canonical atomic constructor to arity two
+and Foundation's equality relation symbol, whose encoded value is zero. The
+result is an explicit binary PR code and candidate PRA proves its graph for
+all labels. In IΣ₁ models a separate theorem identifies the value with the
+Foundation relation constructor applied to the exact two-variable matrix.
+The recursive PA194 source decoder and the membership/bit translation remain
+open. Check with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-eq-atom.sh
+```
