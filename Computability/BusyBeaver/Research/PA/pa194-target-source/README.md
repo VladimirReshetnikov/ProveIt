@@ -31,4 +31,4 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 
 The final module passed a fresh suffix check using separately rebuilt head1,
 head2, head5, diagonal, gate-reduction and scheduler objects and retained deeper prerequisite overlays,
-with no `sorryAx`. The complete nested replay has not yet been run.
+with no `sorryAx`. The complete nested replay has not yet been completed.
