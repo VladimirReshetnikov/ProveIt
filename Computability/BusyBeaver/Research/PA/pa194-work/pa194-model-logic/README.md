@@ -36,6 +36,7 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelFormulaFreshness`, `PA194ModelEnvironmentFreshness` | Binder labels and bounded entries of reconstructed bound stacks are below a reserved label under explicit allocation and initial-stack bounds. |
 | `PA194ModelSourceIndexBound`, `PA194ModelAtomicFreshness` | Source-atom variable indices are below the atom code, and the selected labels are fresh under explicit ceiling and environment bounds. |
 | `PA194ModelSourcePath` | A finite PRA code follows source-formula child paths for arbitrary model-length step counts; visited node codes are bounded by the root. |
+| `PA194ModelSourcePathDepth` | A finite code counts binders actually traversed by such a path; the visited node plus the count is bounded by the root. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -142,10 +143,13 @@ and atomic/truth/falsity or unrecognized tags stay at the current node.
 Internal Σ₁ induction proves every visited node is at most the root, even for
 nonstandard step counts. At a visited valid source atom, its variable indices
 are therefore below the root, and its labels are fresh under the explicit
-initial-bound/free-stack bounds, `base + root ≤ reserve`, and a separately
-supplied allocation depth `n ≤ root`. No theorem yet shows every internal
-syntactic subformula is reachable by a coded path or identifies `n` with the
-number of binders traversed.
+initial-bound/free-stack bounds and `base + root ≤ reserve`. A finite binder
+counter, using the same choice stack, counts exactly the quantifier tags
+traversed. Internal Σ₁ induction proves that the visited node plus this count
+is at most the root, including at nonstandard step counts. This supplies the
+allocation-depth bound for freshness at a visited valid atom. No theorem yet
+shows every internal syntactic subformula is reachable by a coded path or
+identifies the dispatcher's context with the path and its binder counter.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -157,8 +161,8 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelSourcePath` as the top module. On 2026-11-14, all twenty modules in
-this directory were rebuilt against a retained combined overlay.
+`PA194ModelSourcePathDepth` as the top module. On 2026-11-14, all twenty-one
+modules in this directory were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
 prerequisites; these were suffix checks, not empty-overlay replays.
