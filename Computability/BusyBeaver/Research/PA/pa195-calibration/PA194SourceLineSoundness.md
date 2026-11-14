@@ -26,6 +26,6 @@ Run `check-source-line-soundness.sh` with the audited `IPRA_LEAN_OVERLAY` and
 `IPRA_FOUNDATION_OVERLAY` set; it rebuilds the dependencies in a fresh
 temporary overlay and rejects `sorryAx`.
 
-The full author replay passed with the audited overlays. An independent suffix
-replay also recompiled the final theorem using retained dependency overlays,
-with no `sorryAx`; an independent full rebuild is running separately.
+The full author replay and an independent full Linux replay both passed with
+the audited overlays. An additional independent suffix replay recompiled the
+final theorem using retained dependencies; no checked theorem used `sorryAx`.

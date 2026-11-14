@@ -32,5 +32,6 @@ rejects `sorryAx`.
 
 An independent suffix replay recompiled this module against the independently
 checked final derivation-renaming module and retained prerequisite overlays.
-The reported theorem axioms did not include `sorryAx`; the full combined
-fresh replay is running separately.
+The reported theorem axioms did not include `sorryAx`. An independent full
+`check-source-line-soundness.sh` replay also rebuilt this theorem and its
+combined dependencies without `sorryAx`.
