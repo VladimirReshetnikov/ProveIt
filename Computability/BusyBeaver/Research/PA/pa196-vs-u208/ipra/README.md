@@ -120,6 +120,9 @@ the vector majorant and proves its recurrence in every candidate-PRA model.
 `PA196PAQVecTowerModel.lean` proves that one qVec application advances that
 majorant by one stage when the arithmetic reduct also models IΣ₁. The bound
 for the full substitution recursion stage remains open.
+`PA196PRAQVecHistory.lean` constructs a seed-parameterized primitive-recursive
+history code and proves its recurrence in candidate-PRA models. Its sequence
+properties and its connection to the arithmetic coded traces remain open.
 `PA196PAQVecTraceInvariant.lean` proves by IΣ₁ induction that a coded qVec
 trace is bounded by a coded majorant trace at every model index, assuming the
 initial comparison and both trace-transition properties. Constructing traces

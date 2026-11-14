@@ -81,6 +81,7 @@ lean -M6000 -j1 "$bridge/PA196PAQVecLength.lean" | tee -a "$PA196_TASK_CHECK_DIR
 lean -M6000 -j1 "$bridge/PA196PATermBShiftGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermBShiftGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAQVecGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PRAQVecTower.lean" -o "$PA196_TASK_CHECK_DIR/PA196PRAQVecTower.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PRAQVecHistory.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecTowerModel.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecTraceInvariant.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecSeqTrace.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
