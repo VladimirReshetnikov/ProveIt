@@ -45,4 +45,12 @@ capture/freshness, other constructors, proof transport and the actual numeric
 semantics remain separate obligations. The replay uses a retained overlay, not an
 empty-overlay build.
 
+With fresh binder label `z` distinct from source labels `a` and `b`,
+`PA194SemanticNeighborhoodExact` proves the explicit named neighborhood
+formula holds exactly when their assigned values have identical incoming and
+outgoing relation profiles. Consequently, its agreement with source equality
+is equivalent to equality agreeing with that observational equivalence on
+the assigned values. This is a standard named-semantics result; it neither
+constructs a total PA194 decoder nor proves extensionality or full soundness.
+
 Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-semantic-audit/check.sh --out DIR` with a matching retained overlay to replay the three modules. This is a suffix replay, not an empty-overlay build.
