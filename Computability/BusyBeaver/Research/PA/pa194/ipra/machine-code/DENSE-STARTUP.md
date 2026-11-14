@@ -26,6 +26,9 @@ not prove the source controller simulation for arbitrary model-length runs,
 blank-to-refutation equivalence, either iPRA consistency implication, or the
 desired biconditional.
 
+The [source-frame decomposition](STARTUP-SOURCE-FRAME.md) further identifies
+the endpoint's controller header, permuted seed registers, and spare blocks.
+
 From the repository root, the full check can be run with:
 
 ```sh
@@ -41,11 +44,31 @@ must contain the audited standard-configuration and zipper-stepper objects,
 and the Foundation overlay supplies their Foundation prerequisites. The
 script verifies hashes of the named parent and model objects and of selected
 source files; it does not rebuild every transitive object in those overlays.
+The selected hash pins do not by themselves verify that all transitive objects
+match the dependencies used to produce the pinned objects.
 It regenerates the dense and parent checkpoint sources, rebuilds the literal
 machine, parent seed data, and fast evaluator, then rebuilds the dense blocks,
 the composition, four model bridge modules, and the native iPRA startup sentence. This is not an all-from-source
 replay of the retained overlays. `PA194_DENSE_JOBS` sets the number of parallel
 Lean block checks (default 2).
+
+A [stronger independent replay](COHERENT-STARTUP-AUDIT.md) rebuilt the parent/source modules, literal
+table, stepper, dense certificate and model/iPRA bridge modules into one fresh
+directory, without a prebuilt PA194 machine-object overlay. It passed all 455
+blocks and the native iPRA theorem without `sorryAx`. It retained the general
+PR/iPRA and Foundation/Mathlib prerequisite overlays, so it was not an
+all-from-source rebuild of those foundations. The corresponding reproducible
+wrapper is:
+
+```sh
+IPRA_LEAN_OVERLAY=/path/to/audited-pr-ipra-objects \
+IPRA_FOUNDATION_OVERLAY=/path/to/audited-foundation-objects \
+  bash Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/check-dense-startup-coherent.sh
+```
+
+The wrapper checks that its fallback search roots contain no PA194/195/196
+machine objects and rebuilds the machine-specific dependencies in one private
+directory. A full invocation of the wrapper itself is in progress.
 
 For a shorter setup check, set `PA194_DENSE_CHECK_BLOCKS=1`; this checks the
 first batch only and explicitly does not check the complete startup theorem or

@@ -23,12 +23,58 @@ length, is not started. Nothing here yields a consistency implication.
 | `PA194ModelNeighborhood` | The target-code neighborhood relation is reflexive, symmetric and transitive, and three corresponding universally closed source equality-supplier-shaped formulas are target-provable for arbitrary model labels. |
 | `PA194ModelNeighborhoodDef` | The neighborhood and biconditional constructors are Σ₁-definable model functions, which permits their use in suitable internal induction predicates. |
 | `PA194ModelNeighborhoodCode` | A fixed ternary candidate-PRA code for the neighborhood constructor has its stated value on arbitrary model inputs, including nonstandard labels, and agrees over the natural numbers with the existing source-LK neighborhood encoding. |
+| `PA194ModelSourceAtomCode` | Candidate-PRA codes decode positive and negative source equality atoms and select bound/free labels from encoded environments, including for nonstandard terms and vectors. |
+| `PA194ModelSourceEnvironment` | A finite code pushes a label onto the bound environment; its lookup equations have the head/tail behavior of the standard source translator's binder update. |
+| `PA194ModelBoundAllocation` | A finite code reconstructs consecutive binder labels and the bound stack from a remaining depth budget, including at nonstandard depths. |
+| `PA194ModelTranslationContext` | Finite PRA codes unpack the fixed history parameters and reconstruct the current bound environment and binder label from the remaining budget. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
 shape as the ordinary-number source-LK equality suppliers, but no theorem here identifies
 them with the translation of internal source-formula codes. The latter connection and the
 internal compiler remain open.
+
+For the source atom decoder, relation code `0` is equality and the term vector
+must satisfy Foundation's `IsUTermVec` predicate at arity two. The raw codes
+do not check the atom tag, arity, relation code, term validity or scope; these
+are hypotheses of the model equations. The function-free source language has
+only bound and free variable terms. The two label environments are Foundation
+stacks encoded with `0` for empty and `pair head tail + 1` for cons; the
+existing total lookup code agrees with Foundation's `stack.[i]`. No index
+bounds are asserted. The atom code applies the neighborhood constructor to
+the selected labels and a reserved label, with negation for a negative atom.
+Its fixed Σ₁ graph is correct on arbitrary inputs. The finite codes inherit
+the earlier classically chosen Cantor and projection witnesses.
+
+These results do not identify the environments with the compiler's variable
+allocation policy, recursively translate internal source formulas, or compile
+nonstandard source proofs.
+
+The binder update prepends `new` to the bound environment as `pair new old + 1`.
+For arbitrary model indices it maps bound index zero to `new`, bound index
+`i + 1` to the previous value at `i`, and leaves free-variable lookup unchanged.
+This matches the head/tail behavior of `Fin.cases lo bound` in the ordinary
+source `toNamed` translation. It does not establish a recursive translation of
+internal formulas or its correctness under quantifiers.
+
+`boundAtBudget` reconstructs the bound stack from fixed initial parameters and
+truncated subtraction `ceiling - budget`. At the root, budget equals ceiling.
+The binder equation assumes a positive parent budget `b + 1` with
+`b + 1 ≤ ceiling` and shows that the child budget `b` pushes the current
+label. If `ceiling < budget`, subtraction saturates at zero and the stack and
+label revert to their initial values; no binder equation is asserted there.
+The intended packed-history recursion must preserve the budget on Boolean
+children and decrement it only at binders, as the existing formula-budget
+machinery does. This module does not yet supply the new dispatcher, packed
+parameter decoder, or the depth invariant needed for a recursive compiler.
+
+The context codes take a history node indexed by `pair source remaining` and
+two fixed parameters: `pair initialBound free` and
+`pair initialBudget (pair initialLabel reservedLabel)`. Their model equations
+decode those values and reconstruct the current bound stack and label for
+arbitrary model inputs. They do not enforce formula well-formedness, budget
+inequalities, or the dispatcher's requirement to preserve the budget on
+Boolean children and decrement it only under quantifiers.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -40,8 +86,8 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelNeighborhoodCode` as the top module. On 2026-11-14, the five
-modules and the standard-agreement extension were rebuilt against a retained
-combined overlay. Their printed axiom reports were free of `sorryAx`. The
+`PA194ModelTranslationContext` as the top module. On 2026-11-14, all nine
+modules in this directory were rebuilt against a retained combined overlay.
+Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
 prerequisites; these were suffix checks, not empty-overlay replays.
