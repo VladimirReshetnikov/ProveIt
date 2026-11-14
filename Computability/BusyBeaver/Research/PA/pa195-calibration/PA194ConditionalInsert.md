@@ -7,3 +7,7 @@ This gives a set-extension ingredient for bounded comprehension. It does not con
 `check-conditional-insert.sh` rebuilds the dependencies and all four new modules, checking printed axioms for `sorryAx`. A focused ordered suffix replay against retained prerequisite overlays is recorded below. As with adjacent packages, the full nested rebuild is deferred because of the existing disk-I/O constraint.
 
 The author focused replay built `PA194ConditionalInsertLogic`, `PA194ConditionalInsertLift`, and `PA194ConditionalInsert` in order in `/dev/shm/pa194-conditional-insert-fresh`, against the separately checked bit-insertion, conditional-singleton, and retained prerequisite overlays. The printed dependencies contain only `propext`, `Classical.choice`, and `Quot.sound`, and no `sorryAx`.
+
+An independent ordered suffix replay rebuilt all three conditional-insertion
+modules against separately checked bit-insertion and source prerequisites. It
+passed without `sorryAx`; this was not a full nested replay.
