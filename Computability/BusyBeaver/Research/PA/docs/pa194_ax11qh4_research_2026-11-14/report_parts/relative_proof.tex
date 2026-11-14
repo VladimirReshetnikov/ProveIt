@@ -1,0 +1,302 @@
+\section{The two new physical implementations}
+
+Let $M$ denote the pinned PA194AX11QH machine whose dense table has
+SHA-256
+\begin{center}\small\ttfamily
+19e215df20429fa6a35f0a99ba0dcfcb40893a6e4b9a4ae6e450b0225f110e50
+\end{center}
+Write $N_L$ and $N_R$ for PA194AX11QH4L and PA194AX11QH4R.
+All three machines have a two-way infinite binary tape, blank symbol zero,
+initial head coordinate zero, and a separate terminal halt control.
+The dense initial control is zero; the dense halt label is 194.
+
+The change concerns a repeated four-increment subtree.  If
+$i$ denotes incrementing logical register~1, the old association is
+$((i,i),(i,i))$.  The new associations are
+\[
+ T_L=((i,(i,i)),i),\qquad T_R=(i,(i,(i,i))).
+\]
+The left-to-right sequence of primitive instructions is exactly the same.
+The deterministic checker proves equality of all 3,671 resolved source
+instructions, including every jump and decrement target.  It also identifies
+all 61 occurrences of this four-increment subtree.  Their roots occupy the
+same source addresses; only addresses inside the subtrees change.
+
+In native labels, control 61 implements the single-increment subtree,
+and control 99 implements the two-increment subtree.  Introduce a helper
+control 330 for $(i,(i,i))$.  Its rows are
+\[
+ (330,0)\mapsto(0,R,61),\qquad
+ (330,1)\mapsto(1,R,99).
+\]
+For $N_L$, replace the two rows of control 190 by
+\[
+ (190,0)\mapsto(0,R,330),\qquad
+ (190,1)\mapsto(1,R,61);
+\]
+for $N_R$, use
+\[
+ (190,0)\mapsto(0,R,61),\qquad
+ (190,1)\mapsto(1,R,330).
+\]
+These are changes to the unfolded machine, before its contextual quotient.
+The arithmetic list engine is unchanged.
+
+The new association makes the incoming history at control 99 uniform.
+Consequently control 41 can be folded into 99, using the replacement rows
+\[
+ (99,0)\mapsto(0,L,30),\qquad
+ (99,1)\mapsto(1,L,2040).
+\]
+The seven other folds are given explicitly in the delivered
+\texttt{folds.json}.  All eight are checked simultaneously, so a provider
+used by one fold is allowed to be changed by another only when the complete
+local identity still closes in the final table.  Each new machine therefore
+has
+\[
+ 135\text{ fixed controls}+67\text{ AX readers}-8\text{ folds}=194
+\]
+working controls.  This is a new physical implementation and is not a
+reduction below 194 states.
+
+\section{Finite certificates and their universal meanings}
+
+For each folded pair $(a,b)$, every incoming transition to $a$ writes zero
+and moves right, and every incoming transition to $b$ writes one and moves
+right.  Neither state is the initial control.  Thus the cell immediately
+left of the head records which old control was entered.  The checker
+enumerates the four possibilities for that history bit and the current
+bit.  It reads only those two cells and restores their exact required
+contents.  All exterior tape cells remain arbitrary.  There are 32 cases
+for the eight simultaneous folds, each taking one, three, or five literal
+transitions in the quotient machine.
+
+This proves a local simulation lemma, not merely a sampled execution.
+Every ordinary unfolded transition projects to one quotient transition.
+Every exceptional transition projects to the certified positive-length
+segment.  Induction on a finite unfolded run gives a quotient run with the
+same complete tape and head at its segment boundaries.  If the unfolded run
+has length $t$, the corresponding quotient run has length between $t$ and
+$5t$.  Positivity of the segment lengths and determinism give the reverse
+halting implication by bounded segmentation of a quotient run.  In
+particular, no separate reachability assumption concerning the unbounded
+external tape is being inferred from a finite blank run.
+
+The two supplied complete-machine checks have separate purposes.  The
+construction replay checks source resolution, the local quotient identities,
+the unchanged arithmetic-box rows, all 4,778 symbolic source outcomes, dense
+renumbering, and the entire blank-start tape.  The independent literal-tape
+checker imports neither the construction compiler nor its arithmetic-box
+oracles.  It rederives the four unary-list sweep lemmas from the candidate
+rows and uses two independent source resolvers.  Its cases quantify over
+arbitrary values of the nine logical registers and an arbitrary nonempty finite
+spare-register list, with both branches of every decrement represented.  Both new
+independent audits passed all 4,778 outcomes.  Their duration constant
+terms have minimum three and maximum 534; all variable coefficients are
+between zero and eight.  The independent results must not be replaced by
+the construction check's bounded abstract-operation count.
+
+All three startup runs reach the canonical source seed at site 25.  The
+logical seed has register~0 equal to two and all eight other logical registers
+zero.  There are 26 spare physical registers of value one.  The entire
+finite-support tape is checked, including absence of stray nonzero cells.
+The parent startup takes 57,922 transitions; each new startup takes 58,088.
+The native control and head coordinate after initialization
+are 84 and $-2$, respectively.
+
+\section{Relative weak-arithmetic theorem}
+
+The machine-specific claim supplied by this transformation is
+\[
+ \mathsf{iPRA}\ \vdash\
+ \operatorname{Halt}(N_L,\mathrm{blank})
+ \leftrightarrow\operatorname{Halt}(M,\mathrm{blank})
+ \leftrightarrow\operatorname{Halt}(N_R,\mathrm{blank}).
+\]
+Here ``supplied'' means an ordinary computer-assisted mathematical argument
+with explicit finite certificates and primitive-recursive induction
+invariants, not a newly compiled Lean theorem.  The following argument
+explains why the relative result uses only primitive-recursive arithmetic.
+
+Encode a finite-support tape and integer head position by natural numbers.
+Literal machine iteration, register-frame construction, source-instruction
+iteration, and the finite case selector are primitive recursive.  A symbolic
+constant-symbol sweep asserts an equality between a primitive-recursive
+iterate and its explicitly described final configuration; its proof is
+quantifier-free induction on the sweep length.  A list sweep uses the same
+induction on an encoded finite list, equivalently bounded recursion on its
+code or length.  The finite composition of these identities gives, for each
+of the 4,778 source outcomes, an equality
+\[
+ \operatorname{Run}_{X}\bigl(d_{X,j}(\mathbf x),E_{X,j}(\mathbf x)\bigr)
+   = E_{X,j'}\bigl(F_j(\mathbf x)\bigr),
+ \qquad X\in\{M,N_L,N_R\},
+\]
+with the appropriate absorbing halt endpoint in the halt case.  All side
+conditions are explicit tests on primitive-recursive codes.  The checker
+also supplies the physical duration expressions.  Their coefficients are
+nonnegative and their constant terms are positive.  The literal case
+certificates certify that a segment does not halt before its designated
+endpoint, except when the current source instruction is the halt
+instruction.
+
+Let $s_k$ be the total, primitively recursive source iteration, including
+its register-frame parameters, starting from the displayed seed.  In
+particular, its state contains the header-gap parameter and the entire
+finite spare-register list, in addition to the nine logical registers.
+These are updated by the explicit frame equations: a positive decrement
+increases the gap by one, as specified by its \texttt{delta=1} contract, and an
+increment's tail operation updates the spare list.  They must not be
+silently discarded from the simulation invariant.  Define
+the boundary clock by primitive recursion:
+\[
+ C_X(0)=\operatorname{startup}_X,\qquad
+ C_X(k+1)=C_X(k)+d_{X,s_k}(\mathbf x_k)
+\]
+until the source halt case. For a total definition, extend a halted source
+state by a self-loop of duration one and keep the physical halt state
+absorbing. Clock comparisons concern prefixes through the first halt; this
+extension makes every boundary-clock increment positive without changing
+any first-halting assertion.  The previous equations and quantifier-free induction give the
+literal configuration at each $C_X(k)$.  Thus a finite source halting
+run gives a finite literal halting run for every $X$.
+
+Conversely, suppose a literal run halts at time $T$.  The explicitly checked
+startup does not halt.  Before source halting, each segment length is at
+least one.  Bounded search among at most $T+1$ source boundaries therefore
+locates the segment containing the alleged halting time.  The local
+no-premature-halt identity forces that segment to be the halt case.  This
+bounded search, its accumulated clocks, and the corresponding configuration
+equalities are primitive recursive; their verification uses
+quantifier-free induction.  The bounded prefix condition saying that no
+earlier literal transition is a halt is represented by its
+primitive-recursive characteristic function, so the induction invariant
+is an equality of primitive-recursive terms, not an induction instance
+with an unbounded quantifier.  No unbounded minimization, induction on an
+existential formula, standard-model soundness principle, or appeal to the
+truth of $\operatorname{Con}(\mathsf{PA})$ is required.
+
+The source transition function is literally identical for the three
+machines, so these two directions establish the displayed relative
+equivalences.  Intuitionistic propositional reasoning then yields the
+relative nonhalting equivalences as well.  In particular, the desired
+consistency conclusion for either new table follows from the separate
+calibration hypothesis
+\[
+ \mathsf{iPRA}\vdash
+ \neg\operatorname{Halt}(M,\mathrm{blank})
+ \leftrightarrow\operatorname{Con}(\mathsf{PA}).
+\]
+This hypothesis is not established by the new physical construction.
+The current repository explicitly identifies the end-to-end
+machine/refutation calibration as unfinished.  A completed relative
+physical proof must not be reported as an unconditional new consistency
+machine theorem.
+
+\section{A factor-two witness transfer}
+
+Matching the independent duration certificates by source-site number and
+decrement branch gives a substantially sharper bound.  For all 4,778
+matched outcomes, the twelve nonconstant duration coefficients are identical
+in $M,N_L,N_R$.  The differences in their constant terms satisfy
+\[
+ d_L-d_M\in\{0,2,4,6,8\},\qquad
+ d_R-d_M\in\{-2,0,2,4,6\}.
+\]
+The actual coefficientwise comparisons, which are stronger than these
+sets of possible differences alone, verify
+\[
+ d_M\le d_L\le2d_M,\qquad
+ d_M\le2d_R,\qquad d_R\le2d_M.
+\]
+These inequalities hold for every nonnegative assignment of the symbolic
+register, gap, and spare-list parameters.
+
+The frame parameters really do agree at corresponding source boundaries.
+The complete resolved source graphs and opcode/register fields are
+identical.  Each increment appends the same spare block, each positive
+decrement changes the same logical register and header gap, and the
+remaining source instructions have the same frame effects.  In addition,
+all 4,777 nonhalt outcomes have identical zero head displacement in the
+three independent checks, so there is no differing source-address overflow
+to hide in the gap parameter.  The unique halt instruction, site 10 at
+address \texttt{001}, has duration three and displacement three in all
+three tables.
+
+The initial clocks satisfy $57922\le58088\le2\cdot57922$.  Summing the
+verified segment inequalities, with the final halt instruction included,
+therefore gives the following explicit bounded-witness implications:
+\[
+\begin{aligned}
+ \operatorname{HaltBy}_M(t)&\Longrightarrow
+     \operatorname{HaltBy}_{N_L}(2t),\\
+ \operatorname{HaltBy}_{N_L}(t)&\Longrightarrow
+     \operatorname{HaltBy}_M(t),\\
+ \operatorname{HaltBy}_M(t)&\Longrightarrow
+     \operatorname{HaltBy}_{N_R}(2t),\\
+ \operatorname{HaltBy}_{N_R}(t)&\Longrightarrow
+     \operatorname{HaltBy}_M(2t).
+\end{aligned}
+\]
+Here $\operatorname{HaltBy}_X(t)$ is the primitive-recursive bounded
+halting predicate for the blank-start table $X$.  The positive-duration
+and prefix-nonhalting argument in the previous section identifies the
+executed source instruction count of an arbitrary literal halting witness;
+the displayed coefficient inequalities then bound the translated witness.
+This makes the relative iPRA result a concrete bounded-witness transfer,
+while leaving the separate PA-consistency calibration untouched.
+
+\section{An explicit polynomial witness bound}
+
+The 13 slots of every checked duration polynomial are, in order: the
+constant, the header gap, the nine active register values, the first spare
+register value, and the total width of the remaining spare-register list.
+The maximum coefficient in each slot, for both new machines, is
+\[
+ (534,8,4,4,4,4,4,4,2,4,4,2,2).
+\]
+The parent's independent contract data have the same maxima.  Let $L_k$
+be the sum of the twelve nonconstant frame parameters before source
+instruction $k$.  At the seed, the active-register sum is two, the first
+spare value is one, and the remaining 25 spare registers have encoding
+width three each.  Therefore $L_0=78$.
+
+An increment increases one active value by one and appends one spare
+register of value one, whose encoding has width three.  It may also
+increase the header gap by one when the source address overflows.  Hence
+an increment increases $L$ by at most five.  A positive decrement reduces
+an active value by one and increases the gap by one plus the possible
+overflow bit; its net increase is at most one.  A zero decrement or break
+only adds the possible overflow bit, and a continue has no positive
+resource effect.  Thus quantifier-free induction proves
+\[
+ L_k\le78+5k.
+\]
+In a positive-decrement certificate, the independent variable for the
+tested register is its predecessor value; using the actual register value
+in $L_k$ only enlarges the upper bound.
+
+Each nonterminal source segment and the final halt-instruction segment
+therefore has duration at most
+\[
+ 534+8L_k\le1158+40k.
+\]
+If $m$ source instructions are executed, \emph{counting the final halt
+instruction}, the corresponding literal computation has duration at most
+\[
+ 58088+\sum_{k=0}^{m-1}(1158+40k)
+   =58088+1138m+20m^2.
+\]
+Every source segment has positive duration, so a literal halt at time
+$t$ uses at most $t$ executed source instructions.  The convenient rounded
+bound
+\[
+ \boxed{B(t)=60000+1200t+20t^2}
+\]
+therefore bounds a halting witness in any of $M,N_L,N_R$ obtained from a
+halting witness at time $t$ in any other one.  All coefficients are natural
+numbers.  Bounded searches through these explicitly bounded literal and
+source traces can be represented by primitive-recursive characteristic
+functions.  This gives a concrete bounded-witness form of the relative
+halting equivalence and removes any reliance on an unspecified simulation
+time function.

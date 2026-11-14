@@ -1,0 +1,74 @@
+\section{Bounded physical state-reduction experiments}
+\label{sec:physical-search}
+
+A separate search investigated the primary PA194 table and the new
+AX11H and QAX11H tables at the literal transition-table level.
+For each table, it tested every unordered pair of controls as an ordinary
+merge and a larger family of head-displaced merges. It found no reduction
+within these finite-window requirements.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Table & Local windows & Ordinary pairs & Displaced pairs & Hits\\
+\hline
+Primary PA194 & 10,886 & 18,721 & 32,038 & 0\\
+AX11H & 10,909 & 18,721 & 32,038 & 0\\
+QAX11H & 11,018 & 18,721 & 32,038 & 0\\
+\hline
+\end{tabular}
+\end{center}
+
+An ordinary merge removes one control, redirects its incoming transitions
+and freely resynthesizes the two rows of the retained control. A displaced
+merge additionally reverses the movement of every transition into the
+removed control, when those incoming movements share a direction. Its
+configuration correspondence displaces the represented head by two cells.
+Initial controls are included: translation of a blank tape handles a fixed
+initial displacement. The local simulation may revisit the retained control.
+For each recorded window, it must reproduce the mapped endpoint of one old
+transition, including all tape bits, within 100 new transitions while
+remaining inside a radius-four window. Exiting that window or exceeding the
+local bound rejects a proposal. These restrictions are properties of the
+search family, not necessities for every possible correct machine reduction.
+
+The contexts combine symbolic source execution, the interiors of accelerated
+constant-symbol scans, physical arithmetic samples, and the exact finite
+blank startups. The source checks cover 4,780 outcomes for the primary table
+and 4,778 for each hybrid. The startup lengths are 58,154 and 57,922
+transitions respectively. Arithmetic interiors were sampled using 3,000
+pseudorandom register files and 121 uniform or single-coordinate files,
+with 27 block runs per file: 84,267 runs. Sampled values range from zero
+through ten, and file lengths range from ten through thirteen.
+\emph{This is not a proof that the sampled arithmetic contexts are exhaustive.}
+Some symbolic windows also deliberately overapproximate reachable contexts.
+Consequently the negative synthesis results are bounded experimental evidence,
+not lower bounds on all calibrated machines or on all sound reductions.
+
+The final staged experiment first proposes a locally neutral one-row rewrite
+of QAX11H, then attempts every ordinary control-pair merge of the modified
+table. The frozen old windows remain in use after the first edit. This is
+explicitly a candidate screen; it is not an unproved assertion that those
+windows form an invariant of the mutated table. All 358 proposed neutral rewrites were screened. This covered
+6,702,118 pair instances, 8,726,731,232 individual action trials,
+and 52,929,250 paired action choices, with zero hits. The complete
+per-edit counters and all rewrites are supplied in the accompanying results
+files.
+
+\subsection{The 193-state runtime splice still fails on both hybrids}
+
+Apply the familiar runtime splice in native numbering: identify control 301
+with 88, remove 301, set $(88,0)\mapsto(0,L,51)$, and set
+$(51,0)\mapsto(0,R,122)$. Applying this splice to either new hybrid produces
+a literal 193-state table. However, both designated blank computations reach
+exactly the same configuration after 92 transitions:
+\[
+ q=35,\qquad h=14,\qquad \operatorname{supp}_1(T)=\{-3,1\}.
+\]
+The transition at $(35,0)$ writes one, moves right and remains in 35.
+Induction on the number of subsequent steps proves an outward infinite ray:
+the head always reads the next untouched zero to the right. The supplied
+certificate contains every transition of the 92-step prefix and the complete
+finite tape support. No timeout is used to infer nonhalting. Thus the H and
+AX11 changes do not repair the previously identified initialization failure;
+these two 193-state splice attempts are rejected as proof-search machines.

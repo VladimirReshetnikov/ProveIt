@@ -1,0 +1,68 @@
+Physical reduction research, 14 November 2026
+===========================================
+Pinned source commit: 32d0d8b7d93a63ad4106c18cdb29b37927acdad2
+
+Joint neutral-row bootstrap search
+---------------------------------
+Input runtime193 is the supplied 193-control runtime core obtained from primary
+PA194 by merging native301 into88 and setting88/0=0L51,51/0=0R122.
+Its blank initialization is rejected in its source packet.
+
+Input neutral_k6.jsonl is the corrected radius-six pool of346 individually
+screened row rewrites from:
+Computability/BusyBeaver/Research/PA/docs/pa_sub194_research_2026-11-13/
+research/reduction/recorded/runtime193_corrected_neutral_k6.jsonl
+It includes19 speculative arithmetic-box edits. The pool does not prove the
+soundness of an arbitrary simultaneous pair, and no such claim is made.
+
+Commands (all paths relative to this directory):
+  g++ -O3 -std=c++17 search_pairs.cpp -o search_pairs
+  ./search_pairs runtime193.native.tm neutral.tsv any_frames.tsv 200000 0 \
+    > pair_start74_hits.jsonl 2> pair_start74_log.txt
+  ./search_pairs runtime193.native.tm neutral.tsv any_frames.tsv 200000 1 \
+    > pair_all_starts_hits.jsonl 2> pair_all_starts_log.txt
+
+All unordered pairs of edits to DIFFERENT state/read entries were examined:
+58,485 pairs. The first command uses native initial state74; the second uses
+each of the193 working controls as initial control, always head0, all-zero tape.
+No other modification or external initialization is allowed.
+
+Per-run limits:200,000 transitions; absolute head position at most20,000;
+number of1 cells at most20,000. A run reaching any cutoff is unresolved.
+A ray outcome uses a literal finite state loop whose every zero-read action
+has the same direction; when the entire suffix in that direction is blank,
+the head visits only fresh zero cells forever. Writes may be0 or1.
+
+The positive detector checks the WHOLE finite-support tape at control84,
+allows arbitrary tape translation, any padding length at least48, all20
+source sites25--44, arbitrary values of all9 work registers, and any finite
+nonempty spare-register tail. It requires proper delimiter/unary encoding.
+This deliberately includes semantically unsuitable seeds. No detector hit
+occurred, so absence in this superset suffices for absence of the canonical
+calibrated seeds within the recorded observation limits.
+
+All starts result:
+  11,287,605 simulations
+  2,173,634,233 literal transitions
+  11,159,792 certified outward blank rays
+  117,274 finite halts
+  10,539 bounded/unresolved runs
+  0 complete canonical frames
+
+This is a bounded search receipt, NOT a state lower bound or proof that every
+pair fails forever. The existing source packet exhausted single edits only;
+this joint pair experiment is new at the pinned snapshot.
+
+Restored marker / one-action exhaustive symbolic screen
+------------------------------------------------------
+  python3 restore_skip_search.py > restore_skip_results.txt
+Restores51/0=0R16, retains the merger301→88, and exhausts all772 actions for
+88/0 (write0/1,directionL/R,next any of193 controls). With the unchanged
+arithmetic block, all candidates fail one of three symbolic source outcomes.
+See the JSON receipt. The scope excludes new halting actions and changes to
+other rows. This proves failure of this restricted symbolic-refinement class,
+not of possible semantic equivalences with a different abstraction.
+
+The restored-marker symbolic screen uses the inherited1024-symbolic-step fuel.
+It rejects bounded local source-refinement certificates in that exact framework;
+it does not prove that an unbounded alternative simulation could not exist.

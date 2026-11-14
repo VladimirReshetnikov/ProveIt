@@ -1,0 +1,33 @@
+PA194AX11G binary Turing machine
+
+machine.tm is the normative dense presentation. Each line contains:
+
+    current_state read_symbol write_symbol move next_state
+
+The current states are integers 0 through 193. There are exactly two rows
+for each working state, one for each binary symbol. L and R move one cell
+left or right. The tape is indexed by all integers and is initially zero;
+the head starts at coordinate zero in state zero. Label 194 is terminal:
+entering it halts, and there are no transition rows with current state 194.
+The sole terminal edge is '27 1 1 R 194'. The final write and move are part
+of the transition, though neither changes the question whether it halts.
+
+SHA-256 of machine.tm:
+7e1c6442816e5df05e961f2057719252a1976c9a195a786978bf1e2d3c8e466d
+
+machine.native.tm has the same rows with inherited sparse state names;
+native start state is 74 and native terminal label is 254. labels.json is
+the list of native labels indexed by the corresponding dense state. The
+last entry is the native terminal label. raw.native.tm is the 201-working-
+state table before the seven contextual folds; folds.json records them.
+
+grammar.tree.json is the complete nested source grammar. nodes.json gives
+its fixed named source trees. sites.json is the ordered primitive-leaf
+list; instructions.json is the resolved control-flow graph. local.json
+records the 28 finite local fold cases. All these files are rebuilt or
+checked by the included construction and verification programs.
+
+The completed mathematical claim is relative iPRA halting equivalence to
+the primary 194-state machine. An absolute equivalence to Con(PA) transfers
+if the primary calibration is supplied. No new absolute or Lean endpoint
+is claimed here. See proof/ax11g.tex and the main report for the boundary.

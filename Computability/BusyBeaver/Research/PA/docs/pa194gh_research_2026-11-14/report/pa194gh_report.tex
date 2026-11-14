@@ -1,0 +1,613 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,xcolor,xurl,hyperref,fancyhdr,needspace}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,pdftitle={PA194GH: new 194-state designs and a search below 194},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\urlstyle{tt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlength{\headheight}{14pt}
+\setlist{itemsep=3pt,topsep=4pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small PA194GH and PA194GHS}
+\fancyhead[R]{\small Construction, comparison, and proof boundary}
+\fancyfoot[C]{\thepage}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\PRA}{\mathrm{PRA}}
+\newcommand{\iPRA}{\mathrm{iPRA}}
+\newcommand{\HA}{\mathrm{HA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\NH}{\operatorname{NH}}
+\newcommand{\file}[1]{\texttt{\nolinkurl{#1}}}
+\newcommand{\snap}{\nolinkurl{32d0d8b7d93a63ad4106c18cdb29b37927acdad2}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\input{facts.tex}
+\title{PA194GH: explicit generalization with cached-head halting\\[5pt]
+\large Two new 194-state physical designs, a comparison of the current corpus,\\
+and reproducible searches for a 193-state machine}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{14 November 2026, Pacific time}
+\begin{document}
+\maketitle
+\begin{abstract}
+No blank-start machine with fewer than 194 working states is established in
+this investigation. The concrete fallback is PA194GH, together with the
+PA194GHS implementation of the same new command interface. Each is a
+complete deterministic binary single-tape machine with 194 working states.
+They combine an explicit axiom-command operand as the generalization binder,
+modus ponens without a dummy push, and a halt test on the cached theorem
+alone. The combination changes recurring computation and its proof compiler;
+it is not a change of state names or a different blank starting control.
+
+The delivery includes the literal tables, complete resolved source graphs,
+reconstruction programs, universal symbolic runtime certificates, exact
+whole-tape startups, a common-calculus proof compiler, an audited corpus
+comparison, and new bounded reduction searches. The repository snapshot has
+77 filed research packets and five current incoming archives. Its current
+status explicitly leaves the absolute machine-specific iPRA calibration to
+$\Con(\PA)$ open. This report preserves that distinction: the new command
+calculus has constructive finite witness transformations, while the absolute
+iPRA theorem still needs the inherited physical and logical bridges. Neither
+Python certificates nor an older PA-only proof are represented as a completed
+iPRA or Lean endpoint.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Outcome and exact interpretation}
+\label{sec:outcome}
+
+The requested strict state-count improvement was not obtained. The two
+delivered fallback tables are new in the checked pinned corpus, and both
+have the usual Busy Beaver machine convention:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Property & PA194GH & PA194GHS\\
+\midrule
+Working controls & $0,\ldots,193$ & $0,\ldots,193$\\
+Initial control / halt label & $0/194$ & $0/194$\\
+Binary transition rows & 388 & 388\\
+Initial tape and head & all zero, coordinate zero & all zero, coordinate zero\\
+Tape and motion & two-way infinite; $L,R$ & two-way infinite; $L,R$\\
+Primitive source sites & 3,653 & 3,650\\
+Primitive source outcomes & 4,754 & 4,750\\
+Exact startup length & 57,922 & 57,768\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The halt label has no transition rows and is excluded from 194. No prewritten
+tape, extra tape symbol, stationary move, external input, or larger hidden
+initializer is used. All 194 controls of each table are graph-reachable from
+its designated initial control; this is graph reachability, not a claim
+that all are visited on the unknown infinite blank computation.
+
+The SHA-256 identities of the literal dense files are:
+\begin{quote}\small
+PA194GH: \nolinkurl{b9fadcb197c33895603c71b7119bc92b1772c01960804e8850e2a66dd39a995e}\\
+PA194GHS: \nolinkurl{68442e304616894c14f0e256624208c89fc9e84897d678b1c809f0c27a4ca471}.
+\end{quote}
+
+\subsection{The theorem boundary is substantive}
+
+Let $M_0$ be the primary PA194 table, pinned in the repository by dense
+SHA-256 \nolinkurl{4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f}.
+The desired absolute assertion for a new table $M$ is
+\[
+             \iPRA\vdash \NH(M)\leftrightarrow\Con(\PA).
+\tag{A}
+\]
+The current PA README and its iPRA endpoint README do not assert that (A)
+has already been proved for $M_0$. They specifically distinguish standard
+finite-run theorems, model-uniform arithmetic statements, and a proof inside
+iPRA. They identify both a physical-machine correspondence and the internal
+PA-refutation compiler among the remaining work. The current incoming
+reports likewise keep their stronger conclusions relative. These are
+documented mathematical dependencies, not merely an unrun compiler command
+\cite{pa,endpoint}.
+
+This delivery establishes the new command-level witness equivalence and
+supplies checked physical implementations. Its transport route is
+\[
+\begin{aligned}
+ \Halt(\text{literal machine})
+ &\longleftrightarrow \Halt(\text{primitive register source})\\
+ &\longleftrightarrow \Halt(\text{abstract command scheduler})\\
+ &\longleftrightarrow \operatorname{Ref}(\text{common numerical calculus})\\
+ &\longleftrightarrow \operatorname{Ref}(\PA).
+\end{aligned}
+\]
+The new command proof supplies the abstract-scheduler/calculus equivalence
+for the GH interface. The literal-machine/primitive-source equivalence has
+universal executable runtime evidence and its written simulation argument.
+The primitive register program's refinement of the abstract AX/MP/Shift
+commands is a distinct inherited bridge. Its uniform correctness and the
+full internal formalization of the physical bridge remain separate
+obligations. The last equivalence retains the inherited logical
+calibration boundary. Therefore this report does not claim to have
+completed (A). Assuming the needed weak-arithmetic bridges, the new
+machines inherit (A); assuming only the prior written PA calibration yields
+only that PA-level scope. Section~\ref{sec:weak} states the transfer precisely.
+
+\section{Comparison of the current designs}
+\label{sec:comparison}
+
+\subsection{Snapshot and coverage}
+
+All repository claims and novelty comparisons are pinned to ProveIt commit
+\snap. The supplied PA directory contains 77 filed packets. Five additional
+ZIP files really are present in \file{docs/incoming} at this commit; the older
+placement README is stale on that point. These 82 packets are the comparison
+unit, not 82 independent mathematical proofs.
+
+The repository's historical \file{docs/MACHINES.md} records 11,631 delivered
+\file{.tm} occurrences, 965 byte forms, and 662 transition-table classes,
+including 89 at 194 controls and 53 at 193. Those are historical counts
+before the five newest incoming archives and include rejected tables,
+unfolded parents, diagnostics and comparison copies. Many duplicate files
+have been removed from the present tree, with their locations retained in
+\file{OMITTED.tsv} and \file{MACHINE_FILES.tsv}. Consequently a fresh count of
+files physically present must not be equated with 11,631 \cite{catalog}.
+
+\input{comparison_summary.tex}
+
+The census separately retains file identities, exact tables, declared or
+externally supplied starts, and graph classes. The historical comparison
+does not always include the start: 66 removed files have a numeric zero
+that does not correspond to the kept file's intended initial control.
+A bare file with states $0,\ldots,193$ must not automatically be read as
+starting at zero. Novelty is checked in the stronger unrooted sense here;
+the delivered GH/GHS files separately have an explicit, verified start zero.
+
+\subsection{The real design axes}
+
+Most names in the collection describe combinations of a small number of
+independent mechanisms. The following table explains the differences that
+matter to correctness and state cost; the packet and frontier ledgers retain
+the exact per-file identities, including auxiliary and rejected designs.
+
+\begin{longtable}{@{}p{0.19\linewidth}p{0.35\linewidth}p{0.39\linewidth}@{}}
+\toprule
+Axis / examples & Actual change & Consequence for comparison\\
+\midrule\endhead
+Primary 67/7, 68/8, M4R, R, 4L & Reassociate the axiom-reader program and choose compatible history-sensitive folds. & Equal source words can have different control sharing. Source paths and jump destinations must be rechecked, not just the macro-token list.\\[3pt]
+J, A, F, ZR, CZ, CSZ, HAZ & Replace jumps or returns by decrements of registers proved zero. & The zero-register invariant makes an existing instruction serve as control transfer; it must hold at every use and during initialization.\\[3pt]
+Radix 4, 5, 6 families & Change constructor arithmetic and its fixed-radix reader. & Literal tables and command code change. The apparent radix-three reduction is a rejected logical construction, not a calibrated 193-state machine.\\[3pt]
+Q families & Exchange the two curried premises in universal distribution. & Requires a uniform propositional proof translation; changed emitter sharing can affect the final fold set.\\[3pt]
+N and cached-result C & Omit successful MP's dummy push, or place the conclusion in a cache. & These have different store effects. Old proof words cannot be imported without checking stack and offset invariants.\\[3pt]
+H and S families & Test the cached head alone; optionally symmetrize a destructive equality test. & H changes the abstract halt interface. S can preserve that interface while changing primitive source and control count.\\[3pt]
+D / diagonal variants & Select or rearrange the diagonal vacuity head. & Freshness is justified by code bounds. Weakening a head needs a completeness proof, not just arithmetic soundness.\\[3pt]
+G & Use explicit AX operand $c$ in the saved generalization $U(c,h)$. & Removes an offset-setting command from generalization. Its body must be old $h$, not arbitrary $h+y$.\\[3pt]
+AX11 families & Add an operand/output position and an eleven-entry axiom interface. & Existing ten-entry selectors have wrong offsets; each combined controller needs its own compiler.\\[3pt]
+AD, TDY, P5, HX & Change physical positions of logical registers. & Alters recurring tape access and initialization. A new graph may implement the same numerical source, but it is not a new logical calculus.\\[3pt]
+B / dedicated selector & Keep a separate history selector where a runtime fold breaks initialization. & Repairs a sharing conflict while retaining 194 controls. Its extra selector cannot be counted as a state saving.\\
+\bottomrule
+\end{longtable}
+
+The names are not reliable identities. In particular QN/NQ and several
+HS/NS presentations coincide after renaming, while a later sum-guard NS
+means a different design. The catalogue and the fresh canonical comparison
+resolve these by exact tables. Coefficient changes, register permutations,
+and recurring command changes are not all the same kind of novelty.
+
+\subsection{The five newest incoming packets}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Packet & Substantive contribution screened in this audit\\
+\midrule
+\file{pa1944l_research_2026-11-14} & Four-increment reassociation, with a helper and a compensating fold.\\
+\file{pa194_ax11h_research_2026-11-14} & AX11 combined with cached-head-only Shift.\\
+\file{pa194_ax11qh_research_2026-11-14} & AX11/Q/no-push/cached-head composition; explicitly relative iPRA scope.\\
+\file{pa194_ax11s_study} & AX11 with the symmetric implementation of the original sum-based Shift.\\
+\file{pa194_research_2026-11-14} & Physical H/X allocation and another copy of an already filed AX11QH5 table.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+These were included before declaring GH or GHS new. Neither changing a
+filename nor rediscovering an auxiliary table counts as a fallback result.
+
+\section{The common numerical calculus}
+\label{sec:calculus}
+
+For completeness, this section spells out the inherited objects used in
+the new command proof. Define Cantor pairing
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,
+\]
+\[
+ U(a,B)=4p(B,a)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+The order of the arguments in $U$ is deliberately reversed at the pairing
+level. Code zero is truth; code one is the refutation target $M(0,0)$.
+Use $A\to B=I(A,B)$, $N(B)=I(B,1)$,
+$A\wedge B=N(I(A,N(B)))$ and $\exists_a B=N(U(a,N(B)))$.
+The numerical equality $I(0,0)=0$ is not ignored.
+
+The six universal head families, with the Q distribution orientation, are
+\begin{align*}
+ L_1(D,H)&=(\exists_D U(D,H))\to H,\\
+ L_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ L_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ L_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ L_5(D,H)&=\exists_D E(H,D),\\
+ L_6(D,A,H)&=U(D,A\to H)\to(U(D,A)\to U(D,H)).
+\end{align*}
+Also retain the dominated implicational head
+\[
+ \rho_8(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \qquad u\le D,
+\]
+and the diagonal head $\Gamma(B)=B\to U(B,B)$.
+The numerical code property that every variable label occurring in $B$ is
+strictly less than $B$ supplies the diagonal freshness fact. It is not an
+unrestricted formula-substitution axiom.
+
+For the separation gate put
+\begin{align*}
+ P(a,b,c)&=c\to M(c,b),\\
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ S_0(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q_0(a,b,c)&=U\bigl(c,S_0(a,b,c)\to N(P(a,b,c))\bigr),\\
+ K(a,b,c)&=\begin{cases}N(V(a,b,c)\to Q_0(a,b,c)),&c\ne a,b,\\0,&\text{otherwise.}\end{cases}
+\end{align*}
+The two inference rules are modus ponens and generalization of a theorem.
+The primary non-Q distribution head and $L_6$ interderive by a fixed
+propositional exchange template, in both directions. This is an inherited
+calculus equivalence, not a new source of arithmetic strength.
+
+The new construction preserves this refutation calculus. Its contribution
+is a different, fully specified enumerating command interface and two
+physical implementations. The imported ordinary PA calibration text is
+retained under \file{references/primary_pa_calibration.tex}, explicitly as
+an attributed reference with its original PA scope.
+
+\input{gh_command_proof.tex}
+
+\section{Physical verification and the companion implementation}
+\label{sec:physical}
+
+\subsection{What a universal source outcome means}
+
+At an instruction address $p$, the source-frame convention has a marker
+one immediately to the left of the head, the bits of $p$, an affine zero
+gap, a header one, and a unary register list. Relative to the head, its
+right-hand contents have the form
+\[
+ p\,0^{48+n-|p|}\,1\,
+       (0\,1^{r_0+1})\cdots(0\,1^{r_8+1})\,
+       (0\,1^{s_0+1})\cdots(0\,1^{s_{m-1}+1})\,0^\infty,
+\]
+where the nine $r_i$ are arbitrary naturals, $n\ge0$, and $m\ge1$ with
+arbitrary natural spare values $s_i$. The tape to the left of the head is
+blank except for the adjacent marker. This quantification is why testing
+a few small counter values would be inadequate.
+
+For every primitive instruction site the verifier proves the next source
+frame with the prescribed increment, decrement, branch or halt effect.
+A decrement contributes separate zero and positive outcomes. The two
+source resolvers independently recover the instruction graph from the
+structured paths; the delivered instruction array must agree with both.
+Arithmetic list operations are covered by four induction certificates
+derived from the literal transition rows. The independent checker does
+not call the builder's arithmetic-box oracle.
+
+The source interpreter uses logical-to-physical register allocation
+\[
+                      [6,2,0,4,3,7,8,5,1].
+\]
+Both initializations reach source site 25, native control 84, head $-2$,
+logical registers $(2,0,0,0,0,0,0,0,0)$ and 26 spare blocks of value one.
+The complete finite-support tape is compared, including the exterior,
+not merely a window around the head.
+
+\input{verification_summary.tex}
+
+\subsection{PA194GHS}
+
+PA194GHS has exactly the GH command semantics. It replaces the cached-head
+comparison implementation by the inherited symmetric comparison method.
+The two compared arithmetic operands can be exchanged because equality is
+symmetric and both operands are cleared on the nonhalting branch. The
+remaining registers and destination are preserved. This removes three
+primitive source sites. Its count is
+\[
+       135\text{ fixed controls}+67\text{ AX readers}-8\text{ folds}=194.
+\]
+PA194GH instead has $134+67-7=194$. This explains why three fewer source
+instructions do not automatically give fewer physical states. The extra
+fixed control and extra fold compensate one another.
+
+The companion is a second physical realization, not a second new
+arithmetical theory. It starts 154 transitions sooner than GH; this finite
+startup comparison is not a uniform runtime-speed claim.
+
+\subsection{Finite-trace reflection}
+
+Every successfully certified nonhalting source step has a positive finite
+physical duration. Concatenating the segments gives a physical halting
+witness from a source halting witness. For the converse, suppose the
+physical machine first halts at time $T$. Inspect at most $T+1$ source
+steps after the fixed initialization. If all were nonhalting, their
+positive segments would give the same deterministic physical computation
+continuing beyond its first halt, a contradiction. Thus a source halt
+occurs within that bounded inspection. This argument supplies a bounded
+witness-extraction plan rather than an unbounded search for a source halt.
+
+The finite startup and local symbolic certificates are substantial evidence
+for this bridge. They are not, by themselves, an object-theory derivation
+of its uniform correctness in iPRA. The distinction is retained in the
+machine-readable status and the proof-dependency ledger.
+
+\section{Weak-arithmetic transport and remaining obligations}
+\label{sec:weak}
+
+\begin{proposition}[Constructive witness transport]
+Let $V_A(u)$ and $V_B(v)$ be primitive-recursive witness predicates.
+Suppose iPRA proves
+\[
+ V_A(u)\to V_B(f(u)),\qquad V_B(v)\to V_A(g(v)),
+\]
+for specified primitive-recursive $f,g$. Then it proves both
+\[
+ (\exists u\,V_A(u))\leftrightarrow(\exists v\,V_B(v))
+ \quad\text{and}\quad
+ \neg\exists u\,V_A(u)\leftrightarrow\neg\exists v\,V_B(v).
+\]
+\end{proposition}
+\begin{proof}
+Eliminate the given existential witness, apply its displayed implication,
+and introduce the resulting witness on the other side. Do this in both
+directions. Applying either implication to an assumed existential proves
+the corresponding implication of negations. All steps are intuitionistic;
+neither Markov's principle nor consistency of either calculus is used.
+\end{proof}
+
+At the abstract command level, GH has exactly such witness maps: a finite
+halting trace yields a numerical proof by annotation, and a proof of one
+yields a cofinal scheduler candidate executing its compiled all-store
+halting word. The word bound $122n+13$ and the explicit scheduler bound
+make this more concrete than an appeal to semantic completeness. The new
+proof also avoids an invalid unbounded induction on ``all stores'': it
+uses bounded actual-call records in the primitive-recursively generated
+execution, with arbitrary initial parameters free.
+
+For a relative machine theorem, substitute finite halting traces of $M_0$
+and $M_{GH}$ for these predicates and compose the physical/primitive-source,
+primitive-source/abstract-command, and calculus bridges. Once their
+correctness is established in iPRA,
+the proposition yields
+\[
+           \iPRA\vdash\NH(M_{GH})\leftrightarrow\NH(M_0).
+\tag{R}
+\]
+Together with the same assertion for the symmetric implementation, this
+transports an eventual primary calibration to both new tables. Formula
+(R) is stated here with its physical/internalization premises; a completed
+Lean theorem for it is not claimed.
+
+Classical weak-arithmetic proofs provide another route for the negative
+endpoint. A Gödel--Gentzen translation of a classical PRA equivalence of
+the two existential witness sentences gives an intuitionistic equivalence
+of their double negations. Intuitionistically $\neg\neg\neg A$ is equivalent
+to $\neg A$, so their nonexistence sentences follow without eliminating a
+double negation in front of an existential. The repository's
+\file{isigma1-transfer} development explicitly supports an alternative
+model argument in $I\Sigma_1$. None of these general transfer facts supplies
+the missing machine-specific premise.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.31\linewidth}X@{}}
+\toprule
+Obligation & Status in this delivery\\
+\midrule
+Literal table and state count & Complete executable checks; dense/native bijections included.\\
+Exact blank initialization & Complete literal whole-tape runs at the stated lengths.\\
+Universal local physical contracts & Symbolic induction certificates and independent literal replay; explicit quantified frame domain.\\
+GH abstract-command/refutation equivalence & Written constructive proof with all-store words and primitive-recursive witness bounds.\\
+Primitive register source / abstract commands & Inherited arithmetic command-implementation refinement; its uniform internal correctness is a separate premise.\\
+Uniform arithmetic internalization of full physical implementation & Still an inherited proof obligation; finite certificates do not replace it.\\
+Numerical calculus / PA refutation equivalence inside iPRA & Still an inherited calibration obligation. The older ordinary proof is explicitly PA-scoped.\\
+End-to-end Lean/Rocq theorem for GH/GHS & Not supplied or claimed.\\
+Strict sub-194 blank-start result & Not obtained.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\section{New searches below 194 states}
+\label{sec:search}
+
+The search effort targeted an actual remaining mechanism rather than
+counting already rejected 193-state files as successful machines. The
+known runtime193 core identifies native controls 301 and 88 and changes
+two rows:
+\[
+  (88,0)\mapsto(0,L,51),\qquad(51,0)\mapsto(0,R,122).
+\]
+It has universal source-runtime evidence but the shared marker change
+breaks its blank initialization. Its source correctness therefore does
+not establish a Busy Beaver consistency construction.
+
+\input{search_summary.tex}
+
+The frame detector used in the paired/triple startup experiments accepts
+even arbitrary proof-store values. Thus it searches a superset of sound
+candidate seeds. A hit would still need a sound-store certificate, all
+runtime contracts, and complete calibration. No hit was found. Conversely,
+a cutoff is not a proof that no suitable frame is ever reached.
+
+The search certificates deliberately distinguish three outcomes: an actual
+halt, a certified infinite outward ray or exact repeated configuration,
+and an unresolved bounded run. The outward-ray certificate follows a
+cycle of transitions reading zero, with all moves in one fixed direction,
+starting strictly beyond every nonzero tape cell. Every subsequent read
+is a previously unvisited zero; written symbols lie behind the head and
+cannot affect the continuation. Exact-cycle certificates include the
+entire finite-support tape, control and head, not just a local window.
+
+No reported finite search is a lower bound of 194 for arbitrary machines,
+or even for arbitrary implementations of the same numerical calculus.
+The unresolved startup runs and the restrictions of the source/allocation
+searches are preserved in their receipts.
+
+\input{top_generalizer.tex}
+
+\section{What transfers from the other requested projects}
+\label{sec:other}
+
+\subsection{ZFC machines: context sharing and bootstrap cost}
+
+The ZFC work is directly relevant at the physical compiler layer. It uses
+history recorded in a preceding tape symbol, partial selectors,
+source-loop reassociation, and no-push/cache transformations. The PA
+runtime193 experiment is precisely the kind of sharing opportunity this
+suggests. Its failure is equally informative: a control shared safely
+during source execution may also implement the blank bootstrap, where the
+required predecessor invariant is absent. Counting only the runtime core
+omits a real part of the machine. The new coupled-edit searches therefore
+looked at initialization and recurring contracts together.
+
+The current ZFC README also distinguishes externally checked exact-table
+equivalences from an internal PA equivalence. The K215 external Lean/Rocq
+endpoint does not, just by its existence, supply the desired iPRA theorem
+for a different PA table.
+
+\subsection{Diophantine consistency: reusable proof architecture}
+
+The DiophantineConsistency development is useful for its separation of
+literal expression binding, witness transformations, model-uniform
+correctness, and negative iPRA endpoints. The same distinction matters
+here. An explicit counter or machine trace should be tied to the literal
+object being delivered, and both finite-witness directions should be
+made explicit before the negative consistency statement is assembled.
+
+A small-variable Diophantine formula is not automatically a small
+blank-start binary machine. Its polynomial evaluator, tuple enumerator,
+constant initialization and arithmetic representation have to be compiled
+and counted. For example the cited compact44 work includes a parameter
+$\beta=2^{590069}-1$. This is a legitimate compact mathematical expression,
+but it is not a free initial tape constant. No state saving from a
+Diophantine replacement is claimed in this delivery.
+
+\subsection{Concise iPRA: a precise alternative theory route}
+
+The concise native scalar calculus by itself is calibrated to iPRA, not
+to PA. Replacing the current refutation calculus by its proof checker
+without changing its strength would therefore change the requested
+consistency target. Its useful idea is rule fusion and structured syntax,
+not identification of the two consistency statements.
+
+There is, however, a specific stronger extension worth compiling. In the
+native \file{NPrf} kernel, with the closure reading of Q displayed below,
+retain all rules and allow QI by progress for
+\emph{every} native formula, instead of only literal equations:
+\[
+ \frac{\Gamma,B(z)\vdash B(Sz)}{\Gamma\vdash Q_y B(y)},
+ \qquad z\text{ fresh},\qquad Q_yB=B(0)\to\forall y\,B(y).
+\]
+Under the established native-to-ordinary logical interpretation, this is
+exactly full formula induction. Its ordinary interpretation is a
+primitive-recursive definitional extension of Heyting arithmetic. In the
+other direction the native encodings of ordinary connectives and
+quantifiers let the new rule prove induction for any encoded arithmetic
+formula. Thus, with the native interpretation and translations retained,
+the extension is a concrete HA presentation rather than merely the
+original iPRA presentation. PA and HA have the usual syntactic refutation
+translations, including negative translation in the PA-to-HA direction.
+
+This observation identifies the missing strength correctly and removes
+an atomicity test in that rule. It does \emph{not} yet give a smaller TM:
+terms, binding, substitution, proof contexts and the proof enumerator
+still need an explicit compiler. Uniform native/HA refutation compilers
+and their internal correctness proofs are not delivered here. No state
+count or priority claim is assigned to this proposed route.
+
+\section{Further research questions}
+\label{sec:future}
+
+\begin{enumerate}
+\item Can a bootstrap repair be synthesized jointly with a runtime
+representation invariant, rather than drawn from individually neutral
+row changes? The paired and triple searches narrow only their stated
+finite domains. A useful repair must reach a whole canonical frame and
+preserve every recurring source effect.
+\item Can semantic liveness permit an eight-register implementation?
+Zero/nonzero abstractions can be too coarse: two nonzero values may be
+dead at disjoint points. A register-overlay compiler would need explicit
+live ranges, a new frame invariant, and the cost of any normalization.
+\item Can multi-symbol history be exploited with fewer helper controls?
+The present seven/eight folds use short, fixed predecessor contexts.
+A different interpreter may make richer history accessible without
+paying for an extra selector elsewhere.
+\item Can the full-HA native calculus just described be compiled to this
+binary target more cheaply than the finite-membership calculus? Compare
+literal total machines, including initialization, rather than the number
+of high-level logical rules.
+\item Can the existing symbolic list and source certificates be exported
+as explicit iPRA proof-producing certificates? This would make future
+physical variants inherit a checked weak-arithmetic theorem instead of
+repeating an informal internalization argument.
+\item Can the arbitrary-PA-refutation compiler and source-calculus
+calibration be completed uniformly for internal proof codes? This is the
+remaining bridge that an exact state saving would still need.
+\end{enumerate}
+
+\section{Reproduction and provenance}
+\label{sec:reproduce}
+
+\input{reproduction.tex}
+
+All imported programs and logical material retain source paths and license
+notices. The new contribution is the GH composition and proof interface,
+its GHS physical implementation, the current comparison, and the stated
+fresh reduction searches. The underlying pairing, numerical calculus,
+compiler, runtime engine and prior optimization ideas remain attributed
+to James Chang's development and the cited ProveIt research packets.
+
+\begin{thebibliography}{9}\small
+\bibitem{pa} ProveIt, \emph{PA consistency machines}, pinned project status.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/32d0d8b7d93a63ad4106c18cdb29b37927acdad2/Computability/BusyBeaver/Research/PA/README.md}.
+\bibitem{endpoint} ProveIt, \emph{PA194 bounded halting and conditional PA consistency endpoint}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/32d0d8b7d93a63ad4106c18cdb29b37927acdad2/Computability/BusyBeaver/Research/PA/pa194/ipra/README.md}.
+\bibitem{catalog} ProveIt, \emph{Machines in the delivered packets}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/32d0d8b7d93a63ad4106c18cdb29b37927acdad2/Computability/BusyBeaver/Research/PA/docs/MACHINES.md}.
+\bibitem{primary} ProveIt, \emph{PA194 construction and written PA calibration},
+\file{PA/docs/pa194_conpa_2026-11-13/}, same snapshot. Exact source paths and
+Git blobs are retained in the provenance manifests.
+\bibitem{g} ProveIt, \emph{PA194B and PA194G},
+\file{PA/docs/PA194B_PA194G_research_2026-11-14/}, same snapshot.
+\bibitem{h} ProveIt, \emph{PA194H and PA194HS},
+\file{PA/docs/pa194hs_conpa_2026-11-13/}, same snapshot.
+\bibitem{transfer} ProveIt, \emph{Transfer from $I\Sigma_1$},
+\file{PA/isigma1-transfer/README.md}, same snapshot.
+\bibitem{other} ProveIt, the ZFC, DiophantineConsistency and ConciseIPRA
+project READMEs at the same snapshot. Frozen copies and source identities
+are in \file{references/}.
+\end{thebibliography}
+
+\appendix
+\section{Complete literal transition tables}
+\label{app:tables}
+An entry $wDq'$ means write $w$, move in direction $D$, and enter $q'$.
+Columns 0 and 1 refer to the bit read. Label H means terminal 194.
+Both tables start in control zero on an all-zero tape.
+\input{transition_tables.tex}
+
+\section{Named design and packet ledger}
+\label{app:ledger}
+\input{frontier_ledger.tex}
+\input{packet_ledger.tex}
+\end{document}

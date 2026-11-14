@@ -1,0 +1,83 @@
+PHYSICAL FOLD SEARCH: SCOPED NEGATIVE RESULTS
+
+Outcome
+-------
+No smaller machine was obtained in these searches. Four finite screens found
+zero candidate control identifications. This is not a lower bound on machines
+for Con(PA), or on all reductions of the supplied tables.
+
+Frozen inputs and measured searches
+----------------------------------
+1. Primary PA194: 170 non-box, non-interface controls; 14,365 pairs;
+   8,291 local context instances.
+2. PA1944L: 170 non-box, non-interface controls; 14,365 pairs;
+   8,417 local context instances.
+3. PA1944L with arithmetic controls exposed: 192 controls; 18,336 pairs;
+   11,690 local context instances. Only native start 74 and dispatcher 84 are
+   excluded. The additional contexts come from the independent literal-tape
+   verifier and its generic unary-list inductions, including intermediate
+   positions of accelerated scans in the arithmetic controls.
+4. PA194AX11G: 170 non-box, non-interface controls; 14,365 pairs;
+   8,772 local context instances. Its collector replays all 4,779 outcomes
+   from the exact new node map and grammar, plus its 58,154-step startup.
+
+The first two collectors replay all 4,780 source outcomes, with arbitrary
+natural register parameters and an affine header gap. The third also replays
+all 4,780 outcomes with the literal unary-tape engine. Blank-start observations
+cover the full 58,154-step primary seed prefix and 58,320-step PA1944L prefix.
+The small context envelopes deliberately forget some correlations; they are
+proposal screens, not complete invariant proofs.
+
+Search family
+-------------
+For each pair a,b, identify a with b, redirect all targets accordingly, and
+permit both remaining transitions of b to change. Each first action may write
+either bit, move either direction and target any surviving control or halt.
+The two edited rows are coupled: a simulated detour may reenter the merged
+control and use either row. Tests permit at most 32 literal transitions and
+read only offsets -4 through +4 of the entry tape neighborhood. A successful
+detour must rendezvous with a positive prefix of the original computation,
+agreeing on control under the proposed identification, head and whole window.
+The original comparison prefixes have the same 32-step bound. Full final
+source-frame and startup verification would be required for any positive hit.
+
+Neither arbitrary tape recodings, additional transition changes outside the
+merged control, longer detours, different source programs, nor new logical
+calibrations are covered. Impossible neighborhoods in the overapproximation
+can reject a reduction that would work on actual runs. Consequently the
+negative result is strictly a result of this specified screening procedure.
+
+Reproduction
+------------
+From this directory, with Python 3 and a C++17 compiler:
+
+  python3 replay.py --output fresh_search_receipts.json
+
+This compiles coupled_search.cpp in a temporary directory and replays the
+four frozen inputs. The JSON records their hashes, exact counts and limits.
+The older uncoupled prototype fold_search.cpp is included for inspection; the
+reported searches use the stronger coupled_search.cpp.
+
+To regenerate the finite context inputs offline:
+
+  python3 collect_contexts.py primary
+  python3 collect_contexts.py 4l
+  python3 collect_contexts.py ax11g
+  python3 collect_literal_contexts.py 4l
+
+The literal collection takes several minutes. Keep Python assertions enabled.
+The collector code is exploratory; it is not a proof-assistant kernel. Its
+input tables and inherited source engines are retained under inputs/,
+reference/ and literal_reference/. Original licenses are in reference/.
+
+Provenance
+----------
+Primary material is from ProveIt revision
+32d0d8b7d93a63ad4106c18cdb29b37927acdad2,
+Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13/.
+PA1944L and its independent literal engine come from the same revision's
+docs/incoming/pa1944l_research_2026-11-14.zip, wrapper pa1944l_research/.
+The AX11G input table, node map and grammar are exact copies of the new
+delivered construction. The all-offset fold synthesis and literal
+arithmetic-context extension here
+are new exploratory scripts. They do not alter any baseline source file.

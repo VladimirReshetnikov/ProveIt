@@ -1,0 +1,183 @@
+% Separate audit fragment; requires amsmath, amssymb and hyperref.
+% No unconditional weak-base PA-to-calculus theorem is asserted here.
+\section{Focused weak-base calibration audit}
+\label{sec:focused-calibration-audit}
+
+The inspected source is the repository at commit
+\path{1c9524d8bf2e0a27b9a16ff622359927f536e663}.
+The original written calibration, in
+\path{report/reference/original_pa195_calibration.tex} of the
+\path{PA/docs/pa194_conpa_2026-11-13} package, proves its endpoint over
+PA. It asserts primitive-recursive proof transformations with
+PA-provable correctness. This does not alone yield correctness in
+intuitionistic primitive recursive arithmetic.
+
+There is nevertheless a concrete improvement. The bounded all-store
+proof in the present command-preservation argument replaces the role of
+the full-PA induction in the upstream
+\path{PA196/Arithmetic/CompilerInvariant.lean}, theorem
+\path{fuel_invariant}. It applies to arbitrary internal finite
+numerical derivations and the new commands. The remaining calibration
+question is earlier: can every internal PA refutation be converted into
+such a numerical derivation over the weaker base?
+
+\subsection{A finite-demand induction principle}
+
+The following sufficient principle makes the uniformity requirement
+precise. Its hypotheses must be instantiated; the existence of such a
+principle does not automatically verify a compiler.
+
+Code a request by a pair $(r,x)$, with numerical rank $r$ and parameter
+code $x$. Let $\operatorname{Req}(r,x)$ and
+$\operatorname{Cert}(r,x,c)$ be primitive-recursive Boolean predicates.
+Suppose a primitive-recursive function $Q(r,x)$ returns the finite list
+of child requests. For a valid parent, each child is valid and has rank
+strictly below $r$. Crucially, $Q$ is computed from the request before
+receiving any child certificates. Let a primitive-recursive constructor
+$K$ combine certificates for those children. Require that iPRA proves
+the just-stated rank and validity properties and proves
+\[
+ \operatorname{Req}(r,x)\ \wedge\
+ \bigwedge_{(j,y)\in Q(r,x)}
+       \operatorname{Cert}(j,y,c_{j,y})
+ \ \longrightarrow\
+ \operatorname{Cert}\bigl(r,x,K(r,x,(c_{j,y}))\bigr).
+\]
+The empty-list case includes the actual uniform leaf suppliers.
+
+Fix a root rank $D$ and parameter bound $s$. Define
+\[
+ F_D(v)=1+\max\left(\{v\}\cup
+  \{y: r\le D,\ x\le v,\ (j,y)\in Q(r,x)\}\right),
+ \qquad B(r)=F_D^{\,D-r}(s)\quad(r\le D).
+\]
+These are primitive-recursive functions: the maximum is a bounded scan
+over finite computed lists. If $x\le B(r)$ and $(j,y)\in Q(r,x)$
+with $j<r$, then
+\[
+ y\le F_D(B(r))\le B(j).
+\]
+Construct a table in ascending rank, containing a certificate for
+every $x\le B(r)$ in row $r$. Use the already completed rows for child
+lookups; invalid requests receive a default output. The constructor is
+primitive recursive, regardless of how large its certificate outputs
+are. The invariant after completing rows below $k$ is
+\[
+ \bigwedge_{r<k}\ \bigwedge_{x\le B(r)}
+ \left(\operatorname{Req}(r,x)\to
+       \operatorname{Cert}(r,x,\operatorname{table}[r,x])\right).
+\]
+Both conjunctions are finite Boolean folds, so this is a
+quantifier-free induction invariant. An inner bounded Boolean
+induction constructs the next row. The child-bound inequality and the
+local correctness hypothesis prove that row's validity. Hence iPRA
+proves the root certificate correct, uniformly in $D,s$.
+
+Thus the unbounded oracle formulations used in the existing proofs
+need not be retained. But the principle requires the complete finite
+request list and the actual local suppliers. A statement that all
+recursive calls have ``some sufficiently large bound'' does not
+instantiate these hypotheses.
+
+\subsection{Concrete request maps and the remaining supplier}
+
+The following source paths are relative to
+\path{PA/jamesyc-upstream/pa196/PA196/Arithmetic/Transport/}.
+The endpoint \path{ordinary_derivation_requested} in
+\path{NumericPAeqSequentDerivation.lean} uses the following interface.
+Write $g=\operatorname{guardedCode}(f,S)$ and
+$P(n,l,z)=\operatorname{parameters}(0,n,l,z)$. Then
+\[
+\begin{aligned}
+ \operatorname{RequestedCertificate}(f,S):={}&
+ \forall n,l,z\,\bigl(\operatorname{Covered}(0,n,l,z,g)\\
+ &\to \exists c\,
+  \operatorname{verify}(c)=\operatorname{translate}(P(n,l,z),g)+1\bigr).
+\end{aligned}
+\]
+The existing full induction quantifies all environments and smaller
+derivations. Several finite request maps can be read directly from its
+local rules. In the existential rule, the padding budget is
+\[
+ r=\max\bigl(\operatorname{guardedCode}
+      (f,\operatorname{insert}(\operatorname{substs1}(u,p),S)),
+      \operatorname{existentialRuleCode}(f,p,u)\bigr),
+\]
+and the child is queried at
+$(\operatorname{padEnvironment}(n,r),l,z+l+r)$.
+The shift rule has the same map with
+$r=\operatorname{guardedCode}(f,S)$ at the child environment.
+The theorem \path{requested_universal_certificate} in
+\path{FoundationRelationalSequentRequestedUniversal.lean} uses
+$d=\operatorname{free}(p)+1$ and queries its opened child at
+\[
+ \bigl(l::\operatorname{padEnvironment}(n,d),\ l+1,\ z+l+d\bigr).
+\]
+These maps are independent of returned certificate values. They are
+concrete ingredients for the preceding lemma. Nested composition and
+universal-context helpers induce additional requests whose coverage
+must also be proved.
+
+The axiom branch calls
+\path{induction_axiom_requested_certificate} in
+\path{NumericPAeqInductionAxiomCertificate.lean}. For every internally
+coded PA induction axiom $q$, its target is a certificate for
+\[
+ \operatorname{translate}\bigl(\operatorname{parameters}(0,n,l,z),
+       \operatorname{formulaSyntax}(\operatorname{parameters}(0,f),q)
+                         \bigr)
+\]
+at every covered triple $(n,l,z)$. This closed-axiom theorem permits
+arbitrary $f$; a closed-environment lemma removes its influence.
+Its current proof assumes a model of full PA. Unfolding it reveals
+further explicit full-induction uses:
+
+\begin{itemize}
+\item \path{NumericPAeqGuardedAlls.lean},
+\path{matrixSupply_alls}, uses
+\path{InductionScheme.succ_induction} with
+\texttt{C := Set.univ}. Its invariant quantifies all matrices and
+environments and propagates a certificate-supplier interface through
+arbitrarily many universal closures.
+\item \path{NumericPAeqCanonicalMatrixCertificate.lean},
+\path{matrix_certificate}, invokes
+\path{open_source_formula_realization_certificate}.
+In \path{NumericPAeqFormulaRealization.lean},
+\path{open_source_formula} proves this by another
+\texttt{C := Set.univ} induction over formula codes. Its
+\texttt{FormulaSupply} quantifies the changing depths, substitution
+vectors, environments, and requested labels.
+\item \path{RelationalPredicateTemplateOrdinalRequested.lean}
+uses the fixed derivation \texttt{inductionDerivation} through
+\path{template_nd_requested_certificate}, with
+\path{induction_axiom_certificate} as callback. The fixed template
+is promising, but uniform substitution, coverage, and callback
+correctness are still required.
+\end{itemize}
+
+The two full-induction sites highlighted in the forward-audit README
+are consequently examples, not an exhaustive transitive list.
+Removing the top sequent induction and the command-fuel induction
+alone does not close the forward calibration.
+
+\subsection{Exact conclusion of the focused attempt}
+
+No obstruction or counterexample to weak-base calibration was found.
+In particular, a generated PA proof may contain an arbitrary PA
+induction instance while its syntactic producer is verified in a much
+weaker metatheory; the induction strength of the output proof must not
+be confused with that of its verifier.
+
+However, a complete iPRA or $I\Sigma_1$ proof of the PA-to-numerical
+calibration is not supplied here. The precise remaining construction
+is the uniform arbitrary-matrix supplier above, with a complete
+finite-demand and coverage proof for its formula-realization,
+closure, and sequent dependencies. The bounded-demand lemma explains
+how suitable explicit suppliers would remove the high-induction
+formulations. It cannot replace those suppliers. The numerical
+verifier and replacement-interface maps must additionally be matched
+to the exact new calculus. The physical simulation is a separate
+proof, supplied in Section~\ref{sec:physical-ipra}, and does not
+complete this compiler. Therefore the new abstract-command theorem does
+not by itself justify the unconditional machine-specific iPRA
+equivalence requested by the user.

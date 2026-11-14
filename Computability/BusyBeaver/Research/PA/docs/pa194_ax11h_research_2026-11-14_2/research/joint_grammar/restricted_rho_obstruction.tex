@@ -1,0 +1,47 @@
+\section{A small obstruction to eliminating the offset parameter}
+The dominated implicational axiom is
+\[
+ \rho(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \qquad u\le D.
+\]
+Two tempting simplifications are to keep only \(u=D\), or only \(u=0\).
+The following matrices show that neither restricted family, considered
+as a propositional axiom schema with modus ponens and substitution,
+even proves the weakening axiom \(P\to(Q\to P)\).
+This is a negative result about those proposed replacements of the
+propositional interface alone; it does not show that the full numerical
+calculus with all of its other axioms is incomplete after either change.
+
+For the reflexive restriction \(u=D\), use values \(\{0,1,2\}\),
+designate only \(2\), and define implication by the following table:
+\[
+\begin{array}{c|ccc}
+\to&0&1&2\\\hline
+0&1&1&2\\
+1&1&2&2\\
+2&1&1&2
+\end{array}.
+\]
+For the restriction \(u=0\), interpret the source truth constant
+zero by the matrix value \(2\), and use
+\[
+\begin{array}{c|ccc}
+\to&0&1&2\\\hline
+0&0&0&2\\
+1&2&2&2\\
+2&1&1&2
+\end{array}.
+\]
+Both tables satisfy \(2\to2=2\), so the numerical truth alias
+\(I(0,0)=0\) is respected. Modus ponens preserves designation because
+the last row has its sole designated entry in column \(2\).
+All 27 instances of the relevant three-variable restricted schema
+evaluate to \(2\). In contrast, with \(P=Q=0\) the weakening instance
+evaluates to \(1\) in the first matrix and to \(0\) in the second.
+The companion script checks every displayed claim directly.
+
+Consequently an offset-eliminating redesign cannot justify its
+propositional completeness merely by restricting the old four-parameter
+head and reusing its proof. It would have to derive the missing
+implicational principles using other retained axiom families, or supply
+a different complete basis and implementation.

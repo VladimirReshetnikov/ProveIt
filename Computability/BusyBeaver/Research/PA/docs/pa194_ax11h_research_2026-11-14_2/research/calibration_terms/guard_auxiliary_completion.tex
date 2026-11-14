@@ -1,0 +1,127 @@
+% Explicit auxiliary suppliers used by arithmetic formula and matrix closure.
+\subsection{Guard collection, binder input, and canonical input}
+\label{sec:term-guard-auxiliaries}
+
+The formula and induction-matrix constructions also need three auxiliary
+guard suppliers.  They do not follow merely from the arbitrary-term
+vector-realization theorem, so we give their algorithms explicitly.
+All translations in a native guard loop use one fixed parameter tuple
+$\lambda$; no recursive call changes that tuple.
+
+Let $G_0=\top$ and $G_{j+1}=G_j\mathbin\&E_j$ be any of the
+domain or realization guards.  Given an \emph{explicit} primitive
+recursive array $e_j$ of proofs of $A\to T_\lambda(E_j)$, define
+$c_0$ to be truth weakening and form $c_{j+1}$ by the fixed native
+implication-pairing recipe from $c_j,e_j$.  The bounded invariant is
+that $c_j$ is a checked proof of $A\to T_\lambda(G_j)$, conjoined
+with validity of the first $j$ entries.  Quantifier-free induction on
+$j$ proves the assertion.  This is the direct-list interpretation of
+\texttt{NumericPAeqValueDomainGuardCollection} and
+\texttt{NumericPAeqValueRealizationGuardCollection}; it does not
+extract an unspecified choice function from
+$\forall j<k\,\exists e_j$.
+
+For domain prepend, use antecedent
+$T_\lambda(G_k(b))\wedge T_\lambda(D(x))$ and collect $k+1$
+entries.  The zeroth proof is its right projection.  Entry $j+1$
+is its left projection followed by the already completed projection
+$G_k(b)\to D(b_j)$.  The list equations
+$(x::b)_0=x$ and $(x::b)_{j+1}=b_j$ prove the desired conclusion
+$G_{k+1}(x::b)$ exactly.  This construction is
+\texttt{NumericPAeqValueDomainGuardPrepend.guard\_prepend\_certificate}.
+Applying it to the bound guard and retaining the free guard gives
+the input-prepend supplier used by universal matrix closure.
+
+Write $D(x)=\operatorname{domainCode}(x)$ and
+$V_x=\operatorname{variableValue}(x,x)$.
+The requested self-variable proof is
+$T_\lambda([D(x)\Rightarrow V_x])$.
+Its fixed relational ND template proves
+$D(x)\to(D(x)\wedge\operatorname{Eq}(x,x))$ from the
+closed relational reflexivity sentence.  Thus it is precisely an
+instance of the lower singleton-requested-template constructor,
+with its sole lower nonlogical leaf supplied by the closed
+\texttt{reflexivityNativeProof}; it needs no term recursion.
+This is the exact boundary in
+\texttt{NumericPAeqValueSelfVariableCertificate.lean}.
+
+For binder input, let
+$G=\operatorname{vectorInput}(s,r,b,f,a,w)$ and
+\[
+ A=G\mathbin\&D(x),\qquad
+ B=\operatorname{vectorInput}
+       (s+1,r+1,x::b,f,x::a,\operatorname{qVec}(w)),
+ \quad S=[D(x)\Rightarrow V_x].
+\]
+The exact requested-label map in
+\texttt{NumericPAeqSupportedVectorBinderInputCertificate.lean} is
+\[
+ d=\max(S,[A\Rightarrow B]),\qquad
+ \lambda'=P_d(\lambda).
+ \tag{T15}
+\]
+The only non-native request is the self-variable proof at $\lambda'$.
+At this same tuple the new realization guard has entry zero $V_x$
+and entry $j+1$ equal to the old entry $j$.  These are
+\texttt{vector\_qVec\_entry\_zero} and
+\texttt{vector\_qVec\_entry\_succ}; the successor equation is
+the completed source-lift/value-syntax substitution identity, with
+the exact support conditions of the vector environment.
+Collect the zeroth entry using right projection and the self proof;
+collect each later entry using left projection and old-guard
+projection.  Prepend the domain guards of $b$ and $a$ by the
+preceding native loop, retain the two copies of the free-domain
+guard, and pair the resulting five factors in the literal
+\texttt{vectorInput} association.  Native/source implication
+normalization and padding readback give $T_\lambda([A\Rightarrow B])$.
+All entry indices are bounded by $s+1$ or $r+1$ and every proof
+value is computed explicitly.  When formula realization first
+shifts $b,f,a$, this same construction is applied to those shifted
+vectors; the support and validity tests are preserved by the
+already completed target-shift syntax equations.
+
+For canonical input, let $|B|=m$ and set
+\[
+ G=G_m(B),\quad
+ J=\operatorname{vectorInput}(m,0,0,B,B,\operatorname{fvarVec}(m)),
+ \qquad S_i=[D(B_i)\Rightarrow\operatorname{variableValue}(B_i,B_i)].
+\]
+Replace the source's collection-based existential bound by the
+explicit primitive recursion
+\[
+ d_0=0,\qquad d_{i+1}=\max(d_i,S_i),\qquad
+ d=d_m,\qquad \lambda'=P_d(\lambda).
+ \tag{T16}
+\]
+The bounded invariant $\bigwedge_{i<j}S_i\le d_j$ supplies every
+coverage check, including the empty case $m=0$.
+At $\lambda'$ request the self-variable proof for each $i<m$;
+compose it with the native projection $G\to D(B_i)$.
+The canonical realization entry is literally
+$\operatorname{variableValue}(B_i,B_i)$, because
+$\operatorname{fvarVec}(m)_i=\operatorname{fvar}(i)$ and the
+value-syntax free-variable equation selects $B_i$.
+Collect these $m$ explicit arrows with the first loop.
+The literal input shape is
+\[
+ T_{\lambda'}(J)=
+ (\top\wedge T_{\lambda'}G)\wedge
+   ((T_{\lambda'}G\wedge T_{\lambda'}G)\wedge
+       T_{\lambda'}G_{\rm realized}).
+\]
+Truth weakening, three identities on $G$, and the collected arrow
+therefore prove $G\to J$ by fixed conjunction operations.
+Native/source normalization and padding readback finish the
+requested proof.  This is the explicit realization of
+\texttt{NumericPAeqCanonicalVectorInputCertificate.lean} and its
+\texttt{self\_codes\_bounded} auxiliary.  It neither invokes an
+unbounded collection principle nor recurses through an arbitrary
+formula-realization supplier.
+
+Consequently these auxiliaries belong immediately after guard
+projection and the lower fixed self-variable template, before
+arithmetic formula realization and induction-matrix closure.
+Their only new closed leaf is ordinary relational reflexivity,
+already present among the six fixed ordinal leaves of the generic
+relational construction.  No edge returns to the arithmetic
+formula or proof strata.

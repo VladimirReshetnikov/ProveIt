@@ -16,9 +16,10 @@ The checked work of this project is described in the [parent README](../README.m
 
 - Each archive has one directory, named after the archive. A trailing ` (1)` or ` (2)` of an
   archive name is written `_1` or `_2`.
-- Two different archives were delivered under the name
-  `pa_consistency_research_2026-11-14.zip`, on 13 and on 14 November. The second one is
-  filed as `pa_consistency_research_2026-11-14_2`.
+- Two archive names were each used for two different archives:
+  `pa_consistency_research_2026-11-14.zip` (13 and 14 November) and
+  `pa194_ax11h_research_2026-11-14.zip` (twice on 14 November). In both cases the second
+  archive is filed in the directory with the suffix `_2`.
 - Almost every archive wraps its files in a single top directory. That directory is
   removed, so the archive member `<wrapper>/<path>` is the file `<directory>/<path>` here.
   The table gives each wrapper, or `none` for an archive without one.
@@ -37,10 +38,10 @@ reason and where the same bytes are. There are four reasons.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `upstream-copy` | 13,489 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
+| `upstream-copy` | 14,130 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
 | `sibling-archive` | 17 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
-| `ignored` | 1,696 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
-| `duplicate-machine` | 12,325 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
+| `ignored` | 1,736 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
+| `duplicate-machine` | 13,059 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
 
 Six nested archives have no delivered counterpart and are placed as files:
 `U209_ConPA_Joint_2026-10-29.zip` (in three packets), `U209_ConPA_2026-10-29.zip`,
@@ -53,8 +54,8 @@ does not run here as delivered.
 
 ## Packets
 
-The 82 archives hold 46,564 members: 19,037 placed here (1078 MB), 13,489 copies of the upstream
-snapshots, 17 nested copies of sibling archives, 1,696 ignored files and 12,325 duplicate machine
+The 86 archives hold 48,848 members: 19,906 placed here (1133 MB), 14,130 copies of the upstream
+snapshots, 17 nested copies of sibling archives, 1,736 ignored files and 13,059 duplicate machine
 tables. The columns P, U, S, I and M give these five counts for each packet. Arrival is
 the date of the commit that added the archive to `docs/incoming`.
 
@@ -142,10 +143,14 @@ the date of the commit that added the archive to `docs/incoming`.
 | [`pa194_ax11qh_research_2026-11-14`](pa194_ax11qh_research_2026-11-14/) | 2026-11-14 | `pa194_ax11qh_research_2026-11-14` | PA194AX11QH. States a new 194-state machine and an analysis of the weak-arithmetic proof obligations, and establishes neither a machine below 194 nor the iPRA equivalence. | 139 | 107 | 0 | 15 | 141 |
 | [`pa194_ax11s_study`](pa194_ax11s_study/) | 2026-11-14 | `pa194_ax11s_study` | PA194AX11S. States a different 194-state composition with a relative iPRA source-equivalence proof, and establishes neither a machine below 194 nor the absolute iPRA theorem. | 234 | 2 | 0 | 11 | 142 |
 | [`pa194_research_2026-11-14`](pa194_research_2026-11-14/) | 2026-11-14 | `pa194_research_2026-11-14` | Comparison and two new 194-state implementations. States a command-level weak-arithmetic proof, an obstruction for one 193-state bootstrap family, and nothing below 194. | 167 | 1 | 0 | 9 | 277 |
+| [`pa194_ax11h_research_2026-11-14_2`](pa194_ax11h_research_2026-11-14_2/) | 2026-11-14 | `pa194_ax11h_research_2026-11-14` | PA194AX11H and PA194QAX11H. States two new 194-state machines, a written proof of the iPRA equivalence for each, and that no machine below 194 was obtained. | 264 | 634 | 0 | 10 | 279 |
+| [`pa194_ax11qh4_research_2026-11-14`](pa194_ax11qh4_research_2026-11-14/) | 2026-11-14 | `pa194_ax11qh4_research_2026-11-14` | PA194AX11QH4L and PA194AX11QH4R. States two new 194-state machines for the PA194AX11QH source program with a relative iPRA proof, and nothing below 194. | 159 | 2 | 0 | 22 | 198 |
+| [`pa194gh_research_2026-11-14`](pa194gh_research_2026-11-14/) | 2026-11-14 | `pa194gh_research_2026-11-14` | PA194GH and PA194GHS. States two new 194-state physical designs and that no construction below 194 was obtained. | 227 | 3 | 0 | 2 | 102 |
+| [`pa194_ax11g_research_2026-11-14`](pa194_ax11g_research_2026-11-14/) | 2026-11-14 | `pa194_ax11g_research_2026-11-14` | PA194AX11G. States a new 194-state machine combining the generalization binder of PA194G with the AX11 protocol, a relative proof that it halts exactly when the primary PA194 does, and nothing below 194. | 219 | 2 | 0 | 6 | 155 |
 
 ## Archives still in `docs/incoming`
 
-None. All 82 archives are removed from `docs/incoming`. They remain in the history of
+None. All 86 archives are removed from `docs/incoming`. They remain in the history of
 the repository.
 
 Some scripts of the [parent directory](../README.md) open an archive at
@@ -157,10 +162,9 @@ c=$(git log --diff-filter=D --format=%H -1 -- "docs/incoming/<archive>.zip")
 git show "$c^:docs/incoming/<archive>.zip" > "docs/incoming/<archive>.zip"
 ```
 
-A restored archive is a working copy only; do not commit it. For
-`pa_consistency_research_2026-11-14.zip` this command restores the second archive of that
-name; the first one was deleted by an earlier commit, the second entry of the same
-`git log` without `-1`.
+A restored archive is a working copy only; do not commit it. For the two names that
+were used twice this command restores the second archive; the first one was deleted by
+an earlier commit, the second entry of the same `git log` without `-1`.
 
 ## Third-party material
 

@@ -1,0 +1,36 @@
+\section{Why independent head reparameterizations preserve the calculus}
+The search retains the complete AX11 protocol and every formula constructor.
+For each of the six unguarded numerical axiom families
+\(h_j:\mathbb N^3\to\mathbb N\), choose an independently selected
+permutation \(\sigma_j\in S_3\). Replace the emitted instance
+\(h_j(D,A,H)\) by \(h_j(\sigma_j(D,A,H))\). Families using fewer
+than three arguments are viewed as families on triples that ignore the
+unused coordinates. No such permutation is applied to the guarded gate
+or the dominated implication family.
+
+Every newly emitted ordinary head is still an instance of the old
+schema. Conversely, for a desired old instance \(h_j(a,b,c)\), select
+the AX parameters \(\sigma_j^{-1}(a,b,c)\), after the command compiler
+has cleared its offset and cached-head registers. The unchanged selector
+for slot \(j\) then returns that same formula. Other simultaneously
+emitted heads need not agree with the old emission; they remain valid
+axioms and are discarded by the selector. Thus there are finite,
+explicit proof translations in both directions that preserve every
+conclusion. This argument uses surjectivity of each individual
+parameter map, not a single global variable renaming.
+
+The separately emitted diagonal schema may likewise be changed from
+\(\Gamma(A)\) to \(\Gamma(D)\) or \(\Gamma(H)\): each selected
+register ranges over every natural value after the same offset reset.
+The guarded gate and its freshness tests are unchanged.
+
+The seeds also include the previously studied curried-premise exchanges
+in heads 3, 4, and 6 and the previous equality-orientation conjugacy.
+These have separate inherited proof obligations documented in
+\texttt{pa194q\_conpa\_2026-11-13/references/further\_source\_variants.txt};
+the present elementary permutation argument does not replace those
+obligations. A score found by the grammar search is only a candidate
+implementation. It must still pass the complete physical contracts,
+blank startup, and proof compilation checks before being called a machine
+with a calibrated halting property. No sub-194 score was produced by the
+recorded searches.

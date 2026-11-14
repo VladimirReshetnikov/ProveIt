@@ -1,0 +1,309 @@
+% Research contribution: AX11G command architecture and relative iPRA proof.
+% This is a fragment to include in the main research report.
+\section{AX11G: four operands and explicit generalization}
+\label{sec:ax11g}
+
+The construction combines two changes that have not previously occurred in
+one delivered table. The axiom command saves the generalization
+$U(c,h)$ with its explicit first operand $c$ as binder, and it then pushes
+its guarded top and continues through the complete MP parameter reader.
+Consequently AX has four operands and eleven saved entries. The first
+change is inherited from PA194G; the second is inherited from PA194AX11.
+The contribution here is their exact combined source, a new literal table,
+its command compiler, and the relative weak-arithmetic proof below.
+
+The table has $194$ working states, $388$ transitions, dense initial state
+$0$, and terminal halt label $194$. It uses a two-way infinite binary tape,
+initially all zero, with the head at coordinate zero. Its dense-table hash is
+\begin{quote}\small\ttfamily
+7e1c6442816e5df05e961f2057719252a1976c9a195a786978bf1e2d3c8e466d.
+\end{quote}
+The count is $134+67-7=194$: fixed controls, raw AX readers, and simultaneous
+contextual folds. It is not a sub-$194$ result.
+
+\subsection{The exact numerical interface}
+
+Put $p(a,b)=(a+b)(a+b+1)/2+b$ and use
+\[
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code $0$ is truth and code $1=M(0,0)$ is the contradiction target.
+Write $N(B)=I(B,1)$, $A\wedge B=N(I(A,N(B)))$, and
+$\exists_a B=N(U(a,N(B)))$. The Cantor stack notation $[a;w]=p(a,w)$
+is total; in particular $[0;0]=0$ and both projections of zero are zero.
+The separate-head numerical calculus has truth, MP, generalization, and
+\begin{align*}
+ h_1(D,H)&=I(\exists_D U(D,H),H),\\
+ h_2(D,A,H)&=I(U(D,U(A,H)),U(A,U(D,H))),\\
+ h_3(D,A,H)&=I(M(H,D),I(E(H,A),M(A,D))),\\
+ h_4(D,A,H)&=I(E(H,D),I(M(A,H),M(A,D))),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6^Q(D,A,H)&=I(U(D,I(A,H)),I(U(D,A),U(D,H))),\\
+ \rho(D,A,H,u)&=I(I(I(H,u),D),I(I(D,H),I(A,H))),\quad u\le D,\\
+ \Gamma(A)&=I(A,U(A,A)).
+\end{align*}
+For its last head put
+\begin{align*}
+ P(a,b,c)&=I(c,M(c,b)),\\
+ V(a,b,c)&=I(M(a,b),U(c,M(a,b))),\\
+ S(a,b,c)&=U\bigl(b,I(M(a,b),P(a,b,c))\wedge I(M(c,b),c)\bigr),\\
+ Q(a,b,c)&=U(c,I(S(a,b,c),N(P(a,b,c)))),\\
+ g(a,b,c)&=\begin{cases}N(I(V(a,b,c),Q(a,b,c))),&c\ne a,b,\\
+                         0,&\text{otherwise.}\end{cases}
+\end{align*}
+This is the same calculus as PA194G. The exchanged distribution head is interderivable with the primary
+distribution head by the uniform formula
+$(A\to(B\to C))\to(B\to(A\to C))$, used in both directions.
+The delivered native certificate has $18,897$ proof lines: $8986$
+instances of the restricted $\rho$ axiom and $9911$ MP steps. It assumes
+neither K nor S as an extra axiom. Each numerical side condition has an
+explicit component path of length at most six, proving $u\le D$ using
+$x,y\le I(x,y)$. The separate flat checker verifies all these paths and
+the exact exchange conclusion on a $29,932$-node formula DAG. It does not
+trust the Lean-source parser used to produce the certificate. Substituting
+number codes into this fixed finite proof and checking its prefix are
+primitive recursive operations with quantifier-free correctness proofs;
+thus the conversion is available in iPRA. No interpretation of arbitrary
+arithmetic truth is involved.
+
+A store is $(t,w,d,h)$, with theorem top $t$, stack $w$, arbitrary offset $d$,
+and theorem cache $h$. Given operands $c,x,y,z$, let $D=d+x$ and $H=h+y$.
+Define, in top-first order,
+\[
+\begin{array}{c|l}
+q_0&g(H,D,c)\\q_1&\Gamma(c)\\q_2&h_6^Q(D,c,H)\\q_3&h_5(D,H)\\
+q_4&h_4(D,c,H)\\q_5&h_3(D,c,H)\\q_6&h_2(D,c,H)\\
+q_7&h_1(D,H)\\q_8&\rho(D,c,H,d)\\q_9&U(c,h).
+\end{array}
+\]
+The literal command effects are
+\begin{align*}
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+   &=(0,[q_0,q_1,\ldots,q_9,t;w],z,0),\\
+ \mathsf M_x(t,w,d,h)
+   &=\begin{cases}(d+x,w,d+x,0),&I(t,d+x)=h,\\
+                   (0,w,d+x,0),&I(t,d+x)\ne h;\end{cases}\\
+ \mathsf S(t,w,d,h)
+   &=\begin{cases}\mathsf{halt},&t+h=1,\\
+        (h,\operatorname{tl}w,d,\operatorname{hd}w),&t+h\ne1.
+       \end{cases}
+\end{align*}
+The fourth AX operand is real. It is consumed by the full MP reader after
+AX has cleared $d,h$ and pushed $q_0$. At that point the MP input is
+$(0,w',0,0)$. For $z=0$ its comparison succeeds and returns zero; for
+$z>0$ it fails and returns zero. Both branches leave offset $z$.
+The compiler deliberately chooses $z=0$; soundness permits every $z$.
+
+\subsection{Total stack words and the shorter generalizer}
+
+Let $A_0=\mathsf A_{0,0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0\mathsf S^{10}\mathsf M_0,\qquad
+ \mathsf{Pop}=A_0\mathsf S^{12},\qquad
+ \mathsf{Discard}=\mathsf M_0.
+\]
+Then, for arbitrary natural entries,
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=(t,w,0,a),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0).
+\end{align*}
+These are total identities, including $t=1$ in Pop and all zero-stack aliases.
+Indeed, $q_0,\ldots,q_8$ are divisible by four, whereas $q_9=U(c,h)\ge2$.
+The shifts through the generated heads cannot pass the sum-one test.
+The last test of Pop has one summand $U(0,h)\ge2$, so the saved arbitrary
+top can safely be restored. Push's final comparison fails by the distinct
+implication and universal residues, and clears both visible formulas.
+
+For $j=0,\ldots,8$, apart from the additional offset needed to select a
+nonzero-$u$ rho instance, the axiom selector is
+\[
+ \mathsf{Discard};\mathsf A_{c,D,H,0};\mathsf S^{j+2};
+                         \mathsf{Pop}^{9-j}.
+\]
+From $(t,w,0,0)$ it returns $(q_j,w,0,0)$. Every generated selector top
+has residue zero, but Pop's stronger totality means no extra hypothesis on
+it is needed. For a desired rho instance with $u\le D$, use
+\[
+ \mathsf{Discard};\mathsf M_u;\mathsf A_{c,D-u,H,0};
+                      \mathsf S^{10};\mathsf{Pop}.
+\]
+Offset setting satisfies $\mathsf M_i(0,w,0,0)=(0,w,i,0)$ for all $i$.
+
+The generalization word is
+\[
+ \boxed{\mathsf{Gen}_i=
+      \mathsf{Push};\mathsf S;\mathsf A_{i,0,0,0};\mathsf S^{11}.}
+\]
+From $(a,w,0,0)$, its first two parts give $(0,w,0,a)$. The axiom call
+saves $U(i,a)$ as $q_9$, and eleven shifts return $(U(i,a),w,0,0)$.
+There is no offset-setting command. This difference is observable:
+with incoming $d=h=0$ and operand $c=1$, the saved universal is
+$U(1,0)=10$, whereas the offset-binder AX11 command saves $U(0,0)=2$.
+
+\subsection{Derivation compilation and its weak induction bound}
+
+For an MP node with major premise $I(a,b)$ and minor premise $a$, define
+\[
+\begin{split}
+ C(\mathrm{MP}(e,f))={}&\mathsf{Discard};\mathsf{Push};
+ C(e);\mathsf{Push};C(f);\mathsf{Push};\mathsf S;\mathsf S;
+ \mathsf M_b;\mathsf{Pop}.
+\end{split}
+\]
+The initial pair of commands reserves a zero. If the recursive calls
+return normally, the store before the two shifts is
+$(0,[a,I(a,b),0;w],0,0)$. The first shift gives
+$(0,[I(a,b),0;w],0,a)$. The second either halts with $a=1$, or gives
+$(a,[0;w],0,I(a,b))$. MP then returns $(b,[0;w],b,0)$ and the total
+Pop returns $(b,w,0,0)$. This includes $b=1$. Truth uses Discard,
+axioms use the displayed selectors, and generalization appends
+$\mathsf{Gen}_i$ to the recursively compiled premise.
+
+\paragraph{An explicit bounded-input invariant.}
+The statement ``for every stack'' must not be used as the induction
+formula in iPRA. Here is a quantifier-free replacement. Fix a checked
+finite proof DAG, a postorder table of its nodes, a height bound $F$ (leaves have height one, and a rule node has one
+plus the largest premise height), and a requested initial top and stack $(t,w)$. Let $K\ge1$ bound every
+conclusion code in the table. Put
+\[
+ R_0=\max(1,K,t,w),\qquad R_{j+1}=(K+R_j+3)^4.
+\]
+All these functions are primitive recursive. At a recursive MP call,
+the only possible predecessor stacks are $[0;y]$ and $[I(a,b),0;y]$.
+For $y\le R$ and $I(a,b)\le K$ their codes are at most
+$(K+R+3)^4$: apply $p(v,x)\le(v+x+1)^2$ twice. Their tops are zero.
+Generalization queries its predecessor at the same store.
+
+For $k\le F$, the invariant says that every proof-table node of height
+at most $k$ realizes its conclusion from every $x,y\le R_{F-k}$:
+it either halts or returns the stated conclusion with stack $y$ and both
+auxiliary visible entries zero. The table-node and input quantifiers are
+bounded. Their finite conjunction is therefore the value of a
+primitive-recursive Boolean function, and the invariant is an equation.
+In the successor step $k\to k+1$, the requested outer inputs are
+bounded by $R_{F-k-1}$ and the induction hypothesis permits predecessor
+inputs up to $R_{F-k}$. At a leaf use its local word identity. At an MP
+node, the displayed pairing bound places both recursive inputs within
+that preceding-stage allowance. At a generalization node, monotonicity of $R_j$ suffices.
+Guarding by $k\le F$ makes the induction equation total.
+Quantifier-free induction proves the desired final instance; only then
+are the originally fixed proof and store parameters universally generalized.
+This proves the compiler correctness in iPRA without induction on an
+unbounded all-store formula.
+
+A coarse command-length bound is also immediate. A selector has at most
+$122$ commands, a generalization suffix has $25$, and an MP node adds
+at most $53$ commands to its two predecessor words. Thus
+$L_0=0$, $L_{k+1}\le2L_k+128$, and $L_k\le128(2^k-1)$ is a safe common
+bound. The length bound is not a bound on numerical formula codes or on
+physical running time.
+
+\subsection{The scheduler and soundness}
+
+The nonempty continuation encoding is $e(c::v)=1+b(c,e(v))$, with
+$e(\epsilon)=0$. The first command of a fresh candidate omits the outer
+one. For the four-operand axiom command,
+\[
+ b(\mathsf A_{c,x,y,z},r)=p(c+2,p(y,p(x,p(z,r)))).
+\]
+The other tags are the inherited Shift and MP tags. Total Cantor
+projections recover all four AX fields in the order $y,x,z$ after reading
+$c+2$. An old three-operand encoding is incorrect here: it would consume
+the first component of the alleged continuation as $z$.
+
+For a derivation $e$ of code one, the word
+$A_0;C(e);\mathsf S$ halts from every incoming store. The initial AX
+clears $d,h$; the compiler either halts earlier or returns
+$(1,w',0,0)$, and the last shift halts. Prefixing this word by
+$\mathsf A_{k,0,0,0}$ gives the cofinal family of fresh candidate codes
+\[
+ p(k+2,p(0,p(0,p(0,e(A_0;C(e);\mathsf S))))).
+\]
+Each prefix terminates and leaves an arbitrary store to which the same
+compiler applies. Hence the scheduler's carried store is harmless.
+The candidate continuation strictly decreases; finite iteration up to a
+chosen candidate and the known finite command words gives
+primitive-recursive halting witnesses. No unbounded search is needed in
+the proof that a supplied refutation eventually causes a halt.
+
+Conversely, annotate $t,h$ and each live canonical stack entry with a
+numerical-calculus proof of its code. Zero has its truth proof. AX adds
+axiom instances, the old top, and the theorem generalization $U(c,h)$.
+Its final MP reader only writes truth, irrespective of $z$. Successful
+MP composes two proofs; failure writes truth. Shift moves annotations
+and its halt test $t+h=1$ yields an annotated code one. Cantor zero
+collapse is covered by the zero truth proof. The annotation update and
+proof concatenation are primitive recursive. A bounded proof-prefix
+invariant, expressed by the Boolean conjunction of proof-checker
+successes, is quantifier-free; its induction therefore takes place in
+iPRA. This is syntactic derivation preservation, not a truth predicate.
+
+Consequently iPRA proves, for the exact command scheduler,
+\[
+ \operatorname{Halt}(R_{\mathrm{AX11G}})
+ \ \longleftrightarrow\
+ \exists e\,\operatorname{Prf}_{\mathcal C^Q}(e,1).
+\]
+The same finite, bounded-input proof applies to the displayed PA194G
+command compiler: its selectors and generalizer have one fewer final
+shift, its AX has three operands, and its all-store identities were
+separately checked. Thus the two schedulers have iPRA-provably equivalent
+halting problems. Composition with the finite propositional exchange
+certificate identifies their calculus with the primary separate-head
+calculus; this relative step does not require an internal translation of
+arbitrary PA induction axioms.
+
+\subsection{Literal source binding and physical scope}
+
+Relative to PA194G, exactly the final AX macro changes from
+\texttt{breakTo 1} to \texttt{node49}, the ordinary push. The independently
+resolved source comparison removes old primitive jump $3553$ at path
+\texttt{10101001111} and inserts the $19$-site push interval
+$[3553,3572)$. Every retained primitive operation and every retained
+successor agrees under relocation. Every exit of the added push enters
+site $3572$, the complete MP operand reader. The old jump had skipped
+that reader to old site $3641$. This is why the fourth AX field is required.
+
+The resulting source has $3672$ primitive sites and $4779$ branch outcomes.
+All $28$ simultaneous two-cell fold cases pass. The construction checker
+checks every source outcome over arbitrary natural registers, arbitrary
+finite nonempty spare lists and an affine gap: $1,483,363$ symbolic steps,
+maximum $470$. The whole finite-support blank tape reaches the source
+seed at site $25$, dispatcher $84$, head $-2$, logical registers
+$(2,0,\ldots,0)$, and $26$ one-valued spare blocks after $58,154$ steps.
+The checks are universal symbolic contracts and a complete finite startup,
+not a bounded-run extrapolation of nonhalting.
+
+For physical internalization, represent a finite binary tape by its two
+natural-number zipper halves. Literal steps and concatenation identities
+are primitive recursive. Repeated scans of $b^n$, register-list traversals,
+and each fixed symbolic trace have quantifier-free induction proofs on
+$n$ or on list length, with arbitrary outside contexts as parameters.
+Positive local durations compose by primitive recursion. If a machine
+halts at time $T$, then $T+1$ unhalted source steps with positive durations
+would produce a nonhalting physical frame after that halt, contradicting
+determinism and the absorbing halt convention. Bounded minimization
+extracts the first source halt. Both witness transformations are primitive
+recursive, and the relevant finite-prefix tests are decidable.
+
+The separate literal-tape replay checks all $4779$ outcomes in
+$1,083,079$ symbolic steps, with maximum $379$, minimum positive duration
+constant three, four list lemmas derived from the actual table, and the
+whole $58,154$-step startup. Its two independent source resolvers also
+agree with the complete delivered source graph. These local arguments prove in iPRA the halting equivalence of the literal
+AX11G table and its stated scheduler. Together with the corresponding
+primary-table contracts and the foregoing source-calculus translations,
+this gives the relative theorem
+\[
+ \mathsf{iPRA}\vdash
+ \bigl(\operatorname{Halt}(M_{\mathrm{AX11G}},\mathsf{blank})
+   \leftrightarrow\operatorname{Halt}(M_{194},\mathsf{blank})\bigr).
+\]
+The proof is ordinary computer-assisted mathematics; no new end-to-end
+Lean or Rocq endpoint is asserted. A consistency calibration for the
+primary table is a separate hypothesis. If that table is calibrated to
+$\operatorname{Con}(\mathsf{PA})$ in iPRA, intuitionistic logic immediately
+transfers the nonhalting calibration to AX11G. This relative construction
+does not by itself supply the repository's missing PA-to-calculus compiler.

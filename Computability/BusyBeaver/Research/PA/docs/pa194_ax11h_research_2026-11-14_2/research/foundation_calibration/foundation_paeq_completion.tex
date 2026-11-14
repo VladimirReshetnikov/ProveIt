@@ -1,0 +1,617 @@
+% Include after amsmath, amssymb, amsthm, booktabs.
+\section{Foundation PA to the ordinary PAeq proof presentation}
+\label{sec:foundation-paeq-complete}
+
+This section completes a separate logical interface: Foundation
+Peano arithmetic, in the pinned ordered-semiring language, to the ordinary
+$0,S,+,\times,=$ PAeq presentation used by the numerical compiler.
+The result is a mathematical $I\Sigma_1$ proof on arbitrary internal
+codes.  It does not merely remove a full-PA model assumption from a theorem
+statement.  The two places that previously used that assumption are
+replaced: formula substitution uses the repaired $I\Sigma_1$ construction
+argument, and repeated proof opening/closing uses the explicit constructors
+below.  The last subsections bind the result to the current Foundation
+predicate used by \texttt{nativePAConsistency}, including the one changed
+finite axiom and the metatheory-base comparison.  No correctness assertion
+about the numerical compiler is assumed.
+
+\subsection{The exact presentations and numerical syntax}
+
+The source is the pinned Foundation theory \texttt{Peano}: its finite
+\texttt{PeanoMinus} branch has 17 arithmetic and nine equality axioms,
+and its second branch is unrestricted induction.  Its primitive language
+is $0,1,+,\times,=,<$.  The target is the exact theory
+\texttt{Presentation.ordinaryPAeq} of
+\texttt{PAPresentationAxioms.lean}: six equality/congruence axioms,
+six recursion/injectivity axioms, and successor induction with every free
+parameter universally closed.  Addition and multiplication recurse on
+their first argument.  This choice fixes the proof predicate; arbitrary
+alternative axiom recognizers are not substituted for it.
+
+The term map sends $1$ to $S0$ and otherwise preserves $0,+,\times$ and
+variables.  Formula translation $\tau$ preserves truth, falsity,
+conjunction, disjunction and quantifiers; it translates equality
+componentwise and translates strict order by
+\[
+ \tau(s<t)=\exists z\,(\tau(s)+S z=\tau(t)),
+\]
+with the displayed binder implemented by bound-variable shift.
+Negative atoms are the normal-form negations of their translated positive
+atoms.  These are exactly the numerical functions \texttt{termCode} and
+\texttt{formulaCode 0}; all constructors are the pinned Foundation
+constructors, not the later radix-four formula codes.
+
+Write $\operatorname{Alls}(b,k)$ for $k$ iterated universal quantifiers,
+$F_k=(v_0,\ldots,v_{k-1})$ for the free-variable vector, and
+$\operatorname{Open}(k,b)=\operatorname{subst}(F_k,b)$.
+Let $\operatorname{sh}$ increment free-variable indices and let
+$\operatorname{free}(p)=\operatorname{subst}_1(v_0,\operatorname{sh}p)$.
+The condition $\operatorname{sh}b=b$ expresses absence of free variables.
+All these operations and their validity predicates are primitive recursive.
+
+The following numerical syntax identities hold uniformly in $I\Sigma_1$:
+translation commutes with normal-form negation, free shift, bound support,
+iterated universal closure, and simultaneous substitution of translated
+terms.  The last identity is
+\[
+ \tau(\operatorname{subst}(w,p))
+ =\operatorname{subst}(\operatorname{termVector}(w),\tau(p)) . \tag{S}
+\]
+Its induction is on the actual substitution-construction trace carrying
+$w$ as an input, not an induction on an unbounded assertion about all
+vectors.  Atomic steps use the term substitution identity and the one
+fresh bound variable in strict order.  Boolean steps compose the child
+identities; a quantifier passes the lifted vector
+$(\#0,\operatorname{bShift}(w))$ to its child.  Translation commutes with
+this vector lift.  This is the repaired argument in
+\texttt{pa194-paeq-formula-subst/PA194PAeqFormulaSubst.lean}, including its
+\texttt{formulaCode\_subst\_internal} theorem.  The primitive function
+definitions agree with the explicit translation just given.  Thus (S)
+applies to nonstandard formula codes as well as quoted standard formulas.
+
+\subsection{Two explicit proof constructors}
+
+Use the source's actual ten-rule one-sided proof code.  A constructor has
+the form $\langle\!\langle s,\mathrm{tag},\ldots\rangle\!\rangle+1$,
+where $s$ is its concluding finite-set sequent.  The relevant tags are
+0 for initial excluded middle, 4 for universal introduction, 5 for
+existential introduction, 6 for weakening, 7 for shift, 8 for cut,
+and 9 for a theory axiom.  The definitions are in the pinned
+\texttt{Bootstrapping/Syntax/Proof/Basic.lean}.  These constructors are
+primitive recursive even where the arbitrary-model Lean interface marks
+them \texttt{noncomputable}.
+
+Let $\operatorname{Proof}_U(d,a)$ mean that $d$ proves the singleton
+sequent $\{a\}$ in ordinary PAeq.  For a one-bound-variable matrix $p$,
+define $\operatorname{CloseOne}(p,d)$ as follows:
+\[
+ \operatorname{allIntro}\bigl(\{\forall p\},p,
+   \operatorname{wkRule}(\{\operatorname{free}(p)\}
+        \cup\operatorname{sh}\{\forall p\},d)\bigr).       \tag{C1}
+\]
+The premise of the literal universal rule is exactly its indicated
+weakened sequent.  Consequently $I\Sigma_1$ verifies
+\[
+ \operatorname{Proof}_U(d,\operatorname{free}(p))
+ \ \longrightarrow\ \operatorname{Proof}_U(\operatorname{CloseOne}(p,d),\forall p).
+\]
+
+For the opposite direction, put $u=\operatorname{sh}p$,
+$a=\forall u$, $g=\operatorname{subst}_1(v_0,u)=\operatorname{free}(p)$,
+and $s=\{g\}$.  Define the following five proof nodes:
+\begin{align*}
+ d_0&=\operatorname{shiftRule}(\{a\},d),\\
+ d_1&=\operatorname{wkRule}(\{a\}\cup s,d_0),\\
+ d_3&=\operatorname{axL}(\{\neg g,\neg a\}\cup s,g),\\
+ d_2&=\operatorname{exsIntro}(\{\neg a\}\cup s,\neg u,v_0,d_3),\\
+ \operatorname{OpenOne}(p,d)&=\operatorname{cutRule}(s,a,d_1,d_2).
+\end{align*}
+Negation commutes with substitution, and $\neg a=\exists\neg u$,
+so these are precisely legal instances of the literal rules.  Therefore
+\[
+ \operatorname{Proof}_U(d,\forall p)
+ \ \longrightarrow\ \operatorname{Proof}_U(\operatorname{OpenOne}(p,d),\operatorname{free}(p))
+                                                               \tag{O1}
+\]
+is proved uniformly in $I\Sigma_1$.  This derivation specifies the
+numerical constructor, rather than inferring a primitive recursive
+transformation just from the existential statement of provability.
+
+\subsection{Replacing the full-PA closure induction}
+
+Fix $k,b$ with $b$ a $k$-bound-variable semiformula and
+$\operatorname{sh}b=b$.  For $j\le k$ define the single, explicitly
+coded chain
+\[
+ C_j=\operatorname{subst}(F_j,\operatorname{Alls}(b,k-j)).
+\]
+Then $C_0=\operatorname{Alls}(b,k)$ and $C_k=\operatorname{Open}(k,b)$.
+For $j<k$, set
+\[
+ q_j=\operatorname{subst}\bigl(\operatorname{qVec}(F_j),
+                    \operatorname{Alls}(b,k-j-1)\bigr).
+\]
+The substitution equations give
+\[
+ C_j=\forall q_j,\qquad \operatorname{free}(q_j)=C_{j+1}. \tag{Chain}
+\]
+The second equality is exactly the vector identity
+\texttt{free\_opening\_succ}, applied to the shift-fixed body
+$\operatorname{Alls}(b,k-j-1)$.  Its precondition is rank $j+1$,
+obtained by removing the displayed $k-j-1$ binders.  The vector computation
+is: shift free indices in $\operatorname{qVec}(F_j)$, then substitute
+$v_0$ for its first bound variable, obtaining $F_{j+1}$.
+These identities are already $I\Sigma_1$ syntax facts and have no
+provability premise.
+
+Starting with $d_0=d$, iterate
+$d_{j+1}=\operatorname{OpenOne}(q_j,d_j)$ for $j<k$.
+This defines a PR constructor $\operatorname{OpenProof}(k,b,d)=d_k$.
+Starting with a proof $e_0$ of $C_k$, iterate in reverse order
+$e_{j+1}=\operatorname{CloseOne}(q_{k-j-1},e_j)$, defining
+$\operatorname{CloseProof}(k,b,e_0)=e_k$.
+
+The correctness induction for the first loop is just
+$\operatorname{Proof}_U(d_j,C_j)$ for $j\le k$; for the second it is
+$\operatorname{Proof}_U(e_j,C_{k-j})$.  The initial parameters $b,k,d$
+are fixed.  Proof checking is $\Delta_1$, and the functions constructing
+the displayed codes are provably total PR functions.  Each invariant
+therefore has a $\Sigma_1$ presentation, so $I\Sigma_1$ induction applies.
+Equivalently, one can carry the finite vector of constructed proof nodes
+as the existential witness.  There is no unbounded universal quantifier
+over bodies or proofs inside either induction predicate.
+
+We have thus proved in $I\Sigma_1$, with explicit PR witnesses, that
+\[
+ \operatorname{Prov}_U(\operatorname{Alls}(b,k))
+ \longleftrightarrow \operatorname{Prov}_U(\operatorname{Open}(k,b)) .\tag{OC}
+\]
+This replaces the full-PA induction in the pinned
+\texttt{FoundationPAeqCodeClosureProof.provable\_alls\_iff\_open}.
+It also covers vacuous surplus closure parameters; it does not assert
+that a noncanonical closure is itself a recognized induction axiom.
+
+\subsection{The exact bounded induction witnesses}
+
+For the source, an accepted induction axiom $c$ supplies
+\[
+ m,b\le c,\quad c=\operatorname{Alls}(b,m),\quad
+ \operatorname{sh}b=b,\quad\operatorname{bv}(b)=m,
+\]
+and a unary matrix $K$ satisfying
+\[
+ K\le\operatorname{Open}(m,b),\qquad
+ \operatorname{Open}(m,b)=\operatorname{Ind}_{+}(K).
+\]
+Here $\operatorname{Ind}_{+}$ uses $x+1$ in its step.
+For the target, the \emph{exact} recognizer in
+\texttt{FoundationPAeqCodeInductionRecognizer.lean} is
+\begin{align*}
+\operatorname{targetInductionR}(c)\ \longleftrightarrow\\
+ &\exists m\le c\ \exists b\le c\ [\,
+  c=\operatorname{Alls}(b,m)\land\operatorname{IsUFormula}(b)\land
+  \operatorname{sh}b=b\land\operatorname{bv}(b)=m\ \land\\
+ &\hspace{8mm}\exists K\le\operatorname{Open}(m,b)\,
+  (\operatorname{IsSemiformula}(1,K)\land
+   \operatorname{Open}(m,b)=\operatorname{Ind}_{S}(K))\,].
+\end{align*}
+The bound on $K$ is the computed opened-body code, \emph{not} $c$.
+Search first over $m,b\le c$, then over
+$K\le\operatorname{Open}(m,b)$, checking the explicit PR relations.
+This is total bounded primitive recursion, with a default failure value.
+It returns witnesses on every accepted input, including internally
+nonstandard accepted codes.  An annotated proof may instead carry these
+same witnesses at each induction-axiom leaf.
+
+\subsection{A uniform supplier for the original induction branch}
+
+Take source witnesses $m,b,K$ as above, and set $B=\tau(b)$,
+$k=\tau(K)$.  The syntax identities, including (S), give
+\[
+ \tau(c)=\operatorname{Alls}(B,m),\quad
+ \operatorname{sh}B=B,\quad\operatorname{bv}(B)=m,\quad
+ \operatorname{Open}(m,B)=\operatorname{Ind}_{+}(k).        \tag{W}
+\]
+This is the original \texttt{translated\_induction\_witness} argument
+with its repaired substitution identity.  It now requires only $I\Sigma_1$.
+
+Constructor inversion in the last identity extracts a matrix $q$ from
+the final universal conclusion of $B$.  Explicitly, in normal form
+$B=\alpha\vee(\beta\vee\forall q)$, and
+\[
+ \operatorname{IsSemiformula}(m+1,q),\quad
+ \operatorname{sh}q=q,\quad
+ \operatorname{subst}(\operatorname{qVec}(F_m),q)=k .       \tag{M}
+\]
+The extraction uses the three displayed outer constructors, not an
+unbounded inverse search.  These are the already $I\Sigma_1$ facts of
+\texttt{additive\_matrix\_witness}.
+
+Put $m_0=\operatorname{bv}(\forall q)\le m$.  Define
+\[
+ B_0=\operatorname{IndClosed}_{S}(m_0,q)
+\]
+using base substitution vector $(0,\#0,\ldots,\#(m_0-1))$ and step
+vector $(S\#0,\#1,\ldots,\#m_0)$.  Then $B_0$ is shift fixed and
+has \emph{exactly} support $m_0$: the final $\forall q$ supplies the
+lower bound, and both substituted premises have support at most $m_0$.
+Consequently
+$A_0=\operatorname{Alls}(B_0,m_0)$ is a recognized target induction
+axiom, with its actual canonical parameter count.  Its one-node axiom
+proof is $a_0=\operatorname{axm}(\{A_0\},A_0)$.
+
+Apply $\operatorname{OpenProof}(m_0,B_0,a_0)$.  The result proves
+\[
+ \operatorname{Ind}_{S}\bigl(
+       \operatorname{subst}(\operatorname{qVec}(F_{m_0}),q)\bigr).
+\]
+Substitution ignores surplus vector entries beyond the proved bound
+support.  Therefore its matrix equals the matrix in (M), namely $k$.
+The all-model proof is
+\texttt{canonical\_matrix\_opening\_eq}; its proof uses $I\Sigma_1$
+structural substitution agreement, with both vector lengths explicit.
+
+There is a uniform target proof of
+$\operatorname{Ind}_{S}(k)\to\operatorname{Ind}_{+}(k)$.
+Its construction uses a fixed target proof of $x+S0=Sx$, the formula
+equality-replacement constructor for $k$, universal introduction, and a
+fixed propositional template.  The formula replacement constructor is
+obtained recursively on the actual formula code, with its atomic,
+Boolean and two binder cases given in
+\texttt{FoundationPAeqCodeEqualityFormula.lean}; its internal
+\texttt{replace\_aux} theorem uses $\Sigma_1$ structural induction.
+The fixed arithmetic proof is quoted in
+\texttt{FoundationPAeqCodeInductionStep.lean}.  These proofs already
+require only $I\Sigma_1$ and do not assume source PA in the metatheory.
+Composing them gives an actual target proof of $\operatorname{Ind}_{+}(k)$.
+Finally use $\operatorname{CloseProof}(m,B,-)$ and (W) to prove $\tau(c)$.
+
+Every step is a bounded witness extraction, syntax computation, fixed
+proof constructor, or primitive recursion on a finite syntax/proof object.
+This explicitly defines the induction supplier $\mathcal A_{\mathrm{ind}}(c)$.
+For the equality-replacement constructor, recursion must not be justified
+by a decrease of the raw formula \emph{code}: the binder case opens a
+variable and can increase that code.  Instead form its finite call tree.
+The query at a child is computed from the parent query by the displayed
+variable renamings, before either child proof is constructed.  These
+renamings preserve the connective/quantifier skeleton.  Descending into
+a binder or Boolean child strictly decreases its constructor count;
+atomic term replacement descends into the actual term tree.  All branching
+degrees are at most two.  For initial syntax size $r$ the query tree has
+at most $2^{r+1}-1$ nodes.  Compute these queries first, then construct
+their proof outputs in reverse order.  The queries use PR syntax
+operations, and every proof node uses one of finitely many explicit
+constructor templates.  Bounded maxima of those operations, iterated for
+$2^{r+1}$ steps, give PR bounds on the query payloads and proof outputs.
+This is a PR implementation of the cited equality-replacement argument;
+it does not appeal to termination of an unrestricted proof search.
+The reasoning above proves its correctness in $I\Sigma_1$ for all accepted
+source induction codes.  In particular the target canonical closure count
+$m_0$ is not silently replaced by the source count $m$.
+
+\subsection{The finite branch and the complete proof translation}
+
+For each of the 26 source finite tags, the pinned
+\texttt{finiteImageProof} is an actual closed ordinaryPAeq proof of its
+translated sentence.  The arithmetic tags are add-zero, associativity,
+commutativity, positive difference, zero lower bound, zero-less-one,
+positive-one lower bound, addition monotonicity, the corresponding
+multiplication laws, distributivity, and the three order laws.  The nine
+equality tags cover reflexivity, symmetry, transitivity, both constants,
+addition, multiplication, equality, and strict order.  The exact inventory
+and Type-valued proof constants are in
+\texttt{PAPresentationAxiomWitness.lean} and
+\texttt{FoundationPAeqCodeFiniteSupplier.lean}.
+The already checked $I\Sigma_1$ classifier says that the finite branch
+accepts exactly one of these standard numerical codes, even in a
+nonstandard model.  Select its proof by 26 code comparisons.
+
+Combining this finite selection with $\mathcal A_{\mathrm{ind}}$ gives
+a total PR axiom supplier $\mathcal A$, with a fixed default value on
+nonaxioms, for which
+\[
+ I\Sigma_1\vdash
+ \operatorname{Ax}_{\mathrm{PA}}(c)
+ \longrightarrow \operatorname{Proof}_U(\mathcal A(c),\tau(c)). \tag{A}
+\]
+
+Define a proof translator $\mathcal D$ by recursion over the actual coded
+source derivation.  Translate every formula in its finite-set sequent.
+For tags 0 through 8, use the same literal proof constructor with
+translated formula/term arguments and recursively translated premises.
+The substitution, free, negation and sequent-shift identities make the
+premise sequents exactly those required by the target rules.  For tag 9,
+replace the axiom leaf $c$ by $\mathcal A(c)$ and weaken its singleton
+sequent into the translated conclusion sequent.  Give invalid codes a
+fixed default result.
+
+To make primitive recursion explicit, compute a table of results for
+codes $0,\ldots,d$.  Every immediate premise code of a valid constructor
+is smaller than its parent code.  Each table cell thus uses only previous
+cells and PR operations.  Induction on this bounded table, or the
+existing $\Sigma_1$ derivation induction, proves
+\[
+ I\Sigma_1\vdash
+ \operatorname{DerivationOf}_{\mathrm{PA}}(d,s)
+ \longrightarrow
+ \operatorname{DerivationOf}_{U}(\mathcal D(d),\tau[s]).   \tag{D}
+\]
+The existing ten-case proof in
+\texttt{pa194-paeq-proof-transport/PA194PAeqProofTransport.lean}
+is the corresponding conditional $I\Sigma_1$ argument; (A) now supplies
+the actual PA axiom branch.  Because $\tau(\bot)=\bot$, we obtain
+\begin{theorem}[Original PA to ordinary PAeq]
+For the presentations fixed above there is a PR proof transformation
+$\mathcal D$ such that
+\[
+ I\Sigma_1\vdash
+ \operatorname{Proof}_{\mathrm{PA}}(d,\bot)
+ \longrightarrow \operatorname{Proof}_{\mathrm{ordinaryPAeq}}(\mathcal D(d),\bot).
+\]
+In particular $I\Sigma_1$ proves the corresponding implication between
+the two refutation-existence sentences, without a full-PA model assumption.
+\end{theorem}
+
+\subsection{Binding the current Foundation predicate}
+\label{sec:current-foundation-adapter}
+
+The root ProveIt revision pins its current Foundation submodule to
+\texttt{32e1a0956a8622fad067328ca1959729a7634428}.
+Use $\mathrm{PA}_c$ for this current theory and $\mathrm{PA}_h$ for the
+historical source used above.  The following coding comparison fixes
+the interface on \emph{all} natural codes, rather than only on quoted
+standard sentences.
+
+Both versions use the same square pairing
+\[
+ P(a,b)=
+ \begin{cases}
+   b^2+a,&a<b,\\
+   a^2+a+b,&b\le a,
+ \end{cases}
+ \qquad
+ \langle a_0,\ldots,a_k\rangle
+   =P(a_0,\langle a_1,\ldots,a_k\rangle).
+\]
+Here the last two entries use $P$ itself.  Vectors have empty code $0$
+and $\operatorname{cons}(a,v)=P(a,v)+1$; finite sets use binary-bit
+membership.  This is the Foundation syntax pairing, distinct from
+the machine's Cantor pairing.  In both versions, bound and free
+variables have codes $P(0,i)+1$ and $P(1,i)+1$, and a function application
+has code $\langle2,k,f,v\rangle+1$.
+The symbols $(0,1,+,\times)$ have arity/code pairs
+$(0,0),(0,1),(2,0),(2,1)$; equality and strict order have
+pairs $(2,0),(2,1)$.
+
+The formula tags, in order $0,\ldots,7$, are positive relation, negative
+relation, truth, falsity, conjunction, disjunction, universal quantifier
+and existential quantifier.  Their tuple equations are identical.
+The proof constructors have the same ten tuple equations and
+\texttt{Derivation.Phi} has the same ten clauses, including all
+membership, premise-sequent, variable-scope, shift and weakening
+conditions.  These direct definition comparisons justify identity on
+terms, formulas and the \emph{logical part} of proof checking.
+For validity predicates this identity can be proved by the bounded
+table computation on codes up to the input code: every immediate
+syntax or proof child has smaller code.  The table invariant is
+$\Delta_1$ and the matching constructor equations give its successor
+step.  Shift and substitution are identified by their actual finite
+construction traces, with input vectors carried as parameters as in
+(S).  Thus this comparison extends to internal codes in an
+$I\Sigma_1$ model; it is not restricted to an external induction on
+standard quoted formulas.
+The falsity code in both versions is $P(3,0)+1=13$.
+There is no claim that their theory-axiom predicates are identical.
+
+In the current pin,
+\texttt{Incompleteness/InductionSchemeDelta1.lean} defines
+\begin{align*}
+\operatorname{InductionUnivR}(c)\ \longleftrightarrow\
+ \exists m\le c\ \exists b\le c\ [\,
+ &c=\operatorname{Alls}(b,m)\land\operatorname{IsUFormula}(b)
+ \land\operatorname{sh}b=b\land\operatorname{bv}(b)=m\\
+ {}\land{}&
+ \exists K\le\operatorname{Open}(m,b)\,
+  (\operatorname{IsSemiformula}(1,K)
+   \land\operatorname{Open}(m,b)=\operatorname{Ind}_{+}(K))\,].
+\end{align*}
+Its \texttt{indBodyVal} is exactly
+$K[0]\to((\forall(K\to K[\#0+1]))\to\forall K)$.
+The historical \texttt{InductionR (fun \_ => True)} has these same
+conditions with one redundant true conjunct.  The current theorem
+\texttt{PA\_delta1Definable} uses the disjunction of this recognizer
+and the finite \texttt{PeanoMinus} recognizer.  Its all-model defining
+lemmas identify those relations in every $I\Sigma_1$ model.
+Consequently the induction supplier constructed above applies to the
+\emph{current} induction branch without changing its witness bounds.
+
+\subsection{The changed finite axiom: an explicit logical adapter}
+
+There are exactly 25 shared finite leaves: nine equality/congruence
+axioms and 16 arithmetic axioms.  The remaining leaf,
+\texttt{PeanoMinus.Axiom.addEqOfLt}, is
+\begin{align*}
+ \mathrm{PA}_h:\quad&
+ \forall x\,\forall y\,
+   (x<y\to\exists z\,(z<y+1\land x+z=y)),\\
+ \mathrm{PA}_c:\quad&
+ \forall x\,\forall y\,
+   (x<y\to\exists z\,(x+z=y)).
+\end{align*}
+The old notation $\exists z<^{+}y$ expands to the first displayed
+existential.  Translation $\tau$ is homomorphic for the displayed
+connectives and quantifiers, so only a logical existential projection is
+needed to reuse the existing ordinaryPAeq proof of the stronger formula.
+
+Here is the exact projection constructor, valid for any unary matrices
+$B,E$, including matrices containing further binders and free parameters.
+Put
+\[
+ \phi=\neg B\vee\neg E,\quad
+ s=\{\forall\phi,\exists E\},\quad
+ r=\operatorname{sh}s\cup\{\operatorname{free}(\phi)\},\quad
+ e=\operatorname{free}(E),\quad
+ I=(\exists(B\land E)\to\exists E).
+\]
+Define six nodes:
+\begin{align*}
+ p_0&=\operatorname{axL}
+       (r\cup\{e,\neg\operatorname{free}(B),\neg e\},e),\\
+ p_1&=\operatorname{orIntro}
+       (r\cup\{e\},\neg\operatorname{free}(B),\neg e,p_0),\\
+ p_2&=\operatorname{exsIntro}(r,\operatorname{sh}E,v_0,p_1),\\
+ p_3&=\operatorname{allIntro}(s,\phi,p_2),\\
+ p_4&=\operatorname{wkRule}(s\cup\{I\},p_3),\\
+ \operatorname{Erase}(B,E)&=
+       \operatorname{orIntro}(\{I\},\forall\phi,\exists E,p_4).
+\end{align*}
+Every premise sequent is exactly the sequent required by its literal
+constructor.  In particular
+$\operatorname{free}(\phi)=
+\neg\operatorname{free}(B)\vee\neg e$ and
+$\operatorname{subst}_1(v_0,\operatorname{sh}E)=e$.
+No theory leaf is used.
+
+For completeness, fixed propositional composition need not hide a proof
+search.  For arbitrary formulas $A,X,Y$, let
+$a=A\land\neg X$, $b=X\land\neg Y$, $c=\neg A$, $e=Y$,
+and $s=\{a,b,c,e\}$.
+Three excluded-middle leaves on $A,X,Y$, followed by conjunction
+introduction for $b$ and then $a$, prove $s$:
+the three premises are respectively $s\cup\{A\}$,
+$s\cup\{\neg X,X\}$, and $s\cup\{\neg X,\neg Y\}$.
+One weakening and three disjunction introductions then prove
+\[
+ (A\to X)\to((X\to Y)\to(A\to Y)).
+\]
+This is a fixed nine-node constructor template.
+Modus ponens is also an explicit five-new-node template: for proofs of
+$P$ and $F=P\to Q$, weaken the latter into $\{F,Q\}$;
+conjunction-introduce $\neg F=P\land\neg Q$ in
+$\{\neg F,Q\}$, using the former proof and the excluded-middle
+leaf on $Q$; then cut on $F$ to conclude $\{Q\}$.
+
+Let $d_h$ be the existing fixed ordinaryPAeq proof of the translated
+historical \texttt{addEqOfLt}.  Open its two outer parameters using
+$\operatorname{OpenProof}(2,-,d_h)$.  Apply the projection just given,
+the nine-node transitivity template and two modus-ponens instances.
+Finally use $\operatorname{CloseProof}(2,-,-)$ for the weaker body.
+The result is a specified finite proof $d_c$ of the translated current
+leaf.  The function \texttt{weaken\_difference\_axiom} in the supplied
+checker gives this literal construction.  Thus the current finite
+supplier selects the old 25 shared proofs and $d_c$ by 26 comparisons.
+
+\subsection{The metatheory-base comparison}
+
+Using an old $I\Sigma_1$ syntax lemma also requires justifying its
+arithmetic base; the changed finite leaf cannot be ignored at that level.
+The current finite arithmetic base itself proves the historical bounded
+leaf.  Here is a fixed derivation with no induction.
+
+First, \texttt{zeroLtOne} and \texttt{addLtAdd} give
+$0+y<1+y$.  The shared \texttt{addZero} and \texttt{addComm}
+axioms rewrite this as $y<y+1$.
+Now suppose $x<y$ and choose $z$ from the current
+\texttt{addEqOfLt}, so $x+z=y$.
+\texttt{zeroLe} says $0=x$ or $0<x$.
+In the first case, equality substitution and $0+z=z$ give $z=y$,
+hence $z<y+1$.  In the second case,
+\texttt{addLtAdd} applied to $0<x$ gives $0+z<x+z$,
+therefore $z<y$, and \texttt{ltTrans} with $y<y+1$ gives
+$z<y+1$.  In both cases introduce
+$\exists z\,(z<y+1\land x+z=y)$, discharge $x<y$, and
+universally close $x,y$.
+This uses only shared finite axioms, the current changed axiom, and
+fixed first-order proof templates.  Conversely the historical bounded
+leaf implies the current leaf by the six-node projection above.
+The two finite arithmetic bases are therefore mutually derivable.
+
+The historical metatheory writes $I\Sigma_1$ with a prenex
+$\Sigma_1$ hierarchy, whereas the current metatheory uses
+\texttt{Arithmetic.Hierarchy}.  In the historical
+\texttt{FirstOrder/Syntax/Classical/BoundingHierarchy.lean},
+$\operatorname{PrenexHierarchy}(\Sigma,s+1,\phi)$ unfolds to
+$\phi=\exists\psi$ with
+$\operatorname{PrenexHierarchy}(\Pi,s,\psi)$;
+at $s=0$ the latter predicate is the bounded closure
+$\mathcal B[<].\operatorname{Closure}(\psi)$.
+Its eight constructors are truth, falsity, positive relation, negative
+relation, conjunction, disjunction, bounded universal and bounded
+existential quantification.  The bounds have the displayed
+\texttt{Positive} side condition.
+The current \texttt{Arithmetic/Basic/Hierarchy.lean} has those same
+eight constructors at level zero with the same bound condition.
+Structural recursion on the historical bounded derivation therefore
+produces a current $\Pi_0$ derivation of $\psi$.  The current
+\texttt{Hierarchy.sigma} constructor adds its outer existential to
+give a current $\Sigma_1$ derivation of $\phi$.
+Thus current $\Sigma_1$ induction includes every historical prenex
+$\Sigma_1$ instance; the argument is an explicit structural inclusion,
+not an identification of differently named hierarchy classes.
+Together with the fixed base-axiom derivation, it allows all historical
+$I\Sigma_1$ syntax lemmas used above to be applied in a current
+$I\Sigma_1$ model.  The new inductions in this note have explicit
+$\Delta_1$ or $\Sigma_1$ predicates as shown above.
+
+\subsection{Current proof and native-refutation endpoint}
+
+Define $\mathcal A_c$ by the current 26-leaf finite selection and
+the same induction supplier $\mathcal A_{\mathrm{ind}}$.
+The preceding arguments establish, in current $I\Sigma_1$,
+\[
+ \operatorname{Ax}_{\mathrm{PA}_c}(c)
+ \ \longrightarrow\
+ \operatorname{Proof}_{U}(\mathcal A_c(c),\tau(c)).
+\]
+Use it in the table recursion (D), on the current ten-rule proof
+predicate, to obtain $\mathcal D_c$.  This construction works
+directly on the current proof; it does not assert equality of the
+historical and current PA axiom predicates.
+
+\begin{theorem}[Exact current Foundation endpoint]
+There is a total PR function $\mathcal D_c$ for which current
+$I\Sigma_1$ proves
+\[
+ \operatorname{Proof}_{\mathrm{PA}_c}(d,13)
+ \ \longrightarrow\
+ \operatorname{Proof}_{\mathrm{ordinaryPAeq}}(\mathcal D_c(d),13).
+\]
+Both proof predicates are the numerical singleton-sequent predicates
+with the coding and axiom recognizers fixed in this section.
+The theorem holds uniformly for internally nonstandard $d$.
+\end{theorem}
+
+Finally, the exact source sentence in
+\texttt{DiophantineConsistency/IPRAPA196Consistency.lean} is
+\[
+ \texttt{paRefutation}
+ =\operatorname{provabilityPred}(\mathrm{PA}_c,\bot).
+\]
+The definitions map it into the PR language as
+\texttt{mappedPARefutation}; its intuitionistic native reading is
+\texttt{nativePARefutation}, and
+\texttt{nativePAConsistency} is its negation.
+The existing all-model
+\texttt{PA195RefutationBridge.mapped\_refutation\_iff}
+identifies the mapped formula, in every PR-language structure whose
+arithmetic reduct satisfies current $I\Sigma_1$, with
+$\exists d\,\operatorname{Proof}_{\mathrm{PA}_c}(d,13)$.
+The endpoint theorem therefore gives, in exactly those structures,
+\[
+ \operatorname{Eval}(\texttt{mappedPARefutation})
+ \ \longrightarrow\
+ \exists e\,\operatorname{Proof}_{\mathrm{ordinaryPAeq}}(e,13).
+\]
+This is the source endpoint needed by the separate ordinaryPAeq-to-C4
+compiler and the one-way $I\Sigma_1$-to-iPRA transfer.  This note does
+not substitute a different consistency sentence for
+\texttt{nativePAConsistency}.
+
+The conclusion is a written mathematical proof, with explicit
+constructors and their induction invariants.  The supplemental checker
+replays 308 closure chains, 140 canonical induction readbacks,
+36 existential projections and four complete changed-leaf adapters,
+checking 8,828 distinct primitive proof nodes.  These finite checks
+support the displayed constructor equations; they are not a proof
+by testing over all natural codes.  No Lean kernel rebuild of the
+entire current-package adapter is claimed.
