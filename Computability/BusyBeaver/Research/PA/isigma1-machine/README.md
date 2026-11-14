@@ -107,3 +107,26 @@ already checked objects and logs in the same directory. All 100 module logs
 were checked for `sorryAx`; the reported axioms are `propext`,
 `Classical.choice`, and `Quot.sound`. No machine calibration follows from this
 certificate check alone.
+
+## One-direction transfers
+
+`ConPAISigma1Directions.lean` separates the two calibration obligations. For
+an open, bounded halting matrix, it proves:
+
+- If in every candidate PRA model with an IΣ₁ reduct an internal PA refutation
+  implies halting, then standard iPRA proves that nonhalting implies Con(PA).
+- If in every such model halting implies an internal PA refutation, then
+  standard iPRA proves that Con(PA) implies nonhalting.
+
+Each hypothesis concerns **all** the relevant models, including nonstandard
+proofs and clock times. Neither hypothesis is established here for any
+machine. The proof separately transfers each implication through the
+open-existential conservation theorem, the PA witness certificate, and the
+Gödel–Gentzen interpretation; it does not require the opposite implication.
+
+With the audited `IPRA_LEAN_OVERLAY` and `IPRA_FOUNDATION_OVERLAY` set, run
+`bash Computability/BusyBeaver/Research/PA/isigma1-machine/check-directions.sh`
+for a fresh dependency and certificate rebuild and an axiom check. An
+incremental check of the new module has passed against independently rebuilt
+transfer and certificate objects, reporting only `propext`, `Classical.choice`,
+and `Quot.sound`.
