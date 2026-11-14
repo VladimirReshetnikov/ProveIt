@@ -10,7 +10,7 @@ out=$(mktemp -d "${TMPDIR:-/tmp}/conpa-isigma1.XXXXXXXX")
 trap 'rm -rf "$out"' EXIT
 case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) sep=';' ;; *) sep=':' ;; esac
 case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*) extra="$(cygpath -w "$out")$sep" ;; *) extra="$out$sep" ;; esac
-if [ -n "${IPRA_LEAN_OVERLAY:-}" ]; then extra="$(realpath "$IPRA_LEAN_OVERLAY")$sep"; fi
+if [ -n "${IPRA_LEAN_OVERLAY:-}" ]; then extra="$extra$(realpath "$IPRA_LEAN_OVERLAY")$sep"; fi
 if [ -n "${IPRA_FOUNDATION_OVERLAY:-}" ]; then extra="$extra$(realpath "$IPRA_FOUNDATION_OVERLAY")$sep"; fi
 export CONPA_EXTRA="$extra" CONPA_OUT="$out"
 lake env bash -c '

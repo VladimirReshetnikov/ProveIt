@@ -124,5 +124,9 @@ bash Computability/BusyBeaver/Research/PA/isigma1-transfer/check.sh
 `IPRA_LEAN_OVERLAY` and `IPRA_FOUNDATION_OVERLAY` are put in front of the search path when
 set, as for `../pa194/ipra/check.sh`. The script compiles both files, prints the axioms of `classical_iff`,
 `endpoint_sigma_one`, `endpoint`, `finite_isigma1`, `pi_one_iff_of_models` and
-`halt_iff_refutation_of_models`, and fails if `sorryAx` occurs. It was run on Windows under Git Bash against the
-root workspace (Lean 4.32.0); it was not run with overlays.
+`halt_iff_refutation_of_models`, and fails if `sorryAx` occurs. It passed on
+Windows against the root workspace and in an independent Linux replay with
+Lean 4.32.0 and the iPRA/Foundation overlays. For the latter, the missing
+`IPRAPA196Consistency` dependency was rebuilt from its repository source in a
+private overlay. This check does not discharge `BoundCertificate` or a
+machine-specific equivalence.
