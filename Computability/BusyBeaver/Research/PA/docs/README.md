@@ -40,8 +40,8 @@ reason and where the same bytes are. There are four reasons.
 |---|---:|---|
 | `upstream-copy` | 14,130 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
 | `sibling-archive` | 17 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
-| `ignored` | 1,736 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
-| `duplicate-machine` | 13,059 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
+| `ignored` | 1,783 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
+| `duplicate-machine` | 13,175 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
 
 Six nested archives have no delivered counterpart and are placed as files:
 `U209_ConPA_Joint_2026-10-29.zip` (in three packets), `U209_ConPA_2026-10-29.zip`,
@@ -54,8 +54,8 @@ does not run here as delivered.
 
 ## Packets
 
-The 86 archives hold 48,848 members: 19,906 placed here (1133 MB), 14,130 copies of the upstream
-snapshots, 17 nested copies of sibling archives, 1,736 ignored files and 13,059 duplicate machine
+The 87 archives hold 49,512 members: 20,407 placed here (1159 MB), 14,130 copies of the upstream
+snapshots, 17 nested copies of sibling archives, 1,783 ignored files and 13,175 duplicate machine
 tables. The columns P, U, S, I and M give these five counts for each packet. Arrival is
 the date of the commit that added the archive to `docs/incoming`.
 
@@ -147,10 +147,11 @@ the date of the commit that added the archive to `docs/incoming`.
 | [`pa194_ax11qh4_research_2026-11-14`](pa194_ax11qh4_research_2026-11-14/) | 2026-11-14 | `pa194_ax11qh4_research_2026-11-14` | PA194AX11QH4L and PA194AX11QH4R. States two new 194-state machines for the PA194AX11QH source program with a relative iPRA proof, and nothing below 194. | 159 | 2 | 0 | 22 | 198 |
 | [`pa194gh_research_2026-11-14`](pa194gh_research_2026-11-14/) | 2026-11-14 | `pa194gh_research_2026-11-14` | PA194GH and PA194GHS. States two new 194-state physical designs and that no construction below 194 was obtained. | 227 | 3 | 0 | 2 | 102 |
 | [`pa194_ax11g_research_2026-11-14`](pa194_ax11g_research_2026-11-14/) | 2026-11-14 | `pa194_ax11g_research_2026-11-14` | PA194AX11G. States a new 194-state machine combining the generalization binder of PA194G with the AX11 protocol, a relative proof that it halts exactly when the primary PA194 does, and nothing below 194. | 219 | 2 | 0 | 6 | 155 |
+| [`pa194_frontier_2026-11-14`](pa194_frontier_2026-11-14/) | 2026-11-14 | `pa194_frontier_2026-11-14` | Frontier audit and PA194AX11G, PA194GH. States two new 194-state machines with command-level refutation-search proofs and a comparison with 94 recognized 194-state graphs. | 501 | 0 | 0 | 47 | 116 |
 
 ## Archives still in `docs/incoming`
 
-None. All 86 archives are removed from `docs/incoming`. They remain in the history of
+None. All 87 archives are removed from `docs/incoming`. They remain in the history of
 the repository.
 
 Some scripts of the [parent directory](../README.md) open an archive at
