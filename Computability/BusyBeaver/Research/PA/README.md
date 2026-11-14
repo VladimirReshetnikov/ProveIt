@@ -214,6 +214,9 @@ candidate PRA model; the corresponding closed equality is also proved in
 native iPRA. Its [source-frame decomposition](pa194/ipra/machine-code/STARTUP-SOURCE-FRAME.md)
 identifies the permuted seed register file and all spare blocks. This is a
 finite startup result, not a model-length simulation. The
+[first seeded instruction](pa194/ipra/machine-code/FIRST-INSTRUCTION.md) is
+also checked on the literal machine and as a closed native-iPRA equality: its
+zero branch reaches the site-27 frame after another 462 steps. The
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
 checks a nonstandard-model path under explicit header, positivity and blank
 suffix hypotheses. A [combined marker return](pa194/ipra/machine-code/ALL-SELECTED-MARKER-TO24.md)
