@@ -92,13 +92,18 @@ python3 Computability/BusyBeaver/Research/PA/isigma1-machine/check_unconditional
 
 compiles `ConPAUnconditional.lean` with everything it imports outside the root Lake
 libraries: the upstream `M6.Zip` and `PA196.Literal`, the modules of `../pa196-vs-u208/ipra`
-that the certificate needs, and the files of the two `isigma1-*` directories, 99 modules in
+that the certificate needs, and the files of the two `isigma1-*` directories, 100 modules in
 all, one `lean` process at a time. It prints the axioms of `certificate`, `machine_endpoint`
 and `ipra_of_models` and fails if `sorryAx` occurs in any log. With `--out DIR` it keeps the
 objects and skips modules already compiled there. `IPRA_LEAN_OVERLAY` and
 `IPRA_FOUNDATION_OVERLAY`, when set, are searched before the root Lake objects.
 
-The unconditional check was run on Windows (Lean 4.32.0) and its axiom reports
-are `propext`, `Classical.choice`, `Quot.sound`. The 99 modules were compiled once, in two passes into one
-directory; `check_unconditional.py` was then run on that directory and recompiled only
-`ConPAUnconditional`. A run from an empty directory was not made.
+The unconditional check was run on Windows (Lean 4.32.0) with objects built
+in two passes. An independent Linux replay also passed from an initially empty
+tmpfs output directory, using the iPRA/Foundation overlays and privately
+rebuilt missing PA-consistency dependencies. That replay was resumed after
+fixing the checker and rebuilding missing overlay dependencies, reusing the
+already checked objects and logs in the same directory. All 100 module logs
+were checked for `sorryAx`; the reported axioms are `propext`,
+`Classical.choice`, and `Quot.sound`. No machine calibration follows from this
+certificate check alone.
