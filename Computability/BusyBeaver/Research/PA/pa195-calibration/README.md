@@ -422,3 +422,21 @@ finite codes, not a dynamically chosen numeral compiler. Check it using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-numeral-code.sh
 ```
+
+`PA194BitTemplate.lean` statically compiles a fixed closed arithmetic syntax
+template into a binary PR code, mapping the two outer placeholders to source
+free labels while keeping locally bound indices. For every template, it proves
+in all candidate-PRA models that the generated code agrees with an explicitly
+defined numeric constructor specification. `bitTemplateCode` applies this
+construction to Foundation's exact bounded bit formula. The remaining crucial
+step is to prove that the numeric specification is the Foundation quote of
+capture-avoiding substitution; it is not yet a verified membership translator.
+
+`PA194BitTemplateSize.lean` provides a reproducible executable size probe. Its
+`#eval` reports 1,503,347 nodes, counting both `Code` and `Codes` constructors;
+this is an evaluation rather than a kernel-checked size theorem. The generated
+code has not been serialized. Rebuild and run the probe with:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-bit-template.sh
+```
