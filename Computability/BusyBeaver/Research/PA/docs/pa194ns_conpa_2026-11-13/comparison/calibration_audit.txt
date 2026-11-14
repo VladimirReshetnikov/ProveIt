@@ -1,0 +1,237 @@
+INDEPENDENT CALIBRATION AND PROTOCOL AUDIT
+==========================================
+
+Scope and result
+----------------
+This is a mathematical source review, not an end-to-end proof-assistant
+certification. The reviewed corpus is VladimirReshetnikov/ProveIt at commit
+1e407ae841e4666f932777fad977ba784ebbcfd5. The review examines the retained
+PA calibration and the new PA194NS command compiler. It does not rerun every
+historical certificate or rebuild the complete upstream Lean development.
+
+No mathematical defect was found in the selected inherited calibration
+argument or in the reviewed PA194NS compiler. The resulting consistency
+claim is an ordinary mathematical PA-provability argument whose explicit
+logical dependencies must remain attached. The new physical certificates
+do not themselves establish those logical dependencies.
+
+Principal inherited sources
+---------------------------
+Paths below are relative to Computability/BusyBeaver/Research/PA unless
+otherwise indicated.
+
+1. docs/pa195_conpa_2026-11-13/report/sections/pa_calibration.tex
+   Uniform PA proof production, annotated-store soundness, command progress,
+   exact physical segments and the internal halting/refutation equivalence.
+2. docs/pa194_conpa_2026-11-13/report/calibration.tex
+   Diagonal replacement and separate-head calibration.
+3. docs/pa194_conpa_2026-11-13/report/reference/separate_head_calculus.tex
+   Proof translations between bundled and separate diagonal clauses.
+4. jamesyc-upstream/pa196/PA196/Logic/Basic.lean and Logic/Reverse.lean
+   Logical interfaces, including negative specialization and reverse
+   membership rewriting.
+5. jamesyc-upstream/pa196/PA196/Arithmetic/Scheduler/
+   ActualWordEncodingBlueprint.lean, SourceCommandResidualBounds.lean,
+   SourceCommandResidualTermination.lean, SourceEnumerationFromTwo.lean
+   Exact continuation encoding, decreasing residuals and the initial
+   candidate offset.
+6. README.md, jamesyc-upstream/README.md and
+   pa196-vs-u208/archive-audit/README.md
+   The scope of current proof-assistant endpoints.
+
+PA194NS retains copies of the relevant mathematical calibration fragments
+under references/logical. Their provenance is recorded in its manifest.
+
+1. Why the source-to-PA-refutation direction is not reflection
+------------------------------------------------------------
+Let p(a,b)=(a+b)(a+b+1)/2+b. The numerical constructors are
+I(A,B)=4p(A,B), M(a,b)=4p(a,b)+1, U(a,B)=4p(B,a)+2,
+and E(a,b)=4p(a,b)+3. Code 0 denotes truth and code 1 denotes
+M(0,0), whose arithmetic translation is false. I(0,0)=0 is an intentional
+numeric alias, so compositionality must be a proved PA equivalence rather
+than syntactic identity at that point.
+
+The arithmetic interpretation uses finite binary membership:
+M(a,b) becomes Bit(x_a,x_b), E(a,b) becomes equality, and U introduces a
+universal quantifier. PA proves Bit(s,z) implies z<s; in particular,
+not Bit(x_0,x_0). Thus code 1 gives a PA refutation.
+
+The separation gate uses finite comprehension for an arbitrary formula
+syntax theta. The relevant uniform operation returns a PA proof of
+  for all n, there exists s<2^n such that
+  for all z<n, Bit(s,z) iff theta(z,u).
+It instantiates one induction template with theta. At the successor step,
+a classical split on theta(n) chooses either s or s+2^n. The proof generator
+does not decide theta, interpret a truth predicate, or assume reflection.
+Its correctness is a syntactic induction on formula/proof codes.
+
+The coincident-label separation case matters. For distinct source and
+bound labels a,b, the defining finite-set matrix is
+  (Bit(x_a,z) or z=x_b) and T(c)[z/x_b],
+with bound x_a+x_b+1. When a=b, the first membership antecedent becomes
+Bit(z,z) under the binder and is false. The correct matrix is then
+  z=x_b and T(c)[z/x_b].
+The reviewed calibration handles this case explicitly; simply reusing
+the distinct-label matrix with an incorrect free-variable interpretation
+would be invalid.
+
+Every variable label in a nontrivial coded formula c is strictly less than
+c. This supplies the fresh label used by diagonal generalization. The
+guarded-zero and implication-zero aliases are handled explicitly.
+
+The clean scheduler store is annotated with PA proofs of the formulas in
+its current top, cache and canonical live Cantor stack. For positive w,
+tl(w)<w, so the canonical live entries form a bounded recursive list.
+Popping numerical zero supplies truth. Pushing zero onto zero contributes
+no fictitious list cell. AX, MP and Shift transform the annotations by
+fixed syntactic proof operations. A real source halt therefore carries a
+proof of code 1. Nothing requires an arbitrary carried numeric value to
+be true before the annotation invariant has been established.
+
+2. The PA-refutation-to-source-halt direction retains a real dependency
+----------------------------------------------------------------------
+Replacing equality-vacuity by the smaller diagonal clause
+Gamma(B)=B -> U(B,B) requires a proof translation, not just comparable
+formula lengths. The reviewed reports recover the original compiler's
+reverse-membership and neighborhood-equality interfaces.
+
+For reverse rewriting, set
+  C = E(a,b) -> (chi(b) -> chi(a)),
+  phi = not C,
+  c = the numerical code of phi.
+Pointed separation at (a,a,c), negative specialization and Gamma(phi)
+supply the needed interface. Label coincidences have separate cases.
+Inspection of upstream negativeSpecialization shows that it uses the
+direct rewriting, witness and membership-vacuity interfaces, rather than
+circularly requiring the removed equality-vacuity axiom.
+
+For neighborhood equality, first choose z_0 as the code of E(a,b), which
+is above both labels. Transport to the desired binder is justified by
+equality-witness and membership-vacuity derivations; it does not silently
+assume a generic alpha-conversion interface.
+
+The finite replacement templates, syntax-code comparisons and proof
+concatenations are primitive recursive. Separate Gamma and the old gate
+recover the bundled gate, and conversely. A Gamma(B) instance can always
+be obtained by choosing diagonal-head parameter B and the other two
+labels B+1, satisfying the relevant guard.
+
+This review found no defect in the selected mathematical argument.
+Nevertheless, it is an inherited completeness theorem. The new work does
+not regenerate every full PA proof certificate or claim a new Lean/Rocq
+verification of the whole arithmetic translation. Repository statements
+that machine-specific iPRA directions remain open refer to a stronger,
+different formal endpoint and should not be presented as its proof.
+
+3. PA194NS compiler: independent command-level review
+---------------------------------------------------
+PA194NS combines no-push MP returning its successful consequent in T with
+Shift halting exactly when cache H=1. This changes both parent interfaces.
+A plain Shift after deriving T=1 is insufficient: from (1,0,0,0) it
+returns (0,0,0,0). A compiler that merely reused that final detector
+would be incomplete.
+
+The reviewed proof and symbolic checker repair the issue with:
+  Push = AX(0,0,0); S^9; MP(0),
+  Pop  = AX(0,0,0); S^11,
+  Discard = MP(0) when the incoming offset is zero.
+The exact Pop law is a case split:
+  Pop(t,[a;w],d,h) halts if t=1;
+  otherwise it returns (t,w,0,a).
+The first ten shifts expose the saved old top in H. The eleventh performs
+the contradiction test before decoding a stack cell. This law also holds
+at [0;0]=0. All generated AX heads are non-one by constructor residues,
+so the first ten shifts are total even for arbitrary old t=1.
+
+The MP proof word reserves a zero below both recursive computations.
+After both premise words return, its final suffix reaches
+  (0,[a,I(a,b),0;w],0,0);
+two Shifts either halt on antecedent a=1 or present (a,I(a,b)) to MP.
+Successful MP returns b in T. The concluding Pop halts when b=1,
+otherwise consumes exactly the reserved zero and returns (b,w,0,0).
+This establishes a halt-or-return contract for every natural initial
+top and stack, including the I(0,0)=0 and zero-stack aliases.
+
+Generalization is total even on a=1. The generated universal code has
+residue two and is at least two, so no soundness premise is smuggled into
+its safety proof. The axiom, gate and dominated-head selectors restore
+the original stack, zero offset and zero cache.
+
+For a derivation p of contradiction, the word
+  AX(0,0,0); C(p); AX(0,0,0); S^11
+halts from every carried store. The first AX establishes the compiler's
+offset/cache interface, and the last Pop is the correct detector.
+Any early halt in this arbitrary-store theorem is sufficient for
+completeness; it is not independently claimed to be sound.
+
+Soundness is established separately by propagating annotations from the
+actual clean seed through every real command. In that invariant, every
+early halting cache already has a PA proof. This separation removes the
+otherwise serious confusion between arbitrary-store early halting and
+a clean blank-input consistency endpoint.
+
+The reviewed source replacement preserves W and uses two terminating
+counter loops to copy D into T while restoring D and zero scratch.
+The Shift interface assumes scratch X=0 at command boundaries. A stronger
+comparison-tail equivalence with arbitrary incoming scratch instead tests
+h+x=1; the report correctly does not use it as the h=1 command law.
+
+4. Scheduler, primitive recursion and the candidate offset
+--------------------------------------------------------
+The inherited raw command encodings with continuation z are
+  enc(S,z) = p(0,z),
+  enc(MP_x,z) = p(1,p(x,z)),
+  enc(AX_A,x,y,z) = p(A+2,p(y,p(x,z))).
+A positive continuation uses E(c::w)=1+enc(c,E(w)), with E(empty)=0.
+A fresh candidate is raw, without the extra outer 1.
+
+For positive continuation n, the fetch decodes raw n-1 and obtains
+a residual at most n-1, hence strictly below n. A fresh candidate n
+requires at most n+1 decoded commands. This exact convention agrees with
+the upstream word-encoding and residual-termination modules.
+
+If z encodes the all-store halting word, the raw family
+  p(k+2,p(0,p(0,z)))
+prepends AX(k,0,0), so every member halts from every store. The family is
+strictly increasing and unbounded, and already its k=0 member is at least
+three. The scheduler's initial candidate two therefore causes no loss.
+
+Each fixed command macro is a primitive-recursive numeric transformation
+with a primitive-recursive terminating source trace, by the pairing,
+unpairing, drain and fixed-emitter loop bounds. Candidate execution is a
+bounded iteration of those total transformations; halting can be made
+absorbing for this construction. The finite search from candidate two
+through the explicit target is another bounded iteration. These operations
+can grow extremely quickly but remain primitive recursive. Their PA
+correctness uses induction, not an unbounded minimization principle.
+
+5. Exact tape transfer remains essential
+---------------------------------------
+The physical proof must cover all natural register values, both decrement
+branches, the gap parameter, the spare-register list and the complete tape
+frame, including zeros outside the represented support. It must also
+give positive finite segment lengths and no premature physical halts.
+
+A source halt then yields a physical halt by finite concatenation after
+the verified startup. Conversely, if a physical halt occurs at time T,
+T+1 nonhalting source steps would produce more than T nonhalting physical
+steps in the same deterministic run. This proves the other implication
+without an infinitary simulation principle.
+
+The corpus contains two 194-state source-valid zero-jump variations whose
+literal blank machines halt after 1,361 steps before reaching their clean
+seed. They are direct evidence that a source CFG check or a warm-start
+contract alone is insufficient. PA194NS's full startup and full-frame
+receipts must accompany the source and command arguments.
+
+6. Permissible claim
+-------------------
+With the retained logical-calibration dependency and the new command and
+physical arguments, the proposed theorem is:
+  PA proves [not Halt(PA194NS, blank) iff Con(PA)].
+The standard-model nonhalting assertion consequently depends on PA's
+consistency. This is a mathematical proof claim with executable finite
+and symbolic certificates, not a claim that a new complete Lean/Rocq
+or iPRA theorem was constructed. The finite unsuccessful searches and
+the absence of recognized 10--193-state tables in this corpus establish
+no lower bound on the number of states.

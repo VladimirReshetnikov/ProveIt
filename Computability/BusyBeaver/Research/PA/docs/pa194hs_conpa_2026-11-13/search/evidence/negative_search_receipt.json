@@ -1,0 +1,114 @@
+{
+  "status": "No accepted reduction below194 from these finite searches",
+  "upstream_commit": "1e407ae841e4666f932777fad977ba784ebbcfd5",
+  "input_tables": {
+    "primary": "e0a7397cf2134e8e7f58a8b1de2f7ff90b74ededd54c912f6ba5b7db48dabe54",
+    "PA194HS": "0b72fc7decfe10ffe30c967f59ddfc570bc7f92177f67b72735b82a0d2fe9fb8"
+  },
+  "merge_searches": [
+    {
+      "name": "primary",
+      "trials": 62073,
+      "passed": [],
+      "seconds": 35.80948543548584
+    },
+    {
+      "name": "PA194HS",
+      "trials": 62073,
+      "passed": [],
+      "seconds": 33.40487742424011
+    }
+  ],
+  "merge_search_definition": {
+    "non_box_states": 171,
+    "protected_box_states": 23,
+    "unprotected_pair_row_choice_trials": 58140,
+    "protected_keeper_trials": 3933,
+    "trials_per_table": 62073,
+    "symbolic_fuel_per_contract": 1024,
+    "candidate_structure": "Identify one removed state with one keeper; each keeper row is taken from one of the two old rows (or fixed for protected keeper); redirect incoming targets; no other rows changed.",
+    "accepted_candidates": 0
+  },
+  "local_action_screens": [
+    {
+      "table": "primary",
+      "radius": 5,
+      "maximum_local_steps": 300,
+      "seeded_windows": 16393,
+      "candidates": 0
+    },
+    {
+      "table": "primary",
+      "radius": 6,
+      "maximum_local_steps": 1000,
+      "seeded_windows": 29347,
+      "candidates": 0
+    }
+  ],
+  "scanner_attempt": {
+    "table": "PA194HS",
+    "patch": "Delete34; redirect23/0 target34 to75",
+    "resulting_states": 193,
+    "parent_symbolic_contracts": 4750,
+    "symbolic_fuel": 1024,
+    "failed_contracts": 113,
+    "failed_sites": 57,
+    "failure_file": "evidence/PA194HS_short_scan_failed.json",
+    "literal_alignment_witness": {
+      "source_site": 0,
+      "source_path": "000000",
+      "gap_parameter": 0,
+      "physical_registers": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "parent_q84_returns": [
+        [
+          116,
+          0
+        ],
+        [
+          246,
+          0
+        ],
+        [
+          486,
+          0
+        ]
+      ],
+      "shortened_q84_returns": [
+        [
+          100,
+          0
+        ],
+        [
+          236,
+          8
+        ]
+      ],
+      "parent_required_successor_reached_at": 486
+    },
+    "blank_start_screen_bound": 1000000,
+    "blank_start_expected_frame_reached": false
+  },
+  "pruning": {
+    "table": "PA194HS",
+    "working_states": 194,
+    "controls_covered_by_source_arithmetic_and_startup": 194,
+    "unseen_controls": []
+  },
+  "limits": [
+    "No lower bound on Turing machine size is asserted.",
+    "A failure to close a symbolic contract within1024 operations is a rejection by this proof method, not an undecidability or nonhalting result.",
+    "Window sets are discovery inputs, not a separately verified complete reachable-context theorem.",
+    "No candidate satisfying every original source contract was found; richer simultaneous edits and semantic source invariants remain outside the search."
+  ]
+}

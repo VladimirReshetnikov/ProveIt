@@ -1,0 +1,71 @@
+{
+  "native_table_sha256": "0b72fc7decfe10ffe30c967f59ddfc570bc7f92177f67b72735b82a0d2fe9fb8",
+  "contexts_sha256": "e0d48e86add1cd75ff65031dc29cb1c7dec15d91c9cc935b39227083dd1b77b4",
+  "runs": [
+    {
+      "search": "action_merge_future",
+      "radius": 4,
+      "step_bound": 100,
+      "source_contexts": false,
+      "hits": 0
+    },
+    {
+      "search": "action_merge_future",
+      "radius": 5,
+      "step_bound": 150,
+      "source_contexts": true,
+      "hits": 0
+    },
+    {
+      "search": "eliminate",
+      "radius": 5,
+      "step_bound": 150,
+      "source_contexts": true,
+      "hits": 0
+    }
+  ],
+  "derived_contexts": {
+    "contracts": {
+      "ok": true,
+      "contracts": 4750,
+      "max_steps": 508,
+      "total_steps": 1514674
+    },
+    "symbolic_frame_observations": 18492,
+    "states": 171,
+    "patterns": 16293,
+    "radius": 5,
+    "startup_steps": 57768,
+    "context_sha256": "e0d48e86add1cd75ff65031dc29cb1c7dec15d91c9cc935b39227083dd1b77b4"
+  },
+  "scanner_audit": {
+    "rejected_optimization": "Delete native state 34 and redirect every former target 34 to 75",
+    "removed_state_rows": [
+      [
+        0,
+        false,
+        75
+      ],
+      [
+        1,
+        false,
+        2
+      ]
+    ],
+    "candidate_controls": 193,
+    "source_contract_check": {
+      "ok": false,
+      "failed": [
+        0,
+        [
+          7,
+          true
+        ]
+      ],
+      "completed": 0
+    },
+    "reason": "The seven-zero reset scanner cannot simply be shortened: source site 0 already has address 000000. The modified scanner returns into that address while the register file is still marked.",
+    "scope": "Failure of the inherited universal source contract, not a proof that every conceivable 193-state redesign fails."
+  },
+  "interpretation": "No reduction was obtained in these finite search classes. No lower bound on state count is established."
+}

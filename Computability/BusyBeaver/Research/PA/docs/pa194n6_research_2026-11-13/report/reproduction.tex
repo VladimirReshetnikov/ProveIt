@@ -1,0 +1,35 @@
+Python 3.10 or later and its standard library
+suffice for the accepted construction and its independent physical audit.
+Run with assertions enabled, without \file{-O} or \file{PYTHONOPTIMIZE}.
+From the package root:
+\begin{verbatim}
+python3 -B construction/build.py --output generated
+python3 -B verification/check.py generated
+python3 -B verification/review_structure.py
+python3 -B comparison/check_current_novelty.py generated/machine.tm
+\end{verbatim}
+The first two commands reconstruct the literal table, complete source,
+folds and certificates, then run the separate literal implementation.
+The third is a read-only structural/fold/startup audit against the frozen
+parent. The fourth compares the new table with the bundled current census.
+No network or repository checkout is required for these commands.
+
+Optional local reduction screens use a C++17 compiler:
+\begin{verbatim}
+cd research
+python3 replay_physical.py
+\end{verbatim}
+The research README gives the longer grammar-search commands; only the
+optional MILP experiment requires NumPy and SciPy. Recomputing the full
+external corpus inventory additionally requires a checkout of the pinned
+ProveIt revision and \file{rg}; this is separate from verifying the machine.
+
+To regenerate the report's data tables and compile its PDF:
+\begin{verbatim}
+cd report
+python3 generate_includes.py
+pdflatex -interaction=nonstopmode -halt-on-error pa194n6_research.tex
+pdflatex -interaction=nonstopmode -halt-on-error pa194n6_research.tex
+\end{verbatim}
+Run one further LaTeX pass if requested for references or long-table widths.
+Standard TeX Live packages named in the preamble are sufficient.
