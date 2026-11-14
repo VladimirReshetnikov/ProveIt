@@ -19,10 +19,11 @@ and generates Lean files for the following kernel checks:
 * `Transfer.lean` proves generic soundness lemmas for bitset inclusion and each
   increment and decrement transfer case. The seed mask 1 is present at ordinal
   25. At ordinal 3692, each recorded mask has bits 3, 4, 5, and 6 clear.
-* The first 32 extracted instructions and ordinal 3692 agree with the actual
-  `PA196.Program.sites` resolver in Lean. The checker rebuilds the resolver
-  modules from the pinned upstream sources and also checks that the archived
-  and upstream `Program.lean` files have the same hash.
+* The first 32 extracted instructions and ordinal 3692 are checked directly
+  against the actual resolver. Separate bounded checks prove equality of the
+  entire segmented lookup with `PA196.Program.sites` resolution, including
+  ordinals outside the source table. The checker rebuilds the upstream resolver
+  and verifies that archived and upstream `Program.lean` hashes match.
 * `Abstraction.lean` defines a Boolean positivity mask for actual source
   register stores and proves that its nine-bit numeric encoding has exactly
   those bits. Given an explicit `Closed` hypothesis for the source resolver,
@@ -41,15 +42,12 @@ and generates Lean files for the following kernel checks:
   arrays of blocks of 16, together with bounded Lean row-check modules.
   `SegmentAssembly.lean` and the generated `SegmentAll2.lean` assemble them
   into an unconditional `TableClosed` theorem for that extracted table.
-  `SegmentEnd.lean` then proves the ordinal-3692 result for actual source runs
-  with one explicit machine-specific hypothesis: equality of the extracted
-  lookup with the upstream resolver for every ordinal.
+  The generated `ResolverBinding.lean` proves the required equality with the
+  upstream resolver, so `SegmentEnd.lean` proves the ordinal-3692 result for
+  actual source runs without a table-binding hypothesis.
 
-The source-run result is **conditional**: the extracted lookup has not been
-proved equal to the actual `Program.sites` resolver. Only 33 individual
-extracted instructions are currently checked against that resolver in Lean;
-the other 3,779 remain to be checked, as does their assembly into one equality.
-No correspondence between the assumed source seed and a blank-tape run is
+The final Lean theorem is a standard-natural-number statement about the source
+program; no correspondence between its source seed and a blank-tape run is
 proved here. This also does not establish any
 physical-machine simulation, equivalence between the
 four variants and PA196, iPRA theorem, or PA consistency result. Hash checks

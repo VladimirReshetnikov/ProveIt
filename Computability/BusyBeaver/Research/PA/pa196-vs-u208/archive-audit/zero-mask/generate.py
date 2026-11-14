@@ -160,4 +160,54 @@ lines += ["set_option maxRecDepth 100000", "namespace PA196ZeroMask", "open M6.S
           "  table_closed_of_rows segmentedLookup segmentedCertificate segmentAll",
           "#print axioms segmentAll", "#print axioms archiveTableClosed", "end PA196ZeroMask"]
 (out / "SegmentAll2.lean").write_text("\n".join(lines) + "\n")
-print("Generated checks for 3812 extracted rows, 477 direct chunks, segmented table closure, and 33 upstream source rows.")
+
+# Independently bind the segmented instruction lookup to the optimized
+# upstream trie resolver, using separate bounded kernel checks.
+for begin in range(0, 3812, 64):
+    name, size = f"resolver{begin}", min(64, 3812 - begin)
+    lines = ["import ResolverCommon", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0",
+             "namespace PA196ZeroMask",
+             f"theorem {name} : ∀ i : Fin {size}, sourceFast ({begin}+i.val) = segmentedLookup ({begin}+i.val) := by decide",
+             f"#print axioms {name}", "end PA196ZeroMask"]
+    (out / f"{name}.lean").write_text("\n".join(lines) + "\n")
+
+for begin in range(0, 3812, 256):
+    total = min(256, 3812 - begin)
+    parts = list(range(begin, begin + total, 64))
+    conditions = []
+    for part in parts:
+        lo, hi = part - begin, min(part - begin + 64, total)
+        conditions.append(f"i.val < {hi}" if lo == 0 else f"({lo} ≤ i.val ∧ i.val < {hi})")
+    lines = [f"import resolver{part}" for part in parts]
+    lines += ["set_option maxRecDepth 100000", "set_option maxHeartbeats 0", "namespace PA196ZeroMask",
+              f"theorem resolverSegment{begin} (i : Fin {total}) : sourceFast ({begin}+i.val) = segmentedLookup ({begin}+i.val) := by",
+              "  have hi := i.isLt", "  have hc : " + " ∨ ".join(conditions) + " := by omega",
+              "  rcases hc with " + " | ".join(f"h{k}" for k in range(len(parts)))]
+    for part in parts:
+        lo = part - begin
+        lines += [f"  · have ht := resolver{part} ⟨i.val - {lo}, by omega⟩",
+                  f"    have heq : {part} + (i.val - {lo}) = {begin} + i.val := by omega",
+                  "    simpa only [heq] using ht"]
+    lines += [f"#print axioms resolverSegment{begin}", "end PA196ZeroMask"]
+    (out / f"resolverAggregate{begin}.lean").write_text("\n".join(lines) + "\n")
+
+bases = list(range(0, 3812, 256))
+conditions = []
+for begin in bases:
+    hi = min(begin + 256, 3812)
+    conditions.append(f"pc < {hi}" if begin == 0 else f"({begin} ≤ pc ∧ pc < {hi})")
+lines = [f"import resolverAggregate{begin}" for begin in bases]
+lines += ["set_option maxRecDepth 100000", "set_option maxHeartbeats 0", "namespace PA196ZeroMask", "open M6.Source",
+          "theorem resolverWithin (pc : Nat) (hp : pc < 3812) : sourceFast pc = segmentedLookup pc := by",
+          "  have hc : " + " ∨ ".join(conditions) + " := by omega",
+          "  rcases hc with " + " | ".join(f"h{k}" for k in range(len(bases)))]
+for begin in bases:
+    lines += [f"  · have ht := resolverSegment{begin} ⟨pc - {begin}, by omega⟩",
+              f"    have heq : {begin} + (pc - {begin}) = pc := by omega",
+              "    simpa only [heq] using ht"]
+lines += ["theorem resolver_binding (pc : Nat) : resolveAt PA196.Program.sites pc = segmentedLookup pc := by",
+          "  by_cases hp : pc < 3812", "  · rw [PA196.Program.resolve_tree]", "    exact resolverWithin pc hp",
+          "  · exact resolverOutside pc (by omega)", "#print axioms resolverWithin", "#print axioms resolver_binding",
+          "end PA196ZeroMask"]
+(out / "ResolverBinding.lean").write_text("\n".join(lines) + "\n")
+print("Generated checks for 3812 extracted rows, table closure and resolver binding, and 33 source samples.")

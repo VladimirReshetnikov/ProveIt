@@ -59,6 +59,19 @@ seq 1024 256 3584 | xargs -n 1 -P "$PA196_ZERO_JOBS" bash -c '\''
 cat aggregate*.log >> "$PA196_ZERO_TASK_DIR/axioms.log"
 lean -M1600 -j1 SegmentAll2.lean -o SegmentAll2.olean | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
 cd "$PA196_ZERO_REPO"
+lean -M1600 -j1 Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask/ResolverCommon.lean \
+  -o "$PA196_ZERO_TASK_DIR/ResolverCommon.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
+cd "$PA196_ZERO_TASK_DIR"
+seq 0 64 3808 | xargs -n 1 -P "$PA196_ZERO_JOBS" bash -c '\''
+  lean -M1600 -j1 "resolver$1.lean" -o "resolver$1.olean" > "resolver$1.log" 2>&1 || { cat "resolver$1.log"; exit 1; }
+'\'' _
+cat resolver[0-9]*.log >> "$PA196_ZERO_TASK_DIR/axioms.log"
+seq 0 256 3808 | xargs -n 1 -P "$PA196_ZERO_JOBS" bash -c '\''
+  lean -M1600 -j1 "resolverAggregate$1.lean" -o "resolverAggregate$1.olean" > "resolverAggregate$1.log" 2>&1 || { cat "resolverAggregate$1.log"; exit 1; }
+'\'' _
+cat resolverAggregate*.log >> "$PA196_ZERO_TASK_DIR/axioms.log"
+lean -M1600 -j1 ResolverBinding.lean -o ResolverBinding.olean | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
+cd "$PA196_ZERO_REPO"
 lean -M4000 -j1 Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask/Conclusion.lean \
   -o "$PA196_ZERO_TASK_DIR/Conclusion.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
 lean -M1600 -j1 Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask/SegmentEnd.lean \
