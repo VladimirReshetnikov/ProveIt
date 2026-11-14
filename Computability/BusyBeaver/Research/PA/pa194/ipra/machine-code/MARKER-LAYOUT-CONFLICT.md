@@ -34,4 +34,4 @@ temporary directory and rejects `sorryAx` in the reported dependencies.
 
 An independent suffix replay recompiled this module against the preserved
 marker prerequisites in a fresh tmpfs output directory, with no `sorryAx` in
-the reported axioms. The full standalone replay is still in progress.
+the reported axioms. The full author standalone replay also passed using the audited overlays.

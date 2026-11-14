@@ -44,4 +44,5 @@ rejects `sorryAx` dependencies in the reported theorems.
 An independent suffix replay rebuilt the eight controller and dispatch modules
 in order in a fresh tmpfs overlay, reusing the preserved marker and increment
 prerequisites. The reported theorem dependencies did not include `sorryAx`.
-The complete nested replay described above is running separately.
+The complete author nested replay described above also passed using the
+audited overlays.
