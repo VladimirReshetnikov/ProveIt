@@ -64,13 +64,15 @@ induction to prove that the explicit square-root code equals Foundation's
 model-theoretic square root at every element of every candidate classical PRA
 model. `PackedDecoderModel.lean` connects the explicit decoder to Foundation's two
 unpairing projections for every model element, and proves that both decode a
-pair back to its inputs in every candidate PRA model. The packed clock has not
-yet been linked to a model-side iteration of the decoded configurations, and
-the clock is not yet a proof of either iPRA implication.
+pair back to its inputs in every candidate PRA model. `PackedIterationModel.lean` connects the packed clock to decoded
+configuration semantics in every candidate PRA model: it proves the blank
+initial state, the successor step at every model time (including nonstandard
+times), and the exact condition for the halt indicator to equal one. These
+are all-model Lean theorems; the clock is not yet a proof of either iPRA
+implication.
 
-The work still needs an all-model connection between the explicit packed
-clock and iterated configuration semantics, as well as an internal proof of a
-PA-consistency implication. It does not prove either
+The work still needs internal machine-specific proofs linking the explicit
+clock with PA refutations. It does not prove either
 machine-specific iPRA implication. In particular, the standard-model
 equalities here do not identify these explicit codes with the noncomputably
 chosen `PA194Bounded.boundedCode` in arbitrary models.
@@ -94,3 +96,6 @@ hashes, two directly imported project object hashes, Foundation `Init`, and
 the source of `M6/Zip.lean`; it does not rebuild the other transitive overlay
 objects. Paths and caches are machine-specific. The script checks printed
 axiom dependencies for `sorryAx`.
+
+To replay the all-model decoded-clock recurrence and indicator theorem with
+the same overlays, use `bash Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/check-iteration.sh`.
