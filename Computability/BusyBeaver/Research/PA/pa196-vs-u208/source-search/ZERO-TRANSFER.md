@@ -1,7 +1,7 @@
 # A reachable zero-transfer specialization of the PA196 source
 
 The zero-input transfer-loop idea used in the incoming
-[PA208 source optimization](../../../../../../docs/incoming/pa_consistency_research_2026-10-29.zip)
+[PA208 source optimization](../../docs/pa_consistency_research_2026-10-29/)
 has an analogue in PA196. From the imported program's **clean source seed**,
 a loop at old ordinals 3773–3775 can be removed while preserving source-level
 halting. This is a source specialization: no 195-state table, physical tape

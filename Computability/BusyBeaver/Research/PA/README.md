@@ -17,7 +17,7 @@ statements, and reproducibility instructions.
 ## Primary 194-state candidate
 
 The target table is `pa194_conpa/construction/tables/pa194.tm` in
-[the PA194 research packet](../../../../docs/incoming/pa194_conpa_2026-11-13.zip).
+[the PA194 research packet](docs/pa194_conpa_2026-11-13/).
 It has 194 working states, start state 0, halt label 194, and 388 transitions.
 Its SHA-256 is
 `4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f`.
@@ -45,7 +45,7 @@ remain unproved.
 ## Original 195-state candidate
 
 The target table is `pa195_conpa/pa195/pa195.tm` in
-[the PA195 research packet](../../../../docs/incoming/pa195_conpa_2026-11-13.zip).
+[the PA195 research packet](docs/pa195_conpa_2026-11-13/).
 It has 195 working states, start state 0, halt label 195, and 390 transitions.
 The table's SHA-256 is
 `5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455`.
@@ -88,22 +88,22 @@ witness certificate. The machine-specific reductions remain open.
 [The archive audit](pa196-vs-u208/archive-audit/README.md) inventories related
 196-state tables and distinguishes candidates from rejected machines.
 
-[The later PA195 packet](../../../../docs/incoming/PA195_ConPA_research_2026-11-14.zip)
+[The later PA195 packet](docs/PA195_ConPA_research_2026-11-14/)
 contains two further 195-state candidates, `machine_195S.tm` and
 `machine_195C.tm`, along with source and physical execution certificates.
 They are distinct from the original PA195 table. The packet gives mathematical
 and executable evidence, not an end-to-end Lean proof of the desired iPRA
 statement.
 
-[The PA195 follow-up packet](../../../../docs/incoming/pa195_followup_research.zip)
+[The PA195 follow-up packet](docs/pa195_followup_research/)
 contains another 195-state candidate, `M195S8`, and a claimed halting
 equivalence with the original PA195. It also contains a rejected 194-state
-construction. [A later PA194 packet](../../../../docs/incoming/pa194_conpa_2026-11-13.zip)
+construction. [A later PA194 packet](docs/pa194_conpa_2026-11-13/)
 proposes two other 194-state candidates and claims a PA-provable equivalence.
 These packets do not supply an end-to-end Lean proof of the iPRA statement.
 
-[Another PA194 packet](<../../../../docs/incoming/pa194_conpa_2026-11-13 (2).zip>)
-and [the PA195DC packet](../../../../docs/incoming/pa195_diagonal_combined_2026-11-13.zip)
+[Another PA194 packet](docs/pa194_conpa_2026-11-13_2/)
+and [the PA195DC packet](docs/pa195_diagonal_combined_2026-11-13/)
 propose additional 194- and 195-state machines respectively. Their reported
 PA equivalences likewise do not constitute Lean proofs of the iPRA goal.
 
@@ -118,5 +118,6 @@ calibrations. They do not report completed Lean proofs of the iPRA equivalence.
 [`docs`](docs/README.md) holds the contents of the research packets that were delivered
 to `docs/incoming`, one directory per archive, filed as delivered. Its README lists the
 packets, the wrapper directory of each archive, and the members that are not placed.
-The archives named above stay in `docs/incoming` for as long as scripts of this
-directory open them there.
+The archives themselves are no longer in `docs/incoming`. A script of this directory
+that opens `docs/incoming/<archive>.zip` needs that archive restored from the history of
+the repository, as `docs/README.md` describes, until it reads the placed files instead.

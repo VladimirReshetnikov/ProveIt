@@ -96,35 +96,19 @@ the archive to `docs/incoming`.
 
 ## Archives still in `docs/incoming`
 
-21 of the 41 archives stay in `docs/incoming` although their contents are placed here.
-Scripts and READMEs of this project open them at that path, and several scripts check
-the digest of the archive file itself, so removing them would break those checks. They
-can be removed once those references read the files of this directory instead.
+None. All 41 archives are removed from `docs/incoming`. They remain in the history of
+the repository.
 
-- `PA195_ConPA_research_2026-11-14.zip`
-- `U208_ConPA_2026-10-29.zip`
-- `conpa_tm_comparison_and_reduction_search.zip`
-- `conpa_tm_comparison_and_search.zip`
-- `conpa_tm_study_2026-11-13.zip`
-- `pa194_conpa_2026-11-13 (2).zip`
-- `pa194_conpa_2026-11-13.zip`
-- `pa195_conpa_2026-11-13.zip`
-- `pa195_diagonal_combined_2026-11-13.zip`
-- `pa195_followup_research.zip`
-- `pa208_research_2026-10-29.zip`
-- `pa_consistency_comparison_and_new196_2026-11-13.zip`
-- `pa_consistency_reduction.zip`
-- `pa_consistency_research.zip`
-- `pa_consistency_research_2026-10-29.zip`
-- `pa_consistency_research_2026-11-13 (2).zip`
-- `pa_consistency_research_2026-11-13.zip`
-- `pa_tm_comparison_and_reductions.zip`
-- `pa_tm_extended_research_2026-11-13.zip`
-- `pa_tm_research_2026-11-13 (2).zip`
-- `pa_tm_research_2026-11-13.zip`
+Some scripts of the [parent directory](../README.md) open an archive at
+`docs/incoming/<archive>.zip` and check the digest of the archive file. Such a script
+needs the archive file restored, until it reads the files of this directory instead:
 
-The other 20 archives are removed from `docs/incoming`. They remain in the history of
-the repository at the commits that added them.
+```bash
+c=$(git log --diff-filter=D --format=%H -1 -- "docs/incoming/<archive>.zip")
+git show "$c^:docs/incoming/<archive>.zip" > "docs/incoming/<archive>.zip"
+```
+
+A restored archive is a working copy only; do not commit it.
 
 ## Third-party material
 
