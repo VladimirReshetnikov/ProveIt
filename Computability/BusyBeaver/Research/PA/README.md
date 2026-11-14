@@ -107,6 +107,12 @@ and [the PA195DC packet](../../../../docs/incoming/pa195_diagonal_combined_2026-
 propose additional 194- and 195-state machines respectively. Their reported
 PA equivalences likewise do not constitute Lean proofs of the iPRA goal.
 
+The later [radix-family](../../../../docs/incoming/pa194_radix_family_2026-11-13.zip),
+[PA194J/PA194D](../../../../docs/incoming/pa194j_pa194d_conpa_2026-11-13.zip),
+and [PA194Q/PA194CSZ](../../../../docs/incoming/pa194q_conpa_2026-11-13.zip)
+packets propose further 194-state candidates with ordinary mathematical PA
+calibrations. They do not report completed Lean proofs of the iPRA equivalence.
+
 ## Delivered research packets
 
 [`docs`](docs/README.md) holds the contents of the research packets that were delivered
