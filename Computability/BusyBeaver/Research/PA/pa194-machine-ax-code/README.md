@@ -5,9 +5,9 @@ the modeled AX command's guarded top and its complete triangular-Cantor stack
 update. The codes are parameterized by arbitrary finite-code expressions for
 the input registers. `axTop_model` and `axStack_model` identify their results
 with the `axTop` and `axStack` functions from the model-level store invariant
-in every candidate-PRA model whose arithmetic reduct satisfies IΣ₁, including
-nonstandard inputs. `axCode_preserves` then proves that applying these coded
-effects preserves `SoundStore`.
+in every candidate-PRA model, including nonstandard inputs. `axCode_preserves`
+then proves that applying these coded effects preserves `SoundStore` when the
+model's arithmetic reduct also satisfies IΣ₁.
 
 The modeled functions were transcribed from the standard PA194 source AX
 implementation. This package does **not** yet prove equality of these codes

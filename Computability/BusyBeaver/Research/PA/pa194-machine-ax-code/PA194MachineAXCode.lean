@@ -40,7 +40,24 @@ local instance : Add M := ⟨fun x y => F addCode ![x,y]⟩
 local instance : Mul M := ⟨fun x y => F mulCode ![x,y]⟩
 local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
 local instance : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
-variable [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
+theorem app3_model_pra {n : Nat} (f : Code 3) (a b c : Code n) (e : Fin n → M) :
+    F (app3 f a b c) e = F f ![F a e,F b e,F c e] := by
+  rw [app3,modelComposition]
+  congr 1
+  funext i
+  refine Fin.cases rfl (fun j => ?_) i
+  refine Fin.cases rfl (fun k => ?_) j
+  exact Fin.cases rfl (fun l => Fin.elim0 l) k
+
+theorem app4_model_pra {n : Nat} (f : Code 4) (a b c d : Code n) (e : Fin n → M) :
+    F (app4 f a b c d) e = F f ![F a e,F b e,F c e,F d e] := by
+  rw [app4,modelComposition]
+  congr 1
+  funext i
+  refine Fin.cases rfl (fun j => ?_) i
+  refine Fin.cases rfl (fun k => ?_) j
+  refine Fin.cases rfl (fun l => ?_) k
+  exact Fin.cases rfl (fun q => Fin.elim0 q) l
 
 theorem pair_model {n : Nat} (a b : Code n) (e : Fin n → M) :
     F (pair a b) e = cantor (F a e) (F b e) := by
@@ -58,15 +75,17 @@ theorem axStack_model {n : Nat} (t A d h y x w : Code n) (e : Fin n → M) :
       funext i
       exact Fin.cases rfl (fun j => Fin.elim0 j) i
     rw [hv,diagonal_model]
-  simp only [axStackCode,pair_model,app3_model,app4_model,modelUnary,add_model,modelBin,
+  simp only [axStackCode,pair_model,app3_model_pra,app4_model_pra,modelUnary,add_model,modelBin,
     head6_model,head5_model,head4_model,head3_model,head2_model,machineHead1_model,rho8_model,
     machineAll_model,hdiag,axStack]
   rfl
 
 theorem axTop_model {n : Nat} (A d h y x : Code n) (e : Fin n → M) :
     F (axTopCode A d h y x) e = axTop (F h e+F y e) (F d e+F x e) (F A e) := by
-  simp only [axTopCode,modelChooseEqual,PRAMultiplication.modelZero,app3_model,oldBundle_model,add_model,axTop]
+  simp only [axTopCode,modelChooseEqual,PRAMultiplication.modelZero,app3_model_pra,oldBundle_model,add_model,axTop]
   by_cases hd : F d e + F x e = F A e <;> by_cases hh : F h e + F y e = F A e <;> simp [hd,hh] <;> rfl
+
+variable [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 theorem axCode_preserves {n : Nat} (t A d h y x w : Code n) (e : Fin n → M)
     (hs : SoundStore (F t e) (F w e) (F h e)) :
