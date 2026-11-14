@@ -2,8 +2,12 @@
 """Generate a Lean kernel-checkable local quotient certificate from the frozen archive."""
 import hashlib
 import json
+import sys
 from pathlib import Path
 from zipfile import ZipFile
+
+if sys.flags.optimize:
+    raise SystemExit('Python optimization disables required archive assertions')
 
 root = Path(__file__).resolve().parents[5]
 archive = root / 'docs/incoming/pa194_conpa_2026-11-13.zip'
