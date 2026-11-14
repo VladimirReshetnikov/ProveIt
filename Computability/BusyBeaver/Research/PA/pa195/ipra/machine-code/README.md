@@ -52,13 +52,23 @@ nonstandard models. `ConfigurationStandard.lean` proves that these terms evaluat
 natural-number configuration to `PA195Bounded.next`, and uses its existing
 zipper refinement to identify the result with a literal PA195 tape step.
 This standard-model binding does not itself internalize the literal-machine
-correspondence in PRA. No actual state-iteration or bounded-halt code is supplied.
+correspondence in PRA. `PackedClock.lean` explicitly constructs a square-root
+decoder, a packed transition, an iterator, and a halting indicator as finite
+`Code` terms. The
+clock's zero and successor equations are proved in every candidate PRA model.
+`PackedStandard.lean` proves the decoder, pairing, and iterator correct over
+standard natural numbers and proves that the halting indicator equals the
+existing bounded predicate. Thus an existential over its standard evaluation
+is equivalent to literal PA195 halting. The square-root decoder has not yet
+been linked to the model-theoretic square root and unpairing in arbitrary PRA
+models, and the clock is not yet a proof of either iPRA implication.
 
-The work still needs a configuration encoding and projections, a state
-iterator and a proof that its internal recurrence matches the exact PA195 machine. It does not prove either
+The work still needs an all-model connection between the explicit packed
+clock and the configuration semantics, including decoder correctness, as
+well as an internal proof of a PA-consistency implication. It does not prove either
 machine-specific iPRA implication. In particular, the standard-model
 equalities here do not identify these explicit codes with the noncomputably
-chosen `PA196Bounded.boundedCode` in arbitrary models.
+chosen `PA195Bounded.boundedCode` in arbitrary models.
 
 The check uses Lean 4.32.0 and two prebuilt dependency overlays. The following
 are the exact local caches used for the original check:
@@ -83,3 +93,7 @@ For the standard-number binding, use the same overlays with
 `bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check-standard.sh`.
 This separate check also rebuilds the pinned `M6/Zip.lean`, generated literal
 PA195 table, and `PA195Bounded.lean` in its private temporary directory.
+
+For the explicit packed clock and standard halting binding, use the same
+overlays with `bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check-clock.sh`.
+This performs the standard-step rebuild plus the two packed-clock modules.
