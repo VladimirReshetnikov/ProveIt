@@ -28,6 +28,10 @@ TABLES = [
  ('candidate','pa_consistency_reduction.zip','pa_consistency_reduction/comparison/audit/h_catalan_node170_3_133_37.tm','5e7e8daf0fbd91d27389de054023bc5959e0246f4001c0ec1381dc3f53a55dac',0,196),
  ('candidate','pa_consistency_research_2026-11-13 (2).zip','pa_consistency_research_2026-11-13/rotated196/machine.tm','b9873b89df4189414d0f443922ca9227bf2f76d8c81a0d0951c06cd608d6a90b',0,196),
  ('candidate','conpa_tm_study_2026-11-13.zip','conpa_tm_study/machines/h_only_mp_h.tm','bd74754d75e7b8ba97fa7bfc104374de33ae603fc183ae7f08f053ab8c9ea592',0,196),
+ ('candidate','pa_consistency_comparison_and_new196_2026-11-13.zip','pa_consistency_research/axioms/diagonal196/machine.tm','59bbe3dbe040de4903b7f9b4fb64f70642757c54849e921a44af29145d625b0c',0,196),
+ ('candidate','pa_consistency_comparison_and_new196_2026-11-13.zip','pa_consistency_research/axioms/separate196/machine.tm','61ffdfea87d204cfb879ffb78fb1c9c47f425fdb53771995a40dbe0f0c9c3e28',0,196),
+ ('candidate','pa_consistency_comparison_and_new196_2026-11-13.zip','pa_consistency_research/axioms/search/scanner_best196.tm','bccb07e7da72d96806ab325cb321a88f28cdf0c14bfa87f9efd5e1a7d418c10a',0,196),
+ ('candidate','pa_tm_research_2026-11-13 (2).zip','pa_tm_research_2026-11-13/verification/zero_jump_machine/machines/zerojump196.tm','2c1a736399e0f32304ed18d6a439dc8d4fdd82f2ad103cdfc6851c0f4ae1e4af',0,196),
 ]
 
 def need(ok, message):
