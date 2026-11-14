@@ -25,3 +25,8 @@ The module passed an author suffix rebuild against previously checked
 prerequisite overlays. Its reported axioms were `propext`, `Classical.choice`,
 and `Quot.sound`, with no `sorryAx`. The full nested checker
 `check-marker-increment-continue-two.sh` is provided but has not been run.
+
+An independent ordered suffix replay rebuilt the continuation modules and the
+final marker composition against separately checked increment, rewind and
+return-to-control objects, with retained deeper prerequisite overlays. It
+passed without `sorryAx`; this was not a full nested replay.

@@ -31,3 +31,8 @@ The final module was checked against the freshly built scheduler-to-PA object
 and retained prerequisite overlays. Its printed axiom dependencies contain no
 `sorryAx`. The wrapper's syntax has been checked, but a full nested replay has
 not yet been completed.
+
+An independent suffix replay rebuilt the modeled halt-code module against
+separately checked scheduler-to-PA and iteration objects and retained deeper
+prerequisite overlays. It passed without `sorryAx`; this was not a full nested
+replay.
