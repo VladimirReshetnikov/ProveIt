@@ -9,17 +9,19 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import sys
 from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[5]
-DEFAULT_ARCHIVE = ROOT / 'docs/incoming/pa195_conpa_2026-11-13.zip'
+sys.path.insert(0, str(ROOT / 'Computability/BusyBeaver/Research/PA'))
+from packet_inputs import PlacedPacket
 DEFAULT_MEMBER = 'pa195_conpa/pa195/source.json'
 DEFAULT_HASH = 'd35c2d718f07dd80892f42e0b78f9e6a21f05aa0521cdc779a7dadade502df69'
 PHYSICAL = [6, 2, 0, 4, 3, 7, 8, 5, 1]
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--out', type=Path, required=True)
-p.add_argument('--archive', type=Path, default=DEFAULT_ARCHIVE)
+p.add_argument('--archive', type=Path, help='explicit alternate archive (default: placed PA195 packet)')
 p.add_argument('--member', default=DEFAULT_MEMBER)
 p.add_argument('--sha256', default=DEFAULT_HASH)
 p.add_argument('--engine-module', default='PA195RuntimeEngine')
@@ -31,8 +33,12 @@ a = p.parse_args()
 for name in (a.engine_module, a.machine):
     if not re.fullmatch(r'[A-Za-z_][A-Za-z0-9_.]*', name):
         raise SystemExit(f'invalid Lean name: {name}')
-with ZipFile(a.archive) as z:
-    payload = z.read(a.member)
+if a.archive is not None:
+    with ZipFile(a.archive) as z:
+        payload = z.read(a.member)
+else:
+    with PlacedPacket(ROOT, '195') as packet:
+        payload = packet.read(a.member)
 if hashlib.sha256(payload).hexdigest() != a.sha256:
     raise SystemExit('source-site JSON SHA-256 mismatch')
 sites = json.loads(payload)

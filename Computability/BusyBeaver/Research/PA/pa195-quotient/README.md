@@ -1,8 +1,8 @@
 # PA195 finite quotient certificate
 
 `PA195LocalQuotient.lean` checks the seven-fold local simulation from the
-unfolded 202-state native table to the 195-state native table in
-`docs/incoming/pa195_conpa_2026-11-13.zip`. It also checks each dense PA195
+unfolded 202-state native table to the 195-state native table in the placed
+`../docs/pa195_conpa_2026-11-13/pa195/` packet. It also checks each dense PA195
 transition against the native table under the supplied state map.
 
 To regenerate and check the Lean certificate from the repository root, run:
@@ -14,7 +14,8 @@ lake env lean -M6000 -j1 Computability/BusyBeaver/Research/PA/pa195-quotient/PA1
 
 The generator checks the published SHA-256 of the dense table, verifies the
 dense/native mapping and row uniqueness, and extracts both complete native
-tables, the state map, folds, and local case durations from the archive. The
+tables, the state map, folds, and local case durations from the packet, with
+each input pinned to the original archive member's SHA-256. The
 Lean theorem independently checks the dense/native mapping, coverage of all
 28 history/read-bit cases, and the simulated endpoint in each case. The
 simulator rejects reads outside the two inspected cells. It also checks the

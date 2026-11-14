@@ -2,17 +2,16 @@
 """Regenerate temporary Lean definitions from the pinned dense PA195 table."""
 from hashlib import sha256
 from pathlib import Path
-from zipfile import ZipFile
 import sys
 
 if len(sys.argv) != 3:
     raise SystemExit('usage: generate.py REPOSITORY OUTPUT_DIRECTORY')
 repo, out = map(Path, sys.argv[1:])
-archive_path = repo / 'docs/incoming/pa195_conpa_2026-11-13.zip'
+sys.path.insert(0, str(repo / 'Computability/BusyBeaver/Research/PA'))
+from packet_inputs import PlacedPacket
+
 member = 'pa195_conpa/pa195/pa195.tm'
-if sha256(archive_path.read_bytes()).hexdigest() != '0001250c43a40920027403d748bcca36e4519a5a45e94dec98cafad4f3c8ff9f':
-    raise SystemExit('unexpected archive hash')
-with ZipFile(archive_path) as archive:
+with PlacedPacket(repo, '195') as archive:
     data = archive.read(member)
 if sha256(data).hexdigest() != '5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455':
     raise SystemExit('unexpected machine table hash')

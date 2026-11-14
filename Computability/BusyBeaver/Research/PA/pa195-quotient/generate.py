@@ -3,12 +3,18 @@
 import hashlib
 import json
 from pathlib import Path
-from zipfile import ZipFile
+import sys
+
+if sys.flags.optimize:
+    raise SystemExit('Python optimization disables required packet assertions')
 
 root = Path(__file__).resolve().parents[5]
-archive = root / 'docs/incoming/pa195_conpa_2026-11-13.zip'
-out = Path(__file__).with_name('PA195LocalQuotient.lean')
-with ZipFile(archive) as z:
+sys.path.insert(0, str(root / 'Computability/BusyBeaver/Research/PA'))
+from packet_inputs import PlacedPacket
+out = Path(sys.argv[1]) if len(sys.argv) == 2 else Path(__file__).with_name('PA195LocalQuotient.lean')
+if len(sys.argv) > 2:
+    raise SystemExit('usage: generate.py [OUTPUT.lean]')
+with PlacedPacket(root, '195') as z:
     prefix = 'pa195_conpa/pa195/'
     dense = z.read(prefix + 'pa195.tm')
     assert hashlib.sha256(dense).hexdigest() == '5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455'

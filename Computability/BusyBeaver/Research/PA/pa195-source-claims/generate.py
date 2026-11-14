@@ -4,7 +4,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
-from zipfile import ZipFile
+import sys
 
 root = Path(__file__).resolve().parents[5]
 p = argparse.ArgumentParser(description=__doc__)
@@ -13,8 +13,9 @@ p.add_argument('--start-site', type=int, default=0)
 p.add_argument('--stop-site', type=int)
 p.add_argument('--batch-size', type=int, default=100)
 a = p.parse_args()
-archive = root / 'docs/incoming/pa195_conpa_2026-11-13.zip'
-with ZipFile(archive) as z:
+sys.path.insert(0, str(root / 'Computability/BusyBeaver/Research/PA'))
+from packet_inputs import PlacedPacket
+with PlacedPacket(root, '195') as z:
     payload = z.read('pa195_conpa/pa195/source.json')
 if hashlib.sha256(payload).hexdigest() != 'd35c2d718f07dd80892f42e0b78f9e6a21f05aa0521cdc779a7dadade502df69':
     raise SystemExit('source-site JSON SHA-256 mismatch')

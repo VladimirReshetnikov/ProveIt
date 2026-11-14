@@ -6,16 +6,15 @@ machine-specific equivalence in iPRA, PRA, or PA. The machine-specific
 reductions remain hypotheses in `PA195Endpoint.lean` and
 `PA195ForwardGG.lean`.
 
-`generate.py` reads the archive `docs/incoming/pa195_conpa_2026-11-13.zip`
-and refuses any other bytes. Its SHA-256 is
-`0001250c43a40920027403d748bcca36e4519a5a45e94dec98cafad4f3c8ff9f`;
-the member `pa195_conpa/pa195/pa195.tm` has SHA-256
+`generate.py` reads the placed packet file
+`../../docs/pa195_conpa_2026-11-13/pa195/pa195.tm` and checks its SHA-256
+against the original archive member `pa195_conpa/pa195/pa195.tm`:
 `5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455`.
 The generator validates that the member describes 390 transitions, one for
 each bit and working label 0–194, all targets are 0–195, and all 195 working
 labels are reachable in the transition graph from 0. Terminal label 195 has
-no transition. Graph reachability and archive parsing are Python checks, not
-Lean theorems; the generator is part of the trusted route from the archived
+no transition. Graph reachability and table parsing are Python checks, not
+Lean theorems; the generator is part of the trusted route from the pinned
 bytes to the two temporary Lean definitions. Those definitions use different
 representations but are generated from the same parsed table. Lean checks that
 their 390 entries agree. No generated table is tracked here.
