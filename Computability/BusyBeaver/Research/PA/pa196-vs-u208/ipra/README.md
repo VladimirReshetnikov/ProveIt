@@ -95,8 +95,10 @@ those term and term-vector bounds, and `PA196PAFormulaComplete.lean` composes
 them to prove both formula-recognizer bounds without additional hypotheses.
 The arithmetic formula-recursion and negation modules build on those bounds;
 `PA196PAIdentityBounds.lean` uses them to prove both witness-bound polarities
-for the exact identity-rule branches. The full derivation-core bounds still
-need the remaining rule branches and formula-set/axiom recognizers.
+for the exact identity-rule branches, and `PA196PACutBounds.lean` does so for
+cut. `PA196PABvGrowth.lean` proves bounds on arithmetic term and formula
+bound-variable counts. The full derivation-core bounds still need the
+remaining rule branches and formula-set/axiom recognizers.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
