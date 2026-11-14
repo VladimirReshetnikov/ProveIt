@@ -2080,8 +2080,10 @@ calculi (\Lean{amprf\_iff\_nprf}, \Lean{bmprf\_iff\_nprf},
 \Lean{bm7prf\_iff\_nprf}).  The bootstrap of
 \cref{kern:lem:bmeq,kern:lem:bzero} is proved once, generically over the class
 \Lean{BMKernel}, whose only elimination of a closure is \rulename{AQE} and
-whose only introduction is the one at the witness $0$ with the assumption
-unused.  In $\mathsf{B}^{-}$ and $\mathsf{B}^{-}_{7}$, \rulename{AQE} is
+whose only introduction is \rulename{QI} at a literal equation with the
+assumption unused; the closure of the name for zero is a hypothesis of the
+congruence at a zero endpoint, so that calculi without an introduction at the
+witness $0$ are covered as well (\cref{wit:thm:matrix-free}).  In $\mathsf{B}^{-}$ and $\mathsf{B}^{-}_{7}$, \rulename{AQE} is
 \rulename{QE} followed by the identities of \cref{kern:lem:abstr}(ii)
 (\Lean{NFm.aqE\_of\_qE}).  For the restricted $\mathsf{A}_7$ the recovery of
 \rulename{QE} is that of \Lean{NativeAbstraction}, stated there over the class
