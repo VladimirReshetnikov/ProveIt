@@ -24,8 +24,11 @@ the existing standard `sourceFile` and `modelSourceFile` permutation results.
 `args 10 = 0`. It does not quantify over nonstandard model-length lists and
 it does not provide a zipper for a nonzero suffix. The site-25 specialization
 is thus established for standard physical frames, with the same limitation.
-Matching the site-25 model execution input's own `k` and register arguments to
-this standard frame in a single theorem remains separate.
+`PA194Path25Input.site25Input` also proves, for arbitrary model elements `k`
+and `f`, that the `y6+y6+1` arithmetic input used by `twoPassesZeroTo24`
+equals the site-25 `modelWord` with `zeros((k+1)+1, 1+2*f)`. Identifying its
+model `k` with standard `n+40` and composing all these pieces into a single
+standard-frame execution theorem remains separate.
 
 None of these frame/numeric identities proves any source instruction executes
 or establishes a literal-machine halting/consistency implication. They can be
@@ -34,10 +37,10 @@ stated hypotheses and the additional bridges they require.
 
 ## Replaying the final sources
 
-`check-path27-frame.sh` rebuilds four source files sequentially into one fresh
+`check-path27-frame.sh` rebuilds five source files sequentially into one fresh
 output directory: the repository copies of `PA194ZeroOutputFile.lean` and
 `PA194Path27Header.lean`, followed by the supplied `PA194Path27Frame.lean` and
-`PA194SelectedFile.lean`. It pins all four source hashes, rejects inherited Git
+`PA194SelectedFile.lean` and `PA194Path25Input.lean`. It pins all five source hashes, rejects inherited Git
 internal overrides, checks the named printed axiom audits and refuses
 `sorryAx`. It requires the argument `COHERENT_BASE` to be a previously
 source-rebuilt, internally consistent machine-specific output with all its
@@ -66,6 +69,7 @@ bash "$base/check-path27-frame.sh" \
   "$PWD" \
   "$base/PA194Path27Frame.lean" \
   "$base/PA194SelectedFile.lean" \
+  "$base/PA194Path25Input.lean" \
   /dev/shm/pa194-header-coherent/hardlink-baseline \
   /tmp/current14-standard-fresh-build-20261104/lib \
   /tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib
