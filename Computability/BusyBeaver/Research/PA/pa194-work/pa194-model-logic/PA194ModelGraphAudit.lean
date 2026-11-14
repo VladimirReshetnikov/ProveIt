@@ -1,0 +1,20 @@
+import PA194ModelPathGraph
+#print axioms PA194ModelLogic.formulaReferenceChain_budget_suffix
+#print axioms PA194ModelLogic.formulaReferenceChain_budget
+#print axioms PA194ModelLogic.formulaReferenceEdge_and
+#print axioms PA194ModelLogic.formulaReferenceEdge_or
+#print axioms PA194ModelLogic.formulaReferenceEdge_all
+#print axioms PA194ModelLogic.formulaReferenceEdge_ex
+#print axioms PA194ModelLogic.formulaReferenceChain_coverage
+#print axioms PA194ModelLogic.formulaGraph_all_occurrence
+#print axioms PA194ModelLogic.formulaGraph_ex_occurrence
+#print axioms PA194ModelLogic.formulaGraph_and_occurrences
+#print axioms PA194ModelLogic.formulaGraph_or_occurrences
+#print axioms PA194ModelLogic.sourcePath_le_remaining
+#print axioms PA194ModelLogic.sourcePath_binder_remaining_positive
+#print axioms PA194ModelLogic.sourcePath_binder_remaining_succ
+#print axioms PA194ModelLogic.path_reference_graph
+#print axioms PA194ModelLogic.path_graph_all_occurrence
+#print axioms PA194ModelLogic.path_graph_ex_occurrence
+#print axioms PA194ModelLogic.path_graph_all_next
+#print axioms PA194ModelLogic.path_graph_ex_next

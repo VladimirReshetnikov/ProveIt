@@ -48,6 +48,8 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelSourceChainDepth` | A separately coded sum of the chain’s binder bits equals the operational path depth. |
 | `PA194ModelDescendantComplexity` | The independent edge, chain, and descendant relations are uniformly Σ₁-definable. |
 | `PA194ModelRecursorOccurrence` | The actual Foundation formula-reference equations expose immediate child descendants with their binder depths. |
+| `PA194ModelRecursorChain`, `PA194ModelRecursorGraph` | A newly specified recursion chain has exact depth and budget change; actual Foundation graph inversions supply its immediate edges. |
+| `PA194ModelPathBudgetPositive`, `PA194ModelPathGraph` | Visited binders have positive remaining budget, and every chosen path node has an actual Foundation graph entry. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -195,7 +197,14 @@ Boolean or binder constructor, the actual Foundation `formulaReference`
 recurrence equation now has independently chain-defined witnesses for its
 immediate recursive child inputs, with depth zero for Boolean edges and one
 for binders. This is a local result, not a theorem covering an entire
-nonstandard Foundation recursion history.
+nonstandard Foundation recursion history. A newly specified chain of valid
+reference edges has exact binder depth and budget change even at nonstandard
+lengths. Actual Foundation graph inversions expose the corresponding immediate
+Boolean child graphs and positive-budget binder body graphs. Every path from a
+valid root has actual Foundation graph entries at its visited nodes and
+root-derived budgets; visited binder budgets are positive, and their next nodes
+and budgets match the graph inversions. The converse extraction of paths or
+chains from arbitrary Foundation fixpoint witnesses remains open.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -207,7 +216,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelRecursorOccurrence` as the top module. On 2026-11-14, the path and
+`PA194ModelGraphAudit` as the top module. On 2026-11-14, the path and
 dispatcher modules were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
