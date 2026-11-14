@@ -1,4 +1,5 @@
 import PA194ModelPathGraph
+import PA194ModelPathReferenceStep
 #print axioms PA194ModelLogic.formulaReferenceChain_budget_suffix
 #print axioms PA194ModelLogic.formulaReferenceChain_budget
 #print axioms PA194ModelLogic.formulaReferenceEdge_and
@@ -18,3 +19,6 @@ import PA194ModelPathGraph
 #print axioms PA194ModelLogic.path_graph_ex_occurrence
 #print axioms PA194ModelLogic.path_graph_all_next
 #print axioms PA194ModelLogic.path_graph_ex_next
+#print axioms PA194ModelLogic.path_reference_step
+#print axioms PA194ModelLogic.path_reference_graph_step
+#print axioms PA194ModelLogic.validSourceChild_step
