@@ -1,0 +1,63 @@
+# PA consistency machines
+
+This directory contains machine tables, imported research, and Lean proofs
+concerning small Turing machines associated with the consistency of Peano
+arithmetic, `Con(PA)`. The current goal is a Lean proof of
+`iPRA ⊢ Con(PA) ↔ ¬Halt(M)` for the original 195-state candidate, followed
+by the other 195- and 196-state consistency candidates. The machines start
+on a blank two-way binary tape; state counts exclude the halt state.
+
+**Status:** Neither machine-specific direction of this equivalence has yet
+been established in iPRA for the original PA195 or PA196 candidate. In
+particular, a Lean theorem about ordinary finite runs, a Python certificate,
+and a conditional iPRA theorem are not themselves an iPRA proof of the
+consistency equivalence. See the individual READMEs for assumptions, exact
+statements, and reproducibility instructions.
+
+## Original 195-state candidate
+
+The target table is `pa195_conpa/pa195/pa195.tm` in
+[the PA195 research packet](../../../../docs/incoming/pa195_conpa_2026-11-13.zip).
+It has 195 working states, start state 0, halt label 195, and 390 transitions.
+The table's SHA-256 is
+`5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455`.
+The packet claims a PA-provable consistency equivalence; it does not supply
+an end-to-end Lean proof of that claim or an iPRA proof.
+
+- [PA195 arithmetic endpoint](pa195/ipra/README.md) binds the table to a
+  primitive-recursive halting test and an iPRA sentence in the standard
+  model. Its equivalence theorem assumes two machine-specific classical PRA
+  reductions; those assumptions remain open.
+- [Quotient and dense-table proof](pa195-dense/README.md) proves in Lean that
+  the 202-control parent and the delivered dense 195-state table halt under
+  the same circumstances for every complete tape and head position.
+  [The zipper bridge](pa195-zip-bridge/README.md) connects blank-tape
+  halting to the arithmetic endpoint over the standard natural numbers.
+- [Register engine](pa195-runtime/README.md),
+  [source entry contracts](pa195-site25/README.md), and
+  [symbolic contract batches](pa195-symbolic/README.md) check parts of the
+  parent machine's execution. The source-graph and arithmetic correctness
+  connections still need proof.
+- [Explicit machine codes](pa195/ipra/machine-code/README.md) develop tape,
+  transition-table, and configuration-step functions in the PRA language.
+  Their model equations are ingredients for a weak-arithmetic proof, not the
+  missing machine/refutation reductions.
+
+## Other machines and related work
+
+[James Chang's imported snapshots](jamesyc-upstream/README.md) contain the
+upstream PA196 and PA209 developments. The imported PA196 result includes a
+PA proof of the implication from literal nonhalting to PA consistency; this
+alone does not establish the converse in PA or either direction in iPRA.
+[PA196 versus U208](pa196-vs-u208/ipra/README.md) documents the PA196
+arithmetic endpoint, conditional transfers, and the completed PA-refutation
+witness certificate. The machine-specific reductions remain open.
+[The archive audit](pa196-vs-u208/archive-audit/README.md) inventories related
+196-state tables and distinguishes candidates from rejected machines.
+
+[The later PA195 packet](../../../../docs/incoming/PA195_ConPA_research_2026-11-14.zip)
+contains two further 195-state candidates, `machine_195S.tm` and
+`machine_195C.tm`, along with source and physical execution certificates.
+They are distinct from the original PA195 table. The packet gives mathematical
+and executable evidence, not an end-to-end Lean proof of the desired iPRA
+statement.
