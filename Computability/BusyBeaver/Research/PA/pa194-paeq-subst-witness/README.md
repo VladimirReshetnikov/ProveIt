@@ -35,3 +35,8 @@ and rebuilds the PA196 prerequisite prefix followed by the complete target
 chain in a private directory; its generated shell syntax has been checked,
 but the full prefix replay remains pending. The target atomic-growth module
 alone required several minutes and roughly 2.5 GiB RAM in the suffix run.
+
+An independent ordered suffix replay rebuilt all ten formula-recursion,
+qVec, clause, stage and graph-bound modules against separately checked PAeq
+formula/term prerequisites and retained deeper overlays. It passed without
+`sorryAx`; this was not a full prefix replay.

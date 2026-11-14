@@ -184,7 +184,10 @@ The [modeled scheduler iteration](pa194-scheduler-iteration/README.md)
 preserves the store invariant for arbitrary model-length runs, and a modeled
 halt yields a target proof of code 1. The [target-to-PA bridge](pa194-target-source/README.md)
 turns that proof into an internal PA refutation assuming the still-open guarded
-gate seed. Neither result supplies the physical-machine connection.
+gate seed. The [distinct-label endpoint](pa194-distinct-gate-endpoint/README.md)
+discharges the equal-label gate case and narrows the premise to the remaining
+distinct-label separation tails. Neither result supplies the physical-machine
+connection.
 
 For the physical simulation needed in both directions, the
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
