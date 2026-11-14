@@ -37,3 +37,21 @@ checked numerical witness and retained scheduler/gate prerequisite objects.
 objects. `check-modeled-halt.sh` additionally rebuilds the nested source and
 scheduler endpoint chain but still requires separately supplied general-witness
 prerequisite objects; a complete run of that wrapper remains in progress.
+
+`PA194ModeledHaltIPRA.consistency_implies_modeled_nonhalt` transfers that
+all-model result into the actual syntactic iPRA derivation
+`Con(PA) → ¬Halt(modeled scheduler)`, where the halting sentence existentially
+quantifies a time at which the fixed primitive-recursive `haltAfter` code
+returns 1. This proves a direction for the auxiliary modeled scheduler, not
+for the literal 194-state Turing machine. In particular, neither requested
+machine-specific iPRA direction is established by this theorem.
+
+A fresh theorem suffix check passed without `sorryAx`, using the rebuilt
+100-module PA refutation-certificate chain, rebuilt transfer and refutation
+bridges, and retained scheduler/gate prerequisites. The full nested chain was
+not rerun as a single successful script: a first combined attempt rebuilt the
+certificate but encountered a missing module in its temporary overlay; the
+missing modules and transfer objects were rebuilt in a corrected overlay before
+the theorem was checked. `check-modeled-ipra-suffix.sh` reproduces the final
+check with the audited Lean and Foundation overlays and ordered prerequisite
+objects in `PA194_MODELED_IPRA_PREREQ_PATH`.

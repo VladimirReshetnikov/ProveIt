@@ -198,8 +198,9 @@ constructs the required closed induction axiom bodies. General
 is also checked for arbitrary internal formula codes, and its
 [distinct-label numerical gate application](pa194-distinct-gate-sound/README.md)
 now supplies the remaining gate premise in those models. A modeled scheduler
-halt therefore yields an internal PA refutation with no remaining gate premise.
-The physical-machine connection remains open.
+halt therefore yields an internal PA refutation with no remaining gate premise,
+and iPRA proves `Con(PA) → ¬Halt(modeled scheduler)`. The scheduler is an
+auxiliary encoded computation; the physical-machine connection remains open.
 
 For the physical simulation needed in both directions, the
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
