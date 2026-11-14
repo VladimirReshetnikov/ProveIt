@@ -5,7 +5,7 @@ base=Computability/BusyBeaver/Research/PA
 package=$base/pa194-source-separation
 task_dir=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-source-separation.XXXXXXXX")
 trap 'rm -rf "$task_dir"' EXIT
-python3 - "$base/pa194-source-lk/check.sh" "$task_dir/prerequisites.sh" <<'PY'
+python3 - "$base/pa194-source-lk/check.sh" "$task_dir/source-separation-prerequisites.sh" <<'PY'
 from pathlib import Path
 import re,sys
 s=Path(sys.argv[1]).read_text()
@@ -16,7 +16,8 @@ if s.count(old) != 1: raise SystemExit('unexpected source LK cleanup declaration
 Path(sys.argv[2]).write_text(s.replace(old,'',1))
 PY
 export PA194_SEPARATION_TASK_DIR="$task_dir"
-bash "$task_dir/prerequisites.sh"
+bash -n "$task_dir/source-separation-prerequisites.sh"
+bash "$task_dir/source-separation-prerequisites.sh"
 sha256sum -c "$package/upstream.sha256"
 export LEAN_PATH="$task_dir:$IPRA_FOUNDATION_OVERLAY:$(lake env printenv LEAN_PATH)"
 for mod in PA194SeparationSchema PA194SeparationRelocation PA194SourceSeparation PA194SourceWeakAdjunction; do

@@ -6,7 +6,7 @@ package=$base/pa194-source-calculus
 task_dir=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-source-calculus.XXXXXXXX")
 trap 'rm -rf "$task_dir"' EXIT
 # Keep every freshly rebuilt relational prerequisite in the same overlay.
-python3 - "$base/pa194-relational-interface/check.sh" "$task_dir/prerequisites.sh" <<'PY'
+python3 - "$base/pa194-relational-interface/check.sh" "$task_dir/source-calculus-prerequisites.sh" <<'PY'
 from pathlib import Path
 import re,sys
 s=Path(sys.argv[1]).read_text()
@@ -21,7 +21,8 @@ if s.count(old) != 1: raise SystemExit('unexpected relational freshening command
 Path(sys.argv[2]).write_text(s.replace(old,new,1))
 PY
 export PA194_SOURCE_TASK_DIR="$task_dir"
-bash "$task_dir/prerequisites.sh"
+bash -n "$task_dir/source-calculus-prerequisites.sh"
+bash "$task_dir/source-calculus-prerequisites.sh"
 sha256sum -c "$package/upstream.sha256"
 export LEAN_PATH="$task_dir:$IPRA_FOUNDATION_OVERLAY:$(lake env printenv LEAN_PATH)"
 for mod in PA194SourceSyntax PA194SourceRewriting PA194RelationalSourceCode PA194RelationalSourceAllocation PA194RelationalSourceInstantiation PA194RelationalSourceGeneralization PA194RelationalPointed PA194RelationalSourceNegation PA194RelationalSourceExistential; do
