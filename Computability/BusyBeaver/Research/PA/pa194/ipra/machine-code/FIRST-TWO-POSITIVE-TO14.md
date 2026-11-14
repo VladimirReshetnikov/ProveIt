@@ -16,6 +16,7 @@ three modules against retained prerequisite objects, and the reported theorem
 axioms contain no `sorryAx`. The nested replay wrapper was syntax checked but
 not run for this change.
 
-This conditional path does not yet complete the return to state 24, show that
+The later [state-16 theorem](FIRST-TWO-POSITIVE-TO16.md) continues this
+conditional path. It does not yet complete the return to state 24, show that
 the blank-start machine reaches the marker layout, or establish a source-frame
 correspondence or an iPRA consistency implication.

@@ -1,7 +1,7 @@
 import PA194StateOne
 import PA194BinaryDouble
 import PackedIterationModel
-/-! All-model execution of arbitrary checked right-moving rows of the pinned PA194 table. -/
+/-! All-model execution of checked left-moving rows that read one and write zero of the pinned PA194 table. -/
 set_option autoImplicit false
 namespace PA194LeftOneRows
 open DiophantineConsistency
