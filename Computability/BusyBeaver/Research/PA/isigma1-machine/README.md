@@ -130,3 +130,7 @@ for a fresh dependency and certificate rebuild and an axiom check. An
 incremental check of the new module has passed against independently rebuilt
 transfer and certificate objects, reporting only `propext`, `Classical.choice`,
 and `Quot.sound`.
+
+The fresh Linux `check-directions.sh` replay has also passed using those
+overlays: all 100 certificate and transfer modules and the direction theorems
+were rebuilt, with no `sorryAx` in the checked logs.
