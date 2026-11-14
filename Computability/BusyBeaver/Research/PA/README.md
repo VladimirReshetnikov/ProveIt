@@ -152,6 +152,13 @@ PRA language, the two classical PRA reductions that the PA194 and PA196 assembli
 hypotheses follow if halting and the mapped PA refutation agree in every candidate PRA model
 whose arithmetic reduct satisfies `𝗜𝚺₁`. Model arguments may therefore assume `𝗜𝚺₁`.
 
+[The PA194 generic-machine bridge](pa194/ipra/machine-code/GENERIC-BRIDGE.md)
+identifies its packed clock and the pinned table's arithmetic run at every model
+time, including nonstandard times. [The one-way endpoints](pa194/ipra/machine-code/ONE-WAY-ENDPOINT.md)
+separately reduce each iPRA implication to its corresponding all-model
+machine/refutation implication. Neither of those machine-specific premises is
+proved yet; the earlier standard-run source simulation does not supply them.
+
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
 `Calibrated T h` from which the iPRA equivalence follows. No table is shown to be calibrated.
