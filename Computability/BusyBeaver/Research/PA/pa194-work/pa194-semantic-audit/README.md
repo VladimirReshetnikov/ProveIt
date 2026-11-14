@@ -53,4 +53,10 @@ is equivalent to equality agreeing with that observational equivalence on
 the assigned values. This is a standard named-semantics result; it neither
 constructs a total PA194 decoder nor proves extensionality or full soundness.
 
+Assuming an explicit named extensionality formula, `PA194SemanticExtensionalModel`
+proves ordinary equality agrees with this named neighborhood equality when the
+binder is fresh. It also characterizes that named formula by incoming
+extensionality of the relation. This is a standard semantic lemma for one atom,
+not a target-calculus derivation or an internal PA proof compiler.
+
 Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-semantic-audit/check.sh --out DIR` with a matching retained overlay to replay the three modules. This is a suffix replay, not an empty-overlay build.
