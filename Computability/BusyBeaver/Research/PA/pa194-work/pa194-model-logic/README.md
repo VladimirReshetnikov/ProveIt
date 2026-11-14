@@ -29,6 +29,7 @@ length, is not started. Nothing here yields a consistency implication.
 | `PA194ModelTranslationContext` | Finite PRA codes unpack the fixed history parameters and reconstruct the current bound environment and binder label from the remaining budget. |
 | `PA194ModelMembershipAtomCode` | Candidate-PRA codes decode positive and negative source membership atoms, with the argument reversal used by the numerical calculus. |
 | `PA194ModelFormulaDispatch` | A finite packed-history dispatcher satisfies model equations for the atomic, truth, Boolean and quantifier constructors. |
+| `PA194ModelFormulaUniqueness` | Internal Σ₁ structural induction proves bounded and root agreement with any candidate-PRA comparison code satisfying explicit constructor recurrences. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -90,6 +91,16 @@ binder with the intended environment additionally requires the budget bound.
 These local equations do not prove an independent recursive translation for
 every internally valid source formula, its depth invariant, or proof transport.
 
+For a fixed comparison code `spec`, fixed model parameters and bound `B`,
+the uniqueness proof shows that `∀ b ≤ B, p ≤ b → history(p,b) = spec(p,b)`
+is a Σ₁-definable predicate of `p`. Internal Σ₁ structural induction then
+establishes it for every valid source-formula code, including nonstandard
+codes, assuming the eight displayed atomic, truth, Boolean and quantifier
+recurrences for `spec`. Taking `B = b = p` gives root agreement. The `p ≤ b`
+condition is a conservative budget bound, not a claimed minimal depth bound.
+The comparison code and its recurrence equations remain explicit hypotheses;
+this does not yet construct an independent translation or compile PA proofs.
+
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
 
@@ -100,7 +111,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelFormulaDispatch` as the top module. On 2026-11-14, all eleven
+`PA194ModelFormulaUniqueness` as the top module. On 2026-11-14, all twelve
 modules in this directory were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
