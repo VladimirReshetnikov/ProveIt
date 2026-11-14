@@ -29,5 +29,5 @@ Run `check-source-polarity.sh` with the audited `IPRA_LEAN_OVERLAY` and
 `IPRA_FOUNDATION_OVERLAY` set. It rebuilds the formula closer, source
 translation and well-formedness dependencies before checking both modules.
 
-The full author replay passed with the audited overlays and no `sorryAx` in
-the checked dependencies. An independent full replay is also in progress.
+Both the full author replay and an independent fresh Linux replay passed with
+the audited overlays and no `sorryAx` in the checked dependencies.

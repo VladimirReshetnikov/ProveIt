@@ -31,3 +31,8 @@ IPRA_FOUNDATION_OVERLAY=/path/to/foundation/package-lib \
 
 The script rebuilds its prerequisite chain under `/dev/shm` by default; set
 `TMPDIR` for another suitable temporary directory.
+
+An independent suffix replay recompiled the node-field module against the
+separately checked choice, preimage, set-search, and source-shift objects,
+reusing the remaining prerequisite overlays. Its reported axioms did not
+include `sorryAx`.
