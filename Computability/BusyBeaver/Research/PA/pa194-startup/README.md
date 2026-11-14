@@ -23,3 +23,6 @@ connecting Lean proofs have all passed. All temporary artifacts use `/dev/shm`.
 
 This is a standard-Lean finite startup certificate. It does not alone prove a
 full source-to-machine equivalence, a PA/PRA/iPRA theorem, or consistency of PA.
+
+The completed full-run result, input hashes, and theorem scope are recorded in
+[`verification.json`](verification.json).
