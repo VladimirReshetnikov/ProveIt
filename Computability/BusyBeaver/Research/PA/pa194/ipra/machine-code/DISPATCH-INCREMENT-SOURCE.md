@@ -24,7 +24,10 @@ The theorem assumes the complete displayed intermediate tape layout, including
 the nine-bit dispatch prefix directly before the marked file. It does **not**
 show that source dispatch or the earlier marking routine produces that combined
 layout, that a blank-tape run reaches it, or either PA consistency direction.
-The source-controller and layout invariants remain open.
+The source-controller and layout invariants remain open. In fact, the
+[marker-layout conflict](MARKER-LAYOUT-CONFLICT.md) proves that the existing
+non-first marking output cannot immediately satisfy this route's input pattern;
+a different continuation or layout argument is required for those positions.
 
 Replay from the repository root using the pinned iPRA/Foundation overlays:
 
