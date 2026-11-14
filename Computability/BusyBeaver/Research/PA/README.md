@@ -36,8 +36,11 @@ PRA model. [The quotient proof](pa194-dense/README.md) connects the 201-control
 parent and dense PA194 table for all standard finite runs; [the zipper bridge](pa194-zip-bridge/README.md)
 connects blank-tape halting to the literal machine used by the arithmetic code.
 [Source coverage](pa194-coverage/README.md) reduces the source-to-parent
-simulation to a finite set of Lean checks; its full run is in progress. Both
-machine-specific consistency reductions remain unproved.
+simulation to a finite set of Lean checks; all 3,673 sites and the aggregate
+have passed. [The clock/source composition](pa194-clock-source-complete/README.md)
+connects the initialized source program to the exact machine clocks in
+standard finite-run semantics. Both machine-specific consistency reductions
+remain unproved.
 
 ## Original 195-state candidate
 
