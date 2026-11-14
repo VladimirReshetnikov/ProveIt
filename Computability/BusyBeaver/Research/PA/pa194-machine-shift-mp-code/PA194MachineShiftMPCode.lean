@@ -33,7 +33,6 @@ local instance : Add M := ⟨fun x y => F addCode ![x,y]⟩
 local instance : Mul M := ⟨fun x y => F mulCode ![x,y]⟩
 local instance : LT M := ⟨fun x y => Structure.rel (L := language) Language.ORing.Rel.lt ![x,y]⟩
 local instance : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
-variable [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁]
 
 theorem shiftHalt_correct {n : Nat} (t h : Code n) (e : Fin n → M) :
     F (shiftHalt t h) e = 1 ↔ F t e + F h e = 1 := by
@@ -42,7 +41,7 @@ theorem shiftHalt_correct {n : Nat} (t h : Code n) (e : Fin n → M) :
   change F equalityCode ![F t e + F h e,1] = F oneCode Fin.elim0 ↔ _
   exact (modelEqualityCode (F t e + F h e) (1 : M)).2
 
-theorem shift_preserves {n : Nat} (t w h : Code n) (e : Fin n → M)
+theorem shift_preserves [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {n : Nat} (t w h : Code n) (e : Fin n → M)
     (hs : SoundStore (F t e) (F w e) (F h e)) :
     SoundStore (F h e) (F (shiftStack w) e) (F (shiftCache w) e) := by
   have hv : (fun _ : Fin 1 => F w e) = ![F w e] := by
@@ -63,7 +62,7 @@ theorem mpStack_model {n : Nat} (t w h d x : Code n) (e : Fin n → M) :
   simp only [mpStack,mpMatches,modelChooseEqual,machineImp_model,mpArg,add_model,pair_model,PRAMultiplication.modelZero]
   rfl
 
-theorem mp_preserves {n : Nat} (t w h d x : Code n) (e : Fin n → M)
+theorem mp_preserves [M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁] {n : Nat} (t w h d x : Code n) (e : Fin n → M)
     (hs : SoundStore (F t e) (F w e) (F h e)) :
     SoundStore (F (mpTop t h d x) e) (F (mpStack t w h d x) e) 0 := by
   rw [mpTop_model,mpStack_model]

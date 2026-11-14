@@ -6,9 +6,10 @@ the SHIFT halt bit is one exactly when top + cache = 1. `shift_preserves`
 proves that the modeled normal SHIFT update preserves `SoundStore` using the
 certified machine-Cantor projections. `mpTop_model`, `mpStack_model`, and
 `mp_preserves` establish the modeled MP branch selection, resulting top and
-stack, and invariant preservation in both branches. These theorems hold in
-every candidate-PRA model whose arithmetic reduct satisfies IΣ₁, including
-nonstandard register values.
+stack, and invariant preservation in both branches. The halt-bit and MP
+branch equations hold in every candidate-PRA model; the invariant-preservation
+theorems additionally require IΣ₁ on the arithmetic reduct. Both scopes
+include nonstandard register values.
 
 The effects were transcribed from the standard PA194 source commands. This
 package does **not** prove that its codes equal the standard PA194 command
