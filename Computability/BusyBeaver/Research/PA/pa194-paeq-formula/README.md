@@ -31,3 +31,7 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 The standalone script has passed: it checked the upstream pins and rebuilt
 the term, language, atom, and formula modules in a private tmpfs directory
 against the audited project and Foundation objects, without `sorryAx`.
+
+An independent complete standalone replay rebuilt the term, language, atomic
+and formula graph modules from the pinned audited overlays and passed without
+`sorryAx`.
