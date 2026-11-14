@@ -21,3 +21,8 @@ The five new modules passed an author suffix rebuild against previously
 checked prerequisite overlays, with `propext`, `Classical.choice`, and
 `Quot.sound` as their reported axioms and no `sorryAx`. The full nested
 checker `check-first-six-all-to24.sh` is supplied but has not been run.
+
+An independent ordered suffix replay rebuilt all five first-six modules
+against separately checked selected-zero and controller objects, with retained
+deeper prerequisites. It passed without `sorryAx`; this was not a full nested
+replay.
