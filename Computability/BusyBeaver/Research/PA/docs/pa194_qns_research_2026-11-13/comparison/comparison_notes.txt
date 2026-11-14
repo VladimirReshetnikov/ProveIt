@@ -1,0 +1,208 @@
+PA consistency machine comparison, pinned to 317b07268681b44ff352d173a162e2a8c241b2fe
+================================================================================
+
+Coverage and freshly checked facts
+---------------------------------
+The requested PA tree contains 51 filed delivery packets; docs/incoming contains
+three further delivery archives, for 54 deliveries. The accompanying packet_ledger
+has one row per delivery, its reported contribution and immutable source URL.
+The primary PA/README and the imported PA196/PA209 snapshots were also inspected.
+
+The fresh read-only scanner traversed every tracked .tm, .txt, .csv and .tsv file
+under PA and docs/incoming, and recursively traversed every ZIP encountered.
+Identical ZIP bodies are visited once. It encountered 29 archive references and
+17 distinct archive bodies, and read 3,480 files with the recognized text suffixes.
+It recognizes complete five-column binary L/R transition tables with exactly one
+undefined target serving as halt. There are 1,402 table occurrences, 721 distinct
+file byte forms and 497 distinct whole action graphs admitting a spanning root.
+Two unspanned test fixtures (six and nine controls) are recorded separately. Two
+.tm occurrences fail the one-halt recognizer; both are the same synthetic
+no-halt-target fixture. No complete graph with a spanning root has between 7 and
+193 working states; the six- and nine-control objects are disconnected fixtures.
+
+At 194 states the corpus has 179 occurrences, 94 byte presentations and 39 distinct
+action graphs. The 39 remain distinct when L/R reflection and global bit
+interchange are allowed, in addition to arbitrary state relabeling and any
+spanning choice of root. Bit interchange changes the distinguished blank unless
+it is transformed as well; it is included only as a deliberately stronger
+structural novelty test, not as a claimed blank-zero semantic equivalence.
+
+These counts describe the current deduplicated tree and actual archive traversal.
+They are not directly comparable to old occurrence totals made before duplicate
+tables and nested archive copies were removed during repository filing. The
+root-free graph invariant is exact for tables with a spanning root. Hashes identify
+the resulting complete canonical strings; check_candidate.py compares the strings
+themselves, and its positive control correctly recognizes the already supplied
+sum-guard NS machine.
+
+This literal recognizer does not extract machines that exist only as arbitrary
+source expressions, prose, JSON, or implicit search parameters. The 54-delivery
+narrative ledger complements it; no global claim about all syntactically expressible
+machine variants is made. Every current 194-state literal graph has a named row in
+frontier194.csv/json, including auxiliary and rejected variants.
+
+The 194-state frontier
+----------------------
+The semantic frontier splits into 26 graphs presented as constructions in their
+reports, nine auxiliary/search graphs to which this census does not assign a
+complete equivalence argument, and four expressly rejected implementations. The
+status labels record supplied paper and implementation evidence. This inventory
+did not replay every historical universal checker or independently reprove all
+historical logical calibrations.
+
+The oldest three allocations, PA194-67, PA194-AD and PA194-68/8, share the separate
+diagonal-head calculus and its ten-entry AX interface. The first uses 134 fixed
+controls plus 67 AX readers minus seven contextual folds. AD changes physical
+register allocation. The 68/8 variant changes decoder association; its extra reader
+is compensated by an extra fold. These are different literal implementations of
+essentially the same resolved program, not three unrelated proof systems.
+
+The C family changes command semantics. Successful MP leaves its result in the
+cached head H, and Shift tests H=1 instead of the original t+h=1 guard. The CS
+family reverses destructive comparator operands in that cached-only protocol and
+recovers a controller fold. C has 3,649 source sites; CS has 3,646. CZ, CSZ/X,
+A, F, R, J, ZR and the auxiliary CSZ-A3/A5/A6, both-zero6 and I-tree variants
+change zero-return conventions, source-address association, or both. Their
+semantic invariants apply only at the designated source entries; the physical
+startup must still be checked separately.
+
+The N family removes the dummy-zero stack push after successful MP, leaves the
+result in the visible top T, and retains the candidate as the numerical offset D.
+The needed zero must then be reserved by the proof-word compiler. N uses the
+original sum guard; the H/HS packet combines the no-push result with a cached-only
+guard (H asymmetric, HS symmetric). This distinction matters: dropping a dummy
+push is not justified by an old compiler that assumed the extra stack entry.
+The successful no-push result is (b,w,b,0), not (b,w,0,0).
+
+The radix machines M4R, M5 and M6 share a new multiplication-controller fold.
+M4R is a physical reassociation with coefficient four. M5 and M6 change all formula
+constructor coefficients to five and six and need explicit formula/variable-label
+recoding. The stack Cantor pairing and proof-word scheduler do not become radix-five
+or radix-six data structures. N5 and N6 compose those formula recodings with the
+no-push MP interface. Constructor recoding does not preserve numerical order;
+the restricted implicational condition therefore needs its supplied syntactic
+translation argument, not a monotonicity assertion.
+
+D changes the separately produced diagonal axiom to Gamma(D), with a different
+selector and 69-reader/nine-fold decoder. Q exchanges the curried premises of a
+quantifier-distribution head; a K/S exchange proof translates the altered axiom.
+QN combines Q's emitter with N's no-push/original-sum controller. The novelty of
+these designs is in the logical interface or its actual composition, rather than
+in a relabeling of a table.
+
+The latest HAZ packet uses the older auxiliary MPH semantics: MP caches its result
+in H while Shift still has the original sum guard. HA adds A/D physical placement;
+HAZ also replaces the final AX return with a known-zero decrement. Both have 3,650
+source sites, with 4,750 and 4,751 outcomes. The initial H of that research is
+already the old MPH auxiliary table; it is not the same designation as the new
+H in the HS packet. Name-only comparison would confuse distinct graphs here.
+
+The latest uppercase PA194NS_research packet is a further distinct family. SUMS
+keeps the original sum guard and reverses its destructive comparison, eliminating
+a transfer loop; an additional one-bit history fold absorbs the new trailer
+control. Its NS companion also removes the successful-MP zero push. SUMS has
+3,670 source sites and 4,776 outcomes; sum-NS has 3,651 and 4,751. Both initialize
+in 58,004 physical steps. Their guard is semantically different from cached-only
+HS/NS despite the duplicate name.
+
+Exact overlaps and name collisions
+---------------------------------
+* Five cached-controller deliveries contain the same PA194C action graph.
+* PA194X and PA194CSZ have identical dense bytes, SHA-256 62e93098caf7c09ff2938d07064f0dbbb47c71ec369892968258fff708592269.
+* PA194HS and lowercase pa194ns_conpa's PA194NS have identical dense bytes,
+  SHA-256 19935635f2c5722f5a72977d20a7019764a28573e12d1d0bce398245576c33b1.
+* The joint N5/N6 and standalone N6 deliveries have identical N6 dense bytes,
+  SHA-256 36da42a81d605ccb8b5edae197c7cde311447bd95b9bf1ab771a3e726a41c6f4.
+* Uppercase PA194NS_research's NS is a different graph, dense SHA-256
+  eef9329b9a7e1f2810eddcf3e99fc0184b073ea266d658ebe473f7d11d68ecd7.
+* HAZ's initial H is the old MPH auxiliary; HS-packet H is a different no-push
+  machine. A construction should be identified by path plus exact bytes.
+
+Larger designs
+--------------
+At 195 controls the census has 19 whole-graph classes. The principal reports cover
+original PA195 (bundled diagonal/vacuity gate), 195S (separate diagonal head),
+195C (cached command interface), the M195S8 scanner variant and diagonal-combined
+PA195DC. Other classes include quotient parents, alternate logical/decoder
+experiments, rejected contractions and the two latest QN MP-tail experiments.
+The QN packet itself does not claim complete new consistency proofs for those
+two tails, although it supplies physical checks. Thus 19 is not a count of
+19 established consistency theorems.
+
+At 196 controls there are 99 whole-graph classes. The upstream PA196 construction
+changes quantifier coding, axiom-head organization and decoder allocation from
+the 209-era source. Later designs explore separate and combined diagonal heads,
+logical rebracketing, MP/Shift protocols, physical register permutations, zero
+return branches and grammar changes. Some are rejected or intermediate inputs.
+The shorter 18-site direct-negation macro has a 197-control verified allocation;
+similarly, shorter source trees can have larger decoder budgets. Expanded-source
+length and number of mathematical proof rules are not TM-state objectives.
+
+The 197--207 classes mostly record larger controller/compiler/decoder experiments
+and ancestors. The 208 collection has 142 classes, largely research candidates
+and repeatedly quoted reference machines. The principal U208 constructions
+reduce U209 with entry, finite-history and three-cell contextual folds. Imported
+PA209 and the U209 parent are different tables and source lineages. Historical
+nested ZIPs retain 209--222-control ancestors and additional entry-bypass/joint
+experiments. None supplies a missing literal sub-194 design in this snapshot.
+All state-count histograms and member paths are in the complete census.
+
+Proof boundary
+--------------
+The current PA README explicitly reports that neither machine-specific direction
+of its target iPRA consistency equivalence is complete for primary PA194, PA195
+or PA196. It also describes substantial checked source coverage, simulation,
+quotient, zipper and clock constructions. The filed papers separately present
+ordinary mathematical arguments intended to be formalizable in PA, using
+syntactic refutation translations. The absence of a new Lean/Rocq endpoint does
+not refute or erase an ordinary PA paper proof; conversely, a standard finite-run
+theorem or a conditional endpoint does not discharge the stated iPRA reductions.
+
+The new construction should explicitly state which ordinary PA-calibration
+lemmas it inherits and prove its changed command/source interface and exact
+literal simulation, including blank startup and positive progress. A bounded
+nonhalting run supplies neither direction of the logical biconditional. The
+upstream PA196 statement Nonhalt -> Con(PA), by itself, does not supply the
+reverse internal implication. Nothing in this inventory upgrades that one-way
+statement into an end-to-end kernel biconditional.
+
+Fresh negative controls
+-----------------------
+The independent finite-support simulator verify_negative_examples.py reproduced
+halting at exactly 1,361 steps for all three distinct comparator-return dec-X
+mutants (CS, alternate I-tree and ZR). Their universal source invariants can hold
+while startup fails before the intended clean seed. This makes complete blank
+initialization a concrete, necessary check for future zero-return changes. The
+fourth rejected 194 graph is the shortened seven-zero scanner, documented as
+failing source-frame alignment; no independent full replay of that certificate
+is claimed here.
+
+Next construction opportunities and constraints
+----------------------------------------------
+The current 39-class set leaves literal combinations of SUMS with Q or radix
+constructors, or Q with cached-only no-push semantics, absent at the table level.
+That observation is a search direction, not a proof of a 194-state allocation.
+Changing formula coefficient, controller tail and physical register placement
+together can alter which history folds remain compatible. A new combination
+must be rebuilt and compared against auxiliary graphs as well as headline
+designs. A change confined to an unreachable transition is not a material
+improvement; recurring logical arithmetic, stack behavior or actually executed
+return conventions provide stronger differences.
+
+ZFC supplies useful no-push, command-local field-reader, history-fold and marker
+ideas, but its state savings depend on that source interface. ConciseIPRA supplies
+proof-checker and certificate-interface simplifications, not a free equivalence
+between PA refutation search and iPRA refutation search. The usable transfer is
+joint optimization of proof compilation, data representation, decoder and actual
+tape behavior, with both PA refutation translations retained.
+
+Provenance
+----------
+The scanner and explicit string comparator are new read-only inventory code.
+The first 30 semantic frontier annotations are attributed to the filed N6
+comparison/frontier194_current.csv; their identities are independently rebound
+to this census by exact file SHA-256. Nine current annotations are based on the
+named primary READMEs/reports and exact literal tables. The 51 filed delivery
+summaries come from PA/docs/README.md, whose own stated scope is reporting packet
+claims; three incoming summaries come from their actual contents. Retain the
+repository and James Chang/upstream licenses when redistributing table copies.

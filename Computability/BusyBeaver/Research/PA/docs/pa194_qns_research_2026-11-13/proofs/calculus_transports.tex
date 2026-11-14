@@ -1,0 +1,209 @@
+% Mathematical proof fragment. Requires amsmath,amssymb,amsthm.
+% Inherited calibration is explicitly separated from the new transports.
+\section{Two exact transports of the numerical proof calculus}
+\label{sec:calculus-transports}
+
+This section proves the new logical transformations independently of the
+literal transition-table construction.  A transition table realizes a
+transformation only after its full emitter and command interfaces have been
+checked.  The proof below is an ordinary mathematical proof that the
+corresponding syntactic reductions can be verified in PA; it is not a claim
+that a new end-to-end Lean or Rocq theorem has been compiled.
+
+\subsection{The inherited calculus and the precise dependency}
+
+Write $p(a,b)=(a+b)(a+b+1)/2+b$.  The standard constructors are
+\[
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code $0$ is truth, code $1=M(0,0)$ is contradiction, and
+$N(A)=I(A,1)$.  Conjunction and existential quantification are the usual
+classical abbreviations in $I,N,U$.  The six universally instantiated heads,
+in their order of emission, are
+\begin{align*}
+ h_1(D,A,H)&=I(\exists x_D\,U(D,H),H),\\
+ h_2(D,A,H)&=I(U(D,U(A,H)),U(A,U(D,H))),\\
+ h_3(D,A,H)&=I(M(H,D),I(E(H,A),M(A,D))),\\
+ h_4(D,A,H)&=I(E(H,D),I(M(A,H),M(A,D))),\\
+ h_5(D,A,H)&=\exists x_D\,E(H,D),\\
+ h_6(D,A,H)&=I(U(D,A),I(U(D,I(A,H)),U(D,H))).
+\end{align*}
+The unused parameter in a head is harmless.  In addition the calculus has
+truth, the dominated implicational schema
+\[
+ \rho(D,A,H,d)=I(I(I(H,d),D),I(I(D,H),I(A,H)))\quad(d\leq D),
+\]
+the diagonal schema $\Gamma(B)=I(B,U(B,B))$, and the guarded separation gate
+\begin{align*}
+ V(a,b,c)&=I(M(a,b),U(c,M(a,b))),&P(a,b,c)&=I(c,M(c,b)),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,I(S(a,b,c),N(P(a,b,c)))),&G(a,b,c)&=N(I(V(a,b,c),Q(a,b,c))).
+\end{align*}
+The gate is an axiom when $c\ne a,b$; a failed guard returns $0$.
+The inference rules are modus ponens and generalization of a theorem
+$B\mapsto U(i,B)$.  These are finite proof trees with explicit axiom
+parameters and inference annotations.
+
+Call this calculus $\mathcal C$.  The inherited numerical-calculus
+calibration provides primitive-recursive proof transformations in both
+refutation directions between $\mathcal C$ and ordinary PA, with correctness
+provable in PA.  Its nontrivial ingredients are the diagonal recovery of
+reverse membership rewriting and neighborhood equality, the original
+PA-refutation compiler, and the syntactic PA proof supplier for finite binary
+comprehension.  The source is the primary PA194 report's
+\texttt{calibration.tex} and its attributed reference texts; those arguments
+are dependencies, not new results of the present emitter change.
+
+The inherited theorem \texttt{rho8All} is used at its exact interface:
+modus ponens, the dominated $\rho$ schema, reflexivity of $\leq$, and the
+bounds $A,B\leq I(A,B)$ give a fixed derivation of unrestricted $\rho$.
+The same finite template derives the usual $K$ and $S$ schemata, and hence
+all implicational proof templates used below.  It works for any implication
+operation with the displayed domination bounds, including the code-zero
+alias $I(0,0)=0$; no injectivity assumption about implication is required.
+
+\subsection{Exchange in the two equality-rewriting heads}
+
+Define the exchanged versions
+\begin{align*}
+ h_3^{\mathrm e}(D,A,H)
+   &=I(E(H,A),I(M(H,D),M(A,D))),\\
+ h_4^{\mathrm e}(D,A,H)
+   &=I(M(A,H),I(E(H,D),M(A,D))),\\
+ h_6^{\mathrm e}(D,A,H)
+   &=I(U(D,I(A,H)),I(U(D,A),U(D,H))).
+\end{align*}
+Any chosen subset of these three replacements defines a calculus
+$\mathcal C_{\mathrm e}$.  The third replacement was already used in the
+supplied Q family; the first two concern the membership-rewriting heads.
+The emitted diagonal head may likewise be $\Gamma(A)$, $\Gamma(D)$, or
+$\Gamma(H)$: the parameter is freely selectable in an AX call with zero
+incoming offset and cache, so every diagonal instance remains available.
+The same replacement can be combined with an independently checked
+permutation of a head's three universally quantified parameters: its family
+of instances is unchanged, and the proof selector uses the inverse
+parameter permutation.
+
+\paragraph{Explicit proof transformation.}
+The closed combinatory term $\lambda f\,b\,a.\,f\,a\,b$ gives a fixed
+$K,S$ derivation of
+\[
+ I\bigl(I(A,I(B,C)), I(B,I(A,C))\bigr).                 \tag{X}
+\]
+For a completely mechanical proof supplier, bracket abstraction is defined
+by $[x]x=SKK$, $[x]t=Kt$ if $x$ does not occur in $t$, and
+$[x](uv)=S([x]u)([x]v)$.  Its usual typing induction is a finite Hilbert
+proof generator using only $K,S$ and modus ponens.  Apply it three times to
+$f\,a\,b$ with variable types $f:A\to B\to C$, $b:B$, and $a:A$.
+The delivered implementation produces 61 proof-DAG nodes: 17 $K$ leaves,
+14 $S$ leaves, and 30 modus-ponens nodes. Its separate checker verifies
+every leaf and edge and the closed conclusion. This is a fixed finite
+derivation of (X), uniform in the numerical formula codes $A,B,C$.  Each of its $K,S$ leaves is replaced by the inherited
+fixed $\rho$ proof template.
+
+Given an ordinary $h_3$ axiom, instantiate (X) with
+$(A,B,C)=(M(H,D),E(H,A),M(A,D))$ and apply modus ponens.  This gives
+$h_3^{\mathrm e}$.  The analogous instances give $h_4^{\mathrm e}$ and
+$h_6^{\mathrm e}$.  Interchanging $A,B$ in the same template proves the
+reverse transformations.  Every other axiom and every inference is
+unchanged.  Recursion on a finite derivation therefore gives
+primitive-recursive maps $L,R$ satisfying
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Prf}_{\mathcal C}(d,B)
+   \Longrightarrow\operatorname{Prf}_{\mathcal C_{\mathrm e}}(L(d),B),
+\]
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Prf}_{\mathcal C_{\mathrm e}}(d,B)
+   \Longrightarrow\operatorname{Prf}_{\mathcal C}(R(d),B).
+                                                               \tag{E}
+\]
+Proof concatenation, fixed-template instantiation, and traversal of a coded
+finite tree are primitive recursive.  PA verifies (E) by induction on that
+tree.  The transformations preserve conclusions exactly, including code
+one.  Thus they transfer the inherited PA refutation calibration without a
+new soundness assumption or a change of logical strength.
+
+\subsection{An independent residue-permutation construction}
+\label{sec:residue-permutation}
+
+The following alternative is a mathematical encoding transformation.  It is
+included even if its literal implementation does not meet the size target;
+it must not be confused with the accepted table's implemented semantics.
+Keep $I,M$ unchanged and set
+\[
+ U^{\sigma}(a,B)=4p(B,a)+3,\qquad E^{\sigma}(a,b)=4p(a,b)+2.
+\]
+Replace $U,E$ consistently in every schema and in the emitted
+generalization.  Let $\sigma$ fix residues $0,1$ and interchange $2,3$.
+Define $F(0)=0$; for $n>0$, write $n=4p(a,b)+r$, $0\leq r<4$, and put
+\[
+ F(n)=4p(F(a),F(b))+\sigma(r).                         \tag{F}
+\]
+For every positive code its two decoded components are strictly smaller.
+A primitive recursion that stores all earlier values therefore implements
+(F), so $F$ is primitive recursive.  PA proves that $F(n)>0$ for $n>0$:
+if $r\ne0$ its new residue is nonzero, while if $r=0$ then $(a,b)\ne(0,0)$
+and induction gives a positive recoded component.
+
+Strong induction, uniqueness of Cantor decoding, and
+$\sigma^2=\mathrm{id}$ now prove
+\[
+ F(F(n))=n.                                             \tag{F1}
+\]
+Consequently $F$ is a bijection and preserves equality and disequality of
+numerical labels.  It fixes $0,1$, and it exchanges $2,3$.  The constructor
+identities, including the exceptional zero implication, are
+\begin{align*}
+ F(I(A,B))&=I(F(A),F(B)),&F(M(a,b))&=M(F(a),F(b)),\\
+ F(U(a,B))&=U^{\sigma}(F(a),F(B)),&
+ F(E(a,b))&=E^{\sigma}(F(a),F(b)).                       \tag{F2}
+\end{align*}
+One must recode numerical variable labels as well as numerical formula
+codes.  Since $F$ is injective, this preserves binding, repeated variable
+labels, and shadowing.  In particular,
+\[
+ F(\Gamma(B))=I(F(B),U^{\sigma}(F(B),F(B)))
+             =\Gamma^{\sigma}(F(B)),                  \tag{F3}
+\]
+so diagonal self-indexing is preserved exactly.  Disequality preservation
+carries the gate guard to the new guard.  Equations (F2)--(F3) carry every
+other head, modus ponens, and generalization to its corresponding instance.
+
+There is one real obstruction: $F$ is not increasing, since $2<3$ but
+$F(2)=3>2=F(3)$.  Thus an old restricted $\rho$ leaf cannot simply be
+recoded as a new restricted leaf.  Instead instantiate the unrestricted
+$\rho$ template at the four recoded parameters.  Its own restricted leaves
+have correct numerical side conditions because
+$A,B\leq p(A,B)\leq4p(A,B)=I(A,B)$.  The reverse translation uses the same
+method.  Recursion on proof trees gives PA-verifiable maps in both directions,
+preserving a conclusion $B$ up to $F(B)$.  Since $F(1)=1$, refutations
+translate both ways.  This proves the new numerical calculus is calibrated
+to PA by composition with the stated inherited calibration.
+
+The same construction can be combined with the head exchanges above.  For
+formula coefficient $k>4$, use the inherited hereditary radix recoding first
+and the tag transposition second.  On noncanonical residues $4,\ldots,k-1$,
+the tag transposition fixes the residue.  It is still an involution of all
+natural codes.  The coefficient-change soundness direction must retain the
+inherited treatment of unused residues; it is not supplied by an inverse
+map onto the coefficient-four syntax.
+
+\subsection{The proof obligation for a literal emitter}
+
+The free-constructor checker evaluates the complete emitter word as a stack
+program, rather than inferring its meaning from the text labels of macros.
+For the unchanged coefficient-four interface it must prove the pushed list
+\[
+ [t,\ U(d,h),\ \rho(D,A,H,d),\ h_1,h_2,h_3,h_4,h_5,h_6,\Gamma(A)]
+\]
+in order of emission, with $D=d+x$, $H=h+y$, and final guarded top
+$G(H,D,A)$.  Exchanged heads or residue-swapped constructors are substituted
+only where the chosen construction says so.  The last three guard macros
+must retain their exact effect, including zero output on a failed guard
+and the cleared temporary registers.  This algebraic check is one part of
+correctness; complete source resolution, both physical decrement outcomes,
+positive simulation durations, and the entire blank initialization remain
+separate obligations.

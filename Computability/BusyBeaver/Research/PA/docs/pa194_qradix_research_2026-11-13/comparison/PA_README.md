@@ -1,0 +1,135 @@
+# PA consistency machines
+
+This directory contains machine tables, imported research, and Lean proofs
+concerning small Turing machines associated with the consistency of Peano
+arithmetic, `Con(PA)`. The current goal is a Lean proof of
+`iPRA ⊢ Con(PA) ↔ ¬Halt(M)` for the primary 194-state candidate, followed
+by the other 194-, 195-, and 196-state consistency candidates. The machines start
+on a blank two-way binary tape; state counts exclude the halt state.
+
+**Status:** Neither machine-specific direction of this equivalence has yet
+been established in iPRA for PA194, the original PA195, or the PA196 candidate. In
+particular, a Lean theorem about ordinary finite runs, a Python certificate,
+and a conditional iPRA theorem are not themselves an iPRA proof of the
+consistency equivalence. See the individual READMEs for assumptions, exact
+statements, and reproducibility instructions.
+
+## Primary 194-state candidate
+
+The target table is `pa194_conpa/construction/tables/pa194.tm` in
+[the PA194 research packet](docs/pa194_conpa_2026-11-13/).
+It has 194 working states, start state 0, halt label 194, and 388 transitions.
+Its SHA-256 is
+`4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f`.
+The packet reports a PA-provable consistency equivalence and proposes a
+second 194-state table; it does not provide an end-to-end Lean proof or an
+iPRA proof. The primary table is a seven-fold quotient of a 201-control
+parent with a ten-entry source interface. The arithmetic and simulation
+results below provide reusable methods but do not by themselves establish
+the PA194 equivalence.
+
+[The PA194 arithmetic endpoint](pa194/ipra/README.md) binds the pinned table
+to a standard-model halting sentence and constructs a conditional iPRA
+equivalence. [The explicit machine codes](pa194/ipra/machine-code/README.md)
+include a clock whose decoded execution is characterized in every candidate
+PRA model. [The quotient proof](pa194-dense/README.md) connects the 201-control
+parent and dense PA194 table for all standard finite runs; [the zipper bridge](pa194-zip-bridge/README.md)
+connects blank-tape halting to the literal machine used by the arithmetic code.
+[Source coverage](pa194-coverage/README.md) reduces the source-to-parent
+simulation to a finite set of Lean checks; all 3,673 sites and the aggregate
+have passed. [The clock/source composition](pa194-clock-source-complete/README.md)
+connects the initialized source program to the exact machine clocks in
+standard finite-run semantics. [The command scheduler](pa194-command-source/README.md)
+is equivalent to that source program in standard finite-run semantics, and
+[its clock composition](pa194-command-clock/README.md) connects the initial
+scheduler state to the machine clocks. Parts of the literal register scanner
+are also proved as native iPRA equalities; see the
+[source-file engine](pa194/ipra/machine-code/SOURCE-FILE-ENGINE.md). In standard
+Lean semantics, [the calculus/clock composition](pa194-calculus-clock/README.md)
+proves that either clock reaches 1 exactly when the displayed separate-diagonal
+numerical calculus has a finite derivation of contradiction. Its calibration
+to PA and its internalization in iPRA remain open, as do both machine-specific
+consistency reductions.
+
+## Original 195-state candidate
+
+The target table is `pa195_conpa/pa195/pa195.tm` in
+[the PA195 research packet](docs/pa195_conpa_2026-11-13/).
+It has 195 working states, start state 0, halt label 195, and 390 transitions.
+The table's SHA-256 is
+`5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455`.
+The packet claims a PA-provable consistency equivalence; it does not supply
+an end-to-end Lean proof of that claim or an iPRA proof.
+
+- [PA195 arithmetic endpoint](pa195/ipra/README.md) binds the table to a
+  primitive-recursive halting test and an iPRA sentence in the standard
+  model. Its equivalence theorem assumes two machine-specific classical PRA
+  reductions; those assumptions remain open.
+- [Quotient and dense-table proof](pa195-dense/README.md) proves in Lean that
+  the 202-control parent and the delivered dense 195-state table halt under
+  the same circumstances for every complete tape and head position.
+  [The zipper bridge](pa195-zip-bridge/README.md) connects blank-tape
+  halting to the arithmetic endpoint over the standard natural numbers.
+- [Register engine](pa195-runtime/README.md),
+  [source entry binding](pa195-source-entry/README.md), and
+  [symbolic contract batches](pa195-symbolic/README.md) check parts of the
+  parent machine's execution. The entry binding covers one source instruction
+  and both branches; the complete source-graph and arithmetic correctness
+  connections still need proof.
+- [Explicit machine codes](pa195/ipra/machine-code/README.md) develop tape,
+  transition-table, and configuration-step functions in the PRA language.
+  Their model equations are ingredients for a weak-arithmetic proof, not the
+  missing machine/refutation reductions.
+- [Diagonal calibration](pa195-calibration/README.md) constructs an
+  occurrence code and proves decoder self-freshness in classical PRA,
+  including its behavior in nonstandard models. The component codes are
+  supplied existentially; the proof-producing PA translation remains open.
+
+## Other machines and related work
+
+[James Chang's imported snapshots](jamesyc-upstream/README.md) contain the
+upstream PA196 and PA209 developments. The imported PA196 result includes a
+PA proof of the implication from literal nonhalting to PA consistency; this
+alone does not establish the converse in PA or either direction in iPRA.
+[PA196 versus U208](pa196-vs-u208/ipra/README.md) documents the PA196
+arithmetic endpoint, conditional transfers, and the completed PA-refutation
+witness certificate. The machine-specific reductions remain open.
+[The archive audit](pa196-vs-u208/archive-audit/README.md) inventories related
+196-state tables and distinguishes candidates from rejected machines.
+
+[The later PA195 packet](docs/PA195_ConPA_research_2026-11-14/)
+contains two further 195-state candidates, `machine_195S.tm` and
+`machine_195C.tm`, along with source and physical execution certificates.
+They are distinct from the original PA195 table. The packet gives mathematical
+and executable evidence, not an end-to-end Lean proof of the desired iPRA
+statement.
+
+[The PA195 follow-up packet](docs/pa195_followup_research/)
+contains another 195-state candidate, `M195S8`, and a claimed halting
+equivalence with the original PA195. It also contains a rejected 194-state
+construction. [A later PA194 packet](docs/pa194_new_designs_2026-11-13/)
+proposes two other 194-state candidates and claims a PA-provable equivalence.
+These packets do not supply an end-to-end Lean proof of the iPRA statement.
+
+[Another PA194 packet](docs/pa194_conpa_2026-11-13_2/)
+and [the PA195DC packet](docs/pa195_diagonal_combined_2026-11-13/)
+propose additional 194- and 195-state machines respectively. Their reported
+PA equivalences likewise do not constitute Lean proofs of the iPRA goal.
+
+The later [radix-family](docs/pa194_radix_family_2026-11-13/),
+[PA194J/PA194D](docs/pa194j_pa194d_conpa_2026-11-13/),
+and [PA194Q/PA194CSZ](docs/pa194q_conpa_2026-11-13/)
+packets propose further 194-state candidates with ordinary mathematical PA
+calibrations. They do not report completed Lean proofs of the iPRA equivalence.
+
+## Delivered research packets
+
+[`docs`](docs/README.md) holds the contents of the research packets that were delivered
+to `docs/incoming`, one directory per archive, filed as delivered. Its README lists the
+packets, the wrapper directory of each archive, and the members that are not placed.
+[`docs/MACHINES.md`](docs/MACHINES.md) lists the distinct machines among the tables of the
+packets; a table that repeats a kept machine, also with its states renamed, is removed.
+The archives themselves are no longer in `docs/incoming`. A script of this directory
+that opens `docs/incoming/<archive>.zip` needs that archive restored from the history of
+the repository, as `docs/README.md` describes, until it reads the placed files instead.
+

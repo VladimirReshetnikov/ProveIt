@@ -1,0 +1,188 @@
+% Ordinary mathematical proof fragment for the no-push controller.
+% Adapted and independently restated from the supplied PA194N compiler.
+\section{A complete command compiler for the changed emitter}
+\label{sec:new-command-compiler}
+
+This compiler applies to the no-push controller with Shift guard $t+h=1$.
+It works for any of the exact head exchanges in the preceding section and
+for either quantifier residue $2$ or $3$.  It does not describe the cached
+or head-only Shift controllers.  The underlying no-push strategy and its
+reserved-zero discipline are inherited from the supplied PA194N packet;
+the present application changes which axiom codes the emitter produces.
+
+Let $[a;w]=p(a,w)$ and use nested brackets with the leftmost item at the
+head.  Cantor projections are total and satisfy
+\[
+ \operatorname{hd}[a;w]=a,\quad\operatorname{tl}[a;w]=w,
+ \quad[0;0]=0,\quad\operatorname{hd}(0)=\operatorname{tl}(0)=0.
+\]
+These are numerical stacks, not freely generated lists.  The command store
+$(t,w,d,h)$ consists of top formula, stack, offset, and cached formula.
+With $y=d+x$, the no-push modus-ponens command is
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(y,w,y,0),&I(t,y)=h,\\(0,w,y,0),&I(t,y)\ne h.\end{cases}   \tag{MP}
+\]
+Shift has the literal contract
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1.
+ \end{cases}                                                        \tag{S}
+\]
+The checked emitter gives
+\[
+ \mathsf{AX}_{A,x,y}(t,w,d,h)
+   =(g(H,D,A),[q_1,\ldots,q_9,t;w],0,0),\qquad D=d+x,\ H=h+y,        \tag{AX}
+\]
+where $q_1=\Gamma(A)$ (or the separately checked $\Gamma(D)$ or
+$\Gamma(H)$), and $q_2,\ldots,q_7$ are the six heads in reverse
+emission order, $q_8=\rho(D,A,H,d)$, and $q_9=U(d,h)$.  A head exchange
+changes the corresponding $q_j$ and nothing in this stack protocol.
+All $q_1,\ldots,q_8$ and $g$ have implication residue zero; $q_9$ has
+quantifier residue $2$ or $3$ and satisfies $q_9\ge2$.  None is code one.
+
+Direct projection calculation proves
+\begin{align*}
+ \mathsf{AX}_{A,x,y};\mathsf S^9(t,w,d,h)
+     &=(q_8,[t;w],0,U(d,h)),\\
+ \mathsf{AX}_{A,x,y};\mathsf S^{10}(t,w,d,h)
+     &=(U(d,h),w,0,t).                                  \tag{A10}
+\end{align*}
+Every Shift displayed here is nonhalting: it tests zero against a generated
+non-one code, two such generated codes, or the universal code of value at
+least two.  The identities hold even when a zero stack cell collapses.
+
+Put $A_0=\mathsf{AX}_{0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0;\mathsf S^9;\mathsf{MP}_0,\qquad
+ \mathsf{Pop}=A_0;\mathsf S^{11},\qquad
+ \mathsf{Discard}=\mathsf{MP}_0,\qquad
+ \mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+Their contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=(t,w,0,a),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).                    \tag{P}
+\end{align*}
+For Push, the final comparison is between an implication code and a
+universal code, so it fails.  Pop's eleventh Shift tests $U(d,h)+t\ge2$,
+so Pop is total, including when $t=1$.  For Discard, both branches of
+(MP) coincide at $y=0$.  For Offset, $I(0,i)>0$ if $i>0$, while the
+successful zero case returns the same stated store.  Thus no false
+assumption about $I(0,0)=0$ or $[0;0]=0$ is hidden in (P).
+
+\paragraph{Axiom leaves.}
+Starting from arbitrary $(t,w,0,0)$, first Discard.  For $1\le j\le7$,
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};\mathsf S^{j+1};
+                 \mathsf{Pop}^{9-j}
+\]
+returns $(q_j,w,0,0)$.  The Pops remove exactly the unselected generated
+tail and the saved zero; the final cache is that saved zero.  If an emitted
+head uses a permutation of its parameters, choose the AX arguments by the
+inverse permutation for this one selected head. If $q_1$ is $\Gamma(D)$
+or $\Gamma(H)$, set that freely chosen AX parameter to the desired code.
+No simultaneous choice of parameters for the other unselected heads is
+needed.  For $u\le a$, the word
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;\mathsf{AX}_{b,a-u,c};
+                    \mathsf S^9;\mathsf{Pop}
+\]
+returns $(\rho(a,b,c,u),w,0,0)$.  A permitted gate uses
+$\mathsf{Discard};\mathsf{AX}_{A,D,H};\mathsf{Pop}^{10}$ and returns
+$(g(H,D,A),w,0,0)$.  Truth uses Discard.
+
+\paragraph{Generalization.}
+From $(a,w,0,0)$, the word
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;\mathsf S;
+                         \mathsf{AX}_{i,0,0};\mathsf S^{10}
+\]
+returns $(U(i,a),w,0,0)$.  Its first three operations produce
+$(0,w,i,a)$; then (A10) gives the conclusion.  Every Shift is safe,
+including when the premise code is one.
+
+\paragraph{Modus ponens.}
+Suppose recursive words $C(a),C(I(a,b))$ return the displayed conclusion
+with the stack tail preserved and offset/cache zero, or halt earlier.
+Use
+\[
+ \mathsf{Discard};\mathsf{Push};C(I(a,b));\mathsf{Push};C(a);
+ \mathsf{Push};\mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}.       \tag{C-MP}
+\]
+The initial Push reserves one zero.  Immediately before the two Shifts the
+store is $(0,[a,I(a,b),0;w],0,0)$.  The first Shift exposes $a$ in the
+cache; the second halts if $a=1$, otherwise giving
+$(a,[0;w],0,I(a,b))$.  Successful MP gives $(b,[0;w],b,0)$ and total Pop
+gives $(b,w,0,0)$.  These numerical projection equations also cover
+$a=b=w=0$.  An early halt already fulfills the refutation-search goal.
+
+Induction on a finite proof tree now proves that $C(p)$, from every
+$(t,w,0,0)$, either halts or returns
+$(\operatorname{concl}(p),w,0,0)$.  The proof word is primitive recursively
+constructed.  From arbitrary incoming $d,h$, prepend $A_0$ to clear both.
+If $p$ concludes code one, append Shift.  Thus
+\[
+                         A_0;C(p);\mathsf S                         \tag{W}
+\]
+halts from every incoming numerical store.  The derivation induction and
+all displayed calculations are formalizable in PA.
+
+\paragraph{The carried-store scheduler.}
+The scheduler need not reset the store between candidates.  For a positive
+continuation encoding $E(\epsilon)=0$ and
+$E(c::w)=1+\operatorname{encodeCommand}(c,E(w))$, its AX code is
+\[
+ \operatorname{encodeCommand}(\mathsf{AX}_{A,x,y},z)
+                  =p(A+2,p(y,p(x,z))).
+\]
+Let $z=E(W)$ for the universal halting word (W).  Prefixing it by
+$\mathsf{AX}_{k,0,0}$ gives fresh candidate codes
+\[
+                       p(k+2,p(0,p(0,z))).
+\]
+They are strictly increasing and unbounded in $k$, and all such prefixes
+are harmless because (W) works from every store.  Hence the scheduler,
+whose fresh counter begins at two and increases through all later natural
+numbers, eventually executes a halting word.  Positive continuations
+strictly decrease and the source arithmetic macros terminate.  Candidate
+coding, source-trace formation, and the finite arithmetic bounds used here
+are primitive recursive; PA verifies the construction by induction.
+
+\paragraph{Soundness and the exact conclusion.}
+From the clean seed, annotate $t,h$ and every live canonical stack entry
+with a proof in the changed calculus.  The zero stack supplies truth, and
+a zero push on zero adds no canonical cell.  AX adds its checked axiom
+heads, a generalization of the cached theorem, and the saved top.  MP
+applies its two premise annotations or returns truth.  Shift transports
+annotations; if it halts, $t+h=1$ says one of its two annotated codes is
+one.  Therefore a source halt yields a changed-calculus refutation.
+The two calculus transports above turn such a refutation into an inherited
+calculus refutation and then a PA refutation.  Conversely, a PA refutation
+passes through the inherited calibration, the new transport, the compiler
+(W), and the scheduler to a source halt.
+
+If the literal machine $M$ has the separately verified complete startup
+and universal positive-duration source simulation, concatenate finite
+segments in the forward direction.  In the reverse direction, a physical
+halt at time $T$ cannot precede $T+1$ nonhalting source instructions, since
+each consumes positive physical time and their simulations contain no
+premature halt.  Determinism gives the required contradiction.  Thus PA
+proves the two finite syntactic reductions and consequently
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Halt}(M,\mathrm{blank})
+   \longleftrightarrow\exists p\,\operatorname{Prf}_{\mathrm{PA}}(p,\ulcorner0=1\urcorner),
+\]
+\[
+ \mathrm{PA}\vdash
+ \neg\operatorname{Halt}(M,\mathrm{blank})
+   \longleftrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+This conclusion uses the explicitly identified inherited calibration and
+its ordinary mathematical proof; it does not upgrade an executable Python
+certificate into a proof-assistant theorem, and it does not assume PA
+consistency in order to prove the biconditional.

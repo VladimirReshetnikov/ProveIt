@@ -1,0 +1,42 @@
+{
+  "status": "PASS",
+  "integrity_files": 945,
+  "full_physical_replay": false,
+  "regenerated_principal_table_exact": true,
+  "dense_sha256": "7eb36aea69e5de46cc47fa7aab0191f191657ab500dafb808dc3c394640591b8",
+  "source_equivalence": {
+    "status": "PASS",
+    "initial_source": 25,
+    "common_instruction_prefix": 3649,
+    "changed_region_entry": 3649,
+    "sole_external_entry": [
+      3645,
+      3649
+    ],
+    "entry_condition": "Logical H (register5) is zero on this zero decrement branch.",
+    "old_tail_comparator_input": "(H,X)=(x,1)",
+    "new_tail_comparator_input": "(H,X)=(1,x)",
+    "common_halting_condition": "x=1",
+    "common_nonhalting_exit": "source11, H=X=0; all other logical registers unchanged",
+    "all_store_shift_statement": "At3642, input(T,H,X)=(t,h,x): halt iff x+t+h=1; otherwise source11 with(T,H,X)=(h,0,0).",
+    "local_termination": "Counter-transfer loops strictly decrease the transferred natural counter; the comparator decreases H+X.",
+    "proof": "Finite halting traces from source25 translate both ways by replacing whole terminating blocks between entry3649 and exit11 or halt. Induction on the number of block visits gives the PA-provable equivalence.",
+    "parent_source_sha256": "3a41e43a11e461bdbb15dd1eb75d4578027f74aacd0bb5cfd711cf836f2fd99c",
+    "new_source_sha256": "eb7e1674eb55c7c639690263de8fb739bbd02792b6492b9c7ddc18ca81dcf049",
+    "kernel_checked": false
+  },
+  "compared_existing_194_classes": 39,
+  "absent_from_corpus": true,
+  "exchange_certificate": {
+    "status": "PASS",
+    "nodes": 61,
+    "K": 17,
+    "S": 14,
+    "MP": 30,
+    "hypotheses": 0,
+    "theorem": "(P -> (Q -> R)) -> (Q -> (P -> R))",
+    "scope": "Universal finite proof template over arbitrary formula codes, using K/S/MP."
+  },
+  "kernel_checked": false,
+  "scope": "Executable construction and certificates; ordinary PA calibration is the attributed mathematical dependency."
+}

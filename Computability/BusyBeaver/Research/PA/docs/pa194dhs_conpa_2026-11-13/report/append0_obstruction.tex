@@ -1,0 +1,48 @@
+% Standalone fragment; native control labels throughout.
+\paragraph{An exact obstruction to the append-zero transplant.}
+Let $T_0$ be the primary PA194 transition table, expressed in its native
+control labels, with the single replacement
+\[
+ (198,0)\mapsto(0,\mathrm L,40)
+ \qquad\text{in place of}\qquad
+ (198,0)\mapsto(1,\mathrm L,40).
+\]
+The native table has SHA-256
+\texttt{49439961cb03177c0e2e65b9009000d7e005bca9c57193f90650f5dc79bb9c77}.
+Every one of its 194 working controls has been considered as an initial
+control on the blank tape.  The following classification is exhaustive:
+\[
+\begin{array}{c|c|c}
+\text{initial control}&\text{outcome}&\text{number of transitions}\\\hline
+0&\text{halt in control }254&37\\
+66&\text{halt in control }254&33\\
+94&\text{halt in control }254&34\\
+97&\text{halt in control }254&31\\
+\text{each of the other 190 controls}&\text{certified infinite ray}&\leq77
+\end{array}
+\]
+Here the last column for an infinite ray counts the finite prefix ending
+at its induction certificate.  These certificates end in control 35 for
+163 initial controls, control 1 for 12, control 75 for 8, and control 6 for
+7.  At each certificate the head reads zero, its zero transition returns
+to the same control, and every nonzero tape cell lies strictly behind
+the head in the direction of that transition.  The four zero actions are
+$35/0=1\mathrm R35$, $1/0=0\mathrm L1$, $75/0=0\mathrm R75$, and
+$6/0=0\mathrm R6$.  An induction on further steps proves that the head
+continues into the untouched blank half-line forever.  This is an exact
+nonhalting certificate, independent of a finite simulation cutoff.
+
+An independent sparse-dictionary simulator reproduces every finite
+prefix and checks its terminal condition.  Its receipt records all 194
+prefix traces, and separately verifies that $T_0$ differs from the
+primary PA194 table in precisely the displayed row.  Thus changing only
+the initial control cannot turn this particular append-zero transplant
+into an unbounded refutation search: every available initial control
+already has the elementary behavior just classified.  In particular,
+the 190 ray cases have PA-provable nonhalting, so (assuming PA consistent)
+they cannot have a PA-provable equivalence between nonhalting and
+$\operatorname{Con}(\mathrm{PA})$.  The four remaining cases actually
+halt and therefore cannot have the intended standard-model equivalence
+when PA is consistent.  This obstruction concerns this exact one-row
+transplant; it excludes neither other transition changes nor a newly
+designed initializer.

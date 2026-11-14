@@ -1,0 +1,138 @@
+\section{A new diagonal-vacuity calculus}\label{sec:diagonal}
+There is a mathematical simplification of the axiom program, even though the state-count target was not reached. Replace the equality-vacuity component of the gate by the diagonal clause
+\begin{equation}\label{eq:gamma}
+ \Gamma(B)=I(B,U(B,B)),\qquad\text{that is,}\qquad B\longrightarrow\forall x_B\,B.
+\end{equation}
+Here \(B\) is both a formula code and a variable index. This clause is sound because every variable index in the decoded formula \(B\) is strictly below \(B\). Code zero is truth and presents no exceptional free variable.
+
+For the implementation included in this archive, replace the old gate
+\[
+ F(a,b,c)=\neg\bigl(\Delta_c(a,b)\to(V(a,b,c)\to Q(a,b,c))\bigr)
+\]
+by
+\begin{equation}\label{eq:new-gate}
+ F_\Gamma(a,b,c)=\neg\bigl(\Gamma(c)\to(V(a,b,c)\to Q(a,b,c))\bigr).
+\end{equation}
+Keep the old guard \(c\ne a,b\), the six other heads, the restricted propositional head, generalization, and modus ponens. Thus the membership-vacuity part of the gate is retained. Removing that part as well would invalidate the reverse-rewriting argument below.
+
+\subsection{What can be extracted from the new gate}
+Classical implicational reasoning gives both
+\[
+ F_\Gamma(a,b,c)\to\Gamma(c),\qquad
+ F_\Gamma(a,b,c)\to G(a,b,c),
+ \quad G=\neg(V\to Q).
+\]
+Every diagonal instance \(\Gamma(B)\) is derivable: take \(c=B\) and \(a=b=B+1\). Both guard comparisons succeed. The extracted old gate \(G\) continues to give unrestricted membership vacuity at labels different from the atom's indices, and the original pointed-separation schema. Coincident labels \(a=b\) are permitted by the guard and have already been accounted for in the arithmetic interpretation.
+
+The retained propositional and quantifier heads give the same basic implicational reasoning, universal monotonicity, and the existential-elimination rule for a conclusion known to be vacuous at the quantified label. Membership vacuity extends to the quantifier-free membership matrices used below by the original negation and implication arguments. It also extends through a universal quantifier whose binder differs from the new vacuity label, by quantifier commutation. No equality-vacuity premise is used in those extensions.
+
+\subsection{Recovering reverse rewriting}
+The old proof used equality vacuity to discharge an existential witness from a conclusion containing an equality atom. The replacement is to make the separator property the negation of that entire conclusion.
+
+Let \(a\ne b\). Let \(\chi(t)\) be one of
+\(M(d,t)\), \(M(t,d)\), or \(M(t,t)\), with \(d\ne a\) in the first two cases. The direct membership-rewriting heads give
+\[
+ E(v,y)\to\bigl(\chi(v)\to\chi(y)\bigr).
+\]
+Put
+\[
+ C=E(a,b)\to\bigl(\chi(b)\to\chi(a)\bigr),
+ \qquad \varphi=\neg C,\qquad c=\ulcorner\varphi\urcorner.
+\]
+The code \(c\) exceeds all variable labels in \(C\), so \(c\ne a,b\); in the first two families it also gives \(c\ne d\). There is no property-code collision requiring a separate padding branch.
+
+Use pointed separation at \((a,a,c)\). It gives
+\begin{equation}\label{eq:witness}
+ \exists x_c\,(S\wedge P),\qquad
+ P=\varphi\to M(c,a),\qquad
+ S\to U\bigl(a,M(c,a)\to\varphi\bigr).
+\end{equation}
+Propositionally, \(\varphi\) implies \(E(a,b)\), \(\chi(b)\), and \(\neg\chi(a)\). In particular, weakening the last consequent in~\eqref{eq:witness} gives
+\[
+ S\to U\bigl(a,M(c,a)\to\neg\chi(a)\bigr).
+\]
+The original negative-property specialization lemma now applies. It uses the equality witness head, the direct membership rewrites, and membership-only vacuity, and yields
+\[
+ S\to\bigl(M(c,b)\to\neg\chi(b)\bigr).
+\]
+The equality atom occurring inside \(\varphi\) is never substituted: it was removed from the quantified consequent by the propositional weakening step.
+
+Under \(\varphi\), the point condition \(P\) gives \(M(c,a)\). Direct rewriting under \(E(a,b)\) gives \(M(c,b)\), and the displayed consequence of \(S\) contradicts \(\chi(b)\). Therefore
+\[
+ \varphi\to(S\to\neg P)
+\]
+is derivable. Generalize at \(c\), use universal distribution, and apply the available diagonal axiom
+\(\Gamma(\varphi)=\varphi\to U(c,\varphi)\). This gives
+\[
+ \varphi\to U(c,S\to\neg P)=\varphi\to Q.
+\]
+Pointed separation gives \(\neg Q\). Hence \(\neg\varphi\), and classical double-negation elimination gives \(C\). This proof avoids a circular appeal to equality vacuity for \(C\).
+
+For \(a=b\), the desired reverse rewrite is propositional. The cases \(d=a\) reduce, as in the original proof, to direct rewrites and the already established diagonal case \(\chi(t)=M(t,t)\). Thus for all labels the two unrestricted membership rewrites in both directions are recovered:
+\begin{equation}\label{eq:R-interface}
+ \begin{split}
+ E(a,b)&\to\bigl(M(d,a)\leftrightarrow M(d,b)\bigr),\\
+ E(a,b)&\to\bigl(M(a,d)\leftrightarrow M(b,d)\bigr).
+ \end{split}
+\end{equation}
+
+\subsection{Recovering the neighborhood-equality interface}
+Define
+\[
+ R(a,b,z)=U\bigl(z,M(a,z)\leftrightarrow M(b,z)\bigr)
+ \wedge U\bigl(z,M(z,a)\leftrightarrow M(z,b)\bigr).
+\]
+Let \(z_0=\ulcorner E(a,b)\urcorner\). Then \(z_0>a,b\), and the diagonal clause for \(E(a,b)\) gives
+\[
+ E(a,b)\to U(z_0,E(a,b)).
+\]
+Lifting~\eqref{eq:R-interface} at \(z_0\) gives
+\(E(a,b)\to R(a,b,z_0)\).
+
+It remains to recover the original interface at \emph{every} \(z\ne a,b\), not just at a numerically large binder. If \(z=z_0\), nothing further is required. Otherwise consider either quantifier-free membership matrix
+\[
+ P(t)=M(a,t)\leftrightarrow M(b,t)
+ \quad\text{or}\quad
+ P(t)=M(t,a)\leftrightarrow M(t,b).
+\]
+The two-direction rewrites imply
+\(E(z,z_0)\to(P(z_0)\to P(z))\). The witness
+\(\exists x_{z_0}E(z,z_0)\), universal distribution, and membership-only vacuity give
+\[
+ U(z_0,P(z_0))\to P(z).
+\]
+The antecedent is itself membership-only and vacuous at \(z\), so generalization and distribution yield
+\[
+ U(z_0,P(z_0))\to U(z,P(z)).
+\]
+Apply this to both matrices. Consequently
+\[
+ E(a,b)\to R(a,b,z)\qquad(z\ne a,b)
+\]
+is derivable without unrestricted vacuity for primitive equality.
+
+The equality-witness head is unchanged. Existential monotonicity and the recovered neighborhood implication supply its interpreted witness form. These are exactly the original completeness proof's three interfaces: two-direction membership rewriting, neighborhood equality, and an equality witness, conventionally denoted (R), (N), and (W).
+
+\subsection{PA calibration and logical scope}
+The original PA-refutation compiler uses primitive equality through those interfaces, together with the old gate and the unchanged heads. In the inspected logical and arithmetic-certificate source closure, the uses of equality vacuity occur in the reverse-rewriting and neighborhood modules. Substitute the finite derivations above for those affected templates. Code formation, choosing \(c=\ulcorner\neg C\urcorner\), and \(z_0=\ulcorner E(a,b)\urcorner\), the label-equality case splits, and the finite proof concatenations are primitive recursive. Their correctness is provable in PA. This gives the internal refutation-to-halting direction for the revised calculus.
+
+In the other direction, each new diagonal clause has a uniformly generated first-order proof under the arithmetic interpretation, by the code-freshness lemma. Pointed separation is still supplied by full PA induction as in Section~\ref{sec:internal}. The annotated proof-store argument and positive-length tape simulation then give the internal halting-to-refutation direction.
+
+Thus the written calibration argument establishes the same target:
+\[
+ \PA\vdash\bigl(\neg H_{\Gamma}\leftrightarrow\Con(\PA)\bigr)
+\]
+for a correct literal implementation of the revised program. This is a calibration to PA; merely replacing the searched system by iPRA would not supply it. The construction applies the general strategy of replacing a primitive schema by smaller derivably equivalent interfaces. Its decisive freshness lemma comes from PA196's existing numeric coding: the magnitude of a formula code guarantees a fresh variable label. We do not attribute that specific diagonal trick to the ConciseIPRA proposals.
+
+\subsection{The exact emitter change}
+Using the published macro names, replace the old half-open token interval \([121,138)\) by
+\begin{center}
+\texttt{copyA, copyA, copyA, cons, incT, incT, cons}.
+\end{center}
+The three copies push the old top and two copies of \(A\). The first \texttt{cons} and two increments form \(U(A,A)=4p(A,A)+2\); the last \texttt{cons} forms \(I(A,U(A,A))\). The rest of the gate, its two numerical guard comparisons, and the final register cleanup are unchanged.
+
+The independent free-algebra checker compares constructor trees, rather than finitely many numerical examples. It verifies that all nine stack entries are exactly the old entries and that the new top is precisely~\eqref{eq:new-gate}. The macro word has 191 items instead of 201; the primitive program has 3,700 sites instead of 3,812. The nine-item command extraction identities remain unchanged.
+
+The supplied literal implementation has \textbf{199 working states}, after four validated context folds from a 203-state initial compilation. It has 398 transition rows, start state zero, halt label 199, and an all-zero initial tape. Its dense table has SHA-256
+\begin{quote}\small\nolinkurl{6c29db7f324a0d18ee7dc5bfaa3f9b734011c453586d0bc1b96754a6bab4e52c}.\end{quote}
+This is three states larger than the published PA196 machine and four states above the requested maximum of 195. The smaller logical program is therefore a genuine mathematical simplification, but \emph{not} a solution of the requested state-count problem.

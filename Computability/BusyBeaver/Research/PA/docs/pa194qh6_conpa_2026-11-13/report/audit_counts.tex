@@ -1,0 +1,26 @@
+The current census finds 1,445 recognized table occurrences, 725 byte
+forms, and 499 complete one-halt action-graph classes with a spanning root.
+The 499 equals the repository's 490, less three small diagnostic fixture
+classes, plus twelve new classes in the current incoming archives.
+Of the current classes, 40 have 194 working states: 27 have supplied
+ordinary PA-equivalence manuscripts, nine are auxiliary/search tables,
+and four are explicitly rejected. No eligible full consistency-candidate
+table in the scanned literal formats has fewer than 194 states.
+
+The location counts are 506 direct PA files, 127 table occurrences in
+nested PA ZIPs, and 812 in the current incoming archives. Their byte forms
+and graph classes overlap heavily. The scanner recognizes numeric
+five-column tables in \file{.tm}, \file{.txt}, \file{.tsv}, and \file{.csv};
+it does not count unmaterialized parameter families or JSON-only machine
+encodings as literal tables. Named contributions outside that encoding are
+still represented in the delivery ledger. The small diagnostic fixtures
+are recorded separately, not treated as consistency-machine candidates.
+
+PA194QH6 matches none of the 40 pre-existing 194-state classes. The
+novelty checker compares full canonical tuples, not only their hashes,
+under arbitrary state renaming, every spanning-root choice, reflection,
+and binary-symbol exchange. This requires 160 exact comparisons after
+considering the four candidate symmetries. The supplied primary PA194 is
+also used as a positive control: the checker correctly finds its existing
+class. See \file{comparison/QH6_novelty.json} and
+\file{comparison/novelty_positive_control.json}.

@@ -1,0 +1,337 @@
+% Standalone report fragment. Requires amsmath, amssymb; no custom macros.
+\section{Logical calibration of PA194Q}
+\label{sec:q-calibration}
+
+The new machine changes one axiom head and retains the cached-head
+commands of the pinned PA194C construction. Its source instruction map
+is therefore not asserted to equal PA194C's instruction map. The
+preservation argument passes through finite derivations in two
+interderivable numerical calculi, then through their complete command
+compilers and literal tape simulations.
+
+\subsection{The exact change of axiom}
+
+Put
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(a,b)=4p(a,b),\qquad U(i,B)=4p(B,i)+2.
+\]
+Write $a\to b$ for the numerical constructor $I(a,b)$. In the
+separate-diagonal-head calculus let
+\[
+ P=U(D,A),\qquad Q=U(D,I(A,H)),\qquad R=U(D,H).
+\]
+The old sixth head and its new replacement are respectively
+\[
+ L_6(D,A,H)=P\to(Q\to R),\qquad
+ L_6^{\mathrm Q}(D,A,H)=Q\to(P\to R).
+\tag{Q1}
+\]
+Every other head, the guarded separation gate, the separate diagonal
+head, the numerical constructors, and the inference rules are retained.
+There is no change to the numerical parameters $D,A,H$ within any
+formula. In particular, (Q1) is an exchange of two premises within one
+axiom, not a permutation of the three parameter names or an exchange
+of stack positions.
+
+Both postfix emitters have 19 tokens. Writing $A,D,H$ for the macros
+that push the old top and load that register, $C$ for the pairing macro,
+and $i$ for increment, their words are
+\[
+\begin{aligned}
+ L_6 &: A\,D\,C\,i\,i\;
+         A\,H\,C\,D\,C\,i\,i\;
+         H\,D\,C\,i\,i\;C\,C,\\
+ L_6^{\mathrm Q} &: A\,H\,C\,D\,C\,i\,i\;
+         A\,D\,C\,i\,i\;
+         H\,D\,C\,i\,i\;C\,C.
+\end{aligned}
+\tag{Q2}
+\]
+The exact emitter audit identifies these words inside the complete
+190-token AX word, checks both displayed formula blocks in a free algebra,
+and verifies that every surrounding token is unchanged. Each block pushes
+the incoming top and leaves the older stack intact, so the replacement
+preserves every other emitted stack entry.
+
+\subsection{A proof translation independent of quantifier distribution}
+
+The unchanged restricted implicational basis derives, uniformly in
+all numerical codes $a,b,c$, the exchange formula
+\[
+ \bigl(a\to(b\to c)\bigr)\to
+                  \bigl(b\to(a\to c)\bigr).
+\tag{Q3}
+\]
+This is already the theorem \texttt{Dominated.exchange} in
+\texttt{PA196/Logic/ImplicationBasis.lean}. Its construction uses only
+the restricted propositional head, modus ponens, reflexivity of the
+numerical bound, and the two inequalities
+$a,b\le I(a,b)$. In particular it does not use either version of the
+sixth head. It also needs no rule treating code one as falsity.
+
+For clarity, (Q3) is an intuitionistic implicational tautology. From
+assumptions $f:a\to(b\to c)$, $b$, and $a$, two applications of modus
+ponens give $c$; three applications of the implicational deduction
+construction give (Q3). The $K$ and $S$ combinators used by that
+construction are derived from the same unchanged restricted basis.
+The optional certificate supplied with this report checks a finite
+$K,S,\mathrm{MP}$ derivation of this exact exchange formula.
+
+Apply (Q3) at $(a,b,c)=(Q,P,R)$ and use the new axiom
+$Q\to(P\to R)$ as its minor premise. This derives the old axiom
+$P\to(Q\to R)$. Conversely, (Q3) at $(P,Q,R)$ derives the new axiom
+from the old one. These are uniform finite derivations for every
+triple of parameter values $D,A,H$.
+
+Let $\mathcal C$ be the pinned separate-diagonal-head calculus and
+$\mathcal C_{\mathrm Q}$ the calculus with (Q1)'s replacement.
+Transform a $\mathcal C$ derivation recursively: retain every
+unchanged axiom; replace a sixth-head leaf by the new sixth-head
+axiom followed by the first exchange derivation above; recursively
+transform the premises at modus ponens and generalization nodes.
+Every conclusion is preserved literally. The converse transformation
+uses the other exchange derivation. Thus there are primitive-recursive
+proof transformations $F,G$ whose correctness PA proves:
+\[
+\begin{aligned}
+ \operatorname{Prf}_{\mathcal C}(e,B)
+   &\Longrightarrow
+       \operatorname{Prf}_{\mathcal C_{\mathrm Q}}(F(e),B),\\
+ \operatorname{Prf}_{\mathcal C_{\mathrm Q}}(e,B)
+   &\Longrightarrow
+       \operatorname{Prf}_{\mathcal C}(G(e),B).
+\end{aligned}
+\tag{Q4}
+\]
+There is no substitution of arbitrary formulas into a
+freshness-restricted gate. Only the numerical parameters of the
+unrestricted implicational exchange template are instantiated.
+In particular (Q4) proves, inside PA, equivalence of the two
+existential refutation predicates with conclusion code one.
+
+\paragraph{The code-zero alias.}
+These are numerical derivations, so they include zero among the allowed
+formula codes. The identity $I(0,0)=0$ never violates a modus-ponens
+step: its code equality remains exactly the equality required by the
+rule. In the arithmetic interpretation of formulas, $T(B)$ denotes the
+formula produced by a syntactic translation, not an arithmetic truth
+predicate. There is a uniform proof-producing construction of the
+instancewise PA equivalence
+\[
+ T(I(a,b))\leftrightarrow(T(a)\to T(b)),
+\]
+whose exceptional $(a,b)=(0,0)$ case is the fixed equivalence of truth
+with truth implying truth. One must not assert literal syntactic
+identity in that exceptional case. The new head's three displayed
+subformulas are universal codes and hence are nonzero; more generally
+the proof translation does not require any nonzero-code assumption.
+
+\subsection{The ten-entry cached command interface}
+
+Let $[a;w]=p(a,w)$ and let $\operatorname{hd},\operatorname{tl}$ be
+the total Cantor projections. In particular
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$ and $[0;0]=0$.
+The command store is $\langle t,w,d,h\rangle$. The commands retained
+from PA194C are
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}
+   \mathsf{halt},&h=1,\\
+   \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,
+       &h\ne1,
+ \end{cases}
+\]
+and, with $y=d+x$,
+\[
+ \mathsf{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+   \langle0,w,0,y\rangle,&I(t,y)=h,\\
+   \langle0,w,y,0\rangle,&I(t,y)\ne h.
+ \end{cases}
+\tag{Q5}
+\]
+Only Shift can halt. The new axiom command, with
+$D=d+x$, $H=h+y$, $A=c$, has effect
+\[
+ \mathsf{AX}^{\mathrm Q}_{c,x,y}\langle t,w,d,h\rangle
+  =\langle K(H,D,c),[q_1,\ldots,q_9,t;w],0,0\rangle,
+\]
+where
+\[
+ (q_1,\ldots,q_9)=
+ (\Gamma(A),L_6^{\mathrm Q},L_5,L_4,L_3,L_2,L_1,
+      \rho_8(D,A,H,d),U(d,h)).
+\tag{Q6}
+\]
+Here $K(a,b,c)=G(a,b,c)$ is the unchanged guarded gate defined in the
+following all-axiom section, and
+$\Gamma(B)=I(B,U(B,B))$. The saved top remains the tenth pushed
+entry. All $q_j$ except $q_9$ have residue zero modulo four;
+$q_9$ has residue two. The gate has residue zero, including a failed
+guard's output zero. Hence none of these generated entries is one.
+
+The general cached-command proof depends on those residues, the ten
+positions, and the last two entries. It does not depend on the internal
+curried-premise order of $q_2$. For the new AX command define
+\[
+\begin{aligned}
+ \mathsf{Push}&=\mathsf{AX}^{\mathrm Q}_{0,0,0};S^9;
+                                      \mathsf{MP}_0,\\
+ \mathsf{Pop}&=\mathsf{AX}^{\mathrm Q}_{0,0,0};S^{11},\\
+ \mathsf{Discard}&=\mathsf{MP}_1;
+     \mathsf{AX}^{\mathrm Q}_{1,0,0};S^{10};\mathsf{MP}_0.
+\end{aligned}
+\tag{Q7}
+\]
+These words satisfy, for all displayed natural values,
+\[
+\begin{aligned}
+ \mathsf{Push}\langle t,w,d,h\rangle
+       &=\langle0,[t;w],0,0\rangle,\\
+ \mathsf{Pop}\langle t,[a;w],d,h\rangle
+       &=\begin{cases}\mathsf{halt},&t=1,\\
+                         \langle t,w,0,a\rangle,&t\ne1,
+          \end{cases}\\
+ \mathsf{Discard}\langle t,w,0,0\rangle
+       &=\langle0,w,0,0\rangle.
+\end{aligned}
+\tag{Q8}
+\]
+Indeed, the first ten Shifts after AX test the cleared cache and the
+nine generated entries, and never test the saved top. The next Shift
+tests precisely that top. Push's final MP necessarily fails because
+an implication has residue zero and the current universal cache has
+residue two. Discard's two failed comparisons follow from
+$I(t,1)>0$ and $I(U(1,0),0)>0$. These calculations use the total
+projection identities, including their zero aliases; they do not
+require stacks to be free lists.
+
+For $1\le j\le7$, the head selector remains
+\[
+ \mathsf{Discard};\mathsf{AX}^{\mathrm Q}_{A,D,H};
+                      S^{j+1};\mathsf{Pop}^{9-j}.
+\tag{Q9}
+\]
+It returns $q_j$ on the original arbitrary stack with both caches zero,
+starting from any $\langle t,w,0,0\rangle$, even when $t=1$.
+In particular the selector for the changed head is $S^3$ followed by
+seven Pops after Discard and AX. It returns the new head, not the
+old one; the latter is obtained by compiling the derivation in (Q4).
+The unchanged generalization, restricted-propositional-head, and
+gate selectors have the same proofs and exponents as PA194C.
+
+For completeness, with $\mathsf{Offset}_0$ empty and
+$\mathsf{Offset}_i=\mathsf{MP}_i$ for $i>0$, generalization uses
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;S;
+              \mathsf{AX}^{\mathrm Q}_{i,0,0};S^{10}.
+\]
+It sends $\langle a,w,0,0\rangle$ to
+$\langle U(i,a),w,0,0\rangle$ for every $a,w$, including $a=1$.
+The MP suffix $S;S;\mathsf{MP}_b;S$ on
+\[
+          \langle0,[a,I(a,b),0;w],0,0\rangle
+\]
+halts if $a=1$ or $b=1$, and otherwise returns
+$\langle b,w,0,0\rangle$. The dummy zero is essential for preserving
+the arbitrary underlying stack. The calculation also covers
+$a=b=w=0$ and $I(0,0)=0$.
+
+\subsection{All-store completeness and syntactic soundness}
+
+For a finite $\mathcal C_{\mathrm Q}$ proof $e$, compile axiom leaves
+by their selectors, generalization by the preceding word, and an MP
+node with major proof $e_1$ of $I(a,b)$ and minor proof $e_0$ of $a$ by
+\[
+ \mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+ W_{e_0};\mathsf{Push};S;S;\mathsf{MP}_b;S.
+\]
+Induction on the finite proof tree proves the exact invariant:
+from every $\langle t,w,0,0\rangle$, the word $W_e$ either halts
+or returns $\langle\operatorname{concl}(e),w,0,0\rangle$.
+Therefore, if $e$ proves one, the word
+\[
+       \mathsf{AX}^{\mathrm Q}_{0,0,0};W_e;\mathsf{Pop}
+\tag{Q10}
+\]
+halts from every incoming store. This all-store assertion handles the
+inherited scheduler's retention of the store between unsuccessful
+trials. An assumption that every trial resets the store would be wrong.
+The unchanged exhaustive scheduler eventually tests the word (Q10),
+so a refutation yields a source halt.
+
+Conversely annotate the visible top, cached head, and each live
+canonical stack entry by derivations in $\mathcal C_{\mathrm Q}$.
+Zero has the fixed derivation $\rho_8(0,0,0,0)=0$, so a single
+zero proof supplies the total stack's padding. AX emits its own axiom
+heads, the saved theorem, and a generalization of the cached theorem;
+successful MP applies modus ponens; failed MP returns zero.
+Shift moves derived formulas and halts only at a cached proof of one.
+This finite proof-store invariant extracts a refutation from every
+source halt. The changed head is sound in this invariant because it
+is an axiom of the new calculus, and by (Q4) it also has a proof in
+the old calculus.
+
+These constructions are primitive recursive. Their correctness uses
+induction on finite proofs, total Cantor-stack decoding, natural loop
+counters, and finite traces. PA consequently proves
+\[
+ H_{R_{\mathrm Q}} \leftrightarrow\
+   \exists e\,\operatorname{Prf}_{\mathcal C_{\mathrm Q}}(e,1),
+ \qquad
+ H_{R_{\mathrm C}}\ \leftrightarrow\
+   \exists e\,\operatorname{Prf}_{\mathcal C}(e,1).
+\tag{Q11}
+\]
+Here $R_{\mathrm Q}$ is the newly bound source program and
+$R_{\mathrm C}$ the pinned cached-head source. Equation (Q4),
+not source-step identity, connects their existential halting predicates.
+
+\subsection{Literal machines and the PA biconditional}
+
+The machine-specific certificates bind the literal PA194Q table to
+$R_{\mathrm Q}$: every one of its 4,749 source outcomes has a
+positive-length, non-premature-halting simulation ending in the exact
+intended complete frame, and its verified blank startup reaches the
+clean source seed. The corresponding interfaces for PA194C are
+retained from the pinned source packet. The generic arithmetic proofs
+of the literal transition and register-scan certificates yield
+\[
+ \mathrm{PA}\vdash H_{M_{\mathrm Q}}\leftrightarrow H_{R_{\mathrm Q}},
+ \qquad
+ \mathrm{PA}\vdash H_{M_{\mathrm C}}\leftrightarrow H_{R_{\mathrm C}}.
+\tag{Q12}
+\]
+The forward trace construction concatenates the physical simulations
+and prepends startup. For the reverse implication, a first literal
+halt at time $T$ contradicts $T+1$ nonhalting source steps: their
+positive physical durations would give, by determinism, a nonhalting
+literal execution extending beyond $T$. This is a bounded arithmetic
+argument and does not assume either machine actually runs forever.
+
+Combining (Q4), (Q11), and (Q12) proves the new preservation theorem
+\[
+ \boxed{\mathrm{PA}\vdash
+       H_{M_{\mathrm Q}}\leftrightarrow H_{M_{\mathrm C}}.}
+\tag{Q13}
+\]
+The supplied calibration of $\mathcal C$ gives primitive-recursive
+translations between its refutations and PA refutations, with
+PA-provable correctness.
+Its reverse translation uses arithmetic finite bit comprehension
+as a proof-producing induction template, not a uniform truth predicate.
+Its forward translation uses the diagonal-freshness replacement of
+equality vacuity and the established PA-refutation compiler.
+Using that inherited mathematical calibration with (Q13) gives
+\[
+ \boxed{\mathrm{PA}\vdash
+   \bigl(\neg H_{M_{\mathrm Q}}\leftrightarrow
+                         \operatorname{Con}(\mathrm{PA})\bigr).}
+\tag{Q14}
+\]
+This is an ordinary mathematical proof with executable finite and
+universal symbolic certificates. The new exchange and transport
+arguments do not turn the repository's conditional iPRA endpoints
+into completed formalizations. No newly compiled end-to-end Lean
+or Rocq theorem for (Q14) is asserted.

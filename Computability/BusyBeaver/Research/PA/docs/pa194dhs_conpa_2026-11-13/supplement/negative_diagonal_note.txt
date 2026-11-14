@@ -1,0 +1,105 @@
+Negative-only diagonal schema: proof note and exact scope
+
+Pinned source: ProveIt 3cc7fbf75ba111a0da696ef2f6001dd528891bd5.
+Notation I(a,b)=4*pair(a,b), N(a)=I(a,1), U(z,a)=4*pair(a,z)+2.
+
+1. Closed positive vacuity from closed negative vacuity
+
+Input: a finite derivation v of N(B) -> U(z,N(B)).
+Output: a finite derivation B -> U(z,B), with THE SAME z.
+
+A proof-producing term using the repository's existing operations is:
+
+  implicationCompose (doubleNegationIntroduction B)
+    (implicationCompose (negationVacuity z (wn B) v)
+      (liftImp z (doubleNegationElimination B)))
+
+The displayed term is a specification in the notation of the existing
+PA196.Logic API, not a newly compiled Lean declaration. Its inputs and
+outputs follow directly from those operations' types. It transfers to
+any calculus retaining their rule dependencies.
+
+Audited dependency facts:
+- negationVacuity: Logic/Vacuity.lean. Given A -> U(z,A), contrapose it,
+  generalize the resulting CLOSED theorem, and apply h6. Contrapose h1
+  at A, apply double-negation elimination to its consequent, and compose.
+  The operation uses h1, h6, theorem generalization, MP, and propositional
+  proof templates. It uses no equality-vacuity, membership-vacuity, gate,
+  or diagonal-axiom constructor.
+- liftImp: Logic/Vacuity.lean; it is generalization plus h6/distribution.
+- doubleNegationIntroduction: Logic/Reverse.lean; its body is a finite
+  assumption/MP/deduction argument, with no reverse-rewriting dependency.
+- doubleNegationElimination: Logic/Deduction.lean; its body uses the
+  dominated Peirce theorem and explosion. Explosion itself is derived
+  using h1 and dominated K, so no diagonal or equality-vacuity dependency
+  is introduced by this step.
+- Implication composition, K, S, Peirce and exchange come from the
+  unchanged dominated implication basis via Logic/ImplicationBasis.lean.
+
+Thus the proof does not assume the equality facts it is intended to help
+recover. Generalization is applied only to theorem proofs, never to an
+arbitrary assumption whose vacuity has not been paid for.
+
+2. Exact binder for the restricted schema
+
+C_minus retains only Gamma(N(B)) = N(B) -> U(N(B),N(B)). Applying item 1
+with z=N(B) yields B -> U(N(B),B). The binder is N(B), not B. Numerical
+codes for B, N(B), and N(N(B)) are not identified. The quantified DNE
+step is proved by liftImp, not by syntactic replacement inside U.
+
+3. The two inherited calibration uses
+
+Reverse rewriting:
+  C = E(a,b) -> (chi(b) -> chi(a)), phi=N(C), c=phi.
+  The original diagonal replacement needs phi -> U(c,phi), which is
+  literally an allowed Gamma(N(C)). No alteration is needed there.
+
+Neighborhood equality:
+  B=E(a,b), choose z0=N(B), rather than the old z0=B.
+  Item 1 yields B -> U(z0,B). Code inequalities give z0>B>a,b.
+  Lift the recovered forward/reverse membership rewrites to obtain
+  B -> R(a,b,z0). The existing membership-only binder-transport proof
+  changes z0 to any z distinct from a,b; treat z=z0 by identity.
+  The witness interface then follows by the unchanged existential
+  monotonicity template with the new neighborhood implication.
+
+The inherited compiler uses primitive equality via these interfaces.
+This note replaces those interface templates and retains that stated
+compiler/calibration dependency. It does not claim a full translation
+of arbitrary proofs in the old separate-head calculus into C_minus,
+since no proof of Gamma(B) at the original binder B is supplied here.
+
+The replacement proof templates and arithmetic name choices are primitive
+recursive. Their correctness is established by proof-tree induction and
+finite arithmetic identities in PA, using the same ordinary syntactic
+calibration boundary as the main report. No stronger semantic or
+proof-assistant verification claim is made.
+
+4. Cost data: keep the two experiments separate
+
+negative_only_screen.json: 9 direct Gamma(N(R)) insertions, three old
+A/D/Q tree associations times R=A/D/H. Replacement is left-associated
+copyR; push; incT; cons for each of the three copies. Minimum optimistic
+count: 200 (D association), other associations: 202.
+
+positive_offset_screen.json: 72 direct Gamma(R+k) insertions, the same
+three associations and registers, k=1,...,8. Minimum optimistic count:
+198, attained at k=1 with the D association. The k=1 schema covers all
+positive B and its missing Gamma(0) has a fixed proof; no corresponding
+logical completeness claim is made here for every larger k.
+
+Both counts mean raw controls minus a maximum matching of eligible
+contextual-fold pairs. This is optimistic, since pair choices may not be
+simultaneously compatible. Neither screen has accepted source-contract
+and blank-start verification. No smaller consistency machine is claimed.
+
+5. Portable replay
+
+Run python3 -B supplement/semantic_screens.py from the package directory,
+or give the absolute script path from any directory. This reuses the
+pinned construction compiler and frozen supplement/grammars/{A,D,Q}.json,
+then compares all 105 cross profiles, 72 positive-offset profiles and 9
+negative-only profiles with the recorded JSON. No external repository
+checkout or scratch path is required. All 186 profiles replayed with PASS;
+see replay_receipt.json. The arbitrary maximum matching itself need not be
+identical across Python versions; all maximum sizes and costs are compared.

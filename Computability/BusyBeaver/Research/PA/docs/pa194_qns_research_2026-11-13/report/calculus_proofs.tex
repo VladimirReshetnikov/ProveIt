@@ -1,0 +1,49 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx,enumitem}
+\usepackage{xcolor,xurl,hyperref,fancyhdr,needspace}
+\definecolor{ink}{HTML}{16364B}
+\definecolor{teal}{HTML}{126B76}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=teal,
+ pdftitle={PA194QNS and TAG196N: logical transports and command compiler},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.6em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Numerical proof calculi}
+\fancyhead[R]{\small Complete transport and compiler proofs}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\title{\color{ink}Logical transports and the no-push compiler\\[5pt]
+\large Supplementary proofs for PA194QNS and TAG196N}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{13 November 2026, Pacific time}
+\begin{document}
+\maketitle
+\begin{abstract}
+This supplement supplies the complete proof translations for exchanging
+curried premises in three axiom heads and for swapping the quantifier and
+equality constructor tags. It also gives the matching no-push command
+compiler with the original sum-based Shift guard. Numerical zero aliases,
+arbitrary incoming stores, recoding of variable labels and the nonmonotone
+side condition are treated explicitly. The inherited PA calibration and
+restricted-implication template are identified as dependencies. These are
+ordinary mathematical proofs whose syntactic reductions are verifiable in
+PA, not a new end-to-end Lean or Rocq formalization. The complete physical
+machines and their executable verification evidence are in the accompanying
+research archive and main report.
+\end{abstract}
+\tableofcontents
+\clearpage
+\input{../proofs/calculus_transports.tex}
+\input{../proofs/command_compiler.tex}
+\end{document}

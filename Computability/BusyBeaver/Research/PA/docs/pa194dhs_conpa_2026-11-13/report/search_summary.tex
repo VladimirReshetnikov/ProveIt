@@ -1,0 +1,61 @@
+\subsection{Physical contractions and decoder allocation}
+
+The physical screens operate on explicit literal tables. They try common
+replacement actions for two controls, or separately redirected incoming
+edges of an eliminated control. The replacement must reproduce the
+specified tape, target control and head position inside the tested window,
+and must avoid circular reliance on rows being rewritten. Passing one
+representative window would not establish a global proof; all required
+abstract contexts must pass, followed by the complete source and startup
+checks. No proposed contraction passed the screens below.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{.24\linewidth}p{.14\linewidth}p{.18\linewidth}X@{}}
+\toprule Input / rule & Radius & Step bound & Context scope\\\midrule
+Primary PA194, pair merger & 4 & 80 & All-tape abstract contexts.\\
+Primary PA194, pair merger & 6 & 120 & Blank-start abstract contexts.\\
+Top-only Shift, pair merger & 6 & 300 & Blank-start abstract contexts; this input has 195 controls.\\
+PA194DHS, pair merger & 7 & 300 & Blank-start abstract contexts; all working endpoints considered.\\
+PA194DHS, incoming-edge bypass & 7 & 300 & All-tape abstract contexts; exact old two-step endpoint.\\
+PA194DHS, joining-prefix pair & 4 & 40 / 120 & Blank-start abstract contexts; a later old configuration may be the common endpoint.\\
+PA194DHS, joining-prefix pair & 6 & 80 / 240 & 274,589 abstract state/window pairs.\\
+Top-only Shift, joining-prefix pair & 6 & 80 / 240 & 268,907 abstract state/window pairs.\\\bottomrule
+\end{tabularx}\end{center}
+Here a radius-$r$ window has $2r+1$ cells. These abstractions and bounded
+continuations give sufficient local rewrite rules, not complete searches
+through halting-equivalent machines. A failed overapproximation can hide
+a reduction that requires a stronger global invariant.
+For a joining-prefix screen, the two bounds concern the old prefix and
+replacement continuation, respectively. Both paths must avoid rewritten
+controls before their common endpoint. These three additional screens
+also returned zero candidates.
+
+A separate 15,120-case finite screen permutes all seven generated head
+blocks in the DHS association and independently chooses the diagonal
+argument from $A,D,H$. Its best allocation score is 194. Source semantics,
+structured returns and simultaneous local folds still require their own
+checks whenever an allocation score looks promising.
+
+Three seeded grammar searches, including folds with eligible fixed
+passive readers, likewise supplied no certified sub-194 table:
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}Xp{.12\linewidth}r r@{}}
+\toprule Search & Seconds & Proposal slots & Best score\\\midrule
+DHS shared-subtree reassociation & 600 & 11,362,240 & 194\\
+DHS head order, parameters and reassociation & 600 & 8,606,089 & 194\\
+Normalized top-only Shift reassociation & 120 & 2,243,386 & 195\\\bottomrule
+\end{tabularx}\end{center}
+The seeds are 202611141931, 202611141932 and 202611141933, respectively.
+The total of 22,211,715 counts proposal slots, including skipped mutations,
+repeated trees and rejected proposals; it is not a count of distinct
+machines or proofs. The corresponding accepted-mutation counts are
+547,685, 3,012,683 and 130,995. The optional bundle at
+\file{search/local_and_grammar/} records exact inputs, seeds, stopping
+budgets, observations and limitations. Discovery is not required by
+\file{verify_all.py}.
+
+An early top-only mutation experiment had inconsistent indexing between
+opaque and expanded increment macros. That run is excluded from trusted
+search accounting. A corrected normalized reassociation experiment is
+recorded separately. The accepted PA194DHS construction and its complete
+verification do not depend on the rejected search run.

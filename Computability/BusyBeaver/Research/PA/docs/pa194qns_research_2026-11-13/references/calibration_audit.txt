@@ -1,0 +1,151 @@
+Independent audit of the inherited ordinary PA calibration
+Snapshot: 317b07268681b44ff352d173a162e2a8c241b2fe
+
+Outcome and scope
+-----------------
+I found no concrete defect in the inherited ordinary mathematical calibration
+after checking its delicate logical and coding steps against the supplied Lean
+source interfaces. This is a review of a written proof and its dependencies,
+not a newly compiled Lean/Rocq endpoint. The repository expressly leaves its
+machine-specific iPRA consistency reductions open. The resulting distinction
+must remain visible in the report.
+
+The QNS theorem does not need a new calibration of a new axiom system. Its exact
+resolved source agrees with the supplied QN source through instruction 3648 and
+changes only a terminating Shift trailer. The supplied QN source is calibrated
+by (i) the premise-exchange proof translation for Q and (ii) the no-push command
+compiler for N. The new source equivalence is independently proved in
+source_preservation.tex and bound by check_source_preservation.py.
+
+Logical source audit
+--------------------
+The main inherited text is original_pa195_calibration.tex; its separated-head
+adaptation is separate_head_PA_calibration.tex. The diagonal replacement is
+spelled out independently in diagonal_calculus.tex and the change from a bundled
+to a separate diagonal head in separate_head_calculus.tex. These documents are
+copied unchanged under references/logical and hashed in references/PROVENANCE.json.
+
+The PA196 source inspected was
+Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/PA196/Logic/.
+Basic.lean defines exactly the six logical heads, restricted implication head,
+guarded gate, MP and theorem generalization. Reverse.lean's
+negativeSpecialization takes direct membership rewriting and membership-vacuity
+premises only; it does not appeal to primitive equality vacuity. The explicit
+uses of equalityVacuity in that logical dependency closure are in reverseChi
+(Reverse.lean) and primitiveToNeighborhood (Neighborhood.lean). The corresponding
+Arithmetic/Certificates copies have the same two uses. This matches the two
+interfaces replaced by the diagonal proof in the manuscript.
+
+For reverse rewriting, the new property phi is the negation of the entire
+desired equality implication C, and separator label c is the code of phi.
+Hence c is fresh for all variables of C. The quantified consequent is weakened
+propositionally to a negative membership-only property before applying
+negativeSpecialization. Thus the equality atom inside phi is not silently
+substituted. After deriving phi -> (S -> not P), Gamma(phi) pays exactly for
+generalization at c; pointed separation supplies not Q. This avoids the old
+equality-vacuity premise without invoking an unproved arbitrary alpha-renaming
+rule. Coincident fixed labels are handled by the diagonal membership case.
+
+For neighborhood equality, the first binder is z0=code(E(a,b)). Gamma(E(a,b))
+pays for this binder. Transport to another z uses the already recovered
+two-way membership rewrites, the retained equality witness, and membership-only
+vacuity. The target matrices contain only a,b,z and are vacuous at fresh z0;
+the universal antecedent is vacuous at z when z differs from a,b,z0. This is
+the exact point where the retained quantifier-commutation head is needed.
+
+The proof-producing PA-refutation compiler for the original calculus is an
+explicit inherited dependency from the PA196 development. The ordinary
+manuscript replaces its R/N/W interfaces with these finite templates. It does
+not claim that the new diagonal calculus has been substituted throughout and
+compiled in the PA196 Lean project. This is the correct formalization boundary.
+
+Q premise exchange
+------------------
+I inspected PA196/Logic/ImplicationBasis.lean and
+M6/Logic/RestrictedImplication.lean. Dominated.exchange is obtained through the
+generic restricted implicational Rules interface. That interface uses only MP,
+the restricted rho row, reflexivity of the numerical bound, and the left/right
+constructor bounds. No quantifier-distribution head occurs in the construction.
+Therefore exchanging P -> (Q -> R) with Q -> (P -> R) has fixed uniform proof
+translations in both directions without circularly using the head being changed.
+The QN command compiler selects the changed head in the unchanged q2 slot.
+
+Internal soundness in PA
+-----------------------
+The arithmetic translation interprets membership by Bit(x_a,x_b), equality by
+actual equality and universal coding by quantification of the indicated source
+label. PA proves not Bit(x,x), which supplies a refutation of source code one.
+The exceptional implication I(0,0)=0 is treated by a fixed proof that truth is
+equivalent to truth implying truth; no disjoint-constructor assumption at zero
+is made. Extra bound variables of the bit formula are renamed or represented
+with bound indices so they do not invalidate source-label freshness.
+
+The finite-bit-comprehension supplier is a syntactic proof-producing operation:
+given any well-formed arithmetic formula theta, substitute it into a fixed
+PA-induction proof pattern. PA verifies that the generated proof code is valid.
+This is a uniform theorem about proof checking, not a truth predicate or a
+reflection principle for PA. The manuscript explains this distinction and the
+uniform syntactic induction, rather than inferring uniformity merely from
+separately constructed standard proofs.
+
+The separation supplier distinguishes a != b from a=b. In the latter case the
+bound first antecedent is Bit(z,z), not Bit(x_a,z) with x_a frozen. The singleton
+matrix (z=x_b) and theta[z/x_b] correctly handles that collision. The guard makes
+the separator label distinct from the two input labels, and code freshness
+makes it absent from its own property. This handles the most likely variable-
+capture error in the scheme.
+
+No-push compiler and persistent store
+------------------------------------
+I checked the N proof's exact contracts. Successful MP_x returns (b,w,b,0),
+where b=d+x; d is not cleared. Push uses the generated universal q9, whose
+residue differs from an implication, to force failure. Pop=A0;S^11 is total
+under the sum guard, even for saved top one, because its decisive sum includes
+U(d,h)>=2. Discard=MP_0 on d=0 has the same output in both branches, including
+the zero alias. The MP compiler reserves one zero below its two premises before
+using Pop to clear the outgoing offset/cache and preserve the arbitrary tail.
+
+Cantor stacks are numerical: pair(0,0)=0. The proof uses the exact total
+projection identities rather than a free-list or fixed-length assumption.
+For soundness, it annotates the canonical finite stack obtained by popping
+until zero; popping zero returns the fixed truth proof. Both visible registers
+t and h are annotated because the sum guard may expose code one in either.
+No theorem annotation is imposed on arithmetic offset d.
+
+The compiled refutation word halts from every incoming store, not just from an
+empty stack. Prefixing it by AX_k,0,0 gives a cofinal family of candidate codes,
+so a scheduler starting at candidate two loses no refutation. Positive
+continuation codes decrease under residual decoding, and the primitive source
+loops terminate. The source's retained store between trials is therefore
+handled explicitly.
+
+Physical boundary
+-----------------
+Every candidate must have its own full source-to-tape contracts and blank
+startup check. State folds valid at command boundaries do not alone prove that
+the blank initialization reaches those boundaries; the repository contains a
+rejected table halting during startup. The current proof requires exact whole-
+tape startup and positive simulation lengths for every source primitive.
+
+Conversely, a first physical halt at time T is incompatible with T+1 completed
+nonhalting source primitives whose positive simulations extend beyond T. This
+is a finite, bounded determinism argument inside PA. It does not infer actual
+nonhalting from a long simulation, and it does not assume a reflection principle.
+
+Transferable ZFC and concise-iPRA ideas
+------------------------------------
+The useful ZFC contributions here are delayed work on successful MP, reserving
+an explicit zero in the proof compiler, source-tree reassociation, and sharing
+control states using a restored tape-history bit. The N packet already cites
+candidate-k215/alternatives/zero-spare-transfer as ancestry. These mechanisms
+must be checked at the new controller's exact command interface; a state saving
+from one controller is not an arithmetic subtraction from another.
+
+ConciseIPRA supplies the general strategy of replacing a large primitive rule
+by a smaller derivably equivalent interface and deriving logical infrastructure
+from a small kernel. It does not by itself supply the requested Con(PA) target.
+The calibration here uses full PA induction for arbitrary-formula finite
+comprehension. Searching merely for an iPRA contradiction would require a new
+PA-provable pair of refutation translations, which is not provided by the
+iPRA checker simplifications. The existing arithmetic/PRA infrastructure is
+valuable for future formalization of the already stated finite translations.

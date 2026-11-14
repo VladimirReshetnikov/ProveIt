@@ -1,0 +1,139 @@
+\section{What the complete comparison establishes}
+\label{sec:comparison}
+
+The comparison is frozen at ProveIt commit
+\begin{quote}\small\nolinkurl{317b07268681b44ff352d173a162e2a8c241b2fe}.\end{quote}
+It covers all 51 delivered packets filed under
+\file{Computability/BusyBeaver/Research/PA/docs}, the three current incoming
+archives, the primary PA documentation and imported PA196/PA209 sources.
+The ZFC and ConciseIPRA projects were examined for transferable mechanisms.
+The three additional archives are \file{PA194NS_research.zip},
+\file{pa194haz_research_2026-11-14.zip}, and
+\file{pa194qn_research_2026-11-13.zip}. Thus there are \textbf{54 deliveries}
+in the narrative ledger. Immutable paths, packet summaries and provenance
+appear in \file{comparison/packet_ledger.csv} and its JSON counterpart.
+
+\subsection{Literal tables, graph classes and evidence status}
+
+The new scanner reads every tracked \file{.tm}, \file{.txt}, \file{.csv}
+and \file{.tsv} file in the two requested locations, and recursively reads
+ZIP archives. It visits identical ZIP payloads once. A recognized table is
+a complete numeric five-column binary transition table with left/right
+moves and one undefined target serving as halt. The resulting inventory is:
+\begin{center}
+\begin{tabular}{@{}lr@{}}\toprule
+Item & Count\\\midrule
+Delivery packets & 54\\
+Recognized literal-table occurrences & 1,402\\
+Distinct table byte strings & 721\\
+Complete action graphs with a spanning root & 497\\
+194-state action graphs & 39\\
+195-state action graphs & 19\\
+196-state action graphs & 99\\
+\bottomrule\end{tabular}
+\end{center}
+The scanner examines 3,480 candidate text occurrences and 17 distinct ZIP
+bodies reached through 29 references. The 194-state portion contains 179
+occurrences and 94 byte presentations. Two disconnected synthetic fixtures
+with six and nine controls are recorded separately; another synthetic
+fixture has no terminal target and fails the recognizer. There is
+\emph{no complete spanning-root graph with 7--193 working states} in the
+recognized corpus. This is an inventory result, not a minimality theorem.
+
+The graph comparison is stronger than a comparison of filenames or hashes.
+For every possible root reaching the whole table it serializes the complete
+action graph in deterministic traversal order. It then compares the
+canonical strings, also allowing global tape reflection and interchange of
+the two symbols. All 39 current 194-state classes remain distinct under
+these transformations. Symbol interchange is included only as a stronger
+structural exclusion test: it does not by itself preserve a distinguished
+zero blank. The new machine is compared against \emph{all} these classes,
+including auxiliary and rejected objects.
+
+Of the 39 existing classes, \textbf{26 are presented as constructions},
+nine are auxiliary or search objects, and four are explicitly rejected
+implementations. These labels report the supplied evidence; they do not
+assert that all historical proof obligations were independently discharged
+in this investigation. Appendix~\ref{app:frontier} lists each class. Every
+table, its identity, its member paths and its evidence classification can
+also be inspected in the machine-readable census.
+
+Old reports have different occurrence totals because repository filing has
+removed repeated table copies, and older archives recursively quoted one
+another. Those totals must not be added. The current scanner deliberately
+does not infer tables hidden only in arbitrary program expressions, JSON,
+prose or uninstantiated search parameters. The packet-by-packet narrative
+review complements that explicit literal-table boundary.
+
+\subsection{The main 194-state mechanisms}
+
+\begin{longtable}{@{}p{.23\linewidth}p{.71\linewidth}@{}}
+\toprule Family & What changes, and what its comparison requires\\\midrule\endhead
+PA194, AD, 68/8 & The separated diagonal head and ten-entry AX interface are shared. The primary budget is $134+67-7$; AD changes register placement, and 68/8 trades an extra decoder reader for an extra compatible fold. Their resolved sources or source conjugacies must be compared, not only the counts.\\
+C, CS & Successful MP leaves its result in the cache; Shift tests the cache alone. CS changes the destructive comparator. These have 3,649 and 3,646 source sites. Their proof-word interface differs from the original sum-guard controller.\\
+N, H, HS & N omits a successful-MP zero push but retains the sum guard and visible result. H/HS combine no-push MP with a cache-only guard. N's successful result is $(b,w,b,0)$; the retained offset and missing zero must be handled by the proof compiler.\\
+M4R, M5, M6; N5, N6 & A multiplier-decoder reassociation exposes another history fold. M5/M6 change formula coefficients to 5/6; the stack and scheduler still use Cantor pairing. Their hereditary formula-and-label recoding is not order preserving. N5/N6 add no-push MP.\\
+J, D, Q, QN & J changes return organization; D emits a diagonal instance indexed by another register. Q exchanges the curried premises of a quantifier-distribution axiom. QN adds no-push MP to Q. Logical and command interfaces must both be translated.\\
+CZ, CSZ/X, A, F, R, ZR and auxiliaries & Known-zero decrements, scanner choices and source reassociations change physical return paths. Their local invariants need a separate blank-start check. Some source-valid changes fail during initialization.\\
+HA, HAZ & These combine the older MPH cached-result interface with physical A/D placement; HAZ also changes the final AX return. Their sum guard differs from the cache-only H/HS family despite overlapping names.\\
+SUMS, incoming sum-NS & These retain the original sum guard but compare its two operands in reverse order, removing a transfer loop. A new one-bit history fold pays for the trailer reader. The incoming sum-NS additionally omits the MP push.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Duplicates and ambiguous names}
+
+Several apparent additions to the frontier are the same literal graph:
+five principal cached-controller deliveries repeat PA194C;
+PA194X equals PA194CSZ;
+the filed PA194HS equals the lowercase packet's PA194NS;
+and the two N6 deliveries contain the same PA194N6.
+The \emph{uppercase} incoming \file{PA194NS_research.zip} uses PA194NS
+for a different machine, preserving the sum guard rather than testing the
+cache alone. Its dense digest begins \texttt{eef9329b}; the filed HS/NS
+digest begins \texttt{19935635}. HAZ's preliminary H is the old MPH auxiliary,
+not the H from the HS packet. Full paths and exact bytes resolve these
+collisions; names alone do not.
+
+\subsection{The larger machines}
+
+The 19 graphs at 195 states include the original bundled-diagonal PA195,
+the separated-head 195S, the cached 195C, the scanner variant M195S8,
+diagonal-combined PA195DC, quotient parents and rejected or auxiliary
+experiments. Two latest QN-tail experiments are physically checked but are
+not supplied with complete new consistency calibrations. Thus 19 is not
+a count of 19 independently established consistency theorems.
+
+The 99 graphs at 196 states include the imported PA196 and later logical,
+register, controller and decoder variations. A shorter direct-negation
+source has a verified 197-state allocation: source length is not the
+physical objective. The 197--207-state graphs mostly record larger
+experiments or ancestors. There are 142 classes at 208 states, predominantly
+U208 research variants and quoted inputs; the principal U208 reductions use
+entry, finite-history and contextual folds of an older U209 implementation.
+Imported PA209 and U209 are distinct source lineages. The census retains
+all recognized ancestors through 222 states and their exact paths.
+
+\subsection{A useful negative control}
+
+Three distinct comparator-return mutations independently halt after exactly
+\textbf{1,361 blank-tape steps}. The fresh simulator and their identities are
+included in \file{comparison/verify_negative_examples.py} and
+\file{comparison/early_halt_rechecks.json}. Their source-level zero invariants
+do not rescue a changed initialization. This is why a successful source
+contract and a full blank initialization are both required below. The fourth
+rejected 194-state graph is the shortened seven-zero scanner, whose supplied
+source-address contract fails; no new complete replay of that older failure
+is claimed here.
+
+\subsection{The formal proof boundary}
+
+The current PA project explicitly leaves its machine-specific iPRA
+consistency reductions open, while providing substantial Lean source,
+quotient, zipper, scheduler and clock infrastructure~\cite{pa-status}.
+The delivered papers separately give ordinary mathematical arguments
+intended to be formalizable in PA. These are different claims. Absence of
+a newly compiled Lean endpoint does not disprove an ordinary paper proof;
+standard-natural-number simulation and a conditional arithmetic endpoint
+also do not discharge the missing iPRA reductions. This report proves its
+new transport and identifies the inherited PA-calibration arguments rather
+than silently upgrading one proof level to another.

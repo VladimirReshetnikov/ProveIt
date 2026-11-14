@@ -14,7 +14,7 @@ a report at one of the destinations of section 2.
 
 ## Con(PA) machine research packets
 
-Fifty-five archives that arrived between 28 October and 13 November 2026 are about
+Sixty-one archives that arrived between 28 October and 13 November 2026 are about
 constructing a Turing machine whose non-halting is equivalent to `Con(PA)`. They are
 placed, as delivered and without a write, in
 [`Computability/BusyBeaver/Research/PA/docs`](../../Computability/BusyBeaver/Research/PA/docs/README.md),
@@ -85,6 +85,12 @@ from the history.
 | `pa194haz_research_2026-11-14.zip` | 2026-11-13 | [pa194haz_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194haz_research_2026-11-14/) |
 | `pa194qn_research_2026-11-13.zip` | 2026-11-13 | [pa194qn_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194qn_research_2026-11-13/) |
 | `pa194h6_conpa_2026-11-13.zip` | 2026-11-13 | [pa194h6_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194h6_conpa_2026-11-13/) |
+| `pa194dhs_conpa_2026-11-13.zip` | 2026-11-13 | [pa194dhs_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194dhs_conpa_2026-11-13/) |
+| `pa194nq_research_2026-11-13.zip` | 2026-11-13 | [pa194nq_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194nq_research_2026-11-13/) |
+| `pa194_qns_research_2026-11-13.zip` | 2026-11-13 | [pa194_qns_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194_qns_research_2026-11-13/) |
+| `pa194_qradix_research_2026-11-13.zip` | 2026-11-13 | [pa194_qradix_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194_qradix_research_2026-11-13/) |
+| `pa194qh6_conpa_2026-11-13.zip` | 2026-11-13 | [pa194qh6_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194qh6_conpa_2026-11-13/) |
+| `pa194qns_research_2026-11-13.zip` | 2026-11-13 | [pa194qns_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194qns_research_2026-11-13/) |
 
 ## Sub-exponential 3-SAT (ETH) reports
 
