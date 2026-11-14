@@ -31,3 +31,7 @@ PAeq formula and arithmetic-recursion prerequisites plus audited
 project/Foundation objects. Printed dependencies contain no `sorryAx`. The
 generated wrapper syntax and source pins were checked; the full PA196
 prerequisite-prefix replay remains pending.
+
+An independent ordered suffix replay rebuilt the translation-rank, clause and
+term-graph witness modules against separately checked PAeq term/formula
+prerequisites. It passed without `sorryAx`; this was not a full prefix replay.
