@@ -1,0 +1,128 @@
+PA194J (working name): a source-invariant decoder redesign
+=========================================================
+
+Literal machine
+---------------
+The native table has 194 working states, starts at 74, and halts at 254.
+Dense table: states 0,...,193, initial state0, terminal194; 388 rows;
+blank two-way infinite binary tape, each move exactly one cell left/right.
+Every working control is reachable in the pointed transition graph.
+
+Native SHA256:
+31abf450ba25066c8ac3aad6e7eedb59386b770bb4917f006800145ebb622218
+Dense SHA256:
+7c498ced0eb0dffed77ae2f68f4d80c98edfd8f7763ec1be68aa8cd7ea80eacd
+
+Relationship to the supplied source
+-----------------------------------
+The source is the supplied PA194CS symmetric-Shift source (3646 sites).
+All initial source paths remain identical. Ten jump instructions become
+zero tests/decrements of registers that are provably zero whenever the
+instruction is reached from source25, registers(N,T,W,A,D,H,X,Y,L)
+=(2,0,0,0,0,0,0,0,0).
+
+At sites3,9,3526,3532,3544,3550,3627,3633, replace breakTo1 by decA.
+At site26, replace breakTo1 by decX (the already supplied CZ idea).
+At site3553, replace the final AX breakTo1 by decD.
+Each new instruction's zero successor is the old jump target, and its
+positive successor is the next primitive site. Source paths and total
+site count stay unchanged, while the number of complete primitive
+physical cases rises from4745 to4755.
+
+These changes are generated structurally, not only patched in JSON:
+node1 = (node0, decA), node22 = (decL, decX), and the single BREAK
+terminal of the 67-reader AX grammar becomes decD. The Combined and
+symmetric-Shift changes to nodes163,170,171 are exactly those of PA194CS.
+Two independent source-path resolvers rederive the resulting full
+instruction map from the generated paths.
+
+The physical table differs from supplied PA194CS in exactly three rows:
+27/read1: 0 L40 ->1 R21
+103/read1:0 L302->1 R17
+2066/read1:0 L302->1 R144
+The zero branches have identical register effects on reachable source
+configurations. The positive branches are new and unreachable under the
+source invariant, but are still included in the universal physical test.
+The modifications make103 and2066 symbol-preserving right readers;
+27 becomes one too. Consequently these controls can serve as additional
+history-decoder helpers for subsequent minimization searches.
+
+Proof of the zero invariant
+---------------------------
+For a concrete register vector v define mask(v)=sum(2^i:[v_i>0]).
+The abstract states are (source site, nine-bit positivity mask).
+An increment sets its register bit. A zero decrement follows the zero
+branch with the mask unchanged. A positive decrement follows the positive
+branch with its bit either retained or cleared. Jumps preserve the mask.
+This transition relation soundly overapproximates the concrete step,
+by elementary properties of natural successor and predecessor.
+
+The builder independently recomputes the reachable abstract closure of
+both original CS and new J from (25,1). They are equal and contain exactly
+263180 pairs. At every pair in this set the two abstract successor lists
+are identical. Every successor belongs to the set. All ten replaced
+jump sites have their tested bit absent at every associated mask. The
+actual per-site masks and a closure digest are stored in zero_invariant.json.
+
+Induction on the concrete trace length keeps its mask in the finite
+closed set. At a changed site the selected register is0, so the new
+instruction makes exactly the old register update (none) and takes the
+old successor. Other instructions are literally unchanged. Hence the
+old and new source configurations are identical after every source step,
+and they halt iff one another. This proof is formalizable in PA: the
+closure is an explicit finite list, closure checks are fixed finite
+arithmetic facts, and the sole unbounded argument is ordinary induction.
+It does not use Con(PA), reflection, or a hypothesis of actual nonhalting.
+
+Physical realization
+--------------------
+independent_verify.py imports neither the source compiler nor any
+arithmetic-box oracle. It uses literal transitions and four generic
+list-sweep inductions rederived from the actual table. It then checks all
+4755 primitive source cases over nine independent arbitrary natural
+register values, arbitrary natural extra header gap, arbitrary first
+spare and arbitrary finite remainder of the spare list. Both outcomes of
+every decrement are checked, including the ten newly introduced positive
+branches. Exact whole-tape equality is required at each next source frame.
+The duration certificate is positive, so no source step can be simulated
+by zero physical progress. The source-frame start control is native84,
+with the normal minimum header distance48.
+
+A separate bytearray interpreter runs exactly60062 steps from the blank
+start and compares the entire tape (not just registers) to source25,
+head -2, N=2, all other logical registers0, and26 one-valued spare blocks.
+The complete finite support is recorded in independent_blank_seed.json.
+
+Concatenating the positive finite simulation segments maps finite source
+halts to physical halts. Conversely, if the physical run first halts at
+T, T+1 nonhalting source steps would produce a longer nonhalting physical
+prefix by determinism, a contradiction. Thus physical halting and source
+halting are equivalent by a PA-formalizable finite-trace argument. Composing
+this with the preceding invariant gives PA194J and supplied PA194CS the
+same blank halting behavior in PA. The logical calibration of PA194CS to
+Con(PA) is inherited; these new scripts do not supply a Lean/Rocq proof of
+that calibration or of the final biconditional.
+
+What has NOT been obtained
+-------------------------
+No machine with fewer than194states was obtained in this subtask.
+The table is not a control renaming, global reflection, or symbol-complement
+version of any of the8root-free194-state graph classes found by the corpus
+agent. It changes executed controller transitions and the reachable proof
+search implementation. State count is unchanged; no runtime improvement
+is claimed (startup is60062 vs57768 for supplied CS).
+
+Search findings
+---------------
+Deleting return-scanner state34 from original PA194 fails113 of4780
+symbolic primitive contracts, including both seed25 branches and the first
+source path, plus one increment. Merely bounding interior AX zero runs
+therefore cannot justify that deletion.
+Changing allocator row198/read0 from1 L40 to0 L40 directly fails blank
+initialization. In CSZ it visits84 only at steps38 and66, then starts an
+unbounded rightward state35 sweep writing ones. This ZFC zero-spare idea
+requires a coupled bootstrap redesign before it can be used here.
+No further single two-cell history fold was found on the fixed final
+CSZ tables augmented by the tested103/2066zero-jump substitutions.
+Fresh AX association searches using these new providers are a separate
+root-agent experiment; this certificate does not rely on their outcome.

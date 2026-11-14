@@ -1,0 +1,221 @@
+% Ordinary mathematical proof for the candidate PA194F.
+% Requires amsmath, amssymb, amsthm, booktabs, and theorem/lemma environments.
+\section{The new source transformation and its PA proof}
+\label{sec:pa194f-proof}
+
+The new machine PA194F retains the symmetric cached controller of the
+supplied PA194CS machine and changes the last source instruction of the
+axiom-emission command. Its only native transition change is
+\[
+                  (2066,1):0L302\quad\longmapsto\quad1R21.
+\]
+The working-state count remains 194. This is a change to the represented
+instruction and its physical decoder, not a renaming of controls: an
+unconditional source jump becomes a decrement with two different source
+successors. The extra branch is unreachable from every intended source
+start. The proof below establishes that assertion by an invariant involving
+only four program locations.
+
+
+The general zero-closing idea is inherited. The supplied 196-state
+research already replaced the last AX break by a decrement of a register
+known to be zero, with separate variants for registers 3, 4, 5 and 6;
+see \texttt{TRIT\_CONTEXTS.md} in the earlier comparison-and-new196
+packet~\cite{closing}. The new result here is its complete verified composition with
+the 194-state symmetric cached controller and its particular decoder,
+together with the four-site proof below. Novelty is claimed for the
+resulting literal control graph within the pinned corpus, not for the
+general principle of replacing a jump by a known-zero test.
+
+\subsection{The exact four-site invariant}
+
+Let $P$ be the 3,646-site source program of PA194CS and let $P_F$ be the
+source of PA194F. The programs have the same instruction at every site
+except 3553. A decrement
+$\operatorname{dec}r[z,p]$ leaves a zero register unchanged and goes to $z$;
+on a positive register it subtracts one and goes to $p$. Put $X=r_6$.
+The four sites in
+\[
+                         Z=\{3550,3551,3552,3553\}
+\]
+are as follows, with a decrement's zero successor written first:
+\[
+\begin{array}{r|l|l}
+\text{site}&P&P_F\\\hline
+3550&\operatorname{jump}3553&\operatorname{jump}3553\\
+3551&\operatorname{dec}r_1[3553,3552]
+    &\operatorname{dec}r_1[3553,3552]\\
+3552&\operatorname{jump}3551&\operatorname{jump}3551\\
+3553&\operatorname{jump}3637&\operatorname{dec}r_6[3637,3554].
+\end{array}
+\]
+Inspection of the complete resolved instruction graph gives exactly two
+edges entering $Z$ from outside:
+\[
+\begin{array}{r|l|c}
+3545&\operatorname{dec}r_6[3551,3546]&3545\longrightarrow3551\\
+3548&\operatorname{dec}r_6[3550,3549]&3548\longrightarrow3550.
+\end{array}
+\]
+Both are zero branches of a decrement of $r_6$. This list is an exhaustive
+finite graph check, not an observation about a sampled run. The two
+programs have exactly the same outside-to-inside edges.
+The standalone checker \texttt{verification/four\_site\_cut.py} verifies
+the complete instruction lists, their sole difference, and this complete
+boundary without importing either source compiler or symbolic simulator.
+
+\begin{lemma}[Four-site zero invariant]
+For both programs the assertion
+\[
+                   \operatorname{pc}\in Z\ \Longrightarrow\ X=0
+                                                        \tag{F1}
+\]
+is preserved by every source step. It holds initially at site 25 for
+arbitrary natural values of all nine registers.
+\end{lemma}
+\begin{proof}
+Site 25 is outside $Z$, so the initial assertion has no register
+precondition. For preservation, suppose the next program counter lies
+in $Z$. If the current counter is outside $Z$, one of the two displayed
+zero branches was taken, and therefore $X=0$. If the current counter is
+inside $Z$, the induction hypothesis gives $X=0$. Sites 3550, 3551 and
+3552 preserve $X$; the old instruction at 3553 preserves it, and the new
+instruction there follows its zero branch and preserves it. Thus (F1)
+holds after the step. A next counter outside $Z$ satisfies (F1)
+immediately.
+\end{proof}
+
+\begin{theorem}[Exact preservation of source executions]
+For every nine-tuple of natural initial register values, the executions
+of $P$ and $P_F$ from source site 25 have identical configurations at
+every source time, including identical halting outcomes and halting times.
+Here a halting configuration may be made absorbing, or equivalently the
+comparison may stop at the first halt. PA proves this statement for the
+arithmetized programs.
+\end{theorem}
+\begin{proof}
+Induct on source time. Away from site 3553 the two instructions are
+identical. At site 3553, (F1) gives $r_6=0$, and both instructions leave
+the entire register vector unchanged and go to site 3637. This proves
+agreement of the next complete configurations. Neither program changes
+the halt instruction.
+
+The instruction lists, their unique difference, the two boundary edges,
+and the four cases in $Z$ are finite data. The proof is induction on a
+primitive-recursively coded source run with the formula (F1) as its
+invariant. PA has that induction instance and verifies the finite
+instruction lookups. In particular, the argument is an ordinary proof
+of an internal PA theorem; it does not assume that PA is consistent.
+\end{proof}
+
+The source result is stronger than preservation only from the intended
+seed. In the machine application the seed is
+\[
+                   (25;2,0,0,0,0,0,0,0,0).
+\]
+The invariant is also considerably smaller than a full nine-register
+positivity analysis: two entering edges and four source sites suffice.
+
+\subsection{Binding the source proof to the binary table}
+
+The source theorem would not by itself justify editing a binary table.
+Three additional bindings are used.
+
+First, the two source resolvers agree on the entire source graph. They
+identify the old last emitter token as the jump at site 3553 and the new
+last emitter token as the displayed decrement. All other 3,645 source
+instructions and all their successor indices agree. The emitter's
+formula-building instructions, its guarded gate, and its cleanup are
+unchanged.
+
+Second, the literal table is verified on every primitive source outcome.
+The new decrement's zero \emph{and positive} outcomes are included, even
+though (F1) excludes its positive outcome from the intended source run.
+The contracts quantify over arbitrary natural register values, the
+variable source gap and an arbitrary finite nonempty spare list. They
+produce the complete next source frame and a positive number of physical
+steps. Every intermediate control of a nonhalting instruction contract
+is nonhalting. The register-list loops used in these contracts are
+verified from the literal rows; the affine symbolic presentations encode
+arbitrary run lengths, rather than samples of small register values.
+
+Third, exact finite simulation of the delivered table from the all-zero
+tape reaches the specified clean frame after 57,768 physical steps,
+including the head, all nonzero tape cells, the source address and the
+complete physical register/spare file. The source site is 25 and the
+logical register vector is the displayed seed. The clean-frame statement
+includes the zero exterior of the finite tape support.
+
+\begin{lemma}[Positive finite simulation and converse halting]
+PA proves that the delivered binary table halts from blank if and only
+if $P_F$ halts from its clean seed.
+\end{lemma}
+\begin{proof}
+Concatenate the positive physical instruction segments after the fixed
+startup. A finite source halt supplies a finite literal halt.
+
+For the converse, suppose a literal halting trace has length $T$. If
+$T<57{,}768$, it contradicts the checked nonhalting startup by
+determinism. Otherwise the startup precedes that halt. Suppose the source
+has no halt during its first $T+1$ instructions after the seed. The source
+machine's increment, decrement and jump operations are total. Their
+physical contracts can therefore be concatenated for all $T+1$ source
+instructions. Their lengths are positive, so the resulting physical run
+extends beyond time $T$. Its intermediate states are nonhalting. This
+contradicts determinism of the given literal halting trace. Thus the
+source halts within a bounded finite source trace.
+
+This proof is arithmetical. A source register grows by at most one at each
+primitive source instruction; finite source iteration and its encoding
+are primitive recursive. The physical contract proofs use terminating
+unary sweeps, fixed finite row calculations and induction on the relevant
+natural lengths. Concatenation and trace determinism are proved by
+induction on coded finite sequences. These are PA proofs, including for
+nonstandard trace lengths in a model of PA. No reflection principle or
+standard-model soundness argument is used.
+\end{proof}
+
+This gives
+\[
+ \mathrm{PA}\vdash
+ H_{\mathrm{PA194F}}\ \longleftrightarrow\ H_{P_F}
+                  \ \longleftrightarrow\ H_P.             \tag{F2}
+\]
+The two binary tables can consume different physical times and spare
+lists. Equality of their source configurations is the relevant invariant.
+
+\begin{theorem}[PA194F consistency calibration]
+Let $H_{\mathrm{PA194F}}$ be the arithmetic sentence asserting a finite
+halting trace of the delivered table from its specified blank start.
+For a fixed ordinary primitive-recursive PA proof predicate,
+\[
+ \mathrm{PA}\vdash H_{\mathrm{PA194F}}\leftrightarrow
+    \exists p\,\operatorname{Prf}_{\mathrm{PA}}
+                      (p,\ulcorner0=1\urcorner),
+\]
+and therefore
+\[
+ \mathrm{PA}\vdash
+       \neg H_{\mathrm{PA194F}}\leftrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+\end{theorem}
+\begin{proof}
+Compose (F2) with the proof-producing equivalences in (F3), and negate
+the PA-refutation predicate. All transformations and the inductions
+establishing their correctness are available in PA. The biconditional
+itself does not assume PA consistency; actual standard-model nonhalting
+follows under that assumption.
+\end{proof}
+
+\paragraph{Precise proof status.}
+This is an ordinary mathematical proof of a PA-provability statement,
+with the unchanged numerical calibration explicitly attributed to and
+retained from the supplied research. The new four-site invariant and
+source equivalence are proved above; the literal-table bindings are
+supported by complete finite and universal symbolic checks. The latter
+use the mathematical soundness of the inherited symbolic rules and
+their register-list induction lemmas, as well as the recorded Python
+executions; a successful execution is not itself a kernel proof. No new
+end-to-end Lean or Rocq theorem is claimed. In particular, neither the
+upstream PA196 one-direction formal theorem nor the conditional iPRA
+endpoints are relabeled as a kernel-checked proof of this biconditional.

@@ -1,0 +1,107 @@
+\section{A small invariant for the zero-register jump}
+\label{sec:zero-cut}
+
+Let $P$ be the 3,646-site register program of the supplied symmetric cached
+machine PA194CS. Its registers are numbered $0,\ldots,8$. Write $X=r_6$.
+A decrement instruction $\operatorname{dec}r[z,p]$ goes to $z$ without
+changing the register when it is zero, and otherwise subtracts one and
+goes to $p$. Define $P_X$ by replacing its instruction at site 26:
+\[
+ P(26)=\operatorname{jump}34,
+ \qquad
+ P_X(26)=\operatorname{dec}r_6[34,27].
+\]
+Every other instruction, including every resolved successor, is unchanged.
+
+The required invariant does not depend on a large abstract-state search.
+It uses the following eleven program locations:
+\[
+ Z_X=\{25,26\}\cup\{3550,3551,3552,3553\}
+       \cup\{3633,3634,3635,3636,3637\}.
+\]
+The entire set of edges entering $Z_X$ from its complement is
+\[
+\begin{array}{c|c|c}
+\text{source}&\text{instruction}&\text{edge into }Z_X\\\hline
+22&\operatorname{dec}r_6[25,23]&22\longrightarrow25\\
+3545&\operatorname{dec}r_6[3551,3546]&3545\longrightarrow3551\\
+3548&\operatorname{dec}r_6[3550,3549]&3548\longrightarrow3550\\
+3628&\operatorname{dec}r_6[3634,3629]&3628\longrightarrow3634\\
+3631&\operatorname{dec}r_6[3633,3632]&3631\longrightarrow3633
+\end{array}
+\]
+All five are zero branches of a decrement of $r_6$. Inside $Z_X$, the
+unchanged instructions are
+\[
+\begin{array}{r|l@{\qquad}r|l}
+25&\operatorname{dec}r_8[27,26]&3550&\operatorname{jump}3553\\
+3551&\operatorname{dec}r_1[3553,3552]&3552&\operatorname{jump}3551\\
+3553&\operatorname{jump}3637&3633&\operatorname{jump}3637\\
+3634&\operatorname{dec}r_4[3637,3635]&3635&\operatorname{inc}r_5\to3636\\
+3636&\operatorname{jump}3634&3637&\operatorname{jump}25.
+\end{array}
+\]
+Thus none of these ten instructions changes $r_6$. The eleventh is site
+26, whose old instruction preserves it and whose replacement takes its
+zero branch whenever $r_6=0$.
+
+\begin{lemma}[Eleven-site zero invariant]
+In both $P$ and $P_X$, every run from a configuration satisfying
+\[
+                    \operatorname{pc}\in Z_X\ \Longrightarrow\ r_6=0
+\]
+preserves that implication. In particular, it holds from site 25 with
+$r_6=0$, irrespective of the values of the other eight registers.
+\end{lemma}
+\begin{proof}
+Induct on the number of register instructions. If the next program counter
+is outside $Z_X$, the conclusion is immediate. If the current counter is
+in $Z_X$, the displayed instructions preserve a zero value of $r_6$.
+If it is outside $Z_X$ and the next counter is inside, one of the five
+listed zero branches was taken, so $r_6=0$ at the destination. These cases
+exhaust all resolved successors; the accompanying checker verifies that
+exhaustiveness against the complete instruction file.
+\end{proof}
+
+\begin{theorem}[Exact source-run preservation]
+From the clean seed
+\[
+       (\operatorname{pc},r_0,\ldots,r_8)
+                  =(25,2,0,0,0,0,0,0,0,0),
+\]
+the programs $P$ and $P_X$ have identical register configurations at every
+source time and halt at the same source time, if they halt at all. More
+generally this holds from every configuration satisfying the preceding
+invariant.
+\end{theorem}
+\begin{proof}
+Induct simultaneously on the two runs. The instructions agree except at
+site 26. At that site the invariant gives $r_6=0$, and both instructions
+preserve every register and go to site 34. Thus the complete next
+configurations agree, not merely their halting outcomes. Their identical
+halt instruction is preserved. The invariant and the run induction are
+ordinary arithmetical inductions on coded finite runs, so PA proves the
+corresponding universal statements. No consistency or soundness assumption
+about PA is used.
+\end{proof}
+
+The binary-table modification implementing this source replacement is
+native row $(27,1):0L40\mapsto1R21$. The source proof alone does not justify
+that row edit: it is separately bound to the exact table by complete
+symbolic register contracts, including the now-unreachable positive
+branch at site 26, and by complete-tape blank initialization. The two
+binary machines need not have equal physical running times or equal
+spare lists. Their own positive-duration simulations to the respective
+source programs, followed by the exact source theorem, are sufficient.
+
+\paragraph{An alternative using the command register.}
+Replacing site 26 instead by $\operatorname{dec}r_3[34,27]$ has the same
+source-run preservation property. One suitable zero cut is
+\[
+       Z_A=\{0,\ldots,9\}\cup\{11,\ldots,26\}
+                 \cup\{3523,\ldots,3645\}.
+\]
+It contains 149 sites. Every edge into it from outside is a zero branch
+of a decrement of $r_3$, and its internal instructions preserve $r_3=0$.
+The same induction applies. The smaller $Z_X$ was chosen for the primary
+proof because its entire boundary can be printed in five rows.

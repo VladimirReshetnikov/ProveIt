@@ -1,0 +1,71 @@
+Separate diagonal source relocation, D and H variants
+====================================================
+
+Numerical AX command change only:
+  Old: push t,U(d,h),rho8(D,A,H,d),h1,...,h6,Gamma(A), then set top=guarded G.
+  D variant: replace only Gamma(A) by Gamma(D), where D=d+x.
+  H variant: replace only Gamma(A) by Gamma(H), where H=h+y.
+Here A=c, and the parameter reads, all six heads, rho8, the guarded top G,
+the clearing of both caches, MP, Shift and scheduler are unchanged.
+
+This is an actual change of emitted numerical formulas, not a renaming of TM
+states or a physical register permutation. The free-algebra certificates check
+that exactly this one pushed expression changes, with the same incoming t,d,h
+and c,x,y on both sides. The AX word remains length190, the complete source
+remains3673 sites, and the stack has10 pushed entries.
+
+The searched calculus is literally the same collection of formula axioms:
+all old heads/rules and every Gamma(B)=B -> U(B,B), together with guarded G.
+The set of numerical AX tuples covers every required instance after resetting
+the cached d=h=0. To select Gamma(B), use one changed parameter choice:
+
+  D variant: select_1(D=B,H=0,A=0).
+  H variant: select_1(D=0,H=B,A=0).
+
+In the existing PA194 notation,
+  select_j(D,H,A) = discard AX(A,D,H) S^(j+1) pop^(9-j).
+For j=1 this is discard AX(A,D,H) S^2 pop^8. Its result is
+  (Gamma(B), w, 0, 0)
+for the displayed parameter choices. The same formula values D,H,A remain
+available for every h1,...,h6,rho8 and G selection. Thus no other head selector
+changes. Every generic push/pop/discard/MP/generalization word remains exactly
+as in pa194_conpa_2026-11-13_2/mathematics/pa194_calibration.tex.
+
+Why no hidden early halt changes those compiler identities:
+  q1 is Gamma(D) or Gamma(H), always an implication code divisible by4.
+  q2,...,q8 are still implication codes divisible by4.
+  q9=U(d,h) has residue2 and is at least2.
+Every Shift safety proof in the ten-entry compiler used only these residue
+facts and the unchanged saved top at q10; none used q1's argument A. Therefore
+all original generic command identities and the universal halting-word compiler
+remain valid with precisely the Gamma selector substitution above. The gate
+may fail its guard on those tuples, but only the top gate becomes0; the
+unconditional q1 Gamma entry still exists and is selected normally.
+
+Internal arithmetic calibration:
+  Soundness: the old proof annotation invariant is unchanged except that the
+  diagonal supplier gets code D or H, rather than A. PA proves every variable
+  index in decoded formula B is below B, so a uniform proof constructor proves
+  T(B) -> forall x_B T(B) for all B. It therefore supplies the altered q1 too.
+  Completeness: the numerical calculus itself is unchanged; the existing PA
+  refutation-to-calculus compiler is copied. The calculus-to-command compiler
+  changes only its Gamma clause by the explicit parameter choices above.
+  The output universally halting word still begins with AX to clear caches;
+  persistent scheduler stores cause no issue. The inherited scheduler and
+  positive-length physical simulation proof then give both directions in PA
+  once the new literal machine is actually certified.
+
+As a finite check, new_transfer_words.py verifies the entire emitted stack
+and gate for all symbolic t,a,d,h,x,y. The separateD.word.json and
+separateH.word.json records include named and raw node words. The balanced
+source grammar/instruction files are convenient witnesses for the primitive
+program, not accepted reduced TMs. Reader reassociation must preserve the
+resolved source control graph and exact runtime/startup contracts.
+
+Corpus novelty scope:
+  pa195_followup_research/source_extensions/gamma_relocation.tex relocates Gamma
+  among parameters in the bundled G gate, and witness_bundle.tex moves it into
+  h5. In the inspected PA/docs code and text corpus, the separate-head designs
+  retained Gamma(A). Changing Gamma(A) to Gamma(D/H) therefore adds source
+  commands distinct from the current separate194 family. These are small
+  logical engineering changes, not a claim of a deep new arithmetic theorem.

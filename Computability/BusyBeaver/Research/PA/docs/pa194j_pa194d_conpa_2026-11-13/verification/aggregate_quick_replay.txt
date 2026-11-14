@@ -1,0 +1,604 @@
+Running construction/rebuild.py
+{
+  "name": "pa194j",
+  "working_states": 194,
+  "transitions": 388,
+  "source_sites": 3646,
+  "source_contracts": 4755,
+  "source_changes": [
+    3,
+    9,
+    26,
+    3526,
+    3532,
+    3544,
+    3550,
+    3553,
+    3627,
+    3633
+  ],
+  "positivity_pairs": 263180,
+  "native_sha256": "31abf450ba25066c8ac3aad6e7eedb59386b770bb4917f006800145ebb622218",
+  "dense_sha256": "7c498ced0eb0dffed77ae2f68f4d80c98edfd8f7763ec1be68aa8cd7ea80eacd",
+  "proof_scope": "Finite source invariant and exact construction; independent_verify.py verifies complete physical simulation and blank startup.",
+  "kernel_checked": false
+}
+Running logical_emitter/rebuild.py
+{
+  "name": "pa194d",
+  "fixed_states": 134,
+  "raw_readers": 69,
+  "simultaneous_folds": 9,
+  "working_states": 194,
+  "rows": 388,
+  "local_cases": 36,
+  "max_local_steps": 5,
+  "source_sites": 3649,
+  "source_contracts": 4751,
+  "native_sha256": "bc8ab6c58badd137535938c9810e39d19152c49dd2eb26ef4ea07dbcf3157231",
+  "dense_sha256": "4226b7702de554df4b52d10239b2bd7ad79ca90bd8faf2bd256552fe0c7fe81b",
+  "kernel_checked": false,
+  "proof_scope": "Finite construction, all-tape contextual quotient, source reassociation and zero-test invariant. The Gamma(D) logical calibration is a separate mathematical argument."
+}
+Running comparison/independent_mask_audit.py
+{
+  "scope": "Fresh independent least abstract reachability computation and source identity under the resulting invariant; imports no builder/compiler/runtime code. Proof of concretization soundness is the elementary natural-register case analysis stated in the report.",
+  "seed_source_ordinal": 25,
+  "seed_positivity_mask": 1,
+  "seed_logical_registers": [
+    2,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
+  ],
+  "pairs": 263180,
+  "source_sites_with_some_mask": 3646,
+  "recomputed_least_closure_equals_saved_set": true,
+  "both_source_successors_agree_at_every_pair": true,
+  "both_source_abstract_successors_stay_inside_set": true,
+  "all_ten_new_tests_always_take_zero_branch": true,
+  "changed_sites": [
+    {
+      "ordinal": 3,
+      "register_proved_zero": 3,
+      "reachable_masks_at_site": 32,
+      "old_jump_target": 5,
+      "new_zero_branch_target": 5,
+      "unused_positive_branch_target": 4
+    },
+    {
+      "ordinal": 9,
+      "register_proved_zero": 3,
+      "reachable_masks_at_site": 16,
+      "old_jump_target": 11,
+      "new_zero_branch_target": 11,
+      "unused_positive_branch_target": 10
+    },
+    {
+      "ordinal": 26,
+      "register_proved_zero": 6,
+      "reachable_masks_at_site": 32,
+      "old_jump_target": 34,
+      "new_zero_branch_target": 34,
+      "unused_positive_branch_target": 27
+    },
+    {
+      "ordinal": 3526,
+      "register_proved_zero": 3,
+      "reachable_masks_at_site": 32,
+      "old_jump_target": 3528,
+      "new_zero_branch_target": 3528,
+      "unused_positive_branch_target": 3527
+    },
+    {
+      "ordinal": 3532,
+      "register_proved_zero": 3,
+      "reachable_masks_at_site": 16,
+      "old_jump_target": 3535,
+      "new_zero_branch_target": 3535,
+      "unused_positive_branch_target": 3533
+    },
+    {
+      "ordinal": 3544,
+      "register_proved_zero": 3,
+      "reachable_masks_at_site": 16,
+      "old_jump_target": 3546,
+      "new_zero_branch_target": 3546,
+      "unused_positive_branch_target": 3545
+    },
+    {
+      "ordinal": 3550,
+      "register_proved_zero": 3,
+      "reachable_masks_at_site": 8,
+      "old_jump_target": 3553,
+      "new_zero_branch_target": 3553,
+      "unused_positive_branch_target": 3551
+    },
+    {
+      "ordinal": 3553,
+      "register_proved_zero": 4,
+      "reachable_masks_at_site": 8,
+      "old_jump_target": 3637,
+      "new_zero_branch_target": 3637,
+      "unused_positive_branch_target": 3554
+    },
+    {
+      "ordinal": 3627,
+      "register_proved_zero": 3,
+      "reachable_masks_at_site": 16,
+      "old_jump_target": 3629,
+      "new_zero_branch_target": 3629,
+      "unused_positive_branch_target": 3628
+    },
+    {
+      "ordinal": 3633,
+      "register_proved_zero": 3,
+      "reachable_masks_at_site": 8,
+      "old_jump_target": 3637,
+      "new_zero_branch_target": 3637,
+      "unused_positive_branch_target": 3634
+    }
+  ],
+  "parent_instructions_sha256": "e2f74c0fad95734738788b98e76dc3e11748c0819ad7ef2b2998f81e0140da87",
+  "child_instructions_sha256": "b2f61a352ccaa3fbc19f06084dc04adb5f0b7cb562b792646571b1c9f34e5918",
+  "mask_file_sha256": "496a12b507f91184a3dac863eda1c0743a6dc88c3ab79ea8206516f3e97bdb0e"
+}
+Running comparison/audit_gamma_d.py
+{
+  "scope": "Independent literal table graph comparison plus free-term AX macro-word evaluation from grammar files. No construction/compiler/runtime module imported. The graph comparison is stronger than rooted renaming; physical source/table binding and PA calibration require separate certificates.",
+  "candidates": [
+    {
+      "mode": "CZ",
+      "states": 194,
+      "source_sites": 3649,
+      "source_outcomes": 4751,
+      "native_sha256": "bc8ab6c58badd137535938c9810e39d19152c49dd2eb26ef4ea07dbcf3157231",
+      "dense_sha256": "4226b7702de554df4b52d10239b2bd7ad79ca90bd8faf2bd256552fe0c7fe81b",
+      "instructions_sha256": "cdea095114ac889ca0bc0dbbc6f789b8811bedd6de62c8e4c0657e29391a9ae2",
+      "root_free_transformation_hashes": {
+        "00": "2b78123c10289d3fbe78c6ed1003f1af57422e2fe680cd31bf589832a19433a5",
+        "01": "2b0bcfd41e8a6a91f7f616b1dee36cb2e322d3ca9f9def70756f8d58e9ab1a0f",
+        "10": "fdf0d023e670dd44c0b929e813d32d1e0b5623a195f781fbb09a833c32310f6a",
+        "11": "1b89135aa4a6f0f850be29623465d1274f2bfba0dffac652d3b3fd49ac6a147a"
+      },
+      "cosmetic_class_sha256": "1b89135aa4a6f0f850be29623465d1274f2bfba0dffac652d3b3fd49ac6a147a",
+      "old_eight_class_matches": [],
+      "new_J_family_matches": []
+    },
+    {
+      "mode": "CSZ_A",
+      "states": 194,
+      "source_sites": 3646,
+      "source_outcomes": 4755,
+      "native_sha256": "2071953e6ff815f80b3a555e51c7c5240b1a816eb6d0c7b0d3329ea4746f913d",
+      "dense_sha256": "f9527c1867a0f76567791342adca329140a0a9499d90f3173e3b44f0d6b5dad1",
+      "instructions_sha256": "8ee68808f7c2b06c7bbbacd4b9b7e9820d0f32a14a914ee0b33b3c6138534dad",
+      "root_free_transformation_hashes": {
+        "00": "b25b1ad226a23ac445944b5de04850a93befd77f44ccc2c06273da24ee06c9c9",
+        "01": "ae508342175bacfdf7ffdb9820fefe3822b3f62e7e956b4b3a059f7dd512b66d",
+        "10": "22751cf139f2ab306021038eab13cf7c0e921c586be1db4e2a85dd4ae130021c",
+        "11": "0a90b2f9afa6e4bc5e68d417b40dce1439dc217f0384a672452b6b855e710ec3"
+      },
+      "cosmetic_class_sha256": "0a90b2f9afa6e4bc5e68d417b40dce1439dc217f0384a672452b6b855e710ec3",
+      "old_eight_class_matches": [],
+      "new_J_family_matches": []
+    }
+  ],
+  "both_novel_against_old_eight_and_new_four_J_variants": true,
+  "candidates_mutually_distinct": true,
+  "emitter": {
+    "tokens": 190,
+    "token_differences": [
+      {
+        "token_index": 121,
+        "parent": "A",
+        "new": "D"
+      },
+      {
+        "token_index": 122,
+        "parent": "A",
+        "new": "D"
+      },
+      {
+        "token_index": 123,
+        "parent": "A",
+        "new": "D"
+      },
+      {
+        "token_index": 189,
+        "parent": "close",
+        "new": "closeDecD"
+      }
+    ],
+    "complete_pushed_items": 10,
+    "all_other_nine_pushed_items_equal": true,
+    "final_gate_equal": true,
+    "guard_and_parameter_reads_equal": true,
+    "old_last_head": [
+      "I",
+      "a",
+      [
+        "succ",
+        [
+          "succ",
+          [
+            "I",
+            "a",
+            "a"
+          ]
+        ]
+      ]
+    ],
+    "new_last_head": [
+      "I",
+      [
+        "add",
+        "d",
+        "x"
+      ],
+      [
+        "succ",
+        [
+          "succ",
+          [
+            "I",
+            [
+              "add",
+              "d",
+              "x"
+            ],
+            [
+              "add",
+              "d",
+              "x"
+            ]
+          ]
+        ]
+      ]
+    ],
+    "last_head_change": "Gamma(A) -> Gamma(D)",
+    "matches_under_any_global_ADH_parameter_permutation": [],
+    "concrete_witness": {
+      "inputs": {
+        "a": 0,
+        "d": 1,
+        "h": 0,
+        "x": 0,
+        "y": 0,
+        "oldT": 0
+      },
+      "old_head_code": 20,
+      "new_head_code": 832
+    },
+    "old_grammar_sha256": "ca78fcfb8394f09eea1ed0d2fdf8fbabd8b4f5ac524f742ba9c45f4b69c1915f",
+    "new_grammar_sha256": "2477d5f09947ba3170ec978ee0060aac43b3f33409635c21bd08e5f985507a37"
+  },
+  "inputs": {
+    "old_frontier_sha256": "7d47de5a6ddbc3b8af1f57cc265c4b2151648a086e85cc72f5bd7557dceac002",
+    "J_receipt_sha256": "69ef8031f0e919f6f17c31acb6f33200d5438854056151973eccf81155d58bc0"
+  }
+}
+{
+  "status": "PASS",
+  "mode": "quick",
+  "integrity_files": 861,
+  "machines": [
+    {
+      "name": "PA194J",
+      "dense_sha256": "7c498ced0eb0dffed77ae2f68f4d80c98edfd8f7763ec1be68aa8cd7ea80eacd",
+      "cosmetic_graph_sha256": "2d172ebba20cc3261e0c05195f3765f11de9e3fae74f3f3e186fe4283bc1beb0",
+      "different_from_eight_old_graphs": true,
+      "startup": {
+        "steps": 60062,
+        "state": 84,
+        "head": -2,
+        "complete_tape_equal": true,
+        "one_cells": 66
+      },
+      "build": {
+        "name": "pa194j",
+        "working_states": 194,
+        "transitions": 388,
+        "source_sites": 3646,
+        "source_contracts": 4755,
+        "source_changes": [
+          3,
+          9,
+          26,
+          3526,
+          3532,
+          3544,
+          3550,
+          3553,
+          3627,
+          3633
+        ],
+        "positivity_pairs": 263180,
+        "native_sha256": "31abf450ba25066c8ac3aad6e7eedb59386b770bb4917f006800145ebb622218",
+        "dense_sha256": "7c498ced0eb0dffed77ae2f68f4d80c98edfd8f7763ec1be68aa8cd7ea80eacd",
+        "proof_scope": "Finite source invariant and exact construction; independent_verify.py verifies complete physical simulation and blank startup.",
+        "kernel_checked": false
+      },
+      "independent_physical_replay": "Not run in --quick mode."
+    },
+    {
+      "name": "PA194D",
+      "dense_sha256": "4226b7702de554df4b52d10239b2bd7ad79ca90bd8faf2bd256552fe0c7fe81b",
+      "cosmetic_graph_sha256": "1b89135aa4a6f0f850be29623465d1274f2bfba0dffac652d3b3fd49ac6a147a",
+      "different_from_eight_old_graphs": true,
+      "startup": {
+        "steps": 58168,
+        "state": 84,
+        "head": -2,
+        "complete_tape_equal": true,
+        "one_cells": 66
+      },
+      "build": {
+        "name": "pa194d",
+        "fixed_states": 134,
+        "raw_readers": 69,
+        "simultaneous_folds": 9,
+        "working_states": 194,
+        "rows": 388,
+        "local_cases": 36,
+        "max_local_steps": 5,
+        "source_sites": 3649,
+        "source_contracts": 4751,
+        "native_sha256": "bc8ab6c58badd137535938c9810e39d19152c49dd2eb26ef4ea07dbcf3157231",
+        "dense_sha256": "4226b7702de554df4b52d10239b2bd7ad79ca90bd8faf2bd256552fe0c7fe81b",
+        "kernel_checked": false,
+        "proof_scope": "Finite construction, all-tape contextual quotient, source reassociation and zero-test invariant. The Gamma(D) logical calibration is a separate mathematical argument."
+      },
+      "independent_physical_replay": "Not run in --quick mode."
+    }
+  ],
+  "new_graphs_mutually_distinct": true,
+  "independent_J_invariant": {
+    "scope": "Fresh independent least abstract reachability computation and source identity under the resulting invariant; imports no builder/compiler/runtime code. Proof of concretization soundness is the elementary natural-register case analysis stated in the report.",
+    "seed_source_ordinal": 25,
+    "seed_positivity_mask": 1,
+    "seed_logical_registers": [
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "pairs": 263180,
+    "source_sites_with_some_mask": 3646,
+    "recomputed_least_closure_equals_saved_set": true,
+    "both_source_successors_agree_at_every_pair": true,
+    "both_source_abstract_successors_stay_inside_set": true,
+    "all_ten_new_tests_always_take_zero_branch": true,
+    "changed_sites": [
+      {
+        "ordinal": 3,
+        "register_proved_zero": 3,
+        "reachable_masks_at_site": 32,
+        "old_jump_target": 5,
+        "new_zero_branch_target": 5,
+        "unused_positive_branch_target": 4
+      },
+      {
+        "ordinal": 9,
+        "register_proved_zero": 3,
+        "reachable_masks_at_site": 16,
+        "old_jump_target": 11,
+        "new_zero_branch_target": 11,
+        "unused_positive_branch_target": 10
+      },
+      {
+        "ordinal": 26,
+        "register_proved_zero": 6,
+        "reachable_masks_at_site": 32,
+        "old_jump_target": 34,
+        "new_zero_branch_target": 34,
+        "unused_positive_branch_target": 27
+      },
+      {
+        "ordinal": 3526,
+        "register_proved_zero": 3,
+        "reachable_masks_at_site": 32,
+        "old_jump_target": 3528,
+        "new_zero_branch_target": 3528,
+        "unused_positive_branch_target": 3527
+      },
+      {
+        "ordinal": 3532,
+        "register_proved_zero": 3,
+        "reachable_masks_at_site": 16,
+        "old_jump_target": 3535,
+        "new_zero_branch_target": 3535,
+        "unused_positive_branch_target": 3533
+      },
+      {
+        "ordinal": 3544,
+        "register_proved_zero": 3,
+        "reachable_masks_at_site": 16,
+        "old_jump_target": 3546,
+        "new_zero_branch_target": 3546,
+        "unused_positive_branch_target": 3545
+      },
+      {
+        "ordinal": 3550,
+        "register_proved_zero": 3,
+        "reachable_masks_at_site": 8,
+        "old_jump_target": 3553,
+        "new_zero_branch_target": 3553,
+        "unused_positive_branch_target": 3551
+      },
+      {
+        "ordinal": 3553,
+        "register_proved_zero": 4,
+        "reachable_masks_at_site": 8,
+        "old_jump_target": 3637,
+        "new_zero_branch_target": 3637,
+        "unused_positive_branch_target": 3554
+      },
+      {
+        "ordinal": 3627,
+        "register_proved_zero": 3,
+        "reachable_masks_at_site": 16,
+        "old_jump_target": 3629,
+        "new_zero_branch_target": 3629,
+        "unused_positive_branch_target": 3628
+      },
+      {
+        "ordinal": 3633,
+        "register_proved_zero": 3,
+        "reachable_masks_at_site": 8,
+        "old_jump_target": 3637,
+        "new_zero_branch_target": 3637,
+        "unused_positive_branch_target": 3634
+      }
+    ],
+    "parent_instructions_sha256": "e2f74c0fad95734738788b98e76dc3e11748c0819ad7ef2b2998f81e0140da87",
+    "child_instructions_sha256": "b2f61a352ccaa3fbc19f06084dc04adb5f0b7cb562b792646571b1c9f34e5918",
+    "mask_file_sha256": "496a12b507f91184a3dac863eda1c0743a6dc88c3ab79ea8206516f3e97bdb0e"
+  },
+  "independent_D_emitter_and_novelty": {
+    "scope": "Independent literal table graph comparison plus free-term AX macro-word evaluation from grammar files. No construction/compiler/runtime module imported. The graph comparison is stronger than rooted renaming; physical source/table binding and PA calibration require separate certificates.",
+    "candidates": [
+      {
+        "mode": "CZ",
+        "states": 194,
+        "source_sites": 3649,
+        "source_outcomes": 4751,
+        "native_sha256": "bc8ab6c58badd137535938c9810e39d19152c49dd2eb26ef4ea07dbcf3157231",
+        "dense_sha256": "4226b7702de554df4b52d10239b2bd7ad79ca90bd8faf2bd256552fe0c7fe81b",
+        "instructions_sha256": "cdea095114ac889ca0bc0dbbc6f789b8811bedd6de62c8e4c0657e29391a9ae2",
+        "root_free_transformation_hashes": {
+          "00": "2b78123c10289d3fbe78c6ed1003f1af57422e2fe680cd31bf589832a19433a5",
+          "01": "2b0bcfd41e8a6a91f7f616b1dee36cb2e322d3ca9f9def70756f8d58e9ab1a0f",
+          "10": "fdf0d023e670dd44c0b929e813d32d1e0b5623a195f781fbb09a833c32310f6a",
+          "11": "1b89135aa4a6f0f850be29623465d1274f2bfba0dffac652d3b3fd49ac6a147a"
+        },
+        "cosmetic_class_sha256": "1b89135aa4a6f0f850be29623465d1274f2bfba0dffac652d3b3fd49ac6a147a",
+        "old_eight_class_matches": [],
+        "new_J_family_matches": []
+      },
+      {
+        "mode": "CSZ_A",
+        "states": 194,
+        "source_sites": 3646,
+        "source_outcomes": 4755,
+        "native_sha256": "2071953e6ff815f80b3a555e51c7c5240b1a816eb6d0c7b0d3329ea4746f913d",
+        "dense_sha256": "f9527c1867a0f76567791342adca329140a0a9499d90f3173e3b44f0d6b5dad1",
+        "instructions_sha256": "8ee68808f7c2b06c7bbbacd4b9b7e9820d0f32a14a914ee0b33b3c6138534dad",
+        "root_free_transformation_hashes": {
+          "00": "b25b1ad226a23ac445944b5de04850a93befd77f44ccc2c06273da24ee06c9c9",
+          "01": "ae508342175bacfdf7ffdb9820fefe3822b3f62e7e956b4b3a059f7dd512b66d",
+          "10": "22751cf139f2ab306021038eab13cf7c0e921c586be1db4e2a85dd4ae130021c",
+          "11": "0a90b2f9afa6e4bc5e68d417b40dce1439dc217f0384a672452b6b855e710ec3"
+        },
+        "cosmetic_class_sha256": "0a90b2f9afa6e4bc5e68d417b40dce1439dc217f0384a672452b6b855e710ec3",
+        "old_eight_class_matches": [],
+        "new_J_family_matches": []
+      }
+    ],
+    "both_novel_against_old_eight_and_new_four_J_variants": true,
+    "candidates_mutually_distinct": true,
+    "emitter": {
+      "tokens": 190,
+      "token_differences": [
+        {
+          "token_index": 121,
+          "parent": "A",
+          "new": "D"
+        },
+        {
+          "token_index": 122,
+          "parent": "A",
+          "new": "D"
+        },
+        {
+          "token_index": 123,
+          "parent": "A",
+          "new": "D"
+        },
+        {
+          "token_index": 189,
+          "parent": "close",
+          "new": "closeDecD"
+        }
+      ],
+      "complete_pushed_items": 10,
+      "all_other_nine_pushed_items_equal": true,
+      "final_gate_equal": true,
+      "guard_and_parameter_reads_equal": true,
+      "old_last_head": [
+        "I",
+        "a",
+        [
+          "succ",
+          [
+            "succ",
+            [
+              "I",
+              "a",
+              "a"
+            ]
+          ]
+        ]
+      ],
+      "new_last_head": [
+        "I",
+        [
+          "add",
+          "d",
+          "x"
+        ],
+        [
+          "succ",
+          [
+            "succ",
+            [
+              "I",
+              [
+                "add",
+                "d",
+                "x"
+              ],
+              [
+                "add",
+                "d",
+                "x"
+              ]
+            ]
+          ]
+        ]
+      ],
+      "last_head_change": "Gamma(A) -> Gamma(D)",
+      "matches_under_any_global_ADH_parameter_permutation": [],
+      "concrete_witness": {
+        "inputs": {
+          "a": 0,
+          "d": 1,
+          "h": 0,
+          "x": 0,
+          "y": 0,
+          "oldT": 0
+        },
+        "old_head_code": 20,
+        "new_head_code": 832
+      },
+      "old_grammar_sha256": "ca78fcfb8394f09eea1ed0d2fdf8fbabd8b4f5ac524f742ba9c45f4b69c1915f",
+      "new_grammar_sha256": "2477d5f09947ba3170ec978ee0060aac43b3f33409635c21bd08e5f985507a37"
+    },
+    "inputs": {
+      "old_frontier_sha256": "7d47de5a6ddbc3b8af1f57cc265c4b2151648a086e85cc72f5bd7557dceac002",
+      "J_receipt_sha256": "69ef8031f0e919f6f17c31acb6f33200d5438854056151973eccf81155d58bc0"
+    }
+  },
+  "kernel_checked": false,
+  "seconds": 8.385
+}

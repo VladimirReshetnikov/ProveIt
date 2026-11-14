@@ -1,0 +1,23 @@
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Completed root search & Proposal slots & Best reader objective\\\midrule
+Axiom-head variants & 2,832,997 & 60\\
+Focused axiom-head search & 1,664,002 & 65\\
+Separation-matrix variants & 1,761,744 & 61\\
+Head-parameter permutations & 1,766,625 & 60\\
+\bottomrule\end{tabular}\end{center}
+The reader objective is the number of raw decoder readers minus a simultaneously checked fold set; the fixed part adds 134 controls. Proposal slots are neither distinct machines nor proofs. Some proposed rotations are skipped. The accepted PA194Q endpoint has objective 60 and separately passes all source and literal checks. The search logs and random seeds are retained.
+
+
+The expanded-macro branch additionally records 15,895,250 proposal slots
+in completed runs and at least 4,572,000 before interrupted runs. Its
+strongest local screen first proves a finite ternary register invariant
+($0$, $1$, or at least $2$): 3,648 sites and 4,747 primitive outcomes are
+admissible from the exact clean seed. Specialized independent literal
+replay checks 4,749 affine cases (two require a zero/one split), covering
+all 194 controls and yielding 29,396 conservative radius-five windows.
+Common-action identification, per-predecessor two-step state deletion,
+and rejoining after 2--24 original transitions all produce empty witness
+lists under their stated finite restrictions. The source invariant,
+complete bootstrap binding, windows and portable enumerators are in
+\file{search/invariant/}. None is a global state lower bound.

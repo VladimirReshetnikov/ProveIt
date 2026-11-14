@@ -1,0 +1,145 @@
+\section{Comparison of the complete supplied corpus}
+\label{sec:comparison}
+The comparison is pinned to \texttt{VladimirReshetnikov/ProveIt} commit
+\begin{quote}\small\nolinkurl{17f92105e2bc4317feae6c219cb2143437b482ff}.\end{quote}
+These are the requested repository locations~\cite{repo,incoming}. The repository has reorganized the historical submissions: 36 research
+packets are filed under \file{Computability/BusyBeaver/Research/PA/docs},
+21 of those remain as incoming archives, and five further archives have
+arrived. Consequently the requested comparison covers \textbf{41 principal
+research packets}, not just the 26 ZIPs currently visible in
+\file{docs/incoming}. This distinction matters: scanning only the incoming
+filenames would omit fifteen earlier packets; counting every filed copy as
+an independent design would overcount. The full packet ledger is included
+in \file{comparison/archive_ledger.csv} and Appendix~\ref{app:ledger}.
+
+\subsection{A reproducible, explicitly scoped census}
+The census recursively opens each distinct ZIP payload, retains every
+reference to it, and recognizes complete numeric, five-column binary
+transition tables in the supported text formats. Each recognized table
+has two rows for every working control and exactly one undefined terminal
+control. Direct PA tables and the six nested archives retained in the
+filed historical packets are included. The recognizer does not discover
+machines embedded only in arbitrary code or JSON; the manuscript comparison
+supplements that deliberately narrow parser.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Count\\\midrule
+Principal research packets & 41\\
+Current incoming ZIP files & 26\\
+Archive references / distinct archive payloads & 71 / 44\\
+Members of the distinct archive payloads & 24,458\\
+Recognized table occurrences & 4,417\\
+Byte-distinct tables & 620\\
+Action-preserving graph classes & 446\\
+194-state occurrences / byte forms / graph classes & 97 / 15 / 8\\
+Archive parsing failures & 0\\\bottomrule
+\end{tabular}
+\end{center}
+These counts include ancestors, repeated reference tables, rejected
+experiments and small test controls. They are not counts of correct PA
+consistency machines. Two disconnected synthetic tables are excluded from
+the graph-class count. The recorded graph signature minimizes deterministic
+BFS serialization over all initial controls that reach the whole working
+graph. It retains the read and write symbols, directions and terminal
+control, while forgetting the selected initial control. Thus unequal
+signatures imply inequivalence under a stronger relation than merely
+renaming states while preserving the designated start. Separate tests
+handle reflection and global symbol interchange.
+
+\subsection{The 194-state frontier before this work}
+The supplied eight graph classes contain seven constructions with
+implementation evidence and one documented rejection. The three original
+194-state machines use the same 190-token separate-head emitter and the
+original Shift/MP protocol. The later cached protocol changes the source
+semantics, even when the arithmetic axiom family is unchanged.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrl@{}}
+\toprule
+Supplied design & Sites & Outcomes & Startup & Main change\\\midrule
+PA194, 67 readers / 7 folds & 3,673 & 4,780 & 58,154 & Primary allocation\\
+PA194 with A/D exchange & 3,673 & 4,780 & 58,122 & Physical register order\\
+PA194, 68 readers / 8 folds & 3,673 & 4,780 & 58,154 & Reader association\\
+PA194C & 3,649 & 4,749 & 57,922 & Cached conclusion protocol\\
+PA194CS & 3,646 & 4,745 & 57,768 & Symmetric Shift comparison\\
+PA194CZ & 3,649 & 4,750 & 58,168 & Known-zero scheduler jump\\
+PA194altC & 3,649 & 4,749 & 57,922 & Cached, eight-fold allocation\\
+\bottomrule
+\end{tabular}
+\end{center}
+``Outcomes'' counts both branches of each decrement. Startup means an
+exact finite run to the entire clean source-frame tape; it is not evidence
+about the eventual halting behavior. Full table hashes and locators appear
+in \file{comparison/frontier194.csv}.
+
+Five new packets principally deliver the identical PA194C table, whose
+SHA-256 begins \texttt{d759313c}. They should not be counted as five new
+machines. PA194CS is also already supplied: it omits a restore loop and
+exchanges the operands of a destructive equality comparison, whose normal
+exit clears both operands. Its extra reader is offset by a contextual fold.
+PA194CZ replaces source instruction 26 by a decrement of a register proved
+zero at that point. The alternate eight-fold cached machine appears as a
+\emph{validated search input} in \file{pa194c_conpa.zip}; promoting it from
+a search directory to a headline would not make it a new construction.
+
+The rejected eighth class illustrates the verification boundary. Its local
+folds and resolved source graph pass their checks, but its source addresses
+violate the physical return scanner's delimiter condition. Enlarging the
+scanner repairs the implementation at 195 states. A successful local
+quotient check cannot replace a complete physical execution argument.
+
+\subsection{Larger designs and contributions that survive comparison}
+The original PA195 uses a bundled diagonal-vacuity formula, a 191-token
+emitter, 3,700 source sites and 4,815 outcomes. The separate-head variant
+has 190 tokens and 3,673 sites. The cached 195C and bundled 195DC variants
+change where successful modus ponens stores its conclusion and where
+Shift checks for contradiction. Other 195-state results include the
+repaired eight-zero-scanner implementation and alternative allocations.
+The broader 195-state census has 26 byte forms and 16 graph classes,
+including known failures; those numbers do not certify every table.
+
+The original PA196 has 3,812 source sites and 4,959 outcomes. Its important
+successors combine diagonal vacuity, separated emitted heads, source-tree
+association, physical register allocation, cached commands, and invariant
+based jumps. The broad 196-state census has 163 byte forms and 99 graph
+classes. Some experiments actually halt on blank input after 43,563 steps;
+others fail universal source contracts. They cannot be treated as
+consistency-machine improvements merely because their tables are small.
+
+The U208 family contributes the method of recovering a merged reader's
+identity from neighboring tape history. The earlier positive-design
+catalogue identifies twenty graph classes among twenty-seven selected
+presentations; the much broader current census includes generated
+experiments and therefore has larger counts. The U209-to-U208 history
+fold and the PA209-to-PA196 source redesign overlap in their inherited
+machinery. Their nominal state savings cannot simply be added.
+
+The ZFC work~\cite{zfc} motivates finite-history reader quotients and source-level
+invariants. ConciseIPRA~\cite{ipra} motivates a different but complementary lesson:
+proof presentations may be changed by explicit proof translations.
+Neither importing an iPRA checker nor proving its consistency would by
+itself give the requested PA-consistency machine. Every transfer used here
+retains the PA refutation predicate as its logical endpoint.
+
+\subsection{Mathematical proofs and the formal endpoint}
+At the pinned revision the PA README explicitly says that neither
+machine-specific direction of the desired \emph{iPRA} equivalence has
+been established for the primary PA194. Its machine-specific conditional
+endpoints must therefore remain conditional in this comparison. The
+201-parent/194-dense quotient, zipper bridges, source coverage infrastructure,
+and arithmetic clock equations are valuable pieces of formal verification;
+they do not automatically assemble the missing internal endpoint.
+
+This is compatible with the ordinary mathematical PA proofs in the
+research manuscripts. Those proofs give syntactic transformations from PA
+refutations to numerical-calculus refutations and back, command compilers,
+and positive finite physical simulations. The inherited reverse
+translation handles the numerical aliases at truth code zero and the
+empty Cantor stack, fresh diagonal binders, and coincident variable labels.
+It uses a uniform \emph{proof constructor} for finite binary-set
+comprehension, not a truth predicate or an assumption of PA reflection.
+The present report states exactly which written calibration is inherited
+and supplies the additional finite machine and source arguments needed
+for its new construction. No new end-to-end Lean or Rocq theorem is claimed.

@@ -1,0 +1,185 @@
+% Ordinary mathematical calibration, retained source dependencies explicit.
+\section{The inherited PA calibration and its audit}
+\label{sec:calibration-audit}
+
+The new source instruction does not change the numerical calculus or its
+command protocol. The ordinary calibration used here is the supplied
+calibration of the separate-diagonal-head calculus and cached controller.
+The exact PA conclusion is obtained by the following syntactic chain:
+\[
+ \operatorname{Ref}_{\mathrm{PA}}\quad\longleftrightarrow\quad
+ \operatorname{Ref}_{\mathcal C}\quad\longleftrightarrow\quad
+ H_{\mathrm{cached\ source}}\quad\longleftrightarrow\quad H_P.
+                                                        \tag{F3}
+\]
+Here every equivalence is provable in PA. The accompanying reference
+proofs and their provenance are retained; the following details specify
+what their use entails and why a mere appeal to external equiconsistency
+would not suffice.
+The full ordinary mathematical argument is retained in
+\texttt{references/complete\_cached\_calibration.tex}; its logical
+dependencies are retained with the original diagonal and PA195
+calibration, and the final source equivalence is detailed in
+\texttt{references/proof\_symmetric.tex}. This section audits and
+summarizes those supplied proofs; it does not claim an independently
+implemented PA proof-code compiler or a new kernel-checked calibration.
+
+The numerical formula constructors are
+\[
+\begin{split}
+ p(a,b)&=\tfrac12(a+b)(a+b+1)+b,\\
+ I(A,B)&=4p(A,B),\qquad M(a,b)=4p(a,b)+1,\\
+ U(a,B)&=4p(B,a)+2,\qquad E(a,b)=4p(a,b)+3.
+\end{split}
+\]
+Code zero is truth, code one is the designated contradiction $M(0,0)$,
+and $N(A)=I(A,1)$. The transposed arguments of $U$ and the alias
+$I(0,0)=0$ are part of the specification. The separate head is
+$\Gamma(B)=I(B,U(B,B))$; the guarded separation gate and the six other
+heads are those in the retained calibration. The only inference rules
+are modus ponens and generalization of theorems; the retained dominated
+implicational schema supplies additional axioms. There is no implicit
+arbitrary-tautology or truth oracle.
+
+
+For completeness, write $A\to B$ for $I(A,B)$, and expand conjunction
+and existential quantification using $N$ and $U$. The six universally
+parameterized heads are
+\[
+\begin{aligned}
+ &(\exists x_a\,U(a,C))\to C,\\
+ &U(a,U(b,C))\to U(b,U(a,C)),\\
+ &M(c,a)\to(E(c,b)\to M(b,a)),\\
+ &E(c,a)\to(M(b,c)\to M(b,a)),\\
+ &\exists x_a E(c,a),\\
+ &U(a,b)\to\bigl(U(a,b\to c)\to U(a,c)\bigr).
+\end{aligned}
+\]
+The dominated schema is
+\[
+ ((c\to u)\to a)\to((a\to c)\to(b\to c)),\qquad u\le a.
+\]
+The old guarded gate $G(a,b,c)=N(V\to Q)$ is available when $c\ne a,b$,
+with the following literal numerical terms:
+\[
+\begin{aligned}
+ V&=M(a,b)\to U(c,M(a,b)),\\
+ P&=c\to M(c,b),\\
+ S&=U\bigl(b,(M(a,b)\to P)\wedge(M(c,b)\to c)\bigr),\\
+ Q&=U(c,S\to N(P)).
+\end{aligned}
+\]
+A failed guard emits truth. The separate diagonal head $\Gamma(c)$ is
+emitted without the guard. The bundled predecessor emits
+$N(\Gamma(c)\to(V\to Q))$ instead. Classical implicational proof templates
+translate the bundled gate to both separate components and conversely;
+an arbitrary $\Gamma(B)$ is obtained from the bundled gate at
+$(a,b,c)=(B+1,B+1,B)$, whose guard always holds. These translations are
+uniform on proof codes. Explosion and double-negation elimination in
+these templates are derived rules of the actual numerical calculus:
+explosion follows from the first head and the implicational $K$ theorem,
+and double-negation elimination then follows from Peirce's law. Treating
+code one as falsity is therefore supported by derivations, not silently
+added as a new rule.
+
+\paragraph{PA refutations to numerical refutations.}
+The supplied PA196 proof-producing interpretation uses bidirectional
+membership rewriting, a neighborhood-equality implication, and an equality
+witness. The diagonal calculus recovers those same interfaces. For the
+reverse rewrite
+\[
+ C=E(a,b)\to(\chi(b)\to\chi(a)),
+ \qquad \varphi=N(C),\qquad c=\ulcorner\varphi\urcorner,
+\]
+the code $c$ is larger than every variable label occurring in $C$. The
+old separation gate at $(a,a,c)$, direct membership rewriting and the
+retained witness turn the hypothesis $\varphi$ into the gate's forbidden
+quantified consequence. The available diagonal clause
+$\Gamma(\varphi)$ supplies precisely the vacuity needed to generalize
+that consequence at $c$. Double-negation elimination yields $C$.
+Coincident labels are handled by the separate diagonal membership case.
+The neighborhood interface is first obtained at the fresh label
+$\ulcorner E(a,b)\urcorner$ and then transported using the witness and
+membership-only vacuity. These are finite syntactic proof templates;
+substitution in the existing refutation compiler is primitive recursive
+and its correctness is proved by induction on the input proof. This is
+the first direction in the left equivalence of (F3).
+
+\paragraph{Numerical refutations to PA refutations.}
+The converse is a syntactic interpretation into PA, not a reflection
+argument. In a fixed conservative definitional extension for
+exponentiation, interpret membership by the bit predicate
+\[
+ B(s,z)\equiv\exists u,v\,
+       \bigl(s=(2u+1)2^z+v\ \wedge\ v<2^z\bigr),
+\]
+equality by equality, and $U(a,A)$ by universal quantification at the
+corresponding source label. PA proves $B(s,z)\to z<s$, and therefore
+refutes the translation of code one. For the zero alias use a fixed PA
+proof of $\top\leftrightarrow(\top\to\top)$; constructor translation is
+provable equivalence, not unconditional syntactic identity.
+
+Given the syntax of any formula $\theta(z,\vec u)$, a fixed induction
+proof pattern produces a PA proof of
+\[
+ \forall n\,\exists s<2^n\,\forall z<n\,
+              \bigl(B(s,z)\leftrightarrow\theta(z,\vec u)\bigr).
+\]
+At the successor step keep the previous code or add $2^n$, according to
+excluded middle for $\theta(n,\vec u)$. Substituting a formula into this
+induction instance, choosing fresh auxiliary bound variables, and checking
+the resulting finite proof are primitive-recursive syntactic operations.
+PA verifies the proof-producing operation uniformly; no formula is
+semantically evaluated by it.
+
+For distinct source labels $a,b$, the separation witness uses the bounded
+matrix
+\[
+          (B(x_a,z)\lor z=x_b)\wedge T(c)[z/x_b].
+\]
+When the labels $a=b$ coincide, the first membership antecedent under the
+binder becomes $B(z,z)$ and is false. The correct witness instead uses
+$(z=x_b)\wedge T(c)[z/x_b]$. This label-collision case cannot be treated as
+two independent free values. Code freshness makes the output label absent
+from $T(c)$, and auxiliary arithmetic bound variables are renamed to avoid
+capture. The remaining heads have fixed first-order proof suppliers.
+Recursion on a finite numerical proof, followed by the fixed PA refutation
+of $B(x_0,x_0)$ and elimination of the definitional extension, produces
+a PA refutation. PA verifies this transformation by induction on the
+coded proof. This proves the other direction of the left equivalence
+in (F3).
+
+\paragraph{Refutations and command search.}
+The cached controller maintains a top theorem $t$, a Cantor-encoded stack
+$w$, an untyped offset $d$, and a cached theorem $h$. Shift halts exactly
+when $h=1$; otherwise it transfers $h$ to the top and pops the next cache.
+Successful modus ponens puts its consequent in $h$, clears $t,d$, and
+leaves $w$ unchanged. The separate-head AX command pushes ten entries,
+so its stack selectors use the corresponding ten-entry exponents.
+The inherited proof compiler produces, from a numerical refutation, a
+finite command word that halts from \emph{every} incoming store. This
+last uniformity is essential because earlier search trials do not reset
+the store. The exhaustive scheduler eventually executes that word unless
+it has already halted.
+
+In the reverse direction annotate $t$, $h$ and each live canonical stack
+entry by a finite numerical derivation. AX appends axiom/generalization
+proofs, successful MP appends an MP proof, and Shift moves annotated
+entries or exposes a proof of one. For $w>0$ the Cantor tail is strictly
+smaller than $w$, so the live stack is finite and its annotation is
+primitive recursively bounded. The alias $p(0,0)=0$ is handled by a fixed
+proof of truth on underflow; it does not require an infinite proof list.
+The invariant is verified by induction on finite command executions.
+Together with exhaustive scheduling, this is the middle equivalence
+of (F3), uniformly on proof and computation codes.
+
+\paragraph{The symmetric Shift.}
+The old cached implementation restores a scratch copy of $h$ and compares
+$(H,X)=(h,1)$. The supplied symmetric implementation compares $(1,h)$.
+The destructive comparator halts exactly at equality and, on inequality,
+clears both operands while preserving every other register. Consequently
+both implementations have the same complete surviving store and the same
+halt condition. The local argument also covers arbitrary incoming scratch:
+the compared pair is $(h+x,1)$ or $(1,h+x)$. Its loop induction and finite
+source binding prove the last equivalence of (F3) in PA.
+

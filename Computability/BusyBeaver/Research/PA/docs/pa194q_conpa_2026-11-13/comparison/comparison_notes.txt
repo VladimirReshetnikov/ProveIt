@@ -1,0 +1,164 @@
+PA corpus audit at 17f92105e2bc4317feae6c219cb2143437b482ff
+=========================================================
+
+Scope and independently observed results
+----------------------------------------
+The fresh read-only scan covers every .tm/.txt file in the current git tree
+under Computability/BusyBeaver/Research/PA, every current docs/incoming ZIP,
+and recursively nested ZIP payloads (each identical payload traversed once).
+It recognizes complete five-column numeric binary transition tables with
+exactly one terminal target lacking outgoing rows. Source-only, JSON-only,
+and arbitrary embedded machine encodings are outside that literal parser.
+
+Observed: 4,417 table occurrences, 620 exact byte identities, 446 action-graph
+classes, plus two disconnected synthetic controls excluded from graph
+classification. There were no missing blobs or archive-read errors. There
+are 44 unique recursively encountered archive payloads and 71 archive
+references in this current-tree scan. These counts include ancestors,
+rejected machines, search inputs, synthetic controls and repeated copies;
+they are not counts of correct Con(PA) constructions.
+
+The previous 36-delivery census contained 606 byte identities. Every one of
+those 606 hashes is present in the new scan. Exactly 14 byte identities have
+been added. This validates coverage of the old literal-table corpus without
+assuming its reported graph hashes or reusing its parser. The union of the
+36 filed deliveries and five incoming-only deliveries gives a 41-packet
+report-level catalogue. Twenty-one existing incoming ZIPs duplicate filed
+packets; packet count and current archive-body count are different notions.
+
+At 194 states there are exactly 15 byte forms in eight action-graph classes.
+Those eight remain distinct after quotienting by global reflection and
+symbol complementation. The graph convention forgets the designated start
+and permits arbitrary state renaming. It takes the minimum canonical BFS
+code among all roots reaching the entire working graph. All 194 tables
+have such roots. Exact byte identity and exact canonical class are both
+recorded. This is an effective stronger test against cosmetic novelty;
+reflection/symbol exchange need not preserve a fixed zero-blank convention.
+
+The literal inventory contains no 190-, 191-, 192-, or 193-state table. It
+contains rejected 194-, 195-, 196- and 207-state experiments. This observation
+is not a lower bound and does not imply that code-only experiments are absent.
+
+The eight existing 194-state action graphs
+------------------------------------------
+1. PA194-67: dense SHA256
+   4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f.
+   134 fixed controls + 67 raw readers - 7 simultaneous folds.
+   Separate ten-entry diagonal-head source; 3,673 sites, 4,780 outcomes;
+   exact startup reported as 58,154. It is the repository's primary target.
+   Dense/native forms plus one re-emitted native form share this graph.
+2. PA194-67-AD: dense SHA256
+   27613aa92da79ba2ec6e2e88e0ac909fda218e06495ecc0af27201eac0e26c8f.
+   Same source and reader accounting, physical A/D register swap, startup
+   58,122. This is not merely a renaming of finite controls.
+3. PA194-68: dense SHA256
+   9087d70fc0e1878c38ceff928e6e7e0999c86b6efed00a5ec353821c00641c87.
+   Alternate reassociation: 134 + 68 - 8. Same 3,673-site source and
+   4,780 outcomes. Thirty-two local fold cases include a seven-step detour.
+4. Rejected scanner194: native SHA256
+   c48d6711e9c733669fca64576a1ae5277dfcc40388656bfa766edd2346363075.
+   The scanner confuses a legal seven-zero address run with its separator.
+   Valid local fold identities did not establish full source simulation.
+   Repair requires a new scanner state and gives M195S8, not a valid194.
+5. PA194C: dense SHA256
+   d759313c03b515293fe06b12769fa1771d3829a2bad89febaa9b4391990f3a4b.
+   The SAME principal table occurs in all five new incoming packets.
+   It combines the 67/7 decoder with the pre-existing Combined controller:
+   Shift halts on cached H=1; successful MP leaves its conclusion in H,
+   clears T and D, and leaves the stack unchanged. Six native rows change.
+   Its whole source graph is the prior PA195C graph: 3,649 sites,
+   4,749 outcomes, startup 57,922. Do not propose this again as new.
+6. PA194CS: dense SHA256
+   1c71002e5b8a2ddd1dd1311a2c54c424764624b611b69c8efbee1ac23c2e6f5f.
+   PA194C plus symmetric destructive equality in Shift. Instead of restoring
+   H=h and comparing (h,1), the new controller compares (1,h). The mismatch
+   routine clears both operands, preserving the complete surviving store.
+   Three sites disappear: 3,646 sites, 4,745 outcomes, startup 57,768.
+   A new reader costs a state; local fold 41->330 recovers it, using rows
+   0 L 31 and 1 L 46. The four local cases all have length3. Already supplied
+   in pa194_new_designs_2026-11-13.zip; not a new fallback for this request.
+7. PA194altC: native SHA256
+   a509952c1e06a79a90d5436cb52d3d5faf395ea3f1de2a9e496d7e17f1c4f353.
+   The 68/8 alternate decoder plus Combined controller. Already supplied
+   as a search input in pa194c_conpa.zip/search/grammar/fresh_frontier/.
+   Exact source identity, 32 fold cases, all original symbolic primitive
+   contracts and whole-tape startup are audited. The archive explicitly
+   distinguishes this from its principal result and does not independently
+   rederive the arithmetic block lemmas for this auxiliary composition.
+8. PA194CZ: dense SHA256
+   b713e73457be28f3e9b7c8ecbfac537115d1767462b557b2b30fe50b64201247.
+   PA194C with native row27/read1 changed to (1,R,21). Source site26 is
+   retagged as dec(register6, zero34, positive27), using the invariant that
+   register6 is zero there. Its 263,244-pair positivity invariant, original
+   symbolic audit (4,750 outcomes) and startup58,168 are recorded; the
+   archive says no separate new independent replay was supplied.
+
+Earlier 195-state designs and why their savings do not simply add
+----------------------------------------------------------------
+Original PA195 uses a bundled diagonal191 emitter: 134+68-7, 3,700 sites,
+4,815 outcomes, startup58,154; dense hash5c6afd87.... PA195S uses separate190
+with 134+67-6 and 3,673 sites. PA195C installs Combined commands on that
+allocation and has3,649 sites. PA195DC instead installs Combined commands
+on the original diagonal191 allocation:3,676 sites,4,784 outcomes.
+M195S8 repairs an invalid scanner194 by adding one scanner control:
+135+68-8; 3,700 sites,4,815 outcomes,startup59,164. A distinct intermediate
+separate195 layout is also supplied in the later PA194 packet. The literal
+inventory contains26 byte forms of195 states, including rejected experiments
+and raw parents; not all26 are candidate consistency theorems.
+
+The effective AX decoder cost of both accepted primary194 families is60:
+67-7 or68-8. With134 fixed controls, a reduction below194 needs at most59
+remaining readers or a fixed-control reduction. Existing196/195 rotations
+and folds commonly target the same roles or the same row and are not
+independent savings. The source code lengths are not machine-state counts.
+
+The196 families split into physical layout changes (head-order changes,
+closing-decrement CD3/CD4/CD5/CD6 choices, two and twelve rotations,
+eight-zero scanners, A/D swaps, and reassociation), proof-command changes
+(H-only Shift, Combined cached MP, zero-register jumps), and logical emitter
+changes (diagonal191, separate190, head decomposition). The supplied PA195
+comparison documents25 representative196 variants and their evidence
+boundaries; broader files include search experiments. Direct-negation NEG18
+reduces separate source length from3,673 to3,441 but produces197 physical
+states because useful decoder sharing is lost. Other compact157/158-node
+source representations likewise do not automatically improve the binary
+machine once scanner and helper controls are counted.
+
+The208 family includes a primary/compatibility pair repeated as conditional,
+entry-context, history and three-cell-fold arguments. These are alternative
+proofs or presentations of the same shared-state saving, not four additive
+savings. Later helper layouts bring the designated208 class count to20 in
+that historical comparison. The historical207 candidates fail physical
+frames; the new inventory retains58 byte forms of207 as experiments, not
+successful constructions. Full article-by-article approaches and known
+negative examples are recorded in archive_catalogue_current.json.
+
+Proof-status caveat that matters to the new result
+--------------------------------------------------
+The supplied archive reports claim ordinary mathematical PA proofs of the
+consistency biconditional for the principal194/195 designs. The repository
+README explicitly says the machine-specific iPRA reductions remain open,
+and distinguishes finite-run Lean theorems, Python certificates, conditional
+iPRA endpoints, and a completed weak-arithmetic equivalence. The imported
+PA196 development provides a PA proof of nonhalting -> consistency; this
+single direction is not the converse. None of this inventory audit newly
+kernel-verifies any theorem. It checks exact table identities and cosmetic
+novelty, preserves the archives' stated status, and points to their proofs.
+
+Files for integration
+----------------------
+- inventory.json: complete fresh member-level catalogue and canonical classes.
+- frontier194.json: all15 literal194 forms and their eight canonical classes.
+- principal_families.json:14 key194/195 designs with literal identities.
+- archive_catalogue_current.json:41 historical/current delivery descriptions.
+- coverage_check.json: all606 older byte forms present;14 new forms identified.
+- reference194/: all15 exact current194 byte forms, suitable for offline checks.
+- build_inventory.py: complete read-only reproducible git/archive parser.
+- check_novelty.py: candidate action-graph comparison under renaming, arbitrary
+  start choice, reflection and simultaneous symbol complementation.
+
+Example candidate check:
+python3 inventory/check_novelty.py /absolute/path/candidate.tm --output result.json
+
+Both scanners use only Python's standard library. Graph novelty is a finite
+comparison, independent from preservation of source or Con(PA) equivalence.

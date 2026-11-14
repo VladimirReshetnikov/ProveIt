@@ -1,0 +1,213 @@
+\section{Comparison with the complete supplied corpus}
+\label{sec:corpus-review}
+
+The comparison is pinned to ProveIt commit
+\nolinkurl{17f92105e2bc4317feae6c219cb2143437b482ff}.
+At this revision the PA research directory contains the extracted contents
+of 36 delivered packets. The incoming directory contains 26 ZIP files:
+21 are retained copies of those packets, and five are later cached-controller
+packets. Thus there are 41 top-level research packets to compare, rather
+than 62 independent constructions. The numerous
+\nolinkurl{pa194-*} and \nolinkurl{pa195-*} proof directories develop
+different proof layers for the same designated machines; their names do
+not signify additional machine designs.
+
+The comparison has two levels. First, a fresh read-only census scans every
+\nolinkurl{.tm} and \nolinkurl{.txt} file under the entire PA directory,
+every incoming ZIP, and every ZIP recursively encountered in those sources.
+Archive payloads are deduplicated by their complete SHA-256. Second, the
+reports and source descriptions classify the recognized tables as principal
+results, supplementary implementations, search seeds, or rejected
+experiments. A small state count or a filename beginning with ``candidate''
+is never sufficient for a positive classification.
+
+The census visits 44 distinct ZIP payloads through 71 archive references.
+It recognizes 4,417 table occurrences, 620 exact byte identities, and 446
+action-preserving, root-free control-graph classes. Two disconnected
+synthetic controls have no root reaching their whole graph and are left
+unclassified. The numeric tables contain eight 194-state graph classes,
+sixteen 195-state classes, and ninety-nine 196-state classes. These are
+corpus counts, including diagnostics and repeats of ancestors; they are
+not counts of established consistency machines. No recognized complete
+table has between 10 and 193 working states. This observation is not a
+state-count lower bound.
+
+\subsection{The eight existing 194-state graphs}
+
+\input{frontier194_table}
+
+The five principal designs in the table are PA194-67, PA194-AD, PA194-68,
+PA194C, and PA194CS. The remaining three are deliberately retained in the
+novelty comparison: PA194altC and PA194CZ already occur as supplementary
+search seeds, while the shortened-scanner table is explicitly rejected.
+All eight classes remain distinct even if one allows tape reflection,
+simultaneous read/write symbol complementation, and arbitrary choice of
+a graph-reaching root. Symbol complementation is used only as a stronger
+test against cosmetic novelty; it does not preserve the specified all-zero
+blank input.
+
+Several archive names suggest different cached machines, but their
+principal literal result is the same table. Its SHA-256 is
+\begin{quote}\small
+\nolinkurl{d759313c03b515293fe06b12769fa1771d3829a2bad89febaa9b4391990f3a4b}.
+\end{quote}
+In particular, recomposing the primary seven-fold decoder with the
+Combined controller would reproduce an existing result. The symmetry
+of the destructive equality test is also already used by PA194CS.
+Likewise, merely installing the Combined controller on the alternate
+eight-fold decoder, or adding the zero-register jump at source site 26,
+would reproduce supplied search seeds. A proposed fallback must be
+compared with these supplementary tables as well as the principal ones.
+
+\subsection{The positive 195-state families and their limitations}
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrl@{}}
+\toprule
+Family & Sites & Outcomes & Startup & Physical organization\\
+\midrule
+Original PA195 & 3,700 & 4,815 & 58,154 & $134+68-7$\\
+195S & 3,673 & 4,780 & 58,154 & $134+67-6$\\
+195C & 3,649 & 4,749 & 57,922 & 195S with Combined commands\\
+M195S8 & 3,700 & 4,815 & 59,164 & Extra scanner control and eight folds\\
+PA195DC & 3,676 & 4,784 & 57,922 & Original diagonal emitter, Combined commands\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The table identifies the five designated positive manuscript families.
+Original PA195 packages the diagonal-vacuity formula with the guarded
+gate. The separate-head emitter saves one macro occurrence and 27
+primitive sites; it underlies 195S, 195C, and the principal 194-state
+families. Combined Shift and MP remove a further 24 primitive sites,
+but do not automatically save a reader state. M195S8 uses an additional
+scanner control to make a different eight-fold allocation valid.
+PA195DC applies the Combined controller to the original bundled-diagonal
+source rather than the separate-head source.
+
+The sixteen recognized 195-state graph classes include these five, six
+explicitly rejected or diagnostic quotients, a secondary separate195
+layout, a crossed allocation, the 195-state parent of PA194CS, and two
+secondary implementations in the PA195DC search material. The latter
+include a negative-diagonal variant whose author explicitly keeps it
+outside the principal consistency theorem. They must not be silently
+promoted to independently proved consistency constructions. The full
+class inventory records every byte identity and source locator.
+
+\subsection{What the larger designs contribute}
+
+James Chang's PA209 and the Joint/Compatibility U209 ancestor are different
+209-state constructions, with respectively 3,948 and 3,909 primitive
+source sites. The U208 packets identify two old decoder roles by a
+finite-history argument. Entry-context, three-cell, and history
+presentations repeatedly describe this same kind of one-state saving;
+later helper layouts produce further 208-state graphs. Their equal
+state counts do not identify their source programs or transition graphs.
+
+The published PA196 has 3,812 source sites and 4,959 primitive outcomes.
+Its allocation comprises 36 tape/register-engine controls, 13 primitive
+routers, and 147 readers. The later 196-state proposals change head
+ordering, association, physical A/D positions, closing decrements, or
+zero-register jump routing. The direct repository catalogue selects
+22 rooted 196-state graph classes and explicitly distinguishes two
+experimental MP variants and two rejected layouts. The latter both
+halt on blank tape after 43,563 transitions; their finite halting traces
+are Lean checked in the repository. They are controls, not consistency
+machines.
+
+The mathematical source changes show why source length cannot be used
+as a proxy for the number of physical states. Diagonal vacuity reduces
+the emitter to 3,700 sites, but its first implementation uses 199 states;
+later allocations reach 198, 196, and 195. Separating the diagonal head
+gives 3,673 sites and eventually reaches 194. An integrated witness gate
+uses 3,745 sites and 4,872 primitive outcomes, yet its verified physical
+allocations use 206 and then 203 states. Distributed-gate and
+short-negation alternatives likewise lose advantageous reader sharing.
+The NEG18 separate-emitter source has only 3,441 sites and 4,468
+outcomes, but the documented allocation is $134+68-5=197$.
+A repaired 157-node representation of the unchanged PA196 source has
+a 207-state realization: a smaller abstract DAG can require more
+routing and fewer useful contextual identifications.
+
+Changed command protocols form a separate axis. H-only Shift alone has
+3,811 sites; Combined196 has 3,788 sites, 4,928 outcomes, and a complete
+57,922-step startup. Its successful MP returns the consequent in H,
+clears T and D, and does not push a dummy stack value. Shift tests H.
+These semantics differ from the original controller, so the command
+compiler and arbitrary-incoming-store refutation argument must change
+with them. An MP-only bounded register experiment is not the same result
+as a complete Combined implementation with all universal source outcomes.
+
+Other packets contain source-only grammar proposals, failed scanner
+shortcuts, pruned sources without a calibrated blank seed, and
+intermediate parity/control components. Their contribution is evidence
+about particular search spaces or reusable proof obligations. A failed
+universal frame contract rejects the proposed simulation argument; it
+does not by itself prove that the failing frame occurs on the blank run.
+Conversely, a long nonhalting prefix does not repair that argument.
+
+\subsection{Proof status and inherited assumptions}
+
+The ordinary PA calibration in the recent reports is stronger than
+experimental evidence but distinct from a freshly elaborated proof-assistant
+endpoint. It supplies syntactic translations of PA and numerical-calculus
+refutations, an explicit command compiler, exhaustive command enumeration,
+and positive-duration physical simulations. The reports explicitly address
+the code-zero alias $I(0,0)=0$, the Cantor-stack alias $[0;0]=0$, early
+halts during proof compilation, an arbitrary carried store between trials,
+and the coincident-variable case in the finite bit-comprehension argument.
+These points matter to the claimed PA-provable biconditional.
+
+The repository's current README nevertheless states that neither
+machine-specific reduction has yet been established in iPRA for the
+primary PA194, original PA195, or PA196 candidate. Its ordinary finite-run
+Lean theorems and conditional arithmetic endpoints do not close those
+obligations. This is consistent with reusing an explicit ordinary
+mathematical PA calibration; it must not be described as a completed
+Lean/Rocq or iPRA result. The present comparison audits the arguments and
+their interfaces but does not independently rebuild every historical
+proof-assistant development.
+
+\subsection{Coverage limits and reproducibility}
+
+The literal recognizer requires a UTF-8 text file of five-column rows
+\texttt{state read write direction next}, numeric state labels, a binary
+alphabet, both rows for every working state, and exactly one undefined
+halt target. Blank lines and whole-line comments are allowed. Files using
+other syntaxes, multiple undefined halts, code-generated tables not
+materialized as text, and tables embedded solely in JSON or Lean are
+outside this mechanical recognizer. They are considered through the
+reports and source descriptions rather than counted as recognized literal
+tables. The archive ledger gives all 41 top-level packet contributions.
+
+Graph classification forgets the designated start and compares each
+root that reaches the full working graph by deterministic breadth-first
+numbering with symbol-labelled edges and exact write/direction actions.
+Taking the least such encoding yields a complete invariant for this
+stated class of root-free graphs. This is stronger than comparing native
+labels or file hashes, but makes no assertion about semantic equivalence
+or correctness. Exact machine bytes, graph hashes, all occurrence paths,
+archive identities, the parser, and the read-only reproduction command
+are included in the comparison artifacts.
+
+\subsection{Prior work on expanded macro searches}
+
+The supplied search material already contains a partial expansion of
+the parameter-copy macros. In
+\nolinkurl{pa194_conpa_2026-11-13_2/search/exploratory/expanded_input.txt},
+fourteen terminals replace the eleven-terminal basis. Native copy roots
+12, 98, and 166 are opened into push root 19 and tail roots 20, 114,
+and 179. The old diagonal macro word grows from 191 to 252 terminals.
+The associated \nolinkurl{search_expanded.cpp} hashes newly composed
+pairs against all fixed pure-reader pairs, so exact fixed-pair reuse
+is already present. The recorded expanded and general runs cover
+3,363,000 and 1,023,000 iteration slots, respectively, and retain 195
+states as their best count. Earlier free-macro-aware grammar searches
+also give source-only upper bounds.
+
+Opening deeper interiors of the cons and push macros, using the newer
+separate-head or cached source, and performing a physically checked
+global optimization can extend those searches. It would be inaccurate
+to claim that exposing the three copy tails or recognizing fixed pure
+reader pairs is itself a new idea. Nor do those negative runs prove
+that a deeper or differently initialized search cannot save a state.

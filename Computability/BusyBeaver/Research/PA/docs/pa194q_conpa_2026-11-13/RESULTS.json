@@ -1,0 +1,67 @@
+{
+  "status": "Two materially different new 194-state constructions; no verified sub-194 result",
+  "convention": {
+    "alphabet": [
+      0,
+      1
+    ],
+    "working_states": 194,
+    "start": 0,
+    "halt_excluded_from_count": 194,
+    "tape": "two-way infinite, initially all zero",
+    "initial_head": 0,
+    "moves": [
+      "L",
+      "R"
+    ]
+  },
+  "principal": {
+    "name": "PA194Q",
+    "table": "machine/pa194q.tm",
+    "sha256": "48e98b5504dc5b3f20a2d040cb54ed1c96bee4c5e32ea27ae98ffada4dce7ea1",
+    "allocation": {
+      "fixed": 134,
+      "readers": 67,
+      "folds": 7
+    },
+    "source_sites": 3649,
+    "source_outcomes": 4749,
+    "changed_source_instructions": 79,
+    "unchanged_source_instructions": 3570,
+    "blank_startup_steps": 57922,
+    "independent_symbolic_transitions": 1124844
+  },
+  "secondary": {
+    "name": "PA194CSZ",
+    "table": "secondary/pa194csz/machine_csz/pa194CSZ.tm",
+    "sha256": "62e93098caf7c09ff2938d07064f0dbbb47c71ec369892968258fff708592269",
+    "allocation": {
+      "fixed": 135,
+      "readers": 67,
+      "folds": 8
+    },
+    "source_sites": 3646,
+    "source_outcomes": 4746,
+    "invariant_pairs": 263180,
+    "blank_startup_steps": 58014,
+    "independent_symbolic_transitions": 1100566
+  },
+  "new_preservation": "PA proves Halt(PA194Q) iff Halt(PA194C), and Halt(PA194CSZ) iff Halt(PA194CS)",
+  "calibrated_result": "PA proves (not Halt(M)) iff Con(PA) for each delivered machine, using the explicitly inherited ordinary mathematical PA calibration",
+  "kernel_checked_end_to_end": false,
+  "completed_ipra_endpoint": false,
+  "minimality_proof": false,
+  "corpus": {
+    "commit": "17f92105e2bc4317feae6c219cb2143437b482ff",
+    "deliveries": 41,
+    "literal_occurrences": 4417,
+    "byte_forms": 620,
+    "action_graph_classes": 446,
+    "existing_194_graph_classes": 8
+  },
+  "universal_frame_scope": {
+    "registers": "nine arbitrary natural values",
+    "header_distance": "48+n for n>=0; zero gap 48+n-|address|",
+    "spares": "arbitrary finite nonempty list of arbitrary naturals"
+  }
+}

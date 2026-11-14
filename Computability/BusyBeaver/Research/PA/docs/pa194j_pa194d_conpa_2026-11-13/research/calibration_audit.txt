@@ -1,0 +1,154 @@
+PA consistency-machine proof audit
+=================================
+Snapshot: ProveIt 17f92105e2bc4317feae6c219cb2143437b482ff.
+Scope: targeted source/paper audit and new source-level variants, not a Lean
+build and not certification of a new literal machine.
+
+1. The premise needs careful wording, not dismissal.
+
+PA/README.md states that the current goal is iPRA ⊢ Con(PA) ↔ ¬Halt(M),
+and neither machine-specific iPRA direction is completed for the primary
+PA194, original PA195, or PA196 candidate. That does not negate the written
+PA-provability arguments in the research packets. The user asks for a
+PA-provable equivalence, not a formalized iPRA theorem.
+
+PA/jamesyc-upstream/README.md and pa196/docs/result.md explicitly identify
+PA196.Arithmetic.pa_proves_nonhalting_consistency, an internal proof of
+Nonhalt → Con(PA). The published semantic nonhalting theorem alone does not
+supply the converse internally. It would be incorrect to infer an internal
+biconditional just from nonhalting in the standard model.
+
+However, the newer calibration reports add a substantive syntactic argument
+for the missing internal direction. Principal sources:
+  PA/docs/pa194_conpa_2026-11-13/report/calibration.tex
+  PA/docs/pa194_conpa_2026-11-13_2/mathematics/pa194_calibration.tex
+  PA/docs/pa194_conpa_2026-11-13/report/reference/diagonal_calculus.tex
+These explicitly distinguish ordinary mathematics about PA proof existence
+from an exported Lean/Rocq theorem. No concrete mathematical contradiction
+or invalid inference was found in the inspected calibration argument.
+
+2. Exact strength-preserving source argument.
+
+The numerical constructors are I(A,B)=4p(A,B), M(a,b)=4p(a,b)+1,
+U(a,B)=4p(B,a)+2 and E(a,b)=4p(a,b)+3, with Cantor p. Zero is truth, one is
+M(0,0), and I(0,0)=0 is a real code alias. The source uses six logical heads,
+a restricted but complete classical implicational head, theorem generalization,
+modus ponens, and a guarded separation gate. The diagonal replacement
+Gamma(B)=B→U(B,B) is sound because every free variable index in formula B is
+less than B. Immediate component descent and the exceptional zero case give
+an ordinary PA proof of that syntactic fact.
+
+Completeness is supplied through primitive recursive refutation translations.
+The diagonal calculus recovers reverse membership rewriting and neighborhood
+equality using Gamma at specially chosen formula codes. The separation property
+is the negation of the desired rewrite conclusion. This permits weakening its
+quantified matrix to membership-only formulas before using existential witness
+specialization, avoiding the equality-vacuity principle that is being replaced.
+The supplied proof then substitutes these interfaces into the PA196 compiler.
+No full source-level Lean correctness compiler has been produced in this audit.
+
+Soundness inside PA uses proof production, not a truth predicate or reflection:
+interpret M(s,z) as finite binary membership Bit(s,z), E as equality, and U as
+universal quantification. For each formula theta, a uniform syntactic generator
+builds a PA proof of finite binary comprehension by an induction instance.
+PA checks the output proof code; it need not evaluate theta. The gate follows
+from that comprehension template. The case a=b must use the separate singleton
+matrix, because the binder then changes both occurrences of that label; the
+reports handle this case. The guard c≠a,b supplies membership-vacuity freshness,
+and numerical code freshness supplies the separator variable.
+
+Annotate t, h, and each live canonical Cantor-stack entry with a PA proof of
+its translation. Both t and h are essential because Shift halts when t+h=1.
+The stack is not a free list: p(0,0)=0. The reports use canonical expansion;
+popping zero returns a fixed truth proof, and pushing zero on zero leaves the
+canonical list empty. AX, MP and safe Shift preserve the proof annotations.
+A halt produces a proof of translated code1; PA refutes Bit(x0,x0), giving a
+PA contradiction. This is a viable internal halting→refutation construction.
+
+3. Exact command and scheduler issues already handled in the better reports.
+
+The separate Gamma version pushes TEN entries; the bundled version pushes
+NINE. Reusing nine-entry selectors for ten-entry AX is invalid. The _2 PA194
+calibration spells out the ten-entry compiler, gives generic push/pop/discard
+words, and checks residues before every intermediate Shift test.
+
+The scheduler does not reset its live store between candidate words. The
+compiler therefore constructs a universally halting word from any incoming
+store, by beginning with AX to clear both caches. The rest of the code
+preserves arbitrary underlying stack values. Continuation pointers descend,
+so all earlier candidates terminate or halt and the candidate eventually runs.
+This is stronger and more appropriate than relying on informal fairness.
+
+4. Machine simulation scope.
+
+The best current source reports check every primitive branch from a symbolic
+complete register file and affine unary gap, together with exact startup.
+These are universal symbolic contracts, not finitely many chosen natural
+register values. Their mathematical correctness relies on the literal-row
+semantics of the symbolic verifier and on imported arithmetic block lemmas.
+The new endpoint is not automatically a Lean kernel theorem merely because
+these Python certificates pass.
+
+For the Con(PA)→nonhalting direction, positive simulation is enough. Under
+Con(PA), construct T+1 successive nonhalting source boundaries for any alleged
+physical halt time T. Each source macro has a finite positive physical trace;
+concatenate them to pass T, contradicting deterministic halting. This avoids
+an unjustified inverse decoding argument for arbitrary intermediate tapes.
+The construction is formalizable in PA given the macro termination/proof
+production invariants. Fixed startup trace and finite local simulation cases
+are arithmetizable in PA by bounded calculations.
+
+5. New source-level variants delivered to parent.
+
+Directory research_work/proof_audit/ contains:
+ - new_transfer_words.py, transfer_words.json and per-variant .word.json files:
+   independent whole-AX free-algebra checker and exact named/raw macro words.
+ - source_words.py, per-variant balanced grammar/instruction/site files and
+   source_words_receipt.json: complete ordinal source graphs.
+ - transfer_proofs.txt: proofs of three strengthened-head variations.
+ - separate_D_H_calibration.txt: precise ten-entry source/compiler/calibration
+   change for Gamma(A)→Gamma(D) or Gamma(H).
+ - adapt_separate_seeds.py and adapted194 seeds: simple starting trees only.
+
+New strengthened variants (191 tokens, nine entries, 3700 sites):
+ h1D: (Gamma(D)→Ex(D,U(D,H)))→H.
+ h2D: (Gamma(D)→U(D,U(A,H)))→U(A,U(D,H)).
+ h6outerD: (Gamma(D)→U(D,A))→(U(D,A→H)→U(D,H)).
+They are equivalent to the old calculus by explicit finite proof templates.
+Each first recovers its old structural head using only positive weakening,
+before using that head in the Gamma recovery. The h6outerD specialization
+A=H=1 uses the generalized identity and seriality ¬U(D,1). Seriality itself
+uses h5+h6+K; no Gamma or equality vacuity is needed.
+
+Separate variants (190 tokens, TEN entries, 3673 sites): change only the
+unconditional Gamma(A) to Gamma(D) or Gamma(H). The searched axiom set stays
+exactly the same. The Gamma selector changes to select_1(B,0,0) or
+select_1(0,B,0), respectively, from the old select_1(0,0,B). Every other
+selector and generic command word remains unchanged. These are actual
+numerical command changes, not state/physical-register relabelings.
+
+No successful reduced literal TM is asserted by these source files. Parent
+must certify the allocated table, folds, exact startup and all runtime
+contracts before calling a variant a 194-state or smaller result.
+
+6. Prior-art traps identified.
+
+The tempting Gamma fusion into h5 is already fully described in
+pa195_followup_research/source_extensions/witness_bundle.tex, for all three
+parameter choices. It must not be presented as new. Archived h1A, h2A and
+h6innerD transfers appear in pa194_conpa_2026-11-13_2/mathematics/. The supplied
+new variants alter parameter binding or antecedent location, while the
+separate Gamma(D/H) tail variants alter the actual command. No exact prior
+match was found in the inspected PA/docs corpus, but this is not a worldwide
+novelty claim.
+
+7. ConciseIPRA relevance.
+
+The concise iPRA calculus does not automatically give the desired PA-strength
+machine. Replacing the searched theory by iPRA would change the consistency
+target. Its techniques of deriving rather than emitting logical structure are
+useful; a concrete source-level bridge and compiled state count are necessary.
+A possible future route is the native scalar core with progress induction
+extended to all formulas, yielding a candidate concise HA presentation and
+then using the PA/HA negative-translation consistency equivalence. No compact
+binary TM or state advantage for this route was established here.
