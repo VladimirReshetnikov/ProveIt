@@ -31,3 +31,7 @@ IPRA_FOUNDATION_OVERLAY=/path/to/foundation/package-lib \
 
 The script rebuilds the prerequisite chain under `/dev/shm` by default; set
 `TMPDIR` for another suitable temporary directory.
+
+An independent suffix replay recompiled the final universal-premise theorem
+against separately checked set-search and source-shift objects, reusing the
+remaining prerequisite overlays. Its axiom report did not contain `sorryAx`.
