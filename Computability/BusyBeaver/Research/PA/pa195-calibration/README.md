@@ -27,3 +27,17 @@ Computability/BusyBeaver/Research/PA/pa195-calibration/check.sh
 The script verifies source and direct object hashes and rejects `sorryAx` in
 the printed theorem dependencies. It uses the supplied audited object
 directories; it does not rebuild their transitive dependencies.
+
+`PA195DecodedFields.candidate_pra_decodedFieldBound` strengthens this to the
+actual first decoder step: it uses the bounded graph for `p = n / 4`, then
+the Cantor graph for its two components, and proves that both components are
+strictly less than every positive `n`. Its supporting semantic theorem holds
+for arbitrary IOpen model elements. Check this extension, including a fresh
+build of `PA195FreshBound.olean`, with the same overlay variables:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-decoded.sh
+```
+
+This still proves only one decoder step, not represented recursive occurrence
+or self-freshness.
