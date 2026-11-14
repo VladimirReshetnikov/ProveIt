@@ -1,7 +1,7 @@
 import PA194Global
 import PA194DenseBinding
 
-/-! The exact 202-state parent and the delivered dense 194-state PA195 table
+/-! The exact 201-state parent and the delivered dense 194-state PA194 table
 have the same ordinary finite-run halting behavior on every tape. This is not
 an internal PRA or iPRA theorem and says nothing by itself about Con(PA). -/
 set_option autoImplicit false

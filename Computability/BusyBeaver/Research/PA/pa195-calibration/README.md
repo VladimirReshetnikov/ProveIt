@@ -214,3 +214,17 @@ Check the specialization and freshly rebuilt local prerequisites using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-stage-core.sh
 ```
+
+`PA194OccurrenceLocality.lean` proves that the occurrence core at packed index
+`x` depends only on history bits below `x`. `PA194OccurrenceStable.lean`
+uses an explicitly represented bounded invariant and candidate-PRA strong
+induction to show that every bit `x` at any stage `t > x` agrees with its bit
+at stage `x + 1`, even for nonstandard model elements. The theorem assumes a
+candidate-PRA-certified bit code and the stated exact stage-update equation;
+the preceding stage-core module supplies the latter for certified occurrence
+components. Construction of the final occurrence code and its coverage
+property remain separate. Check the locality and stabilization proofs with:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-stability.sh
+```
