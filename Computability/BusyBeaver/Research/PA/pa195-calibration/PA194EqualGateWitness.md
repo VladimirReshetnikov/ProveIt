@@ -40,3 +40,7 @@ I/O pressure, the present check is a focused ordered suffix rebuild against
 retained prerequisite objects; the full nested rebuild is deferred.
 
 The author completed the focused ordered suffix rebuild with no `sorryAx`.
+
+An independent ordered suffix replay rebuilt all three equal-gate witness
+modules against the separately checked conditional-singleton and earlier
+source objects. It passed without `sorryAx`; this was not a full nested replay.
