@@ -20,8 +20,11 @@ This package leaves `close` as a parameter. The separate
 [canonical-closer bridge](PA194CanonicalDualForall.md) supplies a fixed code,
 proves its agreement with Foundation's internal traversal, and establishes
 the universal-branch equation when the recursively translated bodies are
-well formed. Neither package establishes that hypothesis for arbitrary
-source formulas, positive/negative semantic duality, the connection of the
+well formed. The separate [source-output proof](PA194SourceOutputWF.md)
+establishes that well-formedness for every internal source code, and the
+[polarity proof](PA194SourcePolarity.md) identifies the negative output as the
+internal syntactic negation of the positive output. These packages do not
+establish positive/negative semantic duality for nonstandard formulas, the connection of the
 zero alias to this truth code and the represented proof compiler, the encoding
 and proof translation to Foundation's relational source, PA calibration,
 machine internalization, or either consistency implication.

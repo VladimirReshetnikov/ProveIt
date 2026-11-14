@@ -18,8 +18,10 @@ are `4 * pair a b` and `4 * pair body label + 2` in
 syntax and proof translation. `translation_universal` identifies that actual source
 universal branch, assuming that its two recursively translated body components
 are internally well formed and that the supplied source-tag and child decoder
-codes have their respective candidate-PRA certificates. It does not prove
-these hypotheses for every source formula, nor full compiler correctness.
+codes have their respective candidate-PRA certificates. This file leaves those hypotheses explicit. The separate
+[source-output proof](PA194SourceOutputWF.md) establishes them for every
+internal numeric source code, including nonstandard values, under the decoder
+certificates. Neither file proves full compiler correctness.
 All statements apply to nonstandard model elements in every nonempty
 candidate-PRA model with an IΣ₁ arithmetic reduct and equality interpreted as
 equality. Lean reports `propext`, `Classical.choice`, and `Quot.sound`, with no
