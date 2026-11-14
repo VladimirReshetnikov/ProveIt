@@ -51,6 +51,7 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelRecursorChain`, `PA194ModelRecursorGraph` | A newly specified recursion chain has exact depth and budget change; actual Foundation graph inversions supply its immediate edges. |
 | `PA194ModelPathBudgetPositive`, `PA194ModelPathGraph` | Visited binders have positive remaining budget, and every chosen path node has an actual Foundation graph entry. |
 | `PA194ModelPathReferenceStep` | Every path step from valid syntax is either a stationary leaf or a reference edge with actual graph entries at both ends. |
+| `PA194ModelEqualityObservations` | Translated equality atoms derive four quantified neighborhood observations in the target calculus. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -208,6 +209,10 @@ and budgets match the graph inversions. The converse extraction of paths or
 chains from arbitrary Foundation fixpoint witnesses remains open. Every path
 step from valid syntax is either a stationary leaf with unchanged budget or a
 reference edge, with actual Foundation graph entries at both endpoints.
+The target calculus also derives all four quantified neighborhood membership
+implications from a translated equality atom, uniformly for internally valid
+source term vectors and model-valued labels. Arbitrary-label specialization
+and membership substitution remain separate obligations.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.

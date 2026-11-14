@@ -1,5 +1,6 @@
 import PA194ModelPathGraph
 import PA194ModelPathReferenceStep
+import PA194ModelEqualityObservations
 #print axioms PA194ModelLogic.formulaReferenceChain_budget_suffix
 #print axioms PA194ModelLogic.formulaReferenceChain_budget
 #print axioms PA194ModelLogic.formulaReferenceEdge_and
@@ -22,3 +23,11 @@ import PA194ModelPathReferenceStep
 #print axioms PA194ModelLogic.path_reference_step
 #print axioms PA194ModelLogic.path_reference_graph_step
 #print axioms PA194ModelLogic.validSourceChild_step
+#print axioms PA194ModelLogic.equalityAtom_valid_observe_all
+#print axioms PA194ModelLogic.iff_forward_target
+#print axioms PA194ModelLogic.iff_reverse_target
+#print axioms PA194ModelLogic.neighborhood_observe_right_forward
+#print axioms PA194ModelLogic.neighborhood_observe_right_reverse
+#print axioms PA194ModelLogic.neighborhood_observe_left_forward
+#print axioms PA194ModelLogic.neighborhood_observe_left_reverse
+#print axioms PA194ModelLogic.equalityAtom_valid_observe_right
