@@ -202,3 +202,15 @@ with the same audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-stage.sh
 ```
+
+`PA194OccurrenceStageCore.lean` specializes the stage iterator to the actual
+PA194 occurrence core. Candidate PRA certifies the required Boolean core,
+history insertion, and bit-test component codes. For any such certified
+codes, `modelStageRec` proves the exact four-tag decoded-child recurrence at
+every stage of every candidate-PRA model, including nonstandard stages. This
+still does not prove stabilization or the final occurrence coverage property.
+Check the specialization and freshly rebuilt local prerequisites using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-stage-core.sh
+```
