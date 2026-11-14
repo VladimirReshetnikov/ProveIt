@@ -19,4 +19,6 @@ report `propext`, `Classical.choice`, and `Quot.sound`, without `sorryAx`.
 For a full fresh replay, set the audited `IPRA_LEAN_OVERLAY` and
 `IPRA_FOUNDATION_OVERLAY` as in `GENERIC-BRIDGE.md`, and run
 `bash Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/check-one-way-endpoint.sh`
-from the repository root. This script has not yet received a full fresh run.
+from the repository root. A fresh Linux run passed with the audited overlays, rebuilding the full
+generic-machine and 100-module transfer/certificate chain before checking
+all four endpoint theorems; no checked theorem depended on `sorryAx`.

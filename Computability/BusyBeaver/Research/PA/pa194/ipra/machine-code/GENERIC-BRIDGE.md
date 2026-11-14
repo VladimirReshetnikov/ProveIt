@@ -35,3 +35,7 @@ To replay, use the same pinned overlays as `check-mark-all.sh` and run
 `bash Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/check-generic-bridge.sh`
 from the repository root. The script builds the generic machine from source and uses a private temporary
 directory for the generated PA194 rows and all other local dependencies.
+
+An independent fresh Linux replay through `check-one-way-endpoint.sh` also
+rebuilt this complete generic bridge and the 100-module transfer/certificate
+chain successfully, with no `sorryAx` in the checked theorem dependencies.

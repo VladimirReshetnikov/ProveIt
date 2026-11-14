@@ -36,3 +36,8 @@ From the repository root, set `IPRA_FOUNDATION_OVERLAY` to the audited current
 Foundation object overlay and `IPRA_LEAN_OVERLAY` to the pinned audited
 project object overlay, then run
 `bash Computability/BusyBeaver/Research/PA/pa194-source-formula-shift-code-model/check.sh`.
+
+An independent Lean invocation also recompiled the final source-shift module
+against the same freshly rebuilt suffix dependencies, with the same axiom
+report and no `sorryAx`. That invocation did not rebuild the full prerequisite
+chains.
