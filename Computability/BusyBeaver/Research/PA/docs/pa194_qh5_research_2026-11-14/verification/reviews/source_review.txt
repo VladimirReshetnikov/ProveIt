@@ -1,0 +1,47 @@
+Independent review of PA194QH5
+Reviewed 14 November 2026
+
+Outcome: no mathematical or source-binding defect was identified in the reviewed QH6-to-QH5 modification. The result is appropriately described as a new 194-state composition with an ordinary mathematical PA calibration, supported by executable certificates. It is not a state-count improvement and is not a new end-to-end Lean/Rocq theorem.
+
+Scope inspected
+---------------
+Read construction/build_qh5.py, construction/support.py, proof/qh5_preservation.tex, proof/check_source_binding5.py, proof/check_commands.py, and the retained uniform radix-calibration argument. Reviewed the current acceptance receipt's scope, rather than treating the receipt as a proof of the mathematical calibration. Did not independently reprove the original coefficient-four PA-to-calculus theorem, re-elaborate RestrictedImplication.lean, or rerun the complete independent physical checker; those remain explicitly attributed components of the assembled argument.
+
+Fresh short replays
+-------------------
+1. Source relocation check passed, writing qh5_source_review.json outside the candidate package. It reconstructed QH6, H6, and Q; checked the coefficient-six and coefficient-four comparisons; identified exactly 61 multiplier bodies; and checked every outside operation and successor under the relocation.
+2. Free-term emitter and command-word check passed, writing qh5_commands_review.json outside the candidate package.
+3. Rebuilt the machine with --skip-runtime into qh5_build_review. The eight simultaneous folds / 32 local cases passed. Complete blank initialization reached the claimed frame at 58,088 steps. The rebuild produced 194 working controls and 388 rows, with dense SHA-256 94c85547b3edd0df0a441d45bf22abb52711f2b27cc9e680999232285757dba5 and native SHA-256 45c649af2600c2cfa8bbb07ce2a674e07945d985af6c9fc8aaa8563df1225c05. This particular review replay intentionally omitted the universal runtime pass; its receipt has runtime=null. It must not be substituted for the separately completed full acceptance receipt.
+
+Coefficient and exact source binding
+------------------------------------
+The changed native row (190,1): (1,R,330) -> (1,R,99) agrees with replacing node61=((incT,node60),(incT,node60)) by ((incT,node60),node60). Since node60 is two increments, these are six and five increments respectively. The 61 expansions account exactly for 3775-3714=61. Comparing the four-increment restoration gives 3653+61=3714. The 3409 outside sites are equal under a bijective relocation; external successors may enter a body's first instruction but not its interior. This is the correct condition for reusing the surrounding loop proof.
+
+The explicit draining-loop invariant T=T0+5i, Y=Y0-i yields (T0+5Y0,0), with 7Y0+1 primitive steps. The check that each multiplier body occurs at relative path 1110 in exactly one of the 61 Cons occurrences supports applying that changed contract to every formula constructor, including MP matching. No assertion that ordinary stack pairing or scheduler pairing has changed is made.
+
+Radix calibration
+-----------------
+The hereditary map correctly recodes numerical variable labels as well as formula trees. The left inverse J supplies injectivity and thus guard preservation; it is not improperly used to translate arbitrary radix-five proofs back to radix four. The exceptional I(0,0)=0 case is addressed. The interpretation of unused residue four as truth is necessary because arbitrary command parameters may use it, and is included. The non-monotonicity of F is correctly handled by translating a restricted rho leaf through the unrestricted rho8All template, whose own target leaves satisfy their actual target order conditions. There is no unsupported claim that F preserves subtraction, addition, Cantor stacks, or literal machine trajectories.
+
+Command compiler
+----------------
+Independently checked the displayed identities algebraically:
+* After AX;S^9 the top is q8, stack [old_top;old_stack], and cache U(old_d,old_h). Push's final MP0 therefore fails its implication/universal residue comparison and returns the required zero top with the saved stack.
+* Pop's eleventh Shift tests exactly the saved old top, then removes one underlying stack entry. It remains correct for the Cantor zero alias.
+* Discard=MP0 returns the same zero store fields on both matching branches when the offset is zero, for arbitrary cache.
+* Offset_i also works at i=0, where the matching branch gives the same required result.
+* Gen_i carries the old formula into the cache before AX and selects U(i,a) without an unintended halt.
+* The q_j selector uses j+1 Shifts and 9-j Pops. The propositional and gate selectors have the correct remaining stack counts.
+* The MP compiler explicitly reserves the otherwise missing zero beneath its two premises. Its two Shifts expose a and I(a,b), then MP_b and Pop return b with a restored old stack, or halt on an intermediate/final contradiction. The all-store leading AX and final Pop handle arbitrary carried caches and stacks. A plain final Shift would be wrong, and the manuscript correctly rejects it.
+
+Physical and proof scope
+------------------------
+The local fold checker evaluates the final simultaneously patched table, with all four history/current-bit combinations for every fold. This is stronger than checking each fold in isolation. The blank check compares the whole finite-support tape rather than a projected register state. The full independent runtime receipt is separate and reports completion; this review did not rerun that lengthy engine. The ordinary PA argument composes syntactic proof translations, a complete command compiler, scheduler fairness, positive finite physical simulations, and exact startup. The README and proof correctly retain the inherited calibration as a named mathematical dependency and do not assert completed iPRA or kernel verification.
+
+Minor editorial issue
+---------------------
+proof/check_commands.py's opening docstring still names proof_hybrid.tex. The current corresponding proof is proof/qh5_preservation.tex. This is a stale filename only and does not affect execution or any reviewed identity.
+
+Material difference
+-------------------
+The composition is materially different at its recurrent formula construction and MP matching (coefficient five rather than six) and differs from Q5 in its no-push successful MP and cache-only Shift. The components themselves are supplied ideas. The manuscript appropriately claims the verified new composition and literal-corpus novelty, not a new radix theorem, historical priority for the mechanisms, or optimality of 194 states.

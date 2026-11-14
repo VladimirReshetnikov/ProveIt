@@ -1,0 +1,228 @@
+\section{A complete ten-entry command compiler}
+\label{sec:np-controller}
+
+\subsection{Exact numerical operations and command contracts}
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad [a;w]=p(a,w),\qquad
+ I(a,b)=4p(a,b),\qquad U(i,a)=4p(a,i)+2.
+\]
+Iterated brackets put their leftmost entry at the top. The Cantor
+projections are total and satisfy
+\[
+ \operatorname{hd}[a;w]=a,\quad \operatorname{tl}[a;w]=w,
+ \quad[0;0]=0,\quad\operatorname{hd}(0)=\operatorname{tl}(0)=0.
+\]
+A numerical stack is therefore not being treated as a free list.
+A command store is $(t,w,d,h)$: current formula, stack, offset, and cached
+formula. Code zero is truth and code one is the target contradiction.
+The new MP command, with $y=d+x$, is
+\begin{equation}\label{eq:np-mp}
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+ (y,w,y,0),& I(t,y)=h,\\
+ (0,w,y,0),& I(t,y)\ne h.
+ \end{cases}
+\end{equation}
+Shift is retained literally:
+\begin{equation}\label{eq:np-shift}
+ S(t,w,d,h)=
+ \begin{cases}
+ \mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1.
+ \end{cases}
+\end{equation}
+For $D=d+x$, $H=h+y$, the unchanged AX command has output
+\begin{equation}\label{eq:np-ax}
+ \mathsf{AX}_{A,x,y}(t,w,d,h)
+   =\bigl(g(H,D,A),[q_1,\ldots,q_9,t;w],0,0\bigr).
+\end{equation}
+Here $q_1=\Gamma(A)=I(A,U(A,A))$, $q_2,\ldots,q_7$ are the
+six retained PA196 heads in reverse emission order,
+\[
+ q_8=\rho(D,A,H,d)=I(I(I(H,d),D),I(I(D,H),I(A,H))),
+ \qquad q_9=U(d,h).
+\]
+The gate $g$ is the original separate-head guarded separation gate.
+The free-constructor computation in
+\texttt{check\_emitter\_and\_words.py} binds all these formula trees to
+the delivered grammar. All $q_1,\ldots,q_8,g$ are divisible by four,
+and $q_9\equiv2\pmod4$, with $q_9\ge2$. In particular none is code one.
+This is a statement about constructor values, requiring no consistency
+assumption and holding for arbitrary incoming natural stores.
+
+The count in (\ref{eq:np-ax}) is nine generated stack entries plus the
+saved old top. The two identities needed below are
+\begin{align}
+ \mathsf{AX}_{A,x,y};S^9(t,w,d,h)
+   &=(q_8,[t;w],0,U(d,h)),\label{eq:np-nine}\\
+ \mathsf{AX}_{A,x,y};S^{10}(t,w,d,h)
+   &=(U(d,h),w,0,t).\label{eq:np-ten}
+\end{align}
+All displayed Shifts are nonhalting: their tests involve two generated
+non-one codes, zero and a generated code, or the universal code of value
+at least two. This also establishes exact stack effects when zero pairs
+collapse.
+
+\subsection{Uniform stack operations and a one-command discard}
+
+Write $A_0=\mathsf{AX}_{0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0;S^9;\mathsf{MP}_0,\qquad
+ \mathsf{Pop}=A_0;S^{11},\qquad
+ \mathsf{Discard}=\mathsf{MP}_0,\qquad
+ \mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+Their exact contracts are
+\begin{align}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\label{eq:np-push}\\
+ \mathsf{Pop}(t,[a;w],d,h)&=(t,w,0,a),\label{eq:np-pop}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\label{eq:np-discard}\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).\label{eq:np-offset}
+\end{align}
+For Push, (\ref{eq:np-nine}) makes the final MP compare an implication
+with a universal code, so it fails with offset zero. For Pop, the first
+ten Shifts give (\ref{eq:np-ten}). The eleventh Shift tests
+$U(d,h)+t\ge2$, hence it does not halt even when $t=1$.
+It pops exactly the displayed item. Thus Pop is total on all natural
+stores. In particular $\mathsf{Pop}(t,0,d,h)=(t,0,0,0)$ and
+$\mathsf{Push}(0,0,d,h)=(0,0,0,0)$.
+
+For Discard, the two MP outcomes in (\ref{eq:np-mp}) coincide when
+$d=x=0$, for arbitrary $h$: both are $(0,w,0,0)$. This gives a single-command discard,
+where the old dummy-push controller needed a longer word. The old cache
+need not be zero for this identity. For Offset,
+if $i>0$ then $I(0,i)>0$, so the comparison fails; if $i=0$ it succeeds
+and returns $(0,w,0,0)$. The same one-command definition covers both cases.
+These simplifications affect the proof-word compiler; they do not claim
+additional physical state savings.
+
+\subsection{Axiom selectors and generalization}
+
+In the following contracts the arbitrary incoming store is $(t,w,0,0)$.
+For $1\le j\le7$, the word
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};S^{j+1};\mathsf{Pop}^{9-j}
+\]
+returns $(q_j,w,0,0)$ with the parameters evaluated at the desired
+$A,D,H$. After the initial Shifts, the remaining $9-j$ stack entries
+are exactly the unselected generated tail and the saved zero. The Pops
+preserve the selected top and consume those entries; the last pop puts
+that saved zero into the cache. For the dominated head, if $u\le a$,
+use
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf{AX}_{b,a-u,c};S^9;\mathsf{Pop}.
+\]
+It returns $(\rho(a,b,c,u),w,0,0)$, with the numerical dominance condition
+coming from $a=u+(a-u)$. A permitted gate is obtained by
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};\mathsf{Pop}^{10},
+\]
+which returns $(g(H,D,A),w,0,0)$. Truth uses Discard alone.
+
+The word
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;S;
+                \mathsf{AX}_{i,0,0};S^{10}
+\]
+returns $(U(i,a),w,0,0)$ from $(a,w,0,0)$. Before its AX the store is
+$(0,w,i,a)$; its last ten Shifts use (\ref{eq:np-ten}) with saved top zero.
+Its first Shift tests $0+0$, and the later ones are among the safe AX
+shifts. Hence this generalization word is total even for $a=1$.
+
+\subsection{Modus ponens with its spare zero supplied by the compiler}
+
+Suppose recursively compiled proofs return $a$ and $I(a,b)$ with the
+stack framed and both caches cleared, or halt earlier. The MP compiler is
+\begin{equation}\label{eq:np-compile}
+ \mathsf{Discard};\mathsf{Push};C(I(a,b));\mathsf{Push};
+ C(a);\mathsf{Push};S;S;\mathsf{MP}_b;\mathsf{Pop}.
+\end{equation}
+The first two commands reserve a zero below the premise computations.
+If the recursive calls have returned, the store before the two Shifts is
+\[
+             (0,[a,I(a,b),0;w],0,0).
+\]
+The first Shift returns $(0,[I(a,b),0;w],0,a)$.
+The second halts if $a=1$; otherwise it returns
+$(a,[0;w],0,I(a,b))$. MP succeeds and returns
+\[
+                         (b,[0;w],b,0).
+\]
+By the total Pop contract, the final word returns $(b,w,0,0)$, including
+$b=1$. The stack zero is now consumed once, at the compiler level.
+At $a=b=w=0$ the same proof uses the literal Cantor projection identities;
+no extra distinction between a zero push and an empty stack is introduced.
+
+Induction on a finite derivation $p$ in the inherited separate-head
+calculus therefore proves:
+\begin{quote}
+From every $(t,w,0,0)$, $C(p)$ either halts or returns
+$(\operatorname{concl}(p),w,0,0)$.
+\end{quote}
+The axiom and generalization cases use the words above. The MP case is
+(\ref{eq:np-compile}); extending a word after an early halt still halts.
+In particular a refutation compiler ends in top one, if it has not already
+halted. Its final appended Shift halts because $1+0=1$.
+For arbitrary incoming $t,w,d,h$, first apply $A_0$ to clear $d,h$.
+Thus the concrete word
+\[
+                         A_0;C(p);S
+\]
+halts from \emph{every} incoming store whenever $p$ derives code one.
+The compiler is a primitive-recursive traversal of the finite derivation,
+and PA proves its correctness by induction on that coded derivation.
+It does not assume a reset between the scheduler's unsuccessful trials.
+
+The unchanged scheduler enumerates finite command words with the usual
+Cantor continuation coding. A cofinal family of halting fresh candidates
+is obtained by prefixing the universal word by
+$\mathsf{AX}_{k,0,0}$. Let $E(\epsilon)=0$ and let a positive continuation be encoded by
+$E(c::w)=1+\operatorname{encodeCommand}(c,E(w))$. In particular
+$\operatorname{encodeCommand}(\mathsf{AX}_{A,x,y},z)
+=p(A+2,p(y,p(x,z)))$. Put $z=E(A_0;C(p);S)$, using this positive
+continuation convention rather than a fresh-candidate code. The fresh
+candidate codes for the prefixed words are exactly
+$p(k+2,p(0,p(0,z)))$, which are strictly increasing and
+unbounded in $k$. The fresh counter begins at two, so omitting smaller
+candidates loses none of this cofinal family. Every decoded continuation
+strictly decreases, and the unchanged source macro loops terminate.
+The resulting finite-word and finite-trace construction is formalizable
+in PA by primitive recursion and induction.
+
+\subsection{Soundness and the PA calibration}
+
+Annotate the current top $t$, cached head $h$, and every live canonical
+Cantor-stack entry by a derivation in the separate-head calculus, or by a
+PA proof of its arithmetic translation. For $w>0$, its decoded tail is
+strictly smaller than $w$; thus the canonical stack and its annotation
+have a primitive-recursive bounded construction. A zero stack supplies
+truth when popped, and pushing zero onto zero preserves the empty
+canonical annotation.
+
+AX adds the unchanged valid axiom instances, a generalization of the old
+cached theorem, and the saved old top. On a successful MP, the annotations
+of $t$ and $I(t,y)=h$ produce an annotation for $y$. The stack is retained,
+and the cache receives the truth proof. Failure outputs truth and retains
+the stack. Shift transports the annotations. If its test succeeds, then
+$t+h=1$ implies that one of the two annotated formulas is code one.
+The inherited syntactic arithmetic translation turns that annotation into
+a PA refutation. No annotation is imposed on the arithmetic offset $d$.
+
+Consequently PA proves both finite syntactic reductions:
+\[
+ \text{source halt}\ \longrightarrow\ \text{PA refutation},
+ \qquad
+ \text{PA refutation}\ \longrightarrow\ \text{source halt}.
+\]
+For the second reduction, compose the supplied primitive-recursive
+PA-to-separated-head proof translation with the all-store compiler above.
+For the first, compose the proof annotation with the supplied
+separated-head-to-PA translation. This uses the existing logical calibration,
+including its treatment of the code-zero alias and coincident variable
+labels. Nothing in the no-push modification changes that calculus or
+requires a new logical axiom, a reflection principle, or consistency as
+an additional assumption.
+

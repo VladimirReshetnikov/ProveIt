@@ -14,7 +14,7 @@ a report at one of the destinations of section 2.
 
 ## Con(PA) machine research packets
 
-Sixty-one archives that arrived between 28 October and 13 November 2026 are about
+Seventy-seven archives that arrived between 28 October and 13 November 2026 are about
 constructing a Turing machine whose non-halting is equivalent to `Con(PA)`. They are
 placed, as delivered and without a write, in
 [`Computability/BusyBeaver/Research/PA/docs`](../../Computability/BusyBeaver/Research/PA/docs/README.md),
@@ -91,6 +91,22 @@ from the history.
 | `pa194_qradix_research_2026-11-13.zip` | 2026-11-13 | [pa194_qradix_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194_qradix_research_2026-11-13/) |
 | `pa194qh6_conpa_2026-11-13.zip` | 2026-11-13 | [pa194qh6_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194qh6_conpa_2026-11-13/) |
 | `pa194qns_research_2026-11-13.zip` | 2026-11-13 | [pa194qns_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194qns_research_2026-11-13/) |
+| `pa194qh_conpa_2026-11-13.zip` | 2026-11-14 | [pa194qh_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194qh_conpa_2026-11-13/) |
+| `pa_consistency_reduction_study_2026-11-13.zip` | 2026-11-14 | [pa_consistency_reduction_study_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_reduction_study_2026-11-13/) |
+| `pa_consistency_research_2026-11-14.zip` (second archive of this name) | 2026-11-14 | [pa_consistency_research_2026-11-14_2](../../Computability/BusyBeaver/Research/PA/docs/pa_consistency_research_2026-11-14_2/) |
+| `pa_sub194_research.zip` | 2026-11-14 | [pa_sub194_research](../../Computability/BusyBeaver/Research/PA/docs/pa_sub194_research/) |
+| `pa_sub194_research_2026-11-13.zip` | 2026-11-14 | [pa_sub194_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa_sub194_research_2026-11-13/) |
+| `pa194_ax11_research_2026-11-14.zip` | 2026-11-14 | [pa194_ax11_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194_ax11_research_2026-11-14/) |
+| `pa194_qh5_research_2026-11-14.zip` | 2026-11-14 | [pa194_qh5_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194_qh5_research_2026-11-14/) |
+| `pa194qhs_conpa_2026-11-14.zip` | 2026-11-14 | [pa194qhs_conpa_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194qhs_conpa_2026-11-14/) |
+| `pa194qn6_conpa_2026-11-14.zip` | 2026-11-14 | [pa194qn6_conpa_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194qn6_conpa_2026-11-14/) |
+| `pa194qn_2026-11-14.zip` | 2026-11-14 | [pa194qn_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194qn_2026-11-14/) |
+| `pa194h5_research_2026-11-14.zip` | 2026-11-14 | [pa194h5_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194h5_research_2026-11-14/) |
+| `PA194B_PA194G_research_2026-11-14.zip` | 2026-11-14 | [PA194B_PA194G_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/PA194B_PA194G_research_2026-11-14/) |
+| `pa194_ax11qh5_2026-11-14.zip` | 2026-11-14 | [pa194_ax11qh5_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194_ax11qh5_2026-11-14/) |
+| `pa194_tdy_2026-11-14.zip` | 2026-11-14 | [pa194_tdy_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194_tdy_2026-11-14/) |
+| `pa194ax11q6_2026-11-14.zip` | 2026-11-14 | [pa194ax11q6_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194ax11q6_2026-11-14/) |
+| `pa194p5_research_2026-11-14.zip` | 2026-11-14 | [pa194p5_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194p5_research_2026-11-14/) |
 
 ## Sub-exponential 3-SAT (ETH) reports
 

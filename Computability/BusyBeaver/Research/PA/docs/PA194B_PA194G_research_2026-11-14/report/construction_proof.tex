@@ -1,0 +1,133 @@
+\section{A dedicated history selector: PA194B}
+\label{sec:history-selector}
+
+This construction gives a new physical decoder for the primary PA194 program.
+It has 194 working controls and preserves the primary program's halting
+behaviour on \emph{every} tape started in native control 74.  Its correctness
+does not rely on bounded testing, on assumptions about reachable arithmetic
+register values, or on assuming PA consistent.  It does rely on the inherited
+calibration if that halting behaviour is identified with PA refutability.
+
+\subsection{Exact construction}
+Let $M$ denote the pinned primary PA194 table.  The relevant old rows, written
+as $(\hbox{write},\hbox{move},\hbox{next})$, are
+\[
+\begin{array}{c|cc}
+q & 0 & 1\\\hline
+77 & (0,R,87)&(1,R,88)\\
+87 & (0,R,301)&(1,R,21)\\
+88 & (0,R,122)&(1,R,103)\\
+301&(0,R,45)&(1,R,103)\\
+122&(0,L,137)&(0,L,1)\\
+137&(0,R,30)&(1,R,70)\\
+30 &(0,R,45)&(1,R,46).
+\end{array}
+\]
+The complete table has exactly one incoming edge to old control 88, namely
+$77/1$, and exactly one incoming edge to old control 301, namely $87/0$.
+Thus, immediately on entry to 88, the cell one position to the left contains
+1; immediately on entry to 301, that cell contains 0.  The respective input
+symbols have just been written, so the conclusion holds regardless of every
+other tape cell.
+
+Replace exactly four rows:
+\[
+\begin{array}{c|c|c}
+\hbox{row}&M& M_B\\\hline
+87/0 &(0,R,301)&(0,R,88)\\
+88/0 &(0,R,122)&(0,L,301)\\
+301/0&(0,R,45)&(0,R,122)\\
+301/1&(1,R,103)&(1,R,301).
+\end{array}
+\]
+Every other row, including every arithmetic-engine row, is unchanged.
+In the new table, control 88 represents both old readers and control 301
+is a dedicated history selector.  The reused numeral 301 is a label: its
+new operational role is different from the old reader's role.
+
+\subsection{Two-cell proof}
+Take the entering head position to be zero.  Let $h$ be the symbol in cell
+$-1$ and $b$ that in cell zero.  No assumption is made about any other cell.
+For old control 88 use $h=1$, and for old control 301 use $h=0$.  In both cases
+the new macro starts in control 88.  If $b=1$, both old readers have action
+$(1,R,103)$, which is also the new $88/1$ action; both computations arrive
+at control 103 at position 1 after one step.
+If $b=0$, the following traces apply; each displayed number is a native
+control and the parenthesized number is the head position:
+\[
+\begin{array}{c|l|c}
+\hbox{old reader}&\hbox{new trace}&\hbox{duration}\\\hline
+88&88(0),301(-1),301(0),122(1)&3\\
+301&88(0),301(-1),122(0),137(-1),30(0),45(1)&5.
+\end{array}
+\]
+All writes preserve the two symbols $h,b$.  Until the final configuration,
+the head only visits cells $-1$ and zero.  Therefore these are proofs for
+arbitrary complete tapes, not finite-window experiments that leave an
+unexamined assumption about exterior cells.  The final head position,
+control, and entire tape agree exactly with the corresponding old single
+transition.  The new intermediate controls are all nonhalting.
+
+\subsection{Whole-run theorem and internalization}
+The start control 74 is distinct from both replaced readers.  For a run of
+$M$ from control 74, align its configurations with a run of $M_B$: ordinary
+transitions take one step, old 88/0 takes three steps, and old 301/0 takes
+five steps.  The incoming-edge fact supplies the history bit whenever an
+affected reader is entered.  Every aligned configuration has the same
+head and tape, with old 301 represented by new 88.  Induction on the number
+of old steps proves the alignment for every finite prefix.
+
+Conversely, determinism and the four local cases partition the new run
+into these finite nonhalting segments.  A halting new prefix must finish
+at a segment boundary, and hence gives an old halting prefix.  This proves
+\[
+ \operatorname{Halt}(M_B,74,T,x)
+ \quad\longleftrightarrow\quad
+ \operatorname{Halt}(M,74,T,x)
+\]
+for every complete tape $T$ and initial head $x$.
+If the old halting time is $t$, the aligned new halting time is
+\[
+ t+2a_t+4b_t\leq 5t,
+\]
+where $a_t$ and $b_t$ count visits to old rows $88/0$ and $301/0$ in its first
+$t$ transitions.  Conversely the old halting time is at most the new one.
+The step relation, the counting functions, and the segment expansion are
+primitive recursive on finite configuration histories.  PA proves the
+four local identities and their finite-run induction.  Consequently PA
+proves the displayed equivalence for the blank tape as well.  Composing
+with the inherited mathematical primary-PA194 calibration transfers
+$\neg\operatorname{Halt}\leftrightarrow\operatorname{Con}(\mathrm{PA})$.
+This argument is not a claim that the inherited calibration has acquired
+an end-to-end Lean or iPRA proof.
+
+\subsection{What changed and what was checked}
+The change is a factoring of two recurring decoder readers through a
+new history-sensitive selector.  Both successful paths and the extra
+selector are exercised during the blank startup; the new helper is visited
+55 times before the initial source frame.  This is an operational change
+to recurring decoding, rather than a control renaming or an edit of an
+unreached transition.  It gives no state saving: the dedicated selector
+uses the slot released by joining the two old readers.
+
+The tempting 193-control variant reuses arithmetic skip control 51 for
+this selector.  Its $51/0$ rewrite changes the marker behaviour when the
+following cell is blank.  Normal initialized register frames supply a 1
+there, but blank initialization does not.  PA194B keeps control 51's two
+original rows and avoids that exact obstruction.
+
+The supplied executable checker reconstructs the dense table, verifies
+all four two-cell identities, checks the complete incoming-edge lists,
+and confirms unchanged arithmetic-engine rows.  It also runs all 4,780
+symbolic branch outcomes for the 3,673 primitive source sites.  Its
+complete blank-tape simulation reaches precisely the old source frame
+at native control 84, head $-2$, with the same finite tape support and
+register file, after 58,242 transitions; the old table requires 58,154.
+The source and local arguments are the unbounded justification.  The
+58,242-transition check establishes this particular initialization.
+
+The dense table has states $0,\ldots,193$, initial state zero and separate
+halt label 194, with exactly 388 transitions.  Its SHA-256 is
+\begin{quote}\ttfamily\small
+b2bcdb6c3816a1fbade699a79e431e4b530ec341aaf516c911920d43f9995397
+\end{quote}

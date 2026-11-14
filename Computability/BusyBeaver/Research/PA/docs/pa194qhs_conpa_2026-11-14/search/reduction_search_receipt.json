@@ -1,0 +1,101 @@
+{
+  "repository": "VladimirReshetnikov/ProveIt",
+  "source_commit": "2337ce611a26e308697ccbddb2a1636f989f01c3",
+  "result": "No smaller machine established by these bounded screens.",
+  "current_corpus_pair_screen": {
+    "tables": 38,
+    "radius": 6,
+    "window_cells": 13,
+    "macro_step_bound": 100,
+    "initial_configuration": "state0 on blank tape",
+    "candidate_merges": 0,
+    "inputs_file": "current_family_action_search.json"
+  },
+  "qhs_pair_screen": {
+    "dense_sha256": "3bf22abe66e327d63d1feacacda9cc6f1b6529d09ca779c10f22fa5ed3acd103",
+    "native_sha256": "f548197b33889b879d4dce83f6e9ef9322b8a21f0ca8864a566b3ca0c0aed518",
+    "abstract_blank_radius": 8,
+    "abstract_blank_macro_bound": 300,
+    "abstract_blank_candidates": 0,
+    "source_window_radius": 6,
+    "source_outcomes": 4750,
+    "symbolic_max_steps": 499,
+    "symbolic_total_steps": 1547560,
+    "source_windows": 30294,
+    "accelerated_scan_observations": 6206,
+    "source_and_startup_windows_outside_arithmetic_boxes": 30358,
+    "startup_literal_steps": 57768,
+    "source_startup_macro_bound": 300,
+    "source_startup_candidates": 0,
+    "contexts_file": "qhs_source_startup_contexts.txt",
+    "contexts_sha256": "564132ef6c8477b936b82231e35e5bb853a0de20ead51c9d18f286ecddad7417"
+  },
+  "runtime193_two_edit_startup": {
+    "parent_archive": "docs/incoming/pa_sub194_research_2026-11-13.zip",
+    "parent_archive_git_blob": "9c21c39268248603fc6587e34a71dff63329ea09",
+    "runtime_sha256": "50f7be44afb63293365270a83111299247d12d140614e4b4c9a52786163acb53",
+    "pool_non_box_edits": 327,
+    "distinct_row_pairs": 52128,
+    "all_existing_initial_states_per_pair": 193,
+    "normalization": "Follow blank transitions to first written1; identify resulting one-bit configurations up to tape translation; blank cycles cannot reach a frame.",
+    "frame_acceptance": "Complete canonical tape at source sites25..44, any9 register values, padding>=48 and arbitrary finite nonempty spare tail.",
+    "per_run_transition_bound": 200000,
+    "head_displacement_bound": 20000,
+    "support_size_bound": 20000,
+    "append1": {
+      "normalized_onebit_runs": 417349,
+      "literal_transitions": 114987509,
+      "halts": 104255,
+      "outward_rays": 312581,
+      "bounded_runs": 513,
+      "frames": 0
+    },
+    "append0": {
+      "normalized_onebit_runs": 365221,
+      "literal_transitions": 21260321,
+      "halts": 156383,
+      "outward_rays": 208778,
+      "bounded_runs": 60,
+      "frames": 0
+    },
+    "source_equivalence_of_combinations": "Not claimed. Individual edits were screened as neutral; paired interactions would require full verification if a startup succeeded.",
+    "limitations": "The573 bounded runs were not proved divergent. This is not exhaustive over arbitrary edits, larger multirow changes, or other frame sites.",
+    "transition_accounting": "Literal transition counts start after the first written1; zero-prefix steps are used for normalization but not included in these totals. Limits are measured in the translated one-bit configuration."
+  },
+  "runtime193_family_transfer": {
+    "current_tables_with_compatible_native_labels": 38,
+    "all_reach_same_outward_ray": true,
+    "steps": 92,
+    "state": 35,
+    "head": 14,
+    "note": "The source equivalence of every transferred fold is not asserted; startup failure alone rejects these tables as candidates."
+  },
+  "joint_radix": {
+    "change": "Intern exact pure fixed-reader pairs, including free330=(61,99); remove hardcoded incorrect(99,99)->190 shortcut for changed coefficient. Keep parameter roles fixed.",
+    "radix5": {
+      "proposals": 1485114,
+      "accepted": 86755,
+      "seconds_budget": 180,
+      "best_optimistic_count": 194,
+      "sub194_hits": 0,
+      "seed": 231117
+    },
+    "radix6": {
+      "proposals": 1531055,
+      "accepted": 69217,
+      "seconds_budget": 180,
+      "best_optimistic_count": 194,
+      "sub194_hits": 0,
+      "seed": 231118
+    },
+    "limitation": "Heuristic association search; no global lower bound or completeness claim."
+  },
+  "pair_search_scope": [
+    "For each state/read outcome, candidate first actions use a working control as target.",
+    "Continuation stays inside the stated finite window and matches the exact original one-step tape, head, and control effect within the step bound.",
+    "Common actions may merge a pair only if continuations avoid the rewritten controls.",
+    "All other transitions are fixed except target redirection from the removed control.",
+    "Abstract entering window bits are nondeterministic. Supplied source envelopes refine only non-box controls.",
+    "No multi-pair, arbitrary larger rewriting, or optimality claim is made."
+  ]
+}

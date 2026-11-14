@@ -1,0 +1,61 @@
+FRESH PHYSICAL CONTRACTION SCREENS
+
+Status: no machine below 194 states was obtained. These are finite sufficient-condition searches. Their failure is not a lower bound on possible PA-consistency machines and does not establish that every unaccepted mutation is incorrect.
+
+Pinned source: VladimirReshetnikov/ProveIt commit 567266818aaeceb0f3a8f82debf303c8d84bddaf.
+
+The final receipt receipts/verified_searches_328.json combines 288 unchanged conservative-window replays with 40 fresh replays after a self-loop coverage correction. All 328 have empty candidate outputs; the correction did not produce a contraction.
+
+Scope of the 328 reproducible screens:
+  49 catalog-resolved 194-state graphs x 3 operators, radius 7, bound 180 = 147.
+  The same 49 graphs x generalized retagging, radius 6, bound 180 = 49.
+  23 source/decoder-preserving rotations x 4 operators, radius 6, bound 180 = 92.
+  5 physically validated rotations x 4 operators, source masks radius 5, bound 250 = 20.
+  PA194, PA194H6, PA194QH6, PA194QNS x 5 operators, source masks radius 8, bound 300 = 20.
+A screen is a run of one sufficient-condition algorithm, not a distinct candidate machine. The 49-class input inventory includes reported designs, auxiliary designs, and explicit rejected controls, as recorded in the case notes. Its inclusion here does not endorse a consistency claim.
+
+Operators:
+1. action_merge_all: a common-action merge using unchanged continuations; adapted from the pinned PA194 packet's action_merge.cpp. It considers all controls rather than protecting the 23 arithmetic-engine controls, and initializes abstract reachability from the blank input.
+2. shift_merge: delete a control q when every incoming edge moves in one direction d. Reverse the incoming moves and redirect to r. The representation maps q at head h to r at h-2d, with unchanged tape. Enumerate local windows and verify a positive bounded child trace reproducing each parent step after this representation map.
+3. retag_merge: flip the bit written by each incoming edge to q, redirect it to r, and optionally reverse the move. The representation complements the predecessor cell at h-d; the head is either h or h-2d. Verify exact restoration at the end of every simulated parent step. The start control is not eligible for bit retagging, because changing its tape would violate blank initialization.
+4. retag_actions: the same representation changes, while synthesizing both retained-control actions. It checks obligations from both old controls and uses only unchanged continuations between appearances of the retained control. Actions may target any retained working control; immediate halting targets are not included in this search vocabulary.
+5. cyclic_merge: if one read branch admits a common unchanged-continuation action, enumerate all working-control first actions for the other branch. Verify the final combined table, allowing the retained control to recur within the bounded simulation. This is a restricted cyclic search, not exhaustive synthesis of all two-row quotients.
+
+Correctness of an accepted local certificate:
+The representation is identity on all other controls. The changed incoming edges implement that representation exactly. Every changed-control obligation is checked for every window in a conservative parent invariant. Each witness uses at least one child transition, remains inside the recorded window, and restores the entire window and required head/control. Outside cells are untouched. Concatenating these positive finite witnesses gives a forward simulation. Determinism and positivity give the converse for halting: an infinite parent computation expands to an infinite child computation, and a finite parent halt expands to a finite child halt. This reasoning is elementary and formalizable in PA. No such accepted certificate was found for the research inputs.
+
+Abstract and source-derived masks:
+The default invariant starts with the all-zero window at control 0, repeatedly applies transitions, and nondeterministically supplies the newly exposed exterior bit. It is a sound overapproximation of the blank run.
+For the stronger masks, the inherited symbolic executor is run over every primitive source outcome and the exact finite blank startup. Unlike a list of observations from a concrete trace, its source contracts quantify over the gap parameter and all valid register files. Prefix generation uses the regular language of unary register files, with at least ten registers. Marked files have exactly the designated first 1 erased. Correlations between run lengths are discarded conservatively. Interior configurations of a skipped self-loop are included by allowing independent consumed and remaining run lengths. This avoids omitting an interior local window merely because a symbolic step crossed an entire run.
+The 23 protected arithmetic controls are not replaced by source-derived masks: they retain the conservative default windows. All nine machines used for source masks preserve the 46 imported arithmetic-engine rows exactly; see receipts/arithmetic_box_binding.json. The masks depend on the inherited register-file lemmas, not a newly compiled Lean theorem.
+
+Universal source validation:
+PA194: 4,780 outcomes; radius-8 masks 72,935 windows.
+PA194H6: 4,876 outcomes; radius-8 masks 74,314 windows.
+PA194QH6: 4,876 outcomes; radius-8 masks 77,302 windows.
+PA194QNS: 4,751 outcomes; radius-8 masks 76,027 windows.
+All four exact blank startups reach the expected complete source frame.
+
+Five rotations pass the full 4,780-outcome source validation and exact startup:
+  100_174_right
+  2061_2062_left
+  2011_2012_left
+  2009_2010_right
+  2008_2009_right
+Eighteen other source-CFG-preserving rotations do not close under the symbolic checker. This is not by itself a literal blank-run counterexample. For eight outside-AX rotations a larger 20,000-operation diagnostic reaches an unsupported symbolic step rather than a merely exhausted bound; several have already performed the wrong symbolic register effect. The failure states and targets are retained.
+
+Reproduction:
+  python3 replay.py --quick
+checks all pinned input hashes, compiles the C++ programs, and checks positive fixtures for the shifted and retagged quotient operators.
+  python3 replay.py --workers 2
+repeats all 328 screens. A fresh receipt is written to receipts/replay_fresh.json.
+Use --group with a group name from manifest.json to replay one family.
+  python3 -B extract_contexts.py --case PA194 --radius 8 --output generated_contexts
+regenerates source-derived local windows without a repository checkout or network access. The other eight case names are subdirectories of inputs/source_programs. Use radius 5 for the five rotation cases. A portable regeneration of 100_174_right at radius 5 was checked byte-for-byte against the frozen mask.
+The compiler and symbolic runtime in support/ retain their upstream interfaces; only source-language resolution, symbolic primitive execution, and startup checking are used by extract_contexts.py. Their default repository-reading helper functions are not called.
+
+Positive fixtures:
+The small fixtures deliberately contain helper controls unreachable in the parent but used by the transformed machine. They test that the search code can recognize a specified nontrivial shifted or retagged simulation. They are not improvements to any Busy Beaver bound.
+
+Provenance and license:
+The common-action search and source-contract support derive from the pinned PA194 packet, under the included notices. The shifted, retagged, generalized-retag, cyclic, and unary-prefix extensions were written for this investigation. See LICENSE.ProveIt and LICENSE.JamesChang.

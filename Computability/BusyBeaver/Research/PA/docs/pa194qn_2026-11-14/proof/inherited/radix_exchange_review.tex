@@ -1,0 +1,298 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,xurl,hyperref}
+\newtheorem{proposition}{Proposition}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\C}{\mathcal C}
+\newcommand{\AX}{\mathsf{AX}}
+\newcommand{\MP}{\mathsf{MP}}
+\newcommand{\Sh}{\mathsf S}
+\title{Independent logical review of the Q5 and Q6 composition}
+\author{Research review}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+
+\section{Verdict and proof boundary}
+The quantifier-premise exchange and radix-five/radix-six formula coding
+are compatible. For every fixed $k\ge4$, the exchanged numerical calculus
+$\C_k^{\mathrm Q}$ and the ordinary radix-$k$ numerical calculus $\C_k$
+have primitive-recursive proof translations preserving the literal
+conclusion code. PA proves the translations correct. Combining these
+translations with the supplied radix calibration gives PA equivalence of
+their refutation predicates with the PA refutation predicate.
+
+The concrete Q5 and Q6 source programs retain the original controller:
+Shift tests $t+h=1$, and successful MP pushes zero and retains the result
+in $t$ and $d$. Their command compiler must therefore be the original
+ten-entry compiler. The cached-controller command section in the supplied
+PA194Q report cannot be imported verbatim. Exact appropriate identities
+are provided below.
+
+This is an ordinary mathematical review and a finite symbolic certificate
+replay. No new Lean kernel execution or machine-specific end-to-end
+Lean theorem is claimed. The concrete physical implementation additionally
+depends on the candidate-specific source bindings, universal primitive
+contracts, and exact blank startup supplied with the construction.
+
+\section{A radix-independent exchange derivation}
+Write
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I_k(a,b)=kp(a,b),\qquad U_k(d,a)=kp(a,d)+2.
+\]
+All arrows below mean $I_k$. Put
+\[
+ P=U_k(D,A),\qquad Q=U_k(D,I_k(A,H)),\qquad R=U_k(D,H).
+\]
+The old sixth head is $P\to(Q\to R)$; the Q head is
+$Q\to(P\to R)$. All other axioms and rules remain unchanged.
+
+The generic source \path{M6/Logic/RestrictedImplication.lean} defines
+\texttt{Rules} using only modus ponens, the restricted row
+\[
+ ((c\to u)\to a)\to((a\to c)\to(b\to c))\qquad(u\preceq a),
+\]
+reflexivity of $\preceq$, and the two rules that a bound by either
+operand gives a bound by their implication. Its finite proofs derive
+weakening K, distribution S, and
+\[
+ E(X,Y,Z)=(X\to(Y\to Z))\to(Y\to(X\to Z)).       \tag{1}
+\]
+The declaration \texttt{exchange} uses only earlier finite proofs and MP;
+it does not use the changed quantifier head. The later declaration
+\texttt{s} is obtained from \texttt{exchange}, so there is no dependence
+of that derivation on an assumed distribution head.
+
+Instantiate $\preceq$ by numerical $\le$ and implication by $I_k$.
+Cantor pairing gives
+\[
+ a,b\le p(a,b)\le kp(a,b)=I_k(a,b)\qquad(k\ge1).
+\]
+These bounds and transitivity discharge every generic side condition.
+Thus the same fixed proof constructor derives (1) at every radix in
+question. The independent 61-line archived K/S/MP certificate is a second
+explicit exchange derivation; its flat replay is recorded separately.
+K and S in that replay have the preceding restricted-basis derivation as
+their stated dependency.
+
+Apply MP to the new head and $E(Q,P,R)$ to derive the old head. Apply
+MP to the old head and $E(P,Q,R)$ for the converse. Recursion on a
+derivation replaces each sixth-head leaf by the appropriate two-part
+derivation, retains every other axiom, and translates MP and
+generalization recursively. Hence there are primitive-recursive maps
+$F_k,G_k$ such that
+\[
+\begin{aligned}
+ \PA&\vdash
+ \operatorname{Prf}_{\C_k}(d,B)
+    \to\operatorname{Prf}_{\C_k^{\mathrm Q}}(F_k(d),B),\\
+ \PA&\vdash
+ \operatorname{Prf}_{\C_k^{\mathrm Q}}(d,B)
+    \to\operatorname{Prf}_{\C_k}(G_k(d),B).
+\end{aligned}                                                    \tag{2}
+\]
+No first-order substitution into a freshness-restricted gate is involved.
+The proof works on numerical codes, including $I_k(0,0)=0$ and formula
+parameters in unused residues. It does not require free constructors or
+an injective representation of arbitrary implication trees.
+
+\section{How the PA calibration composes}
+The supplied radix calibration uses hereditary recoding of both formula
+codes and variable labels. For $n>0$, if $n=4p(a,b)+r$ with $r<4$, it sets
+\[
+ H_k(0)=0,\qquad H_k(n)=kp(H_k(a),H_k(b))+r.
+\]
+The recursive arguments are smaller than $n$; course-of-values recursion
+is primitive recursive. A left inverse gives injectivity, so guards based
+on equality or disequality and quantifier binding are preserved. In
+particular the diagonal head $B\to U(B,B)$ is recoded correctly because
+the same function is applied to the formula code and its binder label.
+
+Numerical order is \emph{not} preserved: $40<44$ but
+$H_5(40)=75>55=H_5(44)$. Consequently dominated propositional leaves
+must be replaced by the generic \texttt{rho8All} derivation, whose own
+restricted leaves satisfy valid bounds. They must not be recoded as
+single restricted leaves by assuming monotonicity.
+
+The converse calibration translates every radix-$k$ numerical formula
+syntactically into PA. Residues $4,\ldots,k-1$ are interpreted as closed
+truth. Membership is the finite-bit predicate; $1=M_k(0,0)$ is refutable;
+the zero implication alias is handled by a fixed proof of truth's
+equivalence with truth implying truth. The guarded separation gate uses
+one finite-comprehension PA induction instance constructed from the input
+property. This is a uniform syntactic proof supplier, not an arithmetical
+truth predicate or a reflection principle.
+
+The two supplied radix proof translations, together with (2), therefore
+give
+\[
+ \PA\vdash
+ \left(\exists d\,\operatorname{Prf}_{\C_k^{\mathrm Q}}(d,1)
+ \ \leftrightarrow\
+ \exists e\,\operatorname{Prf}_{\PA}(e,\ulcorner0=1\urcorner)\right).
+                                                               \tag{3}
+\]
+One must compile a fresh target-radix command word from the translated
+proof. Hereditary recoding preserves neither the Cantor stack arithmetic
+nor addition of command offsets, and does not conjugate machine runs.
+
+\section{The correct original-controller command identities}
+Let $[a]w=p(a,w)$, with total projections
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$. Write stores as
+$(t,w,d,h)$. In Q5 and Q6,
+\[
+ \Sh(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},&t+h=1,\\
+  (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1,
+ \end{cases}
+\]
+and, with $v=d+x$,
+\[
+ \MP(x)(t,w,d,h)=
+ \begin{cases}
+   (v,[0]w,v,0),&I_k(t,v)=h,\\
+   (0,w,v,0),&I_k(t,v)\ne h.
+ \end{cases}                                                    \tag{4}
+\]
+For $D=d+x,H=h+y,A=c$, the AX command pushes, from first to last,
+\[
+ t,\ U_k(d,h),\ \rho_{8,k}(D,A,H,d),\ h_1,h_2,h_3,h_4,h_5,
+ h_6^{\mathrm Q},\Gamma_k(A),
+\]
+leaves the usual guarded gate $G_k(H,D,A)$ on top, and clears $d,h$.
+Let $q_1,\ldots,q_{10}$ be these entries in reverse order. The gate
+and $q_1,\ldots,q_8$ have residue zero modulo $k$;
+$q_9=U_k(d,h)$ has residue two and is at least two; $q_{10}=t$.
+The internal Q exchange changes only $q_2$ and preserves these facts.
+Thus
+\[
+\begin{aligned}
+ \AX(c,x,y)\Sh^9(t,w,d,h)
+   &=(\rho_{8,k}(D,c,H,d),[t]w,0,U_k(d,h)),\\
+ \AX(c,x,y)\Sh^{10}(t,w,d,h)&=(U_k(d,h),w,0,t).
+\end{aligned}                                                    \tag{5}
+\]
+Every tested sum differs from one. Define
+\[
+\begin{aligned}
+ \mathrm{pop}&=\AX(0,0,0)\Sh^{11},\\
+ \mathrm{push}&=\AX(0,0,0)\Sh^9\MP(0),\\
+ \mathrm{discard}&=\MP(1)\AX(1,0,0)\Sh^{10}\MP(0).
+\end{aligned}
+\]
+Their identities, for arbitrary natural parameters, are
+\[
+\begin{aligned}
+ \mathrm{pop}(t,[a]w,d,h)&=(t,w,0,a),\\
+ \mathrm{push}(t,w,d,h)&=(0,[t]w,0,0),\\
+ \mathrm{discard}(t,w,0,0)&=(0,w,0,0).
+\end{aligned}                                                    \tag{6}
+\]
+Pop never halts even when $t=1$: its last test is
+$U_k(d,h)+t\ge2$. Push's MP comparison fails by the implication and
+universal residues. Discard's comparisons fail because $I_k(t,1)>0$
+and $I_k(U_k(1,0),0)>0$.
+
+For $1\le j\le7$, the selector
+\[
+ \mathrm{discard}\,\AX(A,D,H)\Sh^{j+1}\mathrm{pop}^{9-j}
+\]
+returns $(q_j,w,0,0)$ from $(t,w,0,0)$. In particular, $j=2$ selects
+the exchanged sixth head. Write $\mathrm{offset}(0)$ for the empty
+word and $\mathrm{offset}(i)=\MP(i)$ for $i>0$. Then generalization is
+\[
+ \mathrm{gen}_i=\mathrm{push}\,\mathrm{offset}(i)\Sh
+                   \AX(i,0,0)\Sh^{10}.
+\]
+It sends $(a,w,0,0)$ to $(U_k(i,a),w,0,0)$ even if $a=1$.
+The dominated head selector for $u\le D$ is
+\[
+ \mathrm{discard}\,\mathrm{offset}(u)\AX(A,D-u,H)\Sh^9\mathrm{pop},
+\]
+and the gate selector is
+$\mathrm{discard}\,\AX(c,b,a)\mathrm{pop}^{10}$.
+
+The correct MP suffix is
+\[
+ \mathrm{suffix}_b=\Sh\Sh\MP(b)\AX(b,0,0)\Sh^{11}.              \tag{7}
+\]
+On $(0,[a][I_k(a,b)]w,0,0)$ the second Shift halts if $a=1$.
+Otherwise MP succeeds and yields $(b,[0]w,b,0)$; the remaining
+AX--Shift word returns $(b,w,0,0)$. This calculation also covers
+$a=b=w=0$ and $[0]0=0$. A cached-controller suffix
+$\Sh\Sh\MP(b)\Sh$ has a different effect under (4) and must not be used.
+
+Compile a proof node with premises $p:a$ and $q:I_k(a,b)$ as
+\[
+ C(q)\,\mathrm{push}\,C(p)\,\mathrm{push}\,\mathrm{suffix}_b.
+\]
+Together with the selectors and generalization identity, induction
+proves that $C(d)$ either halts or returns its conclusion on the original
+arbitrary stack, with both caches zero. Hence a refutation supplies
+\[
+ W_d=\AX(0,0,0)\,C(d)\,\Sh,
+\]
+which halts from \emph{every} incoming store. This is the property
+needed by the scheduler, which carries the store between trials rather
+than resetting it. All assertions in this section use residue classes,
+positivity, Cantor projection identities, and finite induction; their
+proofs are uniform for $k\ge4$.
+
+\section{Binding to the concrete constructions}
+The only changed arithmetic body of Cons replaces four increments by
+$k$ increments. Its decrement loop sends $(T,Y)$ to $(T+k,Y-1)$ while
+$Y>0$, so after $i$ iterations
+\[
+ T=T_0+ki,\qquad Y=Y_0-i.
+\]
+It terminates in exactly $(k+2)Y_0+1$ primitive source steps. Together
+with the unchanged unpair/pair prefix, this yields
+\[
+ (t,[a]w,0,0)\longmapsto(I_k(a,t),w,0,0)
+\]
+on coordinates $(T,W,X,Y)$, preserving the remaining registers.
+This is a new multiplier-loop induction, not an invocation of the
+old times-four lemma as if its parameter had already been generalized.
+The candidate-specific binding checks identify all 61 Cons occurrences,
+their exact 21-site prefixes, all changed increment bodies, and the
+successor relocation for all 3429 other sites. Formula construction
+inside MP uses the same Cons routine; ordinary stack and scheduler
+pairing retain their unmultiplied Cantor coding.
+
+The independent free-algebra emitter audit must identify the exact
+ten-element stack and guarded top above, not merely compare a few
+numerical examples. Universal primitive simulation contracts and the
+complete blank-tape startup then bind those source semantics to the
+literal binary tables. Their positive durations are essential: under
+consistency one iterates nonhalting command execution past any proposed
+finite machine halt, using determinism; conversely the scheduler reaches
+the all-store halting word and physical simulation yields a finite halt.
+Composing this with (3) gives the desired ordinary PA-provability claim
+for each certified concrete table.
+
+\section{Sources inspected}
+All repository paths refer to snapshot
+\texttt{317b07268681b44ff352d173a162e2a8c241b2fe} of
+\url{https://github.com/VladimirReshetnikov/ProveIt}, below
+\path{Computability/BusyBeaver/Research/PA/}.
+\begin{itemize}
+\item \path{jamesyc-upstream/pa196/M6/Logic/RestrictedImplication.lean}:
+generic \texttt{Rules}, \texttt{k}, \texttt{exchange}, \texttt{s},
+\texttt{rho8All} proof templates.
+\item \path{docs/pa194q_conpa_2026-11-13/report/calibration_q.tex}:
+literal conclusion-preserving exchange proof and its separately identified
+cached-controller interface.
+\item \path{docs/pa194q_conpa_2026-11-13/verification/exchange_certificate.json}:
+61-line symbolic K/S/MP proof, replayed by the independent checker.
+\item \path{docs/pa194_radix_family_2026-11-13/calibration/radix_calibration.tex}:
+hereditary code/label recoding, order obstruction, unused residues,
+PA proof suppliers, and original-controller radix calibration.
+\item \path{docs/pa194_conpa_2026-11-13_2/mathematics/pa194_calibration.tex}:
+exact ten-entry original-controller identities and MP suffix.
+\item Candidate construction: \path{research/emitter/qradix.py} and
+\path{output/pa194_qradix_research/construction/source_audit.py},
+with corresponding Q5/Q6 source bindings and emitter receipts.
+\end{itemize}
+\end{document}

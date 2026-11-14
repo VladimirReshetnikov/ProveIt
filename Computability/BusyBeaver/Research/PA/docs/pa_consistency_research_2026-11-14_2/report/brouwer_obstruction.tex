@@ -1,0 +1,67 @@
+\section{A logical obstruction and its correct repair}
+
+Replacing the first head
+\[
+ O(a,H)=(\exists x_a\,\forall x_a H)\to H
+\]
+by the positive Brouwer head
+\[
+ B(a,H)=H\to\forall x_a\,\exists x_a H
+\]
+requires care: the numerical negation is $N(A)=I(A,1)$, and code $1$ is a
+membership atom, not a logical falsity constant built into the proof rules.
+The old first head supplies explosion. An equivalence argument that first
+uses explosion to justify the replacement is circular unless explosion is
+separately retained or independently recovered.
+
+\paragraph{Exact obstruction.}
+There is a Boolean interpretation of the numerical calculus with every
+remaining head, diagonal vacuity, and $B$, in which an instance of $O$ is
+false. Interpret $I$ as material implication, every $U(a,\cdot)$ as the
+identity, every equality atom as false, $M(0,0)$ as true, and every other
+membership atom as false. Interpret code zero as true. This is a recursive
+interpretation of the actual tagged numerical formulas; the alias
+$I(0,0)=0$ is respected because true implying true is true.
+
+The designated code $1$ is true, so every numerical negation is true.
+Consequently every guarded gate and every existential witness head is
+true. Membership-congruence heads hold because their equality premises
+are false. Commutation, distribution, diagonal vacuity, the restricted
+implicational head, and $B$ all hold. Modus ponens and generalization
+preserve truth. For a false membership formula $H$, however,
+$\exists x_a\forall x_aH$ is true while $H$ is false. Thus $O(a,H)$ fails.
+The same interpretation refutes the proposed replacement by
+$U(a,H)\to H$ alone. In particular the diagonal clause does not by itself
+repair the missing explosion argument.
+
+\paragraph{Repair by an explicit explosion head.}
+Let $E(C)=1\to C$. The presentations with $O$ and with both $B,E$ are
+uniformly interderivable over the common implicational and quantifier
+heads. The old first head gives $E$: under an assumption $1$, use $K$ to
+obtain $U(a,N(U(a,C)))\to1$, which is $\exists x_aU(a,C)$; apply $O$ and
+discharge the assumption. Both presentations now have explosion and
+therefore ordinary double-negation elimination relative to code $1$.
+
+Put $Y=U(a,N(U(a,H)))$. Then $O(a,H)$ is $N(Y)\to H$.
+Contraposition followed by double-negation elimination gives
+$N(H)\to Y$. Substitute $H=N(C)$ and compose with
+$C\to N(N(C))$ to obtain $B(a,C)$.
+Conversely, $B(a,N(H))$ gives
+\[
+ N(H)\to U\bigl(a,N(U(a,N(N(H))))\bigr).
+\]
+The closed double-negation equivalence $N(N(H))\leftrightarrow H$ lifts
+through each displayed quantifier by distribution and generalization of
+closed theorems. It yields $N(H)\to Y$. Contraposition and a final
+double-negation elimination produce $N(Y)\to H$, as required.
+All these derivations are fixed finite proof templates. Bounded scans of
+proof codes instantiate them and translate whole proofs; induction on the
+input proof length proves their correctness in PA.
+
+Adding a separate explosion head changes the command stack interface by
+one entry. Since $E(C)$ is an implication code, it never equals one. Its
+presence therefore causes no accidental Shift halt, but every selector,
+push/pop word and all-store compiler must use the new head count. A source
+or decoder candidate that implements $B$ without this repair remains a
+rejected diagnostic candidate for this equivalence argument.
+

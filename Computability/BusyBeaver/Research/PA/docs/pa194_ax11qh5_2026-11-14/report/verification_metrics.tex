@@ -1,0 +1,23 @@
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule Check & Recorded result\\\midrule
+Literal complete machine &194 working states; 388 transitions; one terminal halt label.\\
+Construction &135 fixed controls + 67 AX readers $-$ 8 simultaneous folds.\\
+Resolved source &3,732 sites; 4,839 branch-sensitive outcomes.\\
+Primary symbolic replay &PASS; 1,582,483 symbolic steps; maximum 499 per outcome.\\
+Independent symbolic replay &PASS; 1,155,170 symbolic steps; maximum 403 per outcome.\\
+Independent arithmetic binding &4 list lemmas derived from literal rows; no unchecked block oracles.\\
+Simultaneous local fold checks &32 cases, all checked on the final folded table.\\
+Complete blank initialization &58,088 literal steps; full tape equality with a canonical source frame.\\
+Inherited emitter/source binding &190 tokens; all 61 multiplier loops; 61-line exchange certificate.\\
+Changed-command identities &39 symbolic identities, including the conditional Pop behavior.\\
+Integer stack regressions &13,236 assertions; explicit numerical zero-alias cases.\\
+Corpus novelty &No match among all 82 current complete 194-state graphs.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The two symbolic executors count different symbolic operations; their step
+counts are not claims about a single numerical run. The integer audit uses
+small AX-head representatives satisfying the proved residue contracts, so
+it tests the stack identities rather than the literal AX emitter. The
+physical checkers and inherited emitter binding supply the other layers.

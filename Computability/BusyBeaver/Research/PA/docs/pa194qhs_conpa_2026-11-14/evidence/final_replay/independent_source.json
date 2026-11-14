@@ -1,0 +1,26 @@
+{
+  "status": "PASS",
+  "old_source_sha256": "f15fbc3a894a44ea0a7258fff848e9be24014f14f85229bb86d77ee9285c01a1",
+  "new_source_sha256": "958fecee0f3aeaf2f25c8333f6d3cc1d08ba6d991c2791a7ac34239ac7748788",
+  "old_sites": 3653,
+  "new_sites": 3650,
+  "identical_prefix_sites": 3648,
+  "only_external_tail_edge": [
+    [
+      3644,
+      3648,
+      "zero"
+    ]
+  ],
+  "established_boundary": "Register5 H=0 at source3648; register6 X=k arbitrary; every other register unchanged by tail/comparator except their common behavior.",
+  "common_comparator": "halts iff H=X; otherwise reaches11 with H=X=0, preserving all other registers",
+  "old_tail": "(H,X)=(0,k) -> (k,1)",
+  "new_tail": "(H,X)=(0,k) -> (1,k)",
+  "source_steps_saved_by_new_tail_and_comparator": {
+    "k=0": 0,
+    "k=1": 4,
+    "k>=2": "2*k+4"
+  },
+  "kernel_checked": false,
+  "proof_boundary": "Exact structural binding to universal PA-formalizable loop lemma; no sampling used as universal evidence."
+}

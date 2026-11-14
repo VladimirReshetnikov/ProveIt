@@ -1,0 +1,117 @@
+REVIEW HISTORY
+
+The first section reviews the abstract positive-target protocol. Its statements
+about the lack of a literal implementation describe that earlier review stage.
+The final section reviews the delivered unshifted MP196 construction.
+
+# Independent review of the positive-target MP command compiler
+
+Reviewed `logical_work/mp_positive_halting.md` against the retained `pa194n_command_proof.tex` in the current QN packet, using the actual ten-entry AX contract. This is an independent mathematical review of the proposed command protocol, not a review of a smaller literal machine: no such table is supplied by that argument.
+
+## Verdict
+
+The displayed command identities and recursive proof compiler are correct. The proof handles the Cantor zero-stack alias and permits either success-offset convention (retain `k`, or return zero). I found no counterexample to the proposed command-level refutation equivalence under the initialized-store assumptions of the inherited calculus.
+
+Two statements should be made explicit in the final theorem:
+
+1. **Soundness starts from the genuine initialized/admissible store.** It is not true that every halt from an arbitrary numerical store yields a refutation: a store with `t=a`, `h=I(a,1)`, `d=0` halts under `MPplus_0`, whether or not these supplied formulas have derivations. Arbitrary incoming stores belong to the completeness/normalization statement only.
+2. **The scheduler connection needs the inherited cofinal-word argument and termination of each changed command.** The finite word compiler alone establishes command-language completeness. A source implementation must still prove that candidate enumeration reaches a suitable word and that the modified physical/source contracts implement the command exactly.
+
+## Stack identities checked algebraically
+
+The unchanged AX operation has output `(g,[q1,...,q9,t;w],0,0)`, where `q9=U(d,h)` is at least two and congruent to two modulo four. Its other generated heads are implications. Therefore:
+
+- After `AX;S^9`, the store is `(q8,[t;w],0,U(d,h))`. `MPplus_0` compares an implication with a universal code, so necessarily fails. This proves `Push(t,w,d,h)=(0,[t;w],0,0)` for arbitrary natural stores, with no accidental halt.
+- After `AX;S^10`, the store is `(U(d,h),w,0,t)`. Unconditional `S` then proves `Pop(t,[a;w],d,h)=(t,w,0,a)` for arbitrary `d,h`.
+- With `h=d=0`, `MPplus_0` necessarily fails because `I(t,1)>0`; this gives Discard. The stronger old arbitrary-cache Discard law is correctly not claimed.
+- `MPplus_i(0,w,0,0)` fails because `I(0,i+1)>0`, yielding `(0,w,i,0)` for every `i`, including zero.
+
+These arguments use only total Cantor projection identities. If `[a;w]=0`, then `a=w=0`, so `Pop` returns exactly `(t,0,0,0)`. `Push(0,0,d,h)` returns the numerical zero stack; no argument treats that stack as a free list with a distinguished stored zero.
+
+## Selectors and generalization
+
+For an ordinary generated head `q_j`, after Discard, AX and `j+1` shifts the top is `q_j`, the cache is `q_(j+1)`, and the remaining stack has exactly `9-j` displayed entries, ending in the reserved zero. The indicated Pops preserve the chosen top and consume precisely those entries, clearing the final cache. The dominated-head selector similarly leaves `q8` over one reserved zero, and one Pop clears it. Ten Pops select the gate while preserving it as the top. None of these Pops can halt under the proposed unconditional Shift.
+
+For generalization, `Push;Offset_i;S` maps `(a,w,0,0)` to `(0,w,i,a)`. The following AX has ninth head `U(i,a)`, and its ten shifts return `(U(i,a),w,0,0)`. This checks the complete generalization word without any consistency assumption.
+
+## MP proof node and the success offset
+
+The reserved-zero construction produces, before its final two shifts,
+
+`(0,[a,I(a,b),0;w],0,0)`.
+
+The two unconditional shifts produce `(a,[0;w],0,I(a,b))`. For `b>0`, `MPplus_(b-1)` compares exactly `I(a,b)` with the cached major premise. If `b=1`, it halts. If `b>1`, it returns `(b,[0;w],b-1,0)`; the optional convention instead returns `(b,[0;w],0,0)`. In both cases the total Pop law gives `(b,w,0,0)`.
+
+For `b=0`, replacing the entire node by Discard is legitimate because zero already has a fixed axiom derivation. There is no need to reproduce the original premises or their code-zero implication alias. Consequently restricting MP targets to positive numbers preserves refutation power.
+
+An induction on the derivation proves that compilation either halts earlier or returns its conclusion with original stack and cleared caches. An axiom leaf cannot have conclusion one; generalization has code two modulo four; and an MP node concluding one halts immediately. This proves the stronger claim that every compiled refutation halts, without a final Shift.
+
+## Arbitrary-store normalization and scheduling
+
+Prefixing by `A0=AX(0,0,0)` clears `d,h` and produces a clean store with some arbitrary numerical stack. The compiler induction is framed over every stack value, so it applies to that stack regardless of its contents. Thus a refutation gives a word `W=A0;C(e)` that halts from every incoming store. This is a completeness statement and does not assert that arbitrary incoming stores are theorem-annotated.
+
+For the inherited scheduler, put `z=E(W)` using the positive continuation convention `E(c::v)=1+encodeCommand(c,E(v))`. Prefixing by `AX(k,0,0)` gives fresh candidate codes
+
+`p(k+2,p(0,p(0,z)))`.
+
+These codes are strictly increasing and unbounded in `k`. Thus the scheduler's omission of finitely many initial candidates cannot omit all halting candidates. The prefix AX is total and W halts from every store it leaves. The source-to-command proof must still verify this same encoding and the modified MP/Shift termination behavior; the proposed file appropriately treats literal implementation as outstanding.
+
+For soundness, start with the genuine clean initialization, where top and cache are truth and the canonical stack annotation is empty. AX and unconditional Shift preserve theorem annotations. Failed MP returns truth. A successful MP derives its positive conclusion from the annotated minor and major premises, and the only halt produces conclusion one. Offset values need no proof annotations. These arguments remain valid under the optional success-offset-zero convention.
+
+## Conclusion of the review
+
+The protocol is a valid mathematical direction for a new source controller. It removes the Shift test and relocates contradiction detection to successful positive-target MP. The state-count benefit depends entirely on a complete physical implementation and bootstrap validation. It must not be presented as a 193-state construction until that implementation exists and is checked.
+
+
+FINAL MP196 REVIEW
+
+# Independent review of the frozen MP196 prototype
+
+**Reviewed table:** dense SHA-256 `c14cc614c8f33a67697b4fbc3b502ee5c8c6b3764ef721cd1e0c09f3810a97f3`; native SHA-256 `7689bf1cf5843f3f2c27ac3e3f7da2a84b28a8bce1d9f6458209579012ef6271`.
+
+The 196-state construction supersedes the positive-target 201/200/199 experiments. This review concerns the exact `inc H` construction in `reduction_work/mp196_prototype`, not its experimental association or decrement variants. No mathematical blocker was found, subject to the stated inherited numerical-calculus calibration and generic arithmetic tape-block lemmas. It remains three states above the requested strict target of at most 193.
+
+## 1. Exact command effect
+
+The inherited MP reader and implication constructor are unchanged. They form `I(t,k)`, with `k=d+x`, and leave `D=k`. The old comparison with the cache remains unchanged too. On inequality it clears `T,H,X,Y` and returns `(0,w,k,0)`.
+
+On equality, the source success splice is `node51 ; inc H ; node7`. The delivered resolved source realizes it as follows:
+
+- Sites 3634–3637 transfer D into both T and X. Entry has `T=H=X=Y=0,D=k`. After j positive iterations, `T=X=j,D=k−j`, and every other register is framed. Termination gives `T=X=k,D=0`.
+- Site 3638 sets H to 1.
+- Sites 3639–3648 use the inherited destructive equality comparator. They compare `H=1` with `X=k`, while framing T. Equality occurs precisely when k=1 and reaches source halt 3649. If k=0 or k≥2, the mismatch/cleanup path clears H and X, reaches site 3650, and returns to command-loop site 25.
+
+Thus the new MP succeeds with `(k,w,0,0)` when `k!=1` and halts when `k=1`. A failed comparison does not trigger this halt. The zero-target success is permitted and leaves the stack unchanged.
+
+The last point simplifies the proof compiler relative to the positive-target experiment. `Discard=MP_0` on a clean store `(t,w,0,0)` either fails when t>0 or succeeds when t=0; both cases return `(0,w,0,0)`. `Offset_0` has the same safe zero-alias behavior; positive `Offset_i` comparisons fail as required. `Push` still fails its final MP comparison because its cache has residue 2 modulo 4, while implication codes have residue 0. The proof-node compiler now uses `MP_b`, rather than `MP_(b−1)`. Its successful nonhalting case is followed by the same Pop normalization.
+
+## 2. Shift, zero stacks, and soundness
+
+The original literal Shift remains intact: it halts if `t+h=1` and otherwise performs `(h,tl(w),d,hd(w))`. There are therefore **two source halt leaves**, 10 and 3649, sharing the **single physical halting row** `(68,1)`. The universal runtime checks include both source leaves; no contract is omitted in MP196.
+
+At every completed, nonhalting command boundary, no current top, cache, or canonical stack entry has code 1. Initially all are zero; AX generates no code 1; MP returns either zero or its target different from 1; Shift transports existing entries. This is an arithmetic invariant and does not assume Con(PA). It makes the Shift halt unreachable after the initialized frame, so the literal initialized run agrees with the abstract protocol using total Shift.
+
+The invariant must be stated at command boundaries. For target 1, MP196 temporarily writes `T=1` inside the successful command and subsequently halts. It does not return that value to the next command. Saying it never physically stores code 1 would be false.
+
+Soundness starts at the genuine initialized theorem-annotated store; arbitrary incoming stores are used only by the completeness compiler. The Cantor stack identities remain valid at zero, including `p(0,0)=0`; explicit wrapper calculations do not require an injective numerical stack-length representation. The all-store witness word and cofinal scheduler argument from the reviewed command proof therefore continue to apply.
+
+## 3. Exact table and independent startup replay
+
+Relative to the primary PA194 native table, MP196 changes only inherited row `(164,1)` to `1 R 400` and adds these four rows:
+
+| State | Read 0 | Read 1 |
+|---|---|---|
+| 400 | `0 R 130` | `1 R 401` |
+| 401 | `0 R 63` | `1 R 68` |
+
+The dense table has 196 working controls, halt label 196, and 392 binary L/R rows. All 23 inherited arithmetic-oracle controls retain their rows. The builder resolves 3,663 source sites and checks all 4,768 primitive outcomes, with 1,476,043 symbolic operations and maximum 497 operations per outcome. Those figures are certificate checks using the inherited arithmetic-block lemmas, not a new kernel theorem.
+
+The independent script `mp196_review_check.py` imports neither the construction compiler nor its symbolic runtime. It verifies the pinned baseline hash, the exact five-row construction, native/dense correspondence, the sole halting row, and the relevant source CFG. It then compares **every one of 58,154 literal startup transitions** in the two presentations and checks the complete final tape support. The endpoint is native state 84, head −2, source site 25, gap 48, physical primary registers `[0,0,0,0,0,0,2,0,0]`, and 26 one-valued spare registers. This is candidate K=2 and all other logical registers zero. Five independent success-block executions also check k=0,1,2,17,1000 with unrelated framing values.
+
+The receipt is `mp196_independent_receipt.json`. A separate comparison, `mp196_census_comparison.json`, found no action-graph match among the pinned census's 503 spanning-root classes and two disconnected diagnostic classes. This is a finite corpus comparison, not a global novelty theorem.
+
+## 4. Claim boundary
+
+The new controller has an ordinary mathematical proof and complete executable source/tape bindings. A mathematical PA-equivalence claim still uses the explicitly attributed ordinary PA calibration of the unchanged numerical calculus and the inherited generic tape runtime arguments. This review does not independently re-prove those dependencies and does not claim a new Lean, Rocq, or iPRA endpoint. MP196 is a verified research construction under those dependencies; it does not improve the existing 194-state bound.
+
+**Final prose correspondence check.** After the command-boundary wording correction, the final `source_proof.tex` (SHA-256 `b8252ceff5239ef4b512c5631ac92bfe288209b4bd8ebaccd00300083bca8853`) agrees with the inspected CFG, table edits, state counts, runtime scope, and startup. The corresponding README hash is `58061ce024a15a2d583ba1a4bf73f464eaf346fdc468ed2ef362d78e7ad29ebc`. The command proof reviewed alongside it is `logical_work/mp_halting_proof.tex`, SHA-256 `8f173e5ee7e917eca277d7157b7847013ccdef3cca41954f78a294d447ca63a7`. No outstanding source-controller discrepancy remains in those versions.

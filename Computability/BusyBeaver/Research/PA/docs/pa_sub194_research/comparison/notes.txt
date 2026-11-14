@@ -1,0 +1,68 @@
+# Comparison findings for the pinned PA corpus
+
+Snapshot: `VladimirReshetnikov/ProveIt@2a88cb6a3f823e0de5addf19d725bf8373860c71`.
+
+## Scope and reproducibility
+
+The comparison covers all 51 filed research packets in `Computability/BusyBeaver/Research/PA/docs`, all five currently incoming archives, the direct PA project tables, and six historical nested-archive paths. The six historical paths contain four distinct outer archives and fourteen distinct recursive archive payloads. With the five current incoming payloads, nineteen unique ZIP payloads were visited. Identical ZIP payloads are visited once, while all their outer references are recorded.
+
+All 9,040 expected `.tm`, `.txt`, `.csv`, `.tsv`, and `.json` paths in the scoped PA tree were present locally when audited; the checked-out commit matches the pin above. The recognizer accepts complete numeric five-column binary L/R tables with exactly one undefined halt label, including explicit string-valued `table` fields in JSON. It does not claim to decode every arbitrary program that could generate a machine. The packet ledger separately covers source-only proposals and qualitative contributions.
+
+Observed totals: **1,542 recognized table occurrences, 731 byte forms, 503 action-graph classes admitting a spanning root, and two disconnected diagnostic classes.** The 194-state frontier contains **43 graph classes: 28 reported constructions, 10 auxiliary/search classes, and 5 explicitly rejected classes**. The forty-third class is PA194N_AD, stored only in a JSON table field. The text-file-only subset has 1,488 occurrences, 730 byte forms, 502 spanning classes, and 42 classes at 194 states.
+
+These counts differ from older packet counts because their pinned snapshots, omission policies, scopes, and class encodings differ. They are neither counts of independently established consistency theorems nor state lower bounds. Historical `MACHINES.md` counts 4,984 original `.tm` delivery occurrences before duplicate-machine removal, whereas the present scan counts the current retained files plus active and nested archives. Its six- and nine-control synthetic fixtures have only two and four controls reachable from their supplied starts; these are not candidate consistency machines.
+
+`audit_current.py` is the executable census; `current_census/` records every occurrence, byte identity, graph membership, nested archive identity, and exclusion. Graph hashes are calculated by enumerating roots and taking the least hash of a breadth-first canonical transition list, as in the repository's `machine_classes.py`. The hash forgets state names and, for table comparison, the designated start. The actual machine claims always retain their specified blank-start control. No reported construction with fewer than 194 states appears in this audited corpus.
+
+## The meaningful progression
+
+| Family | Main change | State-count consequence |
+|---|---|---|
+| U209/U208 | Earlier arithmetic/source implementation; contextual, entry-context, or history-sensitive decoder identification | Two main 208-state graphs occur under several packet names; larger experiments retain useful quotient ideas |
+| PA196 and variants | Smaller register-machine source; reassociation, return rewrites, diagonal-vacuity and cached-controller experiments | PA196 is the upstream physical baseline; source shortening alone often gives 197--206 states |
+| Original PA195 | Bundled-diagonal source and compatible reader folds | 195-state ordinary mathematical PA-equivalence claim, with incomplete formal endpoint |
+| PA195S / C | Separate-diagonal 190-token emitter; C uses cached-result MP and cache-only Shift | S has 134 fixed controls +67 readers -6 folds; C uses its modified controller at195 |
+| Primary PA194 and 68/8 variant | Reassociated reader grammar with larger compatible fold sets | 134+67-7=194 or134+68-8=194; same separate-head source interface |
+| PA194C / CS | Cached-result MP; symmetric destructive comparison in CS | CS removes three source sites but adds one reader before recovering it by controller fold41→330; count remains194 |
+| Radix M4R/M5/M6 | Reassociated or coefficient5/6 formula constructors; explicit logical recoding | Larger code coefficients change decoder sharing; all accepted endpoints remain194 |
+| Known-zero families A/F/J/R/ZR/CSZ | Replace selected jumps by decrements of provably zero registers; R also reassociates decoder | Valid source transformations and distinct physical graphs; none saves a state |
+| N/H/HS/NS/N5/N6 | Remove successful-MP dummy-zero push; vary sum versus cache-only Shift and code coefficient | Requires new proof-word compiler because stack and halt behavior change; all stay194 |
+| Q / D | Exchange curried premises of quantifier distribution, or emit diagonal Gamma(D) instead of Gamma(A) | Proof translation changes the logical interface; D trades69 readers against9 folds |
+| Current seven headline tables | SUMS, sum-guard NS, DHS, H6, HA, HAZ, QN combine prior transformations | Each remains194; several useful transformations consume the same shareable state and cannot be added independently |
+
+The supplied packets repeatedly expose the same allocation bottleneck: an effective sixty AX decoder controls over a134-control fixed implementation, or an effective fifty-nine over a135-control implementation. A source graph can lose instructions without decreasing the number of distinct decoder subtrees. This explains why many mathematically useful simplifications preserve or worsen the physical state count.
+
+## Duplicates and name collisions
+
+1. Five PA194C headline submissions contain the same rooted action graph and dense table. They are five deliveries, not five machine designs.
+2. Historical PA194HS and `pa194ns_conpa_2026-11-13`'s PA194NS are byte-identical. Both use no-push MP and symmetric cache-only Shift.
+3. Current `PA194NS_research.zip`'s PA194NS is different: it retains the original sum guard `t+h=1` and reverses the destructive comparison. Its companion SUMS retains the MP dummy-zero push. Naming it simply PA194NS without its packet or guard would conflate distinct machines.
+4. PA194CSZ and PA194X are the same dense bytes.
+5. PA194N6 is repeated in the N5/N6 packet and the later N6 packet.
+6. HAZ's preliminary H was already the auxiliary MPH table in the N packet; HA and HAZ are new physical compositions, not a new underlying MP interface.
+
+`frontier194_annotated.csv`/`.json`/`.md` names and classifies all43 distinct frontier graphs. The evidence labels are attributed to the supplied reports, rather than claiming a fresh end-to-end proof of every prior construction.
+
+## Proof boundary
+
+The current root PA README explicitly states that neither machine-specific direction of the desired iPRA equivalence has been established for primary PA194, original PA195, or PA196. The primary table's standard finite-run connections are far stronger than bounded testing: the project proves its source/clock composition and the connection to a displayed separate-diagonal numerical calculus. Its PA calibration and internalization in iPRA remain open in the proof-assistant development.
+
+The delivered research packets claim ordinary mathematical PA-provable halting/refutation equivalences. Their common logical calibration is inherited; their physical claims use exact blank initialization, universal source contracts, positive-duration trace composition, and contextual quotient lemmas. An ordinary PA proof is distinct from a new Lean/Rocq endpoint, and both are distinct from a conditional theorem that assumes the missing reductions. A newly reduced physical machine must explicitly state which inherited theorem it transports.
+
+Important concrete failure modes already represented in the corpus:
+
+- A legal source transformation can destroy blank initialization. Several known-zero register6 comparator-return changes pass clean-source contracts yet halt after1,361 blank-start steps.
+- Removing the seventh scanner stage changes head alignment on a legal source context; an apparent194-state table can therefore be rejected despite passing local fold checks.
+- H6 cannot blindly reuse the symmetric controller's state330: radix6 already uses330 for a three-increment block, and both folds consume41.
+- The exact primary append-zero transplant is rejected for every working-state blank start: four halt and190 reach inductively proved blank rays. That does not exclude a redesigned zero-spare runtime.
+- Optimistic grammar scores and the absence of bounded search hits are not correctness certificates or lower bounds.
+
+## Existing negative-search scope worth avoiding
+
+The radix packet already tried all36 pair transpositions of nine physical scanner positions on two seeds and then fixed-seed random permutations:1,275 screened tables in90seconds, with a conservative local quotient rule at radius5/300steps. It did not exhaust all9! physical register layouts or perform a full global liveness/register-allocation proof.
+
+Several packets exhaust bounded first-action quotient closures, test row-choice state merges, perform neutral two-row rewrites, and run millions of grammar proposals. These searches are substantial but highly template-dependent. HAZ additionally tests literal-head detours, ±2-cell displacement and marker-bit representation changes at radius8/384, finding no reduction on HA/HAZ. The exact older bit-phase/head-displacement algorithms can still be worth comparing on other194 families, provided their domain differs from the already screened rules.
+
+DHS already proves a negative-only diagonal-vacuity proof-template suffices for its inherited PA-refutation calibration. Direct negative-only compilation profiles are at least200 states; positive-offset profiles at least198. Repeating the logical observation without a new physical allocation would not establish progress below194.
+
+The next meaningful result must therefore change at least one of: effective decoder sharing, fixed-register implementation, the joint interaction of controller/axiom folds, or a proof-search representation whose complete physical compiler is smaller. A new same-size composition is not the user’s current requested result.

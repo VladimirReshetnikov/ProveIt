@@ -1,0 +1,60 @@
+\subsection{The verified 195-state realization, PA195EvenHX}
+
+The parity scheduler has a complete literal implementation with 195
+working states and 390 rows. Its dense start state is zero, its external
+halt label is 195, and its tape is initially entirely zero. It is included
+as a separate research result, since its state count exceeds the requested
+194-state fallback. Its algorithmic change is more substantial than the
+H5 radix specialization: it permanently visits only candidates
+$4,6,8,\ldots$, with completeness proved in the preceding section.
+
+Relative to primary PA194, introduce native control 3000 and make the
+following changes:
+\[
+\begin{array}{c|cc}
+\text{control}&\text{read 0}&\text{read 1}\\\hline
+110&\text{unchanged}&1R3000\\
+3000&0R14&1R8\\
+21&\text{unchanged}&0R55\\
+45&\text{unchanged}&0R60
+\end{array}
+\]
+The latter two edits exchange the physical positions of logical registers
+$H$ and $X$. The logical-to-physical register map becomes
+$(6,2,0,4,3,8,7,5,1)$. The arithmetic engine's rows are unchanged.
+This placement change is essential to the demonstrated blank bootstrap;
+the first trial with the old placement halts after 62,645 steps and does
+not provide a consistency machine.
+
+An independent literal-table checker derives the four register-list
+lemmas again, resolves the source by both arithmetic and interval methods,
+and checks all 4,781 branch-sensitive outcomes over arbitrary registers
+and a nonempty spare tail. It uses 1,068,285 symbolic operations, with a
+largest case of 392 operations and minimum positive duration constant
+three. Dense/native conjugacy and graph reachability are also checked.
+
+After exactly 44,094 literal transitions from the blank tape, the machine
+reaches native state 84 with head at $-2$, source ordinal 40 and logical
+registers $(4,0,0,0,0,0,0,0,1)$. The complete finite-support tape equals
+the prescribed frame, including all 29 one-valued spare registers and
+the zero exterior. The independently replayed 48-instruction bridge
+then reaches the clean source entry 25 with registers
+$(4,0,0,0,0,0,0,0,0)$. The parity-prefix theorem therefore applies with
+$N_0=4$. The original source calculus, proof annotation and all-store
+refutation compiler are unchanged. The same positive-duration argument
+used for H5 transfers this source calibration to the literal table.
+
+Consequently the ordinary mathematical proof establishes
+\[
+ \mathrm{PA}\vdash
+ \neg\Halt(\mathrm{PA195EvenHX},\mathrm{blank})
+ \longleftrightarrow\Con(\mathrm{PA}).
+\]
+The exact dense table is
+\file{research/sparse/even195HX/even195HX.tm}, with SHA-256
+\begin{center}\small
+\path{c1934e3132f577559e41df0fdb59f63ab9ef63963e705cfe26fdd6f2091c95f8}.
+\end{center}
+The executable construction and independent audit are both included.
+As for H5, these checks supplement an ordinary PA proof; they are not a
+new end-to-end proof-assistant development.

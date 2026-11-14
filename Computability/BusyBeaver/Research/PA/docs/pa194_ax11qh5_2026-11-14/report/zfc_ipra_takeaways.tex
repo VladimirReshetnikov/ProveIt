@@ -1,0 +1,51 @@
+% Proposed replacement for the report's ZFC/ConciseIPRA section.
+% All links are fixed at the same audited ProveIt revision.
+\section{Concrete lessons from ZFC and concise iPRA}
+
+\paragraph{Partial selectors can expose a missed physical fold.}
+The accepted ZFC K216 reparses a 4,174-instruction region as
+$((A,X),(B,Y))$. Only the zero branches $A,B$ are prescribed by the
+selector; $X,Y$ remain live and require verification. Native states 164
+and 183 share their read-one transition, while incoming edges leave
+different predecessor bits. Existing helper 201 reads that marker,
+chooses the appropriate old endpoint, and restores the tape in three
+steps. This removes state 183 without a new helper. Earlier searches
+limited such reparses to 600 leaves, so their negative results did not
+cover this construction. This gives a concrete reason to search larger
+partial-provider regions in PA while checking every retained branch.\footnote{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4be5c6e3a10292a7466f5d3687e3b39615ff049b/Computability/BusyBeaver/Research/ZFC/candidate-k216/README.md}{ZFC/candidate-k216/README.md}, ``What saves the state'' and ``Attribution and prior search scope''.}
+
+\paragraph{Read fields only where a command needs them.}
+The command-permuted K216 moves the shared counter reader into individual
+commands. Its primary small-command tags are NIP0, DROP1, MP2;
+permuting these closed bodies also changes blank initialization to reach
+a clean theorem seed. The three-step replacement
+$81/0:0L92\mapsto0L111$ frees the old $92/1$ role. K215 combines this
+reader schedule with the partial selector through a fresh allocation;
+its 202 source subtrees become 215 physical states, rather than a state
+count inferred from source size.\footnote{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4be5c6e3a10292a7466f5d3687e3b39615ff049b/Computability/BusyBeaver/Research/ZFC/candidate-k216/alternatives/permuted/README.md}{ZFC/candidate-k216/alternatives/permuted/README.md} and \href{https://github.com/VladimirReshetnikov/ProveIt/blob/4be5c6e3a10292a7466f5d3687e3b39615ff049b/Computability/BusyBeaver/Research/ZFC/candidate-k215/README.md}{ZFC/candidate-k215/README.md}.}
+The applicable PA question is which field readers, return paths and
+initialization roles can share controls. Source savings alone answer
+none of those physical obligations.
+
+\paragraph{Fuse proof rules with a proved recovery translation.}
+ConciseIPRA uses iterator terms $I(n,a;u.h)$ and formulas built from
+equations, $Q_yB=B(0)\to\forall yB(y)$ and
+$D_{x,y}B=\exists x(B(x,0)\to\forall yB(x,y))$.
+Its \texttt{E3Prf} calculus has three rule families: Use, Intro and
+Discharge, together with a fixed reflexivity clause. Discharge both opens
+a witness and performs one deterministic evaluation step; a compound
+auxiliary formula selects identity evaluation and recovers ordinary
+elimination. Lean proves \texttt{e3prf\_iff\_vprf} for every clause
+context. This supplies a concrete model for combining interfaces while
+proving that each original operation remains expressible.\footnote{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4be5c6e3a10292a7466f5d3687e3b39615ff049b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeEvalDischarge.lean}{ConciseIPRA/Lean/ConciseIPRA/NativeEvalDischarge.lean}.}
+
+\paragraph{Keep the theory and formalization claims separate.}
+The concise native calculus has a completed Lean bi-interpretation with
+iPRA, including \texttt{native\_inconsistent\_iff}; the README reports
+no \texttt{sorry}, extra axioms or \texttt{native\_decide}. K215 likewise
+has exact-table external Lean and Rocq endpoints, while its internal PA
+endpoint remains open.\footnote{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4be5c6e3a10292a7466f5d3687e3b39615ff049b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}; \href{https://github.com/VladimirReshetnikov/ProveIt/blob/4be5c6e3a10292a7466f5d3687e3b39615ff049b/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}{ConciseIPRA/README.md}, ``Lean formalization''; K215 README above.}
+These results establish reusable proof methods. A concise iPRA checker
+does not itself recognize PA refutations: a PA calibration and a complete
+binary implementation, including syntax and initialization costs, are
+still needed for this task.

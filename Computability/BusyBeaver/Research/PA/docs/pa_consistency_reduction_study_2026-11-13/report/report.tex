@@ -1,0 +1,271 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.84in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,longtable,array,xcolor}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\definecolor{navy}{HTML}{18384E}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}[proposition]{Lemma}
+\setlist{itemsep=2pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\hypersetup{pdftitle={PA consistency machines: comparison and a search below 194 states},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\title{\color{navy}PA consistency machines\\[4pt]\large Corpus comparison and a search below 194 states}
+\author{Prepared for Vladimir Reshetnikov}
+\date{13 November 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+We compare the PA-consistency machine designs in the requested ProveIt source areas at commit \texttt{75a42a28ca81}. The 61 delivered packets have been consolidated into the PA documentation tree. A fresh audit verifies all 535 entries in the retained table catalogue and finds 49 distinct 194-state classes, including rejected and auxiliary tables. The sole retained 193-state construction is explicitly rejected: its numerical proof calculus derives contradiction. We replay its 73,393-step primitive refutation and explain the decisive coding collision. A new exact rational dual proves a 194-state lower bound within one frozen-grammar direct-selector family. New searches address finite-trajectory reconvergence, whole-instruction control sharing, reachable source branches, grammar compression, alternative negation implementations, and scanner-aware layouts. A new exact source reassociation removes the fixed program's six-zero address obstruction, but exposes a physical history-sharing obligation. The required machine with fewer than 194 states has not been established. This report makes that limitation explicit; no unsuccessful search is presented as a state lower bound.
+\end{abstract}
+\vspace{3pt}
+\noindent\fcolorbox{navy}{white}{\parbox{0.94\linewidth}{\textbf{Result status.} The comparison and documented checks are complete. The requested construction is unresolved in this investigation. The archive contains no accepted sub-194 consistency machine.}}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{Target, machine convention, and scope}
+The requested mathematical endpoint is an explicit deterministic machine $M$ with fewer than 194 working states such that
+\begin{equation}\label{eq:goal}
+ \PA\vdash\bigl(\neg\Halt(M,\mathrm{blank})\leftrightarrow\Con(\PA)\bigr).
+\end{equation}
+We retain the convention of the supplied Busy Beaver constructions: one two-way infinite tape, alphabet $\{0,1\}$, blank symbol zero, one-square left or right moves, and a separate halting label excluded from the working-state count. Merely changing the alphabet or machine model would not be a comparable state reduction.
+
+The source snapshot is
+\begin{center}\small
+\nolinkurl{75a42a28ca818627f5a104fb0f0c7f7d02a52947}.
+\end{center}
+The requested \path{docs/incoming} directory now contains a routing README; the packets have been placed under
+\path{Computability/BusyBeaver/Research/PA/docs}. Their earlier archive membership and removed duplicate tables are recorded by the repository. We also inspect the relevant ZFC and ConciseIPRA ideas. All repository sources in the bibliography are pinned to the same commit unless stated otherwise.\cite{repo,packets,machines}
+
+The word ``all'' in the comparison has a precise operational meaning. Every one of the 61 placed packets is in the packet ledger. Every retained catalogue entry is independently checked. The fresh census recognizes complete numeric five-column tables in ordinary table files, textual JSON fields, five-column JSON arrays, and recursively examined distinct ZIP payloads. It does not claim to understand every arbitrary source program, transition dictionary, prose description, or external historical repository.
+
+For frontier tables admitting a root that reaches every working state, a table class identifies the transition graph up to working-state renaming, with the repository's treatment of terminal labels. For disconnected synthetic controls we reproduce the catalogue's maximal-reachable-component fingerprint and do not assert full graph isomorphism. Its designated blank start is a separate piece of data. Root-free graph identity is not a substitute for an explicit initial configuration. The delivered CSV/JSON records retain the distinction.
+
+\section{Comparison results}
+\subsection{Historical deliveries versus current files}
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Quantity & Count\\
+\midrule
+Placed research packets &61\\
+Original delivered \code{.tm} occurrences in repository ledger &7,130\\
+Original byte-distinct table forms in that ledger &786\\
+Retained catalogue classes, all freshly checked &535\\
+Current candidate files examined in the broader fresh scan &10,160\\
+Distinct nested ZIP payloads examined &14\\
+Recognized current table occurrences &744\\
+Current byte-distinct forms in that scan &598\\
+Distinct 194-state frontier classes &49\\
+Retained 193-state classes &1 (rejected)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The historical and current counts have different denominators. Deduplication explains why 7,130 original occurrences do not imply that 7,130 physical table files remain. The JSON extension found no additional 194-state class. Four additional JSON fragments represent patches or fixtures with zero or multiple external targets; they are not additional complete consistency-machine constructions.
+
+The fresh structural results are recorded in \path{comparison/catalog_recheck.json}, \path{comparison/census_summary.json}, and the occurrence/class ledgers. The standalone archive also retains all 535 catalogue representatives with their original paths, byte hashes, and structural metadata. These are comparison inputs, not 535 newly validated consistency theorems.
+
+\subsection{Evidence classification of the 194-state frontier}
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Evidence attributed by the supplied packets & Classes\\
+\midrule
+Principal or supported constructions with ordinary PA arguments &33\\
+Supplementary constructions &5\\
+Auxiliary tables and search seeds &6\\
+Explicitly rejected tables &5\\
+\midrule
+Total &49\\
+\bottomrule
+\end{tabular}
+\end{center}
+The classification describes the evidence supplied for each design. In particular, ``supported'' does not mean that this investigation independently reconstructed every historical arithmetic proof or compiled an end-to-end proof-assistant theorem. The full frontier table appears in Appendix~\ref{app:frontier}; the 61-packet contribution ledger appears in Appendix~\ref{app:packets}.
+
+\subsection{What distinguishes the designs}
+The main state budgets are
+\[
+ 134+67-7=194,\qquad 134+68-8=194,\qquad135+67-8=194.
+\]
+The first term counts the fixed interpreter and controller, the second counts allocated axiom-reader controls, and the last counts compatible contextual identifications. The $\Gamma(D)$ family uses other equally balanced budgets, including 69 readers with nine or ten identifications.
+
+\begingroup\small
+\begin{longtable}{p{.23\linewidth}p{.69\linewidth}}
+\toprule
+Design axis & Mathematical and physical significance\\
+\midrule\endhead
+Reader association & Different binary associations and shared subtrees encode the same macro word. Fewer raw readers and more compatible history folds are separate objectives; optimizing either alone can worsen the other.\\[3pt]
+Modus ponens protocol & The original, cached-result, and no-push variants return their result in different visible registers or change the dummy stack entry. Their proof-command compilers must be adjusted.\\[3pt]
+Shift and halt test & Sum guard $T+H+X=1$ (hence $T+H=1$ when the scratch register $X=0$), cache-only guard $H=1$, and symmetric comparison variants change source control and initialization. A shorter source comparator can require an extra physical helper.\\[3pt]
+Formula coefficient & Four-, five-, and six-coefficient encodings retain distinct logical tags. The unchanged three-coefficient shortcut collides with implication and is inconsistent.\\[3pt]
+Logical heads & The separate diagonal head can use different parameters; quantifier distribution permits exchanged curried premises. These change emitted numerical formulas without necessarily changing strength.\\[3pt]
+Returns and register placement & A source-proved zero register can sometimes replace an unconditional return. A/D placement changes are store conjugacies. Both still require a blank-start argument.\\
+\bottomrule
+\end{longtable}
+\endgroup
+Most later 194-state packets cross already established axes. This produces distinct validly motivated designs, but it does not automatically produce additive state savings.
+
+\subsection{Aliases and incompatible combinations}
+Several names conceal duplicate graphs. PA194C is repeated as a principal table in five packets. The cache-only PA194HS and the filed cache-only PA194NS coincide. Another packet uses ``NS'' for a distinct sum-guard symmetric machine. PA194QN and PA194NQ coincide; the two QNS deliveries coincide; PA194N6 is repeated; and PA194CSZ and PA194X identify the same table. Native tables densely renumbered by a census can still have a nonzero designated start.
+
+A concrete conflict occurs between the coefficient-six multiplier and the symmetric comparator. Both supplied implementations occupy native control 330 and consume a fold involving control 41. Their separate state savings therefore cannot simply be added.\cite{h6}
+
+Other recorded failures include a scanner that confuses legal source-address zeros with a delimiter, source-correct return edits that halt during blank initialization, and an append-one/append-zero change that destroys the spare-list invariant. These invalidate the particular patches, not every redesign in their neighborhood.
+
+\section{Why the existing 193-state table is not a solution}
+The table retained at
+\begin{center}\small
+\path{pa194nq_research_2026-11-13/search/rejected193/machine.tm}
+\end{center}
+has 193 working states and 386 transition rows. Its packet reports successful physical source-simulation checks, but explicitly rejects its logical interface.\cite{nq} Its byte SHA-256 is
+\begin{center}\scriptsize
+\nolinkurl{dedb74819ee59e096a6a6c36448e13a1dc8df9363085b183ff5d0838bbbf215a}.
+\end{center}
+
+\subsection{A short derivation explaining the obstruction}
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\quad
+ I(a,b)=3p(a,b),\quad E(a,b)=3p(a,b)+3,
+\]
+\[
+ U(d,A)=3p(A,d)+2,\qquad N(A)=I(A,1).
+\]
+The unchanged calculus has modus ponens, generalization, the dominated implication head
+\[
+ R(a,b,c,u)=I\bigl(I(I(c,u),a),I(I(a,c),I(b,c))\bigr),\qquad u\le a,
+\]
+and the equality-witness head
+\[
+ H_5(d,h)=N\bigl(U(d,N(E(h,d)))\bigr).
+\]
+The designated contradiction is code one.
+
+\begin{proposition}[Retained coefficient-three obstruction]\label{prop:three}
+These numerical rules derive code one.
+\end{proposition}
+\begin{proof}
+First $R(0,0,0,0)=0$, so zero is a theorem. The critical equality is
+\[
+ E(1,0)=6=I(0,1).
+\]
+The retained generic derivations of $K$ and $S$ from $R$ apply: their comparison requirements follow from $a,b\le I(a,b)$ and do not require disjoint constructor tags. Set $A=6=I(0,1)$. From $K,S$ obtain $I(A,A)$ and, from the theorem zero, obtain $I(A,0)$. Applying $S(A,0,1)$ gives
+\[
+ I(A,1)=N(6)=87.
+\]
+Generalization at zero yields $U(0,N(6))=11486$. The instance $H_5(0,1)$ is its negation,
+\[
+ H_5(0,1)=I(11486,1)=197943987.
+\]
+One final modus ponens yields one.
+\end{proof}
+The argument is not just a failure of one semantic interpretation. It is an explicit finite derivation in the very numerical rules the machine searches. Changing only the proposed interpretation cannot rescue that unchanged machine.
+
+\subsection{Fresh primitive-certificate replay}
+The archive retains the supplied expanded certificate and its independent verifier, with attribution. We freshly replayed it. The certificate has 73,393 steps: 34,888 dominated-head instances, 38,503 modus-ponens steps, one generalization, and one fifth-head instance. It uses 116,171 shared exact arithmetic-expression nodes and ends at literal code one. The primitive checker admits no $K/S$ rule and no propositional-tautology oracle.
+
+The certificate SHA-256 is
+\begin{center}\scriptsize
+\nolinkurl{baf316dce45568036fd803382b30ae2669eb504222a39a6be1f3abcad77dcb83}.
+\end{center}
+A faithful exhaustive proof search for these rules consequently halts. This does not establish a state lower bound and does not rule out a different three-coefficient interface. It rules out the exact unchanged shortcut.
+
+\section{What a correct new reduction must preserve}
+\subsection{The logical calibration is syntactic}
+The relevant ordinary argument has two proof-producing directions:
+\begin{align*}
+ \text{finite PA refutation}&\longmapsto\text{finite source halting computation},\\
+ \text{finite source halting computation}&\longmapsto\text{finite PA refutation}.
+\end{align*}
+A primitive-recursive compiler for refutations and a PA verification of its correctness are stronger requirements than an informal assertion that two theories are equiconsistent. No uniform truth predicate or reflection principle for PA should be smuggled into the reverse translation.
+
+The retained calibration interprets membership by a binary-digit relation, for example
+\[
+ \operatorname{Bit}(s,z)\equiv\exists u,v\,
+ [s=(2u+1)2^z+v\ \wedge\ v<2^z].
+\]
+PA proves that a set code does not contain itself. Full-formula finite binary comprehension is obtained by an induction proof template. Substituting formula syntax into that template is a proof-producing operation; it is not a uniform assertion of the truth of all arithmetic formulas. Coincident variable labels and the exceptional truth-code alias $I(0,0)=0$ must be treated explicitly.\cite{pa195,nq}
+
+\subsection{Source and tape obligations}
+A new table needs more than a state count or a long nonhalting sample. The relevant obligations are exact byte identity, source graph and command semantics, a proof annotation for every live stack/register formula, complete blank initialization, terminating primitive register implementations, and a simulation that preserves halting in both directions. The scheduler carries its store between command words, so a proof must not silently assume a fresh reset at each candidate word.
+
+A contextual fold also needs a simultaneous check after all aliases have been applied. Two folds valid in isolation may break one another's detours. Testing a finite collection of small register values is useful for discovery but cannot replace an arbitrary-register argument.
+
+\subsection{PA versus iPRA, and written versus kernel-checked proofs}
+The repository explicitly says that its machine-specific iPRA consistency equivalences remain unfinished.\cite{repo} That is not itself a refutation of the packets' ordinary PA-formalizable arguments; the present target is equation~\eqref{eq:goal}, over PA. It does mean that Python certificates and standard-model Lean simulation theorems must not be advertised as a newly completed arithmetic consistency biconditional.
+
+ZFC's dominated-implication and contextual-control ideas already occur in this lineage. ConciseIPRA suggests useful simplification methods, but replacing the searched PA calculus by an iPRA-equivalent theory would change the consistency target unless an additional PA-internal calibration were supplied. In particular, the retained PA soundness argument uses full-formula finite comprehension.\cite{zfc,ipra}
+
+\section{New reduction investigations}
+\input{search_results.tex}
+
+\section{An exact reassociation and its remaining physical obligation}\label{sec:rotation}
+The scanner-shortening investigation yielded an exact source-level fact. In the pinned tree program, write the relevant nodes with their existing names. Apply
+\begin{align*}
+ \mathrm{node21}&:=(\mathrm{node20},\mathrm{node170}),\\
+ \mathrm{node171}&:=(\mathrm{node21},\mathrm{node23}),\\
+ \mathrm{node172}&:=(\mathrm{node7},\mathrm{node171}),
+\end{align*}
+and, in the MP subtree,
+\[
+ \mathrm{node162}:=(\mathrm{node37},\mathrm{node163}),\qquad
+ \mathrm{node164}:=(\mathrm{node75},\mathrm{node162}).
+\]
+The resulting flattened list has the same 3,673 primitive instructions, in the same order, with exactly the same resolved successors. The first source path shortens from \code{000000} to \code{00000}. After both rotations the fixed portion outside the AX emitter has no run of six consecutive zeros in a source address and no increment with five consecutive address zeros. These are finite exact identities checked by \path{verification/check_rotations.py}.
+
+They do not yet give a smaller physical machine. Native control 69 represents two different source subtrees by inspecting the preceding bit. Its zero transition moves left to control 213; in the old layout, history zero selects one subtree and history one selects the other. The root rotation reverses the required context of node20. Rewiring only the obvious reader rows therefore fails.
+
+A concrete repair opportunity comes from the existing AX word. Its consecutive tokens at positions 8 and 9 (zero-based) are \code{node65,node75}, while
+\[
+ \mathrm{node75}=(\mathrm{node74},\mathrm{node65}).
+\]
+Exposing that subtree gives the unchanged primitive sequence
+\[
+ \mathrm{node65},\mathrm{node74},\mathrm{node65}.
+\]
+A reader for the first pair has physical successor pair $(90,92)$, the reverse of the existing helper's $(92,90)$. It can supply the required history distinction. However, creating it naively costs an extra reader, cancelling the scanner saving. A successful construction must recover that cost elsewhere and pass the complete physical and startup checks. The fixed reader rows also serve as providers for existing AX folds, so those folds must be rebuilt after the rotations. In the tested variant, a separate reader repairs the three fixed-region failures but leaves eight AX source-contract failures with the old scanner, or 47 with the shortened scanner. Neither scanner variant reaches the tested clean Fetch seed condition within five million blank steps. This is a bounded initialization diagnostic, not a proof that no later valid seed can occur. We retain the exact rotations, failing contracts and search inputs without labelling this an accepted 193-state machine.
+
+\section{Reproduction, files, and interpretation}
+The archive's main offline check is
+\begin{center}\code{python3 verify.py}\end{center}
+It verifies the release hashes, rechecks the 535 retained catalogue representatives, replays the primitive coefficient-three refutation, checks the exact rational selector-family dual certificate, checks the exact source reassociations, and validates the feasible cost-67 dictionary witness without asserting its optimality. The table checker treats explicit start metadata separately from root-free graph identity. Its counts include rejected examples and synthetic controls.
+
+The files in \path{comparison/} contain the full packet and frontier ledgers, fresh census receipts, and repository rescan script. \path{inputs/catalogue/} contains the original retained representatives. \path{research/} contains the new search sources, inputs, logs and receipts. \path{verification/} contains the small offline checks and attributed inherited dependencies. The report is built by \code{sh build_report.sh} using pdfLaTeX.
+
+The computational negative results concern finite, documented search families. They neither prove that 194 is optimal nor imply that a 193-state solution cannot exist. The exact restricted selector bound, source rotations, complete comparison, and explicit rejected-shortcut proof are reusable results; the principal construction objective remains open here.
+
+\appendix
+\section{All 49 distinct 194-state designs}\label{app:frontier}
+\noindent Status labels below attribute the supplied packet evidence. Short class hashes identify the rows; full hashes, starts, source paths and provenance appear in \path{comparison/frontier194.csv} and its JSON counterpart.
+\input{frontier.tex}
+
+\section{All 61 delivered research packets}\label{app:packets}
+\noindent Names are the actual placed packet directories. Contribution descriptions record the supplied work; they do not promote every auxiliary table to a proved consistency machine.
+\input{packets.tex}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{repo} ProveIt, \emph{PA consistency machines}, snapshot \texttt{75a42a28ca81}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/75a42a28ca818627f5a104fb0f0c7f7d02a52947/Computability/BusyBeaver/Research/PA/README.md}.
+\bibitem{packets} ProveIt, \emph{Delivered research packets}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/75a42a28ca818627f5a104fb0f0c7f7d02a52947/Computability/BusyBeaver/Research/PA/docs/README.md}.
+\bibitem{machines} ProveIt, \emph{Machines in the delivered packets}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/75a42a28ca818627f5a104fb0f0c7f7d02a52947/Computability/BusyBeaver/Research/PA/docs/MACHINES.md}.
+\bibitem{nq} ProveIt, \emph{PA194NQ research packet}, including the explicitly rejected coefficient-three experiment, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/75a42a28ca818627f5a104fb0f0c7f7d02a52947/Computability/BusyBeaver/Research/PA/docs/pa194nq_research_2026-11-13}.
+\bibitem{pa195} ProveIt, \emph{Original PA195 research packet}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/75a42a28ca818627f5a104fb0f0c7f7d02a52947/Computability/BusyBeaver/Research/PA/docs/pa195_conpa_2026-11-13}.
+\bibitem{h6} ProveIt, \emph{PA194H6 research packet}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/75a42a28ca818627f5a104fb0f0c7f7d02a52947/Computability/BusyBeaver/Research/PA/docs/pa194h6_conpa_2026-11-13}.
+\bibitem{zfc} ProveIt, \emph{ZFC consistency-machine research}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/75a42a28ca818627f5a104fb0f0c7f7d02a52947/Computability/BusyBeaver/Research/ZFC}.
+\bibitem{ipra} ProveIt, \emph{ConciseIPRA}, same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/75a42a28ca818627f5a104fb0f0c7f7d02a52947/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\end{thebibliography}
+\end{document}

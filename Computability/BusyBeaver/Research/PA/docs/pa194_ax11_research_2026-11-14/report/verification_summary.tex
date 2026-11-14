@@ -1,0 +1,40 @@
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Observed quantity & PA194AX11 & PA194QH5\\\midrule
+Working controls / transition rows &194 / 388&194 / 388\\
+Raw controls / simultaneous folds &201 / 7&202 / 8\\
+Local history/current-bit fold cases &28&32\\
+Resolved source sites &3,672&3,714\\
+Universal source outcome contracts &4,779&4,815\\
+Construction symbolic operations &1,479,769&1,576,144\\
+Construction maximum case &497&499\\
+Independent symbolic operations &1,078,230&1,150,677\\
+Independent maximum case &397&403\\
+Generic register-list lemmas rederived &4&4\\
+Minimum positive-duration constant &3&3\\
+Exact whole-tape blank startup &58,154&58,088\\
+Prior 194-state graph classes compared &76&76\\
+Prior graph matches &0&0\\\bottomrule
+\end{tabular}
+\end{center}
+
+The symbolic operation counts are counts inside the checker. They are
+not bounds on physical Turing time for arbitrarily large registers.
+The domain contains all nine natural register values, all nonempty finite
+spare-register lists, and every nonnegative affine gap parameter. Ordinary
+table steps, unary sweeps and list inductions justify that representation.
+The independent implementation derives the generic list lemmas from the
+literal rows instead of trusting the construction checker's box oracles.
+Both start comparisons include the complete tape and blank exterior.
+
+The primary dense-table SHA-256 is
+\begin{quote}\small\nolinkurl{1a7defae031c322a5577a3f2cb77d4c3bbc3242c7246f35f073d4dcf12a191d0}.\end{quote}
+The secondary dense-table SHA-256 is
+\begin{quote}\small\nolinkurl{94c85547b3edd0df0a441d45bf22abb52711f2b27cc9e680999232285757dba5}.\end{quote}
+
+The primary source checker verifies both the nineteen-site inserted push
+and the removed nineteen-site MP dummy push. Its 3,653 unaffected sites
+retain their operations and edges under relocation. The secondary checks
+61 complete coefficient-body changes and 3,409 unaffected sites. The
+command checkers separately verify the exact emitted stack, every selector,
+Push, Pop, generalization, protected MP, final halt and scheduler encoding.

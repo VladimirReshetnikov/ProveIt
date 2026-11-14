@@ -1,0 +1,45 @@
+The new history-selector machine was itself used as a target for further
+state sharing. The corrected symbolic-context collector includes the
+interiors of accelerated scans. Its finite local merger search permits
+repeated visits to the proposed merged control and examines segments of
+at most 100 transitions. The observed results were:
+\begin{center}\small
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+Window radius & Contexts & State pairs & Joint action pairs & Folds found\\
+\midrule
+4 & 8,379 & 18,721 & 134,240 & 0\\
+6 & 29,458 & 18,721 & 196,736 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The two runs considered 23,474,976 and 25,531,584 candidate actions,
+respectively. These are negative results only for the stated local search
+domain; they do not rule out another compiler or a longer-context quotient.
+
+A deliberately weaker candidate-discovery envelope sampled arithmetic
+engine entries from 290,167 concrete source frames and the exact startup,
+using 30,301,733 literal transitions and 1,474 engine windows. Each source
+sample stops at its first return to controller 84, which can occur inside
+a primitive instruction; these are prefix samples, not complete primitive
+executions. It likewise
+found no candidate among 18,721 pairs and 141,014 joint combinations.
+This sampling is only discovery evidence. It would not have certified a
+successful reduction, had one appeared.
+
+Another search allowed native row 198/0 to enter any of 772 actions and
+accepted any finite valid appended spare-register list, rather than
+requiring the usual fixed appended value. Within 100 local steps and
+without reading the arbitrary prefix left of the specified tail, seven
+actions satisfy the append contract. Every one appends only the already
+known singleton value zero or one. No new spare-list pattern was found.
+
+The full existing runtime frontier was also independently replayed from
+blank tape. Across all 193 controls of each of the 52 runtime-experiment
+graphs, all 10,036 runs resolve within 117 literal transitions: 106 reach
+halt and 9,930 reach certified outward rays. There are no cutoffs. A ray
+certificate identifies a constant control moving outward through a blank
+half-line and is verified by a finite prefix followed by an immediate
+induction. The coefficient-three graph is excluded from this startup test
+because its separate rejection is logical. The replay is included as
+\file{comparison/replay/audit_193_startups.py}.

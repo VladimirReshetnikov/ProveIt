@@ -1,0 +1,238 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm}
+\usepackage[margin=0.88in,headheight=15pt]{geometry}
+\usepackage{booktabs,longtable,tabularx,array,enumitem,xcolor,xurl,hyperref,fancyhdr,microtype}
+\definecolor{ink}{HTML}{19394D}
+\hypersetup{colorlinks=true,linkcolor=ink,urlcolor=ink,citecolor=ink,pdftitle={PA194AX11: Stacked axioms and a comparative audit of Con(PA) machines},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small PA194AX11}\fancyhead[R]{\small Construction, proof and comparison}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.3em}\setlength{\parindent}{1em}
+\setlist{itemsep=0.2em,topsep=0.3em}
+\setlength{\emergencystretch}{2em}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+symbols.map}
+\title{\textbf{PA194AX11}\\[0.3em]\Large Stacked axioms and a comparative audit\\of small $\operatorname{Con}(\mathrm{PA})$ machines}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+No verified blank-tape machine with fewer than 194 working states is obtained.
+The requested fallback is achieved by PA194AX11, a new binary, one-tape,
+194-state construction with a different axiom-command protocol. It places
+the guarded axiom on the stack and reuses the following modus-ponens tail.
+The resulting command reads a fourth parameter; its exact effect and a new
+all-store proof compiler are given below. The ordinary mathematical proof
+establishes in PA that its blank-tape nonhalting is equivalent to
+$\operatorname{Con}(\mathrm{PA})$, using the supplied baseline PA calibration
+and new source, runtime and startup certificates. A second new 194-state
+composition, PA194QH5, uses coefficient-five formula coding, exchanged
+quantifier distribution, no-push MP and a cached-head halt test.
+
+The comparison covers all 66 deliveries present at the pinned repository
+snapshot. A fresh literal/JSON census finds 76 prior 194-state action-graph
+classes; both new machines differ from every one. The audit separates
+reported constructions, research intermediates and rejected tables. In
+particular, neither of the two existing 193-state objects is a calibrated
+blank-start consistency machine. The new results are ordinary mathematical
+proofs supported by executable certificates; no new end-to-end Lean, Rocq
+or iPRA formalization is claimed.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{Result, exact scope and proof status}
+
+The primary delivered table is \file{primary/machine/machine.tm}.
+It starts in state 0 at cell 0 of the all-zero, two-way infinite tape.
+States $0,\ldots,193$ are working controls and 194 is the terminal label.
+A table row is \texttt{state read write direction next}; each read and
+write is a bit, and each direction is $L$ or $R$. There are 388 rows.
+The count excludes the terminal control. All initialization occurs inside
+the same counted table.
+
+The central statement is
+\[
+ \mathrm{PA}\vdash
+ \bigl(\operatorname{Halt}_{\rm blank}(\mathrm{PA194AX11})
+       \leftrightarrow
+       \exists p\,\operatorname{Prf}_{\rm PA}(p,\ulcorner0=1\urcorner)\bigr),
+\]
+and therefore
+\[
+ \mathrm{PA}\vdash
+ \bigl(\neg\operatorname{Halt}_{\rm blank}(\mathrm{PA194AX11})
+       \leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).
+\]
+These are provability statements. They do not assert that PA proves its
+own consistency or proves this machine nonhalting. Actual nonhalting
+follows under the assumption that PA is consistent.
+
+The construction reuses the numerical calculus calibrated in the supplied
+separated-diagonal PA194 work \cite{baseline,pa195}. Its new contribution
+is the eleven-entry axiom protocol and the exact physical machine that
+implements it, together with a replacement proof-word compiler. The
+component no-push MP operation appeared previously \cite{nopush}.
+The second machine QH5 is a new composition of existing component ideas,
+with a separately verified global formula-arithmetic change \cite{qh6,radix}.
+Neither claim rests on structural graph novelty alone.
+
+The repository's main README distinguishes ordinary manuscript arguments
+from its unfinished machine-specific iPRA endpoints \cite{paindex}.
+This report retains that distinction. It uses full PA for syntactic proof
+translation and finite comprehension; it does not silently strengthen a
+standard finite-run theorem to a theorem in every weak-arithmetic model.
+The supplied programs are executable certificate checkers, not proof
+assistant kernels. The inherited calibration arguments and their precise
+dependencies are included for inspection.
+
+\subsection{Pinned inputs}
+
+All source comparisons refer to ProveIt commit
+\begin{quote}\small\nolinkurl{2337ce611a26e308697ccbddb2a1636f989f01c3}.\end{quote}
+The requested PA research directory, all five current incoming ZIPs, and
+the suggested ZFC and ConciseIPRA material were inspected at this snapshot.
+The new tables are not counted as existing tables in the census.
+Exact hashes, source paths and the recognition scope accompany the
+machine-readable inventories. No change has been pushed to the repository.
+
+\input{comparison.tex}
+\input{ax11_preservation.tex}
+
+\section{Observed verification and reproducibility}
+\label{sec:verification}
+
+\input{verification_summary.tex}
+
+The checks have different roles. Table completeness and dense/native
+conjugacy identify the literal object. Source relocation checks bind
+changed instructions to the advertised command semantics. Generic
+unary-register lemmas and universal symbolic source contracts justify
+arbitrary inputs. The exact startup comparison fixes the blank initial
+configuration. The written syntactic calibration and all-store compiler
+then supply the PA equivalence. A long finite blank run would establish
+none of the latter claims by itself.
+
+From the extracted archive root, run
+\begin{verbatim}
+python3 -B verify_all.py --receipt fresh-verification.json
+\end{verbatim}
+The default run reconstructs both machines, checks their exact bytes,
+replays the command and physical certificates, and checks novelty against
+the frozen representatives. Python's standard library suffices for those
+checks. Assertions must be enabled. Optional research searches use C++17;
+they are not required to reconstruct the delivered machines.
+
+The comparison can be regenerated from the pinned checkout using
+\begin{verbatim}
+python3 comparison/scanner/audit_current.py \
+  --repo /path/to/ProveIt --output /tmp/pa-census
+\end{verbatim}
+The report is built by two ordinary \texttt{pdflatex} passes in
+\file{report/}. The complete LaTeX input tree is included. The release
+receipt and file-hash manifest identify the exact delivered outputs.
+
+\input{new_research.tex}
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the eleven-entry AX protocol be implemented with 193 controls
+after changing the reader association, sharing the final push decoder,
+or using its known-zero exit fields? The new protocol enlarges the
+optimization space without weakening the logical calculus.
+\item Can the extra AX field be removed by a source-level proof that
+reuses the MP tail while restoring its continuation register? A valid
+construction must account for the fourth field explicitly; calling it
+MP$_0$ on arbitrary candidates is false.
+\item Can the 193-state runtime core be given a calibrated blank startup
+using coordinated edits that are not individually neutral? The present
+bounded two- and three-edit screens do not rule this out.
+\item Can the protected proof-store invariant permit a physical reduction
+that fails on arbitrary, unreachable register vectors? Such a reduction
+needs a proved inductive source invariant and a matching restricted
+runtime theorem, including initialization.
+\item Can the existing ordinary PA proof suppliers be internalized in
+the repository's iPRA framework? The difficult interfaces include
+arbitrary-formula comprehension, all-model compiler calibration and
+the physical source-frame correspondence.
+\item Can a new non-overlapping numerical syntax make formula construction
+cheaper than the present coefficient-four/five/six family? The rejected
+coefficient-three examples show why constructor collisions must be
+analyzed at the logical level before trusting a smaller physical table.
+\end{enumerate}
+
+\appendix
+\input{qh5_preservation.tex}
+
+\clearpage
+\section{Complete transition table: PA194AX11}
+\label{app:tableax}
+The notation $wDn$ means write $w$, move in direction $D$, and enter state
+$n$. The start is 0 and the separate terminal label is 194.
+\input{transition_ax11.tex}
+
+\clearpage
+\section{Complete transition table: PA194QH5}
+\label{app:tableqh}
+The same conventions apply. Both tables have 194 working states and 388
+transitions; their hashes and exact native presentations are in the archive.
+\input{transition_qh5.tex}
+
+\clearpage
+\section{All 66 deliveries}
+\label{app:packets}
+This ledger records the contribution stated by every filed packet and
+current incoming archive. Historical claims are attributed to their
+packets; they have not all been independently reproved here. Full source
+paths, hashes and occurrence metadata are in
+\file{comparison/packet_ledger.json} and \file{comparison/census/census.json}.
+\input{packet_ledger.tex}
+
+\clearpage
+\section{All 76 prior 194-state graph classes}
+\label{app:frontier}
+The category labels describe the evidence in the supplied packets:
+P = reported principal construction; S = supplementary construction;
+V = research rotation with recorded full source contracts and startup;
+A = other research auxiliary; R = explicitly rejected. A graph class
+is not a consistency theorem. The twelve-digit graph identifiers below
+are abbreviations; complete fingerprints and representative files are
+in \file{comparison/frontier194.json}.
+\input{frontier194.tex}
+
+\begin{thebibliography}{99}
+\bibitem{paindex} ProveIt, \emph{PA consistency machines}, pinned README.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/2337ce611a26e308697ccbddb2a1636f989f01c3/Computability/BusyBeaver/Research/PA/README.md}.
+\bibitem{catalogue} ProveIt, \emph{Machines in the delivered packets} and packet ledger.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2337ce611a26e308697ccbddb2a1636f989f01c3/Computability/BusyBeaver/Research/PA/docs}.
+\bibitem{baseline} \emph{A 194-state Turing machine calibrated to Con(PA)}, supplied packet
+\file{pa194_conpa_2026-11-13}; especially \file{report/calibration.tex},
+the separate-head calibration and independent physical checker.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2337ce611a26e308697ccbddb2a1636f989f01c3/Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13}.
+\bibitem{pa195} \emph{PA195}, supplied packet \file{pa195_conpa_2026-11-13};
+original syntactic PA calibration, retained in the reference files.
+\bibitem{nopush} \emph{PA194N}, supplied packet \file{pa194N_conpa_2026-11-13};
+visible no-push MP and reserved-zero proof compilation.
+\bibitem{qh6} \emph{PA194QH6}, supplied packet \file{pa194qh6_conpa_2026-11-13};
+Q emitter, H controller and coefficient-six source/physical binding.
+\bibitem{radix} \emph{New 194-state machines calibrated to Con(PA): a radix family},
+supplied packet \file{pa194_radix_family_2026-11-13}; generic constructor and
+radix-calibration arguments.
+\bibitem{incoming} ProveIt, five incoming archives at the pinned snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2337ce611a26e308697ccbddb2a1636f989f01c3/docs/incoming}.
+\bibitem{runtime193} \emph{PA sub-194 research}, supplied incoming archive
+\file{pa_sub194_research_2026-11-13.zip}; runtime193, startup obstructions,
+corrected source contexts and neutral-row inputs.
+\bibitem{zfc} ProveIt, \emph{ZFC consistency-machine research}, pinned source tree.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2337ce611a26e308697ccbddb2a1636f989f01c3/Computability/BusyBeaver/Research/ZFC}.
+\bibitem{ipra} ProveIt, \emph{ConciseIPRA}, pinned source tree.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/2337ce611a26e308697ccbddb2a1636f989f01c3/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,55 @@
+\subsection{A gap in boundary-only local contexts}
+
+The source runtime represents some tape segments as constant-symbol runs
+whose lengths depend affinely on an arbitrary natural parameter.  Its symbolic
+stepper can execute a complete same-state scan over such a run in one symbolic
+step.  An observer invoked only before symbolic steps sees the scan's entry
+and exit, but need not see the intermediate physical head positions.
+
+This distinction matters for local transition synthesis.  For example, a long
+zero run presents only zeros ahead of its entry, whereas its last zero presents
+the following one at distance one.  A proposed replacement of a scanner row
+may agree at the observed entry window and disagree near that final zero.
+Observing normalization points does not supply the omitted physical positions.
+
+The inherited boundary-only collector admitted nine apparent replacements of
+native row $35/0=1R35$.  Those candidates redirected the row to controls
+\[
+  17,\ 21,\ 41,\ 45,\ 61,\ 82,\ 144,\ 161,\ 190.
+\]
+None passed the generic symbolic source checker.  They are rejected heuristic
+candidates, not proved neutral transformations.
+
+\paragraph{Correction.}
+For every accelerated constant-symbol self-loop, the revised collector adds
+the local windows at all distinguishable positions of its scan.  For radius
+$K$, run lengths above $2K+1$ need only retain positions near each end and a
+middle position: the remaining length is invisible to the window.  The bits
+already traversed have the row's written symbol; the untraversed bits retain
+the run's original symbol.  Possible prefixes outside the run are combined
+conservatively, discarding correlations rather than assuming them.
+
+On the runtime-valid 193-state core, the corrected collector processes
+6,245 scan observations.  At radius four the envelope grows from 8,331 to
+8,357 contexts, and at radius six from 29,299 to 29,421.  The nine apparent
+row-35 rewrites disappear.  Both corrected radii yield the same 346 candidates:
+327 outside the arithmetic boxes and 19 speculative box-row candidates.
+The latter retain a separate arithmetic correctness obligation.
+
+\paragraph{Effect on the reported searches.}
+The original 336 outside-box candidates, together with the unchanged core,
+were screened from every one of the 193 existing blank initial controls.
+The strongest screen accepted any complete physical source frame at source
+sites 25 through 44, with arbitrary values of all nine registers, arbitrary
+translation, padding $48+n$, and any finite nonempty spare tail.  It found
+no such frame in 65,041 simulations and 101,840,170 literal transitions.
+There were 674 halts, 62,799 certified outward blank rays, and 1,568 bounded
+runs.  The bounds were 200,000 transitions, head displacement 20,000, and
+support size 20,000 per run.  A bounded run is not a permanent-failure theorem.
+
+These remain accurate records of the candidates actually simulated.  They
+must not be promoted into proofs that the first-stage candidates were all
+neutral, or into an impossibility theorem for 193-state constructions.  The
+corrected 327-candidate non-box pool is a subset of the screened pool, and
+radius six adds no new candidate.  The proposed two-edit search through
+row 35 was rejected before second-stage synthesis.

@@ -1,0 +1,157 @@
+% Input fragment; requires amsmath, amssymb, hyperref, and xurl.
+% Exact inspected source paths and hashes are in transfer_sources.json.
+\providecommand{\TransferSource}[2]{\href{https://github.com/VladimirReshetnikov/ProveIt/blob/4be5c6e3a10292a7466f5d3687e3b39615ff049b/#1}{#2}}
+
+\section{What the suggested ZFC and ConciseIPRA developments contribute}
+\label{sec:transferred-ideas}
+
+The two suggested directories provide useful implementation and proof
+techniques.  The consistency calibration remains a separate obligation.
+The discussion here uses the same pinned repository commit as the comparison,
+\texttt{4be5c6e3a10292a7466f5d3687e3b39615ff049b}.
+It is based on the exact sources named below; no fresh Lean or Rocq build of
+those developments was performed in this study.
+
+\subsection{ZFC: contextual folds, return paths, and protected storage}
+
+\paragraph{The historical $301\mathbin{\to}88$ experiment already contains
+the startup warning.}
+The ZFC continuation study deletes native state 301 and changes exactly
+\[
+  87/0=0R88,\qquad 88/0=0L51,\qquad 51/0=0R122.
+\]
+This is the antecedent of the PA \texttt{Runtime193} experiment.  The
+\TransferSource{Computability/BusyBeaver/Research/ZFC/k218-continuation-search/all-starts/README.md}{ZFC all-starts record}
+proves that all 217 existing choices of initial state for its exact shortened
+table, on a blank tape, eventually enter an infinite zero ray.  Its certificate
+condition is simple and unbounded: the scanned cell is zero, the zero transition
+returns to the same state, and it moves into a half-line containing no ones.
+The written cell stays behind the head, so induction preserves the condition.
+Consequently a valid reduction on initialized unary-register frames does not
+by itself supply a complete blank-start machine.  In particular, the known
+PA runtime fold cannot be counted as a 193-state consistency construction
+until its startup is repaired and the revised table is calibrated.
+
+The follow-up
+\TransferSource{Computability/BusyBeaver/Research/ZFC/k218-continuation-search/marker-relay/README.md}{marker-relay record}
+is also instructive.  A temporary marker and six redirected return paths repair
+some local behavior, but a literal counterexample at a later \texttt{CC2}
+occurrence refutes the unchanged source-interface contract.  This is why a
+new startup edit must be checked against every source occurrence, including
+short backward returns, rather than only against its initial tape trace.
+
+\paragraph{History can replace control state, with an exact whole-tape proof.}
+The
+\TransferSource{Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/conditional-marker/README.md}{conditional-marker construction}
+shares old roles 52 and 176 when their zero branch can recover the origin
+from a neighboring bit; the exceptional incoming path is proved to read one.
+Its matching blocks take one or three steps and preserve the entire tape and
+head.  The
+\TransferSource{Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/context-returns/README.md}{history-return construction}
+similarly uses one- and two-transition histories to justify five row changes.
+The completed engine census frees two individual protected rows without
+deleting their states.  These are concrete design principles for a future PA
+fold: prove the contextual marker fact, reuse the resulting row or role, and
+replay the complete changed decoder.  Their state savings cannot simply be
+added to a PA table whose existing folds may already use the same roles.
+
+\paragraph{A logical zero and a physical spare have different jobs.}
+The
+\TransferSource{Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/zero-spare-transfer/README.md}{zero-spare transfer construction}
+combines an append-zero physical allocation policy with a source-level
+protected-tail argument.  Its initial safe theorem heads permanently hide an
+unsafe suffix under the scheduler's proved stack-debt bound.  The same packet
+contains the complete no-successful-MP-zero-push compiler; it explicitly
+reserves a logical zero below the premises when cleanup needs one.  The present
+AX11Q6 proof uses this latter principle in its all-store MP block.  A stored
+logical zero is not a physical spare-register block, and neither can be
+discarded merely because its numeral is zero.  In particular, Cantor's
+$p(0,0)=0$ alias requires proofs with explicit wrapper lists over an arbitrary
+fixed suffix, rather than an assumed injective stack length.
+
+These contributions concern simulation and proof enumeration.  The inherited
+ZFC numerical calculus is calibrated to $\operatorname{Con}(\mathrm{ZFC})$;
+substituting its proof search would change the target predicate.  The new
+194-state construction therefore retains the PA-calibrated numerical calculus
+while changing its operational interface and coefficient.
+
+\subsection{ConciseIPRA: prove a smaller interface before pricing its machine}
+
+The
+\TransferSource{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean}{native bi-interpretation source}
+contains the explicit theorems \texttt{native\_iff\_pra},
+\texttt{pra\_iff\_native}, both round-trip results, and
+\texttt{native\_inconsistent\_iff}.  Their target is full first-order
+intuitionistic primitive recursive arithmetic.  They do not identify that
+calculus's refutations with PA refutations.  A smaller checker for that
+calculus would thus require an additional PA calibration before it could
+answer this problem.
+
+The useful transferable method is explicit elimination of operational
+structure.  In
+\TransferSource{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeOneBody.lean}{\texttt{NativeOneBody.lean}},
+a context entry stores one formula body instead of an antecedent/body pair.
+An ordinary assumption is represented by a gate body.  Soundness and
+completeness are proved through \texttt{OBPrf.toNPrf} and
+\texttt{CPrf.toOB}, with a binder-depth induction supplying access to the
+stored assumption.  The result is not justified by counting constructors
+alone: the gate, substitutions, fresh variables, and access proof are all
+part of the translation.
+
+The
+\TransferSource{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Artifacts/source_dispatch/README.txt}{source-dispatch proposal}
+offers a related example.  It proves literal-zero-source equality transport
+admissible, permitting syntax to choose between two elimination majors.  The
+restriction is syntactic: a nonliteral term denoting zero remains permitted.
+Its README carefully distinguishes a written universal proof from executable
+instances and from a mechanized theorem.  This suggests seeking a cheaper
+PA command interface through derivable rules and source-controlled dispatch,
+but Python tokens, AST nodes, and bytes are not binary TM states.  The complete
+cost must include input enumeration, freshness or substitution machinery,
+normalization if used, decoding, and blank initialization.
+
+\subsection{Available interfaces for a future weaker-base formalization}
+
+The PA tree already provides a precise integration target.  In
+\TransferSource{Computability/BusyBeaver/Research/PA/isigma1-machine/ConPAMachineEndpoint.lean}{\texttt{ConPAMachineEndpoint.lean}},
+\texttt{Calibrated T h} requires, in every model $V$ of $I\Sigma_1$,
+\[
+ V\models\operatorname{Prov}_{\mathrm{PA}}(\bot)
+ \quad\Longleftrightarrow\quad
+ \exists t\in V\; \operatorname{state}(\operatorname{run}_T(t))=h.
+\]
+Both proof codes and clock times may be nonstandard.
+\TransferSource{Computability/BusyBeaver/Research/PA/isigma1-machine/ConPAUnconditional.lean}{\texttt{ConPAUnconditional.lean}}
+discharges the inherited PA witness-certificate hypothesis and derives the
+iPRA consistency/nonhalting equivalence from this machine-specific calibration.
+The hypothesis \texttt{Calibrated T h} remains; the theorem does not verify a
+particular table.  The
+\TransferSource{Computability/BusyBeaver/Research/PA/isigma1-transfer/README.md}{transfer documentation}
+and
+\TransferSource{Computability/BusyBeaver/Research/PA/isigma1-machine/README.md}{machine documentation}
+make this boundary explicit.  These interfaces are useful future targets;
+they are not invoked here as a new kernel-checked endpoint for AX11Q6.
+
+\subsection{Three concrete questions left by the 193-state barrier}
+
+\begin{enumerate}
+\item Can the $301\to88$ initialized-frame reduction be paired with a
+      different blank bootstrap whose physical rows retain all-natural
+      runtime contracts?  The search target should be a complete tape seed
+      admitted by the all-store compiler, including a proved protected-tail
+      alternative if needed.  A clean-looking finite frame alone is
+      insufficient.
+\item Can an equality-free or intrinsically typed numerical calculus give
+      a three-tag emitter while preserving PA refutations?  It must avoid
+      the concrete alias $E_3(1,0)=I_3(0,1)=6$ and provide a new complete
+      translation.  External type annotations cannot repair the unchanged
+      numerical machine, which does not check them.
+\item Can a derivable-rule or gate-body translation remove one complete
+      decoder role, rather than only shorten source text?  Such a proposal
+      should be compiled and priced together with its guards, fresh-variable
+      handling, and initialization, then attached to the explicit
+      \texttt{Calibrated} interface if a weaker-base formal endpoint is sought.
+\end{enumerate}
+
+These are scoped research questions, not assertions that any listed change
+saves a state or that 194 states is minimal.

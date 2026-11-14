@@ -1,0 +1,185 @@
+% Report fragment. Requires amsmath, amsthm and theorem/lemma environments.
+\section{A sparse scheduler that retains every finite proof word}
+\label{sec:sparse-scheduler}
+
+The source-level change is to visit every other fresh command code.
+It preserves the numerical calculus, the AX, MP and Shift operations,
+their stack representation, and their proofs of soundness. It changes the
+infinite enumeration, rather than only its finite starting segment.
+We first prove the arithmetic completeness of this change independently
+of any proposed physical implementation.
+
+Write
+\[
+ P(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+For a command $C$ and a continuation code $t$, the supplied command encoder is
+\[
+ \begin{array}{ll}
+ e_{\mathsf S}(t)=P(0,t),&
+ e_{\mathsf{MP}(u)}(t)=P(1,P(u,t)),\\[2pt]
+ e_{\mathsf{AX}(c,x,y)}(t)=P(c+2,P(y,P(x,t))).
+ \end{array}
+\]
+For a command word $W$, put $E([],t)=t$ and
+$E(C::V,t)=e_C(E(V,t))+1$. If $W$ is nonempty, its fresh candidate code is
+$F_W(t)=E(W,t)-1$. The literal decoder reads a fresh candidate without
+subtracting one; it subtracts one from each positive continuation before
+decoding that continuation. Consequently, for $t>0$, the word decoded from
+$F_W(t)$ begins with exactly $W$, followed by the word decoded from the
+residual pointer $t$. This is the supplied fresh/positive-pointer convention,
+including the exceptional behavior of pointer zero.
+
+Define the pairing depth
+\[
+ d(W)=\#\mathsf S(W)+2\#\mathsf{MP}(W)+3\#\mathsf{AX}(W).
+\]
+This counts pairings along the unique chain from the terminal pointer to
+the fresh candidate; additions of one do not contribute to this count.
+
+\begin{lemma}[Parity padding]\label{lem:parity-padding}
+For every nonempty $W$ and every $t\geq0$, the difference
+\[
+             F_W(t+2^{d(W)})-F_W(t)
+\]
+is odd.
+\end{lemma}
+\begin{proof}
+For $h=2^ku$, where $k\geq1$ and $u$ is odd, direct expansion gives
+\[
+ P(a,x+h)-P(a,x)
+   =2^{k-1}u\bigl(2a+2x+h+3\bigr).
+\]
+The factor in parentheses is odd. Thus one pairing decreases the exact
+power of two dividing the difference by one. Adding the same integer to
+the two arguments leaves their difference unchanged. Starting from a
+terminal-pointer difference $2^{d(W)}$ and proceeding through the
+$d(W)$ pairings leaves an odd difference. All functions in the chain
+are increasing, and $E(W,t)>0$ for nonempty $W$, so the final common
+subtraction of one introduces no truncated-subtraction issue.
+\end{proof}
+
+\begin{theorem}[Completeness of a parity progression]
+\label{thm:sparse-prefix}
+For every $N_0\geq0$ and every nonempty finite command word $W$, there
+is a $k\geq0$ such that the fresh word at candidate $N_0+2k$ has $W$
+as a prefix. The candidate can be chosen primitive recursively in
+$N_0$ and $W$, and PA proves the statement and the correctness of this
+choice.
+\end{theorem}
+\begin{proof}
+Take $t=N_0+1$. By Lemma~\ref{lem:parity-padding}, the two integers
+$F_W(t)$ and $F_W(t+2^{d(W)})$ have opposite parity. Select the one
+congruent to $N_0$ modulo two. Pairing satisfies $P(a,b)\geq b$,
+so both candidates are at least $t>N_0$. The selected candidate is
+therefore $N_0+2k$ for a natural $k$. Both choices have the required
+word prefix by the encoding identity. Code formation, exponentiation,
+parity testing, and the selected division by two are primitive recursive.
+The proof uses arithmetic identities and induction over a finite word,
+all available in PA.
+\end{proof}
+
+\subsection{The exact register-program edit}
+
+The nine registers are ordered $(N,T,W,A,D,H,X,Y,L)$. In the primary
+PA194 source, the relevant shared trees are
+\[
+\begin{aligned}
+ \mathsf{node27}&=(\mathsf{node25},\mathsf{node26}),\\
+ \mathsf{node25}&=(\operatorname{dec}N,
+        (\operatorname{inc}L,(\operatorname{inc}X,\operatorname{continue}3))),\\
+ \mathsf{node26}&=(\operatorname{inc}N,
+        (\operatorname{dec}X,\operatorname{continue}2)).
+\end{aligned}
+\]
+The first loop drains $N$ into $L$ and $X$. The second loop restores
+$X$ into $N$ and performs one additional increment. To advance the fresh
+counter by two, replace only the first line by
+\[
+ \mathsf{node27}'=(\mathsf{node25},
+          (\operatorname{inc}N,\mathsf{node26})).
+\]
+The additional increment is outside the restoring loop. Duplicating
+its increment inside that loop would instead change $N$ to $2(N+1)$
+and would require a different completeness argument.
+
+At the resolved instruction level, insert an increment of register zero
+at ordinal 31. Identify each old ordinal $i$ with $i$ for $i<31$ and
+with $i+1$ otherwise. All old instructions and successors are preserved
+under this identification except the zero branch of the decrement at
+ordinal 27: that branch enters the new ordinal 31, which then enters
+ordinal 32, the relocated old increment. The resulting source has
+3,674 primitive instructions and 4,781 branch-sensitive contracts.
+Its maximum source-path length is 36.
+
+Induction on the drained register and then on the restored register gives
+an exact fresh-fetch contract
+\[
+ (N,L,X)=(n,0,0)\quad\longmapsto\quad(n+2,n,0)
+\]
+in $7n+5$ source steps, from ordinal 25 to the relocated unpairing
+entry at ordinal 35. All other registers are unchanged. For $L=l+1>0$,
+the unchanged positive-pointer branch takes two source steps and yields
+$(N,L,X)=(n,l,0)$. In particular, the added increment is executed exactly
+once per fresh candidate, and never once per continued command.
+
+\paragraph{Joining an intermediate physical-startup endpoint.}
+The verified source trace supplied with this study starts at ordinal 40
+with logical vector $(4,0,0,0,0,0,0,0,1)$. It reaches ordinal 25 with
+that same vector after 29 source instructions. The positive continuation
+$L=1$ then decodes command code zero, which is Shift. From the zero proof
+store this Shift is harmless; after 19 further source instructions the
+machine returns to ordinal 25 with vector $(4,0,0,0,0,0,0,0,0)$.
+The delivered trace lists all 49 configurations of this 48-instruction
+prefix and contains no halt. Thus a literal blank-start certificate ending
+at the former frame joins to the required clean seed with $N_0=4$.
+The change of physical register locations, when used by the physical
+construction, has no effect on this source calculation.
+
+\subsection{PA consistency calibration of the changed source}
+
+Let $R_2$ denote this modified source, with a clean proof store, scratch
+registers zero and arbitrary initial fresh counter $N_0$. As in the
+supplied calibration, every visible theorem code and every canonical
+stack entry is annotated by a PA proof of its arithmetical translation.
+The scheduler change acts only on the fresh-code counter. It does not
+change a command, its logical output, its halt test, or any proof-store
+update. The same syntax-level annotation therefore transforms every
+finite halting run of $R_2$ into a PA refutation.
+
+For the other direction, apply the supplied primitive-recursive
+refutation compiler to a PA refutation. It supplies a nonempty command
+word $W$ that halts from \emph{every} incoming command store. This
+arbitrary-store property matters: the scheduler retains its proof store
+between candidates. The initial AX command of the compiler clears the
+caches; the subsequent proof-producing word works over an arbitrary
+saved stack. For the separate-head calculus the ten-entry stack offsets
+must remain those of that calculus; the scheduler change does not alter
+them.
+
+Theorem~\ref{thm:sparse-prefix} provides a candidate $N_0+2k$ whose decoded
+word begins with $W$. Each preceding candidate either halts, already
+satisfying the conclusion, or completes after finitely many commands.
+A positive continuation strictly decreases, since it is decoded from
+$L-1$ and the next component is at most $L-1$. Therefore every finite
+candidate completes unless it halts. Induction through the first $k$
+candidates reaches the selected one unless an earlier halt occurs.
+The selected candidate halts during its prefix $W$, regardless of the
+store left by the preceding candidates. Halting is absorbing, so the
+arbitrary residual suffix is immaterial.
+
+All these operations are primitive-recursive transformations of finite
+codes. Their loop bounds and trace concatenations are proved by ordinary
+arithmetic induction; there is no appeal to standard-model soundness or
+to a reflection principle for PA. Thus, writing $H_{R_2}$ for finite
+halting from the specified clean seed,
+\[
+       \mathrm{PA}\vdash
+       H_{R_2}\;\longleftrightarrow\;
+       \exists p\,\operatorname{Prf}_{\mathrm{PA}}
+                    (p,\ulcorner0=1\urcorner).
+\]
+Any literal binary machine whose exact blank startup reaches this seed,
+and whose positive finite simulations implement all modified source
+instructions, inherits the desired PA-provable nonhalting biconditional.
+The source theorem itself does not assert a physical state count.

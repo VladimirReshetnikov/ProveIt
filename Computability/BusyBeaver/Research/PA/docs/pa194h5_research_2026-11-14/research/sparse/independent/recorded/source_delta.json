@@ -1,0 +1,40 @@
+{
+  "status": "PASS",
+  "baseline_sites": 3673,
+  "child_sites": 3674,
+  "all_3673_old_sites_preserved": true,
+  "relocation": "i when i<31; i+1 otherwise",
+  "inserted_site": 31,
+  "inserted_instruction": [
+    "inc",
+    0,
+    32
+  ],
+  "sole_redirected_old_edge": {
+    "source": 27,
+    "branch": "decrement zero",
+    "old_target": 31,
+    "relocated_target": 32,
+    "actual_target": 31
+  },
+  "all_other_successor_edges_exactly_relocated": true,
+  "only_incoming_edge_to_added_increment": [
+    [
+      27,
+      0
+    ]
+  ],
+  "restoration_back_edge": [
+    "jump",
+    32
+  ],
+  "restoration_loop_skips_added_increment": true,
+  "both_graphs_resolved_arithmetically_and_by_intervals": true,
+  "input_sha256": {
+    "primary.sites.json": "ffe8ee6395f33ec552a3df23b910aaa16a41060bdd6d55c6189df98d66f30b19",
+    "primary.instructions.json": "6c3127cd0da15fda49ed99cea199a009b9bc1e1707100846df9a2df02a22d507",
+    "source.sites.json": "e000783a7cc5d3616b2090c922eb3d9d14e90deb84c043f737b3eac636839639",
+    "source.instructions.json": "576eb2051792326331e2c3b61307c3829eeb7134e270675c51b7f27834f32a1d"
+  },
+  "scope": "Exact finite CFG relation. Together with the inherited fresh-candidate loop meaning, the extra increment occurs once on entry and is skipped by the restoration loop."
+}

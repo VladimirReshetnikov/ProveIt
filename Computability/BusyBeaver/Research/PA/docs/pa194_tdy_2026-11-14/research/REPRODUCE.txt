@@ -1,0 +1,41 @@
+Research reproduction and scope
+===============================
+
+From the package root:
+
+  node verification/verify_tdy.cjs
+  node research/runtime193_permutations.cjs
+
+The first command reconstructs the four-row PA194TDY transformation,
+checks the unchanged complete source instruction map, checks all 4,780
+symbolic source outcomes, verifies the exact complete blank startup,
+checks the two table hashes, and writes the native/dense tables and receipt.
+Its symbolic arithmetic operations inherit the unchanged M6 arithmetic-box
+contracts. It is not a new proof-assistant endpoint.
+
+The second command proves the uniform finite-prefix certificate for all
+9! physical layouts of the specified 193-state runtime fold at native
+blank start 74. It also explicitly checks the 8! layouts fixing slot 6.
+All 40,320 enumerated runs enter the certified outward-ray configuration;
+there are no timeout or unclassified cases. State 51 is reached at time
+79 + pi(7), and the perpetual state-35 writing loop begins at time
+85 + pi(7). The included LaTeX fragment gives the mathematical argument.
+
+Optional bounded contraction search (C++17):
+
+  g++ -O3 -std=c++17 research/action_merge_all.cpp -o /tmp/action_merge_tdy
+  /tmp/action_merge_tdy artifacts/pa194_tdy.native.tm 4 80
+  /tmp/action_merge_tdy artifacts/pa194_tdy.native.tm 6 150
+  /tmp/action_merge_tdy artifacts/pa194_tdy.native.tm 8 200
+
+The observed stdout files contain zero candidate pair contractions at all
+three bounds. The source adapts the supplied primary PA194 packet's
+search/action_merge.cpp, allowing arithmetic-box states as potential
+contracted states while continuing to exclude the start state. It uses
+all-tape finite-window overapproximations and bounded exact detours.
+These are negative results for this sufficient finite contraction rule;
+they do not establish minimality or a general lower bound.
+
+The runtime193_rejected.native.tm file is deliberately a rejected
+blank-start candidate. Its presence must not be interpreted as a new
+193-state PA-consistency construction.

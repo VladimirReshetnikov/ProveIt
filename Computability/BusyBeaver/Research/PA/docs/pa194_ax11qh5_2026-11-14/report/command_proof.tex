@@ -1,0 +1,321 @@
+% Self-contained report fragment. Uses amsmath/amssymb/amsthm/booktabs.
+% No title, preamble, or external file dependencies.
+\section{The eleven-entry cache-tested command protocol}
+\label{sec:ax11qh5-proof}
+
+This section proves the mathematical command interface obtained by combining
+the eleven-entry AX splice with the coefficient-five, premise-exchanged
+calculus and the cache-only Shift test. The composition needs its own proof:
+the earlier eleven-entry machine tested $t+h=1$, whereas this controller tests
+$h=1$. In particular, the final test of a compiled refutation must change.
+
+The logical dependency is the inherited ordinary mathematical calibration of
+the coefficient-five, premise-exchanged numerical calculus to PA. The result
+below supplies explicit command identities, an all-store proof compiler,
+four-field scheduling, and soundness of the changed protocol. An end-to-end
+Lean or Rocq theorem is not asserted.
+
+\subsection{Constructors and the exact AX effect}
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad I(a,b)=5p(a,b),
+\]
+and put $M(a,b)=I(a,b)+1$, $U(i,B)=I(B,i)+2$, and
+$E(a,b)=I(a,b)+3$. Write $A\to B$ for $I(A,B)$,
+$N(A)=I(A,1)$, $A\wedge B=N(I(A,N(B)))$, and
+$\exists_i B=N(U(i,N(B)))$. Zero is the designated truth code and one the
+designated contradiction. The numerical alias $I(0,0)=0$ is retained.
+
+The ordinary heads are
+\begin{align*}
+ h_1(D,H)&=(\exists_D U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6^{Q}(D,A,H)&=U(D,A\to H)\to(U(D,A)\to U(D,H)).
+\end{align*}
+The other heads are
+\[
+ \rho(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \quad u\le D,
+ \qquad \Gamma(B)=B\to U(B,B).
+\]
+Define
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ L(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))
+                         \wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,L(a,b,c)\to N(P(a,b,c))),\\
+ G(a,b,c)&=N(V(a,b,c)\to Q(a,b,c)).
+\end{align*}
+The gate $G(a,b,c)$ is supplied only if $c\ne a,b$; otherwise its emitted
+value is zero. The rules are modus ponens and generalization of theorems,
+$B\mapsto U(i,B)$. Call this calculus $\mathcal D_5$.
+
+A command store is $(t,w,d,h)$, consisting of the visible top, a Cantor
+stack, an offset, and the cached formula. We write $[a;w]=p(a,w)$ and
+use total projections $\operatorname{hd}0=\operatorname{tl}0=0$.
+In particular, $[0;0]=0$; the notation is not a free-list encoding.
+
+For $D=d+x$, $H=h+y$, and $A=c$, define
+\[
+\begin{array}{c|l}
+ j&q_j\\\hline
+ 0&G(H,D,A)\text{ if its guard succeeds; zero otherwise}\\
+ 1&\Gamma(A)\\
+ 2&h_6^Q(D,A,H)\\
+ 3&h_5(D,H)\\
+ 4&h_4(D,A,H)\\
+ 5&h_3(D,A,H)\\
+ 6&h_2(D,A,H)\\
+ 7&h_1(D,H)\\
+ 8&\rho(D,A,H,d)\\
+ 9&U(d,h).
+\end{array}
+\]
+All $q_0,\ldots,q_8$ have residue zero modulo five. The final generated
+entry $q_9$ has residue two and is at least two. None of these entries is
+one. Their parameters need not denote valid tagged formulas.
+
+The spliced command has four fields:
+\begin{equation}
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =(0,[q_0,q_1,\ldots,q_9,t;w],z,0).
+ \label{eq:ax11qh5-A}
+\end{equation}
+The extra push saves the guarded gate and clears the visible top. The
+following full MP reader consumes $z$ from the continuation. Its input has
+$t=d=h=0$, so its comparison is $I(0,z)=0$. For $z=0$ it succeeds with
+conclusion zero; for $z>0$ it fails. Both branches have the effect shown
+in~\eqref{eq:ax11qh5-A}. Thus soundness requires all four fields, although
+the proof compiler chooses $z=0$.
+
+\subsection{Exact source splice}
+
+For the initial constructed association, the new source has 3,732 primitive
+sites, compared with 3,714 for QH5. Old AX-return site 3613, the instruction
+$\operatorname{jump}(3702)$, is replaced by a nineteen-site push at sites
+3613 through 3631. Its exit 3632 is precisely the relocated full MP reader,
+formerly site 3614. The inserted block agrees instruction by instruction
+with the already used push at old sites 50 through 68, under an affine
+relocation including its exit. All 3,713 instructions outside the replaced
+site, with every successor target, agree under
+\[
+ r(i)=\begin{cases}i,&i\le3613,\\i+18,&i>3613.\end{cases}
+\]
+No external edge enters a new push interior. All fixed source nodes agree
+with QH5, including its no-push MP and cache-only Shift nodes. These finite
+graph facts are independently checked in
+\texttt{check\_ax11qh5\_splice.py}. Reassociation of the AX grammar may
+change source addresses; preservation of the complete ordinal instruction
+graph is the appropriate separate check for such a change.
+
+\subsection{All-store stack identities}
+
+The remaining commands are, with $b=d+x$,
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+ \end{cases}
+\]
+and
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(b,w,b,0),&I(t,b)=h,\\
+ (0,w,b,0),&I(t,b)\ne h.
+ \end{cases}
+\]
+Words below execute from left to right. Put $A_0=\mathsf A_{0,0,0,0}$.
+Repeatedly applying the displayed Shift equation, without halting, gives
+\begin{align*}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)
+     &=(q_8,[t;w],0,U(d,h)),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)
+     &=(U(d,h),w,0,t).
+\end{align*}
+Every tested cache is zero or one of the non-one generated entries.
+An additional Shift now tests exactly the saved top $t$.
+
+Define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,
+ \quad \mathsf{Pop}=A_0;\mathsf S^{12},
+ \quad \mathsf{Discard}=\mathsf{MP}_0,
+ \quad \mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+Their full contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+   \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+Push is total even at $t=1$: its MP comparison has implication residue
+zero and universal residue two, so it fails. Discard is independent of
+its comparison result because both branches return zero when the target
+is zero. Offset uses $I(0,i)>0$ if $i>0$, and the zero alias if $i=0$.
+The Pop contract, including empty stacks and collapsed zero pushes, follows
+from total projections. It differs essentially from the sum-tested AX11
+Pop, which did not halt on a visible one.
+
+For $0\le j\le8$ the selector
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,0};
+       \mathsf S^{j+2};\mathsf{Pop}^{9-j}
+ \label{eq:ax11qh5-selector}
+\]
+sends $(t,w,0,0)$ to $(q_j,w,0,0)$ without halting. After the initial
+Shifts, the selected $q_j$ is visible; all Pops preserve it, and it is
+never one. The number $9-j$ removes the remaining generated entries and
+the saved zero, restoring the protected old tail. This covers the gate
+and diagonal as well as the six ordinary heads.
+
+For an actual restricted leaf with $u\le D$, use
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf A_{A,D-u,H,0};\mathsf S^{10};\mathsf{Pop}.
+\]
+The emitted restricted head has parameters $(D,A,H,u)$ and its valid
+numerical side condition. The fourth AX field clears the offset after
+emission. Generalization uses
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;\mathsf S;
+          \mathsf A_{i,0,0,0};\mathsf S^{11}.
+\]
+It sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$ for every $a,w,i$, including
+$a=1$. The intermediate Shift tests zero; AX consumes $a$ as a cache
+parameter before any subsequent Shift could test it.
+
+\subsection{Proof compilation and the final halt}
+
+From $(0,[a,I(a,b),0;w],0,0)$ the suffix
+\[
+                  \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}
+\]
+halts if $a=1$ or $b=1$, and otherwise returns $(b,w,0,0)$. The second
+Shift tests $a$; if it continues, MP succeeds, putting $b$ in the visible
+top; the Pop then tests $b$. The reserved zero below the premises is
+necessary because MP itself no longer pushes a dummy cell. The same
+equations cover $a=b=w=0$.
+
+Compile a $\mathcal D_5$ derivation $e$ recursively into $W_e$. Axioms use
+the selectors just proved; generalization appends $\mathsf{Gen}_i$. For an
+MP node with major proof $e_1$ of $I(a,b)$ and minor proof $e_0$ of $a$, use
+\[
+ \mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+ W_{e_0};\mathsf{Push};\mathsf S;\mathsf S;
+                   \mathsf{MP}_b;\mathsf{Pop}.
+\]
+Induction on the finite proof tree proves: for every $t,w$, the word
+$W_e$ from $(t,w,0,0)$ either halts or returns
+$(\operatorname{concl}(e),w,0,0)$. The initial Discard and Push reserve
+the zero required by the MP suffix, and both recursive calls preserve the
+entire protected old stack. Earlier halts satisfy the induction statement.
+
+If $e$ proves one, the word
+\[
+                         A_0;W_e;\mathsf{Pop}
+\]
+halts from every incoming store. The first command clears the two caches,
+so the induction statement applies to its resulting arbitrary stack. If
+no earlier halt occurs, the final Pop tests the derived visible one.
+A final plain Shift would be incorrect:
+\[
+               \mathsf S(1,0,0,0)=(0,0,0,0).
+\]
+The standalone checker \texttt{ax11qh5\_commands.py} replays 39 symbolic
+identities, including the one branches, zero-stack aliases, four-field
+inverse, generalization at contradiction, and the reserved-zero MP suffix.
+Its symbolic values are arbitrary; any required non-one branch assumption
+is explicit. It does not import the machine generator or physical simulator.
+
+\subsection{Enumeration and soundness}
+
+Define $e(\epsilon)=0$ and $e(c::w)=1+b_c(e(w))$, with
+\[
+\begin{aligned}
+ b_{\mathsf S}(v)&=p(0,v),\\
+ b_{\mathsf{MP}_x}(v)&=p(1,p(x,v)),\\
+ b_{\mathsf A_{c,x,y,z}}(v)&=p(c+2,p(y,p(x,p(z,v)))).
+\end{aligned}
+\]
+A fresh candidate decodes its number directly; a positive continuation
+$\ell$ first decodes $\ell-1$. Consequently $b_C(e(W))$ is the fresh-candidate
+code for $C$ followed by $W$, whereas $e(C::W)=1+b_C(e(W))$ is its
+continuation code.
+
+The fields are read in the physical order $y,x,z$, after the command tag
+$c+2$. Total Cantor projections prove each decoding identity, including
+all zero aliases. Using the old three-field AX encoding would consume the
+head of the next continuation as the fourth operand; the symbolic checker
+explicitly detects this error.
+
+Every positive continuation decreases after a decoded command: the next
+continuation is a component of the number beneath its initial successor.
+The source arithmetic loops terminate with primitive-recursive bounds.
+Consequently every nonhalting candidate finishes in finite time. The
+unchanged fresh-candidate scheduler starts at two and increases its counter.
+If $v=e(A_0;W_e;\mathsf{Pop})$, prefixing the halting suffix by
+$\mathsf A_{k,0,0,0}$ gives the increasing unbounded family of fresh codes
+\[
+                  p(k+2,p(0,p(0,p(0,v)))).
+\]
+Each such prefix returns an ordinary store; the suffix halts from every
+store. Finite candidate induction therefore proves that a refutation
+forces a scheduler halt, unless the machine has halted sooner.
+
+For the converse, annotate $t,h$ and every canonical Cantor-stack entry
+with a $\mathcal D_5$ derivation. Zero has the fixed proof
+$\rho(0,0,0,0)=0$; virtual entries past a zero tail use that proof.
+More explicitly, $\operatorname{tl}(w)<w$ for every $w>0$.
+Thus the canonical depth $\delta(w)$ is the least $j\le w$ such that
+$\operatorname{tl}^{j}(w)=0$, and only the entries at depths
+$0,\ldots,\delta(w)-1$ require stored annotations. If $[t;w]>0$,
+its head is $t$ and its tail is $w$, so its annotation is the proof of
+$t$ followed by the old canonical annotation. If $[t;w]=0$, then
+$t=w=0$; there is no extra live cell, and future projections use the
+fixed proof of zero. No proof or command identity counts a collapsed
+zero push as a live list entry.
+AX pushes only derived entries: its gate or zero, diagonal and ordinary
+axioms, a restricted head satisfying $d\le d+x$, a generalization of the
+old cache, and the saved old top. Its post-push MP leaves zero visible and
+cached for every $z$, while the offset has no derivability requirement.
+Successful MP combines two annotated premises; failure yields zero.
+Shift transfers annotated entries and halts only at an annotated cache
+equal to one. Thus every finite command halt yields a calculus refutation.
+
+All word constructions, proof-tree inductions, canonical-stack decodings,
+and finite candidate inductions are primitive recursive or have explicit
+PA-provable correctness arguments. Composing them with the inherited
+calibration gives
+\[
+ \mathrm{PA}\vdash
+ H_{\mathrm{new\ source}}
+ \leftrightarrow
+ \exists p\,\operatorname{Prf}_{\mathrm{PA}}(p,\ulcorner0=1\urcorner).
+\]
+After the separately verified blank startup and positive physical source
+simulation are attached, finite concatenation gives the same equivalence
+for the exact binary table. In the converse physical direction, $T+1$
+positive nonhalting source segments would extend a purported first physical
+halt at time $T$, contradicting determinism. This uses finite arithmetic
+induction, not a consistency assumption or a truth-reflection principle.
+
+The coefficient-five calibration and premise-exchange theorem are inherited
+mathematics. The newly checked command composition supplies the changed
+eleven-entry interface and its correct final halt test. These dependency
+boundaries must remain explicit in any claimed PA-provability theorem.
+
+As a separate regression, \texttt{adversarial\_stack\_audit.py} evaluates
+13,236 integer assertions using actual Cantor numbers, including both
+projection identities, strict tail descent, collapsed zero pushes,
+visible and cached ones, Push, Pop, generalization, and the MP suffix.
+For the larger words its AX heads are small representatives of the proved
+residue contracts; it is a numerical check of those command identities,
+not a second check of the exact axiom emitter or the physical table.

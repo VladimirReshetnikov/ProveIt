@@ -1,0 +1,153 @@
+\subsection{Exact preservation by eliminating restoration}
+\label{sec:qhs-shift}
+
+The immediate parent is PA194QH, whose quantified distribution head has
+exchanged premises, whose successful modus ponens leaves its result in the
+visible top, and whose Shift tests the cached head. PA194QHS retains these
+command semantics. Its new contribution is the exact physical composition
+with the previously supplied symmetric comparison method. No individual
+component optimization is claimed as new.
+
+Write $T=r_1$, $W=r_2$, $D=r_4$, $H=r_5$, and $X=r_6$.
+The resolved QH source has 3,653 instructions and the QHS source has 3,650.
+Instructions 0 through 3647 agree literally, including their successors.
+The only incoming edge to the removed suffix is the zero branch of
+instruction 3644. Instructions 3644--3647 are
+\[
+ \mathsf{while}\ H>0\ \mathsf{do}\ (H:=H-1;\ T:=T+1;\ X:=X+1).
+\]
+Consequently $H=0$ at every entry to either suffix. If the values before
+this loop were $(T,H,X)=(t,h,x)$, its values on exit are
+$(t+h,0,x+h)$. Write $n=x+h$. This statement allows arbitrary incoming
+scratch $x$; it does not presume that scratch was zero.
+
+The old suffix restores scratch into the cache and then increments scratch:
+\[
+ \mathsf{while}\ X>0\ \mathsf{do}\ (X:=X-1;\ H:=H+1);
+ \quad X:=X+1;\quad \mathsf{goto}\ 0.
+\]
+It reaches the common comparator with $(H,X)=(n,1)$. The new suffix is
+\[
+ H:=H+1;\quad \mathsf{goto}\ 0,
+\]
+and reaches that comparator with $(H,X)=(1,n)$. The values of $T,W,D$
+and every other register agree. The unchanged predecessor loop strictly
+decreases $H$; the removed restoration loop strictly decreases $X$.
+Their termination and endpoint equations follow by induction on those
+natural counters.
+
+\subsection{The comparator is symmetric in its result}
+
+The common source at instructions 0--10 is exactly the following resolved
+program. The targets of a decrement are its zero and positive targets.
+\begin{center}
+\begin{tabular}{rll}
+Instruction&Operation&Targets\\\hline
+0&decrement $H$&$4,1$\\
+1&decrement $X$&$3,2$\\
+2&jump&$0$\\
+3&jump&$5$\\
+4&decrement $X$&$10,5$\\
+5&decrement $H$&$7,6$\\
+6&jump&$5$\\
+7&decrement $X$&$9,8$\\
+8&jump&$5$\\
+9&jump&$11$\\
+10&halt&\\
+\end{tabular}
+\end{center}
+
+Each completed pass through 0, 1, and 2 reduces both positive counters by
+one. If both become zero together, instructions 0 and 4 select the halt
+at 10. If one becomes zero first, the other remains positive and control
+reaches 5. The loops at 5 and 7 clear both counters and reach 11. Thus,
+for all natural $u,v$, the comparator halts exactly when $u=v$; otherwise
+it reaches instruction 11 with $(H,X)=(0,0)$. It preserves every other
+register. This proves its symmetry as a partial register transformation,
+even though the two directions need not have the same duration.
+
+Applying this result to $(u,v)=(n,1)$ and $(1,n)$ proves that both suffixes
+halt if $n=1$, and otherwise reach precisely the same source configuration
+at 11. The argument covers every suffix-entry store with $H=0$, including
+all stores admitted by the predecessor loop.
+
+\subsection{An exact source cost statement}
+
+Count each resolved primitive instruction once, including the final halt
+when it is taken. The removed suffix costs $3n+3$ instructions; the new
+suffix costs two. The comparator cost from $(u,v)$ is
+\[
+ C(u,v)=\begin{cases}
+ 3u+3,&u=v,\\
+ 2u+v+4,&u>v,\\
+ 3v+2,&u<v.
+ \end{cases}
+\]
+These equations follow by counting the matched passes and the remaining
+clearing loops in the displayed program. Accordingly the old execution
+from suffix entry to halt or instruction 11 exceeds the new execution by
+\[
+ (3n+3+C(n,1))-(2+C(1,n))
+ =\begin{cases}
+ 0,&n=0,\\
+ 4,&n=1,\\
+ 2n+4,&n\ge2.
+ \end{cases}
+\]
+The source saving is unbounded. This is a statement about primitive
+register instructions. The additional physical fold changes the costs of
+other source instructions, so no blanket improvement in literal Turing
+machine running time is inferred from it.
+
+\subsection{Command and finite-trace consequences}
+
+At clean command boundaries the unchanged prefix sets scratch to zero
+and clears the old top before copying the cached value. The resulting
+Shift is therefore, in both QH and QHS,
+\[
+ S(t,w,d,h)=\begin{cases}
+ \mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&h\ne1.
+ \end{cases}
+\]
+The axiom command and modus ponens are unchanged. In particular successful
+modus ponens still returns $(b,w,b,0)$ when
+$b=d+x$ and $I(t,b)=h$; failure returns $(0,w,b,0)$.
+
+Every visit to the changed suffix satisfies $H=0$, and every such visit
+is replaced by a finite execution with the same exit or halt behavior.
+Induction on visits, or equivalently on finite execution segments cut at
+suffix entry and common instruction 11, proves equality of halting
+behavior for the initialized source programs. Neither the shorter source
+nor its guard can add a new halt on an unequal comparison. Conversely,
+a halt in either source has a finite corresponding execution in the other.
+All counter recurrences and finite execution translations are primitive
+recursive; their correctness is provable by ordinary induction in PA.
+
+The literal-tape certificates bind the two source endpoints to their exact
+machines. The QHS builder reconstructs the pinned QH source and table,
+checks all eight simultaneous folds on the final QHS table, and checks
+all 4,750 primitive outcomes. The independent executor derives four generic
+list lemmas directly from the QHS rows and checks the same outcomes without
+an arithmetic-box oracle. Both complete blank initializations are checked.
+The new one reaches its source entry after 57,768 transitions; the pinned
+QH initialization takes 57,922. These finite startup figures are not evidence
+of infinite nonhalting.
+
+Composing the source preservation with these positive-duration physical
+simulations gives the ordinary mathematical theorem
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Halt}(\mathrm{PA194QHS},\mathrm{blank})
+ \leftrightarrow
+ \operatorname{Halt}(\mathrm{PA194QH},\mathrm{blank}).
+\]
+The inherited QH syntactic consistency calibration then yields
+\[
+ \mathrm{PA}\vdash
+ \neg\operatorname{Halt}(\mathrm{PA194QHS},\mathrm{blank})
+ \leftrightarrow \operatorname{Con}(\mathrm{PA}).
+\]
+This is an ordinary proof using explicitly identified inherited calibration
+and symbolic-executor correctness arguments. It is not presented as a new
+end-to-end Lean, Rocq, or iPRA kernel theorem.

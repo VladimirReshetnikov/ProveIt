@@ -1,0 +1,75 @@
+INDEPENDENT REVIEW: QH TO QHS
+
+Conclusion
+
+The source replacement is correct and is a recurring executable change. It is a new concrete194-state composition in the pinned corpus, with the symmetric-comparison mechanism already known from CS/HS. It should not be presented as a new calculus or state-count record. The strongest clean preservation claim is PA-provable blank halting equivalence with the supplied QH machine, obtained by the source block argument below plus each machine's complete physical refinement and seed. Composing with QH's attributed ordinary PA calibration gives the requested PA consistency biconditional. This introduces no new logical-calibration lemma beyond inherited QH.
+
+Exact independently checked binding
+
+The supplied QH instruction file has3,653 sites and SHA-256 f15fbc3a894a44ea0a7258fff848e9be24014f14f85229bb86d77ee9285c01a1.
+The new QHS instruction file has3,650 sites and SHA-256 958fecee0f3aeaf2f25c8333f6d3cc1d08ba6d991c2791a7ac34239ac7748788.
+Every instruction0 through3647, including all successor indices, is identical. All source jumps and decrement exits are defined. The sole edge from the common prefix into either replaced tail is the ZERO branch3644→3648 of a decrement of register5. Thus H=r5=0 at every tail entry from source entry25, independently of all other register values and independently of consistency.
+
+Use T=r1,H=r5,X=r6. The common Shift prefix is:
+3642: dec T [zero3644,positive3643]
+3643: jump3642
+3644: dec H [zero3648,positive3645]
+3645: inc T ->3646
+3646: inc X ->3647
+3647: jump3644
+
+For arbitrary initial(T,H,X)=(t,h,x), this clears T and transfers H into both T and X. At3648 the exact store is(T,H,X)=(h,0,k),k=h+x. Every other register is preserved by this prefix.
+
+QH's final five instructions are:
+3648: dec X [zero3651,positive3649]
+3649: inc H ->3650
+3650: jump3648
+3651: inc X ->3652
+3652: jump0
+
+QHS replaces them with:
+3648: inc H ->3649
+3649: jump0
+
+Consequently the old comparator input is(H,X)=(k,1), while the new input is(1,k). Both retain T=h and all other registers.
+
+Common comparator and universal proof
+
+0: dec H [4,1]
+1: dec X [3,2]
+2: jump0
+3: jump5
+4: dec X [10,5]
+5: dec H [7,6]
+6: jump5
+7: dec X [9,8]
+8: jump5
+9: jump11
+10: halt
+
+From any natural(a,b), sites0,1,2 reduce both positive operands together. If H runs out first, site4 distinguishes equality from a positive X remainder. If X runs out while H is positive, site3 enters cleanup. Sites5--8 clear both registers and reach11. Induction on a+b proves the exact dichotomy: halt at10 iff a=b; otherwise reach11 with H=X=0 and every other register unchanged. This proves invariance under exchanging a,b, including(0,0),(0,1),(1,0) and all positive cases; no numerical sampling is needed.
+
+Therefore the old and new Shift blocks halt under exactly the same condition k=1. If they do not halt, they both reach source11 with(T,H,X)=(h,0,0), and all remaining registers identical. They then perform the same unchanged stack-decoding routine. At the normal command boundary x=0, both Shift commands test cached h=1. The local equivalence is stronger: it holds for arbitrary scratch x, with the test h+x=1. No proof-store or consistency invariant is used for this local source theorem.
+
+Because no external edge enters a deleted tail interior, executions from entry25 can be partitioned into common single instructions and these terminating comparator blocks. Induction over this partition gives equality of halt outcomes and exact surviving stores. Converse transport of a finite halting run follows by expanding the shorter block, whose loops terminate for every natural register store. All proof transformations are primitive recursive and verified by ordinary PA induction.
+
+Substantive runtime difference
+
+The old tail performs k destructive transfers X→H, then restores the unit comparator operand in X. The new tail immediately places that unit in H. It therefore removes an entire restoration loop, not merely renames controls. Including the different paths through the common comparator, the new source block saves0 primitive steps at k=0,4 at k=1,and2k+4 at k>=2. These are source instruction counts, not a claim of a uniform literal-TM speed improvement: decoder paths, spare-list effects and the extra physical fold also contribute to physical time.
+
+Physical implementation and boundary
+
+The directly compiled shortened source adds one control. The known contextual fold identifies old41 with new330, using the immediately preceding tape bit to distinguish old41's entry context0 from new330's entry context1. Its four three-transition paths reproduce the two old rows in both contexts while restoring neighboring/exterior tape. Seven AX folds plus this controller fold produce135fixed+67readers-8folds=194. All cases must be checked in the final simultaneous table, and every incoming row must justify its context; the released local-case certificate and universal literal replay supply these finite checks.
+
+The two source arrays are not globally identical: the theorem is blockwise source equivalence, and their physical tape frames/addresses need not match pointwise. Each complete source-step contract must quantify over arbitrary natural registers, arbitrary affine gap and arbitrary nonempty spare list. Each literal machine separately reaches its required full frame from blank. QHS's complete57,768-step seed and all4,750 outcomes have been replayed by the independent literal checker. Finite startup is used solely to establish that seed, never as evidence of infinite nonhalting.
+
+Novelty check
+
+The QHS dense table SHA-256 is3bf22abe66e327d63d1feacacda9cc6f1b6529d09ca779c10f22fa5ed3acd103. It has194 graph-spanning working controls,388 transitions,start0 and halt194. The fresh current-corpus audit finds no match even with arbitrary state renaming, changed spanning root,tape reflection or global bit interchange. PriorQH is the closest semantic parent; priorHS/cache-onlyNS shares the symmetric visible-result controller but uses the unexchanged axiom emitter. PriorQNS has the Q emitter but symmetric SUM Shift,which can halt on visible top1; QHS uses CACHE Shift. This distinction is material to the all-store proof compiler even though both are calibrated to the same consistency target.
+
+Scope caveats
+
+1. The symmetry lemma and controller fold are inherited ideas; credit CS/HS and the existing QH package. Novelty is the exact compatible combination and checked literal implementation.
+2. The ordinary PA calibration is an inherited mathematical proof dependency. The new checks prove a relative machine-preservation theorem. They are not an end-to-end Lean/Rocq export or completion of the iPRA internalization project.
+3. The census covers every complete literal table in the requested materialized paths and the packet narratives. It does not decide arbitrary programs encoded only in JSON or source. This is adequate for the listed194 frontier; no global priority claim follows.
+4. Known source-counterexample studies show that full symbolic source contracts alone cannot certify modified bootstrap. The exact whole-tape startup check is an essential separate condition, satisfied here.

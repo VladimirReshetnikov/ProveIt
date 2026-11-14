@@ -1,0 +1,183 @@
+% Include fragment: requires amsmath, amssymb, amsthm and a lemma environment.
+\subsection{Exact source and tape binding for MP196}
+
+This section concerns the delivered 196-state prototype. It does not
+assert a reduction below 194 states. The baseline is the primary PA194
+table at repository commit
+\texttt{2a88cb6a3f823e0de5addf19d725bf8373860c71}.
+
+Write $p(a,b)=(a+b)(a+b+1)/2+b$ and $I(a,b)=4p(a,b)$.
+Logical registers $1,2,4,5,6,7,8$ hold the accumulator $T$, formula stack
+$W$, offset $D$, cache $H$, scratches $X,Y$, and command residual $L$.
+The logical-to-physical permutation remains
+\[
+ (6,2,0,4,3,7,8,5,1).
+\]
+All registers not mentioned in a block's postcondition are framed.
+
+\subsubsection{The unchanged operand and the new successful exit}
+
+The original MP operand block is retained. For input command store
+$(t,w,d,h)$ and parameter $x$, put $b=d+x$. The inherited operand block
+reads $x$, sets $D=b$, constructs $I(t,b)$, and restores the old
+formula-stack tail. The following original clear-and-compare block
+compares $I(t,b)$ with $h$. It leaves $T=H=X=Y=0$ and returns directly
+to the command loop on inequality. Thus failure returns $(0,w,b,0)$.
+On equality it enters source site 3634 with $D=b$ and the same cleared
+registers.
+
+Only the successful source continuation is replaced. In the structured
+source, the precise replacement is
+\[
+ \mathtt{node163}
+ =\bigl(\mathtt{node6},
+     (\mathtt{node51},(\mathtt{inc}\,5,\mathtt{node7}))\bigr).
+\]
+The original definition
+$\mathtt{node7}=(\mathtt{node6},\mathtt{halt})$ is retained, including
+its original occurrence in Shift. The transfer block \texttt{node51}
+is also retained; it has the exact numerical instructions
+\[
+\begin{array}{rll}
+3634&\mathtt{dec}\,D&0\mapsto3638,\quad +\mapsto3635,\\
+3635&\mathtt{inc}\,T&\mapsto3636,\\
+3636&\mathtt{inc}\,X&\mapsto3637,\\
+3637&\mathtt{jump}&\mapsto3634,\\
+3638&\mathtt{inc}\,H&\mapsto3639.
+\end{array}
+\]
+A positive decrement subtracts one. At the head of the transfer loop,
+the invariants $T+D=b$ and $X+D=b$ hold, while $H=Y=0$.
+Every positive iteration decreases $D$. It therefore reaches site 3638
+with $T=X=b$ and $D=H=Y=0$. The increment sets $H=1$.
+
+The inherited destructive comparator is now entered at site 3639 with
+$H=1$ and $X=b$. Its complete new occurrence has the CFG
+\[
+\begin{array}{rll}
+3639&\mathtt{dec}\,H&0\mapsto3643,\quad +\mapsto3640,\\
+3640&\mathtt{dec}\,X&0\mapsto3642,\quad +\mapsto3641,\\
+3641&\mathtt{jump}&\mapsto3639,\\
+3642&\mathtt{jump}&\mapsto3644,\\
+3643&\mathtt{dec}\,X&0\mapsto3649,\quad +\mapsto3644,\\
+3644&\mathtt{dec}\,H&0\mapsto3646,\quad +\mapsto3645,\\
+3645&\mathtt{jump}&\mapsto3644,\\
+3646&\mathtt{dec}\,X&0\mapsto3648,\quad +\mapsto3647,\\
+3647&\mathtt{jump}&\mapsto3644,\\
+3648&\mathtt{jump}&\mapsto3650,\\
+3649&\mathtt{halt},&\\
+3650&\mathtt{jump}&\mapsto25.
+\end{array}
+\]
+If $b=0$, site 3640 takes its zero branch and the cleanup returns to
+site 25 with $T=0$. If $b=1$, the first pair of positive decrements
+sets $H=X=0$, after which sites 3639 and 3643 take their zero branches
+to halt. If $b\ge2$, those branches leave $X=b-2$ at site 3644; the
+cleanup decreases $X$ to zero and returns to site 25. In every
+nonhalting case $T=b$, $D=H=X=Y=0$, and the formula stack is unchanged.
+Consequently the exact MP command is
+\[
+ \operatorname{MP}_x(t,w,d,h)=
+ \begin{cases}
+  (0,w,d+x,0),&h\ne I(t,d+x),\\
+  \mathsf{halt},&h=I(t,d+x)\ \text{and}\ d+x=1,\\
+  (d+x,w,0,0),&h=I(t,d+x)\ \text{and}\ d+x\ne1.
+ \end{cases}
+\]
+The finite builder asserts all the displayed control endpoints, so the
+new successful continuation cannot accidentally return to Shift instead
+of the command loop. The MP source entry is 3554 and the Shift source
+entry is 3651.
+
+\subsubsection{The retained Shift and a syntactic invariant}
+
+The original Shift and its halt leaf are unchanged. On an arbitrary
+command store, Shift halts when $t+h=1$, and otherwise produces
+$(h,\operatorname{tl}(w),d,\operatorname{hd}(w))$.
+The old halt leaf remains source site 10, path $001$, and is still
+covered by its primitive tape contract.
+
+Define the canonical contents of a numerical stack by repeatedly
+applying the Cantor projections until its tail is zero, then regarding
+further heads as zero. This is finite because for $w>0$,
+$\operatorname{tl}(w)<w$, while both projections of zero are zero.
+Say a command store is \emph{one-free} when $t$, $h$, and every canonical
+stack entry differ from 1.
+
+\begin{lemma}
+Starting at the initialized command store, every completed nonhalting
+command boundary is one-free, without assuming consistency of PA.
+\end{lemma}
+\begin{proof}
+Initially the formula fields and formula stack are zero. The unchanged
+AX command pushes the saved top and nine generated formulas: the
+generated implication heads and gate are divisible by four, and the
+universal head is congruent to two and at least two. None equals one.
+AX resets the cache to zero. An unsuccessful MP returns top and cache
+zero. A successful MP with consequent one halts without returning to a
+completed command boundary; every other successful MP stores zero or
+a value at least two. MP
+leaves the formula stack unchanged. Finally, if nonnegative $t,h$
+are both different from one, then $t+h\ne1$. Shift therefore takes
+its ordinary nonhalting branch and merely exposes existing one-free
+stack contents. Induction over the finite sequence of completed commands proves
+the claim.
+\end{proof}
+
+The successful MP transfer may transiently write $T=1$ inside a command;
+the invariant is asserted only at completed nonhalting command boundaries.
+Thus the original Shift halt is unreachable after initialization. The
+abstract protocol with total Shift and the displayed MP rule simulates
+every literal execution from that frame up to and including its first
+halt. The command proof compiler uses MP parameter $b$ for conclusion
+$b$, and may discard the cleared successful offset immediately with
+Pop. This supplies the connection to the unshifted immediate-MP-halt
+protocol in the main report. No consistency assumption is used to
+exclude the old Shift halt.
+
+\subsubsection{Literal controls and exact startup}
+
+The only changed inherited row is $(164,1)$, which becomes $1R400$.
+The two new readers have the entire transition table
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+400&0R130&1R401\\
+401&0R63&1R68.
+\end{array}
+\]
+Native controls 130, 63, and 68 implement the existing transfer block,
+increment of $H$, and comparator-plus-halt block in these source
+contexts. The 23 controls used by the inherited arithmetic-block
+oracle have exactly their original rows.
+The dense machine has 196 working controls, a separate halt label 196,
+and 392 binary left/right rows. Every working control is reachable in
+the transition graph from the initial control.
+
+The verifier resolves 3,663 source sites and checks all 4,768 primitive
+outcomes against symbolic frames, including both outcomes of every
+decrement and both occurrences of the halt instruction. It uses
+1,476,043 symbolic operations, with maximum 497 operations for one
+primitive contract. The simulation induction behind these checks
+inherits the unchanged generic arithmetic-block lemmas and uses
+explicit one-row steps outside them. These executable certificates
+are not an independent proof-assistant kernel theorem or a new
+literal verification of those arithmetic blocks.
+
+A separate literal blank-tape simulation takes exactly 58,154
+transitions and checks equality of the entire finite tape support
+with a clean frame: native state 84, head $-2$, source site 25, gap 48,
+nine physical primary registers
+\[
+ (0,0,0,0,0,0,2,0,0),
+\]
+and 26 further registers of value one. The whole tape has 66 one-cells.
+This represents candidate $K=2$ and all other logical registers zero.
+It lies in the symbolic frame scope with gap parameter $n=0$.
+Every initialization transition is checked to avoid the halt label.
+
+The ordinary PA-formalizable command proof supplied in the main report
+depends on the attributed numerical-calculus calibration from the
+existing packets. There is no new end-to-end Lean/Rocq theorem or
+claimed iPRA internalization. The construction remains two states
+larger than the primary 194-state baseline.

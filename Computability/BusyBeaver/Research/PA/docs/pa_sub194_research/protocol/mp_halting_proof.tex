@@ -1,0 +1,426 @@
+% Standalone report fragment. Requires amsmath/amssymb; no new theorem
+% environments or macros are declared. MP196 implements the unshifted
+% target. The positive-target construction is a command-level alternative.
+\section{Moving contradiction detection into modus ponens}
+\label{sec:mp-halt}
+
+The following command transformation keeps the numerical proof calculus
+unchanged. At command level it replaces Shift's halting test with a test
+made only after a successful modus-ponens comparison. There are two versions.
+The 196-state construction uses the original target $d+x$ and reuses the
+existing destructive comparator for the terminal singleton test. The
+positive-target alternative uses $d+x+1$, so that the terminal test can
+be a zero test of the retained offset $d+x$. Its command-level proof is
+included as a separate possible refinement. Neither construction here
+is claimed to improve the supplied 194-state bound.
+
+This is a statement about refutation power and command compilation. The
+number of binary-machine controls is a separate question, settled only by
+a complete literal table and its source simulation. In particular, this
+section does not infer a state saving from a shorter command description.
+
+\subsection{Numerical stores and the retained axiom command}
+
+Write
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad [a;w]=p(a,w),\qquad
+ I(a,b)=4p(a,b),\quad U(i,a)=4p(a,i)+2.
+\]
+The total Cantor projections satisfy
+\[
+ \operatorname{hd}[a;w]=a,
+ \quad\operatorname{tl}[a;w]=w,
+ \quad[0;0]=0,
+ \quad\operatorname{hd}(0)=\operatorname{tl}(0)=0.
+\]
+Thus stacks are natural numbers with total projections; they are not
+assumed to be free lists. The constructor alias $I(0,0)=0$ is retained.
+Code zero is the fixed theorem of truth, and code one is the designated
+contradiction. A command store is $\langle t,w,d,h\rangle$, consisting of
+the visible formula, stack, numerical offset, and cached formula.
+
+The ten-entry separate-diagonal AX command is unchanged. With
+$D=d+x$, $H=h+y$, its effect is
+\[
+ \mathsf{AX}_{A,x,y}\langle t,w,d,h\rangle
+ =\langle g(H,D,A),[q_1,\ldots,q_9,t;w],0,0\rangle,
+ \tag{MH1}
+\]
+where
+\[
+ (q_1,\ldots,q_9)=
+ (\Gamma(A),L_6,L_5,L_4,L_3,L_2,L_1,
+       \rho(D,A,H,d),U(d,h)).
+\]
+Here $L_1,\ldots,L_6$, $\Gamma$, and the guarded separation gate $g$
+are the retained numerical axiom families, and
+\[
+ \rho(D,A,H,d)=
+ I\bigl(I(I(H,d),D),I(I(D,H),I(A,H))\bigr),\qquad d\le D.
+\]
+Each $q_1,\ldots,q_8$ and $g$ is divisible by four, including a failed
+guard's output zero. The ninth head satisfies $q_9\equiv2\pmod4$ and
+$q_9\ge2$. None of these generated entries is one. The saved old top
+$t$ is the tenth entry and is not subject to that residue assertion.
+
+\subsection{The two new modus-ponens protocols}
+
+In both protocols, Shift is the total command
+\[
+ \mathsf S\langle t,w,d,h\rangle
+   =\langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle.
+ \tag{MH2}
+\]
+Equation (MH2) specifies the abstract protocol used for the compiler
+identities below. MP196 agrees with it on every store reached from
+blank-tape initialization. Its behavior on other stores retains a guard,
+documented after the soundness proof; the distinction
+is necessary when stating a literal simulation contract.
+For the original-target command implemented by MP196, put $b=d+x$ and
+define
+\[
+ \mathsf{MP}^{0}_{x}\langle t,w,d,h\rangle=
+ \begin{cases}
+  \mathsf{halt},&I(t,b)=h\text{ and }b=1,\\
+  \langle b,w,0,0\rangle,&I(t,b)=h\text{ and }b\ne1,\\
+  \langle0,w,b,0\rangle,&I(t,b)\ne h.
+ \end{cases}
+ \tag{MH3}
+\]
+Successful target zero returns the zero theorem; it does not halt.
+The MP196 implementation reuses two existing source routines. At entry
+to the successful tail, $T=H=X=0$ and $D=b$. The existing transfer loop
+\texttt{node51} changes this to $T=b$, $X=b$, $D=H=0$. Increment $H$
+once and invoke the existing \texttt{node7}, which destructively compares
+$H$ with $X$ and halts on equality. The comparison now succeeds exactly
+when $b=1$. Otherwise it clears $H,X$ and returns with $T=b$, $D=0$,
+including when $b=0$. The exact new structured tail is
+\[
+ \bigl(\texttt{node51},
+       (\mathsf{inc}\,H,\texttt{node7})\bigr).
+\]
+Only its two new binary readers are needed; the transfer and halting
+comparator are retained. The checked source exit returns to the command
+loop, so it realizes (MH3), not merely its register arithmetic.
+
+For the positive-target version, put $k=d+x$ and $b=k+1$, and let
+$r\colon\mathbb N\to\mathbb N$ be any fixed total output-offset function:
+\[
+ \mathsf{MP}^{+}_{x}\langle t,w,d,h\rangle=
+ \begin{cases}
+  \mathsf{halt},&I(t,b)=h\text{ and }k=0,\\
+  \langle b,w,r(k),0\rangle,&I(t,b)=h\text{ and }k>0,\\
+  \langle0,w,k,0\rangle,&I(t,b)\ne h.
+ \end{cases}
+ \tag{MH4}
+\]
+Examples include $r(k)=k$, $r(k)=0$, and $r(k)=k\mathbin{\dot-}1$,
+where $\dot-$ is truncated subtraction. The proof compiler immediately clears the successful
+offset using a total Pop word, so every such convention has the same
+proof. The target $b=1$ is recognized by one zero test of $k$,
+provided $I(t,k+1)$ is formed while retaining $k$. The algebraic compiler
+identities use only that $r(k)$ is a natural number. An arithmetized
+machine implementation must additionally supply a terminating source
+routine for its chosen $r$ with PA-provable correctness, as is immediate
+for the three listed elementary functions. The delivered MP196 table
+implements (MH3), not this positive-target alternative.
+
+It is essential that the singleton test occurs only after the equality
+comparison succeeds. A failed comparison with proposed target one does
+not establish a contradiction and must return normally.
+
+\subsection{Uniform stack identities}
+
+Let $A_0=\mathsf{AX}_{0,0,0}$, and let $\mathsf{MP}^{\epsilon}$ stand
+for either of the preceding protocols. Define
+\[
+ \begin{aligned}
+ \mathsf{Push}&=A_0;\mathsf S^9;\mathsf{MP}^{\epsilon}_0,\\
+ \mathsf{Pop}&=A_0;\mathsf S^{11},\\
+ \mathsf{Discard}&=\mathsf{MP}^{\epsilon}_0,\\
+ \mathsf{Offset}_i&=\mathsf{MP}^{\epsilon}_i.
+ \end{aligned}
+ \tag{MH5}
+\]
+These words have the exact contracts
+\[
+ \begin{aligned}
+ \mathsf{Push}\langle t,w,d,h\rangle
+    &=\langle0,[t;w],0,0\rangle,\\
+ \mathsf{Pop}\langle t,[a;w],d,h\rangle
+    &=\langle t,w,0,a\rangle,\\
+ \mathsf{Discard}\langle t,w,0,0\rangle
+    &=\langle0,w,0,0\rangle,\\
+ \mathsf{Offset}_i\langle0,w,0,0\rangle
+    &=\langle0,w,i,0\rangle.
+ \end{aligned}
+ \tag{MH6}
+\]
+Push and Pop quantify over all incoming stores, including arbitrary
+cached values. Discard's displayed clean-cache precondition is sufficient
+for the compiler. For (MH3) it can be strengthened to arbitrary $h$,
+since the success and failure branches at target zero both return
+$\langle0,w,0,0\rangle$. That stronger assertion is not made for (MH4).
+
+\paragraph{Proof of the identities.}
+After $A_0;\mathsf S^9$ the store is
+\[
+    \langle q_8,[t;w],0,U(d,h)\rangle.
+\]
+The final MP comparison is between an implication of residue zero and
+a universal formula of residue two, so it fails. Its resulting offset
+is zero in either protocol. This proves Push. After ten Shifts following
+$A_0$, the store is $\langle U(d,h),w,0,t\rangle$; one more unconditional
+Shift proves Pop. This includes
+$\mathsf{Pop}\langle t,0,d,h\rangle=\langle t,0,0,0\rangle$.
+
+In (MH3), Discard proposes target zero, and both outcomes coincide.
+In (MH4), it compares $I(t,1)>0$ to cache zero and therefore fails.
+For Offset, the positive-target version compares $I(0,i+1)>0$ to zero.
+The unshifted version fails when $i>0$ and returns zero in either branch
+when $i=0$. The resulting offset is exactly $i$. All these calculations
+respect $[0;0]=0$ and $I(0,0)=0$. No distinction between a zero push onto
+zero and an empty canonical stack is used. $\square$
+
+\subsection{Selectors and generalization}
+
+The unchanged AX stack order gives the same selectors as in the no-push
+PA194N compiler. Every selector below starts at a clean-cache store
+$\langle t,w,0,0\rangle$ and preserves its arbitrary underlying stack.
+For generated head $q_j$, $1\le j\le7$, use
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};
+       \mathsf S^{j+1};\mathsf{Pop}^{9-j}.
+ \tag{MH7}
+\]
+After the initial Shifts, the unselected generated tail and the saved
+zero remain. The Pops preserve the selected top, remove that tail, and
+finally put the saved zero into the cache. The output is
+$\langle q_j,w,0,0\rangle$.
+
+For the dominated propositional head $\rho(a,b,c,u)$, $u\le a$, use
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+   \mathsf{AX}_{b,a-u,c};\mathsf S^9;\mathsf{Pop}.
+ \tag{MH8}
+\]
+The old offset is $u$ and the new parameter is
+$u+(a-u)=a$, so the required instance is selected literally. A legitimate
+guarded gate is selected by
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};\mathsf{Pop}^{10}.
+ \tag{MH9}
+\]
+Truth zero uses Discard alone.
+
+Generalization at numerical label $i$ uses
+\[
+ \mathsf{Gen}_i=
+ \mathsf{Push};\mathsf{Offset}_i;\mathsf S;
+      \mathsf{AX}_{i,0,0};\mathsf S^{10}.
+ \tag{MH10}
+\]
+From $\langle a,w,0,0\rangle$, its state immediately before AX is
+$\langle0,w,i,a\rangle$. The ninth generated head is $U(i,a)$ and the
+saved top is zero, so the final ten Shifts give
+$\langle U(i,a),w,0,0\rangle$. These words do not invoke a new axiom or
+modify a numerical formula. They only select and manipulate the retained
+axiom instances and theorem codes.
+
+\subsection{A complete finite-proof compiler}
+
+Compile an axiom leaf with its selector and a generalization node with
+(MH10). Consider an MP proof node with major conclusion $I(a,b)$ and
+minor conclusion $a$. For $b>0$, use
+\[
+ \begin{split}
+ \mathsf{Discard};\mathsf{Push};C(\text{major});\mathsf{Push};
+ C(\text{minor});\mathsf{Push};\mathsf S;\mathsf S;\qquad\qquad\\[-2pt]
+ \mathsf{MP}^{\epsilon}_{b-\epsilon};\mathsf{Pop},
+ \end{split}
+ \tag{MH11}
+\]
+where $\epsilon=0$ for (MH3) and $\epsilon=1$ for (MH4).
+If either recursive call has already halted, the whole word halts.
+Otherwise, immediately before the two Shifts the store is
+\[
+       \langle0,[a,I(a,b),0;w],0,0\rangle.
+\]
+The two total Shifts produce
+$\langle a,[0;w],0,I(a,b)\rangle$. The MP comparison therefore succeeds.
+For $b=1$ it halts immediately. For $b>1$ it returns $b$ with stack
+$[0;w]$ and zero cache. Its offset is zero in (MH3) and $r(b-1)$ in
+(MH4), which is harmless because the Pop contract permits every offset.
+The total Pop contract removes exactly the reserved zero and returns
+$\langle b,w,0,0\rangle$.
+
+If $b=0$, the compiler may use Discard without compiling either premise.
+Code zero already has a fixed derivation, so this shortcut preserves the
+conclusion. Thus the positive-target restriction removes no refutation
+power. The unshifted protocol also allows direct execution of successful
+MP with target zero; its contract is explicitly checked, but the compiler
+does not need it.
+
+Induction on a finite numerical derivation $e$ gives two statements:
+\begin{enumerate}
+\item From every $\langle t,w,0,0\rangle$, $C(e)$ either halts or returns
+      $\langle\operatorname{concl}(e),w,0,0\rangle$.
+\item If $\operatorname{concl}(e)=1$, the word $C(e)$ halts.
+\end{enumerate}
+For the second statement, an axiom leaf cannot have code one by the
+residue facts in (MH1), and a generalization has residue two. An MP node
+with conclusion one halts at its final successful comparison unless a
+subproof has already halted. Hence no final Shift test is needed.
+
+For every refutation $e$ and every natural $k$, the word
+\[
+        W_{e,k}=\mathsf{AX}_{k,0,0};C(e)
+ \tag{MH12}
+\]
+halts from every incoming store. The first AX clears both caches, after
+which the compiler's clean-entry theorem applies. This assertion is
+deliberately stronger than compilation from an empty stack: the scheduler
+retains its store between unsuccessful candidates.
+
+\subsection{Explicit scheduling and the cofinal witness family}
+
+The unchanged command decoder uses positive continuation pointers.
+For finite words define
+\[
+ \begin{aligned}
+ e([])&=0,\\
+ e(\mathsf S::v)&=1+p(0,e(v)),\\
+ e(\mathsf{MP}^{\epsilon}_x::v)&=1+p(1,p(x,e(v))),\\
+ e(\mathsf{AX}_{c,x,y}::v)&=1+p(c+2,p(y,p(x,e(v)))).
+ \end{aligned}
+ \tag{MH13}
+\]
+At a fetch boundary $(n,l)$, the scheduler decodes payload $n$ and
+increments $n$ when $l=0$; otherwise it decodes $l-1$ and keeps $n$.
+The decoded residual pointer of any nonempty word in (MH13) is exactly
+the code of its tail. For arbitrary positive $l$, the residual is at
+most $l-1$, since each Cantor projection is at most its input. Thus each
+arbitrary candidate reaches its next fresh boundary after finitely many
+commands, or halts first. No reset of the command store is required.
+
+The fresh candidates from the initialized scheduler are $2,3,4,\ldots$.
+For (MH12), the exact fresh candidate is $e(W_{e,k})-1$, and
+\[
+             e(W_{e,k})-1\ge k+2.
+ \tag{MH14}
+\]
+The witness family is therefore cofinal: from any current fresh counter
+$n$, take $k\ge n$. Unless an earlier candidate has halted, bounded
+induction through the intervening candidates reaches this witness, whose
+all-store property then forces a halt. This supplies the scheduling
+argument explicitly, instead of appealing to an unspecified fairness
+assumption. The proof is arithmetizable in PA using induction on positive
+continuation codes and the finite interval of fresh candidate numbers.
+
+\subsection{Soundness from the initialized store}
+
+The soundness statement has a different quantifier from (MH12).
+It starts with the initialized theorem-annotated store, not with an
+arbitrary store containing possibly unproved formulas. Annotate the
+visible top, cached formula, and every live canonical stack entry with
+derivations in the retained numerical calculus. The initialized zero
+entries carry the fixed zero derivation. Popping numerical zero uses that
+same derivation; pushing zero onto zero creates no extra canonical entry.
+
+AX preserves the annotations: its heads and gate are axiom instances,
+its saved top retains its old derivation, and its ninth head is a
+generalization of the cached theorem. Unconditional Shift only moves
+annotated formulas. Failed MP returns the zero theorem. Successful
+nonhalting MP returns its conclusion with the usual MP derivation.
+The sole halting event is a successful MP comparison whose conclusion
+is one. It therefore extracts a numerical-calculus refutation.
+
+Together with the compiler and scheduler argument, this proves
+equivalence of halting of the specified initialized command scheduler
+and refutability in the unchanged numerical calculus. The proof transforms
+finite syntactic objects; it does not invoke a truth predicate or
+reflection principle. The constructors, stack operations, proof compiler,
+and proof annotations are primitive recursive, and PA proves their
+correctness by the displayed finite inductions. Composition with the
+inherited ordinary PA calibration gives the corresponding source-level
+consistency equivalence.
+
+\subsection{The retained Shift guard and its invariant}
+
+MP196 retains the original Shift source block: on a store with
+$t+h\ne1$ it performs (MH2), and on a store with $t+h=1$ it halts.
+The retained halting branch is unreachable on the new initialized run,
+as shown below. The literal table can therefore reuse the same
+\texttt{node7} comparator in the successful MP tail while retaining
+complete source binding, including the unused old Shift halt leaf.
+Its exact all-store contract is
+\[
+ \mathsf S_{\mathrm{literal}}\langle t,w,d,h\rangle=
+ \begin{cases}
+  \mathsf{halt},&t+h=1,\\
+  \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&t+h\ne1.
+ \end{cases}
+ \tag{MH15}
+\]
+Consequently, an unconditional all-store simulation claim for (MH2)
+would be false for the literal table.
+
+The needed restriction is an elementary numerical invariant, independent
+of consistency or of whether any formula has a proof. Call a command
+store admissible when its top, cache, and every live canonical stack
+entry differ from one. The initialized store is admissible. Every newly
+generated AX entry differs from one by its constructor residue; its saved
+top was already admissible. Failed MP returns zero. Successful MP in
+either version halts with target one, or returns a target different
+from one. An ordinary Shift permutes entries of the admissible store,
+with a zero returned by an exhausted canonical stack. Finally, for
+natural numbers $t,h\ne1$, the equality $t+h=1$ is impossible.
+
+Induction over completed commands therefore proves that every prehalting
+command boundary is admissible and that the old Shift halting branch
+is never used. In particular, this is not an assumption that PA is
+consistent: a refuting run halts inside its successful MP before returning
+a code one at a completed command boundary. The physical MP tail does
+temporarily store one while performing that final test; the invariant is
+asserted at completed command boundaries, not at every internal source
+instruction. The literal source simulates the total-Shift protocol on its
+entire initialized run.
+
+The all-store compiler theorem for the abstract protocol remains valid
+as stated. For the physical completeness direction, it is sufficient to
+apply it at the admissible store actually reached by the scheduler when
+the cofinal witness begins. All intermediate nonhalting stores remain
+admissible, so the literal and abstract runs continue to agree until the
+compiled successful MP halts. Arbitrary incoming stores are used only
+in the abstract compiler identities; they are not silently included in
+the literal Shift simulation contract.
+
+To transfer that result to a literal binary table, one still needs the
+exact initialization, complete source binding, and positive finite
+simulation for every primitive source outcome. Those are machine-specific
+obligations. Once supplied, a source halt gives a physical halt by
+concatenating simulation segments. Conversely, a first physical halt at
+time $T$ contradicts $T+1$ nonhalting source steps and their positive
+simulation segments, by determinism. This is the usual PA-internal
+finite-trace argument; the command proof alone does not supply its table
+equalities or its state count.
+
+\subsection{Executable checks and proof boundary}
+
+The accompanying checker verifies symbolic identities over free store,
+stack, and parameter terms. Its comparison evaluator accepts only
+syntactic equality, explicit zero identities, provable positivity, and
+incompatible constructor residues. Unresolved symbolic comparisons raise
+an error; they are not guessed. The unshifted target-zero case uses an
+explicit join of its two identical outcomes. Separate integer checks
+execute Cantor pairing and total inversion, and the continuation-code
+checks use a separate square-root decoder. The symbolic identities are
+the uniform part of this audit; the integer examples are additional
+implementation checks.
+
+This is an ordinary mathematical proof with executable algebraic checks,
+not a newly compiled end-to-end Lean or Rocq theorem. The inherited PA
+calibration and the literal-machine simulation remain explicitly separate
+dependencies. In particular, neither a successful command audit nor an
+optimized source word is described as a certified sub-194-state machine.

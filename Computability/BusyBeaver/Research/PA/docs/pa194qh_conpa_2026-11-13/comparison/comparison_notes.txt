@@ -1,0 +1,199 @@
+PA CONSISTENCY MACHINE CORPUS: COMPARISON AT THE PINNED SNAPSHOT
+Pinned requested repository: VladimirReshetnikov/ProveIt
+Pinned main: b5086c8db0f5778b9569c1ce36b7fe0310d5f225
+
+SCOPE AND COUNTS
+
+The current filed PA/docs collection represents 51 delivered research packets.
+Five current ZIPs add five deliveries, for 56 deliveries reviewed in the
+packet_ledger. The original delivered files are not all still present: the
+repository's own MACHINES.md records 4,984 historical .tm occurrences, 682
+file-byte forms, 444 pointed classes and 46 unpointed classes (490 combined),
+with duplicate machine files removed. Thus those historical occurrence counts
+must not be compared directly with a scan of the present checkout.
+
+Our fresh scan reads complete numeric five-column binary transition tables in
+.tm, .txt, .csv and .tsv files throughout the current PA subtree and the five
+current ZIPs. Each distinct retained nested ZIP body is recursively scanned
+once. It recognizes 1,490 present occurrences, 731 byte forms and 505 table
+classes. Of these, 502 are one-halt tables with a spanning root. The other
+three types are diagnostic controls (four controls and no halt target; six
+controls with at most two reachable; nine controls with at most four reachable).
+None is a small PA-consistency construction.
+
+Exactly 42 of the one-halt spanning graph classes have 194 working controls.
+This is the 34-class filed frontier plus seven new incoming constructions and
+one rejected append-zero transplant. All 42 remain distinct when exact full
+canonical tuples allow arbitrary control renaming, any spanning root, tape
+reflection, global read/write bit interchange, and arbitrary write/move on
+transitions into halt. Strong graph comparison uses equality of tuples, not
+hash equality. Hashes are file/index identifiers only.
+
+Status attribution is deliberately conservative: 28 reported constructions,
+nine auxiliary/research tables, five explicitly rejected tables. "Reported
+construction" describes the packet's ordinary mathematical claim and its
+implementation certificates; it does not mean that all historical proof
+arguments were freshly revalidated or that there is a complete formal theorem.
+PA194CZ is kept in the auxiliary category because the contemporary packet calls
+it an additional search seed with a construction checker and invariant but no
+fresh independent replay. An older HAZ inventory assigned it the broader
+"reported construction" label; this is a classification difference, not a new
+machine.
+
+A START-STATE PITFALL
+
+Several HAZ comparison/tables and normalized-fixtures files densely relabel
+native graph vertices without preserving the original start as state zero.
+They do not carry a start comment. A blanket "dense means start zero" convention
+therefore invents extra pointed machines and makes a naive census read 74
+194-state classes. They are graph fixtures, not additional blank-start designs.
+Use the 42 unrooted graph classes for structural novelty. Definitive dense
+machine tables use their documented start zero; native starts are documented
+as 74. The exported reference manifest records each selected representative's
+start separately. Structural novelty is intentionally stronger than a pointed
+comparison; a mere change of start cannot create a claimed new graph.
+
+DESIGN FAMILIES AND WHY THEIR SAVINGS DO NOT AUTOMATICALLY STACK
+
+1. Unary-cover / U209 / U208 lineage.
+The early construction uses an equality-free membership theory calibrated to
+PA. The U208 packets contain many presentations of two rooted graph classes.
+They reuse one conditional/history-sensitive identification of native roles
+172 and 211; these roles are already absent from the later PA196 core. The
+208 saving cannot be applied again to obtain 193. Larger 209--222 tables and
+207-state rejected attempts remain useful provenance/search inputs, not better
+accepted endpoints. Unary-free-matrix restrictions and equality/diagonal
+changes require logical strength arguments, rather than extrapolation from
+a smaller source DAG.
+
+2. PA196 and diagonal-emitter source redesign.
+PA196 supplies the basic binary tape register engine, compiler and arithmetic
+formalization context. The 196-state research explores equality rewrites,
+parameter/head permutations, rebracketing, diagonal vacuity, zero jumps, and
+controller specialization. A shorter source may have a worse shared binary
+decoder: source counts and physical state counts are different optimization
+objectives. The 199- and 198-state diagonal variants and some 203/206-state
+integrated-gate implementations exemplify this distinction. Complete runtime
+contracts must include both decrement outcomes, and blank initialization is a
+separate condition.
+
+3. The 195-to-194 physical frontier.
+The main source separates the diagonal-vacuity head from the bundled emitter,
+giving a ten-entry AX/stack interface and 3,673 primitive source sites. Existing
+allocations include 134 fixed+68 readers-7 folds=195 and
+134 fixed+67 readers-6 folds=195. Primary PA194 combines 67 readers with seven
+compatible history folds: 134+67-7=194. An independent alternative reaches
+134+68-8=194. The A/D companion only changes physical register placement.
+The same mathematical source therefore has several genuinely different
+physical layouts, but their decoder folds are not independent additive
+savings; each is tied to a particular tree and entry history.
+
+4. Controller semantics.
+Let (t,w,d,h) denote visible top, proof stack, numerical offset and cached head,
+and put b=d+x in MP. The original successful MP returns (b,[0;w],b,0), while
+Shift tests t+h=1. PA194N removes the dummy-zero push and returns (b,w,b,0),
+retaining that sum guard. PA194C instead caches the conclusion, returning
+(0,w,0,b), and Shift tests h=1. PA194H returns the no-push visible-top result
+but still uses the cached-only Shift guard. These changes require different
+proof-to-command words: merely deleting a stack action without adjusting
+selectors and contradiction detection is not a proof of correctness.
+
+PA194CS reverses the operands of a destructive equality comparison in the
+cached Shift. Since inequality clears both operands, this removes a transfer
+loop without changing that command's result. A new reader and a contextual
+41-to-330 fold balance to the same total count. PA194HS/NS(cache) combine the
+same symmetric cached guard with no-push visible-top MP. The new incoming
+SUMS and NS(sum) instead apply symmetry to the original sum guard t+h=1.
+
+5. Arithmetic/formula encoding.
+The radix family replaces constructor coefficient four with five or six;
+the stack remains the ordinary unscaled Cantor pairing. It requires hereditary
+formula/variable recoding and a syntactic proof translation. M4R is a decoder
+layout companion that retains coefficient four and exactly the original
+resolved source. N5/N6 add no-push MP; H6 adds the cached-only guard. The same
+194-state cost can hide many more primitive source sites. Coefficient-six
+multiplication already uses reader 330, and the symmetric-comparator fold also
+needs 330 and consumes 41; the two supplied fold schemes cannot simply be
+combined without a fresh allocation and proof.
+
+6. Logical head/interface changes.
+PA194D emits Gamma(D) instead of Gamma(A), requiring a changed proof selector
+and a 69-reader/nine-fold allocation. PA194Q exchanges the curried premises
+of one quantifier-distribution head using an explicit K/S/MP derivation.
+DHS combines Gamma(D), no-push MP and symmetric cached-only Shift; QN combines
+the Q head with no-push MP and the original sum guard. These are changes of
+what command sequences mean, rather than cosmetic state renamings. Their
+components and inherited calibrations must still be credited to the earlier
+packets.
+
+7. Known-zero source specializations.
+J, CZ, CSZ/X, A, F, R and ZR replace different jumps by decrements whose tested
+register is zero at the relevant source entry. R also reassociates the AX
+decoder. ZR specializes nine exits inside a 129-site region with three incoming
+zero branches and no increment of that register. Such changes need an inductive
+source invariant plus whole startup verification: three supplied node1/X
+variants satisfy intended source intuitions but halt from blank at step 1361.
+The rejected seven-zero scanner demonstrates another failure mode: a legal
+source address is confused with a tape delimiter. The newest append-zero
+mutation has all 194 possible blank starts classified and reaches no intended
+seed; its failure says nothing about all conceivable zero-spare designs.
+
+EXACT DUPLICATIONS AND THE NAME COLLISION
+
+PA194C is the same graph (indeed the same definitive dense bytes) across five
+filed packets. PA194HS and the filed PA194NS are byte-identical. PA194CSZ and
+PA194X are byte-identical. PA194N6 is repeated in two filed deliveries.
+The incoming PA194NS_research package uses the name PA194NS for a DIFFERENT
+machine: symmetric sum-guard Shift and no-push MP, with 3,651 source sites,
+4,751 outcomes and startup 58,004. The filed NS=HS tests only h=1, with
+3,650/4,750/57,768. Use NS(sum) and NS(cache)=HS in the comparison.
+
+THE SEVEN NEW INCOMING CONSTRUCTIONS
+
+DHS: Gamma(D)+no-push+symmetric cached Shift; 3,650 sites, 4,752 outcomes,
+58,014 startup; 135 fixed+69 readers-10 contextual folds=194.
+H6: coefficient-six+no-push+cached Shift; 3,775 sites, 4,876 outcomes,
+58,088 startup; 135 fixed+67 readers-8 folds=194.
+HA: cached-result MP, original sum Shift, A/D placement; 3,650 sites,
+4,750 outcomes, 58,122 startup.
+HAZ: HA plus known-zero final AX decrement; 3,650 sites, 4,751 outcomes,
+58,122 startup.
+QN: premise-exchange Q emitter plus N controller; 3,654 sites,
+4,755 outcomes, 58,154 startup.
+SUMS: symmetric original sum guard with dummy-zero MP push; 3,670 sites,
+4,776 outcomes, 58,004 startup.
+NS(sum): SUMS guard with no-push MP; 3,651 sites, 4,751 outcomes,
+58,004 startup.
+
+These numerical certificate counts are reported by their packets and are not
+new full replays performed by this census. Exact tables and graph identities
+were freshly parsed and compared.
+
+PROOF BOUNDARY
+
+The current PA/README explicitly says that neither machine-specific direction
+of the desired iPRA equivalence has been established for the primary PA194,
+original PA195 or PA196 candidate. Several ordinary finite-run/source/clock
+bridges have been formalized; a theorem assuming the missing arithmetic
+reductions does not supply them. The ordinary reports assert PA-internal
+calibrations through primitive-recursive finite proof and trace translations.
+A new same-source implementation can use that ordinary mathematical dependency
+without claiming a newly completed Lean/Rocq proof. The resulting theorem must
+not be presented as evidence that PA proves its own consistency, or as an
+unconditional proof of actual nonhalting. The target is the PA-provable
+biconditional; actual nonhalting follows under Con(PA).
+
+REPRODUCTION FILES
+
+results/packet_ledger.csv/json covers all 56 deliveries.
+results/frontier194_annotated.csv/json names all 42 frontier classes and their
+reported evidence status.
+results/table_classes.json covers all 505 current literal-table groups.
+results/occurrences.csv/json gives every present scan occurrence and SHA-256.
+results/byte_forms.json gives parsed graph metadata for every byte form.
+results/summary.json records counts and scope caveats.
+reference_tables/ plus frontier_manifest.json retains all 42 exact frontier
+representatives with SHA-256 and authoritative starts.
+verify_novelty.py compares a proposed table against every frontier graph under
+all the cosmetic equivalences stated above, using exact canonical tuples.
+results/strong_novelty_frontier.json is the successful fresh 42-class check.

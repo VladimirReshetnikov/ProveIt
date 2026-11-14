@@ -1,0 +1,266 @@
+% Report fragment. Requires amsmath, amssymb, booktabs, and hyperref.
+\section{A different 194-state controller: PA194C}
+\label{sec:pa194c}
+
+The fallback machine $M_C$ combines the primary 194-state packet's
+67-reader, seven-fold axiom decoder with the supplied cached-head command
+controller. Its literal table is \file{construction/candidate/pa194C.tm}: 194 working
+states, numbered $0,\ldots,193$, and separate halt label 194. The start is
+state zero on the two-way all-zero binary tape, with the head at cell zero.
+There are 388 transitions and no stationary moves. In native coordinates
+the start and halt are 74 and 254.
+
+This is a change to the proof-search computation. Successful modus ponens
+stores its result in the cached head, and Shift tests that cached head
+alone. The old 194-state controller tests a sum involving the visible top
+and cached head. The new source has 3,649 primitive instruction sites,
+compared with 3,673 for that controller, and different command traces.
+A change of names for the same states would not make those changes.
+The axiom calculus, 190-token axiom word and its stack order are retained.
+The count is
+\[
+                  134+67-7=194.
+\]
+The six changed native rows, relative to the primary 194-state table, are
+\[
+\begin{array}{rr|l|l}
+ \text{state}&\text{read}&\text{old action}&\text{new action}\\\hline
+ 38&0&0R28&0R11\\
+ 38&1&1R20&1R122\\
+ 164&1&1R98&1R130\\
+ 214&0&0R188&0R312\\
+ 214&1&1R312&1R20\\
+ 312&0&0R11&0R188
+\end{array}
+\]
+All seven decoder folds are retained and checked in the resulting table.
+
+\subsection{The exact transfer theorem}
+
+Let $M_{195C}$ denote the pinned cached-head machine in
+\texttt{PA195\_ConPA\_research\_2026-11-14.zip}, and let $H_M$ be the
+arithmetic sentence that $M$ has a finite halting trace from its specified
+blank start. The direct preservation statement is
+\[
+             \mathrm{PA}\vdash H_{M_C}\leftrightarrow H_{M_{195C}}.
+\tag{C1}
+\]
+The machine-specific content of (C1) is independently checked here;
+it does not rely on assuming either machine never halts.
+
+The builder first reconstructs the pinned $M_{195C}$ from its grammar and
+six folds, requiring equality of every native row with the supplied table.
+It then compiles the new grammar using the same cached-head fixed
+controller. After numbering primitive source sites from left to right,
+the two complete resolved instruction maps are equal: every opcode,
+register, successor and both decrement branches agree. Their axiom words
+are also equal. This latter check alone would not suffice: reassociation
+can change the ancestor counted by a break or continue instruction.
+Two independent path/interval resolvers check the stronger equality of
+all 3,649 resolved instructions. Hence the two source step functions are
+identical on every vector of nine natural registers.
+
+A source frame has the logical register order
+$(N,T,W,A,D,H,X,Y,L)$, physical order map
+$(6,2,0,4,3,7,8,5,1)$, unary blocks $0\,1^{v+1}$, a source-address
+header of base length 48 plus an arbitrary nonnegative gap, and an
+arbitrary finite nonempty spare list. Source entry is native control 84.
+All 4,749 instruction outcomes, including both decrement cases, have
+positive-length physical simulations between the exact intended frames.
+The contract preserves the complete other register file and the specified
+spare-list effects. In particular, an increment appends a one-valued spare
+block; a partial-frame argument omitting this effect would be invalid.
+
+The first checker uses the unchanged arithmetic-block contracts after
+checking their rows. A separate literal-tape checker rederives four list
+sweep lemmas from the candidate rows and checks every source outcome
+without an arithmetic-box oracle. Its symbolic lengths include nine
+independent natural register values and an arbitrary spare list. These
+are universal symbolic contracts, not bounded numerical simulations.
+The seven simultaneous folds additionally pass all 28 two-cell local
+contracts with arbitrary untouched exterior tape, taking at most five
+steps per replaced raw transition.
+
+Both machines reach the same clean logical source seed at site 25.
+For $M_C$, an exact blank run takes 57,922 transitions and ends at native
+control 84, head $-2$, with $N=2$, all other logical registers zero, and
+26 spare blocks of value one. Independent set and bytearray simulations
+check the entire tape support, including markers, address bits and
+register blocks. There is no earlier halt.
+
+For completeness of the transfer argument, let $R_C$ be their common
+source program. Given a finite halting source trace, concatenate its
+physical simulation segments and prepend the verified startup to obtain
+a literal halting trace. Conversely, suppose a literal run first halts
+after $T$ transitions. If $R_C$ did not halt during its first $T+1$ source
+steps, the positive-length contracts would concatenate to a nonhalting
+literal run lasting more than $T$ transitions. Determinism would contradict
+the first halt. Thus
+\[
+ \mathrm{PA}\vdash H_{M_C}\leftrightarrow H_{R_C},\qquad
+ \mathrm{PA}\vdash H_{M_{195C}}\leftrightarrow H_{R_C},
+\]
+which proves (C1). The trace constructions use finite recursion and
+induction on natural loop bounds and trace lengths. Their coding and
+correctness are available in PA; no reflection principle is involved.
+The executable certificates instantiate these elementary proofs, but are
+not themselves a newly compiled Lean or Rocq endpoint.
+
+\subsection{Cached-head commands and their completeness}
+
+Here is the semantic reason for retaining the supplied cached controller.
+Put $p(a,b)=(a+b)(a+b+1)/2+b$, $[a;w]=p(a,w)$,
+$I(a,b)=4p(a,b)$, and $U(i,B)=4p(B,i)+2$. Cantor projections are total,
+including $\operatorname{hd}(0)=\operatorname{tl}(0)=0$ and $[0;0]=0$.
+A command store is $\langle t,w,d,h\rangle$. With $y=d+x$, its commands
+are
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}
+ \mathsf{halt},&h=1,\\
+ \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&h\ne1,
+ \end{cases}
+\]
+\[
+ \mathsf{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+ \langle0,w,0,y\rangle,&I(t,y)=h,\\
+ \langle0,w,y,0\rangle,&I(t,y)\ne h.
+ \end{cases}
+\]
+The separate-diagonal AX command pushes ten entries, including the saved
+top. In stack order these are
+\[
+ [q_1,\ldots,q_9,t;w],\qquad
+ (q_1,\ldots,q_9)=(\Gamma(c),L_6,L_5,L_4,L_3,L_2,L_1,
+                    \rho_8(d+x,c,h+y,d),U(d,h)),
+\]
+where $\Gamma(B)=I(B,U(B,B))$; $L_1,\ldots,L_6$ and $\rho_8$ are
+the unchanged logical heads. AX returns the guarded gate as its top and
+clears both $d$ and $h$. The heads, apart from the last universal entry,
+and the guarded gate all have residue zero modulo four; the universal
+entry has residue two. None is code one, including when the guard fails
+and the gate is zero.
+
+The exact source changes bind this command interface. The successful MP
+tail transfers $D=y$ into initially zero $H$ by
+$\operatorname{dec}D;\operatorname{inc}H;\operatorname{jump}$,
+then returns to fetch site 25. The transfer requires $3y+1$ primitive
+instructions, followed by its return. The Shift boundary has scratch
+$X=0$. It clears $T$ in $2t+1$ instructions, copies $H$ into $T$ and
+$X$ in $4h+1$, and restores $H$ from $X$ in $3h+1$; thus
+$(T,H,X)=(h,h,0)$ after $2t+7h+3$ instructions. It sets $X=1$
+and enters the unchanged comparison/stack-decoder. These loop invariants
+hold for arbitrary command-store values. They justify the changed
+command effects independently of any finite blank-run observation.
+
+For this ten-entry emitter define, executing left to right,
+\[
+ \begin{aligned}
+ \mathsf{Push}&=\mathsf{AX}_{0,0,0};S^9;\mathsf{MP}_0,\\
+ \mathsf{Pop}&=\mathsf{AX}_{0,0,0};S^{11},\\
+ \mathsf{Discard}&=\mathsf{MP}_1;\mathsf{AX}_{1,0,0};S^{10};\mathsf{MP}_0.
+ \end{aligned}
+\]
+Push sends any store to $\langle0,[t;w],0,0\rangle$ without halting.
+Pop sends $\langle t,[a;w],d,h\rangle$ to
+$\langle t,w,0,a\rangle$ when $t\ne1$ and halts when $t=1$.
+Discard sends $\langle t,w,0,0\rangle$ to
+$\langle0,w,0,0\rangle$ without halting. These follow from the projection
+identities and residue distinctions, so they include the zero-stack alias.
+They must not be replaced by the nine-entry emitter's exponents.
+
+Let $\mathsf{Offset}_0$ be empty and $\mathsf{Offset}_i=\mathsf{MP}_i$
+for $i>0$. The word
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;S;
+                     \mathsf{AX}_{i,0,0};S^{10}
+\]
+returns $\langle U(i,a),w,0,0\rangle$ from
+$\langle a,w,0,0\rangle$ for every $a,w$, including $a=1$.
+For $1\le j\le7$, the ordinary-head selector
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};S^{j+1};
+                              \mathsf{Pop}^{9-j}
+\]
+returns $q_j$ as top with the original stack and zero caches.
+The restricted head is selected, for $u\le a$, by
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+                 \mathsf{AX}_{b,a-u,c};S^9;\mathsf{Pop},
+\]
+and the gate by
+$\mathsf{Discard};\mathsf{AX}_{c,b,a};\mathsf{Pop}^{10}$.
+Their preserved top values are never one, making their Pop calls safe.
+
+Modus ponens uses the suffix $S;S;\mathsf{MP}_b;S$ on
+\[
+             \langle0,[a,I(a,b),0;w],0,0\rangle.
+\]
+It halts if $a=1$ or $b=1$; otherwise it returns
+$\langle b,w,0,0\rangle$. The dummy zero is essential: omitting it
+would consume the underlying stack. The identity remains valid for
+$a=b=w=0$, despite the numerical alias of the displayed stack with zero.
+
+Induct on a finite proof tree $p$ in the separate-head calculus.
+Use the selectors for axioms and the displayed generalization word for
+generalization. For MP with minor proof $p_0$ of $a$ and major proof
+$p_1$ of $I(a,b)$, take
+\[
+ W_p=\mathsf{Discard};\mathsf{Push};W_{p_1};\mathsf{Push};
+            W_{p_0};\mathsf{Push};S;S;\mathsf{MP}_b;S.
+\]
+The induction invariant is: from every $\langle t,w,0,0\rangle$,
+$W_p$ either halts or returns
+$\langle\operatorname{concl}(p),w,0,0\rangle$.
+For a refutation $p$, the word
+\[
+                  \mathsf{AX}_{0,0,0};W_p;\mathsf{Pop}
+\]
+therefore halts from \emph{every} incoming store. The initial AX clears
+caches; the last Pop detects one if no earlier halt occurred. This
+all-store property is necessary because the unchanged exhaustive
+command-word scheduler carries its store between unsuccessful trials.
+Its enumeration of every finite command word now supplies completeness.
+
+For soundness, annotate $t$, $h$, and every live canonical stack entry
+with derivations in that same numerical calculus. Zero has a fixed proof
+from $\rho_8(0,0,0,0)=0$ and supplies the total stack's zero padding.
+AX emits axioms, a generalization of the previously derived cache,
+and the already derived saved top. Successful MP derives its new cache;
+failed MP returns zero. Shift moves derived formulas and halts only when
+the cache is one. Thus a halt yields a calculus refutation. This is a
+finite proof-store invariant, not an assertion that PA can prove the
+truth of all its theorems.
+
+\subsection{The inherited logical calibration and proof boundary}
+
+Write $\mathcal C_{\rm sep}$ for the precise separate-diagonal-head
+numerical calculus of the supplied 194 and 195S/195C packets. Its ordinary
+calibration provides primitive recursive translations of PA refutations
+into $\mathcal C_{\rm sep}$ refutations, and conversely, with PA-provable
+correctness. The former replaces equality-vacuity uses by diagonal-code
+freshness, reverse membership rewriting and neighborhood equality. The
+latter interprets membership by finite binary membership and obtains
+pointed separation from PA's formula-dependent finite-comprehension
+induction. These are syntactic proof transformations; a uniform arithmetic
+truth predicate is not required. The reference manuscripts are retained
+with their provenance, rather than being presented as newly proved here.
+
+Combining that logical calibration, the command compiler and soundness
+invariant above, the unchanged scheduler, and (C1) gives the ordinary
+mathematical conclusion
+\[
+       \mathrm{PA}\vdash
+       \bigl(\neg H_{M_C}\leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).
+\tag{C2}
+\]
+More explicitly, without importing the logical calibration, the new
+machine-specific result is the unconditional preservation theorem (C1);
+(C2) uses the supplied calibration at the stated interface. This work does
+not convert the existing conditional Lean/iPRA arithmetic endpoints into
+complete formal proofs. No newly kernel-checked end-to-end PA, iPRA, Lean,
+or Rocq theorem is claimed. The new finite and universal symbolic checks
+establish the decoder/controller composition and identify its exact
+literal table; the logical PA calibration remains an inherited ordinary
+mathematical proof.
