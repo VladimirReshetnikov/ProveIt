@@ -1,0 +1,65 @@
+\section{Verification and certificate boundaries}\label{sec:verification}
+The statement that a machine is small, the statement that its tape program implements a source program, and the statement that the source calculus is calibrated to PA require different evidence. This archive keeps those obligations separate.
+
+\subsection{Literal tables and startup}
+The file \texttt{diagonal199/machine.tm} has exactly one row for every pair \((q,b)\) with \(0\leq q<199\) and \(b\in\{0,1\}\). Its row format is
+\begin{center}\texttt{state\quad read\quad write\quad direction\quad next\_state}.\end{center}
+The alphabet is \(\{0,1\}\), the blank is zero, the initial state is zero, and the separate halt label is 199. Directions are \texttt{L} and \texttt{R}; there are no stationary moves. The companion native table retains the sparse internal labels, with initial state 74, decoder root 84, and halt label 254. The complete dense-to-native bijection is supplied and checked transition by transition. Counting the largest sparse label would be an incorrect state count.
+
+The startup check runs the actual table on an all-zero tape. At transition 58,154 it checks the entire finite set of nonzero cells, head position, and native control state against the clean source frame. Its physical register vector is
+\[
+ (0,0,0,0,0,0,2,0,0)\mathbin{+\!+}(1,\ldots,1),
+\]
+where the final vector has 26 entries. The source address is the candidate-2 startup site and the address gap is 48. Checking only the control state would not establish this interface.
+
+\subsection{A symbolic check for every primitive site}
+The Python verifier is an independent port of the finite path and symbolic-execution definitions in the published \texttt{M6/Runtime.lean}. It represents unary runs by affine lengths and retains the arbitrary register file as an abstract segment. Consequently, an accepted primitive case describes all register values covered by its precondition; it is not a sample of small concrete register values.
+
+For each source site the checker constructs the required input frame and output frame. Decrement instructions have separate zero and positive cases. The interpreter follows the literal table, checks exact tape effects, and requires positive concrete movement for the primitive execution. It may summarize register excursions through the inherited engine lemmas. This last operation makes the engine-agreement check essential: a modified engine row must never be hidden by an unchanged oracle.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Table & States & Source sites & Cases & Startup steps\\
+\midrule
+Published PA196 &196&3,812&4,959&58,154\\
+Diagonal-vacuity machine &199&3,700&4,815&58,154\\
+Negation peephole experiment &197&3,596&4,671&58,154\\
+Original-calculus repacking &201&3,812&4,959&58,154\\
+\bottomrule
+\end{tabular}
+\caption{Successful finite symbolic and blank-startup checks. The last two rows are unsuccessful state-reduction experiments, not new minima.}
+\end{table}
+
+The maximum number of symbolic interpreter steps needed by a primitive case in these checks is 515. This number is not a uniform bound on the concrete running time: the summarized unary excursions can take arbitrarily many concrete steps as register values increase.
+
+\subsection{The inherited engine and a new kernel check}
+The original generic engine agreement asks for 44 transition rows, with one further append-one row supplied separately. Inspecting its proof dependencies showed that read-zero rows of native states 3, 16, and 40 need not be included in the generic agreement hypothesis. The archive's \texttt{M6/NativeMinimal.lean} proves the resulting engine theorem with 41 agreement rows, plus the separately checked row
+\[
+ (198,0)\longmapsto(1,\mathrm L,40).
+\]
+The full generic proof was checked with Lean 4.35.0. Its reported axioms are \texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound}; no \texttt{sorryAx} occurs. The Python verifier explicitly checks all 42 fixed rows before using an engine summary.
+
+An additional deletion audit tried omitting each of the remaining 41 agreement rows while leaving the proof otherwise unchanged. None of those 41 attempts compiled. That is a statement about this proof script, not a proof that every row is semantically indispensable. The newly freed rows did not yield a smaller table in the local searches.
+
+For the upstream checking pipeline, the dependency closure of \texttt{PA196.CheckCoverage} was rebuilt and one 16-site coverage module was checked in the Lean kernel. The full 4,959-case baseline and 4,815-case new table were checked with the supplied Python interpreter. We did \emph{not} generate and kernel-check a complete new family of Lean coverage modules for the 199-state machine.
+
+\subsection{Source identity, folds, and rebuilding}
+Checking primitive contracts alone would allow the wrong source program to be implemented perfectly. Therefore \texttt{verification/rebuild.py} also checks the following identities:
+\begin{enumerate}
+\item The axiom macro tree expands to the intended 191-item word, obtained by the exact replacement specified in Section~\ref{sec:diagonal}.
+\item Each inherited macro has its original ordinal control-flow graph. The outer program is unchanged except for relocating indices beyond the shortened axiom block. There are no hidden edges into a different interior instruction.
+\item Compiling that tree with the frozen engine produces the initial 203-state table. The four listed quotients reproduce the final native 199-state table exactly.
+\item Renumbering the final table by the supplied map reproduces every row of the dense binary table.
+\end{enumerate}
+The four folds reduce the intermediate state counts to 202, 201, 200, and 199. Each was accepted only after all 4,815 symbolic cases and the exact startup passed. The corresponding pairs of native labels are
+\[
+ (5020,5026),\quad(5021,5025),\quad(5030,5042),\quad(5057,5058),
+\]
+with the first label retained. The replacement rows are in \texttt{folds.json}. These pairs are meaningful only with the specific supplied grammar and its native numbering.
+
+The free-algebra emitter check is complementary: it verifies the exact formulas constructed on top and in all nine stack slots, while the ordinal graph audit verifies the inherited macro and outer control flow. Neither check is a substitute for the calibration proof.
+
+\subsection{What the evidence does and does not establish}
+The finite checks establish the explicit table and its uniform primitive interfaces relative to the engine lemmas. The mathematical proof in Sections~\ref{sec:diagonal} and~\ref{sec:internal} supplies the PA calibration. The upstream repository supplies its own published formal theorems. The new generic engine theorem is kernel checked. The new calculus and the strengthened PA-internal converse remain written proof constructions, not newly completed Lean formalizations. These distinctions are material and should be retained when citing or extending this work.

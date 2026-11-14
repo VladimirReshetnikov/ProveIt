@@ -1,0 +1,268 @@
+% Standalone section for inclusion in the main paper.
+% Requires amsmath, amssymb, amsthm; uses the main paper's theorem/lemma envs.
+\section{The reverse consistency implication}
+\label{sec:reverse-consistency}
+
+The published PA196 endpoint explicitly supplies
+\[
+ \mathrm{PA}\vdash \operatorname{Nonhalt}(M_{196})
+                   \longrightarrow \operatorname{Con}(\mathrm{PA}).
+\]
+Its external soundness and nonhalting theorems do not, merely by being
+formalized in Lean, assert the opposite implication inside PA.
+We give a syntactic interpretation of the command calculus and a conditional
+transfer theorem for the physical compilation.  The calculus interpretation
+below is an ordinary mathematical proof.  Its application to the exact
+arithmetized tape predicate still has the explicit implementation and binding
+obligations listed at the end of this section.  No new closed Lean theorem
+of the internal biconditional is claimed.
+
+\subsection{An arithmetical interpretation of the exact calculus}
+
+Write $B(u,v)$ for the arithmetical predicate asserting that the $v$th
+binary digit of $u$ is one.  Thus the first argument is the container,
+as in the convention for $\mathsf M$ in PA196.  For convenience work
+first in a fixed definitional extension $\mathrm{PA}^{+}$ for the
+primitive recursive functions needed to express binary digits and
+exponentiation.  Fix their PA proofs of totality and the usual
+primitive recursive elimination of this finite definitional extension
+from proofs.  In particular,
+\begin{equation}\label{eq:bit-bound}
+ \mathrm{PA}^{+}\vdash B(u,v)\longrightarrow v<u,
+ \qquad
+ \mathrm{PA}^{+}\vdash \neg B(u,u).
+\end{equation}
+The first implication follows from $2^v\leq u$ and $v<2^v$.
+
+The translation $T$ sends truth to $0=0$ and commutes with implication
+and universal quantification.  On atoms it is
+\[
+ T(\mathsf M(a,b))=B(x_a,x_b),\qquad
+ T(\mathsf E(a,b))=(x_a=x_b),\qquad
+ T(\mathsf U(a,F))=\forall x_a\,T(F).
+\]
+The numerical decoder reads
+$\mathsf U(a,F)=4p(F,a)+2$ with its transposed arguments.
+All its recursion is bounded by the input code.  The one degenerate
+implication constructor is $\mathsf I(0,0)=0$; here $T(0)=0=0$ is
+provably equivalent to $T(0)\to T(0)$, and a fixed logical proof
+bridges the syntactic mismatch.  Other implication constructors commute
+literally with $T$.
+
+Every variable label in a formula of code $c$ is less than $c$.
+This is the syntactic bound proved in
+\texttt{PA196/Logic/Decode.lean}; in particular $x_c$ does not occur
+in $T(c)$.  No assertion that $T(c)$ is true is involved.
+
+\subsection{Uniform finite-comprehension proofs}
+
+\begin{lemma}[A proof-producing comprehension schema]
+For every arithmetical formula $\psi(z,\vec u)$, with auxiliary variables
+chosen fresh, $\mathrm{PA}^{+}$ proves
+\begin{equation}\label{eq:finite-comprehension}
+ \forall n\,\exists s<2^n\,
+ \forall z<n\bigl(B(s,z)\leftrightarrow\psi(z,\vec u)\bigr).
+\end{equation}
+There is a primitive recursive function of the code of $\psi$ that
+produces such a proof, and PA proves the syntactic correctness of
+this proof-producing function.
+\end{lemma}
+
+\begin{proof}
+Use the displayed existential formula as the induction formula in $n$.
+At $n=0$ take $s=0$.  At the step, take $s+2^n$ if
+$\psi(n,\vec u)$ and take $s$ if $\neg\psi(n,\vec u)$.
+The binary-digit update laws prove the required statement at $n+1$;
+the old witness satisfies $s<2^n$, so adding $2^n$ introduces exactly
+the new digit.  This is ordinary classical reasoning in PA.
+
+The proof consists of a fixed finite logical template, the fixed binary
+arithmetic lemmas, and one induction-axiom instance built from $\psi$.
+Variable renaming, substitution, formation of that instance, and proof
+concatenation are primitive recursive syntax operations.  Verifying
+that the constructed instance satisfies the PA induction schema is a
+syntactic calculation.  Consequently PA verifies the output as a
+proof uniformly in the code of $\psi$; no uniform arithmetical truth
+predicate is used.
+\end{proof}
+
+Applying the lemma to
+$\bigl(B(A,z)\lor z=b\bigr)\land\psi(z,\vec u)$,
+with cutoff $A+b+1$, gives
+\begin{equation}\label{eq:pointed-bits}
+ \exists s\,\forall z\left[
+ B(s,z)\leftrightarrow
+ \bigl((B(A,z)\lor z=b)\land\psi(z,\vec u)\bigr)\right].
+\end{equation}
+Equation~\eqref{eq:bit-bound} shows that every eligible $z$ lies below
+the cutoff, while a witness less than $2^{A+b+1}$ has no digits beyond
+it.  This is the finite pointed-separation schema needed by the gate.
+
+\subsection{Translation of the gate and the logical heads}
+
+The six PA196 heads and the restricted propositional head are valid
+first-order or equality schemata after translation.  Finite case
+distinctions on coinciding variable labels give uniform proof
+constructors.  The domination restriction on the fourth argument of
+the propositional head restricts the available instances, but plays no
+role in their validity.
+
+For the gate, keep the notation of the PA196 paper:
+\[
+ \Delta=\mathsf E(a,b)\to\mathsf U(c,\mathsf E(a,b)),
+ \quad V=\mathsf M(a,b)\to\mathsf U(c,\mathsf M(a,b)),
+\]
+\[
+ P=c\to\mathsf M(c,b),\quad
+ S=\mathsf U\bigl(b,(\mathsf M(a,b)\to P)
+                         \land(\mathsf M(c,b)\to c)\bigr),
+ \quad Q=\mathsf U(c,S\to\neg P).
+\]
+The returned formula is $\neg(\Delta\to(V\to Q))$ under
+$c\ne a,b$, and truth otherwise.
+
+If the guard fails, the translation is immediately provable.  If it
+holds, $x_c$ is absent from the translated equality and membership
+atoms, so $T(\Delta)$ and $T(V)$ have elementary vacuity proofs.
+Put $\varphi=T(c)$; $x_c$ is also absent from $\varphi$ by the code
+bound.  For $a\ne b$, equation~\eqref{eq:pointed-bits}, with
+$\psi(z)=\varphi[z/x_b]$, constructs a witness $s$ satisfying
+\[
+ \forall x_b\,
+ \bigl[(B(x_a,x_b)\to(\varphi\to B(s,x_b)))
+       \land(B(s,x_b)\to\varphi)\bigr]
+\]
+and also $\varphi\to B(s,x_b)$ at the distinguished original value
+of $x_b$.  Thus $\exists x_c(T(S)\land T(P))$ has a PA proof.
+
+The collision $a=b$ deserves a separate check: the first membership
+atom inside $S$ then becomes $B(x_b,x_b)$, which PA refutes.  Use
+pointed comprehension on the singleton distinguished point; it proves
+the second conjunct and the point clause, while the first conjunct
+is vacuous.  This handles the collision without incorrectly treating
+$x_a$ as an unchanged parameter under the $x_b$ binder.
+
+Classical first-order reasoning now gives $\neg T(Q)$ and hence
+$T(\neg(\Delta\to(V\to Q)))$.  Every step is part of a uniform
+finite proof template.  This proves the following syntactic statement.
+
+\begin{lemma}[Refutation translation]\label{lem:reverse-proof}
+Let $\operatorname{Prf}_{C}(p,f)$ be a primitive recursive proof
+predicate for exactly the PA196 numeric calculus.  There is a
+primitive recursive function $F$ for which PA proves
+\[
+ \operatorname{Prf}_{C}(p,1)
+       \longrightarrow
+ \operatorname{Prf}_{\mathrm{PA}}(F(p),\ulcorner\bot\urcorner).
+\]
+\end{lemma}
+
+\begin{proof}
+Primitive recursion over the finite derivation translates each axiom
+using the preceding constructors, each modus ponens by proof
+concatenation, and each generalization by the corresponding PA rule.
+Use universal closures at intermediate open conclusions.  The
+code-zero constructor collision is bridged by the fixed equivalence
+already described.  The result is a proof in $\mathrm{PA}^{+}$ of
+the translated conclusion.  At code $1$ this is $B(x_0,x_0)$, whose
+negation has the fixed proof in~\eqref{eq:bit-bound}.  Append that proof
+and eliminate the definitional extension.
+
+Correctness is proved by induction on derivation syntax, using only
+syntactic checking of the produced proofs.  This is neither a
+reflection principle for PA nor an induction on the truth of
+arbitrary PA formulas.
+\end{proof}
+
+\subsection{From a finite halting trace to a refutation}
+
+The command invariant in
+\texttt{PA196/Logic/CommandSoundness.lean} can be made explicitly
+proof-producing.  Retain a derivation code for each live formula $t,h$
+and a sequence of derivation codes parallel to the numeric stack.
+Initially all formulas are truth.  Stack underflow returns truth with
+its fixed proof.  A successful MP appends an application of modus
+ponens; a failed MP supplies truth.  AX supplies its six heads,
+restricted propositional head, generalization of the old $h$, saved
+old top, and guarded gate or truth.  These are primitive recursive
+updates of finite data.
+
+When Shift halts, $t+h=1$.  Since these are natural numbers, one of
+$t,h$ is exactly $1$, and its retained code is a derivation of the
+contradiction.  Notice that this extraction requires no assertion
+that a derivation of $1$ cannot exist.
+
+For the tape machine, the finite startup and total positive-length
+instruction contracts permit extraction along a finite trace.
+Determinism identifies each completed instruction boundary with the
+source execution.  A tape trace of length $N$ has at most $N$
+completed source instructions, since every instruction contract has
+positive length.  No nonhalting engine macro has an internal halting
+exit: its totality and designated exit are part of its contract.
+Thus a halting trace reaches the source Shift test, and the preceding
+annotated invariant returns a calculus refutation.  Bounded traversal
+of the trace and the primitive recursive syntax updates make the
+extractor primitive recursive.
+
+This gives the following useful transfer criterion.  The published
+development contains substantial physical and internal-compilation
+infrastructure for its application.  A modified table must satisfy the same
+stated hypotheses; the existence of finite test runs does not supply them.
+
+\begin{theorem}[Internal equivalence from certified compilation]
+Suppose a binary table $M$ has a PA-verifiable finite startup and
+total positive-length instruction contracts for the PA196 command
+search, including its unique halting test.  Suppose also that the
+PA196 compiler from a coded PA refutation to a finite halting
+execution is retained.  Then
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Nonhalt}(M)\leftrightarrow
+ \operatorname{Con}(\mathrm{PA}).
+\]
+\end{theorem}
+
+\begin{proof}
+The forward implication is supplied by the refutation-to-execution
+compiler, contraposed.  For the reverse implication, PA verifies the
+bounded extraction from a halting trace to a calculus refutation and
+then applies Lemma~\ref{lem:reverse-proof}.  Hence PA proves that
+halting yields a PA refutation.  Contraposition is the desired reverse
+implication.
+\end{proof}
+
+The theorem identifies the exact extra obligations behind an internal
+biconditional.  External soundness, finite testing of selected runs,
+and a theorem of two-sided independence are each insufficient by
+themselves.  Conversely, no uniform truth predicate and no PA
+reflection assumption are needed once these syntactic compilations
+and total physical contracts are supplied.
+
+\paragraph{Remaining artifact-level obligations.}
+The following concrete work is not supplied by this section and must not
+be inferred from the existence proof of the calculus compiler:
+\begin{enumerate}
+\item Fix the certificate encodings and connect
+$\operatorname{Prf}_{C}$ and $\operatorname{Prf}_{\mathrm{PA}}$ above to the
+exact checker and consistency sentence used in the published arithmetic
+statement.  Record and verify the encoding conversions.
+\item Implement the proof-producing templates and their arithmetized
+correctness proofs, including the code-zero implication collision, fresh
+variables in comprehension, and the coincident-label gate case.  The
+mathematical template construction above does not constitute a compiled
+Lean implementation of these transformations.
+\item Bind the reverse trace extractor to the literal machine's exact
+arithmetic trace predicate.  Verify the startup, every relevant positive
+instruction contract, termination of its bounded traversal, and extraction
+of the Shift certificate within the chosen arithmetization.
+\item For a reordered AX body, verify its physical compilation and update
+the axiom-selection ranks in the forward certificate compiler.  For push
+order $(h_1,h_2,h_3,h_5,h_6,h_4)$ the ranks from the top are respectively
+$(6,5,4,3,2,1)$ in that displayed order; equivalently,
+$h_4$ has rank $1$, $h_5$ rank $3$, and $h_6$ rank $2$.
+The propositional head, generalization and saved top retain ranks $7,8,9$.
+\end{enumerate}
+The fixed permutation preserves the exact set of available axiom
+instances.  It changes which head a particular command word selects;
+the appropriate equivalence is through the adjusted proof compiler,
+not equality of the literal command executions.

@@ -1,0 +1,145 @@
+{
+  "status": "CONTEXT_REENTRY_REPAIR_PASS",
+  "reference_states": 215,
+  "repaired_states": 214,
+  "final_states": 213,
+  "canonical_state": 500,
+  "representative": 182,
+  "changed_incoming": [
+    146,
+    0,
+    0,
+    1,
+    182
+  ],
+  "old_invariant": "state500 implies the immediately preceding cell is0",
+  "initial_tapes": "all binary tapes from state0",
+  "local_cases": [
+    {
+      "scanned": 0,
+      "known_left": 0,
+      "old_steps": 1,
+      "new_steps": 5,
+      "old_trace": [
+        [
+          500,
+          0,
+          0,
+          0,
+          1,
+          90
+        ]
+      ],
+      "new_trace": [
+        [
+          182,
+          0,
+          0,
+          0,
+          -1,
+          209
+        ],
+        [
+          209,
+          -1,
+          0,
+          0,
+          1,
+          157
+        ],
+        [
+          157,
+          0,
+          0,
+          0,
+          -1,
+          67
+        ],
+        [
+          67,
+          -1,
+          0,
+          0,
+          1,
+          151
+        ],
+        [
+          151,
+          0,
+          0,
+          0,
+          1,
+          90
+        ]
+      ],
+      "endpoint": [
+        90,
+        1
+      ],
+      "opaque_exterior_unread": true,
+      "whole_tape_preserved": true
+    },
+    {
+      "scanned": 1,
+      "known_left": 0,
+      "old_steps": 1,
+      "new_steps": 1,
+      "old_trace": [
+        [
+          500,
+          0,
+          1,
+          1,
+          1,
+          61
+        ]
+      ],
+      "new_trace": [
+        [
+          182,
+          0,
+          1,
+          1,
+          1,
+          61
+        ]
+      ],
+      "endpoint": [
+        61,
+        1
+      ],
+      "opaque_exterior_unread": true,
+      "whole_tape_preserved": true
+    }
+  ],
+  "admissible_radius2_frames": 6864,
+  "new_steps_counts": {
+    "1": 6856,
+    "5": 8
+  },
+  "negative_controls": [
+    {
+      "name": "wrong predecessor write",
+      "rejected": true,
+      "reason": "left-zero guard is not established"
+    },
+    {
+      "name": "wrong five-step exit",
+      "rejected": true,
+      "reason": "local full-tape endpoints differ"
+    },
+    {
+      "name": "wrong reused one write",
+      "rejected": true,
+      "reason": "local full-tape endpoints differ"
+    }
+  ],
+  "proof": "Induct on old steps using the left-zero invariant; one old step is matched by one or five new steps, with identical complete tape, head, and projected state, and no internal halt. Positive bounded blocks give both halting directions. Formalizable in PA; not proof-assistant kernel checked.",
+  "seven_zero_claim": "Only exact literal construction is checked here. The seven-zero deletion is source-specific and requires the separate arbitrary-natural whole-primitive runtime proof and blank-start calibration.",
+  "input_sha256": {
+    "raw_allocation": "0f94433e9329709c438affa56223abf2edd7d20bfc8b13b6893ff4741a800d31",
+    "repaired214": "54cb4f8630801e22f755aef1787cd6a58eba7d024e5f5fcb3b1352d6478f62bd",
+    "final213": "bb4f5ac12b29d07d1080109af9bb564e9e11a4783efc48cd73b8f826789d01f7"
+  },
+  "canonical_reference_sha256": "7af5861da5fdde42e12f0b2460dd900c8e5d5a7d7f876fc2043cad1f20969231"
+}

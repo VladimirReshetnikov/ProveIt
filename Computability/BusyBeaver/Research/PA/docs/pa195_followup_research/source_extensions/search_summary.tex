@@ -1,0 +1,18 @@
+\subsection{Finite searches of the new source families}
+The five completed runs used 373,968 fixed-association assignments and 12,200,000 stochastic proposal slots. Together they made 10,508,034 grammar-scoring calls. No score below 61 was found.
+\begin{center}
+\small
+\begin{tabular}{lrrr}
+\toprule
+Family & Scored evaluations & Best score & Scores below 61\\
+\midrule
+Head roles and order & 1,228,070 & 61 / 65 & 0\\
+Forced head changes & 1,341,329 & 65 & 0\\
+Gamma parameter & 1,982,975 & 64 & 0\\
+48 gate forms & 3,965,397 & 64 & 0\\
+Witness bundle & 1,990,263 & 65 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first row distinguishes the unchanged PA195 seed (61) from changed words (65). It exhausts 373,248 head-role choices and 720 head orders at fixed association before its bounded walk. The next run forces changed-word restarts. The last three runs respectively use 240, 480, and 240 restarts of 10,000 proposal slots.
+The inherited fixed part has 134 controls. An admissible effective reader score of 61 corresponds to the existing 195-state allocation. The scorer checks geometry first, uses matching as an optimistic bound, and performs exact simultaneous local fold-choice checking whenever that bound is at most 64. Scores above 64 need not be realizable state counts. Even a better locally compatible score would still require the complete physical scanner/runtime and startup checks. The JSON receipts preserve seeds, proposal slots, actual evaluations, acceptances, and elapsed times; standalone C++17 sources and input headers permit replay. These finite searches are not lower bounds.

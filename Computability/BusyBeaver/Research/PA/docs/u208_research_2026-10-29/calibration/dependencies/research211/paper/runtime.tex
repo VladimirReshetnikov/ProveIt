@@ -1,0 +1,127 @@
+\section{Whole-tape runtime and blank startup}
+\label{sec:runtime}
+
+A source reassociation changes instruction addresses even when it preserves
+all ordinal control-flow edges. It therefore requires a fresh connection to
+the literal binary machine. We establish that connection by replaying the
+inherited symbolic engine~\cite{proposal1} on the final U211 table and every
+occurrence in its new source. The engine is preserved unchanged in
+\texttt{code/symbolic\_runtime.py}; the new portable driver is
+\texttt{code/verify\_runtime.py}. The resulting certificate uses explicit
+induction rules for unbounded tape segments. It is executable mathematical
+evidence, rather than a proof-assistant kernel certificate.
+
+\paragraph{The quantified frame.}
+For a natural number $v$, put
+\[
+ B(v)=0\,1^{v+1},\qquad C(v)=1\,0\,1^v.
+\]
+For a finite list $A$, write $B(A)$ and $C(A)$ for the corresponding
+concatenations. At a primitive boundary the control is native state~84,
+and the head points to the first bit of the instruction address $p$.
+Relative to that head, the whole tape has the form
+\[
+ \cdots 0\,1\;p\;0^{56+g-|p|}\,1\;
+ B(v_0)\cdots B(v_8)B(a_0)B(A)\;0\cdots .
+\]
+Here $g\in\mathbb N$ is an arbitrary extra gap, $a_0\in\mathbb N$ is an
+arbitrary first spare value, and $A$ is an arbitrary finite spare tail,
+including the empty list. Thus the complete spare list is nonempty.
+The nine logical values $x_i$ are arbitrary naturals, arranged physically
+by
+\[
+ \pi=(6,2,0,4,3,7,8,5,1),\qquad v_{\pi(i)}=x_i.
+\]
+Each guarded decrement is checked separately at zero and at $x_i=u+1$.
+The final source has maximum address length~42 and maximum consecutive-zero
+run~6; its seven-zero origin detector and minimum header distance~56 remain
+compatible with this encoding. Both infinite zero exteriors are represented.
+Unmentioned cells are never silently replaced by a finite sample of zeros.
+
+The engine stores run lengths, elapsed time, and displacement as affine
+expressions with thirteen slots: a constant, the gap, nine primary values,
+the first spare value, and the width of $B(A)$. The last slot denotes the
+actual summed width of the represented list; it is not a second, unrelated
+choice of tape length. Coefficientwise nonnegativity supplies the elementary
+inequalities needed by the following rules.
+
+\paragraph{Four sound symbolic rules.}
+The proof construction uses only these operations.
+\begin{enumerate}
+\item \emph{Literal transition.} A row is read from the final transition
+table. A literal read of a run is permitted only when its constant length
+term is at least one and all coefficients are nonnegative. Removing its
+first symbol, inserting the written symbol, and updating control and head
+therefore implement that transition for every represented valuation. A
+possibly empty run or a read into an opaque context causes rejection.
+
+\item \emph{Unary scan induction.} If the row preserves the control state
+and moves in the current traversal direction, an entire homogeneous run
+can be consumed at once. For run length $n$, this abbreviates exactly $n$
+applications of the same row. Induction on $n$, including zero, proves the
+rule; its time and signed displacement are recorded as $n$ and $\pm n$.
+It places no upper bound on a register value.
+
+\item \emph{Finite-list induction.} Before using any list traversal, the
+checker rederives its one-block law from the final table, with arbitrary
+natural $v$ and opaque contexts on both sides. The four native entry states
+are 64, 0, 40, and 97: respectively rightward $B$-to-$B$, rightward
+$B$-to-$C$, leftward reversed $B$-to-$B$, and leftward reversed
+$C$-to-$B$. Each traversal returns to its entry state after exactly $v+2$
+steps and traverses that width. The empty-list case and concatenation of
+one more checked block prove the corresponding law for every finite list.
+
+\item \emph{Word normalization.} Adjacent equal-symbol runs are joined,
+runs of identically zero length are removed, and the infinite zero exterior absorbs
+neighboring finite zero runs. The additional identity
+\[
+ C(A)1=1B(A)
+\]
+and its reversal follow from the one-block identity and induction on $A$.
+These operations preserve the represented whole word, including its
+position relative to the head.
+\end{enumerate}
+
+\paragraph{Primitive contracts and positive progress.}
+For each source occurrence, the expected endpoint is calculated from its
+instruction: increment, the appropriate decrement outcome, an ancestor
+cut for a control instruction, or the halt label. Address overflow and the
+resulting head displacement are included explicitly. A positive decrement
+increases the header gap; an increment appends the prescribed spare block.
+For every nonhalting primitive, the resulting control, complete tape, and
+head displacement must equal the expected configuration exactly. A halt
+case must reach native~254. The duration must be an affine expression with
+nonnegative coefficients and a strictly positive constant term.
+Consequently every represented source step takes finite positive time.
+The bound of 4000 symbolic inferences per attempted contract limits proof
+construction, not the natural values or list lengths covered by a successful
+contract.
+
+The completed run proves all \textbf{5084 cases}: one for each of 3909
+primitive occurrences, together with an additional case for each of the
+1175 decrements. It uses \textbf{1,280,108 symbolic inferences}, covers all
+\textbf{422 literal transition rows}, and obtains minimum duration constant
+\textbf{5}. Transition coverage is a supplementary diagnostic; the quantified
+contracts and their induction rules provide the substantive evidence.
+The inherited assertion-based engine deliberately rejects optimized Python,
+so the portable driver preserves that restriction.
+
+\paragraph{Exact blank initialization.}
+A separate sparse-tape replay checks all \textbf{48,140} transitions of the
+blank startup. Its entire trace agrees with the U212 baseline~\cite{combined};
+no changed retained row is visited. The endpoint is native~84 at head
+position $-2$, with source ordinal~136 and address
+$\texttt{001100110101010}$. Its header distance is 56, its logical registers
+are
+\[
+ (1,0,13,0,0,1,0,0,1),
+\]
+and its spare list consists of 43 ones. The complete finite support contains
+120 one-cells and agrees with an independently reconstructed frame, which
+also fixes the zero exterior. This is an exact finite initialization proof.
+Together with the new source's identical ordinal control flow and the
+quantified runtime contracts, it transports the baseline's source behavior
+to the released literal machine. The inherited safe-suffix and logical
+calibration arguments are identified separately in
+Section~\ref{sec:calibration}; the checks here do not assert consistency
+or unconditional nonhalting.

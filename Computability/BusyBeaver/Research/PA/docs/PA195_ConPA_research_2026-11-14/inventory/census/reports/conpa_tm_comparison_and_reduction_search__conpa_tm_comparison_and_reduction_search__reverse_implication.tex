@@ -1,0 +1,243 @@
+% Manuscript section, not a compiled or machine-checked proof.
+\section{The reverse implication inside Peano arithmetic}
+\label{sec:reverse-pa}
+
+The upstream formal theorem is
+\[
+ \mathrm{PA}\vdash \neg H_{196}\longrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+Its separate Lean proof of standard-model nonhalting does not, by itself,
+establish the converse implication in PA. The converse has a direct
+syntactic proof. The purpose of this section is to specify that proof and
+to isolate it from the external hereditarily finite model used upstream.
+The additional compiler described below has not been implemented or checked
+in Lean in this package.
+
+\subsection{A syntactic interpretation into PA}
+
+Use a conservative definitional extension of ordinary PA containing
+exponentiation and binary digits. Write $\beta(s,x)$ for the assertion that
+the $x$th binary digit of $s$ is one. Two fixed PA theorems are
+\[
+ \beta(s,x)\longrightarrow x<s,
+ \qquad \neg\beta(x,x).
+\]
+The extension can be eliminated by primitive recursive proof translation;
+its consistency predicate is therefore interchangeable with the ordinary
+one for this argument.
+
+Translate a decoded command formula into an arithmetic formula as follows:
+\[
+ \top^\tau=(0=0),\quad
+ (x_a\mathrel{\mathrm M}x_b)^\tau=\beta(x_a,x_b),\quad
+ (x_a\mathrel{\mathrm E}x_b)^\tau=(x_a=x_b),
+\]
+and commute with implication and universal quantification. Bound auxiliary
+variables in the definition of $\beta$ are renamed away from the surrounding
+binders; choose their labels above the largest label of the finite input.
+This is a primitive recursive, capture-avoiding substitution operation.
+The translation introduces no additional free variables. It is a map on
+syntax, not a satisfaction predicate. The decoder is primitive
+recursive: it recurses on strictly smaller nonzero Cantor-coded
+subexpressions. Every variable label in the decoded formula of code $c$ is
+less than $c$. Consequently $x_c$ is fresh in that formula, a fact PA proves
+about the decoder.
+
+The special code $0$ requires an explicit convention. The arithmetic
+operation $\mathrm I(0,0)$ also gives $0$, while the decoder reads $0$ as
+truth. These two readings are propositionally equivalent. A proof compiler
+uses this fixed equivalence in the zero case; it must not assert literal
+syntactic equality between the two readings. Code $1$ translates to
+$\beta(x_0,x_0)$, whose negation has a fixed PA proof.
+
+There is a related normalization for derived connectives. Coded negation
+$\mathrm N(c)=\mathrm I(c,1)$ initially translates to
+$\tau(c)\to\beta(x_0,x_0)$, not to literal arithmetic negation.
+The fixed PA theorem $\forall x\,\neg\beta(x,x)$ gives a uniform proof
+that these are equivalent. The same normalization applies to coded
+conjunction and existential quantification, including inside binders.
+These fixed normalization proofs are part of the axiom templates below;
+the argument does not silently decode code $1$ as a primitive falsity
+symbol.
+
+\subsection{Uniform finite comprehension is a proof schema}
+
+For every arithmetic formula $\varphi(x,\vec y)$, PA proves
+\begin{equation}\label{eq:finite-comprehension-audit}
+ \forall n\;\exists s<2^n\;\forall x<n\,
+       (\beta(s,x)\leftrightarrow\varphi(x,\vec y)).
+\end{equation}
+Here is the proof, with its uniformity made explicit. Induct on $n$ using
+the displayed existential formula as the induction formula. At $n=0$ take
+$s=0$. At the successor step, use excluded middle for
+$\varphi(n,\vec y)$. If it is false, retain $s$; if it is true, replace $s$
+by $s+2^n$. The standard binary-digit lemmas show that the lower digits are
+unchanged and that the new digit has the required value. The size bound
+becomes $s'<2^{n+1}$.
+
+This describes a primitive recursive map from the code of $\varphi$ to a
+PA proof of~\eqref{eq:finite-comprehension-audit}. It inserts $\varphi$ into
+one full-induction instance and fixed propositional and arithmetic proof
+templates. PA proves that this map produces valid proofs by checking the
+templates and the induction-axiom recognizer. No assertion of the truth of
+arbitrary formulas, and no uniform reflection principle, is used.
+
+Take
+\[
+ \psi(x)= (x=b\lor\beta(a,x))\land\varphi(x)
+ \quad\hbox{and}\quad n=a+b+1.
+\]
+All possible members of $a$, as well as the distinguished point $b$, are
+below $n$. Formula~\eqref{eq:finite-comprehension-audit} yields a number $s$
+with
+\[
+ \forall x\;\bigl(\beta(s,x)\leftrightarrow
+       ((x=b\lor\beta(a,x))\land\varphi(x))\bigr).
+\]
+In particular,
+\[
+ \begin{split}
+ &\forall x\;((\beta(a,x)\to\varphi(x)\to\beta(s,x))
+       \land(\beta(s,x)\to\varphi(x))),\\
+ &\varphi(b)\to\beta(s,b).
+ \end{split}
+\]
+This is the pointed-separation statement needed by the gate.
+
+For the actual gate, $a,b,c$ are variable labels, and the matrix is the
+arithmetic translation of the formula with code $c$, viewed as a formula
+in the variable $x_b$. The guard $c\ne a,b$ and the decoder freshness
+lemma ensure that the set variable $x_c$ is fresh. One must distinguish
+the free distinguished-point occurrence of $x_b$ from its bound occurrence
+inside the separation clause; rename the latter to a fresh variable before
+inserting the comprehension proof. If $a\ne b$, the preceding construction
+applies with $x_a$ as the fixed container parameter. If $a=b$, the membership
+antecedent under the quantifier becomes $\beta(x,x)$ and is false. In that
+case the simpler choice $s=2^{x_b}$ when $\varphi(x_b)$ holds, and
+$s=0$ otherwise, proves both the point clause and
+$\forall x(\beta(s,x)\to\varphi(x))$. This separate case avoids treating
+the captured occurrence of $x_a$ as a fixed parameter. Equality
+and membership vacuity are ordinary quantifier theorems under the same
+guard. Classical propositional reasoning combines these facts into the
+translation of the exact bundled gate.
+
+All six remaining axiom heads translate to fixed logical or equality
+theorem schemas. The restricted propositional head translates to a
+classical tautology; its numerical restriction does not affect soundness.
+The translation respects modus ponens and generalization. Thus there is a
+primitive recursive proof compiler $J$ for which PA proves
+\begin{equation}\label{eq:compiler-sound-audit}
+ \operatorname{Der}_{196}(d,c)\longrightarrow
+ \operatorname{Prf}_{\mathrm{PA}}(J(d),\tau(c)).
+\end{equation}
+When $c=1$, compose with the fixed proof of
+$\neg\beta(x_0,x_0)$ to obtain a PA refutation. This is the precise
+syntactic replacement for an appeal to external semantic soundness.
+
+More explicitly, define $J$ by recursion on the annotated proof tree.
+At an axiom leaf insert its fixed logical/equality proof template, or
+the comprehension template just constructed for a gate. At an MP node
+append the translated premise proofs and one MP step, inserting the
+fixed zero-code equivalence when necessary. At a generalization node
+append the corresponding generalization. The usual finite-proof list
+concatenation and reindexing operations are primitive recursive. An
+induction on the coded proof tree verifies the output proof predicate.
+This defines the mathematical compiler; writing its concrete Gödel-code
+implementation and verifying that implementation in Lean remain separate
+tasks.
+
+\subsection{Command safety under consistency}
+
+For a command store $(t,w,d,h)$, retain proof codes for the translations of
+$t$, $h$, and every entry of the finite stack encoded by $w$. The initial
+store has zeros everywhere, so fixed proofs of truth supply the invariant.
+Stack underflow produces code $0$ and is harmless. Each command preserves
+the invariant by primitive recursive operations on proof codes:
+\begin{itemize}
+\item An axiom command appends proofs supplied by the head and gate
+  compilers and by generalization of the existing proof of $h$.
+\item A successful modus-ponens test applies modus ponens to the existing
+  proofs; a failed test writes zeros, for which the fixed truth proof is
+  used.
+\item A shift only moves existing proofs and stack entries. Its halt test
+  is $t+h=1$, so one of the proved formula codes would be $1$. Under
+  $\operatorname{Con}(\mathrm{PA})$, this is impossible by
+  \eqref{eq:compiler-sound-audit} and the fixed refutation of its translation.
+\end{itemize}
+This is an arithmetical invariant involving proof codes. Induction over a
+coded command computation is an instance of full PA induction. It works
+for internal, possibly nonstandard command computations as well as for
+ordinary finite computations.
+
+\subsection{From commands to the literal tape machine}
+
+The final bridge is the two-level positive-continuation argument already
+used by the upstream external simulation. Each safe command boundary has
+a finite positive register-program continuation to the next safe command
+boundary. Each register instruction has a finite positive tape continuation
+to its next frame. The arithmetic versions of the pairing, unpairing,
+register and tape-macro contracts are total in PA. Their loop proofs use
+decreasing natural-number counters; the finite per-site coverage checks
+select the applicable contract.
+
+In particular, the existing arithmetic modules
+\path{OriginalModelCoverage} and
+\path{EndpointInternalCodedSourcePhysicalStep} supply all-model
+instruction contracts and positive coded physical continuations.
+\path{InternalCodedSourceDispatchTotal} supplies positive coded command
+continuations. Their conclusions are stronger than external standard-model
+simulation alone.
+
+Project the auxiliary machine traces to the literal 196-state machine by
+relabeling their control vectors. The upstream theorem
+\path{StateMapTrace.step_maps} proves the pointwise projection for every
+nonpadding control. The same finite table check preserves that property
+at each next step. All physical root frames have the fixed nonpadding
+control $81$, so induction along any positive frame continuation proves
+the required projection, with unchanged length and tape vectors. The
+packaged theorem \path{StateMapProjection.segment_to_literal} is
+specialized to blank-start halting segments; the positive-segment version
+just described is an additional composition obligation, not a claim that
+this specialized theorem already proves nonhalting. Apply the principle
+below to the projected continuations. An independent backwards simulation
+is not needed.
+
+For clarity, the elementary logical principle behind this bridge is the
+following. Suppose $I$ is an arithmetical configuration invariant, the
+initial configuration satisfies $I$, and every $I$-configuration has a
+positive finite execution to another $I$-configuration. A deterministic
+machine cannot have a finite halting run from an $I$-configuration. Prove
+this inside PA by strong induction on the proposed halting length $n$.
+For a continuation of length $k>0$, if $k\le n$, the next invariant
+configuration would halt in $n-k<n$ steps. If $k>n$, the continuation would
+extend strictly beyond the first halt, contradicting the definition of
+the transition relation. The induction predicate may contain $I$;
+full PA induction permits that predicate.
+
+Applied to the proof-code invariant, the startup trace and the two levels
+of macro simulation, this gives the mathematical implication
+\[
+ \mathrm{PA}\vdash \operatorname{Con}(\mathrm{PA})\longrightarrow\neg H_{196}.
+\]
+Together with the upstream arithmetized refutation-to-halting compiler it
+gives the desired biconditional. Its exact implementation status must remain
+visible: the upstream Lean library checks the latter compiler and external
+nonhalting; it does not contain the syntactic interpretation compiler $J$
+or the foregoing PA-internal proof-code safety theorem. A Lean certification
+of the full biconditional requires adding those modules and the positive
+segment and invariant compositions just described. No such certification
+is supplied here.
+
+\subsection{What ConciseIPRA contributes}
+
+The native scalar calculi in ConciseIPRA are proved equivalent to iPRA,
+whose induction is quantifier-free. They do not by that fact furnish a
+refutation calculus for full PA. In particular the uniform finite
+comprehension proof above uses the full induction instance containing
+the arbitrary translated formula $\varphi$. Replacing the present calculus
+by an iPRA calculus without supplying the missing strength would change the
+consistency problem. Useful transferable ideas are operational: deriving
+equality rules from other rules, choosing antecedent order for shared
+instruction trees, and using a literal syntactic feature to select a rule
+mode. Those ideas are applicable only after the full-PA proof translations
+are re-established.

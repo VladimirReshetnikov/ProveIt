@@ -1,0 +1,81 @@
+{
+  "status": "BOUNDED_NEGATIVE_CHECK_NO_ACCEPTED_REDUCTION",
+  "baseline_working_states": 196,
+  "baseline_paths_containing_six_consecutive_zeros": 20,
+  "initial_allowed_physical_rotations_examined": 56,
+  "filter_for_listed_single_moves": "resolved source CFG identical; no claim of full symbolic validation",
+  "single_moves_reducing_six_zero_path_count": [
+    {
+      "rotation": [
+        90,
+        105,
+        0
+      ],
+      "remaining": 15
+    },
+    {
+      "rotation": [
+        100,
+        174,
+        0
+      ],
+      "remaining": 19
+    },
+    {
+      "rotation": [
+        1342,
+        1320,
+        0
+      ],
+      "remaining": 19
+    }
+  ],
+  "initial_move_observation": "No initially available individually CFG-preserving rotation removes the six-zero run at source ordinal0.",
+  "two_step_root_reassociation": {
+    "rotations": [
+      [
+        84,
+        53,
+        0
+      ],
+      [
+        53,
+        310,
+        1
+      ]
+    ],
+    "after_first_move_only_cfg_change": {
+      "ordinal": 3811,
+      "old": [
+        "jump",
+        0
+      ],
+      "new": [
+        "jump",
+        11
+      ]
+    },
+    "after_second_move_cfg_equal": true,
+    "working_states": 196,
+    "source0_address": "00000",
+    "remaining_six_zero_addresses": 19,
+    "symbolic_validation": {
+      "ok": false,
+      "first_failed_ordinal": 11,
+      "branch": {
+        "physical_register": 0,
+        "is_zero": true
+      },
+      "contracts_completed": 16
+    },
+    "diagnosis": "raw69 incoming previous bit changes1 to0;69/0 goes left to213, whose read0 enters92 instead of read1 entering90.",
+    "table_file": "shortscanner_rootrotation196.json"
+  },
+  "limitations": [
+    "Only the initial56 moves and one two-step composition were checked.",
+    "No global impossibility or state lower bound is claimed.",
+    "No long beam search was started.",
+    "Five-zero address bounds alone were not treated as sufficient: full symbolic contracts and blank startup would still be required.",
+    "The contract failure rejects this proof-preserving construction attempt; it is not a proof that its blank-run Con(PA) equivalence is false."
+  ]
+}

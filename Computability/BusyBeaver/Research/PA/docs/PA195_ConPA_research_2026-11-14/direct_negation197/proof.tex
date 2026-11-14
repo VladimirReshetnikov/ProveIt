@@ -1,0 +1,89 @@
+\section{An exact direct-negation replacement}
+This section records a source simplification implemented by an experimental
+197-state table. It does not meet the requirement of fewer than 196 states.
+The parent is the separated diagonal emitter with the Combined196 command
+control changes. Its source has 3,649 sites; the replacement has 3,433.
+
+Write $T=r_1$, $W=r_2$, $S=r_6$, and $R=r_7$, and put
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+The old negation block is \texttt{push; increment T; cons}. The replacement
+is \texttt{drain T into S; increment T; pair-and-times-four}.
+It reuses the existing source subtrees \texttt{node37} and \texttt{node64},
+whose native entry states are 28 and 106.
+
+\paragraph{Arbitrary-value block identity.}
+For every $t,w,s\in\mathbb N$, both blocks, entered with
+$(T,W,S,R)=(t,w,s,0)$, terminate with
+\[
+ (T,W,S,R)=(4p(t+s,1),w,0,0),
+\]
+and preserve all other registers. In the old block, the push stores
+$p(t+s,w)$ in $W$ and clears $T,S,R$. After the increment, $T=1$.
+The cons block unpairs $W$ back into $t+s$ and $w$ and computes $4p(t+s,1)$.
+In the new block, the first drain gives $T=0,S=t+s$; the increment gives
+$T=1$; the unchanged pairing suffix gives exactly the same result.
+
+Here is an explicit termination argument for that pairing suffix, avoiding
+an inference from finite input tests. It first drains $T$ into both $S$ and
+$R$. At the following checkpoint $T=0$, and the invariant is
+\[
+ R+\frac{S(S+1)}2=p(s_0,t_0)
+\]
+for the initial inputs $(S,T,R)=(s_0,t_0,0)$. A nonzero $S$ is decremented
+once, $R$ is incremented once, and the remaining $S$ is drained into $T$.
+Returning through the first drain changes the checkpoint values by
+$(R,S)\mapsto(R+S,S-1)$, where the right-hand $S$ is the old value.
+The displayed invariant is preserved, and $S$ decreases strictly.
+Consequently this phase terminates with $S=T=0$ and $R=p(s_0,t_0)$.
+The final loop drains $R$ while making four increments of $T$ per iteration,
+giving $T=4p(s_0,t_0)$ and $R=0$. Every drain terminates by decreasing the
+register drained. The argument is an elementary induction over natural
+numbers and is formalizable in PA.
+
+The entry condition $R=0$ matters. With all registers initially zero except
+$R=1$, the old 47-site block returns $T=16$, whereas the new 20-site block
+returns $T=12$. Thus this is not an unconditional replacement on arbitrary
+source configurations.
+
+\paragraph{The actual source invariant.}
+The clean seed is source site 25 with register vector
+$(2,0,0,0,0,0,0,0,0)$. A bit mask records, for each register, whether its
+value is zero or positive. Increment makes the corresponding bit positive;
+a decrement at zero takes only its zero branch; a decrement at a positive
+value takes its positive branch and nondeterministically leaves zero or a
+positive value. Other instructions preserve that bit.
+The computed overapproximations contain 263,244 old and 247,308 new
+site/mask pairs. The replay independently checks initial inclusion and
+closure under every abstract successor. Induction on a concrete execution
+therefore places every reachable configuration in the abstraction. At each
+of the eight replaced entries, every admitted mask has bit 7 clear.
+Hence the required $R=0$ hypothesis holds without sampling a run.
+
+The old entry ordinals are
+\[
+584,686,1759,1861,3007,3081,3316,3472;
+\]
+the new entries are
+\[
+584,659,1705,1780,2899,2946,3154,3283.
+\]
+The regions are disjoint. Their only external entry is their first site and
+their only external exit their following site. The 3,273 other source rows
+agree under the order-preserving relocation, including all branch targets.
+The local identity and entry invariant therefore compose into a
+halting-preserving source simulation from the clean seed. This argument
+compares source computations; it does not substitute a finite blank-tape
+prefix for a proof of nonhalting.
+
+\paragraph{Literal implementation and limits.}
+The table has 197 working states, with 68 axiom-reader states and five
+compatible reader folds over the fixed 134-state part. The complete symbolic
+primitive-runtime audit has 4,461 cases and a maximum of 497 symbolic steps.
+The literal startup reaches the exact source frame after 57,922 steps.
+The checker uses the unchanged upstream arbitrary-register block contracts;
+these executable certificates are not newly exported Lean theorems. The
+mathematical and encoded-proof calibration of the parent calculus remains a
+separate dependency. No state saving or new end-to-end PA biconditional is
+claimed for this 197-state experiment.

@@ -1,0 +1,535 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.88in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx,microtype}
+\usepackage{xcolor,xurl,enumitem,fancyhdr,needspace,etoolbox}
+\usepackage[hidelinks,pdftitle={PA195: a 195-state binary Turing machine for the consistency of Peano arithmetic},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}]{hyperref}
+\definecolor{ink}{HTML}{17364D}
+\definecolor{accent}{HTML}{0B6B6A}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\file}[1]{\texttt{\nolinkurl{#1}}}
+\newcommand{\code}[1]{\texttt{#1}}
+\pretocmd{\section}{\Needspace{8\baselineskip}}{}{}
+\AtBeginEnvironment{lemma}{\Needspace{5\baselineskip}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}PA195}
+\fancyhead[R]{\small A binary machine for $\Con(\PA)$}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{\color{ink}\bfseries PA195\\[0.3em]
+\Large A 195-state binary Turing machine\\for the consistency of Peano arithmetic}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{13 November 2026\\[0.3em]\small Source snapshot:
+\texttt{906367250a7f96c923147b10df392294bced7be5}}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We give an explicit deterministic single-tape, two-symbol Turing machine
+with 195 working states, started on a two-way infinite all-zero tape, and
+an ordinary mathematical proof that Peano arithmetic proves its
+nonhalting equivalent to $\Con(\PA)$. The construction preserves the
+191-item diagonal-vacuity axiom emitter in the supplied research corpus.
+A new binary association admits seven simultaneously valid
+history-sensitive reader identifications: 134 inherited controls plus
+68 reader controls, less seven, gives 195.
+
+The packet contains the complete 390-row table, deterministic
+reconstruction, all 3,700 source instructions, 28 finite local simulation
+certificates, an exact 58,154-step startup certificate, and executable
+symbolic checks for all 4,815 primitive branches. An independent audit
+checks the source graph, two representations of startup, all protected
+engine rows, and 19,260 concrete instruction frames.
+The comparison covers all 27 incoming archives, the direct PA research
+directory, 20 designated U208 graph classes, and 25 distinct supported
+196-state layouts. The new arithmetic endpoint is proved in ordinary
+mathematical form; a new end-to-end Lean or Rocq theorem is not claimed.
+\end{abstract}
+\vspace{0.6em}
+\begin{center}
+\fcolorbox{accent}{white}{\parbox{0.88\linewidth}{\centering
+\large\textbf{195 working states \quad 2 symbols \quad 390 transitions}\\[0.4em]
+\(\displaystyle
+ \PA\vdash
+ \neg\Halt(\mathrm{PA195},\mathrm{blank})\ \leftrightarrow\ \Con(\PA).
+\)}}
+\end{center}
+\newpage
+\tableofcontents
+\newpage
+
+\section{Result and exact machine conventions}
+\label{sec:result}
+The deliverable \file{pa195/pa195.tm} is the definitive literal machine.
+Its working labels are $0,\ldots,194$, its start label is $0$, and its
+separate halt label is $195$. The tape alphabet is $\{0,1\}$, the tape
+extends without bound in both directions, the initial head coordinate is
+zero, and every initial cell is zero. There is one transition for every
+working-state/read-symbol pair. No stay-put move is used.
+
+A row \((q,b,w,D,q')\) means: read \(b\), write \(w\), move one cell in
+direction \(D\in\{L,R\}\), and enter \(q'\). The halt control has no
+outgoing row and is excluded from the working-state count. All 195
+working states are reachable in the finite transition graph. This last
+claim concerns graph reachability, not occurrence on the actual blank run.
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Object & Exact value\\
+\midrule
+Working states & 195\\
+Transition rows & 390\\
+Start / halt & 0 / 195\\
+Source root in the dense table & 75\\
+Unique halt transition & \(63,\ 1\ \mapsto\ 1,\ R,\ 195\)\\
+First transition on blank & \(0,\ 0\ \mapsto\ 1,\ R,\ 1\)\\
+Source instructions & 3,700\\
+Primitive branch contracts & 4,815\\
+Exact startup length & 58,154 literal transitions\\
+\bottomrule
+\end{tabular}
+\end{center}
+The SHA-256 of the literal five-column table, including its final newline, is
+\begin{quote}\small
+\nolinkurl{5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455}.
+\end{quote}
+Appendix~\ref{app:table} prints the entire table in paired-column form.
+The native-label version and its complete conjugacy are also included;
+native label 254 and dense label 195 denote the same halt control.
+
+\subsection{What is new}
+The new result is a physical compilation of the existing
+\emph{diagonal191} program below the 196-state threshold. Its theory,
+formula encoding, axiom order, formula parameters, register assignment,
+and exact ordered instruction sequence are unchanged from the
+\file{diagonal196} construction in the supplied archive \cite{diagonal}.
+The source parenthesization and reader allocation change.
+The ordinary PA proof in Section~\ref{sec:pa-calibration} explicitly
+connects this unchanged calculus to the delivered table.
+
+For the supplied \file{diagonal196} parent, the allocation is
+\(134+68-6=196\).
+For the new association, it is
+\[
+ \boxed{134+68-7=195.}
+\]
+The new association therefore retains the same number of allocated
+readers before folding but admits one additional \emph{compatible}
+fold. Optimizing only the number of syntax nodes would miss this saving.
+The 134 inherited controls comprise 36 engine controls, 13 leaf routers,
+and 85 readers outside this AX allocation. The final reader census is
+$85+(68-7)=146$; hence $36+13+146=195$.
+
+\subsection{Meaning of the proof claim}
+The theorem is the internal PA biconditional, not merely external
+nonhalting under the standard interpretation. It is proved here by
+uniform syntactic proof transformations, arithmetic induction, and
+positive finite simulation. Its validity does not assume $\Con(\PA)$.
+Actual blank-tape nonhalting follows if PA is consistent.
+
+The published PA196 Lean development supplies the internal implication
+from nonhalting to consistency, together with its other external and
+independence results \cite{chang,bridge}. It should not be described as
+already containing the converse internal implication. This report
+supplies the converse by syntactic PA proof annotations and finite
+bit-comprehension proof generation. The executable machine certificates
+and the ordinary proof are available for review; a newly elaborated
+Lean or Rocq endpoint for PA195 remains future formalization work.
+
+\section{Comparison of the supplied designs}
+\label{sec:comparison}
+\subsection{Pinned scope and deduplication}
+The comparison fixes ProveIt commit
+\file{906367250a7f96c923147b10df392294bced7be5}.
+The direct \file{Computability/BusyBeaver/Research/PA} directory contains
+the imported PA196 and PA209 projects plus their comparison and source
+experiments \cite{comparison}. The incoming directory has 27 ZIP
+archives, totaling 224,873,862 bytes, with 21,003 non-directory outer
+members. Text, code, and machine members were inspected or indexed;
+nested archives were inspected to depth two. Appendix~\ref{app:archives}
+gives a contribution/status entry for every incoming archive.
+
+The numeric table census finds 1,857 \file{.tm} occurrences and 521
+distinct literal byte strings. These are \emph{file} counts, not claims
+of 521 correct consistency machines: they include repeated ancestors,
+experimental allocations, rejected candidates, and small test controls.
+For meaningful comparisons we canonicalize designated tables as rooted,
+read-symbol- and action-preserving graphs. A canonicalization preserves
+the start control, the halt control, writes, directions, and the two
+read-symbol labels; it does not collapse a change of tape convention.
+
+The designated U208 corpus has 27 presentations and 20 graph classes.
+The first nine presentations form two classes, with five and four
+presentations respectively. Eighteen later helper variants each add a
+class. Twenty-five distinct supported 196-state layouts are retained.
+Twenty-three have complete evidence in the supplied reports; two more
+have their missing startup or contract checks completed in this audit.
+\emph{Supported} means that the table has its stated source, runtime,
+startup, and mathematical evidence.
+It does not upgrade every report to a kernel-checked theorem.
+
+The full 196-state census contains 268 table occurrences, 131 distinct
+byte strings, and 90 rooted graph classes. Every class is classified in
+the accompanying ledger; the remaining classes have partial, bounded,
+or negative evidence and are not silently promoted to the supported frontier.
+
+The incoming corpus also contains 14 occurrences of 195-state tables:
+eight literal byte strings and six candidate constructions after
+native/dense renamings are identified. All are rejected or uncertified
+in their source reports. Some fail an exact primitive contract; others
+have a wrong source successor or an explicit blank-tape halt. They are
+not predecessors already meeting the requested endpoint.
+
+\clearpage
+\subsection{The 196-state frontier}
+\input{sections/design_comparison.tex}
+The source counts are primitive instruction occurrences. Contract counts
+include both outcomes of a conditional decrement. Prior numerical
+figures are supported by the supplied receipts, with the two audit-completed
+cases marked separately; the PA195 row is newly recomputed. Exact archive/member/hash bindings are in
+\file{comparison/frontier196_and_pa195.json}, and complete state
+bijections for the 25 normalized tables are retained under
+\file{comparison/prior196/}.
+
+\subsection{Why the older reductions are not additive}
+James Chang's specified 209-state predecessor and the U209 parents of the
+U208 archives are distinct machines. The U208 saving identifies the
+particular native roles 172 and 211 using entry history and an existing
+helper. Those old roles are already absent from PA196. One cannot simply
+subtract that saving again from a different 196-state table.
+
+The published 209-to-196 change combines the transposed quantifier code,
+a smaller equality interface, changed axiom order, and contextual reader
+sharing \cite{chang}. The original PA196 has 3,812 source sites and 159
+distinct internal source nodes; its 201-item AX word uses 68 allocated
+reader nodes and six folds. The diagonal-vacuity source reduces the AX
+word to 191 and the full source to 3,700 sites. Its earlier physical
+layouts reached 196, and provide the parent used here.
+
+Several apparently simpler proposals do not yield a smaller binary
+machine. A 157-node source can lose a required helper. A different
+158-node layout needs an extra scanner state. The five-zero source
+representation changes the initial source address and loses inherited
+contextual sharing. The separate-vacuity emitter has only 190 macro
+items, but pushes ten stack entries instead of nine and has a different
+command compiler interface. These examples explain why the present
+search scores an actual compatible allocation.
+
+The direct PA directory's additional literal tables are inventoried in
+\file{comparison/pa_directory_inventory.json}. Besides the two
+published tables and alternative196, these include 197-state
+negation/MP and shortcut experiments, source-pruning allocations, an
+identity reconstruction, and a 198-state root-frame experiment with an
+unsettled blank initialization. None supplies a smaller accepted table.
+
+\subsection{Ideas reused from ZFC and ConciseIPRA}
+The useful ZFC inheritance is the compact unary-register engine and its
+symbolic block contracts, source-tree sharing, and history-sensitive
+reader reuse \cite{zfc}. The new machine keeps this engine and changes
+its compiled proof-search program representation.
+
+The useful proof-theoretic idea is to derive only the equality interface
+actually used by the refutation compiler, exploiting a formula code as a
+fresh variable label. The diagonal version is already in the incoming PA
+research, and is credited as such. A small iPRA checker cannot simply
+replace the searched calculus: the PA translation uses induction for an
+arbitrary formula in finite bit comprehension. Section~\ref{sec:pa-calibration}
+explains this strength distinction; no identification of
+$\Con(\mathrm{iPRA})$ with $\Con(\PA)$ is used \cite{ipra}.
+
+\section{Exact source and compilation}
+\label{sec:source}
+\subsection{Source representation and invariant interfaces}
+The delivered \file{pa195/source.json} specifies every primitive source
+instruction, its binary address, and every ordinal successor. The
+instruction vocabulary is increment, conditional decrement, break,
+continue, and halt. Binary association determines how break and
+continue depths are resolved; equal source fragments can share physical
+reader states. Consequently equality of flattened opcodes alone would
+not be sufficient. The verifier compares the complete ordinal
+control-flow graphs with two independently structured resolvers.
+
+The 3,700 sites consist of 1,468 increments, 1,115 conditional
+decrements, 1,116 jumps, and one halt. Thus the branch census is
+\[
+ 1468+2(1115)+1116+1=4815.
+\]
+The longest path has 37 bits and the longest consecutive zero run is six.
+The clean seed remains source ordinal 25, at path \code{100000}.
+
+At a clean physical frame the left marker is immediately left of the
+first path cell, a zero-filled gap separates the path from the right
+header, and the complete register file follows the header. A natural
+value \(v\) is encoded by \(0\,1^{v+1}\).
+Logical registers \(0,\ldots,8\) occupy physical positions
+\[
+ (6,2,0,4,3,7,8,5,1).
+\]
+The symbolic gap is \(48+n\) for arbitrary \(n\ge0\).
+Increment preserves the gap and appends a one-valued spare block;
+a positive decrement increases the gap by one; zero decrement and
+jump preserve it. The proof covers every complete finite file of at
+least ten registers satisfying the indicated branch condition.
+
+\subsection{The emitted numerical calculus}
+Section~\ref{sec:pa-calibration} defines the formula constructors and
+the changed gate fully. For completeness, the six unchanged heads are
+listed here. \(D,A,H\) are arbitrary numerical parameters, read as
+variable labels or formula codes in the indicated positions.
+\begin{center}\small
+\begin{tabular}{@{}cl@{}}
+\toprule
+Head & Formula\\
+\midrule
+1 & \((\exists x_D\,U(D,H))\to H\)\\
+2 & \(U(D,U(A,H))\to U(A,U(D,H))\)\\
+3 & \(M(H,D)\to(E(H,A)\to M(A,D))\)\\
+4 & \(E(H,D)\to(M(A,H)\to M(A,D))\)\\
+5 & \(\exists x_D\,E(H,D)\)\\
+6 & \(U(D,A)\to(U(D,A\to H)\to U(D,H))\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+The restricted propositional schema is
+\[
+ \rho_8(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \qquad u\le D.
+\]
+The only primitive inference rules are modus ponens and generalization
+of an already derived theorem. There is no extra equality rule or
+arbitrary-tautology oracle.
+
+In a command store \((t,w,d,h)\), an AX call with parameters \((c,x,y)\)
+uses \(D=d+x\), \(H=h+y\), \(A=c\). In execution order it pushes
+the saved \(t\), \(U(d,h)\), \(\rho_8(D,A,H,d)\), and heads 1 through 6.
+Its new top is the diagonal gate when the guard succeeds and truth
+otherwise; \(d,h\) are cleared. The exact output, including its full
+stack order and the gate, is verified as an identity in a free algebra.
+It is not inferred from selected small numerical codes.
+
+The new \file{grammar.json} defines the complete association of the same
+191 macro tokens. A pair of adjacent increments uses an already
+available macro root, so the grammar's number of named rules must not
+be confused with its 68 newly allocated reader controls. The deterministic
+builder expands the exact grammar, retains the inherited macro entry
+controls, and then applies the seven folds.
+
+\subsection{Exact startup and total primitive simulation}
+After exactly 58,154 literal steps, the delivered machine is in dense
+state 75 (native 84), with head at absolute coordinate \(-2\).
+Relative to that head the left marker is at \(-1\), the path is
+\code{100000}, the right header is at 48, and the physical register
+file is
+\[
+ [0,0,0,0,0,0,2,0,0]\ \mathbin{+\!\!+}\ [1]^{26}.
+\]
+The full finite nonzero support, containing 66 cells, is recorded in
+\file{startup_certificate.json}; every other tape cell is zero.
+The proof therefore uses blank initialization of this exact machine,
+not an externally supplied nonblank input.
+
+For both the unfolded and folded tables the executable symbolic
+interpreter checks all 4,815 branch contracts at arbitrary gap and
+register values. Its register oracle is justified by the inherited
+unary-loop proofs. Independently, all 44 rows named in the Lean
+\code{boxRows} contract, the additional increment-tail row, and even
+the full 46-row protected superset were compared literally.
+Every row is unchanged. The runtime soundness argument and its
+PA internalization are developed in Section~\ref{sec:pa-calibration}.
+
+\input{sections/fold_proof.tex}
+
+\subsection{The interacting five-step case}
+Compatibility is substantive: an apparent seven-edge matching in an
+earlier grammar allowed only five folds simultaneously. That grammar was
+discarded. The retained grammar passes the simultaneous check, including
+a case whose helper itself participates in another fold.
+
+For raw control 2036 reading 1 with its required left-neighbor bit 1,
+the raw step writes 1, moves right, and enters 2037. The folded table
+executes these five rows; head positions are relative to entry.
+\begin{center}\small
+\begin{tabular}{@{}rrrrcr@{}}
+\toprule
+State & Head & Read & Write & Move & Next\\
+\midrule
+2036 & 0 & 1 & 1 & L & 2046\\
+2046 & -1 & 1 & 1 & R & 2043\\
+2043 & 0 & 1 & 1 & L & 2005\\
+2005 & -1 & 1 & 1 & R & 2054\\
+2054 & 0 & 1 & 1 & R & 2037\\
+\bottomrule
+\end{tabular}
+\end{center}
+Only the two known cells are read, their contents are unchanged, and
+the final state and head exactly match the raw step. This illustrates
+why disjoint pairs alone are insufficient: the composed helper behavior
+must also be checked.
+
+\input{sections/pa_calibration.tex}
+
+\section{Verification, reproduction, and evidence limits}
+\label{sec:verification}
+\subsection{Reproduction without a search}
+From the archive's top-level directory, run
+\begin{verbatim}
+python3 -B pa195/build_verify.py
+python3 -B verification/verify_independent.py pa195 --concrete
+python3 -B verification/check_engine.py
+\end{verbatim}
+Only Python 3 and its standard library are required. No network access,
+optimizer, SAT solver, or proof-assistant installation is needed for
+these checks. Python optimization mode \code{-O} must not be enabled,
+because the preserved source parser uses assertions. To regenerate
+derived certificates, add \code{--export} to the first command.
+
+The builder pins the inherited files, reconstructs both tables, checks
+the complete state renaming, validates all incoming-history conditions
+and local quotient traces, verifies the source graph and free-algebra
+emitter identity, checks both universal symbolic contract lists, and
+replays the complete startup. The independent verifier imports none of
+the compiler or symbolic-runtime code. It parses the source itself,
+resolves control through subtree intervals, checks the literal machine
+and conjugacy, and performs two independent startup simulations.
+
+\begin{center}\small
+\begin{tabular}{@{}p{0.48\linewidth}p{0.44\linewidth}@{}}
+\toprule
+Evidence & Result\\
+\midrule
+Literal table reconstruction & 195 states, 390 rows; exact SHA-256\\
+Graph reachability & All 195 working controls\\
+Local quotient & 22 incoming rows; 28 exhaustive two-cell cases\\
+Positive local durations & Ten length-1, seventeen length-3, one length-5\\
+Source identity & 3,700 opcodes and all ordinal successors unchanged\\
+Emitter identity & All 191 tokens; full stack and guarded top\\
+Symbolic primitive verification & All 4,815 cases, for each of two tables\\
+Register oracle prerequisites & All 46 protected rows identical\\
+Blank startup & 58,154 steps; state, head, and complete tape exact\\
+Independent concrete frames & 19,260 runs; 8,234,830 literal steps\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The concrete frames use gaps 48, 49, and 61, variable register
+contents, both decrement branches, and different nonempty spare tails.
+Their longest measured run is 708 transitions. These are transcription
+and implementation controls; the universal proof is supplied by the
+symbolic contracts and their loop lemmas. Similarly, the symbolic
+evaluator's maximum of 497 is an \emph{abstract} execution length, not
+a bound on the physical time for arbitrary unary register contents.
+
+\subsection{What the packet establishes}
+The seven-state quotient is supported by a complete finite all-tape
+proof. The source compilation is supported by exact graph identity,
+total symbolic contracts, and the inherited register-block proofs.
+The PA consistency calibration is given as an ordinary proof with
+uniform proof-code transformations, including the truth-code alias,
+the zero-stack alias, variable-label collisions, and both directions
+of finite trace transport.
+
+No finite prefix of the actual blank run is used as evidence of
+nonhalting. The runtime and startup verifications do not themselves
+prove PA's consistency. The theorem only transfers consistency to
+nonhalting inside PA; it does not assert that PA proves either of
+those equivalent statements. No global minimality claim is made for
+195 states.
+
+The remaining difference from a fully formalized result is explicit:
+the new complete theorem has not been elaborated in Lean or Rocq.
+Selected unmodified upstream proof sources are supplied for review,
+with exact pinned URLs and hashes, rather than presented as a new
+standalone proof-assistant project.
+
+\subsection{Files and provenance}
+\file{pa195/} is the deterministic machine packet.
+\file{verification/} contains the independent checker and audit receipts.
+\file{comparison/} contains the complete archive inventory, the direct PA
+directory inventory, canonical comparison manifests, and the 25 normalized
+supported 196-state tables. \file{reference_sources/} supplies the selected
+upstream proof modules cited in the arithmetic and engine arguments.
+The original licenses and source hashes are retained.
+
+The article is compiled with
+\begin{verbatim}
+cd report
+latexmk -pdf -interaction=nonstopmode -halt-on-error pa195_conpa.tex
+\end{verbatim}
+All numerical table data printed below are generated from the delivered
+machine, so the PDF and the machine-readable artifact specify the same
+390 transitions.
+
+\appendix
+\clearpage
+\section{Complete transition table}
+\label{app:table}
+An entry \(wDq'\) means write \(w\), move \(D\), and enter \(q'\).
+State 0 is initial. The symbol \(\mathrm H\) denotes the separate halt
+label 195. The 195 working-state entries below specify both transitions.
+Read down each panel, then proceed to the next panel on its right.
+\input{sections/transition_table.tex}
+
+\section{Archive-by-archive comparison}
+\label{app:archives}
+Every archive below is at the pinned source commit. The longer
+machine-readable inventories preserve exact member names, sizes,
+digests, and comparison maps. The entries distinguish mathematical
+source simplification from a validated physical state reduction.
+\input{sections/archive_comparison.tex}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{chang}
+James Chang.
+\emph{Nonhalting and PA-independence for a 196-state Turing machine}.
+Upstream revision \file{407cdc356f6b586635e71ac92be394255f4bfea4}.
+\url{https://github.com/jamesyc/BusyBeaver/tree/407cdc356f6b586635e71ac92be394255f4bfea4}.
+The imported paper, source, machine, and proof inventory are in ProveIt,
+\file{Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/}.
+
+\bibitem{comparison}
+ProveIt. \emph{PA196 and the incoming U208 construction}.
+Commit \file{906367250a7f96c923147b10df392294bced7be5}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/906367250a7f96c923147b10df392294bced7be5/Computability/BusyBeaver/Research/PA/pa196-vs-u208/COMPARISON.md}.
+
+\bibitem{bridge}
+ProveIt. \emph{PA196: a route to the missing internal implication}.
+Same pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/906367250a7f96c923147b10df392294bced7be5/Computability/BusyBeaver/Research/PA/pa196-vs-u208/PA-BRIDGE.md}.
+
+\bibitem{diagonal}
+ProveIt incoming research.
+\file{pa_consistency_comparison_and_new196_2026-11-13.zip},
+especially the 191-token diagonal calculus and \file{axioms/diagonal196/}.
+Archive SHA-256
+\nolinkurl{6fcb1cf2878eda152beda0b17cc0242c003908fa8adf07c81a2bbf49870f1866}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/906367250a7f96c923147b10df392294bced7be5/docs/incoming/pa_consistency_comparison_and_new196_2026-11-13.zip}.
+
+\bibitem{incoming}
+ProveIt. All 27 incoming PA research archives at the pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/docs/incoming}.
+The accompanying inventory records every inspected archive and member.
+
+\bibitem{zfc}
+ProveIt. ZFC small-machine research and inherited register-engine lineage.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/Computability/BusyBeaver/Research/ZFC}.
+
+\bibitem{ipra}
+ProveIt. \emph{ConciseIPRA}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\end{thebibliography}
+\end{document}

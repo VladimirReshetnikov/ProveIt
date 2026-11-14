@@ -1,0 +1,167 @@
+\section{Rejected shortcuts and research implications}
+\label{sec:research}
+
+Several plausible reductions fail for concrete reasons. They are useful
+because they explain why a smaller-looking source or a few successful
+executions would not have been sufficient evidence for U211.
+
+\paragraph{The original U212 patches are duplicates.}
+All seven intact final tables are identical. Their local proofs can be
+combined as redundant evidence, but their one-state reductions cannot be
+counted repeatedly. The earlier known tagged rotations additionally
+repurpose helper 211, invalidating the U212 bypass. Extending the closed
+region to 936 primitives is what makes a different, compatible allocation
+available here.
+
+\paragraph{A shorter origin detector is not sound.}
+The inherited source contains legal addresses with six consecutive zeros.
+The supplied negative example shows a proposed six-zero detector taking
+the wrong action on a genuine decrement frame. The final U211 source
+retains maximum zero run six and the seven-zero detector. Early speculative
+reassociations in this investigation produced runs of seven or eight zeros
+and were discarded before being treated as valid machines.
+
+\paragraph{Forward-prefix correctness is not the whole runtime.}
+Another exploratory 211-state allocation preserved source order and obtained
+the required address bound, but changed native 213 and 92. The literal row
+$69/0=\act{0}{L}{213}$ reenters that part of the decoder during a primitive.
+The full symbolic checker rejected the candidate at the zero case of a
+decrement of register 8 at source ordinal 158. This counterexample motivated
+the explicit backward-entry guard. The successful recipe does not change
+213 or 92, and passes the full primitive replay. A source-tree theorem
+cannot silently be upgraded to a theorem about the binary runtime.
+
+\paragraph{Whole-state aliases did not suffice.}
+A bounded screen considered all 44,310 ordered direct aliases obtained
+by deleting a noninitial, nondispatch working state of U212 and retaining
+another working state. It screened aliases against a suite containing two
+small valuations of each of the 5,084 primitive cases, with a finite execution
+cutoff; none passed all samples.
+This is only a negative search result for that test and transformation
+class. It is not a lower bound. The accepted construction changes the
+source allocation first and uses a predecessor invariant instead of
+requiring the two states to have identical behavior without a guard.
+
+\paragraph{Theory size and machine size are different quantities.}
+One schema need not compile into fewer states than a stronger theory with
+an especially convenient encoding. The constant factors include the
+formula syntax, arithmetic pairing, proof enumeration, decoder sharing,
+and the literal initializer. Here the logical calculus and even the
+197-node source DAG are unchanged; a single bit already written by a
+predecessor saves one physical control state. The apparent arithmetic/set
+theory reversal therefore does not imply a reversal of proof-theoretic
+strength. This construction is an explicit upper bound at the stated
+proof status; it makes no claim that 211 is optimal.
+
+\section{Reproduction, provenance, and remaining formalization}
+\label{sec:reproduction}
+
+\subsection{Offline reproduction}
+
+Extract the archive, enter its top-level directory, and run
+\begin{lstlisting}
+python3 reproduce.py
+\end{lstlisting}
+Python 3.10 or later and its standard library suffice. The default command
+checks the frozen SHA-256 manifest, rebuilds both literal tables and the
+source, independently audits all nine rotations, verifies the final fold
+twice (including Python \code{-O}), checks the exact blank prefix, and
+replays the complete symbolic primitive certificate. The portable runtime
+replay took about 135 seconds in the preparation environment; machine speed
+will change this. No network, discovery search, C++ compiler, or original
+checkout is needed for the new U212-to-U211 verification.
+
+\code{python3 reproduce.py --quick} skips the unbounded primitive replay and
+reports that omission. It is a useful construction/local-proof check, not
+an alternative proof of the full runtime. The symbolic engine contains
+assertions and deliberately rejects \code{-O} or \code{PYTHONOPTIMIZE};
+the full command refuses those settings. Its 4,000-inference per-case cap
+is a proof-search limit, not a bound on the values certified by a success.
+
+With a normal TeX installation, \code{python3 reproduce.py --quick --pdf}
+also regenerates the appendix and compiles \path{report.tex} twice.
+The paper uses standard \code{pdflatex} packages. The generated PDF's bytes
+need not be reproducible across TeX versions or build timestamps; the
+transition tables and source bytes are exact fixed outputs.
+
+The integrity manifest covers frozen construction inputs, code, literal
+machine files, paper sources and reference archives. The generated PDF and
+replay outputs under \path{evidence/} are not sealed by that manifest,
+because rebuilding rewrites them and timestamps or wall times vary. Their machine
+identities are checked by the programs and recorded within the reports.
+The archive itself provides the original evidence snapshots.
+
+\subsection{What is supplied}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{38mm}X@{}}
+\toprule
+Path & Purpose\\
+\midrule
+\path{report.tex}, \path{paper/} & Complete mathematical report sources,
+including the complete dense transition appendix.\\
+\path{report.pdf} & Compiled, rendered and visually inspected report.\\
+\path{machine/} & Native and dense U211 tables, rotated U212 intermediate,
+new source sites, state isomorphism, and machine census.\\
+\path{inputs/} & Frozen U212 parent/source, nine rotations and occurrence
+paths, inherited label map, source manifest and damaged-archive recovery ledger.\\
+\path{code/} & Deterministic builder, independent source/startup auditors,
+local fold verifier, inherited symbolic engine and portable replay driver.\\
+\path{evidence/} & Source, startup, fold and runtime results, all primitive-case
+records, comparison manifest, and theory/runtime audit notes.\\
+\path{reference/} & Complete compact U212 ancestry/calibration packet,
+complete unary-theory packet, and preserved notices/licenses.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The new source and local machine arguments can be reviewed without accepting
+the logical calibration. Conversely, the logical calibration cannot replace
+the new runtime theorem. The dependency order is: inherited numerical
+finite-refutation calibration; unchanged ordinal source behavior; final
+literal primitive simulation; exact blank entry. Section~\ref{sec:calibration}
+identifies the delicate protected-tail and compiler facts retained from the
+baseline. The included reference packet makes those arguments inspectable
+offline, but the new replay command does not claim to recheck a kernel
+formalization of them.
+
+\subsection{Exact output identities}
+
+\begin{samepage}
+The native U211 table SHA-256 is
+\begin{center}\small
+\path{7edae566b4c2e5c34d88030e0ae7caa49edda32c174b06b1a68bf9eb78567c8d}.
+\end{center}
+\end{samepage}
+\begin{samepage}
+The dense U211 table SHA-256 is
+\begin{center}\small
+\path{a529d2ea12b0f4c4185d2fe8ce9dd0f1633c04f39f6bf272bb37bf97bb31a349}.
+\end{center}
+\end{samepage}
+\begin{samepage}
+The reassociated source SHA-256 is
+\begin{center}\small
+\path{a1c81a3abff846a329a109927ce92d0be1553b7af2671855cdfe5bc4d6d953d1}.
+\end{center}
+\end{samepage}
+\begin{samepage}
+The rotated 212-state intermediate SHA-256 is
+\begin{center}\small
+\path{e3fe20c1d0181997354d0cf97b8ccceb85a1ec8055ad32ea5d02cacdf1a1b9d5}.
+\end{center}
+\end{samepage}
+Hashes identify reviewed bytes; they do not prove semantic properties.
+Both the source and runtime checks consume these literal outputs.
+
+\subsection{Remaining proof-assistant work}
+
+An end-to-end kernel result would need to formalize or import the exact
+numerical-calculus and U/PA proof translations, the retained compiler and
+startup-suffix theorem, the source relation, and the whole-tape symbolic
+rules, then instantiate them on the released table. The local predecessor-tag
+lemma is particularly small and could be formalized independently. No
+missing kernel proof is represented here as an already completed artifact.
+The present deliverable meets the requested below-212 candidate goal with
+an exact 211-state table, a mathematical reduction, and reproducible
+inductive verification at the stated boundary.

@@ -1,0 +1,116 @@
+\section{Result, model, and proof obligations}
+\label{sec:result}
+
+The delivered machine $\New$ uses one tape indexed by $\mathbb Z$, alphabet
+$\{0,1\}$, blank symbol 0, and one head. Every working-state/symbol pair has
+one transition. Dense working labels are $0,\ldots,210$, the start label is
+0, and the distinct halt label is 211. Thus there are exactly 211 working
+states and 422 transition rows. Initialization is part of the machine.
+Every working label is reachable in the directed transition graph; this
+does not assert that all labels occur in its blank-tape execution.
+
+For derivations we retain native labels from the supplied compiler:
+native 254 is halt, 84 is the primitive dispatcher, and labels need not
+be consecutive. The builder checks a bijective renaming to the dense table.
+Native and dense tables describe the same machine. The complete dense table
+appears in Appendix~\ref{sec:table} and in \path{machine/u211.tm}.
+
+The new part of the argument has three logically separate components.
+First, nine changes of source association preserve the full ordinal
+register-program control-flow graph. Second, the final literal machine
+implements every source primitive on the prescribed whole-tape frame.
+Third, its blank startup reaches exactly the frame required by the inherited
+proof-search calibration. The final physical fold also has a short independent
+local simulation theorem. Combining the new results with the supplied
+finite-refutation calibration gives the intended conclusion
+\begin{equation}\label{eq:endpoint}
+ \PA\vdash
+ \neg\Halt(\New,\mathrm{blank})
+ \;\leftrightarrow\;\Con(\UU)
+ \;\leftrightarrow\;\Con(\PA).
+\end{equation}
+Here the justification is a conventional mathematical argument with executable
+checks of the finite machine and symbolic runtime obligations. Equation
+\eqref{eq:endpoint} is not the output of a newly compiled proof-assistant
+kernel. Section~\ref{sec:calibration} spells out the inherited dependencies
+and the difference between unary $\UU$ and the actual numerical calculus
+searched by the machine. No assertion that $\PA$ is consistent, and no
+unconditional assertion of nonhalting, is needed for the equivalence.
+
+\section{Comparison of the supplied 212-state proposals}
+\label{sec:comparison}
+
+All comparisons use ProveIt commit
+\path{9d50bf3df8c9e14941b549945c4f8400172d81f4}, not a moving branch
+head~\cite{snapshot}. The seven complete readable archives contain
+byte-identical native U212 tables. Their common source is also identical;
+the combined archive stores it in its retained direct-parent directory.
+The eighth archive, the one with suffix \code{(5)}, is damaged. Fifty early
+local members were recovered with uncompressed sizes and CRC values checked.
+The recovered builder, parent and receipts specify the same construction
+and expected hashes. Its final table is reconstructed from those inputs,
+not directly read from a sound final-table member.
+
+Every proposal applies the same reduction to the same direct-transfer U213
+parent, whose native SHA-256 begins \code{bb4f5ac12b29d07d}. The common patch is
+\begin{align*}
+ 180/1 &: \act{1}{R}{172}\ \longmapsto\ \act{1}{R}{211},\\
+ 172/0 &: \act{0}{L}{112}\ \longmapsto\ \act{0}{L}{67},
+ \qquad\text{then delete native 112.}
+\end{align*}
+Consequently, adding the eight final patches together cannot save another
+state: they coincide. Comparisons of different U213 ancestors reproduced
+inside these packets should not be mistaken for eight different U212
+machines. What can usefully be combined is the proof organization,
+independent checks, negative examples, and search information.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}p{26mm}X@{}}
+\toprule
+Packet & Useful contribution and assessment\\
+\midrule
+Stacked, no suffix & Direct whole-tape local proof, endpoint audit, independent
+checks, and exploratory bypass/scanner searches. Complete U213 ancestry.\\
+Stacked (1) & Clear two-stage proof and time bounds; two local checkers;
+explicit six-zero scanner counterexample and the helper-211 stacking conflict.\\
+Stacked (2) & Independent path and frame implementations, 6,768 local frames,
+calibration audit, and a portable replay.\\
+Stacked (3) & Explicit intermediate table, independent two-stage audit,
+and a rejected circular-helper alias. Particularly useful final-table guards.\\
+Stacked (4) & Most explicit bounded-search ledger: direct aliases, deeper
+synchronization, bypasses, contextual targets, and direction changes.\\
+Stacked (5) & Recovered builder and receipts corroborate the same result;
+the supplied archive is not fully replayable because of its damage.\\
+ConU & Explicit source-prefix binding and numerical-theory distinctions;
+independent frame checks and the $56+g$ runtime/startup interface.\\
+Combined & Compact, flattened ancestry, source/calibration inventory,
+preserved hashes and startup/seed checks. Best practical baseline for this
+package; organization does not make its theorem stronger.\\
+\bottomrule
+\end{tabularx}
+\caption{Eight proposal packets at the pinned snapshot. ``Stacked'' abbreviates
+\protect\path{U212_ConPA_Stacked_2026-10-28}; ``ConU'' and ``Combined'' denote the
+two archives dated 2026-10-29. All seven complete packets have the same machine.}
+\label{tab:comparison}
+\end{table}
+
+The common native U212 SHA-256 is
+\begin{center}\small
+\path{386ce16259d4c97e4af31b3ba494feaff11a0a1a066e0235dddc154b4cea38c4}.
+\end{center}
+Its dense table has SHA-256
+\begin{center}\small
+\path{c979e55e6a6f75b08effdf67067cceb460e30a4c28aef9c79797d0a6d32a074e}.
+\end{center}
+The machine and calibration chosen for the new work are exactly this
+common baseline. The complete combined archive and unary-theory archive
+are included intact. The other original packets are identified by exact
+URLs, byte lengths, Git blob SHA-1 values and archive SHA-256 values in the
+comparison manifest; their much larger duplicate ancestry is not copied
+into this deliverable.
+
+All supplied U212 endpoints have the same relevant qualification: they
+retain mathematical numerical-calculus, compiler, startup and theory
+arguments. The separate fixed K215/ZFC verification~\cite{k215pa} does not
+certify a changed table or a different consistency predicate.

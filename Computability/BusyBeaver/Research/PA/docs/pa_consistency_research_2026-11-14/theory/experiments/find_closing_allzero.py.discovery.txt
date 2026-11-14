@@ -1,0 +1,23 @@
+import sys,json,time
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+import closing_ties as x
+c=x.c
+orig=c.oracle
+
+def multi(q,br,st):
+ if isinstance(br,frozenset):
+  r=st[2]
+  return orig(q,(r,True)if r in br else None,st)
+ return orig(q,br,st)
+c.oracle=multi
+c.run.__globals__['oracle']=multi
+rows,labels=c.machine();cs=c.contracts();co=next(y for y in cs if y[0]==3692)
+cc=(co[0],frozenset(c.PHYSICAL[r]for r in range(3,8)),co[2],co[3]);hits=[];start=time.time()
+for q in sorted({q for q,_ in rows if q<1300}):
+ for w in(0,1):
+  for d in(False,True):
+   rr=rows.copy();rr[1365,1]=(w,d,q);n=c.run(rr,cc,fuel=1500)
+   if n is not None:hits.append([w,'R'if d else'L',q,n]);print(hits[-1],flush=True)
+print('total',len(hits),'seconds',round(time.time()-start,2),flush=True)
+(x.W/'transfer_work/closing_allzero_receipt.json').write_text(json.dumps({'zero_logical_registers':list(range(3,8)),'hits':hits},indent=2)+'\n')

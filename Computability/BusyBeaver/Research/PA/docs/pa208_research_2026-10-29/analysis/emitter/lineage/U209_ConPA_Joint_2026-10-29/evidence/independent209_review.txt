@@ -1,0 +1,215 @@
+# Independent adversarial review of the U209 construction
+
+**Verdict:** the delivered U209 table and source pass an independently written
+reconstruction and local simulation audit. The 18-node direct source
+reassociation from the original U212 parent is valid and reproduces the
+existing U209 artifacts exactly. No logical defect was found in the new
+finite reductions. There is one presentation-sensitive point: in a direct
+simultaneous three-fold simulation, the old native163/read0 case takes **five**
+new steps, because the218 deletion modifies a helper used by that fold.
+A blanket claim that every old step becomes one or three new steps would be
+false for the combined three-fold construction.
+
+## Audit artifacts and independence
+
+- `research/combine_work/review209.py` contains this independent audit. It
+  imports only Python's standard library, not any supplied builder, source
+  parser, symbolic runtime, saved certificate checker, or saved PASS flag.
+- `research/combine_work/review209/independent209.json` records all checked
+  interfaces, the atomic word, factor sizes, complete incoming inventories,
+  the sequential local paths, and the direct simultaneous local paths.
+- It passed both ordinary execution and `python3 -O`; all necessary checks
+  use explicit exceptions and therefore remain active under optimization.
+
+The auditor reads the original Contextual archive's frozen U212 table/source
+and the actual files under `research/rotated_work/candidate209`. The audited
+native U209 table SHA-256 is
+
+    d0a155d3c683789f3bf5327c0cfb2a0cfd78076af8f1654d4ca426ccbb604d16
+
+The audit independently reconstructs the intermediate212-state literal table
+and final source, checking exact equality against the delivered bytes' parsed
+values. It checks every changed source control edge using two distinct
+resolvers: interval/ancestor semantics and binary increment/cut semantics,
+including the no-stray-one-suffix condition.
+
+## 1. Direct 18-node reassociation from U212
+
+Use the Rotated agent's target table extended by
+
+    185:(159,181), 181:(147,176).
+
+The complete18-state internal selector set is
+
+    {162,203,223,188,177,89,174,129,158,204,
+     214,216,220,217,163,215,185,181}.
+
+Every literal row of these18 states is a pure decoder: it preserves the
+scanned bit and moves right. In the original U212 table, the **complete**
+external-entry census consists of exactly
+
+    native156/read1 -> write1,R,162.
+
+There is no external runtime entry into any other member of the changed
+internal set. Thus internal labels can be reassigned to the new binary
+association without violating a hidden engine calling convention. The root
+has exactly one syntactic source occurrence, at address
+
+    0011001110101011.
+
+Expanding only the18 internal selectors, the original and target forms have
+exactly the same ordered19-factor word:
+
+    207,67,153,132,155,159,147,176,98,218,
+    178,147,146,218,176,90,211,218,116.
+
+The corresponding primitive lengths are
+
+    503,401,56,1042,80,162,52,80,26,56,
+    78,52,108,56,80,27,103,56,78,
+
+whose sum is3096. Every factor independently has closure summary
+`(0,0,False)`: no escaping break, no escaping continue, and no halt. Repeated
+atom labels identify identical syntax trees at all encountered occurrences.
+These facts justify ordinary sequential associativity for any parenthesization
+of the fixed atomic word. They are also verified without trusting the
+construction's chosen source paths.
+
+After this direct reassociation, perform the existing three rotations around
+native7 and repair171/read0→205. The resulting whole source is exactly the
+published `candidate209/sites.json`; the whole table is exactly its
+`prefold212.native.tm`. Therefore a standalone release builder can go directly
+from U212 to this intermediate. It does not need the exploratory U210 output
+as an input or dependency.
+
+The small rotations around7 occur inside the enlarged3096-primitive region;
+they should not be described as disjoint from that enlarged region. They are
+separate steps of the proof. The earlier936-primitive region174 and the region7
+were disjoint, which explains that wording in the exploratory U210 notes.
+
+## 2. Source bounds and global control flow
+
+The final source still contains3909 primitive instructions in exactly the same
+order, with identical opcodes and register/control operands. Exactly3096 source
+addresses differ from U212. Both independent CFG resolvers yield the same
+complete5083-edge ordinal graph for the original and final source. The binary
+resolver additionally rejects nonzero stray suffixes after a selected leaf.
+
+The inherited frame conditions are retained:197 distinct subtrees, maximum
+source-address depth42, maximum run of zeros6, and header distance56 in the
+literal runtime. The exact source-at-startup address is unchanged. The native
+runtime replay recorded by the Rotated agent supplies the separate unbounded
+primitive contracts; this review does not treat graph equality alone as a
+literal execution proof.
+
+## 3. The two predecessor-tag folds
+
+In the212-state intermediate, the complete incoming inventories are:
+
+| Old state | Incoming rows |
+|---|---|
+|163|217/read0, writing0 and movingR|
+|180|132/read1 and199/read1, writing1 and movingR|
+|220|216/read0, writing0 and movingR|
+|181|185/read1, writing1 and movingR|
+
+These are unconditional syntactic properties of the literal table. Since the
+initial state0 is outside the affected set, they imply the relevant left-cell
+tag invariant on every run from state0, for every initial tape.
+
+The joint quotient180→163 and181→220 is valid. There are eight exhaustive
+local cases; each examines only offsets-1 and0. Comparing212 to the separate
+210-state intermediate, every old step takes one or three new steps. All
+ordinary rows commute with the quotient. This audit checks every one of those
+rows, not just the visibly edited entries.
+
+## 4. Deleting218 and preserving preexisting157 calls
+
+After the first two folds, the **complete** incoming inventory of218 is
+
+    158/read0, 211/read0, 215/read0,
+
+and all three rows write0 and moveR. Replace their targets by157, then delete
+218. The existing native157 rows are not changed. For a simulated218 entry,
+the preceding tape cell is0; the two local paths are:
+
+- Current bit0:157/0 movesL to67,67/0 movesR to151,151/0 movesR to90.
+- Current bit1:157/1 movesL to148,148/0 movesR to186,186/1 movesR to86.
+
+Both restore the two inspected tape cells, end one cell to the right, and
+reach exactly the target of the old218 step. The opaque exterior is never
+read. Other preexisting calls to157 retain their original literal behavior.
+They do not require the new zero-tag assumption, because they are simulated
+by the ordinary unchanged-row case, not by the218 case.
+
+This establishes the second all-common-initial-tapes halting equivalence.
+Sequential composition with the two-fold theorem is valid even though218
+was a helper inside the first fold: the second theorem applies to the entire
+intermediate machine, including all its helper states.
+
+## 5. Stronger direct simultaneous certificate
+
+For concise exposition one can use a single state map
+
+    chi(180)=163, chi(181)=220, chi(218)=157,
+    chi(q)=q otherwise.
+
+Before any fold, the incoming218 inventory includes the additional row220/0:
+
+    158/0,211/0,215/0,220/0,
+
+all writing0 and movingR. Thus the necessary invariant already holds in the
+212-state intermediate. Every row outside the five special states
+163,180,220,181,218 commutes with chi; there are414 such ordinary rows.
+The ten special cases have these exact block lengths:
+
+| Old state | Read0 | Read1 |
+|---|---:|---:|
+|163|5|1|
+|180|3|1|
+|220|3|1|
+|181|3|1|
+|218|3|3|
+
+All ten paths preserve the complete tape and produce the mapped old endpoint.
+Together with the two engine-repair cases, this gives12 exhaustive local
+cases for the displayed construction. The special five-step path is
+
+    163/0 ->211;211/0 ->157;157/0 ->67;67/0 ->151;151/0 ->90.
+
+Starting in state0, induction on old steps concatenates these strictly
+positive finite blocks. Their interiors contain no halt. Therefore an
+infinite old run gives an infinite new run, while an old halt gives a new
+halt. Determinism and the fixed initial configuration establish the reverse
+halting implication as well; an injective state map or unique decoding of all
+intermediate helper configurations is unnecessary.
+
+If N is the old run length, A counts its163/read0 steps, and B counts its
+180/read0,220/read0,181/read0, and either-read218 steps, the corresponding new
+length is
+
+    N+4A+2B,
+
+so N≤N_new≤5N. This bound concerns only the final fold stage after source
+reassociation and engine repair. It is not a bound comparing original U212
+and U209 execution times across their different address encodings.
+
+## 6. Exact theorem boundaries
+
+The new results support:
+
+1. Source CFG conjugacy from the original U212 program to the final program.
+2. The exact repaired initialization and source-address interface.
+3. A literal all-tape halting equivalence between the212-state intermediate
+   and final209-state table, based on complete incoming censuses and universal
+   opaque-exterior local cases.
+4. With the freshly rederived arbitrary-register primitive runtime, the
+   blank-tape halting equivalence between original U212 and U209.
+
+The final consistency interpretation additionally depends on the inherited
+proof-search/calculus adequacy and U/PA calibration. This finite structural
+review neither proves those inherited theorems afresh nor turns the Python
+induction engine into a proof-assistant kernel. The conclusion should remain
+calibrated as an explicit209-state candidate with a conventional mathematical
+reduction and executable inductive verification, without a newly exported
+PA, MM0, Lean, or Rocq endpoint certificate.

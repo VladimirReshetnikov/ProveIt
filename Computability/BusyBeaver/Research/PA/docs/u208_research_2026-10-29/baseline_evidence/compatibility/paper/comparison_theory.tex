@@ -1,0 +1,220 @@
+\section{Comparison of the three supplied proposals}\label{sec:comparison}
+
+\subsection{Snapshot and literal comparison}
+The comparison is pinned to ProveIt commit
+\begin{center}\small
+\hash{da4ab9dd68ccfc47ac852118601eaf1fdae53795}.
+\end{center}
+Its \file{docs/incoming/} directory contained the three U211 archives and
+\file{pa_unary_power_cover.zip} used here~\cite{snapshot}.
+All four original archives are retained unchanged in \file{inputs/}.
+Their SHA-256 values, original paths, and sizes are recorded in
+\file{provenance.json}. The table/source snapshots used by the new construction
+are checked directly against the corresponding ZIP members.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}lrrX@{}}
+\toprule
+Proposal & Rotations & Deleted label & Principal mechanism\\
+\midrule
+Contextual & 6 & 180 &
+Predecessor-tag fold into 163 through helper 211;
+also repairs the backward entry \(171/0\) into state 7.\\
+Research & 9 & 181 &
+Predecessor-tag fold into 220 through helper 129;
+retains the earlier helper 211.\\
+Rotated & 11 & 218 &
+Makes every entry to 218 write a zero immediately left of the head,
+then replaces 218 by the existing state 157.\\
+\bottomrule
+\end{tabularx}
+\caption{Distinct 211-state constructions from the same U212 parent.}
+\end{table}
+
+All three contain the same ordered 3,909 primitive operations and operands.
+Both source-control resolvers produce the same complete ordinal control-flow
+graph. However, their native tables differ, and canonical breadth-first
+numbering from state 0 shows that their rooted transition graphs are pairwise
+nonisomorphic when read symbols, write symbols, and directions are preserved.
+These are different machines, not three filenames for one table.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrr}
+\toprule
+Compared pair & Different common native rows & Different source addresses\\
+\midrule
+Contextual / Research & 28 & 1,275\\
+Contextual / Rotated & 31 & 3,096\\
+Research / Rotated & 29 & 3,096\\
+\bottomrule
+\end{tabular}
+\caption{The row counts exclude the two outgoing rows of each differently
+deleted label. Full inventories are in \texttt{comparison/census.json}.}
+\end{table}
+
+The common parent has native SHA-256
+\begin{center}\small
+\hash{386ce16259d4c97e4af31b3ba494feaff11a0a1a066e0235dddc154b4cea38c4}.
+\end{center}
+The three U211 native identities are listed below in abbreviated form;
+the full hashes are retained in the comparison files.
+\[
+ \begin{array}{ll}
+ \text{Contextual:}&\texttt{ac75e2fa934e89b3\ldots}\\
+ \text{Research:}&\texttt{7edae566b4c2e5c3\ldots}\\
+ \text{Rotated:}&\texttt{72234980bd604524\ldots}.
+ \end{array}
+\]
+
+\subsection{Verification quality and the selected parent}
+Each original package was copied to an isolated working directory and its
+finite replay command was rerun successfully: Contextual's default reproduction,
+Research's \texttt{--quick} reproduction, and Rotated's default verifier.
+Those fresh receipts and logs are included. The original full symbolic runtime
+suites were not rerun for all three inputs; their packaged full-runtime
+receipts remain prior evidence. In contrast, the complete final-table runtime
+derivations for both new candidates were freshly regenerated.
+
+The Research table is the direct parent of the new work because its tagged
+fold can be preserved while the 218 predecessor condition is rearranged.
+It also gives a particularly transparent 210-state intermediate without the
+171-entry repair. The Contextual package contributes an independently useful
+retagging and repair argument; Rotated contributes the exact 218-to-157
+two-cell identity. None of these merits implies that its entire patch can be
+copied into another source layout without rechecking the entry conditions.
+
+The common consistency calibration is not a reason to treat all three as
+already covered by K215's separate formal endpoint. The linked
+K215/MM0 project proves a statement about a different literal table and
+ZFC~\cite{k215pa}. Its result motivates the architecture but does not certify
+the newly supplied PA machines.
+
+\section{Theory U and the arithmetic program actually preserved}\label{sec:theory}
+
+\subsection{The unary schema}
+Theory U uses classical, equality-free first-order logic on nonempty domains,
+with one binary relation \(x\in a\). Put
+\[
+ \Sub(x,a)\;:\!\Longleftrightarrow\;\forall z\,(z\in x\to z\in a).
+\]
+For every formula \(\varphi(x)\) with no other free variable, its sole schema is
+\[
+ \forall a\,\exists b\,
+ \left[
+   \forall x\,(x\in b\to\varphi(x))
+   \ \land\
+   \forall x\,(\Sub(x,a)\to(\varphi(x)\to x\in b))
+ \right].
+ \tag{U}
+\]
+Variables are freshened before insertion. The source \(a\) is not a permitted
+free matrix parameter. This is a restriction on free roles, not a restriction
+to formulas containing only one variable symbol.
+
+The schema supplies a weak cover: all members of \(b\) satisfy the matrix, and
+every subset of \(a\) satisfying it belongs to \(b\). It does not require every
+member of \(b\) to be a subset of \(a\), and it does not postulate ambient
+extensionality. Replacing the matrix by
+\(\Sub(x,a)\land\varphi(x)\) would introduce the forbidden free source \(a\);
+that apparent shortcut is not available in U.
+
+\subsection{Why the retained U/PA proof is substantive}
+The supplied unary manuscript~\cite{unary} contains a detailed ordinary
+interpretation argument. Its upper direction interprets membership as binary
+bit membership in PA. Bit inclusion implies \(x\le a\); for each fixed
+arithmetical matrix, PA's induction constructs the finite characteristic code
+on the interval through \(a\). This is formula-specific finite comprehension,
+not a uniform truth predicate, and works inside arbitrary PA models.
+
+For the lower direction, equality is interpreted by coextensionality.
+The numerical representatives explicitly include saturation and suitable
+first-order order/endpoint conditions. Local predecessor facts establish
+induction before total successor existence is used. Comparison and least
+failing numerical tuples then allow parameters to be bound inside a legal
+unary matrix. Bounded numerical comprehension follows, with its support and
+invariance premises stated explicitly. This provides successors, numerical
+powers, pair and graph codes, and canonical finite histories for addition and
+multiplication. The order of these steps avoids a circular appeal to total
+successors.
+
+The manuscript also describes uniform syntactic proof templates: freshening,
+substitution, relativization, replacement of terms by functional graphs, and
+concatenation of finite derivations. These are primitive recursive syntax
+operations, with correctness justified by induction in PA. An independent
+review here found no concrete defect in that dependency chain. The review
+does not claim to have implemented a complete arbitrary-proof translator or
+checked an exported endpoint in a proof assistant.
+
+\subsection{The machine-facing calculus is a different presentation}
+The preserved source program searches the inherited numerical calculus
+\(\DU\). It uses truth code \(0\), falsity code \(1\), native Cantor-coded
+constructors, seven logical rows, a dominated propositional row, modus ponens,
+generalization, and a gated cover/vacuity bundle.
+Its machine-facing theory allows additional matrix parameters and uses global
+irreflexivity. It is calibrated by finite-refutation translations to the
+unary U presentation, rather than having literally the same axiom strings.
+
+This distinction is essential. The separate positive dyadic emitter in the
+unary-theory ZIP is not the program implemented by these U211, U210, or U209
+tables. Its operation counts cannot be used as a runtime or state-count
+certificate for them.
+
+The retained role-emitter proof handles small-code aliases, the truth/falsity
+codes, the gate, and the possible coincidence of output and source labels.
+In the coincident-label case, irreflexivity changes the relevant guard to
+emptiness; an empty source supplies the required cover. Padding and fresh
+labels supply completeness for arbitrary desired instances.
+The new reductions leave this numerical calculus and every ordered source
+primitive unchanged.
+
+\section{Source equivalence and contextual decoding}\label{sec:method}
+The source is a binary tree whose leaves carry \(\mathrm{CI}\) (increment),
+\(\mathrm{CD}\) (guarded decrement), \(\mathrm{CB}\) (forward branch),
+\(\mathrm{CC}\) (backward branch), or \(\mathrm{CH}\) (halt).
+There are respectively 1,558, 1,175, 80, 1,095, and one such occurrences.
+The leaf address encodes control context, so retaining the printed operation
+sequence alone is insufficient.
+
+For ordinal \(i\), let \(G(i)\) record the primitive, its operand, and its ordered
+successor ordinals. A decrement has zero and positive successors; halt has
+none. The first resolver computes successors by binary increment and suffix
+cutting, followed by zero-padded leaf decoding. The second resolver uses the
+ordinal intervals of enclosing subtrees. Both check all 5,083 nonhalt
+successor edges. The arithmetic resolver additionally rejects stray one bits
+after the decoded target leaf.
+
+A factor is closed and nonhalting when its ancestor-relative branches are
+resolved within the factor and it contains no halt. Closure is checked in
+two ways: recursive boundary signatures and independent leafwise counts of
+the relevant enclosing zero/one edges. Association of closed sequential
+factors preserves the primitive word and resolved ordinal control graph.
+
+\begin{lemma}[Source conjugacy]\label{lem:source}
+If two complete source trees have the same ordered primitive word and the
+same \(G(i)\) for every ordinal, then from a common ordinal and numerical
+register store they have identical stores and ordinals at every source step.
+They halt after the same number of source steps.
+\end{lemma}
+\begin{proof}
+Induct on the source-step count. Increment changes the same register in both
+programs. A decrement tests the same value, so both programs choose the same
+branch and make the same register change. The two branch operations choose
+the checked common successor; halt occurs in the same ordinal. No bound on
+the register values is used.
+\end{proof}
+
+A pure physical decoder has rows \((0,R,a)\) and \((1,R,b)\).
+A tagged physical decoder may implement different logical source subtrees
+depending on a bit left by its incoming transition. Therefore a source rewrite
+must preserve the relevant entry context. This is the key to the new result:
+one may alter a branch of a shared decoder that a runtime call cannot execute,
+while preserving all branches used by that runtime call.
+
+The source theorem is separate from the final literal-machine theorem.
+Some construction intermediates have seven consecutive zero address bits,
+which collide with the inherited origin detector. Their source control graphs
+are still equivalent, but those intermediate tables are not claimed to
+implement a complete correct runtime. The final sources have maximum zero
+run six and pass the complete runtime verification directly.

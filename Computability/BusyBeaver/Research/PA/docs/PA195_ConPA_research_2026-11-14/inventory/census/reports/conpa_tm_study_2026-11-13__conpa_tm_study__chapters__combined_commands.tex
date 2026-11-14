@@ -1,0 +1,284 @@
+% Include after defining the report's theorem/lemma environments.
+\section{A complete command compiler for the combined Shift and MP changes}
+\label{sec:combined-command-compiler}
+
+This section supplies the source-level correctness argument for combining two
+changes: Shift tests only the cached head, and successful modus ponens leaves
+its result in that cache.  The underlying axiom calculus and all AX formulas
+are exactly those of the pinned PA196 source.  The argument proves equivalence
+of the proof-search problems; a physical state count and tape simulation are
+separate obligations.  In particular, none of the command-word counts below
+is a Turing-machine state count.
+
+\subsection{The changed arithmetic commands}
+
+Write a store as $\langle t,w,d,h\rangle$.  Let
+$\langle a,w\rangle_C$ denote Cantor stack cons, and let
+$\operatorname{hd},\operatorname{tl}$ be its total inverse projections;
+both projections of zero are zero.  Retain
+\[
+ I(a,b)=4p(a,b),\qquad U(a,B)=4p(B,a)+2
+\]
+and the other PA196 formula constructors.  A command word is read from left
+to right.  The modified Shift, written $S$, is
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}
+  \mathsf{halt},&h=1,\\
+  \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&h\ne1.
+ \end{cases}
+\]
+For $y=d+x$, the modified modus ponens command is
+\[
+ \operatorname{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+  \langle0,w,0,y\rangle,&I(t,y)=h,\\
+  \langle0,w,y,0\rangle,&I(t,y)\ne h.
+ \end{cases}
+\]
+Both branches have a defined, terminating arithmetic effect.  Only Shift
+can halt.  AX is unchanged.  Put $D=d+x$, $H=h+y$, $A=c$, and let its eight
+generated stack entries, listed from the top downward, be
+\begin{align*}
+ q_1&=\operatorname{head}_6(D,A,H),&
+ q_2&=\operatorname{head}_5(D,H),\\
+ q_3&=\operatorname{head}_4(D,A,H),&
+ q_4&=\operatorname{head}_3(D,A,H),\\
+ q_5&=\operatorname{head}_2(D,A,H),&
+ q_6&=\operatorname{head}_1(D,H),\\
+ q_7&=\rho_8(D,A,H,d),&q_8&=U(d,h).
+\end{align*}
+Then
+\[
+ \operatorname{AX}_{c,x,y}\langle t,w,d,h\rangle
+ =\langle\operatorname{gate}(H,D,c),
+       [q_1,\ldots,q_8,t]\mathbin{::}_C w,0,0\rangle.
+\]
+Here a list before $\mathbin{::}_C w$ means repeated Cantor cons onto $w$.
+The first seven generated entries are divisible by four.  The eighth is
+congruent to two modulo four.  The guarded gate is divisible by four as well,
+including when it is zero.  Thus none of these generated values is one.
+
+\subsection{Stack words and the changed pop contract}
+
+The following two identities hold for every incoming store, with no
+restriction on its saved top $t$:
+\begin{align}
+ \operatorname{AX}_{c,x,y};S^8:
+ \langle t,w,d,h\rangle
+ &\longmapsto
+ \langle\rho_8(d+x,c,h+y,d),\langle t,w\rangle_C,0,U(d,h)\rangle,
+ \label{eq:combined-ax8}\\
+ \operatorname{AX}_{c,x,y};S^9:
+ \langle t,w,d,h\rangle
+ &\longmapsto\langle U(d,h),w,0,t\rangle.
+ \label{eq:combined-ax9}
+\end{align}
+Indeed the first Shift tests the newly cleared zero cache; each later test
+up to and including the ninth tests one of $q_1,\ldots,q_8$, never the saved
+top.  This is why the second identity remains total even for $t=1$.
+
+Define
+\begin{align*}
+ \mathsf{Push}&=\operatorname{AX}_{0,0,0};S^8;\operatorname{MP}_0,\\
+ \mathsf{Pop}&=\operatorname{AX}_{0,0,0};S^{10},\\
+ \mathsf{Discard}&=\operatorname{MP}_1;\operatorname{AX}_{1,0,0};S^9;
+                    \operatorname{MP}_0.
+\end{align*}
+Their precise contracts are
+\begin{align}
+ \mathsf{Push}\langle t,w,d,h\rangle
+   &=\langle0,\langle t,w\rangle_C,0,0\rangle,
+   \label{eq:combined-push}\\
+ \mathsf{Pop}\langle t,\langle a,w\rangle_C,d,h\rangle
+   &=\begin{cases}\mathsf{halt},&t=1,\\
+                  \langle t,w,0,a\rangle,&t\ne1,
+      \end{cases}
+   \label{eq:combined-pop}\\
+ \mathsf{Discard}\langle t,w,0,0\rangle
+   &=\langle0,w,0,0\rangle.
+   \label{eq:combined-discard}
+\end{align}
+For Push, after~\eqref{eq:combined-ax8} the equality tested by
+$\operatorname{MP}_0$ compares an implication code, congruent to zero, with
+$U(d,h)$, congruent to two.  It therefore takes the failure branch and has
+exactly the stated effect.  For Pop, the tenth Shift is precisely the test
+of the saved top.  For Discard, the first MP fails since $I(t,1)>0$, giving
+$\langle0,w,1,0\rangle$.  Identity~\eqref{eq:combined-ax9} then gives
+$\langle U(1,0),w,0,0\rangle$, and the last MP fails since $I(U(1,0),0)>0$.
+
+The old claim that Pop is total for arbitrary $t$ must therefore be replaced
+by~\eqref{eq:combined-pop}.  An early halt when $t=1$ is harmless in the
+refutation compiler, but this change cannot be silently omitted.
+
+For $u\in\mathbb N$, let $\mathsf{Offset}_0$ be the empty word and let
+$\mathsf{Offset}_u=\operatorname{MP}_u$ when $u>0$.  Then
+\[
+ \mathsf{Offset}_u\langle0,w,0,0\rangle=\langle0,w,u,0\rangle.
+\]
+This follows from $I(0,u)>0$ for $u>0$.  The old generalization word remains
+valid without alteration:
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;S;
+          \operatorname{AX}_{i,0,0};S^9,
+ \qquad
+ \mathsf{Gen}_i\langle a,w,0,0\rangle
+       =\langle U(i,a),w,0,0\rangle.
+\]
+The one Shift before AX reads a zero cache.  It retrieves $a$ into the cache;
+AX then constructs its generalization.  The proof also covers $a=1$.
+
+\subsection{All axiom selectors remain total}
+
+For $1\le j\le6$, define
+\[
+ \mathsf{Select}_{j,D,H,A}=
+ \mathsf{Discard};\operatorname{AX}_{A,D,H};S^{j+1};\mathsf{Pop}^{8-j}.
+\]
+From $\langle t,w,0,0\rangle$ this produces
+$\langle q_j,w,0,0\rangle$, with the $q_j$ evaluated at the intended
+parameters.  After $S^{j+1}$ the selected $q_j$ is the top, and the remaining
+stack is $[q_{j+2},\ldots,q_8,0]\mathbin{::}_C w$ (with the evident empty
+range at the end).  The following Pops preserve $q_j$, remove that list,
+and leave the final zero in the cache.  Every such Pop is nonhalting because
+$q_j\ne1$.  The intermediate cache, which may contain another formula,
+is cleared by the next AX before any Shift reads it.
+
+For $u\le a$, the unchanged restricted-propositional selector is
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \operatorname{AX}_{b,a-u,c};S^8;\mathsf{Pop}.
+\]
+It returns $\langle\rho_8(a,b,c,u),w,0,0\rangle$.  The final Pop is safe
+because its preserved top is an implication code.  The unchanged gate
+selector
+\[
+ \mathsf{Discard};\operatorname{AX}_{c,b,a};\mathsf{Pop}^9
+\]
+returns $\langle\operatorname{gate}(a,b,c),w,0,0\rangle$.  Its preserved
+top is again different from one.  Under the original guard inequalities this
+is the intended bundle axiom; under a failed guard it is the harmless code
+zero.  Thus every primitive axiom of the exact PA196 calculus still has a
+total selector that preserves an arbitrary underlying stack.
+
+\subsection{The new modus ponens suffix}
+
+Successful MP now puts the conclusion in $h$, so the old cleanup suffix is
+inapplicable.  A dummy zero stack entry gives a shorter correct suffix:
+\[
+ \mathsf{MPSuffix}_b=S;S;\operatorname{MP}_b;S.
+\]
+Its complete contract is
+\begin{equation}\label{eq:combined-mp-suffix}
+ \mathsf{MPSuffix}_b
+ \langle0,[a,I(a,b),0]\mathbin{::}_C w,0,0\rangle
+ =\begin{cases}
+    \mathsf{halt},&a=1\text{ or }b=1,\\
+    \langle b,w,0,0\rangle,&a\ne1\text{ and }b\ne1.
+  \end{cases}
+\end{equation}
+After the first Shift, the cache is $a$.  If $a\ne1$, the second Shift
+gives $\langle a,\langle0,w\rangle_C,0,I(a,b)\rangle$.  MP succeeds,
+giving $\langle0,\langle0,w\rangle_C,0,b\rangle$.  The final Shift
+either halts at $b=1$ or returns $b$ as the top while consuming exactly the
+dummy zero.  No part of the arbitrary underlying stack is consumed.
+The dummy entry is essential: omitting it consumes the first entry of $w$
+and fails the compiler's stack-preservation invariant.
+
+\subsection{A primitive recursive compiler and universal halting word}
+
+Let $\mathcal C$ be the unchanged numeric calculus.  A proof is a finite tree
+whose nodes are primitive axioms, modus ponens, or theorem generalization.
+Define $W_p$ recursively.  At an axiom, use the appropriate selector above.
+At generalization $p=\forall_i p_0$, put
+\[
+ W_p=W_{p_0};\mathsf{Gen}_i.
+\]
+At modus ponens, let $p_0$ prove $a$ and let $p_1$ prove $I(a,b)$, and put
+\[
+ W_p=\mathsf{Discard};\mathsf{Push};
+     W_{p_1};\mathsf{Push};W_{p_0};\mathsf{Push};\mathsf{MPSuffix}_b.
+\]
+The first two words introduce the dummy zero.  Before the suffix, the three
+protected entries are exactly $a$, $I(a,b)$, and zero.
+
+\begin{lemma}[Compilation invariant]
+If $p$ is a $\mathcal C$ derivation of $a$, then for every $t,w$,
+the word $W_p$ from $\langle t,w,0,0\rangle$ either halts or returns
+$\langle a,w,0,0\rangle$.
+\end{lemma}
+\begin{proof}
+Induct on the proof tree.  The axiom and generalization cases use the total
+contracts already proved.  In the MP case, Discard and Push give
+$\langle0,\langle0,w\rangle_C,0,0\rangle$.  Apply the major-premise
+induction hypothesis at that stack and Push its result.  Apply the
+minor-premise induction hypothesis at the enlarged stack and Push again.
+An early halt persists under appending commands.  Otherwise the suffix
+precondition is exact, and~\eqref{eq:combined-mp-suffix} proves the claim.
+\end{proof}
+
+If $p$ proves code one, define
+\[
+ \mathsf{HaltWord}_p=\operatorname{AX}_{0,0,0};W_p;\mathsf{Pop}.
+\]
+The first AX clears both caches of any incoming store, although it need not
+erase the top or stack.  The compiler is independent of those values.  If it
+returns normally, its top is one, and Pop halts by its tenth Shift before
+inspecting the old underlying stack.  Thus $\mathsf{HaltWord}_p$ halts from
+\emph{every} incoming store.  This is the form required by the existing word
+enumerator: no assumption that its previous trials restore the zero store
+is needed.
+
+\subsection{Soundness and PA-provable calibration}
+
+Use the following syntactic store invariant: $t$, $h$, and every finitely
+decoded stack entry have $\mathcal C$ derivations.  It places no condition
+on the offset register $d$.  Code zero has a fixed derivation: the instance
+$\rho_8(0,0,0,0)$ is numerically zero because $I(0,0)=0$.  Thus a zero stack
+tail can be padded by zero entries indefinitely.
+
+AX preserves the invariant.  Its saved top is already derivable, its six
+heads and guarded gate are primitive axioms or zero, its restricted
+propositional head satisfies $d\le d+x$, and $U(d,h)$ follows by theorem
+generalization from the old cache $h$.  A failed MP returns zero.  A successful
+MP obtains $y$ from the derivable formulas $t$ and $I(t,y)=h$ and stores that
+derived formula in $h$.  A nonhalting Shift merely moves proven formulas
+between the top, cache, and stack.  A halting Shift exposes a derivation of
+one in $h$.  Therefore a finite run from the clean store can halt only if
+$\mathcal C$ has a refutation.
+
+The converse follows from the universal halting word and the unchanged
+exhaustive scheduler.  The axiom-selector words, proof-tree compiler,
+command encodings, and extraction of a refutation from a finite run are
+primitive recursive.  Their correctness proofs use arithmetic induction on
+finite lists, proof trees, and finite traces.  Hence PA proves, at the
+command-program level,
+\[
+ \operatorname{Halt}(R_{\mathrm{combined}})
+ \quad\longleftrightarrow\quad
+ \exists p\;\operatorname{Prf}_{\mathcal C}(p,1).
+\]
+Composing with the existing PA-to-$\mathcal C$ refutation translation and the
+written syntactic $\mathcal C$-to-PA interpretation gives
+\[
+ \mathrm{PA}\vdash
+ \neg\operatorname{Halt}(R_{\mathrm{combined}})
+       \longleftrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+For a particular binary table, the startup, source binding, and positive
+instruction simulations must additionally identify its blank-tape halting
+with the displayed source-program halting inside PA.  A collection of finite
+run samples alone would not establish that identification.  This section is
+a written proof and executable command-level check, not a claim of a new
+Lean kernel theorem for the modified table.
+
+\paragraph{Executable supplement.}
+The accompanying \texttt{check\_commands.py} checks 64 symbolic contract
+cases.  It expands all eight axiom-head expressions, treats the unchanged
+guarded gate by its exact parameter list and residue property, and uses
+opaque arbitrary stack tails.  It distinguishes saved top one from an
+arbitrary non-one value, tests all nine zero/one/other MP cases, and rejects
+an equality if its truth is not forced by constructor equality, zero facts,
+or residues.  It therefore does not choose an unknown branch by fiat.
+The general proof above supplies the universal statement; the script is
+an independent finite check of its command-word algebra.

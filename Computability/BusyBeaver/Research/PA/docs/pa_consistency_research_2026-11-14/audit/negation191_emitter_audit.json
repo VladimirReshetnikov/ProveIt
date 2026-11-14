@@ -1,0 +1,64 @@
+{
+  "grammar_sha256": "83f407727a27d3f01914c7c3ae3a89610fcb730fc050c53ba6a597adc09fb6b3",
+  "family": "diagonal",
+  "macro_tokens_after_increment_expansion": 191,
+  "peephole_count": 8,
+  "peepholes": [
+    {
+      "expanded_macro_offset": 23,
+      "restored_macro_offset": 23,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    },
+    {
+      "expanded_macro_offset": 30,
+      "restored_macro_offset": 30,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    },
+    {
+      "expanded_macro_offset": 92,
+      "restored_macro_offset": 92,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    },
+    {
+      "expanded_macro_offset": 99,
+      "restored_macro_offset": 99,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    },
+    {
+      "expanded_macro_offset": 158,
+      "restored_macro_offset": 158,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    },
+    {
+      "expanded_macro_offset": 162,
+      "restored_macro_offset": 162,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    },
+    {
+      "expanded_macro_offset": 175,
+      "restored_macro_offset": 175,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    },
+    {
+      "expanded_macro_offset": 185,
+      "restored_macro_offset": 185,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    }
+  ],
+  "restored_exact_baseline_word": true,
+  "restored_free_algebra_stack_contract": true,
+  "conditional_arithmetic_identities": {
+    "drain_inc_pair": "The 20-site replacement equals the old 47-site block when incoming source r7=0. As a formula negation macro, r6=0 is also needed.",
+    "pair_plus8": "With r6=r7=0, node64 then eight increments maps t to 4*p(0,t)+8 = 4*p(t,1). Both expressions are 2*t^2+6*t+8. It preserves the encoded stack."
+  },
+  "required_unproved_here": "Bind the clean-scratch macro contracts to every replacement entry in this exact changed source, establishing r6=r7=0. The upstream AXMacro.registers model sets both to zero, and AXMacroSound preserves clean macro stores; this checker does not bind those contracts or prove any tape simulation.",
+  "no_new_logical_schema": true
+}

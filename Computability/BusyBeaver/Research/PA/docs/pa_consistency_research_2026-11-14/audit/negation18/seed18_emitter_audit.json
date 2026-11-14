@@ -1,0 +1,66 @@
+{
+  "grammar_sha256": "b150d8c35e0b6691a8e74c000a4c638b0ffe2cda3a790b63701dee50c05e0721",
+  "family": "separate",
+  "macro_tokens_after_increment_expansion": 190,
+  "peephole_count": 8,
+  "peepholes": [
+    {
+      "expanded_macro_offset": 23,
+      "restored_macro_offset": 23,
+      "kind": "preload2_pair",
+      "kind_number": 3
+    },
+    {
+      "expanded_macro_offset": 30,
+      "restored_macro_offset": 30,
+      "kind": "preload2_pair",
+      "kind_number": 3
+    },
+    {
+      "expanded_macro_offset": 92,
+      "restored_macro_offset": 92,
+      "kind": "preload2_pair",
+      "kind_number": 3
+    },
+    {
+      "expanded_macro_offset": 99,
+      "restored_macro_offset": 99,
+      "kind": "preload2_pair",
+      "kind_number": 3
+    },
+    {
+      "expanded_macro_offset": 158,
+      "restored_macro_offset": 158,
+      "kind": "preload2_pair",
+      "kind_number": 3
+    },
+    {
+      "expanded_macro_offset": 162,
+      "restored_macro_offset": 162,
+      "kind": "preload2_pair",
+      "kind_number": 3
+    },
+    {
+      "expanded_macro_offset": 175,
+      "restored_macro_offset": 175,
+      "kind": "preload2_pair",
+      "kind_number": 3
+    },
+    {
+      "expanded_macro_offset": 184,
+      "restored_macro_offset": 184,
+      "kind": "preload2_pair",
+      "kind_number": 3
+    }
+  ],
+  "restored_exact_baseline_word": true,
+  "restored_free_algebra_stack_contract": true,
+  "conditional_arithmetic_identities": {
+    "drain_inc_pair": "The 20-site replacement equals the old 47-site block when incoming source r7=0. As a formula negation macro, r6=0 is also needed.",
+    "pair_plus8": "With r6=r7=0, node64 then eight increments maps t to 4*p(0,t)+8 = 4*p(t,1). Both expressions are 2*t^2+6*t+8. It preserves the encoded stack.",
+    "preload2_pair": "With r6=r7=0, two INC7 operations followed by node64 map t to 4*(2+p(0,t)) = 4*p(t,1). The raw core contract is (T,S,Y)=(t,s,y) -> (4*(y+p(s,t)),0,0).",
+    "preload1_pair_plus4": "With r6=r7=0, INC7 followed by node64 and four accumulator increments maps t to 4*(1+p(0,t))+4 = 4*p(t,1)."
+  },
+  "required_unproved_here": "Bind the clean-scratch macro contracts to every replacement entry in this exact changed source, establishing r6=r7=0. The upstream AXMacro.registers model sets both to zero, and AXMacroSound preserves clean macro stores; this checker does not bind those contracts or prove any tape simulation.",
+  "no_new_logical_schema": true
+}

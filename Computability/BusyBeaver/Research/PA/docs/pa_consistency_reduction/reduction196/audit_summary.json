@@ -1,0 +1,101 @@
+{
+  "status": "No verified machine below 196 states was found by this track.",
+  "source_commit": "407cdc356f6b586635e71ac92be394255f4bfea4",
+  "searches": [
+    {
+      "family": "Local arbitrary write/move/helper detours, radius 4, at most 21 steps",
+      "machines": [
+        "published 196",
+        "h-only 196",
+        "alternative grammar 196"
+      ],
+      "result": "No candidate merges."
+    },
+    {
+      "family": "Detours rejoining any of the next 8 original configurations",
+      "machines": [
+        "published 196",
+        "h-only 196",
+        "alternative grammar 196"
+      ],
+      "result": "No candidate merges."
+    },
+    {
+      "family": "Unfolded 202-state AX controls, generalized detours then compatible folds",
+      "result": "Nine local options, all in known fold families; best count 196."
+    },
+    {
+      "family": "Root-preserving detours including state 75",
+      "machines": [
+        "published 196",
+        "h-only 196",
+        "alternative grammar 196"
+      ],
+      "result": "No candidate merges."
+    },
+    {
+      "family": "States 0 and 75 with exact opposite predecessor tags",
+      "result": "No common actions, including bounded future rejoining."
+    },
+    {
+      "family": "Engine-inclusive detours",
+      "fixtures": 2970,
+      "startup_steps": 58154,
+      "result": "No candidate merges; fixtures are candidate generation, not a uniform proof."
+    },
+    {
+      "family": "Engine direct folds and inline bypasses with arbitrary well-formed spare tail",
+      "result": "No new candidates beyond the already rejected strong-file candidates."
+    },
+    {
+      "family": "t-only Shift prototype and 84 Catalan layouts",
+      "result": "Some 198-state layouts pass all 4958 primitive source contracts; no count improvement. Blank bootstrap and full proof transport were not completed for this prototype."
+    },
+    {
+      "family": "h-only compatible grammar annealing",
+      "trials_observed": 440000,
+      "result": "Best 196; process later exited 137 under memory pressure."
+    },
+    {
+      "family": "Head antecedent exchanges with parameter/head permutations",
+      "iterations": 300000,
+      "result": "Best 196."
+    },
+    {
+      "family": "Original-word exact grammar MILP",
+      "result": "Raw incumbent 68, reported lower bound 62; paid incumbent 67, reported lower bound 62; both time-limited, not certified optima."
+    },
+    {
+      "family": "Paid cost <=66 feasibility, and paid cost <=67 with sufficient leading-zero constraints",
+      "seconds_each": 180,
+      "result": "Both timed out without incumbents; no infeasibility conclusion."
+    }
+  ],
+  "invalid_shortcuts": [
+    {
+      "edit": "62/read0 -> write1,L,51, deleting125",
+      "reason": "Fails decrement-zero; state125/read1 is needed for that branch, not merely blank startup."
+    },
+    {
+      "edit": "82/read0 -> write0,L,51, deleting62 and125",
+      "reason": "Also fails decrement-zero."
+    }
+  ],
+  "main_reproducers": [
+    "search_generic.py",
+    "search_future.py",
+    "search_root_detours.py",
+    "root_zero_pair.py",
+    "engine_detours.py",
+    "engine_weak_folds.py",
+    "engine_weak_inline.py",
+    "t_only.py",
+    "t_catalan.py",
+    "h_optimize.py",
+    "optimize_antecedents.py",
+    "exact_grammar_milp.py",
+    "binarize_exact.py",
+    "binarize_extra.py"
+  ],
+  "mathematical_note": "grammar_milp_note.tex"
+}

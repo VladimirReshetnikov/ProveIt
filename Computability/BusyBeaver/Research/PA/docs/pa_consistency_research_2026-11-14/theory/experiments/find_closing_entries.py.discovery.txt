@@ -1,0 +1,16 @@
+from pathlib import Path
+import sys,json
+AX=Path('/workspace/scratch/1bb85a643efe/incoming_work/pa_consistency_comparison_and_new196_2026-11-13/pa_consistency_research/axioms')
+sys.path.insert(0,str(AX))
+import compiler as c
+rows,labels=c.machine();cs=c.contracts();co=next(x for x in cs if x[0]==3692)
+found={}
+for r in range(3,8):
+ cc=(co[0],(c.PHYSICAL[r],True),co[2],co[3]); hits=[]
+ for q in sorted({q for q,_ in rows}):
+  rr=rows.copy();rr[1365,1]=(1,True,q)
+  n=c.run(rr,cc,fuel=1200)
+  if n is not None:hits.append((q,n))
+ found[r]=hits
+ print(r,hits,flush=True)
+Path('/workspace/scratch/1bb85a643efe/transfer_work/closing_entry_receipt.json').write_text(json.dumps(found,indent=2)+'\n')

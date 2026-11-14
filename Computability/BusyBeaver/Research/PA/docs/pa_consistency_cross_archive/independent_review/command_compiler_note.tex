@@ -1,0 +1,212 @@
+\section{A command compiler for the two cross-grafted emitters}
+\label{sec:graft-command-compiler}
+
+The diagonal cross-graft retains the combined H-only Shift and MP-in-H
+commands and replaces AX by the diagonal-vacuity emitter. The separate-head
+cross-graft additionally pushes the diagonal formula as an axiom head. It
+is necessary to adjust the proof-command words in the latter case. This
+section gives one argument covering both constructions.
+
+Write a store as $\langle t,w,d,h\rangle$ and write
+$[a_1,\ldots,a_k]::_Cw$ for successive Cantor cons operations, with $a_1$
+at the top. The operations $\operatorname{hd},\operatorname{tl}$ are the
+total Cantor projections, including their zero values. Put
+\[
+ I(a,b)=4p(a,b),\qquad U(a,B)=4p(B,a)+2.
+\]
+Shift and MP have the combined-program contracts
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}\mathsf{halt},&h=1,\\
+ \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&h\ne1,
+ \end{cases}
+\]
+\[
+ \mathsf{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+ \langle0,w,0,d+x\rangle,&I(t,d+x)=h,\\
+ \langle0,w,d+x,0\rangle,&I(t,d+x)\ne h.
+ \end{cases}
+\]
+
+\paragraph{The generic AX interface.}
+Let $m=8$ for the diagonal cross-graft and $m=9$ for the separate-head
+cross-graft. AX pushes $m$ generated formulas and the saved top, so the
+total pushed-entry counts are respectively nine and ten. Put
+$D=d+x$ and $H=h+y$. In both cases,
+\[
+ \mathsf{AX}_{c,x,y}\langle t,w,d,h\rangle
+  =\langle G_m(H,D,c),[q_1,\ldots,q_m,t]::_Cw,0,0\rangle.
+\]
+The last two generated entries are
+\[
+ q_{m-1}=\rho_8(D,c,H,d),\qquad q_m=U(d,h).
+\]
+For $m=8$, $q_1,\ldots,q_6$ are the unchanged six heads, in reverse
+emission order. For $m=9$, $q_1=\Gamma(c)=I(c,U(c,c))$, and the six old
+heads occupy positions two through seven. The diagonal formula is pushed
+unconditionally; a failed numerical guard only replaces the final top
+$G_m$ by zero. All $q_i$ except $q_m$ have residue zero modulo four,
+whereas $q_m$ has residue two. The guarded top also has residue zero.
+Consequently none of these generated values is one.
+
+The independent free-algebra check in \texttt{verify\_grafts.py} verifies
+the entire emitted stack and top, the original order of the two operand
+reads, the unchanged final guard/cleanup macros, and the exact expansion
+of all 191 or 190 macro items into the candidate source. The updated AX
+therefore still clears both $D$ and $H$ at command return.
+
+\paragraph{Two total stack identities.}
+For every incoming store, including $t=1$,
+\[
+ \mathsf{AX}_{c,x,y};S^m:
+ \langle t,w,d,h\rangle\longmapsto
+ \langle\rho_8(D,c,H,d),[t]::_Cw,0,U(d,h)\rangle,
+\]
+\[
+ \mathsf{AX}_{c,x,y};S^{m+1}:
+ \langle t,w,d,h\rangle\longmapsto
+ \langle U(d,h),w,0,t\rangle.
+\]
+The first Shift tests the cleared zero cache. Each subsequent Shift up to
+the $(m+1)$st tests one of the generated $q_i$, and therefore cannot halt.
+The saved top is not tested until one further Shift. These facts prove
+the identities directly by the total Cantor head/tail equations. They do
+not require injectivity of a finite-list encoding; in particular
+$p(0,0)=0$ is allowed.
+
+\paragraph{Stack combinators and their exact scopes.}
+Define
+\[
+\begin{aligned}
+ \mathsf{Push}_m&=\mathsf{AX}_{0,0,0};S^m;\mathsf{MP}_0,\\
+ \mathsf{Pop}_m&=\mathsf{AX}_{0,0,0};S^{m+2},\\
+ \mathsf{Discard}_m&=\mathsf{MP}_1;\mathsf{AX}_{1,0,0};
+                       S^{m+1};\mathsf{MP}_0.
+\end{aligned}
+\]
+Their effects are
+\[
+ \mathsf{Push}_m\langle t,w,d,h\rangle
+   =\langle0,[t]::_Cw,0,0\rangle,
+\]
+\[
+ \mathsf{Pop}_m\langle t,[a]::_Cw,d,h\rangle
+   =\begin{cases}\mathsf{halt},&t=1,\\
+                  \langle t,w,0,a\rangle,&t\ne1,
+     \end{cases}
+\]
+\[
+ \mathsf{Discard}_m\langle t,w,0,0\rangle
+   =\langle0,w,0,0\rangle.
+\]
+For Push, the comparison after $S^m$ is between an implication, residue
+zero, and the cached universal code, residue two, so MP takes its failure
+branch. For Pop, precisely its final Shift tests the saved top. For
+Discard, the first comparison fails because $I(t,1)>0$, and the final
+comparison fails because $I(U(1,0),0)>0$. Thus Pop is conditional on the
+saved top, while Push is total on every store and Discard is total on the
+displayed cache/offset interface. The compiler below permits an early halt
+from a saved derived one and never assumes a stronger Pop contract.
+
+Put $\mathsf{Offset}_0$ equal to the empty word and
+$\mathsf{Offset}_i=\mathsf{MP}_i$ for $i>0$. From
+$\langle0,w,0,0\rangle$ this returns $\langle0,w,i,0\rangle$.
+Then
+\[
+ \mathsf{Gen}_{m,i}=\mathsf{Push}_m;\mathsf{Offset}_i;S;
+                    \mathsf{AX}_{i,0,0};S^{m+1}
+\]
+returns $\langle U(i,a),w,0,0\rangle$ from
+$\langle a,w,0,0\rangle$, including $a=1$.
+
+\paragraph{Axiom selectors.}
+For $1\le j\le m-2$, the word
+\[
+ \mathsf{Discard}_m;\mathsf{AX}_{c,D,H};S^{j+1};
+      \mathsf{Pop}_m^{m-j}
+\]
+selects the $j$th generated primitive head and returns it as the top,
+preserving the arbitrary underlying stack and clearing both caches.
+After $S^{j+1}$ the top is $q_j$, the cache is $q_{j+1}$, and the remaining
+explicit stack is $[q_{j+2},\ldots,q_m,0]$. The $m-j$ Pops consume exactly
+this list and finish with cache zero. They cannot halt because $q_j\ne1$.
+This includes the new unconditional $\Gamma(c)$ head when $m=9$.
+
+For $u\le a$, the restricted propositional selector is
+\[
+ \mathsf{Discard}_m;\mathsf{Offset}_u;
+ \mathsf{AX}_{b,a-u,c};S^m;\mathsf{Pop}_m.
+\]
+It returns $\rho_8(a,b,c,u)$. The guarded gate selector is
+\[
+ \mathsf{Discard}_m;\mathsf{AX}_{c,b,a};\mathsf{Pop}_m^{m+1},
+\]
+which returns $G_m(a,b,c)$. The gate has residue zero even when the guard
+fails, so the Pops remain nonhalting. Soundness of the selected formulas
+is the retained diagonal or separate-head calculus argument; this word
+calculation does not replace that argument.
+
+\paragraph{Modus ponens and proof compilation.}
+The four-command suffix is unchanged:
+\[
+ \mathsf{MPSuffix}_b=S;S;\mathsf{MP}_b;S.
+\]
+On $\langle0,[a,I(a,b),0]::_Cw,0,0\rangle$ it halts if $a=1$ or $b=1$;
+otherwise it returns $\langle b,w,0,0\rangle$. The dummy zero is essential
+to preserve the underlying stack. This computation remains valid at
+$a=b=0$, where $I(0,0)=0$.
+
+Recursively compile a calculus proof $p$ into a word $W_p$. At an axiom
+use its selector. At generalization append $\mathsf{Gen}_{m,i}$. For an
+MP proof with minor proof $p_0$ of $a$ and major proof $p_1$ of $I(a,b)$,
+use
+\[
+ W_p=\mathsf{Discard}_m;\mathsf{Push}_m;
+      W_{p_1};\mathsf{Push}_m;W_{p_0};\mathsf{Push}_m;
+      \mathsf{MPSuffix}_b.
+\]
+The first Push reserves the dummy zero. Induction on the proof tree proves
+that, from every $\langle t,w,0,0\rangle$, $W_p$ either halts or returns
+$\langle\operatorname{concl}(p),w,0,0\rangle$. The proof uses the exact
+Pop contract above, so an intermediate derived one is handled as an early
+halt rather than silently excluded.
+
+For a proof of one,
+\[
+ \mathsf{AX}_{0,0,0};W_p;\mathsf{Pop}_m
+\]
+halts from every incoming store. The first AX clears arbitrary incoming
+caches, the compiled proof preserves the arbitrary residual stack, and
+the final Pop halts before examining that stack. This is the universal
+halting-word form used by the unchanged exhaustive scheduler.
+
+In the opposite direction, annotate the live top, cache, and decoded stack
+entries by calculus proofs. AX introduces the retained axioms, zero, and
+the generalization of its old cache; successful MP records a derivation
+of its conclusion in the cache; failed MP returns zero; Shift moves proved
+formulas and halts only when it exposes one. The unconditional extra
+$\Gamma$ is a valid primitive head in the separate calculus even when the
+final gate guard fails. Thus the annotation argument is unchanged apart
+from one additional certified stack entry.
+
+The word construction and annotation argument are primitive recursive and
+use ordinary induction on finite proofs and runs. Composed with the
+retained calculus-to-PA translations, scheduler proof, exact startup, and
+positive complete physical instruction simulations, they provide the
+ordinary mathematical calibration for the cross-grafts. They do not assert
+a newly checked Lean endpoint. The independent finite-word checker verifies
+64 symbolic identities for $m=8$ and 67 for $m=9$, with arbitrary opaque
+stack tails; unknown arithmetic comparisons are errors rather than guessed
+branches.
+
+\paragraph{The zero-jump variants.}
+The two additional variants change source site 26 from a jump to 34 into
+\(\operatorname{dec}(R_6,34,27)\). Independent closure computations for
+both the original and changed sources give identical inductive sets of
+265,964 and 263,244 source-location/zero-pattern pairs, respectively. Every
+pattern at site 26 has $R_6=0$. The two instructions therefore have identical
+concrete effects whenever reached from the common clean seed. Induction
+on source steps transports the command compiler unchanged. This is a
+source-invariant argument; the separate exact physical checks bind the
+changed row and the 58,168-step blank initialization to that source.

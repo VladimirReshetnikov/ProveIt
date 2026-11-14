@@ -1,0 +1,178 @@
+{
+  "status": "ALL_SCOPED_QUICK_CHECKS_PASSED",
+  "python": "3.12.14",
+  "manifest_files_verified": null,
+  "checks": [
+    {
+      "check": "combined157",
+      "exit_code": 0,
+      "seconds": 0.136135,
+      "result": {
+        "combined197.tree.json": {
+          "sha256": "7d01a47445daf5ff804d32af8886364b3ee9e9f38efaa1e9d147d7989c28479e",
+          "source_sites": 3573,
+          "internal_nodes": 159,
+          "maximum_path_length": 38,
+          "maximum_zero_run": 6,
+          "seed_path": "100000"
+        },
+        "combined157.tree.json": {
+          "sha256": "c3db43ecb5129b12b4f5dc1357e0a162be29c38e24aa8a48a517a80c6bd70675",
+          "source_sites": 3573,
+          "internal_nodes": 157,
+          "maximum_path_length": 41,
+          "maximum_zero_run": 6,
+          "seed_path": "100000"
+        },
+        "all_3573_ordered_primitive_instructions_equal": true,
+        "all_3573_source_rows_equal": true,
+        "scope": "Source representation only; no smaller binary machine or PA theorem."
+      }
+    },
+    {
+      "check": "source_zero5",
+      "exit_code": 0,
+      "seconds": 0.123378,
+      "result": {
+        "status": "SOURCE_CFG_IDENTITY_PASS",
+        "original": {
+          "sites": 3812,
+          "internal_nodes": 159,
+          "max_path": 38,
+          "max_zero_run": 6,
+          "seed25_path": "100000"
+        },
+        "candidate": {
+          "sites": 3812,
+          "internal_nodes": 159,
+          "max_path": 37,
+          "max_zero_run": 5,
+          "seed25_path": "10100000"
+        },
+        "candidate_sha256": "0bedf590291b5dbe63b35ba1c74dedb05dd835281775a11ec3314dbe18173399",
+        "rows_compared": 3812,
+        "ordered_primitive_word_equal": true,
+        "independent_resolvers": 2,
+        "mutation_rejected": true,
+        "original_paths_containing_six_zeros": 20,
+        "candidate_paths_containing_six_zeros": 0,
+        "scope": "Exact finite source graph identity only; no new physical machine, startup, or PA consistency endpoint."
+      }
+    },
+    {
+      "check": "residual_source",
+      "exit_code": 0,
+      "seconds": 0.575321,
+      "result": {
+        "baseline_sha256": "7204b25d70f0bc6fbc5fbb19d0ccdcb3fa88f9d63fa3610ca0b1c950617d34f9",
+        "source_sha256": "9aa46652ee8f11d7919700f860578d3c4c6b0ad8ec43524af79ec7d4703dff4a",
+        "metrics": {
+          "dag_nodes": 187,
+          "leaf_occurrences": 3799,
+          "maximum_depth": 38,
+          "maximum_zero_run": 6
+        },
+        "internal_nodes": 164,
+        "source_sites": 3799,
+        "guarded_cases": 4941,
+        "splices": [
+          [
+            3680,
+            3692,
+            13
+          ],
+          [
+            3693,
+            3707,
+            0
+          ]
+        ],
+        "retained_instructions": 3786,
+        "retained_edges": 4921,
+        "macro_test_cases": 4096,
+        "old_and_new_comparison_durations_equal_in_all_finite_probes": true,
+        "residual": "max(c-(old_d+x)-1,0)",
+        "status": "source_and_finite_local_checks_pass",
+        "scope": "Source syntax/CFG plus finite local checks; ordinary arbitrary-value proof supplied separately. No physical machine certification."
+      }
+    },
+    {
+      "check": "residual_command_interfaces",
+      "exit_code": 0,
+      "seconds": 1.002716,
+      "result": {
+        "status": "PASS_PARAMETRIC_INTERFACE_REGRESSION",
+        "counts": {
+          "push_pop_reset_setter": 21000,
+          "selection": 26244,
+          "generalization": 1080,
+          "modus_ponens": 3456,
+          "wire_roundtrip": 1365,
+          "fresh_continuation_first_step": 1364
+        },
+        "total": 54509,
+        "models": 3,
+        "native_AX_evaluated": false,
+        "HOLEs": "premise compiler interface assumptions",
+        "scope": "Finite regression of universal algebra in residual_command_proof.tex; not a literal machine check or PA proof."
+      }
+    },
+    {
+      "check": "comparison208",
+      "exit_code": 0,
+      "seconds": 0.058241,
+      "result": {
+        "status": "PASS",
+        "original208_presentations": 9,
+        "original208_graph_classes": 2,
+        "additional208_presentations": 18,
+        "additional208_graph_classes": 18,
+        "total_accepted208_graph_classes": 20
+      }
+    },
+    {
+      "check": "census196",
+      "exit_code": 0,
+      "seconds": 0.03521,
+      "result": {
+        "status": "CENSUS_PASS",
+        "tables": 14,
+        "rooted_action_graph_classes": 14,
+        "scope": "Finite graph census only; includes two experimental MP variants."
+      }
+    },
+    {
+      "check": "synthetic_search_control",
+      "exit_code": 0,
+      "seconds": 0.029167,
+      "result": {
+        "status": "INDEPENDENT_CONTROL_REPLAY_PASS",
+        "outputs": 17,
+        "kinds": {
+          "SURVIVOR": 5,
+          "THREE": 11,
+          "ONE": 1
+        },
+        "full_context_obligations": 2176
+      }
+    },
+    {
+      "check": "rejected_prefix",
+      "exit_code": 0,
+      "seconds": 0.034396,
+      "result": {
+        "status": "DECODER_PREFIX_COUNTEREXAMPLE_CONFIRMED",
+        "old_prefix": "01",
+        "new_prefix": "100",
+        "expected_child": 105,
+        "actual_child": 104,
+        "single_row_actions_tested": 788,
+        "working_targets": 196,
+        "halt_targets": 1,
+        "single_row_repairs": 0,
+        "scope": "Preserved-prefix child-selection specification only; no claimed blank-halting counterexample."
+      }
+    }
+  ],
+  "scope": "Source identities, local source splice and finite command regressions, graph census, synthetic control and rejected-prefix replay. Not a new literal TM refinement, complete native-AX evaluation, Lean build, PA biconditional, or exhaustive-search replay."
+}

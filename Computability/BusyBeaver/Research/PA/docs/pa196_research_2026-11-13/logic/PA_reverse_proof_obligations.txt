@@ -1,0 +1,258 @@
+# PA196 reverse implication: a precise sufficient interface and a canonical stack
+
+## Inspected theorem boundary
+
+At upstream commit `407cdc356f6b586635e71ac92be394255f4bfea4`,
+`PA196/Independence.lean` proves
+
+\[
+ \mathrm{PA}\vdash N_{196}\to\operatorname{Con}(\mathrm{PA}).
+\]
+
+It also proves two-sided independence using the standard-model
+nonhalting/soundness theorem in the Lean metatheory. The reverse internal
+implication is not one of the displayed theorems. Let `H196` be the exact
+literal blank-tape halting formula, so `N196=¬H196`. What remains is
+
+\[
+ \mathrm{PA}\vdash H_{196}\to
+       \operatorname{Prov}_{\mathrm{PA}}(\ulcorner\bot\urcorner).
+\]
+
+This note does not claim to add that theorem. It sharpens the constructive
+proof obligations and gives a canonical proof-stack representation that
+resolves one obstruction explicitly recorded in the existing
+`pa196-vs-u208/PA-BRIDGE.md`.
+
+## 1. Four sufficient propositions
+
+Fix primitive-recursive encodings of exact TM traces, source states and
+executions, command words and stores, native formulas, and PA proofs.
+The following are sufficient, with each statement proved in PA (or
+uniformly in every PA model with a checked arithmetic representation):
+
+1. **Literal extraction.** From a blank-start literal halting trace,
+   construct a halting source execution, including the fixed startup and
+   the exact sparse-to-dense state projection.
+2. **Command extraction.** From that source execution, extract a finite
+   command run from the zero store ending at a Shift test `t+h=1`.
+   This must cover the scheduler, failed parses and partially executed
+   macros, rather than only a command word supplied independently.
+3. **Syntactic command invariant.** Along a command run before its halt,
+   maintain PA proofs of the translations of `t`, `h`, and every
+   canonically decoded stack entry. A Shift halt yields a proof of the
+   translation of numeric code 1, because `t+h=1` implies `t=1` or
+   `h=1`.
+4. **Falsity conversion.** The translation of code 1 is bit membership
+   `B(x_0,x_0)`. Append a fixed PA derivation of
+   `B(x_0,x_0)→⊥` to obtain a PA refutation.
+
+All four must be about arbitrary internally finite traces and proof codes,
+including nonstandard ones. External standard-Nat proof trees or tested
+finite traces are insufficient. Together they compose to the missing
+implication. For a reduced machine, one additionally needs a PA-provable
+halting equivalence with PA196 or the same direct extraction interface.
+
+## 2. A canonical proof stack removes the zero-tail ambiguity
+
+The source stack uses Cantor pairing
+
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+
+Hence `p(0,0)=0`: pushing zero onto the zero stack produces the same
+numeric stack as the empty stack. A separate proof stack whose length is
+assumed to grow on every push is therefore incorrect.
+
+Let `(hd(w),tl(w))` be Cantor decoding, including `(hd(0),tl(0))=(0,0)`.
+PA proves
+
+\[
+ w>0\implies\operatorname{tl}(w)<w.
+\]
+
+Indeed, write `w=p(a,b)`. If `b=0`, the claim is immediate for `w>0`;
+if `b>0`, then `p(a,b)≥2b>b`. Therefore repeated tails reach zero in
+at most `w` steps. Define
+
+\[
+ L(w)=\min\{k\le w:\operatorname{tl}^{k}(w)=0\},
+ \qquad f_i(w)=\operatorname{hd}(\operatorname{tl}^{i}(w))\quad(i<L(w)).
+\]
+
+Bounded minimization and bounded iteration give primitive-recursive
+definitions, with PA proofs of their elementary properties. The stack
+witness is a coded sequence `E` of length **exactly `L(w)`** such that
+entry `E_i` is a PA proof of the translated formula `f_i(w)`.
+
+Its operations are completely specified:
+
+* **Push `a` with proof `P`.** If `a=w=0`, the new numeric stack is zero
+  and the new certificate sequence is empty. Otherwise
+  `L(p(a,w))=L(w)+1`, its first decoded entry is `a`, and its tail is
+  `w`; prepend `P` to the old certificate sequence.
+* **Pop at positive `w`.** Return the first certificate, and remove it
+  from the sequence. The remaining length is `L(tl(w))=L(w)-1`.
+* **Pop at zero.** The source returns formula zero and stack zero.
+  Return a fixed PA proof of the chosen truth translation, keeping the
+  certificate sequence empty.
+
+Thus the certificate sequence describes the **canonical decoded stack**,
+not a hidden history of pushes. It is never necessary to guess whether a
+zero stack once contained one or more zero entries. All the updates are
+primitive recursive. This gives a direct PA-inductive replacement for
+the external `SoundStack` invariant in
+`PA196/Logic/CommandSoundness.lean`.
+
+## 3. The direct arithmetic translation
+
+Choose a conservative PA language extension containing powers of two
+and the primitive-recursive syntax/proof operations. Interpret
+membership by
+
+\[
+ B(s,z)\;:\Longleftrightarrow\;
+ \exists u,v\,[s=2^{z+1}u+2^z+v\ \wedge\ v<2^z].
+\]
+
+PA proves `B(s,z)→z<s`, so it proves `¬B(s,s)`. Interpret equality as
+arithmetic equality, implication as implication, and the transposed
+quantifier code directly as its indicated numerical quantifier. Code
+zero is the special truth alias, translated to a fixed tautology `τ`.
+For nonzero implication codes the translation is homomorphic. The sole
+exception `I(0,0)=0` is handled by a fixed proof of
+`τ↔(τ→τ)`. Code 1 translates to `B(x_0,x_0)`.
+
+For each decoded formula code `c`, a syntax induction gives that all its
+numerical variable labels are less than `c`. The proof uses the same
+component bounds as the upstream decoder; quantifier transposition does
+not change the bound. Therefore the label `c` is fresh in the property
+whose original code is `c`. To internalize this observation, use an
+explicit represented occurrence/decoding predicate and PA induction on
+its bounded decoding trace. Merely citing the existing external
+`NumericDecode.self_fresh` is not an internal proof.
+
+## 4. A uniform proof template for the guarded gate
+
+Here is why the arithmetic soundness obligation is about syntactic
+proof production, rather than a uniform truth predicate.
+
+For each arithmetic formula `φ(z,parameters)`, full PA induction supplies
+the bounded bit-comprehension schema
+
+\[
+ \forall m\ \exists s<2^{m+1}\ \forall z\le m\,
+     [B(s,z)\leftrightarrow\varphi(z)].
+\]
+
+Use induction on `m`. At zero choose 1 or 0 according as `φ(0)` or
+its negation holds. At the successor stage keep the preceding bit set
+or add `2^{m+1}`, according as `φ(m+1)` holds. Fixed elementary bit
+lemmas verify the old bits, the new bit and the bound. This is an
+ordinary **schema**: an algorithm inserts the input formula into a
+fixed proof template and its induction instance. It neither evaluates
+that formula nor proves a global reflection principle. The syntactic
+proof constructor and its proof-checking correctness can be formalized
+in PA by structural recursion on the input syntax.
+
+For PA196's gate, let the distinct numerical *labels* `a,b` have values
+`A,B`, and let the property be the translation of formula code `c`.
+Under `c≠a,b`, that property is fresh in the output variable `x_c`.
+If `a≠b`, choose the finite set with bit predicate
+
+\[
+ [B(A,z)\lor z=B]\ \wedge\ \varphi[z/x_b],
+\]
+
+using a bound at least `A+B`. It contains every required old member
+satisfying the property and contains the distinguished original value
+`B` whenever the property holds there. Every member of the constructed
+set satisfies the property. Bits above the bound are zero by the bound
+on the coding number.
+
+When the labels coincide, `a=b`, the first antecedent under the binder
+becomes `B(z,z)`, which is false. Use instead the singleton bit predicate
+`z=B ∧ φ[z/x_b]`. This distinction is about **label equality**; two
+distinct labels receiving equal numeric values are covered by the
+first case without difficulty.
+
+The guard also makes both vacuity clauses genuine PA theorems:
+
+\[
+ \Delta=(x_a=x_b)\to\forall x_c(x_a=x_b),\qquad
+ V=B(x_a,x_b)\to\forall x_c B(x_a,x_b).
+\]
+
+Let `S` and `P` be the separation and distinguished-point parts of the
+gate, and `Q=∀x_c(S→¬P)`. The constructed witness gives
+`∃x_c(S∧P)`, hence `¬Q`. Together with `Δ,V` this proves
+
+\[
+ F=\neg(\Delta\to(V\to Q)).
+\]
+
+Every use of negation here is converted to implication to the code-1
+translation with the fixed irreflexivity proof. The other six axiom
+heads, the propositional head, and generalization have fixed standard
+PA proof templates. Failed gates and failed modus-ponens tests return
+zero and use the fixed proof of truth. Successful modus ponens uses
+the translated implication, except for the harmless zero/zero alias.
+
+This describes the proof-producing ingredient for the canonical
+command invariant. An implemented compiler must still spell out its
+proof-code constructors, substitution/freshness contracts, bit lemma
+proofs, and PA-internal correctness. The present repository does not
+contain that completed compiler, and this note does not pretend that
+the description is a kernel-checked realization of it.
+
+## 5. Literal extraction by positive simulation and determinism
+
+Suppose exact literal trace determinism is proved in PA and every
+nonhalt source instruction, when started at a valid frame, has a
+positive-length exact physical segment ending at the next nonhalt
+frame without an intervening halt. A halt instruction must have a
+corresponding halting segment. Suppose also that source execution is
+totalized at its halt status and coded source sequences of arbitrary
+model length exist.
+
+A literal halting trace of length `t` cannot coexist with `t+1`
+successive nonhalt source steps. Compose their physical segments by
+internal induction. Their combined length is at least `t+1`.
+Determinism identifies the prefix through time `t` with the supplied
+literal trace, but the composition was nonhalting through that time,
+a contradiction. Account for the fixed startup prefix and use the
+remaining physical time in the same argument. This proves a bounded
+source-halt witness from the literal halt.
+
+The positivity and no-intermediate-halt hypotheses are substantive.
+The existing `Lifted` disjunction, allowing either a physical halt or
+a successor frame, does not by itself prove them. The exact halt
+labels (sparse 215 versus literal 196 upstream), projection, startup,
+trace coding, and source-halt behavior all need checked contracts.
+This lemma supplies a route to obligation 1, not a replacement for
+those contracts.
+
+## 6. Conclusion for a proposed reduced table
+
+A finite stuttering certificate can prove halting equivalence between
+two **specified** TMs if its coverage invariant and local progress
+conditions have been proved. Such a certificate can often be verified
+inside PA. It transfers whatever PA theorem is actually available for
+the parent. If the parent has only `N→Con(PA)` and an external
+nonhalting theorem, the same two results transfer; an internal
+biconditional does not appear automatically. The missing reverse
+interface above should therefore be kept separate in the final claim.
+
+## Sources
+
+* [Upstream formal theorem inventory](https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/docs/result.md).
+* [Exact command soundness invariant](https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/PA196/Logic/CommandSoundness.lean).
+* [Existing PA bridge audit](https://github.com/VladimirReshetnikov/ProveIt/blob/f1f076e31995f10460838d1846456f4bb9c8ae80/Computability/BusyBeaver/Research/PA/pa196-vs-u208/PA-BRIDGE.md).
+
+The direct bit-membership translation and guarded-gate plan already
+appear in the incoming `pa_tm_research_2026-11-13.zip` and are discussed
+in the last source. They are attributed to that prior work here. The
+explicit canonical-stack certificate strategy is a refinement supplied
+by the present analysis, not a claim that the entire missing bridge has
+been completed.

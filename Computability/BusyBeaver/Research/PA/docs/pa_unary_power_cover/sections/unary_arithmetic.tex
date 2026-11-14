@@ -1,0 +1,368 @@
+\section{Saturated graphs and arithmetic}\label{un:arithmetic}
+
+We now use bounded numerical comprehension to recover the graph
+constructions needed for arithmetic. The all-representatives coding and
+the canonical history construction are inherited from
+draft~\cite{draftC2}; their existence premises now follow from the unary
+theory. No graph object is used as a free parameter of a filter matrix.
+
+\subsection{Singletons, pairs, and ordered-pair codes}
+
+Define the following fixed formulas:
+\begin{align*}
+ \operatorname{SSing}(h,x)&:\Longleftrightarrow
+             \forall z\,(z\in h\leftrightarrow z\Eq x),\\
+ \operatorname{SPair}(d,x,y)&:\Longleftrightarrow
+             \forall z\,(z\in d\leftrightarrow(z\Eq x\lor z\Eq y)),\\
+ \operatorname{OP}(p,x,y)&:\Longleftrightarrow
+       \N(x)\land\N(y)\land
+       \forall u\,[u\in p\leftrightarrow
+          (\operatorname{SSing}(u,x)\lor\operatorname{SPair}(u,x,y))].
+\end{align*}
+The last construction collects every witness for the two Kuratowski
+component profiles, not an arbitrarily chosen representative of each.
+
+\begin{lemma}[Saturated numerical codes]\label{un:codes}
+Every number has an $\operatorname{SSing}$ witness, and every pair of
+numbers has $\operatorname{SPair}$ and $\operatorname{OP}$ witnesses.
+These formulas are invariant under $\Eq$ in all their arguments, and
+their outputs are saturated and unique modulo $\Eq$. An
+$\operatorname{OP}$ code determines both numerical coordinates uniquely
+modulo $\Eq$. If $x,y\in n$, $\N(n)$, and $\Pow(n,W)$, then every
+$\operatorname{OP}(p,x,y)$ satisfies $p\subseteq W$.
+\end{lemma}
+\begin{proof}
+For a numerical $x$, use Theorem~\ref{un:bnc} on the target
+$z\Eq x$, supported at $x$. For numerical $x,y$, choose a common
+number $n$ containing both, using Corollary~\ref{un:bootstrap}.
+The target $z\Eq x\lor z\Eq y$ is invariant in its numerical
+parameters and is supported at $n$: its selected objects are
+coextensional with members of the transitive object $n$.
+This gives $\operatorname{SPair}$.
+
+If $x,y\in n$, saturation of $n$ shows that every singleton or pair
+witness for those coordinates is a subset of $n$. Therefore the target
+\[
+             \operatorname{SSing}(u,x)\lor\operatorname{SPair}(u,x,y)
+\]
+is supported at $n$. It is invariant in the numerical parameters $x,y$.
+Another application of Theorem~\ref{un:bnc} gives the
+$\operatorname{OP}$ witness.
+
+Each output profile is unchanged when its inputs are changed within
+their coextensionality classes. Its membership test is invariant in the
+tested object as well, which proves saturation. The displayed exact
+profiles give output uniqueness modulo $\Eq$.
+
+For decoding, an $\operatorname{OP}$ witness satisfies
+\begin{align}
+ \forall u\,(u\in p\to z\in u)
+       &\quad\longleftrightarrow\quad z\Eq x,\label{un:decode-first}\\
+ \exists u\,(u\in p\land z\in u)
+       &\quad\longleftrightarrow\quad(z\Eq x\lor z\Eq y).
+                                                        \label{un:decode-both}
+\end{align}
+A singleton witness exists and belongs to $p$, so it forces the
+right-hand condition of~\eqref{un:decode-first}; every possible
+component contains that entire class, proving the converse.
+A pair witness exists and belongs to $p$, proving both directions
+of~\eqref{un:decode-both}. The first formula determines $[x]$ and
+the second determines $\{[x],[y]\}$; together they determine $[y]$,
+including the case $[x]=[y]$.
+
+Finally, every $u\in p$ is a singleton or pair witness and hence
+satisfies $u\subseteq n$. The power identity puts $u$ in $W$.
+This is precisely $p\subseteq W$.
+\end{proof}
+
+\subsection{Comprehension for numerically parameterized graphs}
+
+For any object $G$ put
+\[
+       V_G(x,y):=\exists p\,(p\in G\land\operatorname{OP}(p,x,y)).
+\]
+The numerical coordinates of this relation are invariant under $\Eq$,
+even if $G$ is an arbitrary ambient object. Replacing $G$ by a
+coextensional object preserves the relation as well.
+
+\begin{theorem}[Numerical graph comprehension]\label{un:graphs}
+Let $R(x,y,n,\bar r)$ be any fixed formula whose only free variables
+are the displayed numerical ones, and suppose its invariance under
+$\Eq$ in all those arguments has been proved. Then for every numerical
+$n,\bar r$ there exists a saturated $G$ such that
+\begin{equation}\label{un:graph-profile}
+ p\in G\quad\longleftrightarrow\quad
+ \exists x\exists y\,
+ [x\in n\land y\in n\land\operatorname{OP}(p,x,y)
+                                  \land R(x,y,n,\bar r)].
+\end{equation}
+Its decoded relation satisfies
+\begin{equation}\label{un:graph-relation}
+ V_G(x,y)\quad\longleftrightarrow\quad
+              x\in n\land y\in n\land R(x,y,n,\bar r).
+\end{equation}
+The parameters $\bar r$ need not themselves belong to $n$.
+\end{theorem}
+\begin{proof}
+The right side of~\eqref{un:graph-profile}, viewed as a predicate of
+$p$ with numerical parameter tuple $(n,\bar r)$, is invariant in those
+parameters. Coextensionality of $n$ preserves its member profile, and
+the other assertions are invariant by hypothesis and
+Lemma~\ref{un:codes}. Choose an exact power $W$ of the number $n$,
+using Corollary~\ref{un:bootstrap}. Every selected code is a subset of
+$W$, by Lemma~\ref{un:codes}. Thus Theorem~\ref{un:bnc} supplies
+the exact output $G$. The membership test depends only on the profile
+of $p$, so $G$ is saturated.
+
+For the reverse implication in~\eqref{un:graph-relation}, coordinates
+belonging to $n$ are numerical by heredity, and an ordered-pair code
+exists;~\eqref{un:graph-profile} puts it into $G$. Conversely, a code
+witnessing $V_G(x,y)$ is selected by some coordinates $x',y'\in n$
+satisfying $R$. Unique decoding gives $x\Eq x'$ and $y\Eq y'$.
+Saturation puts $x,y$ in $n$, and invariance of $R$ proves the desired
+right side.
+\end{proof}
+
+Only a power of a numerical source is needed here. The source-free
+proof uses neither iterated powers nor a formula recovering a source
+from its power. The bound and every parameter are bound inside the
+least-failure matrix of Theorem~\ref{un:bnc}.
+
+\subsection{Deterministic histories with explicit value bounds}
+
+Fix a formula $T(u,v;\bar t)$ with only the displayed free variables.
+Its parameters, input, and output are numerical. Assume it is invariant
+under $\Eq$ and defines a total function on numerical classes:
+\[
+\begin{split}
+ &\forall u\in\N\;\exists v\in\N\;T(u,v;\bar t),\\
+ &u\Eq u'\land T(u,v;\bar t)\land T(u',v';\bar t)
+                                      \quad\to\quad v\Eq v',
+\end{split}
+\]
+where the numerical guards in the second line are understood.
+These assumptions will be proved for the particular transitions used
+to define addition and multiplication.
+
+For numerical $a,b,c,d,\bar t$, define
+$H_T(f;a,b,c,d;\bar t)$ by the following finite first-order conditions:
+\begin{enumerate}
+\item Every member of $f$ is an $\operatorname{OP}$ code with numerical
+      coordinates $i\preccurlyeq b$, $y\preccurlyeq d$.
+\item Each numerical $i\preccurlyeq b$ has a decoded value
+      $y\preccurlyeq d$, and any two values at the same index are
+      coextensional.
+\item For every empty $e$, $V_f(e,a)$ holds, and $V_f(b,c)$ holds.
+\item If $\Succ(i,j)$, $j\preccurlyeq b$, $V_f(i,u)$ and $V_f(j,v)$,
+      with numerical arguments, then $T(u,v;\bar t)$.
+\end{enumerate}
+The literal formula also includes $\N$-guards on every free numerical
+argument. The bound $d$ is separate from the terminal value $c$; no
+monotonicity of $T$ is assumed. The definition is invariant in every
+numerical argument, directly from the invariance of comparison,
+$\operatorname{OP}$, and $T$. This fact is established before the
+existence or uniqueness of histories.
+
+\begin{lemma}[Pointwise comparison before history existence]
+\label{un:history-unique}
+Two $T$-histories with coextensional initial values have coextensional
+values at every index common to their domains. Their lengths and
+numerical value bounds may differ.
+\end{lemma}
+\begin{proof}
+Keep the two histories and all their parameters fixed. Apply full
+representative induction, Theorem~\ref{un:induction}, to the assertion
+that their values agree at $i$ whenever $i$ belongs to both domains.
+At an empty index, their initial clauses and the functionality of each
+graph identify its values with its initial class.
+
+For an existing successor $\Succ(i,j)$, if $j$ belongs to both domains,
+so does $i$, because $i\in j$ and those numerical segments are initial.
+Take the two values at $i$ from graph totality. They are coextensional
+by the induction hypothesis. Each value at $j$ is a $T$-output of the
+corresponding prior value, so functionality of $T$ makes those new
+values coextensional. The arbitrary graph objects occur only as
+parameters of the already derived induction theorem. No graph
+restriction, graph object coding, or filtering with a free graph
+parameter is used.
+\end{proof}
+
+\begin{theorem}[Existence of bounded numerical histories]
+\label{un:history-total}
+For every numerical initial value $a$ and length $b$, there are numerical
+$c,d$ and an object $f$ satisfying $H_T(f;a,b,c,d;\bar t)$.
+\end{theorem}
+\begin{proof}
+Induct on $b$ with the numerical parameters $a,\bar t$ retained.
+At an empty $b$, choose a number $n$ containing $a,b,\bar t$ and use
+Theorem~\ref{un:graphs} with
+\[
+                         R(i,y):=(i\Eq b\land y\Eq a).
+\]
+This supplies a history on the single index class $[b]$, with terminal
+value and bound $a$. No successor has an empty output, so there are no
+transition conditions between indices in this domain.
+
+For the step, let $\Succ(b,b')$. Take an old history with terminal
+value $c$ and bound $d$, and choose $c'$ satisfying $T(c,c';\bar t)$.
+Comparison supplies a numerical $d'$ at least $d$ and $c'$. Choose a
+number $n$ containing the finite numerical tuple
+$a,b,b',c,c',d,d',\bar t$. Apply Theorem~\ref{un:graphs} to
+\begin{equation}\label{un:canonical-extension}
+\begin{split}
+ R(i,y;a,b,b',c,c',d,\bar t):={}&
+ \bigl(i\preccurlyeq b\land
+   \exists h\,[H_T(h;a,b,c,d;\bar t)\land V_h(i,y)]\bigr)\\
+ &\lor(i\Eq b'\land y\Eq c').
+\end{split}
+\end{equation}
+Every free parameter is numerical; the old graph variable $h$ is
+bound. The formula is invariant in all its numerical arguments because
+$H_T$ and $V_h$ are invariant, with the same witness $h$ after a change
+of representatives.
+
+There is at least one old history. By Lemma~\ref{un:history-unique},
+all old histories in the first clause have the same values modulo
+$\Eq$, and those values are at most $d$. Thus the first clause is
+total and functional on $I_b$. The second clause adds the single
+value class $[c']$ at the new index class $[b']$. The domains are
+disjoint, and together they equal $I_{b'}$. All relevant indices and
+values belong to $n$, so the numerical graph comprehension loses none.
+
+The resulting graph retains the initial value and has terminal value
+$c'$ and bound $d'$. An old transition agrees with the corresponding
+transition in the original history by pointwise comparison and
+invariance of $T$. For a transition into the new class $[b']$,
+successor injectivity identifies its predecessor class as $[b]$.
+Its value classes are $[c]$ and $[c']$, and the transition holds by
+the choice of $c'$. This proves the induction step.
+\end{proof}
+
+Put
+\[
+ A_T(a,b,c;\bar t):=\exists f\exists d\,
+                     [\N(d)\land H_T(f;a,b,c,d;\bar t)],
+\]
+with numerical guards on all displayed arithmetic arguments.
+
+\begin{lemma}[Exact recursion equations]\label{un:recursion-equations}
+The relation $A_T$ is total and functional modulo $\Eq$, and invariant
+in all numerical arguments. It satisfies
+\begin{align}
+ \Emp(b)&\ \to\
+       [A_T(a,b,c;\bar t)\leftrightarrow c\Eq a],
+                                                     \label{un:rec-zero}\\
+ \Succ(b,b')&\ \to\
+ \bigl[A_T(a,b',c';\bar t)\leftrightarrow
+ \exists c\,(\N(c)\land A_T(a,b,c;\bar t)\land T(c,c';\bar t))\bigr].
+                                                     \label{un:rec-step}
+\end{align}
+\end{lemma}
+\begin{proof}
+Totality is Theorem~\ref{un:history-total}. Pointwise comparison at the
+terminal index proves functionality, and the defining formulas prove
+invariance. The initial and terminal clauses yield the forward zero
+equation; the base construction, followed by invariance, yields its
+reverse direction.
+
+For the forward successor equation, take a history on $I_{b'}$ with
+terminal value $c'$ and some numerical bound $d$. Its value at $b$
+gives a number $c$, and its last transition gives $T(c,c';\bar t)$.
+To obtain an actual history on $I_b$, choose a number containing
+$a,b,b',c',d,\bar t$ and use numerical graph comprehension with
+\begin{equation}\label{un:canonical-restriction}
+ i\preccurlyeq b\ \land\
+       \exists h\,[H_T(h;a,b',c',d;\bar t)\land V_h(i,y)].
+\end{equation}
+Again all free parameters are numerical. The given history witnesses
+totality of this relation. Pointwise comparison makes it functional and
+identifies all its values with the old values, which remain at most
+$d$. Its graph is an $I_b$-history with terminal value $c$. This proves
+$A_T(a,b,c;\bar t)$ without separating an old graph using that graph
+as an illicit matrix parameter.
+
+Conversely, given an old history and $T(c,c';\bar t)$, repeat the
+canonical extension~\eqref{un:canonical-extension} with this chosen
+$c'$. Its output supplies the desired new history.
+\end{proof}
+
+\subsection{The interpretation of PA}
+
+\begin{theorem}[Arithmetic in the unary theory]\label{un:pa-lower}
+The theory $\UU$ interprets full first-order Peano arithmetic.
+\end{theorem}
+\begin{proof}
+Use $\N$ as the interpreted domain, $\Eq$ as equality, the empty class
+as zero, and $\Succ$ as successor. The domain is nonempty.
+Corollary~\ref{un:bootstrap} and Lemma~\ref{un:local} prove totality
+and injectivity of successor, the omission of zero, and the existence
+of a predecessor for every nonzero class.
+
+First take $T(u,v):=\Succ(u,v)$ and define
+\[
+                         \operatorname{Add}(a,b,c):=A_T(a,b,c).
+\]
+This transition satisfies all hypotheses of the recursion construction.
+Thus addition is total, invariant, and functional on numerical classes,
+and~\eqref{un:rec-zero}--\eqref{un:rec-step} give
+\[
+                       [a]+0=[a],\qquad
+                       [a]+S[b]=S([a]+[b]).
+\]
+Next, with numerical parameter $a$, use the already defined transition
+$T_a(u,v):=\operatorname{Add}(u,a,v)$ and define
+\[
+ \operatorname{Mul}(a,b,c):=
+             \exists e\,[\Emp(e)\land A_{T_a}(e,b,c;a)].
+\]
+Addition is already total, functional, and invariant, so this second
+recursion is justified. All empty representatives are coextensional;
+hence multiplication is total and functional and is independent of
+the chosen initial empty representative. Its equations are
+\[
+                       [a]\cdot0=0,\qquad
+                       [a]\cdot S[b]=[a]\cdot[b]+[a].
+\]
+
+Translate arithmetic terms by these total functional graphs, equality
+by $\Eq$, and quantifiers by relativization to $\N$. Structural
+induction on formulas proves invariance under replacing numerical
+representatives. The finite arithmetic axioms follow from the
+successor facts and recursion equations. Every translated induction
+instance, with all its parameters, is an instance of
+Theorem~\ref{un:induction}. Therefore every axiom of PA is valid under
+this fixed definable interpretation.
+\end{proof}
+
+The interpretation uses only numerical parameters in its graph
+comprehensions. Arbitrary graph objects occur as parameters of the
+already proved induction theorem or as bound variables in
+\eqref{un:canonical-extension} and~\eqref{un:canonical-restriction}.
+The quotient language above describes a first-order interpretation;
+it does not assert the existence of a set of all numerical classes.
+
+\subsection{Uniformity needed for proof transport}\label{un:uniformity}
+
+The proofs above provide uniform finite derivation templates.
+Parameter internalization, the fixed-length least-tuple formula, the
+failure predicate, and the unary matrix~\eqref{un:bnc-matrix} are formed
+by substitution and fresh bound-variable renaming. For bounded
+numerical comprehension, proofs of invariance and support are explicit
+inputs; no algorithm decides whether an arbitrary formula has those
+properties. Only finitely many such formulas are needed to establish
+the fixed arithmetic interpretation. The graph and history definitions
+are finite formulas formed before their existence proofs; they do not
+contain a satisfaction predicate or a syntactic fixed point.
+
+After the arithmetic interpretation has been fixed, translating a PA
+induction instance requires only inserting its translated formula in
+Theorem~\ref{un:induction}. The remaining arithmetic axioms have fixed
+finite derivations. Translation of terms to operation graphs,
+relativization, formula expansion, substitution, proof concatenation,
+and the finite loops over displayed parameter tuples are primitive
+recursive syntactic operations. Structural induction on formulas and
+induction on coded derivations verify their correctness in PA. These
+facts justify the usual PA-verifiable refutation transport; they do not
+constitute a delivered proof-assistant certificate or an implemented
+end-to-end proof translator.
+

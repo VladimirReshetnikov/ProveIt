@@ -1,0 +1,316 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,geometry,xurl}
+\usepackage[hidelinks]{hyperref}
+\geometry{margin=1in}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Sh}{\mathsf{Shift}}
+\newcommand{\Ax}{\mathsf{AX}}
+\newcommand{\Mp}{\mathsf{MP}}
+\newcommand{\Pop}{\mathsf{pop}}
+\newcommand{\Push}{\mathsf{push}}
+\newcommand{\Drop}{\mathsf{discard}}
+\newcommand{\code}[1]{\texttt{\nolinkurl{#1}}}
+\setlength{\emergencystretch}{2em}
+\title{Permuting the six AX heads:\\command completeness and arithmetic transfer}
+\author{Technical lemma for a proposed layout change}
+\date{13 November 2026}
+\begin{document}
+\maketitle
+
+\noindent
+This note is a mathematical permission to change one particular output
+order, not a certificate for an untested transition table.  Its hypotheses
+must be established by the source macro and physical runtime checks for
+the selected candidate.  It does not claim a new kernel-checked theorem.
+
+\section{The precise allowed change}
+
+Write $\langle a,b\rangle$ for the source Cantor pair, $I(a,b)=
+4\langle a,b\rangle$, $M(a,b)=4\langle a,b\rangle+1$,
+$E(a,b)=4\langle a,b\rangle+3$, and
+$U(d,h)=4\langle h,d\rangle+2$.
+Let $q_i(D,A,H)$, $1\leq i\leq6$, be the six published PA196
+heads, with the unused $A$ argument ignored for heads 1 and 5.
+For a fixed permutation $\pi$ of $\{1,\ldots,6\}$, define the
+modified AX command on the store $(t,w,d,h)$ by
+\[
+ \Ax_\pi(c,x,y)(t,w,d,h)
+   =\bigl(G(H,D,c),[q_{\pi(1)},\ldots,q_{\pi(6)},
+                 \rho,U(d,h),t]_w,0,0\bigr),
+\]
+where $D=d+x$, $H=h+y$, each $q_i$ has arguments $(D,c,H)$,
+$\rho=\rho_8(D,c,H,d)$, $G$ is the unchanged guarded gate, and
+$[a_1,\ldots,a_k]_w=\langle a_1,\langle a_2,\ldots,
+\langle a_k,w\rangle\ldots\rangle\rangle$.
+Thus $\pi$ denotes \emph{top-to-bottom} stack order; the published
+order is $(6,5,4,3,2,1)$.  The gate remains the current top,
+the propositional and generalization heads remain in positions 7 and 8,
+the incoming top remains in position 9, and both caches are cleared.
+Shift and MP, their parameter conventions, the source scheduler,
+and the starting store are unchanged.
+
+\section{Exact selectors without accidental halts}
+
+Shift halts precisely when $t+h=1$; otherwise it maps
+$(t,w,d,h)$ to $(h,\operatorname{right}(w),d,
+\operatorname{left}(w))$.  Each $q_i$, including the existential
+head $q_5$, has an outer implication constructor and is a multiple
+of 4.  The same is true of $\rho$ and of $G$, including the guarded
+value $G=0$.  Consequently none is 1, and no sum of two such values
+is 1.  The fixed generalization head $U(d,h)$ is at least 2.
+These elementary identities hold in every model of PA.
+
+\begin{lemma}[Order-independent stack macros]
+For every $\pi$ and every incoming store, including $t=1$, the
+following exact executions are live and have the displayed endpoints:
+\begin{align*}
+ \Ax_\pi(c,x,y)\,\Sh^8(t,w,d,h)
+   &=(\rho,\langle t,w\rangle,0,U(d,h)),\\
+ \Ax_\pi(c,x,y)\,\Sh^9(t,w,d,h)
+   &=(U(d,h),w,0,t).
+\end{align*}
+Here a word is written in execution order.  Hence the unchanged words
+\begin{align*}
+ \Pop&=\Ax_\pi(0,0,0)\,\Sh^{10},\\
+ \Push&=\Ax_\pi(0,0,0)\,\Sh^8\Mp(0),\\
+ \Drop&=\Mp(1)\Ax_\pi(1,0,0)\,\Sh^9\Mp(0)
+\end{align*}
+satisfy, respectively,
+\begin{align*}
+ \Pop(t,\langle a,w\rangle,d,h)&=(t,w,0,a),\\
+ \Push(t,w,d,h)&=(0,\langle t,w\rangle,0,0),\\
+ \Drop(t,w,0,0)&=(0,w,0,0).
+\end{align*}
+These statements require no consistency hypothesis.
+\end{lemma}
+\begin{proof}
+During the first eight Shifts, both tested entries are drawn from
+zero, the gate, and the first eight generated heads, so the halt
+test cannot succeed.  The ninth test includes $U(d,h)\geq2$.
+The tenth test, used for $\Pop$, still includes this universal head,
+so it is safe even when the saved incoming top is 1.  Only after
+that test is the incoming top restored.  This is why $\Pop$ is
+total even though a bare Shift on arbitrary formula entries need
+not be total.  Cantor decoding now gives the two displayed identities
+and the $\Pop$ endpoint.
+
+For $\Push$, the last MP compares an implication code, divisible by
+4, with $U(d,h)\equiv2\pmod4$; the test fails and leaves the saved
+top on the stack.  In $\Drop$, its first MP fails because
+$I(t,1)\ne0$, leaving $(0,w,1,0)$.  The nine-Shift identity gives
+$(U(1,0),w,0,0)$; the last MP fails because $I(U(1,0),0)\ne0$.
+All arguments are finite algebraic derivations uniform in the
+incoming parameters, not tests on bounded numerical samples.
+\end{proof}
+
+For $1\leq j\leq6$ define
+\[
+ \operatorname{select}_\pi(j,D,H,A)
+   =\Drop\,\Ax_\pi(A,D,H)\,\Sh^{j+1}\Pop^{8-j}.
+\]
+The exact endpoint from $(t,w,0,0)$ is
+\[
+ \bigl(q_{\pi(j)}(D,A,H),w,0,0\bigr).
+\]
+Indeed, the initial discard makes the saved top zero; $j+1$
+Shifts expose the desired head; the remaining pops preserve it
+and consume the suffix through that saved zero.  Thus head $i$
+is selected at the fixed position $j=\pi^{-1}(i)$.
+The selector has $102-10j\leq92$ commands.
+The existing selectors for $\rho_8$ and the guarded gate are
+unchanged, as are generalization and the MP suffix.  They use only
+the two order-independent Shift identities and the total macros
+above.  The possible early halt in the MP suffix remains the
+intentional case in which its already derived antecedent is code 1.
+
+\section{A uniform derivation-to-halting-word map}
+
+\begin{lemma}[Modified compiler]
+Let $\mathcal C$ be the unchanged native proof calculus.  There is
+a primitive recursive compiler $p\mapsto C_\pi(p)$ such that PA
+proves, for every internally verified $\mathcal C$ derivation $p$
+of formula code $a$ and every $t,w$, that execution from $(t,w,0,0)$
+either halts or returns $(a,w,0,0)$.  Therefore, if $p$ is a
+derivation of 1, the word
+\[
+ W_\pi(p)=\Ax_\pi(0,0,0)\,C_\pi(p)\,\Sh
+\]
+halts from \emph{every} incoming live store.
+\end{lemma}
+\begin{proof}
+Use the published proof compiler, replacing its six fixed head
+positions by $\pi^{-1}(i)$.  The gate, restricted propositional,
+generalization and MP cases keep their command words.  At a leaf,
+the new selector lemma proves the required endpoint.  At an MP
+node, compile the major proof, push its result, compile the minor
+proof, push its result, and run the unchanged MP suffix.  At a
+generalization node run the unchanged generalization word after
+compiling its premise.  If a premise execution has already halted,
+the absorbing command semantics preserves that result.
+Induction on the coded derivation proves the assertion.
+
+The initial AX in $W_\pi$ clears both caches for arbitrary incoming
+$d,h$, so the compiler theorem applies with arbitrary new top and
+stack.  If it returns, its top is 1 and its $h$ cache is zero, and
+the final Shift halts.  This handles dirty incoming caches and is
+strong enough for the scheduler, which does not reset the store
+between its candidate words.
+
+The only new constants in the proof generator are six numbers
+between 1 and 6.  Its recursion and word encoding are the original
+primitive recursive operations.  For an expanded derivation tree
+with $n$ nodes, the command word has length at most $112n+2$;
+large formula parameters affect command codes, not that word-length
+bound.  PA verifies the recursion by induction on the coded proof,
+including internally finite proofs of nonstandard length.  No
+appeal to truth of all internally provable formulas is involved.
+\end{proof}
+
+The original source word encoder still applies: if $E$ folds a
+command word into its source Cantor tail encoding, the candidate
+index is $E(W_\pi(p))-1$.  The reset prefix puts this index in the
+enumerated range.  The exact decoded-word theorem and candidate
+enumeration induction therefore give a source halt from any
+native refutation.  These are uniform arithmetical maps, with the
+same argument for nonstandard words in a PA model; one must not
+replace this with an external assertion that every standard word
+is eventually tried.
+
+\section{Soundness and transfer to a physical machine}
+
+An order-independent proof annotation also goes in the other
+direction.  Starting from the zero store, attach a PA proof to the
+current top, the $h$ cache and each finite stack entry; zero tails
+carry a fixed proof of code-zero truth.  The PA interpretation is
+the direct native-code interpretation from the accompanying
+soundness note.  At AX, the six head proofs are merely reordered
+along with their formula codes.  The gate proof, restricted
+propositional proof, proof of $U(d,h)$ obtained by generalization,
+and saved-top proof are unchanged.  MP combines proofs on success
+and installs the fixed truth proof on failure.  A nonhalting Shift
+only moves existing proof witnesses.  If a Shift halts, $t+h=1$
+implies $t=1$ or $h=1$, so one of the attached proofs is a proof
+of code 1.  Its direct interpretation contradicts PA's theorem
+that a number is not its own binary-bit member.  This constructs
+a PA refutation; it does not assume that PA proves its consistency.
+
+\begin{theorem}[Permutation transfer, conditional on implementation]
+Suppose a proposed binary machine $M_\pi$ has a verified blank
+startup and PA-formalizable uniform positive instruction and
+command-macro contracts implementing exactly $\Ax_\pi$, the
+unchanged MP and Shift commands, and the unchanged complete
+scheduler.  The AX contracts must return to the live command
+boundary for every natural parameter and may not expose an
+additional halt.  Then, with the fixed PA-to-native proof
+translation and the direct native-to-PA syntactic translation,
+\[
+ \PA\vdash H_{M_\pi}\leftrightarrow\neg\operatorname{Con}(\PA),
+ \qquad
+ \PA\vdash\neg H_{M_\pi}\leftrightarrow\operatorname{Con}(\PA).
+\]
+In particular it has the same arithmetical halting statement as
+the baseline, given the accompanying paper-level reverse-soundness
+proof for the baseline.  These conclusions also hold in the
+standard model.
+\end{theorem}
+\begin{proof}
+From a PA refutation, use the unchanged PA-to-native translation,
+the modified compiler $W_\pi$, the exact source word encoder,
+and candidate enumeration.  Positive source and physical
+contracts produce a literal halting trace.
+
+Conversely, under the internal hypothesis $\operatorname{Con}(\PA)$,
+the proof annotation makes every command successor live.
+The scheduler's positive fresh-candidate and positive-residual
+contracts then build arbitrarily long live source traces, and
+the physical contracts build arbitrarily long live literal traces.
+If a literal halt existed at time $T$, building $T+1$ positive
+segments would contradict determinism at that halt.  If a coded
+source halt is represented by an absorbing self-loop, its absorbed
+endpoint is likewise incompatible with a later live endpoint.
+This is an induction inside PA; it makes no assumption of external
+standardness for $T$ or for formula codes.  Thus PA proves both
+directions claimed.
+\end{proof}
+
+\paragraph{Implementation boundary.}
+An instruction-level check against a changed source proves only
+that this source is executed correctly.  In addition one must
+prove the changed AX macro has exactly the output displayed in
+Section 1, with the same argument values, live return, gate guard,
+and fixed tail.  Source order is now different, so an assertion of
+identical ordinal control flow cannot replace that macro check.
+A successful check of every proposed permutation is useful for
+search; only the chosen candidate's complete contracts and startup
+justify a final machine claim.
+
+\section{Optional exchange of the first two antecedents}
+
+The same argument permits, independently for heads 3, 4 and 6,
+replacing $I(\alpha,I(\beta,\gamma))$ by
+$I(\beta,I(\alpha,\gamma))$.  Here the triples are
+\[
+\begin{array}{c|ccc}
+ i&\alpha&\beta&\gamma\\ \hline
+ 3&M(H,D)&E(H,A)&M(A,D)\\
+ 4&E(H,D)&M(A,H)&M(A,D)\\
+ 6&U(D,A)&U(D,I(A,H))&U(D,H).
+\end{array}
+\]
+This is not a claim that either membership head may be deleted.
+The exchanged head is a different formula, so the native proof
+compiler needs one more explicit translation.
+
+The restricted propositional head alone, with MP, uniformly derives
+\[
+ I\bigl(I(\alpha,I(\beta,\gamma)),
+        I(\beta,I(\alpha,\gamma))\bigr).
+\]
+The existing finite proof template is
+\code{PA196.Logic.Dominated.exchange} in
+\code{PA196/Logic/ImplicationBasis.lean}; its underlying rules
+use only the restricted $\rho_8$ axioms and MP.  Interchanging
+$\alpha,\beta$ gives the reverse implication.  Thus replacing
+any of these three axiom schemas by its exchanged version admits
+primitive recursive proof translations in both directions.
+
+For completeness, translate an old head leaf to the selected new
+head followed by the appropriate exchange proof and MP.  The
+exchange proof itself uses only the unchanged propositional
+selector, so this construction is not circular.  For soundness,
+derive a newly emitted exchanged head from its old head proof
+using the forward exchange template.  Each new head is still
+divisible by 4.  Every stack-macro and no-accidental-halt calculation
+above therefore remains valid.  The same all-model induction proves
+the transfer theorem for all $6!\,2^3=5{,}760$ combinations,
+conditional on their exact source and physical contracts.  The
+bound $112n+2$ above applies to pure permutations; expanding the
+fixed exchange templates gives a larger fixed linear bound for
+these additional variants.  No numeric or semantic sampling is
+needed to justify these logical transformations.
+
+\paragraph{Existing formal templates.}
+The fixed baseline is commit
+\code{407cdc356f6b586635e71ac92be394255f4bfea4} of
+\href{https://github.com/jamesyc/BusyBeaver}{jamesyc/BusyBeaver}.
+The relevant declarations are
+\code{Commands.Words.ax_shift8}, \code{ax_shift9},
+\code{pop_total}, \code{push_total}, \code{discard_total},
+the six theorems of \code{Commands.HeadSelectors},
+\code{Commands.Compiler.compile_result} and
+\code{haltWord_universal}.  Their all-model arithmetic templates
+are in \code{Arithmetic/WordAlgebra.lean},
+\code{WordSelectors.lean}, \code{CompilerLeaves.lean}, and
+\code{CompilerHaltingWord.lean}.  The exact word encoding and
+enumeration are developed in
+\code{Arithmetic/Scheduler/ActualWordEncodingBlueprint.lean},
+\code{SourceCommandWordTraversal.lean},
+\code{ActualCandidateBlueprint.lean}, and
+\code{InternalCodedSourceCandidate.lean}.
+The permutation modifications described here have not been
+implemented and checked as new Lean declarations.
+
+\end{document}

@@ -1,0 +1,288 @@
+\section{An equivalent axiom emitter with 39 fewer source instructions}
+\label{sec:distributed-gate}
+\begingroup
+\newcommand{\Imp}{\mathsf I}
+\newcommand{\Mem}{\mathsf M}
+\newcommand{\All}{\mathsf U}
+\newcommand{\Eq}{\mathsf E}
+\newcommand{\Neg}{\mathsf N}
+
+A new source-level simplification distributes the innermost universal
+quantifier over the two conjuncts of PA196's separation condition. The
+result has \textbf{199 AX macro tokens instead of 201}, and expands to
+\textbf{3,773 source instructions instead of 3,812}. These are source
+counts. They establish no reduction in physical Turing-machine states.
+
+Use the exact PA196 constructors
+\[
+ \Imp(x,y)=4p(x,y),\quad
+ \Mem(x,y)=4p(x,y)+1,\quad
+ \All(x,B)=4p(B,x)+2,\quad
+ \Eq(x,y)=4p(x,y)+3,
+\]
+where $p$ is the upstream Cantor pairing, and put
+$\Neg(B)=\Imp(B,1)$ and
+$B\wedge C=\Neg(\Imp(B,\Neg(C)))$.
+The property parameter $c$ is simultaneously a formula code and the
+fresh-output variable label, exactly as in the upstream emitter.
+
+For the original gate parameters $(a,b,c)$ define
+\begin{align*}
+ \Delta&=\Eq(a,b)\to\All(c,\Eq(a,b)), &
+ V&=\Mem(a,b)\to\All(c,\Mem(a,b)),\\
+ P&=c\to\Mem(c,b), &
+ A&=\Mem(a,b)\to P, &
+ B&=\Mem(c,b)\to c.
+\end{align*}
+Here an arrow denotes $\Imp$, and $c$ in formula position denotes the
+property with numeric code $c$. The original definitions are
+\[
+ S=\All(b,A\wedge B),\qquad
+ Q=\All(c,S\to\Neg(P)),\qquad
+ F=\Neg\bigl(\Delta\to(V\to Q)\bigr).
+\]
+Replace them by
+\begin{align*}
+ S_1&=\All(b,A), & S_2&=\All(b,B),\\
+ Q_*&=\All\bigl(c,S_1\to(S_2\to\Neg(P))\bigr), &
+ F_*&=\Neg\bigl(\Delta\to(V\to Q_*)\bigr).
+\end{align*}
+The guard remains $c\ne a,b$; its disabled result remains truth code zero.
+The other six heads, the restricted propositional head, and the saved
+incoming/generalization entries are unchanged. In particular, the AX
+command still pushes nine items, and the head-selection ranks and
+fixed push/pop words require no change merely because of this logical
+reformulation. The numerical value of the enabled gate is different;
+the claim is derivable logical equivalence, not equality of codes.
+
+\begin{proposition}[Gate equivalence in the common numeric calculus]
+\label{prop:distributed-gate}
+The retained heads h1, h6, the restricted implicational basis, modus
+ponens, and generalization derive both $F\to F_*$ and $F_*\to F$ for
+all numeric parameters. The proof does not use either version of the
+guarded gate, equality symmetry, a substitution rule, or unrestricted
+universal instantiation.
+\end{proposition}
+\begin{proof}
+The unchanged restricted implicational basis yields the classical
+implicational rules. With unchanged h1 it also yields explosion for
+code~1, hence the usual rules for the displayed negative encoding of
+conjunction. These are the upstream bootstrap arguments, independent of
+the gate.
+
+For arbitrary formula codes $X,Y$ and label $b$, generalize the
+propositional projections $(X\wedge Y)\to X$ and
+$(X\wedge Y)\to Y$. Applying h6 gives
+\[
+ \All(b,X\wedge Y)\to\All(b,X),\qquad
+ \All(b,X\wedge Y)\to\All(b,Y).
+\]
+Conversely, generalize the propositional theorem
+$X\to(Y\to X\wedge Y)$ and apply h6 twice. This gives
+\[
+ \All(b,X)\to
+ \bigl(\All(b,Y)\to\All(b,X\wedge Y)\bigr).
+\]
+Propositional reasoning therefore proves
+\[
+ \All(b,X\wedge Y)\ \leftrightarrow\
+       \bigl(\All(b,X)\wedge\All(b,Y)\bigr).
+\]
+This is normal-quantifier distribution over a binary conjunction. It
+requires no freshness side condition.
+
+Apply it with $X=A$ and $Y=B$. Currying the two conjuncts now gives
+\[
+ S\to\Neg(P)
+ \quad\leftrightarrow\quad
+ S_1\to(S_2\to\Neg(P)).
+\]
+Generalize each direction at $c$ and use h6 to obtain
+$Q\leftrightarrow Q_*$. Implicational reasoning transports this
+equivalence through the unchanged contexts
+$\Neg(\Delta\to(V\to\cdot))$, proving the result.
+\end{proof}
+
+The preceding proof is about the actual numerical constructors, not
+about a change of variable names in a decoded first-order language.
+The inner label $b$ binds exactly the same occurrences on both sides
+of the conjunction-distribution law. If $a=b$, the resulting additional
+bound occurrences are present on both sides. The outer label $c$ still
+binds the whole curried condition, and the occurrences of $\Delta$ and
+$V$ remain outside it. The simultaneous use of $c$ as a property code
+and a bound label is preserved. Thus no freshness assumption beyond
+the original gate guard enters, and no general substitution theorem
+is being used implicitly.
+
+\subsection{Uniform proof translation and its PA verification}
+
+Let $C$ be the exact numerical proof calculus with the original gate,
+and let $C_*$ replace only its gate by $F_*$. A proof is a finite list
+of labelled lines. An axiom line records its head and numerical
+parameters; an MP line records the two earlier line indices and its
+conclusion; a generalization line records an earlier line and its
+label. The checker verifies numerical equalities of the displayed
+constructors, the restriction $u\leq a$ on the propositional head,
+and the original two inequalities on an enabled gate. One may code
+lists, for example, by $\operatorname{nil}=0$ and
+$\operatorname{cons}(h,t)=1+p(h,t)$. Use any fixed tagged coding of
+these line records. Write $\operatorname{Prf}_C(p,f)$ and
+$\operatorname{Prf}_{C_*}(p,f)$ for the resulting primitive recursive
+proof predicates, with last conclusion $f$.
+
+\begin{theorem}[PA verification of the numerical proof translation]
+\label{thm:distributed-pa-translation}
+There are primitive recursive proof translators $\tau$ and $\sigma$
+for which PA proves
+\begin{align*}
+ \operatorname{Prf}_C(p,f)&\longrightarrow
+   \operatorname{Prf}_{C_*}(\tau(p),f),\\
+ \operatorname{Prf}_{C_*}(p,f)&\longrightarrow
+   \operatorname{Prf}_{C}(\sigma(p),f).
+\end{align*}
+Consequently PA proves equality of the two refutability predicates,
+\[
+ \exists p\,\operatorname{Prf}_C(p,1)
+ \quad\longleftrightarrow\quad
+ \exists p\,\operatorname{Prf}_{C_*}(p,1),
+\]
+and hence equality of their consistency assertions.
+\end{theorem}
+\begin{proof}
+The restricted implicational bootstrap is a fixed finite family of
+proof templates. Its constructor bounds follow from
+$x,y\leq p(x,y)\leq4p(x,y)$. In particular it supplies the usual
+$K,S$, Peirce, composition, and exchange templates at arbitrary
+numerical inputs. The pinned upstream files
+\file{M6/Logic/RestrictedImplication.lean} and
+\file{PA196/Logic/ImplicationBasis.lean} give these explicit finite
+constructions. They use no gate. The finite-context deduction
+construction in \file{PA196/Logic/Deduction.lean} uses only MP and
+closed theorems, so it never generalizes an undischarged assumption.
+
+For completeness, explosion also has a uniform gate-free template.
+From a temporary assumption $1$, the $K$ template gives
+\[
+ \All(0,\Neg(\All(0,X)))\to1
+       =\exists 0\,\All(0,X).
+\]
+Head h1 then gives $X$; the finite deduction construction closes this
+as $1\to X$. Peirce and explosion supply double-negation elimination,
+and the three conjunction templates used in
+Proposition~\ref{prop:distributed-gate} follow by ordinary finite
+deduction. The upstream \file{PA196/Logic/Connectives.lean} contains
+those constructors explicitly. The only generalizations in the gate
+equivalence proof are of already closed conjunction or implication
+theorems. Thus each direction of that proof expands to a fixed finite
+template whose parameters are $a,b,c$.
+
+Scan an input proof from left to right, maintaining the index of the
+translated conclusion of each old line. A changed gate-axiom line
+with conclusion $F(a,b,c)$ is replaced by the $C_*$ gate axiom
+$F_*(a,b,c)$, the common-core template proving $F_*\to F$, and MP.
+Unchanged axioms are copied. An MP or generalization line is copied
+with its prior-line references updated. Every translated line group
+therefore ends in exactly the original numerical conclusion code;
+there is no formula recoding. The reverse translator uses $F\to F_*$.
+Extend both algorithms arbitrarily to malformed input records, for
+example by outputting the empty proof when a required record is
+missing. List decoding, constructor calculation, finite-template
+instantiation, appending, and this bounded scan are primitive
+recursive.
+
+PA verifies each fixed template by its finitely many checking
+equations and the elementary pairing bounds above. Induction on
+the input proof length proves the invariant that the remembered
+output index has the same numerical conclusion and a valid proof
+prefix. The only changed axiom has exactly the same numerical side
+conditions in the two calculi. This proves the two displayed
+implications inside PA. Existential introduction in each direction
+proves the final equivalence. This is a syntactic proof-checking
+argument, and does not use soundness, reflection, or a truth predicate.
+\end{proof}
+
+The code-zero identity $\Imp(0,0)=0$ does not obstruct this argument:
+the translation preserves all original conclusion codes, including
+zero. If the source-level checker exposes a disabled gate as code
+zero, that result is identical on both sides; it also has the common
+identity proof $0\to0$. The theorem is an ordinary mathematical
+arithmetization proof. The new translators have not been exported as
+Lean declarations in this artifact.
+
+\paragraph{The selected head order.}
+The grammar candidate used by the physical compiler additionally
+emits the six heads in order $[1,6,2,3,4,5]$, and writes its sixth head
+in the exchanged form
+\[
+ \All(D,A\to H)\to\bigl(\All(D,A)\to\All(D,H)\bigr).
+\]
+The common restricted implicational basis proves exchange independently
+of h6. Thus the original and exchanged h6 derive one another by one
+exchange-template application and MP. Add that fixed replacement
+case to $\tau$ and $\sigma$ to obtain
+Theorem~\ref{thm:distributed-pa-translation} for this selected
+calculus as well. Permuting the emitted heads does not change the
+axiom family, but it changes the stack rank used to select each
+head. The compiler must use the corresponding new ranks. The
+independent word audit checks this precise permutation and the
+precise exchanged head; it does not treat an arbitrary permutation
+as an unchanged numerical command.
+
+\paragraph{Additional equivalent words.}
+Inside $Q_*$, the three antecedents $S_1,S_2,P$ precede the final
+falsity code. All six permutations are equivalent by repeated
+implicational exchange. Within $S_1$, the two antecedents of
+$\Mem(a,b)\to(c\to\Mem(c,b))$ may also be exchanged.
+These choices give twelve explicitly certified words with the same
+macro multiset. They change formula-code layouts and can therefore
+change grammar sharing even though they prove the same formulas.
+
+\subsection{Exact expansion count}
+
+The accompanying \file{distributed_gate.py} reconstructs the original
+201-token word from the mathematical heads and compares it with the
+literal blocks in upstream \file{PA196/Source/AXProgram.lean}. It checks
+the pinned source identity and contiguous block boundaries before
+emitting any variants. The new words each have 199 tokens. Their
+multiset difference from the original is
+\[
+  +1\;\texttt{copyD}\ -1\;\texttt{cons}\ -2\;\texttt{push}.
+\]
+All increment counts remain the same. The authoritative block lengths
+are 26 primitive instructions for \texttt{copyD}, 27 for
+\texttt{cons}, and 19 for \texttt{push}. Consequently
+\[
+  26-27-2\cdot19=-39,
+  \qquad 3812-39=3773.
+\]
+The enabled gate's contribution drops from 77 to 75 macro tokens.
+The simplification replaces the negative conjunction's two constant-one
+constructions and three pairing operations by a second universal
+constructor and a curried antecedent. The source arithmetic above
+accounts for their different expansion lengths.
+
+The source is pinned to
+\nolinkurl{jamesyc/BusyBeaver@407cdc356f6b586635e71ac92be394255f4bfea4}.
+The checked SHA-256 of \file{PA196/Program.lean} is
+\begin{quote}\small
+\nolinkurl{8c7c6c6884ecbb8f56e893404bb81162db15ef3dd6fd3212881a93994d63d872}.
+\end{quote}
+The AX-block source has SHA-256
+\begin{quote}\small
+\nolinkurl{8eda8dc0ed0b445c05726990c5a07634464c10ba547fff6bbdba516578ad572c}.
+\end{quote}
+The receipt records all twelve words, exact counts, and the explicit
+absence of an established physical state count.
+
+\paragraph{What this does not justify.}
+The equality- and membership-vacuity factors have deliberately remained
+outside the outer universal quantifier. Moving them through that
+quantifier would require an additional derivation; their reuse of the
+same bound label cannot be dismissed by an informal freshness claim.
+The present transformation only distributes a universal over a
+conjunction and curries antecedents, operations proved above from the
+unchanged common heads. A source tree, physical allocation, blank
+startup, universal runtime simulation, and the complete PA consistency
+calibration remain separate requirements for a smaller TM.
+
+\endgroup

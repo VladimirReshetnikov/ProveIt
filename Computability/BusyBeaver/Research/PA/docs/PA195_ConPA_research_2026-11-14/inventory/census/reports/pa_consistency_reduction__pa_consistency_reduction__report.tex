@@ -1,0 +1,500 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+symbols.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\usepackage[margin=0.82in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,multicol}
+\usepackage{xcolor,microtype}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black]{hyperref}
+\usepackage{fancyhdr,listings}
+\definecolor{ink}{HTML}{16354D}
+\hypersetup{pdftitle={PA Consistency Machines: Comparative Audit and Reduction Experiments},pdfauthor={Computational research report}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{PA consistency machines}}
+\fancyhead[R]{\small Comparative audit and reductions}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},showstringspaces=false}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\NH}{\operatorname{Nonhalt}}
+\begin{document}
+\begin{titlepage}
+\vspace*{0.5in}
+{\color{ink}\Huge\bfseries PA Consistency Machines\par}
+\vspace{0.25in}
+{\Large A comparative audit and verified reduction experiments\par}
+\vspace{0.2in}
+{\large The supplied 209-, 208-, and 196-state constructions\par}
+\vspace{0.3in}
+{\large 13 November 2026\par}
+\vspace{0.4in}
+\hrule\vspace{0.2in}
+\textbf{Result status.} No verified machine with fewer than 196 working states
+was obtained. This report does not claim that 196 is a lower bound. It gives
+an exact comparison of the supplied designs, two verified 196-state
+intermediates, a new logical reduction of the source program, and reproducible
+certificates distinguishing successful simulations from rejected smaller
+candidates.
+
+\textbf{Verified machine results.} A new rebracketing retains all 3,812 source
+instructions and passes all 4,959 symbolic contracts. A second variant
+transfers the $h$-only acceptance convention into PA196, has 3,811 source
+instructions, and passes all 4,958 contracts. Independent literal interpreters
+verify complete blank-tape startup configurations for both.
+
+\textbf{Mathematical contributions.} A syntactic interpretation supplies the
+PA-internal converse needed for the full consistency equivalence. A new
+integrated equality-witness gate removes a primitive logical head and 67
+source instruction sites, reducing the program from 3,812 to 3,745 sites.
+Its best verified implementation has 203 working states. Achieving a physical
+state count below 196 remains an additional obligation.
+
+\textbf{Proof status.} The machine certificates are independently replayable
+Python calculations justified by the published unbounded tape-engine lemmas.
+The new logical and PA-internal arguments are mathematical proofs. This work
+does not claim a new completed or executed Lean formalization.
+\vfill
+\small The accompanying ZIP contains this PDF, its complete TeX sources, literal
+transition tables, source-site data, proof and verification scripts, source
+revision locks, licenses, and selected search receipts.\par
+\end{titlepage}
+\tableofcontents
+\newpage
+
+\section{The target and the result obtained}
+The requested target is a deterministic, one-tape, two-symbol machine $M$
+with fewer than 196 working states, starting on the all-zero tape, for which
+\[
+       \PA\vdash \NH(M)\ \longleftrightarrow\ \Con(\PA).
+\]
+The halting control label is additional to the working-state count. The
+meaning of $\Con(\PA)$ is the ordinary arithmetized absence of a PA proof of
+contradiction, with the proof presentation fixed as in the cited development.
+Changing to another ordinary proof presentation requires the usual
+PA-provable primitive-recursive proof translations.
+
+The strict state-count target remains unmet in this work. The positive
+results below have complete, finite artifacts; a table with a nominal count
+of 195 is expressly rejected because it fails a required simulation and
+admits a four-step loop on a legitimate source frame. No inference of
+nonhalting is drawn from merely running a machine for a long time.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Verified table & States & Source sites & Contracts & Startup steps\\
+\midrule
+Published PA196 &196&3,812&4,959&58,154\\
+New rebracketing &196&3,812&4,959&58,154\\
+New $h$-only variant &196&3,811&4,958&57,922\\
+Integrated witness, initial &206&3,745&4,872&59,164\\
+Integrated witness, compressed &203&3,745&4,872&58,154\\
+\bottomrule
+\end{tabular}
+\end{center}
+The source-site numbers count primitive register instructions. The contract
+numbers additionally distinguish the zero and positive cases of each
+decrement. The startup numbers count literal binary tape transitions.
+These three units are different and are not interchanged in state estimates.
+
+The comparison in Section~\ref{sec:comparison-audit} explains why the
+one-state U208 deletion cannot simply be applied to PA196. The unbounded
+verification method and the new rebracketed table are given next. The later
+sections establish the logical results and document the rejected reductions.
+
+\input{comparison/audit/comparison_chapter.tex}
+
+\section{Verification at the literal-machine boundary}
+\label{sec:verification}
+\subsection{Source frames and the complete register file}
+The verifier independently transcribes the symbolic operations of the
+published \texttt{M6/Runtime.lean}. A clean frame has control state 75, a
+one immediately to the left of the head, and right-hand tape
+\[
+ p\,0^{\,n+48-|p|}\,1\,\operatorname{File}(v_0,\ldots,v_{k-1}),
+ \qquad n\in\mathbb N,
+\]
+where $p$ is a source address, $k\geq9$, and
+\[
+ \operatorname{File}(\vec v)=
+  0\,1^{v_0+1}\,0\,1^{v_1+1}\cdots0\,1^{v_{k-1}+1}.
+\]
+All remaining tape cells are zero. The logical register numbers $0,\ldots,8$
+are stored in physical positions
+\[
+                  [6,2,0,4,3,7,8,5,1].
+\]
+The symbolic padding is an affine expression in the arbitrary natural $n$.
+The register file is one opaque term, with a recorded operation and marked
+register where appropriate. It is not replaced by a small test vector.
+
+Four unbounded summaries cover marking the selected register, increment,
+zero decrement, and positive decrement. Their justification is the existing
+native tape-engine proofs. The verifier checks all 45 literal transition
+rows on which those summaries depend. In particular the increment summary
+includes the appended spare register with value one; changing that spare
+value without adapting the engine proof is not an allowed optimization in
+these positive certificates.
+
+\subsection{What each finite contract proves}
+For every source address the checker starts from its symbolic clean frame
+and follows literal transition rows, finite scan summaries, and the four
+unbounded register summaries. It must reach the prescribed next clean frame,
+with the exact complete-file effect and a positive number of literal steps.
+A halt instruction must reach the designated halting label. Decrement has
+separate contracts under $v_r=0$ and $v_r>0$.
+
+There are 1,147 decrement sites in the published source, hence
+$3,812+1,147=4,959$ contracts. The check includes arithmetic-loop bodies and
+control transfers as well as the straight-line formula constructors.
+Unfolding a symbolic derivation and applying the engine lemmas gives a
+finite positive simulation for every admissible natural padding and every
+complete register file. The mathematical conclusion is therefore universal;
+it is stronger than a collection of bounded numerical trials.
+
+The release verifier uses explicit exceptions at its acceptance gates and
+works with Python assertions disabled. The underlying source parser is
+checked against pinned input hashes and the explicit graph identities.
+This remains a small, reviewable certificate-replay implementation rather
+than a replacement for a proof assistant's trusted kernel.
+
+\subsection{Startup is checked independently}
+Symbolic contracts begin at clean source frames, whereas the task starts on
+a blank tape. A separate interpreter represents the entire tape by the set
+of its nonzero cells and executes one literal transition at a time. It
+imports neither the symbolic runtime nor its register summaries.
+At the claimed startup step it compares the \emph{whole} tape, state, and
+relative head position with the clean source-25 frame. The initial physical
+file is
+\[
+       [0,0,0,0,0,0,2,0,0]\mathbin{+\!+}[1]^{26}.
+\]
+For both the published and the rebracketed table this occurs at step 58,154,
+with absolute head position $-2$ and state 75. For the $h$-only table it occurs
+at step 57,922. The zero extension of an address is part of its padding, so
+the differing printed source-25 path of the $h$-only table does not hide a
+tape discrepancy.
+
+Positive step lengths, deterministic execution, and the one halting label
+transport the source program's halting behavior to the literal blank-tape
+machine. These transport arguments can be formalized in PA by bounded
+induction and primitive-recursive trace construction. Section~\ref{sec:internal-converse}
+spells out the additional syntactic argument needed for the consistency
+biconditional.
+
+\section{A structurally different verified 196-state machine}
+\label{sec:rebracketed}
+\subsection{Construction}
+The AX body is a sequence over the following macro alphabet. The single-letter
+names are opaque compression tokens: in particular token $\mathsf A$ copies
+the register called $D$ in the arithmetic program, and token $\mathsf D$
+copies the register called $A$. The mapping, not an intuitive interpretation
+of the letters, defines the construction.
+\begin{center}
+\begin{tabular}{@{}clcl@{}}
+\toprule
+Token&Original source node&Token&Original source node\\
+\midrule
+$\mathsf P$&\texttt{node49}&$\mathsf H$&\texttt{node58}\\
+$\mathsf A$&\texttt{node55}&$\mathsf D$&\texttt{node70}\\
+$\mathsf C$&\texttt{node65}&$\mathsf R$&\texttt{node72}\\
+$\mathsf S$&\texttt{node75}&$\mathsf G$&\texttt{node142}\\
+$\mathsf K$&\texttt{node150}&$\mathsf i$&\texttt{inc 1}\\
+$\mathsf B$&\texttt{breakTo 1}&&\\
+\bottomrule
+\end{tabular}
+\end{center}
+The search also exposes the closed copy suffixes
+$\mathsf h=\texttt{node57}$, $\mathsf a=\texttt{node54}$, and
+$\mathsf d=\texttt{node69}$, with
+$\mathsf H=(\mathsf P,\mathsf h)$,
+$\mathsf A=(\mathsf P,\mathsf a)$, and
+$\mathsf D=(\mathsf P,\mathsf d)$.
+Reassociations are accepted only after reconstructing every primitive
+instruction's ordinal destinations and checking equality with the original
+3,812-instruction control graph.
+
+The selected grammar is
+\path{verification/open_physical_61_201240.json}.
+The ``61'' in this historical search filename is an \emph{obsolete optimistic
+search score}; it is not the certified state saving. Its first fold proposal
+contained an incompatible pair. The accepted certificate uses the compatible
+six pairs below and has 196 states. This potentially confusing filename is
+retained only so that the research trail remains reproducible.
+
+Compiling its distinct new readers gives 202 working states, comprising the
+unchanged 134-state exterior and 68 new pure readers. Six compatible
+predecessor-sensitive identifications reduce 202 to 196. Finally a bijection
+maps the surviving new reader labels to $134,\ldots,195$, preserving all labels
+$0,\ldots,133$ and the halt label 196.
+
+\subsection{The six finite local identifications}
+In the temporary pure-reader numbering, the entire fold certificate is
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Kept&Deleted&Helper for read 0&Helper for read 1\\
+\midrule
+1004&1013&1039&--\\
+1006&1028&1035&1023\\
+1020&1003&1018&--\\
+1029&1009&--&1057\\
+1044&1024&1043&--\\
+1048&1049&1008&--\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every original entry to the kept state has predecessor bit zero, and every
+original entry to the deleted state has predecessor bit one. A dash means
+that the two original rows already agree. On a differing read bit $b$, the
+shared state preserves $b$, moves left, and enters the stated helper. The
+helper reads the predecessor bit, returns right, and selects a donor that
+performs the original transition.
+
+All 24 local cases are checked \emph{after all six identifications have been
+applied}. Each takes one or three literal transitions, touches only the two
+specified cells, preserves their contents, and finishes at the identified
+old endpoint one cell to the right. This simultaneous check matters: an
+individually suitable helper may cease to work when another selected fold
+changes it. Ordinary unchanged rows commute with the identification.
+
+The relabeling verifier checks all 392 rows, including halt targets. All 196
+working states are graph reachable. The resulting canonical graph is
+structurally different from the published PA196 graph, so this is more than
+a relabeling of the published table.
+
+\subsection{The concrete artifact and its guarantees}
+The complete dense table is
+\path{comparison/audit/rebracketed196_dense.tm}; it is also printed in
+Appendix~\ref{app:table}. Its SHA-256 is
+\begin{quote}\small
+\nolinkurl{e212e359837cff6d1b3ab665855b0e9b4a2b471d23e77db447680d494d943b80}.
+\end{quote}
+It has start state 0, working states $0,\ldots,195$, and halt label 196.
+The longest source path decreases from 38 to 37. Its 4,959 contracts have a
+maximum symbolic execution length of 515 and a total of 1,589,112 symbolic
+steps, compared with 1,619,679 for the published table. These symbolic step
+counts are verifier costs, not universal bounds on literal tape runtimes.
+The startup remains exactly 58,154 literal steps.
+
+Since the primitive source program is unchanged, the all-natural contracts
+and startup prove halting equivalence with PA196. Together with the
+mathematical internal converse below, they give
+\[
+ \PA\vdash \NH(M_{\mathrm{rebracketed}})\leftrightarrow\Con(\PA).
+\]
+The state count is still 196; the construction supplies a verified different
+starting point for further reductions.
+
+\input{comparison/audit/h_only_shift_note.tex}
+\input{math_reduction/internal_converse.tex}
+\input{math_reduction/integrated_gate_reduction.tex}
+
+\subsection{Verified implementations of the integrated gate}
+The new logical source has a complete literal implementation in
+\path{comparison/audit/integrated_gate206_dense.tm}.
+It uses working states $0,\ldots,205$, start state 0, and halt label 206.
+State 196 is now an ordinary working state and must not be interpreted as
+halt when executing this table. Its SHA-256 is
+\begin{quote}\small
+\nolinkurl{7be1c776f1c5ac1db48b082b1880c710e0ce5722ea82fd66bc33e4ac561afe73}.
+\end{quote}
+
+The release verifier reconstructs the exact macro-word edit and checks its
+postfix expression against the displayed gate $G'$. It reconstructs all
+3,745 expanded primitive sites from the modified source grammar. All 1,127
+decrement sites have both branches checked, giving $3,745+1,127=4,872$
+uniform contracts. The largest address has length 38; the longest symbolic
+trace uses 524 verifier steps. The unchanged 45 engine rows retain their
+existing unbounded summaries. This particular grammar uses two extra return
+scanner states.
+
+An independent literal blank-tape execution reaches the exact initial
+source frame after 59,164 steps, at head position $-2$ and state 75.
+All 412 rows commute with the documented relabeling, and all 206 working
+states are graph reachable. The raw and dense tables have identical startup
+configurations under that relabeling.
+
+A further reassociation and compatible-fold search gives a 203-state table
+in \path{comparison/audit/integrated_gate203_dense.tm}, with start state 0,
+working states $0,\ldots,202$, and halt label 203. Its SHA-256 is
+\begin{quote}\small
+\nolinkurl{c2da8e535f77ba8441ca443ad6f7e93262096eb8dc99373152a64d2774fb5e21}.
+\end{quote}
+The release verifier reconstructs its grammar, proves equality of the
+expanded 3,745-instruction ordinal control graph with the initial integrated
+source, and checks all 4,872 contracts. The largest source path is 39; the
+longest symbolic trace uses 515 verifier steps. This table requires no extra
+return-scanner states. All 406 rows pass the complete relabeling check and
+all 203 working states are graph reachable. Its exact blank startup is
+58,154 steps, with the same whole initial source frame, head $-2$, and root
+75 as PA196.
+
+Thus the source reduction has certified machine realizations. The best one
+currently costs seven more physical states than the published PA196 table,
+illustrating why source length and decoder-state count must be measured
+separately.
+
+\section{Why the apparent smaller candidates were rejected}
+\label{sec:negative}
+\subsection{A four-step loop caused by incompatible helper reuse}
+The retained diagnostic
+\path{verification/candidates/warm_physical_61_8047.tm}
+has 195 working labels. It was produced by an optimistic combination of
+reader folds and a longer return scan. It is not an accepted construction.
+
+The release verifier starts it at the valid clean frame for source site
+1111, with nine zero-valued live registers and 26 one-valued spare registers.
+After 26 literal transitions the entire finite tape, head, and control enter
+a cycle. The four control states are
+\[
+              1024\longrightarrow1056\longrightarrow1038
+                   \longrightarrow1018\longrightarrow1024.
+\]
+The complete configuration repeats at step 30. Thus the claimed finite
+source return does not occur. This is an exact finite-tape counterexample to
+the proposed simulation, independently replayed without symbolic register
+summaries. It is not merely a timeout at an arbitrarily chosen fuel limit.
+
+The counterexample refutes the candidate's claimed compiler certificate.
+It is not presented as a general decision procedure for consistency-machine
+correctness, nor as a proof that every 195-state table fails the task.
+
+\subsection{The return scan and transient zeros}
+Another obstruction occurs even before incompatible folds are applied.
+The unchanged return routine distinguishes the left tape margin using a
+long run of zeros. Rebracketing changes the runs of zeros in source
+addresses. Decrement preparation can introduce an additional transient zero,
+so a bound on the unmodified address alone is insufficient.
+
+For example, two optimistic grammar candidates with seven-zero address runs
+pass most of their source contracts after adding one scan state, but fail
+14 and 18 decrement contracts respectively. Adding a second scan state makes
+their pure-reader versions pass all 4,959 contracts. Their compatible reader
+folds then leave 197 working states. The apparent saving vanishes when both
+the scan and simultaneous helper obligations are met.
+
+Likewise, deleting the final state of the original return detector does not
+establish a 195-state machine: the initial comparison address already
+supplies a failing case. Source rebracketing, contextual macro entry, and
+return-scan behavior have to be solved together.
+
+\subsection{The precise scope of the searches}
+The archive retains deterministic search scripts and selected receipts for
+several families: direct identifications, mixed transition-row choices,
+local detours, existing-helper substitutions, associativity changes,
+exposure of closed macro bodies, altered acceptance conventions, physical
+register allocations, axiom-head permutations, and equivalent logical
+orientations. A separate integer program explores reusable macro phrases.
+A solver time limit or an incumbent cost is not an optimality certificate.
+
+Some particularly concrete negative results are:
+\begin{itemize}
+\item The original direct nonengine fold pass tested 33,150 candidates; the
+mixed-row pass tested 28,440 candidates. Their protected engine and frame
+conditions are stated in the scripts.
+\item All 36 single transpositions of the nine physical register positions
+were verified at the source boundary, and the corresponding direct-fold
+passes tested 1,193,400 candidates without an accepted deletion.
+\item All $8!=40,320$ register allocations fixing the original candidate
+position were scored against compatible predecessor folds on the pure
+202-state grammar. Each retained the same best six-state saving.
+\item Several searches over hundreds of thousands of grammar mutations
+returned valid or promising 196-state layouts, but no certified smaller
+literal table. The results depend on their specified grammar and helper
+families.
+\end{itemize}
+These are scoped computational results. They do not prove that the published
+machine is locally optimal under every transformation, that a particular
+source language is minimal, or that a sub-196 consistency machine cannot
+exist.
+
+\subsection{An append-zero initialization failure}
+One experiment changes only the spare-register append action
+\[
+ (125,0):\quad 1L39\ \longmapsto\ 0L39.
+\]
+Even if later register contracts are reinterpreted to permit zero-valued
+spares, this edit fails the required blank initialization. After exactly
+76 steps the machine is in state 35 at head position 4, and the only
+nonzero tape positions are $-3$ and 1. Its row on zero is $1R35$.
+Every cell at or to the right of the head is therefore zero, and each next
+step writes behind the new head and advances right in the same state.
+This proves that the modified machine never reaches the intended initial
+source frame. The release verifier reproduces the complete configuration
+and the escaping-loop premise. The rejected edit is not included among
+the positive machine constructions.
+
+\section{Reproduction and proof boundaries}
+\label{sec:reproduction}
+\subsection{One command for the positive claims}
+Extract the ZIP and, from its top-level directory, run
+\begin{lstlisting}
+python3 verify_release.py
+python3 -O verify_release.py
+\end{lstlisting}
+The standard library is sufficient for these release checks. The script
+replays the published and both new 196-state tables, verifies exact source
+identity or the documented $h$-only source edit, checks all unbounded-engine
+rows, verifies the six simultaneous folds and complete relabeling, replays
+blank startup, reproduces the four-step rejected-candidate witness, and
+repeats the 208-state graph census and neutral-helper checks.
+It also reconstructs the shortened integrated-gate source, checks its
+symbolic formula and all 4,872 source contracts for each realization,
+verifies the 206- and 203-state relabelings and blank startups, and reproduces
+the append-zero failure.
+It writes its detailed outputs under \texttt{receipts/}.
+
+The arithmetic behind the unbounded register summaries is in the pinned
+upstream source snapshot under \texttt{sources/BusyBeaver/}. The independent
+Python transcription is \texttt{verification/symbolic.py}. The full
+comparison inputs and their byte hashes are in
+\texttt{comparison/audit/inputs/}. The grammar optimization scripts are
+research tools; their output must pass the release-style checks before it
+is treated as a machine construction.
+
+\subsection{Rebuilding this PDF}
+On an ordinary TeX Live installation,
+\begin{lstlisting}
+pdflatex report.tex
+pdflatex report.tex
+\end{lstlisting}
+rebuilds the PDF. The document uses Latin Modern, standard mathematical
+packages, \texttt{booktabs}, \texttt{longtable}, \texttt{xurl}, and
+\texttt{hyperref}. The included build script also documents the local-format
+fallback used in the execution environment. All TeX inputs are in the ZIP.
+
+\subsection{What has and has not been proved here}
+The exact finite table comparisons, graph identifications, literal startups,
+source-site replay calculations, and failed-cycle witness are executable
+results. The mathematical interpretation and integrated-gate proof provide
+explicit uniform constructions and explain their internalization in PA.
+They are separate from a completed kernel-checked formalization. The
+upstream Lean declarations retain their original claims and identities;
+no new formal theorem is attributed to them.
+
+The final state-count conclusion is limited and explicit: the supplied
+archive contains verified new 196-state variants and a smaller logical
+source program with a verified 203-state implementation. It does not supply
+the requested verified machine with fewer than 196 working states.
+
+\appendix
+\input{reduction196/grammar_milp_note.tex}
+\section{Complete transition table of the rebracketed machine}
+\label{app:table}
+The start state is 0, the blank symbol is 0, and $H$ denotes halt label 196.
+An entry $wDq$ writes $w$, moves one cell in direction $D$, and enters $q$.
+The three blocks below cover every working state and both scanned symbols.
+\input{transition_table.tex}
+\end{document}

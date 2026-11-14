@@ -1,0 +1,58 @@
+\subsection{Previous work that is already in the supplied archives}
+
+The incoming collection already contains extensive negative experiments.
+For example, it reports 23,040 fixed-association head variants with no
+improvement on the original 68 distinct AX concatenation nodes, and
+46,656 head-independent label permutations with no improvement on the
+original 159 distinct internal program nodes. Its same-count helper
+screen reports 8,061,300 trials without the desired saving. These are
+supplied results, not new searches of this investigation~\cite{incoming}.
+
+The same caution applies to earlier source simplifications. Removing
+known dead or constant branches can lower the source-site count from
+3,812 to 3,807 while increasing the distinct-node count to 162 and giving
+a best reported 197-state allocation. Negation-head peepholes remove
+many more occurrences but still give 197 states in the supplied compiler.
+The distributed-gate branch already gives a 198-state table. The new
+198-state table in this report belongs instead to the diagonal-vacuity
+branch. None of these counts combines additively with the contextual
+U208 saving.
+
+\subsection{Fresh association and reader-rotation searches}
+
+Each of three fresh AX reassociation searches used a 240-second wall-clock
+budget. For the original 201-token word and zero-run bound six, the run
+recorded 91,792 sampling attempts and a best screening cost of 62.
+With bound five, it recorded 99,064 attempts and a best cost of 73.
+For the diagonal 191-token word and bound six, 92,720 attempts found
+69 distinct new readers with five potential folds, giving screening
+cost 64. That last witness was subsequently reconstructed and separately
+verified as the delivered 198-state machine.
+
+The screening cost subtracts a maximum matching of possible context folds;
+it does not itself prove that all those folds can coexist. The zero-run
+calculation includes the temporary trailing zero introduced by the
+increment-one router. The attempt counter includes repeated samples and
+selected nodes with no admissible rotation; it does not count distinct
+machines. Fixed seeds and the full receipts are supplied, but repeating
+a wall-clock-bounded run on another machine or Python version can change
+its attempt total and the best result reached before the cutoff. These
+are heuristic search observations, not exhaustive grammar optimizations
+or state-count lower bounds.
+
+A separate direct physical reader search produced the twelve-rotation
+196-state layout. It expanded 412 queued layouts and accepted 11,866
+prefix-decoder checks. A subsequent continuation expanded 573 layouts
+and accepted 16,470 prefix checks without improving the fourteen
+remaining zero-scanner obstruction sites. These are queue expansion
+counts; repeated paths can reach the same physical layout, and a prefix
+pass is not itself a universal primitive certificate.
+
+A third rotation search explicitly computed action-preserving state
+partitions for 12,966 candidate tables after prefix checks. It found
+no nontrivial state quotient and no source-node count below 159 in that
+family. It expanded 487 queued layouts. The search is bounded by its
+time and queue strategy; these numbers do not assert exhaustive coverage
+of all tree associations or all equivalent transition tables.
+
+\input{search_results/local_fold_summary.tex}

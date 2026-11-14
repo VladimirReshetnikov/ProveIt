@@ -1,0 +1,103 @@
+Independent mathematical review of the all-natural runtime proof
+===============================================================
+
+Reviewed final native table:
+  bb4f5ac12b29d07d1080109af9bb564e9e11a4783efc48cd73b8f826789d01f7
+Reviewed exact source:
+  7b6539dc67b66ff73f22554018d7af5985d85574460a73fea5f025103c523d00
+
+The source has 3,909 leaves, of which 1,175 are decrement tests. Splitting
+each decrement into zero and strictly-positive cases gives exactly 5,084
+cases. Both the inherited header64 and explicitly parameterized header56
+runs report UNIVERSAL_MATHEMATICAL_PASS, with all5,084 cases proved and no
+failures. The header56 run is the one needed by the actual blank startup.
+
+What the symbolic inputs quantify over
+-------------------------------------
+The thirteen affine slots represent a constant, arbitrary extra gap,
+nine logical registers, arbitrary first-spare register, and encoded width
+of the arbitrary remaining finite spare list. The decremented register is
+set to0 in its false case and to1+v in its positive case. No other logical
+register is specialized. The tape has an infinite zero exterior in both
+directions, a left marker, the exact source address, padding to the data
+header, nine physically permuted primary blocks, a first spare, and an
+arbitrary finite tail. Hence it covers every nonempty finite spare list.
+
+Header56 change
+---------------
+The parameterized engine adds HEADER_BASE=64 and replaces exactly two
+literal64 constants, in the initial and target padding formulas, by that
+parameter. The accepted run sets it to56. It therefore proves source
+primitive contracts with actual header distance56+g, for every natural g;
+it does not silently pad a shorter blank-start frame to64. Maximum source
+depth42 is below56. The successor gap is g plus the nonnegative decrement
+and overflow adjustments, so the same lower-bound invariant is preserved.
+
+Soundness of the execution rules
+-------------------------------
+1. A literal step reads a run only when its constant lower bound is at
+   least1. It applies the exact parsed transition, moves the zipper one
+   cell, and accounts for the write. Thus no unsplit possibly-empty run is
+   read. The scanner and contextual alias failures encountered during
+   research were rejected by this rule rather than silently accepted.
+
+2. Unary acceleration is allowed only for an exact self-loop in the scan
+   direction. For an arbitrary natural run length n, induction on n gives
+   precisely n literal steps, the indicated run of writes, and displacement
+   plus or minus n. The n=0 case is the identity. This acceleration does not
+   impose a bound on a register value or literal execution time.
+
+3. Each of the four list traversals is proved anew on the exact final
+   table, on one generic block0 1^(v+1) or1 0 1^v, with arbitrary natural v
+   and opaque exterior contexts. The derivation cannot read either opaque
+   context. Repeating the one-block identity and using induction on list
+   length proves traversal of an arbitrary finite spare tail, including an
+   empty tail. Traversed block widths are unchanged.
+
+4. The only nontrivial list normalization is
+       C(A)1 = 1B(A), where B(v)=0 1^(v+1), C(v)=1 0 1^v,
+   and its reversal. These identities hold for the empty list and follow
+   for a nonempty list by concatenating the one-block identities. Combining
+   adjacent equal runs and absorbing finite zero runs into an infinite zero
+   exterior are exact word identities. Affine-vector equality is exact.
+
+5. The target compares the entire symbolic tape, head direction, and state.
+   Each nonhalting source instruction is accepted only upon reaching its
+   exact expected successor frame. The separately accumulated affine head
+   motion must equal the expected displacement, namely minus the instruction
+   address overflow bit. Its derived duration has nonnegative
+   affine coefficients and a positive constant term. The source halt case
+   is accepted only upon reaching native halt254. An unexpected halt during
+   a nonhalt case has no outgoing transition and cannot be hidden by a
+   successful continuation.
+
+The implementation's4000-iteration cap is a cap on constructing a finite
+symbolic derivation. An accelerated unary or list step represents an
+unbounded natural number of literal machine steps. Thus a PASS is not
+bounded testing on small registers or a finite cutoff on machine running
+time.
+
+Composition and remaining trust boundary
+----------------------------------------
+The native/legacy state map is a literal relabeling; the final table must
+also be checked independently for injectivity, completeness, binary rows,
+and target closure. The source audit supplies its complete binary tree,
+instruction validity, and control-flow binding. These obligations are not
+established merely by this research runner's compact input handling.
+
+Given those bindings, the primitive contracts compose by induction on
+source execution. Every nonhalting source step has a positive finite
+literal block with no hidden halt, and source halt reaches literal halt.
+Positive block lengths give both directions of the finite halting
+equivalence. The rules and finite derivations are formalizable in PA.
+
+The blank initial tape is a separate exact literal computation. In this
+construction it reaches an interior source frame; that frame must be
+matched to the calibrated source execution by a separate exact prefix
+proof. A dirty interior frame is not automatically a valid theorem-search
+initialization. The source-calculus and unary-power-cover consistency
+calibrations are likewise separate inherited mathematical dependencies.
+
+No Lean, Rocq, MM0, or exported PA proof certificate is asserted by these
+Python checks. The review establishes the mathematical meaning and the
+explicit trust boundary of the executable all-natural proof procedure.

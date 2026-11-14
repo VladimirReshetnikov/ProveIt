@@ -1,0 +1,107 @@
+\section{An investigated theory replacement and its remaining obligations}
+\subsection{Weak and exact filtered adjunction}
+Work first in ordinary classical first-order logic with equality and binary
+relation $E$. For each formula $\varphi(x,\bar p)$, with fresh output variable
+$b$, put $A(x,a,y)\equiv E(x,a)\lor x=y$. Weak filtered adjunction is the schema
+\begin{align*}
+ \forall a\,\forall y\,\exists b\bigl[&
+  \forall x\,(E(x,b)\to\varphi(x,\bar p))\\[-2pt]
+ &\land\forall x\,(A(x,a,y)\to
+              (\varphi(x,\bar p)\to E(x,b)))\bigr],
+\end{align*}
+with universal closure over any further parameters. It permits extra members
+of $b$ that satisfy $\varphi$ but are not in $a\cup\{y\}$. Exact filtered
+adjunction instead requires
+\[
+ \forall a\,\forall y\,\exists b\,\forall x\,
+ \bigl(E(x,b)\leftrightarrow(A(x,a,y)\land\varphi(x,\bar p))\bigr).
+\]
+
+\begin{lemma}[Effective equivalence of the two schemas]
+With the same underlying first-order logic and any common additional axioms,
+the complete weak and exact filtered-adjunction schemas prove one another.
+\end{lemma}
+\begin{proof}
+An exact witness satisfies each implication required of a weak witness, so
+each weak instance follows from the corresponding exact instance. Conversely,
+given $\varphi$, instantiate the weak schema with
+$\psi(x)=A(x,a,y)\land\varphi(x,\bar p)$. Its upper clause gives
+$E(x,b)\to A(x,a,y)\land\varphi(x,\bar p)$. Its lower clause gives
+$A(x,a,y)\to((A(x,a,y)\land\varphi(x,\bar p))\to E(x,b))$, which entails the
+opposite implication. These two implications give the exact biconditional.
+Freshen $b$ first to avoid capture. Each step is a finite syntactic derivation,
+so the transformation is effective on instances and finite proofs.
+\end{proof}
+
+This lemma is a theory-to-theory equivalence, not a proof of either theory's
+PA-equiconsistency. A primary lead is
+\href{https://cpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2014/01/GodelLect060202-n2gdjc.pdf}
+{Harvey Friedman, \emph{Issues in the Foundations of Mathematics}, G\"odel
+Lecture, 2 June 2002, section C2, page 10}. It states mutual interpretability
+with PA for a four-atomic-formula adjunction schema. The displayed bound and
+free variables appear inconsistent, and the lecture gives no lower
+interpretation proof there. This research does not treat that assertion or a
+silently corrected formula as an audited finite-refutation translation.
+
+\subsection{A measured emitter using the fixed object label 5}
+The source-cost experiment uses source variable $v_0$, tested variable $v_1$,
+adjoined-object variable $v_5$ and output binder $v_c$. In the inherited raw
+formula encoding, $I$ constructs implication, $R$ membership, $Q$ universal
+binding and $\mathrm{Eq}$ equality; $N$ abbreviates implication to the fixed
+false code. The proposed lower guard encodes
+$E(v_1,v_0)\lor v_1=v_5$. Its postfix word is
+\begin{quote}\ttfamily\small
+c 1 1 0 R N 1 5 Eq I c 1 c R I I Q\\
+1 1 c R c I Q N I Q
+\end{quote}
+There are 27 tokens. The experiment uses a retained K215/U222 reference pipeline with fixed
+source/test/output roles, preserving that reference shell and its
+membership-vacuity bundle. It is not a pointwise rewrite of the later accepted
+208-state source, which uses a different role assignment and additional
+source transport.
+It is a source experiment, not a new literal machine.
+
+The choice 5 is semantically motivated, not just a cheaper constant. A naive
+choice of fixed object label 2 fails at code $c=2$: the decoded matrix is a
+tautology while the output and adjoined-object variables coincide, forcing a
+self-member contrary to irreflexivity. For label 5, the special decoded matrix
+is $E(v_1,v_0)$; when $c=5$, choosing the output equal to the source makes both
+clauses valid. The other small collisions are $c=0$ and $c=1$. In the intended
+ordinary finite-set model, the former can use a singleton container and the
+latter has a false matrix under irreflexivity. These are local model checks,
+not the missing proof-calculus translation.
+
+Interval dynamic programming on the inherited closed macros gives 723 emitter
+primitive occurrences, 3,877 whole-source primitive occurrences and
+\textbf{207 distinct source DAG nodes}, compared with 204 DAG nodes for the original emitter under the same
+closed-macro compiler and interval-DP procedure. The separately optimized
+accepted source has 197 DAG nodes. The DAG count is the number of distinct source subexpressions,
+not the number of working Turing-machine states. Fewer tokens or occurrences
+did not give a smaller shared source representation in this experiment.
+A same-theory experiment also factors the two universal cover clauses under
+one binder, with the outer negation preserved. Under the same compiler, the
+original has 28 tokens, 737 emitter primitives, 3,891 total primitives and 204
+DAG nodes. Factoring keeps 28 tokens but gives 782 emitter primitives, 3,936
+total primitives, and 205 or 206 DAG nodes depending on conjunct order. This
+controlled family therefore did not improve the original. The accepted
+197-node, 3,909-primitive source uses the later ST215 exterior and a different
+role-based emitter: its 3,909 occurrences are $4,732-1,597+774$, whereas the
+reference original has $4,751-1,597+737=3,891$. The difference 18 is therefore
+$37-19$, not an unexplained count discrepancy. The factoring equivalence is
+within the measured reference role assignment; no pointwise equivalence across
+role assignments or cost for the current literal emitter is inferred.
+
+A syntactic cost sweep with object labels 2 through 16 attains DAG counts from
+207 to 211. It does not establish all those alternative theories are sound;
+in particular label 2 has the collision just described.
+
+\subsection{Why this is not yet an accepted replacement}
+Three obligations remain distinct. First, the exact intended theory needs
+both audited finite-refutation translations linking it with PA. Second, the
+new equality guard needs a bridge through the actual numerical calculus.
+The inherited ordinary-logic interpretation uses equality as membership
+indiscernibility; equality-free old axioms did not present this additional
+guard obligation. Ordinary-equality model checks do not discharge it.
+Third, a proposed source must be physically allocated and connected to a
+literal smaller TM with all-time interpreter and exact blank-startup proofs.
+No such accepted machine is supplied by this branch.

@@ -1,0 +1,56 @@
+\subsection{Dedicated extra routers}
+A distinct allocation experiment adds a read-only helper
+\[
+ (h,0)\mapsto(0,R,u_0),\qquad
+ (h,1)\mapsto(1,R,u_1).
+\]
+The helper is absent from the raw machine and appears only in the folded
+implementation. A correct local certificate may execute it during a
+detour. Its cost is worthwhile only if it enables more state deletions
+than the number of added helpers.
+
+For the fixed original PA195 grammar, one-helper screening finds 1,147
+useful routers and at most eight optimistic folds; nine would be needed
+to reach 194. For the fixed scanner-eight grammar it finds 1,287 routers
+and at most nine folds; ten would be needed. Both conservative incoming
+histories and the broader, unreachable-helper interpretation were tried.
+Two-router screening also checks cases where the routers complete
+different missing branches of the same pair. The fixed-grammar tests
+still give no optimistic score below 195.
+
+Across 172 retained admissible original-PA195 grammar ties, the
+matching upper bound on fold savings yields an optimistic 194-state
+count for 24 grammars with one helper, but all fail the simultaneous
+compatible-fold check. The completed all-control two-helper screen
+also finds optimistic 194 scores on 24 grammars, and rejects all
+11,655 concrete improving router assignments by exact history and
+cycle checks. Related AX-only and one-helper modes overlap with
+this search; their trial counts must not be summed as distinct machines.
+Across 141 distinct score-60
+scanner-eight ties from two final search pools, neither one nor two
+added routers gives even an optimistic 194 score. Complete sources and
+receipts are included in \file{search/added_routers/}.
+
+Finally, the start control was checked separately rather than discarded
+by a generic rule against merging the start. On blank tape, native 74
+has a known zero on its left, consistent with its incoming history.
+General recursive two-cell start-fold searches over 52 eligible
+partners in PA195 and 51 in 195S8 both fail. This closes that specific
+exception to the earlier local screens, not arbitrary startup changes.
+
+\subsection{Completed association runs}
+Seven separately seeded root searches use 23,000,000 proposal slots:
+three 3,000,000-slot ordinary association runs, two 3,000,000-slot
+encoding-repair runs, a 3,000,000-slot scanner-eight run from the
+original seed, and a 5,000,000-slot scanner-eight run from the
+eight-fold seed. The repair runs preserve a 194-state local quotient
+only with remaining encoding violations. The relaxed scanner runs
+find no allocation below 195 after the extra scanner is counted.
+An additional 3,000,000-slot equal-word crossover run has the same
+negative outcome.
+
+These figures count proposal slots, including proposals rejected before
+scoring. They are not counts of distinct machines. The separate source
+families in the final appendix have their own exact scoring-call totals.
+Finite seeds, headers, executable source code, final pools and logs are
+retained so that these empirical outcomes can be examined or repeated.

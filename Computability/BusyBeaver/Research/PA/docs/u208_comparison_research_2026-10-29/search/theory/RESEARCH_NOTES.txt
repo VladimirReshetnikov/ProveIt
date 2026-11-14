@@ -1,0 +1,76 @@
+WEAK FILTERED ADJUNCTION: AN INVESTIGATED ALTERNATIVE, NOT AN ACCEPTED MACHINE
+
+The candidate schema, in classical first-order logic with equality, is:
+  forall a,y exists b [forall x (E(x,b) -> phi(x)) and
+    forall x ((E(x,a) or x=y) -> (phi(x) -> E(x,b)))].
+The matrix may have parameters a,y and other variables, but not the fresh b.
+Add global irreflexivity IR for the proposed machine-calculus interpretation.
+
+At the ordinary first-order level this is equivalent to exact filtered
+adjunction: exactify with the matrix
+  (E(x,a) or x=y) and phi(x).
+Conversely an exact filtered adjunction witness is a weak cover witness.
+This syntactic transformation is effective. It does not, by itself, prove
+PA-equiconsistency.
+
+Friedman's 2002 Godel Lecture, section C2, page10, reports mutual
+interpretability with PA for a four-atomic-formula filtered-adjunction
+schema. The displayed variables in the PDF appear inconsistent (z versus w),
+and the lecture gives no lower-interpretation proof. Do not substitute this
+reference for a fully audited finite-refutation translation. Source:
+https://cpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2014/01/GodelLect060202-n2gdjc.pdf
+The PDF was retrieved and the page visually inspected. It is retained here
+as research evidence, not a new proof.
+
+CONCRETE RAW-CODE EMITTER IDEA
+Use fixed source label0, tested label1, adjoined-object label5, and output c.
+I=4P, R=4P+1, Q=4P+2, Eq=4P+3, F=1, N(x)=I(x,F).
+  guard = I(N(R(1,0)), Eq(1,5))
+  lower(c) = Q(1, I(guard, I(c,R(1,c))))
+  upper(c) = Q(1, I(R(1,c),c))
+  negseed(c) = Q(c, I(lower(c), N(upper(c))))
+Keep the old outer membership-vacuity bundle and gate unchanged.
+The postfix word has 27 tokens:
+  c 1 1 0 R N 1 5 Eq I c 1 c R I I Q 1 1 c R c I Q N I Q
+
+WHY FIXED LABEL5, RATHER THAN2
+The first naive choice y=2 is unsound at c=2. Code2 is Q(0,0), a tautology;
+then output=y and the lower clause forces E(y,y), contrary to IR.
+Label5 avoids that collision because code5 is R(1,0), exactly the predicate
+of being a member of the source. The self-output case can choose b=a.
+
+The exceptional cases, under ordinary equality and the intended decoder:
+- c=0: D(0)=true and output equals source. The lower clause reduces to the
+  existence of a container for v5; take its singleton in the Ackermann model.
+  The old-source part of the guard is tautological at the chosen output.
+- c=1: D(1)=E(v0,v0) is false under IR. The output/test binders collide,
+  but both clauses are true, so the existential is harmless.
+- c=5: D(5)=E(v1,v0). Choose output v5 equal to source v0. The upper clause
+  is tautological. The lower clause is
+  (E(x,a) or x=a) -> (E(x,a) -> E(x,a)), also tautological.
+For c>=2 except5, every label in D(c) is less than c, and c differs from
+all three fixed roles0,1,5. Thus the output binder is fresh in the matrix.
+
+A successful compilation would still need all of these separate proofs:
+1. A fully audited PA lower interpretation of the exact chosen set theory.
+2. A bridge for the equality guard. The inherited numerical logic obtains
+   ordinary FOL by interpreting equality as membership indiscernibility.
+   The old power-cover axioms were equality-free; this new guard is not.
+   Ordinary-equality soundness and raw-code case checks do not discharge
+   this completeness obligation.
+3. Literal physical allocation, all-time interpreter contracts and blank
+   startup calibration for a resulting machine.
+
+ACTUAL SOURCE-COST EXPERIMENT
+The source worker used the inherited closed macros and interval dynamic
+programming for the exact postfix word. It measured723 emitter primitives,
+3877 whole-program primitives, and207 distinct source DAG nodes, compared
+with197 in the accepted U208 source. Thus fewer postfix tokens and fewer
+primitive occurrences did not produce a smaller source-state representation.
+See ../source_search/measure_adjoin.py, adjoin_source.json, adjoin_metrics.json.
+These are source-only artifacts, not an accepted TM or a consistency proof.
+
+CONCLUSION
+This investigation supplies a safe ordinary-model treatment of the three
+small self-code collisions and a concrete costed emitter. It supplies no
+machine below208 states and must not be presented as one.

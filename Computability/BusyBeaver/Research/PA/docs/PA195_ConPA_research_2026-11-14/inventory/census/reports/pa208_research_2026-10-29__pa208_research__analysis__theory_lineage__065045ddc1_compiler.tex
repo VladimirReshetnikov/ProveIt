@@ -1,0 +1,182 @@
+\section{Transferring the three-command compiler to the unary cover calculus}
+\label{sec:transfer-u}
+
+This argument concerns the changed register source, independently of physical
+allocation.  Let $\mathcal D_U$ be the exact numerical calculus calibrated by
+the primary U214 report: truth $0$, falsity $1$, the seven retained logical
+rows, dominated propositional row, modus ponens, theorem generalization,
+and the enabled role-reassigned cover bundle $B^*(a,b,c)$.  The role-emitter
+calibration of U214 supplies, as a mathematical dependency, the
+PA-formalizable equivalence
+\[
+ \mathcal D_U\vdash 1\quad\longleftrightarrow\quad
+ \neg\operatorname{Con}(U)\quad\longleftrightarrow\quad
+ \neg\operatorname{Con}(\mathsf{PA}).
+\]
+The K215 transfer compiler can be used here because its command proof depends
+on the generated rows' theoremhood, their numerical tags, their selectable
+positions, and the gate, rather than on the set-theoretic content of the
+old covering bundle.  The new bundle satisfies all of these interfaces.
+No theorem about the literal ZFC machine is identified with a theorem about
+the changed arithmetic machine.
+
+Write $P(x,y)=(x+y)(x+y+1)/2+y$, $I(x,y)=4P(x,y)$,
+$Q_i(x)=4P(i,x)+2$, and $[x;w]=P(x,w)$.  For a command store
+$(t,w,d,h)$, define the direct transfer
+\[
+ S(t,[x;v],d,h)=
+ \begin{cases}\mathsf{halt},&h=1,\\(h,v,d,x),&h\ne1.\end{cases}
+\]
+There is no incoming-top guard in this definition.  The unchanged AX
+arithmetic has, with $A=d+x$, $B=h+y$, $C=c$, and $U=d$, the effect
+\[
+ \operatorname{AX}(c;x,y)(t,w,d,h)=
+ (\operatorname{gate}(A,B,c),
+ [r_1,\ldots,r_7,\ell(A,B,c,U),Q_U(h),t;w],0,0).
+\]
+The gate is $B^*(A,B,c)$ when $c\ne A,B$ and is zero otherwise.
+The eight logical rows and the gate are implication codes and hence are
+not $1$.  The quantified entry has residue $2$ modulo $4$, so it is
+neither $0$ nor $1$.  These assertions hold for every natural choice of
+parameters, including the alias $I(0,0)=0$.
+
+\subsection{The two modus-ponens implementations}
+
+Both versions compute $Y=d+x$ and compare $I(t,Y)$ with $h$.  Failure
+returns $(0,w,Y,0)$.  Ordinary MP returns $(Y,[0;w],Y,0)$ on success;
+cache-return MP instead returns $(0,w,0,Y)$.  For the latter, the exact
+source replacement is the closed loop
+\[
+ (\mathrm{CD}_4,(\mathrm{CI}_5,\mathrm{CC}_2)),
+\]
+which moves the target into the known-zero cache and clears the additive
+counter.  This loop is justified for arbitrary counter values by induction.
+The direct $S$ implementation is clear-top; copy-cache-to-top; old-NIP.
+Its components have $2$, $7$, and $26$ primitive occurrences.  The copy
+restores the cache and zero scratch, allowing old-NIP to test that cache
+and then pop the numerical stack.  Its two associations have the same
+all-natural contract.
+
+\subsection{Soundness}
+
+At a safe boundary, $t$, $h$, and every explicit stack head are
+$\mathcal D_U$-theorems.  AX preserves this property: its ordinary rows
+are axioms, its dominated row meets $U\le A$, its quantified head is
+generalization of a theorem, and its gate is an axiom or truth.  Failed
+MP returns truth.  Successful MP applies numerical modus ponens and stores
+the conclusion either as current top or as cache.  Transfer moves theorem
+codes and halts only when the cache is $1$.  Thus every halt from a safe
+seed yields a numerical refutation.  This proves soundness for arbitrary
+decoded fields, without a well-formedness or proof-word filter.
+
+\subsection{Strong completeness}
+
+For every theorem code $X$, the required compiler invariant is
+\[
+ (t,w,0,0)\xrightarrow{B_X}\mathsf{halt}
+ \quad\text{or}\quad (X,w,0,0)
+ \qquad\text{for every natural }t,w.
+\]
+This is deliberately stronger than the safe-execution invariant; the
+retained top and stack need not be theorem-valued in this completeness
+statement.
+
+Put $D=\operatorname{AX}(0;0,0)$ and define
+\[
+ H=D;S^{11},\qquad
+ \mathrm{PUSH}=D;S^9;\mathrm{MP}(0),\qquad
+ \mathrm{DISCARD}=\mathrm{MP}(1);\operatorname{AX}(1;0,0);S^{10};\mathrm{MP}(0).
+\]
+The exact contracts are as follows.  $H$ tests the incoming top, and
+otherwise preserves it, pops one preexisting stack head, and clears $d$.
+PUSH never halts and returns $(0,[t;w],0,0)$.  DISCARD, from a zero
+counter and cache, never halts and returns $(0,w,0,0)$.
+The MP uses inside PUSH and DISCARD are forced failures.  In PUSH its
+cache has residue $2$, whereas the compared implication has residue $0$.
+In DISCARD the first comparison has $I(t,1)>0$ against cache zero;
+the last has $I(Q_1(0),0)>0$ against zero.  Consequently these contracts
+hold for both MP implementations.  The first ten transfers of $H$ test
+only zero and generated nonfalsity entries; its eleventh tests the
+original top.  The original cache is overwritten by AX before any test.
+
+From top, counter, and cache zero, set $J(0)$ to the empty word and
+$J(u)=\mathrm{MP}(u)$ for $u>0$.  This sets the counter to $u$ without
+altering the stack.  The zero exception is essential: MP$(0)$ would
+succeed by the raw zero alias.
+
+Truth is compiled by DISCARD.  For $1\le j\le7$, a row $r_j(a,b,c)$
+is compiled by
+\[
+ \mathrm{DISCARD};\operatorname{AX}(c;a,b);S^{j+1};H^{9-j}.
+\]
+For the dominated row with $u\le a$ use
+\[
+ \mathrm{DISCARD};J(u);\operatorname{AX}(c;a-u,b);S^9;H.
+\]
+For an enabled bundle use
+\[
+ \mathrm{DISCARD};\operatorname{AX}(c;a,b);H^{10}.
+\]
+All discarded entries, including the saved zero, are removed, while the
+selected theorem is retained and the original stack is restored.
+For generalization use
+\[
+ B_{Q_i(X)}=B_X;\mathrm{PUSH};J(i);S;\operatorname{AX}(i;0,0);S^{10}.
+\]
+Just before AX the tuple is $(0,w,i,X)$; the gate is disabled because
+$A=c=i$, and ten transfers select $Q_i(X)$ and restore the stack.
+This calculation includes $i=0$ and $X=1$.
+
+For ordinary MP, let the premises be $A$ and $M=I(A,Y)$.  Use
+\[
+ B_M;\mathrm{PUSH};B_A;\mathrm{PUSH};S;S;\mathrm{MP}(Y);
+ \operatorname{AX}(Y;0,0);S^{11}.
+\]
+Absent an earlier successful halt, the two transfers leave
+$(A,w,0,M)$, MP yields $(Y,[0;w],Y,0)$, and the last AX/transfer
+block clears $d$ and removes precisely that pushed zero.  Its final
+transfer halts if $Y=1$; otherwise it returns $(Y,w,0,0)$.
+
+For cache-return MP, reserve a disposable zero before computing either
+premise:
+\[
+ \mathrm{DISCARD};\mathrm{PUSH};B_M;\mathrm{PUSH};B_A;\mathrm{PUSH};
+ S;S;\mathrm{MP}(Y);S.
+\]
+The two shifts now leave $(A,[0;w],0,M)$, successful MP yields
+$(0,[0;w],0,Y)$, and the last transfer either halts at $Y=1$ or
+returns $(Y,w,0,0)$.  Reserving zero is necessary to avoid popping
+an arbitrary head of the original stack.  The pairing identities make
+all these traces valid when $A=Y=0$ or $w=0$, notwithstanding
+$P(0,0)=0$.  Induction on a finite numerical derivation proves the
+strong contract in both cases; $B_1;H$ then halts from every
+$(t,w,0,0)$.
+
+The ordinary selector fields are $S=[0]$, MP$(x)=[1,x]$, and
+AX$(c;x,y)=[c+2,y,x]$.  Exchanging the two small command bodies
+changes only their first selectors to $1$ and $0$, respectively.
+Let $R$ be the successor-delimited continuation code of $B_1;H$.
+For every $z$ the candidate $P(2,P(z,P(1,R)))$ first executes
+AX$(0;1,z)$, clearing counter and cache, then executes the successful
+suffix.  Since this candidate is at least $z$, successful candidates
+are cofinal.  Every nonhalting continuation decreases after its
+predecessor operation and Cantor projections, so the ordinary scheduler
+reaches such a candidate beyond every finite initial cutoff.
+
+\subsection{Startup dependency of the new table}
+
+The actual shortened initializer is calibrated by the interior-AX
+suffix lemma in Section~\ref{sec:u213-bootstrap}.  It reaches source
+ordinal $136$ after $48{,}140$ binary steps, matching $141$ source
+steps from ordinal $106$ and store $(1,0,4,0,0,1,0,0,1)$.
+That interior suffix yields nine explicit theorem heads above opaque
+tail $4$, next candidate $1$, and empty proof pointer.  The exact
+three-command credit is $d(1)=2$, leaving permanent margin seven.
+The old ST215 whole-AX startup is historical background and is not
+used as a premise for this table.  The literal frame and whole-tape
+primitive simulation are separate machine-specific checks.
+
+The source/compiler argument uses finite syntax, natural-number
+induction, and primitive-recursive proof transformations.  Its
+PA-formalizable conclusion uses the inherited U214 arithmetic
+calibration; no newly kernel-checked PA endpoint is asserted here.

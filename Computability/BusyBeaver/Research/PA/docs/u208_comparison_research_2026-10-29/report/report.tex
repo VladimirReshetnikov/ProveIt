@@ -1,0 +1,424 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,longtable,tabularx,array}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{microtype,xurl,seqsplit,enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\setlength{\parindent}{0pt}\setlength{\parskip}{5pt plus 1pt}
+\setlist{itemsep=2pt,topsep=3pt}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Comparing the 208 state proposals}
+\fancyhead[R]{\small 29 October 2026}\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt}\setlength{\headheight}{14pt}
+\newcommand{\PA}{\mathrm{PA}}\newcommand{\UU}{\mathsf U}
+\newcommand{\Con}{\operatorname{Con}}\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\hash}[1]{\texttt{\seqsplit{#1}}}\newcommand{\file}[1]{\path{#1}}
+\newtheorem{theorem}{Theorem}[section]\newtheorem{lemma}[theorem]{Lemma}
+\hypersetup{pdftitle={Comparing the 208 state proposals and searching below 208},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\title{\vspace{-1cm}\textbf{Comparing the 208 state proposals}\\[7pt]\large Exact machine identities and the search below 208 states}
+\author{Research prepared for Vladimir Reshetnikov}\date{29 October 2026}
+\begin{document}\maketitle\thispagestyle{empty}
+\begin{abstract}
+\textbf{No accepted machine below 208 working states was obtained.}
+The five pinned incoming archives contain nine advertised 208-state outputs,
+but only \textbf{two rooted action-labelled machine graphs}. The variation is
+seven byte strings and six native-labelled transition functions. Thus the
+newly supplied descriptions do not provide independently stackable reductions.
+Both graph classes are exactly those in the previously accepted 208-state
+release, and every literal current table is checked by a complete state
+conjugacy and exact finite startup replay.
+
+The attempted 207-state decoder reassociation has a concrete failure on a
+legal canonical primitive frame. It returns after 538 transitions to the
+wrong source address and decrements the wrong register, while the parent
+returns correctly after 568 transitions. This refutes that candidate's
+universal interpreter contract, not its blank-tape halting equivalence.
+Additional bounded state-merger and repair searches found no accepted
+smaller machine. Their negative results are not lower bounds.
+
+This report separates exact finite identities, ordinary mathematical proofs,
+inherited arithmetic calibration, bounded tests and unresolved obligations.
+The strict requested target is fewer than 208 working states, including
+blank-tape initialization. The already accepted 208-state result is a
+baseline, not a solution to that new target.
+\end{abstract}
+
+\textbf{Research status}\quad The strict target remains unmet. The comparison, concrete rejection,
+and bounded searches in this report are complete; the missing calibration
+obligations for the investigated theory replacement are stated explicitly.
+
+\textbf{Pinned scope}\quad \file{VladimirReshetnikov/ProveIt}, commit
+\hash{c086b5adaa6228009365768946d691dfc49a20bb}, committed
+29 October 2026 at 18:14:37 UTC. Later repository changes are not silently
+included. Exact input hashes and selected bytes accompany the report.
+
+\section{The machine model and the success condition}
+A working state is a state with two defined transitions, one for each binary
+tape symbol. The machines use one two-way infinite tape, alphabet $\{0,1\}$,
+and left or right unit moves. The initial tape is all zero, the initial head
+is at coordinate 0, and the initial state is 0. A separate halt label is not
+counted as a working state. Entry into it ends execution after the row's
+write and move. A native row \texttt{q b w D r} means: read $b$ in state $q$,
+write $w$, move in direction $D$ and enter $r$.
+
+The current machines have 208 working states and 416 defined rows. Their
+native halt label is 254; a dense serialization names the working states
+$0,\ldots,207$ and halt 208. Large sparse labels do not increase the state
+count. The same convention would give 414 rows for a 207-state candidate.
+The blank-tape initializer must remain part of the counted machine.
+
+The user permits replacement of Theory $\UU$ provided the replacement remains
+equiconsistent with PA. This opens a genuine source-level route: it is not
+necessary to preserve the old literal axiom code. It remains necessary to
+prove both consistency directions for the replacement, to connect its actual
+encoding with the enumerated proof system, and to prove the compiled blank
+machine implements that proof search. A lower compiler count without these
+links is not yet a solution.
+
+The earlier accepted endpoint was the PA-formalizable equivalence
+\[
+ \neg\Halt(U_{208},\mathrm{blank})
+ \quad\longleftrightarrow\quad \Con(\UU)
+ \quad\longleftrightarrow\quad \Con(\PA).
+\]
+Here that endpoint is \emph{inherited}, not newly derived from a hash, finite
+simulation or graph-reachability test. No unconditional nonhalting statement,
+proof-assistant certificate or state-minimality theorem is asserted.
+
+\section{An exact comparison of the current proposals}
+\subsection{The nine outputs reduce to two graph classes}
+In the following table A denotes the Plain/Joint source graph and B the
+Compatibility source graph. The labels M1--M9 are local evidence identifiers,
+not mathematical state names. Full paths, native hashes, dense hashes and
+source hashes are in \file{evidence/input_index.json}.
+
+\begin{center}\small
+\begin{tabular}{cllc}\toprule
+ID & Archive label & Output & Class\\\midrule
+M1 & ConPA & primary & A\\
+M2 & Conditional Context & alternative & B\\
+M3 & Conditional Context & primary & A\\
+M4 & Entry Context & primary & A\\
+M5 & Entry Context & Compatibility & B\\
+M6 & History & Compatibility & B\\
+M7 & History & primary & A\\
+M8 & Earlier accepted research & primary & B\\
+M9 & Earlier accepted research & Plain variant & A\\\bottomrule
+\end{tabular}
+\end{center}
+
+The class identifiers are SHA-256 hashes of a deterministic breadth-first
+serialization of the rooted graph, with outgoing read-0 before read-1 edges.
+Each edge retains its read symbol, write symbol and direction. Start is fixed
+at canonical label 0 and halt at $-1$.
+\begin{description}[style=nextline,leftmargin=1em]
+\item[Class A]
+\hash{ab3b7f35756ab763601fae76e24486751d286b699f2ca7d4bedb9b5ea39fe3eb}
+\item[Class B]
+\hash{baaabd3e109e13e134c05facb1db663bda6a491cf2ea2e7f6ef118beaed0fe99}
+\end{description}
+The explicit row-by-row comparison, rather than a collision-resistance
+assumption about those identifiers, establishes the equivalences.
+
+\begin{theorem}[Literal machine equivalence within each class]
+For each pair of current machines in the same class there is a bijection $f$
+of their working states and halt label that fixes start and halt and satisfies
+\[
+ \delta_2(f(q),b)=(w,D,f(r))
+ \qquad\text{whenever}\qquad\delta_1(q,b)=(w,D,r).
+\]
+Consequently, for every same initial complete tape and head coordinate, the
+two runs have identical complete tapes and head coordinates at each time,
+with states related by $f$. They halt at exactly the same time.
+\end{theorem}
+\begin{proof}
+For either rooted graph, enumerate reachable vertices by breadth-first search,
+processing read-0 before read-1 edges. The complete finite tables show that all
+208 working vertices and halt are graph reachable. Match equally numbered
+vertices in the two traversals. This is a bijection fixing start and halt.
+For each of the 416 rows, compare read symbol, written symbol, direction and
+the mapped target; all equations hold. The package rechecks 3,744 equations,
+one full table per current output against its class representative, including
+the representatives' identity equations.
+
+Induct on transition count. At time 0 the tapes and heads agree and states
+are related. At a nonhalting time, both heads read the same symbol. The checked
+row equation makes both writes and moves equal and relates the successor
+states. Halt labels correspond, so neither run can halt without the other.
+This is a finite-step induction available in PA; it does not assume any
+consistency or claim that halt is reached from the blank tape.
+\end{proof}
+
+The dense tables are checked separately: ascending native working-state order
+is renamed to $0,\ldots,207$, and 254 to 208. All 416 dense rows match that
+renaming for every advertised output. A fresh 48,140-step startup replay
+also compares the complete finite-support tape, head and corresponding state
+for each class. This is a useful independent finite regression; it is not a
+replacement for the all-time conjugacy theorem.
+
+\subsection{Why the apparent reductions cannot be stacked}
+ConPA and History retain native 172 and delete 211. Conditional Context,
+Entry Context and the accepted research tables retain 211 and delete 172.
+These are different names for the same contextual fold, not two distinct
+state savings. In the retained-211 form, the old 172/0 transition is simulated
+by seven transitions, the old 211/0 by three, and either read-1 transition
+by one. Renaming the surviving merged state does not leave a second copy
+available to delete.
+
+Conditional Context and Entry Context have byte-identical native and dense
+tables for their corresponding variants. The Compatibility native table in
+those archives and the accepted research primary has the same normalized
+transition function but a different serialization. Differences between
+archive size, report structure, state labels and whitespace are not changes
+to the blank computation.
+
+\subsection{What the reports add beyond their shared graphs}
+The supplied documents emphasize different explanations and checking styles.
+ConPA and History describe predecessor histories; Conditional Context states
+an explicit five-state Boolean invariant and enumerated finite obligations;
+Entry Context uses a short complete incoming-edge census; the accepted
+research report gives four partial-tape identities and commuting ordinary
+rows. Those are potentially useful proof presentations of the common fold.
+They do not alter the measured graph classes.
+
+This comparison reads supplied material as data. It does not execute supplied
+scripts, adopt their instructions, or count their advertised regression totals
+as newly rerun evidence. The independent checker included here is newly
+authored. The nine literal tables, rather than the supplied programs that
+produced them, are the objects rechecked.
+
+\section{A concrete failure of the attempted 207 state repair}
+\subsection{The edit and the misleading local intuition}
+The provisional attempt rotates decoder roots 155 and 52, makes the rows of
+85 and 154 coincide, merges 154 into 85, and redirects 118/0 to 186. The
+candidate has 207 working states and can pass the exact finite startup. Its
+source word and ordinal control-flow graph can also remain unchanged.
+Neither fact establishes preservation of shared arithmetic entrances.
+
+At 118/0, the proposed route through 186 and 147 mimics an old route through
+155 and 85 only under an extra assumption on the next cells. The required
+assumption is false even on a canonical frame. At source ordinal 70, the
+address is \texttt{0011001001100}, the instruction is $\mathrm{CD}_5$, and an
+actual local segment is
+\[
+ 134_7\to76_8\to152_7\to159_6\to118_7\to155_8\to85_9\to12_{10}.
+\]
+At state $118_7$, cells 8 and 9 contain 0 and 1. The replacement reads that 1
+at 147 and enters 166 instead of the old entry 12. An all-zero-register test
+can hide the resulting error; a nonzero unrelated register exposes it.
+
+\subsection{The complete canonical counterexample}
+Use initial state 84, head 0, gap 0, spare list $[0]$, source ordinal 70 and
+logical register vector
+\[
+ (R_0,\ldots,R_8)=(0,0,0,1,0,0,0,0,0).
+\]
+The complete tape is zero except at the following coordinates:
+\[
+ \{-1,2,3,6,9,10,56,58,60,62,64,66,67,69,71,73,75,77\}.
+\]
+This is the ordinary canonical encoding: the address begins at coordinate 0,
+the header is at 56, and logical registers use the physical permutation
+$(6,2,0,4,3,7,8,5,1)$ with unary blocks, followed by the spare zero block.
+No unconstrained or symbolic cells remain in this example.
+
+\begin{center}\small
+\begin{tabular}{lcc}\toprule
+Canonical first return & Parent & Rejected candidate\\\midrule
+Transition count & 568 & 538\\
+State and head & 84 at 0 & 84 at 0\\
+Stored PC without trailing zeros & \texttt{001100100111} & \texttt{0011001001101}\\
+Resolved source leaf & \texttt{0011001001110} & \texttt{00110010011010}\\
+Resolved ordinal and instruction & 74, $\mathrm{CD}_6$ & 71, $\mathrm{CI}_1$\\
+Header coordinate & 56 & 57\\
+Logical $R_3$ & 1 & 0\\
+All other logical registers & 0 & 0\\
+Spare list & $[0]$ & $[0]$\\\bottomrule
+\end{tabular}
+\end{center}
+
+Because $R_5=0$, the parent correctly takes the zero branch without decrement.
+The candidate instead decrements logical $R_3$, changes the header position
+and chooses a different source address. The package reconstructs the exact
+input tape, replays every row up to both first canonical returns, validates each source
+address and every decoded register block, verifies that no earlier full
+canonical return occurred, and compares every final one-cell.
+A trace digest pins each complete replay without including redundant large
+JSON trace files.
+
+\begin{theorem}[Rejected universal primitive claim]
+The displayed 207-state candidate does not implement the parent's canonical
+$\mathrm{CD}_5$ contract on all legal frames at ordinal 70.
+\end{theorem}
+\begin{proof}
+The specified input satisfies the canonical-frame definition and $R_5=0$.
+The literal deterministic replay yields the two different complete canonical
+outputs shown above. A universal contract requires the zero branch to leave
+all logical registers unchanged and select the specified source successor.
+The candidate violates both requirements on this one input.
+\end{proof}
+
+\textbf{Scope of the rejection.} A legal canonical input need not occur on the
+unique blank computation. This counterexample therefore does not prove that
+the candidate and parent halt differently from blank, or that the candidate
+cannot reach the expected frame at some later time. It does rule out the
+claimed universal primitive theorem used to justify the construction. A new
+blank-run-specific invariant might avoid the bad frame, but none has been
+proved here. Bounded predecessor enumeration cannot supply that missing proof
+merely by failing to find a bad history.
+
+\section{What the bounded searches established}
+\subsection{Expanded table searches}
+The following searches were run on both verified 208-state classes or on the
+explicitly rejected 207-state candidate. An action trial is an inner search
+operation, not a distinct machine certified correct. Counts from overlapping
+or preliminary searches must not be added as if they described disjoint
+candidate spaces.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lrrX@{}}\toprule
+Search & First trials & Further trials & Scope\\\midrule
+One edited row B & 117,576 & --- & Generalized unchanged-branch endpoint\\
+One edited row A & 116,748 & --- & Same method\\
+Coupled rows B & 35,307,576 & 73,428,696 & Both merged branches editable\\
+Coupled rows A & 35,307,576 & 73,026,288 & Same method\\
+Halting pair each & 342,784 & 840,320 & Pairs involving native 68 only\\
+Repair 118 plus helper & 341,964 & 1,554,984 & Rejected candidate only\\
+Repair 118 plus both 85 rows & 685,584 & 54,648 & Rejected candidate only\\\bottomrule
+\end{tabularx}
+\end{center}
+All entries returned no hits. The coupled-row searches use depth-8 predecessor
+contexts, at most 40 transitions, head radius 8 and a 1,000-node symbolic
+budget per context. The repair searches use at most 60 transitions, radius 8
+and 2,000 nodes. Reaching a limit is rejection by that bounded search, not a
+mathematical obstruction. The one-row search tests all assignments of newly
+read cells but has its own branch-independence precondition; it is not an
+arbitrary-program search. The full method and raw counts are in
+\file{search/table/README.txt} and the corresponding logs.
+
+The halting-pair search deliberately permits different endpoint head and tape
+when both paths halt. It still considers only pairs involving native 68,
+the sole parent state with an immediate halt row. The three-row repair search
+separates the old and rotated entrances to 85 by their preceding bit. A positive
+result from either repair search would still require final-table invariants,
+source transport and universal runtime verification; no positive result occurred.
+
+\subsection{Two sided macro aliases and source reassociations}
+A second independent extension allows both old and new executions to take
+multiple transitions before matching. For each class it considers all 42,849
+ordered pairs $(q,r)$ with $q\ne0$ and $r\ne q$, deletes $q$, redirects targets
+to $r$ and looks for equal complete tapes, heads and states at positive prefix
+lengths. Temporary writes may be restored before a match. A five-state positive
+control succeeds at a two-old-step match that a one-old-step matcher misses.
+
+The actual 208-state runs have no accepted aliases. The tested bounds are
+8 or 12 backward edges, 16, 32 or 64 transitions per side, head radius 30 and
+3,000 symbolic nodes per context. These parameter combinations overlap; the
+342,792 parameterized trials are not that many distinct state identifications.
+The program, raw context inputs, positive control and run receipts are in
+\file{search/macro/}. Limits remain rejection limits, not completeness claims.
+
+On the source side, a broader reassociation criterion checks the whole resolved
+ordinal CFG rather than requiring three locally closed factors. Of 70 initial
+structural rotations, 57 preserve the CFG, versus 50 that satisfy the older
+closed-factor condition. Only two of the seven extra rotations preserve the
+exact startup address in the initial layout. A random-walk search seeded by
+those two ran 6,640 iterations in about 302 seconds without a smaller accepted
+candidate. An iteration is not a distinct source layout. Eight regroupings of
+three disjoint increment-commutation pairs attain no fewer than the baseline
+197 source DAG nodes. The selected source receipts record these bounded
+outcomes; none proves global optimality.
+
+\subsection{Sound source abstractions do not prove concrete reachability}
+A ternary abstract source execution uses values $0$, $1$ and $\geq2$ for each
+of the nine registers. Starting at ordinal 136 with abstraction
+$(1,0,2,0,0,1,0,0,1)$, its closed reachable set has 4,513,459 abstract states.
+For the post-startup ordinals 136 onward, the absent ordinals are precisely
+3848, 3849 and 3892; reached decrements 3847 and 3891 have only zero inputs.
+All individual per-ordinal register masks are supplied. Excluding those three
+ordinals and the two impossible positive branches leaves 5,079 guarded
+primitive contracts. For each class they still cover all 416 transition rows.
+The stronger per-ordinal register-mask restrictions likewise leave no unused
+row; 11,305 register constraints were applied in each class. These coverage
+results concern the sound abstract restriction, not concrete reachability.
+
+\begin{lemma}[Soundness of the ternary overapproximation]
+Every concrete source configuration reached from the specified startup maps
+to an abstract configuration in the computed closure, provided the concrete
+source control-flow graph is the checked graph used by the abstraction.
+\end{lemma}
+\begin{proof}
+Map a register value $n$ to $\alpha(n)=0$ for $n=0$, to 1 for $n=1$, and to 2
+for $n\geq2$. Increment maps $0$ to 1, 1 to 2 and 2 to 2. A zero-test follows
+the zero edge exactly when the abstract value is 0. Positive decrement maps
+1 to 0 and permits either 1 or 2 from abstract value 2: these cover concrete
+predecessors 2 and at least 3 respectively. Control-only commands preserve
+the abstract registers. Thus every concrete step is represented by an
+abstract edge. The initial abstraction is included; induction on concrete
+step count proves containment in the closed set.
+\end{proof}
+
+The converse is false in general because saturation and independent branching
+lose information. In particular an abstract visit to ordinal 70 with a
+matching mask is not proof that the displayed concrete counterexample lies
+on the blank computation. The abstraction can safely exclude cases absent
+from its closure, but cannot establish every present case is realizable.
+
+\input{theory_status.tex}
+
+\section{Reproduction and evidence boundaries}
+The archive contains selected literal machine tables, two deduplicated current
+source maps, the rejected candidate and its witness, compact receipts, the new
+comparison checker, search source text and this full \LaTeX{} report. It does
+not contain compiled search executables or duplicate historical PDFs. Input
+archives are identified by hashes rather than copied wholesale.
+
+The fast independent replay is
+\begin{quote}\ttfamily
+python3 verify.py --negative-controls\\
+python3 -O verify.py --negative-controls
+\end{quote}
+The checker uses explicit exceptions, not Python assertions. It recomputes
+state counts, dense renamings, all graph conjugacies, exact startups and the
+complete rejected-candidate witness. It also runs negative controls that
+alter a transition write and the input frame. A passing replay means precisely
+that these comparison and rejection obligations passed; it does not turn the
+rejected 207-state table into a valid machine.
+
+The C++ search sources are reproducible independently with a C++17 compiler.
+For example, from the package root:
+\begin{quote}\ttfamily
+c++ -O3 -std=c++17 search/table/coupled\_all.cpp -o /tmp/u208-search\\
+/tmp/u208-search search/table/4564c487.dat
+\end{quote}
+The selected raw context inputs make this run independent of the original
+workspace layout. Historical helper scripts retained for provenance may use
+workspace-relative paths; they are not the standalone fast verifier.
+
+The release verification receipt records manifest checking, normal and
+optimized replays from a clean extraction, a rebuild of this PDF, equality of
+extracted text and rendered page pixels, and page-by-page visual inspection.
+These release checks establish artifact integrity and the stated finite
+obligations, not a proof of arithmetic consistency.
+
+\section{What remains necessary for a smaller result}
+A successful continuation must provide a literal machine with at most 207
+working states, a proved correct blank initializer, and a complete path to the
+chosen theory's inconsistency search. If Theory $\UU$ changes, its exact new
+axioms and both consistency directions must be explicit. If source addresses
+change, all shared arithmetic and decoder entrances must be transported, not
+only the visible source control-flow graph. If a local reduction uses a guard,
+that guard must hold at every relevant boundary of the run to which the
+simulation theorem applies.
+
+The comparison removes one misleading avenue: the current 208-state reports
+do not contain independent folds that can simply be combined. The concrete
+counterexample removes another: startup and ordinal-CFG preservation alone
+do not validate the proposed decoder rotation. These are useful constraints
+on the next construction, but neither is a proof that 208 is optimal.
+\textbf{The requested fewer-than-208 result is not achieved in this report.}
+
+\clearpage
+\appendix
+\section{Input archive identities}
+\input{archive_hashes.tex}
+\end{document}

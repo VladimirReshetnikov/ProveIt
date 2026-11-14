@@ -1,0 +1,232 @@
+\documentclass[10pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,geometry}
+\usepackage[hidelinks]{hyperref}
+\geometry{margin=1in}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newcommand{\Bit}{\operatorname{Bit}}
+\newcommand{\I}{\mathsf I}
+\newcommand{\M}{\mathsf M}
+\newcommand{\U}{\mathsf U}
+\newcommand{\E}{\mathsf E}
+\newcommand{\N}{\mathsf N}
+\title{The two membership heads are independently necessary\\for their own derivability in the PA196 calculus}
+\author{Research note}
+\date{13 November 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A tempting state reduction deletes one of PA196's two membership
+rewriting heads and tries to recover it using the other and pointed
+separation.  Two explicit interpretations show that this particular
+strategy cannot work: each head fails in an interpretation validating
+all the remaining exact native rules.  The interpretation is sensitive
+to the numerical labels of variables, which is permitted when proving
+independence of this deliberately restricted numeric calculus.  We also
+give a nontrivial consequence of one-sided rewriting, namely ordinary
+same-variable universal elimination, to distinguish the obstruction
+from the failure of the simplest specialization arguments.
+\end{abstract}
+
+\section{The question}
+
+The exact definitions are those of
+\href{https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/PA196/Logic/Basic.lean}{\texttt{PA196/Logic/Basic.lean}}.
+Up to exchange of antecedents, the two heads are
+\begin{align*}
+ L(a,b,d)&:\quad \E(a,b)\to(\M(a,d)\to\M(b,d)),\\
+ R(a,b,d)&:\quad \E(a,b)\to(\M(d,a)\to\M(d,b)).
+\end{align*}
+They are the paper's head 3 and head 4, respectively.  The remaining
+rules are modus ponens, closed generalization, heads 1, 2, 5 and 6,
+the restricted propositional head $\rho_8$, and the entire guarded gate,
+including equality vacuity and membership vacuity.
+
+An independence interpretation need only validate these exact numeric
+rules.  It need not validate all unpostulated rules of ordinary
+first-order logic, especially uniform substitution of variable labels
+inside membership atoms.  Assuming that additional invariance would
+assume precisely the phenomenon to be derived.
+
+\section{A two-point permutation}
+
+Let $\sigma:\mathbb N\to\mathbb N$ interchange $2$ and $3$ and fix
+all other numbers.  It is an involution.  Both identities
+\[
+ \neg\Bit(\sigma(t),t),\qquad
+ \neg\Bit(t,\sigma(t))
+\]
+hold for every $t$.  Away from $2,3$ they are the usual absence of the
+$t$th bit in $t$.  At $2,3$ they follow by direct calculation:
+$\Bit(3,2)=\Bit(2,3)=0$.
+Set $f_1=g_1=\sigma$ and $f_i=g_i=\mathrm{id}$ for $i\ne1$.
+
+\section{Head 3 is not derivable without itself}
+
+Given an assignment $\nu:\mathbb N\to\mathbb N$, interpret atoms by
+\[
+ \M(a,b)^\nu:=\Bit\bigl(f_a(\nu(a)),\nu(b)\bigr),\qquad
+ \E(a,b)^\nu:=(\nu(a)=\nu(b)).
+\]
+Interpret implication classically, and interpret $\U(a,B)$ as
+universal quantification of the $a$th coordinate of the assignment.
+Use the exact numeric decoder, including code $0$ as truth and the
+reversed quantifier pairing.  Since $f_0=\mathrm{id}$, code
+$1=\M(0,0)$ is false under every assignment.  Hence all the derived
+connectives have their intended classical meanings, even when
+quantification binds coordinate $0$.
+
+The quantifier heads 1, 2 and 6, the equality witness head 5, and
+$\rho_8$ are valid for ordinary reasons.  Head 4 is valid: if
+$\nu(a)=\nu(b)$, the two membership formulas in $R(a,b,d)$ test
+the same digit of the same number $f_d(\nu(d))$.  Modus ponens and
+closed generalization preserve validity.
+
+It remains to check the entire gate, because arbitrary separation
+is the possible source of a hidden derivation.  Let $c\ne a,b$ and
+let $\varphi$ be the decoded property with original code $c$.
+The source-label bound shows that changing coordinate $c$ does not
+change $\varphi$.  Write
+\[
+ P(y):=\varphi^{\nu[b:=y]}.
+\]
+If $a\ne b$, take the finite set
+\[
+ Z=\{y:(\Bit(f_a(\nu(a)),y)\vee y=\nu(b))\wedge P(y)\}.
+\]
+Let $m=\sum_{y\in Z}2^y$, and choose $s=f_c^{-1}(m)$.  Then
+$\M(c,b)$ under $\nu[c:=s,b:=y]$ is precisely $y\in Z$.  This
+establishes the separation conjunct and the distinguished-point
+clause.  If $a=b$, the first antecedent of the separation conjunct
+is $\Bit(f_b(y),y)$, which is always false.  In this case use just
+$Z=\{\nu(b):P(\nu(b))\}$; the remaining subset condition and the
+point clause still hold.  Equality and membership vacuity are valid
+because $c\ne a,b$.  Thus the whole bundled gate is valid.
+
+But head 3 fails.  Use the actual instance
+\[
+ \M(1,2)\to\bigl(\E(1,0)\to\M(0,2)\bigr)
+\]
+and the assignment $\nu(1)=\nu(0)=2$, $\nu(2)=0$.  Its first
+antecedent is $\Bit(3,0)$, which is true; its equality antecedent is
+true; its conclusion is $\Bit(2,0)$, which is false.
+
+\begin{theorem}
+Head 3 is not derivable from the remaining exact PA196 native rules.
+This remains true if primitive equality reflexivity, symmetry and
+transitivity are added, since equality in the counterinterpretation
+is actual equality of natural numbers.
+\end{theorem}
+\begin{proof}
+Every remaining rule preserves validity in the interpretation, and
+the displayed instance is invalid.
+\end{proof}
+
+\section{Head 4 is not derivable without itself}
+
+Use instead
+\[
+ \M(a,b)^\nu:=\Bit\bigl(\nu(a),g_b(\nu(b))\bigr),\qquad
+ \E(a,b)^\nu:=(\nu(a)=\nu(b)).
+\]
+The same argument verifies the logical heads and rules.  Head 3 is
+now valid, because it replaces the container value by an equal
+value and leaves the digit index $g_d(\nu(d))$ unchanged.
+
+For the gate with $a\ne b$, consider the finite set of indices
+\[
+ Z=\{g_b(y):(\Bit(\nu(a),g_b(y))\vee y=\nu(b))\wedge
+                    \varphi^{\nu[b:=y]}\}.
+\]
+It is finite because $g_b$ is a bijection and a natural number has
+only finitely many set bits.  Take the witness
+$s=\sum_{z\in Z}2^z$ for coordinate $c$.  Injectivity of $g_b$
+ensures that no point with the wrong property enters the selected
+set.  If $a=b$, the first antecedent is $\Bit(y,g_b(y))$, always
+false; the singleton-point construction suffices again.
+All other parts of the gate are as before.
+
+Head 4 fails at
+\[
+ \E(0,1)\to\bigl(\M(2,0)\to\M(2,1)\bigr)
+\]
+with $\nu(0)=\nu(1)=2$, $\nu(2)=4$.  The membership antecedent
+is $\Bit(4,2)$ and is true; the conclusion is $\Bit(4,3)$ and is
+false.
+
+\begin{theorem}
+Head 4 is not derivable from the remaining exact PA196 native rules,
+even with primitive equality reflexivity, symmetry and transitivity.
+\end{theorem}
+
+\section{A useful positive consequence of just head 4}
+
+This section uses head 4, head 5, the other logical heads and the gate,
+but never head 3.  Vacuity for arbitrary formulas at a fresh label
+follows as in the upstream construction; that proof uses the gate,
+negation, implication and quantifier commutation, not either
+membership rewrite head.
+
+\begin{lemma}[Negative-membership specialization]
+For $r\ne x$ and $z\ne x$,
+\[
+ \U(x,\N\M(r,x))\to\N\M(r,z)
+\]
+is derivable using head 4.
+\end{lemma}
+\begin{proof}
+The equality witness is $\exists x_x\E(z,x)$.  Head 4 gives
+$\E(z,x)\to(\M(r,z)\to\M(r,x))$.  Under the assumption
+$\M(r,z)$, its vacuity at $x$ and universal distribution give
+$\U(x,\E(z,x)\to\M(r,x))$.  Combining this with the universal
+negative premise gives $\U(x,\N\E(z,x))$, contradicting the
+witness.  Discharge the assumption.
+\end{proof}
+
+\begin{lemma}[Same-variable universal elimination]
+For every label $x$ and formula code $A$,
+\[
+ \U(x,A)\to A
+\]
+is derivable without head 3.
+\end{lemma}
+\begin{proof}
+Let $c$ be the code of $\N A$.  If $c=x$, use the code of
+$\N\N\N A$ instead; it is different and is propositionally
+equivalent to $\N A$.  The gate at $(x,x,c)$ gives a witness
+$x_c$ with a point clause implying $\M(c,x)$ from $\N A$ and
+a separation clause implying
+$\U(x,\M(c,x)\to\N A)$.
+Assume $\U(x,A)$ and $\N A$.  The clauses give $\M(c,x)$ and
+$\U(x,\N\M(c,x))$.
+
+Choose a label $z$ fresh for all displayed formulas and distinct from
+$0,x,c$.  Negative-membership specialization gives $\N\M(c,z)$.
+Head 4 gives $\E(x,z)\to(\M(c,x)\to\M(c,z))$.  Thus under the
+present assumptions $\N\E(x,z)$ follows.  Generalize at $z$;
+the assumptions are vacuous there.  This contradicts head 5's
+$\exists x_z\E(x,z)$.  Finally eliminate the separation witness
+at $c$, which is fresh in the desired conclusion, and discharge
+$\N A$ by classical logic.
+\end{proof}
+
+This result does not cross from a bound label $x$ to a different
+free label $y$.  Such a crossing is exactly where an attempted
+proof of the missing membership head needs an additional,
+unjustified substitution or alpha-conversion argument.  The two
+counterinterpretations show that no completion of that route can
+produce the missing head from the unchanged remaining rules.
+
+\section{Limits of the conclusion}
+
+The countermodels exclude a specific reduction justification:
+``delete one head because the other heads already derive it.''
+They do not prove that a machine searching the weaker calculus
+cannot still be equiconsistent with PA through a different
+interpretation.  Nor do they establish any lower bound on Turing
+machine states.  A new PA interpretation of a one-head calculus
+would be a separate mathematical construction.
+
+\end{document}

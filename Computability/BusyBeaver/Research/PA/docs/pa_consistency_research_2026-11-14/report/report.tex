@@ -1,0 +1,534 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array,multicol}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref,xurl,fancyhdr}
+\hypersetup{colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue,pdftitle={PA consistency machines: comparison and an 18-instruction negation},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PA consistency machines}
+\fancyhead[R]{\small Research audit, 14 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\title{PA consistency machines:\\comparison, an 18-instruction negation,\\and the search below 196 states}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{14 November 2026\\\small Repository snapshot: 906367250a7f96c923147b10df392294bced7be5}
+\begin{document}
+\maketitle
+\begin{abstract}
+The requested strict state improvement has \emph{not} been obtained. No
+validated binary blank-tape machine with fewer than 196 working states is
+claimed in this report or its accompanying archive.
+
+The positive construction is a new implementation of encoded negation in
+18 primitive source instructions, replacing a 47-instruction stack-based
+sequence and using entries already present in the physical engine. Applying
+it at all eight relevant sites of the separate-head calculus reduces the
+source from 3,673 to 3,441 instructions. A complete literal machine for this
+source has 197 working states. Its table is regenerated exactly; all 4,468
+symbolic primitive contracts and its complete 58,154-step startup pass.
+An independent checker verifies the new arithmetic loop argument.
+
+The comparison covers all 27 incoming ZIP archives at the pinned revision,
+including recursively nested archives, and the PA source directory. A
+selected catalogue contains 22 pairwise nonisomorphic rooted 196-state
+graphs, with evidence status retained. Two rejected graphs both halt after
+43,563 blank-tape steps. The report separates source size from physical
+state count, mathematical PA-provability from existing proof-assistant
+exports, and bounded negative searches from lower bounds. Exact tables,
+source data, verifiers, search receipts, provenance, and this \LaTeX\ source
+are included.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Result and conventions}
+
+The intended target is a deterministic one-tape, two-symbol Turing machine
+$M$ with at most 195 working states and a proof of
+\begin{equation}\label{eq:target}
+ \PA\vdash
+ \neg\Halt(M,\mathrm{blank})\ \longleftrightarrow\ \Con(\PA).
+\end{equation}
+The tape is two-way infinite and initially all zero. A transition writes a
+bit and moves one cell left or right. The distinguished halt control is
+not counted as a working state. The initial state and halt control are part
+of the machine specification. No alternative alphabet, larger input, advice
+word, or change of state-count convention is used here.
+
+There are two separate findings. First, the archive comparison identifies
+what has already been built, what has only been proposed, and which apparent
+reductions have failed. Second, the new negation block is a reusable
+arithmetic improvement and supports a fully specified 197-state research
+machine. It is not a solution of the strict state-count target. The
+arithmetical proof framework in Section~\ref{sec:pa-bridge-audit} states
+exactly the implementation and calibration hypotheses needed to turn any
+such source compilation into~\eqref{eq:target}.
+
+For the new machine, the dense working states are $0,\ldots,196$, start is
+$0$, and halt is $197$. The alternative native labels have start $74$,
+source root $84$, and halt $254$. Native labels are identifiers, not state
+counts. Both complete tables are included. Their SHA-256 digests are:
+\begin{quote}\small
+Dense table:\\
+\nolinkurl{15f8b3e96d6adae76236ab0960d288b9537e39294ef1ab65f8fdd2e16dc2a9b6}\\
+Native table:\\
+\nolinkurl{06f0d712e0933e80c2a0e82c765dbf82b4a9645a4fb6556eb50f8fc79550519d}
+\end{quote}
+
+\section{What was compared}
+
+All comparisons use the single Git revision printed on the title page,
+not a mixture of moving branches. The four requested source areas are
+listed in the bibliography~\cite{repo-pa,repo-incoming,repo-zfc,repo-ipra}.
+The detailed archive-by-archive account is also supplied as
+\code{audit/ARCHIVE_COMPARISON.md}; the machine-readable catalogue retains
+the exact archive member names and byte digests.
+
+\subsection{Recursive census and evidence status}
+
+The recursive census finds 27 top-level ZIP archives, 40 distinct archive
+bodies, 68 archive references, and nesting depth up to eight. Identical ZIP
+bodies are inspected once while their multiple references are retained.
+Across the PA tree and archives there are 26,891 file occurrences and 1,480
+complete numeric binary-machine table occurrences. Those tables comprise
+531 distinct byte forms and 402 action-preserving graph classes when the
+initial control is not distinguished. These totals include ancestors,
+intermediate allocations, failed experiments, and synthetic controls;
+they are not counts of established consistency machines.
+
+For the meaningful 196-state comparison, 22 selected tables are pairwise
+nonisomorphic as rooted action-labelled graphs. Their status is one
+published upstream table, 17 manuscript-positive candidates, two
+experimental modus-ponens variants, and two explicitly rejected Shift
+layouts. ``Candidate'' records the corresponding manuscript's validation
+claim; it is not a fresh proof-assistant certification. All 22 literal
+tables are total and graph-reachable. The selected catalogue and its
+independent checker are included in the archive.
+
+The 195-state family contains eight byte forms in six root-free graph
+classes. Every inspected representative is explicitly rejected or
+diagnostic. There is no hidden accepted 195-state construction among those
+files. The two rejected 196-state Shift layouts both first halt on blank
+tape at step 43,563; this was replayed independently. A failed symbolic
+contract for some other table is weaker evidence: it refutes that proposed
+simulation contract but does not, by itself, establish blank-tape halting.
+
+\subsection{Main construction families}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.24\textwidth}>{\raggedright\arraybackslash}p{.10\textwidth}>{\raggedright\arraybackslash}p{.56\textwidth}@{}}
+\toprule
+Family & States & What distinguishes it \\
+\midrule\endhead
+U209 to U208 & 209, 208 & A history-sensitive native-state fold in a predecessor architecture. The original nine designated presentations form two rooted graph classes; the expanded 27 designated presentations form 20 classes. \\
+James Chang PA209 and PA196 & 209, 196 & A separate source and physical compilation lineage. The U209 parent of U208 must not be confused with the PA209 predecessor. \\
+Published PA196 & 196 & The pinned formal development and literal reference table. Its source has 3,812 primitive sites; the original source DAG has 159 nodes. \\
+Reassociated source DAGs & 196 or more & Exact 158- and 157-node source representations already occur in incoming work. Smaller DAGs can destroy contextual aliases and fail to reduce the literal machine. \\
+Shift/MP and register variants & 196 or more & H-only Shift, result-in-H MP, A/D register exchange, and combined variants. Evidence differs by table; two Shift layouts are rejected by actual blank halting. \\
+Closing-row alternatives & 196 & Reuse of a different zero-register deletion path after AX cleanup. Several alternatives replace the same row and cannot be counted as additive savings. \\
+Diagonal-vacuity and separate head & 196 & The best supplied versions use 3,700 and 3,673 source sites, respectively. The separate version emits the diagonal schema as an independent seventh head. \\
+Scanner-oriented layout & 196 & Same 3,673-site separate source with different association and helper reuse. A leading-six-zero hazard prevents the proposed one-state scanner deletion. \\
+Zero-jump variant & 196 & Joint abstract register invariants justify bypasses at eligible source jumps. Its attempted 195-state fold fails at source site 26. \\
+New 18-instruction negation & 197 & 3,441 source sites, 68 generated readers, five simultaneous folds. This is the new positive construction in this report. \\
+\bottomrule
+\end{longtable}
+
+The latest supplied positive layouts were replayed rather than inferred
+from their filenames. For \code{diagonal196} the supplied checker passes
+4,815 contracts over 3,700 source sites. For \code{separate196} it passes
+4,780 contracts over 3,673 sites. Both check the complete 58,154-step startup.
+The zero-jump replay passes 4,959 contracts and a 58,402-step startup; its
+abstract closure contains 274,880 site/mask pairs, with 14 eligible forward
+jump sites and 12 recognized row replacements.
+
+\subsection{Why known improvements do not simply add}
+
+The common physical accounting for the newest AX layouts is
+\[
+ 134\ \text{fixed engine states}
+ +68\ \text{generated reader states}
+ -6\ \text{compatible contextual folds}
+ =196.
+\]
+The folds are constrained by their execution contexts and must work
+simultaneously. A source reassociation may save a DAG node while losing a
+fold. Two independent-looking edits may alter the same physical row, or
+invalidate each other's entry invariant. The U208 history fold uses native
+roles absent from the newer PA196 allocation; it cannot be transplanted by
+subtracting another state from 196.
+
+This is also why the new arithmetic block does not settle the user's
+target. Its current allocation has the same 68 generated readers but only
+five compatible folds:
+\[
+ 134+68-5=197.
+\]
+It removes 232 primitive instructions while increasing the best validated
+physical state count for that exact allocation by one. A program length,
+a compressed source DAG size, an optimistic matching score, and a complete
+physical transition-table count are four different quantities.
+
+\section{The new arithmetic construction}
+\label{sec:negation}
+
+Write
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad I(a,b)=4p(a,b).
+\]
+The source language uses code $1$ for falsity, so negation of a formula
+code $t$ is $N(t)=I(t,1)$. The key identity is
+\begin{equation}\label{eq:negid}
+ p(t,1)=p(0,t)+2,
+ \qquad N(t)=4p(0,t)+8.
+\end{equation}
+It follows by expanding the two triangular numbers, including at $t=0$.
+
+Let $T$ be register 1, $S$ register 6, and $Y$ register 7. The existing
+\code{node64} core, entered at native state 106, has the more general
+source-level contract
+\begin{equation}\label{eq:core}
+ (T,S,Y)=(t,s,y)
+ \longmapsto
+ \bigl(4(y+p(s,t)),0,0\bigr).
+\end{equation}
+Every other register is preserved. The arbitrary initial accumulator
+$y$ is important: setting it to zero too early would hide the improvement.
+
+\begin{proposition}
+On entry with $S=Y=0$, the sequence
+\[
+ \operatorname{INC}(7);\quad\operatorname{INC}(7);\quad\code{node64}
+\]
+sets $T$ to $N(T)$, restores $S=Y=0$, and preserves all other registers.
+Its expansion has 18 primitive instructions and uses only existing native
+engine entries $82,82,106$.
+\end{proposition}
+\begin{proof}
+The first two instructions establish $(T,S,Y)=(t,0,2)$. Substitution in
+\eqref{eq:core} gives $T'=4(2+p(0,t))$, which equals $4p(t,1)$ by
+\eqref{eq:negid}. The core restores the two scratch registers and its
+frame condition preserves the rest. The core has 16 primitive sites, so
+the full expansion has $1+1+16=18$ sites.
+\end{proof}
+
+\subsection{A universal loop argument, with a separate finite check}
+
+The first loop decreases $T$ and increases both $S$ and $Y$ once per
+iteration. Its exit is $(T,S,Y)=(0,s+t,y+t)$. At the next loop header,
+one outer iteration sends $(0,u,v)$ to $(0,u-1,v+u)$ when $u>0$:
+it first decreases $S$ and increases $Y$, drains the remaining $S$ into
+$T$, and executes the first loop again. The preserved quantity is
+\[
+ Y+\frac{S(S+1)}2.
+\]
+At exit this gives $Y=y+t+(s+t)(s+t+1)/2=y+p(s,t)$ and $S=T=0$.
+The final loop drains $Y$, increasing $T$ four times per iteration.
+This proves~\eqref{eq:core}.
+
+The independent verifier binds this argument to the exact 16-instruction
+primitive graph. It derives the three drain-loop summaries and checks
+the triangular identity using exact rational-polynomial arithmetic.
+Each loop has a decreasing natural-number variant: the relevant values
+are $T$, $S$, $S$, and $Y$ at their respective headers. These invariants,
+the drain summaries, and the final multiplication establish~\eqref{eq:core}
+for all natural inputs, not just inputs observed on the initial execution.
+No instruction writes a register outside $1,6,7$, giving the full register
+frame condition. The exact primitive source-step count of the new macro is
+$13t(t+1)/2+8t+17$, saving $6t+9$ steps over the prior 20-site implementation.
+These are source steps; physical time also depends on the tape encoding.
+
+As additional implementation controls, the checker tests 819 arbitrary
+initial accumulator cases and 455 cases covering the five complete
+negation spellings. Those tests catch implementation mistakes; they are
+not the universal proof. The verifier also binds all 64 occurrences of the
+core to native state 106 and all 346 register-7 increments to native state
+82 in the reference source and physical mapping.
+
+\subsection{Five spellings and their preconditions}
+
+\begin{center}
+\begin{tabular}{@{}p{.53\textwidth}r p{.27\textwidth}@{}}
+\toprule
+Source spelling & Sites & Required scratch condition \\
+\midrule
+\code{push; incT; cons} &47& Original macro contract \\
+\code{node37; incT; node64} &20& $Y=0$; same old effect for arbitrary $S$ \\
+\code{node64; node61; node61} &24& $S=Y=0$ \\
+\code{INC7; node64; node61} &21& $S=Y=0$ \\
+\code{INC7; INC7; node64} &18& $S=Y=0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here \code{node61}, native entry 190, adds four to $T$. The last three
+rows are the choices $y=0,1,2$ in
+\[
+ 4(y+p(0,t))+4(2-y)=4p(t,1).
+\]
+The 20-site version and earlier direct-negation research are prior work;
+the arbitrary-$Y$ preload and its 18-site use are the new construction
+documented here. Novelty is asserted relative to the inspected repository
+corpus, not every unpublished construction.
+
+The clean-scratch premise cannot be omitted. For $S=s$ and $Y=0$, the
+24-site version outputs $4p(s,t)+8$, whereas the old sequence outputs
+$4p(t+s,1)$; the old result minus the 24-site result is $4s$.
+The source macro invariant sets both
+registers 6 and 7 to zero at the relevant boundaries. In addition, the
+complete newly compiled primitive source has an independently computed
+joint zero/positive closure of 245,112 site/mask pairs. At all eight
+replacement entries it forces both scratch registers to be zero. Thus the
+replacement is bound to the actual source graph, including its entry
+conditions and exits.
+
+\subsection{The literal 197-state compilation}
+
+All eight 47-site blocks in the separate-head source are replaced. The
+primitive source size is exactly
+\[
+ 3673-8(47-18)=3441.
+\]
+The archive contains the source, grammar, five simultaneous folds, native
+and dense tables, dense/native label correspondence, and a single
+regenerate-and-verify entry point. Two independent CFG resolvers agree;
+3,297 source rows outside the replaced blocks are bound to the old source
+after the appropriate site-index transport. Entry and exit checks exclude
+an uncontrolled jump into the middle of a replacement.
+
+The verification receipt records 197 reachable working states and 394
+transition rows; all 4,468 unbounded symbolic primitive contracts pass.
+Their symbolic executions use at most 488 abstract steps per contract and
+1,392,425 abstract steps in total. These are symbolic-checker work counts,
+not limits on register values or physical run times. The 46 inherited
+register-engine rows are checked unchanged. The startup is simulated for
+exactly 58,154 physical transitions and its entire finite nonblank tape,
+head position, state, and source frame are compared, not merely a tape
+window or register sample.
+
+\section{Searches performed and what their failures mean}
+
+\subsection{Search over the separate seventh head}
+
+Much of the apparent search space had already been explored. Incoming
+work contains fixed-association role permutations, head order changes,
+several gates, equality or membership orientation choices, grammar
+rotations, MILP searches, and physical helper scans. The detailed comparison
+records those prior scopes so that they are not presented as new results.
+
+The new combined search uses the latest 190-token separate-head emitter.
+It varies the order of the six ordinary heads and the independent diagonal
+head; permitted parameter-role permutations inside each schema; allowed
+antecedent exchanges; one consistent equality orientation; the choice of
+$A,H$, or $D$ as the diagonal parameter; and source-tree association.
+The fixed parameter-read prefix is preserved. Four propositionally
+equivalent gate spellings are included in extended runs. A separate
+free-algebra checker validates the emitter family and includes deliberately
+incorrect metadata and ordering controls.
+
+The search score is $134$ plus the number of newly required reader controls
+after optimistic syntactic matching to compatible providers. Any score
+below 196 would only be a candidate: simultaneous folds, whole-source
+contracts, and startup would still need checking. In the completed runs
+listed below no score below 196 was obtained. Iteration slots include
+rejected proposals; evaluations count calls of the scoring routine and
+can include initialization work. Neither number counts distinct machines.
+
+\input{search_counts.tex}
+
+The arithmetic variants were also searched in mixed occurrence masks.
+There are eight negation positions. The completed binary-mask search
+uses the old 47-site and prior 20-site forms; the ternary family adds the
+24-site form. A five-way family adds the 21- and 18-site preload forms,
+with a separate closing-row option. The completed budgets are:
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Negation family & Slots or masks & Evaluations & Best score \\
+\midrule
+Two spellings, stochastic & 10,000,000 & 8,718,871 & 196 \\
+Three spellings, stochastic & 10,000,000 & 8,699,367 & 196 \\
+Five spellings and closing & 10,000,000 & 9,443,373 & 196 \\
+Three spellings, at most one rotation & 6,561 masks & 703,446 & 196 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The five-spelling evaluation count includes its exhaustive initialization
+over $2\cdot5^8=781,250$ mask/closing assignments. Exact seeds and measured
+counts are supplied as receipts. A finite search minimum is not a lower
+bound on all associations, all source programs, or all consistency machines.
+
+\subsection{Physical local transformations}
+
+Several physical tests address a different possible route to one state.
+Pure-reader prefix equivalence was tested on the latest separate and
+scanner-oriented tables with the complete known source prefixes and a
+preserved tape exterior. No surviving reader merger was found within the
+tested family. The independent checker includes a positive control from
+a larger raw allocation so that a universally rejecting implementation
+would be detected.
+
+A second search synthesizes a single physical row from an original block
+of at most 31 steps, using the least blank-window closure with radius six.
+It permits a contraction only when the whole tracked tape effect agrees:
+only the original head cell may change, the net movement is one cell, and
+the target state and written bit are fixed. On the original and separate
+196-state tables this finds only two extra row options beyond the original
+rows. Optimization over those options retains 196 reachable states.
+Additional context/helper scans after applying the contractions find no
+one-state reduction. This result has the stated window and block scope;
+it is not a classification of all possible multi-step machine simulations.
+
+\subsection{Scanner deletion needs the tape exterior}
+
+The scanner-oriented work exposed an audit issue: counting only seven
+consecutive zero address bits misses a failure on a leading six-zero path.
+For the selected \code{scanner_best196} layout, deleting scanner control
+34 already fails at source site 0 with path \code{000000}. Other six-zero
+leaf addresses and increment-tail hazards are listed in the supplied
+receipt. Fifteen exterior-reader rotations were tested with exact source
+graphs and runtime contracts; two pass all 4,780 runtime contracts at 196
+states, with startup not checked in this particular experiment. Neither
+removes the hazard. This is why a lower scanner metric, by
+itself, is not a valid 195-state construction.
+
+\subsection{Closing rows can trade context without changing the source}
+
+The original closing action is $0L302$. Several existing deletion entries
+can implement its clean-store effect after cleanup, using the known-zero
+register premise. There are also uniform finite detours, including
+$1R113$, $1L88$, $0L103$, and $1L301$, justified from the adjacent address
+and padding bits. Their exact proofs and bounds are supplied separately.
+They can change available physical sharing without changing the emitted
+axioms. On the fixed collection of 98 archived ties and selected additional
+layouts, the completed matching and runtime checks do not yield 195 states.
+These alternatives replace one closing action; they cannot be counted as
+several independent state savings.
+
+\section{Logical calibration and formalization status}
+
+The task asks for a provable equivalence, not merely an indefinitely long
+simulation. Three layers have to be kept distinct:
+\begin{enumerate}
+\item an ordinary mathematical proof of a PA theorem about the machine;
+\item executable certificates establishing source and physical contracts;
+\item a complete theorem exported by a trusted proof-assistant kernel.
+\end{enumerate}
+The pinned published PA196 development exports the internal implication
+from nonhalting to $\Con(\PA)$, together with its external nonhalting result.
+The exact arithmetic converse is not already exported by that endpoint.
+This does not show that the converse is false or unprovable. Several
+incoming reports already give the direct binary-membership and finite
+comprehension strategy for proving it in PA. That strategy is prior work.
+
+Section~\ref{sec:pa-bridge-audit} gives an explicit account of this bridge,
+including the troublesome zero-code aliases, label collisions, stack
+underflow, and reverse simulation. It is an ordinary mathematical argument
+with precise interface hypotheses. The new negation construction preserves
+the separate-head formula emitter, so it does not require a new logical
+axiom-calibration theorem merely because its arithmetic implementation
+changes. It still needs the source and physical binding that the bundled
+verifiers check. No new end-to-end Lean or Rocq endpoint, and no claim of
+having rebuilt the entire imported formal library, is made here.
+
+The related ZFC and ConciseIPRA sources are useful for the separation of
+proof systems, coded syntax, and concrete computation. They do not permit
+replacement of $\Con(\PA)$ by consistency of a weaker arithmetic. A small
+checker for a weaker theory solves a different calibration problem. Nor
+can an apparent logical redundancy simply be removed: the inspected
+incoming work already supplies countermodels to proposed deletions of
+specific heads. Replacing the guarded membership principle by a statement
+whose labels are all automatically fresh changes the calculus and needs
+a new forward interpretation proof.
+
+\input{pa_bridge.tex}
+
+\section{Reproduction and remaining work}
+
+\subsection{Archive layout and replay}
+
+The archive is self-contained for the new machine replay, its independent
+negation certificate, and the selected-table audit. The complete recursive
+census can also be regenerated from a checkout of the pinned repository;
+the original ZIP bodies are not duplicated in this deliverable. The
+machine-readable inventory retains their identities.
+
+From the archive root, the principal commands are:
+\begin{quote}\small\ttfamily
+python3 construction197/verify.py --check\\
+python3 construction197/macro\_proof/verify.py\\
+python3 audit/verify\_selected.py\\
+cd report\\
+pdflatex -interaction=nonstopmode -halt-on-error report.tex\\
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{quote}
+The top-level README identifies optional search commands and their
+dependencies. Stored search logs are results, not substitutes for rerunning
+their programs. Manifest hashes bind the delivered files. Imported source
+licenses and attribution are retained under the relevant subdirectories.
+
+The dense table in Appendix~\ref{app:table} is identical to the machine
+file checked by the replay. An independently checkable complete table is
+provided even though its state count misses the requested threshold.
+
+\subsection{What would complete the original task}
+
+A successful continuation must produce an explicit table with at most 195
+working states under the same binary blank-tape model. For a compilation
+of the present source family, it must retain the emitter's calibrated
+axiom supply, show the required scratch and entry invariants, verify every
+primitive source contract including arbitrary spare tails, and establish
+the exact startup. Its arithmetic proof must cover both directions of
+\eqref{eq:target}. A smaller source count or a promising matching score
+does not complete those obligations.
+
+The most concrete new reusable ingredient here is the arbitrary-accumulator
+pairing contract and the 18-site negation. Its present grammar loses a
+contextual fold. Recovering enough compatible sharing, altering the
+arithmetic core or decoder allocation, or finding a different calibrated
+source construction could still yield a strict state reduction. The
+negative searches establish no impossibility result. The requested
+sub-196 construction remains unresolved by this work.
+
+\appendix
+\section{Selected 196-state catalogue}\label{app:catalogue}
+The short digests below are display identifiers; the JSON manifest contains
+the full SHA-256 digest, exact archive and member, initial control, and halt
+control for every table. Status is retained from the audit classification.
+\input{catalogue.tex}
+
+\clearpage
+\section{Complete 197-state dense table}\label{app:table}
+Each cell is \emph{write bit, movement, next state}. The two action columns
+are for read symbols 0 and 1, respectively. State 197 is the distinguished
+halt control and has no outgoing row. Start state is 0. The table is split
+into two vertical panels solely to make it easier to read.
+\begingroup\small
+\input{machine_table.tex}
+\endgroup
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{repo-pa} Vladimir Reshetnikov, \emph{ProveIt, PA busy-beaver research}.
+Pinned revision \code{906367250a7f96c923147b10df392294bced7be5}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/Computability/BusyBeaver/Research/PA}.
+\bibitem{repo-incoming} Vladimir Reshetnikov, \emph{ProveIt, incoming research archives}, same revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/docs/incoming}.
+\bibitem{repo-zfc} Vladimir Reshetnikov, \emph{ProveIt, ZFC busy-beaver research}, same revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/Computability/BusyBeaver/Research/ZFC}.
+\bibitem{repo-ipra} Vladimir Reshetnikov, \emph{ProveIt, ConciseIPRA}, same revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\end{thebibliography}
+\end{document}

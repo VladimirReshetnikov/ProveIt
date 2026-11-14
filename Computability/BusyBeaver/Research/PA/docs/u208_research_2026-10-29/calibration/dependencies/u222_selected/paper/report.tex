@@ -1,0 +1,894 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor,listings,enumitem,fancyhdr,xurl,needspace}
+\usepackage[hidelinks]{hyperref}
+\input{metadata.tex}
+\hypersetup{pdftitle={A 222-state binary Turing machine for unary power covering},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={A PA-provable consistency equivalence and exact machine verification},
+ pdfkeywords={Turing machine, PA, consistency, unary power covering, U222}}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\ThU}{\mathsf U}
+\newcommand{\ThW}{\mathsf W}
+\newcommand{\IR}{\mathsf{IR}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Sub}{\operatorname{Sub}}
+\newcommand{\Emp}{\operatorname{Emp}}
+\newcommand{\Num}{\operatorname{Num}}
+\newcommand{\Succ}{\operatorname{Succ}}
+\newcommand{\Eq}{\mathrel{\simeq}}
+\newcommand{\CU}{\mathcal C_U}
+\newcommand{\Nn}{\mathbb N}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small Unary power covering and a small consistency machine}
+\fancyhead[R]{\small 28 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{3em}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,
+  frame=single,rulecolor=\color{black!20},xleftmargin=0.5em,xrightmargin=0.5em,
+  aboveskip=1em,belowskip=1em,showstringspaces=false}
+\title{A \Nstates-state binary Turing machine\texorpdfstring{\\}{ }for the consistency of unary power covering}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{28 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct an explicit deterministic, single-tape, two-symbol Turing machine
+with \Nstates\ working states, including initialization, whose blank-tape
+non-halting is provably equivalent in Peano arithmetic to the syntactic
+consistency of the supplied unary power-covering theory~$\ThU$.
+This improves the requested 238-state benchmark by \Saving\ states.
+The construction replaces the Theory~K axiom emitter in the accepted K215
+proof-search architecture by a fixed-variable power-covering emitter. The
+matrix code itself supplies a fresh output-variable label; both exceptional
+small codes are proved harmless. The retained logical
+calculus and the new schema are connected by uniform finite proof
+transformations. The literal table is checked against every one of its
+\Ncases\ primitive simulation cases using arbitrary natural register values,
+an arbitrary gap, and an arbitrary nonempty finite spare list. Initialization is
+independently replayed from a genuinely blank tape.
+
+The result is an ordinary mathematical proof, with a PA formalizability
+argument and executable symbolic verification. This release does not contain
+a newly compiled Lean, Rocq, or MM0 certificate for its final theorem. No
+absolute state minimality or unconditional consistency assertion is made.
+\end{abstract}
+
+\section{Result, conventions, and scope}
+
+\begin{theorem}[Main result]\label{thm:main}
+Let $M_U$ be the exact transition table in \texttt{machine/u.tm}.
+It has \Nstates\ working states and satisfies
+\[
+ \PA\vdash \neg\Halt(M_U,\mathrm{blank})\ \longleftrightarrow\ \Con(\ThU).
+\]
+Using the uniform interpretation theorem in the supplied $\ThU$ report,
+\[
+ \PA\vdash \neg\Halt(M_U,\mathrm{blank})\ \longleftrightarrow\ \Con(\PA).
+\]
+\end{theorem}
+
+Here $\Con(T)$ is the assertion that no natural number codes a finite
+classical first-order $T$-refutation. The assertion on the left says that no
+natural number codes a finite halting run of the displayed machine.
+The proof concerns these arithmetized assertions, not just their truth in
+the standard natural numbers. In particular, all simulation and proof
+translations below are justified by induction available in PA.
+
+The tape is indexed by $\mathbb Z$, starts entirely with symbol~0, and has
+one head initially at position~0. Every step writes one symbol from
+$\{0,1\}$, moves exactly one cell left or right, and changes state. The
+dense presentation starts in state~0, has working labels
+$0,\ldots,\LastState$, and has a distinct halt label~\Nstates\ with no
+outgoing transitions. Every working state has both binary transition rows.
+The count is therefore \Nstates, not \Nstates\ plus a hidden initialization
+program or an externally prepared input tape. The native presentation uses
+halt label~254 and dispatcher~84; the included bijection translates every
+transition and the start state exactly.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Quantity & Exact value\\\midrule
+Working states & \Nstates\\
+Transition rows & \Nrows\\
+Source primitive occurrences & \Nsites\\
+Distinct source subtrees, including primitive leaves & \Ndag\\
+Maximum source depth / consecutive zeros & \Ndepth\ / \Nzeros\\
+Zero/positive primitive cases checked & \Ncases\\
+Literal blank initialization steps & \BootSteps\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{What is and is not inherited.}
+The K215 project supplies an exceptionally compact register interpreter,
+proof-search source, and finite logical proof templates
+\cite{proveit,k215pa}. Its ZFC endpoint is a theorem about a different
+transition table and a different nonlogical theory. We do not apply that
+endpoint to the modified table. We establish the new emitter contract,
+the new theory calibration, the exact modified source contract, and the
+complete literal-machine simulation separately.
+
+The 238-state PA reference is the construction described in the upstream
+\texttt{PA/m238} development \cite{m238}. Our comparison uses the same
+two-symbol blank-tape convention. We call \Nstates\ the best verified
+construction in this release; we do not prove that every smaller machine
+fails the requested property, or assert a globally exhaustive priority search.
+
+\section{The theory and the useful machine-facing extension}
+
+The supplied theory $\ThU$ uses classical equality-free first-order logic
+over a nonempty domain and one binary relation $E$, written as membership.
+Set
+\[
+ \Sub(x,a):=\forall t\,(E(t,x)\to E(t,a)).
+\]
+For every formula $\varphi(x)$ with no other free variable, its sole
+nonlogical schema is the universal closure of
+\begin{equation}\label{eq:U}
+ \forall a\,\exists b\left[
+  \forall x\,(E(x,b)\to\varphi(x))\ \land\
+  \forall x\,(\Sub(x,a)\to(\varphi(x)\to E(x,b)))
+ \right].
+\end{equation}
+Arbitrarily many bound variables are allowed. The source variable $a$
+cannot occur freely in a legal matrix of $\ThU$. The two clauses describe
+a weak cover; they do not require every member of $b$ to be a subset of $a$.
+
+Let $\ThW$ allow arbitrary additional matrix parameters, including the source,
+in the same schema. Write
+\[
+ \IR:=\forall x\,\neg E(x,x).
+\]
+The machine can emit the unrestricted schema: recognizing the unary
+free-variable restriction would add implementation work without changing
+the consistency strength needed here.
+
+\begin{proposition}[Uniform consistency reductions]\label{prop:theories}
+There are PA-verifiable transformations of finite refutations yielding
+\[
+ \PA\vdash\Con(\ThU)\leftrightarrow\Con(\PA)
+                 \leftrightarrow\Con(\ThW+\IR).
+\]
+The upper interpretation remains valid when ordinary equality and matrices
+containing equality are permitted in the machine-facing presentation.
+\end{proposition}
+\begin{proof}
+The first equivalence is the interpretation theorem proved in the supplied
+report \cite{unary}, included in full under \texttt{references/theory\_U}.
+Its relevant uniformity is summarized below. Since $\ThW$ includes every
+$\ThU$ instance, a $\ThU$-refutation is immediately a
+$\ThW+\IR$-refutation.
+
+For the upper interpretation, interpret $E(x,a)$ as ``bit $x$ of the
+binary expansion of $a$ is~1,'' and equality as arithmetic equality. PA
+proves $E(x,a)\to x<a$ and hence irreflexivity. It also proves
+$\Sub(x,a)\to x\le a$. For each fixed translated matrix
+$\theta(x,a,\bar p)$, full PA induction constructs a number $b$ whose
+1-bits are precisely the integers $x\le a$ satisfying
+$\Sub(x,a)\land\theta(x,a,\bar p)$. Thus $b$ satisfies both weak-cover
+clauses. This bounded finite selection uses the induction instance for the
+particular formula $\theta$; it does not assume a uniform arithmetic truth
+predicate. Arithmetic coding of exponentiation and finite bit sequences is
+available in PA by its usual primitive-recursive definitional extensions.
+
+Replacing each axiom in a $\ThW+\IR$ refutation by this finite arithmetic
+derivation produces a PA-refutation. The $\PA$-to-$\ThU$ interpretation
+then produces a $\ThU$-refutation. The translations are recursive on
+formulas and finite proof lists, and PA verifies their correctness by
+induction. The same upper argument handles equality-containing matrices.
+\end{proof}
+
+\subsection{The lower interpretation used from the supplied report}
+
+For clarity about this dependency, the lower interpretation is much stronger
+than an observed resemblance to finite sets. It uses coextensionality
+$u\Eq v$ defined by
+$\forall z(E(z,u)\leftrightarrow E(z,v))$, and numerical representatives
+that are saturated, transitive, and linearly ordered by membership modulo
+$\Eq$. Its endpoint condition requires each nonempty intersection of an
+existing object's member profile with a numerical initial segment to have
+least and greatest member classes. No external finiteness or well-foundedness
+is assumed.
+
+The dependency order is essential. Empty objects and local predecessor
+facts are derived first. A unary filter of failures gives induction on
+numerical representatives before total successor existence is known.
+Parameters in an induction formula are internalized by a universally
+quantified implication whose antecedent states that the corresponding base
+and step premises hold. Induction then yields comparison and least failed
+numerical tuples. Such least tuples permit bounded numerical comprehension
+using genuinely unary matrices. For example, the matrix says that $z$
+belongs to the definable profile associated with some least failing tuple;
+the tuple is bound inside the matrix rather than used as an illicit free
+parameter.
+
+This comprehension theorem yields saturated successors, powers of numerical
+objects, and saturated Kuratowski pair codes. Graphs with numerical
+parameters are formed inside a suitable numerical power bound.
+Deterministic histories are extended by a canonical formula that existentially
+quantifies over prior histories; an arbitrary old graph is not inserted as
+a free filter parameter. Successor iteration gives addition, and iteration
+of addition gives multiplication. These operations are total and functional
+modulo $\Eq$ and satisfy the PA recursion equations. The already established
+induction supplies every translated induction instance.
+
+All the auxiliary definitions are fixed finite formulas. Once the
+interpretation is fixed, its proof translation requires only structural
+formula translation, fresh-name choices, finite proof concatenation, and
+insertion into the induction template. The supplied paper explicitly gives
+this PA-verifiable uniformity. We reviewed that mathematical argument and
+replayed its delivered diagnostics, but have not produced a new kernel
+formalization of it. Finite diagnostic success alone is not the reason for
+Proposition~\ref{prop:theories}.
+
+\section{Native formula codes and the new axiom emitter}
+
+\subsection{The retained codec}
+
+Use dual Cantor pairing and the four constructors
+\begin{align*}
+ P(x,y)&=\frac{(x+y)(x+y+1)}2+y,\\
+ I(x,y)&=4P(x,y),& R(i,j)&=4P(i,j)+1,\\
+ Q(i,f)&=4P(i,f)+2,& E_{=}(i,j)&=4P(i,j)+3.
+\end{align*}
+They represent implication, membership, universal quantification, and
+auxiliary equality, respectively. Set $F=1$ and $N(f)=I(f,1)$.
+The natural number~0 is a deliberate truth alias, since $I(0,0)=0$.
+Every positive number is decoded by its residue modulo~4 and inverse pairing;
+every recursive formula field is smaller than the parent. Consequently
+all natural numbers are admissible formula codes.
+
+There are two standard equivalent ways to handle falsity. Decode $F$ as
+$E(v_0,v_0)$ and normalize it under $\IR$, or decode an implication with
+consequent~1 as ordinary negation. In either presentation, inside
+$\ThW+\IR$ one has uniform proof transformations for
+\[
+ D(I(f,g))\leftrightarrow(D(f)\to D(g)),\qquad
+ D(Q(i,f))\leftrightarrow\forall v_iD(f).
+\]
+The zero collapse is harmless because both $\top$ and $\top\to\top$ are
+theorems. Treating code~1 as false without justifying irreflexivity would
+be a genuine soundness error.
+
+\begin{lemma}[Self-fresh labels]\label{lem:fresh}
+For every positive $n$, every variable label in the decoding
+of $n$ is strictly smaller than $n$.
+\end{lemma}
+\begin{proof}
+Both coordinates of $P(i,j)$ are at most $P(i,j)$. For positive constructor
+codes, the factor~4 and tag therefore make every coordinate strictly
+smaller than the parent. Choose the decoding of zero to be a fixed closed
+tautology using only label~0. The decoding of~1 is $E(v_0,v_0)$, whose
+only label is $0<1$. Strong induction on positive $n$ now proves the claim
+for all recursive formula fields, including occurrences of the zero alias.
+\end{proof}
+
+\subsection{Fixed source and test variables}
+
+The old axiom selector is $c$. Put $n=c$, using this same number as both
+the matrix code and the output-variable label. Define
+\begin{align}
+ e_n&=R(1,n),\nonumber\\
+ G_n&=Q(n,I(R(n,1),R(n,0))),\nonumber\\
+ U_n&=Q(1,I(e_n,n)),\label{eq:emitter}\\
+ L_n&=Q(1,I(G_n,I(n,e_n))),\nonumber\\
+ H_n&=Q(n,\Hbody),\nonumber\\
+ V(a,b,c)&=I(R(a,b),Q(c,R(a,b))),\nonumber\\
+ B(a,b,c)&=N(I(V(a,b,c),H_c)).\nonumber
+\end{align}
+The selected table uses \ClauseOrder\ clause order. The two possible orders
+differ only by exchanging the conjuncts after classical normalization.
+The axiom branch emits $B(a,b,c)$ if $c\ne a$ and $c\ne b$, and emits
+truth~0 otherwise. The two old gate tests are retained unchanged.
+
+For $n\ge2$, $G_n$ expresses $\Sub(v_1,v_0)$. Its binder $n$ is local
+to that guard and safely shadows the output binder there. The matrix does
+not occur inside this guard. By Lemma~\ref{lem:fresh}, $n$ is fresh in
+the matrix and differs from the fixed labels~0 and~1. Thus
+\begin{equation}\label{eq:shell}
+ \neg D(H_n)\ \equiv\ \exists v_n\left[
+ \forall v_1(E(v_1,v_n)\to D(n))\ \land\
+ \forall v_1(\Sub(v_1,v_0)\to(D(n)\to E(v_1,v_n)))
+ \right].
+\end{equation}
+This is an unrestricted weak-cover instance. The other component of
+$D(B)$ is membership vacuity, valid because the original gate makes its
+binder fresh. The vacuity component is independent of the fixed source
+and tested variables of the power-cover component.
+
+\begin{lemma}[The two exceptional codes]\label{lem:collision}
+The outputs corresponding to $n=0$ and $n=1$ are sound in $\ThW+\IR$.
+\end{lemma}
+\begin{proof}
+At $n=0$, the matrix is truth. The binder of $G_0$ captures all
+occurrences of label~0 in its own scope, so under $\IR$ it is
+\[
+ G_0=\forall v_0(E(v_0,v_1)\to E(v_0,v_0))
+       \ \leftrightarrow\ \Emp(v_1).
+\]
+Here $\Emp(x):=\forall t\,\neg E(t,x)$. The upper clause is tautological,
+and the shell says
+\[
+ \exists b\,\forall x\,(\Emp(x)\to E(x,b)).
+\]
+This follows from $\ThW$. First obtain an empty object $e$ by applying
+the false-matrix cover at any source (the domain is nonempty). Then apply
+the true-matrix cover at $e$. Since $\Sub(x,e)\leftrightarrow\Emp(x)$,
+the resulting object contains every empty object, as required.
+
+At $n=1$, the matrix is $F=E(v_0,v_0)$, false under $\IR$. The upper clause
+$U_1$ is $\forall v_1(E(v_1,v_1)\to F)$ and hence expresses
+irreflexivity under this normalization. The lower clause holds because
+its matrix antecedent is false. All occurrences of label~1 in those
+clauses are already bound, so the outer output quantifier is vacuous.
+The resulting shell is true. No malformed-input case has been silently
+discarded.
+\end{proof}
+
+\paragraph{Why no increment or syntax test is needed.}
+The local binder of the subset guard is essential to the zero-code
+calculation. Replacing that binder by a separately fixed fresh label would
+produce a different exceptional formula and would require a new analysis.
+For the displayed dynamic guard, both tiny cases are sound and the selector
+can be used directly. No run-time matrix traversal or free-variable
+validator is required: self-freshness does that work in the proof.
+
+\paragraph{A second pitfall avoided.}
+Using arbitrary source and tested labels $b,a$ would require a check
+$a\ne b$: when $a=b$, the subset guard is tautological and the schema
+becomes unrestricted comprehension. But applying that extra check to the
+whole bundle would also suppress diagonal membership vacuity. Fixing the
+power-cover roles to distinct labels~0 and~1 avoids both problems and
+preserves the old logical interface.
+
+\section{The numerical calculus and its consistency calibration}
+
+Let $\CU$ be the numerical calculus containing truth~0, numerical modus
+ponens and generalization, the following eight logical rows, and the gated
+bundle~$B$. We display rows as formulas, with bold arguments denoting
+formula-code slots and plain arguments denoting variable labels:
+\begin{center}\small
+\begin{tabular}{cl}
+\toprule
+Row & Formula shape\\\midrule
+$\rho_1$ & $\exists a\,(a=b)$\\
+$\rho_2$ & $\forall a(\mathbf b\to\mathbf c)\to
+              (\forall a\mathbf b\to\forall a\mathbf c)$\\
+$\rho_3$ & $a=b\to(c\in a\to c\in b)$\\
+$\rho_4$ & $\forall a\forall b\mathbf c\to\forall b\forall a\mathbf c$\\
+$\rho_5$ & $c=a\to(c\in b\to a\in b)$\\
+$\rho_6$ & $\exists a\forall a\mathbf c\to\mathbf c$\\
+$G$ & $c=a\to(c=b\to\forall_{R(a,b)}(a=b))$\\
+$\rho_8$ & $((\mathbf c\to\mathbf u)\to\mathbf a)\to
+             ((\mathbf a\to\mathbf c)\to(\mathbf b\to\mathbf c))$\\
+\bottomrule
+\end{tabular}\end{center}
+Existential quantification and negation use the native $F$ abbreviation.
+The binder in $G$ is the integer $R(a,b)$, which exceeds both $a$ and $b$.
+The actual source emits the dominated family of $\rho_8$, with $u\le a$.
+The inherited finite dominated-row derivation recovers unrestricted
+$\rho_8$ using only numerical modus ponens, truth, and the elementary
+bounds $x,y\le I(x,y)$; it is independent of Theory~K \cite{dominated}.
+
+\begin{lemma}[Retained logical completeness]\label{lem:logic}
+The finite equality-free first-order proof templates used by the K215
+calculus remain valid when its nonlogical bundle is replaced by $B$.
+\end{lemma}
+\begin{proof}
+The unrestricted $\rho_8$ basis gives classical implication. The row
+$\rho_6$, together with weakening, derives $F\to A$ for every code $A$.
+Indeed $F\to\exists i\forall i A$ is a weakening instance, and
+$\exists i\forall i A\to A$ is $\rho_6$.
+
+The merged row $G$ recovers equality reflexivity, its fresh-binder helper,
+and the ordinary Euclidean equality row using only $G$, $\rho_1$,
+$\rho_2$, $\rho_6$, modus ponens, generalization, and propositional
+logic. The finite derivations are in the retained \texttt{G222} templates.
+The new bundle yields every membership-vacuity instance by the classical
+projection $\neg(V\to H)\to V$, including the case $a=b$.
+
+One must not infer arbitrary primitive-equality vacuity from this alone.
+The inherited proof instead interprets equality by two-sided membership
+indiscernibility,
+\[
+ \operatorname{Eind}(x,y):=
+ [\forall r(E(r,x)\leftrightarrow E(r,y))]\land
+ [\forall r(E(x,r)\leftrightarrow E(y,r))],
+\]
+with fresh bound names. The \texttt{L224E}/\texttt{Interp222}
+templates establish first-order completeness through that interpretation.
+Their premises are exactly the retained logical rows and membership
+vacuity just recovered. They do not use the Theory~K schema. Equality-free
+formulas, including the $\ThU$ and $\ThW$ schemas, are unchanged by this
+interpretation. All templates are finite syntactic proof transformations.
+\end{proof}
+
+\begin{lemma}[All needed power-cover instances]\label{lem:cover-complete}
+Every ordinary equality-free $\ThW+\IR$ axiom has a uniformly constructible
+numerical proof in the retained interpretation.
+\end{lemma}
+\begin{proof}
+Write $\tau$ for quotation, with
+$\tau(\neg A)=I(\tau(A),1)$. Numerical identity $I(1,1)$ is both a
+propositional theorem and $\tau(\neg E(v_0,v_0))$. Generalization at~0
+therefore yields the quotation of $\IR$.
+
+For a desired cover matrix, rename its source and tested variables to~0
+and~1, using temporary fresh labels and capture-avoiding bound-variable
+renaming. Double-negate the matrix before quotation. This preserves
+meaning and guarantees a code $n>1$. Self-freshness then makes $n$ a
+legal output label. Choose $c=n$ and $a=b=n+1$. The old gate succeeds,
+and projection of $B(a,b,c)$ gives $N(H_n)$. Equation~\eqref{eq:shell}
+supplies the desired cover. Remove the double negation by the logical
+templates, then universally close and restore the original names by
+instantiation and alpha conversion.
+
+For a concrete check on the tiny codes, a true matrix may be padded to
+$I(1,1)=16$ and a false one to $I(0,1)=8$, with the meanings understood
+under $\IR$. These are proof-compiler
+operations; the Turing machine never computes a fresh-variable scan.
+\end{proof}
+
+\begin{proposition}[Calibration of the numerical target]\label{prop:calibration}
+PA proves
+\[
+  (\exists p\,\operatorname{Prf}_{\CU}(p,1))
+           \ \longleftrightarrow\ \neg\Con(\ThU).
+\]
+\end{proposition}
+\begin{proof}
+For soundness, decode a numerical proof into an ordinary proof under
+irreflexivity. Every logical row is sound, a failed gate produces truth,
+and every successful bundle is a valid unrestricted cover together with
+vacuity, including both exceptional cases from
+Lemma~\ref{lem:collision}. Apply the bit-membership interpretation in PA.
+Code~1 becomes a false diagonal membership assertion, yielding a
+PA-refutation, and the supplied lower interpretation translates that
+refutation to $\ThU$.
+
+For completeness, a $\ThU$-refutation is a $\ThW+\IR$-refutation.
+Lemmas~\ref{lem:logic} and~\ref{lem:cover-complete} translate its axioms
+and every inference into the numerical calculus. The standard finite
+natural-deduction-to-Tarski and quotation templates turn the contradiction
+into code~1. For example, quote a negation of a closed logical truth and
+apply numerical modus ponens to that truth. Intermediate auxiliary
+equalities are eliminated by membership indiscernibility.
+
+All these maps are primitive recursive on the supplied finite syntax.
+Their correctness is verified by PA induction on formulas and proof
+lengths. No inference from model-theoretic equiconsistency alone is used.
+\end{proof}
+
+\section{Fair proof search and its exact counter program}
+
+The nine logical registers retain the K215 order
+\[
+ \begin{aligned}
+ (N,T,W)&=(\text{next},\text{current},\text{stack}),\\
+ (C,D,H)&=(\text{selector},\text{counter},\text{cache}),\\
+ (X,Y,L)&=(\text{scratch}_1,\text{scratch}_2,\text{remaining fields}).
+ \end{aligned}
+\]
+At a command boundary the selector and two scratch registers are zero.
+The semantic state is $(pl,np,t,w,d,h)=(L,N,T,W,D,H)$.
+The stack is nested $P(\text{top},\text{rest})$, with the infinite
+zero tail of $\operatorname{unP}(0)=(0,0)$.
+
+If $pl=0$, the next candidate is read from $np$ and $np$ is incremented.
+Otherwise fields are read from $pl-1$. Repeated inverse pairing reads
+the selector and the indicated additional fields. The commands are:
+\begin{description}[style=nextline,leftmargin=1.2em]
+\item[{NIP, fields $[0]$.}]
+Halt if $h=1$. Otherwise pop $(x,w')=\operatorname{unP}(w)$ and return
+$(t,w',d,x)$.
+\item[{DROP, fields $[1]$.}]
+Return $(h,P(t,w),d,h)$.
+\item[{MP$(x)$, fields $[2,x]$.}]
+Put $z=d+x$. If $I(t,z)=h$, return $(z,P(0,w),z,0)$;
+otherwise return $(0,w,z,0)$.
+\item[{AX$(c;x,y)$, fields $[c+3,y,x]$.}]
+Put $u=d$, $a=d+x$, and $b=h+y$. Push, in order,
+\[
+ t,\ Q(u,h),\ \rho_8(a,b,c,u),\ G(a,b,c),\ \rho_6(a,c),
+\]
+\[
+ \rho_5(a,b,c),\ \rho_4(a,b,c),\ \rho_3(a,b,c),\
+ \rho_2(a,b,c),\ \rho_1(a,b).
+\]
+Set current to the gated bundle and set $d=h=0$.
+\end{description}
+The field order in AX is deliberately $y,x$, whereas the displayed
+parameter order is $x,y$. The old counter is $u$, so the directly
+generated $\rho_8$ satisfies $u\le a$. AX still pushes exactly ten
+stack cells. In particular the change has not silently altered the
+proof-compiler stack discipline.
+
+\subsection{Soundness}
+
+The invariant says that $t$, $h$, and every stack entry are $\CU$ theorems;
+it imposes no condition on the counter or unread fields. It holds when all
+three formula registers are zero. NIP and DROP move theorems; successful
+MP applies its tested numerical implication; failed MP supplies truth;
+AX supplies the old theorem, its generalization, the logical rows, and
+a permitted bundle or truth. A halt therefore extracts a finite numerical
+proof of~1 by induction on the command run.
+
+\subsection{Exact compiler macros and completeness}
+
+Write $\mathsf h$ for NIP and $\mathsf d$ for DROP. A block
+$\operatorname{Build}(A)$ has the following contract: from every
+$(T,w,0,0)$, it halts early or returns $(A,w,0,0)$. Define
+\begin{align*}
+ \operatorname{Discard}&=\operatorname{MP}(1);\operatorname{AX}(1;0,0);
+                             \mathsf h^{10},\\
+ J(0)&=\varepsilon,\qquad J(u)=\operatorname{MP}(u)\quad(u>0).
+\end{align*}
+Discard gives $(0,w,0,0)$: the MP must fail, and the next AX has $c=a=1$,
+so the gate fails. From that zero current/cache state, $J(u)$ sets the
+counter to $u$ while retaining zero current/cache.
+The truth leaf is $\operatorname{Build}(0)=\operatorname{Discard}$.
+
+The following finite blocks compile every proof constructor:
+\begin{align*}
+ \operatorname{Leaf}_j(a,b,c,u)
+ &=\operatorname{Discard};J(u);\operatorname{AX}(c;a-u,b);
+      \mathsf h^j;\mathsf d;\mathsf h^{11-j},\\
+ \operatorname{BundleLeaf}(a,b,c)
+ &=\operatorname{Discard};\operatorname{AX}(c;a,b);\mathsf h^{10},\\
+ \operatorname{Build}(Q(i,A))
+ &=\operatorname{Build}(A);\mathsf d;J(i);\mathsf h;
+   \operatorname{AX}(i;0,0);\mathsf h^9;\mathsf d;\mathsf h;\mathsf h.
+\end{align*}
+Here $1\le j\le8$ and $u\le a$; for rows other than $\rho_8$ use $u=0$.
+BundleLeaf is used for successful gates, $c\ne a,b$.
+The finite dominated-row derivation handles an unrestricted $\rho_8$
+leaf. For a modus-ponens node with premises $A$ and $I(A,B)$, use
+\begin{align*}
+ &\operatorname{Build}(A);\mathsf d;\operatorname{Build}(I(A,B));
+ \mathsf h;\mathsf d;\mathsf h;\operatorname{MP}(B);\\
+ &\hspace{12mm}\operatorname{AX}(B;0,0);\mathsf h^{10};
+ \mathsf d;\mathsf h;\mathsf h.
+\end{align*}
+Substitution in the four exact command equations proves these contracts.
+The temporary AX instances in the cleanup have failed gates, and the ten
+pops restore the old stack. Encountering cache~1 earlier only helps
+completeness. Induction on a finite numerical derivation consequently
+constructs a block for its last line.
+
+The actual initialization starts $np$ at~4. This loses no proof.
+Let $\operatorname{START}(Y)=\operatorname{AX}(0;1,Y)$, which resets
+$d=h=0$ from any retained tuple. A compiled proof of~1 gives a command
+list
+\[
+ \operatorname{START}(Y);\operatorname{Build}(1);
+                   \mathsf d;\mathsf h;\mathsf h
+\]
+that halts from every retained tuple. Encode a noninitial command by
+$1+$ its nested pairing of fields, and encode the first command without
+that extra~1. If $s$ is the encoded suffix after START, the candidate is
+\[
+ N_Y=P(3,P(Y,P(1,s)))\ge Y.
+\]
+Choose $Y=4$. At positive $pl$, every completed command leaves a remainder
+at most $pl-1$, since each inverse-pairing coordinate is bounded by its
+input. Thus every candidate drains. Induction on $N_Y-4$ proves that
+the enumerator either halts earlier or eventually starts candidate $N_Y$.
+This is a cofinal, constructive argument, valid for internally finite
+nonstandard codes in PA as well as standard ones.
+
+\begin{proposition}\label{prop:enum}
+PA proves that the counter source from $(N,T,W,C,D,H,X,Y,L)
+=(4,0,0,0,0,0,0,0,0)$ halts if and only if a finite $\CU$ proof of~1 exists.
+\end{proposition}
+
+\subsection{The exact source replacement}
+
+The accepted K215 source has 4,751 primitive occurrences. We replace its
+closed interval $[2885,4482)$, the old Theory~K shell, by a closed expression
+with 737 primitive occurrences. The result has 3,891 occurrences. The
+other 3,154 primitive instructions and every associated control-flow edge
+are independently checked after the ordinal index translation; no retained
+edge enters the interior of the replacement.
+
+The inherited arithmetic macros satisfy, for arbitrary natural registers
+and cleared scratch values,
+\begin{align*}
+ \operatorname{PUSH0}:&(T,W)\mapsto(0,P(T,W)),\\
+ \operatorname{PUSH1}:&(T,W)\mapsto(1,P(T,W)),\\
+ \operatorname{PAR3}:&(T,W)\mapsto(C,P(T,W)),\\
+ K:&(T,P(A,W))\mapsto(K(A,T),W)\quad(K\in\{I,R,Q\}),\\
+ N:&T\mapsto I(T,1).
+\end{align*}
+The third line preserves $C$; every macro restores both scratch registers
+to~0. The new atom for $n$ is exactly PAR3.
+Structural induction on its postfix expression proves that the new block
+computes exactly $H_C$ and pushes the old current once. At this point
+the old current is $V(a,b,c)$; the unchanged final implication and negation
+consume it and produce $B(a,b,c)$, with no additional net stack cell.
+
+The pair, unpair, copy, and destructive-comparison loop contracts are the
+retained all-natural counter-program lemmas, including
+\texttt{cons119}, \texttt{par168}, \texttt{pushwff171}, \texttt{v177},
+\texttt{wal180}, \texttt{wel181}, and \texttt{wn218} in the included
+\texttt{ProgLibPerm.v}. An independent check binds their source DAG
+expansions to the exact reused intervals: resolved control edges agree,
+with only adjacent commuting increments reordered and no control edge
+entering the interior of such a pair. The pair/unpair loop lemmas are
+\texttt{pair162} and \texttt{unpair115}/\texttt{unpair116}.
+Their termination is proved by decreasing natural-number variants.
+The new work is a finite
+composition of those same closed macros. Parenthesization changes only
+closed sequencing, and both independent source-CFG resolvers verify the
+control flow. Hence each abstract command has a finite source execution
+with exactly the displayed effect, and the only halting instruction remains
+the NIP target test. This proves the source part of
+Proposition~\ref{prop:enum}; literal-table simulation is the next obligation.
+
+\section{Verification of the literal binary machine}
+
+\subsection{Canonical complete tape frames}
+
+A source boundary frame has a left sentinel~1, a binary program address
+$p$, enough zero padding to make the address area length $64+g$, a
+header~1, nine primary unary register blocks, and a nonempty finite list
+of spare unary blocks. Both exterior half-lines are zero.
+A register value $v$ is represented by
+\[
+ B(v)=0\,1^{v+1}.
+\]
+The logical-to-physical register permutation is
+$(6,2,0,4,3,7,8,5,1)$. The extra gap $g$, all nine values, the first
+spare value, and the remaining finite spare list are arbitrary.
+An increment appends a spare block of value~1; a successful decrement
+increases the gap by one. Address overflow moves the left sentinel one
+cell left and increases the gap correspondingly. These effects are
+included in the target frame, not discarded as irrelevant tape garbage.
+
+\subsection{Three sound symbolic proof rules}
+
+The checker in \texttt{code/runtime} represents unary lengths by affine
+expressions in independent natural variables. It uses only:
+\begin{enumerate}
+\item a literal transition when the scanned run has a guaranteed positive
+constant term;
+\item induction across an arbitrary unary run when the exact table row
+is a self-loop moving in the scan direction;
+\item induction across an arbitrary finite list of blocks after separately
+proving the one-block transformation with an arbitrary value and untouched
+opaque contexts.
+\end{enumerate}
+The zero-length case of a unary scan is the identity. An unknown length
+cannot be consumed by a literal transition. Reversing the head direction
+reverses the represented tape-side orientation as well. Empty spare tails
+are allowed, while the separate first spare ensures a nonempty whole list.
+
+The only additional block family is $C(v)=1\,0\,1^v$.
+There are four one-block schemas, each taking exactly $v+2$ steps:
+\begin{center}
+\begin{tabular}{ccc}
+\toprule
+Native entry state & Direction & Block transformation\\\midrule
+64 & right & $B(v)\mapsto B(v)$\\
+0 & right & $B(v)\mapsto C(v)$\\
+40 & left & $B(v)\mapsto B(v)$\\
+97 & left & $C(v)\mapsto B(v)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For example, the first uses the actual rows
+$64,0\mapsto0R74$, $74,1\mapsto1R64$, and then the
+$64,1\mapsto1R64$ self-loop $v$ times. The full four derivations are
+recorded in the runtime report and independently reviewed.
+
+The normalization identity $C(A)1=1B(A)$ for a finite block list~$A$,
+and its reversal, follow by list induction. The tail-width variable means
+$\sum_{v\in A}(v+2)$, not the number of blocks. It is preserved by the
+block transformations. Allowing it to be an independent natural variable
+is a sound strengthening of the checked claim.
+
+For every source primitive and, for a decrement, for both zero and positive
+inputs, the checker starts from the full symbolic frame and reaches the
+specified successor frame or the halt state. It also requires a duration
+with nonnegative coefficients and a strictly positive constant term. The
+result therefore supports finite concatenation and rules out infinitely
+many source steps occurring in only finitely many machine steps.
+The limit on symbolic proof construction bounds the checker's search for a
+derivation; it does not bound register values or actual run times.
+
+\begin{lemma}[Literal simulation]\label{lem:runtime}
+For the released table and source, every canonical primitive frame makes
+the corresponding source transition after a positive finite number of
+literal machine steps, with the exact complete successor tape frame.
+\end{lemma}
+\begin{proof}
+The complete symbolic run succeeds for all \Ncases\ cases. Soundness of
+each rule follows from the preceding unary or finite-list induction, and
+the only noninductive rule is an exact table lookup. Finite composition
+proves each case; the complete source census proves coverage. The checks
+use every value as an arbitrary natural parameter, rather than sampling
+large register values. All rule soundness arguments and the finite
+compositions are expressible and provable in PA.
+\end{proof}
+
+\subsection{Blank startup and the final composition}
+
+Starting with no 1-cells, the literal machine reaches the root dispatcher
+after \BootSteps\ transitions, with head at~$-8$, left sentinel at~$-9$,
+header at~57, and extra gap~1. Its primary logical registers are
+$(4,0,0,0,0,0,0,0,0)$, followed by forty spare blocks of value~1. There
+are exactly 95 one-cells. An independent simulator checks every transition
+of this finite prefix and the complete final finite support; the complement
+of that support is zero. The startup theorem is a separate condition from
+the arbitrary-register simulation report.
+
+The source-to-enumerator proof and Lemma~\ref{lem:runtime} give both
+directions of halting equivalence. There is no unaccounted halt in a
+nonhalting primitive simulation: crossing the halt state would make the
+next literal lookup fail instead of proving the required successor frame.
+Combining startup, Proposition~\ref{prop:enum}, and
+Proposition~\ref{prop:calibration} gives a PA proof of
+\[
+ \Halt(M_U,\mathrm{blank})\longleftrightarrow\neg\Con(\ThU).
+\]
+Classical propositional logic yields Theorem~\ref{thm:main}.
+
+\section{Construction history, reproducibility, and limits}
+
+\subsection{Why the physical checks matter}
+
+The first source layout produced a 228-state table that passed decoder
+prefix checks and exact blank startup, but failed a primitive simulation.
+A reused increment entry selected its continuation using the preceding
+tape bit. Its new location did not have the required bit. A concrete
+all-zero-register execution reproduced the discrepancy. A later 222-state
+prefix allocation had the same class of defect. These rejected tables
+are not claimed as results.
+
+The corrected allocation checks the contexts of retained arithmetic
+entries and protects the intermediate rows used by their marker-dependent
+routing. Every delivered table is then subjected to the complete
+symbolic runtime check. The final result depends on that check, not on
+the allocator's estimate or on the count of distinct source subtrees.
+\input{search_summary.tex}
+
+\Needspace{9\baselineskip}
+\subsection{Reproduction}
+
+The archive is self-contained for reconstruction and verification of the
+new table. It needs Python~3.10 or later and the standard library. No
+solver, network access, or source repository checkout is needed. Run:
+\begin{lstlisting}
+python3 reproduce.py
+\end{lstlisting}
+This checks release hashes, reconstructs the selected source from the
+frozen K215 input and explicit sequencing recipe, reconstructs both
+transition tables from the exact finite allocation recipe, runs the
+independent source audit, verifies the state-renaming bijection, and
+replays initialization. To repeat every arbitrary-register symbolic case,
+run:
+\begin{lstlisting}
+python3 reproduce.py --full
+\end{lstlisting}
+The full run also requires the successful startup condition and checks
+the complete expected case count. It may take several minutes.
+The saved runtime case file contains reproducible summaries, not a
+standalone proof object with every symbolic event. The small checker,
+table, and source regenerate the full verification.
+
+The original supplied $\ThU$ report and its own reproduction code are
+included intact. From \texttt{references/theory\_U}, its command is
+\texttt{python3 -B reproduce.py}. Its six diagnostic suites run in normal
+and optimized Python modes; all sixteen named certificate targets and
+the 4,096-description bounded searches were replayed. These finite
+checks neither prove consistency nor replace its interpretation proof.
+
+The LaTeX source is \texttt{paper/report.tex}, with exact machine metadata
+and the full table appendix generated from the delivered data. Compile
+from that directory with \texttt{pdflatex report.tex} twice. The released
+PDF was rendered and inspected; different TeX installations and timestamps
+may change PDF bytes without changing its mathematical content.
+
+\subsection{Formal status}
+
+The proof consists of ordinary mathematical arguments about finite syntax,
+natural-number counter programs, and literal binary transitions. Each
+unbounded step uses induction available in PA. The new symbolic checker
+has been independently reviewed at the level of its proof rules. It is
+not a proof-assistant kernel, and this release supplies no new checked
+MM0 theorem with the final literal table in its statement. The existing
+K215 MM0 result is relevant evidence for the reusable architecture, but
+does not certify this modification automatically.
+
+If $\PA$ is consistent, Theorem~\ref{thm:main} implies actual non-halting
+and PA-unprovability of this non-halting assertion by the second
+incompleteness theorem. Mere consistency does not by itself justify the
+stronger statement that PA also cannot prove halting; that assertion needs
+an appropriate soundness hypothesis. Our main theorem makes neither
+extra assertion part of its proof.
+
+\subsection{Why proof-theoretic strength does not order state counts}
+
+A consistency-search program's size depends on its axiom generator,
+syntax, proof engine, and compiler. Proof-theoretic strength places no
+monotone lower bound on those sizes: a stronger theory can have a shorter
+presentation. Here the arithmetic interpretation appears only in the
+correctness proof. The machine emits a short covering schema. Its state
+cost is determined by using formula codes as fresh variable labels,
+fixing source and test roles, retaining the membership-vacuity interface,
+and sharing physical states.
+
+\appendix
+\section{Exact transition table}
+
+Each entry is written $wDq$, meaning write $w$, move $D\in\{L,R\}$,
+and enter state $q$. The start is~0; the halt label is~\Nstates.
+The table's SHA-256, in the supplied ASCII file format, is
+\begin{center}\small\texttt{\DenseHash}\end{center}
+The native table SHA-256 is
+\begin{center}\small\texttt{\NativeHash}\end{center}
+The source-site SHA-256 is
+\begin{center}\small\texttt{\SourceHash}\end{center}
+\input{transition_table.tex}
+
+\section{Pinned sources and attribution}
+
+The supplied $\ThU$ archive has SHA-256
+\begin{center}\small
+\texttt{0fcb1117a5353766a3366bab04e56b4efbd0607833cdc73ffb34b67e6808b0ff}.
+\end{center}
+The ProveIt checkout is pinned to
+\texttt{651d6258e9d57f974839ff2ef98060466973a512}; the
+\texttt{k215-pa} reference to
+\texttt{992b76d60d1a138d84e184cd8b6796243646a984}; and the
+\texttt{zf-254} reference to
+\texttt{c132d7eae8158cd3a9850ea3eb7251158c3dd821}.
+
+The new work is the fixed-role, code-as-label power-covering source,
+its logical calibration to $\ThU$, the selected source layout and corrected
+physical allocation, and the exact verification and packaging of the
+resulting table. The proof-search architecture, native codec, logical
+templates, source-control language, and register interpreter are inherited
+from the cited Mira, Wade, Jeff Ketchersid, Elliot Glazer, and ProveIt work.
+The theory $\ThU$ and its arithmetic interpretation are inherited from the
+user-supplied report. File-level provenance and retained notices are
+listed in \texttt{NOTICE.txt}; no repository-wide license is newly asserted
+for upstream material whose licensing is unspecified.
+
+\begin{thebibliography}{9}
+\bibitem{unary} Supplied research package, \emph{Unary Power Covering at PA
+Strength}, 27 October 2026. Exact input:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/main/docs/incoming/pa_unary_power_cover.zip}.
+Included under \texttt{references/theory\_U}.
+\bibitem{proveit} V. Reshetnikov and contributors, \emph{ProveIt, accepted
+K215 construction and verification}, pinned revision above.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Computability/BusyBeaver/Research/ZFC/candidate-k215}.
+\bibitem{k215pa} E. Glazer and contributors, \emph{K215 halts iff ZFC is
+inconsistent, formalized in Metamath Zero}.
+\url{https://github.com/elliotglazer/k215-pa}.
+\bibitem{k230} E. Glazer and contributors, \emph{K230: a 230-state Turing
+machine for the consistency of ZFC}, especially the Theory~K description.
+\url{https://github.com/elliotglazer/k230-rocq}.
+\bibitem{m254} J. Ketchersid and contributors, \emph{Mira's 254-state
+construction: logic, program, and binary-machine verification}.
+\url{https://github.com/jeff87654/busy-beaver/tree/zf-254/ZF/m254}.
+\bibitem{m238} Mira and verification contributors, \emph{The 238-state
+PA-consistency machine}, upstream \texttt{PA/m238}.
+\url{https://github.com/jeff87654/busy-beaver/tree/main/PA/m238}.
+\bibitem{dominated} ProveIt finite logical templates, particularly
+\texttt{DominatedCore.v}, \texttt{DomRho8.v}, \texttt{G222.v},
+\texttt{L224E.v}, \texttt{Interp222.v}, and \texttt{Complete222.v}, in
+\texttt{k225-formal/rocq/rocq-extension/coq/215}; arithmetic counterparts
+\texttt{k215\_rho8\_recovery.mm0} and
+\texttt{k218\_translation\_logic.mm0} in \cite{k215pa}.
+\end{thebibliography}
+\end{document}

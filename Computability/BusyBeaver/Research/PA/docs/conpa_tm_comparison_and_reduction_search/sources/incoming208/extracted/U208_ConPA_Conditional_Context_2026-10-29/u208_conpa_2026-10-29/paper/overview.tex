@@ -1,0 +1,76 @@
+\begin{abstract}
+We construct an explicit binary, single-tape Turing machine with
+\textbf{208 working states}, including its blank initializer, by deleting
+one state from the supplied U209 candidates. The reduction changes only
+two retained transition rows. Its new ingredient is a conditional tape
+invariant: when an existing helper reads zero, its predecessor cell is
+one, whereas the deleted state has the two-cell predecessor word $10$.
+Four exact local identities, of lengths $7,1,3,1$, permit the helper to
+serve both roles. A five-state inductive invariant and 414 ordinary row
+identities prove halting equivalence on every common initial tape from
+state~0. For blank computations the equivalence is formalizable in PA;
+composition with the retained unary-theory calibration gives
+$\PA\vdash\neg\Halt(\Unew,\mathrm{blank})\leftrightarrow\Con(\PA)$.
+
+The six supplied submissions represent only two machines up to rooted
+labeled graph isomorphism. Both admit the new reduction, yielding two
+nonisomorphic 208-state variants. The primary candidate passes a fresh
+replay of all 5,084 symbolic primitive contracts, with all 416 rows
+covered, and retains the complete 48,140-step startup trajectory.
+The archive contains mathematical proofs and executable certificates;
+it does not contain a newly exported end-to-end proof-assistant
+certificate for the consistency biconditional.
+\end{abstract}
+
+\section{Result and machine conventions}
+The primary artifact is \path{machine/u208.tm}. Its working states are
+$0,\ldots,207$ and its separate halt label is 208. The tape alphabet is
+$\{0,1\}$, the tape is indexed by $\mathbb Z$, and the initial
+configuration has state~0, head coordinate~0, and all cells zero.
+Every working-state/symbol pair has exactly one transition and every
+transition moves left or right. A transition into the halt label performs
+its write and move before stopping. The initializer is included in the
+208-state count.
+
+A table row \texttt{q b w D r} means: in state $q$, reading $b$, write
+$w$, move one cell in direction $D$, and enter state $r$.
+The header \texttt{\#! start 0} is metadata, not a transition.
+The proofs use sparse \emph{native} state names, in which 211 is a
+working state and 254 is halt. \path{machine/state_map.json} gives the
+complete bijection from retained native names to dense labels.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Property & Primary candidate\\
+\midrule
+Working states / transition rows & $208/416$\\
+Changed retained rows / deleted rows, relative to Joint U209 & $2/2$\\
+Primitive source occurrences / guarded ordinal control edges & $3,909/5,083$\\
+Changed source addresses or primitive operands & $0$\\
+Symbolic primitive contracts / covered literal rows & $5,084/416$\\
+Maximum local time expansion per old transition & $7$\\
+Exact unchanged blank startup length & $48,140$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The dense table has SHA-256
+\begin{center}\small\ttfamily
+a2fee9e41311c0d43aaac871ea411be24eada17e6b3633c55f40b437101144e1.
+\end{center}
+The native table has SHA-256
+\begin{center}\small\ttfamily
+b348a466a2c316511e0037ea3824de29d4c6ad37338404fbc98a3968fdb25135.
+\end{center}
+The deterministic builder, the independent local checker, and the full
+table in Appendix~\ref{app:table} identify the candidate independently of
+the prose. Its local reduction is proved without a consistency
+assumption. Actual nonhalting is equivalent to consistency of PA;
+neither unconditional consistency nor global state minimality is claimed.
+
+The scope of novelty is explicit: this is a further reduction of the
+six supplied U209 submissions at the inspected repository snapshot.
+The sources did not contain the new $172\mapsto211$ fold. The inspection
+is not an exhaustive search of all unpublished machines or a priority
+claim against the entire literature.

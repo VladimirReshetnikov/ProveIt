@@ -1,0 +1,231 @@
+INDEPENDENT REVIEW OF THE ARBITRARY-REGISTER SYMBOLIC RUNTIME CHECKER
+===================================================================
+
+Reviewed files (read in full; no primary runtime recheck performed here):
+  sources/ProveIt/Computability/BusyBeaver/Research/ZFC/candidate-k215/
+    code/runtime-inputs/runtime/symbolic_runtime.py
+    code/runtime-inputs/runtime/independent_runtime.py
+    code/runtime-inputs/validate_native.py
+Candidate:
+  machine/u.native.tm
+Source sites:
+  machine/sites.json
+
+Conclusion: I found no mathematical soundness error in the three symbolic
+execution rules or their use by this fixed driver. A complete successful
+run proves a universal primitive-instruction simulation theorem, using
+explicit natural-number and finite-list inductions. It is more than a
+bounded collection of concrete register-value tests. It is not a
+proof-assistant kernel certificate. The source-calculus correspondence
+and its PA consistency calibration remain separate obligations.
+
+1. EXACT CANDIDATE CENSUS AND INDEPENDENT BLANK REPLAY
+---------------------------------------------------
+I independently parsed the literal table, without importing project code:
+  222 working states, 444 binary transition rows;
+  all 222 states reachable in the directed transition graph from start0;
+  sole target outside the working states is halt254.
+Native table SHA256:
+  88a9c5ea637560bf58dba612d598663213884d7bb7981230164bc058babaa427
+There are 3,891 distinct source leaves and 3,890 internal prefixes forming
+a complete prefix-free binary tree, maximum depth45. The operation counts
+are CD1169, CB82, CI1552, CC1087, CH1. Splitting every CD into zero/positive
+cases requires exactly 5,060 universal cases.
+Source SHA256:
+  1d258cfe56f8b845826a63af57de8134fbc4886b47f95312cf6d49424f3f3072
+
+The portable independent script work/review_native_bootstrap.py checks each of the
+95,714 published startup trace transitions against this table, starting
+from state0/head0/all-zero tape. No earlier calibrated root is reached.
+The final exact frame is:
+  native dispatcher state84, head -8, left sentinel at -9;
+  header at57 (gap1 beyond the 64-cell code field);
+  logical registers [4,0,0,0,0,0,0,0,0];
+  40 spare registers, each value1;
+  no ones outside the compared finite support.
+Report: work/native222_bootstrap_independent_review.json
+        (packaged as evidence/bootstrap_independent.json).
+This is a literal finite computation, hence directly provable in PA by
+finite verification. It does not by itself prove calibration from seed4
+to complete theorem search; the separate enumerator proof must do that.
+
+2. WHAT A SYMBOLIC CASE ASSERTS
+------------------------------
+For each source leaf (pc,op,arg), every vector of nine natural primary
+register values, every additional natural gap g, and every nonempty finite
+list of natural spare values, the exact table executes a finite positive
+number of steps from the encoded dispatcher frame to the prescribed next
+frame, or reaches the explicit halt label for CH.
+The code field occupies 64 cells plus g zeros; source leaf length<=45 here.
+Primary values are permuted physically by (6,2,0,4,3,7,8,5,1).
+A block B(v)=0 1^(v+1) represents v, including B(0)=01.
+The final target records updated register values, code-field displacement,
+gap change, spare-list preservation/appending, and the full zero exterior.
+
+Every decrement guard has a zero case and a positive case v+1. This covers
+all naturals without bounded testing. The other eight primary registers
+remain independent variables. Slot11 is an arbitrary first spare. A
+separate list atom is the arbitrary possibly-empty remainder of the spare
+list, so the complete spare list is nonempty as required by startup.
+
+3. SYMBOLIC TAPE SEMANTICS AND ORIENTATION
+----------------------------------------
+Each symbolic state stores two outward-reading half-tape words at a cut,
+plus a direction specifying which half contains the scanned cell. For
+direction+1 the head is the first cell of the right half; for direction-1
+it is the first cell of the left half. The other half starts immediately
+across the cut. Each half ultimately has an infinite zero exterior.
+The accumulated motion records the physical head displacement; matching
+local half-tape words alone is not used to infer displacement.
+
+A literal transition in the current direction consumes the current cell
+and prepends its written value to the other half. On a reversal, it leaves
+the rewritten current cell on the old source half and changes which half
+contains the head: this represents the move to the adjacent cell across
+the unchanged cut. I checked that both conventions agree with ordinary
+one-cell left/right Turing movement. A run is reversed unchanged because
+all of its cells have the same bit. A list's reverse flag reverses the
+entire concatenated word, not merely the order of block parameters.
+
+4. THE THREE SOUND RULES
+-----------------------
+(a) Literal transition. A run of bit b can be consumed once only when its
+affine length has constant coefficient>=1 and all other coefficients are
+nonnegative. Therefore the run is nonempty for every parameter assignment.
+The checker uses exactly table[q,b], subtracts one cell, writes, moves and
+changes state. The duration increases by one and motion by +/-1.
+
+(b) Unary self-loop induction. If table[q,b]=(w,d,q) and d is the current
+scan direction, the checker may cross the whole run b^ell, replacing it by
+w^ell, staying in q, using exactly ell steps. This follows by induction on
+the natural ell. The base ell=0 is the empty execution and is sound even if
+the symbolic affine length has zero constant term. No arbitrary-state
+transition is accelerated by this rule. Unknown-zero runs need not be
+split: literal consumption rejects them, while the self-loop theorem
+explicitly includes zero.
+
+(c) Finite-list induction. A list traversal may be applied only after its
+one-block schema was rederived using rules (a) and (b) from this exact
+literal table. The block proof uses a universally arbitrary natural v
+and opaque contexts on both sides. Reaching either context would fail
+the proof construction. Its target has the same entry state and scan
+orientation, preserves both contexts, maps B(v) or C(v) to the advertised
+family, and consumes exactly v+2 steps with matching signed displacement.
+Here C(v)=1 0 1^v. Both B and C have width v+2.
+The empty list takes zero steps. The cons case composes one checked block
+run with the induction hypothesis on the remaining list. Thus an arbitrary
+finite list is traversed in its total physical width, with its values and
+order preserved and only its family changed as specified.
+
+Four block schemas are rederived: legacy states73 B->B right,95 B->C right,
+48 B->B left,112 C->B left. Their native labels here are64,0,40,97. The
+dispatcher legacy96 is native84. The driver checks an injective relabelling
+on every working state plus halt; the renaming therefore preserves literal
+runs exactly and cannot merge halt with a working state.
+
+I also independently inspected the concrete native rows used by each block
+proof. They make the arbitrary-v derivations particularly short:
+  B(v)->B(v), right at64:
+    (64,0)->(0,R,74); (74,1)->(1,R,64); (64,1)->(1,R,64)^v.
+  B(v)->C(v), right at0:
+    (0,0)->(1,R,94); (94,1)->(0,R,0); (0,1)->(1,R,0)^v.
+  rev(B(v))->rev(B(v)), left at40:
+    (40,1)->(1,L,54); (54,1)->(1,L,54)^v; (54,0)->(0,L,40).
+  rev(C(v))->rev(B(v)), left at97:
+    (97,1)->(1,L,97)^v; (97,0)->(1,L,113); (113,1)->(0,L,97).
+Superscript v means precisely v iterations of the indicated self-loop.
+Each list proof follows directly from these literal rows for arbitrary v,
+including v=0; no sampled block-size assumption is hidden here.
+
+5. AFFINE PARAMETERS, LIST WIDTH, AND NORMALIZATION
+-------------------------------------------------
+All affine expressions have 13 slots: constant, gap, nine independent
+register values, first spare value, and tail width. Crucially slot12 is
+sum(v+2) over the remaining spare list, not its number of blocks. It is
+the same list atom throughout each case; crossing preserves its width,
+and changing B<->C preserves each block's width. Treating width as an
+independent nonnegative quantity is a sound overapproximation: the checked
+affine identities then hold, in particular, for every realizable width.
+The fixed checker creates only one such list atom; extending it to multiple
+independent list atoms would require distinct width parameters.
+
+Normalization uses only exact word identities: delete a zero-length run;
+merge adjacent runs of the same bit; absorb any finite zero run into the
+adjacent infinite zero exterior. It does not delete a symbolic run merely
+because its length might be zero. Therefore its equalities are valid for
+all parameter assignments, including endpoint assignments zero.
+The extra list identity is
+  C(A) 1 = 1 B(A),
+with its reversal 1 rev(C(A))=rev(B(A))1.
+Proof: the empty-list case is 1=1; for A=v::tail, use
+C(v)1=1 B(v), which is the elementary identity
+1 0 1^v 1 = 1 0 1^(v+1), and the list induction hypothesis.
+The checker uses the identity only when it can extract a guaranteed one
+from a run whose constant term is>=1. It is valid for v=0 and empty A.
+
+6. POSITIVE DURATION, HALT, AND THE WHOLE TAPE
+-------------------------------------------
+The duration vector is required to have nonnegative coefficients and a
+strictly positive constant term on every completed primitive case. Hence
+each macro run takes at least one real transition for every assignment,
+including empty tail and all zero registers. This excludes zero-time
+infinite source execution when source and TM runs are concatenated.
+
+A CH case stops only at the explicit halt state. A non-CH case succeeds
+only on the exact target frame and also verifies the required head motion
+(-overflow). If a non-CH symbolic trace entered halt, its next step would
+try to read a missing table row and fail; it cannot silently pass across
+halt. Block schemas likewise cannot pass through halt. Consequently a
+successful case includes no unintended earlier halting.
+
+Both infinite zero exteriors are represented explicitly from the outset.
+The executor rejects an unrepresented exterior or an opaque context read.
+It follows that the theorem describes the complete tape, not just an
+observed window. Ordinary table determinism and the positive durations
+then give the usual forward/backward halting simulation along source
+executions, once the separately checked source semantics are supplied.
+
+7. WHY THE FINITE CERTIFICATE IS UNIVERSAL AND PA-FORMALIZABLE
+------------------------------------------------------------
+A certificate is a finite composition of the three rules. Interpret its
+affine expressions over arbitrary natural assignments and its list atom
+over an arbitrary coded finite list. Soundness of rule(a) is the literal
+transition equation. Rule(b) uses PA induction on a natural run length.
+Rule(c) uses PA induction on the length of a coded finite list, with the
+independently established arbitrary-v one-block theorem. The word identities
+above are proved by those same elementary inductions. Every certificate
+step therefore has a uniform PA proof of a finite-run relation, and finite
+composition yields the universally quantified primitive contract.
+
+Finite-support tapes, words, lists, configurations and execution histories
+all admit primitive-recursive arithmetic codes. PA proves their elementary
+coding operations total. Each fixed certificate can be mechanically
+expanded into a PA derivation using the listed inductive templates. The
+4000 symbolic-step limit limits the search for a finite certificate only;
+it imposes no bound on concrete register values, gap, list length, or real
+runtime. One symbolic scan may stand for arbitrarily many real steps.
+
+The executable checker and this audit constitute an ordinary mathematical
+verification. The emitted reports contain per-case summaries, and the
+one-block reports contain symbolic traces. They do not contain an entire
+standalone proof trace for every source case. Re-executing the checker
+reconstructs each finite symbolic derivation. No new MM0/Rocq/Lean kernel
+certificate is asserted. The fact that earlier machines have such
+certificates does not substitute for the present universal argument.
+
+8. DRIVER-SCOPE OBSERVATIONS
+---------------------------
+validate_native.py intentionally bypasses the obsolete source hash and
+leaf-count pin in symbolic_runtime.validate_inputs. It checks a complete
+prefix tree, but source-code generation/calibration must still be checked
+separately. My independent script additionally validates all site operation
+types, nonnegative valid register indexes, positive loop counts, depth<=64,
+and exact table format for this candidate.
+
+The driver's UNIVERSAL_MATHEMATICAL_PASS concerns only the runtime cases;
+the status expression does not require successful startup. Thus a release
+must separately require startup_status=CALIBRATED_DIRTY_ROOT_SEED. The
+candidate's independently replayed startup does satisfy that condition.
+The checker refuses Python -O/PYTHONOPTIMIZE, so its proof assertions cannot
+be silently disabled in an accepted run. The independent startup script
+uses explicit RuntimeError guards instead of Python assertions.

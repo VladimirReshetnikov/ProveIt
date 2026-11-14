@@ -1,0 +1,322 @@
+# A concrete HA-strength use of the ConciseIPRA idea
+
+## Scope and status
+
+This note supplies a mathematical construction of a native scalar calculus
+with the strength of Heyting arithmetic (HA), using the witness-sensitive
+introduction rule from ConciseIPRA. Consequently its refutation search has
+the right consistency target for PA. It does **not** supply a compiler to a
+binary one-tape Turing machine, a state bound, or a new machine below 196
+states. The accompanying Python program is a readable reference checker;
+its checks are not a kernel verification of the metatheorem below.
+
+The starting point is the report calculus with **full formula-template
+transport**. This qualification matters: the later Lean
+`ConciseIPRA/NativeOneIntro.lean` minimizes transport to `trOne`. Its ordinary
+iPRA equivalence is proved there, but one must not silently reuse that
+equivalence after changing the introduction rule. The proof below uses full
+transport explicitly and therefore does not assert a theorem about the
+modified `trOne` kernel.
+
+Source snapshot: ProveIt
+`f1f076e31995f10460838d1846456f4bb9c8ae80`, directory
+`Logic/PrimitiveRecursiveArithmetic/ConciseIPRA`, especially its README,
+`Artifacts/witness_rule/code/readable_checker.py`, the unified article, and
+`Lean/ConciseIPRA/NativeOneIntro.lean`.
+
+## 1. The calculus
+
+Use a single numerical sort and terms
+
+\[
+t ::= x\mid0\mid S(t)\mid I(n,a;u.h).
+\]
+
+Only `u` is bound in the body `h` of the iterator. The computation axioms
+are
+
+\[
+ I(0,a;u.h)=a,\qquad
+ I(Sn,a;u.h)=h[I(n,a;u.h)/u].
+\]
+
+Formulas are equations, `Q_y B(y)`, and `D_{x,y} B(x,y)`. In the last
+constructor `x` and `y` are distinct bound variables. Their ordinary
+readings are
+
+\[
+ Q_yB:=B(0)\to\forall y\,B(y),\qquad
+ D_{x,y}B:=\exists x\,(B(x,0)\to\forall y\,B(x,y)).
+\]
+
+Designate `0=S(0)` as falsity. Sequents have finite contexts. Besides
+hypothesis and the two computation axioms, use these rules:
+
+* **Transport:** from `s=t` and `F(s)`, infer `F(t)`, for every native
+  formula template `F`; substitution avoids capture.
+* **QE:** from `Q_y B` and `B(0)`, infer `B(t)`.
+* **DE:** from `D_{x,y}B` and a derivation of `A` under the additional
+  hypothesis `Q_y B(b,y)`, infer `A`; the eigenvariable `b` is fresh in
+  the outside context, the major premise, and the conclusion.
+* **DI:** from `Γ,B(t,η) ⊢ B(t,Sz)`, infer `Γ ⊢ D_{x,y}B`, where `z` is
+  fresh in the outside context, the witness, and the uninstantiated matrix
+  apart from the displayed bound coordinates, and
+
+\[
+ \eta=\begin{cases}z&\text{if }t\text{ is literally }0,\\
+                   0&\text{otherwise.}\end{cases}
+\]
+
+Call this calculus `W_H`. The corresponding report-level iPRA calculus
+`W_i` chooses `η=z` only when the matrix is a **literal equation** and the
+witness is literally zero. Thus the change is removal of the matrix test
+from this one rule. It is not replacement of the theory by classical iPRA.
+
+## 2. Recovering all the old cases
+
+Changing the selector does not merely add rules: a case introduction at
+zero with a compound matrix is no longer primitive. It must be recovered.
+
+Put
+
+\[
+ e:=I(0,0;u.0).
+\]
+
+The term `e` is not literally zero, but the first computation axiom proves
+`e=0`. Reflexivity and symmetry are already derivable using computation
+and transport, with no DI instance. For reflexivity of `t`, transport the
+equation `r=t`, where `r=I(0,t;u.0)`, along itself in the template `v=t`;
+the result is `t=t`. Transport `s=s` along `s=t` in the template `v=s`
+to obtain symmetry `t=s`.
+
+Suppose a zero-witness case premise has been given:
+
+\[
+ \Gamma,B(0,0)\vdash B(0,Sz).
+\]
+
+First introduce the matrix `C(w,y):=B(0,y)`, in which `w` is unused,
+using the nonliteral witness `e`. It selects case mode, and its premise
+is exactly the displayed premise. We obtain
+
+\[
+ \Gamma\vdash D_{w,y}B(0,y).
+\]
+
+Open this with DE. The new hypothesis is `Q_y B(0,y)` and does not
+actually mention the fresh witness. Under it introduce the original
+matrix `B(x,y)` at witness `e`, again in case mode. Its additional
+hypothesis is `B(e,0)`. Transport along `e=0` gives `B(0,0)`. QE at
+`Sz` gives `B(0,Sz)`. Transport along `0=e` gives `B(e,Sz)`, as
+required. DI then yields `D_{x,y}B`, and DE removes the fresh opening.
+
+This argument works for **every matrix**, including matrices containing
+`Q` and `D`. No formula normalization or arithmetic induction is involved.
+Every `W_i` rule is therefore either a `W_H` rule or has this fixed
+replacement. The inherited native logical macros and their derivations
+remain available. In particular, the ordinary intuitionistic
+connectives and quantifiers, numerical cases, and primitive-recursive
+arithmetic operations are available with their usual rules.
+
+The use of a nonliteral zero is exactly the useful idea imported from
+ConciseIPRA. Its purpose here is different: it preserves the old logical
+rules while allowing full induction, the strength required for PA
+consistency.
+
+## 3. Full induction is now derivable
+
+Let `A(y)` be any native formula, not necessarily an equation, and suppose
+
+\[
+ \Gamma,A(z)\vdash A(Sz)
+\]
+
+with `z` fresh in `Γ`. Give DI an unused witness coordinate `x`, matrix
+`B(x,y):=A(y)`, and literal-zero witness. Its premise is exactly the
+displayed progress premise, so
+
+\[
+ \Gamma\vdash D_{x,y}A(y).
+\]
+
+DE followed by hypothesis yields
+
+\[
+ \Gamma\vdash Q_yA(y).
+\]
+
+If also `Γ ⊢ A(0)`, QE yields `Γ ⊢ A(t)` for arbitrary `t`.
+Applying the ordinary universal-introduction macro (already recovered
+from the old calculus) to a fresh variable gives
+
+\[
+ \frac{\Gamma\vdash A(0)\qquad
+       \Gamma,A(z)\vdash A(Sz)}
+      {\Gamma\vdash\forall y\,A(y)}.
+\]
+
+Equivalently, the ordinary full induction schema is derivable. This
+establishes the lower inclusion of HA in `W_H`, with the native encodings
+of the ordinary connectives and the definitional representation of the
+primitive-recursive functions. It explains exactly why the equation test
+cannot be dropped when the target is still iPRA, but can be dropped for
+the present PA-consistency task.
+
+## 4. Interpretation in HA
+
+For the reverse inclusion, interpret `Q` and `D` by their displayed
+ordinary readings. Interpret an iterator by primitive recursion. Each
+finite iterator term determines a primitive-recursive function of its
+free numerical variables; nested iterator bodies are treated before the
+enclosing iterator. HA proves the relevant defining equations and
+totality. This is a definitional extension, not an axiom asserting a
+uniform evaluator for all primitive-recursive programs.
+
+Hypothesis, transport, computation, QE, and DE are valid immediately.
+For DI there are two cases:
+
+* If the witness is literally zero, its premise yields
+  `∀z (B(0,z)→B(0,Sz))`. HA induction for the possibly compound formula
+  `B(0,y)` gives `B(0,0)→∀y B(0,y)`. Existential introduction with
+  witness zero proves the interpretation of `D B`.
+* For every other witness `t`, its premise gives
+  `B(t,0)→∀z B(t,Sz)`. Under the hypothesis `B(t,0)`, numerical case
+  distinction, `y=0 ∨ ∃z(y=Sz)`, yields `∀y B(t,y)`. That case
+  distinction is a theorem of HA. Existential introduction with witness
+  `t` again proves the interpretation of `D B`.
+
+Thus every `W_H` theorem has an HA proof. Together with Section 3 and
+the inherited logical translations, this gives proof translations in
+both directions between `W_H` and HA in its conservative
+primitive-recursive language extension. The numerical domain is the same
+and equality is actual equality. The argument is a mathematical proof;
+it has not been added to the existing Lean development or checked by its
+kernel.
+
+## 5. Why its consistency target is PA
+
+HA proofs are also PA proofs. In the other direction, apply the
+Gödel--Gentzen negative translation to PA proofs. Classical logical
+rules become intuitionistically derivable rules, and a PA induction
+instance translates to an HA induction instance for the translated
+formula. Falsity is preserved. This yields refutation translations
+
+\[
+ \operatorname{Ref}_{\rm PA}\longrightarrow
+ \operatorname{Ref}_{\rm HA}\longrightarrow
+ \operatorname{Ref}_{W_H},
+ \qquad
+ \operatorname{Ref}_{W_H}\longrightarrow
+ \operatorname{Ref}_{\rm HA}\longrightarrow
+ \operatorname{Ref}_{\rm PA}.
+\]
+
+These are syntactic proof translations, not assertions that PA is sound.
+They can be implemented by primitive recursion on finite proof syntax:
+copy a fixed proof template for a rule, substitute the supplied formulas
+and terms, and choose fresh labels larger than every label already used.
+The same applies to the zero-witness replacement above. The proof that
+the resulting object is a valid proof is induction on the source proof.
+With explicit primitive-recursive proof encodings, these construction
+and checking statements are formalizable in PA. Consequently, after
+fixing those encodings, PA proves
+
+\[
+ \operatorname{Con}(W_H)\leftrightarrow\operatorname{Con}({\rm PA}).
+\]
+
+This statement concerns the newly specified calculus and standard
+syntactic proof predicates. It is not a theorem about PA196's literal
+trace formula. A compiler from this checker to a concrete TM would still
+need its own PA-internal halting/refutation equivalence.
+
+## 6. The reference checker and its exact change
+
+`native_ha_checker.py` implements the calculus above using finite named
+syntax, capture-avoiding simultaneous substitution, and comparison
+modulo alpha conversion. Its only difference between the `ipra` control
+and the proposed `ha` mode is:
+
+```python
+def progress_mode(matrix, witness, logic):
+    return witness == Z and (logic == 'ha' or matrix[0] == 'e')
+```
+
+This function is used **only by DI**. The implementation does not
+change the computation axioms or fuse them with the introduction
+dispatch. This caution matters for the upstream compact checker, whose
+one Boolean expression serves several different operations. A textual
+replacement in that expression has not been justified here.
+
+Proof JSON contains `goal`, optionally `context`, optionally `logic`
+(`ha` by default), and `proof`. Terms and formulas are described in the
+program's header. Proof constructors are:
+
+| Constructor | Meaning |
+|---|---|
+| `['hyp',i]` | Context formula at index `i` |
+| `['zero',a,u,h]` | Zero computation for `I(0,a;u.h)` |
+| `['succ',n,a,u,h]` | Successor computation for `I(Sn,a;u.h)` |
+| `['tr',p,q,x,F]` | Transport using equality proved by `p`, minor proof `q`, template `F(x)` |
+| `['qe',p,q,t]` | QE from closure `p`, base `q`, at `t` |
+| `['de',p,b,q]` | DE, checking `q` under the opened closure at fresh `b` |
+| `['di',x,y,B,t,z,p]` | DI with matrix `B`, witness `t`, fresh successor variable `z`, and branch proof `p` |
+
+The verification procedure terminates on finite syntax in the abstract
+unbounded computational model. Proof recursion is on strict subtrees;
+substitution and alpha comparison are structural tree traversals. It
+never evaluates an arbitrary iterator. An invalid constructor,
+substitution mismatch, or eigenvariable violation rejects the input.
+Under standard finite-string encodings, every operation is primitive
+recursive, and primitive recursion on certificate size gives a
+primitive-recursive checker. As usual, a concrete CPython invocation has
+finite stack and memory limits; these engineering limits are not a
+different logical rule.
+
+Reproduce the small implementation checks with:
+
+```sh
+python3 verify_reference.py
+python3 native_ha_checker.py < compound_progress_certificate.json
+```
+
+All nine checks in `reference_receipt.json` pass. The compound-progress
+certificate is accepted in HA mode and the **same certificate** is
+rejected in the iPRA control because the locally supplied hypothesis is
+different. This does not claim that its conclusion separates HA from
+iPRA; that conclusion is deliberately a small testing example. The
+checks also cover falsity rejection, an eigenvariable failure, and
+capture-avoiding substitution. They do not prove checker correctness,
+the arithmetic equivalence, or any binary-TM state count. No comparison
+between the readable checker's byte count and PA196's 196 states is
+meaningful without a concrete compiler.
+
+## 7. What would make this a smaller Con(PA) machine
+
+A usable completion needs (1) a closed program that enumerates finite
+certificates and halts exactly when this checker accepts falsity,
+(2) an explicit compiler to blank-start, single-tape, two-symbol TMs,
+(3) a literal transition table with fewer than 196 working states, and
+(4) PA-internal verification connecting the literal trace predicate to
+the syntactic refutation predicate. The logical construction gives the
+appropriate target calculus. It does not make any of these machine-level
+deliverables automatic. In particular, replacing the AX fragment of
+PA196 by this checker is not a local rewrite: this kernel uses recursive
+substitution and tree-shaped certificates, whereas PA196 uses its
+specialized command and stack language.
+
+## Sources and attribution
+
+The scalar syntax, `Q`/`D` logical encodings, full-template transport, and
+nonliteral-zero recovery are inherited from
+[ConciseIPRA at the inspected commit](https://github.com/VladimirReshetnikov/ProveIt/tree/f1f076e31995f10460838d1846456f4bb9c8ae80/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA).
+The formal source's related zero-witness proof is
+[`NativeOneIntro.lean`](https://github.com/VladimirReshetnikov/ProveIt/blob/f1f076e31995f10460838d1846456f4bb9c8ae80/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeOneIntro.lean).
+The extension to all-formula progress, the HA interpretation described
+here, and the reference implementation are the present analysis. The
+ordinary negative-translation step is classical proof theory; the
+upstream Foundation support also includes a
+[`GoedelGentzen.lean`](https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/vendor/Foundation/Foundation/FirstOrder/LJ/GoedelGentzen.lean)
+development of the logical translation. No claim of literature-wide
+novelty is made.

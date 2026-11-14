@@ -1,0 +1,401 @@
+\section{A smaller source program by integrating the equality witness}
+\label{sec:integrated-equality-witness}
+
+This section gives a new reduction of the proof-search \emph{source program}.
+It preserves the exact numeric proof calculus up to primitive-recursive proof
+translations, while removing one independently generated AX stack item.  It
+does not, by itself, establish a reduction in the number of physical Turing
+machine states: the final decoder grammar, context folds, return scan, and
+blank startup must still be certified separately.
+
+\subsection{The modified gate}
+
+Use the original numeric constructors $I,M,E,U$, with $U_a B$ denoting
+$U(a,B)$, $A\to B=I(A,B)$, and $N A=A\to1$.  Thus $1$ is the distinguished
+falsity code, not the truth value true.  For parameters $a,b,c$, put
+\begin{align*}
+ F&=E(a,b),&
+ \Delta&=F\to U_cF,&
+ V&=M(a,b)\to U_cM(a,b),\\
+ \Pi&=c\to M(c,b),&
+ S&=U_b\bigl((M(a,b)\to\Pi)\mathbin{\wedge}(M(c,b)\to c)\bigr),\\
+ X&=U_b(NF),& W&=N X=\exists b\,E(a,b).
+\end{align*}
+Here $c$ in a formula position means the formula with numeric code $c$; in a
+quantifier subscript or atomic variable position it is a variable label.  This
+is the same convention as the original guarded gate.
+
+The 196-state design's unguarded bundle is
+\begin{align*}
+ Q&=U_c\bigl(S\to(\Pi\to1)\bigr),\\
+ G&=N\bigl(\Delta\to(V\to Q)\bigr).
+\end{align*}
+Replace its inner falsity occurrence by $X$:
+\begin{align*}
+ Q'&=U_c\bigl(S\to(\Pi\to X)\bigr),\\
+ G'&=N\bigl(\Delta\to(V\to Q')\bigr).
+\end{align*}
+The runtime guard is unchanged: return numeric $0$ when $c=a$ or $c=b$, and
+otherwise return $G'$.  Delete the separate fifth head
+$W=\exists b\,E(a,b)$ from the AX output stack.  Retain heads 1, 2, 3, 4, and 6,
+the restricted propositional schema, modus ponens, and generalization.
+
+Semantically, for $c\ne a,b$, the new bundle packages the old bundle together
+with the equality witness.  The following syntactic argument establishes the
+required equivalence without assuming a truth predicate or a general
+first-order completeness theorem.
+
+\subsection{Proof recipes available without the deleted head}
+
+We use finite proof constructions already exhibited in the source repository:
+\path{PA196/Logic/Deduction.lean} supplies distribution \texttt{r2},
+quantifier exchange \texttt{r4}, \texttt{explosion}, and double-negation
+elimination; \path{PA196/Logic/Vacuity.lean} supplies
+\texttt{negImpLeft}, \texttt{negImpRight}, \texttt{negationVacuity},
+\texttt{universalVacuity}, and \texttt{liftImp}.  Propositional composition,
+exchange, and deduction are constructed from the restricted propositional
+schema in \texttt{ImplicationBasis.lean} and its dependent modules.
+
+The recipes used below do not invoke the fifth head.  In particular,
+\texttt{explosion} uses the retained first head; distribution uses the retained
+sixth head; quantifier exchange uses the retained second head.  The negation
+vacuity construction uses these same retained rules.  This dependency check
+is essential: the fifth head is recovered using these recipes, so using it
+inside one of them would be circular.
+
+In ordinary formula notation, the two vacuity recipes say
+\begin{align}
+ A\to U_c A &\quad\Longrightarrow\quad N A\to U_c(N A),
+ \label{eq:negative-vacuity-integrated}\\
+ A\to U_c A &\quad\Longrightarrow\quad U_b A\to U_c(U_b A).
+ \label{eq:universal-vacuity-integrated}
+\end{align}
+For the second implication, generalize the premise over $b$, apply
+quantifier distribution, and then exchange $U_bU_c$ with $U_cU_b$.  The first
+implication is the existing finite proof of \texttt{negationVacuity}, using
+normality, the first head, contraposition, and double-negation elimination.
+These are uniform proof constructors, not additional inference rules.
+
+\subsection{Recovering the deleted equality-witness head}
+
+Fix arbitrary $a,b$ and choose
+\[
+ c=\max(a,b)+1.
+\]
+The new gate is therefore available.  Propositional elimination from $G'$
+gives proofs of
+\[
+ \Delta,\qquad V,\qquad NQ'.
+\]
+Apply \eqref{eq:negative-vacuity-integrated} to
+$\Delta=(F\to U_cF)$, then
+\eqref{eq:universal-vacuity-integrated} to $NF$.  This yields
+\[
+ NF\to U_c(NF),\qquad X=U_b(NF)\to U_cX.
+\]
+The propositional implication
+\[
+ X\to\bigl(S\to(\Pi\to X)\bigr)
+\]
+can be generalized over $c$ and lifted by quantifier distribution.  Hence
+$U_cX\to Q'$, and composition gives $X\to Q'$.  Together with $NQ'$ this
+proves $NX$, which is exactly
+\[
+ \exists b\,E(a,b).
+\]
+Thus every instance of the deleted fifth head has a derivation in the new
+calculus.  The choice of $c$ is primitive recursive, and the proof uses no
+fifth-head instance.
+
+\subsection{Recovering the old gate}
+
+For each guarded triple, explosion gives $1\to X$.  Ordinary implication
+monotonicity, first under $\Pi\to\_$ and then under $S\to\_$, gives
+\[
+ S\to(\Pi\to1)\quad\longrightarrow\quad S\to(\Pi\to X).
+\]
+The \texttt{liftImp} recipe for $U_c$ therefore supplies $Q\to Q'$.  By
+contraposition, $NQ'\to NQ$.  The three consequences
+$\Delta,V,NQ'$ extracted from $G'$ now provide $\Delta,V,NQ$, and
+propositional introduction rebuilds $G$.
+
+This direction does not require the recovered fifth head: it uses only
+explosion and the retained quantifier-distribution head.  Consequently the
+new calculus proves every old primitive axiom by an explicitly finite
+construction.
+
+\subsection{Deriving the new gate in the old calculus}
+
+Conversely, the old fifth head supplies $NX=X\to1$.  Generalization over $c$
+provides $U_c(X\to1)$.  Propositional implication monotonicity and quantifier
+distribution then give
+\[
+ Q'\to Q.
+\]
+The old gate yields $\Delta,V,NQ$.  Contraposition gives $NQ'$, and these three
+formulas rebuild $G'$.  Thus the new gate is a theorem of the old calculus;
+all other retained primitive axioms and both inference rules are identical.
+
+Replacing each primitive-axiom node of a finite proof tree by its indicated
+finite template yields primitive-recursive proof translations in both
+directions.  The translations preserve the final formula, including the
+falsity code $1$.  Their correctness is provable in $\mathsf{PA}$ by induction
+on proof trees.  In particular, the old and new calculi have provably
+equivalent consistency statements.  The conditional output $0$ at the two
+excluded guard cases remains the original harmless truth code.
+
+\subsection{Exact source-program savings}
+
+The postfix macro alphabet is the one used in the original AX grammar.  Its
+\emph{macro} $\mathsf P$ saves the current top and starts a zero expression;
+$\mathsf i$ increments that expression; $\mathsf C$ combines two saved
+expressions.  These macro letters must not be confused with the logical point
+formula $\Pi$ above.  The authoritative token-to-source-node mapping is
+included with the construction scripts.
+
+The original fifth-head word is
+\[
+ \mathsf{HACiiiPiCACiiPiC}.
+\]
+Its final $\mathsf{PiC}$ performs the outer negation.  The remaining prefix
+\[
+ \mathsf{HACiiiPiCACii}
+\]
+constructs $X$.  Remove the whole 16-token fifth-head word and replace the
+inner falsity-building word $\mathsf{Pi}$ in the old gate by this 13-token
+prefix.  Therefore the AX macro word changes by
+\[
+ 201-16-2+13=196
+\]
+tokens.  The net deletion is exactly
+$2\mathsf P+2\mathsf i+\mathsf C$.  In the supplied source tree,
+$\mathsf P$ expands to 19 primitive instruction sites and
+$\mathsf C$ to 27.  Hence the complete source program changes by
+\[
+ 3812-(2\cdot19+2+27)=3745
+\]
+primitive instruction sites.  A symbolic postfix-expression evaluator checks
+that the resulting formula is exactly $G'$; these counts are computed from
+the actual expanded trees, not estimated from displayed notation.
+
+The AX command now pushes seven generated formulas followed by the saved
+incoming top, for eight stack items in total.  The old nine-Shift identity
+becomes an eight-Shift identity, and the old ten-Shift stack-pop construction
+uses nine Shifts.  The surviving head selectors are adjusted to their new
+positions.  The deleted head is selected by the finite gate proof above.
+All intermediate generated heads still have implication or universal outer
+tags, so the same elementary nonacceptance checks used by the original stack
+identities apply.  These changes give the corresponding primitive-recursive
+finite command-word translations and preserve the intended consistency
+search.
+
+\paragraph{Physical certification remains separate.}
+The integers 196 and 3745 in the preceding computation count AX macro tokens
+and source instruction sites, respectively.  Neither is a physical state
+count.  Any literal Turing machine built from this source requires its own
+complete transition table, source-site simulation certificates, and blank
+startup check.  A source-level reduction must not be reported as a
+sub-196-state construction unless those additional checks succeed.
+
+\subsection{Additional equivalent gate and encoding variants}
+
+Two independent curried-implication exchanges give four gate words: exchange
+$\Delta,V$ in the outer chain, and exchange $S,\Pi$ in the inner chain.
+The propositional exchange theorem, lifted under $U_c$ where necessary,
+provides derivations in both directions.  All four words have 196 opaque
+macro tokens.
+
+A second witness orientation is also available.  Set
+\[
+ X^{\rm mir}=U_a\bigl(N E(b,a)\bigr)
+\]
+instead of $X$.  The resulting witness family is the same fifth-head family,
+with its two parameters exchanged.  Its vacuity proof uses the \emph{other}
+new gate, at $(b,a,c)$, to obtain
+$E(b,a)\to U_cE(b,a)$.  Negation and universal vacuity then give
+$X^{\rm mir}\to U_cX^{\rm mir}$.  The gate at $(a,b,c)$ supplies the
+contradiction needed to infer $N X^{\rm mir}$.  Both guard conditions hold
+when $c=\max(a,b)+1$.  Thus this orientation requires two gate instances but
+neither equality symmetry nor the deleted fifth head.  Combining it with the
+two exchanges gives eight equivalent 196-token gate words.
+
+For completeness, the search also considered independently reversing the
+numeric Cantor-argument order of $M,E,U$.  A precise coding transport avoids
+a subtlety here: a gate parameter is simultaneously a formula code and a
+variable label.  Transport both roles by the same map $\tau$.  With
+$\langle\cdot,\cdot\rangle$ the original Cantor pairing, define
+$\tau(0)=0$.  For $n>0$ uniquely written as
+$n=4\langle u,v\rangle+k$, transform its two arguments recursively and
+interchange them exactly when tag $k$ is one of the chosen tags from
+$\{1,2,3\}$.  Tag zero, the implication constructor, is never interchanged.
+Equivalently,
+\[
+ \tau(4\langle u,v\rangle+k)=
+ \begin{cases}
+ 4\langle\tau(v),\tau(u)\rangle+k,&k\text{ is reversed},\\
+ 4\langle\tau(u),\tau(v)\rangle+k,&k\text{ is retained}.
+ \end{cases}
+\]
+Every proper constructor argument is less than its code, so this is a
+primitive-recursive course-of-values definition.  Induction on codes proves
+$\tau(\tau(n))=n$; in particular it is a bijection, fixes both $0$ and $1$,
+and preserves the gate inequalities $c\ne a,b$ when all three parameters are
+transported.  The dual role of $c$ is preserved exactly, since both its
+variable label and its formula code become $\tau(c)$.
+
+One must not assume that $\tau$ preserves numerical order.  The side
+condition $u\le a$ on a primitive restricted propositional axiom may fail
+after transport.  Instead, translate such an axiom using the already-derived
+full propositional basis.  Those finite proof constructions rely on the
+unchanged implication constructor's numerical bounds and on the retained
+first head, so they remain available in the recoded calculus.  All other
+primitive axioms transport directly, as do modus ponens and generalization.
+This supplies primitive-recursive proof translations preserving falsity in
+both directions.  It justifies the 64 combinations of gate and constructor
+orientations investigated by the supplied search scripts, without asserting
+that any of those encodings reduces the physical state count.
+
+\subsection{Exact command identities and completeness}
+\label{sec:integrated-command-completeness}
+
+Here are the command-level details behind the shorter-stack statement.  Write
+stores as $\langle t,w,d,h\rangle$, let $\langle a,w\rangle_C$ denote Cantor
+stack cons, and let $\operatorname{Sh}$ be the unchanged Shift command: it
+halts exactly when $t+h=1$, otherwise replacing the store by
+$\langle h,\operatorname{tail}(w),d,\operatorname{head}(w)\rangle$.
+Modus ponens is also unchanged.  On input $\operatorname{MP}(x)$, set
+$y=d+x$; if $I(t,y)=h$, return
+$\langle y,\langle0,w\rangle_C,y,0\rangle$, and otherwise return
+$\langle0,w,y,0\rangle$.
+
+Let $D=d+x$, $H=h+y$, and $A=c$.  The modified command
+$\operatorname{AX}'(c,x,y)$ returns the guarded $G'(H,D,c)$ as its current
+top, clears $d,h$, and pushes, in top-to-bottom order,
+\[
+ q_1,q_2,q_3,q_4,q_5,q_6,q_7,t,
+\]
+where
+\begin{align*}
+ (q_1,q_2,q_3,q_4,q_5)
+   &=\bigl(\mathrm{head}_6(D,A,H),\mathrm{head}_4(D,A,H),
+       \mathrm{head}_3(D,A,H),\mathrm{head}_2(D,A,H),
+       \mathrm{head}_1(D,H)\bigr),\\
+ q_6&=\rho_8(D,A,H,d),\qquad q_7=U_dh.
+\end{align*}
+The displayed five-tuple is schematic notation for the indicated five entries,
+not an additional numeric encoding.
+
+The guarded top and $q_1,\ldots,q_6$ are all divisible by four; $q_7$ is
+congruent to two modulo four and is at least two.  Consequently the following
+identities are total for \emph{arbitrary} incoming $t,w,d,h,c,x,y$:
+\begin{align*}
+ \operatorname{AX}'(c,x,y);\operatorname{Sh}^{7}
+ &: \langle t,w,d,h\rangle\longmapsto
+    \langle\rho_8(d+x,c,h+y,d),\langle t,w\rangle_C,0,U_dh\rangle,\\
+ \operatorname{AX}'(c,x,y);\operatorname{Sh}^{8}
+ &: \langle t,w,d,h\rangle\longmapsto
+    \langle U_dh,w,0,t\rangle.
+\end{align*}
+No assumption that the incoming caches vanish is used.  During the first
+eight Shifts, the tested sums either are divisible by four or contain a
+summand congruent to two with the other summand divisible by four.  The next
+Shift, if executed, is also safe because its top is $U_dh\ge2$.
+
+Define the following finite command words:
+\begin{align*}
+ \operatorname{Push}'&=
+   \operatorname{AX}'(0,0,0);\operatorname{Sh}^{7};\operatorname{MP}(0),\\
+ \operatorname{Pop}'&=
+   \operatorname{AX}'(0,0,0);\operatorname{Sh}^{9},\\
+ \operatorname{Discard}'&=
+   \operatorname{MP}(1);\operatorname{AX}'(1,0,0);
+   \operatorname{Sh}^{8};\operatorname{MP}(0).
+\end{align*}
+They satisfy
+\begin{align*}
+ \operatorname{Push}' &: \langle t,w,d,h\rangle\longmapsto
+     \langle0,\langle t,w\rangle_C,0,0\rangle,\\
+ \operatorname{Pop}' &: \langle t,\langle a,w\rangle_C,d,h\rangle
+     \longmapsto\langle t,w,0,a\rangle,\\
+ \operatorname{Discard}' &: \langle t,w,0,0\rangle
+     \longmapsto\langle0,w,0,0\rangle.
+\end{align*}
+For Push, the final MP comparison fails because its proposed implication
+code is divisible by four whereas the cache contains $U_dh$, congruent to
+two.  Pop follows from the eight-Shift identity and one additional safe
+Shift.  For Discard, the initial MP fails since $I(t,1)>0$; it sets $d=1$.
+The AX guard then returns zero because its third parameter equals its second
+variable label.  The final MP again fails and clears the caches.
+
+Let $\operatorname{Offset}(u)$ be empty when $u=0$, and otherwise the single
+command $\operatorname{MP}(u)$.  From
+$\langle0,w,0,0\rangle$ it returns $\langle0,w,u,0\rangle$.
+For generalization use
+\[
+ \operatorname{Gen}'(i)=\operatorname{Push}';\operatorname{Offset}(i);
+ \operatorname{Sh};\operatorname{AX}'(i,0,0);\operatorname{Sh}^{8}.
+\]
+It returns $\langle U_i a,w,0,0\rangle$ from
+$\langle a,w,0,0\rangle$.  This uses only the stack identities, not the
+content of the deleted head.
+
+For modus ponens use
+\[
+ \operatorname{MPSuffix}'(b)=\operatorname{Sh};\operatorname{Sh};
+ \operatorname{MP}(b);\operatorname{AX}'(b,0,0);\operatorname{Sh}^{9}.
+\]
+Starting from
+$\langle0,\langle a,\langle I(a,b),w\rangle_C\rangle_C,0,0\rangle$,
+it halts on its second Shift if $a=1$; otherwise it returns
+$\langle b,w,0,0\rangle$.  The first two Shifts expose $a$ and $I(a,b)$,
+MP succeeds, and Pop removes the resulting saved zero.
+
+For $1\le j\le5$, a selector for $q_j$ is
+\[
+ \operatorname{Select}'(j,D,H,A)=
+ \operatorname{Discard}';\operatorname{AX}'(A,D,H);
+ \operatorname{Sh}^{j+1};(\operatorname{Pop}')^{7-j}.
+\]
+It preserves the incoming stack and returns $q_j$ with both caches zero.
+The final popped item is the saved zero introduced after Discard.  The
+surviving paper heads have positions
+$6\mapsto1$, $4\mapsto2$, $3\mapsto3$, $2\mapsto4$, $1\mapsto5$.
+The restricted propositional selector, for $u\le a$, is
+\[
+ \operatorname{Discard}';\operatorname{Offset}(u);
+ \operatorname{AX}'(b,a-u,c);\operatorname{Sh}^{7};\operatorname{Pop}',
+\]
+which returns $\rho_8(a,b,c,u)$.  A selector for the guarded new gate is
+\[
+ \operatorname{Discard}';\operatorname{AX}'(c,b,a);
+ (\operatorname{Pop}')^8.
+\]
+These selectors supply every primitive axiom of the modified calculus.
+The fifth head is first expanded by the finite gate proof already given,
+then compiled as a derived proof.
+
+Induction on a modified-calculus derivation now gives the same operational
+compiler invariant as the original construction: from any
+$\langle t,w,0,0\rangle$, its compiled word either halts early or returns the
+proved formula as top, preserves $w$, and clears both caches.  The axiom
+cases use the selectors above; the generalization case uses
+$\operatorname{Gen}'$; the MP case compiles the implication, pushes it,
+compiles the antecedent, pushes it, and executes
+$\operatorname{MPSuffix}'$.  An early halt in the antecedent-$1$ case is the
+required successful refutation detection.
+
+For a derivation of $1$, prepend $\operatorname{AX}'(0,0,0)$ and append one
+Shift.  The leading AX clears arbitrary incoming caches, so this finite word
+halts from \emph{every} incoming store.  The unchanged outer scheduler's
+universal-word coverage argument therefore applies.  Conversely, the usual
+store invariant that every live formula is derivable is preserved: the new
+gate is a primitive axiom, the remaining generated heads are retained axioms,
+the $U_dh$ entry is justified by generalization, and MP and Shift have their
+original meaning.  Thus acceptance still yields a derivation of $1$.
+
+All of these word constructions, finite proof translations, and execution
+identities are primitive recursive and admit the same PA-internal finite-run
+formalization as the original command compiler.  This completes the
+command-level consistency equivalence independently of the eventual physical
+state allocation.  It is a mathematical proof specification; the shortened
+word library has not been claimed to be a newly completed Lean formalization.

@@ -1,0 +1,55 @@
+\subsection{Whole-instruction endpoint searches}
+
+The further physical search changes the equivalence boundary. Earlier
+screens primarily require one parent binary step to match a short child
+block. Here a candidate may redistribute work over a complete source
+instruction before reaching the required frame. This admits a different
+family of potential reductions.
+
+The baseline fixture contains 4,959 complete source-outcome frames. All
+primary registers are zero except that the tested positive decrement
+register is one. These are concrete filters, unlike the unbounded
+symbolic contracts used for the positive constructions. All baseline
+endpoints are checked literally; 59 selected cases cover all 392 rows.
+A guarded fixture uses the 274,880-pair source positivity invariant and
+has 4,956 representative feasible-branch cases. It still covers every
+baseline row. These representative concrete frames are not asserted to
+occur in the actual blank run.
+
+For each deleted state, a keeper is selected, all incoming edges are
+redirected, and either row of the keeper may be replaced by any legal
+action. The full 196-state screen examines
+\[
+                 196\cdot195\cdot2\cdot784=59,928,960
+\]
+row assignments and finds no survivor. The guarded exact version and a
+relaxed-frame version each examine the 49-state engine/router subset,
+with 14,982,240 assignments per version, and find none.
+The relaxed version allows a different gap of at least 48 and arbitrary
+valid spare blocks while retaining the source path, head, marker and
+all nine primary register values.
+
+A separate helper extension permits the changed row to belong to any
+retained control. Its completed prefix consists of deleted states
+\file{0,1,2,3,4,5,6,7,9,10}; it checks 29,495,648 assignments with no
+survivor. The interrupted work on state 14 is excluded from that count.
+Failure-trace intersections restrict which single helper rows can
+possibly repair all failed tests within the same budget.
+
+Each concrete test allows at most
+$\max(800,2s+64)$ candidate transitions, where $s$ is the parent
+instruction duration, and uses a 256-cell tape array. Unexpected halt,
+leaving the array, or failing to reach the required endpoint within the
+budget rejects the assignment. A wrong intermediate root visit alone
+does not reject it. An independent set-of-cells simulator checks all
+4,959 baseline endpoints and all 4,959 endpoints after a genuine two-step
+head round trip is inserted before root/read-0. Deliberate halt and
+infinite-motion controls are rejected for the appropriate reasons.
+
+The search counts are assignments and overlap between lanes. A rejected
+assignment may merely require a longer simulation or a different
+representation. Thus the conclusion is precisely that no tested
+assignment passes the stated finite endpoint filter. It is not a proof
+of different blank halting behavior or a general lower bound. Complete
+sources, fixtures, positive controls, limits and logs are retained under
+\file{research/macro_boundary_study/}.

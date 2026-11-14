@@ -1,0 +1,50 @@
+\section{A second location for diagonal vacuity}
+Let $\Gamma(A)=A\to\forall x_A A$ and
+$X(D,H)=\exists x_D\forall x_D H$.
+The diagonal calculus can be presented with the old gate
+$G(a,b,c)=\neg(V(a,b,c)\to Q(a,b,c))$, replacing its first head
+$X(D,H)\to H$ by
+\[
+  \bigl(\Gamma(A)\to X(D,H)\bigr)\to H.
+\]
+The other five heads, propositional axiom family and inference rules are
+unchanged. This is an exactly interderivable numerical calculus, by
+primitive-recursive proof translations whose correctness PA proves.
+
+The first step must precede appeals to explosion. The restricted
+implicational axiom alone derives $K$ and composition, as in
+\texttt{PA196/Logic/ImplicationBasis.lean}. For arbitrary $X,G,H$, those
+positive implicational principles derive
+\[
+ ((G\to X)\to H)\to(X\to H)
+\]
+by composing $X\to(G\to X)$ with $(G\to X)\to H$.
+Thus the strengthened head recovers every original first-head instance
+without using explosion or any negation theorem. The unchanged original
+proof of explosion from that first head now applies, followed by its
+proof of double-negation elimination.
+
+Next specialize the strengthened head to $H=1$, the fixed false code.
+It is $\neg(\Gamma(A)\to X(D,1))$ and hence propositionally implies
+$\Gamma(A)$. Since $A$ is an independent unrestricted parameter, this
+recovers every diagonal-vacuity instance. The old gate and these instances
+recover the former guarded bundled gate. Conversely, the old diagonal
+calculus derives $\Gamma(A)$ and $X(D,H)\to H$; applying them under the
+assumption $\Gamma(A)\to X(D,H)$ proves the strengthened head.
+All substitutions and the choices $H=1$ and, say, $D=0$ are fixed numerical
+proof templates. No new equality-vacuity premise is used.
+
+At the command interface the number of pushed entries remains nine.
+The strengthened head has implication code, so it cannot equal the false
+code $1$. The selector retrieves it at the old first-head position, and
+the proof compiler then applies the fixed projection derivation above.
+The recovered diagonal clause is selected from the same first-head family
+using the specialized parameter triple.
+
+The existing emitter encodes $\Gamma$ in seven macro tokens. Inserting it
+in the first head adds those seven tokens and one implication constructor;
+removing it from the gate removes exactly the same eight tokens. Thus the
+whole AX word still has 191 tokens. This token identity alone is not a
+physical state reduction: the changed word must receive a new associative
+allocation, source-control check, full runtime contracts, and exact blank
+startup before it defines an accepted machine.

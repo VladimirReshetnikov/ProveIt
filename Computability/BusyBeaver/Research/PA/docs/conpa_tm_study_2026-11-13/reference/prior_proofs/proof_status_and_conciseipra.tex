@@ -1,0 +1,119 @@
+\section{Proof status and the role of ConciseIPRA}
+\label{sec:proof-status-conciseipra}
+
+\subsection{The two directions must be distinguished}
+
+The pinned upstream theorem inventory explicitly lists
+$\mathrm{PA}\vdash\operatorname{Nonhalt}(M_{196})\to
+\operatorname{Con}(\mathrm{PA})$, standard-model nonhalting, and two-sided
+independence.  Its inventory does not list the converse implication inside
+PA.  Standard-model nonhalting does not supply that converse.  The earlier
+incoming research already supplies a written converse by a syntactic
+interpretation: decode formulas into PA, interpret membership as binary-bit
+membership, and compile every numeric-calculus refutation into a PA
+refutation.  The gate is handled by a finite-comprehension induction
+template for an arbitrary arithmetic formula.  This uses full PA induction;
+it does not use a uniform arithmetical truth predicate or PA's own soundness.
+The exceptional code $I(0,0)=0$ and the gate case with coincident labels must
+be handled, as in that earlier argument.
+
+For the combined 196-state table, the written chain is
+\[
+\begin{split}
+ \operatorname{Halt}(M_{196}^{\mathrm{combined}})
+ &\longleftrightarrow\operatorname{Halt}(R_{\mathrm{combined}})\\
+ &\longleftrightarrow\exists p\,\operatorname{Prf}_{\mathcal C}(p,1)\\
+ &\longleftrightarrow\exists q\,\operatorname{Prf}_{\mathrm{PA}}(q,\bot).
+\end{split}
+\]
+The first equivalence uses exact startup and uniform positive-length
+instruction simulations in both directions.  The second uses the modified
+command compiler, its universal halting word, the syntactic sound-store
+invariant, and the unchanged exhaustive scheduler.  The last uses the
+upstream PA-to-calculus translation and the earlier written converse.
+Each proof transformation and finite-trace construction is primitive
+recursive, with correctness established by arithmetic induction, so the
+chain is available inside PA.
+
+The newly supplied finite checks and written inductions address different
+parts of this chain:
+\begin{itemize}
+\item The literal startup check establishes equality of the entire tape,
+head and control after 57922 steps with the source-25 entry frame.
+\item The symbolic runtime check covers 4928 source-site outcomes for
+arbitrary register values and gaps at least 48, including both decrement
+outcomes.  Its register-engine assumptions are justified by the unchanged
+engine rows and the upstream engine lemmas.
+\item The finite source-graph check verifies 3770 unchanged prefix rows,
+three relocated exits, and the 15 new tail rows.  The loop proofs establish
+the modified command effects for every natural register value.
+\item The command-word check covers 64 symbolic cases with opaque stack
+tails.  The accompanying proof-tree induction establishes the universal
+compiler invariant, including early halts and the required dummy stack
+entry in the new MP suffix.
+\end{itemize}
+
+These are sufficient ingredients for the stated written theorem.  They
+are not a newly executed Lean proof of the combined endpoint.  A complete
+new kernel artifact would additionally bind the modified table and source,
+port the two changed macro proofs and command compiler, rebuild the
+arithmetic scheduler and physical transport endpoints for their new
+definitions, and formalize the syntactic converse.  The last task is also
+absent from the published upstream endpoint; it must not be attributed to
+an existing upstream Lean declaration.
+
+\subsection{What the current ConciseIPRA development actually offers}
+
+The current ConciseIPRA README describes complete standalone Python
+checkers, measured by significant tokens, AST nodes, and normalized source
+bytes.  Its mathematical qualification is a whole-domain
+bi-interpretation with intuitionistic primitive recursive arithmetic,
+with actual equality and identity-graph round trips.  This is a different
+metric from the number of working states of a blank-tape, binary,
+single-tape Turing machine.  JSON parsing, recursive syntax traversal,
+substitution, and normalization have costs in a small binary implementation
+even when their Python expressions are short.
+
+Its native terms are variables, zero, successor and one iterator with the
+two usual zero and successor equations.  Formulas are equations together
+with conditional closures $Q_yB$ and witnessed closures $D_{x,y}B$:
+\[
+ Q_yB=B(0)\to\forall y B(y),\qquad
+ D_{x,y}B=\exists x\,(B(x,0)\to\forall y B(x,y)).
+\]
+The equation restriction on the progress rule calibrates induction to
+iPRA.  Equality laws and ordinary logical operations are derived rather
+than separately primitive.
+
+Several concrete reductions are pertinent to machine design.  One-term
+crossed transport obtains equality reasoning from a single term template;
+direct progress introduces $Q$ without an unnecessary existential witness;
+one introduction rule shares the case and progress machinery; clause
+contexts remove a separate $Q$ constructor; and evaluation or equality can
+be combined with witness discharge.  The current development reaches
+three-family clause calculi such as Use/Intro/Name and Use/Intro/Open.
+Other variants move computation into full normalization or infer a witness
+from two distinguished matrix instances.  The README states exactly which
+calculus equivalences have Lean proofs and which claims concern only
+Python checker measurements; those two levels must remain separate in a
+Turing-machine comparison.
+
+The transferable principle is to prove an operation derivable, or merge it
+with a computation already required, before paying for a new decoder or
+handler.  PA196's derived equality head and the new direct arithmetic
+fragments are instances of this strategy.  Removing an arbitrary primitive
+axiom merely because a smaller propositional fragment looks plausible is
+not justified: the actual target is a two-way refutation translation with
+PA, including quantifiers, equality and full induction.
+
+A direct iPRA-refutation search does not establish the requested
+calibration with $\operatorname{Con}(\mathrm{PA})$.  The incoming
+\texttt{pa196\_research\_2026-11-13.zip} already records a native
+HA-strength extension of the scalar calculus, obtained by allowing progress
+at arbitrary native formulas and recovering full induction.  Together
+with negative translation, that is a plausible alternative PA-calibrated
+starting point.  It is prior work, not a new result of this comparison.
+No binary table below 196 states is supplied by that checker or by the
+Python size measurements.  Its missing engineering result is a complete
+small-state implementation with an explicit startup, all-input simulation,
+and state census.

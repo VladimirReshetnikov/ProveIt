@@ -1,0 +1,79 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array}
+\usepackage{enumitem,microtype,xcolor,listings}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\definecolor{ink}{RGB}{24,48,72}
+\definecolor{quiet}{RGB}{83,93,104}
+\hypersetup{pdftitle={Unary power covering at PA strength},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={A unary equality-free axiom schema and a division-free positive proof-search interface}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{quiet}Unary power covering}
+\fancyhead[R]{\small\color{quiet}PA consistency}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlength{\parskip}{4pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\setcounter{tocdepth}{1}
+\lstset{basicstyle=\small\ttfamily,columns=fullflexible,breaklines=true,
+  frame=single,rulecolor=\color{black!20},showstringspaces=false}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\UU}{\mathsf{U}}
+\newcommand{\WW}{\mathsf{W}_{\infty}}
+\newcommand{\PP}{\mathsf{P}_{1}}
+\newcommand{\RR}{\mathsf{R}}
+\newcommand{\N}{\mathsf{N}}
+\newcommand{\Eq}{\mathrel{\simeq}}
+\newcommand{\Sat}{\operatorname{Sat}}
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\Sub}{\operatorname{Sub}}
+\newcommand{\Succ}{\operatorname{S}}
+\newcommand{\Emp}{\operatorname{Emp}}
+\newcommand{\Pow}{\operatorname{Pow}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\FV}{\operatorname{FV}}
+\newcommand{\OP}{\operatorname{OP}}
+\newcommand{\SSing}{\operatorname{SSing}}
+\newcommand{\SPair}{\operatorname{SPair}}
+\newcommand{\Bit}{\operatorname{Bit}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newcommand{\Add}{\operatorname{Add}}
+\newcommand{\Mul}{\operatorname{Mul}}
+\title{\color{ink}Unary power covering at PA strength\\[6pt]
+\large Eliminating the source parameter, with a division-free\\positive proof-search interface}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{27 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The eight supplied drafts already establish a compact equality-free power-covering theory whose matrix may mention its tested object and its source. We remove the source as well. For every formula $\varphi(x)$ with no other free variable, the sole schema asserts that each source $a$ has a cover containing every $\varphi$-object whose members lie in $a$, and containing only $\varphi$-objects. There are no additional nonlogical axioms. We prove that this unary theory and full Peano arithmetic interpret one another, with uniform finite-proof transformations yielding a PA-provable consistency equivalence.
+
+The new lower proof obtains induction before successor existence. Global least numerical counterexamples then eliminate all free numerical parameters from bounded constructions. This avoids the earlier power-source recovery and stored-parameter machinery. The closed primitive shell remains 20 nodes; the improvement is matrix freedom and proof structure, not a claimed 19-node shell. The version allowing only closed matrices has a two-object model, making one free matrix role sharp within this architecture and this internal calibration.
+
+For contradiction search we combine the inherited positive target and arithmetic sharing with a new bijective dyadic codec. A single division-free polynomial emitter uses nine nonlinear multiplications, has degree 128 and leading coefficient $2^{71}$, and accepts every natural input. A complete eight-case theorem stream searches for the atom of code zero. The archive includes executable reference code and targeted independent checks. The unbounded interpretation proofs are conventional mathematics; no new literal TM state count or proof-assistant certificate is asserted.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/overview}
+\input{sections/unary_core}
+\input{sections/unary_arithmetic}
+\input{sections/unary_separation}
+\input{sections/upper_transport}
+\input{sections/positive_interface}
+\input{sections/emitter}
+\input{sections/stream}
+\input{sections/validation}
+\input{sections/references}
+\end{document}

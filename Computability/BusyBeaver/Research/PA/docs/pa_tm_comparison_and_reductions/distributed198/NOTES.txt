@@ -1,0 +1,119 @@
+DISTRIBUTED-GATE CANDIDATE: 198 WORKING STATES, BINARY ALPHABET
+===========================================================
+
+Status
+------
+This is a concrete 198-state machine and a reproducible executable symbolic
+check of its compilation from the revised 199-token AX word.  It does not
+meet the requested fewer-than-196-state target.  It is a new gate/compiler
+artifact, not a new Lean proof or a claimed PA proof of a biconditional.
+
+The machine is generated from James Chang's PA196 implementation at commit
+407cdc356f6b586635e71ac92be394255f4bfea4.  It replaces only the AX emitter word
+and its reader DAG.  The revised mathematical gate distributes a universal
+quantifier over a conjunction, preserving the intended theory.  The separate
+distributed_gate research artifact explains that logical equivalence and the
+selected head order.  This directory binds the exact selected macro word to
+the concrete machine.  The original 169 primitive sites outside AX remain
+identical, including their paths and relative jump depths.
+
+Reproduce
+---------
+Run with standard Python 3, from any working directory:
+
+    python3 verify_distributed.py
+
+The verifier compares the entire supplied tables with regeneration, checks
+that the delivered Lean source data has exactly the generated tree, compares
+the whole selected 199-token word, checks all 3773 resolved primitive sites,
+checks all 4908 symbolic contracts, runs the literal dense machine from blank
+through the exact seed frame, and checks graph reachability of every working
+state.  It writes checks.json.  No third-party Python packages are required.
+
+Tables and numbering
+--------------------
+candidate.tm has dense labels 0 through 197, with initial state 0 and the
+single halting state 198.  Blank symbol is 0.  Each line has
+
+    current_state read_symbol write_symbol direction next_state
+
+There are 396 rows, two for each working state, and no row for the halting
+state.  candidate.native.tm has equivalent sparse native labels.  Native
+initial, interpreter root, and halting labels are 74, 84, and 254.  The exact
+conjugacy is labels.json: element i is the native label for dense label i.
+All 198 working states are graph reachable from the initial state.
+
+Construction
+------------
+The unchanged non-AX part contributes 134 states.  The selected distributed
+word has 199 macro tokens (original 201).  Its complete source has 3773
+primitive sites (original 3812).  The chosen reader DAG contributes 67 new
+states (original 68 raw AX readers).  The existing native core reader 99 is
+reused for the two-increment subtree node60.  Three contextual reader folds
+reduce 201 raw states to 198; exact states and replacement rows are in
+folds.json.  These folds are checked simultaneously against all complete
+instruction contracts.
+
+The compiler enforces two inherited macro-entry conditions: node72 must be
+entered after bit 0, and node142 after bit 1.  Those two native core entries
+already use contextual folds.  An increment-1 leaf also needs an additional
+trailing zero counted in the return-scanner bound, because its routing phase
+creates that zero transiently.  A raw six-zero source-path bound alone was
+insufficient: discarded layouts passed that static bound but failed the full
+symbolic check.  The accepted machine passes the latter check.
+
+Exact verification results
+--------------------------
+Raw 201-state table: 4908 contracts, maximum 488 symbolic steps per contract,
+1564299 total symbolic steps.
+Folded 198-state table: 4908 contracts, maximum 497 symbolic steps per contract,
+1585320 total symbolic steps.  Maximum source path length is 37.
+
+From the literally blank tape, after exactly 58154 transitions the dense
+machine has reached native root 84 at absolute head -2.  The entire tape,
+including all zero cells outside its finite support, equals the expected
+frame.  Its path is 100000 (source site 25), its relative gap is 48, and its
+physical register sequence is
+
+    [0,0,0,0,0,0,2,0,0] followed by twenty-six 1s.
+
+The corresponding logical first nine registers are [2,0,0,0,0,0,0,0,0].
+checks.json records the complete finite support of the tape and file hashes.
+This finite startup check only establishes entry into the source interpreter;
+it is not being used as evidence of nonhalting.
+
+Symbolic check and trust boundary
+--------------------------------
+The symbolic frame has an affine gap n+48 and a symbolic whole register file.
+The checker splits both zero and positive decrement branches, preserves the
+complete represented tape, and checks the exact successor source frame.
+Therefore the check is not a finite numerical sampling of register values or
+execution steps.  It uses a finite executable symbolic calculus with the
+positive register-operation contracts exposed by the unchanged M6 runtime.
+
+symbolic_runtime.py is adapted from the supplied Nov13 research archive's
+work/optimize196/core.py.  That code describes itself as an exact executable
+specialization of BusyBeaver/M6/Runtime.lean.  Its oracle interface relies on
+the upstream positive register-block contracts (M6/Native.lean and Runtime).
+verify_distributed.py explicitly compares every row in BOXSTATES against the
+pinned PA196 table.  Those rows are byte-for-byte unchanged.  The result is a
+reproducible computational certificate conditional on that symbolic
+interface, not a newly kernel-checked theorem.  A formal publication would
+still need to regenerate and compile the relevant Lean simulation, logical
+transport, and arithmetization proofs.
+
+Program.lean contains source DATA only.  No new theorem is asserted in that
+file.  Existing upstream proofs cannot be reused merely by replacing their
+Program.lean because source counts, paths, and AX formulas changed.
+
+Provenance
+----------
+Upstream: https://github.com/jamesyc/BusyBeaver
+Pinned commit: 407cdc356f6b586635e71ac92be394255f4bfea4
+The original reference table SHA-256 is
+ e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8
+The original Program.lean and Conjugacy.lean are included under reference/.
+LICENSE.JamesChang is the upstream license.
+New grammar/layout/search/verification artifacts were produced in this task.
+The provenance and logical-equivalence limitations in the accompanying
+research report also apply here.

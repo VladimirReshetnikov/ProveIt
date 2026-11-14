@@ -1,0 +1,248 @@
+\section{A parameter-free MP command for the PA196 calculus}
+\label{sec:residual-pa}
+
+This construction transfers the opposite-comparison-residual idea from the
+repository's ZFC \texttt{k215-residual-parameter} experiment to PA196's
+different three-command language. It is a source-level construction. No
+claim of a smaller physical machine or a newly kernel-checked PA theorem is
+made here.
+
+Write $[a]W=P(a,W)$ for the exact unshifted Cantor stack constructor,
+$I(a,b)=4P(a,b)$, and $U(i,a)=4P(a,i)+2$. Code $0$ denotes truth and code
+$1$ is the target contradiction. A store is $(t,W,d,h)$. Retain Shift,
+which halts if $t+h=1$ and otherwise maps
+\[
+ S(t,[a]W,d,h)=(h,W,d,a).
+\]
+Replace the parameterized MP command by the nullary command
+\[
+ M(t,W,d,h)=
+ \begin{cases}(d,[0]W,d,0)& I(t,d)=h,\\(0,W,d,0)&I(t,d)\ne h.
+ \end{cases}
+\]
+For $A(c,x,y)$ put $D=d+x$, $H=h+y$. Emit exactly the old gate
+$g(H,D,c)$ and exactly the old eight heads $r_1,\ldots,r_8$, in their
+old top-to-bottom order; in particular $r_8=U(d,h)$ and $r_7$ is the
+restricted implicational head with fourth parameter $d\le D$.
+Change only the numeric residual:
+\[
+ A(c,x,y)(t,W,d,h)=
+ \bigl(g,[r_1]\cdots[r_8][t]W,\max(c-D-1,0),0\bigr).
+\]
+Every emitted head and gate is different from $1$, and $r_8\ge2$.
+These are literal constructor-tag facts, requiring no assumption that
+$t,h$, or the old stack are sound.
+
+\subsection{Exact command macros}
+
+Commands in a displayed word execute from left to right. Let $A_0=A(0,0,0)$
+and define
+\[
+ P=A_0S^8M,\qquad R=A_0S^{10},\qquad
+ Z=(PR)^2,\qquad
+ T_v=P\,A(v+1,0,v+1)S^{10}.
+\]
+The following equations hold for arbitrary natural stores, with no early
+halt:
+\begin{align*}
+ P(t,W,d,h)&=(0,[t]W,0,0),\\
+ R(t,[a]W,d,h)&=(t,W,0,a),\\
+ Z(t,W,d,h)&=(0,W,0,0),\\
+ T_v(t,W,d,h)&=(0,W,v,t).
+\end{align*}
+For $P$, $A_0$ sets the residual to zero. After eight Shifts the cache is
+$U(d,h)$, of residue $2$ modulo $4$; hence $M$ fails regardless of the
+current value and returns zero without touching the saved old top.
+All tested adjacent fresh values differ from $1$, so their sum cannot be
+$1$. For $R$, the tenth Shift tests $U(d,h)+t\ge2$, then exposes $t$ and
+pops one old stack item. Applying $PR$ twice proves the formula for $Z$.
+After $P$ in $T_v$, both theorem fields and $d$ are zero. The second AX
+has $D=0$, $H=c=v+1$, so its gate is zero and its residual is $v$. Its
+generalization is $U(0,0)=2$. Ten Shifts expose the stored original $t$
+in the cache and restore the original stack.
+
+These equations use only $\operatorname{decode}(P(a,W))=(a,W)$.
+They therefore remain valid when $a=W=0$ and $P(0,0)=0$; no injective
+distinction between an empty stack and a pushed zero is presumed.
+
+\subsection{A proof compiler}
+
+A compiler block for a derivable formula $B$ is required, on any numerical
+store, either to halt or to return $(B,W,d',0)$, preserving the old stack
+exactly. The parameter $d'$ may be arbitrary. The following construction is
+structural induction on a derivation in PA196's exact numeric calculus.
+
+Truth is compiled by $Z$. To select the $j$th AX head, $1\le j\le8$,
+start AX with current zero and follow it by
+\[
+ S^{j+1}R^{8-j}.
+\]
+The initial Shifts place $r_j$ in the current field. Subsequent $R$s
+preserve that field and discard only the remaining fresh prefix, ending
+with the saved zero in the cache. For the restricted head with data
+$(D,H,c,u)$, $u\le D$, the complete block is
+\[
+ Z\,T_u\,A(c,D-u,H)\,S^8R.
+\]
+The other six heads use $u=0$ and the appropriate selection index.
+For a permitted gate, use $Z A(c,D,H) R^9$. The nine pops remove the
+eight new heads and saved zero while retaining the gate as current.
+
+If $p_B$ compiles $B$, a block for $U(i,B)$ is
+\[
+ p_B\,T_i\,A_0S^9.
+\]
+After $T_i$ the store is $(0,W,i,B)$; the last eight-head item is exactly
+$U(i,B)$, and nine Shifts expose it with cache zero.
+
+If $p_I$ compiles $I(A,B)$ and $p_A$ compiles $A$, modus ponens is compiled
+by
+\[
+ p_I\,P\,p_A\,T_B\,S\,M\,R.
+\]
+Unless a premise block has already halted, the successive key stores are
+\[
+ (I(A,B),W,d,0),\quad(0,[I(A,B)]W,0,0),\quad
+ (A,[I(A,B)]W,d_1,0),\quad(0,[I(A,B)]W,B,A).
+\]
+The Shift halts when $A=1$, which is acceptable. Otherwise it gives
+$(A,W,B,I(A,B))$, so $M$ succeeds and gives $(B,[0]W,B,0)$.
+The final $R$ removes precisely that zero, yielding $(B,W,0,0)$.
+This also covers $I(0,0)=0$ literally. For a derivation of code $1$,
+append one Shift to its compiler block: $(1,W,d',0)$ passes the exact
+halt test.
+
+Soundness uses the usual invariant: the current value, cached value, and
+every numeric stack entry are derivable. Shift can halt only when one of
+the two theorem values is $1$ and the other is $0$. Successful MP is
+literal modus ponens, failed MP returns truth, and the altered AX emits
+the same formulas as before. Its numeric residual has no logical invariant.
+Thus the revised command calculus searches for exactly the same refutations.
+
+\subsection{Changed arities and fair enumeration}
+
+Let $e(\epsilon)=0$ and encode a nonempty continuation by
+\begin{align*}
+ e(Sw)&=1+P(0,e(w)),\\
+ e(Mw)&=1+P(1,e(w)),\\
+ e(A(c,x,y)w)&=1+P(c+2,P(y,P(x,e(w)))).
+\end{align*}
+These are the old tags; only MP no longer consumes an additional operand
+field. The untouched scheduler subtracts one from positive continuations
+and decodes the outer pair. Deleting its old 14-site reader implements
+exactly this new convention. Each positive continuation decreases under
+decoding, so a finite word is consumed completely. This is a claim about
+the rewritten source, not an assertion that old certificate integers
+have their old meanings.
+
+The distinction between a continuation and a fresh candidate is essential.
+For nonempty $w$, put $f(w)=e(w)-1$. If the continuation register is
+$L=e(w)>0$, the scheduler decodes $L-1=f(w)$ and leaves its fresh
+candidate counter $N$ unchanged. If $L=0$ and $N=f(w)$, it decodes $N$
+without subtracting one and increments that counter. Both cases therefore
+decode the same first command and leave $L=e(w')$ after its parameter
+fields, where $w'$ is the tail. This is a structural induction on $w$,
+using the exact Cantor inverse identities. The original source supplies
+precisely these two interfaces as \texttt{Fetch.positive} and
+\texttt{Fetch.fresh} in \texttt{PA196/Source/Fetch.lean}; its
+\texttt{FetchDispatch.seed} in \texttt{Source/FetchDispatch.lean} is
+literally $N$ when $L=0$, and $L-1$ otherwise. The source splice changes
+neither of those routines. Parameter-free MP consumes no field after its
+tag, whereas AX still consumes $y$ and then $x$.
+
+The compiler contract is uniform in the incoming numerical store, hence
+cofinality is obtained by prefixing a fixed compiled refutation with
+$A(Y,0,0)Z$. If $z$ is the code of the fixed suffix, the fresh-candidate
+integer is $P(Y+2,P(0,P(0,z)))$. It is strictly increasing and unbounded
+in $Y$, so an increasing candidate enumeration beginning at $2$ includes
+such a halting word. Conversely, every halt from a theorem-safe seed is
+a derivation of $1$. The needed coding and block arguments use finite
+induction and primitive-recursive proof transformations; a PA-internal
+binding to a literal TM still requires the separate machine formalization.
+
+\subsection{Exact source splice and its present cost}
+
+In the pinned PA196 source, replace the cleanup subtree
+$({\rm CD}6,{\rm CC}2)$ at old sites $3687$--$3688$ by
+$({\rm CD}6,({\rm CI}4,{\rm CC}2))$ within the second comparison
+$[3680,3692)$. The paired comparison loop consumes one excess scratch
+unit on inequality. Its remaining scratch value is
+$\max(c-D-1,0)$, transferred to initially zero register $4$; registers
+$5,6$ end zero. Then remove the closed MP reader $[3693,3707)$.
+Every unchanged instruction and both of its ordinal successors are
+checked under the explicit splice map by \texttt{residual\_source.py}.
+Two independent CFG resolvers agree. The isolated comparison was also
+replayed for all $0\le c,D<64$; this finite replay supplements the loop
+argument and does not replace it.
+
+Here is the complete arbitrary-natural comparison argument. At its entry
+the registers $(T,H,X,d)$ are $(t,D,c,0)$. Number the thirteen new
+instructions $0,\ldots,12$ and call the exit $13$. Their resolved effects
+are
+\[
+\begin{array}{c|l@{\quad}c|l}
+0&{\rm dec}\ H:(4,1)&1&{\rm dec}\ X:(3,2)\\
+2&{\rm jump}\ 0&3&{\rm jump}\ 5\\
+4&{\rm dec}\ X:(11,5)&5&{\rm dec}\ H:(7,6)\\
+6&{\rm jump}\ 5&7&{\rm dec}\ X:(10,8)\\
+8&{\rm inc}\ d;9&9&{\rm jump}\ 7\\
+10&{\rm jump}\ 13&11&{\rm dec}\ T:(13,12)\\
+12&{\rm jump}\ 11&&
+\end{array}
+\]
+where the two targets of a decrement are zero and positive, respectively.
+After $k\le\min(D,c)$ complete trips through $0,1,2$, the invariant is
+$(T,H,X,d)=(t,D-k,c-k,0)$ and the control is $0$. Each trip takes three
+steps. The terminal cases are:
+\begin{itemize}
+\item If $D=c$, rows $0,4$ enter $11$ with $H=X=0$.
+The $11,12$ loop takes $2t+1$ steps and clears $T$; $d$ remains zero.
+\item If $D<c$, rows $0,4$ enter $5$ with
+$(H,X,d)=(0,c-D-1,0)$, leaving $T$ untouched.
+\item If $D>c$, rows $0,1,3$ enter $5$ with
+$(H,X,d)=(D-c-1,0,0)$, again leaving $T$ untouched.
+\end{itemize}
+Rows $5,6$ clear $H$ in $2H+1$ steps. In rows $7,8,9$, if the incoming
+$X$ is $r$, after $j\le r$ trips the invariant is
+$(X,d)=(r-j,j)$; each trip takes three steps. The zero test and exit
+jump take two more steps. Thus the exact comparison duration is
+\[
+ \begin{cases}
+ 3D+2t+3,&D=c,\\
+ 3c+2,&D<c,\\
+ 2D+c+4,&D>c.
+ \end{cases}
+\]
+The final store is always
+$(T,H,X,d)=({\rm if}\ D=c\ {\rm then}\ 0\ {\rm else}\ t,0,0,
+\max(c-D-1,0))$. Every other register is unchanged. This proves
+termination and the residual contract by elementary natural-number
+induction, including both zero boundary cases. The preceding unchanged
+guard copies $c$ twice, performs the first $H=c$ test, then moves old
+$D$ to $H$, leaving the residual destination $d=0$ exactly as required.
+Consequently the final gate tests are still the two original equalities;
+only the disposable excess $X$ is now retained as a numeric parameter.
+
+The residual transfer has \emph{exactly the same register-machine execution
+time} as the old comparison, for every $t,D,c$. In the old cleanup, one
+positive $X$ cycle consists of decrementing $X$, jumping back to the
+$H$ test, and testing the already zero $H$ before returning to the $X$
+test: three steps. In the new cleanup, the corresponding cycle decrements
+$X$, increments $d$, and jumps directly back to the $X$ test: also three
+steps. The initial $H$ drain and both exit tests are unchanged. The shared
+prefix, the equality branch, and the $D>c$ branch have unchanged step
+counts as well. Applying the two cycle invariants to arbitrary $r$ proves
+that both comparisons obey the three duration formulas above, not just
+that a finite selection of runs agrees. The constructor additionally
+checks both old and new outputs and equal durations in all 4,096 probes.
+Thus the numeric information was available in an otherwise wasted loop
+test. This does not imply equal physical TM time: the new source address
+layout still has to be compiled and verified.
+
+The result has $3,799$ source instructions and $4,941$ guarded cases.
+It has $164$ distinct internal subtrees versus $159$ in PA196 because
+the changed comparison loses existing sharing. The source SHA-256 is
+\texttt{9aa46652ee8f11d7919700f860578d3c4c6b0ad8ec43524af79ec7d4703dff4a}.
+A conservative startup-preserving allocator with no new labels reports
+an empty domain. This is a limitation of that allocation model, not an
+impossibility theorem. No physical state reduction is established.

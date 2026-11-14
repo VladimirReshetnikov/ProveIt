@@ -1,0 +1,135 @@
+U222: source synthesis and table provenance
+==========================================
+
+Identity
+--------
+The selected source is u-unshifted-lower-z5. It has 3,891 primitive
+occurrences, 204 distinct hash-consed source-tree nodes (including primitive
+leaves), maximum address depth 45, and maximum consecutive-zero address run 6.
+The selected machine has 222 working states and 444 binary transitions.
+The separate halt state is 222 in the dense presentation, and the start is 0.
+Both tape directions are permitted; the blank symbol is 0.
+
+SHA256(source sites.json):
+1d258cfe56f8b845826a63af57de8134fbc4886b47f95312cf6d49424f3f3072
+SHA256(native table):
+88a9c5ea637560bf58dba612d598663213884d7bb7981230164bc058babaa427
+SHA256(dense table):
+f3c8492394b2589c47cfe0bb38a3dc6e51e11bfdead7cdec6b07913a4106cb3e
+
+Source synthesis
+----------------
+The input is the accepted K215 source, sites215.json, from
+VladimirReshetnikov/ProveIt at commit
+651d6258e9d57f974839ff2ef98060466973a512,
+under Computability/BusyBeaver/Research/ZFC/candidate-k215.
+Its SHA256 is
+17af207195179b2508bf91154cd00739374f8862207ca21b9a3cb9098aa6f5ba.
+
+Only the half-open primitive-ordinal interval [2885,4482) is replaced.
+The original atomic-vacuity expression [2643,2885), the final implication
+and negation [4482,4556), all ten other axiom-stack slots, the original
+gate c != a,b, and the proof enumerator remain. The replacement consists
+of 737 primitive occurrences; the 3,154 retained primitive occurrences
+and their control edges are checked separately by the source audit.
+
+Let I, R, and Q denote the native implication, relation-atom, and universal
+quantifier constructors, and let F=1=R(0,0), N(A)=I(A,F). The replacement
+pushes the code
+
+  negseed(c) = Q(c, I(lower(c), I(upper(c), F))),
+
+where
+
+  lower(c) = Q(1, I(Q(c,I(R(c,1),R(c,0))), I(c,R(1,c)))),
+  upper(c) = Q(1, I(R(1,c),c)).
+
+Here an occurrence of c in a formula position means the decoded formula
+whose code is the current parameter c; an occurrence in a variable
+position means variable label c. The exact postfix constructor word is
+
+  c 1 c c 1 R c 0 R I Q c 1 c R I I Q 1 1 c R c I Q N I Q.
+
+The pre-existing outer code combines this with
+V(a,b,c)=I(R(a,b),Q(c,R(a,b))) as N(I(V(a,b,c),negseed(c))).
+No increment of c is performed. The subset guard binds variable c
+dynamically; replacing that binder by a fixed variable is not this source.
+The separate mathematical proof treats the exceptional codes c=0,1.
+
+The constructors are literal closed factors of the K215 source:
+  c (parameter copy): [107,133)
+  0 (push zero):      [26,45)
+  1 (push one):       [995,1015)
+  I:                 [78,105)
+  Q:                 [78,107)
+  R:                 [695,723)
+  N:                 [995,1042).
+
+Their serial order is fixed by the postfix word. A bounded dynamic program
+chooses a binary parenthesization, retaining at most twelve alternatives
+per token interval and charging newly introduced hash-consed tree nodes.
+This search is only a construction heuristic. The final recipe records
+the exact parenthesization; deterministic reconstruction requires no
+search and no optimizer. All reordered compositions are between closed
+factors, so reassociation preserves their source semantics.
+
+Physical table synthesis
+------------------------
+The native baseline is candidate-k215/k215.native.tm, SHA256
+9683d6ed9628e6ce407c315b08f5da3d063da94e92706f275ca0f33e8272e4b2.
+The physical allocation procedure is adapted from ProveIt's
+k215-residual-parameter/role-pool/allocate_from215.py. It retains usable
+decoder/engine rows and assigns new source nodes to compatible old or
+fresh state roles. A mixed-integer solver was used for construction.
+Its optimal solution is optimal only for that finite allocation instance;
+it says nothing about the global minimum number of states for Con(U).
+
+Additional context checks were necessary. Some baseline arithmetic entry
+rows inspect preceding address bits: e.g. native state 150/read1 and
+152/read1 both implement CI1 in their original contexts but require
+different predecessor bits. Matching only opcode/register is unsound.
+The corrected construction checks each arithmetic leaf in every new
+occurrence by following its known address prefix to the canonical
+arithmetic entry and requiring the same tape/head position. It protects
+all intermediate routing rows, as well as all old descendant states
+actually reached below retained parents. An old contextual row is reused
+only when every new occurrence has the required context and all its
+intermediate routing rows remain protected. Branch/control suffix
+constraints are retained. A final finite prefix/leaf-routing pass checks
+the produced table. This pass is not a substitute for full runtime proof.
+
+The fixed patch modifies 72 existing rows, adds 16 rows at eight new
+native states 500 through 507, and removes the two rows of native state
+204. Thus 215 - 1 + 8 = 222 working states. The complete patch is in
+inputs/table_recipe.json. Sorting the working native labels and mapping them
+bijectively to 0,...,221, with native halt 254 mapped to 222, yields the
+dense table. Every one of its 444 transitions is checked under this map.
+
+Reconstruction and scope
+------------------------
+build_source.py and build_table.py use only the Python standard library.
+They check exact input and result hashes. audit_replay.py confirms identical
+output under ordinary Python and python -O, independently recomputes
+source metrics, checks the exact table delta, and checks every relabeled
+row. The finite audit result is evidence/reconstruction_independent.json.
+
+Strong deterministic state-bisimulation refinement leaves all 222 states
+in singleton classes after eleven refinement rounds. Consequently this
+specific table has no unconditional transition-preserving state merge.
+This is not a minimality proof and does not exclude semantic optimizations.
+
+The source syntax/CFG audit, arbitrary-natural primitive runtime proof,
+blank-startup trace, proof-enumerator correctness, and consistency bridge
+are separate obligations. The fixed recipes and finite audits alone do not
+prove non-halting, consistency, or the claimed equivalence in PA.
+
+Attribution
+-----------
+This work reuses the ProveIt K215 source, native TM, source-language and
+closed-splice machinery, and physical allocation framework. The source
+utilities credit the K225/K226 construction packet and Wade's MIT-0
+register-machine framework. The original project license/attribution
+files should accompany redistributed baseline and adapted code. The new
+power-cover shell, exact source parenthesization, context-aware allocation
+corrections, deterministic recipes, and replay audit were constructed on
+2026-10-28. This note does not alter upstream license terms.

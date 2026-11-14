@@ -1,0 +1,132 @@
+% Supplement to pa_bridge.tex.  No new packages are required.
+\section{Alternative implementations of the final AX jump}
+\label{sec:closing-alternatives}
+
+This section records a finite implementation experiment.  All state numbers
+in this section are the imported native labels, before dense relabelling.
+The closing instruction of the AX emitter is \texttt{breakTo 1}.  Its reader
+transition on its final address bit is
+\[
+       (q,1)\longmapsto (0,\mathrm L,302).
+\]
+The seven-head source construction changes the emitted formulas, but leaves
+the final guard and cleanup macros unchanged.  The original source proof,
+\texttt{PA196/Source/AXGate.lean}, in the local claim named
+\texttt{fifth}, establishes that logical registers $3,4,5,6,7$ are all zero
+immediately before this instruction.  This assertion is an arithmetic
+invariant, independent of any assumption about the consistency of PA.
+The correspondence of these fields with register numbers is in
+\texttt{PA196/Source/AXGateSteps.lean}.
+
+\paragraph{Known-zero conditional decrement.}
+For a source address $p$, both \texttt{breakTo 1} and the zero branch of
+\texttt{dec}$\,r$ cut the address at its innermost zero edge and continue
+past that subtree.  A zero decrement changes no register.  Consequently,
+at this particular source site, the source instructions have identical
+successors and register effects whenever register $r$ is zero.  Existing
+native entries give the four alternatives
+\[
+\begin{array}{c|cccc}
+r&3&4&5&6\\ \hline
+\text{closing action}&1\mathrm R17&1\mathrm R144&
+  1\mathrm R45&1\mathrm R21 .
+\end{array}
+\]
+These four alternatives were already supplied in the earlier
+\texttt{pa\_tm\_extended\_research\_2026-11-13} archive, under
+\texttt{auxiliary196/closing\_variants.md}.
+For each modified physical table, all source instruction contracts must
+still be checked.  Only the closing contract is restricted to the zero
+branch of the selected register.  It would be incorrect to impose this
+restriction at every occurrence of a conditional decrement, or to validate
+the modified table against the old closing row while leaving the source
+interpretation implicit.
+
+\paragraph{An unconditional padding detour.}
+There is also an alternative which needs no register invariant:
+\[
+                  (q,1)\longmapsto(1,\mathrm R,113).
+\]
+It requires only that the cell immediately following the completed address
+contains zero.  This follows from the explicit padding bound in the
+source-frame contract.  The two relevant unchanged native rows are
+\[
+ (113,0)\longmapsto(0,\mathrm L,302),\qquad
+ (302,1)\longmapsto(0,\mathrm L,302).
+\]
+Let the head initially be at address cell $i$, containing $1$, and suppose
+cell $i+1$ contains $0$.  The new transition leaves the $1$ intact and moves
+to $i+1$ in state $113$.  The next transition leaves its $0$ intact and
+returns to $i$ in state $302$.  The third transition changes the $1$ at $i$
+to $0$ and moves to $i-1$ in state $302$.  This is precisely the complete
+configuration reached by the original closing transition after one step.
+Thus the detour costs two literal transitions and preserves every tape
+cell, the final head position, and the final control state.  The proof is
+uniform in all register values and in every suffix of the tape.  It is a
+finite calculation that PA verifies directly.
+
+The necessary padding condition must be checked for the actual grammar.
+For the searched AX grammars the AX-subtree height is at most $38$, its
+fixed exterior prefix has length $8$, and source frames provide
+$48-|p|+u$ padding zeros, with $u\geq0$.  Hence even the longest AX address
+has at least two following zeros.  A future grammar search changing these
+bounds must re-establish the condition instead of assuming it.
+
+\paragraph{Three alternatives using the preceding address bit.}
+The final AX leaf is the rightmost leaf of its grammar tree.  Its path
+within that tree therefore consists entirely of ones.  The fixed exterior
+prefix also ends in one.  Consequently, immediately before the closing
+leaf is executed, both its current address bit and its preceding address
+bit are one.  No register-value assumption is used here.
+The fixed 134-state portion of the table contains states $88$, $103$ and
+$301$, and its rows include
+\[
+ (88,1)\longmapsto(1,\mathrm R,103),\qquad
+ (301,1)\longmapsto(1,\mathrm R,103),\qquad
+ (103,1)\longmapsto(0,\mathrm L,302).
+\]
+Replacing the closing action by either $1\mathrm L88$ or
+$1\mathrm L301$ first moves to the preceding one, moves back to the
+closing one in state $103$, and then erases that one and moves left in
+state $302$.  These three transitions reach exactly the configuration
+reached by the original closing action in one transition.  Every other
+tape cell is unchanged.
+
+The replacement $0\mathrm L103$ also works.  After its first step,
+compare it with the original $0\mathrm L302$: both runs have erased the
+closing one and have their head on the preceding one.  Their controls
+are $103$ and $302$, respectively.  Since the two controls have the same
+row on symbol one, both runs reach the same complete configuration after
+their second step.  This is a bounded convergence argument with two
+steps on each side, rather than a change to the source instruction.
+
+These arguments require the listed fixed rows to remain unchanged.
+They remain valid if compatible reader folds elsewhere add finite
+stuttering, provided the final physical contract is checked for the
+folded table.  Evaluating these three actions and the additional
+register-6-zero action $1\mathrm L77$ on all 98 archived tied grammars
+adds 392 cases; none has a matching-based reader score below 196.
+
+\paragraph{Exact scope of the finite experiment.}
+The script \texttt{closing\_ties.py} independently reconstructs the 98
+archived tied grammars and four distinct current gate-search grammars.
+For all 102 grammars it evaluates seven choices of closing action: the
+original jump, the four known-zero alternatives, the unconditional
+$1\mathrm R113$ detour, and the separately checked register-6-zero route
+$1\mathrm R103$.  The latter route is retained only as a checked search
+case; the simple three-transition argument above applies to $113$.
+There are 714 grammar/action cases.  None has an effective score below
+196 under the specified matching-based reader-fold operation.  This is
+only an exhaustive statement about that finite family and that operation,
+not a lower bound for the machine problem.
+
+For a selected minimum in each mode, the full 4780 instruction contracts
+pass, with maximum abstract execution length 506.  These contracts use
+an arbitrary-natural padding parameter and the complete arbitrary
+register-file suffix, restricted only at the selected closing instruction
+when its proof uses a zero register.  A separate recursive comparison
+finds no additional exact-row reuse with existing fixed reader states in
+the 98 archived grammars under these seven closing modes.  The JSON
+receipts identify the exact selected grammars and folds.  Abstract
+execution lengths count symbolic checker steps, not literal TM steps.
+No complete new Lean endpoint is asserted for these experiments.

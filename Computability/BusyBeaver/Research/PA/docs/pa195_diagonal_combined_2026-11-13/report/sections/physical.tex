@@ -1,0 +1,188 @@
+\section{Binding the proof to the literal binary machine}
+\label{sec:physical}
+
+\subsection{The changed source loops}
+
+The logical register names are $T=R_1$, $W=R_2$, $D=R_4$, $H=R_5$,
+with scratch $X=R_6$, $Y=R_7$. The command-boundary invariant includes
+$R_3=X=Y=0$. It leaves the four store values arbitrary. Candidate register
+$R_0$ and the remaining command word $R_8$ are preserved except where
+the inherited scheduler and operand decoder explicitly use them.
+
+Here is the complete changed tail. A decrement lists the zero successor
+first and the positive successor second; on the positive branch it
+decrements the named register.
+\begin{center}\small
+\begin{tabular}{@{}rl@{}}
+\toprule
+Ordinal&Resolved instruction\\\midrule
+3661&$\operatorname{dec}(D,3664,3662)$\\
+3662&$\operatorname{inc}(H,3663)$\\
+3663&$\operatorname{jump}(3661)$\\
+3664&$\operatorname{jump}(25)$\\
+3665&$\operatorname{dec}(T,3667,3666)$\\
+3666&$\operatorname{jump}(3665)$\\
+3667&$\operatorname{dec}(H,3671,3668)$\\
+3668&$\operatorname{inc}(T,3669)$\\
+3669&$\operatorname{inc}(X,3670)$\\
+3670&$\operatorname{jump}(3667)$\\
+3671&$\operatorname{dec}(X,3674,3672)$\\
+3672&$\operatorname{inc}(H,3673)$\\
+3673&$\operatorname{jump}(3671)$\\
+3674&$\operatorname{inc}(X,3675)$\\
+3675&$\operatorname{jump}(0)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+On a successful MP, the unchanged prelude supplies
+$(T,W,D,H,X,Y)=(0,w,y,0,0,0)$ at 3661. After $k$ loop iterations,
+$(D,H)=(y-k,k)$. The loop reaches 3664 in $3y+1$ source steps and
+returns to fetch in one more. A failed comparison goes directly to 3664
+with offset $y$ and zero cache. This proves (C1) for arbitrary naturals.
+
+At Shift entry 3665, the first loop clears $T=t$ in $2t+1$ instructions.
+The next loop transfers $H=h$ into both $T$ and $X$ in $4h+1$ steps,
+and the third restores $H$ from $X$ in $3h+1$ steps. Thus the first nine
+tail instructions, iterated as prescribed, reach $(T,H,X)=(h,h,0)$
+after $2t+7h+3$ steps. The final two rows set $X=1$ and enter the
+unchanged root guard, now comparing $h$ with one. On a nonhalting branch,
+the unchanged Cantor decoder produces $\operatorname{hd}(w)$ and
+$\operatorname{tl}(w)$. The elementary loop invariants give precisely
+the new Shift contract for all store values. They do not rely on tests
+of a bounded initial computation.
+
+The checker verifies all unchanged prefix rows and the three exit
+relocations before checking this tail. The source therefore has the
+command semantics proved in Section~\ref{sec:commands}. Its census is
+1,458 increments, 1,108 decrements, 1,109 resolved jumps, and one halt.
+Counting both decrement outcomes gives
+\[
+ 1458+2(1108)+1109+1=4784.
+\]
+
+\subsection{Clean tape frames and two independent checks}
+
+A clean frame has a left marker, a binary source address, a zero-filled
+separator, a right header, and a complete unary register file. A value $v$
+uses the block $0\,1^{v+1}$. Logical registers $0,\ldots,8$ occupy physical
+positions
+\[
+ (6,2,0,4,3,7,8,5,1).
+\]
+The header distance is $48+n$ for arbitrary $n\ge0$; the longest source
+path here has 38 bits. The physical file has the nine logical registers
+and an arbitrary finite nonempty spare suffix. Increment appends a
+one-valued spare block, as in the inherited register engine. That effect
+is part of the contract, rather than silently ignored.
+
+The primary checker reconstructs original PA195 from its supplied grammar,
+folds, and pinned vendor files, then reconstructs PA195DC. It checks the
+source graph with two differently structured resolvers, the complete AX
+free-algebra output, unchanged arithmetic-box rows, every instruction
+outcome for the unfolded and final folded tables, and full initialization.
+Its symbolic execution uses the inherited arbitrary-register block
+contracts. It accepts 4,784 contracts for each table; the folded run has
+1,573,300 symbolic steps in total and a maximum of 506 per contract.
+
+The independent checker reads the literal final table and the delivered
+source, without importing the primary compiler. It reconstructs the source
+graph independently and rederives four generic register-list sweep lemmas
+from that table. It then follows all source instructions with symbolic
+natural-valued unary blocks and a symbolic finite spare list. It does not
+call an arithmetic-box oracle. The resulting verification is:
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Independent physical check&Result\\\midrule
+Source instructions / outcomes&3,676 / 4,784\\
+Total symbolic steps&1,152,450\\
+Largest symbolic step count&409\\
+Literal / unary-scan / list events&977,255 / 172,279 / 2,916\\
+List lemmas derived from the literal table&4\\
+Rows occurring outside list-summary applications&390 of 390\\
+Arithmetic-box oracles&None\\
+Exact blank startup&57,922 transitions\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are different symbolic granularities, so their step totals need not
+agree. Neither maximum is a bound on actual tape steps for arbitrary
+register values. The symbolic formulas describe all natural register
+values and finite spare lists; the counts enumerate proof cases, not small
+numeric samples. The symbolic reasoning is executable mathematics and is
+not asserted to have been newly checked by a proof-assistant kernel.
+
+\subsection{Exact initialization}
+
+Literal execution from the all-zero tape reaches the clean source-25 frame
+after exactly 57,922 transitions, in native state 84 with head at $-2$.
+The new source path is $\code{1000000}$; the logical register vector is
+$(2,0,0,0,0,0,0,0,0)$, and the spare suffix has 26 registers of value one.
+The header distance is 48. Both checkers compare the entire finite support
+of the tape, the state, and the head, and require every other cell to be
+zero. The certificate retains the complete sorted set of one positions.
+The original PA195 startup took 58,154 transitions; the saving is 232
+transitions in initialization. It is not a claim of uniform runtime
+improvement throughout the infinite search.
+
+\subsection{Uniform finite-trace transfer inside PA}
+
+Each symbolic instruction contract denotes a finite, positive literal
+execution segment from a clean source frame to the exact next frame,
+or to halt for the single source halt instruction. Symbolic unary scans
+have natural-valued lengths; list traversals use induction on the finite
+register list. Their trace constructors and duration bounds are primitive
+recursive in the coded frame. The unchanged header and spare invariants
+are preserved. The arithmetic loops above and the scheduler have analogous
+primitive-recursive finite trace constructors.
+
+For clarity, configurations can be coded by a control and two binary stacks
+for the tape on either side of the head. A finite run is a coded finite
+sequence checked by the fixed transition function. PA proves the usual
+coding identities, the scan and list inductions, and the finite symbolic
+identities. Since the table and the contract list are fixed finite objects,
+their case distinctions require no additional schema beyond PA induction.
+This internal argument concerns all coded finite traces, including
+model-length traces. An external Lean theorem only about standard finite
+runs would not by itself justify that step.
+
+\begin{lemma}[Literal/source halting equivalence]\label{lem:literal-source}
+PA proves that $M_{\rm DC}$ halts from blank if and only if the delivered
+source program $G_{\rm DC}$ halts from the exact clean seed.
+\end{lemma}
+\begin{proof}
+Forward source-to-tape transfer concatenates the fixed startup and the
+positive physical segments of a finite source trace. All constructed runs
+and their bounds are primitive recursive, and PA verifies them by induction.
+
+For the converse, suppose the literal machine halts at time $T$. If it
+halted before the end of startup, the checked finite startup would already
+contradict determinism. Otherwise start at the exact seed and suppose the
+source does not halt within its first $T+1$ instructions. Iterating those
+instructions and their contracts constructs a defined physical continuation
+longer than $T$, with no premature halt. Determinism contradicts the alleged
+halting trace. Thus the source halts within that bound. This does not assume
+that a physical tape can be inversely decoded at arbitrary intermediate
+times, or that the machine actually runs forever. Positivity of the
+segments is the essential bounded argument.
+\end{proof}
+
+The dense and native tables have a separately checked row-for-row conjugacy.
+Mapping each control of a finite trace along that fixed bijection gives
+one-step exact conjugacy and fixes the specified start/halt pair. This
+finite induction also formalizes in PA, completing the binding to the
+definitive dense table rather than merely to inherited native labels.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+The uniform proof translations of Section~\ref{sec:pa-calibration} identify
+refutability of $\mathcal C_\Gamma$ with refutability of PA, internally
+in PA. Section~\ref{sec:commands} identifies the former with source
+halting, using both the annotation invariant and the complete proof-word
+compiler. The exact source binding and Lemma~\ref{lem:literal-source}
+identify that source halt with a blank halt of the literal table. Compose
+the three internal equivalences and negate them in classical PA. This
+gives the stated biconditional with $\Con(\PA)$.
+\end{proof}

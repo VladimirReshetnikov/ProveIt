@@ -1,0 +1,157 @@
+\section{A division-free emitter with no rejected inputs}
+\label{sec:emitter}
+
+For machine construction it can be cheaper to accept arbitrary matrix parameters than to validate a unary restriction. The arithmetic interpretation in PA already validates the unrestricted covering schema $\WW$, and $\WW$ contains $\UU$. Thus unrestricted generation retains exactly the required consistency strength. The unary theorem and the following numerical implementation solve complementary optimization problems.
+
+\subsection{A bijective dyadic grammar}
+
+Let
+\[
+ \pi(i,j):=\frac{(i+j)(i+j+1)}2+j.
+\]
+Use named variables $v_0,v_1,\ldots$ and the constructors
+\begin{align*}
+ R(i,j)&:=2\pi(i,j) &&\text{for }E(v_i,v_j),\\
+ A(v,f)&:=4\pi(f,v)+1 &&\text{for }\forall v_v\,\operatorname{dec}(f),\\
+ I(f,g)&:=4\pi(f,g)+3 &&\text{for }\operatorname{dec}(f)\to\operatorname{dec}(g).
+\end{align*}
+Every even code is an atom. Odd codes with residue 1 modulo 4 are universal formulas; those with residue 3 are implications. These disjoint cases exhaust all natural numbers. The quantifier stores its body first and its binder second.
+
+\begin{lemma}[Total syntax and freshness]\label{lem:codec}
+These constructors give a bijection between natural numbers and finite named positive formulas. Every variable label appearing in $\operatorname{dec}(n)$ is at most $n$, and is strictly below $n$ when $n>0$.
+\end{lemma}
+\begin{proof}
+Both coordinates of $\pi(i,j)$ are at most its value. Every recursive formula field of an implication or quantifier is therefore strictly smaller than its positive parent. Atom fields are terminal labels, including the sole zero case $R(0,0)=0$. Strong induction proves decoding terminates and proves the label bounds. Disjoint tags and the two inverse pairing identities prove both encoder/decoder compositions are identities.
+\end{proof}
+
+In particular
+\[
+ \operatorname{dec}(0)=q_0,
+ \qquad\operatorname{dec}(1)=D,
+ \qquad\operatorname{dec}(3)=(q_0\to q_0).
+\]
+There is no malformed-code case, atom alias, or exceptional zero interpretation. All constructor formulas are integer polynomials: the factors 2 and 4 clear Cantor pairing's denominator.
+
+Fix source label 0, tested label 1, and the local guard binder 2. The cached subset guard is
+\[
+ G=A(2,I(R(2,1),R(2,0)))=1512069.
+\]
+It requires four constructor calls to initialize or 21 bits as a bare binary literal. Those bits do not measure the cost of writing them on a blank tape. Reversing the quantifier coordinates minimizes this guard among the eight independent pairing orientations with these fixed roles; no global coding optimality is asserted.
+
+\subsection{The exact generator}
+
+For every natural $n$, use the input both as the matrix code and as the output-variable label:
+\begin{lstlisting}
+e = R(1,n)
+h = I(e+n,0)
+u = A(1,h+4*n)
+v = A(1,I(G,h+4*e))
+g(n) = I(A(n,I(v,I(u,0))),0)
+\end{lstlisting}
+The arithmetic identities
+\[
+ I(e,n)=I(e+n,0)+4n,\qquad
+ I(n,e)=I(e+n,0)+4e
+\]
+share one pairing evaluation between the two oppositely directed implications. The resulting ledger is one $R$, three $A$, and five $I$ evaluations: nine pairings after guard initialization.
+
+For $n\ge2$, the output variable is fresh by Lemma~\ref{lem:codec}. Decoding gives precisely
+\[
+ \bigl[\forall v_n\,(V_\theta(v_n,v_0)
+                      \to(U_\theta(v_n)\to q_0))\bigr]\to q_0,
+ \qquad\theta=\operatorname{dec}(n).
+\]
+Here additional free matrix variables are universally intended theorem parameters. The local binder 2 occurs only inside the subset guard; it does not capture matrix occurrences. Its shadowing of the output binder when $n=2$ is harmless. No matrix traversal, freshness scan, variable substitution, code increment, or rejected-input branch occurs in this emitter.
+
+\subsection{The two useful collisions}
+
+Let $\RR$ be the theory of universal closures of all decoded $g(n)$, including $n=0,1$. Define
+\[
+ J:=\forall x(E(x,x)\to D),\qquad
+ \mathrm{IR}:=\forall x\neg E(x,x).
+\]
+The inherited collision idea from D2 remains valid after the coding changes:
+\begin{equation}\label{eq:collisions}
+ \begin{aligned}
+  \operatorname{dec}(g(0))&\leftrightarrow
+                  (E(a,a)\lor\exists c\,\Emp(c)),\\
+  \operatorname{dec}(g(1))&\leftrightarrow(E(a,a)\lor J),
+ \end{aligned}
+\end{equation}
+where $a=v_0$ is free outside the displayed outer wrapper.
+
+For $n=0$, the output binder captures the source occurrences inside its scope. A counterexample to the outer universal antecedent has the two filter clauses and a false diagonal $E(c,c)$. The upper clause then says exactly that $c$ is empty. Conversely an empty $c$ satisfies both clauses: the lower clause has the false matrix antecedent $E(c,c)$. The guard's binding choices therefore do not affect this identity.
+
+For $n=1$, the matrix is the closed $D$ and output/test binders coincide. The upper clause is $J$; the lower clause is valid because $D\to E(x,x)$ is a universal instance. The outer output quantifier is vacuous, leaving $J\lor E(a,a)$. Reordering the two curried clauses preserves both identities by propositional logic.
+
+The regular part still generates all needed positive schemas. The two missing tiny matrices have regular logically equivalent codes
+\[
+ 27=\ulcorner(q_0\to q_0)\to q_0\urcorner,
+ \qquad 33=\ulcorner\forall v_2D\urcorner.
+\]
+All other matrix codes are already at least 2. Canonicalize source/test labels to 0 and 1, emit, then use theorem generalization, capture-avoiding instantiation, and derived alpha conversion to restore arbitrary labels. Moving other free parameters through fresh temporary names prevents collisions. These are proof transformations, not instructions executed by the emitter.
+
+\begin{theorem}[Raw-rule calibration]\label{thm:raw}
+In full classical first-order logic, $\RR+\neg D$ and $\WW+\mathrm{IR}$ have the same deductive closure after the described naming normalization. Their proof conversions are primitive recursive and PA-verifiable. Moreover
+\[
+ \PA\vdash
+ \bigl(\exists p\,\Prf_{\mathsf H_++\RR}(p,q_0)\bigr)
+                               \leftrightarrow\neg\Con(\PA).
+\]
+\end{theorem}
+\begin{proof}
+The padding and renaming argument derives every unrestricted positive diagonal instance from $\RR$. Under $\neg D$, choose an irreflexive source $a$. The second collision gives $J$; together $J$ and $\neg D$ imply global $\mathrm{IR}$. Thus every source has false diagonal. For any ordinary unrestricted matrix, replace its falsities by the source diagonal, which is now false. This is permitted in the unrestricted interface. The positive shell supplies its ordinary weak filter. Hence $\RR+\neg D$ proves $\WW+\mathrm{IR}$.
+
+Conversely $\WW+\mathrm{IR}$ proves $\neg D$, supplies witnesses for all regular positive shells, and proves both exceptional outputs: empty objects exist and $J$ follows from irreflexivity. This derives every axiom of $\RR+\neg D$.
+
+Since $\WW$ contains $\UU$, the new lower interpretation gives PA strength. The binary-membership interpretation validates $\WW+\mathrm{IR}$ in PA, giving the reverse proof transformation. Finally discharge $\neg D$ and apply the positive-conservativity argument from Section~\ref{sec:positive}. Generalization/instantiation exchanges targets $q_0$ and $D$. All steps are finite uniform syntax transformations.
+\end{proof}
+
+\subsection{One polynomial, nine nonlinear multiplications}
+
+Set $Q(s)=2s(s+1)$. The generator is the following polynomial in $n$, expressed in factored form:
+\begin{lstlisting}
+e = n*(n+5)+2
+h = Q(e+n)+3
+u = Q(h+4*n+1)+5
+j = h+4*e
+l = Q(G+j)+4*j+3
+v = Q(l+1)+5
+c = Q(u)+3
+b = Q(v+c)+4*c+3
+z = Q(b+n)+4*n+1
+g = Q(z)+3
+\end{lstlisting}
+It uses one multiplication for $e$ and eight evaluations of $Q$. Multiplication by 2 or 4 can be addition or a binary shift. The emitter contains no division or data-dependent branch.
+
+The degrees of $e,h,u,j,l,v,c,b,z,g$ are respectively
+\[
+                 2,4,8,4,8,16,16,32,64,128.
+\]
+Tracking leading terms gives
+\[
+        g(n)=2^{71}n^{128}+O(n^{127}),\qquad
+        \log_2g(n)=128\log_2n+71+O(n^{-1}).
+\]
+The leading coefficient of $b$ is $2^{17}$ because its two degree-16 inputs $v,c$ both have leading coefficient $2^7$; the next two quadratic layers give $2^{35}$ and $2^{71}$. Exact coefficient reconstruction in the supplied program confirms all 129 coefficients are positive integers.
+
+Three persistent arithmetic registers suffice for a high-level schedule. Keep $r_0=n$, form $r_1=e$ and $r_2=h$, and then execute
+\begin{lstlisting}
+r1 = r2 + 4*r1
+r2 = Q(r2 + 4*r0 + 1) + 5
+r1 = Q(G + r1) + 4*r1 + 3
+r1 = Q(r1 + 1) + 5
+r2 = Q(r2) + 3
+r1 = Q(r1 + r2) + 4*r2 + 3
+r1 = Q(r1 + r0) + 4*r0 + 1
+r1 = Q(r1) + 3
+\end{lstlisting}
+The result is $r_1=g(n)$. Each assignment reads the old right-hand side before overwriting its destination. Multiplication and expression-evaluation workspace are excluded; this is not a three-register primitive counter-machine claim.
+
+\subsection{Fair comparisons}
+
+The raw positive emitter in D2 recomputes its $n$-dependent guard and uses 14 constructor pairings. Freezing the guard reduces this to 10; sharing opposite implications reduces it to nine. The longest clause is placed first in the curried pair, lowering the degree from the varying-guard baseline's 512, through 256 with a frozen upper-first order, to 128. D4 already contains nine-pairing and clause-order ideas for an ordinary falsity-bearing emitter; the new claim is their calibrated combination with raw positive collisions and the dyadic division-free grammar.
+
+The fixed guard is 21 bits, compared with 22 in the inspected ternary comparator and 25 in its uniform radix-four comparator. These sizes exclude bootstrap machinery. A sample of 514 \emph{matched named matrices}, re-encoded in each grammar, gives aggregate emitted-code lengths 542,344 bits for the preferred dyadic grammar, 563,166 for the ternary grammar, and 634,286 for the uniform radix-four grammar. These are diagnostic samples, not a distributional performance theorem: the dyadic output is longer in 113 ternary comparisons and 17 radix-four comparisons. It is not pointwise dominant.
+
+No comparison of constructor counts, code lengths, or polynomial degrees establishes a TM state bound. The complete proof engine and initialization must be compiled under one common binary single-tape convention before making that claim.

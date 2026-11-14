@@ -1,0 +1,77 @@
+# Complete supported 196-state frontier and new PA195
+
+The incoming archives supply 25 distinct 196-state tables with complete support: 23 have documented complete runtime and startup evidence, and two received their missing coverage/startup checks during this audit. The full corpus contains 90 rooted 196-state graph classes; `196_classification.json` and `.md` classify the other 65. These 25 rows are a supported frontier, not an assertion that all 90 inputs are valid consistency machines.
+
+A state count excludes the separate halt control. Source sites count primitive instruction occurrences. Runtime branch coverage includes both decrement branches, except at stated invariant-specialized sites. Startup counts are literal transitions to the entire clean seed configuration. Prior evidence retains its written/executable/kernel distinctions.
+
+| Design | Working states | Source sites | Runtime branch coverage | Literal startup | Evidence | Main change |
+|---|---:|---:|---:|---:|---|---|
+| Published PA196 | 196 | 3,812 | 4,959 | 58,154 | K | Original 201-token AX word; six contextual folds |
+| Alternative head order | 196 | 3,812 | 4,959 | 58,154 | E | Head order (1,2,3,5,6,4); shallower AX grammar |
+| Closing CD3 | 196 | 3,812 | 4,959 | 58,154 | I | One closing row uses a proven zero logical register |
+| Closing CD4 | 196 | 3,812 | 4,959 | 58,154 | I | One closing row uses a proven zero logical register |
+| Closing CD5 | 196 | 3,812 | 4,959 | 58,154 | I | One closing row uses a proven zero logical register |
+| Closing CD6 | 196 | 3,812 | 4,959 | 58,154 | I | One closing row uses a proven zero logical register |
+| Rotation layout 1 | 196 | 3,812 | 4,959 | 58,294 | E | Reassociated source tree; unchanged ordinal CFG |
+| Rotation layout 2 | 196 | 3,812 | 4,959 | 58,294 | E | Distinct 62-reader AX allocation |
+| Eight-zero scanner layout | 196 | 3,812 | 4,959 | 59,164 | E | 158-node source; longer scanner restores physical correctness |
+| A/D register swap | 196 | 3,812 | 4,959 | 58,122 | E | Changes logical-to-physical register assignment |
+| Rebracketed source | 196 | 3,812 | 4,959 | 58,154 | E | Different source associations and reader sharing |
+| H-only Shift | 196 | 3,811 | 4,958 | 57,922 | E | Shift accepts on h=1; proof-completion padding preserves consistency target |
+| Twelve-rotation layout | 196 | 3,812 | 4,959 | 58,294 | E | Twelve source rotations; maximum depth 36 |
+| Combined196 | 196 | 3,788 | 4,928 | 57,922 | E | H-only Shift plus successful MP result held in h |
+| Diagonal196 | 196 | 3,700 | 4,815 | 58,154 | E+L | 191-token AX; formula-code diagonal vacuity; same nine pushed items |
+| Separate196 | 196 | 3,673 | 4,780 | 58,154 | E+L | 190-token AX; diagonal vacuity separately pushed; ten-item protocol |
+| Separate/scanner196 | 196 | 3,673 | 4,780 | 58,294 | E+L | Same separate calculus; alternate source/address grammar |
+| Original/scanner196 | 196 | 3,812 | 4,959 | 58,294 | E | Changed address layout on original PA196 calculus |
+| Zerojump196 | 196 | 3,812 | 4,959 | 58,402 | I | Source26 invariant R6=0 permits alternate zero-test continuation |
+| Diagonal closing CD3 | 196 | 3,700 | 4,815 (differential) | 58,154 | I+L (differential) | Diagonal site3580 closes through register3=0; separate trit invariant |
+| Diagonal closing CD4 | 196 | 3,700 | 4,815 (differential) | 58,154 | I+L (differential) | Diagonal site3580 closes through register4=0; separate trit invariant |
+| Diagonal closing CD5 | 196 | 3,700 | 4,815 (differential) | 58,154 | I+L (differential) | Diagonal site3580 closes through register5=0; separate trit invariant |
+| Diagonal closing CD6 | 196 | 3,700 | 4,815 (differential) | 58,154 | I+L (differential) | Diagonal site3580 closes through register6=0; separate trit invariant |
+| Zerojump CD3 | 196 | 3,812 | 4,959 | 58,366 | I (audit completed) | Source26 uses logical CD3 under the checked zero invariant |
+| Rebracketed Combined196 | 196 | 3,788 | 4,928 | 57,922 | E (audit completed) | Same Combined196 primitive word and CFG, different reader layout |
+| New PA195 | 195 | 3,700 | 4,815 | 58,154 | E+L (fresh) | Unchanged diagonal191 word; 68-reader grammar with seven simultaneously valid context folds |
+
+## Evidence key
+
+- **K:** Published Lean development proves the physical refinement and the internal direction PA ⊢ Nonhalt → Con(PA). A full internal biconditional is not asserted to be an already existing kernel theorem.
+- **E:** Executable symbolic contracts for arbitrary natural register values, protected register-engine premise checks, exact finite startup, and ordinary proof transfer. This is not a newly elaborated Lean theorem.
+- **I:** The runtime obligations use a proved source invariant at the changed site.
+- **L:** The numerical calculus changes, so the supplied ordinary syntactic PA calibration must also be used. The new PA195 report includes an independently audited ordinary proof of both PA directions.
+- **Audit completed:** An archived physical table whose missing complete runtime or startup binding was checked afresh in this audit; the report does not pretend the supplied primary receipt already contained that check.
+
+For each diagonal closing variant, all 4,815 baseline branch contracts are covered differentially: 45 affected branches are replayed as 69 affine cases under the checked trit invariant; every other branch provably avoids the changed row. The complete blank startup is also checked. These four auxiliary variants occur in engine-search directories.
+
+The maximum symbolic-step statistic is an abstract certificate length, not a literal runtime bound. Finite startup alone is no nonhalting evidence. Shorter sources can have more physical states if they lose useful sharing.
+
+## Exact archive bindings
+
+1. **Published PA196:** `conpa_tm_comparison_and_reduction_search.zip` → `conpa_tm_comparison_and_reduction_search/machines/published_pa196.tm`. Receipt: `PA196/Table.lean; PA196/Independence.lean`.
+2. **Alternative head order:** `pa_tm_research_2026-11-13.zip` → `pa_tm_research_2026-11-13/alternative196/alternative196.tm`. Receipt: `alternative196/summary.json; report.tex`.
+3. **Closing CD3:** `pa_tm_extended_research_2026-11-13.zip` → `pa_tm_extended_research_2026-11-13/auxiliary196/pa196_close_cd3.tm`. Receipt: `auxiliary196/closing_patch_receipt.json`.
+4. **Closing CD4:** `pa_tm_extended_research_2026-11-13.zip` → `pa_tm_extended_research_2026-11-13/auxiliary196/pa196_close_cd4.tm`. Receipt: `auxiliary196/closing_patch_receipt.json`.
+5. **Closing CD5:** `pa_tm_extended_research_2026-11-13.zip` → `pa_tm_extended_research_2026-11-13/auxiliary196/pa196_close_cd5.tm`. Receipt: `auxiliary196/closing_patch_receipt.json`.
+6. **Closing CD6:** `pa_tm_extended_research_2026-11-13.zip` → `pa_tm_extended_research_2026-11-13/auxiliary196/pa196_close_cd6.tm`. Receipt: `auxiliary196/closing_patch_receipt.json`.
+7. **Rotation layout 1:** `pa_tm_comparison_and_reductions.zip` → `pa_tm_research/rotated196/candidate/data/rotated196.tm`. Receipt: `rotated196/checks.json`.
+8. **Rotation layout 2:** `pa_tm_comparison_and_reductions.zip` → `pa_tm_research/rotated196/candidate-macro62/data/rotated196-macro62.tm`. Receipt: `rotated196/checks-macro62.json`.
+9. **Eight-zero scanner layout:** `pa_consistency_research.zip` → `pa_consistency_research/data/variant196.tm`. Receipt: `certificates/variant196/runtime.json; certificates/variant196/startup.json`.
+10. **A/D register swap:** `conpa_tm_comparison_and_search.zip` → `conpa_tm_study/research196/accepted196_register_swap/pa196_register_AD_swap.tm`. Receipt: `research196/accepted196_register_swap/manifest.json`.
+11. **Rebracketed source:** `pa_consistency_reduction.zip` → `pa_consistency_reduction/comparison/audit/rebracketed196_dense.tm`. Receipt: `comparison/audit/rebracketed196_receipt.json`.
+12. **H-only Shift:** `pa_consistency_reduction.zip` → `pa_consistency_reduction/comparison/audit/h_catalan_node170_3_133_37.tm`. Receipt: `comparison/audit/h_only_shift_note.md; h_symbolic_result.json; h_startup_result.json`.
+13. **Twelve-rotation layout:** `pa_consistency_research_2026-11-13 (2).zip` → `pa_consistency_research_2026-11-13/rotated196/machine.tm`. Receipt: `rotated196/verification.json`.
+14. **Combined196:** `conpa_tm_study_2026-11-13.zip` → `conpa_tm_study/machines/h_only_mp_h.tm`. Receipt: `receipts/combined196_validation.json; receipts/source_binding_receipt.json`.
+15. **Diagonal196:** `pa_consistency_comparison_and_new196_2026-11-13.zip` → `pa_consistency_research/axioms/diagonal196/machine.tm`. Receipt: `axioms/diagonal196/original_validation.json; original_startup.json; report.tex`.
+16. **Separate196:** `pa_consistency_comparison_and_new196_2026-11-13.zip` → `pa_consistency_research/axioms/separate196/machine.tm`. Receipt: `axioms/separate196/original_validation.json; original_startup.json; report.tex`.
+17. **Separate/scanner196:** `pa_consistency_comparison_and_new196_2026-11-13.zip` → `pa_consistency_research/axioms/search/scanner_best196.tm`. Receipt: `axioms/search/scanner_best196.receipt.json; report.tex`.
+18. **Original/scanner196:** `pa_consistency_comparison_and_new196_2026-11-13.zip` → `pa_consistency_research/comparison/scanner196/candidate.native.tm`. Receipt: `comparison/scanner196/receipt.json`.
+19. **Zerojump196:** `pa_tm_research_2026-11-13 (2).zip` → `pa_tm_research_2026-11-13/verification/zero_jump_machine/machines/zerojump196.tm`. Receipt: `verification/zero_jump_machine; report.tex`.
+20. **Diagonal closing CD3:** `pa_consistency_comparison_and_new196_2026-11-13.zip` → `pa_consistency_research/engine/trit_diagonal_close3/machine.tm`. Receipt: `engine/trit_diagonal_close3/trit_ones_contexts/receipt.json; engine/TRIT_CONTEXTS.md; engine/trit_diagonal196/closing_differential_receipt.json`.
+21. **Diagonal closing CD4:** `pa_consistency_comparison_and_new196_2026-11-13.zip` → `pa_consistency_research/engine/trit_diagonal_close4/machine.tm`. Receipt: `engine/trit_diagonal_close4/trit_ones_contexts/receipt.json; engine/TRIT_CONTEXTS.md; engine/trit_diagonal196/closing_differential_receipt.json`.
+22. **Diagonal closing CD5:** `pa_consistency_comparison_and_new196_2026-11-13.zip` → `pa_consistency_research/engine/trit_diagonal_close5/machine.tm`. Receipt: `engine/trit_diagonal_close5/trit_ones_contexts/receipt.json; engine/TRIT_CONTEXTS.md; engine/trit_diagonal196/closing_differential_receipt.json`.
+23. **Diagonal closing CD6:** `pa_consistency_comparison_and_new196_2026-11-13.zip` → `pa_consistency_research/engine/trit_diagonal_close6/machine.tm`. Receipt: `engine/trit_diagonal_close6/trit_ones_contexts/receipt.json; engine/TRIT_CONTEXTS.md; engine/trit_diagonal196/closing_differential_receipt.json`.
+24. **Zerojump CD3:** `pa_tm_research_2026-11-13 (2).zip` → `pa_tm_research_2026-11-13/verification/low_level_search/inputs/cd3_parent196.tm`. Receipt: `zerojump_cd3_fresh_audit.json; original verification/zero_jump_machine/receipts/reproduced.json`.
+25. **Rebracketed Combined196:** `conpa_tm_study_2026-11-13.zip` → `conpa_tm_study/research/helper_search/rebracket_combined196.tm`. Receipt: `rebracket_combined196_fresh_audit.json; original research/helper_search/rebracket_results.json`.
+26. **New PA195:** `new deliverable` → `pa195/pa195.tm`. Receipt: `pa195/build_verify.py; pa195/validation.json; written PA calibration`.
+
+Commit: `906367250a7f96c923147b10df392294bced7be5`. JSON contains literal hashes and canonical graph hashes for all 25 archived supported tables. `accepted196/manifest.json` adds complete original-to-normalized relabelings; every normalized table starts at 0 and halts at 196. `comparison_findings.md` compares all 27 incoming archive families, including larger designs and rejected 195-state proposals.

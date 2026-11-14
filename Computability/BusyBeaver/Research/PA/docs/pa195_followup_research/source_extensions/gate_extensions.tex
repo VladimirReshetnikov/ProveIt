@@ -1,0 +1,37 @@
+\subsection{Further gate transformations with explicit scope}
+The broader search combines the three diagonal locations with the following
+finite changes.  First,
+\[
+ \neg(X\to(Y\to Z))\quad\longleftrightarrow\quad
+ \neg(Y\to(X\to Z))
+\]
+is proved by the explicit deduction template in
+\texttt{proof\_templates.json}; the reverse direction is the
+same template with $X,Y$ exchanged.  This exchanges $\Gamma$ and $V$ in the
+two leading antecedent positions without introducing an extra negation.
+Second, exchanging the numerical parameters $a,b$ throughout a gate preserves
+the guarded axiom family, since $c\ne a,b$ is symmetric and the exchange is
+an involution.  The gate selector exchanges its two input increments after
+the ordinary reset; no unbounded parameter search is needed.
+
+Third, use the four separation matrices already considered by the earlier
+seven-head search: the antecedents in
+$M(a,b)\to(c\to M(c,b))$ may be exchanged, and its conjunction with
+$M(c,b)\to c$ may be exchanged.  Each direction is a fixed propositional
+proof.  To transport such an equivalence through the enclosing universal
+quantifier, generalize its closed proof and use the retained universal
+implication-distribution head.  Implication and negation congruence are fixed
+propositional templates; repeating these operations transports the matrix
+equivalence through $S$, $Q$, and the whole gate.  Thus every resulting gate
+has primitive-recursive proof translations to and from the gate before the
+matrix exchange.  These are proof operations on closed derivations; no
+generalization under an unverified open assumption is used.
+
+There are $3\cdot2\cdot2\cdot4=48$ distinct 67-token gate words.  Their
+complete free-algebra expressions and stack effects were independently
+checked by \texttt{verify\_source\_family.py}, with the unchanged PA195 gate
+bound exactly as variant zero.  All full AX words retain 191 tokens, nine
+pushes, the original parameter reads, and the same guard suffix.  This is a
+finite source search family, not a physical-state lower bound; any proposed
+small transition table still requires compatible-fold and complete scanner,
+primitive-runtime, and startup verification.

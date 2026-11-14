@@ -1,0 +1,220 @@
+\section{The retained consistency calibration}
+\label{sec:calibration}
+
+The new reduction preserves the entire source proof search. Its logical
+endpoint therefore comes from composing the preceding literal-machine
+equivalence with the retained calibration of the selected Joint U209
+parent~\cite{joint}. This section identifies the exact mathematical
+dependencies and the scope of their verification. The fixed K215 theorem
+about ZFC~\cite{k215pa} is background and a source of reusable interfaces;
+it is not applied to the changed transition table by renaming its conclusion.
+
+\subsection{Unary power covering}
+
+The proposed theory $\mathsf U$ uses equality-free classical first-order
+logic over a nonempty domain, with one binary relation $E$, written as
+membership. Put
+\[
+ \operatorname{Sub}(x,a):=\forall t\,(E(t,x)\to E(t,a)).
+\]
+For each formula $\varphi$ whose free variables are contained in
+$\{x\}$, its sole nonlogical schema is
+\begin{equation}
+\label{eq:unary-calibration}
+\forall a\,\exists b\left[
+ \forall x\,(E(x,b)\to\varphi(x))\ \land\
+ \forall x\,(\operatorname{Sub}(x,a)\to
+                       (\varphi(x)\to E(x,b)))\right].
+\end{equation}
+All bound variables are freshened before insertion. In particular, the
+source $a$ cannot occur freely in $\varphi$. Arbitrarily many bound
+variables and unrestricted quantifier complexity are permitted. The cover
+contains all selected represented subsets of $a$, and may contain further
+selected objects. It need not be an exact filter of the subsets of $a$.
+The tempting exactification $\varphi(x)\mapsto
+\operatorname{Sub}(x,a)\land\varphi(x)$ is illegal in this unary schema.
+
+The supplied report~\cite{unary} proves interpretations in both directions
+between $\mathsf U$ and full PA, with uniform finite-proof transformations.
+The reviewed lower argument addresses the parameter restriction through a
+specific noncircular sequence of constructions, rather than assuming
+unrestricted separation.
+
+Define coextensionality $u\simeq v$ by equality of member profiles. An
+object is saturated when its membership predicate respects this relation.
+Numerical representatives are saturated, transitive objects whose members
+are saturated and linearly ordered by membership modulo coextensionality.
+A further endpoint condition says that each nonempty intersection of an
+existing object's member profile with the number or one of its numerical
+initial segments has least and greatest member classes. All these
+conditions are fixed first-order formulas. They assert neither external
+finiteness nor external well-foundedness.
+
+False filtering supplies an empty object. The local numerical facts give
+heredity, a greatest predecessor for each nonempty number, and uniqueness
+of existing successors modulo coextensionality. They do not initially
+assert that every number has a successor. A unary filter of failures then
+proves induction: if failures occur below a counterexample $n$, choose
+their least class and use its predecessor; if there are no failures below
+$n$, the predecessor of $n$ supplies the contradiction directly. Neither
+case needs an already existing successor of $n$.
+
+For an induction predicate $\theta(v,\bar p)$, write
+$A_\theta(\bar p)$ for its base and step premises. Parameter
+internalization uses the legal unary formula
+\[
+ Q(v):=\forall\bar p\,
+             (A_\theta(\bar p)\to\theta(v,\bar p)).
+\]
+This yields induction with arbitrary ambient parameters, even when the
+predicate is not invariant under coextensionality. Induction next gives
+comparison of numerical classes and least numerical witnesses. Fixed
+finite tuples can be minimized lexicographically without assuming objects
+that already encode those tuples.
+
+The resulting bounded comprehension theorem has explicit invariance and
+support hypotheses. Suppose $\chi(z,\bar n)$ is invariant in its numerical
+parameters and every selected $z$ is a subset of some supporting object.
+If exact comprehension fails, let $\bar r$ be the least failing numerical
+tuple. The unary matrix
+\[
+ \exists\bar n\,
+    (\operatorname{LeastFailure}(\bar n)\land\chi(z,\bar n))
+\]
+is extensionally $\chi(z,\bar r)$. Filtering at a separately obtained
+support source gives the forbidden exact object. The parameters are bound
+inside the matrix. This is a finite classical proof construction, not an
+algorithm that evaluates a least failure or a hidden truth predicate.
+
+This comprehension supplies total successors, powers of numerical
+sources, and saturated singleton, pair, and ordered-pair codes. Pair codes
+with coordinates in a number $n$ are subsets of an exact power of $n$,
+providing supports for numerical graph comprehension. Deterministic
+histories are extended using a canonical formula that existentially binds
+the old history; an arbitrary graph is never inserted as a forbidden free
+matrix parameter. History uniqueness precedes extension, and a separate
+numerical bound controls values without assuming monotonicity. Successor
+iteration gives addition, iteration of addition gives multiplication, and
+the already derived induction gives every translated PA induction instance.
+
+\subsection{The upper interpretation and internal proof transport}
+
+For the reverse direction, interpret $E(x,a)$ as ``bit $x$ of $a$ is
+one.'' PA proves that the translated subset condition implies $x\le a$.
+For each fixed arithmetic formula $\chi$, PA induction constructs its
+binary characteristic code on the interval through $a$. Applying this to
+$\operatorname{Sub}(x,a)\land\varphi(x)$ gives an exact filter and hence
+the weak cover~\eqref{eq:unary-calibration}. The argument also permits
+arbitrary extra matrix parameters. Because it uses PA's induction scheme,
+it applies in nonstandard PA models and requires no uniform satisfaction
+predicate. PA also proves global irreflexivity of this membership relation.
+
+Once the lower interpretation is fixed, its finite non-induction
+obligations have fixed derivations; an arbitrary induction instance is
+inserted into the preceding uniform template. Fresh-name selection,
+substitution, operation-graph translation, relativization, and finite proof
+concatenation are primitive-recursive syntax operations. The upper
+translation similarly inserts each fixed translated formula into the
+finite-comprehension proof. Induction on formulas and coded derivations
+verifies the resulting refutation transformations in PA. Thus the supplied
+claim is the internal syntactic equivalence
+\begin{equation}
+\label{eq:U-PA-calibration}
+ \PA\vdash\Con(\mathsf U)\leftrightarrow\Con(\PA),
+\end{equation}
+not merely standard-model equiconsistency. The package gives the ordinary
+mathematical uniformity argument; it does not provide a complete executable
+arbitrary-proof translator or a new proof-assistant certificate for this
+assertion.
+
+\subsection{What the native machine actually enumerates}
+
+The selected machine preserves the native Cantor-coded calculus. It does
+not newly compile the positive dyadic emitter also proposed in the unary
+report. Its ordinary machine-facing theory is $\mathsf W+\mathsf{IR}$:
+$\mathsf W$ allows arbitrary matrix parameters in the weak-cover schema,
+and $\mathsf{IR}$ is $\forall x\,\neg E(x,x)$. Its consistency calibration
+is the cycle of PA-verifiable reductions
+\[
+ \Con(\PA)\ \Longrightarrow\ \Con(\mathsf W+\mathsf{IR})
+ \ \Longrightarrow\ \Con(\mathsf U)
+ \ \Longrightarrow\ \Con(\PA).
+\]
+The first arrow uses the bit interpretation, the second the inclusion of
+the unary instances, and the third the lower interpretation just reviewed.
+
+The numerical calculus has truth alias $0$, target $1$, seven logical
+rows, a dominated propositional row, modus ponens, generalization, and a
+gated cover/vacuity bundle. In the retained role assignment, matrix code
+and output-variable label are $a$, the source label is $b$, and the tested
+label is $c$; the gate requires $c\ne a,b$. Every effective variable label
+in a positive matrix code is smaller than that code, while code zero is
+a closed truth alias. The output label is therefore fresh.
+
+When $a\ne b$, the generated guard is the subset condition. When $a=b$,
+the guard's local binder captures the source occurrence and gives
+emptiness under irreflexivity. A cover at an empty source supplies this
+exceptional instance, including the small codes zero and one. The gate
+also preserves atomic membership vacuity. For completeness, a desired
+matrix is padded to an equivalent code $n>1$ and emitted using
+$(a,b,c)=(n,0,1)$; the logical proof templates remove the padding and
+restore names. Auxiliary equality is handled through two-sided membership
+indiscernibility, not by silently assuming unrestricted primitive-equality
+vacuity. These are the retained U214/U213 calibration arguments in the
+parent's reference chain~\cite{joint}.
+
+\subsection{Proof search and the protected startup}
+
+The source contains 3,909 primitive occurrences. Its axiom command keeps
+the theorem-valued output and ten-entry stack interface needed by the
+three-command proof compiler. Strong completeness works above an arbitrary
+underlying numerical stack after counter and cache reset. Successful
+candidate codes are cofinal, and each residual continuation decreases;
+retaining a finite candidate cutoff therefore does not lose completeness.
+The native alias $P(0,0)=0$ is explicitly handled, including the special
+zero case of the counter-setting macro.
+
+Startup needs a separate soundness argument. The shortened initializer
+reaches an interior axiom-command suffix, rather than a complete invocation.
+Its source bridge starts at ordinal $106$ with logical store
+$(1,0,4,0,0,1,0,0,1)$ and reaches ordinal $136$ after 141 source primitives.
+The raw cache value $1$ is used as an arithmetic parameter, and the stack
+tail $4$ is opaque; neither is assumed theorem-valued.
+
+The suffix builds nine explicit theorem heads above that tail and reaches
+scheduler candidate $1$ with counter and cache zero. A ghost explicit
+stack length is retained because the pairing alias prevents recovery of
+list length from its integer code. The all-natural scheduler-credit proof
+assigns conservative weights $-1,0,10$ to transfer, modus ponens, and axiom
+commands. Its maximal prefix debt from candidate $1$ is two, leaving a
+permanent margin of seven heads. Hence no pop exposes the opaque tail.
+This unbounded argument supplies startup soundness; a finite blank trace
+alone would not do so.
+
+\subsection{Composed endpoint and proof status}
+
+\begin{corollary}
+For the exact delivered 208-state table, with its own initialization and
+blank input tape,
+\[
+ \PA\vdash
+ \neg\Halt(\Unew,\mathrm{blank})
+       \leftrightarrow\Con(\mathsf U)
+       \leftrightarrow\Con(\PA).
+\]
+\end{corollary}
+\begin{proof}
+Compose the new literal halting equivalence of
+Theorem~\ref{thm:local208-equivalence} with the selected parent's retained
+numerical proof-search, compiler, startup, and theory calibration, then
+apply~\eqref{eq:U-PA-calibration}.
+\end{proof}
+
+No consistency assumption is needed for the biconditional. Asserting
+actual nonhalting additionally uses $\Con(\PA)$. The result is an ordinary
+PA-formalizable mathematical proof, supported by exact finite checks and
+universal symbolic induction certificates. Those certificates are stronger
+than bounded register tests, but their checker is not a proof-assistant
+kernel. The separate formal K215/Con(ZFC) and Theory K developments
+\cite{k215pa,k230} establish different endpoints. This release does not
+claim a newly compiled end-to-end Lean, Rocq, or MM0 theorem for U208.

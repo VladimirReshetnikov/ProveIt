@@ -1,0 +1,36 @@
+\section{The upper interpretation and internal proof transport}
+\label{sec:upper}
+
+\subsection{Binary membership in every PA model}
+
+Interpret $E(x,a)$ by $\Bit(a,x)$, meaning that the $x$th binary digit of $a$ is one. This is the usual arithmetic representation of hereditary finite membership; its role in finite-set interpretations is discussed in \cite{kaye-wong}. We give the particular verification needed here rather than importing a full finite-set theory.
+
+PA proves that inclusion of the one-bits of $x$ in those of $a$ implies $x\le a$. Thus the translation of $\Sub(x,a)$ bounds its possible solutions by $a$. For every fixed arithmetic formula $\chi(i,\bar p)$, PA proves the finite-comprehension instance
+\[
+ \forall k\,\exists c<2^k\,\forall i<k\,
+        (\Bit(c,i)\leftrightarrow\chi(i,\bar p)).
+\]
+The proof is induction on $k$: at stage $k+1$, leave the previous code unchanged if $\chi(k,\bar p)$ is false, and add $2^k$ if it is true. The corresponding PA induction instance and classical excluded middle suffice. Exponentiation here denotes its PA-definable total graph; it is not an added symbol in the final interpretation.
+
+For a given source $a$, apply this fact at $k=a+1$ to
+\[
+        \chi(i,a):=\Sub(i,a)^*\land\varphi(i)^*.
+\]
+No larger index satisfies the translated subset condition. The resulting $c$ therefore satisfies the exact filter condition, and in particular both weak covering clauses. The argument even allows arbitrary additional matrix parameters. It establishes a formula-by-formula interpretation in every PA model, including nonstandard ones. It does not decide $\chi$ or assert a uniform truth predicate.
+
+Also PA proves $\neg E(a,a)$ under this interpretation: the $a$th bit of $a$ cannot be one, since $2^a>a$. This additional fact will validate the positive numerical interface below.
+
+\subsection{What the consistency biconditional asserts}
+
+The lower interpretation uses fixed formulas for its domain, equality, zero, successor, addition, and multiplication. Its finite non-induction obligations have the proofs in the preceding sections. For an arbitrary translated PA induction formula, the unary construction of Section~\ref{un:induction} forms the universally quantified base-and-step premise and inserts it in one fixed proof pattern.
+
+The upper interpretation expands each given unary axiom, forms its translated arithmetic predicate, and inserts that predicate into the finite-comprehension induction proof just described. Both procedures operate on finite syntax. Bound-variable renaming, substitution, construction of a fixed-length lexicographic formula, proof concatenation, and verification of earlier proof lines are primitive recursive. The least-failure argument is a classical proof pattern; the translator never searches for a semantically true least failure.
+
+Consequently there are primitive-recursive maps $f,g$ on proof codes such that PA proves
+\begin{align*}
+ \Prf_{\PA}(p,\bot)&\longrightarrow\Prf_{\UU}(f(p),\bot),\\
+ \Prf_{\UU}(q,\bot)&\longrightarrow\Prf_{\PA}(g(q),\bot).
+\end{align*}
+Correctness is proved by structural induction on formulas and induction through the coded finite derivation. Negating the existential versions gives Theorem~\ref{thm:main}. No consistency premise or reflection principle is used in these syntactic transformations.
+
+The package proves the transformations mathematically; it does not implement a complete translator for arbitrary PA proofs or provide its Lean, Rocq, or MM0 verification. The executable proof compiler supplied later operates between two specified presentations of the positive reference calculus. These are different scopes of verification.

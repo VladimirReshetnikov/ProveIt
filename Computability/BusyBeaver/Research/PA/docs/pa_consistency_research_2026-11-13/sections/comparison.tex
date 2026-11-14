@@ -1,0 +1,60 @@
+\section{Frozen sources and comparison}
+The task concerns the standard binary, one-tape model. The tape extends in both directions; every cell is initially zero; each ordinary transition writes one bit and moves exactly one cell left or right. A working state is a state with transitions. The separate halt label is excluded from the working-state count. No larger alphabet, nonblank input, or change of counting convention is used in this report.
+
+The comparison freezes the following repository revisions, rather than the moving \texttt{main} branches:
+\begin{itemize}
+\item James Chang's current construction: \texttt{jamesyc/BusyBeaver} at \nolinkurl{407cdc356f6b586635e71ac92be394255f4bfea4}.
+\item Its historical predecessor: the same repository at \nolinkurl{69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\item The ProveIt incoming reports and ConciseIPRA proposals: \texttt{VladimirReshetnikov/ProveIt} at \nolinkurl{239b7a406e24405d464edc526e09d402abce5bc5}.
+\end{itemize}
+The source papers, theorem lists, transition files, and relevant implementation files were read directly from these snapshots. References are given at the end; local copies of the small inputs used by the reproducible checks accompany the report.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Construction & Working states & Rows & Principal change\\
+\midrule
+U208 submissions' U209 parent &209&418&Earlier program layout\\
+ProveIt U208 presentations &208&416&Conditional history sharing\\
+James historical PA209 &209&418&Published PA verification\\
+James current PA196 &196&392&Smaller calculus and new layout\\
+\bottomrule
+\end{tabular}
+\caption{Working states exclude the halt label. Identical state counts do not imply identical transition graphs.}
+\end{table}
+
+The label ``U209 parent'' here refers specifically to the parent supplied with the U208 submissions. We did not independently identify the exact earlier common transition table of that branch and James's historical PA209. The historical paper describes an earlier 211-state PA construction, identifies K230 as the source of its register engine, and cites PA238 for proof-calculus ingredients~\cite{previous}. Shared construction ingredients alone do not identify an identical common whole-machine ancestor.
+
+\subsection{The 208-state submissions are not independent reductions}
+Eleven PA-related incoming ZIP archives were inspected. Among the U208 construction submissions, nine literal table presentations reduce to two rooted, symbol-labelled transition-graph isomorphism classes. This is an exact graph comparison: the checker starts at the declared initial state, follows the read-0 and read-1 successors in a fixed order, and retains both the written symbol and the direction. It does not erase transition labels or compare only sampled trajectories.
+
+The two classes use the same underlying conditional-history idea. One presentation retains native state 172 and eliminates 211; the other retains 211 and eliminates 172. The latter redirects the old entry from native row \((116,0)\) to 211 and replaces row \((211,0)\) by a leftward visit to helper 217. Previously written bits distinguish the old roles. In the checked local simulations, the distinguishing histories include the two-bit history \(10\), and the exceptional macro can revisit the merged state itself. A search which requires helpers to avoid the merged state therefore misses this established reduction.
+
+The included comparison receipt provides the original file hashes, the canonical hashes, and the complete renaming maps. The local-history checks were reproduced for both classes. These computations verify the stated finite reduction; they do not manufacture a new formal PA calibration for the older incoming reports.
+
+\subsection{What changed from James's PA209 to PA196}
+Let \(p(a,b)=\binom{a+b+1}{2}+b\). The new encoding keeps
+\[
+ I(A,B)=4p(A,B),\qquad M(a,b)=4p(a,b)+1,\qquad E(a,b)=4p(a,b)+3,
+\]
+but changes the universal constructor to
+\[
+ U(a,B)=4p(B,a)+2.
+\]
+The old constructor was \(4p(a,B)+2\). This is a deliberate transposition of the quantifier arguments, and it changes the arithmetic program used to assemble axiom instances.
+
+PA196 also removes the old seventh equality head and adds guarded equality vacuity to the separation gate. Its remaining heads are reordered and, where helpful, propositionally rearranged. The number of items pushed by the axiom command, including the saved top, falls from ten to nine. The physical register program falls from 3,948 to 3,812 source sites. The historical command-level presentation collapses one physical site and consequently sometimes reports 3,947; that is a different count, not a discrepancy in the literal table.
+
+The 196 states divide into 36 tape-engine states, 13 leaf-routing states, and 147 node-reader states. There are 159 distinct binary source nodes. The axiom body has 201 macro items, 68 distinct internal nodes, and six context-dependent pairs implemented with 62 reader states. Two obsolete helper states outside that body were also removed. The startup reaches its clean candidate-2 frame after 58,154 transitions, compared with 58,210 for the historical 209-state table.
+
+The native states 172 and 211 used by the U208 reduction are both absent from PA196. Consequently, subtracting the U208 saving of one from the PA196 total is unjustified. The reductions overlap in the portion of the program that has already been replaced.
+
+\subsection{Published formal statement versus the requested biconditional}
+Write \(H_{196}\) for the literal arithmetic halting sentence and \(N_{196}=\neg H_{196}\). The retrieved theorem list and README explicitly state the internal implication
+\[
+ \PA\vdash N_{196}\longrightarrow\Con(\PA).
+\]
+The repository also proves standard-model nonhalting in Lean's metatheory and the relevant PA unprovability results. Its file \texttt{PA196/Logic/Soundness.lean} explicitly describes its semantic soundness argument as external. Those statements should not be silently relabelled as an already kernel-checked PA biconditional.
+
+Section~\ref{sec:internal} supplies the syntactic argument needed for the reverse implication. That additional argument is a written proof construction; it is distinguished from the upstream checked theorem and from the finite machine checks run for this report.

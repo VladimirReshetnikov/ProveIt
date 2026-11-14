@@ -1,0 +1,163 @@
+\section{Comparison of the supplied proposals}
+\label{sec:comparison}
+\subsection{Frozen scope and exact identities}
+The incoming directory was retrieved at ProveIt commit
+\begin{center}\small\ttfamily
+343da82d7384d10ec9fd1c17361fc923b2d1d117.
+\end{center}
+It contained five executable U209 packages, a sixth U209 ZIP containing
+only a PDF, and the unary-theory archive~\cite{unary,plain,compat,folds,composed,joint,jointpdf}.
+The download of every item was checked against its Git blob identifier.
+\path{reference/source_inventory.json} retains the exact URLs, names,
+sizes, and blob identifiers; the comparison snapshots also record SHA-256.
+
+\begin{center}
+\small
+\begin{tabular}{@{}llcl@{}}
+\toprule
+Submission & Dense SHA-256 prefix & Class & Source depth\\
+\midrule
+Plain U209 & \texttt{65ccb606c8e9} & A & 42\\
+Compatibility & \texttt{bda91bd40880} & B & 41\\
+Compatible Folds & \texttt{5ded628d692f} & A & 42\\
+Composed & \texttt{3a69998d818b} & A & 42\\
+Joint, full package & \texttt{5ded628d692f} & A & 42\\
+Joint, PDF-only package & \texttt{65ccb606c8e9} & A & 42\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here ``class'' means rooted deterministic transition-graph isomorphism
+preserving the initial state, halt, read symbols, write symbols, and
+directions. Compatible Folds and full Joint have byte-identical native
+and dense tables. Plain and Composed differ from them only by state
+renaming. The four class-A executable packages also have byte-identical
+source occurrence maps. The PDF-only Joint appendix was extracted
+independently: all 418 printed transition rows agree with Plain. It
+therefore identifies Plain's table, even though its title resembles
+the full Joint package.
+
+There are consequently \emph{two}, rather than five or six, distinct
+machines in the comparison. A different archive, table hash, or rotation
+recipe need not describe a different machine.
+
+\subsection{Independent isomorphism and source checks}
+A rooted read-labeled graph map is forced by following zero and one
+edges from state~0. An independent breadth-first procedure propagates
+that map, checking writes, directions, injectivity, and the distinguished
+halt label. Every working state is graph-reachable in every table, so
+a consistent map covers the whole machine. This is syntactic graph
+reachability; it does not assert that the actual blank computation
+visits every state.
+
+In native labels, the nontrivial permutations are particularly small:
+\[
+\begin{array}{ll}
+\text{Plain to Joint or Compatible Folds:}&
+ (217\ 129\ 214)(215\ 204\ 216),\\
+\text{Plain to Composed:}&(215\ 129\ 204\ 214\ 216).
+\end{array}
+\]
+All other labels are fixed, including initial state~0 and halt~254.
+The checker verifies the conjugacy of every row. For Plain versus
+Compatibility, the forced map has an explicit conflicting assignment;
+the witness is retained in \path{comparison/independent_comparison.json}.
+Its edge words are paths in a labeled graph, not claimed tape histories.
+
+The two source layouts differ in exactly 720 addresses. An independent
+interval-based resolver verifies the same ordered 3,909 opcode/operand
+pairs and all 5,083 guarded ordinal control edges. Both have maximum
+consecutive-zero run six and 197 distinct source subtrees. Compatibility
+reduces maximum address depth from 42 to 41. A shallower source tree alone
+does not establish a better asymptotic runtime for the complete proof search.
+
+\subsection{What is shared, and what each package contributes}
+The U209 machines descend from one common U212 construction. Their
+joint layouts allow deletion of native states 180, 181, and 218, which
+had previously been removed separately in three U211 proposals.
+Class A uses representatives 163, 220, and 157. Compatibility instead
+uses 216 for state 180, with 220 and 157 serving the other two folds.
+All packages retain the arithmetic-entry repair at native row $171/0$,
+redirecting the backward entry from 7 to 205. That repair is necessary
+because a source decoder also serves an arithmetic role.
+
+The common reduction method exploits bits written immediately before
+a decoder entry. Opposite predecessor bits allow two control roles to
+share a state when an existing helper recovers the role from the tape.
+The source reassociations ensure that the required tags coexist without
+breaking the primitive control-flow graph or other interpreter entries.
+Different deleted labels therefore do not automatically give additive
+savings: the helper and address requirements can conflict.
+
+\paragraph{Plain.}
+This package gives a detailed ledger of 30 closed source rotations from
+U212, explicit local quotient cases, and careful treatment of the
+arithmetic entry. It distinguishes algebraic intermediate layouts from
+valid final interpreters: some intermediate addresses have seven-zero
+runs, while the final runtime proof uses the restored six-zero bound.
+It also supplies a useful obstruction: simply deleting the apparently
+dominated propositional row destroys the intended PA calibration.
+A Boolean interpretation using equivalence as implication validates
+the remaining calculus while keeping its target false. That is a
+reason to retain the row, not an unexplored one-state saving.
+
+\paragraph{Compatibility.}
+This is the genuinely different U209 family. Its eight-factor
+reassociation changes 720 addresses relative to class A and produces
+depth 41. Its separate construction, runtime, and theory audits make
+the changed source layout easy to inspect. It provides an important
+second search starting point, though its numerical calculus and
+symbolic inference engine are shared with the other packages.
+
+\paragraph{Compatible Folds.}
+Its staged 212-to-211-to-210-to-209 construction makes the coexistence
+of the old three folds explicit. It is a useful presentation of the
+same literal machine later delivered in the full Joint package.
+The extra exposition is valuable even though it is not an additional
+transition-graph class.
+
+\paragraph{Composed.}
+The grouped source proof and independent local-fold checker provide
+another view of class A. The machine itself is a permutation of Plain's
+decoder labels; its savings cannot be added to Plain's savings.
+
+\paragraph{Joint, full package.}
+This is the selected baseline for the new construction. Its direct
+18-selector layout, compact complete ancestry, independent source-prefix
+auditor, and finite C++ executor make it convenient to extend and review.
+The selection is about its evidence organization, not a smaller state count
+than the other class-A presentations.
+
+\paragraph{Joint, PDF-only package.}
+The report is readable and its printed table is complete, but it does
+not add an executable verification package. Its table agrees with
+Plain, not byte-for-byte with full Joint. This distinction matters when
+binding a mathematical argument to a literal transition file.
+
+\subsection{Fresh comparison evidence and remaining common dependencies}
+All five executable packages passed their advertised quick replay
+commands in separate copies. Those commands check manifests, deterministic
+construction, local folds, source bindings, and startup according to their
+documented scope. The six-table comparison was independently rerun under
+ordinary and optimized Python. The comparison phase did not rerun five
+copies of the full symbolic runtime derivation. Instead, the new primary
+U208 table received its own complete fresh derivation in
+Section~\ref{sec:verification}.
+
+The inherited runtime engines are essentially the same implementation
+under label and import changes. Multiple passing receipts should not be
+presented as independent logical foundations. The unary-theory
+interpretation, native numerical calculus, strong compiler, and protected
+startup argument are also shared. The new reduction preserves these
+components and has a short separate local proof.
+
+\subsection{Why the new fold was outside the old local search}
+The retained Joint search tested direct aliases through 15 steps and
+one-row folds using opposite unconditional predecessor tags through
+17 steps. No result was found in those scopes. Native state 211 is
+entered from both directions and does not possess a uniform predecessor
+tag. Its useful property is conditional on reading zero; state 172
+needs two predecessor cells. Extending the search to finite-history
+contexts exposes this interface. The successful proof needs only the
+five-state invariant and the four finite identities below, and does
+not depend on search bounds or random screening.

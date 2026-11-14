@@ -1,0 +1,120 @@
+{
+  "title": "PA195DC: a materially different 195-state binary Turing machine for Con(PA)",
+  "report_date": "2026-11-13",
+  "date_convention": "America/Los_Angeles; latest source archive is named 2026-11-14 in UTC",
+  "source_repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "source_commit": "5ed5a41fa5932433111eea096311364c6087e8e3",
+  "source_paths": [
+    "Computability/BusyBeaver/Research/PA",
+    "docs/incoming",
+    "Computability/BusyBeaver/Research/ZFC",
+    "Logic/PrimitiveRecursiveArithmetic/ConciseIPRA"
+  ],
+  "main_result": {
+    "working_states": 195,
+    "alphabet": [
+      0,
+      1
+    ],
+    "dense_start": 0,
+    "dense_halt": 195,
+    "tape": "two-way infinite, initially all zero, head at 0",
+    "transition_rows": 390,
+    "source_instructions": 3676,
+    "symbolic_source_outcomes": 4784,
+    "local_fold_cases": 28,
+    "blank_startup_transitions": 57922,
+    "dense_table_sha256": "e5cc1b2cb374fa4342070e95d8bdfd60c1bb845e7a52d44857bdee937bba7938"
+  },
+  "proof_status": {
+    "mathematical_claim": "PA proves Halt(M,blank) iff there is a PA proof of 0=1; hence PA proves Nonhalt(M,blank) iff Con(PA).",
+    "ordinary_mathematical_proof": "report/pa195_diagonal_combined.pdf",
+    "new_closed_proof_assistant_theorem": false,
+    "finite_checkers_do_not_replace_logical_calibration": true,
+    "verified_sub195_machine_found": false
+  },
+  "inherited_materials": [
+    {
+      "component": "191-token bundled-diagonal emitter, original 195-state baseline, seven contextual folds",
+      "source_archive": "docs/incoming/pa195_conpa_2026-11-13.zip",
+      "local_path": "machine/baseline195",
+      "details": "Original baseline retained, excluding transient Python caches."
+    },
+    {
+      "component": "Combined command controller and uniform compiler",
+      "source_archives": [
+        "docs/incoming/conpa_tm_study_2026-11-13.zip",
+        "docs/incoming/pa_consistency_cross_archive.zip"
+      ],
+      "details": "Applied and checked with the original bundled-diagonal emitter; report specializes the nine-entry compiler."
+    },
+    {
+      "component": "195S/195C comparison and independent physical checker components",
+      "source_archive": "docs/incoming/PA195_ConPA_research_2026-11-14.zip",
+      "local_paths": [
+        "comparison",
+        "independent",
+        "search/annealing"
+      ],
+      "details": "Each directory retains attribution and exact imported-source metadata."
+    },
+    {
+      "component": "PA196 engine and formal components",
+      "upstream_repository": "https://github.com/jamesyc/BusyBeaver",
+      "upstream_commit": "407cdc356f6b586635e71ac92be394255f4bfea4",
+      "details": "Imported via pinned ProveIt archive; unchanged James Chang and ProveIt license notices retained."
+    }
+  ],
+  "new_contributions": [
+    "Exact six-row diagonal-plus-Combined195 construction",
+    "Full source/tape and arbitrary-value command verification for that combination",
+    "Ordinary mathematical PA biconditional with explicit inherited calibration",
+    "All-archive inventory and graph comparison",
+    "Corrected bounded searches and labeled optional secondary implementation witnesses"
+  ],
+  "corpus_scope": {
+    "top_level_zip_archives": 32,
+    "distinct_zip_payloads": 45,
+    "archive_references": 73,
+    "literal_table_occurrences": 2363,
+    "distinct_table_bytes": 583,
+    "labeled_transition_functions": 573,
+    "spanning_action_graph_classes": 422,
+    "disconnected_synthetic_controls": 2,
+    "literal_census_formats": [
+      ".tm",
+      "strict five-column numeric .txt",
+      ".tsv",
+      ".csv"
+    ],
+    "full_provenance": "comparison/graph_classes.json"
+  },
+  "search_summary": {
+    "corrected_anneal_proposals": 39661078,
+    "accepted_moves": 7153880,
+    "final_neighborhood_endpoint_trees": 49513,
+    "sub195_hits": 0,
+    "lower_bound_claim": false
+  },
+  "validation": {
+    "clean_copy_commands": [
+      "python3 machine/build_verify.py",
+      "python3 independent/replay.py",
+      "python3 comparison/verify_novelty.py machine/machine.tm --start 0"
+    ],
+    "all_exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "logs_directory": "validation",
+    "pdf_rendered_and_visually_checked": true
+  },
+  "license_locations": [
+    "machine/baseline195/vendor/LICENSE.ProveIt",
+    "machine/baseline195/vendor/LICENSE.JamesChang",
+    "independent/LICENSE.ProveIt",
+    "independent/LICENSE.JamesChang",
+    "comparison/LICENSE.ProveIt.txt"
+  ]
+}

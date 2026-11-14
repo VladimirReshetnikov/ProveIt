@@ -1,0 +1,214 @@
+Frozen artifact identities: 45 files checked
+
+>>> /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 code/build.py
+{
+  "status": "EXACT_CONSTRUCTION_PASS",
+  "working_states": 211,
+  "transition_rows": 422,
+  "start": 0,
+  "dense_halt": 211,
+  "native_halt": 254,
+  "symbols": [
+    0,
+    1
+  ],
+  "blank": 0,
+  "tapes": 1,
+  "tape_index": "integers",
+  "initial_head": 0,
+  "moves": [
+    "L",
+    "R"
+  ],
+  "rotations": 9,
+  "deleted_native_state": 181,
+  "fold_keeper": 220,
+  "fold_helper": 129,
+  "all_working_states_graph_reachable": true,
+  "parent_native_sha256": "386ce16259d4c97e4af31b3ba494feaff11a0a1a066e0235dddc154b4cea38c4",
+  "rotated_native_sha256": "e3fe20c1d0181997354d0cf97b8ccceb85a1ec8055ad32ea5d02cacdf1a1b9d5",
+  "native_sha256": "7edae566b4c2e5c34d88030e0ae7caa49edda32c174b06b1a68bf9eb78567c8d",
+  "dense_sha256": "a529d2ea12b0f4c4185d2fe8ce9dd0f1633c04f39f6bf272bb37bf97bb31a349",
+  "source_sha256": "a1c81a3abff846a329a109927ce92d0be1553b7af2671855cdfe5bc4d6d953d1"
+}
+
+>>> /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 code/audit_rotation_source.py inputs/u212.native.tm inputs/u212.sites.json inputs/rotations.json machine/rotated212.native.tm machine/sites.json --output evidence/source.json
+AUDIT_STEP 0 215 204 1
+AUDIT_STEP 1 217 181 1
+AUDIT_STEP 2 185 217 0
+AUDIT_STEP 3 174 185 1
+AUDIT_STEP 4 129 158 0
+AUDIT_STEP 5 217 215 1
+AUDIT_STEP 6 204 214 0
+AUDIT_STEP 7 215 129 0
+AUDIT_STEP 8 216 220 1
+{
+  "status": "INDEPENDENT_ROTATION_SOURCE_AUDIT_PASS",
+  "rotations": 9,
+  "base_metrics": {
+    "primitives": 3909,
+    "dag_nodes": 197,
+    "maximum_depth": 42,
+    "maximum_zero_run": 6
+  },
+  "final_metrics": {
+    "primitives": 3909,
+    "dag_nodes": 197,
+    "maximum_depth": 42,
+    "maximum_zero_run": 6
+  },
+  "source_cfg_primitives_checked_per_stage": 3909,
+  "seven_zero_detector_source_bound_satisfied": true,
+  "scope": "Literal decoder/source reconstruction and exact ordinal CFG only. Whole-runtime and startup correctness are separate obligations.",
+  "input_sha256": {
+    "base_table": "386ce16259d4c97e4af31b3ba494feaff11a0a1a066e0235dddc154b4cea38c4",
+    "base_source": "7b6539dc67b66ff73f22554018d7af5985d85574460a73fea5f025103c523d00",
+    "recipe": "79eb13438ed2b3a317cb763e6f0641c72a2a3db9d1bbad53c874e6f3b6f35b25",
+    "final_table": "e3fe20c1d0181997354d0cf97b8ccceb85a1ec8055ad32ea5d02cacdf1a1b9d5",
+    "final_source": "a1c81a3abff846a329a109927ce92d0be1553b7af2671855cdfe5bc4d6d953d1"
+  }
+}
+
+>>> /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 code/verify_fold.py
+{
+  "status": "UNIVERSAL_LOCAL_FOLD_PASS",
+  "old_states": 212,
+  "new_states": 211,
+  "incoming_keep": [
+    [
+      216,
+      0,
+      0,
+      1
+    ]
+  ],
+  "incoming_drop": [
+    [
+      185,
+      1,
+      1,
+      1
+    ]
+  ],
+  "ordinary_rows_checked": 420,
+  "mutations_rejected": [
+    "left entry tag",
+    "right entry tag",
+    "left entry direction",
+    "right entry direction",
+    "helper zero write",
+    "helper one write",
+    "left result write",
+    "right result direction",
+    "common result write",
+    "backward selector move",
+    "ordinary target",
+    "circular helper"
+  ],
+  "time_identity": "T_new = T_old + 2*k; T_old <= T_new <= 3*T_old",
+  "scope": "All common initial tapes from state 0, for the final fold only. The source-address rotations use a different simulation relation."
+}
+
+>>> /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 -O code/verify_fold.py
+{
+  "status": "UNIVERSAL_LOCAL_FOLD_PASS",
+  "old_states": 212,
+  "new_states": 211,
+  "incoming_keep": [
+    [
+      216,
+      0,
+      0,
+      1
+    ]
+  ],
+  "incoming_drop": [
+    [
+      185,
+      1,
+      1,
+      1
+    ]
+  ],
+  "ordinary_rows_checked": 420,
+  "mutations_rejected": [
+    "left entry tag",
+    "right entry tag",
+    "left entry direction",
+    "right entry direction",
+    "helper zero write",
+    "helper one write",
+    "left result write",
+    "right result direction",
+    "common result write",
+    "backward selector move",
+    "ordinary target",
+    "circular helper"
+  ],
+  "time_identity": "T_new = T_old + 2*k; T_old <= T_new <= 3*T_old",
+  "scope": "All common initial tapes from state 0, for the final fold only. The source-address rotations use a different simulation relation."
+}
+
+>>> /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 code/audit_startup.py inputs/u212.native.tm machine/u211.native.tm machine/sites.json --output evidence/startup.json
+{
+  "status": "INDEPENDENT_BLANK_STARTUP_PASS",
+  "steps": 48140,
+  "state": 84,
+  "head": -2,
+  "source_ordinal": 136,
+  "source_address": "001100110101010",
+  "header_distance": 56,
+  "additional_gap": 0,
+  "logical_registers": [
+    1,
+    0,
+    13,
+    0,
+    0,
+    1,
+    0,
+    0,
+    1
+  ],
+  "zero_exterior": true,
+  "parent_and_candidate_traces_identical": true,
+  "trace_sha256": "7f80b39b94f67d8f40742ee874ca14c2ba1a3d313b560c68b154b3b9cd934cf3",
+  "changed_rows_visited": 0,
+  "scope": "An exact finite blank prefix and calibrated frame. This does not assert actual nonhalting.",
+  "input_sha256": {
+    "parent": "386ce16259d4c97e4af31b3ba494feaff11a0a1a066e0235dddc154b4cea38c4",
+    "candidate": "7edae566b4c2e5c34d88030e0ae7caa49edda32c174b06b1a68bf9eb78567c8d",
+    "source": "a1c81a3abff846a329a109927ce92d0be1553b7af2671855cdfe5bc4d6d953d1"
+  }
+}
+
+>>> /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3 code/verify_runtime.py
+Runtime: 1/3909 sites, 2 contracts
+Runtime: 501/3909 sites, 656 contracts
+Runtime: 1001/3909 sites, 1304 contracts
+Runtime: 1501/3909 sites, 1952 contracts
+Runtime: 2001/3909 sites, 2601 contracts
+Runtime: 2501/3909 sites, 3250 contracts
+Runtime: 3001/3909 sites, 3898 contracts
+Runtime: 3501/3909 sites, 4546 contracts
+{
+  "status": "UNIVERSAL_PRIMITIVE_CONTRACTS_PASS",
+  "cases": 5084,
+  "site_count": 3909,
+  "working_states": 211,
+  "literal_rows": 422,
+  "symbolic_steps": 1280108,
+  "minimum_duration_constant": 5,
+  "header_base": 56,
+  "arbitrary_natural_primary_registers": 9,
+  "arbitrary_natural_extra_gap": true,
+  "arbitrary_nonempty_finite_spare_register_list": true,
+  "whole_tape_including_zero_exterior": true,
+  "native_sha256": "7edae566b4c2e5c34d88030e0ae7caa49edda32c174b06b1a68bf9eb78567c8d",
+  "source_sha256": "a1c81a3abff846a329a109927ce92d0be1553b7af2671855cdfe5bc4d6d953d1",
+  "seconds": 114.028,
+  "proof_status": "Executable symbolic induction, not a kernel-checked PA endpoint"
+}
+
+ALL CONSTRUCTION, SOURCE, FOLD, STARTUP, AND RUNTIME CHECKS PASSED
+Mathematical and executable evidence; no proof-assistant endpoint is claimed.

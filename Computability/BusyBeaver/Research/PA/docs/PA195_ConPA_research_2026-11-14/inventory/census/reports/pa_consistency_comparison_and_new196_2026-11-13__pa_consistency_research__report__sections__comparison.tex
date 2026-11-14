@@ -1,0 +1,85 @@
+\section{What is being compared}
+\label{sec:comparison}
+All state counts in this report count working states. The distinct halt label is not counted. Machines have one two-way infinite tape, alphabet $\{0,1\}$, an all-zero initial tape, a distinguished initial state, and one-cell left or right moves. The supplied dense tables have exactly two transition rows for every working state. A larger alphabet, nonblank advice tape, or an external input program is not allowed to account for a claimed reduction.
+
+The comparison is pinned to the source snapshots in Table~\ref{tab:pins}\cite{pa196,pa209,incoming}. Dates alone are inadequate: the incoming directory includes cumulative archives containing earlier attempts, and the main BusyBeaver branch already contains the newer construction.
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{p{.23\linewidth}p{.68\linewidth}}
+\toprule
+Source & Pinned revision\\
+\midrule
+BusyBeaver, PA196 & \nolinkurl{407cdc356f6b586635e71ac92be394255f4bfea4}\\
+BusyBeaver, PA209 & \nolinkurl{69d98241a721ead20b4f0b17df9062950b40fbfe}\\
+ProveIt incoming and ConciseIPRA & \nolinkurl{dc523e7b06ffb414093c90aa035500ca283e5f75}\\
+\bottomrule
+\end{tabular}
+\caption{Repository snapshots actually inspected.}\label{tab:pins}
+\end{table}
+
+The PA196 dense transition file has SHA-256
+\begin{quote}\small\nolinkurl{e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8}.\end{quote}
+The corresponding PA209 file has SHA-256
+\begin{quote}\small\nolinkurl{0610d978675320f0b4b1ef34619dcd3daa5912632d7037e200dfcc70954fea51}.\end{quote}
+The comparison receipts bind the inspected files to those revisions and bind extracted incoming files to their exact ZIP member bytes. This avoids treating similarly named files in overlapping archives as independent constructions.
+
+\subsection{Presentations, transition graphs, and source programs}
+A catalogued presentation here is an origin-identified table occurrence with a particular naming of its states. Byte-identical copies in different supplied archives remain separate catalogue entries, but are not counted as different graphs. Graph equivalence here means an isomorphism preserving the initial state, halt label, read symbol, write symbol, and direction. It is a substantially narrower relation than having the same halting behavior. In particular, a successful context-sensitive state fold need not be an ordinary graph quotient.
+
+The eighteen incoming ZIP archives were inventoried. The comparison found twenty-seven accepted U208 presentations in twenty transition-graph classes. Nine originally designated finals belong to two classes, called A and B; the broader research archive contains eighteen further accepted helper variants, nine in each family. The helper variants are not simply dense renamings of the two representatives.
+
+Nine supplied 196-state presentations lie in nine classes: Chang's original, an alternative head order, four auxiliary-decoder variants, two rotated layouts, and a source-factorization variant with a compensating scanner state. Together with PA209, this gives \textbf{thirty-seven supplied accepted presentations in thirty graph classes}. Here ``accepted'' describes the evidence retained in the supplied artifacts---literal table, executable checks, and the relevant source bridge---and does not mean that every variant has its own completed Lean development. Experimental modus-ponens variants that did not meet those conditions are excluded from this count.
+
+Appendix B lists all thirty-seven presentations individually, with their state counts, exact graph-class assignments, and hash prefixes. The accompanying \code{catalogue.json} binds them to full hashes and table paths, and \code{catalogue.py} independently regenerates the combined census from the supplied tables.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrrrr}
+\toprule
+Representative & States & Primitive sites & Internal DAG nodes & Maximum depth\\
+\midrule
+PA209 & 209 & 3948 & 173 & 33\\
+U208 A & 208 & 3909 & 174 & 42\\
+U208 B & 208 & 3909 & 174 & 41\\
+PA196 & 196 & 3812 & 159 & 38\\
+Alternative PA196 layout & 196 & 3812 & 159 & 36\\
+\bottomrule
+\end{tabular}
+\caption{Source-tree measurements, with twenty-three leaf instruction types excluded from the internal-node count.}\label{tab:source}
+\end{table}
+
+This distinction matters when reading the supplied scripts: one metric called \code{dag_nodes} counts internal nodes \emph{and} distinct leaf types. A reported value of 181 can therefore mean 158 internal nodes, not 181 physical TM states. Table~\ref{tab:source} uses internal nodes consistently.
+
+U208 A and B have the same 5083 nonhalting source edges but differ at 720 instruction paths. PA196 has 4958 such edges and 4959 primitive instruction contracts when the halt case is included. A decrement has separate zero and positive contracts. These quantities describe the complete source control graph, not a bounded initial run.
+
+\subsection{What changed between the branches}
+The reductions do not combine by subtracting their headline state savings. The U208 branch and the PA196 branch use different source layouts and different sharing of physical states. A control can simultaneously read a source bit, implement a return path, and serve as a helper for a context-dependent decoder fold.
+
+The published PA196 budget is 36 unchanged tape-engine controls, 13 leaf routers, and 147 reader controls implementing 159 distinct internal source nodes\cite{pa196}. Its thirteen-state improvement over PA209 is concentrated in AX. The universal constructor changes from $4p(a,B)+2$ to $4p(B,a)+2$; the old seventh axiom head is removed and its required interfaces are derived using guarded equality vacuity added to the gate. The remaining heads are reordered, with several antecedent orders exchanged. The resulting AX body has 201 macro items, a 68-node reader grammar, and 62 physical reader controls after sharing. The existing sharing is already included in the published count and cannot be subtracted again.
+
+The AX axiom-emission interval has 3779 primitive sites in PA209, 3742 in U208 A, and 3643 in PA196. Outside that interval, PA209 and PA196 have 169 primitive sites, whereas U208 has 167. Thus U208's thirty-nine-site reduction from PA209 consists of thirty-seven sites inside AX and two sites outside it. The two outside changes are independent of the axiom formula compression:
+\begin{itemize}
+\item A cyclic relocation moves the first twenty-five primitive instructions to the end and uses root wraparound in place of an explicit final continuation.
+\item Shift clears the old top directly instead of first copying it into the scratch register. Its falsity check tests the old head alone, instead of the sum of old top and old head.
+\end{itemize}
+These are meaningful candidates for combination with PA196's smaller AX. They still require a new physical decoder and complete runtime checks.
+
+The often-quoted U208 deletion of native state 211 into native state 172 is tied to the entry contexts and helper native state 217 in that table. PA196 has different meanings and sharing at the corresponding interfaces. There is no justified operation ``delete the same-numbered state from PA196.''
+
+\subsection{The published formal theorem boundary}
+The PA196 repository exports an arithmetic nonhalting sentence $N$ and proves\cite{pa196}
+\[
+ \PA\vdash N\longrightarrow\Con(\PA).
+\]
+It also proves external nonhalting and the intended independence results, with the stated metatheoretic assumptions. The inspected PA196 and PA209 endpoints do \emph{not} export a theorem
+\[
+ \PA\vdash\Con(\PA)\longrightarrow N.
+\]
+External soundness in a hereditarily finite model is not, by itself, that internal converse. This is a statement about the inspected theorem exports, not a claim that the converse is false or unattainable. Section~\ref{sec:calibration} explains the additional syntactic argument needed for the exact biconditional requested here.
+
+The blank-tape startup of PA196 reaches its canonical source frame after 58,154 steps; PA209 requires 58,210. Both have head position $-2$, header distance 48, and the same physical register sequence
+\[
+ [0,0,0,0,0,0,2,0,0]\mathbin{+\!+}[1,\ldots,1]
+ \quad\text{(twenty-six trailing ones).}
+\]
+The respective dense source-root states are 75 and 81. Startup checks compare the complete tape, not just the head, control, or number of ones.

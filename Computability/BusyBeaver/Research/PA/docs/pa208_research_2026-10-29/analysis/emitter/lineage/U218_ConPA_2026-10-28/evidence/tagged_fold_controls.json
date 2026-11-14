@@ -1,0 +1,57 @@
+{
+  "status": "ALL_TAG_FOLD_PREMISE_MUTATIONS_REJECTED",
+  "count": 10,
+  "controls": [
+    {
+      "control": "incorrect_initial_state",
+      "status": "REJECTED",
+      "reason": "initial header must be exactly #! start 0"
+    },
+    {
+      "control": "original_predecessor_writes_wrong_tag",
+      "status": "REJECTED",
+      "reason": "unexpected original-state predecessor"
+    },
+    {
+      "control": "clone_predecessor_writes_wrong_tag",
+      "status": "REJECTED",
+      "reason": "unexpected clone predecessor"
+    },
+    {
+      "control": "extra_predecessor_breaks_tag",
+      "status": "REJECTED",
+      "reason": "unexpected original-state predecessor"
+    },
+    {
+      "control": "tag_reader_moves_wrong_direction",
+      "status": "REJECTED",
+      "reason": "candidate differs from exact tag-dispatch transformation"
+    },
+    {
+      "control": "reused_tag_one_route_has_wrong_endpoint",
+      "status": "REJECTED",
+      "reason": "('local simulation mismatch', 182, (0, 1, 0, 0, 0), [[182, 0, 0, 0, -1, 209], [209, -1, 1, 1, 1, 133], [133, 0, 0, 0, 1, 90]])"
+    },
+    {
+      "control": "reused_tag_zero_route_halts_interior",
+      "status": "REJECTED",
+      "reason": "('intermediate halt', 507, (0, 0, 0, 0, 0), 2)"
+    },
+    {
+      "control": "omit_original_tag_invariant",
+      "status": "REJECTED",
+      "reason": "('local simulation mismatch', 182, (0, 0, 0, 0, 0), [[182, 0, 0, 0, -1, 209], [209, -1, 0, 0, 1, 157], [157, 0, 0, 0, -1, 67]])"
+    },
+    {
+      "control": "omit_clone_tag_invariant",
+      "status": "REJECTED",
+      "reason": "('local simulation mismatch', 507, (0, 1, 0, 0, 0), [[182, 0, 0, 0, -1, 209], [209, -1, 1, 1, 1, 133], [133, 0, 0, 0, 1, 76], [76, 1, 0, 0, -1, 152], [152, 0, 0, 0, -1, 159]])"
+    },
+    {
+      "control": "omit_both_tag_invariants",
+      "status": "REJECTED",
+      "reason": "('local simulation mismatch', 182, (0, 0, 0, 0, 0), [[182, 0, 0, 0, -1, 209], [209, -1, 0, 0, 1, 157], [157, 0, 0, 0, -1, 67]])"
+    }
+  ],
+  "scope": "Mutation controls for initialization, predecessor tags, routing, unknown continuation endpoints, premature interior halt, and invariant hypotheses. They supplement the positive finite local proof certificate."
+}

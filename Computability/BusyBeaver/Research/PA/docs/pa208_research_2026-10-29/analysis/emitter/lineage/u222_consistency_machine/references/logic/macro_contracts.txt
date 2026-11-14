@@ -1,0 +1,164 @@
+UNIFORM CONTRACTS OF THE SEVEN REUSED EMITTER MACROS
+=================================================
+
+This note is a new ordinary proof explanation for the supplied U machine.
+The accompanying .v files are verbatim upstream templates. No new Rocq,
+MM0, or other proof-assistant compilation is asserted by this note.
+
+Register conventions and statement
+---------------------------------
+Let T=register1, W=register2, C=register3, X=register6 and Y=register7.
+All registers have arbitrary natural values. At macro entry X=Y=0.
+Registers not mentioned in a contract retain their exact original values.
+
+P(a,b)=(a+b)(a+b+1)/2+b, I(a,b)=4P(a,b), R(a,b)=I(a,b)+1,
+Q(a,b)=I(a,b)+2, N(a)=I(a,1).
+
+The node names in the following table refer to the pinned DagPerm.v.
+The ordinal ranges refer to the pinned candidate-k215/sites215.json.
+Every interval includes its first primitive and excludes its last bound.
+
+node  lemma                 interval      contract on (T,W)
+119   cons119               [78,105)      (t,P(a,w)) -> (I(a,t),w)
+168   par168                [107,133)     (t,w) -> (C,P(t,w)); C preserved
+171   pushwff171            [26,45)       (t,w) -> (0,P(t,w))
+177   v177                  [995,1015)    (t,w) -> (1,P(t,w))
+180   wal180                [78,107)      (t,P(a,w)) -> (Q(a,t),w)
+181   wel181                [695,723)     (t,P(a,w)) -> (R(a,t),w)
+218   wn218                 [995,1042)    (t,w) -> (N(t),w)
+
+All seven terminate normally, restore X=Y=0, and preserve every other
+register. These are all-natural statements, not consequences of testing
+small input tuples.
+
+1. Increment-only transfer loops
+--------------------------------
+A loop that decrements register r until zero and increments distinct
+target registers by fixed multiplicities each iteration terminates after
+its initial value of r iterations. If the initial value is k, the source
+ends at zero and each target j has increased by m_j*k. Induction on k
+proves the statement, including k=0. The targets do not change r.
+
+ProgLibPerm.sem_while is precisely this induction principle. Its w117,
+w193, w201, w208, w211, w212, w215, w216, and w217 instances are the
+transfer loops needed here. Multiple increments in the same iteration
+may be interchanged without changing their net effect.
+
+2. Pairing loop (node162, lemma pair162)
+---------------------------------------
+This loop has the following exact pseudocode, with break and continue
+interpreted by the structured semantics of RM.v:
+
+  repeat:
+    while T>0: T--; X++; Y++
+    if X=0: exit
+    X--; Y++
+    while X>0: X--; T++
+
+Its total contract, even for arbitrary initial X,T,Y, is
+
+  (X,T,Y)=(a,b,z) -> (0,0,z+P(a,b)).
+
+Induct on k=a+b. At k=0, the first loop is empty and the test exits.
+At k=s+1, the first transfer gives (X,T,Y)=(s+1,0,z+b).
+The next decrement and increment, followed by the transfer from X to T,
+give (0,s,z+b+1). The induction hypothesis contributes P(0,s).
+The identity
+
+  P(a,b)=b+1+P(0,s)  when a+b=s+1
+
+proves the result. Both inner loops terminate by their decreasing source
+register; the repeated outer call decreases a+b. All other registers
+are untouched. This is the proof recorded as pair_step and pair162.
+
+3. Unpairing loop (nodes115/116)
+--------------------------------
+For every unit consumed from input register Z, node154 performs:
+
+  Y++
+  if X>0: X--
+  else: while Y>0: Y--; X++
+
+Thus the pair (X,Y) advances by the function
+
+  (a+1,b) -> (a,b+1),    (0,b) -> (b+1,0).
+
+Starting at (0,0), after z iterations it is unP(z). Indeed P(0,0)=0,
+and each displayed transition increases the Cantor value by exactly one.
+The converse identities unP(P(a,b))=(a,b) follow from this diagonal
+enumeration. Induction on the input Z proves termination and the exact
+output, with Z cleared. Lemmas ubody154, unpair115, unpair116 and
+iter_unP record this argument. Node115 uses input register8; node116
+uses W. The latter is the one used by the expression constructors.
+
+4. Composition into the seven macros
+------------------------------------
+PUSH0 (node171) first transfers T to X, then W to T, computes P(X,T)
+into Y by node162, and transfers Y to W. Thus (t,w) becomes
+(0,P(t,w)) with both scratch registers zero. This is pushwff171.
+
+PUSH1 (node177) is PUSH0 followed by one increment of T.
+
+PAR3 (node168) is PUSH0, then a loop clearing C into both T and X,
+then a loop transferring X back to C. It leaves T equal to the old C,
+restores C exactly, and clears both scratch registers.
+
+CONS/I (node119) unpairs W=P(a,w) into X=a,Y=w,W=0, transfers Y
+back to W, computes P(X,T) into Y with node162, and transfers Y to T
+with multiplicity four. The result is T=4P(a,t), W=w, X=Y=0.
+
+R (node181) and Q (node180) append one and two increments of T,
+respectively, to node119. N (node218) is PUSH1 followed by node119:
+PUSH1 saves the old t, and CONS then constructs I(t,1) while restoring
+the original stack w. No further loop principle is required.
+
+5. Binding these proofs to the actual source intervals
+------------------------------------------------------
+DagPerm.v is pinned by SHA-256
+ba2b28487ae978bd27b0d804e9b2bde6d9adcd1dd575de55572465c050b86aa1.
+
+audit_source.py --macro-dag references/logic/DagPerm.v parses this
+literal DAG independently, expands each of the seven nodes, resolves
+all branch destinations, and compares the result with the corresponding
+interval of the separately pinned accepted sites215.json.
+
+The finite normalization is deliberately narrow:
+
+* Every resolved branch destination must be identical. A CB/CC count
+  may differ only because a changed binary parenthesization names the
+  same resolved destination by a different ancestor count.
+* The only other permitted difference is two adjacent increments in
+  opposite order. Both must fall through, and the checker rejects any
+  external control edge entering the second increment. At the pair's
+  exit both register files are identical, so induction through successive
+  control boundaries transfers the uniform macro contract.
+* Every other instruction, register operand, and control edge is exact.
+
+This comparison succeeds for all seven macros. It is not a probabilistic
+test or an inference from their small-value runs. The recorded finite
+normalization steps, together with the elementary commutation identity,
+transfer the all-natural proofs above to the exact reused source bytes.
+
+The same audit then binds all 737 new primitives and every new branch
+target to the selected postfix expression built from these intervals.
+All 3154 retained primitives and translated control edges are checked
+unchanged. Structural induction on a postfix expression E gives the
+uniform contract (T,W)->(eval(E),P(T,W)), with all parameters preserved
+and scratch cleared. In the final source the atom n is PAR3, so n=C.
+The expression evaluates exactly to H_C, with lower clause first.
+
+RM.v supplies both the path and structured source-language semantics.
+RMEquiv.v gives their generic equivalence for well-formed programs.
+The ordinal CFG resolver is the direct finite form of the same rules:
+CD-zero/CB strip the indicated zero ancestors and go past that block;
+CC strips one ancestors and returns to the selected block's start.
+
+6. PA formalizability
+---------------------
+The proof uses induction on a natural counter, elementary pairing
+identities, finite source-graph comparison, finite composition, and
+structural expression induction. All run witnesses can be constructed
+primitive recursively from the inputs and loop iteration counts. PA
+proves their totality and the stated contracts. The new literal TM
+simulation and blank startup remain separate proof obligations and are
+not established by this macro note.

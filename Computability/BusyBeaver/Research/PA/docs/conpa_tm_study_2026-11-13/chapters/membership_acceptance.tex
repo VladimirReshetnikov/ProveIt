@@ -1,0 +1,35 @@
+\subsection{A residue-one acceptance test without recoding}
+\label{sec:membership-acceptance}
+
+There is a related option that leaves all PA196 formula constructors
+unchanged.  Instead of accepting exactly cached code one, accept precisely
+the cached codes congruent to one modulo four.  These are exactly the
+membership atoms $M(a,b)=4p(a,b)+1$.
+
+If the unchanged numeric calculus derives $M(a,b)$, its syntactic arithmetic
+interpretation gives a PA proof of $\operatorname{Bit}(x_a,x_b)$.  Substitute
+zero for the free variables and append the fixed proof of
+$\neg\operatorname{Bit}(0,0)$.  This gives a PA refutation by a primitive
+recursive proof transformation whose correctness is provable in PA.
+Conversely, a PA refutation already compiles to a derivation of the code
+$1=M(0,0)$, which satisfies the new acceptance condition.  Thus accepting
+any proved membership atom has exactly the required consistency calibration.
+
+The combined cached-head command compiler in
+Section~\ref{sec:combined-command-compiler} applies with the following
+changes: Pop halts when its saved top is congruent to one; the MP suffix
+halts when its antecedent or conclusion is congruent to one; all other
+normal-return contracts are unchanged.  AX-generated heads and the gate
+are congruent to zero, apart from the generalization entry, congruent to two.
+Consequently all axiom selectors, Push, and the generalization word remain
+total.  The compilation theorem still permits an early halt, and a proof of
+code one still provides a universal halting word.  Soundness extracts the
+derivation of the accepted membership atom and uses the zero-substitution
+translation just described.
+
+The criterion must be imposed on the cached head alone.  Testing
+$t+h\equiv1\pmod4$ would also accept residues $(2,3)$ or $(3,2)$, involving
+a universal formula and an equality formula.  The membership-atom argument
+does not justify those extra cases.  A concrete implementation needs a
+certified modulo-four guard and its complete source/tape contracts; no
+state saving is claimed without them.

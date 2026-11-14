@@ -1,0 +1,1 @@
+These are unmodified excerpts of supplied research, retained for attribution and to make the inherited logical arguments inspectable offline. They are not new results of this investigation and are not standalone LaTeX documents. See provenance.json for exact archive members and hashes. The new standalone document is ../report.tex.

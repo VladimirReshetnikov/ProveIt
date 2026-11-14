@@ -1,0 +1,320 @@
+{
+  "old_working_states": 209,
+  "new_working_states": 208,
+  "old_rows": 418,
+  "new_rows": 416,
+  "ordinary_rows": 414,
+  "changed_row": [
+    172,
+    0,
+    0,
+    "L",
+    217
+  ],
+  "deleted_state": 211,
+  "representative": 172,
+  "selector": 163,
+  "continuation": 215,
+  "complete_incoming": {
+    "211": [
+      [
+        163,
+        0,
+        0,
+        -1
+      ],
+      [
+        163,
+        1,
+        1,
+        1
+      ]
+    ],
+    "172": [
+      [
+        116,
+        0,
+        0,
+        1
+      ]
+    ],
+    "116": [
+      [
+        215,
+        1,
+        1,
+        1
+      ]
+    ],
+    "163": [
+      [
+        132,
+        1,
+        1,
+        1
+      ],
+      [
+        199,
+        1,
+        1,
+        1
+      ],
+      [
+        217,
+        0,
+        0,
+        1
+      ]
+    ],
+    "217": [
+      [
+        216,
+        1,
+        1,
+        1
+      ]
+    ]
+  },
+  "paths": [
+    {
+      "old_state": 211,
+      "read": 0,
+      "known_cells": {
+        "-1": 1,
+        "0": 0
+      },
+      "old_steps": 1,
+      "new_steps": 3,
+      "old_trace": [
+        [
+          211,
+          0,
+          0,
+          0,
+          1,
+          157
+        ]
+      ],
+      "new_trace": [
+        [
+          172,
+          0,
+          0,
+          0,
+          -1,
+          217
+        ],
+        [
+          217,
+          -1,
+          1,
+          1,
+          1,
+          215
+        ],
+        [
+          215,
+          0,
+          0,
+          0,
+          1,
+          157
+        ]
+      ],
+      "exterior_unread": true,
+      "endpoint_state": 157,
+      "endpoint_head": 1
+    },
+    {
+      "old_state": 211,
+      "read": 1,
+      "known_cells": {
+        "0": 1
+      },
+      "old_steps": 1,
+      "new_steps": 1,
+      "old_trace": [
+        [
+          211,
+          0,
+          1,
+          1,
+          1,
+          184
+        ]
+      ],
+      "new_trace": [
+        [
+          172,
+          0,
+          1,
+          1,
+          1,
+          184
+        ]
+      ],
+      "exterior_unread": true,
+      "endpoint_state": 184,
+      "endpoint_head": 1
+    },
+    {
+      "old_state": 172,
+      "read": 0,
+      "known_cells": {
+        "-2": 1,
+        "-1": 0,
+        "0": 0
+      },
+      "old_steps": 1,
+      "new_steps": 7,
+      "old_trace": [
+        [
+          172,
+          0,
+          0,
+          0,
+          -1,
+          67
+        ]
+      ],
+      "new_trace": [
+        [
+          172,
+          0,
+          0,
+          0,
+          -1,
+          217
+        ],
+        [
+          217,
+          -1,
+          0,
+          0,
+          1,
+          163
+        ],
+        [
+          163,
+          0,
+          0,
+          0,
+          -1,
+          172
+        ],
+        [
+          172,
+          -1,
+          0,
+          0,
+          -1,
+          217
+        ],
+        [
+          217,
+          -2,
+          1,
+          1,
+          1,
+          215
+        ],
+        [
+          215,
+          -1,
+          0,
+          0,
+          1,
+          157
+        ],
+        [
+          157,
+          0,
+          0,
+          0,
+          -1,
+          67
+        ]
+      ],
+      "exterior_unread": true,
+      "endpoint_state": 67,
+      "endpoint_head": -1
+    },
+    {
+      "old_state": 172,
+      "read": 1,
+      "known_cells": {
+        "0": 1
+      },
+      "old_steps": 1,
+      "new_steps": 1,
+      "old_trace": [
+        [
+          172,
+          0,
+          1,
+          1,
+          1,
+          184
+        ]
+      ],
+      "new_trace": [
+        [
+          172,
+          0,
+          1,
+          1,
+          1,
+          184
+        ]
+      ],
+      "exterior_unread": true,
+      "endpoint_state": 184,
+      "endpoint_head": 1
+    }
+  ],
+  "predicates": [
+    "old211 and scanned0 implies tape[-1]=1",
+    "old172 implies tape[-2]=1 and tape[-1]=0"
+  ],
+  "clock": "Tchild = Tparent + 2*N(parent211/read0) + 6*N(parent172/read0)",
+  "clock_bound": "Tparent <= Tchild <= 7*Tparent",
+  "negative_controls": [
+    {
+      "name": "bad new selector direction",
+      "rejection": "Replacement selector row"
+    },
+    {
+      "name": "bad new selector target",
+      "rejection": "Replacement selector row"
+    },
+    {
+      "name": "bad new selector write",
+      "rejection": "Replacement selector row"
+    },
+    {
+      "name": "bad old172 predecessor tag",
+      "rejection": "Required row (116, 0)"
+    },
+    {
+      "name": "bad old116 predecessor tag",
+      "rejection": "Required row (215, 1)"
+    },
+    {
+      "name": "bad helper predecessor tag",
+      "rejection": "Left tag of helper"
+    },
+    {
+      "name": "extra zero entry to selector",
+      "rejection": "Unique zero entrance to selector"
+    },
+    {
+      "name": "bad helper read-zero branch",
+      "rejection": "Ordinary commuting row (215, 0)"
+    }
+  ],
+  "status": "FINITE_LOCAL_TWO_CELL_FOLD_PASS",
+  "parent_sha256": "d0a155d3c683789f3bf5327c0cfb2a0cfd78076af8f1654d4ca426ccbb604d16",
+  "native_sha256": "527c2a6065ba7c9adb09294eed2b532810d812e46df4b5b912bae99ae6fb3a3a",
+  "dense_sha256": "9f4ea95849c5e1d01fa3f740023092230cd7006eed650b94a2d5da537e25212c",
+  "scope": "Positive block simulation for every common tape initially in state0. Ordinary mathematical finite verification; inherited source and PA calibration are separate."
+}

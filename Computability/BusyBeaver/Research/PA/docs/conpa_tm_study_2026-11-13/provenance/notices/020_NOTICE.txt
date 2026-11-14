@@ -1,0 +1,74 @@
+U222 — provenance and inherited terms
+====================================
+
+This package was constructed for Vladimir Reshetnikov's research request
+on 28 October 2026. It does not assert discovery priority, absolute state
+minimality, unconditional consistency, or a new proof-assistant endpoint.
+Independent reviews in this package were conducted by separate assistants
+within this research collaboration; they are not external human endorsements.
+
+PRIMARY INPUTS
+
+1. VladimirReshetnikov/ProveIt, revision
+   651d6258e9d57f974839ff2ef98060466973a512.
+   Base directory: Computability/BusyBeaver/Research/ZFC/candidate-k215.
+
+   inputs/k215_sites.json is the exact sites215.json.
+   inputs/k215.native.tm is the exact k215.native.tm.
+   code/validate_native.py is the unchanged code/runtime-inputs/validate_native.py.
+   code/runtime/symbolic_runtime.py and independent_runtime.py are unchanged
+   runtime-inputs/runtime files. code/inputs/legacy_mapping.json is its
+   unchanged runtime-inputs/inputs/legacy_mapping.json.
+
+   code/build_source.py adapts source_language.py and the closed-factor splice
+   machinery from k215-residual-parameter/vendor/source_splice.py. The finite
+   table allocation recipe was synthesized from a corrected adaptation of
+   k215-residual-parameter/role-pool/allocate_from215.py. The final recipe
+   removes all solver/search dependencies from deterministic reconstruction.
+
+2. User-supplied pa_unary_power_cover.zip, from ProveIt's docs/incoming at
+   the revision above. The original ZIP is inputs/pa_unary_power_cover.zip;
+   its intact extracted deliverable is references/theory_U.
+   SHA256: 0fcb1117a5353766a3366bab04e56b4efbd0607833cdc73ffb34b67e6808b0ff.
+   The theory U and its arithmetic interpretation belong to that supplied
+   work. This package adds a machine construction and its verification.
+
+3. references/logic contains selected upstream formal source files.
+   Its README.md and provenance.json identify every exact source path,
+   hash, and the mathematical scope of reuse. These are proof excerpts,
+   not a complete newly compiled formal development of the U222 theorem.
+
+4. Additional reference checkouts inspected:
+   elliotglazer/k215-pa at 992b76d60d1a138d84e184cd8b6796243646a984;
+   jeff87654/busy-beaver, zf-254 branch, at
+   c132d7eae8158cd3a9850ea3eb7251158c3dd821.
+   Their old ZFC/PA machines and endpoint theorems are not silently changed
+   or asserted to certify U222.
+
+NEW WORK
+
+The fixed-source/test, code-as-output-label power-cover emitter; the exact
+analysis of its exceptional codes; the calibration and source-composition
+proof; the selected closed-factor parenthesization; arithmetic-context
+allocation corrections; exact source/table recipes; independent source,
+bootstrap, and reconstruction audits; the paper, document-data generator,
+and reproduction wrapper were prepared for this task.
+
+The proof-search architecture, logical basis, numerical formula codec,
+register interpreter, compiler ancestry, and retained proof templates are
+inherited. The upstream notices credit Mira, ProveIt contributors,
+Elliot Glazer, Jeff Ketchersid and collaborators, Andrew James Wade,
+BusyCoq, and the Coq Library of Undecidability within their respective scopes.
+
+LICENSE NOTICES
+
+The original ProveIt MIT No Attribution and Andrew James Wade MIT No
+Attribution license texts, original notices, K215 NOTICE, and source pins
+are preserved under licenses/. Those copied notices describe their own
+upstream packets. Relative paths in an unchanged upstream notice may refer
+to the pinned upstream repository rather than this compact release.
+
+Nothing here relicenses third-party work. No repository-wide license is
+newly asserted for upstream components whose terms were not specified.
+The original theory-U report and diagnostics are included as the supplied
+research dependency with their own retained contents and provenance.

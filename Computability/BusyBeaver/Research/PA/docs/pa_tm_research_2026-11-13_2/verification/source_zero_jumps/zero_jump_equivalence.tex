@@ -1,0 +1,119 @@
+\section{Exact source equivalence for guarded jump replacements}
+\label{sec:zero-jump-source}
+
+This certificate concerns the register program. It does not identify a
+source instruction merely by the name of a physical decoder state.
+A separate physical binding and blank-tape initialization are necessary
+for any transition-table claim.
+
+\paragraph{The finite invariant.}
+A register vector $r\in\mathbb N^9$ has zero pattern
+\[
+ \alpha(r)=\sum_{i=0}^{8}2^i[r_i>0]\in\{0,\ldots,511\}.
+\]
+Let $P$ be the pinned 3,812-site PA196 register program, using the ordinary
+cyclic source execution convention. The finite certificate stores sets
+$J_i\subseteq\{0,\ldots,511\}$, one for each source site. Starting from
+$(25,1)$, it closes under the following abstract transitions:
+\begin{itemize}
+\item Increment register $r$: set bit $r$ and take the fixed successor.
+\item Decrement register $r$ with bit $r$ zero: preserve the mask and take
+      the zero successor.
+\item Decrement register $r$ with bit $r$ one: take the positive successor,
+      and allow either retaining or clearing bit $r$.
+\item Jump: preserve the mask and take its fixed successor.
+\item Halt: no successor is required.
+\end{itemize}
+Each concrete step has one of the listed abstract successors. In the
+positive decrement case the two possibilities correspond to a previous
+value greater than one or equal to one. Thus these are all-value rules,
+not observations of a finite concrete run.
+
+The independently reconstructed closure contains exactly 274,880
+site-mask pairs. The verifier checks the initial pair and every closure
+edge explicitly, including under optimized Python execution. It also
+checks the SHA-256 of the unchanged source file. The source control
+successors are reconstructed from the literal binary-tree paths; they
+are not accepted from an optimizer's receipt.
+
+Define
+\[
+ \mathcal I(i,r)\quad\Longleftrightarrow\quad\alpha(r)\in J_i.
+\]
+Induction on source steps proves that $\mathcal I$ holds throughout the
+run beginning at site 25 with $r_0=2$ and every other register zero. In
+fact the same statement holds for any positive initial value of $r_0$,
+because its initial zero pattern is the same.
+
+\paragraph{Source site 26.}
+The original instruction at path $100001$ is a forward jump to source
+site 34. The finite invariant proves
+\[
+ \mathcal I(26,r)\ \Longrightarrow\ r_3=r_6=r_7=0.
+\]
+Replace that one source leaf by a decrement of $r_6$, with zero successor
+34 and positive successor 27. Whenever $\mathcal I$ holds, the new
+instruction takes its zero branch and leaves the entire register vector
+unchanged. Its next configuration is therefore exactly the next
+configuration of the original jump. This is one source step on either
+side, so there is no time rescaling at source level.
+
+\paragraph{Simultaneous-replacement theorem.}
+Let $S$ be any finite collection of sites of $P$, where the instruction at
+each $i\in S$ is a forward jump with successor $z_i$. Choose a register
+$r(i)$ such that bit $r(i)$ is zero in every mask in $J_i$. Replace the
+instruction by a decrement of $r(i)$ whose zero successor is $z_i$; its
+positive successor may be arbitrary. Call the resulting program $P_S$.
+Then for every configuration satisfying $\mathcal I$,
+\[
+       \operatorname{step}_{P_S}(i,r)=\operatorname{step}_{P}(i,r).
+\]
+The same $\mathcal I$ is inductive for $P_S$. Hence, from any common
+initial configuration satisfying $\mathcal I$, the two source executions
+agree at every step and halt at exactly the same source step, if either
+halts.
+
+The proof is pointwise: at an unchanged site the instructions agree; at
+an edited site the tested register is zero, so both instructions perform
+the same jump without modifying a register. Closure of $\mathcal I$
+under the old instruction gives closure under the new instruction.
+Induction then proves equality of complete executions. In particular,
+several independently justified edits do not require assuming that the
+new program continues to follow a sampled old trace: the old inductive
+invariant remains valid for all of them simultaneously.
+
+For $r(i)=6$, the certificate verifies the simultaneous replacement at
+\[
+ S_6=\{3,9,26,3665,3671,3683,3689,3692,3766,3772\}.
+\]
+The scripts retain both the single-site program and this ten-site
+program as complete path/instruction JSON data. The other eligible
+register choices are listed in the receipt.
+
+\paragraph{PA formalizability.}
+The zero-pattern map, the finite membership test for $J_i$, and both
+source step functions are primitive recursive. Each fixed finite
+certificate check can be proved in PA. The abstract-step soundness
+argument is elementary arithmetic; the unbounded execution comparison
+then follows by ordinary induction on the number of source steps.
+Consequently this construction supplies a direct route to a PA proof
+of the source-halting equivalence. No formalized PA proof or Lean
+kernel certificate is asserted by the Python computation itself.
+
+\paragraph{Why this does not validate the tempting 195-state table.}
+The attempted change of native row $27/1$ to $1R62$ was informally
+identified with decrementing register seven. The complete source-site
+check disproved that identification: the decoder's effect depends on
+its tape history. At the right-child path of source site 26 it does not
+implement the required zero decrement and successor. A subsequent
+locally certified fold of native states 27 and 46 can preserve the
+behavior of this wrongly changed parent table without repairing its
+source binding. Neither the source theorem above nor that local fold
+therefore establishes the requested consistency equivalence for that
+195-state table.
+
+The source certificate and a physical runtime contract answer different
+questions. A successful smaller machine must satisfy both, and its
+blank startup must reach a configuration covered by their common
+invariant. The failure just described is retained as a concrete negative
+control, rather than treated as evidence for the desired state count.

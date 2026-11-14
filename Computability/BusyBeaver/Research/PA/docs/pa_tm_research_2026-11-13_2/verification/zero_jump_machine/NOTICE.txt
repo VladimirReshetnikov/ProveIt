@@ -1,0 +1,20 @@
+Reference files are copied byte-for-byte from VladimirReshetnikov/ProveIt commit
+1fe9b29810bfe3d0e507146d65f6b97692e7444a, under
+Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196.
+That imported James Chang PA196 source is pinned to upstream commit
+407cdc356f6b586635e71ac92be394255f4bfea4. LICENSE.JamesChang preserves
+the upstream MIT notice. LICENSE.ProveIt preserves the repository license.
+Attributions to the K-family register engine remain in the copied Lean files.
+
+symbolic.py is a portable adaptation of the symbolic verifier in the incoming
+conpa_tm_study_2026-11-13 submission. The adaptation changes reference paths and
+replaces removable Python assertions with explicit validation exceptions.
+verify.py adds a conjunction of known-zero branch hypotheses, independent CFG
+resolution, inductive mask reconstruction, finite row-action synthesis, exact
+startup checks, and explicit counterexamples. The source-mask transfer rule
+follows the repository's verify_joint_mask.py. The direct counterexample was
+independently cross-checked against the machine-reduction investigation.
+
+The two files with rejected/wrong in their names are negative controls.
+They must not be represented as validated Con(PA) machines. Their state count
+alone does not establish a consistency equivalence or a new Busy Beaver bound.

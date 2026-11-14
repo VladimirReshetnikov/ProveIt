@@ -1,0 +1,36 @@
+MP FIELD AND RECONSTRUCTION REVIEW
+=================================
+
+There is no modulo-4 formula decoder in this MP command.  The word "field"
+in MPField denotes an operand in the enumerated command stream, not a field
+obtained by dividing a formula code by its constructor base.
+
+The pinned upstream source establishes the following behavior:
+
+1. PA196/Source/MPField.lean, theorem read, Cantor-unpairs scheduler register
+   L and adds the decoded head to the old accumulator D.  It preserves T,H
+   and the other non-scratch registers.
+2. PA196/Source/MPPrelude.lean, theorem pre_guard, reconstructs I(T,D) using
+   the shared constructor and restores the temporary stack.
+3. PA196/Source/MPGuard.lean, theorem guard, compares the complete constructed
+   value with H.  Equality alone reaches the success branch.
+4. PA196/Source/MPCommand.lean, theorem command, therefore accepts exactly
+   when I(T,D+head(L)) = H; it does not accept merely when 4 divides H.
+
+The base-8 source's complete MP subtree at path 1010101 is exactly the old
+node164 subtree with its sole node65 constructor occurrence changed from
+Cons4 to Cons8.  No field-reader, push, copy, equality-guard, or success-store
+code inside that subtree is otherwise changed.  check_mp_binding.py verifies
+this structural equality against the included original and altered sources.
+
+Consequently, the intended reconstructed value is 8*Cantor.pair(T,D+offset).
+An equality code 8*Cantor.pair(a,b)+4 cannot equal that value, since their
+residues modulo 8 differ.  Changing equality's tag to 4 does not introduce
+the suspected MP acceptance through an old divisibility-by-4 test.
+
+This resolves the specific decoder concern.  It is not a new formal proof
+of the complete altered command or proof-search calculus.  The 5,205 physical
+instruction contracts establish implementation of the supplied altered
+source.  An adapted arithmetic command theorem, logical calibration of the
+complete changed source, and admissible blank-tape startup remain separate
+obligations.  No mismatch was found in this MP subtree review.

@@ -1,0 +1,73 @@
+# Adversarial review of the PA195 consistency proof
+
+The reviewed proof is `report/sections/pa_calibration.tex`, for the exact
+195-state binary table with SHA-256
+`5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455`.
+The conclusion is an ordinary mathematical proof of
+PA ⊢ Nonhalt(PA195) ↔ Con(PA), with executable finite certificates. This
+review does not describe the new endpoint as an already compiled Lean or
+Rocq theorem.
+
+No mathematical gap was found in the final argument. The following points
+were checked against the actual inherited source definitions rather than
+against a summary of the preceding papers.
+
+1. **Diagonal calibration has no circular equality-vacuity premise.**
+   `negativeSpecialization` in `PA196/Logic/Reverse.lean` needs direct
+   membership rewriting, a mirrored equality witness, and membership-only
+   vacuity. It does not invoke equality vacuity. The new construction chooses
+   the property code to be the code of the negation of the desired reverse
+   rewrite and uses its available diagonal vacuity. The neighborhood binder
+   transport also uses only recovered membership rewriting and
+   membership-only vacuity. The direct equality-vacuity uses in the original
+   external and internal arithmetic certificate developments occur exactly
+   in the reverse and neighborhood interfaces replaced here.
+
+2. **The separation proof handles coincident labels.** For a ≠ b, finite
+   bit comprehension uses the bounded matrix
+   `(Bit(x_a,z) or z=x_b) and phi[z/x_b]`. For a=b, the first antecedent
+   under the b binder becomes `Bit(z,z)`; it cannot be treated as
+   `Bit(x_a,z)` with x_a still free. The final proof correctly uses the
+   singleton matrix `(z=x_b) and phi[z/x_b]` in this case. Code freshness
+   makes the separator label c absent from phi. These details suffice for
+   the guarded gate supplier for all allowed label coincidences.
+
+3. **The reverse PA argument is syntactic, not semantic reflection.** The
+   finite-comprehension compiler substitutes the input formula into a fixed
+   induction-proof template. PA verifies its syntactic proof-checker
+   correctness uniformly for every formula code. It neither evaluates an
+   arbitrary formula nor assumes a truth predicate. The implication alias
+   I(0,0)=0 is handled by a fixed equivalence proof, and the contradiction
+   code translates to Bit(x_0,x_0), whose negation PA proves.
+
+4. **The command invariant follows the exact store.** Both t and h need
+   proof annotations because the Shift test is t+h=1. The canonical
+   Cantor-stack convention treats pair(0,0)=0 explicitly. The successful
+   MP update, failed MP update, nine AX pushes, guarded top, and Shift
+   permutation agree with `PA196/Commands/Store.lean`. The 191-token
+   diagonal emitter retains the nine-item interface; the separate
+   190-token calculus would require different selector identities and is
+   not silently substituted.
+
+5. **The scheduler argument preserves the carried store.** The machine
+   does not reset its proof store between enumerated words. The final proof
+   correctly uses the local annotation-preservation theorem for arbitrary
+   annotated stores, together with `parsed_command_step` in
+   `PA196/Source/CommandTransfer.lean`. This is the same positive boundary
+   progress construction as `PA196/Source/Nonhalting.lean`, with syntactic
+   PA proofs replacing the external semantic soundness invariant. Iterating
+   T+1 nonhalting command segments is a bounded coded construction in PA.
+
+6. **Physical halting reflection uses positive segments.** The full source
+   and register-file contracts yield exact finite endpoint reachability.
+   The register oracle's complete literal premises and the executor rules
+   are audited separately in `verification/runtime_review.txt`. Every accepted
+   source segment contains a literal transition. This supplies the positive
+   clock needed to contradict a hypothetical T-step physical halt; it does
+   not assume the abstract certificate length 497 bounds physical runtime.
+
+The checks rely on the exact source bindings, unchanged macro semantics,
+and finite arithmetic induction arguments explained in the proof. They do
+not assert that standard-model equiconsistency alone implies a PA-provable
+biconditional. Actual nonhalting remains conditional on Con(PA); the
+biconditional is proved without adding Con(PA) as a hypothesis to PA.

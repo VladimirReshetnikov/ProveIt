@@ -1,0 +1,37 @@
+\subsection{Why a literal witness reuse does not shorten this emitter}
+A natural shortening attempt is to reuse an already emitted head as the
+required arbitrary diagonal clause, thereby removing the eight-token
+construction instead of moving it.  There is a small syntactic obstruction
+for the current axiom families.
+
+The numerical implication constructor is injective.  Its output is
+congruent to zero modulo four, whereas a universal formula has tag two.
+Moreover $U(x,Y)>\max(x,Y)$ for every natural pair, including zero.
+Thus $\Gamma(B)=I(B,U(B,B))$ cannot coincide with heads 3, 4, or 6, or
+with the dominated propositional head: each has an implication, of tag zero,
+as its outer consequent.  Head 5 and the unbundled gate have outer consequent
+$1$, which likewise differs from $U(B,B)\ge2$.
+
+Only heads 1 and 2 require an additional check.  If
+\[
+ I(\exists x_d U(d,h),h)=I(B,U(B,B)),
+\]
+then $h=U(B,B)>B$, while
+$B=\exists x_d U(d,h)>h$, a contradiction.  If
+\[
+ I(U(d,U(a,h)),U(a,U(d,h)))=I(B,U(B,B)),
+\]
+then universal-constructor injectivity gives $a=B$ and hence
+$B=U(d,U(B,h))>B$, again a contradiction.  All inequalities are elementary
+PA arithmetic facts about the displayed Cantor codes.  The zero-code alias
+of implication does not evade them, since the universal terms are positive
+and strictly increasing in the sense just used.
+
+This excludes literal coincidence with the retained heads, not derivability
+from them and not a smaller machine by another construction.  If the
+parameter $B$ is restricted to formulas already known to be theorems, then
+$\Gamma(B)$ is already obtained by closed generalization followed by
+implication introduction.  Such a reuse supplies no uniform replacement,
+by itself, for the arbitrary negative-formula instances used in the PA195
+reverse-equality proof.  A genuine shortening through this route therefore
+requires a new calibration argument or a different arithmetic emitter.

@@ -1,0 +1,114 @@
+\section{Safe changes to the axiom emitter}
+\label{app:logical-experiments}
+
+This note concerns the 191-token bundled-diagonal emitter in
+\texttt{pa195\_conpa\_2026-11-13.zip}. Tokens are indexed from zero.
+The initial operand reads occur at positions 5 (\texttt{readH}) and 9
+(\texttt{readDCons}). The six subsequent head blocks have half-open spans
+\[
+ [18,35),[35,54),[54,70),[70,86),[86,102),[102,121).
+\]
+Each contains only \texttt{copyA}, \texttt{copyD}, \texttt{copyH},
+\texttt{cons}, \texttt{push} and \texttt{incT}. Consequently each block
+preserves the parameter registers, pushes the previous top once, and
+leaves its stated formula as the new top. This is an exact free-algebra
+identity, independently checked by \texttt{source\_variants.py}.
+
+Let the six formulas in emission order be $B_1,\ldots,B_6$.
+For every permutation $\pi\in S_6$, replacing these blocks by
+$B_{\pi(1)},\ldots,B_{\pi(6)}$ leaves the final gate unchanged and
+preserves the number of generated entries. The final AX stack, listed
+from the top downward, becomes
+\[
+ [B_{\pi(6)},\ldots,B_{\pi(1)},\rho_8,U(d,h),t]::_Cw.
+\]
+The saved top, generalization and restricted-propositional head retain
+their positions. Every generated head is either an implication code,
+which has residue zero modulo four, or the universal code $U(d,h)$,
+which has residue two. No generated head is one. The unchanged guard
+and cleanup remain at the end of AX.
+
+\paragraph{Why enumeration completeness survives.}
+The stack words for Push, Pop, Discard and generalization depend only on
+the number of generated entries and the last two entries, so they are
+unchanged. An old head $B_k$ formerly had top rank $7-k$; its new top
+rank is $7-\pi^{-1}(k)$. Replace this constant in its axiom selector.
+All tests during the selector encounter generated formulas different
+from one; the selected formula and arbitrary underlying stack are
+preserved. The compiler for modus ponens and theorem generalization is
+unchanged. Thus there is a primitive-recursive compiler of every old
+calculus proof into a new command word, verified by the same induction
+on the finite proof tree. Soundness follows from the proof-store
+invariant because the set of generated axioms is unchanged. Both
+arguments are formalizable in PA. Source association and physical
+allocation still require their separate control-flow and tape-contract
+checks: a head permutation is not a proof that an arbitrary compiled
+binary table is correct.
+
+\paragraph{Antecedent exchange.}
+For each of heads 3, 4 and 6, replace $A\to(B\to C)$ by
+$B\to(A\to C)$. The fixed implicational calculus proves each from the
+other uniformly, so this replacement yields primitive-recursive proof
+translations in both directions. The macro-token counts do not change.
+The generated file \texttt{safe\_variants.json} contains all combinations
+of these replacements with the following restricted-propositional
+parameter exchange.
+
+\paragraph{The restricted-propositional head.}
+The emitted formula is
+\[
+ ((H\to d)\to D)\to((D\to H)\to(A\to H)),\qquad d\le D.
+\]
+Exchanging $A,H$ gives
+\[
+ ((A\to d)\to D)\to((D\to A)\to(H\to A)).
+\]
+The dominated pair $d,D$ is unchanged. This is the same axiom family
+under a permutation of its two unrestricted arguments. Its selector
+chooses the input parameter and $H$ offset in the opposite order after
+clearing the cache, which still realizes every required tuple.
+
+\paragraph{Dual diagonal seeds.}
+The two formulas
+\[
+ \neg U(A,A)\to\neg A,
+ \qquad
+ \neg A\to U(A,\neg A)
+\]
+can each replace $\Gamma(A)=A\to U(A,A)$ in the guarded bundle.
+The first is ordinary contraposition. For the second, use the retained
+lemma that vacuity at a fixed variable passes to negation, whose proof
+uses universal distribution, theorem generalization, and the retained
+head $(\exists x\,\forall xB)\to B$. Applying it twice and using double
+negation elimination proves equivalence with $\Gamma(A)$. These seeds
+are longer (197 total macro tokens), but repeated negation subtrees
+may have a different sharing cost. They are search candidates, not
+advertised state reductions.
+
+\section{Why replacing the equality witness by reflexivity is not immediate}
+\label{app:reflexivity}
+
+Replacing $\exists x_D E(H,D)$ by $E(H,H)$ does not preserve the
+existing axiom interface. Here is a countermodel to derivability of the
+old witness from the remaining heads, gates and reflexivity.
+Let variable $x_1$ range over $\{0\}$ and every other variable range over
+$\mathbb N$. Interpret $E(a,b)$ as numerical equality and $M(a,b)$ as
+bit $x_b$ of $x_a$. Quantification at label $i$ ranges over its indicated
+domain. Each domain is nonempty. All the retained propositional,
+quantifier, congruence and reflexivity heads are valid. Code freshness
+makes every diagonal vacuity instance valid.
+
+For a gate whose formula code is $c\ne1$, its witness variable ranges
+over all natural numbers. Ordinary finite bit comprehension constructs
+its witness, with the membership index restricted to the domain of its
+bound variable when necessary. For $c=1$, the decoded property is the
+uniformly false formula $M(0,0)$. Choosing set witness zero satisfies
+pointed separation. Thus all guarded gates remain valid. Nevertheless
+\[
+ \exists x_1\,E(0,1)
+\]
+is false at an assignment $x_0=1$. The old witness schema is therefore
+not derivable in this proposed replacement calculus. This countermodel
+does not by itself settle its consistency strength; it rules out the
+simple reuse of the existing completeness proof.
+

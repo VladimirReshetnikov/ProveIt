@@ -1,0 +1,180 @@
+COMPARISON FINDINGS, CURRENT INPUT BINDING
+
+ProveIt is pinned at dc523e7b06ffb414093c90aa035500ca283e5f75.
+PA196 is pinned at 407cdc356f6b586635e71ac92be394255f4bfea4.
+PA209 is pinned at 69d98241a721ead20b4f0b17df9062950b40fbfe.
+The sparse ProveIt checkout contains docs/incoming and ConciseIPRA. There are
+18 ZIP archives in the current docs/incoming directory.
+
+Fresh verification performed
+1. check_current_bindings.py compares 30 designated table files byte for byte
+   against original ZIP members in the current checkout, or the literal files
+   in the separately pinned BusyBeaver checkouts. It checks original archive
+   and member SHA-256 identities, and seven additional archive status documents.
+   All comparisons pass. It inventories all 18 current archives.
+   Output: current_bindings_receipt.json.
+2. The existing independent comparison/compare_designs.py from
+   pa_tm_comparison_and_reductions.zip was rerun. It checks literal input hashes,
+   all 30 table domains/counts, 16 complete rooted isomorphism witnesses,
+   eighteen two-cell helper-fold equivalences, five source layouts, and the
+   exact full startup tape for PA209 and PA196. All pass.
+   Output: comparison_receipt.json. This is executable evidence, not a new
+   proof-assistant run.
+3. Independently canonicalized nine supplied accepted 196-state layouts.
+   They form nine distinct rooted graph-isomorphism classes. Exact paths and
+   hashes are in accepted196_layouts.json. The word accepted here means the
+   corresponding supplied report presents startup + executable symbolic
+   instruction checks; it does not assert a new formal PA biconditional.
+
+208-state input classes
+The nine designated final presentations in the five original construction
+archives represent exactly two rooted action-preserving table classes:
+  A: U208_ConPA principal; Conditional principal; Entry principal;
+     History principal; u208_research variant_plain. (Five presentations.)
+  B: Conditional alternative; Entry compatibility; History compatibility;
+     u208_research principal. (Four presentations.)
+The larger pa208_research_2026-10-29.zip adds eighteen accepted helper variants,
+nine from A and nine from B. They are pairwise nonisomorphic and distinct from
+A/B. Therefore the entire accepted U208 collection contains 27 designated
+presentations in 20 table-isomorphism classes, not merely nine/two.
+The helper variants merge two readers and introduce one extra history helper,
+so their net state count remains 208. Each exact local proof uses positive
+one-, three-, or five-step blocks preserving the whole two-cell footprint and
+head, with all other tape cells untouched. Incoming-edge tags are exhaustively
+checked. They are different implementations of the same source calculus.
+
+Source metrics (same counting convention throughout)
+                            Sites  Internal DAG  Leaf types  Max depth
+  U208 A                     3909      174           23          42
+  U208 B                     3909      174           23          41
+  Chang PA209                3948      173           23          33
+  Chang PA196                3812      159           23          38
+  Earlier alternate PA196    3812      159           23          36
+U208 A/B have identical ordered primitive instructions and identical 5083
+successor edges; 720 source paths differ. All five sources have maximum zero
+run six. PA196 has 4958 nonhalting edges and 4959 instruction/branch contracts
+when its halt instruction is included. Internal nodes are NOT physical states.
+
+PA196 versus PA209
+PA196 changes the universal code from the earlier argument order to
+U(a,B)=4p(B,a)+2, removes an old primitive equality/transitivity head, adds guarded
+equality vacuity to the gate, changes head order and some antecedent orders.
+The axiom body becomes 201 macro tokens; the complete source has 3812 sites.
+The physical state budget is 36 engine + 13 leaf routing + 147 reader states.
+The reader states implement 159 distinct internal source nodes by contextual
+sharing. Those savings are already included, so cannot be subtracted again.
+PA209 startup: 58210 steps, literal root81. PA196 startup:58154, root75.
+Both reach head -2 and the same root-relative complete tape: gap48, physical
+file [0,0,0,0,0,0,2,0,0] followed by26 ones.
+
+Why the final U208 deletion does not transplant literally
+The original U208 reduction merges native roles172/211 in its particular
+U209 parent, exploiting mixed entry direction and two preceding bits.
+That parent is NOT identified with Chang PA209 merely because both have209
+states. PA196 has no state whose zero row writes0/movesL and whose one row
+writes1/movesR into the same working target. Thus the exact U208 mixed-entry
+motif is absent even after state renaming. This excludes only that literal
+transplant, not all possible history-based folds.
+
+Additional accepted196 layouts in current incoming archives
+  alternative196 in pa_tm_research_2026-11-13.zip: one head-order rearrangement.
+  auxiliary196 in pa_tm_extended_research_2026-11-13.zip: four source-invariant
+    closing-test alternatives, cd3/cd4/cd5/cd6.
+  rotated196 in pa_tm_comparison_and_reductions.zip: two exact CFG-equivalent
+    rotations, the second retargeting the four-increment macro's jump depth.
+  variant196 in pa_consistency_research.zip: a158-node source using an added
+    return-scanner state to handle eight-zero paths, net count196.
+Together with Chang's literal original, these are nine nonisomorphic196 tables.
+Two MP modifications in conpa_tm_comparison_and_reduction_search.zip remain
+labelled experimental in that report and are not included as accepted layouts.
+
+Previously attempted new-calculus and grammar approaches
+  Distributed gate:199 rather than201 tokens,3773 rather than3812 source sites;
+  a67-rule AX grammar, but actual verified compilation198 states.
+  Diagonal vacuity:191 tokens,3700 sites, actual verified compilation199 states.
+  Exact source factorization/reassociation:157 internal DAG nodes, same3812-site
+  CFG. No sub196 physical allocation. A simpler158-node factorization destroys
+  the old node75/native213 role as a history helper for native69; counting the
+  source saving without replacing that helper gives a false195 estimate.
+  Deleting two known dead source regions has not produced a smaller valid
+  blank-start machine. One198-state runtime passes source-frame contracts but
+  does not reach the intended startup frame within the archived bound.
+
+Theorem boundary
+The published PA196 inventory explicitly exports PA |- N196 -> Con(PA),
+external nonhalting, and independence. The reverse internal implication is
+not an exported endpoint there. This is a proof-interface gap, not evidence
+that the converse is false. Several incoming reports supply written reverse
+proof-translation arguments; none is a new completed internal Lean certificate.
+Use the task's desired PA biconditional only after separately justifying both
+directions, not by combining external truth with the exported one-way theorem.
+
+Reusable research tools
+  pa196_research/.../search/rotations/{rotation_core.py,anneal_source.py}
+  pa196_research/.../search/allocation/allocate_symmetric.py
+  pa_tm_comparison_and_reductions/.../source_rotations/retarget_rotations.py
+  pa_tm_comparison_and_reductions/.../rotated196/symbolic_runtime.py
+  pa_tm_comparison_and_reductions/.../distributed198/compiler.py
+The last compiler is a complete experimental source-to-machine allocator.
+
+New scanner work is in scanner_search.py and scanner*/ subdirectories.
+
+NEW U208/PA196 CROSS-BRANCH EXPERIMENT (THIS SESSION)
+The difference outside AX is two primitive instructions, not zero. PA209/PA196
+outside AX contain169 sites; U208 outside contains167. U208 cyclically moves
+old sites0..24 to the end, removes the final CC3 via root wraparound, and uses
+(CD1,CC1) in place of (CD1,CI6,CC2) to clear the old top. Its Shift halt guard
+therefore depends on old h alone, instead of old t+h.
+
+The hybrid source replaces U208 subtree0011001 by PA196 subtree10101001.
+It has3810 primitive sites,159 internal DAG nodes,23 distinct leaf instructions,
+maximum depth37 and maximum zero run6. A direct physical transplant preserves
+U208's outside rows, copies the PA196 AX reader implementation, identifies
+literal graph-equivalent common routines, and reuses U208 helper201 with the
+copied PA196 helper217. The resulting complete196-state table has147 reader
+states plus49 leaf/engine controls. Its native table SHA256 is
+8c1e8c7fdfc1925361de38a197e8d6ccd2768aaab3ae5eb922a93a7a0b9fca07.
+All4957 full arbitrary-value source-frame contracts pass; all392 rows occur.
+The proof code permits arbitrary natural gap, all9 primary register values,
+and arbitrary nonempty finite spare registers. It is an executable mathematical
+checker, not a Lean kernel proof.
+
+THIS HYBRID IS NOT A VALID BLANK-START CONSISTENCY MACHINE. Its0 initial control
+reaches outward q35/read0 at step132; its74 initial control does so at step54.
+A screen of all196 possible existing initial controls produces an explicit
+outward self-loop in every case. No row is globally unused by full-frame
+contracts. Therefore changing the initial label or repurposing an unused row
+cannot repair it under these tests.
+
+The first deviation from the original U208 blank trace is native11/read1 at
+step124, head4. The old AX consumes relative address011 to the paired-increment
+reader99. Replacing the source subroutine x2=(D,((C,i),i)) globally by
+((D,C),(i,i)) restores that entry. Physical patch:1302/0=0R9000,
+1302/1=1R99, new9000/0=0R98, new9000/1=1R90. This197-state experiment reaches
+an exact frame with headerdistance56 at47068 steps (source153,head-2,
+logical registers[1,0,0,0,1,4,6,2,0],42 spare ones). However it creates two
+seven-zero addresses, and the zero branch of CD1 at source842 fails a full
+runtime contract. It is rejected, not a valid197-state construction.
+
+The newly found diagonal and separated-diagonal196 AX variants transplant into
+U208 outside at196 states, with3698 and3671 primitive sites respectively. Only
+their source-prefix bindings and failed all-control startup screens were run;
+they do not have a fresh complete runtime verification.
+
+All18 incoming helper variants were also attempted as transplant bases. Eight
+produce196-state candidates, six literal-equivalence-only compilations balloon
+to239 states, and four remain incomplete at202 or205 states because of helper
+rows pointing to removed old AX controls. No new sub196 candidate resulted.
+Separately, four exact neutral helper transformations transport to the196 hybrid
+under global predecessor-tag invariants. Exhaustive existing one-helper folds
+with exact two-cell endpoints find zero on the base and zero after each of the
+four neutral transformations. These bounded negative results are not lower
+bounds and do not exclude context-sensitive or simultaneous larger changes.
+
+PORTABLE BUNDLE
+comparison_work/deliverable includes the pinned30-table comparison inputs,
+all9 supplied accepted196 layouts, fresh ZIP/repository binding receipts,
+the new scanner15 verified196 layout and portable verifier, the hybrid table
+and portable deterministic reconstruction, full-frame receipts, all-control
+startup counterexamples, and local fold search receipts. Portable comparison,
+scanner runtime/startup, and byte-for-byte hybrid reconstruction were replayed.

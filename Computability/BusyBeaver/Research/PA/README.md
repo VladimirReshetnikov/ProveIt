@@ -102,3 +102,11 @@ These packets do not supply an end-to-end Lean proof of the iPRA statement.
 and [the PA195DC packet](../../../../docs/incoming/pa195_diagonal_combined_2026-11-13.zip)
 propose additional 194- and 195-state machines respectively. Their reported
 PA equivalences likewise do not constitute Lean proofs of the iPRA goal.
+
+## Delivered research packets
+
+[`docs`](docs/README.md) holds the contents of the research packets that were delivered
+to `docs/incoming`, one directory per archive, filed as delivered. Its README lists the
+packets, the wrapper directory of each archive, and the members that are not placed.
+The archives named above stay in `docs/incoming` for as long as scripts of this
+directory open them there.

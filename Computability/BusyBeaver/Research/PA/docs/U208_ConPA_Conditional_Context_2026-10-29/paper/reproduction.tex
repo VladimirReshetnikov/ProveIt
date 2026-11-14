@@ -1,0 +1,86 @@
+\section{Reproduction, artifacts, and further work}
+The release is self-contained for its executable checks. Python 3.10 or
+later and the standard library suffice for the main replay. No network
+access, solver, optimizer, Lean, or Rocq installation is needed.
+From the unpacked top-level directory run
+\begin{verbatim}
+python3 -B reproduce.py
+\end{verbatim}
+The default command verifies the release hashes, binds the selected
+parent and unchanged inference modules to the original Joint archive,
+runs that parent's quick construction/source/startup replay in a temporary
+directory, reconstructs both 208-state variants, checks the new local
+theorem normally and under optimized Python, checks the alternative's
+local histories, repeats the six-proposal comparison, verifies exact
+startup, and rederives all 5,084 primary U208 contracts. Generated
+temporary files do not alter the sealed release. To record a receipt,
+pass \texttt{--report} with a path outside the release directory.
+
+\begin{verbatim}
+python3 -B reproduce.py --quick
+\end{verbatim}
+This command explicitly skips the fresh universal runtime derivation.
+It remains useful for the new small proof and exact construction, but
+must not be reported as a fresh full symbolic replay. The first complete
+symbolic run in this preparation environment took about 139 seconds;
+wall time is environment-dependent.
+
+The optional independent finite executor requires a C++17 compiler:
+\begin{verbatim}
+g++ -std=c++17 -O3 code/check_finite_runtime.cpp -o /tmp/check_u208
+/tmp/check_u208 machine/u208.native.tm machine/sites.tsv
+\end{verbatim}
+Rebuild the PDF in a working copy, so generated TeX auxiliary files do not
+change the sealed inventory:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+PDF bytes may vary with the TeX version or metadata. Literal machine
+and source bytes are deterministic.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{48mm}>{\raggedright\arraybackslash}p{100mm}@{}}
+\toprule
+Path & Contents\\
+\midrule
+\path{report.tex}, \path{report.pdf}, \path{paper/} & Editable report, proofs, comparison, full transition table\\
+\path{machine/} & Primary native/dense U208 tables, state map, unchanged source\\
+\path{alternative/} & Nonisomorphic Compatibility-derived U208 and its parent/source\\
+\path{machine_parent/} & Exact selected U209 table and runtime label correspondence\\
+\path{code/}, \path{reproduce.py} & Deterministic builder, independent invariant checker, runtime and startup replay\\
+\path{comparison/} & All six table presentations, source snapshots, isomorphisms and fresh quick logs\\
+\path{evidence/} & New local, startup, universal, finite, and release replay receipts\\
+\path{reference/} & Full selected Joint archive with nested U212/U213/U214/U218/U222 lineage and unary theory; source provenance and reviews\\
+\path{research/} & Discovery programs and precisely scoped search receipts\\
+\path{licenses/}, \path{NOTICE.txt} & Upstream terms and attribution\\
+\path{SHA256SUMS} & Hashes of all other sealed release files\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{What the new result suggests}
+The effective improvement is a stronger invariant language for state
+reuse. An unconditional incoming-bit test misses states entered from
+different directions. Here a two-cell old-mode tag and a conditional
+old-helper assertion suffice, even though the replacement path revisits
+the same physical helper. Complete backward history gives discovery
+candidates; small inductive assertions give a clearer proof.
+
+A brief follow-up search on U208 found no further direct alias within
+seven-step history contexts and 27 replacement steps, nor a further
+shared-row fold across 348 ordered interfaces within the tested
+seven-history/25-step limits. These are restricted negative searches,
+not a lower bound at 208. Richer invariant combinations, several jointly
+changed rows, or high-level arithmetic changes remain possible. The
+report does not claim that any of those approaches already gives 207.
+
+The immediate formalization target is compact: encode the five-state
+invariant and four finite trace identities in the preferred arithmetic
+or proof-assistant framework, then export the generic positive-block
+simulation theorem for the exact table. Completing an end-to-end U208
+certificate also requires importing or formalizing the retained
+numerical-calculus and unary-theory proof transformations. That larger
+task should be distinguished from the new finite reduction already
+proved here.

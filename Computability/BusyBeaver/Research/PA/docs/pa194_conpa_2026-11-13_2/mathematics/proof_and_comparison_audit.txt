@@ -1,0 +1,198 @@
+PA195 baseline and current corpus: independent comparison notes
+=============================================================
+Source snapshot: 5be8b9236df6a6d308195e62a906a173dc70d00a
+Input-corpus audit performed for the current 14 November 2026 task.
+The new PA194 result is outside this input census and is proved separately.
+
+1. Source identity and current scope
+-----------------------------------
+The exact ZIP pa195_conpa_2026-11-13.zip has Git blob
+  deb9187261c34ae6a3876a9bfff773ff31737415.
+The definitive dense table has SHA-256
+  5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455.
+It has 195 working states, start 0, halt 195, a two-way initially blank
+binary tape, and 390 total working-state rows. The halt state is excluded
+from the stated size. These conventions match the user's threshold.
+
+The fresh census includes all 31 incoming ZIPs (233,712,151 bytes), recursively
+visits all nested ZIP occurrences, and scans direct PA .tm files. It recognizes
+complete numeric five-column binary tables in .tm/.txt members. It does not
+claim to recognize arbitrary code- or JSON-embedded tables. There are 2,719
+recognized table occurrences, 576 literal byte strings and 566 labeled
+transition functions; counts include historical duplicates, experimental
+candidates, rejected candidates, controls, and accepted tables. The nested
+archive census has 198 occurrences and 44 distinct ZIP payloads.
+
+Among these are 17 195-state occurrences, ten literal byte strings and seven
+rooted action-preserving graphs: the supplied PA195 and six earlier rejected
+or uncertified diagnostic designs. Every start was taken from a supplied
+convention; none was guessed from a minimum state label. No recognized literal
+table has between seven and 194 working states. This is a corpus statement,
+not a mathematical lower bound or an exhaustive program-synthesis result.
+
+The current source manifest, complete member inventory, independent parser,
+and fresh 195-state classification are under comparison/: the portable
+manifest is corpus/source_manifest.json; the census and classification are
+corpus/census_current.json and corpus/comparison195_current.json. The scripts
+census_current.py and compare_195.py accept an explicit archive directory.
+The manifest pins Git blobs, SHA-256 digests, and source URLs. Reproduction
+needs the source archives named there.
+
+2. PA195 reconstruction and reproduction
+----------------------------------------
+PA195 has 3,700 source sites: 1,468 increment, 1,115 conditional decrement,
+1,116 jump, and one halt. Its primitive branch count is 4,815. The longest
+source address is 37 and longest consecutive zero run is six. The physical
+allocation is 134 inherited controls + 68 new AX readers - 7 compatible
+contextual folds = 195. This was an improvement in association and simultaneous
+physical allocation, not a newly invented 191-token diagonal emitter.
+
+I replayed the supplied independent checker against the exact extracted
+archive. Its separate source resolver, dense/native conjugacy, graph closure,
+and complete blank startup passed. The startup consists of exactly 58,154
+literal transitions, ending at dense state 75, head -2, with 66 one cells,
+the standard clean source seed, and the entire rest of the tape zero. Both
+set-of-cells and zipper representations agreed. The 19,260 supplementary
+finite concrete primitive tests also passed, consuming 8,234,830 literal
+transitions (largest individual run 708). Their scope is finite regression;
+the symbolic contracts and the inherited loop lemmas carry the universal
+claim. See pa195_independent_replay.json.
+
+This replay reuses the earlier independently structured checker. It is not a
+claim that a new proof-assistant endpoint has been elaborated in this audit.
+
+3. What the four additional archives contribute
+------------------------------------------------
+PA195's own report compared the older 27-archive snapshot. Four ZIPs now extend
+that set:
+
+(a) pa195_conpa_2026-11-13.zip: the 195-state baseline above, with an ordinary
+    mathematical proof of PA |- Nonhalt(PA195) <-> Con(PA), full local quotient
+    certificates, primitive contracts, startup, and an extensive comparison.
+
+(b) pa_consistency_cross_archive.zip (Git blob
+    303d864d7434c0e2a50a3b4d6e5229578bf9c227): four new 196-state combinations.
+    diagonal_combined: 3,676 sites, 4,784 contracts, startup 57,922.
+    separate_combined: 3,649 sites, 4,749 contracts, startup 57,922.
+    Their zerojump versions have respectively 4,785 and 4,750 contracts and
+    startup 58,168. These combine the diagonal/separate emitters with H-only
+    Shift, successful MP returning in H, and the invariant-based zero jump.
+    All four tables, source bindings, contracts and startup are supplied.
+    The packet has no claimed sub-196 result and no new kernel endpoint.
+
+(c) pa_consistency_reduction_audit_2026-11-14.zip (Git blob
+    3f37e13d347b8e4929199a631793d97a25dc0f07): new diagonal+MP-in-H and
+    separate+MP-in-H compositions, both 196 (3,677/3,650 sites;
+    4,785/4,750 contracts), plus their shorter-negation compositions,
+    both 197. It also enlarges parameter, association, and finite-window
+    helper searches, but supplies no strict state reduction. Its logical
+    and physical scope is more limited than PA195's final proof.
+
+(d) pa_consistency_research_2026-11-14.zip (Git blob
+    af1db044bb77bc29d960e18895fcdecd69edb0d8): a proved 18-instruction negation
+    macro INC7; INC7; node64, using p(t,1)=p(0,t)+2. The general core has
+    (T,X,Y)=(t,x,y) -> (4*(y+p(x,t)),0,0); the negation specialization needs
+    X=Y=0 on entry. The full separate-emitter implementation is 197 states,
+    3,441 sites, 4,468 symbolic contracts, startup 58,154. An independently
+    checked 245,112-pair zero/positive abstraction certifies the scratch
+    hypothesis at every replacement call. The macro saves source instructions
+    but loses contextual sharing, so the final machine is larger.
+
+4. Logical audit of the PA195 baseline
+--------------------------------------
+The PA195 paper claims an ordinary mathematical proof of an internal PA
+biconditional. Its new endpoint is not an already checked Lean/Rocq theorem.
+The imported PA196 Lean declaration provides the internal direction
+Nonhalt -> Con(PA); this is not itself the converse. The PA195 paper explicitly
+supplies the converse by syntactic proof translation and proof annotations.
+
+No mathematical gap was identified in the portions checked directly against
+the inherited source definitions. The important distinctions and checks are:
+
+* Diagonal vacuity uses B -> U(B,B), exploiting the strict inequality between
+  every variable label in B and the code B. The two reverse membership
+  interfaces can be recovered without assuming general equality vacuity.
+  In the source file PA196/Logic/Reverse.lean, negativeSpecialization uses
+  only direct membership rewriting, a mirrored equality witness, and
+  membership-only vacuity. Its premises are available in the new calculus.
+  Thus the revised proof does not secretly invoke the equality-vacuity
+  premise it is replacing. Neighborhood binder transport uses the recovered
+  membership interfaces and membership-only vacuity.
+
+* The reverse interpretation into PA uses finite bit comprehension for an
+  arbitrary formula. The formula code is substituted into a fixed induction
+  proof template, and PA checks the generated proof syntactically. There is
+  no use of uniform truth or soundness reflection for arbitrary PA formulas.
+  In the gate, the coincident-label case a=b changes a bound atom into
+  Bit(z,z); the written proof separately handles that case using a singleton
+  set matrix. Treating x_a as fixed inside that binder would have been wrong.
+
+* The semantic aliases I(0,0)=0 and pair(0,0)=0 are treated explicitly. The
+  first is handled by a fixed truth equivalence; the second by the canonical
+  finite Cantor-stack convention. Source false code 1 translates to
+  Bit(x_0,x_0), whose negation PA proves even inside further quantifiers.
+
+* The command invariant annotates both t and h and all live stack entries,
+  because the original Shift halt test is t+h=1. MP, AX, zero-stack pop and
+  failed matches preserve these annotations exactly. The scheduler carries
+  its live store between words; the proof does not assume a reset.
+
+* Finite physical halting is reflected using positive source-to-tape
+  segments. Under consistency, iterate T+1 command boundaries to construct
+  a physical run longer than any alleged T-step halt. This bounded coded
+  iteration and deterministic trace comparison are provable in PA. Exact
+  endpoint reachability cannot pass through an earlier partial halt.
+
+The useful source anchors are the PA195 report's pa_calibration.tex, its
+runtime_review.txt and check_engine.py, and upstream PA196/Logic/Reverse.lean,
+PA196/Commands/Store.lean, PA196/Source/CommandTransfer.lean,
+PA196/Source/Nonhalting.lean, and M6/Runtime.lean. Those sources still require
+the ordinary mathematical composition and arithmetic induction described
+in the paper; the executable tests should not be called a full kernel proof.
+
+5. Simplest proof route for a new purely physical reduction
+----------------------------------------------------------
+If the new machine changes only the physical implementation and has an exact
+PA-provable positive simulation of PA195, the new consistency theorem should
+be obtained by composition. It need not repeat or alter the proof calculus.
+
+Let q -> f(q) map old working states to new working states, map halt to halt,
+and preserve the designated start and tape. Suppose a PA-provable invariant
+contains the old start and is preserved by all old transitions. For every
+old step from that invariant, a fixed finite rule supplies one or more new
+steps to the exact mapped next configuration, including the complete tape
+and head. Assume the local traces are genuinely nonempty and their end
+controls are ordinary whenever the parent end control is ordinary.
+
+A parent halting trace translates by concatenation. Conversely, if the parent
+has no halt, its first T+1 steps translate to more than T new steps for any T;
+determinism therefore precludes a new halt by time T. These are primitive
+recursive finite trace constructions and induction statements in PA. Thus
+PA proves Halt(new) <-> Halt(PA195). Composing with the existing PA195 theorem
+gives the required internal consistency biconditional.
+
+For contextual reader folds, the invariant can often be certified by the
+finite incoming-row census: each entry arrives from the left and writes the
+specified predecessor bit, and the folded states are not initial. The local
+proof enumerates the remaining read bits and checks full restoration of every
+touched cell. Simultaneous folds must be checked in the fully patched table;
+a matching of individually eligible pairs is not sufficient when a helper
+is itself changed. This exact issue distinguishes PA195's compatible seven
+folds from an earlier unsuccessful seven-edge matching.
+
+6. Transferable ideas and limitations
+--------------------------------------
+The useful ZFC techniques are history-sensitive reader identification,
+source association, register-engine reuse, arbitrary-counter block contracts,
+and positive finite simulation. Their logical consistency calibration is
+about a different theory and does not transfer merely by renaming the machine.
+
+ConciseIPRA suggests deriving only the interfaces used by proof transport and
+exploiting syntax to obtain freshness. Its checker-size objective is not a
+binary-TM state bound. The finite-comprehension proof here uses induction for
+an arbitrary formula; equiconsistency of iPRA cannot simply be substituted
+for Con(PA). A genuine theory-level replacement would need fresh proofs of
+both refutation translations and an actual smaller complete machine.
+
+None of the current census or archived finite searches is a lower bound on
+the number of states needed for the task.

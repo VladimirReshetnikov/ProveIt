@@ -1,0 +1,19 @@
+\begin{center}
+\begin{tabular}{lrl}
+\toprule
+Layout & States & Decisive verification status\\\midrule
+Initial shifted emitter & 228 & Rejected: wrong arithmetic context\\
+Early shared shifted emitter & 222 & Rejected: wrong arithmetic context\\
+Corrected shifted emitter & 224 & Complete runtime and startup pass\\
+Further shared shifted emitter & 223 & Complete runtime and startup pass\\
+Unshifted dynamic-guard emitter & 222 & Complete runtime and startup pass\\
+\bottomrule
+\end{tabular}
+\end{center}
+The selected 222-state table is a different literal machine from the
+rejected earlier table of the same size. Its exact bytes, not its short
+name or state count, identify the result. The selected allocation removes
+one old working state and adds eight: $215-1+8=222$. It changes 72 old
+transition rows and adds 16 fresh rows. Strong transition-bisimulation
+refinement leaves every working state in a separate class; this rules out
+that immediate merge operation, not more general smaller constructions.

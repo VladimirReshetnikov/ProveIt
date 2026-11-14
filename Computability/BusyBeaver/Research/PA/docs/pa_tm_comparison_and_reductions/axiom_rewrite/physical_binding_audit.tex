@@ -1,0 +1,68 @@
+\subsection{Independent binding of the selected word to the complete source}
+\label{sec:independent-source-binding}
+
+The separate checker \file{audit_physical_binding.py} imports neither
+the candidate's compiler nor its symbolic runtime. It parses the
+complete delivered \file{Program.lean}, including its \texttt{trie}
+root, and checks that this tree is exactly the pinned PA196 source
+with only its AX subtree replaced by the delivered grammar. It
+normalizes the two reused increment-pair macros and obtains exactly
+the mathematically audited 199-token word.
+
+\begin{lemma}[The selected emitter's nine stack entries]
+Let the incoming accumulator be $t$, the incoming variable registers
+be $d,h$, and the three post-prefix parameters be $D,H,A$.
+After the selected AX word, the nine newly pushed entries, from top
+to bottom, are
+\[
+ h5,\ h4,\ h3,\ h2,\ h6',\ h1,\
+ \rho8(D,A,H,d),\ U(d,h),\ t,
+\]
+where $h6'$ is the antecedent-exchanged distribution head.
+The enabled accumulator is the distributed gate $F_*(H,D,A)$;
+the disabled accumulator is zero under the unchanged guard.
+\end{lemma}
+\begin{proof}
+For a constructor expression $X$, its mathematical postfix emitter
+takes an incoming accumulator $v$ and stack $w$ to accumulator $X$
+and stack $v::w$. For a variable or constant-one expression this is
+the copy/push definition. In the binary-constructor case, the two
+recursive emissions push the incoming accumulator and then the
+first child; the constructor consumes the latter, leaving exactly
+the former. Tag increments do not change the stack. This proves
+the claim by structural induction on $X$.
+
+The unchanged 18-token prefix ends with accumulator
+$\rho8(D,A,H,d)$ and stack prefix $[U(d,h),t]$. The six successive
+head emissions have order $[1,6',2,3,4,5]$; the final gate emission
+pushes the last head. Applying the preceding stack identity gives
+exactly the displayed list. The unchanged guard suffix preserves
+that stack and either keeps the gate or clears the accumulator.
+\end{proof}
+
+The whole-source audit reconstructs the 3,773 primitive sites and
+their paths from the delivered root. It resolves every relative
+control transfer using the contiguous leaf interval of its target
+subtree. The resulting instruction table agrees with every emitted
+site record. Each ordinary macro's complete ordinal control graph
+matches its pinned baseline pattern at every old and new occurrence;
+the final closing transfer is checked separately after relocation.
+All 169 exterior sites retain their original paths and primitives,
+and all their control edges agree after the 39-instruction shift.
+Thus no implicit assumption that an arbitrary reassociation
+preserves relative jump depths enters this audit.
+
+For the delivered 198-state table, the checker also independently
+executes the 58,154-step blank-tape startup. It obtains native state
+84, head position $-2$, source site 25 with path
+\texttt{100000}, and the complete expected finite tape, including
+the 48-cell routing gap and all 35 physical register blocks. This
+checks equality of the whole finite support, not merely a tape
+prefix. Arbitrary-register physical simulation remains the separate
+runtime certificate's obligation.
+
+The audit also passes with Python optimization enabled. A deliberately
+changed complete source root is rejected, demonstrating that its
+root check cannot be satisfied merely by preserving the AX subtree.
+The exact candidate and source hashes appear in
+\file{physical_binding_audit.json}.

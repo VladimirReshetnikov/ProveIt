@@ -1,0 +1,42 @@
+PAPER-AUDIT CORRECTION: CODE ZERO IS SAFE WITH THE DYNAMIC GUARD
+================================================================
+
+The prior warning about code zero was incorrect for the actual dynamic
+guard G_n=Q(n,I(R(n,1),R(n,0))). This file supersedes that warning.
+
+Use I=4P, R=4P+1, Q=4P+2, N(f)=I(f,1), D(0)=a fixed closed truth, and
+D(I(a,1))=not D(a), with D(1)=E(v0,v0). Take n=c without an increment.
+The existing bundle gate remains c!=a,b.
+
+At n=0, exact decoding gives
+  G_0 = forall v0 not E(v0,v1) = Emp(v1),
+  U_0 = forall v1(E(v1,v0)->True),
+  L_0 = forall v1(Emp(v1)->(True->E(v1,v0))).
+Consequently, with either curried clause order,
+  N(H_0) <-> exists v0 forall v1(Emp(v1)->E(v1,v0)).
+The reason is that the LOCAL guard binder0 also captures the source label0
+inside R(n,0); the guard does not say Sub(v1,output0).
+
+W proves this shell: use a false-matrix cover to get an empty object e;
+then use the true-matrix cover at source e. Since Sub(x,e) iff Emp(x), its
+output contains every empty representative. Thus it is sound in W+IR.
+No extensionality or unique empty object is needed: it collects all of them.
+
+At n=1, the already-reviewed exceptional shell is equivalent to IR under
+ordinary decoding. At n>=2, self-freshness proves the regular W schema.
+Therefore the unshifted dynamic-guard emitter is sound for ALL natural codes.
+The equality-free completeness proof is unchanged: double-negate the desired
+matrix before quotation to obtain n>1; emit with c=n and a=b=0 (gate passes);
+project N(H_n), remove double negation, and restore original variable names.
+No zero matrix is required for completeness, so its altered meaning is safe.
+
+This improvement is specific to the dynamic guard. If the guard instead
+uses a separate fixed label2, n0 leaves its source reference free within
+that guard until the outer output binder captures it, resulting in an
+object containing all its own subsets; that DIFFERENT variant is unsound
+under IR. Do not remove the shift from a fixed-guard variant without a new
+collision proof.
+
+I independently confirmed the exact n0/n1 trees using a small unrelated
+decoder with inverse Cantor pairing computed by math.isqrt. No retained
+machine source or existing emitter implementation was imported.

@@ -1,0 +1,286 @@
+U MACHINE: SOURCE, NUMERICAL CALCULUS, AND FAIR ENUMERATION
+Independent proof-engine audit, 28 October 2026
+
+This is an ordinary mathematical proof outline with exact command macros. It
+does not assert that a new PA/MM0/Rocq/Lean certificate has been compiled. The
+old K215 final theorem cannot simply be reused with a changed axiom: its generic
+proof-engine lemmas, finite propositional derivation, and counter-program
+contracts are the relevant reusable results. Every new theory-specific premise
+is isolated below.
+
+1. NATIVE CONSTRUCTORS AND THE NEW BUNDLE
+
+Let P(a,b)=(a+b)(a+b+1)/2+b, I(a,b)=4P(a,b), R(i,j)=4P(i,j)+1,
+Q(i,a)=4P(i,a)+2, E(i,j)=4P(i,j)+3, F=1, and N(a)=I(a,F).
+Code 0 is the designated truth alias; in particular I(0,0)=0. Every other
+number decodes by its residue modulo4 and recursive unpairing. Formulas with
+literal membership v0 in v0 are normalized using global irreflexivity; the
+effective falsity code1 is closed after normalization.
+
+For the axiom selector c put n=c (the final unshifted variant). Define
+
+  e_n = R(1,n)
+  S_n = Q(n,I(R(n,1),R(n,0)))
+  U_n = Q(1,I(e_n,n))
+  L_n = Q(1,I(S_n,I(n,e_n)))
+  H_n = Q(n,I(L_n,I(U_n,F)))
+  V(a,b,c) = I(R(a,b),Q(c,R(a,b)))
+  B(a,b,c) = N(I(V(a,b,c),H_n)).
+
+The upper-first source variant instead sets H_n=Q(n,I(U_n,I(L_n,F))).
+Exchange of the two curried antecedents gives an explicit propositional
+equivalence. Every following argument applies verbatim with that H_n; the
+independent source audit selects the expected order using --upper-first.
+
+Classically with F false, B is equivalent to V(a,b,c) AND NOT H_n.
+For n>=2, NOT H_n is exactly the ordinary unrestricted power-cover schema
+with source variable0, tested variable1, output variable n, and matrix dec(n).
+The local binder n in S_n shadows the output binder only inside the subset
+guard. It does not bind any occurrence of the matrix.
+
+The self-freshness lemma for native codes says that every effective variable
+name of dec(n) is<n for n>=2. Thus output n is fresh. At n=1, the matrix is F,
+the upper clause is irreflexivity at variable1 and the lower clause is valid;
+the resulting shell is true under IR. At n=0 the local guard binder0 captures
+the source occurrence0: S_0 is forall v0(E(v0,v1)->E(v0,v0)), equivalent to
+Emp(v1) under IR. The upper clause is tautology, and the shell asserts an
+object containing every empty object. First obtain an empty source e by a
+false-matrix cover, then apply a true-matrix cover at e; Sub(x,e) is Emp(x),
+so this proves the exceptional shell. There is no self-powerset demand.
+The alternative shifted variant n=c+1 omits this harmless case, but the shift
+is not needed for soundness with this dynamic guard.
+
+To recover every needed regular matrix, normalize source/test names to0/1.
+If its code is0, replace it by the equivalent truth matrix I(1,1)=16. If it is1,
+replace it by the equivalent false matrix I(0,1)=8. More uniformly, use a
+provably equivalent double-negation padding with code>1. Other parameters are
+renamed through unused temporary names. Choose c=n and, for example,a=b=n+1;
+the inherited gate c!=a,b passes. Project the power-cover component, then
+restore original names by the ordinary GEN/instantiation/alpha-conversion
+proof transformations. These are primitive-recursive transformations of
+finite proofs; no run-time freshness check or substitution is added.
+For the shifted alternative use c=n-1,a=b=n instead.
+
+The two inherited gate tests c!=a and c!=b remain necessary for atom vacuity.
+No a!=b test is needed because the power-cover source/test are fixed distinct
+names0/1. This matters: a variable-role version with tested a and source b
+would require a!=b, since a=b makes Sub(a,b) tautological and emits unrestricted
+global comprehension. Gating the entire conjunction on a!=b would also remove
+diagonal atom vacuity; that extra completeness gap is avoided here.
+
+2. CALCULUS C_U
+
+Use the numerical calculus Thm222 with its theory bundle replaced by B. Its
+rules are truth0, numerical MP, numerical GEN, the unchanged eight logical
+rows rho1,...,rho6,G,rho8, and B(a,b,c) for c!=a,b. The merged equality row is
+
+ G(a,b,c)=I(E(c,a),I(E(c,b),Q(R(a,b),E(a,b)))).
+
+The source directly emits only rho8(A,B,C,U) with U<=A. This does not weaken
+the calculus. The already supplied DominatedCore finite derivation proves
+unrestricted rho8 from the dominated ones using MP only, for any operation I
+that dominates its arguments under the preorder <=. Native I satisfies that
+property, including its zero alias. No set-theory axiom occurs in this fixed
+derivation, so it transfers unchanged to C_U.
+
+Relevant reference files (ProveIt/k225-formal/rocq/rocq-extension/coq/215):
+Thm222.v; DomRho8.v; DominatedCore.v; Codes222.v; L224E.v; L224Meta.v.
+The theory-specific calibration C_U derives1 iff U has a refutation is a
+separate obligation, addressed by the fixed-emitter theory audit. In
+particular, interpreting equality by membership indiscernibility is the
+established equality-free logical bridge; do not assume that replacing K by W
+automatically provides all built-in equality axioms.
+
+3. EXACT ABSTRACT COMMANDS
+
+Retained tuple (t,w,d,h) consists of current formula, encoded theorem stack,
+additive counter, and cached theorem. A stack cell is P(top,rest), with an
+infinite zero tail. Command wire fields and effects are:
+
+ NIP: fields[0]. If h=1,halt. Otherwise (x,w')=unP(w) and result(t,w',d,x).
+ DROP: fields[1]. Result(h,P(t,w),d,h).
+ MP(x): fields[2,x]. Put z=d+x. If I(t,z)=h, result(z,P(0,w),z,0),
+        otherwise result(0,w,z,0).
+ AX(c;x,y): fields[c+3,y,x]. Put u=d,a=d+x,b=h+y. Push, in order,
+        t, Q(u,h), rho8(a,b,c,u), G(a,b,c), rho6(a,c), rho5(a,b,c),
+        rho4(a,b,c), rho3(a,b,c), rho2(a,b,c), rho1(a,b).
+        Set current=0 if c=a or c=b, else B(a,b,c), and set d=h=0.
+
+Thus AX still adds exactly10 stack cells and directly emits only u<=a rho8.
+All row definitions, parameter dependencies, and wire order are unchanged.
+
+An enumerator state is (pl,np,t,w,d,h). At a command boundary, if pl=0 use
+z=np and increment np; otherwise use z=pl-1 and leave np unchanged. Unpair z
+to read selector, then its fields, and retain the final remainder as newpl.
+Each coordinate of unP(z) is<=z. Therefore positive pl strictly decreases
+after each completed command, unless the machine halts. A candidate drains in
+at most oldpl commands; no hidden unbounded search occurs inside decoding.
+
+4. SOUNDNESS, INCLUDING THE STARTING CUTOFF
+
+Invariant: t,h, and every decoded entry of w are C_U theorems. It says nothing
+about d,np,pl. All-zero formula data satisfies it because0 is a theorem and
+unP(0)=(0,0). NIP transfers a theorem from the stack or halts with theorem1.
+DROP copies and pushes theorems. Successful MP uses its tested literal equality
+to apply numerical MP; failed MP produces0. AX produces one gated permitted
+bundle or0, the eight logical rows, GEN of the old cache, and oldcurrent.
+Hence induction over command executions preserves the invariant, and a
+halting run yields a finite C_U derivation of1.
+
+The successful literal initialization reaches the clean root (source address
+empty, ordinal0) with logical nine-register vector[4,0,0,0,0,0,0,0,0]. Thus
+(pl,np,t,w,d,h)=(0,4,0,0,0,0). There is no dirty scratch or partial AX premise
+at this endpoint. Other complete tape data belongs to the binary simulation
+invariant, not to the theorem stack. Completeness from a nonzero cutoff is
+proved next; soundness is immediate from the stated theorem invariant.
+
+More generally an arbitrary dirty formula tuple is NOT sound. The complete
+compiler can reach a refutation from any retained tuple, but that one-way
+completeness assertion must not be confused with a soundness assertion about
+arbitrary initial data.
+
+5. BLOCK COMPILER AND EXACT MACROS
+
+Write H=NIP and D=DROP; H^j means j repeated NIPs. A block Build(X) has the
+contract: from every(T,w,0,0), it either halts early or returns(X,w,0,0).
+Early halting is acceptable for completeness. Define
+
+ DISCARD = MP(1); AX(1;0,0); H^10.
+ J(0) = empty; J(u)=MP(u) for u>0.
+
+DISCARD returns(0,w,0,0) exactly: initial MP fails because I(T,1)>0=h;
+then AX has c=a=1, so its current is0, and10pops discard all its stack cells.
+Set Build(0)=DISCARD for the truth constructor.
+From(0,w,0,0), J(u) returns(0,w,u,0): for u>0 the MP comparison fails since
+I(0,u)>0, and u=0 requires no command.
+
+For logical row j (1<=j<=8), with u<=a, define
+
+ Leaf(j;a,b,c,u) = DISCARD; J(u); AX(c;a-u,b); H^j; D; H^(11-j).
+
+After AX, current is a gated bundle and the j-th stack item is the required
+logical row. The NIPs expose it in cache; DROP makes it current and puts the
+bundle over the remaining stack;11-j further pops remove that bundle and all
+remaining AX cells, leaving the original w and cache0. All discarded fixed
+rows and the bundle have outer constructor residues different from1, so they
+cannot cause an unintended target test. For rows1..7 take u=0. Row6's matrix
+argument is c; row8's u<=a restriction is handled by the finite dominated-row
+derivation above. Consequently every unrestricted logical row is compilable.
+
+ BundleLeaf(a,b,c) = DISCARD; AX(c;a,b); H^10,
+ for c!=a,b, produces exactly B(a,b,c).
+
+ Given Build(X), a GEN block for label i is
+
+ Build(Q(i,X)) = Build(X); D; J(i); H; AX(i;0,0); H^9; D; H; H.
+
+After Build, DROP preserves X on the stack and clears current. J sets counter
+i. NIP loads X into cache. AX pushes Q(i,X); its gate fails because c=a=i.
+Nine NIPs select this GEN item; DROP makes it current; two final NIPs remove
+the temporary0 and recover the old zero cache. The original stack survives.
+
+ Given blocks Build(A) and Build(I(A,B)), use
+
+ Build(B) = Build(A); D; Build(I(A,B)); H; D; H; MP(B);
+            AX(B;0,0); H^10; D; H; H.
+
+The first three transfers place A in current and I(A,B) in cache. If A=1,
+the next NIP halts early. Otherwise MP succeeds and yields B with an extra
+zero stack cell and counter B. AX has c=a=B and yieldscurrent0; the10NIPs
+discard its newly pushed cells while retaining B. The final DROP,NIP,NIP
+restore B/current and the old stack/cache, or halt early when B=1. This is
+the exact inherited contract, independent of the power-cover formula.
+
+Induction on the finite C_U derivation compiles a proof of1 into a block L
+with Build(1)'s contract. Replacing each unrestricted rho8 leaf by the fixed
+dominated derivation is a primitive-recursive finite expansion.
+
+6. COFINAL SEARCH: NO PROOF LOST BY STARTING AT4
+
+Use START(Y)=AX(0;1,Y). It resets d=h=0 from ANY retained tuple, while it may
+change current and stack arbitrarily. Therefore
+
+ START(Y); Build(1); DROP; NIP; NIP
+
+halts from every retained tuple: the Build contract handles its unknown new
+current/stack and either already halts or leaves1/current with zero cache;
+DROP,NIP,NIP then tests cache1.
+
+Encode a field list by nested P, and encode a noninitial command tail by
+enc_tail([])=0,
+enc_tail(k::L)=1+fold_right(P,enc_tail(L),fields(k)).
+The candidate number for the first command START(Y) is
+
+ N_Y = P(3,P(Y,P(1,enc_tail(Build(1);DROP;NIP;NIP)))).
+
+Because P dominates both coordinates, N_Y>=Y. Choose Y=4 for the observed
+seed, or any given initial cutoff. Positive prooflists drain strictly, and
+the next candidate counter advances by1 whenever a candidate starts. Induct
+on N_Y-4: either the search has already halted or it reaches a boundary with
+pl=0,np=N_Y. The command-decoding identities then execute the compiled
+halting program from whatever retained data earlier candidates left behind.
+
+This proves enum_halts_from_seed iff C_U derives1. The argument handles
+internally finite nonstandard proof codes in PA because it consists of
+first-order induction, elementary pairing identities, and coded finite
+proof/run transformations. It does not rely on standard-model semantic
+completeness or on an external truth predicate.
+
+7. SOURCE-TO-ENUMERATOR AND TERMINATION OF ONE COMMAND
+
+The9logical registers are N=0,T=1,W=2,C=3,D=4,H=5,X=6,Y=7,L=8.
+At root the scratch registers X,Y and selector C are0. Existing pair/unpair,
+copy, destructive-equality, and move loops terminate by a natural-number
+variant. In particular pair(A,B) recursively lowers A+B; unpair lowers its
+input z and advances along consecutive Cantor diagonals. These inductions
+prove their exact algebraic effects and primitive-recursive time bounds.
+
+The inherited macro contracts, with X=Y=0, are:
+ PUSH0: (T,W)->(0,P(T,W));
+ PUSH1: (T,W)->(1,P(T,W));
+ PAR3: (T,W)->(C,P(T,W)), preserving C;
+ I/R/Q: from(T,P(A,W))->(I/R/Q(A,T),W);
+ N: T->I(T,1), with W unchanged.
+Every macro restores X=Y=0 and preserves all other registers.
+
+The new RPN expression is built by structural recursion. Every atom pushes
+the oldcurrent and leaves its intended number in T; every binary constructor
+pops its left operand and combines it with T. Thus an expression E has
+uniform contract(T,W)->(eval(E),P(T,W)). For n=C the atom is exactly PAR3.
+The exact symbolic check gives eval(E)=H_C; at entryT is V(a,b,c). The
+unchanged final I then N consumes that saved V and leaves B(a,b,c), with no
+net additional stack cell. All parameters and scratch invariants survive.
+The shifted alternative uses PAR3;CI1 and computes H_(C+1).
+
+The replaced old interval[2885,4482) and new macro expression are closed
+source blocks. Independent CFG comparison checks that all3154 retained
+primitive instructions and their control edges agree after ordinal index
+translation, and that no retained edge enters the replaced block's interior.
+For the stable source the only change to one AX execution is replacing its
+old K current formula by B; its10pushed logical/current slots, gate, cleanup,
+selector behavior, and other command bodies are exactly the inherited ones.
+
+Each macro terminates on every natural input. Hence a completed root command
+corresponds to exactly one enumerator step, and every enumerator step has a
+finite counter execution. The sole CH instruction remains the NIP target
+test. The finite source splice and these all-natural contracts give both
+directions between source halting and enumerator halting. The binary-table
+simulation and exact finite initialization are additional obligations;
+separately verified symbolic runtime certificates discharge those, not the
+bounded tests in this folder.
+
+8. PA FORMALIZABILITY AND SCOPE
+
+All equivalences above can be carried by explicit finite proof/run codes.
+The loop invariants, structural syntax recursion, command compiler, strict
+drain, and cofinal-counter proof use only PA induction and primitive-recursive
+arithmetic. The literal runtime checker uses finite local transition blocks
+plus unary/list inductions, also representable in PA. Thus once its soundness
+and the new U-theory bridge are supplied, the resulting ordinary proof yields
+PA|-Halt(M,blank)<->not Con(U), hence PA|-Nonhalt(M)<->Con(U).
+
+The new source audit is NOT a kernel certificate and the old MM0 proof for
+K215 has a different final theory. Report that distinction. The executable
+checks provide exact bindings and finite verification of the supplied
+construction; the explanatory induction arguments provide its unbounded
+mathematical content.

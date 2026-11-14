@@ -1,0 +1,171 @@
+{
+  "status": "CHECKS_PASS_197_STATES_NOT_SUB196",
+  "working_states": 197,
+  "rows": 394,
+  "start": 0,
+  "halt": 197,
+  "native_start": 74,
+  "native_root": 84,
+  "native_halt": 254,
+  "source_sites": 3441,
+  "baseline_source_sites": 3673,
+  "grammar_readers": 68,
+  "simultaneous_folds": 5,
+  "unchanged_register_engine_rows": 46,
+  "independent_cfg_resolvers_agree": true,
+  "source_graph_no_stray_checks": 4468,
+  "replaced_blocks": 8,
+  "old_block_sites": 47,
+  "new_block_sites": 18,
+  "old_entries": [
+    584,
+    686,
+    1759,
+    1861,
+    3007,
+    3081,
+    3316,
+    3472
+  ],
+  "new_entries": [
+    584,
+    657,
+    1701,
+    1774,
+    2891,
+    2936,
+    3142,
+    3269
+  ],
+  "outside_source_rows_bound": 3297,
+  "external_entry_exit_checks": true,
+  "symbolic_loop_certificate": {
+    "primitive_cfg_exact": true,
+    "simple_drain_loops": 3,
+    "outer_loop_invariant": "Y + S*(S+1)/2; T=0 at outer header",
+    "terminating_natural_variants": [
+      "T at pc0",
+      "S at pc6",
+      "S at pc4",
+      "Y at pc10"
+    ],
+    "general_core_contract": "(T,S,Y)=(t,s,y) -> (4*(y+p(s,t)),0,0)",
+    "frame": "All registers other than 1,6,7 are preserved because no primitive writes them.",
+    "neg18_contract": "With registers 6=7=0, INC7;INC7;node64 sends T to 4*p(T,1) and restores registers 6=7=0.",
+    "exact_transition_count_recurrences_verified": true
+  },
+  "independent_complete_source_certificate": {
+    "grammar_sha256": "b150d8c35e0b6691a8e74c000a4c638b0ffe2cda3a790b63701dee50c05e0721",
+    "sites_sha256": "a903ea0c367fcac96df8aec865247d917ee062b202adcd476a2b62d64698061d",
+    "source_sites": 3441,
+    "exact_grammar_source_reconstruction": true,
+    "both_CFG_resolvers_agree": true,
+    "exact_NEG18_blocks": [
+      {
+        "site": 584,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 657,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 1701,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 1774,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 2891,
+        "mask_count": 40,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 2936,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 3142,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 3269,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      }
+    ],
+    "abstract_initial_state": {
+      "source_pc": 25,
+      "positive_registers": [
+        0
+      ]
+    },
+    "inductive_joint_zero_positive_pairs": 245112,
+    "joint_pair_sha256": "99465e343e0885764ea86f0a0fe024dc4f6f751cdc12b33ef740931f39ea591a",
+    "scope": "The full candidate source is reconstructed independently, every 18-site block has the proved CFG, and a sound finite abstraction proves clean scratch at all its entries from the stated source initial condition. The associated TM runtime and concrete blank startup are certified separately."
+  },
+  "runtime": {
+    "ok": true,
+    "contracts": 4468,
+    "max_steps": 488,
+    "total_steps": 1392425
+  },
+  "startup_steps": 58154,
+  "whole_startup_tape_exact": true,
+  "graph_reachable_states": 197,
+  "joint_mask_site_pairs": 245112,
+  "joint_mask_sha256": "99465e343e0885764ea86f0a0fe024dc4f6f751cdc12b33ef740931f39ea591a",
+  "scratch_entry_invariants": [
+    {
+      "site": 584,
+      "mask_count": 32,
+      "registers_6_and_7_forced_zero": true
+    },
+    {
+      "site": 657,
+      "mask_count": 32,
+      "registers_6_and_7_forced_zero": true
+    },
+    {
+      "site": 1701,
+      "mask_count": 32,
+      "registers_6_and_7_forced_zero": true
+    },
+    {
+      "site": 1774,
+      "mask_count": 32,
+      "registers_6_and_7_forced_zero": true
+    },
+    {
+      "site": 2891,
+      "mask_count": 40,
+      "registers_6_and_7_forced_zero": true
+    },
+    {
+      "site": 2936,
+      "mask_count": 32,
+      "registers_6_and_7_forced_zero": true
+    },
+    {
+      "site": 3142,
+      "mask_count": 32,
+      "registers_6_and_7_forced_zero": true
+    },
+    {
+      "site": 3269,
+      "mask_count": 32,
+      "registers_6_and_7_forced_zero": true
+    }
+  ],
+  "native_sha256": "06f0d712e0933e80c2a0e82c765dbf82b4a9645a4fb6556eb50f8fc79550519d",
+  "dense_sha256": "15f8b3e96d6adae76236ab0960d288b9537e39294ef1ab65f8fdd2e16dc2a9b6",
+  "scope": "Executable primitive contracts use inherited unchanged register-block interfaces. The independent local NEG18 source argument is universal via terminating counter loops and exact polynomial identities. No Lean recheck, new PA-internal consistency biconditional, or machine below196 states is claimed."
+}

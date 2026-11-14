@@ -1,0 +1,144 @@
+\section{Uniform arithmetic contracts for the combined source}
+\label{sec:combined-source-macros}
+
+The following closes the source-macro part of the argument for the combined
+196-state intermediate machine.  It uses induction on arbitrary natural
+register values, rather than bounded executions of the source program.
+The accompanying \texttt{check\_source\_binding.py} verifies the finite
+resolved-instruction identities to which those inductions apply.
+No new Lean theorem is claimed.
+
+\subsection{Exact source changes and proof reuse}
+
+The combined tree has 3788 leaves.  Its resolved instructions at ordinals
+0 through 3772 agree with the 3812-leaf upstream source except for three
+relocated outgoing edges:
+\[
+ 48:\ 3800\mapsto3777,\qquad
+ 3692:\ 3799\mapsto3776,\qquad
+ 3772:\ 3799\mapsto3776.
+\]
+At ordinal 48 only the zero branch of the decrement changes.  Consequently
+the root guard (0--10), stack decoder (11--24), candidate fetch (25--47),
+AX body (50--3692), and MP prelude (3693--3772) retain their arithmetic
+effects.  The proof of each reused fragment transports by its unchanged
+instruction rows, with the indicated exit renamed.  The two entry points
+that change their arithmetic behavior are the MP success continuation and
+Shift.
+
+The logical registers are $T=R_1$, $W=R_2$, $D=R_4$, $H=R_5$; $R_6=X$
+and $R_7=Y$ are scratch.  The source command interface has $R_3=X=Y=0$.
+The candidate number $R_0$ and unconsumed command word $R_8$ are framed
+through the command operations except when explicitly read by the unchanged
+fetch or operand-decoding routines.
+
+\subsection{Shift: clearing the old top costs \texorpdfstring{$2t+1$}{2t+1} instructions}
+
+The new Shift entry is 3777.  Its resolved tail, using $\operatorname{dec}$
+with zero destination first, is
+\[
+\begin{array}{r|l}
+3777&\operatorname{dec}(T,3779,3778)\\
+3778&\operatorname{jump}(3777)\\
+3779&\operatorname{dec}(H,3783,3780)\\
+3780&\operatorname{inc}(T,3781)\\
+3781&\operatorname{inc}(X,3782)\\
+3782&\operatorname{jump}(3779)\\
+3783&\operatorname{dec}(X,3786,3784)\\
+3784&\operatorname{inc}(H,3785)\\
+3785&\operatorname{jump}(3783)\\
+3786&\operatorname{inc}(X,3787)\\
+3787&\operatorname{jump}(0).
+\end{array}
+\]
+Starting with $(T,H,X)=(t,h,0)$, the first loop reaches 3779 with
+$(0,h,0)$ in exactly $2t+1$ instructions.  Its induction step decreases
+$T$ once and executes its one return jump.  The second loop reaches 3783
+with $(h,0,h)$ in $4h+1$ instructions; each iteration decreases $H$ and
+increases $T$ and $X$.  The third reaches 3786 with $(h,h,0)$ in $3h+1$
+instructions.  All other registers are unchanged throughout.  Thus the
+exact pre-guard duration is
+\[
+  (2t+1)+(4h+1)+(3h+1)=2t+7h+3.
+\]
+
+The last two rows enter the unchanged root guard with $X=1$.  That guard
+compares $H$ with one, consumes $H$ and $X$, and either halts or enters
+the unchanged stack decoder at 11.  The existing guard proof applies
+with its initial value $h$, instead of the old value $t+h$.  Including
+rows 3786 and 3787, its duration is eight instructions when $h=1$, and
+$2h+7$ instructions otherwise.  Hence:
+\[
+\begin{array}{ll}
+h=1:&\text{Shift halts in }2t+7h+11\text{ source instructions};\\
+h\ne1:&\text{Shift reaches decoder 11 in }2t+9h+10
+            \text{ source instructions,}\\
+ &\hspace{7mm}(T,H,X)=(h,0,0).
+\end{array}
+\]
+The decoder preserves $T,D$, changes $W$ to its Cantor tail, and puts its
+Cantor head in $H$.  It has a finite positive execution for every natural
+$W$.  This proves the complete modified Shift contract, including arbitrary
+$t,w,d,h$ and preservation of the other registers.
+
+\subsection{MP: the success branch is a single transfer loop}
+
+Let the incoming offset field be $x$, and set $y=d+x$.  The unchanged
+operand decoder and MP prelude consume that field and reach one of two
+exits, with $(T,W,D,H,X,Y)=(0,w,y,0,0,0)$.  Equality
+$I(t,y)=h$ selects 3773; inequality selects 3776.  The new tail is
+\[
+\begin{array}{r|l}
+3773&\operatorname{dec}(D,3776,3774)\\
+3774&\operatorname{inc}(H,3775)\\
+3775&\operatorname{jump}(3773)\\
+3776&\operatorname{jump}(25).
+\end{array}
+\]
+Induction on $y$ gives the success-loop invariant
+$(D,H)=(y-k,k)$ after $k$ iterations.  There are three instructions per
+iteration and one final zero decrement, so the loop reaches 3776 in
+$3y+1$ instructions with $(T,W,D,H)=(0,w,0,y)$.  Its return to fetch costs
+one more instruction.  Failure returns in one instruction with
+$(T,W,D,H)=(0,w,y,0)$.  In particular neither branch adds a zero to the
+stack, and the successful branch no longer retains $y$ in $D$.
+
+The old MP-prelude existence-of-a-finite-run proof and this elementary loop
+induction therefore give a finite positive run for every incoming store and
+offset field, with exactly the two effects used by the new command compiler.
+
+\subsection{From these contracts to the literal binary table}
+
+The 4928 source-site outcomes in the separate symbolic tape certificate
+cover the 3788 leaves, with both possible outcomes of every decrement.
+Those contracts quantify over every unary register file and every permitted
+gap at least 48.  Their register-engine summaries are reused only after
+checking every engine row is unchanged.  The literal startup certificate
+reaches the exact source-25 frame, with candidate register $R_0=2$ and all
+other logical registers zero, after 57922 binary steps.  This frame equality
+includes the whole finite-support tape, not just a prefix.
+
+The arithmetic arguments above, the command compiler, and the unchanged
+exhaustive scheduler now prove source halting iff a numeric-calculus
+refutation.  The positive source-site tape contracts transfer a finite
+source halt to a finite binary halt.  Conversely, suppose a binary halt
+occurs within $n$ steps after startup but the source has not halted in its
+first $n+1$ instructions.  Iterating the positive instruction contracts
+gives a binary continuation of at least $n+1$ steps.  Determinism contradicts
+the alleged earlier halt.  This argument avoids an unproved assumption
+that the physical execution remains forever inside an intended frame.
+
+All loops just used have primitive recursive trace constructors, and their
+correctness uses ordinary arithmetic induction.  Fixed startup and binding
+certificates are finite arithmetic facts.  The existing PA-to-calculus
+translation and the written syntactic calculus-to-PA interpretation can
+therefore be composed with this proof inside PA.  The conclusion for the
+combined binary table is the written calibration theorem
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Nonhalt}(M_{196}^{\mathrm{combined}})
+       \longleftrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+The proof has an explicit finite binding and universal arithmetic argument.
+It is separate from a Lean kernel-checked adaptation of all upstream
+arithmetic endpoint files, which has not been carried out here.

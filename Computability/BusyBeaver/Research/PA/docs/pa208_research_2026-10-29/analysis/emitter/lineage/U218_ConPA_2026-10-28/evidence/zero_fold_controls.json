@@ -1,0 +1,62 @@
+{
+  "status": "ALL_PROOF_PREMISE_MUTATIONS_REJECTED",
+  "controls": [
+    {
+      "control": "wrong_initial_state",
+      "status": "REJECTED",
+      "reason": "initial state header must be exactly #! start 0"
+    },
+    {
+      "control": "missing_initial_state",
+      "status": "REJECTED",
+      "reason": "exactly one initial state header is required"
+    },
+    {
+      "control": "duplicate_initial_state",
+      "status": "REJECTED",
+      "reason": "exactly one initial state header is required"
+    },
+    {
+      "control": "remove_zero_written_before_bounce",
+      "status": "REJECTED",
+      "reason": "('predecessor certificate differs', {112: [[172, 0, 1, -1, 112]], 200: [[112, 1, 1, 1, 200]]})"
+    },
+    {
+      "control": "unexpected_predecessor_of_guard_state",
+      "status": "REJECTED",
+      "reason": "('predecessor certificate differs', {112: [[0, 0, 1, 1, 112], [172, 0, 0, -1, 112]], 200: [[112, 1, 1, 1, 200]]})"
+    },
+    {
+      "control": "incorrect_redirect_target",
+      "status": "REJECTED",
+      "reason": "candidate is not exact quotient"
+    },
+    {
+      "control": "negative_state",
+      "status": "REJECTED",
+      "reason": "negative state or target"
+    },
+    {
+      "control": "negative_target",
+      "status": "REJECTED",
+      "reason": "negative state or target"
+    },
+    {
+      "control": "omit_invariant_at_112",
+      "status": "REJECTED",
+      "reason": "('noninductive invariant', 112, (0, 0, 1, 1, 0), (1, 1, 200))"
+    },
+    {
+      "control": "omit_invariant_at_200",
+      "status": "REJECTED",
+      "reason": "('quotient does not commute', 200, (0, 0, 1, 0, 0))"
+    },
+    {
+      "control": "omit_all_invariant_clauses",
+      "status": "REJECTED",
+      "reason": "('quotient does not commute', 200, (0, 0, 1, 0, 0))"
+    }
+  ],
+  "count": 11,
+  "scope": "The controls mutate initial-state parsing, the two-row zero invariant, the quotient target, and state-domain validity. They do not establish the positive theorem; the local proof certificate does."
+}

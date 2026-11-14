@@ -1,0 +1,298 @@
+\section{The actual U213 bootstrap and its protected arbitrary tail}
+\label{sec:u213-bootstrap}
+
+The shortened initializer reaches an interior point of AX.  The appropriate
+source lemma starts after the ordinary generalized-cache construction; it
+does not identify this run with a complete AX invocation.  This distinction
+is essential because the seed below has cache value $1$, which is used only
+as an arithmetic parameter during this suffix, and has top $0$ in the place
+where a complete AX would have put a quantified code.
+
+\subsection{Literal physical frame and finite source prefix}
+
+For the exact 213-state native table with SHA-256
+\nolinkurl{bb4f5ac12b29d07d1080109af9bb564e9e11a4783efc48cd73b8f826789d01f7},
+the blank run after $48{,}140$ binary steps
+has native state $84$, head coordinate $-2$, and register header coordinate
+$54$.  The header is thus $56$ cells to the right of the dispatcher head.
+Its source address is $001100110101010$, source ordinal $136$, and its
+logical register store, in order $(N,T,W,A,D,H,X,Y,L)$, is
+\[
+ (1,0,13,0,0,1,0,0,1).
+\]
+There are $43$ represented spare registers, each equal to $1$.  The exact
+whole-tape check includes the address, all separators, the register header,
+all register and spare blocks, the head and state, and zero exterior; there
+are $120$ nonzero tape cells.  These are literal finite facts checked by
+the startup replay, separately from the universal primitive simulation.
+
+Starting instead at source ordinal $106$ with
+\begin{equation}
+ (N,T,W,A,D,H,X,Y,L)=(1,0,4,0,0,1,0,0,1),
+ \label{eq:u213-synthetic-seed}
+\end{equation}
+exactly $141$ source primitive steps reach ordinal $136$ with that same
+logical store.  Determinism therefore identifies the continuation of the
+observed physical frame with the continuation of this interior source
+seed, once the whole-tape simulation theorem is applied.  Neither the
+number $4$ nor the incoming cache $1$ is assumed to be theorem-valued.
+
+\subsection{Uniform suffix lemma}
+
+Use $P(x,y)=(x+y)(x+y+1)/2+y$, $I(x,y)=4P(x,y)$,
+$R(x,y)=4P(x,y)+1$, $Q(x,y)=4P(x,y)+2$, and
+$E(x,y)=4P(x,y)+3$.  Put $\neg x=I(x,1)$ and
+$\exists_x y=\neg Q(x,\neg y)$.  A displayed stack
+$[x_1,\ldots,x_k;J]$ means iterated pairing above the arbitrary
+natural tail $J$; its explicit length is a ghost component of the
+invariant, not a claim that integer codes determine list length.
+
+For all natural $n,z,J,c,u,h,x,y,\ell$, consider the exact source at
+ordinal $106$ with store
+\[
+ (n,z,J,c,u,h,0,0,P(y,P(x,\ell))).
+\]
+Put $a=u+x$ and $b=h+y$.  The source suffix terminates normally and,
+after its two return primitives, reaches scheduler ordinal $0$ with
+\begin{equation}
+ \begin{split}
+ N&=n,\qquad L=\ell,\qquad A=D=H=X=Y=0,\\
+ T&=\begin{cases}0,&c=a\text{ or }c=b,\\B^*(a,b,c),&\text{otherwise},\end{cases}\\
+ W&=[r_1(a,b,c),\ldots,r_7(a,b,c),
+        \Lambda(a,b,c,u),z;J].
+ \end{split}
+ \label{eq:u213-suffix-contract}
+\end{equation}
+Here the seven rows are the retained numerical logical axioms, and
+\[
+ \Lambda(a,b,c,u)=
+ I\bigl(I(I(c,u),a),I(I(a,c),I(b,c))\bigr).
+\]
+Its domination premise $u\leq a$ follows from $a=u+x$.
+The role-reassigned arithmetic bundle $B^*$ is exactly the primary
+U214 bundle.  In the actual bootstrap $c=a=0$, so its computed value
+is discarded by the gate.
+
+\paragraph{Exact primitive binding.}
+The standalone audit \texttt{audit\_suffix.py} resolves all primitive
+control-flow edges from source addresses and checks the literal source
+hash against the pinned 197-node source.  It expands the pinned
+\texttt{DagPerm.v} and partitions the construction interval
+$[106,3732)$ into $127$ calls of the following inherited macros:
+\[
+ \begin{array}{c|l|l}
+ \text{DAG node}&\text{all-natural lemma}&\text{effect on top and stack}\\\hline
+ 166,121,168&\texttt{par166, par121, par168}&
+         \text{push old top; load }D,H,A\text{ respectively}\\
+ 119&\texttt{cons119}&(t,[v;w])\mapsto(I(v,t),w)\\
+ 180,181,182&\texttt{wal180, wel181, weq182}&
+         (t,[v;w])\mapsto(Q(v,t),w),(R(v,t),w),(E(v,t),w)\\
+ 218&\texttt{wn218}&t\mapsto\neg t\\
+ 183&\texttt{wex183}&(t,[v;w])\mapsto(\exists_v t,w)\\
+ 176,175&\texttt{read176, read175}&
+         \text{read a Cantor field into }H,D\text{ respectively}.
+ \end{array}
+\]
+The statements are in \texttt{ProgLibPerm.v}.  Each gives termination
+and the exact store effect for all natural inputs with scratch $X=Y=0$;
+both scratch registers are restored to zero, and unmentioned registers
+are unchanged.  The binding accepts identical resolved jumps even when
+tree depths differ, and commuting consecutive increments only when
+there is no branch into the second increment.  It checks this condition
+against the complete source graph as well as the local graph.
+
+The first field read is precisely $[158,172)$ and the second is
+$[199,213)$.  They give
+\[
+ (H,L)=(h,P(y,P(x,\ell)))\mapsto(h+y,P(x,\ell)),\qquad
+ (D,L)=(u,P(x,\ell))\mapsto(u+x,\ell).
+\]
+The only suffix instructions writing $L$ are ordinals
+$158,167,199,208$.  No suffix instruction writes $N$.
+These checks prevent an unnoticed residual proof word or changed
+candidate cutoff from entering the credit argument.
+
+The symbolic constructor audit evaluates only finite syntax trees, not
+their enormous integer codes.  Its checkpoints are:
+\[
+ \begin{array}{r|l|l}
+ \text{ordinal}&T&\text{explicit stack above }J\\\hline
+ 106&z&[]\\
+ 478&\Lambda&[z]\\
+ 887&r_7&[\Lambda,z]\\
+ 1170&r_6&[r_7,\Lambda,z]\\
+ 1466&r_5&[r_6,r_7,\Lambda,z]\\
+ 1765&r_4&[r_5,r_6,r_7,\Lambda,z]\\
+ 2061&r_3&[r_4,\ldots,r_7,\Lambda,z]\\
+ 2411&r_2&[r_3,\ldots,r_7,\Lambda,z]\\
+ 2642&r_1&[r_2,\ldots,r_7,\Lambda,z]\\
+ 2884&V&[r_1,\ldots,r_7,\Lambda,z]\\
+ 3658&H_{\rm cov}&[V,r_1,\ldots,r_7,\Lambda,z]\\
+ 3732&B^*&[r_1,\ldots,r_7,\Lambda,z].
+ \end{array}
+\]
+At every constructor pop, an explicit temporary head is present.
+Consequently the arbitrary tail $J$ is never inspected, and the audit
+proves exactly nine final explicit heads, independently of numerical
+pairing aliases.  The full expanded expressions in
+\texttt{evidence/suffix.json} agree with each retained row and with the
+U214 bundle.  In particular,
+\[
+ \begin{gathered}
+ e=R(c,a),\qquad G=Q(a,I(R(a,c),R(a,b))),\\
+ U_c=Q(c,I(e,a)),\quad
+ L_c=Q(c,I(a,I(G,e))),\quad
+ H_{\rm cov}=Q(a,I(U_c,I(L_c,1))),\\
+ V=I(R(a,b),Q(c,R(a,b))),\qquad
+ B^*=\neg I(V,H_{\rm cov}).
+ \end{gathered}
+\]
+
+\paragraph{Gate and return.}
+The five gate calls are exact bindings to
+\texttt{w192} on $[3732,3736)$,
+\texttt{ifeq131} on $[3736,3748)$,
+\texttt{w211} on $[3748,3751)$,
+\texttt{w197} on $[3751,3754)$, and
+\texttt{ifeq131} on $[3754,3766)$.
+The first consumes selector $c$ into two scratch copies.  The first
+comparison clears $T$ exactly when $c=b$, clearing its comparison
+registers in either case.  The two transfer loops move saved $c$ to
+$X$ and $a$ to $H$, zeroing their sources; the second comparison clears
+$T$ exactly when $c=a$.  Thus $A,D,H,X,Y$ all finish zero, and $W,N,L$
+are unchanged throughout the gate.  The final source instructions are
+\texttt{CB1} at $3766$, which targets $3873$, followed by
+\texttt{CC3} at $3873$, which targets scheduler $0$.
+
+Every macro used has a terminating all-natural contract proved by
+ordinary induction.  Their finite sequential composition proves
+\eqref{eq:u213-suffix-contract}; the finite binding audit establishes
+that it is the contract of this exact source interval.  This is stronger
+than testing the suffix on a few small numerical stores.
+
+\paragraph{Application to the observed seed.}
+For \eqref{eq:u213-synthetic-seed}, take
+\[
+ n=1,\quad z=0,\quad J=4,\quad c=u=0,\quad h=1,
+ \quad y=1,\quad x=\ell=0.
+\]
+Indeed $P(1,P(0,0))=1$.  The two field reads therefore produce
+$a=0$, $b=2$, and $L=0$.  At the resulting scheduler root,
+\begin{equation}
+ \begin{gathered}
+ N=1,\qquad L=0,\qquad T=H=D=A=X=Y=0,\\
+ W=[r_1(0,2,0),\ldots,r_7(0,2,0),\Lambda(0,2,0,0),0;4].
+ \label{eq:u213-safe-root}
+ \end{gathered}
+\end{equation}
+All nine displayed heads are numerical theorems: seven logical rows,
+a dominated propositional row with $0\leq0$, and truth $0$.
+The old cache value $1$ has only helped specify parameter $b=2$; it is
+not among these heads.  No generalized theorem of falsity is asserted.
+
+\subsection{All-natural protected-credit proof}
+
+The stack tail $4$ is unsafe if exposed: $4=P(1,1)$ and $1=P(1,0)$.
+Its safety therefore requires a prefix bound for the entire scheduler,
+not merely for a finite sample of candidate programs.  The following
+argument is the inherited three-command credit theorem, applied to the
+actual nine-head root.
+
+Let $f$ be the right Cantor projection, and
+$T_s=s(s+1)/2$.  The exact source parser has command fields
+\[
+ S:[0],\qquad \operatorname{MP}(x):[1,x],\qquad
+ \operatorname{AX}(c;x,y):[c+2,y,x].
+\]
+Let $W(n)$ be the finite syntactic command word parsed from a fresh
+candidate $n$, ignoring a possible earlier semantic halt.  Define
+$R(0)=[]$ and $R(r)=W(r-1)$ for $r>0$; the subtraction is the scheduler's
+decrement before a residual command.  If $\operatorname{unpair}(n)=(a,y)$,
+the source contracts give the exact recurrences
+\[
+ W(n)=\begin{cases}
+ S;R(y),&a=0,\\
+ \operatorname{MP};R(f(y)),&a=1,\\
+ \operatorname{AX};R(f(f(y))),&a\geq2.
+ \end{cases}
+\]
+These words are defined by descent, since a nonempty continuation has
+candidate index strictly below $n$.  Induction gives $|W(n)|\leq n+1$,
+hence $|R(r)|\leq r$.
+
+Assign conservative weights $S=-1$, MP$=0$, AX$=10$.  Successful MP's
+additional truth-head push is ignored.  Let $b(n)$ be the weight of
+$W(n)$, $B(k)=\sum_{n<k}b(n)$, and $g(0)=0$, $g(r)=b(r-1)$ for $r>0$.
+Every prefix of $R(r)$ has weight at least $-r$.
+
+The projection sequence $f(0),f(1),\ldots$ is the concatenation
+$[0],[0,1],[0,1,2],\ldots$.  Thus a sequence $q$ with nonnegative
+initial partial sums retains that property after pullback along $f$,
+and after two such pullbacks: each initial segment consists of complete
+blocks and one initial partial block.  We apply this fact to
+$q(r)=g(r)+1$, whose partial sum of positive length $k$ is
+\[
+ \sum_{r<k}q(r)=k+B(k-1).
+\]
+
+Induct jointly on Cantor diagonals to establish
+$B(k)+k\geq0$ at every candidate boundary, $B(T_s)\geq-3$, and
+nonnegative relative weight at every command prefix of every diagonal
+$s\geq2$.  The exceptional initial words are
+\[
+ W(0)=[S],\qquad W(1)=[\operatorname{MP}],\qquad W(2)=[S,S],
+\]
+so $B(0),B(1),B(2),B(3)$ are $0,-1,-1,-3$ and the base holds.
+
+On diagonal $s\geq2$, candidates $T_s+y$ for $0\leq y\leq s-2$
+start with AX, the next starts with MP, and the last with $S$.
+By the pullback lemma, the first $k$ AX candidates have total weight
+\[
+ 10k+\sum_{y<k}g(f(f(y)))\geq9k.
+\]
+Only earlier candidate inequalities are used: the relevant projection
+arguments are at most $s-2<T_s$.  Before AX candidate $y$ the relative
+balance is at least $9y$.  After its initial AX, every prefix of its
+continuation has balance at least $9y+10-y=8y+10>0$.
+After the first $s-1$ candidates the balance is at least $9(s-1)$;
+the MP continuation loses at most $s-1$.  The final $S$ and its
+continuation lose at most $1+s$.  Their lower bound is
+\[
+ 9(s-1)-(s-1)-1-s=7s-9>0.
+\]
+This proves prefix safety and nonnegative total weight on the whole
+diagonal.  Since its starting balance is at least $-3$, the new
+candidate boundaries satisfy $B(k)\geq-3$ and, for $k\geq3$,
+$B(k)+k\geq0$.  The induction closes without an assumption about a
+future diagonal.
+
+Starting at $N=1$ with empty residual pointer, the only initial debt is
+the word $W(1);W(2)=[\operatorname{MP},S,S]$, of minimum prefix
+weight $-2$.  Every following complete diagonal is prefix-safe.
+Thus the exact conservative required credit is $d(1)=2$.
+The nine heads in \eqref{eq:u213-safe-root} leave a permanent
+conservative margin of seven.
+
+Maintain a finite list of explicit theorem heads above fixed arbitrary
+tail $J$.  Ordinary AX prepends ten theorem heads, failed MP changes
+none, successful MP adds theorem $0$, and a nonhalting $S$ removes one.
+The conservative bound ensures an explicit head is available before
+every $S$; no pop reaches $J$.  The top and cache stay theorem-valued,
+and the only halt tests cache $1$, so a halt gives a numerical
+refutation.  Pairing aliases cause no gap: the identity
+$\operatorname{unpair}(P(x,v))=(x,v)$ holds also at $P(0,0)=0$,
+and the ghost wrapper length need not be recoverable from the integer
+stack code.  If a halt happens earlier, this argument applies to its
+finite syntactic prefix.
+
+For the converse, the strong compiler works from every numerical
+top and stack after an AX reset of counter and cache.  Its successful
+candidate codes are cofinal, so retaining an opaque tail and beginning
+at $N=1$ does not change completeness.  Together with the exact
+bootstrap and universal primitive simulation, this proves the
+candidate's halting equivalence with numerical refutability.  The
+primary U214 calibration then supplies refutability equivalence with
+$\neg\operatorname{Con}(U)$ and $\neg\operatorname{Con}(\mathsf{PA})$.
+All arguments here are finite syntactic constructions and induction on
+natural numbers.  They give an ordinary PA-formalizable proof; this
+packet does not assert a newly checked proof-assistant endpoint for U213.

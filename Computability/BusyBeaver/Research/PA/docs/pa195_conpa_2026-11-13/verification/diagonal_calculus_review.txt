@@ -1,0 +1,110 @@
+# Independent audit of the 191-token diagonal-vacuity calculus
+
+## Conclusion and exact scope
+
+The written diagonal-vacuity argument is mathematically coherent. I found no circular use of the removed equality-vacuity axiom in the two replacement proof templates after checking the actual upstream Lean dependency implementations. The 191-token emitter preserves the nine-pushed-item command protocol; its gate replaces equality vacuity by diagonal vacuity at the property-code parameter. A future physically verified machine for this exact source can use the following ordinary proof construction of the PA-internal biconditional. This audit is not a new Lean kernel certificate or an implemented general PA proof-code compiler.
+
+Inspected upstream files at the imported James Chang commit407cdc356f6b586635e71ac92be394255f4bfea4: PA196/Logic/{Basic,Deduction,Connectives,Vacuity,Reverse,Neighborhood}.lean; PA196/Commands/{Code,Compiler}.lean; PA196/Logic/CommandSoundness.lean; the corresponding equality-vacuity occurrences throughout PA196/Arithmetic/Certificates. Inspected incoming sources: pa_consistency_research_2026-11-13/notes/diagonal_vacuity_proof.md and pa_consistency_comparison_and_new196_2026-11-13/report/sections/calibration.tex plus axioms/verify_emitter.py and compiler.py.
+
+The fresh free-algebra emitter audit returns:
+
+| Variant | Macro items | Pushed items | Guard |
+|---|---:|---:|---|
+| diagonal196 |191|9|Top replaced by truth if A=D or A=H; A,D,H cleared afterward|
+| separate196 |190|10|Same final guard; diagonal clause is additionally pushed unconditionally|
+
+The prospective191-token candidate therefore has the simpler transport obligation. The separate190-token source changes the stack item count: its selector, push/pop and generalization compilation must use ten-item identities, not the original nine-item identities verbatim. This adjustment is feasible but is an additional command-level obligation.
+
+## Numeric calculus
+
+Let p be Cantor pairing, I(A,B)=4p(A,B), M(a,b)=4p(a,b)+1, U(a,B)=4p(B,a)+2 and E(a,b)=4p(a,b)+3. Code0 denotes truth, code1=M(0,0) is the designated contradiction, and N(A)=I(A,1). Use the original six heads, dominated propositional schema, modus ponens and closed generalization. The derived propositional operations are available from these unchanged rules; they are not assumed as a new oracle.
+
+The changed gate for c≠a,b is
+
+FΓ(a,b,c)=N(Γ(c)→(V(a,b,c)→Q(a,b,c))),
+
+where Γ(B)=B→U(B,B), V(a,b,c)=M(a,b)→U(c,M(a,b)), and Q is the unchanged pointed-separation tail. The emitter uses register names H,D,A for a,b,c respectively; its Γ(A) is therefore Γ(c), not a different formula.
+
+Classical propositional deductions extract Γ(c), V and ¬Q from the gate. For an arbitrary B, taking c=B and a=b=B+1 satisfies the guard and yields Γ(B). The changed calculus thus has all diagonal-vacuity instances and all old membership-vacuity and pointed-separation instances.
+
+Every variable label occurring in the decoding of a formula code B is less than B. This includes all constructors with their strict component bounds, while code0 has no variables. Therefore x_B is absent from its own decoded formula, so Γ(B) has a first-order logical proof. The claim is syntactic freshness; it does not invoke a truth predicate or reflection.
+
+## Reverse membership rewriting: the central replacement
+
+Fix one of χ(t)=M(t,d), χ(t)=M(d,t), χ(t)=M(t,t). Write p=χ(a), q=χ(b), e=E(a,b), and C=e→(q→p). Suppose first a≠b and, for either non-diagonal family, a≠d. Let φ=N(C), and use its numeric code c=φ as the separator variable label. Constructor bounds give c distinct from a,b and any fixed label d.
+
+Pointed separation at(a,a,c) supplies ¬Q, where
+
+P=φ→M(c,a),
+S=U(a, (M(a,a)→P) ∧ (M(c,a)→φ)),
+Q=U(c,S→N(P)).
+
+Propositional deduction supplies φ→e, φ→q and φ→N(p). From S, project the second conjunct under U(a), and use the closed theorem φ→N(p) to obtain
+
+S→U(a,M(c,a)→N(p)).
+
+Now invoke the upstream negativeSpecialization template with(y,v,c,p,q)=(a,b,c,p,q). Its assumptions are: a≠c; a≠b; direct rewriting E(b,a)→(q→p); and q→U(a,q). The last is membership vacuity because the assumed label inequalities make a fresh in q. Its target is exactly
+
+S→(M(c,b)→N(q)).
+
+I inspected the implementation: it uses the mirrored witness ∃x_a E(b,a), direct membership rewriting, and membership-only vacuity of M(c,b) and q. It does not use equality vacuity or the reverse-rewriting theorem under construction.
+
+Under assumptions φ,S,P, the point implication yields M(c,a). From e, direct rewriting in the second membership slot yields M(c,b). The displayed specialization then yields N(q), contradicting q obtained from φ. Discharging P and S gives the closed theorem
+
+φ→(S→N(P)).
+
+Generalize that closed theorem at c and apply universal distribution. The instance Γ(φ), since c is literally the formula code φ, supplies φ→U(c,φ). Consequently φ→Q. Combining with ¬Q gives ¬φ, hence C by double-negation elimination. No equality-vacuity premise appears.
+
+The two collision cases are explicit. If a=b, C is a propositional theorem. If d=a, use one direct rewrite to pass from M(a,b) or M(b,a) to M(b,b), then apply the diagonal case to obtain M(a,a). This gives reverse rewriting in both membership slots for every label assignment.
+
+## Recover the full neighborhood interface
+
+Let z0 be the numeric code E(a,b). It is greater than a and b. Γ(E(a,b)) supplies E(a,b)→U(z0,E(a,b)). Combining this with direct and reverse membership rewriting and universal distribution gives
+
+E(a,b)→R_z0(a,b),
+
+where R_z(a,b) is the conjunction of
+
+U(z,M(a,z)↔M(b,z)) and U(z,M(z,a)↔M(z,b)).
+
+For any z distinct from a,b, transfer z0 to z. The z=z0 case is immediate. Otherwise, let Φ(u) be either quantifier-free membership matrix above. Bidirectional membership rewriting gives
+
+E(z,z0)→(Φ(z0)→Φ(z)).
+
+The upstream specializeWithMirroredEquality template, using the mirrored witness ∃x_z0 E(z,z0), yields
+
+U(z0,Φ(z0))→Φ(z).
+
+Its vacuity premise concerns Φ(z) at z0, a membership-only formula with the required distinct labels. The antecedent U(z0,Φ(z0)) has vacuity at z because z differs from a,b,z0; the implication, conjunction and universal vacuity templates require only membership-vacuity inputs here. Generalizing under this antecedent therefore gives
+
+U(z0,Φ(z0))→U(z,Φ(z)).
+
+Applying this to both matrices recovers E(a,b)→R_z(a,b) at every permitted z, not merely numerically large fresh binders. Existential monotonicity of the unchanged primitive witness, followed by symmetry of the defined neighborhood relation, recovers the original witness interface.
+
+A source-wide name search shows that equalityVacuity enters the upstream external derivation construction only through reverseChi and primitiveToNeighborhood. The corresponding internal arithmetic certificate files duplicate those same two uses. These are precisely the interfaces replaced above. The later relational interpretation uses the recovered membership rewriting/neighborhood/witness interface, so there is no unexamined direct equality-vacuity use in the PA-refutation transport.
+
+## PA-internal reverse direction
+
+Interpret M(a,b) as Bit(x_a,x_b), with the first argument the container, E(a,b) as x_a=x_b, U as universal quantification, and0 as truth. PA proves Bit(s,z)⇒z<s, so it proves the translation of code1 false. The exceptional constructor equation I(0,0)=0 is handled by a fixed proof that truth is equivalent to truth→truth; formula-code translation must not pretend this constructor is disjoint from truth.
+
+For each arithmetic formula ψ(z,parameters), full PA proves finite binary comprehension below n:
+
+∀n ∃s<2^n ∀z<n (Bit(s,z)↔ψ(z,parameters)).
+
+Induct on n, use excluded middle for ψ(n), and either retain s or add2^n. Substitution of the *syntax* of ψ in this induction proof is a primitive-recursive proof-producing operation. Its correctness is a theorem about proof checking. It does not assert a uniform satisfaction predicate.
+
+Apply comprehension below A+B+1 to ((Bit(A,z)∨z=B)∧ψ(z)). This supplies the pointed-separation witness needed by the gate, with all bits above the bound absent. The ordinary first-order vacuity instances and Γ(c) are logical proofs by the code-freshness bounds. All six heads and the dominated propositional schema also have finite logical proof templates. A source derivation of code1 therefore translates primitive recursively to a PA refutation, and PA verifies this syntactic translation by induction on the finite derivation.
+
+To extend the translator from derivations to interpreter executions, annotate both visible codes t,h and all live numerical-stack entries with proofs. The Shift halt test is t+h=1, so both visible proofs are necessary. The numerical stack has alias p(0,0)=0; use canonical expansion until its tail reaches0. Pushing0 onto0 creates no live canonical entry, and popping0 returns the fixed truth proof. These conventions avoid treating an arbitrary abstract-list annotation as an injective numerical stack encoding. All manipulations are primitive recursive and admit PA induction proofs.
+
+AX supplies the new gate proof and the nine unchanged pushed proofs; a successful MP supplies an actual proof of its result, a failed MP supplies truth, and Shift transports annotations. Any finite source halt therefore supplies a PA refutation. This is a syntactic replacement for the upstream external-semantic SoundStore argument; it does not call PA's own soundness.
+
+## Physical trace reflection and forward calibration
+
+For a prospective literal machine, require: exact finite blank startup to the designated complete source frame; each primitive source step simulated by an exact positive-length tape segment with the entire tape preserved at the endpoint; no premature halt; and PA-provable terminating bounds for register excursions. The inherited finite symbolic checker represents these obligations for arbitrary registers, gaps and tails, subject to its stated unchanged block contracts.
+
+Given a physical first-halting time T after startup, if the source has not halted in its first T+1 primitive instructions, concatenate their positive-length nonhalting tape simulations. Determinism contradicts the alleged physical halt. This is a bounded coded induction formalizable in PA. The resulting source halt supplies the PA refutation described above.
+
+Conversely, the replaced equality interfaces supply a primitive-recursive PA-refutation-to-new-calculus translation. For the191-token emitter, the original finite command compiler's nine-item selectors, push/pop macros, generalization and MP constructions have the same operational forms: only the generated top gate changes. Compile the new proof, append the final Shift, and use the unchanged exhaustive finite-command scheduler. Compose with exact source-to-tape simulation. PA thereby proves that a PA refutation implies a finite halt of the prospective machine.
+
+The two directions give PA⊢Nonhalt(M)↔Con(PA) as an ordinary mathematical construction, conditional only on the explicitly required correct literal-machine implementation—not on Con(PA). Actual nonhalting follows under Con(PA). This audit does not convert finite testing into a theorem, does not certify an unsuccessful candidate, and does not claim a newly exported formal endpoint.

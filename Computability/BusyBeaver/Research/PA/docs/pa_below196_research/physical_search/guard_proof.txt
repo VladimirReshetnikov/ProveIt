@@ -1,0 +1,86 @@
+A seven-instruction specialization of the H-only Shift comparison
+===============================================================
+
+This is a source-program specialization, not a smaller Turing machine.
+
+The incoming H-only Shift construction is in pa_consistency_reduction.zip,
+member pa_consistency_reduction/comparison/audit/h_only_shift_note.tex. Its
+accepted 196-state table uses source
+h_catalan_node170_3_133_37_sites.json. The note explains that the modified
+preparation clears T, copies H into T and X, transfers X back to H, and then
+increments X. Consequently the comparison is entered with X=1 and H equal
+to the saved h. The generic comparison that remains in the source halts iff
+H=X and clears both registers on normal exit.
+
+Explicit entry condition: register 6, called X, equals 1. Register 5, called
+H, is any natural number. All seven other registers are arbitrary. The new
+local program has this exact control-flow table (zero successor first):
+
+  0: decrement X; zero -> 2, positive -> 1
+  1: decrement H; zero -> 5, positive -> 2
+  2: decrement H; zero -> 4, positive -> 3
+  3: jump to 5
+  4: halt
+  5: decrement H; zero -> exit, positive -> 6
+  6: jump to 5
+
+Its source tree is
+
+  (((dec X, dec H), ((dec H, break 1), halt)), (dec H, continue 1)).
+
+Proof for all natural inputs
+----------------------------
+At instruction 0 the explicit condition X=1 forces the positive branch;
+X becomes zero. No later instruction changes X.
+
+If the entry H is zero, instruction 1 takes its zero branch to 5, and 5
+immediately exits. The final H and X are both zero.
+
+If the entry H is one, instruction 1 changes H to zero and continues to 2.
+Instruction 2 takes its zero branch to 4, which halts.
+
+If the entry H is at least two, instructions 1 and 2 decrement it twice;
+instruction 3 reaches the loop at 5 with H equal to the entry H minus two.
+Each positive iteration decreases H by one, so ordinary natural-number
+induction proves termination. The zero branch exits with H=0 and X=0.
+Every other register is unchanged in all cases because none is mentioned.
+Thus this block halts exactly for entry H=1, and otherwise has the same
+register effect as the inherited H=X comparison under X=1.
+
+The corresponding old block can be checked by the same three cases. Its
+first successful H/X pair of decrements changes X=1 to X=0. For H=1 it then
+reaches its equality halt; for H>=2 it enters the H-clearing branch with
+X=0. For H=0 it clears the remaining X=1 and exits. The old and new blocks
+therefore have identical halt/normal outcomes under the stated condition.
+
+Finite transcription checks
+---------------------------
+verify_guard.py independently resolves the complete old and new control
+flows in two ways: binary-prefix cutting and interval/ancestor traversal.
+It checks that the first seven new rows are exactly the proved program,
+that only the old node7 subtree has changed, and that all 3,800 exterior
+rows agree under ordinal transport i -> i-4. Every exterior edge into the
+old guard enters at its first instruction; the checker rejects an edge
+into the removed interior. A deliberately altered local successor is a
+negative transcription control. The checker does not infer the proof from
+testing a finite range of H.
+
+Measured effect and limitation
+------------------------------
+The H-only source shrinks from 3,811 to 3,807 primitive occurrences. Its
+number of distinct internal source nodes grows from 159 to 163: the old
+comparison's subtrees are heavily reused elsewhere. Its first leaf address
+shortens from 000000 to 00000, but 20 other addresses still contain a run
+of six zeros. Maximum depth remains 39. This does not justify shortening
+the return scanner, and the source-node increase is unfavorable for the
+current compilation scheme.
+
+The source entry invariant is inherited from the H-only preparation
+argument, not freshly exported as a Lean theorem here. No physical table
+was generated for the new tree, no complete runtime proof or blank-start
+simulation is supplied, and no PA consistency biconditional is claimed.
+The useful result is the explicit local specialization and the exact
+reason it does not currently give a state saving.
+
+Reproduce the finite source checks:
+  python3 verify_guard.py

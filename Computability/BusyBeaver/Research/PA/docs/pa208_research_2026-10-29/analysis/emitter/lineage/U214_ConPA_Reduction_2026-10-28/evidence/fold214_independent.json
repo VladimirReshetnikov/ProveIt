@@ -1,0 +1,132 @@
+{
+  "status": "GUARDED_ROLE214_FOLD_PASS",
+  "input_sha256": "a02a861dc8cd19e856335afaa368f85d81192ce813a1b46c6b33e00dd781004f",
+  "output_sha256": "5fa7d923456ea7fb3e9cb331946e49750970bbffbfa755c0639bdaa9b7afd8a8",
+  "old_working_states": 215,
+  "new_working_states": 214,
+  "removed_state": 156,
+  "only_changed_retained_row": [
+    210,
+    0,
+    0,
+    1,
+    182
+  ],
+  "cases": [
+    {
+      "scanned": 0,
+      "left_symbol": 0,
+      "old_steps": 1,
+      "new_steps": 5,
+      "old_trace": [
+        [
+          156,
+          0,
+          0,
+          0,
+          1,
+          90
+        ]
+      ],
+      "new_trace": [
+        [
+          182,
+          0,
+          0,
+          0,
+          -1,
+          209
+        ],
+        [
+          209,
+          -1,
+          0,
+          0,
+          1,
+          157
+        ],
+        [
+          157,
+          0,
+          0,
+          0,
+          -1,
+          67
+        ],
+        [
+          67,
+          -1,
+          0,
+          0,
+          1,
+          151
+        ],
+        [
+          151,
+          0,
+          0,
+          0,
+          1,
+          90
+        ]
+      ],
+      "endpoint_state": 90,
+      "endpoint_head": 1,
+      "tape_restored": true,
+      "arbitrary_exterior": true
+    },
+    {
+      "scanned": 1,
+      "left_symbol": 0,
+      "old_steps": 1,
+      "new_steps": 1,
+      "old_trace": [
+        [
+          156,
+          0,
+          1,
+          1,
+          1,
+          61
+        ]
+      ],
+      "new_trace": [
+        [
+          182,
+          0,
+          1,
+          1,
+          1,
+          61
+        ]
+      ],
+      "endpoint_state": 61,
+      "endpoint_head": 1,
+      "tape_restored": true,
+      "arbitrary_exterior": true
+    }
+  ],
+  "negative_controls": [
+    {
+      "control": "entry writes wrong tag",
+      "rejected": true,
+      "reason": "wrong predecessor guard"
+    },
+    {
+      "control": "shared helper sends zero case to wrong state",
+      "rejected": true,
+      "reason": "local endpoints differ"
+    },
+    {
+      "control": "shared helper changes the tag cell",
+      "rejected": true,
+      "reason": "local endpoints differ"
+    },
+    {
+      "control": "wrong redirection target",
+      "rejected": true,
+      "reason": "candidate is not the exact fold"
+    }
+  ],
+  "scope": "Exact bounded stuttering equivalence for all runs from state0 on arbitrary initial tape, using the stated left-zero invariant. Logical calibration and source implementation are separate."
+}

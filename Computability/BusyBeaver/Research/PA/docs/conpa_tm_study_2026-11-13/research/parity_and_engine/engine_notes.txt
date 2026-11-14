@@ -1,0 +1,95 @@
+Engine and parity experiments (2026-11-13)
+========================================
+
+No accepted sub-196 binary table was obtained in this subtask.
+
+1. Six-zero reset scanner.
+The native PA196 reset chain begins after a 1 with controls
+2 -> 3 -> 5 -> 9 -> 15 -> 23 -> 34 -> 75 on successive zeroes;
+every intervening 1 restarts at 2. Replacing (23,0) by (0,L,75)
+and deleting 34 gives a nominal 195-state table, reset6.native.tm.
+It fails the existing uniform instruction contract at source site 0.
+The first source path is 000000. Although this word has no internal
+0000001 pattern, the runtime writes a 1 just beyond the address during
+register selection. The shorter scanner can therefore return to an
+interior address. Merely checking clean addresses for internal 0000001
+is insufficient. In the concrete all-zero-register, gap-48, one-spare
+case, the modified run visits root control at head 8 after 236 steps;
+this is not a clean root because earlier marker/data ones remain to its
+left. The intended successor is the clean root of path 00001 at head 0.
+The 10,000-step concrete limit was exhausted without that target;
+this bounded observation alone does not decide blank-run equivalence.
+
+The old t-only 198-state source prototype plus reset6 has 197 states
+and fails 107 of its 4,958 all-natural instruction contracts. It does
+not remove the original comparison at the beginning of the source.
+
+2. Deleting the tail/zero-decrement discriminator 198.
+Native 198 has the sole incoming row (66,0)=(1,R,198).
+We tested all 780 redirects (two writes, two directions, 195 remaining
+working controls) while allowing an arbitrary encoded spare tail after
+increment, rather than insisting on an appended spare of value 1.
+The first nine logical registers and the return control/head remained
+fixed obligations. None passes the 72 concrete register-file cases.
+Only the redirect (0,L,97) passes all 36 decrement cases; it fails the
+increment cases. This is a finite screening result, not a minimality
+theorem. Files: loose_tail_synthesis.py/.json.
+
+A bounded SAT synthesis also attempted to replace the six-control
+block {0,94,66,198,97,113} by five controls with the same entry/exit
+behavior. The general models timed out (unknown). Keeping the original
+nonzero scan rows fixed makes three tiny sample contracts unsatisfiable
+under the stated bounded trace encoding. This is not a theorem that
+five-state replacements are impossible. Files: synthesize_block*.py,
+synthesis*_report.json, synthesis*.log.
+
+3. A new logically valid parity encoding.
+The original four-residue code has equality atoms of odd residue 3,
+so simply changing the halt test to oddness is not justified. A proposed
+clone countermodel fails full separation, which can distinguish clones
+using primitive equality.
+
+The repair is a new even base B >= 6, e.g. 6 or 8, with constructor tags
+I=0, M=1, U=2, E=4. Every unused odd residue decodes to falsity; unused
+even residues may decode to truth. Under the standard Ackermann bit
+interpretation with all variables assigned 0, every odd formula code is
+false. Therefore the machine may halt on any odd theorem code, or on an
+odd sum of two theorem codes. This is a syntactic PA proof translation:
+no global PA truth predicate or soundness axiom is needed. Code 1 remains
+falsity, so the completeness direction still has the old target.
+Both AX and MP must use the new constructor multiplier. The logical
+audit subtask supplies the detailed proof in parity_recoding.tex.
+This is a sound architecture change, not yet a record-sized table.
+
+4. Concrete parity source and runtime.
+The old Shift prelude maps (T=t,H=h,X=0) to (T=h,H=t+h,X=0).
+Replacing its Shift-only node168=(node37,node57) by (node37,node56)
+omits the final X-to-H transfer and instead yields (T=h,H=0,X=t+h).
+Remove the final inc X by replacing the root's right-right subtree
+(incX,continue3) with the leaf continue2.
+Replace the root's old (node6,halt) with
+
+  (decX, ((decX,continue2),halt)).
+
+The pair (decX,continue2) already occurs as node0. The first decrement
+exits normally on zero; the second halts on zero; two positive decrements
+return to the first. This tests oddness and drains every even input.
+Thus the new Shift returns the same store on even sums and halts on odd
+sums. The source has 3,801 sites and 4,944 instruction cases.
+
+Using the unchanged seven-zero scanner, this table has 197 states but
+fails exactly 38 contracts at 19 AX sites. The upstream table's existing
+false-root returns rely on its original root control; changing that root
+invalidates those intermediate walks. A reset8 scanner restores all
+4,944 symbolic contracts, at a cost of 198 states. This is verified by
+parity_reset8.py and parity_reset8_report.json. The reset6 version has
+196 states and fails 105 contracts.
+
+IMPORTANT LIMITS: These parity tables still use the original four-residue
+formula constructor. They serve only to verify the new control/runtime
+fragment. They are not sound Con(PA) machines until the B=6/8 AX and MP
+changes are integrated. Also the reset8 parity table does not reach the
+old exact startup seed within 2,000,000 steps. Hence a new blank-start
+argument is required even after all local instruction contracts pass.
+The first inspected clean frames already have gap 40 and nontrivial
+register values. No end-to-end claim is made for these tables.

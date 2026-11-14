@@ -1,0 +1,214 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=0.92in,headheight=15pt]{geometry}
+\usepackage{microtype,booktabs,longtable,tabularx,array}
+\usepackage{xcolor,enumitem,fancyhdr,xurl,seqsplit}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,
+citecolor=blue!45!black]{hyperref}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt}
+\setlist{itemsep=2pt,topsep=3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Compatible decoder reductions for Con(PA)}
+\fancyhead[R]{\small 29 October 2026}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Sub}{\operatorname{Sub}}
+\newcommand{\DU}{\mathcal D_U}
+\newcommand{\row}[3]{#1\mathrm{#2}#3}
+\newcommand{\file}[1]{\path{#1}}
+\newcommand{\hash}[1]{\texttt{\seqsplit{#1}}}
+\hypersetup{pdftitle={A 209-state candidate for Con(PA): compatible contextual decoder reductions},
+pdfauthor={Research prepared for Vladimir Reshetnikov},
+pdfsubject={Comparison of three U211 proposals and explicit U210 and U209 constructions}}
+\title{\vspace{-1cm}\textbf{A 209-state candidate for the consistency\\of Peano arithmetic}\\[7pt]
+\large Making three contextual decoder reductions compatible}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{29 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We compare the three 211-state proposals in the specified ProveIt incoming
+directory and construct a binary, single-tape machine with
+\textbf{209 working states and 418 transitions}, including its blank-tape
+initializer. A separately verified 210-state intermediate is also supplied.
+The three input machines have the same numerical proof-search program, but
+their rooted labeled transition graphs are pairwise nonisomorphic. Their
+savings remove different native states and cannot be stacked by copying
+patches without preserving their entry conditions.
+
+The new construction first combines the Research and Rotated savings by eight
+closed source reassociations. It then changes a 720-primitive region across
+a decoder shared with the runtime, preserving the specific branches used by
+that runtime entry. An eight-factor reassociation and three further rotations
+make the Contextual saving compatible with the other two. Native states
+181, 218, and 180 are all absent from the final table.
+
+Fresh symbolic derivations establish all 5,084 guarded primitive contracts
+for the final table, with arbitrary natural registers, arbitrary extra header
+gap, arbitrary nonempty finite spare lists, and complete-tape endpoints.
+Every literal row is covered. Independent finite checkers verify the source
+transformation, entry repair, local folds, and exact state counts; the complete
+48,140-step blank initialization is unchanged. Composing these new arguments
+with the retained numerical-calculus and unary-theory calibration yields the
+ordinary mathematical, PA-formalizable endpoint
+\(\PA\vdash\neg\Halt(U_{209},\mathrm{blank})\leftrightarrow\Con(\PA)\).
+This package supplies mathematical proofs and executable certificates,
+not a newly exported Lean, Rocq, MM0, or PA proof object for that endpoint.
+\end{abstract}
+
+\begin{center}
+\fbox{\begin{minipage}{0.92\linewidth}
+\textbf{Primary artifact:} \file{machine/u209.tm}. Working states \(0,\ldots,208\);
+separate halt label \(209\); start state and head coordinate \(0\); all-zero
+initial tape; one two-way infinite tape; alphabet \(\{0,1\}\); only left and
+right moves. All \(209\cdot2=418\) working-state/symbol pairs are defined.
+
+\textbf{Secondary artifact:} \file{machine/u210.tm}. The same conventions,
+with working states \(0,\ldots,209\) and halt label \(210\).
+\end{minipage}}
+\end{center}
+
+\section{Result, scope, and exact identities}
+
+The requested threshold is surpassed by two states. Relative to the common
+212-state parent, all three distinct published one-state savings now coexist:
+the Research deletion of 181, the Rotated deletion of 218, and a contextual
+deletion of 180 using a newly arranged keeper 216. No extra alphabet symbol,
+prewritten input, additional tape, or omitted initializer is used.
+
+A literal row \(\texttt{q b w D r}\) reads \(b\) in state \(q\), writes \(w\),
+moves one cell in direction \(D\), and enters \(r\). Entering the separate
+halt label ends the computation after the write and move. Native tables keep
+sparse inherited labels and halt label 254; these labels are names, not counts.
+The dense tables are exact checked renamings. Every working state is reachable
+in the transition graph. This does not assert that every state is visited on
+the particular blank run.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Property & \(U_{210}\) & \(U_{209}\)\\
+\midrule
+Working states & 210 & \textbf{209}\\
+Transition rows & 420 & \textbf{418}\\
+Source primitive occurrences & 3,909 & 3,909\\
+Distinct syntactic subtrees & 197 & 197\\
+Maximum source-address depth & 41 & 41\\
+Maximum consecutive zeros in an address & 6 & 6\\
+Nonhalt source successor edges & 5,083 & 5,083\\
+Guarded primitive cases, including halt & 5,084 & 5,084\\
+\bottomrule
+\end{tabular}
+\caption{The savings come from contextual control-state sharing, with the same
+source program and the same number of distinct syntactic subtrees.}
+\end{table}
+
+The primary dense-table SHA-256 is
+\begin{center}\small
+\hash{bda91bd40880f96edef104246d22797fe281355cf03610ab7e93e7923be8aa16}.
+\end{center}
+Its native-table and source-map hashes are, respectively,
+\begin{center}\small
+\hash{4564c4876f9b18725bfb3505ec1f50d1ebce572502f2c6381ad673ecfdc3c3e1},\\
+\hash{912724f29b0de28b3326c710fdf1f3863ebd07058c6db1a9b4bbaffb3ae5e3f3}.
+\end{center}
+The complete 209-state table appears in Appendix~\ref{app:table}.
+Both state bijections, both literal tables, and all intermediate tables needed
+by the local proofs are included as machine-readable files.
+
+\begin{theorem}[New halting-preserving construction]\label{thm:new}
+Let \(A\) be the exact Research U211 machine retained in this package.
+The source identities, final-table primitive simulations, and common
+blank initialization described below give PA-formalizable proofs of
+\[
+ \Halt(U_{209},\mathrm{blank})
+ \ \longleftrightarrow\
+ \Halt(U_{210},\mathrm{blank})
+ \ \longleftrightarrow\
+ \Halt(A,\mathrm{blank}).
+\]
+\end{theorem}
+
+\begin{theorem}[Consistency endpoint with the retained calibration]\label{thm:endpoint}
+Composing Theorem~\ref{thm:new} with the retained numerical proof-search and
+Theory U calibration gives, in ordinary mathematics,
+\[
+ \PA\vdash
+ \neg\Halt(U_{209},\mathrm{blank})
+ \ \longleftrightarrow\ \Con(U)
+ \ \longleftrightarrow\ \Con(\PA).
+\]
+\end{theorem}
+
+Here \emph{retained calibration} names mathematical dependencies rather than a
+new object-theory assumption. In particular the biconditional does not assume
+\(\Con(\PA)\). Actual unconditional nonhalting is not established.
+The distinction between an ordinary PA-formalizable argument and an exported,
+kernel-checked PA endpoint is maintained throughout this report.
+
+\input{paper/comparison_theory.tex}
+\input{paper/construction.tex}
+\input{paper/verification.tex}
+
+\clearpage
+\appendix
+\section{Complete dense transition table for U209}\label{app:table}
+Start in state 0 on an all-zero tape. States \(0,\ldots,208\) are working
+states; 209 is the separate halt label. An entry \(wDr\) writes \(w\), moves
+in direction \(D\), and enters \(r\). Each displayed row supplies both
+binary-symbol transitions. The equivalent plain-text table is
+\file{machine/u209.tm}.
+\input{paper/transition_table.tex}
+
+\section{Provenance and acknowledgments}
+The original U211 research packets and the unary-power-cover manuscript are
+credited to the supplied ProveIt research collection. Their original notices,
+nested dependency packets, and licenses are preserved unchanged in the
+retained archives. The runtime engine and source-language utilities are
+reused with their file-level provenance, not represented as newly authored
+proof infrastructure.
+
+The construction inherits the proof-search architecture associated with the
+m254 reference development~\cite{m254}, the K215 verification
+lineage~\cite{k215source,k215pa}, and the Theory K work~\cite{k230}.
+Their respective fixed-machine theorems retain their original scope.
+New work in this package is the comparison, compatible U210 composition,
+shared-helper eight-factor reassociation, combined U209 fold, associated
+proofs, independent audits, and reproducible final artifact assembly.
+
+\begin{thebibliography}{9}
+\bibitem{snapshot} V. Reshetnikov, \emph{ProveIt incoming research collection},
+snapshot\\
+{\small\hash{da4ab9dd68ccfc47ac852118601eaf1fdae53795}}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/da4ab9dd68ccfc47ac852118601eaf1fdae53795/docs/incoming}.
+The three exact U211 ZIP filenames and full hashes are in the package provenance.
+
+\bibitem{unary} \emph{Unary power-cover theory and arithmetic calibration},
+\texttt{pa\_unary\_power\_cover.zip}, in the same snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/da4ab9dd68ccfc47ac852118601eaf1fdae53795/docs/incoming/pa_unary_power_cover.zip}.
+The original archive is included unchanged.
+
+\bibitem{k215pa} E. Glazer, \emph{K215 halts iff ZFC is inconsistent
+(Metamath Zero, PA)}. \url{https://github.com/elliotglazer/k215-pa}.
+
+\bibitem{k215source} V. Reshetnikov, \emph{ProveIt K215 verification sources}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215}.
+
+\bibitem{k230} E. Glazer, \emph{K230 and Theory K}.
+\url{https://github.com/elliotglazer/k230-rocq/blob/main/README.md}.
+
+\bibitem{m254} \emph{Busy-beaver ZF/m254 reference development}.
+\url{https://github.com/jeff87654/busy-beaver/tree/zf-254/ZF/m254}.
+\end{thebibliography}
+\end{document}

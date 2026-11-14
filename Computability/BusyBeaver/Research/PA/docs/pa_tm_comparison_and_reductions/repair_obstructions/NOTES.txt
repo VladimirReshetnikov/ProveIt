@@ -1,0 +1,78 @@
+A two-trace obstruction to repairing the five existing PA196 near misses
+
+This experiment did not construct a machine below 196 working states.
+It establishes a new, deliberately bounded obstruction to extending the
+five one-row near misses recorded in ProveIt's search/helper-row/receipt.json.
+
+Input
+  jamesyc/BusyBeaver revision 407cdc356f6b586635e71ac92be394255f4bfea4
+  data/pa196.tm SHA-256
+  e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8
+  196 working states, separate halt 196, binary alphabet, blank start state 0.
+
+Reproduce
+  python3 repair_obstruction.py
+
+The program reads the adjacent pinned table and writes repair-obstructions.json.
+Only Python 3.10+ and its standard library are needed. It recomputes the complete
+radius-six blank-start abstract window closure (270067 state/windows), then
+builds and checks five small certificates. Dictionary-based trace discovery
+is checked by a separately implemented fixed-width bit-vector replay.
+The included upstream table retains its MIT license in LICENSE.JamesChang.
+
+Exact statement
+  For each fixed near miss below, no modification of one additional transition
+  at any state can produce an exact one-parent-step simulation on all radius-six
+  abstract contexts, if each simulating block must stay within the thirteen
+  cells [-6,6] and use at most 128 child steps. The original one-row patch is
+  required to remain fixed. The head and every represented tape cell must agree
+  at the block endpoint, with controls projected by the stated state merger.
+
+  Drop/keep   Fixed changed row      Failing windows   Witness masks
+  45 /160     184/1 -> 1 L 75             416              99,725
+  56 / 96      96/1 -> 1 R 67              96             203,3915
+  96 / 56      56/1 -> 1 R 67              96             203,3915
+  96 /103     103/1 -> 1 R 110             96             203,331
+  103/ 96      96/1 -> 1 R 110             96             203,331
+
+Mask bit i+6 denotes tape offset i. The witnesses are admitted by an inductive
+reachability overapproximation; this does not say that they are reached by the
+actual blank run. The abstract closure admits halt, so it is not a proof of
+nonhalting.
+
+Proof
+  Consider a fixed erroneous child block on a required initial context. A
+  repair that changes no transition address queried by this block executes
+  the identical block and has the same failure within the stated template.
+  Therefore a successful single-row repair must change a row queried by every
+  failing block. For each near miss, the certificate supplies two failed
+  blocks whose queried transition-address sets intersect only at the already
+  fixed row. No eligible additional row belongs to that intersection.
+
+  The finite replay checks the exact parent's projected one-step target,
+  verifies every child read/write/move/target, checks that no positive prefix
+  matches the target, and verifies the out-of-window or fuel failure. Window
+  membership is checked in the recomputed closure. The closure soundly covers
+  every blank-run window by induction: after each write/head shift, it admits
+  both possible values of the newly exposed boundary bit.
+
+Limits
+  This is not an exhaustive two-row search from the original machine: the
+  first modification is fixed to one of five known near misses. It is not a
+  lower bound on arbitrary 195-state machines, and it does not prove distinct
+  halting behavior for a near miss. Wider blocks, a different intermediate
+  tape/head representation, two or more additional changed rows, a different
+  first patch, or a sharper invariant remain possible. No PA consistency
+  biconditional is claimed by this finite table-level experiment.
+
+Marker avenue
+  The unmodified return scan uses a seven-zero delimiter. Redirecting dense
+  row 23/0 from 0 L 34 to 0 L 69 (native 23/0 to 0 L 75) makes state 34 unnecessary and shortens this
+  test to six zeros. It fails on the existing source-path layout: for example,
+  path 101010011000000 at source site 131 can restart the root at offset 9.
+  A possible structural avenue is to remove six-zero runs after a path 1,
+  while keeping the initial zero run at most six. Six LEADING zeros are
+  compatible with returning to the real left marker; six internal/trailing
+  zeros following a path 1 are not. This is only a layout constraint to test,
+  not a theorem that the edited machine is correct. Complete startup and
+  all-natural source-frame contracts remain required for any proposed layout.

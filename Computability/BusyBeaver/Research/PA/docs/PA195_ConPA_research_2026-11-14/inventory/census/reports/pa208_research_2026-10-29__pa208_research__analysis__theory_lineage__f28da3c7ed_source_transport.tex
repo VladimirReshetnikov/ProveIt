@@ -1,0 +1,81 @@
+\section{Transporting the U214 emitter to the direct-transfer source}
+\label{sec:st-source}
+
+The new source composes two independently identified parts: the direct-transfer
+control structure of ST215 and the exact unary-power-cover emitter already
+calibrated for U214.  In particular, the result does not inherit the fixed
+K215 consistency theorem by renaming its conclusion.
+
+\paragraph{Exact construction.}
+The original ST215 source has 4,732 primitive occurrences and 201 distinct
+subtrees.  Its set-theoretic emitter occupies the half-open ordinal interval
+$[2884,4481)$, containing 1,597 primitive occurrences.  This interval is a
+forest of five closed factors of respective sizes $132,654,652,103,56$.
+Replace it by the single closed 774-primitive subtree at $[2885,3659)$ in
+the primary U214 source.  This is the U214 role assignment with matrix and
+output label $a$, source label $b$, and tested label $c$; the retained gate
+requires $c\ne a,b$.
+
+The result has 3,909 primitive occurrences, 197 distinct subtrees, maximum
+address length 42, and maximum consecutive-zero address run six.  Its source
+SHA-256 is
+\begin{center}\small
+\texttt{\seqsplit{7b6539dc67b66ff73f22554018d7af5985d85574460a73fea5f025103c523d00}}.
+\end{center}
+The deterministic script \texttt{code/build\_source.py} requires the two exact input
+hashes and reconstructs these bytes; it performs no search or optimization.
+
+\paragraph{Full control-flow audit.}
+Let $f(i)=i$ for $i<4481$ and $f(i)=i-823$ otherwise.  For each of the 3,135
+retained exterior primitives, the audit checks the exact operation, register
+or branch operand, and every resolved ordinal successor after translation
+by $f$.  It verifies that no retained control edge enters the strict interior
+of the removed interval.  It separately compares every copied emitter
+primitive and successor with U214, with the constant ordinal translation
+$j\mapsto j-1$.  This supplies an explicit graph comparison, in addition
+to the source checksums.
+
+The critical ST215 command-return instruction remains
+\texttt{CC3} at address \texttt{00111}; its new ordinal is 3873 and its
+resolved target is scheduler ordinal zero.  Direct transfer starts at
+ordinal 3874, address \texttt{010}, with \texttt{CD1}.  The unique source
+halt is at ordinal 3894, address \texttt{11101}.  Thus the change does not
+silently replace the ordinary scheduler by the rejected scratch-biased
+return to a selector interior.
+
+\paragraph{Logical interface.}
+The U214 emitter has the same uniform arithmetic interface as the removed
+closed computation: it pushes one freshly constructed covering component above the old
+top; the unchanged surrounding code builds the complete bundle, preserves the enumeration fields, and restores the two scratch registers
+to zero.  Its logical calibration, including coincident output/source labels,
+small codes zero and one, and recovery of the atomic-vacuity component, is
+the supplied U214 argument.  The source comparison therefore transports that
+calibration to the ST215 context without changing a remaining arithmetic
+macro.  This is a change of the enumerated theory to the U calculus, not a
+claim that the original ST215 set-theoretic theorem has changed its meaning.
+
+The direct-transfer command still has the all-natural contract
+\[
+ S(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},& h=1,\\
+  (h,\operatorname{tail}(w),d,\operatorname{head}(w)),&h\ne1,
+ \end{cases}
+\]
+where $\operatorname{head}$ and $\operatorname{tail}$ are the left and right
+Cantor projections.  The original ST215 strong compiler and its protected
+arbitrary-tail proof apply to this same contract.  Its AX command still adds
+the eight axiom outputs, a generalization of its theorem-valued incoming
+cache, and the saved theorem-valued top.  Only the covering component of the gated output
+has changed.  In particular, every enabled covering bundle remains an
+implication code, and hence cannot equal the falsity code one merely by its
+numerical constructor tag.
+
+Every source-level step used here is a finite syntactic operation or an
+ordinary induction on natural counters, finite syntax, or finite command
+histories.  These arguments are formalizable in PA.  The separate literal
+machine proof must additionally establish the exact physical primitive
+simulation and the correct blank-start bridge.  The source audit is not a
+substitute for either obligation, and no newly compiled end-to-end
+proof-assistant certificate is claimed by this source transport.
+

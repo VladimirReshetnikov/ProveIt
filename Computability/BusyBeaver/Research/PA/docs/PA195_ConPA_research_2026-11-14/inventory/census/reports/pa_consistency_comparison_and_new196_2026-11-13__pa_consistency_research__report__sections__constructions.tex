@@ -1,0 +1,61 @@
+\section{New constructions that pass the complete checks}
+\label{sec:constructions}
+This section records concrete improvements obtained during this investigation. The two primary axiom-emitter constructions and a further scanner-oriented association have 196 working states. They improve the implementation of the alternative calculus found in the incoming research, but do not meet the requested strict inequality.
+
+\subsection{Diagonal vacuity in 196 states}
+The incoming diagonal-vacuity implementation has 199 states and an AX word of 191 macro items. The new implementation keeps that exact word and its logical meaning, changes its binary association, and performs six mutually compatible context folds. Its source program has 3700 primitive sites and 4815 zero/positive/ordinary instruction contracts.
+
+Before folding, the construction retains 134 physical controls and allocates 68 AX reader controls. Six validated deletions give
+\[
+ 134+68-6=196.
+\]
+The reader associations matter because an instruction's binary address is also its program counter on the tape. This is not simply a compression of a string stored elsewhere.
+
+Using the native labels in the construction files, the six deletions identify the following pairs:
+\begin{center}
+\begin{tabular}{rr|rr|rr}
+\toprule
+Removed & Retained & Removed & Retained & Removed & Retained\\
+\midrule
+2018&2024&2023&2019&2042&2028\\
+2053&2032&2055&2056&2062&2036\\
+\bottomrule
+\end{tabular}
+\end{center}
+The replacement rows and all redirects are explicit in the fold JSON. A local checker tests the final simultaneous table on both admissible parent-bit contexts and checks the endpoint control, head position, and complete two-cell tape. A separate whole-program checker then verifies every instruction contract. Checking each fold only against the original table is insufficient: one fold can change a helper used by another.
+
+The resulting table passes all 4815 symbolic contracts. The longest checked symbolic path has 488 steps; the total is 1,503,668 symbolic steps. These are finite certificate sizes, not upper bounds on concrete unary execution times for arbitrary registers. The exact blank startup reaches the standard frame after 58,154 physical steps. An independent reconstruction reproduces the contracts and startup and finds all 196 controls graph-reachable. No two controls are identified by ordinary action bisimulation.
+
+\begin{samepage}
+The dense table has initial state 0 and halt label 196. Its SHA-256 is
+\begin{quote}\small\nolinkurl{59bbe3dbe040de4903b7f9b4fb64f70642757c54849e921a44af29145d625b0c}.\end{quote}
+\end{samepage}
+The written calibration of the diagonal calculus is inherited from the incoming work and explained in Section~\ref{sec:calibration}; the reduction from its 199-state realization to this concrete 196-state table is new to this investigation.
+
+\subsection{Separating the diagonal head: 190 macro items}
+There is a second concrete 196-state implementation. Emit $\Gamma(A)=A\to U(A,A)$ as an additional unconditional head, and leave the old gate $G=\neg(V\to Q)$ under its original guard. The extra implication which bundles $\Gamma$ into the gate is no longer constructed. The AX word has 190 items and the entire primitive program has 3673 sites.
+
+This version has ten pushed items, including the saved top, rather than nine. Consequently the proof-command selectors are adjusted: with $\Gamma$ pushed immediately after the six retained heads, each old positive Shift count used to select those heads, the propositional head, generalization, or the saved top increases by one. The new head is available after two Shifts. The top-level gate is still available immediately. The stack operations and refutation compiler require these adjusted constants; one cannot substitute the new table and retain all nine-item selector identities verbatim.
+
+The physical construction again has 68 AX reader nodes and six compatible folds above the same 134-control base. It passes all 4780 complete instruction contracts and the exact 58,154-step blank startup. The maximum symbolic path length is 488 and the total is 1,492,785 symbolic steps. The dense table SHA-256 is
+\begin{quote}\small\nolinkurl{61ffdfea87d204cfb879ffb78fb1c9c47f425fdb53771995a40dbe0f0c9c3e28}.\end{quote}
+The shortened macro word is an implementation improvement with a complete physical table. It is not a 195-state result.
+
+\subsection{Scanner-oriented 196-state layouts}
+A separate source-CFG-preserving rotation search produced a 196-state layout with fifteen addresses obstructing a proposed shorter origin scanner, down from nineteen in the original PA196 layout. All 4959 instruction contracts pass, as does the complete startup after 58,294 steps. The maximum symbolic path length is 497 and the total is 1,602,117 symbolic steps.
+
+The proposed scanner edit would replace native transition $23,0$ by $0\mathrm L75$ and delete native state 34. It would reduce the marker discrimination from seven zeros to six. The address obstruction considered by this search is a substring \code{1000000}, or seven leading zeros; six leading zeros alone are allowed by that address test. The baseline-calculus layout still has fifteen obstructing sites, so this test does not justify applying the scanner deletion.
+
+A second portfolio search applies the same objective to the separate-head calculus. It obtains a new 196-state table with 69 AX readers and seven mutually compatible folds:
+\[
+134+69-7=196.
+\]
+An exterior source-tree rotation preserves the complete source instruction CFG and removes the sole obstruction outside AX. The remaining internal obstructed source ordinals are 197, 584, 786, 867, 1759, and 2068. The unmodified scanner table passes all 4780 complete contracts, with maximum 515 and total 1,548,633 symbolic steps, and its exact blank startup reaches the frame after 58,294 steps. All 196 controls are graph-reachable. Its dense-table SHA-256 is
+\begin{quote}\small\nolinkurl{bccb07e7da72d96806ab325cb321a88f28cdf0c14bfa87f9efd5e1a7d418c10a}.\end{quote}
+
+The literal 195-state scanner edit was also constructed and tested. It fails 96 unrestricted branch obligations, including failures beyond the six address obstructions. It also fails the stronger invariant-conditioned simulation at source site 0. From the exact clean seed at source site 25, its first root return is after 118 steps, but its tape differs in 43 cells from the required site-27 successor frame. Thus the simple deletion does not implement the claimed clean-frame transition. These failures reject that simulation certificate; they do not by themselves decide the edited machine's actual blank-tape consistency property. No accepted smaller machine follows from this route.
+
+\subsection{What the executable certificates establish}
+The instruction checker starts at a complete symbolic frame, with arbitrary natural register values, an arbitrary permitted gap, and an arbitrary register-list tail. It proves the unchanged list/register routines by their affine-run induction templates, executes the finite decoder and instruction paths, and checks the entire successor frame. Decrements have separate zero and positive cases; the halt leaf is checked explicitly. The seed check is a separate exact simulation of the complete finite blank prefix.
+
+Thus these checks go beyond sampling small registers or running the blank machine for many steps. They remain executable proof procedures whose soundness is described in the inherited verification material, rather than newly generated Lean kernel proofs. The package preserves this distinction in its receipts and reproduction instructions.

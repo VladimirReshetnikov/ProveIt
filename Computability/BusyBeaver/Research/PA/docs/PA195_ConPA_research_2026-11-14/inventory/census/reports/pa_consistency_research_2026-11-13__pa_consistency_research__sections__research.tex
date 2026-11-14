@@ -1,0 +1,45 @@
+\section{Reduction searches and remaining work}
+\subsection{Why shortening the source did not reduce the state count}
+The state cost is governed by shared binary subtrees and by compatible contexts in the tape decoder. It is not proportional to the number of source instructions. A new grammar can have fewer distinct nodes but lose several existing pairs of reader states that share a physical implementation. The decoder also imposes concrete path constraints: a superficially attractive 67-node balanced grammar had a zero run of length nine and failed the primitive checks. Valid layouts in this investigation retained maximum zero run six and the required bounded address depth.
+
+A valid 67-node repacking of the original axiom word compiled to 201 states; the inherited 68-node layout contributes only 62 physical axiom readers after its six folds. Similarly, the new 191-item diagonal word admits useful logical simplification, but the best fully checked implementation obtained here still has 199 states. Raw grammar counts are therefore never reported as literal machine counts.
+
+One safe arithmetic peephole replaces a \texttt{push; incT; cons} negation construction by an inherited drain-to-scratch block, an increment, and the inherited pairing/quadrupling block. It preserves the intended formula and shortens the original-calculus source to 3,596 sites. Its checked implementation has 197 states. Combining that peephole with the diagonal rule was explored at the grammar level, but produced no accepted smaller literal machine. Timeouts in those grammar searches are not infeasibility results.
+
+\subsection{The local quotient family that was searched}
+The local search retains a bounded tape window, records all symbolic primitive contexts and the concrete startup contexts, and tries replacing two reader states by one. The simulator follows the \emph{modified quotient machine}, including revisits to the merged state. A trial succeeds only when its finite window, written bits, head displacement, and successor reproduce the original transition's local effect. Access to an unknown cell rejects that trial. Potential hits still require the independent full symbolic and startup checks.
+
+For the principal search, the window has seven cells to the left of the head and three cells starting at the head. A detour has at most 71 transitions. The engine and designated interface states remain protected. Both replacement rows range over their write bits, directions, and permitted successors. This is a bounded local replacement family; it omits changes to larger portions of the machine, larger windows, longer detours, and different source semantics.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrl@{}}
+\toprule
+Search family & Parameter choices tested & Result\\
+\midrule
+PA196, identical inherited rows &115,440&No hit\\
+PA196, one inherited row &44,981,040&No hit\\
+PA196, both rows synthesized &5,650,476,975&No hit\\
+Diagonal199, both rows synthesized &6,176,511,792&No hit\\
+Freed engine-entry rows, short window &536,640&No hit\\
+Freed engine-entry rows, wider window &536,640&No hit\\
+\bottomrule
+\end{tabular}
+\caption{Finite search results. Counts are loop parameter choices and need not be distinct quotient machines. The hypotheses of these families are not global restrictions on possible Turing machines.}
+\end{table}
+
+Additional direct row merges, reader-to-engine merges, tree rotations, source abstract interpretation, and smaller detour families were explored. They produced no accepted table below 196. The archive includes the main C++ search programs, their exact context inputs, and logs, so the largest bounded search can be repeated without treating the counts as a proof of minimality.
+
+\subsection{Grammar search qualifications}
+Integer-programming and local grammar searches were used to change association, head order, and shared subexpressions. For the diagonal word with all six old fold shapes and their incoming tags forced, one restricted model had minimum 69 raw axiom nodes. Other restricted targets were infeasible; broader targets ended without a feasible incumbent before their time limits. These outcomes are useful engineering evidence but do not establish a grammar-independent optimum. In particular, ``no incumbent before timeout'' must not be rewritten as ``infeasible.''
+
+Source-level reachability pruning also did not solve the problem. In the final 199-state implementation every retained state appeared in a symbolic primitive execution or in the concrete startup trace. Those symbolic executions deliberately cover more states than a single actual blank-tape trajectory may visit. Observation in that family rules out the corresponding simple pruning argument; it does not prove that every state is visited in the actual infinite blank-tape computation.
+
+\subsection{Concrete directions for a subsequent attempt}
+The diagonal rule removes ten macro items without changing the nine-item stack protocol. A useful next optimization target is therefore a grammar for that exact word that recovers at least four further physical state savings, or a different calibration-preserving emitter with a better shared structure. The relevant objective is the number of physical readers after folds, subject to control-flow and primitive-contract checks.
+
+A second route is to redesign the address decoder or register engine jointly with the grammar. The local searches hold those components mostly fixed. The three newly freed engine hypotheses may be useful in a more extensive redesign even though they did not yield a one-state merge here.
+
+A third route is to use the concise-IPRA proposals as a source of coding and freshness ideas while separately proving the two refutation translations required for PA calibration. The diagonal clause is an example. Replacing the searched theory by iPRA without such a translation changes the consistency sentence and does not meet the task.
+
+Finally, formalizing the two syntactic translators and the positive-length internal simulation would remove the principal gap between the written biconditional argument and a single complete kernel-checked theorem for a future smaller machine. That formalization would also make calculus changes safer to evaluate. None of these directions is a claim that a 195-state machine has already been constructed.

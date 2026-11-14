@@ -1,0 +1,51 @@
+% Short report insertion; the full proof is composite_command_audit.tex.
+\paragraph{Compatibility theorem for the new composites.}
+Let $n=9$ for the diagonal-bundle emitter and $n=10$ for the emitter
+with a separate diagonal head. Retain the inherited command-word
+scheduler, change Shift to test $h=1$ alone, and change successful
+$\mathsf{MP}_x$ to return $d+x$ in $h$ with $t=d=0$.
+Then the resulting command program halts exactly when its numerical
+calculus derives code one. This assertion uses the ordinary soundness
+invariant that the top, cached head and stack entries are derived
+formulas; it imposes no derivability requirement on the offset $d$.
+
+For the converse, the required uniform stack words are
+\[
+\mathsf{Push}_n=\mathsf{AX}_{0,0,0}S^{n-1}\mathsf{MP}_0,
+\quad
+\mathsf{Pop}_n=\mathsf{AX}_{0,0,0}S^{n+1},
+\quad
+\mathsf{Discard}_n=\mathsf{MP}_1\mathsf{AX}_{1,0,0}S^n\mathsf{MP}_0.
+\]
+Push saves the top and returns a zero top with zero caches. Pop
+preserves the top and removes one underlying entry, except that it
+halts when the preserved top is one. Discard clears the top from a
+store with zero caches. The generalization word is
+$\mathsf{Push}_n\mathsf{Offset}_iS\mathsf{AX}_{i,0,0}S^n$.
+The MP suffix $SS\mathsf{MP}_bS$ consumes the exact prefix
+$[a,I(a,b),0;w]$; it either halts on a premise or conclusion one, or
+returns $b$ with the original underlying stack $w$ and zero caches.
+These identities hold for total Cantor stacks, including $[0;0]=0$.
+The separate-head emitter therefore needs exponents $(9,11,10)$,
+in place of the diagonal emitter's $(8,10,9)$.
+
+Primitive recursion on proof trees yields a word $W_p$ that, from
+every top and underlying stack with zero caches, either halts or
+returns the proof conclusion with that stack and zero caches.
+For a refutation $p$, the word
+$\mathsf{AX}_{0,0,0}W_p\mathsf{Pop}_n$ halts from every incoming
+store. This uniformity makes the inherited exhaustive scheduler
+sufficient even when unsuccessful earlier trials leave arbitrary
+stores. Exact source binding checks the unchanged axiom emitters,
+three retargeted exits, and the complete fifteen-instruction changed
+tail in both composites. The tail effects have elementary loop
+invariants for arbitrary command-store values, with the inherited
+zero-scratch entry convention.
+
+This establishes compatibility of the two optimizations and supplies
+the changed-command portion of an internal arithmetic proof.
+An end-to-end $\mathrm{PA}$ theorem relating the literal machine to
+$\operatorname{Con}(\mathrm{PA})$ additionally requires the inherited
+calculus calibration, scheduler coding and tape-simulation interfaces;
+no new proof-assistant kernel theorem for that full endpoint is
+claimed by this audit.

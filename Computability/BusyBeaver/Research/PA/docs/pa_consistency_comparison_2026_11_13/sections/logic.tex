@@ -1,0 +1,361 @@
+\section{Logical reductions, rejected deletions, and proof strength}
+\label{sec:logical-audit}
+
+This section separates three questions: equivalence of abstract proof
+calculi, the number of states obtained by compiling them, and formalization
+of the resulting arithmetic halting equivalence.  A reduction in one of
+these measures does not settle the other two.
+
+\subsection{An equivalent split of the first quantifier head}
+
+Write $f=1$ for the distinguished contradiction code and put
+\[
+ X=\mathsf U\bigl(D,\mathsf U(D,H)\to f\bigr).
+\]
+The first PA196 head is
+\[
+ O(D,H)=(X\to f)\to H.
+\]
+Consider replacing it by the two families
+\[
+ B(D,H)=(H\to f)\to X,
+ \qquad E(A)=f\to A.
+ \tag{Split}
+\]
+All remaining heads, the guarded gate, modus ponens, and closed
+generalization are unchanged.
+
+\paragraph{Split-head theorem.}
+The original calculus and the calculus with \textup{(Split)} derive exactly
+the same numeric formulas.  The conversions are uniform finite
+implicational proof templates and hence induce primitive-recursive
+transformations of coded derivations.
+
+\paragraph{Proof.}
+The restricted $\rho_8$ family supplies $K$, $S$, and Peirce's law without
+using the first quantifier head or explosion.  This is explicit in
+\texttt{M6/Logic/RestrictedImplication.lean}: its abstract \texttt{Rules}
+structure contains only modus ponens, the restricted row, and the three
+code-order conditions.  The PA196 interpretation of those rules uses only
+its $\rho_8$ constructor.  In particular, ordinary implicational deduction
+and
+\[
+ ((P\to Q)\to P)\to P
+\]
+are available before either side of the proposed conversion.
+
+In the new calculus assume $p:X\to f$.  Under the further assumption
+$n:H\to f$, the new head $B(D,H)$ gives $X$, then $p$ gives $f$, and
+$E(H)$ gives $H$.  Discharge $n$ to obtain $(H\to f)\to H$ and apply
+Peirce's law with $(P,Q)=(H,f)$.  Discharging $p$ now gives $O(D,H)$.
+
+Conversely, the old first head supplies explosion.  For any $A$, take
+\[
+ Y=\mathsf U\bigl(0,\mathsf U(0,A)\to f\bigr),
+ \qquad (Y\to f)\to A.
+\]
+From the assumption $f$, $K$ gives $Y\to f$; the displayed head gives $A$.
+Discharge $f$ to obtain $E(A)$.  To obtain $B(D,H)$, assume $n:H\to f$ and,
+inside this context, $q:X\to f$.  The old head gives $H$, then $n$ gives
+$f$, and the already derived $E(X)$ gives $X$.  Discharge $q$, apply
+Peirce's law with $(P,Q)=(X,f)$, and discharge $n$.  The result is
+$(H\to f)\to X$, as required.  No quantifier rule occurs in either
+conversion.\hfill$\square$
+
+The accompanying \texttt{check\_split\_head.py} constructs exact Hilbert
+proof DAGs and checks every node using $K$, $S$, Peirce, assumptions, and
+modus ponens.  The new-to-old and old-to-new templates each have 77 nodes;
+the old-to-explosion template has 17 nodes.  These counts measure the
+particular checked certificates, not minimal proof lengths.  Their status
+is a finite syntactic verification over the displayed derived
+implicational basis, not a full new Lean build of the tape machine.
+
+Keeping the explicit explosion family is essential.  The contraposed
+head $B(D,H)$ alone is not a replacement justified by classical
+contraposition: that argument already assumes that code $1$ acts as
+falsity.  Indeed, interpret implication materially, every membership atom as true,
+every equality atom as false, and every quantifier as the identity
+operation on truth values.  Code $0$ is true, code $1$ is true, and code
+$3$ is false.  Every retained head and the guarded gate, together with
+$B(D,H)$, is valid under this evaluation; generalization preserves
+validity.  But $1\to3$ is false.  The proof above identifies the exact
+additional family that repairs this obstruction.
+
+\subsubsection{The corresponding command words}
+
+The split adds one head.  An axiom command consequently pushes ten items:
+the saved top, one generalization, $\rho_8$, and seven heads.  The guarded
+gate remains the new top.  If $S$ denotes Shift, the corrected generic
+stack words are
+\[
+\begin{aligned}
+ \mathrm{pop} &:\quad \mathsf{AX}(0,0,0)\,S^{11},\\
+ \mathrm{push}&:\quad \mathsf{AX}(0,0,0)\,S^{9}\,\mathsf{MP}(0),\\
+ \mathrm{discard}&:\quad
+ \mathsf{MP}(1)\,\mathsf{AX}(1,0,0)\,S^{10}\,\mathsf{MP}(0).
+\end{aligned}
+\]
+The generalization snapshot identity becomes
+\[
+ \mathsf{AX}(c,x,y)\,S^{10}(t,w,d,h)
+   =\bigl(\mathsf U(d,h),w,0,t\bigr).
+\]
+For a head numbered $j$ from the top among the eight nongeneralization
+heads, $1\le j\le8$, the generic selector is: discard, execute
+$\mathsf{AX}$ with the desired arguments, apply $S^{j+1}$, and pop
+$9-j$ times.  The gate selector discards, executes $\mathsf{AX}$, and
+pops ten times.  These are the PA196 stack identities with the push count
+increased by one; the position of each formula must also follow the
+chosen emission order.  The two new head families have implication as
+their outer constructor, so their codes are $0$ modulo $4$ and cannot
+equal the halt code $1$.  Taking a clean store $d=h=0$ makes the parameters
+of $B(D,H)$ and $E(A)$ unrestricted.
+
+These command-word adjustments are necessary even when the emitted
+formula families are logically equivalent.  A candidate table that
+changes the output count but retains the old selectors has not thereby
+inherited the original certificate compiler.
+
+\subsection{Why neither membership rewrite can simply be deleted}
+
+The two direct rewrite families are
+\[
+\begin{aligned}
+ L(a,b,c)&:\quad
+ \mathsf E(a,b)\to\bigl(\mathsf M(a,c)\to\mathsf M(b,c)\bigr),\\
+ R(a,b,c)&:\quad
+ \mathsf E(a,b)\to\bigl(\mathsf M(c,a)\to\mathsf M(c,b)\bigr).
+\end{aligned}
+\]
+They correspond to PA196 heads 3 and 4, with the harmless antecedent
+exchange used in head 3.  The following countermodels rule out the
+proposal to delete either one and derive it from all the remaining
+numeric axiom families.
+
+Let $\operatorname{Bit}(s,k)$ mean that bit $k$ of $s\in\mathbb N$ is one.
+Let $f_1$ exchange $0$ and $1$, and let every other $f_i$ be the identity.
+Thus every $f_i$ is a finite-support permutation.  Variables are assigned
+natural-number values $x_i$; implication and quantifiers have their
+ordinary classical meanings, and
+$\mathsf E(a,b)$ means $x_a=x_b$.  Numeric code $0$ denotes truth, as in
+the usual decoder.
+
+\paragraph{Delete $L$.}
+Interpret membership by
+\[
+ \mathsf M(a,b)\quad\Longleftrightarrow\quad
+ \operatorname{Bit}\bigl(f_a(x_a),x_b\bigr).
+ \tag{L-model}
+\]
+The family $R$ is valid because equal values in its second membership
+coordinate can be substituted.  The quantifier heads, existential
+equality witness, $\rho_8$, and both atomic vacuity families are valid.
+Moreover, code $1$ still denotes
+$\operatorname{Bit}(x_0,x_0)$, which is always false.
+
+The guarded gate remains valid for every formula instance, including the
+case where its two ordinary labels coincide.  When $a\ne b$, the values
+of the bound variable satisfying $\mathsf M(a,b)$ form the finite bitset
+of $f_a(x_a)$.  When $a=b$, they form
+\[
+ \{n:\operatorname{Bit}(f_a(n),n)\}.
+\]
+This set is finite: outside the finite support of $f_a$, the condition is
+$\operatorname{Bit}(n,n)$ and is false.  Add the distinguished point
+$x_b$ to this finite candidate set and retain precisely the elements
+satisfying the gate's arbitrary formula.  If $s$ codes the selected
+finite set, assign $x_c=f_c^{-1}(s)$.  The guard $c\ne a,b$ and the
+self-freshness of numeric formula code $c$ ensure that this assignment
+changes neither the old parameters nor the selected property.  It
+therefore supplies exactly the required pointed separator.  Equality
+and membership vacuity under the same guard are immediate.
+
+Nevertheless, assign $x_1=x_2=x_3=0$.  Then $\mathsf E(1,2)$ and
+$\mathsf M(1,3)$ hold while $\mathsf M(2,3)$ fails.  Thus $L(1,2,3)$ is
+false and cannot be derived from the retained families.
+
+\paragraph{Delete $R$.}
+Instead interpret membership by
+\[
+ \mathsf M(a,b)\quad\Longleftrightarrow\quad
+ \operatorname{Bit}\bigl(x_a,f_b(x_b)\bigr).
+ \tag{R-model}
+\]
+The family $L$ is now valid.  All other retained heads, both atomic
+vacuities, and the false interpretation of code $1$ remain as above.
+For $a\ne b$, the gate's candidate domain is the inverse image under
+$f_b$ of the finite bitset of $x_a$.  For $a=b$, it is the finite set
+\[
+ \{n:\operatorname{Bit}(n,f_b(n))\}.
+\]
+After adding the distinguished point and filtering by the arbitrary
+property, assign to $x_c$ the bitset of the images of the selected values
+under $f_b$.  This proves the entire gate schema in this model.
+
+Set $x_1=x_2=0$ and $x_3=2$.  Then $\mathsf E(1,2)$ and
+$\mathsf M(3,1)$ hold, since bit $1$ of $2$ is one, while
+$\mathsf M(3,2)$ fails, since bit $0$ of $2$ is zero.  Hence $R(1,2,3)$
+is not derivable from its retained families.
+
+These are generalized semantics for the actual numeric calculus, not
+ordinary structures with one uniform binary predicate.  That distinction
+is deliberate: the calculus's primitive proof rules are modus ponens
+and closed generalization.  An unrestricted substitution rule for
+arbitrary numeric formula codes is not available.  Since every retained
+axiom family is valid and the two primitive rules preserve validity,
+these semantics suffice to prove nonderivability.  They exclude a
+\emph{derived-head justification} for either deletion.  They do not
+exclude an entirely new interpretation proving that a smaller calculus
+has the same consistency strength.
+
+The script \texttt{check\_rewrite\_countermodels.py} verifies the two
+explicit countervaluations and finite controls of the constructions.
+For labels $0,\ldots,4$ and parameter values $0,\ldots,7$, it checks
+8,000 retained-rewrite cases and 23,056 separator cases for each model,
+exhausting every property restriction on each relevant finite candidate
+set.  This is a check of the stated finite ranges.  The full-schema
+argument is the mathematical finite-support construction above.
+
+\subsection{What the iPRA work can contribute}
+
+The native scalar core in the supplied \texttt{ConciseIPRA} project~\cite{ipra} is
+bi-interpretable with intuitionistic primitive recursive arithmetic.
+Using that core unchanged would target a different consistency
+statement.  Its most direct useful modification is precise: retain its
+native terms, formula constructors, logical rules, and freshness
+conditions, but extend its progress rule from literal equations to
+arbitrary native formulas:
+\[
+ \frac{\Gamma,B(z)\vdash B(Sz)}
+      {\Gamma\vdash Q_y B(y)},
+ \qquad
+ Q_y B(y)\equiv B(0)\to\forall y\,B(y),
+ \qquad z\text{ fresh}.
+ \tag{Full progress}
+\]
+The ordinary realization of this extended core is sound in Heyting
+arithmetic, using full formula induction.  Conversely, the existing
+native definitions of the logical connectives and primitive-recursive
+functions, together with \textup{(Full progress)} followed by closure
+elimination, supply induction for every translated Heyting-arithmetic
+formula.  This gives a natural HA-strength source calculus.  The usual
+negative translation from PA to HA and the inclusion of intuitionistic
+proofs into classical proofs then supply the intended consistency
+comparison, once implemented on the selected proof codes.
+
+This is a concrete high-level avenue, not a delivered smaller tape
+machine.  A compilation must still count the implementation of terms,
+substitution, freshness, contexts, certificate enumeration, and
+blank-tape startup.  Python token counts and numbers of logical rule
+families do not determine binary single-tape state counts.
+
+\subsection{The reverse internal PA implication}
+
+Let $H_{196}$ be the exact arithmetic halting sentence for the literal
+PA196 table, and let $N_{196}=\neg H_{196}$.
+The upstream declaration
+\texttt{PA196.Arithmetic.pa\_proves\_nonhalting\_consistency}
+proves
+\[
+ \mathrm{PA}\vdash N_{196}\to\operatorname{Con}(\mathrm{PA}).
+\]
+The source's published theorem inventory does not include the converse.
+Its external nonhalting proof uses a hereditarily finite-list model in
+Lean's metatheory.  That external soundness proof is not itself a PA
+proof of the reverse implication.
+
+There is a direct syntactic route to the missing direction.  Translate
+numeric membership to $\operatorname{Bit}(x_a,x_b)$, numeric equality to
+arithmetic equality, and decode the transposed quantifier constructor
+correctly.  For every arithmetic formula $\varphi(x)$, PA proves
+\[
+ \forall a,b\;\exists s\;\forall x\quad
+ \operatorname{Bit}(s,x)\leftrightarrow
+ \bigl((\operatorname{Bit}(a,x)\lor x=b)\land\varphi(x)\bigr).
+ \tag{PC}
+\]
+For a detailed template, set $m=\max(a,b+1)$ and use full induction on
+$k\le m$ to construct a binary sum agreeing with the desired property
+on the first $k$ bits.  At stage $k$, excluded middle for
+$\varphi(k)$ determines whether to add $2^k$.  The implication
+$\operatorname{Bit}(a,x)\Rightarrow x<a$ bounds every possible selected
+value.  The formula $\varphi$ is inserted syntactically into this one
+induction proof template.  Consequently the map from $\varphi$ to its
+PA proof of \textup{(PC)} is primitive recursive; it does not evaluate
+$\varphi$ or introduce a uniform arithmetic truth predicate.
+
+Pointed comprehension supplies PA proof templates for the guarded
+gate.  The other heads have fixed logical proof templates.  A
+primitive-recursive induction on a numeric derivation then translates
+any derivation of code $1$ into a PA refutation.  The command interpreter
+can carry these proof codes in its register and stack invariant.  At a
+halt test $t+h=1$, one of the two proved codes is $1$, so a refutation is
+extracted.  This replaces semantic truth by syntactic proof objects
+throughout the invariant.
+
+The physical step is an internal version of the existing external
+\texttt{blank\_halting\_iff\_source} theorem.  Positive forward macro
+simulation is sufficient: if the literal machine halts by time $n$
+and the source does not halt in its first $n+1$ steps, concatenate
+$n+1$ positive macro simulations to obtain a literal execution longer
+than $n$, contradicting deterministic halting.  This uses bounded
+induction and the macro contracts, not an unbounded termination
+argument.  A completed implementation of these constructions would
+prove
+\[
+ \mathrm{PA}\vdash H_{196}\to
+ \operatorname{Pr}_{\mathrm{PA}}(\ulcorner\bot\urcorner),
+ \quad\text{hence}\quad
+ \mathrm{PA}\vdash\operatorname{Con}(\mathrm{PA})\to N_{196}.
+\]
+This paragraph describes the proof construction and identifies its
+formalization tasks.  It is not a claim that the missing arithmetic Lean
+theorem has been supplied or checked in this work.
+
+\subsection{A stronger obstruction to replacing the first head by reflexivity}
+
+Even adding explicit explosion does not justify replacing the old first
+head by the shorter family
+\[
+ \mathsf U(D,H)\to H.
+ \tag{T}
+\]
+Here is a countermodel to that proposed derived-head argument.  A world
+is a natural-number assignment together with a stage $s\in\{0,1\}$.
+The quantifier $\mathsf U(i,\varphi)$ ranges over all worlds obtained by
+changing $x_i$ arbitrarily and replacing $s$ by any $s'\ge s$.
+Implication is material at each world.  Equality is ordinary numerical
+equality.  At stage $0$ every membership atom is false; at stage $1$,
+$\mathsf M(a,b)$ has its usual bit interpretation
+$\operatorname{Bit}(x_a,x_b)$.  Code $1$ is false at both stages.
+
+The accessibility relation for each quantifier is reflexive, so
+\textup{(T)} holds.  Relations for different labels commute, since their
+two coordinate changes and their final nondecreasing stage can be chosen
+in either order.  Distribution holds for universal modalities.  The
+equality witness holds by choosing the quantified value equal to the
+other value.  Both membership rewrite families hold: at stage $0$ their
+membership antecedents are false, and at stage $1$ they are ordinary
+equality substitutions.  Atomic vacuity at a distinct label also holds:
+equality is unchanged; a true membership atom already lies at stage $1$
+and remains unchanged.  Every explosion instance holds because code
+$1$ is false.
+
+The guarded gate is valid at both stages.  Its equality and membership
+vacuities were just checked.  To refute its universal $Q$ clause, choose
+the separating variable at stage $1$.  All its subsequent quantifiers
+then remain at stage $1$, where ordinary finite pointed separation
+supplies a witness.  The formula-code freshness property has its usual
+meaning at that stage.  The separating set makes both $S$ and $P$ true,
+so $Q$ is false and the whole gate is true.
+
+But take a stage-$0$ world with $x_2=1$, $x_3=0$, put
+$H=\mathsf M(2,3)$, and take $D=4$.  Here $H$ is false.  After advancing
+to stage $1$, $\mathsf U(4,H)$ is true, since changing $x_4$ leaves the
+true assertion $\operatorname{Bit}(1,0)$ unchanged.  Hence
+$\exists x_4\,\mathsf U(4,H)$ is true at the initial world, and the old
+first head is false there.  Modus ponens and closed generalization
+preserve validity in this semantics.  Consequently the first head is
+not derivable from \textup{(T)}, explosion, and the remaining numeric
+axiom families.  This is a stronger obstruction than merely observing
+that a proposed replacement fails to make code $1$ behave as falsity.

@@ -1,0 +1,251 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,booktabs,longtable,array}
+\usepackage{graphicx,microtype,xurl,enumitem,fancyhdr}
+\usepackage[hidelinks,pdftitle={PA-consistency machines: comparison and new reduction experiments},pdfauthor={Research report prepared for Vladimir Reshetnikov}]{hyperref}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\file}[1]{\texttt{\nolinkurl{#1}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=4pt,topsep=6pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small PA-consistency machines}
+\fancyhead[R]{\small Comparison and reduction experiments}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{PA-consistency machines:\\comparison and new reduction experiments}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{November 13, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The requested endpoint is a binary, single-tape Turing machine with at
+most 195 working states, started on a blank tape, whose nonhalting is
+provably equivalent in PA to consistency of ordinary first-order PA.
+\textbf{This investigation did not obtain a verified machine meeting
+that endpoint.} The smallest established reference table remains the
+published 196-state construction. This report and its archive are a
+research result, not a claim to have constructed a 195-state machine.
+
+We recheck the supplied 208-state collection, the specified 209-state
+predecessor, and PA196 against frozen source identities. The complete
+accepted U208 collection has twenty rooted graph-isomorphism classes;
+its final deletion is not an additional deletion available in PA196.
+New work includes checked combinations of source rewrites, stronger
+physical deletion searches, an equivalent split of the first quantifier
+head with explicit Hilbert certificates, and two full-schema
+countermodels to tempting axiom deletions. We also identify a precise
+HA-strength modification of the supplied iPRA core and distinguish the
+published one-way internal PA theorem from the requested biconditional.
+All computational evidence is classified by its actual verification
+scope. No unsuccessful finite search is represented as a lower bound on
+all smaller machines.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\clearpage
+
+\section{The target and the evidence boundary}
+
+The intended theorem is
+\[
+ \PA\vdash\bigl(\neg\Halt(M)\leftrightarrow\Con(\PA)\bigr),
+ \qquad |Q_M|\le195.
+\]
+Here $\PA$ has full first-order induction. The machine has alphabet
+$\{0,1\}$, a two-way infinite tape initially filled with zeros, one
+transition for each working state and read symbol, and one-cell left or
+right moves. The distinguished halting control is excluded from $|Q_M|$.
+These are the common conventions of the supplied constructions. A larger
+alphabet, a nonblank initial program, or a change in how halt is counted
+would require a different comparison.
+
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Input & Frozen revision\\
+\midrule
+ProveIt & \file{dc523e7b06ffb414093c90aa035500ca283e5f75}\\
+BusyBeaver, PA196 & \file{407cdc356f6b586635e71ac92be394255f4bfea4}\\
+BusyBeaver, requested PA209 & \file{69d98241a721ead20b4f0b17df9062950b40fbfe}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The current ProveIt incoming directory includes earlier responses to
+this same research problem. They were inspected before the new searches,
+and their results are attributed as prior work. In particular, an
+alternative 196-state decoder, the shorter-negation experiment,
+distributed separation, diagonal vacuity, and the MP-success rewrite
+were already present. Replaying them does not make them new discoveries.
+The archive preserves the relevant original license and provenance
+notices. No source repository was modified or published.
+
+The report uses four distinct kinds of evidence:
+\begin{enumerate}
+\item Exact finite checks: table sizes, graph isomorphisms, input hashes,
+      complete finite startup traces, and finite proof certificates.
+\item Symbolic instruction checks: a specified executor checks arbitrary
+      register values under its explicit engine contracts. This is
+      stronger than testing a few numerical inputs, but the executor and
+      its binding still belong to the trusted argument.
+\item Mathematical proofs: the split-head equivalence and the
+      countermodels below are schema-level arguments. Their accompanying
+      finite controls supplement those arguments.
+\item Unfinished endpoints: no new end-to-end Lean or Rocq theorem of
+      the requested PA biconditional, and no accepted sub-196 table, is
+      delivered here.
+\end{enumerate}
+
+\input{sections/comparison}
+
+\section{The calculus relevant to the new logical experiments}
+
+For clarity, write $p(a,b)=\binom{a+b+1}{2}+b$. PA196 uses
+\[
+ I(a,b)=4p(a,b),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code $0$ denotes truth and code $1=M(0,0)$ is the selected contradiction.
+The quantifier constructor's argument order is essential. Write
+$N(B)=I(B,1)$, $B\wedge C=N(I(B,N(C)))$, and
+$\exists x_a B=N(U(a,N(B)))$. An arrow below means $I$.
+
+Apart from the restricted implicational head $\rho_8$, the six supplied
+heads are the following families, with parameters made unrestricted by
+the command compiler:
+\begin{align*}
+ & (\exists x_D\,U(D,H))\to H,\\
+ & U(D,U(A,H))\to U(A,U(D,H)),\\
+ & M(H,D)\to(E(H,A)\to M(A,D)),\\
+ & E(H,D)\to(M(A,H)\to M(A,D)),\\
+ & \exists x_D\,E(H,D),\\
+ & U(D,A)\to(U(D,A\to H)\to U(D,H)).
+\end{align*}
+The restricted head is
+\[
+ ((H\to d)\to D)\to((D\to H)\to(A\to H)),\qquad d\le D.
+\]
+The existing restricted-head derivation supplies classical implicational
+reasoning independently of the first quantifier head.
+
+The gate, when $c\ne a,b$, is
+\[
+ F(a,b,c)=N\bigl(\Delta_c(a,b)\to(V(a,b,c)\to Q(a,b,c))\bigr),
+\]
+where
+\begin{align*}
+ \Delta_c(a,b)&=E(a,b)\to U(c,E(a,b)),\\
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P&=c\to M(c,b),\\
+ S&=U\bigl(b,(M(a,b)\to P)\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S\to N(P)).
+\end{align*}
+When the guard fails it returns truth. Here the natural number $c$
+serves both as a formula code and as a variable label. The code-bounding
+lemma makes it fresh for the formula it codes. This interface is the
+reason a generic slogan about changing variable names is insufficient.
+The original construction and its formal proof inventory are given in
+\cite{pa196,result,pa209}.
+
+\input{sections/logic}
+\input{sections/search}
+
+\section{How to reproduce and interpret the archive}
+
+Start with \file{README.md}. The default command
+\begin{quote}\ttfamily
+python3 verify.py
+\end{quote}
+checks the artifact manifest, the complete selected-table comparison,
+the new finite Hilbert certificates and countermodel controls, and the
+recorded evidence summaries. More expensive source and physical searches
+have separate commands, so reproducing the report does not silently
+launch a large search. Input snapshots and source identities are retained
+alongside the code. The comparison implementation is inherited from the
+incoming research and attributed accordingly; the replay binds its
+inputs to the current repository snapshot.
+
+The unchanged upstream source/table check was also run successfully:
+\file{scripts/check.sh} checked all 392 PA196 rows, the Palomar source
+checks, and 41 generated Lean files. Its output is retained in the
+archive. This is the default source check, not the optional full Lean
+build and axiom audit. The complete upstream Foundation/Mathlib proof
+development was not rebuilt for this report.
+
+The literal reference table is included for reproducibility. Every
+experimental table is labeled with its actual count and status. A
+passing finite startup, a smaller source program, an optimistic grammar
+score, or a source-level proof does not by itself certify a smaller
+PA-consistency machine. No file in the archive is labeled as an accepted
+195-state construction.
+
+\section{Further research questions}
+
+\paragraph{Can the tape marker and source layout be optimized together?}
+The return scanner is a concrete place where one state would suffice.
+Shortening its zero-run counter changes how temporary path flags are
+recognized, not just how clean source paths are recognized. A successful
+redesign must constrain intermediate paths or change the flag encoding
+and re-establish the engine contracts. The failed direct deletion is
+useful because it identifies that interface precisely.
+
+\paragraph{Can an offset simulation enable a deletion?}
+Most established folds return to the same head position. A simulation
+relation that permits a fixed state-dependent head displacement enlarges
+the design space. It must account for writes on both sides, all incoming
+paths, startup, and positive progress. The bounded offset screens in
+this investigation do not exhaust such relations.
+
+\paragraph{Which logically equivalent axiom presentation minimizes the
+compiled decoder?}
+The split-head theorem supplies exact finite proof translations, and the
+combined diagonal/distributed emitter shortens the macro word. Neither
+has yet lowered the validated physical count. The promising objective
+is the size of a verified decoder allocation, including available
+history tests and marker constraints. Macro-token count alone is an
+inadequate objective.
+
+\paragraph{Can the missing internal implication be completed on the
+existing exact trace predicate?}
+The proof-producing bit-comprehension argument and bounded positive
+simulation give a concrete route. Implementing that route once for
+PA196 would make the precise calibration reusable for descendants whose
+source transformations are formally certified. This would strengthen
+the foundation of the optimization work even without a state saving.
+
+\paragraph{Does the native HA-strength core compile competitively?}
+The proposed extension of the ConciseIPRA progress rule changes the
+induction strength in the required direction. The next useful artifact
+would be an explicit low-level interpreter and state budget for that
+core, including certificate representation and enumeration. Its compact
+abstract proof checker alone cannot answer the state-count question.
+
+\begin{thebibliography}{9}
+\bibitem{pa196} James Chang. \emph{Nonhalting and PA-independence for a
+196-state Turing machine}. Paper and source at revision
+\file{407cdc356f6b586635e71ac92be394255f4bfea4}.
+\url{https://github.com/jamesyc/BusyBeaver/tree/407cdc356f6b586635e71ac92be394255f4bfea4}.
+\bibitem{result} James Chang. \emph{Formal theorem statements},
+\file{docs/result.md}, same PA196 revision.
+\url{https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/docs/result.md}.
+\bibitem{pa209} James Chang. The requested PA209 snapshot,
+\file{69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\url{https://github.com/jamesyc/BusyBeaver/tree/69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\bibitem{incoming} Vladimir Reshetnikov. ProveIt, incoming research
+archives, revision \file{dc523e7b06ffb414093c90aa035500ca283e5f75}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/dc523e7b06ffb414093c90aa035500ca283e5f75/docs/incoming}.
+\bibitem{comparison} ProveIt. Imported PA196/PA209 comparison and
+reduction-search dossier, same revision, including
+\file{Computability/BusyBeaver/Research/PA/pa196-vs-u208/COMPARISON.md}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/dc523e7b06ffb414093c90aa035500ca283e5f75/Computability/BusyBeaver/Research/PA/pa196-vs-u208}.
+\bibitem{ipra} Vladimir Reshetnikov. ProveIt, \emph{ConciseIPRA},
+same revision, including the native scalar rules and their interpretation.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/dc523e7b06ffb414093c90aa035500ca283e5f75/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\end{thebibliography}
+\end{document}

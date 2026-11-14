@@ -1,0 +1,131 @@
+{
+  "status": "U214_EXHAUSTIVE_GUARDED_FOLD_PASS",
+  "old_working_states": 215,
+  "new_working_states": 214,
+  "fold": {
+    "removed": 156,
+    "representative": 182
+  },
+  "old_invariant": "q=156 implies tape[head-1]=0",
+  "incoming_guard": [
+    [
+      210,
+      0,
+      0,
+      1,
+      156
+    ]
+  ],
+  "initial_state": 0,
+  "initial_tapes": "ALL_BINARY_TAPES",
+  "all_radius2_frames": 6880,
+  "admissible_frames": 6864,
+  "old_steps_per_block": 1,
+  "new_steps_counts": {
+    "1": 6856,
+    "5": 8
+  },
+  "special_cases": {
+    "0": {
+      "read": 0,
+      "left_bit": 0,
+      "old_action": [
+        0,
+        1,
+        90
+      ],
+      "candidate_trace": [
+        [
+          182,
+          0,
+          0,
+          0,
+          -1,
+          209
+        ],
+        [
+          209,
+          -1,
+          0,
+          0,
+          1,
+          157
+        ],
+        [
+          157,
+          0,
+          0,
+          0,
+          -1,
+          67
+        ],
+        [
+          67,
+          -1,
+          0,
+          0,
+          1,
+          151
+        ],
+        [
+          151,
+          0,
+          0,
+          0,
+          1,
+          90
+        ]
+      ],
+      "candidate_steps": 5
+    },
+    "1": {
+      "read": 1,
+      "left_bit": 0,
+      "old_action": [
+        1,
+        1,
+        61
+      ],
+      "candidate_trace": [
+        [
+          182,
+          0,
+          1,
+          1,
+          1,
+          61
+        ]
+      ],
+      "candidate_steps": 1
+    }
+  },
+  "time_bounds": "old halt at n implies new halt at some m with n<=m<=5n; new halt at m implies old halt at some n<=m",
+  "proof": "Induction using the old invariant and checked full-tape endpoint equality. Every block has positive length, preserves head and the projected state, and has no internal halt. Thus finite halting is equivalent on every initial tape in state0; this proof is formalizable in PA.",
+  "proof_assistant_kernel_certificate": false,
+  "negative_controls": [
+    {
+      "name": "wrong predecessor write breaks invariant",
+      "status": "REJECTED",
+      "reason": "('noninductive old invariant', 210, (0, 0, 0, 0, 0))"
+    },
+    {
+      "name": "wrong reused selector breaks simulation",
+      "status": "REJECTED",
+      "reason": "('local simulation failure', 156, (0, 0, 0, 0, 0), [[182, 0, 0, 0, -1, 133], [133, -1, 0, 0, 1, 76], [76, 0, 0, 0, -1, 152], [152, -1, 0, 0, -1, 159], [159, -2,"
+    },
+    {
+      "name": "wrong five-step exit breaks simulation",
+      "status": "REJECTED",
+      "reason": "('local simulation failure', 151, (0, 0, 0, 0, 0), [[151, 0, 0, 0, 1, 19]])"
+    },
+    {
+      "name": "wrong shared write breaks tape equality",
+      "status": "REJECTED",
+      "reason": "('local simulation failure', 156, (0, 0, 1, 0, 0), [[182, 0, 1, 0, 1, 61]])"
+    }
+  ],
+  "input_sha256": {
+    "old": "a02a861dc8cd19e856335afaa368f85d81192ce813a1b46c6b33e00dd781004f",
+    "new": "5fa7d923456ea7fb3e9cb331946e49750970bbffbfa755c0639bdaa9b7afd8a8"
+  }
+}

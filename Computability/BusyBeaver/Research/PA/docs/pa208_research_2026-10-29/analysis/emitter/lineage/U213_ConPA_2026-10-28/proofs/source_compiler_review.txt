@@ -1,0 +1,159 @@
+Independent review of the ST/U source transport and command compiler
+==================================================================
+
+Date: 28 October 2026.
+Scope: an independent assistant pass in this research collaboration, not an
+external human review and not a proof-assistant kernel certificate.
+
+VERDICT
+
+PASS for the ordinary all-natural source-level transport and the explicit
+strong compiler in proofs/compiler.tex, conditional on
+the separately identified U214 numerical-calculus calibration and inherited
+arithmetic-macro contracts. No new logical defect was found. Physical runtime
+and blank startup remain distinct obligations and must be bound to the final
+literal table. The original ST215 blank initializer is not the initializer
+of the new 213-state table.
+
+EXACT SOURCE BINDING
+
+I independently reconstructed the 197-subtree source directly from the exact
+primary U214 and original ST215 source files. Standalone code/build_source.py records
+the two input hashes and requires result SHA-256
+
+  7b6539dc67b66ff73f22554018d7af5985d85574460a73fea5f025103c523d00.
+
+The replacement takes the one closed U214 factor [2885,3659), of 774
+primitives, and inserts it into the old ST215 interval [2884,4481), a forest
+of five closed factors of sizes 132, 654, 652, 103, 56. It produces 3,909 primitive
+occurrences, 197 distinct subtrees, maximum address length 42, and maximum
+zero run 6. Every one of the 3,135 retained exterior operations and every
+resolved edge is compared under the ordinal shift -823; every copied
+emitter operation and edge is compared under shift -1. No external branch
+enters the strict interior of the removed factor.
+
+The command-return CC3 at ordinal 3873/address 00111 resolves to scheduler
+zero. The direct-transfer entry is ordinal 3874/address 010, and its sole
+source halt is ordinal 3894/address 11101. This rules out confusing the
+ordinary scheduler with the known rejected scratch-biased return.
+
+COMPILER CHECKS
+
+The native code identities are P(x,y)=(x+y)(x+y+1)/2+y,
+I(x,y)=4P(x,y), Q_i(x)=4P(i,x)+2. The proof uses I(0,0)=0 explicitly,
+and does not presume that numerical stacks encode list length injectively.
+
+The direct S command tests the incoming cache h=1. On normal return it
+produces (h,tail(w),d,head(w)). It does not test the incoming top. The
+structural macro H=AX(0;0,0);S^11 instead tests the incoming top after AX
+has erased the incoming cache. Its normal contract is the top-preserving
+pop (t,tail(w),0,head(w)). The calibration correctly keeps these two
+contracts separate.
+
+I checked the shift counts in H, PUSH, and DISCARD against all ten AX
+outputs. The first eight outputs are implication codes, the ninth is a
+nonzero quantifier code, and the tenth is the saved top. Thus the first ten
+S tests in H cannot halt; its eleventh tests the saved top. PUSH reaches a
+quantifier code in cache and then forces MP(0) to fail by its residue modulo 4.
+DISCARD's first MP(1) fails because I(t,1)>0, and its final MP(0) fails
+because Q_1(0)>0. These are universal tag arguments, not bounded tests.
+
+J(0) must be the empty word, while J(u)=MP(u) for u>0. This zero exception
+is retained: MP(0) would succeed when both top and cache are zero. The
+axiom-block counts S^(j+1);H^(9-j), S^9;H for the dominated row, and H^10
+for the gated bundle each restore the exact old numerical stack and leave
+counter/cache zero. In generalization, the premise is loaded into cache
+just before AX, so X=1 does not cause an unintended earlier cache test.
+
+For ordinary MP, major-first compilation produces (A,w,0,I(A,Y)); successful
+MP gives (Y,[0;w],Y,0). The final AX(Y;0,0);S^11 either halts at Y=1 or
+returns (Y,w,0,0), removing precisely the MP-pushed zero. The A=Y=0 alias
+case is valid. For the additional cache-return variant, reserving a zero
+below the premises is necessary; the displayed construction does so. The
+accepted source uses ordinary MP.
+
+The strong invariant quantifies over all incoming natural top/stack values,
+and allows an early halt. It must not be confused with actual-run soundness
+on theorem-valued explicit heads. Induction on finite derivations and
+cofinally many successful candidate numbers prove completeness; ordinary
+theoremhood invariance and the protected-tail credit theorem prove soundness.
+The candidate number P(2,P(z,P(1,R))) has the displayed AX fields and
+successor-delimited suffix, dominates z, and resets counter/cache before
+the strong suffix. Cantor projections and the predecessor operation make
+every unsuccessful positive command continuation strictly decrease.
+
+TRANSFER TO U
+
+The inherited compiler requires the AX rows' theoremhood, tag classes,
+positions, gate, and uniform arithmetic contracts. It does not require
+the previous bundle's set-theoretic strength. U214 supplies the changed
+bundle's soundness/completeness calibration, including coincident a=b,
+codes 0 and 1, and atomic vacuity recovery. The retained numerical rows and
+generalization interface are unchanged. Accordingly it is legitimate to
+transport the command compiler to the U calculus. It would not be legitimate
+to reuse the fixed literal K215/ZFC endpoint as if its statement had changed.
+
+STARTUP REVIEW POINT
+
+The new startup argument uses an interior frame and a nine-head AX suffix,
+not the old ST215 ten-head initializer. The source seed at ordinal 106 is
+(N,T,W,A,D,H,X,Y,L)=(1,0,4,0,0,1,0,0,1). At first glance L=1 might appear
+to require an extra pop before the candidate 1 credit theorem. That concern
+is resolved by the actual source: read176 at [158,172) unpairs L=1 into
+(y,L)=(1,0), so H changes from 1 to 2; read175 at [199,213) then reads x=0
+and keeps D=0. Thus the final source parameters are (A,B,C,U)=(0,2,0,0)
+and the residual pointer is zero before the safe root. The ordinary
+candidate 1 credit d(1)=2 is the correct one.
+
+The incoming top 0 at ordinal 106 replaces the already constructed quantified
+head with truth. It is pushed above opaque numerical tail 4, and the suffix
+adds the eight logical axiom heads. Tail 4 is not declared theorem-safe.
+The nine explicit theorem heads protect it, leaving margin 7 under the
+inherited conservative scheduler credit. The full literal startup trace,
+141-step source-prefix match to ordinal 136, exact suffix macro bindings,
+and 56-cell whole-tape simulation are required separately to make this
+application to the 213-state table valid. This review has checked the
+mathematical interface and the two pointer reads; it does not replace those
+separate exact checks.
+
+PROOF LEVEL
+
+The source transport, compiler, and credit arguments use finite syntax,
+primitive-recursive constructions, and ordinary natural-number induction;
+they are formalizable in PA. The new argument is a mathematical proof with
+executable exact checks, not a newly compiled end-to-end Lean/Rocq/MM0 proof.
+The U/PA consistency interpretation remains an expressly inherited
+dependency, and no absolute minimality or unconditional nonhalting claim
+is made.
+
+ADDITIONAL EXACT CHECKS COMPLETED IN THIS REVIEW
+
+The independent startup checker check_startup_independent.py imports no
+received project code. On native table SHA-256
+
+  bb4f5ac12b29d07d1080109af9bb564e9e11a4783efc48cd73b8f826789d01f7
+
+it independently replays all 48,140 blank transitions and compares the whole
+tape with the 56-cell frame at ordinal 136. The finite support has exactly
+120 one-cells, and all exterior cells are zero. Its separately resolved
+source graph reproduces the 141-step prefix from ordinal 106. Both checks
+pass; the complete receipt is evidence/startup_independent.json.
+
+The new audit_commands.py binds all 249 exterior occurrences, outside the
+suffix interval [106,3766), to 15 named arithmetic macro calls and five
+primitive controls. Its complete receipt is evidence/commands.json. I derived
+the scheduler, AX preamble, ordinary MP, and direct S equations from those
+exact macro contracts in proofs/command_semantics.tex. In particular the S test
+is w214;w200;w207;CI6;ifeq132;pop170, with no incoming-top test. The MP
+test is read175;par166;cons119;w216;ifeq130, including its successful
+zero push and unchanged offset.
+
+I additionally reviewed audit_suffix.py and its source/DAG bindings. The
+127 construction/read calls do not pop below the explicit temporary stack
+into the arbitrary tail J. They produce exactly
+[r1,...,r7,Ldom,z;J]. The gate composition
+w192;ifeq131;w211;w197;ifeq131 clears A,D,H,X,Y and disables the bundle
+exactly when c=b or c=a. The arithmetic proof's scratch-zero premises hold
+at every constructor boundary. Thus the command audit and suffix audit
+together bind every one of the 3,909 source primitives. The literal
+arbitrary-register runtime audit remains the separate whole-tape obligation.

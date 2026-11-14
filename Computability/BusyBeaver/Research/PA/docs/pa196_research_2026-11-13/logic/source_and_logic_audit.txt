@@ -1,0 +1,144 @@
+# Source and HA audit
+
+## Independent source audit
+
+`audit_source_graphs.py` reads upstream `PA196/Program.lean` with its own
+parser. It does not import the optimizer, allocator, or original graph
+checker. It reconstructs each candidate as a full binary tree, assigns
+each prefix its half-open interval of ordinal leaf positions, and
+resolves jumps using interval endpoints:
+
+* Increment advances to the next ordinal leaf.
+* A positive decrement advances to the next leaf. A zero decrement
+  removes the suffix through the last zero bit and exits that ancestor's
+  interval.
+* `breakTo k` removes the suffix through the k-th zero bit and exits the
+  selected ancestor's interval.
+* `continueTo k` removes the suffix through the k-th one bit and returns
+  to the selected ancestor's first leaf.
+
+These are a separate implementation of the prefix control convention in
+`M6/Source/Syntax.lean`.
+
+| Artifact | Leaves | Distinct internal nodes | Maximum path | Maximum zero run | Path of ordinal site 25 |
+|---|---:|---:|---:|---:|---|
+| Upstream PA196 | 3812 | 159 | 38 | 6 | `100000` |
+| `anneal6/best_137_2.json` | 3812 | 157 | 37 | 6 | `100000` |
+| `anneal_physical_all/best_140_1.json` | 3812 | 158 | 37 | 6 | `1000000` |
+| `proveit_notes/essential140/essential.json` | 3812 | 158 | 37 | 8 | `100000` |
+
+All three candidates have the same complete resolved ordinal instruction
+array as upstream, including both decrement branches. They also have the
+same leaf operations, in the same order. Their common normalized CFG
+SHA-256 is
+
+`d08674833ace662fb2d3a0de9780a0b7d1425162faa6ea927930747498fc25d9`.
+
+As an additional finite check, starting at source ordinal 25 with registers
+`[2,0,0,0,0,0,0,0,0]`, all four arrays reach ordinal 693 and registers
+`[4,364,0,0,0,0,1266,6178,0]` after 100,000 source instructions. No halt
+or source-root exit occurs in this finite prefix. The stronger result is
+the equality of the entire transition arrays, not this sample run.
+
+The path change for `best_140_1.json` is only a trailing zero. It is not
+by itself evidence that physical startup fails: a trailing zero may be
+absorbed into the frame's zero gap. Conversely, the audit does not
+establish physical startup or simulation for any candidate. The
+eight-zero run in `essential.json` requires special attention when using
+the existing delimiter-scanning engine. Source node counts are not
+physical working-state counts.
+
+`source_audit_receipt.json` records these facts and exact input hashes.
+
+## A short reassociation theorem
+
+For a source tree `T`, define its forward demand `f(T)` as the maximum,
+over decrement and break leaves, of the remaining number of zero bits
+needed after all zero bits on that leaf's local path have been consumed.
+For a decrement the initial demand is 1; for `breakTo k` it is `k`.
+Define its backward demand `b(T)` similarly for `continueTo k` and one
+bits. Inc and halt have demand zero in both directions. Equivalently,
+
+\[
+ f((L,R))=\max(f(L)-1,\,f(R),\,0),\qquad
+ b((L,R))=\max(b(L),\,b(R)-1,\,0).
+\]
+
+**Theorem.** If `f(A)=0` and `b(C)=0`, replacing an occurrence of
+`((A,B),C)` by `(A,(B,C))`, or conversely, preserves the resolved ordinal
+instruction array in every surrounding source tree, whenever the source
+controls are resolved.
+
+**Proof.** The rotation preserves the left-to-right order of all leaves
+and every instruction's register operation. The paths of leaves in the
+three blocks change, below the common surrounding prefix, from `00p`,
+`01p`, `1p` to `0p`, `10p`, `11p`. A branch whose selected ancestor is
+strictly inside its block is unaffected. In `A`, every forward demand is
+met inside `A` by `f(A)=0`; its destination is an internal leaf or the
+immediate successor of `A`. Both have the same ordinal. Backward branches
+leaving `A` are unaffected because the changed prefixes contain no one
+bits. In `C`, the dual argument applies: backward demands are local by
+`b(C)=0`, while the changed prefixes contain no additional zero bits for
+forward branches. For `B`, a first forward escape exits the whole rotated
+block in either parenthesization, and a first backward escape returns to
+the first leaf of `A` in either parenthesization. Any further outward
+demand is identical after that first selected bit. Inc fallthrough and
+root exit are unchanged. Thus every target ordinal is preserved. □
+
+Equal proper subtrees cannot strictly contain one another, since that
+would contradict finite tree size. All occurrences of one structurally
+equal subtree are therefore disjoint. A simultaneous global replacement
+is a finite family of these local rotations and preserves the same CFG.
+
+For the supplied candidates the finite complete CFG comparison is an
+additional direct certificate; it does not require trusting an optimizer's
+record of all intermediate rotations.
+
+## Source equivalence inside PA
+
+If two finite resolved source arrays are identical, their register-state
+transition functions are identical for every program counter and register
+vector. Induction on the number of source steps gives equality of all
+executions from equal source states, including halt and root-exit status.
+The operations used to encode finite trees, calculate their demands,
+resolve targets, and compare the finite arrays are primitive recursive.
+Consequently this argument is formalizable in PA. For fixed concrete
+arrays, equality is a finite computation, followed by the uniform induction
+lemma. The present Python receipt is not itself a newly produced PA or
+Lean proof object, and none of this supplies a binary-tape simulation for
+the new path encodings.
+
+## Critical review of the HA transfer
+
+The forward zero-witness case recovery in `ha_transfer.md` is sound
+with **full formula-template transport**. Its first introduction uses an
+unused witness coordinate and `e=I(0,0;u.0)`, so it selects case mode even
+for a compound matrix. Opening that D gives the closure `Q_y B(0,y)`.
+The second introduction at `e` transports its hypothesis to `B(0,0)`,
+uses QE, and transports back. The fresh opening variable is absent from
+the exported conclusion. This avoids any assumption that the modified
+mode selector is stable under arbitrary term substitution.
+
+The readable checker follows the stated full-transport calculus. Its DI
+branch alone calls `progress_mode`; computation dispatch is unchanged.
+DE checks its eigenvariable against the outside context, free variables
+of the major premise, and the result. DI checks freshness against the
+context, witness, and free parameters of the matrix. Simultaneous
+substitution renames conflicting binders, and equality comparisons use
+alpha-normal keys. The proof recursion follows strict subtrees of the
+input certificate. These features support the written specification and
+termination argument; the nine test cases remain only finite tests.
+
+The mathematical HA interpretation uses inherited iPRA logical-macro
+translations. It is not a new formal proof of those inherited results,
+and the extension has not been checked in Lean. The PA-provable
+consistency correspondence is a metatheorem about chosen standard proof
+encodings and uniform syntactic translations; the current package does
+not implement those translations as proof-code transformers. The claim
+must be kept distinct from a theorem binding PA196's particular arithmetic
+trace sentence, and from a bound on a TM that executes this checker.
+
+The reference checker is deliberately not the minimized current
+`NativeOneIntro.WPrf` kernel, whose primitive transport is `trOne`.
+Transferring this result to that modified kernel would require a separate
+compound-transport recovery argument. No such transfer is claimed.

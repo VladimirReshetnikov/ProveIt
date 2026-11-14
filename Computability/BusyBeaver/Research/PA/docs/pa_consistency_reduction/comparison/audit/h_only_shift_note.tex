@@ -1,0 +1,151 @@
+% Include this section in a larger article after loading amsmath/amssymb/hyperref.
+\section{A verified intermediate with an \texorpdfstring{$h$}{h}-only acceptance test}
+\label{sec:h-only-intermediate}
+This section records a useful intermediate construction.  Its table still has
+196 working states; it is not, by itself, a solution of the strict state-count
+problem.  It changes only five rows of the published PA196 table and passes
+4,958 uniform source-site contracts for a 3,811-instruction source program.
+The construction transfers the $h=1$ acceptance convention already present in
+the U208 family into the newer PA196 arithmetic and command language.
+
+\subsection{Command semantics and the change in the source program}
+Write a command store as $(t,w,d,h)$.  A nonhalting Shift changes it to
+\[
+  (h,\operatorname{tail}(w),d,\operatorname{head}(w)),
+\]
+where head and tail are the two Cantor-decoding components, including the
+usual zero-underflow convention.  The published PA196 Shift halts if
+$t+h=1$.  The variant halts if $h=1$.  All other commands and all normal
+Shift effects are unchanged.
+
+The low-level Shift preparation assumes that its work counter $X$ is zero.
+Its original three-instruction prefix transfers $T$ into $X$.  Replace that
+prefix by the two-instruction loop clearing $T$.  The rest of the preparation
+copies $H$ into $T$ and $X$, transfers $X$ back to $H$, increments $X$, and
+returns to the common comparison routine.  Consequently its register effect
+before the comparison is
+\[
+\begin{array}{c|ccc}
+ &T&H&X\\\hline
+\text{original}&h&t+h&1\\
+\text{variant}&h&h&1.
+\end{array}
+\]
+The comparison halts exactly when $H=X$.  On its normal exit it clears the
+comparison counters and proceeds to the same stack pop.  This proves the
+claimed command semantics by the existing elementary transfer and comparison
+lemmas; no claim about arithmetic consistency enters this calculation.
+
+In original source numbering the transfer loop occupies sites 3800--3802.
+The variant uses site 3800, $\operatorname{dec}T$, followed by site 3801,
+$\operatorname{continueTo}(1)$.  The $\operatorname{inc}X$ is removed and the
+loop-back depth changes from two to one.  All old sites after 3802 have new
+index one smaller; all sites through 3799 keep their ordinal index.  The
+resulting ordinal control graph agrees with this explicit edit.
+
+\subsection{The necessary reassociation}
+A naive call to the existing clear-$T$ decoder does not work: that decoder
+shares a physical state with clear-$H$ and relies on the preceding address
+bit.  Merely substituting the source subtree therefore fails two source-site
+contracts.  A first reassociation fixes clear-$T$ but breaks the preceding
+\texttt{continueTo(3)}.  The following wider reassociation fixes both contexts.
+
+Let $A=\texttt{node36}$, $B=\texttt{node167}$,
+$C=\texttt{node145}$ (clear $T$), and $D=\texttt{node57}$.
+Replace the old subtree
+\[
+  (A,(B,(\texttt{node37},D)))
+\quad\text{by}\quad
+  ((A,(B,C)),D).
+\]
+Here $\texttt{node37}$ is the old $T$-to-$X$ transfer.  No control-transfer
+operand elsewhere in the tree changes.  With the published dense table
+labels, the complete row patch is
+\[
+\begin{array}{cc|ccc}
+\text{state}&\text{read}&\text{write}&\text{move}&\text{next}\\\hline
+37&0&0&R&11\\
+37&1&1&R&101\\
+127&0&0&R&133\\
+127&1&1&R&20\\
+133&0&0&R&120.
+\end{array}
+\]
+Every unlisted transition is exactly the PA196 transition.  The original
+halting state remains 196, the initial state remains 0, and the physical
+source-root state remains 75.  All 196 working states remain graph reachable
+from state 0.  The maximum source address length grows from 38 to 39, still
+within the unchanged 48-cell header.
+
+\subsection{Finite and uniform verification}
+The file \texttt{h\_catalan\_node170\_3\_133\_37.tm} contains the complete table;
+the adjacent \texttt{\_sites.json} file gives the ordered source sites.
+The symbolic runtime check covers every increment, every jump, every halt,
+and both zero and positive branches of every decrement.  It verifies 4,958
+contracts.  The check treats the padding length as an arbitrary natural
+parameter and the entire register file as an opaque symbolic block.  It
+therefore does not bound the input values, the register sizes, or the header
+padding.  The register-block summaries use the same protected engine rows as
+PA196; those rows have not changed.
+
+An independent sparse-tape interpreter, using only literal binary steps,
+finds the exact canonical initial source frame after 57,922 steps from the
+blank tape.  It checks the complete set of nonzero tape cells, not just a
+finite window.  The head is at absolute position $-2$, and the current state
+is 75.  Its control address is $1000000$, whose extra final zero is absorbed
+by the zero padding.  The physical register file is
+\[
+ [0,0,0,0,0,0,2,0,0]\mathbin{+\!+}[1]^{26}.
+\]
+The same interpreter independently reproduces the published PA196 startup
+length of 58,154 steps.  These receipts are in
+\texttt{h\_symbolic\_result.json} and \texttt{h\_startup\_result.json}.
+They are reproducible proof calculations using the published runtime lemmas,
+not a claim that a newly generated Lean proof has been kernel checked.
+
+\subsection{Preservation of the consistency property}
+The PA196 proof invariant is syntactic: $t$, $h$, and every stack member have
+finite derivations in its numerical calculus.  It is not a truth predicate.
+The invariant is preserved by the new normal Shift for precisely the same
+reason as by the old one.  A new halt has $h=1$, hence supplies a finite
+derivation of the distinguished contradiction code.  The syntactic proof
+translation into PA described separately converts this into a PA refutation.
+Every operation on a bounded execution and its attached derivations is
+primitive recursive, and its correctness can be proved in PA.  This yields
+\[
+  \mathrm{PA}\vdash
+  \operatorname{Halt}(M_h)\longrightarrow\neg\operatorname{Con}(\mathrm{PA}).
+\]
+
+For the other direction, start with the existing compiler from a PA
+refutation to an old halting command word.  Take the execution prefix
+\emph{before} its first halting Shift.  Replay that prefix with the new
+semantics.  If a new Shift accepts sooner, the desired halt is already
+obtained.  Otherwise the two stores agree throughout the prefix.  At its
+end, $t+h=1$, so exactly one of the following cases occurs.
+\begin{enumerate}
+\item If $h=1$, append one Shift, which accepts under the new convention.
+\item If $t=1$ and $h=0$, discard the old final Shift and append
+      $\mathrm{AX}(0,0,0)$ followed by ten Shifts.
+\end{enumerate}
+In the second case the AX command has false gate, sets $t=h=0$, and pushes
+its eight generated heads followed by the saved old top $1$.  All eight
+heads differ from 1: seven have outer implication tag 0 and the remaining
+head has universal tag 2.  After nine normal Shifts the new $h$ equals the
+saved 1; the tenth Shift accepts.  The older stack contents do not matter.
+Applying the AX command \emph{after} replaying the old final Shift would be
+incorrect because that Shift can discard the saved $t=1$; the construction
+explicitly stops before it.
+
+This padding operation is primitive recursive in the finite old execution.
+Together with exhaustive command-word enumeration and the positive finite
+runtime simulation, it proves within PA
+\[
+  \neg\operatorname{Con}(\mathrm{PA})
+       \longrightarrow\operatorname{Halt}(M_h).
+\]
+Thus, at the ordinary mathematical proof level, the intermediate has the
+same full PA-provable consistency equivalence as the target construction.
+The statement uses the separately supplied syntactic converse argument;
+it must not be attributed to the unmodified upstream Lean theorem, which
+explicitly states only its existing direction.

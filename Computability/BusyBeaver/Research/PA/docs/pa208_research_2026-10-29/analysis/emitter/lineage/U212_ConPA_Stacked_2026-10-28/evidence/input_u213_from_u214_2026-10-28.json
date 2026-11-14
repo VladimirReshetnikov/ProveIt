@@ -1,0 +1,146 @@
+{
+  "package": "u213_from_u214_2026-10-28",
+  "exit_code": 0,
+  "seconds": 2.629,
+  "original_files_unchanged": true,
+  "file_count": 192,
+  "full_runtime_rederived": false,
+  "finite_commands_executed": 15,
+  "steps": [
+    {
+      "command": [
+        "checks/check_release_manifest.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.068
+    },
+    {
+      "command": [
+        "checks/check_preserved_sources.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.094
+    },
+    {
+      "command": [
+        "-O",
+        "checks/check_preserved_sources.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.234
+    },
+    {
+      "command": [
+        "checks/check_baseline_data.py",
+        "baseline/u214",
+        "--compact"
+      ],
+      "exit_code": 0,
+      "seconds": 0.29
+    },
+    {
+      "command": [
+        "-O",
+        "checks/check_baseline_data.py",
+        "baseline/u214",
+        "--compact"
+      ],
+      "exit_code": 0,
+      "seconds": 0.284
+    },
+    {
+      "command": [
+        "checks/certify_u213.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.048
+    },
+    {
+      "command": [
+        "-O",
+        "checks/certify_u213.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.18
+    },
+    {
+      "command": [
+        "checks/verify_u213_independent.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.04
+    },
+    {
+      "command": [
+        "-O",
+        "checks/verify_u213_independent.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.135
+    },
+    {
+      "command": [
+        "checks/test_semantic_controls.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.067
+    },
+    {
+      "command": [
+        "-O",
+        "checks/test_semantic_controls.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.253
+    },
+    {
+      "command": [
+        "checks/check_artifact.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.065
+    },
+    {
+      "command": [
+        "-O",
+        "checks/check_artifact.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.237
+    },
+    {
+      "command": [
+        "checks/check_candidate_startup.py",
+        "machine/u213.native.tm",
+        "evidence/U213_STARTUP.json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.192
+    },
+    {
+      "command": [
+        "-O",
+        "checks/check_candidate_startup.py",
+        "machine/u213.native.tm",
+        "evidence/U213_STARTUP.json"
+      ],
+      "exit_code": 0,
+      "seconds": 0.321
+    }
+  ],
+  "unrun_full_runtime_commands": [
+    [
+      "checks/check_baseline_runtime.py",
+      "baseline/u214",
+      "checks/runtime",
+      "baseline/u222/code/inputs/legacy_mapping.json"
+    ],
+    [
+      "checks/check_candidate_runtime.py",
+      "baseline/u214",
+      "checks/runtime",
+      "baseline/u222/code/inputs/legacy_mapping.json",
+      "machine/u213.native.tm"
+    ]
+  ]
+}

@@ -1,0 +1,767 @@
+{
+  "source_sha256": {
+    "Program.lean": "8c7c6c6884ecbb8f56e893404bb81162db15ef3dd6fd3212881a93994d63d872",
+    "Conjugacy.lean": "44983c537d1287d5947dec3bd8e2f9ba43657368fe8ebe75899d2ede54e7c1a3",
+    "pa196.tm": "e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8"
+  },
+  "symbolic_loop_certificate": {
+    "primitive_cfg_exact": true,
+    "simple_drain_loops": 3,
+    "outer_loop_invariant": "Y + S*(S+1)/2; T=0 at outer header",
+    "terminating_natural_variants": [
+      "T at pc0",
+      "S at pc6",
+      "S at pc4",
+      "Y at pc10"
+    ],
+    "general_core_contract": "(T,S,Y)=(t,s,y) -> (4*(y+p(s,t)),0,0)",
+    "frame": "All registers other than 1,6,7 are preserved because no primitive writes them.",
+    "neg18_contract": "With registers 6=7=0, INC7;INC7;node64 sends T to 4*p(T,1) and restores registers 6=7=0.",
+    "exact_transition_count_recurrences_verified": true
+  },
+  "independent_cfg_resolvers": {
+    "algorithms": [
+      "leaf-path subtree intervals",
+      "recursive loop-context stacks"
+    ],
+    "reference_source_sites": 3812,
+    "five_negation_macros_agree": true
+  },
+  "macro_entries": {
+    "node64": {
+      "native_state": 106,
+      "source_occurrences_checked": 64
+    },
+    "INC7": {
+      "native_state": 82,
+      "source_occurrences_checked": 346
+    }
+  },
+  "exact_primitive_cfgs": {
+    "old47": [
+      [
+        "dec",
+        1,
+        3,
+        1
+      ],
+      [
+        "inc",
+        6,
+        2
+      ],
+      [
+        "jump",
+        0
+      ],
+      [
+        "dec",
+        2,
+        6,
+        4
+      ],
+      [
+        "inc",
+        1,
+        5
+      ],
+      [
+        "jump",
+        3
+      ],
+      [
+        "dec",
+        1,
+        10,
+        7
+      ],
+      [
+        "inc",
+        7,
+        8
+      ],
+      [
+        "inc",
+        6,
+        9
+      ],
+      [
+        "jump",
+        6
+      ],
+      [
+        "dec",
+        6,
+        16,
+        11
+      ],
+      [
+        "inc",
+        7,
+        12
+      ],
+      [
+        "dec",
+        6,
+        15,
+        13
+      ],
+      [
+        "inc",
+        1,
+        14
+      ],
+      [
+        "jump",
+        12
+      ],
+      [
+        "jump",
+        6
+      ],
+      [
+        "dec",
+        7,
+        19,
+        17
+      ],
+      [
+        "inc",
+        2,
+        18
+      ],
+      [
+        "jump",
+        16
+      ],
+      [
+        "inc",
+        1,
+        20
+      ],
+      [
+        "dec",
+        2,
+        28,
+        21
+      ],
+      [
+        "inc",
+        7,
+        22
+      ],
+      [
+        "dec",
+        6,
+        24,
+        23
+      ],
+      [
+        "jump",
+        27
+      ],
+      [
+        "dec",
+        7,
+        27,
+        25
+      ],
+      [
+        "inc",
+        6,
+        26
+      ],
+      [
+        "jump",
+        24
+      ],
+      [
+        "jump",
+        20
+      ],
+      [
+        "dec",
+        7,
+        31,
+        29
+      ],
+      [
+        "inc",
+        2,
+        30
+      ],
+      [
+        "jump",
+        28
+      ],
+      [
+        "dec",
+        1,
+        35,
+        32
+      ],
+      [
+        "inc",
+        7,
+        33
+      ],
+      [
+        "inc",
+        6,
+        34
+      ],
+      [
+        "jump",
+        31
+      ],
+      [
+        "dec",
+        6,
+        41,
+        36
+      ],
+      [
+        "inc",
+        7,
+        37
+      ],
+      [
+        "dec",
+        6,
+        40,
+        38
+      ],
+      [
+        "inc",
+        1,
+        39
+      ],
+      [
+        "jump",
+        37
+      ],
+      [
+        "jump",
+        31
+      ],
+      [
+        "dec",
+        7,
+        47,
+        42
+      ],
+      [
+        "inc",
+        1,
+        43
+      ],
+      [
+        "inc",
+        1,
+        44
+      ],
+      [
+        "inc",
+        1,
+        45
+      ],
+      [
+        "inc",
+        1,
+        46
+      ],
+      [
+        "jump",
+        41
+      ]
+    ],
+    "move20": [
+      [
+        "dec",
+        1,
+        3,
+        1
+      ],
+      [
+        "inc",
+        6,
+        2
+      ],
+      [
+        "jump",
+        0
+      ],
+      [
+        "inc",
+        1,
+        4
+      ],
+      [
+        "dec",
+        1,
+        8,
+        5
+      ],
+      [
+        "inc",
+        7,
+        6
+      ],
+      [
+        "inc",
+        6,
+        7
+      ],
+      [
+        "jump",
+        4
+      ],
+      [
+        "dec",
+        6,
+        14,
+        9
+      ],
+      [
+        "inc",
+        7,
+        10
+      ],
+      [
+        "dec",
+        6,
+        13,
+        11
+      ],
+      [
+        "inc",
+        1,
+        12
+      ],
+      [
+        "jump",
+        10
+      ],
+      [
+        "jump",
+        4
+      ],
+      [
+        "dec",
+        7,
+        20,
+        15
+      ],
+      [
+        "inc",
+        1,
+        16
+      ],
+      [
+        "inc",
+        1,
+        17
+      ],
+      [
+        "inc",
+        1,
+        18
+      ],
+      [
+        "inc",
+        1,
+        19
+      ],
+      [
+        "jump",
+        14
+      ]
+    ],
+    "plus8_24": [
+      [
+        "dec",
+        1,
+        4,
+        1
+      ],
+      [
+        "inc",
+        7,
+        2
+      ],
+      [
+        "inc",
+        6,
+        3
+      ],
+      [
+        "jump",
+        0
+      ],
+      [
+        "dec",
+        6,
+        10,
+        5
+      ],
+      [
+        "inc",
+        7,
+        6
+      ],
+      [
+        "dec",
+        6,
+        9,
+        7
+      ],
+      [
+        "inc",
+        1,
+        8
+      ],
+      [
+        "jump",
+        6
+      ],
+      [
+        "jump",
+        0
+      ],
+      [
+        "dec",
+        7,
+        16,
+        11
+      ],
+      [
+        "inc",
+        1,
+        12
+      ],
+      [
+        "inc",
+        1,
+        13
+      ],
+      [
+        "inc",
+        1,
+        14
+      ],
+      [
+        "inc",
+        1,
+        15
+      ],
+      [
+        "jump",
+        10
+      ],
+      [
+        "inc",
+        1,
+        17
+      ],
+      [
+        "inc",
+        1,
+        18
+      ],
+      [
+        "inc",
+        1,
+        19
+      ],
+      [
+        "inc",
+        1,
+        20
+      ],
+      [
+        "inc",
+        1,
+        21
+      ],
+      [
+        "inc",
+        1,
+        22
+      ],
+      [
+        "inc",
+        1,
+        23
+      ],
+      [
+        "inc",
+        1,
+        24
+      ]
+    ],
+    "preload2_18": [
+      [
+        "inc",
+        7,
+        1
+      ],
+      [
+        "inc",
+        7,
+        2
+      ],
+      [
+        "dec",
+        1,
+        6,
+        3
+      ],
+      [
+        "inc",
+        7,
+        4
+      ],
+      [
+        "inc",
+        6,
+        5
+      ],
+      [
+        "jump",
+        2
+      ],
+      [
+        "dec",
+        6,
+        12,
+        7
+      ],
+      [
+        "inc",
+        7,
+        8
+      ],
+      [
+        "dec",
+        6,
+        11,
+        9
+      ],
+      [
+        "inc",
+        1,
+        10
+      ],
+      [
+        "jump",
+        8
+      ],
+      [
+        "jump",
+        2
+      ],
+      [
+        "dec",
+        7,
+        18,
+        13
+      ],
+      [
+        "inc",
+        1,
+        14
+      ],
+      [
+        "inc",
+        1,
+        15
+      ],
+      [
+        "inc",
+        1,
+        16
+      ],
+      [
+        "inc",
+        1,
+        17
+      ],
+      [
+        "jump",
+        12
+      ]
+    ],
+    "preload1_plus4_21": [
+      [
+        "inc",
+        7,
+        1
+      ],
+      [
+        "dec",
+        1,
+        5,
+        2
+      ],
+      [
+        "inc",
+        7,
+        3
+      ],
+      [
+        "inc",
+        6,
+        4
+      ],
+      [
+        "jump",
+        1
+      ],
+      [
+        "dec",
+        6,
+        11,
+        6
+      ],
+      [
+        "inc",
+        7,
+        7
+      ],
+      [
+        "dec",
+        6,
+        10,
+        8
+      ],
+      [
+        "inc",
+        1,
+        9
+      ],
+      [
+        "jump",
+        7
+      ],
+      [
+        "jump",
+        1
+      ],
+      [
+        "dec",
+        7,
+        17,
+        12
+      ],
+      [
+        "inc",
+        1,
+        13
+      ],
+      [
+        "inc",
+        1,
+        14
+      ],
+      [
+        "inc",
+        1,
+        15
+      ],
+      [
+        "inc",
+        1,
+        16
+      ],
+      [
+        "jump",
+        11
+      ],
+      [
+        "inc",
+        1,
+        18
+      ],
+      [
+        "inc",
+        1,
+        19
+      ],
+      [
+        "inc",
+        1,
+        20
+      ],
+      [
+        "inc",
+        1,
+        21
+      ]
+    ]
+  },
+  "arbitrary_Y_core_replay_cases": 819,
+  "five_spelling_replay_cases": 455,
+  "core_transition_count": "10*t + 13*triangle(s+t) - 2*(s+t) + 6*y + 3",
+  "neg18_transition_count": "13*triangle(t) + 8*t + 17",
+  "move20_transition_count": "13*triangle(t) + 14*t + 26",
+  "neg18_saving_versus_move20": "6*t + 9",
+  "scope": "Universal source-core/NEG18 argument via exact CFG plus terminating natural-counter loop invariants checked symbolically. Finite replays are additional controls. Native entry bindings use complete known source prefixes in the upstream table. Physical runtime and blank startup are separate certificates; no sub196 machine is claimed.",
+  "seed197_source_binding": {
+    "grammar_sha256": "b150d8c35e0b6691a8e74c000a4c638b0ffe2cda3a790b63701dee50c05e0721",
+    "sites_sha256": "a903ea0c367fcac96df8aec865247d917ee062b202adcd476a2b62d64698061d",
+    "source_sites": 3441,
+    "exact_grammar_source_reconstruction": true,
+    "both_CFG_resolvers_agree": true,
+    "exact_NEG18_blocks": [
+      {
+        "site": 584,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 657,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 1701,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 1774,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 2891,
+        "mask_count": 40,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 2936,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 3142,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      },
+      {
+        "site": 3269,
+        "mask_count": 32,
+        "registers6_and7_forced_zero": true
+      }
+    ],
+    "abstract_initial_state": {
+      "source_pc": 25,
+      "positive_registers": [
+        0
+      ]
+    },
+    "inductive_joint_zero_positive_pairs": 245112,
+    "joint_pair_sha256": "99465e343e0885764ea86f0a0fe024dc4f6f751cdc12b33ef740931f39ea591a",
+    "scope": "The full candidate source is reconstructed independently, every 18-site block has the proved CFG, and a sound finite abstraction proves clean scratch at all its entries from the stated source initial condition. The associated TM runtime and concrete blank startup are certified separately."
+  }
+}

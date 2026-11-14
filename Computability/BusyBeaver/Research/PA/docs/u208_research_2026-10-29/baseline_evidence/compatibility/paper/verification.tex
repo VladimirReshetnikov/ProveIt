@@ -1,0 +1,217 @@
+\section{Universal runtime and exact initialization}\label{sec:verification}
+
+\subsection{What the symbolic contracts quantify over}
+A canonical frame at native dispatch state 84 contains a left marker, a
+zero-padded source address, a header at distance \(56+g\), nine unary-coded
+primary registers, and a nonempty finite spare-register list, with zero
+exteriors. The physical register permutation is
+\[
+                         (6,2,0,4,3,7,8,5,1).
+\]
+A register value \(v\) is represented by the block
+\(B(v)=0\,1^{v+1}\). The symbolic inputs range over arbitrary natural values
+of all nine logical registers, an arbitrary natural extra gap \(g\), an
+arbitrary first spare value, and an arbitrary remaining finite spare list.
+
+For each source site, the verifier derives the exact primitive effect and
+successor frame. Conditional decrement is split into zero and positive
+cases, with the positive value written \(v+1\).
+Increment appends the specified spare block, decrement and source arithmetic
+adjust the header/address representation as required, and branch operations
+leave the logical register store fixed. Nonhalt targets compare the complete
+oriented tape terms, head displacement, and dispatch state. Halt requires
+entry into native label 254.
+
+The distinction between binary successor words and leaf addresses is checked:
+a target word may contain additional zero padding after its first decoded
+leaf, but it must contain no stray one bits there. An independent calculation
+confirmed agreement with ordinal source successors in all 5,083 nonhalt
+cases for each final candidate.
+
+\subsection{The proof rules used by the checker}
+The inherited engine is copied byte-for-byte from the Rotated package and
+its provenance is retained. It uses three execution rules:
+\begin{enumerate}
+\item A literal step applies a row of the actual table and updates the
+represented tape, state, motion, and clock.
+\item A unary scan accelerates a literal self-loop in the scan direction
+across \(b^n\), for arbitrary natural \(n\). Induction on \(n\) justifies
+the resulting block and its exact duration.
+\item A finite-list traversal uses a one-block theorem first rederived from
+the actual table with opaque outside sentinels. Each such theorem returns
+to the same state and direction, handles an arbitrary block value \(v\),
+takes \(v+2\) steps, and preserves the exterior. Induction then traverses an
+arbitrary finite list.
+\end{enumerate}
+The four one-block lemmas are regenerated on both final tables.
+Normalization uses literal word identities and the valid finite-list identity
+\(C(L)1=1B(L)\), where \(C(v)=1\,0\,1^v\), together with its reversal.
+Its base case and one-block algebra are checked; list induction supplies
+the arbitrary-list form.
+
+Clock and motion expressions use thirteen affine slots: a constant, the gap,
+nine primary values, the first spare value, and the total width of the
+remaining spare list. Every accepted primitive duration has nonnegative
+coefficients and strictly positive constant. These are symbolic induction
+certificates, not numerical tests at 5,084 sampled register settings.
+The engine is ordinary Python, so the report makes its small set of
+mathematical rules and their trust boundary explicit rather than calling it
+a proof-assistant kernel.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Fresh final-table verification & U210 & U209\\
+\midrule
+Guarded contracts & 5,084 & 5,084\\
+Symbolic inference applications & 1,249,857 & 1,248,748\\
+Literal rows covered & 420/420 & 418/418\\
+Minimum duration constant & 5 & 5\\
+Final internal-prefix checks & 3,908 & 3,908\\
+Maximum steps in those prefix checks & 49 & 49\\
+Semantic corruptions rejected & 9 & 11\\
+\bottomrule
+\end{tabular}
+\caption{Both complete runtime suites were freshly executed.
+Symbolic inference counts are certificate-replay counts, not a claim about
+the actual proof search's running time.}
+\end{table}
+
+\subsection{The exact blank startup}
+Both new tables have the same complete 48,140-transition blank prefix as
+the Research U211 parent. No changed row is visited. It ends at
+\[
+ q=84,\qquad h=-2,\qquad \text{header}=54,\qquad
+ \text{source ordinal}=136,
+\]
+with source address \(\texttt{001100110101010}\), logical register store
+\[
+                         (1,0,13,0,0,1,0,0,1),
+\]
+and 43 spare registers of value one. The checker compares the entire set
+of 120 nonzero tape cells, so the assertion includes the zero exterior,
+not just a finite viewing window.
+
+The same ordinal/store is reached after 141 source primitives from ordinal
+106 with initial store
+\[ (1,0,4,0,0,1,0,0,1). \]
+This finite source bridge is replayed.
+The inherited startup-suffix proof supplies the further logical meaning:
+the incoming cache value 1 is used arithmetically and is not assumed to be
+a theorem; the suffix creates nine theorem-valued heads above opaque tail 4.
+
+That tail would be unsafe if exposed. The retained scheduler argument bounds
+every command-prefix debt by two, leaving a permanent margin of seven
+explicit heads. A ghost explicit stack length handles the pairing alias
+\(P(0,0)=0\); a numerical stack-length decoder is not assumed. The retained
+strong proof compiler works above arbitrary underlying stacks and produces
+cofinally many successful candidate codes. These arguments provide soundness
+and completeness after the actual startup and finite search cutoff.
+Neither is replaced by the finite 48,140-step test.
+
+\subsection{Independent checks and negative controls}
+The finite checkers do not import the construction builder. They derive all
+3,908 internal source-prefix bindings from literal execution, use two
+complete CFG resolvers, test closure leaf by leaf, check full incoming
+inventories and every table row, and verify dense renaming.
+The U209 audit also checks the two arithmetic entry identities and four
+Research-selector cases on the final table.
+
+The nine U210 and eleven U209 negative controls deliberately damage writes,
+moves, helper targets, endpoint rows, tag inventories, or the 171 repair.
+They are rejected by semantic checks rather than only by a hash mismatch.
+Both independent checkers produce byte-identical receipts normally and under
+\texttt{python3 -O}, because their obligations use explicit exceptions.
+The full symbolic engine uses assertions and rejects optimized Python.
+
+\section{Proof of the machine-to-consistency composition}
+Lemma~\ref{lem:source} identifies all source executions by their ordinals and
+logical stores. The final runtime contracts show that every source primitive
+is simulated by a finite nonempty block of the corresponding literal machine.
+Their complete target frames maintain the induction invariant, including the
+gap and spare-register list. The unique halt primitive reaches the separate
+halt label; the other contracts return to dispatch with the prescribed
+successor and exclude earlier termination.
+
+The exact startup places both final machines in the calibrated common
+interior source configuration. Consequently the source simulation applies
+to their actual blank runs. The inherited parent analysis gives the same
+source interpretation for the selected Research U211. This proves
+Theorem~\ref{thm:new}. It is not necessary to claim that every temporary
+reassociation table implements its temporary source.
+
+The source proof search is unchanged, so its retained calibration gives
+\[
+ \Halt(U_{209},\mathrm{blank})
+ \ \longleftrightarrow\ (\DU\vdash1)
+ \ \longleftrightarrow\ (\PA\vdash\bot)
+\]
+as the corresponding arithmetized equivalence. The source compiler,
+protected-tail proof, and finite-refutation translations discussed in
+Section~\ref{sec:theory} are the explicit inherited links.
+Negating the existence of a finite refutation yields
+Theorem~\ref{thm:endpoint}.
+
+Finite tables, bounded local paths, syntax transformations, and natural/list
+induction are all arithmetizable in PA. This explains the claimed
+formalizability. It does not turn a Python replay into a checked exported
+PA derivation. The archive contains no newly generated end-to-end proof object
+for U209 in Lean, Rocq, or MM0.
+
+\section{Reproduction, deliverables, and remaining work}
+The package is self-contained and uses Python 3.10 or later with its standard
+library. From its extracted root:
+\begin{verbatim}
+python3 reproduce.py --quick
+python3 reproduce.py
+python3 reproduce.py --both
+\end{verbatim}
+The quick mode checks all frozen hashes, reconstructs both machines, binds
+the three comparison snapshots to the original archives, replays the two
+independent finite audits and both startups, and checks the delivered runtime
+records as data. It explicitly skips new universal derivations.
+The default additionally regenerates all U209 contracts.
+The \texttt{--both} mode regenerates both complete suites and requires exact
+equality with the delivered per-case symbolic records. Runtime depends on
+the computer; the fresh derivations here took a few minutes per table.
+
+Generated replay outputs go under \file{build/}; delivered evidence is not
+overwritten. The complete payload is hash-indexed in \file{MANIFEST.json}.
+To rebuild this report, use a standard LaTeX installation:
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+Verify the delivered manifest before rebuilding the PDF, whose metadata
+can change with the TeX installation.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Location & Contents\\
+\midrule
+\file{machine/} & Both dense and native tables and exact state bijections.\\
+\file{source/}, \file{intermediates/} & Final source maps and immediate prefold tables.\\
+\file{code/} & Deterministic builder, independent checkers, comparison, startup,
+and the unchanged inherited symbolic engine.\\
+\file{evidence/} & Fresh complete runtime cases and summaries, independent finite
+receipts, startup frames, and source-stage diagnostics.\\
+\file{comparison/} & Three exact input snapshots, pairwise census, and fresh
+original finite replay logs.\\
+\file{inputs/} & All four original archives and the short construction recipes.\\
+\file{proofs/} & Detailed theory, runtime, comparison, and new-reduction audit notes.\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+The research contribution established here is relative to the supplied
+proposals: previously separate savings have been made compatible through
+source reorganization that respects the exact context of a shared helper.
+No global minimality, independent record ratification, or priority claim
+is made. The natural next verification milestone is to export the local
+context certificates and source/runtime simulation to a small proof-assistant
+kernel, and then connect that development to the retained arithmetic
+calibration. The concrete machine and its current proof boundary are fully
+specified without that additional work.

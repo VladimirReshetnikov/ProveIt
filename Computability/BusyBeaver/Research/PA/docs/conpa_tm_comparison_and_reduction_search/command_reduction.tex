@@ -1,0 +1,177 @@
+\section{Command reductions and a complete proof compiler}
+\label{sec:command-reductions}
+
+Write a command store as $(t,w,d,h)$, where $w$ is a Cantor-coded stack.
+For clarity, $a::w$ denotes one stack item, including the zero-tail
+convention $0::0=0$. Retain the axiom command unchanged. Its generated
+stack has the form
+\[
+ L_0::L_1::\cdots::L_7::t::w,
+\]
+where $L_0,\ldots,L_5$ are the six heads in reverse push order,
+$L_6$ is the restricted propositional head, and
+$L_7=\mathsf U(d,h)$. Every $L_i$ differs from code $1$: the heads
+and propositional axiom are implication codes, and the last item has
+quantifier tag $2$. The axiom command clears $d$ and $h$.
+
+\subsection{Two independent simplifications}
+
+The original Shift halts when $t+h=1$ and otherwise maps
+\[
+ (t,a::w,d,h)\longmapsto(h,w,d,a).
+\]
+The simpler Shift tests only $h=1$, with the same nonhalting update.
+Its soundness invariant needs only a proof of the formula in $h$.
+
+The original successful MP command, with $b=d+x$ and
+$\mathsf I(t,b)=h$, returns $(b,0::w,b,0)$. A stronger simplification
+returns the consequent directly in the other live formula register:
+\begin{equation}\label{eq:new-mp-audit}
+ (t,w,d,h)\overset{\mathsf{MP}(x)}\longmapsto
+ \begin{cases}
+ (0,w,0,d+x),&\mathsf I(t,d+x)=h,\\
+ (0,w,d+x,0),&\text{otherwise}.
+ \end{cases}
+\end{equation}
+This removes the successful branch's zero push and its copying of the
+consequent back to $t$ while retaining $d$. The failed branch is unchanged.
+If both live formula registers contain derivable formulas, the successful
+branch puts a derivable consequent into $h$ and truth into $t$; the failed
+branch puts truth in both. Hence the same syntactic proof invariant applies.
+The two simplifications can be used together.
+
+At the register-program level, the original Shift preparation first
+transfers $T$ to the scratch register $X$, then transfers $H$ to both
+$T$ and $X$, then transfers $X$ to $H$. Its effect is
+$(T,H,X)=(h,t+h,0)$. Replace only the first transfer by the existing
+clear-$T$ loop. The new effect is $(T,H,X)=(h,h,0)$, so the unchanged
+one-test guard now tests the incoming $h$ alone. Counting source
+instructions, the three loops take respectively $2t+1$, $4h+1$, and
+$3h+1$ steps, a total of $2t+7h+3$. The guard takes eight steps when
+$h=1$ and $2h+7$ when $h\ne1$; hence the halting branch takes
+$2t+18$ steps and the nonhalting branch reaches stack decoding in
+$2t+9h+10$ steps. These counts concern source instructions and require
+the corresponding source-address changes; they are not tape-step counts.
+
+For~\eqref{eq:new-mp-audit}, after a successful comparison the live
+registers satisfy $T=H=X=0$, $D=b$. The existing destructive-transfer
+loop from $D$ to $H$ has $3b+1$ source steps and leaves
+$(T,H,D,X)=(0,b,0,0)$. It is therefore sufficient in place of the
+zero-push and the preserving transfer from $D$ to $T$.
+
+\subsection{Unchanged auxiliary words}
+
+Use the original words
+\[
+\begin{split}
+ \mathsf{PUSH}&=\mathsf{AX}(0,0,0)\;\mathsf{SHIFT}^{8}\;\mathsf{MP}(0),\\
+ \mathsf{DROP}&=\mathsf{MP}(1)\;\mathsf{AX}(1,0,0)\;
+                   \mathsf{SHIFT}^{9}\;\mathsf{MP}(0).
+\end{split}
+\]
+Their exact contracts remain
+\[
+ \mathsf{PUSH}(t,w,d,h)=(0,t::w,0,0),\qquad
+ \mathsf{DROP}(t,w,0,0)=(0,w,0,0).
+\]
+Every MP instruction in these words takes its failed branch. For PUSH,
+after eight shifts the value in $h$ is a quantifier code, whereas an
+implication code is divisible by four, so equality cannot hold. For DROP,
+the first test compares the positive code $\mathsf I(t,1)$ with zero;
+the final test compares $\mathsf I(\mathsf U(1,0),0)$ with zero.
+The offset word $\mathsf{MP}(u)$ for $u>0$, applied to $(0,w,0,0)$,
+also fails and establishes $(0,w,u,0)$. Thus these contracts do not depend
+on the old successful MP branch.
+
+The eight- and nine-shift identities following AX are unchanged even with
+the new Shift. The former exposes $L_6$ and $L_7$ while retaining the saved
+top in the stack; the latter gives
+\begin{equation}\label{eq:ax-nine-audit}
+ \mathsf{AX}(c,x,y)\;\mathsf{SHIFT}^{9}(t,w,d,h)
+       =(\mathsf U(d,h),w,0,t).
+\end{equation}
+All nine tests examine either zero or one of the non-one generated heads.
+
+The original word $\mathsf{POP}=\mathsf{AX}(0,0,0)\mathsf{SHIFT}^{10}$
+now has the contract
+\[
+ \mathsf{POP}(t,a::w,d,h)=
+ \begin{cases}
+ \text{halt},&t=1,\\
+ (t,w,0,a),&t\ne1.
+ \end{cases}
+\]
+This distinction matters: POP is no longer unconditionally total under
+the $h$-only halt test. It does not affect the axiom selectors because
+their selected heads and gates differ from $1$. The original
+generalization word is unchanged: it uses PUSH, an offset, one Shift,
+then AX and nine Shifts, and returns
+$(\mathsf U(i,a),w,0,0)$ from $(a,w,0,0)$.
+
+\subsection{Compiling modus ponens with a zero below the premises}
+
+Suppose $p$ proves $A$ of code $a$ and $q$ proves $A\to B$ of code
+$\mathsf I(a,b)$. Define the new compiler recursively by retaining
+the original axiom selectors and generalization clause, and replacing
+its MP clause with
+\begin{equation}\label{eq:new-mp-word-audit}
+ \mathsf{DROP}\;\mathsf{PUSH}\;C(q)\;\mathsf{PUSH}\;
+ C(p)\;\mathsf{PUSH}\;\mathsf{SHIFT}^{2}\;
+ \mathsf{MP}(b)\;\mathsf{SHIFT}.
+\end{equation}
+The initial DROP and PUSH insert a zero below both premises. Starting
+with $(t,w,0,0)$, unless a recursive call already halts, the states at
+the significant boundaries are
+\[
+\begin{array}{c|c}
+ \text{after the first DROP and PUSH}&(0,0::w,0,0)\\
+ \text{after }C(q)\text{ and PUSH}&(0,\mathsf I(a,b)::0::w,0,0)\\
+ \text{after }C(p)\text{ and PUSH}&(0,a::\mathsf I(a,b)::0::w,0,0)\\
+ \text{after two Shifts, if }a\ne1&(a,0::w,0,\mathsf I(a,b))\\
+ \text{after MP}(b)&(0,0::w,0,b)\\
+ \text{after the final Shift, if }b\ne1&(b,w,0,0).
+\end{array}
+\]
+The second Shift halts if $a=1$, and the last Shift halts if $b=1$.
+Both conclusions hold for either halt test: at these tests $t=0$.
+The compiler therefore preserves an arbitrary incoming stack and returns
+the derived formula with cleared caches, or halts earlier.
+
+Induction on the finite derivation proves completeness. For a derivation
+of code $1$, no axiom or generalization can be its final constructor,
+because their conclusion codes differ from $1$. Its last constructor
+is MP, whose final Shift halts. Thus the compiled word itself halts.
+Prepending one AX resets arbitrary initial caches, exactly as in the
+upstream compiler. The construction is primitive recursive and uses
+only fixed words and recursive traversal of a finite derivation; its
+correctness proof is an arithmetical induction available in PA.
+
+\subsection{A transport proof for the Shift change alone}
+
+There is also a direct way to preserve the original refutation compiler
+when only Shift changes. Given an old halting word $W$ and its initial
+store, evaluate the finite word to locate its first halting Shift. Let
+$U$ be the preceding prefix and $(t,w,d,h)$ its store. Evaluation is
+bounded by the word length, so this transformation is primitive recursive.
+The new execution of $U$ either already halts, or reaches that identical
+store: every nonhalting update is unchanged. If $h=1$, append one Shift.
+Otherwise the old condition $t+h=1$ forces $t=1,h=0$; append
+\[
+ \mathsf{AX}(0,0,0)\;\mathsf{SHIFT}^{10}.
+\]
+After nine Shifts, equation~\eqref{eq:ax-nine-audit} puts the saved $1$
+in $h$, and the tenth Shift halts. This supplies an internal-PA
+refutation-to-new-word map without relying on the old final Shift alone.
+It must be applied to the prefix before that old halt: simply appending
+the postlude after the entire old word can discard the only exposed $1$.
+
+\subsection{A weaker MP option}
+
+If only the zero push is omitted and successful MP instead returns
+$(b,w,b,0)$, the same initial DROP and PUSH in the MP compiler clause
+provide the missing zero. Keep the old MP suffix after the two premise
+pushes: two Shifts, MP$(b)$, AX$(b,0,0)$ and ten Shifts. It then returns
+$(b,w,0,0)$ or halts early. The stronger branch
+\eqref{eq:new-mp-audit} has the shorter proof-word suffix above and can
+also shorten the register program by replacing the preserving copy with
+a destructive transfer into $h$.

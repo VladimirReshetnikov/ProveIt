@@ -1,0 +1,76 @@
+{
+  "base_revision": "407cdc356f6b586635e71ac92be394255f4bfea4",
+  "best_accepted_state_count": 196,
+  "strict_target_met": false,
+  "baseline_symbolic": {
+    "contracts": 4959,
+    "max_abstract_steps": 515,
+    "total_abstract_steps": 1619679
+  },
+  "direct_history_fold_search": {
+    "scope": "two decoder states; three-step bounce through existing states; predecessor-bit contexts",
+    "candidates": 0
+  },
+  "long_local_fold_search": {
+    "read_window_each_side": 12,
+    "replacement_steps_after_first_row": 20,
+    "possible_write_bits": [
+      0,
+      1
+    ],
+    "possible_directions": [
+      "L",
+      "R"
+    ],
+    "row_context_groups": 346,
+    "unique_local_windows": 167703,
+    "plausible_pairs": 53,
+    "accepted_pairs": 0
+  },
+  "alternative196_long_local_fold_search": {
+    "unique_local_windows": 168540,
+    "plausible_pairs": 53,
+    "accepted_pairs": 0
+  },
+  "grammar_annealing": {
+    "completed_cycles": 125,
+    "iterations_per_cycle": 3000,
+    "best_effective_body_count": 62,
+    "interrupted": true
+  },
+  "equal_cost_grammar_bfs": {
+    "last_logged_distinct_equal_cost_grammars": 6500,
+    "last_logged_tested_neighbors": 266927,
+    "best_effective_body_count": 62,
+    "interrupted": true
+  },
+  "word_variants_dictionary_transport": {
+    "variants": 23040,
+    "beam_width": 8,
+    "minimum_reported_raw_grammar_cost": 68,
+    "variants_at_68": 12
+  },
+  "assembly_sampling": {
+    "transport_variants": 12,
+    "samples_per_variant": 2000,
+    "best_effective_body_count": 62,
+    "alternative_variant_validated": true
+  },
+  "milp_unchanged_word": {
+    "description": "fixed 201-token word, repeated-substring dictionary, variable-arity productions counted by binary concatenation cost",
+    "dictionary_nonterminals": 243,
+    "additional_start_symbol": 1,
+    "time_limit_seconds": 600,
+    "feasible_objective": 68,
+    "numerical_lower_bound": 67.48387096774194,
+    "branch_and_bound_nodes": 6282,
+    "formal_certificate": false,
+    "interpretation": "The objective has an integer optimum by a shortest-path argument after dictionary selection. The floating-point bound supports optimum 68 within this grammar model, not a global lower bound on TM state count."
+  },
+  "limitations": [
+    "Local fold searches are restricted finite search spaces, not impossibility proofs.",
+    "Matching scores are only optimistic allocator costs until full symbolic contracts pass.",
+    "No accepted machine with fewer than196 working states was obtained.",
+    "Candidate Lean files have not been built in this subtask."
+  ]
+}

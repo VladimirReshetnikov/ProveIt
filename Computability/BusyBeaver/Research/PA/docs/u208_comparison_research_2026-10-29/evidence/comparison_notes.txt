@@ -1,0 +1,61 @@
+Current U208 intake and exact comparison
+=======================================
+Pinned ProveIt HEAD c086b5adaa6228009365768946d691dfc49a20bb.
+Five ZIPs, all downloaded and verified against API Git blob SHA-1, SHA-256,
+CRC and safe member paths. INPUTS.json records exact bytes/paths. No supplied
+program was executed by this comparison; compare.py is newly authored.
+
+Result: nine included U208 outputs, seven native byte strings, six normalized
+native transition functions, TWO rooted action-labelled graph classes. All
+outputs have 208 working states, 416 rows, all working/halt vertices graph
+reachable. Every dense table checked by all416 rows against sorted native
+renaming. Seven explicit class witnesses check 416 transitions each and fix
+start/halt. Normal and optimized Python produce identical comparison.json.
+There are exactly two source byte strings, unchanged from the U209 baseline:
+Class A cddbed7f20e7a8b085b7ca0e76811d07b021522375643b5d1134eec0d2d23164
+Class B 912724f29b0de28b3326c710fdf1f3863ebd07058c6db1a9b4bbaffb3ae5e3f3
+
+Class A comprises the primary outputs of ConPA, Conditional Context,
+Entry Context and History, and our Plain variant. Class B comprises the
+Compatibility variants of Conditional Context, Entry Context, History,
+and our primary. The two canonical graph identities are exactly those
+of our previously delivered208 release:
+A ab3b7f35756ab763601fae76e24486751d286b699f2ca7d4bedb9b5ea39fe3eb
+B baaabd3e109e13e134c05facb1db663bda6a491cf2ea2e7f6ef118beaed0fe99
+
+The apparent delete211 versus delete172 difference is purely which state
+name is retained. ConPA/History retain172 and delete211 (three row edits),
+Conditional/Entry/ours retain211 and delete172 (two row edits). Both perform
+the same conditional-context fold with paths of1,3,7 steps. Thus these
+are not separate savings that can be stacked. Conditional and Entry native
+and dense files are byte-identical for each of their two variants. Their
+Compatibility native table and ours differ in serialization only.
+
+Exposition/evidence differences (claims in reports, not independently rerun
+external scripts here):
+- ConPA selects Joint/Folds parent and retains172; gives predecessor-history
+  proof and four complete-tape identities.
+- Conditional Context selects Joint parent and retains211; writes an explicit
+  five-state inductive Boolean invariant, finite256 valuations (104 applicable),
+  12negative controls, and fresh5084 runtime plus15252 bounded C++ regressions.
+- Entry Context gives the same retained211 graph with short complete incoming
+  census arguments and ordinary arithmetic proof boundaries.
+- History selects Plain parent and retains172. Its useful rejected shortcut
+  rotates roots155 and52 to merge85/154; its source word and ordinal CFG are
+  unchanged but CD1 at ordinal25 misroutes to44 rather than28. This warns
+  that decoder reassociation must preserve shared arithmetic entrances.
+- Our report chooses Compatibility depth41 as primary, Plain depth42 as
+  secondary, gives414 commuting rows and four partial-tape cases, and fresh
+  universal checks for both variants. These cover the current two classes.
+
+History's rejected source witness (report lines754-806): start native84/head0,
+ordinal25 CD1, allnine registers0,gap0,spare[0]; onecells
+{-1,2,3,6,56,58,60,62,64,66,68,70,72,74,76}. Parent canonical return494steps
+ordinal28 CD2; rejected returns526steps ordinal44 CD4. This is stated as a
+primitive-simulation counterexample, NOT a proof of different blank halting.
+No rejected artifact is admitted as a valid U208 input.
+
+Recent incoming commits retained RECENT_COMMITS.json:34aaab66fc5dc834863ed00ea84823c93b8c5b1e
+at18:10:52 and ef5a23e04b0285e321ceec5f4b329223cee0ab57 at18:04:35 are
+latest incoming updates. This comparison is pinned; later additions are not
+silently included.

@@ -1,0 +1,85 @@
+\section{The reverse implication by proof translation}\label{sec:internal}
+The desired reverse direction is \(\PA\vdash H_{196}\to\neg\Con(\PA)\). A semantic assertion that every PA theorem is true would be inappropriate here. Instead, translate finite certificates into finite PA proofs.
+
+\subsection{Arithmetic interpretation}
+Work temporarily in the conservative definitional extension of PA with exponentiation by two, whose totality PA proves. Let
+\[
+ \operatorname{Bit}(s,z)\;:\!\iff\;
+ \exists u,v\,[s=(2u+1)2^z+v\ \wedge\ v<2^z].
+\]
+PA proves the elementary binary-arithmetic facts needed below, including
+\(\operatorname{Bit}(s,z)\to z<s\), hence \(\neg\operatorname{Bit}(x,x)\).
+The translation \(T\) of source formula codes is
+\[
+\begin{aligned}
+ T(0)&=(0=0),& T(M(a,b))&=\operatorname{Bit}(x_a,x_b),\\
+ T(E(a,b))&=(x_a=x_b),& T(U(a,B))&=\forall x_a\,T(B).
+\end{aligned}
+\]
+The first argument of \(M\) is the \emph{container}; reversing this orientation would invalidate the separation argument. For implication, the decoder supplies \(T(I(A,B))\leftrightarrow(T(A)\to T(B))\). The special identity \(I(0,0)=0\) is handled by the fixed proof of \((0=0)\leftrightarrow((0=0)\to(0=0))\).
+
+All recursive subcodes of a nonzero code are smaller. Every source variable label in a formula with code \(c\) is below \(c\). Thus \(x_c\) is fresh in the decoded source formula. Bound variables introduced by the arithmetic translation are renamed by a primitive-recursive capture-avoiding operation; they do not invalidate this source freshness fact.
+
+\subsection{A uniform syntactic supplier for finite comprehension}
+For each arithmetic formula \(\varphi(z,\vec u)\), full PA induction proves the schema
+\begin{equation}\label{eq:comprehension}
+ \forall n\,\exists s<2^n\,\forall z<n\,
+ \bigl(\operatorname{Bit}(s,z)\leftrightarrow\varphi(z,\vec u)\bigr).
+\end{equation}
+For \(n=0\), use \(s=0\). Given a witness below \(2^n\), excluded middle for \(\varphi(n,\vec u)\) chooses \(s+2^n\) or \(s\), respectively. Binary arithmetic verifies the old bits and the new bit. This uses a particular induction instance whose formula is constructed from the syntax of \(\varphi\).
+
+Crucially, there is a primitive-recursive procedure that inserts \(\varphi\) into this fixed proof template. Its correctness concerns proof codes. It neither evaluates \(\varphi\) nor asserts a uniform arithmetic truth predicate. Proofs in the conservative extension are subsequently translated back into ordinary PA by a fixed primitive-recursive proof transformation.
+
+Apply~\eqref{eq:comprehension} at \(n=A+B+1\) to
+\[
+ \psi(z)=(\operatorname{Bit}(A,z)\vee z=B)\wedge\varphi(z).
+\]
+The resulting set code \(s\) satisfies pointed finite separation:
+\begin{align*}
+ &\forall z\bigl[(\operatorname{Bit}(A,z)\to
+       (\varphi(z)\to\operatorname{Bit}(s,z)))
+       \wedge(\operatorname{Bit}(s,z)\to\varphi(z))\bigr],\\
+ &\varphi(B)\to\operatorname{Bit}(s,B).
+\end{align*}
+Elements of \(A\) are below \(A\), and all bits of \(s\) above the chosen bound vanish. This explains why the bounded comprehension proof gives the displayed unbounded universal statement.
+
+\subsection{The guarded gate has uniformly constructible PA proofs}
+For source labels \(a,b\) and code \(c\), put
+\begin{align*}
+ \Delta&=E(a,b)\to U(c,E(a,b)),\qquad
+ V=M(a,b)\to U(c,M(a,b)),\\
+ P&=c\to M(c,b),\\
+ S&=U\bigl(b,(M(a,b)\to P)\wedge(M(c,b)\to c)\bigr),\\
+ Q&=U(c,S\to\neg P),\qquad F=\neg(\Delta\to(V\to Q)).
+\end{align*}
+The axiom command emits \(F\) only when \(c\ne a,b\); otherwise it emits code zero. The guard supplies the two vacuity proofs \(T(\Delta)\) and \(T(V)\). With \(C=T(c)\), pointed separation for the capture-avoiding substitution \(C[x_b:=z]\) supplies
+\(\exists x_c\,(T(S)\wedge T(P))\), hence \(\neg T(Q)\), and therefore \(T(F)\).
+
+There is one label-collision case to check explicitly. If \(a=b\), the first membership antecedent inside \(S\) is \(\operatorname{Bit}(z,z)\), which PA proves false. The same comprehension witness still gives the second conjunct and the distinguished-point condition. Thus the argument covers coincident labels, as well as coincident values of distinct variables. The failed-guard branch supplies the fixed proof of \(0=0\).
+
+Source negation is implication to code one, whose translation is \(\operatorname{Bit}(x_0,x_0)\). PA proves its negation uniformly, including under an enclosing binder with label zero. Fixed propositional templates therefore implement the classical negation, conjunction, and existential abbreviations used above.
+
+All six remaining heads and the restricted propositional head have uniform proofs in first-order logic with equality: existential/universal elimination, quantifier commutation, the two membership rewrites, existence of an equality witness, universal distribution, and the classical implicational tautology. Modus ponens and generalization translate by the corresponding ordinary rules.
+
+Consequently a primitive-recursive translator \(R\) can be specified with the syntactic correctness property
+\begin{equation}\label{eq:refutation-translation}
+ \PA\vdash\forall p\,
+ \bigl(\operatorname{Prf}_{\mathrm{source}}(p,1)
+ \to\operatorname{Prf}_{\PA}(R(p),\ulcorner0=1\urcorner)\bigr).
+\end{equation}
+The proof is induction on coded derivations and the decoding recursion, using the schema supplier above. This is a relation between proof codes, not a reflection principle.
+
+\subsection{Extracting the certificate from a halting run}
+Annotate the command store with proof codes for the two visible formula codes \(t,h\) and for every live stack entry. Initially all required formulas have code zero. The axiom command appends axiom proofs and a generalization of the previous \(h\) proof. A successful modus-ponens match appends the corresponding proof; its unsuccessful branch returns the code-zero proof. Shift moves proof references with the formulas; an empty-stack return again has code zero. The halt test is \(t+h=1\), so one of the two visible codes is one. This is why tracking only \(t\) would be insufficient.
+
+These are primitive-recursive manipulations of annotated stores. The source macro contracts and scheduler transfer the invariant to the primitive register program. Substituting~\eqref{eq:refutation-translation} for the external semantic non-refutability assertion yields the required PA refutation from source halting.
+
+The final tape/source reflection uses positive-length simulation. The exact finite startup prefix first excludes a halt before the clean frame. Given a tape halting trace of length \(t\), execute \(t+1\) source instructions from that frame. If no source halt has occurred, concatenating the positive-length instruction simulations gives a tape run longer than the alleged halting trace. Determinism and the absence of a transition at the halt label contradict this.
+
+This argument can be formalized in PA: source stepping is primitive recursive, the unary register excursions have PA-provable terminating bounds, and finite trace concatenation is primitive recursive. Existing upstream files already supply coded source steps and forward tape lifts inside arbitrary PA models; retaining an accumulated length bound in that induction supplies the reflection just described.
+
+Together with the published internal direction, this gives the written proof construction for
+\[
+ \PA\vdash\bigl(N_{196}\leftrightarrow\Con(\PA)\bigr).
+\]
+The new translator and the strengthened internal trace-lift theorem have not been implemented and built as additional Lean declarations in this report. The claim here is a mathematical proof construction, with its arithmetization steps made explicit, not a new claim about the scope of the upstream kernel certificate.

@@ -1,0 +1,66 @@
+REGISTER-RETARGETING EXPERIMENT AND A RESTRICTED-METHOD INVARIANCE
+==============================================================
+
+The old physical assignment of abstract registers 0 through 8 is
+  [6,2,0,4,3,7,8,5,1].
+The native skip-entry states for physical positions 0 through 8 are
+  SK=[51,36,25,48,32,33,22,55,60].
+
+The closed 36-state engine used in this experiment is
+  [0,1,2,3,4,5,6,9,10,15,16,22,23,24,25,32,33,34,35,36,40,48,49,
+   51,54,55,60,64,66,74,75,94,97,113,198,302].
+Its external targets are interpreter root 84 and terminal 254. Its internal
+transitions are unchanged by retargeting.
+
+Exactly 11 non-engine rows enter SK. All read 1, write 0, and move right:
+  native source/read     old target
+  14/1                   22
+  17/1                   32
+  21/1                   60
+  39/1                   36
+  41/1                   25
+  45/1                   55
+  56/1                   51
+  61/1                   25
+  82/1                   33
+  144/1                  48
+  161/1                  32
+
+For a new physical assignment p, each of these targets SK[oldPhysical[r]]
+is replaced by SK[p[r]]. No engine row is changed. The three tested p are:
+  [6,0,2,4,3,7,8,5,1]   runtime PASS; required startup not found in1,000,000
+  [6,2,0,3,4,7,8,5,1]   runtime PASS; required startup at58,122
+  [6,8,7,5,4,3,2,1,0]   runtime PASS; required startup not found in1,000,000
+
+Each runtime PASS covers all 4,959 universal symbolic contracts, with arbitrary
+register contents and the affine gap parameter used by the original checker.
+The changed expected register effect is supplied explicitly; no stale old
+physical register map is used. The baseline startup was independently
+reproduced at58,154. Literal startup outcomes are separate from these contracts.
+
+Why the current one-bit lookback-fold model gains nothing
+--------------------------------------------------------
+The routine opportunities_fast from the prior search framework uses:
+  (a) previous-bit contexts of bit-preserving right-moving incoming edges;
+  (b) pure reader providers with rows(0,R,u0),(1,R,u1); and
+  (c) equality of row actions in a fixed read-symbol column.
+
+The 11 changed rows are all read 1/write 0, so they are neither the edges counted
+in(a) nor rows of providers in(b). Their targets lie in the engine, outside the
+set of candidate non-engine states. All context sets and provider graphs are
+therefore unchanged. In column 1, the changed action family(0,R,SK[j]) is
+disjoint from every unchanged row action. A permutation of j preserves all
+equalities between members of this family. Thus every row-action equality used
+in(c) is preserved as well. The resulting candidate-fold catalog is identical
+under every one of the8! permutations fixing physical slot 6 for registerB.
+
+The original catalog is empty when all 160 non-engine states are eligible.
+One hundred random retargetings also reproduced the empty catalog, as a
+diagnostic check of the invariant argument. This was NOT an exhaustive search
+over all possible machines or all routing optimizations. More general tape
+excursions, different source trees, changed engine rows, and longer history
+encodings are outside this restricted-method invariance.
+
+The successful A/D swap is exported in accepted196_register_swap. Its table is
+an executable196-state alternative, not a solution to the requested strict
+state bound and not a newly kernel-checked Lean development.

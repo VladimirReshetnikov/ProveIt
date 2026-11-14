@@ -1,0 +1,46 @@
+\subsection{The 67-rule grammar and the physical allocation problem}
+\label{sec:grammar67}
+
+The directory \file{grammar67/} contains an explicit dictionary grammar
+for the selected 199-token word, together with an independent verifier
+that does not import an optimizer. It checks the pinned source, reconstructs
+the original and new formula words, checks that the individual macro blocks
+are closed, expands every grammar production, and checks the exact final
+word. The grammar has 26 selected productions of possibly higher arity.
+Their binary-expansion cost is exactly
+\[
+ \sum_{r\text{ selected}} (\operatorname{arity}(r)-1)=67.
+\]
+Associating each production as a binary tree therefore gives at most 67
+binary rules. This is a constructive upper bound. The time-limited MILP
+run did not prove optimality, and its floating-point objective is not the
+certificate: the delivered integer productions are checked separately.
+
+This word has the head order and exchanged h6 specified above. Its exact
+SHA-256 under the supplied JSON serialization is
+\begin{quote}\small
+\nolinkurl{463bd95d864d1473ab282c6034834cbf631b149b16dfd1f4cb3eb5961a1a4dba}.
+\end{quote}
+The separate \file{axiom_rewrite/verify_selected_word.py} audits that
+precise formula word and stack order against the mathematical construction.
+
+For comparison, the original AX grammar has 68 internal nodes and six
+compatible physical folds, giving 62 readers. If a new 67-node allocation
+retained six compatible folds and all other controls, its count would be
+\[
+ 134+67-6=195.
+\]
+The premise is essential: changing the word and tree changes the available
+sharing. The original six folds are not independent credits that can be
+subtracted from an unrelated grammar.
+
+The first 67-rule dictionary also contains subwords whose cheapest
+associations force seven consecutive zero address bits. Reusing the
+existing two-increment reader repairs some static bounds without adding a
+reader, but static bounds alone remain insufficient. In a tested repaired
+layout, instruction 1596 ends in six zero address bits and its increment
+transiently creates another zero; the return scanner then recognizes a
+false marker. The complete symbolic endpoint check rejects that layout.
+It is not included as a successful machine. Scanner length, opcode-specific
+address endings, startup, and compatible helper allocation must be solved
+together before the grammar gives the requested state-count improvement.

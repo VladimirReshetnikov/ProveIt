@@ -1,0 +1,67 @@
+\section{A strict reduction in original-language strength}\label{un:strict}
+
+The unary restriction is a genuine weakening of the source-only schema,
+even though both theories have PA consistency strength. It also prevents
+the usual schema-level exactification. The following explicit model
+separates these issues.
+
+Take two distinct empty atoms $e_0,e_1$, with no members, and let
+$\sigma$ interchange them. Set $c_i=\{e_i\}$. Objects are atoms and
+ordinary tagged finite set objects, so atoms are distinct from all sets.
+Exclude the actual empty set. Extend $\sigma$ recursively to finite sets,
+and define increasing finite levels by
+\[
+ D_0=\{e_0,e_1,c_0,c_1\},\qquad
+ D_{n+1}=D_0\ \cup\
+       \{S:\varnothing\ne S\subseteq D_n,\ \sigma(S)=S\}.
+\]
+The levels are increasing: each seed remains, and an invariant set from
+an earlier level is still an invariant subset of the next one. Let
+$D=\bigcup_{n<\omega}D_n$, with membership given by the actual member
+sets and with atoms empty. Each level is invariant under $\sigma$,
+and the action is an automorphism of this structure.
+
+\begin{proposition}[The orbit model]\label{un:orbit}
+The structure on $D$ satisfies every unary weak-filter instance of
+$\UU$, but fails the source-only weak-filter schema. It also fails an
+exact unary power-filter instance.
+\end{proposition}
+\begin{proof}
+Fix a unary formula $\varphi(x)$ with no additional free variable and
+a source $a\in D$. The represented subsets of $a$ form a finite set:
+they are the two empty atoms and the nonempty set objects whose member
+sets are subsets of the finite member set of $a$. Among them let
+\[
+ T=\{x\in D:x\subseteq_M a\text{ and }M\models\varphi(x)\}.
+\]
+If $T$ is empty, either atom is an empty output. Otherwise take
+$S=T\cup\sigma(T)$. It is a nonempty invariant finite set of elements
+of $D$, hence belongs to a sufficiently high level. Every member of
+$S$ satisfies $\varphi$, since the formula is unary and $\sigma$ is
+an automorphism. Also $T\subseteq S$. Thus $S$ satisfies both weak
+filter clauses at $a$. This proves every instance; no satisfaction
+predicate is asserted inside the structure.
+
+The object $c_0$ is the unique object with sole member $e_0$. Therefore
+the source-only matrix $\varphi(x,a):=(x\Eq a)$, at source $a=c_0$,
+requires an output having exactly the single member $c_0$: the upper
+clause excludes every other object and the lower clause includes
+$c_0$, because $c_0\subseteq c_0$. But $\{c_0\}$ is not a seed and
+is not fixed by $\sigma$, so it belongs to no level.
+
+Finally, the represented subsets of $c_0$ are precisely
+$e_0,e_1,c_0$. An exact true-filter instance at $c_0$ would require
+the output $\{e_0,e_1,c_0\}$. This set is neither a seed nor invariant,
+so is also absent.
+\end{proof}
+
+Every unary instance is permitted by the source-only theory, while the
+displayed source-only instance fails in this unary model. Consequently
+the unary theory is a proper deductive subtheory in the common
+equality-free language. The model is infinite and has unbounded finite
+set ranks; two atoms does not mean two objects. The argument also shows
+why it would be incorrect to replace unary weak filtering by unary
+exact filtering without proof. The arithmetic interpretation uses the
+locally exact numerical outputs derived in Theorem~\ref{un:bnc}, not
+such a replacement.
+

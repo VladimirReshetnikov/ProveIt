@@ -1,0 +1,130 @@
+\section{Verification of the delivered literal machine}
+\label{sec:verification}
+\subsection{Small independent certificate for the new theorem}
+The independent \path{code/check_local.py} imports neither the builder
+nor proposal code. It reads the pinned parent, independently constructs
+the prescribed child, and verifies its identity with both delivered
+native and dense tables. It uses explicit exceptions throughout, so its
+checks remain active under \texttt{python3 -O}.
+
+The five-state invariant is checked as a finite Boolean implication for
+every possible local tape assignment needed by an incoming transition.
+The window $[-3,1]$ suffices: a transition moves by one, and the farthest
+invariant clause looks two cells to the left. Eight transition rows
+enter states having nontrivial clauses. Their 256 Boolean valuations
+include 104 satisfying antecedents and 152 inapplicable cases. The other
+410 old rows have a trivial destination clause. The initial clause is
+vacuous at state~0. This finite check, together with ordinary induction
+on computation length, proves the invariant for arbitrary tapes.
+
+The checker separately verifies all 414 ordinary quotient-row equations
+and the four exceptional paths. An attempt to read an unspecified local
+cell is rejected; the outside tape is genuinely arbitrary. Dense
+renumbering supplies 416 further row conjugacy checks. Every one of the
+208 working states is graph-reachable from the initial state.
+
+Twelve deliberately damaged controls are rejected. They include an
+unredirected incoming edge, a wrong helper, a reversed selector direction,
+a changed write bit, corrupted helper branches, an incorrect endpoint
+direction, and removal of each needed zero-case context. Normal and
+optimized independent-checker receipts are byte-identical. A separate
+construction checker enumerates all three-step local histories, adding
+all shorter prefixes from the initial state; it independently recovers
+the two guards. The theorem is established by the explicit invariant
+and path proof, not by a sampled blank computation.
+
+\subsection{Fresh universal primitive replay}
+The source and its addresses are unchanged. Nevertheless, we reran the
+inherited whole-tape symbolic induction engine on the final 208-state
+literal table. This checks the primary candidate directly, in addition
+to the local reduction theorem. All 5,084 primitive contracts closed,
+using 1,251,865 symbolic inference applications; every one of the 416
+literal rows was covered. The smallest constant duration was five, and
+all duration coefficients were nonnegative.
+
+The symbolic frame has nine independently arbitrary natural register
+values, an arbitrary natural header gap, and an arbitrary nonempty finite
+spare-register list. Thirteen affine slots represent the constant, gap,
+nine primary values, first spare, and remaining list width. Four
+one-block traversal identities are rederived from the actual literal
+table; list induction and the unary self-loop rule extend them to
+arbitrary block lengths and finite lists. No finite register cutoff is
+used in these contracts. The canonical header distance is 56.
+
+Each source increment, positive or zero decrement, branch, continuation,
+and halt is checked against its exact whole-tape effect. For nonhalting
+primitives the endpoint includes the next encoded source address, head
+displacement, all primary values, the spare list, and the blank exteriors.
+The 4,000-inference search cap per primitive is a limit on certificate
+discovery: every reported case successfully closes with an explicit
+finite derivation. It is not a bound on register values or machine runtime.
+
+These contracts are executable mathematical induction evidence. Their
+soundness depends on the stated unary/list rules and their implementation;
+they are not proof-assistant kernel objects. The new local proof requires
+only the much smaller invariant and finite path checker and does not
+depend on the universal engine to justify the fold itself.
+
+\subsection{Initializer and independent finite regression}
+The parent and new machine execute exactly the same first 48,140
+transitions from blank tape. The full trace SHA-256 is
+\begin{center}\small\ttfamily
+41e9a165abae389c3b182ebbf8d8fd1c260d3d36d4f7ebb6d60e235bac40f19a.
+\end{center}
+Both arrive in native state~84 with head $-2$, source ordinal 136,
+address \texttt{001100110101010}, and 120 one-cells. The logical register
+tuple is $[1,0,13,0,0,1,0,0,1]$ and the 43 spare registers all equal one.
+The checker verifies the complete finite set of one positions and both
+zero exteriors. No changed or deleted row is visited during startup.
+This binds initialization precisely; its soundness significance is the
+protected suffix argument in Section~\ref{sec:calibration}.
+
+An independent C++ literal executor passed 15,252 primitive cases,
+covering three finite assignments for every guarded source branch and
+executing 6,778,830 primitive-level literal steps. It also ran a
+2,000,000-step blank prefix without halting. The latter observations are
+regression evidence only; no finite prefix is offered as a proof of
+nonhalting or consistency.
+
+\begin{center}
+\small
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{64mm}>{\raggedright\arraybackslash}p{84mm}@{}}
+\toprule
+Check & Fresh result and scope\\
+\midrule
+Six-presentation comparison & Two rooted isomorphism classes; identical ordinal source graph\\
+New inductive invariant & 104 applicable local Boolean implications; arbitrary tapes by induction\\
+New local simulation & 414 ordinary rows and four exhaustive macros, maximum seven steps\\
+Dense table and robustness & 208 states, 416 rows, 12 damaged controls rejected; normal/$-O$ agreement\\
+Universal runtime replay & 5,084 contracts, all 416 rows, arbitrary natural values and finite lists\\
+Exact startup & All 48,140 transitions and complete endpoint tape unchanged\\
+Independent finite executor & 15,252 primitive cases; supplementary finite evidence\\
+End-to-end kernel certificate & Not produced for U208; inherited ordinary calibration retained\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{The alternative 208-state family}
+The Compatibility-derived table in \path{alternative/u208.tm} uses the
+same deletion with helper~214 and the corresponding old-role labels.
+It has 208 working states and 416 rows. Its dense SHA-256 is
+\begin{center}\small\ttfamily
+9865dcd7bd44deece098c16dcec7b90a96cf111592cbd37e3531b50f7b09276c.
+\end{center}
+The alternate construction and its history, incoming-census, and local
+macro checks pass. We do not claim a separate full universal runtime
+rerun for this alternate table; its correctness transfers through its
+own exact local theorem from the supplied Compatibility parent.
+
+The two new variants remain nonisomorphic. Let
+\[
+\begin{split}
+p&=\texttt{00000010010000000100110111},\\
+q&=\texttt{000000100100000001001101100111111110}.
+\end{split}
+\]
+In the primary table both read-edge graph paths from state~0 end at
+native~98. In the alternate table they end at native~98 and native~215,
+respectively. A rooted read-edge-preserving bijection would have to
+preserve equality of these endpoints, which is impossible. These graph
+words need not be realizable as one physical tape history.

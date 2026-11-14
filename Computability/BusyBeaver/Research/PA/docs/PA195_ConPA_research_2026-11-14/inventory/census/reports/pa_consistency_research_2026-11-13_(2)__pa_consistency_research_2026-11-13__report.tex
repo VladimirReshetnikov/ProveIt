@@ -1,0 +1,734 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array,microtype,xurl}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small PA consistency machines}
+\fancyhead[R]{\small Research and verification report}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{itemsep=3pt,topsep=5pt}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\NH}{\operatorname{NH}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\code}[1]{\texttt{\nolinkurl{#1}}}
+\newtheorem{proposition}{Proposition}[section]
+\newtheorem{lemma}[proposition]{Lemma}
+\input{artifact_facts.tex}
+\hypersetup{pdftitle={PA consistency machines: comparison and search below 196 states},pdfauthor={Research report}}
+\title{PA consistency machines:\\comparison and search below 196 states}
+\author{Research report}
+\date{13 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+The requested target is a binary, single-tape, blank-start Turing machine
+with fewer than 196 working states whose nonhalting is equivalent to
+\(\Con(\PA)\), with the equivalence available in PA.
+\textbf{This investigation does not establish that target.}
+It supplies a reproducible comparison of the cited designs, a new
+196-state rearrangement of the PA196 implementation, a reduction from 199
+to 198 states within the supplied diagonal-vacuity branch, a new
+command-level refutation search that halts at the last inference, and
+additional bounded searches and inductive analyses.
+
+The nine principal U208 output files represent two machine graphs; the
+expanded accepted helper family contains twenty pairwise nonisomorphic
+208-state graphs. The requested James Chang PA209 is distinct from the
+Joint U209 ancestor of U208. The published PA196 proof explicitly exports
+\(\PA\vdash\NH\to\Con(\PA)\); its external nonhalting theorem must not
+be confused with an exported PA proof of the converse. The accompanying
+files distinguish literal tables, executable symbolic certificates,
+ordinary mathematical arguments, and outstanding formalization work.
+No unsuccessful finite search below is presented as a lower bound.
+\end{abstract}
+
+\section{Result, scope, and conventions}
+
+There is no verified machine with at most 195 working states in this
+archive. The smallest new complete table supplied here has 196 working
+states, the same count as the supplied PA196. The second complete table
+has 198 states and improves the previously supplied 199-state
+diagonal-vacuity implementation. These are useful implementation results,
+but neither meets the numerical goal.
+
+All machine counts use the same convention: one tape extending infinitely
+in both directions; alphabet \(\{0,1\}\); all cells initially zero;
+one designated initial working state; and transitions that write one
+symbol and move one cell left or right. A distinguished halt control is
+excluded from the working-state count. No larger alphabet, preloaded
+program tape, stationary move, or uncounted startup controller is used.
+A row \((q,b,w,D,q')\) reads \(b\), writes \(w\), moves in direction
+\(D\), and enters \(q'\).
+
+The dense new tables start at state 0. The 196-state table has halt label
+196; the 198-state table has halt label 198. Native tables preserve sparse
+historical labels, including initial control 74 and halt control 254.
+The archive contains explicit bijections between native and dense labels.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{2.25in}rrrr@{}}
+\toprule
+Machine or source & States & Rows & Source sites & Status here\\
+\midrule
+Requested James Chang PA209 & 209 & 418 & 3,948 & Supplied\\
+U208, classes A and B & 208 & 416 & 3,909 & Supplied\\
+Published PA196 & 196 & 392 & 3,812 & Baseline\\
+New rotated PA196 & 196 & 392 & 3,812 & Verified layout\\
+Supplied diagonal-vacuity branch & 199 & 398 & 3,700 & Reference\\
+New diagonal-vacuity layout & 198 & 396 & 3,700 & Verified layout\\
+New halt-at-MP source & --- & --- & 3,788 & Source only\\
+\bottomrule
+\end{tabular}
+\caption{``Verified layout'' means the executable reconstruction, symbolic
+primitive contracts, and exact blank startup described below. It does not
+mean a new exported proof-assistant theorem of the PA biconditional.}
+\end{table}
+
+\begin{samepage}
+\subsection{Pinned inputs}
+
+The source snapshot is fixed by three commits:
+\begin{itemize}
+\item PA196: \code{jamesyc/BusyBeaver} at
+\code{407cdc356f6b586635e71ac92be394255f4bfea4}.
+\item Requested PA209: the same repository at
+\code{69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\item Incoming research and ConciseIPRA: \code{VladimirReshetnikov/ProveIt}
+at \code{dc523e7b06ffb414093c90aa035500ca283e5f75}.
+\end{itemize}
+\end{samepage}
+The PA196 table has SHA-256
+\begin{quote}\small\nolinkurl{e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8}.\end{quote}
+The requested PA209 table has SHA-256
+\begin{quote}\small\nolinkurl{0610d978675320f0b4b1ef34619dcd3daa5912632d7037e200dfcc70954fea51}.\end{quote}
+The compact comparison manifest records original archive member names,
+hashes, state maps, and the selected twenty U208 representatives. It is
+not necessary to download the large original archives to rerun the
+comparison. The licenses and attribution accompanying the reused material
+are retained.
+
+\section{What the 208-state collection actually contains}
+
+\subsection{Two principal graphs, twenty accepted representatives}
+
+Different filenames and state labels do not necessarily identify different
+machines. To compare rooted deterministic binary transition graphs, the
+checker assigns canonical names by breadth-first traversal from the stated
+initial control, visiting the read-0 edge before the read-1 edge. It fixes
+read symbols, write symbols, and movement directions. The terminal
+control is represented separately. Equality is checked on the complete
+canonical arrays, not merely on their cryptographic hashes.
+
+Every working state in each selected table is reachable in this finite
+transition graph. That observation concerns the graph with both read
+choices available; it is not a claim that every working state is reached
+on the actual blank-tape execution.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{4.45in}l@{}}
+\toprule
+Principal output in the incoming archive & Graph class\\
+\midrule
+U208\_ConPA: principal & A\\
+U208\_ConPA\_Conditional\_Context: principal / alternative & A / B\\
+U208\_ConPA\_Entry\_Context: principal / alternative & A / B\\
+U208\_ConPA\_History: principal / compatibility & A / B\\
+u208\_research: principal / plain & B / A\\
+\bottomrule
+\end{tabular}
+\caption{The nine named principal outputs have only two rooted,
+action-preserving graph isomorphism classes. Exact state bijections and
+byte reconstruction checks are supplied.}
+\end{table}
+
+There are also eighteen accepted same-count helper variants: nine helper
+constructions applied separately to A and B. Each replaces one control
+with an added helper, keeping 208 working states. Together with A and B
+they give \textbf{twenty} pairwise nonisomorphic tables. Their local
+equivalence arguments belong to the supplied research~\cite{incoming}; the fresh audit
+here establishes the literal comparison and provenance rather than
+re-proving every older helper theorem.
+
+The nine helper recipes are identified by their supplied labels:
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\code{127_124_8_109} & \code{127_124_8_125} & \code{127_124_8_59}\\
+\code{178_168_154_176} & \code{178_168_154_225} & \code{178_168_159_176}\\
+\code{178_168_159_225} & \code{190_160_86_193} & \code{301_88_122_500}\\
+\bottomrule
+\end{tabular}
+\end{center}
+Exploratory or explicitly rejected tables elsewhere in the archives are
+not promoted to accepted constructions merely because their row count
+happens to equal 416.
+
+\subsection{A and B have the same register program}
+
+The two principal graphs implement the same ordered primitive word and
+the same ordinal control-flow graph. Their 3,909 primitive sites contain
+1,558 increments, 1,175 decrements, 80 forward transfers, 1,095 backward
+transfers, and one halt. Their source addresses differ at 720 positions;
+the maximum address lengths are 42 and 41. Each decrement has two branch
+contracts, so the corresponding complete primitive contract count is
+\(3909+1175=5084\).
+
+This is a source-layout difference, rather than two independent logical
+axiomatizations whose savings can simply be added. The supplied archive
+contains source maps for both versions, and the comparison checker
+reconstructs and compares the entire ordinal graph.
+
+\subsection{The Joint U209 is not the requested PA209}
+
+The final U208 fold acts on the Joint U209 lineage~\cite{incoming}, whose program has
+3,909 sites. James Chang's requested 209-state predecessor has 3,948
+sites. Equal state counts do not identify those parents. The common
+ancestry of the broader compiler family does not make their individual
+labels or contextual invariants interchangeable.
+
+In the Joint parent's native labels, the distinguishing incoming rows are
+\[
+ (163,0,0,L,211),\qquad (163,1,1,R,211),
+\]
+and controls 172 and 211 have the same read-1 action, namely
+\((1,R,184)\). The reduction uses entry history and an existing helper
+to replace the read-0 behavior while folding the two controls. The
+original report gives positive blocks of lengths 1, 3, and 7.
+For its stated initial control 0 and a common arbitrary initial tape,
+it states the finite-time relation
+\[
+ T_{208}=T_{209}+2N_{211,0}+6N_{172,0}.
+\]
+This is not a theorem for arbitrary initial control states. In one
+read-0 entry case, the invariant needs three preceding transitions;
+the later failure of a two-history overapproximation does not contradict
+that argument. Blank-start halting preservation is the consequence
+needed for the present problem.
+
+The PA196 table has no state whose read-0 and read-1 rows respectively
+write 0/move left and write 1/move right to the same working target.
+Thus the exact mixed-entry motif above is absent. State renaming cannot
+transplant it. A new contextual proof, a changed layout, or a different
+implementation would be needed to obtain another saving.
+
+\section{Why PA196 saves thirteen states over its PA209 predecessor}
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+The PA196 constructors are
+\[
+ I(a,b)=4p(a,b),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code 0 is truth and code 1 is the designated contradiction
+\(M(0,0)\). Universal quantification reverses the two Cantor-pair
+arguments relative to the requested PA209 predecessor.
+
+The axiom emitter also changes mathematically~\cite{pa196,pa209}. It removes the old
+seventh equality head, strengthens the guarded gate with equality
+vacuity, and reorders or reverses selected head antecedents. The
+published paper derives the required rewriting, neighborhood equality,
+and witness principles without retaining the old seventh head as a
+primitive emission. These changes reduce the full source from 3,948 to
+3,812 sites. They are not merely a thirteen-state quotient of one fixed
+transition table.
+
+For the gate, if \(V\) is membership vacuity and \(Q\) is the old
+quantified separation component, the old gate is
+\(G=\neg(V\to Q)\). PA196 adds equality vacuity \(\Delta\) and uses
+\[
+ F=\neg\bigl(\Delta\to(V\to Q)\bigr).
+\]
+Classically \(F\) is equivalent to \(\Delta\wedge G\). This finite
+propositional observation alone is not the completeness proof: the
+freshness side conditions, quantifier coding, and derivations of the
+replaced equality principles still matter.
+
+The literal 196-state machine~\cite{pa196} consists of 36 arithmetic-engine controls,
+13 leaf-routing controls, and 147 source-reader controls. Its full source
+has 159 distinct internal nodes, and the axiom body is represented by
+201 macro tokens and 68 concatenation nodes. Six complementary-entry
+folds are already included in the final table. They cannot be subtracted
+again when comparing with U208.
+
+Three quantities must therefore be kept separate: the number of primitive
+source visits in the flattened program, the number of distinct subtrees
+in its shared representation, and the number of physical TM controls
+after allocation and contextual folding. Reducing the first or second
+does not automatically reduce the third.
+
+\section{A new 196-state implementation with shorter addresses}
+
+The directory \code{rotated196/} supplies a complete new table, its source
+addresses, a deterministic twelve-rotation reconstruction, dense/native
+conjugacy, and the executable symbolic check. It preserves the original
+3,812-site primitive word and ordinal control-flow graph.
+
+\subsection{The source transformation}
+
+For a source subtree, let \(f\) and \(b\) be its escaping forward and
+backward depths. Increments and halt have depths \((0,0)\), a decrement
+has \((1,0)\), and forward or backward transfers of depth \(k\) have
+\((k,0)\) or \((0,k)\). At an internal node the combination is
+\[
+ f(A,B)=\max\{f(A)-1,0,f(B)\},\qquad
+ b(A,B)=\max\{b(A),b(B)-1,0\}.
+\]
+The directional reassociation
+\[
+ ((A,B),C)\longleftrightarrow (A,(B,C))
+\]
+preserves the ordinal source graph when \(f(A)=0\) and \(b(C)=0\).
+The middle subtree need not be closed. The reconstruction verifies both
+the condition and the complete graph after each rotation, using two
+independent graph resolvers.
+
+Only pure source readers are directly rotated: a read bit is rewritten
+unchanged, and the head moves right. The child being rotated must have
+no source-reader occurrences outside the selected parent occurrences.
+The physical row changes implement the same local reassociation. Full
+prefix reconstruction is checked after every step; this is followed by
+the stronger complete primitive-runtime check.
+
+\begin{center}\small
+\begin{tabular}{@{}rrrl@{}}
+\toprule
+Step & Parent & Child & Rotation\\
+\midrule
+1&100&174&right\\
+2&1353&1349&right\\
+3&1348&1347&right\\
+4&1364&1354&right\\
+5&1354&1353&right\\
+6&1349&1348&right\\
+7&1349&1344&right\\
+8&1353&1363&left\\
+9&1360&1359&left\\
+10&1353&1362&left\\
+11&1363&1349&right\\
+12&1349&1344&right\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are native labels, not working-state counts. Sparse labels above
+1,000 do not add controls. The dense table has exactly 196 labels in its
+working domain and 392 rows.
+
+\subsection{Exact verification results}
+
+The maximum source address length drops from 38 to 36. The number of
+sites whose addresses obstruct the proposed shorter zero scanner falls
+from 19 to 14. Those remaining obstructions are why this rearrangement
+does not justify deleting a scanner state.
+
+All 4,959 primitive branch contracts pass. The maximum checked symbolic
+execution length is 497, with 1,620,783 symbolic operations across the
+checks. These are symbolic operations, including normalization and
+register-file excursions, not a uniform bound on literal TM time for
+arbitrary register values. The register file and gap parameter remain
+symbolic. All 46 protected register-engine rows agree with the original
+PA196 table.
+
+The blank startup changes. It reaches the exact clean frame after
+\textbf{58,294} literal transitions, compared with 58,154 for the
+published table. The clean frame has header gap 48, source ordinal 25,
+logical registers \((2,0,0,0,0,0,0,0,0)\), and the same spare-register
+tail. The verifier compares the entire finite tape support, state, and
+head position; it does not merely recognize a plausible prefix.
+
+\begin{samepage}
+The new dense table's SHA-256 is
+\begin{quote}\small\nolinkurl{b9873b89df4189414d0f443922ca9227bf2f76d8c81a0d0951c06cd608d6a90b}.\end{quote}
+\end{samepage}
+Exact action-preserving bisimulation still has 196 classes. Thus the
+new table has no immediate further quotient of that restricted kind.
+
+\subsection{Why these checks support halting preservation}
+
+At source-instruction boundaries, a frame records the current source
+address and the complete register file. Each successful symbolic
+contract supplies a positive finite machine block with the required
+register effect and successor address. Both branches of every decrement
+are included. The arithmetic-engine excursions retain their inherited
+contracts; the changed reader and return paths are executed explicitly.
+
+Induction over source steps gives corresponding machine frames. The
+blocks have positive length and contain no unintended halt, so an
+infinite source execution supplies arbitrarily long nonhalting machine
+prefixes. Conversely, a finite machine halt cannot lie in a nonhalting
+primitive block and must correspond to the source halt. Together with
+the exact startup, this is the ordinary block-simulation argument for
+halting equivalence with the common source program.
+
+The executable checker is part of the evidence, not a proof-assistant
+kernel~\cite{runtime}. Its symbolic run-length mechanism is an adaptation of the
+published \code{M6/Runtime.lean} framework and its register-file
+contracts. The archive does not claim that the new complete table has
+already been rebuilt through the entire upstream Lean development, or
+that the missing PA-internal consistency direction has thereby been
+exported.
+
+\section{A new 198-state layout of the diagonal-vacuity branch}
+
+The supplied diagonal-vacuity proposal replaces a longer gate component
+with the schema
+\[
+ \Gamma(B)=B\to U(B,B).
+\]
+The numerical code of a formula is larger than every variable label
+occurring in it, with the truth-code convention handled separately.
+Consequently the variable whose label is that code is fresh in the
+formula, which explains the soundness of this diagonal vacuity instance.
+The supplied report~\cite{incoming} gives the separate completeness argument and keeps
+the membership-vacuity resources needed for its reverse rewriting.
+
+This branch has 191 macro tokens and 3,700 primitive sites. Its supplied
+physical implementation uses 199 states. The new layout retains the
+same ordered primitive program and the same ordinal control-flow graph,
+but admits five compatible reader folds instead of four. The raw
+allocation has 203 controls, yielding
+\[
+ 203-5=198.
+\]
+The reduction is internal to this branch; it is not a reduction of the
+published 196-state machine to 195.
+
+The standalone verifier reconstructs the source tree from the included
+pinned PA196 input and the diagonal grammar, reconstructs the raw
+allocation and five folds, and compares the resulting native table with
+the supplied new table. It checks all 46 protected engine rows directly
+against PA196 and verifies the dense/native bijection.
+
+All 4,815 primitive branch contracts pass, with a maximum of 524 symbolic
+operations. The exact blank startup reaches the clean frame after
+58,154 literal transitions.
+
+\begin{samepage}
+The new dense table's SHA-256 is
+\begin{quote}\small\nolinkurl{ad3cef693b0a5d3bb4e3804acd0b9092cfbefdba53cffa9783b7e582c48815e8}.\end{quote}\end{samepage}
+
+The new evidence certifies the implementation relationship with the
+supplied diagonal source. Its logical calibration is the inherited
+ordinary mathematical argument recorded in the provenance manifest;
+this packet does not turn that manuscript into a new exported Lean
+theorem.
+
+\input{command_reduction/halt_at_mp.tex}
+
+\subsection{What its first source compilation does and does not save}
+
+The concrete source candidate is included alongside the command proof.
+Its primitive-site count is 3,788, a saving of 24 over PA196, and two
+independent ordinal graph resolvers agree. Its number of distinct
+internal source nodes increases from 159 to 162. No binary table is
+claimed for this source.
+
+Independent finite register-interpreter checks cover the successful
+branch, the full MP implementation, and the total Shift, comparing all
+nine registers including the untouched frame. These checks supplement
+the universal loop and command arguments; their counts and exact input
+hash appear in the accompanying receipt. They do not establish a
+smaller physical state allocation or replace the required binary
+frame and startup checks.
+
+This example shows why shorter proof words and shorter primitive
+programs do not settle the busy-beaver optimization problem. The
+semantic simplification removes the zero stack push and the consequent
+cache, and places the halt test precisely at a contradiction-producing
+inference. The first shared-tree implementation still costs more
+distinct nodes.
+
+\input{command_reduction/cache_flexible_variants.tex}
+
+\section{A stronger finite abstraction of all nine source registers}
+
+To look for overlooked constant branches, the new analysis tracks all
+nine registers jointly, first in three categories and then in four.
+For radix \(K\), the abstraction is
+\[
+ \alpha_K(v)=\min\{v,K-1\},
+\]
+where category \(K-1\) denotes every value at least \(K-1\). An abstract
+state is an ordinal source site and nine simultaneous categories.
+
+Increment is exact at this level: it raises a non-top category by one
+and leaves the top category at top. A zero decrement takes the zero
+branch without changing the category. A positive non-top decrement
+lowers the category exactly. A top-category decrement has two possible
+outputs, \(K-2\) and top. Ordinary jumps preserve all categories.
+
+\begin{lemma}
+Every concrete source step is covered by one of these abstract steps.
+The least closed set containing the abstract clean seed therefore
+contains the abstraction of every concrete execution from that seed.
+\end{lemma}
+\begin{proof}
+For a top-category decrement, a concrete value equals \(K-1\) or is
+larger; these give exactly the two listed possibilities after subtracting
+one. All other cases follow directly from the definition of
+\(\alpha_K\). Induction on the number of concrete steps gives the
+second assertion.
+\end{proof}
+
+The implementation computes this least fixed point and then separately
+checks closure under every abstract successor. Both runs start at
+ordinal 25 with registers \((2,0,0,0,0,0,0,0,0)\).
+
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Domain for each register & Reachable abstract states & Audited edges\\
+\midrule
+\(\{0,1,\ge2\}\) & 4,455,507 & 5,000,898\\
+\(\{0,1,2,\ge3\}\) & 32,947,398 & 35,969,718\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both computations find exactly the same unreachable source sites,
+\(8,3774,3775\), and the same forced-zero decrement sites,
+\(7,3773\). Those cleanups were already present in the supplied research.
+Neither stronger joint abstraction identifies an additional
+forced-zero deletion.
+
+These are inductive overapproximations, not sampled blank runs. They
+can contain an abstract halt even when the concrete machine does not
+halt. The result is neither a nonhalting proof nor a lower bound on
+possible source simplifications. Relational arithmetic facts outside
+these finite categories may permit other reductions.
+
+\section{Additional reduction searches and their limits}
+
+\input{search_results/search_summary.tex}
+
+The searches deliberately distinguish two specifications. A local
+transition fold must reproduce the complete tape, head position, and
+projected control after a positive replacement block for each parent
+transition. A whole-instruction test may change intermediate head
+positions and paths, provided it reaches the exact required source
+frame. The second specification is more permissive, but neither
+bounded family exhausts possible smaller Turing machines.
+
+Physical register assignment is another independent choice. The
+published logical-to-physical permutation is
+\[
+ (6,2,0,4,3,7,8,5,1).
+\]
+Changing it affects selector targets, possible row sharing, and blank
+startup. A favorable decoder census without an initialization proof
+does not establish a new blank-start machine. The search receipts
+record the scope of the register-assignment experiments actually
+performed; no global optimization over every compiler architecture is
+claimed.
+
+\subsection{A concrete warning about transplanting a valid source edit}
+
+The supplied command research already shows that Shift can test only
+the old \(H\) for code 1, provided its refutation compiler is adjusted.
+At source level this suggests replacing a transfer of old \(T\) into
+scratch by a clear-\(T\) loop. Merely redirecting native row \((38,0)\)
+from reader 28 to reader 122 looks plausible and preserves the source
+prefix structure. It nevertheless fails the full primitive contract.
+
+Reader 122 uses its entry history. At the new location it encounters
+the wrong preceding bit and reaches the marker for physical register 7
+instead of physical register 2. A source rotation can repair that entry
+parity, but then a shared return path fails elsewhere. This is a useful
+counterexample to the inference that a correct register-level edit plus
+a successful prefix scan is already a correct binary implementation.
+The unsuccessful table is not included among the new verified machines.
+
+\section{The PA equivalence and the relevance of ConciseIPRA}
+
+\subsection{The exact distinction in the published formal statements}
+
+Let \(H_M\) be the arithmetic halting sentence for the literal table and
+\(N_M=\neg H_M\). The upstream theorem inventory explicitly includes
+\[
+ \PA\vdash N_M\to\Con(\PA).
+\tag{1}
+\]
+The named declaration is~\cite{pa196}
+\code{PA196.Arithmetic.pa_proves_nonhalting_consistency}.
+The development also proves standard-model nonhalting and the advertised
+independence statements in Lean's metatheory. The source description of
+its HF-model soundness argument explicitly distinguishes that external
+argument from a PA-internal consistency proof.
+
+To obtain the requested biconditional, one also needs
+\[
+ \PA\vdash\Con(\PA)\to N_M,
+\qquad\text{equivalently}\qquad
+ \PA\vdash H_M\to\neg\Con(\PA).
+\tag{2}
+\]
+An external proof that every accepted derivation is true in a standard
+model does not by itself give (2) inside PA. This is a statement about
+the supplied formal theorem inventory; it is not an assertion that
+(2) is false or unprovable.
+
+Later incoming manuscripts already describe ordinary syntactic routes
+to the reverse implication~\cite{incoming,comparison}. They should receive credit as supplied
+arguments, while remaining distinct from a newly exported kernel-checked
+endpoint. This investigation did not rebuild the full upstream Lean
+project. Its new executables are independent reconstruction and
+simulation checks.
+
+\subsection{The appropriate internal proof is a coded proof transformation}
+
+A suitable route to (2) has three components:
+\begin{enumerate}
+\item Extract an accepted finite source-command derivation from an
+arbitrary coded halting run of the literal machine. This requires a
+uniform boundary argument, including startup, total primitive blocks,
+and the possibility that the coded halt lies inside a final block.
+\item Annotate the command execution with finite derivations of its live
+formula registers and stack entries. A successful MP appends a proof
+node; Shift transports annotations; the AX macro supplies fixed
+syntactic schema templates. A halt yields a derivation of code 1.
+\item Translate that derivation into a PA refutation using the binary-bit
+interpretation of membership and uniform PA proof templates for the
+logical and nonlogical schemas. The separation component requires an
+induction instance for the translated property, supplied syntactically
+for each formula code.
+\end{enumerate}
+The maps and their correctness assertions must be available uniformly
+on coded objects in PA, not only separately for each externally fixed
+standard formula. The special alias \(I(0,0)=0\), the transposed
+quantifier pairing, and the distinction between a formula's code and a
+variable's numerical label require explicit treatment.
+
+For example, simply swapping the two Cantor components at quantifier
+nodes changes the numeric code of a property while leaving its old
+fresh binder label unchanged. A gate whose binder is constrained to
+equal the property code cannot be transported by that slogan alone.
+A generic fresh-binder template or a verified alpha-renaming step is
+needed. None of the new state counts in this report is used to conceal
+this obligation.
+
+\subsection{What can be reused from ConciseIPRA}
+
+The native scalar ConciseIPRA core works with iterator terms and
+equations, with its progress rule restricted to literal equations~\cite{ipra}.
+Its small proof-checker descriptions concern iPRA. Replacing a PA
+refutation search by that checker would change the theory being tested;
+equivalence to iPRA is not a refutation translation for PA.
+
+The relevant ideas are structural. Computation can be placed in the
+syntax instead of rechecked by duplicated administrative fields.
+Proof-carrying execution can expose a direct syntactic refutation map.
+Redundant caches and stack padding can be removed when an exact compiler
+contract replaces them. The new halt-at-MP command calculus is an
+example of the last approach. These principles are useful, but their
+success must ultimately be measured in a concrete binary transition
+table and its proof, rather than in Python source length alone.
+
+A fuller induction rule acting on arbitrary formulas could be studied
+as a route to a PA-strength presentation. Such a theory would need its
+own presentation and refutation-translation proofs, followed by an
+actual small-machine compiler. No such completed replacement is claimed
+here.
+
+\section{How to reproduce the delivered results}
+
+The compact deliverable uses Python 3.10 or later for the main checks.
+The following commands require no network access and no upstream
+repository checkout:
+\begin{quote}\small\ttfamily
+python3 comparison/verify.py\\
+python3 rotated196/verify.py\\
+python3 diagonal198/verify.py\\
+python3 command\_reduction/halt\_at\_mp\_checks.py\\
+python3 command\_reduction/halt\_at\_mp\_source\_checks.py
+\end{quote}
+The table verifiers deliberately reject Python optimization flags that
+would disable assertion-based inherited checks. The top-level
+\code{verify_all.py} runs the ordinary verification suite and reports
+each component's result.
+
+The larger abstract fixed-point computations can be reproduced with a
+C++17 compiler:
+\begin{quote}\small\ttfamily
+g++ -O3 -std=c++17 abstract\_analysis/closure.cpp -o /tmp/pa-closure\\
+/tmp/pa-closure abstract\_analysis/cfg.txt 3 /tmp/pa-radix3.json\\
+/tmp/pa-closure abstract\_analysis/cfg.txt 4 /tmp/pa-radix4.json
+\end{quote}
+The emitted deterministic fields can be compared with the supplied
+receipts. The finite-domain abstraction is documented above;
+the raw receipts are not substitutes for running the closure checker.
+
+To rebuild this report, run \texttt{pdflatex report.tex} twice from the
+archive root. The complete transition tables are separate plain-text
+files so that they can be consumed directly by simulators. Their
+checksums, state bijections, and reconstruction recipes are included.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can source association and physical register assignment be
+optimized jointly, including startup and the shared return paths?
+Optimizing only the axiom word or only the existing labels can miss
+interactions across their boundary.
+\item Can a state identification be certified at complete instruction
+boundaries even when every one-transition simulation fails? A useful
+synthesis procedure would generate a total symbolic block certificate
+and its register-file invariants, rather than accept finite blank-run
+agreement.
+\item Can the new halt-at-MP calculus be compiled with fewer distinct
+subtrees? Its first source implementation saves 24 primitive sites but
+adds three internal nodes. Sharing the successful-branch transfer and
+the moved guard with existing blocks is the concrete next problem.
+\item Can the remaining fourteen long-zero address obstructions in the
+rotated layout be removed without paying for additional reader states?
+A valid scanner reduction must account for temporary instruction bits
+as well as static source addresses.
+\item Is there a complete hygienic-label compilation allowing the gate
+to be restricted to a cheaper freshness condition, such as a binder
+larger than both atom labels? Cofinality of available labels alone is
+not a proof of quantifier-instantiation and alpha-renaming completeness.
+\item Can the existing annotated-proof and literal-trace blueprints be
+finished as an explicit PA-internal reverse implication for the exact
+PA196 table, then transported to verified descendants? This would
+separate a reusable arithmetic theorem from each future state-reduction
+certificate.
+\end{enumerate}
+
+\clearpage
+\begin{thebibliography}{9}
+\bibitem{pa196} James Chang, \emph{Nonhalting and PA-independence for a
+196-state Turing machine}, source, paper, and theorem inventory,
+\href{https://github.com/jamesyc/BusyBeaver/tree/407cdc356f6b586635e71ac92be394255f4bfea4}{pinned PA196 repository}.
+See especially \code{paper/pa196.tex}, \code{docs/result.md},
+\code{PA196/Independence.lean}, and \code{PA196/Logic/Soundness.lean}.
+\bibitem{pa209} James Chang, the requested preceding construction,
+\href{https://github.com/jamesyc/BusyBeaver/tree/69d98241a721ead20b4f0b17df9062950b40fbfe}{pinned PA209 repository}.
+\bibitem{incoming} Vladimir Reshetnikov, ProveIt incoming research,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/dc523e7b06ffb414093c90aa035500ca283e5f75/docs/incoming}{pinned incoming directory}.
+The machine-comparison manifest gives individual archive members and
+their hashes, including the U208, helper, diagonal-vacuity, and command
+reduction reports.
+\bibitem{comparison} ProveIt, \emph{PA196 and the incoming U208
+construction}, comparison, arithmetic-bridge notes, and previous
+reduction searches,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/dc523e7b06ffb414093c90aa035500ca283e5f75/Computability/BusyBeaver/Research/PA/pa196-vs-u208}{pinned comparison directory}.
+\bibitem{ipra} ProveIt, \emph{ConciseIPRA}, native scalar core,
+proof-checker proposals, and article,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/dc523e7b06ffb414093c90aa035500ca283e5f75/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{pinned ConciseIPRA directory}.
+\bibitem{runtime} James Chang, \code{M6/Runtime.lean}, symbolic
+run-length execution and register-file contracts,
+\href{https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/M6/Runtime.lean}{pinned runtime source}.
+\end{thebibliography}
+\end{document}
