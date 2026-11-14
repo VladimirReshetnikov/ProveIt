@@ -18,6 +18,8 @@ required next-entry shape. Neither result assumes a blank file suffix. In
 particular, it retains the startup file's 25 further one-valued spare blocks.
 The separately named `secondHeaderPass` exposes the exact result for any
 well-shaped file, and its `scanClock` and `backClock` preserve model lengths.
+The [third-pass entry and scan](TWO-PASSES-SCAN.md) continue this trace to the
+next controller scan while retaining the same source-file suffix.
 
 `check-two-header-passes.sh` recompiles the six new modules in a fresh
 temporary overlay, pins the directly imported project objects and reports the
