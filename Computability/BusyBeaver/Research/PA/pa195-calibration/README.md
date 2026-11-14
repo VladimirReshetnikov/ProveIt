@@ -468,3 +468,22 @@ yet a substitution theorem in every candidate-PRA model. Recheck using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-template-internal.sh
 ```
+
+`PA194MembershipCode.lean` composes the exact PA194 child decoders with the
+bit-template PR code, passing the second child as Foundation's bit index and
+the first child as container. Given candidate-PRA proofs for the two decoder
+codes, `modelMembershipConstructor` proves this equation for every source
+constructor `4*cantor(a,b)+1` in every candidate-PRA model, including
+nonstandard fields. The decoder-code existence theorem supplies suitable
+codes existentially; their numeric serializations are not fixed here.
+
+`modelMembershipConstructorInternal` additionally identifies the resulting
+value with Foundation's internal typed bit-formula substitution, but only
+when the arithmetic reduct satisfies IΣ₁. No complete source-formula
+translator or machine consistency reduction follows yet. The convention and
+argument swap are documented in [BIT-ARGUMENT-ORDER.md](BIT-ARGUMENT-ORDER.md).
+Rebuild the chain with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-membership-code.sh
+```
