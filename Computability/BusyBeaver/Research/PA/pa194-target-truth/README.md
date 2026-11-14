@@ -28,3 +28,7 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 The final module passed a fresh suffix check against the checked verum-node
 and target-proof objects plus retained prerequisite overlays. Its printed
 axioms contain no `sorryAx`. The full nested replay remains pending.
+
+An independent suffix replay rebuilt the truth-certificate module against the
+separately checked verum-node and scheduler prerequisites, with retained deeper
+overlays. It passed without `sorryAx`; this was not a full nested replay.

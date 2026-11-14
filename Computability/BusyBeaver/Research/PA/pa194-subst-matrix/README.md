@@ -25,3 +25,7 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 The final module passed a fresh suffix check using the newly checked
 substitution inversions and retained prerequisite overlays. Its printed axioms
 contain no `sorryAx`. The full nested replay remains pending.
+
+An independent suffix replay rebuilt the matrix module against separately
+checked forward-node and scheduler prerequisites, with retained deeper
+overlays. It passed without `sorryAx`; this was not a full nested replay.

@@ -18,3 +18,7 @@ The three modules passed an author suffix rebuild against previously checked
 prerequisite overlays, with `propext`, `Classical.choice`, and `Quot.sound`
 as their reported axioms and no `sorryAx`. The full nested checker
 `check-zero-first-continue.sh` is supplied but has not been run.
+
+An independent ordered suffix replay rebuilt all three zero-first continuation
+modules against separately checked controller prerequisites and retained deeper
+overlays. It passed without `sorryAx`; this was not a full nested replay.
