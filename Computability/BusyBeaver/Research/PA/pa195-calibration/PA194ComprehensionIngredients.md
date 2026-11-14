@@ -6,4 +6,4 @@
 
 These are ingredients for bounded bit-set comprehension. They do not themselves prove comprehension, the distinct-label gate, an iPRA implication, or the machine consistency equivalence.
 
-The author focused replay rebuilt both new modules in order against retained and independently checked full-induction prerequisites; printed axioms are `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`. `check-comprehension-ingredients.sh` also specifies the full nested rebuild, which has not been repeated for this small suffix.
+The author focused replay rebuilt both new modules in order against retained and independently checked full-induction prerequisites; printed axioms are `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`. An independent run of `check-comprehension-ingredients.sh` completed the full nested rebuild without `sorryAx`.
