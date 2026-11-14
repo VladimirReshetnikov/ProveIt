@@ -34,7 +34,7 @@ git rev-parse HEAD
 lean --version
 printf 'Placed packet, generator, and component builder provenance:\n'
 packet="$base/docs/pa194_conpa_2026-11-13/construction"
-sha256sum "$packet/tables/pa194.tm" "$packet/tables/pa194.native.tm" \
+sha256sum "$packet/tables/pa194.tm" \
   "$packet/tables/unfolded201.native.tm" "$packet/tables/pa194.labels.json" \
   "$packet/source/pa194.folds.json" "$packet/source/pa194.grammar.json" \
   "$packet/evidence/pa194.local-cases.json" "$base/packet_inputs.py" \

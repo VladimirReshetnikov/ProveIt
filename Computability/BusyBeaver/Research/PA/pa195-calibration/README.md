@@ -523,3 +523,29 @@ serialized. Recheck with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-tag-decoder.sh
 ```
+
+`PA194DispatchCode.lean` implements an explicit PR dispatcher for arbitrary
+supplied branch codes. It tests source zero first and selects the truth branch;
+otherwise it selects membership, universal, equality, or implication from
+the exact `%4` tag. In every candidate-PRA model, given a certified tag
+decoder, separate theorems verify the zero case and all four constructor
+tags, including nonstandard payloads. The implication theorem explicitly
+excludes zero. These are dispatch equations only: recursive child lookup and
+the missing implication and universal branch implementations remain open.
+Recheck with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-dispatch-code.sh
+```
+
+`PA194AtomicDispatch.lean` composes the dispatcher with the membership and
+canonical equality branches. Given candidate-PRA certificates for the tag and
+both child decoders, the exact atomic equations hold in every candidate-PRA
+model, including for nonstandard fields. The identification with Foundation's
+internal syntax additionally assumes IΣ₁. Suitable decoder codes exist, but
+are not serialized here. This does not construct the recursive translator or
+prove a machine consistency reduction. Recheck with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-atomic-dispatch.sh
+```

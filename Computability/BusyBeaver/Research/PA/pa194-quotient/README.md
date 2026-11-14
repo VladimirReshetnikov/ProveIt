@@ -13,9 +13,10 @@ lake env lean -M6000 -j1 Computability/BusyBeaver/Research/PA/pa194-quotient/PA1
 ```
 
 The generator checks the published SHA-256 of the dense table, verifies the
-dense/native mapping and row uniqueness, and extracts both complete native
-tables, the state map, folds, and local case durations from the packet, with
-each input pinned to its original archive member's SHA-256. The
+dense/native mapping and row uniqueness. It reads the parent table, state map,
+folds, and case durations from the packet and reconstructs the deduplicated
+native child table from the dense table and state map. Every input and the
+reconstructed table are pinned to their original archive member's SHA-256. The
 Lean theorem independently checks the dense/native mapping, coverage of all
 28 history/read-bit cases, and the simulated endpoint in each case. The
 simulator rejects reads outside the two inspected cells. It also checks the
