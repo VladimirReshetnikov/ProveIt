@@ -24,6 +24,7 @@ length, is not started. Nothing here yields a consistency implication.
 | `PA194ModelNeighborhoodDef` | The neighborhood and biconditional constructors are Σ₁-definable model functions, which permits their use in suitable internal induction predicates. |
 | `PA194ModelNeighborhoodCode` | A fixed ternary candidate-PRA code for the neighborhood constructor has its stated value on arbitrary model inputs, including nonstandard labels, and agrees over the natural numbers with the existing source-LK neighborhood encoding. |
 | `PA194ModelSourceAtomCode` | Candidate-PRA codes decode positive and negative source equality atoms and select bound/free labels from encoded environments, including for nonstandard terms and vectors. |
+| `PA194ModelSourceEnvironment` | A finite code pushes a label onto the bound environment; its lookup equations have the head/tail behavior of the standard source translator's binder update. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -47,6 +48,13 @@ These results do not identify the environments with the compiler's variable
 allocation policy, recursively translate internal source formulas, or compile
 nonstandard source proofs.
 
+The binder update prepends `new` to the bound environment as `pair new old + 1`.
+For arbitrary model indices it maps bound index zero to `new`, bound index
+`i + 1` to the previous value at `i`, and leaves free-variable lookup unchanged.
+This matches the head/tail behavior of `Fin.cases lo bound` in the ordinary
+source `toNamed` translation. It does not establish a recursive translation of
+internal formulas or its correctness under quantifiers.
+
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
 
@@ -57,8 +65,8 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelSourceAtomCode` as the top module. On 2026-11-14, the preceding
-modules and the source-atom code were rebuilt against a retained combined
-overlay. Their printed axiom reports were free of `sorryAx`. The
+`PA194ModelSourceEnvironment` as the top module. On 2026-11-14, all seven
+modules in this directory were rebuilt against a retained combined overlay.
+Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
 prerequisites; these were suffix checks, not empty-overlay replays.
