@@ -1,0 +1,156 @@
+\section{The inherited logical calibration, made explicit}
+\label{sec:calibration}
+
+The construction above changes the command protocol, not the numerical
+calculus. The substantive inherited theorem is the existence of
+primitive-recursive transformations in both directions between PA
+refutations and numerical proofs of code one, whose correctness PA proves.
+The supplied calibration texts are retained byte-for-byte under
+\file{references/logical/}; this section explains the essential arguments
+and the interfaces on which the transfer depends \cite{pa195,pa194,gammad}.
+It is not an assertion that the upstream formal project already exports
+both directions for this literal machine.
+
+\subsection{Formula coding and the PA-to-calculus direction}
+
+For each nonzero formula constructor, its relevant subcodes and variable
+labels are strictly smaller than the constructed code. Strong induction
+on codes proves that variable $x_B$ does not occur in the formula coded
+by $B$. The exceptional numerical identity $I(0,0)=0$ is treated as truth,
+not as a well-founded recursive decomposition of zero. This yields the
+diagonal schema $B\to U(B,B)$, including its separate truth-code case.
+
+The previous bundled diagonal gate is
+\[
+ F_\Gamma(a,b,c)=N\bigl(\Gamma(c)\to(V(a,b,c)\to Q_*(a,b,c))\bigr).
+\]
+Classical implicational templates convert a bundled instance into
+$\Gamma(c)$ and $G(a,b,c)$, and convert those two heads back into the
+bundle. Each $\Gamma(B)$ is obtainable using a bundled instance with
+$c=B$ and $a=b=B+1$. Thus separating the diagonal changes the number and
+order of pushed heads but preserves a primitive-recursive proof
+translation. The ten-item command selectors in the present proof account
+for that changed stack protocol explicitly.
+
+The inherited PA-refutation compiler needs two-direction membership
+rewriting, a neighborhood-equality implication and an equality witness.
+The point of the diagonal replacement is that it recovers these interfaces
+without reinstating the discarded equality-vacuity axiom. Here is the
+critical reverse-rewriting construction.
+
+For one of the required membership substitutions, put
+\[
+ C=E(a,b)\to(\chi(b)\to\chi(a)),\qquad
+ \varphi=N(C),\qquad c=\ulcorner\varphi\urcorner.
+\]
+The predicate $\chi$ is a membership atom with its argument in either
+slot, including the diagonal case $M(t,t)$. For distinct original labels,
+the strict code bounds make $c$ fresh. Pointed separation at $(a,a,c)$
+supplies $N(Q_*)$. The second part of its matrix, together with the
+propositional consequence $\varphi\to N(\chi(a))$, yields
+\[
+ S_*\to U(a,M(c,a)\to N(\chi(a))).
+\]
+The retained equality witness, direct membership rewriting and
+membership-only vacuity transport this to
+\[
+ S_*\to(M(c,b)\to N(\chi(b))).
+\]
+Under $\varphi$, the point condition supplies $M(c,a)$, direct rewriting
+supplies $M(c,b)$, and $\varphi$ also supplies $\chi(b)$. Discharging the
+assumptions gives $\varphi\to(S_*\to N(P))$. Generalization at $c$ and
+the available diagonal instance $\Gamma(\varphi)$ give
+$\varphi\to Q_*$, contradicting $N(Q_*)$. Double-negation elimination
+therefore gives $C$. Coincident original labels are handled by
+propositional reasoning and the diagonal-membership case, rather than by
+assuming the fresh-label argument still applies unchanged.
+
+For neighborhood equality, begin with the fresh binder
+$z_0=\ulcorner E(a,b)\urcorner$. The instance $\Gamma(E(a,b))$,
+universal distribution and the two membership rewrites give the
+neighborhood implication at $z_0$. The equality witness and membership
+vacuity transport the binder to each required $z\ne a,b$, also supplying
+the neighborhood witness. These replace the equality-vacuity uses in the
+original refutation compiler. The audit checked these interfaces against
+the upstream \file{Logic/Reverse.lean}, \file{Neighborhood.lean} and
+\file{Vacuity.lean} dependencies, rather than assuming that a standard-model
+interpretation alone gives an internal PA theorem.
+
+All substitutions, fresh-code construction, fixed propositional
+templates and finite derivation concatenations are operations on syntax.
+They have primitive-recursive implementations, and the inherited
+calibration proves their correctness by arithmetic induction. This
+direction supplies the numerical proof of one required by the new
+all-store command compiler.
+
+\subsection{Numerical refutations produce PA refutations}
+
+Interpret membership by finite binary membership,
+\[
+ \operatorname{Bit}(s,z)\quad\Longleftrightarrow\quad
+ \exists u,v\,[s=(2u+1)2^z+v\ \wedge\ v<2^z],
+\]
+equality by ordinary equality, and $U(a,B)$ by universal quantification
+over the translation of $B$. PA proves
+$\operatorname{Bit}(s,z)\to z<s$, so it proves the negation of the
+translation of numerical code one, $M(0,0)$: the two zeros here are the
+same variable label, giving $\operatorname{Bit}(x_0,x_0)$.
+Code zero receives a fixed truth translation and a fixed proof relating
+it to the alias $I(0,0)$.
+
+For every arithmetic formula $\theta(z,\vec u)$, PA proves finite binary
+comprehension:
+\[
+ \forall n\,\exists s<2^n\,\forall z<n\,
+   (\operatorname{Bit}(s,z)\leftrightarrow\theta(z,\vec u)).
+\]
+The induction step keeps the old code when $\neg\theta(n,\vec u)$ and
+adds $2^n$ when $\theta(n,\vec u)$. For the internal syntactic statement,
+one substitutes the code of $\theta$ into this fixed induction-proof
+template. PA verifies that the resulting finite string is a PA proof.
+This does not assert a uniform arithmetical truth predicate for all
+formulas and uses no reflection principle for PA.
+
+In the pointed-separation translation with $a\ne b$, apply this template
+to
+\[
+ (\operatorname{Bit}(x_a,z)\lor z=x_b)\wedge T(c)[z/x_b]
+\]
+with a bound such as $x_a+x_b+1$. This finite set includes the required
+point if its predicate holds, includes all relevant members satisfying
+the predicate, and contains only elements satisfying the predicate.
+For $a=b$, the inner binder changes both occurrences of that variable
+label. The correct matrix is instead
+\[
+                  (z=x_b)\wedge T(c)[z/x_b].
+\]
+Inside the binder the other antecedent is
+$\operatorname{Bit}(z,z)$, which PA refutes. This case distinction is
+essential: treating the first variable as free in the collision case
+would be an incorrect soundness proof. The separator label is fresh by
+the code bound, and the guard $c\ne a,b$ supplies the remaining freshness.
+
+The diagonal and other logical heads have uniformly generated
+first-order or propositional PA proof templates. The dominated
+implicational head is arithmetically interpreted by its propositional
+template; completeness of the restricted supply is part of the inherited
+numerical proof calculus. Each numerical proof inference is translated
+by a syntactic proof operation. A numerical proof of code one thereby
+produces a PA proof of its translation and, using the fixed negation
+proof above, a PA refutation.
+
+\subsection{Internal finite-trace conclusion}
+
+Writing $H_R$ for halting of the new seeded register source, the two
+syntactic translations, the all-store compiler, cofinal scheduler and
+proof-annotation invariant give
+\[
+ \PA\vdash\left(H_R\longleftrightarrow
+       \exists p\,\Prf_{\PA}(p,\ulcorner0=1\urcorner)\right).
+\]
+The fresh ordinary/specialized source equivalence and the literal
+positive-duration simulation then replace $H_R$ by halting of PA194DHS.
+Negating the existential refutation statement proves the displayed
+nonhalting/consistency equivalence. The missing upstream end-to-end
+iPRA endpoint is neither used as a theorem nor inferred from the Python
+certificates.

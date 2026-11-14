@@ -1,0 +1,118 @@
+INDEPENDENT REVIEW OF THE QH6 COMPOSITION
+
+Reviewed inputs
+- The actual new build_qh6.py, support.py and literal table.
+- The new source-binding and free-term emitter/command checkers.
+- The complete qh6_preservation.tex draft.
+- Supplied PA194H6 preservation proof, PA194Q calibration, radix calibration,
+  and PA196/Logic/ImplicationBasis.lean.
+- The recorded completed independent literal-tape receipt (not relabelled
+  here as another independent replay of the same large physical check).
+
+Conclusion
+No new mathematical gap was found in the Q/H6 composition relative to the
+explicitly inherited numerical-calculus/PA proof-translation interface and
+generic physical symbolic-induction arguments. The new construction changes
+recurring formula emission, with an exact source and graph binding. It is
+appropriate to describe it as an ordinary mathematical PA-provability result
+with executable certificates, preserving the inherited proof dependency.
+It is not a newly compiled end-to-end Lean/Rocq result and is not sub194.
+
+Fresh checks by this reviewer
+1. A complete pinned-corpus census, including all four current incoming ZIPs.
+2. Exact graph novelty under all spanning-root choices, arbitrary relabeling,
+   global reflection and global bit exchange. Dense/native conjugacy agrees.
+3. A known existing PA194 positive control is correctly recognized as existing.
+4. The full source-binding and free-term emitter/command certificates rerun
+   successfully. Receipts are QH6_source_reviewer.json and
+   QH6_commands_reviewer.json.
+5. All 2,435 selected tracked input files have bytes matching their pinned git
+   blobs; 1,445 literal table occurrences and 725 byte forms are reproduced.
+
+Exact source result
+The first source-binding replay encountered the stale radix-four assertion
+that 79 instructions change. This was corrected to 83; the corrected replay
+passes. Exactly 83 of 3,775 resolved source instructions differ from H6;
+3,692 are unchanged. The source word differs only on the 19-token interval
+[102,121). Restoring the coefficient-four multiplier and old cached-MP node
+reconstructs Q exactly. The 61 multiplier bodies widen from 4 increments to 6;
+all 3,409 sites outside the old bodies and their successor targets relocate
+exactly, and no outside edge enters a multiplier interior.
+
+Logical exchange
+The changed axiom is P -> (Q -> R) versus Q -> (P -> R), with
+P=U6(D,A), Q=U6(D,I6(A,H)), R=U6(D,H). The fixed 61-line K/S/MP certificate
+provides both directions by exchanging P and Q. There is no circular use
+of the changed quantifier-distribution axiom: the actual imported Lean
+ImplicationBasis derives K, S and exchange solely from the restricted rho8
+basis and its order bounds. For coefficient 6, a,b<=6p(a,b) supplies those
+same bounds. Substitution into the finite implicational certificate needs
+only equalities of numeric constructors, not injectivity of formula syntax.
+Thus I6(0,0)=0 creates no new obstruction.
+
+As a concrete recurring semantic difference, A=1,D=H=0 gives
+(P,Q,R)=(8,128,2). The H6 distribution head is 7,837,156,242; the QH6 head is
+666,162. This is a different numerical emitter output, not only a renaming
+of TM controls or a modification of dead transitions.
+
+All-store command compiler
+The important interface is exactly
+  S(t,w,d,h)=halt if h=1, else(h,tail(w),d,head(w));
+  MP_x success=(b,w,b,0), failure=(0,w,b,0), b=d+x.
+Successful MP retains d=b and does not insert a dummy zero. Accordingly the
+proof compiler first reserves a zero below the two recursively compiled
+premises and ends successful MP by Pop, which clears the offset and consumes
+that reserved zero. A bare final Shift would be wrong under this cache-only
+halting test. The delivered compiler uses the correct Pop.
+
+After the two Shifts, an MP suffix has the two premises in top and cache.
+If a=1 the second Shift already halts; otherwise successful MP places b at
+top, keeps the reserved-zero stack and sets d=b,h=0. Pop halts when b=1;
+for b!=1 it removes the reserved zero, clears d, and returns(b,w,0,0).
+This is valid even when b=0 or the zero stack representation collapses.
+Discard=MP_0 is uniformly valid when d=0, for arbitrary t and old h, because
+the success and failure branches both return(0,w,0,0).
+
+The initial A0 before a compiled refutation clears arbitrary carried d,h;
+the following proof induction works from every top/stack with cleared d,h.
+The final Pop tests the produced contradiction before inspecting the old
+arbitrary underlying tail. This all-store property is exactly what the
+scheduler needs, since failed trials do not reset the store. AX's generated
+heads are non-one by residues 0 and 2 modulo 6, so their intermediate selector
+Shifts do not require assuming consistency. Total Cantor projection identities,
+including [0;0]=0, are explicitly included and suffice for the stack equations.
+
+Soundness and internalization
+The finite proof-store invariant needs proof annotations for top, cache and
+canonical stack entries, but not for the numerical offset d. Successful MP
+updates the top annotation by MP; retaining d=b is harmless. AX's rho8 side
+condition is d<=d+x. Its U(d,h) head follows by generalization from the cached
+annotation. Failed gate emission and virtual stack zeros use the fixed proof
+of zero. Cache-only halting therefore yields an actual numerical refutation.
+
+The inherited radix calibration cannot be replaced by naive order-preserving
+recoding. The proof correctly recodes formulas and variable labels together,
+uses rho8All for arbitrary recoded parameters, and gives total interpretations
+to unused residues 4 and 5. Its source/stack/scheduler pairing remains Cantor p;
+formula recoding is not asserted to conjugate whole machine configurations.
+Proof translations and command compilation are syntactic primitive-recursive
+constructions with PA-provable induction arguments, not semantic appeals to
+PA's own soundness. The positive-duration physical segments and exact startup
+support both halting directions by finite determinism.
+
+Presentation corrections requested
+- Replace the accidental literal 'quad' in the hereditary-recoding display
+  by the intended TeX spacing command.
+- State J(0)=0 explicitly in its course-of-values decoder definition.
+- Prefer the explicit frame domain 48+n-|p|, n>=0, over an unqualified phrase
+  'arbitrary affine header gap'.
+These are documented wording fixes, not changes to the literal machine.
+
+Limitations
+The review does not reprove every inherited PA calibration argument, does not
+provide a new proof-assistant kernel certificate, and does not establish a
+state-count lower bound. Structural novelty is relative to the complete
+recognized literal-table corpus at the pinned commit; source-only generators
+and unmaterialized parameter families are outside that finite census. The
+semantic materiality witness and new full source binding are separate from
+the graph-novelty computation.

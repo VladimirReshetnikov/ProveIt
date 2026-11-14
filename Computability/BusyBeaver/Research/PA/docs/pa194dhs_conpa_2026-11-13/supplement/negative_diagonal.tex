@@ -1,0 +1,179 @@
+\section{A logical simplification: diagonal vacuity only for negations}
+\label{sec:negative-diagonal}
+
+This supplement concerns the numerical calculus; it does not alter the
+accepted PA194DHS transition table. Replace the full diagonal schema
+\[
+ \Gamma(B)=B\to U(B,B)
+\]
+by its negative instances alone,
+\[
+ \Gamma^-(B)=\Gamma(N(B))
+       =N(B)\to U(N(B),N(B)),\qquad N(B)=B\to1.
+\]
+Keep all six ordinary heads, the dominated implicational head, the
+membership-vacuity/pointed-separation gate and its original distinctness
+guard, modus ponens, and theorem generalization. Call this calculus
+$\mathcal C_-$. All its displayed diagonal instances remain sound under
+the inherited PA interpretation, by the same code-freshness lemma.
+
+\subsection{Positive vacuity at the same binder}
+
+For a fixed numerical label $z$, write $\Box A=U(z,A)$ and
+$\Diamond A=N(\Box N(A))$. These are abbreviations for the original
+numerical constructors. We use the retained heads
+\[
+ \Diamond\Box A\to A,
+ \qquad
+ \Box A\to(\Box(A\to B)\to\Box B),
+\]
+closed generalization, and the derived classical implicational proof
+operations. The latter include contraposition, composition, and both
+double-negation implications; their derivations use the dominated basis
+and the first ordinary head, and use no diagonal or equality-vacuity axiom.
+
+\paragraph{Vacuity-negation lemma.}
+From a closed derivation of $A\to\Box A$ one can construct, uniformly,
+a closed derivation of $N(A)\to\Box N(A)$.
+Indeed contraposition gives
+$N(\Box A)\to N(A)$. Generalize this closed theorem and apply the sixth
+head to obtain
+\[
+ \Box N(\Box A)\to\Box N(A).
+\]
+The first head is $N(\Box N(\Box A))\to A$. Contraposition followed by
+double-negation elimination gives
+\[
+ N(A)\to\Box N(\Box A).
+\]
+Composition proves the assertion. Generalization is applied only to
+closed theorems; there is no assumption-dependent generalization step.
+This is the proof operation named \texttt{negationVacuity} in the supplied
+\texttt{PA196/Logic/Vacuity.lean}.
+
+\paragraph{Positive-from-negative lemma.}
+For arbitrary $B,z$, a closed derivation
+\[
+                     N(B)\to U(z,N(B))
+\]
+uniformly yields a closed derivation $B\to U(z,B)$. Apply the preceding
+lemma with $A=N(B)$, and compose the three implications
+\[
+ B\ \longrightarrow\ N(N(B))\
+   \longrightarrow\ U(z,N(N(B)))\
+   \longrightarrow\ U(z,B).
+\]
+The first arrow is double-negation introduction. The middle arrow is
+vacuity-negation applied to the input proof. The last arrow is obtained
+by generalizing the closed double-negation-elimination theorem
+$N(N(B))\to B$ and applying universal distribution. Thus replacement
+under $U$ is justified by an explicit quantifier-congruence derivation,
+not by treating double negations as identical numerical codes.
+
+Applying this lemma to $\Gamma^-(B)$ gives
+\begin{equation}
+ \mathcal C_-\vdash B\to U(N(B),B).
+ \label{eq:negative-fresh-vacuity}
+\end{equation}
+The binder in (\ref{eq:negative-fresh-vacuity}) is exactly
+$z=\operatorname{code}(N(B))$, not $z=\operatorname{code}(B)$.
+No relabeling or alpha-conversion of that binder has been asserted.
+Since $B<N(B)$, the chosen binder is still larger than every variable
+label appearing in $B$.
+
+\subsection{The two places in the inherited PA calibration}
+
+The supplied diagonal calibration replaces primitive equality vacuity in
+the original PA196 refutation compiler through two interfaces.
+
+\paragraph{Reverse membership rewriting.}
+In that argument the required formula is
+$C=E(a,b)\to(\chi(b)\to\chi(a))$, and the separator property is
+$\varphi=N(C)$ with separator label $c=\operatorname{code}(\varphi)$.
+The needed diagonal clause is exactly
+$\varphi\to U(c,\varphi)=\Gamma^-(C)$, which is an axiom of
+$\mathcal C_-$. Hence the negative-property specialization, pointed
+separation, label-collision cases, and two recovered reverse rewrites
+are unchanged. Membership vacuity is retained with its original guard;
+it has not been restricted to numerically large binders.
+
+\paragraph{Neighborhood equality.}
+For $B=E(a,b)$ choose
+\[
+                   z_0=\operatorname{code}(N(E(a,b))).
+\]
+The positive-from-negative lemma gives
+$E(a,b)\to U(z_0,E(a,b))$. Lifting the two-way membership rewrites at
+$z_0$ then yields
+\[
+ E(a,b)\to R(a,b,z_0),
+\]
+where
+\[
+ R(a,b,z)=U\bigl(z,M(a,z)\leftrightarrow M(b,z)\bigr)
+ \wedge U\bigl(z,M(z,a)\leftrightarrow M(z,b)\bigr).
+\]
+The freshness conditions hold
+because $z_0>E(a,b)>a,b$. For any requested $z\ne a,b$, the existing
+membership-only binder-transport proof sends $R(a,b,z_0)$ to $R(a,b,z)$;
+if $z=z_0$ use the identity proof. That transport uses membership
+vacuity, the witness head and the already recovered rewrites, and needs
+no primitive equality vacuity. The subsequent neighborhood-witness
+interface is obtained by the same existential-monotonicity argument as
+before, using this updated neighborhood implication.
+
+These are explicit replacements of the two diagonal-dependent
+calibration templates. They suffice to reuse the supplied PA196
+refutation compiler at its stated rewriting/neighborhood/witness
+interface. Conversely every $\mathcal C_-$ axiom belongs to the original
+sound separate-head calculus. Thus, at the same inherited calibration
+boundary as the main report, there are primitive-recursive refutation
+translations with PA-provable correctness, and
+\[
+ \mathrm{PA}\vdash
+ \left(\exists d\,\operatorname{Prf}_{\mathcal C_-}(d,1)
+        \leftrightarrow\neg\operatorname{Con}(\mathrm{PA})\right).
+\]
+The constructions use fixed finite proof templates, numerical constructor
+operations, a decidable binder-equality split and recursion on the input
+proof. No uniform arithmetic truth predicate, reflection principle, or
+unbounded search for fresh names is required. This does not claim that
+$\mathcal C_-$ derives every original $\Gamma(B)$ with its original
+binder $B$; the established result is the displayed refutation calibration.
+
+\subsection{Physical cost and the separate positive-offset experiment}
+
+The direct emitter for $\Gamma(N(D))$ uses three copies of the
+four-token expression
+\texttt{copyD, push, incT, cons}, followed by
+\texttt{cons, incT, incT, cons}. It therefore has sixteen tokens in
+place of the seven-token ordinary diagonal head. Nine direct insertions
+in the fixed A, D and Q grammar layouts, using each of A, D and H as the
+source parameter, had optimistic state counts at least 200. These
+profiles use the cached-MP, unsymmetric cache-test controller underlying
+those layouts, not the accepted DHS controller. These are
+compilation-cost screens, not accepted machines.
+
+A separate simple schema emits $\Gamma(D+1)$. It covers all positive
+codes, while the omitted $\Gamma(0)$ follows from the truth theorem,
+generalization at zero, and propositional weakening. Consequently this
+positive-offset variant has a direct proof translation for every
+original diagonal instance. The recorded 72-case screen concerned
+$\Gamma(R+k)$, with $R\in\{A,D,H\}$, $1\le k\le8$, in the same three
+fixed grammar layouts; its minimum optimistic count was 198. Only
+$k=1$ has been justified here by the preceding full-schema argument;
+other offsets in that screen were exploratory compilation cases.
+
+Both screens subtract a maximum matching of eligible contextual pairs
+from the raw control count; such a matching may still fail simultaneous
+compatibility. They do not certify all source outcomes, blank startup,
+or any global minimum over machines. The data are retained in
+\texttt{supplement/negative\_only\_screen.json} and
+\texttt{supplement/positive\_offset\_screen.json}. The logical simplification
+is proved, but no accepted machine below 194 states follows from it.
+
+The bundled standard-library replay script
+\texttt{supplement/semantic\_screens.py} recomputes these 81 profiles and
+the 105 earlier controller/radix crosses from three frozen grammar inputs,
+using the pinned construction compiler. All 186 recorded profile counts
+were reproduced; the controller/radix cross minimum was 194.

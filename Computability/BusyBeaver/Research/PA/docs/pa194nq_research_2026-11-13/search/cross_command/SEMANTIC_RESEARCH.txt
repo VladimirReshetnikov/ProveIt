@@ -1,0 +1,188 @@
+Semantic research and the remaining one-state gap
+================================================
+
+1. Status and exact verified object
+----------------------------------
+
+The research branch did not produce an accepted machine with 194 or fewer
+working states. It did produce a 195-state cross-command sharing candidate.
+This distinction is deliberate: a favorable optimizer score is not being
+reported as a verified smaller consistency machine.
+
+The delivered dense table research195/machine/machine.tm has working states
+0,...,194, start 0, separate halt label 195, and 390 binary transitions, and the usual
+blank two-way infinite tape. Its SHA-256 is:
+
+bc6137a920642ce7a83d00e7eb3d233843d46ae981b3ccfa520405933f34e9e7
+
+The physical count is 134 fixed controls + 69 AX readers - 8 simultaneous
+contextual identifications = 195. The fixed-state MP success edge is redirected
+to an AX reader that already exists. No additional physical control implements
+the new epilogue.
+
+Fresh reproducible checks establish:
+
+- 32 simultaneous two-cell fold contracts on the final quotient table.
+- 3,753 addressed primitive source instructions and 4,886 primitive outcomes.
+- All 4,886 arbitrary-register construction-runtime contracts pass, using
+  the inherited arithmetic-block lemmas: 1,575,244 symbolic operations,
+  maximum 488 per outcome.
+- Exact whole-tape blank initialization takes 58,168 transitions, reaching
+  the standard clean source seed at site 25 with logical registers
+  (2,0,0,0,0,0,0,0,0), head -2, and 26 one-valued spare blocks.
+- A 264,822-pair inductive positivity abstraction proves that the scheduler
+  and final-AX known-zero decrements have the same source successors as
+  their unconditional-return versions. The changed sites are 26 and 3553.
+
+The source-to-physical check uses the inherited construction runtime. A new
+independent literal-tape replay or kernel-checked end-to-end PA theorem is
+not claimed for this research candidate. Its logical calibration below is
+an ordinary proof outline, identifying exactly how the new interface can
+be compiled. It remains separate from the verified table/source results.
+
+2. The new sharing idea
+----------------------
+
+Let p(a,b) be Cantor pairing, [a;w]=p(a,w), I(a,b)=4 p(a,b), and
+U(i,a)=4 p(a,i)+2. A command store is (t,w,d,h): current formula, numerical
+proof stack, numerical offset, and cached formula. At successful MP, the
+inherited comparison routine has erased T,H,X,Y and retains D=b, where
+I(old_t,b)=old_h. The new epilogue is the already present AX fragment
+
+    copyD ; copyD ; copyD ; cons ; incT ; incT.
+
+Here copyD pushes T and then copies D into T while preserving D; cons
+replaces the top two formulas by their encoded implication. Starting with
+(T,W,D,H)=(0,w,b,0), the exact intermediate effects are
+
+    (b,[0;w],b,0)
+    (b,[b,0;w],b,0)
+    (b,[b,b,0;w],b,0)
+    (I(b,b),[b,0;w],b,0)
+    (U(b,b),[b,0;w],b,0).
+
+Thus successful MP returns both the consequence b on the stack and its
+universal generalization U(b,b) in the top. The failure branch is unchanged,
+returning (0,w,b,0). These are different command semantics from the prior
+original, no-push, and cached-head MP rules.
+
+The emitter uses the known Gamma(D) variant. Its only formula-word changes
+from the primary 194 emitter are the three copies at positions 121,122,123,
+changing A to D. Its final return decrements cleared D instead of taking an
+unconditional jump. None of these inherited Gamma(D) or known-zero ideas is
+claimed as new here. The new idea is cross-command sharing of the existing
+axiom fragment as an MP epilogue, together with the adjusted proof interface.
+
+Soundness has a short new step: when b has a derivation, generalization gives
+U(b,b), and both newly pushed entries b and 0 have derivations. Every visible
+formula and live canonical stack entry therefore retains a derivation.
+The Cantor alias [0;0]=0 is handled by the literal projection equations;
+the argument does not treat numerical stacks as free lists.
+
+For completeness, use cached Shift: it halts exactly when h=1, otherwise
+it maps (t,w,d,h) to (h,tail(w),d,head(w)). The inherited AX interface still
+pushes nine generated heads plus the saved old top. Consequently
+
+    Push = AX(0,0,0); Shift^9; MP(0)
+    Pop  = AX(0,0,0); Shift^11
+
+retain their usual contracts. Push's final MP necessarily fails because
+it compares an implication with a universal code. Pop preserves its top,
+clears d, and consumes one stack entry, except that it can halt early when
+the preserved top is 1. Early halting is an allowed successful outcome of
+a refutation compiler.
+
+A robust clearing word, also useful for the positive-sentinel proposal below,
+is
+
+    Discard = Push; Shift; Push; Shift.
+
+From any (t,w,d,h), its successive stores are
+
+    (0,[t;w],0,0), (0,w,0,t),
+    (0,[0;w],0,0), (0,w,0,0).
+
+The two explicit Shifts test cache 0 and cannot halt. This identity remains
+true under Cantor zero collapse and does not rely on MP(0) being a discard.
+An offset i can be installed from a clean store by an empty word for i=0,
+or MP(i) for i>0; the latter necessarily fails, leaving offset i.
+
+For an MP proof node, first reserve a zero below both recursively compiled
+premises. Immediately before the two premise Shifts the state is
+
+    (0,[a,I(a,b),0;w],0,0).
+
+If a=1, the second Shift already halts. Otherwise MP(b) succeeds and the
+new epilogue returns
+
+    (U(b,b),[b,0,0;w],b,0).
+
+Two further Shifts either halt if b=1, or return
+
+    (b,[0;w],b,0).
+
+One Pop consumes the reserved zero and returns (b,w,0,0), again allowing
+early halt for b=1. This supplies the new MP clause for the recursive proof
+compiler. The unchanged axiom selectors use the Gamma(D) parameter choice;
+the inherited generalization selector and exhaustive scheduler complete the
+intended reduction from a finite refutation to a finite source halt.
+
+The remaining logical dependency is the inherited syntactic calibration of
+the separate-head numerical calculus to PA, including its code-zero alias
+and bound-variable conventions. The new table checks do not independently
+re-prove that calibration. The outline is not labeled as a new completed
+end-to-end theorem.
+
+3. Positive truth-sentinel proposal
+----------------------------------
+
+A second source idea replaces the successful MP zero sentinel by the positive
+closed theorem 2=U(0,0):
+
+    success: (t,w,d,h) -> (b,[2;w],b,0), where b=d+x and I(t,b)=h.
+
+The required epilogue is incT;incT;copyD, starting after the comparison at
+T=H=0,D=b. That three-token fragment occurs consecutively in the AX word,
+so a suitable shared binary association might implement it without an added
+control. Its source position is 38--40 in the expanded primary 190-token
+emitter word.
+
+This change would make every successful MP push visible in the numerical
+stack, even when the former stack is 0: [2;w]>0. Soundness annotates the new
+entry by generalization of truth, so it adds no stronger logical axiom.
+However, it invalidates the old no-push identity Discard=MP(0): when the
+comparison succeeds at t=h=0, the proposed MP pushes 2. The robust
+Push;Shift;Push;Shift clearing word above avoids this error.
+
+For the modified MP compiler, reserve a zero below the premises. After
+success the store is (b,[2,0;w],b,0). Two Pops return (b,w,0,0), or halt
+already when b=1 in the cached-Shift convention. This gives the intended
+compiler adjustment. It addresses zero-stack collapse literally rather
+than assuming a nonzero stack sentinel that the actual table does not write.
+
+No 194-state physical implementation of this positive-sentinel idea is
+claimed. Its optimizer candidates have not been promoted to verified
+machines, and their numerical scores are deliberately not included in the
+results. The idea and compiler outline are supplied for further research.
+
+4. Search scope
+---------------
+
+search/search_ledger.json records seven completed compiled searches. They
+jointly proposed 14,947,566 grammar mutations and accepted 1,627,896 annealer
+moves. These are sums of event counts; they are not deduplicated layouts,
+source programs, or transition tables. Shared ancestors and revisits are
+intentional. Neither these counts nor failure to find a smaller accepted
+candidate supplies a lower bound.
+
+The completed searches varied association of the existing axiom macro word,
+required a sound reusable MP epilogue, checked the new incoming MP context,
+and scored simultaneous history folds. Later runs varied known-zero return
+registers and symmetric-Shift helper interfaces. They did not search all
+binary Turing machines, all proof calculi, all encodings, or all local
+simulation relations. No result about global minimality follows.
+
+Two preliminary positive-sentinel searches were stopped because their move
+set rarely exposed the required subtree; they are excluded from the aggregate.
+The preliminary Python beam exploration and other agents' searches are also
+excluded, preventing misleading totals across unlike scopes.

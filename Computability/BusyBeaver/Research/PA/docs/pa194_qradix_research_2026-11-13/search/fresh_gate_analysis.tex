@@ -1,0 +1,141 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,hyperref,xurl}
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\I}{\mathsf I}
+\newcommand{\M}{\mathsf M}
+\newcommand{\U}{\mathsf U}
+\title{A guard-free separation gate: soundness and the remaining completeness obligation}
+\date{13 November 2026 (Pacific time)}
+\begin{document}\maketitle
+\section{Precise proposal}
+Put $p(a,b)=(a+b)(a+b+1)/2+b$, $\I(a,b)=4p(a,b)$,
+$\M(a,b)=4p(a,b)+1$, and $\U(a,B)=4p(B,a)+2$.
+For arbitrary numerical inputs $a,b,A$, let
+\[
+ z=f(a,b,A)=\M(a,\I(b,A)).
+\]
+The property formula still has code $A$; only the separator variable label
+changes from $A$ to $z$. Define
+\begin{align*}
+ P&=A\to\M(z,b),\\
+ S&=\U\bigl(b,(\M(a,b)\to P)\wedge(\M(z,b)\to A)\bigr),\\
+ Q&=\U(z,S\to\neg P),\\
+ V&=\M(a,b)\to\U(z,\M(a,b)),\\
+ G_f(a,b,A)&=\neg(V\to Q).
+\end{align*}
+Classical abbreviations here retain the numerical false code $1=\M(0,0)$.
+This gate has no input guard. The original, separately emitted
+$\Gamma(A)=A\to\U(A,A)$ can be retained unchanged.
+
+\begin{lemma}
+$f(a,b,A)>a,b,A$ for all natural inputs, including $(0,0,0)$.
+The assertions are provable in PA.
+\end{lemma}
+\begin{proof}
+Cantor pairing satisfies $p(u,v)\ge u,v$. Consequently
+\[
+ f(a,b,A)\ge4a+1,
+ \qquad f(a,b,A)\ge4\I(b,A)+1=16p(b,A)+1
+ \ge16b+1,16A+1.
+\]
+At the all-zero input, $f(0,0,0)=1$; there is no code-zero collapse.
+Every variable label in the decoded formula $A$ is strictly less than $A$,
+so the variable with label $z$ is absent from that formula.
+\end{proof}
+
+\section{The soundness direction is available}
+Use the inherited PA translation: membership $\M(a,b)$ becomes the binary
+digit predicate $B(x_a,x_b)$; equality becomes arithmetic equality; the
+formula constructors become implication and quantification, with the
+usual special proof for $\I(0,0)=0$.
+
+\begin{proposition}
+There is a primitive-recursive supplier of PA proofs of the translation
+of every gate $G_f(a,b,A)$. PA proves the supplier's syntactic correctness.
+Thus the modified numerical calculus, with the other supplied heads and
+rules unchanged, has a PA-verifiable refutation translation into PA.
+\end{proposition}
+\begin{proof}
+Write $\phi=T(A)$. The strict bounds imply $z\ne a,b$ and that $x_z$
+is not free in $\phi$. The translated $V$ is an ordinary first-order
+vacuity theorem. To show $\neg T(Q)$, it suffices to prove
+$\exists x_z(T(S)\wedge T(P))$.
+
+If the labels $a,b$ differ, apply the inherited finite bit-comprehension
+supplier with bound $x_a+x_b+1$ and matrix
+\[
+ (B(x_a,y)\lor y=x_b)\wedge\phi[y/x_b].
+\]
+Its coded set $s$ satisfies the two implications in $T(S)$ and the
+distinguished-point condition $T(P)$. Bounded and unbounded versions agree
+because a set bit of $x_a$ has index less than $x_a$, and $s<2^n$ has no set
+bit at an index at least $n$.
+
+If the labels coincide, the first antecedent under the inner binder is
+$B(y,y)$, which PA refutes. Use bound $x_b+1$ and matrix
+$(y=x_b)\wedge\phi[y/x_b]$ instead. This supplies the required remaining
+implication and point. All substitutions are capture avoiding; the original
+free value of $x_b$ is preserved as a parameter in the proof template.
+
+In either case choose $x_z=s$. Freshness ensures this choice does not
+change $x_a,x_b$, or $\phi$. Then classical reasoning derives $T(G_f)$.
+The construction is the existing PA finite-comprehension proof template,
+now with a separately computed fresh witness label. It uses one PA
+induction instance on the finite-set bound, with the induction formula
+constructed from the input property; it uses no truth predicate or reflection.
+Composing these suppliers through a finite derivation gives the claimed
+uniform refutation translation.
+\end{proof}
+
+\section{Completeness is not established by these bounds}
+The old numerical gate directly supplies
+\[
+ V(a,b,c)=\M(a,b)\to\U(c,\M(a,b))
+ \quad(c\ne a,b)
+\]
+for every permitted label $c$. The modified gate supplies this only when
+$c=f(a,b,A)$, hence only for labels larger than $a,b$. For example,
+$V(1,2,0)$ has no direct instance in the modified family.
+This absence of a direct instance is not a nonderivability theorem.
+
+The supplied PA-refutation compiler uses arbitrary-label membership vacuity
+inside negative-property specialization, reverse membership rewriting,
+vacuity through Boolean and quantified formulas, and binder transport.
+Therefore it cannot simply be imported unchanged. An unrestricted
+alpha-conversion or first-order completeness theorem cannot be assumed
+while deriving the restricted numerical calculus's logical interfaces.
+
+Two legitimate routes remain: derive every required arbitrary-label
+vacuity instance in the new calculus, or provide a new PA-refutation
+compiler whose bound-variable discipline uses only available gate instances.
+Neither route is proved in this note. Hence the guard-free gate is a sound
+research proposal, not a completed Con(PA) equivalence or an accepted
+smaller consistency machine.
+
+\section{Prior-art comparison}
+The proposed separator/property split is distinct from the following
+recorded attempts, but the high-label vacuity obstruction is inherited.
+All paths refer to ProveIt commit
+\texttt{317b07268681b44ff352d173a162e2a8c241b2fe}, below
+\path{Computability/BusyBeaver/Research/PA/docs/}.
+\begin{itemize}
+\item \path{pa_consistency_cross_archive/theory_results.tex} pads the
+property to $A'=\I(\I(D+1,\I(H,D+1)),A)$, proving $A'>D,H$ and propositional
+equivalence to $A$. It explicitly leaves arbitrary-vacuity recovery open;
+its 210-control implementation attempt fails a source contract at site 2413.
+\item \path{pa_tm_extended_research_2026-11-13/report/pa_tm_extended_research.tex},
+``Why a larger fresh label does not simply remove the guard,'' considers
+$C=c+H+D+1$ and explains the same missing low-label vacuity interface.
+\item \path{pa194c_conpa/report/pa194c_conpa.tex} lists a cheaply constructed
+automatically fresh label as a further research question, with repeated
+label construction and storage identified as physical-cost concerns.
+\item The concrete dependency on unrestricted fresh labels is visible in
+\path{../jamesyc-upstream/pa196/PA196/Logic/Reverse.lean}, especially
+\texttt{negativeSpecialization} and \texttt{chiVacuity}, and in the ordinary
+diagonal-calibration replacement argument of
+\path{pa195_conpa_2026-11-13/report/sections/pa_calibration.tex}.
+\end{itemize}
+\end{document}

@@ -1,0 +1,186 @@
+% Standalone article fragment. Needs amsmath, amssymb, amsthm, hyperref.
+% The parent article should define theorem and lemma environments.
+\section{An independent source-level preservation proof}
+\label{sec:source-preservation}
+
+The proposed PA194QNS source is compared here with the exact PA194QN source
+from the incoming packet.  This comparison concerns resolved primitive
+instructions, not merely equal lists of macro names.  The independent checker
+\texttt{check\_source\_preservation.py} imports no builder or physical symbolic
+runtime.  It checks that the first 3649 instructions agree, that the old final
+five instructions and the new final two instructions are precisely those below,
+and that all entries to and exits from the changed region have been accounted
+for.  The proof for unbounded registers is the induction given in this section;
+the checker's bounded clock diagnostics are not used as a substitute for it.
+
+Logical registers are numbered
+$(N,T,W,A,D,H,X,Y,L)=(0,1,2,3,4,5,6,7,8)$.
+The complete Shift block begins at source ordinal 3642.
+Its only external incoming edge is $48\to3642$.  Both versions share the
+following prefix:
+\[
+ \texttt{while }T>0:\ T:=T-1;\ X:=X+1;
+ \qquad
+ \texttt{while }H>0:\ H:=H-1;\ T:=T+1;\ X:=X+1.
+\]
+The old trailer at ordinals 3649--3653 is
+\[
+ \texttt{while }X>0:\ X:=X-1;\ H:=H+1;
+ \qquad X:=X+1;\qquad \texttt{goto }0.
+\]
+The new trailer at ordinals 3649--3650 is
+\[
+ H:=H+1;\qquad\texttt{goto }0.
+\]
+The common comparator occupies source ordinals 0--10, has no incoming edge
+from outside except these two trailers, and has only the nonhalting exit
+$9\to11$.  Ordinal 10 is the unique halt instruction in either source.
+In particular, there is no unchecked jump into the middle of a replacement loop.
+
+\Needspace{12\baselineskip}
+\begin{lemma}[Literal destructive comparator]
+For arbitrary initial natural values $(H,X)=(u,v)$, the common comparator
+reaches source ordinal 10 if and only if $u=v$.  If $u\ne v$, it reaches
+ordinal 11.  In either case its final values are $H=X=0$, and every other
+register is preserved.  The number of primitive steps to that endpoint is
+\[
+ C(u,v)=
+ \begin{cases}
+ 3u+2,&u=v,\\
+ 2u+v+4,&u>v,\\
+ 3v+2,&u<v.
+ \end{cases}
+\]
+Here arriving at the halt instruction is the endpoint; executing the halt
+instruction itself is not counted.
+\end{lemma}
+\begin{proof}
+As long as both counters are positive, the instructions at 0, 1 and 2
+decrement each once and return to 0, in three steps.  There are
+$\min(u,v)$ such rounds.  At equality the two zero branches reach 10 in
+two further steps.  If $u>v$, the next decrement of $H$, the zero test of
+$X$, and the jump at 3 lead to the clearing loops in three steps, leaving
+$u-v-1$ in $H$.  Clearing it costs $2(u-v-1)$, and the final two zero tests
+and exit jump cost three.  The total is $2u+v+4$.
+If $u<v$, two steps leave $v-u-1$ in $X$ and reach ordinal 5.  Each unit
+remaining in $X$ costs three steps, and the final zero tests and exit cost
+three, giving $3v+2$.  These calculations are inductions on natural
+counter lengths and exactly match the literal branch targets.
+\end{proof}
+
+\begin{lemma}[All-register equivalence of the replacement]
+Enter ordinal 3642 with arbitrary natural values $(T,H,X)=(t,h,x)$,
+and put $k=t+h+x$.  Both old and new blocks reach ordinal 10 exactly when
+$k=1$.  Otherwise they reach ordinal 11 with
+\[
+                   (T,H,X)=(h,0,0),
+\]
+and identical values in every other register.
+\end{lemma}
+\begin{proof}
+The first loop has invariant $T+X=t+x$ and terminates with $T=0$.
+The second loop has invariants $T+H=h$ and $X+H=x+t+h$ and terminates
+with $(T,H,X)=(h,0,k)$.  The old trailer therefore enters the comparator
+with $(T,H,X)=(h,k,1)$; the new trailer enters it with $(h,1,k)$.
+The comparator lemma proves the same halt decision $k=1$ and the same
+complete nonhalting register store.  No zero assumption on the incoming
+scratch value $x$ is used.  At a clean command boundary $x=0$, both
+implement the original Shift guard $t+h=1$.
+\end{proof}
+
+The common prefix takes $3t+4h+2$ primitive steps.  The old and new
+trailer-plus-comparator costs are respectively $3k+3+C(k,1)$ and
+$2+C(1,k)$.  Their difference is
+\[
+ \Delta(k)=
+ \begin{cases}0,&k=0,\\4,&k=1,\\2k+4,&k\ge2.\end{cases}
+\]
+This is an exact source-level clock comparison for this complete block.
+It is not a claim of a uniform improvement in literal Turing-machine time:
+the binary decoder paths and tape excursions have their own costs.
+
+\begin{theorem}[PA-provable source halting equivalence]
+Starting from the common clean source entry, PA194QNS halts if and only if
+the supplied PA194QN source halts.  The two directions have
+primitive-recursive transformations of finite halting traces, and PA
+proves their correctness.
+\end{theorem}
+\begin{proof}
+Treat a visit to ordinal 3642, followed by its complete trailer and
+comparator, as one block.  All other steps are identical, and the edge
+audit shows that this decomposition omits no alternative entrance into
+an internal state of the changed block.  The block lemma gives identical
+normal exits and matching halting endpoints.  Its loops are total, with
+the displayed positive arithmetic clocks.  Replace complete visits one
+at a time, and use induction on the finite trace decomposition.
+The traces can be generated by primitive recursion using the explicit
+counter loops.  The source starts at ordinal 25 and is outside the
+changed region; thus the same relation applies from the actual clean
+initial source configuration.  Every statement uses only finite codes,
+primitive-recursive operations and ordinary arithmetic induction.
+\end{proof}
+
+\subsection{What remains inherited}
+The new replacement does not alter the Q axiom emitter, the no-push
+modus-ponens command, the command scheduler, or any numerical axiom.
+The exact command store remains $(t,w,d,h)$, with
+\[
+ S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1,
+ \end{cases}
+\]
+and, for $b=d+x$,
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(b,w,b,0),&I(t,b)=h,\\(0,w,b,0),&I(t,b)\ne h.
+ \end{cases}
+\]
+In particular, the successful MP offset is $b$, not zero.
+The supplied QN proof compiler handles this by reserving a zero below
+the two premises and using a final Pop.  The Q emitter changes only
+$I(P,I(Q,R))$ to $I(Q,I(P,R))$ in the sixth logical head.
+The unchanged dominated implication basis derives unrestricted premise
+exchange without using the quantifier-distribution head.  Therefore
+fixed proof templates translate the Q calculus to the original calculus
+and back.  No use of an arbitrary permutation as a logical axiom is made.
+
+The resulting proof chain has three separate links: the inherited
+PA/calculus proof translations; the exact new source equivalence just
+proved; and the candidate's positive physical source contracts and
+complete blank startup.  Their composition gives the ordinary
+mathematical statement
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Halt}_{\rm blank}(\mathrm{PA194QNS})
+ \leftrightarrow
+ \exists p\,\operatorname{Prf}_{\mathrm{PA}}(p,\ulcorner0=1\urcorner).
+\]
+Negation gives the desired consistency equivalence.  This written proof
+and the executable certificates are not a new end-to-end Lean or Rocq
+theorem, and they do not assert the repository's separate iPRA endpoint.
+
+\subsection{The QS companion}
+The same block proof also applies to PA194QS.  For its parent source,
+restore \texttt{node163=(node6,node55)} in the supplied QN source DAG,
+leaving the Q emitter unchanged.  This restores the original successful-MP
+dummy push.  The independent \texttt{bind\_q\_sources.py} expands the DAG
+and resolves jumps by ordinal subtree intervals.  As a positive control
+it first reconstructs the supplied 3654-site QN graph exactly; it then
+reconstructs the root's QNS and QS graphs exactly.  The Q-push parent has
+3673 instructions.  Its first 3668 agree with QS, whose complete Shift
+block starts at 3661 and whose replacement trailer has two instructions.
+The only external edge into the block is $48\to3661$; its comparator and
+normal exit are the same ordinals 0--10 and 11 as above.  All invariants
+and clock formulae are consequently identical after this fixed ordinal shift.
+
+The Q-push source inherits the original separate-head command compiler:
+the Q change only replaces the sixth axiom head by its premise-exchanged
+counterpart, with the same number and order of stack entries.  The fixed
+premise-exchange templates preserve refutations in both directions, while
+the original pushing MP and sum-guard Shift are unchanged.  Thus the
+same chain of PA-provable finite translations establishes the ordinary
+consistency equivalence for QS when composed with its own physical
+contracts and startup.  QS and QNS must use their respective original
+and no-push proof compilers; their MP commands are not identified with
+one another.

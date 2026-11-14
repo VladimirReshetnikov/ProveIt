@@ -1,0 +1,73 @@
+{
+  "requested_target": "A binary blank-start PA consistency TM with fewer than194 working states; failing that a materially different194-state design.",
+  "primary_target_achieved": false,
+  "fallback_delivered": [
+    "PA194Q5",
+    "PA194Q6"
+  ],
+  "theorem": "PA proves (not Halt(M,blank)) iff Con(PA), for each delivered machine.",
+  "theorem_status": "Ordinary mathematical proof with attributed prior calibration and executable physical/source certificates; no new end-to-end proof-assistant endpoint.",
+  "snapshot": "317b07268681b44ff352d173a162e2a8c241b2fe",
+  "report": "report/pa194_qradix.pdf",
+  "report_pages": 19,
+  "candidates": [
+    {
+      "name": "PA194Q5",
+      "status": "PASS",
+      "working_states": 194,
+      "transition_rows": 388,
+      "machine_file": "machines/PA194Q5/machine.tm",
+      "sha256": "150041f819135fa32b4521154823f1b96e635e8141329a6e8fbf15988baa073a",
+      "primitive_sites": 3734,
+      "primitive_outcomes": 4841,
+      "state_budget": {
+        "fixed": 135,
+        "AX_readers": 67,
+        "folds": 8
+      },
+      "construction_certificates": "PASS",
+      "independent_literal_tape_audit": "PASS",
+      "whole_blank_startup_steps": 58320,
+      "prior194_classes_checked": 40,
+      "prior_graph_matches": []
+    },
+    {
+      "name": "PA194Q6",
+      "status": "PASS",
+      "working_states": 194,
+      "transition_rows": 388,
+      "machine_file": "machines/PA194Q6/machine.tm",
+      "sha256": "7f53cacaa0533e601bad9685957a1ef5fede892533e0d62bd49684ef7cf984d4",
+      "primitive_sites": 3795,
+      "primitive_outcomes": 4902,
+      "state_budget": {
+        "fixed": 135,
+        "AX_readers": 67,
+        "folds": 8
+      },
+      "construction_certificates": "PASS",
+      "independent_literal_tape_audit": "PASS",
+      "whole_blank_startup_steps": 58320,
+      "prior194_classes_checked": 40,
+      "prior_graph_matches": []
+    }
+  ],
+  "comparison": {
+    "packets": 54,
+    "existing194_classes": 40,
+    "combined_current_action_graph_classes": 501
+  },
+  "search": {
+    "allocation_runs": 10,
+    "mutation_iterations": 14425456,
+    "QN_zero_only_windows": 29479,
+    "QN_modular_and_periodic_windows": 24388,
+    "physical_local_screens_completed": 6,
+    "physical_candidates": 0,
+    "not_a_lower_bound": true
+  },
+  "novelty_scope": "Full transition tuples under arbitrary state renaming, any spanning root, global reflection, global bit complement, and ignoring final halting write/move.",
+  "reproduction_command": "python3 -B reproduce.py",
+  "deterministic_package_replay": "PASS",
+  "replay_receipt": "verification/reproduction_receipt.json"
+}

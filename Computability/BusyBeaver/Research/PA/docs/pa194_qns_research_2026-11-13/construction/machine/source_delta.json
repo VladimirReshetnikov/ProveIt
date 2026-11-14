@@ -1,0 +1,89 @@
+{
+  "parent": "PA194QN",
+  "parent_dense_sha256": "d1cf0f6e7a3c8f999d045694efc107dd1f9a03d45dd6c15e3d197ff7754c7231",
+  "old_sites": 3654,
+  "new_sites": 3651,
+  "unchanged_instruction_prefix": 3649,
+  "old_tail": [
+    [
+      "dec",
+      6,
+      3652,
+      3650
+    ],
+    [
+      "inc",
+      5,
+      3651
+    ],
+    [
+      "jump",
+      3649
+    ],
+    [
+      "inc",
+      6,
+      3653
+    ],
+    [
+      "jump",
+      0
+    ]
+  ],
+  "new_tail": [
+    [
+      "inc",
+      5,
+      3650
+    ],
+    [
+      "jump",
+      0
+    ]
+  ],
+  "incoming_from_prefix": [
+    [
+      3645,
+      3649
+    ]
+  ],
+  "changed_nodes": {
+    "node168": {
+      "old": [
+        "node37",
+        "node57"
+      ],
+      "new": [
+        "node37",
+        "node56"
+      ]
+    },
+    "node171": {
+      "old": [
+        "node170",
+        "node23"
+      ],
+      "new": [
+        "node170",
+        [
+          [
+            "leaf",
+            "inc",
+            5
+          ],
+          [
+            "leaf",
+            "continueTo",
+            3
+          ]
+        ]
+      ]
+    }
+  },
+  "logical_registers": {
+    "T": 1,
+    "H": 5,
+    "X": 6
+  },
+  "arithmetic_statement": "For arbitrary incoming T=t,H=h,X=x the compared operands become (x+t+h,1) in QN and (1,x+t+h) in QNS; both halt iff x+t+h=1 and otherwise leave T=h,H=X=0."
+}

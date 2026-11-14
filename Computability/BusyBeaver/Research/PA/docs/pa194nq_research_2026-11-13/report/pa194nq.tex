@@ -1,0 +1,996 @@
+\documentclass[10pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.86in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+pdftitle={PA194NQ: a different 194-state PA-consistency machine},
+pdfauthor={Research report prepared for Vladimir Reshetnikov},
+pdfsubject={Comparison, construction, ordinary PA proof, and a rejected 193-state shortcut}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small PA194NQ: construction and comparison}
+\fancyhead[R]{\small 13 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\setlist{nosep,leftmargin=*}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newcommand{\AX}{\mathsf{AX}}
+\newcommand{\MP}{\mathsf{MP}}
+\newcommand{\Sh}{\mathsf S}
+\newcommand{\Pop}{\mathsf{Pop}}
+\newcommand{\Push}{\mathsf{Push}}
+\newcommand{\Discard}{\mathsf{Discard}}
+\newcommand{\Offset}{\mathsf{Offset}}
+\newcommand{\Gen}{\mathsf{Gen}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newcommand{\C}{\mathcal C}
+\newcommand{\CQ}{\mathcal C_Q}
+\title{\textbf{PA194NQ: a different 194-state\protect\\PA-consistency machine}\\[5pt]
+\large A current-corpus comparison, a commuting source construction,\protect\\
+and a refutation of a tempting 193-state shortcut}
+\author{Research report prepared for Vladimir Reshetnikov}
+\date{13 November 2026, Pacific time}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We compare the 51 delivered PA-machine research packets present in
+\texttt{VladimirReshetnikov/ProveIt} at commit
+\texttt{3cc7fbf75ba111a0da696ef2f6001dd528891bd5}. The recognized 194-state
+frontier has 34 distinct control graphs: 21 accompanied by reported ordinary
+PA-calibration arguments, nine auxiliary or search designs, and four rejected
+designs. Several headline names are duplicates.
+
+No machine below 194 states with the required consistency equivalence is
+established. The accepted alternative is an explicit new 194-state binary,
+one-tape, blank-start machine, PA194NQ. It combines no-push modus ponens with
+the exchanged quantifier-distribution emitter. These changes commute at the
+resolved source level. They alter recurring numerical and storage behavior;
+the resulting table is absent from all 34 prior graph classes, even after
+state renaming, root changes, reflection, and symbol exchange.
+
+Using the supplied ordinary syntactic calibration, we give a PA-formalizable
+proof of
+\[\PA\vdash\neg\Halt(\mathrm{PA194NQ})\leftrightarrow\Con(\PA).\]
+Both physical checkers pass all 4,755 primitive source outcomes, and an
+independent checker rederives the four register-list lemmas from the literal
+table. The complete blank startup is checked at 58,154 transitions. The proof
+is an ordinary mathematical proof with executable certificates, not a newly
+compiled end-to-end Lean or Rocq theorem.
+
+A second result explains why a physically valid 193-state coefficient-three
+candidate is unsuitable: its numerical calculus has an explicit fourteen-line
+refutation, also expanded into 73,393 independently checked primitive steps.
+This failure occurs at the logical layer, despite successful source and
+startup checks.
+\end{abstract}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{Result, conventions, and proof boundary}
+
+\subsection{The accepted literal machine}
+
+The authoritative table is \file{machine/machine.tm}. Its working states are
+\(0,\ldots,193\), its initial state is 0, and its separate terminal halt label
+is 194. The halt label has no outgoing rows and is excluded from the state
+count. The tape is two-way infinite over \(\{0,1\}\), initially all zero,
+with the head at position zero. Every transition writes one bit and moves
+exactly one cell left or right. There are 388 transitions.
+
+Each line has the format
+\[
+        \texttt{current\_state\quad read\_bit\quad write\_bit\quad L/R\quad next\_state}.
+\]
+The table's SHA-256 is
+\begin{center}\small\ttfamily
+d1cf0f6e7a3c8f999d045694efc107dd1f9a03d45dd6c15e3d197ff7754c7231.
+\end{center}
+The same machine in sparse compiler labels is
+\file{machine/machine.native.tm}, with initial label 74 and halt label 254.
+\file{machine/labels.json} gives the exact bijection from dense labels to
+native labels, including halt. Every working state is graph-reachable from
+the designated start; this is a graph fact, not a claim that each control is
+visited on the actual blank run.
+
+\begin{theorem}[Ordinary mathematical PA calibration]\label{thm:main}
+For the exact table specified above,
+\[
+ \PA\vdash
+ \bigl(\neg\Halt(\mathrm{PA194NQ},\mathrm{blank})
+                   \leftrightarrow\Con(\PA)\bigr).
+\]
+Here halting is the usual existence of a coded finite run from the stated
+blank configuration, and \(\Con(\PA)\) means that no finite PA proof derives
+\(0=1\), for the same ordinary effective presentation of PA used in the
+inherited calibration.
+\end{theorem}
+
+The theorem is proved by finite syntactic transformations and source/tape
+simulation below. Its logical calibration depends on identified supplied
+mathematical results, whose texts are retained in \file{references/logical/}.
+We do not turn a conditional Lean theorem into an unconditional one, nor
+infer PA derivability from a standard-model execution experiment.
+
+\subsection{What is and is not new}
+
+The separate-head numerical calculus, no-push MP rule, premise-exchange
+theorem, compiler, and physical proof engines are supplied prior
+work~\cite{primary,nopush,exchange,upstream}. The
+new accepted object is their particular 194-state composition, with exact
+source commutation, a complete preservation argument, an updated full-corpus
+comparison, and fresh independent physical checks. This is not a claim of a
+new axiom basis, a state-count breakthrough, or global minimality.
+
+The current repository pursues the stronger endpoint
+\(\mathrm{iPRA}\vdash\Con(\PA)\leftrightarrow\neg\Halt(M)\), and explicitly
+states that neither machine-specific direction is complete for its primary
+PA194 endpoint~\cite{repo}. That limitation is respected here. An ordinary proof about
+PA derivability is a different result from an end-to-end proof-assistant
+export or a proof in iPRA. The Python certificates expose their trusted
+mathematical rules; they do not constitute a foundational kernel.
+
+\section{Comparison of the current corpus}\label{sec:comparison}
+
+\subsection{Pinned scope and deduplication}
+
+The comparison is pinned to commit
+\texttt{3cc7fbf75ba111a0da696ef2f6001dd528891bd5}, using both requested PA
+and incoming paths. The repository had already moved 47 archives into
+\file{Computability/BusyBeaver/Research/PA/docs}; four newer ZIPs remain in
+\file{docs/incoming}. The packet ledger therefore covers 51 deliveries.
+
+The audit reads the pinned Git object tree, scans all 17,557 tracked blobs
+under the two primary paths, and recursively inspects ZIP payloads, expanding
+identical payloads once (30 archive paths, 18 distinct payloads). It
+recognizes complete five-column numeric binary tables in \file{.tm},
+\file{.txt}, \file{.tsv}, and \file{.csv} files. It does not pretend to
+recognize every transition system encoded only in JSON, program source,
+or prose. Source-only proposals are separately considered in the narrative
+prior-art audit. The contribution claims of all packet READMEs are reviewed;
+the historical proofs are not all independently rerun.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Quantity & Count\\\midrule
+Filed packets / fresh incoming ZIPs & 47 / 4\\
+Recognized current literal table occurrences & 1,811\\
+Distinct current byte forms & 683\\
+Action-graph classes with a spanning root & 487\\
+Additional disconnected synthetic fixtures & 2\\
+Current 194-state graph classes & 34\\
+Reported ordinary PA arguments / auxiliary / rejected & 21 / 9 / 4\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are not counts of proved consistency machines. The scan includes
+unfolded parents, rejected experiments, search inputs, and reference copies.
+The repository's older catalog describes 3,803 originally delivered table
+paths; many redundant physical files have since been removed. Its count
+therefore differs from the current literal-occurrence count. The complete
+machine and packet records, including exact paths and hashes, are in
+\file{comparison/frontier194.csv} and \file{comparison/packet_ledger.csv}.
+
+There are 26 194-state classes with a start declared in the table or fixed by
+the dense convention. Eight other classes occur only in native numbering
+without a start declaration in that file. For the cosmetic-novelty exclusion,
+the comparison conservatively allows every graph-spanning root instead of
+silently assigning one.
+
+\subsection{Important exact duplicates}
+
+PA194HS and PA194NS deliver identical dense bytes, with SHA-256 beginning
+\texttt{19935635f2c5}. The two incoming N6 packets deliver identical PA194N6
+bytes, beginning \texttt{36da42a81d60}. PA194X is PA194CSZ. Five headline
+PA194C submissions repeat one principal machine. Consequently the four
+incoming archives add exactly four new 194-state classes: H, HS/NS, N5,
+and N6. Counting filenames or submitted reports would overstate the frontier.
+
+\subsection{Mechanism-level comparison}
+
+\begin{longtable}{@{}p{0.22\linewidth}p{0.73\linewidth}@{}}
+\toprule
+Family & Contribution and limitation\\\midrule\endfirsthead
+\toprule Family & Contribution and limitation\\\midrule\endhead
+U208 and PA209 & Earlier common ancestry, with conditional-context,
+entry-context, and finite-history reductions. Useful for the source-calculus
+and history-fold techniques, but larger than the current frontier.\\[4pt]
+PA196 & James Chang's imported development and alternative decoder layouts.
+The exported PA implication from literal nonhalting to consistency does not
+by itself supply its converse. Later ordinary reports add the syntactic
+reverse direction.\\[4pt]
+PA195 families & Separate diagonal head, reader reassociation, and compatible
+folds; several genuinely different 195-state controllers and source emitters
+also remain. A rejected smaller scanner must not be counted as a result.\\[4pt]
+PA194, 68/8, AD & The main count is \(134+67-7=194\); a second source-identical
+layout has 68 readers and eight folds. AD exchanges physical register slots.\\[4pt]
+C, CS, CZ, CSZ/X & Cached-result MP, cache-only Shift, symmetric comparison,
+and known-zero entry jumps. Some compositions have their own invariant and
+physical evidence; CZ is retained as auxiliary in the conservative ledger.\\[4pt]
+M4R, M5, M6 & Reassociated constructor implementation and coefficients five
+or six. These require formula recoding and a generic constructor proof,
+not just a changed literal numeral.\\[4pt]
+D and Q & D changes the separately emitted diagonal instance to
+\(\Gamma(D)\). Q exchanges the two curried premises of quantifier
+distribution. Both need logical proof translations.\\[4pt]
+J, F, A, R, ZR & Known-zero decrements replace source jumps; R also changes
+1,111 source addresses. An invariant and a separate bootstrap check are
+essential. Some nearby source-valid variants halt during bootstrap.\\[4pt]
+N & Removes successful MP's dummy-zero push, retains the consequent in
+visible top and offset, and retains the original \(T+H=1\) Shift test.
+Its all-store compiler explicitly reserves the missing zero.\\[4pt]
+H, HS/NS & Compose N-style MP with cache-only Shift, with or without the
+symmetric comparator. HS and NS are one table.\\[4pt]
+N5, N6 & Compose no-push MP with coefficient-five or coefficient-six
+constructors; N6 has two duplicate incoming deliveries.\\[4pt]
+PA194NQ (this report) & Combines N's visible-top MP and original Shift with
+the exchanged distribution emitter. The 79 changed instructions and
+19-site MP deletion occupy disjoint source regions.\\
+\bottomrule
+\end{longtable}
+
+The full frontier ledger also lists nine auxiliary and four rejected graph
+classes individually. Three rejected comparator-return variants halt on
+blank tape after 1,361 steps according to their supplied exact replays.
+The fourth rejected design is a shortened source-address scanner. Neither
+a plausible source rewrite nor valid local folds establish a correct blank
+machine by themselves.
+
+Source-level prior art includes separate \(\Gamma(H)\), fusions of diagonal
+vacuity into several other heads, distribution and currying inside the
+separation gate, premise and parameter permutations, and residual MP.
+We do not claim those proposals as new. The ZFC work contributes reusable
+history-sensitive folds, whole-register-list reasoning, and carried-store
+compiler techniques. The concise-iPRA development helps distinguish proof
+levels, but substituting an iPRA-consistency checker would change the target
+consistency statement; it is not an automatic state reduction for this
+task~\cite{related}.
+
+\section{The numerical calculus and the exchanged head}\label{sec:logic}
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \quad I(a,b)=4p(a,b),\quad M(a,b)=4p(a,b)+1,
+\]
+\[
+ U(i,B)=4p(B,i)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+Code 0 denotes truth, code 1 is \(M(0,0)\), and \(N(B)=I(B,1)\) denotes
+negation. Write \(A\to B=I(A,B)\),
+\(A\wedge B=N(I(A,N(B)))\), and
+\(\exists x_i B=N(U(i,N(B)))\).
+All these expressions denote natural-number operations. In particular,
+\(I(0,0)=0\); the proof never assumes a freely generated injective formula
+syntax at that exceptional code.
+
+For arbitrary natural parameters \(D,A,H\), the six ordinary AX heads in
+emission order are
+\begin{align*}
+ f_1&=(\exists x_D\,U(D,H))\to H,\\
+ f_2&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ f_3&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ f_4&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ f_5&=\exists x_D E(H,D),\\
+ f_6&=U(D,A)\to\bigl(U(D,I(A,H))\to U(D,H)\bigr).
+\end{align*}
+PA194NQ replaces only the last head by
+\begin{equation}\label{eq:exchanged-head}
+ f_6^{Q}=U(D,I(A,H))\to\bigl(U(D,A)\to U(D,H)\bigr).
+\end{equation}
+The separate diagonal head is
+\(\Gamma(A)=I(A,U(A,A))\). The dominated implicational head is
+\[
+ \rho(D,A,H,d)
+ =I\bigl(I(I(H,d),D),I(I(D,H),I(A,H))\bigr),\qquad d\le D.
+\]
+
+For completeness, the remaining guarded gate uses
+\begin{align*}
+ V&=M(H,D)\to U(A,M(H,D)), & P&=A\to M(A,D),\\
+ S&=U\bigl(D,(M(H,D)\to P)\wedge(M(A,D)\to A)\bigr),\\
+ Q_0&=U(A,S\to N(P)).
+\end{align*}
+Its value is
+\(g(H,D,A)=N(I(V,Q_0))\) when \(A\ne D,H\), and 0 otherwise.
+Truth, these heads, modus ponens, and generalization of theorems define the
+supplied separate-head numerical calculus \(\C\). Replacing \(f_6\) by
+\(f_6^Q\) defines \(\CQ\).
+
+\begin{lemma}[Uniform premise exchange]\label{lem:exchange}
+The calculi \(\C\) and \(\CQ\) have primitive-recursive proof translations
+in both directions preserving every numerical conclusion. PA proves the
+correctness of these translations.
+\end{lemma}
+\begin{proof}
+The unchanged restricted \(\rho\) basis derives the implicational K and S
+schemas and hence the theorem
+\[
+ (P\to(Q\to R))\to(Q\to(P\to R)).
+\]
+\file{mathematics/exchange_certificate.py} constructs and independently
+replays a 61-line parametric certificate: 17 K instances, 14 S instances,
+and 30 applications of MP, with no hypotheses. Substituting
+\[
+ P=U(D,A),\quad Q=U(D,I(A,H)),\quad R=U(D,H)
+\]
+converts \(f_6\) to \(f_6^Q\). Interchanging P and Q gives the reverse
+conversion. Replace each affected axiom line by this fixed proof template;
+all other axioms and inference rules are unchanged. Instantiating a finite
+template and concatenating coded finite derivations are primitive recursive.
+Their verification is an induction on the input derivation, formalizable in
+PA. Since this argument evaluates identities in the numerical implication
+operation, it does not require disjoint syntax at code zero.
+\end{proof}
+
+The compiler's emitter is also checked independently as a free-constructor
+calculation before numerical evaluation. Its complete word has 190 macro
+tokens. Only positions 102 through 120, in zero-based numbering, change.
+The old and new blocks have the same parameter use and stack effect; their
+final formulas are exactly the two displayed heads. For example, at
+\((A,D,H)=(1,0,0)\), their codes are respectively 31,609,172 and 76,268.
+This is a recurring numerical difference, not a change of labels.
+
+\section{Commands, carried stores, and proof compilation}\label{sec:commands}
+
+\subsection{Exact contracts}
+
+A command store is \((t,w,d,h)\), consisting of visible top, Cantor-coded
+stack, numerical offset, and cached theorem. Write \([a;w]=p(a,w)\), and
+use iterated brackets with the leftmost entry on top. The total projections
+satisfy
+\[
+ \operatorname{hd}[a;w]=a,\quad \operatorname{tl}[a;w]=w,
+ \quad [0;0]=0,\quad \operatorname{hd}(0)=\operatorname{tl}(0)=0.
+\]
+The numerical stack is not a free list.
+
+With \(y=d+x\), PA194NQ's MP contract is
+\begin{equation}\label{eq:mp}
+ \MP_x(t,w,d,h)=
+ \begin{cases}
+ (y,w,y,0),&I(t,y)=h,\\
+ (0,w,y,0),&I(t,y)\ne h.
+ \end{cases}
+\end{equation}
+Successful MP leaves the stack unchanged, instead of inserting a dummy
+zero. It retains the consequent in both visible top and numerical offset.
+Shift is the original operation
+\begin{equation}\label{eq:shift}
+ \Sh(t,w,d,h)=
+ \begin{cases}
+ \mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1.
+ \end{cases}
+\end{equation}
+
+Put \(D=d+x\), \(H=h+y\). The AX operation is
+\begin{equation}\label{eq:ax}
+ \AX_{A,x,y}(t,w,d,h)
+ =\bigl(g(H,D,A),[q_1,\ldots,q_9,t;w],0,0\bigr),
+\end{equation}
+where
+\[
+ (q_1,\ldots,q_9)
+ =(\Gamma(A),f_6^Q,f_5,f_4,f_3,f_2,f_1,
+                 \rho(D,A,H,d),U(d,h)).
+\]
+Thus nine generated entries and the saved old top are pushed. Heads
+\(q_1,\ldots,q_8\) and the gate are multiples of four; \(q_9\) has residue
+two and is at least two. None is code one, independently of any consistency
+assumption. The guard and cleanup suffix are unchanged.
+
+The following proof is an explicit specialization of the supplied N
+compiler. The exchanged head changes the interpretation of selector
+\(q_2\), but not any stack count, residue argument, or command word.
+
+\subsection{Uniform stack words}
+
+Let \(A_0=\AX_{0,0,0}\), and define
+\[
+ \Push=A_0;\Sh^9;\MP_0,\qquad
+ \Pop=A_0;\Sh^{11},\qquad
+ \Discard=\MP_0,\qquad \Offset_i=\MP_i.
+\]
+Their exact contracts are
+\begin{align}
+ \Push(t,w,d,h)&=(0,[t;w],0,0),\label{eq:push}\\
+ \Pop(t,[a;w],d,h)&=(t,w,0,a),\label{eq:pop}\\
+ \Discard(t,w,0,h)&=(0,w,0,0),\label{eq:discard}\\
+ \Offset_i(0,w,0,0)&=(0,w,i,0).\label{eq:offset}
+\end{align}
+Push and Pop are total on all natural stores, including false top code one.
+To see this, AX followed by nine Shifts gives
+\((q_8,[t;w],0,U(d,h))\); ten Shifts give \((U(d,h),w,0,t)\).
+All these Shifts are safe by the displayed residues. The eleventh tests
+\(U(d,h)+t\ge2\), so it also cannot halt. The MP in Push compares an
+implication with a residue-two universal code and returns truth. In
+Discard, both MP branches coincide because the proposed consequent is zero.
+For Offset, \(I(0,i)>0\) when \(i>0\), so comparison with cached zero
+fails; the case \(i=0\) has the same stated result.
+
+These equalities also cover the collapsed zero-pair cases: Pop from a zero
+stack returns cached zero, and Push of zero onto zero returns zero stack.
+The symbolic word checker expressly includes these cases.
+
+\subsection{Axiom selectors and generalization}
+
+From a store \((t,w,0,0)\), selector
+\[
+ \Discard;\AX_{A,D,H};\Sh^{j+1};\Pop^{9-j}
+ \qquad(1\le j\le7)
+\]
+returns \((q_j,w,0,0)\). The remaining \(9-j\) items are precisely the
+unselected tail and the saved zero; the final Pop installs that zero in
+cache. In particular selector two returns \(f_6^Q\), not the old \(f_6\).
+For \(u\le a\), the dominated-head selector is
+\[
+ \Discard;\Offset_u;\AX_{b,a-u,c};\Sh^9;\Pop,
+\]
+which returns \((\rho(a,b,c,u),w,0,0)\). The gate selector is
+\(\Discard;\AX_{A,D,H};\Pop^{10}\). Truth uses Discard alone.
+
+Generalization is compiled by
+\[
+ \Gen_i=\Push;\Offset_i;\Sh;\AX_{i,0,0};\Sh^{10}.
+\]
+From \((a,w,0,0)\) it returns \((U(i,a),w,0,0)\). Immediately before AX,
+the store is \((0,w,i,a)\); the final ten Shifts apply the AX identity
+above with saved top zero. This word remains total when \(a=1\).
+
+\subsection{The missing zero is reserved by the proof compiler}
+
+Suppose recursively compiled proofs return \(a\) and \(I(a,b)\), each
+preserving its input stack and clearing offset and cache, or halt early.
+The MP proof word is
+\begin{equation}\label{eq:compile-mp}
+ \Discard;\Push;C(I(a,b));\Push;C(a);\Push;
+                         \Sh;\Sh;\MP_b;\Pop.
+\end{equation}
+Before the two consecutive Shifts the store is
+\((0,[a,I(a,b),0;w],0,0)\). The first Shift exposes \(a\) in cache.
+The second either halts if \(a=1\), or gives
+\((a,[0;w],0,I(a,b))\). Successful MP then returns
+\((b,[0;w],b,0)\), and the total Pop returns \((b,w,0,0)\).
+The zero is inserted once at the compiler level, below the premise
+computations. Nothing assumes that a numerical zero pair has a distinct
+list representation.
+
+\begin{lemma}[All-store refutation compiler]\label{lem:compiler}
+There is a primitive-recursive map from a \(\CQ\)-derivation \(p\) to a
+finite command word \(C(p)\) such that, from every \((t,w,0,0)\), it either
+halts or returns \((\operatorname{concl}(p),w,0,0)\). If \(p\) concludes
+code one, then \(A_0;C(p);\Sh\) halts from every natural store.
+PA proves these assertions about coded finite executions.
+\end{lemma}
+\begin{proof}
+Induct on the coded derivation. The axiom cases use the selectors above;
+the generalization case uses \(\Gen_i\), and MP uses
+\eqref{eq:compile-mp}. Earlier halting remains halting when a suffix is
+appended. AX first clears an arbitrary offset and cache, so the refutation
+word works from arbitrary carried stores. If no earlier halt occurs, its
+last Shift sees \(1+0=1\). The command words are fixed finite templates,
+and their arithmetic correctness is uniform in the displayed parameters.
+The recursive proof traversal and finite trace construction are formalizable
+in PA without using a reflection principle or assuming consistency.
+\end{proof}
+
+\subsection{Soundness and the fair scheduler}
+
+For soundness, annotate the current top, cached formula, and every live
+canonical stack entry by a \(\CQ\) derivation, or by a PA proof of its
+arithmetic translation. The offset need not be a theorem code. AX emits
+valid instances, a generalization of the old cached theorem, and the old
+top. On MP success, the two theorem annotations give a proof of the
+consequent; failure gives truth. Shift transports annotations. If its halt
+test succeeds, one of its two annotated naturals is one. This supplies a
+refutation. For \(w>0\) the Cantor tail is strictly smaller than \(w\),
+so canonical stack annotations have a bounded primitive-recursive
+construction. Numerical stack zero supplies the fixed truth proof.
+
+The source scheduler is unchanged. It enumerates finite command words and
+carries the store between trials. A single word that works only after a
+reset would therefore be insufficient; Lemma~\ref{lem:compiler} provides
+the needed uniformity. For an explicit cofinal family, put
+\(E(\epsilon)=0\) and
+\(E(c::v)=1+\operatorname{encodeCommand}(c,E(v))\). The AX command code is
+\[
+ \operatorname{encodeCommand}(\AX_{A,x,y},z)
+             =p(A+2,p(y,p(x,z))).
+\]
+If \(z=E(A_0;C(p);\Sh)\), fresh candidate codes
+\(p(k+2,p(0,p(0,z)))\) describe the same universal halting suffix with
+an arbitrary initial AX. They are strictly increasing and unbounded in
+\(k\). Starting the fresh counter at two loses none of this family.
+Decoded positive continuations decrease, and the fixed arithmetic macro
+loops terminate by their natural counters. PA verifies the resulting finite
+enumeration and trace construction.
+
+\section{Source construction and literal tape verification}\label{sec:physical}
+
+\subsection{Two changes commute}
+
+The builder begins with the attributed PA196 numerical register program
+and the supplied separate-head PA194 emitter. Its two edits are:
+\begin{enumerate}
+\item replace the 19-token block for \(f_6\) by the equal-length block for
+      \(f_6^Q\), keeping all other 171 macro tokens unchanged;
+\item in the successful MP branch, replace source subtree
+      \(\texttt{node55}=(\texttt{node49},\texttt{node54})\) by
+      \texttt{node54}, bypassing the dummy-zero push and retaining the copy.
+\end{enumerate}
+In native physical labels, the second edit changes
+\((164,1):1R98\) to \((164,1):1R114\).
+The source comparison checks the following square directly:
+\[
+\begin{array}{ccc}
+ R_{\C,\mathrm{oldMP}}&\xrightarrow{\text{19-site deletion}}&R_{\C,N}\\
+ \big\downarrow\scriptstyle{f_6\mapsto f_6^Q}&&
+ \big\downarrow\scriptstyle{f_6\mapsto f_6^Q}\\
+ R_{\CQ,\mathrm{oldMP}}&\xrightarrow{\text{19-site deletion}}&R_{\CQ,N}.
+\end{array}
+\]
+Both upper/lower full sources have 3,673 sites before the deletion and
+3,654 afterward. The deletion interval is \([3634,3653)\); its only
+external incoming source edge is \(3628\to3634\). All remaining
+instructions and destinations agree under the explicit relocation map,
+on both sides of the square. The axiom exchange changes exactly 79 of the
+3,654 instructions relative to PA194N. The changes are disjoint; agreement
+of a flattened word alone is not used as evidence of preserved structured
+jump destinations.
+
+The retained copy loop, relative to its entry, is
+\begin{center}
+\begin{tabular}{rlll}
+\toprule
+Site & Instruction & Zero successor & Positive / next\\\midrule
+0 & decrement register 4 & 4 & 1\\
+1 & increment register 1 & & 2\\
+2 & increment register 6 & & 3\\
+3 & jump & & 0\\
+4 & decrement register 6 & 7 & 5\\
+5 & increment register 4 & & 6\\
+6 & jump & & 4\\\bottomrule
+\end{tabular}
+\end{center}
+With register 1 and scratch 6 initially zero, it copies the proposed
+consequent from register 4 into register 1, restores register 4, and clears
+scratch 6. This yields the successful branch of \eqref{eq:mp} without
+altering the numerical stack.
+
+\subsection{Allocation and simultaneous folds}
+
+The raw machine has 134 fixed controls and 67 axiom-reader controls. Seven
+disjoint history-sensitive folds give
+\[
+                     134+67-7=194.
+\]
+The builder checks all 28 two-cell cases, four for each folded pair, in
+the final simultaneously folded table. It also checks the incoming rows
+that justify the historical bit distinguishing the members of each pair.
+The full source contracts are subsequently checked against that same final
+table. The generic arithmetic-block rows remain those of the supplied
+runtime; the independent audit nevertheless rederives their list lemmas.
+
+\subsection{What the universal checks establish}
+
+The source frame has nine arbitrary natural register values, a header
+distance \(48+n\) for arbitrary natural \(n\), and an arbitrary finite
+nonempty list of arbitrary natural spare values. At source address \(p\),
+the zero gap is \(48+n-|p|\). Every decrement is checked in both cases.
+The contract includes the whole tape frame and its zero exterior.
+
+The construction checker uses the supplied arithmetic-block specifications.
+The separate checker imports neither the optimizer nor that block oracle:
+it derives four generic list-traversal lemmas from the literal rows, resolves
+the structured source in two independent ways, checks dense/native
+conjugacy, and verifies every primitive outcome. Its symbolic list rules
+are finite instances of elementary induction on unary runs and finite
+lists. The rule source and its assumptions are included in the archive.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule Quantity & Observed value\\\midrule
+Primitive source sites & 3,654\\
+Universal primitive outcomes, each checker & 4,755\\
+Construction-checker symbolic operations & 1,506,202\\
+Construction-checker maximum per outcome & 488\\
+Independent symbolic operations & 1,102,319\\
+Independent maximum per outcome & 397\\
+Minimum positive-duration constant & 3\\
+Generic list lemmas rederived from literal rows & 4\\
+Local fold cases & 28\\
+Exact blank startup transitions & 58,154\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Symbolic-operation counts are checker statistics, not literal TM running
+times. Unlike finite-value sampling, the source contracts quantify over
+unbounded register values and spare lists. They are still executable
+mathematical certificates with an exposed trusted base, not new proof-kernel
+objects.
+
+The exact finite startup reaches source site 25, native control 84, head
+position \(-2\), logical registers \((2,0,\ldots,0)\), header distance 48,
+and 26 spare blocks each of value one. Both literal simulators compare the
+entire finite-support tape with the stated frame; the independent simulator
+uses a set of one-cells, so no finite tape boundary is silently assumed.
+This verifies initialization only. It is not extrapolation from a long
+nonhalting experiment.
+
+\begin{lemma}[PA-formalizable source/tape transport]\label{lem:transport}
+The literal blank machine halts if and only if the initialized PA194NQ
+source scheduler halts. PA proves the equivalence for coded finite runs.
+\end{lemma}
+\begin{proof}
+The exact finite startup establishes the initial source frame. Each
+primitive source outcome has a terminating physical realization with the
+exact successor frame, or the designated source halt. The generic unary
+and list lemmas prove these contracts uniformly. Concatenate their finite
+traces to map a source halt to a physical halt. Conversely, let a first
+physical halt occur at time \(T\). Iterate the totalized source step function
+\(T+1\) times. If a source halt occurs, reflection is established. Otherwise
+concatenate the verified positive, nonhalting primitive traces after the
+nonhalting startup. Their total duration exceeds \(T\), contradicting
+determinism and the assumed first physical halt. This is a bounded finite
+construction, not an assumption of an infinite source execution.
+The integer polynomials, list induction,
+finite case splits, source recursion, and trace concatenations are all
+formalizable in PA. No assumption of consistency is used.
+\end{proof}
+
+\section{Consistency calibration and inherited dependencies}\label{sec:calibration}
+
+The supplied separate-head calibration gives uniform proof-producing
+reductions between PA refutations and \(\C\)-derivations of code
+one~\cite{primary,nopush}.
+We retain its detailed texts and distinguish that mathematical dependency
+from the newly run physical checks. The two directions require different
+arguments; the upstream exported implication alone is insufficient.
+
+\subsection{PA proofs produced from numerical derivations}
+
+Translate \(M(a,b)\) to finite binary membership
+\(\operatorname{Bit}(x_a,x_b)\), \(E(a,b)\) to equality, and \(U(a,B)\)
+to universal quantification of the translated formula. One suitable formula
+is
+\[
+ \operatorname{Bit}(s,z)\equiv
+ \exists u,v\,[s=(2u+1)2^z+v\ \wedge\ v<2^z].
+\]
+PA proves \(\operatorname{Bit}(s,z)\to z<s\), hence the negation of the
+translation of code one. Decode zero as truth; the numerical equality
+\(I(0,0)=0\) is handled by a fixed truth-equivalence proof.
+
+The substantive axiom supplier is finite binary comprehension. For every
+arithmetic formula \(\theta(z,\vec u)\), PA proves
+\[
+ \forall n\,\exists s<2^n\,\forall z<n\,
+          (\operatorname{Bit}(s,z)\leftrightarrow\theta(z,\vec u)).
+\]
+Induct on \(n\), retaining the old code if \(\neg\theta(n,\vec u)\) and
+adding \(2^n\) otherwise. Substitution into this fixed induction-proof
+pattern gives a primitive-recursive function producing PA proofs, whose
+correctness is itself verified in PA. This is a syntactic proof supplier,
+not a truth predicate for all arithmetic formulas.
+
+Variable-label bounds in formula codes justify the diagonal instance
+\(B\to U(B,B)\). The separation supplier also handles collisions: when
+the two relevant labels coincide, the binder changes both occurrences,
+and the first membership antecedent becomes \(\operatorname{Bit}(z,z)\).
+The comprehension matrix must then be changed. The retained proof does
+not incorrectly hold that bound variable fixed. Other heads have uniform
+first-order or propositional proof templates. Lemma~\ref{lem:exchange}
+provides the exchanged head's template. Applying these suppliers to the
+annotation invariant in Section~\ref{sec:commands} maps a source halt to
+a PA refutation.
+
+\subsection{Numerical derivations produced from PA refutations}
+
+The inherited PA196 proof compiler uses two-way membership rewriting,
+neighborhood equality, and an equality witness. The separate diagonal
+calculus derives those interfaces without the deleted equality-vacuity
+head. Its explicit replacements use a formula's own code as a fresh
+separator label, pointed separation, and fixed classical implication
+templates. The supplied separate-head documents retain the detailed
+derivations, including coincident-label cases and the change to a ten-entry
+axiom interface. These are the logical dependencies behind the forward
+proof translation; source simulation alone would not establish them.
+
+Compose that PA-to-\(\C\) proof translation with
+Lemma~\ref{lem:exchange}, then with the all-store compiler
+Lemma~\ref{lem:compiler} and the unchanged fair scheduler. This constructs
+a finite source halt from each PA refutation. Every transformation is
+primitive recursive and its correctness is proved by PA induction on the
+appropriate coded derivation or trace.
+
+Thus, writing \(H_R\) for source halting, the two syntactic directions give
+\[
+ \PA\vdash H_R\leftrightarrow
+      \exists p\,\Prf_{\PA}(p,\ulcorner0=1\urcorner).
+\]
+Compose with Lemma~\ref{lem:transport} and negate the existential
+refutation predicate to obtain Theorem~\ref{thm:main}. The same reasoning
+also proves, in PA, equality of the blank-halting conditions of PA194NQ
+and PA194N. It does not prove unconditional nonhalting in PA. In the
+standard model, nonhalting follows if PA is consistent.
+
+\subsection{Dependency ledger}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.30\linewidth}>{\raggedright\arraybackslash}p{0.65\linewidth}@{}}
+\toprule Component & Evidence and scope\\\midrule\endfirsthead
+\toprule Component & Evidence and scope\\\midrule\endhead
+Separate-head arithmetic calibration & Retained ordinary proof texts:
+\file{original_pa195_calibration.tex},
+\file{separate_head_PA_calibration.tex}, and
+\file{diagonal_calculus.tex}. These contain the nontrivial inherited
+PA/refutation translations.\\[4pt]
+Derived propositional basis & Supplied
+\file{ImplicationBasis.lean} and \file{RestrictedImplication.lean}; supplied
+61-line exchange certificate, freshly replayed over their K/S derived interface.
+No new full Lean build is asserted.\\[4pt]
+NQ command calibration & Explicit contracts and all-store compiler in this
+report; free-constructor emitter and symbolic command-word replay in
+\file{mathematics/check_commands.py}.\\[4pt]
+Exact source composition & Builder checks the commuting source square,
+19-site deletion, resolved jump targets, 79 exchange differences, and all
+seven simultaneous folds.\\[4pt]
+Literal tape refinement & Fresh construction and independent universal
+checks, four rederived list lemmas, exact whole blank startup, and positive
+duration certificates.\\[4pt]
+Novelty & Complete action tuples against all 34 prior frontier classes;
+source/command examples establish materiality separately.\\
+\bottomrule
+\end{longtable}
+
+\section{Why the alternative is materially different}\label{sec:novelty}
+
+Graph novelty by itself is insufficient: one can change unreachable rows
+or merely renumber states. The comparison therefore has two parts.
+
+First, \file{comparison/check_novelty.py} verifies the frozen comparison
+tables' hashes, canonicalizes their complete transition tuples at every
+graph-spanning root, and compares tuples exactly. It additionally allows
+left/right reflection and global symbol exchange. There is no match to
+PA194NQ among any of the 34 classes, including rejected and auxiliary
+ones. Hashes identify files but are not the sole graph-equality test.
+
+Second, the changed behavior is visible at repeatedly used semantic
+interfaces. Compared with PA194N, AX emits \(f_6^Q\) instead of \(f_6\),
+with 79 resolved primitive instructions changed. Compared with PA194Q's
+cached controller, successful MP has a different storage effect. For
+example, \(I(0,2)=20\), so from \((0,0,0,20)\), \(\MP_2\) returns
+\((2,0,2,0)\) in NQ, whereas Q's cached MP returns \((0,0,0,2)\).
+These are actual command semantics. NQ retains the original Shift test
+\(t+h=1\), and its proof compiler reserves the MP zero below both premises.
+It is therefore a new composition of two prior mechanisms, with explicit
+interaction and preservation proofs, rather than a new name for an old
+table. We claim novelty relative to the pinned corpus, not all possible
+unpublished machines.
+
+\section{Attempts below 194 and a rejected 193-state machine}
+
+\subsection{Protected-runtime quotient search}
+
+We extended the existing pair-quotient searches to permit changes to the
+23 protected arithmetic-runtime controls. Each candidate removes one
+control, redirects incoming targets, and selects each survivor row from
+the corresponding row of either old control. Source-frame control 84
+remains fixed. The new search does not assume the altered arithmetic
+blocks remain valid: it rederives the four generic list lemmas from the
+candidate's literal rows with normalized entry and exit labels.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Family & Candidates & List lemmas & Representatives & Full source\\\midrule
+Protected/protected & 1,012 & 629 & 0 & 0\\
+Mixed, protected row changed & 11,730 & 8,334 & 2 & 0\\\midrule
+Total & 12,742 & 8,963 & 2 & 0\\\bottomrule
+\end{tabular}
+\end{center}
+
+The 32 representative contracts cover the primitive instruction/branch
+kinds. The two surviving mixed candidates fail the complete source check.
+The cap is 700 symbolic operations per contract; the unchanged HS/NS
+baseline's recorded maximum is 403. Failure can mean that a required
+symbolic traversal was not established or that the checker did not close
+within its bound. Consequently this is a bounded failure to certify a
+reduction, not a proof that every tested table is semantically invalid and
+not a lower bound on all PA-consistency machines. The search source,
+inputs, licenses, and receipts are retained in \file{search/protected_runtime/}.
+
+A separate fresh search on PA194NQ keeps the 23 protected arithmetic
+controls fixed and considers every pair among the other 171 controls,
+with all four old-row selections: \(4\binom{171}{2}=58{,}140\) candidates.
+It checks the affected contracts from the full 4,755-outcome collection,
+with a cap of 1,024 symbolic operations, and finds no survivor. The
+baseline run establishes which contracts can visit each changed control;
+unaffected traces cannot encounter a first changed transition. Its source
+and receipt are \file{search/search_nq_pairs.py} and
+\file{search/nq_pairs_result.json}. This has the same bounded-method
+limitation, and is not a global lower bound.
+
+\subsection{Other investigated changes}
+
+A destructive successful-MP routine returning \((b,w,0,0)\), consuming
+the offset instead of copying it, is a distinct source proposal. Its
+direct implementation currently needs 195 states. The new transfer
+reader survived the baseline physical checks but no extra fold was found
+among 684 whole-source row-selection quotients or the tested four-cell,
+128-step contextual detours. These bounds do not exclude another
+implementation. Reusing an AX subtree as an MP epilogue was also explored;
+additional incoming edges can invalidate the historical-bit assumption of
+an existing reader fold, so a favorable old decoder score is insufficient.
+
+That cross-command-sharing branch did produce a fully specified 195-state
+research candidate. Its successful MP returns
+\((U(b,b),[b,0;w],b,0)\), reusing an existing AX decoder fragment. All
+4,886 source outcomes, 32 simultaneous fold cases and a 58,168-step whole
+startup pass the construction checker. Its logical calibration is supplied
+as an ordinary proof outline; no new independent literal-tape replay or
+completed consistency theorem is asserted for this supplementary candidate.
+Seven completed searches recorded 14,947,566 mutation events, including
+revisits, without an accepted 194-state reduction in this branch.
+\file{search/cross_command/} preserves the small portable research package,
+its scoped ledger, and a positive truth-sentinel proposal. None of these
+event counts is a count of distinct machines or a state-count lower bound.
+
+A reproduced zero/positive abstraction of the primary source reaches
+263,888 source/mask pairs and certifies no pair of the nine logical
+registers as directly coalescible. This confirms an already supplied
+negative result; it is not claimed as a new register-allocation theorem.
+More precise invariants or a different data representation remain possible.
+
+\subsection{A literal 193-state shortcut with the wrong logic}
+
+The coefficient-three multiplier is physically smaller. Replace the
+four-increment constructor body by three increments, using
+\(\texttt{node61}=(\mathrm{inc}_1,\texttt{node60})\). In the native table,
+the new multiplier rows are \((190,0):0R61\) and \((190,1):1R99\).
+The additional history fold identifies control 41 with 99 without adding
+the helper required by the coefficient-five/six constructions. The count
+becomes
+\[
+                         134+67-8=193.
+\]
+This rejected machine has 3,612 source sites and 4,719 primitive outcomes.
+The construction checker passes all outcomes and all 32 simultaneous fold
+cases; its exact startup reaches the clean source seed in 58,320 steps.
+Its dense table hash begins \texttt{dedb74819ee5}. These physical successes
+do not establish the desired logical calibration.
+
+\input{../search/factor3_obstruction/lemma.tex}
+
+The rejected table and its physical evidence
+are deliberately kept below a \file{search/rejected193/} directory. They
+are not an accepted smaller consistency machine. The correct lesson is
+that physical refinement and logical calibration are separate obligations:
+a complete physical implementation of an inconsistent proof calculus is
+the wrong answer to the requested consistency problem.
+
+\section{Reproduction and artifact map}
+
+The accepted construction and all principal checks use Python 3.10 or
+later and its standard library. Run with assertions enabled; do not use
+\texttt{-O} or \texttt{PYTHONOPTIMIZE}. No network, repository checkout,
+solver, or proof assistant is needed to reconstruct the accepted table
+and replay its packaged certificates.
+
+From the archive's root, run
+\begin{verbatim}
+python3 -B reproduce.py
+\end{verbatim}
+This checks the release hashes, reconstructs the machine in a temporary
+copy, replays both physical checkers, checks command and exchange
+certificates, and compares the graph against all prior frontier classes.
+The full symbolic replay takes several minutes. A separately labeled
+\texttt{--quick} mode omits the independent universal tape replay; it is
+not a substitute for that proof component.
+
+Individual commands are
+\begin{verbatim}
+python3 -B construction/build.py
+python3 -B verification/check.py
+python3 -B mathematics/check_commands.py
+python3 -B mathematics/check_exchange_binding.py
+python3 -B mathematics/exchange_certificate.py
+python3 -B comparison/check_novelty.py machine/machine.tm
+python3 -B search/factor3_obstruction/check.py
+python3 -B search/factor3_obstruction/verify_primitive.py
+\end{verbatim}
+The individual commands regenerate receipts in place. Use the top-level
+temporary-copy runner to preserve the release manifest. The complete
+corpus rescan additionally requires the pinned Git checkout and is described
+in \file{comparison/AUDIT.md}; the frozen novelty check is self-contained.
+
+\begin{center}
+\begin{tabular}{lp{0.68\linewidth}}
+\toprule Path & Contents\\\midrule
+\file{report/} & This PDF, its LaTeX source, and complete transition appendix.\\
+\file{machine/} & Dense/native/raw tables, labels, source graph, source addresses, folds.\\
+\file{construction/} & Deterministic builder, frozen grammars, upstream source inputs.\\
+\file{verification/} & Separate literal-tape checker and attributed induction rules.\\
+\file{mathematics/} & Exact emitter, all-store command words, and premise-exchange checks.\\
+\file{evidence/} & Fresh observed construction, physical, logical, and novelty receipts.\\
+\file{comparison/} & All 51 packet entries, all 34 frontier classes, full census and comparator.\\
+\file{references/} & Inherited ordinary calibration and precise propositional dependencies.\\
+\file{search/} & Scoped unsuccessful searches and the rejected factor-three shortcut.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Compile twice from \file{report/} with
+\begin{verbatim}
+pdflatex -interaction=nonstopmode -halt-on-error pa194nq.tex
+\end{verbatim}
+Attribution, licenses, source commit, and exact imported paths are retained
+in \file{NOTICE.txt}, \file{PROVENANCE.json}, and the adjacent license files.
+The original repository is not modified or published by this deliverable.
+
+\clearpage
+\appendix
+\section{Complete accepted transition table}
+
+An entry \(wD\,q'\) means write bit \(w\), move in direction \(D\), and
+enter state \(q'\). Label \(H\) is halt 194. The four column groups are
+only a printing layout; together they list all states 0 through 193 and
+both read-symbol transitions. Start in state 0 on blank tape.
+\input{transition_table.tex}
+
+\clearpage
+\section{Pinned primary sources}
+
+The following sources are pinned to the comparison commit; the full
+machine-readable provenance gives individual imported files.
+\begin{thebibliography}{9}
+\bibitem{repo}
+V. Reshetnikov and contributors, \emph{ProveIt: PA consistency machines},
+commit \texttt{3cc7fbf75ba111a0da696ef2f6001dd528891bd5}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/3cc7fbf75ba111a0da696ef2f6001dd528891bd5/Computability/BusyBeaver/Research/PA}.
+\bibitem{primary}
+Supplied \emph{A 194-state Turing machine calibrated to Con(PA)},
+\file{PA/docs/pa194_conpa_2026-11-13/}. The original 67-reader,
+seven-fold construction and separate-head calibration.
+\bibitem{nopush}
+Supplied \emph{PA194N}, \file{PA/docs/pa194N_conpa_2026-11-13/}.
+No-push controller, all-store proof compiler, and independent checks.
+\bibitem{exchange}
+Supplied \emph{PA194Q and PA194CSZ},
+\file{PA/docs/pa194q_conpa_2026-11-13/}. Exchanged distribution emitter,
+61-line certificate, frozen grammar and seven folds.
+\bibitem{upstream}
+J. Chang and attributed contributors, imported PA196 development,
+\file{PA/jamesyc-upstream/pa196/}. In particular source Program,
+Conjugacy, ImplicationBasis, and the generic RestrictedImplication results.
+\bibitem{incoming}
+Four incoming archives, pinned at the same commit:
+\file{pa194hs_conpa_2026-11-13.zip},
+\file{pa194ns_conpa_2026-11-13.zip},
+\file{pa194n5_n6_conpa_2026-11-13.zip}, and
+\file{pa194n6_research_2026-11-13.zip}.
+\bibitem{related}
+ProveIt, \file{Computability/BusyBeaver/Research/ZFC/} and
+\file{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/}, at the same commit.
+Used for related proof and compiler methods, not as a replacement of the
+target PA consistency statement.
+\end{thebibliography}
+\end{document}

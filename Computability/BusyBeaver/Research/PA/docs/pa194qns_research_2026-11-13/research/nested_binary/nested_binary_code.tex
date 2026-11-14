@@ -1,0 +1,130 @@
+% Standalone research fragment. Requires amsmath, amssymb, amsthm.
+\section{A total code using only twice the Cantor pairing}
+\label{sec:nested-code}
+
+The following is a mathematical encoding proposal, not a state-count
+improvement established by this packet.  It removes multiplication by four
+from formula construction without deleting primitive equality or merging
+incompatible formula types.  Its first bounded grammar experiment did not
+beat 194 states.
+
+Let $p(a,b)=(a+b)(a+b+1)/2+b$ and $J(a,b)=2p(a,b)$.  Use
+\begin{align*}
+ I_2(A,B)&=J(A,B),\\
+ U_2(a,B)&=J(B,a+1)+1,\\
+ M_2(a,b)&=J(J(a,b),0)+1,\\
+ E_2(a,b)&=J(J(a,b)+1,0)+1.
+\end{align*}
+Keep truth code zero, false code one, and unscaled Cantor pairing for the
+proof stack and command-word scheduler.  In particular
+$M_2(0,0)=1$, $E_2(0,0)=3$, $U_2(0,0)=5$ and $I_2(0,0)=0$.
+
+\begin{lemma}[Complete, unambiguous decoding]
+Every nonzero even number is uniquely an implication.  Every odd number
+is uniquely a universal formula, membership atom or equality atom.
+Formula children and all displayed variable labels are smaller than the
+whole nonzero formula code.  The sole truth/constructor alias is
+$I_2(0,0)=0$.
+\end{lemma}
+\begin{proof}
+An even number $n>0$ gives its unique pair by unpairing $n/2$.
+For an odd $n$, unpair $(n-1)/2$ as $(r,s)$.
+If $s>0$, decode $U_2(s-1,r)$.  If $s=0$ and $r$ is even, unpair
+$r/2$ as $(a,b)$ and decode $M_2(a,b)$.  If $s=0$ and $r$ is odd,
+unpair $(r-1)/2$ and decode $E_2(a,b)$.  These cases are exhaustive
+and disjoint.  The inverse equations follow from the two Cantor
+projections.  The strict bounds follow from $a,b\le p(a,b)$ and
+the outer factor two or outer addition of one.  The cases $n=1,3$
+are included and have only label zero.
+\end{proof}
+
+\subsection{A primitive-recursive bijection of all formula codes}
+Write $I_4,M_4,U_4,E_4$ for the old four-residue constructors.  Define
+$F(0)=0$ and, on each nonzero old code, recursively apply the new
+constructor to the images of all its arguments.  Variable labels are
+recoded by the very same $F$:
+\begin{align*}
+ F(I_4(A,B))&=I_2(F(A),F(B)),\\
+ F(M_4(a,b))&=M_2(F(a),F(b)),\\
+ F(U_4(a,B))&=U_2(F(a),F(B)),\\
+ F(E_4(a,b))&=E_2(F(a),F(b)).
+\end{align*}
+The first identity also holds at $A=B=0$ by the truth convention.
+The old and new strict-component bounds give course-of-values primitive
+recursions for $F$ and its converse $G$, which decodes a new constructor,
+recursively applies $G$ to its arguments, and emits the old constructor.
+Induction on the natural input code proves
+\[
+                         G(F(n))=n,\qquad F(G(n))=n.
+\]
+Thus this is a bijection of all natural codes, rather than an embedding
+into a sparse well-formed subset.  It fixes zero and one.  It is not
+monotone: $F(2)=5$ and $F(4)=2$.
+
+The simultaneous formula-and-label recoding is essential.  In particular
+it makes the diagonal axiom obey the exact identity
+\[
+ F\bigl(I_4(B,U_4(B,B))\bigr)
+       =I_2(F(B),U_2(F(B),F(B))).
+\]
+Injectivity preserves both label-inequality guards of separation, and
+every other logical head commutes with the constructor translation.
+Modus ponens and generalization likewise translate literally.
+
+The numerical dominance condition on the restricted $\rho_8$ head does
+not survive this recoding.  At such a leaf use the supplied
+\texttt{rho8All} template, which derives the unrestricted schema from
+MP, the restricted head, reflexivity of the bound, and the inequalities
+$a,b\le I(a,b)$.  These inequalities hold for $I_2=2p$ as well as
+for $I_4=4p$.  The same construction works for the converse translation.
+Therefore both numerical calculi have primitive-recursive,
+refutation-preserving proof translations with correctness provable in PA.
+The existing ordinary PA calibration is inherited through these
+translations; no new equality axiom or set-theoretic principle is assumed.
+
+\subsection{Command and emitter consequences}
+The output $q_9=U_2(d,h)$ is odd and at least five.  The other eight
+generated heads and the separation gate are even, because their outer
+constructor is implication or the result is zero.  Thus no generated
+head is one.  Push's final MP compares an even implication with an odd
+universal code and necessarily fails.  The original-sum-guard and
+no-push command-word arguments retain their exact proofs with these
+new constructor meanings.  The Cantor stack and its zero alias are
+unchanged.
+
+For an emitter token \texttt{Cons} that now computes $J$ and
+\texttt{Push} that saves the old top and puts zero in the top, the
+constructor suffix replacements are
+\[
+\begin{array}{lll}
+ \text{old membership:}&\texttt{Cons, inc}&
+       \texttt{Cons, Push, Cons, inc},\\
+ \text{old universal:}&\texttt{Cons, inc, inc}&
+       \texttt{inc, Cons, inc},\\
+ \text{old equality:}&\texttt{Cons, inc, inc, inc}&
+       \texttt{Cons, inc, Push, Cons, inc}.
+\end{array}
+\]
+For the universal replacement the current top is the binder label and
+the preceding stack entry is the body, exactly as in the old transposed
+constructor.  Its first increment therefore produces $a+1$.
+The two atom replacements create a zero right component for the outer
+pair while preserving the older stack.
+
+The independent reduction workstream found 31 implication, 15 universal,
+10 membership and 3 equality constructor sites in the 190-token emitter.
+The replacements give 213 tokens.  Removing the four-increment decoder
+gives a theoretical fixed-control budget of 133, so reaching 193 would
+require a compatible effective reader cost of at most 60 under that
+accounting.
+
+The recorded 180.027-second grammar search made 633,781 proposals and
+accepted 124,495 moves.  Its best heuristic score was 74: 81 raw readers,
+minus 11 nominal folds, plus four scanner penalties.  The penalties are
+part of the search objective, not a count of machine controls, and the
+nominal folds were not certified as a compatible simultaneous quotient
+at this endpoint.  Consequently neither 203 nor 207 is an accepted
+machine count from this run.  The scoring experiment failed to yield
+a verified 193- or 194-state candidate.  It establishes no lower bound
+on the encoding.  A different emitter organization or jointly optimized
+dictionary remains a research possibility.

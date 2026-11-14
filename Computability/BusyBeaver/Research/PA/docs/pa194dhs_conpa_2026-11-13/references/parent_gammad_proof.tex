@@ -1,0 +1,470 @@
+% Supplemental section; no preamble.  Uses the report's theorem environments
+% and the existing bibliography keys pa194, cached, and cz.
+\section{PA194D: a different logical emitter with 194 states}
+\label{sec:gammad}
+
+There is a second 194-state construction, denoted
+\(\mathsf{PA194D}\), which changes the numerical axiom command itself.
+The separate diagonal clause in the earlier machines is
+\(\Gamma(A)=A\to U(A,A)\).  PA194D supplies
+\(\Gamma(D)=D\to U(D,D)\) instead, while preserving the parameter
+choices in all six other heads and in the guarded separation gate.
+The resulting proof system is the same numerical calculus, but its
+command interface and its physical reader allocation are different.
+Its state count is
+\[
+ 134\text{ fixed controls}+69\text{ raw readers}
+       -9\text{ compatible folds}=194.
+\]
+The command controller is the cached controller with the scheduler's
+known-zero decrement, as in the supplied PA194CZ construction
+\cite{cached,cz}.  In addition, the final AX return uses a decrement of
+the cleared register \(D\).  The argument below separates the logical
+change from these two reachable source specializations.
+
+The dense binary table has working controls \(0,\ldots,193\), blank
+start control 0, and terminal halt label 194.  Its SHA-256 is
+\begin{quote}\small
+\nolinkurl{4226b7702de554df4b52d10239b2bd7ad79ca90bd8faf2bd256552fe0c7fe81b}.
+\end{quote}
+The native-label table starts at 74, halts at 254, and has SHA-256
+\begin{quote}\small
+\nolinkurl{bc8ab6c58badd137535938c9810e39d19152c49dd2eb26ef4ea07dbcf3157231}.
+\end{quote}
+The table uses the same two-way infinite binary tape convention as
+PA194J. It has 388 defined transition rows. The authoritative file is
+\file{logical_emitter/machine/pa194d.tm}; its complete contents are printed
+in Appendix~\ref{app:table_d}.
+
+\subsection{The exact logical change}
+
+Use Cantor pairing \(p\), implication \(I\), membership \(M\),
+universal quantification \(U\), and equality \(E\) with the numerical
+definitions in Section~\ref{sec:calibration}.  In particular,
+\(U(i,B)=4p(B,i)+2\), \(\neg B=I(B,1)\), and
+\(\exists x_i B=\neg U(i,\neg B)\).  Write \([a;w]=p(a,w)\),
+with the leftmost entry of a displayed list at its top.  The six retained
+heads, in their original push order, are
+\begin{align*}
+ h_1(D,H)&=(\exists x_D U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists x_D E(H,D),\\
+ h_6(D,A,H)&=U(D,A)\to(U(D,A\to H)\to U(D,H)).
+\end{align*}
+The dominated propositional axiom is
+\[
+ \rho_8(D,A,H,u)=((H\to u)\to D)
+                         \to((D\to H)\to(A\to H)),\qquad u\le D.
+\]
+Let \(G(a,b,c)\) be the retained pointed-separation formula from the
+supplied separate-head calculus, and put
+\[
+ K(a,b,c)=
+ \begin{cases}G(a,b,c),&c\ne a\text{ and }c\ne b,\\
+ 0,&\text{otherwise}.
+ \end{cases}
+\]
+For precision, its construction is
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S_*(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))
+                                \wedge(M(c,b)\to c)\bigr),\\
+ Q_*(a,b,c)&=U(c,S_*(a,b,c)\to\neg P(a,b,c)),\\
+ G(a,b,c)&=\neg(V(a,b,c)\to Q_*(a,b,c)),
+ \qquad B\wedge C=\neg(B\to\neg C).
+\end{align*}
+
+For an incoming store \(\langle t,w,d,h\rangle\), define
+\(A=c\), \(D=d+x\), and \(H=h+y\).  The new command is exactly
+\[
+\begin{aligned}
+ \mathsf{AX}^{D}_{c,x,y}\langle t,w,d,h\rangle
+   &=\langle K(H,D,A),W',0,0\rangle,\\
+ W'&=[\Gamma(D),h_6,h_5,h_4,h_3,h_2,h_1,\\[-2pt]
+    &\hspace{3.5em}\rho_8(D,A,H,d),U(d,h),t;w].
+\end{aligned}
+\tag{D-AX}\label{eq:gammad-ax}
+\]
+Every head uses the displayed \(D,A,H\); only the argument of the
+separate \(\Gamma\) has changed.  Thus the command still pushes ten
+entries, counting the saved top, and still clears \(d,h\).
+A failed gate guard does not remove the separately pushed
+\(\Gamma(D)\).
+
+This change is visible even on a zero incoming store.  For the command
+parameters \((c,x,y)=(0,1,0)\), the former first stack entry is
+\(\Gamma(0)=20\), whereas the new one is \(\Gamma(1)=832\).
+The other emitted entries retain their former values.  In particular,
+this is a change of the correlation between axiom parameters, not a
+global exchange of physical register names.
+
+Let \(\mathcal C_s\) be the supplied separate-head calculus: the six
+families above, dominated \(\rho_8\), every \(\Gamma(B)\), each
+guarded \(G(a,b,c)\), modus ponens, and theorem generalization
+\(B\mapsto U(i,B)\).  ``Theorem'' means that there are no undischarged
+hypotheses; the formula may have free variable labels.  The inherited
+calibration gives primitive recursive proof translations, with
+correctness provable in PA, establishing
+\[
+ \mathrm{PA}\vdash
+ \left(\exists q\,\operatorname{Prf}_{\mathcal C_s}(q,1)
+                   \ \leftrightarrow\ \neg\operatorname{Con}(\mathrm{PA})\right).
+ \tag{D-Cal}\label{eq:gammad-cal}
+\]
+This is the separate-head calibration retained in
+\file{references/logical_calibration/separate_head_calculus.tex},
+together with its diagonal-calculus and PA195 dependencies
+\cite{pa194}.  PA194D uses precisely this calculus.  It requires neither
+a new logical axiom nor a new translation of PA proofs.
+
+\subsection{All-store command identities and the changed selector}
+
+For this subsection, use the ordinary cached-C source with the new
+emitter and with its two original unconditional jumps.  Its numerical
+commands have arbitrary stores \(\langle t,w,d,h\rangle\); scratch
+registers obey the inherited clean command-boundary convention.  Write
+\(S\) for cached Shift:
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}
+ \mathsf{halt},&h=1,\\
+ \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&h\ne1.
+ \end{cases}
+\]
+For \(y=d+x\), cached modus ponens is
+\[
+ \mathsf{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+ \langle0,w,0,y\rangle,&I(t,y)=h,\\
+ \langle0,w,y,0\rangle,&I(t,y)\ne h.
+ \end{cases}
+\]
+These are exactly the commands proved for the supplied cached
+controller \cite{cached}.
+
+Number the generated stack entries in (\ref{eq:gammad-ax}) by
+\(q_1,\ldots,q_9\), so \(q_1=\Gamma(D)\),
+\(q_8=\rho_8(D,A,H,d)\), and \(q_9=U(d,h)\).
+The first eight entries and the gate have residue zero modulo four;
+\(q_9\) has residue two.  None is code one.  Consequently the
+ten-entry stack calculations in the supplied cached command audit apply
+without any change in their exponents.  Explicitly, define
+\begin{align*}
+ \mathsf{Push}&=\mathsf{AX}^{D}_{0,0,0};S^9;\mathsf{MP}_0,\\
+ \mathsf{Pop}&=\mathsf{AX}^{D}_{0,0,0};S^{11},\\
+ \mathsf{Discard}&=\mathsf{MP}_1;\mathsf{AX}^{D}_{1,0,0};S^{10};\mathsf{MP}_0.
+\end{align*}
+Their exact contracts are
+\begin{align*}
+ \mathsf{Push}\langle t,w,d,h\rangle
+   &=\langle0,[t;w],0,0\rangle,\\
+ \mathsf{Pop}\langle t,[a;w],d,h\rangle
+   &=\begin{cases}\mathsf{halt},&t=1,\\
+                    \langle t,w,0,a\rangle,&t\ne1,
+      \end{cases}\\
+ \mathsf{Discard}\langle t,w,0,0\rangle
+   &=\langle0,w,0,0\rangle.
+\end{align*}
+For example, \(\mathsf{AX}^{D};S^9\) leaves
+\(\langle q_8,[t;w],0,q_9\rangle\), and
+\(\mathsf{AX}^{D};S^{10}\) leaves
+\(\langle q_9,w,0,t\rangle\).  The first ten Shifts test only zero
+and generated entries; the eleventh tests the saved top.  Push's last
+MP fails because an implication has residue zero and \(q_9\) has
+residue two.  Discard's first MP fails since \(I(t,1)>0\); after
+its AX and Shifts, the last MP fails since \(I(U(1,0),0)>0\).
+These proofs use the total projection equations
+\(\operatorname{hd}[a;w]=a\) and
+\(\operatorname{tl}[a;w]=w\), including the alias \([0;0]=0\).
+They do not presume that a zero push increases a stored stack length.
+
+For \(1\le j\le7\), define a selector whose argument order is
+\emph{\(D,H,A\)}:
+\[
+ \mathsf{select}_{j}(D,H,A)=
+ \mathsf{Discard};\mathsf{AX}^{D}_{A,D,H};S^{j+1};
+                                      \mathsf{Pop}^{9-j}.
+\]
+It sends every \(\langle t,w,0,0\rangle\) to
+\(\langle q_j,w,0,0\rangle\).  The desired change to the proof
+compiler is therefore exactly
+\[
+ \boxed{\quad
+ \Gamma(B):\qquad\mathsf{select}_{1}(B,0,0)
+       =\mathsf{Discard};\mathsf{AX}^{D}_{0,B,0};S^2;\mathsf{Pop}^{8}.
+ \quad}
+ \tag{D-Sel}\label{eq:gammad-selector}
+\]
+After Discard, \(d=h=0\), so this AX has \(D=B\).  The former
+selector used \(\mathsf{select}_1(0,0,B)\).  Selection is safe even
+when \(B=0\) and even when the unrelated gate guard fails.
+The six retained heads use \(j=2,\ldots,7\), with their original
+parameters and words.
+
+For completeness, let \(\mathsf{Offset}_0\) be empty and let
+\(\mathsf{Offset}_u=\mathsf{MP}_u\) for \(u>0\); from
+\(\langle0,w,0,0\rangle\) it produces
+\(\langle0,w,u,0\rangle\).  For \(u\le a\), the word
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf{AX}^{D}_{b,a-u,c};S^9;\mathsf{Pop}
+\]
+selects \(\rho_8(a,b,c,u)\).  The word
+\(\mathsf{Discard};\mathsf{AX}^{D}_{c,b,a};\mathsf{Pop}^{10}\)
+selects \(K(a,b,c)\).  Finally
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;S;
+                                      \mathsf{AX}^{D}_{i,0,0};S^{10}
+\]
+sends \(\langle a,w,0,0\rangle\) to
+\(\langle U(i,a),w,0,0\rangle\), also when \(a=1\).
+The Shift before AX tests zero and puts \(a\) in the cache; AX
+clears that cache before a later Shift can test it.
+
+\subsection{A strong proof compiler and both logical directions}
+
+The cached-MP suffix is
+\[
+ \mathsf{MPSuffix}_b=S;S;\mathsf{MP}_b;S.
+\]
+From \(\langle0,[a,I(a,b),0;w],0,0\rangle\), it halts if
+\(a=1\) or \(b=1\), and otherwise returns
+\(\langle b,w,0,0\rangle\).  The second Shift tests \(a\);
+successful MP places \(b\) in the cache; the final Shift tests \(b\)
+and retrieves the dummy zero.  The dummy is necessary to preserve
+the underlying \(w\).  This calculation also holds at the numerical
+zero-stack alias.
+
+Compile axiom leaves with the selectors just given, and compile a
+generalization node by appending \(\mathsf{Gen}_i\) to its premise
+word.  If an MP node has minor proof \(p_0\) of \(a\) and major
+proof \(p_1\) of \(I(a,b)\), use
+\[
+ W_p=\mathsf{Discard};\mathsf{Push};
+     W_{p_1};\mathsf{Push};W_{p_0};\mathsf{Push};\mathsf{MPSuffix}_b.
+\]
+
+\begin{lemma}[Uniform Gamma-D proof compiler]
+For every finite \(\mathcal C_s\)-proof \(p\) and every \(t,w\),
+the word \(W_p\) from \(\langle t,w,0,0\rangle\) either halts
+or returns \(\langle\operatorname{concl}(p),w,0,0\rangle\).
+If \(p\) proves code one, then
+\[
+  \mathsf{AX}^{D}_{0,0,0};W_p;\mathsf{Pop}
+\]
+halts from every incoming four-component store.
+\end{lemma}
+\begin{proof}
+Induct on the proof tree.  The selectors prove the axiom case, including
+the changed selector (\ref{eq:gammad-selector}).  The generalization
+contract proves that case.  In the MP case, Discard and Push introduce
+a dummy zero; if neither recursive premise word halts, their contracts
+and Push produce precisely the suffix's three-entry precondition.
+The suffix gives either an early halt or the required conclusion with
+the original tail.  An earlier halt remains a halt when a word is
+extended.  For the second claim, the initial AX clears both caches,
+so the first claim applies to its arbitrary resulting top and stack.
+If no earlier halt occurs, the last Pop tests the derived top one
+before inspecting the arbitrary underlying stack.
+\end{proof}
+
+This all-store clause matters because the inherited exhaustive
+command-word scheduler retains its stores between trials.  A refuting
+proof yields a finite universally halting word, so the scheduler either
+halts earlier or halts when it reaches this word.  The inherited
+word encoding and scheduler proof are unchanged.
+
+Conversely, annotate \(t\), \(h\), and each decoded stack entry
+with a \(\mathcal C_s\)-derivation.  Code zero has the fixed proof
+\(\rho_8(0,0,0,0)=0\), which supplies all zero padding.
+AX preserves these annotations: the six heads and a successful gate
+are axioms; a failed gate is zero; \(\Gamma(D)\) is an unconditional
+instance of the existing diagonal family; \(d\le d+x\) permits
+the propositional head; and \(U(d,h)\) follows by generalization
+from the old cache.  A successful MP derives \(d+x\) from the
+annotations for \(t\) and \(h=I(t,d+x)\); a failed MP returns
+zero.  Shift moves derived entries, and a halting Shift exposes a
+proof of one.  No derivability condition is required of the offset
+\(d\).  The actual seeded source begins with the required zero
+annotations.  This proves that its halting yields a refutation.
+
+All selectors and proof-word constructors are primitive recursive.
+The arguments are inductions on proof trees, finite lists, source loop
+counters, and traces.  Together with the unchanged scheduler they prove
+in PA that the ordinary Gamma-D cached-C source halts exactly when
+\(\mathcal C_s\) has a refutation.  The proof translations in
+(\ref{eq:gammad-cal}) then give its equivalence to
+\(\neg\operatorname{Con}(\mathrm{PA})\).  In particular, the
+soundness direction does not appeal to the standard truth of arithmetic
+or to reflection for PA.
+
+\subsection{Exact source binding and the two zero tests}
+
+Let \(P_D\) be that ordinary cached-C Gamma-D source and let
+\(P_D^Z\) be the source implemented by PA194D.  Both have 3,649
+primitive sites, numbered from zero.  Relative to the old 190-token
+Gamma-A emitter, the copy macros at token indices 121, 122, and 123
+change from \texttt{copyA} to \texttt{copyD}.  Their source spans
+are respectively 2258--2283, 2284--2309, and 2310--2335.
+Each span has 26 primitive instructions.  The six altered register
+arguments, and all their exact successors, are
+\begin{center}\small
+\begin{tabular}{@{}rll@{}}
+\toprule
+Site & Old instruction & Gamma-D instruction\\
+\midrule
+2277 & \(\operatorname{dec}(3,2281,2278)\) & \(\operatorname{dec}(4,2281,2278)\)\\
+2282 & \(\operatorname{inc}(3,2283)\) & \(\operatorname{inc}(4,2283)\)\\
+2303 & \(\operatorname{dec}(3,2307,2304)\) & \(\operatorname{dec}(4,2307,2304)\)\\
+2308 & \(\operatorname{inc}(3,2309)\) & \(\operatorname{inc}(4,2309)\)\\
+2329 & \(\operatorname{dec}(3,2333,2330)\) & \(\operatorname{dec}(4,2333,2330)\)\\
+2334 & \(\operatorname{inc}(3,2335)\) & \(\operatorname{inc}(4,2335)\)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here registers 3 and 4 are logical \(A\) and \(D\), respectively.
+Every other instruction of \(P_D\), including every successor,
+agrees with the old cached-C source.  A separate free-expression
+calculation checks the entire stack and gate of
+(\ref{eq:gammad-ax}) for symbolic incoming parameters.
+
+The physical search reassociates the emitter tree.  The winning
+grammar's complete resolved instruction graph equals that of an
+independently balanced tree over the same macro word.  It also equals
+the graph obtained by changing only these macros in the supplied
+accepted association.  Thus the binding checks structured jump
+destinations, not only equality of the flattened token sequence.
+
+To pass from \(P_D\) to \(P_D^Z\), change precisely
+\[
+\begin{array}{c|cc}
+\text{site}&P_D&P_D^Z\\ \hline
+26&\operatorname{jump}(34)&\operatorname{dec}(6,34,27)\\
+3553&\operatorname{jump}(3637)&\operatorname{dec}(4,3637,3554).
+\end{array}
+\]
+The first tests scratch \(X\); the second is the final AX return
+and tests \(D\).  This adds two branch outcomes: \(P_D\) has
+4,749, and \(P_D^Z\) has 4,751.
+
+Use the positivity abstraction of Section~\ref{sec:invariant}, now
+computed for \(P_D\) from the same clean seed
+\[
+ c_*=(25,(2,0,0,0,0,0,0,0,0)).
+\]
+Its least abstract closure \(R_D\) contains 263,244 location/mask
+pairs.  A separate replay verifies that the seed belongs to it,
+that it is closed, that the two source programs have exactly the same
+abstract successors on it, and that the tested bits are zero at the
+two changed sites.  There are 32 masks at site 26, all with bit 6
+clear, and eight masks at site 3553, all with bit 4 clear.
+The sorted-pair certificate has SHA-256
+\begin{quote}\small
+\nolinkurl{57c58dcae511fe13a6c200e7cfe4f4322370aec72b4a2fe5ba39b906fe62dbf8}.
+\end{quote}
+This is a fresh invariant for the changed formula emitter; it is not
+an assumption that the Gamma-A invariant still applies.
+
+The abstraction lemma and induction on execution length therefore
+prove exact equality of the \(P_D\) and \(P_D^Z\) source runs
+from \(c_*\), until and including any halt.  Each inserted decrement
+sees zero, preserves every register, and takes the former jump target.
+PA proves the finite closure facts and the two inductions, hence
+\[
+ \mathrm{PA}\vdash
+ \bigl(\operatorname{Halt}(P_D,c_*)
+          \leftrightarrow\operatorname{Halt}(P_D^Z,c_*)\bigr).
+\]
+This source equivalence is claimed from the specified seed.  The
+arbitrary-store command calculations above concern \(P_D\);
+they are not being inferred for arbitrary inputs to the specialized
+source \(P_D^Z\).
+
+\subsection{Literal realization and the PA theorem}
+
+The nine folds are performed simultaneously on the 203-control raw
+allocation. In native labels their replacement rows are:
+\begin{center}\small
+\begin{tabular}{@{}rrll@{}}
+\toprule
+Removed & Retained & New read-0 action & New read-1 action\\
+\midrule
+2004 & 2063 & $0\,L\,2049$ & $1\,R\,90$\\
+2015 & 2023 & $0\,L\,2061$ & $1\,R\,2012$\\
+2018 & 2012 & $0\,L\,2055$ & $1\,R\,90$\\
+2022 & 2033 & $0\,L\,2002$ & $1\,R\,61$\\
+2025 & 2046 & $0\,L\,2034$ & $1\,R\,2029$\\
+2028 & 2039 & $0\,L\,2014$ & $1\,L\,2003$\\
+2037 & 2059 & $0\,L\,2044$ & $1\,R\,2038$\\
+2053 & 2011 & $0\,R\,98$ & $1\,L\,2019$\\
+2064 & 2032 & $0\,L\,2017$ & $1\,L\,2041$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every incoming row establishes the required predecessor bit. None of the
+folded controls is the initial control. The 36 local cases are checked
+on the final simultaneous quotient: 14 take one step, 19 take three,
+and three take five. The traces preserve the exterior tape and the full
+required local effect; the supplied universal source contracts also
+verify the resulting whole interpreter independently.
+
+The literal table has an independently checked physical simulation
+contract for each of the 4,751 primitive outcomes of \(P_D^Z\), including the positive
+branches that the seeded source invariant excludes.  These contracts
+range over arbitrary natural primary values and header gap and every
+finite nonempty spare list.  The independent checker uses 1,091,154
+symbolic steps, with a maximum of 385 for one case; every duration has
+nonnegative coefficients and constant at least three.  It derives four
+list lemmas from the literal rows and invokes no arithmetic-box oracle.
+The nine compatible reader folds have 36 local all-tape cases.
+The exact blank initialization takes 58,168
+literal transitions to the complete frame for \(c_*\), in native
+control 84 with head at \(-2\).  The frame has source path 1000000,
+header distance 48, primary vector \((2,0,0,0,0,0,0,0,0)\), and
+26 spare blocks of value one.
+
+The source simulations terminate in positive time.  Consequently a
+source halt produces a physical halt, and a physical halt cannot
+precede a nonhalting concatenation of more positive source simulations
+than the alleged halting time.  As in Section~\ref{sec:physical}, this
+argument requires no inverse decoding of arbitrary intermediate tapes.
+The finite startup and local certificates, and the unary, list and
+trace inductions, are formalizable in PA.
+
+\begin{theorem}[Gamma-D consistency machine]
+Let \(H_D\) be the arithmetic sentence asserting a finite halting
+trace of the specified PA194D table from its blank start.  Then
+\[
+ \mathrm{PA}\vdash
+    \bigl(H_D\leftrightarrow\neg\operatorname{Con}(\mathrm{PA})\bigr),
+ \qquad
+ \mathrm{PA}\vdash
+    \bigl(\neg H_D\leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).
+\]
+\end{theorem}
+\begin{proof}
+Compose, inside PA, the physical simulation, the seeded zero-test
+equivalence, the soundness and strong proof compiler, and the supplied
+proof calibration:
+\[
+\begin{split}
+ H_D
+ &\longleftrightarrow\operatorname{Halt}(P_D^Z,c_*)
+ \longleftrightarrow\operatorname{Halt}(P_D,c_*)\\
+ &\longleftrightarrow
+       \exists q\,\operatorname{Prf}_{\mathcal C_s}(q,1)
+ \longleftrightarrow\neg\operatorname{Con}(\mathrm{PA}).
+\end{split}
+\]
+Classical logic in PA gives the nonhalting formulation.
+\end{proof}
+
+The theorem is an ordinary proof with explicit finite and symbolic
+certificates, using the retained ordinary PA calibration.  It is not
+a new proof-assistant kernel export or an iPRA equivalence theorem.
+It makes no consistency assumption in establishing the PA-provable
+biconditional.  PA194D supplies a second construction at the requested
+194-state fallback threshold; it does not lower that threshold.

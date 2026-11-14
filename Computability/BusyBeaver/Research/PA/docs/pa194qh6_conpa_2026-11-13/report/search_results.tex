@@ -1,0 +1,39 @@
+A fresh whole-instruction quotient screen considered 62,073 row-choice
+merges on PA194QH6. Every candidate failed at least one of the 4,876
+source-outcome contracts under the checker's 1,024-step symbolic budget.
+The unmodified machine passes the same contract set. This is rejection by
+the stated checker and fuel bound, not a theorem that every failed proposal
+is semantically inequivalent.
+
+A broader local search allowed arbitrary replacement first actions, with
+radius-five tape windows and at most 150 local transitions. An initial
+source/startup context collection contained 16,937 windows. A stronger
+collection derived from the independent literal executor, all four generic
+register-list inductions, and complete startup contained 30,761 windows
+covering all 194 controls. No compatible merge or single-state elimination
+was found in either collection. The stronger run also allowed removal of
+the initial control 74. This control is used again inside the increment
+engine; its initial role does not make it disposable.
+
+A source-preserving rotation of the main binary control tree lowers the
+leftmost source address from six zero bits to five. Resolving the entire
+3,673-site primary source graph confirms exact control-flow identity for
+that rotation. However, the proposed shorter scanner still fails 52
+source contracts: a changed predecessor bit breaks a contextual dispatch,
+and long zero runs remain in the AX subtree. Thus neither source graph
+identity alone nor shortening one address certifies the scanner deletion.
+
+A fresh fixed-word reassociation search used the exact QH6 fixed table and
+recomputed source attributes for the six-increment multiplier. It allowed
+compatible fixed/reader folds and ran for 120.003 seconds with seed
+202611140617. It considered 1,386,441 mutation slots and accepted 52,092
+proposals. Its best effective reader-minus-fold score remained 59, giving
+\(135+59=194\) total controls, with no sub-194 nomination. The source,
+seed grammar, attributes, final search population, and actual log are in
+\file{research/grammar/}. Wall-time-limited search counts are observations
+of this run, not guaranteed identical across different machines.
+
+The accompanying reduction receipts and portable replay scripts are in
+\file{research/reduction/}. The spare-append-policy search was interrupted
+and is excluded from the completed counts. None of these unsuccessful
+searches is used as an assumption in the accepted machine's proof.

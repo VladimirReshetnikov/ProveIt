@@ -1,0 +1,43 @@
+From the archive root, with Python 3.10 or later and its standard library:
+\begin{verbatim}
+python3 -B verify.py --receipt fresh-verification.json
+\end{verbatim}
+The default rebuilds the machine in a temporary directory, checks byte
+identity with the delivered artifacts, verifies command words and exact
+source relocation, rechecks the 61-line implicational exchange certificate,
+compares the candidate against the frozen graph census, and runs the
+independent literal-tape checker. No network, source checkout, external
+solver, or proof assistant is required. Keep assertions enabled; do not
+use Python's optimization flags.
+
+\file{--quick} omits only the independent physical replay, and reports that
+omission explicitly. The full replay receipt delivered in the archive was
+produced with the default, including that replay. The inputs are hash-pinned;
+the supplied read-only checks write temporary or explicitly requested outputs.
+
+To rebuild just the machine, run
+\begin{verbatim}
+python3 -B construction/build_qh6.py --output rebuilt-machine
+\end{verbatim}
+To regenerate the full current-corpus census, rather than check novelty
+against its frozen output, the separate audit script requires a checkout
+of the pinned repository:
+\begin{verbatim}
+python3 comparison/audit_corpus.py --repo /path/to/ProveIt \
+  --out fresh-corpus-audit
+\end{verbatim}
+It rejects a different HEAD and verifies materialized source bytes against
+the pinned Git blobs. The census input corpus itself is not duplicated in
+this compact archive; exact canonical transition tuples are included for
+offline novelty checking.
+
+The PDF can be regenerated with a TeX Live installation providing the
+packages listed in \file{report/main.tex}:
+\begin{verbatim}
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+pdflatex -interaction=nonstopmode -halt-on-error main.tex
+\end{verbatim}
+The optional bounded-search programs and receipts are under
+\file{research/}. Their failure to find a smaller table is independent of
+the deterministic acceptance checks for the delivered machine.

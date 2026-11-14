@@ -1,0 +1,120 @@
+% Self-contained section fragment; requires amsmath and amssymb.
+\providecommand{\file}[1]{\texttt{#1}}
+\subsection{A concrete obstruction to the three-residue shortcut}
+\label{sec:factor-three-obstruction}
+
+The tempting change from coefficient four to coefficient three is not
+merely unsupported by the old decoding proof.  With the unchanged fifth
+head it makes the numerical calculus inconsistent.  Thus a new interpretation
+of those same numerical axioms cannot repair this particular shortcut.
+
+Write
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \quad I(a,b)=3p(a,b),\quad E(a,b)=3p(a,b)+3,
+\]
+\[
+ U(d,A)=3p(A,d)+2,\qquad N(A)=I(A,1).
+\]
+Retain modus ponens, generalization from $A$ to $U(d,A)$, the restricted
+implicational head
+\[
+ R(a,b,c,u)=I\bigl(I(I(c,u),a),I(I(a,c),I(b,c))\bigr),
+ \qquad u\le a,
+\]
+and the fifth head
+\[
+ H_5(d,h)=N\bigl(U(d,N(E(h,d)))\bigr).
+\]
+No equality-reflexivity axiom, equality-substitution rule, separation gate,
+or semantic soundness assumption will be used.
+
+\paragraph{Proposition.}
+The resulting numerical calculus derives its designated contradiction,
+code $1$, by a finite derivation.  Consequently any faithful exhaustive
+proof search for this unchanged calculus halts.
+
+\paragraph{Proof.}
+First, $R(0,0,0,0)=0$, so code $0$ is a theorem.  The numerical collision is
+\[
+                 E(1,0)=6=I(0,1).
+\]
+The generic restricted-implication derivation gives the usual derived
+$K$ and $S$ schemas
+\[
+ K(a,b)=I(a,I(b,a)),\qquad
+ S(a,b,c)=I\bigl(I(a,I(b,c)),I(I(a,b),I(a,c))\bigr).
+\]
+These derivations still apply at coefficient three.  Specifically,
+\file{M6.Logic.RestrictedImplication.k} and
+\file{M6.Logic.RestrictedImplication.s} are generic over the implication
+operation and comparison relation.  They require only the displayed
+restricted head, modus ponens, reflexivity of comparison, and propagation
+of a bound into either argument of implication.  On natural numbers with
+ordinary $\le$, these bounds follow from
+\[
+                  a,b\le p(a,b)\le3p(a,b)=I(a,b).
+\]
+Neither injectivity nor disjoint constructor tags is a hypothesis of those
+generic derivations.  The supplied generic Lean source is preserved with
+its original attribution in the accompanying certificate directory; no
+new Lean compilation is asserted here.
+
+Put $a=6=I(0,1)$.  From $K$ and $S$ derive $I(a,a)$ in the standard way:
+apply $S(a,I(a,a),a)$ to $K(a,I(a,a))$ and then to $K(a,a)$.
+From $K(0,a)$ and the theorem $0$, derive $I(a,0)$.
+Now apply $S(a,0,1)$ first to $I(a,a)=I(a,I(0,1))$ and then to
+$I(a,0)$, obtaining
+\[
+                   I(a,1)=N(6)=87.
+\]
+Generalization gives
+\[
+                     U(0,N(6))=11486.
+\]
+But $H_5(0,1)$ is precisely its negation:
+\[
+ H_5(0,1)=N(U(0,N(E(1,0))))
+        =I(11486,1)=197943987.
+\]
+One final modus ponens derives $1$.
+\hfill$\square$
+
+\paragraph{Executable certificates and scope.}
+There are two complementary certificates.  First, \texttt{check.py}
+constructs and checks a fourteen-line numeric certificate in
+\texttt{proof.json}.  It checks the displayed small code identities and all
+instantiated $K/S$ formulas using exact integers.
+
+Second, \texttt{expand\_basis.py} instantiates the retained generic
+restricted-implication derivations and expands every use of $K$ and $S$
+into primitive rules.  The resulting \texttt{primitive\_proof.json} contains
+73,393 proof steps: 34,888 restricted-head instances, 38,503 modus-ponens
+steps, one generalization, and one fifth-head instance.  Its conclusions
+are represented by a shared directed acyclic graph of 116,171 exact
+arithmetic expressions, with maximum expression depth 36.  Sharing avoids
+expanding very large numerals and repeated arithmetic subexpressions;
+it does not change their values or the calculus.
+
+The separate \texttt{verify\_primitive.py} checker reads only that
+certificate.  It neither parses nor trusts the generic Lean source, admits
+no $K/S$ rule, and uses no propositional-tautology oracle.  For each
+restricted-head side condition it verifies an explicit chain of implication
+components, each justified by $a,b\le I(a,b)$.  It checks every
+modus-ponens identity by arithmetic-expression congruence, using only the
+normalization $I(0,0)=0$; it checks the one generalization and the precise
+numeric fifth-head instance.  The final conclusion is literal code $1$.
+The final primitive certificate SHA-256 is
+\begin{center}\scriptsize\ttfamily
+baf316dce45568036fd803382b30ae2669eb504222a39a6be1f3abcad77dcb83.
+\end{center}
+This supplies a finite primitive-rule refutation with a small independent
+checker.  It is not presented as a newly compiled proof-assistant theorem
+or as a literal-machine halting trace.
+
+This rules out the unchanged coefficient-three emitter, including any
+state saving obtained solely by implementing its three-increment
+multiplier more compactly.  A viable three-residue design would need to
+change the actual logical interface or emitted heads, and establish a new
+calibration.  It cannot retain $R$, $H_5$, generalization and modus ponens
+exactly as displayed while preserving consistency.

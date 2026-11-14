@@ -1,0 +1,189 @@
+% Report fragment: requires amsmath, amssymb, amsthm, booktabs, longtable.
+\section{PA194QNS: the certified fallback construction}
+
+The machine PA194QNS composes the supplied Q axiom emitter, the supplied
+no-push modus-ponens interface, and the supplied SUMS implementation of the
+original sum-based Shift guard. None of those components is claimed to be
+new individually. The new object is their exact 194-control composition,
+with complete source and tape certificates and a finite-trace equivalence
+to the pinned PA194QN construction. The equivalence is an ordinary
+mathematical proof formalizable in PA; no new Lean or Rocq kernel endpoint
+is claimed.
+
+\subsection{Literal identity and state budget}
+
+The tape alphabet is $\{0,1\}$, the tape extends in both directions, and
+every cell is initially zero. The initial head coordinate is zero. The
+working controls are $0,\ldots,193$, with initial control zero and separate
+terminal halt label $194$. Every one of the 388 actions writes a bit and
+moves exactly one cell left or right. The dense table's SHA-256 is
+\begin{quote}\ttfamily\small
+7eb36aea69e5de46cc47fa7aab0191f191657ab500dafb808dc3c394640591b8
+\end{quote}
+The native-label table starts at 74 and halts at 254. Its SHA-256 is
+\begin{quote}\ttfamily\small
+11613b0b12395fd3132bfe5038c47297685adf337459b138879bb8cdf790daba
+\end{quote}
+The delivered bijection maps the complete native table to the dense table;
+all 194 working controls are graph-reachable.
+
+The unfolded parent has 135 fixed controls and 67 AX readers. The seven
+Q-emitter folds and the added comparator fold are simultaneously compatible:
+\[
+ 135+67-8=194.
+\]
+The 32 local history/read cases are checked against the final simultaneous
+quotient. The arithmetic-box rows are unchanged. The separate literal
+symbolic checker derives its four list-sweep lemmas from the actual table,
+rather than calling the first checker's inherited arithmetic-box oracle.
+
+\subsection{Exact patch relative to QN}
+
+The frozen parent PA194QN has dense digest
+\begin{quote}\small\nolinkurl{d1cf0f6e7a3c8f999d045694efc107dd1f9a03d45dd6c15e3d197ff7754c7231}.\end{quote}
+The builder reconstructs its entire native and dense tables and source
+instruction map before applying the new transformation. The final native
+patch is exactly the following; every other row is identical to QN.
+\begin{center}
+\begin{tabular}{rrll}
+\toprule Control&Read&QN action&QNS action\\\midrule
+28&0&$(0,R,41)$&$(0,R,330)$\\
+38&1&$(1,R,20)$&$(1,R,30)$\\
+41&0&$(0,R,24)$&deleted\\
+41&1&$(0,R,25)$&deleted\\
+70&0&$(0,R,41)$&$(0,R,330)$\\
+310&1&$(1,R,62)$&$(1,R,330)$\\
+330&0&absent&$(0,L,31)$\\
+330&1&absent&$(1,L,46)$\\\bottomrule
+\end{tabular}
+\end{center}
+The no-push action $(164,1)\mapsto(1,R,114)$ is already in QN and is
+retained. This avoids claiming it again as a new row change.
+
+Before quotienting, added control 330 has actions $(0,R,63)$ and
+$(1,L,73)$. Incoming edges to old control 41 write zero and move right;
+incoming edges to raw 330 write one and move right. The immediately
+preceding cell therefore distinguishes the two histories. Folding
+$41\to330$ gives the displayed final actions and the four three-step
+local traces
+\[
+330,31,21,24;\quad 330,46,61,25;\quad
+330,31,47,63;\quad 330,46,62,73.
+\]
+They cover histories zero/one and current bits zero/one, preserve the
+history cell and realize precisely the raw writes, moves and target
+controls. The other seven folds retain their full certificates in the
+presence of this additional fold.
+
+\subsection{An exact source equivalence}
+
+Both programs use logical registers
+$(N,T,W,A,D,H,X,Y,L)$, indexed from zero. Their physical allocation is
+$(6,2,0,4,3,7,8,5,1)$. QN has 3,654 primitive source instructions; QNS
+has 3,651. Their instructions numbered $0$ through $3648$ are literally
+equal, including every resolved target. Only the final five-instruction
+tail is replaced by two instructions:
+\begin{center}
+\begin{tabular}{p{.08\linewidth}p{.43\linewidth}p{.39\linewidth}}
+\toprule Site&QN&QNS\\\midrule
+3649&decrement $X$; zero $\to3652$, positive $\to3650$&increment $H$; $\to3650$\\
+3650&increment $H$; $\to3651$&jump $0$\\
+3651&jump $3649$&absent\\
+3652&increment $X$; $\to3653$&absent\\
+3653&jump $0$&absent\\\bottomrule
+\end{tabular}
+\end{center}
+The only edge from the common prefix into either tail is the zero branch
+of instruction 3645, which decrements $H$. Thus $H=0$ on every tail entry
+arising from the designated initial source instruction 25. This is checked
+by a separate structural certificate that imports neither compiler nor
+physical executor.
+
+The common instructions $0,\ldots,10$ form a destructive equality test:
+on input $(H,X)=(u,v)$ they halt exactly when $u=v$; otherwise they
+terminate at instruction 11 with $H=X=0$ and all other registers
+unchanged. Lockstep decrements detect simultaneous exhaustion; the
+remaining loops clear an unmatched counter. Induction on $u+v$ proves
+termination and the asserted result in PA.
+
+At entry 3649 write $X=x$; the incoming invariant gives $H=0$. QN's
+finite tail transfers $X$ to $H$ and then increments $X$, yielding
+comparator operands $(x,1)$. QNS simply increments $H$, yielding
+$(1,x)$. They therefore both halt exactly when $x=1$, and otherwise
+return to the identical complete store at instruction 11. The transfer
+loop terminates by induction on its initial value $x$.
+
+More explicitly, the common Shift prefix at 3642 transfers incoming
+$T=t$ into $X$, then incoming $H=h$ into both $T$ and $X$. Starting with
+arbitrary $(T,H,X)=(t,h,x)$, it reaches the tail with
+\[
+ (T,H,X)=(h,0,x+t+h).
+\]
+Both complete Shift blocks consequently halt exactly when $x+t+h=1$;
+otherwise they leave $(T,H,X)=(h,0,0)$ and preserve every other register.
+At command boundaries $X=0$, recovering precisely the original guard
+$t+h=1$. No cached-head-only guard is being substituted.
+
+For finite-trace transport, cut a source execution whenever it enters
+3649 and follow that local block through the comparator to instruction 11
+or halt. Replace each such terminating block by its counterpart. Outside
+these blocks the resolved instruction graphs are identical. The sole-entry
+check supplies $H=0$ at every replacement, and every block has positive
+finite duration. Induction on the number of replacements gives
+primitive-recursive translations of finite halting traces in both
+directions, from any complete register store at source 25. PA proves
+the correctness of these translations. In particular,
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Halt}(\mathrm{source}_{\rm QNS},25)
+ \leftrightarrow
+ \operatorname{Halt}(\mathrm{source}_{\rm QN},25).
+\]
+
+\subsection{From the source to consistency}
+
+The complete blank computation of QNS reaches the clean source-25 frame
+after 58,004 physical steps, at native control 84 and head coordinate
+$-2$. The logical registers are $(2,0,0,0,0,0,0,0,0)$, followed by 26
+one-valued spare registers. Both simulators compare the entire finite
+tape support and zero exterior, not a tape window. QN reaches that
+source frame after 58,154 steps.
+
+The universal source-frame certificates cover 4,751 primitive outcomes,
+including both branches of every decrement, arbitrary natural primary
+registers, an arbitrary affine header gap, and the stated complete spare
+list interface. Together with positive progress and deterministic tape
+execution, they identify blank halting with halting of the corresponding
+source from its initial frame. The new source equivalence therefore
+transports the supplied QN paper calibration:
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Halt}(\mathrm{PA194QNS},\mathrm{blank})
+ \leftrightarrow \exists e\,
+       \operatorname{Prf}_{\mathrm{PA}}(e,0=1),
+\]
+and hence
+\[
+ \mathrm{PA}\vdash
+ \neg\operatorname{Halt}(\mathrm{PA194QNS},\mathrm{blank})
+ \leftrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+The inherited QN calibration retains the separate diagonal-head calculus,
+the K/S exchange derivation for Q's curried-premise change, and the
+reserved-zero proof compiler for no-push MP. They are attributed in the
+reference fragments and are not proved again merely by executing the
+physical certificates. This transport needs no assumption that PA is
+consistent. Such an assumption is used only to conclude actual
+nonhalting from the biconditional.
+
+\subsection{Material difference and its limits}
+
+QNS changes the executing Shift protocol of QN, eliminating a counter
+transfer on every visit while retaining its arbitrary-store behavior.
+It changes the Q axiom emitter relative to the supplied sum-symmetric
+NS machine. These are recurring logical and runtime operations, not
+unreachable-row edits. Its complete action graph is absent from all 39
+current 194-state graph classes at the pinned revision, even after
+state renaming, spanning-root change, reflection and bit interchange.
+The component techniques are inherited, and no sub-194 construction or
+global minimality result is claimed for this fallback.
