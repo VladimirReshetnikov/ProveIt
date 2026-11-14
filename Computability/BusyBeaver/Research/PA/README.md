@@ -166,6 +166,26 @@ These cover nonstandard valid formulas in candidate PRA models with IΣ₁
 reducts. They are components of the compiler, not a translation of arbitrary
 PA proofs or a verification of source execution.
 
+For the direction `Con(PA) → ¬Halt(M₁₉₄)`, a
+[conditional source-line theorem](pa195-calibration/PA194SourceLineRefutation.md)
+turns an internally valid numerical derivation of code 1 into an internal PA
+refutation, provided its seed translations are PA-provable. Model-uniform
+proofs cover several seed families, including
+[head5](pa195-calibration/PA194SourceHead5Preservation.md), as well as modus
+ponens and generalization. The remaining seed families and the connection from
+the physical machine to such line histories are open. Separately, the
+[machine-store invariant](pa194-machine-store-invariant/README.md) covers the
+mathematical command effects using an independent target proof encoding; it
+has not been identified with PA provability or the physical controller trace.
+
+For the physical simulation needed in both directions, the
+[restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
+checks a nonstandard-model path under explicit header, positivity and blank
+suffix hypotheses. Its endpoint is not the canonical source root, and a
+complete source-frame correspondence and blank-tape reachability are open.
+The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
+translation of arbitrary PA refutations into the machine's numerical calculus.
+
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
 `Calibrated T h` from which the iPRA equivalence follows. No table is shown to be calibrated.
