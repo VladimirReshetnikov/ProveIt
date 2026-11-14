@@ -170,3 +170,22 @@ Check the theorem and freshly rebuild its calibration prerequisites with:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-packed.sh
 ```
+
+`PA194OccurrenceCore.lean` defines the actual bounded one-step occurrence
+core for PA194's four-tag numeric decoder. It treats code zero as truth,
+recurses into both children for implication, exposes both labels for
+membership and equality, and exposes the binder and recurses into the body
+for universal quantification. The semantic theorem checks this exact reading
+in every IOpen model; packed-child descent removes the explicit rank guards.
+The history is interpreted through the bounded bit graph. Candidate PRA
+supplies existential primitive-recursive codes both for the Boolean core and
+for one bounded-history successor update of its fixpoint blueprint.
+
+The successor code is not yet an iterated occurrence code. Correctness of the
+full model-length stage iteration and identification with the recursive
+decoder remain open. To check this module with the same audited overlays and
+fresh local dependency builds, run:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-core.sh
+```
