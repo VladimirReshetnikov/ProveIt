@@ -48,8 +48,11 @@ candidate classical PRA model for **all** model configurations. The
 specification is stated through the model interpretations of addition,
 parity, halving and the comparison code and the finite decision-list lookup;
 it does not independently identify parity or halving with division in
-nonstandard models. It has not yet been connected to `PA195Bounded.next`
-by a theorem, and no actual state-iteration or bounded-halt code is supplied.
+nonstandard models. `ConfigurationStandard.lean` proves that these terms evaluate on every
+natural-number configuration to `PA195Bounded.next`, and uses its existing
+zipper refinement to identify the result with a literal PA195 tape step.
+This standard-model binding does not itself internalize the literal-machine
+correspondence in PRA. No actual state-iteration or bounded-halt code is supplied.
 
 The work still needs a configuration encoding and projections, a state
 iterator and a proof that its internal recurrence matches the exact PA195 machine. It does not prove either
@@ -75,3 +78,8 @@ For the local run, the recorded project dependency closure of the two imports
 contained 79 modules, and their current source and object hashes matched the
 build's `state.json`; the Foundation provider was the exact overlay shown
 above. Paths and caches are machine-specific.
+
+For the standard-number binding, use the same overlays with
+`bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check-standard.sh`.
+This separate check also rebuilds the pinned `M6/Zip.lean`, generated literal
+PA195 table, and `PA195Bounded.lean` in its private temporary directory.
