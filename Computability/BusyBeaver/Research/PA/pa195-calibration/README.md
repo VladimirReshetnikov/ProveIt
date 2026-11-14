@@ -428,9 +428,9 @@ template into a binary PR code, mapping the two outer placeholders to source
 free labels while keeping locally bound indices. For every template, it proves
 in all candidate-PRA models that the generated code agrees with an explicitly
 defined numeric constructor specification. `bitTemplateCode` applies this
-construction to Foundation's exact bounded bit formula. The remaining crucial
-step is to prove that the numeric specification is the Foundation quote of
-capture-avoiding substitution; it is not yet a verified membership translator.
+construction to Foundation's exact bounded bit formula. The following results
+identify the numeric specification with Foundation substitution under IΣ₁;
+they do not yet give a verified complete membership translator in candidate PRA.
 
 `PA194BitTemplateSize.lean` provides a reproducible executable size probe. Its
 `#eval` reports 1,503,347 nodes, counting both `Code` and `Codes` constructors;
@@ -486,4 +486,40 @@ Rebuild the chain with the audited overlays using:
 
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-membership-code.sh
+```
+
+`PA194EqualityCode.lean` composes the exact PA194 first and second decoder
+children with the canonical equality-atom code. Given candidate-PRA decoder
+certificates, `modelEqualityConstructor` proves the expected equation for
+`4*cantor(a,b)+3` in every candidate-PRA model, including nonstandard fields.
+The separately stated identification with Foundation's named equality syntax
+requires IΣ₁. The decoder codes are supplied existentially by
+`PA194ChildCodes.lean`; the recursive full-formula translator remains open.
+Check with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-equality-code.sh
+```
+
+`PA194StackCode.lean` constructs PR head, tail, indexed drop, and lookup codes
+for Foundation's pair-plus-one vectors. Given candidate-PRA certificates for
+the auxiliary pairing projections, the head/tail equations and drop iterator
+base and successor equations hold in every candidate-PRA model, including at
+nonstandard indices. Suitable projection codes exist, but are not serialized.
+This is a storage component only: the source-translator history invariant and
+its reverse-index relationship to decoder children remain open. Recheck with:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-stack-code.sh
+```
+
+`PA194TagDecoder.lean` proves that candidate PRA supplies a PR code for the
+exact source tag `n % 4`; its model equation holds also for nonstandard
+codes. It also checks that each constructor `4*payload+tag`, for `tag<4`,
+dispatches to that tag. Source code zero still requires its separate truth
+alias check. The selected decoder code is existentially supplied and not yet
+serialized. Recheck with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-tag-decoder.sh
 ```
