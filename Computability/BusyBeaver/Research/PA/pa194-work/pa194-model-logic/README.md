@@ -37,6 +37,8 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelSourceIndexBound`, `PA194ModelAtomicFreshness` | Source-atom variable indices are below the atom code, and the selected labels are fresh under explicit ceiling and environment bounds. |
 | `PA194ModelSourcePath` | A finite PRA code follows source-formula child paths for arbitrary model-length step counts; visited node codes are bounded by the root. |
 | `PA194ModelSourcePathDepth` | A finite code counts binders actually traversed by such a path; the visited node plus the count is bounded by the root. |
+| `PA194ModelSourcePathValidity` | Every visited node of a valid source formula remains valid, including at nonstandard path lengths. |
+| `PA194ModelPathBudget` | At remaining budget `root − binderCount`, the dispatcher allocation agrees with the path's binder count. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -148,8 +150,13 @@ counter, using the same choice stack, counts exactly the quantifier tags
 traversed. Internal Σ₁ induction proves that the visited node plus this count
 is at most the root, including at nonstandard step counts. This supplies the
 allocation-depth bound for freshness at a visited valid atom. No theorem yet
-shows every internal syntactic subformula is reachable by a coded path or
-identifies the dispatcher's context with the path and its binder counter.
+shows every internal syntactic subformula is reachable by a coded path. A
+separate internal induction proves that every visited node of a valid root
+remains valid. At remaining budget `root − binderCount`, the reconstructed
+bound stack and current label equal allocation at that count; the next path
+step leaves the budget unchanged at a nonbinder and decreases it by one at a
+binder. These algebraic facts do not yet prove the recursive dispatcher
+actually visits each path node with that budget.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -161,7 +168,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelSourcePathDepth` as the top module. On 2026-11-14, all twenty-one
+`PA194ModelPathBudget` as the top module. On 2026-11-14, all twenty-three
 modules in this directory were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
