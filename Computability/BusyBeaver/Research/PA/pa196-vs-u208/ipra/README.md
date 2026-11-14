@@ -115,6 +115,11 @@ assumption. `PA196PAQVecLength.lean` bounds its output length and identifies
 its shifted entries on valid vectors. `PA196PATermBShiftGrowth.lean` and
 `PA196PAQVecGrowth.lean` prove numeric growth bounds for arithmetic term
 bound-variable shift and the resulting substitution vector.
+`PA196PRAQVecTower.lean` constructs a primitive-recursive code for iterating
+the vector majorant and proves its recurrence in every candidate-PRA model.
+`PA196PAQVecTowerModel.lean` proves that one qVec application advances that
+majorant by one stage when the arithmetic reduct also models IΣ₁. The bound
+for the full substitution recursion stage remains open.
 `PA196PASubstitutionClauses.lean` proves the ten positive constructor-clause
 witness bounds for arithmetic formula substitution, and
 `PA196PASubstitutionNegative.lean` proves six negative constructor clauses.
