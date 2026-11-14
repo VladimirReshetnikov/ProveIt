@@ -359,3 +359,16 @@ Check with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-atom-code.sh
 ```
+
+`PA194CanonicalVectorCode.lean` constructs the correct Foundation term
+vector for two variable codes by right-folding `Vec.adjoin`, rather than using
+`Seq.seqCons`. The code is fully explicit, and candidate PRA proves its
+`qqFvarDef`/`adjoinDef` graph for all labels. An additional theorem identifies
+the numeric expression with Foundation's actual `matrixToVec` in models of
+IΣ₁, where that syntax interpretation is available. This repairs the vector
+representation needed for a real atomic formula constructor; composition with
+`qqRelDef` and the full recursive translator remain separate. Recheck with:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-canonical-vector.sh
+```
