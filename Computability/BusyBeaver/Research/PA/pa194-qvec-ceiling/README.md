@@ -25,3 +25,7 @@ The final module passed a fresh suffix check using retained PA196 qVec
 prerequisites and the audited project and Foundation overlays. Its printed
 axioms contain no `sorryAx`. The script rebuilds the prerequisite prefix up to
 tower algebra; this full prefix replay remains pending.
+
+An independent suffix replay rebuilt the ceiling module against the retained
+PA196 qVec prerequisites and audited project/Foundation overlays. It passed
+without `sorryAx`; this did not rebuild the full prerequisite prefix.
