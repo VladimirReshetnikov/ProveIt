@@ -320,3 +320,16 @@ formula. Check it with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-vacuity.sh
 ```
+
+`PA194VarVectorCode.lean` composes the represented free-variable constructor
+with a PRA-certified sequence append operation to construct a two-entry
+vector from source labels `a,b`. Its graph states that both entries have the
+exact Foundation free-variable codes, in order, and candidate PRA proves this
+graph; the required append code is supplied by an existence theorem. The
+append code has not been serialized as a numeral. Linking this vector to the
+full Foundation relation-code constructor and the recursive source translator
+remains open. Recheck with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-var-vector-code.sh
+```
