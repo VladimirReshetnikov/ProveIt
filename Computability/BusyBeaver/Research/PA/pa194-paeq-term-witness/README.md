@@ -24,5 +24,9 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 
 The four new modules passed ordered suffix checks against the checked PAeq
 formula and term-rank modules plus retained project/Foundation prerequisites;
-their printed axioms contain no `sorryAx`. The full standalone replay remains
-pending.
+their printed axioms contain no `sorryAx`. The full standalone replay also
+passed with the pinned audited overlays.
+
+An independent ordered suffix replay rebuilt all four term witness-bound
+modules against separately checked PAeq/qVec prerequisites and retained deeper
+overlays. It passed without `sorryAx`; this was not a full prefix replay.

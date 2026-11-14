@@ -23,3 +23,8 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 The final module passed a fresh suffix check against the checked PAeq term
 witness modules and retained prerequisites; printed dependencies contain no
 `sorryAx`. The full standalone replay remains pending.
+
+An independent suffix replay rebuilt the formula-recognizer witness bounds
+against separately checked PAeq term-witness prerequisites and retained
+deeper overlays. It passed without `sorryAx`; this was not a full nested
+replay.
