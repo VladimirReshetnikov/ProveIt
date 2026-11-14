@@ -14,6 +14,7 @@ lengths. Lean compiled the four new modules against retained prerequisite
 objects; the printed theorem axioms contain no `sorryAx`. The nested replay
 wrapper was syntax checked but has not been run for this change.
 
-The zero selected-value case, blank-start reachability, and source-frame
-correspondence remain open. This conditional physical trace does not prove
+The later [all-selected theorem](FIRST-AT-LEAST-TWO-TO24.md) also handles
+the zero case. Blank-start reachability and source-frame correspondence remain
+open. This conditional physical trace does not prove
 either iPRA consistency implication for the literal machine.

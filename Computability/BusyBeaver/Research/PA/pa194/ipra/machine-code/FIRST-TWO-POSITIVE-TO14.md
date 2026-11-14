@@ -13,10 +13,14 @@ block, preserving the remainder of the file. `PA194HalfFileSix.lean` composes
 six concrete physical controller states from 71 to 14. The marker theorem
 joins this with the previously checked path to state 71. Lean compiled all
 three modules against retained prerequisite objects, and the reported theorem
-axioms contain no `sorryAx`. The nested replay wrapper was syntax checked but
-not run for this change.
+axioms contain no `sorryAx`.
 
 The later [state-16 theorem](FIRST-TWO-POSITIVE-TO16.md) continues this
-conditional path. It does not yet complete the return to state 24, show that
-the blank-start machine reaches the marker layout, or establish a source-frame
-correspondence or an iPRA consistency implication.
+conditional path, followed by the [state-24 theorem](FIRST-TWO-POSITIVE-TO24.md).
+These results do not show that the blank-start machine reaches the marker
+layout or establish a source-frame correspondence or an iPRA consistency
+implication.
+
+A full nested `check-first-two-positive-two-returns.sh` replay also passed
+with no `sorryAx`, rebuilding its machine-code chain against retained
+prerequisite overlays.

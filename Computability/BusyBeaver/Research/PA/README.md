@@ -208,8 +208,8 @@ checks a nonstandard-model path under explicit header, positivity and blank
 suffix hypotheses. A [combined marker return](pa194/ipra/machine-code/ALL-SELECTED-MARKER-TO24.md)
 now handles arbitrary selected values under its common intermediate-layout
 assumptions. For the first non-first marker, a further
-[combined return](pa194/ipra/machine-code/FIRST-AT-LEAST-THREE-TO24.md)
-covers all first-register values at least three and arbitrary selected values,
+[combined return](pa194/ipra/machine-code/FIRST-AT-LEAST-TWO-TO24.md)
+covers all first-register values at least two and arbitrary selected values,
 under the explicit eight-block blank-tail layout. These are model-uniform
 conditional traces. A complete source-frame correspondence and blank-tape
 reachability are open.
