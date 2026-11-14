@@ -23,7 +23,7 @@ patterns are consistent with a source-frame change from `10111111` to the
 zero extension `10111100`. The pinned source-tree data identify the former
 path as `continueTo 2` and the leaf `1011110` as `dec 6`; these source-tree
 identifications and the jump between them are now checked in
-[`PA194SourceFacts`](../../../pa194-source-tree/PA194SourceFacts.lean).
+[`PA194SourceFacts`](../../../pa194-work/pa194-source-tree/PA194SourceFacts.lean).
 The physical theorem does not prove the dense/native source-frame correspondence
 and is not an iPRA derivation or a PA consistency equivalence.
 
