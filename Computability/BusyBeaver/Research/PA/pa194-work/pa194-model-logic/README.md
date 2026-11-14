@@ -25,6 +25,7 @@ length, is not started. Nothing here yields a consistency implication.
 | `PA194ModelNeighborhoodCode` | A fixed ternary candidate-PRA code for the neighborhood constructor has its stated value on arbitrary model inputs, including nonstandard labels, and agrees over the natural numbers with the existing source-LK neighborhood encoding. |
 | `PA194ModelSourceAtomCode` | Candidate-PRA codes decode positive and negative source equality atoms and select bound/free labels from encoded environments, including for nonstandard terms and vectors. |
 | `PA194ModelSourceEnvironment` | A finite code pushes a label onto the bound environment; its lookup equations have the head/tail behavior of the standard source translator's binder update. |
+| `PA194ModelBoundAllocation` | A finite code reconstructs consecutive binder labels and the bound stack from a remaining depth budget, including at nonstandard depths. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -55,6 +56,17 @@ This matches the head/tail behavior of `Fin.cases lo bound` in the ordinary
 source `toNamed` translation. It does not establish a recursive translation of
 internal formulas or its correctness under quantifiers.
 
+`boundAtBudget` reconstructs the bound stack from fixed initial parameters and
+truncated subtraction `ceiling - budget`. At the root, budget equals ceiling.
+The binder equation assumes a positive parent budget `b + 1` with
+`b + 1 ≤ ceiling` and shows that the child budget `b` pushes the current
+label. If `ceiling < budget`, subtraction saturates at zero and the stack and
+label revert to their initial values; no binder equation is asserted there.
+The intended packed-history recursion must preserve the budget on Boolean
+children and decrement it only at binders, as the existing formula-budget
+machinery does. This module does not yet supply the new dispatcher, packed
+parameter decoder, or the depth invariant needed for a recursive compiler.
+
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
 
@@ -65,7 +77,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelSourceEnvironment` as the top module. On 2026-11-14, all seven
+`PA194ModelBoundAllocation` as the top module. On 2026-11-14, all eight
 modules in this directory were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
