@@ -95,7 +95,8 @@ libraries: the upstream `M6.Zip` and `PA196.Literal`, the modules of `../pa196-v
 that the certificate needs, and the files of the two `isigma1-*` directories, 99 modules in
 all, one `lean` process at a time. It prints the axioms of `certificate`, `machine_endpoint`
 and `ipra_of_models` and fails if `sorryAx` occurs in any log. With `--out DIR` it keeps the
-objects and skips modules already compiled there.
+objects and skips modules already compiled there. `IPRA_LEAN_OVERLAY` and
+`IPRA_FOUNDATION_OVERLAY`, when set, are searched before the root Lake objects.
 
 The unconditional check was run on Windows (Lean 4.32.0) and its axiom reports
 are `propext`, `Classical.choice`, `Quot.sound`. The 99 modules were compiled once, in two passes into one

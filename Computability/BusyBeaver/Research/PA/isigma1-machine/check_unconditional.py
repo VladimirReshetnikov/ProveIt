@@ -4,7 +4,8 @@
 usage: check_unconditional.py [--out DIR]
 
 The modules of the root Lake workspace (DiophantineConsistency, Foundation, BusyBeaver, ...)
-are taken as built in .lake/build. The standalone modules are compiled one `lean` process at a
+are taken as built in .lake/build, or from IPRA_LEAN_OVERLAY and IPRA_FOUNDATION_OVERLAY when
+set. The standalone modules are compiled one `lean` process at a
 time, in dependency order, into DIR (a fresh temporary directory by default; an existing DIR is
 reused and modules already compiled there are skipped):
 
@@ -55,7 +56,7 @@ def visit(mod):
     if p is None:
         return
     for line in open(p, encoding="utf-8", errors="replace"):
-        m = re.match(r"\s*import\s+([A-Za-z0-9_.]+)", line)
+        m = re.match(r"\s*(?:public\s+)?import\s+([A-Za-z0-9_.]+)", line)
         if m:
             visit(m.group(1))
         elif re.match(r"\s*(theorem|def|lemma|namespace|open|set_option|noncomputable|inductive|structure|instance|abbrev)\b", line):
@@ -67,7 +68,9 @@ visit("ConPAUnconditional")
 lean_path = subprocess.run(["lake", "env", "printenv", "LEAN_PATH"], cwd=repo, capture_output=True,
                            text=True, check=True).stdout.strip()
 env = dict(os.environ)
-env["LEAN_PATH"] = out + os.pathsep + lean_path
+overlays = [os.path.realpath(os.environ[k]) for k in ("IPRA_LEAN_OVERLAY", "IPRA_FOUNDATION_OVERLAY")
+            if os.environ.get(k)]
+env["LEAN_PATH"] = os.pathsep.join([out, *overlays, lean_path])
 version = subprocess.run(["lean", "--version"], cwd=repo, capture_output=True, text=True).stdout
 if "version 4.32.0" not in version:
     sys.exit("expected Lean 4.32.0, found: " + version.strip())
