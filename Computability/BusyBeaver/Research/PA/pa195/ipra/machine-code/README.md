@@ -34,14 +34,25 @@ agrees with the pinned table at index `2*state+read`, with default
 numbers, although machine use supplies a binary read and working state.
 The all-model lookup recurrences imply separate row-output equations for
 each **standard numeral** index in every model of candidate classical PRA.
-They are not yet a single formula for all possibly nonstandard indices or
-an iPRA proof. The table is generated into a private temporary directory
-from the SHA-256-pinned archive and member by the parent `generate.py`.
+`TableModelSemantics.lean` also proves a finite decision-list specification
+for the lookup at *every* model element, including nonstandard ones, using
+the model's predecessor and zero. This is a Lean metatheorem, not yet an
+iPRA proof. The table is generated into a private temporary directory from
+the SHA-256-pinned archive and member by the parent `generate.py`.
 
-These are explicit arithmetic components, not a complete PA195 transition or clock
-code. The work still needs the full finite transition lookup, a configuration
-encoding and projections, a state iterator and a proof that its internal
-recurrence matches the exact PA195 machine. It does not prove either
+`ConfigurationStep.lean` gives three explicit `Code 3` terms for the next
+state and two next tape halves. These use the PA195 bounded representation:
+the right half includes the head cell as its low bit. `modelNext` proves that
+their interpretations agree with a model-side step specification in every
+candidate classical PRA model for **all** model configurations. The
+specification is stated through the model interpretations of addition,
+parity, halving and the comparison code and the finite decision-list lookup;
+it does not independently identify parity or halving with division in
+nonstandard models. It has not yet been connected to `PA195Bounded.next`
+by a theorem, and no actual state-iteration or bounded-halt code is supplied.
+
+The work still needs a configuration encoding and projections, a state
+iterator and a proof that its internal recurrence matches the exact PA195 machine. It does not prove either
 machine-specific iPRA implication. In particular, the standard-model
 equalities here do not identify these explicit codes with the noncomputably
 chosen `PA196Bounded.boundedCode` in arbitrary models.
@@ -55,7 +66,7 @@ IPRA_FOUNDATION_OVERLAY=/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib \
   bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check.sh
 ```
 
-The script rebuilds all three modules in a private temporary directory and verifies
+The script rebuilds all five modules in a private temporary directory and verifies
 the hashes of five direct sources, the two directly imported project objects,
 and the Foundation `Init` object. It prints axiom dependencies and rejects
 `sorryAx`. It assumes the remaining transitive overlay objects were built from

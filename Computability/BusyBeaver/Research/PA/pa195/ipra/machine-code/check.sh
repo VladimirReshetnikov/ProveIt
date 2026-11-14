@@ -36,6 +36,10 @@ lean -R "$BINARY_TAPE_TASK_DIR" -M5000 -j1 "$BINARY_TAPE_TASK_DIR/PA195Rows.lean
   -o "$BINARY_TAPE_TASK_DIR/PA195Rows.olean"
 lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/TableDispatch.lean \
   -o "$BINARY_TAPE_TASK_DIR/TableDispatch.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
+lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/TableModelSemantics.lean \
+  -o "$BINARY_TAPE_TASK_DIR/TableModelSemantics.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
+lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/ConfigurationStep.lean \
+  -o "$BINARY_TAPE_TASK_DIR/ConfigurationStep.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
 if rg -q "sorryAx" "$BINARY_TAPE_TASK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1
