@@ -16,11 +16,15 @@ the source tags now have fixed primitive-recursive syntax combinators except
 for the single supplied `close` operation. Existing dual-recursion theorems
 apply directly to this instantiation.
 
-No semantics, totality certificate, or correct code for `close` is provided.
-This package does not establish well-formedness or positive/negative semantic
-duality of the recursively generated formulas, the connection of the zero
-alias to this truth code and the represented proof compiler,
-PA calibration, machine internalization, or either consistency implication.
+This package leaves `close` as a parameter. The separate
+[canonical-closer bridge](PA194CanonicalDualForall.md) supplies a fixed code,
+proves its agreement with Foundation's internal traversal, and establishes
+the universal-branch equation when the recursively translated bodies are
+well formed. Neither package establishes that hypothesis for arbitrary
+source formulas, positive/negative semantic duality, the connection of the
+zero alias to this truth code and the represented proof compiler, the encoding
+and proof translation to Foundation's relational source, PA calibration,
+machine internalization, or either consistency implication.
 `PA194ZeroAlias.lean` separately proves the alias's logical equivalence in PA
 for truth chosen as `0=0`.
 Rebuild the full chain with the pinned overlays:
