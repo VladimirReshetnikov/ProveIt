@@ -10,9 +10,13 @@ The state-14 intermediate theorem now retains the final unary-run structure;
 the state-16 theorem carries it to the existing model-length return scan.
 The final state-17 theorem records existential tape halves and time. Lean
 compiled both new modules against retained prerequisite objects, and the
-printed theorem axioms contain no `sorryAx`. The nested replay wrapper was
-syntax checked but not run for these modules.
+printed theorem axioms contain no `sorryAx`.
 
-Further file structure is needed to continue the physical return to state 24.
+The later [state-24 theorem](FIRST-TWO-POSITIVE-TO24.md) completes the
+conditional positive return.
 Blank-start reachability, the source-frame correspondence, and both iPRA
 consistency directions for the literal machine remain open.
+
+A full nested `check-first-two-positive-two-returns.sh` replay also passed
+with no `sorryAx`, rebuilding its machine-code chain against retained
+prerequisite overlays.

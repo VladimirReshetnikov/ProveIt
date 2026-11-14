@@ -11,9 +11,13 @@ The proof exports the required shape of the left tape after the six file
 scans, derives the final right tape's odd parity from the last file block,
 and checks the three literal transitions through states 14 and 15 to 16.
 The five new modules were compiled against retained prerequisite objects;
-the printed theorem axioms contain no `sorryAx`. The nested replay wrapper
-was syntax checked but not run for this change.
+the printed theorem axioms contain no `sorryAx`.
 
-The subsequent physical return, source-frame correspondence, and
-blank-start reachability remain open, so this does not establish either
-consistency implication for the literal machine.
+The later [state-24 theorem](FIRST-TWO-POSITIVE-TO24.md) completes the
+conditional positive return. Source-frame correspondence and blank-start
+reachability remain open, so this does not establish either consistency
+implication for the literal machine.
+
+A full nested `check-first-two-positive-two-returns.sh` replay also passed
+with no `sorryAx`, rebuilding its machine-code chain against retained
+prerequisite overlays.
