@@ -372,3 +372,17 @@ representation needed for a real atomic formula constructor; composition with
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-canonical-vector.sh
 ```
+
+`PA194CanonicalAtomCode.lean` composes the corrected `Vec.adjoin` vector
+with the relation-code constructor, using explicit PR codes throughout.
+Candidate PRA proves the composite graph for arbitrary arity and relation
+codes, including nonstandard inputs. A separate theorem identifies this value
+with Foundation's named `qqRel` applied to its `matrixToVec` of free-variable
+term codes in IΣ₁ models; the Foundation definitions used in that statement
+are introduced under IΣ₁. The equality symbol and arity still need to be
+bound for PA194's equality atom, and source membership still needs its expanded
+bit formula. Check with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-canonical-atom.sh
+```
