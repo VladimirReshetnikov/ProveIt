@@ -20,5 +20,5 @@ lean -M6000 -j1 Computability/BusyBeaver/Research/PA/isigma1-transfer/ConPAISigm
   -o "$CONPA_OUT/ConPAISigma1Transfer.olean" | tee "$CONPA_OUT/axioms.log"
 '
 if grep -q sorryAx "$out/axioms.log"; then echo "sorryAx found" >&2; exit 1; fi
-grep -c "depends on axioms" "$out/axioms.log" | grep -qx 2
+grep -c "depends on axioms" "$out/axioms.log" | grep -qx 3
 echo "ConPAISigma1Transfer: checked"

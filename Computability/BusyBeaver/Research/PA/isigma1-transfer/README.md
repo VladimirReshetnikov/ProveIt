@@ -23,6 +23,19 @@ Here `𝗜𝚺₁` is Foundation's theory, `paRefutation` is Foundation's provab
 standard iPRA. The axioms reported for `endpoint` are `propext`, `Classical.choice` and
 `Quot.sound`.
 
+`endpoint_sigma_one` is the same statement for an arbitrary `Σ₁` sentence `H` in place of
+`∃ t, δ t`:
+
+```lean
+theorem endpoint_sigma_one (H : ArithmeticSentence) (hH : Hierarchy 𝚺 1 H)
+    (h : 𝗜𝚺₁ ⊢ (paRefutation 🡘 H)) (hb : BoundCertificate) :
+    standardTheory ⊢ nativePAConsistency 🡘 ∼haltSentence (bnd H)
+```
+
+The halting sentence is then the strict form `∃ w, bnd H w` of `H`, in which every
+existential quantifier of `H` is bounded by `w`. In `𝗜𝚺₁` it is equivalent to `H`. So `H` may
+be written with Foundation's `Σ₁`-definable functions.
+
 ## What this changes
 
 For a machine `M`, the endpoints of this directory tree ask for two theorems of candidate
@@ -74,6 +87,6 @@ bash Computability/BusyBeaver/Research/PA/isigma1-transfer/check.sh
 ```
 
 `IPRA_LEAN_OVERLAY` and `IPRA_FOUNDATION_OVERLAY` are put in front of the search path when
-set, as for `../pa194/ipra/check.sh`. The script prints the axioms of `classical_iff` and
-`endpoint` and fails if `sorryAx` occurs. It was run on Windows under Git Bash against the
+set, as for `../pa194/ipra/check.sh`. The script prints the axioms of `classical_iff`,
+`endpoint_sigma_one` and `endpoint` and fails if `sorryAx` occurs. It was run on Windows under Git Bash against the
 root workspace (Lean 4.32.0); it was not run with overlays.

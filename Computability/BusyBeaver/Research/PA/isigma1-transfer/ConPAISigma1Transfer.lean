@@ -283,6 +283,23 @@ theorem endpoint (δ : ArithmeticSemisentence 1) (hδ : Hierarchy 𝚺 0 δ)
     (Entailment.C_trans Entailment.dni (Entailment.contra hr))
     (Entailment.C_trans Entailment.dni (Entailment.contra hf))
 
+/-- The same for an arbitrary `Σ₁` sentence `H`: its strict form `∃ w, bnd H w` is the halting
+sentence. In `𝗜𝚺₁` the two are equivalent (`StrictPiTwoBridge.eval_bnd_iff`). -/
+theorem endpoint_sigma_one (H : ArithmeticSentence) (hH : Hierarchy 𝚺 1 H)
+    (h : 𝗜𝚺₁ ⊢ (paRefutation 🡘 H)) (hb : BoundCertificate) :
+    standardTheory ⊢ nativePAConsistency 🡘 ∼haltSentence (bnd H) := by
+  refine endpoint (bnd H) (hierarchy_bnd hH (by decide) (by intro _; rfl)) ?_ hb
+  refine complete.{0} _ _ fun M _ hM => ?_
+  haveI : M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁ := hM
+  have hE := models_of_provable hM h
+  have hb' := DiophantineConsistency.StrictPiTwoBridge.eval_bnd_iff (M := M) hH
+  simp only [LogicalConnective.iff, Semantics.And.models_and, Semantics.Imp.models_imply] at hE ⊢
+  have hE1 : paRefutation.Evalb (M := M) ![] → H.Evalb (M := M) ![] := hE.1
+  have hE2 : H.Evalb (M := M) ![] → paRefutation.Evalb (M := M) ![] := hE.2
+  exact ⟨fun hp => (evalb_ex (bnd H)).mpr (hb'.mp (hE1 hp)),
+    fun hh => hE2 (hb'.mpr ((evalb_ex (bnd H)).mp hh))⟩
+
 #print axioms classical_iff
+#print axioms endpoint_sigma_one
 #print axioms endpoint
 end ConPA.ISigma1Transfer
