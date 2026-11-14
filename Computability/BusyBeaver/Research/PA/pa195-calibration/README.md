@@ -249,3 +249,17 @@ check the theorem's axioms using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-occurrence-code.sh
 ```
+
+`PA194BitTranslation.lean` gives the first concrete PA-syntax translation
+piece: substitute source labels `a,b` into Foundation's bounded arithmetic
+bit formula. A general substitution theorem shows that no other free labels
+appear; in particular, helper quantifiers do not capture source labels. A
+separate semantic theorem identifies the resulting formula with the exact
+Foundation bit graph. These are Lean theorems about actual formulas and
+structures; they do not yet supply a primitive-recursive formula-code
+translator, its correctness proof inside PRA, or any proof-template compiler.
+Check them with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-bit-translation.sh
+```
