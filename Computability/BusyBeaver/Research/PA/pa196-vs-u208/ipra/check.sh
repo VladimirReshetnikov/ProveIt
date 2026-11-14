@@ -77,6 +77,7 @@ lean -M6000 -j1 "$bridge/PA196PATermBVRank.lean" -o "$PA196_TASK_CHECK_DIR/PA196
 lean -M6000 -j1 "$bridge/PA196PATermRecBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermRecBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PATermOperations.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermOperations.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecGraph.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAQVecGraph.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAQVecLength.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASubstitutionClauses.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASubstitutionNegative.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PATermBVGraph.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermBVGraph.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
