@@ -61,7 +61,11 @@ lean -M6000 -j1 "$bridge/PA196InductionBodyAll.lean" | tee -a "$PA196_TASK_CHECK
 lean -M6000 -j1 "$bridge/PA196PAAlphabetBounds.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAAlphabetBounds.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAFormulaBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAFormulaBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PATermBounds.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermBounds.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
-lean -M6000 -j1 "$bridge/PA196PAFormulaComplete.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAFormulaComplete.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAFormulaComplete.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAFormulaRecBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAFormulaRecBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PANegationBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PANegationBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PANegBoundTerms.lean" -o "$PA196_TASK_CHECK_DIR/PA196PANegBoundTerms.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAIdentityBounds.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 if rg -q "sorryAx" "$PA196_TASK_CHECK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1
