@@ -30,7 +30,13 @@ the PA194 equivalence.
 
 [The PA194 arithmetic endpoint](pa194/ipra/README.md) binds the pinned table
 to a standard-model halting sentence and constructs a conditional iPRA
-equivalence. Both machine-specific reductions remain unproved.
+equivalence. [The explicit machine codes](pa194/ipra/machine-code/README.md)
+include a clock whose decoded execution is characterized in every candidate
+PRA model. [The quotient proof](pa194-dense/README.md) connects the 201-control
+parent and dense PA194 table for all standard finite runs.
+[Source coverage](pa194-coverage/README.md) reduces the source-to-parent
+simulation to a finite set of Lean checks; its full run is in progress. Both
+machine-specific consistency reductions remain unproved.
 
 ## Original 195-state candidate
 
