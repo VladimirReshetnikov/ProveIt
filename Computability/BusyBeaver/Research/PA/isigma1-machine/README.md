@@ -58,5 +58,8 @@ bash Computability/BusyBeaver/Research/PA/isigma1-machine/check.sh
 
 It compiles `../isigma1-transfer/ConPAISigma1Transfer.lean` and the two files of this
 directory against the root Lake workspace, prints the axioms of `isigma1_iff` and `endpoint`
-(`propext`, `Classical.choice`, `Quot.sound`) and fails if `sorryAx` occurs. It was run on
-Windows under Git Bash (Lean 4.32.0).
+(`propext`, `Classical.choice`, `Quot.sound`) and fails if `sorryAx` occurs. It
+passed on Windows and in an independent Linux replay with Lean 4.32.0 and the
+iPRA/Foundation overlays, after rebuilding the missing PA-consistency
+dependency from the repository source. This does not prove `Calibrated` for a
+machine or discharge the bound certificate.
