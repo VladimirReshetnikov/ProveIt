@@ -440,3 +440,17 @@ code has not been serialized. Rebuild and run the probe with:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-bit-template.sh
 ```
+
+`PA194TemplateRew.lean` closes the preceding quote/substitution gap for
+standard source labels in candidate-PRA models whose arithmetic reduct
+satisfies IΣ₁. It proves the binder-lifting equation and by structural
+induction identifies the numeric template specification with the Foundation
+quote after capture-avoiding substitution. In particular,
+`modelBitTemplateCode_quote` identifies the generated bit-template PR value
+with the quote of Foundation's exact bounded bit formula instantiated at the
+two labels. This is not yet a represented substitution theorem for arbitrary
+nonstandard labels in all candidate-PRA models. Check the chain using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-template-rew.sh
+```
