@@ -18,8 +18,8 @@ simulation, either machine-specific consistency reduction, or the desired
 `iPRA ⊢ Con(PA) ↔ ¬Halt(M₁₉₄)` equivalence.
 
 The new modules were checked in dependency order against retained, separately
-checked prerequisite overlays. Their printed axiom dependencies do not include
-`sorryAx`. The supplied `check-first-all-to24.sh` prepares a nested replay;
-that replay has not yet been completed for this combined result. It uses the
-`IPRA_LEAN_OVERLAY` and `IPRA_FOUNDATION_OVERLAY` prerequisite overlays described
-in this directory's README.
+checked prerequisite overlays. A complete run of `check-first-all-to24.sh`
+also rebuilt the nested machine-code chain, and its reported theorem
+dependencies did not include `sorryAx`. The replay uses the `IPRA_LEAN_OVERLAY`
+and `IPRA_FOUNDATION_OVERLAY` prerequisite overlays described in this
+directory's README; it does not rebuild their full transitive closure.
