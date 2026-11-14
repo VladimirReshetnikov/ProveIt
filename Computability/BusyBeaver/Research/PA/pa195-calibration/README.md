@@ -120,3 +120,21 @@ To check these results and freshly rebuild their dependencies, run:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-iterator.sh
 ```
+
+`PA194BranchSeed.lean` constructs the parameter interface for the branch
+iterator. Candidate PRA supplies existential primitive-recursive witness codes
+for both projections of an auxiliary seed pair and a Boolean branch-word bit
+reader. In every candidate-PRA model, the seed packs a root and branch word;
+the path starts at that root and its next exact decoder child is determined by
+the branch-word bit at each index, including nonstandard indices. The
+auxiliary seed uses Foundation's pairing; PA194 formula codes still use the
+distinct Cantor pairing. The witness codes are not serialized.
+
+This interface does not yet prove that an arbitrary occurrence in the actual
+PA194 recursive decoder supplies a suitable branch word, nor does it prove a
+consistency or halting implication. To check it with the same audited overlays
+and fresh local prerequisite builds, run:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-branch.sh
+```
