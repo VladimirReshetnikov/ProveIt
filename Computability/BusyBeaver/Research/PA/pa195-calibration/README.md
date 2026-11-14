@@ -228,3 +228,24 @@ property remain separate. Check the locality and stabilization proofs with:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-stability.sh
 ```
+
+`PA194OccurrenceCoverage.lean` derives the exact decoder's one-step coverage
+from a history satisfying the update and stability equations.
+`PA194OccurrenceCode.lean` constructs a binary primitive-recursive code by
+testing the packed `(formula, label)` index at its own successor stage.
+For certified core, insertion, and Boolean bit-test components it proves that
+this code satisfies coverage in every candidate-PRA model. Composing with
+strong induction gives a syntactic candidate-PRA proof that the code reports
+no occurrence of a formula code in itself. The theorem
+`PRA_has_selfFreshOccurrenceCode` proves that suitable certified component
+codes exist and supplies the resulting proof; those component codes are not yet
+serialized as explicit numerals.
+
+This establishes the freshness lemma for the represented four-tag decoder.
+It does not yet bind the code to PA194's emitted proof templates or prove a
+machine consistency/halting reduction. Rebuild the complete local chain and
+check the theorem's axioms using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-occurrence-code.sh
+```
