@@ -112,7 +112,9 @@ substitution and shift graphs still need separate bounds.
 `PA196PAQVecGraph.lean` uses the term-shift-vector bound to establish the
 arithmetic substitution-vector helper graph bound without a shift-growth
 assumption. `PA196PAQVecLength.lean` bounds its output length and identifies
-its shifted entries on valid vectors; it does not bound the numeric output code.
+its shifted entries on valid vectors. `PA196PATermBShiftGrowth.lean` and
+`PA196PAQVecGrowth.lean` prove numeric growth bounds for arithmetic term
+bound-variable shift and the resulting substitution vector.
 `PA196PASubstitutionClauses.lean` proves the ten positive constructor-clause
 witness bounds for arithmetic formula substitution, and
 `PA196PASubstitutionNegative.lean` proves six negative constructor clauses.
