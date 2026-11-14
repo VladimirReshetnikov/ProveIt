@@ -22,8 +22,8 @@ The final module passed a fresh Lean 4.32 ordered-overlay check against the
 fresh source-search and source-shift suffixes and audited project and Foundation
 objects. `#print axioms` reported `[propext, Classical.choice, Quot.sound]` for
 both main theorems, without `sorryAx`. The full standalone nested replay below
-is pending; the source-search and source-shift prerequisite full replays were
-already running separately when this package was prepared.
+is pending. The source-search and source-shift prerequisites have passed
+separate full standalone replays with the audited overlays.
 
 From the repository root, with matching audited project and Foundation objects:
 

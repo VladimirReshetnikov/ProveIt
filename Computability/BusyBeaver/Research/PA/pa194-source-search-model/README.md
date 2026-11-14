@@ -20,9 +20,8 @@ halting reduction.
 The final module passed an ordered-overlay Lean 4.32 check against the freshly
 rebuilt source-formula shift suffix and the audited project and Foundation
 objects. Its printed axioms are `[propext, Classical.choice, Quot.sound]`; no
-`sorryAx` was reported. The standalone nested replay below has not yet been
-completed for this package. Its full source-formula-shift prerequisite replay
-was already running separately when this package was prepared.
+`sorryAx` was reported. The standalone nested replay below also passed with the audited overlays,
+including the full source-formula-shift prerequisite chain.
 
 From the repository root, using matching audited project and Foundation
 objects, run:
