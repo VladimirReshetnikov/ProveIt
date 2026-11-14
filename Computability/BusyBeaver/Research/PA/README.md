@@ -204,7 +204,14 @@ of the [PAeq formula translation](pa194-paeq-formula/README.md), its
 [validity](pa194-paeq-translation-validity/README.md), [substitution graph
 witness bounds](pa194-paeq-subst-witness/README.md), and [formula substitution
 agreement](pa194-paeq-formula-subst/README.md) handle nonstandard model inputs.
-The whole proof compiler and its machine connection remain open.
+The [LK proof transport](pa194-paeq-proof-transport/README.md) covers all
+logical rules in IΣ₁ models, conditional on a uniform supplier of translated
+source-axiom proofs. Its [represented version](pa194-paeq-transport-sentence/README.md)
+is proved in IΣ₁ with that antecedent. The
+[finite-axiom classifier](pa194-finite-axiom-classifier/README.md) reduces
+the non-induction part of the supplier to its standard finite cases. The
+translated axiom proofs, arbitrary induction-schema supplier, numerical
+proof compiler and machine connection remain open.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
