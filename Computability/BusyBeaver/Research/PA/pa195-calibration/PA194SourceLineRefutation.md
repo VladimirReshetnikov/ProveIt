@@ -32,4 +32,5 @@ temporary overlay and rejects `sorryAx`.
 
 An independent suffix replay rebuilt both final modules against retained
 prerequisite overlays, with no `sorryAx` in the reported theorem dependencies.
-The complete fresh dependency replay is running separately.
+The complete author fresh dependency replay also passed with the audited
+overlays and no `sorryAx`.
