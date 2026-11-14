@@ -31,3 +31,8 @@ From the repository root, set `IPRA_FOUNDATION_OVERLAY` to the audited current
 Foundation object overlay and `IPRA_LEAN_OVERLAY` to the pinned audited
 project object overlay, then run
 `bash Computability/BusyBeaver/Research/PA/pa194-source-atom-shift-code-model/check.sh`.
+
+An independent suffix replay rebuilt both vector and atom modules in order in
+a fresh output directory, reusing the author's freshly built prerequisite
+overlays. It reported the same axioms with no `sorryAx`; the prerequisite
+chains were not rebuilt in that replay.
