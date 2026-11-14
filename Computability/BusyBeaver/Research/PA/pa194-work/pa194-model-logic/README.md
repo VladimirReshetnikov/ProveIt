@@ -21,6 +21,7 @@ length, is not started. Nothing here yields a consistency implication.
 | `PA194ModelPropositional` | The upstream generic derivation `M6.Logic.RestrictedImplication` instantiated with `M`, `impValue` and `TargetProvable`: `imp_k`, `imp_s`, `imp_peirce`, `imp_comp`, `imp_exchange`, `imp_refl`, and `rho8_all` (the restricted row without its side condition `u ≤ a`). |
 | `PA194ModelContext` | `Ctx Γ a`: proof trees of standard size from a standard-length list `Γ` of model elements. `Ctx.deduction` (deduction theorem), `Ctx.generalize`, `Ctx.existsElim`, `Ctx.casesOnFormula`; `explosion`, `doubleNegationElimination`, `contraposition`; the vacuity rules `negationVacuity`, `implicationVacuity`, `universalVacuity`, `conjunctionVacuity`; `existentialMonotonicity`, `liftImp`; `memRight`, `memLeft`. |
 | `PA194ModelNeighborhood` | The target-code neighborhood relation is reflexive, symmetric and transitive, and three corresponding universally closed source equality-supplier-shaped formulas are target-provable for arbitrary model labels. |
+| `PA194ModelNeighborhoodDef` | The neighborhood and biconditional constructors are Σ₁-definable model functions, which permits their use in suitable internal induction predicates. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -38,8 +39,8 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelNeighborhood` as the top module. On 2026-11-14, a run with `--out`
-pointing at a retained combined overlay rebuilt all three modules in this
-directory. All nine printed axiom reports were free of `sorryAx`. The overlay
-includes previously checked Foundation, project and standalone prerequisites;
-this was a suffix check, not an empty-overlay replay.
+`PA194ModelNeighborhoodDef` as the top module. On 2026-11-14, a run with
+`--out` pointing at a retained combined overlay rebuilt all four modules in
+this directory. Their printed axiom reports were free of `sorryAx`. The
+overlay contains previously checked Foundation, project and standalone
+prerequisites; this was a suffix check, not an empty-overlay replay.
