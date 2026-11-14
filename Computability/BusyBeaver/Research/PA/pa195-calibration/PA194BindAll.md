@@ -7,3 +7,4 @@ The `PA194BindAllTerm` and `PA194BindAllFormula` modules construct a uniform Fou
 The formula-level decoding theorem and its application with `N = bv` of the resulting body are still open. Thus this package does not yet construct all induction-axiom recognizer witnesses, prove arbitrary-formula PA induction, bounded comprehension, the distinct-label gate, or an iPRA implication.
 
 The author replay ran `check-bind-all.sh` against the pinned Foundation overlay, rebuilding the local prerequisite and three new modules. Printed axioms are `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`.
+An independent complete replay also passed without `sorryAx`.

@@ -213,10 +213,11 @@ source-axiom proofs. Its [represented version](pa194-paeq-transport-sentence/REA
 is proved in IΣ₁ with that antecedent. The
 [finite-axiom classifier](pa194-finite-axiom-classifier/README.md) reduces
 the non-induction part of the supplier to its standard finite cases. The
-[equality-reflexivity case](pa194-paeq-refl-source/README.md) now has an
-explicit translated target proof. The remaining finite axiom proofs, arbitrary
-induction-schema supplier, numerical proof compiler and machine connection
-remain open.
+[equality-reflexivity case](pa194-paeq-refl-source/README.md) and the
+[symmetry and transitivity cases](pa194-paeq-equality-source/README.md) now
+have explicit translated target proofs. The remaining finite axiom proofs,
+arbitrary induction-schema supplier, numerical proof compiler and machine
+connection remain open.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
