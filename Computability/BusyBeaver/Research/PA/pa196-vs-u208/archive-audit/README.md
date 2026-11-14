@@ -29,9 +29,12 @@ not claimed to enumerate every 196-state file in every archive: research
 catalogs include many exploratory tables, duplicate encodings and rejected
 variants. Graph nonisomorphism alone says nothing about halting behavior.
 
-The [zero-mask certificate prototype](zero-mask/README.md) checks finite
-closure calculations relevant to the four closing-command variants. It does
-not yet prove a reachable-source invariant or equivalence of their machines.
+The [zero-mask certificate](zero-mask/README.md) proves a source-run invariant
+relevant to the four closing-command variants, from the specified source seed.
+It does not establish equivalence of their physical machines.
+The [common-startup check](close-startup/README.md) proves that these four
+variants and published PA196 have the same zipper configuration after 58,154
+steps; their behavior after that finite prefix remains to be related.
 
 The two rejected tables are important controls: both are 196-working-state
 machines, but both **halt on blank tape**. Their complete finite traces are
