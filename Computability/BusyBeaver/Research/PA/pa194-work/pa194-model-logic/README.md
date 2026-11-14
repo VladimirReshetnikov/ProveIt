@@ -47,6 +47,7 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelSyntacticDescendant` | The chain-based descendant relation is reflexive, closed under direct edges, covered by paths, and preserves formula validity. |
 | `PA194ModelSourceChainDepth` | A separately coded sum of the chain’s binder bits equals the operational path depth. |
 | `PA194ModelDescendantComplexity` | The independent edge, chain, and descendant relations are uniformly Σ₁-definable. |
+| `PA194ModelRecursorOccurrence` | The actual Foundation formula-reference equations expose immediate child descendants with their binder depths. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -189,7 +190,12 @@ and exact-depth descendant relations are uniformly Σ₁-definable; existentiall
 quantifying the depth recovers the ungraded descendant relation. This does not
 identify the relation with a separately defined
 Foundation subformula predicate, prove that the translator visits every such
-node, or establish semantic correctness of the translation.
+node, or establish semantic correctness of the translation. For each valid
+Boolean or binder constructor, the actual Foundation `formulaReference`
+recurrence equation now has independently chain-defined witnesses for its
+immediate recursive child inputs, with depth zero for Boolean edges and one
+for binders. This is a local result, not a theorem covering an entire
+nonstandard Foundation recursion history.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -201,7 +207,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelDescendantComplexity` as the top module. On 2026-11-14, the path and
+`PA194ModelRecursorOccurrence` as the top module. On 2026-11-14, the path and
 dispatcher modules were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
