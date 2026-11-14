@@ -26,13 +26,13 @@ the **same fixed ceiling**, and thus are equations for `budgetClose`, not yet
 constructor equations for the root wrapper `closeFormula`. The stage code's
 behavior on malformed formula codes is outside this claim.
 
-The essential remaining step is to prove that the root wrapper agrees on all
-model-internal well-formed formulas with `PA194InternalFormulaClose.close`;
-this entails handling different budgets/ceilings across recursive calls.
-Neither that agreement, independence from the chosen budget and ceiling,
-well-formedness of the root wrapper, nor the compiler's overall correctness
-is claimed here. No PA194 machine/refutation implication follows from these
-equations alone. The printed theorems use only `propext`, `Classical.choice`,
+The separate [agreement proof](PA194FormulaAgreement.md) proves that the root
+wrapper agrees with `PA194InternalFormulaClose.close` on all model-internal
+well-formed formulas, and handles the changing budget at a fixed ceiling. It
+also proves well-formedness of the fixed canonical root wrapper. Neither that
+agreement nor the compiler's overall correctness is proved by this file's
+constructor equations alone. No PA194 machine/refutation implication follows
+from these equations alone. The printed theorems use only `propext`, `Classical.choice`,
 and `Quot.sound`, with no `sorryAx`.
 
 Run `check-formula-update.sh` with the audited `IPRA_LEAN_OVERLAY` and

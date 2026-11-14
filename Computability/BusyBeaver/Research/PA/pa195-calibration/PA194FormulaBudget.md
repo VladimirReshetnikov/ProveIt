@@ -14,12 +14,13 @@ they assume an IΣ₁ arithmetic reduct, as required for these constructors. All
 parameters may be nonstandard model elements. The printed results depend on
 `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`.
 
-This is only generic recursion infrastructure: `next` is still an arbitrary
-parameter. There is not yet an explicit formula-node update, a complete
-candidate-PRA formula-closing code, its constructor equations, or a proof that
-changing the fixed ceiling leaves results invariant. In particular this file
-does not establish formula translation correctness or the machine/refutation
-equivalence. Run `check-formula-budget.sh` with the audited
+This file provides generic recursion infrastructure: `next` remains an
+arbitrary parameter here. The separate [formula update](PA194FormulaUpdate.md)
+instantiates it with an explicit candidate code, and the
+[agreement proof](PA194FormulaAgreement.md) proves its root wrapper agrees
+with Foundation's internal traversal for well-formed formulas. This file does
+not itself establish that agreement or the machine/refutation equivalence.
+Run `check-formula-budget.sh` with the audited
 `IPRA_LEAN_OVERLAY` and `IPRA_FOUNDATION_OVERLAY` set.
 
 An independent fresh Linux replay passed with the audited overlays, rebuilding

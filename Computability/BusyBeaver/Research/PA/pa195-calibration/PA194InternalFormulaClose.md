@@ -21,12 +21,12 @@ exported statements because the term-code projections are chosen using their
 existing certificates.
 
 Lean reports only `propext`, `Classical.choice`, and `Quot.sound` as axioms of
-the printed results. The Σ₁ graph and the structural/well-formedness results
-are separate facts: neither supplies a candidate-PRA formula-closing `Code 2`.
-That code and an all-model proof of agreement with this Foundation traversal
-are still absent. This result does not prove semantic correctness of the
-complete compiler, formula-level candidate-code traversal, or either direction
-of the PA194 machine/refutation equivalence.
+the printed results. The Σ₁ graph and the structural/well-formedness results are separate facts;
+this file alone does not supply a candidate-PRA formula-closing `Code 2`.
+The separate [agreement proof](PA194FormulaAgreement.md) supplies such a code
+and proves its all-model agreement with this traversal. This result does not
+prove semantic correctness of the complete compiler or either direction of
+the PA194 machine/refutation equivalence.
 
 Run `check-internal-formula-close.sh` with `IPRA_LEAN_OVERLAY` and
 `IPRA_FOUNDATION_OVERLAY` set to the audited project and Foundation object
