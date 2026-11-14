@@ -26,3 +26,6 @@ A fresh author two-module suffix replay passed against retained checked
 prerequisite overlays, reporting `propext`, `Classical.choice`, and
 `Quot.sound` and no `sorryAx`. The full nested checker
 `check-first-three-blank-tail-return.sh` is supplied but has not been run.
+An independent ordered suffix replay rebuilt both modules against separately
+checked blank-tail, carry, and earlier marker/controller objects and retained
+deeper overlays. It passed without `sorryAx`; this was not a full nested replay.
