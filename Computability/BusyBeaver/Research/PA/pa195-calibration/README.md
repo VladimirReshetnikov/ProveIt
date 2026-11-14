@@ -487,3 +487,16 @@ Rebuild the chain with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-membership-code.sh
 ```
+
+`PA194EqualityCode.lean` composes the exact PA194 first and second decoder
+children with the canonical equality-atom code. Given candidate-PRA decoder
+certificates, `modelEqualityConstructor` proves the expected equation for
+`4*cantor(a,b)+3` in every candidate-PRA model, including nonstandard fields.
+The separately stated identification with Foundation's named equality syntax
+requires IΣ₁. The decoder codes are supplied existentially by
+`PA194ChildCodes.lean`; the recursive full-formula translator remains open.
+Check with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-equality-code.sh
+```
