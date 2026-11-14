@@ -47,4 +47,5 @@ TMPDIR=/dev/shm IPRA_LEAN_OVERLAY=/path/to/ipra/lib \
 An independent fresh suffix replay rebuilt all eleven increment and endpoint
 boundary modules against separately checked slot-eight and rewind overlays.
 It passed without `sorryAx` in the reported theorem dependencies. The
-comprehensive nested replay is running separately.
+comprehensive `check-marker-to-increment.sh` nested replay also subsequently
+passed, including the final marker-to-increment theorem.

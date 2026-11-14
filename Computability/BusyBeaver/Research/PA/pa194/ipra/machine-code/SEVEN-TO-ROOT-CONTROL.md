@@ -33,8 +33,11 @@ establish that condition. Even with that condition, the right-hand header and
 its relationship to the source path and complete physical file require a
 separate correspondence proof. From its displayed bit expression, the right
 half starts with the fixed eight bits `10111111` (head first), then `k+3`
-zeros, then a one, one additional zero cell, and the complete even `file`. Those cells
-must be accounted for before identifying the source header and file.
+zeros, then a one and the complete even `file`. For standard natural values,
+`u=0` and `k≥27` make this layout match the concrete source root-frame shape
+with path `10111111` and padding parameter `k-27`. This observation is a
+manual comparison, not yet a Lean-checked frame correspondence or a proof
+that those conditions hold on a run from the blank tape.
 
 The prior standard-source calculation that a decrease of register 2 from
 `k+7` to `k` requires at least seven source steps is conditional on source
