@@ -15,6 +15,7 @@ conditional path to state 24. Its connection to the blank tape and the
 source-level machine remains open.
 
 Lean compiled this module against previously checked prerequisite objects;
-the printed theorem axioms do not include `sorryAx`. The nested replay
-wrapper has been syntax checked but not run for this module. The theorem does
+the printed theorem axioms do not include `sorryAx`. It was also rebuilt
+successfully in the full nested `check-first-at-least-three-to24.sh` replay
+using retained prerequisite overlays. The theorem does
 not establish either consistency implication for the literal machine.

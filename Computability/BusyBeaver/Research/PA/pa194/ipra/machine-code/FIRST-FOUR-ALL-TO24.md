@@ -13,8 +13,9 @@ case in `PA194FirstFourPositiveTo24.lean`. For positive values that module
 traces both remaining-length cases through their exact state-13 and state-16
 shapes, returning to the same header at state 24. Lean compiled both modules
 against previously checked prerequisite objects and printed no `sorryAx` in
-the theorem dependencies. The nested wrapper was syntax checked but not run
-for these two modules.
+the theorem dependencies. Both were also rebuilt successfully as part of the
+full nested `check-first-at-least-three-to24.sh` replay, using retained
+prerequisite overlays.
 
 This is a conditional segment of the physical table. It does not establish
 blank-start reachability, a source-frame simulation, or either iPRA

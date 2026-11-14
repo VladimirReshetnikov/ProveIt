@@ -14,6 +14,7 @@ conditional path to state 24; the source-frame and blank-tape connections
 remain open.
 
 Lean compiled the module against previously checked prerequisite objects, with
-no `sorryAx` in the printed theorem axioms. The nested replay wrapper was
-syntax checked but has not been run for this module. This conditional trace
+no `sorryAx` in the printed theorem axioms. It was also rebuilt successfully
+in the full nested `check-first-at-least-three-to24.sh` replay using retained
+prerequisite overlays. This conditional trace
 does not establish either consistency implication for the literal machine.
