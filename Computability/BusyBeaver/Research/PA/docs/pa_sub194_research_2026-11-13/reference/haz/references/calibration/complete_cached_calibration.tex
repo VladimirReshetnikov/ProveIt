@@ -1,0 +1,552 @@
+\section{The calculus, the changed commands, and the PA equivalence}
+\label{cal:section}
+
+This section gives the ordinary mathematical proof for the literal
+machine $M_{194C}$.  The numerical calculus and its diagonal calibration
+come from the supplied PA194 research packet; the changed command protocol
+comes from the supplied PA195 Combined construction.  The new result is
+their composition with the 194-state table and the fresh source and tape
+certificates.  The detailed inherited arguments are retained in
+\file{construction/proof_sources/}; in particular,
+\file{original_pa195_calibration.tex},
+\file{diagonal_calculus.tex}, and \file{combined_commands.tex} identify the
+proof interfaces being reused.  The present argument is a proof of a
+PA-provability statement.  An end-to-end Lean or Rocq theorem for
+$M_{194C}$ is not claimed.
+
+\subsection{A completely specified numerical calculus}
+\label{cal:calculus}
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad
+ \begin{array}{ll}
+ I(A,B)=4p(A,B),&M(a,b)=4p(a,b)+1,\\
+ U(a,B)=4p(B,a)+2,&E(a,b)=4p(a,b)+3.
+ \end{array}
+\]
+Every natural number is a formula code.  Code $0$ is truth; code
+$1=M(0,0)$ is the designated contradiction.  The intended readings of
+$I,M,U,E$ are implication, membership, universal quantification, and
+equality.  Notice the transposition in $U$.  Write
+\[
+ N(A)=I(A,1),\qquad
+ A\wedge B=N(I(A,N(B))),\qquad
+ \exists_a B=N(U(a,N(B))).
+\]
+In displays of coded formulas, $A\to B$ abbreviates $I(A,B)$ and
+$\neg A$ abbreviates $N(A)$.  These are operations on natural numbers,
+not additional primitive syntax.  The exceptional identity
+$I(0,0)=0$ will be respected throughout.
+
+For arbitrary natural parameters $D,A,H$, the six head schemas are
+\begin{align*}
+ L_1(D,A,H)&=(\exists_D U(D,H))\to H,\\
+ L_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ L_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ L_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ L_5(D,A,H)&=\exists_D E(H,D),\\
+ L_6(D,A,H)&=U(D,A)\to\bigl(U(D,A\to H)\to U(D,H)\bigr).
+\end{align*}
+There is also the restricted implicational schema
+\[
+ \rho(a,b,c,u)=((c\to u)\to a)\to((a\to c)\to(b\to c)),
+ \qquad u\le a,
+\]
+and the unconditional diagonal schema
+\[
+ \Gamma(B)=B\to U(B,B).
+\]
+Define the pointed-separation expressions
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ Z(a,b,c)&=U\bigl(b,
+     (M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U\bigl(c,Z(a,b,c)\to\neg P(a,b,c)\bigr),\\
+ G(a,b,c)&=\neg\bigl(V(a,b,c)\to Q(a,b,c)\bigr).
+\end{align*}
+The gate schema is $G(a,b,c)$ for $c\ne a,b$.  There are exactly two
+inference rules:
+\[
+ \frac{A\qquad I(A,B)}{B}\quad\text{and}\quad
+ \frac{B}{U(a,B)}\quad(a\in\mathbb N).
+\]
+The second is generalization of a theorem, not generalization under
+arbitrary undischarged assumptions.  These schemas and rules define
+$\mathcal C_\Gamma$.  No equality symmetry, equality substitution,
+arbitrary formula substitution, or propositional-tautology oracle is
+primitive.  Truth has a finite derivation because
+$\rho(0,0,0,0)=0$ satisfies the dominance condition.
+
+The retained PA196 implicational development supplies uniform finite
+derivations of the classical implicational templates from the restricted
+$\rho$ schema.  Thus the propositional reasoning below abbreviates
+explicit proof compositions; it does not add a rule to
+$\mathcal C_\Gamma$.  The relevant inherited source is
+\file{PA196/Logic/ImplicationBasis.lean} in the pinned upstream snapshot,
+with its arithmetic-certificate counterpart.
+
+\subsection{Why this calculus has the consistency strength of PA}
+\label{cal:logical}
+
+We state both syntactic directions, since external truth in a structure
+would not establish the requested internal equivalence.  Fix a standard
+recursive proof predicate $\operatorname{Prf}_{\PA}$ for first-order PA
+with full induction, and a recursive predicate
+$\operatorname{Prf}_\Gamma(d,B)$ for the finite derivation trees just
+specified.
+
+\begin{lemma}[Uniform logical calibration]
+\label{cal:logical-lemma}
+There are primitive-recursive proof transformations $F,J$ whose
+correctness is provable in PA and which satisfy
+\begin{align*}
+ \PA&\vdash\forall p\,
+  \bigl(\operatorname{Prf}_{\PA}(p,\ulcorner0=1\urcorner)
+       \to\operatorname{Prf}_\Gamma(F(p),1)\bigr),\\
+ \PA&\vdash\forall d\,
+  \bigl(\operatorname{Prf}_\Gamma(d,1)
+       \to\operatorname{Prf}_{\PA}(J(d),\ulcorner0=1\urcorner)\bigr).
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+For the forward direction, the inherited PA196 refutation compiler uses
+primitive equality through three derived interfaces: two-way membership
+rewriting, neighborhood equality, and an equality witness.  The only
+uses of its removed equality-vacuity schema in the relevant logical and
+arithmetic-certificate derivations are the reverse-rewriting and
+neighborhood modules.  Here are the replacements, including the
+freshness condition that makes them legitimate.
+
+Every variable label occurring in a decoded formula of code $B$ is
+strictly below $B$.  Indeed, the fields of any nonzero tagged constructor
+are strictly smaller than its code; induction through its formula
+children proves the claim, and code zero has no labels.  In particular
+$x_B$ does not occur in its own decoded formula.  The gate supplies both
+membership vacuity $V(a,b,c)$ and $\neg Q(a,b,c)$ by the classical
+implicational templates.
+
+For reverse rewriting, first let $a\ne b$ and take
+$\chi(t)=M(d,t)$ or $M(t,d)$ with $d\ne a$, or take
+$\chi(t)=M(t,t)$.  Put
+\[
+ C=E(a,b)\to(\chi(b)\to\chi(a)),\qquad
+ \varphi=\neg C,\qquad c=\ulcorner\varphi\urcorner.
+\]
+The code bounds make $c$ distinct from every displayed variable label.
+Apply the gate at $(a,a,c)$ and abbreviate its $Z,P,Q$ accordingly.
+Its second separation conjunct and the propositional consequence
+$\varphi\to\neg\chi(a)$ give
+\[
+ Z\to U(a,M(c,a)\to\neg\chi(a)).
+\]
+The equality witness, direct membership rewriting, and membership-only
+vacuity yield the negative-specialization consequence
+\[
+ Z\to(M(c,b)\to\neg\chi(b)).
+\]
+More explicitly, this is the retained specialization using the witness
+$\exists_a E(b,a)$ and the vacuity of
+$M(c,b)\to\neg\chi(b)$ at $a$.  Its side conditions are exactly
+$a\ne b,c$ and, in the nondiagonal cases, $a\ne d$; it needs no
+equality-vacuity premise.  Under $\varphi$, $P$ supplies $M(c,a)$ and
+$E(a,b)$ supplies $M(c,b)$, contradicting the other consequence
+$\chi(b)$ of $\varphi$.  Hence
+$\varphi\to(Z\to\neg P)$.  Generalization at $c$, quantifier
+distribution, and $\Gamma(\varphi)$ give $\varphi\to Q$.
+The gate's $\neg Q$ and double-negation elimination prove $C$.
+For $a=b$ the result is propositional.  If the fixed label $d=a$,
+direct rewriting first reaches $M(b,b)$, and the already proved diagonal
+case reaches $M(a,a)$.  Thus both membership arguments can be rewritten
+in either direction, without any remaining label restriction.
+
+For neighborhood equality, let
+\[
+ R(a,b,z)=U(z,M(a,z)\leftrightarrow M(b,z))
+          \wedge U(z,M(z,a)\leftrightarrow M(z,b)),
+\]
+where the biconditionals are the corresponding coded conjunctions.
+At $z_0=\ulcorner E(a,b)\urcorner$, the diagonal axiom
+$E(a,b)\to U(z_0,E(a,b))$ and the rewrites give
+$E(a,b)\to R(a,b,z_0)$.  For $z\ne a,b,z_0$, let $B(t)$ be either
+membership-only matrix in $R$.  The rewrites, the witness
+$\exists_{z_0}E(z,z_0)$, and vacuity of $B(z)$ at $z_0$ give
+\[
+ U(z_0,B(z_0))\to B(z).
+\]
+Its antecedent is vacuous at $z$: membership vacuity extends through
+the Boolean connectives and through the outer quantifier by $L_2$.
+Generalization and distribution therefore give
+$U(z_0,B(z_0))\to U(z,B(z))$.  The case $z=z_0$ is already done.
+This proves $E(a,b)\to R(a,b,z)$ whenever $z\ne a,b$; existential
+monotonicity and $L_5$ give the required neighborhood witness.  These
+are precisely the three interfaces of the inherited compiler.
+Replacing its two affected proof templates gives $F$.
+All code choices, label comparisons, and proof concatenations above
+are primitive recursive; the inherited arithmetic proof construction
+checks the replacements by the same finite syntactic inductions.
+
+For the reverse direction, work in a fixed conservative definitional
+extension of PA with $2^z$, and set
+\[
+ \operatorname{Bit}(s,z)\equiv
+ \exists u,v\,[s=(2u+1)2^z+v\ \wedge\ v<2^z].
+\]
+Translate $M(a,b)$ to $\operatorname{Bit}(x_a,x_b)$, $E(a,b)$ to
+$x_a=x_b$, $U(a,B)$ to $\forall x_a\,T(B)$, and $0$ to $0=0$.
+For implication, the constructor property is the provable equivalence
+\[
+ T(I(A,B))\leftrightarrow(T(A)\to T(B));
+\]
+when $A=B=0$, it uses the fixed truth equivalence rather than a false
+assertion of syntactic constructor disjointness.  Bound auxiliary
+variables in $\operatorname{Bit}$ are renamed before substitution.
+PA proves $\operatorname{Bit}(s,z)\to z<s$, hence
+$\neg T(1)=\neg\operatorname{Bit}(x_0,x_0)$.
+
+The six logical heads have uniform first-order proof templates, $\rho$
+is a classical tautology, and the code-freshness argument supplies
+$T(\Gamma(B))$.  The substantive axiom supplier is the gate.  For any
+arithmetic formula $\theta(z,\vec v)$, PA proves
+\begin{equation}
+ \forall n\,\exists s<2^n\,\forall z<n\,
+  \bigl(\operatorname{Bit}(s,z)\leftrightarrow\theta(z,\vec v)\bigr).
+ \label{cal:comprehension}
+\end{equation}
+Induct on $n$: use $s=0$ at zero, and retain $s$ or replace it by
+$s+2^n$ according as $\theta(n,\vec v)$ fails or holds.  This is one
+fixed proof pattern with a full PA induction instance.  Inserting an
+arbitrary formula code into that pattern and checking the resulting
+proof are primitive-recursive syntax operations; PA verifies their
+correctness.  This supplies a uniform proof generator, not a uniform
+truth predicate for arithmetic.
+
+For the gate at $c\ne a,b$, put $\phi=T(c)$.  If $a\ne b$, use
+\eqref{cal:comprehension} with bound $x_a+x_b+1$ and matrix
+\[
+  (\operatorname{Bit}(x_a,z)\lor z=x_b)\wedge\phi[z/x_b].
+\]
+Its witness gives $T(Z)\wedge T(P)$, and thus $\neg T(Q)$.
+If the labels $a=b$ coincide, the first antecedent inside the binder
+is $\operatorname{Bit}(z,z)$ and is false.  The correct matrix is then
+$(z=x_b)\wedge\phi[z/x_b]$, with bound $x_b+1$.
+This separate case prevents treating a bound occurrence of $x_a$ as
+free.  Code freshness ensures that the separator variable $x_c$ does
+not occur in $\phi$.  The membership-vacuity clause has its ordinary
+first-order proof, so $T(G)$ follows.
+
+Recursively translate a numerical derivation: insert these axiom
+suppliers, concatenate at modus ponens, and append generalization at
+its corresponding rule.  PA verifies the proof-code invariant by
+induction on the derivation.  At conclusion $1$, append the fixed proof
+of $\neg T(1)$ and eliminate the fixed definitional extension.  This
+gives $J$.  The induction is on syntax and proof checking, so its
+quantified assertion applies to internal, possibly nonstandard proof
+codes as required.
+\end{proof}
+
+\subsection{Exact semantics of the Combined commands}
+\label{cal:commands}
+
+Write $[a;w]=p(a,w)$ and $[a_1,\ldots,a_k;w]$ for repeated pairing
+with $a_1$ first.  The total Cantor projections obey
+\[
+ \operatorname{hd}[a;w]=a,\quad
+ \operatorname{tl}[a;w]=w,\quad
+ \operatorname{hd}(0)=\operatorname{tl}(0)=0.
+\]
+In particular $[0;0]=0$.  All following identities are identities of
+natural numbers; they do not assume a free list constructor.
+
+A command store is $\langle t,w,d,h\rangle$, with two visible formula
+codes $t,h$, a stack $w$, and an offset $d$.  For $y=d+x$, the new
+commands are
+\begin{align*}
+ \mathsf S\langle t,w,d,h\rangle
+ &=\begin{cases}
+     \mathsf{halt},&h=1,\\
+     \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&h\ne1,
+   \end{cases}\\
+ \mathsf{MP}_x\langle t,w,d,h\rangle
+ &=\begin{cases}
+     \langle0,w,0,y\rangle,&I(t,y)=h,\\
+     \langle0,w,y,0\rangle,&I(t,y)\ne h.
+   \end{cases}
+\end{align*}
+Only $\mathsf S$ can halt.  Neither branch of MP pushes an entry.
+
+Define $K(a,b,c)=G(a,b,c)$ when $c\ne a,b$ and $K(a,b,c)=0$
+otherwise.  For $D=d+x$, $H=h+y$, and $A=c$, AX is exactly
+\[
+ \mathsf{AX}_{c,x,y}\langle t,w,d,h\rangle
+ =\langle K(H,D,c),[q_1,\ldots,q_9,t;w],0,0\rangle,
+\]
+where, writing $L_i=L_i(D,A,H)$,
+\[
+ (q_1,\ldots,q_9)=
+ \bigl(\Gamma(A),L_6,L_5,L_4,L_3,L_2,L_1,
+              \rho(D,A,H,d),U(d,h)\bigr).
+\]
+The total number of pushed entries is ten, including the saved top.
+The first eight generated entries and the gate have residue zero modulo
+four; the last entry has residue two.  None is code one.  The separately
+pushed $\Gamma(A)$ is present even when the gate guard fails.
+
+\subsection{A proof compiler valid for every incoming stack}
+\label{cal:compiler}
+
+Command words execute from left to right.  The following exact
+identities hold for every incoming store, including $t=1$:
+\begin{align*}
+ \mathsf{AX}_{c,x,y};\mathsf S^9:
+ \langle t,w,d,h\rangle
+ &\longmapsto\langle\rho(d+x,c,h+y,d),[t;w],0,U(d,h)\rangle,\\
+ \mathsf{AX}_{c,x,y};\mathsf S^{10}:
+ \langle t,w,d,h\rangle
+ &\longmapsto\langle U(d,h),w,0,t\rangle.
+\end{align*}
+The first Shift tests the cache cleared by AX; the next nine test the
+generated entries, never the saved top.  The residue calculation proves
+that all these Shifts continue.
+
+Define
+\begin{align*}
+ \mathsf{Push}&=\mathsf{AX}_{0,0,0};\mathsf S^9;\mathsf{MP}_0,\\
+ \mathsf{Pop}&=\mathsf{AX}_{0,0,0};\mathsf S^{11},\\
+ \mathsf{Discard}&=\mathsf{MP}_1;\mathsf{AX}_{1,0,0};
+                         \mathsf S^{10};\mathsf{MP}_0.
+\end{align*}
+Their complete contracts are
+\begin{align*}
+ \mathsf{Push}\langle t,w,d,h\rangle&=\langle0,[t;w],0,0\rangle,\\
+ \mathsf{Pop}\langle t,[a;w],d,h\rangle
+ &=\begin{cases}\mathsf{halt},&t=1,\\
+                 \langle t,w,0,a\rangle,&t\ne1,
+   \end{cases}\\
+ \mathsf{Discard}\langle t,w,0,0\rangle&=\langle0,w,0,0\rangle.
+\end{align*}
+Push's final MP fails because it compares residues zero and two.
+Pop's final Shift tests exactly the saved top.  Discard's first MP
+fails since $I(t,1)>0$; the AX identity then leaves $U(1,0)$ in
+the top and zero in the cache, so its last MP fails too.  These arguments
+include $t=w=0$ and the alias $[0;0]=0$.
+
+Let $\mathsf{Offset}_0$ be empty and
+$\mathsf{Offset}_u=\mathsf{MP}_u$ for $u>0$.  On a store with
+$t=d=h=0$, it sets $d$ to $u$ and preserves the stack.  Then
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;\mathsf S;
+                  \mathsf{AX}_{i,0,0};\mathsf S^{10}
+\]
+takes $\langle a,w,0,0\rangle$ to
+$\langle U(i,a),w,0,0\rangle$, including $a=1$.
+The Shift preceding AX tests cache zero; AX clears the retrieved
+$a$ before its subsequent Shift tests.
+
+For $1\le j\le7$, the word
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};\mathsf S^{j+1};
+                              \mathsf{Pop}^{9-j}
+\]
+returns $\langle q_j,w,0,0\rangle$ from
+$\langle t,w,0,0\rangle$.  After the Shifts, the top is $q_j$,
+the cache is $q_{j+1}$, and the stack is
+$[q_{j+2},\ldots,q_9,0;w]$.  There are $9-j$ displayed entries to
+consume; each Pop preserves the safe top $q_j\ne1$, and the last
+consumed entry is zero.  Thus the diagonal selector is explicitly
+\[
+ \mathsf{Discard};\mathsf{AX}_{B,0,0};\mathsf S^2;\mathsf{Pop}^{8}.
+\]
+It works at $B=0$ and with a failed gate guard.  For $u\le a$, the
+propositional selector
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf{AX}_{b,a-u,c};\mathsf S^9;\mathsf{Pop}
+\]
+returns $\rho(a,b,c,u)$.  The gate selector
+$\mathsf{Discard};\mathsf{AX}_{c,b,a};\mathsf{Pop}^{10}$ returns
+$K(a,b,c)$.  All these selectors preserve the arbitrary underlying
+stack and clear $d,h$.
+
+For modus ponens the exact suffix is
+\[
+ \mathsf{MPSuffix}_b=\mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf S.
+\]
+On $\langle0,[a,I(a,b),0;w],0,0\rangle$ it halts if $a=1$ or
+$b=1$ and otherwise returns $\langle b,w,0,0\rangle$.
+The first Shift retrieves $a$; the second tests $a$ and puts
+$I(a,b)$ in the cache; MP puts $b$ in the cache; the final Shift
+tests $b$ and consumes the dummy zero.  That zero is necessary to
+preserve $w$.  The same calculation applies when $a=b=w=0$.
+
+\begin{lemma}[Uniform compiled refutations]
+\label{cal:word-lemma}
+There is a primitive-recursive compiler $p\mapsto W_p$ such that,
+for every $\mathcal C_\Gamma$ proof $p$ of $B$ and every $t,w$,
+$W_p$ from $\langle t,w,0,0\rangle$ halts or returns
+$\langle B,w,0,0\rangle$.  A proof of $1$ yields a command word
+that halts from every incoming store.  PA proves these assertions
+about the coded words and derivations.
+\end{lemma}
+
+\begin{proof}
+Compile axioms by the selectors and generalization by
+$W_{p_0};\mathsf{Gen}_i$.  For an MP node with minor proof
+$p_0$ of $a$ and major proof $p_1$ of $I(a,b)$, use
+\[
+ \mathsf{Discard};\mathsf{Push};W_{p_1};\mathsf{Push};
+ W_{p_0};\mathsf{Push};\mathsf{MPSuffix}_b.
+\]
+The first two words introduce the dummy zero, and the premise
+computations and Pushes establish the suffix's three-entry
+precondition.  Induction on the proof gives the claimed invariant;
+an early halt remains a halt after extending the word.  If $p$
+proves $1$, then
+\[
+            \mathsf{AX}_{0,0,0};W_p;\mathsf{Pop}
+\]
+halts from every incoming store.  AX first clears $d,h$; the
+compiler accepts its arbitrary resulting top and stack; and the
+final Pop detects top one if execution has not halted earlier.
+The proof consists of the displayed total projection identities
+and induction on a finite derivation, so PA verifies the compiler.
+\end{proof}
+
+\subsection{Canonical stack annotations and the exhaustive search}
+\label{cal:scheduler}
+
+For $w>0$ one has $\operatorname{tl}(w)<w$.  Thus
+\[
+ \delta(w)=\min\{k\le w:\operatorname{tl}^{,k}(w)=0\}
+\]
+is a total primitive-recursive function, with its defining property
+provable in PA.  Annotate the $\delta(w)$ live heads by proofs, and
+annotate both $t$ and $h$.  The tail beyond those live heads supplies
+the fixed truth proof.  Pushing $a$ prepends its proof unless
+$a=w=0$, in which case the canonical live stack remains empty.
+Popping zero supplies truth and leaves the empty annotation.  This
+is the exact treatment of the Cantor zero alias.
+
+With either numerical proofs or their PA translations as annotations,
+AX preserves the invariant: its saved top is known, its heads are
+axioms, $d\le d+x$ justifies its restricted $\rho$ instance, and
+$U(d,h)$ follows by generalization.  A successful MP uses the
+annotated $t$ and $I(t,d+x)=h$ to prove $d+x$; a failed MP returns
+truth.  Shift moves annotations or halts with a proof of $1$ in
+the cache.  The arbitrary offset $d$ has no theoremhood requirement.
+Every update is primitive recursive, and PA proves preservation
+through every coded finite command sequence.
+
+The retained scheduler exhaustively decodes candidate command words.
+Its inherited coding and padding lemma makes every finite word
+available at a candidate number above any fixed starting cutoff,
+including the clean seed's counter $2$.  Its store is carried between
+trials.  Lemma~\ref{cal:word-lemma}'s universal incoming-store
+property is therefore essential: a compiled refutation halts when
+its trial is reached, unless an earlier trial has already halted.
+The candidate induction, word decoding, and terminating arithmetic
+macro routines have primitive-recursive witnesses with PA-verifiable
+correctness, as in the inherited PA196 source compiler.
+Conversely, the annotation invariant propagates from the clean store
+through all prior trials and turns any halting command into a
+refutation.  Together with Lemma~\ref{cal:logical-lemma}, this proves
+in PA that the Combined source halts exactly when PA has a refutation.
+
+\subsection{From the source to the exact 194-state table}
+\label{cal:physical}
+
+The finite source check establishes equality of the entire
+3,649-instruction control-flow map with the established 195C source,
+under primitive-site ordinal identification.  The comparison includes
+every opcode, register operand, and successor, including both decrement
+branches.  It is stronger than equality of the flattened AX word.
+The first 3,634 instructions match the original PA194 source except
+for exit retargetings at ordinals $48,3553,3633$.  The new MP-success
+tail begins at $3634$, the return to fetch is $3637$, and Shift
+begins at $3638$.
+
+The MP-success loop transfers $(D,H)=(y,0)$ to $(0,y)$ by a
+decrement, increment, and backward jump, then returns to fetch.
+The Shift tail clears $T$, copies $H$ to $T$ and scratch $X$,
+and restores $H$ from $X$.  With the inherited $X=0$ boundary
+invariant, it reaches $(T,H,X)=(h,h,0)$ in exactly
+$2t+7h+3$ primitive steps; two more instructions set $X=1$ and
+enter the unchanged guard.  Induction on the respective unary
+counters proves these contracts for all natural store values.
+No AX formula, parameter assignment, or stack order changes.
+
+Fresh physical checks establish all 4,749 source outcomes against
+the final 194-state table.  In particular, the independent literal-tape
+checker rederives four generic list-sweep lemmas from that table and
+uses no arithmetic-register oracle.  Its frames quantify over arbitrary
+natural registers, an affine arbitrary gap, and an arbitrary finite
+nonempty spare list.  Each nonhalting source step has a finite physical
+run to its exact next complete frame; every duration is positive.
+Increment appends a spare block, while decrement preserves the file
+length, so the nonempty-spare invariant persists from initialization.
+The complete blank run reaches the clean site-$25$ frame after
+57,922 transitions, at native state $84$, head $-2$, logical registers
+$(2,0,0,0,0,0,0,0,0)$, and 26 spare registers of value one.
+The full tape is compared with the specified frame.
+
+These facts admit a specific arithmetic internalization.  A literal
+symbolic transition is a finite table lookup.  A compressed unary scan
+is proved by induction on its run length.  Each generic list sweep
+is proved by induction on its blocks and finite list.  The remaining
+symbolic operations only reexpress the same tape.  Their trace
+constructors, frame encodings, and concatenations are primitive
+recursive, with correctness proved by these inductions in PA.
+The machine-specific part is a finite collection of closed table
+equalities and symbolic traces.  The Python checks verify that finite
+data; they do not themselves constitute a formal PA proof checker.
+
+\begin{theorem}[PA calibration of the literal PA194C table]
+\label{cal:main-theorem}
+Let $H_{194C}$ be the standard arithmetical sentence asserting a finite
+halting trace of \file{construction/output/pa194C.tm} from its designated
+blank start.  Then
+\[
+ \boxed{\PA\vdash
+       \bigl(\neg H_{194C}\leftrightarrow\Con(\PA)\bigr).}
+\]
+\end{theorem}
+
+\begin{proof}
+A PA refutation gives a numerical refutation by
+Lemma~\ref{cal:logical-lemma}, then a uniformly halting command word
+by Lemma~\ref{cal:word-lemma}.  The exhaustive scheduler and arithmetic
+macro contracts give a finite source halt.  Concatenate the exact
+startup and the physical source-step traces to obtain $H_{194C}$.
+All transformations and correctness inductions are available in PA.
+
+For the reverse direction, reason in PA under the temporary assumption
+$\Con(\PA)$.  The translated annotation invariant precludes a
+halting command and supplies an annotated successor store at every
+command boundary.  For any $T$, primitive recursion constructs
+$T+1$ nonhalting command segments and their positive source and
+physical simulations.  Including startup, this is a physical run
+longer than $T$ with no halt before a subsequent nonhalt frame.
+A purported first halting trace of length $T$ contradicts determinism:
+with partial semantics it cannot be extended beyond the halt, and
+with absorbing halt semantics it cannot subsequently reach a
+nonhalt frame.  A halt within startup is excluded by its exact
+finite trace.  No inverse decoding of an arbitrary intermediate
+tape or unbounded search for a return time is needed.
+Thus PA proves $\Con(\PA)\to\neg H_{194C}$.  Classical contraposition
+of the already proved refutation-to-halt implication gives the other
+direction.
+\end{proof}
+
+The full-induction supplier in \eqref{cal:comprehension} explains why
+one cannot replace the searched calculus by the concise iPRA calculus
+and retain this conclusion without a new calibration.  The iPRA
+project contributes the strategy of replacing expensive primitive
+schemas by smaller derived interfaces; it does not provide an
+identification of $\Con(\mathrm{iPRA})$ with $\Con(\PA)$.
+Likewise, the existing conditional iPRA machine endpoints in the
+repository do not prove the two machine-specific reductions needed
+for an unconditional iPRA theorem.  The theorem above has the
+ordinary mathematical PA-provability scope stated at the start.

@@ -1,0 +1,187 @@
+% Independent review fragment; amsmath, amssymb and hyperref are sufficient.
+\section{Independent review of the QN5 and QN6 logical composition}
+
+The quantifier-head exchange, formula radix change, and no-push MP controller
+are compatible. This review is an ordinary mathematical argument using the
+supplied syntactic PA calibration. It is not a new end-to-end Lean or Rocq
+theorem. Candidate-specific source bindings, positive primitive simulations,
+and complete blank startup are separate obligations.
+
+\subsection{Precisely which controller is being compiled}
+Let $p(a,b)=(a+b)(a+b+1)/2+b$, $[a;w]=p(a,w)$,
+$I_k(a,b)=kp(a,b)$, and $U_k(i,a)=kp(a,i)+2$, with $k=5$ or $6$.
+Stores are $(t,w,d,h)$. QN retains the original Shift guard:
+\[
+ S(t,w,d,h)=\begin{cases}\mathsf{halt}&t+h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w)&t+h\ne1.
+ \end{cases}
+\]
+With $v=d+x$, its MP rule is
+\[
+ \operatorname{MP}_x(t,w,d,h)=
+ \begin{cases}(v,w,v,0)&I_k(t,v)=h,\\(0,w,v,0)&I_k(t,v)\ne h.
+ \end{cases}
+\]
+It does not push a dummy zero on success. It does not return the conclusion
+in the cached slot. Both distinctions matter for the MP proof word below.
+
+The AX output is
+\[
+ (g,[q_1,\ldots,q_9,t;w],0,0),
+\]
+where $q_1$ is the diagonal axiom, $q_2,\ldots,q_7$ are the six logical
+heads in reverse order, $q_8$ is the dominated implication head, and
+$q_9=U_k(d,h)$. The Q exchange changes only $q_2$.
+The gate and $q_1,\ldots,q_8$ are multiples of $k$, whereas
+$q_9\equiv2\pmod k$ and $q_9\ge2$. These constructor identities hold
+for every numerical parameter, independently of consistency. Consequently
+\[
+ \operatorname{AX};S^9=(q_8,[t;w],0,U_k(d,h)),\qquad
+ \operatorname{AX};S^{10}=(U_k(d,h),w,0,t),
+\]
+with the appropriate unchanged AX parameters. No displayed Shift halts.
+The argument uses the stated residue classes and positivity, not a special
+identity of radix four.
+
+\subsection{Exact stack words and the reserved zero}
+Put $A_0=\operatorname{AX}_{0,0,0}$ and compose words left to right. Then
+\[
+ \operatorname{Push}=A_0;S^9;\operatorname{MP}_0,
+ \qquad \operatorname{Pop}=A_0;S^{11},
+ \qquad \operatorname{Discard}=\operatorname{MP}_0,
+ \qquad \operatorname{Offset}_i=\operatorname{MP}_i.
+\]
+Their contracts are
+\begin{align*}
+ \operatorname{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \operatorname{Pop}(t,[a;w],d,h)&=(t,w,0,a),\\
+ \operatorname{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \operatorname{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+Push's MP comparison fails because implication and universal codes have
+different residues. Pop's eleventh Shift tests $U_k(d,h)+t\ge2$, so Pop
+is total even when $t=1$. Discard's two MP branches coincide when $d=x=0$,
+even with an arbitrary old cache. Offset uses $I_k(0,i)>0$ for $i>0$ and
+the coincident zero outcomes for $i=0$.
+
+For $1\le j\le7$, the head selector
+\[
+ \operatorname{Discard};\operatorname{AX}_{A,D,H};
+ S^{j+1};\operatorname{Pop}^{9-j}
+\]
+returns $(q_j,w,0,0)$ from $(t,w,0,0)$. The last Pop consumes the saved
+zero. For the dominated head with $u\le D$, use
+\[
+ \operatorname{Discard};\operatorname{Offset}_u;
+ \operatorname{AX}_{A,D-u,H};S^9;\operatorname{Pop}.
+\]
+The gate selector is
+$\operatorname{Discard};\operatorname{AX}_{c,b,a};\operatorname{Pop}^{10}$.
+Generalization uses
+\[
+ \operatorname{Push};\operatorname{Offset}_i;S;
+ \operatorname{AX}_{i,0,0};S^{10}
+\]
+and returns $(U_k(i,a),w,0,0)$ from $(a,w,0,0)$.
+These words remain valid for Q because the only changed head is selected
+at the same position and has the same residue.
+
+For proofs of $a$ and $I_k(a,b)$, the correct no-push MP compilation is
+\[
+ \operatorname{Discard};\operatorname{Push};
+ C(I_k(a,b));\operatorname{Push};C(a);\operatorname{Push};
+ S;S;\operatorname{MP}_b;\operatorname{Pop}.
+\]
+If neither recursive call halts, the three pushes yield
+$(0,[a,I_k(a,b),0;w],0,0)$. The first Shift yields
+$(0,[I_k(a,b),0;w],0,a)$. The second halts if $a=1$; otherwise it yields
+$(a,[0;w],0,I_k(a,b))$. MP succeeds, giving $(b,[0;w],b,0)$, and Pop
+returns $(b,w,0,0)$. This is why the compiler must reserve a zero beneath
+the premise computations. The old controller's suffix that expects MP to
+push its own zero must not be reused.
+
+Every identity uses the actual Cantor projections, including
+$[0;0]=0$ and $\operatorname{hd}(0)=\operatorname{tl}(0)=0$.
+No free-list representation or nonempty-stack hypothesis is introduced.
+Induction on a proof gives a primitive-recursive word $C(d)$ which either
+halts or returns its conclusion on the original arbitrary stack, with
+$d=h=0$. For a refutation, $A_0;C(d);S$ halts from every incoming store.
+This uniformity is required because the scheduler carries the store from
+one trial to the next.
+
+\subsection{The arithmetic calibration and its delicate points}
+The inherited radix translation must recursively recode both formulas and
+variable labels. For $n>0$, writing $n=4p(a,b)+r$ with $r<4$, set
+\[
+ F_k(0)=0,\qquad F_k(n)=kp(F_k(a),F_k(b))+r.
+\]
+The smaller-argument recursion is primitive recursive. Its stated left
+inverse proves injectivity, preserving label equalities, disequalities,
+binding and shadowing. In particular,
+\[
+ F_k(I_4(B,U_4(B,B)))=I_k(F_k(B),U_k(F_k(B),F_k(B))).
+\]
+Keeping labels fixed while recoding formulas would invalidate this diagonal
+identity and is not part of the proof.
+
+Numerical order is not preserved: $40<44$ but
+$F_5(40)=75>55=F_5(44)$. Restricted propositional leaves must therefore be
+expanded using the finite generic \texttt{rho8All} proof, instantiated
+with numerical $\le$ and $I_k$. The required closure bounds follow from
+$a,b\le p(a,b)\le I_k(a,b)$. The generic rules in the supplied
+\texttt{RestrictedImplication.lean} require only MP, the restricted head,
+reflexivity, and these two operand bounds; they do not require injective
+constructors, the exchanged quantifier head, or unrestricted substitution
+through a guarded gate.
+
+The same generic basis proves exchange
+$(P\to(Q\to R))\to(Q\to(P\to R))$ at radix $k$.
+Applying it in both orientations gives conclusion-preserving
+primitive-recursive proof translations between the old sixth head and
+$U_k(D,I_k(A,H))\to(U_k(D,A)\to U_k(D,H))$.
+This supplies Q's logical equivalence independently of the controller.
+
+For the reverse arithmetic translation, residues $4,\ldots,k-1$ are
+interpreted as closed truth. They cannot be omitted, since arbitrary
+command parameters can contain them. The alias $I_k(0,0)=0$ is handled
+by the fixed proof that truth is equivalent to truth implying truth.
+Code one is interpreted as the irreflexive bit-membership assertion and
+has a uniform PA refutation. In the guarded gate, the supplied finite
+comprehension proof must distinguish $a=b$ from $a\ne b$, preserve
+capture-avoiding substitution, and use freshness of label $c$ in the
+translation of formula code $c$. The supplied radix argument makes all
+three distinctions and uses a syntactically generated PA induction
+instance, not a satisfaction predicate or reflection principle.
+
+Accordingly the proof chain is
+\[
+ \mathrm{PA\ refutation}\longrightarrow\mathcal C_4\mathrm{\ refutation}
+ \longrightarrow\mathcal C_k\mathrm{\ refutation}
+ \longrightarrow\mathcal C_k^{\mathrm Q}\mathrm{\ refutation},
+\]
+with the reverse direction obtained by exchange followed by the total
+radix-$k$ arithmetic translation. One compiles a fresh target-radix
+command word after translating a proof. Neither addition of offsets nor
+ordinary Cantor stack pairing is conjugated by $F_k$.
+
+\subsection{Source and proof boundary}
+Replacing the four-increment Cons body by $k$ increments changes its loop
+to $(T,Y)\mapsto(T+k,Y-1)$ on the positive branch. Its invariant is
+$T=T_0+ki$, $Y=Y_0-i$, and its exact cost is $(k+2)Y_0+1$ primitive
+steps. The no-push splice removes the earlier 19-site zero-push loop;
+the unchanged retained copy loop transfers the consequent to $T$ and $D$.
+These modifications occur in different source subtrees. The candidate
+binding checks must retain their exact CFG changes, all 61 Cons occurrences,
+and all external successor edges; a four-increment lemma alone would not
+prove the changed arithmetic routine.
+
+The sound-store invariant annotates $T,H$ and every canonical stack entry
+with source proofs; offset $D$ has no proof obligation. AX preserves the
+annotations through its axiom suppliers and generalization; successful MP
+combines its annotated premises, failure returns truth, and Shift transports
+the annotations. At a Shift halt, $t+h=1$ exposes a proof of code one.
+The all-store refutation word and the cofinal scheduler supply the converse.
+After the independently checked positive physical simulation and complete
+blank startup, these ordinary PA-formalizable arguments yield the requested
+PA-provable equivalence for the exact QN5 and QN6 tables. They do not close
+the repository's separate iPRA or end-to-end proof-assistant endpoint.

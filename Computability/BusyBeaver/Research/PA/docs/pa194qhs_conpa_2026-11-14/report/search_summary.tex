@@ -1,0 +1,69 @@
+\subsection{Context-sensitive pair contractions}
+
+A fresh screen covered 38 current, rooted dense 194-state tables using
+13-cell abstract windows and a 100-transition local simulation bound.
+It allowed a shared replacement action for each read symbol, with
+continuations that restore the original one-step tape, head and control
+effect without revisiting the rewritten pair. It found no candidate.
+This is a particular sufficient transformation rule, not a complete
+search of equivalent machines.
+
+The new QHS table was checked more deeply in two ways. Blank-start
+abstract windows used radius eight and a 300-transition bound. A second
+screen used 30,358 source/startup windows outside the arithmetic boxes,
+radius six and the same bound; the arithmetic interiors retained their
+conservative overapproximation. Its fresh source collection reproduced
+all 4,750 outcomes and included the complete 57,768-transition startup.
+Neither screen found an additional merge.
+
+\subsection{A broader initialization search for the prior runtime193 core}
+
+The source-correct but uninitialized 193-state core was subjected to
+every pair of edits at distinct rows from a specified corrected pool
+of 327 outside-box rewrites. This gives 52,128 row pairs. Every one
+of the 193 existing controls was considered as a blank initial state,
+for each of two choices of the spare-appending bit.
+
+Blank prefixes were followed to their first written one, and identical
+resulting one-bit configurations were identified up to translation.
+The resulting runs were checked against complete canonical frames at
+source sites 25--44, even allowing arbitrary values in all nine
+registers. Thus the acceptance test was broader than the calibrated
+sound-store seed condition, but still required the entire physical
+frame, the specified padding parameter of at least 48, and a nonempty
+spare tail.
+
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}
+\toprule Quantity & Append one & Append zero\\\midrule
+Distinct normalized one-bit runs &417,349&365,221\\
+Transitions after the first one &114,987,509&21,260,321\\
+Halts &104,255&156,383\\
+Certified outward rays &312,581&208,778\\
+Runs stopped by a bound &513&60\\
+Complete accepted source frames &0&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The 573 bounded runs remain unresolved. The paired edits were not
+assumed to preserve source semantics; a successful initialization
+would still have required a fresh universal proof. The search does
+not cover arbitrary multirow changes or every possible admissible
+source entry. Mechanically transferring the same runtime collapse
+to 38 compatible current families also failed initialization: each
+reached the same outward ray at native state 35 after 92 transitions
+from state 74.
+
+\subsection{Corrected sharing in the radix search}
+
+The supplied radix-five/six grammar scorer did not intern AX subtrees
+against the available fixed reader $330=(61,99)$. It also retained a
+shortcut $(99,99)\mapsto190$ whose meaning changes with the multiplier.
+The new scorer uses exact pure fixed-reader pairs and preserves
+parameter roles. Two 180-second heuristic searches examined
+1,485,114 and 1,531,055 mutation proposals respectively. Both retained
+194 as their best screened count, with no sub-194 hit. Randomized
+timed searches need not reproduce identical proposal totals on a
+different machine; their input, seed, scorer, and terminal receipts
+are included. No optimality conclusion follows from these runs.

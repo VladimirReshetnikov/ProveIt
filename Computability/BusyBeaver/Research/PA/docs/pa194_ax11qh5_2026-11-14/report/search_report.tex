@@ -1,0 +1,70 @@
+The completed physical and initialization experiments are reproduced under
+\file{research/finite_searches/}, with literal inputs, programs and logs.
+Their results are:
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\linewidth}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.28\linewidth}@{}}
+\toprule Experiment & Enumerated scope & Result\\\midrule\endhead
+Runtime193 initialization repair & Up to four encountered-row edits from a fixed pool of 346 actions; start 74; 100,000-step limit per run. & 247,094 branch runs; 172,579,287 literal transitions; no complete source frame.\\[5pt]
+AX11QH5 local identification & All 18,721 pairs of working controls; 13-cell contexts; 250-transition local limit; every working or halt target. & 24,904,168 provisional actions; 172,403 joint combinations; no contraction.\\[5pt]
+Identification plus helper rewrite & 14,535 non-arithmetic pairs; at most one extra non-arithmetic provider-row change. & 54 compatible proposals; all rejected by their first helper-window test.\\[5pt]
+EvenHX scheduler plus runtime quotient & The exact inherited runtime quotient applied to the 195-state parity scheduler. & A 194-control table, rejected by a 93-step blank-ray certificate.\\
+\bottomrule
+\end{longtable}
+
+The initialization runs split into 181,281 proved outward blank rays,
+63,943 exact repeated complete configurations, and 1,870 runs unresolved
+beyond the cutoff. These categories sum to 247,094. The ray check requires
+a read-zero control cycle moving only outward, with the head already beyond
+all one-cells in that direction. Cycle detection verifies the entire
+configuration after a possible hash match; a hash collision alone cannot
+certify repetition. Individually source-neutral edits are only candidate
+ingredients: their joint runtime correctness is not assumed.
+
+The local-quotient context collector covers all 4,839 source outcomes,
+interior positions of accelerated scans, the complete initialization, and
+all 8,192 binary windows at each of 23 arithmetic-engine controls. Its
+219,298 control/window pairs were independently regenerated and compared
+as exact sets. The unconstrained arithmetic windows deliberately avoid
+assuming a narrowed reachable invariant inside those engines. Thus a
+negative result in this context domain can exclude a particular local
+transformation, but cannot exclude a more specialized global invariant.
+
+The rejected parity-scheduler combination is especially concrete. Delete
+native control 301 and redirect it to 88, set
+$(88,0)\mapsto(0,L,51)$ and $(51,0)\mapsto(0,R,122)$.
+After 93 blank-start transitions its state is 35, its head is at 15, and
+the complete set of one-cells is $\{-3,1\}$. Its row
+$(35,0)\mapsto(1,R,35)$ runs outward forever. The new scheduler control
+3000 is never reached. A separate script reconstructs this exact prefix
+and the sufficient ray premise.
+
+\subsection{AX association and simultaneous-fold searches}
+
+Four 180-second heuristic searches retained the exact new macro word and
+varied its binary association. Parameter permutations were disabled. Two
+also allowed the exact existing three-increment control 330 as a shared
+subtree; the old four-increment interpretation of control 190 was disabled,
+because coefficient five changes that macro. Every score uses a jointly
+compatible fold set, checked against the final proposed folded table.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule Variant & Proposals & Accepted & Best cost & 193-state hits\\\midrule
+AX-reader folds &605,342&33,219&60&0\\
+AX-reader folds; triple reuse &841,114&44,413&60&0\\
+All eligible controls &467,997&19,783&59&0\\
+All eligible controls; triple reuse &393,223&16,867&59&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the all-control searches, the literal count is
+$135+n-f$, where $n$ is the AX-reader count and $f$ the compatible fold
+count, so effective cost $n-f\le58$ is needed for 193 states. The AX-only
+score excludes the existing fixed-engine fold $41\sim99$; its value 60
+therefore still corresponds to 194 after that extra fold, not 195.
+These are heuristic searches over sampled associations, not exhaustive
+enumerations of all binary trees. No successful source-level candidate was
+found. Reassociation can also change relative branch destinations, so a
+future low score must still pass source resolution, physical simulation
+and complete initialization. The saved grammars alone are not such proofs.

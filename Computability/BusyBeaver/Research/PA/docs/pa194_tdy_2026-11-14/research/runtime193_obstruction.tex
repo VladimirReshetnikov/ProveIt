@@ -1,0 +1,87 @@
+\section{A uniform obstruction to repairing the 193-state runtime by register allocation}
+\label{sec:runtime193-all-layouts}
+
+The supplied runtime core identifies native control \(301\) with \(88\),
+redirects every target \(301\) to \(88\), removes the two rows of \(301\),
+and installs
+\[
+ (88,0)\mapsto(0,L,51),\qquad (51,0)\mapsto(0,R,122).
+\]
+Its 193-state count does not make it a blank-start consistency machine.
+
+Let
+\[
+ \mathrm{SK}=(51,36,25,48,32,33,22,55,60).
+\]
+For any permutation \(\pi\) of the nine physical register positions, first
+apply the register allocation to the primary 194-state table: every
+entry edge from a non-arithmetic-box control to \(\mathrm{SK}_j\) is
+redirected to \(\mathrm{SK}_{\pi(j)}\), while the arithmetic-box rows are
+retained. Then apply the runtime fold above. The order matters:
+the new helper edge \(88\mathbin{/}0\to51\) is installed after allocation
+and remains a literal edge to \(51\).
+
+\paragraph{Proposition.}
+Every one of these \(9!=362{,}880\) physical layouts, started in native
+state \(74\) on the blank tape, reaches an infinite rightward writing
+ray. In particular, none of these reallocations repairs the startup
+of this runtime core.
+
+\paragraph{Proof.}
+The first 78 transitions do not use any of the routing rows changed by
+the physical allocation. The complete common finite prefix ends at
+\[
+ t=78,\quad q=45,\quad h=4,\quad
+             \{i:\mathrm{tape}(i)=1\}=\{-3,1,4\}.
+\]
+The full trace and the check that no allocation-dependent row is used
+are included in the accompanying certificate.
+
+Put \(r=\pi(7)\). The next transition is
+\((45,1)\mapsto(0,R,\mathrm{SK}_{r})\).
+It removes the one at cell \(4\), enters \(\mathrm{SK}_{r}\) at head
+position \(5\), and leaves the entire suffix from position \(5\) blank.
+For \(1\le j\le8\), the unchanged skip chain satisfies
+\[
+  (\mathrm{SK}_{j},0)\mapsto(0,R,\mathrm{SK}_{j-1}).
+\]
+After precisely \(r\) further transitions, the configuration therefore
+has state \(51\), head \(5+r\), and one-cells exactly \(\{-3,1\}\).
+This is time \(79+r\).
+
+The following six zero-reading transitions are fixed in every layout:
+\[
+\begin{array}{c|c}
+\text{current state} & \text{read-zero action}\\ \hline
+51  & 0R122\\
+122 & 0L137\\
+137 & 0R30\\
+30  & 0R45\\
+45  & 0R24\\
+24  & 0L35
+\end{array}
+\]
+They reach state \(35\), head \(7+r\), at time \(85+r\), still with
+one-cells exactly \(\{-3,1\}\). Finally,
+\[
+                 (35,0)\mapsto(1,R,35).
+\]
+The head continually enters a fresh blank cell, writes one, and moves
+right again. Thus it never leaves state \(35\) and never halts.
+All arguments are finite case checks followed by elementary induction,
+so the nonhalting conclusion for each fixed table is provable in PA.
+\hfill\(\square\)
+
+The executable search also explicitly enumerates the \(8!=40{,}320\)
+layouts fixing physical position \(6\). Every one reaches the
+hypothesis of the six-step ray lemma, with no timeout or unclassified
+case. Their literal prefixes have a total of \(3{,}336{,}480\) transitions.
+The time to state \(51\) is \(79+\pi(7)\), giving 5,040 cases each at
+times \(79,80,81,82,83,84,86,87\). Time \(85\) is absent in that subset
+because \(\pi(7)\ne6\).
+
+This is an obstruction for the specified runtime fold, allocation
+transformation, and native start. It does not rule out a different
+bootstrap, another runtime representation, another 193-state design,
+or a still smaller PA-consistency machine. In particular, it is not a
+state-count lower bound.

@@ -1,0 +1,146 @@
+% A report fragment: requires amsmath, amssymb, amsthm.
+\section{The crossed no-push radix construction}
+
+For $k\in\{5,6\}$, let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \quad I_k(A,B)=k p(A,B),\quad M_k(a,b)=k p(a,b)+1,
+\]
+\[
+ U_k(a,B)=k p(B,a)+2,\qquad E_k(a,b)=k p(a,b)+3.
+\]
+Numerical code zero is truth and code one is the designated contradiction.
+Unused residues are decoded as truth. These definitions retain the exceptional
+identity $I_k(0,0)=0$; no injectivity assertion separates this instance from truth.
+For nonzero constructor codes, every recursive formula child is smaller than
+its parent, and every occurring variable label is smaller than the whole code.
+The induction proving this uses $a,b\le p(a,b)$ and $k\ge4$.
+
+The numerical calculus uses the separate diagonal head
+$\Gamma_k(B)=I_k(B,U_k(B,B))$ and the inherited separate-head gate.
+Its distribution head is the exchanged version
+\[
+ U_k(d,I_k(a,h))\ \longrightarrow\
+       \bigl(U_k(d,a)\longrightarrow U_k(d,h)\bigr).
+\]
+The other heads and rules are those of the supplied radix-family calculus.
+The fixed implicational exchange derivation converts this head into the ordinary
+distribution head, and conversely, using only the derived $K,S$ basis and modus
+ponens. The resulting proof transformations are primitive recursive.
+
+The inherited uniform constructor-$k$ calibration consequently applies. One
+must not replace this argument by a claim that code substitution alone conjugates
+the two calculi: the diagonal binder is the whole formula code, and hence changes
+when $k$ changes. The uniform calibration instead uses the displayed strict
+fresh-label bound and instantiates the proof-producing PA templates separately
+at each coefficient. This is an explicitly inherited ordinary mathematical
+dependency, not a newly compiled proof-assistant theorem.
+
+\subsection{No-push commands and the all-store compiler}
+
+Write $[a;w]=p(a,w)$ for the numerical stack. Its projections are total, including
+$[0;0]=0$ and $\operatorname{hd}(0)=\operatorname{tl}(0)=0$. For a command store
+$(t,w,d,h)$, the modified modus ponens command is
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+   (b,w,b,0),&I_k(t,b)=h,\\
+   (0,w,b,0),&I_k(t,b)\ne h,
+ \end{cases}\qquad b=d+x.
+\]
+The Shift command retains its sum test: it halts if $t+h=1$ and otherwise returns
+$(h,\operatorname{tl}(w),d,\operatorname{hd}(w))$. Thus this construction differs
+from the cached-head-only machines as well as from the dummy-push radix machines.
+
+The AX command pushes nine generated entries and the saved old top. Its last
+generated entry in pop order is the universal code $U_k(d,h)\ge2$. The other
+generated entries and the guarded top have implication residue zero; the
+universal entry has residue two. None can equal one, independently of consistency.
+The exchanged distribution head changes its formula but not these facts or its
+position in the ten-entry protocol.
+
+Set $A_0=\mathsf{AX}_{0,0,0}$ and use the supplied no-push compiler words
+\[
+ \mathsf{Push}=A_0;S^9;\mathsf{MP}_0,
+ \qquad \mathsf{Pop}=A_0;S^{11},
+ \qquad \mathsf{Discard}=\mathsf{MP}_0.
+\]
+They satisfy, uniformly in $k\ge4$,
+\[
+ \mathsf{Push}(t,w,d,h)=(0,[t;w],0,0),\qquad
+ \mathsf{Pop}(t,[a;w],d,h)=(t,w,0,a),
+\]
+\[
+ \mathsf{Discard}(t,w,0,h)=(0,w,0,0).
+\]
+For Push the final implication comparison fails because residues zero and two
+are disjoint. The potentially last Shift in Pop tests $U_k(d,h)+t\ge2$.
+Discard is valid because its success and failure outcomes coincide at $d=x=0$.
+These are numerical equalities even when zero stack entries collapse.
+
+The axiom selectors and generalization word of the supplied no-push compiler
+therefore remain valid. For modus ponens, reserve a zero below the two premises
+and execute
+\[
+ \mathsf{Discard};\mathsf{Push};C(I_k(a,b));\mathsf{Push};
+ C(a);\mathsf{Push};S;S;\mathsf{MP}_b;\mathsf{Pop}.
+\]
+After successful recursive calls, the store before the two Shifts is
+$(0,[a,I_k(a,b),0;w],0,0)$. The second Shift may halt early at $a=1$;
+otherwise MP returns $(b,[0;w],b,0)$ and Pop returns $(b,w,0,0)$.
+Thus induction on a finite derivation shows that its compiled word either
+halts or returns its conclusion with the surrounding stack unchanged. Prefixing
+by $A_0$ and appending Shift produces a halting word for every incoming store
+when the derivation concludes one. The inherited cofinal-word scheduler proof
+applies; it never assumes that unsuccessful trials reset their theorem store.
+
+Conversely, attach a derivation to the visible top, cached head, and every live
+canonical stack entry. AX, MP, and Shift preserve this annotation. If Shift
+halts, $t+h=1$ implies that one of the two annotated entries equals one. The
+inherited syntactic interpretation turns this into a PA refutation. Hence the
+source halting predicate and the PA-refutation predicate are PA-provably equivalent.
+
+\subsection{Binding to literal machines}
+
+The construction uses the pinned Q AX grammar, the no-push replacement
+$\texttt{node163}=(\texttt{node6},\texttt{node54})$, and the multiplier
+\[
+ \texttt{node61}=
+ \begin{cases}
+ ((\mathsf{INC}_1,\texttt{node60}),\texttt{node60}),&k=5,\\
+ ((\mathsf{INC}_1,\texttt{node60}),(\mathsf{INC}_1,\texttt{node60})),&k=6.
+ \end{cases}
+\]
+There are exactly 61 multiplier occurrences. The source-binding certificate
+checks their complete Cantor-pairing prefixes, changes each multiplication body
+from four to $k$ increments, and proves that all exterior source edges agree
+under the explicit relocation. No exterior edge enters a changed body interior.
+The complete AX macro word is checked in a free constructor algebra.
+
+Each raw table has 202 controls. Seven Q-reader folds and the additional
+$41\mapsto99$ fold give 194 controls; all 32 local cases are checked in the final
+simultaneous quotient. The 23 arithmetic-engine controls retain every baseline
+row. Complete blank initialization takes 58,320 literal transitions and reaches
+the clean source frame, including all nonzero cells and the blank exteriors.
+
+The constructor checker verifies every primitive source outcome for arbitrary
+natural register values; the separate literal checker reconstructs the four
+list lemmas from the transition rows and resolves the source in two ways.
+These finite certificates support elementary induction arguments for the
+source/tape simulation. Positive simulation durations give halting reflection:
+if the literal machine first halted at time $T$ but the source had not halted
+within $T+1$ steps, their deterministic positive simulations would continue
+beyond that first halt, a contradiction. All finite traces and the bounded
+iteration are arithmetically representable in PA.
+
+Composing the two source reductions with these source/tape simulations yields
+the ordinary mathematical statement
+\[
+ \mathrm{PA}\vdash
+   \neg\operatorname{Halt}(\mathrm{PA194QN}k,\mathrm{blank})
+       \ \longleftrightarrow\ \operatorname{Con}(\mathrm{PA}),
+ \qquad k=5,6.
+\]
+The new result is this explicit composition and its literal bindings. None of
+its component optimization principles is claimed as new. A successful executable
+certificate is not an end-to-end Lean/Rocq verification or a completed iPRA endpoint.

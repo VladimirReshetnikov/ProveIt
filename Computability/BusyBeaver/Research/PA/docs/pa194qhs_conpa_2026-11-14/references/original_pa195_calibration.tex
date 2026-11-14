@@ -1,0 +1,632 @@
+% Standalone section for the PA195 article. Requires amsmath, amssymb,
+% amsthm, hyperref and theorem/lemma/proposition environments in the parent.
+% All claims below are mathematical proofs. They are not claims of a newly
+% compiled Lean endpoint for the new literal machine.
+
+\section{The PA-provable consistency equivalence}
+\label{sec:pa-calibration}
+
+Let $M_*$ denote the delivered 195-state table, with its designated blank
+initial configuration, and let $H_*$ be the arithmetic assertion that this
+literal machine has a finite halting trace. Throughout this section,
+$\operatorname{Con}(\mathrm{PA})$ means that a fixed standard, recursively
+checked first-order PA proof system has no proof of $0=1$. Changing between
+the usual PA proof codings gives primitive-recursive proof translations
+whose correctness PA proves. The conclusion concerns the arithmetic
+sentence for the exact table, rather than an external assertion about its
+standard execution.
+
+\begin{theorem}\label{thm:pa-biconditional}
+For the table $M_*$ in this package,
+\[
+ \mathrm{PA}\vdash
+ \bigl(\neg H_*\leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).
+\]
+This is an ordinary mathematical proof of a PA-provability statement.
+The new endpoint has not been compiled as an additional Lean or Rocq
+theorem. The executable certificates supply the finite literal-program
+facts used in the proof; the arguments below explain their arithmetic
+meaning and the uniform proof transformations.
+\end{theorem}
+
+There are three levels to connect: PA proofs, the numerical proof calculus
+searched by the register program, and literal binary-tape traces. The
+published PA196 development supplies the PA-refutation compiler for the
+original calculus~\cite{chang}. Its other internal direction is not
+assumed here. We first justify the incoming diagonal replacement used
+by $M_*$~\cite{diagonal}, and then supply the reverse proof
+transformation and the finite-trace argument, developing the syntactic
+route identified in the earlier bridge notes~\cite{bridge}.
+
+\subsection{The numerical calculus and its diagonal replacement}
+
+Write
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \quad I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,
+\]
+\[
+ U(a,B)=4p(B,a)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+The notational convention is $\neg A=I(A,1)$, conjunction and existential
+quantification being their classical abbreviations. Code $0$ is truth,
+and code $1=M(0,0)$ is the designated contradiction. The quantifier
+constructor has the transposed Cantor arguments displayed above.
+
+The diagonal calculus $\mathcal C_\Gamma$ retains the six PA196 heads,
+the dominated propositional head, modus ponens, and closed
+generalization. Its guarded gate is
+\begin{align*}
+ \Gamma(B)&=I(B,U(B,B)),\\
+ V(a,b,c)&=I(M(a,b),U(c,M(a,b))),\\
+ P(a,b,c)&=I(c,M(c,b)),\\
+ S(a,b,c)&=U\bigl(b,
+       (M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U\bigl(c,S(a,b,c)\to\neg P(a,b,c)\bigr),\\
+ F_\Gamma(a,b,c)&=\neg\bigl(\Gamma(c)\to(V(a,b,c)\to Q(a,b,c))\bigr).
+\end{align*}
+The gate is available when $c\ne a,b$; a failed guard emits $0$.
+The logical rules and remaining axiom families are exactly those of
+\texttt{PA196/Logic/Basic.lean}, with this one replacement of its
+\texttt{bundle}.
+
+Every recursive formula child of a nonzero code is smaller than that
+code. Every variable label, including a bound label, occurring in a
+formula of code $B$ is strictly below $B$. These assertions follow from
+the inequalities $a,b\le p(a,b)$ and the four tags, with code zero handled
+separately. Consequently $x_B$ is absent from the decoded formula $B$.
+The diagonal clause is a valid vacuity instance, although its binder is
+chosen from the numerical code of the entire formula.
+
+Classical implicational reasoning extracts from the gate both
+$\Gamma(c)$ and the old gate $G(a,b,c)=\neg(V(a,b,c)\to Q(a,b,c))$.
+Every diagonal instance $\Gamma(B)$ is available: use $c=B$ and
+$a=b=B+1$. Thus all membership-vacuity instances and pointed separation
+used in the original proof remain available.
+
+\begin{lemma}[Recovery of the required equality interfaces]
+\label{lem:pa-diagonal-interfaces}
+The diagonal calculus derives, uniformly in the numerical labels,
+\begin{align*}
+ E(a,b)&\to\bigl(M(d,a)\leftrightarrow M(d,b)\bigr),\\
+ E(a,b)&\to\bigl(M(a,d)\leftrightarrow M(b,d)\bigr),\\
+ E(a,b)&\to R(a,b,z)\quad (z\ne a,b),
+\end{align*}
+where
+\[
+ R(a,b,z)=U\bigl(z,M(a,z)\leftrightarrow M(b,z)\bigr)
+ \wedge U\bigl(z,M(z,a)\leftrightarrow M(z,b)\bigr),
+\]
+and it derives $\exists x_a R(a,b,z)$ for $z\ne a,b$.
+All these derivations are supplied by primitive-recursive proof templates,
+with correctness provable in PA.
+\end{lemma}
+
+\begin{proof}
+The two forward membership rewrites are retained heads. To obtain the
+reverse directions, first assume $a\ne b$. Take
+$\chi(t)=M(d,t)$ or $M(t,d)$, initially with $d\ne a$, or take the
+diagonal family $\chi(t)=M(t,t)$. Put
+\[
+ C=E(a,b)\to(\chi(b)\to\chi(a)),\qquad
+ \varphi=\neg C,\qquad c=\ulcorner\varphi\urcorner.
+\]
+Here $c$ is the actual numerical code of the displayed formula, so it is
+larger than every label in $C$. In particular, all required guards hold.
+Apply the old gate at $(a,a,c)$ and abbreviate its $S,P,Q$ by those
+letters. We need only its consequence $\neg Q$, not an unproved general
+rule for changing bound-variable names.
+
+The second conjunct in $S$ gives
+$S\to U(a,M(c,a)\to\varphi)$. Propositionally,
+$\varphi$ implies $E(a,b)$, $\chi(b)$, and $\neg\chi(a)$; hence universal
+monotonicity gives
+\[
+ S\to U(a,M(c,a)\to\neg\chi(a)).
+\]
+The equality atom has disappeared from this quantified consequent.
+The unchanged negative-property specialization lemma now gives
+\[
+ S\to\bigl(M(c,b)\to\neg\chi(b)\bigr).                 \tag{1}
+\]
+For precision, this specialization uses only the retained witness
+$\exists x_a E(b,a)$, direct rewriting under $E(b,a)$, and vacuity of
+$M(c,b)\to\neg\chi(b)$ at $a$. The latter follows from
+membership vacuity because $a\ne b,c$ and, in the two nondiagonal
+families, $a\ne d$. It is exactly the construction
+\texttt{negativeSpecialization} in \texttt{PA196/Logic/Reverse.lean};
+none of its premises is primitive equality vacuity.
+
+Under $\varphi$, the point condition $P$ gives $M(c,a)$.
+Direct element-slot rewriting under $E(a,b)$ then gives $M(c,b)$.
+Together with (1), $S$ contradicts the consequence $\chi(b)$ of
+$\varphi$. Classical deduction gives
+$\varphi\to(S\to\neg P)$. Generalize this theorem at $c$, distribute
+the quantifier through implication, and use
+$\Gamma(\varphi)=\varphi\to U(c,\varphi)$. The result is
+$\varphi\to Q$. Since the gate supplies $\neg Q$, double-negation
+elimination gives $C$, as required.
+
+If $a=b$, the reverse rewrite is propositional. When the fixed label
+$d=a$, direct rewriting first takes $M(a,b)$ or $M(b,a)$ to $M(b,b)$;
+the already proved diagonal case takes $M(b,b)$ to $M(a,a)$.
+This covers every label coincidence without a freshness assumption on
+the theorem being derived.
+
+For the neighborhood formula choose $z_0=\ulcorner E(a,b)\urcorner$.
+The available diagonal clause $E(a,b)\to U(z_0,E(a,b))$ and the two
+bidirectional rewrites yield $E(a,b)\to R(a,b,z_0)$.
+To change the binder to an arbitrary $z\ne a,b$, only the case
+$z\ne z_0$ remains. Let $P(t)$ be either membership-only matrix in
+$R$. Bidirectional rewriting gives
+$E(z,z_0)\to(P(z_0)\to P(z))$.
+The witness $\exists x_{z_0}E(z,z_0)$, universal distribution, and
+vacuity of $P(z)$ at $z_0$ give
+\[
+ U(z_0,P(z_0))\to P(z).
+\]
+Its antecedent is vacuous at $z$: its atoms contain only
+$a,b,z_0$, and membership vacuity extends through its Boolean
+connectives and the outer quantifier by the retained commutation head.
+Generalization and distribution therefore give
+$U(z_0,P(z_0))\to U(z,P(z))$.
+This proves the claimed neighborhood implication for every allowed $z$.
+Finally the unchanged witness head and existential monotonicity give
+the neighborhood witness, reversing its two arguments by the
+propositional symmetry of $R$ if necessary.
+
+Every operation in this proof is a fixed syntactic proof template,
+composition, numerical code formation, or a displayed decidable
+label-equality case split. The choices $c=\ulcorner\neg C\urcorner$ and
+$z_0=\ulcorner E(a,b)\urcorner$ use no unbounded search. PA verifies the
+templates by the same proof-checker induction as their original
+counterparts. This establishes the asserted uniformity.
+\end{proof}
+
+The PA196 refutation compiler uses primitive equality through these
+membership-rewriting, neighborhood, and witness interfaces. In its
+logical and arithmetic certificate copies, the uses of equality vacuity
+are in the reverse-rewriting and neighborhood modules just replaced.
+The old gate, all other heads, and the command stack interface remain
+available. Substituting Lemma~\ref{lem:pa-diagonal-interfaces}'s templates
+therefore gives a PA-verifiable refutation compiler for
+$\mathcal C_\Gamma$. In particular,
+\begin{equation}\label{eq:pa-forward-calculus}
+ \mathrm{PA}\vdash
+ \exists p\,\operatorname{Prf}_{\mathrm{PA}}(p,\ulcorner0=1\urcorner)
+ \ \longrightarrow\
+ \exists d\,\operatorname{Prf}_{\Gamma}(d,1).
+\end{equation}
+This is reuse of the published proof-producing construction with explicit
+replacement templates, rather than an appeal to standard-model
+equiconsistency. The 191-item AX word still pushes nine items in the
+same positions as the original nine-item command, so its stack
+compiler indices need no alteration.
+
+\subsection{A uniform translation of the numerical calculus into PA}
+
+We now prove the converse proof-theoretic direction. Work first in the
+fixed conservative definitional extension of PA containing
+$\operatorname{pow2}(n)=2^n$ and its usual arithmetical definition.
+Only fixed primitive-recursive functions are added. A fixed
+primitive-recursive elimination of these definitions converts the
+resulting proofs to ordinary PA proofs.
+
+Use the bit predicate
+\[
+ B(s,z)\;\equiv\;
+ \exists u,v\,[s=(2u+1)2^z+v\ \wedge\ v<2^z].
+\]
+PA proves the usual digit lemmas directly by induction and division
+with remainder. In particular $B(s,z)\to z<s$, since
+$s\ge 2^z\ge z+1$, and hence PA proves $\neg B(x,x)$.
+
+Let $T(c)$ be the arithmetic formula obtained by decoding the source
+code $c$:
+\begin{align*}
+ T(0)&=(0=0),& T(M(a,b))&=B(x_a,x_b),\\
+ T(E(a,b))&=(x_a=x_b),& T(U(a,A))&=\forall x_a\,T(A).
+\end{align*}
+For a nonzero implication code the translation is the corresponding
+implication. There is one numerical alias:
+$I(0,0)=0$. Thus the uniform constructor theorem is a proof of
+\[
+ T(I(A,B))\leftrightarrow(T(A)\to T(B)),
+\]
+not an unconditional assertion of syntactic identity. At $A=B=0$ it
+uses the fixed proof $(0=0)\leftrightarrow((0=0)\to(0=0))$.
+Every other case follows from the definition of $T$.
+
+Arithmetic auxiliary bound variables are represented with de Bruijn
+indices, or equivalently renamed above all source labels before
+substitution. The source label $c$ is therefore absent among the free
+variables of $T(c)$ even though the expanded bit formula has its own
+bound variables. Quantifier formation closes the indicated free source
+label, so nested occurrences of the same label have their usual
+shadowing semantics. No assumption that all numerical labels are
+distinct is made.
+
+\begin{lemma}[Uniform finite bit comprehension]
+\label{lem:pa-bit-comprehension}
+Given the syntax code of any arithmetic formula $\theta(z,\vec u)$,
+there is a primitive-recursive procedure producing a PA proof of
+\[
+ \forall n\,\exists s<2^n\,\forall z<n\,
+       \bigl(B(s,z)\leftrightarrow\theta(z,\vec u)\bigr).
+                                                        \tag{2}
+\]
+PA proves that the procedure produces a valid proof for every
+well-formed formula input, with the indicated fresh variables.
+\end{lemma}
+
+\begin{proof}
+Take induction on $n$ with the existential formula in (2) as induction
+formula. At zero choose $s=0$. Given a witness $s<2^n$, split by
+excluded middle on $\theta(n,\vec u)$. If it holds use $s+2^n$;
+otherwise use $s$. The fixed bit lemmas say that the first $n$ bits
+are unchanged, that the new $n$th bit is respectively one or zero,
+and that the result is below $2^{n+1}$. This is a fixed finite
+first-order proof pattern with one PA induction instance.
+
+On syntax codes the procedure performs capture-avoiding substitution,
+forms the displayed induction instance, and concatenates this fixed
+proof pattern with the fixed arithmetic lemma proofs. It never
+evaluates $\theta$. Its syntax operations and a fresh-bound-variable
+choice are primitive recursive. The PA proof of correctness is
+induction on the syntax operations, followed by direct verification
+that the generated induction line is an instance of the PA induction
+schema and that each subsequent line follows by the stated logical
+rule. Thus this is a statement about proof checking, with an arbitrary
+formula code as input, not a uniform satisfaction or reflection
+principle for PA. Full PA induction is used: $\theta$ is not restricted
+to a bounded or quantifier-free formula.
+\end{proof}
+
+We spell out the gate supplier because label collisions matter here.
+Fix $a,b,c$ with $c\ne a,b$, let $\phi=T(c)$, and regard $x_a,x_b$
+as the free values before the inner quantifier is entered.
+If $a\ne b$, apply (2) with bound $x_a+x_b+1$ and matrix
+\[
+ \bigl(B(x_a,z)\vee z=x_b\bigr)\wedge\phi[z/x_b].
+                                                        \tag{3}
+\]
+The witness $s$ satisfies, for every $z$,
+\[
+ B(x_a,z)\to(\phi[z/x_b]\to B(s,z)),\qquad
+ B(s,z)\to\phi[z/x_b],
+\]
+and $\phi\to B(s,x_b)$. To pass from the bounded comprehension
+formula to the displayed unbounded assertions, use
+$B(x_a,z)\to z<x_a$ and the fact that a number below $2^n$ has no
+set bit at an index at least $n$.
+
+If the \emph{labels} $a=b$ coincide, the first antecedent inside
+$T(S)$ becomes $B(z,z)$, not $B(x_a,z)$ with $x_a$ held fixed.
+It is therefore false. Apply (2) instead with bound $x_b+1$ and
+matrix
+\[
+ (z=x_b)\wedge\phi[z/x_b].                              \tag{4}
+\]
+This witness has the required second implication and distinguished
+point condition, and the first implication is vacuous. Equality
+substitution in (4) supplies $\phi$ at the distinguished point.
+The substitutions in (3)--(4) are capture avoiding; in particular
+the inner binder corresponding to $b$ is renamed when the witness
+expression depends on the original free value of $x_b$.
+
+In both cases the result is a PA proof of
+$\exists x_c\,(T(S)\wedge T(P))$. Freshness of $c$ in $\phi$
+ensures that choosing the set witness does not alter the property.
+Consequently PA proves $\neg T(Q)$. The guarded membership-vacuity
+clause has a first-order proof, and $T(\Gamma(c))$ has a first-order
+proof by the code-freshness lemma. Classical propositional reasoning
+therefore proves $T(F_\Gamma(a,b,c))$.
+When the guard fails the command emits $0$, with its fixed truth proof.
+
+The source false code is translated to $T(1)=B(x_0,x_0)$.
+Its negation is a fixed PA theorem, uniformly under all binders.
+Thus source negation, conjunction, and existential abbreviations have
+PA-provable equivalences to the ordinary classical connectives, even
+if a surrounding source quantifier binds label zero. This deals with
+the false-code convention independently of the truth-code alias.
+
+The other head suppliers are fixed first-order proof templates:
+the witness-elimination head, quantifier commutation, the two equality
+congruence heads, an equality witness, and quantifier distribution.
+Coincident labels are handled by capture-avoiding instantiation, with
+a numerical equality case split if needed. The dominated
+propositional head is a classical tautology; its arithmetic validity
+does not require the dominance restriction. Generalization and modus
+ponens use their ordinary PA proof constructors, together with the
+implication-constructor equivalence above.
+
+\begin{lemma}[Syntactic refutation translation]
+\label{lem:pa-refutation-translation}
+There is a primitive-recursive function $J$ such that
+\[
+ \mathrm{PA}\vdash\forall d\,
+ \left(\operatorname{Prf}_{\Gamma}(d,1)
+ \to\operatorname{Prf}_{\mathrm{PA}}
+             (J(d),\ulcorner0=1\urcorner)\right).
+                                                        \tag{5}
+\]
+\end{lemma}
+
+\begin{proof}
+Decode the source derivation by recursion on its finite proof code.
+At an axiom node insert the appropriate supplier just described.
+At modus ponens concatenate the two translated proofs and the
+compositional implication proof; at generalization append the
+corresponding quantifier rule. At a code-zero alias emit or use the
+fixed truth equivalence. Recursion on a malformed proof is made total
+by an arbitrary fixed output; the correctness statement has the
+displayed proof-validity hypothesis.
+
+PA proves the syntactic invariant
+$\operatorname{Prf}_{\Gamma}(d,A)\to
+  \operatorname{Prf}_{\mathrm{PA}}(J_0(d),T(A))$
+by induction on this coded recursion. Constructor children decrease
+strictly; proof concatenation, label closing and fresh-variable
+renaming have primitive-recursive definitions and their usual
+syntactic correctness inductions. The gate case is precisely
+Lemma~\ref{lem:pa-bit-comprehension} and the two label cases above.
+Append the fixed theorem $\neg B(x_0,x_0)$ at a proof of code one,
+then eliminate the fixed definitional extension. This gives (5).
+
+This argument proves one quantified assertion about proof codes
+inside PA. It does not merely produce a PA proof separately for each
+standard formula and then assert a uniform conclusion. The inductive
+verification of the compiler, including the schema supplier, is the
+step that makes (5) applicable to nonstandard codes in every model
+of PA.
+\end{proof}
+
+\subsection{The exact proof-store invariant}
+
+The numerical command store is $(t,w,d,h)$. Both $t$ and $h$ carry
+formula codes; $w$ is the Cantor-coded stack and $d$ is an arithmetic
+parameter. Annotate $t,h$ with PA proofs of $T(t),T(h)$, and annotate
+each live stack element with the corresponding proof. The clean store
+uses the fixed proof of $T(0)$.
+
+Here is a precise convention that avoids treating Cantor pairing as a
+free list constructor. Let $\operatorname{hd},\operatorname{tl}$ be
+the two Cantor projections. At zero both are zero. For $w>0$,
+$\operatorname{tl}(w)<w$: writing $w=p(a,b)$, if $b>0$ then
+$p(a,b)>b$, and if $b=0$ the inequality is immediate. Define
+\[
+ \delta(w)=\min\{k\le w:\operatorname{tl}^{k}(w)=0\}.
+\]
+PA proves the set nonempty by induction on $w$.
+The canonical stack has exactly these $\delta(w)$ heads, and its
+proof annotation is a sequence of that length. Its invariant is
+\[
+ \forall i<\delta(w)\quad
+ \operatorname{Prf}_{\mathrm{PA}}
+ \bigl(\pi_i,T(\operatorname{hd}(\operatorname{tl}^{i}(w)))\bigr).
+                                                        \tag{6}
+\]
+Bounded minimization and bounded sequence operations make this an
+ordinary primitive-recursive invariant.
+
+Pushing a code $a$ onto $w$ prepends its proof, except when $a=w=0$;
+in that one case $p(0,0)=0$ and the canonical annotation remains
+empty. Popping nonzero $w$ removes the first proof. Popping zero
+returns code zero with its fixed truth proof and leaves an empty
+annotation. These statements are exact consequences of
+$\operatorname{decode}(p(a,b))=(a,b)$ and
+$p(a,b)=0\leftrightarrow a=b=0$, and PA proves each of them.
+
+Now inspect the actual command updates.
+AX pushes the saved top, a generalization of the old $h$, and the
+seven ordinary head instances, in their specified order, and leaves
+the guarded diagonal gate in $t$ with $d=h=0$.
+The nine pushed entries have the PA proofs provided above.
+For MP with offset $x$, put $y=d+x$.
+If $I(t,y)=h$, combine the proofs for $t,h$ to obtain a proof for
+$y$, push the truth code, and set $(t,d,h)=(y,y,0)$.
+If $I(t,y)=h=0$, then $t=y=0$ and the same operation is justified
+by the truth proof. On a failed match the command outputs truth,
+retains the stack, and sets $(t,d,h)=(0,y,0)$.
+Shift, when it does not halt, sets
+\[
+ (t,w,d,h)\longmapsto
+   \bigl(h,\operatorname{tl}(w),d,\operatorname{hd}(w)\bigr),
+\]
+and moves the annotations accordingly.
+
+The literal Shift test is $t+h=1$. PA proves that this implies
+$t=1$ or $h=1$. In either case the relevant annotation, followed by
+the fixed proof $\neg T(1)$, yields a PA refutation. In particular
+the invariant must track both visible formula registers, rather
+than just $t$.
+
+Every annotation update is primitive recursive. The local statement
+just proved holds for \emph{every annotated store}: a successful
+command preserves the annotation invariant, and a halting command
+produces a PA refutation. PA induction therefore propagates the
+invariant through an arbitrary coded finite command sequence,
+including one starting at an already live scheduler store.
+In particular, if execution from the clean store halts then a PA
+refutation exists. Under $\operatorname{Con}(\mathrm{PA})$, every
+annotated command has a nonhalting output and its successor store
+is annotated again. This is the internal replacement for the
+upstream external HF-model soundness argument.
+
+\subsection{Why the finite runtime certificates are sufficient in PA}
+
+The source and physical verifications in this package have the
+following mathematical content. A frame consists of its source
+path, a gap, and the complete register file. A value $v$ is stored
+as $0\,1^{v+1}$. The physical gap is represented by an affine run
+length $n+c$, with arbitrary $n\ge0$; register contents and the
+complete tail are left symbolic. The initial file has at least ten
+blocks, and this lower bound is preserved by every primitive:
+increment appends one extra block and decrement retains the length.
+The greatest source path length is 37, below the header constant 48.
+
+For each increment, each jump, each zero and positive decrement
+branch, and the halt site, the delivered finite trace certificate
+starts at the exact frame and ends at the exact successor frame
+or at the distinguished halt control. There are 4,815 cases for
+the 3,700-site source. These are symbolic branch contracts, rather
+than 4,815 examples of numerical register inputs.
+
+There are only four kinds of step in their symbolic interpreter:
+an actual table row; a change of notation for an identical tape;
+a whole run of one self-loop; and a register-file excursion.
+Notation changes preserve every concrete instance. A self-loop
+over a run of length $an+c$ has the stated effect by induction on
+that length. The register excursions are marking a register,
+incrementing it, zero decrement, and positive decrement.
+Their proofs in \texttt{M6/Native.lean} are inductions on the finite
+file and its unary blocks. They use exactly the specified engine
+rows and the append-one tail row. These rows are unchanged by the
+new decoder and the seven simultaneous folds.
+
+Consequently the soundness proof of
+\texttt{M6/Runtime.lean}, specifically \texttt{sstep\_sound} and
+\texttt{exec\_sound}, applies to each case. It gives exact
+finite reachability for every natural gap and every valid full
+register file. The checker only accepts after it has traversed at
+least one actual row, so each completed primitive segment has
+strictly positive physical length. A nonhalting contract ends at
+the root control, not at the halt control.
+
+The same assertion is provable arithmetically, for the following
+specific reason. Finite tapes are coded finite words; runs,
+concatenation, frame construction, and the register operations are
+primitive recursive. The proofs for a self-loop and each of the
+four register excursions use induction on a natural run length or
+a coded finite list. Their witness traces can be produced by the
+same bounded scans and primitive recursions. Repeating the four
+symbolic-step cases and concatenating their traces is again a
+primitive recursion. PA proves these inductions directly. The
+candidate-specific part is a finite list of table equalities and
+completed symbolic traces, all decidable closed arithmetic facts.
+Thus PA proves the exact, positive source-to-physical segment
+assertion uniformly in coded frames. An external theorem about
+standard tapes alone would not suffice; the just-described coded
+induction is the internalization used here.
+
+The AX source binding checks every primitive and relative jump in
+each of its 191 macro blocks against the inherited total arithmetic
+macro, and checks every exterior successor. The free-algebra emitter
+check supplies its exact numerical output formulas. Hence the
+source-level command and scheduler contracts are inherited with
+the gate replaced as stated. The scheduler's other 169 sites are
+unchanged. Its finite command-word decoding, the Cantor-pairing
+routines, and the fixed AX macro composition are primitive-recursive
+computations with PA-provable terminating bounds. More specifically,
+the construction \texttt{parsed\_command\_step} in
+\texttt{PA196/Source/CommandTransfer.lean} takes the next decoded
+command at a fetch boundary, executes it, and returns to the next
+fetch boundary in a strictly positive number of primitive source
+steps whenever the decoded command has a nonhalting output. It applies
+to every store and every scheduler pair $(n,l)$ satisfying that explicit
+output premise; the annotated-store invariant under consistency
+supplies the premise used below.
+The source binding retains this construction with the new AX
+composition. The store need not be reset between decoded words;
+the proof-store invariant is preserved from one command boundary
+to the next.
+
+The complete blank startup is checked for exactly 58,154 steps,
+including the entire final nonzero support, the head position,
+and the state. It ends at the stated clean source frame.
+In native labels that state is 84 and the head coordinate is $-2$;
+the injective dense relabeling is checked separately. As a fixed
+finite computation, the startup equality and the absence of an
+earlier halt are PA-provable.
+
+\begin{lemma}[Reflection of a finite physical halt]
+\label{lem:pa-positive-reflection}
+PA proves that a finite halting trace of $M_*$ yields a PA
+refutation.
+\end{lemma}
+
+\begin{proof}
+Work in PA and assume $\operatorname{Con}(\mathrm{PA})$.
+At a command boundary, decode the next command by the fixed
+primitive-recursive function
+$\operatorname{parse}(\operatorname{seed}(n,l))$.
+The proof-store invariant makes its Shift halt test impossible,
+and its nonhalting update supplies the next annotated store.
+The positive \texttt{parsed\_command\_step} contract just described
+then supplies a finite source execution to the next command
+boundary. This is exactly the strengthened syntactic version of
+the \texttt{SoundBoundary}/\texttt{boundary\_progress} argument in
+\texttt{PA196/Source/Nonhalting.lean}; the external appeal to an
+HF model is replaced by the PA proof annotations and consistency.
+
+For any given $T$, primitive recursion through $T+1$ such command
+boundaries therefore constructs more than $T$ primitive source
+steps from the clean initial source frame. Every command segment
+has positive length and ends at the next nonhalt fetch boundary.
+The intermediate macro routines terminate by their stated
+arithmetic contracts. Thus no source halt can occur inside an
+unfinished final macro either. Concatenating the exact positive
+physical segments for these primitive steps constructs a physical
+run from the same initial frame longer than $T$.
+
+Now suppose there were a blank-tape halting trace of length $T$.
+If it stops within startup, the fixed startup computation refutes
+it. Otherwise concatenate startup and the physical segments just
+constructed. Their total length exceeds $T$. Determinism forces
+the alleged halted configuration to be the same configuration
+at that index in the constructed run. With the partial operational
+semantics there is no outgoing row at halt, a contradiction.
+With an absorbing totalization of halt the argument is equivalent:
+the run could never again reach a nonhalt root frame.
+
+No inverse decoding of an arbitrary intermediate tape is used.
+Nor do we need an unbounded least-time search for the next frame.
+The chosen number $T+1$ of completed command segments is a
+bounded coded iteration. PA proves sequence concatenation and the
+determinism comparison by induction on finite trace length.
+We have therefore proved in PA that consistency excludes $H_*$,
+or equivalently $H_*\to\neg\operatorname{Con}(\mathrm{PA})$.
+\end{proof}
+
+For clarity, exact reachability to a nonhalt endpoint already rules
+out a premature halt inside a primitive segment: a deterministic
+partial run cannot pass through a state with no outgoing row.
+The required runtime premise is therefore the exact positive
+endpoint contract verified here, not a disjunction allowing an
+unexplained early halt instead of the next source frame.
+
+\subsection{Completing the other direction}
+
+By (\ref{eq:pa-forward-calculus}), a PA refutation produces a
+$\mathcal C_\Gamma$ refutation. The unchanged nine-item command
+compiler turns that derivation into a finite command word which
+halts, using the new gate supplier where required. Here one uses
+the existing proof compiler's protected-stack-tail and scheduling
+identities, which permit the actual live store; no reset between
+candidate words is being assumed. The unchanged scheduler reaches
+the compiled word, or halts earlier, by the same bounded candidate
+induction as in the original compiler. The total arithmetic macro implementations and
+the source-to-physical contracts then give a finite blank-tape
+halt of the exact delivered table. These are proof-producing
+finite computations and their correctness inductions take place
+in PA. Therefore
+\[
+ \mathrm{PA}\vdash
+ \neg\operatorname{Con}(\mathrm{PA})\to H_*.
+\]
+Combining this with Lemma~\ref{lem:pa-positive-reflection} and
+classical contraposition proves Theorem~\ref{thm:pa-biconditional}.
+
+\subsection{Logical strength and the role of ConciseIPRA}
+
+The proof does not replace PA by intuitionistic primitive recursive
+arithmetic, the subject of the ConciseIPRA project~\cite{ipra}.
+The finite-comprehension supplier uses an induction
+instance for an arbitrary formula, which is precisely why a short
+iPRA proof checker cannot simply be substituted as the searched
+theory. The transferable ideas are smaller derivable interfaces,
+freshness read from syntax, and uniform proof-certificate
+manipulation. Here the diagonal code-freshness device is already
+present in the incoming PA research~\cite{diagonal}; the new reduction is the
+compatible physical allocation of that source, not a new claim
+that iPRA has PA's consistency strength.

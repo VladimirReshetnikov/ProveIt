@@ -1,0 +1,99 @@
+\section{Fresh physical contraction searches}
+\label{sec:fresh-physical}
+The new search did not produce a machine with fewer than 194 working
+states. Its scope is nevertheless more specific than another unstructured
+mutation search: it includes changes to the representation of a control
+state by a neighboring tape bit or by a head displacement.
+
+\paragraph{Head displacement.}
+Suppose every transition into a control $q$ moves in direction
+$d\in\{-1,1\}$. Replace those incoming moves by $-d$ and their target by
+an existing control $r$. A configuration with old control $q$ and head $h$
+is represented by new control $r$ and head $h-2d$ on the same tape.
+The unchanged-control obligations then hold directly from the changed
+incoming rows. The remaining obligation is to simulate each transition
+from $q$ by a positive finite run of the child from this displaced
+configuration, ending at the representation of the old successor.
+The program \texttt{shift\_merge.cpp} checks these obligations on a finite
+conservative set of local windows.
+
+\paragraph{Encoding a control in the preceding tape cell.}
+A second transformation flips the bit written by every incoming
+transition into $q$, and redirects the transition to $r$. The
+representation complements the cell at $h-d$; it can also displace the
+head by $-2d$ if the incoming direction is reversed. Local simulation must
+restore the complete affected tape, including this complemented cell.
+\texttt{retag\_merge.cpp} retains the rows of $r$.
+\texttt{retag\_actions.cpp} also synthesizes its two rows, checking the
+obligations of both old controls. These changes are different from a
+same-position identification of two control states.
+
+\paragraph{Why the sufficient condition is sound.}
+Let $F$ be the indicated configuration representation. At every parent
+configuration covered by the invariant, require a child run of length at
+least one from $F(c)$ to $F(c')$, where $c'$ is the parent successor.
+The local check preserves the entire finite window, and never reads or
+writes outside it, so it applies to every exterior tape. Concatenating
+these witnesses simulates every finite parent run. Positivity ensures
+that an infinite parent run produces an infinite child run. Determinism
+then gives equivalence of halting from the represented initial
+configuration. This argument is elementary enough to formalize in PA;
+it is a sufficient certificate rule, not a complete minimization method.
+No such contraction certificate was found for the research inputs.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Input family & Tables & Operators & Radius & Step bound\\
+\hline
+Catalog frontier & 49 & 3 & 7 & 180\\
+Catalog frontier, synthesized retagging & 49 & 1 & 6 & 180\\
+New source/decoder rotations & 23 & 4 & 6 & 180\\
+Validated rotations, source masks & 5 & 4 & 5 & 250\\
+PA194, H6, QH6, QNS, source masks & 4 & 5 & 8 & 300\\
+\hline
+\end{tabular}
+\end{center}
+These are 328 runs of sufficient-condition searches. They are not 328
+distinct machines, nor an exhaustive search of all 193-state machines.
+The frontier includes explicitly rejected and auxiliary tables as controls;
+including them in a search does not endorse their consistency claims.
+The common-action operator is adapted from the supplied PA194 work.
+The fifth operator is a restricted search allowing repeated use of the
+retained control when one branch already has a common action.
+
+\paragraph{Stronger local invariants.}
+The default masks are an abstract closure of the blank input, with each
+newly exposed exterior bit left arbitrary. For four primary designs and
+five validated rotations, stronger masks are extracted from every
+universal primitive source contract and the complete blank startup.
+The register-file prefix language is used instead of treating its cells as
+independent bits. The construction also includes every possible interior
+window of a skipped symbolic self-loop, by independently overapproximating
+its consumed and remaining run lengths. The 23 arithmetic-engine controls
+retain their conservative default masks. All nine tables preserve the
+46 imported arithmetic-engine rows exactly.
+
+The radius-eight masks contain 72,935 windows for PA194, 74,314 for H6,
+77,302 for QH6, and 76,027 for QNS. Their respective symbolic source checks
+cover 4,780, 4,876, 4,876, and 4,751 outcomes. These are universal symbolic
+checks relative to the inherited arithmetic-engine lemmas, not long
+concrete traces and not newly compiled proof-assistant theorems.
+
+\paragraph{Rotations and a useful failure distinction.}
+Exactly five of the 23 source-graph-preserving rotations also pass all
+4,780 symbolic source outcomes and the complete startup check:
+\texttt{100\_174\_right}, \texttt{2061\_2062\_left},
+\texttt{2011\_2012\_left}, \texttt{2009\_2010\_right}, and
+\texttt{2008\_2009\_right}.
+The other eighteen are not certified by that checker. This alone is not
+a literal blank-run counterexample. Detailed diagnostics of eight
+outside-emitter rotations encounter unsupported symbolic steps; several
+already have a register effect different from the required one. Thus a
+preserved source control-flow graph and a decoder correspondence do not
+by themselves justify arbitrary changes to shared physical controls.
+
+The portable package contains frozen tables, source masks, provenance,
+search programs, positive control fixtures, and exact replay receipts.
+Its negative results delimit these concrete methods and bounds only.
+They supply no lower bound on the state count of a consistency machine.

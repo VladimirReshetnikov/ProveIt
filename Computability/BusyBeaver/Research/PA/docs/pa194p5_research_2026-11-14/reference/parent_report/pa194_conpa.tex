@@ -1,0 +1,541 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.95in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,xurl,hyperref,enumitem,fancyhdr,needspace}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+ pdftitle={A 194-state Turing machine calibrated to the consistency of PA},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\urlstyle{tt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small A 194-state PA consistency machine}
+\fancyhead[R]{\small Construction, comparison and proof}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newcommand{\file}[1]{\texttt{\nolinkurl{#1}}}
+\newcommand{\MX}{M_{194}}
+\newcommand{\MAD}{M_{194\text{-}AD}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\title{A 194-state Turing machine\\calibrated to the consistency of PA}
+\author{Research and computational verification prepared for Vladimir Reshetnikov}
+\date{13 November 2026, Pacific time}
+\begin{document}
+\maketitle
+\begin{abstract}
+We construct a deterministic, binary, one-tape Turing machine with
+\textbf{194 working states}, started on the all-zero tape, whose nonhalting
+is provably equivalent in PA to $\Con(\PA)$. The state count excludes the
+separate terminal halt control. The construction keeps the supplied
+separate-diagonal-head numerical calculus and its entire 3,673-instruction
+register program. A new binary association of the unchanged 190-token
+axiom emitter admits 67 raw reader controls and seven compatible
+history-sensitive folds. Thus the complete count is
+$134+67-7=194$, improving both existing 195-state allocation patterns.
+
+Every one of the 4,780 arbitrary-register source contracts passes, and
+literal blank execution reaches the exact complete source frame after
+58,154 transitions. A separate symbolic literal-tape checker rederives its
+generic list lemmas from the actual table and independently checks every
+source branch, dense-table conjugacy and complete blank initialization.
+The archive contains every transition, deterministic builders, finite
+certificates, source and graph comparisons, search provenance, and this
+mathematical proof. A second 194-state table permutes the physical locations
+of registers $A$ and $D$.
+
+The proof establishes finite-trace equivalence with the supplied
+separate-head source and composes it with its explicit PA calibration:
+$\PA\vdash(\neg\operatorname{Halt}(\MX)\leftrightarrow\Con(\PA))$.
+This is an ordinary mathematical proof of a PA-provability statement,
+supported by executable certificates. A newly compiled end-to-end Lean
+or Rocq theorem is not claimed. The comparison covers all 32 incoming
+archives at the pinned revision, recursively including nested archives,
+and distinguishes three positive 195-state families from six rejected
+diagnostic families.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+
+\section{The result and the literal machine}
+\label{sec:result}
+
+The principal machine is \file{construction/tables/pa194.tm}.
+Its working controls are $0,\ldots,193$, its start is control $0$, and
+its unique terminal halt label is $194$. The tape is two-way infinite,
+has alphabet $\{0,1\}$, and is initially zero everywhere, with the head
+at cell zero. Each transition writes one symbol and moves one cell left
+or right. There are \textbf{388 transition rows}; there is no row for
+the halt control. All 194 working controls are reachable in the pointed
+transition graph.
+
+The native presentation starts in 74 and halts in 254. The supplied
+\emph{dense-to-native} list is an exact conjugacy of every transition.
+The dense table's SHA-256 is
+\begin{quote}\small
+\nolinkurl{4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f}.
+\end{quote}
+The native table's SHA-256 is
+\begin{quote}\small
+\nolinkurl{e0a7397cf2134e8e7f58a8b1de2f7ff90b74ededd54c912f6ba5b7db48dabe54}.
+\end{quote}
+The complete dense table appears in Appendix~\ref{app:table}.
+No alphabet change, nonblank input, stationary move or altered counting
+convention is used.
+
+\begin{center}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Design & Fixed controls & Raw AX readers & Folds & Total\\
+\midrule
+Original PA195 &134&68&7&195\\
+Supplied 195S/195C &134&67&6&195\\
+\textbf{New $\MX$} &\textbf{134}&\textbf{67}&\textbf{7}&\textbf{194}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The improvement is joint: keep the smaller 67-reader allocation and make
+seven folds simultaneously valid. Merely reducing the expanded source or
+counting individually promising folds does not give this result.
+
+Let $H_M$ be the usual arithmetic sentence asserting a finite halting
+trace of a literal machine from its specified blank start. The conclusion is
+\[
+ \boxed{\displaystyle
+       \PA\vdash\bigl(\neg H_{\MX}\leftrightarrow\Con(\PA)\bigr).}
+\]
+Actual nonhalting follows if PA is consistent. The biconditional is a
+statement about what PA proves and does not add $\Con(\PA)$ as an axiom.
+Graph reachability is not a claim that every control is visited by the
+blank execution. No global minimality claim is made for 194.
+
+\input{comparison.tex}
+
+\section{The saving: 67 readers with seven compatible folds}
+\label{sec:decoder}
+
+\subsection{A fixed source program, a new binary association}
+
+The principal source is the supplied separate-head calculus used by 195S.
+It has an axiom-emission word of 190 macro tokens and a complete register
+program with 3,673 primitive instruction sites. The selected construction
+uses exactly that word in exactly that order. Its six independent axiom-head
+parameter permutations are all the identity; no axiom formula, guard,
+command selector, stack position or logical register assignment changes.
+
+The frozen new grammar changes how that same word is parenthesized and
+shared as a binary tree. It has 67 raw reader controls. The 134 fixed
+controls are retained, giving a raw 201-state table, and the seven folds
+listed below reduce it to 194. The builder regenerates the parent 195S
+from its original grammar and folds and binds it to the exact supplied
+native table before checking the new construction.
+
+Checking the flattened word alone would be insufficient. This tree language
+also encodes control flow: a \file{breakTo} or \file{continueTo} leaf counts
+ancestors of one direction, so reassociation can silently change its
+successor. The certificate therefore compares the entire resolved register
+instruction map, indexing sites by their left-to-right ordinal. It checks
+the opcode, register operand and every successor, including both decrement
+branches, every structured jump and every halt. The independent verifier
+uses a second interval/ancestor resolver for the same comparison.
+
+\begin{lemma}[Source identity]
+\label{lem:source}
+The new register program and the supplied separate-head program have
+identical executions from every initial vector of nine natural registers,
+when counters are identified by primitive-site ordinal. PA proves the
+corresponding finite-trace identity.
+\end{lemma}
+\begin{proof}
+Their complete finite instruction maps are equal. Hence their coded step
+functions make the same finite case distinction, register update and
+next-counter choice. Equality of the maps is a finite arithmetic fact;
+induction on the trace length gives the assertion in PA.
+\end{proof}
+
+A replayable occurrence-level reassociation certificate is included. It
+connects the parent and new macro trees through a common right comb.
+The certificate establishes endpoint word identity; intermediate trees
+are not asserted to meet the physical scanner constraints. The endpoint
+source-map and runtime certificates are checked separately.
+
+\subsection{The seven folds in full}
+
+The raw-to-folded identifications, in native compiler labels, are
+\[
+\begin{gathered}
+ 2016\mapsto2052,\quad 2018\mapsto2027,\quad
+ 2022\mapsto2032,\quad 2024\mapsto2046,\\
+ 2037\mapsto2015,\quad2055\mapsto2019,\quad2060\mapsto2014.
+\end{gathered}
+\]
+Each pair has two distinct entry contexts. The removed member is entered
+after a symbol-preserving right move across zero; the retained member is
+entered after the corresponding move across one. The shared control can
+therefore recover the missing state information by inspecting the previous
+bit. The replacement actions are:
+
+\begin{center}\small
+\begin{tabular}{@{}rrll@{}}
+\toprule
+Removed & Retained & New read-0 action & New read-1 action\\
+\midrule
+2016&2052&$0,R,166$&$1,L,2005$\\
+2018&2027&$0,R,90$&$1,L,2020$\\
+2022&2032&$0,L,2002$&$1,R,61$\\
+2024&2046&$0,L,2033$&$1,R,2028$\\
+2037&2015&$0,L,2044$&$1,R,2017$\\
+2055&2019&$0,L,2059$&$1,L,2056$\\
+2060&2014&$0,L,2050$&$1,L,2064$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All incoming targets are projected by the same seven identifications.
+Every other transition is retained from the raw 201-state construction.
+The pairs are disjoint and none contains the start or halt.
+
+The local checker replays all four context/read-bit cases for each pair
+against the \emph{final simultaneously folded table}. It requires the
+complete local tape, head displacement and projected destination control
+to agree, with arbitrary untouched exterior tape. This is 28 finite
+contracts. Helpers may be affected indirectly by other folds, so an
+optimistic matching of individually feasible pairs would be insufficient.
+The full source-frame checker then executes the resulting 194-state table
+for every primitive source case.
+
+\begin{proposition}[The new raw quotient]
+The raw 201-state table and its folded 194-state table have equivalent
+halting behavior from native state 74 on every initial tape. The local
+simulation uses between one and five folded steps for each raw step.
+\end{proposition}
+\begin{proof}
+All 23 incoming rows into exceptional fold controls establish the required
+previous bit. The start is not exceptional. At an ordinary control the
+transition commutes with the state projection; at an exceptional control
+one of the 28 exact two-cell contracts applies. Thus induction constructs
+a positive finite simulation of each raw trace on its complete tape.
+For the converse, a folded first halt after $T$ steps is inconsistent with
+$T+1$ nonhalting raw steps and their positive simulations, by determinism.
+The argument is also arithmetizable for coded initial tapes and traces.
+\end{proof}
+
+This quotient is of the newly compiled 201-state table. The result is not
+obtained by deleting one control from the literal supplied 195S table;
+transport from 195S uses the common source program.
+
+\input{fold_summary.tex}
+
+\subsection{Why this improves the two previous allocations}
+
+The first positive PA195 kept 68 raw readers and saved seven controls by
+folding. The later 195S reduced the raw count to 67 but supported only six
+compatible folds. The new tree has the lower raw count and the larger fold
+set. It does not remove an already-counted fold a second time: its literal
+201-state raw table and seven explicit identifications are reconstructed
+and counted from scratch.
+
+An independent cross-combination first produced a useful fallback: deleting
+the outer diagonal-combination token from the original 195 grammar gave
+a separate-head realization with 68 readers and seven folds. The successful
+194-state run, however, was seeded directly from the supplied 195S grammar,
+not from that crossed fallback. It focused on the best retained layouts
+with a lower annealing temperature and more frequent continuation from
+near-optimal candidates. This run found the 67-reader/seven-fold endpoint.
+The delivered frozen grammar, rather than the stochastic search, defines
+the final machine.
+
+\section{Physical implementation and exact blank startup}
+\label{sec:physical}
+
+The source register order is $(N,T,W,A,D,H,X,Y,L)$. The principal machine
+keeps the supplied logical-to-physical map
+\[
+                        (6,2,0,4,3,7,8,5,1).
+\]
+A physical block $0\,1^{v+1}$ represents natural value $v$.
+The full frame consists of a left marker, the encoded binary source path,
+a gap, a right delimiter, the nine logical blocks in physical order and
+an arbitrary nonempty spare tail. For source path $p$ the right delimiter
+is at distance $48+n$ from the source head, with $n\ge0$ arbitrary; the
+zero gap therefore has length $48+n-|p|$. The verification uses this
+explicit frame family, not arbitrarily shorter headers. The arithmetic-box rows and fixed
+controller are unchanged. In particular, the inherited increment
+interface includes appending a one-valued spare register; omitting that
+effect would invalidate full-frame simulation.
+
+Starting from the all-zero tape, literal execution reaches the exact clean
+frame after \textbf{58,154 transitions}, in native state 84, with head at
+$-2$, source counter 25 and logical vector
+\[
+                         (2,0,0,0,0,0,0,0,0).
+\]
+The endpoint comparison includes the complete finite support of the tape,
+not merely its head and control. It includes all markers, source bits and
+26 one-valued spare blocks. An independent bytearray simulation verifies
+the same complete tape equality.
+
+\subsection{A 194-state register-allocation companion}
+
+The archive also supplies $\MAD$, using the same decoder and source graph
+but physical map
+\[
+                        (6,2,0,3,4,7,8,5,1).
+\]
+The $A$ and $D$ blocks are exchanged. In native labels the only three
+edits are
+\[
+ (17,1):0R32\mapsto0R48,\quad
+ (144,1):0R48\mapsto0R32,\quad
+ (161,1):0R32\mapsto0R48.
+\]
+The physical register arithmetic routines remain unchanged. This is a
+permutation of tape data locations, not a relabeling of controls. If
+$\sigma$ exchanges file positions three and four, then
+$\sigma(v)_{p'(r)}=v_{p(r)}$ for every logical register $r$.
+Increment, zero test and positive decrement commute with this store
+identification, and the spare tail is unchanged.
+
+The clean seed has $A=D=0$ and keeps $N$ at physical position six.
+The companion reaches its exact full clean frame after 58,122 literal
+steps. The 32-step saving is an initialization fact; no uniform speedup
+for all later computations is claimed. This register-layout technique
+was already used in a 196-state report~\cite{register}; the new contribution
+here is its verified composition with the 194-state decoder.
+
+\section{PA-internal finite-trace preservation}
+\label{sec:preservation}
+
+Let $R_S$ be the common finite separate-head register program, started at
+site 25 with the clean logical vector above. Let $H_R$ assert that it has
+a finite halting source trace. Both source and physical trace predicates
+have the usual primitive-recursive finite-trace checkers.
+
+\begin{lemma}[Exact positive simulation]
+Every nonhalting primitive step of $R_S$ from a well-formed frame has a
+terminating, positive-length physical simulation by $\MX$. It ends at
+the exact intended next frame, applies the specified register update,
+preserves the remaining represented register values and untouched exterior
+tape, realizes the specified next-address and spare-tail effects, and has
+no premature halt.
+A source halt reaches the terminal physical control. These facts have
+PA proofs for the coded operations.
+\end{lemma}
+\begin{proof}
+All 4,780 source cases are checked, including both branches of every
+decrement. The symbolic frame includes an arbitrary natural parameter $n\ge0$ in the header distance $48+n$
+and the arbitrary complete physical register file. The construction checker
+instantiates unchanged arithmetic-box contracts with their exact row
+premises; the independent checker rederives the generic register-list
+lemmas from the literal table and executes every source case.
+
+The certificate language uses literal transitions, finite concatenations,
+constant-symbol scan loops and register-list scans and updates. Each has
+an elementary arithmetic correctness proof and a finite bound in the
+represented block lengths. The physical segment codes are primitive
+recursively constructible, with PA-provable correctness. The verifier's
+positive-progress condition requires a literal transition before a
+source contract can close; normalization steps do not count as physical
+progress. The final symbolic checker also provides a positive-duration
+certificate for its compressed list operations.
+
+Replaying the finite certificates instantiates these arithmetic proofs.
+This argument quantifies over all frame parameters and does not infer a
+universal conclusion from bounded samples of register values. The source
+identity and independent successor checks supply the intended destination
+for every case.
+\end{proof}
+
+\begin{theorem}[Finite-trace equivalence]\label{thm:transport}
+For the principal table and the supplied separate-head machine $M_{195S}$,
+\[
+ \PA\vdash H_{\MX}\leftrightarrow H_R,
+ \qquad
+ \PA\vdash H_{\MX}\leftrightarrow H_{M_{195S}}.
+\]
+\end{theorem}
+\begin{proof}
+Given a finite halting source trace, prepend the verified blank startup
+and concatenate its exact physical simulation segments. A recursion on
+the source trace constructs a finite halting tape trace; PA proves this
+construction correct by induction.
+
+Conversely, suppose the physical run first halts after $T$ transitions.
+The verified startup cannot contain a halt. Iterate the total source
+step function for $T+1$ instructions from the clean seed, treating a halt
+as an absorbing event. If no source halt occurs, concatenate these
+positive-length nonhalting physical segments. Their combined length
+already exceeds $T$ before adding startup. Determinism contradicts the
+alleged first physical halt. Thus the bounded source iteration contains
+a halt.
+
+The bounded iteration and finite concatenations are primitive recursive;
+PA proves their correctness and the determinism contradiction by ordinary
+induction. The same argument for the supplied 195S eliminates the common
+source predicate. No assumption of actual nonhalting and no reflection
+principle for PA occurs in this preservation proof.
+\end{proof}
+
+\input{calibration.tex}
+
+\section{Verification and the formal proof boundary}
+\label{sec:verification}
+
+\input{verification_summary.tex}
+
+The two physical checkers have independent representations and control-flow
+resolvers. The construction checker uses the documented arithmetic-box
+contracts after confirming their exact rows. The independent checker uses
+symbolic literal tape lists and rederives its generic list lemmas from
+the candidate table. Its parameters are nine independent arbitrary natural
+register values and an arbitrary finite nonempty list of spare values.
+Both decrement outcomes are covered. Their symbolic-step totals measure
+verification work, not physical runtime on arbitrary register inputs.
+
+The release also checks all 388 rows, the 194 working controls, complete
+graph reachability, the unique halt target, exact dense-to-native
+conjugacy, the full source map, the 28 simultaneous local fold cases,
+whole-tape blank startup and the source-emitter word. The fresh corpus
+census contains no earlier recognized 194-state consistency table.
+The two new 194-state graphs are compared independently of control names.
+
+The imported PA196 formal package exports the implication
+\[
+       \PA\vdash\operatorname{Nonhalt}(PA196)\to\Con(\PA).
+\]
+It does not export a reverse PA-internal consistency implication for
+these new tables. The reverse direction used here comes from the explicit
+ordinary syntactic calibration summarized in Section~\ref{sec:calibration}
+and retained in the reference files. The supplied original-PA195 formal
+quotient libraries prove increasingly strong all-tape preservation results,
+while its iPRA/PRA/PA endpoint assembly remains conditional on its
+machine-specific bridges.
+
+Accordingly, the result delivered here is an ordinary mathematical proof
+of the stated PA biconditional, with executable machine-specific
+certificates and inherited logical proof constructions. The metadata
+marks the new endpoint as \file{kernel_checked: false}. A newly compiled
+end-to-end Lean or Rocq theorem is not being asserted.
+
+\section{Search provenance and failed approaches}
+\label{sec:search}
+
+\input{search_summary.tex}
+
+The successful search jointly scored raw decoder size and compatible
+folds. It used shared-subtree rotations, optional axiom-head parameter
+permutations, the physical scanner constraints and simultaneous local
+verification in its fitness. The selected 194-state result has identity
+parameter permutations, so its mathematical transport reduces to source
+identity and physical simulation. The search was stopped after preserving
+the successful construction and its certificates; no smaller-state claim
+is made.
+
+Earlier searches in this session had reached distinct, fully verified
+195-state alternatives. Those include a crossed 68-reader/seven-fold
+separate-head decoder and physical $A/D$ register permutations. They were
+useful starting points and remain in the discovery record. The final
+194-state theorem does not depend on the negative searches below.
+
+The recorded failed searches include:
+\begin{enumerate}
+\item bounded-window control contractions and first-action synthesis,
+      including alternative write bits, directions and existing controls;
+\item two-, three- and four-bit reader-entry contexts, with a four-bit raw
+      67-reader search of 1,798 disjoint-context pairs recovering only the
+      existing six pairs for that \emph{particular} supplied tree;
+\item contexts extracted from all arbitrary-register source contracts and
+      complete startup of supplied 195S, yielding 8,758 radius-four windows
+      over 172 non-box controls from 9,760 distinct symbolic frame observations;
+\item complete closure of two fixed raw tables under a bounded local
+      pair-contraction template, including alternate helper actions;
+\item all $7!=5,040$ orders of seven unconditional heads on each of two
+      fixed tree shapes, with no sub-195 score for those shapes.
+\end{enumerate}
+These are finite or heuristic searches in stated families, not lower
+bounds. The successful new tree itself demonstrates why failure on a
+fixed association cannot be promoted to a general obstruction.
+
+Register permutations alone do not enlarge the current three-step
+pure-reader opportunity relation: their adjustable router rows write zero
+on reading one and move right, so they cannot be pure reader helpers or
+match either allowed AX reader-1 action. The reader-0 actions are fixed.
+This observation is limited to that fold language and says nothing
+against more general coupled changes.
+
+The corpus also supplies concrete warnings against apparent reductions.
+An interior AX zero-run bound does not cover the first source path and
+transient increment frames, so it does not alone justify deleting a
+return scanner. Exposing membership vacuity as an unconditional stack head
+leaves unsound formulas available when the guard fails. Replacing the
+searched calculus by iPRA requires a new PA calibration, not just a smaller
+proof checker.
+
+\section{Relation to the ZFC and concise-iPRA ideas}
+
+The transferable ZFC principle is joint optimization of the source tree,
+reader allocation and physical helpers. A shorter source can eliminate a
+useful helper and increase the physical state count. The new 194 machine
+realizes the complementary outcome: one shared tree supports both the lower
+raw-reader count and the larger fold set. ZFC return/decoder substitutions
+also motivated the local action searches, although the accepted saving
+here occurs in the AX reader allocation.
+
+The concise-iPRA material encourages reducing proof-checker interfaces by
+deriving some schemas and keeping the remaining dependencies explicit.
+The diagonal-code freshness simplification is already part of the supplied
+PA research; this report does not claim it as a new discovery or attribute
+it to a different theory without evidence. Proof-checker byte count and
+binary TM working-state count remain different objectives, and iPRA
+consistency is not interchangeable with PA consistency. The new machine
+keeps the existing PA proof calibration throughout.
+
+\section{Reproduction and further research questions}
+
+The top-level \file{README.md} gives exact commands. Python 3 and its
+standard library suffice to reconstruct the tables and replay the finite
+and symbolic certificates. Optional discovery searches require C++17.
+The report compiles with a standard LaTeX installation. The final frozen
+grammar and folds are included; stochastic discovery need not be repeated.
+
+The most concrete next questions are:
+\begin{enumerate}
+\item Can a 66-reader layout preserve seven folds, or can a 67-reader
+      layout support eight, giving 193 states with the fixed controller?
+\item Can jointly changing a helper and several reader classes save a
+      control beyond pairwise fold matching?
+\item Can a three-context, two-history-bit decoder be certified as a
+      whole replacement with a net state saving?
+\item Can the complete outer control flow be reorganized to permit a
+      shorter return scanner at every source and transient frame?
+\item Can membership vacuity be split with a correctly guarded stack
+      protocol whose physical cost is below the saved emitter cost?
+\item Can the existing formal quotient and arithmetic-transport libraries
+      be assembled into a kernel-checked endpoint for the exact 194-state
+      table using these finite certificates?
+\end{enumerate}
+
+\appendix
+\section{Complete principal transition table}\label{app:table}
+Each entry is the write bit, movement direction and next control.
+$H$ means the terminal label 194. The start is control zero on a
+blank-zero two-way-infinite tape. This table is generated directly from
+the delivered dense file.
+\input{transition_table.tex}
+
+\section{Archive-by-archive comparison}
+\input{archive_ledger.tex}
+
+\clearpage
+\input{sources.tex}
+\end{document}

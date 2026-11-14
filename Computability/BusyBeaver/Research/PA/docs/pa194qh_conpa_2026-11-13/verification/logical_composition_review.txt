@@ -1,0 +1,88 @@
+PA194QH logical-composition review
+=================================
+
+Reviewed components
+-------------------
+The literal constructor, independent source audit, free-term emitter and
+command identities, finite K/S/MP exchange derivation, and the inherited
+parent_hybrid_proof.tex and pa194q_calibration.tex were inspected together.
+This review is ordinary mathematical checking; it is not a Lean/Rocq build.
+
+Conclusion
+----------
+No additional command-interface assumption is introduced by replacing the
+sixth head in the H controller with its Q premise-exchanged version. The
+proof must use the H command compiler and only the logical exchange part
+of the Q calibration; the cached-result MP command section of the Q parent
+is not the command semantics of QH.
+
+Reasons
+-------
+1. The new head is Q -> (P -> R), with
+   P=U(D,A), Q=U(D,I(A,H)), R=U(D,H). It remains the second generated
+   stack entry q2, is an implication code (residue zero modulo four),
+   and is not the contradiction code one. The other eight generated
+   entries, saved old top, guarded gate, parameter-reading order and
+   cache-clearing effects of AX are unchanged. Thus every position,
+   residue and last-entry hypothesis used by the H compiler is preserved.
+
+2. The exchange map is independent of quantifier distribution. The
+   inspected upstream PA196/Logic/ImplicationBasis.lean defines
+   Dominated.exchange, k and s by M6.Logic.RestrictedImplication from
+   only restricted rho8, modus ponens and pair-bound arithmetic. It does
+   not invoke old or new L6. The finite certificate replays a K/S/MP
+   proof of (P -> Q -> R) -> (Q -> P -> R), without assumptions.
+   Interchanging P,Q gives the converse. Hence all conclusions and the
+   contradiction code are preserved by primitive-recursive proof-tree
+   translations in both directions.
+
+3. H's successful MP returns (b,w,b,0), b=d+x; its failure returns
+   (0,w,b,0). Both keep w. Cache-only Shift halts iff h=1. This is why
+   the correct MP proof suffix is S;S;MP(b);Pop, with a reserved zero
+   under its premises. The cached-result parent's suffix ending in
+   a single S must not be substituted here. The delivered command
+   checker and parent_hybrid_proof.tex use the correct H suffix.
+
+4. The proof-tree invariant quantifies over every incoming top t and
+   underlying stack w, with d=h=0. A preliminary AX clears arbitrary
+   incoming d,h. Thus the resulting refutation word halts from every
+   store, as required by the scheduler that carries stores between
+   trials. Nothing assumes a reset or an empty stack for each trial.
+
+5. The numerical Cantor stack has [0;0]=0 and I(0,0)=0. The command
+   identities are expressed using total projections, not list lengths.
+   The symbolic checker includes zero-stack and zero-implication
+   cases and explicitly verifies both early-halt paths of the MP
+   suffix. No proof annotation is required for the offset d.
+
+6. Generalization consumes a cached theorem via AX before another Shift
+   tests it. The word Gen_i works even when the generalized theorem is
+   code one, and MP(0) supplies a uniform offset-zero branch. The seventh
+   generated theorem/diagonal interface is unchanged; no code-freshness
+   guard or separator argument is modified.
+
+7. The new source audit independently binds both macro words, checks
+   that only the sixth-head macro interval [102,121) changes relative
+   to H, and resolves the complete source graph. Physical correctness
+   and startup are separate obligations discharged by the literal
+   universal-contract checker and exact blank simulation; logical
+   interderivability alone would not suffice for a literal TM claim.
+
+Inherited boundary
+------------------
+The ordinary source-calculus/PA calibration remains an explicitly inherited
+mathematical dependency. It is not established afresh by this finite
+exchange certificate, the free-term checks, or a finite blank simulation.
+The repository status correctly distinguishes this ordinary mathematical
+composition from its still-incomplete end-to-end Lean/iPRA equivalence.
+PA194QH should not be described as a new kernel-checked consistency theorem.
+
+Documentation recommendation
+----------------------------
+Keep the two parent proof texts unchanged and labelled as references.
+In the new report state precisely: retain H's command proof with L6
+replaced by L6^Q, then use the Q parent's two-way logical translation.
+Do not paste the Q parent's cached-result command definitions into the
+new theorem. Preserve the independent novel-graph census and state that
+this construction is a new synthesis of credited mechanisms, with no
+new constituent mechanism or sub-194 result claimed.

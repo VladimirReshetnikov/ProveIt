@@ -1,0 +1,296 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=22mm]{geometry}
+\usepackage{amsmath,amssymb,booktabs,longtable,array,hyperref}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\newcommand{\packet}[1]{\texttt{\detokenize{#1}}}
+\title{Comparison of the PA consistency-machine corpus}
+\author{Snapshot audit and construction research}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+
+\section{Result, scope, and standard of evidence}
+
+The comparison identifies 33 distinct 194-control action graphs presented as
+consistency constructions, eleven auxiliary graphs at that size, and five
+rejected graphs. The only complete 193-control graph found in the supplied
+corpus is explicitly rejected: its numerical calculus derives the designated
+contradiction. The catalog and the mixed-radix experiments accompanying it do
+not supply a verified machine below 194 controls.
+
+All statements refer to ProveIt commit
+\texttt{567266818aaeceb0f3a8f82debf303c8d84bddaf}. The requested PA directory
+contains 55 filed research packets; the requested incoming directory adds six
+archives. The ledger \packet{packet_ledger_61.json} records every packet's
+contribution, status, README hash and pinned source URL. This narrative groups
+the proposals by their mathematical and computational changes. It should be
+read together with that exhaustive ledger and the machine-level catalog, not
+as a claim that every historical search transcript has been rerun.
+
+The state convention is a deterministic, single-tape, two-symbol machine,
+starting on a blank two-way tape. The reported count includes the start control
+and excludes the separate halt label. A complete transition table is only one
+component of the requested result. Its source program must enumerate the
+correct calculus; the physical machine must implement that source, including
+initialization; and the calculus must have the required consistency calibration.
+Failure at any one level invalidates a smaller-machine claim.
+
+The distinction between written proofs and formal endpoints is especially
+important here. The pinned
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/567266818aaeceb0f3a8f82debf303c8d84bddaf/Computability/BusyBeaver/Research/PA/README.md}{PA README}
+states that neither machine-specific direction of the desired equivalence in
+iPRA has yet been established for the primary PA194, original PA195 or PA196.
+The packets report ordinary mathematical PA-provability arguments and provide
+substantial executable evidence. This does not make their claims false; it
+does mean that ``reported construction'' in this catalog is not shorthand for
+an end-to-end Lean theorem or a new independent verification of every proof.
+
+\section{Deduplication and the actual frontier}
+
+The fresh read-only scan included direct files, nested ZIP contents, literal
+tables and explicit complete transition dictionaries in JSON. The recognizers
+are inherited from the incoming Q-radix comparison, retained with attribution,
+and rerun on the pinned tree. Exact bytes and state-renaming classes are recorded
+separately. To compare native-label and densely renumbered tables, graph
+canonicalization considers all roots spanning the full action graph. This
+forgets the start \emph{only for graph comparison}. The selected representative's
+start and its evidential basis are separately recorded; no arbitrary root is
+used to approve a consistency theorem.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Quantity & Fresh count\\
+\midrule
+Filed packets / incoming archives &55 / 6\\
+Distinct ZIP payloads / archive references &20 / 32\\
+Literal transition-table occurrences &1,987\\
+Distinct literal table byte strings &784\\
+Full action-graph classes with a spanning root &531\\
+Classes after excluding all controls-below-ten fixtures &523\\
+JSON files examined / complete table occurrences &7,984 / 85\\
+Additional graph classes found only in JSON &0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The 531 graph classes include seven one-control fragments and one nine-control
+diagnostic. Two byte identities have no root spanning the complete table and
+remain outside that class count. At 194 controls there are 500 occurrences,
+111 byte forms and 49 graph classes; at 195 there are 86 occurrences, 36 forms
+and 22 classes; at 196 there are 454 occurrences, 181 forms and 102 classes.
+These are inventory statistics, not counts of consistency proofs.
+
+The older repository inventory reports 5,792 historical table occurrences,
+502 graph classes and forty classes at 194. That is a different accounting
+surface: redundant files from filed packets were removed, while incoming
+archives preserve additional copies and newer designs. The fresh inventory
+does not interpret its lower occurrence count as missing thousands of
+independent machines. Its growth from forty to 49 classes at 194 consists of
+six new principal graphs (DHS, QH6, Q5, Q6, QNS, QS), an N\_AD auxiliary first
+identified in JSON, the QS parent auxiliary, and the rejected append-zero graph.
+
+Several names otherwise inflate the apparent frontier:
+\begin{itemize}
+\item Incoming PA194NQ is byte-identical to filed PA194QN. Its dense SHA-256 is
+\texttt{d1cf0f6e7a3c8f999d045694efc107dd1f9a03d45dd6c15e3d197ff7754c7231}.
+\item The two incoming QNS releases deliver the same primary table. The release
+without an underscore additionally supplies the distinct QS companion.
+\item PA194HS equals the cached-Shift PA194NS. A different packet also calls
+its original-sum-Shift construction PA194NS; the catalog labels these
+\emph{NS(cache)} and \emph{NS(sum)} to distinguish them.
+\item PA194X equals PA194CSZ; PA194N6 is repeated in two principal packets;
+and the principal PA194C graph is delivered in five packets.
+\end{itemize}
+Full hashes, source paths and representative starts for all 49 classes are in
+\packet{frontier194.json}. The eleven auxiliaries and five rejected graphs
+are intentionally retained, rather than silently promoted or discarded.
+
+\section{What the larger designs contribute}
+
+The progression is more informative than the raw state totals. The U208
+packets start from the earlier 209-control lineage and save one state by a
+finite-history or entry-context decoder fold. Several packets describe the
+same two original graphs using different local proof presentations. The later
+\packet{pa208_research_2026-10-29} adds eighteen nonisomorphic helper variants,
+bringing that supported U208 group to twenty classes. These are alternate
+realizations of one reduction, not twenty independent additive savings.
+
+The 196-control lineage supplies the compact register source, literal runtime
+contracts and a range of decoder geometries. Head permutations, reassociation,
+register A/D exchanges, known-zero returns and controller changes create
+distinct physical tables without changing the final count. The imported
+upstream result includes one formal PA implication from literal nonhalting to
+PA consistency; the pinned README explicitly warns that this is not the other
+direction or either iPRA direction. Later packets supply written reverse
+calibrations and extensive physical evidence, with varying formal scope.
+
+The diagonal-vacuity idea is a genuine logical simplification: an instance
+\(B\to U(B,B)\) is justified by the code-based freshness bound. It shortens
+the old 201-item emitter to a bundled 191-item emitter (3,700 source sites),
+and splitting the diagonal head out yields 190 items (3,673 sites). Early
+physical allocations cost 199 or 198; later allocations reach 196, 195 and
+194. The original PA195 uses 68 AX readers and seven folds. PA195DC combines
+the bundled diagonal emitter with the Combined controller. Separate-head
+195S and 195C use 67 readers and six folds. M195S8 is another supported
+eight-fold allocation. The 22 graph classes at 195 also include rejected and
+experimental candidates; the suffix ``195'' is not itself evidence of validity.
+
+Source-size reductions do not monotonically reduce table size. A 157-node
+representation of the original source can require a larger physical allocation;
+an equivalent reordered witness gate reduces 201 macro items to 199 but its
+best supplied table costs 198; and the direct-negation NEG18 experiment cuts
+the separate source from 3,673 to 3,441 sites but costs
+\(134+68-5=197\) controls. Other packets contribute logical alternatives such
+as splitting the first quantifier head into modal and explosion components,
+unary power-cover theories, and negative countermodels. They enrich the search
+space without supplying an additional accepted state saving.
+
+\section{The 194-control families and nonadditive savings}
+
+Most constructions share the same broad implementation: a fixed register
+runtime, an AX decoder represented by a shared binary grammar, and contextual
+folds whose correctness depends on the history bit carried by the tape.
+The primary accounting identity is
+\[
+134\text{ fixed controls}+67\text{ AX readers}-7\text{ folds}=194.
+\]
+The alternate separate-head grammar uses 68 readers and eight folds. Changing
+the source can improve one term while worsening another, and folds that need
+the same surviving control cannot automatically be added.
+
+\begin{longtable}{p{.18\linewidth}p{.76\linewidth}}
+\toprule
+Family & Substantive change and qualification\\
+\midrule
+\endhead
+PA194, 68/8, AD & Same separate-diagonal source; different shared decoder or
+physical register placement. AD is a register conjugacy, not a logical axiom
+change.\\
+C, CS & C leaves successful MP's result in cached H and makes Shift test H.
+CS reverses the destructive comparison operands. The latter removes three
+source sites but needs its own contextual controller fold.\\
+N, H, HS & N omits the dummy-zero push after successful MP and keeps the
+original sum Shift. Its proof-word compiler must reserve zero explicitly.
+H and HS combine no-push MP with cache-only Shift, with two comparison
+orientations.\\
+SUMS, NS(sum) & Symmetric comparison for the original sum Shift, with
+dummy-push and no-push MP respectively. These are different from cached Shift.\\
+Q, QN, QNS, QS & Q exchanges the curried premises of the sixth quantifier
+head, using a finite K/S proof translation. QN adds no-push MP and original
+sum Shift; QNS makes that Shift symmetric. QS keeps dummy-push MP. The Q
+headline itself has a different controller and must not be conflated with QN.\\
+D, DHS & Replace the separate diagonal head based on A by one based on D,
+changing proof selection and AX sharing. D uses 69 readers and nine folds.
+DHS adds no-push MP and symmetric cache-only Shift, costing
+\(135+69-10=194\).\\
+M5, M6; N5, N6; H6 & Formula constructors use coefficient five or six rather
+than four, with explicit hereditary formula and variable-label recoding.
+The latter variants compose that change with the stated controller protocol.\\
+Q5, Q6, QH6 & Q premise exchange combined with the altered constructor
+coefficient. QH6 further uses no-push MP and cache-only Shift. The reported
+physical count is \(135+67-8=194\).\\
+J, ZR, A, F, CSZ & Replace selected jumps by decrements of a register proved
+zero at that entry. Different register choices and source entries give
+different tables and require entry-specific invariants.\\
+R, M4R & Reassociate a decoder without changing its resolved source program.
+R changes 1,111 source addresses relative to its parent, affecting the
+scanner geometry even when control-flow behavior is unchanged.\\
+HA, HAZ & Cached-result MP with original sum Shift and A/D placement; HAZ
+also changes the final AX return using a known-zero invariant.\\
+\bottomrule
+\end{longtable}
+
+Two concrete interaction costs explain why apparently independent improvements
+have stalled at 194. In H6, the coefficient-six multiplication uses helper
+330; the attractive symmetric comparison also needs a fold using that role.
+Their advertised savings cannot both consume control 41. In DHS the stronger
+logical simplification to negative-only diagonal vacuity is sufficient in the
+calculus, but the tested direct compiler profiles cost at least 200, and
+positive-offset variants at least 198. Logical sufficiency alone does not
+price the emitter grammar, decoder paths or physical helpers.
+
+\section{Rejected shortcuts and verification boundaries}
+
+The most instructive failed 193-control table is the coefficient-three
+shortcut in incoming PA194NQ. It replaces the quadruple-increment body by a
+triple-increment body and obtains an extra history fold. The supplied physical
+checks pass: its accounting is \(134+67-8=193\), with 3,612 source sites,
+4,719 primitive outcomes, 32 local-fold cases and a 58,320-step startup.
+Nevertheless its old tag assignment is invalid. With
+\(I_3(a,b)=3p(a,b)\) and \(E_3(a,b)=3p(a,b)+3\),
+\[
+E_3(1,0)=I_3(0,1)=6.
+\]
+The full retained calculus derives code 1. The packet supplies a compact
+derived-rule contradiction and a 73,393-step primitive expansion, so the
+candidate is rejected at the logical layer despite excellent physical evidence.
+The separate new all-offset obstruction strengthens that diagnosis for the
+fixed coefficient-three implication/membership/universal template; it is
+not a lower bound on arbitrary consistency machines.
+
+Other failures occur at different layers. The seven-zero-scanner quotient
+passes its local folds but violates a source-address runtime contract. Several
+known-zero changes around native control 103 are valid on selected source
+entries but halt during blank initialization after 1,361 steps. Two earlier
+Shift layouts halt after 43,563 steps. In the DHS append-zero transplant,
+all 194 possible blank starts are classified: four halt and the other 190
+enter proved blank rays within the stated bounded initialization analysis.
+That rejects the exact transplant, not every conceivable replacement of
+the startup algorithm.
+
+These examples impose a practical proof order. An altered logical interface
+needs syntactic consistency calibration. A source change needs an all-store
+command argument, not only runs from small numerical examples. A source-tree
+reassociation needs scanner coverage at every resulting address. Proposed
+folds need verification on the final simultaneous quotient. A literal machine
+needs its exact blank startup. Standard finite-run proofs and symbolic
+contracts should then be distinguished from internalization in PA or iPRA.
+
+\section{New mixed-radix experiment and useful remaining targets}
+
+The accompanying new source proposal uses
+\[
+ I=3p,\qquad U(d,A)=3p(A,d)+2,\qquad
+ M=6p+1,\qquad E=6p+4.
+\]
+Modulo three separates implications, universals and atoms; parity of the
+remaining quotient separates membership from equality. This gives a total
+disjoint hereditary coding with a primitive-recursive inverse, retaining
+codes zero and one. It is different from the already supplied nested-binary
+proposal in the QNS packet. The latter uses an outer binary constructor with
+nested atom tags, expands the emitter to 213 tokens, and remains an experiment;
+it must not be presented as a new discovery or an accepted smaller machine.
+
+Two concrete mixed-radix compiler profiles price the selection overhead.
+A separately selected sextupling constructor needs five extra fixed readers,
+yielding 139 fixed controls and 193 emitter tokens. A three-reader doubling
+macro after the triple constructor yields 137 fixed controls and 206 tokens.
+After respectively 3,245,431 and 2,905,346 heuristic rotation proposals, the
+saved best grammars have 81 and 80 AX readers and nominal matchings of twelve
+folds each. Their optimistic totals are therefore 208 and 205. Exact
+free-constructor audits confirm the full emitted formulas, but complete
+physical simulation and startup are unproved. The raw 220- and 217-control
+tables are research inputs, not asserted 208- or 205-control realizations.
+
+The negative experiments suggest concrete targets without proving a state
+floor: change the physical register or address representation, find a source
+geometry that really permits a shorter scanner, or derive a logically smaller
+interface whose new emitter pays for its helpers. Every claimed combination
+must be costed as a complete table. The present catalog preserves both useful
+designs and explicit failure witnesses so that future work can avoid counting
+duplicates or repeating a logically unsound one-state saving.
+
+\paragraph{Reproduction and provenance.}
+The packet ledger and frontier metadata give exact pinned source locations.
+\packet{REPRODUCE.txt} documents the census commands and class conventions;
+\packet{mixed36/README.txt} documents standalone source reconstruction and
+saved-grammar checks. Imported census tools, compiler dependencies and search
+algorithms are attributed explicitly. Their reuse is not claimed as new
+implementation work. The catalogs are evidence about the supplied corpus;
+neither finite searches nor rejected templates imply that a sub-194 machine
+is impossible.
+
+\end{document}

@@ -1,0 +1,41 @@
+\section{Why a physical permutation cannot repair the published 193-state startup}
+
+This is an analytic explanation of a failed repair, not a new empirical
+claim beyond the earlier exhaustive permutation screen. It concerns precisely the published runtime core with SHA-256
+\texttt{50f7be44afb63293365270a83111299247d12d140614e4b4c9a52786163acb53}.
+Its native start is 74. It does not rule out a different start or different
+bootstrap transitions.
+
+Let $K=\{51,36,25,48,32,33,22,55,60\}$ be the nine register-scanning
+controls. Permit an arbitrary permutation of the targets of all instruction
+router edges into $K$, while retaining the scan-state rows and the other
+machine rows. Then every resulting blank computation from control 74 is
+provably nonhalting in PA, by an explicit finite prefix followed by an
+outward ray. If PA is consistent, there can consequently be no PA-provable equivalence
+between the nonhalting of such a machine and $\operatorname{Con}(\mathrm{PA})$: that equivalence would make the latter sentence a PA theorem.
+
+The first 78 transitions are independent of the permutation: they use no
+instruction-router edge into $K$. At that point the configuration has
+control 45, head coordinate 4, and one-cells $\{-3,1,4\}$. Transition
+$(45,1)$ erases the rightmost one, moves right to coordinate 5, and enters
+some control of $K$. All cells at and to the right of coordinate 5 are zero.
+The zero transitions of the scanner chain lead to control 51, then the
+modified $(51,0)$ transition enters 122. On zeros the remaining fixed
+control sequence is
+\[
+122\longrightarrow137\longrightarrow30\longrightarrow45
+\longrightarrow24\longrightarrow35.
+\]
+No further instruction-router edge is used. Control 35 is reached strictly
+to the right of the remaining support $\{-3,1\}$.
+
+The nine possible scanner-entry controls are exhaustively represented by
+the complete traces in \texttt{start74\_permutation\_obstruction.json}.
+At every endpoint, $(35,0)=(1,R,35)$. Induction on the number of further
+steps shows that the head remains ahead of all previously written cells,
+always reads zero, and never leaves control 35. The certificate is therefore
+a proof of these particular infinite runs, not an inference from a timeout.
+
+The script \texttt{prove\_start74\_obstruction.py} checks the source table
+hash, every transition of the nine prefixes, the unique instruction-router
+edge used, the complete finite support, and the final outward-ray condition.

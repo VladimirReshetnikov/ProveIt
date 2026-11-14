@@ -1,0 +1,379 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[hidelinks]{hyperref}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\title{A larger class of admissible startup frames\newline for the PA194 source scheduler}
+\author{Research note}
+\date{November 13, 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The distinguished blank startup used by the PA194 packets is not the only
+source entry compatible with their consistency calibration. The scheduler
+is cofinal from every counter and continuation value. More strongly, the
+literal fetch prefix normalizes arbitrary values in its six non-proof
+registers. At any source site from 25 through 44 inclusive, setting only
+the three proof-store registers $T,W,H$ to zero is sufficient. This is a
+source-entry theorem. A literal machine still needs a verified blank-tape
+computation reaching a complete physical frame for one of these sites.
+No such blank startup is asserted by this note.
+\end{abstract}
+
+\section{Registers and the precise claims}
+
+The nine logical registers, in order, are
+\[
+ (r_0,r_1,r_2,r_3,r_4,r_5,r_6,r_7,r_8)
+       =(N,T,W,A,D,H,S,R,L).
+\]
+Here $N$ is the fresh-candidate counter, $L$ the continuation code,
+$T,W,H$ the displayed theorem, theorem stack, and cached theorem, and $D$
+an arithmetic operand offset. $A,S,R$ are work registers. Source site
+numbers in this note are zero-based indices in the delivered instruction
+array.
+
+The standard clean scheduler entry at source site 25 is
+\[
+ (N,T,W,0,D,H,0,0,L).
+\tag{1}
+\]
+Its abstract scheduler state is $\langle N,L,\sigma\rangle$, where
+$\sigma=\langle T,W,D,H\rangle$. A store is \emph{sound} if $T$ and $H$
+have derivations in the source numerical calculus and every live canonical
+entry of $W$ has such a derivation. There is no soundness condition on
+$D$. In particular $\langle0,0,D,0\rangle$ is sound for every $D$ because
+code zero has a fixed derivation.
+
+\begin{theorem}[Arbitrary clean scheduler seed]\label{thm:clean}
+For all natural numbers $N,L,D$, the source computation from site 25 with
+registers
+\[
+                (N,0,0,0,D,0,0,0,L)
+\tag{2}
+\]
+halts if and only if the numerical calculus has a finite refutation.
+More generally the same equivalence holds with any sound store in (1).
+The proof is formalizable in PA uniformly in all the displayed numbers.
+In particular neither $N\ge2$ nor $L=0$ is required.
+\end{theorem}
+
+\begin{theorem}[Dirty work registers can be normalized]\label{thm:dirty}
+Fix any source site $j$ with $25\le j\le44$. From that site let
+\[
+          (N,T,W,A,D,H,S,R,L)=(N,0,0,A,D,0,S,R,L),
+\tag{3}
+\]
+where all six values $N,A,D,S,R,L$ are arbitrary natural numbers.
+The source computation halts if and only if the numerical calculus has a
+finite refutation. This equivalence too is provable in PA by the finite
+source-computation and syntactic proof arguments below.
+\end{theorem}
+
+Under the inherited PA calibration, either theorem yields
+\[
+ \PA\vdash \bigl(\neg\Halt(\text{source from the stated seed})
+                  \leftrightarrow\Con(\PA)\bigr).
+\]
+Theorems~\ref{thm:clean}--\ref{thm:dirty} do not enlarge the permitted
+physical tape-frame format. A caller must still check the marker, encoded
+source path, head position, padding, complete register-file encoding, and
+spare-register tail required by its literal runtime certificate.
+
+\section{Cofinality from every scheduler state}
+
+Write $p(a,b)=(a+b)(a+b+1)/2+b$ and let \texttt{parse} be the command
+decoder. The unchanged scheduler uses
+\[
+ \operatorname{seed}(N,L)=
+ \begin{cases}N&L=0,\\L-1&L>0,\end{cases}
+ \qquad
+ \operatorname{nextN}(N,L)=
+ \begin{cases}N+1&L=0,\\N&L>0.\end{cases}
+\tag{4}
+\]
+The next continuation is
+$\operatorname{parse}(\operatorname{seed}(N,L)).\mathrm{next}$.
+The component bounds for Cantor decoding give
+\[
+                 \operatorname{parse}(u).\mathrm{next}\le u.
+\tag{5}
+\]
+Consequently a nonzero continuation decreases strictly at each
+nonhalting command. From an arbitrary $\langle N,L,\sigma\rangle$,
+either a halt occurs or at most $L$ commands reach a state with continuation
+zero and the same fresh counter $N$.
+
+A fresh step from $\langle n,0,\sigma\rangle$ increments the counter to
+$n+1$ and leaves a continuation at most $n$. Thus at most $n+1$ additional
+commands either halt or reach fresh counter $n+1$ with continuation zero.
+For each $K\ge N$, a state with fresh counter $K$ and continuation zero
+is reached unless a halt occurs first, within
+\[
+        L+\sum_{n=N}^{K-1}(n+1)
+       =L+\frac{(K-N)(K+N+1)}2
+\tag{6}
+\]
+commands. The theorem does not assume that the unsuccessful trials reset
+the proof store.
+
+\subsection{Padding a halting command word above the initial counter}
+
+For a command $c$ define
+\[
+\begin{aligned}
+ \operatorname{ec}(\mathsf{Shift},t)&=p(0,t),\\
+ \operatorname{ec}(\mathsf{MP}_x,t)&=p(1,p(x,t)),\\
+ \operatorname{ec}(\mathsf{AX}_{a,x,y},t)
+      &=p(a+2,p(y,p(x,t))).
+\end{aligned}
+\]
+Define a finite command-word encoding by
+\[
+ \operatorname{ew}([],t)=t,\qquad
+ \operatorname{ew}(c::w,t)=\operatorname{ec}(c,\operatorname{ew}(w,t))+1.
+\tag{7}
+\]
+The Cantor component bounds prove $t\le\operatorname{ew}(w,t)$.
+Parsing the positive continuation in (7) executes the indicated command
+and then retains precisely the encoded remaining word.
+
+Let $q$ be a numerical-calculus refutation. The inherited command compiler
+provides a nonempty word $w_q$ which halts from \emph{every} incoming store.
+For an initial fresh counter $N$, choose
+\[
+       t=N+1,\qquad C=\operatorname{ew}(w_q,t),\qquad K=C-1.
+\tag{8}
+\]
+Then $C\ge N+1$ and $K\ge N$. By (6), the scheduler either has already
+halted or reaches $\langle K,0,\tau\rangle$ for some store $\tau$.
+Its next transition is identical to that from
+$\langle C,C,\tau\rangle$: both parse $C-1$ and both retain fresh counter
+$C$. The latter state executes $w_q$ before reading its tail, and hence
+halts. This proves completeness from every $N,L,\sigma$, even without a
+soundness hypothesis on the initial store.
+
+For soundness, retain the existing proof annotation for $T,H,W$.
+Every successful command transforms those finite annotations into
+annotations for the output store. In AX the inequality needed by the
+restricted propositional head is $D\le D+x$, valid for every natural $D$.
+An MP success obtains its new theorem from the two annotated premises.
+At a halt, the tested proof slot yields a refutation. Thus soundness needs
+only the stated proof-store invariant, not a bound on $N,L,$ or $D$.
+This proves Theorem~\ref{thm:clean}.
+
+\section{The literal normalization prefix}
+
+The HAZ source instructions 25 through 47 agree exactly with the same
+slice of the primary PA194 instruction array. In these instructions
+\texttt{dec r z p} decrements register $r$ and jumps to $p$ when it is
+positive, and otherwise jumps to $z$ without changing it.
+
+\begin{center}\small
+\begin{tabular}{r l @{\qquad} r l}
+\toprule
+Site&Instruction&Site&Instruction\\
+\midrule
+25&\texttt{dec 8 27 26}&37&\texttt{jump 41}\\
+26&\texttt{jump 34}&38&\texttt{dec 7 41 39}\\
+27&\texttt{dec 0 31 28}&39&\texttt{inc 6; goto 40}\\
+28&\texttt{inc 8; goto 29}&40&\texttt{jump 38}\\
+29&\texttt{inc 6; goto 30}&41&\texttt{jump 34}\\
+30&\texttt{jump 27}&42&\texttt{dec 7 45 43}\\
+31&\texttt{inc 0; goto 32}&43&\texttt{inc 8; goto 44}\\
+32&\texttt{dec 6 34 33}&44&\texttt{jump 42}\\
+33&\texttt{jump 31}&45&\texttt{dec 6 48 46}\\
+34&\texttt{dec 8 42 35}&46&\texttt{inc 3; goto 47}\\
+35&\texttt{inc 7; goto 36}&47&\texttt{jump 45}\\
+36&\texttt{dec 6 38 37}&&\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{lemma}[Prefix termination from arbitrary work-register values]
+Starting at any site 25 through 44, the displayed block reaches site 48
+in finitely many steps. Registers $T,W,D,H$ remain unchanged. At site 48
+both $S$ and $R$ are zero; the values of $N,A,L$ are natural numbers, with
+no additional restriction needed below.
+\end{lemma}
+\begin{proof}
+At sites 27--30, each complete loop decreases $N$ and increases $L,S$.
+It reaches site 31 when $N=0$. At sites 31--33, each complete loop
+decreases $S$ and increases $N$, until site 34 is reached with $S=0$.
+Starting in the middle of either loop adds a finite partial iteration
+and does not affect this termination argument. Site 25 either takes the
+two-step continuation branch to 34 or enters the preceding drain/restore
+loops; site 26 jumps directly to 34. No hypothesis that $A,S,R$ initially
+vanish was used.
+
+At site 34, every complete passage through sites 35--41 decreases $L$
+by one. The only inner loop, sites 38--40, decreases $R$ and increases
+$S$, so it terminates from every value of $R$. Therefore induction on
+the value of $L$ proves that sites 34--41 reach site 42. Again any entry
+in the middle of this block first completes a finite partial passage.
+
+Sites 42--44 drain $R$ into $L$, reaching site 45 with $R=0$.
+Sites 45--47 then drain $S$ into $A$, reaching 48 with $S=R=0$.
+An initial entry at 42, 43, or 44 merely changes the first finite partial
+passage of the first drain. Throughout, no instruction writes $T,W,D,H$.
+\end{proof}
+
+This argument deliberately does not extend the arbitrary-$R$ assertion
+to initial sites 45--47, because those sites do not clear an incoming
+nonzero $R$. Nor does it assert that arbitrary values of the proof-store
+registers are sound.
+
+\subsection{Why the normalized selector is a legitimate command}
+
+At site 48, write the resulting register values as
+\[
+               (N',0,0,a',D,0,0,0,\ell').
+\tag{9}
+\]
+There is no need for $a',\ell'$ to be the intended decoding of the
+original startup's $L$. They are the exact Cantor decoding of
+$u=p(a',\ell')$. Consequently (9) is precisely the selector state
+produced by an ordinary clean fetch of $u$, with the same proof store
+and fresh counter $N'$. Equivalently, a clean scheduler state
+$\langle N',u+1,\langle0,0,D,0\rangle\rangle$ reaches (9) after its
+positive-continuation fetch.
+
+Both the dirty-entry normalization and that clean positive-continuation
+fetch have finite, nonhalting prefixes ending in the identical complete
+source configuration (9). Determinism therefore identifies their future
+halting behavior. Apply Theorem~\ref{thm:clean} to the hypothetical clean
+scheduler entry with counter $N'$, continuation $u+1$, and sound store
+$\langle0,0,D,0\rangle$. This proves Theorem~\ref{thm:dirty} directly,
+without an additional assumption about the first selected command.
+
+\section{Internalization and physical register slots}
+
+The proofs above use induction on natural counters, finite command words,
+finite derivations, and literal computation traces. Each loop rank is an
+explicit decreasing natural number. The cofinality bound (6) is a
+primitive-recursive bound on scheduler transitions. Encoding (7), the
+choice (8), and all proof annotations are syntactic primitive-recursive
+constructions. Thus PA verifies the arguments uniformly; they are not
+restricted to externally standard initial counters. No truth predicate
+for PA and no soundness or reflection principle for PA is invoked.
+This note supplies an ordinary mathematical PA argument, not a newly
+compiled end-to-end Lean theorem.
+
+For the physical allocation used in the HAZ packet, the map from logical
+register indices to physical register slots is
+\[
+                    [6,2,0,3,4,7,8,5,1].
+\]
+The primary PA194 allocation has instead
+$[6,2,0,4,3,7,8,5,1]$; HAZ exchanges the $A,D$ slots. Both registers
+are unrestricted in the broad seed criterion, so the required zero
+slots below are the same for both allocations.
+Accordingly the broad sufficient condition (3) imposes exactly
+\[
+ \text{physical slot }2=0,\qquad
+ \text{physical slot }0=0,\qquad
+ \text{physical slot }7=0.
+\]
+The other six working slots may be arbitrary. This statement assumes a
+valid complete runtime frame for one of the stated source sites. In
+particular, native control 84 with the path of site 25 is not by itself
+enough without the tape-format conditions.
+
+\section{Optional broader stores certified directly in PA}
+
+For the requested PA consistency equivalence, the initial annotations may
+be PA proofs of the translated formulas. They need not be derivations in
+the numerical calculus itself. Completeness still uses the all-store
+halting word, and soundness carries those initial PA proofs through the
+same syntactic command templates. This yields a further sufficient test
+for candidate startups without changing their code.
+
+The accompanying \texttt{seed\_truth.py} is a deliberately partial
+syntactic recognizer. Its output is \emph{true}, \emph{false}, or
+\emph{unknown}; true and false come with a finite tree of the following
+proof templates. Here a true certificate for $B$ means a PA proof of its
+translation, and a false certificate means a PA proof of its negation,
+in both cases universally over the remaining free variables.
+\begin{center}\small
+\begin{tabular}{p{0.51\linewidth}p{0.35\linewidth}}
+\toprule
+Recognized form or premises&Certified value\\
+\midrule
+Code zero&True, by the truth template\\
+$E(a,a)$&True, by equality reflexivity\\
+$M(a,a)$&False, by finite-bit irreflexivity\\
+$I(B,B)$&True, by implication identity\\
+$I(B,C)$ with $B$ false&True, by a false antecedent\\
+$I(B,C)$ with $C$ true&True, by a true consequent\\
+$I(B,C)$ with $B$ true and $C$ false&False\\
+$U(a,B)$ with $B$ true&True, by generalization\\
+$U(a,B)$ with $B$ false&False, by specialization at zero\\
+\bottomrule
+\end{tabular}
+\end{center}
+The false atomic certificate is justified by the PA theorem
+$\operatorname{Bit}(s,z)\Rightarrow z<s$, applied with $z=s$.
+All recursion uses strictly smaller decoded formula children. These
+rules therefore yield primitive-recursive proof-producing templates;
+they are not a full arithmetic truth predicate. An unknown result makes
+no claim about provability or truth.
+
+Apply this recognizer to $T,H$ and every canonical decoded entry of
+$W$, stopping at numerical stack zero. If all receive true certificates,
+the dirty-work-register normalization theorem has the same direct PA
+consistency conclusion. For example $T,H$ may lie in $\{0,2,3,4\}$:
+these are truth, $\forall x_0\top$, $x_0=x_0$, and
+$M(0,0)\to\top$. Sound stack values include $0$, $3=p(2,0)$,
+$6=p(3,0)$, and $10=p(4,0)$. By contrast $4=p(1,1)$ contains a
+contradiction head and is rejected.
+
+This optional criterion proves a direct PA-refutation equivalence. It
+should not be misstated as a source-numerical-calculus equivalence unless
+the chosen initial annotations are also shown to be derivations in that
+calculus. The script checks only these proof-store certificates and the
+source-site interval, not the literal tape-frame format.
+
+\section{Source provenance}
+
+Repository snapshot:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/5784600f8709872fa258af66a94df8deb7075c2f}.
+The following files are relative to
+\texttt{Computability/BusyBeaver/Research/PA/}:
+\begin{itemize}
+\item \texttt{pa194-command-source/PA194CommandRegisters.lean} gives the
+      exact logical register map.
+\item \texttt{pa194-command-source/PA194FetchDispatch.lean} defines
+      \texttt{seed} and \texttt{nextN}.
+\item \texttt{pa194-scheduler-fairness/PA194Fairness.lean} proves
+      \texttt{parse\_next\_le}, \texttt{drain}, \texttt{reach\_fresh},
+      \texttt{encodeWord\_tail\_le}, and \texttt{fresh\_same\_advance}.
+      These are already stated for arbitrary states or counters.
+\item \texttt{pa194-scheduler-fairness/PA194EncodedWord.lean} proves
+      \texttt{derivation\_halts\_scheduler} for every tail, counter,
+      and incoming store.
+\item \texttt{pa194-calculus-soundness/PA194CalculusSoundness.lean}
+      defines \texttt{SoundStore} and proves command and scheduler
+      soundness for every sound store.
+\item \texttt{pa194-command-source/PA194FetchPrefixBinding.lean},
+      \texttt{PA194FetchPrefix.lean}, and \texttt{PA194FetchDecode.lean}
+      bind the fetch blocks to literal source sites.
+\end{itemize}
+
+The primary instruction slice is
+\texttt{docs/pa194\_conpa\_2026-11-13/construction/source/pa194.instructions.json}.
+Its sites 25--47 were compared exactly with
+\texttt{machine/pa194haz.instructions.json} extracted from
+\texttt{docs/incoming/pa194haz\_research\_2026-11-14.zip}.
+The accompanying JSON receipt records the checked slice and source paths.
+For a cached-head variant, its existing all-store command compiler and
+soundness proof replace the original command formulas; the fetch and
+cofinality proofs are identical.
+
+\end{document}

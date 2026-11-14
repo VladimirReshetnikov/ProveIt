@@ -1,0 +1,328 @@
+% Standalone report fragment; requires amsmath, amssymb, booktabs, hyperref.
+\section{The PA194AX11Q6 construction and its correctness}
+\label{sec:ax11q6}
+
+The new table is a composition of three previously justified changes: the
+eleven-entry AX fallthrough interface, exchanged premises in the sixth
+quantifier head, and formula coefficient six. The concrete combination is
+new relative to the audited snapshot. It is a new machine and a checked
+composition, rather than a newly invented proof calculus or architecture.
+The state count remains 194. No reduction below 194 follows from this
+construction.
+
+\subsection{Machine convention and exact construction}
+
+There is one two-way infinite binary tape, initially zero everywhere. The
+head starts at coordinate zero. The dense working controls are
+$0,\ldots,193$, the initial control is 0, and the separate terminal label
+194 has no outgoing transition. Each working control has two transitions;
+every transition writes one binary symbol and moves exactly one square.
+The authoritative table is \texttt{machine/machine.tm}. Its SHA-256 is
+\begin{quote}\ttfamily\small
+9933fe380b5242981255a0b75da6b305fc88df7031e753411a51efaf7dbe0dab.
+\end{quote}
+The native numbering uses initial control 74 and terminal label 254;
+\texttt{labels.json} gives the exact bijection, including the halt label.
+
+Start with the attributed Q-emitter grammar and the ordinary PA194 runtime.
+In its structured register source, make these exact changes:
+\begin{enumerate}
+\item Replace the unique terminal AX \texttt{breakTo 1} by the existing
+      nineteen-instruction Push macro \texttt{node49}. This continues into
+      the full MP operand reader, including its additional field.
+\item Use \texttt{node163=(node6,node54)} instead of
+      \texttt{(node6,node55)}. Successful MP returns the conclusion without
+      pushing a dummy zero.
+\item Replace each four-increment constructor body by two copies of
+      \texttt{(inc 1,node60)}, with \texttt{node60=(inc 1,inc 1)}.
+      Thus all 61 constructor bodies multiply Cantor pairing by six.
+\end{enumerate}
+The Q grammar already exchanges the two curried premises of the sixth
+head. The builder checks the complete source splice, all unchanged
+successors under relocation, and a free-constructor evaluation of the
+entire AX emitter. No informal textual replacement of a numeric constant
+is used as the source-binding argument.
+
+The raw table has 135 fixed controls and 67 AX-reader controls. Eight
+simultaneous contextual folds leave
+\[
+                         135+67-8=194
+\]
+working controls. All 32 combinations of old folded control, predecessor
+history bit, and current read bit are checked on the final table. Their
+local tape identities establish the quotient uniformly in the surrounding
+tape. The primitive arithmetic-box rows are unchanged. The added native
+reader is
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+190&0R330&1R330\\
+330&0R61&1R99.
+\end{array}
+\]
+The extra fold identifies native control 41 with 99, using the two actions
+$0L30$ and $1L2040$. The remaining seven folds are supplied explicitly in
+\texttt{folds.json}; the checker validates their incoming-context
+hypotheses as well as their local execution identities.
+
+\subsection{The calibrated numerical calculus}
+
+Put $p(a,b)=(a+b)(a+b+1)/2+b$ and define
+\[
+ I(A,B)=6p(A,B),\quad M(a,b)=6p(a,b)+1,\quad
+ U(a,B)=6p(B,a)+2,\quad E(a,b)=6p(a,b)+3.
+\]
+Write $A\to B$ for $I(A,B)$, $N(B)=I(B,1)$,
+$A\wedge B=N(I(A,N(B)))$, and $\exists_a B=N(U(a,N(B)))$.
+Zero is truth; one is the designated contradiction. The six ordinary
+heads are
+\begin{align*}
+ h_1(D,H)&=(\exists_D U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6^Q(D,A,H)&=U(D,A\to H)\to(U(D,A)\to U(D,H)).
+\end{align*}
+Also retain
+\[
+ \rho_8(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \quad u\le D,
+ \qquad \Gamma(B)=I(B,U(B,B)).
+\]
+The guarded head is given by
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to N(P(a,b,c))),\\
+ G(a,b,c)&=N(V(a,b,c)\to Q(a,b,c)),\qquad c\ne a,b.
+\end{align*}
+The rules are modus ponens and theorem generalization
+$B\mapsto U(i,B)$. Call this calculus $\mathcal C_6^Q$.
+
+The inherited separate-head calibration, uniform radix calibration, and
+premise-exchange argument give primitive-recursive proof translations,
+with correctness provable in PA, establishing
+\[
+ \mathrm{PA}\vdash
+ \bigl(\operatorname{Ref}(\mathcal C_6^Q)
+                   \leftrightarrow\operatorname{Ref}(\mathrm{PA})\bigr).
+ \tag{1}
+\]
+The dependence on these results is explicit. The complete inherited
+arguments are retained with their attribution; no new proof-assistant
+formalization of (1) is claimed. Their applicability here can be checked
+at the following exact interfaces.
+
+For the radix change, hereditary recoding sends
+$4p(a,b)+r$ to $6p(F(a),F(b))+r$, with $F(0)=0$. The same injection acts
+on formula codes and variable labels; it therefore preserves equality
+guards and the self-indexed diagonal head. Its primitive-recursive left
+inverse establishes injectivity. Since this recoding need not preserve
+numerical order, restricted $\rho_8$ leaves are replaced by the inherited
+fixed derivation of unrestricted $\rho_8$; they are not naively recoded
+as restricted leaves. In the other direction the ordinary finite-bit
+interpretation applies to the four constructor residues, interpreting the
+unused residues four and five harmlessly. PA supplies the needed finite
+binary-comprehension proofs by full induction on each substituted
+arithmetic formula.
+
+For premise exchange, the implicational basis derives
+$(P\to(Q\to R))\to(Q\to(P\to R))$ and its reverse by a fixed
+K/S/MP derivation (equivalently, bracket abstraction of
+$\lambda f.\lambda q.\lambda p.f\,p\,q$). Replace each occurrence
+of the sixth head by this fixed derivation from the other ordering.
+All remaining heads and rules coincide. These are syntactic proof
+translations, not an appeal to semantic soundness of PA.
+
+\subsection{Exact commands and their eleven-entry stack}
+
+A command store is $(t,w,d,h)$: visible top, Cantor stack, numerical
+offset, and cached head. Set $[a;w]=p(a,w)$, with total projections;
+in particular $[0;0]=0$ and both projections of zero equal zero.
+Let $D=d+x$ and $H=h+y$. Define the ten generated entries, in stack
+order, by
+\[
+\begin{array}{c|l}
+0&G(H,D,c),\text{ or }0\text{ if }c=D\text{ or }c=H\\
+1&\Gamma(c)\\
+2&h_6^Q(D,c,H)\\
+3&h_5(D,H)\\
+4&h_4(D,c,H)\\
+5&h_3(D,c,H)\\
+6&h_2(D,c,H)\\
+7&h_1(D,H)\\
+8&\rho_8(D,c,H,d)\\
+9&U(d,h).
+\end{array}
+\]
+Write them $q_0,\ldots,q_9$. The new AX command has four parameters:
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =(0,[q_0,\ldots,q_9,t;w],z,0).                 \tag{2}
+\]
+After the extra Push, the full MP reader consumes $z$. It compares
+$I(0,z)$ with zero: at $z=0$ it succeeds with conclusion zero, and
+at $z>0$ it fails with top zero. Both cases leave the offset $z$.
+Thus $z$ cannot be dropped from the scheduler encoding or assumed zero
+in the soundness proof.
+
+The other commands remain
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&t+h\ne1,
+ \end{cases}
+\]
+and, with $b=d+x$,
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(b,w,b,0),&I(t,b)=h,\\
+ (0,w,b,0),&I(t,b)\ne h.
+ \end{cases}                                             \tag{3}
+\]
+In particular the Shift guard is the actual sum test; it does not halt
+at $(t,h)=(1,1)$.
+
+\subsection{All-store proof-word compiler}
+
+Put $A_0=\mathsf A_{0,0,0,0}$ and use semicolons for command
+concatenation. Define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,
+ \quad\mathsf{Pop}=A_0;\mathsf S^{12},
+ \quad\mathsf{Discard}=\mathsf{MP}_0,
+ \quad\mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+Exact substitution in (2)--(3) proves
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=(t,w,0,a),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+These words do not halt. The safety calculation uses precisely that
+$q_0,\ldots,q_8$ have residue zero modulo six, whereas
+$q_9=U(d,h)$ has residue two and is at least two. Pop is safe even
+when $t=1$, since the relevant last test contains $q_9\ge2$.
+The identities include the zero-pair alias; the stack is not presumed
+to be a free list.
+
+For $0\le j\le8$, from $(t,w,0,0)$ the word
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,0};
+              \mathsf S^{j+2};\mathsf{Pop}^{9-j}
+                                                        \tag{4}
+\]
+returns $(q_j,w,0,0)$. A dominated leaf with $u\le D$ uses
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf A_{A,D-u,H,0};\mathsf S^{10};\mathsf{Pop}.
+\]
+Generalization is implemented by
+\[
+ \mathsf{Push};\mathsf{Offset}_i;\mathsf S;
+                  \mathsf A_{i,0,0,0};\mathsf S^{11},
+\]
+which sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$, including $a=1$.
+
+At an MP proof node with proofs $e_1$ of $I(a,b)$ and $e_0$ of $a$,
+compile the word
+\[
+ \mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+ W_{e_0};\mathsf{Push};\mathsf S;\mathsf S;
+                         \mathsf{MP}_b;\mathsf{Pop}.
+\]
+The initial Push reserves a zero below the two premises. On
+$(0,[a,I(a,b),0;w],0,0)$ the displayed final suffix either halts
+at the second Shift when $a=1$, or returns $(b,w,0,0)$.
+It remains valid at $b=1$ and when zero pairs collapse.
+
+Induction on a finite numerical proof therefore gives: from every
+$(t,w,0,0)$, $W_e$ either halts or returns
+$(\operatorname{concl}(e),w,0,0)$. In particular, if $e$ proves one,
+\[
+                            A_0;W_e;\mathsf S             \tag{5}
+\]
+halts from every carried store $(t,w,d,h)$. The initial AX clears the
+visible fields and offset while preserving a finite stack; the final
+plain Shift tests $(1,0)$. No reset between scheduler trials is assumed.
+The independent free-term checker verifies these identities and all
+explicit branch conditions, including the special cases $1+1$ and
+$[0;0]=0$.
+
+\subsection{Scheduling, soundness, and transfer to the literal tape}
+
+For a finite command word put $e(\epsilon)=0$ and
+$e(c::v)=1+b_c(e(v))$, where
+\[
+ b_{\mathsf S}(u)=p(0,u),\qquad
+ b_{\mathsf{MP}_x}(u)=p(1,p(x,u)),\qquad
+ b_{\mathsf A_{c,x,y,z}}(u)=p(c+2,p(y,p(x,p(z,u)))).
+\]
+The extra AX operand is decoded in the physical source. Each decoded
+continuation is a component of $b_c(u)$, and so decreases strictly
+relative to the positive continuation $1+b_c(u)$. Arithmetic command
+blocks terminate. The source's successive fresh candidates therefore
+finish unless one halts. Prefixing (5) by
+$\mathsf A_{k,0,0,0}$ gives unbounded candidate codes
+$p(k+2,p(0,p(0,p(0,e(\text{word (5)})))))$.
+The all-store property of (5) makes this cofinal padding safe.
+PA proves that some such candidate is reached unless a halt occurs
+earlier. This proves completeness of the source search for refutations.
+
+For soundness, annotate every visible or cached formula and every
+canonical Cantor-stack entry by a $\mathcal C_6^Q$ proof. Zero has a
+fixed proof; all new AX entries are valid leaves or generalizations of
+annotated formulas, and a failed guard emits zero. MP preserves this
+invariant using its two premise proofs, and Shift moves the annotations.
+If its sum equals one then one visible summand is one, giving a
+refutation. The arbitrary numerical offset $z$ carries no formula
+annotation. The construction and the soundness induction are primitive
+recursive and PA-formalizable.
+
+The literal source has 3,794 primitive sites and 4,901 outcomes, covering
+both decrement branches. The construction symbolic engine checks all
+outcomes over arbitrary natural primary registers, arbitrary affine
+header gap, and an arbitrary nonempty finite spare-register list.
+It performs 1,571,333 symbolic operations, with maximum 490 per outcome.
+An independent implementation checks all 4,901 outcomes directly against
+the literal table and rederives four generic list lemmas from its rows.
+It performs 1,149,402 symbolic operations, with maximum 397 and minimum
+positive segment-duration constant three. These checks
+establish universal finite simulation contracts, not a conclusion from
+sampled numerical traces.
+
+Exactly 58,320 literal transitions from blank produce the complete
+clean source frame at native control 84, head $-2$, source site 25,
+header offset 48, logical registers $(2,0,0,0,0,0,0,0,0)$, and 26 unit spare
+registers. The checker compares the whole finite-support tape, with
+blank exterior. Every source primitive has a positive finite physical
+simulation, so finite concatenation yields source halt implies literal
+halt. Conversely, a first literal halt at time $T$ is incompatible with
+$T+1$ positive nonhalting source simulations along the deterministic
+same run. PA proves this finite argument.
+
+Combining (1), source soundness/completeness, and this exact simulation
+gives the ordinary mathematical theorem
+\[
+ \boxed{\mathrm{PA}\vdash
+   \bigl(\neg\operatorname{Halt}_{\mathrm{blank}}(\mathrm{PA194AX11Q6})
+                    \leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).}
+\]
+This argument relies on the identified inherited PA calibration and
+the stated symbolic simulation rules. It is not a newly kernel-checked
+Lean/Rocq theorem, an iPRA equivalence, or a proof that PA is consistent.
+
+\subsection{Why the difference is substantive}
+
+Compared with QN6, AX now saves the gate, consumes an extra command
+operand, and can set the offset arbitrarily. Even at all-zero parameters
+the new stack is $p(0,W)$ rather than the positive old stack $W$, so
+the zero-pair alias does not erase the change. Compared with AX11,
+all constructor arithmetic and MP matching use coefficient six, and the
+sixth emitted head has exchanged premises. For example
+$I_4(0,1)=8$ and $I_6(0,1)=12$; neither operation is a control renaming.
+The graph census separately checks that the literal table is absent
+from the prior corpus under the stated cosmetic symmetries.

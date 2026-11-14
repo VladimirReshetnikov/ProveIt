@@ -1,0 +1,221 @@
+PA DESIGN COMPARISON -- PINNED CORPUS AUDIT
+Snapshot: 2337ce611a26e308697ccbddb2a1636f989f01c3
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+
+1. Coverage and reproducibility
+
+The exact Git tree contains 21,022 tracked files across the requested PA tree
+and docs/incoming. We read the pinned blobs directly, rather than relying on
+a partial checkout or the moving main branch. The structural scan selected
+all numeric-table/text/JSON/ZIP file types and recursively examined distinct
+nested ZIP payloads. Textual or five-column-array tables inside JSON are
+included. The recognizer does not claim to infer arbitrary transition maps
+from executable source code or from other unrecognized encodings.
+
+There are 61 delivered packets already filed under PA/docs, plus FIVE new
+incoming ZIPs. The statement in PA/docs/README.md that no archives remain in
+incoming is stale at this pin. packet_ledger.csv gives all 66 deliveries
+individually, preserving the distinction between a filed directory and a
+new archive that happens to have the same name. All 61 root-README digests
+match the previous packet ledger. The two upstream PA196/PA209 snapshots
+are also included in the literal-table scan, independently of packet count.
+
+The scan recognizes 1,594 table occurrences and 670 distinct byte forms.
+There are 567 complete spanning action-graph classes, of which 563 have
+exactly one terminal halt label. Ten nonspanning byte forms are recorded
+separately; we do not identify disconnected tables merely from a maximal
+reachable component. All 535 representatives in the repository's retained
+catalogue independently reproduce its table digest and reachable-state
+count. The official historical total of 7,130 .tm occurrences is a different
+denominator: duplicates were removed when the 61 packets were filed.
+
+At 194 working states, there are 76 distinct spanning graphs. They remain
+76 classes even under global reflection, bit interchange and arbitrary
+write/move effects on the terminal halt transitions. Start controls are
+retained as metadata and deliberately forgotten ONLY for broad structural
+novelty comparison. A dense table's state zero is a convention, not proof
+of its intended blank start. Full canonical tuples can be compared by
+verify_novelty.py; hash values are only identifiers.
+
+2. What the 76 classes mean
+
+The previous 49-class frontier consists of 33 principal/supported packet
+constructions, five supplementary constructions, six research auxiliaries
+or seeds, and five explicitly rejected tables. These are attributed evidence
+labels, not 49 newly reconstructed consistency proofs.
+
+The five incoming archives add 27 action graphs at 194 states:
+
+* PA194QH: Q quantifier-premise exchange combined with H's visible-result,
+  no-push modus ponens and cache-only Shift. The packet supplies an ordinary
+  mathematical PA calibration, 4,754 symbolic source outcomes, and a complete
+  57,922-step startup receipt.
+* PA194R_AD and PA194F_AD: A/D physical-register swaps of the symmetric,
+  cached, final-zero-test variants. Each has reported verification of 4,746
+  source outcomes and a 57,736-step complete startup; they are supplementary
+  research compositions rather than the runtime193 packet's principal result.
+* Twenty-three source/decoder rotations from the physical contraction study.
+  Five (100_174_right, 2061_2062_left, 2011_2012_left, 2009_2010_right,
+  2008_2009_right) have complete source and startup receipts. The other
+  eighteen preserve the resolved CFG but do not close the symbolic physical
+  checker. Their presence is not acceptance of a blank-tape consistency claim.
+* One N6 append-zero table, used as a contraction-search control. It has no
+  accepted source/startup consistency calibration in that packet.
+
+With the two A/D companions classified as supplementary, the complete
+frontier has 34 principal/supported constructions, seven supplementary,
+30 auxiliary/seed tables and five rejected tables. The CSV identifies
+every class, mechanism, evidence boundary, representative and digest.
+
+3. Architectural comparison
+
+The historical 209--222-state material and U208 family use contextual,
+entry and finite-history folds of larger proof enumerators. Different
+descriptions of U208 often name the same graph; two principal 208 graphs
+are distinguished by the literal census. The earlier reduction packets
+mostly report failed searches, not smaller consistency machines.
+
+PA196 changes the logical interface as well as implementation: transposed
+universal construction, removal of an explicit equality-transitivity head,
+and equality vacuity in a guarded bundle. The later 196/199 work explores
+diagonal vacuity, separated versus bundled diagonal heads, head reordering,
+source association, scanner lengths, and physical register placement.
+Shorter source trees need not produce fewer physical states. Some variants
+need an extra return scanner or lose opportunities for contextual sharing.
+
+PA195 and PA194 improve the AX grammar and contextual fold allocation.
+Primary PA194 has 134 fixed controls plus 67 raw AX readers minus seven
+history folds. A second 194 implementation uses 68 readers and eight folds.
+The AD companion conjugates the physical register allocation. All use the
+same separate-diagonal numerical-calculus calibration unless a packet
+explicitly changes its formulas or command interface.
+
+The C family changes successful MP to maintain a usable formula cache and
+tests that cache in Shift. CS additionally reverses the destructive
+comparison; CZ/CSZ/F/A/J/ZR variants replace selected unconditional jumps
+by decrements of registers proved zero. These rewrites need both source
+invariants and blank initialization checks.
+
+The N family removes the dummy-zero push on successful MP and exposes its
+consequent. H combines this with cache-only Shift. HS combines no-push MP
+with the symmetric cached guard. SUMS and the other NS retain the original
+sum guard while using symmetric comparison. Proof-word compilers must
+reserve stack entries explicitly when the machine no longer pushes them.
+
+Q exchanges the curried premises of a quantifier-related head, changing
+79 resolved instructions and requiring a propositional proof translation.
+D uses Gamma(D) instead of Gamma(A). Radix variants use coefficients five
+or six in formula construction while retaining unscaled Cantor stack
+pairing. Hybrid names combine these changes. Savings are not automatically
+additive: the coefficient-six multiplier and symmetric comparator compete
+for native control 330 and a fold involving 41 in supplied implementations.
+
+Important aliases: C is duplicated as principal table in five packets;
+HS equals the filed cache-only NS; QN equals NQ; the two QNS deliveries
+coincide; N6 is repeated; CSZ equals X. Another packet uses NS for a genuinely
+different sum-guard machine. The comparison must use graphs and protocols,
+not labels alone.
+
+4. The two 193-state graphs are not solutions
+
+The older coefficient-three shortcut is logically rejected. Its equality
+code collides with an implication code. A bundled primitive derivation of
+literal code one uses 73,393 inference steps and 116,171 shared arithmetic
+expression nodes. A later report proves a broader obstruction for every
+constant equality offset in that specific unchanged coefficient-three
+constructor family. Neither result is a lower bound on arbitrary machines.
+
+The incoming merged-marker runtime193 is more promising operationally:
+merge native control301 into88, delete301, set88/0 to0 L51, and51/0 to0 R122.
+It passes all4,780 source outcomes. However, native start74 reaches an
+outward blank ray; all1,158 elementary startup choices are certified
+unsuccessful. Broader finite bootstrap screens find no appropriate frame
+within their explicit bounds. The exact193-state runtime is not a
+calibrated blank-start machine, and its source contracts do not repair that.
+
+The MP196 packet is a distinct larger architecture: successful MP halts
+immediately when its consequent is1. It has196 states, complete source
+contracts and an ordinary mathematical protocol proof, and does not beat
+the194-state frontier.
+
+5. Proof status
+
+PA/README.md explicitly distinguishes ordinary mathematical PA calibrations
+from its stronger unfinished iPRA/Lean project. Neither machine-specific
+iPRA direction for primary194 is completed. This does not itself refute the
+ordinary PA proof requested by the user. The latest ordinary-proof audit
+finds the inherited primary194 proof coherent, including diagonal recovery,
+finite-bit comprehension, zero aliases and the all-store proof compiler.
+The upstream PA196 imported theorem alone provides nonhalting -> Con(PA)
+in PA; the converse relies on the later arithmetic soundness argument.
+
+The inventory verifies finite table identities and class membership. It
+does not pretend to rebuild every historical PA proof or promote bounded
+nonhalting simulations to consistency results. For a new machine, exact
+source transport, positive universal runtime contracts and full blank
+initialization remain distinct obligations.
+
+6. Search-history and novelty guidance
+
+Whole-head reordering is already heavily explored. Primary194's supplement
+tests every7! order of seven unconditional heads on two fixed195 shapes.
+PA194DHS tests15,120 cases (7! times three diagonal parameter choices).
+PA194H6/research/decoder/seven combines seven whole blocks, independent
+parameter renaming and ongoing DAG reassociation; its18-token prefix and
+62-token suffix remain fixed. Six-head permutations and random reassociation
+appear in several C and196 packets. Reordering all ten pushed entries,
+including the dependent saved-top/GEN/rho8 part, is outside these explicitly
+documented seven-head families, but requires a new dependency argument.
+
+An exact rational dual in the incoming reduction study proves a lower bound
+of194 only for its frozen raw201 parent/direct-selector/disjoint-reader
+fold template. Newly created actions after aliasing, overlapping folds,
+changed grammars, helper-to-helper targets and longer detours are excluded.
+Other large finite negative screens likewise are not general lower bounds.
+
+The PA text/code search finds no candidate scheduler that intentionally
+enumerates only even codes. The only stride-two references are copied links
+to the ZFC companion217/feedback-stride2 construction. PA parity experiments
+instead concern even-tag formula recoding and parity-based Shift acceptance.
+A PA stride-two scheduler would therefore change a different algorithmic
+axis, with ZFC provenance credited; literal novelty still needs comparison
+against all76 frontier graphs, including auxiliary and rejected tables.
+
+Constructor transposition is already an exploratory idea, although no
+accepted 194-state E- or M-transposed implementation was identified. The
+older four-mode membership search reported nominal best totals 196,200,
+202,205 for original,E-transposed,M-transposed,both respectively, from
+16 million proposal slots. Those are heuristic allocation scores, not
+verified machines. The later seven-head/four-gate family explicitly varies
+consistent equality orientation and reaches best196 overall after49 million
+slots; it does not certify an E-transposed literal table. Naive native
+formula recoding does not automatically transport the private-code gate:
+the supplied M-transpose example recodes5 to9, changing whether c differs
+from a=9. A direct calibration or correct fresh-binder transport is needed.
+
+The constructor-residue exchange U3/E2 already has literal implementations
+TAG196 and TAG196N. The latter has135 fixed controls+71 readers-10 folds,
+3,666 source sites,4,767 outcome contracts, and58,320 startup steps. Its
+ordinary PA proof is retained under pa194_qns_research_2026-11-13/research/
+tag196n/proof. A194-state implementation of that coding would still be a
+new state-count achievement within the supplied literal corpus.
+
+7. Files for the final package
+
+current/packet_ledger.csv,json: all66 delivery descriptions and provenance.
+current/frontier194.csv,json: all76 classes with mechanisms and evidence.
+current/sub194_status.csv: both193-state graphs and their failure boundaries.
+current/occurrences.csv,json: every recognized literal/JSON occurrence.
+current/table_classes.json: full spanning/nonspanning class inventory.
+current/retained_catalogue_checks.json: all535 catalogue checks, alltrue.
+current/archives.json: recursively traversed ZIP identities and aliases.
+current/git_manifest.json: exact pinned files and blob identifiers.
+current/frontier_tables/: all76 194-state and both193-state representatives.
+audit_corpus.py: portable exact-blob or checkout rescan.
+verify_novelty.py: exact enlarged-equivalence check against the representatives.
+
+Reproduce the structural census with:
+python3 audit_corpus.py --git-repo /path/to/ProveIt --out /new/census
+The pinned commit must exist in that repository. No network is needed if
+the relevant blobs are already present. Evidence annotations are attributed
+source assessments, separate from that automatic structural rerun.

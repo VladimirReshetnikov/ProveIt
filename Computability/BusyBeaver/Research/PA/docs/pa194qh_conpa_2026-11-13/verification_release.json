@@ -1,0 +1,62 @@
+{
+  "status": "PASS",
+  "family": "PA194QH",
+  "dense_sha256": "0f101f654f69230744e8c9aac14a7616745e247855fd964530603ea1ac6412ba",
+  "input_files_checked": 17,
+  "stages": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "construction/build_qh.py"
+      ],
+      "status": "PASS",
+      "elapsed_seconds": 3.271
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/check_commands.py"
+      ],
+      "status": "PASS",
+      "elapsed_seconds": 0.032
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/audit_source.py",
+        "--candidate",
+        "machine",
+        "--output",
+        "machine/source_audit.json"
+      ],
+      "status": "PASS",
+      "elapsed_seconds": 0.061
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verification/check_literal.py",
+        "machine"
+      ],
+      "status": "PASS",
+      "elapsed_seconds": 73.52
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "comparison/verify_novelty.py",
+        "machine/machine.tm",
+        "--output",
+        "comparison/pa194qh_novelty.json"
+      ],
+      "status": "PASS",
+      "elapsed_seconds": 3.407
+    }
+  ],
+  "kernel_checked": false
+}

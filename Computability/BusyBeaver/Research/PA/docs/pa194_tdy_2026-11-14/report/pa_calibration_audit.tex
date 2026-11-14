@@ -1,0 +1,195 @@
+\section{PA calibration and the three-register relocation}
+\label{sec:layout-calibration}
+
+The new machine preserves the complete separate-diagonal source program.
+It changes the physical locations of three registers, together with the
+four selector transitions that address them.  Its consistency theorem
+therefore uses the existing source calculus and its PA calibration.  No
+new axiom schema, proof enumeration rule, or arithmetic coding is introduced.
+
+\subsection{The exact register permutation}
+
+In logical order $(N,T,W,A,D,H,X,Y,Z)$, let the old and new maps from
+logical registers to zero-based physical block positions be
+\[
+ p=(6,2,0,4,3,7,8,5,1),\qquad
+ p'=(6,3,0,4,5,7,8,2,1).
+\]
+Thus $T$ moves from position $2$ to $3$, $D$ from $3$ to $5$, and $Y$
+from $5$ to $2$.  Let $\sigma$ be the permutation $(2\ 3\ 5)$ of
+physical positions, fixing the other six positions.  Then
+$p'(r)=\sigma(p(r))$ for every logical register $r$.
+
+For a physical vector $v=(v_0,\ldots,v_8)$ define
+\[
+ (P_\sigma v)_{\sigma(j)}=v_j\quad(0\le j<9).
+\]
+This permutation changes the order of the nine represented unary blocks;
+it fixes the source-path encoding, header, gap and spare tail.  In particular,
+if $v_{p(r)}=r_r$ represents the logical vector $\mathbf r$, then
+$(P_\sigma v)_{p'(r)}=r_r$ represents the same logical vector in the new
+layout.  Each physical block represents $v_j$ by $0\,1^{v_j+1}$.
+This is a correspondence between source frames.  It is not asserted to
+be a one-step conjugacy on arbitrary binary tapes or a renaming of finite
+control states.
+
+The literal native-row changes are precisely
+\[
+\begin{array}{rcl}
+ (41,1)&:&0R25\ \longmapsto\ 0R48,\\
+ (61,1)&:&0R25\ \longmapsto\ 0R48,\\
+ (82,1)&:&0R33\ \longmapsto\ 0R25,\\
+ (144,1)&:&0R48\ \longmapsto\ 0R33.
+\end{array}
+\]
+Every other native transition, including every arithmetic-box row,
+is unchanged.  No working control is added or removed.
+
+\subsection{Source-frame preservation}
+
+\paragraph{Frame lemma.}
+For every source instruction, every logical vector of nine natural
+register values, every admissible header gap, and every finite nonempty
+spare list, the new table executes the same logical primitive as the old
+source program and reaches its exact successor frame in the new layout.
+The assertion includes both zero and positive decrement outcomes,
+structured-jump destinations and the entire remaining tape.  A nonhalting
+primitive has positive physical duration.  A source halt reaches the
+distinguished physical halt label.
+
+\paragraph{Proof.}
+At the abstract register-file level, incrementing the selected position
+commutes with $P_\sigma$.  So do zero testing and decrementing a positive
+selected value, since $P_\sigma$ preserves the selected value itself.
+The engine's append-one spare-tail effect on increment is also preserved:
+the permutation acts on the first nine positions and fixes the appended
+tail.  Jump and halt instructions do not change the logical register file.
+
+These abstract identities alone would not establish the literal-machine
+claim: the selector paths and all their return conventions must implement
+the changed positions.  The supplied symbolic replay checks exactly this
+claim on the final four-row-modified table.  It resolves all $3,673$
+primitive source sites and checks all $4,780$ outcomes, including both
+decrement branches, with arbitrary register values and an arbitrary spare
+tail.  Two replay implementations use the unchanged arithmetic-box
+contracts. A further independent literal-tape checker derives the four
+required list-sweep lemmas directly from the candidate rows and rechecks
+all outcomes without those named box oracles. The remaining symbolic steps are literal table rows,
+equal tape representations and constant-symbol scan inductions.  Each
+therefore has an elementary finite-trace proof, uniformly in its natural
+parameters.  The positive-duration check concerns actual tape transitions,
+not normalization steps in the verifier.  Concatenation gives the claimed
+exact successor frame for every represented input.\hfill$\square$
+
+The frame family retains the baseline header convention: the right
+delimiter has distance $48+n$, for arbitrary $n\ge0$, and after source
+path $s$ its zero gap has length $48+n-|s|$.  It does not assert a contract
+for an arbitrarily shortened header.  The verification is a symbolic
+universal contract, not extrapolation from a finite sample of register
+values.  Its $1,479,348$ symbolic iterations measure checker work, not
+the running time of the machine on arbitrary represented inputs.
+
+\subsection{Exact blank initialization}
+
+The literal new blank run reaches native control $84$, head position $-2$,
+at source site $25$ after exactly $57,594$ transitions.  Its logical
+register vector is
+\[
+ (N,T,W,A,D,H,X,Y,Z)=(2,0,0,0,0,0,0,0,0),
+\]
+and its spare tail consists of $26$ one-valued blocks.  The checked endpoint
+is the complete tape, including both markers, the source encoding, all
+register and spare blocks, and the zero exterior.  The cycle $\sigma$ fixes
+the nonzero $N$ position and permutes three zero-valued initial registers,
+so the final physical register vector is also the baseline seed vector.
+The finite startup certificate proves reachability of this frame and
+excludes a premature halt.  The new duration is $560$ less than the old
+$58,154$-step startup; this is an initialization comparison only.
+
+\subsection{Arithmetic finite-trace transport}
+
+Let $R$ be the unchanged finite register program from its clean seed, and
+let $H_R$ and $H_M$ be the arithmetic assertions of finite halting source
+and blank-tape computations.  PA proves
+\[
+                         H_M\leftrightarrow H_R.
+\]
+Indeed, a finite halting source computation is translated by prefixing
+the verified startup and concatenating the exact physical segments of
+the frame lemma.  All segment constructions are primitive recursive in
+their coded frames and parameters.  Their correctness proofs use
+induction on finite unary blocks, finite lists, and finite trace lengths,
+so the same proofs are available in PA.
+
+For the converse, suppose that the first physical halt has time $T$.
+If it lies inside startup, the fixed startup certificate refutes it.
+Otherwise iterate the totalized source step function for $T+1$ steps.
+If this bounded iteration contains no source halt, concatenate its
+$T+1$ positive nonhalting physical segments after startup.  Their combined
+length exceeds $T$.  Determinism then identifies the alleged halted
+configuration with an intermediate configuration of this longer run,
+contradicting the absence of an outgoing row at the terminal halt label.
+This argument requires no inverse decoding of an arbitrary intermediate
+tape and no unbounded search for the next source frame.  PA proves its
+finite recursion, concatenation and determinism assertions by induction.
+
+\subsection{The inherited logical calibration}
+
+The source calibration is the ordinary mathematical argument supplied in
+the primary PA194 packet, specifically its
+\texttt{report/calibration.tex} and the retained detailed diagonal and
+PA195 calibration references.  It provides PA-provable syntactic
+translations between a source halt and a finite PA refutation:
+\[
+ H_R\ \leftrightarrow\
+ \exists q\,\operatorname{Prf}_{\mathrm{PA}}(q,\ulcorner0=1\urcorner).
+\]
+Composition with finite-trace transport gives the claimed ordinary
+mathematical theorem for the new literal table:
+\[
+ \boxed{\mathrm{PA}\vdash
+   \bigl(\neg H_M\leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).}
+\]
+
+The proof uses the following specific features of that inherited
+calibration.  Every variable label in a decoded nonzero formula is smaller
+than its code, supplying the diagonal freshness needed for
+$B\to\forall x_B B$.  Its reverse interpretation uses finite binary
+comprehension for arbitrary arithmetic formulas, with a uniform
+primitive-recursive PA proof supplier obtained by inserting the formula
+into a fixed induction-proof template.  This is a statement about proof
+checking, not an arithmetic truth predicate or a reflection principle.
+Full PA induction, rather than equation induction alone, supplies that
+template.
+
+The separation gate treats coincident labels correctly: for $a\ne b$
+its bit-comprehension matrix is
+$(\operatorname{Bit}(x_a,z)\lor z=x_b)\wedge T(c)[z/x_b]$; when $a=b$
+it instead uses $(z=x_b)\wedge T(c)[z/x_b]$, because the first membership
+antecedent under the binder is then $\operatorname{Bit}(z,z)$.
+The proof-store invariant annotates both visible formula registers
+because the actual halt test is $t+h=1$.  It also handles the Cantor-stack
+alias $p(0,0)=0$ and applies to every annotated persistent store, without
+assuming a reset between enumerated command words.  None of these
+logical conditions is changed by the physical register cycle.
+
+\subsection{Proof boundary and attribution}
+
+The new result is a physical register-layout construction with an
+ordinary PA proof by exact source-frame transport.  It inherits the
+numerical-calculus calibration, source compiler and arithmetic-box
+mathematics, rather than replacing them.  The supplied replay checks its
+new literal-table obligations.  It is not a newly compiled end-to-end
+Lean or Rocq proof of the PA sentence, and it does not complete the
+repository's open machine-specific iPRA internalization.
+
+The sources in the ZFC directory contribute the general methods of
+history-dependent control sharing, exact positive simulation and
+whole-frame startup validation.  The ConciseIPRA work contributes the
+strategy of deriving a richer interface from fewer primitives, but
+its searched theory cannot simply replace PA here: that would remove
+the arbitrary-formula induction required by the stated calibration.
+The physical permutation technique itself has predecessors in the
+corpus.  The new contribution is this explicit three-register cycle,
+its final literal table, its exact startup and its checked source-frame
+contracts; it is not a claim that register permutation is a new idea.

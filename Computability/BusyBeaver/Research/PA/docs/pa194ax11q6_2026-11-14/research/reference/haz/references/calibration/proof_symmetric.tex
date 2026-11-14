@@ -1,0 +1,199 @@
+% Report fragment; requires amsmath, amssymb, booktabs, hyperref.
+\section{A second 194-state machine from a symmetric guard}
+\label{sec:symmetric194}
+
+The second new machine, $M_{CS}$ or PA194CS, changes the source computation
+of Shift and then folds the new reader into an existing decrement control.
+It has 194 working states and 388 transition rows, with the same blank
+binary one-tape convention as PA194C. Its source has \textbf{3,646 sites}
+and \textbf{4,745 primitive outcomes}. The literal table is
+\texttt{secondary/pa194CS/machine/pa194CS.tm}; the dense SHA-256 is
+\begin{quote}\small
+\nolinkurl{1c71002e5b8a2ddd1dd1311a2c54c424764624b611b69c8efbee1ac23c2e6f5f}.
+\end{quote}
+This is an additional source simplification. It retains the exact cached
+command interface of PA194C, while removing an unnecessary restoration
+loop from its implementation.
+
+\subsection{The comparison routine is symmetric in its full effect}
+
+The first source instructions of both programs are the following finite
+register graph. Here $H=r_5$, $X=r_6$, and a decrement's first successor
+is its zero branch.
+\[
+\begin{array}{r|l}
+0&\operatorname{dec}H\;[4,1]\\
+1&\operatorname{dec}X\;[3,2]\\
+2&\operatorname{jump}0\\
+3&\operatorname{jump}5\\
+4&\operatorname{dec}X\;[10,5]\\
+5&\operatorname{dec}H\;[7,6]\\
+6&\operatorname{jump}5\\
+7&\operatorname{dec}X\;[9,8]\\
+8&\operatorname{jump}5\\
+9&\operatorname{jump}11\\
+10&\mathsf{halt}.
+\end{array}
+\]
+From any natural pair $(H,X)=(a,b)$ this routine halts exactly when $a=b$.
+If $a\ne b$, it reaches site 11 with $H=X=0$, preserving every other
+register. To prove this, the loop $0,1,2$ removes one from each positive
+component. If $H$ first becomes zero, instruction 4 distinguishes equality
+from a positive remainder in $X$. If $X$ first becomes zero while $H$ is
+positive, instruction 3 enters cleanup. Sites $5,6$ clear the remaining
+$H$, and sites $7,8$ clear the remaining $X$; the latter loop may revisit
+the already-zero $H$ and still terminates. Induction on $a+b$ establishes
+these statements in PA.
+
+Thus exchanging $(a,b)$ with $(b,a)$ preserves both halting and the entire
+surviving register store. Equality of the Boolean test alone would not
+suffice for this optimization; clearing \emph{both} comparison registers
+is the property needed by the following stack decoder.
+
+\subsection{The shortened Shift}
+
+At the inherited Shift boundary let $(T,H,X)=(t,h,0)$. PA194C performs
+\[
+\begin{aligned}
+(t,h,0)&\longmapsto(0,h,0)\\
+       &\longmapsto(h,0,h)\\
+       &\longmapsto(h,h,0)\\
+       &\longmapsto(h,h,1),
+\end{aligned}
+\]
+then enters the comparison. PA194CS instead performs only
+\[
+       (t,h,0)\longmapsto(0,h,0)
+          \longmapsto(h,0,h)\longmapsto(h,1,h)
+\]
+and enters that same comparison. The deleted loop restores $X$ into $H$;
+the final increment has changed from $X$ to $H$. By the preceding lemma,
+both computations halt exactly when $h=1$. Otherwise both reach the
+unchanged stack decoder at site 11 with
+\[
+                         (T,H,X)=(h,0,0).
+\]
+The unchanged decoder therefore produces the same command store in both
+machines. This holds for every natural $t,h$, including $h=1$; there is no
+consistency assumption in the argument.
+
+In fact, the source-block equivalence is stronger than the command-boundary
+claim. For arbitrary incoming scratch value $x$, the common clear/copy
+prefix sends $(T,H,X)=(t,h,x)$ to $(h,0,k)$ with $k=h+x$. The old tail
+and guard then compare $(H,X)=(k,1)$, while the new ones compare
+$(1,k)$. They again have identical halting and complete surviving-register
+effects. Thus this local source proof requires no zero-scratch hypothesis.
+
+The finite source binding is exact. The first 3,644 resolved instructions
+of the new source agree with those of the pinned cached controller.
+The old final five instructions are
+\[
+\begin{array}{r|l}
+3644&\operatorname{dec}X\;[3647,3645]\\
+3645&\operatorname{inc}H\to3646\\
+3646&\operatorname{jump}3644\\
+3647&\operatorname{inc}X\to3648\\
+3648&\operatorname{jump}0,
+\end{array}
+\]
+whereas the new tail is
+\[
+             3644:\operatorname{inc}H\to3645,
+             \qquad3645:\operatorname{jump}0.
+\]
+The preceding transfer loop's zero exit remains site 3644 and now enters
+the shorter tail. An incoming-edge check shows that no instruction outside
+the replaced tail enters its interior: the only external edge to the tail
+is the zero branch from site 3640, which establishes $H=0$. Consequently
+the common source can be partitioned into unchanged single steps and
+complete shortened-Shift/comparator blocks. The blocks terminate on every
+natural register store, have the same halt outcome or the same full store
+at site 11, and have positive duration. Induction on these blocks gives
+halting equivalence of the two source programs from site 25 for arbitrary
+initial registers. This is a direct local source simulation; the entire
+source graphs are not asserted equal.
+
+All AX formulas, command selectors, MP code and scheduler instructions
+are retained. The logical registers agree at command
+boundaries; physical spare lists need not have equal lengths because the
+number of increments changes. Each machine's complete-frame simulation
+tracks its own spare-list effects, so this difference causes no omission
+in the tape argument.
+
+\subsection{Recovering the state cost by an exact contextual fold}
+
+A direct physical implementation uses one new reader, native control 330:
+\[
+ (330,0):0R63,\qquad(330,1):1L73.
+\]
+Relative to PA194C, redirect $(214,1)$ to $1R30$ and $(310,1)$ to
+$1R330$. This produces a 195-state intermediate for the shortened source.
+Control 41, with actions $0R24$ and $0R25$, is entered only through
+$(28,0):0R41$ or $(70,0):0R41$. The new 330 is entered only through
+$(310,1):1R330$. Consequently the preceding tape bit distinguishes the
+two controls: zero for 41 and one for 330.
+
+Identify $41$ with $330$, replace the retained rows by
+\[
+                  (330,0):0L31,\qquad(330,1):1L46,
+\]
+and redirect all old targets 41 to 330. The following exact three-step
+paths reproduce the old one-step actions. The intermediate head visits
+only the current and preceding tape cells.
+\[
+\begin{array}{cc|c|l}
+\text{preceding}&\text{current}&\text{old action}&\text{controls along replacement}\\\hline
+0&0&0R24&330\to31\to21\to24\\
+0&1&0R25&330\to46\to61\to25\\
+1&0&0R63&330\to31\to47\to63\\
+1&1&1L73&330\to46\to62\to73
+\end{array}
+\]
+For every row, the preceding bit and all exterior tape are preserved,
+and the final current bit, head coordinate and target agree with the
+old action. These four cases and every incoming row are checked against
+the \emph{final} quotient table. Ordinary transitions commute with the
+projection. Induction gives an all-tape positive simulation from the
+specified start; the usual determinism argument gives the converse
+halting implication. The original seven AX folds remain separately
+verified. Counting from the fully unfolded control table gives
+\[
+                         135+67-7-1=194.
+\]
+
+\subsection{Consistency calibration and verification scope}
+
+The changed Shift has exactly the cached command semantics already
+proved for PA194C. Its MP and AX commands are unchanged. Consequently
+the same ten-entry proof compiler, all-store universal refutation word,
+proof-store soundness invariant and exhaustive scheduler apply without
+changing a stack exponent or an axiom schema. Induction on command
+executions gives the same source refutation criterion. The guard proof
+above uses only natural-number loop induction; the finite source binding
+and contextual quotient use primitive recursive trace transformations.
+All are formalizable in PA.
+
+The completed literal table is checked on all 4,745 universal source
+outcomes, with arbitrary natural primary-register values, both decrement
+branches, an arbitrary gap and an arbitrary finite nonempty spare list.
+The independent checker rederives the same four list-sweep lemmas from
+literal transitions, resolves the new source graph twice, and verifies
+the exact shorter tail against the pinned cached source. It does not
+assert source-graph identity with PA195C, which would be false.
+
+The \emph{folded} machine reaches the exact complete clean source frame
+after \textbf{57,768} blank-tape transitions. The 195-state intermediate
+takes 57,594; those counts refer to different tables. Both reach site 25,
+native control 84, head $-2$, logical seed $(2,0,0,0,0,0,0,0,0)$ and the
+recorded complete spare list. Thus startup, source semantics and full
+physical simulation all refer to the delivered 194-state table.
+
+With the same explicitly inherited ordinary syntactic calibration of the
+separate-head numerical calculus, these facts give
+\[
+ \mathrm{PA}\vdash
+ \bigl(\neg H_{M_{CS}}\leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).
+\]
+The new contribution is the symmetric-guard source proof and its exact
+194-state implementation. The logical PA calibration is inherited;
+no new end-to-end proof-assistant kernel theorem is asserted.

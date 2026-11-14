@@ -1,0 +1,82 @@
+% Auxiliary fragment. Requires amsmath/amssymb and a standard article context.
+\section{The ancestor-sensitive cost of removing the Shift halt}
+This auxiliary does not meet the 194-state target. It separates a rejected
+196-state shortcut from a correctly implemented 197-state source variation.
+The parent is the MP196 prototype in the pinned incoming packet
+\texttt{pa\_sub194\_research.zip}. Its successful modus ponens halts
+immediately on consequent code one; otherwise it returns its consequent
+and leaves the formula stack unchanged. Its source and arithmetic
+calibration are inherited dependencies.
+
+Write $p(a,b)=(a+b)(a+b+1)/2+b$, with stack encoding
+$[a;w]=p(a,w)$. A command store $(t,w,d,h)$ is \emph{one-free} if $t$,
+$h$ and all the canonical entries obtained by successively unpairing $w$
+are different from one. The tail strictly decreases for nonzero stacks,
+so the assertion is primitive recursive. The zero stack has further heads
+zero, since $p(0,0)=0$.
+
+The initialized store is one-free. An AX command pushes only its saved
+one-free top and the generated implication or universal heads, which are
+congruent to zero or two modulo four; guarded suppression gives zero.
+An unsuccessful MP clears the visible fields, while a successful MP with
+consequent one halts before a completed command boundary. Other successful
+MP steps return a one-free consequent. A Shift at a one-free boundary has
+$t+h\ne1$ and only rearranges existing formulas. Induction over completed
+commands proves the invariant without assuming consistency of PA.
+
+It is tempting to remove the delayed Shift test from
+\[
+ \mathtt{node21}=(\mathtt{node7},\mathtt{node20}),\qquad
+ \mathtt{node7}=(\mathtt{node6},\mathtt{halt})
+\]
+by replacing the first expression by
+$(\mathtt{node6},\mathtt{node20})$. This is incorrect.
+The mismatch branch of \texttt{node6} contains an ancestor-sensitive
+\texttt{breakTo 1}. With the wrapper present it exits \texttt{node7}
+and continues into \texttt{node20}; with the wrapper removed it exits
+\texttt{node21}, skipping the stack pop. At the one-free store
+$t=h=0$, $w=p(2,0)=3$, the shortcut keeps $w=3,h=0$ instead of
+producing $w=0,h=2$. The physical checker also fails its 175th attempted
+contract, at source site 130 on the zero outcome of logical decrement 8.
+Thus neither a source proof nor an implementation proof is available
+for this 196-state shortcut.
+
+For a correct invariant-based variation, retain the wrapper and replace
+only its Shift occurrence of the halt leaf:
+\[
+ \mathtt{node21}=((\mathtt{node6},\mathtt{dec}\,5),\mathtt{node20}).
+\]
+The original \texttt{node7} remains in the immediate-MP test. The changed
+leaf can be reached only if the old Shift comparison has succeeded,
+namely $t+h=1$. It is therefore unreachable from any initialized
+nonhalting command boundary. The old and new source executions agree
+step for step on all reachable source configurations; their halting
+behavior is equal. This is an invariant argument, not a claim that the
+modified Shift has the usual semantics on arbitrary stores containing
+one.
+
+The literal implementation adds one reader to MP196:
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+402&0R77&1R45
+\end{array}
+\qquad
+(53,0):0R68\longmapsto0R402.
+\]
+The complete table consequently has 197 working controls and 394 rows.
+Its 3,663 source sites give 4,769 primitive outcomes, all verified by
+the inherited symbolic physical checker. The exact initial complete
+frame is reached after 58,154 transitions, with native control 84,
+head $-2$, logical registers $(2,0,0,0,0,0,0,0,0)$ and 26 one-valued
+spare blocks. The generic arithmetic-box rows are unchanged. These
+finite symbolic contracts, combined with the explicit register loop
+proofs, supply the physical simulation; a new proof-assistant endpoint
+is not claimed.
+
+The no-one invariant therefore supplies a legitimate logical
+simplification but does not save a control in this compilation. The
+halt leaf already has zero working-control cost, while preserving its
+ancestor scope and distinguishing its two occurrences costs an extra
+reader. This is a precise obstruction to the displayed deletion, not
+a lower bound for other source arrangements or Turing machines.

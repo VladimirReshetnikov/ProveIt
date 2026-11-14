@@ -1,0 +1,62 @@
+{
+  "title": "PA194AX11: Stacked axioms and a comparative audit of Con(PA) machines",
+  "date": "2026-11-14",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "2337ce611a26e308697ccbddb2a1636f989f01c3",
+  "sub194_obtained": false,
+  "claim": "For each of PA194AX11 and PA194QH5, PA proves blank-tape nonhalting equivalent to Con(PA).",
+  "proof_scope": "Ordinary mathematical argument using retained PA calibration and new command/source/literal-machine certificates; not a new end-to-end kernel-checked formalization.",
+  "report": {
+    "path": "report/main.pdf",
+    "pages": 29,
+    "sha256": "da5b9f120bbf3ac3fb50c257ee406cc4c7d1862bd623bd864c3a69a204c305c1"
+  },
+  "conventions": {
+    "tapes": 1,
+    "alphabet": [
+      0,
+      1
+    ],
+    "two_way_infinite": true,
+    "initial_tape": "all zero",
+    "initial_head": 0,
+    "initial_state": 0,
+    "working_states": 194,
+    "terminal_label": 194,
+    "terminal_counted": false,
+    "moves": [
+      "L",
+      "R"
+    ]
+  },
+  "machines": {
+    "PA194AX11": {
+      "table": "primary/machine/machine.tm",
+      "sha256": "1a7defae031c322a5577a3f2cb77d4c3bbc3242c7246f35f073d4dcf12a191d0",
+      "independent_receipt": "primary/machine/independent/receipt.json"
+    },
+    "PA194QH5": {
+      "table": "secondary_qh5/machine/machine.tm",
+      "sha256": "94c85547b3edd0df0a441d45bf22abb52711f2b27cc9e680999232285757dba5",
+      "independent_receipt": "secondary_qh5/machine/independent/receipt.json"
+    }
+  },
+  "comparison": {
+    "deliveries": 66,
+    "filed_packets": 61,
+    "incoming_archives": 5,
+    "prior_194_graph_classes": 76,
+    "claim": "Both new machines have no exact cosmetic-equivalence match among the 76 prior graph classes; see comparison receipts for the scope."
+  },
+  "verification": {
+    "command": "python3 -B verify_all.py --receipt fresh-verification.json",
+    "quick_command": "python3 -B verify_all.py --quick --receipt fresh-quick-verification.json",
+    "python": "3.10+ standard library; assertions enabled",
+    "pinned_core_files": 276,
+    "observed_full_status": "PASS",
+    "observed_full_receipt": "verification_full_receipt.json",
+    "observed_full_stages": 7,
+    "observed_full_seconds": 224.538448,
+    "isolated_copy_replay": true
+  }
+}

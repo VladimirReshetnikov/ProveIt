@@ -1,0 +1,165 @@
+\section{Logical calibration and admissible changes}
+\label{sec:theory-audit}
+
+The target is a theorem of PA,
+\[
+ \mathrm{PA}\vdash \neg H_M\leftrightarrow\operatorname{Con}(\mathrm{PA}),
+\]
+where $H_M$ refers to the literal blank-tape machine. Three different
+statements must be distinguished: a mathematical PA proof, its complete
+formalization in a proof assistant, and the stronger request to internalize
+the proof in a weaker arithmetic. The supplied primary PA194 packet claims
+the first. The maintained PA directory records that the end-to-end iPRA
+formalization remains open. The latter fact does not refute the mathematical
+PA argument, and the present user request does not require iPRA.
+
+\subsection{The inherited source calibration}
+
+Write $p(a,b)=(a+b)(a+b+1)/2+b$. The primary numerical calculus uses
+\[
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code $0$ is truth and code $1=M(0,0)$ is the designated contradiction.
+The key simplification from the older equality-vacuity calculus is the
+diagonal schema
+\[
+ \Gamma(B)=I(B,U(B,B)).
+\]
+Every literal variable label in the formula decoded from $B$ is below $B$;
+therefore the binder named $B$ is fresh. This is a statement about numerical
+syntax, proved by induction from the strict component bounds. It is not a
+reflection principle.
+
+The source refutation-to-halting compiler uses the restricted implicational
+basis, membership rewriting in both slots, a neighborhood-equality
+interface, and an equality witness. The supplied diagonal argument recovers
+the reverse membership rewrites without assuming the equality-vacuity
+schema that it removes. It chooses the separator label to be the code of
+the negation of the entire desired conclusion. This makes that label fresh
+and permits use of the corresponding diagonal instance. The subsequent
+neighborhood argument transports a canonical fresh binder to arbitrary
+allowed binders using membership-only vacuity and the equality witness.
+These are substantial mathematical obligations; finite machine traces do
+not establish them.
+
+For the other direction, interpret $M(a,b)$ by the statement that bit $x_b$
+of $x_a$ is set, and interpret $E$ by arithmetic equality. PA supplies finite
+binary comprehension for each arithmetic formula by induction on the
+finite bound. A primitive-recursive operation inserts the input formula
+into this induction-proof template. The claim is about a uniformly
+generated family of finite PA proofs. It is not a uniform arithmetic truth
+predicate. Each generated source theorem and each live stack entry carries
+a PA proof of its translation; a source halt therefore produces a PA
+refutation.
+
+The implementation proof must preserve the following details.
+\begin{enumerate}
+\item The formula alias $I(0,0)=0$ is real. Its translation uses a fixed
+      proof of $\top\leftrightarrow(\top\to\top)$; the constructors are
+      not syntactically disjoint at that point.
+\item The guarded separation instance requires its formula-code label to
+      differ from its two other displayed labels. Coincident parameters
+      $a=b$ are still allowed and need their own finite-comprehension case.
+\item The separate-diagonal AX command pushes ten entries. The older
+      nine-entry selectors cannot be reused without adjustment.
+\item The scheduler retains the store between unsuccessful trials. Its
+      completeness compiler must work from every incoming store, or first
+      perform an actually verified reset.
+\item A machine quotient requires a positive-length exact simulation,
+      complete tape equality at its return boundaries, and a check that
+      the local paths cannot halt prematurely. Bounded blank-tape runs are
+      insufficient.
+\end{enumerate}
+
+The maintained theorem
+\texttt{PA194CalculusSoundness.initial\_halts\_iff\_refutable}
+establishes a standard-natural-number Lean equivalence between the actual
+scheduler and finite refutations in its numerical calculus. Its README
+explicitly separates that result from the PA calibration and arithmetic
+internalization. The construction and the calibration should be audited
+as separate links, even when the final paper composes them.
+
+\subsection{Changes already represented in the source collection}
+
+The source collection already includes six-head permutations, exchange of
+curried premises in congruence and quantifier-distribution heads,
+permutations of unrestricted parameters of the dominated propositional
+axiom, dual diagonal seeds, and changes of atomic argument orientation.
+Repeating one of these transformations does not itself constitute a new
+state reduction. Its relevance is a new literal table with a smaller
+verified count.
+
+Two tempting deletions have a specific obstruction. First, replacing the
+equality witness $\exists x_D E(H,D)$ by $E(H,H)$ does not preserve the old
+derivability interface. The existing logical-experiments report gives a
+model in which variable $x_1$ ranges only over $\{0\}$ and all other
+variables range over the natural numbers. Equality is literal equality and
+membership is finite binary membership. The retained formulas and
+reflexivity remain valid, but $\exists x_1 E(0,1)$ fails at $x_0=1$.
+This countermodel refutes the proposed derivation of the old witness;
+it does not by itself determine the replacement theory's consistency
+strength.
+
+Second, classical contraposition cannot be used before the native
+calculus's designated code $1$ has the required falsity properties. The
+older source experiments show that changing the first quantifier head by
+such a contraposition may lose explosion. A Boolean valuation with code
+$1$ true witnesses the loss. Consequently a shorter-looking emitter must
+be justified within the actual numerical calculus, not merely by a
+truth-table calculation that presupposes an unproved falsity rule.
+
+\subsection{Atomic-orientation search and its proof boundary}
+
+Four coding conventions are obtained by independently reversing the two
+arguments of $M$ and $E$. For each convention, the code of every literal
+label remains strictly below the formula code, the constructors retain
+their residue tags, and $M(0,0)=1$ is unchanged. These facts make atomic
+orientation a reasonable implementation search dimension. The supplied
+search generator constructs the exact 190-token separate-diagonal emitter
+for all four conventions, eight choices of premise exchange, and four
+equivalent separation-matrix spellings. Its unmodified case agrees exactly
+with the pinned PA194 word.
+
+There is, however, a precise reason not to claim a literal proof conjugacy
+from these facts alone. Let $R$ recursively recode formulas and preserve
+their literal variable labels. The old gate binds the variable named by
+the old formula code $c$; the new gate binds the variable named by $R(c)$.
+Recoding the old gate therefore does not produce the new gate. Even the
+guard need not be preserved. In membership-transposed coding,
+$R(5)=9$, so $(c,a,b)=(5,9,0)$ passes the old guard whereas replacing
+$c$ by $9$ fails the new guard.
+
+A successful smaller oriented machine would therefore need either a
+fresh-binder proof compiler handling this case explicitly, or a direct
+recalibration of the oriented calculus. In the latter route the old
+relational completeness templates must be checked with the new atom
+constructors; one must verify that every use of a numerical constructor
+depends only on the retained bounds, residues, injectivity and decoding
+equations. The present search does not substitute a claimed recoding
+lemma for that task. A search score alone is neither a literal machine
+certificate nor the missing calibration proof.
+
+\subsection{What transfers from ConciseIPRA}
+
+ConciseIPRA demonstrates useful proof-engineering principles: derive
+logical operations from a smaller native calculus, recover apparent
+primitives from computation equations, and measure a complete proof checker
+rather than an isolated notation. Its native scalar core has iterator
+terms and the two compound formula constructors $Q,D$; the maintained
+development establishes its relation to iPRA. This supplies methodological
+ideas, not an automatic Con(PA) calibration. Replacing the searched theory
+by that core would change the target unless an additional PA consistency
+bridge were provided. A shorter Python proof checker also gives no
+Turing-machine state count without a complete explicit compilation.
+
+\paragraph{Source locations.}
+This audit uses the repository snapshot
+\file{5784600f8709872fa258af66a94df8deb7075c2f}.
+The principal sources are the PA directory README;
+\file{docs/pa194_conpa_2026-11-13/report/calibration.tex} and its
+\file{reference/diagonal_calculus.tex};
+\file{pa194-calculus-soundness/README.md};
+\file{docs/pa195_diagonal_combined_2026-11-13/report/sections/logical_experiments.tex};
+\file{docs/pa_below196_research/theory/THEORY.md};
+and \file{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}.

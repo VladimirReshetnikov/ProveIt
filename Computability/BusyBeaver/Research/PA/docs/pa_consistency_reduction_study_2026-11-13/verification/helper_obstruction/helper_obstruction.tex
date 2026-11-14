@@ -1,0 +1,105 @@
+\subsection{An exact obstruction for added selector helpers}
+\label{sec:selector-helper-obstruction}
+
+This subsection concerns one fixed source grammar, namely the raw
+201-control parent of the primary PA194 machine in
+\texttt{pa194\_conpa\_2026-11-13/construction}. It is not a lower bound on
+arbitrary consistency machines, on other source programs, or on other
+associations of this grammar.
+
+The raw table contains 134 fixed controls and 67 AX readers. Its seven
+existing disjoint incoming-bit folds produce the accepted 194-control
+quotient. A tempting extension adds fresh selector controls and uses them
+to enable further folds. A selector with destinations $u,v$ has rows
+\[
+       h/0=(0,R,u),\qquad h/1=(1,R,v).
+\]
+Both destinations are required to be controls of the original raw table;
+this template does not allow one new helper to target another new helper.
+Readers $a,b$ can be identified when their entries carry, respectively,
+previous bits 0 and 1, and their actions on each current bit either agree
+or can be reconstructed by moving left to a selector, reading the previous
+bit, returning right to $u$ or $v$, and executing the required action.
+All action comparisons in candidate generation are literal comparisons of
+the original raw rows, before any aliases are applied. Thus a direct
+action is free only when the two raw actions already agree, and a provider
+qualifies only when its raw successor rows equal the required raw actions.
+The candidate set is not enlarged when other identifications make
+previously different targets or actions equal. We require disjoint reader
+pairs. For a nontrivial selector detour implementing a fold of $a,b$, the
+selector and its two destinations must avoid $a,b$, so the detour does
+not re-enter the row being replaced. The usual simultaneous-fold verification
+is an additional condition, which we deliberately relax in the obstruction.
+
+\paragraph{Theorem (frozen-grammar selector bound).}
+Within this raw-action direct-selector template, adding any number of fresh helpers
+and applying disjoint reader folds cannot reduce the primary 201-control
+parent below 194 controls.
+
+\paragraph{Proof.}
+For each candidate fold pair $e$, introduce an indicator $x_e$. For each
+useful new selector type $h=(u,v)$, introduce an indicator $y_h$. Identical
+selector types need not be duplicated: a duplicate has the same rows and
+can be identified with the first copy. From the literal transition table,
+the independent verifier enumerates 1,039 useful selector types and 120
+candidate reader pairs. Each original reader can participate in at most
+one selected pair:
+\[
+                  \sum_{e\ni q}x_e\leq 1.
+\]
+If a branch of pair $e$ has neither an equal direct action nor an existing
+selector, let $H_{e,b}$ be the complete enumerated set of new selector
+types that can supply its missing action. Then
+\[
+                  x_e\leq\sum_{h\in H_{e,b}}y_h.
+\]
+A missing branch with $H_{e,b}=\varnothing$ excludes that pair. The intended
+variables are binary, but relax them to the interval $[0,1]$. These are
+265 linear inequalities in 1,159 variables. The resulting control count is
+\[
+                 201+\sum_h y_h-\sum_e x_e.
+\]
+The supplied rational dual certificate proves
+\[
+                  \sum_hy_h-\sum_ex_e\geq -7.
+\]
+Consequently every implementation in the template has at least 194
+controls, even before simultaneous compatibility is imposed. The existing
+seven-fold quotient attains this bound. \hfill$\square$
+
+\paragraph{Exact, solver-independent verification.}
+The optimization program was used to discover the dual certificate, but
+is not needed to check it. The checker
+\texttt{verify\_helper\_obstruction.py} uses only Python's standard library.
+It verifies the frozen table's SHA-256, re-enumerates the helper and pair
+sets, reconstructs every inequality, and checks the dual using exact
+\texttt{fractions.Fraction} arithmetic.
+
+More explicitly, write the constraints as $Az\leq b$, with $0\leq z\leq1$
+and objective $c^{\mathsf T}z$. The retained certificate consists of rational
+vectors $\lambda\leq0$ and $\mu\leq0$ satisfying
+\[
+       A^{\mathsf T}\lambda+\mu\leq c,
+       \qquad b^{\mathsf T}\lambda+\mathbf1^{\mathsf T}\mu=-7.
+\]
+Multiplying the inequalities by these nonpositive weights and using
+$z\geq0$ gives $c^{\mathsf T}z\geq-7$ directly. Thus no floating-point
+optimality claim or external solver belongs to the checking argument.
+
+This obstruction leaves open altered source grammars, changed fixed
+controls, helpers that target other new helpers, longer detours outside
+the displayed selector template, overlapping multi-reader identifications,
+and changes to the logical calculus or the tape representation. It also
+leaves open mutually supporting aliases: new direct equalities or provider
+action matches created only after other controls have been identified are
+not admitted by this frozen candidate-generation template.
+
+\paragraph{Reproduction and provenance.}
+Run \texttt{python3 -B verify\_helper\_obstruction.py} with the adjacent files
+\texttt{helper\_lp\_certificate.json} and \texttt{primary201.native.tm}.
+The checked output is retained in \texttt{helper\_obstruction\_verified.json}.
+The raw parent is reconstructed from the grammar and compiler at ProveIt
+commit \texttt{75a42a28ca818627f5a104fb0f0c7f7d02a52947}, under
+\texttt{Computability/BusyBeaver/Research/PA/docs/pa194\_conpa\_2026-11-13}.
+The raw table is included solely as the frozen input to this scoped bound;
+it is not presented as a new consistency machine.

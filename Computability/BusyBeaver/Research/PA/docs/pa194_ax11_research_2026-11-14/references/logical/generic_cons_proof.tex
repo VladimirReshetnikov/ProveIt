@@ -1,0 +1,254 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,hyperref}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newcommand{\pair}[2]{\pi(#1,#2)}
+\newcommand{\tri}{\operatorname{tri}}
+\title{The radix-independent formula constructor and its concrete source binding}
+\author{Supplement to the PA194 radix-5 and radix-6 construction}
+\date{13 November 2026, Pacific time}
+\setlength{\emergencystretch}{2em}
+\begin{document}
+\maketitle
+
+This note supplies the arithmetic macro argument needed to pass from the
+literal primitive-instruction contracts to the new formula codes.  It is
+a mathematical proof, with executable checks of all concrete row bindings.
+It is not presented as a new Lean theorem.  The inherited source modules
+\texttt{M6/Source/AXCons.lean}, \texttt{AXPair.lean}, and
+\texttt{AXTimes4.lean} prove the corresponding radix-4 facts; the argument
+below makes the dependence on the multiplier explicit.
+
+\section{Registers, pairing, and exact source rows}
+
+Write $T=r_1$, $W=r_2$, $X=r_6$, and $Y=r_7$.  All other registers form an
+arbitrary frame $f$ that the macro preserves.  Set
+\[
+ \tri(s)=s(s+1)/2,\qquad \pair ab=\tri(a+b)+b,
+ \qquad (\operatorname{hd}(w),\operatorname{tl}(w))=\pi^{-1}(w).
+\]
+The stack continues to use this unscaled Cantor pairing.  Only formula
+implication changes to $I_k(a,b)=k\pair ab$.
+
+Each occurrence of \texttt{node65} has the following resolved source
+instructions, with all target addresses relative to its entry address $c$.
+For a decrement, the two targets are the zero and positive targets,
+respectively.  A positive decrement subtracts one.  An increment adds one.
+
+\begin{center}
+\begin{tabular}{rll@{\qquad}rll}
+\toprule
+Offset & Operation & Target(s) & Offset & Operation & Target(s)\\
+\midrule
+0 & decrement $W$ & $8,1$ & 11 & decrement $T$ & $15,12$\\
+1 & increment $Y$ & $2$ & 12 & increment $Y$ & $13$\\
+2 & decrement $X$ & $4,3$ & 13 & increment $X$ & $14$\\
+3 & jump & $7$ & 14 & jump & $11$\\
+4 & decrement $Y$ & $7,5$ & 15 & decrement $X$ & $21,16$\\
+5 & increment $X$ & $6$ & 16 & increment $Y$ & $17$\\
+6 & jump & $4$ & 17 & decrement $X$ & $20,18$\\
+7 & jump & $0$ & 18 & increment $T$ & $19$\\
+8 & decrement $Y$ & $11,9$ & 19 & jump & $17$\\
+9 & increment $W$ & $10$ & 20 & jump & $11$\\
+10 & jump & $8$ & 21 & decrement $Y$ & $k+23,22$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Offsets $22,\ldots,k+21$ increment $T$ and continue to the next offset;
+offset $k+22$ jumps to $21$.  The exit is $c+k+23$.
+
+The builder verifies this entire 21-instruction prefix and the complete
+multiplier loop separately at every occurrence.  It checks that all 61
+occurrences of \texttt{node61} are exactly the multiplier bodies of 61
+distinct \texttt{node65} occurrences: the relative tree address of each
+body is $1110$.  There are no additional uses of the multiplier body.  The
+sole direct reference to \texttt{node61} in the named source definitions is
+in \texttt{node62}.  Each outside edge is preserved under the recorded
+source-address relocation, and no outside edge enters an increment-body
+interior.  These are finite facts about the entire source, not sample runs.
+
+\section{The three arithmetic phases}
+
+\begin{lemma}[Unpair prefix]
+Let $(a,z)=\pi^{-1}(w)$.  Starting at $c$ with
+$(T,W,X,Y)=(t,w,0,0)$, the first phase ends at $c+11$ with
+$(t,z,a,0)$ and the same frame $f$.
+\end{lemma}
+\begin{proof}
+At offset 0 one round consumes one unit of $W$.  If $X>0$, the round maps
+$(X,Y)$ to $(X-1,Y+1)$ in five instructions.  If $X=0$, offsets 4--6
+transfer the newly incremented $Y$ into $X$, so the round maps
+$(0,Y)$ to $(Y+1,0)$ in $3Y+8$ instructions.  These are exactly the two
+cases of the successor operation in the Cantor enumeration.  Induction
+on the original value $w$ therefore reaches offset 8 with
+$(W,X,Y)=(0,a,z)$.  Offsets 8--10 transfer $Y$ into $W$ in $3z+1$
+instructions.  No instruction in this phase changes $T$ or $f$.
+\end{proof}
+
+For an exact duration, write
+\[
+ \mathcal{L}(0,p)=1,\qquad
+ \mathcal{L}(n+1,p)=R(p)+\mathcal{L}(n,\operatorname{advance}(p)),
+\]
+where $R(a,b)=5$ for $a>0$, $R(0,b)=3b+8$, and
+$\operatorname{advance}(a,b)=(a-1,b+1)$ for $a>0$ and
+$(b+1,0)$ for $a=0$.  The prefix duration is
+$\mathcal{L}(w,(0,0))+3z+1$.  A convenient bound is
+$\mathcal{L}(w,(0,0))\leq w(3w+8)+1$, because every intermediate
+component is at most $w$.
+
+\begin{lemma}[Pair prefix]
+Starting at $c+11$ with $(T,W,X,Y)=(t,z,a,0)$, the second phase ends at
+$c+21$ with $(0,z,0,\pair at)$ and the same frame $f$.
+\end{lemma}
+\begin{proof}
+Offsets 11--14 transfer each unit of $T$ into one unit of both $X$ and $Y$.
+After $4t+1$ instructions the configuration at offset 15 is
+$(0,z,a+t,t)$.  At offset 15, with $X=s+1$, the macro first subtracts
+one from $X$ and adds one to $Y$.  Offsets 17--19 transfer the remaining
+$s$ units of $X$ into $T$; offset 20 returns to 11; offsets 11--14
+transfer those $s$ units back into $X$ and add $s$ to $Y$.
+Thus the round maps $(X,Y)=(s+1,y)$ to $(s,y+s+1)$ in $7s+5$
+instructions.  Induction on $X$ gives final $Y=t+\tri(a+t)=\pair at$.
+The last zero decrement at offset 15 exits to 21.  The exact duration is
+\[
+ P(t,a)=4t+2+\sum_{j=0}^{a+t-1}(7j+5).
+\]
+The sum is empty if $a+t=0$.  Neither $W$ nor $f$ is changed.
+\end{proof}
+
+\begin{lemma}[Generic multiplication loop]
+For every natural $k$, starting at offset 21 with
+$(T,W,X,Y)=(t,z,x,y)$, the loop reaches offset $k+23$ with
+$(t+ky,z,x,0)$ in exactly $(k+2)y+1$ source instructions.  The frame $f$
+is unchanged.
+\end{lemma}
+\begin{proof}
+If $y=0$, one zero decrement exits.  If $y>0$, one positive decrement,
+the $k$ increments, and the back-jump take $k+2$ instructions and map
+$(T,Y)$ to $(T+k,Y-1)$.  Induction on $y$ proves both the result and the
+duration.  Equivalently, at every return to offset 21 the quantity
+$T+kY$ is invariant and the nonnegative counter $Y$ decreases strictly
+until exit.  The proof uses $Y=r_7$, not $X=r_6$.
+\end{proof}
+
+\begin{theorem}[Generic \texttt{Cons}]
+For every natural $k$, every $t,w$, and every unrelated frame $f$, the
+macro at $c$ terminates at $c+k+23$ with
+\[
+ (T,W,X,Y)=(I_k(\operatorname{hd}(w),t),\operatorname{tl}(w),0,0)
+\]
+when entered with $(t,w,0,0)$ and frame $f$.  Its exact source duration is
+\[
+ \mathcal{L}(w,(0,0))+3z+1+P(t,a)+(k+2)\pair at+1,
+ \qquad (a,z)=\pi^{-1}(w).
+\]
+\end{theorem}
+\begin{proof}
+Compose the three lemmas.  At the start of the multiplier loop $T=0$
+and $Y=\pair at$.  The output is therefore $k\pair at$, as claimed.
+All three phases preserve the same arbitrary frame.  The duration is
+positive and primitive recursive, and its termination proof uses only
+ordinary natural-number induction available in PA.
+\end{proof}
+
+The changes for $k=5,6$ consequently alter formula construction while
+preserving the tuple enumerator, the binary stack representation, and the
+scheduler's pairing and unpairing operations.  Modus ponens uses the same
+\texttt{Cons} macro as the axiom emitter, so its comparison consistently
+uses $I_k$.  In particular, a primitive-contract pass alone is not being
+used to infer this macro fact: the argument above and the 61 concrete
+bindings supply that link.
+
+\section{Formula tags and the free-constructor check}
+
+The source's literal additions of one, two, and three remain unchanged.
+They define
+\[
+ M_k(a,b)=I_k(a,b)+1,\quad
+ U_k(a,B)=I_k(B,a)+2,\quad
+ E_k(a,b)=I_k(a,b)+3.
+\]
+Here $a$ is the variable label bound by $U_k(a,B)$.  The abstract AX
+interpreter in \texttt{build.py} treats $I_k$ as an uninterpreted binary
+constructor, successor as an uninterpreted unary constructor, and input
+values as independent atoms.  It executes all 190 macro tokens of the
+unchanged principal axiom emitter.  It checks syntactic equality of the
+entire output stack and top against the prescribed six retained axiom
+heads, the restricted propositional head, the diagonal
+$\Gamma_k(a)=I_k(a,U_k(a,a))$, and the guarded pointed-separation head.
+The stack contains precisely ten new entries before the final guard.
+
+This check excludes a literal use of \texttt{node61} in the AX token word;
+the only two-increment literal is the unchanged universal tag.  Hence
+changing the multiplier body does not accidentally change a formula tag.
+It is an exact algebraic check for arbitrary inputs and arbitrary $k$;
+it does not evaluate truth or establish the separate logical calibration.
+
+The source binding also checks that the old and new sources have the same
+3,429 primitive sites outside the increment bodies, with all operations,
+register arguments, and successor edges preserved under relocation.
+Their total sizes are therefore
+\[
+ 3673+61(k-4)=
+ \begin{cases}3734,&k=5,\\3795,&k=6.\end{cases}
+\]
+For the auxiliary radix-4 reassociation, the complete resolved instruction
+list is identical to the principal PA194 source.
+
+\section{Why the physical count stays at 194}
+
+Let $i$ denote the one-increment reader and $ii$ the already available
+two-increment reader.  The old multiplier body has shape $(ii,ii)$.
+The new shapes are
+\[
+ 4R:(i,(i,ii)),\qquad 5:((i,ii),ii),\qquad 6:((i,ii),(i,ii)).
+\]
+All introduce one shared new reader, native state 330, for $(i,ii)$.
+The source reassociation ensures that the old two-increment reader,
+native state 99, is now entered only immediately after a transition that
+writes 1 and moves right.  Native state 41 is entered only immediately
+after a transition that writes 0 and moves right.  Both can therefore
+share one retained state 99 that first reads the previous tape cell.
+Its actions are
+\[
+ (99,0)\mapsto(0,L,30),\qquad(99,1)\mapsto(1,L,2035).
+\]
+
+The four two-cell simulations below give the exact old successor after
+three new steps.  The intervening paths visit only the old head cell and
+its left neighbor, restore the appropriate old written symbol, and end
+one cell right of the old head.  Here $h$ is the bit in the left neighbor
+and $b$ is the originally scanned bit.
+
+\begin{center}
+\begin{tabular}{rrrl}
+\toprule
+Old state & $h$ & $b$ & New state path\\
+\midrule
+41 & 0 & 0 & $99\to30\to45\to24$\\
+41 & 0 & 1 & $99\to2035\to61\to25$\\
+99 & 1 & 0 & $99\to30\to46\to61$\\
+99 & 1 & 1 & $99\to2035\to2036\to61$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The builder checks these four cases together with all 28 cases of the
+seven inherited folds on the final simultaneous transition table.  It
+also checks every incoming row, so the history-bit hypotheses hold for
+all entries, rather than merely for the blank run.  There are 135 fixed
+controls and 67 axiom-reader controls before folding.  The eight
+disjoint folds leave $135+67-8=194$ working controls and 388 transitions.
+The separate halt target is not counted as a working control.
+
+The dense table has initial control 0, working controls $0,\ldots,193$,
+and halt target 194.  The tape alphabet is $\{0,1\}$, the blank is 0,
+and every transition moves left or right.  Blank-start initialization
+takes 58,320 physical steps and produces the exact complete source frame,
+which is checked as equality of the entire finite-support tape.
+
+\end{document}

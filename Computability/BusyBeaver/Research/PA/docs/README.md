@@ -2,7 +2,7 @@
 
 This directory holds the research packets that were delivered to
 [`docs/incoming`](../../../../../docs/incoming/README.md) as archives between 28 October and
-13 November 2026. Each packet is about constructing a small Turing machine whose
+14 November 2026. Each packet is about constructing a small Turing machine whose
 non-halting on the blank tape is equivalent to the consistency of Peano arithmetic,
 `Con(PA)`, or about comparing and reducing such machines.
 
@@ -16,6 +16,9 @@ The checked work of this project is described in the [parent README](../README.m
 
 - Each archive has one directory, named after the archive. A trailing ` (1)` or ` (2)` of an
   archive name is written `_1` or `_2`.
+- Two different archives were delivered under the name
+  `pa_consistency_research_2026-11-14.zip`, on 13 and on 14 November. The second one is
+  filed as `pa_consistency_research_2026-11-14_2`.
 - Almost every archive wraps its files in a single top directory. That directory is
   removed, so the archive member `<wrapper>/<path>` is the file `<directory>/<path>` here.
   The table gives each wrapper, or `none` for an archive without one.
@@ -34,10 +37,10 @@ reason and where the same bytes are. There are four reasons.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `upstream-copy` | 13,186 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
+| `upstream-copy` | 13,372 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
 | `sibling-archive` | 17 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
-| `ignored` | 1,285 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
-| `duplicate-machine` | 6,596 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
+| `ignored` | 1,629 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
+| `duplicate-machine` | 10,970 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
 
 Six nested archives have no delivered counterpart and are placed as files:
 `U209_ConPA_Joint_2026-10-29.zip` (in three packets), `U209_ConPA_2026-10-29.zip`,
@@ -50,8 +53,8 @@ does not run here as delivered.
 
 ## Packets
 
-The 61 archives hold 35,544 members: 14,460 placed here (776 MB), 13,186 copies of the upstream
-snapshots, 17 nested copies of sibling archives, 1,285 ignored files and 6,596 duplicate machine
+The 77 archives hold 44,145 members: 18,157 placed here (999 MB), 13,372 copies of the upstream
+snapshots, 17 nested copies of sibling archives, 1,629 ignored files and 10,970 duplicate machine
 tables. The columns P, U, S, I and M give these five counts for each packet. Arrival is
 the date of the commit that added the archive to `docs/incoming`.
 
@@ -118,10 +121,26 @@ the date of the commit that added the archive to `docs/incoming`.
 | [`pa194_qradix_research_2026-11-13`](pa194_qradix_research_2026-11-13/) | 2026-11-13 | `pa194_qradix_research` | PA194Q5 and PA194Q6. States two different 194-state machines and that nothing below 194 was obtained. | 212 | 5 | 0 | 24 | 404 |
 | [`pa194qh6_conpa_2026-11-13`](pa194qh6_conpa_2026-11-13/) | 2026-11-13 | `pa194qh6_conpa_2026-11-13` | PA194QH6. States a new 194-state composition and that no machine below 194 was obtained. | 151 | 2 | 0 | 2 | 3 |
 | [`pa194qns_research_2026-11-13`](pa194qns_research_2026-11-13/) | 2026-11-13 | `pa194qns_research_2026-11-13` | PA194QNS. States a distinct 194-state machine and that no machine below 194 was established. | 217 | 4 | 0 | 15 | 48 |
+| [`pa194qh_conpa_2026-11-13`](pa194qh_conpa_2026-11-13/) | 2026-11-14 | `pa194qh_2026-11-13` | PA194QH. States a new 194-state machine combining the Q emitter with the H controller, and that the reduction below 194 was not achieved. | 226 | 5 | 0 | 10 | 45 |
+| [`pa_consistency_reduction_study_2026-11-13`](pa_consistency_reduction_study_2026-11-13/) | 2026-11-14 | `pa_sub194_research_2026-11-13` | Comparison and reduction study. States that no valid machine below 194 was established and an obstruction for one family of transformations. | 202 | 6 | 0 | 23 | 538 |
+| [`pa_consistency_research_2026-11-14_2`](pa_consistency_research_2026-11-14_2/) | 2026-11-14 | `pa_sub194_comparison_2026-11-14` | Comparison and investigation below 194 states. States that no verified machine below 194 was obtained, 49 distinct 194-state graph classes and an all-offset obstruction. | 359 | 5 | 0 | 5 | 112 |
+| [`pa_sub194_research`](pa_sub194_research/) | 2026-11-14 | `pa_sub194_research` | Search below 194 states. States that the bound was not achieved and a new 196-state construction MP196. | 218 | 10 | 0 | 2 | 64 |
+| [`pa_sub194_research_2026-11-13`](pa_sub194_research_2026-11-13/) | 2026-11-14 | `pa_sub194_research_2026-11-13` | Comparison and research below 194. States that no machine below 194 has been established and an explicit 193-state runtime core whose tested startups are rejected. | 142 | 13 | 0 | 20 | 47 |
+| [`pa194_ax11_research_2026-11-14`](pa194_ax11_research_2026-11-14/) | 2026-11-14 | `pa194_ax11_research_2026-11-14` | PA194AX11 and PA194QH5. States a different 194-state machine with a PA proof of the equivalence, a second 194-state composition, and nothing below 194. | 172 | 62 | 0 | 8 | 210 |
+| [`pa194_qh5_research_2026-11-14`](pa194_qh5_research_2026-11-14/) | 2026-11-14 | `pa194_qh5_research_2026-11-14` | PA194QH5. States a new 194-state construction and that no machine below 194 is established. | 204 | 2 | 0 | 93 | 693 |
+| [`pa194qhs_conpa_2026-11-14`](pa194qhs_conpa_2026-11-14/) | 2026-11-14 | `pa194qhs_conpa_2026-11-14` | PA194QHS. States a 194-state composition not delivered before and that no machine below 194 was established. | 126 | 5 | 0 | 5 | 82 |
+| [`pa194qn6_conpa_2026-11-14`](pa194qn6_conpa_2026-11-14/) | 2026-11-14 | `pa194qn6_conpa_2026-11-14` | PA194QN6. States a new 194-state composition and claims no machine below 194. | 761 | 5 | 0 | 82 | 89 |
+| [`pa194qn_2026-11-14`](pa194qn_2026-11-14/) | 2026-11-14 | `pa194qn_2026-11-14` | PA194QN5 and PA194QN6. States two 194-state machines and that no valid machine below 194 was established. | 163 | 3 | 0 | 3 | 582 |
+| [`pa194h5_research_2026-11-14`](pa194h5_research_2026-11-14/) | 2026-11-14 | `pa194h5_research` | PA194H5. States a new 194-state coefficient-five specialization of the H architecture and nothing below 194. | 161 | 18 | 0 | 2 | 90 |
+| [`PA194B_PA194G_research_2026-11-14`](PA194B_PA194G_research_2026-11-14/) | 2026-11-14 | `PA194B_PA194G_research_2026-11-14` | PA194B and PA194G. States two new 194-state machines and that no verified machine below 194 was obtained. | 196 | 3 | 0 | 11 | 541 |
+| [`pa194_ax11qh5_2026-11-14`](pa194_ax11qh5_2026-11-14/) | 2026-11-14 | `pa194_ax11qh5_2026-11-14` | PA194AX11QH5. States a new 194-state machine combining an eleven-entry AX protocol with coefficient-five coding, and nothing below 194. | 262 | 31 | 0 | 9 | 89 |
+| [`pa194_tdy_2026-11-14`](pa194_tdy_2026-11-14/) | 2026-11-14 | `pa194_tdy_2026-11-14` | PA194TDY. States a 194-state physical register-cycle design and that no machine below 194 was established. | 116 | 2 | 0 | 7 | 5 |
+| [`pa194ax11q6_2026-11-14`](pa194ax11q6_2026-11-14/) | 2026-11-14 | `pa194ax11q6_2026-11-14` | PA194AX11Q6. States a new 194-state composition and claims neither a machine below 194 nor a lower bound. | 281 | 14 | 0 | 13 | 274 |
+| [`pa194p5_research_2026-11-14`](pa194p5_research_2026-11-14/) | 2026-11-14 | `pa194p5_research_2026-11-14` | PA194P5. States a 194-state machine that moves five registers and seven router targets of the primary PA194, a PA proof that it halts exactly when PA194 does, and nothing below 194. | 108 | 2 | 0 | 51 | 913 |
 
 ## Archives still in `docs/incoming`
 
-None. All 61 archives are removed from `docs/incoming`. They remain in the history of
+None. All 77 archives are removed from `docs/incoming`. They remain in the history of
 the repository.
 
 Some scripts of the [parent directory](../README.md) open an archive at
@@ -133,7 +152,10 @@ c=$(git log --diff-filter=D --format=%H -1 -- "docs/incoming/<archive>.zip")
 git show "$c^:docs/incoming/<archive>.zip" > "docs/incoming/<archive>.zip"
 ```
 
-A restored archive is a working copy only; do not commit it.
+A restored archive is a working copy only; do not commit it. For
+`pa_consistency_research_2026-11-14.zip` this command restores the second archive of that
+name; the first one was deleted by an earlier commit, the second entry of the same
+`git log` without `-1`.
 
 ## Third-party material
 

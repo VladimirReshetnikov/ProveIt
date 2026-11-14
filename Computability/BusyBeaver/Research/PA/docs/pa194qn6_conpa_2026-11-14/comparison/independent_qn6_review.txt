@@ -1,0 +1,133 @@
+Independent review of PA194QN6
+==============================
+
+Reviewed candidate dense table SHA-256:
+72a35e528c1061f61e211d0bcf3a954859d2dbbcfd6b9f7846e4f970bb04e4e9
+Native table SHA-256:
+372d68753d206e5396312951a6be777179757598ad1384784db45764efd61fbc
+Repository reference revision:
+2337ce611a26e308697ccbddb2a1636f989f01c3
+
+Finding
+-------
+The reviewed composition has no identified incompatibility between the
+premise-exchanged quantifier head, coefficient-six numerical coding, no-push
+MP, and the sum-one Shift guard. The ordinary mathematical proof chain gives
+the claimed PA halting/refutation equivalence. Its logical calibration uses
+explicit inherited syntactic proof transformations, not a newly completed
+end-to-end Lean/Rocq theorem. The reviewed candidate has 194 working states;
+this review does not claim a sub-194 result or a lower bound.
+
+The finite check audit_qn6.py imports no builder, compiler, command checker, or
+physical simulator from the candidate. Its receipt is independent_qn6_audit.json.
+The separate physical checks were run by the construction/review team and their
+literal hashes and receipts were inspected here; this reviewer did not repeat
+an unnecessary third full symbolic physical validation.
+
+1. Exact parent binding
+
+Reconstructed the supplied Q6 native table from its pinned dense table and
+label map. QN6 has exactly the same native state set, with exactly one altered
+row: (164,1): (1,R,98) -> (1,R,114). The entire source node map differs only
+at node163, from (node6,node55) to (node6,node54). The 3,795-site Q6 resolved
+source becomes the 3,776-site QN6 source by deleting [3756,3775); the only
+exterior entry into the deleted interval is the zero branch 3750 -> 3756.
+Every remaining instruction and successor is equal under the explicit index
+relocation. The retained seven-instruction copy loop is checked literally.
+
+For comparison with N6, every row of all 135 raw fixed controls is identical.
+The resolved source has exactly 83 changed instructions, in the inclusive
+index range 2015..2133, accounting for the Q head. This is independently
+checked against pinned repository blobs, rather than inferred from filenames
+or trusted assertions in the new builder.
+
+The one-row change is operationally substantive. On the sound proof store
+(t,w,d,h)=(0,3,0,0), the stack is [U(0,0);0]=[2;0]=3. Successful MP_0 in Q6
+pushes a dummy zero and yields w=[0;3]=9; QN6 leaves w=3. This is a concrete
+change to command semantics. Structural comparison separately rules out
+renaming, reflection, bit complement, start changes and terminal-action changes
+against all 76 recognized existing full 194-state graphs.
+
+2. Logical exchange
+
+The exchanged head is precisely the two-premise exchange of universal
+distribution. Exchange is derivable from the unchanged restricted
+implication basis, independently of either distribution head. Inspected the
+generic RestrictedImplication/ImplicationBasis proof templates and independently
+replayed the serialized 61-line certificate: 17 K leaves, 14 S leaves, 30 MP
+steps, no undischarged hypotheses. K and S are supplied by the unchanged
+restricted basis. Numerical constructor evaluation, including I(0,0)=0,
+preserves each finite MP identity. This permits proof translations in both
+directions without circular use of the replaced quantifier axiom.
+
+3. Coefficient-six calibration
+
+The hereditary map must recode labels as well as formula constructors, since
+Gamma(B) uses B itself as a variable label. The supplied inverse-on-image
+recursion correctly establishes injectivity, thereby preserving binding,
+shadowing and guarded disequalities. The recoding is not monotone. The proof
+explicitly avoids that false shortcut: rho8All supplies the unrestricted
+propositional schema through a fixed template whose own restricted leaves
+use only reflexivity and domination by an implication code.
+
+Residues four and five receive closed-truth translations. Positive numerical
+formula components are smaller than their parent codes. Every decoded source
+variable label in B is below B, so x_B is not free in its arithmetic
+translation. Auxiliary bound variables in Bit are freshly renamed. An initial
+overbroad sentence about all translated variable labels was corrected during
+review to make this distinction explicit; no machine change was required.
+
+Checked the exceptional zero implication and truth code explicitly. Finite
+binary comprehension is supplied uniformly by inserting the translated
+formula into a PA induction template, not by deciding truth. The gate proof
+distinguishes the coincident-label case a=b using its singleton-point matrix.
+Code one translates to Bit(x_0,x_0), which PA refutes. The reverse direction
+uses the inherited PA-to-coefficient-four refutation compiler, hereditary
+recoding and premise exchange. These are syntactic proof maps; no soundness
+reflection for PA or truth predicate is assumed.
+
+4. All-store compiler and edge cases
+
+Manually derived the Push and total Pop identities from the exact ten-entry
+AX stack, including the saved old top. After nine Shifts the generated rho
+head is visible and U(d,h) is cached; after ten Shifts U(d,h) is visible and
+the old top is cached. U(d,h) is at least two, so the eleventh Shift of Pop
+cannot trigger the sum-one test even when the old top is one.
+
+Checked the seven ordinary-head selectors, guarded-head selector, dominated
+rho selector, and generalization word with the actual offsets and stack
+positions. Discard is MP_0 when d=0 because its two branches have the same
+result, even with an arbitrary old cache. MP_i on (0,w,0,0) yields offset i
+uniformly, including i=0. Generalization reads the saved premise into the
+cache before AX and selects U(i,a) at the correct final stack position.
+
+The no-push MP compiler reserves exactly one zero before compiling its
+premises. Immediately before the final two Shifts its store is
+(0,[a,I(a,b),0;w],0,0). The second Shift either detects an already false
+antecedent, or produces (a,[0;w],0,I(a,b)). MP_b then gives
+(b,[0;w],b,0); total Pop consumes the reserved zero and returns (b,w,0,0).
+The b=1 case works because Pop itself is total at a false top. The final
+Shift detects the false conclusion. Zero-pair collapse, [0;0]=0, respects
+all these equations and does not require treating numerical stacks as free
+lists. Prefixing AX resets arbitrary incoming offsets/caches while the
+proof compiler preserves any framed old stack.
+
+5. Scheduling and soundness
+
+The scheduler carries stores between candidate words; the proof therefore
+uses an all-store halting word, rather than pretending that each trial starts
+clean. The family of fresh candidate codes with an arbitrary leading AX
+parameter is strictly increasing and unbounded, so a universally halting
+refutation word is eventually tested unless halting occurs earlier. Positive
+residual codes strictly decrease and constituent arithmetic loops terminate.
+
+For the other direction, both visible and cached formulas and the canonical
+Cantor stack entries are annotated by numerical/PA derivations. Offsets are
+unrestricted arithmetic data. Shift transports proofs, MP composes proofs,
+and AX supplies proofs. Since t+h=1 forces one annotated formula to be one,
+a halt gives a PA refutation. The physical first-halt argument uses positive
+finite source simulations plus determinism, not only sampled executions.
+
+These checks support the ordinary theorem asserted in qn6_preservation.tex
+while keeping its inherited proof dependencies and lack of a new trusted-kernel
+endpoint visible. All findings concern the exact hashes above.

@@ -1,0 +1,137 @@
+{
+  "accepted_sub194_machine": false,
+  "scope": "Finite unsuccessful search families; no general lower bound.",
+  "reference_commit": "75a42a28ca818627f5a104fb0f0c7f7d02a52947",
+  "runs": [
+    {
+      "name": "coalescence80",
+      "input": "inputs/n6.native.tm",
+      "contexts": 29262,
+      "radius": 5,
+      "old_step_bound": 80,
+      "replacement_step_bound": 300,
+      "candidate_count": 0,
+      "completed": true,
+      "log": "recorded_logs/coalescence80.log"
+    },
+    {
+      "name": "coalescence_bypass300",
+      "input": "inputs/n6.native.tm",
+      "contexts": 29262,
+      "radius": 5,
+      "old_step_bound": 300,
+      "replacement_step_bound": 300,
+      "candidate_count": 0,
+      "completed": true,
+      "log": "recorded_logs/coalescence_bypass300.log"
+    },
+    {
+      "name": "coalescence_append0_bypass",
+      "input": "inputs/n6_append0.native.tm",
+      "contexts": 29262,
+      "radius": 5,
+      "old_step_bound": 300,
+      "replacement_step_bound": 300,
+      "candidate_count": 0,
+      "completed": true,
+      "scope_note": "Heuristic only; context coverage and source/startup invariants are not established for the mutated machine.",
+      "log": "recorded_logs/coalescence_append0_bypass.log"
+    },
+    {
+      "name": "symbolic_merge",
+      "retained_contexts": 7684,
+      "contexts_per_branch": 24,
+      "protected_box_controls": 23,
+      "primitive_contracts": 4780,
+      "preliminary_fuel": 1600,
+      "final_validation_fuel": 1024,
+      "certified_quotients": 0,
+      "completed": true,
+      "completion_note": "Original process completed normally, but its historical driver prints no final DONE marker.",
+      "log": "recorded_logs/symbolic_merge.log"
+    },
+    {
+      "name": "symbolic_diverse_merge",
+      "retained_contexts": 57241,
+      "max_contexts_per_branch": 256,
+      "primitive_contracts": 4780,
+      "preliminary_fuel": 1600,
+      "final_validation_fuel": 1024,
+      "final_candidate_quotients": 1,
+      "certified_quotients": 0,
+      "completed": true,
+      "failure": {
+        "remove": 2002,
+        "keep": 2031,
+        "rows": [
+          [
+            0,
+            true,
+            12
+          ],
+          [
+            1,
+            true,
+            2003
+          ]
+        ],
+        "failed_contract": [
+          1164,
+          null
+        ],
+        "completed_contracts": 1518
+      },
+      "log": "recorded_logs/symbolic_diverse_merge.log"
+    },
+    {
+      "name": "new_helper_search",
+      "helper_types": 85,
+      "required_folds_for_193": 9,
+      "matching_bound_passes": 0,
+      "completed": true,
+      "log": "recorded_logs/new_helper_search.log"
+    },
+    {
+      "name": "two_helpers",
+      "helper_types": 1039,
+      "helper_pairs": 539241,
+      "maximum_matching_bound": 9,
+      "required_folds_for_193": 10,
+      "matching_bound_passes": 0,
+      "completed": true,
+      "log": "recorded_logs/two_helpers.log"
+    },
+    {
+      "name": "arbitrary_helpers_milp",
+      "variables": 1159,
+      "constraints": 265,
+      "reported_optimum": -7,
+      "reported_resulting_states": 194,
+      "solver_report": "HiGHS optimal, gap 0; the separately supplied exact dual is the solver-independent bound.",
+      "completed": true,
+      "log": "recorded_logs/arbitrary_helpers_milp.log"
+    },
+    {
+      "name": "cascade_helpers",
+      "compatible_eight_fold_seed_tables": 0,
+      "descendant_tables": 0,
+      "completed": true,
+      "log": "recorded_logs/cascade_helpers.log"
+    },
+    {
+      "name": "cascade_sequential_helpers",
+      "initial_seeds": 97,
+      "visited_descendant_tables": 3168,
+      "best_states": 195,
+      "per_seed_visit_limit": 20000,
+      "observed_per_seed_visits": [
+        16,
+        32,
+        64
+      ],
+      "queues_exhausted_before_limit": true,
+      "completed": true,
+      "log": "recorded_logs/cascade_sequential_helpers.log"
+    }
+  ]
+}

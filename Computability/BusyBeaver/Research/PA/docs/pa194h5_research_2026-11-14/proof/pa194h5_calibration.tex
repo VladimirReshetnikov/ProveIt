@@ -1,0 +1,382 @@
+% Independent mathematical proof section for the PA194H5 release.
+% Requires amsmath, amssymb, amsthm; theorem and lemma environments.
+\section{A PA proof of the consistency calibration for PA194H5}
+\label{sec:h5-calibration}
+
+The construction combines a coefficient-five formula encoding with the
+visible-result, no-push MP operation and a Shift operation that tests only
+the cached formula. The logical calibration below is an ordinary
+mathematical proof of a PA-provability statement. Its finite machine facts
+are the delivered source, transition, symbolic-runtime and blank-start
+certificates. It is not a newly compiled end-to-end Lean or Rocq theorem.
+
+Let $M$ denote the exact delivered dense table, with start zero and halt
+label 194, and let $H_M$ assert that it has a finite halting trace from the
+blank binary tape. The statement to be proved is
+\[
+ \mathrm{PA}\vdash
+ H_M\ \longleftrightarrow\
+ \exists p\,\operatorname{Prf}_{\mathrm{PA}}(p,\ulcorner0=1\urcorner).
+ \tag{H5}
+\]
+Negating this equivalence in PA gives the requested consistency statement.
+No consistency assumption is used to prove (H5).
+
+\subsection{The total numerical calculus}
+
+Put $P(a,b)=(a+b)(a+b+1)/2+b$ and define
+\[
+\begin{aligned}
+ I_5(A,B)&=5P(A,B),&M_5(a,b)&=5P(a,b)+1,\\
+ U_5(a,B)&=5P(B,a)+2,&E_5(a,b)&=5P(a,b)+3.
+\end{aligned}
+\]
+The order of the two components in $U_5$ is intentional. Zero denotes
+truth and $1=M_5(0,0)$ denotes the target false formula. Write
+$N_5(A)=I_5(A,1)$, $A\wedge B=N_5(I_5(A,N_5(B)))$, and
+$\exists_a B=N_5(U_5(a,N_5(B)))$.
+
+The separate-head calculus $\mathcal C_5$ has modus ponens and theorem
+generalization $B\mapsto U_5(i,B)$. Its six universally instantiated heads
+are
+\[
+\begin{aligned}
+ L_1(D,H)&=(\exists_D U_5(D,H))\to H,\\
+ L_2(D,A,H)&=U_5(D,U_5(A,H))\to U_5(A,U_5(D,H)),\\
+ L_3(D,A,H)&=M_5(H,D)\to(E_5(H,A)\to M_5(A,D)),\\
+ L_4(D,A,H)&=E_5(H,D)\to(M_5(A,H)\to M_5(A,D)),\\
+ L_5(D,H)&=\exists_D E_5(H,D),\\
+ L_6(D,A,H)&=U_5(D,A)\to(U_5(D,A\to H)\to U_5(D,H)).
+\end{aligned}
+\]
+Here every displayed implication is $I_5$. The remaining heads are
+\[
+ \rho_5(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \quad u\le D,
+ \qquad \Gamma_5(B)=B\to U_5(B,B),
+\]
+and the guarded gate $G_5(a,b,c)$ for $c\ne a,b$. Explicitly,
+\[
+\begin{aligned}
+ V(a,b,c)&=M_5(a,b)\to U_5(c,M_5(a,b)),\\
+ P_c&=c\to M_5(c,b),\\
+ S(a,b,c)&=U_5\bigl(b,(M_5(a,b)\to P_c)\wedge(M_5(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U_5(c,S(a,b,c)\to N_5(P_c)),\\
+ G_5(a,b,c)&=N_5(V(a,b,c)\to Q(a,b,c)).
+\end{aligned}
+\]
+A failed guard emits zero. This is derivable, since the dominated
+propositional instance with all four parameters zero has code zero.
+Every natural number is permitted as a formula code, so the fifth residue
+class must receive an interpretation; it is addressed below.
+
+\subsection{Refutations transfer from coefficient four to coefficient five}
+
+The supplied separate-head coefficient-four calibration constructs a
+primitive-recursive translation of PA refutations into proofs of code one
+in $\mathcal C_4$. Its completeness argument replaces the old
+equality-vacuity interface by diagonal freshness, reverse membership
+rewriting and a neighborhood-equality witness. These are the supplied
+ordinary mathematical derivations, retained in the logical references.
+To obtain $\mathcal C_5$ one needs more than a typographical replacement of
+four by five, because formula codes are also used as variable labels.
+
+Define a hereditary recoder $F$ by $F(0)=0$ and, for $n>0$ with unique
+decoding $n=4P(a,b)+r$, $0\le r<4$, put
+\[
+                       F(n)=5P(F(a),F(b))+r.
+\]
+Both decoded components are smaller than $n$. A recursion storing its
+previous values therefore defines $F$ primitive recursively, and PA
+proves its defining equations. It fixes $0,1,2,3$ and takes positive
+arguments to positive values.
+
+Define $J(0)=0$ and, when $m=5P(a,b)+r>0$, put
+\[
+ J(m)=\begin{cases}4P(J(a),J(b))+r,&r<4,\\0,&r=4.\end{cases}
+\]
+The same strict component bounds make this primitive recursive. Induction
+on $n$ gives $J(F(n))=n$, hence $F$ is injective. Direct substitution,
+including the exceptional case $I_4(0,0)=0$, gives
+\[
+\begin{aligned}
+ F(I_4(A,B))&=I_5(F(A),F(B)),\\
+ F(M_4(a,b))&=M_5(F(a),F(b)),\\
+ F(U_4(a,B))&=U_5(F(a),F(B)),\\
+ F(E_4(a,b))&=E_5(F(a),F(b)).
+\end{aligned}
+\]
+The same $F$ is applied to every numerical variable label. Injectivity
+preserves binding, repeated labels and the inequalities $c\ne a,b$ in the
+gate guard. In particular,
+\[
+                         F(\Gamma_4(B))=\Gamma_5(F(B)).
+\]
+This exact identity is why the variable labels must be recoded as well as
+the formula constructors.
+
+The recoder is not order-preserving: $40<44$, whereas $F(40)=75>55=F(44)$.
+A restricted propositional leaf must therefore be translated using a
+proof, not by asserting $F(u)\le F(D)$. The supplied generic proof term
+\texttt{M6/Logic/RestrictedImplication.lean:rho8All} derives the
+unrestricted schema from MP, the restricted schema and the order rules
+\[
+ u\le u,\qquad u\le a\Longrightarrow u\le I_5(a,b),\qquad
+ u\le b\Longrightarrow u\le I_5(a,b).
+\]
+These rules hold because $a,b\le P(a,b)\le5P(a,b)$. The proof term is a
+fixed finite template, with every restricted leaf justified by those
+bounds; it assumes no numerical monotonicity of $F$.
+
+Recursing on a $\mathcal C_4$ proof, recode each ordinary rule and replace
+each restricted propositional leaf by this unrestricted template at its
+recoded arguments. PA verifies the resulting primitive-recursive proof
+transformation. Since $F(1)=1$, composing it with the supplied
+PA-to-$\mathcal C_4$ refutation translation proves in PA that every PA
+refutation yields a $\mathcal C_5$ proof of one.
+
+\subsection{Soundness in PA, including residue four}
+
+Define a total syntactic translation $T$ into arithmetic formulas. Put
+$T(0)=(0=0)$; for $n=5P(a,b)+r>0$ use
+\[
+\begin{array}{c|l}
+ r&T(n)\\\hline
+ 0&T(a)\to T(b)\\
+ 1&\operatorname{Bit}(x_a,x_b)\\
+ 2&\forall x_b\,T(a)\\
+ 3&x_a=x_b\\
+ 4&0=0.
+\end{array}
+\]
+The bit predicate expresses that its second argument is a set bit of its
+first argument. Its internal auxiliary variables are renamed to prevent
+capture. Decoded components are strictly smaller than $n$, so this is a
+primitive-recursive translation of syntax. Residue four is interpreted as
+closed truth even when such a number occurs as an arbitrary command
+parameter or subformula.
+
+Every source variable label appearing in $T(B)$ is below $B$; the truth
+and residue-four cases have no such labels. Thus $x_B$ is not free in
+$T(B)$, and every diagonal head has a uniformly generated PA proof.
+The implication-code identity is a syntactic identity except when both
+arguments are zero. In that case the required equivalence is the fixed
+propositional theorem
+\[
+ (0=0)\ \longleftrightarrow\ ((0=0)\to(0=0)).
+\]
+This handles $I_5(0,0)=0$ without a false disjoint-constructor assumption.
+
+PA proves $\operatorname{Bit}(s,z)\to z<s$ and hence refutes
+$\operatorname{Bit}(z,z)$. For every arithmetic formula $\theta$ it also
+proves finite binary comprehension:
+\[
+ \forall n\,\exists s<2^n\,\forall z<n\,
+       (\operatorname{Bit}(s,z)\leftrightarrow\theta(z,\vec u)).
+\]
+A proof is supplied by induction on $n$: retain the old code or add $2^n$
+according to excluded middle on $\theta(n,\vec u)$. Inserting the syntax
+of $\theta$ into this proof pattern is a primitive-recursive producer of
+PA proofs. It is not a decision procedure for $\theta$ or a uniform truth
+predicate.
+
+For the guarded gate set $\phi=T(c)$. When $a\ne b$, use the finite
+comprehension matrix
+\[
+ (\operatorname{Bit}(x_a,z)\lor z=x_b)\wedge\phi[z/x_b]
+\]
+with bound $x_a+x_b+1$. When $a=b$, use instead
+$(z=x_b)\wedge\phi[z/x_b]$ with bound $x_b+1$.
+In the latter case the first membership antecedent inside the binder is
+$\operatorname{Bit}(z,z)$, which PA refutes. In each case the chosen set
+satisfies the separation matrix and distinguished-point condition.
+Freshness of the label $c$, and capture-avoiding substitution at the
+parameter labels, ensure that choosing the set does not alter $\phi$.
+This supplies a PA proof of $\neg T(Q(a,b,c))$; the guarded membership
+vacuity proves $T(V(a,b,c))$, and propositional reasoning gives $T(G_5)$.
+The failed-guard output has its fixed truth proof.
+
+The six remaining heads have ordinary first-order proof templates under
+this interpretation; the propositional head is a tautology; MP uses the
+implication-code equivalence; theorem generalization uses the corresponding
+PA rule. Recursion on a finite $\mathcal C_5$ derivation consequently
+produces a PA proof of its translation. Since
+$T(1)=\operatorname{Bit}(x_0,x_0)$ has a fixed PA refutation, a
+$\mathcal C_5$ proof of one yields a PA refutation. This combines with the
+preceding recoding argument to establish, inside PA, equivalence of the two
+refutation-existence predicates.
+
+\subsection{The exact controller and its proof compiler}
+
+The command store is $(t,w,d,h)$. The ordinary Cantor stack is
+$[a;w]=P(a,w)$, with total projections
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$. In particular $[0;0]=0$.
+For $b=d+x$, the changed controller is
+\[
+\begin{aligned}
+ \mathsf S(t,w,d,h)&=
+  \begin{cases}\mathsf{halt},&h=1,\\
+    (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+  \end{cases}\\
+ \mathsf{MP}_x(t,w,d,h)&=
+  \begin{cases}(b,w,b,0),&I_5(t,b)=h,\\
+                 (0,w,b,0),&I_5(t,b)\ne h.
+  \end{cases}
+\end{aligned}
+\]
+Successful MP leaves the stack unchanged. This fact is reflected in the
+compiler, which reserves its own dummy zero before compiling the premises.
+
+For $D=d+x,H=h+y,A=c$, AX emits the guarded gate on top, clears $d,h$,
+and pushes ten entries. In top-to-bottom order the nine generated entries
+are
+\[
+ (q_1,\ldots,q_9)=(\Gamma_5(A),L_6,L_5,L_4,L_3,L_2,L_1,
+                          \rho_5(D,A,H,d),U_5(d,h)),
+\]
+followed by the saved incoming $t$. All generated entries and the gate
+have residue zero modulo five except $q_9$, which has residue two and is
+at least two. None is one. The complete free-algebra emitter identity,
+not just these residues, is part of the delivered certificate.
+
+Writing $A_0=\mathsf{AX}_{0,0,0}$ and executing words left to right, define
+\[
+ \mathsf{Push}=A_0\mathsf S^9\mathsf{MP}_0,\quad
+ \mathsf{Pop}=A_0\mathsf S^{11},\quad
+ \mathsf{Discard}=\mathsf{MP}_0,\quad
+ \mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+The ten-entry AX identity gives
+\[
+\begin{aligned}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+ \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{aligned}
+\]
+Push compares an implication of residue zero with a universal head of
+residue two. Pop tests the saved top on its eleventh Shift. For Discard,
+the candidate conclusion is zero, so both MP branches give the same
+result, even with arbitrary old cache. Offset includes $i=0$. These are
+identities of numerical stacks and remain valid when zero pushes collapse.
+
+For $1\le j\le7$, the selector
+\[
+ \mathsf{Discard}\,\mathsf{AX}_{A,D,H}\,
+                  \mathsf S^{j+1}\mathsf{Pop}^{9-j}
+\]
+returns $q_j$, preserves the arbitrary underlying stack and clears the
+caches. The gate uses
+$\mathsf{Discard}\,\mathsf{AX}_{c,b,a}\,\mathsf{Pop}^{10}$.
+For an actual restricted propositional leaf with $u\le D$, use
+\[
+ \mathsf{Discard}\,\mathsf{Offset}_u\,
+        \mathsf{AX}_{A,D-u,H}\,\mathsf S^9\mathsf{Pop}.
+\]
+The subtraction is on target-radix parameters satisfying that leaf's own
+valid inequality. No identity relating recoding to subtraction is used.
+Generalization is
+\[
+ \mathsf{Gen}_i=\mathsf{Push}\,\mathsf{Offset}_i\,\mathsf S\,
+                       \mathsf{AX}_{i,0,0}\,\mathsf S^{10},
+\]
+which returns $U_5(i,a)$ from $(a,w,0,0)$, including $a=1$.
+
+The MP suffix $\mathsf S\mathsf S\mathsf{MP}_b\mathsf{Pop}$ sends
+$(0,[a,I_5(a,b),0;w],0,0)$ to $(b,w,0,0)$ when $a,b\ne1$ and halts
+when $a=1$ or $b=1$. The two Shifts expose the premises; MP leaves
+$(b,[0;w],b,0)$; Pop consumes the reserved zero and clears the offset,
+or detects a false conclusion. This argument also includes the simultaneous
+aliases $I_5(0,0)=0$ and $[0;0]=0$.
+
+Compile axioms by the selectors and generalization by $\mathsf{Gen}$.
+At an MP node with minor-proof $p_0$ of $a$ and major-proof $p_1$ of
+$I_5(a,b)$, use
+\[
+ W_p=\mathsf{Discard}\,\mathsf{Push}\,
+ W_{p_1}\,\mathsf{Push}\,W_{p_0}\,\mathsf{Push}\,
+ \mathsf S\mathsf S\mathsf{MP}_b\mathsf{Pop}.
+\]
+Induction on the proof tree shows that from every $(t,w,0,0)$ this word
+either halts or returns $(\operatorname{concl}p,w,0,0)$.
+If $p$ proves one, then $A_0W_p\mathsf{Pop}$ halts from every incoming
+store. The leading AX clears arbitrary offsets and cache; the final Pop
+exposes and tests the proved one before using the old stack. A plain final
+Shift is insufficient, since $\mathsf S(1,0,0,0)=(0,0,0,0)$.
+
+For soundness, maintain derivations in $\mathcal C_5$ for $t,h$ and all
+entries of the canonical finite stack. The virtual zero tail receives
+its fixed derivation. AX introduces the specified axioms and generalizes
+the old cache; successful MP combines the annotated premises; failed MP
+returns truth; Shift moves annotations and halts only on an annotated
+one. No derivability condition is imposed on the numerical offset $d$.
+All annotation updates and proof compilation are primitive recursive,
+and their correctness follows by induction in PA.
+
+\subsection{Exhaustive scheduling and the literal-machine endpoint}
+
+The scheduler retains its ordinary Cantor encoding; it does not use the
+factor five. Its command encoders are
+\[
+ B_{\mathsf S}(z)=P(0,z),\quad
+ B_{\mathsf{MP}_x}(z)=P(1,P(x,z)),\quad
+ B_{\mathsf{AX}_{c,x,y}}(z)=P(c+2,P(y,P(x,z))).
+\]
+For continuation words, $E([])=0$ and $E(C::V)=1+B_C(E(V))$.
+A fresh candidate decodes its value directly; a positive continuation
+first subtracts one. Given a universal halting word $W$, put $z=E(W)$.
+The fresh candidates
+\[
+                    n_k=P(k+2,P(0,P(0,z)))
+\]
+execute $\mathsf{AX}_{k,0,0}$ followed by $W$. They are increasing and
+unbounded. The fresh counter begins at two. Every earlier trial either
+halts or finishes, since its positive continuation strictly decreases and
+all source arithmetic loops have primitive-recursive termination bounds.
+Finite induction therefore reaches some selected $n_k$ unless an earlier
+halt occurs. The carried store causes no difficulty because $W$ halts
+from every store.
+
+The source binding is exact. Relative to the supplied coefficient-four H
+source, each of the 61 multiplier blocks changes from four increments to
+five; all 3,409 outside instruction sites and all their relocated successors
+are preserved. The changed loop has invariant
+$T=T_0+5i$, $Y=Y_0-i$, and terminates after $7Y_0+1$ primitive steps
+with $T=T_0+5Y_0,Y=0$. It changes formula Cons to
+\[
+            (t,[a;w],0,0)\longmapsto(I_5(a,t),w,0,0)
+\]
+in coordinates $(T,W,X,Y)$, while leaving ordinary stack pairing and
+scheduler coding unchanged. The complete source has 3,714 sites and
+4,815 branch-sensitive outcomes. The no-push MP and cache-only Shift
+subtrees are exactly those of the supplied H source, as checked by restoring
+the multiplier blocks and comparing the entire resolved graph.
+
+The literal table certificates implement every source outcome by a finite
+positive sequence of physical steps, for arbitrary register values,
+affine header gap and nonempty spare tail. They preserve the full frame
+and untouched tape exterior and admit no premature halt. The complete blank
+initialization reaches source entry 25 with logical registers
+$(2,0,0,0,0,0,0,0,0)$ after 58,088 physical steps.
+
+A halting source trace is converted to a physical halting trace by
+concatenating startup and the certified finite segments. Conversely,
+if the physical run first halted at time $T$ but the source had not
+halted, simulate the first $T+1$ source steps. Their positive durations
+would provide a nonhalting physical prefix longer than $T$, contradicting
+determinism. These are finite primitive-recursive trace constructions;
+PA proves their correctness by ordinary induction.
+
+The source annotation yields a $\mathcal C_5$ refutation from a source
+halt, and arithmetic translation yields a PA refutation. In the other
+direction, a PA refutation is recoded into a $\mathcal C_5$ refutation,
+compiled into an arbitrary-store halting word, reached by the scheduler,
+and physically simulated. This proves (H5), and hence
+\[
+ \boxed{\mathrm{PA}\vdash
+       \neg H_M\ \longleftrightarrow\ \operatorname{Con}(\mathrm{PA}).}
+\]
+Consistency of PA is required only for the additional external conclusion
+that the delivered machine actually does not halt.

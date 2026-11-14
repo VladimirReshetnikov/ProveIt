@@ -1,0 +1,131 @@
+% Standalone mathematical note; no claim of a smaller verified machine.
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,hyperref}
+\newtheorem{proposition}{Proposition}
+\title{A mixed-radix 3/6 coding experiment}
+\author{Research note accompanying the PA-machine comparison}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+
+\paragraph{Outcome.}
+This note specifies a collision-free coding and two explicit compiler profiles.
+Neither profile provides a machine with fewer than 194 states. Their saved
+best grammars have optimistic physical totals of 208 and 205; simultaneous
+quotient and runtime proofs have not been supplied.
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+Define the numerical constructors
+\[
+ I(a,b)=3p(a,b),\quad U(d,A)=3p(A,d)+2,\qquad
+ M(a,b)=6p(a,b)+1,\quad E(a,b)=6p(a,b)+4.
+\]
+As usual, zero is a distinguished formula and $1=M(0,0)$ is the designated
+contradiction code. Encoded negation is $N(A)=I(A,1)$.
+
+\begin{proposition}
+The four constructor classes are disjoint. Apart from the designated zero,
+each natural number has a unique outer constructor and unique arguments.
+Every argument of a positive constructor is strictly smaller than its code.
+\end{proposition}
+\begin{proof}
+Residues modulo three separate implication, universal quantification, and
+the two atomic classes. In residue one write $n=3q+1$; an even $q$ selects
+membership and an odd $q$ selects equality. The quotients then uniquely
+determine the pairing arguments. This gives a primitive-recursive inverse.
+For $I$ with positive code, $p(a,b)>0$ and $3p(a,b)>\max(a,b)$.
+The remaining constructors have positive offsets and multipliers at least
+three, so the same strict domination holds, including at zero arguments.
+\end{proof}
+
+For the original radix-four constructors $I_4,M_4,U_4,E_4$, recursively
+recode every formula argument \emph{and every numerical variable label}.
+Thus, for example,
+\[
+ F(E_4(a,b))=E(F(a),F(b)),\qquad
+ F(U_4(d,A))=U(F(d),F(A)),\qquad F(0)=0.
+\]
+The strict domination just proved makes this course-of-values recursion
+well-founded. Applying the inverse constructor decomposition gives an inverse
+recoding. These functions are primitive recursive: their recursion trees have
+arguments below the current natural-number input, and bounded tables of earlier
+values implement the recursion by primitive recursion. Constructor compatibility
+also gives $F(1)=1$. It is essential to recode variable labels; leaving them
+unchanged would not preserve the equality and diagonal schemas.
+
+This bijection is not numerically increasing: $F(3)=4$ and $F(4)=3$.
+Consequently the restricted numerical rule with a side condition $u\leq a$
+cannot be transported by assuming that inequality is invariant. The same
+repair used in the imported radix-five and radix-six packets applies at the
+logical level: first derive the unrestricted implicational rule using the
+generic restricted-rule derivations of $K$ and $S$. These derivations use
+domination of the implication arguments by their code, which $I=3p$ retains.
+The all-natural-variable freshness argument likewise uses the constructor
+subterm bound, not global monotonicity of $F$.
+
+All original outer axiom heads are implications or universals. Their positive
+codes have residues zero or two modulo three and hence cannot equal the
+contradiction code $1$. The distinguished zero and one remain fixed. These
+facts preserve the numerical logical interface required for the original
+sum-based Shift guard and the no-push successful-MP proof compiler. They give
+a route for importing the written logical calibration, not a newly compiled
+proof-assistant theorem or a physical machine proof.
+
+\paragraph{Compiler profile A: selectable sextupling.}
+The old coefficient-four constructor is replaced by coefficient three. A
+second constructor shares its pairing prefix and multiplies the paired result
+by six. Of the 59 explicit constructor occurrences in the 190-token emitter,
+31 are implications, 15 universals, ten memberships, and three equalities.
+Only the last thirteen use the alternative constructor. The equality suffix
+changes from three to four increments. This yields 193 macro tokens. Five
+new fixed readers select and implement the second path, making 139 fixed
+controls before the AX readers. The two implication constructions inside
+the existing parameter-adjustment macro keep coefficient three.
+
+\paragraph{Compiler profile B: doubling the triple.}
+Instead of selecting a full second constructor, construct $3p$ and then double
+it for each membership or equality. The doubling macro needs three new readers
+and reuses the existing double-increment reader. There are 137 fixed controls,
+but the emitter now has 206 macro tokens. This prices the selection overhead
+explicitly; the shared six-increment expression alone is not a complete
+constant-cost constructor switch.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Saved profile & Selectable six & Double triple\\
+\midrule
+Fixed controls &139&137\\
+Raw AX readers &81&80\\
+Nominal disjoint pair matching &12&12\\
+Optimistic total &208&205\\
+Expanded source sites &3635&3687\\
+Primitive outcomes &4736&4814\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The nominal matching counts include the new fixed helper readers, so an
+additional helper fold is not silently omitted from the reported estimates.
+The emitter audits compute in a free algebra of constructors and arbitrary
+initial parameters and confirm the complete output formulas. The heuristic
+searches used 180 seconds each, with 3,245,431 and 2,905,346 proposed grammar
+rotations. This is a bounded negative experiment. The matching is not a
+certificate for simultaneous folds, and no full source simulation or blank
+initialization was attempted. The two raw tables therefore remain research
+artifacts of 220 and 217 controls.
+
+\paragraph{Provenance.}
+All input files come from the pinned ProveIt snapshot
+\texttt{567266818aaeceb0f3a8f82debf303c8d84bddaf}; exact archive member paths,
+hashes, and the imported-source attribution are supplied in
+\texttt{PROVENANCE.json} and \texttt{NOTICE.txt}. In particular the compiler and
+C++ search are inherited, while the mixed-radix proposal and its two profiles
+are the new experiments recorded here. The existing nested-binary encoding
+in the PA194QNS packet is a different earlier proposal and is not claimed as
+new work.
+\end{document}

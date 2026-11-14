@@ -1,0 +1,473 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.92in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array,xcolor}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={PA194TDY: a different physical realization of a PA-consistency machine},pdfauthor={Research prepared for Vladimir Reshetnikov},pdfsubject={194-state Turing machine, PA consistency, corpus comparison, and startup obstruction}}
+\usepackage{fancyvrb}
+\usepackage{enumitem}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlength{\emergencystretch}{2em}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\title{PA194TDY: a different physical realization of a\newline PA-consistency machine\\[0.5em]\large Corpus comparison, exact verification, and a 193-state startup obstruction}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give an explicit deterministic, single-tape, binary Turing machine with
+194 working states, started on the entirely blank two-way tape. It relocates
+the logical registers $T,D,Y$ through three physical block positions in the
+primary PA194 implementation. All 388 transitions are supplied. The complete
+source program is preserved under the new representation. Its 4,780 symbolic
+source-step contracts pass in Python and JavaScript. A further literal-tape
+checker derives the register-file sweep lemmas directly from the candidate
+rows and checks all 4,780 outcomes with positive affine physical durations.
+A literal 57,594-step startup reaches exactly the required whole-tape frame.
+Combining this transport with the primary packet's ordinary mathematical PA
+calibration gives
+\[
+ \PA\vdash \bigl(\neg\Halt(\mathrm{PA194TDY})\leftrightarrow\Con(\PA)\bigr).
+\]
+This is the requested 194-state fallback. We did not establish a machine with
+fewer than 194 states. We also isolate why the existing 193-state runtime
+fold cannot be repaired merely by reallocating the physical registers: its
+blank bootstrap loses the operation that creates a fresh rightmost marker.
+The comparison is pinned to a specified repository snapshot and distinguishes
+proposed consistency machines from auxiliary tables and rejected candidates.
+The result is an ordinary mathematical proof with executable certificates;
+it is not a new end-to-end Lean proof or an internal iPRA formalization.
+\end{abstract}
+
+\section{Result, scope, and conventions}
+
+The source snapshot is ProveIt commit
+\begin{center}\small\texttt{4be5c6e3a10292a7466f5d3687e3b39615ff049b}.\end{center}
+The two requested input locations are the PA research tree and
+\file{docs/incoming}. The snapshot contains 61 already-filed research packets
+and 11 additional incoming ZIP archives. The latter must be examined even
+though an older repository index says that incoming archives have all been
+filed. Newly arriving commits after this snapshot are outside the census.
+
+The machine uses symbols $0,1$, with $0$ blank, moves exactly one square left
+or right per transition, and has no stationary moves. The tape is indexed by
+$\mathbb Z$. The dense table has working controls $0,\ldots,193$, starts at
+control $0$ with the head at square $0$, and halts on entry to control $194$.
+The halt control is not counted as a working state. The native table retains
+the primary implementation's labels, starts at $74$, and halts at $254$.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Quantity & Verified value\\\midrule
+Working controls / transition rows & 194 / 388\\
+Controls reachable in the directed transition graph & 194\\
+Primitive source instruction sites & 3,673\\
+Source outcomes, counting both decrement branches & 4,780\\
+Literal blank startup length & 57,594\\
+Native control and head at the initialized frame & $84$, $-2$\\
+Initialized source site & 25\\
+\bottomrule
+\end{tabular}
+\end{center}
+Graph reachability here concerns the finite control graph. It does not assert
+that every control occurs on the particular blank computation. The startup
+duration, by contrast, is an exact number of literal Turing-machine steps.
+
+The dense transition file has SHA-256
+\begin{center}\scriptsize\texttt{84bfe1368312c7c71c9e4706de7cb65923310e25f8d472997c9c57c5aedd7934}.\end{center}
+The native file has SHA-256
+\begin{center}\scriptsize\texttt{2f6e2342151be7c9f7fb8025f81063525c5d276605d2fa87535a9c7d1498755d}.\end{center}
+The machine files, state-label map, receipts, full source arrays, and checkers
+are included in the archive. The full dense transition table appears in the
+appendix.
+
+\section{What the comparison actually compares}
+
+The filed catalogue records 7,130 historical literal-table occurrences,
+786 distinct byte strings, and 535 transition-graph classes. Of those classes,
+49 have 194 states, 22 have 195 states, and 102 have 196 states. These numbers
+count tables, not 49 independently established consistency theorems. Some
+tables are search intermediates, rejected experiments, or quoted baselines.
+The incoming archives add further occurrences and graph classes; the complete
+fresh comparison is recorded in the generated comparison appendix and the
+machine-readable files. The historical 786 byte strings and the fresh 780
+byte forms refer to different populations: the fresh scan starts from the
+535 retained filed representatives, rather than every historically omitted
+byte-level alias, then adds the incoming and other scoped inputs.
+
+The resulting corpus has 3,442 recognized table occurrences, 780 byte forms,
+642 full spanning graph classes, and ten additional disconnected byte forms.
+There are 82 spanning 194-state classes: 40 principal or historically supported
+constructions, seven supplementary constructions, 25 research auxiliaries,
+four seeds and six rejected candidates. PA194TDY matches none of the frozen
+tables, including 29,294 candidate-sized reachable components in the broader
+corpus. These categories record supplied evidence, rather than 82 newly
+proved consistency theorems.
+
+For each literal table, the comparison checks the rows, control count, and
+external terminal targets. It canonicalizes the ordered two-successor graph by
+traversal, preserving each transition's written symbol and direction. To
+avoid false novelty caused by a changed starting label, it compares all
+graph-spanning roots. It also tests global tape reflection and global symbol
+exchange. These are finite syntactic checks, not tests of semantic halting
+equivalence. A machine beginning in a different control can have a different
+blank computation even when the unrooted table is identical.
+
+This distinction matters in the supplied material: some tables are called
+``dense'' even though control $0$ is not their actual start. It also matters
+when reading counts of historical experiments. The presence of a table with
+193 row-defined controls does not establish a 193-state blank-input
+consistency machine.
+
+\subsection{The principal design families}
+
+\begin{longtable}{@{}p{0.23\textwidth}p{0.29\textwidth}p{0.40\textwidth}@{}}
+\toprule Family & Main change & Consequence for this construction\\\midrule
+\endfirsthead
+\toprule Family & Main change & Consequence for this construction\\\midrule
+\endhead
+PA196 and larger ancestors & Compressed numerical proof search, arithmetic register engine, source-tree interpreter. & Supplies the register semantics, proof-calculus interfaces, and arithmetic-block contracts.\\
+Original PA195 and scanner variants & Source compression, altered scanner allocations, and physical folds. & Establishes the compiler ancestry; an apparently small controller alone is not enough without its startup.\\
+Primary PA194 and AD companion & A 201-control parent, seven history-dependent folds, and a ten-entry separate-diagonal AX interface. & Our source and fixed arithmetic engine are preserved. The older AD companion already changes two work-register locations.\\
+C, CS, J, D and combined-diagonal designs & Cached-result MP and Shift changes (C/CS), known-zero jump routing (J), changed diagonal parameter (D), and guarded diagonal packaging. & These require their own source-calculus and stack-selector arguments. Their 194 count is not a common interchangeable certificate.\\
+Radix 4, 5 and 6 families & Change numerical constructor coefficient and the arithmetic used to build formulas. & Same consistency target, different decoder and code-growth proof obligations. A smaller arithmetic multiplier can break decoding or introduce collisions.\\
+Q families & Exchange premises in the distribution head. & Positive implicational exchange provides a safe logical equivalence, but physical compilation has to be rechecked.\\
+N and H families & Alter MP push behavior and/or use cached heads in guards. & Change recurring command or store behavior; startup and persistent-store invariants remain essential.\\
+S, ZR, HAZ and related compositions & Comparator changes, known-zero return routing, and register-layout combinations. & Many superficially new packets repeat an earlier graph. Exact table comparison is necessary.\\
+Incoming AX11 & Eleven-entry AX stack and an additional operand handled through the MP field reader. & A genuinely changed command protocol; its word compiler and selectors cannot simply be substituted into a ten-entry proof.\\
+193-state runtime core & Identify native 301 with 88 and redirect a marker exit through 122. & Runtime source contracts pass, but the blank bootstrap enters an outward ray. Section~\ref{sec:obstruction} explains the failure.\\
+\bottomrule
+\end{longtable}
+
+The comparison supplies a complete packet ledger and a scoped literal-table
+census at the pinned snapshot. Its appendix specifies the repository JSON
+sources and the exclusion of arbitrary code-only generators. It does not
+claim a fresh end-to-end proof audit of every historical
+proposal. The mathematical audit concentrates on the source and physical
+dependencies actually used by PA194TDY. The repository's unfinished stronger
+iPRA goal is kept separate from the ordinary PA theorem considered here.
+
+\section{The changed physical design}
+
+The underlying register program has logical register order
+\[
+ (N,T,W,A,D,H,X,Y,Z).
+\]
+Here $Z$ denotes the register called $L$ in the inherited primary source;
+only the notation is changed.
+The old and new physical files, written in order from block $0$ to block $8$,
+are
+\[
+ (W,Z,T,D,A,Y,N,H,X)
+ \quad\longrightarrow\quad
+ (W,Z,Y,T,A,D,N,H,X).
+\]
+Thus a proof-store register, a formula-parameter register, and a work register
+move together. This is a representation change in the tape-level machine;
+the logical source instructions retain their original meanings.
+
+Only four native rows change. A row is written as
+$(q,b)\mapsto(w,d,q')$.
+\begin{center}
+\begin{tabular}{@{}ccc@{}}
+\toprule Read pair & Primary action & PA194TDY action\\\midrule
+$(41,1)$ & $(0,R,25)$ & $(0,R,48)$\\
+$(61,1)$ & $(0,R,25)$ & $(0,R,48)$\\
+$(82,1)$ & $(0,R,33)$ & $(0,R,25)$\\
+$(144,1)$ & $(0,R,48)$ & $(0,R,33)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All other rows retain their exact native actions. Dense renumbering is then
+performed by breadth-first discovery from native control $74$, visiting the
+$0$ transition before the $1$ transition. The label map is supplied.
+
+The four edits are active even during the initial blank computation: before
+the first initialized frame they occur respectively 11, 1, 33, and 2 times.
+Their first occurrences, with time zero denoting the initial configuration,
+are at times 9,259, 9,799, 1,438, and 15,365. Thus this construction does not
+obtain a different file merely by changing an unvisited transition.
+
+No arithmetic block has been changed. The selector entry controls for physical
+positions $0,\ldots,8$ are
+\[
+ (51,36,25,48,32,33,22,55,60).
+\]
+The four edits redirect the appropriate logical register operations to the
+new entries. The internal chain that scans the physical file is preserved.
+This distinction is essential: globally renaming every occurrence of a
+selector control would change the scanner itself and would not implement the
+claimed relocation.
+
+This changes recurring physical work, not just initialization. For example,
+access to $T$ now crosses the block holding $Y$, which previously lay to its
+right. The length of that block depends on the current value of $Y$. Accesses
+to $D$ and $Y$ likewise traverse different variable-length prefixes. The
+operational distinction is therefore a changed memory representation and
+changed register-access paths. Exact graph nonidentity alone would be too
+weak a reason to describe a design as materially different. This remains a
+variant of the same interpreter architecture and proof calculus, and its
+relation to the earlier AD allocation is explicit.
+
+The old initialization takes 58,154 literal steps; the new one takes 57,594.
+The reduction of 560 startup steps is an observed exact prefix difference,
+not a claim of uniformly faster proof search. Different register values can
+produce different costs for the relocated operations.
+
+\input{pa_calibration_audit}
+
+\section{Verification and its exact scope}
+
+\subsection{Reconstruction and source graph}
+The primary dense table and its label map are retained with their original
+bytes. The checker converts them to native labels, applies exactly the four
+listed edits, verifies the resulting native file, and independently constructs
+the dense output. It checks 194 controls, 388 complete rows, the unique halt
+label, the 194 graph-reachable controls, and all declared SHA-256 values.
+
+The archive contains the primary source's 3,673 path-labelled instruction
+sites and its resolved instruction array. The checker recomputes the control
+flow from the tree-path rules for increment, decrement, break, continue, and
+halt, then compares the entire resolved array. The source algorithm is
+unchanged; the physical representation map is changed.
+
+\subsection{All source outcomes}
+For every instruction site, the symbolic checker starts from the complete
+prescribed frame. A decrement contributes one zero-register outcome and one
+positive-register outcome. Every other site contributes its corresponding
+single contract. The result is 4,780 checked outcomes.
+
+The symbolic tape contains exact finite bits, affine-length constant runs,
+and an abstract full register file. Literal controller transitions are
+executed symbolically. Register marking, increment, and decrement use the
+unchanged arithmetic-block contracts. The endpoint includes the correct
+source path, complete tape representation, register effect, and head phase;
+it is not just a check of selected register values.
+
+Both implementations return
+\[
+ \text{contracts}=4780,\quad
+ \text{maximum symbolic iterations}=497,\quad
+ \text{total symbolic iterations}=1{,}479{,}348.
+\]
+The latter two quantities count symbolic rewrite iterations, including
+normalization and accelerated runs. They are not bounds of 497 literal TM
+steps per source instruction. Literal durations depend on the represented
+register values and header sizes.
+
+The Python implementation reuses the supplied arithmetic-oracle checker with
+an independently assembled list of new contracts. The JavaScript checker is
+an independent implementation of the same symbolic rules. Agreement between
+the two is useful implementation evidence. It does not turn their common
+imported arithmetic-block assumptions into a new proof-assistant theorem.
+The imported Lean runtime file is included for inspection and attribution;
+it is not advertised as a standalone Lean build of the new machine.
+Its generic symbolic-execution theorem takes \texttt{BoxLemmas} as explicit
+hypotheses. Merely including that file is not a discharge of those hypotheses;
+this construction uses the unchanged physical block lemmas of the inherited
+engine. The additional check below derives their required tape-sweep content
+directly from the candidate's rows.
+
+\subsection{Independent literal-tape derivation}
+The checker \file{verification/literal/check_tdy.py} uses the primary packet's
+separate literal symbolic engine. It does not use arithmetic-box oracles.
+Writing $B(v)=0\,1^{v+1}$ and $C(v)=1\,0\,1^v$, it executes the actual
+candidate rows on one arbitrary block in opaque left and right contexts.
+This derives four sweeps: $B\to B$ to the right, $B\to C$ to the right,
+$B\to B$ to the left, and $C\to B$ to the left. Each has physical duration
+$v+2$ and corresponding signed head motion. Concatenation then proves the
+finite-list versions. For a finite list $A$, write $B(A)$ and $C(A)$ for
+the corresponding blockwise concatenations. The word identity
+$C(A)1=1B(A)$, and its reversal,
+follow by the empty-list and cons cases.
+
+Every source outcome is then derived using only literal transitions,
+constant-symbol loop induction, those list sweeps and exact word identities.
+Two separate control-flow resolvers also agree with the frozen instruction
+array. The recorded result is
+\[
+ \begin{aligned}
+ \text{source contracts}&=4{,}780,\\
+ \text{symbolic iterations}&=1{,}064{,}568,\\
+ \text{maximum iterations per contract}&=397,\\
+ \text{minimum physical-duration constant}&=3.
+ \end{aligned}
+\]
+Each physical duration is an affine expression in the header-gap parameter,
+nine register values, the first spare value and the remaining spare-list
+width. Every coefficient is nonnegative and the constant is at least three.
+These are physical durations, unlike the checker's iteration counts. The
+per-outcome expressions, four list-lemma traces and a separate bytearray
+blank-start receipt are retained under \file{verification/literal/recorded/}.
+This is a direct mathematical certificate against the new rows. It still
+does not constitute a newly kernel-checked proof-assistant theorem.
+
+\subsection{Exact blank initialization}
+The literal simulator begins with an empty set of one-cells, native control
+$74$, and head position $0$. At step 57,594 it reaches native control $84$,
+head position $-2$, and source site 25. Its physical register values are
+\[
+ (0,0,0,0,0,0,2,0,0),
+\]
+followed by 26 spare blocks of value one. Under the new map the logical
+register vector is $(2,0,0,0,0,0,0,0,0)$. The complete set of one-cells equals
+the constructed target frame; all other cells are zero. The receipt records
+that finite set, allowing the whole-tape equality to be replayed.
+
+\section{Why the 193-state runtime fold still fails}
+\label{sec:obstruction}
+
+The supplied runtime construction identifies native $301$ with $88$, redirects
+all incoming targets accordingly, deletes control $301$, and changes
+\[
+ (88,0)\mapsto(0,L,51),\qquad
+ (51,0)\mapsto(0,R,122).
+\]
+This has 193 working controls and passes the source-frame contracts. It is
+not a blank-input consistency machine. The difference between a runtime
+contract and a correct bootstrap is decisive here.
+
+Originally the marker scanner's exit is
+$(51,0)\mapsto(0,R,16)$. On a represented register file, the following block
+starts with a $1$, and
+\[
+ \delta(16,1)=\delta(122,1)=(0,L,1).
+\]
+The change is therefore invisible in the relevant initialized-frame case.
+During bootstrap, however, the next square can still be blank. The old action
+\[
+ \delta(16,0)=(1,L,1)
+\]
+creates the next marker, whereas $\delta(122,0)=(0,L,137)$ does not.
+
+\input{obstruction_summary}
+
+This obstruction concerns the explicitly specified fold and the family of
+physical-register reallocations with the existing blank entry. It is not a
+lower bound of 194 on all PA-consistency machines. Changing the boot protocol,
+finding a different initialized invariant, or redesigning the arithmetic
+engine may still produce a valid 193-state or smaller machine.
+
+\section{Other reduction avenues and limits of the search}
+
+We also explored occurrence-level reassociation of the primary AX expression
+tree, scored by the number of compiled reader controls minus available local
+history folds. A 7,438-proposal exploratory run did not improve the score 194.
+The known local contraction template was extended to include arithmetic-box
+controls and larger tape windows; no additional primary-table contraction
+was found within that template. Neither computation is a global minimality
+argument.
+
+Logical changes were reviewed as a separate search dimension. Premise
+exchange in the equality heads is sound because positive implication derives
+\[
+ (P\to(Q\to R))\to(Q\to(P\to R)).
+\]
+Earlier packets already search such variants, however, and their compilation
+does not automatically match 194 states. Changing the witness parameter in
+$\exists x_D E(H,D)$ to $\exists x_D E(A,D)$ preserves the axiom schema under
+independent parameter selection, but the unchanged association compiled above
+the target. The resulting formula-level observations are not delivered as new
+small machines.
+
+A tempting dualization of the first logical head was rejected. The head
+$(\exists x_D\,U(D,H))\to H$ helps supply explosion for the distinguished
+contradiction atom. An argument replacing it by its classical dual can
+circularly assume the explosion principle it needs to recover. The research
+notes give the separating-valuation analysis. No candidate relying on that
+unjustified replacement is included as a consistency machine.
+
+The ZFC work contributes reusable ideas about history-dependent folds and
+exact source frames. The ConciseIPRA work contributes strategies for reducing
+logical interfaces. Neither permits replacing the consistency target by a
+different theory: the PA calibration used here includes proof production for
+finite comprehension of arbitrary arithmetic formulas. A short equation-only
+proof checker is not automatically a smaller machine for $\Con(\PA)$.
+
+\section{Reproduction and artifact guide}
+
+From the extracted archive root, run:
+\begin{Verbatim}[fontsize=\small]
+python3 verify.py
+node verification/verify_tdy.cjs
+python3 -B verification/literal/check_tdy.py
+python3 comparison/verify_novelty.py
+\end{Verbatim}
+The first two commands reconstruct and verify the literal table, symbolic
+source outcomes, and exact startup. The third independently checks literal
+list sweeps, positive-duration source contracts and blank initialization.
+The comparison command checks the new
+table against the included canonical comparison evidence; its output states
+the scope of the catalogue. The research subdirectory contains the specified
+193-state obstruction certificate and its replay program.
+
+To compile this document with a standard TeX Live installation:
+\begin{Verbatim}[fontsize=\small]
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{Verbatim}
+All outputs have fixed relative paths. No repository checkout, network access,
+or proof assistant is needed for the main executable checks. The original
+reference fragments are retained as supplied and are not themselves all
+standalone compilable documents. Their provenance and licenses are included.
+
+\begin{center}
+\begin{tabular}{@{}p{0.31\textwidth}p{0.59\textwidth}@{}}
+\toprule Location & Purpose\\\midrule
+\file{artifacts/} & Dense and native tables, state labels, startup and result receipts.\\
+\file{source/} & All original instruction sites and the resolved source program.\\
+\file{verify.py}, \file{verification/} & Reproducible table and exact execution checks, including saved receipts.\\
+\file{comparison/} & Filed and incoming packet census, class evidence, and novelty check.\\
+\file{research/} & The failed 193-state fold and the certified startup obstruction.\\
+\file{reference/} & Unmodified source-calibration and runtime dependencies, attribution, and licenses.\\
+\file{report/} & This LaTeX source, generated appendices, and the compiled PDF.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Sources and attribution}
+The result is built on the numerical proof-search and compiler work retained
+in ProveIt, including James Chang's PA196 development and the earlier PA195
+and PA194 research packets. The new contribution is the explicit three-register
+physical realization, its exact verification and corpus comparison, together
+with the refined bootstrap obstruction for the particular 193-state fold.
+We do not claim a new logical consistency encoding or a new record below 194.
+
+All repository references below are pinned to the same commit. For compactness,
+the common URL prefix is
+\begin{center}\small
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/4be5c6e3a10292a7466f5d3687e3b39615ff049b}.
+\end{center}
+\begin{enumerate}
+\item \file{Computability/BusyBeaver/Research/PA/README.md}: status of the ordinary machine claims and unfinished internal iPRA results.
+\item \file{Computability/BusyBeaver/Research/PA/docs/MACHINES.md}, \file{MACHINES.tsv}, and \file{MACHINE_FILES.tsv}: the filed table census and identification rules.
+\item \file{Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13/}: primary machine, earlier register-layout companion, source tree, local-fold certificates, mathematical report, and PA calibration dependencies.
+\item \file{Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/}: upstream source and arithmetic runtime, with its own explicit theorem boundaries.
+\item \file{docs/incoming/}: all 11 ZIP archives listed in the comparison ledger, including the runtime193 research and the later AX11 packet.
+\item \file{Computability/BusyBeaver/Research/ZFC/} and \file{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/}: related physical and logical simplification methods; these do not replace the PA calibration.
+\end{enumerate}
+
+\appendix
+\section{Complete corpus comparison}
+\input{comparison_summary}
+
+\clearpage
+\section{Full dense transition table}
+Each row gives the read-$0$ and read-$1$ actions as written symbol, direction,
+and next control. Start $0$; halt $194$; blank symbol $0$. Read each
+three-column group downward.
+\input{transition_table}
+\end{document}

@@ -1,0 +1,320 @@
+\section{Independent proof audit of the AX11--Q--6 composition}
+\label{sec:ax11q6-audit}
+
+This section proves the new command-level composition.  It separates the
+inherited numerical-calculus calibration, the new proof compiler, the
+enumerator, and the literal physical machine.  The ordinary mathematical
+argument is formalizable in PA; this section is not a claim that a new
+end-to-end proof-assistant theorem has been compiled.
+
+\subsection{Numerical formulas and inherited calibration}
+
+Put $p(a,b)=(a+b)(a+b+1)/2+b$ and, for a fixed $k\geq4$, put
+\[
+ I_k(a,b)=kp(a,b),\quad M_k(a,b)=kp(a,b)+1,\quad
+ U_k(a,B)=kp(B,a)+2,\quad E_k(a,b)=kp(a,b)+3.
+\]
+The distinguished contradiction is $1=M_k(0,0)$, truth is $0$, and
+$N_k(B)=I_k(B,1)$.  In particular $I_k(0,0)=0$; neither numerical formulas
+nor numerical stacks are assumed to be free term algebras at zero.
+
+The separated-diagonal calculus retains six logical heads, the restricted
+implicational head, the diagonal head $\Gamma_k(B)=I_k(B,U_k(B,B))$, and
+the guarded membership-vacuity/pointed-separation gate.  The Q version
+replaces its sixth head
+\[
+ U_k(D,A)\to\bigl(U_k(D,A\to H)\to U_k(D,H)\bigr)
+\]
+by
+\[
+ U_k(D,A\to H)\to\bigl(U_k(D,A)\to U_k(D,H)\bigr).
+\]
+The displayed arrows are $I_k$.  The exchange template
+\[
+ (P\to(Q\to R))\to(Q\to(P\to R))
+\]
+uses only the positive implicational $K,S$ basis.  In the supplied
+calibration that basis follows from the retained restricted implicational
+head alone, before the sixth head is used.  Applying the exchange template
+twice proves that the ordinary and Q versions have uniform
+primitive-recursive derivation translations, preserving conclusions.
+There is no circular use of the distribution axiom being replaced.
+
+The inherited radix calibration establishes the PA-refutation equivalence
+for each fixed $k\geq4$.  Its substantive ingredients must be retained:
+an injective hereditary recoding of both variable labels and formulas;
+the generic derivation of unrestricted implication instances before
+recoding a restricted leaf; and a total PA interpretation of all numerical
+codes, including the unused residues $4,\ldots,k-1$.  Restricting soundness
+only to the image of the old radix-four syntax would be insufficient for
+the actual exhaustive numerical search.  The restricted implication
+order is not preserved by hereditary recoding and cannot be silently
+transported as a numerical inequality.
+
+More explicitly, set $F_k(0)=0$ and, for $n>0$ with
+$n=4p(a,b)+r$, $0\leq r<4$, set
+\[
+                F_k(n)=kp(F_k(a),F_k(b))+r.
+\]
+Both $a,b$ are smaller than $n$, so this is a primitive-recursive
+course-of-values definition.  A partial inverse is defined at
+$m=kp(a,b)+r>0$ by
+$J_k(m)=4p(J_k(a),J_k(b))+r$ for $r<4$, and $J_k(m)=0$ otherwise,
+with $J_k(0)=0$.  Induction proves $J_k(F_k(n))=n$, hence injectivity.
+Recoding the numerical variable labels by this same $F_k$ gives
+\[
+ F_k(U_4(a,B))=U_k(F_k(a),F_k(B)),\qquad
+ F_k(\Gamma_4(B))=\Gamma_k(F_k(B)).
+\]
+Thus binding and shadowing are preserved, as are the distinctness guards
+$c\ne a,b$ of the gate.  The map is an embedding, not a bijection of the
+whole target numerical syntax.  Its failure of order preservation is real:
+$40<44$ but $F_5(40)=75>55=F_5(44)$.  Each restricted implicational leaf
+is replaced by the fixed \texttt{rho8All} template at its recoded parameters;
+that template's own side conditions follow from
+$a,b\leq p(a,b)\leq I_k(a,b)$.
+
+For the converse syntactic translation, decode every positive target code
+$n=kp(a,b)+r$.  Translate residues zero, one, two and three respectively
+as $T_k(a)\to T_k(b)$, $\operatorname{Bit}(x_a,x_b)$,
+$\forall x_b T_k(a)$, and $x_a=x_b$.  Translate zero and unused residues
+as closed truth.  Every source label in $T_k(B)$ is below $B$, so the
+diagonal head is a valid vacuity instance for arbitrary target numbers,
+not merely embedded ones.  The exceptional equation $I_k(0,0)=0$ is
+handled by a fixed proof of truth equivalent to truth implying truth.
+For the guarded separation head, the inherited PA finite-comprehension
+proof supplier uses the matrix
+$(\operatorname{Bit}(x_a,z)\lor z=x_b)\land T_k(c)[z/x_b]$
+when $a\ne b$.  When $a=b$, its matrix is instead
+$(z=x_b)\land T_k(c)[z/x_b]$, since the old membership antecedent becomes
+$\operatorname{Bit}(z,z)$ under that binder.  This distinction and the
+freshness of $c$ prevent an invalid free-variable treatment of colliding
+labels.  These are syntactic PA proof suppliers, not a uniform arithmetic
+truth predicate or a reflection principle.
+
+With those inherited results and the exchange template, if
+$\operatorname{Deriv}_{k,Q}(d,1)$ is the resulting numerical derivation
+predicate, the calibration boundary is
+\[
+ \mathrm{PA}\vdash
+ \exists d\,\operatorname{Deriv}_{k,Q}(d,1)
+ \quad\longleftrightarrow\quad
+ \exists p\,\operatorname{Prf}_{\mathrm{PA}}(p,\ulcorner0=1\urcorner).
+ \tag{Cal}
+\]
+The case used by the new machine is $k=6$.  This audit neither replaces
+(Cal) by a standard-model consistency argument nor promotes the repository's
+unfinished iPRA endpoints to completed theorems.
+
+The exact retained dependencies for (Cal) are
+\file{candidate/proof/references/radix_calibration.tex} and
+\file{candidate/proof/references/q_calibration.tex}, together with their
+retained original, diagonal, and separate-head calibration sources.
+\file{candidate/PROVENANCE.json} binds each source to its pinned repository
+path and SHA-256; the finite premise-exchange derivation is replayed by
+\file{candidate/proof/exchange_certificate.py}.
+
+\subsection{Exact command interface}
+
+Write $[a;w]=p(a,w)$; its total projections satisfy
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$.  The store is $(t,w,d,h)$:
+visible top, encoded theorem stack, offset, and cached theorem.  The new AX
+command has \emph{four} operands $(c,x,y,z)$.  Set $D=d+x$ and $H=h+y$.
+Let $q_0$ be the guarded separation gate, or zero when its numerical guard
+fails; let $q_1=\Gamma_k(c)$; let $q_2,\ldots,q_7$ be the six logical
+heads in reverse stack order, with $q_2$ the Q head; let $q_8$ be the
+restricted implicational head; and let $q_9=U_k(d,h)$.  Then
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+ =\bigl(0,[q_0,q_1,\ldots,q_9,t;w],z,0\bigr).       \tag{AX}
+\]
+There are nine axiom entries, the generalized cached formula $U(d,h)$,
+and the saved old top, so eleven
+entries are pushed, subject to the numerical zero alias.
+
+The extra operand is consumed by falling through to the complete MP field
+reader.  At that point the visible top, offset and cache are all zero.
+For every $z$, $I_k(0,z)=0$ if and only if $z=0$.  The subsequent no-push MP
+therefore returns visible zero and cached zero, with offset $z$, whether
+its comparison succeeds or fails.  Thus (AX) holds for every fourth
+operand, not just the zero operands chosen by the proof compiler.
+
+The other commands, with $b=d+x$, are exactly
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},&t+h=1,\\
+  (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1,
+ \end{cases}
+\]
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+  (b,w,b,0),&I_k(t,b)=h,\\
+  (0,w,b,0),&I_k(t,b)\ne h.
+ \end{cases}                                                \tag{MP}
+\]
+In particular the sum-based Shift guard is retained.  It does not halt at
+$(t,h)=(1,1)$, and the proof must not treat it as a cached-head-only guard.
+
+\subsection{Uniform stack operations, including contradiction inputs}
+
+Every $q_j$ for $0\leq j\leq8$ is divisible by $k$, including a failed
+guard's zero.  The generalization head $q_9$ is congruent to two modulo
+$k$ and is at least two.  Directly applying the Shift equation therefore
+gives, without an intermediate halt,
+\begin{align*}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)
+   &=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)
+   &=(q_9,w,0,t).
+\end{align*}
+The first sums tested are sums of multiples of $k$; the final sums contain
+$q_9\geq2$.  This explains why these identities also hold at arbitrary
+$t$, including $t=1$.
+
+With $A_0=\mathsf A_{0,0,0,0}$, define
+\[
+ \begin{aligned}
+  \mathsf{Push}&=A_0;\mathsf S^{10};\mathsf{MP}_0,&
+  \mathsf{Pop}&=A_0;\mathsf S^{12},\\
+  \mathsf{Discard}&=\mathsf{MP}_0,&
+  \mathsf{Offset}_i&=\mathsf{MP}_i.
+ \end{aligned}
+\]
+For all displayed natural values,
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=(t,w,0,a),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+For Push the final MP comparison fails by the distinct implication and
+universal residues.  For Discard both branches yield zero.  For Offset the
+zero case succeeds with conclusion zero; each positive case fails.
+Pop's last Shift tests $q_9+t\geq2$, so Pop preserves a visible
+contradiction instead of halting.  The derivation includes $[0;0]=0$ and
+the empty stack; no assertion of a free-list representation is needed.
+
+For $0\leq j\leq8$, the selector
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,0};
+       \mathsf S^{j+2};\mathsf{Pop}^{9-j}                 \tag{Sel}
+\]
+sends $(t,w,0,0)$ to $(q_j,w,0,0)$.  The exact number of Pops accounts for
+the generated suffix and the saved zero.  The restricted implicational
+leaf with old offset $u\leq D$ is selected by
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf A_{A,D-u,H,0};\mathsf S^{10};\mathsf{Pop}.
+\]
+These are different selectors from those of a ten-entry AX interface.
+
+Generalization is implemented by
+\[
+ \mathsf{Gen}_i=
+ \mathsf{Push};\mathsf{Offset}_i;\mathsf S;
+        \mathsf A_{i,0,0,0};\mathsf S^{11}.
+\]
+It sends $(a,w,0,0)$ to $(U_k(i,a),w,0,0)$ for every $a,w,i$.
+The Shift after Offset sees two visible zeros.  The saved old $a$ becomes
+AX's cached input, and consequently its generalization head is exactly
+$U_k(i,a)$.  The calculation remains valid for $a=1$.
+
+\subsection{Compiler for every carried store}
+
+Starting with $(0,[a,I_k(a,b),0;w],0,0)$, the word
+\[
+              \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}
+                                                               \tag{MPs}
+\]
+halts if the second Shift sees $a=1$; otherwise it returns
+$(b,w,0,0)$.  The reserved zero below the two premises is necessary:
+successful MP no longer pushes a dummy zero.  After successful MP the
+stack is $[0;w]$ and the final Pop clears that entry while preserving
+$b$, even when $b=1$.  If $a=b=w=0$, all zero aliases have the same
+effect by total projection identities.
+
+Induct on a finite numerical-calculus proof tree $e$ to construct a word
+$W_e$ with the following exact specification: from every $(t,w,0,0)$ it
+either halts or returns $(\operatorname{concl}(e),w,0,0)$.
+For axiom leaves use (Sel) or the restricted selector.  For a
+generalization node append $\mathsf{Gen}_i$.  For modus ponens with
+major proof $e_1$ of $I_k(a,b)$ and minor proof $e_0$ of $a$, use
+\[
+ \mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+ W_{e_0};\mathsf{Push};\mathsf S;\mathsf S;
+                     \mathsf{MP}_b;\mathsf{Pop}.          \tag{Compile}
+\]
+Discard and the first Push reserve zero.  The two inductive subwords
+preserve their entire protected stack, and (MPs) supplies the inductive
+step.  An earlier halt satisfies the specification rather than being
+excluded by an unspoken consistency assumption.
+
+If $e$ proves code one, then
+\[
+                         A_0;W_e;\mathsf S              \tag{HaltWord}
+\]
+halts from every store $(t,w,d,h)$.  The first AX clears offset and cache,
+and if no previous halt occurs the last Shift sees $(1,0)$.
+Appending Pop instead of Shift would be incorrect, since Pop is safe at
+a visible one.
+
+\subsection{Four-field enumeration and both implications}
+
+Let $e(\epsilon)=0$ and $e(c::w)=1+b_c(e(w))$, where
+\[
+ \begin{aligned}
+ b_{\mathsf S}(r)&=p(0,r),\\
+ b_{\mathsf{MP}_x}(r)&=p(1,p(x,r)),\\
+ b_{\mathsf A_{c,x,y,z}}(r)&=p(c+2,p(y,p(x,p(z,r)))).
+ \end{aligned}                                           \tag{Encode}
+\]
+The AX fields occur in the order $y,x,z$ after the command tag.
+The fourth field cannot be suppressed in the scheduler proof: a
+three-field encoding makes the MP reader consume part of the continuation.
+All inverse identities include zero fields and the zero Cantor alias.
+The remainder after a command is a nested Cantor component, so it is at
+most the code before the positive predecessor test and strictly below
+the positive continuation code.  Hence every nonhalting candidate ends
+after finitely many commands.  Each arithmetic macro has a terminating
+all-natural contract, so this argument concerns actual finite source runs.
+
+The fresh candidates increase successively from two.  For a code $r$ of
+(HaltWord), prefixing $\mathsf A_{m,0,0,0}$ produces the unbounded family
+of fresh codes
+\[
+                    p(m+2,p(0,p(0,p(0,r)))).
+\]
+The prefix may change the store; (HaltWord) works from every store.
+Thus a numerical refutation supplies a reached halting candidate or the
+machine halts earlier.  No reset between candidate words is assumed.
+
+Conversely annotate $t$, $h$, and each live canonical stack entry by a
+numerical-calculus derivation.  The initial zeros have fixed proofs.
+AX creates only its ten theorem entries and saves a theorem top; this is
+true for every fourth operand.  MP either applies modus ponens to two
+annotated theorems or returns truth, and Shift moves annotations.  If the
+sum guard holds, nonnegativity yields $(t,h)=(1,0)$ or $(0,1)$, so an
+annotated contradiction is available.  Every finite canonical stack has
+a primitive-recursive representation, including virtual zero entries.
+
+The compiler, code packing, annotation transformations, and finite-run
+arguments are primitive-recursive constructions whose correctness is
+proved by ordinary induction in PA.  Together with (Cal), they establish
+\[
+ \mathrm{PA}\vdash
+ H_{\mathrm{AX11Q6\ source}}
+ \quad\longleftrightarrow\quad
+ \exists p\,\operatorname{Prf}_{\mathrm{PA}}(p,\ulcorner0=1\urcorner).
+\]
+To infer the statement for the delivered literal TM, one additionally
+needs its complete source/table binding, universal physical instruction
+contracts with positive durations, and whole-tape blank initialization.
+These must be replayed on the simultaneously modified final table; success
+of three parent machines is not enough.  With those supplied checks and
+their stated mathematical loop invariants, finite deterministic trace
+composition transports the displayed equivalence to the literal machine.
+Negating the existential proof predicate gives the desired PA-provable
+nonhalting equivalence.  Neither this equivalence nor finite simulation
+asserts that PA proves its own consistency.

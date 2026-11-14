@@ -1,0 +1,167 @@
+\section{A uniform obstruction to every constant equality offset at radix three}
+\label{sec:radix-three-no-go}
+
+The following theorem rules out a concrete class of tempting source edits.
+It is not a lower bound on the number of states of a consistency machine,
+nor an obstruction to all possible ternary formula encodings.
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad I(A,B)=3p(A,B),
+\]
+\[
+ M(a,b)=3p(a,b)+1,\qquad U(a,B)=3p(B,a)+2,
+ \qquad E_e(a,b)=3p(a,b)+e.
+\]
+Here $e$ is any fixed nonnegative integer. As in the supplied source,
+write $N(A)=I(A,1)$ and $\exists_a A=N(U(a,N(A)))$; the refutation target
+is the numerical code $1=M(0,0)$. Arrows below mean the numerical
+constructor $I$, not an additional proof rule.
+
+\begin{theorem}[No constant equality-tag repair at radix three]
+\label{thm:all-offsets}
+For every $e\ge0$, the numerical calculus obtained by keeping the supplied
+PA proof rules and axiom families, replacing the constructor coefficient
+four by three, and replacing the equality tag by $e$, has a finite
+derivation of code one. Moreover the derivation is produced uniformly
+from $e$ by a primitive-recursive procedure, whose correctness PA proves.
+\end{theorem}
+
+The proof uses only the following part of the original calculus:
+modus ponens, generalization of closed theorems, the restricted
+implicational row
+\[
+ ((C\to u)\to A)\to((A\to C)\to(B\to C)),\qquad u\le A,
+\]
+and these heads:
+\begin{align*}
+ O(d,H)&=(\exists_d U(d,H))\to H,\\
+ W(d,h)&=\exists_d E_e(h,d),\\
+ L(c,a,b)&=M(c,a)\to(E_e(c,b)\to M(b,a)),\\
+ R(c,a,b)&=E_e(c,a)\to(M(b,c)\to M(b,a)),\\
+ K_U(d,A,B)&=U(d,A)\to(U(d,I(A,B))\to U(d,B)).
+\end{align*}
+In the residue-one case with $e\ge4$, it additionally uses membership
+vacuity
+\[
+ V(a,b,c)=M(a,b)\to U(c,M(a,b)),\qquad c\ne a,b,
+\]
+which is a derived head of the retained guarded gate. Neither diagonal
+vacuity nor quantifier commutation is needed by the obstruction.
+
+\paragraph{Common syntactic tools.}
+The abstract proof of the restricted implicational basis applies to
+$I(A,B)=3p(A,B)$: its only numerical hypotheses are reflexivity of
+$\le$ and the bounds $A,B\le I(A,B)$. Thus the fixed $K,S$, composition,
+identity and Peirce proof templates remain valid. This follows from the
+explicit interface of
+\texttt{M6/Logic/RestrictedImplication.lean}; no four-residue decoding
+argument enters that proof.
+
+Code zero itself is a theorem: the all-zero instance of the restricted
+row has numerical value zero. Also $O$ yields explosion $1\to H$ by a
+fixed implicational proof. Under a temporary assumption $1$, $K$ yields
+$U(d,N(U(d,H)))\to1$, which is $\exists_d U(d,H)$; applying $O(d,H)$
+and discharging the assumption gives $1\to H$. Consequently the usual
+classical templates relative to $N$ apply, including extraction of
+$V$ from the retained gate $N(I(V,Q))$.
+
+From a closed proof $A\to B$, generalization and $K_U$ yield
+$U(d,A)\to U(d,B)$. Applying this construction to the contraposition
+$N(B)\to N(A)$ and contraposing again gives existential monotonicity:
+\[
+ A\to B\quad\Longrightarrow\quad
+ (\exists_d A)\to(\exists_d B).
+ \tag{EM}
+\]
+Every use of generalization here is on a closed theorem.
+
+\begin{proof}[Proof of Theorem~\ref{thm:all-offsets}]
+We split $e$ into its three possible residues.
+
+\emph{Case 1: $e=3k$, $k\ge0$.}
+Let $x=k+1$ and $T=I(x,0)$. Since zero is a theorem, $K(0,x)$ and
+modus ponens give a proof of $T$. The bounds above imply $T\ge k+1$,
+so the natural number
+\[
+ n=p(T,1)-k
+\]
+is well-defined without truncated-subtraction ambiguity. Choose
+$(h,d)=p^{-1}(n)$, using the total Cantor inverse. Then
+\[
+ A:=E_{3k}(h,d)=3(n+k)=3p(T,1)=I(T,1).
+\]
+There is a fixed $K,S$ proof of $A\to1$: from the theorem $T$, derive
+$A\to T$; the identity theorem $A\to A$ is literally
+$A\to(T\to1)$; apply $S(A,T,1)$ and modus ponens twice. Generalize
+this closed theorem at $d$ to obtain $U(d,N(A))$. But the equality
+witness is
+\[
+ W(d,h)=\exists_d A=N(U(d,N(A))),
+\]
+so one further modus ponens derives one. This case uses no separation,
+vacuity, equality rewriting, or modal head $O$.
+
+\emph{Case 2: $e=3k+2$, $k\ge0$.}
+For $k=0$ choose $(h,d)=(1,0)$. For $k\ge1$ choose
+$(h,d)=(0,k-1)$. In both cases
+\[
+ E_{3k+2}(h,d)=U(d,1).
+\]
+For the second case the required identity is
+$p(1,d)-p(0,d)=d+1=k$; the first case is the direct equality
+$E_2(1,0)=5=U(0,1)$. Hence the equality-witness head gives
+$\exists_d U(d,1)$, and $O(d,1)$ gives its implication to one.
+One modus ponens completes this three-line refutation.
+
+\emph{Case 3: $e=3k+1$.}
+First let $k=0$. Then $E_1(0,0)=1$. The identity theorem
+$N(1)=I(1,1)$, generalized at zero, gives $U(0,N(1))$.
+The equality witness $W(0,0)$ is exactly $N(U(0,N(1)))$.
+Modus ponens derives one.
+
+Now let $k\ge1$. The pairing identity
+\[
+ p(a-k,b+k)=p(a,b)+k\qquad(a\ge k)
+\]
+follows because the sum of the arguments is unchanged. It gives
+\[
+ E_{3k+1}(2k,0)=M(k,k),\qquad
+ E_{3k+1}(3k,k)=M(2k,2k).
+\]
+The corresponding equality witnesses are
+$\exists_0 M(k,k)$ and $\exists_k M(2k,2k)$. Membership vacuity yields
+\[
+ M(k,k)\to U(0,M(k,k)),\qquad
+ M(2k,2k)\to U(k,M(2k,2k)),
+\]
+with both guards valid because $k\ge1$. Apply (EM), then $O$, to each
+witness. This derives both $M(k,k)$ and $M(2k,2k)$. The first of these
+is also $E_{3k+1}(2k,0)$. Now the retained rewriting heads give
+\[
+ M(2k,2k)\to(E_{3k+1}(2k,0)\to M(0,2k))
+\]
+and
+\[
+ E_{3k+1}(2k,0)\to(M(0,2k)\to M(0,0)).
+\]
+Repeated modus ponens therefore derives $M(0,0)=1$.
+
+In every case only fixed proof templates, finite concatenation, numerical
+constructor formation, elementary case selection, and Cantor inversion
+are used. These operations are primitive recursive. PA proves the displayed
+pairing identities, side conditions, and the checking equations of the
+fixed templates; induction on their finite proof concatenations gives the
+claimed uniform correctness statement.
+\end{proof}
+
+\paragraph{Scope of the obstruction.}
+The theorem includes the unmodified tag $e=3$, the seemingly natural repair
+$e=4$, and every other nonnegative constant offset. It establishes that
+merely lowering the coefficient to three and moving the equality tag
+cannot preserve the searched consistency theory. A smaller physical table
+realizing one of these sources would search an explicitly refutable
+calculus. The theorem does not exclude a different nonconstant encoding,
+a new axiom system with a proved calibration, or a valid machine with
+fewer than 194 states obtained by another construction.

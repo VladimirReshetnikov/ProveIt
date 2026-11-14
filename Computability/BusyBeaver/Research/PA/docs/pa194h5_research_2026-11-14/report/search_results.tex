@@ -1,0 +1,41 @@
+\begin{center}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.49\linewidth}>{\raggedright\arraybackslash}p{0.43\linewidth}@{}}
+\toprule
+Recorded experiment & Outcome within its stated family\\
+\midrule
+Runtime193: pairs from 346 proposed row edits plus the unchanged sentinel &
+471,684 simulations; no complete frame at any of the 3,673 source sites.
+117,967 halt, 353,129 outward rays, 588 bounded runs.\\[5pt]
+Runtime193: all $9!$ physical register placements and eight first-writing
+starts & 2,903,040 simulations; 725,760 halt, 2,177,280 outward blank rays;
+no selected safe frame and no step-limit exhaustion.\\[5pt]
+Runtime193 with the extra stride-two reader (194 controls), same placements
+and starts & The same 2,903,040 classifications; initialization fails
+before the additional reader is used.\\[5pt]
+Corrected primary-194 source/startup context sweep & 334 outside-engine
+neutral row edits, each followed by the allowed joint contractions;
+no valid smaller candidate.\\[5pt]
+Bounded grammar annealing & 14,290,285 proposals and 2,436,962 accepted
+moves in the recorded run; best count 194.\\[5pt]
+Rotated arithmetic helper repair & A new selector repairs all 4,780
+source outcomes at 194 states; the tested joint contractions do not
+recover 193.\\
+H5 plus stride-two reader and H/X swap & 195 runtime states and 4,816
+passing source outcomes; no fast fold or tested radius-five joint
+quotient. No blank-start claim for this trial.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The paired-row run allows one million literal transitions per simulation;
+its 588 bounded cases are not divergence proofs. The exhaustive placement
+claims concern exactly the two fixed runtime tables and the eight
+first-writing controls. Before the first one is written, the tape stays
+blank, so every blank start that ever writes one reduces to one of these
+controls, up to translation. The permutation detector checks source sites
+25--44 with $T,W,H$ zero and the other six registers arbitrary.
+This reduction does not exhaust all possible
+modifications of the blank initializer. Grammar annealing is heuristic. Symbolic clean-frame
+validation is kept separate from literal initialization in all cases.
+The corresponding scripts, exact input tables and receipts in
+\file{research/reduction/} define each experiment's scope.

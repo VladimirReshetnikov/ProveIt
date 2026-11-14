@@ -1,0 +1,56 @@
+{
+  "source_commit": "b5086c8db0f5778b9569c1ce36b7fe0310d5f225",
+  "baseline": "Primary PA194, 134 fixed controls + 67 AX readers - 7 folds",
+  "runs": [
+    {
+      "name": "run_copy",
+      "seed": 20261114,
+      "description": "Split each D/H/A copy into Push + loader.",
+      "seconds_budget": 240,
+      "proposals": 3966253,
+      "accepted": 708450,
+      "sub194_fitness_hits": 0,
+      "best_effective_readers": 60,
+      "fixed_controls": 134,
+      "best_state_count_fitness": 194,
+      "elapsed_seconds": 240.003,
+      "input_sha256": {
+        "expanded.txt": "1d5d664ddec2ef747c54dcbb55252169a9aa46a590e1cc23f19c77fbea1d99e5",
+        "expanded_attrs.txt": "067023f47e8dd620bc45160cf709919efeea1ff8ef7789bf6acbdea8e0a84ea3",
+        "search.cpp": "44edcfdb1b145cd86d3507ddffe1ad839f2cfe1d0091ea27ca59fd8b2b2a678a",
+        "screen.cpp": "6a6992335b50e3494a1477487df0302a3300492960ad66cc9517eb97c04b687a"
+      }
+    },
+    {
+      "name": "run_phases",
+      "seed": 20261115,
+      "description": "Also split Push and constructor multiplication into closed phases; reuse every exact fixed reader pair.",
+      "seconds_budget": 240,
+      "proposals": 4215199,
+      "accepted": 222291,
+      "sub194_fitness_hits": 0,
+      "best_effective_readers": 60,
+      "fixed_controls": 134,
+      "best_state_count_fitness": 194,
+      "elapsed_seconds": 240.006,
+      "input_sha256": {
+        "expanded.txt": "bb5d53da91ce0e0f046314fd019b52ca0de85f9d1f354a06ca01b046d17074ca",
+        "expanded_attrs.txt": "376ba197eea4cdfc3cdbc9304315679e2788b4ec4cf66f737d44b6450a08065f",
+        "search.cpp": "bc15187b2c3b8b28da2070cb86f854db4690438b37be0465a7fd26792099adc1",
+        "screen.cpp": "bdf69f49e0d4343d8454d67d38e757d5fbc4217c2c3b31f6bc591e0542777399"
+      }
+    }
+  ],
+  "proposals_total": 8181452,
+  "source_binding_grammars": 60,
+  "source_sites": 3673,
+  "accepted_smaller_machine": false,
+  "scope": "Bounded stochastic association searches. Proposal slots can repeat or be no-ops. Candidate fitness is not a physical correctness certificate. No global lower bound is claimed.",
+  "strategy_novelty": "Known split-macro and free-fixed-pair strategy independently rerun; not claimed novel.",
+  "strategy_precedents": [
+    "pa194_radix_family_2026-11-13/search/split_macro/prepare_split.py",
+    "pa194C_conpa_2026-11-13_2/search/grammar/make_expanded.py",
+    "pa194N_conpa_2026-11-13/research/decoder/screen_nopush.cpp",
+    "PA195_ConPA_research_2026-11-14/axioms/search_split_macros.py"
+  ]
+}
