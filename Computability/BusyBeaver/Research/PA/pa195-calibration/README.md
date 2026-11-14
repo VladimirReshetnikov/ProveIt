@@ -454,3 +454,17 @@ nonstandard labels in all candidate-PRA models. Check the chain using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-template-rew.sh
 ```
+
+`PA194TemplateInternal.lean` strengthens the bit-template identification to
+arbitrary model-valued labels, including nonstandard values. It defines a
+typed substitution vector, proves its binder-lifting behavior, and establishes
+by structural induction that the numeric template specification equals
+Foundation's actual internal typed substitution. `modelBitTemplate_internal`
+instantiates this for the exact bounded bit formula. This theorem still
+requires the candidate-PRA model's arithmetic reduct to satisfy IΣ₁, because
+Foundation's internal syntax and substitution are defined there; it is not
+yet a substitution theorem in every candidate-PRA model. Recheck using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-template-internal.sh
+```
