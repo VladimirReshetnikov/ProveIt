@@ -1,7 +1,8 @@
 import PA194FVarCode
 import DiophantineConsistency.PRAHistorySeqConsCode
 
-/-! Two-entry vectors of Foundation free-variable codes. -/
+/-! A two-entry HFS sequence of Foundation free-variable codes. This sequence
+is not yet shown to be Foundation's `Vec.adjoin` term-vector encoding. -/
 set_option autoImplicit false
 set_option maxHeartbeats 2000000
 namespace PA194VarVectorCode

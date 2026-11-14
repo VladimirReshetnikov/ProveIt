@@ -1,7 +1,9 @@
 import PA194RelCode
 import PA194VarVectorCode
 
-/-! Represented atomic relation translation from two source labels. -/
+/-! Experimental relation-code construction from a two-entry HFS sequence.
+It is not yet shown to encode a well-formed Foundation atomic formula: the
+actual term-vector encoding uses `Vec.adjoin`, not `Seq.seqCons`. -/
 set_option autoImplicit false
 set_option maxHeartbeats 2000000
 namespace PA194AtomCode
@@ -13,8 +15,9 @@ open PRAFiniteFunctionCodes PRALanguage PRATheory PRAAddOne PRAModelIOpenPairing
 
 def argsVector (cons : Code 2) : Code 4 :=
   .comp (varVectorCode cons) (.cons (.proj 2) (.cons (.proj 3) (.nil 4)))
-/-- Input `[arity,symbol,a,b]`, building both source-label terms and a
-Foundation relation formula. The intended atomic cases use arity two. -/
+/-- Input `[arity,symbol,a,b]`, building a relation-shaped numeric code with
+two source-label terms stored in an HFS sequence. Its argument encoding is
+not yet identified with Foundation's term-vector encoding. -/
 def atomCode (cons : Code 2) : Code 4 :=
   .comp relCode (.cons (.proj 0) (.cons (.proj 1) (.cons (argsVector cons) (.nil 4))))
 

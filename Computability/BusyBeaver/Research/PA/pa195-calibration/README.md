@@ -322,13 +322,14 @@ Computability/BusyBeaver/Research/PA/pa195-calibration/check-vacuity.sh
 ```
 
 `PA194VarVectorCode.lean` composes the represented free-variable constructor
-with a PRA-certified sequence append operation to construct a two-entry
-vector from source labels `a,b`. Its graph states that both entries have the
+with a PRA-certified sequence append operation to construct a two-entry HFS
+sequence from source labels `a,b`. Its graph states that both entries have the
 exact Foundation free-variable codes, in order, and candidate PRA proves this
 graph; the required append code is supplied by an existence theorem. The
-append code has not been serialized as a numeral. Linking this vector to the
-full Foundation relation-code constructor and the recursive source translator
-remains open. Recheck with the audited overlays using:
+append code has not been serialized as a numeral. Foundation term vectors use
+`Vec.adjoin`, not this `Seq.seqCons` encoding, so this is not yet a certified
+Foundation term-vector constructor. The recursive source translator remains
+open. Recheck with the audited overlays using:
 
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-var-vector-code.sh
@@ -345,11 +346,11 @@ Recheck with the audited overlays using:
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-rel-code.sh
 ```
 
-`PA194AtomCode.lean` composes the certified two-label vector and relation-code
-constructors. For arity, relation-symbol code, and source labels `a,b`, it
-builds a Foundation relation code using the two free-variable term codes in
-order. Candidate PRA proves the composite graph, and a suitable sequence
-append code is supplied existentially. The intended equality case must still
+`PA194AtomCode.lean` composes the certified two-label sequence and relation-code
+graphs. Candidate PRA proves that composite numeric graph, and a suitable
+sequence append code is supplied existentially. Since Foundation term vectors
+use `Vec.adjoin`, this result does not establish that the output is the code of
+a well-formed Foundation atomic formula. The intended equality case must still
 bind the arity and relation symbol to Foundation's actual equality encoding;
 source membership additionally requires construction of the expanded bit
 formula. Recursive formula translation and its correctness remain open.
