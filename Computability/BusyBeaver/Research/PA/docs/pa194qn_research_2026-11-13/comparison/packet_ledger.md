@@ -1,0 +1,57 @@
+# Packet comparison at 3cc7fbf75ba111a0da696ef2f6001dd528891bd5
+
+All 47 placed packets and four current incoming submissions are represented. Historical assertions below remain attributed packet claims, not fresh machine-specific PA or iPRA proofs.
+
+| Packet | Contribution | Duplicate note |
+|---|---|---|
+| pa_unary_power_cover | Unary power covering at PA strength (report of 27 October 2026). The U208 packets carry it as a baseline. |  |
+| U208_ConPA_Conditional_Context_2026-10-29 | U208 by a conditional tape-context reduction. States a 208-state candidate `machine/u208.tm`. |  |
+| U208_ConPA_Entry_Context_2026-10-29 | U208 by eliminating a state using entry context. States a 208-state machine `machine/u208.tm`. |  |
+| U208_ConPA_History_2026-10-29 | U208 by a finite-history decoder fold. States a 208-state candidate `machine/u208.tm`. |  |
+| U208_ConPA_2026-10-29 | U208 by a three-cell fold. States a 208-state candidate `machine/u208.tm`. |  |
+| u208_research_2026-10-29 | U208 research release. States two 208-state machines, `machine/u208.tm` and `machine/variant_plain/u208.tm`. |  |
+| Below_U208_Research_2026-10-29 | Research toward fewer than 208 states. States that no machine with 207 states or fewer was obtained. |  |
+| u208_comparison_research_2026-10-29 | Comparison of the 208-state proposals and a search below 208. States that the target was not achieved. |  |
+| ConPA_below208_research_2026-10-29 | Comparative audit and reduction search below 208. States that it does not establish a 207-state machine. |  |
+| pa_consistency_research_2026-10-29 | Audit and new source reductions. States that no validated machine below 208 states was obtained. |  |
+| pa208_research_2026-10-29 | Comparison and research below 208 states. States that it does not establish a valid machine below 208. |  |
+| pa_tm_research_2026-11-13 | Comparison and reduction research. States a new 196-state variant with shorter source paths and nothing below 196. |  |
+| pa_consistency_research_2026-11-13 | Comparison and diagonal-vacuity research. States a shorter axiom program with a 199-state implementation and nothing below 196. |  |
+| conpa_tm_comparison_and_reduction_search | Comparison and reduction search. States two experimental 196-state command variants and nothing below 196. |  |
+| pa196_research_2026-11-13 | PA196 comparison, source factorization and proof obligations. States a source tree of 157 internal nodes and nothing below 196. |  |
+| pa_consistency_research | Research and verification packet. States that no machine below 196 states has been validated. |  |
+| pa_tm_comparison_and_reductions | Comparison and new rewrites, a research snapshot. |  |
+| pa_tm_extended_research_2026-11-13 | Comparison and refined reduction search. States that the smallest accepted count is 196. |  |
+| conpa_tm_comparison_and_search | Comparison and a search below 196. States that none was obtained; files named `195` are rejected or diagnostic candidates. |  |
+| pa_consistency_reduction | Comparison and reduction experiments. States two new 196-state variants and a shorter source program with a 203-state implementation. |  |
+| pa_consistency_comparison_2026_11_13 | Comparison and new reduction experiments. States that nothing below 196 was obtained. |  |
+| PA_consistency_TM_research_2026-11-13 | Comparison and new source reductions. States that no machine below 196 is claimed. |  |
+| pa_consistency_research_2026-11-13_2 | Comparison and search below 196. States two new layouts with 196 and 198 states and a command-level reduction. |  |
+| conpa_tm_study_2026-11-13 | Comparison and reduction study. States that nothing below 196 was obtained. |  |
+| pa_below196_research | Comparison and reduction experiments. States that nothing below 196 was obtained. |  |
+| pa_consistency_comparison_and_new196_2026-11-13 | Comparison and reduction research. States that it contains no accepted machine below 196. |  |
+| pa_tm_research_2026-11-13_2 | Comparison and reduction investigation. States same-size work, failed candidates and nothing below 196. |  |
+| pa_consistency_cross_archive | Cross-archive constructions and reduction search. States that it does not certify a 195-state machine. |  |
+| pa195_conpa_2026-11-13 | PA195. States a 195-state machine `pa195/pa195.tm` and an article with a PA proof of the equivalence. |  |
+| pa_consistency_reduction_audit_2026-11-14 | Comparison and reduction audit. States nothing below 196 and no new theorem. |  |
+| pa_consistency_research_2026-11-14 | Comparison and NEG18. States an 18-instruction encoded negation with a compiled machine of 197 states. |  |
+| PA195_ConPA_research_2026-11-14 | A 195-state machine. States the primary `machine_195S.tm` and a second table `machine_195C.tm`. |  |
+| pa195_followup_research | Comparison and searches below 195. States a graph-distinct 195-state machine M195S8 and nothing below 195. |  |
+| pa194_conpa_2026-11-13 | A 194-state machine. States the table `construction/tables/pa194.tm` and a proof of the equivalence in PA. |  |
+| pa194_conpa_2026-11-13_2 | PA194. States a 194-state machine `pa194/pa194.tm` and an article with a PA proof of the equivalence. |  |
+| pa195_diagonal_combined_2026-11-13 | PA195DC. States a different 195-state machine. |  |
+| pa194C_conpa_2026-11-13_2 | PA194C. States a materially different 194-state machine, an article with a PA proof of the equivalence, and nothing below 194. | Headline PA194C is repeated across five deliveries; PA194_new_designs additionally contributes PA194CS. |
+| pa194_new_designs_2026-11-13 | Two new 194-state machines, PA194C and PA194CS. States that nothing below 194 was obtained. | Headline PA194C is repeated across five deliveries; PA194_new_designs additionally contributes PA194CS. |
+| pa194c_conpa | PA194C, a cached-head 194-state machine. States that no machine below 194 was established. | Headline PA194C is repeated across five deliveries; PA194_new_designs additionally contributes PA194CS. |
+| pa194c_conpa_2026-11-13_1 | PA194C. States a different 194-state machine and an article with a PA proof of the equivalence. | Headline PA194C is repeated across five deliveries; PA194_new_designs additionally contributes PA194CS. |
+| pa194c_conpa_2026-11-13 | PA194C, a cached-head 194-state machine. States an article with a PA proof of the equivalence and nothing below 194. | Headline PA194C is repeated across five deliveries; PA194_new_designs additionally contributes PA194CS. |
+| pa194_radix_family_2026-11-13 | New 194-state machines calibrated to Con(PA), a radix family. |  |
+| pa194j_pa194d_conpa_2026-11-13 | PA194J and PA194D. States two new 194-state machines. |  |
+| pa194q_conpa_2026-11-13 | PA194Q and PA194CSZ. States two new 194-state machines and that no machine below 194 was established. |  |
+| PA194R_research_2026-11-14 | PA194R. States a different 194-state machine with a new decoder layout and that no machine below 194 was verified. | PA194X equals PA194CSZ byte for byte; R, F, and A are distinct. |
+| pa194N_conpa_2026-11-13 | PA194N. States a new 194-state machine, an article with a PA proof of the equivalence, and nothing below 194. |  |
+| pa194zr_conpa_2026-11-13 | PA194ZR. States a new 194-state machine `machine/pa194zr.tm`, a PA proof of the equivalence, and nothing below 194. |  |
+| pa194hs_conpa_2026-11-13 | PA194H and PA194HS; successful MP omits dummy-zero push and leaves result in visible T; Shift tests cached H. HS uses symmetric comparison. Both 194 states. | PA194HS is byte-identical to PA194NS. |
+| pa194n5_n6_conpa_2026-11-13 | PA194N5 and PA194N6; coefficient-5/6 formula constructors combined with no-push MP. Two 194-state machines. Node verifier supplied. | PA194N6 is byte-identical to the N6 machine in pa194n6_research_2026-11-13. |
+| pa194n6_research_2026-11-13 | PA194N6; coefficient-six formula constructors combined with no-push MP, 3776 sites and 4877 primitive outcomes, independently audited literal runtime. | The headline N6 table is a duplicate of the N5/N6 submission. |
+| pa194ns_conpa_2026-11-13 | PA194NS; no-push MP and symmetric cached-head Shift, with all-store compiler and 4750 primitive outcomes. No machine below 194. | PA194NS is byte-identical to PA194HS. |

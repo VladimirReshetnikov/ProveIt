@@ -1,0 +1,204 @@
+INDEPENDENT REVIEW: PA194H6
+Pinned comparison revision: 3cc7fbf75ba111a0da696ef2f6001dd528891bd5
+Reviewed dense machine SHA-256:
+4bae5b0a698583d97ae8527472dfb627c1cecbba9babd88159fe94c1e3e7dc17
+
+Conclusion and scope
+--------------------
+No mathematical defect was found in the new H6 composition reviewed here.
+Its new controller identities, proof-tree compiler, arbitrary-carried-store
+interface, and coefficient-six source binding fit the inherited ordinary
+PA calibration. This supports the proposed 194-state fallback. It does not
+establish a machine below 194 states, a state lower bound, a new kernel-checked
+PA theorem, or an iPRA consistency equivalence.
+
+This review checked the ordinary argument in proof/pa194h6_preservation.tex,
+the actual source/data and command checker, and the retained radix, constructor,
+and hybrid-controller proofs. It did not rerun the long universal physical
+checks, which have separate receipts, and did not re-elaborate the upstream
+Lean library or every historical logical lemma.
+
+1. Independent source and literal table check
+--------------------------------------------
+review_h6_structure.py imports no builder, compiler, allocator, or tape-runtime
+module. It expands the named source trees itself, constructs a binary trie,
+and independently resolves successor, decrement, break, and continue targets.
+The result agrees with all 3,775 delivered H6 primitive instructions and every
+source address. Restoring the four-increment multiplier yields exactly the
+supplied 3,653-instruction H4 graph.
+
+All 61 node61 occurrences are the relative 1110 bodies of distinct node65 Cons
+occurrences. The AX grammar does not directly use node61 as a literal tag.
+Every Cons occurrence has the full 29-instruction coefficient-six pattern in
+the generic constructor proof. All 3,409 instructions outside multiplier bodies
+and all their successor edges agree under the recorded relocation. No outside
+edge enters a replacement-body interior. This closes a possible gap between
+changing61 multiplication loops and merely asserting a changed formula radix.
+
+The source changes therefore alter formula multiplication 4 -> 6 everywhere it
+is required, including MP's implication comparison, while leaving Cantor stack
+pairing and the candidate scheduler's pairing conventions unchanged.
+
+The native N6 and H6 tables have identical state/read domains and differ in
+exactly five rows:
+ 38/0: 0 R28  -> 0 R11
+ 38/1: 1 R20  -> 1 R122
+214/0: 0 R188 -> 0 R312
+214/1: 1 R312 -> 1 R20
+312/0: 0 R11  -> 0 R188.
+The no-push edge 164/1 -> 1 R114 is retained. The dense/native label map is an
+exact bijection including halt. H6 has 194 working states and 388 rows; dense
+start is 0 and halt 194. All 194 working states are graph-reachable from start.
+The independent structure receipt is pa194h6_structure_review.json.
+
+2. Controller identities, including degenerate codes
+---------------------------------------------------
+Write [a;w]=p(a,w), I(a,b)=6p(a,b), U(i,a)=6p(a,i)+2. The numerical stack is
+not a free list: [0;0]=0, and I(0,0)=0. Every identity below uses total Cantor
+projections, so these aliases cause no exception.
+
+The hybrid Shift halts exactly if the old cache h=1; otherwise it returns
+(h,tl(w),d,hd(w)). Successful MP_x with b=d+x returns(b,w,b,0), and failed MP
+returns(0,w,b,0). Consequently MP_0 on d=0 returns(0,w,0,0) for every old top
+and cache, regardless of whether its comparison succeeds. This Discard rule
+is valid without assuming that the old cache is derivable or nonzero.
+
+AX pushes the nine generated heads and saved old top and clears d,h. The first
+eight generated heads and gate are 0 modulo 6; the final universal head is 2
+modulo 6. None is 1. Thus AX;S^9 and AX;S^10 never test the arbitrary saved old
+top. They produce the exact interfaces displayed in the report.
+
+Push=AX(0,0,0);S^9;MP_0 works for every old(t,w,d,h), giving(0,[t;w],0,0).
+Pop=AX(0,0,0);S^11 preserves the old top, clears d, and pops the old stack if
+the top is not1; its last Shift halts if that top is 1. A plain final Shift
+would fail to detect top 1 with cache 0. The report correctly uses Pop.
+
+The axiom/gate selectors consume exactly the generated heads and saved zero.
+Their fixed visible output is never1, so the intervening Pops are safe. The
+dominated-rho selector uses an offset u and parameter a-u under u<=a, which
+correctly realizes D=a. Generalization works even with visible premise1:
+its initial Shift tests cleared cache 0, and AX consumes the newly loaded
+premise before any further test could see it.
+
+For MP, reserving zero BEFORE the two compiled premises is essential. After
+major proof, Push, minor proof and Push, the suffix sees
+(0,[a,I(a,b),0;w],0,0). Two Shifts expose the premises; MP gives
+(b,[0;w],b,0); final Pop consumes the reserved zero and clears the offset.
+It halts if a=1 or b=1, otherwise returns(b,w,0,0). The all-zero alias case
+still gives precisely the required numerical equality. Without the reserved
+zero the suffix could consume an arbitrary old stack entry; the submitted
+compiler includes it.
+
+3. Dirty-store compilation and scheduler completeness
+-----------------------------------------------------
+The compiler invariant quantifies over every t,w with d=h=0, rather than only
+an empty stack. At every proof node it either halts early or returns its
+conclusion while preserving w and clearing d,h. A preliminary AX clears any
+arbitrary carried d,h without needing the prior store to be logically sound.
+Thus AX;W_p;Pop halts from EVERY incoming numerical store when p proves 1.
+This is the correct interface for a scheduler that carries its store between
+candidate words.
+
+The continuation encoding E(c::w)=1+B_c(E(w)) must be distinguished from a
+fresh candidate's outer command code. The report does this. Prefixing the
+universal halting word by AX(k,0,0) gives cofinally many candidate codes
+p(k+2,p(0,p(0,E(word)))); they are increasing and unbounded. Starting the fresh
+counter at 2 therefore loses none of the necessary coverage. Positive residual
+continuations decrease, and each fixed arithmetic macro has a PA-provably
+terminating primitive-recursive bound. The finite induction through earlier
+candidate numbers reaches a chosen halting word unless an earlier halt occurs.
+No reset-to-empty hypothesis or standard-model-only enumeration argument is
+being substituted for this step.
+
+4. Radix calibration and the numerical-order obstruction
+--------------------------------------------------------
+Recoding ONLY formula syntax while keeping numerical variable labels fixed
+would break diagonal freshness. The retained radix_calibration.tex instead
+uses hereditary recoding F of both formula codes and labels, with a primitive-
+recursive left inverse proving injectivity. It fixes 0 and 1, preserves all
+constructor identities, and hence carries Gamma4(B) to Gamma6(F(B)).
+
+F is not order preserving. In the coefficient-six instance,
+40<44 but F(40)=126>66=F(44). A restricted propositional axiom cannot simply
+be recoded to another restricted axiom leaf. The proof correctly replaces
+that leaf with the unrestricted rho8All template. The actual retained
+RestrictedImplication.lean defines this template for implication and a
+relation satisfying reflexivity and the two argument bounds. Natural <=
+with I6 satisfies those premises because a,b<=p(a,b)<=6p(a,b).
+
+For the reverse translation, unused residues 4 and 5 are interpreted as closed
+truth; they are not silently excluded from arbitrary numerical command
+parameters. The source label B is absent from the interpretation of code B,
+because recursive components and occurring labels are strictly smaller.
+Truth code 0 and the I(0,0) alias receive explicit fixed proof translations.
+Code 1 translates to Bit(x0,x0), whose negation PA proves.
+
+The gate supplier uses finite bit comprehension for an arbitrary formula,
+with a syntactic proof supplier using one corresponding PA induction instance.
+It does not claim a uniform truth predicate or reflection theorem. The
+coincident-variable-label case is handled separately. The fixed logical
+translation therefore supports all source naturals, including the two unused
+residue classes, and supplies the intended PA refutation equivalence.
+
+The new H6 report relies on these existing ordinary proof-producing
+calibrations. They have not all been converted here to a new end-to-end Lean
+or Rocq declaration. The imported PA196 declaration proves one internal PA
+direction; its external standard-model theorem alone must not be described
+as supplying the converse. The retained ordinary syntactic translation is
+what supplies that converse in this argument.
+
+5. Halting reflection and proof status
+--------------------------------------
+The logical soundness invariant annotates top, cache and every canonical live
+stack entry with derivations; the numerical offset has no such annotation.
+Zero supplies the virtual tail. AX, MP and Shift preserve these annotations,
+and a Shift halt exposes a derivation of 1. Canonical Cantor tails decrease
+at every positive stack value, giving bounded finite annotations.
+
+Exact positive source-to-tape contracts are needed in both directions. An
+arbitrary literal tape halt cannot be reflected just by saying that source
+halts are simulated. The retained argument uses positivity and determinism:
+if a literal halt occurred at time T while source execution remained nonhalting,
+T+1 completed positive source segments would provide a longer run from the
+same frame, a contradiction. Macro termination and the whole blank startup
+close the gaps before the first frame and inside command execution. These
+are PA-formalizable finite inductions with the supplied uniform witnesses.
+
+The finite table/CFG/startup and universal symbolic runtime certificates are
+support for this ordinary mathematical composition. They do not themselves
+encode the complete proof of the PA biconditional. Actual nonhalting is the
+further conclusion under Con(PA); the biconditional itself does not assume
+PA consistency.
+
+6. Comparison and novelty
+-------------------------
+The current comparison covers 51 top-level deliveries: 47 placed research
+packets and four incoming ZIPs. Recursive scanning, including legacy ZIP
+nesting through the observed maximum depth 8, recognizes 2,049 literal table
+occurrences and 683 byte forms. Of these, 487 action-graph classes have a
+spanning root; two disconnected synthetic fixtures are excluded from that
+last count. At 194 states, 208 occurrences and 62 byte forms give 34 action-graph
+classes. These inventory counts include rejected and experimental objects.
+
+The 194 ledger assigns 20 classes supplied ordinary PA arguments and independent
+symbolic physical evidence, one additional class (PA194N5) supplied an ordinary
+PA argument and a universal JavaScript audit, nine auxiliary classes, and four
+rejected classes. This is a classification of supplied evidence, not a fresh
+proof of every historical claim. All 34 classes are included in the novelty
+comparison, regardless of their status.
+
+PA194C has five duplicate headline deliveries; PA194X equals PA194CSZ;
+PA194HS equals PA194NS; and the two PA194N6 deliveries have identical dense
+bytes. The four current incoming archives therefore add four main classes,
+not six distinct machines.
+
+verify_novelty.py compares complete canonical tuples against 34 bundled prior
+representatives, allowing arbitrary state renaming, every graph-spanning
+root, global L/R reflection, and global read/write symbol exchange. H6 has
+no match. File hashes identify inputs; canonical tuple equality decides the
+comparison. Global bit exchange need not preserve the zero-blank convention;
+allowing it strengthens the graph-distinctness claim rather than proving a
+new semantic equivalence. Full PA+incoming census scope and excluded encodings
+are explicit in census.json. Code-only and arbitrary JSON-only encodings are
+not recognized automatically; the 51-packet narrative ledger complements the
+literal census.

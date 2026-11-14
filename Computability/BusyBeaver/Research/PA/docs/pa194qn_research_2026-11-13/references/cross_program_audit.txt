@@ -1,0 +1,110 @@
+Cross-program and logical audit at ProveIt 3cc7fbf75ba111a0da696ef2f6001dd528891bd5
+================================================================================
+
+1. Applicable proof level
+
+PA/README.md explicitly says neither machine-specific consistency reduction for
+PA194 has yet been established internally in iPRA. Ordinary mathematical proofs
+of PA-provability in the delivered packets are a different assertion. A new
+construction may reuse the ordinary PA calibration, but should not be labeled
+as a newly checked Lean theorem, an iPRA theorem, or unconditional nonhalting.
+The correct target here is PA |- [not Halt(M,blank) <-> Con(PA)].
+
+2. The inherited ordinary PA calibration addresses the principal subtle cases
+
+Source: PA/docs/pa194_conpa_2026-11-13/report/calibration.tex and its
+report/reference/original_pa195_calibration.tex, diagonal_calculus.tex,
+separate_head_calculus.tex.
+
+(a) Numerical constructors are I(A,B)=4*p(A,B), M(a,b)=4*p(a,b)+1,
+U(a,B)=4*p(B,a)+2 and E(a,b)=4*p(a,b)+3. Zero denotes truth; one is M(0,0).
+The alias I(0,0)=0 means translation commutes with implication only up to a
+uniformly produced PA proof of equivalence, not as literal syntax.
+(b) Every variable label in decoded B is strictly below B, including bound
+labels; the separate B=0 case is needed. Gamma(B)=B->U(B,B) is therefore a
+valid vacuity axiom. This statement is about numerical syntax, not a truth
+predicate.
+(c) Arithmetic interpretation uses finite binary membership Bit(s,z), which
+PA proves implies z<s. The M(0,0) translation is thus refutable in PA.
+(d) A PA proof template for finite comprehension of an arbitrary arithmetic
+formula is produced syntactically using induction. This is not a uniform
+truth definition or a reflection principle.
+(e) The pointed-separation instance with a=b needs a different comprehension
+matrix. The retained proof handles it explicitly; copying the a!=b matrix
+would be incorrect because the binder changes both occurrences.
+(f) Reverse membership rewriting and neighborhood equality are recovered with
+concrete diagonal code-fresh binders, not an assumed equality-vacuity axiom.
+(g) The original halt test is t+h=1. Soundness must annotate BOTH t and h,
+not merely current top. Canonical numerical stacks must handle p(0,0)=0.
+(h) The scheduler carries the proof store across candidates. Completeness
+therefore needs a word halting from every store, with a cofinal family of
+encodings, not only a word that halts from the all-zero store.
+
+3. Composition Q plus N
+
+Sources:
+  PA/docs/pa194q_conpa_2026-11-13/report/calibration_q.tex
+  PA/docs/pa194N_conpa_2026-11-13/mathematics/full_nopush_proof.tex
+
+Q changes only h6 from P->(Q->R) to Q->(P->R), where
+P=U(D,A), Q=U(D,I(A,H)), R=U(D,H). The unchanged dominated implicational
+basis proves exchange independently of either h6 version; see upstream
+pa196/PA196/Logic/ImplicationBasis.lean, Dominated.exchange. Thus replacing
+h6 leaves the numerical theorem set unchanged by primitive-recursive proof
+translations with correctness in PA.
+
+N retains the old Shift test t+h=1 and changes successful MP to
+(t,w,d,h) -> (d+x,w,d+x,0); failed MP gives (0,w,d+x,0). No zero is pushed.
+For N's command proof the relevant AX properties are: ten pushed entries,
+q1..q8 and gate all divisible by 4, q9=U(d,h)>=2, and each generated item
+has a derivation. Q preserves every one of these properties. Therefore
+N's Push/Pop/Discard/Offset/Gen identities and reserved-zero MP compiler
+remain literally valid after Q's change. Only the formula selected at q2
+is the exchanged h6, and proof translation supplies the former h6.
+
+Specifically Pop=AX(0,0,0);S^11 is total even when saved top is one,
+because its final test includes U(d,h)>=2. Discard=MP(0) at d=0 is total
+because the two branches coalesce. The proof compiler reserves its own
+zero below the two premise values before MP. Both facts are essential.
+All-store halting follows by AX reset, compiled refutation, final Shift.
+No new semantic assumption is needed for Q+N. Exact physical runtime and
+initialization certificates must nevertheless be rerun; Q's old local
+folds were discovered against its cached-C controller and cannot merely
+be presumed valid with N's controller.
+
+4. What transfers from ZFC and ConciseIPRA
+
+ZFC/candidate-k215/proof.md separates command calibration, exact source CFG,
+all-natural physical runtime, and whole-tape blank initialization. Its
+command-local field read, partial selector, known-zero/marker selection,
+and no-successful-MP-push ideas are productive compiler techniques.
+But no-push already appears in PA194N and command-local/cached ideas in
+PA194C; reusing them needs novelty measured against the whole current
+corpus. A row-count reduction on a runtime path is insufficient if the
+same row is used by blank initialization.
+
+ConciseIPRA/README.md's native scalar calculus changes logical vocabulary
+and selects rule modes by existing syntax. Its transferable engineering
+idea is selecting a dispatch branch from existing data rather than storing
+another mode. Simply compiling an iPRA refutation search would change the
+consistency target. A shorter checker source or fewer logical rules is
+not a certificate of a smaller binary TM: data encoding, dispatcher,
+initialization and proof enumerator must all be included.
+
+5. New emitter research
+
+A particularly transparent new axiom correlation replaces h5(D,H)=
+exists x_D E(H,D) by h5'(D,A)=exists x_D E(A,D), leaving every other head,
+Gamma(A), gate and guard unchanged. There is only one copy-register macro
+token change. The full axiom family is identical because all A,D,H range
+independently after reset. To select exists x_d E(h,d), set AX A=h,D=d,H=0
+instead of A=0,D=d,H=h. This is not a global parameter permutation:
+Gamma(A) retains A, while the witness changes H to A. No bijection maps
+both correlations simultaneously. An actual 194-state realization was
+not established as of writing; see permutation/grammar search receipts.
+
+Independent permutations of parameters inside h1..h6, and curry premise
+swaps inside h3/h4/h6, preserve the relevant axiom families/theorem set,
+but disrupt shared decoder subtrees. Such a mathematically simple change
+need not be physically cheap. The bounded searches produce no state
+lower bound and are not correctness evidence for unverified tables.

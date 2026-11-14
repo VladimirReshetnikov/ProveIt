@@ -1,0 +1,262 @@
+% Section fragment. Requires amsmath, amssymb, amsthm, longtable, booktabs.
+\section{PA194H6: the coefficient-six cached-test controller}
+\label{sec:h6}
+
+PA194H6 combines coefficient-six formula constructors with the no-push
+modus-ponens rule and a Shift command that tests only the cached formula.
+Coefficient six and no-push modus ponens occur together in the supplied
+PA194N6.  The cached-test/no-push interface occurs at coefficient four in
+PA194H and PA194HS/NS.  The contribution here is their verified composition,
+with a new literal graph at 194 states.  The component ideas are inherited.
+The composition does not lower the state count.
+
+\subsection{Exact source and physical construction}
+
+The native table starts at 74 and halts at the separate label 254.
+Relative to PA194N6, precisely the following five rows change:
+\begin{center}
+\begin{tabular}{rrll}
+\toprule State & Read & Old action & New action\\\midrule
+38&0&$0R28$&$0R11$\\
+38&1&$1R20$&$1R122$\\
+214&0&$0R188$&$0R312$\\
+214&1&$1R312$&$1R20$\\
+312&0&$0R11$&$0R188$\\\bottomrule
+\end{tabular}
+\end{center}
+The no-push success edge $(164,1)\mapsto(1,R,114)$ is retained.
+The 135 fixed controls and 67 AX readers form a 202-state parent.
+Eight simultaneous history-sensitive folds give $135+67-8=194$ states.
+All 32 history/read-symbol cases are rechecked in the final quotient;
+all arithmetic-box transitions are unchanged from the coefficient-six parent.
+
+The source edits relative to the coefficient-six push-MP parent are
+\[
+\begin{split}
+ \mathtt{node163}&=(\mathtt{node6},\mathtt{node54}),\\
+ \mathtt{node170}&=((\mathtt{node36},
+              (\mathtt{node167},\mathtt{node145})),\mathtt{node57}).
+\end{split}
+\]
+The first removes the successful-MP dummy-zero push.  The second implements
+cached-only Shift: it clears the old top, copies the cached value $h$ into
+$T$ and $X$, restores $X$ to $H$, sets $X=1$, and enters the inherited
+comparison.  Thus the comparison receives $(T,H,X)=(h,h,1)$.
+It halts precisely when $h=1$; otherwise it clears its scratch operands
+and continues to the unchanged Cantor-stack decoder.
+
+There is an independent exact source check.  Replacing the coefficient-six
+multiplier subtree by its four-increment predecessor gives exactly the
+supplied PA194H instruction graph, not merely the same number of sites.
+The new graph replaces 61 four-increment blocks by six-increment blocks.
+Every one of the other 3,409 sites and every outgoing edge agrees under
+the explicit relocation, and no outside edge enters an interior point of
+a replacement block.  Consequently 3,653 sites become 3,775 sites.
+The generic constructor proof retained in the references establishes that
+these replacements implement $6p(a,b)$ instead of $4p(a,b)$ throughout AX
+and the MP comparison.  They leave the Cantor stack pairing unchanged.
+
+The construction checker proves all 4,876 primitive outcome contracts.
+A separately implemented literal-tape checker rederives four register-list
+lemmas from the transition rows and proves those same contracts over
+arbitrary natural registers, both decrement outcomes, an arbitrary affine
+header gap, and any nonempty finite list of natural spare values.  Its
+1,139,739 symbolic operations have maximum case length 403 and minimum
+positive physical-duration constant three.  Complete blank initialization
+takes exactly 58,088 literal TM steps and reaches source entry 25 with
+logical registers $(2,0,0,0,0,0,0,0,0)$ and 26 unit spare blocks.  The entire
+finite-support tape, head, control, and zero exterior are checked.
+These are executable universal certificates, not proof-assistant output.
+
+\subsection{Numerical semantics and inherited logical calibration}
+
+Put
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad [a;w]=p(a,w),\qquad
+ I(a,b)=6p(a,b),\qquad U(i,a)=6p(a,i)+2.
+\]
+Membership and equality codes are $M(a,b)=6p(a,b)+1$ and
+$E(a,b)=6p(a,b)+3$.  Negation is $N(a)=I(a,1)$; conjunction and existential
+quantification have the inherited definitions
+$C(a,b)=N(I(a,N(b)))$ and $\exists_i a=N(U(i,N(a)))$.
+The codes zero and one are truth and the target contradiction.
+The unused residue classes four and five are interpreted by the inherited
+radix calibration; they are not silently assumed to be ordinary formula
+constructors.  In particular $I(0,0)=0$ remains a numerical alias.
+
+Let $\mathcal L_6$ denote the supplied separated-head numerical calculus
+with these coefficient-six constructors.  The logical dependency used here
+is the pair of primitive-recursive proof translations $\alpha,\beta$ whose
+correctness is provable in PA:
+\begin{align*}
+ \operatorname{Prf}_{\rm PA}(p,\ulcorner0=1\urcorner)
+     &\longrightarrow \operatorname{Prf}_{\mathcal L_6}(\alpha(p),1),\\
+ \operatorname{Prf}_{\mathcal L_6}(q,1)
+     &\longrightarrow \operatorname{Prf}_{\rm PA}(\beta(q),\ulcorner0=1\urcorner).
+\end{align*}
+The retained \texttt{radix\_calibration.tex},
+\texttt{separate\_head\_calculus.tex}, and original calibration give this
+ordinary mathematical interface.  The retained
+\texttt{RestrictedImplication.lean} supplies the explicit unrestricted
+$\rho_8$ proof template (\texttt{rho8All}) needed by the recoding argument;
+this avoids assuming that recoding preserves the numerical dominance order.
+This release does not supply a newly
+compiled end-to-end Lean or Rocq proof of it, nor an iPRA endpoint.
+Nothing in the new argument assumes PA's consistency or its own soundness.
+
+A command store is $(t,w,d,h)$, with current top, stack, numerical offset,
+and cached formula.  For $b=d+x$ the two controller operations are
+\[
+ S(t,w,d,h)=\begin{cases}
+ \mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+ \end{cases}
+ \qquad
+ \mathsf{MP}_{x}(t,w,d,h)=\begin{cases}
+ (b,w,b,0),&I(t,b)=h,\\
+ (0,w,b,0),&I(t,b)\ne h.
+ \end{cases}
+\]
+The total Cantor projections obey
+$\operatorname{hd}[a;w]=a$, $\operatorname{tl}[a;w]=w$, and
+$\operatorname{hd}0=\operatorname{tl}0=0$.  Thus $[0;0]=0$; no proof below
+treats the numerical stack as a free list.
+
+For $D=d+x$, $H=h+y$, and $A=c$, the unchanged AX operation returns
+\[
+ \mathsf{AX}_{c,x,y}(t,w,d,h)=
+ (G(H,D,A),[q_1,\ldots,q_9,t;w],0,0).
+\]
+Its first head is $q_1=I(A,U(A,A))$, its next six heads are the inherited
+universal heads in reverse emission order, and
+\[
+ q_8=I(I(I(H,d),D),I(I(D,H),I(A,H))),\qquad q_9=U(d,h).
+\]
+The guarded gate $G$ is exactly the coefficient-six parent's gate.
+The complete free-constructor emitter is checked in
+\texttt{proof/check\_commands.py}.  All $q_1,\ldots,q_8,G$ are zero modulo
+six, whereas $q_9$ is two modulo six and at least two.  None is one.
+This constructor observation is valid for arbitrary input naturals and
+requires no semantic consistency assumption.
+
+\subsection{A complete command compiler}
+
+Write $A_0=\mathsf{AX}_{0,0,0}$ and execute words left to right.  The exact
+identities
+\[
+ \mathsf{AX}_{c,x,y};S^9(t,w,d,h)=(q_8,[t;w],0,U(d,h)),\qquad
+ \mathsf{AX}_{c,x,y};S^{10}(t,w,d,h)=(U(d,h),w,0,t)
+\]
+never halt.  Their tests encounter generated non-one heads and the cleared
+cache, not the arbitrary saved top.  Define
+\[
+ \mathsf{Push}=A_0;S^9;\mathsf{MP}_0,\quad
+ \mathsf{Pop}=A_0;S^{11},\quad
+ \mathsf{Discard}=\mathsf{MP}_0,\quad
+ \mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+They satisfy, for every displayed natural store,
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+  \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+Push's final comparison fails by the residues zero and two.  Pop's eleventh
+Shift tests precisely the saved top.  The two MP branches coincide when
+the candidate conclusion is zero, proving Discard even with arbitrary old
+cache.  Offset includes the zero case.  All identities continue to hold
+when a zero push collapses into the empty stack.
+
+From $(t,w,0,0)$, the word
+$\mathsf{Discard};\mathsf{AX}_{A,D,H};S^{j+1};\mathsf{Pop}^{9-j}$ selects
+$q_j$ for $1\le j\le7$, preserving $w$ and clearing both caches.  The gate
+uses $\mathsf{Discard};\mathsf{AX}_{c,b,a};\mathsf{Pop}^{10}$.
+For $u\le a$, the dominated implicational head is selected by
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf{AX}_{b,a-u,c};S^9;\mathsf{Pop}.
+\]
+Generalization is
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;S;
+                  \mathsf{AX}_{i,0,0};S^{10},
+\]
+which sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$, including $a=1$.
+These are the inherited hybrid words; their proof uses only the constructor
+properties just verified for coefficient six.
+
+The MP suffix $S;S;\mathsf{MP}_b;\mathsf{Pop}$ sends
+$(0,[a,I(a,b),0;w],0,0)$ to $(b,w,0,0)$ when $a,b\ne1$, and halts when
+$a=1$ or $b=1$.  Indeed the two Shifts expose the premises; successful MP
+leaves $(b,[0;w],b,0)$; Pop consumes the reserved zero and clears the offset,
+or detects the false conclusion.  The reserved zero must be supplied by
+the proof compiler, since MP no longer pushes it.
+
+For a finite proof tree $p$, compile axioms by these selectors and a
+universal-introduction node by appending $\mathsf{Gen}_i$.  At an MP node
+with subproofs $p_0$ of $a$ and $p_1$ of $I(a,b)$, use
+\[
+ W_p=\mathsf{Discard};\mathsf{Push};W_{p_1};\mathsf{Push};
+ W_{p_0};\mathsf{Push};S;S;\mathsf{MP}_b;\mathsf{Pop}.
+\]
+Induction on $p$ proves that execution from every $(t,w,0,0)$ either halts
+or returns $(\operatorname{concl}p,w,0,0)$.  The first two commands reserve
+the zero needed by the suffix.  If $p$ proves one, the word
+$A_0;W_p;\mathsf{Pop}$ therefore halts from every incoming store.
+The initial AX clears arbitrary carried offsets and cache; the final Pop
+tests one before using the old underlying stack.  A plain final Shift
+would be incorrect: here $S(1,0,0,0)=(0,0,0,0)$.
+
+\subsection{Exhaustiveness, soundness, and the PA theorem}
+
+The unchanged scheduler tests finite words while carrying the store between
+trials.  The preceding all-store compiler is consequently essential.
+Its continuation convention is $E(\epsilon)=0$ and
+$E(c::w)=1+B_c(E(w))$, where
+\[
+ B_S(z)=p(0,z),\quad B_{\mathsf{MP}_x}(z)=p(1,p(x,z)),\quad
+ B_{\mathsf{AX}_{c,x,y}}(z)=p(c+2,p(y,p(x,z))).
+\]
+Let $z=E(A_0;W_p;\mathsf{Pop})$.  Prefixing the halting word by
+$\mathsf{AX}_{k,0,0}$ gives the fresh-candidate codes
+$n_k=p(k+2,p(0,p(0,z)))$.  They are increasing and unbounded.  Each prefix
+may alter the store arbitrarily because the following word halts from
+every store.  The fresh counter begins at two; a member of this cofinal
+family will be reached unless an earlier halt occurs.  Positive
+continuations strictly decrease during decoding.  The inherited source
+arithmetic loops terminate with primitive-recursive bounds, so each earlier
+finite trial also terminates or halts.  These are finite coding inductions
+formalizable in PA, not an appeal to a consistent standard model.
+
+For soundness, annotate the current top, cache and each canonical Cantor
+stack entry by a derivation in $\mathcal L_6$.  Zero has a fixed derivation
+and supplies the virtual zero tail.  AX preserves the annotations by its
+axioms and generalization; successful MP uses its two annotated premises;
+failed MP returns zero; Shift moves annotations and halts only when an
+annotated cache equals one.  The canonical stack has a finite bounded
+decoding because its tail decreases at each positive value.
+Proof annotations can therefore be updated by primitive recursion on a
+finite execution.  PA proves the soundness invariant and the proof-tree
+compiler by ordinary induction.
+
+Composing these two syntactic constructions with $\alpha,\beta$, the exact
+source binding, the positive universal physical simulations, and the
+complete blank initialization gives the ordinary mathematical theorem
+\[
+ \mathrm{PA}\ \vdash\
+ \operatorname{Halt}(\mathrm{PA194H6},\mathrm{blank})
+ \ \longleftrightarrow\
+ \exists p\,\operatorname{Prf}_{\rm PA}(p,\ulcorner0=1\urcorner),
+\]
+and hence
+\[
+ \mathrm{PA}\ \vdash\
+ \neg\operatorname{Halt}(\mathrm{PA194H6},\mathrm{blank})
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{PA}).
+\]
+The logical calibration is an explicitly inherited ordinary-proof dependency.
+The new physical and symbolic checks support the composition and do not
+constitute an end-to-end proof-assistant theorem.  Consistency is needed only
+for the further external conclusion that the machine actually never halts.

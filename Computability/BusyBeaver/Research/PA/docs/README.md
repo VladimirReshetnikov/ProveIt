@@ -34,10 +34,10 @@ reason and where the same bytes are. There are four reasons.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `upstream-copy` | 13,118 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
+| `upstream-copy` | 13,139 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
 | `sibling-archive` | 17 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
-| `ignored` | 1,186 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
-| `duplicate-machine` | 4,495 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
+| `ignored` | 1,210 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
+| `duplicate-machine` | 5,291 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
 
 Six nested archives have no delivered counterpart and are placed as files:
 `U209_ConPA_Joint_2026-10-29.zip` (in three packets), `U209_ConPA_2026-10-29.zip`,
@@ -50,8 +50,8 @@ does not run here as delivered.
 
 ## Packets
 
-The 51 archives hold 31,544 members: 12,728 placed here (674 MB), 13,118 copies of the upstream
-snapshots, 17 nested copies of sibling archives, 1,186 ignored files and 4,495 duplicate machine
+The 55 archives hold 33,088 members: 13,431 placed here (695 MB), 13,139 copies of the upstream
+snapshots, 17 nested copies of sibling archives, 1,210 ignored files and 5,291 duplicate machine
 tables. The columns P, U, S, I and M give these five counts for each packet. Arrival is
 the date of the commit that added the archive to `docs/incoming`.
 
@@ -108,10 +108,14 @@ the date of the commit that added the archive to `docs/incoming`.
 | [`pa194n5_n6_conpa_2026-11-13`](pa194n5_n6_conpa_2026-11-13/) | 2026-11-13 | none | PA194N5 and PA194N6. States two distinct 194-state machines and claims no machine below 194. | 27 | 5 | 0 | 1 | 4 |
 | [`pa194ns_conpa_2026-11-13`](pa194ns_conpa_2026-11-13/) | 2026-11-13 | `pa194ns_conpa_2026-11-13` | PA194NS. States a different 194-state machine and that no machine below 194 was established. | 120 | 12 | 0 | 2 | 671 |
 | [`pa194n6_research_2026-11-13`](pa194n6_research_2026-11-13/) | 2026-11-13 | `pa194n6_research_2026-11-13` | PA194N6. States a different 194-state machine and that no machine below 194 was verified. | 108 | 4 | 0 | 8 | 249 |
+| [`PA194NS_research`](PA194NS_research/) | 2026-11-13 | `PA194NS_research` | PA194NS and PA194SUMS. States two new 194-state constructions. | 40 | 1 | 0 | 0 | 4 |
+| [`pa194haz_research_2026-11-14`](pa194haz_research_2026-11-14/) | 2026-11-13 | `pa194haz_research_2026-11-14` | PA194HA and PA194HAZ. States two 194-state alternatives and that no machine below 194 was obtained. | 108 | 13 | 0 | 1 | 715 |
+| [`pa194qn_research_2026-11-13`](pa194qn_research_2026-11-13/) | 2026-11-13 | `pa194qn_research_2026-11-13` | PA194QN. States a distinct 194-state machine and that no verified machine below 194 was found. | 122 | 5 | 0 | 16 | 38 |
+| [`pa194h6_conpa_2026-11-13`](pa194h6_conpa_2026-11-13/) | 2026-11-13 | `pa194h6_conpa_2026-11-13` | PA194H6. States a new 194-state machine, an article with a PA proof of the equivalence, and nothing below 194. | 433 | 2 | 0 | 7 | 39 |
 
 ## Archives still in `docs/incoming`
 
-None. All 51 archives are removed from `docs/incoming`. They remain in the history of
+None. All 55 archives are removed from `docs/incoming`. They remain in the history of
 the repository.
 
 Some scripts of the [parent directory](../README.md) open an archive at

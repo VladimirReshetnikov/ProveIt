@@ -1,0 +1,287 @@
+% Standalone section fragment; needs amsmath, amssymb, amsthm.
+\section{A hybrid controller with a new proof interface}
+\label{sec:hybrid-proof}
+
+The new machines combine two previously supplied operations whose
+combination is not one of the supplied command interfaces.  Modus ponens
+returns its conclusion in the visible top, preserves the offset containing
+that conclusion, and pushes no dummy cell.  Shift tests only the cached
+head.  PA194H realizes these commands directly; PA194HS uses the supplied
+symmetric comparison optimization to implement exactly the same commands
+with three fewer primitive sites.  The new contribution is the combination,
+its exact proof compiler and its literal 194-state implementations.  Neither
+the no-push idea nor the symmetric comparison is claimed as new in isolation.
+
+\subsection{Numerical commands}
+
+Write $p(a,b)=(a+b)(a+b+1)/2+b$, $[a;w]=p(a,w)$,
+$I(a,b)=4p(a,b)$ and $U(a,B)=4p(B,a)+2$.  The total projections satisfy
+$\operatorname{hd}[a;w]=a$, $\operatorname{tl}[a;w]=w$, and
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$.  In particular $[0;0]=0$.
+No stack-length argument below assumes otherwise.
+
+A command store is $(t,w,d,h)$.  Its two changed commands are
+\[
+ S(t,w,d,h)=
+ \begin{cases}
+ \mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+ \end{cases}
+\]
+and, writing $b=d+x$,
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+ (b,w,b,0),&I(t,b)=h,\\
+ (0,w,b,0),&I(t,b)\ne h.
+ \end{cases}
+\]
+AX is unchanged from the separate-diagonal-head calculus.  It pushes ten
+entries, including the saved old top.  Put $D=d+x$, $H=h+y$, and $A=c$.
+In stack-top order its nine generated entries are
+\[
+ (q_1,\ldots,q_9)=
+ (\Gamma(A),L_6,L_5,L_4,L_3,L_2,L_1,\rho_8(D,A,H,d),U(d,h)).
+\]
+Here $\Gamma(B)=I(B,U(B,B))$, the six $L_i$ are the unchanged universal
+heads, $\rho_8$ is the unchanged dominated implicational head, and the
+visible output is the unchanged guarded separation gate $K(H,D,A)$.
+Thus
+\[
+ \mathsf{AX}_{c,x,y}(t,w,d,h)=
+ (K(H,D,A),[q_1,\ldots,q_9,t;w],0,0).
+\]
+All $q_1,\ldots,q_8$ and the gate have residue zero modulo four;
+$q_9$ has residue two.  Hence none equals one, including the failed-guard
+case where $K=0$.  The executable free-term check verifies the entire
+emitter stack and top, not merely this residue observation.
+
+\subsection{Uniform word identities}
+
+Words execute from left to right.  For every incoming store,
+\begin{align*}
+ \mathsf{AX}_{c,x,y};S^9(t,w,d,h)
+   &=(\rho_8(D,c,H,d),[t;w],0,U(d,h)),\\
+ \mathsf{AX}_{c,x,y};S^{10}(t,w,d,h)
+   &=(U(d,h),w,0,t).
+\end{align*}
+These executions never halt: they test only the cleared initial cache and
+the nine generated heads, not the saved arbitrary $t$.
+
+Define
+\[
+ \mathsf{Push}=\mathsf{AX}_{0,0,0};S^9;\mathsf{MP}_0,
+ \quad \mathsf{Pop}=\mathsf{AX}_{0,0,0};S^{11},
+ \quad \mathsf{Discard}=\mathsf{MP}_0.
+\]
+The exact contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+   \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,
+   \end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0).
+\end{align*}
+For Push, the final MP compares a residue-zero implication with the
+residue-two universal head and therefore fails.  Pop's eleventh Shift
+tests precisely the saved top, and is its only possible halt.  For
+Discard, the candidate conclusion is zero; both the success and failure
+branches return the same store.  Consequently Discard clears an arbitrary
+old cache without any equality side condition.  This is shorter than the
+multi-command discard required by the supplied cached-result controller.
+
+The empty-stack alias is harmless: every displayed equality is an equality
+of the total numerical projections.  In particular Push sends an all-zero
+store to an all-zero store; it does not create a distinguishable zero cell.
+
+Let $\mathsf{Offset}_i=\mathsf{MP}_i$.  From $(0,w,0,0)$ it returns
+$(0,w,i,0)$ for every $i$, including zero.  Generalization is compiled as
+\[
+ \mathsf{Gen}_i=
+ \mathsf{Push};\mathsf{Offset}_i;S;\mathsf{AX}_{i,0,0};S^{10}.
+\]
+It sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$, even for $a=1$.
+The sole Shift before AX tests zero, then places $a$ in the cache; AX
+consumes that cache before any further Shift.
+
+For $1\le j\le7$, the ordinary head selector
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};S^{j+1};\mathsf{Pop}^{9-j}
+\]
+sends arbitrary $(t,w,0,0)$ to $(q_j,w,0,0)$.  The selected head has
+residue zero and so every Pop is safe.  The last consumed stack entry is
+the saved zero.  The diagonal head is $j=1$, giving explicitly
+$\mathsf{Discard};\mathsf{AX}_{B,0,0};S^2;\mathsf{Pop}^{8}$ for
+$\Gamma(B)$.  The gate selector is
+\[
+ \mathsf{Discard};\mathsf{AX}_{c,b,a};\mathsf{Pop}^{10}.
+\]
+For $u\le a$, the dominated implicational selector is
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf{AX}_{b,a-u,c};S^9;\mathsf{Pop}.
+\]
+It returns $\rho_8(a,b,c,u)$ with the original stack and cleared caches.
+
+\subsection{The new MP suffix and proof compiler}
+
+Define
+\[
+ \mathsf{MPSuffix}_b=S;S;\mathsf{MP}_b;\mathsf{Pop}.
+\]
+For arbitrary $a,b,w$ it obeys the exact alternative
+\[
+ \mathsf{MPSuffix}_b(0,[a,I(a,b),0;w],0,0)=
+ \begin{cases}
+ \mathsf{halt},&a=1\text{ or }b=1,\\
+ (b,w,0,0),&a\ne1\text{ and }b\ne1.
+ \end{cases}
+\]
+The first Shift loads $a$ into the cache.  The second either halts or
+establishes $(a,[0;w],0,I(a,b))$.  MP succeeds, leaving
+$(b,[0;w],b,0)$.  The final Pop either detects $b=1$, or consumes the
+reserved zero and clears the offset without changing $b$ or the old
+stack.  Reserving this zero is necessary: without it, Pop would consume
+the first entry of the arbitrary underlying stack.  At $a=b=w=0$ the
+same calculation applies, because $I(0,0)=0$ and $[0;0]=0$.
+
+Compile each finite numerical proof tree $p$ into a word $W_p$.  Use the
+selectors above for axioms and $W_{p_0};\mathsf{Gen}_i$ for generalization.
+At an MP node with minor premise $a$, major premise $I(a,b)$, and
+subproofs $p_0,p_1$ respectively, set
+\[
+ W_p=\mathsf{Discard};\mathsf{Push};
+       W_{p_1};\mathsf{Push};W_{p_0};\mathsf{Push};\mathsf{MPSuffix}_b.
+\]
+Induction on the proof tree proves that for every $t,w$, execution from
+$(t,w,0,0)$ either halts early or returns
+$(\operatorname{concl}(p),w,0,0)$.  The first two commands reserve the
+dummy zero.  The next two compiled proofs and Pushes establish the exact
+suffix precondition.  Generalization tolerates a premise equal to one,
+and every earlier halt remains a halt under word extension.
+
+If $p$ proves one, then
+\[
+ \mathsf{AX}_{0,0,0};W_p;\mathsf{Pop}
+\]
+halts from \emph{every} incoming store.  The preliminary AX clears $d,h$;
+the compilation invariant tolerates its arbitrary resulting top and stack.
+If no earlier halt occurs, the final Pop tests the proven top one before
+it depends on any value of the underlying stack.  This dirty-store
+property is the precise interface needed by the unchanged exhaustive
+command-word scheduler, whose state is carried between trials.
+
+For completeness, the scheduling argument is finite and cofinal, rather
+than an assertion that every trial starts with an empty store.  The
+inherited command encoding has
+\[
+ B_S(z)=p(0,z),\qquad B_{\mathsf{MP}_x}(z)=p(1,p(x,z)),\qquad
+ B_{\mathsf{AX}_{c,x,y}}(z)=p(c+2,p(y,p(x,z))).
+\]
+For continuation words define $E(\epsilon)=0$ and
+$E(c::w)=1+B_c(E(w))$.  Put
+$z=E(\mathsf{AX}_{0,0,0};W_p;\mathsf{Pop})$.
+Prefixing that universal halting word by $\mathsf{AX}_{k,0,0}$ gives
+the fresh-candidate codes
+\[
+                 n_k=p(k+2,p(0,p(0,z))).
+\]
+They are strictly increasing and unbounded in $k$.  Their prefix command
+can change the store arbitrarily, because the following word halts from
+every store.  The fresh candidate counter starts at two, so omitting zero
+and one loses none of this cofinal family.  For any positive continuation
+$l$, the scheduler decodes $l-1$ and its next residual continuation is at
+most $l-1$.  Every finite trial therefore terminates or halts; the
+unchanged arithmetic source loops also have primitive-recursive terminating
+bounds.  Bounded induction through the earlier candidate numbers reaches
+one chosen $n_k$, unless a halt occurs first.  The continuation distinction
+is essential: $E(w)$ is a positive continuation code, while the first
+candidate is its outer command code without the added one.  PA proves
+the coding identities and finite execution induction directly.
+
+\subsection{Soundness and PA-internal calibration}
+
+Maintain a numerical-calculus derivation for the visible top, cached head
+and every live entry in the canonical finite Cantor stack.  Code zero has
+the fixed derivation $\rho_8(0,0,0,0)=0$; it supplies the virtual zero tail.
+No derivability invariant is imposed on the offset $d$.
+
+AX preserves this annotation by the unchanged axiom instances and theorem
+generalization.  MP success obtains $b$ by modus ponens from the annotated
+minor $t$ and major $I(t,b)=h$; MP failure returns the fixed truth code.
+Shift merely moves annotated entries and halts only on an annotated proof
+of one in the cache.  The annotation updates and the compiler above are
+primitive recursive operations on finite objects.  Ordinary induction in
+PA verifies their correctness.  No reflection or soundness axiom for PA
+is used.
+
+The unchanged separate-head logical calibration supplies PA-verifiable
+proof translations between refutations of PA and proofs of numerical
+code one.  Its original mathematical texts are retained in
+\texttt{references/logical/}; the supplied project's missing end-to-end
+Lean/iPRA reductions are not treated as completed.  Combining those
+inherited translations with the new command proof and unchanged exhaustive
+scheduler proves, in PA,
+\[
+ \operatorname{Halt}(R_H)\ \longleftrightarrow\
+ \exists p\;\operatorname{Prf}_{\mathrm{PA}}(p,\ulcorner0=1\urcorner).
+\]
+This is an ordinary mathematical proof of a PA-provability statement,
+not a newly compiled proof-assistant theorem.
+
+\subsection{Exact source binding and the symmetric implementation}
+
+The source has nine logical registers $(N,T,W,A,D,H,X,Y,L)$.
+The new MP subtree replaces \texttt{node163=(node6,node55)} with
+\texttt{(node6,node54)}.  As in PA194N, it removes the dummy-zero push;
+on success the retained seven-site copy-and-restore tail sends
+$(T,D,H,X)=(0,b,0,0)$ to $(b,b,0,0)$ in $7b+2$ primitive steps.
+
+The Shift source in PA194H first clears the old top, copies $H$ into $T$
+and $X$, restores $X$ to $H$, increments $X$ and jumps to the old root
+comparison.  From arbitrary $t,h$ with $X=0$, it reaches
+$(T,H,X)=(h,h,1)$.  The unchanged destructive equality guard halts just
+when $h=1$; otherwise it clears both compared registers and continues to
+the unchanged Cantor decoder.  This is exactly the displayed cache-only
+Shift command.
+
+PA194HS instead omits the restore loop and increments $H$, arriving at
+$(T,H,X)=(h,1,h)$.  Equality is symmetric, and on inequality the guard
+clears both operands.  Therefore its surviving registers and subsequent
+source control are identical to PA194H.  The change removes three source
+sites.  Its additional physical fold is $41\mapsto330$, with actions
+$0L31$ and $1L46$; all four local history/read-bit cases are rechecked in
+the final machine together with the seven inherited AX folds.
+
+The literal constructors produce PA194H with 3653 sites and 4754 source
+outcomes, and PA194HS with 3650 sites and 4750 outcomes.  Their entire
+resolved source graphs and complete tables are delivered.  Each outcome
+has a universal symbolic physical contract over arbitrary natural
+registers, both decrement branches, arbitrary affine header gap and an
+arbitrary nonempty finite spare list.  The independent verifier derives
+the four register-list lemmas again from the literal rows.  Exact blank
+initialization reaches the clean source site 25 with logical file
+$(2,0,\ldots,0)$ after 57922 and 57768 transitions respectively; the
+complete finite-support tape is compared, including every spare block.
+
+Positive physical durations give both directions of finite-trace
+equivalence.  A source halt is simulated by concatenating finite positive
+segments.  Conversely, if the physical run first halted at time $T$ while
+the source had not halted, the first $T+1$ source steps would produce a
+longer nonhalting physical trace, contradicting determinism.  This finite
+argument and the loop certificates are formalizable in PA.  Consequently,
+for either literal table $M$,
+\[
+ \mathrm{PA}\vdash
+ \bigl(\neg\operatorname{Halt}(M,\mathrm{blank})
+             \longleftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).
+\]
+
+\paragraph{Why this is a different command design.}
+The original no-push PA194N halts on Shift from $(1,0,0,0)$, whereas the
+hybrid clears that store without halting.  The original cached-result
+PA194C sends $(0,w,0,20)$ under $\mathsf{MP}_2$ to $(0,w,0,2)$, whereas
+the hybrid sends it to $(2,w,2,0)$, since $I(0,2)=20$.  The new proof
+compiler accounts for both differences.  These changes affect the specified
+command behavior, rather than merely renaming states, tape directions or
+formula parameters.

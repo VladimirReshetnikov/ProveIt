@@ -1,0 +1,751 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,microtype}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{xcolor}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!55!black,urlcolor=blue!55!black]{hyperref}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{PA194HAZ}
+\fancyhead[R]{14 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\AX}{\mathsf{AX}}
+\newcommand{\MP}{\mathsf{MP}}
+\newcommand{\Shift}{\mathsf{S}}
+\newcommand{\hd}{\operatorname{hd}}
+\newcommand{\tl}{\operatorname{tl}}
+\newcommand{\st}[4]{\langle #1,#2,#3,#4\rangle}
+\newcommand{\Push}{\operatorname{Push}}
+\newcommand{\Pop}{\operatorname{Pop}}
+\newcommand{\Discard}{\operatorname{Discard}}
+\newcommand{\Gen}{\operatorname{Gen}}
+\newcommand{\file}[1]{\path{#1}}
+\emergencystretch=2em
+\title{PA194HAZ: a 194-state PA consistency machine\\
+\large Complete corpus comparison, a verified composition,\\
+and reproducible reduction searches}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We give a complete binary single-tape machine, PA194HAZ, with 194 working
+states and an ordinary mathematical proof, formalizable in PA using the
+supplied development's unchanged calibration and arithmetic-block lemmas,
+that its blank nonhalting is equivalent to $\Con(\PA)$. The machine changes
+five transitions of the primary PA194 table. It combines the supplied
+MPH cached-result protocol, the A/D physical register exchange, and a
+known-zero AX closure. The four-transition companion PA194HA is also supplied.
+Each constituent idea has a prior instance in the supplied corpus; the
+contribution is the particular composition, its explicit command-level
+proof, its source invariant, and its verified physical realization.
+
+The audit covers all 41 placed PA research packets and all five incoming
+archives at a pinned revision. Their 3,597 recognized table occurrences
+contain 666 byte forms. The 664 forms with a spanning control root give
+476 action-graph classes, including 28 classes at 194 states. Both new
+machines differ from every recorded 194-state class even under control
+renaming, arbitrary spanning-root choice, tape reflection, and global
+symbol complementation. Auxiliary and rejected tables are included.
+
+Executed Python and JavaScript checks agree on all 4,751 outcomes of
+HAZ's 3,650-site source and its exact 58,122-step blank initialization.
+A separate finite control-graph checker validates the four-site invariant.
+No sub-194 machine was obtained, and no lower bound or new proof-assistant
+endpoint is claimed. Complete tables, source, proofs, corpus data, negative
+search receipts, and offline reproduction programs accompany this report.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+
+\section{The result and its precise scope}
+
+The machine uses alphabet $\{0,1\}$ on a two-way infinite tape, initially
+zero everywhere, with the head at cell zero. Every transition writes one
+bit and moves one cell left or right. There are 194 working states; the
+halt label is separate. In the dense table the start is zero, working
+states are $0,\ldots,193$, and halt is 194. The native start is 74 and the
+native halt is 254. All 194 working controls are graph-reachable from the
+start; this is a graph property, not a claim that the blank run visits them all.
+
+The claimed arithmetic result is
+\[
+ \PA\vdash\bigl(\neg\Halt(\mathrm{PA194HAZ},\text{blank})
+                 \leftrightarrow\Con(\PA)\bigr),
+\]
+where $\Halt$ is the usual existential finite-run predicate and $\Con(\PA)$
+is the absence of a PA proof of $0=1$. The proof is given below by composing
+finite syntactic proof transformations and source-to-machine simulation.
+The corresponding statement also holds for PA194HA.
+
+\subsection{Five exact edits}
+
+Take the primary native table of \cite{primary} and apply the following
+five replacements. No other transition changes.
+\begin{center}
+\begin{tabular}{rrlll}
+\toprule
+Native state & Read & Original action & HAZ action & Purpose\\
+\midrule
+17   & 1 & $0R32$  & $0R48$  & A/D register placement\\
+144  & 1 & $0R48$  & $0R32$  & A/D register placement\\
+161  & 1 & $0R32$  & $0R48$  & A/D register placement\\
+164  & 1 & $1R98$  & $1R130$ & MP returns to cache\\
+2066 & 1 & $0L302$ & $1R21$  & Known-zero AX closure\\
+\bottomrule
+\end{tabular}
+\end{center}
+PA194HA applies the first four edits. HAZ additionally implements the AX
+return jump by a decrement of logical register $X$, whose value is proved
+zero at that point. A full graph comparison distinguishes HA, HAZ, and
+every one of the 28 prior classes from each other.
+
+Dense labels are assigned by breadth-first traversal from native 74,
+visiting read zero before read one; halt is assigned 194. The dense HAZ
+table is printed in Appendix~\ref{app:table}. Each file has 388 rows in the
+format \texttt{state read write direction next}, with LF line endings.
+The exact SHA-256 identities are:
+\begin{description}
+\item[HAZ native:] \path{5ffbc263413612caa71b85895a92860797d90f5c77315119134b6e30fd566f09}
+\item[HAZ dense:] \path{f9f98218e2f949b28f0429f2bbab17babe0f4948c2e38cb786a5e3b239101981}
+\item[HA native:] \path{503e27b6b619eb04d567d94e47b3bfe667eb457bb921eab3efc4d5d4771036bc}
+\item[HA dense:] \path{dd8b4b0a6419dde553bf840175c5e682b7b1f574f5c152278fb6dfbf2916d7e3}
+\end{description}
+
+\subsection{Contribution and proof status}
+
+The initial one-edit candidate, called H during this investigation, proved
+to be byte-for-byte identical to
+\path{research/physical/inputs/MPH.native.tm} in the N archive. It is an
+existing design and is credited as such. Neither the cached-result MP idea,
+total Pop, the A/D exchange, nor replacing a known-zero jump is claimed as
+new. HA and HAZ supply explicit combinations absent from all materialized
+literal tables in the requested corpus. HAZ changes the successful-MP store
+semantics relative to primary PA194, the physical representation of A and D,
+and the primitive chosen for the AX return. Its novelty claim is limited
+to that concrete construction and proof, not to a new logical calculus.
+
+The proof has four layers: command soundness and all-store completeness;
+the unchanged numerical-calculus/PA refutation translations; universal
+source-instruction refinement with inherited arithmetic-block contracts;
+and exact complete-tape initialization. Python and JavaScript execute the
+finite checks. The mathematical lemmas and the claims of PA formalizability
+are ordinary proofs. This work does not supply a new end-to-end Lean or
+Rocq proof term. The repository's separate machine-specific iPRA endpoint
+remains a distinct formalization task \cite{status}.
+
+\section{Comparison of the complete supplied corpus}
+
+\subsection{Pinned scope and reproducible census}
+
+All retrieval and comparison use repository revision
+\begin{center}\small
+\path{1e407ae841e4666f932777fad977ba784ebbcfd5}.
+\end{center}
+The inventory includes every direct \path{.tm} file in the 41 packet
+directories under \path{Computability/BusyBeaver/Research/PA/docs}, and every
+complete five-column numeric binary table found in \path{.tm},
+\path{.txt}, \path{.csv}, or \path{.tsv} members of the five incoming
+archives. All five archives were decoded. Reports, source descriptions,
+proofs and relevant search families were also inspected \cite{incoming}. Arbitrary code
+encodings and every unmaterialized parameter choice of a heuristic search
+are outside the literal-table census.
+
+The direct files contribute 2,423 occurrences and 618 raw Git blobs. The
+incoming archives add 1,177 recognized occurrences. The combined inventory
+has 3,600 complete numeric binary-table occurrences in 667 byte forms.
+One four-state synthetic control graph, copied three times, has no separate
+halt target and is excluded from the one-halt recognizer. This leaves
+3,597 occurrences and 666 byte forms. A six-state offset fixture and a
+nine-state bypass fixture have no root reaching all declared controls.
+The remaining 664 forms give 476 exact action-graph classes. None of these
+small fixtures is a claimed PA consistency machine.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Incoming archive & Recognized tables & 194-state occurrences\\
+\midrule
+N & 215 & 23\\
+R & 256 & 59\\
+Q & 27 & 23\\
+J/D & 646 & 39\\
+Radix & 33 & 27\\
+\midrule
+Total & 1,177 & 171\\
+\bottomrule
+\end{tabular}
+\end{center}
+Together with 90 direct-file occurrences, the 194-state portion has
+261 occurrences, 51 byte forms and 28 graph classes. These counts include
+experimental inputs and explicitly rejected candidates; they do not mean
+28 independently proved consistency machines.
+
+\input{state_census.tex}
+
+The complete raw corpus is retained in \path{comparison/raw-tables/} and
+\path{comparison/raw-tables-extra/}. Manifests map every occurrence to its
+pinned repository path or archive member. The full 41-packet contribution
+ledger is reproduced in Appendix~\ref{app:ledger}. Imported upstream
+snapshots and the repository's formalization modules supply dependencies
+and proof developments rather than additional novel packet designs.
+
+\subsection{How graph equivalence was tested}
+
+For every root reaching all working controls, and for each combination of
+global read/write symbol complementation and left/right reflection, we
+number controls by breadth-first traversal in read-bit order. We encode
+both outgoing actions of every control, distinguishing halt, and take the
+lexicographically least complete encoding. Equality of these encodings
+exactly decides the stated graph equivalence for this class of tables.
+The replay program compares complete strings; hash values are identifiers,
+not the basis of an assumed collision-free proof.
+
+The comparison is stronger than checking the displayed start states or
+byte hashes. Both HA and HAZ are absent from all 28 prior classes. HAZ's
+canonical encoding has SHA-256
+\begin{center}\small
+\path{a922e6d7cd9639ec9f7c6a3b953679133fc6625e5540daa532836a6d873d0478}.
+\end{center}
+This certifies structural difference from the recorded graphs. It is not
+a statement about semantic inequivalence: all accepted consistency
+machines are intended to have the same blank halting truth value.
+
+\subsection{The prior 194-state designs}
+
+\begin{longtable}{>{\raggedright\arraybackslash}p{0.19\linewidth}p{0.71\linewidth}}
+\toprule
+Class or family & Mechanism and comparison\\\midrule\endhead
+Primary PA194 & Separate diagonal head, 67 raw AX readers and seven compatible folds: $134+67-7=194$.\\
+PA194-AD & Same source; the physical locations of A and D are exchanged.\\
+PA194-68 & Alternative AX association: $134+68-8=194$, with the same resolved source.\\
+C, altC & Cached-result MP and a cache-only Shift test. altC uses the alternative decoder. Several C packets repeat the same principal table.\\
+CS, CZ, CSZ & CS uses symmetric destructive equality in Shift. CZ replaces a known-zero scheduler jump; CSZ combines both. R's named X machine is graph-equivalent to CSZ.\\
+Q & Exchanges the premises of the sixth quantifier-distribution head; 79 resolved instructions change. It preserves the calculus through a propositional conversion.\\
+J; J-A, J-H, J-X & Ten known-zero jump substitutions, with distinct final-register siblings. Source invariants are essential; a graph count alone cannot validate them.\\
+D; D-CSZ-A & Generates $\Gamma(D)$ instead of $\Gamma(A)$, with adjusted selection. The primary D realization uses 69 readers and nine folds. The CSZ-based sibling is a distinct auxiliary.\\
+M4R, M5, M6 & A reassociated multiplier reader enables a fold. M4R preserves the original radix-four source; M5 and M6 change constructor coefficients. Each uses $135+67-8=194$.\\
+N & Removes the successful-MP dummy push, returning the consequence in the visible top. It has 3,654 source sites and 4,755 outcomes.\\
+MPH & Existing auxiliary in N. MP returns the consequence in the cache, while Shift retains $t+h=1$. This is exactly the abandoned initial H candidate.\\
+F, R, A & F uses a known-zero final AX decrement with symmetric Shift; R reassociates the emitter, changing 1,111 source addresses and 44 of 67 reader types. A instead replaces the scheduler entry jump by a known-zero decrement of A.\\
+CS-both-zero6 & Additional zero-test search input in R; retain its experimental status separately from principal outputs.\\
+C-I-Z & Experimental cached-I zero-jump input in the radix archive.\\
+Rejected scanner194 & Confuses a legal seven-zero address with a separator; the reported failure is at source site 1003.\\
+Rejected103 & R archive's rejected candidate: source contracts pass, but blank initialization halts after 1,361 steps.\\
+Rejected node1-X & Radix auxiliary explicitly rejected after a blank halt at step 1,361.\\
+\bottomrule
+\end{longtable}
+The preceding grouped rows contain exactly 28 graph classes. Individual
+names, complete digests and source members are in
+\path{comparison/graph-fixtures.json}; Appendix~\ref{app:graphs} lists
+short fingerprints for convenient identification. Historical source counts
+and acceptance claims above come from the supplied reports, whereas the
+literal-table census and candidate graph comparisons were newly executed.
+
+The N and MPH distinction is substantive. For a successful MP with
+consequence $b$, primary PA194 returns $\st{b}{[0;w]}{b}{0}$, N returns
+$\st{b}{w}{b}{0}$, and MPH/HA/HAZ return $\st{0}{w}{0}{b}$. Those command
+interfaces require different proof compilers even though they search for
+refutations of the same calculus. C uses the last MP interface but changes
+the Shift halt test to cache-only.
+
+\subsection{Larger designs and why reductions do not simply add}
+
+The 195-state families include bundled-diagonal PA195 (3,700 source sites,
+4,815 outcomes), separate-head 195S (3,673/4,780), cached 195C
+(3,649/4,749), cached bundled PA195DC (3,676/4,784), and the M195S8 scanner
+repair. The 196-state families include decoder association, register
+permutations, cached commands, known-zero jumps and logical predecessors
+of the 195/194 emitters. NEG18 shortens a source to 3,441 sites but costs
+197 physical states. Gate simplifications and modal/explosion experiments
+include countermodels and failed candidates, not just successful reductions.
+
+The early 208-state packets provide several proofs of the same native
+$172/211$ helper fold. Later helper layouts introduce additional graphs.
+The imported PA209 lineage and U209 parents must be distinguished. The
+complete combined census records 142 classes at 208 states and 57 at 207,
+including search candidates; these are not counts of accepted theorems.
+
+The seven-fold and eight-fold 194-state allocations cannot be added: their
+raw reader counts differ. Likewise, R/F's extra symmetric-controller state
+makes its allocation $135+67-8$, rather than the primary $134+67-7$.
+The new fold pays for the extra state. Radix M4R has the same accounting
+issue. Transplanting a named fold without its changed context or state
+budget does not produce a 193-state machine.
+
+\section{Numerical calculus and the hybrid command interface}
+
+Let
+\[
+p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad [a;w]=p(a,w).
+\]
+The total inverse projections satisfy $\hd(0)=\tl(0)=0$ and $[0;0]=0$.
+A store is $\st{t}{w}{d}{h}$: visible theorem, encoded stack, numerical offset, cached theorem. A canonical store means $\st{t}{w}{0}{0}$; its top and stack are otherwise arbitrary.
+
+Retain the numerical formula constructors
+\[
+ I(a,b)=4p(a,b),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code zero is truth; code one is contradiction $M(0,0)$. Write
+\[
+N(B)=I(B,1),\quad B\wedge C=N(I(B,N(C))),\quad
+\exists x_a B=N(U(a,N(B))).
+\]
+The diagonal head is $\Gamma(B)=I(B,U(B,B))$.
+
+The six ordinary heads are
+\begin{align*}
+L_1(D,H)&=I(\exists x_D U(D,H),H),\\
+L_2(D,A,H)&=I(U(D,U(A,H)),U(A,U(D,H))),\\
+L_3(D,A,H)&=I(M(H,D),I(E(H,A),M(A,D))),\\
+L_4(D,A,H)&=I(E(H,D),I(M(A,H),M(A,D))),\\
+L_5(D,H)&=\exists x_D E(H,D),\\
+L_6(D,A,H)&=I(U(D,A),I(U(D,I(A,H)),U(D,H))).
+\end{align*}
+The dominated propositional head is
+\[
+ \rho(a,b,c,u)=I(I(I(c,u),a),I(I(a,c),I(b,c))),\qquad u\le a.
+\]
+For the separation gate put
+\begin{align*}
+ V(a,b,c)&=I(M(a,b),U(c,M(a,b))),\\
+ P(a,b,c)&=I(c,M(c,b)),\\
+ B(a,b,c)&=U\bigl(b,I(M(a,b),P(a,b,c))\wedge I(M(c,b),c)\bigr),\\
+ Q(a,b,c)&=U(c,I(B(a,b,c),N(P(a,b,c)))).
+\end{align*}
+The guarded head $G(a,b,c)$ is zero if $c=a$ or $c=b$, and otherwise is
+$N(I(V(a,b,c),Q(a,b,c)))$. This is the unchanged numerical calculus of \cite{calibration}.
+
+\subsection{Commands}
+
+The hybrid Shift is
+\[
+ \Shift\st{t}{w}{d}{h}=
+ \begin{cases}
+ \mathsf{halt},&t+h=1,\\
+ \st{h}{\tl(w)}{d}{\hd(w)},&t+h\ne1.
+ \end{cases}
+\]
+For $y=d+x$, the changed MP command is
+\[
+ \MP_x\st{t}{w}{d}{h}=
+ \begin{cases}
+ \st{0}{w}{0}{y},&I(t,y)=h,\\
+ \st{0}{w}{y}{0},&I(t,y)\ne h.
+ \end{cases}
+\]
+Neither branch pushes on the stack. PA194C has this MP behavior but a different Shift test, $h=1$.
+
+For $\AX_{c,x,y}$ set $D=d+x$, $H=h+y$, $A=c$. AX returns top $G(H,D,A)$, clears offset and cache, and pushes the following ten entries, top first:
+\[
+ \Gamma(A),L_6,L_5,L_4,L_3,L_2,L_1,\rho(D,A,H,d),U(d,h),t.
+\]
+The arguments of $L_i$ are those displayed above. There are nine newly generated formulas and the saved incoming top.
+
+Every generated formula except $U(d,h)$ is divisible by four. The universal formula is congruent to two modulo four and at least two. The gate is divisible by four. In particular, no generated formula is code one.
+
+\section{A total Pop operation and complete proof compilation}
+
+Throughout this section set $n=10$, the exact push count of AX. Semicolon denotes execution in the written order. The total Pop identity also holds in the supplied uncached protocol; it is used here with the cached-result MP interface.
+
+\begin{lemma}[Total stack operations]
+Define
+\begin{align*}
+ \Push_n&=\AX_{0,0,0};\Shift^{n-1};\MP_0,\\
+ \Pop_n&=\AX_{0,0,0};\Shift^{n+1},\\
+ \Discard_n&=\MP_1;\AX_{1,0,0};\Shift^n;\MP_0.
+\end{align*}
+Then
+\begin{align*}
+ \Push_n\st{t}{w}{d}{h}&=\st{0}{[t;w]}{0}{0},\\
+ \Pop_n\st{t}{w}{d}{h}&=\st{t}{\tl(w)}{0}{\hd(w)},\\
+ \Discard_n\st{t}{w}{0}{0}&=\st{0}{w}{0}{0}.
+\end{align*}
+All three identities are total.
+\end{lemma}
+\begin{proof}
+The intermediate generated formula codes cannot trigger the sum-one test. After $n-1$ Shifts in Push, the cache is $U(d,h)$, whereas every implication code is divisible by four; MP therefore fails at parameter zero and clears both visible registers, preserving $[t;w]$.
+
+After $n$ Shifts in Pop, the top is $U(d,h)$, the cache is the saved $t$, and the stack is the original $w$. The last Shift is safe because $U(d,h)+t\ge2$. This handles $t=1$ explicitly.
+
+In Discard, the first MP fails because $I(t,1)>0$ and the cache is zero. It establishes offset one and zero visible theorems. After AX and $n$ Shifts, top is $U(1,0)$, cache zero and stack $w$. The final comparison also fails since $I(U(1,0),0)>0$.
+The proof uses pairing identities, not a false assumption that a zero push increases canonical stack length.
+\end{proof}
+
+Define $\operatorname{Offset}_0$ to be the empty word and
+$\operatorname{Offset}_i=\MP_i$ for $i>0$.
+\begin{lemma}[Generalization]
+The word
+\[
+ \Gen_{i,n}=\Push_n;\operatorname{Offset}_i;\Shift;\AX_{i,0,0};\Shift^n
+\]
+maps $\st{a}{w}{0}{0}$ to $\st{U(i,a)}{w}{0}{0}$ for every $a,w$.
+\end{lemma}
+\begin{proof}
+Push stores $a$ and clears the visible registers. Offset establishes $d=i$. Shift then loads $a$ into the cache. The last generated AX head is $U(i,a)$, which the final $n$ Shifts select while recovering the saved zero cache. No sum-one check fails, including when $a=1$.
+\end{proof}
+
+For a head at top-down position $1\le j\le n-3$, use
+\[
+ \operatorname{Select}_{j,D,H,A}=
+ \Discard_n;\AX_{A,D,H};\Shift^{j+1};\Pop_n^{\,n-1-j}.
+\]
+From any canonical incoming store $\st{t}{w}{0}{0}$ this selects that head, retaining $w$ and zero offset and cache. At $n=10$, positions $1,\ldots,7$ are $\Gamma(A),L_6,L_5,L_4,L_3,L_2,L_1$. The dominated head with $u\le a$ is selected by
+\[
+ \Discard_n;\operatorname{Offset}_u;\AX_{b,a-u,c};\Shift^{n-1};\Pop_n.
+\]
+The separation gate is selected by
+\[
+ \Discard_n;\AX_{c,b,a};\Pop_n^n.
+\]
+These are the correctly adjusted ten-entry selectors. Old nine-entry indices would be wrong.
+
+\begin{lemma}[MP suffix]
+On $\st{0}{[a,I(a,b),0;w]}{0}{0}$, the word
+$\Shift;\Shift;\MP_b;\Shift$ halts if $a=1$ or $b=1$; otherwise it returns $\st{b}{w}{0}{0}$.
+\end{lemma}
+\begin{proof}
+The successive nonhalting stores are
+\begin{align*}
+ &\st{0}{[I(a,b),0;w]}{0}{a},\\
+ &\st{a}{[0;w]}{0}{I(a,b)},\\
+ &\st{0}{[0;w]}{0}{b},\\
+ &\st{b}{w}{0}{0}.
+\end{align*}
+The second Shift halts exactly when $a=1$, and the last exactly when $b=1$. The inserted zero restores the underlying stack.
+\end{proof}
+
+Proofs in the numerical calculus are built from the displayed axioms by MP and generalization. Define $W_p$ by recursion on such a proof. An axiom uses its selector. Generalization at $i$ uses $W_{p_0};\Gen_{i,n}$. For MP with minor proof $p_0$ of $a$ and major proof $p_1$ of $I(a,b)$, use
+\begin{align*}
+W_p={}&\Discard_n;\Push_n;W_{p_1};\Push_n;\\
+     &W_{p_0};\Push_n;\Shift;\Shift;\MP_b;\Shift.
+\end{align*}
+
+\begin{theorem}[All-store completeness]
+For every $t,w$, $W_p$ from $\st{t}{w}{0}{0}$ either halts or returns
+$\st{\operatorname{concl}(p)}{w}{0}{0}$.
+If $p$ proves code one, then
+\[
+ \AX_{0,0,0};W_p;\Shift
+\]
+halts from every incoming store.
+\end{theorem}
+\begin{proof}
+Induct on $p$, using the selector, generalization and MP identities. In the MP case the first Discard and Push insert the needed dummy zero. An early halt is already a successful completeness outcome. For the last assertion, the initial AX clears offset and cache. If $W_p$ returns, it leaves top one and cache zero, so the final Shift halts.
+\end{proof}
+This universal incoming-store property is the correct scheduler interface. The inherited scheduler carries its store between command words; a completeness proof assuming a fresh reset after every trial would be insufficient.
+
+\section{Soundness and PA formalizability}
+
+Annotate top, cache and every canonical live stack entry with a numerical-calculus derivation. The offset requires no proof. Code zero has a fixed derivation, obtained from the all-zero dominated propositional head.
+
+AX supplies its axiom instances, generalizes the cached theorem to $U(d,h)$, preserves the incoming top and clears visible cache. Successful MP obtains a proof of $y$ from proofs of $t$ and $I(t,y)$ and puts $y$ into the cache. Failed MP uses the fixed zero proof. A nonhalting Shift moves existing annotations.
+
+If Shift halts, $t+h=1$ implies $(t,h)=(1,0)$ or $(0,1)$. One of the visible annotations is therefore a refutation. Canonical stack expansion handles $[0;0]=0$: a pop of numerical zero supplies the fixed truth proof.
+
+\begin{theorem}[Command equivalence]
+The HA command enumerator halts exactly when its unchanged numerical calculus has a refutation.
+\end{theorem}
+\begin{proof}
+The annotation invariant gives soundness. The all-store contradiction word and the inherited exhaustive scheduler give completeness.
+\end{proof}
+
+The proof transformations used here are primitive recursive: pairing and projections, finite command words, recursive proof-tree compilation and annotation updates. Their correctness follows by induction on finite proofs, words and runs, all available in PA. No truth or reflection principle for PA is used.
+
+The inherited numerical calibration \cite{calibration} supplies proof translations between numerical refutations and PA refutations. Its ingredients include diagonal freshness, syntactic recovery of membership rewriting and equality interfaces, a finite-binary-membership interpretation, and uniformly proof-producing PA finite-comprehension induction templates. The exceptional code identity $I(0,0)=0$ is treated explicitly. This report retains that ordinary calibration; it does not replace it with a new kernel-checked endpoint.
+
+
+The full inherited calibration texts are retained in
+\path{references/calibration/} and the pinned primary report sources in
+\path{references/primary_packet/report/}. In particular,
+\path{original_pa195_calibration.tex}, \path{diagonal_calculus.tex}, and
+\path{separate_head_calculus.tex} give the finite-binary-membership
+interpretation, the recovery of the removed equality-vacuity interfaces,
+and the bundled/separate-head translations. The command proof in this
+report supplies the appropriate hybrid interface; the cached-only proof
+is not substituted for it.
+
+\section{Source construction and physical verification}
+
+\subsection{The HA source and register layout}
+
+The sole command-source edit, before the HAZ closure transformation, is
+\[
+ \texttt{node163}=(\texttt{node6},\texttt{node147})
+\]
+instead of $(\texttt{node6},\texttt{node55})$ in the frozen program of
+\cite{program}. The successful MP branch therefore uses the already
+supplied cache-return tail; it neither pushes a dummy zero nor returns the
+consequence as its visible top. Shift retains the original sum test.
+The AX grammar otherwise remains the primary grammar.
+
+The logical-to-physical register map is changed from
+\[
+ (6,2,0,4,3,7,8,5,1)\quad\hbox{to}\quad(6,2,0,3,4,7,8,5,1),
+\]
+in logical order $(N,T,W,A,D,H,X,Y,L)$. Only A and D exchange physical
+locations. The three placement edits in Section 1 implement that frame
+conjugacy. The symbolic checker is run with the changed map; correctness
+is not inferred merely from the apparent symmetry of A and D.
+
+\input{haz-cut-proof.tex}
+
+\subsection{Universal source contracts and exact initialization}
+
+The HAZ grammar replaces the single occurrence
+\[
+ (\texttt{node150},(\texttt{leaf},\texttt{breakTo},1))
+ \quad\hbox{by}\quad
+ (\texttt{node150},(\texttt{leaf},\texttt{dec},6)).
+\]
+It changes the native row $(2066,1)$ as specified above. Its extra positive
+source branch is included in the universal physical checks, even though
+the preceding invariant proves it unreachable from source entry 25.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Quantity & Primary PA194 & PA194HA & PA194HAZ\\
+\midrule
+Working controls & 194 & 194 & 194\\
+Transition rows & 388 & 388 & 388\\
+Primitive sites & 3,673 & 3,650 & 3,650\\
+Symbolic source outcomes & 4,780 & 4,750 & 4,751\\
+Verifier iterations & 1,479,348 & 1,472,170 & 1,472,644\\
+Maximum per outcome & 497 & 497 & 497\\
+Blank startup transitions & 58,154 & 58,122 & 58,122\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are executed results. Python reproduces primary PA194 and its A/D
+layout before checking both new machines. The independently ported
+JavaScript resolver/runtime reproduces the A/D baseline and HAZ, then
+compares the complete tables, labels, source instructions and source
+addresses with the Python-produced files. Both implementations agree.
+The iteration counts measure symbolic-verifier work, not physical running
+time for arbitrary register values.
+
+A contract represents arbitrary natural registers, the permitted arbitrary
+spare tail, and the affine header gap of the supplied runtime. Both
+branches of every decrement are checked. Complete tape frames and successor
+addresses are compared. The 23 arithmetic-box control rows are unchanged;
+their universal contracts are inherited. The runtime's oracle summarizes
+those blocks, so these runs do not independently establish their arithmetic
+correctness. The supplied \path{M6/Runtime.lean} context and its
+\texttt{BoxLemmas} assumptions, the primary report's block arguments, and
+the upstream references are preserved in the package.
+
+The exact blank endpoint is native state 84 at head $-2$, source site 25,
+with logical registers
+\[
+ (N,T,W,A,D,H,X,Y,L)=(2,0,0,0,0,0,0,0,0),
+\]
+and 26 spare blocks of value one. The complete finite-support tape matches
+the expected frame, including the zero exterior. It is not a window-only
+or register-only startup test. The full list of one-cells appears in both
+execution receipts.
+
+Each nonhalting primitive source step has a positive-duration physical
+realization with its complete frame and correct successor. Concatenation
+gives physical completeness. For the converse, suppose the physical run
+first halts at time $T$. If the source did not halt, $T+1$ nonhalting source
+steps would give a nonhalting physical run beyond time $T$, contradicting
+determinism. This finite argument is formalizable in PA and avoids any
+assumption that a long observed run proves nonhalting.
+
+\begin{theorem}[PA calibration of the literal tables]
+Using the unchanged inherited arithmetic-block and numerical-calibration
+lemmas specified above, for $M\in\{\mathrm{PA194HA},\mathrm{PA194HAZ}\}$,
+\[
+ \boxed{\PA\vdash
+       \bigl(\neg\Halt(M,\text{blank})\leftrightarrow\Con(\PA)\bigr).}
+\]
+\end{theorem}
+\begin{proof}
+The HA command compiler, soundness invariant and exhaustive scheduler
+translate between finite source halts and numerical refutations. Compose
+with the inherited PA-refutation translations. The four-site invariant
+transfers this source theorem to HAZ. Compose each source theorem with
+its universal positive-duration refinement and exact initialization.
+Negate the resulting equivalence of existential halting and PA-refutation
+predicates. All new finite transformations and inductions are available
+in PA; no PA reflection principle is used.
+\end{proof}
+The receipts explicitly record \texttt{kernel\_checked: false}. This
+qualification concerns the form of verification, not an assumption of
+$\Con(\PA)$ in the equivalence theorem.
+
+\section{Attempts to get below 194 states}
+
+\subsection{Bounded physical quotients}
+
+Three sufficient contraction rules were implemented. The first merges a
+control into another through a bounded local detour that restores the
+complete local tape, head and endpoint modulo the proposed alias. The
+search includes arithmetic controls. The second represents the removed
+control with a head displacement of $\pm2$, compensating incoming movement.
+The third represents it by toggling a neighboring marker bit, compensates
+the incoming write, and requires restoration before continuation.
+
+A radius-$r$ abstract context retains the $2r+1$ cells around the head.
+Boundary transitions admit both possible new bits, giving a conservative
+reachable-window invariant. The limits below restrict the sufficient
+certificate rules and detour lengths, not the represented natural
+register values. Failure to find such a certificate is not a lower bound.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+HAZ bound & Local contexts & Translated cases & Marker cases & Reductions\\
+\midrule
+Radius 6, 256 steps & 274,499 & 32,560 & 32,366 & 0\\
+Radius 8, 384 steps & 3,181,913 & 32,560 & 32,366 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+At radius eight, the translated search examined 1,525,492 actions and the
+marker search 941,501. Both HA runs were also negative. Earlier recorded
+runs cover primary PA194, AD, MPH, Q, J, D, M4R, M5, M6 and CSZ. A final
+radius-six literal-head pass covered the five newly catalogued nonrejected
+auxiliary 194-state graphs. No validated 193-state result emerged.
+
+A separate limited AX-grammar exploration evaluated 22,681 proposals while
+preserving the primary 190-token emitter. It retained effective reader
+score 60 and found no score 59. Targeted attempts to combine the final AX
+zero decrement with the R/F controller fold likewise found no saving.
+All these results are scoped negative experiments. The archive includes
+the exact search implementations and numerical receipts, so their scope
+can be inspected rather than inferred from the number of trials.
+
+\subsection{Transfer from ZFC and concise iPRA}
+
+The ZFC omit-zero alternative \cite{zfc} shows that removing the
+successful-MP dummy push can preserve the consistency target after changing
+the proof compiler. It changes native target 98 to 114, removing 19 source
+primitive occurrences while retaining 218 physical states in that ZFC
+construction. PA194N is the corresponding supplied PA no-push direction.
+HAZ instead uses target 130 and the cached-result interface. Source trace
+equality is not available for these MP changes, which is why the explicit
+command proof is needed.
+
+Concise iPRA \cite{ipra} suggests restricted term forms, checking a rule in
+its consumer context, and syntactic proof translations. Its scalar core
+uses zero, successor and iteration; its equality, Q and D formula forms
+are useful checker-compression ingredients. A PA-calibrated refutation
+checker built from such a core remains a possible direction. The existing
+iPRA checker alone has a different consistency target. Its short high-level
+source also does not price the binary-tape register engine, scheduler and
+blank initialization needed for a state bound.
+
+The most direct remaining physical target is an effective AX-reader score
+59 with the 134-state fixed core, or a certified net saving in that core.
+A useful next search would jointly vary the emitter grammar and a proved
+tape marker invariant, rather than count nominal folds independently of
+the states that implement their contexts. These are research proposals,
+not unverified machines offered as solutions.
+
+\section{Reproduction and contents}
+
+The delivered package contains all inputs needed for the new-machine
+checks and corpus replay without a network connection. From its root,
+run the following commands with Python assertions enabled:
+\begin{verbatim}
+python3 build.py
+node verification/verify_haz.cjs
+python3 verification/haz_four_site_cut.py \
+  machine/pa194ha.instructions.json \
+  machine/pa194haz.instructions.json
+node comparison/verify-corpus.js
+python3 comparison/check-census.py
+node comparison/check-combined-corpus.js
+\end{verbatim}
+The Python and JavaScript construction checks, independent invariant
+checker, and corpus checks were executed successfully during this work.
+The optional larger graph-census replay recomputes all 476 classes; the
+small \path{verify-corpus.js} check handles the 28 prior 194-state classes
+and both candidates.
+
+The bounded HAZ search can be repeated with
+\begin{verbatim}
+node search/search.cjs machine/pa194haz.native.tm 74 8 384
+\end{verbatim}
+For the report, run \texttt{latexmk -pdf pa194haz.tex} in \path{report/}, or
+run \texttt{pdflatex -halt-on-error pa194haz.tex} twice. This PDF was compiled
+from the supplied LaTeX and visually inspected. Python 3.10 or newer,
+a recent Node.js with standard modules, and a conventional TeX Live
+installation suffice. No Lean installation is required for these finite
+checks; compiling a new kernel proof is not one of the reproduced steps.
+
+The main deliverables are the native/dense machines, label maps, complete
+resolved sources, manuscript and PDF. The package also contains execution
+receipts, the independent invariant certificate, the 41-packet ledger,
+all 667 prior raw byte forms, graph representatives and manifests, search
+code/results, inherited proof texts, provenance and licenses. A top-level
+\path{SHA256SUMS} authenticates the packaged files.
+
+The calculus, register engine, compilation interfaces and original 194-state
+allocation are credited to the supplied ProveIt work and James Chang's
+imported PA196 development. HA and HAZ are new concrete compositions
+relative to the fully inspected literal corpus. Their mathematical and
+physical justification is made explicit here. The comparison also records
+failed candidates so that an appealing but unsound smaller table is not
+silently counted as an improvement.
+
+\begin{thebibliography}{99}
+\bibitem{status} ProveIt, PA research status.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/PA/README.md}{Pinned PA README}.
+\bibitem{primary} ProveIt, primary PA194 construction, register-layout companion, and physical proof.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13}{Pinned primary packet}.
+\bibitem{calibration} ProveIt, primary PA194 numerical-calculus calibration and references.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13/report/calibration.tex}{Pinned calibration source}.
+\bibitem{cached} ProveIt, cached command selectors and their PA calibration.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/PA/docs/pa194c_conpa}{Pinned cached-protocol packet}.
+\bibitem{program} James Chang / ProveIt, imported PA196 source program.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/PA196/Program.lean}{Pinned Program.lean}.
+\bibitem{incoming} ProveIt, five incoming N, R, Q, J/D, and radix archives.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1e407ae841e4666f932777fad977ba784ebbcfd5/docs/incoming}{Pinned incoming directory}; individual archive and member identities are in the packaged manifests.
+\bibitem{zfc} ProveIt, ZFC omit-successful-MP-zero alternative.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/ZFC/candidate-k218/alternatives/omit-zero/README.md}{Pinned omit-zero README}.
+\bibitem{ipra} ProveIt, Concise iPRA project.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}{Pinned ConciseIPRA README}.
+\end{thebibliography}
+
+\appendix
+\section{The 28 prior 194-state graph classes}\label{app:graphs}
+The following prefixes identify the complete canonical graph digests in
+\path{comparison/graph-fixtures.json}. These are graph identities, which
+usually differ from native and dense file digests. The candidate files are
+kept separately. Several normalized comparison tables have starts 67 or
+68; their JSON start field is authoritative.
+\input{graph_classes.tex}
+
+\section{All 41 placed research packets}\label{app:ledger}
+The names below are relative to
+\path{Computability/BusyBeaver/Research/PA/docs/} at the pinned revision.
+Summaries are report-derived. Every packet's direct table occurrences are
+included in the census even where its main contribution is a proof or a
+failed search. Full URLs, Git trees and counts are retained in
+\path{comparison/packet-ledger.json}.
+\input{packet_ledger.tex}
+
+\section{Complete HAZ transition table}\label{app:table}
+An entry $wDq$ writes $w$, moves in direction $D$, and enters $q$.
+Start is zero; working states are $0,\ldots,193$; halt is 194.
+{\small\input{transition_table.tex}}
+\end{document}
