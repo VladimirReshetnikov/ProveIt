@@ -118,8 +118,7 @@ bound-variable shift and the resulting substitution vector.
 `PA196PRAQVecTower.lean` constructs a primitive-recursive code for iterating
 the vector majorant and proves its recurrence in every candidate-PRA model.
 `PA196PAQVecTowerModel.lean` proves that one qVec application advances that
-majorant by one stage when the arithmetic reduct also models IΣ₁. The bound
-for the full substitution recursion stage remains open.
+majorant by one stage when the arithmetic reduct also models IΣ₁.
 `PA196PRAQVecHistory.lean` constructs a seed-parameterized primitive-recursive
 history code and proves its recurrence in candidate-PRA models. Its sequence
 properties and its connection to the arithmetic coded traces remain open.
@@ -141,14 +140,12 @@ IΣ₁; `PA196PAQVecPathBound.lean` also bounds coded paths satisfying explicit
 step inequalities. `PA196PASubstitutionPath.lean` bounds paths following the
 actual substitution branch shapes, and the Phi and StageChild modules show
 that an actual successor-stage node is atomic or has a prior-stage child with
-that branch relation. A coded path extractor, bounds for both children of
-branching nodes, and the full substitution-stage bound remain open.
+that branch relation. A coded path extractor for actual stages remains open.
 `PA196PAQVecTowerAlgebra.lean` proves seed and index monotonicity and
 composition of the arithmetic iterator at model-internal indices.
 The StageCases and StageResults modules also record both previous-stage
 children and the parent-result equations for binary branches. StageSize proves
-that a node in a stage is smaller than that stage; this is a lower bound on the
-stage, not the needed upper bound.
+that a node in a stage is smaller than that stage, a lower bound on the stage.
 `PA196PASubstitutionClauses.lean` proves the ten positive constructor-clause
 witness bounds for arithmetic formula substitution, and
 `PA196PASubstitutionNegative.lean` proves six negative constructor clauses.
@@ -157,7 +154,8 @@ the positive core is bounded unconditionally, and its negative counterpart is
 bounded assuming the two negative relation clauses. The arithmetic term and
 vector substitution growth modules establish those remaining clauses, so
 `PA196PASubstitutionCoreComplete.lean` proves both core bounds unconditionally.
-The recursion's global bound remains open.
+Conversion of the recursion-stage bound into a candidate-PRA witness bound
+remains open.
 `PA196PASubstitutionAtomicGrowth.lean` bounds atomic substitution outputs and
 shows that an appropriate majorant absorbs them in one tower step.
 `PA196PASubstitutionConstructorGrowth.lean` proves corresponding local bounds
@@ -168,8 +166,9 @@ children at the two recursive parameter values.
 `PA196PASubstitutionUniformGrowth.lean` uses internal Π₁ induction and tower
 algebra to prove a uniform arithmetic substitution-output bound in IΣ₁ models.
 `PA196PASubstitutionStageBounds.lean` proves the numerical descent and triple
-size properties needed by a proposed stage bound. Membership in that fixpoint
-stage remains open.
+size properties needed by a stage bound. `PA196PASubstitutionStageUniform.lean`
+proves membership in that stage in IΣ₁ models, for well-formed arithmetic
+formula codes. The corresponding candidate-PRA witness bound remains open.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
