@@ -41,6 +41,9 @@ must contain the audited standard-configuration and zipper-stepper objects,
 and the Foundation overlay supplies their Foundation prerequisites. The
 script verifies hashes of the named parent and model objects and of selected
 source files; it does not rebuild every transitive object in those overlays.
+The selected hash pins do not by themselves verify that all transitive objects
+match the dependencies used to produce the pinned objects. A replay rebuilding
+the complete standalone dependency closure together remains to be done.
 It regenerates the dense and parent checkpoint sources, rebuilds the literal
 machine, parent seed data, and fast evaluator, then rebuilds the dense blocks,
 the composition, four model bridge modules, and the native iPRA startup sentence. This is not an all-from-source
