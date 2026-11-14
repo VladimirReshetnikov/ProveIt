@@ -2,9 +2,12 @@
 
 The digests are SHA-256 values of members of the original incoming archives.
 Their reference copies of Program.lean were not retained when unpacking; the
-byte-identical tracked upstream copy is used for that member.
+byte-identical tracked upstream copy is used for that member. Native tables
+removed as renamed duplicates are reconstructed from their pinned dense tables
+and state maps and checked against the original member hashes.
 """
 from hashlib import sha256
+import json
 from pathlib import Path
 
 # Original archive member names and hashes, independently checked against both
@@ -49,6 +52,31 @@ class PlacedPacket:
         expected = _PINS.get((self.machine, member))
         if expected is None:
             raise ValueError(f"unrecognized pinned packet member: {member}")
+        native = {
+            "194": ("pa194_conpa/construction/tables/pa194.native.tm",
+                    "pa194_conpa/construction/tables/pa194.tm",
+                    "pa194_conpa/construction/tables/pa194.labels.json"),
+            "195": ("pa195_conpa/pa195/pa195.native.tm",
+                    "pa195_conpa/pa195/pa195.tm",
+                    "pa195_conpa/pa195/labels.json"),
+        }[self.machine]
+        if member == native[0]:
+            # The native table was removed as a state-renamed duplicate. Recreate
+            # its original sorted bytes from the independently pinned dense table
+            # and state map, then verify the original member hash below.
+            dense = self.read(native[1]).decode('ascii')
+            labels = json.loads(self.read(native[2]))
+            rows = []
+            for line in dense.splitlines():
+                q, bit, write, direction, target = line.split()
+                rows.append((labels[int(q)], int(bit), int(write), direction,
+                             labels[int(target)]))
+            rows.sort(key=lambda row: (row[0], row[1]))
+            data = ''.join(f'{q} {bit} {write} {direction} {target}\n'
+                           for q, bit, write, direction, target in rows).encode('ascii')
+            if sha256(data).hexdigest() != expected:
+                raise ValueError(f"packet member SHA-256 mismatch: {member}")
+            return data
         base = self.repo / "Computability/BusyBeaver/Research/PA"
         if member.endswith("/reference/PA196/Program.lean"):
             path = base / "jamesyc-upstream/pa196/PA196/Program.lean"
