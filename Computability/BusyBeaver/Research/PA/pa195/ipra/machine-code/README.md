@@ -13,7 +13,19 @@ classical `PRA` theory. The latter statements are all-model Lean theorems;
 the module does not yet package them as syntactic `PRA ⊢` sentences, nor does
 it prove an all-model identification with a separate division graph.
 
-These are two explicit arithmetic components, not a PA195 transition or clock
+`TapeStepCodes.lean` builds six additional explicit `Code 3` terms from
+those components. Inputs `(left, written, right)` describe the cells on
+either side of the head, with the nearest cell as the least significant bit,
+and the symbol just written to the current cell. The three outputs after a
+right move are `(2*left + written, right % 2, right / 2)`; a left move gives
+`(left / 2, left % 2, 2*right + written)`. Lean proves each component's
+standard evaluation, bit recovery when `written < 2`, and that moving back
+without changing the new head restores the three components. It also proves
+all six exact composition equations in every model of candidate classical
+PRA. The round-trip results concern standard natural numbers; the all-model
+statements are composition equations, not division or round-trip statements.
+
+These are explicit arithmetic components, not a PA195 transition or clock
 code. The work still needs the full finite transition lookup, a configuration
 encoding and projections, a state iterator and a proof that its internal
 recurrence matches the exact PA195 machine. It does not prove either
@@ -30,7 +42,7 @@ IPRA_FOUNDATION_OVERLAY=/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib \
   bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check.sh
 ```
 
-The script rebuilds this module in a private temporary directory and verifies
+The script rebuilds both modules in a private temporary directory and verifies
 the hashes of five direct sources, the two directly imported project objects,
 and the Foundation `Init` object. It prints axiom dependencies and rejects
 `sorryAx`. It assumes the remaining transitive overlay objects were built from

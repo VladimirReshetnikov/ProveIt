@@ -28,6 +28,9 @@ lean --version | rg -q "Lean \(version 4\.32\.0"
 export LEAN_PATH="$IPRA_LEAN_OVERLAY:$IPRA_FOUNDATION_OVERLAY:${LEAN_PATH:-}"
 lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/BinaryTapeCodes.lean \
   -o "$BINARY_TAPE_TASK_DIR/BinaryTapeCodes.olean" | tee "$BINARY_TAPE_TASK_DIR/axioms.log"
+export LEAN_PATH="$BINARY_TAPE_TASK_DIR:$LEAN_PATH"
+lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/TapeStepCodes.lean \
+  -o "$BINARY_TAPE_TASK_DIR/TapeStepCodes.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
 if rg -q "sorryAx" "$BINARY_TAPE_TASK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1
