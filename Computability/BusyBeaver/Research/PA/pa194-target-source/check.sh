@@ -9,6 +9,7 @@ root=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-target-source.XXXXXXXX")
 trap 'rm -rf "$root"' EXIT
 mkdir -p "$root/source" "$root/scheduler"
 export PA194_TARGET_SOURCE_SRC="$root/source" PA194_TARGET_SOURCE_SCHEDULER="$root/scheduler"
+export PA194_TARGET_SOURCE_REPO="$repo"
 python3 - "$base/pa195-calibration/check-source-diagonal-preservation.sh" "$root/source-prerequisites.sh" <<'PY'
 from pathlib import Path
 import sys
@@ -17,7 +18,10 @@ old='task_dir=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-source-head6.XXXXXXXX")'
 trap='trap \'rm -rf "$task_dir"\' EXIT'
 if s.count(old) != 1 or s.count(trap) != 1:
     raise SystemExit('unexpected source-diagonal prerequisite wrapper')
-s=s.replace(old,'task_dir=$PA194_TARGET_SOURCE_SRC',1).replace(trap,'',1)
+repo='repo=$(git -C "$(dirname "$0")" rev-parse --show-toplevel)'
+if s.count(repo) != 1:
+    raise SystemExit('unexpected source-head2 repository discovery')
+s=s.replace(repo,'repo=$PA194_TARGET_SOURCE_REPO',1).replace(old,'task_dir=$PA194_TARGET_SOURCE_SRC',1).replace(trap,'',1)
 s += '''\nfor module in PA194SourceLineSoundness PA194SourceLineRefutation; do\n  lean -M6000 -j1 -o "$task_dir/$module.olean" "Computability/BusyBeaver/Research/PA/pa195-calibration/$module.lean" | tee -a "$task_dir/axioms.log"\ndone\nif rg -q 'sorryAx' "$task_dir/axioms.log"; then exit 1; fi\n'''
 Path(sys.argv[2]).write_text(s)
 PY
