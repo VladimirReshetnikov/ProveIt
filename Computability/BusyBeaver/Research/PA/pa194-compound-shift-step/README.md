@@ -24,3 +24,8 @@ From the repository root, set `IPRA_FOUNDATION_OVERLAY` to the audited current
 Foundation object overlay and `IPRA_LEAN_OVERLAY` to the pinned audited
 project object overlay, then run
 `bash Computability/BusyBeaver/Research/PA/pa194-compound-shift-step/check.sh`.
+
+An independent suffix replay recompiled the constructor-step module in a fresh
+output directory against the separately rebuilt vector/atom objects and the
+audited prerequisite overlays. It reported the same axioms with no `sorryAx`;
+the full prerequisite chain was reused.
