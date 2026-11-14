@@ -273,3 +273,15 @@ a proof-producing compiler. Check it with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-zero-alias.sh
 ```
+
+`PA194BindTranslation.lean` provides capture-avoiding closure for a named
+source label using a fresh de Bruijn binder. It proves that closure introduces
+no new free source labels and removes the selected label, and verifies that
+universal closure has the expected valuation semantics, including beneath
+nested quantifiers. These are Lean theorems for actual formulas and structures;
+the represented formula-code translator, its correctness in PRA, and the
+uniform proof-template compiler remain open. Check with the audited overlays:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-bind-translation.sh
+```
