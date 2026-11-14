@@ -1,0 +1,253 @@
+\section{Comparison of the supplied constructions}
+
+The comparison was performed against ProveIt revision
+\file{dc523e7b06ffb414093c90aa035500ca283e5f75}, the requested PA209
+revision \file{69d98241a721ead20b4f0b17df9062950b40fbfe}, and the
+published PA196 table~\cite{pa196,pa209,incoming}. The latter's SHA-256 is
+\file{e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8}.
+State counts throughout count working controls; the distinguished halt
+control is separate. Each machine is binary, has one two-way infinite tape,
+starts from all zeroes, and moves one cell left or right on every transition.
+
+The classification and the earlier reductions described in this section
+already occur in the incoming research. They have been freshly replayed
+and their input bytes rebound to the current original ZIP members; they
+are not new state reductions discovered in this investigation.
+
+\subsection{The full U208 collection has twenty graph classes}
+
+The nine headline tables in the five original U208 packages form exactly
+two rooted transition-graph isomorphism classes, called A and B. Each
+isomorphism preserves the initial and halting controls, read symbols,
+written symbols, and movement directions. Raw byte hashes differ under
+renumbering, so comparing hashes alone would overcount independent designs.
+
+\begin{center}\small
+\begin{tabular}{lll}
+\hline
+Package, dated 29 October 2026 & Principal table & Alternative\\
+\hline
+\texttt{U208\_ConPA} & A & ---\\
+\texttt{U208\_ConPA\_Conditional\_Context} & A & B\\
+\texttt{U208\_ConPA\_Entry\_Context} & A & B\\
+\texttt{U208\_ConPA\_History} & A & B\\
+\texttt{u208\_research} & B & A\\
+\hline
+\end{tabular}
+\end{center}
+
+The complete collection is larger. The archive
+\texttt{pa208\_research\_2026-10-29.zip} contains eighteen additional
+accepted 208-state helper constructions, nine based on each class.
+All eighteen graphs are pairwise nonisomorphic and differ from A and B.
+Consequently the accepted U208 material audited here consists of
+\emph{27 presentations in 20 rooted graph classes}. Each new helper
+construction deletes one old state but introduces one fresh helper, so
+its net state count stays 208.
+
+The retained comparison checks 30 selected literal inputs: these 27 U208
+tables, Chang's PA209 and PA196, and the previously supplied alternative196.
+It reconstructs all sixteen isomorphism maps among the nine headline
+tables and verifies every transition under each map. It also independently
+rechecks the exact patches, incoming-edge predicates, and positive local
+whole-tape simulations for all eighteen helper variants. All 30 table
+hashes were checked directly against their current original archive
+members or repository files, rather than only against copied inputs.
+The portable results are in \texttt{comparison/verified\_comparison.json}.
+
+\subsection{Source sizes and physical sizes}
+
+\begin{center}\small
+\begin{tabular}{lrrrrrr}
+\hline
+Design & States & Sites & Internal nodes & Leaf types & DAG total & Max. path\\
+\hline
+U208 A &208&3909&174&23&197&42\\
+U208 B &208&3909&174&23&197&41\\
+Chang PA209 &209&3948&173&23&196&33\\
+Chang PA196 &196&3812&159&23&182&38\\
+Incoming alternative196 &196&3812&159&23&182&36\\
+\hline
+\end{tabular}
+\end{center}
+
+A source site is a primitive instruction occurrence. Internal nodes count
+distinct binary subtree pairs, while the total DAG also counts distinct
+primitive instructions and their operands. Thus U208's total DAG count
+197 must not be compared directly with PA196's internal-node count 159.
+
+A and B have the same ordered primitive word and the same exact ordinal
+control-flow graph; 720 binary instruction addresses differ. Chang's
+PA209 is distinct from the U209 parents inside the U208 reports. Sharing
+an earlier tape engine does not identify their literal state labels or
+make their source optimizations additive.
+
+The PA196 budget is
+\[
+36\text{ engine states}+13\text{ leaf routers}
+ +147\text{ source readers}=196.
+\]
+The 147 readers implement 159 internal source nodes. In particular, the
+six contextual identifications in the axiom body are already included
+in 196; they implement 68 axiom-grammar nodes using 62 physical readers.
+
+The replay also checks the complete finite initializations, not merely
+a tape prefix. PA209 reaches its clean frame after 58,210 transitions;
+PA196 does so after 58,154. Their frames agree up to the documented
+control-label correspondence: the head is at position $-2$, the register
+file represents candidate 2, the gap is 48, and there are 26 spare blocks
+of value 1. These are initialization facts, not evidence of nonhalting.
+
+\subsection{Why the final U208 deletion does not directly transfer}
+
+In the Joint native U209 numbering, the final U208 reduction identifies
+roles 172 and 211. An entry to 172 has predecessor bits $10$; when 211
+scans zero, its immediately preceding bit is one. Re-reading that history
+lets the merged control select the correct continuation. The replacement
+blocks for old state/read pairs
+$(172,0),(172,1),(211,0),(211,1)$ have lengths $7,1,3,1$.
+Their endpoints agree on the entire tape and head position, not just on a
+finite numerical register sample. Thus the exact simulation clock is
+\[
+ T_{208}=T_{209}+6N_{172,0}+2N_{211,0},
+\]
+where the $N$'s count visits in the parent execution. The incoming-edge
+predicates and positive block lengths support a PA-formalizable finite
+stuttering argument, independently of the underlying theory calibration.
+
+PA209-to-PA196 changes the axiom emitter and its coding. It transposes the
+arguments of the universal-quantifier Cantor pair, removes an old axiom
+head, adds guarded equality vacuity, and changes formula and emitter
+ordering. In the native comparison, 75 old controls disappear and 62 new
+ones are introduced: $209-75+62=196$. Roles 172 and 211 are already absent.
+Moreover, a complete finite scan of PA196 finds no state $p$ whose two
+rows have the form
+\[
+(p,0)\mapsto(0,L,q),\qquad(p,1)\mapsto(1,R,q)
+\]
+for the same working state $q$. Therefore no state renaming transplants
+that exact U208 mixed-entry motif. This does not exclude more general
+contextual sharing or a different source allocation.
+
+\subsection{The arithmetic endpoint must be stated accurately}
+
+The upstream theorem inventory exports the internal statement
+\[
+\mathsf{PA}\vdash\neg\operatorname{Halt}(M_{196})
+   \longrightarrow\operatorname{Con}(\mathsf{PA}),
+\]
+and external Lean-metatheoretic nonhalting and independence results.
+It does not export the full internal biconditional. This is a statement
+about the supplied declarations, not a proof that the missing converse
+is false or unprovable. A uniform syntactic extraction of a PA refutation
+from a halted literal trace can establish the converse; external
+HF-model soundness alone does not supply that PA-internal theorem.
+The incoming packets contain additional written proof-translation
+arguments with explicitly stated implementation boundaries. None of the
+state-count experiments below fills that boundary by itself.
+
+\section{New combinations of previously separate reductions}
+
+The first new experiment composes previously supplied source changes,
+then reconstructs and checks their physical implementations. The changes
+are: the distributed-separation emitter; the diagonal-vacuity emitter;
+the shorter negation block; and the MP-success branch that returns its
+consequent in register $H$. These are combined as actual source trees,
+not by subtracting their separate state-count estimates.
+
+The negation replacement changes a 47-instruction block
+\texttt{push; incT; cons} to a 20-instruction block
+\texttt{drainTtoX; incT; pair4}. Its mathematical equivalence requires
+the inherited scratch-zero entry invariant. The MP change removes 23
+primitive instructions. These logical/source obligations are separate
+from the checks that a tape implements the resulting source program.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\hline
+Emitter and changes & Sites & Raw states & Final states & Symbolic cases\\
+\hline
+Original &3812&202&196&4959\\
+Original + MP &3789&202&196&4929\\
+Original + short negation &3596&202&197&4671\\
+Original + short negation + MP &3573&202&197&4641\\
+Distributed &3773&201&198&4908\\
+Distributed + MP &3750&201&198&4878\\
+Distributed + short negation &3611&202&199&4692\\
+Distributed + short negation + MP &3588&202&199&4662\\
+Diagonal &3700&203&199&4815\\
+Diagonal + MP &3677&203&199&4785\\
+Diagonal + short negation &3484&203&200&4527\\
+Diagonal + short negation + MP &3461&203&200&4497\\
+\hline
+\end{tabular}
+\end{center}
+
+Here ``raw'' refers to the straightforward allocation before contextual
+reader folds. For each source, 200 deterministic seeded fold orders were
+examined. The selected complete table passes every symbolic primitive
+contract, preserves the 42 explicitly checked engine rows needed by the
+register-block interface, and reaches the exact clean blank-start frame
+after 58,154 transitions. These are executable symbolic checks, not
+finite sampling of register magnitudes. They are also not a new
+proof-assistant kernel certificate or an exported PA refutation compiler.
+
+The original and original-plus-MP rows retain 196 states; none is a
+strict improvement. The table gives a concrete reason the separate
+savings cannot simply be added. Shortening negation removes source work
+but disrupts useful contextual sharing, costing a physical state in
+these allocations. The reproducible subset is in
+\texttt{combinations/}; its replay writes fresh evidence into a separate
+\texttt{replayed/} directory.
+
+\subsection{Combining distribution with diagonal vacuity}
+
+A further source experiment combines the two logical emitter changes
+with one another. Write $I$ for implication, $U_b$ for universal
+quantification, and $N(X)=I(X,1)$. For parameter codes $a,b,c$, set
+\[
+\begin{split}
+ D&=I(c,U_c(c)),\\
+ V&=I(M(a,b),U_c(M(a,b))),\\
+ P&=I(c,M(c,b)),\\
+ L&=I(M(a,b),P),\\
+ R&=I(M(c,b),c).
+\end{split}
+\]
+The candidate gate is
+\[
+ N\!\left(I\!\left(D,
+ I\!\left(V,U_c\bigl(I(U_b(L),I(U_b(R),N(P)))\bigr)\right)\right)\right).
+\]
+It combines the earlier diagonal clause with distribution of the
+quantifier over the separation conjunction, using the same original
+freshness guard. The preceding head order and one antecedent exchange
+are the previously checked distributed-emitter choices.
+
+Exact macro expansion gives 189 tokens, compared with 201 in PA196,
+and 3661 source sites. Adding the MP rewrite gives 3638. Applying all
+six applicable shorter-negation replacements gives 3499 sites, or 3476
+with MP as well. These are exact source-size calculations; they do not
+establish a 189-state or a sub-196-state machine. A physical layout must
+retain the decoder-entry predicates, maximum-zero-run constraints,
+startup, and full symbolic runtime contracts. The source combination
+also inherits the outstanding uniform proof-translation and internal
+endpoint obligations of its constituent logical changes.
+
+The joint word admits a concrete variable-arity dictionary whose ordinary
+binary concatenation cost is 66 after accounting for an already available
+two-increment block. A 60-second mixed-integer search supplied this
+incumbent; it did not prove optimality. The full witness is retained in
+\texttt{combinations/joint\_dictionary/grammar66.json}.
+It is not an accepted physical layout. In that fixed dictionary, the
+first-part chain through production 208 forces a run of at least seven
+consecutive zero path bits: three come from the existing copy-$A$ block,
+and four from mandatory left-child descents. The inherited reader bound
+is six. The independent \texttt{check\_obstruction.py} verifies the exact
+189-token word, cost 66, use of the offending production, and the
+seven-zero lower bound without rerunning a solver or trusting a random
+association. Thus this particular dictionary cannot be repaired merely
+by selecting a different association of its fixed ordered productions.
+Changing the productions or the reader remains possible. This local
+obstruction is not a lower bound for all 189-token emitter layouts, much
+less for all 195-state consistency machines.

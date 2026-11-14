@@ -1,0 +1,63 @@
+PA machine comparison and source-combination evidence
+====================================================
+
+This component does not contain a validated machine with fewer than 196
+working states and does not export a PA proof of a new consistency equivalence.
+
+comparison/
+  The earlier incoming comparison checker and its exact input files, retained
+  with attribution. Its full fresh replay checks 30 selected transition tables,
+  20 rooted U208 graph classes, 16 complete renaming bijections, 18 positive
+  whole-tape helper simulations, five source layouts and two exact startups.
+  CURRENT_INPUTS.json records the new binding to the current ProveIt checkout.
+
+combinations/
+  New composition experiments using existing distributed-gate, diagonal-vacuity,
+  shorter-negation and MP-success rewrites. All twelve generated source/table
+  pairs pass the executable uniform symbolic primitive checks and the exact
+  58,154-step startup. The smallest state count among these remains 196.
+  examples/ selects four combined tables; replayed/ contains the complete fresh
+  twelve-way replay. Native tables start at 74, use interpreter root 84, and have
+  the distinct halt label 254. Sparse labels are identifiers, not state counts.
+  Each machine.tm is the exact dense conjugate of machine.native.tm, starts at
+  state 0, and halts at label N, where N is its working-state count. The
+  dense_labels.json array records the dense-to-native correspondence, including
+  the halt label as its last element.
+
+  emitter189.py reconstructs the original 201-token literal emitter as a control,
+  then constructs the new 189-token combination of quantifier distribution with
+  diagonal vacuity. It checks exact source sizes only. No physical state count
+  or new endpoint theorem follows from 189 tokens.
+
+  joint_dictionary/ records a finite dictionary search result with exact cost
+  66 and an independent obstruction check. Its selected ordered productions
+  force at least seven consecutive left edges on one initial decoding path,
+  exceeding the inherited reader's limit of six. This rules out this particular
+  dictionary with the unchanged reader, not other dictionaries or smaller TMs.
+
+Reproduce with Python 3, without optimized (-O) mode:
+
+  python3 comparison/compare_designs.py --output /tmp/pa-comparison.json
+  python3 combinations/replay.py
+  python3 combinations/emitter189.py --output /tmp/emitter189.json
+  python3 combinations/joint_dictionary/check_obstruction.py
+
+The second command writes only combinations/replayed/, leaving the frozen
+input tables and original_receipts.json unchanged. The symbolic checkers use
+assertions; do not disable them. They rely on explicitly unchanged register
+engine rows and inherited positive block contracts. Executable symbolic
+verification is stronger than sampling register values, but is not a new
+Lean/Rocq kernel certificate or an implemented internal PA proof compiler.
+
+The logical/source rewrites retain their separate obligations. In particular,
+short negation requires the scratch-zero entry invariant, and the changed MP
+output requires adapting the command/proof compiler. The emitter changes rely
+on the written syntactic-calibration arguments in the earlier research. The
+published upstream internal theorem explicitly states nonhalting -> Con(PA);
+a full internal biconditional needs the separate reverse proof translation.
+
+Source provenance and licenses are under provenance/; the James Chang MIT
+notice is also next to the copied combination inputs. This component retains
+prior checker and source code as prior work. Its new contributions are the
+fresh complete input binding, the composed source/table experiments, and the
+189-token joint emitter calculation.

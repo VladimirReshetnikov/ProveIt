@@ -1,0 +1,116 @@
+\section{Additional searches using source-derived invariants}
+\label{sec:additional-local-search}
+
+No state reduction was obtained in the searches described in this section.
+Their value is to examine several transformations that are not covered by a
+literal action-preserving quotient. The supplied programs, frozen inputs,
+positive controls, adverse controls, and receipts are sufficient to rerun the
+experiments without a network connection.
+
+\subsection{A stronger finite context invariant}
+
+A state merger need not work on every possible local tape word. It suffices
+that its simulation contract holds on every local word that can occur in the
+original blank computation. A bounded-window closure is one sound
+approximation: after a head movement, the bit newly exposed at the edge of the
+window is allowed to be either symbol. This deliberately forgets correlations
+between the path reader and the register program.
+
+We obtain a stronger approximation from the complete source-level coverage.
+The inherited symbolic interpreter checks all $4,959$ zero/positive cases for
+the $3,812$ source sites, with arbitrary natural register values and gap.
+Every ordinary decoder transition exposes a finite symbolic tape prefix.
+We enumerate the local words represented by that prefix, allowing all lengths
+permitted by a variable unary run and all bit patterns at an opaque register
+box. Correlations between variable lengths may be forgotten; this enlarges
+the set and is safe. States used by an opaque engine contract, and states
+whose self-loops may be skipped by the interpreter, retain their full coarse
+blank-window contexts. Finally, all $58,154$ startup transitions are included,
+and the exact final clean frame is checked.
+
+\begin{center}
+\begin{tabular}{r|r|r}
+Radius & Source-derived contexts & Coarse blank contexts\\\hline
+2 & 2,412 & 2,848\\
+4 & 17,343 & 25,827\\
+6 & 161,614 & 270,067
+\end{tabular}
+\end{center}
+
+The mathematical coverage argument is induction over the startup and the
+source-instruction contracts. It is not a new kernel-checked invariant in this
+package. In particular, the imported Python interpreter uses the established
+register-engine contracts as an oracle. The construction does not infer a
+universal property from sampled register values.
+
+\subsection{Moving the alignment boundary}
+
+A conventional local quotient identifies a deleted control $a$ with a retained
+control $b$, then demands that a positive child block match one parent step
+from either control. We also tried deleting $a$ at its predecessor boundary.
+If $a$ has one incoming row, that row may be replaced by an arbitrary
+write/direction/target triple. The child is compared with the old two-step
+block across $a$, or with a later old endpoint. This allows a different
+incoming write or head position without treating control $a$ itself as a
+common boundary.
+
+The unique-predecessor search considered $91$ states and $71,344$ replacement
+actions. A further search considered all $195$ noninitial working states,
+trying incoming rows separately and stopping a deletion when one predecessor
+had no bounded witness. With radius-six coarse contexts and a $64$-step
+bound, it tested $157,584$ individual actions and found no complete deletion.
+This is not an exhaustive search of mutually dependent simultaneous changes
+to several predecessor rows.
+
+\subsection{Storing control information in the head or tape}
+
+Two further templates change the representation of an intermediate
+configuration. Write a configuration as $(q,h,T)$ and let $\pi(a)=b$, with
+$\pi$ otherwise the identity. We exclude deleting the initial state.
+Here $T$ is the set of cells containing $1$, and $[P]$ is $1$ when $P$ holds and $0$ otherwise.
+Suppose all incoming transitions to $a$ from other states move in direction
+$d\in\{-1,1\}$.
+
+For a head-offset encoding use
+\[
+ \Phi(q,h,T)=\bigl(\pi(q),\ h-2d\,[q=a],\ T\bigr).
+\]
+Every incoming direction to $a$ is reversed. Its new head position is then
+exactly the one specified by $\Phi$. One row of $b$ is synthesized, and the
+finite checker requires a positive child block from $\Phi(C)$ to
+$\Phi(C')$ for each permitted parent transition $C\to C'$.
+
+For a neighboring-bit encoding use
+\[
+ \Psi(q,h,T)=
+ \begin{cases}
+ (b,h,T\mathbin{\triangle}\{h-d\}),&q=a,\\
+ (q,h,T),&q\ne a.
+ \end{cases}
+\]
+Here the symmetric difference complements that tape cell. Incoming rows to
+$a$ complement their written bit, and one retained row is synthesized.
+The child block must restore or correctly transport the tape difference.
+These templates can carry a deleted state in physical information that an
+ordinary same-head, same-tape quotient does not preserve.
+
+The controls include explicit three-step examples for both encodings.
+Changing the restoration bit, or the required helper direction, invalidates
+the corresponding witness. For PA196, the recorded head-offset and
+neighboring-bit searches each tested $52,590,720$ variants and found none.
+The packaged full replay repeats both encodings at radius six with the same negative outcome; its combined receipt also records the positive and adverse controls.
+
+\subsection{Results and limitations}
+
+The expanded one-retained-row search at radius four tested $59,928,960$
+patches with a $64$-step bound and found no survivor. At radius six, the
+two-retained-row search examined $29,964,480$ first-row actions. Its
+unknown-second-row prefilter retained $81,874$ choices; $64,189,216$
+complete row pairs were checked, again without a survivor.
+
+These results are restricted negative search outcomes. They do not establish
+minimality of the $196$-state machine. A different axiom calculus, path layout,
+register encoding, initialization, wider window, longer matching block, or
+more extensive simultaneous rewrite remains outside these searches. No
+$195$-state table is asserted by this package, and none of the receipts by
+itself proves a PA-internal consistency equivalence.

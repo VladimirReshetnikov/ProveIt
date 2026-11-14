@@ -1,0 +1,58 @@
+\subsection{Completed wider and displaced screens}
+
+The radius-six blank-start abstract closure has 270,067 state/window pairs.
+Its seven-cell projection has 8,120 contexts. It contains an abstract route
+to halt, so it is used as an overapproximation for local simulation checks,
+not as a nonhalting certificate.
+
+The wider direct-fold screen checks all 38,220 ordered deleted/retained
+state pairs. Child segments may last up to 32 transitions and must stay
+inside seven cells. After projecting the deleted state to the keeper, up to
+two retained rows may change arbitrarily. It examines 98,072,128 first-row
+assignments and 798,376,992 second-row assignments. There are no unpatched,
+one-row or two-row survivors.
+
+The displaced screen uses the full thirteen-cell contexts and offsets
+$-2$ or $+2$. Its 33,735 eligible choices are 173 eligible deleted states
+times 195 keepers. With one additional arbitrary helper-row replacement,
+32-step positive segments and exact whole-window endpoints, it examines
+47,684 helper locations and 37,384,256 replacement triples. There are no
+unpatched or patched survivors.
+
+An independent Python simulator checks 512 seven-cell contexts for a known
+two-helper synthetic fold and 160 five-cell contexts for a genuine displaced
+fold. The C++ engines also recover these controls. This checks that the new
+templates can recognize positive examples; it is not a proof that every
+possible optimization fits either template.
+
+\subsection{Three-row screen: a recorded partial result}
+
+A recursive failure-trace search handles all choices of up to three changed
+rows for each selected pair, within five cells and sixteen child steps. This
+differs from the older representative-only third-row extension. The planned
+pair set contains the 348 ordered pairs sharing an original outgoing row.
+Exactly 84 completed pairs are recorded here. They examine 162,081 first-row,
+328,246,128 second-row and 9,582,125,364 third-row assignments, with zero
+survivors. The run was stopped to pursue source specializations; it is not
+exhaustive for the 348-pair set, much less for all state pairs. The exact
+completed pairs are in \file{physical_search/partial_three_receipt.json}.
+
+\subsection{A shorter H-only Shift guard}
+
+The accepted H-only Shift source enters its comparison with scratch
+register $X=1$ and arbitrary $H$. Under that explicit condition, the generic
+eleven-site equality guard can be specialized to seven sites: clear $X$;
+test $H$ twice; halt precisely if its entry value was one; otherwise clear
+the remaining $H$ and continue. The cases $H=0$, $H=1$ and $H\geq2$, followed
+by induction on the clearing loop, prove the all-natural local contract.
+
+The independent source checker resolves both full control graphs twice,
+checks the exact seven-row replacement, verifies all 3,800 exterior rows
+under the ordinal shift, and rules out exterior entries into the removed
+interior. The H-only source decreases from 3,811 to 3,807 sites. However,
+its distinct internal nodes increase from 159 to 163, because the old
+comparator's pieces are reused elsewhere. The first leaf shortens from
+\texttt{000000} to \texttt{00000}, but twenty other addresses still contain
+six consecutive zeros. Maximum depth remains 39. No shortened scanner,
+binary allocation or new blank-start proof follows. The exact source and
+ordinary proof are included in \file{physical_search/}.

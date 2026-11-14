@@ -1,0 +1,154 @@
+{
+  "status": "PASS",
+  "scope": "finite replay; no Lean build; no new PA biconditional",
+  "sub196_machine_established": false,
+  "tables": {
+    "published_pa196.tm": {
+      "working_states": 196,
+      "rows": 392,
+      "halt": 196,
+      "sha256": "e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8"
+    },
+    "published_pa209.tm": {
+      "working_states": 209,
+      "rows": 418,
+      "halt": 215,
+      "sha256": "0610d978675320f0b4b1ef34619dcd3daa5912632d7037e200dfcc70954fea51"
+    },
+    "experimental_mp_without_zero_push_196.tm": {
+      "working_states": 196,
+      "rows": 392,
+      "halt": 196,
+      "sha256": "3d7f91e548f8a21ed4d6eecdc1f1299d960b612912bf9a6bf7b74870c5c9f11a"
+    },
+    "experimental_mp_result_in_h_196.tm": {
+      "working_states": 196,
+      "rows": 392,
+      "halt": 196,
+      "sha256": "893f08672746ea1c281fda7de4ecc7c8a75fa1f896f2255c9c00e345c37aaaca"
+    }
+  },
+  "one_row_patches_checked": 2,
+  "startup": {
+    "published_pa196.tm": {
+      "steps": 58154,
+      "control": 75,
+      "head": -2,
+      "one_cells": 66,
+      "full_frame_equality": true
+    },
+    "published_pa209.tm": {
+      "steps": 58210,
+      "control": 81,
+      "head": -2,
+      "one_cells": 66,
+      "full_frame_equality": true
+    },
+    "experimental_mp_without_zero_push_196.tm": {
+      "steps": 58154,
+      "control": 75,
+      "head": -2,
+      "one_cells": 66,
+      "full_frame_equality": true
+    },
+    "experimental_mp_result_in_h_196.tm": {
+      "steps": 58154,
+      "control": 75,
+      "head": -2,
+      "one_cells": 66,
+      "full_frame_equality": true
+    }
+  },
+  "incoming_main_graph_classes": {
+    "a09b3b5d5d0ea5300d3bbf94b75987e573f4434ef685aebc217bd5516ae8ca7d": [
+      "ConPA primary",
+      "Conditional primary",
+      "Entry primary",
+      "History primary",
+      "Research alternative"
+    ],
+    "2aba76c0ac54cddd76c92acb14a9e3e7cdcb12bc1bf0245024d5bb1f0cb6cbf5": [
+      "Conditional alternative",
+      "Entry alternative",
+      "History alternative",
+      "Research primary"
+    ]
+  },
+  "source_metrics": {
+    "pa209": {
+      "sites": 3948,
+      "distinct_internal_nodes": 173,
+      "actual_maximum_path_bits": 33
+    },
+    "pa196": {
+      "sites": 3812,
+      "distinct_internal_nodes": 159,
+      "actual_maximum_path_bits": 38
+    }
+  },
+  "decoder_reconstruction": {
+    "unfolded_states": 202,
+    "folds": 6,
+    "exact_196_rows": true,
+    "AX_tokens": 201
+  },
+  "source_inductive_zero_guards": [
+    {
+      "site": 7,
+      "register": 6
+    },
+    {
+      "site": 3773,
+      "register": 1
+    }
+  ],
+  "bounded_primitive_frames": {
+    "mp_no_zero_candidate": {
+      "sites": 3793,
+      "cases": 4933,
+      "maximum_steps_in_test": 684,
+      "scope": "one concrete clean register profile; zero and one decrement inputs"
+    },
+    "mp_move_h_candidate": {
+      "sites": 3789,
+      "cases": 4928,
+      "maximum_steps_in_test": 684,
+      "scope": "one concrete clean register profile; zero and one decrement inputs"
+    }
+  },
+  "rejected_blank_counterexamples": {
+    "REJECTED_shift_layout.tm": {
+      "first_halt_steps": 43563,
+      "halt": 196,
+      "head": 1,
+      "one_cells": 60,
+      "sha256": "db5cd7df1475e4c2edf43f856493e211ed116a7a998eaada741515840424736b"
+    },
+    "REJECTED_combined_layout.tm": {
+      "first_halt_steps": 43563,
+      "halt": 196,
+      "head": 1,
+      "one_cells": 60,
+      "sha256": "d3a049def261732d1c1aa99a48de63c00a1241f02b629b2ae45d445bba6c9527"
+    }
+  },
+  "helper18": {
+    "status": "PASS",
+    "machines": 18,
+    "working_states_each": 208,
+    "distinct_new_graph_classes": 18,
+    "proof_method": "one-step incoming tags and exact positive local blocks",
+    "all_initial_tapes": true,
+    "no_claim_below_208": true
+  },
+  "command_regression_stdout": "{\n  \"push\": 81,\n  \"drop\": 25,\n  \"pop\": 32,\n  \"mp_compiler_clause\": 256,\n  \"old_halting_word_transports\": 956,\n  \"status\": \"passed; bounded command checks, not a tape or PA certification\"\n}",
+  "bounded_command_checks": {
+    "push": 81,
+    "drop": 25,
+    "pop": 32,
+    "mp_compiler_clause": 256,
+    "old_halting_word_transports": 956,
+    "status": "passed; bounded command checks, not a tape or PA certification"
+  },
+  "upstream_publication_checks": "PASS: PA196's 392 transition rows and Palomar source checks.\nChecked 41 Lean files; input SHA-256 e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8"
+}

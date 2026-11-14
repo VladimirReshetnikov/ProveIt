@@ -1,0 +1,30 @@
+# Independent skeptical review of the PA195 calibration argument
+
+Reviewed `pa195_conpa/report/sections/pa_calibration.tex` from incoming `pa195_conpa_2026-11-13.zip` at ProveIt `5ed5a41fa5932433111eea096311364c6087e8e3`, against the actual imported PA196 `Logic/{Basic,Deduction,Connectives,Reverse,Neighborhood,Vacuity}.lean`, `Commands/Store.lean`, `Source/CommandTransfer.lean`, and a source-wide equality-vacuity use search.
+
+## Conclusion
+
+I found no concrete mathematical gap or false implication in the paper-level argument. This is stronger than merely observing that no new formal proof is supplied: the potentially dangerous interfaces have coherent explicit constructions. It remains an ordinary mathematical proof using inherited finite implementation contracts, not a newly checked proof object for the entire PA biconditional.
+
+## Points checked independently
+
+1. **Diagonal reverse rewriting is noncircular.** The actual `negativeSpecialization` definition requires only forward membership rewriting, the mirrored equality witness, and membership-only vacuity. The proof chooses `c` to be the code of the negation of the desired full reverse-rewrite formula `C`, obtains `phi -> (S -> not P)`, generalizes the closed theorem at `c`, and uses `Gamma(phi)` to get `phi -> Q`. The old gate supplies `not Q`. No removed equality-vacuity premise occurs. The label collision `d=a` is handled by forward rewriting to the diagonal membership atom, then the independently proved diagonal reverse case.
+
+2. **The arbitrary neighborhood binder is recovered.** Starting with `z0=code(E(a,b))` yields genuine freshness. Transferring from `forall z0 P(z0)` to `P(z)` uses the mirrored witness and bidirectional membership congruence; vacuity of `P(z)` at `z0` and of the antecedent at `z` involves only membership atoms. Quantifier commutation handles the outer quantifier. Thus the proof does not illegitimately assume general alpha conversion in its restricted numerical calculus. The two direct upstream uses of `equalityVacuity` are exactly reverse rewriting and primitive-to-neighborhood, in both logical and arithmetic-certificate copies. Code definitions/binding expressions also mention `eqVac`, but are precisely the emission/interface data that must be replaced; they are not unexamined additional mathematical equality-vacuity premises.
+
+3. **Finite comprehension is a syntactic PA proof supplier.** Full PA induction on the finite-bound variable supplies a proof template for arbitrary input formula syntax. The program substitutes syntax; it never tests the truth of the input formula. Its quantified proof-checker correctness can be proved by PA induction. This does not invoke a truth predicate, semantic reflection, or PA's consistency. The fixed exponentiation definitional extension can be eliminated by a fixed proof translation.
+
+4. **The coincident-label case is handled correctly.** For `a != b`, the witness matrix is `(Bit(x_a,z) or z=x_b) and phi[z/x_b]`. If the source labels coincide, the inner universal binder captures both roles and the first antecedent is `Bit(z,z)`, hence false. The separate singleton matrix `(z=x_b) and phi[z/x_b]` is then appropriate. The manuscript explicitly handles this distinction and capture avoidance. The property-code variable `c` is fresh in its decoded property, so the set witness does not alter the property.
+
+5. **Both coding aliases are addressed.** `I(0,0)=0` requires a provable constructor equivalence, not syntactic identity. Cantor `pair(0,0)=0` requires canonical live-stack expansion, not an injective list encoding. The proposed canonical stack depth decreases along every positive tail and is bounded by the stack number. Push/pop rules and the implicit truth entry at zero preserve the proof annotation. Source false code 1 translates to `Bit(x_0,x_0)` and remains PA-refutable even when surrounding quantifiers bind label zero.
+
+6. **The command updates match the literal abstract store.** The original Shift guard is `t+h=1`, so both visible formula registers require proof annotations. Success/failure MP updates in `Commands/Store.lean` match the paper. Nine AX pushes consist of the eight head/profile entries plus the saved top. The diagonal 191-token emitter keeps this count. The separate 190-token design needs a ten-entry compiler and cannot reuse the selectors unchanged.
+
+7. **The carried scheduler store is explicitly handled.** `parsed_command_step` is universally quantified over store and scheduler arguments with a nonhalting-output premise; it is not limited to zero stores. Under consistency, the proof annotation supplies that premise. Bounded iteration through `T+1` command segments constructs an exact physical run longer than a proposed halt time `T`. Positive segment lengths and the absence of outgoing halt rows suffice; an inverse decoder of arbitrary partial tape states is unnecessary. PA can verify the fixed primitive-recursive block/trace constructors and iterate them. The reported symbolic step count is not used as a literal runtime bound.
+
+## Where the argument's evidence must remain explicit
+
+- The PA-refutation-to-new-calculus direction uses the existing refutation compiler with two replaced equality interfaces and exact new AX bindings. It is a uniform syntactic construction, not merely external equiconsistency.
+- The source-to-physical direction requires the actual complete symbolic instruction contracts and the unchanged arithmetic-box rows, plus full blank startup. A finite sample of numerical inputs would not justify it.
+- Applying the argument to the new diagonal-plus-Combined machine also requires the adjusted command proof: H-only Shift and MP-result-in-H alter both operational cases and proof-compilation selectors. The already supplied combined-command audit is the relevant interface.
+- No original manuscript endpoint should be described as an already exported Lean proof of the full PA biconditional; the repository's current kernel-checked native quotient is a separate result.

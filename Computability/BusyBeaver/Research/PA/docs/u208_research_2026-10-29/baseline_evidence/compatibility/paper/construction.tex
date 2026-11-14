@@ -1,0 +1,273 @@
+\section{First construction: Research U211 to U210}\label{sec:u210}
+
+\subsection{Move the continuation while preserving the Research selector}
+Starting with the Research table, apply these eight left associations:
+\[
+\begin{array}{rrrr}
+(162,203,0),&(203,223,0),&(223,188,0),&(188,177,0),\\
+(177,89,0),&(89,174,0),&(174,217,0),&(217,163,0).
+\end{array}
+\]
+Here \((p,q,0)\) changes \(((A,B),C)\) at decoder \(p\), whose zero child is
+\(q\), into \((A,(B,C))\). The builder verifies pure decoder rows, the complete
+unique incoming edge to the inner state, and closure of each of the three
+source factors. The independent checker recovers the affected occurrences
+by literal source-prefix execution and checks both complete control graphs
+after every source change.
+
+These associations carry continuation 116 to the right of state 163.
+The Research selector rows at 220 and 129 remain intact.
+The old 181 state remains deleted. The final remaining entrances to 218 are
+exactly
+\[
+ 158/0:\row0R{218},\qquad
+ 163/0:\row0R{218},\qquad
+ 211/0:\row0R{218}.
+ \tag{1}
+\]
+Consequently each visit to 218 from state 0 has a zero immediately left of
+the head. This is a direct consequence of the preceding write/move, valid
+for every initial tape, rather than a property guessed from a blank trace.
+
+\subsection{The 218-to-157 local identity}
+The old rows are \(218/0=\row0R{90}\) and \(218/1=\row1R{86}\).
+Redirect all targets of 218 to 157 and delete 218. With the original head at
+coordinate zero, the existing table executes
+\[
+\begin{array}{c|l}
+\text{current bit}&\text{replacement state/head path}\\
+\hline
+0&157@0\to67@{-1}\to151@0\to90@1\\
+1&157@0\to148@{-1}\to186@0\to86@1.
+\end{array}
+\tag{2}
+\]
+Only cells \(-1,0\) are read. The predecessor is zero by (1);
+each write preserves its bit, and the exterior is untouched.
+
+\begin{lemma}[U210 final local fold]
+From every common initial tape in state 0, the 211-state prefold table and
+the delivered U210 halt equivalently. Each old 218 step becomes three new
+steps; every other old step becomes one new step.
+\end{lemma}
+\begin{proof}
+Map 218 to 157 and fix all other labels. For ordinary old rows, write and move
+are unchanged and the target is mapped by this projection. For old state 218,
+use the exhaustive two cases (2) and the incoming-edge invariant (1).
+Every replacement block has positive length and no internal halt.
+Induction on old steps gives the simulation, including equality of the whole
+tape at its block boundaries. Conversely, if the new machine halts after
+\(t\) steps, simulating \(t\) old steps would pass that point unless the old
+machine had already halted; positivity and the absence of internal halt
+exclude a spurious new halt.
+\end{proof}
+
+For any halting old run, or aligned finite run prefixes, this final fold gives
+\(T_{\rm new}=T_{\rm old}+2k\), where \(k\) counts old visits to 218, and
+\(T_{\rm old}\le T_{\rm new}\le3T_{\rm old}\).
+This clock bound is not asserted across the preceding address changes.
+
+The exact U210 dense hash is
+\begin{center}\small
+\hash{9020e082ef6995d13cd571c325f4d83bf615f4d0a82e77c580353c1127a0d596}.
+\end{center}
+Its full final-table runtime and blank startup were checked independently of
+the state-count calculation.
+
+\section{Second construction: a compatible U209}\label{sec:u209}
+
+\subsection{The shared helper that prevents a direct patch transplant}
+In U210, state 129 is entered both by a right-moving source decoder and by
+the backward call \(220/0=\row0L{129}\). Its two incoming rows are
+\(215/1=\row1R{129}\) and \(220/0=\row0L{129}\).
+Treating it as an ordinary singly entered source decoder would lose one
+of these uses.
+
+The runtime call begins after 220 has just read and preserved zero.
+If the predecessor bit is \(t\), its path is
+\[
+ 220@0\to129@{-1}
+ \to\begin{cases}158@0,&t=0,\\204@0,&t=1,\end{cases}
+ \to\begin{cases}157@1,&t=0,\\147@1,&t=1.\end{cases}
+ \tag{3}
+\]
+Thus the call uses 129's two rows, but only the zero rows of 158 and 204.
+The row \(204/1\) is available for a source-layout change without altering
+this runtime block. This selective preservation is broader than requiring
+the entire shared decoder to be frozen or to have a single entrance.
+
+\subsection{A closed eight-factor reassociation}
+At the U210 source prefix
+\[
+ \texttt{0011001110101011111111}
+\]
+state 174 represents primitive ordinals \([3016,3736)\), a region of length 720.
+Write its eight closed factors in their unchanged order as follows.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{cl r ll}
+\toprule
+Factor & Physical entry & Length & Old suffix & New suffix\\
+\midrule
+\(A\)&98&26&00&00\\
+\(B\)&158&134&010&010\\
+\(C\)&147&52&0110&0110\\
+\(D\)&146&108&01110&0111\\
+\(E\)&220, zero tag&136&011110&10\\
+\(F\)&90&27&011111&1100\\
+\(G\)&211&103&10&1101\\
+\(H\)&163&134&11&111\\
+\bottomrule
+\end{tabular}
+\caption{The zero tag in factor \(E\) is part of its physical decoding context.}
+\end{table}
+
+Replace the source shape by
+\begin{align*}
+ &((A,(B,(C,(D,(E,F))))),(G,H))\\
+ &\hspace{2cm}\longmapsto
+ ((A,(B,(C,D))),(E,((F,G),H))).
+\end{align*}
+Every factor is closed and nonhalting. The word and both complete ordinal
+control graphs are preserved. Physically, this is implemented by seven row
+changes:
+\[
+\begin{array}{c|c|c}
+\text{row}&\text{before}&\text{after}\\
+\hline
+204/1&\row1R{214}&\row1R{146}\\
+214/0&\row0R{146}&\row0R{216}\\
+214/1&\row1R{216}&\row1R{163}\\
+216/0&\row0R{220}&\row0R{90}\\
+216/1&\row1R{90}&\row1R{211}\\
+217/0&\row0R{211}&\row0R{220}\\
+217/1&\row1R{163}&\row1R{214}
+\end{array}
+\tag{4}
+\]
+No state is added. State 216 now decodes the pair \((90,211)\).
+
+The zero-tag entrance to 220 moves from \(216/0\) to \(217/0\); it still
+writes zero and moves right. Its one-tag entrance \(185/1\) is unchanged.
+All rows used by (3) are unchanged. In particular \(204/0\) is preserved
+while \(204/1\) changes. The source entry and backward runtime entry are
+therefore justified separately. Exhaustive final-prefix and primitive-runtime
+checks additionally validate the actual literal table.
+
+\subsection{Retag state 180 and repair the arithmetic entrance}
+Apply the three right associations
+\[
+ (206,199,1),\qquad(205,206,1),\qquad(7,205,1),
+ \tag{5}
+\]
+where side 1 changes \((A,(B,C))\) to \(((A,B),C)\).
+The inner decoder has its specified unique incoming edge in each case, and
+the three factors are closed. Both complete ordinal control graphs remain
+unchanged.
+
+State 7 also has the backward arithmetic entrance \(171/0=\row0L7\).
+Repair this one row to
+\[
+                     171/0=\row0L{205}.
+ \tag{6}
+\]
+For a current zero at coordinate zero, split on the predecessor:
+\[
+\begin{array}{c|l|l}
+\text{left bit}&\text{old path}&\text{repaired path}\\
+\hline
+0&171@0\to7@{-1}\to86@0&
+ 171@0\to205@{-1}\to86@0\\
+1&171@0\to7@{-1}\to205@0\to164@1&
+ 171@0\to205@{-1}\to206@0\to164@1.
+\end{array}
+\tag{7}
+\]
+Both paths preserve the two cells and read no exterior cell. This establishes
+the entry repair on every such configuration.
+
+The first two stages of (5) have maximum zero run seven; their intermediate
+tables are not asserted to be complete runtimes. The final stage restores
+maximum zero run six. The independent receipt records any failed intermediate
+prefix check as \texttt{NOT\_A\_RUNTIME\_INTERMEDIATE}; it checks every prefix
+of the final table successfully.
+
+\subsection{Delete 180 using a five-step contextual path}
+In the 210-state prefold table \(R\),
+\[
+\begin{array}{c|cc}
+q&\delta(q,0)&\delta(q,1)\\
+\hline
+216&\row0R{90}&\row1R{211}\\
+180&\row0R{152}&\row1R{211}.
+\end{array}
+\]
+Its complete incoming inventories are
+\[
+ \operatorname{In}(216)=\{214/0:\row0R{216}\},\qquad
+ \operatorname{In}(180)=
+ \{132/1:\row1R{180},\,199/1:\row1R{180}\}.
+ \tag{8}
+\]
+Neither state is initial. Therefore the old state is encoded by the bit
+immediately left of the head: zero for 216 and one for 180.
+
+Let \(\rho(180)=216\) and \(\rho(q)=q\) otherwise. Redirect both incoming targets
+of 180 to 216, delete its two rows, and replace
+\[
+                           216/0\quad\text{by}\quad\row0L{211}.
+ \tag{9}
+\]
+Keep \(216/1=\row1R{211}\). The resulting machine \(C\) has 209 states.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}rrrrX@{}}
+\toprule
+Old state & Left bit & Read & New steps & New state/head path\\
+\midrule
+216&0&0&5&\(216@0,211@{-1},157@0,67@{-1},151@0,90@1\)\\
+180&1&0&3&\(216@0,211@{-1},184@0,152@1\)\\
+216&0&1&1&\(216@0,211@1\)\\
+180&1&1&1&\(216@0,211@1\)\\
+\bottomrule
+\end{tabularx}
+\caption{Exhaustive whole-tape identities for the final fold. Each old block
+has one step. Only the predecessor and current cell are read.}
+\label{tab:fold}
+\end{table}
+
+The five-step case is the compatibility point: 218 has already been deleted,
+so the zero predecessor branch must pass through its existing 157 detour.
+Using the earlier three-step formula here would be wrong.
+
+\begin{lemma}[Final fold, arbitrary exterior]\label{lem:209fold}
+From state 0 on every common initial tape, \(R\) and \(C=U_{209}\) halt
+equivalently. For a halting old run,
+\[
+ T_C=T_R+4n_0+2n_1,\qquad T_R\le T_C\le5T_R,
+\]
+where \(n_0\) counts old read-zero visits to 216 and \(n_1\) counts old
+read-zero visits to 180.
+\end{lemma}
+\begin{proof}
+Inventory (8) establishes the tag invariant whenever either old state is
+entered. In the four exhaustive cases of Table~\ref{tab:fold}, direct literal
+execution leaves both displayed cells unchanged, reads no other cell, and
+ends with the same head and the projected old target. No internal state is
+the halt label. Every remaining old row commutes with \(\rho\), preserving
+its write and direction. Induction gives a positive block simulation.
+A new finite halt cannot occur inside a block, and each block consumes at
+least one new step, so the converse follows by the finite-horizon argument
+used for U210. Summing the four block lengths gives the clock identity.
+For arithmetic codes of finite-support tapes these are finite induction
+arguments formalizable in PA.
+\end{proof}
+
+The all-initial-tape assertion and time bound concern \(R\to C\) alone.
+They are not extended to the preceding source-address transformations.
+
+Relative to U210, U209 changes 15 retained rows and deletes both rows of 180.
+It changes 847 source addresses, including 508 changed by (4), while retaining
+the same 197 distinct syntactic subtrees.

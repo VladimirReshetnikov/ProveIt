@@ -1,0 +1,134 @@
+{
+  "repository_snapshot": "5ed5a41fa5932433111eea096311364c6087e8e3",
+  "runs": [
+    {
+      "run": "diag_order",
+      "input": "diagonal.txt",
+      "source": "search_order.cpp",
+      "wall_time_budget_seconds": 600,
+      "random_seed": 984194,
+      "initial_trees": 1,
+      "initial_penalized_score": 61,
+      "proposals": 9311745,
+      "accepted_moves": 1651072,
+      "sub195_hits": 0,
+      "best_penalized_score": 61,
+      "best_working_state_count": 195,
+      "elapsed_seconds": 600.006
+    },
+    {
+      "run": "sep_order",
+      "input": "separate.txt",
+      "source": "search_order.cpp",
+      "wall_time_budget_seconds": 600,
+      "random_seed": 713194,
+      "initial_trees": 1,
+      "initial_penalized_score": 61,
+      "proposals": 9643239,
+      "accepted_moves": 1965102,
+      "sub195_hits": 0,
+      "best_penalized_score": 61,
+      "best_working_state_count": 195,
+      "elapsed_seconds": 600.005
+    },
+    {
+      "run": "variant_order",
+      "input": "variants.txt",
+      "source": "search_order.cpp",
+      "wall_time_budget_seconds": 600,
+      "random_seed": 118194,
+      "initial_trees": 19,
+      "initial_penalized_score": 64,
+      "proposals": 9163348,
+      "accepted_moves": 1532778,
+      "sub195_hits": 0,
+      "best_penalized_score": 61,
+      "best_working_state_count": 195,
+      "elapsed_seconds": 600.003
+    },
+    {
+      "run": "dual_adaptive",
+      "input": "dual.txt",
+      "source": "search_dual.cpp",
+      "wall_time_budget_seconds": 600,
+      "random_seed": 618194,
+      "initial_trees": 2,
+      "initial_penalized_score": 82,
+      "proposals": 8738919,
+      "accepted_moves": 1510796,
+      "sub195_hits": 0,
+      "best_penalized_score": 61,
+      "best_working_state_count": 195,
+      "elapsed_seconds": 600.014
+    },
+    {
+      "run": "dc_order_broad",
+      "input": "dc.txt",
+      "source": "search_dc.cpp",
+      "wall_time_budget_seconds": 300,
+      "random_seed": 64194,
+      "initial_trees": 1,
+      "initial_penalized_score": 61,
+      "proposals": 2803827,
+      "accepted_moves": 494132,
+      "sub195_hits": 0,
+      "best_penalized_score": 61,
+      "best_working_state_count": 195,
+      "elapsed_seconds": 300.003
+    }
+  ],
+  "total_proposals": 39661078,
+  "total_accepted_moves": 7153880,
+  "sub195_hits": 0,
+  "scope": "Five corrected bounded anneals; failure is not a lower-bound proof.",
+  "two_rotation_neighborhood": {
+    "source": "neighborhood_unfiltered.cpp",
+    "input": "neighborhood.txt",
+    "word_preservation": "exact by reassociation",
+    "allowed_moves": [
+      "single-occurrence associativity rotation",
+      "global replacement of every occurrence of a shared subtree by one associativity rotation"
+    ],
+    "radius": 2,
+    "candidate_union": [
+      "occurrence followed by occurrence",
+      "occurrence followed by global",
+      "global followed by occurrence",
+      "global followed by global"
+    ],
+    "unique_candidates_negative_gamma": 25196,
+    "unique_candidates_rho_swap": 24317,
+    "unique_candidates_total": 49513,
+    "minimum_effective_reader_count_after_exact_compatible_folds": 61,
+    "fixed_core_states": 134,
+    "sub195_hits": 0,
+    "scanner_penalty_ignored_for_sub195_admission": true,
+    "elapsed_seconds": 3.00969
+  },
+  "secondary_candidates": [
+    {
+      "folder": "secondary195",
+      "working_states": 195,
+      "raw_readers": 69,
+      "compatible_folds": 8,
+      "local_cases": 32,
+      "source_sites": 3700,
+      "symbolic_contracts": 4815,
+      "startup_steps": 58154,
+      "complete_finite_verification": "PASS",
+      "new_kernel_checked_endpoint": false
+    },
+    {
+      "folder": "negative_gamma195",
+      "working_states": 195,
+      "raw_readers": 71,
+      "compatible_folds": 10,
+      "local_cases": 40,
+      "source_sites": 3794,
+      "symbolic_contracts": 4937,
+      "startup_steps": 58154,
+      "complete_finite_verification": "PASS",
+      "logical_status": "Optional negative-vacuity variant; additional mathematical calibration not newly kernel-checked and not used for primary result."
+    }
+  ]
+}

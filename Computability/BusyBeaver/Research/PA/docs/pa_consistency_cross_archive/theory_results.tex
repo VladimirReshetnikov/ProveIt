@@ -1,0 +1,42 @@
+\subsection{An automatically fresh gate parameter}
+
+A further new idea is to make the gate's freshness condition automatic
+by padding its property with an equivalent formula. Let $D,H,A$ be
+formula codes, put $B=D+1$, and define
+\[
+ T=\I(B,\I(H,B)),\qquad A'=\I(T,A).
+\]
+The decoded $T$ is an instance of the propositional tautology
+$B\to(H\to B)$, so $A'$ is propositionally equivalent to $A$.
+Because $B>0$, none of these pairing nodes suffers the $\I(0,0)=0$
+collapse. Strict component growth for positive constructor codes gives
+$A'>D,H$. The label $A'$ is also fresh in its own decoded formula.
+Thus a gate emitted with property code $A'$ automatically satisfies
+both inequalities against $D$ and $H$.
+
+The $+1$ is essential. Without it, $D=H=A=0$ gives $T=A'=0$,
+so strict freshness fails. This edge case is a reason to reason about
+actual numeric constructors, rather than only abstract formula trees.
+
+This lemma does not by itself prove a replacement calculus complete.
+The old gate supplies membership vacuity at arbitrary fresh labels;
+the restricted padded gate supplies it at specially generated labels.
+Recovering the old vacuity and binder-renaming interface requires a new
+syntactic argument or a revised PA proof compiler. It would be circular
+to assume unrestricted predicate logic while deriving the axioms that
+are meant to establish that logic.
+
+In the bundled diagonal variant there is a further obligation: padding
+before emitting the diagonal clause gives only $\Gamma(A')$ for padded
+codes, rather than every $\Gamma(B)$. Preserving a separate original
+$\Gamma(A)$ head could avoid that particular restriction, but would
+not settle the arbitrary-vacuity interface.
+
+The attempted source implementation pads only after the old heads have
+been emitted, preserving their arbitrary parameters. Its retained
+heuristic layout costs 210 controls, well above the target, and the
+candidate physical runtime check fails at source site 2413. It is not
+an accepted 210-state consistency machine. The finite run uses 4,200
+mutation slots; it supplies a concrete negative implementation result
+and a useful local mathematical lemma, not a completed theory
+replacement. The original inequalities cannot simply be deleted.

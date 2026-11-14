@@ -1,0 +1,684 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\pdfmapfile{+lm.map}
+\pdfmapfile{+symbols.map}
+\pdfmapfile{+cm.map}
+\pdfmapfile{+cmextra.map}
+\usepackage[margin=25mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{microtype}
+\usepackage{fancyhdr}
+\usepackage[breaklinks,colorlinks,linkcolor=MidnightBlue,urlcolor=MidnightBlue,citecolor=MidnightBlue]{hyperref}
+\usepackage{listings}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Nonhalt}{\operatorname{Nonhalt}}
+\newcommand{\code}[1]{\texttt{#1}}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Con(PA) machine comparison}
+\fancyhead[R]{\small 13 November 2026}
+\fancyfoot[C]{\thepage}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\ttfamily\small,columns=fullflexible,breaklines=true,frame=single,rulecolor=\color{black!20}}
+\title{\textbf{Con(PA) Turing machines:\\comparison, verified intermediate constructions,\\and the remaining state-reduction obstruction}}
+\author{Research and reproducibility report}
+\date{13 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The requested machine with fewer than 196 working states was not obtained.
+This report does not certify a 195-state machine. It compares the supplied
+208-, 209-, and 196-state designs at pinned revisions, accounts for the
+different 208-state presentations, and records the new work in a form that
+can be checked and continued. The principal complete intermediate combines
+a cached-head-only Shift test with an MP result stored in that cache. It
+has 196 binary working states, 3,788 source instruction occurrences, an exact
+57,922-step blank startup, and 4,928 uniform source-instruction contracts.
+A written proof supplies its PA-provable consistency calibration; it is
+distinct from a new Lean kernel-checked endpoint. A repaired 157-node
+source layout preserves the old 3,812-instruction control graph, but the
+verified physical allocation has 207 states. A direct-negation specialization
+reduces the source to 3,556 instructions and has a verified 197-state
+realization. An even-tag formula recoding
+justifies a simpler parity acceptance condition, but no sub-196-state
+implementation or complete parity startup is certified here.
+\end{abstract}
+\tableofcontents
+\newpage
+
+\section{What was requested, and what is established}
+The goal is a deterministic binary Turing machine $M$ on a single two-way
+infinite tape, started on the all-zero tape, with fewer than 196 working
+states and
+\[
+          \PA\vdash\Nonhalt(M)\longleftrightarrow\Con(\PA).
+\]
+The distinguished halting label is not a working state. Every working state
+has exactly two transition rows, one for each scanned symbol; a transition
+writes a bit and moves exactly one cell left or right. Changing the alphabet,
+using a preloaded tape, or counting source DAG nodes as machine states
+would not meet this goal.
+
+The requested strict inequality remains open in this investigation. The
+accepted complete intermediate in this packet is denoted
+$M_{196}^{\mathrm{combined}}$. Its transition table is
+\path{machines/h_only_mp_h.tm}. The file contains every transition, not a
+patch requiring an unspecified ancestor. Its control labels are
+$0,\ldots,195$, its start label is 0, and its terminal label is 196.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Object & Working states & Source sites & Status in this packet\\
+\midrule
+Pinned PA196 &196&3812&Reference table and uniform checks\\
+Combined Shift/MP &196&3788&Complete written proof and checks\\
+Direct negation variant &197&3556&Equivalent arithmetic macro\\
+Repaired 157-node source &207&3812&Same source CFG; verified realization\\
+Parity control, reset length 8 &198&3801&Runtime component only\\
+Requested construction &$\le195$&---&Not obtained\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+There are three different kinds of evidence throughout this report. Exact
+finite checks establish table counts, hashes, local rewrites, finite source
+bindings, and the literal startup configuration. Uniform source-site checks
+use symbolic tape runs and the unchanged register-engine lemmas to cover
+arbitrary natural register values. Written arithmetic arguments establish
+the changed commands and the proof compiler. None of these is described
+as a completed new Lean formalization of the modified machine.
+
+\section{Pinned inputs and comparison method}
+\subsection{Revisions and archive coverage}
+All comparisons use the following revisions, rather than a moving main
+branch:
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+Repository/version & Commit\\
+\midrule
+BusyBeaver, PA196 &\texttt{407cdc356f6b586635e71ac92be394255f4bfea4}\\
+BusyBeaver, PA209 &\texttt{69d98241a721ead20b4f0b17df9062950b40fbfe}\\
+ProveIt, incoming and ConciseIPRA &\texttt{dc523e7b06ffb414093c90aa035500ca283e5f75}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The current incoming directory contains 18 top-level ZIP archives. The
+inventory in \path{provenance/current_archive_inventory.json} records their
+exact hashes, byte sizes, entry counts, and report paths. The GitHub blob
+identities were checked when materializing these archives. For every
+selected 208-state comparison table, the packet additionally records every
+matching current ZIP member in
+\path{provenance/comparison_input_verification.json}. This prevents an old
+scratch copy from silently substituting for the current supplied input.
+
+The seven newer reports in the incoming directory contain prior reductions,
+negative experiments, and repeated copies of earlier tables. They are part
+of the literature being compared. Their already-recorded unsuccessful
+195-state candidates, HA-strength modification of ConciseIPRA, and written
+internal-converse arguments are not claimed as discoveries of this report.
+The full source archives total well over 100 MiB; the deliverable retains
+selected exact tables, relevant source, hashes, provenance, and notices
+instead of recursively duplicating those archives.
+
+\subsection{Canonicalizing machines without confusing syntax and behavior}
+The canonical comparison traverses the rooted transition graph in breadth
+first order, taking the read-0 edge before the read-1 edge. It records, for
+each edge, the written bit, move direction, and canonical successor label,
+with a distinguished terminal marker. Equality of these encodings is rooted,
+action-preserving graph isomorphism. It is stronger than equal state count
+and weaker than deciding whether two different machines have the same
+halting behavior. It is a finite structural test, not a solution to machine
+equivalence.
+
+\path{comparison/compare_designs.py} checks input hashes and complete tables,
+performs this canonicalization, and checks the extra local helper blocks.
+It runs both normally and under \texttt{python3 -O}; its essential comparisons
+use explicit exceptions rather than removable Python assertions.
+
+\section{How the supplied designs differ}
+\subsection{The 208-state family has more than two classes}
+Nine designated presentations in the five original U208 packets collapse
+to two rooted graph classes, called A and B in the comparison receipt.
+However, \path{pa208_research_2026-10-29.zip} supplies 18 additional helper
+layouts: nine based on A and nine based on B. Each has a distinct rooted
+transition graph, and none is isomorphic to A or B. The correct designated
+comparison therefore has
+\[
+       9+18=27\text{ presentations},\qquad 2+18=20\text{ graph classes}.
+\]
+Saying that all supplied 208-state machines form only two classes would
+omit those 18 layouts. Copies embedded in later research packets do not
+create further designated designs merely by being copied.
+
+\begin{center}\small
+\begin{tabular}{@{}lcc@{}}
+\toprule
+Original packet (all dated 2026-10-29)&Primary class&Alternative class\\
+\midrule
+\texttt{U208\_ConPA}&A&---\\
+\texttt{U208\_ConPA\_Conditional\_Context}&A&B\\
+\texttt{U208\_ConPA\_Entry\_Context}&A&B\\
+\texttt{U208\_ConPA\_History}&A&B\\
+\texttt{u208\_research}&B&A (plain variant)\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The common original 208-state reduction identifies the historical native
+controls 172 and 211. Their entry histories expose different predecessor
+bits, so the merged control can recover the required choice from the tape.
+One presentation keeps 172 and removes 211; another naming keeps 211.
+These are presentations of the same saving, not independent savings that
+can be stacked to obtain 207 states. The four whole-tape local blocks have
+lengths 7, 1, 3, and 1 in the representative audit. With the historical
+state labels, the stuttering-time relation is
+\[
+ T_{208}=T_{209}+6N(172,0)+2N(211,0),\qquad
+ T_{209}\le T_{208}\le7T_{209}.
+\]
+Here $N(q,b)$ counts the old trace's visits to the indicated read case.
+The relation concerns the designated U209 parent and its U208 descendant.
+It must not be applied by label name to James's different PA209 table.
+
+The extra 18 helper layouts identify another pair and add a helper control,
+so their net state count remains 208. Their finite helper blocks are replayed
+in the comparison script. They give useful different sharing arrangements,
+but no additional state saving by themselves.
+\input{chapters/helper_layouts.tex}
+
+\subsection{The two 209-state ancestors must be distinguished}
+The supplied U208 packets descend from their own U209 parents. Those parents
+are not literally James's PA209 machine at the historical commit. They share
+an earlier architecture, but source bracketings, selected sharing, labels,
+and startup traces differ. A direct subtraction of numerical labels across
+the two branches is consequently invalid.
+
+\begin{center}
+\begin{tabular}{@{}lrrrl@{}}
+\toprule
+Design & States & Rows & Source sites & Reported/checked startup\\
+\midrule
+Original U208 A/B &208&416&3909&48140\\
+James PA209 &209&418&3948&58210\\
+James PA196 &196&392&3812&58154\\
+Combined196 &196&392&3788&57922\\
+\bottomrule
+\end{tabular}
+\end{center}
+The U208 source has 5,083 resolved graph edges and 5,084 outcome contracts
+in the inherited reports. PA196 has 4,959 outcome contracts, counting both
+zero and positive cases of each decrement. The startup counts are exact
+reaches of specific clean frames, not useful-run benchmarks or evidence
+of nonhalting. The PA196 and Combined196 startups are replayed in this
+packet; the older counts are attributed to their pinned construction
+certificates and comparative sources.
+
+\subsection{PA196 is a logical and compilation change}
+PA196 is not obtained by simply applying all the old U208 identifications
+to PA209. In native numbering, its comparison with James's PA209 removes
+75 labels, introduces 62 new 1300-series labels, and keeps 134 labels.
+Among those retained labels, 265 transition rows are identical. The only
+three retained-row changes are
+\[
+\begin{array}{c|c|c}
+\text{native row}&\text{PA209}&\text{PA196}\\\hline
+(101,1)&1R115&1R1367\\
+(164,0)&0L311&0R77\\
+(190,1)&1L308&1R99.
+\end{array}
+\]
+Both old controls 172 and 211 are already absent. Reapplying their old
+identification cannot reduce the 196-state table.
+
+The physical allocation consists of 36 engine states, 13 leaf-routing
+states, and 147 reader states representing 159 distinct source nodes.
+The AX body is a 201-item macro word. Its 68 distinct new reader nodes are
+represented by 62 physical controls through six contextual folds. The
+overall source contains further sharing outside AX.
+
+Its constructors use Cantor pairing
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+\quad I(a,b)=4p(a,b),\quad M(a,b)=4p(a,b)+1,
+\]
+\[
+ U(a,B)=4p(B,a)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+The transposition in $U$ is intentional. Code 0 acts as truth and code 1
+is the chosen contradiction. The logical changes include moving equality
+vacuity into the guarded separation bundle, removing the old separate
+$\rho_7$ role, and changing some head orientations and their ordering.
+These changes shorten the AX word and improve physical sharing. The exact
+definitions, rather than a verbal summary, are the specification; see
+\texttt{PA196/Commands/Code.lean} in the pinned source \cite{bb196}.
+
+\section{The logical strength and the meaning of ``provable in PA''}
+Let $\mathcal C$ be the numerical calculus searched by PA196. Four separate
+claims are needed for the requested calibration:
+\begin{enumerate}
+\item PA refutations translate to $\mathcal C$ refutations.
+\item $\mathcal C$ refutations translate syntactically to PA refutations.
+\item A $\mathcal C$ refutation yields a halting command word that is usable
+by the exhaustive scheduler, whatever store previous trials have left.
+\item The literal blank-tape machine and the source program simulate one
+another for halting, with an exact startup and positive finite steps.
+\end{enumerate}
+For an internal biconditional, these transformations and their correctness
+must be available within PA, not merely as true external assertions.
+
+The upstream file \path{PA196/Independence.lean} includes an internal
+theorem named \path{pa_proves_nonhalting_consistency}. Its statement is
+\[
+          \PA\vdash\Nonhalt(M_{196})\longrightarrow\Con(\PA).
+\]
+It also exports nonprovability and two-sided independence, using the
+separate external soundness/model development. This should not be described
+as an exported Lean proof of the displayed biconditional. In particular,
+external soundness of a calculus does not by itself supply the reverse
+implication inside PA.
+
+The reverse internal direction has a written syntactic argument in the
+earlier incoming research, reproduced with exact provenance in
+Appendix~\ref{sec:reverse-consistency}. Decode formulas by a primitive recursive
+arithmetization, interpret membership as binary-bit membership of natural
+numbers, and compile each calculus axiom and inference into a PA proof of
+its arithmetic translation. Finite-comprehension instances are justified
+by arithmetic induction on the finite bound. This constructs proofs of
+individual translated instances; it does not install a truth predicate
+for arbitrary arithmetic formulas. A numeric-calculus proof of code 1
+then yields a PA proof of a fixed contradiction. Correctness is established
+by induction on the coded derivation.
+
+The full calibration is consequently a written mathematical theorem with
+explicit finite and uniform components, while the absent endpoint remains
+a formalization task. The new combined construction below retains the same
+calculus and adapts its command compiler. It does not claim that a new
+Lean endpoint has been built or that the upstream project was rebuilt in
+this run. Selected upstream definitions and proof statements are included
+for review; complete dependency reproduction follows the pinned repository's
+own instructions.
+
+\section{The new complete intermediate: Combined196}
+\subsection{The six physical changes}
+Starting with the dense PA196 table, change precisely these six rows:
+\begin{center}
+\begin{tabular}{@{}rrccc@{}}
+\toprule
+State&Read&Write&Move&Next\\
+\midrule
+115&1&1&R&108\\
+37&0&0&R&11\\
+37&1&1&R&101\\
+127&0&0&R&133\\
+127&1&1&R&20\\
+133&0&0&R&120\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first change moves the MP success result into the cached head. The
+remaining changes implement the Shift variant that tests the cached head
+alone. The existing single halting row, $(63,1)\mapsto(1,R,196)$, remains.
+The full table's SHA-256 is
+\begin{quote}\small
+\nolinkurl{bd74754d75e7b8ba97fa7bfc104374de33ae603fc183ae7f08f053ab8c9ea592}.
+\end{quote}
+
+The two component changes were already present separately in prior research;
+the new result here is their simultaneous realization and the completed
+command compiler for the resulting behavior. Combining the patches without
+updating that compiler would leave a logical gap. In particular, Pop becomes
+partial at a saved top of 1, and the MP compiler needs a dummy zero beneath
+its premises to preserve the underlying stack.
+
+The combined source has 159 distinct internal DAG nodes and 3,788 leaf
+occurrences, compared with 159 and 3,812 in the original. Thus 24 fewer
+source occurrences do not imply any fewer physical states. The longest
+source address is 39 bits. All 196 working controls are graph reachable.
+
+\subsection{Exact startup and uniform runtime certificate}
+The table reaches root control 75 with head at absolute coordinate $-2$
+after exactly 57,922 literal transitions. The whole tape is checked against
+the clean frame at source site 25. Relative to the head, that frame consists
+of a left marker at $-1$, the path \texttt{1000000}, enough zeros to put the
+file marker at 48, and the encoded unary register file. The physical values
+are
+\[
+ [0,0,0,0,0,0,2,0,0]\mathbin{+\!+}[1]^{26}.
+\]
+Under the physical register permutation
+$[6,2,0,4,3,7,8,5,1]$, the logical candidate register is 2 and all other live
+logical registers are zero. The test checks the complete finite support
+of the tape, not just the first several cells or the fact that control 75
+was visited.
+
+The symbolic verifier checks 4,928 instruction outcomes over every natural
+register file and every additional clean gap $n\ge0$, with total gap at
+least 48. A symbolic zero run has length $n+c$; the remaining file is an
+opaque arbitrary register-file object. Scan lemmas and four register-effect
+summaries stand for unbounded loops. Their hypotheses are checked against
+the unchanged engine rows before use. The maximum symbolic trace length
+is 524 verifier steps. This number is a proof-checking statistic, not a
+bound on literal execution for large register values.
+
+The union of the literal startup rows and the rows visited in symbolic
+source execution covers every one of the 392 transition rows. No state or
+row can be dropped by the simple unused-row argument under this certificate.
+The arithmetic source-macro proof and command-level calibration are given
+in Sections~\ref{sec:combined-source-macros} and
+\ref{sec:combined-command-compiler}.
+
+\input{chapters/combined_source_macros.tex}
+\input{chapters/combined_commands.tex}
+
+\section{Direct negation: a shorter source with a 197-state realization}
+\label{sec:direct-negation}
+A further arithmetic specialization replaces every occurrence of the AX
+macro sequence $\mathsf P\,\mathsf i\,\mathsf C$. In the inherited notation,
+these macros push the current top, increment the new top, then combine the
+two values into an implication code. Their composite constructs
+$N(F)=I(F,1)=4p(F,1)$ while preserving the underlying stack. There are eight
+such occurrences in the 201-item AX word.
+
+For arbitrary natural $t,x,y$, the existing \texttt{node46} pairing core
+has the uniform arithmetic contract
+\[
+          (T,X,Y)=(t,x,y)\longmapsto(0,0,y+p(x,t)),
+\]
+with $W$ and the other framed registers unchanged. To verify it, first
+transfer $T$ into $X$ and $Y$. This adds $t$ to $Y$ and leaves $X=x+t$.
+The subsequent passes add the successive values $x+t,x+t-1,\ldots,1$
+to $Y$, decreasing that loop rank after each pass. Thus the total addition
+is $t+(x+t)(x+t+1)/2=p(x,t)$. This is an induction on natural loop ranks,
+not a finite sample test. The existing \texttt{node63} then transfers $Y$
+into the initially zero $T$ four units at a time, giving $(T,Y)=(4Y,0)$.
+Their composition is \texttt{node64}.
+
+Consequently the closed macro
+\[
+        N_{\mathrm{direct}}=
+          (\operatorname{inc}Y,(\operatorname{inc}Y,\texttt{node64}))
+\]
+sends $(T,X,Y)=(F,0,0)$ to $(4p(F,1),0,0)$, since
+\[
+        p(0,F)+2=p(F,1).
+\]
+It preserves arbitrary $W$. The usual zero-scratch invariant holds at AX
+macro boundaries. Replacing all eight occurrences therefore leaves every
+AX output code and its stack order unchanged. All of Combined196's logical
+command proofs transfer directly to this variant.
+
+The exact word/source binding is checked by
+\path{verification/check_negation.py}. The AX word shrinks from 201 to
+185 macro items and the full source from 3,788 to 3,556 instructions.
+Compiling the selected grammar gives 202 states before five simultaneous
+compatible folds, and 197 afterwards. The table
+\path{machines/direct_negation197.tm} passes all 4,616 uniform source
+outcomes and reaches the exact clean seed after 57,922 literal steps.
+Its labels are sparse; its terminal label remains 196 and is excluded from
+the count of 197 working labels. Its SHA-256 is
+\begin{quote}\small
+\nolinkurl{832e067d50599a0ed9ead8e19d621e6491d04faebd821e7018d3aa6708786fa6}.
+\end{quote}
+Two other equal-value macro arrangements were examined: transfer $F$ into
+$X$, set $T=1$, and use \texttt{node64}; or use \texttt{node64} first and
+then add eight to $T$ with existing increment blocks. The latter has worse
+address geometry in the tested layouts. The accepted 197-state table is
+a new complete arithmetic specialization, but it costs one more physical
+state than PA196 and two more than the requested maximum.
+
+\section{Why the repaired 157-node source still costs 207 states}
+Earlier incoming research supplies a 157-node source tree with the same
+3,812-instruction ordinal control graph. Its original physical attempt
+failed at a transient zero-run case. This investigation reassociated the
+source to shorten that problematic increment suffix, then repaired a
+continue-to-depth-3 leaf whose path had changed from \texttt{101011} to
+\texttt{1010011}. A subsequent exact-CFG rotation restored a workable jump
+context without losing the 157-node count.
+
+The selected source is
+\path{research/source157/source157_tailrepair_5.json}. Its resolved
+instruction graph is exactly equal to the original PA196 graph, including
+the register named by every primitive instruction and both outcomes of
+every decrement. Its maximum address depth is 36 and its maximum unmodified
+zero run is 6. Its emitted physical table passes all 4,959 symbolic
+instruction contracts and reaches the exact clean seed after 58,140 steps.
+
+The physical table has 207 working states. A trace-based census identifies
+153 reader controls representing the 157 source nodes, plus 54 nonreader
+controls. The original table has 147 readers for 159 source nodes plus 49
+nonreaders. Existing helper paths keep several old source fragments alive;
+the generic compiler also loses contextual identifications. Exact action
+bisimulation leaves all 207 controls distinct. The tested finite-context
+direct detours and compatible two-cell folds provide no further saving for
+this selected allocation. These are scoped search results, not a lower
+bound on every possible allocation of this source.
+
+This example is a useful failure diagnosis: a correct, smaller DAG and a
+correct, larger TM can coexist. A claim of a 195-state machine based only
+on $157<159$ would leave out the physical decoder, route, and reset costs.
+
+\input{chapters/parity_recoding.tex}
+\input{chapters/membership_acceptance.tex}
+
+\section{Physical experiments for the parity architecture}
+The mathematical recoding in Section~\ref{sec:parity-recoding} is a proposed
+architecture, not the encoding currently present in the parity-control
+table. The control experiment changes the Shift prelude to leave
+$T=h$, $H=0$, and $X=t+h$; removes the final increment of $X$; and uses
+the source guard
+\[
+       (\operatorname{dec}X,
+          ((\operatorname{dec}X,\operatorname{continueTo}2),\operatorname{halt})).
+\]
+It consumes $X$ in pairs and halts on odd inputs. The source contains
+3,801 sites and 4,944 outcome contracts.
+
+\begin{center}
+\begin{tabular}{@{}lrrl@{}}
+\toprule
+Return detector & States & Failing outcomes & Meaning\\
+\midrule
+Original seven-zero detector&197&38&19 source sites fail\\
+Shortened six-zero detector&196&105&Invalid runtime certificate\\
+Extended eight-zero detector&198&0&All 4944 local contracts pass\\
+\bottomrule
+\end{tabular}
+\end{center}
+The original runtime has intermediate returns through the root decoder on
+19 source sites. They are harmless with its original root but not with the
+new parity root. The eight-zero detector repairs these local contracts at
+the cost of one state. It does not discharge startup: the old exact seed
+was not reached in the explicit two-million-step test. Earlier clean frames
+were observed with different register contents, so this is an unresolved
+bootstrap obligation, not a proof that the table can never work.
+
+Moreover, these parity tables still use the old four-residue AX/MP
+constructors. They have not integrated the even-tag encoding needed by the
+logical argument. The table is deliberately placed under
+\path{research/parity_and_engine}, not under the complete machines.
+
+The base-6 and base-8 grammar searches charged for the new multiplier
+macro and equality tag. Their best tested layout estimates did not improve
+on the original physical count; some were around 200 even before a fully
+validated parity guard and bootstrap. These estimates are neither certified
+machine counts nor optimality results. The parity theorem remains useful
+because it identifies a valid simpler acceptance condition and precisely
+states the encoding change needed to support it.
+
+\section{ConciseIPRA: useful ideas and the strength barrier}
+The current ConciseIPRA README \cite{ipra} describes substantially more than
+a small checker file. It includes raw one-term transport, direct progress
+rules, a seven-rule single-introduction presentation, clause-based five-
+and four-family forms, and three-family forms such as Use/Intro/Name and
+Use/Intro/Open on full normal forms. It distinguishes Lean proofs of
+calculus equivalence from Python measurements of checker byte length.
+
+These results provide useful methods: derive redundant rules, use a
+normal form that exposes common code, and separate logical equivalence from
+the cost of its implementation. They do not automatically produce a
+binary Con(PA) machine with the same number of rules, bytes, or source
+nodes. A normalizer, substitution machinery, proof enumerator, and input
+encoding all have a physical state cost.
+
+There is also a logical distinction. A machine searching for an iPRA
+refutation naturally calibrates to iPRA consistency. Its equivalence to
+PA consistency requires an additional proof-theoretic argument; one cannot
+replace the target theory by name. The prior incoming packet
+\path{pa196_research_2026-11-13.zip} already records the HA-strength
+generalization obtained by allowing compound induction progress formulas,
+with the corresponding PA consistency calibration. That is relevant prior
+work. No smaller binary implementation of that strengthened checker was
+completed here.
+
+\section{Rejected shortcuts and exact search limits}
+\begin{enumerate}
+\item \textbf{Combining the 208-state merges.} The original packets remove
+the same native 172/211 distinction. Renaming the surviving state does not
+make a second independent reduction.
+\item \textbf{Deleting a reset state.} The nominal 195-state six-zero
+version fails the first source instruction's uniform runtime contract.
+The clean source address has six zeros, and a transient runtime marker
+creates the misleading interior boundary. This refutes the proposed
+simulation certificate; it does not decide the blank-run behavior of
+every 195-state machine.
+\item \textbf{Accepting all odd codes in the original encoding.}
+Equality has residue 3. The attempted clone interpretation fails because
+equality can distinguish objects that the proposed membership relation
+cannot separate. Even-tag recoding is needed for the parity argument.
+\item \textbf{Keeping an old compiler after changing commands.} The new
+Pop can halt on a saved top of 1, and the MP suffix consumes an extra stack
+entry unless it is supplied a dummy zero. Both facts are explicitly handled
+by the compiler in this report.
+\item \textbf{Removing native state 198.} All 780 tested one-row redirects
+of its sole incoming edge failed the 72 selected register-file cases, even
+when the allowed spare tail was relaxed. This rules out that finite family,
+not every possible redesign of the carry engine.
+\item \textbf{Five-control synthesis of a six-control carry block.}
+Unrestricted bounded synthesis timed out. A restricted version preserving
+the original nonzero scan rows was unsatisfiable on the selected sample
+contracts and bounds. No engine minimality conclusion follows.
+\item \textbf{Fresh-label and weak-head proposals.} Enlarged fresh labels
+have an unproved low-label vacuity/refutation-translation obligation. They
+have not been disproved merely by that gap. Countermodels to restricted
+implicational fragments do not establish incompleteness of the entire
+quantifier-and-gate calculus.
+\end{enumerate}
+
+New finite-window helper searches were also run on PA196, the combined
+table, an earlier structurally different 196-state bracketing, and its
+combined variant. The helper may perform arbitrary allowed bit writes and
+left/right moves within the stated finite window before rejoining the
+old transition endpoint. No compatible net-saving shared helper or direct
+detour merge was found in those searches. This is a restricted absence of
+candidates; it is not evidence that 196 is minimal.
+
+A separate exact-CFG physical-rotation search, keeping the AX region fixed,
+exhausted its connected component of 1,000 layouts at depth 16. All had
+196 states after the tested duplicate-row and predecessor-bit folds.
+This finite component is defined by the allowed rotation moves, not by
+all possible source bracketings or all equivalent Turing machines.
+
+For Combined196, an independent unary/list symbolic checker also rederived
+its engine summaries and passed all 4,928 cases, recording 1,204,510
+symbolic events. Intersecting its source contexts with an independent
+blank-window closure left 2,214 control/window pairs. An engine-inclusive
+screen then considered one deleted state and up to two arbitrary changed
+rows, requiring the original transition endpoint within 16 child steps
+and within the five cells at offsets $-2,\ldots,2$. It tested 38,220 ordered
+state deletions, 118,490,624 first-row assignments, and 576,694,720
+second-row assignments. All 635 representative passes failed on the full
+admitted context set. The two narrower deletion templates also had no
+survivors. The exact context hash, programs, scope, and counts are under
+\path{research/engine_screen}. This is a negative result for the stated
+local simulation templates, not for every possible 195-state machine.
+
+\section{Reproduction and certificate boundaries}
+From the packet directory run:
+\begin{lstlisting}
+python3 verify.py
+python3 verify.py --extended
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The optional \texttt{python3 build\_report.py} wrapper performs the two
+LaTeX passes and can build a local format when a TeX installation supplies
+the packages but has no prebuilt format.
+The first command checks the pinned PA196 and Combined196 tables, exact
+startups, all their symbolic source outcomes, the canonical comparison,
+the 64 symbolic command-algebra checks, and the finite source-macro binding.
+The second also checks the source-CFG identity and 207-state realization
+of the repaired 157-node tree, together with the 197-state direct-negation
+variant. Python needs only its standard library.
+The command and binding supplements are also executed under optimization
+to ensure their essential conditions are not lost with Python assertions.
+
+The scripts output machine-readable receipts under \path{receipts}.
+\path{SHA256SUMS.json} records the packaged file hashes. The upstream Lean
+source is included selectively as a reference and proof dependency; this
+packet's Python verification is not a substitute for rebuilding the
+upstream Lean project. The written changed-command proof is new work,
+while its AX, scheduler, pairing, register-engine, and proof-translation
+dependencies are explicitly inherited from the pinned sources and prior
+written arguments.
+
+The deliverable records a failed strict state-reduction goal and useful
+verified intermediate results. It supplies no certified transition table
+with fewer than 196 working states. A future success must provide that
+table, its actual physical census, an exact blank startup, a uniform
+runtime proof, and the PA-internal proof transformations together.
+
+\appendix
+\clearpage
+\section*{Attribution for the reproduced proof appendix}
+The following section is reproduced unchanged from
+\path{pa_tm_research_2026-11-13.zip}, member
+\path{pa_tm_research_2026-11-13/report/pa_reverse_translation.tex}.
+Its exact archive and member hashes are in
+\path{reference/prior_proofs/provenance.json}. It is prior work supplied
+among the requested inputs. Its implementation obligations and conditional
+transfer statement are retained as written. Sections 6 and 7 of the present
+report supply the changed source and command arguments for Combined196;
+the new machine still has no newly exported Lean endpoint. The appendix's
+encoded negations use the fixed PA theorem $\neg B(x_0,x_0)$, so their
+translation has the intended falsity behavior rather than an arbitrary
+propositional constant.
+\input{reference/prior_proofs/pa_reverse_translation.tex}
+\begin{thebibliography}{9}
+\raggedright
+\bibitem{bb196}
+James Chang, \emph{BusyBeaver: PA196}, pinned source and paper,
+commit \texttt{407cdc356f6b586635e71ac92be394255f4bfea4}.
+\url{https://github.com/jamesyc/BusyBeaver/tree/407cdc356f6b586635e71ac92be394255f4bfea4}.
+\bibitem{bb209}
+James Chang, \emph{BusyBeaver: PA209}, historical source and paper,
+commit \texttt{69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\url{https://github.com/jamesyc/BusyBeaver/tree/69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\bibitem{incoming}
+Vladimir Reshetnikov, \emph{ProveIt, docs/incoming}, 18 pinned research
+archives, commit \texttt{dc523e7b06ffb414093c90aa035500ca283e5f75}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/dc523e7b06ffb414093c90aa035500ca283e5f75/docs/incoming}.
+\bibitem{ipra}
+Vladimir Reshetnikov, \emph{ConciseIPRA}, current README and linked
+calculus developments at the same ProveIt commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/dc523e7b06ffb414093c90aa035500ca283e5f75/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\bibitem{prior}
+Earlier research packets included in \cite{incoming}, especially
+\path{pa196_research_2026-11-13.zip},
+\path{pa208_research_2026-10-29.zip}, and the prior comparison/reduction
+reports. Exact current archive and selected-member hashes are listed in
+this packet's provenance directory. Prior proof arguments and code are
+reused with their original notices preserved.
+\end{thebibliography}
+\end{document}

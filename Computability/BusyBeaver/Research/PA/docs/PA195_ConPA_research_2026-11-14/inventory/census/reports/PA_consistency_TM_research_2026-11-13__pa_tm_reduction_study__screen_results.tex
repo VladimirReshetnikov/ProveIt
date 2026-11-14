@@ -1,0 +1,41 @@
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Variant & Contexts & Second-row actions & Third-row actions \\
+\midrule
+Closing CD3 & 2,782 & 406,092,400 & 406,112 \\
+Closing CD4 & 2,782 & 408,226,448 & 700,896 \\
+Closing CD5 & 2,782 & 404,192,768 & 700,896 \\
+Closing CD6 & 2,782 & 413,685,440 & 700,896 \\
+Eight-zero regrouping & 2,807 & 458,745,840 & 634,256 \\
+H-only Shift & 2,762 & 418,796,336 & 700,896 \\
+MP, no zero push (experimental) & 2,774 & 416,468,640 & 700,896 \\
+MP, result in H (experimental) & 2,781 & 416,717,168 & 700,896 \\
+Published PA196 & 2,774 & 417,538,016 & 700,896 \\
+Rebracketed & 2,768 & 428,383,088 & 868,672 \\
+A/D register swap & 2,774 & 417,538,016 & 700,896 \\
+Rotated & 2,776 & 420,332,192 & 700,896 \\
+Rotated macro62 & 2,768 & 423,098,144 & 700,896 \\
+Short-path alternative & 2,756 & 424,496,800 & 700,896 \\
+\bottomrule
+\end{tabular}
+\caption{New searches with separately computed radius-six invariants.
+Every row has zero surviving two-row or targeted three-row repairs.}
+\end{table}
+
+Across these fourteen inputs the search considers 535,080 ordered
+state pairs, 1,657,293,680 first-row actions,
+5,874,311,296 second-row actions and 9,618,896
+third-row actions. The third stage extends 5,097
+representative-context near misses. No survivor is reported. The larger
+counts do not strengthen the simulation template beyond its stated scope.
+In particular, all fourteen radius-six closures admit an abstract halt;
+they are safe overapproximations, not nonhalting proofs.
+
+A synthetic four-state positive control uses exactly the same C++ search
+logic and finds seventeen reported reductions: one one-row, five two-row,
+and eleven three-row repairs. A separately written Python simulator checks
+all 2,176 control/window obligations for these outputs, including every
+original state and all thirty-two five-cell windows. This provides a
+nonvacuity check of the implementation, not a completeness proof of the search.

@@ -1,0 +1,201 @@
+\section{Why the changed controller still enumerates refutations}
+\label{sec:commands}
+
+This section specializes the already supplied Combined command argument
+\cite{combined,cross,new195} to the nine-entry diagonal emitter. The
+controller transformation is inherited; its composition with the seven-fold
+195-state table is the new construction. Explicit contracts are needed:
+changing where modus ponens leaves its result also changes the proof compiler.
+
+Let $p(a,b)=\binom{a+b+1}{2}+b$ and $[a;w]=p(a,w)$. Cantor decoding is
+total and satisfies
+\[
+ \operatorname{hd}[a;w]=a,\qquad
+ \operatorname{tl}[a;w]=w,\qquad [0;0]=0.
+\]
+The last identity must be retained. A numerical stack is not a free list
+with a distinct empty constructor. Iterated cons is written
+$[a_1,\ldots,a_k;w]$, with $a_1$ on top. Write a command store as
+$\langle t,w,d,h\rangle$, where $t$ is the top formula, $w$ the underlying
+stack, $d$ an offset, and $h$ the cached formula. Put $I(a,b)=4p(a,b)$.
+
+\subsection{Exact new commands}
+
+The new Shift command is
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}
+  \mathsf{halt},&h=1,\\
+  \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&h\ne1.
+ \end{cases}
+\]
+For $y=d+x$, the new modus-ponens command is
+\[
+ \mathsf{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+  \langle0,w,0,y\rangle,&I(t,y)=h,\\
+  \langle0,w,y,0\rangle,&I(t,y)\ne h.
+ \end{cases}                                                    \tag{C1}
+\]
+Only Shift can halt. Successful MP puts the conclusion in the cache and
+clears the offset. It does not push a dummy entry. The old controller
+instead returned $\langle y,[0;w],y,0\rangle$ on success and tested
+$t+h=1$ at Shift. Thus the two controllers have different store transitions,
+even though both recognize refutability of the same calculus.
+
+For $D=d+x$, $H=h+y$, $A=c$, the unchanged AX command has the exact effect
+\[
+ \mathsf{AX}_{c,x,y}\langle t,w,d,h\rangle
+ =\langle K(H,D,c),[q_1,\ldots,q_8,t;w],0,0\rangle,               \tag{C2}
+\]
+where
+\[
+ (q_1,\ldots,q_8)
+ =(L_6,L_5,L_4,L_3,L_2,L_1,\rho_8(D,A,H,d),U(d,h)).
+\]
+Here $L_1,\ldots,L_6$ are the six heads in Table~\ref{tab:heads}, and $K$
+is the guarded diagonal gate of Section~\ref{sec:pa-calibration}, with zero
+on guard failure. All generated values except $U(d,h)$ are implication
+codes and have residue zero modulo four; $U(d,h)$ has residue two.
+Consequently none of $q_1,\ldots,q_8,K$ is the false code one. These are
+numeric residue facts, independent of any consistency assumption.
+
+\subsection{Uniform stack operations}
+
+Commands in a word execute from left to right. For every incoming store,
+including $t=1$ and every Cantor zero alias, (C2) gives
+\begin{align*}
+ \mathsf{AX}_{c,x,y};S^8:
+ \langle t,w,d,h\rangle
+ &\longmapsto\langle\rho_8(d+x,c,h+y,d),[t;w],0,U(d,h)\rangle,\\
+ \mathsf{AX}_{c,x,y};S^9:
+ \langle t,w,d,h\rangle
+ &\longmapsto\langle U(d,h),w,0,t\rangle.
+\end{align*}
+The first Shift tests zero and the next eight test generated entries;
+none of these nine tests examines the saved top $t$.
+
+Define the following concrete words:
+\begin{align*}
+ \mathsf{Push}&=\mathsf{AX}_{0,0,0};S^8;\mathsf{MP}_0,\\
+ \mathsf{Pop}&=\mathsf{AX}_{0,0,0};S^{10},\\
+ \mathsf{Discard}&=\mathsf{MP}_1;\mathsf{AX}_{1,0,0};S^9;\mathsf{MP}_0.
+\end{align*}
+Their contracts are
+\begin{align*}
+ \mathsf{Push}\langle t,w,d,h\rangle
+ &=\langle0,[t;w],0,0\rangle,\\
+ \mathsf{Pop}\langle t,[a;w],d,h\rangle
+ &=\begin{cases}
+   \mathsf{halt},&t=1,\\
+   \langle t,w,0,a\rangle,&t\ne1,
+  \end{cases}\\
+ \mathsf{Discard}\langle t,w,0,0\rangle&=\langle0,w,0,0\rangle.
+\end{align*}
+For Push, its last comparison is between an implication and a universal
+code, so MP fails with offset zero. Pop's tenth Shift tests the saved top
+and, when safe, removes the desired underlying entry. For Discard,
+$I(t,1)>0$ forces the first MP to fail, producing offset one. The AX identity
+then gives $\langle U(1,0),w,0,0\rangle$, and $I(U(1,0),0)>0$ forces
+the final MP to fail with offset zero. Pop is deliberately partial at a
+derived contradiction; the proof compiler accounts for this early halt.
+
+Let $\mathsf{Offset}_0$ be empty and let $\mathsf{Offset}_i=\mathsf{MP}_i$
+for $i>0$. Starting at $\langle0,w,0,0\rangle$, it produces
+$\langle0,w,i,0\rangle$. The word
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;S;
+                    \mathsf{AX}_{i,0,0};S^9
+\]
+sends $\langle a,w,0,0\rangle$ to $\langle U(i,a),w,0,0\rangle$ for
+every $a,w$. AX clears the cache before it could be tested, so the contract
+holds even when $a=1$.
+
+\subsection{Axiom selectors and modus ponens}
+
+For $1\le j\le6$, an ordinary head selector is
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};S^{j+1};\mathsf{Pop}^{8-j}.
+\]
+It returns $\langle q_j,w,0,0\rangle$ from
+$\langle t,w,0,0\rangle$. The remaining displayed stack entries, ending
+in the saved zero, are consumed by the Pops. Each preserves $q_j\ne1$.
+For $u\le a$, the restricted propositional head is selected by
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;\mathsf{AX}_{b,a-u,c};S^8;\mathsf{Pop}.
+\]
+This returns $\rho_8(a,b,c,u)$. The gate selector
+$\mathsf{Discard};\mathsf{AX}_{c,b,a};\mathsf{Pop}^9$
+returns $K(a,b,c)$. All preserve the arbitrary underlying stack and leave
+both caches zero; their generated tops have residue zero.
+
+The exact MP suffix is
+\[
+ \mathsf{MPSuffix}_b=S;S;\mathsf{MP}_b;S.
+\]
+On the store $\langle0,[a,I(a,b),0;w],0,0\rangle$, it halts if $a=1$
+or $b=1$, and otherwise returns $\langle b,w,0,0\rangle$. The first
+Shift fetches $a$; the second tests it and fetches the major premise.
+MP succeeds and puts $b$ in the cache. The final Shift tests the conclusion
+and consumes the dummy zero. Without that zero the suffix would consume
+an entry of the arbitrary underlying stack. At $a=b=w=0$, total Cantor
+decoding proves exactly the same identities.
+
+\begin{lemma}[Uniform proof-word compiler]\label{lem:command-compiler}
+For every finite proof tree $p$ in $\mathcal C_\Gamma$, a primitive-recursively
+constructed word $W_p$, from every $\langle t,w,0,0\rangle$, either halts
+or returns $\langle\operatorname{concl}(p),w,0,0\rangle$.
+If $p$ proves one, a word constructed from $p$ halts from every incoming
+store, including arbitrary nonzero caches.
+\end{lemma}
+\begin{proof}
+Compile axiom leaves by the preceding selectors and generalization by
+$W_{p_0};\mathsf{Gen}_i$. For an MP node with minor premise $p_0$ proving
+$a$ and major premise $p_1$ proving $I(a,b)$, use
+\[
+ W_p=\mathsf{Discard};\mathsf{Push};W_{p_1};\mathsf{Push};
+                            W_{p_0};\mathsf{Push};\mathsf{MPSuffix}_b.
+\]
+The first two words reserve a dummy zero. Induction on $p$ supplies the two
+premises above it, with the original stack framed. The suffix has precisely
+its required precondition. Any earlier halt remains a halt after extending
+the word. This proves the first assertion. If the conclusion is one, use
+$\mathsf{AX}_{0,0,0};W_p;\mathsf{Pop}$. The initial AX clears both
+caches from every incoming store; if $W_p$ has not already halted, the last
+Pop tests its conclusion before inspecting the underlying stack.
+\end{proof}
+
+The unchanged scheduler exhaustively enumerates finite command words.
+The universal incoming-store property matters: failed earlier trials may
+leave a store behind. The successful word need not begin with an empty
+stack. The inherited fetch and operand-decoding proofs therefore apply
+with the modified command contracts, as their source prefix and all
+resolved successors are checked explicitly.
+
+\subsection{Soundness as a finite proof annotation}
+
+Maintain derivations of $t$, $h$, and every canonical stack entry in
+$\mathcal C_\Gamma$; impose no derivability condition on $d$. For $w>0$,
+$\operatorname{tl}(w)<w$, so iterating the tail reaches zero in at most
+$w$ steps. This defines a primitive-recursive finite canonical stack.
+The exceptional identity $[0;0]=0$ is handled by the fixed proof
+$\rho_8(0,0,0,0)=0$: popping the implicit zero tail always supplies that
+proof and requires no infinite annotation.
+
+AX preserves the annotation: it saves $t$, generalizes the old $h$, emits
+axioms, and respects $d\le d+x$. MP failure returns zero, while success
+applies modus ponens to the annotated $t$ and $h=I(t,d+x)$. Shift moves
+annotated entries; a halting Shift exposes an annotated one. These proof
+updates are primitive recursive. Induction on a finite command execution
+proves that a halt yields a calculus refutation. Conversely,
+Lemma~\ref{lem:command-compiler} and exhaustive scheduling turn a calculus
+refutation into a finite source halt. Both are PA-verifiable syntactic
+constructions. Together with Section~\ref{sec:pa-calibration},
+\[
+ \PA\vdash \operatorname{Halt}(G_{\rm DC},\mathrm{seed})
+ \leftrightarrow
+ \exists p\,\operatorname{Prf}_{\PA}(p,\ulcorner0=1\urcorner).     \tag{C3}
+\]
+Here $G_{\rm DC}$ is the explicitly delivered 3,676-instruction register
+program. The next section binds its changed arithmetic loops and its
+literal binary-tape implementation.

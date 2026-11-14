@@ -1,0 +1,157 @@
+\section{The 209-state and 196-state published designs}
+
+The comparison uses the PA209 commit
+\texttt{69d98241a721ead20b4f0b17df9062950b40fbfe} and the PA196 commit
+\texttt{407cdc356f6b586635e71ac92be394255f4bfea4} of
+\url{https://github.com/jamesyc/BusyBeaver}. The latter is two commits after
+the former; commit \texttt{64ff1b3} replaces the proof package and
+\texttt{407cdc3} polishes its paper.
+
+\begin{center}
+\begin{tabular}{lrr}
+\hline
+Quantity & PA209 & PA196\\\hline
+Working states &209&196\\
+Defined binary transition rows&418&392\\
+Source instruction sites&3948&3812\\
+Distinct internal source-tree nodes&173&159\\
+Maximum instruction-path length&33&38\\
+Startup steps to the candidate-2 frame&58210&58154\\
+AX macro tokens under the common tokenization&210&201\\
+AX internal grammar nodes under that tokenization&83&68\\\hline
+\end{tabular}
+\end{center}
+The last two rows are independently counted from the published Lean source
+trees. A token is one of push, push-and-copy of one of the three inputs,
+the Cantor constructor, increment, the parameter readers, or the final
+guard/control macros. The distinct-tree count includes every reachable
+internal node, not just nodes with names in the generated source.
+
+PA209 uses sparse labels $0,\ldots,213$ excluding
+$50,122,150,157,205$, with halt label $215$. PA196 uses consecutive
+working labels $0,\ldots,195$ and halt label $196$. State renaming alone
+therefore obscures the useful structural comparison.
+
+\subsection{Logical and coding changes}
+
+Writing $p$ for Cantor pairing, PA209 uses $4p(a,b)+r$ for all four
+constructors, with residues $0,1,2,3$ for implication, membership,
+universal quantification, and equality. PA196 retains the implication,
+membership, and equality constructors but uses
+$U(a,B)=4p(B,a)+2$. This transposition makes repeated quantifier
+construction share more of the register-program grammar.
+
+The decisive logical change replaces the seventh primitive-equality
+head by guarded equality vacuity
+$E(a,b)\to U(c,E(a,b))$. PA196 adds that clause to the separation gate,
+under its existing freshness guard $c\ne a,b$. Reverse membership
+rewriting is recovered using pointed separation; the interpretation of
+arithmetic then uses equality defined by matching both incoming and
+outgoing membership neighborhoods. It does not need primitive equality
+symmetry and transitivity as independent axioms.
+
+The remaining six heads are reordered, two pairs of implication
+antecedents are exchanged, and the equality witness is mirrored.
+These changes improve repeated-subtree sharing while preserving the
+required interpreted equality facts. The 196-state machine is therefore
+not simply the old table with thirteen duplicate rows removed.
+
+\subsection{Physical sharing}
+
+PA196 has 36 engine states, 13 leaf-routing states, and 147 decision
+states for its 159 distinct source-tree nodes. Six pairs of AX grammar
+nodes share controls using the bit immediately preceding the current
+path bit. For a conflicting branch, the shared control steps left,
+reads this saved choice, and uses existing controls to step back right
+into the correct continuation. These six reductions do not introduce
+additional helper states. The other existing control folds remain in
+the unchanged outer framework. Two obsolete outside-body distinction
+states of PA209 are removed.
+
+An independent compiler in \texttt{compile\_ax.py} reconstructs the
+unfolded 202-state PA196 decoder and reproduces the supplied 196-state
+transition table exactly after the published six AX folds. Thus its
+state-count model is checked against the literal machine.
+
+\subsection{What the published formal endpoints assert}
+
+Both packages explicitly prove an internal implication
+\[
+  \mathrm{PA}\vdash\neg H\to\operatorname{Con}(\mathrm{PA})
+\]
+and an external consistency-to-nonhalting theorem, together with
+two-sided independence under the stated metatheoretic assumptions.
+Their README files and theorem tables do not advertise a checked
+internal converse
+$\mathrm{PA}\vdash\operatorname{Con}(\mathrm{PA})\to\neg H$.
+That converse requires an arithmetized syntactic soundness compiler;
+it must not be inferred merely from the external theorem.
+
+\section{Conservative changes to the command interpreter}
+
+Two independently checked program changes produce alternative
+196-state tables. They can be combined with further decoder
+optimizations, but by themselves do not satisfy the strict target.
+
+First, a successful MP command need not push a zero onto its stack.
+Changing native row $(164,1)$ from target $98$ to target $114$
+(dense row $(115,1)$ from target $86$ to target $100$) removes the
+19-site push block. The new source has 3793 sites. Resolving every
+remaining source instruction gives exactly the old control-flow graph
+with that block deleted and addresses shifted. All concrete primitive
+instruction contracts checked at clean frames, including both outcomes
+of each decrement, pass. At the command level MP success becomes
+$(b,w,b,0)$ rather than $(b,p(0,w),b,0)$. A refutation compiler can
+insert zero below the two premises using the old discard-and-push
+words before invoking the otherwise unchanged MP compilation.
+
+Second, a successful MP command may destructively move its consequent
+from register $D$ into visible register $H$. Native row $(164,1)$ then
+targets $130$ (dense target $108$), and the source replaces the
+push-and-copy subtree by the already present three-instruction
+$D\to H$ loop. The resulting source has 3789 sites. All 4928 concrete
+primitive instruction cases pass. MP success is $(0,w,0,b)$.
+With a zero inserted below the premises, the word consisting of two
+Shifts, MP$(b)$, and one Shift returns $(b,w,0,0)$, or halts when
+$b=1$. This supplies a particularly simple adaptation of the
+refutation compiler.
+
+These concrete runs are falsification checks, not a substitute for a
+uniform proof over all natural register values. The supplied source
+and row changes make the required uniform proof local: the standard
+unary engine is unchanged, and the replacement loop has the elementary
+invariant that $D+H$ is constant until $D=0$.
+For both changed tables, a separate exact finite computation confirms
+the complete original startup configuration after 58154 steps:
+candidate two, gap 48, and the physical file
+$[0,0,0,0,0,0,2,0,0]$ followed by 26 ones.
+
+\section{A checked family of physical register permutations}
+
+The logical registers are physically ordered by the permutation
+$[6,2,0,4,3,7,8,5,1]$. Retargeting the eleven non-engine rows which enter
+the fixed nine-state register-skip chain permutes these physical
+locations. Keeping the candidate counter at physical position six gives
+28 elementary transpositions of the other eight positions. All 28
+tables pass all 4958 primitive instruction cases in the clean-frame
+test profile, for a total of 138824 checked runs. None yielded a further
+state fold in the common-row finite-window search at radius four.
+This is a negative result for the specified finite search, not a
+lower bound on state complexity.
+The same 28 transpositions were also combined with the destructive
+MP variant and screened at radius four; no further fold was found.
+Those combined-table screens are not additional uniform simulation
+proofs.
+
+Changing the physical order can also change bootstrap behavior.
+For the transposition of physical positions zero and one, an exact
+blank-tape run reaches candidate two after 43248 steps with gap 41
+and 28 registers. That gap is below the published uniform bound.
+After 74404 steps it reaches a fully checked clean candidate-three
+frame with gap 53 and 41 registers; every other logical register is
+zero and the 32 spare registers are one. This later frame meets the
+published gap bound. One should therefore record the actual new
+startup frame, rather than expect the old 58154-step trace to survive
+a register permutation unchanged. The source scheduler's completeness
+argument can start at candidate three, since the compiled universal
+halting word has candidate index at least three.

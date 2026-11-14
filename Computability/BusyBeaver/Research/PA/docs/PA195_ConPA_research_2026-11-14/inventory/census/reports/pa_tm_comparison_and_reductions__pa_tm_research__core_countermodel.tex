@@ -1,0 +1,76 @@
+\subsection{Why the vacuity factors cannot simply be moved under the quantifier}
+\label{sec:factor-movement-countermodel}
+
+There is a concrete obstruction to replacing the original gate
+\[
+ F=\neg\bigl(\Delta\to(V\to\forall_c(S\to\neg P))\bigr)
+\]
+by
+\[
+ F_m=\neg\forall_c\bigl(\Delta\to(V\to(S\to\neg P))\bigr)
+\]
+using only the retained common heads.
+
+\begin{lemma}[Failure of common-core factor movement]
+Neither implication $F\to F_m$ nor $F_m\to F$ is uniformly
+derivable from the retained common heads, even under $c\ne a,b$.
+This does not decide interderivability of the complete gate theories.
+\end{lemma}
+\begin{proof}
+
+Use worlds $(\eta,e)$, where $\eta:\mathbb N\to\{0,1\}$ and
+$e\in\{0,1\}$. Interpret implication classically and define
+\begin{align*}
+ E(i,j)&\quad\text{iff}\quad\eta(i)=\eta(j),\\
+ M(i,j)&\quad\text{iff}\quad
+     e=0,\ \eta(i)=0,\ \eta(j)=1,\\
+ \forall_i X&\quad\text{iff}\quad
+     X\text{ holds at both }(\eta[i:=v],1-e),\quad v\in\{0,1\}.
+\end{align*}
+Evaluate natural-number formula codes by their exact PA196
+constructors, with code zero true. Since $M(0,0)$ is always false,
+code one is a genuine falsity in this interpretation. The alias
+$I(0,0)=0$ respects classical implication.
+
+Each quantifier accessibility relation is symmetric: a permitted
+change of coordinate $i$ and color can be reversed by restoring that
+coordinate and flipping the color again. Hence h1,
+$\exists_i\forall_i X\to X$, is valid. Two different quantifier
+relations commute because their coordinate reassignments commute
+and two color flips cancel; this validates h2. Equality is actual
+equality at a world, so the two membership-congruence heads h3 and
+h4 hold. To validate h5, choose the new value of coordinate $i$ to
+equal the current value of its witness coordinate; when the two
+indices coincide the equality already holds. Head h6 is ordinary
+normal-quantifier distribution. The restricted implicational head
+is a classical tautology. MP and generalization preserve validity.
+Thus every instance of every retained common head is valid.
+
+Now take numerical parameters $a=0$, $b=2$, $c=1$, and an environment
+with $\eta(0)=0$, $\eta(2)=1$. Both guard inequalities hold. Since
+the property code $c=1$ is false, $P=(c\to M(c,b))$ is true at every
+world. Also $\Delta$ is true. The membership-vacuity factor $V$ is
+false at color zero and true at color one. The separation condition
+$S=\forall_b((M(a,b)\to P)\wedge(M(c,b)\to c))$ is true at color
+zero, and at color one it is true exactly when $\eta(c)=1$.
+Consequently
+\[
+\begin{array}{c|cc}
+ & e=0 & e=1\\\hline
+ F & \text{false} & \text{true}\\
+ F_m & \text{true} & \text{false}
+\end{array}
+\]
+The two implications therefore both fail in a model of the common
+core.
+\end{proof}
+
+The accompanying \file{core_countermodel.py} checks the binary-domain,
+three-label instance exactly. Its 16 worlds suffice for the displayed
+counterinstance; it checks h1 and h2 for all 65,536 truth sets, all
+three-label instances of the atomic heads, and all local truth
+assignments for h6. The preceding argument extends the retained-head
+validity to arbitrary natural-number labels. A different gate that
+moves these factors would need a new bootstrap argument establishing
+the necessary vacuity properties; the successful conjunction-
+distribution rewrite needs no such step.

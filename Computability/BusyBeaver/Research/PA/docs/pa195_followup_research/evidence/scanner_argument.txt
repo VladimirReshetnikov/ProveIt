@@ -1,0 +1,54 @@
+The inherited seven-zero return scanner
+======================================
+
+Controls 2,3,5,9,15,23,34 count seven successive zeros while moving left.
+Their zero successors are respectively 3,5,9,15,23,34,75. At any of the
+seven controls, reading1 keeps that1, moves left, and returns to control2.
+After the seventh zero, control75 moves right through zeros, then on1
+moves right into decoder-root84. These exact rows explain why an internal
+seven-zero run in an address can be confused with the outside delimiter.
+
+The conservative admissibility check max_zero_run(source_address)<=6
+prevents this particular ambiguity. It is NOT a substitute for all runtime
+contracts; final candidates must still be checked on every primitive
+branch. A long terminal zero run can become an internal run after the
+address update, so checking only internal runs of unmodified addresses
+would need additional proof.
+
+The first candidate k306 had the correct emitter word, all3700 source
+instructions and successors, all32 local quotient traces, and194 states,
+but failed the unfolded source-frame contract at site131, zero branch of
+dec8. Its source path was101010011000000000 (maximum zero run9).
+It was therefore correctly rejected before use as a consistency machine.
+The later unconstrained k10226 candidate failed earlier at site50 and
+had maximum zero run7. Both illustrate why source and quotient certificates
+must be kept separate from the physical runtime certificate.
+
+One-state scanner shortening (rejected direct patch)
+--------------------------------------------------
+Control34 has exactly one incoming row, namely (23,0)->(0,L,34).
+Redirecting that row to75 and deleting34 changes the threshold7 to6.
+It is not enough to restrict the final source grammar to five-zero runs:
+the inherited blank initializer transiently produces a six-zero gap.
+The original and shortened machines have identical tape/head root frames
+for the first53 root visits. At visit index53 (zero based), the original
+returns to84 at step4202, head-2, while the shortened one returns to84 at
+step4079, head-1, with identical tape support. The shortened scanner has
+lost the address's leading1. The complete target startup frame was not
+reached within1000000 steps. Therefore this direct scanner deletion is
+rejected; further startup changes would require independent construction
+and verification.
+
+Additional exact checks
+-----------------------
+The six-zero return scanner also fails the unchanged outer-source contract
+at ordinal0, on the zero branch of logical decrement5 (physical register7),
+whose address is000000. Thus changing AX alone cannot suffice.
+
+Every194 remaining native control was tried as the blank start, for up to
+2000000 transitions. Success required the exact inherited complete clean
+frame, allowing only global tape translation. No success was found. An
+outward self-loop on blank beyond every cell ever written1 was soundly
+recognized as permanent divergence. These are bounded search results for
+other executions, not a proof that all alternative initialization designs
+are impossible.

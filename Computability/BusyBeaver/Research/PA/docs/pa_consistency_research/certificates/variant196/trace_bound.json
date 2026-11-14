@@ -1,0 +1,89 @@
+{
+  "status": "TRACE_BOUND_PASS",
+  "machine_sha256": "f6594edc95efed02f26b88f71c9b1f7699965a258739836f24e6b641887b0cd9",
+  "source_sha256": "f2fd582615c47a680c6475235139d8026bd4126b03e788e7d18c76c1ff45c49e",
+  "runtime_cases_sha256": "c25745a5240d8a2f5ea2d35a26d44ae626171d7ad5b0b9fd4b8b355617afeced",
+  "source_conditions": {
+    "source_sites": 3812,
+    "source_cases": 4959,
+    "pc_increment_cases_checked": 3889,
+    "pc_overflow_in_every_case": 0
+  },
+  "seed": {
+    "startup_steps": 59164,
+    "initial_gap": 48,
+    "initial_register_sum": 2,
+    "initial_spares": 26,
+    "first_spare_value": 1,
+    "initial_remaining_spare_width": 75
+  },
+  "checked_duration_vectors": 4959,
+  "coordinatewise_maximum_duration": [
+    540,
+    8,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    2,
+    4,
+    4,
+    2,
+    2
+  ],
+  "maximum_constant_witness": {
+    "site_index": 29,
+    "positive": false,
+    "duration": [
+      540,
+      8,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      2,
+      4,
+      4,
+      2,
+      2
+    ],
+    "constant": 700,
+    "slope": 18
+  },
+  "maximum_slope_witness": {
+    "site_index": 12,
+    "positive": false,
+    "duration": [
+      528,
+      8,
+      2,
+      4,
+      4,
+      4,
+      4,
+      2,
+      2,
+      2,
+      4,
+      2,
+      2
+    ],
+    "constant": 688,
+    "slope": 18
+  },
+  "inductive_invariants_at_live_boundaries_after_n_source_steps": {
+    "gap_excess_over_48": "<= n",
+    "sum_of_nine_primary_values": "<= n + 2",
+    "first_spare_value": "= 1",
+    "remaining_spare_list_width": "<= 75 + 3*n",
+    "justification": "Each CI raises the primary sum by one and appends B(1), width three; a positive CD lowers that sum by one and increases the gap by one; other live branches preserve these quantities. The first spare is preserved in every certified contract, and no PC increment overflows."
+  },
+  "per_source_step_bound": "700 + 18*n",
+  "T_source_steps_including_startup_bound": "59164 + 700*T + 9*T*(T-1)",
+  "prefix_convention": "A live prefix, or a prefix whose final primitive instruction halts; absorbing coded-halt self-loops are not additional primitive instructions.",
+  "scope": "Arithmetic bound derived from every recorded duration and the certified primitive effects. Validity of those uniform runtime contracts remains a prerequisite; this is not a fresh runtime proof, a nonhalting test, or a proof-assistant certificate."
+}

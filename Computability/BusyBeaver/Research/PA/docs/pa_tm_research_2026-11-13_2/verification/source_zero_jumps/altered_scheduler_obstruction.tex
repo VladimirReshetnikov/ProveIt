@@ -1,0 +1,46 @@
+\section{An obstruction to reusing the original word enumerator}
+\label{sec:altered-scheduler}
+
+This observation concerns the proposed reinterpretation of the rejected
+195-state table. Assume its changed positive fetch has the reported
+source effect: with $L>0$ it decodes the seed $N+L-1$ and increments
+$N$ by two. Retain the original fresh fetch: when $L=0$, decode seed
+$N$ and increment $N$ by one. Write
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+The first unpaired component selects the command: zero is Shift, one is
+modus ponens, and two is the first axiom command. The second component
+is the residual $L$.
+
+\paragraph{Claim.}
+No command sequence beginning at a fresh fetch can begin with two
+successive Shift commands.
+
+\paragraph{Proof.}
+Let $n$ be the fresh seed. If the first command is Shift, then
+$n=p(0,b)$ for some $b\geq0$. Immediately afterwards $N=n+1$ and $L=b$.
+If $b>0$, the changed positive fetch decodes
+\[
+ (n+1)+b-1=n+b
+ =\frac{b(b+1)}2+2b
+ =p(2,b-1).
+\]
+Its command selector is two, so its command is the first axiom command.
+If $b=0$, then $n=0$ and the next fresh seed is one; since
+$1=p(1,0)$, the next command is modus ponens. Neither case gives Shift.
+\hfill$\square$
+
+The original finite-word encoding theorem promises every requested
+command prefix at a fresh candidate boundary. The claim gives a
+length-two counterexample to that theorem for the altered scheduler.
+Padding the terminal residual cannot repair this particular prefix,
+because the calculation holds for every possible $b$.
+
+This is not a proof that no different completeness argument could ever
+use the changed scheduler. Such an argument would need a new compiler
+that accommodates its restricted command streams, or an independent
+simulation embedded away from a fresh boundary. It would also have to
+establish sound initialization of the theorem store and a complete
+physical source binding. None of those additional obligations follows
+from observing a long nonhalting run of the rejected table.

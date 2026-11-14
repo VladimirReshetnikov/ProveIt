@@ -1,0 +1,98 @@
+FINAL STATUS OF THE PA196 AUDIT BRANCH
+====================================
+
+No verified machine with fewer than 196 working states was constructed.
+No global minimality claim is made. The searches below are bounded methods.
+
+Pinned upstream
+---------------
+jamesyc/BusyBeaver main: 407cdc356f6b586635e71ac92be394255f4bfea4
+Previous 209-state snapshot: 69d98241a721ead20b4f0b17df9062950b40fbfe
+Published PA196 table SHA256:
+e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8
+
+The main table has 196 working states, with a separate terminal label 196.
+The native/raw interpreter root is 84; its literal label is 75.
+The original blank startup reaches its clean frame after 58,154 steps.
+The source has 3,812 primitive sites and 4,959  symbolic primitive contracts.
+
+Formal theorem boundary
+-----------------------
+The published development supplies an internal implication from nonhalting to
+Con(PA), external nonhalting under consistency, and the resulting independence
+statements. A PA-internal biconditional must not be silently attributed to the
+published theorem statement. The reverse direction requires a separate
+primitive-recursive proof translation, as the main report discusses.
+
+New concrete 196-state alternative
+---------------------------------
+accepted196_register_swap/pa196_register_AD_swap.tm exchanges the physical
+locations of abstract registers A and D. Exactly three transition targets
+change. The complete state count remains 196.
+
+This alternative passes all 4,959  symbolic contracts with the new physical
+register interpretation and reaches the exact original clean frame from blank
+after 58,122 literal steps. The finite checks are Python executable checks;
+no new Lean kernel proof is claimed. The manifest gives the exact table hash,
+changed rows, physical register map, and check receipt.
+
+Two other register retargetings pass all runtime contracts but do not reach
+the required clean frame within 1,000,000 steps. They are not accepted blank-tape
+alternatives. Runtime contracts alone do not certify startup.
+
+Essential files:
+  accepted196_register_swap/pa196_register_AD_swap.tm
+  accepted196_register_swap/manifest.json
+  accepted196_register_swap/native_rows.json
+  verify_register_remapping.py
+  register_permutations/remap_validation.json
+  NOTES_register_symmetry.txt
+
+Completed bounded searches
+-------------------------
+1. Swapping universal/equality numeric tags: best effective AX cost 67,
+   versus baseline 62. See search_tag_swap.py and tag_swap.log.
+2. Safe H/A exchange inside restricted rho8: 23,040 variants, minimum raw
+   AX grammar 70, best effective 66. See rho8_swap/receipt.json.
+3. Independent variable-role permutations: all 46,656 raw costs surveyed;
+   the 122 candidates with raw cost at most 76 received physical-fold scores.
+   Best effective cost remained62. See roles_effective/receipt.json.
+4. Bit-interleaving pairing2^a(2b+1)-1: tested correct small-input counter
+   routines, but whole source DAG rose from 159 to 170. See bitpair_macros.py
+   and bitpair_count.json. No machine certificate was claimed.
+5. Fusion of head2 into the freshness-guarded gate:11,520 variants,
+   minimum raw grammar 70. Simultaneous fusion of heads2 and5:9,216 variants,
+   minimum raw grammar72. See fused_h2*/receipt.json and fuse_h2.py.
+6. Safe fusion of positive heads into the unconditional negative head5,
+   leaving the head1 explosion bootstrap unchanged:30,720 variants,
+   minimum raw grammar 69. There were 52 candidates with raw cost at most70.
+   A further 1,584 independent role choices did not improve 69. Union of 261
+   dictionary subtrees did not improve 69. See fused_unconditional/receipt.json,
+   fusion_roles/receipt.json, and fused_unconditional_ensemble/receipt.json.
+7. At least 400,000 admissible concatenation assemblies were tested for those
+   safe fusions, plus 108,000 local reassociation proposals in 36 annealing
+   cycles. Best effective AX cost 64, hence198 states. The best198-state
+   assembled_5 grammar passed all 4,994 contracts. Joint selector MILPs with
+   at most 4 helpers proved no improvement for the seven grammars tested.
+   See assemble_unconditional.log, fusion_anneal/receipt.json,
+   fused_unconditional/assembled_5.json, and milp_assembled_*.json.
+   Assembly stopped during candidate 50, following completion of candidates
+   0 through 49; it is not reported as exhaustive.
+8. Seven of the remaining transported 68-node grammars yielded valid starting
+   tables of197-199 states.34,491 physical rotations through depth 5 with
+   beam 60 gave no valid smaller table. Two additional variants failed full
+   baseline contracts; one had 52 decoder collisions before searching.
+   See variant_rotations/receipt.json and variant_rotations.log.
+9. The UNPROVED fresh-label replacement of head1 by (exists H H)->H was
+   screened in 69,120 word variants. Minimum transported raw cost69; none
+   reached the raw-cost 68 threshold for assembly. Its completeness was not
+   established, and no accepted machine is claimed. See fresh_h1/receipt.json.
+10. Physical register permutations admit the restricted-fold symmetry
+    described in NOTES_register_symmetry.txt. Three retargeted tables were
+    fully runtime-checked; only one passed the specified blank startup.
+
+All ongoing assembly and annealing jobs were stopped. Completed logs and
+receipts are retained. The failed213-state generic-unfolding experiment in
+register_permutations.py is explicitly not a certificate: its node 0 jump
+interface has context-dependent continuations, and the baseline contract
+check failed. Use verify_register_remapping.py for the successful experiment.

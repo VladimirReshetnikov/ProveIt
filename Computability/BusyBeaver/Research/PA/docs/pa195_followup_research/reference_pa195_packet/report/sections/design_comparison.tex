@@ -1,0 +1,60 @@
+{\small
+\setlength{\tabcolsep}{5pt}
+\begin{longtable}{@{}p{0.34\linewidth}rrrrl@{}}
+\toprule
+Design & States & Sites & Contracts & Startup & Evidence\\
+\midrule
+\endfirsthead
+\toprule
+Design & States & Sites & Contracts & Startup & Evidence\\
+\midrule
+\endhead
+\midrule
+\endfoot
+\bottomrule
+\endlastfoot
+Published PA196 & 196 & 3,812 & 4,959 & 58,154 & K\\
+Alternative head order & 196 & 3,812 & 4,959 & 58,154 & E\\
+Closing CD3 & 196 & 3,812 & 4,959 & 58,154 & I\\
+Closing CD4 & 196 & 3,812 & 4,959 & 58,154 & I\\
+Closing CD5 & 196 & 3,812 & 4,959 & 58,154 & I\\
+Closing CD6 & 196 & 3,812 & 4,959 & 58,154 & I\\
+Rotation layout 1 & 196 & 3,812 & 4,959 & 58,294 & E\\
+Rotation layout 2 & 196 & 3,812 & 4,959 & 58,294 & E\\
+Eight-zero scanner layout & 196 & 3,812 & 4,959 & 59,164 & E\\
+A/D register swap & 196 & 3,812 & 4,959 & 58,122 & E\\
+Rebracketed source & 196 & 3,812 & 4,959 & 58,154 & E\\
+H-only Shift & 196 & 3,811 & 4,958 & 57,922 & E\\
+Twelve-rotation layout & 196 & 3,812 & 4,959 & 58,294 & E\\
+Combined196 & 196 & 3,788 & 4,928 & 57,922 & E\\
+Diagonal196 & 196 & 3,700 & 4,815 & 58,154 & E+L\\
+Separate196 & 196 & 3,673 & 4,780 & 58,154 & E+L\\
+Separate/scanner196 & 196 & 3,673 & 4,780 & 58,294 & E+L\\
+Original/scanner196 & 196 & 3,812 & 4,959 & 58,294 & E\\
+Zerojump196 & 196 & 3,812 & 4,959 & 58,402 & I\\
+Diagonal closing CD3 & 196 & 3,700 & 4,815$^{*}$ & 58,154 & I+L\\
+Diagonal closing CD4 & 196 & 3,700 & 4,815$^{*}$ & 58,154 & I+L\\
+Diagonal closing CD5 & 196 & 3,700 & 4,815$^{*}$ & 58,154 & I+L\\
+Diagonal closing CD6 & 196 & 3,700 & 4,815$^{*}$ & 58,154 & I+L\\
+Zerojump CD3 & 196 & 3,812 & 4,959 & 58,366 & I$^{\dagger}$\\
+Rebracketed Combined196 & 196 & 3,788 & 4,928 & 57,922 & E$^{\dagger}$\\
+\midrule
+\textbf{New PA195} & 195 & 3,700 & 4,815 & 58,154 & E+L\\
+\end{longtable}
+}
+
+\textbf{Evidence key.} K: the published Lean development, including its
+internal implication from nonhalting to consistency. E: complete executable
+symbolic runtime and exact startup, with ordinary mathematical transfer.
+I: runtime uses a proved source invariant. L: the numerical calculus changes
+and therefore needs its stated logical calibration. None of E, I, or L
+denotes a newly compiled kernel theorem. The new PA195 row has a full
+ordinary proof of the internal biconditional in this report.
+
+$^{*}$For each diagonal closing variant, 45 affected branches are replayed
+as 69 invariant-restricted affine cases; every other baseline branch avoids
+the changed row. This differential proof covers all 4,815 baseline branches.
+
+$^{\dagger}$The CD3 zerojump and rebracketed Combined196 tables are archived
+designs whose missing complete contract or startup check was supplied in
+this audit. Their fresh receipts are included.

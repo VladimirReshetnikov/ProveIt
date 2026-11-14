@@ -1,0 +1,581 @@
+\begin{abstract}
+The strict target of this investigation is a binary, single-tape machine
+with fewer than 196 working states whose blank-tape nonhalting is equivalent
+to the consistency of ordinary first-order Peano arithmetic. No such machine
+is established here. We compare the literal 208-, 209-, and 196-state
+constructions, provide two new explicit 196-state reader layouts with complete
+startup and executable symbolic checks, and give small certificates excluding
+specified repairs of five earlier near misses. A new equivalent axiom emitter
+uses 199 macro tokens and 3,773 primitive instructions instead of 201 and
+3,812, with a uniform proof-translation argument verifiable in PA. An explicit
+67-rule grammar is supplied; its shortest verified tape implementation here
+has 198 states and does not meet the target. A new source search permits jump depths to change while
+preserving the exact ordinal control graph.
+We distinguish these results from a smaller-machine construction and from
+an exported PA proof of the full consistency biconditional.
+\end{abstract}
+
+\section{Target, conventions, and status}
+
+We use the same model as PA196: a deterministic Turing machine on a two-way
+infinite tape over $\{0,1\}$, initially all zero, with one designated initial
+working state and one separate halting control. Each transition writes a bit,
+moves exactly one cell left or right, and changes control. The halt control
+is excluded from the working-state count. We do not change the alphabet,
+preload a nonblank program, or count only states seen in a finite simulation.
+
+For a literal machine $M$, let $H_M$ be its arithmetical blank-input halting
+sentence and $N_M=\neg H_M$. The strongest requested endpoint is
+\[
+ \PA\vdash N_M\leftrightarrow\Con(\PA),\qquad |Q_M|<196.
+\]
+A finite nonhalting prefix proves neither half of this statement. A
+state-count score for a source grammar is also insufficient: the physical
+interpreter, startup, and complete tape endpoints must still work.
+
+The archive includes a fresh literal comparison, two explicit reader layouts
+in \emph{rotated196}, an equivalent numerical axiom emitter and its grammar
+witness, and finite obstruction certificates for extending fixed failed folds. The
+rotation preserves 196 working states. Its symbolic checks use the
+unchanged register-engine contracts of the upstream development; they have
+not been exported as a new Lean build or an internal PA derivation.
+This qualification applies wherever the changed machine is discussed.
+
+\clearpage
+\section{Pinned inputs and a uniform comparison}\label{sec:comparison}
+
+The inputs are frozen at the following revisions, so that future changes to
+\texttt{main} do not change this report:
+\begin{itemize}
+\item ProveIt: \texttt{f1f076e31995f10460838d1846456f4bb9c8ae80}.
+\item James Chang's PA196: \texttt{407cdc356f6b586635e71ac92be394255f4bfea4}.
+\item The requested PA209 predecessor:
+\texttt{69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\end{itemize}
+The archive's \file{comparison/inputs/manifest.json} identifies each file,
+archive member, URL, and SHA-256 digest. The reference tables and relevant
+source programs are included with their notices. The independently written
+\file{comparison/compare_designs.py} checks the following results.
+
+\subsection{Nine U208 outputs represent two machines up to renaming}
+
+The five original construction packages designate nine final 208-state
+tables. They fall into exactly two rooted, action-preserving isomorphism
+classes, called A and B. The names describe classes only; no ordering of
+mathematical strength is intended.
+
+\begin{center}\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Package & Principal table & Alternative table\\
+\midrule
+\texttt{U208\_ConPA} & A & ---\\
+\texttt{U208\_ConPA\_Conditional\_Context} & A & B\\
+\texttt{U208\_ConPA\_Entry\_Context} & A & B\\
+\texttt{U208\_ConPA\_History} & A & B\\
+\texttt{u208\_research} & B & A\\
+\bottomrule
+\end{tabular}
+\end{center}
+All these packages are dated 29 October 2026. The checker constructs and
+verifies 16 complete state bijections: ten among the five A tables and six
+among the four B tables. Each bijection preserves the start and halt,
+read/write symbols, and movement directions. Byte differences between
+renumbered tables therefore do not identify independent savings that can
+be added together.
+
+\subsection{The broader incoming collection has twenty U208 classes}
+
+The two-class statement above does not describe the entire incoming
+directory. The later \file{pa208_research_2026-10-29.zip} supplies eighteen
+additional accepted 208-state helper machines: nine based on A and nine
+on B. All eighteen are pairwise nonisomorphic and distinct from A and B.
+Thus the complete accepted U208 collection audited here consists of
+\textbf{27 presentations in 20 rooted graph-isomorphism classes}.
+
+These variants retain the respective A or B source program and calculus.
+Their extra helper distinguishes the bit left by an incoming transition,
+allowing two readers to share a state while paying for a new helper. The
+net state count remains 208. The new comparison checker independently
+checks each literal patch, every incoming-edge tag, the native-to-dense
+state map, and all required positive local blocks of one, three, or five
+steps. Each block touches only the current cell and its predecessor;
+it ends with the same complete tape and head as the corresponding parent
+step. The remaining rows commute with the state projection. This gives
+the stated bounded local halting equivalence, beyond graph comparison.
+All eighteen complete tables and their individual certificates are included.
+
+The seven other incoming archives were also checked for additional
+accepted outputs. Besides these eighteen U208 machines,
+\file{pa_tm_research_2026-11-13.zip} supplies an existing alternative
+196-state layout. The other five contain reference copies, rejected
+experiments, or logical investigations without an additional accepted
+literal machine. Their pinned status documents are included under
+\file{comparison/incoming_status/}. Including Chang's PA209 and PA196,
+the comparison checker reads \textbf{30 literal tables} and five
+distinct source layouts. The two new 196-state variants constructed in
+this report have separate verifiers.
+
+\subsection{Source metrics must use the same convention}
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Source & States & Sites & Internal & Leaf types & Total DAG & Max path\\
+\midrule
+U208 A &208&3909&174&23&197&42\\
+U208 B &208&3909&174&23&197&41\\
+Chang PA209 &209&3948&173&23&196&33\\
+Chang PA196 &196&3812&159&23&182&38\\
+Incoming alternative196 &196&3812&159&23&182&36\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here a \emph{site} is one primitive instruction occurrence. Internal nodes
+are distinct binary-tree pairs; leaf types are distinct primitive
+instructions, including their register or jump-depth arguments. Total DAG
+size counts both. In particular, comparing the U208 value 197 directly with
+the PA196 value 159 mixes two conventions.
+
+The two U208 sources have identical ordered primitive words and identical
+ordinal control graphs, while 720 binary instruction addresses differ.
+Chang's PA209 is a different source program from the U209 parent bundled
+with the U208 reports. A common ancestral tape engine does not make their
+literal state labels interchangeable.
+
+The checker also independently replays the complete finite startup of
+Chang's machines. PA209 reaches its clean frame after 58,210 steps, at its
+literal root state 81; PA196 does so after 58,154 steps, at root state 75.
+Both heads are at absolute position $-2$, and their complete tapes agree
+relative to the head. The frame stores candidate 2, gap 48, and 26 spare
+blocks of value 1.
+
+\section{What the 196-state construction already saves}
+
+The published PA196 construction changes the axiom command and its layout,
+while retaining the 36-state tape engine of PA209. Its physical state budget
+is
+\[
+ \underbrace{36}_{\text{engine}}+
+ \underbrace{13}_{\text{leaf routers}}+
+ \underbrace{147}_{\text{readers}}=196.
+\]
+Its reader states implement 159 distinct internal source nodes. The existing
+context-dependent sharing is already counted in 147; its six axiom-body
+folds cannot be subtracted a second time. See the upstream paper for the
+logical recovery of the removed axiom head~\cite{pa196paper}.
+
+Let $p(a,b)=\binom{a+b+1}{2}+b$. PA196 uses
+\[
+ I(a,b)=4p(a,b),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Relative to PA209, the universal constructor transposes the pairing
+arguments. The axiom command drops the old seventh head, adds guarded
+equality vacuity, rearranges the other heads, and changes some antecedent
+orders. Its body has 201 macro tokens, represented by a 68-node binary
+grammar and 62 physical reader states after sharing. The complete source
+shrinks from 3,948 to 3,812 primitive occurrences.
+
+U208's last one-state saving uses a different local pattern. In its native
+U209 parent, one predecessor enters the state to be deleted from opposite
+head directions, and a helper uses that entry history to select the proper
+continuation. A direct scan of all PA196 rows finds no state whose two rows
+write $0$ and move left, respectively write $1$ and move right, into the
+same working target. Thus the exact mixed-entry U208 pattern cannot be
+transplanted by renaming. This finite fact does not rule out a more general
+history-dependent fold.
+
+\section{The consistency theorem: the exported direction matters}
+
+The public theorem inventory for PA196 explicitly includes
+\begin{equation}\label{eq:known-direction}
+ \PA\vdash N_{196}\to\Con(\PA).
+\end{equation}
+Classically, this is equivalent to a refutation of PA yielding a halting
+trace of the literal machine. The published development also establishes
+external nonhalting and independence, with the stated metatheoretic
+consistency and soundness assumptions~\cite{pa196result,pa196paper}.
+The analogous PA209 inventory has the same internal direction.
+
+The checked inventory does not supply the other internal implication
+\begin{equation}\label{eq:remaining-direction}
+ \PA\vdash\Con(\PA)\to N_{196},
+ \quad\text{equivalently}\quad
+ \PA\vdash H_{196}\to\neg\Con(\PA).
+\end{equation}
+This is an audit of the exported statements, not a claim that the converse
+is false or unprovable. ProveIt's existing \file{PA-BRIDGE.md} and November
+13 manuscript already discuss this distinction~\cite{proveitbridge}.
+It is confirmed here rather than presented as a new discovery.
+
+An external semantic argument about each ordinary finite formula cannot
+simply be read as a single internal theorem for arbitrary coded formulas
+and traces in every model of PA. A satisfactory internal converse can
+instead use syntax: extract a finite command derivation from an arbitrary
+coded literal halting trace, translate its formulas and axiom instances
+into PA proofs, and verify the transformation uniformly. PA induction can
+then reason about the codes without a truth predicate for all formulas.
+The totality and correctness of the extraction and proof transformations
+are proof obligations, not consequences of a long finite run.
+
+For a descendant machine, a PA-formalizable halting-preserving simulation
+would transport whatever endpoint is proved for its parent. It does not
+create a missing parent theorem. The present artifact neither exports a
+new internal biconditional nor treats a Lean metatheorem as a PA derivation.
+
+\section{A new explicit 196-state reader rotation}\label{sec:rotated}
+
+The successful concrete change acts outside the axiom body. In the upstream
+source notation, write $A=\texttt{node75}$, $B=\texttt{node37}$, and
+$C=\texttt{node163}$. Replace
+\[
+ ((A,B),C)\quad\text{by}\quad(A,(B,C)).
+\]
+The full ordinal control graph, including both branches of each decrement,
+remains identical. This is checked for all 3,812 sites; an association change
+alone would not justify that conclusion for a program with structured jumps.
+
+\subsection{The exact four-row change}
+
+All rows other than the following remain those of the pinned PA196 table.
+These are the \emph{dense literal} labels, with start 0, root 75, and halt
+196. Each entry is $(\text{write},\text{move},\text{next})$.
+\begin{center}
+\begin{tabular}{@{}rrll@{}}
+\toprule
+State & Read & Original & Rotated\\
+\midrule
+88&0&$(0,R,117)$&$(0,R,126)$\\
+88&1&$(1,R,115)$&$(1,R,117)$\\
+117&0&$(0,R,126)$&$(0,R,28)$\\
+117&1&$(1,R,28)$&$(1,R,115)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For comparison with the native upstream reader names, the replacement rows
+are $(100,0,0,R,213)$, $(100,1,1,R,174)$,
+$(174,0,0,R,28)$, and $(174,1,1,R,164)$.
+Native start, root, and halt are 74, 84, and 254. The label conventions must
+not be mixed.
+
+The complete 392-row dense table is
+\file{rotated196/candidate/data/rotated196.tm}. Its SHA-256 digest is
+\begin{quote}\small
+\nolinkurl{25d686ab95f58b1d9eb1f75cb0960ca9f16640a1536140961c90ba8e103e8413}.
+\end{quote}
+The native table, full source-site list, modified source definition, reference
+inputs, and verifier are included in the same directory. All 196 working
+states remain graph reachable; this is a same-size construction.
+
+\subsection{What was checked}
+
+The clean source seed is site 25 with logical register vector
+$(2,0,0,0,0,0,0,0,0)$. The new blank startup takes 58,294 steps, exactly
+140 more than the original. The resulting state, head position, and entire
+finite-support tape equal the old clean configuration. Its physical file
+is $(0,0,0,0,0,0,2,0,0)$ followed by 26 ones, and its right marker is 48
+cells to the right of the root head.
+
+The executable symbolic verification checks 4,959 instruction/branch
+contracts. It performs 1,619,481 symbolic transitions, with a maximum of
+515 per contract. These are \emph{symbolic}, not literal tape-step counts.
+The checker retains arbitrary natural gap lengths and complete symbolic
+register files. It compares the complete intended output frame, including
+all tape contents and the head, rather than merely checking a return to the
+root control. All register-engine rows used by its inherited generic box
+contracts remain unchanged.
+
+This gives a much stronger validation than a finite blank prefix. The
+ordinary composition argument is as follows. The clean configurations
+represent the same source seed. At each source site, both physical layouts
+execute a positive-length block to the source successor's full frame.
+The retained source control graphs agree exactly. By induction, finite
+source executions are represented in both layouts, with the same halt
+instruction. Positive block lengths and total primitive blocks are needed
+to turn this into both directions of halting preservation; they must not be
+replaced by endpoint guesses.
+
+The certificate computation uses the generic register contracts transcribed
+from upstream \file{M6/Native.lean} and \file{M6/Runtime.lean}. It is an
+executable symbolic induction checker, not a new proof-assistant kernel
+check. Neither an end-to-end Lean proof of this literal changed table nor a
+PA consistency biconditional is claimed. The generated source definition is
+supplied for subsequent formal integration.
+
+\subsection{Why this rotation was worth constructing}
+
+The interpreter's return scan distinguishes its left marker using seven
+zeros. A proposed six-zero version removes one scanner state. In literal
+labels this would redirect row $23/0$ from $(0,L,34)$ to $(0,L,69)$;
+in native labels the proposed new target is 75. It fails on the unmodified
+address layout, so it is \emph{not} applied to the delivered machine.
+
+The relevant source-address obstruction is the pattern \texttt{1000000}:
+a run of six zeros following a path one can imitate a marker. Six leading
+zeros can end at the actual left marker; seven leading zeros require
+separate exclusion. Checking only the maximum address length misses this
+issue. Address constraints are a search guide, not a substitute for the
+full primitive runtime checks.
+
+Before the rotation, source site 3693 has address
+\texttt{1010101000000}. Afterwards it has
+\texttt{101010100000}. This removes the sole offending path outside the
+axiom body. Eighteen offending axiom-body addresses remain. The delivered
+196-state table therefore keeps the original seven-zero scanner.
+
+
+\subsection{A second verified layout with adjusted jump depths}
+
+A second table combines the four-row rotation with a reassociation of the
+four-increment macro. Replace
+\[
+ ((\texttt{node60},\texttt{node60}),\texttt{continueTo}\ 2)
+ \quad\text{by}\quad
+ (\texttt{node60},(\texttt{node60},\texttt{continueTo}\ 3)).
+\]
+The 64 changed continuation occurrences still have exactly their old ordinal
+destinations. Three additional native rows change:
+\[
+ (139,0,0,R,99),\quad(139,1,1,R,190),\quad(190,1,0,L,42).
+\]
+In dense literal labels these are
+$(111,0,0,R,87)$, $(111,1,1,R,121)$, and $(121,1,0,L,41)$.
+The table has 196 working states and 392 rows. Its full source control graph
+is unchanged, all 4,959 symbolic frame contracts pass, and it reaches the
+same entire startup frame at step 58,294. The symbolic total is 1,618,329
+steps, with maximum 515 per contract. Its dense-table SHA-256 is
+\begin{quote}\small
+\nolinkurl{591f4240775256349f85a3d99708ba8ebd7e245779271c1cb2244cf04ce87e76}.
+\end{quote}
+The directory \file{rotated196/candidate-macro62/} and
+\file{rotated196/verify_macro62.py} reproduce this second layout. It too
+retains eighteen marker obstructions. A subsequent exploratory search of
+25-cell, 20-step local replacements found 54 candidate pairs from 167,651
+symbolic contexts; none passed the complete instruction contracts. This
+bounded negative result is not an impossibility theorem for this layout.
+
+\section{New jump-retargeting source search}\label{sec:retarget}
+
+The prior directional-rotation search preserves structured jump depths.
+We enlarge the local search by permitting a jump's depth argument to change,
+while retaining its exact ordinal destination. For each reassociated tree:
+\begin{enumerate}
+\item retain the primitive instruction order and check every decrement's
+zero and positive successors;
+\item for each forward or backward jump, enumerate the appropriate ancestor
+boundaries and choose the depth that reaches its old destination;
+\item reject a missing destination or a required depth above 3;
+\item rebuild the tree and compare its complete resolved ordinal graph with
+the original graph.
+\end{enumerate}
+The source transformation is therefore a preservation of the resolved
+register program, not an assumption that tree associativity always
+preserves control flow.
+
+There are 246 first global binary rotations of the distinct internal
+subtrees. Exactly 173 survive the full control-flow check. Of these, 12
+require nontrivial jump retargeting beyond the prior criterion. Their
+internal-node/maximum-zero-run census is:
+\begin{center}
+\begin{tabular}{@{}rrr@{}}
+\toprule
+Internal nodes & Maximum zero run & Accepted first rotations\\
+\midrule
+159&6&36\\
+159&7&32\\
+160&6&85\\
+160&7&19\\
+163&6&1\\
+\bottomrule
+\end{tabular}
+\end{center}
+The 73 rejections comprise 46 changed decrement branches, 23 unrepresentable
+jump destinations, and four required depths above 3. None of the accepted
+first rotations has fewer than 159 internal nodes.
+
+A second screen starts from the 11 newly retargeted first variants with at
+most 160 internal nodes and tests every second global rotation, applying
+the same repair and full graph comparison. It checks 2,706 ordered cases
+and finds no source below 159 internal nodes. This is not an exhaustive
+search of all second rotations from all first variants, and it says nothing
+about arbitrary machine layouts. Some retargeted variants introduce a
+jump instruction absent from the old physical routers; a fixed internal
+node count would still not guarantee a fixed machine-state count.
+
+Reproduction is self-contained in \file{source_rotations/retarget_rotations.py}.
+The optional \texttt{--second} flag reproduces the second screen. The
+receipts omit machine-dependent elapsed times. Restricted physical
+allocation trials of selected variants produced no accepted smaller table;
+timeouts were not treated as unsatisfiability proofs.
+
+\section{Two-trace certificates for fixed near misses}\label{sec:obstruction}
+
+Five earlier one-row near misses were used as fixed starting points for a
+new repair screen. The question is deliberately narrow: after making the
+specified state identification and keeping its first patched row fixed,
+can changing one additional transition repair every required local block?
+
+The contexts come from the radius-six blank-start window overapproximation,
+which contains 270,067 state/windows. A block must match one projected
+parent step in at most 128 positive child steps, remain within the 13 cells
+$[-6,6]$, and restore the complete represented tape and the required head
+position. The closure admits abstract halt, so it is not a nonhalting proof.
+
+\begin{center}\small
+\begin{tabular}{@{}rrlrr@{}}
+\toprule
+Drop&Keep&Fixed row replacement&Failing windows&Witness masks\\
+\midrule
+45&160&$184/1\mapsto(1,L,75)$&416&99, 725\\
+56&96&$96/1\mapsto(1,R,67)$&96&203, 3915\\
+96&56&$56/1\mapsto(1,R,67)$&96&203, 3915\\
+96&103&$103/1\mapsto(1,R,110)$&96&203, 331\\
+103&96&$96/1\mapsto(1,R,110)$&96&203, 331\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are the original PA196 literal labels. Mask bit $i+6$ is the bit at
+tape offset $i$.
+
+\begin{lemma}[Necessary intersection for a one-row repair]
+Fix a failed block and the exact required initial and final configurations.
+Any change to one transition address that alters the block before its
+specified failure must change an address queried by that block.
+Consequently, a single additional row capable of repairing several failed
+blocks must belong to the intersection of their queried-address sets.
+\end{lemma}
+\begin{proof}
+If the changed address is not queried, induction on executed steps gives
+exactly the same control, head, and tape at each step up to failure. The
+modified execution therefore has the same failure. Apply this argument to
+each required block.
+\end{proof}
+
+For each row of the table, two failed blocks have address-set intersection
+contained entirely in the already fixed patch. No eligible additional row
+can therefore repair both. The small JSON certificates retain the complete
+traces, parent endpoints, and window membership. A dictionary-based trace
+generator is checked by a separately implemented bit-vector replay.
+\file{repair_obstructions/repair_obstruction.py} recomputes the closure and
+verifies all five certificates.
+
+The conclusion concerns these fixed first patches and this certificate
+template. It is not a lower bound on 195-state machines, an exhaustive
+unrestricted two-row search, or proof of different eventual halting behavior.
+Sharper reachable invariants, a wider matching region, multiple parent steps,
+a different tape representation, or two more changed rows remain outside it.
+
+\subsection{Two folds sharing a new helper}
+
+The eighteen additional U208 machines suggest a different way to spend
+a helper state: remove two old states and introduce one shared helper,
+so that $196-2+1=195$. The delivered \file{shared_helper/} component
+examines this mechanism directly on PA196. There are fourteen eligible
+pairs of states with opposite one-step predecessor tags and one common
+transition row, giving 88 disjoint pair choices. Both retained-state
+orientations are considered independently. Each helper target ranges over
+all 196 old working controls and the helper itself.
+
+With bit-preserving, right-moving helper rows, the complete count is
+\[
+ 88\cdot4\cdot197^2=13,660,768
+\]
+combined patches. Allowing both write bits and both movement directions
+independently in each helper row gives sixteen action patterns and
+\textbf{218,572,288 patches}. No patch survives the exact whole-tape,
+two-cell, positive-block test with a 64-step bound. The broader family
+includes the narrower one; these counts should not be added as disjoint
+cases. The C++20 source and pinned-input Python replay wrapper are included.
+The search does not require either individual fold to succeed in isolation.
+It therefore tests actual interaction through the shared helper, including
+helper self-visits. Longer blocks, larger footprints, different entry
+predicates, or more changed rows remain outside this bounded result.
+
+\input{distributed_gate.tex}
+\input{grammar_status.tex}
+\input{distributed_machine.tex}
+\input{core_countermodel.tex}
+
+\section{Using the concise-iPRA work without changing the target}
+
+The concise-iPRA material~\cite{ipra} is useful as a source of compilation ideas:
+explicit syntax, restricted proof interfaces, grammar reuse, and a small
+trusted checker boundary. Its axiom system cannot simply replace PA's
+axiom system in this task. A contradiction search for a different theory
+has that theory's consistency as its natural endpoint; an appropriate
+uniform calibration to ordinary PA would be an additional theorem.
+
+Two mechanisms in that work are particularly relevant. Its
+\emph{one-context} and \emph{one-sided transport} presentations recover
+general equality reasoning from restricted transport rules. Its
+\emph{direct closure} presentation replaces a witnessed closure rule by a
+direct universal closure, with an explicit recovery proof. These suggest
+looking for redundant logical interfaces before optimizing their emitted
+instruction trees. The weak-cover analysis in the appendix develops this
+approach for reverse membership rewriting, including the bootstrap that a
+mere semantic-equivalence argument would omit. The distributed gate in
+Section~\ref{sec:distributed-gate} gives a source saving while retaining
+the original PA196 numeric calculus and guard.
+
+These are transfers of proof-design methods. They do not identify the
+iPRA checker with the PA contradiction search. A shorter high-level
+checker, a smaller abstract syntax tree, or fewer macro tokens does not
+automatically produce fewer tape states; the complete binary machine
+still has to be compiled and verified.
+
+\section{Reproduction and evidence boundaries}
+
+The mathematical, source, startup, and symbolic-frame checkers use Python
+3.10 or later and the standard library. The shared-helper enumeration also
+requires a C++20 compiler, invoked by its Python wrapper.
+Run them without \texttt{-O}; assertion-based symbolic checks must remain
+enabled. From the extracted archive directory:
+\begin{verbatim}
+python3 verify_all.py
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{verbatim}
+The archive includes the report source and compiled PDF, full transition
+tables, reference hashes and notices, exact source programs, verification
+scripts, and recorded results. The original upstream proof libraries are
+referenced at their pinned revisions; they are not represented as newly
+rebuilt in this investigation.
+
+The evidence separates four different levels: literal table and startup
+checks; complete source control-flow checks; executable all-natural
+symbolic frame contracts using inherited engine lemmas; and end-to-end
+formal arithmetic theorems. The first three are supplied for the successful
+reader rotations and the new 198-state compilation. The fourth is not supplied for those changed tables, and
+no strict state-count improvement is claimed.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the remaining eighteen six-zero axiom addresses be eliminated
+while keeping at most 62 physical axiom-body readers and preserving all
+startup and primitive contracts? This would make the one-state scanner
+reduction a concrete next candidate.
+\item Can source reassociation and retargeting be optimized jointly with
+helper-row allocation, rather than fixing old reader assignments before
+searching? Existing compatible-helper restrictions exclude some possible
+layouts.
+\item Can the distributed-gate grammar be allocated with enough compatible
+folds to beat PA196? The source saving and the 198-state compilation are
+established here; the lost sharing is now the concrete obstacle. A joint
+objective must include entry-bit conditions and transient address changes,
+not only a binary grammar's rule count.
+\item Can two or more coordinated helper edits repair a different
+195-state quotient with a complete, independently checkable simulation?
+The two-trace certificates identify why one further row is insufficient
+for the five fixed first patches; they do not close this larger space.
+\item Can the new weak-cover free-instance interface in the next section
+be compiled with fewer states than the current pointed-separation emitter?
+The logical recovery should be kept separate from numerical layout scores.
+\item Can the reverse PA trace-to-refutation transformation be completed
+uniformly for the original literal PA196 table, then transported to any
+verified descendant? This would close the internal biconditional independently
+of a state-count improvement.
+\end{enumerate}
+
+\appendix

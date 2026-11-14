@@ -1,0 +1,208 @@
+% Standalone section; requires amsmath, amssymb, amsthm.
+\section{Physical contracts with repeated register excursions}
+\label{sec:repeated-register-excursions}
+
+The published simulation interface already permits a physical instruction
+to append additional spare registers and to increase its gap.  In
+\texttt{PA196/PrimitiveSimulation.lean}, \texttt{Progress} existentially
+quantifies the entire output file and the output gap; its semantic
+requirement concerns only the nine logical registers returned by
+\texttt{readFile}.  The restriction to at most one file modification in
+\texttt{M6/Runtime.lean} belongs to its current symbolic executor, rather
+than to this simulation theorem.
+
+\subsection{A relation between source configurations and full tape frames}
+
+Let $P$ be the fixed source program and let $p_i$ be its path for site $i$.
+Write $\operatorname{Frame}(i,n,v)$ for the complete physical frame with
+root control, left marker, path $p_i$, gap parameter $n\geq0$, and the
+full register file
+\[
+ \operatorname{file}(v)=\prod_{j<|v|}0\,1^{v_j+1}.
+\]
+The base gap is the fixed constant used by the candidate's frame
+definition (48 in the published PA196 reachable-frame theorem).
+The logical register projection is
+\[
+ \pi(v)_r=v_{\sigma(r)},\qquad
+ (\sigma(0),\ldots,\sigma(8))=(6,2,0,4,3,7,8,5,1).
+\]
+Always require $|v|\geq10$, including at least one spare block.  No
+restriction on the values or length of the spare tail is needed.
+Changing that tail is harmless only when it remains a complete encoded
+list; arbitrary binary garbage cannot be discarded.
+
+For each source site $i$, fix a finite set
+$Z_i\subseteq\{0,1\}^9$ of allowed exact zero patterns.  Here
+$\mu(r)_j=1$ means $r_j>0$, and $\mu(r)_j=0$ means $r_j=0$.
+These sets are an invariant if they contain the initial pattern and
+are closed under the following finite abstract successor relation:
+\begin{itemize}
+\item a jump leaves all bits unchanged;
+\item incrementing register $r$ sets its bit to one;
+\item a zero decrement branch leaves the zero bit and all other bits unchanged;
+\item a positive decrement branch permits either value of the decremented
+bit and preserves the other eight bits.
+\end{itemize}
+This last nondeterminism is necessary: a positive natural number can be
+one or greater than one.  Checking all 512 possible patterns at every
+site is sufficient to verify closure.  The source-to-physical register
+permutation must be applied before using a logical zero pattern in a
+physical register contract.
+
+\paragraph{Joint difference-bound invariants.}
+The same argument permits a stronger assertion
+\[
+ I_i(r)\;\equiv\;
+ \mu(r)\in Z_i\ \land\
+ \bigwedge_{0\leq a,b\leq9}(r_a-r_b\leq d^i_{ab}),
+ \qquad r_9=0,
+\]
+where an infinite bound contributes no constraint.  In this version
+it is the \emph{joint} assertion $I_i$ that must be inductive; its two
+projections need not separately be inductive.  Each source branch is
+checked by adding its zero or positive guard, shifting the updated
+register's row and column, and verifying inclusion in the successor
+assertion.
+
+Reducing a product assertion preserves its represented concrete
+states: a bit that is zero in every remaining pattern supplies an
+upper bound zero, and a bit that is positive in every pattern supplies
+a lower bound one.  Conversely $r_a\leq r_b$ rules out a pattern
+with $r_a>0$ and $r_b=0$.  Explicit upper and lower bounds likewise
+rule out incompatible bits.  Triangle closure of difference bounds
+is justified by addition of inequalities.  These operations may be
+iterated, and a negative diagonal proves that the assertion is empty.
+The final inductiveness check, rather than a heuristic widening or
+narrowing history, is the certificate's justification.
+
+\subsection{Sufficient local contract theorem}
+
+\begin{theorem}[Simulation modulo gap and spare tail]
+Suppose a deterministic binary machine $M$ has a finite startup trace to
+$\operatorname{Frame}(i_0,n_0,v_0)$, where $n_0\geq0$, $|v_0|\geq10$,
+and $\mu(\pi(v_0))\in Z_{i_0}$.  Suppose the sets $Z_i$ have the
+finite closure property above.  Require the following contracts for
+every allowed site-pattern pair, every $n\geq0$, and every entire file
+$v$ with $|v|\geq10$ and the specified pattern:
+\begin{enumerate}
+\item If the source instruction is nonterminal and its deterministic
+outcome is $(j,r')$, then there are $m>0$, $n'\geq0$, and a complete
+file $v'$ with $|v'|\geq10$ such that
+\[
+ \operatorname{run}_M(m,\operatorname{Frame}(i,n,v))
+       =\operatorname{Frame}(j,n',v'),\qquad \pi(v')=r'.
+\]
+\item If the source instruction is terminal, the machine has a finite
+halting execution from that frame.
+\end{enumerate}
+Then $M$ halts on the blank tape if and only if the source program halts
+from $(i_0,\pi(v_0))$.
+If startup, invariant closure, and the local contracts are verified in
+PA by primitive recursive trace constructions, PA proves this halting
+equivalence.
+\end{theorem}
+
+\begin{proof}
+Induction on source steps proves the zero-pattern invariant.  For a
+finite source halting execution, concatenate the local physical traces
+and its terminal contract after startup.  This proves one implication.
+
+Conversely, a nonhalting source execution supplies an unending sequence
+of physical frame-to-frame segments.  Each segment has positive
+length, so its first $k$ segments contain at least $k$ machine steps.
+A deterministic halting run of length $N$ cannot coexist with the first
+$N+1$ such segments: determinism identifies their shared prefix, and
+a terminal configuration has no successor.  This argument also shows
+why an accidental early halt inside a purported nonterminal contract
+is impossible once the positive finite endpoint is proved.
+
+For the internal statement, perform the same bounded argument on a
+given coded halting trace.  At most $N+1$ nonterminal segments are
+needed to contradict a trace of length $N$.  Total primitive recursive
+trace constructors, their correctness proofs, and ordinary PA
+induction suffice.  No semantic truth predicate or reflection
+principle is introduced.
+\end{proof}
+
+Replacing the zero-pattern membership hypotheses by any source
+assertions $I_i$ that contain startup and are closed under the source
+instructions gives the same theorem, with exactly the same proof.
+In particular it applies to the joint assertions above and to their
+branch-specific consequences.
+
+\subsection{A reusable symbolic box state}
+
+Replace the old one-use effect field by a vector of integer offsets
+$\delta\in\mathbb Z^9$, an appended-spare count $a\in\mathbb N$, and
+a mark status that is either plain or marks one $r<9$.  Its unmarked
+denotation is the exact file obtained from $v$ by replacing its first
+nine physical entries by $v_j+\delta_j$ and appending $a$ one-valued
+spares.  Preserve the original spare tail unchanged.  All current
+entries must be proved nonnegative.  A marked denotation erases the
+first one of the currently denoted register, as in the original
+$\operatorname{sepsM}$ definition.
+
+Each oracle call is justified by the existing generic engine theorem
+applied to this \emph{current} file:
+\begin{itemize}
+\item marking changes plain status to a marked register, with no offset;
+\item increment changes $\delta_r$ to $\delta_r+1$, appends one spare,
+and returns to plain status;
+\item zero decrement requires the current entry to be zero and changes
+neither the file nor its offsets;
+\item positive decrement requires the current entry to be positive,
+changes $\delta_r$ to $\delta_r-1$, restores plain status, and adds
+the specified boundary cell to the symbolic left segment.
+\end{itemize}
+Thus an increment followed by a positive decrement can cancel on the
+logical registers while leaving an extra spare and a larger gap.
+The register engine lemmas quantify over every current left tape
+segment and every full file of length at least ten, so repeated calls
+are legitimate.  Length never decreases, and every accessed register
+is among the first nine.
+
+Initial zero patterns alone do not resolve every later decrement.
+For example, after decrementing an initially positive register, its
+new value may be zero or positive.  The checker must either prove the
+next oracle precondition from the accumulated offsets and input
+constraints, split the case with correctly tracked stronger
+constraints, or reject it.  It must not silently reuse the initial
+branch bit after a file update.  With only initial zero/positive
+constraints, a sufficient implementation uses lower bounds zero or
+one, exact zero values when supplied by the mask, and rejects an
+ambiguous test.  Increment--decrement cancellation is decidable under
+these constraints without introducing new magnitude cases.
+
+At the endpoint, check the entire canonical path and marker, a plain
+unmarked file, nonnegative final gap, valid complete spare tail, and
+the exact net effect on all nine logical registers.  A larger gap and
+additional well-formed spare blocks can then be absorbed into $n',v'$;
+they are not a license to ignore any other tape discrepancy.  At least
+one concrete transition must be certified, even when every symbolic
+excursion is summarized by a whole-engine lemma.
+
+\subsection{Rows that must remain certified}
+
+For reuse without reproving the native box lemmas, preserve the exact
+rows in \texttt{M6.Native.boxRows}, together with
+\texttt{IncTail1}.  In the native control labels, the box states are
+\[
+0,1,2,3,16,22,25,32,33,36,40,48,51,54,55,60,64,66,74,94,97,113,198.
+\]
+\texttt{boxRows} contains both rows of each listed state except
+$(113,0)$ and $(198,0)$; the extra append-one hypothesis fixes
+$(198,0)$ to $(1,L,40)$.  Agreement includes write bit, direction,
+and destination, after any explicitly verified state renaming.
+Incoming edges from other decoder states may change, provided each
+oracle entry has the exact required marked or unmarked tape shape.
+Changing a protected row invalidates direct use of this theorem and
+requires a replacement proof for the affected excursion.
+
+Finally, a Python implementation of the generalized checker is a new
+verification component.  The existing Lean theorem for the one-use
+\texttt{Eff} datatype does not automatically certify its successes.
+Either prove the generalized executor sound or emit certificates in a
+small independently checked rule system, with every oracle step
+instantiating the retained engine lemmas.  Finite numerical sample
+runs remain supplementary checks.

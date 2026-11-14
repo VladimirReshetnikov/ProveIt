@@ -1,0 +1,85 @@
+INHERITED REPORT: copied from pa196_research_2026-11-13.zip.
+Its first-person claims and paths describe that earlier archive.
+See inherited_contexts/README.txt for the selected portable subset here.
+
+# Source-conditioned local synthesis for PA196
+
+## Result
+
+**No machine with fewer than 196 working states was obtained.** The new result is a stricter source-conditioned local-window invariant and an exhaustive negative result for a broader, explicitly bounded local folding template. This is executable symbolic and finite search evidence, not a proof-assistant certificate, a PA proof, or a lower bound on possible machine size.
+
+The input is James Chang's exact `pa196.tm` at commit `407cdc356f6b586635e71ac92be394255f4bfea4`, SHA-256 `e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8`. ProveIt's checked source and symbolic runtime are from commit `f1f076e31995f10460838d1846456f4bb9c8ae80`.
+
+## Stronger context collection
+
+The existing radius-six blank-window closure contains 270,067 abstract windows. Projecting these to the five cells around the head yields 2,774 control/window pairs. It forgets the source-program structure.
+
+The new collector instruments the inherited all-natural unary/list symbolic executor while it rederives **all 4,959 source branch contracts**, across the 3,812 source instructions. It observes 1,185,472 symbolic steps, including 187,123 unary-run events and 3,032 list traversals. Literal steps contribute all locally possible five-cell windows of their symbolic tape. Affine runs have nonnegative independent variables; admitting every length at least their constant term is a conservative enlargement. Neighboring runs are allowed to vary independently, another conservative enlargement.
+
+At a unary self-loop the collector also includes windows after every locally distinct interior position. The observer needs at most three bits from either side. Lengths and positions past three saturate; sampling the minimum run length through minimum plus six, and the first/last three interior positions, therefore includes every possible clipped pair of distances to the run boundaries. Generic finite-list interiors use the independently sound blank-window closure for every control appearing in their checked one-block traversal proof. This deliberately sacrifices precision at eight engine controls. The exact 58,154-step startup is included and its entire final tape is checked.
+
+The source contracts supply finite, positive complete instruction segments and the next complete frame. Startup followed by induction on these segments covers the blank run up to any halt. The source-derived overapproximation has 2,230 windows. Intersecting it with the independent transition-level closure gives **2,219 windows**, excluding 555 previously admitted windows. The intersection is safe if both enclosing arguments are sound. Neither the collector nor the inherited Python symbolic executor is a proof-assistant kernel; the unbounded claim depends on their stated run/list induction arguments and implementation.
+
+An independent ordinary step simulator checks 353 complete root-frame fixtures with varied registers and header gaps: **240,902 literal steps**, all included in the refined windows whenever covered by the blank-window invariant. In this sample every window was so covered. This finite regression checks implementation agreement; it is not the reason the symbolic argument quantifies over arbitrary naturals.
+
+## Search results
+
+All searches use positive child blocks of at most 16 steps and allow reads only within offsets -2 through +2. The endpoint must match the parent step's projected control, head position, and all five tape cells exactly. The only control identification is one ordered pair, deleting one state and retaining the other; every target of the deleted state is redirected.
+
+| Search | Ordered folds | Explicit row choices | Representative passes | Survivors |
+|---|---:|---:|---:|---:|
+| One arbitrary changed row, including a third-state helper | 38,220 | 2,199,904 | 20 | 0 |
+| Both rows of the retained state | 38,220 | 41,147,456 complete row pairs after 29,964,480 first-row trials | 6 | 0 |
+| Two arbitrary changed rows | 38,220 | 118,504,736 first-row trials and 573,987,568 second-row trials | 633 | 0 |
+
+The final search is broader than the previous two. It permits either changed row to belong to any retained working state, so the two helpers need not coincide with the retained state or with each other.
+
+### Why the two-row pruning is exhaustive within its template
+
+For each proposed control identification, first execute the unmodified quotient until finding a required block that fails. Any successful one- or two-row repair must change a row encountered on that failed trace before the block leaves the admitted window or exceeds the step bound; otherwise its execution is unchanged. The search enumerates every such first row and every legal action on it.
+
+After fixing that action, execute all obligations belonging to the two identified states and the first helper state. For every still-failing block, record all rows it visits. A successful second repair must lie in the **intersection** of these row sets. Exclude the removed state and the first already-fixed row. Enumerate every legal action for every surviving second key. Finally test every local obligation at the removed state, retained state, first helper, and second helper. Every other original state has its original one-step behavior after target projection.
+
+The run considers 151,154 first-key occurrences and 732,127 eligible second-key occurrences. There are 784 legal actions per key (two writes, two directions, 195 retained working states plus halt). This accounts for the two explicit trial counts above. None passes all admitted contexts. The empty `two_arbitrary_results.txt` is intentional.
+
+### Positive controls
+
+A separate four-state synthetic machine, using all 32 five-cell windows at each state, yields six valid outputs: one single-helper fold and five cases with two row assignments. The known one-helper control is recovered exactly:
+
+- delete state 2 and retain state 0;
+- change state 1/read 1 to write 1, move left, enter state 3.
+
+`reproduce.py` independently replays every control output with a separate Python block simulator. The C++ control's receipt is `control_counts.txt`; its six explicit mutations are `control_results.txt`. A dimension-generalized copy of the search is retained only for this four-state control; the full PA196 run uses the fixed-196-state source.
+
+## Limits and useful next directions
+
+The result excludes the stated local template under the stated admitted contexts. It does **not** exclude longer or wider block simulations, synchronization after several parent steps, more than two changed rows, multiple state identifications, tape recodings, head offsets, sharper reachable-source invariants, changed source programs, or genuinely different arithmetic encodings.
+
+The failed six-zero scanner shortcut is already known: source paths with six zero cells can acquire a seventh temporary zero during decrement-zero execution. The detector then restarts the dispatcher at the wrong head position. A new source layout whose *entire* paths (including trailing zeros) have maximum zero run at most five is a potentially useful candidate, but still needs full runtime and startup checks. AX-only reshaping cannot remove all current six-zero paths: the first instruction is `000000`, outside AX.
+
+James Chang's current result documentation explicitly records the internal implication `PA ⊢ nonhalting → Con(PA)`; the converse internal implication is a separate obligation. A local folding result alone would not establish that missing implication.
+
+## Reproduction and selected files
+
+The package is self-contained for the computations: Python 3, the standard library, and a C++17 compiler suffice. No network access or proof-assistant installation is required. From this directory:
+
+```sh
+python3 reproduce.py
+```
+
+The wrapper checks every pinned input digest, rebuilds the symbolic contexts, repeats the independent fixture check, compiles and reruns all three screens, and replays all six synthetic positive controls. Compare all semantic fields; elapsed times naturally vary. The underlying collector, regressions, and searches were run individually in this session. The assembled wrapper is additionally provided to combine their commands.
+
+Keep these source files and receipts:
+
+- `source_contexts.py`, `source_contexts.txt`, `source_contexts_receipt.json`;
+- `validate_contexts.py`, `validation_receipt.json`;
+- `two_arbitrary_rows.cpp`, `two_arbitrary_counts.txt`, `two_arbitrary_results.txt`;
+- `helper_counts.txt`, `helper_results.txt`, `two_row_counts.txt`, `two_row_results.txt`;
+- `two_arbitrary_control.cpp`, `synthetic.tm`, `synthetic_contexts.txt`, `control_counts.txt`, `control_results.txt`;
+- `reproduce.py`, this summary, and `inputs/` including its manifest, licenses, and provenance notices.
+
+The targeted `second_helper.*` experiment is superseded by the complete two-arbitrary-row screen and need not be distributed. Compiled executables and `__pycache__` directories are unnecessary.
+
+## Provenance
+
+`inputs/source_manifest.json` lists both commit pins and the digest and repository path of every principal input. The machine and Lean state-conjugacy table carry James Chang's MIT license. The inherited ProveIt material and historical runtime notices are retained in `inputs/LICENSE.ProveIt` and `inputs/provenance/`. The upstream authors have not reviewed or endorsed these new experiments.

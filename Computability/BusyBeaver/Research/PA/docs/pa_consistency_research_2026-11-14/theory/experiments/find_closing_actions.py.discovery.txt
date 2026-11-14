@@ -1,0 +1,18 @@
+import sys,json,time
+from pathlib import Path
+sys.path.insert(0,str(Path(__file__).resolve().parent))
+import closing_ties as x
+c=x.c
+rows,labels=c.machine();cs=c.contracts();co=next(y for y in cs if y[0]==3692)
+found={};st=time.time()
+for r in [None,3,4,5,6,7]:
+ cc=(co[0],None if r is None else(c.PHYSICAL[r],True),co[2],co[3]);hits=[]
+ for q in sorted({q for q,_ in rows if q<1300}):
+  for w in(0,1):
+   for d in(False,True):
+    rr=rows.copy();rr[1365,1]=(w,d,q)
+    n=c.run(rr,cc,fuel=1200)
+    if n is not None:hits.append([w,'R'if d else'L',q,n])
+ found['any'if r is None else str(r)]=hits
+ print(r,hits,'seconds',round(time.time()-st,2),flush=True)
+(x.W/'transfer_work/closing_action_receipt.json').write_text(json.dumps(found,indent=2)+'\n')

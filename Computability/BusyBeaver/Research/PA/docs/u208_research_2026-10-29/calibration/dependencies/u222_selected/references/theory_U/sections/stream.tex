@@ -1,0 +1,69 @@
+\section{A complete total theorem stream}
+\label{sec:stream}
+
+An axiom emitter alone is not a contradiction searcher. The following full reference algorithm adapts D4's total-stream architecture \cite{draftStream} to the positive dyadic syntax and the calibrated raw rule. Its eight branches also avoid a proof-description rejection state: an unusable inference description produces a fixed theorem.
+
+Write $\tau=I(0,0)=3$. Define $T(0)=\tau$. For $q>0$, uniquely write
+\[
+                  q=1+8\pi(a,b)+i,\qquad 0\le i<8.
+\]
+The coordinates $a,b$ are strictly smaller than $q$. Set $T(q)$ by Table~\ref{tab:stream}; displayed formulas denote their numeric codes.
+
+\begin{longtable}{@{}cl>{\raggedright\arraybackslash}p{.73\textwidth}@{}}
+\caption{All eight theorem-description branches.}\label{tab:stream}\\
+\toprule Tag & Kind & Output\\\midrule\endfirsthead
+\toprule Tag & Kind & Output\\\midrule\endhead
+0 & K & $a\to(b\to a)$.\\[4pt]
+1 & S & Unpair $b=\pi(c,d)$; output
+$(a\to(c\to d))\to((a\to c)\to(a\to d))$.\\[4pt]
+2 & Peirce & $((a\to b)\to a)\to a$.\\[4pt]
+3 & UI & Unpair $b=\pi(f,t)$; output
+$(\forall v_a\,\operatorname{dec}(f))\to
+ \operatorname{dec}(f)[v_t/v_a]$, using capture-avoiding substitution.\\[4pt]
+4 & QD & Unpair $b=\pi(f,g)$. If $a\notin\FV(\operatorname{dec}(f))$, output
+$(\forall v_a(f\to g))\to(f\to\forall v_a g)$; otherwise output $\tau$.\\[4pt]
+5 & AX & $g(a)$ from Section~\ref{sec:emitter}; $b$ is unused.\\[4pt]
+6 & MP & If $T(a)$ is literally $T(b)\to c$, output $c$; otherwise output $\tau$.\\[4pt]
+7 & GEN & $\forall v_a\,\operatorname{dec}(T(b))$.\\
+\bottomrule
+\end{longtable}
+
+Only MP and GEN consult earlier theorem descriptions. Formula arguments always decode. Variable names and formula codes are distinguished by their argument positions. Modus ponens uses literal numerical identity, which is exact named syntax because the grammar is bijective; there is no implicit semantic-equivalence oracle.
+
+\begin{theorem}[Soundness and exact range]\label{thm:stream}
+$T$ is primitive recursive, and its range is exactly the set of formula codes provable in the positive Hilbert theory with the emitted open axioms. There are primitive-recursive proof-producing and proof-compiling maps, with correctness provable in PA.
+\end{theorem}
+\begin{proof}
+Pairing, unpairing, formula decoding, free-variable computation, capture-avoiding substitution, and encoding are primitive recursive. Formula recursion descends to smaller codes; fresh variable names can be chosen as one more than the maximum label in the finite expressions involved. Course-of-values recursion therefore defines a primitive-recursive $T$.
+
+For soundness, induct on $q$. The first five branches are logical axioms, except that failed QD returns $\tau$. AX is a permitted emitted axiom. A successful MP concatenates the two already obtained finite proofs and appends modus ponens; failed MP returns $\tau$. GEN appends generalization. The identity $F\to F$, including $\tau$, has the familiar five-line derivation from K and S, supplied explicitly by the reference code. The induction thus constructs a finite proof $s(q)$ of $T(q)$, rather than merely asserting its semantic truth. PA verifies
+\[
+                      \forall q\,\Prf_{\mathsf H_++\RR}(s(q),T(q)).
+\]
+Open emitted axioms are universally intended schemata, equivalent to their closures; they are not undischarged arbitrary assumptions. Generalization on theorems is consequently unrestricted.
+
+Conversely, first expand any axiom-naming or alpha-conversion conventions into the specified Hilbert calculus. The emitted open axioms and their universal closures have uniform conversions by generalization and instantiation. Encode each line of a finite proof in order. K, S, Peirce, UI, and QD use their corresponding branches and the supplied formula fields. AX at input $n$ uses description $1+8\pi(n,0)+5$. If the implication and antecedent have already compiled descriptions $u,v$, their MP result uses $1+8\pi(u,v)+6$. Generalizing a compiled description $u$ in label $j$ uses $1+8\pi(j,u)+7$.
+
+Every parent description exceeds its consulted children. At a valid MP step the literal formulas match, so the default branch is not used. Induction on the proof length shows that the compiled final description has exactly its intended conclusion code. Extend the compiler to malformed proof codes by returning zero. Proof checking and these finite sequence transformations are primitive recursive, and PA verifies their conditional correctness. This proves exact range and both asserted maps.
+\end{proof}
+
+\begin{corollary}[Calibrated search]\label{cor:search}
+Let $M$ enumerate $q=0,1,2,\ldots$, compute $T(q)$, and halt if $T(q)=0$. Then
+\[
+                 \PA\vdash\operatorname{Nonhalt}(M)
+                                             \leftrightarrow\Con(\PA).
+\]
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:stream} identifies the occurrence of zero with derivability of the positive atom $q_0$; Theorem~\ref{thm:raw} identifies that finite proof with a PA refutation. The displayed search is an ordinary effective algorithm, and its finite computation/proof conversions formalize in PA.
+\end{proof}
+
+This is an abstract program specification and executable reference implementation. It is not a binary single-tape transition table. Python's finite memory and recursive AST utilities impose host limits on actual runs; the theorem concerns the specified unbounded recursion. A bounded run reports \texttt{unknown} when it finds no target.
+
+\subsection{Independent certificates and failure controls}
+
+The supplied \path{positive_stream.py} includes a separate explicit proof checker and a compiler from its finite certificates to stream descriptions. Six identity proofs, capture-avoiding instantiation, derived vacuity, Peirce, six raw axioms, and a four-line nonlogical re-instantiation give 16 saved certificates. In the last example the source is instantiated by the output label of $g(27)$, forcing an alpha-renaming and exercising AX, GEN, UI, and MP together.
+
+Seven invalid controls cover a false target, violated QD side condition, forward proof reference, a Boolean masquerading as a natural-number argument, an unauthorized axiom, an empty certificate, and variable capture. Tests remain active under optimized Python. The checker does not accept an unstated extension axiom to make the target derivable.
+
+The exact target contract is separate from ordinary formula validity. The archive fixes the names and final formula codes of the supplied certificate inventory, replays their inferences, compiles each proof, and checks the resulting stream value. Checking a collection of arbitrary valid tautologies would not satisfy that release contract.

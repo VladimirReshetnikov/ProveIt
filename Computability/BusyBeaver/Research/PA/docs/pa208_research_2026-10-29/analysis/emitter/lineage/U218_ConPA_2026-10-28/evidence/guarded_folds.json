@@ -1,0 +1,261 @@
+{
+  "status": "GUARDED_FOLDS_VERIFIED",
+  "working_states": [
+    220,
+    219,
+    218
+  ],
+  "transition_rows": [
+    440,
+    438,
+    436
+  ],
+  "first_fold": {
+    "drop": 507,
+    "keep": 182,
+    "selector": 209,
+    "incoming_old": [
+      [
+        [
+          173,
+          1
+        ],
+        [
+          1,
+          1,
+          182
+        ]
+      ]
+    ],
+    "incoming_clone": [
+      [
+        [
+          18,
+          0
+        ],
+        [
+          0,
+          1,
+          507
+        ]
+      ],
+      [
+        [
+          134,
+          0
+        ],
+        [
+          0,
+          1,
+          507
+        ]
+      ],
+      [
+        [
+          188,
+          0
+        ],
+        [
+          0,
+          1,
+          507
+        ]
+      ]
+    ],
+    "cases": [
+      {
+        "old_state": 182,
+        "predecessor_bit": 1,
+        "read_bit": 0,
+        "candidate_steps": 3,
+        "parent_steps": 1,
+        "endpoint_state": 76,
+        "endpoint_head": 1,
+        "whole_tape_equal": true,
+        "trace": [
+          {
+            "state": 182,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": -1,
+            "target": 209
+          },
+          {
+            "state": 209,
+            "head": -1,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "target": 133
+          },
+          {
+            "state": 133,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "target": 76
+          }
+        ]
+      },
+      {
+        "old_state": 182,
+        "predecessor_bit": 1,
+        "read_bit": 1,
+        "candidate_steps": 1,
+        "parent_steps": 1,
+        "endpoint_state": 61,
+        "endpoint_head": 1,
+        "whole_tape_equal": true,
+        "trace": [
+          {
+            "state": 182,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "target": 61
+          }
+        ]
+      },
+      {
+        "old_state": 507,
+        "predecessor_bit": 0,
+        "read_bit": 0,
+        "candidate_steps": 5,
+        "parent_steps": 1,
+        "endpoint_state": 90,
+        "endpoint_head": 1,
+        "whole_tape_equal": true,
+        "trace": [
+          {
+            "state": 182,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": -1,
+            "target": 209
+          },
+          {
+            "state": 209,
+            "head": -1,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "target": 157
+          },
+          {
+            "state": 157,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": -1,
+            "target": 67
+          },
+          {
+            "state": 67,
+            "head": -1,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "target": 151
+          },
+          {
+            "state": 151,
+            "head": 0,
+            "read": 0,
+            "write": 0,
+            "direction": 1,
+            "target": 90
+          }
+        ]
+      },
+      {
+        "old_state": 507,
+        "predecessor_bit": 0,
+        "read_bit": 1,
+        "candidate_steps": 1,
+        "parent_steps": 1,
+        "endpoint_state": 61,
+        "endpoint_head": 1,
+        "whole_tape_equal": true,
+        "trace": [
+          {
+            "state": 182,
+            "head": 0,
+            "read": 1,
+            "write": 1,
+            "direction": 1,
+            "target": 61
+          }
+        ]
+      }
+    ],
+    "argument": "The old entrances establish predecessor tag 1 for 182 and tag 0 for 507. Start state 0 is neither state. The four checked local computations replace one parent step by 1, 3, or 5 steps, with identical full tape and head at their endpoints and no internal halt. Induction on finite runs and positive-progress reflection transport halting in both directions, for every initial tape at state 0."
+  },
+  "second_fold": {
+    "drop": 200,
+    "keep": 209,
+    "incoming_200": [
+      [
+        [
+          112,
+          1
+        ],
+        [
+          1,
+          1,
+          200
+        ]
+      ]
+    ],
+    "incoming_112": [
+      [
+        [
+          172,
+          0
+        ],
+        [
+          0,
+          -1,
+          112
+        ]
+      ]
+    ],
+    "matching_read_zero": [
+      0,
+      1,
+      157
+    ],
+    "argument": "Every entrance into 112 follows 172/read0, which writes zero and moves left. The only entrance into 200 follows 112/read1, which moves right back to the written zero. Start 0 is neither 112 nor 200. Therefore every reachable 200 configuration scans zero, where 200 and 209 agree. State projection preserves every reachable literal step."
+  },
+  "scope": "Exact finite local mathematical certificates and structural invariants. No new proof-assistant kernel certificate. Source, theory calibration, complete primitive simulation, and actual blank initialization remain separate obligations.",
+  "mutation_controls": [
+    {
+      "name": "wrong_old_predecessor_tag",
+      "status": "REJECTED",
+      "reason": "Old 182 entries do not guarantee predecessor tag 1"
+    },
+    {
+      "name": "wrong_clone_predecessor_tag",
+      "status": "REJECTED",
+      "reason": "Clone 507 entries do not guarantee predecessor tag 0"
+    },
+    {
+      "name": "wrong_selector_action",
+      "status": "REJECTED",
+      "reason": "First fold has extra/missing changes"
+    },
+    {
+      "name": "extra_unguarded_200_entry",
+      "status": "REJECTED",
+      "reason": "Discarded state 200 has an uncertified entrance"
+    }
+  ],
+  "input_sha256": {
+    "parent": "a39700ce06e6a4ea7208ac0bc3af6e7f7726cc9ed4d7f70bab366ded878a9f09",
+    "intermediate": "b9bcb8f86a2504ba7848ab3362c62d4f480b51e9dabf9be993ba182c47521e29",
+    "final": "366cf96800bd4299de831355a80092394462278f0b62db1e19c167ca5f8b2a30"
+  }
+}

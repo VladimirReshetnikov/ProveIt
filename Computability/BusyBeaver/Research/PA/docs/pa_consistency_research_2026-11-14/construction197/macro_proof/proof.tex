@@ -1,0 +1,174 @@
+\subsection{An eighteen-instruction source macro for negation}
+\label{sec:negation18}
+
+Write $T=R_1$, $W=R_2$, $S=R_6$, and $Y=R_7$ for the accumulator,
+encoded stack, and two scratch registers. All registers range over
+$\mathbb N$. Let
+\[
+ \Delta(n)=\frac{n(n+1)}2,\qquad
+ p(a,b)=\Delta(a+b)+b.
+\]
+The source encoding uses $I(a,b)=4p(a,b)$ and falsity code $1$.
+Consequently the negation constructor is $N(t)=4p(t,1)$.
+
+\paragraph{The general pairing core.}
+The exact raw subtree \texttt{node64} contains sixteen primitive source
+instructions. Its effect, including arbitrary initial scratch values, is
+\begin{equation}
+ (T,S,Y)=(t,s,y)
+ \quad\longmapsto\quad
+ \bigl(4(y+p(s,t)),0,0\bigr).
+ \label{eq:general-pairing-core}
+\end{equation}
+It preserves $W$ and every other register. The only written registers in
+its primitive control-flow graph are $1$, $6$, and $7$.
+
+Here is a terminating-loop proof of~\eqref{eq:general-pairing-core}.
+The first loop repeatedly decreases $T$ and increases both $S$ and $Y$.
+It terminates with
+\[
+ (T,S,Y)=(0,s+t,y+t).
+\]
+Its natural variant is $T$ and its preserved quantities are $S+T$ and
+$Y+T$. The next loop has $T=0$ at its header. If $S=u>0$, it decreases
+$S$ once, increases $Y$ once, drains the remaining $u-1$ units of $S$
+into $T$, and runs the first loop again. The resulting header state is
+\[
+ (0,u,v)\longmapsto(0,u-1,v+u).
+\]
+The inner drain has variant $S$; the outer loop also has variant $S$,
+measured at its header. Its invariant is $Y+\Delta(S)$, because
+$\Delta(u)=u+\Delta(u-1)$. It therefore exits with
+\[
+ (T,S,Y)=(0,0,y+t+\Delta(s+t))=(0,0,y+p(s,t)).
+\]
+Finally \texttt{node63} drains $Y$ into $T$, adding four to $T$ per
+decrement of $Y$. Its variant is $Y$ and its invariant is $T+4Y$.
+This proves~\eqref{eq:general-pairing-core}, including termination and
+preservation of the complete unrelated register frame.
+
+This derivation is also supported by the existing general lemmas
+\texttt{AXPair.drain\_t\_xy}, \texttt{AXPair.pair\_loop}, and
+\texttt{AXTimes4.times4}. In particular, the first two accept arbitrary
+initial $y$; the special zero-$y$ hypothesis of the published
+\texttt{AXPair.pair} statement is unnecessary for the generalized effect
+above. The accompanying independent checker reads the raw source and
+checks the loop invariants as exact rational polynomial identities.
+
+\paragraph{The new macro.}
+Suppose $S=Y=0$ at macro entry. Execute
+\[
+ \texttt{INC7};\quad\texttt{INC7};\quad\texttt{node64}.
+\]
+After the first two instructions $Y=2$. The general core gives
+\[
+ T'=4\bigl(2+p(0,t)\bigr)=4p(t,1)=N(t),
+ \qquad S'=Y'=0,
+\]
+using
+\[
+ p(t,1)=\Delta(t+1)+1=\Delta(t)+t+2=p(0,t)+2.
+\]
+Thus the macro computes negation and preserves the stack and other
+registers. The clean-scratch condition is essential; for arbitrary
+initial $S=s,Y=y$, the same eighteen instructions give
+$4(y+2+p(s,t))$, which need not equal $N(t)$.
+
+The complete eighteen-instruction graph is below. A decrement tests for
+zero; on a positive register it subtracts one before taking its positive
+successor. Label $18$ is the macro exit, not a halt instruction.
+
+\begin{center}
+\begin{tabular}{rlll}
+\hline
+Label & Instruction & Zero successor & Other successor\\
+\hline
+0 & increase $Y$ & --- & 1\\
+1 & increase $Y$ & --- & 2\\
+2 & decrease $T$ & 6 & 3\\
+3 & increase $Y$ & --- & 4\\
+4 & increase $S$ & --- & 5\\
+5 & jump & --- & 2\\
+6 & decrease $S$ & 12 & 7\\
+7 & increase $Y$ & --- & 8\\
+8 & decrease $S$ & 11 & 9\\
+9 & increase $T$ & --- & 10\\
+10 & jump & --- & 8\\
+11 & jump & --- & 2\\
+12 & decrease $Y$ & 18 & 13\\
+13 & increase $T$ & --- & 14\\
+14 & increase $T$ & --- & 15\\
+15 & increase $T$ & --- & 16\\
+16 & increase $T$ & --- & 17\\
+17 & jump & --- & 12\\
+\hline
+\end{tabular}
+\end{center}
+
+The exact source-step count of the general core is
+\[
+ 10t+13\Delta(s+t)-2(s+t)+6y+3.
+\]
+For the new macro on a clean store this becomes
+$13\Delta(t)+8t+17$. These formulas follow from the three drain counts
+$4t+1$, $3s+1$, and $6y+1$, and the outer-loop recurrence
+$C(0)=1$, $C(u)=C(u-1)+7u-2$ for $u>0$.
+
+For comparison, the earlier 20-site block first drains $t$ from $T$ into $S$ in $3t+1$ steps, increments $T$ once, and enters the core at $(T,S,Y)=(1,t,0)$. Its cost is therefore $13\Delta(t)+14t+26$. The new 18-site block saves exactly $6t+9$ source transitions. These counts concern the register program; they are not physical Turing-machine step counts.
+
+\paragraph{Comparison of the five negation spellings.}
+All five spellings below compute $N(t)$ on a clean macro store. The
+published push and cons contracts justify the original stack-based
+spelling; the generalized core proves the four alternatives directly.
+\begin{center}
+\begin{tabular}{lr}
+\hline
+Source spelling & Primitive instructions\\
+\hline
+\texttt{push; incT; cons} & 47\\
+\texttt{node37; incT; node64} & 20\\
+\texttt{node64; node61; node61} & 24\\
+\texttt{INC7; INC7; node64} & 18\\
+\texttt{INC7; node64; node61} & 21\\
+\hline
+\end{tabular}
+\end{center}
+Here \texttt{node37} drains $T$ into $S$, and \texttt{node61} adds four
+to $T$. Primitive source size is distinct from physical TM state count:
+reusing decoder controls determines the latter.
+
+\paragraph{Executable certificate and binding.}
+The portable checker \texttt{negation18/verify.py} imports no optimizer
+or source compiler. It resolves the primitive graph in two ways: by
+leaf-path subtree intervals and by recursively maintaining break and
+continue contexts. The resolvers agree on the original 3812-site
+source, all five macro expansions, and the new 3441-site source.
+The checker independently establishes the native macro entries by
+following complete known prefixes in the upstream transition table:
+all 64 occurrences of \texttt{node64} enter state $106$, and all 346
+occurrences of \texttt{INC7} enter state $82$.
+
+For the supplied 197-state seed, the checker reconstructs the entire
+source from the new grammar and the raw outer source. It finds exactly
+eight copies of the eighteen-instruction graph, at source ordinals
+\[
+ 584,\ 657,\ 1701,\ 1774,\ 2891,\ 2936,\ 3142,\ 3269.
+\]
+An independent exhaustive joint zero/positive abstraction has 245112
+reachable source-site/mask pairs from source site $25$, with register
+$0$ positive and the other registers zero. A positive decrement is
+allowed to leave either a zero or positive result, so this finite
+closure is a sound overapproximation of all represented natural
+register values. It forces both scratch registers to zero at every
+one of the eight macro entries. There are 40 possible masks at site
+$2891$ and 32 at each other listed entry. This supplies the clean-store
+condition for the exact changed source.
+
+There are additionally 819 finite controls for arbitrary-$Y$ core
+inputs and 455 finite full-register-frame comparisons of the five
+spellings. Those runs are regression controls; the universal arithmetic
+argument is the terminating-loop proof and its checked polynomial
+identities. The separate whole-machine certificate checks physical
+instruction contracts and concrete blank startup for the 197-state
+seed. This source improvement does not by itself establish a machine
+with fewer than 196 states or a new formalized PA consistency endpoint.

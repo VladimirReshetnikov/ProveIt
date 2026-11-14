@@ -1,0 +1,59 @@
+\section{Archive contents and reproduction}
+\label{sec:reproduction}
+The ZIP contains the accepted constructions and retained finite checks. Repository inputs are pinned to exact commits; inherited licenses and attribution are preserved beside them.
+
+\begin{longtable}{p{.28\linewidth}p{.64\linewidth}}
+\toprule
+Path & Contents\\
+\midrule
+\endhead
+\code{report/} & Complete LaTeX sources, compiled PDF, and literal diagonal196 table.\\
+\code{axioms/} & Three new 196-state layouts; source, grammar, and fold certificates; complete symbolic runtime and startup checks; logical proofs; completed search inputs and logs.\\
+\code{comparison/} & Pinned supplied tables, census, baseline scanner layout, hybrid experiment, and archive-member byte bindings.\\
+\code{engine/} & Physical reduction code, contexts, invariants, positive controls, and bounded-search receipts.\\
+\code{allocation/} & Fixed-reader allocator, source inputs, and replayable Hall witnesses.\\
+\code{SHA256SUMS} & Hash manifest for all packaged files except the manifest itself.\\
+\bottomrule
+\end{longtable}
+
+\subsection{Accepted constructions}
+Run Python with assertions enabled. From the archive root:
+\begin{lstlisting}
+python3 axioms/verify.py
+python3 catalogue.py
+python3 comparison/comparison/compare_designs.py --output comparison_replayed.json
+python3 comparison/scanner196/verify.py comparison/scanner196 --startup 150000
+cd axioms/search
+python3 export_scanner.py scanner_6 scanner_best196
+cd ../..
+\end{lstlisting}
+The axiom verifier regenerates the literal tables and dense renamings, checks macro control flow and emitted constructor trees, checks every instruction contract, and replays the complete blank startups. It requires only the Python standard library. Comparison and scanner checks are separate.
+
+\subsection{Experimental searches and allocation certificates}
+\begin{lstlisting}
+python3 engine/reproduce.py
+python3 engine/reproduce_trit.py
+python3 engine/check_scanner195.py
+python3 allocation/verify_hall.py
+\end{lstlisting}
+The default engine command checks digests and positive controls. Its \code{--full} option reruns the completed searches using a C++17 compiler. The trit gate reconstructs the source graph using three resolvers, reruns the fixed point and closure audit, and checks invariant/context bindings; its \code{--full} mode also requires NumPy. The scanner195 check reproduces the expected failed contracts. Raw receipts specify the exact templates, inputs, bounds, and trial counts.
+
+The Hall verifier regenerates the domains and witnesses using only Python's standard library. These three obstructions are decisive before a solver is invoked. Exploring other allocations requires \code{z3-solver}. Inputs and hashes are pinned, and the proof is restricted to that allocation model.
+
+\subsection{Rebuilding the PDF}
+\begin{lstlisting}
+cd report
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+pdflatex -interaction=nonstopmode -halt-on-error report.tex
+\end{lstlisting}
+The document uses ordinary TeX Live packages, including Latin Modern, AMS mathematics, \code{booktabs}, \code{microtype}, and \code{hyperref}. The PDF was compiled and visually inspected after rendering.
+
+\subsection{Evidence levels and limitations}
+The following distinctions are maintained throughout the package:
+\begin{enumerate}
+\item A raw grammar count, solver objective, or successful decoder-prefix test is an exploratory result.
+\item A complete symbolic instruction certificate plus exact startup establishes the stated physical implementation, relative to the verified symbolic block methodology.
+\item The PA calibration additionally requires the logical proof translations and their arithmetization; Section~\ref{sec:calibration} spells out the written construction.
+\item A new theorem accepted by the Lean kernel is a separate deliverable. No Lean installation was available for a new build in this environment, and no such new endpoint is represented as completed.
+\end{enumerate}
+The strict target remains unachieved. The archive preserves the constructions and failed paths without promoting rejected candidates to accepted machines.

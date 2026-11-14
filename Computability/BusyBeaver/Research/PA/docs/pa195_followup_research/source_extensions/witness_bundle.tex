@@ -1,0 +1,46 @@
+\section{Moving the diagonal clause to the equality-witness head}
+The fifth retained head is already a negated formula:
+\[
+ H_5(d,h)=\exists x_d E(h,d)=\neg U(d,\neg E(h,d)).
+\]
+Let $a$ denote the other freely chosen AX parameter.  For any fixed choice
+$B\in\{a,d,h\}$, replace this head by
+\[
+ H_5^B(a,d,h)=\neg\bigl(\Gamma(B)\to U(d,\neg E(h,d))\bigr)
+\]
+and replace the bundled PA195 gate $F_c$ by its earlier gate $G=\neg(V\to Q)$.
+All other heads and inference rules remain the same.  This produces the
+conjunction $\Gamma(B)\wedge H_5(d,h)$ in the same economical negated-implication
+form used by the PA195 gate.  The change adds eight tokens to head 5 and
+removes eight from the gate.  The complete AX word still has 191 tokens,
+nine pushed entries, and exactly the same read and guard operations.
+
+The finite templates $\pi_1,\pi_2,\iota$ from the Gamma-relocation proof
+give explicit primitive-recursive translations in both directions.
+In the new calculus, $\pi_2$ projects every old witness head from the
+corresponding bundled head, and $\pi_1$ yields every $\Gamma(C)$ by taking
+$a=d=h=C$.  Thus $\iota$ combines $\Gamma(c)$ and any guarded $G(a,b,c)$
+to recover the PA195 gate $F_c(a,b,c)$.
+Conversely, PA195 already derives every $\Gamma(C)$ using the guarded
+instance $(C+1,C+1,C)$.  Combine it with the original witness head by
+$\iota$ to obtain $H_5^B$; obtain $G$ by projecting the old gate.  The
+remaining proof nodes translate identically.  PA verifies these finite
+syntactic replacements by the same proof-tree induction, so the refutation
+predicates are PA-provably equivalent.
+
+There is no hidden guard condition on this witness-head argument.  The
+numerical AX command pushes its heads unconditionally; the condition
+$c\ne a,b$ controls only the top gate formula.  Consequently the choice
+$a=d=h=C$ is valid for extracting the bundled head even though the gate
+fails its guard and returns zero.  After the standard reset $d=h=0$,
+the AX increments realize the required tuple with nonnegative inputs.
+The generic head selector at the existing fifth-head position selects
+$H_5^B$; the proof compiler uses the displayed projection when an old
+$H_5$ instance is needed.  No extra stack slot or new command is introduced.
+
+The independent expression checker in \texttt{verify\_source\_family.py} verifies each
+of the three complete AX words, including the saved incoming entries,
+all six pushed head values, the restored old gate, and the unchanged
+parameter registers.  The search scores in this directory are discovery
+evidence; none of these variants is asserted to provide a certified
+sub-195 transition table.

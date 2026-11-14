@@ -1,0 +1,77 @@
+% Standalone section fragment for the accompanying report.
+\section{The seven-state quotient: a global finite certificate}
+
+Let $R$ be the explicitly supplied unfolded 202-state table and let $M$
+be \texttt{pa195.native.tm}.  Both use native start label $74$ and native
+halt label $254$.  The dense presentation of $M$ has start $0$, working
+labels $0,\ldots,194$, and halt label $195$.
+The quotient map $\sigma$ identifies the following seven pairs and fixes
+all other controls.  The first member of each pair is removed.
+\[
+ (2018,2024),\ (2030,2050),\ (2038,2019),\ (2042,2028),\
+ (2053,2043),\ (2055,2034),\ (2062,2036).
+\]
+The unfolded machine consists of 134 inherited controls and 68 newly
+allocated AX reader controls.  All seven identifications are disjoint, so
+$202-7=195$ working controls remain.  The root-reachability census visits
+every one of the 195 controls; no distinguished halt control is counted.
+
+\paragraph{The incoming-history invariant.}
+For every pair $(a,b)$ in this list, every incoming row of $R$ whose target
+is $a$ writes $0$ and moves right; every incoming row whose target is $b$
+writes $1$ and moves right.  There are exactly 22 such incoming rows, all
+listed in \texttt{local\_fold\_certificate.json}.  Since neither $a$ nor
+$b$ is the start control, every reachable configuration of $R$ satisfies
+\[
+ q=a\ \Longrightarrow\ t(h-1)=0,
+ \qquad
+ q=b\ \Longrightarrow\ t(h-1)=1,
+\]
+where $h$ is the head position and $t$ is the tape.  This is a direct
+one-step induction.  It applies to every initial tape, not only to the
+blank run or to well-formed register-program frames.
+
+\paragraph{The 28 local obligations.}
+For each of the 14 old controls and each current bit $v\in\{0,1\}$,
+start $M$ in control $\sigma(q)$ at head position $0$, with the prescribed
+history bit at $-1$ and current bit $v$ at $0$.
+The certificate gives a positive finite run that reproduces the single
+$R$ transition, including its write, head displacement, and projected
+successor.  Until that endpoint every read and write is at $-1$ or $0$.
+The two-cell tape at the endpoint is compared exactly.  Hence every
+extension of those two cells to a bi-infinite tape satisfies the same
+identity.  Of the 28 runs, ten have length 1, seventeen have length 3,
+and one has length 5.  All other old transitions commute with $\sigma$
+in exactly one step.
+
+\paragraph{Halting preservation in both directions.}
+Map a configuration $(q,h,t)$ to $(\sigma(q),h,t)$.  The preceding finite
+identities and incoming-history invariant show that every step of $R$
+from a reachable configuration is simulated by one to five steps of $M$.
+Every intermediate control has an outgoing transition unless the final
+endpoint is the halt control; $\sigma$ fixes that halt control.
+Concatenation therefore sends any $R$ halting trace to an $M$ halting
+trace.
+
+Conversely, suppose $M$ halts after $T$ transitions.  If $R$ does not halt
+within its first $T$ transitions, its first $T+1$ steps exist.  Their
+simulating blocks concatenate to more than $T$ defined $M$ transitions,
+in contradiction with determinism and the absence of outgoing rows at
+halt.  Consequently $R$ halts within $T$ steps.  This also covers halts
+inside an attempted comparison block; an intermediate premature halt
+would contradict its verified finite trace.
+
+All quantified tape and trace operations in this proof have standard
+primitive-recursive finite encodings.  The invariant is an induction on
+trace length, the local lookup consists of 28 fixed finite cases, the
+forward trace construction concatenates blocks of length at most 5, and
+the converse uses bounded iteration through $T+1$ parent steps.  Thus the
+argument formalizes in PA and proves
+\[
+ \mathrm{PA}\ \vdash\
+ \operatorname{Halt}(R,\mathrm{blank})
+ \ \leftrightarrow\
+ \operatorname{Halt}(M,\mathrm{blank}).
+\]
+No assumption of consistency, standard-model soundness, or nonhalting
+enters this quotient theorem.

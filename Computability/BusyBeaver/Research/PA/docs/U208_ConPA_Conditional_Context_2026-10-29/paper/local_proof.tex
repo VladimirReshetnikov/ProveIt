@@ -1,0 +1,297 @@
+\section{A conditional tape-context fold from 209 to 208 states}
+\label{sec:local208}
+
+The reduction in this section acts directly on the supplied Joint U209
+transition table. It preserves the tape alphabet, the blank initializer, and
+the entire numerical source program. Its additional information is a property
+of the recent computation: two states with different zero branches can share
+one physical state because their reachable tape contexts distinguish those
+branches. The required property of one state is conditional on its scanned
+symbol. The opposite-predecessor-bit interfaces considered in the supplied
+searches do not include this case.
+
+All state labels in this section are \emph{native} labels. In particular, 211
+is a working state and 254 is the separate halt label. Dense renumbering is
+performed only after the reduction. Let $\Uold$ denote the Joint parent and
+$\Unew$ the reduced machine.
+
+\subsection{The complete modification}
+\label{subsec:local208-patch}
+
+Delete state 172 and redirect its sole incoming transition to state 211.
+Change the zero transition of state 211 as follows:
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+Row & Parent action & Reduced action & Purpose\\
+\midrule
+$116/0$ & $0\,R\,172$ & $0\,R\,211$ & Redirect the deleted state\\
+$211/0$ & $0\,R\,157$ & $0\,L\,217$ & Inspect the preceding tape context\\
+\bottomrule
+\end{tabular}
+\end{center}
+The removed rows are $172/0:0\,L\,67$ and $172/1:1\,R\,184$.
+Every other retained row is unchanged. Thus 209 working states and 418
+transition rows become 208 working states and 416 rows. The initial state
+remains 0, and no halt transition is added or removed.
+
+For the simulation, define the state map
+\[
+ f(q)=\begin{cases}211,&q=172,\\q,&q\ne172.\end{cases}
+\]
+The map identifies two states, but changes neither the head position nor
+the tape. Its lack of injectivity is harmless: the proof follows a definite
+parent computation and establishes agreement at explicitly defined times.
+
+\subsection{Reachable contexts, proved by induction}
+\label{subsec:local208-guards}
+
+A configuration is $(q,h,T)$, where $h\in\mathbb Z$ and
+$T:\mathbb Z\to\{0,1\}$. Write $t_j=T(h+j)$ for the tape viewed from
+the current head. The following five conditions are imposed only when the
+configuration has the indicated state:
+\begin{align*}
+ I_{116}:&\quad t_{-1}=1, &
+ I_{172}:&\quad t_{-2}=1\ \land\ t_{-1}=0,\\
+ I_{217}:&\quad t_{-1}=1, &
+ I_{163}:&\quad t_{-1}=1\ \lor\ t_{-2}=1,\\
+ I_{211}:&\quad t_0=1\ \lor\ t_{-1}=1.
+\end{align*}
+Let $I(q,h,T)$ be the conjunction of the five corresponding implications
+from the state equality. In particular, $I_{211}$ says that a scanned zero
+at state 211 forces the cell immediately to its left to be one. It does
+\emph{not} assert that every entry to 211 has a left-hand one.
+
+The entire incoming-edge census needed for these conditions is small:
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+Target & Every parent transition entering the target\\
+\midrule
+172 & $116/0:0\,R\,172$\\
+116 & $215/1:1\,R\,116$\\
+211 & $163/0:0\,L\,211$, \quad $163/1:1\,R\,211$\\
+163 & $132/1:1\,R\,163$, \quad $199/1:1\,R\,163$,
+      \quad $217/0:0\,R\,163$\\
+217 & $216/1:1\,R\,217$\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are inventories of all physical transition rows, including entries
+arising outside ordinary source decoding. The argument therefore does not
+depend on a sampled run or an assumption that additional entrances are
+unreachable.
+
+\begin{lemma}[Five-state invariant]
+\label{lem:local208-invariant}
+Every configuration of $\Uold$ reached from state 0 satisfies $I$, on
+every initial binary tape.
+\end{lemma}
+\begin{proof}
+The initial configuration satisfies $I$ because 0 is none of the five
+listed states. Assume $I$ holds before a transition. Conditions whose
+target state is not reached impose no obligation afterward, so it suffices
+to inspect the displayed census.
+
+An entry to 116 or 217 writes one and moves right, establishing its
+left-hand-one condition immediately. An entry to 172 comes from 116/0.
+It writes zero immediately left of the new head; the previous left-hand
+one supplied by $I_{116}$ becomes the cell two positions left of that head.
+This proves $I_{172}$.
+
+An entry to 163 from 132/1 or 199/1 writes one immediately left of the new
+head. Its remaining entrance, 217/0, writes a left-hand zero but carries
+the one supplied by $I_{217}$ to the position two cells left. Each case
+establishes the disjunction $I_{163}$.
+
+Finally, entry to 211 through 163/1 writes one immediately left of the
+new head. Entry through 163/0 moves left instead. The new current cell is
+the old $t_{-1}$, and the new left cell is the old $t_{-2}$. Their disjunction
+is exactly $I_{163}$, so $I_{211}$ follows in this case as well. This proves
+preservation of all five conditions and completes the induction.
+\end{proof}
+
+The invariant explains the available distinction. State 172 necessarily
+arrives immediately to the right of the word $10$. State 211, whenever it
+reads zero, instead has a one immediately to its left. Recovering this
+information needs at most three preceding parent transitions. Nevertheless,
+the inductive formulation is preferable for composition: it applies uniformly
+at every time, including the beginning of the run, without a separate
+assumption that a sufficiently long history already exists.
+
+\subsection{Four exact finite identities}
+\label{subsec:local208-blocks}
+
+At a simulation boundary the reduced machine has state $f(q)$, head $h$,
+and the same tape $T$ as the parent. Only parent states 172 and 211 require
+special treatment. The four contracts below specify the complete effects
+of their replacement blocks. Head displacements are relative to $h$.
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+Parent state & Read & Additional tape condition & Steps & Final state, head\\
+\midrule
+172 & 0 & $t_{-2}=1,\ t_{-1}=0$ & 7 & $67,\ -1$\\
+172 & 1 & None & 1 & $184,\ +1$\\
+211 & 0 & $t_{-1}=1$ & 3 & $157,\ +1$\\
+211 & 1 & None & 1 & $184,\ +1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every contract preserves the entire tape. The additional conditions for
+the zero cases follow from Lemma~\ref{lem:local208-invariant}. The one
+cases need only the stated scanned bit, even though other invariant
+conditions may also hold.
+
+\begin{lemma}[Local replacement]
+\label{lem:local208-replacement}
+Suppose a nonhalting parent configuration $C=(q,h,T)$ satisfies $I$,
+and its successor is $C'=(q',h',T')$. From $(f(q),h,T)$ the reduced machine
+reaches $(f(q'),h',T')$ in one, three, or seven transitions. All earlier
+configurations of this block are nonhalting.
+\end{lemma}
+\begin{proof}
+If $q\notin\{172,211\}$, the parent and reduced rows agree after applying
+$f$ to the target. This includes row 116/0, whose target is precisely the
+one redirected by $f$. There are 414 such ordinary rows.
+
+For either exceptional state reading one, the reduced machine uses the
+unchanged row $211/1:1\,R\,184$. Both parent states have that same row,
+so one transition suffices.
+
+For parent state 211 reading zero, its invariant supplies $t_{-1}=1$.
+The new row moves left into 217; row $217/1:1\,R\,215$ moves back to
+the original zero; row $215/0:0\,R\,157$ gives the endpoint of the
+parent's $211/0$ transition. The three transitions read $0,1,0$ and write
+those same bits.
+
+For parent state 172 reading zero, the invariant supplies
+$(t_{-2},t_{-1},t_0)=(1,0,0)$. The full reduced computation is:
+\begin{center}
+\begin{tabular}{rrrrrr}
+\toprule
+Step & State before & Head before & Read/write & State after & Head after\\
+\midrule
+1 & 211 & $0$  & $0/0$ & 217 & $-1$\\
+2 & 217 & $-1$ & $0/0$ & 163 & $0$\\
+3 & 163 & $0$  & $0/0$ & 211 & $-1$\\
+4 & 211 & $-1$ & $0/0$ & 217 & $-2$\\
+5 & 217 & $-2$ & $1/1$ & 215 & $-1$\\
+6 & 215 & $-1$ & $0/0$ & 157 & $0$\\
+7 & 157 & $0$  & $0/0$ & 67  & $-1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Its endpoint is exactly the parent transition $172/0:0\,L\,67$.
+Every read is of one of the three specified cells and every write preserves
+that cell. The three-step case has the same property for its two cells.
+No unspecified exterior cell is inspected, and no exceptional block visits
+halt label 254. This proves all cases.
+\end{proof}
+
+The seven-step block visits the merged state 211 twice. There is no
+circular proof here: all seven transitions have been evaluated explicitly.
+In particular, the argument does not assume that arbitrary internal
+configurations of the reduced computation satisfy the parent invariant.
+The invariant is required only at parent simulation boundaries.
+
+\subsection{Global equivalence and an exact clock}
+\label{subsec:local208-global}
+
+For a parent computation, let $N_{172,0}(n)$ count occurrences of state 172
+reading zero among its first $n$ transitions, and define $N_{211,0}(n)$
+similarly. Counts are taken along the parent run, not the internal states
+of the reduced blocks. Define
+\begin{equation}
+\label{eq:local208-clock}
+ \tau(n)=n+6N_{172,0}(n)+2N_{211,0}(n).
+\end{equation}
+The excesses six and two are the extra transitions used by the seven-step
+and three-step replacements.
+
+\begin{theorem}[Uniform halting equivalence]
+\label{thm:local208-equivalence}
+For every binary tape $T$ and initial head position $h$, $\Uold$ and
+$\Unew$, both started in state 0 on $(h,T)$, either both halt or both
+run forever. At every parent time $n$ up to and including its first halt,
+the reduced configuration at time $\tau(n)$ has the same head and tape,
+and its state is the image under $f$ of the parent state. Furthermore,
+\[
+ n\le\tau(n)\le7n.
+\]
+If the parent first halts at time $H$, the reduced machine first halts
+at exactly $\tau(H)$.
+\end{theorem}
+\begin{proof}
+The configurations agree initially because $f(0)=0$. Induct on the number
+of parent transitions. Lemma~\ref{lem:local208-invariant} supplies the
+required invariant at each parent configuration, and
+Lemma~\ref{lem:local208-replacement} extends the agreement by the
+appropriate positive block. The block lengths give
+\eqref{eq:local208-clock}. Each length is between one and seven, yielding
+the bounds. No block contains an earlier halt, so a parent first halt
+produces a reduced first halt exactly at the corresponding boundary.
+
+If the parent never halts, the same induction supplies nonhalting reduced
+blocks at all boundaries. Their strictly positive lengths make
+$\tau(n)$ unbounded, and together the blocks cover every reduced time.
+The reduced machine therefore cannot halt between boundaries or after
+all of them. This also proves the converse implication of the halting
+equivalence. Determinism ensures that these blocks are prefixes of the
+actual reduced run, rather than merely possible executions.
+\end{proof}
+
+Thus the result concerns the whole computation, not only a finite prefix.
+It also supplies quantitative finite statements: a parent halt within $n$
+steps implies a reduced halt within $7n$ steps; a reduced halt within $n$
+steps implies a parent halt within $n$ steps. No consistency assumption
+appears anywhere in the reduction.
+
+\subsection{Arithmetic scope and the other U209 family}
+\label{subsec:local208-scope}
+
+The arbitrary-tape theorem above is a mathematical statement about tape
+functions. For the required blank input, configurations and finite runs
+have the usual arithmetic encodings. The five invariant checks, the four
+finite identities, and the induction on coded computation length are
+formalizable in $\PA$. The explicit bound $7n$ removes any need for an
+unbounded search to locate a corresponding finite prefix. Consequently,
+this construction supplies the PA-formalizable equivalence
+\[
+ \PA\vdash
+ \bigl(\Halt(\Uold,\mathrm{blank})
+       \leftrightarrow\Halt(\Unew,\mathrm{blank})\bigr).
+\]
+Composing it with a justified parent consistency calibration transfers
+that calibration to $\Unew$. The reduction neither establishes
+$\Con(\PA)$ nor replaces the separate proof-search and theory
+interpretation obligations. The delivered mathematical proof and finite
+certificates do not constitute a newly exported proof-assistant certificate
+of the complete consistency endpoint.
+
+The distinct Compatibility U209 family admits the same reduction:
+delete 172 into 211 and replace row $211/0$ by $0\,L\,214$.
+Its local roles correspond as follows:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Role & Joint parent & Compatibility parent\\
+\midrule
+Left-context selector & 217 & 214\\
+State feeding the merged-state entries & 163 & 216\\
+Right branch of the selector & 215 & 163\\
+Predecessor writing one before the selector & 216 & 217\\
+\bottomrule
+\end{tabular}
+\end{center}
+States 116, 172, 211, 157, 67, and 184 retain their roles. The corresponding
+complete censuses are: 172 from 116/0; 116 from 163/1; 211 from 216/0
+and 216/1; 216 from 132/1, 199/1, and 214/0; and 214 from 217/1.
+Their directions and written bits are exactly those used in the invariant
+proof. The seven-step state sequence becomes
+\[
+ 211\to214\to216\to211\to214\to163\to157\to67.
+\]
+The same tape conditions, head positions, block lengths, and clock formula
+therefore apply. This produces a second 208-state table from the other
+supplied machine family, with no additional source transformation.

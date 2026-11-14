@@ -1,0 +1,430 @@
+% Included by report/main.tex. This is an ordinary mathematical proof;
+% the delivered PA194 endpoint is not claimed to be a newly compiled theorem.
+\section{The PA-provable consistency equivalence}
+\label{sec:pa194-calibration}
+
+Let $M_{194}$ be the exact table \file{pa194/pa194.tm}, started in
+state zero on the all-zero tape, and let $H_{194}$ assert that this
+configuration has a finite halting trace. The halt label is $194$;
+it is not one of the $194$ working states. Fix a conventional recursively
+checked first-order PA proof predicate $\operatorname{Prf}_{\mathrm{PA}}$,
+and put
+\[
+ \operatorname{Con}(\mathrm{PA})\equiv
+ \neg\exists p\,\operatorname{Prf}_{\mathrm{PA}}
+                 (p,\ulcorner0=1\urcorner).
+\]
+
+\begin{theorem}\label{thm:pa194-equivalence}
+The delivered table satisfies
+\[
+ \mathrm{PA}\vdash
+       \bigl(\neg H_{194}\leftrightarrow
+                        \operatorname{Con}(\mathrm{PA})\bigr).
+\]
+This is an ordinary mathematical proof about PA-provability. The finite
+certificates in the package verify its candidate-specific program facts;
+the new endpoint has not been exported as a Lean or Rocq kernel theorem.
+\end{theorem}
+
+The change in logical source is the separate-diagonal emitter already
+present in the supplied separate196 design. Its new association and
+eight compatible physical folds give the present state count. We give
+the changed command compiler explicitly, since the old nine-entry
+compiler cannot be reused with its old indices. The commands below are
+the original commands, including the test $t+h=1$; they are not the
+later H-only Shift or MP-in-H variants.
+
+\subsection{Exact numerical calculus and emitter}
+
+Use Cantor pairing and the four constructors
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad I(A,B)=4p(A,B),
+\]
+\[
+ M(a,b)=4p(a,b)+1,\quad U(a,B)=4p(B,a)+2,
+ \quad E(a,b)=4p(a,b)+3.
+\]
+Thus $U$ deliberately transposes its arguments. Write
+$\neg A=I(A,1)$, $A\wedge B=\neg(A\to\neg B)$, and
+$\exists x_a A=\neg U(a,\neg A)$. Code $0$ is truth, while
+$1=M(0,0)$ is the designated contradiction. In particular,
+$I(0,0)=0$ is an actual numerical alias.
+
+The six retained axiom families, in their original push order, are
+\begin{align*}
+ h_1(D,H)&=(\exists x_D\,U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists x_D E(H,D),\\
+ h_6(D,A,H)&=U(D,A)\to(U(D,A\to H)\to U(D,H)).
+\end{align*}
+Also retain the dominated propositional family
+\[
+ \rho_8(D,A,H,u)=((H\to u)\to D)\to
+                        ((D\to H)\to(A\to H)),\qquad u\le D,
+\]
+modus ponens, and generalization $B\mapsto U(i,B)$ on closed
+derivations. Here ``closed'' means without undischarged hypotheses;
+the formula itself may contain free variable labels.
+
+Put
+\begin{align*}
+ \Gamma(B)&=B\to U(B,B),\\
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))
+                           \wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to\neg P(a,b,c)),\\
+ G(a,b,c)&=\neg(V(a,b,c)\to Q(a,b,c)).
+\end{align*}
+The separate calculus $\mathcal C_s$ adds every $\Gamma(B)$ and
+every $G(a,b,c)$ with $c\ne a,b$. A failed guard emits $0$.
+This adds no unlisted logical rule or arithmetic axiom. Truth is
+derivable already: $\rho_8(0,0,0,0)=0$.
+
+For an incoming store $(t,w,d,h)$, command $\mathsf{AX}(c,x,y)$ sets
+$D=d+x$, $H=h+y$, $A=c$, and pushes, in order,
+\[
+ t,\ U(d,h),\ \rho_8(D,A,H,d),\ h_1,\ h_2,\ h_3,\ h_4,\ h_5,\ h_6,
+ \ \Gamma(A).
+\]
+It leaves $G(H,D,A)$ in the top register if $A\ne H,D$, and
+otherwise leaves $0$; both caches become zero. The list displayed
+is push order, so its last entry is at the top of the resulting stack.
+The complete ten-entry stack and final top are proved as identities
+in a free term algebra, with all six incoming parameters symbolic,
+by \file{mathematics/check_emitter_and_words.py}. Its grammar expansion
+equals the archived separate196 word, and equals the PA195 word with
+the \texttt{cons} at zero-based index $184$ deleted. This is a
+190-token word. The final guard and cleanup blocks are unchanged.
+
+\subsection{Proof equivalence with the calibrated diagonal calculus}
+
+The PA195 calculus $\mathcal C_\Gamma$ has the same six heads,
+$\rho_8$, and rules, but its guarded axiom is
+\[
+ F_\Gamma(a,b,c)=
+       \neg\bigl(\Gamma(c)\to(V(a,b,c)\to Q(a,b,c))\bigr).
+\]
+The retained propositional basis and $h_1$ already derive the
+classical implication and negation templates, independently of either
+gate. In particular the restricted $\rho_8$ supplies the usual
+positive basis and Peirce law, and $h_1$ supplies explosion.
+
+\begin{lemma}\label{lem:pa194-calculi}
+There are primitive-recursive, conclusion-preserving proof
+translations in both directions between $\mathcal C_s$ and
+$\mathcal C_\Gamma$, whose correctness PA proves.
+\end{lemma}
+\begin{proof}
+Classical propositional templates extract $\Gamma(c)$ and
+$\neg(V\to Q)=G$ from $F_\Gamma$. To supply an arbitrary
+$\Gamma(B)$, use the guarded instance with $c=B$ and
+$a=b=B+1$; its guard always succeeds. Conversely, proofs of
+$\Gamma(c)$ and $\neg(V\to Q)$ give
+$\neg(\Gamma(c)\to(V\to Q))$ by a fixed propositional template.
+All other proof constructors are copied. These transformations recurse
+on the finite derivation and use only code formation, concatenation,
+and the displayed parameter choice. PA verifies the finitely many
+templates and proves correctness by induction on that recursion.
+No substitution into a freshness-restricted axiom is used.
+\end{proof}
+
+For completeness, we specify the logical calibration being inherited.
+The preserved PA195 report (\file{reference/pa195_conpa}), in its
+section \file{pa_calibration.tex}, constructs PA-verifiable proof
+translations giving
+\begin{equation}\label{eq:pa194-proofcalibration}
+ \mathrm{PA}\vdash
+ \bigl(\exists p\,\operatorname{Prf}_{\mathrm{PA}}
+                  (p,\ulcorner0=1\urcorner)
+       \leftrightarrow
+       \exists d\,\operatorname{Prf}_{\Gamma}(d,1)\bigr).
+\end{equation}
+These are syntactic transformations, not an inference from the
+existence of a standard model. In the forward direction the published
+PA196 refutation compiler uses equality through direct and reverse
+membership rewriting, neighborhood equality, and an equality witness.
+The preserved diagonal proof replaces exactly the reverse and
+neighborhood suppliers. Its negative-property specialization uses
+direct rewriting, the retained equality witness, and membership
+vacuity; it does not assume the equality-vacuity interface being
+recovered. Choosing a fresh label as the code of the relevant formula
+gives the required $\Gamma$ instance. Equality cases of numerical
+labels are handled explicitly. These replacements are uniform finite
+proof templates.
+
+The reverse translation interprets $M(a,b)$ by the bit predicate
+$\operatorname{Bit}(x_a,x_b)$, $E(a,b)$ by $x_a=x_b$, and $U$
+by universal quantification. PA proves
+$\operatorname{Bit}(s,z)\to z<s$ and hence
+$\neg\operatorname{Bit}(z,z)$. Every label in a formula of code $B$
+is strictly below $B$, so $\Gamma(B)$ is a valid vacuity instance.
+The guarded separation supplier uses the PA proof template
+\[
+ \forall n\,\exists s<2^n\,\forall z<n\,
+       (\operatorname{Bit}(s,z)\leftrightarrow\theta(z,\vec u))
+\]
+for an arbitrary formula $\theta$: induct on $n$, adding $2^n$
+exactly in the case $\theta(n,\vec u)$. This procedure constructs
+one induction instance syntactically; it does not evaluate $\theta$
+or assume reflection for PA. When the source labels $a=b$, the
+membership antecedent under that binder is
+$\operatorname{Bit}(z,z)$ and is false; the preserved supplier uses
+the corresponding singleton comprehension case. All substitutions
+are capture avoiding. The truth alias is handled by the uniform
+constructor equivalence
+\[
+ T(I(A,B))\leftrightarrow(T(A)\to T(B)),
+\]
+including $A=B=0$, rather than by an incorrect syntactic identity.
+False code $1$ translates to $\operatorname{Bit}(x_0,x_0)$, whose
+negation PA proves even under a binder for label zero.
+
+Thus the retained head suppliers, generalization, and modus ponens
+have uniform PA proof constructors. Induction on a coded derivation
+checks the translation for every proof code. This proves the reverse
+of (\ref{eq:pa194-proofcalibration}) internally, including nonstandard
+codes in models of PA. The detailed constructions and their upstream
+source references are preserved verbatim in the cited section.
+Composing them with Lemma~\ref{lem:pa194-calculi} gives the same
+biconditional with $\operatorname{Prf}_s(d,1)$.
+
+\subsection{The exact ten-entry command compiler}
+
+Let $[a]w=p(a,w)$ and let $\operatorname{hd},\operatorname{tl}$ be
+Cantor projections. The unchanged commands act by
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}
+   \text{halt},&t+h=1,\\
+   (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1,
+ \end{cases}
+\]
+and, for $v=d+x$,
+\[
+ \mathsf{MP}(x)(t,w,d,h)=
+ \begin{cases}
+   (v,[0]w,v,0),&I(t,v)=h,\\
+   (0,w,v,0),&I(t,v)\ne h.
+ \end{cases}
+\]
+The AX update is the ten-entry update above. Write $q_j$ for its
+$j$th entry counted from the stack top. The reversal is explicit:
+\[
+\begin{array}{c|cccccccccc}
+ j&1&2&3&4&5&6&7&8&9&10\\ \hline
+ q_j&\Gamma(A)&h_6&h_5&h_4&h_3&h_2&h_1&\rho_8&U(d,h)&t.
+\end{array}
+\]
+The gate and $q_1,\ldots,q_8$ have residue zero modulo four;
+$q_9$ has residue two and is at least two. Directly applying Shift
+therefore proves, without a restriction on the saved top $t$,
+\begin{align}
+ \mathsf{AX}(c,x,y)\mathsf S^9(t,w,d,h)
+   &=(\rho_8(D,c,H,d),[t]w,0,U(d,h)),\label{eq:pa194-nine}\\
+ \mathsf{AX}(c,x,y)\mathsf S^{10}(t,w,d,h)
+   &=(U(d,h),w,0,t).\label{eq:pa194-ten}
+\end{align}
+Every tested pair before these endpoints has sum different from one.
+
+Define
+\begin{align*}
+ \mathrm{pop}&=\mathsf{AX}(0,0,0)\mathsf S^{11},\\
+ \mathrm{push}&=\mathsf{AX}(0,0,0)\mathsf S^9\mathsf{MP}(0),\\
+ \mathrm{discard}&=\mathsf{MP}(1)\mathsf{AX}(1,0,0)
+                                      \mathsf S^{10}\mathsf{MP}(0).
+\end{align*}
+Their exact identities are
+\begin{align*}
+ \mathrm{pop}(t,[a]w,d,h)&=(t,w,0,a),\\
+ \mathrm{push}(t,w,d,h)&=(0,[t]w,0,0),\\
+ \mathrm{discard}(t,w,0,0)&=(0,w,0,0).
+\end{align*}
+For pop, append one safe Shift to (\ref{eq:pa194-ten}). For push,
+the MP comparison after (\ref{eq:pa194-nine}) compares an implication
+code with a universal code, so fails by their different residues.
+For discard, the first MP fails because $I(t,1)>0$, setting $d=1$.
+Equation (\ref{eq:pa194-ten}) then gives $(U(1,0),w,0,0)$;
+the final MP fails because $I(U(1,0),0)>0$.
+These identities include $t=1$.
+
+For $1\le j\le7$ define
+\[
+ \operatorname{select}_j(D,H,A)=
+ \mathrm{discard}\,\mathsf{AX}(A,D,H)
+                    \mathsf S^{j+1}\mathrm{pop}^{\,9-j}.
+\]
+It returns $(q_j,w,0,0)$ from $(t,w,0,0)$.
+After the direct shifts its top is $q_j$, its cache is $q_{j+1}$,
+and its remaining stack consists of $q_{j+2},\ldots,q_{10}$ and
+the protected old $w$. Each pop preserves that top and consumes one
+entry; the final cache is $q_{10}=0$ because discard saved truth.
+Thus $\Gamma(B)$ uses $j=1,D=H=0,A=B$, while $h_1,\ldots,h_6$
+use respectively $j=7,6,5,4,3,2$.
+
+Let $\operatorname{offset}(i)$ be empty for $i=0$ and
+$\mathsf{MP}(i)$ otherwise. From $(0,w,0,0)$ it sets $d=i$ and
+changes nothing else. The dominated head is selected, for $u\le D$,
+by
+\[
+ \mathrm{discard}\,\operatorname{offset}(u)\,
+ \mathsf{AX}(A,D-u,H)\mathsf S^9\mathrm{pop}.
+\]
+The identity $u+(D-u)=D$ gives the desired $\rho_8$; the remaining
+saved zero is removed by the final pop. The gate is selected by
+$\mathrm{discard}\,\mathsf{AX}(c,b,a)\mathrm{pop}^{10}$.
+It returns the guarded $G(a,b,c)$ and preserves $w$.
+
+Generalization is implemented by
+\[
+ \mathrm{gen}_i=\mathrm{push}\,\operatorname{offset}(i)\,
+                  \mathsf S\,\mathsf{AX}(i,0,0)\mathsf S^{10}.
+\]
+After push and offset, Shift transfers the saved formula $a$ to
+$h$ without testing $a$; equation (\ref{eq:pa194-ten}) then returns
+$(U(i,a),w,0,0)$. For modus ponens use
+\[
+ \mathrm{suffix}_b=
+   \mathsf S\mathsf S\mathsf{MP}(b)\mathsf{AX}(b,0,0)\mathsf S^{11}.
+\]
+On $(0,[a][I(a,b)]w,0,0)$ it halts at the second Shift if $a=1$;
+otherwise MP succeeds and yields $(b,[0]w,b,0)$, after which the
+AX--Shift word returns $(b,w,0,0)$.
+
+Compile a derivation by selecting its axiom, by applying
+$\mathrm{gen}_i$ to a compiled generalization premise, and by
+\[
+ C(q)\,\mathrm{push}\,C(p)\,\mathrm{push}\,\mathrm{suffix}_b
+\]
+for premises $p:a$ and $q:I(a,b)$. Induction on the derivation
+proves that $C(d)$, from every $(t,w,0,0)$, either halts or returns
+$(a,w,0,0)$. A refutation therefore supplies the universally halting
+word
+\[
+ W_d=\mathsf{AX}(0,0,0)\,C(d)\,\mathsf S.
+\]
+The first AX clears both caches from any incoming store; no reset
+of the live stack or scheduler store is assumed. All identities are
+equations of primitive-recursive arithmetic functions, with the
+displayed residue and positivity proofs; PA proves their universal
+closures and the compiler induction. The independent symbolic word
+checker also replays these identities, including both MP-suffix cases.
+
+\subsection{Scheduler, source binding, and exact physical traces}
+
+For clarity, the existing enumeration needs no fairness assumption.
+Encode a finite command word by continuation pointers:
+\begin{align*}
+ e([])&=0,\\
+ e(\mathsf S::v)&=1+p(0,e(v)),\\
+ e(\mathsf{MP}(x)::v)&=1+p(1,p(x,e(v))),\\
+ e(\mathsf{AX}(c,x,y)::v)&=1+p(c+2,p(y,p(x,e(v)))).
+\end{align*}
+At a fetch boundary $(n,l)$ the scheduler decodes $n$ and increments
+$n$ when $l=0$; otherwise it decodes $l-1$ and preserves $n$.
+Its residual pointer is precisely $e(v)$ on the displayed words.
+For any positive $l$, that residual is at most $l-1$, since each
+Cantor projection is at most its input. Consequently each arbitrary
+candidate finishes after a bounded number of commands or halts.
+Fresh candidates enumerate $2,3,4,\ldots$ from startup.
+Since $W_d$ begins with AX, $e(W_d)-1\ge3$, so its exact candidate
+is eventually reached or an earlier command has already halted.
+Bounded induction through the preceding candidates is a PA proof
+of this assertion. Intermediate stores may be arbitrary: the
+universal property of $W_d$ is exactly what is needed.
+
+The source binding changes ordinal addresses explicitly:
+\[
+\begin{array}{l|rrr}
+ &\text{upstream PA196}&\text{PA195}&\text{PA194}\\ \hline
+ \text{halt site}&10&10&10\\
+ \text{fetch entry}&25&25&25\\
+ \text{AX entry}&50&50&50\\
+ \text{MP entry}&3693&3581&3554\\
+ \text{shared return}&3799&3687&3660\\
+ \text{Shift entry}&3800&3688&3661\\
+ \text{total primitive sites}&3812&3700&3673
+\end{array}
+\]
+PA194 has $3504$ AX sites and the same $169$ exterior sites.
+Deleting one \texttt{cons} macro removes $27$ primitive sites:
+$11$ increments, $8$ decrements, and $8$ jumps. The independent
+ordinal control-flow checks bind every successor, not only the
+flattened token sequence, to the archived separate196 source.
+Thus the arithmetic-macro composition and the exact command transfer
+proof have the ten-entry AX effect above, with the displayed new
+MP, return, and Shift addresses. The fetch convention and original
+Shift/MP implementations remain identical under this ordinal map.
+
+The final source program has $1457$ increment, $1107$ decrement, $1108$ jump,
+and one halt primitive sites, giving
+$1457+2\cdot1107+1108+1=4780$ symbolic branch contracts.
+Both the unfolded and folded tables pass all of them. These quantify
+over the entire register file and an arbitrary affine unary gap;
+they are not $4780$ concrete numerical examples. The maximum source
+path length is $38$, below header constant $48$.
+
+Each symbolic contract consists of literal table rows, identical-tape
+reexpressions, self-loop traversals of runs, and the inherited
+register excursions. Induction on a run length or finite register
+file proves each excursion's trace. The register-box rows are
+preserved by the folds, and each accepted primitive trace has
+strictly positive physical length and its exact stated endpoint.
+Finite tapes, frame encodings, trace concatenation, and these
+inductions are arithmetizable in PA. The candidate-specific finite
+row equalities and completed symbolic traces therefore give a
+PA-provable positive simulation uniformly in all coded frames.
+The checked $58154$-step blank startup, including every nonzero
+cell, ends at the clean fetch frame $(n,l)=(2,0)$ and store
+$(0,0,0,0)$. Its fixed finite trace is also PA-provable.
+
+\subsection{Sound stores and the two implications}
+
+To reflect a possible physical halt, annotate both formula registers
+$t,h$ and all canonical stack entries with PA proofs of their
+translations $T$. The stack requires care: $p(0,0)=0$, so it is not
+a free list encoding. For $w>0$, $\operatorname{tl}(w)<w$; define
+$\delta(w)$ as the least $k\le w$ for which
+$\operatorname{tl}^{k}(w)=0$. The annotation has exactly
+$\delta(w)$ entries, certifying the successive heads. A push
+prepends a proof except when both the code and stack are zero;
+then the canonical stack remains empty. Popping zero returns zero
+with its truth proof. The identities and compiler above also cover
+these cases, including the alias $I(0,0)=0$.
+
+AX preserves this invariant by the PA suppliers already specified,
+including its unconditional separate $\Gamma$ even on a failed
+guard. A successful MP combines the proofs of $t$ and $h=I(t,v)$;
+its pushed zero receives a truth proof. A failed MP returns truth.
+A nonhalting Shift transfers the corresponding annotations.
+If Shift halts, $t+h=1$ implies $t=1$ or $h=1$, so one annotation
+and the fixed PA proof of $\neg T(1)$ produce a PA refutation.
+Each update is primitive recursive and PA verifies its invariant.
+
+Work now in PA under $\operatorname{Con}(\mathrm{PA})$.
+No annotated command can halt. The exact source command contract
+therefore supplies a positive execution to the next annotated fetch
+boundary. Given a proposed physical halting time $T$, primitive
+recursion through $T+1$ command boundaries supplies more than $T$
+primitive source steps, and concatenating the positive primitive
+contracts supplies a physical execution longer than $T$.
+All these are bounded coded iterations with explicit finite
+witnesses. Determinism contradicts the proposed halt: a partial run
+cannot pass through the halt label and later reach a nonhalt frame.
+An alleged halt inside startup contradicts its fixed checked trace.
+Thus PA proves $H_{194}\to\neg\operatorname{Con}(\mathrm{PA})$.
+This argument needs neither inverse decoding of an arbitrary tape
+nor a least-time search for a future frame.
+
+Conversely, a PA refutation gives a $\mathcal C_s$ refutation by
+(\ref{eq:pa194-proofcalibration}) and Lemma~\ref{lem:pa194-calculi}.
+Its compiled $W_d$ halts from every store. The bounded scheduler
+argument reaches that word or halts earlier; the arithmetic-macro
+and positive physical trace contracts then give a finite blank-tape
+halt of the literal table. All proof-producing operations and
+correctness inductions just used are PA-verifiable, so
+$\mathrm{PA}\vdash\neg\operatorname{Con}(\mathrm{PA})\to H_{194}$.
+The two implications prove Theorem~\ref{thm:pa194-equivalence}.

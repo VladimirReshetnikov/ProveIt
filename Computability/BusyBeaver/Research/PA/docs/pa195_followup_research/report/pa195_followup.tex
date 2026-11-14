@@ -1,0 +1,583 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx,microtype}
+\usepackage{xcolor,xurl,enumitem,fancyhdr,needspace,etoolbox}
+\usepackage[hidelinks,pdftitle={PA consistency machines: comparison and searches below 195 states},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}]{hyperref}
+\definecolor{ink}{HTML}{17364D}
+\definecolor{accent}{HTML}{0B6B6A}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\file}[1]{\texttt{\nolinkurl{#1}}}
+\newcommand{\Mnew}{M_{\mathrm{195S8}}}
+\newcommand{\Mold}{M_{\mathrm{195}}}
+\pretocmd{\section}{\Needspace{7\baselineskip}}{}{}
+\AtBeginEnvironment{theorem}{\Needspace{5\baselineskip}}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\setlist{itemsep=0.2em,topsep=0.4em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}PA consistency machines}
+\fancyhead[R]{\small Comparison and sub-195 searches}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{\color{ink}\bfseries PA consistency machines\\[0.35em]
+\Large Comparison, a verified 195-state alternative,\\
+and searches below 195 states}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{Source snapshot\\[0.2em]
+\small\texttt{5be8b9236df6a6d308195e62a906a173dc70d00a}}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+The requested construction with fewer than 195 working states is
+\textbf{not established by this packet}. We compare the supplied PA
+constructions, validate a distinct 195-state binary machine, and document
+the exact obstruction in a genuine 194-state local quotient.
+That quotient preserves the entire source control-flow graph and has eight
+compatible local folds, but fails a physical instruction contract because
+the old scanner mistakes seven address zeros for a separator.
+One additional scanner state repairs the full runtime, giving
+$135+68-8=195$ working states.
+
+For this repaired machine, the packet supplies the complete 390-row table,
+deterministic reconstruction, 32 local simulation cases, all 4,815 symbolic
+primitive contracts, and an exact 59,164-step blank initialization.
+A common-source argument proves its halting PA-equivalent to the supplied
+PA195 machine. It consequently inherits the supplied ordinary mathematical
+PA biconditional with $\Con(\PA)$; no new end-to-end Lean or Rocq theorem is
+claimed. The comparison covers all 31 incoming archives and 36 selected
+distinct rooted machine graphs. An independently reproduced finite
+rotation census and several explicitly bounded searches find no smaller
+validated machine. None is a general state lower bound.
+\end{abstract}
+\vspace{0.4em}
+\begin{center}
+\fcolorbox{accent}{white}{\parbox{0.88\linewidth}{\centering
+\textbf{Validated new machine: 195 working states, two symbols.}\\[0.3em]
+\(\displaystyle
+\PA\vdash \neg\Halt(\Mnew,\mathrm{blank})
+\ \longleftrightarrow\ \Con(\PA).
+\)\\[0.3em]
+\textbf{The strict target, fewer than 195, remains unmet.}
+}}
+\end{center}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Result, conventions, and evidence}
+\label{sec:result}
+The definitive new table is
+\file{machine_195s8/pa195_scanner8.tm}.
+The model is the same one used in the supplied PA195 construction:
+one deterministic tape extending infinitely in both directions, alphabet
+$\{0,1\}$, an initially all-zero tape, and a head initially at coordinate
+zero. Working states are $0,\ldots,194$, the start is $0$, and the separate
+halt label is $195$. Each working-state/read-symbol pair has exactly one
+transition. Every move is left or right by one cell. The halt state has no
+outgoing transition and is excluded from the count.
+
+A line \((q,b,w,D,n)\) means read $b$, write $w$, move in direction $D$,
+and enter $n$. All 195 controls are reachable in the finite transition
+graph. Graph reachability is not a claim that every control occurs on the
+actual blank execution.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Quantity & Supplied PA195 & New $\Mnew$\\
+\midrule
+Working controls &195&195\\
+Binary transition rows &390&390\\
+Inherited controls before AX allocation &134&135\\
+Allocated AX reader controls &68&68\\
+Compatible pair identifications &7&8\\
+AX macro tokens &191&191\\
+Primitive source sites &3,700&3,700\\
+Primitive branch contracts &4,815&4,815\\
+Exact blank startup, literal transitions &58,154&59,164\\
+\bottomrule
+\end{tabular}
+\end{center}
+The new literal table has SHA-256
+\begin{quote}\small
+\nolinkurl{df6ec639713c4ae7bb3656e59c833dd55ca6336a46bea8327eca639341b34662}.
+\end{quote}
+The supplied PA195 table has SHA-256
+\begin{quote}\small
+\nolinkurl{5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455}.
+\end{quote}
+Appendix~\ref{app:table} prints the complete new table. Native labels,
+dense labels, the source grammar, and exact certificates are separate
+machine-readable files.
+
+\subsection{Three different kinds of claim}
+\textbf{Finite exact facts} include table hashes, state counts, graph
+reachability, the 32 bounded local traces, and the complete startup tape.
+They are independently executable checks on fixed data.
+
+\textbf{Uniform physical correctness} includes all primitive instruction
+contracts for arbitrary natural register contents and all admitted gap
+parameters. These are symbolic identities, with unchanged register-block
+lemmas, rather than a collection of numerical test inputs.
+
+\textbf{Arithmetic calibration} is an ordinary mathematical proof that
+PA proves the desired consistency biconditional. Here it is inherited
+from the supplied PA195 report by the unconditional halting equivalence
+proved in Section~\ref{sec:transfer}. The included checkers are not a proof
+assistant and do not turn this ordinary proof into a newly compiled
+Lean or Rocq theorem.
+
+\input{../comparison/comparison_summary.tex}
+
+\section{Why the 194-state local quotient is rejected}
+\label{sec:failure}
+The strongest new unsuccessful candidate keeps the exact 191-token
+AX emitter, all 3,700 ordered primitive instructions, every ordinal
+successor, and the same initial source site 25. Its unfolded machine has
+202 working controls. Eight disjoint, simultaneously compatible folds
+produce a literal 194-state, 388-row table. An independent parser,
+compiler, and two-cell executor confirm these finite facts.
+
+Those facts do not establish that the physical machine executes the source.
+Its binary association creates seven consecutive zero bits in some source
+addresses. The inherited scanner counts seven zeros as a separator.
+It can therefore return to the source root at the wrong position.
+The four offending decrement sites are:
+\begin{center}
+\small
+\begin{tabular}{rll}
+\toprule
+Source ordinal & Operation & Exact address\\
+\midrule
+1003 & decrement logical register 1 &
+\texttt{101010011010100101110000000}\\
+2310 & decrement logical register 1 &
+\texttt{10101001101011001010000000}\\
+2552 & decrement logical register 1 &
+\texttt{10101001101011010000000}\\
+3390 & decrement logical register 1 &
+\texttt{101010011011110000000}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first failed raw symbolic contract is source ordinal 1003 on the
+zero branch of logical register 1, which is physical register 2.
+The checker completes 1,309 earlier branch contracts before encountering
+this failure. The maximum full source address length is only 37;
+overall address length is not the failing condition.
+
+The rejected table and its successful local quotient certificate are
+retained in \file{evidence/rejected_candidate_194/}.
+The negative replay checks the failure explicitly.
+They are useful together: they demonstrate why a source CFG identity
+and a correct physical quotient are insufficient without a valid
+source-to-parent runtime.
+
+\subsection{Exact scanner repair}
+The native left-scanning counters include
+$2,3,5,9,15,23,34$. On a one the scan resets; the old transition
+\[
+ (34,0)\mapsto(0,L,75)
+\]
+recognizes the seventh zero. The repaired table inserts native control
+1999:
+\[
+\begin{array}{rcl}
+(34,0)&\mapsto&(0,L,1999),\\
+(1999,0)&\mapsto&(0,L,75),\\
+(1999,1)&\mapsto&(1,L,2).
+\end{array}
+\]
+Every other raw row is unchanged. The identifier 1999 is fresh and is
+not one of the AX readers, whose labels start at 2000.
+The longer scan costs exactly one state.
+
+The repaired unfolded parent has 203 controls. Applying the same eight
+folds gives the accepted 195-state alternative. Its maximum zero run
+is seven, and its entire symbolic runtime passes. Merely relaxing the
+zero-run filter would not have sufficed: another seven-zero grammar
+failed a separate contract even with this scanner. Full instruction
+verification remains the acceptance criterion.
+
+\section{Construction and complete physical verification}
+\label{sec:physical}
+\subsection{The eight simultaneous folds}
+All pairs below use native labels. The first state is deleted and mapped
+to the second:
+\[
+\begin{array}{rrrr}
+2018\to2024,&2023\to2004,&2030\to2051,&2033\to2019,\\
+2042\to2028,&2054\to2043,&2056\to2035,&2062\to2037.
+\end{array}
+\]
+The final replacement transitions, including their helpers, appear in
+\file{machine_195s8/folds.json}. They are checked in the final, jointly
+folded table. Selecting several individually valid folds without this
+joint check would be unsound because a fold may change a helper used
+by another fold.
+
+\begin{lemma}[Context-sensitive quotient]
+\label{lem:quotient}
+Let $R$ be the 203-state repaired parent and $Q=\Mnew$ its folded table.
+For every finitely supported initial tape, with common native start
+control 74, $R$ halts if and only if $Q$ halts. PA proves the equivalence
+uniformly in the finite initial-tape code.
+\end{lemma}
+\begin{proof}
+Let $\sigma$ identify each deleted state with its keeper and fix all
+other states. Start 74 and halt 254 are fixed. The 25 raw transitions
+entering a folded pair satisfy the following history invariant: every
+entry to its first state writes zero and moves right; every entry to
+its second writes one and moves right. Thus the cell immediately left
+of the head records the relevant old state role. Induction on the raw
+run proves this invariant independently of the initial tape.
+
+For each pair, each old role, and each current bit, the delivered local
+certificate runs $Q$ from the corresponding two-cell tape and mapped
+control. Its endpoint has exactly the raw transition's final tape,
+head displacement, and mapped successor control. All intermediate
+reads and writes stay in these two cells, so arbitrary tape extensions
+are immaterial. There are 32 cases: 12 have length one, 18 length three,
+and two length five. No case passes through a halt. Every other raw
+transition commutes with $\sigma$ in a single step.
+
+Concatenating these positive blocks simulates every raw step, with
+between one and five folded transitions per step. A finite raw halt
+therefore gives a finite folded halt.
+Conversely, if the folded run halted in $T$ steps but the raw run did
+not halt in its first $T+1$ steps, those raw steps would yield a folded
+run longer than $T$. Determinism and the absence of halt transitions
+contradict that conclusion. No inverse map on arbitrary folded
+configurations is required.
+
+Finite configurations and traces have primitive-recursive codes.
+PA proves the incoming-history invariant by induction, checks the fixed
+finite local identities, concatenates the bounded positive blocks,
+and proves the converse by the same $T+1$ argument.
+\end{proof}
+
+\subsection{Source identity and arbitrary-register runtime}
+The macro emitter is unchanged as a word in the free algebra of
+formula constructors, reads, pushes, and guard operations.
+The check includes the complete resulting stack and top formula;
+it is not an equality test on a few numerical parameters.
+Two independent successor resolvers confirm the exact source graph,
+including all break and continue targets.
+
+For every primitive site, the symbolic checker begins with the source
+path, an affine zero gap, and a complete symbolic register file.
+It checks both outcomes of each decrement and the exact output frame,
+including all registers and the updated gap.
+The underlying register permutation is
+\[
+(0,1,\ldots,8)\longmapsto(6,2,0,4,3,7,8,5,1).
+\]
+All 46 transition rows protecting the inherited opaque register-block
+lemmas are unchanged. The supplied PA195 packet contains those reference
+sources and their arithmetic induction arguments. Explicit sweep and
+register-file trace constructors, together with those induction proofs,
+establish the quantified premises. The finite Python execution checks
+the corresponding symbolic templates; it is not by itself a
+proof-assistant formalization of the universal contracts.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Table & Successful cases & Largest symbolic count & Sum of counts\\
+\midrule
+Repaired raw parent, 203 controls &4,815&544&1,585,685\\
+Folded $\Mnew$, 195 controls &4,815&568&1,616,840\\
+\bottomrule
+\end{tabular}
+\end{center}
+The last two columns count operations of the symbolic executor.
+They are \emph{not} uniform literal running-time bounds for arbitrary
+natural register values: a symbolic sweep or register-block lemma may
+represent an arbitrarily long finite physical excursion.
+The underlying physical segments are always positive and finite.
+
+\subsection{Complete blank initialization}
+Starting with native state 74, head coordinate zero, and an entirely
+zero tape, both the repaired raw table and the folded table reach the
+same clean source frame after exactly 59,164 literal transitions.
+The control is native 84, the head is at $-2$, and the source ordinal
+is 25 with path \texttt{100000}. The logical register vector is
+$(2,0,0,0,0,0,0,0,0)$.
+
+The complete physical file has values
+\[
+(0,0,0,0,0,0,2,0,0,
+\underbrace{1,\ldots,1}_{26\text{ spare registers}}).
+\]
+The header gap is 48. The certificate lists all 66 tape positions
+containing a one and asserts that every other position is zero.
+An independent dense byte-array simulator reproduces the same complete
+tape. Matching only a nearby window or only the visible registers
+would not establish this startup theorem.
+
+\section{Transfer of the internal PA biconditional}
+\label{sec:transfer}
+The new work can be isolated from the inherited logical calibration.
+Let $S$ denote the deterministic ordinal register program whose exact
+3,700 instructions and successors are shared by PA195 and $\Mnew$.
+Its initial ordinal is 25 and its logical register vector is as above.
+
+\begin{theorem}[Common-source transfer]
+\label{thm:transfer}
+PA proves
+\[
+\Halt(\Mnew,\mathrm{blank})
+\ \longleftrightarrow\
+\Halt(\Mold,\mathrm{blank}).
+\]
+This transfer uses no consistency or soundness assumption.
+\end{theorem}
+\begin{proof}
+For either physical machine $N$, let $E_N(i,\mathbf r,g)$ denote its
+complete encoding of source ordinal $i$, register file $\mathbf r$,
+and an admitted gap $g$. Source paths may differ between the two
+grammars; ordinal instructions, register meanings, and successors do not.
+
+Its fixed blank startup reaches $E_N$ of the common source seed.
+For every nonhalting source instruction, its primitive contract gives
+a finite positive physical segment to the encoding of the exact source
+successor. For a source halt, the contract gives a finite positive
+segment to the distinguished physical halt. Register-file and gap
+preconditions are preserved. These statements hold for arbitrary
+natural file entries, by the symbolic identities and unchanged
+register-block lemmas.
+
+PA proves by induction that a finite halting source run yields a
+halting physical run. For the converse, suppose a physical run halts
+in $T$ transitions. It cannot halt during the certified startup.
+If $S$ failed to halt through its first $T+1$ steps, primitive
+recursion would generate those source steps, and their positive
+physical segments, with startup prepended, would yield a defined run
+longer than $T$. This contradicts determinism at the alleged halt.
+Hence PA proves
+\[
+\Halt(N,\mathrm{blank})\longleftrightarrow\Halt(S,\mathrm{seed})
+\]
+for both choices of $N$, and the displayed equivalence follows.
+
+The argument uses finite coded configurations, induction, and
+primitive-recursive generation of the finite traces and registers.
+It does not require an internal truth predicate for PA.
+\end{proof}
+
+\begin{corollary}[Consistency calibration, ordinary mathematical level]
+Using the supplied PA195 calibration,
+\[
+\PA\vdash
+\neg\Halt(\Mnew,\mathrm{blank})\longleftrightarrow\Con(\PA).
+\]
+\end{corollary}
+\begin{proof}
+The supplied PA195 report proves the corresponding PA biconditional
+for $\Mold$ by syntactic proof translations, finite bit comprehension,
+a proof-carrying store invariant, and positive simulation.
+Combine that theorem with Theorem~\ref{thm:transfer}.
+\end{proof}
+The original report and relevant reference sources are included under
+\file{reference_pa195_packet/}. The ordinary arithmetic argument was
+read during this audit; this is not a claim that its entirety has been
+reproved by a new proof-assistant kernel run.
+The imported PA196 Lean endpoint proves the internal nonhalting-to-
+consistency direction. It must not be mistaken for a previously
+compiled internal biconditional for this new literal table.
+
+\section{What the searches establish}
+\label{sec:search}
+\subsection{An exhaustive, finite rotation neighborhood}
+A move either rotates one occurrence of a binary association or rotates
+all occurrences of one distinct ordered subtree. Both directions
+$((a,b),c)\leftrightarrow(a,(b,c))$ are allowed. Macro leaves remain
+fixed. Every first move and every second move is enumerated; invalid
+intermediate encodings are retained so that a second move may repair
+them.
+
+There are 218 distinct one-move results, 24,154 results obtainable
+in exactly two moves, and 24,319 distinct grammars in the union
+including the seed. These sets overlap. Of the union, 12,277 pass
+the stated encoding gates. Every admitted grammar is scored by exact
+simultaneous compatible-fold search, with finite-state cycle detection
+instead of a local fuel cutoff. The minimum allocator count is 195,
+attained by 14 union grammars.
+
+A separate Python implementation reconstructs every canonical grammar
+key, the one/two-move reachability flags, the encoding properties,
+and every admitted fold score. It agrees with the C++ census.
+The complete key file, per-grammar census, sources, and receipts are
+included in \file{search/two_rotation/}.
+This is an exclusion for that neighborhood and allocator; it is not a
+claim that PA195 is minimal among all grammars or all Turing machines.
+
+\subsection{Local deletion screens and heuristic searches}
+On the verified 195S8 table, the two-cell screen tried 32,010 asymmetric
+aliases and 2,784 opposite-history pairs in both predecessor directions.
+Allowing arbitrary finite nonrecursive helper detours gave no deletion.
+A stronger two-cell screen allowed either replacement row to be
+revisited recursively: 5,451,830 row assignments and 29,074,603
+simulated local steps also yielded no deletion. Exact cycle detection
+closes these finite local searches. A positive control rediscovers an
+existing fold in the unfolded parent.
+
+A separate discovery screen derived conservative tape windows from
+the complete symbolic contracts and startup, excluding opaque and
+self-sweeping controls. It considered 165 controls, 13,530 pairs,
+and 258,720 initial actions. Both a five-cell window and a nine-cell
+window gave no additional deletion. This screen is documented as
+a particular discovery family, not as a universal no-fold theorem.
+
+Pure control aliases, partial-provider rewrites, source rotations,
+equal-word subtree crossovers, scanner shortening, and several finite
+stochastic association searches were also tried.
+The receipts distinguish proposal slots, actually scored grammars,
+unique retained grammars, optimistic matching bounds, and genuinely
+compatible folds. These quantities are not interchangeable.
+In particular, several apparent 194 scores from plain bipartite
+matching disappeared when all selected folds were checked together.
+
+The source invariant using the finite domain
+$\{0,1,2,3,\ge4\}$ reaches 3,697 of 3,700 sites and removes five
+of the 4,815 branch contracts. It exposes no free transition row
+in either PA195 or 195S8. It does not prove that every abstractly
+reachable site occurs on the concrete blank execution.
+
+\input{sections/final_search_notes.tex}
+
+\section{Ideas from ZFC and ConciseIPRA}
+\label{sec:ideas}
+The ZFC developments suggest optimizing physical allocation jointly
+with source syntax: predecessor markers can distinguish two logical
+reader roles, useful helpers can be shared, and a partial selector may
+use a transition row whose other role has a proved restriction.
+These are concrete compilation ideas rather than a change of target
+consistency statement. The new eight-fold parent and the additional
+helper searches pursue that approach.
+
+The ZFC project also illustrates the need to keep source proofs,
+literal runtime checks, startup, external correctness, and internal
+arithmetic statements separate. Its documented K215 endpoint and
+the internal PA result for the distinct 240-state table have different
+formal scopes. Neither endpoint can simply be relabeled as a PA
+consistency construction \cite{zfc}.
+
+ConciseIPRA provides a complementary idea: factor common proof
+operations, weaken a primitive rule when its full form is derivable,
+and combine rule families through a shared syntactic interface.
+Its clause, one-body, and evaluation-discharge presentations make
+these possibilities explicit \cite{ipra}. The searches in the following
+appendix apply that style of factoring to the PA195 diagonal clause:
+move it to another gate parameter, or bundle it with an existing
+negated equality-witness head.
+
+The size measure in ConciseIPRA is the complete normalized proof checker,
+including significant tokens, AST nodes, and bytes. A smaller such
+checker does not imply a smaller binary blank-tape TM. Moreover,
+bi-interpretability with its stated iPRA target alone does not supply
+the internal PA calibration with $\Con(\PA)$ required here.
+Both arithmetic calibration and a complete physical compiler would
+still be necessary before substituting that calculus.
+
+\section{Reproduction, limitations, and useful next targets}
+\label{sec:reproduce}
+The top-level command
+\begin{quote}\small\ttfamily
+python3 verify\_all.py
+\end{quote}
+checks the package hashes and runs the principal exact finite,
+symbolic-runtime, rejected-candidate, comparison, and source-family
+checks. Use ordinary Python without \texttt{-O}; the physical
+reference checker deliberately refuses optimized execution.
+The source-family proof checks separately exercise both interpreter
+modes using explicit failure conditions.
+The two-rotation census has its own longer replay instructions;
+its exhaustive regeneration is not silently represented by a
+quick structural check.
+
+The complete accepted machine is reconstructible with the Python
+standard library. A C++17 compiler is needed to repeat the finite
+searches. The report builds with \texttt{pdflatex} from its
+\file{report/} directory. Search executables are not required to
+verify the accepted table.
+
+Three research targets remain concrete:
+\begin{enumerate}
+\item Find a physically valid 194-state association with the original
+scanner, or a 193-state reader/runtime allocation before paying for
+the eighth-zero scanner. The failed 194 seed and the accepted repair
+provide exact inputs and failure conditions.
+\item Change a shared logical routine or macro body enough to reduce
+the total compiler cost. The new 51 equal-length source words offer
+proved source-calculus alternatives, but the searches here do not
+turn any into a smaller accepted machine.
+\item Permit allocation changes involving more than the tested
+two-cell folds, one-control replacements, or bounded helper families,
+while retaining a fully checkable positive simulation and exact
+blank startup.
+\end{enumerate}
+No empirical search in this packet proves that these approaches must
+fail. Conversely, no lower local score is accepted as a consistency
+machine until its whole chain of proof obligations passes.
+The requested strict reduction remains open in this delivery.
+
+\clearpage
+\appendix
+\section{Exact transition table of the accepted 195S8 machine}
+\label{app:table}
+Each cell lists write symbol, direction, and next state. Working state
+0 is the start; 195 is the separate halt.
+\input{sections/machine_table.tex}
+
+\clearpage
+\input{../comparison/archive_catalogue.tex}
+
+\clearpage
+\input{../source_extensions/gamma_relocation.tex}
+\input{../source_extensions/gate_extensions.tex}
+\input{../source_extensions/witness_bundle.tex}
+\input{../source_extensions/coincidence_obstruction.tex}
+\input{../source_extensions/search_summary.tex}
+
+\medskip
+\begin{thebibliography}{9}
+\bibitem{pa195}
+\emph{PA195: a 195-state binary Turing machine for the consistency of
+Peano arithmetic}, supplied 13 November 2026 packet.
+Original archive SHA-256:
+\nolinkurl{0001250c43a40920027403d748bcca36e4519a5a45e94dec98cafad4f3c8ff9f}.
+Included unchanged in substance under
+\file{reference_pa195_packet/}.
+
+\bibitem{repo}
+Vladimir Reshetnikov, \emph{ProveIt}, snapshot
+\texttt{5be8b9236df6a6d308195e62a906a173dc70d00a}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/5be8b9236df6a6d308195e62a906a173dc70d00a/Computability/BusyBeaver/Research/PA}.
+The incoming catalogue and selected literal tables in this packet
+are bound to this snapshot.
+
+\bibitem{zfc}
+\emph{Smaller machines for Con(ZFC)}, ProveIt research overview,
+same pinned snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/5be8b9236df6a6d308195e62a906a173dc70d00a/Computability/BusyBeaver/Research/ZFC/README.md}.
+
+\bibitem{ipra}
+\emph{Concise presentations of intuitionistic primitive recursive
+arithmetic}, ProveIt project overview, same pinned snapshot.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/5be8b9236df6a6d308195e62a906a173dc70d00a/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}.
+\end{thebibliography}
+\end{document}

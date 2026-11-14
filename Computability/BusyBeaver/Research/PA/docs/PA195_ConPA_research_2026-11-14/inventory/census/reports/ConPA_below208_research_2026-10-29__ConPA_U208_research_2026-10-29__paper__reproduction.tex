@@ -1,0 +1,20 @@
+Run from the extracted release root with Python 3.10 or later:
+\begin{lstlisting}
+python3 -B verify.py --output /tmp/conpa-finite.json
+python3 -B verify.py --full-runtime --output /tmp/conpa-full.json
+\end{lstlisting}
+The default verifier checks payload integrity, compares the literal
+machine snapshots, reproduces the finite collision model and regression
+witness, exhausts all 279,936 parameter choices, and replays the supplied
+finite baseline certificates. It explicitly skips the full runtime. The
+second command rederives all 5,084 universal contracts for each of the two
+U208 classes and can take several minutes. Longer discovery searches are
+separate; for example, with a C++17 compiler:
+\begin{lstlisting}
+python3 research/two_row/run.py --class control --output /tmp/conpa-control
+python3 research/two_row/run.py --class A --output /tmp/conpa-search-A
+python3 research/two_row/run.py --class B --output /tmp/conpa-search-B
+\end{lstlisting}
+Each command states whether it is a mathematical certificate replay or a
+bounded rejection screen. Python's optimized mode is supported by the small
+independent checkers; inherited full symbolic engines require assertions.

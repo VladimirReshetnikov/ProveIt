@@ -1,0 +1,74 @@
+Independent audit: exact context-sensitive quotient theorem
+=========================================================
+
+Let R be the unfolded table obtained from the candidate grammar, and Q be
+its folded native table. Let sigma fix every control except the deleted
+first member a of each fold pair (a,b), for which sigma(a)=b. All fold pairs
+must be disjoint; neither start 74 nor halt 254 may occur in a pair.
+
+Premise 1: Every R transition entering a writes 0 and moves R; every R
+transition entering b writes 1 and moves R. Every folded control is reached
+by at least one row. Consequently, in every configuration reachable in R
+from start74, q=a implies tape(head-1)=0 and q=b implies tape(head-1)=1.
+This is an induction on elapsed transitions. It applies to arbitrary
+initial tapes because no folded control is an initial control.
+
+Premise 2: For each of the 2*(2*number_of_pairs) choices of old control q
+and current bit v, the delivered two-cell trace, starting Q at sigma(q)
+with its required history bit at -1 and bit v at0, reproduces exactly the
+one R transition from q,v. Its final control is sigma(the R successor),
+its final head displacement is the R direction, and both tape cells have
+exactly the R final contents. Every read and write before that endpoint
+occurs at -1 or0. Therefore the identity holds under EVERY extension of
+those cells to a full tape. The trace must be positive and never access a
+halt row. Direct comparison verifies all remaining R rows commute with
+sigma in one Q step. Simultaneous folds are checked in the final folded
+table; individually valid merges alone would be insufficient.
+
+These premises define a forward simulation on all R-reachable states,
+with exactly unchanged tape and head at comparison boundaries. Each R
+step is simulated by at least one and at most L Q steps, where L is the
+maximum of the finite certificate lengths and1. A finite R halt therefore
+yields a finite Q halt, with start and halt unchanged.
+
+Conversely, if Q halts in T steps and R had not halted in its first T
+steps, concatenate the comparison blocks for T+1 R steps. This would
+give a Q run with more than T defined transitions from the same initial
+configuration. Determinism and the absence of a halt row make that
+impossible. Thus Q halting implies R halting. No inverse map is needed on
+arbitrary Q configurations, and no claim of one-step bisimulation is made.
+
+The finitely-supported initial-tape version is provable in PA, uniformly
+in its finite initial-tape code. The assertion for arbitrary infinite tapes
+is an external mathematical observation. For the internal theorem, code
+finite configurations and finite
+traces in the usual primitive-recursive way; prove the incoming-history
+invariant by induction; use the fixed finite local identities as closed
+arithmetic facts; concatenate at most L steps per parent step; and prove
+the converse with bounded iteration of T+1 parent steps. No consistency
+or soundness assumption is used in the theorem.
+
+Scope and inheritance
+---------------------
+This quotient proves Q equivalent to its OWN unfolded parent R. To inherit
+PA195's consistency theorem, one must also check: exact source word and
+all ordinal successors; unchanged emitter word and arithmetic interface;
+every primitive symbolic frame contract (including both decrement cases);
+all protected register-engine rows; and the COMPLETE blank startup frame.
+Reassociation plus matching CFG alone is not enough. The inherited binary
+runtime has a finite zero-run scanner, and some grammars with the same
+source CFG violate its encoding conditions. The rejected k306 candidate
+is a concrete counterexample to treating the CFG identity as sufficient.
+
+The PA195 arithmetic calibration was read in full. Its proof direction
+Halt -> inconsistency is syntactic: translate numerical calculus proofs
+into PA proofs using a uniform finite-bit-comprehension induction template;
+maintain annotations for both visible formula registers and the canonical
+Cantor stack; use positive command and physical segments to rule out a
+finite physical halt under consistency. It does not claim an internal PA
+truth predicate or invoke PA soundness. Its code-freshness argument, the
+I(0,0)=0 alias, source false-code translation, coincident binder case a=b,
+and non-resetting scheduler are all addressed explicitly. The reverse
+direction reuses the PA refutation compiler with explicit diagonal
+vacuity templates. No new gap was found in these displayed arguments,
+but this review is not a kernel formalization of the arithmetic endpoint.

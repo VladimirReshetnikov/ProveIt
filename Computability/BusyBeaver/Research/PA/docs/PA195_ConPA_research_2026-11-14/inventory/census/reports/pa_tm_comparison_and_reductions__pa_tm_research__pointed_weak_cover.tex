@@ -1,0 +1,292 @@
+\section{A logical repair for the weak-cover hybrid}\label{sec:pointed-repair}
+\begingroup
+\newcommand{\Sub}{\operatorname{Sub}}
+\newcommand{\Eq}{\mathsf E}
+\newcommand{\Mem}{\mathsf M}
+\newcommand{\Low}{\mathcal L}
+\newcommand{\Upp}{\mathcal U}
+
+This section supplies a mathematical component for a possible hybrid of
+U208's weak-cover emitter and PA196's equality-vacuity reduction. It does
+\emph{not} supply a smaller transition table or an internal PA
+consistency biconditional. The distinction between ordinary first-order
+logic and the numeric machine calculus matters: the latter must establish
+its quantifier and equality rules from its emitted heads.
+
+We use the element-first membership notation $\Mem(x,s)$ of the U208
+role-emitter audit: $x$ belongs to $s$. A coherent reversal in the numeric
+encoding of the two arguments is a separate coding change. The primitive
+symbol $\Eq$ below is not assumed to have reflexivity, symmetry, or
+transitivity. Define, with a fresh bound label $z$,
+\[
+ \Sub(x,s):=\forall z\,[\Mem(z,x)\to\Mem(z,s)].
+\]
+For a property $\phi(x)$, allowing additional parameters, put
+\[
+ \Upp(x,o):=\Mem(x,o)\to\phi(x),\qquad
+ \Low(x;s,o):=\phi(x)\to\bigl(\Sub(x,s)\to\Mem(x,o)\bigr).
+\]
+The weak-cover assertion at source $s$ is
+\begin{equation}\label{eq:weak-cover}
+ \exists o\,[\forall x\,\Upp(x,o)\ \wedge\
+                 \forall x\,\Low(x;s,o)],
+\end{equation}
+where $o$ is fresh in the property and source. There are two useful
+presentations with an additional free point $p$:
+\begin{align}
+ W_{\Low}(s,p)&:\quad
+ \exists o\,[\forall x\,\Upp(x,o)\wedge
+                  \forall x\,\Low(x;s,o)\wedge\Low(p;s,o)],
+                  \label{eq:free-lower}\\
+ W_{\Upp}(s,p)&:\quad
+ \exists o\,[\forall x\,\Upp(x,o)\wedge
+                  \forall x\,\Low(x;s,o)\wedge\Upp(p,o)].
+                  \label{eq:free-upper}
+\end{align}
+All replacements of displayed bound letters avoid capture.
+
+\begin{proposition}[Ordinary logical equivalence]\label{prop:free-instance}
+In ordinary first-order logic, each of
+\eqref{eq:free-lower} and~\eqref{eq:free-upper} is equivalent to
+\eqref{eq:weak-cover}.
+\end{proposition}
+\begin{proof}
+For a fixed existential witness $o$, instantiate the corresponding
+universal conjunct at $p$ and retain that instance as the third conjunct.
+Conversely, discard the third conjunct. No set-theoretic axiom or equality
+principle is used.
+\end{proof}
+
+In the PA interpretation by binary digits, a witness to
+\eqref{eq:weak-cover} is the finite set of all subsets of $s$ satisfying
+$\phi$. Each subset, viewed as a bit code, is at most $s$. PA's induction
+constructs the bounded bit-coded comprehension for each fixed formula
+$\phi$. The extra free conjunct is already true of that witness. This is
+an ordinary mathematical model construction; exporting a uniform
+arithmetized proof transformation is an additional obligation.
+
+\subsection{The retained numeric rules}
+
+For the bootstrap we retain PA196's six logical/equality heads other than
+the choice of orientation of the equality witness, its restricted
+implicational basis, modus ponens, and closed generalization. The two
+direct membership rewrites are
+\begin{align}
+ \Eq(v,w)&\to\bigl(\Mem(v,d)\to\Mem(w,d)\bigr),\label{eq:direct-first}\\
+ \Eq(v,w)&\to\bigl(\Mem(d,v)\to\Mem(d,w)\bigr).\label{eq:direct-second}
+\end{align}
+We also retain atomic membership vacuity and add equality vacuity:
+\[
+ B\to\forall z B
+ \quad\text{for }B=\Mem(v,w)\text{ or }\Eq(v,w),
+ \qquad z\ne v,w.
+\]
+These formulas are obtained by projection from guarded bundles; the
+numeric guards are the corresponding inequalities of variable labels.
+
+The existing h1 and restricted implicational basis provide explosion and
+classical implicational reasoning. The h6 head and generalization lift
+proved implications under a universal quantifier. The h2 head exchanges
+distinct quantifier dimensions. As in PA196's vacuity proof, these rules
+extend atomic vacuity to formulas whose free and bound indices exclude
+the chosen fresh label. They also give the following restricted
+existential elimination: from $\forall y(A\to C)$ and $\exists y A$,
+one may infer $C$ when $C\to\forall y C$ is derivable. None of these
+facts assumes a general substitution rule for primitive equality.
+
+The orientation of the retained witness head is essential. Write
+\[
+ \mathsf{W_R}:\quad\exists y\,\Eq(v,y),
+ \qquad
+ \mathsf{W_L}:\quad\exists y\,\Eq(y,v).
+\]
+Here $\mathsf{W_R}$ is PA196's mirrored witness; $\mathsf{W_L}$ is the
+original orientation. The free-lower construction below uses
+$\mathsf{W_R}$, and the free-upper construction uses $\mathsf{W_L}$.
+The other pairing of a free instance with a witness orientation is not
+certified by the argument in this section.
+
+\subsection{Two restricted specialization lemmas}
+
+Let $\chi(t)$ be one of
+$\Mem(d,t)$, $\Mem(t,d)$, or $\Mem(t,t)$. The two direct rewrites give
+\[
+ \Eq(v,w)\to\bigl(\chi(v)\to\chi(w)\bigr).
+\]
+For the diagonal atom, apply the two coordinate rewrites in succession.
+All freshness conditions stated below concern numeric variable labels.
+
+\begin{lemma}[Negative upper specialization]\label{lem:negative-upper}
+With $\mathsf{W_R}$, if $y\ne v,o$ and $d\ne y$ when $d$ occurs, then
+\[
+ \forall y\,[\Mem(y,o)\to\neg\chi(y)]
+ \ \to\ [\Mem(v,o)\to\neg\chi(v)]
+\]
+is derivable.
+\end{lemma}
+\begin{proof}
+Direct rewriting gives, under $\Eq(v,y)$, both
+$\Mem(v,o)\to\Mem(y,o)$ and $\chi(v)\to\chi(y)$. Classical reasoning
+therefore gives
+\[
+ \Eq(v,y)\to
+ \bigl((\Mem(y,o)\to\neg\chi(y))\to
+       (\Mem(v,o)\to\neg\chi(v))\bigr).
+\]
+Generalize at $y$ and use h6 with the displayed universal premise.
+The conclusion $\Mem(v,o)\to\neg\chi(v)$ is vacuous at $y$.
+Eliminate the witness $\exists y\,\Eq(v,y)$ by the restricted
+existential rule. This is a proof of this particular specialization,
+not an invocation of unrestricted universal instantiation.
+\end{proof}
+
+\begin{lemma}[Negative lower specialization]\label{lem:negative-lower}
+With $\mathsf{W_L}$, let $\phi(t)=\neg\chi(t)$. If $y$ differs from
+$v,s,o$ and from $d$ when present, and the subset binder $o$ is fresh for
+$y,v,s$, then
+\[
+ \forall y\,\Low(y;s,o)\ \to\ \Low(v;s,o)
+\]
+is derivable. The same letter $o$ may name the free output in the
+membership atom and the locally bound variable inside $\Sub$.
+\end{lemma}
+\begin{proof}
+Under $\Eq(y,v)$, the direct rewrites imply
+\[
+ \neg\chi(v)\to\neg\chi(y),\qquad
+ \Mem(y,o)\to\Mem(v,o).
+\]
+They also imply $\Sub(v,s)\to\Sub(y,s)$ under that equality
+assumption. Indeed,
+$\Eq(y,v)\to(\Mem(o,y)\to\Mem(o,v))$ is a direct rewrite.
+Generalization at $o$, equality vacuity at $o$, and h6 lift it to
+$\Eq(y,v)\to\Sub(y,v)$. Combine it pointwise with
+$\Sub(v,s)$, using h6, to obtain $\Sub(y,s)$. Consequently
+\[
+ \Eq(y,v)\to\bigl(\Low(y;s,o)\to\Low(v;s,o)\bigr)
+\]
+is derivable. Generalize at $y$, combine with $\forall y\Low(y;s,o)$,
+and eliminate $\exists y\Eq(y,v)$ using $\mathsf{W_L}$ and vacuity of
+$\Low(v;s,o)$ at $y$. Only the explicitly displayed rewrites and
+quantifier rules have been used.
+\end{proof}
+
+\subsection{Recovery of reverse membership rewriting}
+
+\begin{proposition}[Matching free instances repair the bootstrap]
+\label{prop:reverse-repair}
+Either of the following additions to the retained rules derives both
+reverse membership rewrites:
+\begin{enumerate}
+ \item $W_{\Low}$ together with $\mathsf{W_R}$;
+ \item $W_{\Upp}$ together with $\mathsf{W_L}$.
+\end{enumerate}
+More precisely, for every $a,b,d$ they derive
+\[
+ \Eq(a,b)\to(\Mem(d,b)\to\Mem(d,a)),\qquad
+ \Eq(a,b)\to(\Mem(b,d)\to\Mem(a,d)).
+\]
+The old primitive equality-transitivity head is not used.
+\end{proposition}
+\begin{proof}
+For $a=b$ the conclusions are propositional tautologies. Suppose
+$a\ne b$.
+
+First use $W_{\Low}$ and $\mathsf{W_R}$. For $d\ne a$, take
+$\phi(t)=\neg\chi(t)$, source $s=b$, and distinguished point $p=a$.
+Choose the output label $o$ fresh for $a,b,d$.
+By direct rewriting, equality vacuity, generalization and h6,
+\[
+ \Eq(a,b)\to\Sub(a,b).
+\]
+Assume $\Eq(a,b)$, $\chi(b)$ and $\neg\chi(a)$. The free lower
+conjunct gives $\Mem(a,o)$, the direct first-coordinate rewrite gives
+$\Mem(b,o)$, and Lemma~\ref{lem:negative-upper}, applied to the upper
+universal conjunct, gives $\neg\chi(b)$. This is a contradiction.
+The final implication has no index $o$, so its vacuity permits
+elimination of the existential output. Thus
+$\Eq(a,b)\to(\chi(b)\to\chi(a))$ is obtained for $d\ne a$ and for
+the diagonal atom.
+If $d=a$, each of $\Mem(a,b)$ and $\Mem(b,a)$ transfers directly to
+$\Mem(b,b)$ under $\Eq(a,b)$. The diagonal reverse implication gives
+$\Mem(a,a)$, resolving both omitted cases.
+
+Next use $W_{\Upp}$ and $\mathsf{W_L}$. For $d\ne b$, take
+$\phi(t)=\neg\chi(t)$, source $s=a$, and distinguished point $p=b$,
+again with a fresh output $o$. Under $\Eq(a,b)$, $\chi(b)$ and
+$\neg\chi(a)$, Lemma~\ref{lem:negative-lower} specializes the lower
+universal conjunct to $a$. The formula $\Sub(a,a)$ follows by
+generalizing an implicational identity. Hence $\Mem(a,o)$ follows.
+Direct rewriting gives $\Mem(b,o)$, and the free upper conjunct at
+$b$ gives $\neg\chi(b)$, a contradiction. Eliminate the existential
+output as before. For $d=b$, the diagonal reverse implication takes
+$\Mem(b,b)$ to $\Mem(a,a)$; the direct rewrites then yield
+$\Mem(b,a)$ and $\Mem(a,b)$ respectively, settling the two omitted
+cases.
+\end{proof}
+
+This provides the two directions of membership rewriting needed for
+PA196's defined-neighborhood equality. Generalization and equality
+vacuity then give the implication from primitive $\Eq$ to that defined
+relation. The relevant equality witness is transported to the defined
+relation by existential monotonicity, reversing the \emph{defined}
+relation when necessary. No claim that primitive $\Eq$ itself has a
+separate symmetry or transitivity theorem is required.
+
+\subsection{Native codes and the remaining obligations}
+
+The argument respects the special coupling between a property code and
+an output-variable label. In the U208 role-emitter notation, the same
+number $a$ is both the property code and the output label; $b$ is the
+source label and $c$ the tested label. Put
+\begin{align*}
+ e&=\Mem(c,a), &
+ G&=\forall a\,[\Mem(a,c)\to\Mem(a,b)],\\
+ S&=e\to a, & U&=\forall c\,S,\\
+ R&=a\to(G\to e), & L&=\forall c\,R.
+\end{align*}
+Here $a$ in formula position denotes the decoded formula with code $a$.
+The two revised cover tails are
+\[
+ H_R=\forall a\,[U\to(L\to(R\to\bot))],\qquad
+ H_S=\forall a\,[U\to(L\to(S\to\bot))].
+\]
+With $\Delta=\Eq(a,b)\to\forall c\Eq(a,b)$ and
+$V=\Mem(a,b)\to\forall c\Mem(a,b)$, emit respectively
+\[
+ \neg\bigl(\Delta\to(V\to H_R)\bigr),\qquad
+ \neg\bigl(\Delta\to(V\to H_S)\bigr)
+\]
+under the original guard $c\ne a,b$. Keep truth as the disabled output.
+The free-lower version uses the mirrored equality witness, and the
+free-upper version uses the original witness.
+
+For the negative-property instances used in the proof, the property code
+exceeds its displayed atom indices. If it equals the other distinguished
+label, use the equivalent triple negation instead of a single negation;
+its code is strictly larger. The contraposition argument still supplies
+the same negative-property specialization, and the output label is now
+fresh for all indices in the final conclusion. The source and test labels
+are different because the case $a=b$ in the proof was already discharged
+propositionally. Thus the native guard does not remove any case needed
+for Proposition~\ref{prop:reverse-repair}.
+
+In ordinary first-order logic the new tails add only an instance of an
+existing universal conjunct. This observation also covers the original
+role-emitter's exceptional equality of its source and output labels: the
+native free instance has the same local binding as the body it copies.
+The separate calibration of that exceptional old weak-cover instance
+must still be retained.
+
+\paragraph{Scope.}
+The new component is a noncircular derivation of the reverse-rewriting
+interface for two precisely specified emitter variants. A complete
+construction must still supply the exact AX stack contract and selection
+ranks; complete numeric formula/proof translations, including any
+argument or tag recoding; a physical allocation with correct startup and
+universal runtime contracts; and both coded trace/proof directions in
+PA. This section supplies none of those by implication. In particular,
+it establishes neither a machine with fewer than 196 states nor the full
+PA-provable nonhalting--consistency biconditional.
+
+\endgroup

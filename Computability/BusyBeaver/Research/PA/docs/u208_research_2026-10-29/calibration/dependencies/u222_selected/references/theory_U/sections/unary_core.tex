@@ -1,0 +1,366 @@
+\section{Numerical induction before successor existence}\label{un:core}
+
+The numerical representatives and saturated codes below are adapted from
+the supplied source-only draft~\cite{draftC2}. The new dependency order is
+essential: we prove induction and global minimization before constructing
+successors. This makes a source-free unary matrix sufficient.
+
+Throughout this section membership is the sole primitive binary relation.
+Define
+\begin{align*}
+ u\Eq v&\ :\Longleftrightarrow\ \forall z\,(z\in u\leftrightarrow z\in v),\\
+ \Sat(a)&\ :\Longleftrightarrow\ \forall u\forall v\,
+ [u\Eq v\to(u\in a\leftrightarrow v\in a)],\\
+ \Tr(a)&\ :\Longleftrightarrow\ \forall u\forall v\,
+ [(u\in v\land v\in a)\to u\in a].
+\end{align*}
+The relation $\Eq$ is an equivalence relation by logic alone. It is always
+a congruence in the second coordinate of membership. In the first
+coordinate it is a congruence when the containing object is saturated.
+We never assume that it is a congruence throughout the ambient universe.
+
+Let $\operatorname{Lin}(a)$ say that membership among the members of $a$
+is irreflexive and transitive, and that
+\[
+ \forall u\in a\;\forall v\in a\quad
+       (u\Eq v\lor u\in v\lor v\in u).
+\]
+Here and below bounded quantifiers abbreviate ordinary first-order
+formulas. When the members are saturated, this is a strict linear order
+on their $\Eq$-classes. Define $\operatorname{EP}(s,t)$ to say that the
+intersection of their member profiles, when nonempty, has endpoints:
+\[
+\begin{split}
+ (\exists z\,(z\in s\land z\in t))\ \to\
+ \exists l\exists g\,[&
+ l\in s\land l\in t\land g\in s\land g\in t\\
+ &\land\forall z\,((z\in s\land z\in t)\to
+       ((l\Eq z\lor l\in z)\land(z\Eq g\lor z\in g)))].
+\end{split}
+\]
+No intersection object is asserted to exist. The numerical predicate is
+the following single formula:
+\begin{equation}\label{un:number-definition}
+\begin{split}
+ \N(a):\Longleftrightarrow{}&
+ \Sat(a)\land\Tr(a)\land\operatorname{Lin}(a)
+ \land\forall u\,(u\in a\to\Sat(u))\\
+ &\land\forall s\forall t\,
+       [(t\Eq a\lor t\in a)\to\operatorname{EP}(s,t)].
+\end{split}
+\end{equation}
+Its quantifiers range over existing objects, including objects in
+nonstandard models; it asserts neither external finiteness nor external
+well-foundedness. Finally put
+\[
+ \Emp(a):=\forall z\,z\notin a,\qquad
+ \Succ(a,b):=\forall z\,[z\in b\leftrightarrow
+                             (z\in a\lor z\Eq a)].
+\]
+Thus a successor, when it exists, adds the entire coextensionality class
+of its predecessor.
+
+\begin{lemma}[Local facts without successor totality]\label{un:local}
+Empty objects exist and satisfy $\N$. The predicates $\Sat$ and $\N$
+are invariant under $\Eq$. For numerical $a$:
+\begin{enumerate}
+\item $a\notin a$, and every member of $a$ is numerical;
+\item if $\Succ(a,b)$ holds, then $b$ is numerical and $a$ is its
+      greatest member class;
+\item if $a$ is nonempty, it has a greatest member $d$, unique modulo
+      $\Eq$, and $\Succ(d,a)$; its least members are empty.
+\end{enumerate}
+The relation $\Succ$ is invariant under $\Eq$ in its two arguments.
+On numerical classes its existing outputs are unique, its existing
+predecessors are unique, and no existing successor is empty.
+None of these assertions presupposes that every number has a successor.
+\end{lemma}
+\begin{proof}
+The unary false-matrix instance of $\UU$ has an output with no members.
+An empty object satisfies every clause of~\eqref{un:number-definition}.
+Saturation and numericality depend only on the member profile of their
+argument, so are $\Eq$-invariant.
+
+If $a\in a$, irreflexivity in $\operatorname{Lin}(a)$ applies to $a$
+itself, giving a contradiction. Let $i\in a$. Then $\Sat(i)$ is part
+of $\N(a)$, and transitivity gives $i\subseteq a$. If $u\in v\in i$,
+all three of $u,v,i$ belong to $a$; transitivity of the restricted order
+on $a$ gives $u\in i$. Hence $i$ is transitive. Its linear order and
+saturation of its members are inherited. For an endpoint cutoff $t$,
+if $t\in i$, transitivity puts $t$ in $a$; if $t\Eq i$, saturation of
+$a$ also puts $t$ in $a$. The endpoint clause for $a$ therefore proves
+the required clause for $i$.
+
+Suppose $\Succ(a,b)$. Its member profile consists of the old members of
+$a$ and one new $\Eq$-class, that of $a$. This profile is saturated.
+Every old member is saturated, and any new member is coextensional with
+the saturated object $a$. The profile is transitive: a member of an old
+member lies in $a$, and a member of an object coextensional with $a$
+also lies in $a$. Every old member lies below every new representative.
+There is no reverse edge, because an edge from a representative of
+$[a]$ into an old member, followed by transitivity and saturation, would
+force $a\in a$. There is no edge within the new class for the same
+reason. Thus the old strict class order extends by its one greatest
+class.
+
+For the endpoint condition of $b$, a cutoff $t\in b$ is either an old
+member or coextensional with $a$, so the condition for $a$ applies. If
+$t\Eq b$, its intersection with any $s$ is the old intersection with
+$a$, possibly augmented by representatives of $[a]$. If the old part
+is nonempty, its least endpoint remains least, and its greatest remains
+greatest unless a new representative is present. If the old part is
+empty, any present new representative is both endpoints. This proves
+$\N(b)$ and the greatest-class assertion.
+
+For nonempty $a$, apply its endpoint clause with $s=t=a$ to obtain a
+greatest member $d$. It is numerical by heredity. Greatestness gives
+$z\in a\to(z\in d\lor z\Eq d)$. Conversely, transitivity gives
+$z\in d\to z\in a$, and saturation of $a$ gives
+$z\Eq d\to z\in a$. This is $\Succ(d,a)$. If a least member $l$
+had a member $z$, then $z\in a$, and leastness would give $l\Eq z$
+or $l\in z$, each contradicting the strict class order since $z\in l$.
+Thus $l$ is empty.
+
+The definition of $\Succ$ proves its invariance and uniqueness of output
+profiles. Each numerical predecessor is the greatest member class of
+its output, so predecessors are unique as well. Every successor contains
+its predecessor and is therefore nonempty.
+\end{proof}
+
+\begin{theorem}[Full representative induction before total successors]
+\label{un:induction}
+For every fixed ambient formula $\theta(v,\bar p)$, the theory $\UU$
+proves the following induction implication, with arbitrary parameters
+$\bar p$:
+\begin{equation}\label{un:induction-form}
+\begin{split}
+ \bigl[&\forall e\,(\Emp(e)\to\theta(e,\bar p))\\
+ &\land\forall a\forall b\,
+   ((\N(a)\land\Succ(a,b)\land\theta(a,\bar p))
+                            \to\theta(b,\bar p))\bigr]\\
+ &\hspace{35mm}\to\forall n\,(\N(n)\to\theta(n,\bar p)).
+\end{split}
+\end{equation}
+No invariance of $\theta$ under $\Eq$ is required.
+\end{theorem}
+\begin{proof}
+First let $Q(v)$ have no other free variables. Assume its base and step
+premises, and suppose $\N(n)\land\neg Q(n)$. Apply the legal unary
+instance with matrix $\neg Q(x)$ and source $n$, obtaining $B$. For
+every $x\in n$, transitivity gives $x\subseteq n$, so the two weak
+filter clauses imply
+\begin{equation}\label{un:local-failures}
+               x\in B\quad\longleftrightarrow\quad\neg Q(x)
+                  \qquad(x\in n).
+\end{equation}
+
+If the intersection of $B$ with $n$ is nonempty, take a least member
+$i$. It is numerical by heredity and fails $Q$ by the upper filter
+clause. It is not empty, by the base premise. Let $d$ be its greatest
+member; Lemma~\ref{un:local} gives $\N(d)$ and $\Succ(d,i)$.
+Transitivity puts $d$ in $n$. If $\neg Q(d)$, then
+\eqref{un:local-failures} puts $d$ in the same intersection, contrary
+to its least class $[i]$, since $d\in i$. Hence $Q(d)$, and the step
+premise gives the contradiction $Q(i)$.
+
+If that intersection is empty, every member of $n$ satisfies $Q$.
+The counterexample $n$ is nonempty, so its greatest member $d$ satisfies
+$Q(d)$ and $\Succ(d,n)$. The step premise again contradicts $\neg Q(n)$.
+This second case is the crucial change: it uses $n$ itself as the least
+failure and does not require an already existing successor of $n$.
+
+For a formula with parameters, let $A_\theta(\bar p)$ be the conjunction
+of its base and step premises in~\eqref{un:induction-form}. Form the
+unary formula
+\[
+ Q(v):=\forall\bar p\,[A_\theta(\bar p)\to\theta(v,\bar p)],
+\]
+freshening every bound variable. Its base follows from the base component
+of $A_\theta$. Given an existing successor and $Q$ at its predecessor,
+fix any parameters satisfying $A_\theta$; the step component then gives
+$Q$ at the successor. The unary result proves $Q$ for every number.
+Specializing the bound parameters gives~\eqref{un:induction-form}.
+The filter matrix used in this proof still has only its tested object
+free.
+\end{proof}
+
+\section{Global least failures remove the source parameter}
+\label{un:minimization}
+
+For numerical arguments write
+\[
+                 a\preccurlyeq b\quad:\Longleftrightarrow\quad
+                            (a\Eq b\lor a\in b).
+\]
+
+\begin{lemma}[Global comparison without successor totality]
+\label{un:comparison}
+For any two numbers $a,b$, exactly one of
+$a\Eq b$, $a\in b$, and $b\in a$ holds. This conclusion can be
+proved before totality of $\Succ$.
+\end{lemma}
+\begin{proof}
+First prove by Theorem~\ref{un:induction}, on $b$, the conditional
+no-gap property
+\begin{equation}\label{un:no-gap}
+ \N(a)\land\N(a')\land a\in b\land\Succ(a,a')
+       \quad\to\quad(a'\in b\lor a'\Eq b).
+\end{equation}
+The empty case is vacuous. At an existing successor $\Succ(b,b')$,
+membership $a\in b'$ means $a\in b$ or $a\Eq b$. In the first case,
+the induction hypothesis puts $a'$ in $b$ or in $[b]$, so in $b'$.
+In the second case, successor congruence gives $a'\Eq b'$.
+This uses existing successors only.
+
+Now induct on $a$ in the assertion that it compares with every number
+$b$. An empty $a$ is coextensional with any empty $b$. If $b$ is
+nonempty, its least member is empty; saturation of $b$ therefore gives
+$a\in b$. For the step $\Succ(a,a')$, compare $a$ with $b$ by the
+induction hypothesis. If $b\in a$ or $b\Eq a$, then $b\in a'$.
+If $a\in b$, apply~\eqref{un:no-gap} to obtain $a'\in b$ or
+$a'\Eq b$. This proves exhaustiveness. Irreflexivity, transitivity,
+and saturation on numbers make the alternatives disjoint. Consequently
+the numerical classes are strictly linearly ordered as claimed.
+\end{proof}
+
+\begin{lemma}[Global least numerical tuples]\label{un:least}
+Every fixed formula $P(v,\bar q)$ invariant under $\Eq$ in its numerical
+argument has a least numerical class whenever it has a numerical
+witness. The parameters $\bar q$ may be arbitrary objects.
+More generally, for each fixed positive integer $k$, every formula
+$B(n_1,\ldots,n_k)$ invariant in its numerical arguments has a
+lexicographically least numerical tuple whenever it has one. Its least
+tuples are unique coordinatewise modulo $\Eq$ and are described by a
+fixed first-order formula. If $B$ has no additional free parameter,
+neither does this least-tuple formula.
+\end{lemma}
+\begin{proof}
+For the first claim, apply full representative induction to the assertion
+that the numerical class segment
+$I_n=\{i:\N(i)\land i\preccurlyeq n\}$ either has no $P$-member or
+has a least one. At an empty $n$, the segment consists of its one class,
+and invariance of $P$ handles all representatives. At an existing
+successor $\Succ(n,n')$, the definition gives
+$I_{n'}=I_n\cup[n']$. If an old least witness exists it remains least;
+otherwise the new class either supplies the least witness or supplies
+none. This proves the induction assertion without totality of successors.
+If $P$ has witness $n$, its least witness in $I_n$ is globally least:
+comparison shows every number outside $I_n$ is larger than $n$.
+
+For tuples, minimize the first coordinate for which an extension to a
+$B$-tuple exists. Keep a chosen representative as a parameter of the
+derived least-number theorem, and minimize the second coordinate among
+its extensions; continue a fixed $k$ times. Invariance transports
+extensions between equivalent choices of previous coordinates. The
+result is a lexicographically least tuple and is unique coordinatewise
+modulo $\Eq$.
+
+For precision, let $\bar r<_{\mathrm{lex}}\bar s$ abbreviate the finite
+disjunction
+\[
+ \bigvee_{j=1}^{k}
+       \left[\left(\bigwedge_{i<j}r_i\Eq s_i\right)\land r_j\in s_j\right].
+\]
+One may take
+\begin{equation}\label{un:least-formula}
+\begin{split}
+ L_B(\bar r):\Longleftrightarrow{}&
+ \bigwedge_i\N(r_i)\land B(\bar r)\\
+ &\land\forall\bar s\,
+ \left[\left(\bigwedge_i\N(s_i)\land B(\bar s)\right)\to
+   \left(\bigwedge_i r_i\Eq s_i\ \lor\
+                             \bar r<_{\mathrm{lex}}\bar s\right)\right].
+\end{split}
+\end{equation}
+Tuple notation here abbreviates a fixed finite list of variables, not
+objects coding tuples. Formula~\eqref{un:least-formula} and its proof
+are obtained uniformly from the syntax of $B$.
+\end{proof}
+
+\begin{theorem}[Bounded numerical comprehension]\label{un:bnc}
+Let $\chi(z,\bar n)$ be any fixed formula whose only free variables are
+the displayed ones, with $k$ numerical parameter positions. Let
+$I_\chi$ assert invariance of $\chi$ when those parameters are replaced
+by coextensional numerical representatives, and let
+\[
+ S_\chi:\quad
+ \forall\bar n\in\N\;\exists a\;\forall z\,
+                       (\chi(z,\bar n)\to z\subseteq a).
+\]
+Then $\UU$ proves the conditional theorem
+\begin{equation}\label{un:bnc-statement}
+ (I_\chi\land S_\chi)\ \to\
+ \forall\bar n\in\N\;\exists b\;\forall z\,
+                       (z\in b\leftrightarrow\chi(z,\bar n)).
+\end{equation}
+No invariance condition is imposed on the tested object $z$.
+\end{theorem}
+\begin{proof}
+Assume $I_\chi$ and $S_\chi$. For $k>0$, suppose an output fails to
+exist at some numerical tuple. Define
+\[
+ B(\bar n):=\neg\exists b\;\forall z\,
+                          (z\in b\leftrightarrow\chi(z,\bar n)).
+\]
+The assumed invariance of $\chi$ makes $B$ invariant in its numerical
+arguments. Lemma~\ref{un:least} supplies a globally least failing tuple
+$\bar r$. Use the following legal unary matrix:
+\begin{equation}\label{un:bnc-matrix}
+           \varphi(z):=\exists\bar n\,
+                         [L_B(\bar n)\land\chi(z,\bar n)].
+\end{equation}
+Every tuple satisfying $L_B$ is coordinatewise coextensional with
+$\bar r$, so $I_\chi$ proves
+$\varphi(z)\leftrightarrow\chi(z,\bar r)$ for every ambient object
+$z$. Choose a support source $a$ from $S_\chi$ at $\bar r$. Apply
+the unary weak filter to~\eqref{un:bnc-matrix} at that source. Its
+upper clause gives $z\in b\to\chi(z,\bar r)$. Conversely,
+$\chi(z,\bar r)$ implies both $z\subseteq a$ and $\varphi(z)$, so
+the lower clause gives $z\in b$. This is the forbidden exact output.
+
+For $k=0$, the formula $\chi(z)$ is already unary. Choose any supporting
+source from $S_\chi$ and apply its weak-filter instance directly; the
+same two implications give exactness.
+\end{proof}
+
+The support source is an existentially chosen object in the proof; it
+does not occur free in~\eqref{un:bnc-matrix}. The argument proves a
+derived conditional comprehension theorem. It neither exactifies all
+source-free instances nor licenses arbitrary ambient parameters. A use
+of the theorem must supply proofs of its stated invariance and support
+premises. The least-failure predicate is a finite formula formed from
+$\chi$; no algorithm evaluates it, and no self-referential truth
+predicate is introduced.
+
+\begin{corollary}[The bootstrap is complete]\label{un:bootstrap}
+Every number has a numerical successor. Every number $n$ has an exact
+power witness
+\[
+             \Pow(n,W):=\forall z\,(z\in W\leftrightarrow z\subseteq n).
+\]
+Every finite tuple of numbers is contained in a common numerical object.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{un:bnc} first to
+$\chi(z,n):=(z\in n\lor z\Eq n)$. It is invariant in $n$.
+Every selected object is a subset of $n$, by transitivity or
+coextensionality, so $n$ itself is a support source. Its exact output
+satisfies $\Succ(n,b)$ and is numerical by Lemma~\ref{un:local}.
+
+Next use $\chi(z,n):=(z\subseteq n)$, again invariant in $n$ and
+supported at $n$. The output is the asserted exact power. Only powers
+of numerical sources have been proved here; no power axiom for all
+ambient objects is being assumed.
+
+Finally, numerical comparison chooses a greatest class from any fixed
+finite tuple. A successor of its representative contains every entry
+of that tuple, by saturation and the successor profile.
+\end{proof}
+
+The order of these arguments rules out the tempting circular proof:
+local predecessor facts imply induction; induction implies comparison
+and least failures; least failures imply bounded numerical comprehension;
+only then does comprehension imply total successors and numerical
+powers. Neither a preliminary extensional core nor a source-recovery
+decoder is needed.
+

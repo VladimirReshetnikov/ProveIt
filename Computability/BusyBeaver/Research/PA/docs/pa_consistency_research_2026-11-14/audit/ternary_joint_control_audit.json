@@ -1,0 +1,135 @@
+{
+  "grammar_sha256": "a2cc54e9de96a075d6b387dd99f252e71ccb035af64a8ad5d768c430ccd07b6d",
+  "family": "separate",
+  "macro_tokens_after_increment_expansion": 208,
+  "peephole_count": 6,
+  "peepholes": [
+    {
+      "expanded_macro_offset": 91,
+      "restored_macro_offset": 91,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    },
+    {
+      "expanded_macro_offset": 102,
+      "restored_macro_offset": 102,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 115,
+      "restored_macro_offset": 109,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 170,
+      "restored_macro_offset": 158,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    },
+    {
+      "expanded_macro_offset": 187,
+      "restored_macro_offset": 175,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 202,
+      "restored_macro_offset": 184,
+      "kind": "drain_inc_pair",
+      "kind_number": 1
+    }
+  ],
+  "restored_exact_baseline_word": false,
+  "restored_free_algebra_stack_contract": true,
+  "conditional_arithmetic_identities": {
+    "drain_inc_pair": "The 20-site replacement equals the old 47-site block when incoming source r7=0. As a formula negation macro, r6=0 is also needed.",
+    "pair_plus8": "With r6=r7=0, node64 then eight increments maps t to 4*p(0,t)+8 = 4*p(t,1). Both expressions are 2*t^2+6*t+8. It preserves the encoded stack."
+  },
+  "required_unproved_here": "Bind the clean-scratch macro contracts to every replacement entry in this exact changed source, establishing r6=r7=0. The upstream AXMacro.registers model sets both to zero, and AXMacroSound preserves clean macro stores; this checker does not bind those contracts or prove any tape simulation.",
+  "no_new_logical_schema": true,
+  "joint_witness": {
+    "gate_variant": 3,
+    "macro_tokens": 190,
+    "head_order_zero_based": [
+      6,
+      3,
+      1,
+      5,
+      0,
+      4,
+      2
+    ],
+    "equality_arguments_reversed": true,
+    "head_variants": [
+      {
+        "role_map": {
+          "A": "D",
+          "D": "A",
+          "H": "H"
+        },
+        "antecedents_exchanged": false
+      },
+      {
+        "role_map": {
+          "A": "H",
+          "D": "A",
+          "H": "D"
+        },
+        "antecedents_exchanged": false
+      },
+      {
+        "role_map": {
+          "A": "D",
+          "D": "H",
+          "H": "A"
+        },
+        "antecedents_exchanged": true
+      },
+      {
+        "role_map": {
+          "A": "A",
+          "D": "D",
+          "H": "H"
+        },
+        "antecedents_exchanged": true
+      },
+      {
+        "role_map": {
+          "A": "H",
+          "D": "D",
+          "H": "A"
+        },
+        "antecedents_exchanged": false
+      },
+      {
+        "role_map": {
+          "A": "A",
+          "D": "H",
+          "H": "D"
+        },
+        "antecedents_exchanged": true
+      },
+      {
+        "gamma_parameter": "D",
+        "antecedents_exchanged": false
+      }
+    ],
+    "complete_expression_and_stack_exact": true,
+    "parameter_reads_unchanged": true,
+    "guard_suffix_unchanged": true,
+    "input_word_sha256": "3e2e8c18624f1303fc1de9fdf7ff34b6ec405313069962f25911c0452b84b184",
+    "scope": "Exact expression/stack identity, schema role renaming, equality-code reversal, antecedent exchange and head reordering. No new logical schema is introduced; physical validation and PA proof transport are separate."
+  },
+  "negation_kinds_by_occurrence": [
+    0,
+    1,
+    2,
+    2,
+    1,
+    0,
+    2,
+    1
+  ]
+}

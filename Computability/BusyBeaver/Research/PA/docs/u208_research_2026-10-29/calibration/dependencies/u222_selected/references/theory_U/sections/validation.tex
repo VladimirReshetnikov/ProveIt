@@ -1,0 +1,50 @@
+\section{Evidence, scope, and further research questions}
+\label{sec:validation}
+
+\subsection{What was checked}
+
+The mathematical proof was independently reviewed at the points where an accidental parameter or circular use of successor would invalidate it. The review covered the numerical predicate, induction before totality, conditional comparison, least numerical tuples, the bounded-comprehension rule, all-representatives pair decoding, and canonical graph extension/restriction. A second independent audit challenged the same dependencies and the symmetry-model separation. These are mathematical reviews, not kernel-checked formal proofs.
+
+The executable evidence is deliberately narrower and reproducible:
+\begin{itemize}
+\item All 66,066 binary relations on nonempty domains of size at most four were checked for the local numerical lemmas. The induction diagnostic examines 1,052,740 arbitrary unary predicates and explicitly constructs 86,748 least-failure cases: 83,238 use the empty-intersection branch and 3,510 the nonempty branch. It exhibits 83,382 base failures and 3,366 step failures. These finite structures are not claimed to satisfy the full unary schema.
+\item The symmetry diagnostic checks levels of sizes 4, 7, and 35. Its 224 orbit-witness cases check 15,680 upper/lower implications and 1,225 automorphism comparisons. It confirms the missing-singleton and missing-exact-power controls. Again, a finite level is not a model of the infinite theory.
+\item The emitter diagnostic checks 4,099 inputs in each of four coding variants, including large integers. It compares independent ASTs, round trips, variable bounds, constructor ledgers, input recovery, the polynomial form, and the register schedule.
+\item Both exceptional-input identities are checked on every binary relation of sizes one, two, and three, under every source assignment: 12,560 cases across the four codecs. A further 514 matched matrices are re-encoded before comparing their emitted formulas and lengths.
+\item Exact full coefficient arrays verify degrees 512, 256, and 128 for the inspected arithmetic variants, including the preferred leading coefficient $2^{71}$. This is symbolic rational arithmetic, not fitting a polynomial to samples.
+\item The positive proof checker replays 16 exact named targets, tests 306 finite semantic cases for the logical conclusions, rejects seven invalid controls, and checks a 4,096-description stream prefix. Finding no target in that prefix is recorded only as a bounded implementation observation.
+\end{itemize}
+
+Normal and optimized Python runs are compared for the diagnostic suites. Saved receipts include their exact counts. The archive's replay script writes fresh results into a temporary directory and verifies the release hashes before and after execution. The final PDF was compiled from the supplied LaTeX and visually inspected. External K215, K230, and PA238 proof binaries were not rebuilt.
+
+\subsection{What is delivered}
+
+\path{report.tex} and \path{sections/} contain the complete paper; \path{report.pdf} is its compiled version. \path{code/} contains the emitter, exact polynomial checker, complete positive theorem stream, finite numerical diagnostic, and symmetry diagnostic. \path{results/} contains fixed certificate targets and check receipts. Source identities and review scope are recorded in \path{sources/}; \path{SHA256SUMS} seals the release.
+
+Run
+\begin{lstlisting}
+python3 -B reproduce.py
+python3 scripts/build_pdf.py
+python3 code/positive_stream.py --search --limit 4096
+\end{lstlisting}
+The first command requires only Python 3.10 or later and its standard library. The second also requires a standard LaTeX installation. The third is a bounded reference search and returns \texttt{unknown} on the delivered prefix. Omitting its limit requests the unbounded semidecision search; no termination is promised.
+
+\subsection{The remaining machine question}
+
+The sharp abstract theory uses one free matrix role. The fastest route to a small machine may instead use the unrestricted polynomial emitter, because accepting every integer avoids a free-variable validator. A fair experiment must compare these alternatives within the same implementation of logic, pairing, substitution, proof enumeration, tape encoding, and blank-tape initialization.
+
+The nine nonlinear multiplications are a concrete source-level target. They do not include decoding, proof inference, integer storage, or multiplication workspace. The 21-bit guard can be initialized arithmetically or literally; both costs belong in a compiled comparison. The total theorem stream supplies a complete semantic reference for that work, so the next machine is no longer dependent on an unspecified proof enumerator.
+
+\subsection{Further research questions}
+
+\begin{enumerate}
+\item Can the unary lower interpretation be formalized directly in Lean, Rocq, or MM0 with the predecessor-first induction lemma as its first major theorem? This would avoid formalizing the earlier source-recovery construction.
+\item Can one compile the dyadic polynomial rule and all eight proof-description branches into a literal two-symbol, one-tape machine, then prove its PA-internal halting equivalence? What state count results after initialization and arithmetic workspace are included?
+\item Does the unary restriction actually reduce a compiled machine once its free-variable recognizer is counted, or does unrestricted generation remain smaller? The two mathematical calibrations permit a controlled comparison.
+\item Can a different code preserve the useful $0$/$1$ collision identities while reducing the whole substitution and proof engine, rather than only the axiom emitter? The dyadic sample already shows that one encoding need not minimize every formula.
+\item Can the four-node subset guard or the split-clause wrapper be replaced by a genuinely different PA-strength construction with a smaller compiled interface? The one-role sharpness theorem addresses neither of those global questions.
+\item How far can numerical bounded comprehension be generalized to non-numerical definable domains carrying a parameter-free least-class principle? The least-failure proof isolates the exact invariance and support hypotheses needed.
+\item Which original-language principles separate unary weak filtering, unary exact filtering, source-only filtering, and unrestricted filtering beyond the explicit symmetry example? Their shared consistency strength does not determine their deductive closures.
+\end{enumerate}
+
+The new theorem removes the last free matrix parameter while preserving a PA-provable consistency calibration. The accompanying numerical program gives a concrete next compilation target. A smaller literal machine remains an empirical and formal-verification task.

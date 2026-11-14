@@ -1,0 +1,129 @@
+\section{A base-four disequality recoding for parity acceptance}
+\label{sec:disequality-parity}
+
+This section gives a new high-level consistency calibration. It is not a
+transition table with fewer than 196 states. The point of the construction
+is that parity acceptance can be made sound without changing the existing
+Cantor-pairing multiplier or the modus-ponens decoder.
+
+Write $p(a,b)=(a+b)(a+b+1)/2+b$ and retain
+\[
+ I(a,b)=4p(a,b),\qquad M(a,b)=4p(a,b)+1,\qquad
+ U(a,A)=4p(A,a)+2.
+\]
+Interpret the remaining constructor
+\[
+ D(a,b)=4p(a,b)+3
+\]
+as disequality. Let $N(A)=I(A,1)$ and use the defined equality expression
+$E^*(a,b)=N(D(a,b))$ throughout the PA196 axiom families and guarded gate.
+Code zero remains truth, and code one remains the contradiction $M(0,0)$.
+Keep modus ponens, closed generalization, and the original first quantifier
+head. In particular the explosion principle remains derivable; it is not
+being inferred merely from an intended interpretation of code one.
+
+The six heads and the gate are precisely those in the pinned PA196 paper
+with each displayed primitive equality replaced by $E^*$. One may use the
+classically equivalent shorter witness head
+\[
+ N\bigl(U(d,D(h,d))\bigr)
+\]
+in place of $\exists x_d\,E^*(h,d)$. Their equivalence follows by
+propositional double-negation elimination/introduction, generalization,
+and the quantifier-distribution head. It is consequently a finite
+proof-template change, not a new semantic assumption.
+
+\paragraph{Soundness of odd-code acceptance.}
+Translate $M(a,b)$ to arithmetic binary-bit membership and $D(a,b)$ to
+$x_a\ne x_b$, with implication and universal quantification translated
+as usual. In this translation $E^*$ is equivalent to ordinary equality.
+Thus the same PA proof templates for the six heads, guarded vacuities,
+and pointed finite separation apply. Freshness is unchanged: every label
+in the decoded formula of positive code $c$ is below $c$, so the gate's
+variable $x_c$ is fresh in its property.
+
+Every odd code is either a membership atom or a disequality atom.
+After replacing all its free variables by zero, its translation is
+respectively $\operatorname{Bit}(0,0)$ or $0\ne0$. PA refutes both.
+A derivation of an odd code therefore translates to a PA refutation:
+first construct a PA proof of the translated formula, then apply uniform
+zero substitution and append the fixed refutation. This is a syntactic
+proof transformation; no uniform truth predicate is used.
+
+Consequently either a cached-head parity test or a test that the sum of
+the two certified live formulas is odd is sound relative to PA
+consistency. In the latter case an odd sum has an odd summand, whose
+retained derivation supplies the refutation. The original base-four
+encoding cannot justify this step, since its equality atoms have odd
+residue three and need not be false at zero.
+
+\paragraph{A precise transport of the old calculus.}
+Define $\tau$ by course-of-values recursion. Put $\tau(0)=0$. For
+$n>0$, write $n=4p(a,b)+r$ and set
+\[
+\begin{aligned}
+ \tau(4p(a,b))&=I(\tau(a),\tau(b)),\\
+ \tau(4p(a,b)+1)&=M(\tau(a),\tau(b)),\\
+ \tau(4p(a,b)+2)&=4p(\tau(a),\tau(b))+2,\\
+ \tau(4p(a,b)+3)&=N(D(\tau(a),\tau(b))).
+\end{aligned}
+\]
+The third line preserves the already-transposed universal constructor:
+$\tau(U(a,A))=U(\tau(a),\tau(A))$. Also $\tau(1)=1$.
+
+The map is primitive recursive and injective. For injectivity, observe
+first that no value of $\tau$ has residue three modulo four. Images of
+membership and universal codes have distinct residues one and two.
+Images of positive implication codes and of old equality codes have
+residue zero, but they cannot collide: the antecedent component of an
+old equality image is the disequality code $D(\tau(a),\tau(b))$, with
+residue three, whereas the antecedent of an implication image is itself
+in the range of $\tau$. Two images in the same case reduce to equality
+of smaller component images by injectivity of Cantor pairing. Zero
+is separate because a positive implication image can be zero only if
+both original components were zero, contrary to positivity, and an
+equality image has consequent one. This proves the claim by induction.
+
+Both variable labels and formula codes are transported by this same map.
+This detail is essential: the gate uses its property parameter $c$ also
+as the bound-variable label. Injectivity preserves both freshness
+inequalities. The translated equality heads and gate are exactly the
+new families, before the optional witness simplification. Modus ponens
+and generalization transport directly. For the restricted propositional
+schema, use its already-derived unrestricted version; its finite
+construction uses the usual component bounds for $I$, not monotonicity
+of $\tau$ in the natural-number order. Thus every old proof has a
+primitive-recursively constructed new proof, and the transformation's
+correctness is arithmetizable in PA.
+
+Composing with the PA196 PA-refutation compiler gives a derivation of
+new code one from every PA refutation. The source command compiler must
+be updated for the new emitted formulas, but the AX push count is
+unchanged. All AX-generated heads and the gate have even top tags, as
+does the generalization entry. The usual command proof permits early
+halting under the stronger acceptance test, and a completed derivation
+of code one is accepted. Subject to that explicit source compiler and
+its tape simulation, the intended result is
+\[
+ \mathrm{PA}\vdash
+ \neg\operatorname{Halt}(R_{\rm diseq,parity})
+ \longleftrightarrow \operatorname{Con}(\mathrm{PA}).
+\]
+The argument supplies the calculus and acceptance calibration; it does
+not assert that a new binary table and full PA-internal compiler proof
+have been implemented.
+
+\paragraph{The retained finite emitter experiment.}
+The standard equality-vacuity PA196 AX word has 201 macro tokens and 68
+binary macro-tree nodes. Replacing equality by negative disequality and
+performing the witness double-negation simplification gives 210 tokens.
+The six head-emitter token counts are $17,19,19,19,13,19$; the new gate
+uses 83 tokens. A beam-limited parse over subtrees of the inherited
+source has 75 binary macro-tree nodes. Its balanced assembly exceeds
+an inherited zero-run constraint and is not a verified physical layout.
+A separate 30,000-trial randomized RePair screen over equality and
+membership orientation, three antecedent exchanges, gate order, and
+head order found a best grammar with 75 internal nodes. These are
+heuristic upper bounds, not lower bounds, and no source-node count is
+presented as a TM working-state count. The retained scripts and grammar
+witnesses reproduce the exact finite arithmetic-expression experiments.

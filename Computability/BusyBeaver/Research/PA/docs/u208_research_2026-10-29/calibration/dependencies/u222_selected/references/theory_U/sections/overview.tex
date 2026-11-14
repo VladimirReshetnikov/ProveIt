@@ -1,0 +1,91 @@
+\section{The proposed theory and the actual improvement}
+\label{sec:proposal}
+
+Work in classical first-order logic over nonempty domains, with a single binary relation $E$, written $x\in a$. There is no logical equality, constant, or function symbol. The notation
+\[
+ x\subseteq a\quad:\Longleftrightarrow\quad
+ \Sub(x,a):=\forall t\,(t\in x\to t\in a)
+\]
+is an abbreviation. For each formula $\varphi$ satisfying
+\(\FV(\varphi)\subseteq\{x\}\), take the axiom
+\begin{equation}\label{eq:unary}\tag{U}
+\boxed{\begin{aligned}
+ \forall a\,\exists b\;[\;&\forall x\,(x\in b\to\varphi(x))\\
+ &{}\land\forall x\,(x\subseteq a\to(\varphi(x)\to x\in b))\;].
+\end{aligned}}
+\end{equation}
+These are all the nonlogical axioms of $\UU$. Bound variables are freshened, and quantifier complexity is unrestricted. In particular, the source $a$ cannot occur freely inside the matrix. This is a restriction to one free matrix variable, not to one-variable logic.
+
+For the definable class $X$ selected by $\varphi$, the informal content is
+\[
+                X\cap\mathcal P(a)\ \subseteq\ b\ \subseteq\ X.
+\]
+Here $\mathcal P(a)$ denotes represented subsets for explanatory purposes; its existence as an object is not an axiom. The cover may contain additional members of $X$.
+
+\begin{theorem}[Main result]\label{thm:main}
+There are interpretations of full first-order $\PA$ in $\UU$ and of $\UU$ in $\PA$. The finite refutation transformations can be chosen primitive recursive, with correctness provable in PA. For the corresponding ordinary arithmetizations,
+\[
+                   \PA\vdash\Con(\UU)\leftrightarrow\Con(\PA).
+\]
+\end{theorem}
+
+The proof occupies the next four sections. Its new step is to derive numerical induction while successor is only a partially available relation. Once induction is obtained, a least failing numerical tuple can be quantified inside a unary matrix. This proves exactly the bounded constructions needed for arithmetic.
+
+The classical exactification trick from the source-only drafts is unavailable: replacing $\varphi(x)$ by $\Sub(x,a)\land\varphi(x)$ would introduce the forbidden free source. The proof never uses that substitution. It does not derive unrestricted separation, global extensionality, arbitrary ambient powers, or a common bound for arbitrary ambient objects.
+
+\subsection{A precise count and a limited sharpness statement}
+
+Put
+\[
+ U_\varphi(b):=\forall x(x\in b\to\varphi(x)),\qquad
+ V_\varphi(b,a):=\forall x(\Sub(x,a)\to(\varphi(x)\to x\in b)).
+\]
+In the basis $\{E,\forall,\to,\bot\}$, a closed primitive instance is
+\begin{equation}\label{eq:primitive}
+ \forall a\bigl((\forall b\,[U_\varphi(b)\to
+                         (V_\varphi(b,a)\to\bot)])\to\bot\bigr).
+\end{equation}
+Counting one node for each constructor and an opaque matrix occurrence gives
+\[
+     4E+5\forall+7\mathord\to+2\bot+2\varphi=20.
+\]
+For a matrix of $m$ nodes the exact tree size is $18+2m$. Variable labels, numeral encodings, sharing, proof rules, and the source generator are excluded from this particular count. The previous source-only schema has the same count. A source-open presentation has $17+2m$ for either theory, and that inherited convention is not a new saving.
+
+\begin{proposition}[Zero free roles collapse]\label{prop:closed-collapse}
+Restricting the same schema to closed matrices produces a theory with a two-object model whose consistency is provable in PA.
+\end{proposition}
+\begin{proof}
+Let the objects be $e,u$, with no members of $e$ and with both $e,u$ members of $u$. For any closed matrix $\varphi$, its truth value is independent of $x$ and the source. If it is false, choose $b=e$; if it is true, choose $b=u$. Both clauses hold at every source. Evaluation in this fixed finite structure is primitive recursive, and PA verifies satisfaction of every axiom and soundness of finite derivations. Thus PA proves this restricted theory consistent.
+\end{proof}
+
+If PA is consistent, the zero-role version therefore cannot have a PA-provable consistency biconditional with PA, by the second incompleteness theorem. One free role is sharp for this precise schema family and calibration. This does not prove an absolute lower bound on axiom size or on Turing-machine states.
+
+\subsection{Review of the eight supplied drafts}
+
+Table~\ref{tab:eight} distinguishes the eight packages actually attached here from the older collections discussed inside them. Complete main manuscripts and their relevant included proof sections were reviewed. Their strongest overlapping conclusions are credited as inherited. Input file hashes are in \path{sources/input_manifest.json}.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.06\textwidth}>{\raggedright\arraybackslash}p{.28\textwidth}>{\raggedright\arraybackslash}p{.59\textwidth}@{}}
+\caption{The eight supplied packages and what this iteration uses.}\label{tab:eight}\\
+\toprule
+ID & Packet & Contribution and relation to this result\\\midrule\endfirsthead
+\toprule ID & Packet & Contribution and relation to this result\\\midrule\endhead
+D1 & LP20 Source Only Power Filter & Already proves the closed 20-node two-slot theory through a hereditary saturated core, recoverable powers, and numerical storage. Also distinguishes consistency strength from ambient bounded-pair consequences.\\[4pt]
+D2 & \path{pa_local_falsity} & Positive local falsity, an atomic target, useful collisions at input codes 0 and 1, and total raw numeric generation. Its radix-four atom-alias variant is already present.\\[4pt]
+D3 & \path{pa_power_filter_synthesis_2026-10-27} & Bounded parameter compilation, source frames, and exact comparison of several stronger interfaces. Its source-independent one-payload family still needs one additional fixed instance; U removes that dependency.\\[4pt]
+D4 & \path{pa_power_synthesis} & An existing nine-pairing ordinary emitter, clause-order polynomial optimization, and a complete total theorem stream. Nine pairings alone are therefore not new here.\\[4pt]
+D5 & \path{pa_source_only} & Source-only calibration using saturated numerical representatives and least failing bounded tuples; direct witness tableaux. Its arithmetic backend is the main ancestor of the shorter lower proof here.\\[4pt]
+D6 & \path{pa_source_only (1)} & Another complete source-only lower interpretation and an explicit Hilbert proof search. Source recovery and transitive storage solve the parameter issue at two free slots.\\[4pt]
+D7 & \path{pa_source_only_2026-10-27} & Source-only calibration through a saturated extensional domain; a frozen open emitter with careful freshness and padding.\\[4pt]
+D8 & \path{pa_source_only_2026-10-27(1)} & Source-only calibration and a positive diagonal-target interface. Its unrestricted positive builder has 14 constructors and uses a fresh-label increment.\\
+\bottomrule
+\end{longtable}
+
+The main new mathematical contribution relative to these eight drafts is the unary theorem, with induction before successor existence and globally least failed numerical constructions. The numerical contribution combines earlier sharing and local-falsity ideas with a bijective dyadic grammar, a fixed minimal guard within the inspected orientation family, and a division-free three-register arithmetic schedule. Historical priority beyond this comparison is not claimed.
+
+Compact finite-set presentations of PA have established precedents. Friedman's discussion of simplicity already records a small filtered-adjunction theory mutually interpretable with PA \cite[Section C2]{friedman}; Kaye and Wong analyze the distinctions among finite-set interpretations \cite{kaye-wong}. The new claim here concerns the precise unary equality-free schema \eqref{eq:unary}, for which the entire lower proof is supplied.
+
+\subsection{The 215 versus 238 motivation}
+
+The inspected K215 repository reports a checked internal PA theorem about the literal 215-state machine and ZFC refutations \cite{k215pa}. The linked ProveIt verification separately reports the external Lean/Rocq endpoints \cite{proveit}. The inspected PA238 development proves the literal 238-state blank-tape halting equivalence with finite ordinary PA refutations \cite{pa238}. These source statements were read; their large formal builds were not rerun here. No exhaustive current-record survey is asserted.
+
+Consistency strength does not impose an ordering on the lengths of descriptions of particular proof searchers. A stronger theory can have a shorter convenient schema, and the surrounding logic, variable coding, proof enumeration, initialization, and compiler can dominate the final transition table. Theory K exemplifies the value of optimizing that whole presentation \cite{k230}. Our mathematical and numerical improvements therefore remain separate from any future compiled state count.

@@ -1,0 +1,71 @@
+\section{A positive unary schema and a fixed atomic target}
+\label{sec:positive}
+
+The ordinary theory $\UU$ needs only one schema. A proof-search interface can additionally remove the falsity constructor by incorporating one negative seed into the target. The local-falsity idea and atomic target are inherited from D2 \cite{draftLocal}; the following unary calibration uses the new lower proof.
+
+A \emph{positive formula} here means a formula built from $E$, implication, and universal quantification. This is a syntactic name: antecedents of implications can have negative polarity. Let
+\[
+ D:=\forall v\,E(v,v),\qquad q(a):=E(a,a).
+\]
+For every positive unary matrix $\theta(x)$, let $\PP$ contain
+\begin{equation}\label{eq:positive-unary}\tag{P}
+ \forall a\left(\left[\forall b\,
+       \bigl(V_\theta(b,a)\to(U_\theta(b)\to q(a))\bigr)\right]
+                                                  \to q(a)\right).
+\end{equation}
+The order of the two clauses is chosen for numerical efficiency. As before, the matrix has only $x$ free. Define the ordinary theory
+\(L:=\PP+\neg D\).
+
+\begin{theorem}[Positive unary calibration]\label{thm:positive-unary}
+The theories $L$ and PA interpret one another, with PA-verifiable finite-proof transformations. In particular
+\[
+                   \PA\vdash\Con(L)\leftrightarrow\Con(\PA).
+\]
+\end{theorem}
+\begin{proof}
+The binary-membership interpretation verifies $\neg D$ and every positive shell, using an ordinary weak-filter witness. For the lower direction, replace each falsity occurrence in an arbitrary unary matrix $\varphi(x)$ by the \emph{closed} sentence $D$. Call the result $\varphi^D$. It is positive and remains unary. Under $\neg D$, structural induction gives $\varphi^D\leftrightarrow\varphi$.
+
+At a source $a$ with $\neg q(a)$, the positive shell is classically equivalent to the existence of a witness for its upper and lower clauses. Thus $L$ supplies ordinary unary weak filters at every irreflexive source. Replacing falsity by $q(a)$ inside the matrix would be invalid here, because it would insert a forbidden free source; the closed $D$ avoids that error.
+
+The seed supplies at least one irreflexive object. False filtering there gives an empty object. Inspect the lower proof for $\UU$. Its induction filters have numerical sources, which are irreflexive by the local numerical lemma. The least-failure bounded-comprehension proof remains valid when its support premise additionally requires an irreflexive source. All applications satisfy that stronger premise: successors and numerical powers use a number; numerical singleton, pair, and ordered-pair constructions use a number containing their coordinates; graph comprehension uses an exact power $W$ of a number $n$.
+
+Such a $W$ is irreflexive. Indeed $n\subseteq n$ gives $n\in W$. If $W\in W$, exactness would give $W\subseteq n$, so $n\in n$, contradicting numerical irreflexivity. Therefore every actual source used by the arithmetic construction is legal. All inserted matrices are made positive by the closed substitution $\bot\mapsto D$, preserving their unary scope. The lower proof goes through in $L$ with these explicit local support conditions. The syntax transformations are uniform as before.
+\end{proof}
+
+\subsection{Five logical axiom families suffice}
+
+Use the positive Hilbert calculus $\mathsf H_+$ with modus ponens, theorem generalization, and
+\begin{align*}
+ \mathsf K:\quad&A\to(B\to A),\\
+ \mathsf S:\quad&(A\to(B\to C))\to((A\to B)\to(A\to C)),\\
+ \mathsf P:\quad&((A\to B)\to A)\to A,\\
+ \mathsf{UI}:\quad&(\forall v\,A)\to A[w/v],\\
+ \mathsf{QD}:\quad&\forall v(A\to B)\to(A\to\forall vB),
+                 \qquad v\notin\FV(A).
+\end{align*}
+Substitution avoids capture. Peirce's schema $\mathsf P$ supplies classical implication. Vacuity $A\to\forall vA$ follows by generalizing $A\to A$ and applying $\mathsf{QD}$ when $v\notin\FV(A)$.
+
+For clarity, $\mathsf{QD}$ also yields ordinary universal distribution. Under the two assumptions $H=\forall v(A\to B)$ and $K=\forall vA$, instantiation and modus ponens give $B$. Generalizing in $v$ is permitted because $v$ is free in neither assumption. Discharge $K$ and $H$ to obtain
+\[
+ \forall v(A\to B)\to(\forall vA\to\forall vB).
+\]
+The required deduction transformation is justified directly by $\mathsf K,\mathsf S,\mathsf{QD}$: at a generalized line, generalize the already transformed implication and apply $\mathsf{QD}$; its side condition is exactly the ordinary deduction-theorem restriction. Conversely, distribution plus vacuity yields $\mathsf{QD}$. Thus the reduction from the six logical families in D2 to these five has a uniform syntactic justification.
+
+\subsection{Positive conservativity and the target}
+
+Put $B_*:=\forall u\forall v E(u,v)$. Pure positive logic proves $B_*\to F$ for every positive formula $F$. Atoms follow by instantiation; the implication case follows from the induction hypothesis for the consequent; the universal case follows by generalization and $\mathsf{QD}$, since $B_*$ is closed. This constructs the proof recursively from $F$.
+
+Consider the full classical calculus obtained by adding falsity and $\bot\to F$. Replacing every falsity by $B_*$ converts a proof of a positive conclusion from positive premises to a positive proof. Each translated ex-falso axiom is replaced by the preceding derived theorem. All substitution and side conditions survive because $B_*$ is closed. Peirce and ex falso give the usual double-negation elimination in the full calculus.
+
+\begin{corollary}[A single atomic target]\label{cor:positive-target}
+For $q_0=E(v_0,v_0)$, PA proves
+\[
+  \exists p\,\Prf_{\mathsf H_++\PP}(p,q_0)
+      \quad\longleftrightarrow\quad\neg\Con(\PA).
+\]
+\end{corollary}
+\begin{proof}
+A proof of $q_0$ generalizes to $D$, and the seed refutes $L$. Conversely discharge the closed seed from a refutation of $L$ to obtain $\PP\vdash\neg\neg D$, hence $\PP\vdash D$. Positive conservativity removes intermediate falsity, and instantiation gives $q_0$. All conversions are primitive recursive and verified in PA; apply Theorem~\ref{thm:positive-unary}.
+\end{proof}
+
+The positive theory alone has a one-object total-relation model. Its ordinary consistency is not the calibrated assertion; the calibrated assertion is nonderivability of $q_0$, or consistency after adding $\neg D$. The positive shell has 20 schematic nodes, but its ordinary-theory presentation also has the fixed four-node seed. The search interface handles that seed through its target.

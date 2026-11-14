@@ -1,0 +1,91 @@
+\subsection{Additional reader and engine searches}
+
+The new local searches did not produce a machine below 196 states.
+The portable packet \code{engine_search/} contains the search programs,
+pinned inputs, recorded logs, and negative receipts. These searches
+exhaust specified bounded certificate templates; they are not lower
+bounds on the number of states needed for a consistency machine.
+
+\paragraph{Whole-instruction endpoints.}
+An independent symbolic executor represents arbitrary register contents by
+four register-box contracts and an arbitrary additional zero gap by an
+affine run length. It checks all 4,959 primitive branch contracts of the
+3,812-site source. The baseline completes these checks in at most 515
+symbolic updates per contract; the rotated layout needs at most 497.
+These counts are symbolic updates, not bounds on literal tape steps.
+
+For each eligible control, one search redirects all incoming edges to
+another control and tests the affected instruction suffixes against the
+original whole-instruction endpoint. A second search retains the read-0
+row from one control and the read-1 row from the other in both mixed
+orientations. The bound is 1,024 symbolic updates. Neither requires the
+intermediate controls or head positions to match the original run.
+\begin{center}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Template and layout & Candidates & Contract trials & Survivors\\
+\midrule
+Identification, baseline & 33,540 & 35,753 & 0\\
+Identification, rotated & 33,540 & 35,561 & 0\\
+Mixed rows, baseline & 29,412 & 79,124 & 0\\
+Mixed rows, rotated & 29,412 & 74,960 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+A further incoming-edge contraction screen rejected its restricted
+deletions of all 172 eligible controls. None of these results excludes
+changed data representations, other row designs, longer simulations, or
+new invariants.
+
+\paragraph{Two arbitrary replacement rows.}
+Source-derived windows cover 167 nonloop controls outside the register
+boxes: 152,196 windows for the baseline and 152,352 for the rotated layout.
+Each window has radius 12 and a separate mask of known cells; a candidate
+may not inspect an unknown cell. The C++ screen identifies two controls,
+replaces both rows of the retained control arbitrarily, and permits
+internal revisits to that control. Each old step must be simulated within
+64 new steps inside the window, restoring the old tape and head position
+and reaching the projected old target control.
+
+Each layout has 27,722 directed eligible pairs and 21,734,048 initial
+read-0-row trials. After filtering, the baseline tests 60,990,496 paired
+rows and the rotated layout tests 61,912,480. Each has six candidates
+passing a representative-context filter, and zero passing all contexts.
+The six baseline candidates also fail whole-instruction checks.
+Additional searches for two folds sharing one new helper, or a
+three-control fold using one helper, find no compatible certificate.
+The latter tests 82 triples per layout, with 27 first-branch survivors
+and zero complete survivors.
+
+\paragraph{Register placement.}
+Eleven read-1 rows select the nine logical registers through the physical
+skip chain. A combined search assigns distinct physical slots lazily
+while synthesizing two replacement rows. Every bijection can be
+represented within this template. The screen tests 13,861 unordered pairs,
+10,867,024 first rows, and 30,514,848 paired rows. Three candidates pass
+the representative filter; none satisfy all stored windows.
+\emph{This is not an exclusion of all register permutations:} it reuses
+the baseline's local context obligations, while a changed physical order
+can alter both entry contexts and startup. For example, exchanging the
+physical slots of logical D and H preserves all 4,959 source contracts,
+but the tested blank execution does not reach the required initial frame
+within one million steps. That observation alone proves no nonhalting
+claim.
+
+\paragraph{A rejected engine-tail change.}
+Replacing native row $198/0=1\,L\,40$ by $0\,L\,40$ changes the spare
+register appended by increment. With the inherited initializer, after
+exactly 76 steps the machine is in state 35, its head is at cell 4,
+and the only ones are at cells $-3$ and $1$. Since
+$35/0=1\,R\,35$, induction proves that it forever sweeps right through
+fresh blank cells. This altered blank-start machine therefore has an
+elementary proof of nonhalting in PA and is rejected as a consistency
+machine candidate. The complete finite prefix is included. The example
+shows why register-runtime contracts must be accompanied by a verified
+blank initializer.
+
+The symbolic engine and extracted contexts are executable analyses, not
+new proof-assistant theorems. Any successful candidate would still need
+register-box agreement, a complete blank-start certificate, unbounded
+source simulation, and the arithmetic proof transport.

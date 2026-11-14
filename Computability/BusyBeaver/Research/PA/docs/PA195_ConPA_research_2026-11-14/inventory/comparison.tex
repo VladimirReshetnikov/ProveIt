@@ -1,0 +1,352 @@
+% Requires longtable, booktabs, array, amsmath, and hyperref/xurl.
+\section{Comparison of all supplied PA machine designs}
+
+\subsection{Scope and principal finding}
+
+The source snapshot is ProveIt commit \nolinkurl{906367250a7f96c923147b10df392294bced7be5}.
+The census reads every \nolinkurl{.tm} file in \nolinkurl{Computability/BusyBeaver/Research/PA}
+and every \nolinkurl{.tm} member of every incoming ZIP, following nested ZIPs and
+scanning each byte-distinct ZIP payload once. It executes no submitted code.
+It separately checks the designated initial controls and halt controls for
+the curated final tables. The complete census includes ancestors, rejected
+experiments, raw intermediate compilations, and synthetic controls; its broad
+counts must not be advertised as counts of valid consistency machines.
+
+The supplied source corpus contains \textbf{no accepted sub-196 construction}.
+There are six root-free graph classes of explicit 195-state diagnostics,
+all rejected or unproved by the source reports. Two separate rejected
+196-state layouts actually halt on the blank tape; those finite halts were
+independently replayed here. There are more positive same-size designs than
+the older repository catalogue records: the updated explicitly started
+catalogue has 23 distinct 196-state graphs, comprising 19 baseline or
+report-positive designs, two explicitly experimental MP designs, and two
+blank-halting controls.
+
+This comparison is not a new proof of the PA equivalence of any table.
+The term \textbf{report-positive} records the source manuscript's claim of a
+successful construction, with the stated executable checks. The exact proof
+scope is kept separate below.
+
+The new 195-state constructions obtained during the present work are outside
+this pinned-source census and are described separately. Their existence does
+not change the historical counts or turn the six supplied diagnostics into
+accepted constructions.
+
+\subsection{Freshly checked counts}
+
+\begingroup\footnotesize\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.14}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.76\linewidth}>{\raggedright\arraybackslash}p{0.12\linewidth}@{}}
+\toprule
+\textbf{Quantity} & \textbf{Count}\\
+\midrule\endfirsthead
+\toprule
+\textbf{Quantity} & \textbf{Count}\\
+\midrule\endhead
+\midrule\multicolumn{2}{r}{\emph{Continued on next page}}\\\endfoot
+\bottomrule\endlastfoot
+Top-level incoming ZIP files & 27\\
+Byte-distinct ZIP payloads, including nested historical inputs & 40\\
+ZIP references encountered, including repeated payloads & 68\\
+Maximum ZIP nesting depth & 8\\
+Transition-table occurrences in distinct ZIP payloads & 1,466\\
+Additional \nolinkurl{.tm} files in the PA tree & 14\\
+Total table occurrences & 1,480\\
+Byte-distinct table encodings & 531\\
+Distinct parsed tables retaining literal state labels & 522\\
+Malformed or incomplete binary tables & 0\\
+Canonical root-free action-graph classes with a vertex reaching all controls & 401\\
+Additional synthetic six-state control without such a vertex & 1\\
+Designated 196-state tables / rooted graph classes & 23 / 23\\
+Designated U208 presentations / rooted graph classes & 27 / 20\\
+Explicit 195-state file occurrences / literal encodings / root-free classes & 14 / 8 / 6\\
+\end{longtable}
+\endgroup
+
+There are therefore 402 root-free action-graph classes in the broad corpus:
+401 obtained by canonical traversal plus the unique six-state synthetic
+control, which cannot be isomorphic to any other table because no other
+table has six states. Among 196-state tables the broad corpus has 90
+root-free graph classes; most are exploratory tables, not designated finals.
+Root-free classification deliberately ignores the initial control and must
+not be used as a claim of equal blank-tape behavior. The 23-table designated
+classification preserves the initial control, read bit, write bit, direction,
+and halt control, and checks graph reachability of all 196 working controls.
+
+Detailed outputs are \nolinkurl{census/tables.json}, \nolinkurl{tables.csv}, \nolinkurl{graph_classes.json},
+\nolinkurl{graph_classes.csv}, \nolinkurl{rejected195_graphs.json}, and the two \nolinkurl{designated*}
+directories. The parse and graph algorithms are in \nolinkurl{inventory.py},
+\nolinkurl{graph_census.py}, and \nolinkurl{designated_census.py}.
+
+\Needspace{75mm}
+\subsection{Main lineages}
+
+\begingroup\footnotesize\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.14}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.31\linewidth}>{\raggedright\arraybackslash}p{0.09\linewidth}>{\raggedright\arraybackslash}p{0.105\linewidth}>{\raggedright\arraybackslash}p{0.115\linewidth}>{\raggedright\arraybackslash}p{0.105\linewidth}>{\raggedright\arraybackslash}p{0.115\linewidth}@{}}
+\toprule
+\textbf{Machine family} & \textbf{Working states} & \textbf{Source sites} & \textbf{Distinct internal source nodes} & \textbf{Maximum source path} & \textbf{Reported blank startup}\\
+\midrule\endfirsthead
+\toprule
+\textbf{Machine family} & \textbf{Working states} & \textbf{Source sites} & \textbf{Distinct internal source nodes} & \textbf{Maximum source path} & \textbf{Reported blank startup}\\
+\midrule\endhead
+\midrule\multicolumn{6}{r}{\emph{Continued on next page}}\\\endfoot
+\bottomrule\endlastfoot
+James Chang PA209 & 209 & 3,948 & 173 & 33 & 58,210\\
+U208 A & 208 & 3,909 & 174 & 42 & 48,140\\
+U208 B & 208 & 3,909 & 174 & 41 & 48,140\\
+Published PA196 & 196 & 3,812 & 159 & 38 & 58,154\\
+Shorter-path alternative196 & 196 & 3,812 & 159 & 36 & 58,154\\
+Combined196: H-only Shift plus MP result in H & 196 & 3,788 & --- & --- & 57,922\\
+Diagonal-vacuity196 & 196 & 3,700 & --- & --- & 58,154\\
+Separate diagonal-head 196 & 196 & 3,673 & --- & --- & 58,154\\
+Separate-head scanner-oriented196 & 196 & 3,673 & --- & --- & 58,294\\
+Source-26 CD6 zero-jump196 & 196 & 3,812 & --- & --- & 58,402\\
+\end{longtable}
+\endgroup
+
+The source and startup numbers in this table are manuscript and receipt
+claims, not newly recomputed by this inventory worker. Table structure,
+identity, and graph classes were freshly recomputed. The two invalid blank
+halts described below were also freshly replayed.
+
+James Chang's imported snapshots are PA196 commit
+\nolinkurl{407cdc356f6b586635e71ac92be394255f4bfea4} and PA209 commit
+\nolinkurl{69d98241a721ead20b4f0b17df9062950b40fbfe}. The U209 parent of the U208
+lineage is a different source program from James Chang's PA209. Native
+control labels have local meanings; matching state numbers across these
+lineages is not a simulation argument.
+
+PA196's published budget is 36 arithmetic-engine controls, 13 leaf routers,
+and 147 reader controls representing 159 distinct internal source nodes.
+Its six complementary AX reader folds are already included in 196.
+The PA209-to-PA196 logical changes include the transposed universal code
+\nolinkurl{U(a,B) = 4 pair(B,a) + 2}, removal of the old seventh head, guarded equality
+vacuity, altered head and antecedent orders, and complementary reader sharing.
+
+U208's last fold identifies native 211 with 172 using incoming-history
+information and a helper. Its parent contains the mixed-entry motif
+\nolinkurl{163,0 -> 0 L 211} and \nolinkurl{163,1 -> 1 R 211}. Published PA196 contains no
+control with the corresponding pair of actions to a common working target.
+That excludes an exact relabelling of this particular fold, not other
+contextual or offset simulations.
+
+The U208 outer interpreter also cyclically moves the first 25 source sites
+to the end and uses a simpler Shift accepting on the head alone. Combining
+that outer interpreter with PA196 AX has a 196-state runtime prototype in
+the newest archive. Its 4,957 arbitrary-value source-frame contracts pass,
+but every existing initial control follows a blank startup ending in an
+outward loop. The attempted 197-state prefix repair breaks a runtime case.
+It is therefore not a complete blank-start consistency machine.
+
+\Needspace{65mm}
+\subsection{All 27 incoming archives}
+
+Every filename below is present at the pinned revision. Hashes, direct table
+counts, and exact member paths are in the machine-readable inventory.
+
+\begingroup\footnotesize\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.14}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.3\linewidth}@{}}
+\toprule
+\textbf{Archive} & \textbf{Main contribution} & \textbf{Result or limitation}\\
+\midrule\endfirsthead
+\toprule
+\textbf{Archive} & \textbf{Main contribution} & \textbf{Result or limitation}\\
+\midrule\endhead
+\midrule\multicolumn{3}{r}{\emph{Continued on next page}}\\\endfoot
+\bottomrule\endlastfoot
+\nolinkurl{Below_U208_Research_2026-10-29.zip} & Source-boundary windows, offset quotients, guarded source pruning & 3,909 to 3,904 source sites; no validated machine at or below 207\\
+\nolinkurl{ConPA_below208_research_2026-10-29.zip} & Comparative audit, finite-model obstruction to cover-role identification, local folds & No reduction below 208; template-specific failures are not global lower bounds\\
+\nolinkurl{PA_consistency_TM_research_2026-11-13.zip} & Exact original-source grammar with 159 internal nodes and zero-run bound five; exact 157-node combined-negation/MP grammar; residual MP & No validated sub-196 table or valid shorter-scanner startup\\
+\nolinkurl{U208_ConPA_2026-10-29.zip} & Three-cell history fold of native 172/211 & One presentation of original U208 A\\
+\nolinkurl{U208_ConPA_Conditional_Context_2026-10-29.zip} & Conditional-entry proof, primary and alternative tables & Original U208 A/B, not additional independent state savings\\
+\nolinkurl{U208_ConPA_Entry_Context_2026-10-29.zip} & Complete entry-context proof and tables & Same original A/B classes\\
+\nolinkurl{U208_ConPA_History_2026-10-29.zip} & Finite-history presentation and local stuttering proof & Same original A/B classes\\
+\nolinkurl{conpa_tm_comparison_and_reduction_search.zip} & Two experimental MP196 variants; layout and register catalogues & Two proposed Shift layouts halt on blank after 43,563 steps\\
+\nolinkurl{conpa_tm_comparison_and_search.zip} & A/D register-swap196; two-rotation195 quotient; logical countermodel & Quotient fails 93 source contracts\\
+\nolinkurl{conpa_tm_study_2026-11-13.zip} & Combined196 (H-only Shift and MP result in H); 3,788 sites, 4,928 contracts; shorter-negation197 & Complete same-size intermediate; no strict reduction\\
+\nolinkurl{pa196_research_2026-11-13.zip} & Exact 157-node representation preserving original source CFG; HA-strength reference calculus & Reader-context savings are lost in physical allocation\\
+\nolinkurl{pa208_research_2026-10-29.zip} & Eighteen additional U208 helper variants; source and theory work & Enlarges U208 to 20 designated graph classes, none below 208\\
+\nolinkurl{pa_below196_research.zip} & Updated earlier census; eight equivalent separation gates; exact restricted Boolean formula-size result; grammar and physical screens & No validated sub-196 construction; includes prior failed195 tables as diagnostics\\
+\nolinkurl{pa_consistency_comparison_2026_11_13.zip} & Modal-B plus explosion split; finite Hilbert proofs; twelve composition experiments; 189-token joint gate & Physical constructions remain 196--200 states\\
+\nolinkurl{pa_consistency_comparison_and_new196_2026-11-13.zip} & New diagonal196 and separate-head 196; scanner-oriented196; stronger simultaneous-fold checks; runtime-valid hybrid & Three new alternate-calculus196 tables and one original-calculus scanner196; naive195 scanner fails\\
+\nolinkurl{pa_consistency_reduction.zip} & Rebracketed196, H-only196, integrated-witness gate, internal-converse manuscript & Gate compiles to 203/206; failed195 helper combinations\\
+\nolinkurl{pa_consistency_research.zip} & Exact 158-node source grammars and scanner-repaired196 layout & Nominal195 mistakes an address run for the marker; repair costs one state\\
+\nolinkurl{pa_consistency_research_2026-10-29.zip} & Inductively certified 3,909-to-3,904 source specialization & No validated physical machine below 208\\
+\nolinkurl{pa_consistency_research_2026-11-13 (2).zip} & Twelve-rotation196; diagonal implementation199-to-198; successful-MP halt; joint register abstraction & No strict improvement below 196\\
+\nolinkurl{pa_consistency_research_2026-11-13.zip} & Diagonal-vacuity calculus and 3,700-site199 implementation; short-negation197 & Logical simplification does not save physical states in that layout\\
+\nolinkurl{pa_tm_comparison_and_reductions.zip} & Rotated196, macro62-rotated196, distributed gate with 3,773 sites & Distributed gate compiles to 198; grammar counts are not physical counts\\
+\nolinkurl{pa_tm_extended_research_2026-11-13.zip} & Four closing-CD3/CD4/CD5/CD6 variants, stronger source invariants & All196 and all change the same native row, so their changes cannot be stacked\\
+\nolinkurl{pa_tm_research_2026-11-13 (2).zip} & New source-26 CD6 zero-jump196; complete zero-mask invariant; rejected195 repair search; integrated base-eight parity runtime & New same-size table; base-eight202 runtime has no certified sound blank seed\\
+\nolinkurl{pa_tm_research_2026-11-13.zip} & Shorter-path alternative196; symbolic checks; physical Lean subset; direct PA proof-translation manuscript & Same-size candidate; alternative-specific full formal endpoint not exported\\
+\nolinkurl{pa_unary_power_cover.zip} & Unary weak-covering theory with mutual PA interpretation and proof templates & No newly compiled literal machine\\
+\nolinkurl{u208_comparison_research_2026-10-29.zip} & Original two-class U208 census, weak/exact schema comparison, rejected207 frame witness & Predates eighteen helper classes; no sub208 result\\
+\nolinkurl{u208_research_2026-10-29.zip} & Two U208 outputs and symbolic runtime evidence & Same original history-fold saving\\
+\end{longtable}
+\endgroup
+
+\subsection{The 23 designated 196-state graphs}
+
+Every row below has 196 graph-reachable working controls and 392 transitions.
+These are 23 distinct rooted action graphs, not merely different filenames.
+The full hashes and source member paths are in
+\nolinkurl{census/designated196/catalogue.json}.
+
+\begingroup\footnotesize\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.14}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.2\linewidth}>{\raggedright\arraybackslash}p{0.39\linewidth}@{}}
+\toprule
+\textbf{Design} & \textbf{SHA-256 prefix} & \textbf{Status and distinction}\\
+\midrule\endfirsthead
+\toprule
+\textbf{Design} & \textbf{SHA-256 prefix} & \textbf{Status and distinction}\\
+\midrule\endhead
+\midrule\multicolumn{3}{r}{\emph{Continued on next page}}\\\endfoot
+\bottomrule\endlastfoot
+Published PA196 & \nolinkurl{e8bbccd4cfa3} & Upstream formal development\\
+MP result in H & \nolinkurl{893f08672746} & Explicitly experimental command change\\
+MP without zero push & \nolinkurl{3d7f91e548f8} & Explicitly experimental command change\\
+Rejected Shift layout & \nolinkurl{db5cd7df1475} & Blank halt at 43,563\\
+Rejected combined layout & \nolinkurl{d3a049def261} & Blank halt at 43,563\\
+Shorter-path alternative196 & \nolinkurl{aa05f079326a} & Head order and association; maximum path 36\\
+Closing CD3 & \nolinkurl{d5c1c2c69082} & Forced-zero decrement in place of closing jump\\
+Closing CD4 & \nolinkurl{2be1986cbbac} & Same row, different zero register\\
+Closing CD5 & \nolinkurl{4433af83b568} & Same row, different zero register\\
+Closing CD6 & \nolinkurl{2db09bb05768} & Same row, different zero register\\
+Rotated196 & \nolinkurl{25d686ab95f5} & Source-CFG-preserving rotations\\
+Macro62 rotated196 & \nolinkurl{591f42407752} & Alternative rotated reader layout\\
+Regrouped158-node196 & \nolinkurl{1ab0fd1fe7b7} & Shorter source grammar plus longer scanner\\
+A/D register-swap196 & \nolinkurl{3968e6733b30} & Physical register permutation\\
+Rebracketed196 & \nolinkurl{e212e359837c} & Different source-tree association\\
+H-only Shift196 & \nolinkurl{5e7e8daf0fbd} & 3,811 source sites\\
+Twelve-rotation196 & \nolinkurl{b9873b89df41} & Later source-CFG-preserving layout\\
+Combined196 & \nolinkurl{bd74754d75e7} & H-only Shift plus MP-result-in-H; 3,788 sites\\
+Diagonal-vacuity196 & \nolinkurl{59bbe3dbe040} & 191 AX macro items; 3,700 sites\\
+Separate diagonal-head 196 & \nolinkurl{61ffdfea87d2} & 190 AX macro items; 3,673 sites\\
+Separate-head scanner196 & \nolinkurl{bccb07e7da72} & 69 AX readers and seven mutually compatible folds\\
+Original-calculus scanner15 & \nolinkurl{ed5454b2db8b} & Fifteen remaining address obstructions; native start 74, halt 254\\
+Source-26 CD6 zero-jump196 & \nolinkurl{2c1a736399e0} & One native row27/1 becomes \nolinkurl{1 R 21}\\
+\end{longtable}
+\endgroup
+
+The four closing-decrement variants all modify native \nolinkurl{(1365,1)}, dense
+\nolinkurl{(193,1)}. Their individual row choices are alternatives. The new
+source-26 zero-jump changes native \nolinkurl{(27,1)} instead, so it is a different
+source specialization; composing it with a closing specialization still
+needs whole-program runtime checks because helper paths can interact.
+
+The separate-head calculus pushes ten rather than nine items in AX. The
+source compiler's head-selection Shift counts must therefore change.
+Simply swapping its emitter into the old proof-command compiler would
+leave incorrect selection constants.
+
+\subsection{Every explicit 195-state diagnostic}
+
+\begingroup\footnotesize\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.14}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.29\linewidth}>{\raggedright\arraybackslash}p{0.2\linewidth}>{\raggedright\arraybackslash}p{0.39\linewidth}@{}}
+\toprule
+\textbf{Graph family} & \textbf{Encodings} & \textbf{Supplied rejection evidence}\\
+\midrule\endfirsthead
+\toprule
+\textbf{Graph family} & \textbf{Encodings} & \textbf{Supplied rejection evidence}\\
+\midrule\endhead
+\midrule\multicolumn{3}{r}{\emph{Continued on next page}}\\\endfoot
+\bottomrule\endlastfoot
+Two-rotation quotient & Native and dense & 93 of 4,959 source contracts fail; an ideal unimplemented history router is insufficient as a literal machine\\
+\nolinkurl{warm_physical_61_8047} & One & 714 failed contracts; a valid source frame at site 1111 enters an exact four-transition cycle after 26 steps\\
+\nolinkurl{extended_physical_61_12085} & One & 777 failed source contracts recorded by its supplied receipt\\
+Seven-zero regrouped scanner & One & Site1003 is confused with the marker; wrong clean frame after 276 steps; scanner repair returns 196\\
+Separate-head short-scanner & Native and dense & 96 unrestricted failures; even the intended clean seed reaches a root after 118 steps with 43 wrong tape cells\\
+Wrong-opcode zero-jump fold & One sparse dense-labelled table & Native27/1 is incorrectly redirected to \nolinkurl{1 R 62}; source 26 reaches wrong site 27 with register 6 incremented and an extra spare, instead of site 34\\
+\end{longtable}
+\endgroup
+
+These six graph families appear in 14 file occurrences because reports
+repackage earlier diagnostics. Their eight literal encodings are not eight
+different constructions. Most failures refute a claimed source simulation,
+not every possible account of the table's eventual blank behavior. The
+wrong-opcode parent also exhibits that wrong source operation on its actual
+blank run. Its 195-state child cannot be validated just because a local
+fold is correct relative to the already incorrect parent.
+
+A separate code-defined dense45-to160 merge with repair184/1=\nolinkurl{1 L75}
+survives100 million blank steps yet fails its claimed simulation at the
+parent boundary 1,223,335,721, selecting source 615 rather than 605. It is
+recorded in the integrated PA search material; it is not an extra explicit
+\nolinkurl{.tm} entry in the six-family count. This is a useful warning about long
+finite-prefix evidence.
+
+The two rejected196 controls have a stronger and independently reproduced
+failure: both halt after exactly 43,563 transitions on blank, in halt 196
+with head 1 and the same complete finite-support tape. Their sole difference
+at row 115/1 is not visited by that run. See
+\nolinkurl{census/designated196/rejected_blank_halt_replay.json}.
+
+\subsection{Proof boundaries}
+
+The precise imported formal PA196 result is
+
+\texttt{PA $\vdash$ Nonhalt(PA196) $\to$ Con(PA)}.
+
+The imported Lean project also establishes external nonhalting in its
+metatheory. Its theorem inventory does not export the reverse implication
+inside PA. The same distinction applies to imported PA209. External
+soundness, independence in both directions, and a finite simulation prefix
+do not supply the reverse implication by themselves.
+
+Incoming manuscripts contain substantial ordinary mathematical arguments
+for the converse: translate membership to binary-bit membership, equality
+to arithmetic equality, and the transposed universal constructor directly;
+generate PA proofs of finite comprehension by substituting the input formula
+into a full-induction proof template; preserve code0's truth alias; handle
+coincident source labels; and carry proofs through the live store and stack.
+Their positive-length exact macro simulations plus determinism are intended
+to extract a source refutation from any physical halt. Absence of a new Lean
+certificate does not alone refute these mathematical arguments. Conversely,
+the existence of the manuscripts does not mean every exact proof-code and
+machine-binding obligation has already been checked.
+
+The integrated PA directory includes useful standard-Nat prerequisites:
+canonical certificate-stack treatment of \nolinkurl{pair(0,0)=0}, bindings to actual
+command definitions, a numeric native checker, and checker-rule audits.
+The documentation keeps the arbitrary-PA-model trace extraction and the
+Foundation model-valued proof-code bindings as separate obligations. A
+replacement table must preserve the appropriate command compiler, complete
+runtime contracts, and exact blank startup as well as the logical theory.
+
+ConciseIPRA supplies proof-checker design principles. Consistency of iPRA
+cannot simply replace consistency of PA; an encoding through an
+intuitionistic checker requires the full PA-strength calibration. ZFC K215
+supplies useful physical techniques, but its numerical control labels and
+code conventions do not identify states in the PA196 table.
+
+\subsection{Opportunities identified in the supplied designs}
+
+\begin{enumerate}
+\item The separate-head 190-item emitter has substantially fewer source sites
+while still costing196 controls. Its final all-helper compatibility
+checker is a stronger search base than a matching-size estimate alone.
+The earlier optimistic70-reader/nine-fold195 count failed because of
+invalid macro entry sides and interacting helper paths. This direction
+led to the new construction: an unchanged 190-token macro word is
+reassociated from68 distinct readers to67, retaining six valid
+simultaneous folds and giving134+67-6=195 working controls.
+\item The scanner-oriented separate-head layout has only six static internal
+address obstructions:197,584,786,867,1759,2068. Removing these is not by
+itself a correct scanner deletion; dynamic address bits, reader aliases,
+and startup require a joint invariant.
+\item The runtime-valid U208/PA196 hybrid isolates blank initialization as a
+concrete unsolved issue. Its initial-control screens and unused-row
+census are supplied. Any successful bootstrap must also preserve the
+universally quantified runtime cases.
+\item Source-26 zero-jump, closing-jump specialization, H-only Shift,
+MP-result-in-H, and the diagonal/separate-head calculus involve different
+source regions but share physical helper paths. Their composition is a
+promising question only after full simultaneous verification; savings
+cannot be summed arithmetically.
+\end{enumerate}
+
+No negative result cited here proves a global lower bound of 196.
+

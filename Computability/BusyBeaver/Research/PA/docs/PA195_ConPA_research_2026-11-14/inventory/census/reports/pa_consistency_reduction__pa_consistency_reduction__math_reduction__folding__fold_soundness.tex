@@ -1,0 +1,62 @@
+\subsection{Simultaneous predecessor-bit folds}
+\label{sec:simultaneous-folds}
+
+The following finite certificate criterion is sufficient for the reader-state
+folds used in our search.  It is stronger than checking each proposed fold in
+isolation: a helper used by one fold may itself be changed by another fold.
+
+Let $M$ be the original binary transition table.  A \emph{pure reader} $q$ has
+rows $M(q,b)=(b,R,q_b)$ for $b\in\{0,1\}$.  For each state $q$, conservatively
+collect the possible predecessor bits from every incoming transition: an
+incoming right-moving row that writes $a$ contributes $a$, and every incoming
+left-moving row contributes both bits.  Suppose $q$ has predecessor set
+$\{0\}$ and $r$ has predecessor set $\{1\}$.  The two states can potentially
+share one state, because the tape cell immediately left of the head records
+which of the two original states was entered.
+
+A proposed fold retains $q$, aliases $r$ to $q$, and, for each scanned bit $b$,
+either retains their common row or writes $b$ and moves left to an existing
+helper $h_b$.  The usual three-step helper satisfies
+\[
+ M(h_b,0)=(0,R,a),\qquad M(h_b,1)=(1,R,c),\qquad
+ M(a,b)=M(q,b),\qquad M(c,b)=M(r,b).
+\]
+These equations suffice only if all rows in this expansion retain their stated
+behavior.  Choosing a matching of pairs without checking this condition can
+produce invalid simultaneous folds.
+
+Our checker therefore applies \emph{all} selected folds first.  Write
+$\mu(r)=q$ for each removed state and let $M'$ be the resulting complete table,
+with every transition target renamed by $\mu$.  For each selected pair
+$(q,r)$, each $j,b\in\{0,1\}$, let $s_0=q$ and $s_1=r$.  The checker executes
+$M'$ from state $\mu(s_j)$, head position $0$, and the two known tape cells
+\[
+ T(-1)=j,\qquad T(0)=b.
+\]
+It requires a finite positive execution ending with the head at $1$, state
+$\mu((M(s_j,b))_{\rm next})$, and both known cells unchanged.  Reading a cell
+outside $\{-1,0\}$ before that endpoint, encountering an undefined row, or
+repeating a configuration rejects the proposal.  The implementation uses a
+finite fuel bound; exhausting it also rejects, so it can lose opportunities
+but cannot certify an unverified expansion.  Recorded successful traces give
+finite certificates that can be checked independently.
+
+\paragraph{Soundness.}
+At an original entry to $q$ or $r$, the incoming transition has written the
+required predecessor bit, since any left-moving incoming transition would
+have excluded that state from the candidate sets.  Thus the local certificate
+applies independently of the tape outside the two inspected cells.  Unfolded
+states take the same one step, with only the destination renamed; folded
+states take their certified positive finite sequence.  Induction on the
+original run therefore produces a simulation in $M'$, preserving tape and
+head at every original step boundary.  Every inserted sequence terminates
+and has no intermediate halting configuration.  Conversely, if $M'$ halted
+before an original halting boundary, finitely many of these positive
+sequences would extend past that time, contradicting determinism.  Hence the
+machines have the same halting behavior from any common start satisfying the
+incoming-bit invariant.  The start state is excluded from the folds.
+
+All reasoning here is about fixed finite tables and fixed finite local traces;
+the run induction and the bounded reflection argument are formalizable in
+$\mathsf{PA}$.  This is a mathematical certificate argument, not a claim that
+our Python implementation has itself been verified by the Lean kernel.

@@ -1,0 +1,221 @@
+\section{Construction: enlarge the closed region, then share a selector}
+\label{sec:construction}
+
+The earlier tagged-selector proposal could not simply be stacked with U212:
+it repurposed native helper 211, which the accepted U212 patch enters from
+$180/1$. The successful construction preserves that helper and changes a
+larger closed source region. No axiom is removed and no new proof-search
+calculus is introduced.
+
+\subsection{Source reassociation and physical decoder rows}
+
+The source is a full binary sequence tree. Leaves are register primitives
+with effects \code{CI}, \code{CD}, \code{CB}, \code{CC}, or \code{CH}; a leaf's
+binary address identifies its position in the tree. Branch primitives
+refer to enclosing left or right ancestors, so arbitrary reassociation
+would not be justified. A factor is \emph{closed} when it has no branch
+escaping its root and contains no halt primitive. For three closed factors,
+the changes
+\[
+        ((A,B),C)\quad\longleftrightarrow\quad(A,(B,C))
+\]
+preserve the ordered primitive effects and their resolved ordinal successors.
+The checker establishes closure for the exact factors and then verifies
+the entire ordinal control-flow graph, including both cases of every
+conditional decrement.
+
+A pure physical decoder state reads a bit, writes that same bit, moves
+right, and enters its zero or one child. Write its children as an ordered
+pair. If $p=(q,c)$ and $q=(a,b)$, a left rotation makes
+$p=(a,q)$ and $q=(b,c)$. If $p=(a,q)$ and $q=(b,c)$, the inverse rotation
+makes $p=(q,c)$ and $q=(a,b)$. In both cases the inner decoder $q$ must
+have precisely the stated incoming row. This is checked over the whole
+literal table, not merely the source tree. The builder also rejects any
+incoming left-moving runtime edge to either edited decoder.
+
+The source addresses are changed accordingly. For the first direction,
+at each affected prefix $s$, the replacements are
+\[
+       s00u\mapsto s0u,\qquad
+       s01u\mapsto s10u,\qquad
+       s1u\mapsto s11u;
+\]
+the reverse direction uses the inverse prefix code. All occurrences of a
+shared physical decoder are transformed. The independent auditor reconstructs
+these occurrences from literal prefix executions rather than trusting
+the discovery program's map. At every stage it checks all 3,908 internal
+prefixes, rejecting a write that changes a bit or a read outside the
+known prefix and left sentinel. It independently rechecks the full source
+graph after the transformation.
+
+\subsection{The nine rotations}
+
+The useful closed region is rooted at native 174 and occupies primitive
+ordinals $[2722,3658)$, with zero-based ordinals. It extends the previously
+used 774-primitive emitter by one preceding closed 162-primitive factor.
+Its fourteen factors, in unchanged order, are
+\[
+ 159,147,176,98,218,168,98,147,146,218,176,90,211,218.
+\]
+Their primitive lengths are respectively
+\[
+ 162,52,80,26,56,52,26,52,108,56,80,27,103,56,
+\]
+which sum to 936. Repeated labels denote repeated occurrences of the same
+factor. The nine literal rotations are listed in Table~\ref{tab:rotations}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabular}{rrrrl}
+\toprule
+Step & Outer & Inner & Side & Source reassociation\\
+\midrule
+1&215&204&1&$(A,(B,C))\to((A,B),C)$\\
+2&217&181&1&$(A,(B,C))\to((A,B),C)$\\
+3&185&217&0&$((A,B),C)\to(A,(B,C))$\\
+4&174&185&1&$(A,(B,C))\to((A,B),C)$\\
+5&129&158&0&$((A,B),C)\to(A,(B,C))$\\
+6&217&215&1&$(A,(B,C))\to((A,B),C)$\\
+7&204&214&0&$((A,B),C)\to(A,(B,C))$\\
+8&215&129&0&$((A,B),C)\to(A,(B,C))$\\
+9&216&220&1&$(A,(B,C))\to((A,B),C)$\\
+\bottomrule
+\end{tabular}
+\caption{The deterministic recipe. Side is the old edge from outer to inner.
+All labels are native. Exact occurrence prefixes are in
+\protect\path{inputs/rotation_paths.json}.}
+\label{tab:rotations}
+\end{table}
+
+One way to display the final association, using $(x,y)$ for source
+sequencing, is
+\begin{align*}
+ F&=(211,218), & E&=(218,176),\\
+ D&=(146,(E,90)), & C&=(147,D),\\
+ B&=((218,(168,98)),C), & A&=(98,B),\\
+ \text{root }174&=((159,(147,176)),(A,F)).
+\end{align*}
+In the physical table, $B$ uses helper 129; its left branch through 158
+begins with 218 and its right branch through 204 begins with 147. The
+factor represented by 211 remains intact.
+
+After all nine rotations, the source still has 3,909 primitives and 197
+distinct subtrees, maximum depth 42 and maximum zero run six. The reduction
+does not improve the subtree count: it makes the existing allocation more
+shareable. Intermediate rotated tables are construction stages only. Some
+intermediate address shapes are unsuitable for the original scanner; the
+full runtime theorem is checked for the final table, not asserted for
+every intermediate stage.
+
+\section{The predecessor-tag fold}
+\label{sec:fold}
+
+Let $\Rot$ denote the 212-state table after the nine rotations. Its relevant
+rows are:
+\begin{center}
+\begin{tabular}{rcc}
+\toprule
+Native state & Read 0 & Read 1\\
+\midrule
+220 & $\act{0}{R}{218}$ & $\act{1}{R}{176}$\\
+181 & $\act{0}{R}{147}$ & $\act{1}{R}{176}$\\
+129 & $\act{0}{R}{158}$ & $\act{1}{R}{204}$\\
+158 & $\act{0}{R}{218}$ & unchanged\\
+204 & $\act{0}{R}{147}$ & unchanged\\
+\bottomrule
+\end{tabular}
+\end{center}
+The complete incoming inventories, including all runtime rows, are
+\[
+ \operatorname{In}(220)=\{216/0:\act{0}{R}{220}\},\qquad
+ \operatorname{In}(181)=\{185/1:\act{1}{R}{181}\}.
+\]
+Neither state is initial. Thus whenever $\Rot$ enters 220, the cell immediately
+left of its head is 0; whenever it enters 181, that cell is 1. The previous
+transition wrote the identifying bit, so no condition on earlier tape
+contents is needed.
+
+The final fold performs exactly three operations:
+\begin{enumerate}
+\item Redirect the target of $185/1$ from 181 to 220.
+\item Replace $220/0$ by $\act{0}{L}{129}$.
+\item Delete the two outgoing rows of 181.
+\end{enumerate}
+All other retained rows agree with $\Rot$, up to the target identification
+$\rho(181)=220$, $\rho(q)=q$ otherwise. In particular, the helpers are checked
+in the final edited table, and are distinct from both merged states.
+
+\begin{lemma}[Four local identities]\label{lem:four}
+Let the old head position be $h$, with left-neighbor tag 0 at old state 220
+or tag 1 at old state 181. One old transition is simulated by one or three
+new transitions, with the same whole tape and head position and control
+mapped by $\rho$. The exterior tape is arbitrary and is not read.
+\end{lemma}
+\begin{proof}
+The two possible current symbols give the four cases in
+Table~\ref{tab:local}. If the current symbol is 1, both old states have
+the identical row to 176, which is retained. If it is 0, the new 220 row
+moves left to 129. That helper reads and preserves the tag, returning right
+to 158 or 204. The current zero then selects the required old target 218
+or 147. Every write preserves the symbol read. Only cells $h-1$ and $h$
+are read; the head ends at $h+1$, which is not read inside the block.
+No displayed intermediate state is halt.
+\end{proof}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrlc}
+\toprule
+Old state & Tag & Read & New state/head path, relative to $h$ & Steps\\
+\midrule
+220&0&0&$220@0\to129@{-1}\to158@0\to218@1$&3\\
+181&1&0&$220@0\to129@{-1}\to204@0\to147@1$&3\\
+220&0&1&$220@0\to176@1$&1\\
+181&1&1&$220@0\to176@1$&1\\
+\bottomrule
+\end{tabular}
+\caption{Exhaustive local cases. The old block has one step in every row.}
+\label{tab:local}
+\end{table}
+
+\begin{theorem}[Final-fold equivalence]\label{thm:fold}
+For any common initial tape, from start state 0 and a common head position,
+$\Rot$ halts if and only if $\New$ halts. If a common halting run has
+$T_{\mathrm{rot}}$ old steps and $k$ of them read zero at old 220 or 181,
+then
+\[
+ T_{211}=T_{\mathrm{rot}}+2k,\qquad
+ T_{\mathrm{rot}}\leq T_{211}\leq3T_{\mathrm{rot}}.
+\]
+\end{theorem}
+\begin{proof}
+At time zero neither tagged state is active. The complete incoming lists
+establish the required tag at every subsequent old occurrence. For every
+old step outside the two tagged states, the corresponding new row commutes
+with $\rho$. There are 420 such rows, all checked explicitly. The common
+one branch and Lemma~\ref{lem:four} handle the remaining rows.
+
+Induction on old time therefore embeds the old execution into the unique
+new execution at block boundaries, with identical tape and head and
+projected control. Every block is finite, has length one or three, and
+has no internal halt. If the old run halts, the corresponding new boundary
+halts. If the old run is infinite, its block times grow without bound and
+describe a nonhalting new run; a new halt cannot occur inside a block.
+This proves reflection as well as preservation. Summing block lengths
+gives the exact time identity and bounds.
+\end{proof}
+
+The arbitrary-tape statement is an ordinary mathematical local simulation.
+For its PA formulation one codes finite configurations and finite tape
+support; blank-tape equivalence and the finite trace induction are arithmetic.
+No second-order quantification over infinite tapes is required. The bound
+belongs only to the final fold $\Rot\to\New$. The preceding reassociations
+change source addresses, so neither this bound nor arbitrary-common-tape
+equivalence is asserted for the whole path from the original $\Old$.
+
+The finite structural verifier \path{code/verify_fold.py} checks the
+incoming inventories, all ordinary rows, the final helper rows, and the
+four paths over partial tapes with an unread opaque exterior. Twelve
+intentional corruptions are rejected. The verifier uses explicit checks
+and passes also under Python \code{-O}; it does not turn off the obligations
+when assertions are disabled.

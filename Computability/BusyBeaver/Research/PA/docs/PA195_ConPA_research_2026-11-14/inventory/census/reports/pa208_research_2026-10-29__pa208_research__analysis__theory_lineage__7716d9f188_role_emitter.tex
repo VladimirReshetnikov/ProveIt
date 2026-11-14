@@ -1,0 +1,121 @@
+\section{Audit of the matrix/output role reassignment}
+
+This section proves the logical calibration of the selected source.
+The physical compilation and its state count are certified separately.
+
+Retain native implication $I$, membership atom $R$, universal
+quantifier $Q$, falsity code $F=1$, and $N(A)=I(A,F)$. Retain the exact
+vacuity component and gate
+\[
+ V(a,b,c)=I(R(a,b),Q(c,R(a,b))),\qquad c\ne a\ \land\ c\ne b.
+\]
+For the reassigned covering component use output label and matrix code
+$a$, source label $b$, and tested label $c$. Define
+\begin{align*}
+ e&=R(c,a), & G&=Q(a,I(R(a,c),R(a,b))),\\
+ U&=Q(c,I(e,a)), & L&=Q(c,I(a,I(G,e))),\\
+ H&=Q(a,I(U,I(L,F))), & B^*(a,b,c)&=N(I(V(a,b,c),H)).
+\end{align*}
+The alternatives obtained by exchanging the two curried antecedents in
+$L$, or exchanging $U$ and $L$ inside $H$, are equivalent by the
+unchanged common-core implicational exchange theorem. The disabled gate
+still emits truth code zero.
+
+\subsection{Soundness of every enabled instance}
+
+Use the inherited normalized native decoder in the machine-facing
+theory $W+\mathsf{IR}$, where $W$ permits arbitrary matrix parameters
+in the weak power-cover schema and $\mathsf{IR}$ is global
+irreflexivity. Write $\phi$ for the decoded formula of code $a$.
+For $a>0$, every variable label occurring effectively in $\phi$ is
+strictly below $a$. For $a=0$, $\phi$ is the fixed closed truth alias.
+Thus the output variable $v_a$ is fresh in $\phi$ in every case.
+The gate ensures $c\ne a,b$, so the tested variable is distinct from
+both source and output.
+
+If $a\ne b$, the guard $G$ decodes to
+$\operatorname{Sub}(v_c,v_b)$, and $\neg H$ decodes to the ordinary
+weak cover of $\phi$ at source $v_b$, with tested object $v_c$ and
+fresh output $v_a$. Any occurrence of the source in $\phi$ is an
+allowed matrix parameter of $W$. This argument also permits the tested
+variable to be absent from $\phi$.
+
+If $a=b$, the guard's local binder $a$ captures both occurrences of
+the source/output label within the guard. It therefore decodes to
+\[
+ \forall v_a\,[E(v_a,v_c)\to E(v_a,v_a)],
+\]
+which is equivalent, under $\mathsf{IR}$, to
+$\operatorname{Emp}(v_c)$. The desired shell is consequently
+\[
+ \exists v_a\,\forall v_c\,
+ \bigl[(E(v_c,v_a)\to\phi)\land
+       (\operatorname{Emp}(v_c)\to(\phi\to E(v_c,v_a)))\bigr].
+\]
+Theory $W$ first supplies an empty source using a false-matrix
+instance. At this source $s$, $\operatorname{Sub}(x,s)$ is equivalent
+to $\operatorname{Emp}(x)$. The $\phi$-cover at $s$ is exactly the
+required shell. Fresh-bound-variable renaming keeps the auxiliary
+source separate from the displayed variables. No extensionality,
+unique empty object, or representation of tuples is used.
+
+The two small matrix codes introduce no further exception. Code zero
+is closed truth, giving an output containing every empty representative
+when $a=b=0$. Code one is uniformly false under $\mathsf{IR}$, giving
+an empty output. These are instances of the two arguments just given,
+not assumptions that a small selector is fresh by size.
+
+The unchanged gate makes $V$ a valid atomic membership-vacuity
+instance. Classical currying makes $B^*$ equivalent to
+$V\land\neg H$, so every enabled bundle is sound in $W+\mathsf{IR}$.
+
+\subsection{Completeness and the PA consistency calibration}
+
+Every enabled atomic membership-vacuity instance remains derivable by
+propositional projection from its bundle. The retained numerical
+logical rows, truth, modus ponens and generalization are otherwise
+unchanged. Consequently the inherited pure-logic translations, including
+the indiscernibility interpretation used for equality, keep exactly
+their original premises.
+
+Given any desired $W$ instance, first rename source and tested roles to
+labels zero and one, avoiding bound-variable capture. Replace its matrix
+by an equivalent double negation and quote it, obtaining a native code
+$n>1$. Every effective matrix label is below $n$. Choose the axiom
+selector tuple
+\[
+                  (a,b,c)=(n,0,1).
+\]
+Both gate tests hold. The regular case of the displayed bundle now
+supplies precisely this padded $W$ instance. Project its covering
+component, eliminate the double negation, and restore the original
+names by the retained logical proof templates. Global irreflexivity is
+derived from the numerical identity and generalization exactly as in
+the parent calibration.
+
+Thus the new numerical calculus derives a refutation exactly when
+$W+\mathsf{IR}$ does. Soundness and completeness are uniform finite
+proof transformations: they use native coding, fresh-name selection,
+padding, fixed propositional derivations, and structural recursion over
+finite proofs. The exceptional $a=b$ case adds a fixed pair of $W$
+instances, not a semantic oracle. The same PA formalizability argument
+as in the parent calibration therefore applies. Composing with its
+supplied $W+\mathsf{IR}$, $U$, and PA refutation translations yields
+the unchanged consistency endpoint, once source execution and the
+literal table have separately been verified.
+
+\subsection{Two further equivalent families}
+
+Interchanging $a$ and $b$ in the covering component gives the variant
+with matrix/output $b$, source $a$, and test $c$. The vacuity component
+and gate remain as originally written. The same proof applies, since
+the exceptional equality of source and output and the two exclusions
+of the tested label are symmetric. For recovery choose $(a,b,c)=(0,n,1)$.
+
+One may also use the uniformly negated matrix $N(a)$ while retaining
+output label $a$. Under the inherited normalized decoder its matrix
+is $\neg\phi$, and freshness is preserved, including code zero.
+For completeness quote the negation of the desired matrix; the emitted
+matrix is then its double negation. This is a logical permission only:
+the extra source operations and the resulting physical implementation
+must still be assessed and verified.

@@ -1,0 +1,273 @@
+# Independent comparison and proof-status audit
+
+## Scope and source identities
+
+This audit is a newly executed comparison of existing inputs, not a new small
+machine. The reference snapshots are:
+
+- ProveIt: `f1f076e31995f10460838d1846456f4bb9c8ae80`.
+- James Chang's PA196: `407cdc356f6b586635e71ac92be394255f4bfea4`.
+- James Chang's PA209: `69d98241a721ead20b4f0b17df9062950b40fbfe`.
+
+The supplied script `compare_designs.py` reads only the pinned files under
+`inputs/`. It uses Python's standard library and contains independently written
+parsers and graph checks. Running
+
+```
+python3 compare_designs.py --output comparison_receipt.json
+```
+
+checks 30 literal tables, 20 U208 rooted graph classes, 16 complete
+state-isomorphism bijections, eighteen local helper-equivalence certificates,
+five source layouts, equality of the two U208 ordinal control-flow graphs,
+and the complete
+finite startups of PA196 and PA209. Every source input has its original hash
+and provenance in `inputs/manifest.json`. The original reference programs and
+tables have not been edited. These checks do not constitute a new Lean build,
+an infinite-run proof, or an internal PA theorem.
+
+## The nine U208 tables are two machines up to state renaming
+
+**Scope of the complete incoming directory.** The nine-table
+statement in this section concerns the five original construction archives.
+The later `pa208_research_2026-10-29.zip` adds eighteen accepted 208-state
+helper variants, each in a new rooted graph class. Consequently the complete
+accepted U208 inventory has **27 designated tables in 20 graph classes**.
+The extended standalone checker checks all 27, including the exact local
+equivalences for the eighteen helper variants. It also includes the accepted
+196-state alternative in the November 13 research archive, bringing the
+total reference table census, with Chang's PA209 and PA196, to 30 tables.
+
+The five construction archives specify nine final tables when their
+alternatives are counted. The independently reconstructed graph classes are:
+
+| Archive | Principal output | Alternative |
+| --- | --- | --- |
+| `U208_ConPA_2026-10-29.zip` | A | none |
+| `U208_ConPA_Conditional_Context_2026-10-29.zip` | A | B |
+| `U208_ConPA_Entry_Context_2026-10-29.zip` | A | B |
+| `U208_ConPA_History_2026-10-29.zip` | A | B |
+| `u208_research_2026-10-29.zip` | B | A |
+
+All nine have 208 working states, 416 rows, and a separate halt control. The
+comparison fixes the initial control, read and write symbols, and head
+directions. It permits only state renaming. The script numbers the graph by
+breadth-first search from state 0, visiting the zero edge before the one edge,
+and verifies each resulting isomorphism against every literal transition.
+It does not infer equality from matching hashes alone. All working states are
+graph reachable; this is not a claim of actual blank-run reachability.
+
+The five reports already describe the same final one-state reduction, in
+different orientations and allocations. In one Joint-native orientation,
+states 172 and 211 are identified, with an existing helper distinguishing their
+incoming tape contexts. These are not five independent state savings. A
+comparison cannot subtract them five times.
+
+### The eighteen additional accepted helper designs
+
+The additional archive explicitly designates the eighteen `augmented_A_*`
+and `augmented_B_*` directories under `analysis/comparison/double_helper/`
+as accepted. Each deletes one old state, identifies it with a retained
+state, and adds a new selector state 500. The net count remains 208.
+There are nine donor choices for each of the two original graph classes.
+They retain the original A/B register sources and consistency calibration;
+these are tape-control variations, not eighteen different axiom theories.
+
+In the archive's History native labels, the four families are:
+
+| Deleted → retained | Retained row changed | Helper 500/0 | Helper 500/1 | Donor variants per baseline |
+| --- | --- | --- | --- | ---: |
+| 127 → 124 | read 0: `0 L 500` | `0 R 8` | `1 R y`, y∈{59,109,125} | 3 |
+| 190 → 160 | read 1: `1 L 500` | `0 R 86` | `1 R 193` | 1 |
+| 178 → 168 | read 0: `0 L 500` | `0 R x`, x∈{154,159} | `1 R y`, y∈{176,225} | 4 |
+| 301 → 88 | read 0: `0 L 500` | `0 R 122` | `1 R 500` | 1 |
+
+The full literal inputs and parameters are pinned in the extended input
+manifest. For every variant, the new independent `helper_equivalences`
+checker reconstructs all 416 rows from the patch, checks native/dense
+conjugacy, derives predecessor tags from the complete incoming-edge census,
+and replays all four changed-row cases on their entire two-cell footprints.
+Each block has positive length 1, 3, or 5, never reads an unspecified cell,
+and reaches exactly the old tape/head endpoint under the state quotient.
+All ordinary rows commute. Thus the elementary bounded-stuttering argument
+gives halting equivalence from state 0 on every common initial tape. This
+does not reprove the inherited consistency calibration.
+
+Fresh execution of the archive's separate `verify_helper_machines.py`
+also passes. Its result is retained as
+`helpers208/fresh_helper_receipt.json`. The new checker independently finds
+all eighteen rooted graphs distinct from one another and from both A and B.
+
+### Audit of the seven other incoming archives
+
+All twelve incoming ZIP archives were inventoried. The seven archives other
+than the five original construction releases have these designated results:
+
+| Archive | Additional accepted literal output |
+| --- | --- |
+| `Below_U208_Research_2026-10-29.zip` | None; baseline comparisons and bounded negative searches |
+| `ConPA_below208_research_2026-10-29.zip` | None; baseline comparisons and bounded negative searches |
+| `pa208_research_2026-10-29.zip` | Eighteen new 208-state helper graphs, as above |
+| `pa_consistency_research_2026-10-29.zip` | None; source-level specialization and rejected smaller-table experiments |
+| `pa_tm_research_2026-11-13.zip` | One accepted alternative 196-state table; its source has 3,812 sites, 159 internal nodes, and maximum path 36 |
+| `pa_unary_power_cover.zip` | No literal machine; theory-calibration work |
+| `u208_comparison_research_2026-10-29.zip` | None; comparisons and explicitly rejected smaller candidates |
+
+The seven archive hashes, designated-status member paths, and verbatim
+README snapshots are in `incoming_status/inventory.json` and the accompanying
+status files. The complete comparison does not treat arbitrary experimental
+`.tm` files, filenames containing `PASS`, or explicitly rejected machines as
+accepted consistency designs. The accepted alternative 196-state machine
+has a new graph class; its statement remains at the source/calculus and
+custom symbolic-verification level recorded in that earlier archive.
+
+The distinction between the U209 parents in these archives and Chang's PA209
+is important. The former implement a 3,909-site source. The latter implements
+a 3,948-site physical source. Equal state counts do not identify the tables or
+the proof-calculus encodings.
+
+## Uniform source metrics
+
+The following counts were recomputed from the input trees, rather than copied
+from their prose descriptions:
+
+| Source | Working states | Primitive occurrences | Distinct internal nodes | Distinct leaf instructions | Total distinct subtrees | Maximum path |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| U208 A | 208 | 3,909 | 174 | 23 | 197 | 42 |
+| U208 B | 208 | 3,909 | 174 | 23 | 197 | 41 |
+| Chang PA209 | 209 | 3,948 | 173 | 23 | 196 | 33 |
+| Chang PA196 | 196 | 3,812 | 159 | 23 | 182 | 38 |
+
+The older U208 reports often call 197 the DAG size; that number includes the
+23 distinct leaf instructions. PA196's paper calls 159 its node count and is
+counting internal nodes. Comparing 197 directly with 159 exaggerates the
+source-structure reduction. Both consistent conventions are shown above.
+PA209's formal statement bounds paths by 38; its exact maximum in the supplied
+tree is 33. All four sources have maximum consecutive-zero path run six.
+
+The two U208 layouts have identical ordered primitive instruction words and
+identical ordinal control-flow graphs. They differ at 720 primitive addresses.
+The graph has 5,083 nonhalting edges. PA209 has 5,134 and PA196 has 4,958.
+The source counts include the single halt occurrence.
+
+PA196's paper specifies its physical budget as 36 engine states, 13
+leaf-routing states, and 147 source-reader states. The 147 reader states
+service 159 distinct internal source nodes using the already incorporated
+sharing. A reduced source DAG or a shorter path is not, by itself, a reduced
+physical state count.
+
+## What PA196 changes
+
+The published PA196 construction changes PA209's axiom command, including:
+
+1. Transposing the Cantor-pair arguments only for universal quantification:
+   `U(a,B) = 4 pair(B,a) + 2`.
+2. Dropping the old seventh equality head, replacing its needed uses by
+   derivations using membership rewriting and separation, and putting guarded
+   equality vacuity into the gate.
+3. Reordering the remaining axiom heads and exchanging selected antecedents.
+4. Reallocating the binary source tree, sharing six complementary pairs in
+   the axiom body and removing two obsolete outside helpers.
+
+The paper supplies the mathematical replacement derivations and Lean source
+for the revised calculus and literal simulation. The body has 201 macro
+items and 68 distinct internal nodes represented by 62 reader states. Those
+six savings have already been counted in 196.
+
+The exact mixed-entry U208 fold cannot be transferred by state renaming alone.
+It needs a state whose zero transition is `0 L q` and whose one transition is
+`1 R q`, with the same working target `q`. A complete scan of PA196's 392 rows
+finds no such state. This observation excludes only that literal motif.
+
+The startups were replayed with an independent finite-support tape simulator.
+PA196 reaches literal state 75 at step 58,154; PA209 reaches literal state 81
+at step 58,210. Both have absolute head position -2, and their entire tapes
+are identical relative to the head. The common clean file is
+`[0,0,0,0,0,0,2,0,0]` followed by 26 spare ones, with header distance 48.
+This is a finite exact result, not evidence of infinite nonhalting by itself.
+
+## Exact proof status
+
+Let `H` be the literal arithmetic halting sentence and `N = not H`. The
+published PA196 theorem is
+
+```
+PA196.Arithmetic.pa_proves_nonhalting_consistency :
+  M6.PA.theory proves (N -> Con(PA)).
+```
+
+The PA209 snapshot exposes the analogous one-way statement in
+`M6PA/FinalEndpoint.lean`. Both repositories also supply external machine
+nonhalting and independence theorems. The standard-model soundness argument
+is distinct from a uniform internal statement about all coded halting traces.
+PA196's `Logic/Soundness.lean` explicitly calls its hereditarily-finite-model
+argument external.
+
+The additional implication required by the user's requested biconditional is
+
+```
+PA proves (H -> not Con(PA)),
+```
+
+equivalently, `PA proves (Con(PA) -> N)`. The published theorem inventory does
+not assert it. This is a proof-status distinction; it does not establish that
+the converse is false or unprovable.
+
+The current ProveIt tree already documents this issue in
+`PA/pa196-vs-u208/PA-BRIDGE.md` and reviews the incoming November 13 direct
+arithmetic translation manuscript. The manuscript's direct bit-membership
+interpretation is a concrete ordinary proof plan. It includes the difficult
+same-variable-label case for the gate and avoids the older decoder's
+primitive-negation convention. However, it does not provide an implemented
+arbitrary-proof translator, a PA proof of that translator's correctness, or
+the reverse extraction from an arbitrary model-length literal trace.
+
+The remaining interfaces are therefore explicit:
+
+- Turn an internally coded literal halt trace into a native refutation,
+  including complete macro endpoints and arbitrary final partial blocks.
+- Translate native proof codes uniformly into ordinary PA refutations,
+  with bound-variable freshness, arbitrary formula substitution into PA
+  induction, the truth-code alias `I(0,0)=0`, and the stack alias
+  `pair(0,0)=0` accounted for.
+
+These observations are already present in the repository and should not be
+reported as a new breakthrough from this audit.
+
+## Prior reductions that must not be rediscovered as new
+
+The latest ProveIt PA research includes the following completed searches and
+their stated boundaries:
+
+| Existing investigation | Established result | Remaining scope |
+| --- | --- | --- |
+| Single keeper-row fold | No survivor in the one-state merge, one replacement row, five-cell/16-step template | Longer blocks, different encodings, multiple patched rows |
+| Both keeper rows | No survivor in that two-row template; the `{56,96}` near misses actually halt after 12,039 blank steps | Other multirow changes and different simulations |
+| One arbitrary helper row | No survivor; `45 -> 160`, helper `184/1 = 1 L 75`, fails the tested alignment on the actual blank run near 1.223 billion steps | Two helper patches, nonlocal effects, alternative relations |
+| Alternative196 helper screen | No survivor in the analogous template; the near miss has a source-reached adverse frame | No continuous blank-run inequivalence proof follows from that source-frame replay alone |
+| Source rotations | No source-node reduction among all allowed single rotations, two global rotations, or the documented restricted third-rotation extension | Other third intermediates, longer or mixed rotations, different physical allocations |
+| Source cleanups | Three, then two more primitive occurrences can be removed from the clean seed | The combined source has 162 internal nodes, versus 159; no physical saving follows |
+| Startup-preserving allocation | A validated executable 197-state layout for the first cleanup | Restricted allocator failures are not global lower bounds |
+| Incoming alternative196 | Same state count, shorter maximum path 36 after head reordering | Requires its own source/logical transport and does not meet the sub-196 target |
+
+The initial helper-row near miss has particularly strong adverse evidence:
+the original source reaches site 604 with logical registers
+`[4,1,75,0,0,0,0,0,0]`; the original next complete source frame is site 605,
+whereas the modified table reaches site 615. The latest continuous accelerated
+blank replay checks that the problematic boundary is actually reached.
+Even that finite divergence does not, by itself, prove unequal ultimate
+halting behavior, and the repository correctly does not make that inference.
+
+## Primary references
+
+- [PA196 paper](https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/paper/pa196.tex).
+- [PA196 formal inventory](https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/docs/result.md).
+- [PA209 paper](https://github.com/jamesyc/BusyBeaver/blob/69d98241a721ead20b4f0b17df9062950b40fbfe/paper/pa209.tex).
+- [Existing comparison](https://github.com/VladimirReshetnikov/ProveIt/blob/f1f076e31995f10460838d1846456f4bb9c8ae80/Computability/BusyBeaver/Research/PA/pa196-vs-u208/COMPARISON.md).
+- [Existing proof-interface audit](https://github.com/VladimirReshetnikov/ProveIt/blob/f1f076e31995f10460838d1846456f4bb9c8ae80/Computability/BusyBeaver/Research/PA/pa196-vs-u208/PA-BRIDGE.md).
+- [Latest alternative helper search](https://github.com/VladimirReshetnikov/ProveIt/blob/f1f076e31995f10460838d1846456f4bb9c8ae80/Computability/BusyBeaver/Research/PA/pa196-vs-u208/source-search/alternative196-cleanup/helper-row/README.md).
+
+Each U208 table's exact archive and member path is recorded in the input
+manifest. The comparison repeats known classifications with independent
+code, supplies uniform source-size metrics, and identifies no new smaller
+machine.

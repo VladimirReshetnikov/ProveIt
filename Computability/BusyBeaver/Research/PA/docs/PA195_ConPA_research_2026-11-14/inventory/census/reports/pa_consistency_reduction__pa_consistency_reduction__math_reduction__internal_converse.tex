@@ -1,0 +1,248 @@
+% Standalone mathematical contribution; no claim of a completed Lean formalization.
+\section{The PA-internal converse for the PA196 command calculus}
+\label{sec:internal-converse}
+
+The published endpoint of PA196 is
+\[
+  \mathrm{PA}\vdash \neg H_{196}\longrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+Its separate external nonhalting theorem uses a concrete model of hereditarily
+finite lists.  That external theorem, by itself, does not establish the
+opposite implication inside PA.  The argument below supplies the opposite
+implication by a syntactic interpretation.  It is an ordinary mathematical
+proof and a specification for an additional formalization; it is not a claim
+that the existing Lean declarations already contain this converse.
+
+\subsection{Conventions and the translation}
+
+Write $\mathcal C$ for the numeric calculus of
+\texttt{PA196/Logic/Basic.lean}. Its rules are modus ponens and theorem
+generalization; its axioms are the six displayed heads, the restricted
+propositional head, and the guarded gate. A derivation is a finite tree
+whose nodes record the rule and its numerical arguments. Let
+$\operatorname{Prf}_{\mathcal C}(p,n)$ be the primitive recursive predicate
+saying that $p$ is such a tree with conclusion code $n$.
+
+The translation $A\mapsto A^*$ decodes numeric formulas using the actual
+transposed universal constructor. It replaces membership by binary-bit
+membership, equality by arithmetic equality, implication by implication,
+and a quantifier with label $a$ by $\forall x_a$. Precisely,
+\[
+  \mathsf M(a,b)^*=\operatorname{Bit}(x_a,x_b),\qquad
+  \mathsf E(a,b)^*=(x_a=x_b),\qquad
+  \mathsf U(a,B)^*=\forall x_a\,B^*.
+\]
+Here $\operatorname{Bit}(s,i)$ means that the binary digit of $s$ at
+position $i$ is one. Code zero is decoded as $\top$, for example $0=0$.
+The numeric identity $\mathsf I(0,0)=0$ is the sole degenerate implication
+case: the translation proves $0^*\leftrightarrow(0^*\to0^*)$, rather than
+pretending that their parse trees are identical. For every other implication
+code, decoding gives the indicated implication literally. Consequently the
+translation of an MP step is either ordinary MP, or the fixed proof of
+$\top$ in this exceptional case. Code one is
+$\mathsf M(0,0)$ and hence translates to
+$\operatorname{Bit}(x_0,x_0)$.
+
+We may carry out the proof in the conservative definitional extension
+$\mathrm{PA}^{\mathrm{pr}}$ with symbols for the fixed primitive recursive
+functions needed below, including exponentiation and binary digits.
+Their totality is provable in PA, and the usual elimination of those
+definitions is a primitive recursive proof transformation. No uniform
+evaluation of arbitrary primitive recursive programs is being postulated.
+Only finitely many fixed numerical functions occur in these definitions.
+
+\subsection{The finite-comprehension proof template}
+
+For every arithmetic formula $\varphi(i,\vec z)$, with $s,n$ chosen fresh,
+PA proves the corresponding instance
+\begin{equation}\label{eq:finite-comprehension-template}
+ \forall n\;\exists s<2^n\;\forall i<n\,
+ \bigl(\operatorname{Bit}(s,i)\leftrightarrow\varphi(i,\vec z)\bigr).
+\end{equation}
+This uses full induction, so no restriction is placed on the quantifier
+complexity of $\varphi$. At $n=0$, choose $s=0$. In the induction step,
+choose $s'=s+2^n$ if $\varphi(n,\vec z)$, and $s'=s$ otherwise.
+The bound $s<2^n$ ensures that adding $2^n$ changes exactly the new bit;
+the familiar bit identities and $s'<2^{n+1}$ complete the step. Classical
+excluded middle for $\varphi(n,\vec z)$ is available in PA.
+
+This is a syntactic template, not a uniform truth definition. Given the
+code of $\varphi$, a primitive recursive algorithm writes the displayed
+induction instance and the fixed proof around it. Fresh variable selection,
+capture-avoiding substitution, the induction-axiom recognizer, and proof
+concatenation are primitive recursive. PA proves the algorithm's output is
+a proof of the corresponding instance by checking these syntactic
+operations. The induction instance changes with $\varphi$; no assertion
+that PA proves its own soundness occurs.
+
+PA also proves
+\begin{equation}\label{eq:no-self-bit}
+ \forall a\;\neg\operatorname{Bit}(a,a),
+ \qquad
+ \operatorname{Bit}(a,i)\longrightarrow i<a.
+\end{equation}
+For the second assertion, a set bit implies $2^i\le a$, while
+$i<2^i$ is provable by induction. The first follows by setting $i=a$.
+
+\subsection{The gate, including the coincident-label case}
+
+Fix numerical labels $a,b,c$ with $c\ne a,b$. Put
+$\Phi=(\operatorname{decode}(c))^*$. Every variable label appearing
+anywhere in $\operatorname{decode}(c)$ is strictly below $c$.
+The reason is that a nonzero constructor's Cantor components are smaller
+than the constructor code, in either order; induction on the decoder
+proves the assertion. In particular $x_c$ does not occur in $\Phi$, even
+bound. This syntactic fact is primitive recursively checkable and
+PA-provable. It is stronger than the required freshness condition.
+
+First suppose $a\ne b$. Under fixed values $A=x_a$ and $B=x_b$, apply
+\eqref{eq:finite-comprehension-template} at $n=A+B+1$ to
+\[
+  \theta(i)=
+  \bigl(\operatorname{Bit}(A,i)\lor i=B\bigr)
+  \land \Phi[i/x_b].
+\]
+The resulting number $s$ satisfies
+\[
+ \forall i\;
+   \bigl(\operatorname{Bit}(A,i)\to\Phi[i/x_b]
+                 \to\operatorname{Bit}(s,i)\bigr)
+   \land\bigl(\operatorname{Bit}(s,i)\to\Phi[i/x_b]\bigr),
+ \qquad
+ \Phi\to\operatorname{Bit}(s,B).
+\]
+For $i\ge n$, both the first antecedent and $\operatorname{Bit}(s,i)$
+are false, by the bound on $s$ and \eqref{eq:no-self-bit}; hence the
+unbounded universal statement follows from the bounded comprehension.
+
+If $a=b$, the occurrence of $x_a$ in the gate's universally quantified
+membership antecedent is bound together with $x_b$. That antecedent is
+then $\operatorname{Bit}(i,i)$, always false. In this case use
+$n=B+1$ and $\theta(i)=(i=B)\land\Phi[i/x_b]$ instead. The same required
+separation statement and distinguished-point implication follow. This
+case distinction is necessary: silently treating $x_a$ as a fixed
+parameter when $a=b$ would be a variable-capture error.
+
+These two cases give precisely the translation of
+\[
+   \exists x_c\bigl(S(a,b,c)\land P(a,b,c)\bigr),
+\]
+where $P=c\to\mathsf M(c,b)$ and
+\[
+  S=\mathsf U\bigl(b,
+      (\mathsf M(a,b)\to P)\land(\mathsf M(c,b)\to c)\bigr).
+\]
+Because $c\ne a,b$, the equality- and membership-vacuity clauses
+$\Delta$ and $V$ are ordinary quantifier-vacuity tautologies after
+translation. If $Q=\mathsf U(c,S\to\neg P)$, the displayed witness
+refutes $Q$. From $\Delta$, $V$, and $\neg Q$, propositional logic gives
+\[
+   \neg\bigl(\Delta\to(V\to Q)\bigr),
+\]
+which is the exact PA196 gate. When a guard fails, the command returns
+code zero, already covered by the proof of $\top$.
+
+After using the fixed PA proof that $\operatorname{Bit}(x_0,x_0)$ is false,
+all six other heads translate into first-order logical or equality
+theorems. This replacement matters for heads containing encoded negation or
+existential quantification: their translations are PA theorems, not pure
+logical validities with an arbitrary predicate in place of falsity.
+The restricted propositional head translates into a classical
+tautology; its numerical restriction is irrelevant to soundness.
+The proof templates also cover the exceptional numeric implication code
+by the fixed equivalence noted above.
+
+\subsection{A proof compiler and its internal consequence}
+
+There is a primitive recursive function $T$ for which PA proves
+\begin{equation}\label{eq:proof-compiler-soundness}
+ \operatorname{Prf}_{\mathcal C}(p,1)
+ \longrightarrow
+ \operatorname{Prf}_{\mathrm{PA}}(T(p),\ulcorner\bot\urcorner).
+\end{equation}
+To construct it, traverse the derivation tree. Translate each axiom by
+the templates above, each MP node by MP (with the exceptional truth case
+handled explicitly), and each theorem-generalization node by arithmetic
+generalization. At the root append the fixed proof of
+$\neg\operatorname{Bit}(x_0,x_0)$ from \eqref{eq:no-self-bit}, followed
+by the contradiction rule of the selected PA presentation. Eliminate the
+finitely many definitional extensions. Recursion on a finite tree and
+substitution into fixed proof templates are primitive recursive;
+duplication of previously constructed proofs may enlarge certificates
+but does not change this fact. PA proves correctness by induction on the
+tree code, using its ordinary syntactic proof-checking predicates.
+
+Thus PA proves
+\begin{equation}\label{eq:con-no-calculus-refutation}
+ \operatorname{Con}(\mathrm{PA})\longrightarrow
+ \forall p\;\neg\operatorname{Prf}_{\mathcal C}(p,1).
+\end{equation}
+The existing HF interpretation is unnecessary for this implication.
+
+\subsection{From proof syntax to the literal machine}
+
+The sound-store invariant needed by the command interpreter is purely
+syntactic: its live formulas have $\mathcal C$ derivations and every
+element of the stack has one too. A zero tail pops to zero, and zero has
+a fixed derivation. An AX step attaches the appropriate axiom proofs
+and the theorem-generalization proof. An MP step either attaches an
+MP proof or returns zero. A Shift step halts only if $t+h=1$, which
+forces one of the two live formulas to be code one.
+Consequently PA proves, by induction on a coded finite command
+execution, that a halting execution from the zero store gives a
+$\mathcal C$ refutation. This proof uses the existence of finite proof
+codes, not their truth in a model.
+
+To transport this assertion to a specific literal table, one must also
+internalize its startup and instruction contracts. The relevant
+contracts are finite, positive-length simulations on clean unary
+register frames. Their variable parts are the fixed tape-engine
+loops, proved by arithmetic induction; their program-reading parts
+are finite symbolic traces. All register operations, path encodings,
+and trace concatenations are primitive recursive, and PA proves
+their totality. They therefore hold also for nonstandard coded frames
+and traces in arbitrary models of PA. Determinism and positive length
+exclude an intermediate halt before a prescribed return frame. More
+explicitly, if a literal run halts within $t$ steps while none of the
+first $t+1$ source instructions halts, the total source-step function
+and the positive instruction contracts produce a literal run lasting
+at least $t+1$ steps from that frame. Determinism contradicts the
+claimed earlier halt. This is a bounded induction argument available
+inside PA; it does not invoke the truth of an unbounded nonhalting
+assertion. The identical argument applies to command boundaries using
+the positive, total arithmetic macro contracts. This
+gives, within PA, equivalence of blank-tape halting and source-program
+halting, and hence the literal implication
+\[
+ \mathrm{PA}\vdash H_{196}\longrightarrow
+              \neg\operatorname{Con}(\mathrm{PA}).
+\]
+Together with the published reverse implication this proves
+\[
+ \mathrm{PA}\vdash
+ \neg H_{196}\ \longleftrightarrow\ \operatorname{Con}(\mathrm{PA}).
+\]
+For a newly reduced table the same conclusion follows once its finite
+symbolic instruction contracts and startup preserve this source
+program. This mathematical proof should be distinguished from the
+stronger artifact claim of a completed Lean formalization of the
+new internal converse: no such completed formalization is supplied
+by the upstream PA196 endpoint.
+
+\subsection{What transfers from ConciseIPRA}
+
+ConciseIPRA is useful here as a design principle: replace primitive
+logical and equality heads by derivations, exploit a deliberately
+chosen representation, and count the implementation of the resulting
+checker rather than surface axiom symbols. PA196's removal of the
+primitive seventh equality head is exactly this kind of reduction.
+The mathematical target cannot, however, simply be replaced by the
+ConciseIPRA calculus. Its stated equivalence is with intuitionistic
+primitive recursive arithmetic, whose induction is limited to
+equations after the appropriate translation. Our finite-comprehension
+template deliberately uses induction for arbitrary arithmetic
+formulas. A machine searching only for an iPRA refutation would
+establish the consistency of that theory; the required PA-internal
+equivalence with $\operatorname{Con}(\mathrm{PA})$ would require an
+additional theorem and does not follow from ConciseIPRA's
+bi-interpretation theorem.

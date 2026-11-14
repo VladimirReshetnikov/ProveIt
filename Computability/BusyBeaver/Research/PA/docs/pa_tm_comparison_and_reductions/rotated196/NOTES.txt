@@ -1,0 +1,99 @@
+A reader rotation of James Chang's PA196 with the same 196 working states
+
+No machine below 196 states is claimed here. This is a concrete alternative
+layout whose source program has exactly the original ordinal control graph.
+It removes one obstruction to a possible future reduction of the return scan.
+
+Construction
+  Original source:
+    node162 = (node75, node37)
+    node163 = (node6, node55)
+    node164 = (node162, node163)
+  Rotated source:
+    node163 = (node6, node55)
+    node162 = (node37, node163)
+    node164 = (node75, node162)
+
+Thus ((A,B),C) becomes (A,(B,C)), with A=node75, B=node37, C=node163.
+The complete 3812-instruction ordinal graph, including both branches of every
+conditional decrement, is checked equal to the reference graph. No arithmetic
+axiom, formula constructor or proof-search scheduler is changed.
+
+Only four native transition rows change:
+  100 0 0 R 213
+  100 1 1 R 174
+  174 0 0 R 28
+  174 1 1 R 164
+The native start is 74, root is 84 and halt is 254. The adjacent dense table
+uses the original literal relabeling, with start 0, root 75 and halt 196.
+Its working states are 0 through 195. Refer to checks.json for the exact dense
+rows and SHA-256 digests. Both tables have 392 rows, and all 196 working states
+are graph reachable.
+
+Reproduce
+  python3 verify_layout.py
+
+This verifies the four-row construction, source-control-graph equality,
+unchanged register-engine rows, all 4959 arbitrary-gap/full-file symbolic
+instruction contracts, and the exact blank startup. It writes checks.json
+and regenerates the dense table and complete source-site listing. The package
+requires Python 3.10+ and its standard library only.
+
+The original reaches its clean seed frame after 58154 steps; this variant
+reaches exactly the same complete tape, control and head after 58294 steps.
+The physical file is [0,0,0,0,0,0,2,0,0] followed by 26 ones; the root-relative
+right marker is at offset 48. The logical source program is at site 25 with
+registers [2,0,0,0,0,0,0,0,0]. This is a finite exact computation, not evidence
+from which infinite nonhalting is inferred.
+
+Symbolic verification and its boundary
+  The executor represents arbitrarily long zero gaps by affine segments and
+  arbitrary full unary register files by symbolic boxes. Every candidate
+  instruction is checked against its complete intended output frame, for both
+  outcomes of conditional decrement, not merely against a return to the root
+  state. Self-loop scans and box effects stand for induction over arbitrary
+  natural run lengths and finite register lists.
+
+  The imported box contracts are those of BusyBeaver/M6/Native.lean and
+  M6/Runtime.lean at revision 407cdc356f6b586635e71ac92be394255f4bfea4.
+  The candidate leaves all rows used by those contracts unchanged. The script
+  is an executable symbolic checker, not a proof-assistant kernel. Neither the
+  newly generated Program.lean nor an end-to-end proof of the changed literal
+  table has been compiled here. No PA proof of a consistency biconditional is
+  exported by this package. The original source's formal theorem inventory
+  still supplies only its stated internal nonhalting-to-consistency direction.
+
+Marker motivation
+  Site 3693 previously had path 1010101000000. After rotation its path is
+  101010100000, so one internal six-zero obstruction is removed. Eighteen such
+  obstructions remain in the axiom-emission body. The return scanner remains
+  completely unchanged in this delivered machine. Its proposed shortening is
+  a future experiment, not part of the successful variant.
+
+Provenance
+  The reference table, source and state relabeling come from
+  https://github.com/jamesyc/BusyBeaver/tree/407cdc356f6b586635e71ac92be394255f4bfea4
+  and retain James Chang's MIT notice in LICENSE.JamesChang.
+  symbolic_runtime.py adapts work/optimize196/core.py from ProveIt's incoming
+  pa_tm_research_2026-11-13.zip, a Python transcription of the above Lean runtime.
+  The source-graph and startup checks, four-row construction and variant files
+  were produced for this investigation. The checks record their limitations
+  explicitly rather than treating a finite run as a nonhalting certificate.
+
+A second verified 196-state variant
+  Run python3 verify_macro62.py for the package in candidate-macro62/.
+  It adds a right rotation of node62 and repairs the relative jump depth:
+    old node61=(node60,node60), node62=(node61,continueTo 2)
+    new node61=(node60,continueTo 3), node62=(node60,node61).
+  The 64 occurrences of that continuation change depth from 2 to 3. The
+  complete ordinal control graph is still equal to the reference graph.
+  Three additional native rows are changed:
+    139 0 0 R 99
+    139 1 1 R 190
+    190 1 0 L 42
+  All 4959 complete symbolic contracts pass, with 1618329 symbolic executor
+  steps in total and a maximum of 515. It reaches exactly the same seed frame
+  at step 58294. The source path obstruction count remains 18. This variant
+  therefore supplies another checked physical layout, not a state saving.
+  The same proof-status limitations stated above apply. Exact hashes and
+  source edit indices appear in checks-macro62.json.

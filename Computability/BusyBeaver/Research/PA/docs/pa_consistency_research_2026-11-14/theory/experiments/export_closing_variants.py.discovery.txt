@@ -1,0 +1,38 @@
+from pathlib import Path
+import json,hashlib
+import closing_ties as k
+from verify import source_binding
+W=Path(__file__).resolve().parent
+old,_=k.c.machine();published=k.canonical(k.c.read_grammar(k.AX/'separate196/grammar.json'))
+receipts={}
+for name,(act,reg)in k.CLOSES.items():
+ d=json.loads((W/f'closing_best_{name}.json').read_text());tmp=W/f'closing_best_{name}.grammar.json';tmp.write_text(json.dumps(d['grammar']))
+ t=k.c.read_grammar(tmp);tmp.unlink()
+ assert k.expandedword(t)==k.expandedword(published),'exact word for selected grammar'
+ raw,ind,shape=k.build(t,act);rows,alias=k.s.apply(raw,d['folds']);sites,ins,cs=k.c.source(t)
+ sb=source_binding(t,sites,ins)
+ assert all(rows[q,b]==old[q,b]for q in k.c.BOXSTATES for b in(0,1))
+ q=74;head=0;ones=set()
+ for _ in range(58154):
+  wr,di,q=rows[q,int(head in ones)]
+  (ones.add if wr else ones.discard)(head);head+=1 if di else-1
+ values=[0,0,0,0,0,0,2,0,0]+[1]*26
+ target={head-1,head};pos=head+48;target.add(pos);pos+=1
+ for v in values:pos+=1;target.update(range(pos,pos+v+1));pos+=v+1
+ assert(q,head)==(84,-2)and ones==target,(name,q,head)
+ labels=[74]+sorted({q for q,b in rows}-{74})+[254];labelmap={q:i for i,q in enumerate(labels)}
+ nt=''.join(f'{q} {b} {w} {"R"if di else"L"} {n}\n'for(q,b),(w,di,n)in sorted(rows.items()))
+ dt=''.join(f'{labelmap[q]} {b} {w} {"R"if di else"L"} {labelmap[n]}\n'for q in labels[:-1]for b in(0,1)for w,di,n in[rows[q,b]])
+ targetdir=W/f'closing_{name}196';targetdir.mkdir(exist_ok=True)
+ (targetdir/'machine.native.tm').write_text(nt);(targetdir/'machine.tm').write_text(dt);(targetdir/'labels.json').write_text(json.dumps(labels)+'\n')
+ (targetdir/'grammar.json').write_text(json.dumps(d['grammar'],indent=2)+'\n');(targetdir/'folds.json').write_text(json.dumps(d['folds'],indent=2)+'\n')
+ reached={74};todo=[74]
+ while todo:
+  q=todo.pop()
+  for b in(0,1):
+   n=rows[q,b][2]
+   if n!=254 and n not in reached:reached.add(n);todo.append(n)
+ receipt={**d['receipt'],'protected_engine_unchanged':True,'source_binding':sb,'source_token_word_identical_to_separate196':True,'startup_steps':58154,'startup_exact':True,'graph_reachable':len(reached),'sha256':hashlib.sha256(dt.encode()).hexdigest()}
+ (targetdir/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n');receipts[name]=receipt
+ print(name,len(labels)-1,len(reached),receipt['sha256'],flush=True)
+(W/'closing_variants_receipt.json').write_text(json.dumps(receipts,indent=2)+'\n')

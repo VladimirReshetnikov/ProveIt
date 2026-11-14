@@ -1,0 +1,17 @@
+\paragraph{Two further cache-flexible source variants.}
+The derivation compiler can allow the numerical cache $D$ to have an
+arbitrary value after a successful MP: each compiled premise in the
+MP clause is followed by PUSH, and the generalization word also begins with PUSH.
+Those words clear the incoming caches.  Two concrete source variants
+were therefore tested.  The first tests $b=1$ with two decrements and
+retains $D=\max(b-2,0)$ on a nonhalting success.  The second makes the
+consequent $b=d+x+1$, so a zero raw cache marks the contradictory
+consequent, and retains $D=b-2$ on a nonhalting success.  Each has
+3,782 primitive sites but 163 distinct internal nodes, one more than
+the initial halt-at-MP source and four more than PA196.  The complete
+MP fragments pass 2,286 and 2,304 bounded exact-integer tests,
+respectively, with all nine registers compared.  These are source
+experiments; neither yields a smaller physical transition table, and
+the finite tests are not proof-assistant certificates.  The supplied
+\texttt{cache\_flexible\_variants.py} reconstructs both from the pinned
+PA196 source and reproduces the receipts.

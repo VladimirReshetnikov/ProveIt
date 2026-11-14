@@ -1,0 +1,128 @@
+% Ordinary PA-verifiable proof translation for a prospective source change.
+% This is not a statement that a smaller physical machine has been certified.
+\section{Moving the diagonal clause within the guarded gate}
+\label{sec:gamma-relocation}
+Write $\bot$ for the distinguished formula code $1$ and
+$\neg X=(X\to\bot)$.  Use the numerical constructors, six retained heads,
+dominated propositional head, modus ponens, and closed generalization of the
+PA195 calibration.  In particular, all the following are syntactic formula
+codes; the parameters range over natural numbers, including coincident labels.
+Put
+\[
+ \Gamma(B)=B\to U(B,B),\qquad R(a,b,c)=V(a,b,c)\to Q(a,b,c),
+ \qquad G(a,b,c)=\neg R(a,b,c).
+\]
+Here $V,Q$ are exactly the PA195 formulas.  The old gate and two alternatives
+are
+\begin{align*}
+ F_c(a,b,c)&=\neg\bigl(\Gamma(c)\to R(a,b,c)\bigr),\\
+ F_a(a,b,c)&=\neg\bigl(\Gamma(a)\to R(a,b,c)\bigr),\\
+ F_b(a,b,c)&=\neg\bigl(\Gamma(b)\to R(a,b,c)\bigr).
+\end{align*}
+All three use precisely the guard $c\ne a\land c\ne b$.  There is no
+condition $a\ne b$.  A failed guard returns code zero, as before.
+
+\paragraph{Fixed propositional proof operations.}
+For arbitrary formulas $X,Y$, the common propositional fragment supplies
+\begin{align*}
+ \pi_1(X,Y)&:\neg(X\to Y)\to X,\\
+ \pi_2(X,Y)&:\neg(X\to Y)\to\neg Y,\\
+ \iota(X,Y)&:X\to\bigl(\neg Y\to\neg(X\to Y)\bigr).
+\end{align*}
+These need no semantic completeness assumption.  Here are finite natural
+ deduction templates for them, translated by the existing syntactic deduction
+operation.  For $\pi_1$, assume $f:\neg(X\to Y)$ and $n:\neg X$.
+Under a further assumption $x:X$, $n(x)$ is absurd, hence implies $Y$;
+discharge $x$ to obtain $X\to Y$ and apply $f$.  Discharging $n$ yields
+$\neg\neg X$, and double-negation elimination yields $X$.
+For $\pi_2$, assume $f$ and $y:Y$, form the constant implication
+$X\to Y$, apply $f$, and discharge $y$.
+For $\iota$, assume $x:X$, $n:\neg Y$, and $u:X\to Y$; the two
+applications $u(x)$ and $n(u(x))$ give absurdity.  Discharge $u,n,x$.
+Explosion, double-negation elimination, and deduction are the unchanged
+finite proof-producing operations in the pinned PA196 propositional
+infrastructure (\texttt{Logic/Deduction.lean} and
+\texttt{Logic/Connectives.lean}).  Consequently these are fixed
+primitive-recursive proof templates, whose checker equations PA proves.
+
+\paragraph{Uniform translation of axiom instances.}
+Let $\mathcal C_c,\mathcal C_a,\mathcal C_b$ be the calculi with the respective
+gates and otherwise identical rules and heads.  Projection by $\pi_2$ gives
+$G(a,b,c)$ from the gate of any one of them.  Every diagonal clause is
+uniformly available in each calculus:
+\[
+ \begin{array}{c|c|c}
+ \text{calculus}&\text{gate instance}&\text{consequence by }\pi_1\\\hline
+ \mathcal C_c&F_c(B+1,B+1,B)&\Gamma(B)\\
+ \mathcal C_a&F_a(B,B,B+1)&\Gamma(B)\\
+ \mathcal C_b&F_b(B,B,B+1)&\Gamma(B).
+ \end{array}
+\]
+Both guard inequalities follow from the PA theorem $B+1\ne B$.
+For clarity, the proof replacements for a guarded instance are as follows.
+To obtain $F_a(a,b,c)$ in $\mathcal C_c$, project $G(a,b,c)$ from
+$F_c(a,b,c)$, project $\Gamma(a)$ from $F_c(a+1,a+1,a)$, and combine
+by $\iota(\Gamma(a),R(a,b,c))$.  Replace $a$ by $b$ for $F_b$.
+Conversely, in either relocated calculus, project $G(a,b,c)$ from its
+current gate and obtain $\Gamma(c)$ from its auxiliary gate at
+$(c,c,c+1)$.  Apply $\iota(\Gamma(c),R(a,b,c))$ to recover
+$F_c(a,b,c)$.
+
+Translate a finite derivation recursively: preserve every common head,
+propositional axiom, modus-ponens node, and generalization node, and replace
+each gate node by the displayed finite proof.  The translation uses only
+formula-code constructors, addition of one, and finite proof-tree
+composition.  It is primitive recursive.  PA checks its output by induction
+on the input proof tree, using the same propositional-template correctness
+lemmas and the successor inequality.  If $T_{ij}$ denotes the resulting
+translation, then, for $i,j\in\{a,b,c\}$,
+\[
+ \mathrm{PA}\vdash\forall p\,\forall A\;
+ \bigl(\operatorname{Prf}_{\mathcal C_i}(p,A)
+       \longrightarrow
+       \operatorname{Prf}_{\mathcal C_j}(T_{ij}(p),A)\bigr).
+\]
+In particular the calculi have PA-provably equivalent refutation
+predicates.  Combining this with the supplied PA195 calibration transfers
+the same $\operatorname{Con}(\mathrm{PA})$ equivalence to either relocated
+source calculus.  No assertion of PA's own consistency is used.
+
+\paragraph{The machine-command parameter range.}
+The actual arithmetic command is not an unconstrained oracle for a triple.
+On a store $(t,w,d,h)$, its parameters are
+\[
+ \operatorname{AX}(c,x,y):\quad a=h+y,\quad b=d+x,
+\]
+and its result resets $d=h=0$ while pushing the same nine entries.
+These are the equations of \texttt{PA196/Commands/Store.lean}; they remain
+unchanged by moving the diagonal clause.  An initial
+$\operatorname{AX}(0,0,0)$ always returns a store with $d=h=0$; AX itself
+has no halting branch.  The original universal refutation compiler already
+uses this reset before its compiled proof
+(\texttt{PA196/Commands/Compiler.lean}, theorem
+\texttt{haltWord\_universal}).  From the reset state every triple is
+reachable by $\operatorname{AX}(c,b,a)$.
+Thus the auxiliary relocated instance $(B,B,B+1)$ is produced with
+$c=B+1,x=y=B$, and the auxiliary old instance $(B+1,B+1,B)$ with
+$c=B,x=y=B+1$.  No negative increment or assumption about an arbitrary
+live value of $d,h$ is hidden in either witness.  The same selector positions,
+head count, failed-guard behavior, and normal reset protocol apply.
+
+\paragraph{Scope of the finite audit.}
+The accompanying independent free-algebra check verifies the complete
+formula expression and pushed stack for all three 191-token words, rather
+than checking a numerical sample.  An independent interval resolver agrees
+with the compiler on each 3,700-site source graph and its 4,815 primitive
+contracts.  The guard suffix is unchanged.  The 256 numerical range controls
+and eight Boolean controls in its receipt are diagnostic checks; the uniform
+range and proof-translation arguments are the ones above.  These results
+justify a source-calculus search.  They do not certify a smaller physical
+transition table, its scanner contracts, or a new kernel-checked endpoint.
+The four finite deduction trees (including the antecedent-exchange template)
+are supplied as \texttt{proof\_templates.json}.  The small explicit-rule
+checker \texttt{check\_templates.py} checks their closed conclusions and a
+negative control, including when Python assertions are disabled.  It uses
+only implication introduction/elimination, falsity elimination, and classical
+double-negation elimination.  This is a concrete certificate for the fixed
+propositional part, not a replacement for the inherited numerical proof
+compiler or its arithmetization.

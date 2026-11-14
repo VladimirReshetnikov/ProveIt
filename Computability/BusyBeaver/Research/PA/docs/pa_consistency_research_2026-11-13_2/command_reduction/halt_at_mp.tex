@@ -1,0 +1,173 @@
+\section{A command calculus that halts at the last inference}
+\label{sec:halt-at-mp}
+
+This section gives a new command-level reduction.  Its arithmetic correctness
+does not by itself assert a state count for a binary tape implementation.
+The formula constructors, guarded gate, and eight generated heads are those
+of PA196.  Write $a::w$ for $p(a,w)$, where $p$ is Cantor pairing and
+$p(0,0)=0$.  A store is $(t,w,d,h)$.
+The underlying derivation compiler and auxiliary words are taken from
+\texttt{PA196/Commands/Compiler.lean}, \texttt{Words.lean}, and the selector
+modules at upstream commit
+\texttt{407cdc356f6b586635e71ac92be394255f4bfea4}.
+The command below and its revised MP compiler clause are manuscript
+constructions; they are not declarations from that Lean development.
+
+Keep AX unchanged.  Make Shift total, with update
+\[
+ (t,a::w,d,h)\longmapsto(h,w,d,a).
+\]
+For MP$(x)$ put $b=d+x$ and use the following operation:
+\[
+\begin{cases}
+ \text{halt},& I(t,b)=h\text{ and }b=1,\\
+ (b,w,0,0),& I(t,b)=h\text{ and }b\ne1,\\
+ (0,w,b,0),& I(t,b)\ne h.
+\end{cases}
+\tag{MP$^\dagger$}
+\]
+Compared with the original successful branch, the zero stack item and the
+copy of the consequent in the numerical cache are both removed.  The halt
+test is applied only to a successfully derived consequent.
+
+\paragraph{Soundness.}
+Retain the PA196 invariant that $t$ and $h$ are derivable formula codes and
+that every stack item is derivable, including the infinite zero tail.
+The total Shift preserves this invariant.  AX preserves it by its unchanged
+formula contracts.  On a failed MP the two live formulas become truth; on a
+successful nonhalting MP its consequent is derivable by modus ponens and the
+other live formula becomes truth.  A halting MP therefore yields a finite
+derivation of code $1$.  This argument constructs a derivation from the
+finite command trace and needs no semantic soundness theorem.
+
+\paragraph{Auxiliary words.}
+Use the same words
+\[
+\begin{split}
+ P&=\operatorname{AX}(0,0,0)\,S^8\,\operatorname{MP}(0),\\
+ D&=\operatorname{MP}(1)\,\operatorname{AX}(1,0,0)\,S^9\,
+       \operatorname{MP}(0),\\
+ R&=\operatorname{AX}(0,0,0)\,S^{10}.
+\end{split}
+\]
+Their contracts are
+\[
+\begin{split}
+ P(t,w,d,h)&=(0,t::w,0,0),\\
+ D(t,w,0,0)&=(0,w,0,0),\\
+ R(t,a::w,d,h)&=(t,w,0,a).
+\end{split}
+\]
+Every MP in $P$ and $D$ fails, so its new successful branch is irrelevant.
+In $P$, the compared major has universal tag $2$, whereas implication
+codes are divisible by four.  In $D$, the first comparison is
+$I(t,1)=0$, which is impossible; the final comparison is
+$I(U(1,0),0)=0$, also impossible.  The word $R$ has no MP at all and
+is now total even when the preserved top equals $1$.
+For $i>0$, MP$(i)$ from $(0,w,0,0)$ fails and sets $d=i$; for $i=0$
+use the empty offset word.  Hence the original generalization word
+\[
+ P\,\operatorname{offset}(i)\,S\,\operatorname{AX}(i,0,0)\,S^9
+\]
+still maps $(a,w,0,0)$ to $(U(i,a),w,0,0)$.  The original six head
+selectors, restricted-propositional selector, and gate selector use only
+these words and therefore retain their exact contracts.
+
+\paragraph{Completeness with a shorter MP clause.}
+Define a compiler $C$ on finite PA196 derivations.  Retain the old axiom
+selectors and generalization clause.  For $p:A$ and $q:A\to B$, set
+\[
+ C(\operatorname{mp}(p,q))
+   =C(q)\,P\,C(p)\,P\,S^2\,\operatorname{MP}(b),
+\]
+where $a,b$ are the codes of $A,B$.  Starting from $(t,w,0,0)$, the
+induction hypotheses either already give a halt or yield the sequence
+\[
+\begin{array}{c|c}
+ C(q);P &(0,I(a,b)::w,0,0)\\
+ C(p);P &(0,a::I(a,b)::w,0,0)\\
+ S^2 &(a,w,0,I(a,b))\\
+ \operatorname{MP}(b)&
+       \text{halt if }b=1;\quad(b,w,0,0)\text{ otherwise.}
+\end{array}
+\]
+Thus $C$ returns the proved formula while restoring the arbitrary incoming
+stack and clearing both caches, or halts earlier.  Every derivation of code
+$1$ ends in MP: none of the axiom heads, guarded gates, or universal
+conclusions has code $1$.  Consequently its compiled word halts.
+Prepending AX$(0,0,0)$ clears arbitrary incoming caches; the compiler works
+with whatever top and stack that command supplies.  This gives a universally
+halting word from a refutation, exactly the property required by the cyclic
+enumerator.
+
+The compiler and the trace-to-derivation construction are primitive
+recursive.  Their correctness is proved by induction on finite derivations
+and finite command traces, so PA can prove their correctness after the
+usual coding.  This is a manuscript proof, not an additional Lean artifact.
+The exceptional numeric identity $I(0,0)=0$ causes no problem in this
+argument: a successful MP with consequent $0$ returns truth and continues.
+In particular, successful MP is not assumed to have a positive consequent.
+
+\paragraph{An implementation using existing arithmetic pieces.}
+At the entry to the old successful MP branch the live arithmetic registers
+satisfy $T=H=X=0$, $D=b$.  The existing tree \texttt{node51} drains $D$
+into $T$ and $X$, giving $T=X=b,D=0$.  The existing \texttt{node19}
+drains $X$ into $H$, giving $T=H=b,X=0$.  Increment $X$ and use the
+old NIP comparison on $(H,X)$: it halts exactly when $b=1$, and otherwise
+clears both registers.  The remaining values are $T=b,D=H=X=0$ and the
+unchanged stack.  Shift needs only to clear $T$, drain $H$ into $T$, and
+decode the next stack item into $H$.  Relative tree-jump targets, root
+return placement, blank startup, and universal tape-frame contracts must
+all be checked for a compiled table.
+
+The concrete reconstructed source has 3,788 instruction occurrences and
+162 distinct internal tree nodes.  The pinned PA196 source has 3,812
+occurrences and 159 distinct internal nodes.  Thus the change removes
+24 instruction occurrences but adds three internal DAG nodes; it has not
+produced a smaller binary transition table.
+
+The reconstruction checks all outgoing control edges of the 3,762 retained
+sites: old sites $11$ through $3772$ map to new sites $0$ through $3761$.
+The external exits are mapped by
+\[
+ 3773\mapsto3762,\qquad3799\mapsto3781,\qquad3800\mapsto3782.
+\]
+This checks the unchanged AX command, MP prelude, cyclic fetch machinery,
+and root stack decoder as literal control-flow fragments.  Equality of
+operations and successors gives their usual step-for-step correspondence
+for every register assignment until one of the mapped boundary sites.
+
+The new successful branch starts at site $3762$.  Its first loop has
+invariant $T=X=b-D$ and decreases $D$ at each iteration; its second loop
+has invariant $H+X=b$ and decreases $X$.  At the comparison entry the
+values are $T=H=b$, $D=0$, $X=1$.  The retained comparator halts at site
+$3780$ exactly when $b=1$.  Otherwise it clears $H,X$ and reaches fetch
+site $14$.  Direct induction on those loops gives $9b+9$ source transitions
+to fetch for $b\ne1$, and 15 transitions to the halt instruction for $b=1$.
+The new Shift at site $3782$ first clears $T$, then transfers all of $H$
+into $T$, and returns through the retained stack decoder.  Its two new
+loops terminate by descent of $T$ and then $H$, respectively.  No unrelated
+register is changed.  These are arithmetic proofs about the source
+interpreter; the physical tape refinement remains a separate obligation.
+
+The original literal startup is proved in
+\texttt{PA196/Nonhalting.lean} to reach the old fetch boundary $25$ with
+$N=2$ and all other registers zero.  The corresponding new fetch boundary
+is $14$, with the same source-tree path.  A physical realization must bind
+its actual startup to this boundary; the source change alone does not
+establish that binding.
+
+\paragraph{Reproduction evidence.}
+The accompanying \texttt{halt\_at\_mp\_checks.py} checks the exact integer
+command interpreter on 81 push cases, 25 drop cases, 243 pop cases, 27
+generalization cases, 125 MP compiler clauses, and 21 positive offsets.
+All 522 checks pass.  These finite checks supplement the universal proof
+above; they do not certify a binary tape table or any particular state count.
+The independent literal-source regression script
+\texttt{halt\_at\_mp\_source\_checks.py} additionally passes 240 successful
+branch tests, 2,286 complete MP tests, and 1,920 total Shift tests, comparing
+all nine registers, including the unrelated frame registers.  The source
+snapshot and \texttt{reconstruct\_halt\_at\_mp.py} are supplied so that
+the construction and the 3,762 retained control-flow sites can be checked
+without a Lean installation.  The latter requires the pinned
+\texttt{PA196/Program.lean} as its input.

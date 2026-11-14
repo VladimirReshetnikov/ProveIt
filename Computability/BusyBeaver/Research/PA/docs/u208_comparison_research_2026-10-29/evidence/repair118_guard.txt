@@ -1,0 +1,37 @@
+118/read0 repair guard analysis
+==============================
+Analyzed Plain-derived208 parent 8edb41dc...
+Complete incoming census:
+118 <-159/1 1R
+159 <-152/0 0L;185/0 0R
+152 <-67/1 1R;76/0 0L;184/0 0R
+185 <-89/0 0R
+76 <-133/0 0R;134/0 0R;187/1 1R
+
+No all-tape finite-history argument gives nexttwo bits00 at118/read0.
+The185source route leavesforwardbits unrestricted. Even the76hiddenroute
+proves only the immediate-rightzero written by76, not the next cell.
+Backwardhistory enumeration through14steps agrees; this is a bounded
+incompleteness observation, not proof that no stronger invariant exists.
+
+More decisively, actual legalcanonical frame ordinal70 (CD5), allnine
+registers0,gap0,spare[0] has the following old trace, visible in independent
+audit candidate207_concrete.json:
+step7 134@7 reads0 writes0 R76
+step8 76@8 reads0 writes0 L152
+step9 152@7 reads0 writes0 L159
+step10 159@6 reads1 writes1 R118
+step11 118@7 reads0 writes0 R155
+step12 155@8 reads0 writes0 R85
+step13 85@9 reads1 writes1 R12
+At118/read0 the nexttwo bits are01, not00. Both155/85oldroute and
+186/147alternative preservecells and moveR twice, but85/1ends12 whereas
+147/1ends166. Thus the proposedlocal repair identity requires an invalid
+extra guard on canonicalframes. The differing intermediate endpoints alone
+are not asserted to prove different eventualblankhalting.
+
+Potential remaining repair: route through an existing implementation of
+old85's(98,12) branch, not147's(98,166), or repair upstream76 continuation
+with a proved address remapping. Source decoder entrances to118 via185
+also need separate treatment; changing118/0globally isn't confined to
+hidden arithmetic execution.

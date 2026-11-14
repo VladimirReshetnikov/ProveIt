@@ -1,0 +1,187 @@
+FIXED-ROLE POWER-COVER EMITTER: MATHEMATICAL AUDIT
+================================================
+
+Exact proposed constructors (dual Cantor P):
+  I(x,y)=4P(x,y); R(x,y)=4P(x,y)+1;
+  Q(x,y)=4P(x,y)+2; Eq(x,y)=4P(x,y)+3; F=1;
+  N(x)=I(x,F).
+For a,b,c in N put n=c+1 and
+  V(a,b,c)=I(R(a,b),Q(c,R(a,b))),
+  U(n)=Q(1,I(R(1,n),n)),
+  G(n)=Q(n,I(R(n,1),R(n,0))),
+  L(n)=Q(1,I(G(n),I(n,R(1,n)))),
+  Z(n)=Q(n,I(L(n),I(U(n),F))),
+  B(a,b,c)=N(I(V(a,b,c),Z(c+1))).
+The outer gate is exactly c!=a and c!=b, else code 0.
+This is the fixed-role candidate sent by machine_design and proof_engine.
+
+STATUS: its new logical/nonlogical schema passes this mathematical audit.
+The note does not certify any emitted transition table or source compiler.
+
+1. SOUNDNESS IN W+IR
+-------------------
+Use classical equality-free W (unrestricted power covering) + global IR;
+the machine's equality atoms may be interpreted as ordinary equality for
+the soundness direction. This larger signature has the same PA consistency
+calibration since identity is available in the bit-membership model.
+
+The radix-four zero is a deliberate alias: I(0,0)=0. Decode 0 as a fixed
+closed tautology. Decode positive codes recursively by their tag, except
+that I(x,1) is decoded as the negation of decoded x. The atomic code1 still
+decodes as E(v0,v0). All nontrivial recursive formula fields are smaller than
+their code. Under IR the decoder satisfies
+  D(I(x,y)) <-> (D(x)->D(y))
+even in the exceptional y=1 and x=y=0 cases. This yields a uniform derivation
+for the MP soundness step, not just a standard-model truth claim. Quantifier
+and relation constructors have their ordinary meanings; negation/existence
+expressions decode as intended. Equivalently one may use ordinary positive
+decoding and prove equivalence under IR by structural induction.
+
+When n>=2, all labels occurring in D(n) are <n (the closed zero tautology
+can be chosen to use only label0). Thus n is fresh in the matrix and is
+distinct from the fixed source label0 and test label1. The guard G(n) is
+Sub(v1,v0). Its binder n shadows the output binder only inside the guard,
+where the output object is not referenced. The emitted N(Z(n)) is exactly
+the weak cover for matrix D(n), source v0, tested object v1, output vn.
+The clause order is lower then upper; classical currying gives the same W.
+The source may be a free parameter of D(n), which W allows.
+
+For n=1, the matrix is F=E(v0,v0), the output binder and test binder collide.
+The upper clause is forall v1 not E(v1,v1), i.e. IR. Under IR the lower clause
+is true because its matrix antecedent F is false. The outer output binder1
+is vacuous in both clauses, as all occurrences of label1 within them are
+already bound. Therefore N(Z(1)) is equivalent to IR under W+IR, and is
+sound. This is a proof of the one exceptional case, not an untested freshness
+assumption. n=0 MUST NOT be admitted: its collision could demand a set
+containing all its own represented subsets, contrary to IR.
+
+Whenever the outer gate is enabled, V is ordinary atomic membership
+vacuity, since c differs from a and b. It remains valid for a=b. The bundle
+N(I(V,Z)) is propositionally equivalent to V and N(Z), so is sound. A failed
+gate outputs the tautology alias0. All retained logical rows are sound in
+W+IR, including the merged equality row G and the restricted Lukasiewicz
+row. Their two alias exceptions are handled by the same decoder lemma.
+
+2. LOGICAL COMPLETENESS: EXACT INHERITED DEPENDENCIES
+--------------------------------------------------
+Do not say that the new machine inherits the old K215 *final theorem*.
+It inherits finite logical proof templates whose premises can be verified
+for the new calculus:
+  (i) code0 is an axiom; MP and GEN are present;
+  (ii) every restricted rho8(a,b,c,u) with u<=a is available;
+  (iii) rho1--rho6 and merged equality row G are available;
+  (iv) every membership-vacuity instance with fresh binder is available.
+The new bundle proves (iv) by the same propositional projection as the old
+bundle. Thus all the following finite templates survive the replacement of
+the K schema.
+
+Dominated rho8 recovery: k215-pa/pa-mm0/k215_rho8_arithmetic.mm0 and
+k215_rho8_recovery.mm0 use only code0, MP, the inequalities x,y<=I(x,y), and
+dominated rho8. In particular kr8Closed is explicitly parameterized by an
+arbitrary set of codes. It recovers the unrestricted propositional basis.
+
+The merged equality row G(a,b,c) is
+  Eq(c,a) -> (Eq(c,b) -> Q(R(a,b),Eq(a,b))).
+G222.v proves equality reflexivity, the helper
+  Eq(a,b) -> Q(R(a,b),Eq(a,b)),
+and the old Euclid row rho7 using only G, rho1, rho2, rho6, MP, GEN, and
+propositional logic. No nonlogical K schema is used. Exact file:
+sources/ProveIt/Computability/BusyBeaver/Research/ZFC/k225-formal/
+rocq/rocq-extension/coq/215/G222.v
+The corresponding arithmetic templates are k218_g.mm0/.mm1.
+
+Full equality vacuity is not asserted directly. The finite pure-logic
+interpretation instead replaces equality by two-sided membership
+indiscernibility:
+  Eind(x,y) = forall r(E(r,x)<->E(r,y))
+              and forall r(E(x,r)<->E(y,r)),
+where r is chosen fresh. The helper plus equality existence yields
+existence for Eind; membership vacuity supplies all fresh-binder vacuity of
+Eind after alpha-converting its auxiliary binder. Congruence, Euclid and
+substitution are then derived. L224E.v theorem lprov_th proves that every
+theorem of the usual Tarski calculus translates into this reduced logical
+basis; Interp222.v lprov224_thm222 is an induction using the listed rows and
+bundle membership-vacuity projection only. Both files are alongside G222.v.
+The arithmetic counterparts are k218_equality_interpretation.mm0,
+k218_translation_logic.mm0, and k218_translation_vacuity.mm0.
+Since W and IR are equality-free, this equality interpretation fixes their
+formulas and targets. Intermediate equality in ordinary proof conversions
+can be eliminated by this uniform interpretation.
+
+Explosion from F is already a derived rule: rho6 is
+  Exists r(All r A) -> A,
+while K proves F -> Exists r(All r A) because Exists r B is
+I(Q(r,I(B,F)),F). Hence F->A. Together with the unrestricted implicational
+basis this gives classical negation and conjunction projections.
+
+3. IR AND EVERY W INSTANCE ARE AVAILABLE
+--------------------------------------
+Let tau quote ordinary named formulas, with tau(not A)=I(tau(A),1),
+tau(E(x,y))=R(x,y), and the other constructors homomorphic. Numerical
+identity I(1,1) is tau(not E(v0,v0)); theorem generalization at v0 gives
+tau(IR). This is the same finite derivation as TB_IR in
+sources/busy-beaver/ZF/m254/coq/logic/Comp_Bundle254.v. No extra seed and no
+machine instruction for IR are required. Soundness of interpreting the same
+code as an ordinary negation is supplied by the preceding decoder argument.
+
+For every n>=1 choose c=n-1 and a=b=n. The outer gate holds. Projecting the
+bundle yields N(Z(n)), so every regular matrix code is available. Choice of
+a,b here controls only the independent vacuity conjunct; it does not alter
+the fixed source/test labels in Z.
+
+To recover an arbitrary ordinary W instance with matrix psi(x,A,p):
+  1. Rename free roles injectively so source A has name0, test x has name1,
+     and all other parameters have distinct fresh names. First use temporary
+     fresh names if 0 or1 was already occupied. Alpha-rename bound variables
+     to avoid capture. These are standard finite syntactic transformations.
+  2. Replace its matrix by phi=not not psi. This is logically equivalent and
+     ensures its quotation n=tau(phi)>1. If working through the equality
+     interpretation, phi is equality-free and unchanged by it.
+  3. Every label of phi is <n, proved by structural induction from
+     P(x,y)>=x,y and positive tags. Thus output n is fresh, regardless of
+     the size of the matrix or parameter list.
+  4. Obtain N(Z(n)) with c=n-1 as above; its code is exactly the quotation of
+     the ordinary fixed-role cover for phi. Replace the double-negated matrix
+     by psi using ordinary logical congruence, then universally close and
+     instantiate/alpha-convert to restore the requested parameter names.
+No syntax traversal, validation, padding, or renaming is executed by the
+machine. These operations belong to the finite completeness proof compiler.
+The soundness direction does not need D(tau(phi))=phi literally; equivalence
+under IR suffices. Completeness uses exact quotation identities.
+
+4. FROM ORDINARY REFUTATIONS TO NUMERICAL TARGET1
+----------------------------------------------
+Let TB contain universal closures of all named equality-free formulas A
+whose quotation is numerically provable (or use the standard equality
+interpretation Q(A)=Prov(tau(th(A))) for arbitrary intermediate formulas).
+The preceding constructions derive all W+IR axioms from TB. The inherited
+finite natural-deduction-to-Tarski translation, equality interpretation,
+quotation, MP and GEN send a TB refutation to the quotation of
+botw = not forall v0(v0=v0). The quotation of forall v0(v0=v0) is also
+provable; MP then gives code1. Exact framework: Complete222.v, declarations
+Q_of_lprov, Q_genall, Q_tr_cl, Q_discharge, TB_to_thm. Their proofs above the
+set-theoretic schema-recovery section are independent of Theory K.
+
+Conversely a numerical proof of1 decodes into a W+IR proof of E(v0,v0),
+contradicting its IR axiom. This is a finite refutation transformation.
+Thus PA proves
+  (there exists a numerical proof of1) <-> not Con(W+IR)
+                                           <-> not Con(U).
+
+5. INTERNAL PA CLAIM AND ITS LIMITS
+---------------------------------
+Every transformation just listed is a structural recursive transformation on
+finite formulas/derivations plus a finite template for each axiom family.
+Fresh-name selection, double-negation padding, the Cantor codec, formula
+traversal, and proof concatenation are primitive recursive. Their correctness
+is proved in PA by induction on formula structure and proof length. The
+numeric bound/freshness lemmas are elementary arithmetic. The existing MM0
+files give explicit arithmetic versions of the unchanged logic templates;
+their final K215/ZFC equivalence is not used as a substitute for a new emitter
+proof. Combined with separately established machine/program/enumerator
+simulation, the argument yields PA-provability for the new literal table.
+
+A statement of mathematical PA-provability is legitimate if all these
+inductive simulations are proved. Calling the new table 'kernel-verified'
+requires recompiling or producing a new proof certificate and must not be
+inferred from tests, hashes, or the inherited K215 certificate.

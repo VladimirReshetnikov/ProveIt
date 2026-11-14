@@ -1,0 +1,29 @@
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Principal check & Result\\
+\midrule
+Working controls / transition rows &194 / 388\\
+Raw AX readers / simultaneous folds &67 / 7\\
+Complete source instructions &3,673\\
+Universal source branches, each implementation &4,780\\
+Construction checker, total symbolic steps &1,479,348\\
+Construction checker, maximum per branch &497\\
+Independent checker, total symbolic steps &1,078,198\\
+Independent checker, maximum per branch &397\\
+Independent list lemmas rederived from literal rows &4\\
+Minimum positive-duration constant &3\\
+Exact complete-tape blank startup &58,154\\
+\bottomrule
+\end{tabular}
+\end{center}
+All listed checks passed. The independent verifier uses no arithmetic-box
+oracle; its recorded branch certificate has SHA-256
+\begin{quote}\small
+\nolinkurl{be3b1dd3ad86ac93dba48a40d04d8623ffc914cc3fbe84486a78548800e201c8}.
+\end{quote}
+The companion passes the same 4,780 source cases in both implementations
+under its permuted physical map and reaches its full blank seed after
+58,122 steps. Its independent checker takes 1,078,321 symbolic steps,
+with maximum 397 per outcome and minimum positive-duration constant three;
+it also rederives all four list lemmas from the literal transition rows.

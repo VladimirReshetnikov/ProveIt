@@ -1,0 +1,78 @@
+\section{An exact finite model for the macro grammar problem}
+\label{sec:grammar-milp}
+This experiment optimizes a binary straight-line grammar for the fixed macro
+word. It does not by itself optimize the complete Turing machine: physical
+state folds, context-sensitive macro entries, the return scanner, and blank
+initialization remain separate obligations.
+
+Let $w$ be a word of length $n$ over the opaque macro alphabet. Let $\mathcal R$
+contain every distinct substring of $w$ of length at least two which occurs at
+least twice, together with $w$ itself. For the original 201-token AX word,
+there are 243 repeated substrings, of maximum length 13. Introduce a binary
+variable $x_s$ for each $s\in\mathcal R$, and require $x_w=1$.
+
+For each $s=s_0\cdots s_{m-1}$, construct a directed acyclic graph on vertices
+$0,\ldots,m$. An arc $i\to j$ is available when $s[i:j]$ is a single terminal
+or is a strictly shorter member of $\mathcal R$. Its binary variable is
+$y_{s,i,j}$. Impose a flow of value $x_s$ from 0 to $m$. If the arc uses a
+nonterminal $t=s[i:j]$, also impose $y_{s,i,j}\le x_t$. Thus every selected
+phrase chooses exactly one partition into terminals and selected shorter
+phrases. The objective is
+\[
+       \min\left(\sum_{s,i,j}y_{s,i,j}-\sum_s x_s\right).
+\]
+A selected phrase partitioned into $k$ pieces costs $k-1$, the number of
+binary joins needed to assemble those pieces.
+
+\paragraph{Why this model is exact for the abstract grammar count.}
+Any feasible solution is an acyclic n-ary straight-line grammar. Binarizing
+its rules uses at most the displayed objective number of binary rules;
+accidental duplicate subtrees can only reduce that count. Conversely, in a
+binary straight-line grammar, duplicate nonterminals with the same expanded
+word may be identified. Any nonterminal whose expanded word occurs only
+once in $w$ can be substituted at its unique use, making a longer n-ary rule.
+This substitution preserves the sum of $k-1$ over all rules. Repeating it
+leaves only the root and repeated substrings, and therefore gives a feasible
+flow solution with no greater cost. The two optimum values consequently
+coincide.
+
+The physical compiler already contains the reader for the phrase $ii$.
+A second model credits this fixed reader by decreasing the coefficient of
+$x_{ii}$ from $-1$ to $-2$. Its costs count additional reader states rather
+than all abstract binary rules. This credit does not include any contextual
+state folds.
+
+\paragraph{Binarization and path constraints.}
+The supplied binarizer performs interval dynamic programming on the pieces
+of each selected n-ary rule. It tracks the number of leading zero edges,
+the maximum expanded path length, and the required incoming edge for the
+context-sensitive macros $R,S,G$. It rejects a realization with a zero run
+longer than the requested bound. A subsequent experiment allowed seven-zero
+paths and charged two additional return-scanner states. The count is still
+only a candidate score until all symbolic source contracts and the blank
+initialization have been checked.
+
+There is also an optional, stronger MILP restriction which assigns integer
+leading-zero bounds to phrases and requires every nonfinal piece to fit
+under a left edge. This guarantees a bounded right-comb realization when
+macro contexts are ignored. It is a sufficient restriction for that chosen
+family of realizations, not a complete characterization of every possible
+binary bracketing.
+
+\paragraph{Observed results and their limits.}
+The script \texttt{exact\_grammar\_milp.py} uses SciPy's interface to HiGHS.
+The original-word raw-count run reached 68 rules and reported a lower bound
+of 62 after a 180-second limit. The run crediting the existing $ii$ reader
+reached a paid cost of 67 with reported lower bound 62 at the same limit.
+Neither is an optimality certificate. A separate feasibility run with paid
+cost at most 66 reached its 180-second limit without finding an incumbent.
+The cost-at-most-67 run with the extra leading-zero restriction also timed
+out without an incumbent. Neither timeout proves infeasibility.
+
+For the first four 196-token integrated-gate words, the corresponding paid
+cost incumbents were 69, 70, 71, and 71 after 180 seconds, with reported
+lower bounds 64, 64, 64, and 65. Of four mirrored-witness variants, one
+reached cost 72 with lower bound 65 after 120 seconds; the other three found
+no incumbent under the imposed upper bound of 72. The retained logs and
+JSON grammars record these solver outcomes. These experiments did not
+produce a verified machine with fewer than 196 states.

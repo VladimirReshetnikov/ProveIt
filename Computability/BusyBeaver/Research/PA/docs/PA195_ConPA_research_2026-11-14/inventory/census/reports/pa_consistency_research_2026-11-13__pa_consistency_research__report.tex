@@ -1,0 +1,50 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,longtable,microtype,xurl}
+\usepackage[margin=1in]{geometry}
+\usepackage[hidelinks,pdftitle={PA-consistency machines: comparison and a diagonal-vacuity calculus}]{hyperref}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\setlength{\emergencystretch}{3em}
+\title{PA-consistency machines:\\comparison and a diagonal-vacuity calculus}
+\author{Research report with reproducible verification artifacts}
+\date{13 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We compare the ProveIt U208 submissions, James Chang's historical PA209, and his current PA196 at fixed repository revisions. The nine U208 table presentations examined have two rooted labelled-graph isomorphism classes and share the same conditional-history reduction; that reduction cannot simply be subtracted from PA196 because its two relevant native states are already absent. We give a new diagonal-vacuity calculus, replacing one gate component by \(B\to\forall x_B B\), and a written PA-internal calibration argument through the original proof compiler's interfaces. Its axiom program uses 191 rather than 201 macros and 3,700 rather than 3,812 primitive instructions. A complete 199-state binary table, exact startup, and all 4,815 symbolic primitive cases are supplied. \textbf{No machine with fewer than 196 states was obtained.} The existing 196-state construction remains the smallest validated table in this comparison. Finite computation, inherited kernel proofs, new kernel checks, and the additional written calibration arguments are explicitly distinguished.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\section{Outcome and how to use the archive}
+The numerical target was fewer than 196 working states, hence at most 195. It was not reached. In particular, the new 199-state table in this archive must not be presented as a smaller replacement for PA196.
+
+The useful deliverables are: an exact comparison of the supplied designs; a new proof-calculus simplification with a complete written calibration argument; an explicit 199-state implementation of that calculus; an independent symbolic verifier; a kernel-checked weakening of the engine-agreement hypotheses; and reproducible bounded reduction searches. The unsuccessful searches establish no global lower bound.
+
+Run \texttt{python3 verification/check.py --experiments} to reproduce the table, startup, and symbolic primitive checks; \texttt{python3 verification/check\_emitter.py} checks the new axiom emitter; and \texttt{python3 verification/compare\_proveit.py} reproduces the U208 graph census. The Python checks use only the standard library. A separate Lean 4.35.0 script checks the new generic engine lemma. The README describes file roles and the exact scope of each certificate.
+
+\input{sections/comparison}
+\input{sections/diagonal}
+\input{sections/internal}
+\input{sections/verification}
+\input{sections/research}
+\clearpage
+\appendix
+\section{The complete 199-state transition table}
+This is the dense table in \texttt{diagonal199/machine.tm}. A cell such as \texttt{1R74} means write one, move right, and enter state 74. Start in state 0 on the all-zero tape. Label 199 means halt and is not a working state. The nine columns below show three consecutive state ranges side by side; each range has its own read-zero and read-one columns.
+\input{sections/transition_table}
+\clearpage
+\begin{thebibliography}{9}
+\small\raggedright
+\bibitem{current} James Chang, \emph{Nonhalting and PA-independence for a 196-state Turing machine}, repository and paper at commit \texttt{407cdc356f6b586635e71ac92be394255f4bfea4}.\newline
+\url{https://github.com/jamesyc/BusyBeaver/tree/407cdc356f6b586635e71ac92be394255f4bfea4}
+\bibitem{previous} James Chang, historical 209-state construction, commit \texttt{69d98241a721ead20b4f0b17df9062950b40fbfe}.\newline
+\url{https://github.com/jamesyc/BusyBeaver/tree/69d98241a721ead20b4f0b17df9062950b40fbfe}
+\bibitem{incoming} Vladimir Reshetnikov, ProveIt incoming research archives, frozen revision \texttt{239b7a406e24405d464edc526e09d402abce5bc5}.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/239b7a406e24405d464edc526e09d402abce5bc5/docs/incoming}
+\bibitem{ipra} Vladimir Reshetnikov, ProveIt ConciseIPRA proposals, same frozen revision.\newline
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/239b7a406e24405d464edc526e09d402abce5bc5/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}
+\bibitem{formal} The current repository's theorem list and formal-source files, especially \texttt{docs/result.md}, \texttt{PA196/Logic/CommandSoundness.lean}, \texttt{PA196/PhysicalEndpoint.lean}, \texttt{PA196/Arithmetic/Machine/EndpointInternalCodedSourcePhysicalStep.lean}, and \texttt{M6/Runtime.lean}, at the revision in~\cite{current}.
+\end{thebibliography}
+\end{document}

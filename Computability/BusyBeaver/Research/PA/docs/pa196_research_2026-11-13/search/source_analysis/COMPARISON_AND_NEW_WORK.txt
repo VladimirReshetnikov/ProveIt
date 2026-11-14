@@ -1,0 +1,164 @@
+COMPARISON AND NEW SOURCE RESEARCH — 13 NOVEMBER 2026
+
+No binary Turing machine with fewer than 196 working states was obtained by
+this subtask. The new 158-node object is a register-program source grammar,
+not a 158-state or 195-state Turing machine.
+
+PINNED SOURCES
+
+ProveIt: f1f076e31995f10460838d1846456f4bb9c8ae80.
+James Chang, BusyBeaver: 407cdc356f6b586635e71ac92be394255f4bfea4.
+Requested earlier BusyBeaver revision:
+69d98241a721ead20b4f0b17df9062950b40fbfe.
+
+FRESH U208 COMPARISON
+
+The nine designated final tables in five construction archives form exactly
+two rooted, action-preserving graph-isomorphism classes. Class A has five
+presentations and class B four. Every table has 208 working states, 416 rows,
+and all 208 controls reachable in the transition graph. This does not assert
+that every control occurs on the blank computation. The complete canonical
+encodings and old-to-canonical state maps are retained, not merely hashes.
+
+The main tables in ConPA, Conditional Context, Entry Context and History
+belong to A. Their Compatibility alternatives and the research package's
+main table belong to B. The research package's variant_plain belongs to A.
+All use the same final identification of historical native roles 172 and 211;
+the apparent separate one-state savings cannot be added.
+
+An independent source resolver based on ordinal subtree intervals verifies
+that A and B have identical ordered operation/argument sequences and identical
+complete source control graphs: 3,909 leaves, 5,083 nonhalting edges, counts
+CI 1,558, CD 1,175, CB 80, CC 1,095, CH 1. Their paths differ at 720 occurrences;
+maximum lengths are 42 and 41, with maximum zero run 6 for both.
+
+PA209 is a distinct 209-state predecessor of PA196, not the U209 parent in the
+U208 archive merely because its count is209. The published 196 branch changes
+the formula encoding and axiom supplier. Its current source has 3,812 leaves
+and 159 distinct internal nodes. The table combines 36 engine controls,
+13 leaf-routing controls, and147 reader controls. The six axiom-body pairs
+already shared in that construction are included in the 196 count.
+
+The current formal statements distinguish external literal nonhalting from
+the internal theorem PA |- Nonhalting(PA196) -> Con(PA). The reverse internal
+implication is not among those shipped endpoint theorems. The U208 manuscripts
+assert an ordinary-mathematical biconditional but disclaim a new end-to-end
+exported proof-assistant or PA certificate. A changed table does not discharge
+either machine refinement or the missing internal arithmetic direction.
+
+NEW TWO-EDIT FACTORIZATION
+
+Use (A,B) for the source sequence constructor and retain the original node
+names. Introduce the shared closed factor G=(node55,node65). Replace
+
+  node75=((node32,(node53,node55)),node65)
+    by ((node32,node53),G),
+
+and replace
+
+  x37=(node55,(((node65,x27),x19),x35))
+    by (G,((x27,x19),x35)).
+
+The changes propagate through subsequent definitions in the ordinary way,
+including the occurrences of node75 inside x27. The flattened source still
+has 3,812 leaves. The exact ordered instructions and every ordinal successor
+agree with the original, so this is an exact source-level control-graph
+identity. The number of distinct internal syntax nodes drops 159 to 158.
+The first 50 source paths agree, including seed site 25 at 100000. There are
+1050 changed paths overall; maximum path length is 37.
+
+This simplified witness has maximum zero run 8, at source site 224, path
+1010100110010010100000000. Thus it lies outside the unchanged seven-zero
+origin-scanner contract. The earlier randomized witness from which it was
+simplified has a different shape and must not be assigned this same statistic.
+
+There is a separate, concrete physical-sharing obstruction. Native state 69
+represents both node20 and node72. Its read-zero action uses the old node75
+as a free helper:
+
+  69/0  = 0 L213
+  213/0 = 0 R92       213/1 = 1 R90
+  92/0  = 0 R104       90/0 = 0 R105.
+
+The immediately preceding bit selects native 104 (node32) or native 105
+(node17). After three transitions the tape is unchanged and the head is one
+cell to the right of its position on entry to 69. Restructuring node75 removes
+this free helper: its right child is now G, whose zero child is node55,
+not node17. The whole changed source has no node H of the shape
+
+  H=((node32,A),(node17,B)).
+
+The apparent state estimate 195 silently retains the old alias saving at 69,
+even though this particular supporting helper has disappeared. A valid
+physical construction must repair that routing, retain its cost explicitly,
+and handle the scanner before the source count can imply a TM state saving.
+This is a precise obstruction to the attempted transfer, not an impossibility
+proof for all 195-state machines or all other helper implementations.
+
+TARGETED HELPER REASSOCIATION SCREEN
+
+The self-contained helper_associations.py enumerates all 16,796 binary
+associations of the following 11 fixed source atoms in the old x17 word:
+
+  node32,node53,node55,node65,x5,x6,node17,node64,node65,x3,x15.
+
+It combines each with the fixed x37 rewrite and with either old or new node75
+outside x17. There are 33,592 candidate source constructions. Of these 17,685
+contain the stated helper shape. With old node75 outside x17, all 16,796 have
+a helper and the minimum reader-sharing estimate is 196. With the new node75
+outside x17, 889 have a helper and the minimum estimate is 198. These are source
+allocation estimates under inherited named aliases, not compiled TM counts.
+The search is restricted to these atoms, that rewrite and that helper shape;
+it proves no general lower bound. The full original CFG is checked whenever
+a new best estimate is recorded.
+
+NEW ABSTRACT SOURCE SCREENS
+
+All analyses start at source site 25 and registers(2,0,0,0,0,0,0,0,0).
+For category count k, register values 0,...,k-2 are exact, and the final
+category means >=k-1. Increment saturates; decrement of the final category
+has two possible output categories. Product-state reachability therefore
+overapproximates every concrete source run. The product engine separately
+audits initial inclusion and every successor after fixed-point calculation.
+
+  Categories   Reachable pairs   Audited edges   Forced-zero tests
+      2            274880           326688          3773
+      3           4455507          5000898          7,3773
+      4          32947398         35969718          7,3773
+
+For k=3 and4, unreachable sites are exactly 8, 3774, 3775. No decrement is
+forced positive. Abstract halt is reachable in all three domains. The k=2
+case reproduces the earlier joint-mask count independently; the stronger
+domains yield no additional pruning beyond the two previously known cleanups.
+
+A further 36 screens combine all-nine trits with the sign of r_i-r_j for each
+unordered register pair. Each domain keeps unbounded equality/order, unlike
+a finite magnitude cap alone. The 36 domains contain 217,674,446 abstract pairs
+in total (individual counts 5,366,853 through 8,691,384). Every domain still has
+only forced-zero sites 7 and 3773, unreachable sites 8, 3774, 3775, and no forced
+positive tests. These are separately computed reachability screens; the
+relational program does not export the separate second closure audit used
+by the product engine. They neither prove nonhalting nor supply a TM table.
+
+REPRODUCTION
+
+Run from this folder. Python 3 and a C++17 compiler are sufficient; no network
+or third-party Python package is required for the compact retained evidence.
+
+  python3 verify_comparison.py comparison
+  python3 prepare_graph.py upstream /tmp/pa196-source
+  python3 build_essential.py upstream /tmp/pa196-essential
+  python3 helper_associations.py upstream baseline_decoder_aliases.json /tmp/helpers.json
+  g++ -O3 -std=c++17 joint_trits.cpp -o /tmp/pa196-product
+  /tmp/pa196-product /tmp/pa196-source/source_graph.txt /tmp/trits.bin 3
+  /tmp/pa196-product /tmp/pa196-source/source_graph.txt /tmp/quads.bin 4
+  g++ -O3 -std=c++17 relational.cpp -o /tmp/pa196-relational
+  /tmp/pa196-relational /tmp/pa196-source/source_graph.txt
+
+Compare semantic fields with the retained JSON receipts. The generated
+bitsets are intentionally not bundled; their SHA-256 values are recorded
+in product_receipts.json. The graph generator checks the exact upstream
+source and the three seed-definition files by hash. The new source listing
+is data-only Lean code and has not been advertised as a new kernel-checked
+machine refinement. Retained upstream licenses/notices govern their own
+materials; nothing here relicenses inherited sources wholesale.

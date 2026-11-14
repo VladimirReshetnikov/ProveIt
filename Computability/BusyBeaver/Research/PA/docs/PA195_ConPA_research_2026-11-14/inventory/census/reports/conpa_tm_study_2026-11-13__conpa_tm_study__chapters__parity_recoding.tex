@@ -1,0 +1,159 @@
+\section{An even-tag recoding that permits parity acceptance}
+\label{sec:parity-recoding}
+
+This is a source-calculus construction and correctness theorem.  It does not
+assert that its binary tape implementation uses fewer than 196 states.
+The purpose of the recoding is to make a parity test a sound acceptance test,
+while retaining the PA-refutation compiler.
+
+\subsection{The new formula codes}
+
+Choose an even integer $B\ge6$ and two distinct nonzero even residues
+$u,e<B$.  The directly relevant choices are $B=6$ or $B=8$, with
+$\{u,e\}=\{2,4\}$.  Define
+\begin{align*}
+ I_B(a,b)&=Bp(a,b),& M_B(a,b)&=Bp(a,b)+1,\\
+ U_B(a,A)&=Bp(A,a)+u,& E_B(a,b)&=Bp(a,b)+e.
+\end{align*}
+Code zero is truth, and code one remains $M_B(0,0)$, the contradiction.
+Use exactly the PA196 heads, gate, modus ponens, and generalization, with
+these constructors.  Negation is still $I_B(A,1)$; there is no new logical
+negation constructor or normalization rule.
+
+The arithmetic interpretation decodes nonzero residues $0,1,u,e$ as
+implication, bit membership, universal quantification, and equality,
+respectively.  A code with any unused odd residue denotes falsity; a code
+with an unused even residue denotes truth.  These cases are part of the
+decoder definition, not machine instructions or additional axioms.  In the
+base-six construction every even residue is used.  In the base-eight
+construction residue six may denote truth.  The sole degenerate implication
+$I_B(0,0)=0$ is handled by the fixed equivalence between truth and
+truth-implies-truth.
+
+Every proper constructor component is smaller than its nonzero compound
+code.  Thus decoding is primitive recursive by course-of-values recursion,
+and every variable label in the decoded formula of code $c$ is below $c$.
+The standard gate-freshness argument remains valid, including the dual use
+of its parameter as a formula code and a variable label.
+
+\subsection{Why every odd acceptance yields a PA refutation}
+
+Interpret membership by arithmetic binary-bit membership and primitive
+equality by ordinary equality.  All PA196 axiom-soundness proof templates
+continue to apply: only the numerical constructors have changed.  For a
+junk-code formula the finite-comprehension template simply receives truth
+or falsity as its matrix.  It remains a template producing a proof of an
+individual instance, rather than a uniform arithmetic truth predicate.
+
+\begin{lemma}[Odd formulas fail at the zero assignment]
+For every odd code $a$, PA proves the negation of the arithmetic translation
+of $a$ after all its free variables have been replaced by zero.  A proof of
+this negation can be constructed primitive recursively from $a$.
+\end{lemma}
+\begin{proof}
+As $B$ is even, an odd code has an odd residue modulo $B$.  Residue one is
+a membership atom $M_B(r,s)$, whose zero-assignment translation is
+$\operatorname{Bit}(0,0)$, refutable in PA.  Every other odd residue was
+defined to translate to falsity.  The required proofs are therefore fixed
+templates, preceded by decoding the residue and, in the membership case,
+the two indices.
+\end{proof}
+
+Suppose $p$ is a derivation of an odd code in the recoded calculus.  The
+syntactic interpretation produces a PA proof of its arithmetic translation.
+Substitute zero for its free variables in that finite proof and append the
+preceding negation proof.  The result is a PA refutation.  Correctness of this
+proof transformation is provable in PA by induction on coded derivations.
+Consequently
+\[
+ \mathrm{PA}\vdash
+ \bigl(\exists p\,\exists a\,[\operatorname{Prf}_{\mathcal C_B}(p,a)
+                          \land a\text{ odd}]\bigr)
+       \longrightarrow\neg\operatorname{Con}(\mathrm{PA}).
+\]
+This argument does not claim that the recoded calculus itself derives
+falsity from each odd theorem.  A PA refutation is sufficient for the target
+equivalence.
+
+In a sound-store invariant, both live formulas $t,h$ have derivations.
+Thus either of the acceptance conditions
+\[
+ h\text{ odd},\qquad t+h\text{ odd}
+\]
+is sound relative to PA consistency.  For the second condition, an odd sum
+has an odd summand.  Under the unchanged PA196 encoding this argument would
+fail: primitive equality has the odd residue three.  The change to an even
+equality tag is essential.
+
+\subsection{Transporting the old PA-refutation compiler}
+
+Let $\sigma(0)=0$, $\sigma(1)=1$, $\sigma(2)=u$, and $\sigma(3)=e$.
+Define a recoding $\tau:\mathbb N\to\mathbb N$ by $\tau(0)=0$ and, for
+$n>0$ written uniquely as $n=4p(a,b)+r$, by
+\[
+ \tau(n)=Bp(\tau(a),\tau(b))+\sigma(r).
+\]
+This is an injective primitive recursive map fixing zero and one.  Injectivity
+follows by recovering the distinct tag and the two Cantor components, then
+inducting on the original codes.  Both formula codes and variable labels
+must be transported by this same $\tau$.  In particular,
+\[
+ \tau(I(a,b))=I_B(\tau(a),\tau(b)),\qquad
+ \tau(U(a,A))=U_B(\tau(a),\tau(A)),
+\]
+and the analogous identities hold for membership and equality.  The gate's
+formula argument $c$ and its bound-variable label both become $\tau(c)$;
+injectivity preserves the two inequality guards.
+
+There is no assumption that $\tau$ preserves the numerical order on codes.
+For the restricted propositional schema, use the existing finite derivation
+of the unrestricted schema.  Its abstract construction requires modus
+ponens, $a\le a$, and the bounds $a,b\le I_B(a,b)$; these bounds hold for
+the new constructors.  Thus an old restricted axiom translates to a
+derivable unrestricted instance even when its numerical side condition is
+not preserved by $\tau$.  Every other primitive axiom, MP step, and
+generalization step transports directly.
+
+Replacing each axiom node by the indicated finite template defines a
+primitive recursive proof translation, with PA-provable correctness.
+Composing it with the existing PA-to-PA196 refutation compiler gives
+\[
+ \mathrm{PA}\vdash\neg\operatorname{Con}(\mathrm{PA})
+ \longrightarrow\exists p\;\operatorname{Prf}_{\mathcal C_B}(p,1).
+\]
+
+\subsection{Command compilation with the cached-head parity test}
+
+Retain the combined command semantics of
+Section~\ref{sec:combined-command-compiler}, but halt Shift when $h$ is odd
+instead of when $h=1$, and use the new formula constructors everywhere.
+The proof of that section changes in three explicit places.
+
+First, all eight AX-generated entries and the gate are even.  The first
+seven heads are implications and the last is a universal code with the even
+tag $u$.  Hence the eight- and nine-Shift identities and all selectors remain
+total.  Push still uses a forced MP failure: implication has residue zero
+modulo $B$, whereas the cached universal formula has residue $u\ne0$.
+
+Second, Pop now halts exactly when its saved top is odd; otherwise it has
+the same stack-preserving effect.  Axiom selectors use Pop only with an even
+preserved top, so their totality proof is unchanged.
+
+Third, the four-command MP suffix with dummy zero halts when its antecedent
+or conclusion is odd and otherwise returns the conclusion with the old
+stack and cleared caches.  The same induction on proof trees consequently
+gives the alternative: an early halt, or the derived formula in the top with
+the old stack.  In particular a derivation of code one gives a universal
+halting word, by the final Pop if the compilation has not halted already.
+
+The syntactic store invariant and the preceding odd-proof interpretation
+then yield, for the exhaustive command program,
+\[
+ \mathrm{PA}\vdash\neg\operatorname{Halt}(R_{B,\mathrm{parity}})
+                 \longleftrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+Obtaining a small binary table remains a separate engineering and proof
+task: the pairing multipliers in AX and MP, all constructor residues, the
+acceptance routine, the source tree, the startup, and the instruction
+contracts must be changed consistently.  A favorable source-node estimate
+does not certify a physical state reduction.

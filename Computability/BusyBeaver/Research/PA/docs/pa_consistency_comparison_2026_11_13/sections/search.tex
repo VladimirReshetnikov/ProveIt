@@ -1,0 +1,69 @@
+\section{New grammar screens and their limitations}
+
+The new split-head equivalence was tested as an actual changed emitter.
+The macro word has 205 items instead of 201: the contraposed modal head
+has the same constructor count as the old first head, while the separate
+explosion family adds a four-item expression. Seven heads can be emitted
+in different orders, and their parameter roles can be renamed. These are
+sound source-level choices when the changed command selectors are used.
+
+A second tested presentation uses the positive modal form
+\[
+ H\to U\bigl(D,U(D,H\to1)\to1\bigr)
+\]
+together with explosion. Substituting $H\to1$ into the contraposed form
+and using $H\to((H\to1)\to1)$ derives this positive form. Conversely,
+substitute $H\to1$ into the positive form and use double-negation
+elimination, available with explosion and classical implication, under
+the retained quantifier-monotonicity rule. Thus it is another safe
+presentation with the same number of constructors but a different
+emission order.
+
+The third family pads the formula parameter in the first head with
+formulas equivalent to it under the unchanged implicational basis.
+Examples are $0\to H$, $(H\to H)\to H$, and $(H\to0)\to H$.
+Code $0$ is already derivable truth, so these equivalences do not use
+the first quantifier head. Quantifier monotonicity transports them
+through its two quantifiers. Longer words can occasionally share more
+subtrees, so this is a legitimate state-optimization question despite
+the additional symbols.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Screen & Seeded trials & Distinct words & Smallest raw AX DAG\\
+\midrule
+Contraposed modal head plus explosion &50,000&22,057&74\\
+Positive modal head plus explosion &75,000&26,433&74\\
+Truth padding of the original head &50,000&24,882&68\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The search uses the inherited repeated-subword dictionary and a randomized
+pair-replacement heuristic with fixed seed 2026111342. Before each run,
+the original compiler is checked to produce 196 states from the original
+68-node body. The two split families never reached the heuristic's
+72-node physical-allocation cutoff. Among the padding samples, 499
+candidate parses reached that cutoff, but every one failed the imposed
+maximum-six-zero-run or 46-bit-path screen. The padding family includes
+the unchanged parameter, so its score of 68 is not claimed as a new
+grammar improvement.
+
+Consequently no layout in these three screens was accepted for physical
+pricing. The recorded \file{best_physical} field is \file{null}; it is
+not a numerical state bound. The report deliberately does not convert
+74 raw grammar nodes into a purported minimum machine count. The
+searches are finite heuristics, do not exhaust associations or logical
+presentations, and do not rule out a better implementation of the
+proved split-head calculus.
+
+The portable script is \file{grammar/split_head_search.py}; its minimal
+support sources and licenses are included. The exact receipts are under
+\file{results/}. The two directions of the split-head proof are also
+serialized in \file{logic/split_head_certificates.json}. A separate
+checker reads those stored DAGs without importing their generator and
+validates every axiom instance, assumption, prior-node reference, modus
+ponens step, and final conclusion.
+
+\input{sections/physical_search}

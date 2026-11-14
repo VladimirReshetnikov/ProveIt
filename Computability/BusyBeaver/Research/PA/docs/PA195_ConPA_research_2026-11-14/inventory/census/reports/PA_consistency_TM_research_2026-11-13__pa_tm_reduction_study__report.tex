@@ -1,0 +1,495 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,booktabs,longtable,array,microtype,xurl}
+\usepackage[margin=1in]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[hidelinks,pdftitle={PA consistency machines: comparison and new source reductions},pdfauthor={Research prepared for Vladimir Reshetnikov}]{hyperref}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\file}[1]{\texttt{\nolinkurl{#1}}}
+\newcommand{\source}[2]{\href{#1}{#2}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\setlength{\emergencystretch}{3em}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{0pt}
+\title{PA consistency machines:\\comparison and new source reductions}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{13 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This investigation did not obtain a two-symbol, single-tape blank-input
+machine with fewer than 196 working states and the requested PA-provable
+consistency biconditional. It compares the PA source snapshots and all twenty
+incoming archives at a pinned repository revision. The positive results are
+an explicit parameter-free MP command compiler adapted from the ZFC work;
+a 157-node source representation of the combined 3,573-instruction
+negation/MP program; and a source representation with the same count of 159
+internal nodes and 3,812 instructions but no path containing six consecutive
+zeros. Independent finite control-graph checks verify the two representation
+changes. None is a smaller physical machine. New bounded local searches and
+rejected physical candidates are documented with reproducible artifacts.
+The report distinguishes source equivalence, physical refinement, and the
+uniform arithmetic proof translations needed for the requested endpoint.
+\end{abstract}
+
+\section{Outcome and conventions}
+
+The intended endpoint is a concrete table $M$ for which
+\[
+ \#\operatorname{WorkingStates}(M)\le195,
+ \qquad \PA\vdash\neg\Halt(M,\text{blank})\leftrightarrow\Con(\PA).
+\]
+The alphabet is $\{0,1\}$, the tape is two-way infinite and initially zero,
+and the separate halt control is excluded from the state count. These are
+the conventions of the supplied PA196 construction. Increasing the alphabet
+or changing the counting convention would not meet the intended comparison.
+
+\textbf{No table satisfying this endpoint is claimed in this packet.}
+The reference tables are labelled as references, and rejected 195-state
+tables are labelled as rejected experiments. A smaller source expression,
+a favorable allocation estimate, a finite nonhalting prefix, and a proved
+consistency equivalence are different results.
+
+The repository snapshot is
+\begin{quote}\small
+\nolinkurl{38b84bce90b7d1c24c3319c0ff58d8ef92d96b21}.
+\end{quote}
+The principal imported upstream revisions are James Chang's PA196 at
+\nolinkurl{407cdc356f6b586635e71ac92be394255f4bfea4} and PA209 at
+\nolinkurl{69d98241a721ead20b4f0b17df9062950b40fbfe}.
+The directory-level comparison, theorem inventory, and proof sources were
+read directly; archive inventories and selected tables were checked locally.
+The original repositories were not modified. A new full Lean build was not
+performed in this investigation.
+
+\section{What the existing machines establish}
+
+\subsection{The internal theorem has a specific direction}
+
+Let $H$ denote the exact arithmetic sentence expressing blank-tape halting
+of PA196. The imported theorem inventory and \file{Independence.lean}
+establish the internal implication
+\[
+ \PA\vdash\neg H\longrightarrow\Con(\PA).
+\]
+The external Lean development also proves literal nonhalting in its
+metatheory. The imported repository audit explicitly leaves the converse
+internal implication as an obligation:
+\[
+ \PA\vdash H\longrightarrow\neg\Con(\PA),
+ \quad\text{equivalently}\quad
+ \PA\vdash\Con(\PA)\longrightarrow\neg H.
+\]
+This is a statement about the supplied theorem statements and remaining
+proof bindings. It is not a claim that the converse is false or unprovable.
+Some incoming manuscripts give ordinary mathematical approaches to it;
+they do not export a new complete kernel-checked biconditional for the
+literal PA196 table. A sound ordinary proof could settle it, but its
+uniform trace and proof-code transformations must actually be supplied.
+See the primary sources~\cite{comparison,bridge,paper}.
+
+The two missing directions can be isolated as
+\[
+ \text{literal halted trace}
+ \ \longrightarrow\ \text{accepted native proof of code }1
+ \ \longrightarrow\ \text{PA refutation}.
+\]
+The imported arithmetic transport gives the useful converse directions.
+An external satisfaction argument in a hereditarily finite model does not
+by itself translate arbitrary model-internal proof codes into PA proofs.
+
+\subsection{Main construction families}
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrp{7.2cm}@{}}
+\toprule
+Family & States & Sites & Distinguishing feature \\
+\midrule
+James Chang PA209 &209&3,948&Direct predecessor of the imported PA196.\\
+Historical U208 &208&3,909&One-state context fold of its own native U209 parent.\\
+James Chang PA196 &196&3,812&Transposed quantifier code, changed axiom basis and reader sharing.\\
+Combined negation/MP &197&3,573&Two source changes combined; a complete symbolic runtime receipt is supplied upstream.\\
+Diagonal-vacuity variant &199&3,700&Shorter axiom sequence but more physical states.\\
+Equivalent-gate variant &198&3,773&199 macro items; source and physical counts improve differently.\\
+Integrated-witness variant &203&3,745&Best reported physical table for its shorter gate word.\\
+H-only Shift variant &196&3,811&Different command arrangement and startup; same state count.\\
+\bottomrule
+\end{tabular}
+\caption{Selected comparison points. Validation scopes differ; state count
+alone is not an assertion of the full requested consistency theorem.}
+\end{table}
+
+PA196 has 36 engine states, 13 leaf-routing states, and 147 reader states.
+Its source contains 159 distinct internal subtrees. The paper's six AX
+reader identifications are already included in 196. They are not six
+additional savings that can be subtracted again.
+
+The older U208 papers identify native roles 172 and 211 in their particular
+parent. Changing the survivor's label or helper changes a presentation, not
+the number of independent reductions. James Chang's PA209 is a distinct
+209-state parent. In the PA209-to-PA196 change, both of those historical
+roles disappear with the replaced axiom body. A direct scan also finds no
+PA196 state having the exact mixed-entry motif needed for the original
+U208 transplantation. Other context-dependent constructions remain possible.
+
+\subsection{Twenty archives, with duplicate presentations separated}
+
+The complete archive inventory, including hashes and member counts, is retained
+in the packet. The following
+table describes the principal contribution of every incoming archive.
+Long names share the literal date suffix shown in the inventory.
+
+\small
+\begin{longtable}{@{}p{5.9cm}p{8.0cm}@{}}
+\toprule
+Archive or archive family & Principal content and outcome \\
+\midrule\endhead
+\file{U208_ConPA_2026-10-29.zip} & Original primary U208 and local fold argument.\\
+\file{U208_ConPA_Conditional_Context_2026-10-29.zip} & Two original U208 layouts; conditional-context presentation.\\
+\file{U208_ConPA_Entry_Context_2026-10-29.zip} & Entry-context presentation of the same two layouts.\\
+\file{U208_ConPA_History_2026-10-29.zip} & History-based presentation of the same two layouts.\\
+\file{u208_research_2026-10-29.zip} & Primary/Plain presentations of the two original classes.\\
+\file{pa208_research_2026-10-29.zip} & Eighteen additional same-size helper variants.\\
+\file{Below_U208_Research_2026-10-29.zip} & Local, offset and source-context searches; no accepted sub-208 table.\\
+\file{ConPA_below208_research_2026-10-29.zip} & Source permutations, two-row searches and logical obstruction.\\
+\file{pa_consistency_research_2026-10-29.zip} & Five-site source pruning; internal-node count increases.\\
+\file{u208_comparison_research_2026-10-29.zip} & Concrete canonical-frame counterexample to a proposed 207-state decoder.\\
+\file{pa_unary_power_cover.zip} & An alternate unary-cover theory and interpretation; no compiled table.\\
+\file{conpa_tm_comparison_and_search.zip} & Accepted same-size A/D register swap; failed 195-state rotation and scanner shortcut.\\
+\file{conpa_tm_comparison_and_reduction_search.zip} & Two explicitly experimental 196-state MP variants and command arguments.\\
+\file{pa_tm_research_2026-11-13.zip} & A shorter-path 196-state layout and reverse-translation research.\\
+\file{pa_tm_extended_research_2026-11-13.zip} & Four closing-decrement variants; stronger reachability and grammar searches.\\
+\file{pa_consistency_research_2026-11-13.zip} & The 199-state diagonal-vacuity and 197-state negation constructions.\\
+\file{pa_tm_comparison_and_reductions.zip} & Two rotated 196-state layouts and a 198-state equivalent-gate layout.\\
+\file{pa_consistency_reduction.zip} & Rebracketing, H-only Shift, and integrated-witness gate experiments.\\
+\file{pa_consistency_research.zip} & 158-node sources, eight-zero scanner regrouping, logical counterinterpretations and head-order search.\\
+\file{pa196_research_2026-11-13.zip} & 157-node source without a smaller table; refined local contexts and two arbitrary-row repair search.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+A fresh replay distinguishes 27 designated final U208 presentations:
+the nine original presentations give two rooted action-preserving graph
+classes, while the eighteen added helper variants give eighteen further
+classes, for twenty classes in total. Calling the entire corpus ``two
+U208 machines'' would miss those later variants.
+
+The separate 196-state census selects fourteen designated tables. Each has
+196 graph-reachable working states, 392 binary transitions and one separate
+halt label; all fourteen are pairwise nonisomorphic as rooted, read-labelled
+transition graphs preserving write symbols and directions. Two are explicitly
+experimental MP variants. This census does not certify their arithmetic
+endpoints. The selection manifest preserves the exact member names, hashes,
+state maps, and original validation scopes.
+
+\section{A new 157-node representation of the combined program}
+
+The existing combined program incorporates the shorter negation macro and
+an MP success branch that returns its consequent in the cache. It has
+3,573 primitive sites, 159 distinct internal source nodes and a supplied
+197-state table. This investigation found a representation with
+\[
+ 3,573\text{ sites},\qquad157\text{ internal nodes},\qquad
+ \text{maximum path length }41,\qquad\text{maximum zero run }6.
+\]
+Its seed-site path remains \texttt{100000}.
+
+The retained witness is checked independently of its search history. The
+verifier parses both complete binary trees, compares the ordered primitive
+instructions, and resolves every successor twice: by binary increment and
+path cutting, and by ancestor intervals. Both resolvers agree and every
+ordinal successor equals that of the supplied combined program.
+
+\begin{proposition}[Source representation invariance]
+Suppose two complete source trees have the same ordered primitive
+instructions and the same ordinal successor for every branch. Starting
+at the same ordinal site with the same register vector, their ordinal
+executions agree at every step, including halting.
+\end{proposition}
+\begin{proof}
+The increment and decrement operations have the same register argument;
+the zero/positive tests therefore agree. Their target ordinals agree by
+hypothesis. Break and continue have the same resolved successor and change
+no register. A halt is a halt in both. These observations give the one-step
+identity, and induction gives equality of every finite execution. This
+argument quantifies over arbitrary natural register contents.
+\end{proof}
+
+The proposition applies to the new witness and the selected combined
+program. It does not supply the separate logical compiler for the original
+MP modification, nor a physical interpreter for the new paths. A simple
+inherited-alias estimate for the new tree is 200 states because existing
+reader folds are lost. That figure is an allocation estimate, not a lower
+bound and not a verified table. The 157-node result is useful source
+compression, but it does not meet the requested 195-state endpoint.
+
+\section{A source with no six-zero path}
+
+The second exact witness preserves the original PA196 program itself:
+all 3,812 ordered primitive instructions and every ordinal control edge.
+It has 159 internal nodes, maximum path length 37, and maximum zero run 5.
+The original figures are 159, 38 and 6. The witness removes all twenty
+original paths containing six consecutive zeros without increasing the
+number of distinct internal nodes.
+
+The seed ordinal 25 changes from \texttt{100000} to \texttt{10100000}.
+The source-preservation proposition proves equality of the abstract ordinal
+executions at that seed. It says nothing by itself about the binary machine's
+blank initialization, which must produce the corresponding encoded frame.
+
+\subsection{The coordinated outer reassociation}
+
+A useful first step is
+\[
+ ((A,B),(C,D))\quad\longmapsto\quad(A,((B,C),D)),
+\]
+where $A=\mathtt{node7}$, $B=\mathtt{node20}$,
+$C=\mathtt{node170}$ and $D=\mathtt{node23}$ in the pinned source.
+$A,B,C$ have no escaping control depths. The final continue in $D$ still
+has three right ancestors, so its target remains ordinal zero. The complete
+graph is unchanged even though checking the two component rotations in
+isolation is unnecessarily restrictive. The first path becomes
+\texttt{00000}; nineteen other six-zero paths initially remain.
+
+For discovery, penalizing the \emph{number} of six-zero paths supplies a
+useful search signal when merely penalizing the maximum run does not.
+The final verifier relies on the finite source identity and does not trust
+the heuristic or its random seed.
+
+\subsection{Why the scanner saving remains unallocated}
+
+The existing return scanner distinguishes the left marker from internal
+path bits by counting zeros. Shortening it by one state on the original
+program is already known to fail. Decrement-zero execution can introduce
+an additional temporary zero next to a long path run. A path representation
+with maximum zero run five is a concrete candidate for making the shorter
+scanner usable, but a complete machine must still be built and checked.
+
+The naive outer-table rewire fails even before shortening the scanner.
+Native state 69 uses the preceding path bit to distinguish two source
+nodes. The reassociation moves one of its entries from a path ending in
+1 to a path ending in 0, so it selects the wrong child. Our direct whole
+instruction checker rejects ordinal 11 on its zero-decrement branch; a search
+over every replacement action for native row 69/0 finds no one-row repair
+within the specified prefix-endpoint test. Simply deleting a scanner state
+does not repair this reader mismatch.
+
+The original blank initialization visits the dispatcher 463 times before
+the advertised clean frame, beginning at step 38. A changed root cannot be
+assumed irrelevant to startup. The final five-zero witness therefore remains
+a source artifact, not a 195-state transition table.
+
+\input{residual_command_proof.tex}
+
+\section{New physical search and concrete rejections}
+
+\subsection{Extension of the two-row near misses}
+
+The incoming refined-context search admits 2,219 control/window pairs and
+exhausts its stated two-arbitrary-row repair template. Its parent/child
+endpoint relation preserves the entire five-cell tape window, head position,
+and projected control after a positive block of at most sixteen child steps.
+It considers one identified pair of working states and at most two changed
+remaining transition rows.
+
+We reran that search with an additional targeted third-row stage. The
+first two stages reproduce 38,220 ordered state pairs, 118,504,736 first-row
+actions, 573,987,568 second-row actions, and 633 representative-context
+passes. For each of these 633 near misses, intersect the sets of rows visited
+by its failing complete obligations. A third repair must touch a row in
+that intersection. Exclude the first two changed rows and the removed state;
+then enumerate every legal action at every remaining eligible row.
+
+This tests 1,400 eligible third-row keys and 1,097,600 third-row actions.
+There are no survivors. The third helper's own contexts are checked as well,
+so a local repair cannot silently break the helper's original role.
+
+\textbf{Scope:} this is exhaustive for extensions of the selected near misses,
+not for all possible three-row repairs. The earlier pruning was designed for
+two changed rows and can exclude candidates that require three changes
+before even a representative test passes. The result is not a lower bound
+on 195-state machines.
+
+\subsection{Fourteen distinct 196-state variants}
+
+For each designated table we separately recompute the least radius-six
+blank-start window closure, project it to five cells, and run the same
+two-arbitrary-row search plus targeted third-row extension. The invariant
+begins with the all-zero window in state zero, follows every transition,
+and allows both values for a newly exposed cell. Induction on literal time
+therefore covers every actual blank-start window, while allowing spurious
+ones. Each table has its own invariant; the original PA196 contexts are
+not reused for a different machine.
+
+\input{screen_results.tex}
+
+Failed searches under these overapproximations do not exclude a successful
+proof using a sharper reachable invariant, a wider window, longer blocks,
+multiple parent steps, several simultaneous state identifications, changed
+tape encodings, or a different source algorithm.
+
+\section{The remaining arithmetic bridge}
+
+\subsection{A useful general reverse-refinement lemma}
+
+\begin{lemma}[Positive total segments permit bounded reversal]
+Let a deterministic source program have a primitive-recursive totalized
+step function, with a distinguished halting instruction, and let the
+physical machine also be deterministic. Suppose each
+nonhalting source step has a total positive-length physical simulation
+ending at its next encoded working frame, without a physical halted
+configuration anywhere in that segment, including its endpoints. Suppose
+the source halting instruction has a finite segment ending in a physical
+halt. Suppose these contracts and a finite nonhalting startup ending at the
+initial encoded working frame are proved inside PA. Then PA proves
+equivalence of source and physical halting.
+\end{lemma}
+\begin{proof}
+The forward direction concatenates the finitely many source-step segments
+before the source halt and then the halting segment. For the reverse
+direction, let a physical halt occur within $t$ steps after startup.
+Assume that the first $t+1$ source instructions are all nonhalting. Concatenating
+their positive nonhalting segments gives a physical nonhalting prefix of
+length at least $t+1$. Determinism identifies its first $t$ transitions with
+the proposed halted trace, a contradiction. Thus a source halt occurs
+among those $t+1$ instructions. The proof uses PA induction up to the given
+trace length and coded
+finite concatenation, not an inverse control-state map. With absorbing
+totalized halt states, a segment ending at a nonhalt frame likewise cannot
+have passed through halt.
+\end{proof}
+
+The lemma makes the missing hypotheses precise. In particular, a disjunction
+allowing an early physical halt or a next source frame is weaker than the
+nonhalting-segment contract used here. Merely knowing that a source halt
+can be simulated is insufficient for the reverse implication.
+
+\subsection{Syntactic soundness rather than a uniform truth predicate}
+
+For native logical soundness in PA, the promising direct interpretation is
+\[
+ M(a,b)\mapsto\operatorname{Bit}(x_a,x_b),\qquad
+ E(a,b)\mapsto x_a=x_b,
+\]
+with transposed quantifiers translated directly. PA proves
+$\operatorname{Bit}(u,v)\to v<u$, so the target code 1 translates to
+a contradiction. Code 0 is a truth alias and needs an explicit base case.
+
+For each input formula $\varphi(z)$, PA's induction schema gives a bounded
+bit-comprehension proof: there is a number whose first $n$ bits agree with
+$\varphi$ on $z<n$. A syntactic proof-producing template can substitute
+the input formula into that fixed induction construction. This avoids
+asserting a PA truth predicate for arbitrary formulas. It must handle
+capture-free substitution, freshness, equality of variable labels, and
+the unshifted Cantor stack convention $P(0,0)=0$.
+
+The supplied repository discussion already develops these ideas, including
+the different equal-label gate case and a certificate-stack invariant with
+ghost entries beyond a zero numeric tail. This investigation does not
+claim a new implemented and internally verified proof-code compiler for
+the full bridge. The new residual command compiler leaves the native
+calculus unchanged; it does not eliminate that pre-existing obligation.
+
+\section{What transfers from ZFC and concise iPRA}
+
+The residual-parameter construction above is a concrete transfer from
+the ZFC research, adapted to PA196's different three-command interface.
+Other reusable ideas are contextual reader sharing, closed-source
+factoring, explicit macro contracts, and positive-segment refinement.
+The ZFC consistency target itself must be replaced by a PA-calibrated
+native calculus; a small ZFC machine is not automatically a Con(PA) machine.
+
+The concise-iPRA program optimizes the size of a straightforward proof
+checker. The present problem counts binary tape states, including the
+interpreter, routing, and initialization. A smaller checker description
+can increase the physical state count after compilation. Also, simply
+replacing the PA checker with an iPRA checker changes the consistency
+statement. A proposed intuitionistic route of HA strength would need its
+PA calibration and exact compiler to be exhibited before its state budget
+could be compared. No such replacement is claimed here.
+
+\section{Reproduction and artifact status}
+
+The ZIP contains this TeX source and its compiled PDF, the explicit new
+source witnesses, portable verifiers, exact reference-table census,
+provenance and licenses, and the new search source and receipts. The
+top-level \file{README.txt} gives the precise quick and extended commands.
+Quick checks require Python 3; rerunning the local synthesis also requires
+a C++17 compiler. The artifacts do not depend on a signed-in GitHub session.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}p{4.7cm}p{8.9cm}@{}}
+\toprule
+Artifact & What its check establishes \\
+\midrule
+Combined 157-node witness & Exact ordered primitive word and two independently resolved control graphs equal those of the combined 197-state source.\\
+159-node/five-zero witness & Exact original PA196 source graph; complete path geometry and node count.\\
+Residual source and compiler & Explicit command algebra, changed-arity encoding, exact retained-source splice checks, finite regressions with stated models.\\
+196-table census & Literal table shape, graph reachability, exact canonical graph comparison and source provenance.\\
+Local search receipts & The specified bounded search was performed; no general machine-size lower bound.\\
+Rejected scanner experiment & The root mutation violates the intended decoder-prefix specification and is rejected by the instruction-contract checker.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the exact five-zero source be allocated with a six-zero return
+scanner while preserving enough contextual reader sharing to produce
+195 states? The seed and complete blank initialization must be rebuilt.
+\item Can the residual transfer be factored into an already needed loop,
+so that deleting MP's parameter reader saves physical reader roles rather
+than duplicating the comparator? Its command compiler is now explicit.
+\item Can a physical allocator optimize helper use and source-tree
+structure jointly, with full runtime and startup constraints, instead of
+pricing internal nodes and repairing lost aliases afterward?
+\item Can a multi-instruction simulation merge states that no
+single-parent-step local test can merge? A useful certificate format would
+record resynchronization frames and a positive progress bound.
+\item Can the native-to-PA syntactic proof compiler and the bounded reverse
+trace argument be implemented against the exact PA196 arithmetic predicates,
+including nonstandard proof codes and zero-alias stacks?
+\end{enumerate}
+
+\begin{thebibliography}{20}
+\bibitem{comparison}\label{ref:comparison}
+V. Reshetnikov, ProveIt repository, \emph{PA196 and the incoming U208
+construction}, \file{Computability/BusyBeaver/Research/PA/pa196-vs-u208/COMPARISON.md},
+revision \texttt{38b84bce90b7}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/38b84bce90b7d1c24c3319c0ff58d8ef92d96b21/Computability/BusyBeaver/Research/PA/pa196-vs-u208/COMPARISON.md}.
+\bibitem{bridge}\label{ref:bridge}
+ProveIt, \emph{PA196: a route to the missing internal implication},
+\file{PA-BRIDGE.md}, same revision.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/38b84bce90b7d1c24c3319c0ff58d8ef92d96b21/Computability/BusyBeaver/Research/PA/pa196-vs-u208/PA-BRIDGE.md}.
+\bibitem{paper}\label{ref:paper}
+J. Chang, \emph{Nonhalting and PA-independence for a 196-state Turing machine},
+imported paper, theorem inventory, and Lean sources.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/38b84bce90b7d1c24c3319c0ff58d8ef92d96b21/Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196}.
+\bibitem{pa209}
+J. Chang, PA209 snapshot, revision
+\texttt{69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\url{https://github.com/jamesyc/BusyBeaver/tree/69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\bibitem{incoming}
+ProveIt, twenty incoming research archives, exact names and input digests
+in the accompanying inventory.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/38b84bce90b7d1c24c3319c0ff58d8ef92d96b21/docs/incoming}.
+\bibitem{combined}
+ProveIt, combined negation/MP experiment and local invariant audit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/38b84bce90b7d1c24c3319c0ff58d8ef92d96b21/Computability/BusyBeaver/Research/PA/pa196-vs-u208/source-search/negation-mp197}.
+\bibitem{residual}
+ProveIt, \emph{Parameter-free MP on the accepted215 source},
+ZFC residual-parameter experiment and ordinary proof.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/38b84bce90b7d1c24c3319c0ff58d8ef92d96b21/Computability/BusyBeaver/Research/ZFC/k215-residual-parameter}.
+\bibitem{ipra}
+ProveIt, concise iPRA research.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/38b84bce90b7d1c24c3319c0ff58d8ef92d96b21/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\end{thebibliography}
+\end{document}

@@ -1,0 +1,196 @@
+\section{The 195-state construction and its preservation theorem}
+\label{sec:preservation195}
+
+Let $M_{196}^{\mathrm{sep}}$ be the separated-diagonal machine supplied in
+\texttt{pa\_consistency\_comparison\_and\_new196\_2026-11-13.zip},
+with the original PA196 command control. Let $M_{195}$ be the new table
+in this archive using the same fixed control and the new axiom-reader
+grammar. Both machines use a two-way infinite binary tape, initially all
+zero. In native labels the initial state is $74$ and the unique halting
+label is $254$. A dense relabeling does not affect the theorem.
+
+\paragraph{What the construction changes.}
+The new grammar has 67 distinct reader nodes. The fixed part has 134
+working states, and six disjoint, simultaneously valid context folds
+remove six reader states. Hence the number of working states is
+\[
+ 134+67-6=195.
+\]
+There are exactly 390 transition rows, one for each working-state and
+symbol pair. Every working state is graph-reachable from the initial
+state. The halting label is not counted as a working state.
+
+The flattened axiom-emitter word has exactly the same 190 tokens, in
+the same order, as the supplied separated-diagonal emitter. Although the
+search allowed independent parameter permutations, the final grammar
+uses the identity permutation in all six heads. No axiom formula,
+parameter assignment, guard, stack position, or command selector changes.
+The new object is a different binary parenthesization and sharing of the
+same emitter. All fixed transition rows are unchanged except the reader
+entry transition $(101,1)$, which is redirected to the new reader root.
+
+Token equality alone would be insufficient for this tree language:
+changing ancestors can change the targets of structured jumps. The
+stronger check is exact equality of the entire branch-resolved register
+program. Both source trees have 3,673 primitive sites. Number their leaves
+from left to right by $0,\ldots,3672$. At every ordinal, the instruction,
+register operand, and every successor ordinal agree. This includes both
+branches of every decrement, every break and continue target, and every
+halt. Only source addresses in the binary tree change. The equality is
+checked using both arithmetic path cutting and an independent resolver
+based on subtree intervals and ancestor walking. The latter also checks
+that a proposed successor has no nonzero suffix beyond its target leaf.
+
+\paragraph{Source identity lemma.}
+Let $G$ be this common finite control graph, acting on nine natural-number
+registers. The two source programs have identical executions after
+identifying their program counters by leaf ordinal. This holds for every
+initial register vector, not merely the clean seed. Indeed, the step
+functions are literally the same finite case distinction: increment has
+the same register and successor; decrement tests and updates the same
+register and has the same two successors; a jump has the same target;
+and halt has the same meaning. Induction on the number of source steps
+proves equality of their finite traces. Since the graph is finite and
+explicit, PA proves the same statement about its coded step functions.
+
+\paragraph{The inherited tape interfaces.}
+The source-to-tape argument uses the original PA196 interfaces for
+scanning and marking a unary register, incrementing it, and decrementing
+it with its zero/positive case distinction. These interfaces quantify
+over the complete arbitrary register file and the intervening tape gap.
+They specify the action on that whole file: in particular, increment
+also appends a one-valued spare register, as in the inherited engine.
+The untouched logical registers are preserved, and the file continues
+to satisfy its minimum-length invariant. The interfaces also assert
+termination. The register routines in $M_{195}$ are literally unchanged.
+More precisely, the new table agrees on all 44 entries of
+\texttt{M6.Native.boxRows} and on the append-one tail
+$(198,0)\mapsto(1,L,40)$. The parameterized theorem
+\texttt{M6.Native.boxLemmas} therefore supplies the same four register
+contracts for this table. In the upstream formal development these are
+the block contracts supplied to the symbolic executor in
+\texttt{M6/Runtime.lean}, whose soundness chain includes
+\texttt{oracle\_sound}, \texttt{sstep\_sound}, and
+\texttt{exec\_sound}. The present executable audit uses those mathematical
+block interfaces; it does not replace them by bounded tests on numerical
+register samples.
+
+For each primitive source site, and for both branches when appropriate,
+the delivered symbolic certificate begins at the full encoded source
+frame. It reaches exactly the next full frame with the specified register
+effect, or reaches the halting state for a halt instruction. The symbolic
+gap is affine in an arbitrary natural number, and the register file is
+an arbitrary symbolic object satisfying the stated branch condition.
+The 195-state certificate has 4,780 cases, a maximum of 452 symbolic
+steps in a case, and 1,442,472 symbolic steps in total. These are symbolic
+proof-case counts, not bounds on the physical execution time for
+arbitrarily large register values.
+
+Every nonhalting source instruction is simulated by a finite, positive
+number of physical steps, without a premature halt. The positive-length
+condition is explicit in the executor: reaching the target does not
+close a case until an actual tape transition has occurred. Compressed
+constant-symbol scans and register oracles represent finite runs whose
+lengths have elementary, hence primitive recursive, bounds in the frame
+parameters. This excludes an infinite physical computation trapped
+inside one source instruction. The complete source graph audit supplies
+the correct target for each symbolic case.
+
+The six reader folds have an additional local check. Before folding, each
+member of a pair is entered by a rightward, symbol-preserving move, with
+the bit just crossed distinguishing the two members. One member has only
+incoming context zero, and the other only incoming context one. For each
+of these two contexts and each current symbol, the replacement follows
+exactly the original transition's tape effect, head displacement and
+target, allowing a finite detour that inspects the previous bit. All 24
+cases are checked against the final table after all six folds. The
+detours stay within the two cells described by the local interface, so
+the arbitrary tape outside them is untouched. The whole-frame symbolic
+certificate then checks the folded table itself, not only its unfolded
+parent.
+
+\paragraph{Blank initialization.}
+Both the supplied parent and the new table reach their exact clean source
+frames after 58,154 literal tape transitions from the all-zero tape.
+The source counter is site 25 and the logical register vector is
+$(2,0,0,0,0,0,0,0,0)$. The complete tape, head position and native dispatch
+state 84 are checked, including the unchanged dummy-register suffix.
+This is a fixed finite trace, so its correctness is an elementary PA
+calculation. Agreement only on a selected portion of the tape would
+not suffice here; the delivered check compares the complete finite
+support of the tape.
+
+\paragraph{Finite-trace equivalence theorem.}
+Write $H_M$ for the arithmetic sentence that $M$ has a finite halting
+trace from its specified blank start. Then
+\[
+ \mathrm{PA}\vdash
+ H_{M_{195}}\ \longleftrightarrow\ H_{M_{196}^{\mathrm{sep}}}.
+\tag{195-preservation}
+\]
+To prove this inside PA, use the common source graph $G$ and the exact
+clean seed. A finite halting source trace produces a finite halting tape
+trace by concatenating the exact startup and primitive execution
+segments. Their codes and finite bounds are primitive recursively
+constructible, and PA proves their correctness by induction on the
+length of the source trace.
+
+For the reverse implication from a tape trace to a source trace, suppose
+the tape trace first halts after $T$ transitions. Iterate the common
+source step function for $T+1$ instructions from the clean seed. If none
+of these instructions halts, their exact positive-length simulations,
+after startup, concatenate to a physical run longer than $T$, with no
+halt before its end. Determinism contradicts the alleged first halting
+trace. Thus one of the first $T+1$ source instructions halts. This
+bounded iteration is primitive recursive; its correctness needs only
+ordinary arithmetic induction. Apply both directions to each of the
+two machines and eliminate the common source-halting predicate. The
+argument does not assume that either machine actually fails to halt.
+
+\paragraph{Composition with the PA calibration.}
+The numerical calculus and proof-search program in this theorem are
+exactly the supplied separated-diagonal ones. The inherited mathematical
+calibration gives
+\[
+ \mathrm{PA}\vdash
+ H_{M_{196}^{\mathrm{sep}}}
+ \ \longleftrightarrow\
+ \exists p\,\operatorname{Prf}_{\mathrm{PA}}
+       (p,\ulcorner 0=1\urcorner).
+\tag{parent-calibration}
+\]
+Its substantive interfaces are the following. The arithmetic
+interpretation translates membership to finite binary-set membership
+and supplies PA proofs of pointed separation by full induction. The
+formula-code freshness lemma supplies proofs of the diagonal clause
+$B\to U(B,B)$. The recovered two-direction membership rewrites,
+neighborhood equality and equality-witness interfaces feed the original
+PA-refutation compiler. The separated diagonal head uses the adjusted
+ten-item stack selectors. In the soundness direction, a proof annotation
+of the top, cached head and canonical Cantor stack turns a source halt
+into a PA refutation, including the zero-stack alias. In the completeness
+direction, the proof-command compiler and exhaustive command scheduler
+turn a PA refutation into a source halt. These are primitive recursive
+syntactic constructions with PA-provable correctness; no uniform truth
+predicate or reflection principle for PA is used. The inherited
+calibration and diagonal-interface arguments are included elsewhere in
+the report so that the logical dependency is visible.
+
+Combining parent calibration with (195-preservation) and the definition
+$\operatorname{Con}(\mathrm{PA})\equiv
+\neg\exists p\,\operatorname{Prf}_{\mathrm{PA}}
+(p,\ulcorner0=1\urcorner)$ gives the requested result:
+\[
+ \boxed{\displaystyle
+ \mathrm{PA}\vdash
+ \bigl(M_{195}\text{ does not halt from its blank start}\bigr)
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{PA}).}
+\]
+
+This is an ordinary mathematical proof obtained by preservation and
+composition with the stated upstream interfaces. The executable files
+make the finite construction and its certificate data reproducible.
+They do not constitute a newly exported Lean theorem for the entire
+displayed biconditional. The inherited formal development and the
+additional written arithmetic-calibration argument are distinct parts
+of the proof provenance.

@@ -1,0 +1,46 @@
+Direct transfer from PA195 through the common source program
+==========================================================
+
+Let S be the deterministic ordinal register program whose3700 entries
+are the exact primitive instructions and exact successor ordinals in
+PA195/source.json. Its initial ordinal is25, its logical register vector
+is the one represented by the supplied clean startup file, and its
+register permutation PHYSICAL is unchanged. The new grammar must yield
+exactly the same S; comparing a flattened word without successors is
+insufficient.
+
+For each binary machine N (PA195 or an accepted new machine), let E_N(i,R,g)
+be the physical source frame at ordinal i with complete register file R
+and the required header gap g. The path in E_N may depend on its grammar.
+All other encoding conventions and the abstract register operations agree.
+The startup certificate proves its blank run reaches the corresponding
+initial frame. The primitive certificate proves uniformly in every valid
+file and every admitted gap:
+  (i) every nonhalting source step has an exact finite N segment to the
+      corresponding successor frame, with the claimed updated registers;
+  (ii) a source halt has an exact finite N segment to its distinguished halt;
+  (iii) each segment contains at least one literal N transition;
+  (iv) file/gap preconditions are preserved.
+The register-block excursion lemmas are unchanged. Their arithmetic
+induction proofs and the finite symbolic trace checker establish these
+uniform statements in PA, not merely for sampled numerical files.
+
+These premises prove PA ⊢ Halt(N,blank) ↔ Halt(S,initial). The forward
+source-to-machine implication concatenates its source-step segments.
+For the reverse, suppose N has a T-step blank halt but S has no halt in
+its first T+1 steps. Primitive recursion produces these T+1 source steps
+and their positive N segments, with startup attached, giving a defined N
+run longer than T. Determinism and partial halting semantics contradict
+the alleged T-step halt. If N allegedly halted before startup completed,
+the fixed complete startup trace already contradicts it. Every operation
+is finite and primitive recursive; PA proves the induction and comparison.
+
+Applying this theorem to both PA195 and the new N gives the unconditional
+relative theorem
+   PA ⊢ Halt(N,blank) ↔ Halt(PA195,blank).
+No consistency or soundness premise enters this transfer. Combining it
+with the inherited ordinary mathematical PA195 calibration gives
+   PA ⊢ Nonhalt(N,blank) ↔ Con(PA).
+This presentation isolates exactly what is new. It neither silently
+upgrades PA195's ordinary proof to a newly compiled Lean theorem nor
+requires a second reconstruction of its arithmetic refutation compiler.

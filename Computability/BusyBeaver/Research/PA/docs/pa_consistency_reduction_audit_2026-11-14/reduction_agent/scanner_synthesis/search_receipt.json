@@ -1,0 +1,91 @@
+{
+  "scope": "One exact prefix-local scanner replacement template, not all six-state scanners or all 195-state machines. Two inherited helper states are in addition to the counted counter states. All runs use eight finite specifications, no reads outside a supplied prefix, full tape restoration, and bounded positive execution. q0/1 is fixed to write1,moveL,q0 unless explicitly relaxed; first fresh zero target is fixed to1.",
+  "python": "3.12.14",
+  "z3": "5.4.1",
+  "runs": [
+    {
+      "counter_states": 7,
+      "bound": 8,
+      "writes": "read-only",
+      "original_rows_fixed": true,
+      "result": "SAT",
+      "seconds": 0.03434562683105469
+    },
+    {
+      "counter_states": 7,
+      "bound": 10,
+      "writes": "read-only",
+      "original_rows_fixed": false,
+      "first_target_fixed": true,
+      "result": "SAT",
+      "seconds": 0.4082608222961426,
+      "independent_replay": "positive_receipt.json"
+    },
+    {
+      "counter_states": 6,
+      "bound": 18,
+      "writes": "read-only",
+      "result": "UNSAT",
+      "seconds": 3.030219078063965,
+      "encoding": "array BV"
+    },
+    {
+      "counter_states": 6,
+      "bound": 12,
+      "writes": "arbitrary",
+      "result": "UNSAT",
+      "seconds": 13.453107595443726,
+      "encoding": "array BV"
+    },
+    {
+      "counter_states": 6,
+      "bound": 14,
+      "writes": "arbitrary",
+      "result": "UNKNOWN",
+      "timeout_seconds": 120,
+      "encoding": "array BV"
+    },
+    {
+      "counter_states": 6,
+      "bound": 16,
+      "writes": "arbitrary",
+      "result": "UNKNOWN",
+      "timeout_seconds": 120,
+      "encoding": "array BV"
+    },
+    {
+      "counter_states": 6,
+      "bound": 24,
+      "writes": "arbitrary",
+      "result": "UNKNOWN",
+      "timeout_seconds": 50,
+      "encoding": "array BV"
+    },
+    {
+      "counter_states": 6,
+      "bound": 18,
+      "writes": "arbitrary",
+      "q0_read1_fixed": false,
+      "result": "UNKNOWN",
+      "timeout_seconds": 120,
+      "encoding": "array BV"
+    },
+    {
+      "counter_states": 6,
+      "bound": 14,
+      "writes": "arbitrary",
+      "result": "UNSAT",
+      "seconds": 47.60270953178406,
+      "encoding": "mux BV"
+    },
+    {
+      "counter_states": 6,
+      "bound": 16,
+      "writes": "arbitrary",
+      "result": "UNKNOWN",
+      "timeout_seconds": 90,
+      "encoding": "mux BV",
+      "raw_log": "mux16.log"
+    }
+  ]
+}

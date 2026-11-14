@@ -1,0 +1,82 @@
+\section{Diagonal vacuity in the commutation or distribution head}
+Write $\Gamma(B)=B\to U(B,B)$ and let $1$ denote the numerical false
+code. Each of the following modifications is made separately. The bundled
+gate is replaced by the old gate $\neg(V\to Q)$, and all other axiom heads
+are retained.
+
+\paragraph{A seriality lemma with no diagonal premise.}
+The ordinary first head yields explosion by the unchanged construction in
+\texttt{PA196/Logic/Deduction.lean}. The ordinary sixth head gives normal
+quantifier distribution and lifting of theorem implications. For every $x$,
+choose the retained equality witness $\exists x_x E(0,x)$, namely
+$\neg U(x,\neg E(0,x))$. Lift the explosion instance
+$1\to\neg E(0,x)$ through $U(x,-)$. Composition with the witness proves
+\[
+ S_x:\quad\neg U(x,1).
+\]
+This uses neither diagonal vacuity, general equality vacuity, reverse
+membership rewriting, nor a satisfaction interpretation. Lifting $S_d$
+through $U(a,-)$ and using $S_a$ also proves
+\[
+ \neg U(a,U(d,1)).
+\]
+These are uniform numerical proof templates.
+
+\paragraph{Modification of the second head.}
+Put $X=U(D,U(A,H))$ and $Y=U(A,U(D,H))$. Replace $X\to Y$ by
+\[
+ (\Gamma(A)\to X)\to Y.
+\]
+The positive implicational tautology
+$((G\to X)\to Y)\to(X\to Y)$ is derived using only $K$ and composition
+from the retained restricted propositional axiom. Hence the original second
+head is recovered before any use of the seriality lemma. The first, fifth,
+and sixth heads were never changed, so all premises of that lemma remain
+available. Specialize the strengthened head to $H=1$ and, for example,
+$D=0$. Its consequent $Y$ is refutable by the displayed double-quantifier
+instance. The strengthened head therefore gives
+$\neg(\Gamma(A)\to X)$, and classical propositional reasoning gives
+$\Gamma(A)$. The parameter $A$ is arbitrary, so every diagonal instance
+is recovered. Conversely, the original second head and $\Gamma(A)$ prove
+the strengthened head by a fixed positive implicational argument.
+
+\paragraph{Modification of the sixth head.}
+Replace
+$U(D,A)\to(U(D,A\to H)\to U(D,H))$ by
+\[
+ U(D,A)\to
+ \bigl((\Gamma(D)\to U(D,A\to H))\to U(D,H)\bigr).
+\]
+Again recover the ordinary sixth head first, using only positive
+implicational reasoning: under the two old antecedents, $K$ gives
+$\Gamma(D)\to U(D,A\to H)$, to which the strengthened head applies.
+This does not presuppose quantifier distribution. After that recovery,
+normal quantifier distribution and the seriality lemma are available.
+
+Take $A=0$ and $H=1$. Code $0$ is a theorem, since the implicational
+identity at $0$ has code $I(0,0)=0$. Generalization gives $U(D,0)$.
+The strengthened head now yields
+\[
+ (\Gamma(D)\to U(D,I(0,1)))\to U(D,1).
+\]
+Combine this with $S_D$ to obtain
+$\neg(\Gamma(D)\to U(D,I(0,1)))$, hence $\Gamma(D)$. No simplification
+of the numerical formula $I(0,1)$ is needed. The parameter $D$ is arbitrary.
+Conversely, the old sixth head and $\Gamma(D)$ derive the strengthened
+head by a fixed propositional proof.
+
+\paragraph{Consequences and scope.}
+For each separate variant, all six original heads and every diagonal
+instance have now been recovered, and conversely the old diagonal calculus
+proves the new head. Thus both proof translations are primitive recursive,
+and PA verifies their correctness by induction on finite derivations.
+The argument recovers each changed infrastructure rule before invoking it;
+there is no circular appeal to explosion or quantifier distribution.
+
+Each change inserts the seven-token diagonal expression and one implication
+constructor into a head while deleting the same eight tokens from the gate.
+The AX word therefore retains 191 tokens and the nine-entry pushed stack
+interface. The selected strengthened head is an implication code and cannot
+equal false code $1$. A new physical compilation still needs exact source,
+runtime, startup, and selector/derivation binding checks. The logical result
+alone is not a machine-state reduction.

@@ -1,0 +1,950 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=25mm,headheight=15pt]{geometry}
+\usepackage{booktabs,longtable,array,enumitem,xcolor,fancyhdr}
+\usepackage{hyperref}
+\usepackage{xurl}
+\definecolor{ink}{HTML}{17334A}
+\definecolor{accent}{HTML}{256E81}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+ pdftitle={PA consistency machines: comparison and research below 208 states},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}\fancyhead[L]{\small PA consistency machines}
+\fancyhead[R]{\small 29 October 2026}\fancyfoot[C]{\thepage}
+\setlength{\parskip}{5pt}\setlength{\parindent}{0pt}
+\setcounter{tocdepth}{1}
+\setlist{itemsep=3pt,topsep=5pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Sub}{\operatorname{Sub}}
+\newcommand{\IR}{\mathsf{IR}}
+\newcommand{\Emp}{\operatorname{Emp}}
+\newcommand{\CI}{\mathsf{CI}}
+\newcommand{\CD}{\mathsf{CD}}
+\newcommand{\CB}{\mathsf{CB}}
+\newcommand{\CC}{\mathsf{CC}}
+\newcommand{\CH}{\mathsf{CH}}
+\newcommand{\code}[1]{\texttt{#1}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{15mm}
+{\color{accent}\Large Research report}\par\vspace{6mm}
+{\color{ink}\Huge\bfseries PA consistency machines}\par\vspace{5mm}
+{\color{ink}\LARGE Comparison of the five U208 proposals\par and attempts to cross the 208-state threshold}\par
+\vspace{12mm}
+\large Prepared for Vladimir Reshetnikov\par
+29 October 2026\normalsize
+\vspace{12mm}
+\hrule\vspace{5mm}
+\textbf{Status.} The five supplied proposals reduce to two transition-graph
+classes, and both pass a fresh symbolic runtime replay. This investigation
+develops new source transformations and several independently checkable
+search methods. It has \textbf{not established a valid machine with fewer than
+208 working states}. Rejected 207-state tables are not presented as solutions.
+\vspace{5mm}\hrule
+\vfill
+\textbf{What the archive supplies}\par
+The complete \LaTeX{} source and PDF; pinned upstream provenance; comparison
+witnesses and verification receipts; new arithmetic and source-level proofs;
+search implementations and scoped negative results; and instructions to
+reproduce the accepted checks. Executable experiments, ordinary mathematical
+proofs, and proof-assistant certificates are distinguished throughout.
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\begin{abstract}
+The requested endpoint is a two-symbol, one-tape machine $M$ with fewer than
+208 working states such that
+$\PA\vdash\neg\Halt(M,\mathrm{blank})\leftrightarrow\Con(\PA)$.
+Five incoming U208 archives were examined at the same pinned repository
+revision. Their nine primary and alternative tables fall into exactly two
+rooted, action-preserving isomorphism classes. All five proposals implement
+the same local identification of historical states 172 and 211; their
+advertised savings cannot be added. Fresh verification covers 5,084 symbolic
+primitive contracts and every literal transition row for each graph class.
+The inherited consistency calibration was audited, including the difference
+between unary Theory U, the native $W+\IR$ calculus, and the separate positive
+theorem-stream proposal. New research includes a more general source
+associativity theorem, finite-window inductive context analysis, a direct
+18-primitive negation constructor, fixed-role cover emitters, and a proof
+compiler with unnecessary successful-modus-ponens padding removed.
+Four new local constructions also yield eighteen pairwise non-isomorphic
+208-state machines with short halting-equivalence proofs.
+None has yet yielded a verified sub-208 literal table. The negative results
+are explicitly limited to their search families; they are not state-count
+lower bounds.
+\end{abstract}
+\tableofcontents\newpage
+
+\section{Problem, conventions, and evidential standard}
+
+The motivating K215 result is materially stronger than an informal statement
+of equiconsistency: its final theorem is proved in PA and binds a particular
+literal machine to a particular arithmetization of ZFC inconsistency
+\cite{k215pa}. Replacing its set theory, source program, or transition table
+requires new bridges at the affected levels. The K215 certificate does not
+automatically certify a U-based construction.
+
+Here a working state is a state with two binary transition rows; the halt
+state is excluded from the count. A transition writes a bit, moves exactly
+one square left or right, and selects the next state. The tape is two-way
+infinite and initially all zero, with designated initial state 0. A smaller
+alphabet count, a nonblank input encoding, or a different machine convention
+would not answer the requested comparison.
+
+There are four separate proof obligations:
+\begin{enumerate}
+\item A theory/calculus calibration, verified inside PA at the level of
+      finite refutations, not merely an external equivalence of models.
+\item Sound and complete enumeration of numerical derivations by the
+      structured register program, including its startup invariant.
+\item Correct implementation of every required primitive over arbitrary
+      natural register values, complete tape frames, and arbitrary permitted
+      exterior tape.
+\item An exact state census and a binding of all those statements to the
+      actual delivered transition table.
+\end{enumerate}
+A finite blank-tape run, finite register tests, or a small source expression
+establishes none of these obligations by itself.
+
+We use the following evidence labels. An \emph{ordinary proof} is a written
+mathematical argument. \emph{PA-formalizable} means its construction uses the
+specified finite syntactic transformations and induction available in PA;
+it does not assert that a new PA proof object has been generated and checked.
+A \emph{symbolic runtime replay} applies explicit induction schemas and
+arbitrary-natural tape identities. A \emph{finite screen} is used to reject
+candidates and is never promoted to an unbounded correctness theorem.
+
+\section{Pinned inputs and comparison of the five proposals}
+
+All incoming inputs were retrieved from ProveIt revision
+\begin{center}\small
+\code{c086b5adaa6228009365768946d691dfc49a20bb}.
+\end{center}
+The Git blob identities were checked against the returned repository
+metadata, and the exact archive byte hashes were recorded before extraction.
+The input inventory is in \path{sources_manifest.json}; Appendix~\ref{sec:hashes}
+lists archive hashes. No source package was edited in place.
+
+For brevity, A and B denote rooted graph classes, preserving both written
+symbol and movement direction on every edge. They do not merely have the
+same state count or similar diagrams.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}p{0.30\linewidth}cp{0.52\linewidth}@{}}
+\toprule
+Archive shorthand & Primary & Relationship\\
+\midrule
+ConPA & A & Retains historical state 172 as the merged representative.\\
+Conditional Context & A & Retains 211 instead; supplies a class-B alternative.\\
+Entry Context & A & Primary native and dense tables are byte-identical to Conditional Context.\\
+History & A & Relabels the same graph; supplies a class-B alternative.\\
+Research & B & Its Plain alternative is class A.\\
+\bottomrule
+\end{tabular}
+\caption{Five packages, two literal transition-graph classes.}
+\label{tab:comparison}
+\end{table}
+
+Across all nine selected primary and alternative tables, canonical rooted
+serialization gives exactly these two SHA-256 values:
+\begin{description}[font=\normalfont\bfseries]
+\item[Class A:] \path{5d858b5d7528dd98c5272f83d308c782ae323a47fc394a73ad9efda1096a5284}
+\item[Class B:] \path{f0c6098fabd68fce3fca0c6ac78a1b4e9dbb4ded60437b84d3e9d9ccda74f11d}
+\end{description}
+These are hashes of the comparison script's canonical serialization, not
+hashes of a particular archive's raw table bytes. The JSON witness records
+the corresponding state maps and raw-file hashes.
+
+All tables have 208 working states and 416 rows. Both classes implement the
+same ordered 3,909-primitive source word and the same 5,083 ordinal control
+edges. Their source associations differ: the recorded maximum source depth
+is 42 for A and 41 for B. This distinction matters to the physical
+implementation because selector states are reused inside arithmetic code.
+
+\subsection{What the packaging differences mean}
+
+The Conditional Context title is not an admission that the local reduction
+depends on an unproved hypothesis. Its condition is a tape-context property
+proved by a complete predecessor analysis. The Entry Context and History
+presentations organize the same essential evidence differently. Selecting
+172 rather than 211 as the retained state is a relabeling choice. Consequently
+there is no sequence of five independent one-state savings waiting to be
+composed.
+
+For continued work, class A is a convenient main baseline because its
+lineage and state labels directly match the first ConPA archive. Class B is
+a useful independent source-layout alternative. This is a practical choice,
+not a mathematical preference between their consistency statements.
+
+\subsection{Fresh replay}
+
+After inspection, all five quick reproduction drivers were run with output
+outside the sealed input packages. Both distinct machines were then replayed
+through the Research package's full symbolic checker. The result was:
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Quantity & Class A & Class B\\
+\midrule
+Arbitrary-natural primitive contracts & 5,084 & 5,084\\
+Literal rows exercised symbolically & 416/416 & 416/416\\
+Symbolic inference applications & 1,251,865 & 1,250,564\\
+Exact blank startup transitions & 48,140 & 48,140\\
+\bottomrule
+\end{tabular}
+\end{center}
+The combined full replay took about 333 seconds in this environment.
+Dependency verification also checked 167 retained member hashes and the
+nested Theory U binding. The receipt is
+\path{analysis/comparison/full_research.json}; it should be read alongside
+the verifier's stated induction schemas, not as a new proof-assistant export.
+
+\section{The existing local 209-to-208 reduction}
+
+The reduction identifies historical states 172 and 211. Its point is that
+the surrounding tape distinguishes visits whose state names are being
+identified. The complete predecessor census establishes:
+\begin{enumerate}
+\item On every entry to old state 172, the two preceding tape cells are
+      \code{10}.
+\item On entry to old state 211 while reading zero, the immediately
+      preceding cell is one.
+\end{enumerate}
+These claims concern arbitrary initial tape runs from the specified initial
+state, not only the observed blank startup.
+
+In the class-A representative, both transitions entering 211 from state
+163 are redirected to 172, the zero row at 172 is altered, and state 211
+is deleted. The key rows are
+\[
+\begin{array}{rclcrcl}
+163,0&\mapsto&(0,L,211)&\longrightarrow&163,0&\mapsto&(0,L,172),\\
+163,1&\mapsto&(1,R,211)&\longrightarrow&163,1&\mapsto&(1,R,172),\\
+172,0&\mapsto&(0,L,67)&\longrightarrow&172,0&\mapsto&(0,L,217).
+\end{array}
+\]
+The four old steps at $(172,0),(172,1),(211,0),(211,1)$ are simulated by
+new blocks of lengths $7,1,3,1$. Every block preserves the entire tape,
+has the correct state/head endpoint under the quotient, and has no interior
+halt. The other 414 old rows commute directly with the quotient.
+
+\begin{proposition}[Bounded positive stuttering]
+The old and new machines halt on exactly the same inputs. If an old run
+halts after $T_{209}$ transitions, the corresponding new run has length
+\[
+T_{208}=T_{209}+6N_{172,0}+2N_{211,0}\leq 7T_{209},
+\]
+where $N_{q,b}$ counts the indicated old steps before halting.
+The finite local argument and both halting implications formalize in PA.
+\end{proposition}
+
+\begin{proof}
+Induct on old execution length, substituting the appropriate positive block
+at each step. This constructs the new boundary configurations and the stated
+time identity. For reflection, boundaries occur after positive blocks of
+length at most seven. An interior point cannot be a new halt. A new halting
+prefix therefore ends at a simulated old boundary; a bounded search through
+the new prefix recovers the corresponding old prefix. Finite tape windows
+and finite trajectories can be coded arithmetically, so the induction and
+bounded recovery require no consistency assumption.
+\end{proof}
+
+This local theorem is strong evidence for the shared reduction. It must
+still be composed with the theory, program, runtime, and startup bridges to
+obtain the final PA-consistency statement.
+
+\section{Eighteen new machines at the 208-state boundary}\label{sec:helpers}
+
+A further local synthesis found four useful merge-and-helper constructions.
+Each deletes one old state and adds one helper, so its count remains
+$208-1+1=208$. Different donor choices give nine graphs over each original
+class. An independent canonical comparison confirms eighteen pairwise
+non-isomorphic new graphs, all distinct from both original graphs.
+These are proved alternative starting points, not sub-208 solutions.
+
+All labels in this section are the \emph{History package's native labels},
+which keep state 172 in the inherited fold. Let $q$ be deleted, $r$ retained,
+and let the new state be 500. Redirect all old targets $q$ to $r$; replace
+the indicated row $r/b$ by $(b,L,500)$; add the two displayed helper rows.
+
+\begin{center}\small
+\begin{tabular}{@{}rrrlll@{}}
+\toprule
+$q$ & $r$ & $b$ & $500/0$ & $500/1$ & Lengths at $q,r$ on $b$\\
+\midrule
+127 &124&0&$0,R,8$ &$1,R,59$ &3,3\\
+190 &160&1&$0,R,86$&$1,R,193$&3,3\\
+178 &168&0&$0,R,154$&$1,R,176$&3,3\\
+301 &88 &0&$0,R,122$&$1,R,500$&5,3\\
+\bottomrule
+\end{tabular}
+\end{center}
+In the first row, donor 59 can be replaced by 109 or 125. In the third,
+154 can be replaced by 159 and 176 by 225, independently. This gives
+$3+1+4+1=9$ choices per baseline.
+
+\subsection{A one-step invariant suffices}
+
+The complete incoming census is particularly simple:
+\begin{center}\small
+\begin{tabular}{@{}rll@{}}
+\toprule
+State & All incoming source/read pairs & Written predecessor bit\\
+\midrule
+127 & $110/0$ &0\\
+124 & $104/1$ &1\\
+160 & $139/0$ &0\\
+190 & $165/1$ &1\\
+168 & $176/0,178/0,225/0$ &0\\
+178 & $158/1$ &1\\
+301 & $87/0$ &0\\
+88 & $77/1$ &1\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every listed incoming edge moves right, and none of the states is initial.
+Thus every visit has the displayed preceding bit, on every initial tape.
+This proof does not depend on the larger finite-window analysis.
+
+For the first three constructions, the new block moves left to read the
+predecessor tag, right to a donor, then right through a row matching the old
+exceptional action. Its final head is one square right of its old location,
+and the complete tape is unchanged. The other-symbol rows agree and use
+one step. For the last construction, starting at retained state 88 and
+head 0 while reading zero, the two blocks are
+\begin{align*}
+\text{old 301, preceding 0:}\quad
+88&\xrightarrow{0L}500\xrightarrow{0R}122\xrightarrow{0L}137
+  \xrightarrow{0R}30\xrightarrow{0R}45,\\
+\text{old 88, preceding 1:}\quad
+88&\xrightarrow{0L}500\xrightarrow{1R}500\xrightarrow{0R}122.
+\end{align*}
+Each touches only positions $-1$ and 0 before its endpoint, preserves their
+bits, and finishes at head 1 with exactly the old target. Every other old
+row commutes with the quotient.
+
+\begin{theorem}[New 208-state alternatives]
+Each of the eighteen delivered helper tables has 208 working states and
+halts exactly when its old U208 baseline halts, on every initial tape.
+The bounded local proof formalizes in PA. Composing with the inherited
+calibration gives the same ordinary PA-proof argument for
+$\neg\Halt(M,\mathrm{blank})\leftrightarrow\Con(\PA)$.
+\end{theorem}
+\begin{proof}
+The incoming census supplies the required tag at every old boundary. The
+complete two-cell cases give positive blocks of length at most five,
+with no interior halt. Apply the same finite-run induction and halting
+reflection argument as for the original fold. For the three-step cases,
+$T_{\rm new}=T_{\rm old}+2N_{q,b}+2N_{r,b}$; for the last case it is
+$T_{\rm new}=T_{\rm old}+4N_{301,0}+2N_{88,0}$.
+\end{proof}
+
+The standard-library-only checker
+\path{code/verify_helper_machines.py} independently checks the literal patches,
+the complete incoming census, all positive two-cell blocks, the ordinary
+rows, the state counts, and the graph-class census. It passed for all
+eighteen tables. Each also passed 5,084 finite canonical primitive cases.
+The finite cases are additional regression evidence; the preceding local
+argument is the halting-equivalence proof.
+
+The intended saving was to let two merges share one helper, producing
+$208-2+1=207$. All 4,832 tested oriented combinations per baseline failed
+the bounded screen. Fresh ordinary one-row fold searches on each of the
+eighteen new layouts also produced no survivor. These failures are restricted
+to those synthesis families.
+
+\section{Audit of Theory U and the native consistency calibration}
+
+\subsection{Three interfaces that must be kept separate}
+
+The unary theory U is equality-free classical first-order logic over
+nonempty domains, in one binary relation $E$. Define
+\[
+\Sub(x,a)\;:\!\equiv\;\forall t\,(E(t,x)\to E(t,a)).
+\]
+For every formula $\varphi$ whose only possible free variable is $x$, U has
+the schema
+\begin{equation}\label{eq:U}
+\forall a\,\exists b\left[
+ \forall x(E(x,b)\to\varphi(x))\ \land\
+ \forall x\bigl(\Sub(x,a)\to(\varphi(x)\to E(x,b))\bigr)
+\right].
+\end{equation}
+The source variable $a$ cannot occur free in $\varphi$. The output is a
+weak cover: every member passes the predicate, and every passing subset of
+the source is included. The axiom does not require the output's members to
+be exactly the passing subsets of the source.
+
+The actual U208 source instead uses a Cantor-coded native calculus whose
+ordinary theory is $W+\IR$. Here W allows matrix parameters in the weak-cover
+schema, and $\IR$ is global irreflexivity. Its numerical truth alias is 0 and
+its refutation target is 1. The intended PA-verifiable consistency cycle is
+\begin{equation}\label{eq:cycle}
+\Con(\PA)\ \Longrightarrow\ \Con(W+\IR)
+\ \Longrightarrow\ \Con(U)\ \Longrightarrow\ \Con(\PA).
+\end{equation}
+
+The positive dyadic theorem stream in the original unary-theory archive is
+a third interface. It targets the atom $E(v_0,v_0)$ at code 0 and uses a
+negative seed concerning $D\equiv\forall v\,E(v,v)$. Its positive theory
+alone has a one-object total-relation model. Its calibrated assertion is
+nonderivability of the atomic target, equivalently consistency after the
+negative seed is included. Equating the consistency of that positive theory
+alone with $\Con(\PA)$ would be an error. It is not the source compiled by
+the five current U208 packages.
+
+\subsection{Lower interpretation: why unary matrices suffice}
+
+The subtle direction is interpreting arithmetic in U. The supplied argument
+uses coextensionality, saturation, and numerical representatives rather
+than assuming global extensionality. Coextensionality is a congruence in
+the second argument of membership; its use in the first argument requires
+saturated containers. Numerical representatives are saturated, transitive
+objects whose member classes are linearly ordered, together with a first-order
+endpoint condition for represented initial segments.
+
+The ordering of the proof is essential. Heredity, irreflexivity, greatest
+predecessors, and uniqueness of existing successors are proved first.
+Induction is established before totality of successor. Given a numerical
+counterexample $n$, one filters the failures below $n$ using the fact that
+every member of $n$ is a subset of $n$. If a failure lies inside $n$, take
+its least class and use its existing predecessor. If none lies inside $n$,
+apply the successor step from the greatest predecessor of $n$ to $n$.
+Neither argument assumes that $n$ already has a successor.
+
+Arbitrary ambient parameters are internalized in a legal unary matrix:
+\[
+Q(v)\;:\!\equiv\;\forall p\,
+\bigl(\operatorname{BaseAndStep}_{\theta}(p)\to\theta(v,p)\bigr).
+\]
+The base and successor step for $Q$ follow from their corresponding
+components. This is an actual elimination of free parameters in the
+nonlogical instance, not a silent strengthening of the schema.
+
+After comparison and least-counterexample results, bounded numerical
+comprehension uses the least failing numerical tuple. For a putatively
+missing filter at that tuple, use the unary matrix
+\[
+\exists n\,
+  \bigl(\operatorname{LeastFailure}(n)\land\chi(z,n)\bigr).
+\]
+All parameters $n$ are bound. A separate support hypothesis supplies an
+object $a$ such that every selected $z$ is a subset of $a$. The upper and
+lower clauses then yield the desired exact profile. Finite tuples are
+minimized by finitely many least-element arguments; tuple-coding objects
+are not assumed prematurely.
+
+Successor, exact powers of numerical sources, common bounds, and bounded
+graph comprehension follow in that order. Ordered-pair profiles include
+entire coextensionality classes, so equal-coordinate and representative
+cases are covered. Histories are constructed with the old graph
+existentially bound inside the matrix and numerical parameters alone left
+free. This avoids using an illegal arbitrary graph parameter in U's schema.
+Addition, multiplication, and each translated PA induction instance then
+follow from these history constructions.
+
+\subsection{Upper interpretation and internal consistency equivalence}
+
+Interpret $E(x,a)$ as ``bit $x$ of $a$ is one.'' PA proves that the translated
+$\Sub(x,a)$ implies $x\leq a$. For each fixed arithmetic formula, induction
+constructs its finite binary characteristic code through $a$. That gives
+an exact filter, hence the weak-cover instance. Parameters are permitted in
+this PA induction, so the interpretation also validates W. PA proves
+irreflexivity because $2^a>a$.
+
+This is a formula-by-formula induction argument and works in nonstandard
+PA models. It does not use a uniform arithmetical truth predicate for all
+formulas. For the internal statement, the required bridge consists of
+uniform proof templates: renaming, substitution, term-to-graph translation,
+relativization, and finite proof concatenation. Those syntactic operations
+are primitive recursive, with verification by formula and proof induction
+in PA. This supplies the stated ordinary argument for
+\[
+\PA\vdash\Con(U)\leftrightarrow\Con(\PA).
+\]
+The supplied work does not implement every arbitrary-proof translation or
+export a new end-to-end PA kernel certificate. The audit found no fatal
+mathematical defect in the proof, but this remaining formalization boundary
+must be reported accurately.
+
+\subsection{Native role emitter and its exceptional cases}
+
+Write $I,R,Q$ for the native implication, membership, and universal
+quantifier constructors, and $F=1$, $N(A)=I(A,F)$. The emitter uses
+matrix/output label $a$, source label $b$, and tested label $c$:
+\begin{align*}
+V&=I(R(a,b),Q(c,R(a,b))), & e&=R(c,a),\\
+G&=Q(a,I(R(a,c),R(a,b))), & U_0&=Q(c,I(e,a)),\\
+L_0&=Q(c,I(a,I(G,e))), & H&=Q(a,I(U_0,I(L_0,F))).
+\end{align*}
+If $c\ne a,b$, the emitted bundle is $N(I(V,H))$; otherwise it is truth
+code 0. Classically the enabled bundle is $V\land\neg H$.
+
+For positive code $a$, every effective variable label in its decoded
+formula is below $a$; zero is a closed truth alias. Thus the output binder
+is fresh. For $a\ne b$, $G$ is the intended subset condition. For $a=b$,
+its binder captures the source and gives
+\[
+\forall v_a\,[E(v_a,v_c)\to E(v_a,v_a)],
+\]
+which is $\Emp(v_c)$ under $\IR$. W supplies an empty source from a false
+matrix and then supplies precisely the required cover at that source.
+The codes $a=0$ and $a=1$ are treated explicitly as closed truth and falsity
+under $\IR$. The gate is still needed for the separate atomic-vacuity
+component $V$.
+
+For completeness, rename source and test to 0 and 1, double-negate the
+desired matrix to a code $n>1$, and choose $(a,b,c)=(n,0,1)$. Project the
+cover, remove the double negation, and restore names. The inherited logical
+rows and equality-indiscernibility translation remain necessary premises.
+In particular, a supplied Boolean counterinterpretation rules out simply
+deleting the dominated propositional row.
+
+\subsection{Why the startup invariant cannot be omitted}
+
+At exactly 48,140 blank-tape transitions, the selected class-A table reaches
+native dispatcher 84 at head coordinate $-2$, source ordinal 136, with
+logical registers
+\[
+(1,0,13,0,0,1,0,0,1).
+\]
+The header is at 54, there are 43 spare blocks of value one, and the complete
+tape has 120 one-cells. These are exact finite data, not an extrapolation.
+The source address is \code{001100110101010}.
+
+The source then enters an interior axiom suffix. Its incoming cache 1 is
+an arithmetic parameter, not an already proved falsity, and its numerical
+stack tail 4 is opaque. The retained suffix proof constructs nine explicit
+theorem heads above that tail. A separate ghost stack length is required
+because Cantor pairing has the zero alias $P(0,0)=0$. The scheduler's maximum
+initial conservative debt is two, leaving a permanent margin of seven.
+This unbounded credit argument, together with the suffix contract, prevents
+the opaque tail from being exposed. The finite startup trace alone does
+not establish this fact.
+
+\subsection{Simple theory shortenings that fail}
+
+Several tempting modifications have small countermodels, uniformly
+verifiable in PA:
+\begin{itemize}
+\item Deleting the lower clause permits a one-object empty relation.
+\item Deleting the upper clause permits a two-object directed cycle, even
+      with irreflexivity. Each profile is a singleton and $\Sub(x,a)$ reduces
+      to $x=a$.
+\item Replacing the subset guard by $E(x,a)$ again permits the one-object
+      empty relation.
+\item Removing the guard while retaining both clauses makes the matrix
+      $\neg E(x,x)$ yield Russell's contradiction.
+\end{itemize}
+These are counterexamples to the specified edits, not a lower bound on
+possible PA-equiconsistent schemas.
+
+\section{New source-level transformations}
+
+\subsection{Directional associativity}
+
+The structured source language uses binary sequencing trees. A decrement's
+zero branch and a forward break select zero-edge ancestors; backward
+continues select one-edge ancestors. Let $f(X)$ and $b(X)$ be the respective
+escaping control-depth bounds. For a leaf they are
+\[
+\begin{array}{c|cc}
+ & f & b\\\hline
+\CI r,\CH&0&0\\
+\CD r&1&0\\
+\CB k&k&0\\
+\CC k&0&k
+\end{array}
+\]
+and at a sequence $(X,Y)$ they satisfy
+\[
+f(X,Y)=\max(f(X)-1,f(Y),0),\qquad
+b(X,Y)=\max(b(X),b(Y)-1,0).
+\]
+
+\begin{theorem}[Directional associativity]\label{thm:rotation}
+The trees $((A,B),C)$ and $(A,(B,C))$ have the same ordered primitive word
+and ordinal control graph whenever $f(A)=0$ and $b(C)=0$. No condition is
+needed on the middle factor B. Halt occurrences are allowed.
+\end{theorem}
+\begin{proof}
+Within A, forward controls do not escape. The prefix changes from 00 to 0,
+which changes no one-edge ancestor, so backward controls retain their
+targets. Within B, compare prefixes 01 and 10. The first escaping forward
+control sees the end of ABC in either tree: the old root and the new BC
+interval have the same right endpoint. The first escaping backward control
+sees the start of ABC: old AB and the new root have the same left endpoint.
+Every later relevant ancestor is outside the changed region and agrees.
+Within C, backward controls do not escape. Its prefix changes from 1 to 11,
+which changes no zero-edge ancestor, so forward targets agree. Internal
+targets are unchanged, as are ordinary successors and positive decrement
+branches in the identical primitive word. Halting has no target to change.
+\end{proof}
+
+The supplied builders used the stronger requirement that all three factors
+be completely closed and halt-free. On class A, the new theorem increases
+the initially eligible single-entry pure-selector rotations from 51 to 58.
+All 58 were checked against two independent CFG resolvers, including all
+5,084 arithmetic target checks. Only one of the seven newly admitted literal
+layouts passed the finite physical screen; it did not save a state.
+
+This last qualification matters: a source associativity theorem is not a
+theorem about the physical table. A selector state may also be called from
+an arithmetic routine, where its old row still has another required role.
+
+\subsection{Direct negation without a stack round trip}\label{sec:negation}
+
+Let the native pairing be
+\[
+P(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad I(a,b)=4P(a,b).
+\]
+The original negation constructor pushes a literal one and uses generic
+implication. It consumes 47 source primitives and performs an unnecessary
+push/pop round trip. The following identity gives a shorter construction:
+\begin{equation}\label{eq:pairidentity}
+P(n,1)=P(0,n)+2.
+\end{equation}
+It is an elementary polynomial identity, valid also at $n=0$.
+
+Use the inherited pair routine with effect
+\[
+(X,T,Y)\longmapsto (0,0,Y+P(X,T))
+\]
+and the inherited quadruple-transfer routine $Y\mapsto4T$, which clears Y
+when T is initially zero. Start with $T=n$, $X=Y=0$ and perform
+\[
+Y\mathrel{+}=1;\quad Y\mathrel{+}=1;\quad
+\operatorname{Pair};\quad\operatorname{QuadrupleTransfer}.
+\]
+The resulting top is $4(P(0,n)+2)=I(n,1)=N(n)$. The stack and selectors are
+untouched, and both scratch registers end at zero. The routines require
+$2+10+6=18$ primitives. An alternative 20-primitive version first transfers
+T to X, sets T to one, then pairs and quadruples.
+
+Four exact old 47-primitive subtrees can initially be replaced after the
+protected startup prefix. Two further occurrences are hidden by source
+association but are still closed 47-primitive intervals. Replacing all six
+with the 18-primitive routine saves $6(47-18)=174$ occurrences, giving 3,735
+primitives. The first 137 source rows are unchanged, all
+exterior primitive effects and control edges are preserved, and the logical
+axiom family is unchanged. The best initial literal substitutions have
+198 distinct source DAG nodes, versus 197 in the baseline. Exploratory
+allocation yielded a 211-state four-occurrence implementation and a
+212-state six-occurrence implementation, both passing their finite primitive
+screens. Thus this is a real arithmetic simplification but, by itself, not
+yet a state reduction.
+
+\subsection{Fixing cover roles while preserving the logical interface}
+
+The completeness proof already uses source label 0 and tested label 1.
+This suggests replacing those roles by constants throughout the cover,
+while retaining the original atomic-vacuity term and its original gate.
+With matrix/output selector $n$, define
+\begin{align*}
+e_n&=R(1,n),&g_n&=Q(n,I(R(n,1),R(n,0))),\\
+u_n&=Q(1,I(e_n,n)),&\ell_n&=Q(1,I(n,I(g_n,e_n))),\\
+h_n&=Q(n,I(u_n,I(\ell_n,F))).
+\end{align*}
+For $n>1$ this is the intended weak-cover shell. The small cases must be
+checked, since the original vacuity gate does not necessarily exclude them.
+For $n=0$, the inner guard binder also captures the fixed source; under
+irreflexivity it means emptiness, and W supplies the required cover at an
+empty source. For $n=1$, the matrix is false under irreflexivity and the
+output/test collision makes the shell an irreflexivity instance. Thus the
+enabled fixed-role bundle remains sound in $W+\IR$.
+
+Every original atomic-vacuity instance is still projected from its enabled
+bundle. For any desired W instance, padding to a matrix code $n>1$ and
+choosing $(a,b,c)=(n,0,1)$ recovers its cover. The same proof templates give
+the original consistency calibration.
+
+Replacing five test-label loads by literal-one loads and one source-label
+load by a literal-zero load saves 37 primitives, giving 3,872 occurrences.
+The first 137 rows and the exterior interface remain unchanged. Exchanging
+the upper and lower clauses inside the curried negation is classically
+equivalent; exchanging the two lower-clause antecedents is also legitimate.
+Using both exchanges improved the initial optimized source DAG from 206
+to 203 nodes. This is still larger than the original 197-node source.
+
+It is unsafe simply to reverse the constants without a repair: test 0,
+source 1 fails at matrix code 0. Clearing the entire enabled bundle there
+would also remove required atomic-vacuity instances. A sound repair sets
+the cover's negative shell to F before combining it with V; then the bundle
+becomes double-negated V. The explored variants record this distinction.
+
+\subsection{Removing successful-modus-ponens padding}
+
+The current successful MP command leaves an additional zero at the head of
+the proof stack. In work-register notation $(T,W,D,H)$ its successful
+postcondition is
+\[
+(z,P(0,w),z,0).
+\]
+That extra zero is a theorem but carries no information needed by the
+enumerator. A revised success branch can return $(z,w,z,0)$ instead, leaving
+failure unchanged. This deletes the closed PUSH0 interval
+$[3847,3866)$, or 19 primitive occurrences.
+
+Soundness is preserved because no new top, cache value, or stack entry is
+introduced. The conservative stack-credit proof assigns MP weight zero
+already; it never relied on the additional head. Completeness must use the
+\emph{final three-command compiler}, not an earlier four-command
+NIP/DROP presentation. Write $M=I(A,Y)$ and retain the established PUSH,
+DISCARD, and testing-cleanup H blocks. The MP-node compiler becomes
+\[
+\operatorname{DISCARD};\operatorname{PUSH};B_M;\operatorname{PUSH};
+B_A;\operatorname{PUSH};S;S;\operatorname{MP}'(Y);H.
+\]
+The initial PUSH reserves a zero. Immediately before the two S commands the
+tuple is $(0,[A;M;0;w],0,0)$. The two transfers give $(A,[0;w],0,M)$;
+the successful new MP gives $(Y,[0;w],Y,0)$; and H removes the reserved zero,
+tests Y, and returns $(Y,w,0,0)$ or halts when $Y=1$. The other uses of MP
+inside PUSH and DISCARD are forced failures, so their contracts are
+unchanged. The zero exception $I(0,0)=0$ is handled by leaving $J(0)$ empty.
+Induction on finite proofs therefore supplies the required strong Build
+contract, cofinal enumeration, and halting of a compiled refutation.
+
+The resulting source has 3,890 primitives and 197 distinct DAG nodes. An
+exploratory literal allocation produced a 209-state implementation passing
+10,118 finite primitive cases, with all 418 rows visited. This is not a
+sub-208 result and is not supplied as an accepted replacement for U208.
+
+\subsection{Direct selection and a checked zero invariant}
+
+The old S command halts exactly when the cache $h=1$; otherwise it installs
+$h$ as the current formula and pops the stack into the cache. Its 35-primitive
+implementation can be replaced by a 25-primitive routine: clear T; attempt
+one cache decrement; if it fails, proceed to the pop; otherwise increment T,
+attempt a second decrement, and halt if that fails. If the second succeeds,
+increment T again and transfer the remaining cache to T before the pop.
+For $h=0$ this leaves $T=0$; for $h=1$ it halts; for $h\geq2$ the transfer
+loop has invariant $T+H=h$ and decreases H to zero. The unchanged 14-primitive
+pop then has its original all-natural precondition. A 26-primitive version
+first copies the cache and performs the two-decrement test on scratch.
+Their source DAG counts are 201 and 199, respectively, so neither count
+constitutes a state improvement.
+
+An independent product-domain analysis also proves a local zero fact useful
+to MP. At every source ordinal it records which registers are zero, positive,
+or unrestricted. The finite certificate checks 5,080 abstract CFG edges and
+has 3,907 nonempty ordinal domains. It proves T is zero at ordinal 3847 and
+excludes the positive body at 3848--3849. It includes both the canonical
+source seed and the actual interior bootstrap: at ordinal 136 its only
+requirements are $N>0$ and scratch $Y=0$, satisfied by the calibrated register
+vector. Closure of all abstract edges makes this an induction over arbitrary
+execution length. Deleting only that dead initial transfer gives 3,906
+primitives but 198 source DAG nodes.
+
+\section{Context analysis and the negative searches}
+
+\subsection{Finite-window inductive contexts}
+
+Finite histories constrain the tape near a state but forget information
+older than the chosen history length. A complementary analysis computes a
+least fixed point on states and radius-seven tape windows. The abstract
+window contains 15 bits centered on the current head. Initially, every
+window at state 0 is admitted, corresponding to arbitrary initial tapes.
+Each transition updates the scanned bit, shifts the window by one cell,
+and admits both possibilities for the newly exposed exterior bit.
+
+\begin{proposition}[Soundness of window closure]
+Any set of abstract state/window pairs containing every initial window and
+closed under both exposed-bit successors contains the abstraction of every
+concrete run from state 0.
+\end{proposition}
+\begin{proof}
+Induct on run length. The concrete new exterior bit is one of the two
+abstract choices. All other new window cells are determined by the old
+window and the literal transition, so the concrete successor belongs to
+the closed set.
+\end{proof}
+
+For class A the computed fixed point contains 961,765 abstract configurations,
+compressed into 2,692 exact Boolean cylinders. Class B has 2,698 cylinders.
+No working state is restricted to reading just one symbol. These are
+complementary unbounded-history invariants within the chosen window
+vocabulary. A long finite history can retain correlations involving a cell
+that a sliding window has forgotten, so there is no blanket dominance claim.
+The builder and its data are retained; independent transition-closure
+verification is the appropriate certificate boundary.
+
+\subsection{Search families and what their failures establish}
+
+Table~\ref{tab:negative} records selected completed searches. Counts describe
+the actual restricted families, not all possible smaller machines. Random
+or finite canonical checks are rejection filters; any survivor would still
+need an exact local simulation or a fresh symbolic runtime proof.
+
+\begin{longtable}{@{}p{0.39\linewidth}p{0.23\linewidth}p{0.30\linewidth}@{}}
+\caption{Selected negative searches.}\label{tab:negative}\\
+\toprule Family & Scope & Result\\\midrule\endfirsthead
+\toprule Family & Scope & Result\\\midrule\endhead
+One-row shared-row contextual folds & 369,152 mutations per graph class & No accepted fold with the computed radius-seven contexts.\\
+General one-row representative helper & 42,642 oriented pairs & No finite-screen survivor.\\
+Two-row representative/helper changes & 235,136,640 mutations over 174 shared-row pairs & No survivor in the completed broad screen.\\
+Equal-tape head-offset quotients & 37,053 choices, offsets $\pm2$ & No accepted simulation.\\
+Offset plus one retained-row mutation & 61,656,192 choices & No finite-screen survivor.\\
+Offset with predecessor-bit complement & 61,656,192 choices & No finite-screen survivor.\\
+Closed source rotations through depth 3 & 24,321 distinct tables & 50 exact 207-state contractions; all fail finite physical validation.\\
+Combined individually passing rotations & 767 compatible nonempty subsets & No shared-row contextual-fold survivor.\\
+Directional zero-run beam & 19,136 tables, depth at most 20 & Six-zero leaves reduced from 33 to 17; maximum run remains six.\\
+Affine source summaries & 25 total affine transformations & No universal equal-function decoder donor.\\
+Uniform increment-run reorderings & 24 register orderings in each class & Baseline DAG count 197 remains minimal in this family.\\
+\bottomrule
+\end{longtable}
+
+The head-offset screens adjust incoming movements and sometimes written
+symbols, so they explore a different quotient representation from ordinary
+same-head state merging. The representative/helper family allows a second
+modified row but requires every original use of that helper to remain valid.
+This preservation requirement is substantial; dropping it silently would
+make many apparent reductions unsound.
+
+Source rearrangement also has a specific repeated obstruction. Within
+maximal single-entry pure-selector islands with closed atoms, the only
+repeated multi-atom factor exposed by arbitrary reassociation is the factor
+represented by states 12 and 150 at roots 52 and 155. It leads back to the
+same invalid 85/154 suffix identification. This explains repeated discovery
+of the same false saving within that family; it is not a general minimality
+theorem.
+
+\subsection{Counterexamples that prevented false positive results}
+
+\paragraph{A dispatcher visit is not necessarily a primitive boundary.}
+Cutting execution every time native state 84 is visited produced an
+apparently useful invariant and the proposed deletion of state 14. That
+cut is invalid: a primitive may re-enter dispatcher 84 on a temporary program
+counter, before its canonical contract is complete. The finite checker
+rejects the candidate at the decrement instruction with address
+\code{0000100}. Those exploratory files are explicitly classified as
+rejected and are not certificates.
+
+\paragraph{Matching scanners on short words is insufficient.}
+A two-sided joining search temporarily retained a $52\to155$ alias. Exact
+branch analysis reaches state 32 on one side and 48 on the other. Both scan
+ones to the right, but their zero transitions count different numbers of
+separators. A longer unary block exposes the mismatch. Other scanner aliases
+similarly fail on long zero separators.
+
+\paragraph{A smaller decoder graph may break arithmetic.}
+Fifty 207-state contractions obtained after source rotations fail finite
+primitive tests even though their source graphs are correct. Selector states
+are reused as arithmetic continuation code. An independent one-row repair
+search over 86,008 choices did not repair the relevant failure.
+
+\paragraph{A shorter zero detector needs a global invariant.}
+Deleting state 34 from the origin detector fails an actual decrement case.
+The leftward search encounters temporary phase markers as well as final
+source addresses. Neither a shorter header constant nor an observed short
+source address proves that a six-zero detector is sound. The explored
+reassociations did not eliminate every six-zero source run in any event.
+
+\section{What is established, and what remains open}
+
+The comparison establishes two original U208 graphs, a single shared
+historical fold, and successful fresh symbolic replay of both. The eighteen
+new helper layouts have independently checked local halting-equivalence
+proofs and remain at 208 states. The theory audit supports the
+ordinary PA-formalizability claim while keeping its missing end-to-end
+proof-assistant export explicit. The new directional associativity theorem,
+the direct negation identity, and the revised MP proof-stack protocol are
+mathematical contributions with precise interfaces. Fixed-role emitters
+preserve the necessary native logical calibration, including exceptional
+small codes and atomic vacuity.
+
+The requested state-count breakthrough remains open in this investigation.
+The central implementation obstacle is shared code: minimizing primitive
+occurrences, distinct source nodes, and literal machine states are three
+different optimization problems. A source routine may become shorter while
+losing a physical overlap that previously saved a state. Conversely, a
+slightly longer routine might enable better state sharing.
+
+A defensible next candidate should therefore be accompanied by its literal
+table at discovery time. The decisive tests are a complete state census,
+the exact protected blank startup, arbitrary-natural primitive simulation
+over complete frames, and the applicable source/calculus proof. For a local
+quotient, a complete finite context invariant and positive bounded local
+simulation may replace the full runtime replay. No amount of additional
+blank-tape running substitutes for those arguments.
+
+\appendix
+\section{Input hashes}\label{sec:hashes}
+\small
+\begin{description}[font=\normalfont\bfseries,leftmargin=0pt]
+\item[U208\_ConPA\_2026-10-29.zip]\hfill\\
+\path{0662a968902f231ac2483bbd424f80b8f86e6fe1e04bbe97b6f25c634aa532f9}
+\item[U208\_ConPA\_Conditional\_Context\_2026-10-29.zip]\hfill\\
+\path{6f23aaca025984a9a3561c7cf352cbde069096713269d8ace9b8c0e305f3b251}
+\item[U208\_ConPA\_Entry\_Context\_2026-10-29.zip]\hfill\\
+\path{00b0a699606a654bcc8b2079932ec3c6c7303b0adc019e548db2b12d62eb4868}
+\item[U208\_ConPA\_History\_2026-10-29.zip]\hfill\\
+\path{2479f562ba30b68bcabcc9ab481cdcb20da2a74476bff132a99382a6669a88aa}
+\item[u208\_research\_2026-10-29.zip]\hfill\\
+\path{33666892d7e729084edb5aa6e2b5e07d0117adbb63b0f46baff5bbbdf1da3d09}
+\item[pa\_unary\_power\_cover.zip]\hfill\\
+\path{0fcb1117a5353766a3366bab04e56b4efbd0607833cdc73ffb34b67e6808b0ff}
+\end{description}
+\normalsize
+
+\section{Reproduction and artifact map}
+
+\path{README.txt} is the entry point for the archive. The complete ordered
+file inventory and SHA-256 values are recorded separately. The supplied
+reproduction driver checks the pinned upstream archives, exact rooted graph
+comparison, the new source changes and their structural assertions, and
+selected counterexamples. Full symbolic replay is an explicit additional
+mode because it takes several minutes.
+
+The most useful analysis records are:
+\begin{itemize}
+\item \path{analysis/candidate_comparison.md} and
+      \path{analysis/comparison/current_comparison.json}: raw hashes,
+      graph witnesses, and package-by-package evidence.
+\item \path{analysis/theory_audit.md} and \path{analysis/theory_lineage/}:
+      detailed mathematical audit and exact inherited proof excerpts.
+\item \path{analysis/directional_associativity.md}: the new source theorem
+      and the exact limits of its physical implications.
+\item \path{analysis/runtime_redesign/}: arithmetic and fixed-role emitter
+      experiments, source trees, interfaces, and receipts.
+\item \path{analysis/reduction_search/notes.md}: scoped local searches,
+      window invariants, rejected approaches, and MP protocol work.
+\end{itemize}
+All source-level variants are labeled experimental unless a separate literal
+machine theorem is explicitly supplied. Names such as \code{candidate} in a
+search directory denote search inputs, not accepted mathematical claims.
+
+\begin{thebibliography}{9}
+\bibitem{k215pa} Elliot Glazer and collaborators.
+\emph{k215-pa: PA formalization for K215}.
+\url{https://github.com/elliotglazer/k215-pa}.
+\bibitem{k230} Elliot Glazer and collaborators.
+\emph{k230-rocq}, especially ``The theory K.''
+\url{https://github.com/elliotglazer/k230-rocq/blob/main/README.md#the-theory-k}.
+\bibitem{m254} \code{jeff87654} and collaborators.
+\emph{busy-beaver, ZF/m254}, branch \code{zf-254}.
+\url{https://github.com/jeff87654/busy-beaver/tree/zf-254/ZF/m254}.
+\bibitem{proveit} Vladimir Reshetnikov and collaborators.
+\emph{ProveIt: Busy Beaver research and formal verification}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/main/Computability/BusyBeaver/Research/ZFC/k225-formal/verification/k215}.
+\bibitem{incoming} ProveIt incoming submissions, revision
+\code{c086b5adaa6228009365768946d691dfc49a20bb}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/c086b5adaa6228009365768946d691dfc49a20bb/docs/incoming}.
+\bibitem{unary} \emph{pa\_unary\_power\_cover.zip}, exact input identified in
+Appendix~\ref{sec:hashes}; proof source and supporting artifacts in the
+\code{pa\_unary\_power\_cover} package.
+\bibitem{u208} The five U208 archives listed in Table~\ref{tab:comparison},
+with exact input hashes in Appendix~\ref{sec:hashes}. Local theorem proofs,
+runtime induction engines, and retained attribution notices are preserved
+in their respective packages.
+\end{thebibliography}
+\end{document}

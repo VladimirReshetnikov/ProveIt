@@ -1,0 +1,323 @@
+% Self-contained comparison section.  Requires amsmath, booktabs, longtable,
+% xurl (or url), and hyperref.  No project-specific macro is used.
+\section{Comparison of the supplied constructions}
+\label{sec:comparison-audit}
+
+\subsection{Scope, model, and exact source identities}
+All state counts in this comparison refer to working states of a deterministic
+binary Turing machine, with an additional halting label, a tape infinite in
+both directions, and an initially blank tape.  A missing working-state number
+is not a state: the census counts distinct source labels in the transition
+table, not the largest label plus one.  In particular the historical
+PA209 table has 209 working labels and halt label 215, whereas PA196 uses the
+dense working labels $0,\ldots,195$ and halt label 196.
+
+The comparison fixes the following repository revisions.  The links name
+immutable revisions; references to a repository's moving \texttt{main} branch
+are not used to identify a table.
+\begin{description}
+\item[ProveIt incoming and ConciseIPRA.]
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/6ce5acc401f0c84be90dc5c38dc1487e391122c6}{ProveIt revision}
+\nolinkurl{6ce5acc401f0c84be90dc5c38dc1487e391122c6}.
+\item[Published PA196.]
+\href{https://github.com/jamesyc/BusyBeaver/tree/407cdc356f6b586635e71ac92be394255f4bfea4}{BusyBeaver revision}
+\nolinkurl{407cdc356f6b586635e71ac92be394255f4bfea4}.
+\item[Historical PA209.]
+\href{https://github.com/jamesyc/BusyBeaver/tree/69d98241a721ead20b4f0b17df9062950b40fbfe}{BusyBeaver revision}
+\nolinkurl{69d98241a721ead20b4f0b17df9062950b40fbfe}.
+\end{description}
+
+The complete literal-file SHA-256 digests are:
+\begin{description}
+\item[\texttt{data/pa196.tm}]
+\nolinkurl{e8bbccd4cfa325251ca95066db116b5aa766e404b0971c33c02772be1c3617a8}.
+\item[\texttt{data/pa209.tm}]
+\nolinkurl{0610d978675320f0b4b1ef34619dcd3daa5912632d7037e200dfcc70954fea51}.
+\end{description}
+These are hashes of the supplied files, including their literal row order and
+formatting.  They must be distinguished from the hashes of canonical
+transition graphs used below.  The audit manifest records both kinds of
+identifier and the complete provenance of every selected table.
+
+\subsection{The incoming archive census: twenty graph classes}
+All eleven ZIP archives in the pinned \texttt{docs/incoming} directory were
+inventoried.  Their names do not denote eleven independent reductions.  Some
+contain alternate presentations of the same table, some contain further
+208-state tables, and others record negative searches or uncompiled logical
+proposals.  Table~\ref{tab:incoming-census} separates these roles.  Except for
+\texttt{pa\_unary\_power\_cover}, the archive names have the suffix
+\texttt{\_2026-10-29.zip}; the shorter stems are printed for readability.
+
+\begin{longtable}{@{}p{.39\linewidth}p{.57\linewidth}@{}}
+\caption{The eleven supplied incoming archives.}\label{tab:incoming-census}\\
+\toprule
+Archive stem & Audited role\\
+\midrule
+\endfirsthead
+\toprule Archive stem & Audited role\\\midrule
+\endhead
+\path{U208_ConPA} & Primary 208-state presentation in original graph class A.\\
+\path{U208_ConPA_Conditional_Context} & Primary A and alternative B; the retained member of the folded pair differs from the first presentation.\\
+\path{U208_ConPA_Entry_Context} & Primary A and alternative B; its primary and alternative literal tables duplicate the corresponding Conditional Context files.\\
+\path{U208_ConPA_History} & Primary A and alternative B, with a history-based explanation of the same local reduction.\\
+\path{u208_research} & Primary B and a Plain alternative in A.\\
+\path{pa208_research} & Eighteen additional 208-state layouts: nine modifications of each original graph class.\\
+\path{Below_U208_Research} & Boundary projections and guarded, offset, and source searches; no accepted smaller table.\\
+\path{ConPA_below208_research} & Comparison, two-row searches, source permutations, and a finite-model obstruction to a logical simplification.\\
+\path{pa_consistency_research} & Source specialization from 3,909 to 3,904 primitives, but an increase from 197 to 200 syntactic subtrees; no smaller compiled table.\\
+\path{u208_comparison_research} & Comparison and local/source searches; the expressly rejected 207-state candidate is not an accepted consistency machine.\\
+\path{pa_unary_power_cover} & A mathematical unary-cover proposal and a separate proof stream, without a compiled literal Turing machine.\\
+\bottomrule
+\end{longtable}
+
+The first five rows supply nine designated original 208-state presentations.
+A fresh, independent finite verifier classifies these into exactly two rooted,
+action-preserving transition-graph classes, denoted A and B.  The additional
+eighteen designated tables in \texttt{pa208\_research} belong to eighteen more
+classes.  Thus the selected accepted presentations give
+\[
+  9+18=27\text{ presentations},\qquad 2+18=20\text{ graph classes}.
+\]
+Here ``accepted'' means the archive's designated final 208-state
+construction, together with the independent finite local checks described
+below.  It does not reclassify failed exploratory tables as valid machines,
+or assert a new proof-assistant certification of the original packages.
+
+The classification does more than compare file hashes.  Starting at state 0,
+the verifier numbers working states by breadth-first discovery, following
+read-zero before read-one.  It retains the read symbol, written symbol,
+head direction, and target, with a separate distinguished halt symbol.
+Every working state is graph reachable.  Equal serializations therefore give
+an exact rooted action-preserving isomorphism, with the bijection explicitly
+available from the traversal.  Different serializations prove that no such
+isomorphism exists.  The two original canonical SHA-256 identifiers, in this
+audit's specified serialization, are
+\begin{description}
+\item[A]
+\nolinkurl{43d44b9b61daf753b2b833273c6b970c1787b15b7e4e177a30ca4cd886486702}.
+\item[B]
+\nolinkurl{7bd9c53560bd49e008cdf4653800e0218c5ec94330e24d2a714f35c26971d63b}.
+\end{description}
+Canonical hashes produced by a different serialization need not agree.
+The complete file identities and the eighteen other canonical identifiers
+are retained in \texttt{inputs/manifest.json} and
+\texttt{comparison\_results.json}.
+
+\subsection{The original one-state U208 reduction}
+The five original 208-state packages all exploit the same pair of historical
+native states, 172 and 211.  Their savings cannot be added.  In the
+Joint/History naming, retain 172, delete 211, redirect both outgoing rows of
+163 that previously entered 211 to 172, and replace the read-zero action of
+172 by
+\[
+               172,0\longmapsto(0,L,217).
+\]
+An equivalent naming keeps 211 and deletes 172, redirecting the appropriate
+entry from 116.  The differing retained label is not a second deletion.
+
+The justification depends on how the state is entered.  Complete predecessor
+histories establish that an old entry to 172 has the two preceding tape bits
+$10$, whereas an old entry to 211 that scans zero has preceding bit $1$.
+The retained state can move left and use that history bit to select the old
+behavior.  The exceptional transitions expand to exact finite blocks of
+lengths $7,1,3,1$.  At each block endpoint the entire tape and head position
+agree with the old endpoint, with only the state identification applied.
+All other transitions commute with that identification.
+
+For an aligned finite old execution, let $N(q,b)$ count old steps in state
+$q$ scanning $b$.  The construction gives
+\[
+ T_{208}=T_{209}+6N(172,0)+2N(211,0),\qquad
+ T_{209}\leq T_{208}\leq7T_{209}.
+\]
+These are positive blocks, so the correspondence preserves both halting and
+nonhalting.  The induction starts in the specified initial control state and
+applies to every common initial binary tape; it is not based on a long
+blank-tape sample run.
+
+The two original U208 source layouts have the same ordered 3,909 primitive
+opcodes and operands and the same 5,083 ordinal control-flow edges.  Their
+binary associations and physical dispatchers differ.  The original packages
+record an exact startup of 48,140 steps and 5,084 uniform source-site
+contracts.  This comparison inspected those proof artifacts but did not rerun
+their complete older symbolic-runtime derivations.  The graph census and
+the extra local helper verifications are independently reproduced here.
+
+\subsection{The eighteen additional 208-state layouts}
+The additional tables reuse a related idea without reducing the final state
+count.  They delete one state $q$, retain a state $r$, and add a new helper,
+named 500 in the native tables.  On the exceptional scanned bit $b$, the
+retained state moves left to read the tag left by its predecessor.  The
+helper dispatches to existing continuations.  Table~\ref{tab:helper-families}
+lists all choices; each is applied once to each original graph class.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{@{}rrcllc@{}}
+\toprule
+Deleted $q$&Retained $r$&$b$&Helper on 0&Helper on 1&Choices\\
+\midrule
+127&124&0&$0R8$&$1R59$, $1R109$, or $1R125$&3\\
+190&160&1&$0R86$&$1R193$&1\\
+178&168&0&$0R154$ or $0R159$&$1R176$ or $1R225$&4\\
+301&88&0&$0R122$&$1R500$&1\\
+\bottomrule
+\end{tabular}
+\caption{Nine neutral helper layouts over each of A and B.  All labels are
+historical native labels, not PA196 dense labels.}
+\label{tab:helper-families}
+\end{table}
+
+Each layout has a net change of zero working states: one deletion and one
+new helper.  The independent verifier checks the exact literal patch, the
+complete incoming-edge census, and the fixed opposite predecessor bits.
+It then checks the four relevant two-cell executions while treating the
+exterior tape as opaque.  Every macro has positive length at most five,
+preserves the entire exterior, and ends at the required old endpoint.
+Ordinary rows satisfy the quotient correspondence.  These finite checks
+establish the local simulation for all allowed surrounding tapes, rather
+than just sampled register values.  They also explain why merely noticing
+that two rows have similar continuations is insufficient: the predecessor
+tag and all uses of the chosen helper must be compatible.
+
+\subsection{How published PA209 and PA196 differ from the U208 family}
+The U209 parents used inside the ProveIt U208 archives are not literally the
+published PA209 machine at the historical BusyBeaver revision.  The shared
+engine and compiler lineage explain many common native labels and rows,
+but the proof-command bodies, source layouts, and startups differ.  For
+example, History U208 class A and published PA209 have 195 common native
+working labels and 304 identical transition rows.  This is a useful
+comparison in the inherited naming, not a conjugacy claim.
+
+The principal quantitative comparison is
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Construction&Working states&Physical source sites&Blank startup steps\\
+\midrule
+Original U208 classes A/B&208&3,909&48,140\\
+Published PA209&209&3,948&58,210\\
+Published PA196&196&3,812&58,154\\
+\bottomrule
+\end{tabular}
+\end{center}
+The PA209 source-site count is stated by the \texttt{sites\_count}
+theorem in its pinned \texttt{M6/Program.lean}; the PA196 source-site count is
+stated in \texttt{PA196/Program.lean}.  This audit did not rerun those upstream
+Lean builds.  The published PA196 paper describes its physical
+state partition as 36 engine states, 13 leaf routes, and 147 states reading
+159 distinct source-tree nodes.
+
+PA196 obtains its thirteen-state improvement by changing the logical command
+construction and its compiled layout together.  Its universal-quantifier
+constructor transposes the Cantor-pairing arguments:
+\[
+                    U(a,B)=4p(B,a)+2.
+\]
+It deletes the old primitive equality/transitivity head $\rho_7$, adds guarded
+equality vacuity to the gate, and derives the required reverse membership
+rewrites and neighborhood equality using separation.  It also mirrors the
+equality witness, exchanges selected antecedents and axiom arguments,
+reorders the command items, and stores the resulting 201-item AX body as
+68 internal nodes represented by 62 physical states through six
+context-dependent pairs.  Two obsolete outer controls are removed.
+These are described in the pinned
+\href{https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/paper/pa196.tex}{PA196 paper}
+and its associated command and source modules.
+
+An exact native-label table comparison removes 75 old working labels,
+introduces 62 new labels in the 1300 series, and retains 134 working labels.
+Of the retained rows, 265 are identical and only the following three change:
+\[
+\begin{array}{cc|l|l}
+q&b&\text{old action}&\text{new action}\\\hline
+101&1&1R115&1R1367\\
+164&0&0L311&0R77\\
+190&1&1L308&1R99.
+\end{array}
+\]
+The net census is $209-75+62=196$.  In particular both native 172 and native
+211 are already absent from PA196.  The central U208 deletion therefore
+cannot be applied again to remove one of them.
+
+Two neutral U208 helper families, 127/124 and 301/88, survive far enough
+structurally to motivate new searches.  However the old helpers cannot simply
+be overlaid on PA196.  The independently attempted existing-helper
+substitutions for 127/124 fail uniform source-site contracts, and the
+obvious self-loop donors for 301/88 belong to the protected register engine.
+More extensive finite searches are recorded separately with their precise
+scope and counterexamples.  A failed scoped search is not a lower bound on
+all equivalent machines.
+
+\subsection{Proof strength and the internal equivalence obligation}
+The published PA196 and PA209 developments distinguish external nonhalting
+from what PA proves about the machine.  For PA196 the advertised internal
+statement is
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Nonhalt}(M_{196})\longrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+The relevant endpoints are the pinned
+\href{https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/docs/result.md}{theorem table},
+\href{https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/PA196/Independence.lean}{the independence module},
+and
+\href{https://github.com/jamesyc/BusyBeaver/blob/407cdc356f6b586635e71ac92be394255f4bfea4/PA196/Nonhalting.lean}{the nonhalting module}.
+The last file explicitly separates external soundness from arithmetic
+unprovability.  The old PA209 article makes the same distinction.
+
+Thus the requested PA-provable biconditional has an additional proof
+obligation.  A proof that PA has no proof of either halting or nonhalting,
+together with an external soundness proof, does not by itself establish the
+missing implication inside PA.  The appropriate additional route is a
+primitive recursive syntactic translation from an accepted numerical proof
+to a PA refutation, with PA proving the correctness of that translation.
+That argument can use finite proof codes and bounded computations; it must
+not silently invoke a uniform truth predicate for all PA formulas or PA's
+own semantic soundness.  A separate chapter supplies the proposed converse
+argument.  The comparison here does not attribute it to an upstream theorem
+that states only the displayed implication.
+
+\subsection{The contribution and limits of the ConciseIPRA material}
+The pinned
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/6ce5acc401f0c84be90dc5c38dc1487e391122c6/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{ConciseIPRA project}
+measures complete standalone Python proof checkers by significant tokens,
+AST nodes, and normalized source bytes.  Its mathematical criterion is
+bi-interpretability with full first-order intuitionistic primitive recursive
+arithmetic, with whole numerical domains, actual equality, and identity
+composites.  These are substantive requirements, but they are different from
+a state census for a binary blank-tape machine with the PA-consistency
+property.  The stated bi-interpretability target does not by itself establish
+the PA-consistency equivalence needed here.
+
+Several design ideas are directly relevant to minimizing proof searchers:
+selecting an operation from the shape of a premise; deriving unrestricted
+transport from a one-sided restricted rule; fusing evaluation with discharge;
+replacing a general template operation by simpler operations with explicit
+proof recovery; and using a syntactic tag to select an introduction mode.
+PA196 already uses a related principle when it removes a primitive equality
+head but derives its required applications from other heads.
+
+A new use of these ideas would still need two concrete results: a proof
+translation preserving the requested PA target, and a literal Turing-machine
+compilation with a verified state count.  A smaller rule inventory or shorter
+Python checker does not supply either result automatically.  Consequently
+this comparison treats the ConciseIPRA proposals as useful design input,
+without claiming a state-count improvement from them alone.
+
+\subsection{What the independent audit establishes}
+The supplied \texttt{compare\_designs.py} is a standard-library verifier for
+all selected transition tables.  It checks row uniqueness, binary actions,
+target closure, working-state and halt domains, graph reachability, canonical
+graph serialization, exact helper patches, complete predecessor-tag
+conditions, and the finite whole-tape local simulations for all eighteen
+new helper layouts.  Its checks use explicit failures rather than relying on
+Python assertions.  It passes both normally and under \texttt{python -O},
+producing byte-identical receipts.
+
+The machine manifest preserves 27 designated 208-state presentations, the
+published PA209 and PA196 tables, the two native helper baselines, original
+paths, and hashes.  The archive inventory and this chapter keep uncompiled
+proposals, failed candidates, scoped search results, local simulation
+certificates, and proof-assistant endpoints distinct.  This comparison
+chapter establishes no new sub-196 state-count result; any such construction
+must be identified and verified independently of the census above.

@@ -1,0 +1,64 @@
+{
+  "grammar_sha256": "c2b6a2b4fe4f844b5b3029cf0aef273c4713ba43a792a407d89530492a98edaa",
+  "family": "separate",
+  "macro_tokens_after_increment_expansion": 238,
+  "peephole_count": 8,
+  "peepholes": [
+    {
+      "expanded_macro_offset": 23,
+      "restored_macro_offset": 23,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 36,
+      "restored_macro_offset": 30,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 104,
+      "restored_macro_offset": 92,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 117,
+      "restored_macro_offset": 99,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 182,
+      "restored_macro_offset": 158,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 192,
+      "restored_macro_offset": 162,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 211,
+      "restored_macro_offset": 175,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    },
+    {
+      "expanded_macro_offset": 226,
+      "restored_macro_offset": 184,
+      "kind": "pair_plus8",
+      "kind_number": 2
+    }
+  ],
+  "restored_exact_baseline_word": true,
+  "restored_free_algebra_stack_contract": true,
+  "conditional_arithmetic_identities": {
+    "drain_inc_pair": "The 20-site replacement equals the old 47-site block when incoming source r7=0. As a formula negation macro, r6=0 is also needed.",
+    "pair_plus8": "With r6=r7=0, node64 then eight increments maps t to 4*p(0,t)+8 = 4*p(t,1). Both expressions are 2*t^2+6*t+8. It preserves the encoded stack."
+  },
+  "required_unproved_here": "Bind the clean-scratch macro contracts to every replacement entry in this exact changed source, establishing r6=r7=0. The upstream AXMacro.registers model sets both to zero, and AXMacroSound preserves clean macro stores; this checker does not bind those contracts or prove any tape simulation.",
+  "no_new_logical_schema": true
+}

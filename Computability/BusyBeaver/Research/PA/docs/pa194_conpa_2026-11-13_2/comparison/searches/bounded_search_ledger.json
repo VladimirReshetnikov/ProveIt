@@ -1,0 +1,75 @@
+{
+  "scope": "Finite randomized searches. Mutation slots include skipped mutations and revisited shapes; they are not distinct candidates or score evaluations. Matching estimates are not completed accepted TMs.",
+  "runs": [
+    {
+      "driver": "separate_search.cpp",
+      "input": "separate_input.txt",
+      "cycles": 1000,
+      "slots_per_cycle": 3000,
+      "configured_mutation_slots": 3000000,
+      "seed": 9491013,
+      "completed": true,
+      "best_state_count_or_matching_estimate": 195,
+      "status": "67 readers, six compatible folds",
+      "stdout": "separate_search.log",
+      "stderr": "separate_search_progress.log",
+      "command": "./separate_search separate_input.txt 1000 9491013"
+    },
+    {
+      "driver": "mixed_rotation_search.cpp",
+      "input": "separate67_input.txt",
+      "cycles": 2000,
+      "slots_per_cycle": 3000,
+      "configured_mutation_slots": 6000000,
+      "seed": 81147731,
+      "completed": true,
+      "best_state_count_or_matching_estimate": 195,
+      "status": "no improvement over seed",
+      "stdout": "mixed_rotation_search.log",
+      "stderr": "mixed_rotation_progress.log",
+      "command": "./mixed_rotation_search separate67_input.txt 2000 81147731"
+    },
+    {
+      "driver": "h1seed_search.cpp",
+      "input": "h1seed_input.txt",
+      "cycles": 1500,
+      "slots_per_cycle": 3000,
+      "configured_mutation_slots": 4500000,
+      "seed": 87391221,
+      "completed": true,
+      "best_state_count_or_matching_estimate": 197,
+      "status": "70 readers minus seven-edge matching; estimate only",
+      "stdout": "h1seed_search.log",
+      "stderr": "h1seed_progress.log",
+      "command": "./h1seed_search h1seed_input.txt 1500 87391221"
+    },
+    {
+      "driver": "h2transfer_search.cpp",
+      "input": "h2transfer_input.txt",
+      "cycles": 1500,
+      "slots_per_cycle": 3000,
+      "configured_mutation_slots": 4500000,
+      "seed": 73913221,
+      "completed": true,
+      "best_state_count_or_matching_estimate": 197,
+      "status": "70 readers minus seven-edge matching; estimate only",
+      "stdout": "h2transfer_search.log",
+      "stderr": "h2transfer_progress.log",
+      "command": "./h2transfer_search h2transfer_input.txt 1500 73913221"
+    },
+    {
+      "driver": "h6transfer_search.cpp",
+      "input": "h6transfer_input.txt",
+      "cycles": 1500,
+      "slots_per_cycle": 3000,
+      "configured_mutation_slots": 4500000,
+      "seed": 23931441,
+      "completed": true,
+      "best_state_count_or_matching_estimate": 197,
+      "status": "72 readers minus nine-edge matching; estimate only",
+      "stdout": "h6transfer_search.log",
+      "stderr": "h6transfer_progress.log",
+      "command": "./h6transfer_search h6transfer_input.txt 1500 23931441"
+    }
+  ]
+}

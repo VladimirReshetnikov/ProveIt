@@ -1,0 +1,156 @@
+\section{The search below 195 and what the negative results mean}
+\label{sec:search}
+
+No verified 194-state machine was obtained. The result is the user's
+same-size alternative, with a source-level controller change and a new
+literal graph. The comparison and search receipts support this statement;
+they do not establish a lower bound of 195 or exhaust all possible
+two-symbol machines.
+
+\subsection{Finite-window local reductions}
+
+We computed an inductive overapproximation of the head-centered tape
+windows. A transition overwrites the central bit, shifts the window one
+cell, and exposes either possible bit at its far edge. Starting from the
+zero window is sound for the blank computation: introducing both possible
+new edge bits only enlarges the represented set. A least fixed point on
+this finite abstract graph supplies all allowed local contexts. The
+radius-seven runs used 15-cell windows and gave:
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Table&Reachable abstract contexts\\\midrule
+Original diagonal PA195&922,054\\
+Separate-head 195S&931,579\\
+New PA195DC&916,710\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For each, we checked 37,636 ordered direct identifications retaining the
+keeper's rows, with a noninitial removed state. We also checked all 18,721
+unordered pairs of noninitial controls in a two-rewritten-row template:
+the keeper's first step can write either bit, move either way, and enter
+an existing helper. Each local simulation must reproduce one parent
+transition within 63 steps, stay inside the recorded window, restore the
+exact tape, and reach the projected state and head. Helper runs reject an
+interior revisit to the merged keeper before the required endpoint.
+Both possible starting read bits and all abstract contexts are checked.
+The PA195DC run attempted 14,631,480 row actions after early rejection of
+infeasible first-row choices. No pair passed this template.
+
+As a positive control, the same program on the unfolded 202-state diagonal
+parent found all seven known fold pairs. The full compatibility of the
+retained simultaneous fold is verified separately by the 28-case
+certificate. Radius-five arbitrary-initial-tape runs provide additional
+recorded controls. The search's limited template and 63-step cutoff are
+explicit; no failure is promoted to a universal state-minimality theorem.
+
+\subsection{Program trees and alternative logical emitters}
+
+The fold-aware grammar searches score the actual allocation of readers
+after compatible folds, rather than merely minimizing source-tree nodes.
+They explored binary reassociation, dynamic permutations of the six pure
+axiom-head blocks, local parameter permutations, antecedent exchange in
+three implicational heads, and a permutation of the two unrestricted
+parameters in the dominated propositional head. Additional searches
+allowed fold candidates involving the fixed core and used the new
+Combined core, as well as two longer dual-diagonal clauses.
+The five corrected runs proposed 39,661,078 moves and accepted 7,153,880;
+none produced a sub-195 candidate. A final radius-two rotation neighborhood
+contained 49,513 distinct endpoint trees and also found none. The retained
+source/input files and fixed-seed logs state the finite budgets and tested
+fold model. Two secondary 195-state witnesses passed full finite
+implementation checks; their additional logical calibration is separate
+from the primary result. The selected machine needs none of these
+stochastic searches for reproduction: its exact witness is frozen and
+deterministic.
+
+Appendix~\ref{app:logical-experiments} proves the head-order change safe at
+the command interface. Appendix~\ref{app:reflexivity} records a useful obstruction. Replacing the equality-witness head
+$\exists x_D E(H,D)$ by the shorter reflexivity $E(H,H)$ does not preserve
+the needed axiom interface: a variable-dependent-domain model validates the
+other proposed axioms while refuting the witness. This rules out a simple
+reuse of the old completeness proof. It does not decide the consistency
+strength of the altered theory.
+
+\subsection{What was useful from ZFC and ConciseIPRA}
+
+The ZFC lineage supplies the unary-register engine, shared source readers,
+and history-sensitive use of the adjacent tape cell \cite{zfc}. Those are
+already central to the PA lineage. Transferring an optimized row from a
+different encoding requires preserving its entry conditions; the corpus
+contains failed examples of a blind zero-spare transplant. Here the full
+table and its frame contracts were checked after composition.
+
+ConciseIPRA emphasizes explicit syntax, proof checking, and economical
+proof-theoretic interfaces \cite{ipra}. The diagonal formula-code freshness
+argument is useful in that spirit. The PA calibration, however, needs
+finite bit comprehension for an \emph{arbitrary} translated formula, proved
+using full PA induction. A short iPRA checker cannot replace that strength
+without a new equivalence proof. This report makes no identification of
+$\Con(\mathrm{iPRA})$ with $\Con(\PA)$.
+
+\section{Reproduction, provenance, and limits}
+\label{sec:reproduce}
+
+From the extracted archive root, the primary construction and full checks
+run with Python 3 and its standard library:
+\begin{verbatim}
+python3 machine/build_verify.py
+python3 independent/replay.py
+python3 comparison/verify_novelty.py machine/machine.tm --start 0
+\end{verbatim}
+Assertions must remain enabled; do not use \code{python3 -O}. The primary
+checker reconstructs its parent and the new machine, verifies all symbolic
+contracts and exact startup, and compares the frozen table bytes. Adding
+\code{--export} regenerates its derived source and certificates.
+The independent replay checks its manifest, recomputes the physical and
+command certificates, and compares the recorded outputs byte for byte.
+No optimizer, solver, network connection, or theorem-prover installation
+is required for these machine checks.
+
+The independent command algebra check has 164 cases with arbitrary opaque
+underlying stacks and the exact zero-tail alias. An undecided symbolic
+comparison is an error, not a guessed branch. The mathematical universal
+word theorem is given in Section~\ref{sec:commands}; the cases provide a
+separate executable check of its exact contracts.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule
+Directory&Content\\\midrule
+\file{machine/}&Literal dense/native tables, source, exact construction,
+ parent, folds, startup and deterministic certificates.\\
+\file{independent/}&Separate direct symbolic tape and command verifiers,
+ recorded proofs and replay.\\
+\file{comparison/}&Every-archive inventory, table/graph census, graph
+ canonicalization and novelty receipt.\\
+\file{search/}&Bounded local searches, logical source variants and optional
+ grammar-search evidence; no search result is required by the build.\\
+\file{report/}&This LaTeX source, its included sections, compiled PDF,
+ and reproduction instructions.\\
+\file{references/}&Attributed inherited calibration/command arguments,
+ selected upstream proof sources, and source licenses.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The source snapshot, archive hashes, exact imported paths, and unchanged
+license notices are recorded. The 191-token emitter and seven folds are
+from the original PA195 archive; the controller transformation and its
+compiler are from the earlier Combined and cross-archive reports; 195S/195C
+and the independent checker are from the latest 195-state research archive.
+The present novelty is their verified diagonal-plus-Combined realization
+at 195 states, its corpus comparison, and the accompanying bounded search.
+It is not attributed as a new axiom system or the first Combined controller.
+
+The remaining formalization task is to assemble the new literal-table,
+source-command, and arithmetic-translation steps as one closed Lean or Rocq
+theorem of the PA biconditional. The existing native 202-to-195 Lean theorem
+concerns the old table; changing six rows does not automatically instantiate
+it for the new one. The new finite fold certificate and the independent
+physical proof support the ordinary mathematical lifting given here.
+No soundness claim is inferred merely from a long nonhalting prefix, and
+no state-optimality claim is made.

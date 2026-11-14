@@ -1,0 +1,88 @@
+\subsection{A second direct arithmetic implementation of negation}
+Let $p(a,b)=\frac{(a+b)(a+b+1)}2+b$ be the Cantor pairing function
+used by the source program. In the published encoding, the implication
+constructor is $I(a,b)=4p(a,b)$ and falsity has code $1$. Therefore
+$N(t)=I(t,1)=4p(t,1)$.
+
+The elementary identity
+\[
+ p(t,1)=\frac{(t+1)(t+2)}2+1
+       =\frac{t(t+1)}2+t+2=p(0,t)+2
+\]
+gives the alternative algorithm
+\[
+        N(t)=4p(0,t)+8.
+\]
+This identity changes the arithmetic work performed, rather than merely the
+names or textual encoding of instructions.
+
+In the existing physical kernel, \texttt{node64} (native entry state $106$)
+executes the pairing and multiplication core without the preceding stack
+pop. Its clean-scratch contract, with accumulator $T=t$, auxiliary $X=0$,
+and auxiliary $Y=0$, is
+\[
+ (T,W,X,Y)=(t,w,0,0)
+   \longmapsto (4p(0,t),w,0,0).
+\]
+All other registers are preserved. The existing \texttt{node61}
+(native entry state $190$) adds four to $T$. Thus the three macro tokens
+\[
+ \texttt{node64};\quad \texttt{node61};\quad \texttt{node61}
+\]
+implement the same accumulator and stack transformation as
+\[
+ \texttt{push};\quad\texttt{incT};\quad\texttt{cons},
+\]
+which pushes $t$, loads $1$, pops $t$, and forms $4p(t,1)$.
+The new implementation uses $24$ primitive source sites, compared with
+$47$ for the original stack-based sequence and $20$ for the earlier
+move-to-$X$ negation optimization. Fewer primitive sites alone do not
+imply fewer physical control states: sharing with the rest of the decoder
+is decisive.
+
+The zero-scratch hypothesis must be retained. For $X=x$ and $Y=0$, the
+new pairing core instead produces $4p(x,t)+8$, whereas the earlier direct
+negation block gives $4p(t+x,1)$. Their difference is $4x$.
+Consequently, the weaker $Y=0$ precondition sufficient for the earlier
+negation replacement does not justify this replacement.
+
+The appropriate source-level invariant is available at macro boundaries:
+\texttt{M6/Source/AXMacro.lean}'s \texttt{registers} definition sets both
+logical registers $6$ and $7$ to zero, and the \texttt{Realizes} contracts
+in \texttt{M6/Source/AXMacroSound.lean} preserve that full clean store.
+The core contract follows from \texttt{M6/Source/AXPair.lean}, theorem
+\texttt{pair}, composed with the multiplication contract in
+\texttt{M6/Source/AXTimes4.lean}. Binding the moved blocks to a particular
+new source tree and checking its physical table remain necessary.
+A zero/positive abstraction of individual primitive steps need not retain
+this stronger macro invariant; failure of that abstraction to force
+register $6$ to zero is not a proof that the actual macro-boundary invariant
+fails.
+
+\paragraph{Preloading the pair accumulator gives an 18-site version.}
+The same proof yields a shorter implementation. The more general contract
+of \texttt{node64}, obtained by retaining the arbitrary initial accumulator
+in \texttt{AXPair.pair\_loop}, is
+\[
+ (T,W,X,Y)=(t,w,x,y)
+ \longmapsto (4(y+p(x,t)),w,0,0).
+\]
+Thus, from the clean-scratch store, two increments of register $7$ followed
+by \texttt{node64} produce $4(2+p(0,t))=4p(t,1)$.
+The token sequence
+\[
+  \operatorname{inc}(7);\quad\operatorname{inc}(7);\quad\texttt{node64}
+\]
+uses existing native entries $82,82,106$ and has only $18$ primitive source
+sites. No extra arithmetic-engine state is required. A mixed version
+$\operatorname{inc}(7);\texttt{node64};\texttt{node61}$ has $21$ sites
+and the same clean-store effect.
+
+These variants are the three choices $y=0,1,2$ in the formula
+\[
+ 4\bigl(y+p(0,t)\bigr)+4(2-y)=4p(t,1).
+\]
+For $y=0$ the suffix uses two existing four-increment macros; for $y=1$ it
+uses one; for $y=2$ it is empty. Each whole variant is treated as one macro
+with clean scratch at its entry and exit. Intermediate nonzero values of
+register $7$ inside the macro are intentional.

@@ -1,0 +1,80 @@
+{
+  "status": "PASS",
+  "sub196_machine_certified": false,
+  "full_lean_build_run": false,
+  "large_fold_searches_rerun": false,
+  "elapsed_seconds": 22.789879924999696,
+  "checks": [
+    {
+      "name": "comparison",
+      "script": "comparison/verify_comparisons.py",
+      "exit_code": 0,
+      "seconds": 0.08919606199924601,
+      "stdout": "{\n  \"196\": {\n    \"working_states\": 196,\n    \"presentations\": 18,\n    \"rooted_classes\": 18,\n    \"explicit_conjugacies\": 0,\n    \"row_equations\": 0,\n    \"classes\": [\n      [\n        \"published_pa196\"\n      ],\n      [\n        \"experimental_mp_result_in_h_196\"\n      ],\n      [\n        \"experimental_mp_without_zero_push_196\"\n      ],\n      [\n        \"REJECTED_shift_layout\"\n      ],\n      [\n        \"REJECTED_combined_layout\"\n      ],\n      [\n        \"alternative196\"\n      ],\n      [\n        \"pa196_close_cd3\"\n      ],\n      [\n        \"pa196_close_cd4\"\n      ],\n      [\n        \"pa196_close_cd5\"\n      ],\n      [\n        \"pa196_close_cd6\"\n      ],\n      [\n        \"rotated196\"\n      ],\n      [\n        \"rotated196-macro62\"\n      ],\n      [\n        \"variant196\"\n      ],\n      [\n        \"pa196_register_AD_swap\"\n      ],\n      [\n        \"rebracketed196_dense\"\n      ],\n      [\n        \"h_catalan_node170_3_133_37\"\n      ],\n      [\n        \"rotated196_twelve_rotations\"\n      ],\n      [\n        \"h_only_mp_h\"\n      ]\n    ]\n  },\n  \"208\": {\n    \"working_states\": 208,\n    \"presentations\": 27,\n    \"rooted_classes\": 20,\n    \"explicit_conjugacies\": 7,\n    \"row_equations\": 2912,\n    \"classes\": [\n      [\n        \"three_cell\",\n        \"conditional_primary\",\n        \"entry_primary\",\n        \"history_primary\",\n        \"research_plain\"\n      ],\n      [\n        \"conditional_alternative\",\n        \"entry_alternative\",\n        \"history_alternative\",\n        \"research_primary\"\n      ],\n      [\n        \"helper_A_1\"\n      ],\n      [\n        \"helper_A_2\"\n      ],\n      [\n        \"helper_A_3\"\n      ],\n      [\n        \"helper_A_4\"\n      ],\n      [\n        \"helper_A_5\"\n      ],\n      [\n        \"helper_A_6\"\n      ],\n      [\n        \"helper_A_7\"\n      ],\n      [\n        \"helper_A_8\"\n      ],\n      [\n        \"helper_A_9\"\n      ],\n      [\n        \"helper_B_1\"\n      ],\n      [\n        \"helper_B_2\"\n      ],\n      [\n        \"helper_B_3\"\n      ],\n      [\n        \"helper_B_4\"\n      ],\n      [\n        \"helper_B_5\"\n      ],\n      [\n        \"helper_B_6\"\n      ],\n      [\n        \"helper_B_7\"\n      ],\n      [\n        \"helper_B_8\"\n      ],\n      [\n        \"helper_B_9\"\n      ]\n    ]\n  },\n  \"scope\": \"Exact rooted table structure only; candidate status is inherited, not certified here.\"\n}\n\n",
+      "stderr": ""
+    },
+    {
+      "name": "source_zero_invariant",
+      "script": "verification/source_zero_jumps/verify_zero_jumps.py",
+      "exit_code": 0,
+      "seconds": 2.0531944460017257,
+      "stdout": "{\n  \"status\": \"SOURCE_TRANSITION_IDENTITY_ON_INDUCTIVE_INVARIANT\",\n  \"source_sha256\": \"8c7c6c6884ecbb8f56e893404bb81162db15ef3dd6fd3212881a93994d63d872\",\n  \"sites\": 3812,\n  \"invariant_pairs\": 274880,\n  \"site26_zero_registers\": [\n    3,\n    6,\n    7\n  ],\n  \"single_cd6_site\": 26,\n  \"joint_cd6_sites\": [\n    3,\n    9,\n    26,\n    3665,\n    3671,\n    3683,\n    3689,\n    3692,\n    3766,\n    3772\n  ],\n  \"physical_binding\": \"Not provided by this source-only certificate\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "new196_and_rejected195",
+      "script": "verification/zero_jump_machine/verify.py",
+      "exit_code": 0,
+      "seconds": 6.965104462000454,
+      "stdout": "Invariant: 274880 pairs, 14 eligible forward-jump sites.\nSynthesis: 12 recognized row actions, each with exact clean startup.\nZerojump196: 4959 symbolic contracts; whole-tape startup in 58402 steps.\nRejected195: source26 fails; exact counterexample also occurs on its blank run.\nPASS; receipt: /workspace/scratch/d8031e7c0f6c/output/pa_tm_research_2026-11-13/verification/zero_jump_machine/receipts/reproduced.json\n",
+      "stderr": ""
+    },
+    {
+      "name": "composed_jump_contracts",
+      "script": "verification/jump_products/replay.py",
+      "exit_code": 0,
+      "seconds": 7.379671980001149,
+      "stdout": "checked 0 of936\nchecked 100 of936\nchecked 200 of936\nchecked 300 of936\nchecked 400 of936\nchecked 500 of936\nchecked 600 of936\nchecked 700 of936\nchecked 800 of936\nchecked 900 of936\n{\n  \"status\": \"PASS\",\n  \"sub196_machine_certified\": false,\n  \"action_counts\": [\n    12,\n    6,\n    13\n  ],\n  \"modified_combinations\": 935,\n  \"runtime_pass\": 671,\n  \"runtime_reject\": 264,\n  \"fold_search_replayed\": false,\n  \"fold_survivors\": null,\n  \"seconds\": 7.310997896998742,\n  \"scope\": \"Default: all affected symbolic instruction contracts plus finite invariant; --folds: exact recorded five-cell/sixteen-step one-helper-row search, not an unrestricted state lower bound.\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "low_level_saved_certificates",
+      "script": "verification/low_level_search/verify.py",
+      "exit_code": 0,
+      "seconds": 0.03781211000023177,
+      "stdout": "{\n  \"status\": \"SAVED_ARTIFACTS_AND_EXACT_STARTUP_CHECKED\",\n  \"working_states\": 196,\n  \"cd6_startup_steps\": 58402,\n  \"source_window_files_identical\": true,\n  \"negative_search_runs\": 3,\n  \"search_rerun\": false\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "formula_recoding_witnesses",
+      "script": "experiments/formula_recoding/check_witnesses.py",
+      "exit_code": 0,
+      "seconds": 0.04333992000101716,
+      "stdout": "{\n  \"status\": \"EXACT_WORDS_AND_GRAMMAR_COUNTS_VERIFIED\",\n  \"shortlist_witnesses\": 10,\n  \"base4_tag_swap\": {\n    \"tokens\": 211,\n    \"best_raw_AX_nodes\": 73\n  },\n  \"disequality_parity\": {\n    \"tokens\": 210,\n    \"best_raw_AX_nodes\": 75\n  },\n  \"physical_machine\": \"Not established\"\n}\n",
+      "stderr": ""
+    },
+    {
+      "name": "base8_runtime",
+      "script": "experiments/base8_parity/build_b8.py",
+      "exit_code": 0,
+      "seconds": 6.2210455240019655,
+      "stdout": "{\"name\": \"raw\", \"states\": 207, \"source_sites\": 4062, \"contracts\": 5205, \"passed\": 5205, \"failures\": 0, \"max_symbolic_steps\": 524, \"seconds\": 3.060508966445923, \"sha256\": \"ac7547264463d1effaf9201634aa1c334d205fe5e549611ffe618b01c60d1c64\", \"scope\": \"Full constructor/tag/parity integration; source-site runtime contracts only, not a blank-start or consistency theorem.\"}\n{\"name\": \"folded\", \"states\": 202, \"source_sites\": 4062, \"contracts\": 5205, \"passed\": 5205, \"failures\": 0, \"max_symbolic_steps\": 524, \"seconds\": 3.1008665561676025, \"sha256\": \"d9a0256666bbd6e5cad616e5b2df7f56b2773b86df75842fd2ba17ccb45a3f76\", \"scope\": \"Full constructor/tag/parity integration; source-site runtime contracts only, not a blank-start or consistency theorem.\"}\n",
+      "stderr": ""
+    }
+  ],
+  "scope": "This is the default packaged replay. Fresh large-search receipts are retained separately; this command does not repeat those searches.",
+  "additional_repair_searches_rerun": [
+    {
+      "script": "verification/rejected195_repairs/repair_candidate.py",
+      "alternatives": 37584,
+      "source26_pass": 153,
+      "all_contract_survivors": 0
+    },
+    {
+      "script": "verification/rejected195_repairs/two_row_dispatch.py",
+      "alternatives": 15680,
+      "source26_pass": 113,
+      "all_contract_survivors": 0
+    }
+  ]
+}

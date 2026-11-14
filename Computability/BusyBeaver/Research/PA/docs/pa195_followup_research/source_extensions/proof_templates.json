@@ -1,0 +1,421 @@
+[
+  {
+    "name": "project_first",
+    "goal": [
+      "im",
+      [
+        "im",
+        [
+          "im",
+          [
+            "atom",
+            "X"
+          ],
+          [
+            "atom",
+            "Y"
+          ]
+        ],
+        [
+          "false"
+        ]
+      ],
+      [
+        "atom",
+        "X"
+      ]
+    ],
+    "proof": {
+      "rule": "deduction",
+      "name": "f",
+      "formula": [
+        "im",
+        [
+          "im",
+          [
+            "atom",
+            "X"
+          ],
+          [
+            "atom",
+            "Y"
+          ]
+        ],
+        [
+          "false"
+        ]
+      ],
+      "body": {
+        "rule": "dne",
+        "proof": {
+          "rule": "deduction",
+          "name": "n",
+          "formula": [
+            "im",
+            [
+              "atom",
+              "X"
+            ],
+            [
+              "false"
+            ]
+          ],
+          "body": {
+            "rule": "mp",
+            "function": {
+              "rule": "assume",
+              "name": "f"
+            },
+            "argument": {
+              "rule": "deduction",
+              "name": "x",
+              "formula": [
+                "atom",
+                "X"
+              ],
+              "body": {
+                "rule": "explosion",
+                "proof": {
+                  "rule": "mp",
+                  "function": {
+                    "rule": "assume",
+                    "name": "n"
+                  },
+                  "argument": {
+                    "rule": "assume",
+                    "name": "x"
+                  }
+                },
+                "formula": [
+                  "atom",
+                  "Y"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "project_second_negated",
+    "goal": [
+      "im",
+      [
+        "im",
+        [
+          "im",
+          [
+            "atom",
+            "X"
+          ],
+          [
+            "atom",
+            "Y"
+          ]
+        ],
+        [
+          "false"
+        ]
+      ],
+      [
+        "im",
+        [
+          "atom",
+          "Y"
+        ],
+        [
+          "false"
+        ]
+      ]
+    ],
+    "proof": {
+      "rule": "deduction",
+      "name": "f",
+      "formula": [
+        "im",
+        [
+          "im",
+          [
+            "atom",
+            "X"
+          ],
+          [
+            "atom",
+            "Y"
+          ]
+        ],
+        [
+          "false"
+        ]
+      ],
+      "body": {
+        "rule": "deduction",
+        "name": "y",
+        "formula": [
+          "atom",
+          "Y"
+        ],
+        "body": {
+          "rule": "mp",
+          "function": {
+            "rule": "assume",
+            "name": "f"
+          },
+          "argument": {
+            "rule": "deduction",
+            "name": "x",
+            "formula": [
+              "atom",
+              "X"
+            ],
+            "body": {
+              "rule": "assume",
+              "name": "y"
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "combine",
+    "goal": [
+      "im",
+      [
+        "atom",
+        "X"
+      ],
+      [
+        "im",
+        [
+          "im",
+          [
+            "atom",
+            "Y"
+          ],
+          [
+            "false"
+          ]
+        ],
+        [
+          "im",
+          [
+            "im",
+            [
+              "atom",
+              "X"
+            ],
+            [
+              "atom",
+              "Y"
+            ]
+          ],
+          [
+            "false"
+          ]
+        ]
+      ]
+    ],
+    "proof": {
+      "rule": "deduction",
+      "name": "x",
+      "formula": [
+        "atom",
+        "X"
+      ],
+      "body": {
+        "rule": "deduction",
+        "name": "n",
+        "formula": [
+          "im",
+          [
+            "atom",
+            "Y"
+          ],
+          [
+            "false"
+          ]
+        ],
+        "body": {
+          "rule": "deduction",
+          "name": "u",
+          "formula": [
+            "im",
+            [
+              "atom",
+              "X"
+            ],
+            [
+              "atom",
+              "Y"
+            ]
+          ],
+          "body": {
+            "rule": "mp",
+            "function": {
+              "rule": "assume",
+              "name": "n"
+            },
+            "argument": {
+              "rule": "mp",
+              "function": {
+                "rule": "assume",
+                "name": "u"
+              },
+              "argument": {
+                "rule": "assume",
+                "name": "x"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "name": "exchange_gate_antecedents",
+    "goal": [
+      "im",
+      [
+        "im",
+        [
+          "im",
+          [
+            "atom",
+            "X"
+          ],
+          [
+            "im",
+            [
+              "atom",
+              "Y"
+            ],
+            [
+              "atom",
+              "Z"
+            ]
+          ]
+        ],
+        [
+          "false"
+        ]
+      ],
+      [
+        "im",
+        [
+          "im",
+          [
+            "atom",
+            "Y"
+          ],
+          [
+            "im",
+            [
+              "atom",
+              "X"
+            ],
+            [
+              "atom",
+              "Z"
+            ]
+          ]
+        ],
+        [
+          "false"
+        ]
+      ]
+    ],
+    "proof": {
+      "rule": "deduction",
+      "name": "f",
+      "formula": [
+        "im",
+        [
+          "im",
+          [
+            "atom",
+            "X"
+          ],
+          [
+            "im",
+            [
+              "atom",
+              "Y"
+            ],
+            [
+              "atom",
+              "Z"
+            ]
+          ]
+        ],
+        [
+          "false"
+        ]
+      ],
+      "body": {
+        "rule": "deduction",
+        "name": "u",
+        "formula": [
+          "im",
+          [
+            "atom",
+            "Y"
+          ],
+          [
+            "im",
+            [
+              "atom",
+              "X"
+            ],
+            [
+              "atom",
+              "Z"
+            ]
+          ]
+        ],
+        "body": {
+          "rule": "mp",
+          "function": {
+            "rule": "assume",
+            "name": "f"
+          },
+          "argument": {
+            "rule": "deduction",
+            "name": "x",
+            "formula": [
+              "atom",
+              "X"
+            ],
+            "body": {
+              "rule": "deduction",
+              "name": "y",
+              "formula": [
+                "atom",
+                "Y"
+              ],
+              "body": {
+                "rule": "mp",
+                "function": {
+                  "rule": "mp",
+                  "function": {
+                    "rule": "assume",
+                    "name": "u"
+                  },
+                  "argument": {
+                    "rule": "assume",
+                    "name": "y"
+                  }
+                },
+                "argument": {
+                  "rule": "assume",
+                  "name": "x"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+]

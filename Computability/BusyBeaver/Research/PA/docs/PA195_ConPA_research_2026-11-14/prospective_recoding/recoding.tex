@@ -1,0 +1,115 @@
+\section{Simultaneous recoding of formula codes and variable labels}
+A future change of constructor encoding need not create a mismatch between
+an axiom's property code and its bound-variable label. The numerical
+calculus uses every natural number in both roles. Recode both roles with the
+same recursively defined permutation. This observation is useful at the
+calculus level; no smaller literal machine is obtained here.
+
+\paragraph{An explicit alternative.}
+Keep the transposed quantifier convention and define
+\[
+\begin{aligned}
+ I'(a,b)&=2p(a,b),&M'(a,b)&=6p(a,b)+1,\\
+ U'(a,B)&=6p(B,a)+3,&E'(a,b)&=6p(a,b)+5.
+\end{aligned}
+\]
+Even numbers are implication codes. Odd residues $1,3,5$ modulo six are
+membership, universal-quantifier, and equality codes respectively. These
+ranges partition $\mathbb N$. Code zero remains the truth alias
+$I'(0,0)=0$, and code one remains $M'(0,0)=1$. Every component of a nonzero
+constructor is strictly smaller than its code, including both components
+of atoms, which are variable labels.
+
+Let $C_r(a,b)=4p(a,b)+r$ be the old raw constructors, where the raw
+quantifier components are body first and binder second. Let $C'_0=I'$,
+$C'_1=M'$, $C'_2(a,b)=U'(b,a)$, and $C'_3=E'$. Define
+\[
+ f(0)=0,\qquad
+ f(C_r(a,b))=C'_r(f(a),f(b))\quad(C_r(a,b)>0).
+\]
+Define $g$ by the same recursion in the reverse direction, using the unique
+new tag and pair decomposition. The zero clause is necessary: blindly
+recursing on $C_0(0,0)$ would not descend.
+
+\paragraph{Constructor-algebra lemma.}
+The maps $f,g$ are primitive recursive inverse bijections. They fix zero and
+one and satisfy, for every label or formula code,
+\[
+\begin{aligned}
+ f(I(a,b))&=I'(f(a),f(b)),&
+f(M(a,b))&=M'(f(a),f(b)),\\
+ f(U(a,B))&=U'(f(a),f(B)),&
+f(E(a,b))&=E'(f(a),f(b)).
+\end{aligned}
+\]
+To prove this, compute a course-of-values table in increasing order of the
+input code. Every recursive argument is smaller. Explicit primitive
+recursive growth bounds are available: if all earlier values are at most
+$m$, each new forward value is at most $12m^2+12m+5$, and each new reverse
+value at most $8m^2+8m+3$. Iterating these bounds supplies a primitive
+recursive bound for each finite table. Induction on the old code proves
+$g(f(n))=n$, and induction on the new code proves $f(g(n))=n$, by unique
+constructor decomposition. The homomorphism equations follow from the
+recursion, including the exceptional $I(0,0)$ case. These arguments use only
+ordinary arithmetic induction and admit uniform formalization in PA.
+
+This is not the translation that fixes every numerical variable label while
+changing only compound formula codes. A variable $x_a$ becomes $x_{f(a)}$.
+Consequently a gate using $c$ as both property code and binder becomes a
+gate using $f(c)$ in both roles. The guards $c\ne a,b$ are preserved by
+injectivity. For example, if
+\[
+ F(a,b,c)=N\bigl(I(\Delta_c(a,b),I(V(a,b,c),Q(a,b,c)))\bigr),
+\]
+then exact constructor homomorphism gives
+\[
+ f(F(a,b,c))=F'(f(a),f(b),f(c)).
+\]
+The same statement applies to the diagonal clause $\Gamma(c)=I(c,U(c,c))$
+and to its separated or bundled gates. No independently asserted
+alpha-conversion or freshness shortcut is needed for this identity.
+
+\paragraph{The numerical order restriction must be handled separately.}
+The map is not monotone:
+\[
+ f(2)=3,\qquad f(3)=5,\qquad f(4)=2.
+\]
+Thus the hypothesis $u\le a$ of a restricted $\rho_8$ instance does not
+transport to $f(u)\le f(a)$. The correct proof translation first uses the
+unrestricted implicational schema already derived from the restricted one.
+The construction in the imported
+\texttt{M6/Logic/RestrictedImplication.lean} uses only reflexivity of the
+parameter order and domination of both arguments by the implication code.
+The new constructor $I'(a,b)=2p(a,b)$ has these same domination properties.
+Hence the same finite derivation recipes yield unrestricted $\rho'_8$.
+Map an old restricted row to that derived unrestricted new row; use the
+analogous old theorem in the reverse direction.
+
+For the six quantifier/equality heads and the gate, the image is a literal
+instance of the corresponding new schema. Modus ponens and generalization
+transport by constructor homomorphism. Induction on coded derivations then
+gives primitive recursive proof transformations in both directions,
+preserving their recoded conclusions. Since $f(1)=g(1)=1$, the resulting
+abstract numerical calculi have PA-provably equivalent refutation
+predicates. This is a written calculus-level argument and a route for a
+future formal transport module; it is not a claim that a modified register
+program, its command compiler, or its literal tape simulator has been
+verified.
+
+\paragraph{Physical tradeoff.}
+The alternative makes an implication constructor multiply its Cantor pair by
+two, and an MP recognizer need only check evenness before unpairing. It also
+makes each nonimplicational constructor multiply by six, which introduces
+additional arithmetic and changes the emitter's sharing patterns. The
+present program shares its constructor and decoding fragments extensively;
+source instruction savings cannot simply be subtracted from its working
+state count. In particular, replacing only the factor four in the existing
+cons routine would give incorrect membership, quantifier, equality, and
+proof-command behavior. A complete generator, decoder, command simulation,
+startup check, and allocation would be required before reporting a state
+count for this recoding.
+
+The accompanying \texttt{recoding.py} checks both inverse identities on
+10,000 inputs, 1,764 constructor identities, and 64 exact gate identities.
+These finite checks verify the transcription of the definitions; the
+inductive argument above establishes the general algebraic claims.

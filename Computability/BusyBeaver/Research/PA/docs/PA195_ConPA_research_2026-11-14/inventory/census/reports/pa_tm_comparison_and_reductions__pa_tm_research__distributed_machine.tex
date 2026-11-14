@@ -1,0 +1,96 @@
+\subsection{A complete 198-state implementation of the new gate}
+\label{sec:distributed-machine}
+
+The shortest fully checked implementation of the distributed gate produced
+in this investigation has \textbf{198 working states}. This is a concrete
+compilation result, but it does not improve the existing 196-state bound.
+The directory \file{distributed198/} contains the full machine, its exact
+source tree and compiler, the selected macro word, and a portable verifier.
+
+The dense table \file{distributed198/candidate.tm} has working states
+$0,\ldots,197$, initial state 0, and a separate halt label 198. There are
+396 transition rows. Its SHA-256 is
+\begin{quote}\small
+\nolinkurl{316c1fd0ade319e3896037f969c18065ecb690339816a5e1defb797ca6751b0c}.
+\end{quote}
+The native table uses initial state 74, interpreter root 84, and halt 254;
+\file{labels.json} gives the complete conjugacy. All 198 working states
+are reachable in the rooted transition graph. No claim that all are visited
+on the actual blank computation is needed for the count.
+
+Its physical budget is
+\[
+ 134\text{ unchanged controls}+67\text{ AX readers}
+        -3\text{ contextual folds}=198.
+\]
+The existing native reader 99 supplies the two-increment subtree. The three
+folds are applied simultaneously and their complete transition edits are
+recorded in \file{folds.json}. They retain the original seven-zero scanner.
+The maximum source address length is 37.
+
+The raw 201-state precursor and the folded 198-state table both pass all
+4,908 complete symbolic instruction contracts for the revised 3,773-site
+program. The folded check uses 1,585,320 symbolic execution steps in total,
+at most 497 per contract. The arbitrary-gap and whole-register-file
+interpretation is the same as for the 196-state rotations: all rows used
+by the inherited register-block contracts are checked unchanged. These
+counts are symbolic execution counts, not elapsed steps of the blank run.
+
+The literal blank startup takes exactly 58,154 tape transitions. It reaches
+dense root 75 (native 84), head position $-2$, source site 25, and the same
+complete clean frame as PA196, including gap 48 and all 26 spare one-blocks.
+This equality includes the entire finite tape support and all zeros outside
+it. The finite startup is used only to establish the simulation's initial
+condition.
+
+\begin{lemma}[The selected emitter's nine stack entries]
+Let the incoming accumulator be $t$, the incoming variable registers
+be $d,h$, and the three post-prefix parameters be $D,H,A$.
+After the selected AX word, the nine newly pushed entries, from top
+to bottom, are
+\[
+ h5,\ h4,\ h3,\ h2,\ h6',\ h1,\
+ \rho8(D,A,H,d),\ U(d,h),\ t,
+\]
+where $h6'$ is the antecedent-exchanged distribution head.
+The enabled accumulator is the distributed gate $F_*(H,D,A)$;
+the disabled accumulator is zero under the unchanged guard.
+\end{lemma}
+\begin{proof}
+For a constructor expression $X$, its mathematical postfix emitter
+takes an incoming accumulator $v$ and stack $w$ to accumulator $X$
+and stack $v::w$. For a variable or constant-one expression this is
+the copy/push definition. In the binary-constructor case, the two
+recursive emissions push the incoming accumulator and then the
+first child; the constructor consumes the latter, leaving exactly
+the former. Tag increments do not change the stack. This proves
+the claim by structural induction on $X$.
+
+The unchanged 18-token prefix ends with accumulator
+$\rho8(D,A,H,d)$ and stack prefix $[U(d,h),t]$. The six successive
+head emissions have order $[1,6',2,3,4,5]$; the final gate emission
+pushes the last head. Applying the preceding stack identity gives
+exactly the displayed list. The unchanged guard suffix preserves
+that stack and either keeps the gate or clears the accumulator.
+\end{proof}
+
+An additional independent checker,
+\file{axiom_rewrite/audit_physical_binding.py}, imports neither the compiler
+nor the symbolic runtime. It parses the entire delivered source tree,
+including its root; proves that it is the pinned PA196 source with only
+the AX subtree replaced; reconstructs the selected 199-token word; resolves
+every primitive control edge by subtree intervals; and compares all 3,773
+site records with the emitted certificate. It checks every macro occurrence
+against the pinned macro's relative control graph, the 169 exterior sites
+and their relocated edges, and the final closing jump. It also independently
+replays the full blank startup. This audit passed without a discrepancy.
+
+The logical and physical interfaces are now explicit: the machine implements
+the revised emitter, and the revised numerical calculus has the PA-verifiable
+proof translations of Theorem~\ref{thm:distributed-pa-translation}. The
+ordinary source-level nonhalting transfer uses the inherited scheduler and
+proof-search argument with the updated head-selection ranks. This package
+does not export a new Lean build of those arguments or a complete internal
+PA theorem about the new literal halting sentence. In particular, its
+relative numerical-calculus theorem does not fill the separately documented
+baseline consistency-bridge obligations.

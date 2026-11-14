@@ -1,0 +1,59 @@
+U209 intake comparison, pinned ProveIt 343da82d7384d10ec9fd1c17361fc923b2d1d117
+
+Six named incoming archives are not six independent machines.
+Joint(1) contains only a PDF. Its declared native/dense hashes identify the
+unqualified ConPA packet. Five full packets contain four byte-distinct native
+tables and only TWO rooted labelled transition-graph isomorphism classes.
+
+Class A: ConPA, Compatible_Folds, Joint, Composed.
+Class B: Compatibility.
+Compatible_Folds and Joint have literally identical native/dense tables.
+The three byte-distinct Class A variants are exact state relabelings. Explicit
+witnesses are in isomorphisms.json. Every one of 418 rows, start0 and halt254,
+is checked. Consequently they have identical head/tape behavior step for step
+on any initial tape; all their timing claims are the same after relabeling.
+All210 graph vertices, including halt, are graph reachable; this is NOT a
+claim that halt is reached on the blank computation.
+
+All five packets have the same 3909 ordered primitive operations. All Class A
+sources are literally identical (SHA cddbed7f...). Their maximum depth is42
+and maximum zero run6. Compatibility source912724... has depth41/zero6,
+and differs from Class A in exactly720 addresses. Class B is not isomorphic
+to Class A by a start/read/write/direction-preserving state renaming.
+
+All three original savings delete native180,181,218. Class A chooses keeper
+163 for180; Compatibility chooses216. Both remove181 via220 and218 via157.
+The apparent different helper arrangements in Class A are conjugate, not
+independent reductions that can be added. A new below209 improvement must
+remove some further state, change source/layout more deeply, or otherwise
+produce a genuinely smaller literal table. This comparison makes no global
+minimality claim and does not execute supplied archive programs.
+
+New independent cross-check of table-search worker's208 candidate:
+  parent Compatibility native4564c487...
+  child bdf724e5a4c5d25567a8b51d50db8ff8b6da3e42b0f03a73794f470171fdcbbe
+  remove172, redirect targets172->211; change211/0 from0R157 to0L214.
+
+Old172 arrivals:116/0 writes0R172;116 has sole predecessor163/1 writes1R116.
+Thus at172 cells[-2,-1]=[1,0]. Old211/read0 arrivals have leftcell1:
+if preceding transition is216/1, it writes1R. If216/0 writes0L, the scanned
+zero excludes the132/1 and199/1 entrances to216, so entry was214/0. The sole
+entrance to214 is217/1, placing1 one cell left of the new211 position.
+
+For172/read0 new path211,214,216,211,214,163,157,67 has7steps and ends at
+old successor67 with head-1 and entire tape unchanged. For211/read0 path
+211,214,163,157 has3steps, ending at old successor157 with head+1 and tape
+unchanged. Both read1 cases take1step to184. All414 other oldrows commute
+with the quotient. Initial state0 is not exceptional. All localpaths avoid
+halt and use only specified local cells, so arbitrary outside tape is safe.
+
+Concatenating blocks yields time conversion Tnew=Told+6*n172zero+2*n211zero,
+with Told<=Tnew<=7*Told. If new machine halts bytimeS, simulating S oldsteps
+would produce a nonhalting new prefix of length>=S unless old machine has
+already halted, proving reflection. This is a local any-initial-tape theorem
+from common state0; it does not itself establish the inherited Con(U) endpoint.
+A fresh runtime audit of the final table is prudent and assigned elsewhere.
+
+compare.py and check208_local.py are newly authored independent code. Both
+run normally and under-O. They parse supplied tables/source as data only.
+comparison.json, isomorphisms.json, local208.json contain reproducible results.

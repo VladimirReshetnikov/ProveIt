@@ -1,0 +1,124 @@
+# Independent PA195 runtime audit
+
+This audit concerns the frozen dense table with SHA-256
+`5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455`.
+It does not claim a newly elaborated Lean proof. It checks that the ordinary
+proof invokes precisely the previously proved register-block lemmas and that
+the executable certificate's inference rules have their advertised universal
+meaning.
+
+## Literal register-oracle premises
+
+`check_engine.py` directly parses the submitted dense and native tables,
+their relabeling, and the Lean files `M6/Native.lean` and
+`M6/Reference230.lean` at the pinned upstream import. It does not import the
+candidate builder or its executor. The result is `engine_audit.json`.
+
+The 23 Python `BOXSTATES` are exactly `M6.Native.boxStates`. The generic Lean
+theorem `M6.Native.boxLemmas` requires equality with the reference K230 on
+44 rows: both read bits at these states, except 113/0 and 198/0. It also
+requires the native append-one tail 198/0 = 1 L 40. All 44 reference rows
+match the new table literally, and that append-one tail also matches. The
+candidate checker preserves both bits of all 23 states, so it checks 46 rows:
+the 45 needed premises plus the unnecessary extra row 113/0. There is no
+missing register-oracle premise hidden behind the set of protected states.
+
+The independently parsed tables have exactly 390 binary rows for 195 working
+states. The dense/native map is a bijection, maps dense start 0 to native 74,
+and maps dense halt 195 to native 254.
+
+## Scope of the symbolic register rule
+
+The complete physical register file is a finite list of length at least ten.
+The first nine entries are logical registers in a fixed permutation; the
+remaining entries form a nonempty spare tail. The oracle theorem quantifies
+over every entry of the entire list and over arbitrary tape context to the
+left. A register increment appends a spare entry of value one, exactly as
+the native tail does. A positive decrement shifts the register-file boundary
+one cell to the right and accounts for the extra leading one on the left.
+Zero and positive decrement cases carry the corresponding premise about
+the selected physical register. No bounded register sample is substituted
+for this quantification.
+
+The Python skip list, mark exits, increment exit, zero-decrement exit,
+positive-decrement exit, and register effects agree case by case with
+`M6.Runtime.oracle`. The opaque rule is used only for a sole terminal box on
+the right, as in the Lean semantics. Once the box is marked or modified,
+the executor cannot arbitrarily invoke a plain-file rule again: its effect
+tag must match the relevant case. This prevents the oracle from concealing
+an unproved physical operation.
+
+## Other symbolic inference rules
+
+An affine run represents exactly `a*n+c` copies of one tape symbol, where
+`n` is an arbitrary natural header-gap parameter and both coefficients are
+natural. Peeling a known positive constant is a representational equality.
+An unknown positive multiple of `n` cannot be peeled when its constant is
+zero; the executor fails rather than assuming `n>0`. A matching self-loop
+can cross an entire run, replacing each scanned symbol by the written
+symbol, because the state and direction remain fixed. This includes the
+zero-length case and hence is uniformly valid in `n`.
+
+A literal-bit transition is exactly one physical transition. Moving the
+symbolic cursor between the adjacent left/right-list presentations is an
+equality of the represented two-way tape. With a box at the right edge,
+the fallback rule is permitted only when the actual row reads zero, writes
+zero, and moves left; every valid encoded register file has the needed
+leading zero. These are the same rules as `M6.Runtime.sstep`.
+
+Normalization joins adjacent runs of the same symbol and discards the
+final all-zero suffix of the outward-facing left list. Both preserve the
+represented infinite tape. Target matching compares normalized complete
+symbolic configurations, including the entire box effect and finite spare
+tail parameter, not just a prefix of the tape.
+
+Every accepted source contract must have its `moved` flag set by a literal
+transition. Oracle steps and whole-run scans conservatively leave that flag
+unchanged. Consequently every accepted contract denotes a finite physical
+execution of **positive** length, for every legal input frame. This is what
+is needed to reflect a finite tape halt back to a finite source halt.
+
+The reported maximum 497 is the number of abstract executor iterations;
+one such iteration may cross an arbitrarily long unary register or run.
+It is **not** a 497-transition bound on a physical source instruction.
+
+## Contextual folds and halting reflection
+
+The seven folded pairs are disjoint, and none contains the start or halt
+control. Every incoming row of the unfolded machine sets the immediate
+left neighbor to the bit assigned to the role it enters. These incoming
+rows establish the entry-history invariant on every reachable unfolded
+configuration. For each of the fourteen roles and both read symbols, the
+checker executes the **final simultaneously folded table**, not a table
+containing just one fold, until it matches the unfolded one-step result
+under the alias map. The local traces may inspect only cells -1 and 0;
+both are restored to the required endpoint, and all outside cells are
+unread and unchanged. Unmodified rows commute with the alias map in one
+step. Therefore the local checks provide a positive block simulation on
+every reachable unfolded configuration.
+
+This argument needs no claim that the role guard holds at every transient
+fold-detour state. It is an invariant of the unfolded boundary state;
+the complete detour is checked literally. It is also valid when the local
+detour invokes a helper that participates in another fold, because the
+certificate executes all seven folds together.
+
+The positive-block simulation preserves halting both ways. Forward
+preservation is concatenation of blocks. For reflection, if the target
+first halts after T physical transitions but the source has not halted in
+its first T+1 instructions, simulating those instructions produces a
+deterministic target run longer than T. This contradicts the absence of an
+outgoing transition from the terminal control. The proof uses positive
+length and termination of each block, not a uniform constant runtime
+bound. All computations and finite-sequence inductions in this argument
+are formalizable in PA.
+
+## Adversarial review result
+
+No unsatisfied register-oracle premise or unsound symbolic rule was found.
+The new candidate's accepted symbolic contracts, its exact whole-tape blank
+startup, and its identical ordinal source control graph jointly support
+the physical refinement used in the ordinary PA-equivalence proof. The
+separate numerical-calculus and command-compiler obligations are addressed
+in `pa_calibration_review.txt`; successful physical verification alone
+would not discharge them.

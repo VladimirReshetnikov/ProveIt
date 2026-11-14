@@ -1,0 +1,133 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=26mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,enumitem,fancyhdr,listings}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=teal]{hyperref}
+\definecolor{ink}{HTML}{17364A}
+\definecolor{teal}{HTML}{087E8B}
+\definecolor{pale}{HTML}{EFF5F7}
+\definecolor{graytext}{HTML}{52616B}
+\hypersetup{pdftitle={U211: a decoder-sharing candidate for Con(PA)},
+ pdfauthor={Research prepared for Vladimir Reshetnikov},
+ pdfsubject={Explicit 211-state binary Turing machine, mathematical reduction and executable verification}}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\UU}{\mathsf U}
+\newcommand{\Rot}{M^{\mathrm{rot}}_{212}}
+\newcommand{\New}{M_{211}}
+\newcommand{\Old}{M_{212}}
+\newcommand{\act}[3]{#1\,#2\,#3}
+\newcommand{\code}[1]{\texttt{#1}}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5.5pt plus 1pt}
+\setlist{nosep,topsep=5pt,leftmargin=1.6em}
+\renewcommand{\arraystretch}{1.13}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{graytext}U211 / decoder sharing and Con(PA)}
+\fancyhead[R]{\small\color{graytext}Research candidate}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+ keepspaces=true,backgroundcolor=\color{pale},frame=single,
+ rulecolor=\color{pale},xleftmargin=4pt,xrightmargin=4pt}
+\title{\color{ink}\textbf{U211: a decoder-sharing candidate\\for $\Con(\PA)$}\\[7pt]
+ \large Nine closed-source reassociations and a predecessor-tag fold}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{28 October 2026}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\begin{abstract}
+We give an explicit binary, one-tape Turing machine with 211 working states,
+one separate halt, and an all-zero initial tape. It is obtained from the
+common supplied U212 machine by nine reassociations of closed source factors
+followed by one physical decoder-state identification. The reassociation
+exposes two selectors whose incoming transitions leave distinct bits immediately
+to the left of the head. Existing decoder states read that bit and implement
+both selectors, allowing native state 181 to be deleted. The source retains
+all 3,909 primitive occurrences and 197 distinct subtrees.
+
+The package contains the complete table, a deterministic builder, an independent
+source audit, a four-case whole-tape proof of the final fold, exact blank startup,
+and 5,084 arbitrary-natural primitive contracts covering all 422 final rows.
+Together with the supplied mathematical calibration, these establish the intended
+PA-formalizable equivalence between blank nonhalting and $\Con(\PA)$.
+The complete endpoint is not exported as a Lean, Rocq, or MM0 kernel certificate.
+The claim is an explicit, reproducible research candidate with mathematical
+and executable evidence; no minimum-state or independently ratified record
+claim is made.
+\end{abstract}
+
+\vspace{7pt}
+\colorbox{pale}{\parbox{\dimexpr\linewidth-2\fboxsep\relax}{
+\textbf{Result at a glance.} 211 working states; 422 binary rows; start 0;
+dense halt 211; no external initializer. Source: 3,909 primitives, 197
+distinct subtrees, depth 42, maximum zero run six. Verification: 5,084
+symbolic contracts; all rows covered; exact 48,140-step blank startup.}}
+
+\clearpage
+\tableofcontents
+\clearpage
+\input{paper/result_comparison}
+\input{paper/construction}
+\input{paper/runtime}
+\input{paper/calibration}
+\input{paper/research_reproduction}
+
+\begin{thebibliography}{9}
+\bibitem{snapshot} ProveIt incoming research directory, fixed commit
+\path{9d50bf3df8c9e14941b549945c4f8400172d81f4}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/9d50bf3df8c9e14941b549945c4f8400172d81f4/docs/incoming}{Pinned source directory}.
+Exact file URLs, sizes, Git blob identities and archive SHA-256 values are in
+\path{inputs/source_manifest.json} and \path{evidence/input_comparison.json}.
+
+\bibitem{unary} \emph{Unary power covering at PA strength}, 27 October 2026.
+\path{pa_unary_power_cover.zip}, at the fixed snapshot~\cite{snapshot}.
+Included intact in \path{reference/pa_unary_power_cover.zip}.
+Relevant sections: unary core, unary arithmetic, upper transport, positive interface.
+
+\bibitem{proposal1} \path{U212_ConPA_Stacked_2026-10-28 (1).zip},
+at the fixed snapshot~\cite{snapshot}. Source of the inherited, unmodified
+\path{symbolic_runtime.py}, \path{independent_runtime.py}, and legacy label map.
+The other numbered proposals are identified in Table~\ref{tab:comparison}.
+
+\bibitem{combined} \path{u212_combined_2026-10-29.zip},
+at the fixed snapshot~\cite{snapshot}. Included intact in \path{reference/}.
+Retains the direct U213 parent, U214/U218/U222 calibration and proofs,
+literal-source and compiler arguments, startup suffix, and comparison inputs.
+
+\bibitem{k215pa} Elliot Glazer, \emph{k215-pa}.
+\url{https://github.com/elliotglazer/k215-pa}.
+The fixed K215/ZFC theorem is background, not a proof certificate for U211.
+
+\bibitem{k230} Elliot Glazer, \emph{k230-rocq}, ``The theory K.''
+\url{https://github.com/elliotglazer/k230-rocq#the-theory-k}.
+
+\bibitem{m254} \emph{busy-beaver}, branch \path{zf-254}, \path{ZF/m254}.
+\url{https://github.com/jeff87654/busy-beaver/tree/zf-254/ZF/m254}.
+Historical machine and compiler context supplied with the research question.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\section{Complete dense transition table}
+\label{sec:table}
+States are $0,\ldots,210$; $H$ denotes the separate halt label 211.
+The initial state is 0, the head starts at coordinate 0, and every tape cell
+is initially 0. A row applies its write and movement before entering its
+next state. All moves are one cell left or right. There are no implicit
+transitions or uncounted preparatory states. This appendix is generated
+directly from \path{machine/u211.tm}; its three groups of columns list the
+states of one machine.
+\input{paper/transition_table}
+\end{document}

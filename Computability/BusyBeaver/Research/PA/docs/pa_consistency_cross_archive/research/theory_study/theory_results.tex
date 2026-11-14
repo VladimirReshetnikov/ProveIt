@@ -1,0 +1,195 @@
+% Standalone section for inclusion in the root report; requires amsmath, amssymb, hyperref.
+\section{Theory and source composition experiments}
+\label{sec:theory-composition}
+
+This section records one successful source composition and one rejected
+allocation.  The successful composition has 197 working states.  Neither
+experiment supplies a machine below 196 states.  All inherited source is
+pinned to ProveIt commit
+\texttt{906367250a7f96c923147b10df392294bced7be5}.
+The immediate parents are
+\texttt{pa\_consistency\_comparison\_and\_new196\_2026-11-13.zip}
+and \texttt{conpa\_tm\_study\_2026-11-13.zip} in
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/docs/incoming}{the pinned incoming directory}.
+
+\subsection{Direct negation composed with the diagonal gate}
+
+Write
+\[
+  \operatorname{tri}(n)=\frac{n(n+1)}2,\qquad
+  P(a,b)=\operatorname{tri}(a+b)+b,\qquad
+  I(a,b)=4P(a,b).
+\]
+The numeral code for falsity used in the emitter is 1, so its negation
+constructor is $N(t)=I(t,1)$.  The usual macro sequence
+\texttt{push; incT; cons} constructs this code by pushing $t$ and building
+an implication with consequent 1.  It can instead be constructed without
+the stack operation.
+
+The inherited register names are $T=r_1$, $W=r_2$, $A=r_3$, $D=r_4$,
+$H=r_5$, $S=r_6$, $R=r_7$, and $L=r_8$.
+On entry with $S=R=0$ and $T=t$, execute two increments of $R$ and then
+the existing \texttt{node64}.  Its first component, \texttt{node46},
+adds $\operatorname{tri}(t)+t$ to $R$ while clearing $T,S$.
+Its second component, \texttt{node63}, transfers four times $R$ into $T$
+and clears $R$.  Thus the resulting $T$ is
+\[
+  4\bigl(2+\operatorname{tri}(t)+t\bigr)
+  =4\bigl(\operatorname{tri}(t+1)+1\bigr)=I(t,1).
+\]
+The invariant for the first component is the ordinary triangular-number
+loop invariant, and the second is a fourfold transfer loop.  All other
+registers, including $W$, are preserved.  This is an all-natural-number
+arithmetic identity, not an extrapolation from finite inputs.
+
+The new grammar replaces all eight old negation sequences with this
+18-primitive macro and retains the diagonal gate
+$\Gamma(B)=I(B,U(B,B))$.  Each replacement saves 29 primitive sites,
+for a total saving of 232.  The 169 exterior source sites, their opcodes,
+and their relative successors remain exactly the same as in the parent.
+The emitted heads and gate are checked as terms in the free constructor
+algebra; this check does not identify merely numerically equal sampled
+formulas.
+
+\begin{center}
+\begin{tabular}{lr}
+Quantity & Verified value\\\hline
+Working states, excluding halt & 197\\
+Transition rows & 394\\
+Reader nodes before folding & 68\\
+Compatible local folds & 5\\
+Primitive source sites & 3,468\\
+Macro items & 175\\
+Negation replacements & 8\\
+Symbolic primitive contracts passed & 4,503\\
+Transitions in symbolic checks & 1,402,726\\
+Longest symbolic contract & 488\\
+Blank startup transitions & 58,154\\
+\end{tabular}
+\end{center}
+
+The exact blank run reaches native state 84 with head at $-2$ and 66
+one-cells.  The verifier compares the complete finite support of the
+tape, including the counter representation and its blank exterior,
+against the inherited seed.  The delivered dense table uses start state
+0, working labels $0,\ldots,196$, and halt label 197; the native start
+and halt labels are 74 and 254.
+
+The frozen composition and all checks can be replayed using
+\texttt{python3 -B verify.py}.  A bounded grammar search considered 100
+distinct initial compositions and ran 24 cycles of 1,600 proposal
+iterations, with seed 6236814.  An iteration can select a node with no
+available rotation; the count is therefore not a claim that 38,400
+distinct mutations were tested.  No allocation below 197 states was
+found.  This is a search result for the stated representation and budget,
+not a lower bound on machines or grammars.
+
+The new checks use the inherited symbolic arithmetic-engine interfaces.
+They establish the recorded source binding, local primitive contracts,
+constructor identity, and startup execution.  They do not constitute a
+new Lean or Rocq development of the full machine, or a new internal PA
+proof of the consistency biconditional.  The proof-theoretic bridge must
+be assessed separately from the state count and executable receipts.
+
+In particular, the free-constructor checker does not track $S,R$, and
+the primitive runtime checker does not prove that these registers are
+zero on entry to all eight new macro calls.  The arithmetic identity
+above retains that precondition.  Its intended propagation uses the
+inherited clean-to-clean macro contracts: \texttt{AXMacro.registers}
+materializes $r_6=r_7=0$, \texttt{AXMacro.Realizes} relates such stores,
+and \texttt{AXMacro.Plan.sound} composes the contracts.  The original
+\texttt{PA196.Source.AXBindings.full\_plan} certifies the original
+emitter plan.  Applying this reasoning to the changed word, with the
+new negation identity as one further clean-to-clean contract, is an
+ordinary composition argument; the packet does not supply a newly
+certified plan or a new call-site scratch-zero reachability theorem.
+
+\subsection{A fresh-code padding lemma and its cost}
+
+The guard in the original source prevents a property code $A$ from
+being used as a binder when $A=D$ or $A=H$.  One mathematical way to
+make these equalities impossible is to construct
+\[
+  K(D,H)=I(D+1,I(H,D+1)),\qquad
+  A^\star=I(K(D,H),A).
+\]
+As a formula, $K(D,H)$ is an instance of
+$p\mathbin{\to}(q\mathbin{\to}p)$ and is a theorem of the implicational
+propositional calculus.  Consequently $A^\star$ and $A$ are logically
+equivalent.
+
+For every natural $n\geq1$, $\operatorname{tri}(n)\geq n$.  Hence whenever
+$x+y\geq1$,
+$I(x,y)\geq4(x+y)$.  Set $B=I(H,D+1)$.  Then
+\[
+ B\geq4(H+D+1)>\max(D,H),\quad
+ K(D,H)\geq4B>B,\quad A^\star\geq4K(D,H)>K(D,H).
+\]
+Thus $A^\star>D,H$ for every $A,D,H\in\mathbb N$.
+The increment of $D$ is essential: omitting it gives
+$I(I(0,I(0,0)),0)=0$ when $D=H=A=0$, so the intended freshness fails
+because of the zero-code alias.
+
+The arithmetic lemma does not by itself prove completeness of a
+modified calculus.  Replacing the gate property by $A^\star$ restricts
+the available instances.  In the bundled diagonal design it also
+produces only $\Gamma(A^\star)$, rather than arbitrary $\Gamma(B)$.
+Moving an unrestricted diagonal head before the padding would address
+that particular loss but would not automatically recover all
+membership-vacuity instances of the original emitter.  A uniform
+syntactic translation of refutations, including the relevant variable
+renaming and instance-recovery arguments, is still required.
+Logical equivalence of a padded property and the original property is
+insufficient to supply that translation.
+
+The physical experiment replaces the first property copy in the gate
+with construction of $K$, a destructive transfer of $A$, construction
+of $A^\star$, and a transfer back into $A$.  It replaces the old guard
+copy and comparisons by three clearing loops.  Its best retained
+allocation has 3,812 source sites, 87 reader nodes, seven local folds,
+and 210 working states before validation.  Six search cycles of 700
+proposal iterations with seed 971615 found no improvement.
+
+That allocation is rejected.  The reused physical return action for
+\texttt{continueTo 2} in the new transfer loop fails the symbolic
+primitive contract at source ordinal 2,413, after 3,138 contracts have
+passed.  No complete startup or accepted 210-state construction is
+claimed.  The corrected reachability audit starts at native state 74
+and gives the same count and failure.  The packet includes the frozen
+grammar, fold selection, hash of the reconstructed rejected allocation,
+and a replay script; it deliberately omits an invalid literal machine
+from the candidate collection.  The replay command is
+\texttt{python3 -B replay\_padded\_failure.py}.
+
+\subsection{What transfers from ZFC and concise iPRA}
+
+The
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/Computability/BusyBeaver/Research/ZFC}{ZFC research}
+contains reusable compiler ideas: command-local fields, source
+reassociation, shared macro entry points, and folds justified by the
+incoming tape context.  These operate at the representation or compiler
+level and can be tested for PA without changing the target theory.
+Their numerical savings are not additive across different machines:
+replacing one routine can remove the sharing or the tape context that
+made another saving possible.  The direct-negation experiment gives a
+concrete example: 232 fewer source sites coexist with one more working
+state than in the 196-state diagonal parent.
+
+The
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/906367250a7f96c923147b10df392294bced7be5/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{ConciseIPRA research}
+offers concise presentation and checking techniques for a different
+theory.  Its native checker size is also not a literal two-symbol
+Turing-machine state count.  A checker for iPRA refutations cannot be
+substituted for the PA checker merely by relabeling its consistency
+statement.  Such a substitution requires a proved uniform reduction
+between the relevant refutation predicates, of the strength needed for
+the claimed internal arithmetic equivalence.  No such new reduction is
+provided here.  Likewise, a machine searching for ZFC refutations does
+not acquire the desired $\operatorname{Con}(\mathrm{PA})$ equivalence
+from the similarity of its architecture.
+
+The resulting contribution is therefore a reproducible 197-state
+composition, a strict fresh-code lemma, and precise negative records for
+the attempted padding allocation.  These records preserve useful
+mathematical and implementation distinctions without asserting a
+sub-196 result or an optimality theorem.
