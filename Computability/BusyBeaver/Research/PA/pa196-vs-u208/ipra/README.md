@@ -120,8 +120,10 @@ witness bounds for arithmetic formula substitution, and
 `PA196PASubstitutionNegative.lean` proves six negative constructor clauses.
 `PA196PASubstitutionCore.lean` combines the growth bound with these clauses:
 the positive core is bounded unconditionally, and its negative counterpart is
-bounded assuming the two remaining negative relation clauses. The recursion's
-global bound also remains open.
+bounded assuming the two negative relation clauses. The arithmetic term and
+vector substitution growth modules establish those remaining clauses, so
+`PA196PASubstitutionCoreComplete.lean` proves both core bounds unconditionally.
+The recursion's global bound remains open.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
