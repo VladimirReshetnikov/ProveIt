@@ -24,3 +24,6 @@ A fresh author two-module suffix replay passed against retained checked
 prerequisite overlays, reporting `propext`, `Classical.choice`, and
 `Quot.sound` and no `sorryAx`. The supplied full nested checker
 `check-first-three-positive-carry.sh` has not been run.
+An independent ordered suffix replay rebuilt both new modules against
+separately checked positive-path and marker/controller objects and retained
+deeper overlays. It passed without `sorryAx`; this was not a full nested replay.
