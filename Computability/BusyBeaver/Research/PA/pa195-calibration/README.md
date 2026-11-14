@@ -359,3 +359,42 @@ Check with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-atom-code.sh
 ```
+
+`PA194CanonicalVectorCode.lean` constructs the correct Foundation term
+vector for two variable codes by right-folding `Vec.adjoin`, rather than using
+`Seq.seqCons`. The code is fully explicit, and candidate PRA proves its
+`qqFvarDef`/`adjoinDef` graph for all labels. An additional theorem identifies
+the numeric expression with Foundation's actual `matrixToVec` in models of
+IΣ₁, where that syntax interpretation is available. This repairs the vector
+representation needed for a real atomic formula constructor; composition with
+`qqRelDef` and the full recursive translator remain separate. Recheck with:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-canonical-vector.sh
+```
+
+`PA194CanonicalAtomCode.lean` composes the corrected `Vec.adjoin` vector
+with the relation-code constructor, using explicit PR codes throughout.
+Candidate PRA proves the composite graph for arbitrary arity and relation
+codes, including nonstandard inputs. A separate theorem identifies this value
+with Foundation's named `qqRel` applied to its `matrixToVec` of free-variable
+term codes in IΣ₁ models; the Foundation definitions used in that statement
+are introduced under IΣ₁. The equality symbol and arity still need to be
+bound for PA194's equality atom, and source membership still needs its expanded
+bit formula. Check with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-canonical-atom.sh
+```
+
+`PA194EqAtomCode.lean` binds the canonical atomic constructor to arity two
+and Foundation's equality relation symbol, whose encoded value is zero. The
+result is an explicit binary PR code and candidate PRA proves its graph for
+all labels. In IΣ₁ models a separate theorem identifies the value with the
+Foundation relation constructor applied to the exact two-variable matrix.
+The recursive PA194 source decoder and the membership/bit translation remain
+open. Check with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-eq-atom.sh
+```
