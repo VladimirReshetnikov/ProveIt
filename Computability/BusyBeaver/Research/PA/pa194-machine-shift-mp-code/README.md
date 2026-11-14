@@ -29,3 +29,8 @@ The final module was rebuilt against the freshly checked AX-code module and
 previously checked prerequisite overlays. A full nested replay of this wrapper
 has not yet been completed. Its printed axiom dependencies contain no
 `sorryAx`.
+
+An independent ordered suffix replay rebuilt the generalized AX and SHIFT/MP
+code modules against a separately checked model-store object and retained deeper
+prerequisite overlays. It passed without `sorryAx`; this was not a full nested
+replay.

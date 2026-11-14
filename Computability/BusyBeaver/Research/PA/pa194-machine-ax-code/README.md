@@ -9,12 +9,11 @@ in every candidate-PRA model, including nonstandard inputs. `axCode_preserves`
 then proves that applying these coded effects preserves `SoundStore` when the
 model's arithmetic reduct also satisfies IΣ₁.
 
-The modeled functions were transcribed from the standard PA194 source AX
-implementation. This package does **not** yet prove equality of these codes
-with that standard command implementation, and does **not** connect them to
-any model scheduler or physical controller trace. It therefore does not prove
-machine/calculus calibration, an internal PA interpretation, or a
-PA194/Con(PA) implication.
+The separate [standard binding](../pa194-machine-ax-standard/README.md) proves
+that these finite codes match the PA194 AX command on ordinary natural-number
+inputs. The model equations do not connect them to a model scheduler or
+physical controller trace. They therefore do not prove machine/calculus
+calibration, an internal PA interpretation, or a PA194/Con(PA) implication.
 
 Run from the repository root with the matching audited Lean 4.32 overlays:
 
@@ -28,3 +27,8 @@ The final module was rebuilt against the freshly checked model-store module
 and previously checked prerequisite overlays. A full nested replay of this
 wrapper has not yet been completed. Its printed axiom dependencies contain no
 `sorryAx`.
+
+An independent ordered suffix replay rebuilt the generalized AX and SHIFT/MP
+code modules against a separately checked model-store object and retained deeper
+prerequisite overlays. It passed without `sorryAx`; this was not a full nested
+replay.
