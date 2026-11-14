@@ -14,6 +14,7 @@ new modules against retained prerequisite objects; their printed theorem
 axioms contain no `sorryAx`. The nested replay wrapper was syntax checked but
 not run for these modules.
 
-The remaining controller steps to state 24, blank-start reachability, and
-source-frame correspondence are open. This conditional trace does not prove
+The later [state-24 theorem](FIRST-TWO-POSITIVE-TO24.md) completes this
+conditional positive branch. Blank-start reachability and source-frame
+correspondence remain open. This conditional trace does not prove
 either iPRA consistency implication for the literal machine.
