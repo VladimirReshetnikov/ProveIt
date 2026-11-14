@@ -23,6 +23,9 @@ not yet identified with a physical PA194 run in arbitrary PRA models. The
 model-uniform controller/source-frame simulation and both consistency
 implications remain open.
 
+The [seed-header dispatch](SEED-HEADER-DISPATCH.md) extends this endpoint
+through twelve physical steps with an arbitrary model-valued residual tail.
+
 The model decomposition and standard source facts passed a suffix rebuild
 against retained checked dense-startup, arithmetic, source-tree and iPRA
 prerequisite overlays. Their printed theorem axioms exclude `sorryAx`; a fresh
