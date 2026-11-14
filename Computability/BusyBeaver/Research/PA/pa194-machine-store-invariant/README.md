@@ -35,3 +35,8 @@ The final module was rebuilt against the freshly checked triangular projection
 and target-line objects with previously checked deeper prerequisites. A full
 nested replay of this wrapper has not yet been completed. Its printed axiom
 dependencies contain no `sorryAx`.
+
+An independent suffix replay rebuilt the invariant module against separately
+checked machine-projection and target MP-closure objects and retained deeper
+prerequisite overlays. It passed without `sorryAx`; the full nested replay is
+separate.
