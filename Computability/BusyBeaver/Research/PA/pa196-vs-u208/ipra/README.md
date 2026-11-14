@@ -167,7 +167,9 @@ bound for actual graph outputs, conditional on bounds for the relevant smaller
 children at the two recursive parameter values.
 `PA196PASubstitutionUniformGrowth.lean` uses internal Π₁ induction and tower
 algebra to prove a uniform arithmetic substitution-output bound in IΣ₁ models.
-The global fixpoint-stage bound remains open.
+`PA196PASubstitutionStageBounds.lean` proves the numerical descent and triple
+size properties needed by a proposed stage bound. Membership in that fixpoint
+stage remains open.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
