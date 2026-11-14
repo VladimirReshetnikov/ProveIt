@@ -1,0 +1,124 @@
+\section{Further searches below 194 states}
+\label{sec:additional-search}
+
+The experiments in this section produced no validated blank-start machine
+with fewer than 194 working states. They record concrete searches and rejected
+repairs, with enough information to reproduce their scope. Their failure
+establishes no general lower bound on consistency machines.
+
+\subsection{Repairing the inherited 193-state runtime}
+
+The sub-194 packet supplies a 193-control runtime obtained by identifying
+native control 301 with 88 and changing two transitions
+\cite{sub194packet}. Its source-step certificate covers 4,780 symbolic
+outcomes on canonical source frames. The critical arithmetic change is
+\((51,0):0R16\mapsto0R122\). When the next cell contains 1, the original
+and changed paths have the same two-step endpoint, because both
+\((16,1)\) and \((122,1)\) are \(0L1\). The blank initialization can instead
+encounter a following zero. The unchanged reduced table therefore fails
+initialization; a runtime certificate alone does not supply the required
+blank-start consistency machine.
+
+The AX11 packet already screened pairs and triples from a fixed pool of
+327 proposed transition detours outside the generic arithmetic boxes
+\cite{ax11packet}. We extended that experiment to four distinct transition
+rows. A hit had to display the \emph{entire} finite support of an encoded
+source frame: control 84, the left marker, the source address, zero padding,
+a register-file marker, all nine working registers, and a nonempty spare
+list. Register values were unrestricted in this preliminary screen.
+The minimum header offset was relaxed from 48 to 36 to admit more potential
+hits; no runtime theorem at offset 36 is asserted.
+
+Each run was limited to 20,000 literal transitions, the implementation's
+finite tape window, and 20,000 cells containing 1. Directly recognized
+outward blank self-loops were classified separately. The main experiment
+used every one of the 193 existing controls as a possible initial control
+and source entry sites 25--44. Two further experiments used native start
+74 and admitted every one of the 3,673 source addresses; one also changed
+\((198,0)\) from \(1L40\) to \(0L40\).
+
+\begin{center}
+\small
+\begin{tabular}{@{}p{0.49\linewidth}rr@{}}
+\hline
+Experiment & Eligible quadruples & Frame hits\\
+\hline
+All initial controls; sites 25--44 & 5,544,509 & 0\\
+Start 74; every source site & 106,694 & 0\\
+Start 74; every site; append zero & 103,375 & 0\\
+\hline
+\end{tabular}
+\end{center}
+
+The main experiment performed 6,106,954 runs including its preparatory
+phases, and 79,714,470,105 literal transitions. Of those runs, 3,983,144
+reached a search bound, 2,123,805 reached a recognized outward ray, and five
+halted. The bounded runs remain unresolved beyond the cutoffs. The other
+two experiments performed respectively 1,093,967,014 and 969,547,469
+transitions. These experiments overlap in their preparatory phases, so
+their totals should not be added as disjoint coverage.
+
+The quadruple counts use the recorded row-encounter filters and deduplicate
+quadruple/start combinations. They do not count all formal four-element
+subsets of the pool. Moreover, simultaneous semantic correctness of the
+individual detours was never assumed: a startup hit would still have
+required complete runtime and logical verification.
+
+\subsection{Joint decoder guards and a late counterexample}
+
+A separate synthesis experiment permitted an arbitrary replacement of
+\((122,0)\) or \((137,0)\), together with a replacement of one non-box row
+encountered along the first modified test trajectory. The local screen used
+radius-12 windows from the symbolic source execution: 48 windows for
+\((122,0)\) and 177 for \((137,0)\). It sought a rejoining configuration
+among the first 64 original local steps, using at most 128 candidate steps
+and remaining inside the window.
+
+Of 8,544,225 tested pairs, 31 passed these targeted local checks. Every one
+of the 31 failed the complete 4,780-outcome source checker. The closest
+repairs set
+\[
+ (122,0)\mapsto0L174,\qquad
+ (174,0)\mapsto0R30
+ \quad\hbox{or}\quad 0R47.
+\]
+They pass 4,623 outcomes before failing at source site 3554: the zero branch
+of a decrement of the logical continuation register \(L\). They are
+therefore rejected constructions, despite their extensive local agreement.
+The inherited symbolic checker uses generic arithmetic-box lemmas; these
+experiments do not constitute a new end-to-end proof in Lean or
+\(\mathsf{iPRA}\).
+
+\subsection{Alternative terminal grammars}
+
+A second route changed the AX11 terminal store-push fragment to a fragment
+copying one of \(D,H,A\), with two source-tree associations, yielding six
+frozen input templates. The semantic adequacy of these substitutions was
+not established. The experiment consequently tested an optimistic
+compiler-allocation opportunity, rather than a verified replacement
+calculus.
+
+The supplied AX11 annealer and compatible-fold scorer were reused unchanged
+\cite{ax11packet}; parameter renaming is disabled in that source. Active
+mutations reassociate binary trees. The score combines the effective number
+of reader nodes with penalties for structural and scanner constraints.
+With 134 fixed controls, a nomination for at most 193 controls required an
+effective reader count at most 59 and zero penalty.
+
+A 600-second run with random seed \texttt{202611142001} recorded
+11,424,577 iterations and 584,235 accepted moves. It produced no qualifying
+nomination; its best penalized score was 60. At zero penalty, the count
+\(134+60=194\) would retain the existing state bound. The iteration count
+is not a count of distinct grammars or verified machines. The elapsed-time
+cutoff also makes exact final iteration counts hardware-dependent.
+
+\paragraph{Reproduction and interpretation.}
+The source, inputs, receipts, rejected runtime table, and detailed commands
+are under \texttt{research/runtime193/}; see its \texttt{README.txt} and
+\texttt{results.json}. The six frozen grammar templates, unchanged inherited
+C++ sources, full run log, and one representative unverified grammar sample
+are under \texttt{research/terminal\_grammar/}. Its \texttt{provenance.json}
+identifies the source archive members and their hashes. Both directories
+include only the evidence needed for their stated experiments. Different
+tape encodings, source invariants, bootstrap strategies, proof calculi, and
+transition edits remain outside these finite searches.

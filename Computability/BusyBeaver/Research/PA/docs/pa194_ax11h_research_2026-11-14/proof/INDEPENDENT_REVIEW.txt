@@ -1,0 +1,75 @@
+Independent AX11H command and novelty review
+==========================================
+
+Conclusion: the proposed change has a correct all-store refutation compiler
+relative to the unchanged numerical calculus C4. The previous AX11 terminal
+word must change. This review does not establish the missing iPRA calibration
+of C4 refutations to PA refutations, or a new kernel-checked literal-machine
+bridge. Do not label the result an unconditional iPRA Con(PA) equivalence.
+
+Exact machine examined
+Dense SHA-256 c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a
+194 working states, 388 rows, start 0 by the supplied construction convention,
+terminal label 194. All controls are reachable in the transition graph.
+
+Native delta from supplied AX11: five rows (38,0), (38,1), (214,0), (214,1),
+(312,0). native_delta_from_AX11.json records their exact old/new actions.
+
+Key proof correction
+Pop=A0;Shift^12 now halts exactly when its incoming visible top is 1;
+otherwise it returns (top,tail(stack),0,head(stack)). The first eleven Shifts
+are safe for arbitrary incoming stores because the generated heads are
+residue 0 or 2 modulo 4. Push, the nine selectors, restricted-rho selection
+and generalization retain their prior exact effects.
+
+The reserved-zero MP suffix S;S;MP_b;Pop halts when a=1 or b=1 and otherwise
+returns (b,w,0,0). These early halts make the inductive disjunction work:
+the compiled proof word either halts or returns its conclusion while
+preserving an arbitrary old stack. A calculus refutation e yields the
+all-store halting word A0;W_e;Pop. A final plain Shift is wrong for this
+protocol, because its cache is zero even when its visible top is one.
+
+The proof fragment report/ax11h_relative_proof.tex gives the selectors, generalization,
+MP compiler, sound-store annotation invariant, four-field scheduler encoding,
+safe cofinal AX prefix, and primitive-recursive finite-witness transformations.
+Zero-stack and zero-implication aliases are included explicitly.
+
+Fresh executable audit
+check_words.py imports no compiler, arithmetic oracle or tape simulator.
+It checks 31 universal symbolic case identities with explicit non-one facts,
+constructor residues and exhaustive equality splits. word_receipt.json is PASS.
+The guarded-gate term is treated through its residue-zero/axiom interface;
+this file does not reprove that gate's PA calibration.
+
+Exact novelty
+check_novelty.py compares exact canonical action tuples, not only digests.
+It allows every spanning root, arbitrary control renaming, reflection, global
+bit exchange and arbitrary terminal write/move effects. Of the 83 current
+frontier objects, 82 have spanning roots; the other is a disconnected
+diagnostic and is automatically distinct from this spanning machine.
+All 82 exact comparisons return different tuples. exact_novelty.json is PASS
+with no matches. Global bit exchange is only a stronger structural screen;
+it is not asserted to preserve a zero-blank machine theorem.
+
+Materiality
+This changes the recurring halt protocol and its proof compiler. For example,
+Shift on (1,w,0,0) halted under AX11 and continues under AX11H; Shift on
+(1,w,0,1) does the reverse. That distinction is not renaming or reflection.
+Nevertheless AX11 fallthrough and H cache-only testing are both inherited
+ideas. The claim is a new verified combination and relative proof, not a new
+arithmetical principle or a state-count improvement.
+
+Metadata validation
+The final builder and receipts use 3671 primitive sites and 4778 source
+outcome contracts. The supplied AX11 predecessor has 3672 sites and 4779
+contracts; those predecessor counts must not be copied into AX11H receipts.
+The corrected metadata changes no table row.
+
+Reproduction
+  python3 check_words.py --output fresh_words.json
+  python3 check_novelty.py --candidate PATH/TO/machine.tm \
+      --census PATH/TO/census --output fresh_novelty.json
+
+The comparison/ directory contains all 83 annotated 194-state objects
+and representative tables, pinned to commit
+1c9524d8bf2e0a27b9a16ff622359927f536e663.

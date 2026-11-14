@@ -1,0 +1,61 @@
+{
+  "title": "PA1944L: comparison, a new decoder, and the iPRA proof boundary",
+  "date": "2026-11-14",
+  "status": "partial_research_result",
+  "requested_absolute_ipra_con_pa_goal_established": false,
+  "successful_machine_below_194_established": false,
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "1c9524d8bf2e0a27b9a16ff622359927f536e663",
+  "machine": {
+    "name": "PA1944L",
+    "table": "machine/machine.tm",
+    "working_states": 194,
+    "transitions": 388,
+    "start": 0,
+    "halt": 194,
+    "initial_head": 0,
+    "initial_tape": "all_zero_two_way_infinite_binary",
+    "table_sha256": "c5787c6f2350e77183ca0d3ff25d2733ba87e8bb52cd54092d7fa26fcf4d5253",
+    "source_instructions": 3673,
+    "source_identical_to_primary": true,
+    "allocation": "135 fixed controls + 67 AX readers - 8 folds = 194",
+    "change": "Recurring four-increment decoder reassociation ((i,(i,i)),i), one new helper, one new history fold."
+  },
+  "relative_theorem": {
+    "statement": "iPRA proves Halt(PA1944L, blank) iff Halt(primary PA194, blank), and equivalence of their negations.",
+    "proof_kind": "ordinary_computer_assisted_mathematical_proof",
+    "new_proof_assistant_endpoint_compiled": false,
+    "primary_table_sha256": "4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f",
+    "remaining_obligation": "Uniform internal calibration of the numerical proof calculus and initialized source program to PA refutation."
+  },
+  "full_physical_verification": {
+    "new_and_primary_passed_separately": true,
+    "outcomes_each": 4780,
+    "new_symbolic_operations": 1084060,
+    "primary_symbolic_operations": 1078198,
+    "maximum_symbolic_operations_per_case_each": 397,
+    "minimum_duration_constant_each": 3,
+    "list_lemmas_each": 4,
+    "new_blank_startup_steps": 58320,
+    "primary_blank_startup_steps": 58154,
+    "final_assembly_replay_mode": "assembly_quick"
+  },
+  "comparison": {
+    "deliveries": 72,
+    "filed_packets": 61,
+    "incoming_archives": 11,
+    "examined_payloads": 15257,
+    "recognized_table_occurrences": 3444,
+    "spanning_graph_classes": 642,
+    "historical_194_state_classes": 82,
+    "historical_193_state_classes": 53,
+    "new_table_graph_matches": 0,
+    "scope": "Literal complete binary L/R tables and explicit JSON encodings, recursively including ZIP payloads; arbitrary source generators are not executed."
+  },
+  "additional_results": [
+    "Bounded-store compiler induction, conditional on the stated local realization identities.",
+    "Primitive-recursive Boolean countermodel for the specified equality-free radix-three calculus.",
+    "Primitive-recursive Boolean countermodel for deleting only the equality-witness head at radix four."
+  ],
+  "negative_search_scope": "Bounded decoder grammar search and specified immediate-history folds only; no state-count lower bound."
+}

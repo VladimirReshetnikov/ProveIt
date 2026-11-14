@@ -1,0 +1,40 @@
+\section{An exact obstruction to repairing the 193-state core by register allocation}
+
+Fix the supplied 193-state core with native start 74 and halt 254.  It is the
+primary table with controls 301 and 88 identified and the two replacement rows
+$(88,0):0L51$ and $(51,0):0R122$.  Let the register selectors be precisely the
+external transitions of the primary table whose target is one of
+\[
+51,36,25,48,32,33,22,55,60.
+\]
+A register allocation permutes these target labels according to a permutation
+of the nine field positions.  All other rows, including the new decoder
+helper $(88,0)$, remain fixed.
+
+\paragraph{Proposition.}
+For every one of the $9!=362{,}880$ allocations in this specified family, the
+machine started in control 74 on blank tape reaches an outward right ray in
+control 35 after at most 93 transitions, and never halts.
+
+\paragraph{Proof.}
+For each $k\in\{0,\ldots,8\}$, choose the allocation exchanging positions 7
+and $k$.  Replay its literal blank-start trace until reaching control 35 to
+the right of the complete finite support.  The nine checked prefix lengths
+are $85,86,\ldots,93$.  In each prefix the only executed row whose action can
+depend on the register allocation is $(45,1)$, which selects physical field
+7 before permutation.  Therefore an arbitrary allocation with image $k$ of
+field 7 has exactly the same whole-tape trace as this representative.
+Formally, induction on the prefix length gives equality of control, head and
+complete finite tape: the next row is either unchanged or is $(45,1)$ with
+the same selected target.  No other allocated selector is reached.
+
+At the resulting configuration, the next square and every square to its
+right are blank, and row $(35,0)$ is $1R35$.  Each subsequent transition writes
+one and moves right to the next blank square in the same control.  A second
+induction proves that every future control is 35.  The halt control 254 is
+never reached.  The finite prefix certificates and every literal row check
+are supplied in the accompanying JSON and Python replay.\hfill$\square$
+
+This result concerns only this runtime core, this start, and these selector
+rewrites.  It is not a lower bound on arbitrary machines, and it does not
+exclude other modifications of the bootstrap or data representation.
