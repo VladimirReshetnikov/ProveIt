@@ -190,8 +190,11 @@ distinct-label separation tails. The model-length
 [universal-opening endpoint](pa195-calibration/PA194OpeningEndpoint.md) is
 now identified even for nonstandard codes, and the resulting
 [internal induction theorem](pa195-calibration/PA194FullInternalInduction.md)
-constructs the required closed induction axiom bodies. Distinct-label bounded
-comprehension and the physical-machine connection remain open.
+constructs the required closed induction axiom bodies. General
+[internal finite-set separation](pa195-calibration/PA194InternalSeparation.md)
+is also checked for arbitrary internal formula codes. Its identification with
+the distinct-label numerical gate and the physical-machine connection remain
+open.
 
 For the physical simulation needed in both directions, the
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
