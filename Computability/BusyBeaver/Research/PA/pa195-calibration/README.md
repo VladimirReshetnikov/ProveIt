@@ -344,3 +344,17 @@ Recheck with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-rel-code.sh
 ```
+
+`PA194AtomCode.lean` composes the certified two-label vector and relation-code
+constructors. For arity, relation-symbol code, and source labels `a,b`, it
+builds a Foundation relation code using the two free-variable term codes in
+order. Candidate PRA proves the composite graph, and a suitable sequence
+append code is supplied existentially. The intended equality case must still
+bind the arity and relation symbol to Foundation's actual equality encoding;
+source membership additionally requires construction of the expanded bit
+formula. Recursive formula translation and its correctness remain open.
+Check with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-atom-code.sh
+```
