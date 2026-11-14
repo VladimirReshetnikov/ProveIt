@@ -7,11 +7,12 @@ finite remaining file has a blank tail, `markerFirstFourPositiveBlankTo13`
 reaches dense control state 13 in every candidate-PRA model. Its model-valued
 register lengths and time can be nonstandard.
 
-`selectedZero` and `selectedSucc` give separate exact state-13 tape shapes.
-The zero case consumes the first returned file block; the successor case
-consumes the remaining selected block. `returnIsBlock` supplies the required
-file shape. The final composition retains existential final tape halves; the
-separate lemmas retain the explicit forms needed for further work.
+`selectedZero` and `selectedSucc` handle separate state-13 cases. The zero
+case consumes the first returned file block; the successor case consumes the
+remaining selected block. `returnIsBlock` supplies the required file shape.
+The statements retain existential final tape halves; the proofs exhibit the
+corresponding witnesses, but their precise forms are not exported as theorem
+conclusions.
 
 The module was compiled against previously checked prerequisite objects; its
 reported axioms do not include `sorryAx`. The nested wrapper provides a fresh

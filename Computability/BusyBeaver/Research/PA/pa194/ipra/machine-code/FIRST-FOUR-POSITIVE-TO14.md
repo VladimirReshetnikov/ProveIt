@@ -9,9 +9,8 @@ register lengths and run times.
 
 The returned file is shown to have an even tail; consequently both the zero
 and successor remaining-selected cases reach state 13 with an even right tape
-half. The next physical transition then reaches state 14. Explicit prior tape
-shapes remain available from `PA194FirstFourPositiveTo13.lean`; the final
-composition here records existential tape halves.
+half. The next physical transition then reaches state 14. The proof witnesses appear in `PA194FirstFourPositiveTo13.lean`; the theorem
+statements retain existential tape halves.
 
 Lean compiled this module against previously checked prerequisite objects and
 reported no `sorryAx`. The nested replay wrapper was syntax checked but not
