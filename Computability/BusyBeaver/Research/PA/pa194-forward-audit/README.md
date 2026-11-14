@@ -1,4 +1,4 @@
-# PA194 forward compiler: induction audit and a node prerequisite
+# PA194 forward compiler: induction audit and prerequisites
 
 The desired direction starts with an internal Foundation PA refutation and
 must construct an accepted numerical proof, a halting scheduler word, and
@@ -30,22 +30,20 @@ Its `additive_matrix_witness`, `canonicalSuccessorAxiom_provable`, and
 latter two construct internal proof codes. The supplier nevertheless relies on
 `translated_induction_witness` and, through it,
 [`formulaCode_subst`](../jamesyc-upstream/pa196/M6PA/Calibration/FoundationPAeqCodeSubstitution.lean).
-That substitution-translation compatibility theorem explicitly uses
+The upstream substitution-translation compatibility theorem explicitly uses
 `C := Set.univ` induction over an invariant quantifying all vectors, depths,
 and translation parameters. Its local constructor step is already proved
 under IΣ₁ alone. Reproving the global agreement through a suitable internal
 Σ₁ or Π₁ structural induction is a concrete remaining task; the existing
-full-PA proof cannot be assumed to work in IΣ₁ models.
+full-PA proof cannot be assumed to work in IΣ₁ models. A current-Foundation
+replacement has since been proved in every IΣ₁ model, including for
+nonstandard codes; see [`pa194-paeq-formula-subst`](../pa194-paeq-formula-subst/README.md).
 
-The source/PAeq `formulaCode` interpretation used by that theorem has not
-been ported to the current Foundation in this research directory. The
-quantifier cases also change the depth and lifted substitution vector, so an
-induction hypothesis at only the original fixed parameters does not suffice.
-One candidate is to adapt the checked fixed-ceiling packed-history method
-used for PA194 source shift, bounding all lifted vectors and required graph
-witnesses using a suitable tower. This is a proposed route, not an
-implemented agreement theorem. The generic ∀/∨ substitution inversions
-needed for the matrix step have now been ported in
+The replacement handles the changing depth and lifted substitution vector in
+the quantifier cases using Foundation's substitution-construction induction.
+This removes one full-PA dependency, but the uniform induction-axiom supplier
+and the rest of the PAeq-to-numerical-proof compiler remain open. The generic
+∀/∨ substitution inversions needed for the matrix step are in
 [`pa194-source-subst-inverse`](../pa194-source-subst-inverse/README.md).
 
 An IΣ₁ replacement needs a model-uniform construction of certificate witnesses

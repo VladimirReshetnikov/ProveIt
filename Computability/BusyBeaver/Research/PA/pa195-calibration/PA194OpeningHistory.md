@@ -7,3 +7,4 @@
 The package does not prove that the intermediate entries of a particular `qqAlls` axiom have the necessary universal shape, identify the endpoint with `subst (fvarVec m) b`, construct induction-axiom recognizer witnesses, prove comprehension, discharge the distinct-label gate, or establish an iPRA implication.
 
 The author replay ran `check-opening-history.sh`, rebuilding both modules against the pinned Foundation overlay. The printed axioms are `propext`, `Classical.choice`, and `Quot.sound`; no `sorryAx` appears.
+An independent complete replay of the same script also passed without `sorryAx`.
