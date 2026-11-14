@@ -37,7 +37,9 @@ objects. The first-instruction trace and blank-to-site-27 composition report
 `[propext, Classical.choice, Quot.sound]`, with no `sorryAx`. The source-frame
 and first-instruction logs are `source-frame.coherent.log` and
 `first-instruction.coherent.log` in that retained build directory. A separate
-end-to-end run of this wrapper is in progress.
+end-to-end invocation of the wrapper also completed successfully without
+`sorryAx` in the checked theorem reports; its log is
+`/tmp/pa194-first-instruction-coherent-full.log`.
 
 These are fixed concrete execution facts. They do not prove the arbitrary
 model-length source-controller simulation or either implication relating
