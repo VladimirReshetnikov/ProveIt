@@ -11,9 +11,12 @@ on a model element is used.
 internally valid source formula at every vector position below the bound and a
 position whose shift is the target, it finds a position below that bound whose
 Foundation source shift is the target. The validity hypothesis is explicit.
-No theorem here yet identifies the encoding of a nonstandard Foundation LK
-sequent or proof with this vector, or supplies its validity condition. The
-machine calibration and both reductions remain open.
+Foundation’s bootstrapped LK sequents use finite-set (bit-index) coding, whereas
+the verified lookup operates on pair-encoded vectors. No theorem here converts
+a nonstandard coded finite set to such a vector, proves preservation of
+membership, or supplies the validity condition. In particular, standard list
+preimage selection does not by itself establish any of these results for
+nonstandard codes. The machine calibration and both reductions remain open.
 
 The final module passed a fresh Lean 4.32 ordered-overlay check against the
 fresh source-search and source-shift suffixes and audited project and Foundation
