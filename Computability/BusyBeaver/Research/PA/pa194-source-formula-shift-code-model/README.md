@@ -30,7 +30,8 @@ A fresh ordered tmpfs suffix replay rebuilt `PA194FormulaBudget`,
 `PA194FormulaUpdate`, the term, vector and atom shift code modules, and this
 package in dependency order against the audited source and history overlays.
 All printed theorems report `[propext, Classical.choice, Quot.sound]`, without
-`sorryAx`. The full nested two-chain standalone script remains pending.
+`sorryAx`. The full nested two-chain standalone replay also passed with the audited
+overlays.
 
 From the repository root, set `IPRA_FOUNDATION_OVERLAY` to the audited current
 Foundation object overlay and `IPRA_LEAN_OVERLAY` to the pinned audited
