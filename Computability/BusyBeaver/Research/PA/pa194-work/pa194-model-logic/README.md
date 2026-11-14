@@ -46,6 +46,7 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelDirectEdge`, `PA194ModelSourceChain` | Independently coded chains of source-child edges give operational paths, including for model-valued chain lengths. |
 | `PA194ModelSyntacticDescendant` | The chain-based descendant relation is reflexive, closed under direct edges, covered by paths, and preserves formula validity. |
 | `PA194ModelSourceChainDepth` | A separately coded sum of the chain’s binder bits equals the operational path depth. |
+| `PA194ModelDescendantComplexity` | The independent edge, chain, and descendant relations are uniformly Σ₁-definable. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -183,7 +184,10 @@ gives a valid target. The resulting explicitly chain-defined descendant relation
 is reflexive, closed under direct edges, covered by operational paths, and
 preserves formula validity. A finite PRA code independently sums binder bits along
 the chain, and internal induction gives an operational path at exactly this depth,
-including for nonstandard-length chains. This does not identify the relation with a separately defined
+including for nonstandard-length chains. The independent edge, chain, descendant,
+and exact-depth descendant relations are uniformly Σ₁-definable; existentially
+quantifying the depth recovers the ungraded descendant relation. This does not
+identify the relation with a separately defined
 Foundation subformula predicate, prove that the translator visits every such
 node, or establish semantic correctness of the translation.
 
@@ -197,7 +201,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelSourceChainDepth` as the top module. On 2026-11-14, the path and
+`PA194ModelDescendantComplexity` as the top module. On 2026-11-14, the path and
 dispatcher modules were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
