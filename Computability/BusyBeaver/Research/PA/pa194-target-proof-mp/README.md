@@ -35,3 +35,8 @@ The final module was rebuilt against the freshly rebuilt accepted-line replay
 module and previously checked history suffix. A full nested replay of this
 wrapper has not yet been completed. Its printed axiom dependencies contain no
 `sorryAx`.
+
+An independent suffix replay recompiled the target proof-join and MP-closure
+module against separately checked target replay and leaf objects, reusing
+remaining prerequisite overlays. Its reported theorem axioms did not include
+`sorryAx`; the full nested replay remains separate.

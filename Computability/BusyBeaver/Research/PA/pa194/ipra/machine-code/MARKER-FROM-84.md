@@ -36,4 +36,4 @@ An independent ordered suffix replay rebuilt the four new modules in a fresh
 tmpfs overlay against separately checked controller objects and preserved
 prerequisite/scratch overlays. Their reported theorem axioms did not include
 `sorryAx`. The redundant full nested replay was stopped to reduce I/O; a
-shared comprehensive prerequisite replay is running separately.
+shared `check-file-traversal.sh` replay subsequently passed.

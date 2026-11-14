@@ -30,4 +30,4 @@ TMPDIR=/dev/shm IPRA_LEAN_OVERLAY=/path/to/ipra/lib \
 An independent suffix replay rebuilt the new module(s) against separately
 checked controller objects and preserved prerequisite/scratch overlays. The
 reported theorem axioms did not include `sorryAx`. The shared comprehensive
-prerequisite replay is running separately.
+`check-file-traversal.sh` replay subsequently passed.
