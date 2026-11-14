@@ -25,7 +25,7 @@ From the repository root, set `IPRA_FOUNDATION_OVERLAY` to the audited
 Lean 4.32 Foundation objects and run `bash
 Computability/BusyBeaver/Research/PA/pa194-source-calculus/check.sh`. The
 script builds in tmpfs, rebuilds the entire relational prerequisite chain,
-checks source pins and rejects `sorryAx` in printed theorem dependencies. The
-modules were replayed against an independently rebuilt relational overlay;
-the full standalone script has not yet completed. The checked theorems are
+checks source pins and rejects `sorryAx` in printed theorem dependencies.
+The full nested `pa194-source-separation/check.sh` replay passed, including
+this package and all of its prerequisites. The checked theorems are
 ordinary Lean theorems, not proofs internal to PA, PRA or iPRA.

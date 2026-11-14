@@ -20,6 +20,6 @@ From the repository root, set `IPRA_FOUNDATION_OVERLAY` to the audited Lean
 4.32 Foundation object directory and run `bash
 Computability/BusyBeaver/Research/PA/pa194-source-separation/check.sh`.
 It rebuilds the complete source-LK prerequisite chain in tmpfs, checks
-upstream hashes and rejects `sorryAx` in printed theorem dependencies. The
-four new modules were checked against the independently rebuilt source-LK
-overlay; the full standalone script has not yet completed.
+upstream hashes and rejects `sorryAx` in printed theorem dependencies.
+The complete nested separation check passed, including all four modules and
+their prerequisites.
