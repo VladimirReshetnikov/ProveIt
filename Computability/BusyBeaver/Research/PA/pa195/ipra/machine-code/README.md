@@ -25,7 +25,20 @@ all six exact composition equations in every model of candidate classical
 PRA. The round-trip results concern standard natural numbers; the all-model
 statements are composition equations, not division or round-trip statements.
 
-These are explicit arithmetic components, not a PA195 transition or clock
+`TableDispatch.lean` defines three explicit lookup codes for the write bit,
+direction, and target state from the 390-row dense PA195 table. A generic
+list-to-code compiler uses zero tests and predecessor recursively; no code is
+chosen from an existence theorem. Its standard evaluation at `(state, read)`
+agrees with the pinned table at index `2*state+read`, with default
+`(0,0,195)` outside the table. This theorem applies to every pair of natural
+numbers, although machine use supplies a binary read and working state.
+The all-model lookup recurrences imply separate row-output equations for
+each **standard numeral** index in every model of candidate classical PRA.
+They are not yet a single formula for all possibly nonstandard indices or
+an iPRA proof. The table is generated into a private temporary directory
+from the SHA-256-pinned archive and member by the parent `generate.py`.
+
+These are explicit arithmetic components, not a complete PA195 transition or clock
 code. The work still needs the full finite transition lookup, a configuration
 encoding and projections, a state iterator and a proof that its internal
 recurrence matches the exact PA195 machine. It does not prove either
@@ -42,7 +55,7 @@ IPRA_FOUNDATION_OVERLAY=/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib \
   bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check.sh
 ```
 
-The script rebuilds both modules in a private temporary directory and verifies
+The script rebuilds all three modules in a private temporary directory and verifies
 the hashes of five direct sources, the two directly imported project objects,
 and the Foundation `Init` object. It prints axiom dependencies and rejects
 `sorryAx`. It assumes the remaining transitive overlay objects were built from

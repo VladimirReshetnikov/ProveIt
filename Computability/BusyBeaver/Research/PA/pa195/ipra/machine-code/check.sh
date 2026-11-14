@@ -22,6 +22,7 @@ printf '%s  %s\n' \
 task_dir=$(mktemp -d "${TMPDIR:-/dev/shm}/binary-tape-code.XXXXXXXX")
 trap 'rm -rf "$task_dir"' EXIT
 export BINARY_TAPE_TASK_DIR="$task_dir" IPRA_LEAN_OVERLAY IPRA_FOUNDATION_OVERLAY
+python3 -B Computability/BusyBeaver/Research/PA/pa195/ipra/generate.py "$repo" "$task_dir"
 lake env bash -c '
 set -euo pipefail
 lean --version | rg -q "Lean \(version 4\.32\.0"
@@ -31,6 +32,10 @@ lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/Bin
 export LEAN_PATH="$BINARY_TAPE_TASK_DIR:$LEAN_PATH"
 lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/TapeStepCodes.lean \
   -o "$BINARY_TAPE_TASK_DIR/TapeStepCodes.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
+lean -R "$BINARY_TAPE_TASK_DIR" -M5000 -j1 "$BINARY_TAPE_TASK_DIR/PA195Rows.lean" \
+  -o "$BINARY_TAPE_TASK_DIR/PA195Rows.olean"
+lean -M5000 -j1 Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/TableDispatch.lean \
+  -o "$BINARY_TAPE_TASK_DIR/TableDispatch.olean" | tee -a "$BINARY_TAPE_TASK_DIR/axioms.log"
 if rg -q "sorryAx" "$BINARY_TAPE_TASK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1
