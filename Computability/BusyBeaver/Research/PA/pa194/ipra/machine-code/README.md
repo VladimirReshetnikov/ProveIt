@@ -99,3 +99,14 @@ axiom dependencies for `sorryAx`.
 
 To replay the all-model decoded-clock recurrence and indicator theorem with
 the same overlays, use `bash Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/check-iteration.sh`.
+
+`PA194ExplicitEndpoint.lean` defines a halt sentence directly from the explicit
+code. Its classical interpretation in every candidate PRA model is exactly the
+existence of a model time at which the decoded control is outside 0–193; its
+standard interpretation is literal PA194 halting. It also provides the GG
+transfer conditional on a classical PRA refutation-to-halt proof and the
+conditional iPRA biconditional. Neither machine-specific reduction is proved.
+This sentence is separate from the old `PA194Bounded.haltSentence`, whose
+chosen function code is identified with the machine only on standard naturals.
+Replay the endpoint with the same overlays using
+`bash Computability/BusyBeaver/Research/PA/pa194/ipra/machine-code/check-endpoint.sh`.
