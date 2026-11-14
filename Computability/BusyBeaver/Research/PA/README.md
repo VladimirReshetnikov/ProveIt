@@ -34,9 +34,10 @@ an end-to-end Lean proof of that claim or an iPRA proof.
   [The zipper bridge](pa195-zip-bridge/README.md) connects blank-tape
   halting to the arithmetic endpoint over the standard natural numbers.
 - [Register engine](pa195-runtime/README.md),
-  [source entry contracts](pa195-site25/README.md), and
+  [source entry binding](pa195-source-entry/README.md), and
   [symbolic contract batches](pa195-symbolic/README.md) check parts of the
-  parent machine's execution. The source-graph and arithmetic correctness
+  parent machine's execution. The entry binding covers one source instruction
+  and both branches; the complete source-graph and arithmetic correctness
   connections still need proof.
 - [Explicit machine codes](pa195/ipra/machine-code/README.md) develop tape,
   transition-table, and configuration-step functions in the PRA language.
