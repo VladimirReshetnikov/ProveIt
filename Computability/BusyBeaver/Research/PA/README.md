@@ -238,10 +238,13 @@ For the last step of that direction above the physical machine,
 for an abstract command semantics, that the scheduler meets a halting SHIFT as soon as some
 command word computes the formula `1`, and that the formulas computed by command words are
 closed under the rules of the numerical calculus. Words, candidates and times may be
-nonstandard. Its instantiation with the modeled scheduler and `TargetProvable` is not checked
-yet. The translation of an internal PAeq or source-language proof into the numerical
-calculus (the model-level counterpart of [`pa194-foundation-lk`](pa194-foundation-lk/README.md))
-has no model-level result.
+nonstandard. Its module `PA194ModelFairness` instantiates this with the modeled scheduler and
+`TargetProvable`: in every candidate-PRA model with an IΣ₁ reduct, the modeled scheduler halts
+at some model time exactly when the numerical calculus has a target proof of the
+contradiction code (`halts_iff_provable`). This concerns the modeled scheduler, not the
+physical table. The translation of an internal PAeq or source-language proof into the
+numerical calculus (the model-level counterpart of
+[`pa194-foundation-lk`](pa194-foundation-lk/README.md)) has no model-level result.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation

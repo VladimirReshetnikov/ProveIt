@@ -12,12 +12,26 @@ be nonstandard. The ordinary-number versions of these arguments are
 into a command word) and [`pa194-scheduler-fairness`](../pa194-scheduler-fairness/README.md)
 (the scheduler reaches the word); they do not cover nonstandard derivations.
 
-**Status.** The modules below are checked. They are stated for an abstract command semantics
-`Sem V` and an abstract run `Run V S`. The instantiation with the modeled PA194 scheduler of
+**Status.** The modules below are checked. Six of them are stated for an abstract command
+semantics `Sem V` and an abstract run `Run V S`. `PA194ModelFairness` instantiates them with
+the modeled PA194 scheduler of
 [`pa194-scheduler-iteration`](../pa194-scheduler-iteration/README.md) and with
-`TargetProvable` of [`pa194-target-proof-leaves`](../pa194-target-proof-leaves/README.md) is
-not in this directory yet. Nothing here concerns the physical 194-state table, the
-translation of PA proofs into the calculus, or either consistency implication by itself.
+`TargetProvable` of [`pa194-target-proof-leaves`](../pa194-target-proof-leaves/README.md), in
+every candidate-PRA model `M` whose arithmetic reduct satisfies `𝗜𝚺₁`:
+
+```lean
+theorem provable_halts (h : TargetProvable (1 : M)) : ∃ k : M, F haltAfter ![k] = 1
+theorem halts_iff_provable : (∃ k : M, F haltAfter ![k] = 1) ↔ TargetProvable (1 : M)
+```
+
+The other direction of `halts_iff_provable` is
+`PA194SchedulerHaltCode.modeled_halt_provable`. So the *modeled* scheduler halts at some model
+time exactly when the numerical calculus has a target proof of the contradiction code.
+
+Nothing here concerns the physical 194-state table: the modeled scheduler has not been
+identified with a run of the machine at nonstandard times. Nothing here translates PA proofs
+into the calculus. No consistency implication for the machine follows from this directory
+alone.
 
 ## Modules
 
@@ -29,6 +43,7 @@ translation of PA proofs into the calculus, or either consistency implication by
 | `ConPACommandClosure` | `G S` is closed under the rules: `G_leaf` (the eight leaf formulas of an AX, for `d ≤ D`), `G_axT` (the guarded gate), `G_gen`, `G_mp`. |
 | `ConPAScheduler` | `encC`, `ptr`: the continuation pointer of a word. `sstep`, `shalt`: the scheduler step and its halting test. `run_inv`: started at the pointer of `W`, the scheduler executes `W`; `word_halts`. |
 | `ConPASchedulerHalts` | `drain`, `reach`: every later candidate is reached. `derivation_halts : G S 1 → ∃ k, shalt (R.run k ⟪2, 0, σ⟫)`. |
+| `PA194ModelFairness` | `cstepCode`: the store step as one PRA code; `semM`, `runM`: the PA194 instances; `step_eq`: the modeled scheduler step is `sstep`; `G_of_provable`: `TargetProvable r → G semM r` by `targetProof_sound`; `provable_halts`, `halts_iff_provable`. |
 
 ## Why a tracked executor
 
@@ -48,6 +63,30 @@ at height `0`" is a `𝚺₁` (in fact `𝚫₁`) property of the word, and the 
 bash Computability/BusyBeaver/Research/PA/pa194-model-fairness/check.sh
 ```
 
-The script compiles the modules against the root Lake workspace, one `lean` process at a
-time, and fails on `sorry`. The printed axiom reports are `propext`, `Classical.choice`,
+compiles the six abstract modules against the root Lake workspace, one `lean` process at a
+time, and fails on `sorry`. The nine printed axiom reports are `propext`, `Classical.choice`,
 `Quot.sound`.
+
+```sh
+python3 Computability/BusyBeaver/Research/PA/pa194-model-fairness/check_bridge.py [--out DIR]
+```
+
+compiles `PA194ModelFairness` together with every standalone module it imports (about three
+hundred: the PA194 target-proof, machine-store and scheduler modules, the ordinary-number
+source and command modules they import, the upstream `M6`/`PA196` modules, and the generated
+table, source-tree and AX-batch modules, which it regenerates). With `--out DIR` it reuses the
+objects already in `DIR` and recompiles only the modules of this directory.
+
+What was run on 2026-11-14, on Lean 4.32.0: the 295 standalone modules of the closure were
+compiled once, in dependency order and one process at a time, by a scratch driver that
+resolves imports in the same way as `check_bridge.py`; then
+`check_bridge.py --out <that object directory>` recompiled the seven modules of this
+directory against those objects and printed
+
+```
+'PA194ModelFairness.G_of_provable' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PA194ModelFairness.provable_halts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'PA194ModelFairness.halts_iff_provable' depends on axioms: [propext, Classical.choice, Quot.sound]
+```
+
+A run of `check_bridge.py` into an empty directory has not been done.
