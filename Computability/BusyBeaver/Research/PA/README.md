@@ -4,7 +4,7 @@ This directory contains machine tables, imported research, and Lean proofs
 concerning small Turing machines associated with the consistency of Peano
 arithmetic, `Con(PA)`. The current goal is a Lean proof of
 `iPRA ⊢ Con(PA) ↔ ¬Halt(M)` for the primary 194-state candidate, followed
-by the 195- and 196-state consistency candidates. The machines start
+by the other 194-, 195-, and 196-state consistency candidates. The machines start
 on a blank two-way binary tape; state counts exclude the halt state.
 
 **Status:** Neither machine-specific direction of this equivalence has yet
@@ -90,3 +90,8 @@ equivalence with the original PA195. It also contains a rejected 194-state
 construction. [A later PA194 packet](../../../../docs/incoming/pa194_conpa_2026-11-13.zip)
 proposes two other 194-state candidates and claims a PA-provable equivalence.
 These packets do not supply an end-to-end Lean proof of the iPRA statement.
+
+[Another PA194 packet](<../../../../docs/incoming/pa194_conpa_2026-11-13 (2).zip>)
+and [the PA195DC packet](../../../../docs/incoming/pa195_diagonal_combined_2026-11-13.zip)
+propose additional 194- and 195-state machines respectively. Their reported
+PA equivalences likewise do not constitute Lean proofs of the iPRA goal.
