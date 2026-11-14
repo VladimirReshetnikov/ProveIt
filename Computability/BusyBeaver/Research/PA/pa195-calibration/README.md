@@ -82,3 +82,19 @@ theorem using the same audited overlays, run:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-occurs.sh
 ```
+
+`PA194ChildCodes.lean` uses candidate-PRA bounded witnessing to prove the
+existence of a primitive-recursive function code for each of the exact two
+PA194 decoder-child functions, `first(n / 4)` and `second(n / 4)`, together
+with candidate-PRA proofs of their represented graph instances. The model
+lemmas confirm those code values in every candidate-PRA model. These witness
+codes are existentially supplied by Lean; an explicit serialized code is not
+exported. A branch-choice iterator and the connection from arbitrary actual
+decoder occurrences to such a path remain to be constructed.
+
+To check the child-code results and freshly build their two earlier
+prerequisites, use the same audited overlays and run:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-child.sh
+```
