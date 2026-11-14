@@ -7,3 +7,4 @@ For any IΣ₁ arithmetic model and arbitrary internal formula code `K`, `PA194I
 The model-length final-code equality and existence of suitable closure bodies remain open. Thus this package does not prove arbitrary-formula PA induction, bounded comprehension, the distinct-label gate, or an iPRA implication.
 
 The author replay ran `check-induction-endpoint.sh`, rebuilding the six local modules against the pinned Foundation overlay. Printed axioms are `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`.
+An independent complete replay also passed without `sorryAx`.

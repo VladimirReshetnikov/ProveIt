@@ -18,3 +18,6 @@ The three new modules passed an author suffix replay against retained previously
 checked overlays, reporting only `propext`, `Classical.choice`, and `Quot.sound`
 and no `sorryAx`. The full nested checker `check-first-three-positive-to3.sh`
 is supplied but has not been run.
+An independent ordered suffix replay rebuilt the three new modules against
+separately checked first-three and marker/controller objects and retained
+deeper overlays. It passed without `sorryAx`; it was not a full nested replay.
