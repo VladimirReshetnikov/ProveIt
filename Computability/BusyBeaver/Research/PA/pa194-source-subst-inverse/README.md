@@ -28,3 +28,7 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 
 The final module passed a fresh suffix check using retained prerequisites;
 the printed axioms contain no `sorryAx`. The full nested replay is pending.
+
+An independent suffix replay rebuilt the inversion module against separately
+checked forward-node prerequisites and retained deeper overlays. It passed
+without `sorryAx`; this was not a full nested replay.
