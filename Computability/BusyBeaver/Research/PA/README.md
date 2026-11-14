@@ -43,6 +43,9 @@ an end-to-end Lean proof of that claim or an iPRA proof.
   transition-table, and configuration-step functions in the PRA language.
   Their model equations are ingredients for a weak-arithmetic proof, not the
   missing machine/refutation reductions.
+- [Diagonal calibration](pa195-calibration/README.md) proves immediate
+  formula-code descent in classical PRA, including nonstandard models.
+  Recursive freshness and the proof-producing translation remain open.
 
 ## Other machines and related work
 
@@ -62,3 +65,10 @@ contains two further 195-state candidates, `machine_195S.tm` and
 They are distinct from the original PA195 table. The packet gives mathematical
 and executable evidence, not an end-to-end Lean proof of the desired iPRA
 statement.
+
+[The PA195 follow-up packet](../../../../docs/incoming/pa195_followup_research.zip)
+contains another 195-state candidate, `M195S8`, and a claimed halting
+equivalence with the original PA195. It also contains a rejected 194-state
+construction. [The separate below-195 audit](../../../../docs/incoming/pa_below195_research_2026-11-14.zip)
+does not establish a smaller consistency machine. These packets do not supply
+an end-to-end Lean proof of the iPRA statement.
