@@ -35,4 +35,5 @@ TMPDIR=/dev/shm IPRA_LEAN_OVERLAY=/path/to/ipra/lib \
 An independent ordered suffix replay rebuilt the four new modules in a fresh
 tmpfs overlay against separately checked controller objects and preserved
 prerequisite/scratch overlays. Their reported theorem axioms did not include
-`sorryAx`; the full nested replay is running separately.
+`sorryAx`. The redundant full nested replay was stopped to reduce I/O; a
+shared comprehensive prerequisite replay is running separately.
