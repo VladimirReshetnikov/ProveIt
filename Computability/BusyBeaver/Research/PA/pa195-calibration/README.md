@@ -61,3 +61,24 @@ To check the path result and rebuild both earlier calibration modules, use:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-path.sh
 ```
+
+`PA195OccursFormula.lean` represents the path-occurrence over-approximation and
+its positive-child step premise as explicit formulas of the candidate-PRA
+language. For each **fixed** binary primitive-recursive path code `f`,
+`candidate_pra_represented_path_fresh` proves the universally closed
+conditional as an actual candidate-PRA theorem: if the represented path
+obeys the represented step condition, its root does not occur as a Cantor
+field on that path. The semantics of both formulas are checked in every
+candidate-PRA model, including nonstandard ones. The fixed `f` is a theorem
+parameter, not an internal quantifier over function codes.
+
+The same four-tag decoder and diagonal clause are used by PA194. This
+represented predicate remains an over-approximation for a *supplied* path;
+no extractor has yet been shown to turn an arbitrary PA194 decoder
+occurrence into such a path, so the theorem does not establish complete
+self-freshness of the PA194 decoder. To check the representation and PRA
+theorem using the same audited overlays, run:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-occurs.sh
+```
