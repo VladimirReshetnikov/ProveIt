@@ -285,3 +285,14 @@ uniform proof-template compiler remain open. Check with the audited overlays:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-bind-translation.sh
 ```
+
+`PA194FVarCode.lean` implements an explicit primitive-recursive code that maps
+any source label to the exact Foundation free-variable term code. Candidate
+PRA proves its graph agrees with Foundation's `qqFvarDef`, and the model
+theorem covers nonstandard labels. This supplies one atomic operation needed
+by the represented source-to-PA translator; the recursive translator and its
+correctness remain open. Check the component using the audited overlays:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-fvar-code.sh
+```
