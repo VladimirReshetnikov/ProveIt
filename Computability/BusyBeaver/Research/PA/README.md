@@ -33,7 +33,8 @@ to a standard-model halting sentence and constructs a conditional iPRA
 equivalence. [The explicit machine codes](pa194/ipra/machine-code/README.md)
 include a clock whose decoded execution is characterized in every candidate
 PRA model. [The quotient proof](pa194-dense/README.md) connects the 201-control
-parent and dense PA194 table for all standard finite runs.
+parent and dense PA194 table for all standard finite runs; [the zipper bridge](pa194-zip-bridge/README.md)
+connects blank-tape halting to the literal machine used by the arithmetic code.
 [Source coverage](pa194-coverage/README.md) reduces the source-to-parent
 simulation to a finite set of Lean checks; its full run is in progress. Both
 machine-specific consistency reductions remain unproved.
