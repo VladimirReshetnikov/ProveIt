@@ -26,6 +26,5 @@ Computability/BusyBeaver/Research/PA/pa194-relational-interface/check.sh
 ```
 
 The script rebuilds the neighborhood prerequisites and pinned named-formula
-modules in private tmpfs, then checks the interface and encoding. The Lean
-modules have passed independently rebuilt overlay checks; the complete
-standalone script has not yet completed.
+modules in private tmpfs, then checks the interface and encoding. An
+independent full standalone replay has passed.

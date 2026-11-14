@@ -22,5 +22,5 @@ Computability/BusyBeaver/Research/PA/pa194-neighborhood/check.sh
 ```
 
 The script rebuilds the reverse-rewrite prerequisites in private tmpfs, then
-checks the neighborhood proofs. The Lean modules have passed an independently
-built overlay check; the full standalone script has not yet completed.
+checks the neighborhood proofs. An independent full nested rebuild through
+`pa194-relational-interface/check.sh` has passed, including these prerequisites.
