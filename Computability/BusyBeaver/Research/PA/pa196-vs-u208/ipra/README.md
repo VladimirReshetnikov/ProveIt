@@ -83,7 +83,11 @@ graph and its enclosing existential, conditional on a bound for the remaining
 Σ₁ conjunct. This does not establish that remaining bound.
 `PA196InductionBodyAll.lean` bounds two exact quantifier-code graphs in the
 induction-body recognizer and their nested existentials, conditional on the
-remaining inner tail's witness bound.
+remaining inner tail's witness bound. The implication-growth and induction-body
+tail modules discharge that tail and one more enclosing existential.
+`PA196InductionBodyOuter.lean` derives a bound for the complete body graph
+from an arithmetic substitution-graph bound and two explicit substitution
+growth bounds; those premises remain open.
 
 `PA196PAAlphabetBounds.lean` proves both polarities of the witness bounds for
 Foundation's arithmetic function-symbol and relation-symbol recognizers.
@@ -102,6 +106,9 @@ modules build on these results: `PA196PAFormulaSetComplete.lean` proves both
 witness bounds for the exact formula-set conjunct of Foundation PA's
 derivation core. The full core bounds still need the remaining rule branches
 and the unrestricted-induction axiom recognizer.
+`PA196PATermOperations.lean` also bounds arithmetic term substitution and
+free- and bound-variable shifts, including their vector forms. Formula-level
+substitution and shift graphs still need separate bounds.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
