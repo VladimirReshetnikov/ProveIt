@@ -34,3 +34,9 @@ produces the full `Coverage` theorem. All build products are placed in an
 isolated temporary `/dev/shm` directory. Theorems here are about standard
 finite executions; none is a theorem internal to PA, PRA, or iPRA, and none
 alone establishes an equivalence to consistency of PA.
+
+The complete run has passed; `verification.json` records its inputs, result,
+and theorem axiom audit. All 368 generated batch objects were retained in a
+hash-verified temporary overlay, and the aggregate theorem was independently
+recompiled from those objects. The full source-tree generator remains a
+pinned Python translation, as described above.
