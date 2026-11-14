@@ -32,3 +32,22 @@ Those temporary overlays are not distributed build artifacts. A single clean
 combined rebuild script for every dependency and both long certificates has
 not yet been provided. The full checks and their independent aggregate replays
 are stated separately rather than claiming such a rebuild.
+
+A combined fresh build is now provided. Supply the matching freshly built
+project and Foundation object overlays used by the iPRA checks, then run:
+
+```sh
+IPRA_LEAN_OVERLAY=/path/to/project/objects \
+IPRA_FOUNDATION_OVERLAY=/path/to/foundation/objects \
+  Computability/BusyBeaver/Research/PA/pa194-clock-source-complete/check.sh
+```
+
+It retains each component in a private tmpfs directory until assembly,
+compares duplicate object files byte for byte, and rejects collisions. It
+prints the repository revision, Lean version, source-builder and archive
+hashes, and theorem axioms. `--preflight` checks wrapper construction and
+Lean version without rebuilding proofs. Expect about 55–70 minutes or more on
+the machine used for the receipts, mainly for the full coverage and startup
+runs. The component wrappers, collision check, and final assembly have been
+tested, but this new complete fresh script has not yet been run end to end.
+The previous checks and receipts remain the evidence for the theorem.
