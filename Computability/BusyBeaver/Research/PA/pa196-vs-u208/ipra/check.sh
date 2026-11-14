@@ -156,6 +156,9 @@ for task_mod in PA196PAFreeGraph PA196PAFreeGrowth PA196PRAWitnessNestedTower PA
   lean -M6000 -j1 "$bridge/$task_mod.lean" -o "$PA196_TASK_CHECK_DIR/$task_mod.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 done
 lean -M6000 -j1 "$bridge/PA196PRAAssemblyComplete.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+if [[ -n "${PA196_EXTRA_CHECK:-}" ]]; then
+  bash "$PA196_EXTRA_CHECK"
+fi
 if rg -q "sorryAx" "$PA196_TASK_CHECK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1

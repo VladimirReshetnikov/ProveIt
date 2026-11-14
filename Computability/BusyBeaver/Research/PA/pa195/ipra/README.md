@@ -41,6 +41,13 @@ IΣ₁. That semantic assumption is stronger than the candidate PRA assumptions;
 the witness may be nonstandard, and no relation to the machine's checker is
 proved. None of these results establish the missing machine reductions.
 
+`PA195PRAAssembly.lean` reuses the completed machine-independent PA
+refutation witness certificate to derive the reverse iPRA implication from
+the corresponding classical PRA machine reduction. It assembles the desired
+equivalence from the forward and reverse classical PRA reductions, both of
+which remain explicit hypotheses. Thus it does not prove either direction for
+PA195 unconditionally.
+
 To rerun the checks from the repository root, supply matching prebuilt Lean
 4.32 project and Foundation object directories, for example in the development
 environment:
@@ -57,3 +64,9 @@ modules in a private temporary directory. It checks a few direct source hashes
 but assumes its supplied transitive object caches match their sources; it is
 not a clean rebuild of those dependencies. It prints theorem axiom dependencies
 and rejects `sorryAx` in the checked declarations.
+
+To check the additional assembly and rebuild the PA witness certificate,
+use the same environment variables with `check-assembly.sh` instead of
+`check.sh`. This invokes the PA196 iPRA check script to rebuild the shared
+certificate and then checks the PA195 assembly in the same private overlay.
+The dependency-overlay limitations above still apply.
