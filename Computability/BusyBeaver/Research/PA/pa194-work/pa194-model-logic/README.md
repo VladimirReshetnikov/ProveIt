@@ -100,6 +100,10 @@ recurrences for `spec`. Taking `B = b = p` gives root agreement. The `p ≤ b`
 condition is a conservative budget bound, not a claimed minimal depth bound.
 The comparison code and its recurrence equations remain explicit hypotheses;
 this does not yet construct an independent translation or compile PA proofs.
+Semantic correctness of the neighborhood-equality translation also requires
+the reserved label to be fresh for the initial environments and all labels
+allocated under binders. The constructor equations and source-syntax validity
+do not establish that freshness invariant.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
