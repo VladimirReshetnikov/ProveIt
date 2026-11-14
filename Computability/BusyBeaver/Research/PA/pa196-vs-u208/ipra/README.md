@@ -123,6 +123,11 @@ for the full substitution recursion stage remains open.
 `PA196PRAQVecHistory.lean` constructs a seed-parameterized primitive-recursive
 history code and proves its recurrence in candidate-PRA models. Its sequence
 properties and its connection to the arithmetic coded traces remain open.
+`PA196PRAQVecTraceMatrix.lean` defines a bounded formula characterizing the
+parameterized tower history as a sequence with the expected entries. The
+TraceStep and TraceTotal modules prove its preservation and all-model validity
+using candidate-PRA recursion, assuming a sequence-cons code with its proved
+graph specification.
 `PA196PAQVecTraceInvariant.lean` proves by IΣ₁ induction that a coded qVec
 trace is bounded by a coded majorant trace at every model index, assuming the
 initial comparison and both trace-transition properties. Constructing traces
@@ -130,8 +135,14 @@ in that vector encoding and relating them to the substitution stage remains
 open.
 `PA196PAQVecSeqTrace.lean` constructs coded qVec and majorant sequences at
 every model-internal length in IΣ₁ models, and proves their result comparison
-at every model index. Identifying the majorant result with the candidate-PRA
-tower and relating qVec iteration to the substitution stage remain open.
+at every model index. `PA196PAQVecTowerConnect.lean` identifies that majorant
+result with the candidate-PRA tower in models whose arithmetic reduct satisfies
+IΣ₁; `PA196PAQVecPathBound.lean` also bounds coded paths satisfying explicit
+step inequalities. `PA196PASubstitutionPath.lean` bounds paths following the
+actual substitution branch shapes, and the Phi and StageChild modules show
+that an actual successor-stage node is atomic or has a prior-stage child with
+that branch relation. A coded path extractor, bounds for both children of
+branching nodes, and the full substitution-stage bound remain open.
 `PA196PASubstitutionClauses.lean` proves the ten positive constructor-clause
 witness bounds for arithmetic formula substitution, and
 `PA196PASubstitutionNegative.lean` proves six negative constructor clauses.

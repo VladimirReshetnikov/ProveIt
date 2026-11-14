@@ -27,7 +27,7 @@ mkdir -p "$task_dir/M6" "$task_dir/PA196" "$task_dir/DiophantineConsistency"
 # PA-consistency module below does not hide its other imports.
 for task_dep in "$IPRA_LEAN_OVERLAY"/DiophantineConsistency/*; do
   task_name=${task_dep##*/}
-  case "$task_name" in IPRAPA196Consistency.olean*|PRAWitnessRefutationOuter.olean*) continue ;; esac
+  case "$task_name" in IPRAPA196Consistency.olean*|PRAWitnessRefutationOuter.olean*|PRAHistoryLengthUnique.olean*|PRAHistorySingletonMembership.olean*|PRAHistorySingletonSequence.olean*|PRAHistoryIterator.olean*|PRAHistoryTrace.olean*) continue ;; esac
   ln -s "$task_dep" "$task_dir/DiophantineConsistency/$task_name"
 done
 export PA196_TASK_CHECK_DIR="$task_dir" IPRA_LEAN_OVERLAY IPRA_FOUNDATION_OVERLAY
@@ -44,6 +44,10 @@ lean -M6000 -j1 Computability/DiophantineConsistency/Lean/DiophantineConsistency
   -o "$PA196_TASK_CHECK_DIR/DiophantineConsistency/IPRAPA196Consistency.olean"
 lean -M6000 -j1 Computability/DiophantineConsistency/Lean/DiophantineConsistency/PRAWitnessRefutationOuter.lean \
   -o "$PA196_TASK_CHECK_DIR/DiophantineConsistency/PRAWitnessRefutationOuter.olean"
+for task_mod in PRAHistoryLengthUnique PRAHistorySingletonMembership PRAHistorySingletonSequence PRAHistoryIterator PRAHistoryTrace; do
+  lean -M6000 -j1 "Computability/DiophantineConsistency/Lean/DiophantineConsistency/$task_mod.lean" \
+    -o "$PA196_TASK_CHECK_DIR/DiophantineConsistency/$task_mod.olean"
+done
 lean -M6000 -j1 "$bridge/PA196BoundedChecks.lean" | tee "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196Endpoint.lean" -o "$PA196_TASK_CHECK_DIR/PA196Endpoint.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196StandardSemantics.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
@@ -81,10 +85,18 @@ lean -M6000 -j1 "$bridge/PA196PAQVecLength.lean" | tee -a "$PA196_TASK_CHECK_DIR
 lean -M6000 -j1 "$bridge/PA196PATermBShiftGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermBShiftGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAQVecGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PRAQVecTower.lean" -o "$PA196_TASK_CHECK_DIR/PA196PRAQVecTower.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
-lean -M6000 -j1 "$bridge/PA196PRAQVecHistory.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
-lean -M6000 -j1 "$bridge/PA196PAQVecTowerModel.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PRAQVecHistory.lean" -o "$PA196_TASK_CHECK_DIR/PA196PRAQVecHistory.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PRAQVecTraceMatrix.lean" -o "$PA196_TASK_CHECK_DIR/PA196PRAQVecTraceMatrix.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PRAQVecTraceStep.lean" -o "$PA196_TASK_CHECK_DIR/PA196PRAQVecTraceStep.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PRAQVecTraceTotal.lean" -o "$PA196_TASK_CHECK_DIR/PA196PRAQVecTraceTotal.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAQVecTowerModel.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAQVecTowerModel.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecTraceInvariant.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
-lean -M6000 -j1 "$bridge/PA196PAQVecSeqTrace.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAQVecSeqTrace.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAQVecSeqTrace.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAQVecTowerConnect.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAQVecTowerConnect.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAQVecPathBound.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PASubstitutionPath.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionPath.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PASubstitutionPhi.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionPhi.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PASubstitutionStageChild.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASubstitutionClauses.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionClauses.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASubstitutionNegative.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionNegative.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASubstitutionCore.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionCore.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
