@@ -33,6 +33,11 @@ PA proof-code predicate in models whose arithmetic reduct satisfies IΣ₁;
 this semantic assumption is stronger than the candidate PRA assumptions.
 None of these results proves the missing machine-specific reductions.
 
+`PA194PRAAssembly.lean` also reuses the completed machine-independent PA
+proof-code witness certificate. It derives the reverse iPRA implication
+from a hypothesized classical PRA machine reduction and assembles the
+equivalence from both classical PRA reductions; neither reduction is proved.
+
 To reproduce the checks, supply matching prebuilt Lean 4.32 project and
 Foundation object directories, for example:
 
@@ -48,3 +53,7 @@ private temporary directory. It pins a few direct sources but assumes that
 the supplied transitive object caches match their sources; it is not a clean
 rebuild of those dependencies. It prints axiom dependencies and rejects
 `sorryAx` in the checked declarations.
+
+To rebuild the shared PA witness certificate and check the additional
+assembly, use the same environment variables with `check-assembly.sh` in
+place of `check.sh`. The same dependency-overlay limitations apply.
