@@ -25,3 +25,7 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 The final module passed a fresh suffix check against the already checked
 output-ceiling theorem and retained prerequisites. Its printed axioms contain
 no `sorryAx`. The full prerequisite-prefix replay remains pending.
+
+An independent suffix replay rebuilt the combined qVec/substitution theorem
+against the separately checked arithmetic output, witness and qVec ceilings.
+It passed without `sorryAx`; this was not a full prerequisite replay.
