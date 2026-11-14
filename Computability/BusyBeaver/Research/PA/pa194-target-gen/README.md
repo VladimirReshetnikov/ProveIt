@@ -31,3 +31,7 @@ IPRA_FOUNDATION_OVERLAY=/path/to/foundation/package-lib \
 
 The script rebuilds its prerequisite chain under `/dev/shm` by default; set
 `TMPDIR` for another suitable temporary directory.
+
+An independent suffix replay recompiled the generalization step against the
+separately checked target MP and h1 objects, reusing the other prerequisite
+overlays. The reported theorem axioms did not include `sorryAx`.
