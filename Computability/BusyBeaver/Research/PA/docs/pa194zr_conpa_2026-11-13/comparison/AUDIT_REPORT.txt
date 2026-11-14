@@ -1,0 +1,177 @@
+PA machine corpus audit at ProveIt 17f92105e2bc4317feae6c219cb2143437b482ff
+======================================================================
+
+Scope and method
+----------------
+The current repository has 26 ZIPs directly in docs/incoming. PA/docs files
+36 historical packets, preserving delivered file bytes except documented
+omissions: copies already in upstream snapshots, byte-identical sibling
+archives, and ignored log/manifest files. Twenty-one of the old archives
+remain in incoming; five newly added packets give 41 distinct principal
+research packets overall. The archive_ledger.csv/json files cover all 41.
+Counting current incoming only would omit fifteen older packets now filed
+under PA/docs. Counting every filed copy as a new design would overcount.
+
+census.py recursively opens each distinct archive payload once, records all
+references to it, and scans direct PA .tm/.txt files and six ZIPs. The numeric
+recognizer requires complete five-column binary deterministic transition
+rows, two rows per working control, L/R directions, and exactly one undefined
+halt control. It excludes arbitrary code/JSON-only machine encodings and
+nonhalting synthetic controls with no halt label. Thus its census is scoped,
+not a recognizer for every machine described by arbitrary programs. Human
+comparison supplements this recognizer using each packet's report/README.
+
+Fresh counts:
+  26 current top-level incoming ZIPs
+  71 archive references,44 distinct ZIP payloads, maximum nested depth 7
+  24458 members of distinct archive payloads
+  4417 complete-table occurrences
+  620 byte-distinct tables
+  446 root-free action-preserving control graphs
+  2 disconnected synthetic tables excluded from the graph-class count
+  zero archive parsing failures
+
+The graph signature is the lexicographically minimum deterministic BFS
+serialization over all controls that reach the full working graph. It keeps
+read bits, written bits, directions and the unique halt fixed. It forgets
+the selected initial control; different signatures therefore establish a
+stronger distinction than inequality of start-rooted graphs. Conversely,
+class membership alone does not identify the intended blank start. Every
+family actually under consideration uses dense start 0 or native start 74.
+Graph signatures say nothing about PA calibration or minimality.
+
+Frontier and duplicate delivery
+------------------------------
+At 194 states there are 97 table occurrences,15 literal byte forms and 8 graphs.
+Seven have supplied implementation evidence; one is explicitly rejected.
+frontier194.csv/json gives exact hashes, source counts, startups and statuses.
+
+The first 3 supported graphs are primary PA194 (134+67−7), its physical A/D
+swap, and the independently found 194 allocation (134+68−8). The source is
+exactly the same 3,673-site separate190 emitter with the original S/MP command
+protocol. These are not 3 different logical theories.
+
+Four newer packets principally deliver the same PA194C, dense SHA256
+d759313c03b515293fe06b12769fa1771d3829a2bad89febaa9b4391990f3a4b.
+The fifth new packet also delivers this table as its first construction.
+C installs the existing cached-head protocol through six native row changes;
+its 3,649-site source equals the supplied 195C source. Thus presenting C again
+would not meet the new-fallback requirement at the current revision.
+
+PA194CS, second construction of pa194_new_designs_2026-11-13.zip, is already
+present. It replaces Shift's final restore-and-test with a symmetric
+comparison: old(cache,scratch)=(h,1), new=(1,h). On inequality the destructive
+comparison clears both operands. It removes 3 source instructions and adds a
+reader control; the certified 41→330 fold recovers that control. It has 3,646
+sites,4745 outcomes,startup 57,768. Combining the symmetric Shift argument
+with primary C and calling it new would also repeat an input.
+
+PA194CZ, in pa194c_conpa_2026-11-13 (1).zip, is a supplementary but concrete
+194-state seed. It changes native 27/read 1 to(1,R,21), replacing source 26's
+jump 34 by decrement register 6 with zero branch 34 and positive branch 27. The 263,244-pair
+positivity-mask invariant establishes register 6=0 at site 26. It has 4,750
+outcomes and startup 58,168. The packet supplies a construction checker and
+invariant certificate, explicitly without a separate new independent replay.
+
+The easily missed eighth-fold cached C composition already appears as
+pa194c_conpa.zip!pa194c_conpa/search/grammar/fresh_frontier/pa194altC.native.tm,
+SHA a509952c1e06a79a90d5436cb52d3d5faf395ea3f1de2a9e496d7e17f1c4f353.
+Although called a search input, its input_validation.json records all 4,749
+symbolic contracts,32 fold cases,exact source equality and startup 57,922.
+It is not available as a fresh fallback merely by promoting it to a main
+result. Its checker uses inherited arithmetic-block lemmas rather than a
+fresh literal-tape derivation of those lemmas.
+
+The eighth 194 graph is the rejected seven-zero scanner quotient. Its local
+folds and complete source CFG pass; physical runtime fails because an old
+scanner mistakes interior seven-zero source runs for the header. Counting
+local quotient certificates as whole-machine certification would accept
+this known negative control incorrectly.
+
+Larger designs and how reductions relate
+----------------------------------------
+The 195 frontier comprises 26 byte forms in 16 action graphs. Important
+supported ancestors are original PA195(bundled diagonal191,3,700 sites,4,815
+outcomes,134+68−7),195S(separate190,3,673 sites,4,780 outcomes,134+67−6),
+195C(cached separate190,3,649 sites,4,749 outcomes),195DC(cached bundled191,
+3,676 sites,4,784 outcomes),and M195S8(scanner8,3,700 sites,4,815 outcomes,59,164 startup).
+An alternate 195 separate190 allocation occurs in the later 194 packet; it
+uses 67 raw readers minus 6 folds and is a comparison point, not a new logic.
+
+Two 195 secondary implementation witnesses in the 195DC packet deserve
+separate status. PA195R swaps A,H only in rho8's unrestricted positions,
+retaining the same full axiom family; it has 69 raw readers minus 8 folds.
+PA195N replaces Gamma(A)=A→U(A,A) by negative vacuity
+(A→1)→U(A,A→1),has 197 emitter tokens,71 raw readers minus 10 folds,
+3,794 sites,4,937 outcomes. Both passed implementation checks. PA195N's
+additional logical transfer is an explicitly separate mathematical
+obligation; its optional folder is not used to justify the primary result.
+
+Other 195 groups include six documented rejected or failing designs:
+two-rotation quotient(93 contract failures),warm_physical(714),
+extended_physical(777),seven-zero regrouping,short-scanner deletion(96
+unrestricted failures),andzero-jump/helper fold(fails even a reached source
+site). New files also include search-only quotientcross and the unfolded
+195CS parent. Their mere count does not certify a logical endpoint.
+
+The 196 corpus has 163 byte forms in 99 graphs, including ancestors, controls,
+rejected experiments and accepted presentations. Distinct effective ideas
+are diagonal-vacuity and separate-head emitters, cached-head S/MP, A/D
+register allocation, equivalent source associations, scanner repairs and
+zero-invariant jump replacements. The original PA196 has 3,812 source sites
+and 4,959 outcomes; reductions in source-site count do not imply fewer physical
+states because sharing and compatible contextual folds determine the final
+reader allocation. Two rejected 196 Shift arrangements actually halt from
+blank after 43,563 steps; this stronger negative evidence is preserved in the
+formal archive audit.
+
+U208 has 177 byte forms and 142 graphs in this broad census, most generated
+experiments. The manuscript-selected corpus earlier distinguished 20 graphs
+among 27 designated presentations. Those numbers concern a restricted
+positive-design catalogue and are compatible with the broader census.
+The original U209→U208 history fold and the PA209→PA196 redesign are not
+independent reductions one can subtract twice. Many named directories in
+PA are proof layers for a single table, not extra machine designs.
+
+The 41-packet ledger explains each packet's distinct role. Its historical
+status descriptions are manuscript descriptions, not claims that all old
+certificates were rerun in this turn. Full literal hashes and first-member
+locators permit exact reproduction against this revision.
+
+Formalization and logical proof boundary
+---------------------------------------
+The current PA/README.md explicitly says neither machine-specific
+direction of iPRA⊢Con(PA)↔¬Halt(PA194) has been established. The analogous
+195/196 endpoints also retain their reductions as hypotheses. This is
+not evidence against ordinary mathematical PA proofs in the manuscripts;
+it means the words "Lean-checked" or "proved in iPRA" require care.
+
+pa194-dense establishes the 201-parent/194-dense equivalence for all
+standard finite executions over complete tapes. The zipper bridges bind
+those standard executions to the arithmetic machine representation.
+pa194-coverage supplies a conditional source-to-physical coverage theorem
+and per-site checking infrastructure; its README calls the full run
+in progress. These are not internal PA/PRA/iPRA endpoint proofs.
+
+The imported PA196 contains an internal PA implication from literal
+nonhalting to consistency. That does not supply its converse. The later
+manuscripts explicitly supply ordinary syntactic calibration arguments:
+PA refutation→calculus refutation→command sequence→source halt, and the
+reverse by proof annotations and PA-verifiable arithmetic translation of
+finite binary-set comprehension. The soundness argument must use proof
+transformations, not a uniform truth predicate or PA reflection. It must
+handle truth code I(0,0)=0, Cantor-stack pair(0,0)=0, coincident binders and
+Gamma freshness. The supplied detailed calibration discusses these points.
+
+For a new source-preserving decoder or register-allocation reduction,
+an ordinary mathematical theorem can legitimately cite that inherited
+calibration and prove a PA-formalizable finite-trace equivalence. Executable
+universal contracts support the new finite machine facts. A report should
+state that dependency clearly and should not claim it produced a fresh
+end-to-end Lean/Rocq endpoint. Conversely, repeating the repository's
+conditional iPRA assembly without establishing its hypotheses does not
+by itself solve the requested PA-equivalence construction.
+
+No census count or unsuccessful restricted search establishes a lower
+bound of 194. Sub-194 remains a construction problem; the best effective
+AX-reader target under the old fixed 134 controls is 59.

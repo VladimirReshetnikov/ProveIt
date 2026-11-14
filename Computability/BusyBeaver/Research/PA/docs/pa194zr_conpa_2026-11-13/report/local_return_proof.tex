@@ -1,0 +1,75 @@
+\subsection{A local certificate for all nine zero returns}
+Let $P$ be the archived PA194CS register program, and let $P'$ be
+PA194ZR.  A configuration consists of a source program counter and nine
+natural-number registers $R_0,\ldots,R_8$.  The source instruction
+$\operatorname{dec}(r,z,p)$ leaves a zero register unchanged and jumps to
+$z$; on a positive register it subtracts one and jumps to $p$.
+
+The programs have the same 3,646 instruction sites.  Their only differences
+are the following nine replacements.  All site numbers are zero-based.
+\begin{center}
+\begin{tabular}{r|r|r}
+site & old jump destination & new positive destination\\\hline
+3 & 5 & 4\\
+9 & 11 & 10\\
+3526 & 3528 & 3527\\
+3532 & 3535 & 3533\\
+3544 & 3546 & 3545\\
+3550 & 3553 & 3551\\
+3553 & 3637 & 3554\\
+3627 & 3629 & 3628\\
+3633 & 3637 & 3634
+\end{tabular}
+\end{center}
+At each listed site, $P'$ has
+$\operatorname{dec}(3,\text{old destination},\text{positive destination})$.
+
+Define the protected region
+\[
+ S=\{0,\ldots,9\}\ \cup\ \{3523,\ldots,3633\}
+     \ \cup\ \{3638,\ldots,3645\}.
+\]
+It contains 129 sites, including all nine changed sites, and does not contain
+the initial source counter 25.  Inspection of the complete control-flow
+graphs of both $P$ and $P'$ gives exactly three edges entering $S$ from its
+complement:
+\[
+ 48\longrightarrow3638,\qquad
+ 49\longrightarrow3554,\qquad
+ 3519\longrightarrow3523.
+\]
+Each is the zero branch of a decrement of $R_3$.  No instruction at a site
+in $S$ increments $R_3$.  The accompanying independent checker verifies
+these facts by enumerating every edge of both complete instruction lists;
+it uses no register-value bound, program simulation, or whole-program
+positivity-mask certificate.
+
+\paragraph{Local invariant.}
+For either program, from source counter 25 with \emph{any} initial register
+store, whenever the current counter lies in $S$, the current value of $R_3$
+is zero.  This follows by induction on the number of source steps.  The
+initial counter is outside $S$.  A step entering $S$ from outside is one
+of the three zero branches above and therefore establishes $R_3=0$.
+A step starting in $S$ cannot make a zero $R_3$ positive, because it does
+not increment that register.  This includes a decrement of $R_3$: its
+positive branch is then unavailable and its zero branch leaves the register
+unchanged.
+
+\paragraph{Exact source equivalence.}
+Start $P$ and $P'$ from the same arbitrary register store at source counter
+25.  After every number of source steps, their complete configurations
+are equal.  Prove this by a second induction.  At every unchanged site
+the instructions agree literally.  At a changed site the local invariant
+gives $R_3=0$, so the new decrement leaves every register unchanged and
+takes exactly the old jump's destination.  The two successors are thus
+identical.  Consequently the source programs halt on exactly the same
+initial stores, after the same number of source instructions.
+
+This is a direct elementary argument about unbounded natural-number
+registers.  Its finite graph premises and induction can be expressed in
+PA.  It establishes the source-level transformation only: the separate
+blank-tape initialization and universal physical transition contracts
+remain necessary to transfer the conclusion to the displayed Turing
+machine.  In particular, the rejected version using $R_6$ at the eight
+shared returns had valid source contracts but failed blank-tape
+initialization, so source equivalence alone was insufficient.

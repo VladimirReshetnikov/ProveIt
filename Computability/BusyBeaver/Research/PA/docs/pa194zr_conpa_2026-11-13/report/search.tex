@@ -1,0 +1,81 @@
+\section{Attempts to cross the 194-state frontier}
+\label{sec:search}
+No delivered search produced a verified machine with fewer than 194
+working states. This is an experimental outcome, not a lower bound.
+The searches separate syntactic size estimates, local tape-context
+conditions, complete arbitrary-register contracts, and the actual blank
+initialization. Passing an earlier gate is never reported as passing a
+later one.
+
+\subsection{Compiler and axiom-presentation searches}
+The compiler searches vary the binary association of the axiom-emitter
+word, its shared reader dictionary, and context-sensitive reader folds.
+They also test permutations of emitted heads, parameter roles, selected
+macro expansions, and the new zero-return control. The frozen trusted
+record accounts for 90,819,000 mutation iteration slots. A slot is not
+necessarily a distinct grammar or a complete candidate machine, and most
+slots never reach whole-machine validation. The best resulting total
+state-count score remains 194.
+
+Two logical variants exchange the antecedents of $h_3$ or $h_6$. The
+exchange transformation has an explicit propositional proof and is a
+legitimate candidate for preserving the proof calculus. Its compiler
+scores nevertheless remain above 194 in these runs. The accompanying
+exchange-template checker is retained as exploratory work; neither
+variant is substituted into the delivered machine.
+
+A dynamic-normalization defect was discovered during exploration:
+normalization preserved the emitted word immediately but reused leaf
+position identifiers that a later mutation treated as distinct.
+An apparent sub-194 result from the affected experiment was discarded.
+The corrected optimizer renumbers the leaves and checks exact word
+identity after normalization. The trusted accounting excludes all runs
+affected by that defect, unlogged interrupted tails, and runs based on
+the blank-invalid $R_6$ return variant. The final two bounded runs were
+stopped at logged prefixes, with 4,743,000 and 4,503,000 accounted slots.
+This provenance is necessary to interpret the negative record honestly.
+
+\subsection{Physical reductions of the accepted machine}
+The final PA194ZR table was also subjected to direct reduction attempts.
+Native control 302 remains reachable through the zero branch of control
+113 even after the nine source returns have been redirected. The
+successful source transformation therefore does not by itself delete 302.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}XrX@{}}
+\toprule
+Bounded search & Trials & Result\\\midrule
+Mergers involving 302, selecting old transition actions
+ & 676 & No complete-contract success\\
+Alternative actions for $(113,0)$ after deleting 302
+ & 776 & No complete-contract success\\
+Generalized pair folds on radius-six contexts
+ & 28,755,456 & No context-valid reduction\\
+302-specific folds on radius-eight contexts
+ & 297,984 & No context-valid reduction\\
+\bottomrule
+\end{tabularx}
+\end{center}
+The context collections contain 272,471 and 3,129,859 contexts
+respectively. These are finite inductive abstractions of tape behavior,
+and a negative result can exclude only the tested actions under the
+specified abstraction. It is not a proof that a different simulation
+relation, source tree, scanner, or arithmetic kernel cannot save a state.
+
+Earlier scanner experiments shorten the seven-zero delimiter test to
+six, redirect scanner states, or merge scanner controls. They fail
+universal contracts. The six-zero version fails 95 contracts: delimiter
+safety cannot be inferred merely from a tally of source-address
+substrings. The record includes the important $R_6$ negative control:
+all source contracts pass, but the literal blank run halts at step 1,361.
+It is a rejected design, never an alternative consistency machine.
+
+\subsection{What remains open}
+The accepted construction changes the shared return convention while
+keeping the same total state count. Its two row changes could provide a
+different starting point for future reader allocation or scanner work,
+but no further saving is established here. A successful smaller machine
+would still need a complete source binding, arbitrary-frame physical
+contracts, exact blank initialization, and a PA refutation calibration.
+The present evidence neither proves minimality at 194 nor rules out
+a substantially different design.
