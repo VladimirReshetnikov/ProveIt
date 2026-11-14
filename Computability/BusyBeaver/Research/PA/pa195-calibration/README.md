@@ -189,3 +189,16 @@ fresh local dependency builds, run:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-core.sh
 ```
+
+`PA194OccurrenceStage.lean` gives an explicit primitive-recursive stage
+iterator for any certified successor code. In every candidate-PRA model,
+including nonstandard stages, it proves the base and successor equations and
+the successor graph. For the concrete history collector, it also proves the
+exact bounded-bit membership equation, with its code-correctness proofs stated
+as hypotheses. It does not yet show stabilization of history bits, construct
+the final occurrence predicate, or establish its recursion coverage. Check it
+with the same audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-stage.sh
+```
