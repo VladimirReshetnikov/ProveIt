@@ -92,7 +92,8 @@ growth bounds. The polynomial tower-transfer modules and
 graph witness bound in every candidate-PRA model.
 `PA196InductionFvarTailComplete.lean` further proves the bound for the positive
 recognizer's exact free-variable tail and enclosing existential; the complete
-recognizer and its negative polarity remain open.
+recognizer's positive bound is completed by the arithmetic shift-graph modules
+and `PA196InductionPositiveComplete.lean`. Its negative polarity remains open.
 
 `PA196PAAlphabetBounds.lean` proves both polarities of the witness bounds for
 Foundation's arithmetic function-symbol and relation-symbol recognizers.

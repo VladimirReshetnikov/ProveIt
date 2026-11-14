@@ -135,7 +135,12 @@ lean -M6000 -j1 "$bridge/PA196PATermBVGraph.lean" -o "$PA196_TASK_CHECK_DIR/PA19
 lean -M6000 -j1 "$bridge/PA196PABvGraphBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PABvGraphBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAFormulaSetBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAFormulaSetBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAFormulaSetComplete.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAFormulaSetComplete.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
-lean -M6000 -j1 "$bridge/PA196InductionFvarTailComplete.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionFvarTailComplete.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionFvarTailComplete.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PATermShiftGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermShiftGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAShiftGraphConditional.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAShiftGraphConditional.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAShiftGraphComplete.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAShiftGraphComplete.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionPositiveConditional.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionPositiveConditional.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionPositiveComplete.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 if rg -q "sorryAx" "$PA196_TASK_CHECK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1
