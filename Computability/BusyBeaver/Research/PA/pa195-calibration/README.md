@@ -411,3 +411,14 @@ Recheck both with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-bit-syntax-codes.sh
 ```
+
+`PA194NumeralCode.lean` constructs, for each externally fixed natural number
+and input arity, an explicit PR constant function code. Its value is checked
+in every candidate-PRA model, and candidate PRA proves that its graph agrees
+with the corresponding nullary constant code. This can supply fixed syntax
+tags and symbol codes to a static bit-formula compiler; it is a family of
+finite codes, not a dynamically chosen numeral compiler. Check it using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-numeral-code.sh
+```
