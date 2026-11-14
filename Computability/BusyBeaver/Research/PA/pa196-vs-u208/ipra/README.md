@@ -143,6 +143,10 @@ actual substitution branch shapes, and the Phi and StageChild modules show
 that an actual successor-stage node is atomic or has a prior-stage child with
 that branch relation. A coded path extractor, bounds for both children of
 branching nodes, and the full substitution-stage bound remain open.
+The StageCases and StageResults modules also record both previous-stage
+children and the parent-result equations for binary branches. StageSize proves
+that a node in a stage is smaller than that stage; this is a lower bound on the
+stage, not the needed upper bound.
 `PA196PASubstitutionClauses.lean` proves the ten positive constructor-clause
 witness bounds for arithmetic formula substitution, and
 `PA196PASubstitutionNegative.lean` proves six negative constructor clauses.
