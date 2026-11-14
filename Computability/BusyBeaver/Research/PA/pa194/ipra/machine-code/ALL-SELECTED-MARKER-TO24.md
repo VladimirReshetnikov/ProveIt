@@ -26,3 +26,7 @@ The new module passed an author suffix rebuild against previously checked
 prerequisite overlays, with `propext`, `Classical.choice`, and `Quot.sound`
 as its reported axioms and no `sorryAx`. The full nested checker
 `check-all-selected-marker-to24.sh` is supplied but has not been run.
+
+An independent suffix replay rebuilt the combined theorem against separately
+checked zero-selected and positive-selected branch objects and retained deeper
+prerequisites. It passed without `sorryAx`; this was not a full nested replay.

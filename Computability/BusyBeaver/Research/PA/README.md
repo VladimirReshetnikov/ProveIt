@@ -189,8 +189,10 @@ gate seed. Neither result supplies the physical-machine connection.
 For the physical simulation needed in both directions, the
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
 checks a nonstandard-model path under explicit header, positivity and blank
-suffix hypotheses. Its endpoint is not the canonical source root, and a
-complete source-frame correspondence and blank-tape reachability are open.
+suffix hypotheses. A [combined marker return](pa194/ipra/machine-code/ALL-SELECTED-MARKER-TO24.md)
+now handles arbitrary selected values under its common intermediate-layout
+assumptions. A complete source-frame correspondence and blank-tape
+reachability are open.
 The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
 translation of arbitrary PA refutations into the machine's numerical calculus.
 
