@@ -18,12 +18,10 @@ The printed axiom dependencies are `propext`, `Classical.choice`, and
 
 The source rule instead starts with a proof of the original translated body.
 This package does **not** derive the reopened-body premise from that proof.
-Reopening renames the selected free label to zero and sends every other free
-label to its successor. A model-internal proof-renaming transformation, with
-quantifier/eigenvariable and the proof calculus's explicit shift-rule cases,
-remains required. Consequently this package does not prove unconditional
-source generalization, preservation of whole derivations, an iPRA theorem,
-or either machine/consistency implication.
+The separate [universal-preservation theorem](PA194SourceUniversalPreservation.md)
+now discharges it at the model-uniform level using internal derivation renaming.
+Neither package proves preservation of whole derivations, an iPRA theorem, or
+either machine/consistency implication.
 
 Run `check-source-all-conditional.sh` with the audited `IPRA_LEAN_OVERLAY` and
 `IPRA_FOUNDATION_OVERLAY` set; the script rebuilds the relevant source
