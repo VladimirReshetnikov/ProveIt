@@ -87,7 +87,12 @@ remaining inner tail's witness bound. The implication-growth and induction-body
 tail modules discharge that tail and one more enclosing existential.
 `PA196InductionBodyOuter.lean` derives a bound for the complete body graph
 from an arithmetic substitution-graph bound and two explicit substitution
-growth bounds; those premises remain open.
+growth bounds. The polynomial tower-transfer modules and
+`PA196InductionBodyComplete.lean` discharge those premises and prove the body
+graph witness bound in every candidate-PRA model.
+`PA196InductionFvarTailComplete.lean` further proves the bound for the positive
+recognizer's exact free-variable tail and enclosing existential; the complete
+recognizer and its negative polarity remain open.
 
 `PA196PAAlphabetBounds.lean` proves both polarities of the witness bounds for
 Foundation's arithmetic function-symbol and relation-symbol recognizers.
