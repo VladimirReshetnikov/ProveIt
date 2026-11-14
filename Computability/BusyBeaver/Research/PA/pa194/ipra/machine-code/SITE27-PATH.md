@@ -15,10 +15,10 @@ is the named sum in the theorem. This is an all-model semantic physical run;
 the theorem does not itself construct an object-theory iPRA proof of a
 universally quantified source simulation.
 
-The model-word identity uses the formal source-program path. A separate
-standard-zipper frame correspondence is being checked; this module does not
-by itself assert that correspondence in nonstandard models or prove all
-source instructions.
+The model-word identity uses the formal source-program path. A separate [standard-zipper frame correspondence](PATH27-FRAME-REPLAY.md)
+has been checked. It applies to standard data with a blank suffix; this module
+does not assert a nonstandard zipper correspondence or prove all source
+instructions.
 
 `check-site27-path.sh` recompiles this module, the path identity, and the
 entire preceding incremental suffix. It expects the five checked overlays
