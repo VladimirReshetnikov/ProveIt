@@ -36,5 +36,5 @@ the reported theorem dependencies.
 
 An independent suffix replay recompiled the new module in a fresh tmpfs
 overlay against the separately checked controller and dispatch objects, with
-no `sorryAx` in the reported theorem dependencies. The complete standalone
-replay is running separately.
+no `sorryAx` in the reported theorem dependencies. The complete author standalone
+replay also passed with the audited overlays.

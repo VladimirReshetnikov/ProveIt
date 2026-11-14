@@ -39,5 +39,5 @@ reported theorem dependencies.
 
 An independent suffix replay rebuilt both cycle modules in a fresh tmpfs
 overlay against separately checked marker and threshold objects. The reported
-theorem axioms did not include `sorryAx`; a full nested replay is running
-separately.
+theorem axioms did not include `sorryAx`; the full author nested replay also passed with the audited
+overlays.

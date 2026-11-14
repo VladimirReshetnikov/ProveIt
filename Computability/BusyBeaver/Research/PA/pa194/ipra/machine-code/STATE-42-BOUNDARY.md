@@ -33,5 +33,5 @@ theorem dependencies.
 
 An independent suffix replay rebuilt the table row and state-42 modules in a
 fresh tmpfs overlay against the preserved marker prerequisites, with no
-`sorryAx` in the reported theorem dependencies. A full nested replay is running
-separately.
+`sorryAx` in the reported theorem dependencies. The full author nested replay
+also passed with the audited overlays.

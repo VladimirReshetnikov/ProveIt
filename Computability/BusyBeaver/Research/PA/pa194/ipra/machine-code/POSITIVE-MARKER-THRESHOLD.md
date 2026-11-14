@@ -33,5 +33,5 @@ rejects `sorryAx` in the reported dependencies.
 
 An independent suffix replay rebuilt both threshold modules in a fresh tmpfs
 overlay against separately checked controller and dispatch objects; the
-reported theorems have no `sorryAx` dependencies. A full nested replay is
-running separately.
+reported theorems have no `sorryAx` dependencies. The full author nested replay
+also passed with the audited overlays.
