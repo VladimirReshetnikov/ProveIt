@@ -5,15 +5,15 @@ import json
 from pathlib import Path
 import re
 import sys
-from zipfile import ZipFile
 
 root = Path(__file__).resolve().parents[5]
 program_path = root / 'Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/PA196/Program.lean'
-archive_path = root / 'docs/incoming/pa194_conpa_2026-11-13.zip'
+sys.path.insert(0, str(root / 'Computability/BusyBeaver/Research/PA'))
+from packet_inputs import PlacedPacket
 program = program_path.read_bytes()
 if hashlib.sha256(program).hexdigest() != '8c7c6c6884ecbb8f56e893404bb81162db15ef3dd6fd3212881a93994d63d872':
     raise SystemExit('upstream PA196 Program.lean hash mismatch')
-with ZipFile(archive_path) as z:
+with PlacedPacket(root, '194') as z:
     frozen_program = z.read('pa194_conpa/construction/reference/PA196/Program.lean')
     grammar_bytes = z.read('pa194_conpa/construction/source/pa194.grammar.json')
 if program != frozen_program:

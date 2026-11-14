@@ -32,8 +32,15 @@ fi
 printf 'Combined build repository commit: '
 git rev-parse HEAD
 lean --version
-printf 'Archive and component builder provenance:\n'
-sha256sum docs/incoming/pa194_conpa_2026-11-13.zip \
+printf 'Placed packet, generator, and component builder provenance:\n'
+packet="$base/docs/pa194_conpa_2026-11-13/construction"
+sha256sum "$packet/tables/pa194.tm" "$packet/tables/pa194.native.tm" \
+  "$packet/tables/unfolded201.native.tm" "$packet/tables/pa194.labels.json" \
+  "$packet/source/pa194.folds.json" "$packet/source/pa194.grammar.json" \
+  "$packet/evidence/pa194.local-cases.json" "$base/packet_inputs.py" \
+  "$base/jamesyc-upstream/pa196/PA196/Program.lean" \
+  "$base/pa194-quotient/generate.py" "$base/pa194-source-tree/generate.py" \
+  "$base/pa194-startup/generate.py" "$base/pa194/ipra/generate.py" \
   "$base/pa194-coverage/check.sh" "$base/pa194-startup/check.sh" \
   "$base/pa194-dense/check.sh" "$base/pa194-zip-bridge/check.sh" \
   "$base/pa194-parent-zip/check.sh" "$base/pa194/ipra/machine-code/check-endpoint.sh" \
