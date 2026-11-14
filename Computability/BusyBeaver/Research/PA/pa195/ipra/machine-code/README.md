@@ -59,9 +59,12 @@ clock's zero and successor equations are proved in every candidate PRA model.
 `PackedStandard.lean` proves the decoder, pairing, and iterator correct over
 standard natural numbers and proves that the halting indicator equals the
 existing bounded predicate. Thus an existential over its standard evaluation
-is equivalent to literal PA195 halting. The square-root decoder has not yet
-been linked to the model-theoretic square root and unpairing in arbitrary PRA
-models, and the clock is not yet a proof of either iPRA implication.
+is equivalent to literal PA195 halting. `PackedRootModel.lean` uses open
+induction to prove that the explicit square-root code equals Foundation's
+model-theoretic square root at every element of every candidate classical PRA
+model. The complete decoder has not yet been linked
+to model-theoretic unpairing, and the clock is not yet a proof of either iPRA
+implication.
 
 The work still needs an all-model connection between the explicit packed
 clock and the configuration semantics, including decoder correctness, as
@@ -97,3 +100,6 @@ PA195 table, and `PA195Bounded.lean` in its private temporary directory.
 For the explicit packed clock and standard halting binding, use the same
 overlays with `bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check-clock.sh`.
 This performs the standard-step rebuild plus the two packed-clock modules.
+
+The all-model square-root graph can be replayed with the same overlays using
+`bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check-root.sh`.

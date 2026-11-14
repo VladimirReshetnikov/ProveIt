@@ -3,16 +3,34 @@
 This directory contains machine tables, imported research, and Lean proofs
 concerning small Turing machines associated with the consistency of Peano
 arithmetic, `Con(PA)`. The current goal is a Lean proof of
-`iPRA ⊢ Con(PA) ↔ ¬Halt(M)` for the original 195-state candidate, followed
-by the other 195- and 196-state consistency candidates. The machines start
+`iPRA ⊢ Con(PA) ↔ ¬Halt(M)` for the primary 194-state candidate, followed
+by the 195- and 196-state consistency candidates. The machines start
 on a blank two-way binary tape; state counts exclude the halt state.
 
 **Status:** Neither machine-specific direction of this equivalence has yet
-been established in iPRA for the original PA195 or PA196 candidate. In
+been established in iPRA for PA194, the original PA195, or the PA196 candidate. In
 particular, a Lean theorem about ordinary finite runs, a Python certificate,
 and a conditional iPRA theorem are not themselves an iPRA proof of the
 consistency equivalence. See the individual READMEs for assumptions, exact
 statements, and reproducibility instructions.
+
+## Primary 194-state candidate
+
+The target table is `pa194_conpa/construction/tables/pa194.tm` in
+[the PA194 research packet](../../../../docs/incoming/pa194_conpa_2026-11-13.zip).
+It has 194 working states, start state 0, halt label 194, and 388 transitions.
+Its SHA-256 is
+`4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f`.
+The packet reports a PA-provable consistency equivalence and proposes a
+second 194-state table; it does not provide an end-to-end Lean proof or an
+iPRA proof. The primary table is a seven-fold quotient of a 201-control
+parent with a ten-entry source interface. The arithmetic and simulation
+results below provide reusable methods but do not by themselves establish
+the PA194 equivalence.
+
+[The PA194 arithmetic endpoint](pa194/ipra/README.md) binds the pinned table
+to a standard-model halting sentence and constructs a conditional iPRA
+equivalence. Both machine-specific reductions remain unproved.
 
 ## Original 195-state candidate
 
@@ -69,6 +87,6 @@ statement.
 [The PA195 follow-up packet](../../../../docs/incoming/pa195_followup_research.zip)
 contains another 195-state candidate, `M195S8`, and a claimed halting
 equivalence with the original PA195. It also contains a rejected 194-state
-construction. [The separate below-195 audit](../../../../docs/incoming/pa_below195_research_2026-11-14.zip)
-does not establish a smaller consistency machine. These packets do not supply
-an end-to-end Lean proof of the iPRA statement.
+construction. [A later PA194 packet](../../../../docs/incoming/pa194_conpa_2026-11-13.zip)
+proposes two other 194-state candidates and claims a PA-provable equivalence.
+These packets do not supply an end-to-end Lean proof of the iPRA statement.

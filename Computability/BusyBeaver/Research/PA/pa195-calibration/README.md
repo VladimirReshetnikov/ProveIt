@@ -41,3 +41,23 @@ Computability/BusyBeaver/Research/PA/pa195-calibration/check-decoded.sh
 
 This still proves only one decoder step, not represented recursive occurrence
 or self-freshness.
+
+`PA195PathBound.lean` proves an all-model path-descent result using candidate
+PRA's open induction. For a supplied binary primitive-recursive function code
+and seed, its values must describe a path whose intermediate nodes are positive
+and whose next node is one of the two Cantor fields of the current node divided
+by four. For an arbitrary, potentially nonstandard model-length limit, the
+result bounds every visited node by the root and shows that every field of a
+visited positive node is strictly below the root. `path_self_fresh` states
+this as absence of the root from an explicitly defined path-occurrence
+over-approximation.
+
+The function code and its step equations are explicit hypotheses. The actual
+PA195 recursive occurrence predicate and a path extractor connecting it to
+the supplied code have not yet been defined or proved correct, so this is
+not yet full self-freshness or a syntactic PRA theorem about that predicate.
+To check the path result and rebuild both earlier calibration modules, use:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-path.sh
+```
