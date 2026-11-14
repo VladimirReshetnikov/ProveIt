@@ -229,6 +229,16 @@ have explicit translated target proofs. The remaining finite axiom proofs,
 arbitrary induction-schema supplier, numerical proof compiler and machine
 connection remain open.
 
+For the last step of that direction above the physical machine,
+[`pa194-model-fairness`](pa194-model-fairness/README.md) proves in every model of `𝗜𝚺₁`,
+for an abstract command semantics, that the scheduler meets a halting SHIFT as soon as some
+command word computes the formula `1`, and that the formulas computed by command words are
+closed under the rules of the numerical calculus. Words, candidates and times may be
+nonstandard. Its instantiation with the modeled scheduler and `TargetProvable` is not checked
+yet. The translation of an internal PAeq or source-language proof into the numerical
+calculus (the model-level counterpart of [`pa194-foundation-lk`](pa194-foundation-lk/README.md))
+has no model-level result.
+
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
 `Calibrated T h` from which the iPRA equivalence follows. No table is shown to be calibrated.
