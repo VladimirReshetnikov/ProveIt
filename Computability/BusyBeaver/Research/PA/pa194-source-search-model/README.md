@@ -36,3 +36,8 @@ IPRA_FOUNDATION_OVERLAY=/path/to/foundation/package-lib \
 The script uses temporary storage under `/dev/shm` by default, rebuilds its
 source-shift prerequisite chain, and checks the reported final theorem axioms.
 `TMPDIR` may be set to an alternative suitable temporary directory.
+
+An independent suffix replay recompiled the final search module in a fresh
+output directory against the independently recompiled source-formula shift and
+the existing prerequisite overlays. Both printed theorems have the same axiom
+report and no `sorryAx`; that suffix replay reused the prerequisite chains.
