@@ -69,6 +69,6 @@ statement.
 [The PA195 follow-up packet](../../../../docs/incoming/pa195_followup_research.zip)
 contains another 195-state candidate, `M195S8`, and a claimed halting
 equivalence with the original PA195. It also contains a rejected 194-state
-construction. [The separate below-195 audit](../../../../docs/incoming/pa_below195_research_2026-11-14.zip)
-does not establish a smaller consistency machine. These packets do not supply
-an end-to-end Lean proof of the iPRA statement.
+construction. [A later PA194 packet](../../../../docs/incoming/pa194_conpa_2026-11-13.zip)
+proposes two other 194-state candidates and claims a PA-provable equivalence.
+These packets do not supply an end-to-end Lean proof of the iPRA statement.
