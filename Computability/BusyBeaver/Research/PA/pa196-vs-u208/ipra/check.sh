@@ -106,6 +106,7 @@ lean -M6000 -j1 "$bridge/PA196PASubstitutionCore.lean" -o "$PA196_TASK_CHECK_DIR
 lean -M6000 -j1 "$bridge/PA196PATermSubstGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermSubstGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PATermSubstVecGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermSubstVecGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASubstitutionAtomicGrowth.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PASubstitutionConstructorGrowth.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASubstitutionRel.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionRel.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASubstitutionCoreComplete.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PATermBVGraph.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermBVGraph.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"

@@ -157,8 +157,10 @@ vector substitution growth modules establish those remaining clauses, so
 `PA196PASubstitutionCoreComplete.lean` proves both core bounds unconditionally.
 The recursion's global bound remains open.
 `PA196PASubstitutionAtomicGrowth.lean` bounds atomic substitution outputs and
-shows that an appropriate majorant absorbs them in one tower step. Non-atomic
-output and global stage bounds remain open.
+shows that an appropriate majorant absorbs them in one tower step.
+`PA196PASubstitutionConstructorGrowth.lean` proves corresponding local bounds
+for the four non-atomic constructors, assuming bounds for their children.
+Uniform recursive output and global stage bounds remain open.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
