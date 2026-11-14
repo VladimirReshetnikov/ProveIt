@@ -5,3 +5,7 @@
 This is one ingredient for a prospective internal bounded-comprehension induction. It does not construct that induction or prove the distinct-label gate, an iPRA implication, or the machine consistency equivalence.
 
 The author compiled the new module against the previously checked singleton and retained prerequisites in `/dev/shm/pa194-bit-insert-fresh`; its reported axioms are `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`. The full nested check is `check-internal-bit-insert.sh`; it rebuilds the singleton prerequisites before the new module, and has not been rerun for this package due to the existing disk-I/O constraint.
+
+An independent suffix replay rebuilt the insertion module against separately
+checked conditional-singleton and earlier source prerequisites. It passed
+without `sorryAx`; this was not a full nested replay.
