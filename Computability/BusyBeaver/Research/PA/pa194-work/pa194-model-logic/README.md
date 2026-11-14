@@ -35,6 +35,7 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelFormulaTranslation` | A finite candidate-PRA `Code 5` packages the root translation and agrees with the independent reference for all valid model formulas, including nonstandard codes. |
 | `PA194ModelFormulaFreshness`, `PA194ModelEnvironmentFreshness` | Binder labels and bounded entries of reconstructed bound stacks are below a reserved label under explicit allocation and initial-stack bounds. |
 | `PA194ModelSourceIndexBound`, `PA194ModelAtomicFreshness` | Source-atom variable indices are below the atom code, and the selected labels are fresh under explicit ceiling and environment bounds. |
+| `PA194ModelSourcePath` | A finite PRA code follows source-formula child paths for arbitrary model-length step counts; visited node codes are bounded by the root. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -135,6 +136,17 @@ do not establish the initial or free-stack bounds, propagate the atom-code bound
 through every node of a compound formula, or prove semantic preservation. PA
 proof transport and the physical machine correspondence remain open.
 
+`sourcePath` iterates a finite child-selection code using choices from an
+encoded stack. Boolean tags select one child, quantifier tags select the body,
+and atomic/truth/falsity or unrecognized tags stay at the current node.
+Internal Σ₁ induction proves every visited node is at most the root, even for
+nonstandard step counts. At a visited valid source atom, its variable indices
+are therefore below the root, and its labels are fresh under the explicit
+initial-bound/free-stack bounds, `base + root ≤ reserve`, and a separately
+supplied allocation depth `n ≤ root`. No theorem yet shows every internal
+syntactic subformula is reachable by a coded path or identifies `n` with the
+number of binders traversed.
+
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
 
@@ -145,8 +157,8 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelAtomicFreshness` as the top module. On 2026-11-14, all nineteen
-modules in this directory were rebuilt against a retained combined overlay.
+`PA194ModelSourcePath` as the top module. On 2026-11-14, all twenty modules in
+this directory were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
 prerequisites; these were suffix checks, not empty-overlay replays.
