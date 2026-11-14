@@ -14,8 +14,9 @@ binder. The decoder and pair-projection certificates are still supplied as
 hypotheses, with their existence established by `PRA_has_concreteComponents`.
 
 The implication and binder-closing operations remain explicit, unverified
-binary-code parameters. The exceptional zero implication alias also still
-requires its intended logical-equivalence proof. These equations do not
+binary-code parameters. `PA194ZeroAlias.lean` proves the exceptional alias's
+logical equivalence in PA using `0=0` as truth; connecting that result to
+this `⊤` code and the represented proof compiler remains open. These equations do not
 establish recursive syntax correctness, PA calibration, machine
 internalization, or either consistency implication. In particular, the
 identification with Foundation typed syntax is stated only under IΣ₁.
