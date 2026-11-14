@@ -62,13 +62,15 @@ existing bounded predicate. Thus an existential over its standard evaluation
 is equivalent to literal PA195 halting. `PackedRootModel.lean` uses open
 induction to prove that the explicit square-root code equals Foundation's
 model-theoretic square root at every element of every candidate classical PRA
-model. The complete decoder has not yet been linked
-to model-theoretic unpairing, and the clock is not yet a proof of either iPRA
-implication.
+model. `PackedDecoderModel.lean` connects the explicit decoder to Foundation's two
+unpairing projections for every model element, and proves that both decode a
+pair back to its inputs in every candidate PRA model. The packed clock has not
+yet been linked to a model-side iteration of the decoded configurations, and
+the clock is not yet a proof of either iPRA implication.
 
 The work still needs an all-model connection between the explicit packed
-clock and the configuration semantics, including decoder correctness, as
-well as an internal proof of a PA-consistency implication. It does not prove either
+clock and iterated configuration semantics, as well as an internal proof of a
+PA-consistency implication. It does not prove either
 machine-specific iPRA implication. In particular, the standard-model
 equalities here do not identify these explicit codes with the noncomputably
 chosen `PA195Bounded.boundedCode` in arbitrary models.
@@ -103,3 +105,6 @@ This performs the standard-step rebuild plus the two packed-clock modules.
 
 The all-model square-root graph can be replayed with the same overlays using
 `bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check-root.sh`.
+
+The all-model pair-decoder results can be replayed with the same overlays using
+`bash Computability/BusyBeaver/Research/PA/pa195/ipra/machine-code/check-decoder.sh`.
