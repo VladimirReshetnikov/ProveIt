@@ -21,7 +21,7 @@ A fresh tmpfs suffix replay rebuilt `PA194TermShiftModel`, `PA194BranchSeed`,
 the ordered source and term-graph development overlays, using the same
 audited project and Foundation objects. The printed theorems report
 `[propext, Classical.choice, Quot.sound]`, without `sorryAx`. The full nested
-two-chain standalone replay remains pending.
+two-chain standalone replay also passed with the audited overlays.
 
 The projection codes are existentially certified and chosen classically, so
 this is a fixed finite code but its full constructor tree is not printed. The
