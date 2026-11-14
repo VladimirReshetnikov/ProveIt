@@ -42,3 +42,7 @@ The final module passed a fresh suffix check using the qVec result, retained
 PA196 witness-bound prerequisites, and audited project and Foundation
 objects. Its printed axioms contain no `sorryAx`. The full prerequisite-prefix
 replay remains pending.
+
+An independent suffix replay rebuilt the bounded-graph module against the
+separately checked qVec ceiling and retained PA196 prerequisites. It passed
+without `sorryAx`; this was not a full prerequisite replay.
