@@ -17,5 +17,5 @@ transitive import closure; direct object hash checks are not such an audit.
 
 This theorem gives an exact transformed physical root configuration. It does
 not by itself identify the result as site 27, establish all source steps, or
-prove a consistency implication in iPRA. A separate site-27 numeric tape
-identity is being developed.
+prove a consistency implication in iPRA. The separate [site-27 numeric identity](SITE27-STEP.md) identifies this
+endpoint while preserving the complete source file.
