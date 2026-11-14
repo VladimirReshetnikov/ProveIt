@@ -263,3 +263,13 @@ Check them with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-bit-translation.sh
 ```
+
+`PA194ZeroAlias.lean` checks the exceptional numerical alias `I(0,0)=0`
+for the stated Cantor-based source constructor and proves in Foundation PA
+that `(0=0)` is equivalent to `((0=0) → (0=0))`. This PA proof is obtained
+through the completeness interface; it is not yet a serialized derivation or
+a proof-producing compiler. Check it with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-zero-alias.sh
+```
