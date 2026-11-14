@@ -25,3 +25,8 @@ The final module was rebuilt against freshly checked standard command and
 scheduler-code objects and previously checked prerequisites. A full nested
 replay of this wrapper has not yet been completed. Its printed axiom
 dependencies contain no `sorryAx`.
+
+An independent suffix replay rebuilt the standard scheduler binding against
+separately checked scheduler and command-code objects and retained deeper
+prerequisite overlays. It passed without `sorryAx`; this was not a full nested
+replay.

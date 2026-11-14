@@ -30,3 +30,7 @@ An author suffix rebuild of the new module passed against separately checked
 prerequisite overlays, with `propext`, `Classical.choice`, and `Quot.sound`
 as its reported axioms and no `sorryAx`. The reproducible full nested checker
 `check-continue-two-dispatch.sh` was prepared but has not been run.
+
+An independent suffix replay rebuilt the 32-step module against the separately
+checked return-to-control path and retained deeper prerequisites. It passed
+without `sorryAx`; this was not a full nested replay.

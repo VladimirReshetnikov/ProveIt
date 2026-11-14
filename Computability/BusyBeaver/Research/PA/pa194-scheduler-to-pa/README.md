@@ -31,3 +31,8 @@ The final module was rebuilt against the refreshed target-to-PA bridge,
 freshly checked scheduler iteration and retained source/prerequisite overlays.
 A full nested replay of this wrapper has not yet been completed. Its printed
 axiom dependencies contain no `sorryAx`.
+
+An independent suffix replay rebuilt the conditional endpoint against the
+separately checked iteration and target-to-PA objects and retained deeper
+prerequisite overlays. It passed without `sorryAx`; this was not a full nested
+replay.

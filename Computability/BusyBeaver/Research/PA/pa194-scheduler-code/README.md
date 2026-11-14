@@ -8,11 +8,11 @@ command effects. `store_preserves` proves that every selected update preserves
 the concrete Σ₁ `SoundStore` invariant in every candidate-PRA model whose
 arithmetic reduct satisfies IΣ₁, including nonstandard states.
 
-The modeled fetch/dispatch assembly has not yet been proved equal to the
-standard PA194 scheduler. Its component command effects have separate standard
-bindings. This package does **not** connect the assembled step to a
-nonstandard PA194 controller trace, identify target provability with internal
-PA provability, or prove a PA194/Con(PA) implication.
+The [standard scheduler binding](../pa194-scheduler-standard/README.md)
+proves that the finite codes reproduce the PA194 scheduler step on ordinary
+natural-number inputs. This package does **not** connect the assembled step to
+a nonstandard PA194 controller trace. The separate [target-to-PA bridge](../pa194-target-source/README.md) is conditional on the guarded gate seed.
+Neither result proves a PA194/Con(PA) implication.
 
 Run from the repository root with the matching audited Lean 4.32 overlays:
 

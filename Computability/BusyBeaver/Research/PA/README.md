@@ -170,10 +170,9 @@ For the direction `Con(PA) → ¬Halt(M₁₉₄)`, a
 [conditional source-line theorem](pa195-calibration/PA194SourceLineRefutation.md)
 turns an internally valid numerical derivation of code 1 into an internal PA
 refutation, provided its seed translations are PA-provable. Model-uniform
-proofs cover several seed families, including
-[head5](pa195-calibration/PA194SourceHead5Preservation.md), as well as modus
-ponens and generalization. The remaining seed families and the connection from
-the physical machine to such line histories are open. Separately, the
+proofs cover the six numbered seeds, rho8 and diagonal, as well as modus
+ponens and generalization. The guarded gate and the connection from the
+physical machine to such line histories are open. Separately, the
 [machine-store invariant](pa194-machine-store-invariant/README.md) covers the
 mathematical command effects using an independent target proof encoding; it
 has not been identified with PA provability or the physical controller trace.
