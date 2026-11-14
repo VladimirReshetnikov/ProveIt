@@ -98,3 +98,25 @@ prerequisites, use the same audited overlays and run:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-child.sh
 ```
+
+`PA194PathZero.lean` removes the earlier positive-intermediate-node assumption:
+both decoder children are at most the parent even for code zero, so model-length
+child paths remain bounded through the truth-code case. Occurrence still
+requires its visited node to be positive.
+
+`PA194PathIterator.lean` explicitly constructs a primitive-recursive path
+code from supplied root and branch-choice codes and the two child witness
+codes. Given candidate-PRA graph proofs for those child codes, its model-step
+theorem shows that each step chooses one of the exact decoder fields in every
+candidate-PRA model. It does not require the branch selector to be Boolean:
+zero chooses the second child and any nonzero value chooses the first. The
+resulting path self-freshness theorem allows nonstandard model-length limits
+and needs no positive-intermediate-node premise. Root and choice codes and
+child-graph proofs are explicit parameters; the final extractor from arbitrary
+actual decoder occurrences into those choices remains unproved.
+
+To check these results and freshly rebuild their dependencies, run:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-iterator.sh
+```
