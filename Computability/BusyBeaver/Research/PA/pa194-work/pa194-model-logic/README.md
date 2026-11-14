@@ -39,6 +39,8 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelSourcePathDepth` | A finite code counts binders actually traversed by such a path; the visited node plus the count is bounded by the root. |
 | `PA194ModelSourcePathValidity` | Every visited node of a valid source formula remains valid, including at nonstandard path lengths. |
 | `PA194ModelPathBudget` | At remaining budget `root − binderCount`, the dispatcher allocation agrees with the path's binder count. |
+| `PA194ModelPathDispatch`, `PA194ModelPathDispatcherFresh` | Selected Boolean and binder edges satisfy dispatcher equations at their path budgets, and visited valid atoms have fresh labels under explicit environment bounds. |
+| `PA194ModelPathPrepend` | Prefixing a choice to a model-length path follows that edge and then continues through the former choice stack. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -155,8 +157,17 @@ separate internal induction proves that every visited node of a valid root
 remains valid. At remaining budget `root − binderCount`, the reconstructed
 bound stack and current label equal allocation at that count; the next path
 step leaves the budget unchanged at a nonbinder and decreases it by one at a
-binder. These algebraic facts do not yet prove the recursive dispatcher
-actually visits each path node with that budget.
+binder. The six single-edge dispatcher equations identify the selected
+Boolean child or binder body with that next node and budget, retaining the
+other Boolean child in its proper position. They are equations for values of
+the packed-history code, not a runtime call-stack theorem. At a visited valid
+atom, the selected labels in the initialized dispatcher context are fresh
+under the stated reserve and initial-bound/free-stack hypotheses.
+
+For arbitrary model-valued path lengths, prefixing a choice to the encoded
+stack follows the corresponding first edge and then the old path; this uses
+internal Σ₁ induction. No theorem yet proves coverage of every internal
+subformula or semantic correctness of the full translation.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -168,8 +179,8 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelPathBudget` as the top module. On 2026-11-14, all twenty-three
-modules in this directory were rebuilt against a retained combined overlay.
+`PA194ModelPathPrepend` as the top module. On 2026-11-14, the path and
+dispatcher modules were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
 prerequisites; these were suffix checks, not empty-overlay replays.
