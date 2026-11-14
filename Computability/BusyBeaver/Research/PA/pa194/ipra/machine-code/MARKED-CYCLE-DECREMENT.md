@@ -29,7 +29,8 @@ in `markerToDecrement`, including the residual one-run on the left.
 **The preceding first block `e[0]` is consumed by this physical controller
 path.** The output theorem leaves its residual `m` ones on the left tape; it
 does not prove that the original `m+6` block is restored or that the output
-is a source frame. In particular this is not a complete source-instruction
+is a source frame. The separate [positive-return theorem](MARKER-POSITIVE-RETURN.md)
+continues this path and proves that the returned block has value `m`. In particular this is not a complete source-instruction
 simulation or either PA consistency direction. When the residual at state 42
 is zero (first block value five), the machine instead reaches state 84; that
 separate branch is in `STATE-42-BOUNDARY.md` and is not covered by this
