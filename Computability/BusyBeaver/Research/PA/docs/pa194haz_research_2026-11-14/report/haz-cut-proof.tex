@@ -1,0 +1,53 @@
+\subsection{The four-site zero-register certificate}
+Let $P$ be the resolved source program for the A/D-swapped cached-MP
+machine, and let $P_Z$ replace only site $3553$ of $P$:
+\[
+  P(3553)=\operatorname{jump}(3637),\qquad
+  P_Z(3553)=\operatorname{dec}(6;3637,3554).
+\]
+Here register $6$ is $X$, and the first successor of a decrement is its
+zero branch.  A zero branch leaves the tested register unchanged.
+Both programs have $3650$ resolved source sites.
+
+Put $Z=\{3550,3551,3552,3553\}$.  The following data are checked directly
+from the complete resolved instruction arrays, independently of the
+compiler and the symbolic Turing-machine simulator.  The only edges into
+$Z$ from outside $Z$ are
+\[
+  3545\xrightarrow{X=0}3551,\qquad
+  3548\xrightarrow{X=0}3550.
+\]
+Their source instructions are respectively
+$\operatorname{dec}(6;3551,3546)$ and
+$\operatorname{dec}(6;3550,3549)$.
+The unchanged instructions within $Z$ are
+\[
+  P(3550)=\operatorname{jump}(3553),\quad
+  P(3551)=\operatorname{dec}(1;3553,3552),\quad
+  P(3552)=\operatorname{jump}(3551).
+\]
+In particular, no instruction within $Z$ increments $X$.
+
+The predicate
+\[
+  \mathcal I(pc,\mathbf r)\;\equiv\;(pc\in Z\ \Longrightarrow\ r_6=0)
+\]
+is therefore an inductive invariant of either source program.  It is
+initially true at the source entry $pc=25$, for arbitrary natural values
+of all nine registers.  Every entry from outside $Z$ establishes it by a
+zero test of $X$; every step from within $Z$ preserves it or exits $Z$.
+At the sole changed site, $\mathcal I$ forces the new decrement to take
+its zero branch.  That branch has the old jump's destination and makes
+no change to any register.  Every other instruction is identical.
+Induction on source time now proves equality of the complete source
+configurations of $P$ and $P_Z$ at every step, until their common halt if
+one occurs.  The extra positive branch in the resolved graph of $P_Z$
+is unreachable from the source entry.
+
+This is an invariant argument for all register values and all execution
+lengths, rather than a bounded simulation result.  It supplies the source
+equivalence needed to transfer the command-level soundness, completeness,
+and scheduler argument to the modified source.  The independent blank-tape
+startup certificate and the universal instruction-refinement certificate
+remain necessary to connect that source theorem to the displayed binary
+Turing-machine table.

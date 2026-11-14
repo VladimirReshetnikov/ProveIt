@@ -8,8 +8,10 @@ with move L or R. Lines that start with "#" are comments. A next label without r
 is the halting state.
 
 Start state. A comment containing "start N" declares the start N. Without such a comment the
-start is 0 when the states are labelled 0, 1, ..., n-1, which is the convention of the packets
-for their dense tables. A table with other labels and no such comment declares no start.
+start is taken to be 0 when the states are labelled 0, 1, ..., n-1, which is the convention of
+the packets for their dense tables; this is a convention and not a fact of the file, and some
+packets ship tables numbered 0, 1, ..., n-1 whose state 0 is not the start. A table with other
+labels and no such comment has no start here. Compare tables by the table class.
 
 machine class   SHA-256 of the transition list in the order in which a traversal from the start
                 discovers the states, reading 0 before 1 at each state. Two tables with a start
@@ -54,7 +56,7 @@ def parse(data):
         start = None
     if start is not None and start not in states:
         raise ValueError("the start has no rows")
-    return rows, states, start
+    return rows, states, start, declared is not None
 
 
 def rooted(rows, states, start, mirror=False, loose=False):
@@ -82,11 +84,11 @@ def rooted(rows, states, start, mirror=False, loose=False):
 
 
 def classify(data):
-    rows, states, start = parse(data)
+    rows, states, start, declared = parse(data)
     by_root = {q: rooted(rows, states, q) for q in states}
     most = max(r for _, r in by_root.values())
     table = min(h for h, r in by_root.values() if r == most)
-    info = {"states": len(states), "start": start, "table": table,
+    info = {"states": len(states), "start": start, "declared": declared, "table": table,
             "halting": sorted({n for w, d, n in rows.values()} - states),
             "roots": {h for h, r in by_root.values() if r == most}}
     if start is None:
@@ -103,6 +105,6 @@ def classify(data):
 if __name__ == "__main__":
     for path in sys.argv[1:]:
         i = classify(open(path, "rb").read())
+        start = "none" if i["start"] is None else "%d (%s)" % (i["start"], "declared" if i["declared"] else "by convention")
         print("%s\tstates=%d\treachable=%d\tstart=%s\tmachine=%s\ttable=%s" % (
-            path, i["states"], i["reachable"], "undeclared" if i["start"] is None else i["start"],
-            i["machine"] or "-", i["table"]))
+            path, i["states"], i["reachable"], start, i["machine"] or "-", i["table"]))

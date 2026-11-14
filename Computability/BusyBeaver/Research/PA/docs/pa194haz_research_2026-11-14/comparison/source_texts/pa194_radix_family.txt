@@ -1,0 +1,913 @@
+<PARSED TEXT FOR PAGE: 1 / 16>
+                        New 194-state PA-consistency machines
+    Constructor coefficients 5 and 6, a shared decoder, and a complete corpus comparison
+
+                              Research prepared for Vladimir Reshetnikov
+
+                                      13 November 2026, Pacific time
+
+                                                     Abstract
+        No verified machine with fewer than 194 working states was obtained. The requested alternative is supplied
+    by two new, complete, blank-start binary Turing machines, M5 and M6 , with 194 working states each. They
+    use the numerical formula constructors kp(a, b) + r, with k = 5, 6 and tags r = 0, 1, 2, 3, in place of the
+    previous coefficient four. A restructuring of the multiplication decoder makes its two-increment subroutine
+    reachable only after a written one. That context permits a three-transition implementation shared with a
+    different control reached after a written zero. The count is 135 + 67 − 8 = 194.
+        The new arithmetic encoding is calibrated to PA by an injective hereditary recoding of both formula codes
+    and variable labels. Its failure to preserve numerical order is handled using the already proved unrestricted
+    dominated-implication theorem. Independent literal-tape checks cover every primitive source outcome, derive
+    the four register-list lemmas from the actual rows, and verify the complete blank startup. A third 194-state
+    machine, M4R , applies the new decoder mechanism while preserving the original resolved source graph exactly.
+    The results are ordinary mathematical PA-provability arguments with executable certificates; they are not
+    newly compiled end-to-end Lean or Rocq theorems.
+
+
+
+Contents
+1 Result, conventions, and exact scope                                                                               2
+
+2 Comparison of the requested corpus                                                                                 2
+
+3 Changing the constructor coefficient                                                                               3
+  3.1 The exact source change . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      4
+
+4 The decoder allocation and the eighth fold                                                                         4
+
+5 The PA-calibration argument                                                                                        5
+  5.1 What is inherited and what changes . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .         5
+  5.2   Hereditary recoding also renames variables . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     6
+  5.3 The order obstruction and its solution . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       6
+  5.4   Syntactic soundness in PA . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    7
+  5.5   Compile a new target word; do not recode an old run . . . . . . . . . . . . . . . . . . . . . . . . .        7
+
+6 Physical transport and independently replayed evidence                                                             8
+
+7 Reproduction and package contents                                                                                  8
+
+8 What the reduction searches did and did not establish                                                              9
+
+
+
+                                                          1
+<PARSED TEXT FOR PAGE: 2 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                           13 November 2026
+
+
+
+9 Further research questions                                                                                         9
+
+A Complete transition definition                                                                                   11
+
+B All 41 delivered packet families                                                                                 15
+
+
+1    Result, conventions, and exact scope
+Every delivered main table has alphabet {0, 1}, one two-way infinite tape, and an all-zero initial tape. Every
+transition writes one bit and moves exactly one cell left or right. Working states exclude the terminal halt label.
+In the dense tables the working labels are 0, . . . , 193, the start is 0, and the halt label is 194. There are exactly
+388 transition rows and no outgoing row at halt.
+Theorem 1 (New constructor-coefficient machines). For each k ∈ {5, 6}, the literal table Mk supplied with this
+report satisfies
+                               PA ⊢ ¬ Halt(Mk , blank) ←→ Con(PA) .
+                                     (                                  )
+
+The new 194-state companion M4R satisfies the same statement and has a PA-formalizable blank-halting equivalence
+with the pinned primary PA194 table.
+
+Here Con(PA) is the absence of a finite proof of 0 = 1 in a fixed ordinary recursively checked first-order PA proof
+system. The theorem concerns an arithmetized finite run of the exact transition table, not just its execution over
+the standard natural numbers. The proof combines the source-calculus translation in Section 5, the exact source
+binding, and the universal physical simulation. Its inherited PA-refutation compiler and diagonal-calibration
+interfaces are identified explicitly below.
+The construction fulfills the alternative 194-state target. It does not lower the current count and does not claim
+faster proof search. In fact the coefficient-5 and coefficient-6 programs contain more primitive increment sites,
+and the larger numerical codes can increase running time. Their value is a different arithmetic encoding with a
+fully specified state allocation and a new family for subsequent optimization.
+
+                  Machine    Construction                       Dense-table SHA-256
+                  M4R        Source-preserving reassociation    a3c1d556d61b37d60639801accacfa59
+                                                                5df4b2c9d2b2a0a46978425b10c459a8
+                  M5         Constructor coefficient 5          180a0fd1f046d4cbd687b43979f06056
+                                                                19ad5f53054d32b9f62f33e7a3bccab8
+                  M6         Constructor coefficient 6          725ce8474d7b83473488fc9466548ed2
+                                                                de3744d9a80183467894f9d719103ab2
+
+
+2    Comparison of the requested corpus
+The comparison is pinned to ProveIt commit
+
+                                    17f92105e2bc4317feae6c219cb2143437b482ff.
+
+The requested PA directory and incoming archives were inspected, together with relevant ZFC and ConciseIPRA
+material. The corpus includes 36 packets already placed under PA/docs and five newer packets: 41 delivered
+packet families. Twenty-six ZIP files remain directly under docs/incoming; 21 of these overlap the placed
+collection. The complete packet ledger appears in Appendix B and in machine-readable form.
+The table recognizer found 4,421 occurrences of complete numeric five-column tables, representing 621 distinct
+byte forms, in direct files and 44 distinct ZIP payloads referenced 71 times. There were no unread or skipped
+archives. It found no recognized table with 10 through 193 working states. Small synthetic examples and rejected
+experiments were retained in the inventory rather than counted as consistency machines. Tables encoded only in
+arbitrary source code, JSON, or prose are outside this literal-table recognizer’s scope; the packet narratives were
+read separately. This census is not a proof that no smaller design exists.
+
+
+                                                            2
+<PARSED TEXT FOR PAGE: 3 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                             13 November 2026
+
+
+
+The critical 194-state comparison is broader than the main report files alone:
+
+Existing class              Distinguishing feature and status
+Primary PA194               134 + 67 − 7; 3,673 source sites; separated diagonal head.
+PA194_AD                    Same source, different physical A/D register placement.
+Eight-fold PA194            134 + 68 − 8; alternative AX decoder allocation.
+Rejected scanner quotient   A source address violates the return-scanner contract; not an accepted consistency construc-
+                            tion.
+PA194C                      Cached combined controller; 3,649 sites. Several later packets repeat exactly the same primary
+                            table.
+PA194CS                     Symmetric destructive-equality implementation of Shift; 3,646 sites.
+PA194altC                   Auxiliary combination of the cached controller and eight-fold decoder.
+PA194CZ                     Auxiliary known-zero conditional-decrement implementation of a source jump.
+
+
+These eight graph classes occur as 15 table byte forms, including native/dense relabelings. At 195 states the
+recognizer finds 26 byte forms in 16 graph classes; at 196 states, 163 forms in 99 classes. Those counts include
+rejected and diagnostic objects.
+The larger families establish the ancestry and explain why apparently independent savings often do not add.
+The U208 lineage compresses an older PA checker using contextual folds, frame-aware source simulations,
+register placement, and source rotations. James Chang’s PA209/PA196 lineage changes the logical interface and
+constructor layout; the imported PA196 development supplies the internal PA-refutation-to-halting direction. The
+subsequent diagonal 195-state designs replace a larger equality-vacuity component by code-driven diagonal vacuity.
+Separating that diagonal clause into its own pushed stack head shortens the AX emitter to 190 macro tokens.
+The first primary 194-state design then combines 67 raw readers with seven compatible folds. Cached-controller
+and symmetric-Shift variants modify the fixed program instead. The new work changes the constructor multiplier
+and its fixed decoder, while retaining the separated-head logical interface.
+The novelty comparison canonicalizes the new complete transition graphs against all prior 194-state tables,
+allowing arbitrary control renaming, arbitrary choice of a root reaching the whole graph, global left/right reflection,
+and global read/write-bit complementation. M5 , M6 , and M4R are pairwise distinct and absent from the old
+classes even under this deliberately stronger comparison. Bit complementation is used only as an exclusion test;
+the delivered machines still start on zero tape.
+
+
+3     Changing the constructor coefficient
+Write Cantor pairing as
+                                                  (a + b)(a + b + 1)
+                                          p(a, b) =                  + b.
+                                                          2
+For a fixed k ≥ 4, define the numerical constructors
+
+                      Ik (A, B) = kp(A, B),                             Mk (a, b) = kp(a, b) + 1,
+                      Uk (a, B) = kp(B, a) + 2,                         Ek (a, b) = kp(a, b) + 3.
+
+The transposition in Uk is intentional. In this section Mk (a, b) denotes a formula constructor, while the standalone
+symbol Mk denotes the delivered machine; the arguments distinguish them. Code zero is truth, code one is
+Mk (0, 0) and is the designated contradiction, and Nk (B) = Ik (B, 1) is negation. Conjunction and existential
+quantification are the usual classical implicational abbreviations.
+For k > 4, some residues are unused. In the PA interpretation they decode as truth. This supplies a total
+interpretation of every natural number, including every possible arithmetic parameter encountered by the checker.
+It does not add an axiom saying that each unused number is a theorem of the searched calculus.
+
+
+
+
+                                                            3
+<PARSED TEXT FOR PAGE: 4 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                                   13 November 2026
+
+
+
+3.1    The exact source change
+The source register order is (N, T, W, A, D, H, X, Y, L). Thus T is register 1 and Y is register 7. The original
+constructor macro node65 computes a stack operation with the effect
+
+                                             (T, W ) = (a, p(b, w)) 7−→ (kp(b, a), w),
+
+when entered with X = Y = 0; it restores X = Y = 0 and preserves every other register. Its unchanged prefix
+decodes the stack head and computes the Cantor pair. The final loop consumes Y and increments T a fixed
+number of times for each consumed unit.
+In the old source node61 is four consecutive increments of register 1. It is used only by node62, the per-unit
+body of this constructor loop. The new source replaces it with five or six consecutive increments. The explicit
+source binding checks 61 expanded occurrences, all 61 surrounding constructor prefixes, every loop test and back
+edge, all 3,429 primitive sites outside these bodies, and every outside successor under the index relocation. No
+source edge enters the interior of a replacement body from outside it.
+Consequently the complete source sizes are
+
+                        3429 + 61 · 4 = 3673,          3429 + 61 · 5 = 3734,   3429 + 61 · 6 = 3795.
+
+The literal tag increments after the constructor remain unchanged. The AX word still contains exactly 190 macro
+tokens. The same constructor is used when MP constructs the implication whose code is compared with the
+cached theorem; changing the emitter without changing this MP constructor would be incorrect.
+Lemma 2 (Generic constructor loop). If the final loop begins with T = t and Y = y, its coefficient-k body
+terminates with T = t + ky and Y = 0, preserving all other registers.
+
+Proof. Use the invariant T + kY = t + ky. A positive loop iteration decrements Y once and increments T exactly
+k times, preserving the invariant; the zero branch exits. Induction on the initial y gives termination and the
+stated result. Combining this with the unchanged stack-decoding and pairing prefix proves the macro contract
+above. This is a primitive-recursive finite computation with a PA proof, uniformly for each fixed k.
+
+This macro argument is additional to the primitive instruction certificates: implementing the changed primitive
+graph does not alone prove its intended constructor semantics. The archive includes the detailed source lemma
+and an exact free-algebra AX-emitter audit. That audit checks all ten pushed entries, the six retained axiom
+heads, the separated diagonal head, the guarded final top, and their ordering.
+
+
+4     The decoder allocation and the eighth fold
+Let i denote one increment of T , and let D = (i, i) denote the two-increment subtree. The old multiplier tree is
+(D, D), so the physical decoder for D can be entered after either bit. For the new coefficient-five tree choose
+((i, D), D); for coefficient six choose ((i, D), (i, D)). Now every entry into D in the multiplier is a right-child entry.
+The existing AX uses of D are also right-child entries. Therefore the cell just left of its head is always one.
+
+                                        V5
+                                0
+                    T3 = (i, D)                   1                   Every incoming edge to D writes
+                                         1                            one and moves right.
+                                                                      For V6 , both root edges go to T3 ;
+                        0                          D = (i, i)         the incoming bit of D is still one.
+
+                                    0 or 1
+                            i
+
+
+
+
+                                                                4
+<PARSED TEXT FOR PAGE: 5 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                                     13 November 2026
+
+
+
+Native control 99 implements D. A different fixed decoder, control 41, has incoming rows only from controls 28 and
+70, each writing zero and moving right. The changed multiplier therefore makes the two controls distinguishable
+by a tape bit already present, without adding a new tape marker.
+Add control 330 with rows 0 R 61 and 1 R 99. In the raw table, change control 190 as follows:
+
+                                   Family       Reading 0 at 190             Reading 1 at 190
+                                   M4R                0 R 61                         1 R 330
+                                   M5                 0 R 330                         1 R 99
+                                   M6                 0 R 330                        1 R 330
+
+Finally redirect control 41 to 99, delete 41, and give 99 the rows
+                                        (99, 0) 7→ 0 L 30,             (99, 1) 7→ 1 L 2035.
+The two helpers are already present. Four local cases prove the fold. In the following table h is the bit immediately
+left of the head, b is the bit being read, and the last column is the effect of the original one-step transition,
+reproduced by three new transitions.
+
+                                Old control      h    b     New control trace            Final action
+                                     41          0    0     99, 30, 45, 24               0 R 24
+                                     41          0    1     99, 2035, 61, 25             0 R 25
+                                     99          1    0     99, 30, 46, 61               0 R 61
+                                     99          1    1     99, 2035, 2036, 61           1 R 61
+
+Each trace visits only the original head cell and its left neighbor. It restores the history bit and reproduces the
+entire old one-step tape effect. Incoming-context checks justify h from the raw transition table. The start state is
+not folded.
+The seven inherited AX folds and this eighth fold are checked simultaneously against the final table, producing
+32 local cases. This avoids assuming that individually correct folds remain correct after their helpers change. The
+resulting accounting is
+                                       135
+                                       |{z}                 +      67
+                                                                  |{z}       −         8
+                                                                                      |{z}          = 194 .
+                            fixed controls, including 330       AX readers       compatible folds
+
+All 194 working controls are reachable in the directed transition graph. This graph fact is not a claim that all
+controls occur on the actual blank run.
+
+
+5     The PA-calibration argument
+5.1    What is inherited and what changes
+The pinned primary PA194 packet supplies an ordinary mathematical proof of its PA-provable consistency
+biconditional, supported by the imported PA196 refutation compiler and a diagonal replacement argument [2, 3].
+The repository’s README correctly distinguishes that argument from its unfinished end-to-end Lean/iPRA
+goals [1]. The present proof does not claim an iPRA equivalence.
+The new M4R has exactly the same resolved 3,673-instruction source as primary PA194. Its physical equivalence
+can therefore be transported directly. For M5 and M6 , the source and its numerical computation change. They
+require a calculus translation and a fresh target command compilation, which we now provide.
+The six retained axiom heads, the dominated propositional head, modus ponens, and generalization of theorems
+are retained. In coefficient-k notation the separated diagonal head is
+                                                Γk (B) = Ik (B, Uk (B, B)).
+The guarded separation gate is the same constructor expression as before, with every constructor replaced by its
+coefficient-k version. Its guard is still c ̸= a, b. The proof uses the exact separate-head ten-entry stack protocol,
+rather than the old nine-entry selectors.
+
+
+                                                                   5
+<PARSED TEXT FOR PAGE: 6 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                          13 November 2026
+
+
+
+5.2    Hereditary recoding also renames variables
+For each k ≥ 4, define Fk (0) = 0. For n > 0, uniquely write
+
+                                          n = 4p(a, b) + r,     0 ≤ r < 4,
+
+and set
+                                           Fk (n) = kp(Fk (a), Fk (b)) + r.                                       (1)
+Both a, b < n in this nonzero case, so this is primitive-recursive course-of-values recursion. The same function is
+applied to formula codes and to numerical variable labels.
+Lemma 3 (The recoding properties). PA proves that Fk is injective, fixes 0 and 1, and preserves all four
+constructors, with every argument and variable label mapped by Fk . In particular,
+
+                                           Fk Γ4 (c) = Γk Fk (c) .
+                                              (      )    (     )
+
+
+Proof. Strong induction shows Fk (n) > 0 for n > 0. In an equality of two nonzero outputs, reduction modulo k
+recovers the same tag r < 4 ≤ k. Injectivity of Cantor pairing then gives equality of the two recursively mapped
+components. Induction on the sum of the input codes yields equality of the original components and hence of the
+inputs. The zero case follows from positivity.
+The constructor equations follow directly from (1), including the exceptional implication I4 (0, 0) = 0, since
+Ik (0, 0) = 0. The universal constructor merely reverses the two paired arguments on both sides. The diagonal
+identity follows because the binder label and the property code are both recoded by the same function. Injectivity
+also preserves the separation guard.
+
+Mapping only formula codes while keeping their old variable labels would fail at the diagonal head. The
+simultaneous hereditary recoding is what makes this a translation of the actual searched calculus.
+
+
+5.3    The order obstruction and its solution
+It would be incorrect to say that Fk preserves numerical order. For example,
+
+                                     40 < 44,      F5 (40) = 75 > 55 = F5 (44).
+
+The restricted propositional row has the form
+
+                             ((H → u) → D) → ((D → H) → (A → H)),                 u ≤ D.                          (2)
+
+Its recoded side condition need not hold. However the generic theorem M6/Logic/RestrictedImplication.lean:
+rho8All derives the unrestricted version of (2). Its assumptions are modus ponens, the restricted row, reflexivity of
+the comparison relation, and propagation of a bound into either component of implication [4]. For Ik (a, b) = kp(a, b)
+these component bounds hold for every k ≥ 1.
+Accordingly, when translating an old derivation, replace a recoded restricted-row leaf by the generic derived
+proof of its unrestricted target instance. All other axiom leaves translate directly by the constructor identities
+and guard preservation; MP and generalization translate by their proof constructors. These operations give a
+primitive-recursive proof translation whose correctness is provable in PA. No false monotonicity assumption about
+Fk is used.
+The old PA-refutation compiler therefore supplies the first syntactic implication:
+
+                                              PA ⊢ Ref PA −→ Ref Ck .                                             (3)
+
+Here Ck is the coefficient-k separated-head numerical calculus.
+
+
+
+
+                                                            6
+<PARSED TEXT FOR PAGE: 7 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                          13 November 2026
+
+
+
+5.4    Syntactic soundness in PA
+Interpret membership by finite binary membership
+
+                                  Bit(s, z) ≡ ∃u, v [s = (2u + 1)2z + v ∧ v < 2z ],
+
+and interpret equality and universal quantification in the ordinary way. Decode unused residues as truth. All
+recursive children and all occurring variable labels of a nonzero constructor code are smaller than that code. The
+truth-code exception and unused residues contain no source variables. Thus xB is absent from the interpretation
+of the formula coded by B, so every Γk (B) has a uniform first-order proof.
+PA proves Bit(s, z) → z < s, and hence refutes the interpretation of code one, Bit(x0 , x0 ). For any arithmetic
+formula syntax θ(z, ⃗u), PA has a proof of finite bit comprehension
+
+                                      ∀n ∃s < 2n ∀z < n (Bit(s, z) ↔ θ(z, ⃗u)).                                    (4)
+
+The proof is induction on n, adding the bit 2n exactly in the θ(n, ⃗u) case. Substituting a formula’s syntax into
+this fixed induction-proof template is a primitive-recursive operation on proofs. This is not a uniform truth
+predicate or a reflection principle for PA.
+The separation supplier uses (4) and the same collision split as the primary calibration. When the two source
+labels a, b differ, use the bounded predicate
+
+                                        (Bit(xa , z) ∨ z = xb ) ∧ Tk (c)[z/xb ].
+
+When a = b, the antecedent inside the binder is Bit(z, z), which is false, and the required witness uses the singleton
+predicate (z = xb ) ∧ Tk (c)[z/xb ]. Capture-avoiding renaming is part of the proof supplier. Code freshness makes
+the separator label absent from the property. All remaining head suppliers are fixed first-order or propositional
+proof templates.
+PA therefore verifies a primitive-recursive translation from each Ck refutation to a PA refutation:
+
+                                              PA ⊢ Ref Ck −→ Ref PA .                                              (5)
+
+The exceptional equality Ik (0, 0) = 0 is handled by the fixed proof that truth is equivalent to truth implying
+truth. It is not treated as injectivity between distinct syntactic constructors.
+
+
+5.5    Compile a new target word; do not recode an old run
+The map Fk is a translation of derivations. It does not preserve ordinary addition or Cantor-stack arithmetic,
+and it is not a conjugacy of scheduler stores. After translating a derivation, compile a new command word using
+the coefficient-k command compiler. In each actual restricted propositional step of that new proof, the target
+proof supplies the required numerical bound and the relevant subtraction is performed in the target arithmetic.
+The separate-head command identities retain ten pushed entries. The safe-head arguments use residues 0 and
+2 modulo k, the fact that a universal code is at least 2, and Ik (0, i) > 0 for i > 0; these hold for k ≥ 4. The
+generic stack identities, protection of an arbitrary stack tail, and initial AX clearing of dirty caches are otherwise
+unchanged. The compiled refutation word halts from every incoming store, rather than only from a reset store.
+The scheduler continues to use ordinary Cantor pairing, not Fk or coefficient-k formula pairing. Its candidate
+pointer strictly decreases while a word is being read. Candidate integers are enumerated from 2 upward, and an
+AX-prefixed compiled refutation word has a candidate number at least 3. Finite induction through the preceding
+candidates reaches it or an earlier halt.
+Conversely annotate both visible theorem codes and every live canonical stack entry with PA proofs of their
+interpretations. AX, MP, and Shift preserve this annotation; either visible occurrence of code one produces a PA
+refutation. The Cantor-stack alias p(0, 0) = 0 is handled explicitly: pushing zero onto an empty canonical stack
+leaves it empty, and popping zero supplies the truth proof. This invariant applies to every annotated store, so no
+scheduler reset is assumed.
+Together with the generic constructor lemma and the source binding, these facts prove in PA that the coefficient-k
+source halts exactly when a PA refutation exists.
+
+
+                                                            7
+<PARSED TEXT FOR PAGE: 8 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                             13 November 2026
+
+
+
+6     Physical transport and independently replayed evidence
+Every source primitive is implemented by an exact finite segment between canonical frames, with a strictly
+positive duration. A frame has a source-address word, a zero gap with header constant 48, nine arbitrary natural
+register values encoded in unary blocks, and an arbitrary finite nonempty spare list. The physical checks cover
+increment, jump, both decrement outcomes, and halt. They do not extrapolate from finitely many register values.
+The independent checker imports no builder, allocator, or arithmetic-box oracle. It derives four generic list-sweep
+lemmas from the delivered literal transition rows, resolves source control flow in two independent ways, and checks
+every symbolic outcome. Its startup simulation separately verifies the entire finite-support tape and zero exterior,
+the head at −2, native control 84, source site 25, logical registers (2, 0, 0, 0, 0, 0, 0, 0, 0), and 26 one-valued spare
+blocks.
+
+                       Checked quantity                             M4R          M5           M6
+                       Working states / transition rows         194 / 388   194 / 388   194 / 388
+                       Resolved primitive sites                     3,673       3,734       3,795
+                       Universal source outcomes                    4,780       4,841       4,902
+                       Construction symbolic steps              1,488,141   1,512,944   1,537,198
+                       Independent symbolic steps               1,083,877   1,102,267   1,119,986
+                       Independent maximum per outcome                397         397         397
+                       Minimum positive-duration constant               3           3           3
+                       Exact complete blank startup                58,320      58,320      58,320
+                       Maximum source address length                   36          36          36
+                       Simultaneous fold cases                         32          32          32
+
+
+Symbolic step counts measure checker operations, not physical Turing-machine running times. The startup counts
+are literal physical transitions.
+The arithmetic proof of transport uses induction on the finite unary blocks, source segments, and coded runs. A
+source halt yields a physical halt by concatenation. For the reverse implication, under consistency the proof-store
+invariant allows arbitrarily many completed positive command segments. Given an alleged physical halting time
+T , constructing T + 1 such segments gives a run longer than T . Determinism contradicts an earlier terminal halt.
+Exact nonhalt endpoints exclude a hidden premature halt within a segment. The fixed blank initialization is
+checked separately.
+The independently replayed source graph for M4R is exactly the primary 194 source. For M5 , M6 , the two source
+resolvers instead verify the changed graph, and the 61-loop binding and constructor theorem supply its new
+command meaning. Those two different assertions must not be conflated.
+
+
+7     Reproduction and package contents
+Python 3.10 or later and its standard library suffice for construction and physical verification. Assertions must
+remain enabled. The package’s top-level README gives the exact commands and their output locations. The
+main components are:
+• construction/: frozen inputs, standalone builder, generic constructor lemma, inherited engine support,
+  explicit source binding, free-algebra emitter audit, and licenses.
+• machines/: dense and native tables, source maps, labels, all eight folds, local traces, and construction receipts
+  for 4R, 5, and 6.
+• verification/: independent literal-tape checker and its separate runtime; completed evidence is in
+  machines/*/independent/.
+• comparison/: 41-packet ledger, complete recognized-table census, all prior 194-state representatives, novelty
+  checker, and mathematical audit.
+• calibration/: the new radix-calibration argument, relevant frozen Lean source interfaces, and retained prior
+  calibration text with provenance.
+• search/: bounded search code, inputs, logs, and exact scope of negative results.
+
+
+
+                                                            8
+<PARSED TEXT FOR PAGE: 9 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                         13 November 2026
+
+
+
+The full transition definition is also printed in Appendix A. All main deliverables are bound by the manifest and
+SHA-256 checksums. Re-running a builder can change elapsed-time receipts, but the delivered dense tables are
+required to reproduce the stated hashes exactly.
+
+
+8    What the reduction searches did and did not establish
+The primary-source grammar search examined 4,773,613 proposals in its 300-second run, retaining a minimum
+of 60 effective AX controls. A second search allowed eligible fixed controls as fold endpoints during grammar
+mutation; its 1,618,013 proposals also retained a 194-state minimum. Exposing selected internal macro fragments
+produced a further 550,868 proposals without a 193-state candidate. These searches preserve precisely described
+syntactic or local simulation conditions; they do not enumerate all equivalent machines.
+The constant-increment decoder search considered 1,248 DAG candidates with at most three auxiliary controls.
+Its only non-four coefficients at the 194-state threshold were five and six. The further coefficient-five/six grammar
+logs are included with their measured proposal counts and outcomes. Their fitness includes the extra fixed control
+and the new fold; a raw fitness value 59 means 135 + 59 = 194, not 193.
+Other finite searches included all 576 tables in a specified quotient closure of the 202-state CSZ parent, 459
+neutral two-row rewrites of one helper followed by a fold search, and 1,275 register-scanner permutation screens.
+None produced a verified 193-state table. The package records these domains, rather than turning their failure
+into a lower bound.
+One instructive rejected candidate replaced a source jump by a conditional decrement of a register known to be
+zero at that source location. Its source contracts and invariant passed, but its modified blank bootstrap halted
+after 1,361 steps. It was rejected. This example is why complete startup checking is an essential part of every
+accepted table here.
+
+
+9    Further research questions
+1. Can the coefficient, AX association, and fixed arithmetic decoder be optimized jointly to reach 193 states?
+   The new results show that preserving the old coefficient four is an unnecessary search restriction, even when
+   a larger coefficient does not immediately save a state.
+2. Can a helper that is initially unusable become shareable after a constant-subtree reassociation? The 41/99
+   fold gives a concrete example where changing the set of incoming history bits matters more than direct row
+   similarity.
+3. Can a three-control region be replaced by two controls with a certified finite interface, even when no sequence
+   of pairwise folds exists? Negative pair-fold searches leave this possibility open.
+4. Can the 61 generic constructor-loop substitutions and the hereditary proof translation be formalized once,
+   parameterized by k ≥ 4? The generic rho8All result already isolates the only order obstruction in the
+   derivation translation.
+5. Can proof-friendly certificate formats connect the complete physical source simulation to the arithmetic
+   endpoint without obscuring positive-duration and carried-store obligations? This is the useful connection to
+   the ConciseIPRA work. Replacing the searched theory by iPRA would require a separate consistency-strength
+   argument and is not a valid automatic optimization.
+The transferable ZFC idea is contextual use of existing tape bits to share controls, combined with explicit
+source-frame invariants and exact blank initialization. The new coefficient family adds a mathematical degree
+of freedom to that physical search. The remaining opportunity is to combine these choices under a correctness
+certificate strong enough to reject bootstrap and scanner failures early.
+
+
+References
+[1] ProveIt, PA consistency machines, current status at the pinned commit. Repository README.
+
+
+
+
+                                                            9
+<PARSED TEXT FOR PAGE: 10 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                     13 November 2026
+
+
+
+[2] ProveIt, A 194-state Turing machine calibrated to Con(PA), primary packet, construction and ordinary PA
+    calibration. Frozen packet contents.
+[3] James Chang, imported PA196 development, logical interfaces, command compiler and source arithmetic.
+    Frozen upstream snapshot. Copyright and license notices are retained.
+[4] James Chang, M6/Logic/RestrictedImplication.lean and PA196/Logic/ImplicationBasis.lean,
+    generic derivation of unrestricted rho8All. Generic theorem source.
+[5] ProveIt, current incoming research packets. Pinned directory. Each packet’s separate contribution and status
+    is listed in the ledger.
+[6] ProveIt, ZFC consistency-machine research. Pinned research directory.
+
+[7] ProveIt, ConciseIPRA. Pinned project directory.
+
+
+
+
+                                                            10
+<PARSED TEXT FOR PAGE: 11 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                          13 November 2026
+
+
+
+A     Complete transition definition
+The table below is the complete native-label definition of M5 . The start is 74 and terminal halt is 254. The set of
+194 working labels is exactly the set printed in the first column; missing integers are not states. A triple is write
+bit, direction, next label. For M6 , change only the row at control 190 reading one to 1 R 330. For M4R , change
+control 190’s rows to 0 R 61 and 1 R 330. All other native rows agree. The separately supplied dense tables are
+their exact breadth-first relabelings from the start, with the halt label appended last.
+
+                                        Control        Read 0        Read 1
+                                              0         1 R 94        1R0
+                                              1          0L1          1L2
+                                              2          0L3          1L2
+                                              3          0L5          1L2
+                                              4          1R6          0L4
+                                              5          0L9          1L2
+                                              6          0R6         0 R 10
+                                              8         0 R 14       1 R 13
+                                              9         0 L 15        1L2
+                                             10         0 L 16       0 R 10
+                                             11         0 L 26       1 R 18
+                                             12         0 R 19       1 R 20
+                                             13         0 L 91       1 L 31
+                                             14         0 L 11       0 R 22
+                                             15         0 L 23        1L2
+                                             16          1L1          0L1
+                                             17         0 R 24       0 R 32
+                                             18         0 R 96       0 L 108
+                                             19         0 R 28       1 R 29
+                                             20         0 R 30       1 R 31
+                                             21         0 R 24       0 R 60
+                                             22         0 R 33       1 R 22
+                                             23         0 L 34        1L2
+                                             24         0 L 35        0R0
+                                             25         0 R 36       1 R 25
+                                             26        0 R 194       1 R 42
+                                             27         0 R 39        0 L 40
+                                             28         0 R 99       1 R 42
+                                             29         0 R 43       1 R 44
+                                             30         0 R 45       1 R 46
+                                             31         0 R 21       1 R 47
+                                             32         0 R 48       1 R 32
+                                             33         0 R 32       1 R 33
+                                             34         0 L 75        1L2
+                                             35         1 R 35        1L1
+                                             36         0 R 51       1 R 36
+                                             38         0 R 28       1 R 20
+                                             39         0 L 11       0 R 36
+                                             40          0L4         1 L 54
+                                             42         0 R 13        0 L 16
+                                             43         0 R 56       1 R 57
+                                             44         0 R 58       1 R 59
+                                             45         0 R 24       0 R 55
+                                             46         0 R 61       1 R 62
+                                             47         0 R 63        0 L 16
+                                             48         0 R 25       1 R 48
+                                             49         0 L 35       0 R 64
+                                             51         0 R 16       1 R 51
+                                             53         0 R 68       1 R 69
+                                               Continued on the next page
+
+
+                                                            11
+<PARSED TEXT FOR PAGE: 12 / 16>
+PA consistency machines: constructor coefficients 5 and 6                      13 November 2026
+
+
+
+                                        Control        Read 0        Read 1
+                                             54         0 L 40        1 L 54
+                                             55         0 R 22        1 R 55
+                                             56         0 L 11       0 R 51
+                                             57         0 R 61        0 L 16
+                                             58         0 R 70        1 R 71
+                                             59         0 R 62        1 R 72
+                                             60         0 R 55        1 R 60
+                                             61         0 R 49        0 R 25
+                                             62         0 L 28        1 L 73
+                                             63        0 L 123        1 L 30
+                                             64         0 R 74        1 R 64
+                                             66        1 R 198        1 L 54
+                                             68         0 R 77       1 R 254
+                                             69        0 L 213       1 R 31
+                                             70         0 R 99        1 R 63
+                                             71         0 L 91       1 R 80
+                                             72         0 R 56        1 L 81
+                                             73         0 R 82        1 R 83
+                                             74          1R0          1 R 64
+                                             75         0 R 75        1 R 84
+                                             77         0 R 87        1 R 88
+                                             80         0 R 91       1 L 138
+                                             81        0 L 111       1 R 57
+                                             82         0 R 49        0 R 33
+                                             83         0 R 93        0 L 42
+                                             84         0 R 53       1 R 310
+                                             87        0 R 301        1 R 21
+                                             88        0 R 122       1 R 103
+                                             90        0 R 105       1 R 106
+                                             91         0 R 82        1 R 81
+                                             92        0 R 104       1 R 185
+                                             93        0 R 108       1 R 109
+                                             94         0 R 66         0R0
+                                             95         0 R 27       1 R 110
+                                             96        0 R 101       1 R 100
+                                             97        1 L 113        1 L 97
+                                             98         0 R 19       1 R 114
+                                             99         0 L 30      1 L 2035
+                                            100        0 R 174       1 R 164
+                                            101         0 L 26      1 R 2000
+                                            103        0 R 108       0 L 302
+                                            104        0 R 123       1 R 124
+                                            105         0 R 72        1 R 59
+                                            106         0 R 58       1 R 125
+                                            107         0 R 21       1 R 126
+                                            108         0 R 21        0 L 10
+                                            109         0 R 62        1 R 42
+                                            110        0 R 127         1R8
+                                            111        0 R 104       1 R 128
+                                            113        0 L 302        0 L 97
+                                            114        0 R 130       1 R 107
+                                            122        0 L 137         0L1
+                                            123         0 R 39        1 R 73
+                                            124         0 R 62       1 R 138
+                                            125         0 R 62       1 R 139
+                                            126         0 R 71        0 L 16
+                                            127         0 R 14       1 R 138
+                                            128         0 R 21       1 R 141
+                                               Continued on the next page
+
+
+                                                            12
+<PARSED TEXT FOR PAGE: 13 / 16>
+PA consistency machines: constructor coefficients 5 and 6                      13 November 2026
+
+
+
+                                        Control        Read 0        Read 1
+                                            130         0 R 144       1 L 20
+                                            137          0 R 30       1 R 70
+                                            138          0 R 39      1 L 130
+                                            139         0 R 190       0 L 16
+                                            141         0 R 161       0 L 16
+                                            144          0 R 24       0 R 48
+                                            161          0 R 49       0 R 32
+                                            164          0 R 77       1 R 98
+                                            166          0 R 19      1 R 179
+                                            174         0 R 213       1 R 28
+                                            179         0 R 194      1 R 128
+                                            185         0 R 107       1 R 98
+                                            188          0 R 95      1 R 111
+                                            190         0 R 330       1 R 99
+                                            194          0 R 17      1 L 137
+                                            196          0 R 77      1 R 122
+                                            197         0 R 109      1 R 130
+                                            198          1 L 40      1 L 113
+                                            213          0 R 92       1 R 90
+                                            214         0 R 188      1 R 312
+                                            217         0 R 197      1 R 196
+                                            221         0 R 196      1 R 217
+                                            301          0 R 45      1 R 103
+                                            302           0L4        0 L 302
+                                            310         0 R 214       1 R 62
+                                            312          0 R 11       1 R 38
+                                            330          0 R 61       1 R 99
+                                           2000        0 R 2001     1 R 2033
+                                           2001        0 R 2002     1 R 2005
+                                           2002          0 R 12     1 R 2003
+                                           2003        0 R 2004      1 R 99
+                                           2004          0 R 98       1 R 90
+                                           2005        0 R 2006     1 R 2023
+                                           2006        0 R 2007     1 R 2014
+                                           2007          0 R 69     1 R 2008
+                                           2008        0 R 2009     1 R 2019
+                                           2009        0 R 2010     1 R 2011
+                                           2010          0 R 12     1 R 2004
+                                           2011         0 R 213     1 R 2012
+                                           2012        0 R 2013     1 R 2015
+                                           2013          0 R 98     1 R 2014
+                                           2014        0 L 2050     1 L 2064
+                                           2015        0 L 2044     1 R 2017
+                                           2017        0 R 2027     1 R 2002
+                                           2019        0 L 2059     1 L 2056
+                                           2020        0 R 2021     1 R 2003
+                                           2021        0 R 2032      1 R 90
+                                           2023        0 R 2046     1 R 2029
+                                           2025          0 R 12     1 R 2026
+                                           2026         0 R 166     1 R 2027
+                                           2027          0 R 90     1 L 2020
+                                           2028        0 R 2003     1 R 2002
+                                           2029        0 R 2030     1 R 2031
+                                           2030        0 R 2026      1 R 90
+                                           2031          0 R 12     1 R 2032
+                                           2032        0 L 2002      1 R 61
+                                           2033        0 R 2034     1 R 2039
+                                           2034        0 R 2025     1 R 2035
+                                               Continued on the next page
+
+
+                                                            13
+<PARSED TEXT FOR PAGE: 14 / 16>
+PA consistency machines: constructor coefficients 5 and 6                    13 November 2026
+
+
+
+                                        Control        Read 0     Read 1
+                                           2035          0 R 61   1 R 2036
+                                           2036        0 R 2015     1 R 61
+                                           2038         0 R 166   1 R 2032
+                                           2039        0 R 2052   1 R 2040
+                                           2040        0 R 2041   1 R 2066
+                                           2041        0 R 2042   1 R 2047
+                                           2042        0 R 2043   1 R 2044
+                                           2043        0 R 2035   1 R 2019
+                                           2044        0 R 2045   1 R 2046
+                                           2045        0 R 2038     1 R 61
+                                           2046        0 L 2033   1 R 2028
+                                           2047        0 R 2048   1 R 2053
+                                           2048        0 R 2027   1 R 2049
+                                           2049        0 R 2050   1 R 2029
+                                           2050        0 R 2051   1 R 2031
+                                           2051         0 R 166   1 R 2052
+                                           2052         0 R 166   1 L 2005
+                                           2053        0 R 2054    1 R 194
+                                           2054        0 R 2019   1 R 2056
+                                           2056        0 R 2057   1 R 2058
+                                           2057        0 R 2027   1 R 2038
+                                           2058        0 R 2059   1 R 2021
+                                           2059        0 R 2014   1 R 2063
+                                           2061          0 R 90   1 R 2062
+                                           2062        0 R 2021     1 R 90
+                                           2063        0 R 2020   1 R 2064
+                                           2064        0 R 2065   1 R 2030
+                                           2065        0 R 2019   1 R 2061
+                                           2066         0 R 221    0 L 302
+
+
+
+
+                                                            14
+<PARSED TEXT FOR PAGE: 15 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                                  13 November 2026
+
+
+
+B     All 41 delivered packet families
+The following is a family-level comparison. Historical archive hashes retained from earlier ledgers are marked as
+historical in the JSON, while all 26 currently present incoming ZIP hashes were checked afresh. Summarizing
+an old packet’s reported result does not assert a new replay of every historical proof or experiment. Exact file
+occurrences and graph classes are in the census.
+
+ Packet                                       Contribution / comparison point
+ 1. Below_U208_Research_2026-10-29      Full-frame windows, offset quotients and guarded pruning; source 3,909→3,904; no
+                                        accepted below-208 table.
+ 2. ConPA_below208_research_2026-10-29  Finite-model role-collapse objection, 279,936 fixed-association parameter cases, fold
+                                        synthesis; no sub-208.
+ 3. PA195_ConPA_research_2026-11-14     Positive195S and195C: unchanged separate190 AX word, 67-6 readers; full
+                                        source/runtime/startup certificates plus independent literal-tape audits.
+ 4. PA_consistency_TM_research_2026-11- 159-node five-zero source and 157-node combined representation; exact source CFG
+ 13                                     checks, no smaller physical allocation.
+ 5. U208_ConPA_2026-10-29               Particular native172/211 history fold reduces a U209 parent to U208.
+ 6.   U208_ConPA_Conditional_Context_ Conditional-entry proof; same two original U208 graph classes.
+ 2026-10-29
+ 7. U208_ConPA_Entry_Context_2026-10- Full entry-context proof; same two original classes.
+ 29
+ 8. U208_ConPA_History_2026-10-29     Finite-history proof with four exceptional blocks; same original saving.
+ 9. conpa_tm_comparison_and_reduction_ Experimental MP-result-in-H and MP-without-zero-push 196 variants; rejected
+ search                                Shift layouts halt at 43,563.
+ 10. conpa_tm_comparison_and_search    A/D register-swap 196; rejected two-rotation 195 fails 93 contracts.
+ 11. conpa_tm_study_2026-11-13          Combined196 = H-only Shift + MP-result-in-H: 3,788 sites, 4,928 contracts, 57,922
+                                        startup; direct-negation 197 too.
+ 12. pa194_conpa_2026-11-13 (2)         Different separate190 association: 68 readers and 8 simultaneous folds yield a third
+                                        positive194 graph. Also contains a distinct intermediate195 separate190 layout with
+                                        67 readers and6 folds. The actual intermediate source is3673 sites/4780 contracts
+                                        despite a clerical report-table diagonal/3700 label.
+ 13. pa194_conpa_2026-11-13             Three-way saving composition: separate190 emitter, 67 raw AX readers and 7
+                                        simultaneous folds yield primary PA194; the A/D register permutation gives a
+                                        second nonisomorphic194. Both include complete 4780 symbolic contracts, exact
+                                        startup, and a written PA calibration.
+ 14. pa195_conpa_2026-11-13             Positive original PA195: unchanged diagonal191 program, 68-7 reader allocation,
+                                        detailed ordinary PA calibration.
+ 15. pa195_diagonal_combined_2026-11-13 PA195DC combines bundled diagonal191 and7 folds with cached-head Shift/MP;
+                                        3676 sites,4784 contracts,57922 startup, six changed native rows. Optional PA195R
+                                        and PA195N implement parameter-permuted and negative-vacuity emitters at195,
+                                        with explicitly limited endpoint claims.
+ 16. pa195_followup_research            M195S8 keeps diagonal191 but pays one extra scanner control and obtains8
+                                        folds:135+68-8=195. It rejects the associated194 quotient at source ordinal1003
+                                        because seven address zeros trigger the old scanner. Includes additional equivalent
+                                        source-calculus families and bounded searches.
+ 17. pa196_research_2026-11-13          Exact 157-node representation of 3,812-site original program; loses contextual
+                                        sharing, no physical reduction.
+ 18. pa208_research_2026-10-29          Eighteen further helper layouts; 27 designated U208 presentations give 20 graphs,
+                                        not two.
+ 19. pa_below196_research               Eight equivalent gates, membership/equality orientations, broad grammar searches;
+                                        original201-token best 196.
+ 20. pa_consistency_comparison_2026_11_ Modal-head/explosion split, twelve semantic compositions, joint gate; physical
+ 13                                     results 196–200.
+ 21.     pa_consistency_comparison_and_ Diagonal196 (3,700 sites), Separate196 (3,673), Scanner-best196; principal logi-
+ new196_2026-11-13                      cal/source parents of positive195.
+ 22. pa_consistency_cross_archive       Four new196 combinations: diagonal/separate AX + Combined controller, each
+                                        optionally zero-jump; sites 3,676/3,649 and startups57,922/58,168.
+ 23. pa_consistency_reduction           Rebracketed196, H-only196, integrated gate 203/206; two failed 195 diagnostics.
+ 24. pa_consistency_reduction_audit_2026- Four further experimental MP-H compositions, two196 and two197; parame-
+ 11-14                                    ter/order/association/helper/scanner negative searches.
+ 25. pa_consistency_research              Two exact158-node sources and repaired196; nominal195 needs added scanner
+                                          state.
+ 26. pa_consistency_research_2026-10-29   Inductive 3,909→3,904 specialization; no physical sub208.
+
+                                                                                                Continued on the next page
+
+
+
+
+                                                             15
+<PARSED TEXT FOR PAGE: 16 / 16>
+PA consistency machines: constructor coefficients 5 and 6                                                   13 November 2026
+
+
+
+ Packet                                       Contribution / comparison point
+ 27. pa_consistency_research_2026-11-13 (2)   Twelve-rotation196, diagonal198, successful-MP halting-source experiment; no
+                                              sub196.
+ 28. pa_consistency_research_2026-11-13       Earlier diagonal-vacuity199 and short-negation197.
+ 29. pa_consistency_research_2026-11-14       NEG18: ‘INC7; INC7; node64‘, 18-site encoded negation; complete source3,441
+                                              and197 states (134+68-5); independent macro and scratch-zero proofs.
+ 30. pa_tm_comparison_and_reductions          Two rotated196 graphs; distributed-gate198 with 3,773 source sites.
+ 31. pa_tm_extended_research_2026-11-13       Four closing-decrement variants and stronger zero invariants; all change the same
+                                              row, hence not stackable.
+ 32. pa_tm_research_2026-11-13 (2)            Zerojump196 (4,959 contracts, 58,402 startup); parity/disequality experiments;
+                                              rejected195 fails source26.
+ 33. pa_tm_research_2026-11-13                Shorter-path196 and independent physical checking; detailed direct PA reverse-
+                                              translation strategy.
+ 34. pa_unary_power_cover                     Unary weak-covering theory and PA proof translations; no new compiled small
+                                              table.
+ 35. u208_comparison_research_2026-10-29      Original two-class audit; weak/exact schemas; rejected207.
+ 36. u208_research_2026-10-29                 Primary/alternative U208 and symbolic contracts; same initial history fold.
+ 37. pa194C_conpa_2026-11-13 (2)              Cached Combined controller +67-reader/seven-fold primary194; same PA194C
+                                              literal table as the other cached packets.
+ 38. pa194_new_designs_2026-11-13             PA194C plus symmetric-Shift PA194CS: destructive equality operands exchanged,
+                                              three source sites removed; one new reader offset by41->330 fold.
+ 39. pa194c_conpa                             Cached PA194C, same main table; also alternative eight-fold cached table
+                                              PA194altC as optional search seed.
+ 40. pa194c_conpa_2026-11-13 (1)              Cached PA194C, same main table; PA194CZ changes known-zero jump at source26
+                                              via register6, new literal table.
+ 41. pa194c_conpa_2026-11-13                  Cached PA194C, same main table; broader scanner/deletion and controller searches
+                                              unsuccessful.
+
+
+
+
+                                                             16
