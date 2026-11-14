@@ -1,0 +1,265 @@
+PROOF AUDIT: PA194, iPRA AND THE INHERITED CALIBRATION
+Pinned source: VladimirReshetnikov/ProveIt commit
+1c9524d8bf2e0a27b9a16ff622359927f536e663 (14 November 2026).
+Independent proof audit; no end-to-end Lean rebuild claimed.
+The finalized discussion is in report/main.pdf, section 6.
+
+1. CENTRAL FINDING
+
+The premise that the supplied literal 194-state tables already have an
+established iPRA proof of their PA-consistency equivalence is not supported
+by the pinned repository. PA/README.md explicitly says neither machine-
+specific direction has been established in iPRA for primary PA194, original
+PA195, or PA196. The new incoming packets advertise ordinary written PA
+calibrations, not proofs in iPRA. This is not evidence that the desired
+statement is false, and absence of a Lean formalization alone would not
+refute an adequate ordinary mathematical proof. The actual issue is that
+the inherited mathematical argument explicitly concludes PA-provability,
+and its formal counterpart uses unrestricted induction at essential
+uniformity steps. An unqualified iPRA claim requires another argument.
+
+All paths below are relative to
+Computability/BusyBeaver/Research/PA/, unless stated otherwise.
+
+The exact primary table has 194 working labels 0..193, terminal 194, 388
+rows, blank start 0, and SHA-256
+4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f.
+Source: pa194/ipra/README.md; docs/pa194_conpa_2026-11-13/construction/tables/pa194.tm.
+
+2. WHAT IS ACTUALLY AVAILABLE
+
+(a) A completed general transfer from IΣ1 calibration to iPRA. The theorem
+ConPAUnconditional.machine_endpoint in isigma1-machine says:
+
+  Calibrated T h -> iPRA proves Con(PA) <-> not machineHaltSentence T h.
+
+Here Calibrated is the FULL machine-specific obligation: in EVERY IΣ1
+model V, internal PA provability of falsum is equivalent to the arithmetic
+run of T reaching h at a V-valued time. Proof codes and times may be
+nonstandard. The PA witness certificate is supplied, so that is not a
+missing assumption of machine_endpoint. No table in this directory is
+shown calibrated. The file name 'Unconditional' refers to discharging the
+generic witness certificate, not to discharging Calibrated.
+
+Sources: isigma1-machine/README.md; isigma1-transfer/README.md;
+isigma1-machine/ConPAMachineEndpoint.lean;
+isigma1-machine/ConPAUnconditional.lean.
+
+(b) Standard-natural-number exact simulations. The primary 201-control
+parent is halting-equivalent to the literal dense PA194 on complete tapes;
+the source program, scheduler and numerical calculus have standard finite-
+run bridges. These are substantive checked mathematical results. They are
+not automatically theorems inside weak arithmetic.
+
+Sources: pa194-quotient/README.md; pa194-dense/README.md;
+pa194-calculus-clock/README.md.
+
+(c) The modeled scheduler is much further along at model level. In every
+candidate-PRA model with IΣ1 arithmetic reduct,
+PA194ModelFairness.halts_iff_provable identifies modeled scheduler halting
+with TargetProvable(1), where TargetProvable is the encoded separate-
+diagonal numerical calculus. The tracked word executor solves the earlier
+unbounded 'works over every underlying stack' induction problem: it checks
+one encoded run on empty stack plus a height/no-underflow witness and
+then applies a frame theorem. The resulting property is Σ1.
+
+Source: pa194-model-fairness/README.md and PA194ModelFairness.lean.
+
+(d) The numerical-calculus-to-PA direction is available for this modeled
+scheduler. Distinct-label gate soundness now discharges the last gate
+premise; PA194ModeledHaltRefutesPA.modeled_halt_refutes_PA turns a modeled
+scheduler halt into an internal PA refutation. The transferred theorem
+PA194ModeledHaltIPRA.consistency_implies_modeled_nonhalt is a genuine
+syntactic iPRA result for the auxiliary scheduler, not for the literal TM.
+
+Source: pa194-distinct-gate-sound/README.md.
+
+(e) The reverse direction still lacks a complete internal PA-refutation-
+to-numerical-calculus compiler. The current PAeq LK transport covers the
+logical rules in IΣ1 models conditional on an axiom supplier. The source
+ordinal induction supplier is an ordinary Lean proof construction, not yet
+its all-model internal form. Several finite arithmetic/equality suppliers
+are complete but the entire pipeline is not.
+
+Sources: pa194-paeq-proof-transport/README.md;
+pa194-paeq-pa-supplier/README.md; pa194-foundation-lk/README.md;
+pa194-foundation-induction/README.md; pa194-forward-audit/README.md.
+
+(f) The physical-table/model-scheduler connection also remains open. Some
+model-uniform unary-block traces are checked under explicit tape-layout
+hypotheses. Complete blank-start reachability, controller layout invariant
+and arbitrary model-time composition are not supplied.
+
+Sources: PA/README.md; pa194/ipra/machine-code/MARKER-TO-INCREMENT.md;
+pa194/ipra/machine-code/ALL-SELECTED-MARKER-TO24.md.
+
+3. WHY THE WRITTEN PA CALIBRATION CANNOT JUST BE RELABELLED
+
+The incoming primary report's calibration.tex explicitly concludes
+PA proves Nonhalt(PA194) iff Con(PA). It uses primitive-recursive syntactic
+operations but proves their correctness by PA induction. Primitive-
+recursiveness of a function by itself does NOT imply that an arbitrary
+correctness statement about it has a PRA/iPRA proof. Likewise, a standard
+finite-run equivalence does not quantify over nonstandard times in models
+of IΣ1. One needs a weak-arithmetic correctness argument.
+
+The two headline examples in pa194-forward-audit are genuine:
+
+- jamesyc-upstream/pa196/PA196/Arithmetic/Transport/
+  NumericPAeqSequentDerivation.lean:
+  ordinary_derivation_requested performs C := Set.univ induction on
+  forall d<n, Derivation(d) -> forall f, SourceProofBudget(d,f) ->
+  RequestedCertificate(f, root(d)). RequestedCertificate itself universally
+  quantifies native environments and allocation parameters before asserting
+  existence of a certificate. This is not presented as Σ1.
+
+- jamesyc-upstream/pa196/PA196/Arithmetic/CompilerInvariant.lean:
+  fuel_invariant performs C := Set.univ induction on
+  forall bound, TableRealizes(checkerTable(fuel,bound), compilerTable(...)).
+  The latter includes unbounded store/environment requirements.
+
+A direct textual audit found 88 distinct files with explicit
+C := Set.univ inductions in the imported PA196/Arithmetic and
+M6PA/Calibration trees: 32 Transport, 12 Scheduler, 10 Machine,
+3 Certificates, 1 CompilerInvariant, and 30 M6PA/Calibration files.
+The exact paths and local contexts are in proof/full_pa_inductions.json.
+This is a syntactic count, NOT a claim that 88 independent deep obstacles
+remain. Many syntax equations should admit Π1 induction or bounded
+witness-table replacements, and several have newer IΣ1 replacements.
+But auditing only the two headline wrappers would miss real dependencies.
+
+4. A SUFFICIENT CONSTRUCTIVE CRITERION FOR THE REQUESTED RESULT
+
+Use a primitive-recursive PA proof predicate R(p) and a primitive-recursive
+bounded machine halting predicate H_M(t), with terminal states totalized
+absorbingly. Suppose explicit primitive-recursive functions F,G satisfy,
+with proofs in iPRA,
+
+  R(p) -> H_M(F(p)),
+  H_M(t) -> R(G(t)).
+
+Then iPRA proves (forall t, not H_M(t)) iff (forall p, not R(p)). The proof
+is just two intuitionistically valid contraposition arguments, using the
+explicit witnesses F and G. It needs neither Markov's principle nor a
+truth/reflection principle for PA. This is the cleanest sufficient target
+for a future fully executable proof packet.
+
+Alternatively, proving the existential equivalence in IΣ1 and applying
+the repository's already checked transfer suffices. IΣ1 syntax is often
+more convenient than trying to internalize the whole simulator directly
+in the specific candidate-PRA language.
+
+5. CONCRETE WAY TO LOWER THE PARAMETERIZED COMPILERS
+
+The source does NOT use cut elimination: NumericPAeqSequentDerivationStep
+handles all ten LK rules including a cut case with two child certificates.
+Preserving cut avoids a major known source of proof-size explosion.
+The inspected quantifier steps request child derivations at explicitly
+computed environments (eigenEnvironment, padding, or tail); these requests
+are determined by input syntax and allocation, rather than unbounded proof
+search. Thus enormous formula codes alone do not force non-primitive-
+recursive growth: an exponential tower of input-dependent finite height
+is still primitive recursive.
+
+A useful exact replacement principle is a FINITE REQUEST TABLE.
+
+For one fixed input proof and one fixed requested allocation, build the
+finite directed request graph of actual recursive child requests. Store
+with each node: its source subcode, its environment, the already computed
+child indices, and an output certificate. A local certificate check is
+primitive recursive. Correctness of an entire finite table is therefore a
+bounded/Δ1 condition (or an open predicate after adding the relevant PR
+symbols). Existence of a correct table is Σ1, so IΣ1 can induct on its
+construction. A separate finite frame/renaming lemma supplies any desired
+uniform conclusion after the table is built. One never inducts on a
+formula of the form 'for every environment there exists a proof'.
+
+A concrete example is the imported NNF certificate construction in
+ActualCertificateEquivalenceInduction.lean. Its only parameter change
+under a quantifier is param -> advance(param), while source subcodes
+strictly decrease. For input source code p and parameter a, store entries
+(q,k) with q+k <= p. Entry (q,k) is a pair of certificates comparing the
+translation of source negation at q, using advance^k(a), with the target
+negation of the translation. Process q in increasing order. A quantifier
+child q'<q needs (q',k+1), and
+
+  q' + (k+1) <= q+k <= p.
+
+A Boolean child needs (q',k), also in the table. Thus the entire dependency
+set is finite with at most (p+1)(p+2)/2 entries, including nonstandard p
+internally. The required translation equalities and fixed local proof
+constructors yield each entry from earlier entries. A coded table witness
+makes the induction Σ1. This is a genuine method to replace that stronger
+unbounded-parameter induction; it is not a claim that all actual target
+certificate interfaces have already been ported or checked in this packet.
+
+For the full compiler, one needs explicit bounds for all parameter
+changes and local constructors. A sufficient majorization scheme is:
+all child-request parameters are bounded by a monotone PR function G of
+the parent parameters, recursion depth is bounded by source code d,
+branching at each node is bounded by a PR function of those parameters,
+and a monotone PR H bounds the output of each local constructor from its
+inputs and child certificates. Then iterate G d times to bound request
+parameters, bound the number of nodes by B^d for a resulting B, and
+iterate H through that many nodes to bound certificates. Everything is PR.
+But the premise that child-request formation is independent of generated
+certificate values must be proved, not assumed: unrestricted nested
+recursive calls can have non-PR growth even when each displayed operation
+is PR. This is a concrete audit condition still to discharge across the
+full supplier library.
+
+6. PHYSICAL SIMULATION CAN USE POSITIVE SEGMENTS
+
+A useful weak-arithmetic lemma avoids inverse decoding of arbitrary tapes.
+Suppose a source computation has a primitive-recursive frame embedding E;
+from every valid nonhalting frame, one source step has an exact physical
+segment of length tau(c) >= 1 to the next embedded frame; tau and the full
+segment witness are PR; source halts map to the physical halt; and the
+finite blank startup reaches E(c0) without an earlier halt. Exact endpoint
+contracts rule out a premature halt inside a successful segment, by
+determinism and the absorbing/partial terminal convention.
+
+Given a physical halting time T, generate T+1 source segments, stopping
+if a source halt occurs. If none occurs, their total physical length is
+at least T+1 beyond startup and the endpoint is nonhalting, contradicting
+the alleged physical halt. This finite bounded process produces a source
+halt witness, and if annotated source halts carry PA proof certificates,
+it produces a PA refutation. The other direction concatenates the segments
+for a supplied source halt. This reasoning is intuitionistic once the
+witness generators and their PR invariants are available.
+
+For the finite local folds, tau may have a fixed small bound and all
+pattern equalities can be checked exhaustively; the whole-tape lift is then
+particularly transparent. For register-machine macro simulation tau is
+larger but remains PR if each arithmetic macro and the complete register-
+file excursions have explicit total witness generators. A finite list of
+sample executions is not the required universal contract.
+
+7. SAFE CLAIM FOR ANY NEW STATE REDUCTION
+
+If a new table N is connected to primary PA194 by an explicit positive-
+segment simulation with PR witness transformers and iPRA proofs of their
+correctness, one obtains in iPRA the relative halting equivalence
+H_N <-> H_PA194 (or equivalence of their negations). If PA194's iPRA calibration is an assumption, then
+N's iPRA calibration follows conditionally. This does not discharge the
+common PA calibration. Likewise a new 194-state representation with a
+changed source command protocol must update its selectors and stack
+invariant before invoking the same argument.
+
+A research report should distinguish:
+  (i) exact table count/hash/startup and finite universal local certificates;
+  (ii) relative source/table halting equivalence and its base arithmetic;
+  (iii) ordinary written PA calibration inherited from the source;
+  (iv) a proved iPRA calibration, or an explicitly unproved common premise.
+Conflating these would turn a meaningful state reduction into an unsupported
+claim about the main requested property.
+
+FURTHER RESEARCH DIRECTION
+
+A serious sub-194 construction is valuable even if it inherits the common
+calibration obligation, but it must be named a candidate unless a complete
+weak-arithmetic argument is supplied. The most promising proof repair is
+bounded request tables plus the existing modeled-scheduler results, not
+starting a new semantics or replacing the searched theory by iPRA. A
+shorter iPRA proof checker recognizes refutations of a weaker theory and
+does not automatically yield the required Con(PA) search.

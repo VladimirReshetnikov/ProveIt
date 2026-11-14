@@ -1,0 +1,57 @@
+{
+  "status": "PASS",
+  "checks": [
+    "AX arbitrary fourth operand",
+    "first ten Shifts",
+    "first eleven Shifts",
+    "Push arbitrary store",
+    "Push zero alias",
+    "Pop non-one case",
+    "Pop contradiction case",
+    "Pop empty alias",
+    "Discard",
+    "Offset all natural indices",
+    "selector 0",
+    "selector 1",
+    "selector 2",
+    "selector 3",
+    "selector 4",
+    "selector 5",
+    "selector 6",
+    "selector 7",
+    "selector 8",
+    "restricted rho with D=u+x",
+    "Generalization arbitrary formula",
+    "Generalization formula one",
+    "reserve zero",
+    "MP both non-one",
+    "MP antecedent one",
+    "MP consequent one",
+    "MP all zero aliases",
+    "terminal Pop",
+    "plain Shift is NOT terminal test",
+    "cached one halts even with top one",
+    "AX resets arbitrary d,h"
+  ],
+  "checked_identities": 31,
+  "shift_guard": "h=1",
+  "pop_cases": [
+    "t=1: halt",
+    "t!=1: (t,tail(w),0,head(w))"
+  ],
+  "mp_suffix_cases": [
+    "a=1: halt",
+    "a!=1,b=1: halt",
+    "a!=1,b!=1: (b,w,0,0)"
+  ],
+  "all_store_refuter": "AX(0,0,0,0); compile(refutation); Pop",
+  "calibration_scope": "Relative to the explicit C4 numerical calculus; no unconditional iPRA/PA consistency calibration is established by this script.",
+  "scheduler": {
+    "four_operands": true,
+    "order": "c in tag, then y,x,z",
+    "total_zero_projections": true,
+    "cofinal_raw_candidates": "p(k+2,p(0,p(0,p(0,e(refuter)))))",
+    "proof_obligation": "Components are bounded by their Cantor pair; e(nonempty)=1+raw supplies strict continuation decrease."
+  },
+  "script_sha256": "6386b2731daec66efa13c9b382b9ce464fcbc57ec8a186c283f4d0c4d4bf305c"
+}

@@ -1,0 +1,263 @@
+% Weak-arithmetic audit.  Included by the main report; no standalone preamble.
+% Citation keys are supplied by the main report.  All labels are ipra-prefixed.
+\section{The weak-arithmetic obligation and its present status}
+\label{ipra-status}
+
+The requested conclusion is a theorem \emph{in iPRA} about the blank run
+of one specified literal table.  A state count, an external simulation,
+and even a PA-provable consistency equivalence do not by themselves give
+that theorem.  The pinned PA README explicitly leaves both
+literal-machine-specific iPRA directions open for its primary PA194,
+original PA195, and PA196.  The incoming mathematical calibrations state
+PA-provability.  These are statements about the available arguments, not
+evidence that the desired iPRA equivalence is false.\cite{pa-readme}
+
+The distinction is not ``written proof versus Lean proof.''  An adequate
+ordinary mathematical proof that a particular argument is formalizable in
+iPRA would meet the mathematical requirement without a new Lean build.
+What remains missing here is the complete weak-arithmetic correctness
+argument for the relevant proof compiler and literal simulation.  Neither
+the word ``primitive recursive'' nor an existing correctness proof using
+unrestricted induction automatically supplies it.
+
+\subsection{What the current interfaces establish}
+\label{ipra-interfaces}
+
+The generic endpoint is already available.  For a numerical transition
+table $T$ and halt label $h$, its hypothesis \texttt{Calibrated}$\,(T,h)$
+requires, in \emph{every} model $V\models I\Sigma_1$,
+\begin{equation}
+ \operatorname{Prov}_{\mathrm{PA}}^V(\bot)
+ \quad\longleftrightarrow\quad
+ \exists t\in V\;\operatorname{state}(\operatorname{run}_T(t))=h.
+ \label{ipra-calibrated}
+\end{equation}
+Both proof codes and times may be nonstandard.  The repository transfers
+this calibration to the syntactic iPRA consistency/nonhalting theorem;
+its PA witness-certificate obligation has been discharged.  The name
+\texttt{ConPAUnconditional} concerns that generic certificate, and does
+not discharge the table-specific premise \eqref{ipra-calibrated}.
+No literal table is calibrated in that generic directory.\cite{ipra-generic}
+
+The modeled scheduler has a stronger result than a standard-model
+semidecision argument.  In every relevant $I\Sigma_1$ model its halting is
+equivalent to internal refutability in the numerical calculus.  The proof
+uses a tracked execution on an empty stack, with a height/no-underflow
+witness, and a frame theorem to extend it to arbitrary underlying stacks.
+This makes the existence-of-execution invariant $\Sigma_1$.
+The modeled-halt-to-PA-refutation direction is also established, including
+the distinct-label gate supplier; it yields an iPRA theorem that PA
+consistency excludes a halt of that \emph{auxiliary scheduler}.
+Neither result identifies that scheduler with the literal binary machine
+at arbitrary internal times.\cite{pa194-fairness,pa194-modeled}
+
+Two complete bridges are still needed: an internal PA-refutation-to-calculus
+compiler, including all axiom suppliers, and the model-uniform physical
+connection from the actual blank tape through its controller and arithmetic
+macros.  Current logical proof transport covers the LK rules, including
+cut, under explicit supplier hypotheses; it does not supply every
+translated PA induction axiom.\cite{fullpa-audit,pa-readme}
+
+\subsection{An explicit sufficient criterion}
+\label{ipra-criterion}
+
+Fix a primitive-recursive PA refutation checker $R(p)$ and a
+primitive-recursive predicate $H_M(t)$ saying that the specified machine
+has reached its absorbing halt state by time $t$.  Set
+\[
+ \operatorname{Con}(\mathrm{PA})\equiv\forall p\,\neg R(p),
+ \qquad \operatorname{Nonhalt}(M)\equiv\forall t\,\neg H_M(t).
+\]
+The absorbing convention changes no finite halting event.
+
+\paragraph{Witness criterion.}
+Suppose primitive-recursive functions $F,G$ have correctness proofs in
+iPRA:
+\begin{equation}
+ R(p)\longrightarrow H_M(F(p)),\qquad
+ H_M(t)\longrightarrow R(G(t)).
+ \label{ipra-witness-maps}
+\end{equation}
+Then
+\[
+ \mathrm{iPRA}\vdash
+ \operatorname{Nonhalt}(M)\longleftrightarrow
+ \operatorname{Con}(\mathrm{PA}).
+\]
+\begin{proof}
+Assume nonhalting and $R(p)$.  The first implication gives the forbidden
+instance $H_M(F(p))$, so $\neg R(p)$; generalize over $p$.
+Conversely, under consistency, $H_M(t)$ gives the forbidden instance
+$R(G(t))$; generalize over $t$.  These are intuitionistically valid
+arguments with explicit witnesses.  They use neither Markov's principle,
+double-negation elimination, nor reflection for PA.
+\end{proof}
+
+This is a sufficient target, not an assertion that its two correctness
+proofs have been completed.  Alternatively one can establish the
+$I\Sigma_1$ calibration \eqref{ipra-calibrated} and use the existing
+transfer.  A primitive-recursive program together with an unrestricted-PA
+proof of its correctness is not yet either target.
+
+\subsection{Where full induction occurs, and what it does not imply}
+\label{ipra-induction-audit}
+
+The inherited \texttt{original\_pa195\_calibration.tex} describes a concrete
+calculus-to-PA proof translator: decode formulas, insert fixed logical
+templates, generate a finite bit-comprehension proof for each guarded
+gate, and translate proof steps.  The comprehension proof uses one PA
+induction instance for an arbitrary input formula.  That induction belongs
+to the \emph{generated PA proof}.  Checking syntactically that a line is
+a PA induction instance does not require the checking metatheory to accept
+that instance as true.  Thus arbitrary induction in the output is not an
+obstruction to weak-arithmetic verification of the supplier.  This is
+consistent with the newer modeled soundness result.\cite{pa194-modeled}
+
+The forward PA-to-calculus direction in the inherited argument instead
+imports the PA196 compiler and replaces certain equality templates.  Its
+displayed internal conclusion is PA-provable existential refutation
+transport.  The replacements and radix recodings are explicit finite
+syntactic constructions; they do not lower the induction strength of the
+entire imported compiler.  In particular, the inspected correctness
+arguments include the following unbounded invariants:\cite{fullpa-audit}
+\begin{itemize}
+ \item \texttt{ordinary\_derivation\_requested} quantifies over smaller
+ derivations and all environments/allocation parameters, and then asserts
+ the existence of requested certificates.  Its induction predicate is not
+ supplied in $\Sigma_1$ form.
+ \item \texttt{fuel\_invariant} quantifies over every table bound and a
+ table-realization condition containing unbounded store/environment
+ requirements.  Again, the imported proof invokes unrestricted induction.
+\end{itemize}
+
+The accompanying syntactic audit records 88 files containing explicit
+\texttt{C := Set.univ} inductions in the imported
+\texttt{PA196/Arithmetic} and \texttt{M6PA/Calibration} trees:
+32 transport, 12 scheduler, 10 machine, 3 certificate, 1 compiler-invariant,
+and 30 calibration files.  The JSON manifest records representative sites.
+This is a count of files exhibiting a syntactic pattern, not 88 independent open problems,
+not a lower bound on repair work, and not a claim that every use is
+essential.  Some are syntax identities amenable to weak induction; some
+already have newer $I\Sigma_1$ replacements.  It does show why replacing
+only the two outer wrappers would not constitute a complete audit.
+
+Accordingly, we do not infer that the compiler is impossible in iPRA.
+We also do not infer its weak-arithmetic correctness merely from the fact
+that each standard instance has a finite output.  The missing step is a
+uniform construction and verification at the required base theory,
+covering the actual suppliers, environments and nonstandard proof codes.
+
+\subsection{A concrete repair: bounded request tables}
+\label{ipra-request-tables}
+
+The problematic shape is ``for every environment there exists a
+certificate.''  A useful alternative fixes the input and requested
+environment, and records the finite graph of the recursive requests
+actually made.  Each entry stores its source subcode, environment, child
+indices and resulting certificate.  Validity of a proposed finite table
+is primitive recursive; in the usual arithmetic presentation it is
+$\Delta_1$, and existence of such a table is $\Sigma_1$.  An induction
+constructing these witnesses can therefore be an $I\Sigma_1$ induction,
+provided its local construction and bounds are proved.  A separate
+renaming or frame lemma recovers the desired uniform interface.
+
+There is a particularly explicit pattern in the imported NNF certificate
+construction.  Its quantifier case changes a parameter $a$ only to
+$\operatorname{advance}(a)$, while each source child $q'$ is strictly
+smaller than its parent $q$.  For input code $p$, use table entries
+\[
+ (q,k)\quad\text{with}\quad q+k\le p,
+ \qquad\text{at parameter }\operatorname{advance}^{k}(a).
+\]
+Process $q$ in increasing order.  A Boolean child requests $(q',k)$;
+a quantifier child requests $(q',k+1)$, and
+\[
+ q'<q\quad\Longrightarrow\quad q'+k+1\le q+k\le p.
+\]
+Thus every dependency is an earlier entry of the same triangle, containing
+at most $(p+1)(p+2)/2$ entries.  Local certificate constructors and
+translation equalities give a bounded table checker.  This is a concrete
+way to replace the unbounded-parameter induction, including internally
+for nonstandard $p$ once the coding lemmas are established.  It is not a
+claim that all actual interfaces have already been ported.
+
+For the full compiler one must also bound every parameter change and
+local proof constructor.  A sufficient scheme bounds request depth by
+the source code $d$, bounds parameter updates by iteration of a monotone
+primitive-recursive function, obtains a resulting branching bound $B$,
+and bounds the number of request nodes by $(B+1)^{d+1}$.  Iterating a
+monotone primitive-recursive majorant for local certificate constructors
+through that many nodes gives a primitive-recursive output bound.  The
+hypotheses must be checked: arbitrary nested recursion does not become
+primitive recursive merely because its individual operations are.
+The inspected transport preserves cut, so cut elimination is not a
+required intermediate step.  Large formula codes, or towers of
+exponentials with primitive-recursively bounded height, are consequently
+not by themselves the obstruction.\cite{fullpa-audit}
+
+\subsection{The physical bridge can use positive segments}
+\label{ipra-physical}
+
+Here is a useful conditional lemma for exact machine simulations.
+Suppose source configurations have a primitive-recursive tape embedding
+$E$, and each valid nonhalting source step has a generated exact physical
+trace of length $\tau(c)\ge1$ to the next embedded configuration.
+Require primitive-recursive generators and weak-arithmetic proofs of
+these contracts, correspondence of terminal configurations, preservation
+of valid frames, and a verified finite blank startup into $E(c_0)$ with
+no earlier halt.
+
+Forward translation concatenates the segments of a given source halting
+trace.  For the converse, given a physical halting time $T$, generate at
+most $T+1$ source steps and their segments, stopping if a source halt
+occurs.  If none occurs, positivity makes the total physical duration
+greater than $T$, and the endpoint is nonhalting.  Determinism and the
+absorbing halt convention contradict the alleged physical halt.  Bounded
+search therefore supplies a source halting witness.  This avoids an
+unbounded inverse search through arbitrary intermediate tapes.
+
+All iterations in this argument are primitive recursive under the stated
+contracts.  The same reasoning can prove relative halting equivalence
+between two literal tables, independently of PA calibration.  But the
+contracts must cover the entire register file, all valid gaps, controller
+layout, and startup.  A finite symbolic certificate may express a
+universally parameterized contract; a collection of successful numerical
+sample runs does not.  The AX11H artifacts supply the executable bindings
+and finite symbolic checks, while a complete weak-arithmetic treatment of
+their inherited physical interpretation remains part of the stated
+obligation.\cite{pa-readme}
+
+\subsection{What transfers from the three related projects}
+\label{ipra-related}
+
+The ZFC research supplies useful physical ideas: command-local reader
+orders, coordinated source rotations, predecessor-bit folds, and omission
+of a redundant successful-MP push.  Several already occur in the inspected
+PA designs.  Savings competing for the same control roles do not simply
+add, and changes still need exact startup and source bindings.  A ZFC
+machine's calibration, or a stronger-base arithmetic endpoint there, does
+not calibrate a different PA table in iPRA.\cite{zfc}
+
+The DiophantineConsistency work is relevant through explicit data-valued
+proof constructors, proof checkers, and weak-arithmetic witness machinery;
+the generic PA transfer already uses related infrastructure.  A small
+polynomial's variable count or degree is not a binary-TM state count:
+enumeration, coefficient representation and arithmetic implementation
+still require controls.  Nor can a consistency equation for ZFC replace
+the required PA refutation checker.\cite{dio}
+
+ConciseIPRA illustrates smaller derived interfaces and translations proved
+on a specified public image.  This is a useful possible approach after a
+raw-schema reduction fails: a restricted translation might suffice even
+when arbitrary raw formulas cannot be transported.  For the guard-padding
+proposal that remains an open route, not a constructed translation.
+Finally, substituting a concise checker for \emph{iPRA proofs} changes the
+searched theory; it does not establish the requested PA-consistency
+equivalence.\cite{concise}
+
+The appropriate claim for PA194AX11H is therefore an explicit 194-state
+candidate with a proved relative command-calculus construction and
+documented physical certificates, together with the common unresolved
+weak-arithmetic calibration.  The witness criterion above states exactly
+what would turn that candidate into a solution of the requested iPRA
+problem; this report does not assert that the criterion has been met.

@@ -1,0 +1,119 @@
+% Report-ready section. Requires amsmath, amssymb, amsthm.
+\section{Coefficient three cannot be repaired by finitely many exceptions}
+\label{sec:cofinite-collision}
+
+The earlier coefficient-three experiment has a concrete small refutation
+using $E(1,0)=I(0,1)$. The following strengthening rules out an entire
+repair strategy: excluding small variable labels or finitely many offending
+equality-witness instances merely moves the same obstruction to larger
+numbers. This concerns the unchanged logical interface; it does not rule
+out a genuinely different ternary encoding or a typed proof calculus.
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(a,b)=3p(a,b),\qquad E(a,b)=3p(a,b)+3,
+\]
+\[
+ U(d,A)=3p(A,d)+2,\qquad N(A)=I(A,1),\qquad
+ H_5(d,h)=N\bigl(U(d,N(E(h,d)))\bigr).
+\]
+The designated contradiction is the number one. Retain modus ponens,
+the restricted implicational family
+\[
+ R(a,b,c,u)=I\bigl(I(I(c,u),a),I(I(a,c),I(b,c))\bigr),
+ \qquad u\leq a,
+\]
+and theorem generalization at the labels allowed below.
+
+\paragraph{Inherited propositional dependency.}
+The generic restricted-implication construction derives
+\[
+ K(a,b)=I(a,I(b,a)),\qquad
+ S(a,b,c)=I\bigl(I(a,I(b,c)),I(I(a,b),I(a,c))\bigr).
+\]
+Its exact source is
+\texttt{PA/jamesyc-upstream/pa196/M6/Logic/RestrictedImplication.lean}
+in the pinned repository; the earlier coefficient-three packet separately
+expands its uses of these schemas into the primitive restricted head and
+modus ponens. The generic argument requires only reflexivity of the
+comparison and inflationary implication bounds. Here those bounds follow
+from $a,b\leq p(a,b)\leq3p(a,b)$. No disjointness of constructor tags is
+assumed. This paragraph identifies the inherited derived-rule dependency;
+the new argument is the unbounded family below.
+
+\paragraph{Cofinite-label obstruction.}
+Fix any natural cutoff $L$. Suppose $H_5(d,h)$ is still available for every
+$d,h\geq L$ and generalization is still available for every binder
+$d\geq L$. Then the numerical calculus derives one. In particular, no
+finite exclusion of fifth-head instances, finite forbidden set of labels,
+or uniform upward shift of the unrestricted label range repairs the
+coefficient-three calculus while the displayed propositional interface
+is retained.
+
+\paragraph{Proof.}
+Put
+\[
+ T=L+1,\qquad A=I(T,T),\qquad B=I(A,1),\qquad
+ h=A+1,\qquad d=B-1.
+\]
+The ordinary $K,S$ identity derivation proves $A=T\to T$ without any
+assumption on $T$. All these are natural numbers, $A\geq T\geq1$,
+$B\geq3A$, and hence $h,d\geq L$.
+
+The two pairs $(A+1,B-1)$ and $(A,B)$ have the same sum. Their second
+coordinates differ by one, so
+\[
+ p(A+1,B-1)+1=p(A,B).
+\]
+Consequently their literal numerical codes satisfy
+\[
+ E(h,d)=3p(A+1,B-1)+3
+       =3p(A,B)=I(A,B).                                     \tag{Collision}
+\]
+Write $D=I(A,B)=A\to(A\to1)$. Since $A$ is a theorem, assuming $D$
+and applying modus ponens twice gives one. The implicational deduction
+theorem, or the explicit $K,S$ derivation immediately below, therefore
+gives $N(D)=D\to1$ as a theorem. Generalization at the allowed binder
+$d$ gives $U(d,N(D))$. But the retained instance $H_5(d,h)$ is exactly
+its negation by (Collision). One final modus ponens gives one.
+\hfill$\square$
+
+For completeness, the propositional step uses no unbounded proof search.
+Let $P=I(D,A)$. From $K(A,D)$ and the theorem $A$, derive $P$.
+The identity theorem $I(D,D)$ and $S(D,A,B)$ give
+$I(P,I(D,B))$, hence $I(D,B)$ by modus ponens with $P$.
+Now $S(D,A,1)$ and $I(D,B)$ give $I(P,I(D,1))$; a second use of $P$
+gives $I(D,1)$. Both identity theorems use the fixed five-line $K,S$
+pattern
+\[
+ K(X,I(X,X)),\quad K(X,X),\quad S(X,I(X,X),X),\quad
+ I(K(X,X),I(X,X)),\quad I(X,X).
+\]
+After expanding the inherited $K,S$ templates, the proof has a fixed
+finite pattern independent of $L$; only its numerical instances vary.
+
+\paragraph{Scope and significance.}
+The refutation does not use code zero as a theorem, membership axioms,
+equality reflexivity, equality substitution, the separation gate, or any
+semantic soundness assumption. Its cause is the interaction between
+the colliding implication/equality codes, unrestricted propositional
+reasoning, generalization, and the fifth head.
+
+Given any finite forbidden collection, choose $L$ larger than every
+coordinate occurring in it. The constructed fifth-head instance and
+binder then avoid that collection. Thus a special case rejecting
+$E(1,0)$, or every equality-witness instance with a code below a chosen
+bound, cannot suffice. A viable
+repair must alter infinitely many relevant instances, introduce a genuine
+type/grammar restriction with a new calibration, or change the constructor
+or witness interface itself. None of these alternatives is claimed to
+have produced a smaller machine here.
+
+The displayed numerical functions and fixed proof-template operations
+are primitive recursive. The new collision and bound calculations are
+quantifier-free arithmetic identities and inequalities, so they introduce
+no stronger induction requirement than iPRA. The supplied checker verifies
+the finite schematic $K,S$/generalization/fifth-head derivation and exact
+arithmetic instances; it is not advertised as a new proof-assistant
+compilation of the inherited restricted-implication templates.

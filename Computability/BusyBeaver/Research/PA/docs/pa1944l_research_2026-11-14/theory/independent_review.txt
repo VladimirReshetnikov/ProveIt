@@ -1,0 +1,197 @@
+INDEPENDENT ADVERSARIAL REVIEW
+Subject: work_cross_theory/bounded_compiler_and_radix3.tex and check_boolean_obstruction.py
+Repository basis: ProveIt@1c9524d8bf2e0a27b9a16ff622359927f536e663
+
+VERDICT
+
+No substantive mathematical error was found in the Boolean countermodels or
+the bounded-input compiler argument. The generic positive-segment transfer
+is also valid with its stated hypotheses. These are appropriately scoped
+results: they do not provide the missing PA-refutation translator, a physical
+machine's complete consistency calibration, or a newly compiled Lean theorem.
+Two explanatory additions were requested and have appeared in the supplement:
+explicitly list the three surviving axiom heads, and give the Boolean factor
+lemma needed by the proof-prefix invariant. A further requested clarification
+is to keep local IΣ1 identities as hypotheses for any iPRA version of the
+bounded-input result; quantifier-free induction alone does not establish
+those local identities in a weaker theory.
+
+1. BOOLEAN EVALUATION IS TOTAL AND THE ZERO ALIAS IS SAFE
+
+For a nonzero radix-r code c (r=3 or4), its Cantor components are strictly
+less than c. If the quotient floor(c/r)=0, both components are0<c. Otherwise
+both are at most floor(c/r)<c. Consequently the proposed course-of-values
+recursion is primitive recursive. It can be implemented by a recursively
+constructed finite table of all earlier Boolean values. The constructor
+identities are proved by the defining equations and component bounds, using
+quantifier-free induction; they do not require a general arithmetic truth
+predicate.
+
+The only truth/implication overlap is I(0,0)=0. Setting v(0)=1 agrees with
+v(I(0,0))=(1 implies1)=1. The membership tag is disjoint, so code1=M(0,0)
+has value0. Universal code U(a,B) decodes to the components (B,a), and the
+Python implementation returns the value of that first component. The order
+of the two arguments is therefore correct.
+
+2. ALL-PARAMETER AXIOM AND RULE CHECK
+
+All claims here are symbolic checks for arbitrary numerical parameters, not
+an extrapolation from the finite test extent.
+
+For any code B, negation has Boolean value not v(B). Conjunction has value
+v(A) and v(B), and the defined existential has value not-not v(B)=v(B).
+The last equality is a Boolean identity, provable intuitionistically because
+Boolean values are decidable.
+
+Head1 becomes v(C) implies v(C). Head2 compares two occurrences of v(C).
+Head6 becomes b implies ((b implies c) implies c). Diagonal vacuity becomes
+b implies b. All are Boolean tautologies.
+
+For rho8, write the Boolean values of H,D,A,d as h,d0,a,u. If h=1, its final
+consequent a implies h is1. If h=0, the left antecedent (h implies u)
+implies d0 has value d0, whereas d0 implies h has value not d0; the complete
+formula is again1. Thus the head is valid for all16 Boolean assignments;
+the numeric dominance condition is unnecessary for this particular model.
+No intuitionistic validity of the object-level classical formula is being
+assumed: the metatheory proves a finite Boolean truth-table identity.
+
+For the gate, its guard implies c!=b. Hence v(M(c,b))=v(c). Therefore P has
+value1 and the second implication in S has value1. The first implication
+in S has consequent P, so it also has value1. Universal quantification does
+not change a value, giving S=1. Likewise V=1. Negation gives N(P)=0, so Q=0
+and G=not(V implies Q)=1. The bundled gate also has value1 because Gamma(c)
+has value1. This proof works even when c=a; the actual guard is stronger.
+A failed guard yields code0, whose value is1. It does not matter that a=b
+is permitted: the argument never requires M(a,b) to be true.
+
+MP preserves value1 by Boolean implication elimination. Closed
+generalization preserves the value by the defining universal equation.
+These exhaust the explicitly listed reduced calculus. The argument would
+not automatically cover extra substitution, instantiation, equality
+reflexivity or witness axioms added to that calculus; the theorem correctly
+identifies its retained axiom/rule set.
+
+3. THE RADIX-FOUR WITNESS-HEAD OBSTRUCTION
+
+Assign every E(a,b) value0. Both equality-rewriting heads contain E as an
+antecedent of a relevant implication, hence have value1. Equality vacuity
+E(a,b) implies U(c,E(a,b)), if retained, is0 implies0 and has value1.
+The omitted existential equality-witness head has value0, because the
+existential operator preserves the value of its body. The gate and other
+head checks above remain unchanged. Thus deleting only that witness head
+also yields the stated Boolean model.
+
+For the proposed neighborhood equality, a=0,b=1,z=2 are distinct where
+freshness is needed. M(0,2) has value v(0)=1 and M(1,2) has value v(1)=0,
+so the first biconditional is false. M(2,0) and M(2,1) both have value v(2),
+so the second biconditional is true. The conjunction and its existential
+closure are false. This is a genuine counterexample to that witness-schema
+instance, even though it is not an ordinary first-order structure. It is
+exactly a model of the coded inference rules under discussion.
+
+4. IPRA PROOF-PREFIX INDUCTION
+
+For a fixed coded proof D, every line's value is a primitive-recursive
+Boolean. The prefix product B(D,i) is therefore primitive recursive.
+The matrix OK(D,i)=1 implies B(D,i)=1 is quantifier-free. The property
+that a product of Boolean factors equals1 only if any selected earlier
+factor equals1 has its own quantifier-free proof by induction on product
+length (with the selected index as a free parameter). This supplies the
+premise values at MP or generalization lines. One then gets the prefix
+induction exactly as stated, including malformed proofcodes via OK.
+Universal generalization over D and i follows after that induction. No
+unbounded satisfaction predicate or induction on arbitrary arithmetic
+formulas is hidden in this argument.
+
+An iPRA proof of consistency for this reduced calculus blocks an iPRA
+calibration to PA consistency if PA is consistent: together with the alleged
+calibration it would prove Con(PA), contradicting the usual second
+incompleteness consequence for PA. This conclusion concerns the specific
+reduced calculus, not every equality-free axiomatization of PA.
+
+5. BOUNDED-INPUT COMPILER INDUCTION
+
+I inspected the actual imported files PA196/Arithmetic/Realizes.lean,
+CompilerRecursive.lean, CompilerRule.lean, CompilerInvariant.lean,
+Compiler.lean, Checker.lean, WordMacros.lean and Commands/Words.lean.
+They agree with the supplement's dependency pattern. In realizes_mp, the
+major is applied at (t,w), and after push the minor is applied exactly at
+(0,pair(I(a,b),w)). The major formula, not a runtime witness or a newly
+produced certificate, supplies the new stack entry. Generalization uses
+one prior row at the same incoming clean store. All accepted predecessor
+lookups use the previous fuel table. Table bound N creates N+1 entries,
+so the supplement's index convention i<=N is correct.
+
+Fixing F,N,t,s first makes K the maximum of a bounded primitive-recursive
+array, even though its value may be enormous. R0 bounds all requested
+inputs and every relevant formula. The recurrence R(j+1)=(K+Rj+2)^2 is
+nondecreasing and exceeds the Cantor pairing of any h<=K with x<=Rj.
+At fuel k+1, the minor's new tail is therefore within the fuel-k input
+budget. Reversing the budget index F-k is essential and is done correctly.
+At k=0, acceptance is impossible. At k=F the invariant covers the fixed
+requested inputs. Bounded universal quantifiers can all be replaced by
+primitive-recursive finite products, so the actual induction matrix is
+an equation or a quantifier-free implication. Guarding k<=F makes the
+induction formula total outside the intended interval. There is no appeal
+to induction on the original unbounded TableRealizes predicate.
+
+The result is conditional on the local word equations in the ambient theory.
+The repository proves those local equations in IΣ1 models; consequently the
+bounded replacement offers an IΣ1 argument for this particular compiler
+stage. An unconditional iPRA claim would additionally need iPRA proofs of
+its defining equations and local identities, or the explicitly stated
+conditional formulation. It does not supply RequestedCertificate or the
+arbitrary PA induction-axiom translator.
+
+The nine-entry command lengths independently check out: pop11,push10,
+discard12; head selector max92; rho selector max33; gate112; generalization
+adds at most22; the MP suffix has14 and its two push words add20, hence34.
+Thus L(k+1)<=2L(k)+112 and L(k)<=112(2^k-1) are correct. The ten-entry134
+bound is reasonable with the displayed adjusted selectors, and the paper
+appropriately makes that extension conditional on their binding checks.
+
+6. POSITIVE-SEGMENT PHYSICAL TRANSFER
+
+The finite-word identities B(v)=0 1^(v+1), C(v)=1 0 1^v and C(A)1=1B(A)
+are correct. The list identity follows by induction on concatenated blocks.
+Literal transitions, unilateral repeated-row sweeps, canonical finite tape
+zipper equality and concatenation admit quantifier-free equational proofs.
+The one-block-to-list extension is valid when the certified one-block
+contract really preserves its outside contexts and returns in the claimed
+control/direction. Those hypotheses must remain explicit.
+
+The generic transfer theorem correctly augments source states with spare
+list, gap and head offset so that the frame and its duration are functions
+of a coded source state. The nonempty-spare invariant must be proved by the
+local contracts; merely observing it at startup would not suffice.
+Positive segment durations imply T(n)>=b+n. A nonhalting endpoint together
+with absorbing physical halt excludes any hidden earlier physical halt
+inside that segment; an extra intermediate-trace hypothesis is unnecessary
+once the endpoint equality is proved in the totalized semantics.
+
+For a physical halt at t, the assumption that the first t+1 source states
+are all nonhalting yields a nonhalting frame at T(t+1)>t, a contradiction.
+The finite source prefix is decidable, so a bounded search extracts a halt
+index. This is constructively valid and uses no Markov principle. The
+forward witness is the primitive-recursive sum of the finitely many segment
+durations and the halt contract. The proof transfers source halting only;
+it does not furnish PA-calibration facts about that source.
+
+7. EXECUTABLE CHECKS ACTUALLY PERFORMED
+
+The checker module was imported without executing its main output mutation.
+Its check(3) and check(4) routines were run independently. Both passed.
+Extra checks covered all a,b,c<9 satisfying only c!=b (including c=a), and
+all constructor pairs a,b<100 in both radices. These passed, including the
+I(0,0)=0 special case. The exact receipt is
+work_inventory/cross_theory_review_receipt.json. These finite calculations
+support implementation binding; the preceding symbolic analysis is the
+reason the mathematical result holds for every numerical parameter.
+
+REVIEW LIMIT
+
+This review did not execute a proof assistant or build the missing full
+PA-to-numerical-calculus compiler. It does not independently certify the
+construction agent's physical table or all 4,780 local tape contracts.
+The verdict concerns the mathematical arguments and conditional boundaries
+in the named supplement and the Boolean verification program.

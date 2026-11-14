@@ -1,0 +1,480 @@
+% Report fragment. Requires amsmath, amssymb, amsthm, booktabs, hyperref.
+% This fragment deliberately does not assert an unconditional literal iPRA/Con(PA) endpoint.
+\section{The combined AX11--Q--H command protocol}
+\label{sec:ax11qh5-proof}
+
+The new protocol combines three independently meaningful changes.  The
+sixth logical head has its two premises exchanged; SHIFT tests the cached
+formula alone; and AX stores its guarded gate, then falls through into the
+existing no-push MP routine.  The last change consumes a fourth AX operand.
+The combined protocol therefore needs its own proof compiler.  In
+particular, the last command of a refutation word must be the POP gadget
+defined below.  A final plain SHIFT can discard a visible contradiction.
+
+This section gives a mathematical proof at the command and numerical-calculus
+levels, together with the exact relative arithmetic statement it supports.
+The executable checker verifies symbolic identities and its binding to the
+delivered grammar.  No newly checked Lean proof of the final literal-machine
+consistency equivalence is asserted.
+
+The literal source binding starts from the supplied QH5 program.  Its old
+AX return, source ordinal 3613, is replaced by the nineteen-site push at
+ordinals 3613 through 3631; the following full MP field-reader entry is
+3632.  The other 3,713 source instructions and their resolved successors
+agree under the explicit relocation.  The source has
+$3714-1+19=3732$ sites.  These finite graph identities are distinct from
+the logical argument below and are checked separately.
+
+\subsection{Numerical formulas and the exchanged calculus}
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad
+ I(A,B)=5p(A,B),\quad M(a,b)=5p(a,b)+1,
+\]
+\[
+ U(a,B)=5p(B,a)+2,\qquad E(a,b)=5p(a,b)+3.
+\]
+Write $A\to B$ for $I(A,B)$, $N(B)=I(B,1)$,
+$A\wedge B=N(I(A,N(B)))$, and $\exists_a B=N(U(a,N(B)))$.
+The distinguished contradiction is $1$ and zero is a theorem.
+The identity $I(0,0)=0$ is retained throughout.
+
+The six logical families are
+\begin{align*}
+ h_1(D,H)&=(\exists_D U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h'_6(D,A,H)&=U(D,A\to H)\to(U(D,A)\to U(D,H)).
+\end{align*}
+There are also the restricted propositional family
+\[
+ \rho_8(D,A,H,u)=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \qquad u\leq D,
+\]
+the diagonal family $\Gamma(B)=I(B,U(B,B))$, and the guarded gate
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))
+                         \wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to N(P(a,b,c))),\\
+ G(a,b,c)&=N(V(a,b,c)\to Q(a,b,c)),\qquad c\ne a,b.
+\end{align*}
+Its rules are modus ponens and theorem generalization
+$B\mapsto U(i,B)$.  Call this numerical calculus $\mathcal D_5$.
+An AX whose gate guard fails emits zero in the gate position.
+This is harmless because $\rho_8(0,0,0,0)=0$.
+
+The supplied QH5 packet already uses precisely $\mathcal D_5$.
+Thus the new AX11 splice introduces no further logical axiom or radix
+translation.  If one compares with the unexchanged coefficient-five
+calculus $\mathcal C_5$, the only changed leaf is
+\[
+ h_6=U(D,A)\to(U(D,A\to H)\to U(D,H)).
+\]
+The fixed implicational theorem
+\[
+ (P\to(Q\to R))\to(Q\to(P\to R))
+\]
+converts $h_6$ to $h'_6$; the same theorem with $P,Q$ exchanged gives
+the converse.  The supplied finite restricted-implication derivation
+derives this theorem using only modus ponens, restricted $\rho_8$,
+reflexivity of $\leq$, and the two inequalities
+$a,b\leq 5p(a,b)$.  Alternatively the accompanying exchange certificate
+replays its finite $K,S,\mathrm{MP}$ derivation, with $K,S$ supplied by
+that same restricted-implication derivation.  Recursive replacement of
+sixth-axiom leaves preserves every conclusion.  This local proof
+translation does not require a monotonicity claim about hereditary radix
+recoding.
+
+\subsection{Exact four-field AX semantics}
+
+A store is $(t,w,d,h)$: top formula, Cantor stack, numerical offset,
+and cached formula.  Put $[a;w]=p(a,w)$, with total projections
+$\operatorname{hd}0=\operatorname{tl}0=0$.  Hence $[0;0]=0$;
+the following calculations never require a free-list interpretation.
+
+For $D=d+x$, $H=h+y$, and $A=c$, define
+\[
+\begin{array}{c|l}
+j&q_j\\\hline
+0&G(H,D,A)\text{, or zero if its guard fails}\\
+1&\Gamma(A)\\
+2&h'_6(D,A,H)\\
+3&h_5(D,H)\\
+4&h_4(D,A,H)\\
+5&h_3(D,A,H)\\
+6&h_2(D,A,H)\\
+7&h_1(D,H)\\
+8&\rho_8(D,A,H,d)\\
+9&U(d,h).
+\end{array}
+\]
+The exact command effects are
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =(0,[q_0,q_1,\ldots,q_9,t;w],z,0),
+ \tag{A11H}
+\]
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(b,w,b,0),&I(t,b)=h,\\
+ (0,w,b,0),&I(t,b)\ne h,
+ \end{cases}
+ \qquad b=d+x,
+ \tag{MPH}
+\]
+and
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1.
+ \end{cases}
+ \tag{SH}
+\]
+
+The added final AX push leaves $t=d=h=0$ before entering the full MP
+field reader.  That reader consumes $z$ from the continuation.  If $z=0$,
+MP succeeds with conclusion zero.  If $z>0$, the comparison
+$I(0,z)=0$ fails, and MP again returns zero.  Both cases preserve the
+eleven-entry stack, leave $d=z$, and clear $h$.  This proves (A11H) for
+every fourth field, including malformed attempts to regard it as part of
+the next command.  The compiler chooses $z=0$; the soundness argument
+must cover all $z$.
+
+The checker expands the actual grammar in a free constructor algebra.
+It checks the entire ordered stack, the exchanged sixth head, the gate
+before the guard, both guarded outputs, the final push, the coefficient-five
+multiplier node, the no-push MP controller, the cache-only SHIFT controller,
+and the full MP operand-reader shape.  This is stronger than checking a
+finite collection of numerical parameter values.  It remains a finite
+symbolic certificate interpreted by the accompanying mathematical lemmas.
+
+\subsection{Gadgets, including all exceptional cases}
+
+Let $A_0=\mathsf A_{0,0,0,0}$, and execute words left to right.
+Every $q_0,\ldots,q_8$ has residue zero modulo five, and
+$q_9=U(d,h)$ has residue two and is at least two.  Therefore none of
+these generated heads equals one.  Direct iteration of (SH) gives
+\begin{align*}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)
+     &=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)
+     &=(q_9,w,0,t),
+\end{align*}
+without halting, for arbitrary $t,w,d,h$.
+
+Define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,
+ \qquad \mathsf{Pop}=A_0;\mathsf S^{12},
+ \qquad \mathsf{Discard}=\mathsf{MP}_0,
+ \qquad \mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+Their identities are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+  \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+For Push, the final comparison fails because its major candidate is an
+implication code whereas its cache is a universal code.  Discard has
+the same conclusion zero in both MP branches.  Pop's last SHIFT tests
+exactly the saved top $t$; in the halting case it does so before reading
+the old underlying stack.  These equations include empty stacks and
+all collapsed zero pairs.
+
+For $0\leq j\leq8$, the selector
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,0};
+ \mathsf S^{j+2};\mathsf{Pop}^{9-j}
+ \tag{SEL11H}
+\]
+sends every $(t,w,0,0)$ to $(q_j,w,0,0)$.
+Each Pop sees the selected $q_j\ne1$, so all the indicated Pops
+complete.  After the initial Shifts the remaining generated suffix
+and the saved zero have exactly $9-j$ stack cells.  For
+$\rho_8(D,A,H,u)$ with $u\leq D$, use instead
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf A_{A,D-u,H,0};\mathsf S^{10};\mathsf{Pop}.
+\]
+This emits an actual restricted leaf with its required inequality;
+the numerical offset is never silently set to a formula parameter
+whose ordering has changed.
+
+Generalization uses
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;\mathsf S;
+                \mathsf A_{i,0,0,0};\mathsf S^{11}.
+\]
+It sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$ for all $a,w,i$.
+The intervening SHIFT has cache zero.  The old formula $a$ becomes an
+AX parameter before another SHIFT tests it; in particular this identity
+also holds when $a=1$.
+
+Finally, on $(0,[a,I(a,b),0;w],0,0)$ the word
+\[
+ \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}
+ \tag{MP11H}
+\]
+halts if $a=1$ or $b=1$, and otherwise returns $(b,w,0,0)$.
+The first two Shifts expose the minor and major premises.  MP leaves
+the zero padding below them, and Pop removes that padding while restoring
+clean caches.  The padding is essential because the MP routine itself
+no longer pushes a dummy zero.  When all displayed numerical values are
+zero, total projections give the same result despite $p(0,0)=0$.
+
+\subsection{A compiler valid over every carried store}
+
+Compile a finite $\mathcal D_5$ derivation $e$ to a word $W_e$.
+Use the selectors for axiom leaves.  For a generalization append
+$\mathsf{Gen}_i$.  At modus ponens, with major derivation $e_1$ of
+$I(a,b)$ and minor derivation $e_0$ of $a$, use
+\[
+ W_e=\mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+ W_{e_0};\mathsf{Push};\mathsf S;\mathsf S;
+ \mathsf{MP}_b;\mathsf{Pop}.
+ \tag{COMP11H}
+\]
+Induction on the derivation proves the exact invariant:
+from every $(t,w,0,0)$, this word either halts or returns
+$(\operatorname{concl}(e),w,0,0)$.  In the MP case the initial
+Discard and Push reserve zero; the two recursively compiled words
+preserve the entire protected old stack; (MP11H) then applies.
+The early-halting cases satisfy the invariant without any consistency
+assumption.
+
+If $e$ concludes one, the word
+\[
+                 A_0;W_e;\mathsf{Pop}
+ \tag{HALT11H}
+\]
+halts from every store $(t,w,d,h)$.  The first AX clears both caches
+and creates a legitimate new underlying stack.  The invariant applies
+over that entire stack.  If no earlier command halts, the final Pop
+tests the returned one before reading below the protected part.
+
+This last command is a substantive change from the sum-guard AX11
+compiler.  Here
+\[
+ \mathsf S(1,0,0,0)=(0,0,0,0),
+\]
+so replacing the final Pop by a plain SHIFT destroys the argument.
+The checker tests this failure explicitly rather than relying on the
+name of an inherited gadget.
+
+\subsection{Why the command argument works in weak arithmetic}
+
+The preceding arbitrary-stack invariant is convenient mathematical
+notation, but one must not apply $\Sigma_1$ induction to a formula of
+the form ``there is a word that works over every stack.''  The following
+tracked execution supplies a $\Sigma_1$ invariant.
+
+Run a word from the zero store with a height counter $\delta=0$.
+AX increases $\delta$ by eleven, MP leaves it unchanged, and a
+nonhalting SHIFT decreases it by one.  A nonhalting SHIFT at height
+zero raises an underflow flag.  A halting SHIFT tests the cache before
+reading the stack, so it needs no positive height.  Pair the explicit
+finite list above the protected base with its height; keeping the
+height separately accommodates collapsed numerical zero entries.
+
+For fixed word, trace, and base stack $w$, induction on its coded trace
+shows that a run without underflow is independent of $w$ below the
+tracked segment.  The top, offset and cache agree, and the stack is
+the tracked finite segment folded over $w$.  This is a direct invariant
+on coded finite sequences.  All its checks are primitive recursive.
+The universal quantifier over $w$ is introduced after this proof;
+it is absent from the induction predicate.
+
+Let $\operatorname{Good}(r)$ assert that there are a word and a tracked
+trace which, from the zero store, avoid underflow and either halt or
+finish at $(r,0,0,0)$ at height zero.  It is a $\Sigma_1$ predicate in
+arithmetic.  The gadgets give the following height ledger:
+\[
+\begin{array}{l|c}
+\text{gadget}&\text{net height on a nonhalting return}\\\hline
+\mathsf{Push}&+1\\
+\mathsf{Pop}&-1\\
+\text{selector }j&11-(j+2)-(9-j)=0\\
+\mathsf{Gen}_i&1-1+11-11=0\\
+\text{MP compiler frame}&3-2-1=0.
+\end{array}
+\]
+Every prefix of a compiled nonhalting word has nonnegative tracked
+height.  Each compiled word begins with Discard, so its initial top
+is irrelevant whenever the initial caches are clean.  The frame lemma
+therefore supplies exactly the arbitrary-store property needed for
+composition.  The fixed selectors prove $\operatorname{Good}$ for
+every leaf; the displayed words prove its closure under generalization
+and MP.  $\Sigma_1$ induction along an internally coded derivation, retaining
+an existentially coded list of the preceding word-and-trace witnesses,
+proves $\operatorname{Good}(r)$ for every internally provable $r$,
+including nonstandard proof codes in a model of $\mathrm I\Sigma_1$.
+Appending the final Pop to a successful proof of one halts before
+underflow.
+
+This is the same tracked-executor method used by the repository's
+\texttt{pa194-model-fairness} development, with the eleven-push AX
+contract and the new terminal Pop substituted explicitly.  The present
+result is a paper proof; the existing ten-entry Lean theorem is not
+being asserted to have checked this new interface.
+
+\subsection{Four-field scheduling and soundness}
+
+There are two different integer conventions at the fetch boundary.
+They can be read directly from the literal source instructions 25--47,
+which the checker binds independently.  Register 0 is the next fresh
+candidate $N$, register 8 is the continuation $L$, and register 3
+receives the command tag.  Registers 3, 6 and 7 are initially zero,
+as required at a clean command-fetch boundary.  At source site 25 the
+seed to be unpaired is
+\[
+ \operatorname{seed}(N,L)=
+ \begin{cases}N,&L=0,\\L-1,&L>0,\end{cases}
+ \qquad
+ N'=\begin{cases}N+1,&L=0,\\N,&L>0.\end{cases}
+ \tag{SEED11H}
+\]
+Indeed, positive $L$ is decremented once and execution jumps directly
+to site 34.  For $L=0$, sites 27--30 copy $N$ into $L$ and scratch 6;
+sites 31--33 restore $N$ with one additional unit and clear scratch 6.
+Sites 34--47 then unpair the seed, putting its first component in
+register 3 and its second in register 8.  At the head of their main
+loop the invariant is
+$\operatorname{seed}=p(R_6,R_7)+R_8$.  One outer iteration replaces
+$(a,b)$ by $(a-1,b+1)$ when $a>0$, or by $(b+1,0)$ when $a=0$;
+in either case its Cantor pair increases by one while $R_8$ decreases
+by one.  The two concluding transfers clear the scratches and return
+the two projections.  This proves (SEED11H) for arbitrary natural
+inputs, preserves the other registers, and also supplies its internal
+finite arithmetic induction proof.  The initial clean frame has
+$N=2,L=0$.
+
+The command continuation must retain all four fields.  Define
+$e(\epsilon)=0$ and $e(c::w)=1+b_c(e(w))$, where
+\begin{align*}
+ b_{\mathsf S}(v)&=p(0,v),\\
+ b_{\mathsf{MP}_x}(v)&=p(1,p(x,v)),\\
+ b_{\mathsf A_{c,x,y,z}}(v)&=p(c+2,p(y,p(x,p(z,v)))).
+\end{align*}
+Thus a \emph{fresh candidate} for $c::w$ has value $b_c(e(w))$,
+without an additional one, whereas a \emph{positive continuation}
+for the same word has value $e(c::w)=1+b_c(e(w))$.
+Equation (SEED11H) makes both enter the same decoder with payload
+$b_c(e(w))$.  This is why the candidate family below has no outer
+``$+1$''.  The fields after the command tag are read in the order $y,x,z$.
+Every inverse equation follows from total Cantor projections, including
+zero aliases.  The checker also decodes the old three-field encoding
+and confirms that it wrongly consumes the head of the next continuation
+as $z$.
+
+After decoding a positive pointer $1+b_c(v)$, its continuation is a
+component of $b_c(v)$ and is strictly smaller than the old pointer.
+Consequently each candidate executes finitely many commands unless it
+halts.  Fresh candidate numbers start at two and increase.  If
+$v=e(A_0;W_e;\mathsf{Pop})$, then prefixing by
+$\mathsf A_{k,0,0,0}$ gives candidate codes
+\[
+       p(k+2,p(0,p(0,p(0,v)))),\qquad k\geq0.
+\]
+This is an increasing unbounded family, with every member at least
+three.  Every such candidate halts because its suffix works from
+every store, regardless of what its prefix and earlier candidates
+left behind.  Bounded induction on the earlier candidate numbers
+proves that the scheduler reaches one or halts earlier.  The decrease
+of the continuation gives a concrete command-count bound: a fresh
+candidate $n$ executes at most $n+1$ commands, since its first remainder
+is at most $n$ and every positive remainder subsequently decreases.
+Thus candidates $2,\ldots,r$ together execute at most
+\[
+ \sum_{n=2}^{r}(n+1)=\frac{r^2+3r-4}{2}\leq r^2
+ \qquad(r\geq2)
+\]
+commands.  Take the $k=0$ member of the displayed family as $r$.
+In the command-step scheduler, bounded minimization through $r^2$
+steps therefore finds a halt whenever the input is a valid refutation.
+The candidate code, total command functions, bounded execution and
+bounded minimization are all primitive recursive.  This supplies an
+explicit witness transformation; the bound counts commands and does
+not assert a bound of $r^2$ on literal Turing-machine transitions.
+No unbounded search for a successful candidate is used.
+
+For the converse, annotate the top, cache and every canonical
+Cantor-stack entry with a $\mathcal D_5$ derivation.  The zero store
+has such an annotation.  At an AX, each $q_j$ is an axiom or, for
+$q_9$, the generalization of the annotated old cache; the saved old
+top retains its annotation.  The restricted leaf has
+$d\leq d+x$.  The arbitrary fourth operand carries no formula
+obligation and the two new visible zero entries have their fixed
+proofs.  A successful MP composes its annotated premises; a failed
+MP produces zero.  SHIFT moves annotations and halts only when
+the annotated cache is exactly one.  For an internally finite
+trace, the existence of its coded annotation history is a
+$\Sigma_1$ induction invariant.  This yields an internal
+$\mathcal D_5$ refutation from every scheduler halt.
+
+Thus, for the explicit four-field scheduler and the displayed
+primitive-recursive numerical proof checker, the preceding paper
+argument establishes
+\[
+ \mathrm I\Sigma_1\ \vdash\
+  H_{\mathrm{AX11QH5,sch}}
+    \longleftrightarrow
+  \exists e\,\operatorname{Prf}_{\mathcal D_5}(e,1).
+ \tag{REL-SCH}
+\]
+Both witness conversions are primitive recursive: the forward one
+maintains proof annotations, and the reverse one constructs the word,
+its candidate code, a bounded scheduler trace, and its first halting
+index by bounded minimization.  The proof specifies its weak-arithmetic
+induction predicates; it does not infer (REL-SCH) merely from a theorem
+over the standard natural numbers.
+
+\subsection{What remains conditional at the literal endpoint}
+
+Let $T$ be the delivered binary table and let $H_T$ be its arithmetized
+blank-tape halting sentence.  Two distinct statements complete the
+requested iPRA result:
+\begin{align*}
+ \mathrm I\Sigma_1&\vdash H_T\leftrightarrow
+                        H_{\mathrm{AX11QH5,sch}},\tag{PHYS}\\
+ \mathrm I\Sigma_1&\vdash
+  \exists e\,\operatorname{Prf}_{\mathcal D_5}(e,1)
+       \leftrightarrow \operatorname{Ref}_{\mathrm{PA}}.\tag{CAL}
+\end{align*}
+The exact finite startup, local folds and universal symbolic register
+contracts are evidence for (PHYS); establishing its internal coded
+simulation requires the uniform frame, source-controller and positive
+runtime inductions.  A conditional proof should keep those obligations
+visible.  The inherited manuscripts state PA-provable calibration;
+their PA proofs do not automatically establish (CAL).
+
+Given (PHYS) and (CAL), composition with (REL-SCH) gives the all-model
+calibration required by the repository's
+\texttt{ConPAUnconditional.machine\_endpoint}.  The established
+conservation and negative-translation pipeline then yields
+\[
+ \mathrm{iPRA}\ \vdash\
+ \operatorname{Con}(\mathrm{PA})\leftrightarrow\neg H_T.
+\]
+Without those premises this last formula remains conditional.  In
+particular, exchanging an axiom head, changing the command protocol,
+or verifying every ordinary finite run cannot supply an unproved
+uniform PA-refutation compiler.
+
+At the relative command level, (REL-SCH) and the analogous theorem
+for the original QH5 scheduler show that the AX11 splice preserves
+the existence of a numerical-calculus refutation.  That is the useful
+unconditional contribution of the present protocol proof.  The same
+gadget proof works for every coefficient $k\geq4$: it uses only
+the zero alias, the disjoint implication/universal residues, and
+$U(a,B)\geq2$.  The delivered checker is bound to the actual
+coefficient-five source, and the coefficient-four case is not
+being advertised as a second delivered machine.

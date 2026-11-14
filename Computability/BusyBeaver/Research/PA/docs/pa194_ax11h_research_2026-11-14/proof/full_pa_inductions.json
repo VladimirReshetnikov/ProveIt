@@ -1,0 +1,442 @@
+[
+  {
+    "path": "PA196/Arithmetic/Certificates/Fuel.lean",
+    "line": 39,
+    "context": "  have hall : \u2200 delta : V, \u2200 f b i : V, nth (tableValue f b) i \u2260 0 \u2192\n      nth (tableValue (f+delta) b) i = nth (tableValue f b) i := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun delta : V => \u2200 f b i : V, nth (tableValue f b) i \u2260 0 \u2192\n        nth (tableValue (f+delta) b) i = nth (tableValue f b) i) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb fuelExtensionFormula,by trivial,?_\u27e9\n      intro n\n      simpa using (fuelExtension_formula (V := V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Certificates/Locality.lean",
+    "line": 78,
+    "context": "  have hall : \u2200 f : V, \u2200 b c i : V, i \u2264 b \u2227 i \u2264 c \u2192\n      nth (tableValue f b) i = nth (tableValue f c) i := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun f : V => \u2200 b c i : V, i \u2264 b \u2227 i \u2264 c \u2192\n        nth (tableValue f b) i = nth (tableValue f c) i) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb localityFormula,by trivial,?_\u27e9\n      intro n\n      simpa using (locality_formula (V := V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Certificates/Monotone.lean",
+    "line": 81,
+    "context": "  have hall : \u2200 f : V, \u2200 b i : V, nth (tableValue f b) i \u2260 0 \u2192\n      nth (tableValue (f+1) b) i = nth (tableValue f b) i := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun f : V => \u2200 b i : V, nth (tableValue f b) i \u2260 0 \u2192\n        nth (tableValue (f+1) b) i = nth (tableValue f b) i) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb fuelStepFormula,by trivial,?_\u27e9\n      intro n\n      simpa using (fuelStep_formula (V := V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/CompilerInvariant.lean",
+    "line": 49,
+    "context": "      TableRealizes (Checker.tableValue fuel bound)\n        (Compiler.tableValue fuel bound) := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun fuel : V => \u2200 bound : V,\n        TableRealizes (Checker.tableValue fuel bound)\n          (Compiler.tableValue fuel bound)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb fuelInvariantFormula,by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/EndpointInternalCodedSourcePhysicalTrace.lean",
+    "line": 66,
+    "context": "  have all : \u2200 i : V, \u2200 n cs a b padding file q l r : V,\n      Trace n cs a b \u2192 Refines a padding file \u27e8q,l,r\u27e9 \u2192 i\u2264n \u2192 Lifted cs.[i] q l r := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun i : V => \u2200 n cs a b padding file q l r : V,\n        Trace n cs a b \u2192 Refines a padding file \u27e8q,l,r\u27e9 \u2192 i\u2264n \u2192 Lifted cs.[i] q l r) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb liftInvariantFormula,by trivial,?_\u27e9\n      intro i; simpa using (liftInvariant_correct i).symm\n    \u00b7 intro n cs a b padding file q l r ht hf hi"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/InternalCodedSourceTrace.lean",
+    "line": 56,
+    "context": "    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have all : \u2200 n : V, \u2200 a : V, \u2203 cs b, Trace n cs a b := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun n : V => \u2200 a : V, \u2203 cs b, Trace n cs a b) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb allTraceFormula,by trivial,?_\u27e9\n      intro n\n      simpa using (allTrace_correct n).symm\n    \u00b7 intro a; exact \u27e8?[a],a,trace_zero a\u27e9"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/InternalCodedSourceTraceInvariant.lean",
+    "line": 36,
+    "context": "  have all : \u2200 i : V, \u2200 n cs a b : V, Trace n cs a b \u2192 ValidState a \u2192\n      i\u2264n \u2192 ValidState cs.[i] := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun i : V => \u2200 n cs a b : V, Trace n cs a b \u2192 ValidState a \u2192\n        i\u2264n \u2192 ValidState cs.[i]) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb traceInvariantFormula,by trivial,?_\u27e9\n      intro i; simpa using (traceInvariant_correct i).symm\n    \u00b7 intro n cs a b ht ha hi"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/PAInternalCarryFile.lean",
+    "line": 44,
+    "context": "  have all : \u2200 n : V, \u2200 xs : V, xs<n \u2192 \u2200 l t : V, \u2203 qs ls rs,\n      Segment (cost xs) qs ls rs 1 l (rightFile xs t) 1 (leftFile xs l) t := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun n : V => \u2200 xs : V, xs<n \u2192 \u2200 l t : V, \u2203 qs ls rs,\n        Segment (cost xs) qs ls rs 1 l (rightFile xs t) 1 (leftFile xs l) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb boundedFormula,by trivial,?_\u27e9\n      intro n\n      simpa using (bounded_correct n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/PAInternalCarryReturnRelation.lean",
+    "line": 35,
+    "context": "  have all : \u2200 n : V, \u2200 xs : V, xs<n \u2192 \u2200 l : V,\n      ReturnCode.leftFile xs ((1+1)*l+1)=(1+1)*CarryCode.leftFile xs l+1 := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun n : V => \u2200 xs : V, xs<n \u2192 \u2200 l : V,\n        ReturnCode.leftFile xs ((1+1)*l+1)=(1+1)*CarryCode.leftFile xs l+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb boundedFormula,by trivial,?_\u27e9\n      intro n\n      simpa using (bounded_correct n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/PAInternalForwardFile.lean",
+    "line": 45,
+    "context": "  have all : \u2200 n : V, \u2200 xs : V, xs<n \u2192 \u2200 l t : V, \u2203 qs ls rs,\n      Segment (cost xs) qs ls rs 64 l (rightFile xs t) 64 (ReturnCode.leftFile xs l) t := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun n : V => \u2200 xs : V, xs<n \u2192 \u2200 l t : V, \u2203 qs ls rs,\n        Segment (cost xs) qs ls rs 64 l (rightFile xs t) 64 (ReturnCode.leftFile xs l) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb boundedFormula,by trivial,?_\u27e9\n      intro n\n      simpa using (bounded_correct n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/PAInternalReturnFile.lean",
+    "line": 45,
+    "context": "  have all : \u2200 n : V, \u2200 xs : V, xs<n \u2192 \u2200 l t : V, \u2203 qs ls rs,\n      Phase (cost xs) qs ls rs 40 (ReturnCode.leftFile xs l) t 40 l (rightFile xs t) := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun n : V => \u2200 xs : V, xs<n \u2192 \u2200 l t : V, \u2203 qs ls rs,\n        Phase (cost xs) qs ls rs 40 (ReturnCode.leftFile xs l) t 40 l (rightFile xs t)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb boundedFormula,by trivial,?_\u27e9\n      intro n\n      simpa using (bounded_correct n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/PAInternalRollbackFile.lean",
+    "line": 44,
+    "context": "  have all : \u2200 n : V, \u2200 xs : V, xs<n \u2192 \u2200 l t : V, \u2203 qs ls rs,\n      Phase (cost xs) qs ls rs 94 (leftFile xs l) t 94 l (rightFile xs t) := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun n : V => \u2200 xs : V, xs<n \u2192 \u2200 l t : V, \u2203 qs ls rs,\n        Phase (cost xs) qs ls rs 94 (leftFile xs l) t 94 l (rightFile xs t)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb boundedFormula,by trivial,?_\u27e9\n      intro n\n      simpa using (bounded_correct n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/PAInternalScanLeft.lean",
+    "line": 43,
+    "context": "      Segment n qs ls rs q.val (repeatBits n read.toNat l) ((1+1)*t+read.toNat)\n        q.val l ((1+1)*repeatBits n write.toNat t+read.toNat) := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun n : V => \u2200 l t : V, \u2203 qs ls rs,\n        Segment n qs ls rs q.val (repeatBits n read.toNat l) ((1+1)*t+read.toNat)\n          q.val l ((1+1)*repeatBits n write.toNat t+read.toNat)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (scanFormula q read write),by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Machine/PAInternalScanRight.lean",
+    "line": 42,
+    "context": "      Segment n qs ls rs q.val l (repeatBits n read.toNat t)\n        q.val (repeatBits n write.toNat l) t := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun n : V => \u2200 l t : V, \u2203 qs ls rs,\n        Segment n qs ls rs q.val l (repeatBits n read.toNat t)\n          q.val (repeatBits n write.toNat l) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (scanFormula q read write),by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceCommandIteration.lean",
+    "line": 46,
+    "context": "  have all : \u2200i : V,\u2200c n p : V, TraversalRelation c n p \u2192\n      \u2203k cs d,Trace k cs c d \u2227 TraversalRelation d n (consume i p) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun i : V=>\u2200c n p : V, TraversalRelation c n p \u2192\n        \u2203k cs d,Trace k cs c d \u2227 TraversalRelation d n (consume i p)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb commandIterationFormula,by trivial,?_\u27e9\n      intro i; simpa using (commandIteration_correct i).symm\n    \u00b7 intro c n p h"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceCompare.lean",
+    "line": 23,
+    "context": "      Trace t cs (stateCode ((base+1:Nat):V) (guardStore xs h x))\n        (stateCode (if h=x then ((same+1:Nat):V) else ((diff+1:Nat):V)) (guardStore xs 0 0)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun h:V=>\u2200xs x:V,ValidStore xs \u2192\u2203t cs,0<t \u2227\n      Trace t cs (stateCode ((base+1:Nat):V) (guardStore xs h x))\n        (stateCode (if h=x then ((same+1:Nat):V) else ((diff+1:Nat):V)) (guardStore xs 0 0))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb (compareFormula base same diff),by trivial,?_\u27e9\n      intro h\n      simpa using (compare_formula (V:=V) base same diff h).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceCompareClear.lean",
+    "line": 37,
+    "context": "      Trace (3*n+2) cs (stateCode ((base+7+1:Nat):V) (guardStore xs 0 n))\n        (stateCode ((diff+1:Nat):V) (guardStore xs 0 0)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n:V=>\u2200xs:V,ValidStore xs \u2192\u2203cs,\n      Trace (3*n+2) cs (stateCode ((base+7+1:Nat):V) (guardStore xs 0 n))\n        (stateCode ((diff+1:Nat):V) (guardStore xs 0 0))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb (compareClearFormula base diff),by trivial,?_\u27e9\n      intro n\n      simpa using (compare_clear_formula (V:=V) base diff n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceDrain.lean",
+    "line": 32,
+    "context": "      Trace (3*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n        (stateCode ((exit+1:Nat):V) (drainEnd r s n xs)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun n : V => \u2200 xs : V, ValidStore xs \u2192 registers xs r=n \u2192 \u2203 cs,\n        Trace (3*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n          (stateCode ((exit+1:Nat):V) (drainEnd r s n xs))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (drainFormula entry exit r s),by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceDrainJumpInc.lean",
+    "line": 32,
+    "context": "      Trace (3*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n        (stateCode ((exit+1:Nat):V) (drainEnd r s n xs)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun n : V => \u2200 xs : V, ValidStore xs \u2192 registers xs r=n \u2192 \u2203 cs,\n        Trace (3*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n          (stateCode ((exit+1:Nat):V) (drainEnd r s n xs))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (drainFormula entry exit r s),by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceDrainOption.lean",
+    "line": 34,
+    "context": "      Trace (3*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n        (stateCode ((destinationCode exit:Nat):V) (drainEnd r s n xs)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun n : V => \u2200 xs : V, ValidStore xs \u2192 registers xs r=n \u2192 \u2203 cs,\n        Trace (3*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n          (stateCode ((destinationCode exit:Nat):V) (drainEnd r s n xs))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (drainFormula entry (destinationCode exit-1) r s),by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceDrainTwo.lean",
+    "line": 35,
+    "context": "      Trace (4*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n        (stateCode ((exit+1:Nat):V) (drainTwoEnd r s u n xs)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun n : V => \u2200 xs : V, ValidStore xs \u2192 registers xs r=n \u2192 \u2203 cs,\n        Trace (4*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n          (stateCode ((exit+1:Nat):V) (drainTwoEnd r s u n xs))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (drainTwoFormula entry exit r s u),by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceErase.lean",
+    "line": 42,
+    "context": "      Trace (2*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n        (stateCode ((exit+1:Nat):V) (replace r.val xs 0)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun n : V => \u2200 xs : V, ValidStore xs \u2192 registers xs r=n \u2192 \u2203 cs,\n        Trace (2*n+1) cs (stateCode ((entry+1:Nat):V) xs)\n          (stateCode ((exit+1:Nat):V) (replace r.val xs 0))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (eraseFormula entry exit r),by trivial,?_\u27e9\n      intro n; simpa using (erase_formula (V:=V) entry exit r n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourcePairLoop.lean",
+    "line": 32,
+    "context": "      0<k \u2227 Trace k cs (stateCode ((offset+36:Nat):V) xs)\n        (stateCode ((offset+42:Nat):V) (pairLoopEnd n xs)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun n : V => \u2200 xs : V, ValidStore xs \u2192 registers xs 1=0 \u2192 registers xs 6=n \u2192 \u2203 k cs,\n        0<k \u2227 Trace k cs (stateCode ((offset+36:Nat):V) xs)\n          (stateCode ((offset+42:Nat):V) (pairLoopEnd n xs))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (pairLoopFormula offset),by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceTimes4.lean",
+    "line": 27,
+    "context": "      Trace (6*n+1) cs (stateCode ((base+1:Nat):V) xs)\n        (stateCode ((base+7:Nat):V) (times4End n xs)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun n : V => \u2200 xs : V, ValidStore xs \u2192 registers xs 7=n \u2192 \u2203 cs,\n        Trace (6*n+1) cs (stateCode ((base+1:Nat):V) xs)\n          (stateCode ((base+7:Nat):V) (times4End n xs))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (times4Formula base),by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/InternalCodedSourceUnpairIteration.lean",
+    "line": 39,
+    "context": "      Trace t cs (stateCode ((base+1:Nat):V) (unpairDecodedStore r x y xs (n+m) k))\n        (stateCode ((base+1:Nat):V) (unpairDecodedStore r x y xs m (k+n))) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun n : V=>\u2200 xs k m : V,ValidStore xs \u2192 \u2203 t cs,\n        Trace t cs (stateCode ((base+1:Nat):V) (unpairDecodedStore r x y xs (n+m) k))\n          (stateCode ((base+1:Nat):V) (unpairDecodedStore r x y xs m (k+n)))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb (unpairIterationFormula r x y base),by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Scheduler/SourceEnumerationSuffixInduction.lean",
+    "line": 33,
+    "context": "  have all : \u2200 i : V, \u2200 base c initial : V, CommandRelation c base 0 initial \u2192\n      \u2203 k cs d, Trace k cs c d \u2227 CommandRelation d (base+i) 0 (fromValue base i initial) := by\n    refine InductionScheme.succ_induction (C := Set.univ)\n      (P := fun i : V => \u2200 base c initial : V, CommandRelation c base 0 initial \u2192\n        \u2203 k cs d, Trace k cs c d \u2227 CommandRelation d (base+i) 0 (fromValue base i initial)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb sourceFromFormula,by trivial,?_\u27e9\n      intro i; simpa using (sourceFrom_correct i).symm\n    \u00b7 intro base c initial h"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/ActualCertificateEquivalenceInduction.lean",
+    "line": 110,
+    "context": "    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall : \u2200 n : V, \u2200 q<n, IsUFormula language q \u2192 \u2200 param, Result param q := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun n : V => \u2200 q<n, IsUFormula language q \u2192 \u2200 param, Result param q) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb nnfInvariant,by trivial,?_\u27e9\n      intro n\n      simpa [Result] using (nnf_invariant (V:=V) n).symm\n    \u00b7 intro q hq"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentAllocator.lean",
+    "line": 115,
+    "context": "  have hall : \u2200 n : V, \u2200 p<n, \u2200 b f lo other z : V,\n      FormulaCovered b f lo z p \u2192 FormulaCovered b f other z p \u2192 Result p b f lo other z := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 p<n, \u2200 b f lo other z : V, FormulaCovered b f lo z p \u2192\n        FormulaCovered b f other z p \u2192 Result p b f lo other z) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb allocatorInvariant,by trivial,?_\u27e9\n      intro n\n      simpa [Result] using (allocator_invariant (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentClosedEnvironment.lean",
+    "line": 54,
+    "context": "      Bootstrapping.shift language p=p \u2192 len f\u2264n \u2192\n      translate (parameters b f lo z) p=translate (parameters b 0 lo z) p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 p b f lo z : V, IsUFormula language p \u2192 Bootstrapping.shift language p=p \u2192\n        len f\u2264n \u2192 translate (parameters b f lo z) p=translate (parameters b 0 lo z) p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb closedEnvironmentInvariant,by trivial,?_\u27e9\n      intro n\n      simpa using (closedEnvironment_invariant (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentDerivation.lean",
+    "line": 34,
+    "context": "      ProofEnvironment d f lo z \u2192 \u2203 code,\n        verifyValue code=sequentCode (parameters 0 f lo z) (fstIdx d)+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 d<n, Derivation T d \u2192 \u2200 f lo z : V, ProofEnvironment d f lo z \u2192\n        \u2203 code, verifyValue code=sequentCode (parameters 0 f lo z) (fstIdx d)+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb (derivationTranslationInvariant T),by trivial,?_\u27e9\n      intro n\n      simpa using (derivationTranslation_invariant T n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentEnvironmentExistence.lean",
+    "line": 36,
+    "context": "  have : V\u2193[\u2112\u2092\u1d63] \u22a7* InductionScheme \u2112\u2092\u1d63 Set.univ :=\n    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n    len (zeroEnvironment n)=n \u2227 \u2200 i<n, nth (zeroEnvironment n) i=0) ?_ ?_ ?_ n\n  \u00b7 refine \u27e8fun _ => 0,Rewriting.emb zeroEnvironmentInvariant,by trivial,?_\u27e9\n    intro n\n    simpa using (zeroEnvironment_invariant (V:=V) n).symm\n  \u00b7 simp"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentFold.lean",
+    "line": 57,
+    "context": "      (\u2200 p, p\u2208s \u2192 \u2203 code, verifyValue code=wim (translate param p) c+1) \u2192\n      \u2203 code, verifyValue code=wim (sequentScan param s n) c+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 param s c : V,\n        (\u2200 p, p\u2208s \u2192 \u2203 code, verifyValue code=wim (translate param p) c+1) \u2192\n        \u2203 code, verifyValue code=wim (sequentScan param s n) c+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb foldScanInvariant,by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentHighVacuity.lean",
+    "line": 136,
+    "context": "  have hall : \u2200 n : V, \u2200 p<n, \u2200 c b f lo z : V, FormulaCovered b f lo z p \u2192\n      z<c \u2192 Vacuous c b f lo z p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 p<n, \u2200 c b f lo z : V, FormulaCovered b f lo z p \u2192\n        z<c \u2192 Vacuous c b f lo z p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb highVacuityInvariant,by trivial,?_\u27e9\n      intro n\n      simpa [Vacuous] using (highVacuity_invariant (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentMember.lean",
+    "line": 56,
+    "context": "  have hall : \u2200 n : V, \u2200 param s p : V, p\u2208s \u2192 p<n \u2192 \u2203 code,\n      verifyValue code = wim (translate param p) (sequentScan param s n)+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 param s p : V, p\u2208s \u2192 p<n \u2192 \u2203 code,\n        verifyValue code = wim (translate param p) (sequentScan param s n)+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb memberScanInvariant,by trivial,?_\u27e9\n      intro n\n      simpa using (memberScan_invariant (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentPadEnvironment.lean",
+    "line": 79,
+    "context": "      (\u2200 i<len f, nth (padEnvironment f n) i=nth f i) \u2227\n      (\u2200 i<len f+n, len f\u2264i \u2192 nth (padEnvironment f n) i=0) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V => \u2200 f : V,\n      len (padEnvironment f n)=len f+n \u2227\n      (\u2200 i<len f, nth (padEnvironment f n) i=nth f i) \u2227\n      (\u2200 i<len f+n, len f\u2264i \u2192 nth (padEnvironment f n) i=0)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb padEnvironmentInvariant,by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentPrefixAgreement.lean",
+    "line": 108,
+    "context": "      (\u2200 i<p, nth f i=nth g i) \u2192\n      translate (parameters b f lo z) p=translate (parameters b g lo z) p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 p<n, IsUFormula language p \u2192 \u2200 b f g lo z : V,\n        (\u2200 i<p, nth f i=nth g i) \u2192\n        translate (parameters b f lo z) p=translate (parameters b g lo z) p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb prefixAgreementInvariant,by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentRename.lean",
+    "line": 115,
+    "context": "      RenameEnvironment x y b bb \u2192 RenameEnvironment x y f ff \u2192 x<lo \u2192 y<lo \u2192\n      Result p x y b bb f ff lo z := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 p<n, \u2200 x y b bb f ff lo z : V, FormulaCovered b f lo z p \u2192\n        RenameEnvironment x y b bb \u2192 RenameEnvironment x y f ff \u2192 x<lo \u2192 y<lo \u2192\n        Result p x y b bb f ff lo z) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb renameFormulaInvariant,by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentReserve.lean",
+    "line": 98,
+    "context": "  have hall : \u2200 n : V, \u2200 p<n, \u2200 b f lo z other : V,\n      FormulaCovered b f lo z p \u2192 FormulaCovered b f lo other p \u2192 Result p b f lo z other := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 p<n, \u2200 b f lo z other : V, FormulaCovered b f lo z p \u2192\n        FormulaCovered b f lo other p \u2192 Result p b f lo z other) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb reserveInvariant,by trivial,?_\u27e9\n      intro n\n      simpa [Result] using (reserve_invariant (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentShift.lean",
+    "line": 82,
+    "context": "  have hall : \u2200 n : V, \u2200 p<n, IsUFormula language p \u2192 \u2200 param x,\n      translate (prependFree x param) (Bootstrapping.shift language p)=translate param p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 p<n, IsUFormula language p \u2192 \u2200 param x,\n        translate (prependFree x param) (Bootstrapping.shift language p)=translate param p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb shiftAgreementInvariant,by trivial,?_\u27e9\n      intro n\n      simpa using (shiftAgreement_invariant (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentSingleton.lean",
+    "line": 53,
+    "context": "        ActualArithmeticGraph.eval translationOr (translate param p) 1 0 0) \u2227\n      (n\u2264p \u2192 sequentScan param {p} n=1) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V => \u2200 param p : V,\n      (p<n \u2192 sequentScan param {p} n=\n        ActualArithmeticGraph.eval translationOr (translate param p) 1 0 0) \u2227\n      (n\u2264p \u2192 sequentScan param {p} n=1)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb singletonScanInvariant,by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentSubstitution.lean",
+    "line": 111,
+    "context": "      translate (parameters b f lo z) (Bootstrapping.subst language w p)=\n        translate (parameters a f lo z) p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 p<n, \u2200 w a b f lo z : V, LabelSubstitution w a b f \u2192\n        IsSemiformula language (len a) p \u2192\n        translate (parameters b f lo z) (Bootstrapping.subst language w p)=\n          translate (parameters a f lo z) p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb substitutionAgreementInvariant,by trivial,?_\u27e9"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/FoundationRelationalSequentVacuity.lean",
+    "line": 112,
+    "context": "  have hall : \u2200 n : V, \u2200 p<n, \u2200 c b f lo z : V, FormulaCovered b f lo z p \u2192\n      FreshEnvironment c b f lo z \u2192 Vacuous c b f lo z p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 p<n, \u2200 c b f lo z : V, FormulaCovered b f lo z p \u2192\n        FreshEnvironment c b f lo z \u2192 Vacuous c b f lo z p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb vacuityInvariant,by trivial,?_\u27e9\n      intro n\n      simpa [Vacuous] using (vacuity_invariant (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqFormulaRealization.lean",
+    "line": 42,
+    "context": "    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall : \u2200k:V,\u2200p<k,FormulaSupply (V:=V) p := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun k:V => \u2200p<k,FormulaSupply (V:=V) p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb formulaInvariant,by trivial,?_\u27e9\n      intro k; simpa using (formula_invariant (V:=V) k).symm\n    \u00b7 intro p hp; exact False.elim (by simpa using hp)\n    \u00b7 intro k ih p hp"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqGuardedAlls.lean",
+    "line": 49,
+    "context": "  have hall : \u2200k:V,\u2200s p:V,IsSemiformula Presentation.language (s+k) p\u2192FreeSupported 0 p\u2192\n      MatrixSupply (s+k) p\u2192MatrixSupply s (qqAlls p k) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k:V=>\u2200s p:V,\n      IsSemiformula Presentation.language (s+k) p\u2192FreeSupported 0 p\u2192\n      MatrixSupply (s+k) p\u2192MatrixSupply s (qqAlls p k)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb closureInvariant,by trivial,?_\u27e9\n      intro k; simpa using (closure_invariant (V:=V) k).symm\n    \u00b7 intro s p hp hs h; simpa using h"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqSequentDerivation.lean",
+    "line": 31,
+    "context": "  have hall : \u2200 n : V, \u2200 d<n, Derivation Presentation.ordinaryPAeq d \u2192 \u2200 f : V,\n      SourceProofBudget d f \u2192 RequestedCertificate f (fstIdx d) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 d<n, Derivation Presentation.ordinaryPAeq d \u2192 \u2200 f : V,\n        SourceProofBudget d f \u2192 RequestedCertificate f (fstIdx d)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb budgetedDerivationInvariant,by trivial,?_\u27e9\n      intro n\n      simpa using (budgetedDerivationInvariant_semantics (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqSequentFold.lean",
+    "line": 49,
+    "context": "      (\u2200 p, p\u2208s \u2192 \u2203 code, verifyValue code=wim (translate native (formulaSyntax param p)) c+1) \u2192\n      \u2203 code, verifyValue code=wim (translate native (sequentScan param s n)) c+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 native param s c : V, SupportedSet param s \u2192\n        (\u2200 p, p\u2208s \u2192 \u2203 code, verifyValue code=wim (translate native (formulaSyntax param p)) c+1) \u2192\n        \u2203 code, verifyValue code=wim (translate native (sequentScan param s n)) c+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb foldScanInvariant,by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqSequentMember.lean",
+    "line": 57,
+    "context": "  have hall : \u2200 n : V, \u2200 native param s p : V, SupportedSet param s \u2192 p\u2208s \u2192 p<n \u2192 \u2203 code,\n      verifyValue code = wim (translate native (formulaSyntax param p)) (translate native (sequentScan param s n))+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 native param s p : V, SupportedSet param s \u2192 p\u2208s \u2192 p<n \u2192 \u2203 code,\n        verifyValue code = wim (translate native (formulaSyntax param p)) (translate native (sequentScan param s n))+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb memberScanInvariant,by trivial,?_\u27e9\n      intro n\n      simpa using (memberScan_invariant (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqSequentTargetShift.lean",
+    "line": 55,
+    "context": "  have hall : \u2200 n : V, \u2200 param s : V, SupportedSet param s \u2192\n      shift language (sequentScan param s n)=sequentScan (targetShiftParameters param) s n := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 param s : V, SupportedSet param s \u2192\n        shift language (sequentScan param s n)=sequentScan (targetShiftParameters param) s n) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb scanShiftInvariant,by trivial,?_\u27e9\n      intro n\n      simpa using (scanShift_invariant (V:=V) n).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqSupportedValueCoherence.lean",
+    "line": 45,
+    "context": "    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall : \u2200k:V,\u2200t<k,SupportedCoherenceSupply (V:=V) t := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun k:V => \u2200t<k,SupportedCoherenceSupply (V:=V) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb coherenceInvariant,by trivial,?_\u27e9\n      intro k; simpa using (coherence_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)\n    \u00b7 intro k ih t ht"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqSupportedValueTotality.lean",
+    "line": 43,
+    "context": "    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall : \u2200k:V,\u2200t<k,ValueSupply (V:=V) t := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun k:V => \u2200t<k,ValueSupply (V:=V) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb totalityInvariant,by trivial,?_\u27e9\n      intro k; simpa using (totality_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)\n    \u00b7 intro k ih t ht"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqSupportedVectorRealization.lean",
+    "line": 39,
+    "context": "    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall : \u2200k:V,\u2200t<k,VectorSupply (V:=V) t := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun k:V => \u2200t<k,VectorSupply (V:=V) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb vectorInvariant,by trivial,?_\u27e9\n      intro k; simpa using (vector_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)\n    \u00b7 intro k ih t ht"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqValueCoherence.lean",
+    "line": 45,
+    "context": "    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall : \u2200k:V,\u2200t<k,CoherenceSupply (V:=V) t := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun k:V => \u2200t<k,CoherenceSupply (V:=V) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb coherenceInvariant,by trivial,?_\u27e9\n      intro k; simpa using (coherence_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)\n    \u00b7 intro k ih t ht"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqValueDiagonalSupply.lean",
+    "line": 22,
+    "context": "    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall : \u2200count:V,DiagonalSupply (V:=V) count := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun count:V => DiagonalSupply (V:=V) count) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb diagonalInvariant,by trivial,?_\u27e9\n      intro count; simpa using (diagonal_invariant (V:=V) count).symm\n    \u00b7 exact diagonal_zero_supply\n    \u00b7 exact diagonal_successor_supply\n  exact hall count"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqValueDomainGuardCollection.lean",
+    "line": 50,
+    "context": "      (\u2200i<k,\u2203code,verifyValue code=wim assumption (translate param (NumericPAeqTerm.domainCode (nth env i)))+1) \u2192\n      \u2203code,verifyValue code=wim assumption (translate param (M6.PA.NumericPAeqValueDomainGuard.guard env k))+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k:V=>\u2200assumption param env n:V,\n      (\u2200i<k,IsSemiterm language n (nth env i)) \u2192\n      (\u2200i<k,\u2203code,verifyValue code=wim assumption (translate param (NumericPAeqTerm.domainCode (nth env i)))+1) \u2192\n      \u2203code,verifyValue code=wim assumption (translate param (M6.PA.NumericPAeqValueDomainGuard.guard env k))+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb collectionInvariant,by trivial,?_\u27e9\n      intro k; simpa using (collection_invariant (V:=V) k).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqValueDomainGuardProjection.lean",
+    "line": 62,
+    "context": "      \u2203 code, verifyValue code=wim (translate param (M6.PA.NumericPAeqValueDomainGuard.guard env k))\n        (translate param (domainCode (nth env i)))+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 param env n i : V, i<k \u2192\n        (\u2200 j<k, IsSemiterm language n (nth env j)) \u2192\n        \u2203 code, verifyValue code=wim (translate param (M6.PA.NumericPAeqValueDomainGuard.guard env k))\n          (translate param (domainCode (nth env i)))+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb projectionInvariant,by trivial,?_\u27e9"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqValueIsoGuardProjection.lean",
+    "line": 62,
+    "context": "      \u2203 code, verifyValue code=wim (translate param (M6.PA.NumericPAeqValueIsoGuard.guard env other k))\n        (translate param (isoCode (nth env i) (nth other i)))+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 param env other n i : V, i<k \u2192\n        (\u2200 j<k, IsSemiterm language n (nth env j) \u2227 IsSemiterm language n (nth other j)) \u2192\n        \u2203 code, verifyValue code=wim (translate param (M6.PA.NumericPAeqValueIsoGuard.guard env other k))\n          (translate param (isoCode (nth env i) (nth other i)))+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb projectionInvariant,by trivial,?_\u27e9"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqValueRealizationGuardCollection.lean",
+    "line": 50,
+    "context": "      (\u2200i<k,\u2203code,verifyValue code=wim assumption (translate param (M6.PA.NumericPAeqValueRealizationGuard.entry b f w a i))+1) \u2192\n      \u2203code,verifyValue code=wim assumption (translate param (M6.PA.NumericPAeqValueRealizationGuard.guard b f w a k))+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k:V=>\u2200assumption param b f w a n:V,\n      (\u2200i<k,IsSemiformula language n (M6.PA.NumericPAeqValueRealizationGuard.entry b f w a i)) \u2192\n      (\u2200i<k,\u2203code,verifyValue code=wim assumption (translate param (M6.PA.NumericPAeqValueRealizationGuard.entry b f w a i))+1) \u2192\n      \u2203code,verifyValue code=wim assumption (translate param (M6.PA.NumericPAeqValueRealizationGuard.guard b f w a k))+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb collectionInvariant,by trivial,?_\u27e9\n      intro k; simpa using (collection_invariant (V:=V) k).symm"
+  },
+  {
+    "path": "PA196/Arithmetic/Transport/NumericPAeqValueRealizationGuardProjection.lean",
+    "line": 44,
+    "context": "  have hall : \u2200k:V,\u2200param b f w a n i:V,i<k\u2192(\u2200j<k,IsSemiformula language n (M6.PA.NumericPAeqValueRealizationGuard.entry b f w a j))\u2192\n      \u2203code,verifyValue code=wim (translate param (M6.PA.NumericPAeqValueRealizationGuard.guard b f w a k)) (translate param (M6.PA.NumericPAeqValueRealizationGuard.entry b f w a i))+1 := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k:V=>\u2200param b f w a n i:V,\n      i<k\u2192(\u2200j<k,IsSemiformula language n (M6.PA.NumericPAeqValueRealizationGuard.entry b f w a j))\u2192\n      \u2203code,verifyValue code=wim (translate param (M6.PA.NumericPAeqValueRealizationGuard.guard b f w a k)) (translate param (M6.PA.NumericPAeqValueRealizationGuard.entry b f w a i))+1) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb projectionInvariant,by trivial,?_\u27e9\n      intro k; simpa using (projection_invariant (V:=V) k).symm\n    \u00b7 intro param b f w a n i hi _; exact False.elim (not_lt_zero hi)"
+  },
+  {
+    "path": "M6PA/Calibration/FoundationPAeqCodeClosureProof.lean",
+    "line": 41,
+    "context": "  have hall : \u2200 k : V, \u2200 b : V, IsSemiformula PAeq k b \u2192 shift PAeq b=b \u2192\n      (Provable U (qqAlls b k) \u2194 Provable U (subst PAeq (fvarVec k) b)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ)\n      (P:=fun k : V=>\u2200 b : V, IsSemiformula PAeq k b \u2192 shift PAeq b=b \u2192\n        (Provable U (qqAlls b k) \u2194 Provable U (subst PAeq (fvarVec k) b))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb closureProofInvariant,by trivial,?_\u27e9\n      intro k; simpa using (closureProofInvariant_eval (V:=V) k).symm\n    \u00b7 intro b hb _"
+  },
+  {
+    "path": "M6PA/Calibration/FoundationPAeqCodeSubstitution.lean",
+    "line": 59,
+    "context": "      IsSemiformula \u2112\u2092\u1d63 k p \u2192 IsSemitermVec \u2112\u2092\u1d63 k n w \u2192\n      formulaCode param (subst \u2112\u2092\u1d63 w p)=subst Presentation.language (termVector k w) (formulaCode param p) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun b : V => \u2200 p<b, \u2200 k n w param : V,\n      IsSemiformula \u2112\u2092\u1d63 k p \u2192 IsSemitermVec \u2112\u2092\u1d63 k n w \u2192\n      formulaCode param (subst \u2112\u2092\u1d63 w p)=subst Presentation.language (termVector k w) (formulaCode param p)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb substitutionInvariant,by trivial,?_\u27e9\n      intro b; simpa using (substitution_invariant (V:=V) b).symm\n    \u00b7 intro p hp; exact False.elim (by simpa using hp)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqFormulaArity.lean",
+    "line": 59,
+    "context": "  have hall : \u2200 bound : V, \u2200 p<bound, \u2200 s n param,\n      FormulaCovered s n param p \u2192 IsSemiformula language n (formulaSyntax param p) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun bound : V =>\n      \u2200 p<bound, \u2200 s n param, FormulaCovered s n param p \u2192 IsSemiformula language n (formulaSyntax param p)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb validityInvariant,by trivial,?_\u27e9\n      intro bound; simpa using (validity_invariant (V:=V) bound).symm\n    \u00b7 intro p hp; exact False.elim (by simpa using hp)\n    \u00b7 intro bound ih p hp s n param h"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqFormulaClosedEnvironment.lean",
+    "line": 66,
+    "context": "  have : V\u2193[\u2112\u2092\u1d63] \u22a7* InductionScheme \u2112\u2092\u1d63 Set.univ := models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall :\u2200k:V,\u2200p<k,FreeSupported 0 p\u2192\u2200b f g,formulaSyntax (parameters b f) p=formulaSyntax (parameters b g) p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k:V=>\u2200p<k,FreeSupported 0 p\u2192\u2200b f g,formulaSyntax (parameters b f) p=formulaSyntax (parameters b g) p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb closedEnvironmentInvariant,by trivial,?_\u27e9\n      intro k;simpa using (closedEnvironment_invariant (V:=V) k).symm\n    \u00b7 intro p hp;exact False.elim (by simpa using hp)\n    \u00b7 intro k ih p hp hs\n      rcases eq_or_lt_of_le (lt_succ_iff_le.mp hp) with he|hlt"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqFormulaSupportedArity.lean",
+    "line": 59,
+    "context": "  have hall : \u2200 bound : V, \u2200 p<bound, \u2200 s n param,\n      SupportedFormulaCovered s n param p \u2192 IsSemiformula language n (formulaSyntax param p) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun bound : V =>\n      \u2200 p<bound, \u2200 s n param, SupportedFormulaCovered s n param p \u2192 IsSemiformula language n (formulaSyntax param p)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedValidityInvariant,by trivial,?_\u27e9\n      intro bound; simpa using (supportedValidity_invariant (V:=V) bound).symm\n    \u00b7 intro p hp; exact False.elim (by simpa using hp)\n    \u00b7 intro bound ih p hp s n param h"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqFormulaSupportedNegation.lean",
+    "line": 76,
+    "context": "  have hall : \u2200 bound : V, \u2200 p<bound, \u2200 s n param, SupportedFormulaCovered s n param p \u2192\n      formulaSyntax param (neg Presentation.language p)=neg language (formulaSyntax param p) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun bound : V =>\n      \u2200 p<bound, \u2200 s n param, SupportedFormulaCovered s n param p \u2192\n        formulaSyntax param (neg Presentation.language p)=neg language (formulaSyntax param p)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedNegationInvariant,by trivial,?_\u27e9\n      intro bound; simpa using (supportedNegation_invariant (V:=V) bound).symm\n    \u00b7 intro p hp; exact False.elim (by simpa using hp)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqFormulaSupportedSourceFree.lean",
+    "line": 74,
+    "context": "  have hall : \u2200 bound : V, \u2200 p<bound, \u2200 s n param, SupportedFormulaCovered (s+1) n param p \u2192\n      formulaSyntax (sourceFreeParameters s param) (formulaSourceFree s p)=formulaSyntax param p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun bound : V =>\n      \u2200 p<bound, \u2200 s n param, SupportedFormulaCovered (s+1) n param p \u2192\n        formulaSyntax (sourceFreeParameters s param) (formulaSourceFree s p)=formulaSyntax param p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedSourceFreeInvariant,by trivial,?_\u27e9\n      intro bound; simpa using (supportedSourceFree_invariant (V:=V) bound).symm\n    \u00b7 intro p hp; exact False.elim (by simpa using hp)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqFormulaSupportedSourceShift.lean",
+    "line": 73,
+    "context": "  have hall : \u2200 bound : V, \u2200 p<bound, \u2200 s n param x, SupportedFormulaCovered s n param p \u2192 IsSemiterm language n x \u2192\n      formulaSyntax (prependFreeParameters param x) (shift Presentation.language p)=formulaSyntax param p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun bound : V =>\n      \u2200 p<bound, \u2200 s n param x, SupportedFormulaCovered s n param p \u2192 IsSemiterm language n x \u2192\n        formulaSyntax (prependFreeParameters param x) (shift Presentation.language p)=formulaSyntax param p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedSourceShiftInvariant,by trivial,?_\u27e9\n      intro bound; simpa using (supportedSourceShift_invariant (V:=V) bound).symm\n    \u00b7 intro p hp; exact False.elim (by simpa using hp)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqFormulaSupportedTargetShift.lean",
+    "line": 69,
+    "context": "  have hall : \u2200 bound : V, \u2200 p<bound, \u2200 s n param, SupportedFormulaCovered s n param p \u2192\n      shift language (formulaSyntax param p)=formulaSyntax (targetShiftParameters param) p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun bound : V =>\n      \u2200 p<bound, \u2200 s n param, SupportedFormulaCovered s n param p \u2192\n        shift language (formulaSyntax param p)=formulaSyntax (targetShiftParameters param) p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedTargetShiftInvariant,by trivial,?_\u27e9\n      intro bound; simpa using (supportedTargetShift_invariant (V:=V) bound).symm\n    \u00b7 intro p hp; exact False.elim (by simpa using hp)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqFormulaSupportedTargetSubst.lean",
+    "line": 69,
+    "context": "  have hall : \u2200 bound : V, \u2200 p<bound, \u2200 s n m w param, SupportedFormulaCovered s n param p \u2192 IsSemitermVec language n m w \u2192\n      subst language w (formulaSyntax param p)=formulaSyntax (targetSubstParameters w param) p := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun bound : V =>\n      \u2200 p<bound, \u2200 s n m w param, SupportedFormulaCovered s n param p \u2192 IsSemitermVec language n m w \u2192\n        subst language w (formulaSyntax param p)=formulaSyntax (targetSubstParameters w param) p) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedTargetSubstInvariant,by trivial,?_\u27e9\n      intro bound; simpa using (supportedTargetSubst_invariant (V:=V) bound).symm\n    \u00b7 intro p hp; exact False.elim (by simpa using hp)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqSequentValidity.lean",
+    "line": 38,
+    "context": "      (\u2200 p, p\u2208s \u2192 SupportedFormulaCovered sourceArity arity param p) \u2192\n      IsSemiformula language arity (sequentScan param s n) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 param s arity sourceArity : V,\n        (\u2200 p, p\u2208s \u2192 SupportedFormulaCovered sourceArity arity param p) \u2192\n        IsSemiformula language arity (sequentScan param s n)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb scanValidityInvariant,by trivial,?_\u27e9\n      intro n"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermClosedEnvironment.lean",
+    "line": 58,
+    "context": "  have : V\u2193[\u2112\u2092\u1d63] \u22a7* InductionScheme \u2112\u2092\u1d63 Set.univ := models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall :\u2200k:V,\u2200t<k,FreeSupported 0 t\u2192\u2200b f g z,valueSyntax (parameters b f z) t=valueSyntax (parameters b g z) t := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k:V=>\u2200t<k,FreeSupported 0 t\u2192\u2200b f g z,valueSyntax (parameters b f z) t=valueSyntax (parameters b g z) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb closedEnvironmentInvariant,by trivial,?_\u27e9\n      intro k;simpa using (closedEnvironment_invariant (V:=V) k).symm\n    \u00b7 intro t ht;exact False.elim (by simpa using ht)\n    \u00b7 intro k ih t ht hs\n      rcases eq_or_lt_of_le (lt_succ_iff_le.mp ht) with he|hlt"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermSourceSubstValidity.lean",
+    "line": 87,
+    "context": "      t\u2264len (nth param 1) \u2192\n      IsSemiformula language n (valueSyntax param (termSubst Presentation.language ?[u] t)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 n param u, TermCovered 0 n param u \u2192 IsSemiterm Presentation.language 1 t \u2192\n        t\u2264len (nth param 1) \u2192\n        IsSemiformula language n (valueSyntax param (termSubst Presentation.language ?[u] t))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb sourceSubstValidityInvariant,by trivial,?_\u27e9\n      intro k; simpa using (sourceSubstValidity_invariant (V:=V) k).symm"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermSupportedSourceBShift.lean",
+    "line": 80,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s n param x, SupportedTermCovered s n param t \u2192 IsSemiterm language n x \u2192\n      valueSyntax (prependBoundParameters param x) (termBShift Presentation.language t)=valueSyntax param t := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s n param x, SupportedTermCovered s n param t \u2192 IsSemiterm language n x \u2192\n        valueSyntax (prependBoundParameters param x) (termBShift Presentation.language t)=valueSyntax param t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedSourceBShiftInvariant,by trivial,?_\u27e9\n      intro k; simpa using (supportedSourceBShift_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermSupportedSourceFree.lean",
+    "line": 84,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s n param, SupportedTermCovered (s+1) n param t \u2192\n      valueSyntax (sourceFreeParameters s param) (sourceFree s t)=valueSyntax param t := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s n param, SupportedTermCovered (s+1) n param t \u2192\n        valueSyntax (sourceFreeParameters s param) (sourceFree s t)=valueSyntax param t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedSourceFreeInvariant,by trivial,?_\u27e9\n      intro k; simpa using (supportedSourceFree_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermSupportedSourceShift.lean",
+    "line": 80,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s n param x, SupportedTermCovered s n param t \u2192 IsSemiterm language n x \u2192\n      valueSyntax (prependFreeParameters param x) (termShift Presentation.language t)=valueSyntax param t := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s n param x, SupportedTermCovered s n param t \u2192 IsSemiterm language n x \u2192\n        valueSyntax (prependFreeParameters param x) (termShift Presentation.language t)=valueSyntax param t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedSourceShiftInvariant,by trivial,?_\u27e9\n      intro k; simpa using (supportedSourceShift_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermSupportedTargetShift.lean",
+    "line": 87,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s n param, SupportedTermCovered s n param t \u2192\n      shift language (valueSyntax param t)=valueSyntax (targetShiftParameters param) t := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s n param, SupportedTermCovered s n param t \u2192\n        shift language (valueSyntax param t)=valueSyntax (targetShiftParameters param) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedTargetShiftInvariant,by trivial,?_\u27e9\n      intro k; simpa using (supportedTargetShift_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermSupportedTargetSubst.lean",
+    "line": 93,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s n m w param, SupportedTermCovered s n param t \u2192 IsSemitermVec language n m w \u2192\n      subst language w (valueSyntax param t)=valueSyntax (targetSubstParameters w param) t := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s n m w param, SupportedTermCovered s n param t \u2192 IsSemitermVec language n m w \u2192\n        subst language w (valueSyntax param t)=valueSyntax (targetSubstParameters w param) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedTargetSubstInvariant,by trivial,?_\u27e9\n      intro k; simpa using (supportedTargetSubst_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermSupportedValidity.lean",
+    "line": 64,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s n param,\n      SupportedTermCovered s n param t \u2192 IsSemiformula language n (valueSyntax param t) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s n param, SupportedTermCovered s n param t \u2192 IsSemiformula language n (valueSyntax param t)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb supportedValidityInvariant,by trivial,?_\u27e9\n      intro k; simpa using (supportedValidity_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)\n    \u00b7 intro k ih t ht s n param h"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermTargetSubst.lean",
+    "line": 92,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s n m w param, TermCovered s n param t \u2192 IsSemitermVec language n m w \u2192\n      subst language w (valueSyntax param t)=valueSyntax (targetSubstParameters w param) t := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s n m w param, TermCovered s n param t \u2192 IsSemitermVec language n m w \u2192\n        subst language w (valueSyntax param t)=valueSyntax (targetSubstParameters w param) t) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb targetSubstInvariant,by trivial,?_\u27e9\n      intro k; simpa using (targetSubst_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermTotality.lean",
+    "line": 50,
+    "context": "    models_of_subtheory (inferInstance : V\u2193[\u2112\u2092\u1d63] \u22a7* theory)\n  have hall : \u2200 n : V, \u2200 t<n, IsUTerm Presentation.language t \u2192 \u2200 param, \u2203 out, ValueWitness param t out := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 t<n, IsUTerm Presentation.language t \u2192 \u2200 param, \u2203 out, ValueWitness param t out) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb existenceInvariant,by trivial,?_\u27e9\n      intro n; simpa using (existence_invariant (V:=V) n).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)\n    \u00b7 intro n ih t ht hvalid param"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermUniqueness.lean",
+    "line": 60,
+    "context": "  have hall : \u2200 n : V, \u2200 t<n, IsUTerm Presentation.language t \u2192 \u2200 param a b,\n      ValueWitness param t a \u2192 ValueWitness param t b \u2192 a=b := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun n : V =>\n      \u2200 t<n, IsUTerm Presentation.language t \u2192 \u2200 param a b,\n        ValueWitness param t a \u2192 ValueWitness param t b \u2192 a=b) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb uniquenessInvariant,by trivial,?_\u27e9\n      intro n; simpa using (uniqueness_invariant (V:=V) n).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermValidity.lean",
+    "line": 63,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s n param,\n      TermCovered s n param t \u2192 IsSemiformula language n (valueSyntax param t) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s n param, TermCovered s n param t \u2192 IsSemiformula language n (valueSyntax param t)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb validityInvariant,by trivial,?_\u27e9\n      intro k; simpa using (validity_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)\n    \u00b7 intro k ih t ht s n param h"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermVectorSubstTarget.lean",
+    "line": 82,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s r n m v param w, SubstitutionCovered s r n param w t \u2192 IsSemitermVec language n m v \u2192\n      subst language v (valueSyntax param (termSubst Presentation.language w t))=valueSyntax (targetSubstParameters v param) (termSubst Presentation.language w t) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s r n m v param w, SubstitutionCovered s r n param w t \u2192 IsSemitermVec language n m v \u2192\n        subst language v (valueSyntax param (termSubst Presentation.language w t))=valueSyntax (targetSubstParameters v param) (termSubst Presentation.language w t)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb vectorSubstTargetInvariant,by trivial,?_\u27e9\n      intro k; simpa using (vectorSubstTarget_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqTermVectorSubstValidity.lean",
+    "line": 65,
+    "context": "  have hall : \u2200 k : V, \u2200 t<k, \u2200 s r n param w,\n      SubstitutionCovered s r n param w t \u2192 IsSemiformula language n (valueSyntax param (termSubst Presentation.language w t)) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 t<k, \u2200 s r n param w, SubstitutionCovered s r n param w t \u2192 IsSemiformula language n (valueSyntax param (termSubst Presentation.language w t))) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb vectorSubstValidityInvariant,by trivial,?_\u27e9\n      intro k; simpa using (vectorSubstValidity_invariant (V:=V) k).symm\n    \u00b7 intro t ht; exact False.elim (by simpa using ht)\n    \u00b7 intro k ih t ht s r n param w h"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqValueDomainGuardTargetShift.lean",
+    "line": 29,
+    "context": "  have hall : \u2200k:V,\u2200env m n:V,IsSemitermVec language m n env\u2192k\u2264m\u2192\n      shift language (guard env k)=guard (targetShiftTerms env) k := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k:V=>\u2200env m n:V,\n      IsSemitermVec language m n env\u2192k\u2264m\u2192shift language (guard env k)=guard (targetShiftTerms env) k) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb targetShiftInvariant,by trivial,?_\u27e9\n      intro k; simpa using (targetShift_invariant (V:=V) k).symm\n    \u00b7 intro env m n h hk; simp\n    \u00b7 intro k ih env m n h hk"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqValueDomainGuardValidity.lean",
+    "line": 36,
+    "context": "      (\u2200 i<k, IsSemiterm language n (nth env i)) \u2192\n        IsSemiformula language n (guard env k) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 env n : V, (\u2200 i<k, IsSemiterm language n (nth env i)) \u2192\n        IsSemiformula language n (guard env k)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb guardValidInvariant,by trivial,?_\u27e9\n      intro k; simpa using (guardValid_invariant (V:=V) k).symm\n    \u00b7 intro env n _; rw [guard_zero]; simp"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqValueIsoGuardValidity.lean",
+    "line": 36,
+    "context": "      (\u2200 i<k, IsSemiterm language n (nth env i) \u2227 IsSemiterm language n (nth other i)) \u2192\n        IsSemiformula language n (guard env other k) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k : V =>\n      \u2200 env other n : V, (\u2200 i<k, IsSemiterm language n (nth env i) \u2227 IsSemiterm language n (nth other i)) \u2192\n        IsSemiformula language n (guard env other k)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _ => 0,Rewriting.emb guardValidInvariant,by trivial,?_\u27e9\n      intro k; simpa using (guardValid_invariant (V:=V) k).symm\n    \u00b7 intro env other n _; rw [guard_zero]; simp"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqValueRealizationGuardTargetShift.lean",
+    "line": 47,
+    "context": "      (\u2200i<k,IsSemiformula language n (entry b f w a i) \u2227 shift language (entry b f w a i)=entry bs fs w aa i)\u2192\n      shift language (guard b f w a k)=guard bs fs w aa k := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k:V=>\u2200b f w a bs fs aa n:V,\n      (\u2200i<k,IsSemiformula language n (entry b f w a i) \u2227 shift language (entry b f w a i)=entry bs fs w aa i)\u2192\n      shift language (guard b f w a k)=guard bs fs w aa k) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb targetShiftInvariant,by trivial,?_\u27e9\n      intro k; simpa using (targetShift_invariant (V:=V) k).symm\n    \u00b7 intro b f w a bs fs aa n h; simp"
+  },
+  {
+    "path": "M6PA/Calibration/NumericPAeqValueRealizationGuardValidity.lean",
+    "line": 29,
+    "context": "  have hall : \u2200k:V,\u2200b f w a n:V,(\u2200i<k,IsSemiformula language n (entry b f w a i))\u2192\n      IsSemiformula language n (guard b f w a k) := by\n    refine InductionScheme.succ_induction (C:=Set.univ) (P:=fun k:V=>\u2200b f w a n:V,\n      (\u2200i<k,IsSemiformula language n (entry b f w a i))\u2192IsSemiformula language n (guard b f w a k)) ?_ ?_ ?_\n    \u00b7 refine \u27e8fun _=>0,Rewriting.emb guardValidInvariant,by trivial,?_\u27e9\n      intro k; simpa using (guardValid_invariant (V:=V) k).symm\n    \u00b7 intro b f w a n _; rw [guard_zero]; simp\n    \u00b7 intro k ih b f w a n h"
+  }
+]

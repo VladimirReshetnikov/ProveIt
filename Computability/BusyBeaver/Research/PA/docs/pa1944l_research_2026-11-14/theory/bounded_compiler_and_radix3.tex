@@ -1,0 +1,566 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,hyperref}
+\setlength{\emergencystretch}{3em}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\pra}{\mathsf{PRA}}
+\newcommand{\pa}{\mathsf{PA}}
+\newcommand{\isone}{\mathsf{I\Sigma_1}}
+\newcommand{\p}{\operatorname{p}}
+\title{Arithmetic checks for small PA-consistency machines}
+\author{Research supplement}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This supplement proves a bounded-input replacement for one full-PA induction
+in the imported numerical-proof-to-command-word compiler. It also gives an
+explicit primitive-recursive Boolean countermodel to an attractive radix-three
+reduction which deletes the equality constructor and its three axiom heads.
+A third result internalizes positive symbolic physical contracts in iPRA and
+gives a relative halting theorem for PA1944L. These results do not supply an
+end-to-end iPRA calibration of a physical machine to PA consistency.
+All repository statements below refer to commit
+\begin{center}\texttt{1c9524d8bf2e0a27b9a16ff622359927f536e663}.\end{center}
+\end{abstract}
+
+\section{Bounded induction for the word compiler}
+
+The imported PA196 arithmetic module \texttt{CompilerInvariant.lean},
+together with its realization, compiler-rule, and command-word definitions,
+gives the following concrete situation. Exact source paths are listed in
+the accompanying README.
+At fuel $k$ and fixed table bound $N$, let $A_k(i)$ be the checker's row
+value and $W_k(i)$ its compiled command word, for $i\le N$.
+Value zero denotes rejection and $a+1$ acceptance with conclusion $a$.
+Both tables are produced by primitive recursion on $k$ from the preceding
+tables; lookup outside $[0,N]$ returns zero. The zero checker table has only
+zero entries. For a word $w$, conclusion $a$, and clean store $(t,s,0,0)$,
+write
+\[
+ R(w,a,t,s)\quad\Longleftrightarrow\quad
+ \operatorname{run}(w,(t,s,0,0))=\mathsf{halt}
+ \ \lor\
+ \operatorname{run}(w,(t,s,0,0))=(a,s,0,0).
+\]
+The run here is over the finite command word, not an unbounded machine run.
+Its value is primitive recursive. Early halting is allowed and absorbing.
+
+The local rules, already proved in arbitrary $\isone$ models in the named
+files, have this exact dependency pattern:
+\begin{enumerate}
+\item A leaf realizes its conclusion at every clean store, without a
+      recursive row hypothesis.
+\item Generalization queries one predecessor row at the same $(t,s)$,
+      then appends a fixed generalization macro.
+\item Modus ponens first queries the major predecessor at $(t,s)$.
+      If it returns normally with formula $h=I(a,b)$, the minor predecessor
+      is queried at $(0,\p(h,s))$. The fixed push and MP macros then return
+      $b$ with original tail $s$, or halt earlier.
+\end{enumerate}
+In particular, the second query's input depends on the major's \emph{formula},
+not on an unbounded execution-time witness or on the contents of a returned
+proof code. This point makes the bound below possible.
+
+Fix the final fuel $F$, table bound $N$, and arbitrary requested inputs $t,s$.
+All the following functions are primitive recursive:
+\begin{align*}
+ K&=\max\bigl(1,\{A_j(i):j\le F,\ i\le N\}\bigr),\\
+ R_0&=\max(1,K,t,s),\\
+ R_{j+1}&=(K+R_j+2)^2.
+\end{align*}
+Cantor pairing satisfies $\p(h,x)\le(K+x+2)^2$ for $h\le K$.
+The sequence $R_j$ is nondecreasing.
+
+\begin{theorem}[Bounded-input compiler induction]\label{thm:bounded}
+Under the displayed local word identities, the table compiler satisfies
+\[
+ A_F(i)=a+1\quad\Longrightarrow\quad R(W_F(i),a,t,s)
+ \qquad(i\le N)
+\]
+by quantifier-free induction in the primitive-recursive language. The same
+argument therefore holds in $\isone$ under its representations of those
+functions. It does not require full-PA induction on the universally quantified
+predicate \texttt{TableRealizes}.
+\end{theorem}
+\begin{proof}
+For $k\le F$, use the bounded invariant
+\[
+ P(k):\quad
+ \forall i\le N\ \forall x,y\le R_{F-k},\quad
+ A_k(i)>0\ \Longrightarrow\
+ R\bigl(W_k(i),A_k(i)-1,x,y\bigr).
+\]
+Every displayed universal quantifier is bounded. Replace these finite
+conjunctions by their primitive-recursive Boolean characteristic. The
+matrix is a decidable equality/disjunction between primitive-recursive
+values, so $P(k)$ is expressed by an equation in that language. Use a
+guard $k\le F$ to make the induction total beyond $F$.
+
+At $k=0$ every antecedent is false. Suppose $P(k)$ and $k<F$.
+Take an accepted row $i$ at fuel $k+1$ and $x,y\le R_{F-k-1}$.
+Leaves use their closed local identities. Generalization uses the induction
+hypothesis for the same input; monotonicity gives
+$x,y\le R_{F-k}$. In an MP row, the major input is the same and hence is
+covered. On a normal major return, its conclusion $h$ is less than its
+positive checker entry, so $h\le K$ by the definition of $K$.
+The minor input satisfies
+\[
+ 0\le R_{F-k},\qquad
+ \p(h,y)\le(K+R_{F-k-1}+2)^2=R_{F-k}.
+\]
+It is therefore covered by $P(k)$ too. The local MP identity completes
+the step, including either possible early halt. A lookup outside the table
+cannot be an accepted premise, because its checker value is zero.
+Thus $P(F)$ holds and covers the initially fixed $t,s\le R_0$.
+Finally universally generalize the arbitrary parameters $F,N,t,s$.
+This is universal generalization \emph{after} induction on an equation,
+not induction on an unbounded universal formula.
+\end{proof}
+
+The theorem in $\pra$ or $\ipra$ is relative to the displayed local word
+identities being available there. The imported realization lemmas supply
+those identities in $\isone$, which is enough for the claimed repair of
+the full-PA word-compiler induction in that theory. Merely using
+quantifier-free induction in the last step does not automatically lower
+the strength of unprovided lemma proofs.
+
+\subsection{An explicit word-length bound}
+For the imported nine-entry PA196 command interface the lengths are
+\[
+ |\mathsf{pop}|=11,\quad |\mathsf{push}|=10,\quad
+ |\mathsf{discard}|=12.
+\]
+The head selectors have length at most $92$, the rho8 selector at most $33$,
+and the gate selector $112$. Generalization appends at most $22$ commands;
+MP concatenates its two predecessor words and $34$ additional commands.
+Consequently, with $L_k=\max_{i\le N}|W_k(i)|$,
+\[
+ L_0=0,\qquad L_{k+1}\le 2L_k+112,\qquad
+ L_k\le112(2^k-1).
+\]
+This is a bound on command count. Numerical word codes and arithmetic
+register values can be much larger. For the separate ten-entry interface,
+the adjusted words \texttt{pop=AX S\string^11},
+\texttt{push=AX S\string^9 MP}, and
+\texttt{discard=MP AX S\string^10 MP} have lengths $12,11,13$.
+With the corresponding selectors, $134$ replaces $112$ as a safe local
+constant. This latter application requires checking the adjusted selectors;
+it is not a claim that the old nine-entry word is interchangeable with it.
+
+\subsection{What the lemma does not settle}
+The imported forward theorem also uses \texttt{RequestedCertificate}, a
+statement quantifying over source environments, native label maps, and
+freshness bounds. Its conclusion supplies a numerical certificate for an
+arbitrary translated PA derivation. Fixing the word compiler does not
+construct those certificates. In particular, the arbitrary induction-axiom
+supplier still needs its own uniform proof-producing construction.
+The upstream tree has numerous full-PA induction uses beyond the two
+illustrative uses named in the forward-audit README.
+
+A valid finite-table replacement for that remaining stage would require
+the following concrete data. Given a node and requested parameter tuple,
+list all predecessor queries, prove a primitive-recursive bound on each
+query parameter independent of the missing predecessor certificate, and
+supply every leaf and composition step in $\isone$. One can then use a
+backwards-growing bound as above and collect finitely many certificate
+witnesses by bounded $\Sigma_1$ collection. None of these data may be
+replaced by the assertion that an external operation is ``primitive
+recursive''. The present supplement has not supplied that complete
+PA-axiom translator or its arithmetic calibration to the physical machine.
+
+\section{An obstruction to equality-free radix three}
+
+Consider Cantor pairing $\p(a,b)$ and the three injective, disjoint tags
+\[
+ I(A,B)=3\p(A,B),\qquad
+ M(a,b)=3\p(a,b)+1,\qquad
+ U(a,B)=3\p(B,a)+2.
+\]
+Treat code zero as truth, and code $1=M(0,0)$ as the proposed contradiction.
+As before, $N(B)=I(B,1)$, conjunction is its classical implicational
+abbreviation, and $\exists x_a B=N(U(a,N(B)))$.
+Delete the equality constructor and the two equality-rewriting heads and
+equality-witness head. Retain exactly the three heads
+\[
+ (\exists x_a U(a,C))\to C,\qquad
+ U(a,U(b,C))\to U(b,U(a,C)),
+\]
+\[
+ U(a,B)\to\bigl(U(a,B\to C)\to U(a,C)\bigr),
+\]
+as well as the dominated
+propositional head, diagonal vacuity, guarded separation, MP, and closed
+generalization. The same construction below works if equality is kept but
+its single equality-witness head is deleted, by assigning every equality
+atom value zero.
+
+Define a Boolean value $v(c)$ by course-of-values primitive recursion:
+\begin{align*}
+ v(0)&=1,\\
+ v(I(A,B))&=\neg v(A)\lor v(B),\\
+ v(U(a,B))&=v(B),\\
+ v(M(a,b))&=
+   \begin{cases}0,&a=b,\\v(a),&a\ne b.\end{cases}
+\end{align*}
+All requested children are smaller than the nonzero code. The special
+overlap $I(0,0)=0$ is consistent with the definition, since $1\to1=1$.
+Thus $v$ is total primitive recursive and $v(1)=0$.
+
+\begin{theorem}[A countermodel to deletion of the equality interface]
+Every axiom and rule of the equality-free calculus described above preserves
+Boolean value one. In particular code one is not derivable; this soundness
+and consistency assertion can be proved in $\ipra$ by induction on coded
+derivations.
+\end{theorem}
+\begin{proof}
+Under $v$, both universal and existential quantifiers leave the body's
+Boolean value unchanged. The head $(\exists x_a U(a,C))\to C$, quantifier
+commutation, universal distribution, and diagonal $B\to U(B,B)$ therefore
+evaluate to classical tautologies. The rho8 head
+\[
+ ((H\to d)\to D)\to((D\to H)\to(A\to H))
+\]
+is a propositional tautology for arbitrary truth values, so also when the
+numeric dominance guard $d\le D$ is imposed. MP is Boolean implication
+elimination, and generalization preserves $v(B)$ by definition.
+
+It remains to check the guarded separation gate. Use the repository's
+definitions
+\begin{align*}
+ V&=M(a,b)\to U(c,M(a,b)),&
+ P&=c\to M(c,b),\\
+ S&=U\bigl(b,(M(a,b)\to P)\wedge(M(c,b)\to c)\bigr),&
+ Q&=U(c,S\to N(P)),\\
+ G&=N(V\to Q).
+\end{align*}
+The gate guard includes $c\ne b$. Hence $v(M(c,b))=v(c)$, which gives
+$v(P)=1$. Also $v(V)=1$, $v(S)=1$, and then $v(Q)=0$.
+Therefore $v(G)=1$. If diagonal and gate are bundled as
+$N(\Gamma(c)\to(V\to Q))$, this still has value one.
+A failed guard returns truth and is harmless. These are all axiom cases.
+
+For complete precision, encode a proof as a finite sequence $D$ of lines.
+Each line carries either an axiom tag and its numerical parameters, or a
+rule tag and indices of earlier premise lines. Let $\operatorname{OK}(D,i)$
+mean that the first $i$ lines are accepted by this primitive-recursive
+checker, and let $c_j$ be the conclusion code of line $j$. Define the
+primitive-recursive Boolean
+\[
+ B(D,i)=\prod_{j<i} v(c_j).
+\]
+The induction formula is the quantifier-free implication
+$\operatorname{OK}(D,i)=1\to B(D,i)=1$.
+The Boolean factor lemma
+$\prod_{j<i}v(c_j)=1\to v(c_r)=1$ for $r<i$ is itself a
+quantifier-free induction on the finite product; thus the prefix invariant
+supplies each earlier premise value without a hidden unbounded quantifier.
+If line $i$ is an axiom, its value is one by the displayed numerical
+identities. If it uses a rule, its earlier premise values are one by the
+induction hypothesis, so its conclusion has value one by the local rule
+check. Thus $\ipra$ proves the implication for every $i$; no truth predicate
+or induction on an arbitrary arithmetic formula is involved. A final
+accepted line of code one contradicts $v(1)=0$. A usual finite proof tree
+can alternatively be flattened in postorder by primitive recursion.
+\end{proof}
+
+This is a Boolean algebra model of the \emph{coded proof rules}; it need
+not be an ordinary first-order membership structure. That is precisely
+why it detects the missing quantifier/equality interface.
+
+\begin{proposition}[The witness head alone cannot be deleted]
+In the original radix-four language, retain all the heads other than
+$\exists x_a E(c,a)$. The resulting calculus has an $\ipra$ consistency
+proof by the same method.
+\end{proposition}
+\begin{proof}
+Use radix four in the numerical recursion and set $v(E(a,b))=0$ for every
+equality atom. The two remaining equality-rewriting heads
+\[
+ M(c,a)\to(E(c,b)\to M(b,a)),\qquad
+ E(c,a)\to(M(b,c)\to M(b,a))
+\]
+have value one, because the equality antecedent has value zero.
+Equality vacuity, if retained, also has value one. All other checks and
+the proof-prefix induction are exactly those already given.
+By contrast the omitted witness head has value zero for every pair of
+labels, because the existential constructor preserves the body's value.
+\end{proof}
+
+\begin{proposition}[The proposed definable equality lacks a witness]
+Replacing the removed equality by two-sided neighborhood equivalence
+does not recover the missing witness axiom in this reduced calculus.
+\end{proposition}
+\begin{proof}
+For a fresh label $z$ define
+\[
+ E_z(a,b)=U(z,M(a,z)\leftrightarrow M(b,z))
+       \wedge U(z,M(z,a)\leftrightarrow M(z,b)).
+\]
+Take $a=0$, $b=1$, and $z=2$. The first conjunct has value
+$v(0)\leftrightarrow v(1)=0$; the second has value
+$v(2)\leftrightarrow v(2)=1$. Thus $v(E_2(0,1))=0$ and
+$v(\exists x_1 E_2(0,1))=0$. The soundness theorem rules out a derivation
+of this instance of the proposed equality-witness schema.
+\end{proof}
+
+Consequently this specific deletion has not found a smaller checker for
+the same refutation problem. It yields a calculus with an explicit weak
+consistency proof. The result does not rule out every equality-free
+presentation of PA: replacing the missing interface by a different, fully
+calibrated rule remains possible, but its machine cost must be included.
+
+\section{Internalizing the finite physical certificates}
+
+This section concerns a relative compiler theorem. It does not identify the
+source program's refutations with PA refutations. The four-increment
+reassociation under investigation, PA1944L, retains every resolved source
+instruction. Its independent verifier uses the following symbolic objects:
+finite binary runs of affine length, the arbitrary finite spare-register
+list, an infinite zero exterior, and arbitrary untouched contexts. There
+are thirteen affine slots: a constant, the gap, nine primary-register
+values, the first spare value, and the total width of the remaining spare
+list. A claimed run length has nonnegative coefficients.
+
+For $v\in\mathbb N$ set
+\[
+ B(v)=0\,1^{v+1},\qquad C(v)=1\,0\,1^v.
+\]
+For a finite list $A$, concatenate its blocks to form $B(A),C(A)$, and put
+$\operatorname{width}(A)=\sum_{v\in A}(v+2)$. The word identity
+\[
+ C(A)1=1B(A)
+\]
+holds for the empty list and is preserved on adjoining one element, since
+$C(v)1=1B(v)$. Its reversal follows by reversal of finite words.
+
+\begin{lemma}[Arithmetic validity of the symbolic step rules]
+Each of the following certificate operations has an $\ipra$ proof when
+finite words, finite lists, tape zippers, and bounded machine iteration are
+represented by their primitive-recursive codes:
+\begin{enumerate}
+\item A literal transition performs its table row and adds one to time.
+\item If a row writes $b'$ and moves repeatedly in one direction while
+      remaining in the same state on $b$, it crosses $b^m$ in exactly $m$
+      steps, replacing it with $b'^m$ and preserving both outside contexts.
+\item The identities combining adjacent equal-symbol runs, deleting empty
+      runs, absorbing a finite zero suffix into the blank exterior, and
+      $C(A)1=1B(A)$ preserve the represented tape and head.
+\item A checked one-block traversal from state $q$ back to $q$, in a fixed
+      direction, mapping $B(v)$ or $C(v)$ to its declared output block in
+      exactly $v+2$ steps, extends to an arbitrary finite list $A$ in
+      exactly $\operatorname{width}(A)$ steps.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+One explicit canonical zipper is a pair of natural numbers $(l,r)$:
+the low bit of $r$ is the current cell, and the low bit of $l$ its immediate
+left neighbor. All exterior cells are zero. Writing $w$ and moving right
+updates this pair to $(2l+w,\lfloor r/2\rfloor)$; writing $w$ and moving
+left updates it to
+\[
+ (\lfloor l/2\rfloor,
+ 2(2\lfloor r/2\rfloor+w)+(l\bmod2)).
+\]
+Together with the finite state label, these are primitive-recursive
+configuration functions for the delivered binary table. Canonical
+zero-tail removal is built into the natural-number encoding.
+The first item is a defining equation. For the second, use induction on
+$m$ in the equation for the coded iterated step and concatenation. Empty
+run, singleton run, and successor concatenation are the base and step;
+contexts are free numerical parameters. Tape equality can be expressed
+as equality of canonical finite zippers, so no unbounded quantifier over
+tape positions is needed.
+
+Each finite-word identity in the third item follows by induction on the
+relevant run or list length in an equality of primitive-recursive codes.
+For the fourth, the one-block proof is a fixed finite composition of the
+first three items. Iterating it over the first $j$ entries of a fixed
+coded list gives a quantifier-free equality of coded configurations at
+time $\sum_{i<j}(v_i+2)$. Induction on $j$, with $j$ bounded by the given
+list length, proves the list traversal. This also proves preservation of
+arbitrary external contexts, because their codes remain free parameters.
+All induction formulas are equations or Boolean combinations of equations.
+\end{proof}
+
+The independent checker rederives four one-block traversals directly from
+the literal transition table. It records exact duration $v+2$, direction,
+and preservation of arbitrary contexts. Its four entries use the label
+conjugacy $73,95,48,112$ and transformations $B\to B$, $B\to C$,
+$B\to B$, and $C\to B$, respectively. These are finite data, not
+postulated register-engine oracles.
+
+For each accepted source-site branch, composing the foregoing lemmas
+along its finite symbolic trace gives an $\ipra$ theorem. Its duration is
+the recorded affine polynomial $k_s(\vec v)$, with nonnegative coefficients
+and strictly positive constant term. Coefficientwise checks make
+$k_s(\vec v)\ge1$ immediate. The complete source has finitely many sites;
+each decrement has its zero case and its positive case $v=x+1$. Thus the
+finite list of local proofs covers every primitive source step.
+
+This description gives an ordinary arithmetical soundness proof of the
+certificate rules. A successful Python run checks the closed table and
+certificate data; it is not itself an object-theory derivation. A new Lean
+endpoint internalizing these rules has not been compiled here.
+
+\begin{theorem}[Positive-segment halting transfer]\label{thm:physical}
+Suppose a primitive-recursive source step $S$ and a literal machine $M$
+have an $\ipra$-proved startup and the complete positive local contracts
+just described. Then $\ipra$ proves
+\[
+ \operatorname{Halt}(M,\mathsf{blank})
+ \quad\longleftrightarrow\quad
+ \operatorname{Halt}(S,s_0).
+\]
+The two directions have primitive-recursive witness transformations.
+Consequently two literal machines with these contracts for the same
+resolved source program have an $\ipra$-provable halting equivalence.
+\end{theorem}
+\begin{proof}
+Augment the abstract source configuration by the finite spare list, gap,
+and head offset used by its frame. The local contracts specify
+primitive-recursive updates of these auxiliary fields. They do not change
+which instruction or numerical register value the source uses. The
+initial spare list is nonempty; each source primitive preserves that
+condition. This augmentation makes the exact encoded frame a function
+$E(s)$ of a coded source state.
+
+Let $b$ be the fixed startup duration. As long as no source halt has yet
+occurred, define
+\[
+ T(0)=b,\qquad T(n+1)=T(n)+k(S^n(s_0)).
+\]
+Choose arbitrary total primitive-recursive values for the duration and
+source update after halting. By induction on $n$ in a quantifier-free
+implication guarded by the Boolean test that the first $n$ source steps
+do not halt, the physical configuration at time $T(n)$ is $E(S^n(s_0))$.
+The iterated-step composition equation is proved by quantifier-free
+induction. Moreover $T(n)\ge b+n$ on such a prefix.
+
+A source halt at step $n$ yields a physical halt by composing startup,
+the first $n$ normal contracts, and the exact halt-site contract.
+The resulting physical time is a primitive-recursive function of the
+source prefix and its final local duration.
+
+Conversely, suppose the physical machine halts at time $t$. The fixed
+startup trace excludes an earlier startup halt. If none of the first
+$t+1$ source states were a halt site, the preceding construction would
+reach a nonhalting root frame at time $T(t+1)\ge b+t+1>t$.
+In the totalized physical semantics a halt is absorbing, so this
+contradicts the assumed halt at $t$. The partial semantics gives the same
+conclusion because the halt state has no outgoing row. The finite source
+prefix is decidable, and bounded minimization finds its first halt site.
+This is a primitive-recursive witness extraction; it does not use Markov's
+principle, unbounded search, or inverse decoding of intermediate tapes.
+\end{proof}
+
+For PA1944L, the independent check has passed for all $3,673$ sites and
+$4,780$ branch outcomes, using $1,084,060$ symbolic steps, together with
+the complete $58,320$-step startup and the exact source-instruction
+comparison. The literal dense table's SHA-256 is
+\begin{center}\small\texttt{c5787c6f2350e77183ca0d3ff25d2733ba87e8bb52cd54092d7fa26fcf4d5253}.\end{center}
+Its duration records give the explicit uniform bounds
+\[
+ 3\le k(s)\le
+ 534+8g+4\sum_{i=0}^{8}r_i+2a_0+2\operatorname{width}(A),
+\]
+where $g$ is the gap, $r_i$ the nine primary values, and $a_0,A$ the
+first spare value and remaining spare list. A positive-decrement case
+uses the parameter $r_i-1$ in its certificate, which is at most $r_i$.
+These numerical bounds follow by taking the largest coefficient in each
+of the thirteen slots across the $4,780$ records; the supporting JSON
+summary is included. Therefore the relative theorem supplies an ordinary
+mathematical proof in $\ipra$ for this exact physical implementation.
+It transfers the source's halting problem and does not turn the
+repository's still-open PA-refutation compiler into an established theorem.
+
+\begin{corollary}[Relative iPRA equivalence of the two literal tables]
+Let $M_0$ be the repository's primary PA194 table, with dense-file hash
+\begin{center}\small\texttt{4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f},\end{center}
+and let $M_4$ be the PA1944L table pinned above. Both start in dense state
+zero on the blank binary tape. Then
+\[
+ \ipra\vdash
+ \bigl(\operatorname{Halt}(M_4)\leftrightarrow\operatorname{Halt}(M_0)\bigr)
+\]
+and hence
+\[
+ \ipra\vdash
+ \bigl(\neg\operatorname{Halt}(M_4)\leftrightarrow
+       \neg\operatorname{Halt}(M_0)\bigr).
+\]
+This is an ordinary computer-assisted proof of a provability statement,
+not a newly compiled Lean or Rocq theorem.
+\end{corollary}
+\begin{proof}
+The source comparison checks equality of all $3,673$ resolved primitive
+instructions, including every jump target. Both startups end at instruction
+$25$ with logical primary registers $(2,0,0,0,0,0,0,0,0)$ and a nonempty
+finite spare list. The independent checker has also passed the primary
+table's $4,780$ cases, with $1,078,198$ symbolic steps, four rederived
+list lemmas, minimum duration constant $3$, and its full $58,154$-step
+startup. Therefore Theorem~\ref{thm:physical} applies to both tables and
+the same initialized register-instruction program. Their auxiliary gaps
+and path frames need not agree; each implementation has its own
+primitive-recursive augmented-frame simulation, whose projection is the
+same source program. Compose their halting equivalences. Negation
+preserves an equivalence in intuitionistic logic.
+\end{proof}
+
+An equivalence of this source program with PA refutation is a further
+premise. If the primary PA194 table is eventually calibrated to
+$\operatorname{Con}(\pa)$ in $\ipra$, the displayed relative theorem
+transfers that calibration to PA1944L immediately. The relative theorem
+does not supply that missing premise.
+
+\section{The final weak-arithmetic transfer}
+
+Let $H=\exists t\,\operatorname{Run}_M(t)$ and
+$R=\exists p\,\operatorname{Prf}_{\pa}(p,\bot)$ with decidable
+primitive-recursive matrices. Once the actual machine satisfies
+$\isone\vdash H\leftrightarrow R$, the repository's
+\texttt{isigma1-transfer} applies. In the standard primitive-recursive
+presentation, each implication is a $\Pi_2$ statement after placing the
+decidable matrix in prenex form; the conservation step supplies the
+corresponding classical PRA statement. G\"odel--Gentzen translation then
+supplies the negative equivalence in intuitionistic PRA. Concretely,
+intuitionistic logic proves $\neg\neg H\leftrightarrow\neg\neg R$
+implies $\neg H\leftrightarrow\neg R$. No Markov principle is needed.
+
+The remaining PA-to-source-calculus compiler and the formal assembly are
+still required: neither a standard finite-run equivalence nor a
+PA-provability theorem by itself establishes the displayed $\isone$ premise.
+
+\begin{thebibliography}{9}
+\bibitem{status}
+ProveIt, \emph{PA consistency machines: status and proof boundaries}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/README.md}{Pinned PA README}.
+
+\bibitem{forward}
+ProveIt, \emph{PA194 forward compiler: induction audit and prerequisites}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/pa194-forward-audit/README.md}{Pinned forward-compiler audit}.
+
+\bibitem{realizes}
+Imported James Chang PA196 development,
+\emph{Realizes}, \emph{CompilerRule}, and \emph{CompilerInvariant}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/PA196/Arithmetic/Realizes.lean}{Exact protected-tail realization identities}.
+
+\bibitem{calculus}
+Imported James Chang PA196 development, \emph{Exact numerical proof calculus}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/PA196/Logic/Basic.lean}{Exact axiom and rule definitions}.
+
+\bibitem{transfer}
+ProveIt, \emph{From $\isone$ to iPRA for consistency machines}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/isigma1-transfer/README.md}{Transfer theorem and its hypotheses}.
+
+\bibitem{newdata}
+This research package, PA1944L independent verifier and receipts;
+\texttt{check\_boolean\_obstruction.py},
+\texttt{summarize\_durations.py}, and the corresponding JSON results.
+The physical duration receipt is bound to the full contract-list digest.
+\end{thebibliography}
+\end{document}

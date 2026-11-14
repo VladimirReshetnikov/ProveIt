@@ -1,0 +1,118 @@
+% Report-ready appendix section. Requires amsmath, amssymb, booktabs,
+% array and hyperref. The cited sources are also copied into reference/.
+\section{Pinned proof status and the remaining absolute theorem}
+\label{sec:proof-status}
+
+The repository snapshot used throughout is
+\texttt{1c9524d8bf2e0a27b9a16ff622359927f536e663}.
+The user requested a literal blank-start binary machine $M$ satisfying
+\[
+ \mathrm{iPRA}\vdash
+       \neg H_M\leftrightarrow\operatorname{Con}(\mathrm{PA}).
+                                                               \tag{Goal}
+\]
+The pinned repository does not establish (Goal) for its existing PA194
+tables. Its \href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/README.md}{PA status README}
+explicitly leaves both machine-specific iPRA directions open for PA194,
+the original PA195, and PA196. The
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/INCOMING-2026-11-14.md}{14 November intake record}
+also describes the new 194-state reports as written PA calibrations,
+with no new end-to-end iPRA proof. These are proof-status observations,
+not a mathematical disproof of the intended equivalences.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.23\linewidth}p{0.33\linewidth}p{0.35\linewidth}}
+\toprule
+Layer & Established evidence & Remaining limitation\\
+\midrule
+Exact tables & State/row counts, literal hashes, blank prefixes, and
+specified local/source certificates & A finite run alone establishes
+neither nonhalting nor a consistency calibration.\\[4pt]
+Standard finite-run bridges & The repository records Lean quotient,
+zipper, source-coverage, and clock compositions for the primary PA194 &
+These concern ordinary natural runs; they do not automatically cover
+internal nonstandard times or proof codes.\\[4pt]
+Modeled scheduler & The snapshot records model-length fairness and
+soundness, including the distinct-label gate case & The auxiliary
+scheduler has not been connected to every internal physical-table run.\\[4pt]
+PA refutation compiler & Several syntax, substitution, and finite-axiom
+components are model-uniform & The uniform arbitrary-PA-proof compiler,
+remaining axiom suppliers, and numerical compilation are open.\\[4pt]
+Generic iPRA transfer & The PA witness bound certificate is discharged;
+an all-model machine calibration implies (Goal) & The actual
+machine-specific calibration premise is not discharged.\\[4pt]
+This packet's new theorem & Exact AX11/AX11S register-source equivalence
+has an ordinary iPRA proof by counter induction & It is a relative source
+theorem, not (Goal) for either literal binary table.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{The exact remaining generic premise.}
+The definition in
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/isigma1-machine/ConPAMachineEndpoint.lean}{\texttt{ConPAMachineEndpoint.lean}}
+is, in mathematical notation,
+\[
+ \operatorname{Calibrated}(T,h):\quad
+ \text{for every }V\models\mathrm{I}\Sigma_1,\quad
+ \operatorname{Prov}_{\mathrm{PA}}^V(\bot)
+ \ \longleftrightarrow\
+ \exists t\in V\;\operatorname{state}
+                    (\operatorname{run}_T^V(t))=h.             \tag{Cal}
+\]
+Both the proof code and the time in (Cal) may be nonstandard elements of
+$V$. The file
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/isigma1-machine/ConPAUnconditional.lean}{\texttt{ConPAUnconditional.lean}}
+proves \texttt{machine\_endpoint} from (Cal), using its separately
+discharged PA witness certificate. The word ``Unconditional'' in that
+filename refers to removal of the witness-certificate hypothesis; the
+table-calibration hypothesis remains explicit.
+
+The two directions of (Cal) have different obligations. A modeled
+physical halt must yield an internal numerical-calculus derivation and
+then an internal PA refutation. Conversely, an arbitrary internal PA
+refutation must be translated into a numerical-calculus proof, compiled
+into a scheduler word, and realized by the physical table. The repository
+now supplies scheduler-level components of these arguments, but its
+README explicitly leaves the physical connection and full internal
+forward compiler incomplete.
+
+\paragraph{Why the written PA calibration does not automatically descend.}
+The existing reports say that their proof translations are primitive
+recursive and that PA proves their correctness. The correctness proof
+must still be justified in the weaker base; primitive recursiveness of
+the code alone does not supply that theorem. The pinned
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/pa194-forward-audit/README.md}{forward-compiler audit}
+identifies unrestricted-induction uses in
+\texttt{ordinary\_derivation\_requested} and
+\texttt{fuel\_invariant}. Their invariants have not been shown to have
+the needed restricted complexity. A previous substitution-translation
+dependency has received an $\mathrm{I}\Sigma_1$ replacement, but that
+does not complete the rest of the compiler.
+
+The
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1c9524d8bf2e0a27b9a16ff622359927f536e663/Computability/BusyBeaver/Research/PA/isigma1-transfer/README.md}{generic transfer development}
+shows the useful sufficient target: an $\mathrm{I}\Sigma_1$ proof of
+the positive PA-refutation/halting equivalence, followed by conservation
+and G\"odel--Gentzen translation, yields the required negative iPRA
+equivalence. It is therefore unnecessary to formalize the whole machine
+directly in an intuitionistic calculus; the exact internal
+$\mathrm{I}\Sigma_1$ calibration suffices.
+
+\paragraph{Evidence retained in this archive.}
+\texttt{reference/current\_status/} contains complete unchanged copies
+of the cited status files and the two endpoint sources. Its
+\texttt{PROVENANCE.json} records original paths, pinned GitHub URLs,
+Git blob identifiers, sizes, and SHA-256 hashes. These sources are provided
+as evidence, not as a newly rebuilt Lean closure. The source and runtime
+checks of this packet are reported separately from inherited formal-build
+claims.
+
+The cofinite coefficient-three obstruction is independent of this gap:
+it proves inconsistency of a specified modified numerical calculus using
+a finite schematic derivation. Its inherited restricted-implication source
+and the older primitive-rule expansion/checking programs are included in
+\texttt{reference/coefficient\_three/}, with their provenance and licenses.
+That negative result and the relative source theorem must not be
+presented as a proof of (Goal).

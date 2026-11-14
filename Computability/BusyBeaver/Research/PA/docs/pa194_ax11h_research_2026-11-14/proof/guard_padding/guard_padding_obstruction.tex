@@ -1,0 +1,250 @@
+% Standalone section fragment. Requires amsmath, amssymb, amsthm.
+% The parent report should define theorem/proposition/proof environments.
+\section{A variable-alias obstruction to automatic freshness padding}
+\label{sec:padding-obstruction}
+
+The following result rules out a specific tempting proof of guard
+elimination. It concerns derivability of the old gate in the proposed
+modified numerical calculus. It does not prove that every guardless
+calculus has insufficient strength for a PA-consistency construction.
+
+\subsection{Exact calculus and the proposed replacement}
+
+Put
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(A,B)=4p(A,B),\qquad M(a,b)=4p(a,b)+1,
+\]
+\[
+ U(a,B)=4p(B,a)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+Code $0$ is truth. A nonzero code is decoded by its remainder modulo
+$4$ into implication, membership, universal quantification, or equality,
+respectively. In particular $1=M(0,0)$ is the designated false formula,
+and $I(0,0)=0$ is a code alias. Write $N(A)=I(A,1)$; conjunction and
+existential quantification are the usual classical abbreviations formed
+from $I,N,U$. In displayed formulas we use logical connective notation
+for these numerical constructors.
+
+The unchanged heads are the following schemata, for arbitrary numerical
+parameters of the indicated sorts:
+\begin{align*}
+ &(\exists x_a\,\forall x_a C)\to C, \tag{H1}\\
+ &U(a,U(b,C))\to U(b,U(a,C)), \tag{H2}\\
+ &M(c,a)\to(E(c,b)\to M(b,a)), \tag{H3}\\
+ &E(c,a)\to(M(b,c)\to M(b,a)), \tag{H4}\\
+ &\exists x_a E(c,a), \tag{H5}\\
+ &U(a,B)\to\bigl(U(a,B\to C)\to U(a,C)\bigr). \tag{H6}
+\end{align*}
+Also retain truth, the dominated propositional head
+\[
+ ((H\to d)\to D)\to((D\to H)\to(A\to H)),\qquad d\le D,
+\]
+and the unrestricted separate diagonal head
+\[
+ \Gamma(B)=B\to U(B,B).
+\]
+The inference rules are modus ponens and generalization of theorems.
+No additional rule allowing arbitrary renaming of numerical variable
+labels is postulated.
+
+Define the old gate by
+\begin{align*}
+ V(a,b,r)&=M(a,b)\to U(r,M(a,b)),\\
+ P(a,b,r)&=r\to M(r,b),\\
+ S(a,b,r)&=U\bigl(b,
+    (M(a,b)\to P(a,b,r))\wedge(M(r,b)\to r)\bigr),\\
+ Q(a,b,r)&=U(r,S(a,b,r)\to N(P(a,b,r))),\\
+ G(a,b,r)&=N(V(a,b,r)\to Q(a,b,r)).
+\end{align*}
+Occurrences of $r$ as a formula mean the formula decoded from code $r$;
+its occurrences as an argument of $M$ or the first argument of $U$ are
+variable labels. The original gate schema supplies $G(a,b,r)$ whenever
+$r\ne a,b$.
+
+The proposed unguarded replacement uses
+\[
+ F(a,b,c)=I\bigl(I(M(a,b),M(a,b)),c\bigr)
+\]
+and supplies only
+\[
+ G\bigl(a,b,F(a,b,c)\bigr)
+ \quad\text{for all }a,b,c\in\mathbb N.
+ \tag{PG}
+\]
+Let $\mathcal C_{\mathrm{pad}}$ be the resulting calculus, with all the
+unchanged heads above and (PG).
+
+The numerical freshness calculation is correct. If $m=M(a,b)$, then
+$m>a,b$ and $m\ge1$. Consequently $I(m,m)\ge16$, and
+\[
+ F(a,b,c)>a,b,c,\qquad F(a,b,c)\ge F(0,0,0)=544.
+ \tag{1}
+\]
+Moreover $I(m,m)$ is a propositional theorem, so the formula with code
+$F(a,b,c)$ is propositionally equivalent to the formula with code $c$.
+Nevertheless, these facts do not recover the old gate schema.
+
+\begin{theorem}[Failure of old-gate recovery]
+\label{thm:padding-alias}
+In the calculus $\mathcal C_{\mathrm{pad}}$, neither
+\[
+ V(1,0,4)=M(1,0)\to U(4,M(1,0))
+\]
+nor the legitimate original gate instance $G(1,0,4)$ is derivable.
+In particular, unrestricted separate diagonal axioms do not repair the
+loss of arbitrary-label membership vacuity caused by this padding scheme.
+\end{theorem}
+
+\begin{proof}
+We give a sound interpretation of every axiom and rule of
+$\mathcal C_{\mathrm{pad}}$ in which the displayed formulas fail.
+
+Let the object domain be $\mathbb N$. Write $\mu(s,z)$ when the $z$-th
+binary digit of $s$ is $1$. Thus $\mu(s,z)$ means that the finite set
+coded by $s$ contains $z$. In particular
+\[
+ \mu(s,z)\Longrightarrow z<s,
+ \qquad \neg\mu(z,z).
+ \tag{2}
+\]
+Define a noninjective map of variable labels by
+\[
+ f(4)=1,\qquad f(i)=i\quad(i\ne4).
+ \tag{3}
+\]
+Translate a numerical formula recursively into ordinary classical
+first-order arithmetic formulas:
+\begin{align*}
+ T_f(0)&=\top,\\
+ T_f(M(a,b))&=\mu(x_{f(a)},x_{f(b)}),\\
+ T_f(E(a,b))&=(x_{f(a)}=x_{f(b)}),\\
+ T_f(U(a,B))&=\forall x_{f(a)}\,T_f(B),\\
+ T_f(I(A,B))&=T_f(A)\to T_f(B).
+\end{align*}
+The last equation is understood semantically at the exceptional pair
+$(A,B)=(0,0)$: both its sides are true. This suffices for soundness of
+modus ponens. By (2), $T_f(1)=\mu(x_0,x_0)$ is false under every
+assignment, even inside other binders. Thus the encoded negation,
+conjunction and existential quantifier have their usual classical
+semantics under this interpretation.
+
+Every unchanged head (H1)--(H6) is valid under $T_f$. (H1) is
+$(\exists y\,\forall y\,\psi)\to\psi$ over a nonempty domain;
+(H2) is commutation of universal quantifiers, also valid if the two
+labels become equal; (H3) and (H4) are ordinary substitution of equals
+in the two argument positions of $\mu$; (H5) is the equality witness
+$\exists y\,(z=y)$, or $\exists y\,(y=y)$ if the labels coincide;
+and (H6) is universal distribution. The dominated propositional head
+is a classical tautology for arbitrary values of all its formula
+arguments, so its numerical restriction causes no problem. Truth is
+valid. Modus ponens and generalization preserve validity.
+
+It remains to check the two axiom families that mention numerical
+freshness. Let $\operatorname{supp}(B)$ contain every variable label in
+the decoded formula, including bound labels. The usual code induction
+gives
+\[
+ v\in\operatorname{supp}(B)\Longrightarrow v<B.
+ \tag{4}
+\]
+At $B=0$ the support is empty. The two exceptional codes in (3) have
+\[
+ 1=M(0,0),\qquad 4=I(1,0),\qquad
+ \operatorname{supp}(1)=\operatorname{supp}(4)=\{0\}.
+ \tag{5}
+\]
+If $B\notin\{1,4\}$, then $f(B)=B$ and $f(v)\le v<B$ for every
+$v\in\operatorname{supp}(B)$. If $B=1$ or $4$, equations (3)--(5)
+give $f(B)=1\ne0=f(0)$. Hence in every case the variable
+$x_{f(B)}$ is absent from $T_f(B)$. Every diagonal axiom
+$B\to U(B,B)$ is therefore valid. This explicitly checks the codes
+where the two labels were identified; injectivity of $f$ is unnecessary.
+
+Now take an arbitrary padded gate and put $r=F(a,b,c)$.
+By (1), $r\ge544$, so $f(r)=r$. Also $f(a),f(b)<r$.
+By (4), the variable $x_r$ is absent from the translated predicate
+$\psi=T_f(r)$. Thus its separator binder is genuinely fresh under
+this interpretation. We verify the separation portion, including the
+case $a\ne b$ but $f(a)=f(b)$.
+
+Set $u=f(a)$ and $v=f(b)$, and fix an assignment of all variables
+other than $x_r$. The membership-vacuity clause $T_f(V)$ is true
+because $r\ne u,v$. Since this clause is true, the gate is equivalent
+to
+\[
+ \exists x_r\bigl(T_f(S)\wedge T_f(P)\bigr).
+ \tag{6}
+\]
+If $u\ne v$, write $A$ and $B$ for the current values of $x_u$
+and $x_v$, and let $\psi(z)$ be the truth value of the translated
+predicate after setting $x_v=z$, leaving the other parameters fixed.
+Choose a finite-set code $s$ for
+\[
+ \{z:(\mu(A,z)\lor z=B)\wedge\psi(z)\}.
+ \tag{7}
+\]
+This is a finite set: its elements are in the set coded by $A$ or
+are equal to $B$. Assign $x_r=s$. Then, for every $z$,
+\[
+ \mu(A,z)\Longrightarrow(\psi(z)\Longrightarrow\mu(s,z)),
+ \qquad \mu(s,z)\Longrightarrow\psi(z),
+\]
+which is exactly $T_f(S)$. The distinguished point $B$ in (7) gives
+$\psi(B)\to\mu(s,B)$, which is $T_f(P)$.
+
+If $u=v$, changing the bound variable in $S$ changes both original
+occurrences together. Its first antecedent becomes $\mu(z,z)$ and
+is always false by (2). Let $B$ be the current value of this shared
+variable. Choose $s=2^B$ if $\psi(B)$ is true, and $s=0$ otherwise.
+Then $\mu(s,z)\to\psi(z)$ holds for every $z$, while
+$\psi(B)\to\mu(s,B)$ holds at the distinguished point. This again
+proves (6). The predicate has no occurrence of $x_r$, so choosing
+$s$ does not change these truth values. Every padded gate is valid.
+
+We have established soundness of the whole modified calculus under
+$T_f$. But $T_f(V(1,0,4))$ is
+\[
+ \mu(x_1,x_0)\to\forall x_1\,\mu(x_1,x_0).
+\]
+At $x_1=1,x_0=0$ its antecedent is true and its consequent is false
+(take $x_1=0$ in the quantifier). Thus the old vacuity instance is
+not valid. At the same assignment $V$ is false, so $V\to Q$ is true
+regardless of $Q$ and $N(V\to Q)$ is false. Consequently
+$T_f(G(1,0,4))$ is false as well. By soundness, neither formula is
+derivable in $\mathcal C_{\mathrm{pad}}$.
+\end{proof}
+
+\subsection{Scope and consequences}
+
+The failure is stronger than a missing proof of an obvious alpha-renaming
+lemma: the particular old-gate recovery lemma is false for the stated
+calculus. The padding permits the interpretation to identify two
+numerically distinct variable labels that the original arbitrary-label
+vacuity schema distinguishes. It is therefore circular to invoke full
+first-order renaming in order to justify this replacement, unless that
+renaming principle has been independently recovered from other axioms.
+
+The theorem does not assert inconsistency of the padded calculus, nor
+that it cannot be equiconsistent with PA by a different interpretation.
+It does not rule out a different guardless redesign with an additional
+independence or renaming mechanism. It rules out the claimed derivation
+of all original gate instances from exactly the retained heads and the
+padded gate family above.
+
+A related earlier padding proposal in the corpus used
+$K(D,H)=I(D+1,I(H,D+1))$ and $A^\star=I(K(D,H),A)$; it explicitly left
+instance recovery open. The present theorem gives an explicit semantic
+obstruction to the proposed recovery for the membership-tautology
+wrapper, rather than merely noting a formalization gap. The supplied
+\texttt{check\_codes.py} checks (5), $I(1,1)=16$, and
+$F(0,0,0)=544$ exactly. These finite numeral checks supplement the
+universal written proof and are not used as a substitute for it.
+
+One possible further direction is a translation of PA proofs into a
+restricted public image that never requires the missing raw gate. The
+ConciseIPRA project demonstrates why completeness on a translated image
+and completeness on arbitrary raw syntax must be distinguished. No such
+translation for $\mathcal C_{\mathrm{pad}}$ is constructed here. This is
+an open research direction, not a positive calibration theorem or a
+claim that padding can be implemented below 194 states.

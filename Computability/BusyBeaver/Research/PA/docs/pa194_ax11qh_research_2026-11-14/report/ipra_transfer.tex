@@ -1,0 +1,142 @@
+% A standalone mathematical section.  This is not a compiled proof-assistant theorem.
+% Requires amsmath, amssymb and amsthm in the containing document.
+\section{What an iPRA calibration must establish}
+\label{sec:ipra-audit}
+
+Let $\operatorname{Prf}_{\rm PA}(p)$ be the primitive-recursive predicate
+that $p$ is a PA proof of $0=1$.  For a fixed literal Turing table $M$,
+let $H_M(t)$ be the primitive-recursive predicate that the absorbing
+totalization of its blank run is in the halt state at time $t$.  We use
+\[
+  \operatorname{Con}({\rm PA})\equiv
+       \forall p\,\neg\operatorname{Prf}_{\rm PA}(p),\qquad
+  \operatorname{NH}(M)\equiv\forall t\,\neg H_M(t).
+\]
+All the predicates in this paragraph may be represented by their
+characteristic-function equations in iPRA.  This is a claim about the
+\emph{metatheory in which equivalence is proved}; the theory whose proofs
+are searched remains classical PA.
+
+\subsection{A direct constructive criterion}
+
+\begin{proposition}[Witness-transformer criterion]
+Suppose $f$ and $g$ are primitive-recursive functions and iPRA proves
+\begin{align}
+ \operatorname{Prf}_{\rm PA}(p)&\longrightarrow H_M(f(p)),
+       \label{eq:pr-to-halt}\\
+ H_M(t)&\longrightarrow\operatorname{Prf}_{\rm PA}(g(t)).
+       \label{eq:halt-to-pr}
+\end{align}
+Then iPRA proves
+\[
+ \operatorname{NH}(M)\ \longleftrightarrow\ \operatorname{Con}({\rm PA}).
+\]
+\end{proposition}
+\begin{proof}
+Under nonhalting, a PA proof $p$ would yield $H_M(f(p))$ by
+\eqref{eq:pr-to-halt}, a contradiction.  Conversely, under consistency,
+a halting time $t$ would yield a PA proof $g(t)$ by
+\eqref{eq:halt-to-pr}, also a contradiction.  These are intuitionistic
+implication introductions; neither Markov's principle, a reflection
+principle, nor excluded middle for an unbounded formula is used.
+\end{proof}
+
+The hypothesis is not just that $f$ and $g$ happen to be primitive
+recursive or that PA proves their correctness.  The displayed correctness
+statements themselves must be available in iPRA.  A proposed compiler
+with correctness proved using unrestricted induction does not yet meet
+this criterion.
+
+\subsection{A constructive finite-segment transfer theorem}
+
+The physical part of a state reduction has a useful sufficient condition
+which is considerably weaker than reproving the PA calibration.
+Let $s$ and $m$ be primitive-recursive, deterministic step functions on
+coded source and machine configurations.  Halting configurations are
+absorbing.  Let $h_s$ and $h_m$ be their primitive-recursive halt tests.
+Assume a primitive-recursive frame map $F$, a primitive-recursive invariant
+$J$, and a primitive-recursive positive length $\ell$ satisfy the following
+formulas, with proofs in iPRA:
+\begin{align*}
+ &J(c_0),\qquad J(c)\longrightarrow J(s(c)),\\
+ &J(c)\longrightarrow 1\leq\ell(c),\\
+ &J(c)\longrightarrow m^{\ell(c)}(F(c))=F(s(c)),\\
+ &J(c)\longrightarrow\bigl(h_m(F(c))\leftrightarrow h_s(c)\bigr).
+\end{align*}
+Here $s^n$ and $m^n$ denote primitive-recursive iteration.  A halt source
+configuration may be given length one; absorption then supplies its
+segment equation.  Assume also a fixed blank initialization of length
+$b$ ending at $F(c_0)$, with a verified nonhalting prefix.  A source which
+is already halted at $c_0$ can instead be handled as a separate fixed case.
+
+\begin{proposition}[Positive-segment transfer in iPRA]
+Under these hypotheses iPRA proves that the source computation and the
+literal blank-start machine halt under exactly the same circumstances.
+Both directions have primitive-recursive witness transformations.
+\end{proposition}
+\begin{proof}
+Define simultaneously by primitive recursion
+\[
+ c_n=s^n(c_0),\quad
+ L_0=0,\quad L_{n+1}=L_n+\ell(c_n).
+\]
+Quantifier-free induction, with the primitive-recursive predicates and
+finite-word operations replaced by their function symbols, gives
+\[
+ J(c_n),\qquad L_n\geq n,\qquad
+ m^{b+L_n}(\text{blank})=F(c_n).
+\]
+In particular a source halt at $n$ gives a machine halt at $b+L_n$.
+
+For the reverse direction suppose the machine has halted at time $t$.
+Perform the bounded search for the first $n\leq t+1$ with $h_s(c_n)$;
+this is primitive recursive.  If the search succeeds it supplies the
+required source witness.  Otherwise its decidable search certificate
+gives $\neg h_s(c_{t+1})$.  The displayed simulation gives a nonhalting
+machine frame at time $b+L_{t+1}>t$.  Absorption of machine halting,
+proved by quantifier-free induction on the additional number of steps,
+contradicts that frame.  Since the search has a decidable result, this
+contradiction proves that its success branch holds and yields its
+bounded witness intuitionistically.  The initialization-prefix check
+also excludes a halt preceding $b$.
+
+All inductions used here concern equations or decidable predicates of
+explicitly defined primitive-recursive functions.  The proof does not
+induct on ``there exists a next frame'' and does not use an unbounded
+least-time search or a standard-model soundness argument.
+\end{proof}
+
+If two literal machines satisfy such contracts for the same source, the
+proposition gives an iPRA proof of their halting equivalence.  It then
+transfers any iPRA consistency calibration already proved for either
+machine.  It does not manufacture a missing PA-to-source proof compiler.
+For a candidate-specific application, the actual $J,F,\ell$, their
+primitive-recursive definitions, every successor-frame contract and the
+blank initialization must be supplied.  Finite numerical tests of some
+register values do not establish these hypotheses.
+
+\subsection{The alternative I\texorpdfstring{$\Sigma_1$}{Sigma1} route}
+
+One can instead prove, in $\mathrm I\Sigma_1$,
+\[
+ \exists p\,\operatorname{Prf}_{\rm PA}(p)
+       \ \longleftrightarrow\ \exists t\,H_M(t).
+\]
+The two witness implications can be put in $\Pi_2$ form.  The
+$\Pi_2$ conservation of $\mathrm I\Sigma_1$ over classical PRA then
+gives the corresponding classical PRA implications.  Applying the
+G\"odel--Gentzen interpretation and using decidability of the open
+matrices gives the desired equivalence of the two negative sentences
+in iPRA.  No elimination of the double negation of a $\Sigma_1$ sentence
+is needed.  ProveIt's \texttt{isigma1-transfer} and
+\texttt{isigma1-machine} directories formalize this route, conditional
+on the machine-specific calibration premise.
+
+The relevant distinction is between a theorem about the ordinary natural
+numbers and a proof in the weak theory.  An external proof-assistant
+theorem about all standard finite runs can support the finite
+combinatorics, but it is not by itself the required internal arithmetic
+proof.  Conversely, the absence of a completed Lean internalization does
+not by itself disprove the possibility of a written iPRA proof: an
+explicit primitive-recursive compiler with verified decidable invariants
+would suffice.

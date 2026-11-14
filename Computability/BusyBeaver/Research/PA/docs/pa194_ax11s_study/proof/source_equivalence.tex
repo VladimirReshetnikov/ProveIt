@@ -1,0 +1,151 @@
+% Report-ready section. Requires amsmath, amssymb, amsthm, booktabs.
+\section{An iPRA proof of the relative source equivalence}
+\label{sec:relative-ipra}
+
+The new construction changes the implementation of the sum test within
+Shift. Its command semantics remain exactly those of PA194AX11, including
+the nonhalting case with both visible formulas equal to one. This section
+proves the relative statement in a weak base; it does not assume or prove
+the missing calibration of the parent binary machine to PA consistency.
+
+\paragraph{Literal source boundary.}
+Use zero-based primitive ordinals. The parent has 3,672 instructions and
+the new source has 3,669. The first 3,667 instructions agree literally.
+The final five parent instructions are replaced by two new instructions.
+The affected command block begins at ordinal 3,660. Its only incoming edge
+from outside the block is the edge from ordinal 48. The only entries into
+the comparison block, ordinals 0 through 10, are the final instructions of
+these two versions of Shift. The comparison has the same exit ordinal 11
+in both programs. These are finite graph assertions checked directly
+against the two instruction arrays, independently of their grammar.
+
+Write $t,h,x$ for the incoming contents of registers 1, 5, and 6, and put
+$s=t+h+x$. Every other register is arbitrary and unchanged throughout the
+following comparison block. In particular, this is not a bounded-value
+claim or an assumption that the incoming scratch register is zero.
+
+The first loop transfers register 1 into register 6. The second transfers
+register 5 into both registers 1 and 6. Their exact common result is
+\[
+                  (r_1,r_5,r_6)=(h,0,s).
+\]
+The parent trailer transfers $r_6$ into $r_5$ and sets $r_6$ to one; the
+new trailer merely increments $r_5$. Thus the comparator receives
+\[
+ \begin{array}{c|ccc}
+ &r_1&r_5&r_6\\\hline
+ \text{parent}&h&s&1\\
+ \text{new}&h&1&s.
+ \end{array}
+\]
+
+\paragraph{Comparator lemma.}
+Starting at ordinal 0 with $(r_5,r_6)=(a,b)$, the common comparator
+decrements the two counters together while both are positive. It then
+clears either remainder. If $a=b$, it reaches the halt instruction at
+ordinal 10. Otherwise it reaches ordinal 11. In both cases the final two
+counters are zero, and no other register changes.
+
+Counting primitive transitions up to arrival at ordinal 10 or 11, the
+exact duration is
+\[
+ C(a,b)=
+ \begin{cases}
+ 3a+2,&a=b,\\
+ 2a+b+4,&a>b,\\
+ 3b+2,&a<b.
+ \end{cases}                                                   \tag{CE}
+\]
+For example, in the $a>b$ case, the initial $b$ paired decrements cost
+$3b$ transitions. The first unequal comparison costs three more and
+leaves $a-b-1$ in the first counter. Clearing it costs $2(a-b-1)+3$,
+giving the middle line of (CE). The other two cases follow directly
+from the same loops. These calculations prove the lemma by induction
+on natural counters; they do not use a symmetry assumption about the
+comparator's timing.
+
+Applying the lemma to $(s,1)$ and $(1,s)$ shows that both versions halt
+exactly when $s=1$. Otherwise both return at ordinal 11 with the identical
+entire register store, namely $(r_1,r_5,r_6)=(h,0,0)$ and all other
+registers preserved. When they halt, their stores at ordinal 10 also
+agree. Their step counts need not agree.
+
+\paragraph{Exact durations and an arithmetic bound.}
+The shared prefix costs $3t+4h+2$ transitions. The parent trailer costs
+$3s+3$, and the new trailer costs two. Hence the complete affected blocks
+have durations
+\[
+ D_{\rm old}=3t+4h+3s+5+C(s,1),\qquad
+ D_{\rm new}=3t+4h+4+C(1,s).                                  \tag{D}
+\]
+Their difference is
+\[
+ D_{\rm old}-D_{\rm new}=
+ \begin{cases}
+ 0,&s=0,\\
+ 4,&s=1,\\
+ 2s+4,&s\geq2.
+ \end{cases}                                                   \tag{Gain}
+\]
+All durations are positive and both are at most $9s+10$. Including
+execution of the final halt instruction, if that convention is desired,
+changes the applicable duration and bound by one. On a well-formed command
+frame $x=0$, so the exact guard is $t+h=1$; the shared continuation gives
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}
+ \mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1.
+ \end{cases}
+\]
+The total Cantor-stack conventions remain
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$ and $p(0,0)=0$.
+No free-list assumption is introduced. In particular, the sum at
+$(t,h)=(1,1)$ is two and does not trigger either implementation.
+
+\paragraph{Why the relative theorem holds in iPRA.}
+Encode finite register stores, primitive instructions, and bounded runs
+by fixed primitive-recursive functions. The loop invariants above are
+equalities and decidable comparisons between these functions. With the
+incoming parameters retained, they are quantifier-free formulas; ordinary
+induction on each remaining counter proves them in iPRA. The displayed
+linear bounds make each local witnessing trace primitive recursive.
+
+Replace the common source block by one macro step at its entry. The
+finite graph check ensures that an ordinary run beginning at the common
+initial source entry cannot enter a strict block interior by another
+edge. Expanding every macro step by its old or new trace is primitive
+recursion on the macro-step count. Both expansions end at identical
+boundary stores and preserve halting. Conversely, a first halting
+primitive trace cannot occur in a nonhalting block interior: the block
+proof identifies the only halt and its exact exit condition. Positivity
+of every expansion duration lets one use at most $n+1$ macro boundaries
+when analyzing a putative first halt at primitive time $n$.
+
+Thus, for the explicit register-program halting predicates from their
+common initial source frame, ordinary mathematical reasoning gives
+\[
+ \mathrm{iPRA}\ \vdash\
+       H_{\rm AX11\ source}\ \leftrightarrow\
+       H_{\rm AX11S\ source}.                               \tag{Relative}
+\]
+This is a proof of relative source semantics, not a newly compiled Lean
+or Rocq theorem. It does not require the numerical calculus to be sound,
+nor does it assume $\operatorname{Con}(\mathrm{PA})$.
+
+\paragraph{The remaining absolute-calibration boundary.}
+The new source therefore inherits exactly the parent's numerical-calculus
+and scheduling arguments: its four-field AX command, eleven-entry stack
+interface, no-push successful MP, and exhaustive candidate decoder are
+unchanged. At the literal binary-table level the packet separately checks
+all primitive simulation contracts, simultaneous state folds, and the
+complete blank startup. Their mathematical interpretations must be stated
+at the strength actually proved.
+
+The repository's existing all-model endpoint still requires a calibration
+of the physical table in every model of $\mathrm{I}\Sigma_1$. The new
+source proof does not fill the inherited model-uniform controller/frame
+simulation or arbitrary-internal-PA-proof compiler gaps. Consequently
+(Relative) must not be silently substituted for the requested absolute
+statement $\mathrm{iPRA}\vdash\neg H\leftrightarrow
+\operatorname{Con}(\mathrm{PA})$.

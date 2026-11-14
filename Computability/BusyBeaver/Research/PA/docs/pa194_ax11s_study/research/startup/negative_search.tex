@@ -1,0 +1,87 @@
+\subsection{Additional search for a 193-state blank-start machine}
+
+The supplied incoming packet \texttt{pa\_sub194\_research\_2026-11-13.zip}
+already contains a 193-control runtime core. In the primary native numbering,
+it deletes control 301, redirects its incoming edges to 88, and changes
+\[
+ (88,0)\longmapsto(0,L,51),\qquad
+ (51,0)\longmapsto(0,R,122).
+\]
+This saves one control on the prescribed runtime frames. At a unary-register
+delimiter, the next cell is 1; old row $(16,1)$ and replacement row
+$(122,1)$ both have action $(0,L,1)$. The marker operation therefore agrees
+after two steps. The next-cell premise fails during the original blank
+initialization. An independent concrete replay reaches state 35 at head
+14 with support $\{-3,1\}$ after 92 steps. Its transition $(35,0)=(1,R,35)$
+then gives an outward blank ray by induction.
+
+\paragraph{Coupled startup repairs.}
+The earlier packet screens individual candidate edits. The present extension
+combines simultaneous edits to distinct rows, using its corrected radius-six
+pool of 346 proposals. Of these, 327 are outside the arithmetic boxes and
+19 are speculative box-row mutations. The latter are included only to make
+the startup screen broader; their arithmetic correctness is not assumed.
+Even two individually neutral edits need not remain neutral when combined.
+Any successful startup would therefore require a new universal runtime
+proof and the appropriate logical calibration.
+
+The following completed screens found no accepted full tape frame:
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\hline
+Scope & Tables & Blank runs & Literal steps & Frames\\
+\hline
+Two edits, native start 74 & 58,485 & 58,485 & 87,558,362 & 0\\
+Two edits, all 193 starts & 58,485 & 11,287,605 & 2,173,634,233 & 0\\
+\hline
+\end{tabular}
+\end{center}
+The second row includes the first. Its runs consist of 117,274 halts,
+11,159,792 certified outward rays, and 10,539 runs stopped at a finite
+bound. The single-start screen has 58,072 rays and 413 bounded runs.
+
+Each run is limited to 200,000 literal steps, absolute head displacement
+20,000, and finite support size 20,000. The detector checks the \emph{whole}
+finite tape support at native control 84, a source site from 25 through 44,
+padding at least 48, nine arbitrary natural register values, and a
+nonempty arbitrary spare tail. It deliberately accepts a larger class than
+the logically admissible startup theorem: no proof-store zero condition is
+imposed. Thus even a positive detection would be a proposal, not a
+consistency-machine theorem. As a positive control, the same implementation
+recovers the primary PA194 full startup frame at site 25 after exactly
+58,154 steps, including all 66 one-cells and all 35 register/spare blocks.
+
+The three-edit screen fixes native start 74 and enumerates 6,440,096
+admissible distinct-row triples. Of these, 4,225,362 edit no row occurring
+on the unchanged blank trajectory and are eliminated by the exact ray
+argument. The remaining 2,214,734 runs execute 16,183,877,637 literal
+transitions. They produce 2,134,087 certified rays and 80,647 bounded runs,
+with no halt and no accepted full frame. The row-set premise of the pruning
+step was independently checked against the 92-step ray certificate; the
+portable program asserts it. These are results for the specified finite
+candidate pool, not an exclusion of arbitrary three-row repairs.
+
+\paragraph{Alternative local realizations of the merge.}
+A separate finite synthesis modifies the merged control and one existing
+helper row. The two-cell template checks 592,896 patches and produces 11
+local identities. The known helper 51 has the supplied register-marker
+justification; the other ten overwrite arithmetic roles. A radius-four,
+100-step version checks 3,719,496 patches against every assignment of its
+nine-cell window and produces 13 local identities. Its two additional
+non-box alternatives change row 31/0 or 70/0. The complete symbolic source
+checker rejects them at outcomes $(16,\mathrm{None})$ and
+$(56,(2,\mathrm{True}))$, respectively.
+
+An additional version uses 8,339 symbolic source windows, including
+interiors of accelerated constant-symbol scans. It excludes arithmetic-box
+helper mutations and finds no survivor among 3,100,352 proposals. These
+counts concern explicitly bounded templates and the named source envelope.
+They do not imply a lower bound of 194 states or exclude a different
+arithmetic representation, initializer, source compiler, or coordinated
+transformation outside the candidate pool.
+
+The portable scripts, exact inputs, unchanged prior candidate list,
+positive control, complete logs, and source attribution are in
+\texttt{research/startup/}. The comparison above extends the particular
+single-edit screen in the named incoming packet; it makes no general
+priority claim about all historical searches in the repository.

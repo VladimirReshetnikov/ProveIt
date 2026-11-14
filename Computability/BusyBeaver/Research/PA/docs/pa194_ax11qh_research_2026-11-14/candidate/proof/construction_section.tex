@@ -1,0 +1,390 @@
+% Standalone report fragment. Requires amsmath, amssymb, booktabs, and hyperref.
+% Its relative arithmetic theorem is developed separately; this section makes
+% no claim to a completed iPRA consistency calibration.
+\section{The new PA194AX11QH construction}
+\label{sec:ax11qh-construction}
+
+The concrete output of the construction work is a new 194-working-state
+machine, called \textbf{PA194AX11QH}. It combines four mechanisms from the
+supplied packets: the exchanged universal-distribution head (Q), the
+AX command that pushes its gate and falls through the full modus-ponens
+reader (AX11), no-push modus ponens (N), and a cached-only contradiction
+test (H). The constructor coefficient remains four. The contribution is
+this precise composition, its fresh source and tape verification, and the
+reduction searches described below. Each constituent mechanism is
+attributed to its supplied packet in \texttt{PROVENANCE.json}.
+
+The machine is deterministic, uses one two-way infinite binary tape,
+and moves one cell left or right on every transition. Its initial tape
+is entirely zero and its initial head coordinate is zero. The dense table
+has initial state 0, working states $0,\ldots,193$, and a separate terminal
+label 194 with no outgoing transitions. Thus there are 388 transition rows;
+the terminal label is not included in the count of 194. The native table
+has initial state 74 and terminal label 254. Native labels are identifiers,
+not state counts.
+
+The completed checks concern this exact machine. They do not supply the
+missing baseline proof in iPRA of the PA-consistency calibration. The
+relative proof-strength discussion elsewhere in this report keeps those
+obligations explicit. In particular, successful Python verification is
+not being reported as a newly kernel-checked Lean or Rocq theorem.
+
+\subsection{Numerical operations and the exchanged logical head}
+
+Use Cantor pairing
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad [a;w]=p(a,w),
+\]
+with total projections $\operatorname{hd}$ and $\operatorname{tl}$. In
+particular, $[0;0]=0$ and both projections of zero are zero. Write
+$[a_0,\ldots,a_k;w]$ for iterated pairing with $a_0$ on top. None of the
+arguments below replaces this numerical stack by a free list.
+The formula constructors are
+\[
+ \begin{aligned}
+ I(A,B)&=4p(A,B), & M(a,b)&=4p(a,b)+1,\\
+ U(a,B)&=4p(B,a)+2, & E(a,b)&=4p(a,b)+3.
+ \end{aligned}
+\]
+Zero is the truth code and one is the designated contradiction code.
+The alias $I(0,0)=0$ is retained throughout the command calculations.
+
+The Q emitter replaces the ordinary universal-distribution head
+\[
+ U(D,A)\longrightarrow
+       \bigl(U(D,I(A,H))\longrightarrow U(D,H)\bigr)
+\]
+by
+\[
+ L_6^{\mathrm Q}(D,A,H)=
+ U(D,I(A,H))\longrightarrow
+       \bigl(U(D,A)\longrightarrow U(D,H)\bigr),
+ \tag{Q}
+\]
+where each displayed implication is the numerical constructor $I$.
+The other five ordinary heads, the dominated implicational head $\rho$,
+the diagonal head $\Gamma$, and the guarded gate $G$ are unchanged from
+the coefficient-four separated-diagonal calculus. The exchange formula
+\[
+ (P\longrightarrow(Q\longrightarrow R))\longrightarrow
+       (Q\longrightarrow(P\longrightarrow R))
+\]
+gives proof translations in both directions. A retained 61-line
+parametric $K,S,$ modus-ponens certificate is independently replayed in
+this package. The availability of $K$ and $S$ from the unchanged restricted
+implication basis remains its explicitly identified inherited dependency;
+the exchange certificate does not assume the quantifier axiom it replaces.
+
+\subsection{The exact four-parameter command interface}
+
+A command store is $(t,w,d,h)$: the visible theorem code, numerical stack,
+arithmetic offset, and cached theorem code. Set $D=d+x$ and $H=h+y$.
+The new axiom command has four parameters:
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =\bigl(0,[q_0,q_1,\ldots,q_9,t;w],z,0\bigr).
+ \tag{A}
+\]
+The ten generated entries are as follows; the saved old top $t$ is the
+\emph{eleventh} entry.
+\begin{center}
+\begin{tabular}{cl}
+\toprule
+Entry & Generated code\\
+\midrule
+$q_0$ & $G(H,D,c)$ if the numerical gate guard succeeds, otherwise $0$\\
+$q_1$ & $\Gamma(c)$\\
+$q_2$ & $L_6^{\mathrm Q}(D,c,H)$\\
+$q_3$ & $L_5(D,H)$\\
+$q_4$ & $L_4(D,c,H)$\\
+$q_5$ & $L_3(D,c,H)$\\
+$q_6$ & $L_2(D,c,H)$\\
+$q_7$ & $L_1(D,H)$\\
+$q_8$ & $\rho(D,c,H,d)$\\
+$q_9$ & $U(d,h)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The dominated head has a valid side condition because $d\leq D=d+x$.
+The gate guard is the inherited distinct-label condition on $c,H,D$.
+All of $q_0,\ldots,q_8$ have residue zero modulo four. The last generated
+entry $q_9$ has residue two and is at least two. Hence none of the generated
+entries is the contradiction code one, for arbitrary incoming numerical
+stores, independently of consistency.
+
+The extra parameter $z$ is essential. After the gate has been pushed,
+the emitter falls through the \emph{full} MP reader, which consumes a
+further field of the current continuation. At that point $t=d=h=0$.
+The ensuing MP attempt compares $I(0,z)$ with zero. It succeeds at $z=0$
+and fails at $z>0$, but both cases return a visible zero, preserve the
+new stack, clear the cache, and leave offset $z$. The proof compiler
+chooses $z=0$. Soundness must cover every $z$, since the scheduler
+enumerates every numerical candidate.
+
+For $b=d+x$, the no-push MP command is exactly
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+   (b,w,b,0),& I(t,b)=h,\\
+   (0,w,b,0),& I(t,b)\ne h.
+ \end{cases}
+ \tag{MP}
+\]
+Successful MP does not insert the older dummy zero into $w$. Shift is
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}
+   \mathsf{halt},&h=1,\\
+   \bigl(h,\operatorname{tl}(w),d,\operatorname{hd}(w)\bigr),&h\ne1.
+ \end{cases}
+ \tag{S}
+\]
+This is a change in recurring computation. For example, Shift halts at
+$(t,h)=(1,1)$, whereas the earlier sum-one guard does not; a visible one
+with cache zero is not directly tested. Changing these cases requires
+changing the proof-command argument.
+
+\subsection{The command identities that survive, and the necessary early halt}
+
+Let $A_0=\mathsf A_{0,0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,
+ \qquad
+ \mathsf{Pop}=A_0;\mathsf S^{12},
+ \qquad
+ \mathsf{Discard}=\mathsf{MP}_0.
+\]
+Direct iteration of (A) and (S) gives
+\[
+ \begin{aligned}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)
+      &=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)
+      &=(q_9,w,0,t).
+ \end{aligned}
+\]
+These shifts cannot halt: the tested generated entries are never one.
+Thus Push is total and has effect
+\[
+       \mathsf{Push}(t,w,d,h)=(0,[t;w],0,0).
+\]
+Its last MP comparison fails because $q_9$ is a universal code and
+$I(q_8,0)$ is an implication code. Pop has the conditional identity
+\[
+ \mathsf{Pop}(t,[a;w],d,h)=
+ \begin{cases}
+   \mathsf{halt},&t=1,\\
+   (t,w,0,a),&t\ne1.
+ \end{cases}
+ \tag{Pop}
+\]
+The final Shift tests precisely the original visible theorem, now in the
+cache. The old AX11 claim that Pop always preserves a visible one would
+be false for this composition. The new proof compiler therefore permits
+an early halt when it has already obtained contradiction.
+
+The remaining elementary identities are
+\[
+ \mathsf{Discard}(t,w,0,h)=(0,w,0,0),
+ \qquad
+ \mathsf{MP}_i(0,w,0,0)=(0,w,i,0).
+\]
+For $0\leq j\leq8$, a generated head is selected by
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,0};
+     \mathsf S^{j+2};\mathsf{Pop}^{9-j}.
+\]
+It returns $(q_j,w,0,0)$ from $(t,w,0,0)$. Every Pop preserves a
+noncontradictory generated head. The restricted-head selector first
+sets the actual offset $u$, then uses an increment $D-u$ with $u\leq D$;
+this retains the numerical side condition rather than treating it as
+an unrestricted axiom. Generalization is compiled by
+\[
+ \mathsf{Push};\mathsf{MP}_i;\mathsf S;
+       \mathsf A_{i,0,0,0};\mathsf S^{11}.
+\]
+It sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$, including $a=1$.
+
+To combine premises $a$ and $I(a,b)$, the framed proof compiler
+reserves a zero below them. The resulting local suffix is
+\[
+ \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}
+ \quad\hbox{on}\quad
+ (0,[a,I(a,b),0;w],0,0).
+\]
+If $a=1$ it halts at the second Shift. If $a\ne1$ and $b=1$ it halts
+inside Pop. Otherwise it returns $(b,w,0,0)$. These alternatives,
+together with the separate all-zero calculation, cover the numerical
+alias $[0;0]=I(0,0)=0$. If a compiled refutation ever returns a visible
+one instead of halting earlier, the suffix
+\[
+                         \mathsf{Push};\mathsf S;\mathsf S
+\]
+exposes that one in the cache and halts. A lone final Shift would be
+incorrect for the cached-only test.
+
+The command checker proves the stated symbolic identities from total
+Cantor projections, constructor residues, and explicit assumptions
+$t\ne1$, $a\ne1$, or $b\ne1$ in the appropriate branches. It separately
+checks each corresponding equality-to-one branch. It does not use a
+consistency assumption to dismiss those cases.
+
+\subsection{Scheduler encoding and source binding}
+
+The four-field fresh code for AX is
+\[
+ \operatorname{enc}(\mathsf A_{c,x,y,z},e)
+       =p\bigl(c+2,p(y,p(x,p(z,e)))\bigr).
+\]
+Positive continuation codes have the outer successor used by the
+inherited scheduler. The independent checker verifies all four field
+projections, including the collapsed-zero cases, and verifies that using
+the obsolete three-field encoding would consume a different continuation.
+For a universal halting suffix $W$, the fresh words
+$\mathsf A_{k,0,0,0};W$ have a strictly increasing cofinal family of
+candidate codes. The detailed arithmetic transfer argument must use
+this actual scheduler and its carried store.
+
+The finite source description is fully retained. Starting from the
+pinned coefficient-four nodes, it changes exactly two named node
+definitions: \texttt{node163} removes the successful-MP dummy push,
+and \texttt{node170} implements the H guard. The axiom subtree is the
+pinned Q grammar with its sole terminal \texttt{breakTo 1} replaced by
+the existing stack-push macro \texttt{node49}. This macro then falls
+through to the full MP reader. No other source-node definition changes.
+Independent expansion of \texttt{node172} gives all 3,671 primitive sites.
+Two independent control-flow resolvers agree on every instruction and
+successor, and their result equals the delivered complete source graph.
+A separate free-constructor calculation checks the entire AX stack,
+the exchanged sixth head, the gate, and both gate-guard outcomes.
+
+At the fixed-controller level, the new rows relative to the pinned
+coefficient-four parent are
+\begin{center}
+\begin{tabular}{rrrcr}
+\toprule
+State & Read & Write & Move & Next\\
+\midrule
+38&0&0&R&11\\
+38&1&1&R&122\\
+164&1&1&R&114\\
+214&0&0&R&312\\
+214&1&1&R&20\\
+312&0&0&R&188\\
+\bottomrule
+\end{tabular}
+\end{center}
+The Q reader graph and terminal AX push are generated separately from
+the exact supplied grammar. All arithmetic-box transition rows remain
+unchanged. The literal independent checker verifies those boxes from
+rows rather than assuming their construction-time oracle.
+
+\subsection{The quotient and the complete initial frame}
+
+The raw machine has 134 fixed controls and 67 AX-reader controls.
+Seven simultaneous history-sensitive folds give
+\[
+                         134+67-7=194.
+\]
+In native labels, the removed/retained pairs are
+\begin{center}
+\begin{tabular}{rr@{\qquad}rr}
+\toprule
+Removed&Retained&Removed&Retained\\
+\midrule
+2004&2052&2021&2030\\
+2025&2035&2027&2046\\
+2039&2044&2055&2056\\
+2058&2017&&\\
+\bottomrule
+\end{tabular}
+\end{center}
+For each pair, every incoming transition to the first member writes
+zero and moves right; every incoming transition to the second writes
+one and moves right. The preceding tape cell therefore identifies the
+old control. Four complete two-cell cases per pair verify the quotient
+on the final simultaneously folded table. Each case recovers the
+aliased raw successor, the raw head displacement, the raw written
+symbol, the unchanged history cell, and arbitrary untouched exterior
+tape. All 28 cases pass, with durations one, three, or five steps.
+This verifies compatibility of the seven folds together.
+
+A breadth-first renumbering from native state 74 visits all 194 working
+controls and maps halt 254 to 194. The dense/native conjugacy is checked
+independently. Starting from an entirely blank tape, the machine reaches
+the complete clean source frame after exactly 57,922 physical steps:
+native state 84, head coordinate $-2$, the address of source site 25,
+header base 48, logical registers $(2,0,\ldots,0)$, and 26 spare unary
+blocks of value one. Both startup implementations check the entire
+finite-support tape, not just the visible register values; all exterior
+cells remain zero. Their tape representations are independent: a set
+of one-cells in the construction checker and a byte array in the literal
+checker.
+
+\subsection{Observed verification and exact deliverable identity}
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Quantity & Observed value\\
+\midrule
+Working states / transition rows&194 / 388\\
+Primitive source sites&3,671\\
+Universal source outcomes&4,778\\
+Construction symbolic operations&1,547,747\\
+Independent symbolic operations&1,130,254\\
+Independent maximum case length&403\\
+Minimum positive duration constant&3\\
+Generic list lemmas rederived from literal rows&4\\
+Complete blank initialization steps&57,922\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The independent physical contracts quantify over nine arbitrary natural
+register values, both decrement outcomes, an arbitrary nonempty finite
+list of arbitrary natural spare values, and an affine header gap. The
+independent engine imports neither the construction compiler nor its
+arithmetic-box oracle. A fresh aggregate offline run rebuilt every table
+and source artifact, checked source binding, checked the symbolic command
+identities, replayed the premise-exchange certificate, and reran this
+independent literal-tape engine. Every stage passed; the full observed
+receipt is \texttt{verification\_full.json}.
+
+The dense table's SHA-256 is
+\begin{quote}\small\ttfamily
+19e215df20429fa6a35f0a99ba0dcfcb40893a6e4b9a4ae6e450b0225f110e50
+\end{quote}
+The native table's SHA-256 is
+\begin{quote}\small\ttfamily
+424bd5175bbca161e76af485f1eda03f2f169d90afe80563035b60289361bf07
+\end{quote}
+The tables, source graphs, fold witnesses, command certificates, preserved
+licences, input hashes, and reconstruction code are all included. Running
+\texttt{python3 -B verify.py} reruns both physical engines in an isolated
+temporary directory. Its optional \texttt{--quick} mode skips only the
+independent physical replay and explicitly records that omission.
+
+\subsection{New search dimension: permuting emitted theorem heads}
+
+The seven separately emitted heads---the six ordinary logical heads and
+the diagonal head---can be permuted while preserving the numerical
+calculus. The command selectors must follow the new stack positions.
+This supplies a search dimension beyond reassociation of a fixed macro
+word. The retained search combines binary reassociation with pairwise
+exchanges of these seven blocks, retaining the initial generalization
+and dominated-axiom prefix and the final guarded gate. Near the target
+frontier it checks exact compatibility of simultaneous two-cell history
+folds; it does not certify a score from matching alone.
+
+The first 240-second run, using the supplied AX11 controller, considered
+3,631,115 proposals and accepted 650,390 search moves. The second
+90-second run used the new H-controller rows, making their different
+provider transitions available to decoder folds; it considered
+1,283,873 proposals and accepted 221,857 moves. Neither run obtained an
+effective reader count below 60, hence neither obtained a machine below
+194 states with its 134 fixed controls. Exact inputs, seeds, source,
+logs, and receipts are included. These are bounded heuristic searches,
+not a general state-count lower bound, and no unverified numerical score
+has been promoted to a smaller machine.

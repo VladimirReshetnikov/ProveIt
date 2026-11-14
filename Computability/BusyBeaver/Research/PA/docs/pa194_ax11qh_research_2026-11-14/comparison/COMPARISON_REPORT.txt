@@ -1,0 +1,191 @@
+COMPARISON OF THE CURRENT PA CONSISTENCY MACHINE CORPUS
+Pinned source: VladimirReshetnikov/ProveIt@1c9524d8bf2e0a27b9a16ff622359927f536e663
+
+1. Scope and evidence
+
+The current corpus contains 61 filed PA research packets and 11 incoming ZIP
+archives, for 72 deliveries. The complete ledger is packet_ledger72.json/csv.
+All 62 top-level filed README payloads were independently fetched/read from
+this commit and checked against their Git blob identities; their SHA-256
+values match the earlier 66-delivery ledger. The five older incoming archive
+hashes also match. The six later arrivals were individually inspected.
+Historical descriptions are attributed evidence; old PA correctness proofs
+were not all independently rebuilt or formalized in this comparison.
+
+All currently tracked .tm/.txt/.tsv/.csv/.json and .zip files under PA, plus
+all 11 incoming archives and nested archives, were scanned. No file-size
+cutoff remains for these formats. Arbitrary executable generators, source
+programs requiring execution, TeX-only tables, .jsonl, and binary encodings
+are outside literal recognition. Their named proposals remain represented
+at manuscript/README level. This is a precise recognizer scope, not a claim
+to recover arbitrary machines from arbitrary programs.
+
+Final scan: 9, 400 JSON payloads; 1, 867 TXT; 388 TSV; 209 CSV; 3, 356 TM;
+37 ZIP references representing 25 unique ZIP payloads. Recognition found
+3, 422 complete table occurrences and 752 normalized labeled tables.
+Twenty-two .tm inputs were partial/nonconforming under the complete
+one-halt recognizer. Thirty-five incidental one-state JSON fragments were
+excluded. Both lists/counters remain in results/summary.json.
+
+2. Frontier classification
+
+There are 82 complete spanning-root 194-state action graphs. All 82 remain
+distinct even allowing arbitrary state names, any spanning initial root,
+left/right reflection, global symbol interchange, and arbitrary terminal
+write/move effects. Two additional 194-row-state diagnostic graphs have no
+spanning root and are kept separate; neither is an accepted consistency
+construction. Symbol interchange is a structural test and need not
+preserve the all-zero initial tape.
+
+Historical evidence categories for the 82 spanning 194 graphs:
+ 40 reported principal constructions;
+  7 supplementary constructions;
+  5 reassociations with recorded full source contracts and blank startup;
+ 25 other research auxiliaries or seeds;
+  5 explicitly rejected constructions.
+
+There are 53 distinct complete 193-state graphs in the current literal
+corpus, all research candidates. Earlier reports' statements that there
+were only two 193 objects refer to their old snapshots. The latest QN6
+packet alone contributes numerous variants to a bounded startup search.
+None of the 53 is supplied with an accepted blank-start calibration to
+Con(PA). The metadata distinguish rejection from mere lack of proof.
+
+The smallest ordinary action-preserving bisimulation quotient of each of
+the 82 spanning 194 graphs still has 194 states. This exact computation rules
+out unconditional control merging in this narrow all-symbol-stream sense;
+it does not rule out context-dependent folds, source transformations,
+startup repairs, or an entirely different machine architecture. The two
+disconnected diagnostics reduce to five classes and are irrelevant to the
+consistency frontier.
+
+3. What the 40 principal designs actually change
+
+principal_designs40.json/csv gives a separate row for each distinct
+principal graph, with constructor coefficient, quantifier head, diagonal
+seed, AX interface, successful MP, Shift halt condition, comparator order,
+and specific source/layout change. All 40 have 194 working states.
+
+Their underlying machine architecture is substantially shared: numerical
+proof search, command-word enumeration with persistent stores, a unary
+register-file implementation, and a compressed source decoder. Variations
+occur in the formula encoding, emitter, command-store protocol, decoder
+association, and proved-zero return conventions.
+
+The main mechanisms are:
+* The baseline 67-reader/seven-fold and alternate 68-reader/eight-fold
+  machines retain the ten-entry AX interface and sum halt test t+h=1.
+* C sends a successful MP conclusion into the cached head, clears visible
+  top/offset, and tests h=1. CS swaps the destructive comparison order.
+* N removes the dummy-zero stack push and returns the conclusion visibly,
+  preserving t+h=1. Its proof-word compiler needs the reserved-zero rule.
+* H combines N's visible no-push MP with cached-only h=1 Shift; HS adds
+  symmetric comparison. H is not the same as cached-result C.
+* Q exchanges the curried premises of the universal-distribution head.
+  Its K/S/MP exchange proof is distinct from controller optimizations.
+* D emits Gamma(D) instead of Gamma(A), with changed selectors. DHS also
+  uses the H/symmetric controller. Only these two principal designs use
+  the Gamma(D) seed.
+* Coefficients 5 and 6 replace 4 throughout formula constructors. The change
+  can occupy one native transition row, yet changes all 61 multiplier
+  sites, the arithmetic encoding, and proof translations. This is a new
+  verified composition when not already present, not a new search method.
+* J/F/A/X/ZR/HAZ replace selected jumps by decrements of registers proved
+  zero; some combine A/D physical register placement. Such invariants do
+  not by themselves prove correct blank startup.
+* R and M4R reassociate the source decoder; resolved source identity and
+  physical source simulation must be checked separately.
+* AX11 pushes the final guard too, then falls through MP's full field
+  reader. AX consumes a genuine fourth parameter z and leaves eleven
+  stack-prefix entries (ten generated heads plus the saved old top).
+  The original sum guard remains; the completeness compiler chooses z=0.
+
+Among the 40 principal graphs there are 28 coefficient 4, six coefficient 5,
+and six coefficient 6 designs; 12 use the Q premise exchange. Successful MP
+is original dummy-push in 10, cached-result in 12, and visible no-push in 18.
+Twenty-one use the sum guard; 19 use cached-only Shift. Fourteen use the
+symmetric comparison. These are structural/protocol classifications,
+not forty independently rechecked consistency theorems.
+
+4. Essential duplicate corrections
+
+PA194C is the same principal graph in five deliveries.
+PA194HS equals the cache-only machine in lowercase pa 194 ns_conpa.
+PA194 N 6 appears in two principal deliveries.
+PA194QN and PA194NQ are one graph.
+Both QNS deliveries share their principal graph.
+PA194CSZ and PA194X are one graph.
+PA194QH5 is duplicated across the AX11 and dedicated QH5 archives.
+PA194QN6 is duplicated across the dedicated QN6 and combined QN archives.
+Conversely, PA194NS in uppercase PA194NS_research has the sum guard and is
+not the cache-only NS=HS. Names alone cannot identify a design. Dense/native
+relabelings are not new graphs, and native table labels starting at zero
+must not silently change the designated start.
+
+5. Why the obvious 193 objects are not solutions
+
+The coefficient-three shortcut compresses physical arithmetic but retains
+an inconsistent numerical calculus. For the old equality offset 3, the
+collision E(1, 0)=6=I(0, 1), together with the retained heads/rules, yields
+contradiction code 1. The supplied primitive refutation has 73, 393 steps;
+a later ordinary mathematical obstruction covers every nonnegative
+constant equality offset for the specified unchanged head/rule family.
+That is a restricted encoding obstruction, not a state lower bound.
+
+Runtime193 folds native 301 into 88 with rows 88/0 ->0 L 51 and 51/0 ->0 R 122.
+Its source contracts pass under a canonical initialized frame, but its
+original blank start enters an outward ray. The corpus's elementary and
+compound startup searches have not repaired this. The new AX11/QN6/QHS
+variants of this attempt are unaccepted or explicitly failed experiments.
+
+Other near misses demonstrate that source-equivalent edits can break
+initialization: a recorded comparator-return patch halts after 1, 361 blank
+steps despite its source contracts. Deleting a loop or choosing a lower
+optimistic grammar score is therefore insufficient.
+
+6. New PA194AX11QH: independently checked corpus novelty
+
+Candidate file: reduction_agent/ax11qh/machine/machine.tm
+Byte SHA-256:
+19e215df20429fa6a35f0a99ba0dcfcb40893a6e4b9a4ae6e450b0225f110e50
+Strict graph identifier:
+78245b0fa67acabdd21a9a9d7b5c2ba8975ed053a06dc408fb0042f1d5363bd7
+Broad graph identifier:
+5ca4022d1d388653ae5f50a56a13c2ac579b6e2b7e92229dfcef3a196364e94a
+
+Fresh check_novelty.py reparsed all 82 actual representatives and compared
+full canonical tuples, not only hashes. No match was found, even under the
+broad transformations above. The two disconnected diagnostics were
+explicitly reported as excluded from spanning-root comparison.
+
+Its mathematical/program difference is the composition of Q premise
+exchange, AX11's four-field/full-push axiom interface, visible no-push MP,
+and cached-only Shift, all at coefficient 4. These individual mechanisms
+are prior work. This is a new literal recurring command protocol and
+source/table binding, not a new general logical calculus or state record.
+The separate reduction agent supplies source/tape correctness evidence.
+This comparison establishes corpus-relative graph novelty only.
+
+7. The iPRA requirement
+
+Current PA/README.md explicitly says neither machine-specific direction
+of the physical PA194 consistency equivalence has been established in
+iPRA. isigma1-machine supplies a generic conditional endpoint, and the
+modeled scheduler has stronger proved calibration results, but the
+physical-machine bridge and PA-proof compiler remain open. Existing
+ordinary written PA arguments must not be relabeled as iPRA proofs.
+A new same-size graph with full source/runtime certificates still needs
+these logical bridges to satisfy the user's strengthened requirement.
+
+8. Reproducibility
+
+census.py scans the full local pinned source tree and ZIP archives.
+check_novelty.py recomputes exact canonical tuples from frozen tables.
+results/representatives contains one representative of every frontier
+class, including failed and diagnostic ones with explicit annotation.
+results/frontier_annotated.json/csv gives mechanisms and evidence labels;
+principal_designs40.json/csv is the requested design-level comparison;
+packet_ledger72.json/csv accounts for every supplied delivery.
+
+No bounded search failure, exact bisimulation result, or supplied evidence
+category is presented as a lower bound or an end-to-end iPRA theorem.

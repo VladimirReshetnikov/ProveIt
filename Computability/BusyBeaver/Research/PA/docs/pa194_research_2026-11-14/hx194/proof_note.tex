@@ -1,0 +1,68 @@
+\section{The H/X physical allocation}
+
+The source register order is $(N,T,W,A,D,H,X,Y,L)$.  Write
+$p=(6,2,0,4,3,7,8,5,1)$ for the primary machine's logical-to-physical
+map, and put $p'=(6,2,0,4,3,8,7,5,1)$.  Thus the new machine exchanges
+the cached theorem register $H$ and scratch register $X$ on the tape.
+It does not exchange their logical roles.
+
+A physical field of value $v$ is $0\,1^{v+1}$.  The exchange acts on the
+ordered list of field values, not by a fixed coordinate permutation of the
+binary tape: unequal fields have unequal lengths.  This distinction matters
+for the proof.  The source-address bits, header padding and nonempty spare
+list are unchanged.  Let $F_p(s)$ and $F_{p'}(s)$ denote the two complete
+physical frames for the same logical source configuration $s$.
+
+Only two native transition rows change:
+\[
+ (21,1):0R60\longmapsto0R55,\qquad
+ (45,1):0R55\longmapsto0R60.
+\]
+Controls $55$ and $60$ select physical field indices 7 and 8,
+respectively (indices start at zero).  Every arithmetic-engine row remains identical to the primary
+table.  The source graph still has 3,673 instruction sites.
+
+\paragraph{Universal local refinement.}
+The literal symbolic replay rederives four list-sweep lemmas and checks all
+4,780 instruction outcomes, including both decrement branches.  Its affine
+variables range over independent arbitrary natural field values and header
+padding; the spare tail is an arbitrary nonempty finite list.  For each
+nonhalting source step $s\longmapsto s'$, the new table executes a finite
+positive-duration trace from $F_{p'}(s)$ to $F_{p'}(s')$, and no intermediate
+control is halting.  For a halting source instruction, its trace reaches the
+halt control.  The four generic list lemmas are proved from the literal
+transition rows; the replay does not appeal to a register-arithmetic oracle.
+
+The checked durations have nonnegative affine coefficients and constant at
+least three.  The completed replay uses 1,068,062 symbolic operations, at
+most 392 for an outcome.  These operation counts are costs of symbolic
+verification, not physical machine runtimes.  The exact startup trace is
+56,134 physical transitions.  Its endpoint is the whole source frame at
+site 25, native control 84, head $-2$, logical vector $(2,0,\ldots,0)$ and
+26 one-valued spares.  Since $H=X=0$ there, its binary tape is identical to
+the primary machine's 58,154-step startup endpoint.  The saving is exactly
+2,020 initialization transitions; no uniform later speedup is asserted.
+
+\paragraph{Relative halting equivalence.}
+The frame exchange and the positive-duration source contracts show that the
+primary machine and PA194HX halt from blank tape under the same circumstances.
+For one direction, concatenate the source instruction traces through the
+first halting source instruction.  For reflection, a physical halt at time
+$t$ cannot lie outside all initial source segments: if the source has not
+halted after $t+1$ instructions, their positive durations cover more than
+$t$ physical steps and none of those covered configurations halts.  This
+contradicts the assumed physical halt.  The other table satisfies the same
+source specification, so the argument applies in both directions.
+
+\paragraph{Arithmetic proof boundary.}
+This is a relative simulation result.  A weak-arithmetic implementation can
+use primitive-recursive source iteration, accumulated segment lengths, and
+bounded search through the first $t+1$ source steps to transport halting
+witnesses.  If the local trace contracts and their composition are internalized
+in iPRA, the same argument supplies an iPRA proof of the relative machine
+halting equivalence.  This package supplies the explicit finite certificates
+and the mathematical argument, not a newly compiled iPRA proof of that
+internalization.  In particular it supplies no unconditional identification
+with PA refutations.  It does not resolve the missing baseline calibration
+\(\mathrm{iPRA}\vdash\operatorname{Con}(\mathrm{PA})\leftrightarrow
+\neg\operatorname{Halt}(M)\).
