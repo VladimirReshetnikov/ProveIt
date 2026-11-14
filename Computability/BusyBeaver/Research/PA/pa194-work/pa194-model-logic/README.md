@@ -27,6 +27,8 @@ length, is not started. Nothing here yields a consistency implication.
 | `PA194ModelSourceEnvironment` | A finite code pushes a label onto the bound environment; its lookup equations have the head/tail behavior of the standard source translator's binder update. |
 | `PA194ModelBoundAllocation` | A finite code reconstructs consecutive binder labels and the bound stack from a remaining depth budget, including at nonstandard depths. |
 | `PA194ModelTranslationContext` | Finite PRA codes unpack the fixed history parameters and reconstruct the current bound environment and binder label from the remaining budget. |
+| `PA194ModelMembershipAtomCode` | Candidate-PRA codes decode positive and negative source membership atoms, with the argument reversal used by the numerical calculus. |
+| `PA194ModelFormulaDispatch` | A finite packed-history dispatcher satisfies model equations for the atomic, truth, Boolean and quantifier constructors. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -76,6 +78,18 @@ arbitrary model inputs. They do not enforce formula well-formedness, budget
 inequalities, or the dispatcher's requirement to preserve the budget on
 Boolean children and decrement it only under quantifiers.
 
+The membership decoder assumes source relation code `1` and an internally
+valid arity-two term vector; the raw code does not validate these hypotheses.
+It reverses the two source arguments in the target membership constructor.
+The formula dispatcher uses the decoded atom and context codes. Its checked
+history equations preserve the budget for Boolean children and use one less
+for a quantified body, provided the parent budget is a successor. Its default
+branch applies to any unrecognized tag, so interpreting that branch as an
+existential requires source-constructor validity. Identifying the allocated
+binder with the intended environment additionally requires the budget bound.
+These local equations do not prove an independent recursive translation for
+every internally valid source formula, its depth invariant, or proof transport.
+
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
 
@@ -86,7 +100,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelTranslationContext` as the top module. On 2026-11-14, all nine
+`PA194ModelFormulaDispatch` as the top module. On 2026-11-14, all eleven
 modules in this directory were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
