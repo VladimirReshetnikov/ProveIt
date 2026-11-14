@@ -37,3 +37,7 @@ temporary directory, and rejects `sorryAx` in the printed dependencies.
 An independent ordered suffix replay rebuilt the three new modules against
 retained source-prerequisite overlays and passed with no `sorryAx`. That
 suffix replay did not rebuild all of their prerequisites.
+
+The author also ran the complete fresh dependency replay using the audited
+project and Foundation overlays; it reached the final head5 theorem with no
+Lean errors or `sorryAx` in the replay log.
