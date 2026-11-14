@@ -138,3 +138,21 @@ and fresh local prerequisite builds, run:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-branch.sh
 ```
+
+`PA194StrongInduction.lean` derives strong induction for any fixed binary PR
+code in every candidate-PRA model, using bounded induction. The companion
+`PA194OccurrenceStrong.lean` proves self-freshness without constructing a
+branch-word path: for a supplied binary PR occurrence code, it assumes that
+any nonzero occurrence result at `(n, v)` comes from a positive `n` and is
+explained by one of the two immediate Cantor fields of `n / 4`, or by a
+nonzero occurrence result at one of those children. Under that uniform
+one-step coverage hypothesis, every reported label is below its code, so the
+code cannot occur in itself, including at nonstandard model elements.
+
+This theorem still assumes the occurrence code and its all-model coverage
+property. It does not construct PA194's actual occurrence code or establish
+that property for it. Check the bounded-strong-induction route using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-strong.sh
+```
