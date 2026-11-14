@@ -220,6 +220,10 @@ conditional traces. A complete source-frame correspondence and blank-tape
 reachability are open.
 The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
 translation of arbitrary PA refutations into the machine's numerical calculus.
+The [model-level calculus logic](pa194-work/pa194-model-logic/README.md) now
+includes fixed-size neighborhood-equality derivations for arbitrary model
+labels. Their connection to coded source formulas and the internal compiler
+remain open.
 The [forward compiler audit](pa194-work/pa194-forward-audit/README.md) identifies where
 the imported PA196 argument uses full PA induction. Current-Foundation ports
 of the [PAeq formula translation](pa194-work/pa194-paeq-formula/README.md), its

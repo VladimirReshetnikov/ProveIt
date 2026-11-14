@@ -8,8 +8,9 @@ proof. The ordinary-number version of that compiler is
 This directory rebuilds it for `TargetProvable`, the provability predicate of the calculus in
 a candidate-PRA model `M` whose arithmetic reduct satisfies `𝗜𝚺₁`.
 
-**Status.** Only the first two layers exist: the implication basis and the finite-context
-machinery. They contain no induction inside the model. The compiler itself, which needs
+**Status.** The implication basis, finite-context machinery, and fixed-size neighborhood
+equality derivations are checked. They contain no induction inside the model. The compiler
+itself, which needs
 internal inductions over a derivation, over formula codes and over sequents of nonstandard
 length, is not started. Nothing here yields a consistency implication.
 
@@ -19,6 +20,13 @@ length, is not started. Nothing here yields a consistency implication.
 | --- | --- |
 | `PA194ModelPropositional` | The upstream generic derivation `M6.Logic.RestrictedImplication` instantiated with `M`, `impValue` and `TargetProvable`: `imp_k`, `imp_s`, `imp_peirce`, `imp_comp`, `imp_exchange`, `imp_refl`, and `rho8_all` (the restricted row without its side condition `u ≤ a`). |
 | `PA194ModelContext` | `Ctx Γ a`: proof trees of standard size from a standard-length list `Γ` of model elements. `Ctx.deduction` (deduction theorem), `Ctx.generalize`, `Ctx.existsElim`, `Ctx.casesOnFormula`; `explosion`, `doubleNegationElimination`, `contraposition`; the vacuity rules `negationVacuity`, `implicationVacuity`, `universalVacuity`, `conjunctionVacuity`; `existentialMonotonicity`, `liftImp`; `memRight`, `memLeft`. |
+| `PA194ModelNeighborhood` | The target-code neighborhood relation is reflexive, symmetric and transitive, and three corresponding universally closed source equality-supplier-shaped formulas are target-provable for arbitrary model labels. |
+
+These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
+not an internal induction over source proof codes. The formulas have the same displayed
+shape as the ordinary-number source-LK equality suppliers, but no theorem here identifies
+them with the translation of internal source-formula codes. The latter connection and the
+internal compiler remain open.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -29,8 +37,9 @@ so they cover nonstandard formula codes. What is standard is the shape of each d
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh [--out DIR]
 ```
 
-runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with `PA194ModelContext` as
-the top module. On 2026-11-14, with `--out` pointing at the object directory that already
-held the compiled closure, it recompiled the two modules of this directory and printed seven
-axiom reports, all `propext`, `Classical.choice`, `Quot.sound`. A run into an empty directory
-has not been done.
+runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
+`PA194ModelNeighborhood` as the top module. On 2026-11-14, a run with `--out`
+pointing at a retained combined overlay rebuilt all three modules in this
+directory. All nine printed axiom reports were free of `sorryAx`. The overlay
+includes previously checked Foundation, project and standalone prerequisites;
+this was a suffix check, not an empty-overlay replay.
