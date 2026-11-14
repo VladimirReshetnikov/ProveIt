@@ -26,6 +26,7 @@ length, is not started. Nothing here yields a consistency implication.
 | `PA194ModelSourceAtomCode` | Candidate-PRA codes decode positive and negative source equality atoms and select bound/free labels from encoded environments, including for nonstandard terms and vectors. |
 | `PA194ModelSourceEnvironment` | A finite code pushes a label onto the bound environment; its lookup equations have the head/tail behavior of the standard source translator's binder update. |
 | `PA194ModelBoundAllocation` | A finite code reconstructs consecutive binder labels and the bound stack from a remaining depth budget, including at nonstandard depths. |
+| `PA194ModelTranslationContext` | Finite PRA codes unpack the fixed history parameters and reconstruct the current bound environment and binder label from the remaining budget. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -67,6 +68,14 @@ children and decrement it only at binders, as the existing formula-budget
 machinery does. This module does not yet supply the new dispatcher, packed
 parameter decoder, or the depth invariant needed for a recursive compiler.
 
+The context codes take a history node indexed by `pair source remaining` and
+two fixed parameters: `pair initialBound free` and
+`pair initialBudget (pair initialLabel reservedLabel)`. Their model equations
+decode those values and reconstruct the current bound stack and label for
+arbitrary model inputs. They do not enforce formula well-formedness, budget
+inequalities, or the dispatcher's requirement to preserve the budget on
+Boolean children and decrement it only under quantifiers.
+
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
 
@@ -77,7 +86,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelBoundAllocation` as the top module. On 2026-11-14, all eight
+`PA194ModelTranslationContext` as the top module. On 2026-11-14, all nine
 modules in this directory were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
