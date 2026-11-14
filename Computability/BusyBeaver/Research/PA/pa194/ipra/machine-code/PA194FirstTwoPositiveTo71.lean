@@ -83,6 +83,45 @@ theorem markerFirstTwoPositiveBlankTo71 (n : Nat) (e : Fin 2 → M) (rest : Fin 
   change F PA194Stepper.stepper ![F addCode ![t,_],_] = _
   rw [PA194StepperCompose.modelStepperCompose,hm]
   exact PA194State106Scan.scanExit (rest 0+1) (x+x) p
+theorem markerFirstTwoPositiveBlankTo71WithFile (n : Nat) (e : Fin 2 → M) (rest : Fin (n+2) → M)
+    (u k : M)
+    (ht : e (Fin.last 1) =
+      let t := F ones ![k+1,F (fileCode (n+1)) rest]; (t+t+1)+(t+t+1))
+    (hfirst : e 0 = modelNumeral M 2)
+    (hblank : rest (Fin.last (n+1)) = (0 : M)) :
+    let z := u+u
+    let z1 := z+z
+    let z2 := z1+z1
+    let z3 := z2+z2
+    let z4 := z3+z3
+    let l64 := z4+z4
+    let x := ((l64+l64)+(l64+l64))+((l64+l64)+(l64+l64))+1
+    ∃ time left right : M, F (fileCode n) (fun i => rest i.succ) = right+right ∧ F PA194Stepper.stepper ![time,
+      F pairCode ![modelNumeral M (markerControl ⟨1,by decide⟩),F pairCode ![x+x+1,F (fileCode 1) e]]] =
+    F pairCode ![modelNumeral M 71,F pairCode ![left,right]] := by
+  letI : M↓[ℒₒᵣ] ⊧* 𝗜𝗢𝗽𝗲𝗻 := standardModelIOpen
+  dsimp only
+  let g := F zeros ![modelNumeral M 2,F zeros ![modelNumeral M 6,u]]
+  let h := g+g+1
+  let xx := h+h+1
+  let ll := (xx+xx)+(xx+xx)+1
+  let a0 := ll+ll+1
+  let a1 := a0+a0+1
+  let d := (a1+a1)+(a1+a1)
+  let x := F ones ![k,d+d]
+  let markClock := (F (costCode 1) e+modelNumeral M 3)+F (costCode 1) e
+  let headerClock := (((modelNumeral M 1+1)+1)+1)+(((modelNumeral M 5+modelNumeral M 6)+modelNumeral M 2)+1)
+  let t := (((((markClock+headerClock)+modelNumeral M 3)+(modelNumeral M 2+1))+1)+1+k)+1
+  obtain ⟨p,hp⟩ := evenRemainingFile n rest hblank
+  have hm := PA194FirstTwoPositiveTo106.markerFirstTwoPositiveTo106 n e rest u k ht hfirst
+  dsimp only at hm
+  rw [hp] at hm
+  let left := F ones ![rest 0+1,x+x]
+  refine ⟨t+((rest 0+1)+1),left+left,p,hp,?_⟩
+  change F PA194Stepper.stepper ![F addCode ![t,_],_] = _
+  rw [PA194StepperCompose.modelStepperCompose,hm]
+  exact PA194State106Scan.scanExit (rest 0+1) (x+x) p
+#print axioms markerFirstTwoPositiveBlankTo71WithFile
 #print axioms evenRemainingFile
 #print axioms markerFirstTwoPositiveBlankTo71
 end models
