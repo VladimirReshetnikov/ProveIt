@@ -164,8 +164,10 @@ shows that an appropriate majorant absorbs them in one tower step.
 for the four non-atomic constructors, assuming bounds for their children.
 `PA196PASubstitutionGraphStep.lean` combines these results into a one-node
 bound for actual graph outputs, conditional on bounds for the relevant smaller
-children at the two recursive parameter values. Uniform recursive output and
-global stage bounds remain open.
+children at the two recursive parameter values.
+`PA196PASubstitutionUniformGrowth.lean` uses internal Π₁ induction and tower
+algebra to prove a uniform arithmetic substitution-output bound in IΣ₁ models.
+The global fixpoint-stage bound remains open.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
