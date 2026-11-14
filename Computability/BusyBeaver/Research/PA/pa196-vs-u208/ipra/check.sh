@@ -67,7 +67,13 @@ lean -M6000 -j1 "$bridge/PA196PANegationBound.lean" -o "$PA196_TASK_CHECK_DIR/PA
 lean -M6000 -j1 "$bridge/PA196PANegBoundTerms.lean" -o "$PA196_TASK_CHECK_DIR/PA196PANegBoundTerms.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAIdentityBounds.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PACutBounds.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
-lean -M6000 -j1 "$bridge/PA196PABvGrowth.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PABvGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PABvGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PATermBVRank.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermBVRank.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PATermRecBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermRecBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PATermBVGraph.lean" -o "$PA196_TASK_CHECK_DIR/PA196PATermBVGraph.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PABvGraphBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PABvGraphBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAFormulaSetBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAFormulaSetBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAFormulaSetComplete.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 if rg -q "sorryAx" "$PA196_TASK_CHECK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1
