@@ -1,0 +1,17 @@
+import PA194ModelPathAtomSubstitution
+import PA194ModelPathReferenceStep
+#print axioms PA194ModelLogic.membershipVacuity_target
+#print axioms PA194ModelLogic.specializeWithMirroredEquality_target
+#print axioms PA194ModelLogic.negativeSpecialization_target
+#print axioms PA194ModelLogic.reverseAll_target
+#print axioms PA194ModelLogic.reverseRight_target
+#print axioms PA194ModelLogic.reverseLeft_target
+#print axioms PA194ModelLogic.neighborhoodRightCongruence_target
+#print axioms PA194ModelLogic.neighborhoodLeftCongruence_target
+#print axioms PA194ModelLogic.equalityAtom_rightCongruence_target
+#print axioms PA194ModelLogic.sourceAtom_substitute_container
+#print axioms PA194ModelLogic.sourceAtom_substitute_member
+#print axioms PA194ModelLogic.path_reference_graph_step
+#print axioms PA194ModelLogic.validTerm_label_below_reserve
+#print axioms PA194ModelLogic.allocated_sourceAtom_substitution
+#print axioms PA194ModelLogic.path_sourceAtom_substitution

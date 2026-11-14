@@ -52,6 +52,7 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelPathBudgetPositive`, `PA194ModelPathGraph` | Visited binders have positive remaining budget, and every chosen path node has an actual Foundation graph entry. |
 | `PA194ModelPathReferenceStep` | Every path step from valid syntax is either a stationary leaf or a reference edge with actual graph entries at both ends. |
 | `PA194ModelEqualityObservations` | Translated equality atoms derive four quantified neighborhood observations in the target calculus. |
+| `PA194ModelPathAtomSubstitution` and dependencies | [Target membership substitution](SUBSTITUTION.md) follows for suitably bounded equal-depth source paths with explicit environment bounds. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
