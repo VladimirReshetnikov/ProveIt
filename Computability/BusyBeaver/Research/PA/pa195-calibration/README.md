@@ -537,3 +537,15 @@ Recheck with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-dispatch-code.sh
 ```
+
+`PA194AtomicDispatch.lean` composes the dispatcher with the membership and
+canonical equality branches. Given candidate-PRA certificates for the tag and
+both child decoders, the exact atomic equations hold in every candidate-PRA
+model, including for nonstandard fields. The identification with Foundation's
+internal syntax additionally assumes IΣ₁. Suitable decoder codes exist, but
+are not serialized here. This does not construct the recursive translator or
+prove a machine consistency reduction. Recheck with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-atomic-dispatch.sh
+```
