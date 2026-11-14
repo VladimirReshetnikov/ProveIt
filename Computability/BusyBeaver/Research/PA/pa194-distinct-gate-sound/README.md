@@ -21,3 +21,19 @@ Lean and Foundation overlays and ordered prerequisite object directories in
 checked gate-closure, general-witness and retained deeper objects, and its axiom
 audit contained no `sorryAx`. The full nested prerequisite chain was not
 rebuilt by this suffix check.
+
+`PA194ModeledHaltRefutesPA.modeled_halt_refutes_PA` composes the distinct and
+equal-label gate proofs with the checked fixed modeled scheduler: in every
+candidate-PRA model with IΣ₁ arithmetic reduct, if its modeled `haltAfter`
+code returns 1 at an arbitrary model time, internal PA proves falsum. This
+is unconditional on a separate gate-soundness assumption. It remains a
+statement about the modeled scheduler; the nonstandard physical-machine trace
+has not been linked to that scheduler. Neither literal-machine iPRA direction
+follows yet.
+
+A fresh two-module suffix replay passed without `sorryAx` using the independently
+checked numerical witness and retained scheduler/gate prerequisite objects.
+`check-modeled-halt-suffix.sh` reproduces that suffix with ordered prerequisite
+objects. `check-modeled-halt.sh` additionally rebuilds the nested source and
+scheduler endpoint chain but still requires separately supplied general-witness
+prerequisite objects; a complete run of that wrapper remains in progress.

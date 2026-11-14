@@ -183,7 +183,7 @@ those bindings do not establish the nonstandard controller simulation.
 The [modeled scheduler iteration](pa194-scheduler-iteration/README.md)
 preserves the store invariant for arbitrary model-length runs, and a modeled
 halt yields a target proof of code 1. The [target-to-PA bridge](pa194-target-source/README.md)
-turns that proof into an internal PA refutation assuming the still-open guarded
+turns that proof into an internal PA refutation assuming the guarded
 gate seed. The [distinct-label endpoint](pa194-distinct-gate-endpoint/README.md)
 discharges the equal-label gate case and narrows the premise to the remaining
 distinct-label separation tails. The model-length
@@ -192,9 +192,11 @@ now identified even for nonstandard codes, and the resulting
 [internal induction theorem](pa195-calibration/PA194FullInternalInduction.md)
 constructs the required closed induction axiom bodies. General
 [internal finite-set separation](pa195-calibration/PA194InternalSeparation.md)
-is also checked for arbitrary internal formula codes. Its identification with
-the distinct-label numerical gate and the physical-machine connection remain
-open.
+is also checked for arbitrary internal formula codes, and its
+[distinct-label numerical gate application](pa194-distinct-gate-sound/README.md)
+now supplies the remaining gate premise in those models. A modeled scheduler
+halt therefore yields an internal PA refutation with no remaining gate premise.
+The physical-machine connection remains open.
 
 For the physical simulation needed in both directions, the
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
