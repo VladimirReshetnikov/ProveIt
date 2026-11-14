@@ -22,3 +22,6 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 The standalone script passed against the audited project/Foundation objects.
 It checked the upstream pins and rebuilt the full local syntax/validity chain;
 all printed dependencies omit `sorryAx`.
+
+An independent complete standalone replay rebuilt the term, atom and formula
+validity chain from the pinned audited overlays and passed without `sorryAx`.
