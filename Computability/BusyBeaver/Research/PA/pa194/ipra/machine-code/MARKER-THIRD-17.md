@@ -30,5 +30,5 @@ TMPDIR=/dev/shm IPRA_LEAN_OVERLAY=/path/to/ipra/lib \
 ```
 
 The author completed a fresh suffix replay of the relevant modules with no
-`sorryAx`. A separate independent suffix replay has stalled on filesystem I/O;
-the full nested replay is also still running.
+`sorryAx`. An independent suffix replay also passed against separately checked
+and preserved prerequisite overlays; the full nested replay is still running.
