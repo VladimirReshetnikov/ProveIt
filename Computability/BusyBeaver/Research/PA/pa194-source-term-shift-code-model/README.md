@@ -34,3 +34,7 @@ From the repository root, set `IPRA_FOUNDATION_OVERLAY` to the audited current
 Foundation object overlay and `IPRA_LEAN_OVERLAY` to the pinned audited
 project object overlay, then run
 `bash Computability/BusyBeaver/Research/PA/pa194-source-term-shift-code-model/check.sh`.
+
+An independent Lean invocation also recompiled the final module using that
+same freshly rebuilt dependency overlay. It reported the same axioms and no
+`sorryAx`; it did not independently rebuild the prerequisite chains.
