@@ -68,9 +68,9 @@ lines += ["#print axioms chunk0", "#print axioms chunk3808"]
 (out / "Closure.lean").write_text("\n".join(lines) + "\n")
 
 lines = ["import Transfer", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0",
-         f"def site3692 : Nat := {masks[3692]}", f"def site25 : Nat := {masks[25]}",
+         f"def site3692 : Nat := {masks[3692]}", f"def site25 : Nat := {masks[25]}", f"def site26 : Nat := {masks[26]}",
          "theorem seed_present : site25.testBit 1 = true := by decide"]
-for r in (3, 4, 5, 6):
+for r in (3, 4, 5, 6, 7):
     lines += [
         f"def zero{r} : Nat := {zero[r]}",
         f"theorem zero{r}_meaning : ∀ m : Fin 512, zero{r}.testBit m.val = !m.val.testBit {r} := by decide",
@@ -80,7 +80,16 @@ for r in (3, 4, 5, 6):
         f"  rw [zero{r}_meaning m] at hz",
         "  simpa using hz",
     ]
+for r in (3, 6, 7):
+    lines += [
+        f"theorem zero{r}_subset26 : maskSub site26 zero{r} = true := by decide",
+        f"theorem site26_reg{r}_zero (m : Fin 512) (hm : site26.testBit m.val = true) : m.val.testBit {r} = false := by",
+        f"  have hz := maskSub_sound zero{r}_subset26 hm",
+        f"  rw [zero{r}_meaning m] at hz",
+        "  simpa using hz",
+    ]
 lines += ["#print axioms seed_present"] + [f"#print axioms site3692_reg{r}_zero" for r in (3, 4, 5, 6)]
+lines += [f"#print axioms site26_reg{r}_zero" for r in (3, 6, 7)]
 (out / "Zero.lean").write_text("\n".join(lines) + "\n")
 
 def lean_instruction(op):

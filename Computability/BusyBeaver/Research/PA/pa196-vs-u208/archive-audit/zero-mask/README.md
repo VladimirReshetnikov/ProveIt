@@ -44,11 +44,16 @@ and generates Lean files for the following kernel checks:
   into an unconditional `TableClosed` theorem for that extracted table.
   The generated `ResolverBinding.lean` proves the required equality with the
   upstream resolver, so `SegmentEnd.lean` proves the ordinal-3692 result for
-  actual source runs without a table-binding hypothesis.
+  actual source runs without a table-binding hypothesis. It also proves that
+  every reached ordinal-26 frame has registers 3, 6, and 7 zero, and hence that
+  a decrement of register 6 with zero successor 34 has the same source effect
+  there as the original jump to 34.
 
 The final Lean theorem is a standard-natural-number statement about the source
-program; no correspondence between its source seed and a blank-tape run is
-proved here. This also does not establish any
+program under `M6.Source.Steps`, whose exited control is absorbing. A bridge to
+the cyclic driver (`CycleSteps`, which restarts after a normal exit) has not
+been proved here. No correspondence between its source seed and a blank-tape
+run is proved here. This also does not establish any
 physical-machine simulation, equivalence between the
 four variants and PA196, iPRA theorem, or PA consistency result. Hash checks
 and the archive's parser are part of the reproduction procedure, not Lean
