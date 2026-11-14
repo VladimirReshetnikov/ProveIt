@@ -26,3 +26,5 @@ consistency implication.
 prerequisite source/object hashes, requires the three exact theorem reports,
 and rejects `sorryAx`. It uses retained prerequisite overlays and does not
 rebuild or independently pin their entire transitive dependency closure.
+An independent [coherent replay](MODEL-HEADER-COHERENT.md) rebuilt the
+machine-specific closure in a single startup-derived output directory.

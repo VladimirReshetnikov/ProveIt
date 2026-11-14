@@ -29,3 +29,5 @@ second root pass and retains the complete source file and arbitrary suffix.
 checks selected direct source/object hashes, and rejects `sorryAx`. It retains
 transitive prerequisite objects from the documented overlays, so this is a
 suffix check rather than a full dependency-closure replay.
+An independent [coherent replay](MODEL-HEADER-COHERENT.md) rebuilt the
+machine-specific closure in a single startup-derived output directory.
