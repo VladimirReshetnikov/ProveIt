@@ -23,3 +23,7 @@ The final modules passed ordered suffix checks against the checked target
 shift-growth object and retained arithmetic/project/Foundation prerequisites.
 Their printed axioms contain no `sorryAx`. The full prerequisite-prefix replay
 remains pending.
+
+An independent ordered suffix replay rebuilt both term-substitution growth
+modules against the separately checked PAeq qVec bounds and retained formula
+prerequisites. It passed without `sorryAx`; this was not a full prefix replay.
