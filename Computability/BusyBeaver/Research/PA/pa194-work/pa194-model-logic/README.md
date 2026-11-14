@@ -41,6 +41,8 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelPathBudget` | At remaining budget `root − binderCount`, the dispatcher allocation agrees with the path's binder count. |
 | `PA194ModelPathDispatch`, `PA194ModelPathDispatcherFresh` | Selected Boolean and binder edges satisfy dispatcher equations at their path budgets, and visited valid atoms have fresh labels under explicit environment bounds. |
 | `PA194ModelPathPrepend` | Prefixing a choice to a model-length path follows that edge and then continues through the former choice stack. |
+| `PA194ModelPathPrependDepth` | Prefixing a choice adds the parent’s binder bit to the path’s binder count. |
+| `PA194ModelPathReachability`, `PA194ModelPathReachabilityDef` | Operational path reachability with binder depth is reflexive, extends by a parent edge, and is uniformly Σ₁ in root, target, and depth. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -166,8 +168,14 @@ under the stated reserve and initial-bound/free-stack hypotheses.
 
 For arbitrary model-valued path lengths, prefixing a choice to the encoded
 stack follows the corresponding first edge and then the old path; this uses
-internal Σ₁ induction. No theorem yet proves coverage of every internal
-subformula or semantic correctness of the full translation.
+internal Σ₁ induction. The binder count of the prefixed path equals the parent’s
+binder bit plus the count of the remaining path. Operational `PathWithDepth`
+records an endpoint and binder count, has a zero-step witness, and extends by a
+parent edge. A finite code packs the step count and choice stack into one witness;
+this gives uniform Σ₁ definability in root, target, and depth. This operational
+relation is not an independent syntactic descendant relation. No theorem yet
+proves coverage of every internal subformula or semantic correctness of the full
+translation.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -179,7 +187,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelPathPrepend` as the top module. On 2026-11-14, the path and
+`PA194ModelPathReachabilityDef` as the top module. On 2026-11-14, the path and
 dispatcher modules were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
