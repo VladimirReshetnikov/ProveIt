@@ -7,6 +7,11 @@ arithmetic, `Con(PA)`. The current goal is a Lean proof of
 by the other 194-, 195-, and 196-state consistency candidates. The machines start
 on a blank two-way binary tape; state counts exclude the halt state.
 
+The `pa194/` and `pa195/` directories contain the principal machine-specific
+arithmetic developments. Supporting packages are grouped by candidate under
+[`pa194-work/`](pa194-work/) and [`pa195-work/`](pa195-work/). The `docs/`
+directory holds the delivered research packets.
+
 **Status:** Neither machine-specific direction of this equivalence has yet
 been established in iPRA for PA194, the original PA195, or the PA196 candidate. In
 particular, a Lean theorem about ordinary finite runs, a Python certificate,
@@ -35,16 +40,16 @@ The [14 November incoming reports](INCOMING-2026-11-14.md) include another
 to a standard-model halting sentence and constructs a conditional iPRA
 equivalence. [The explicit machine codes](pa194/ipra/machine-code/README.md)
 include a clock whose decoded execution is characterized in every candidate
-PRA model. [The quotient proof](pa194-dense/README.md) connects the 201-control
-parent and dense PA194 table for all standard finite runs; [the zipper bridge](pa194-zip-bridge/README.md)
+PRA model. [The quotient proof](pa194-work/pa194-dense/README.md) connects the 201-control
+parent and dense PA194 table for all standard finite runs; [the zipper bridge](pa194-work/pa194-zip-bridge/README.md)
 connects blank-tape halting to the literal machine used by the arithmetic code.
-[Source coverage](pa194-coverage/README.md) reduces the source-to-parent
+[Source coverage](pa194-work/pa194-coverage/README.md) reduces the source-to-parent
 simulation to a finite set of Lean checks; all 3,673 sites and the aggregate
-have passed. [The clock/source composition](pa194-clock-source-complete/README.md)
+have passed. [The clock/source composition](pa194-work/pa194-clock-source-complete/README.md)
 connects the initialized source program to the exact machine clocks in
-standard finite-run semantics. [The command scheduler](pa194-command-source/README.md)
+standard finite-run semantics. [The command scheduler](pa194-work/pa194-command-source/README.md)
 is equivalent to that source program in standard finite-run semantics, and
-[its clock composition](pa194-command-clock/README.md) connects the initial
+[its clock composition](pa194-work/pa194-command-clock/README.md) connects the initial
 scheduler state to the machine clocks. Parts of the literal register scanner
 are also proved as native iPRA equalities; see the
 [source-file engine](pa194/ipra/machine-code/SOURCE-FILE-ENGINE.md). The
@@ -55,7 +60,7 @@ for each physical position, and the
 them for each logical register. The controller
 transitions into these boxes and the layout invariants between them remain
 open. In standard
-Lean semantics, [the calculus/clock composition](pa194-calculus-clock/README.md)
+Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal
 numerical calculus has a finite derivation of contradiction. Its calibration
 to PA and its internalization in iPRA remain open, as do both machine-specific
@@ -75,14 +80,14 @@ an end-to-end Lean proof of that claim or an iPRA proof.
   primitive-recursive halting test and an iPRA sentence in the standard
   model. Its equivalence theorem assumes two machine-specific classical PRA
   reductions; those assumptions remain open.
-- [Quotient and dense-table proof](pa195-dense/README.md) proves in Lean that
+- [Quotient and dense-table proof](pa195-work/pa195-dense/README.md) proves in Lean that
   the 202-control parent and the delivered dense 195-state table halt under
   the same circumstances for every complete tape and head position.
-  [The zipper bridge](pa195-zip-bridge/README.md) connects blank-tape
+  [The zipper bridge](pa195-work/pa195-zip-bridge/README.md) connects blank-tape
   halting to the arithmetic endpoint over the standard natural numbers.
-- [Register engine](pa195-runtime/README.md),
-  [source entry binding](pa195-source-entry/README.md), and
-  [symbolic contract batches](pa195-symbolic/README.md) check parts of the
+- [Register engine](pa195-work/pa195-runtime/README.md),
+  [source entry binding](pa195-work/pa195-source-entry/README.md), and
+  [symbolic contract batches](pa195-work/pa195-symbolic/README.md) check parts of the
   parent machine's execution. The entry binding covers one source instruction
   and both branches; the complete source-graph and arithmetic correctness
   connections still need proof.
@@ -90,7 +95,7 @@ an end-to-end Lean proof of that claim or an iPRA proof.
   transition-table, and configuration-step functions in the PRA language.
   Their model equations are ingredients for a weak-arithmetic proof, not the
   missing machine/refutation reductions.
-- [Diagonal calibration](pa195-calibration/README.md) constructs an
+- [Diagonal calibration](pa195-work/pa195-calibration/README.md) constructs an
   occurrence code and proves decoder self-freshness in classical PRA,
   including its behavior in nonstandard models. The component codes are
   supplied existentially; the proof-producing PA translation remains open.
@@ -163,40 +168,40 @@ machine/refutation implication. Neither of those machine-specific premises is
 proved yet; the earlier standard-run source simulation does not supply them.
 
 For the compiler's internal syntax operations, fixed candidate-PRA codes now
-have all-model correctness proofs for [source formula shift](pa194-source-formula-shift-code-model/README.md)
-and [arithmetic formula closing](pa195-calibration/PA194FormulaAgreement.md).
+have all-model correctness proofs for [source formula shift](pa194-work/pa194-source-formula-shift-code-model/README.md)
+and [arithmetic formula closing](pa195-work/pa195-calibration/PA194FormulaAgreement.md).
 These cover nonstandard valid formulas in candidate PRA models with IΣ₁
 reducts. They are components of the compiler, not a translation of arbitrary
 PA proofs or a verification of source execution.
 
 For the direction `Con(PA) → ¬Halt(M₁₉₄)`, a
-[conditional source-line theorem](pa195-calibration/PA194SourceLineRefutation.md)
+[conditional source-line theorem](pa195-work/pa195-calibration/PA194SourceLineRefutation.md)
 turns an internally valid numerical derivation of code 1 into an internal PA
 refutation, provided its seed translations are PA-provable. Model-uniform
 proofs cover the six numbered seeds, rho8 and diagonal, as well as modus
 ponens and generalization. The guarded gate and the connection from the
 physical machine to such line histories are open. Separately, the
-[machine-store invariant](pa194-machine-store-invariant/README.md) covers the
+[machine-store invariant](pa194-work/pa194-machine-store-invariant/README.md) covers the
 mathematical command effects using an independent target proof encoding; it
 has not been identified with PA provability or the physical controller trace.
-The finite codes for [AX](pa194-machine-ax-standard/README.md) and
-[SHIFT/MP](pa194-machine-shift-mp-standard/README.md) have also been proved
+The finite codes for [AX](pa194-work/pa194-machine-ax-standard/README.md) and
+[SHIFT/MP](pa194-work/pa194-machine-shift-mp-standard/README.md) have also been proved
 to reproduce the corresponding standard-natural-number source commands;
 those bindings do not establish the nonstandard controller simulation.
-The [modeled scheduler iteration](pa194-scheduler-iteration/README.md)
+The [modeled scheduler iteration](pa194-work/pa194-scheduler-iteration/README.md)
 preserves the store invariant for arbitrary model-length runs, and a modeled
-halt yields a target proof of code 1. The [target-to-PA bridge](pa194-target-source/README.md)
+halt yields a target proof of code 1. The [target-to-PA bridge](pa194-work/pa194-target-source/README.md)
 turns that proof into an internal PA refutation assuming the guarded
-gate seed. The [distinct-label endpoint](pa194-distinct-gate-endpoint/README.md)
+gate seed. The [distinct-label endpoint](pa194-work/pa194-distinct-gate-endpoint/README.md)
 discharges the equal-label gate case and narrows the premise to the remaining
 distinct-label separation tails. The model-length
-[universal-opening endpoint](pa195-calibration/PA194OpeningEndpoint.md) is
+[universal-opening endpoint](pa195-work/pa195-calibration/PA194OpeningEndpoint.md) is
 now identified even for nonstandard codes, and the resulting
-[internal induction theorem](pa195-calibration/PA194FullInternalInduction.md)
+[internal induction theorem](pa195-work/pa195-calibration/PA194FullInternalInduction.md)
 constructs the required closed induction axiom bodies. General
-[internal finite-set separation](pa195-calibration/PA194InternalSeparation.md)
+[internal finite-set separation](pa195-work/pa195-calibration/PA194InternalSeparation.md)
 is also checked for arbitrary internal formula codes, and its
-[distinct-label numerical gate application](pa194-distinct-gate-sound/README.md)
+[distinct-label numerical gate application](pa194-work/pa194-distinct-gate-sound/README.md)
 now supplies the remaining gate premise in those models. A modeled scheduler
 halt therefore yields an internal PA refutation with no remaining gate premise,
 and iPRA proves `Con(PA) → ¬Halt(modeled scheduler)`. The scheduler is an
@@ -208,33 +213,33 @@ checks a nonstandard-model path under explicit header, positivity and blank
 suffix hypotheses. A [combined marker return](pa194/ipra/machine-code/ALL-SELECTED-MARKER-TO24.md)
 now handles arbitrary selected values under its common intermediate-layout
 assumptions. For the first non-first marker, a further
-[combined return](pa194/ipra/machine-code/FIRST-AT-LEAST-TWO-TO24.md)
-covers all first-register values at least two and arbitrary selected values,
+[combined return](pa194/ipra/machine-code/FIRST-AT-LEAST-ONE-TO24.md)
+covers all positive first-register values and arbitrary selected values,
 under the explicit eight-block blank-tail layout. These are model-uniform
 conditional traces. A complete source-frame correspondence and blank-tape
 reachability are open.
 The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
 translation of arbitrary PA refutations into the machine's numerical calculus.
-The [forward compiler audit](pa194-forward-audit/README.md) identifies where
+The [forward compiler audit](pa194-work/pa194-forward-audit/README.md) identifies where
 the imported PA196 argument uses full PA induction. Current-Foundation ports
-of the [PAeq formula translation](pa194-paeq-formula/README.md), its
-[validity](pa194-paeq-translation-validity/README.md), [substitution graph
-witness bounds](pa194-paeq-subst-witness/README.md), and [formula substitution
-agreement](pa194-paeq-formula-subst/README.md) handle nonstandard model inputs.
-The [LK proof transport](pa194-paeq-proof-transport/README.md) covers all
+of the [PAeq formula translation](pa194-work/pa194-paeq-formula/README.md), its
+[validity](pa194-work/pa194-paeq-translation-validity/README.md), [substitution graph
+witness bounds](pa194-work/pa194-paeq-subst-witness/README.md), and [formula substitution
+agreement](pa194-work/pa194-paeq-formula-subst/README.md) handle nonstandard model inputs.
+The [LK proof transport](pa194-work/pa194-paeq-proof-transport/README.md) covers all
 logical rules in IΣ₁ models, conditional on a uniform supplier of translated
-source-axiom proofs. Its [represented version](pa194-paeq-transport-sentence/README.md)
+source-axiom proofs. Its [represented version](pa194-work/pa194-paeq-transport-sentence/README.md)
 is proved in IΣ₁ with that antecedent. The
-[finite-axiom classifier](pa194-finite-axiom-classifier/README.md) reduces
+[finite-axiom classifier](pa194-work/pa194-finite-axiom-classifier/README.md) reduces
 the non-induction part of the supplier to its standard finite cases. The
-[equality-reflexivity case](pa194-paeq-refl-source/README.md) and the
-[symmetry and transitivity cases](pa194-paeq-equality-source/README.md) now
+[equality-reflexivity case](pa194-work/pa194-paeq-refl-source/README.md) and the
+[symmetry and transitivity cases](pa194-work/pa194-paeq-equality-source/README.md) now
 have explicit translated target proofs. The remaining finite axiom proofs,
 arbitrary induction-schema supplier, numerical proof compiler and machine
 connection remain open.
 
 For the last step of that direction above the physical machine,
-[`pa194-model-fairness`](pa194-model-fairness/README.md) proves in every model of `𝗜𝚺₁`,
+[`pa194-model-fairness`](pa194-work/pa194-model-fairness/README.md) proves in every model of `𝗜𝚺₁`,
 for an abstract command semantics, that the scheduler meets a halting SHIFT as soon as some
 command word computes the formula `1`, and that the formulas computed by command words are
 closed under the rules of the numerical calculus. Words, candidates and times may be
@@ -244,7 +249,7 @@ at some model time exactly when the numerical calculus has a target proof of the
 contradiction code (`halts_iff_provable`). This concerns the modeled scheduler, not the
 physical table. The translation of an internal PAeq or source-language proof into the
 numerical calculus (the model-level counterpart of
-[`pa194-foundation-lk`](pa194-foundation-lk/README.md)) has no model-level result.
+[`pa194-foundation-lk`](pa194-work/pa194-foundation-lk/README.md)) has no model-level result.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation

@@ -10,7 +10,8 @@ shape and an existential model-valued time.
 The four new modules follow the state-59 branch, the state-1 and state-3
 scans, the file carry, and the return across the remaining file. Lean compiled
 them against retained prerequisite objects; the printed theorem axioms contain
-no `sorryAx`. The nested replay wrapper was syntax checked but not run for
-these modules. The later [all-selected theorem](FIRST-AT-LEAST-TWO-TO24.md)
+no `sorryAx`. The modules also passed the full nested
+`check-first-at-least-two-to24.sh` replay in the sparse checkout against
+retained prerequisite overlays. The later [all-selected theorem](FIRST-AT-LEAST-TWO-TO24.md)
 completes this conditional return to state 24. Blank-start reachability and
 the source-frame correspondence remain open.

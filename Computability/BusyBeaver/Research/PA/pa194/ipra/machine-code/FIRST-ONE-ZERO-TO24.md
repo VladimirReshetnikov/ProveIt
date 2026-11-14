@@ -14,7 +14,7 @@ modules against retained prerequisite objects; their printed theorem axioms
 contain no `sorryAx`. The nested replay wrapper was syntax checked but not run
 for this change.
 
-The positive selected-value case for first value one, the first-value-zero
-case, blank-start reachability, and the source-frame correspondence remain
-open. This conditional physical trace does not establish either iPRA
+The later [positive-first-value theorem](FIRST-AT-LEAST-ONE-TO24.md) also
+handles the positive selected-value case. The first-value-zero case,
+blank-start reachability, and source-frame correspondence remain open. This conditional physical trace does not establish either iPRA
 consistency implication for the literal machine.

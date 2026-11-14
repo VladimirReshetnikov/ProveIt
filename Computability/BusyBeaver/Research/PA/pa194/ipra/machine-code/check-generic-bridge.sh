@@ -52,7 +52,7 @@ for name in PRAHistoryLengthUnique PRAHistorySingletonMembership PRAHistorySingl
     "Computability/DiophantineConsistency/Lean/DiophantineConsistency/$name.lean"
 done
 lean -M6000 -j1 -o "$task_dir/PA194UnaryRecursionGraph.olean" \
-  Computability/BusyBeaver/Research/PA/pa195-calibration/PA194UnaryRecursionGraph.lean | tee -a "$task_dir/axioms.log"
+  Computability/BusyBeaver/Research/PA/pa195-work/pa195-calibration/PA194UnaryRecursionGraph.lean | tee -a "$task_dir/axioms.log"
 # The wrapper independently rebuilds the PA witness certificate and the
 # generic IΣ₁ transfer from their local sources in a separate private overlay.
 IPRA_LEAN_OVERLAY="$task_dir" python3 -B Computability/BusyBeaver/Research/PA/isigma1-machine/check_unconditional.py --out "$task_dir/conpa"
