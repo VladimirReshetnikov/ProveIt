@@ -169,6 +169,10 @@ algebra to prove a uniform arithmetic substitution-output bound in IΣ₁ models
 size properties needed by a stage bound. `PA196PASubstitutionStageUniform.lean`
 proves membership in that stage in IΣ₁ models, for well-formed arithmetic
 formula codes. The corresponding candidate-PRA witness bound remains open.
+`PA196PASubstitutionWitness.lean` derives the substitution-graph witness bound
+from two explicit remaining conditions: a classical PRA proof that the tower
+term dominates its arithmetic graph, and monotonicity of the term in the
+candidate-PRA model. Neither condition is established here.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
