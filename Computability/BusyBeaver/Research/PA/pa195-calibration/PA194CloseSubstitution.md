@@ -29,3 +29,7 @@ I/O pressure, the present check is a focused suffix rebuild against retained
 prerequisite objects; the full nested rebuild is deferred.
 
 The author completed the focused suffix rebuild with no `sorryAx`.
+
+An independent suffix replay rebuilt the closer/substitution module against
+separately checked equal-gate and earlier source objects. It passed without
+`sorryAx`; this was not a full nested replay.
