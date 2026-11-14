@@ -18,8 +18,9 @@ syntax in models satisfying IΣ₁. That additional assumption is explicit. The
 truth, implication, and binder-closing operations remain parameters; the
 recursive translation's syntax correctness, PA calibration, machine
 internalization, and consistency equivalence are not proved by this package.
-The zero alias has its own branch and still requires a proof that its intended
-truth meaning is compatible with the exceptional implication constructor.
+The zero alias has its own branch. `PA194ZeroAlias.lean` proves the logical
+equivalence in PA when truth is `0=0`; connecting that proof to the selected
+truth code and represented proof compiler remains open.
 Rebuild all dependencies with the pinned overlays:
 
 ```sh

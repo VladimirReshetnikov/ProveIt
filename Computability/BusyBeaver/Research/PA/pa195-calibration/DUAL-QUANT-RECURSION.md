@@ -18,8 +18,11 @@ apply directly to this instantiation.
 
 No semantics, totality certificate, or correct code for `close` is provided.
 This package does not establish well-formedness or positive/negative semantic
-duality of the recursively generated formulas, the zero-alias equivalence,
+duality of the recursively generated formulas, the connection of the zero
+alias to this truth code and the represented proof compiler,
 PA calibration, machine internalization, or either consistency implication.
+`PA194ZeroAlias.lean` separately proves the alias's logical equivalence in PA
+for truth chosen as `0=0`.
 Rebuild the full chain with the pinned overlays:
 
 ```sh

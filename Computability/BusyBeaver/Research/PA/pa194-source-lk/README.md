@@ -35,6 +35,6 @@ audited Lean 4.32 Foundation object directory and run
 `bash Computability/BusyBeaver/Research/PA/pa194-source-lk/check.sh`. It
 rebuilds the full source-calculus prerequisite chain in tmpfs, checks the
 upstream pins, compiles the LK and equality-supplier files, and rejects `sorryAx` in their
-printed theorem dependencies. The modules have been checked against a
-retained independently rebuilt prerequisite overlay; the full standalone
-script has not yet completed.
+printed theorem dependencies.
+The full nested `pa194-source-separation/check.sh` replay passed, including
+this package and all of its prerequisites.

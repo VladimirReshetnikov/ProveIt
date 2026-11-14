@@ -20,10 +20,13 @@ binder and the first child's recursively translated pair as body.
 
 This is not yet a verified PA translation. It does not prove the positive and
 negative syntax codes' recursive semantic duality, the exceptional zero
-implication alias's logical equivalence, universal binder correctness, PA
+implication alias's connection to the chosen truth code and represented proof
+compiler, universal binder correctness, PA
 calibration, machine internalization, or either consistency implication.
 The numeric equations do not assume IΣ₁; separate Foundation named-syntax
 identifications in the component files have explicit IΣ₁ assumptions.
+`PA194ZeroAlias.lean` separately proves the alias's logical equivalence in PA
+for truth chosen as `0=0`.
 Rebuild with the pinned overlays:
 
 ```sh
