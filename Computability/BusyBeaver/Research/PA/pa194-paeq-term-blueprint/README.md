@@ -28,3 +28,6 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 Both modules were rebuilt in order against the audited project and Foundation
 objects, with no `sorryAx` in their printed dependencies. The standalone
 script checks the upstream pins and repeats that build.
+
+An independent complete standalone replay rebuilt both the blueprint and term
+code modules from the pinned audited overlays and passed without `sorryAx`.

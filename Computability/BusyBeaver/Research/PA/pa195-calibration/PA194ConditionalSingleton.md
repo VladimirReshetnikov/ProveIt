@@ -29,3 +29,7 @@ of the three new modules against retained prerequisite objects; the full
 nested rebuild is deferred.
 
 The author completed the focused ordered suffix rebuild with no `sorryAx`.
+
+An independent ordered suffix replay rebuilt all three modules against the
+separately checked singleton and earlier source prerequisites. It passed
+without `sorryAx`; the full nested replay remains separate.
