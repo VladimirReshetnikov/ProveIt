@@ -140,6 +140,10 @@ the repository, as `docs/README.md` describes, until it reads the placed files i
 consistency and the negation of the mapped sentence `∃ t, δ t`, given the PA witness
 certificate. It is independent of the machine and proves no machine equivalence. Its use is
 that a machine reduction may be proved in models of `𝗜𝚺₁` instead of models of candidate PRA.
+The same directory proves `halt_iff_refutation_of_models`: for an open halting matrix of the
+PRA language, the two classical PRA reductions that the PA194 and PA196 assemblies take as
+hypotheses follow if halting and the mapped PA refutation agree in every candidate PRA model
+whose arithmetic reduct satisfies `𝗜𝚺₁`. Model arguments may therefore assume `𝗜𝚺₁`.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation

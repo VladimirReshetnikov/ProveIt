@@ -36,6 +36,41 @@ The halting sentence is then the strict form `∃ w, bnd H w` of `H`, in which e
 existential quantifier of `H` is bounded by `w`. In `𝗜𝚺₁` it is equivalent to `H`. So `H` may
 be written with Foundation's `Σ₁`-definable functions.
 
+## Models of PRA may be assumed to satisfy IΣ₁
+
+`ConPAISigma1Models.lean` gives the same transfer in the form in which the endpoints of this
+tree consume it: for sentences of the language of candidate PRA, so with its function symbols.
+
+```lean
+def ReductISigma1 (M : Type) [Nonempty M] [Structure language M] : Prop :=
+  letI : Structure ℒₒᵣ M := (inferInstance : Structure language M).lMap embedding
+  M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁
+
+theorem halt_iff_refutation_of_models (halt : Semisentence language 1) (hopen : halt.Open)
+    (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
+      [M↓[language] ⊧* PRA], ReductISigma1 M →
+        ((M↓[language] ⊧ ∃⁰ halt) ↔ (M↓[language] ⊧ mappedPARefutation)))
+    (hb : BoundCertificate) :
+    PRA ⊢ ((∃⁰ halt) 🡘 mappedPARefutation)
+```
+
+`forward_of_models` and `reverse_of_models` give `PRA ⊢ mappedPARefutation 🡒 ∃⁰ halt` and
+`PRA ⊢ (∃⁰ halt) 🡒 mappedPARefutation` from the same hypothesis. These are the two hypotheses
+of `PA194PRAAssembly.consistency_iff_nonhalting_of_classical_pra` and of its PA196 counterpart,
+whose `haltClassical` is `∃⁰ haltMatrix` with an open `haltMatrix`.
+
+So in a model argument for a machine reduction the model of candidate PRA may be assumed to
+have an arithmetic reduct satisfying `𝗜𝚺₁`. `standard_isigma1` turns `ReductISigma1 M` into the
+instance `M↓[ℒₒᵣ] ⊧* 𝗜𝚺₁` for the arithmetic operations read off the PRA structure, which is
+the assumption of `PA194RefutationBridge.mapped_refutation_iff`; `reduct_of_standard` is the
+converse.
+
+The general statements are `open_existential_of_models` (`∀ x̄ ∃ y θ` with `θ` open) and
+`pi_one_iff_of_models` (`(∀ x p) ↔ (∀ x q)` with `p`, `q` open). They rest on
+`finite_isigma1`: a sentence true in all these models follows in PRA from the image of one
+theorem of `𝗜𝚺₁`, by completeness and the finiteness of proofs; the formalized conservation
+theorems then remove that theorem.
+
 ## What this changes
 
 For a machine `M`, the endpoints of this directory tree ask for two theorems of candidate
@@ -79,7 +114,7 @@ natural numbers does not transfer.
 
 ## Checking
 
-The file imports only modules of `DiophantineConsistency`. With those built in the root Lake
+The files import only modules of `DiophantineConsistency`. With those built in the root Lake
 workspace:
 
 ```sh
@@ -87,6 +122,7 @@ bash Computability/BusyBeaver/Research/PA/isigma1-transfer/check.sh
 ```
 
 `IPRA_LEAN_OVERLAY` and `IPRA_FOUNDATION_OVERLAY` are put in front of the search path when
-set, as for `../pa194/ipra/check.sh`. The script prints the axioms of `classical_iff`,
-`endpoint_sigma_one` and `endpoint` and fails if `sorryAx` occurs. It was run on Windows under Git Bash against the
+set, as for `../pa194/ipra/check.sh`. The script compiles both files, prints the axioms of `classical_iff`,
+`endpoint_sigma_one`, `endpoint`, `finite_isigma1`, `pi_one_iff_of_models` and
+`halt_iff_refutation_of_models`, and fails if `sorryAx` occurs. It was run on Windows under Git Bash against the
 root workspace (Lean 4.32.0); it was not run with overlays.
