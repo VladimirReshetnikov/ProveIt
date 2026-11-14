@@ -28,6 +28,9 @@ parent with a ten-entry source interface. The arithmetic and simulation
 results below provide reusable methods but do not by themselves establish
 the PA194 equivalence.
 
+The [14 November incoming reports](INCOMING-2026-11-14.md) include another
+194-state candidate and do not report a verified sub-194 blank-start machine.
+
 [The PA194 arithmetic endpoint](pa194/ipra/README.md) binds the pinned table
 to a standard-model halting sentence and constructs a conditional iPRA
 equivalence. [The explicit machine codes](pa194/ipra/machine-code/README.md)
