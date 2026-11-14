@@ -132,3 +132,11 @@ packets; a table that repeats a kept machine, also with its states renamed, is r
 The archives themselves are no longer in `docs/incoming`. A script of this directory
 that opens `docs/incoming/<archive>.zip` needs that archive restored from the history of
 the repository, as `docs/README.md` describes, until it reads the placed files instead.
+
+## Transfer from IΣ₁
+
+[`isigma1-transfer`](isigma1-transfer/README.md) proves, for any bounded arithmetic formula
+`δ`, that an `𝗜𝚺₁` proof of `paRefutation 🡘 ∃ t, δ t` gives the iPRA equivalence of PA
+consistency and the negation of the mapped sentence `∃ t, δ t`, given the PA witness
+certificate. It is independent of the machine and proves no machine equivalence. Its use is
+that a machine reduction may be proved in models of `𝗜𝚺₁` instead of models of candidate PRA.
