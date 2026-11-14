@@ -156,6 +156,9 @@ bounded assuming the two negative relation clauses. The arithmetic term and
 vector substitution growth modules establish those remaining clauses, so
 `PA196PASubstitutionCoreComplete.lean` proves both core bounds unconditionally.
 The recursion's global bound remains open.
+`PA196PASubstitutionAtomicGrowth.lean` bounds atomic substitution outputs and
+shows that an appropriate majorant absorbs them in one tower step. Non-atomic
+output and global stage bounds remain open.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
