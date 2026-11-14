@@ -181,6 +181,11 @@ The finite codes for [AX](pa194-machine-ax-standard/README.md) and
 [SHIFT/MP](pa194-machine-shift-mp-standard/README.md) have also been proved
 to reproduce the corresponding standard-natural-number source commands;
 those bindings do not establish the nonstandard controller simulation.
+The [modeled scheduler iteration](pa194-scheduler-iteration/README.md)
+preserves the store invariant for arbitrary model-length runs, and a modeled
+halt yields a target proof of code 1. The [target-to-PA bridge](pa194-target-source/README.md)
+turns that proof into an internal PA refutation assuming the still-open guarded
+gate seed. Neither result supplies the physical-machine connection.
 
 For the physical simulation needed in both directions, the
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
