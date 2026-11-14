@@ -8,11 +8,11 @@ proof. The ordinary-number version of that compiler is
 This directory rebuilds it for `TargetProvable`, the provability predicate of the calculus in
 a candidate-PRA model `M` whose arithmetic reduct satisfies `𝗜𝚺₁`.
 
-**Status.** The implication basis, finite-context machinery, and fixed-size neighborhood
-equality derivations are checked. They contain no induction inside the model. The compiler
-itself, which needs
-internal inductions over a derivation, over formula codes and over sequents of nonstandard
-length, is not started. Nothing here yields a consistency implication.
+**Status.** The implication basis, finite-context machinery and neighborhood equality
+derivations are checked. A finite formula-translation code now agrees on internally valid
+formulas with an independent model-level structural recursion, including for nonstandard
+codes. Freshness and semantic correctness, and the compiler over internal derivations and
+sequents of nonstandard length, remain open. Nothing here yields a consistency implication.
 
 ## Modules
 
@@ -30,6 +30,9 @@ length, is not started. Nothing here yields a consistency implication.
 | `PA194ModelMembershipAtomCode` | Candidate-PRA codes decode positive and negative source membership atoms, with the argument reversal used by the numerical calculus. |
 | `PA194ModelFormulaDispatch` | A finite packed-history dispatcher satisfies model equations for the atomic, truth, Boolean and quantifier constructors. |
 | `PA194ModelFormulaUniqueness` | Internal Σ₁ structural induction proves bounded and root agreement with any candidate-PRA comparison code satisfying explicit constructor recurrences. |
+| `PA194ModelFormulaUniquenessF` | The same bounded/root uniqueness argument applies to a Σ₁-definable model function satisfying constructor equations on valid children. |
+| `PA194ModelFormulaSpecification` | An independent Foundation structural recursion satisfies those equations, and agrees with the packed history on valid formulas at budgets at least the formula code. |
+| `PA194ModelFormulaTranslation` | A finite candidate-PRA `Code 5` packages the root translation and agrees with the independent reference for all valid model formulas, including nonstandard codes. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -98,12 +101,25 @@ establishes it for every valid source-formula code, including nonstandard
 codes, assuming the eight displayed atomic, truth, Boolean and quantifier
 recurrences for `spec`. Taking `B = b = p` gives root agreement. The `p ≤ b`
 condition is a conservative budget bound, not a claimed minimal depth bound.
-The comparison code and its recurrence equations remain explicit hypotheses;
-this does not yet construct an independent translation or compile PA proofs.
-Semantic correctness of the neighborhood-equality translation also requires
+The original comparison-code theorem takes its recurrence equations as
+explicit hypotheses. The later `formulaReference` is a separate Foundation
+`UformulaRec1` construction whose eight constructor equations are proved on
+valid source syntax. Internal Σ₁ induction proves that `formulaHistory` agrees
+with this reference whenever the formula code is at most the budget. The root
+code `fixedFormulaTranslation` uses the source formula code itself as budget;
+its value and fixed Σ₁ graph agree with the reference on every internally
+valid source formula. It inherits the previously classically chosen Cantor and
+projection code witnesses.
+
+This establishes syntactic agreement only. Source syntax validity does not
+assert de Bruijn scope and the environment lookups are total. No theorem here
+identifies the reference on standard typed formulas with the existing host
+`toNamed`/`relationalCode` translation. Semantic correctness of the
+neighborhood-equality translation also requires
 the reserved label to be fresh for the initial environments and all labels
 allocated under binders. The constructor equations and source-syntax validity
-do not establish that freshness invariant.
+do not establish that freshness invariant. PA proof transport and the physical
+machine correspondence remain open.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -115,7 +131,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelFormulaUniqueness` as the top module. On 2026-11-14, all twelve
+`PA194ModelFormulaTranslation` as the top module. On 2026-11-14, all fifteen
 modules in this directory were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
