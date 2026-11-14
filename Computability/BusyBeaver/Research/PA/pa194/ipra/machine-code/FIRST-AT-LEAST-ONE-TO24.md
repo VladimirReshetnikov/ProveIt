@@ -16,6 +16,7 @@ routes. Lean compiled the eight new modules against retained prerequisite
 objects and reported no `sorryAx` in their printed theorem axioms. The nested
 replay wrapper was syntax checked but not run for these modules.
 
-The first-value-zero case, blank-start reachability, and source-frame
-correspondence remain open. This is a conditional physical trace; it does not
-establish either iPRA consistency implication for the literal machine.
+The first-value-zero case was subsequently combined with this result in
+[the all-value return](FIRST-ALL-TO24.md). Blank-start reachability and
+source-frame correspondence remain open. These conditional physical traces do
+not establish either iPRA consistency implication for the literal machine.

@@ -14,7 +14,7 @@ retained prerequisite objects; the printed theorem axioms contain no
 `sorryAx`. The nested replay wrapper was syntax checked but not run for this
 change.
 
-The positive selected-value branch for first value zero, blank-start
-reachability, and the source-frame correspondence remain open. This
-conditional trace does not establish either iPRA consistency implication for
-the literal machine.
+The positive selected-value branch was subsequently combined with this case
+in [the all-value return](FIRST-ALL-TO24.md). Blank-start reachability and the
+source-frame correspondence remain open. These conditional traces do not
+establish either iPRA consistency implication for the literal machine.
