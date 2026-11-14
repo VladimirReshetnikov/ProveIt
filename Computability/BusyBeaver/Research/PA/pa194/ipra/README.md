@@ -6,10 +6,9 @@ halting sentence. It does **not** prove either machine-specific direction of
 in the endpoint. The packet's claimed PA equivalence is not an end-to-end Lean
 proof or an iPRA proof.
 
-`generate.py` reads `docs/incoming/pa194_conpa_2026-11-13.zip` and refuses
-other bytes. The archive SHA-256 is
-`fda113b720aaa1615c26994a9ca6ccb3b34d3928deee3755b306678a41e21935`;
-`pa194_conpa/construction/tables/pa194.tm` has SHA-256
+`generate.py` reads the placed packet file
+`../../docs/pa194_conpa_2026-11-13/construction/tables/pa194.tm` and checks its
+SHA-256 against the original archive member:
 `4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f`.
 The generator validates 388 transitions for all bits and working labels 0–193,
 start 0, terminal 194, and graph reachability of all working labels. Parsing,

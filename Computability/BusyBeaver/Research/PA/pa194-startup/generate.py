@@ -3,9 +3,11 @@
 import argparse
 import hashlib
 from pathlib import Path
-from zipfile import ZipFile
+import sys
 
 root = Path(__file__).resolve().parents[5]
+sys.path.insert(0, str(root / 'Computability/BusyBeaver/Research/PA'))
+from packet_inputs import PlacedPacket
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--out', type=Path, required=True)
 p.add_argument('--start-block', type=int, default=0)
@@ -14,7 +16,7 @@ p.add_argument('--batch-size', type=int, default=10)
 a = p.parse_args()
 if not (0 <= a.start_block < a.stop_block <= 455 and a.batch_size > 0):
     raise SystemExit('invalid block range or batch size')
-with ZipFile(root / 'docs/incoming/pa194_conpa_2026-11-13.zip') as z:
+with PlacedPacket(root, '194') as z:
     raw = z.read('pa194_conpa/construction/tables/unfolded201.native.tm')
 if hashlib.sha256(raw).hexdigest() != 'b25933d14de19f72709bdecf7a67a4e21c150f525cf61ec76c074ac577d6cc87':
     raise SystemExit('unfolded parent table hash mismatch')
