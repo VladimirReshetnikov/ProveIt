@@ -198,6 +198,13 @@ assumptions. A complete source-frame correspondence and blank-tape
 reachability are open.
 The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
 translation of arbitrary PA refutations into the machine's numerical calculus.
+The [forward compiler audit](pa194-forward-audit/README.md) identifies where
+the imported PA196 argument uses full PA induction. Current-Foundation ports
+of the [PAeq formula translation](pa194-paeq-formula/README.md), its
+[validity](pa194-paeq-translation-validity/README.md), [substitution graph
+witness bounds](pa194-paeq-subst-witness/README.md), and [formula substitution
+agreement](pa194-paeq-formula-subst/README.md) handle nonstandard model inputs.
+The whole proof compiler and its machine connection remain open.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
