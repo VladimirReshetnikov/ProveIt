@@ -96,7 +96,11 @@ recognizer's positive bound is completed by the arithmetic shift-graph modules
 and `PA196InductionPositiveComplete.lean`. The negative-counterexample modules
 and `PA196InductionRecognizerComplete.lean` establish the other polarity and
 both exact PA axiom-rule branches in every candidate-PRA model. The remaining
-derivation-rule branches and the full PA-refutation certificate remain open.
+derivation-rule modules and `PA196PACoreComplete.lean` establish both bounds
+for Foundation PA's exact derivation core. `PA196PACertificateComplete.lean`
+uses them to prove the PA-refutation witness certificate without hypotheses.
+`PA196PRAAssemblyComplete.lean` still assumes both classical-PRA
+machine/refutation reductions; neither machine-specific direction is proved.
 
 `PA196PAAlphabetBounds.lean` proves both polarities of the witness bounds for
 Foundation's arithmetic function-symbol and relation-symbol recognizers.
