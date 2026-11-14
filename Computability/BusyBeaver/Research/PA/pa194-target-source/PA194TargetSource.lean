@@ -3,6 +3,7 @@ import PA194SourceLineRefutation
 import PA194SourceHead1Preservation
 import PA194SourceHead2Preservation
 import PA194SourceDiagonalPreservation
+import PA194SourceGateTargetLink
 set_option autoImplicit false
 set_option linter.unusedSectionVars false
 set_option maxHeartbeats 5000000
@@ -91,6 +92,33 @@ theorem scheduler_halt_refutes_PA
     Provable (𝗣𝗔 : ArithmeticTheory) (^⊥ : M) :=
   target_refutes_PA hgate (PA194SchedulerHalt.halt_implies_provable n l t w h e hs hh)
 
+/-- A proof of each fresh-label negated separation tail suffices for the
+only remaining target seed assumption. -/
+theorem gate_from_separation_tail
+    (htail : ∀ a b c : M, c ≠ a → c ≠ b →
+      good (PA194SourceGateReduction.gateNeg (separationTailValue a b c))) :
+    ∀ a b c : M, c ≠ a → c ≠ b → good (oldBundleValue a b c) := by
+  intro a b c ha hb
+  exact PA194SourceGateTargetLink.target_gate_from_tail a b c ha hb (htail a b c ha hb)
+
+theorem target_refutes_PA_of_tail
+    (htail : ∀ a b c : M, c ≠ a → c ≠ b →
+      good (PA194SourceGateReduction.gateNeg (separationTailValue a b c)))
+    (hp : TargetProvable (1 : M)) : Provable (𝗣𝗔 : ArithmeticTheory) (^⊥ : M) :=
+  target_refutes_PA (gate_from_separation_tail htail) hp
+
+theorem scheduler_halt_refutes_PA_of_tail
+    (htail : ∀ a b c : M, c ≠ a → c ≠ b →
+      good (PA194SourceGateReduction.gateNeg (separationTailValue a b c)))
+    {m : Nat} (n l t w h : Code m) (e : Fin m → M)
+    (hs : PA194MachineStack.SoundStore (F t e) (F w e) (F h e))
+    (hh : F (PA194SchedulerCode.halt n l t h) e = 1) :
+    Provable (𝗣𝗔 : ArithmeticTheory) (^⊥ : M) :=
+  scheduler_halt_refutes_PA (gate_from_separation_tail htail) n l t w h e hs hh
+
+#print axioms gate_from_separation_tail
+#print axioms target_refutes_PA_of_tail
+#print axioms scheduler_halt_refutes_PA_of_tail
 #print axioms diagonal_seed
 #print axioms target_sound
 #print axioms target_refutes_PA

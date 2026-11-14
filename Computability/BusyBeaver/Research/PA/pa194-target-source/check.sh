@@ -36,7 +36,7 @@ trap='trap \'rm -rf "$root"\' EXIT'
 if s.count(old) != 1 or s.count(trap) != 1:
     raise SystemExit('unexpected scheduler prerequisite wrapper')
 s=s.replace(old,'root=$PA194_TARGET_SOURCE_SCHEDULER',1).replace(trap,'',1)
-s += '''\nexport LEAN_PATH="$PA194_TARGET_SOURCE_SRC:$LEAN_PATH"\nlean -M6000 -j1 -o "$root/final/PA194SchedulerHalt.olean" "$base/pa194-scheduler-halt/PA194SchedulerHalt.lean" | tee "$root/final/halt-axioms.log"\nlean -M6000 -j1 -o "$root/final/PA194TargetSource.olean" "$base/pa194-target-source/PA194TargetSource.lean" | tee "$root/final/source-axioms.log"\nif rg -q 'sorryAx' "$root/final/halt-axioms.log" "$root/final/source-axioms.log"; then exit 1; fi\n'''
+s += '''\nexport LEAN_PATH="$PA194_TARGET_SOURCE_SRC:$LEAN_PATH"\nfor module in PA194SourceGateReduction PA194SourceGateTargetLink; do\n  lean -M6000 -j1 -o "$root/final/$module.olean" "$base/pa195-calibration/$module.lean" | tee "$root/final/$module.axioms.log"\n  if rg -q 'sorryAx' "$root/final/$module.axioms.log"; then exit 1; fi\ndone\nlean -M6000 -j1 -o "$root/final/PA194SchedulerHalt.olean" "$base/pa194-scheduler-halt/PA194SchedulerHalt.lean" | tee "$root/final/halt-axioms.log"\nlean -M6000 -j1 -o "$root/final/PA194TargetSource.olean" "$base/pa194-target-source/PA194TargetSource.lean" | tee "$root/final/source-axioms.log"\nif rg -q 'sorryAx' "$root/final/halt-axioms.log" "$root/final/source-axioms.log"; then exit 1; fi\n'''
 Path(sys.argv[2]).write_text(s)
 PY
 bash -n "$root/scheduler-prerequisites.sh"

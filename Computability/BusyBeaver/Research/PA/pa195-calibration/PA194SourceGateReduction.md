@@ -35,3 +35,8 @@ does not rebuild the source and target prerequisites.
 The author ran the focused two-module suffix check against retained source
 and target prerequisite objects. It passed with no `sorryAx`; the check did
 not rebuild those prerequisites.
+
+An independent ordered suffix replay rebuilt both gate-reduction modules
+against separately checked diagonal and earlier source/target objects, with
+retained deeper prerequisites. It passed without `sorryAx`; this was not a
+full prerequisite replay.

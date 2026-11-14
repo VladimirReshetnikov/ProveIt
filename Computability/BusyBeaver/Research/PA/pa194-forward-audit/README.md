@@ -52,3 +52,7 @@ The final module passed a fresh suffix check using the separately checked
 universal-rule inversion object and retained prerequisite overlays; the
 printed axioms contain no `sorryAx`. The full nested wrapper replay remains
 pending.
+
+An independent suffix replay rebuilt the verum-node module against separately
+checked scheduler and proof-code objects and retained deeper prerequisites.
+It passed without `sorryAx`; this was not a full nested replay.

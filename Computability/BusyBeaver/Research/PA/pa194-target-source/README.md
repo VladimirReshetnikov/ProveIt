@@ -15,8 +15,10 @@ modeled scheduler's halt endpoint, assuming its store invariant at the
 halting state.
 
 These are conditional all-model theorems, not a proof of an iPRA consistency
-implication. The guarded gate remains unproved; so do the invariant along
-an internal scheduler run and the connection to the literal PA194 machine.
+implication. The guarded gate remains unproved. The `*_of_tail` variants narrow that
+hypothesis to internal PA provability of the translated negated separation
+tail for fresh labels, using the checked gate reduction. Connecting the
+modeled scheduler run to the literal PA194 machine also remains open.
 The separate PA-refutation-to-machine-halt direction remains open as well.
 
 From the repository root, run with the matching audited Lean 4.32 overlays:
@@ -28,5 +30,5 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 ```
 
 The final module passed a fresh suffix check using separately rebuilt head1,
-head2, head5, diagonal and scheduler objects and retained deeper prerequisite overlays,
+head2, head5, diagonal, gate-reduction and scheduler objects and retained deeper prerequisite overlays,
 with no `sorryAx`. The complete nested replay has not yet been run.
