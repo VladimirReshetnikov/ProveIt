@@ -26,6 +26,11 @@ right half is stated above. The theorem also gives the full model-valued
 physical clock. `PA194SixteenHeaderReturn.backToHeader` proves the last
 five-step state-16-to-17 segment independently.
 
+The same header shape does not imply the next branch repeats: the exact
+returned right half selects the four-one route to dense state 61. The
+checked continuation from there to dense state 84 is described in
+`MARKER-TO-84.md`.
+
 This closes a physical header-shape recurrence, not yet a source-machine
 simulation: it has not identified the transformed right tape with a source
 instruction or source frame, and has not proved the starting shape reachable
