@@ -39,8 +39,13 @@ connects blank-tape halting to the literal machine used by the arithmetic code.
 simulation to a finite set of Lean checks; all 3,673 sites and the aggregate
 have passed. [The clock/source composition](pa194-clock-source-complete/README.md)
 connects the initialized source program to the exact machine clocks in
-standard finite-run semantics. Both machine-specific consistency reductions
-remain unproved.
+standard finite-run semantics. [The command scheduler](pa194-command-source/README.md)
+is equivalent to that source program in standard finite-run semantics, and
+[its clock composition](pa194-command-clock/README.md) connects the initial
+scheduler state to the machine clocks. Parts of the literal register scanner
+are also proved as native iPRA equalities; see the
+[source-file engine](pa194/ipra/machine-code/SOURCE-FILE-ENGINE.md). Both
+machine-specific consistency reductions remain unproved.
 
 ## Original 195-state candidate
 
@@ -98,7 +103,7 @@ statement.
 [The PA195 follow-up packet](docs/pa195_followup_research/)
 contains another 195-state candidate, `M195S8`, and a claimed halting
 equivalence with the original PA195. It also contains a rejected 194-state
-construction. [A later PA194 packet](docs/pa194_conpa_2026-11-13/)
+construction. [A later PA194 packet](docs/pa194_new_designs_2026-11-13/)
 proposes two other 194-state candidates and claims a PA-provable equivalence.
 These packets do not supply an end-to-end Lean proof of the iPRA statement.
 
@@ -107,9 +112,9 @@ and [the PA195DC packet](docs/pa195_diagonal_combined_2026-11-13/)
 propose additional 194- and 195-state machines respectively. Their reported
 PA equivalences likewise do not constitute Lean proofs of the iPRA goal.
 
-The later [radix-family](../../../../docs/incoming/pa194_radix_family_2026-11-13.zip),
-[PA194J/PA194D](../../../../docs/incoming/pa194j_pa194d_conpa_2026-11-13.zip),
-and [PA194Q/PA194CSZ](../../../../docs/incoming/pa194q_conpa_2026-11-13.zip)
+The later [radix-family](docs/pa194_radix_family_2026-11-13/),
+[PA194J/PA194D](docs/pa194j_pa194d_conpa_2026-11-13/),
+and [PA194Q/PA194CSZ](docs/pa194q_conpa_2026-11-13/)
 packets propose further 194-state candidates with ordinary mathematical PA
 calibrations. They do not report completed Lean proofs of the iPRA equivalence.
 
