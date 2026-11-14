@@ -14,6 +14,8 @@ scans with the checked state-14/16 transitions and two model-length returns to
 state 17. Its `ninetyThreeReturnTwoWithTailExact` theorem retains an explicit
 clock and right-tape expression containing the complete residual file and its
 arbitrary suffix. All values, suffixes and run lengths may be nonstandard.
+The number `n` of remaining file blocks is an external natural-number
+parameter; this is not a scan of a nonstandard number of blocks.
 
 These are conditional physical segments. They do not assume the seed's 25
 remaining one-valued spare blocks are blank, but they also do not yet prove a
