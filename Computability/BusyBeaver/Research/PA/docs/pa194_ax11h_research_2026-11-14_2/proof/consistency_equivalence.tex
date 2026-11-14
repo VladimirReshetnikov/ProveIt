@@ -1,0 +1,123 @@
+\section{The complete iPRA equivalence for the two literal tables}
+\label{sec:complete-equivalence}
+
+This section composes the preceding constructions and states the final
+claim for the actual blank-start transition tables.  The PA predicate is
+the current Foundation predicate used by the pinned ProveIt consistency
+endpoint.  The separate Foundation adapter checks its source coding,
+induction recognizer, finite axioms, and the relevant metatheory.  The
+historical ordinary-PAeq presentation is an intermediate proof system,
+with an explicit proof transformation.  Its code is not identified with
+the current PA code or with the Cantor-coded numerical calculus.
+
+\subsection{A uniform refutation-to-halting witness}
+
+Let $A(d)$ be the Foundation-to-ordinary-PAeq proof transformation of
+Section~\ref{sec:foundation-paeq-complete}, and let $F$ be the direct
+numerical proof-list compiler of
+Section~\ref{sec:forward-calibration-completion}.  For a current PA
+refutation $d$, put
+\[
+ e=F(A(d))\quad\text{for AX11H},\qquad
+ e=F_Q(F(A(d)))\quad\text{for QAX11H},
+\]
+where $F_Q$ is the iPRA-correct exchange translation of
+Section~\ref{sec:q-exchange-ipra}.  These are primitive recursive
+functions.  Their correctness, for arbitrary internal proof codes, holds
+in every candidate-PRA model whose arithmetic reduct satisfies
+$\mathrm I\Sigma_1$.
+
+The abstract command compiler supplies the all-store halting word
+\[
+ V_e=A_0;W_e;\mathsf{Pop}.
+\]
+Prefix $\mathsf A_{0,0,0,0}$ once more, using the cofinal coding from
+Section~\ref{sec:ax11h-preservation}.  Its raw candidate is
+\[
+ N_e=p\bigl(2,p(0,p(0,p(0,e_{\rm word}(V_e))))\bigr)\ge3.
+\]
+Here $e_{\rm word}$ is the four-field command-word encoding, not a
+numerical derivation code.  Candidate seeds $2,\ldots,N_e-1$ each
+drain within their seed plus one abstract commands unless a halt has
+already occurred.  Candidate $N_e$ starts with the additional AX and
+then executes the all-store halting suffix.  Its entire drain is bounded
+by $N_e+1$.  Consequently
+\[
+ K(e)=(N_e+2)^2
+\]
+is an explicit primitive recursive bound by which the absorbing abstract
+scheduler has halted.  This bound does not reset the carried store and
+does not require finding the least successful candidate.
+
+Let $B(k)$ be the exact cumulative source clock from
+Section~\ref{sec:source-command-complete}.  Let $\tau(j)$ be the exact
+cumulative physical clock for $j$ primitive source steps from
+Section~\ref{sec:physical-ipra}, with duration zero after the canonical
+source halt.  The data-retaining and canonical source halt
+representations have the same halt flag and commute under the erasure
+already described.  A physical halting witness is therefore
+\[
+ T_M(e)=57922+\tau\bigl(B(K(e))\bigr).                 \tag{Final-time}
+\]
+The variable list width, spare-file growth, and gap parameter are part of
+the primitive source-frame recursion defining $\tau$; none is silently
+held constant.  All arguments of these functions are finite coded
+states, lists, or counters, and every iteration is a specified primitive
+recursion.  Thus (Final-time) is an actual primitive recursive witness
+function, despite its impractical size.
+
+The exact simulation equations prove in every stated model that a valid
+PA refutation produces a halt of the delivered literal machine at the
+displayed time.  Hence the all-model implication required by the forward
+one-way consistency endpoint is established:
+\[
+ \operatorname{Prov}_{\PA}(\bot)
+ \quad\Longrightarrow\quad \exists t\,\chi_M(t)=1.
+\]
+The reverse all-model implication was proved in
+Section~\ref{sec:consistency-nonhalting}.  Both use the same literal
+halting function $\chi_M$ and the same mapped PA-refutation predicate.
+
+\subsection{The intuitionistic conclusion}
+
+The matrix $h_M(t)\equiv\chi_M(t)=1$ is atomic, hence both open and
+bounded.  Apply the pinned
+\file{ConPA.Directions.ipra_nonhalt_implies_consistency}
+to the preceding all-model refutation-to-halting implication.
+Its open and bounded matrix hypotheses hold immediately; its PA witness
+certificate is supplied by the existing unconditional certificate chain.
+It yields
+\[
+ \mathrm{iPRA}\vdash
+       \neg\operatorname{Halt}_{\rm blank}(M)\to\Con(\PA).
+\]
+The opposite implication is the one-way theorem already established
+using \file{ipra_consistency_implies_nonhalt}.  Intuitionistic
+conjunction introduction combines the two implications\cite{one-way-transfer}.
+
+\begin{theorem}[The two 194-state consistency machines]
+Let $M$ be either of the complete dense tables
+\file{machines/PA194AX11H/machine.tm} or
+\file{machines/PA194QAX11H/machine.tm}, with the initial state, blank
+tape, head position, and separate halt label specified in this report.
+Then
+\[
+ \boxed{\quad\mathrm{iPRA}\ \vdash\quad
+       \Con(\PA)\ \longleftrightarrow\
+                     \neg\operatorname{Halt}_{\rm blank}(M).\quad}
+\]
+Each table has exactly 194 working states and a two-symbol tape alphabet.
+\end{theorem}
+
+No PA-consistency assumption is used to prove this equivalence.  The
+negative conclusion is obtained through the cited conservation and
+negative-translation endpoints; it does not infer an intuitionistic
+positive existential from a double negation and uses no Markov principle.
+
+This is a written mathematical proof with explicit primitive recursive
+constructions and finite machine certificates.  The execution checkers
+replay the concrete finite bindings; they do not certify the entire
+arithmetic derivation.  No new end-to-end Lean or Rocq build is supplied.
+The new mathematical argument therefore does not alter the proof-assistant
+status stated by the pinned repository.  It also gives no valid machine
+below 194 states and no minimality theorem for 194.

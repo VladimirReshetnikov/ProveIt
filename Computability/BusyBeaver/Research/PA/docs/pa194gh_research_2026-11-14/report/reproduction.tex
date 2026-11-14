@@ -1,0 +1,49 @@
+The archive is self-contained for its delivered checks. Python 3.10 or
+newer and its standard library suffice for the machine construction,
+command identities, literal symbolic verification and novelty replay.
+The optional reduction searches require a C++17 compiler. Assertions must
+remain enabled; do not use Python's \file{-O} option.
+
+From the extracted archive root, the quick verification commands are:
+\begin{verbatim}
+python3 verify.py
+\end{verbatim}
+The full independent physical replay is:
+\begin{verbatim}
+python3 -B machines/PA194GH/independent/check.py \
+  machines/PA194GH machines/PA194GHS --output /tmp/pa194gh-replay
+\end{verbatim}
+The independent command rebuilds its unary-list certificates and checks
+every source outcome in both machines. It can take several minutes. The
+delivered PASS receipts are preserved separately from this suggested
+temporary output directory.
+
+The C++ search replay commands and exact finite domains are listed in
+\file{research/physical/README.txt}. Long or time-limited discovery searches
+are optional; the accepted literal machine tables are frozen and do not
+depend on rerunning a stochastic search to rediscover a winner.
+
+To rebuild this PDF with a standard TeX Live installation:
+\begin{verbatim}
+cd report
+python3 make_tables.py
+pdflatex -interaction=nonstopmode -halt-on-error pa194gh_report.tex
+pdflatex -interaction=nonstopmode -halt-on-error pa194gh_report.tex
+\end{verbatim}
+All included report fragments are beside the main source. Imported
+\file{references/*.tex} files preserve historical context and are not
+separate standalone papers.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\toprule Directory / file & Purpose\\\midrule
+\file{report/} & Full editable LaTeX report, generated appendices and PDF.\\
+\file{machines/PA194GH/} & Primary new literal table, source graph, reconstruction, command proof, symbolic and independent checks.\\
+\file{machines/PA194GHS/} & Symmetric physical implementation with the same GH command semantics.\\
+\file{comparison/} & All-packet ledger, all 194-state representatives, provenance, exact novelty and quotient checks.\\
+\file{research/physical/} & New startup, quotient, repair and liveness searches, exact inputs and recorded results.\\
+\file{references/} & Pinned project-status and inherited-calibration texts, with hashes and source paths.\\
+\file{RESULTS.json} & Exact result identities and explicit unfinished target.\\
+\file{SHA256SUMS} & Integrity of the complete delivered release, except the hash list itself.\\
+\bottomrule\end{tabularx}
+\end{center}

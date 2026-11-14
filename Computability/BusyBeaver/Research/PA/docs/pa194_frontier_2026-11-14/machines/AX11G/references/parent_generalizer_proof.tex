@@ -1,0 +1,271 @@
+% Include as a report section after defining amsmath/amssymb and theorem environments.
+\section{PA194G: generalization controlled by the AX parameter}
+\label{sec:pa194g}
+
+The new 194-state construction PA194G changes a command interface. Its AX
+command uses its explicit parameter $c$, rather than the incoming numerical
+offset $d$, as the binder of the saved generalization. Thus the generated
+formula is $U(c,h)$, where $h$ is the incoming cached theorem. This change
+is sound for every store; it does not require the offset to represent a
+provable formula. It also removes one command from the proof compiler's
+generalization operation. The construction uses the existing Q orientation
+of universal distribution, successful MP without a dummy push, and the
+original sum-based Shift test. Those three ingredients are inherited.
+
+The new mathematical conclusion, by composition with the retained ordinary
+PA calibration, is
+\[
+ \mathrm{PA}\vdash
+ \bigl(\neg\operatorname{Halt}_{\mathrm{blank}}(\mathrm{PA194G})
+       \leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).
+\]
+The literal table has dense working states $0,\ldots,193$, start $0$, and
+halt label $194$. Its alphabet is $\{0,1\}$, its initial tape is all zero,
+and every transition moves one square left or right. The dense SHA-256 is
+\begin{quote}\small\nolinkurl{28bd991a84200351f36c98afac369ab5a555eb8793821ad35555f0aa4a0fdeeb}.\end{quote}
+The mathematical calibration and executable certificates below are not a
+new end-to-end Lean or Rocq theorem, and establish no new iPRA endpoint.
+
+\subsection{Numerical calculus and exact command effects}
+
+Put
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad [a;w]=p(a,w),
+\]
+with nested brackets listed top first. The total Cantor projections satisfy
+$\operatorname{hd}[a;w]=a$, $\operatorname{tl}[a;w]=w$, and
+$[0;0]=\operatorname{hd}(0)=\operatorname{tl}(0)=0$.
+The formula constructors are
+\[
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code zero is truth; code one is $M(0,0)$ and is the refutation target.
+Write $A\to B=I(A,B)$, $N(B)=I(B,1)$,
+$A\wedge B=N(I(A,N(B)))$, and $\exists_a B=N(U(a,N(B)))$.
+The axiom families retained by this construction are
+\begin{align*}
+ h_1(D,H)&=(\exists_D U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6^{Q}(D,A,H)&=U(D,A\to H)\to(U(D,A)\to U(D,H)),\\
+ \rho(D,A,H,u)&=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+       \quad u\le D,\\
+ \Gamma(B)&=B\to U(B,B).
+\end{align*}
+The guarded separation gate uses
+\begin{align*}
+ P(a,b,c)&=c\to M(c,b),\\
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U\bigl(c,S(a,b,c)\to N(P(a,b,c))\bigr),\\
+ g(a,b,c)&=\begin{cases}N(V(a,b,c)\to Q(a,b,c)),&c\ne a,b,\\0,&\text{otherwise.}\end{cases}
+\end{align*}
+The rules are modus ponens and generalization of theorems.
+
+The Q variant interderives with the primary universal-distribution head by
+the uniform propositional exchange template
+$(X\to(Y\to Z))\to(Y\to(X\to Z))$, used in both directions.
+The supplied finite exchange certificate and the primary PA calibration
+therefore apply to the same numerical calculus. That calibration consists
+of primitive-recursive translations between its refutations and PA
+refutations, whose correctness PA proves. It is an inherited logical
+dependency, not an inference from a long nonhalting simulation.
+
+The command store is $(t,w,d,h)$: current theorem, stack, numeric offset,
+and cached theorem. For $D=d+x$ and $H=h+y$, the new AX command is
+\begin{equation}\label{eq:g-ax}
+ \mathsf{AX}_{c,x,y}(t,w,d,h)
+    =(g(H,D,c),[q_1,q_2,\ldots,q_9,t;w],0,0),
+\end{equation}
+where
+\[
+\begin{array}{c|l}
+1&\Gamma(c)\\2&h_6^Q(D,c,H)\\3&h_5(D,H)\\4&h_4(D,c,H)\\
+5&h_3(D,c,H)\\6&h_2(D,c,H)\\7&h_1(D,H)\\
+8&\rho(D,c,H,d)\\9&U(c,h).
+\end{array}
+\]
+All of $g,q_1,\ldots,q_8$ have residue zero modulo four. The ninth entry
+has residue two and is at least two. These are arithmetic constructor
+facts, with no assumption of consistency. The exact formulas and the
+complete saved stack are checked over a free term algebra in
+\texttt{check\_commands.py}.
+
+With $v=d+x$, the unchanged no-push MP and sum Shift are
+\begin{align*}
+ \mathsf{MP}_x(t,w,d,h)&=
+ \begin{cases}(v,w,v,0),&I(t,v)=h,\\(0,w,v,0),&I(t,v)\ne h;\end{cases}\\
+ \mathsf S(t,w,d,h)&=
+ \begin{cases}\mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1.
+ \end{cases}
+\end{align*}
+The offset may be arbitrary and has no theorem annotation.
+
+\subsection{Total stack operations, selectors and the shorter generalizer}
+
+Following AX, nine and ten successive Shifts give respectively
+\begin{align*}
+ \mathsf{AX}_{c,x,y};\mathsf S^9(t,w,d,h)
+    &=(q_8,[t;w],0,U(c,h)),\\
+ \mathsf{AX}_{c,x,y};\mathsf S^{10}(t,w,d,h)
+    &=(U(c,h),w,0,t).
+\end{align*}
+Every displayed Shift is nonhalting: the tests involve two zero-residue
+entries, or an entry of value at least two. The saved arbitrary old top
+is not exposed to a halt test until it is paired with that universal code.
+These identities use literal numerical projections and include all
+zero-stack aliases.
+
+Write $A_0=\mathsf{AX}_{0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0;\mathsf S^9;\mathsf{MP}_0,\quad
+ \mathsf{Pop}=A_0;\mathsf S^{11},\quad
+ \mathsf{Discard}=\mathsf{MP}_0,\quad
+ \mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+Their contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=(t,w,0,a),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+Push's last comparison is between an implication code and a universal
+code, so fails. Pop's eleventh test is $U(0,h)+t\ge2$; therefore Pop is
+\emph{total}, including when $t=1$. Discard's two branches coincide for
+$d=x=0$, even if the old cache is nonzero. Offset succeeds harmlessly at
+$i=0$ and fails harmlessly at $i>0$. The contracts also hold at $w=0$.
+
+From an arbitrary $(t,w,0,0)$, the selector for $q_j$, $1\le j\le7$, is
+\[
+ \mathsf{Discard};\mathsf{AX}_{c,D,H};\mathsf S^{j+1};
+                  \mathsf{Pop}^{9-j}.
+\]
+It returns $(q_j,w,0,0)$. After the initial Shifts, the last $9-j$ entries
+are the unselected generated tail and saved zero; the total Pops consume
+them and leave zero in the cache. For a dominated instance with $u\le D$,
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf{AX}_{c,D-u,H};\mathsf S^9;\mathsf{Pop}
+\]
+returns $(\rho(D,c,H,u),w,0,0)$. The gate selector is
+$\mathsf{Discard};\mathsf{AX}_{c,D,H};\mathsf{Pop}^{10}$.
+Truth uses Discard.
+
+The new generalization word is
+\begin{equation}\label{eq:g-gen}
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf S;
+                       \mathsf{AX}_{i,0,0};\mathsf S^{10}.
+\end{equation}
+From $(a,w,0,0)$, Push gives $(0,[a;w],0,0)$ and the next Shift gives
+$(0,w,0,a)$. AX then stores $U(i,a)$ as its ninth generated entry; ten
+Shifts return $(U(i,a),w,0,0)$. Every step is nonhalting, including $a=1$.
+The old $\mathsf{Offset}_i$ command is absent. The new binder is the AX
+operand itself; this is the exact reason the shorter word works.
+For example, with $d=h=0$ and $c=1$, the prior saved head is
+$U(0,0)=2$, while this command saves $U(1,0)=10$. Thus the interface
+change is observable even on a store whose cached theorem is truth.
+
+\subsection{A compiler that works from every store}
+
+For a derivation ending in MP with premises $a$ and $I(a,b)$, use
+\[
+ \mathsf{Discard};\mathsf{Push};C(I(a,b));\mathsf{Push};
+ C(a);\mathsf{Push};\mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}.
+\]
+The initial pair reserves a zero. If both recursive calls return, the
+store before the two Shifts is
+$(0,[a,I(a,b),0;w],0,0)$. The first Shift gives
+$(0,[I(a,b),0;w],0,a)$. The second either halts because $a=1$, or gives
+$(a,[0;w],0,I(a,b))$. MP succeeds, returning $(b,[0;w],b,0)$, and the
+total Pop returns $(b,w,0,0)$. In particular it can return the false code
+one, which the final appended Shift recognizes.
+
+Induction on a coded derivation now proves that, from every $(t,w,0,0)$,
+$C(e)$ either halts or returns $(\operatorname{concl}(e),w,0,0)$.
+The axiom cases use the selectors; the generalization case uses
+\eqref{eq:g-gen}; the MP case is the preceding calculation. Every
+identity covers the zero-pair aliases. Starting from arbitrary $d,h$,
+$A_0$ first clears both. Hence
+\[
+                         A_0;C(e);\mathsf S
+\]
+halts from every incoming store when $e$ derives code one.
+
+The unchanged scheduler's continuation encoding is
+\[
+ E(\epsilon)=0,\qquad
+ E(c::w)=1+\operatorname{encodeCommand}(c,E(w)),
+\]
+where the latter clause applies to nonempty words and
+\[
+ \operatorname{encodeCommand}(\mathsf{AX}_{a,x,y},z)
+       =p(a+2,p(y,p(x,z))).
+\]
+For $z=E(A_0;C(e);\mathsf S)$, prefixing $\mathsf{AX}_{k,0,0}$ produces
+the cofinal fresh-candidate family $p(k+2,p(0,p(0,z)))$. A fresh
+candidate code omits the leading one used by positive continuations. Every prefix
+terminates and leaves some store to which the all-store compiler applies.
+No reset assumption is needed between failed trials. The source macros
+terminate, continuations decrease, and the finite witness construction is
+primitive recursive with correctness provable in PA.
+
+For soundness, annotate $t$, $h$, and each live canonical stack entry by
+a proof of its translated formula. Zero supplies the truth proof. AX adds
+axioms, the old top, and the valid generalization $U(c,h)$ of the incoming
+cached theorem. Successful MP composes two proofs; failure writes truth.
+Shift only transfers annotations. If $t+h=1$, one of these two annotated
+codes is one. The inherited translation supplies a PA refutation.
+Combining this annotation with the compiler gives both PA-provable finite
+syntactic reductions, and hence the stated consistency equivalence once
+the literal implementation is bound to the source.
+
+\subsection{Literal binding and verification boundary}
+
+Relative to the primary 190-token word, token 1 changes
+\texttt{copyD} to \texttt{copyA}; six further token changes at positions
+103, 105, 106, 107, 108, and 109 implement the existing Q premise exchange.
+The exact new word is checked over the free constructor algebra. Its
+chosen association is compared with the accepted primary association
+populated with the same word: all resolved source instructions and
+successors agree. Successful MP deletes the 19-site dummy-zero push,
+old interval $[3634,3653)$, with every retained instruction and successor
+checked under its relocation and no outside entry into the removed
+interior. There are 3,654 primitive source sites.
+
+The compiler constructs 134 fixed controls and 67 AX readers. Seven
+contextual folds are checked simultaneously on all 28 two-cell cases;
+the supplied fold set avoids a conflict present in the first maximum
+matching returned by the allocation heuristic. The final count is
+\[
+                       134+67-7=194.
+\]
+All 4,755 arbitrary-register primitive outcomes pass the construction
+checker, with 1,477,258 symbolic steps and maximum 470 per outcome.
+The entire finite-support blank-start tape reaches source site 25,
+native dispatcher 84, head $-2$, logical registers $(2,0,\ldots,0)$,
+and 26 spare blocks of value one after exactly 58,154 transitions.
+
+A separate literal-tape checker recomputes its four register-list
+induction lemmas from the actual transition rows, uses two independently
+implemented source resolvers, and checks the same unbounded register
+contracts. Its actual replay receipt is delivered alongside the
+construction receipt: 1,078,742 symbolic steps, maximum 379 per outcome,
+and minimum positive duration constant three. The domain includes arbitrary natural register
+values, both decrement branches, arbitrary nonempty finite lists of
+natural spare values, and arbitrary extra nonnegative header gap.
+These certificates are not finite-value sampling tests.
+
+Each source step has a positive finite physical simulation. PA verifies
+the register-list lemmas by induction and the fixed site contracts by
+finite computation, giving a primitive-recursive source-to-tape trace
+translation. Conversely, for a physical first halt at time $T$, perform
+$T+1$ totalized source steps. If none halted, their positive simulations,
+preceded by startup, would produce a deterministic physical trace beyond
+its first halt, a contradiction. This bounded reflection argument gives
+the other physical reduction. Composition with the two syntactic
+reductions above proves the ordinary PA statement for the exact table.

@@ -1,0 +1,169 @@
+% Report section. Requires amsmath, amssymb, amsthm and hyperref.
+% This is a paper proof framework, not a claimed Lean compilation.
+\section{Constructive transport in intuitionistic primitive recursive arithmetic}
+\label{sec:ipra-transport}
+
+The machine reduction and the calibration to PA are separate assertions.
+The first can be established in intuitionistic primitive recursive arithmetic
+without a truth predicate, a soundness principle, or Markov's principle.
+The following formulation makes the precise burden of a reduction certificate
+explicit.
+
+\subsection{Coded traces and the logical transport lemma}
+
+Fix primitive-recursive encodings of finite words, finite-support binary
+tapes, configurations, and finite traces. A convenient tape encoding uses
+two natural numbers, the low-order bit of the right number being under the
+head and the low-order bit of the left number being immediately to its left.
+For each fixed finite transition table $M$, let $\mathrm{Tr}_M(u)$ be the
+primitive-recursive predicate saying that $u$ is a valid blank-start trace
+ending in the designated halt state. We use a Boolean characteristic
+function for this predicate, so it is a quantifier-free formula in the
+language of iPRA. Write
+\[
+ H_M\equiv\exists u\,\mathrm{Tr}_M(u),\qquad
+ \mathrm{NH}_M\equiv\neg H_M.
+\]
+All trace coding conventions are fixed before the comparison; a change of
+coding requires the corresponding elementary translation lemma.
+
+\begin{theorem}[Constructive trace transport]
+Suppose $F,G$ are specified primitive-recursive functions and that iPRA proves
+\begin{align*}
+ \forall u\,(\mathrm{Tr}_M(u)&\longrightarrow\mathrm{Tr}_N(F(u))),\\
+ \forall v\,(\mathrm{Tr}_N(v)&\longrightarrow\mathrm{Tr}_M(G(v))).
+\end{align*}
+Then iPRA proves both $H_M\leftrightarrow H_N$ and
+$\mathrm{NH}_M\leftrightarrow\mathrm{NH}_N$. Consequently, for any sentence
+$C$, an iPRA proof of $C\leftrightarrow\mathrm{NH}_M$ yields an iPRA proof
+of $C\leftrightarrow\mathrm{NH}_N$.
+\end{theorem}
+
+\begin{proof}
+Existential elimination on a trace witness followed by existential
+introduction using $F$ proves $H_M\to H_N$; $G$ gives the reverse implication.
+If $\neg H_M$ and $H_N$, the second implication gives a contradiction,
+and hence $\neg H_M\to\neg H_N$. Interchanging the machines proves the
+other implication. These are intuitionistic natural-deduction arguments.
+No double-negation elimination for an existential sentence occurs.
+\end{proof}
+
+This theorem is deliberately relative to its two verification statements.
+The fact that an external algorithm is primitive recursive does not, by
+itself, prove either statement in iPRA. One must verify its computation by
+quantifier-free induction or another already justified iPRA argument.
+
+\subsection{A sufficient, checkable positive-simulation interface}
+
+Here is a useful sufficient condition for producing $F$ and $G$. Let $R$ be
+a deterministic source machine with primitive-recursive total step function
+$s$, decidable halt predicate $h_R$, and initial state $r_0$. Totalization
+holds a halting state fixed. Let $M$ be a literal target machine with the
+same absorbing convention for its halt state. Specify the following data:
+
+\begin{enumerate}
+\item A primitive-recursive frame encoding $E(r)$ and a decidable invariant
+      $I(r)$, with $I(r_0)$.
+\item A fixed finite blank-start trace to $E(r_0)$, containing no halt unless
+      the initial source state itself is halting.
+\item A primitive-recursive segment constructor $S(r)$, including its
+      exact positive length $\ell(r)\ge1$, such that, if $I(r)$ and
+      $\neg h_R(r)$, it is a literal target trace from $E(r)$ to $E(s(r))$.
+      All its proper-prefix configurations are nonhalting; its endpoint is
+      halting exactly when $s(r)$ is halting. The invariant $I(s(r))$ holds.
+\item At a source halt, $E(r)$ is a target halt. More generally, a separately
+      specified terminating halt segment may be used, provided its trace
+      and its finite bound are part of the interface.
+\end{enumerate}
+
+Every assertion in this list must be proved in iPRA for the chosen numeric
+codes. A bounded check of an explicitly constructed finite segment is again
+a primitive-recursive predicate. Thus the statement does not require a
+quantifier over arbitrary infinite tapes: untouched exterior tape is handled
+by a finite locality theorem, or by an arbitrary coded finite-support tape
+parameter. Register lists, header gaps and loop lengths remain variables;
+testing finitely many values for those variables would not suffice.
+
+\begin{proposition}[Positive simulation gives constructive equivalence]
+The preceding verified interface yields primitive-recursive trace
+translations in both directions, with their correctness provable in iPRA.
+Therefore iPRA proves $H_R\leftrightarrow H_M$ and
+$\mathrm{NH}_R\leftrightarrow\mathrm{NH}_M$.
+\end{proposition}
+
+\begin{proof}
+For the forward translation, read a source trace, prepend the fixed startup,
+and concatenate the segments $S(r_i)$ until its first source halt. An invalid
+input receives a fixed dummy output. This is a primitive recursion on the
+input trace. The verification invariant records the current source state,
+the target endpoint, the accumulated trace and its length. With the
+Boolean trace checker, this invariant is quantifier-free. The local segment
+theorems and quantifier-free induction prove correctness.
+
+For the reverse translation, let a valid target trace end in a halt after
+$T$ steps. Compute the first $T+1$ source steps, stopping at a halt if one
+is encountered. This bounded computation is primitive recursive; inspect
+its finite list by a primitive-recursive search. If there is a source halt,
+output the corresponding prefix trace. If there is no such halt, concatenate
+the $T+1$ certified nonhalting source segments and startup. Their total length
+is greater than $T$, since every segment contributes at least one literal
+target step. By determinism, its prefix through time $T$ agrees with the
+given target trace. But the constructed trace has no halt at time $T$ and
+subsequently reaches a nonhalt macro boundary, contradicting the absorbing
+halt property. Hence the bounded search succeeds.
+
+The case distinction is on a decidable bounded search, and its failed case
+has just been refuted. Intuitionistic logic therefore yields the particular
+witness returned by the search, not merely its double negation. The
+comparison of trace prefixes, preservation of the invariant and positivity
+of the accumulated length use quantifier-free induction on the coded finite
+computations. Thus the correctness of the reverse translator is an iPRA
+theorem as well.
+\end{proof}
+
+When a source halt is implemented by a separate halt segment, choose the
+bounded search to inspect the first $T+1$ source \emph{boundaries} and append
+that segment in the forward translator. Positivity for ordinary boundaries
+still proves the same reverse argument. The exact endpoint convention must
+be fixed consistently; it cannot be replaced by a contract that permits an
+unexplained early target halt.
+
+\subsection{How finite local fold certificates fit the interface}
+
+For a state fold, $E$ normally projects the source control and preserves
+the tape and head. An exceptional control also has a finite history
+condition, such as the value of the cell just crossed. Every incoming
+source transition must establish the required condition. The finite
+certificate enumerates every allowed local pattern, simulates it in the
+\emph{final combined table}, and checks the exact projected endpoint, whole
+local tape, head displacement, positive duration, and absence of premature
+halt. A certificate for each fold separately need not validate their
+simultaneous use: a helper can itself be changed by another fold.
+
+If the local window and maximum simulation length are fixed constants, the
+certificate expands to a finite collection of transition-row equalities.
+The resulting local simulation theorem is provable in iPRA for arbitrary
+untouched exterior tape. Quantifier-free induction then propagates the
+history invariant and constructs complete trace translations as above.
+This is a considerably smaller obligation than recalibrating the numerical
+proof calculus to PA.
+
+\subsection{What may and may not be concluded}
+
+A certified replacement with the preceding interface preserves the desired
+consistency equivalence at the same base-theory strength. Its exact conclusion
+is
+\[
+ \mathrm{iPRA}\vdash\mathrm{NH}_{M_{\mathrm{new}}}
+                         \leftrightarrow\mathrm{NH}_{M_{\mathrm{old}}}.
+\]
+If the baseline calibration is supplied, ordinary intuitionistic composition
+gives
+\[
+ \mathrm{iPRA}\vdash\mathrm{Con}(\mathrm{PA})
+                         \leftrightarrow\mathrm{NH}_{M_{\mathrm{new}}}.
+\]
+The first theorem does not supply the premise of the second. In particular,
+an external standard-run equivalence, a PA proof of the consistency
+biconditional, and an iPRA proof of the biconditional are distinct claims.
+Every final statement must identify which of these has actually been proved.

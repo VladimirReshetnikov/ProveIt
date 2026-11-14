@@ -1,0 +1,277 @@
+\ifdefined\pdfmapfile
+  \pdfmapfile{+lm.map}\pdfmapfile{+cm.map}
+  \pdfmapfile{+cmextra.map}\pdfmapfile{+symbols.map}
+\fi
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs,array,xurl,hyperref}
+\setlength{\emergencystretch}{2em}
+\hypersetup{colorlinks=true,urlcolor=blue,linkcolor=blue}
+\newcommand{\imp}{\mathbin{\to}}
+\newcommand{\U}{\mathsf U}
+\newcommand{\M}{\mathsf M}
+\newcommand{\iPRA}{\mathsf{iPRA}}
+\title{A quantified gate exchange and unsuccessful source-level reductions}
+\author{Supplement to the PA194 comparison and construction package}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A fixed, independently replayed syntactic proof permits an exchange of the
+two antecedents inside the quantified negative gate of the coefficient-four
+PA calculus. This supplies a sound alternative source formula. Two bounded
+grammar searches did not produce a machine with 194 states or fewer for the
+tested source changes. Their best discovery scores project to 197 and 200
+states. The present note records this mathematical result, the negative
+search evidence, its limitations, and the remaining work. It makes no new
+machine claim and does not establish the inherited absolute equivalence
+with the consistency of PA.
+\end{abstract}
+
+\section{Scope and notation}
+
+The repository snapshot is
+\texttt{32d0d8b7d93a63ad4106c18cdb29b37927acdad2}.
+The source templates used in these experiments come from the incoming
+PA194AX11QH packet listed in Section~\ref{sec:provenance}.
+Numerical implication and universal quantification have the inherited
+definitions
+\[
+ I(A,B)=4p(A,B),\qquad \U(c,A)=4p(A,c)+2,
+ \qquad p(a,b)=\frac{(a+b)(a+b+1)}2+b.
+\]
+We write $A\imp B$ for $I(A,B)$ and $\bot$ for the designated contradiction
+code $1$. In particular, $I(0,0)=0$ remains an allowed numerical alias.
+No free-syntax injectivity assumption is needed by the proof below.
+
+The proof interpretation used here has modus ponens, generalization of
+closed proofs, universal distribution, and the dominated implicational
+schema
+\[
+ \rho(a,b,c,u)=((c\imp u)\imp a)\imp((a\imp c)\imp(b\imp c)),
+ \qquad u\le a.
+\]
+The imported proof terms derive the ordinary $K$, $S$, and exchange
+schemas from this restricted schema and modus ponens. The checker expands
+and rechecks that derivation; it does not assume an unrestricted classical
+implication axiom in place of $\rho$.
+
+The two distribution orientations relevant to the comparison are
+\begin{align*}
+ D(c,A,B)&=\U(c,A)\imp
+       (\U(c,A\imp B)\imp\U(c,B)),\\
+ D^{\mathrm Q}(c,A,B)&=\U(c,A\imp B)\imp
+       (\U(c,A)\imp\U(c,B)).
+\end{align*}
+They interderive by one instance of exchange and one application of modus
+ponens. The certificate is replayed separately with either orientation
+as the primitive distribution schema.
+
+\section{The alternative gate}
+
+For the inherited PA gate, abbreviate its subexpressions as
+\begin{align*}
+ P&=c\imp\M(c,b),\\
+ V&=\M(a,b)\imp\U(c,\M(a,b)),\\
+ S_0&=\U\bigl(b,
+       (\M(a,b)\imp P)\mathbin{\wedge}(\M(c,b)\imp c)\bigr).
+\end{align*}
+Here the conjunction is the inherited negative encoding; nothing in the
+following argument depends on its implementation. More generally,
+$P,V,S_0$ may be arbitrary numerical formula codes. Set
+\begin{align*}
+ Q&=\U(c,S_0\imp(P\imp\bot)),&
+ G&=(V\imp Q)\imp\bot,\\
+ Q'&=\U(c,P\imp(S_0\imp\bot)),&
+ G'&=(V\imp Q')\imp\bot.
+\end{align*}
+The change under investigation is $G\rightsquigarrow G'$. It exchanges
+the two premises immediately inside the outer quantifier. It leaves the
+distinct-label guard unchanged.
+
+\paragraph{Fixed derivation.}
+The exchange theorem gives
+\[
+ (S_0\imp(P\imp\bot))\imp(P\imp(S_0\imp\bot))
+\]
+and its converse. Generalize each closed theorem by $c$, then use universal
+distribution to obtain $Q\imp Q'$ and $Q'\imp Q$.
+To derive $G\imp G'$, suppose $g:G$ and $h:V\imp Q'$.
+For $v:V$, the term $h(v)$ gives $Q'$, and the theorem $Q'\imp Q$ gives
+$Q$. Thus $v\mapsto (Q'\imp Q)(h(v))$ establishes $V\imp Q$; applying
+$g$ gives $\bot$. Discharging $h$ and $g$ gives $G\imp G'$.
+The reverse direction is identical with $Q$ and $Q'$ interchanged.
+The checker eliminates these temporary hypotheses by the explicit
+$K,S$ abstraction algorithm, leaving only closed proof rows.
+
+\paragraph{Why the numerical side conditions survive.}
+Every dominated-schema leaf in the expanded $K,S,$ exchange derivation
+has its parameter $u$ as an implication subterm of its parameter $a$.
+The constructor inequalities
+$x\le I(x,y)$ and $y\le I(x,y)$ imply $u\le a$ under every numerical
+substitution. This remains true when some codes are zero or coincide.
+The finite proof therefore supplies universal numerical proof templates,
+not merely a truth-table equivalence for well-formed positive codes.
+
+\paragraph{What can be transferred.}
+If two otherwise identical numerical calculi use respectively $G$ and
+$G'$ as their guarded axiom family, replace each use of one gate axiom
+by the other gate axiom, the appropriate fixed implication template, and
+modus ponens. Retain the same guard and all remaining proof rules.
+This gives explicit primitive-recursive translations of finite derivations
+in both directions. The construction can be verified by quantifier-free
+induction on the length of the input derivation, using the fixed template
+checks and the primitive-recursive syntax constructors.
+
+This is a relative logical statement. To turn it into the requested
+machine theorem one must still implement and verify the changed emitter,
+derive its literal physical simulation in $\iPRA$, and connect the
+reference numerical calculus to PA proof codes. No such new physical
+machine was accepted in these experiments. The supplied Python replay
+is not a Lean kernel check and does not discharge the absolute PA
+calibration obligation.
+
+\section{Finite certificate and replay}
+
+Run from this directory:
+\begin{verbatim}
+python3 check_gate_exchange.py
+\end{verbatim}
+The script reads the imported Lean source as proof-term data and expands
+the dependencies of $K,S,$ and exchange. Each resulting row is checked
+against the dominated schema or modus ponens. It then constructs and
+audits the small outer gate certificate. In addition to reporting success,
+it writes the complete outer certificates and content hashes under
+\nolinkurl{evidence/}.
+
+The imported implication derivation contains 55,585 distinct proof rows
+and 88,006 distinct implication terms: 26,427 dominated-schema leaves
+and 29,158 modus-ponens rows. All domination checks succeed by subterm
+inclusion. With ordinary distribution, the outer gate certificate has
+123 proof rows and 144 terms. The receipt gives the corresponding counts
+for the exchanged-distribution replay and hashes both artifacts.
+
+This is a concrete finite syntactic check. It does not test the truth of
+PA, prove that PA is consistent, or prove that a proposed physical TM is
+nonhalting. Nor does the check certify any of the search scores as literal
+transition-table state counts.
+
+\section{Recorded source searches}
+
+Both searches retain the 190-token emitter word length. They explore
+binary grammar reassociations while holding their selected emitted
+word fixed. The score is the number of reachable raw reader shapes minus
+the number of simultaneously compatible two-context folds, plus penalties
+for source-depth and orientation constraints. Only the final
+zero-penalty minima are reported below. Adding the inherited fixed-state
+term 134 gives a \emph{projected} total; this is a discovery score pending
+full compilation and literal validation.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Experiment & Inner-$S_0$ exchange & $Q$ exchange\\
+\midrule
+Initial seeds & 2 & 8\\
+Random seed & 14112620 & 14112621\\
+Time limit in seconds & 300 & 300\\
+Iterations & 1,129,324 & 1,530,028\\
+Accepted moves & 234,043 & 323,454\\
+Best raw readers & 70 & 73\\
+Compatible folds at best & 7 & 7\\
+Best effective readers & 63 & 66\\
+Projected total states & 197 & 200\\
+Penalty at minimum & 0 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The first experiment exchanges
+$\M(a,b)\imp(c\imp\M(c,b))$ with
+$c\imp(\M(a,b)\imp\M(c,b))$ inside $S_0$.
+It is included as negative search evidence only: this exchange was
+already present in the prior PA194G exploratory inputs. The prior inputs
+also already considered swapping the two conjuncts in $S_0$.
+These ideas are not claimed as new designs here.
+
+The second experiment makes the $Q\rightsquigarrow Q'$ change from
+Section~2 and uses eight initial seeds: the primary and Q distribution
+grammars, each with four combinations of the prior inner-$S_0$ premise
+exchange and conjunction order. No global novelty claim is made for
+the logical equivalence itself.
+
+The searches are heuristic, not exhaustive. The first retained an
+inherited seed-pool admission threshold of score at most 62; its observed
+score-63 improvement was saved, but not admitted to that pool. The second
+used the adaptive threshold ``score at most current best plus one.''
+Both disabled head reordering and parameter renaming. The logs and source
+are retained to make those restrictions visible. A time budget and random
+seed reproduce the search procedure, but not an identical number of
+iterations on another computer. The retained best grammars and logs are
+the evidence for the reported runs.
+
+Neither run supplies a lower bound on any machine class. Neither run
+produced an accepted 194-state machine, and neither result should be
+described as a 197-state or 200-state verified machine construction.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can a joint search over gate orientation, head order, parameter
+renaming, reader association, and compatible folds realize $G'$ in at
+most 194 states? The fixed logical proof means that such a search would
+not need a new PA-calibration argument for the gate replacement itself.
+\item Can the primitive logical proof-template transformations be added
+as Lean declarations over the repository's actual numerical derivation
+type? This would turn the retained finite certificate into a reusable
+formal library lemma rather than leaving it as an external replay.
+\item Can a different guard be justified by a primitive-recursive proof
+translation while reducing the physical cost of the present two
+inequality tests? A suggested inequality such as $c>a+b$ is not a
+replacement theorem: it would require a complete padding argument and
+an actual smaller implementation before it could be accepted.
+\item Can AX push its gate and enter the Shift continuation more cheaply
+than the existing AX11 fallthrough into MP? A simple reassociation of
+the outer dispatch tree introduces an extra continuation depth; no free
+physical helper for that depth was identified. This remains a concrete
+implementation question, not an accepted design.
+\item Most critically, can the inherited proof-code translations and
+literal simulation be completed inside $\iPRA$ with all nonstandard
+instances covered? Relative gate equivalence and finite execution checks
+do not replace that absolute calibration theorem.
+\end{enumerate}
+
+\section{Provenance}\label{sec:provenance}
+
+All repository references below use the pinned snapshot from Section~1.
+The imported material retains its upstream license in
+\nolinkurl{vendor/UPSTREAM_LICENSE}.
+
+\begin{itemize}
+\item The source of \nolinkurl{vendor/RestrictedImplication.lean} and
+\nolinkurl{vendor/check_restricted_exchange.py} is the
+\nolinkurl{proof/} directory inside
+\nolinkurl{docs/incoming/pa194_ax11qh_research_2026-11-14.zip}.
+\item \nolinkurl{search/screen.cpp} and \nolinkurl{search/leaf_attrs.txt}
+come from that packet's \nolinkurl{candidate/research/emission_order/}.
+The two \texttt{search*.cpp} files are adaptations of its
+\texttt{search.cpp}; changes and run commands are recorded in
+\texttt{README.txt}.
+\item The self-contained seed files were generated from the packet's
+\nolinkurl{candidate/inputs/primary.raw.native.tm},
+\texttt{primary.grammar.json}, and \texttt{q.grammar.json}.
+They embed the base rows and the tested expression DAGs.
+\item Prior inner-$S_0$ exchanges are recorded in
+\nolinkurl{Computability/BusyBeaver/Research/PA/docs/PA194B_PA194G_research_2026-11-14/generalizer/search/current/inputs_four.hpp},
+with context in that experiment's \nolinkurl{generalizer/SEARCH.md}.
+\end{itemize}
+
+The repository is available at
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+Exact file hashes and the scope of each included file are recorded in
+\texttt{PROVENANCE.json}.
+
+\end{document}

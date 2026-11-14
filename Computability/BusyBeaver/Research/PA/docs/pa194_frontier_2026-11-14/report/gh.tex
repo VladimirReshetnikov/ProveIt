@@ -1,0 +1,262 @@
+% Section fragment. Packages: amsmath, amssymb, amsthm, booktabs, hyperref.
+\section{PA194GH: explicit-binder AX with cached-head Shift}
+\label{sec:pa194gh-new}
+
+PA194GH combines the supplied G emitter with the supplied H controller
+\cite{generalizer,h-parent}.
+Its saved generalization uses the explicit AX operand, and its Shift
+tests only the cached theorem. Neither ingredient is new in isolation.
+Their combination changes the command compiler and is absent from all
+94 recognized 194-state transition graphs at the pinned snapshot.
+The construction has exactly 194 working states and a separate halt label.
+It is a new 194-state fallback, not a state-count improvement.
+
+The unconditional results are the literal table, its finite construction
+checks, the symbolic unbounded-register contracts, and the command-word
+identities below. At the level of ordinary finite computations these give
+the same refutation-search behavior as the numerical calculus
+$\mathcal D_{4,Q}$. The absolute iPRA equivalence with PA consistency
+still depends on the missing internal calibration. This section does not
+treat Python certificates as proof-assistant theorems.
+
+\subsection{Exact numerical interface and relation to G}
+
+Use the numerical calculus of Section~\ref{sec:calculus}, with $h_j=L_j$ and the same Q-oriented distribution head and guarded gate. No further logical rule is introduced by GH.
+
+A store is $(t,w,d,h)$: visible theorem, stack, numerical offset, cached
+theorem. For $D=d+x$ and $H=h+y$, AX is \emph{exactly G's command}:
+\[
+ \mathsf{AX}_{c,x,y}(t,w,d,h)
+       =(g(H,D,c),[q_1,q_2,\ldots,q_9,t;w],0,0),
+\]
+where the top-first generated entries are
+\begin{align*}
+ (q_1,q_2,q_3)&=(\Gamma(c),h_6^Q(D,c,H),h_5(D,H)),\\
+ (q_4,q_5,q_6)&=(h_4(D,c,H),h_3(D,c,H),h_2(D,c,H)),\\
+ (q_7,q_8,q_9)&=(h_1(D,H),\rho(D,c,H,d),U(c,h)).
+\end{align*}
+In particular $q_9$ uses the raw incoming $h$, not $H$, and the explicit
+binder $c$, not the offset $d$. The entire emitter word and its complete
+output stack are unchanged from G and checked in a free term algebra.
+All of $g,q_1,\ldots,q_8$ are zero modulo four; $q_9$ is two modulo four
+and at least two. These observations do not assume consistency.
+
+Writing $v=d+x$, MP is G's successful no-push command. Shift is H's:
+\begin{align*}
+ \mathsf{MP}_x(t,w,d,h)&=
+ \begin{cases}(v,w,v,0),&I(t,v)=h,\\(0,w,v,0),&I(t,v)\ne h;\end{cases}\\
+ \mathsf S(t,w,d,h)&=
+ \begin{cases}\mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&h\ne1.
+ \end{cases}
+\end{align*}
+The change is observable: Shift from $(1,w,0,0)$ proceeds in GH but halts
+in G. Conversely, on $(1,w,0,1)$ it halts in GH but G's sum guard is false.
+At $d=h=0,c=1$, GH's saved generalization is $U(1,0)=10$, whereas H's is
+$U(0,0)=2$. Thus GH differs from both parents at the command interface.
+
+\subsection{Uniform words, including zero aliases}
+
+Commands execute from left to right. For every store,
+\begin{align*}
+ \mathsf{AX}_{c,x,y};\mathsf S^9(t,w,d,h)
+     &=(q_8,[t;w],0,U(c,h)),\\
+ \mathsf{AX}_{c,x,y};\mathsf S^{10}(t,w,d,h)
+     &=(U(c,h),w,0,t).
+\end{align*}
+These Shifts test only the cleared cache or generated heads, never the
+arbitrary saved top. Put $A_0=\mathsf{AX}_{0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0;\mathsf S^9;\mathsf{MP}_0,
+ \quad \mathsf{Pop}=A_0;\mathsf S^{11},
+ \quad \mathsf{Discard}=\mathsf{MP}_0.
+\]
+The exact contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+ \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1;\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0).
+\end{align*}
+Push's final comparison fails because implication and universal codes have
+different residues. Pop's eleventh Shift tests exactly the saved $t$; it
+is its only possible halt. Discard has candidate conclusion zero, so its
+two branches coincide for every old cache. The equations also hold for
+the zero stack using the total projections: in particular Push does not
+create a distinguishable zero entry when both $t$ and $w$ are zero.
+
+Let $\mathsf{Offset}_i=\mathsf{MP}_i$. From $(0,w,0,0)$ it returns
+$(0,w,i,0)$, including at $i=0$. For $1\le j\le7$ the selector
+\[
+ \mathsf{Discard};\mathsf{AX}_{c,D,H};\mathsf S^{j+1};
+             \mathsf{Pop}^{9-j}
+\]
+returns $(q_j,w,0,0)$ from every $(t,w,0,0)$. The selected head is never
+one, so every Pop is safe. The final consumed entry is the saved zero.
+The gate selector is $\mathsf{Discard};\mathsf{AX}_{c,D,H};\mathsf{Pop}^{10}$.
+For $u\le D$, the selector
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+       \mathsf{AX}_{c,D-u,H};\mathsf S^9;\mathsf{Pop}
+\]
+returns $(\rho(D,c,H,u),w,0,0)$. Truth uses Discard.
+
+G's shorter generalizer survives the change to Shift:
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf S;
+                    \mathsf{AX}_{i,0,0};\mathsf S^{10}.
+\]
+From $(a,w,0,0)$, the first two operations give $(0,w,0,a)$; AX then
+consumes the cache and saves $U(i,a)$, and ten Shifts return
+$(U(i,a),w,0,0)$. This execution never halts, including when $a=1$.
+No offset-setting command is needed because the binder comes from the
+explicit AX operand.
+
+\subsection{All-store refutation compiler and exhaustive scheduler}
+
+The framed MP suffix has the exact alternative
+\[
+ (\mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop})
+         (0,[a,I(a,b),0;w],0,0)
+  =\begin{cases}
+       \mathsf{halt},&a=1\text{ or }b=1,\\
+       (b,w,0,0),&a\ne1\text{ and }b\ne1.
+    \end{cases}
+\]
+The first Shift caches $a$. The second either halts or produces
+$(a,[0;w],0,I(a,b))$. Successful MP gives $(b,[0;w],b,0)$, after which
+Pop either detects $b=1$ or consumes the reserved zero and clears the
+offset. This includes $a=b=w=0$, since both the stack and implication
+zero aliases are identities of the numerical constructors.
+
+Compile a finite $\mathcal D_{4,Q}$ proof tree $e$ into $C(e)$ as follows.
+Use the selectors for axiom nodes and append $\mathsf{Gen}_i$ for a
+generalization node. For an MP node with minor proof $e_0$ of $a$ and major
+proof $e_1$ of $I(a,b)$, use
+\[
+ \mathsf{Discard};\mathsf{Push};C(e_1);\mathsf{Push};
+ C(e_0);\mathsf{Push};\mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}.
+\]
+Induction on the proof tree shows that from any $(t,w,0,0)$ this word either
+halts or returns $(\operatorname{concl}(e),w,0,0)$. The initial Discard and
+Push reserve the zero required by the MP suffix. In the generalization case
+the induction hypothesis either supplies a halt or the exact input to the
+total shorter generalizer. If $e$ proves one, then
+\[
+                         A_0;C(e);\mathsf{Pop}
+\]
+halts from every store, including stores with arbitrary offset and cache.
+The first AX clears those fields, and final Pop detects one even when it
+was not produced by an MP node. A final Shift alone would be incorrect.
+
+The scheduler is unchanged. Its command and continuation codes are
+\begin{align*}
+ B_{\mathsf S}(z)&=p(0,z),\qquad
+ B_{\mathsf{MP}_x}(z)=p(1,p(x,z)),\\
+ B_{\mathsf{AX}_{c,x,y}}(z)&=p(c+2,p(y,p(x,z))),\\
+ E(\epsilon)&=0,\qquad E(c::w)=1+B_c(E(w)).
+\end{align*}
+For $z=E(A_0;C(e);\mathsf{Pop})$, prefixing this universal halting word
+by $\mathsf{AX}_{k,0,0}$ gives fresh-candidate codes
+\[
+                       n_k=p(k+2,p(0,p(0,z))).
+\]
+They are strictly increasing and unbounded. The carried store after the
+prefix is harmless by the all-store property. Positive continuation codes
+are decoded after subtracting one and have strictly decreasing residuals.
+Each prior candidate therefore finishes or halts, and a finite search
+reaches a suitable $n_k$ unless it has halted earlier. The leading-one
+distinction between a continuation code and a fresh candidate is essential.
+
+For the converse, annotate the visible theorem, cached theorem, and each
+live canonical stack entry with a $\mathcal D_{4,Q}$ derivation. The virtual
+zero tail has the truth derivation. No annotation is required for the offset.
+AX adds the listed axioms and the generalization $U(c,h)$ of an annotated
+theorem. MP composes proofs on success and writes truth on failure. Shift
+transfers annotations and halts only on a cached derivation of one.
+This supplies the finite syntactic equivalence between scheduler halting
+and $\mathcal D_{4,Q}$ refutability.
+
+\subsection{Literal source and physical verification}
+
+In the frozen G source DAG only the following named definition is replaced:
+\[
+ \texttt{node170}:=
+       ((\texttt{node36},(\texttt{node167},\texttt{node145})),\texttt{node57}).
+\]
+The existing no-push MP definition
+$\texttt{node163}=(\texttt{node6},\texttt{node54})$ remains.
+The Shift branch now clears the old top, copies the cache into the top and
+comparison scratch register, restores the cache, and enters the existing
+destructive equality guard with scratch value one. Its guard is therefore
+$h=1$. The full source contains 3,653 primitive sites and 4,754 outcomes;
+the same G AX word has 190 macro tokens. The five native transition edits
+relative to the G raw table are
+\[
+\begin{array}{cc|ccc|ccc}
+q&b&\multicolumn{3}{c|}{\text{old write, move, target}}&
+      \multicolumn{3}{c}{\text{new write, move, target}}\\
+38&0&0&R&28&0&R&11\\
+38&1&1&R&20&1&R&122\\
+214&0&0&R&188&0&R&312\\
+214&1&1&R&312&1&R&20\\
+312&0&0&R&11&0&R&188
+\end{array}
+\]
+They are the supplied H controller changes, applied to the G association.
+The arithmetic register-engine rows are unchanged.
+
+There are 134 fixed controls, 67 reader controls, and seven simultaneous
+contextual folds, giving $134+67-7=194$. All 28 local fold cases close.
+The construction checker verifies all 4,754 symbolic outcomes using
+1,512,536 symbolic steps, with maximum 479 per outcome. An independent
+literal-row checker rederives four register-list induction lemmas, uses two
+independent source resolvers, and checks the same outcomes in 1,102,232
+symbolic steps, maximum 385, with minimum positive duration constant three.
+Its domain contains nine arbitrary natural registers, either decrement
+branch, an arbitrary nonempty finite list of natural spare values, an
+arbitrary nonnegative affine header gap, and complete blank exteriors.
+These are symbolic contracts rather than finite-value sampling.
+
+The complete finite-support blank tape reaches native dispatcher 84 at
+source site 25, head $-2$, logical registers $(2,0,\ldots,0)$, and 26 spare
+blocks of value one in exactly 57,922 transitions. Here the nonzero register
+is the fresh-candidate counter; the command store is initially clear.
+The 388-row dense table has start zero, working states $0,\ldots,193$,
+and halt label 194. Its SHA-256 is
+\begin{quote}\small
+\nolinkurl{b9fadcb197c33895603c71b7119bc92b1772c01960804e8850e2a66dd39a995e}.
+\end{quote}
+
+Exact structural comparison against the entire recognized 94-graph frontier
+finds no match under control renaming, choice of spanning root, reflection,
+global symbol exchange, or ignored final halt effects. Symbol exchange is
+used only as a stronger structural novelty test, not as an assertion of
+zero-blank semantic equivalence.
+
+\subsection{Arithmetic conclusion and remaining obligation}
+
+The source-word compiler, annotation update, scheduler witnesses, and
+finite physical simulations are explicit primitive-recursive operations.
+Ordinary mathematical induction proves their finite-trace claims. These
+claims support the usual ordinary-PA argument when composed with the
+inherited numerical-calculus-to-PA refutation calibration. That calibration
+is an explicit inherited dependency, not a consequence of this construction's
+runtime certificates.
+
+For an iPRA conclusion the required premises must themselves be established
+in iPRA: (i) the exact source/tape trace reductions and the syntactic
+soundness/completeness reductions just described, and (ii) the equivalence
+of $\mathcal D_{4,Q}$ refutability with PA refutability. Once these premises
+are supplied, constructive composition gives
+\[
+ \mathrm{iPRA}\vdash
+ \neg\operatorname{Halt}_{\rm blank}(\mathrm{PA194GH})
+       \leftrightarrow\operatorname{Con}(\mathrm{PA}).
+\]
+Neither the executable certificates nor a citation of the generic
+\texttt{Calibrated} theorem supplies the missing premises. The current
+repository reports the machine-specific iPRA calibration as unfinished.
+Accordingly, GH is delivered as a fully explicit new 194-state design with
+checked computational interfaces and an explicit conditional calibration,
+not as a completed unconditional solution of that formalization problem.

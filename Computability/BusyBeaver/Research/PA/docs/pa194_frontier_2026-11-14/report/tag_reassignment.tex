@@ -1,0 +1,178 @@
+% Proof supplement for admissible tag reassignment.
+% Root manuscript should supply bibliography entries for the inherited
+% RestrictedImplication proof and the radix-family calibration.
+\section{Formula-tag reassignment without constructor collisions}
+\label{sec:tag-reassignment}
+
+Changing the residue used by equality or universal quantification is a
+mathematical change to the numerical calculus, not a state renaming. The
+following conditions make that change sound. They also explain why changing
+the multiplier to three while retaining four constructor tags is invalid.
+
+\subsection{Admissible tags}
+
+Fix $k\ge4$ and two distinct numbers $u,e$ with $2\le u,e<k$.
+For Cantor pairing $p(a,b)=((a+b)(a+b+1))/2+b$, use
+\begin{align*}
+ I(A,B)&=kp(A,B), & M(a,b)&=kp(a,b)+1,\\
+ U(a,B)&=kp(B,a)+u, & E(a,b)&=kp(a,b)+e.
+\end{align*}
+Code zero is truth and code one is the designated contradiction $M(0,0)$.
+Negation, conjunction and existential quantification use the same
+implicational definitions as the baseline calculus. Retain the six logical
+heads, the dominated implicational head, the separate diagonal head and the
+guarded separation gate, replacing their constructors by the displayed ones.
+The guard remains $c\ne a,b$.
+
+The relevant instances include $(k,u,e)=(4,3,2)$ and $(5,2,4)$. The first
+swaps the two constructor residues. The second leaves residue three unused
+and moves equality to residue four. In each case all four constructor tags
+are distinct and the implication and contradiction conventions remain fixed.
+
+Every component of a nonzero code is strictly smaller than the code. Indeed,
+if $n=kp(a,b)+r>0$ then $a,b\le p(a,b)<n$; when $r=0$, positivity implies
+$p(a,b)>0$, and when $p(a,b)=0$, both components are zero and $r>0$.
+Consequently the usual course-of-values coding recursions are primitive
+recursive. The identity $I(0,0)=0$ is still exceptional and must not be
+treated as disjoint syntax for truth and implication.
+
+\subsection{An explicit hereditary embedding}
+
+Let $\tau(0)=0$, $\tau(1)=1$, $\tau(2)=u$, $\tau(3)=e$. Define $F(0)=0$;
+for $n>0$, uniquely write $n=4p(a,b)+r$ and put
+\[
+ F(n)=kp(F(a),F(b))+\tau(r).
+\]
+The function is primitive recursive: compute its values through $n$ in an
+accumulated finite table, looking up only smaller arguments. It fixes zero
+and one and maps positive inputs to positive outputs. Define a left inverse
+$J$ by the analogous recursion on target codes: use $\tau^{-1}(r)$ for
+the four used residues, and return zero at an unused residue. Induction on
+the old code gives $J(F(n))=n$, so $F$ is injective.
+
+Both formula codes and numerical variable labels are transformed by this
+same map. Directly from its defining equations,
+\begin{align*}
+ F(I_4(A,B))&=I(F(A),F(B)),\\
+ F(M_4(a,b))&=M(F(a),F(b)),\\
+ F(U_4(a,B))&=U(F(a),F(B)),\\
+ F(E_4(a,b))&=E(F(a),F(b)).
+\end{align*}
+The first equation includes the exceptional zero case. Injectivity preserves
+guards, binding and repeated labels. Most importantly, it preserves the
+diagonal head exactly:
+\[
+ F\bigl(I_4(B,U_4(B,B))\bigr)
+   =I\bigl(F(B),U(F(B),F(B))\bigr).
+\]
+Recoding formula constructors while leaving their numerical labels fixed
+would not establish this equation.
+
+The embedding need not preserve numerical order. In the swap case,
+$F(2)=3$ and $F(3)=2$. Therefore an old restricted propositional leaf cannot
+be translated as one new restricted leaf merely by applying $F$ to its
+parameters.
+
+\subsection{The dominated implicational head is no obstruction}
+
+Write
+\[
+ \rho(D,A,H,d)=((H\to d)\to D)\to((D\to H)\to(A\to H)).
+\]
+The machine emits this head when $d\le D$. The existing finite proof
+\texttt{rho8All} in \path{M6/Logic/RestrictedImplication.lean}
+\cite{restricted-implication} derives the
+unrestricted head from restricted instances, using only modus ponens,
+reflexivity of the side relation, and the two implications
+\[
+ d\le A\Longrightarrow d\le I(A,B),\qquad
+ d\le B\Longrightarrow d\le I(A,B).
+\]
+These hold here because $A,B\le p(A,B)\le kp(A,B)$. The proof is generic
+in the implication operation and contains no quantifier, membership or
+equality constructor. Thus changing $u,e$ does not change its validity.
+
+Translate every other leaf and inference by $F$, and replace each translated
+propositional leaf by that unrestricted finite template. This gives a
+primitive-recursive translation of baseline-calculus derivations into the
+new calculus, preserving contradiction since $F(1)=1$. The domination
+conditions of the template's own leaves are proved directly in the target
+arithmetic. No monotonicity or subtraction identity for $F$ is used.
+
+For $(k,u,e)=(4,3,2)$, the same hereditary map is an involution. Its defining
+tag permutation is its own inverse, and induction using the component
+equations proves $F(F(n))=n$. Applying the same proof translation in the
+opposite direction gives refutation translations between the two calculi.
+For larger $k$, $J$ is only a left inverse on the image; it is not claimed
+to translate arbitrary target proofs back, since unused tags and possible
+label collisions prevent that inference.
+
+\subsection{Soundness of all target numerical codes}
+
+To include unused residues, define a total syntactic interpretation $T$ in
+arithmetic. Send zero and every unused-residue code to closed truth. For a
+positive code $n=kp(a,b)+r$, the used residues are interpreted by
+\[
+\begin{array}{c|l}
+r& T(n)\\\hline
+0&T(a)\to T(b)\\
+1&\operatorname{Bit}(x_a,x_b)\\
+u&\forall x_b\,T(a)\\
+e&x_a=x_b.
+\end{array}
+\]
+Auxiliary arithmetic bound variables are kept separate from the source
+labels by de Bruijn coding or capture-avoiding renaming. Every source label
+occurring in $T(B)$ is strictly below $B$, by the component inequality.
+An unused residue introduces no source label. Hence the diagonal formula
+$B\to U(B,B)$ has a uniformly generated PA proof for every numeric $B$,
+including junk codes.
+
+The other axiom suppliers are unchanged in mathematical content. Equality
+congruence and its existential witness are ordinary first-order equality
+theorems; quantifier distribution, commutation and witness elimination have
+their usual proof templates. The separation supplier uses finite binary
+comprehension for the syntactically translated formula $T(c)$, with the
+distinct-label and coincident-label cases handled exactly as in the
+baseline calibration \cite{radix-parent}. The guard and the freshness bound are the only
+properties of the numerical tags used in that argument.
+
+The implication translation is a syntactic identity except at $I(0,0)=0$,
+where a fixed proof of
+$(0=0)\leftrightarrow((0=0)\to(0=0))$ supplies the required equivalence.
+The interpretation of code one is $\operatorname{Bit}(x_0,x_0)$, which PA
+refutes. Recursing over a target derivation and inserting the appropriate
+proof supplier therefore gives a primitive-recursive translation of target
+refutations into PA refutations, with the same paper-proof scope as the
+inherited calibration. No uniform arithmetic truth predicate is used.
+
+\subsection{The scheduler and stack offsets must be recompiled}
+
+The stack continues to use ordinary Cantor pairing, not the formula
+constructors. An AX command pushes the same ten entries. Its guarded top
+and the eight leading logical entries have root implication tag zero.
+The generalization entry $U(d,h)$ has residue $u\ne0$ and value at least
+two. These are precisely the residue and size facts needed by the safe
+SHIFT windows, PUSH, POP and DISCARD words. Replacing the old universal
+tag two by any allowed $u$ therefore preserves those proofs.
+
+For a target restricted leaf with parameters $d\le D$, the compiler uses
+the actual target offset $D-d$, so $d+(D-d)=D$. The fixed unrestricted-rho
+expansion just described supplies leaves meeting that restriction. The MP
+compiler similarly calculates offsets in the target numerical encoding.
+The formula embedding preserves neither ordinary addition nor Cantor-stack
+coding; identities such as $F(d+x)=F(d)+F(x)$ are neither true in general
+nor needed. One compiles a new target command word from the translated
+derivation, and then invokes the scheduler's exhaustive word search.
+
+Finally, the source generator must be checked to implement these constructors
+at \emph{every} occurrence. Altering only some equality tags would not be
+a tagged-calculus implementation. A free-constructor emitter check, exact
+primitive source-map binding, positive full-frame physical contracts and
+whole-tape blank initialization are distinct obligations. Successful tag
+algebra does not replace any of those machine checks.
+
+The new tag argument can therefore be combined with the inherited written
+PA calibration, or with a future completed iPRA calibration after its stated
+syntactic and physical obligations are discharged. It is not, by itself,
+an end-to-end Lean proof or a completion of the baseline's open iPRA bridge.

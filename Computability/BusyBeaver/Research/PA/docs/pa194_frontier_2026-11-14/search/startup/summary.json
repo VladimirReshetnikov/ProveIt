@@ -1,0 +1,154 @@
+{
+  "status": "No accepted sub-194 machine. All finite limit exits remain unresolved.",
+  "source_commit": "32d0d8b7d93a63ad4106c18cdb29b37927acdad2",
+  "pool_size": 327,
+  "source_sites": 3673,
+  "experiments": [
+    {
+      "name": "start74_original",
+      "executable": "quad_allframes",
+      "input_table": "runtime193.native.tm",
+      "stage": 5,
+      "step_bound": 200000,
+      "minimum_header_distance": 36,
+      "minimum_one_count": 13,
+      "quadruple_phase_starts": [
+        74
+      ],
+      "preparatory_baseline_and_single_starts": 193,
+      "log": "quad74_allframes_200k.log",
+      "output": "quad74_allframes_200k.out",
+      "integer_totals": {
+        "eligible": 640,
+        "quads": 106694,
+        "triples": 9013,
+        "runs": 119534,
+        "ticks": 10827753922,
+        "hits": 0,
+        "limits": 54362,
+        "halts": 4,
+        "rays": 65168
+      },
+      "recorded_search_phase_seconds": 50.9473
+    },
+    {
+      "name": "start74_append_zero",
+      "executable": "quad_allframes",
+      "input_table": "runtime193_append0.tm",
+      "stage": 5,
+      "step_bound": 200000,
+      "minimum_header_distance": 36,
+      "minimum_one_count": 13,
+      "quadruple_phase_starts": [
+        74
+      ],
+      "preparatory_baseline_and_single_starts": 193,
+      "log": "quad74_append0_allframes_200k.log",
+      "output": "quad74_append0_allframes_200k.out",
+      "integer_totals": {
+        "eligible": 635,
+        "quads": 103375,
+        "triples": 8839,
+        "runs": 115953,
+        "ticks": 9589305357,
+        "hits": 0,
+        "limits": 48179,
+        "halts": 6,
+        "rays": 67768
+      },
+      "recorded_search_phase_seconds": 71.5863
+    },
+    {
+      "name": "nine_first_write_starts_corrected",
+      "executable": "quad_firstwrite",
+      "input_table": "runtime193.native.tm",
+      "stage": 6,
+      "step_bound": 200000,
+      "minimum_header_distance": 36,
+      "minimum_one_count": 12,
+      "quadruple_phase_starts": [
+        0,
+        4,
+        16,
+        35,
+        66,
+        74,
+        97,
+        198,
+        302
+      ],
+      "preparatory_baseline_and_single_starts": 9,
+      "log": "quad_firstwrite_allframes_200k.log",
+      "output": "quad_firstwrite_allframes_200k.out",
+      "integer_totals": {
+        "eligible": 1545,
+        "quads": 226546,
+        "triples": 20263,
+        "runs": 248457,
+        "ticks": 25275985412,
+        "hits": 0,
+        "limits": 127047,
+        "halts": 5,
+        "rays": 121405
+      },
+      "recorded_search_phase_seconds": 119.207
+    }
+  ],
+  "positive_controls": {
+    "corrected_detector": {
+      "primary_194": {
+        "steps": 58154,
+        "head": -2,
+        "native_state": 84,
+        "source_site": 25,
+        "header_distance": 48,
+        "physical_registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2,
+          0,
+          0
+        ],
+        "unit_spares": 26
+      },
+      "twelve_one_diagnostic": {
+        "steps": 139,
+        "head": 1,
+        "native_state": 84,
+        "source_site": 0,
+        "path": "000000",
+        "header_distance": 48,
+        "ones": [
+          0,
+          49,
+          51,
+          53,
+          55,
+          57,
+          59,
+          61,
+          63,
+          65,
+          67,
+          69
+        ]
+      }
+    },
+    "inherited_detector": {
+      "permissive_primary_nomination_steps": 24866,
+      "minimum_header_distance": 36,
+      "twelve_one_diagnostic_rejected": true
+    }
+  },
+  "limitations": [
+    "Fixed 327-entry edit pool, at most four distinct changed transition rows.",
+    "Finite step, tape-window and one-count bounds; limit exits unresolved.",
+    "Gap36 only a nomination criterion; no runtime theorem at this smaller gap.",
+    "Safe individual edits need not remain correct in composition.",
+    "No global lower bound, no calibrated 193-state machine, no new iPRA calibration theorem."
+  ]
+}

@@ -1,0 +1,62 @@
+% A section fragment, not a claim of a smaller consistency machine.
+\section{The 189-token visible-top generalizer: a rejection and an open route}
+
+A tempting AX simplification deletes its first \texttt{copyH} macro.
+The old top $t$ is then consumed by the first constructor, so the saved
+universal formula becomes $U(c,t)$ and the separate saved raw $t$
+disappears. This reduces the emitter from 190 to 189 macro tokens and
+from ten to nine pushed entries. The complete free-term computation is
+checked in \texttt{check\_invariant.py}; the remaining eight entries are
+the same logical and dominated heads, and the guarded visible gate is
+unchanged.
+
+\paragraph{An exact obstruction to the cached-head version.}
+Consider this new AX together with no-push MP and cached-head-only Shift.
+From the zero store, every canonical stack entry and the cached head $h$
+is even, throughout every command execution. Initially this is true.
+AX clears $h$ and pushes eight codes divisible by four plus the universal
+code $U(c,t)$, of residue two. MP preserves the stack and clears $h$.
+Shift replaces $h$ by the stack head and removes that head; the virtual
+zero tail also satisfies the invariant. These three cases prove the
+claim by quantifier-free induction on the command-word length. Pairing
+zeros do not matter because the invariant is on total canonical
+projections and includes the virtual zero.
+
+Consequently $h=1$ is unreachable and this version never halts on any
+command word from the zero store. This is an unconditional arithmetic
+invariant; no consistency assumption enters its proof. It invalidates
+this attempted refutation-search interface. In particular, a valid
+internal equivalence of its nonhalting with $\operatorname{Con}(\mathrm{PA})$
+would, together with this invariant, prove $\operatorname{Con}(\mathrm{PA})$
+in the base theory. Under the usual consistency hypothesis for PA this
+cannot give the requested iPRA calibration. No such calibrated table is
+claimed here.
+
+\paragraph{The sum-test version remains open.}
+Keeping the original Shift condition $t+h=1$ avoids that particular
+obstruction: a successful MP can leave $(t,h)=(1,0)$, and a following
+Shift detects it. However the original proof-word compiler is invalid.
+The available words now satisfy
+\[
+ (\mathsf{AX}_{0,0,0};S^8;\mathsf{MP}_0)(t,w,d,h)
+       =(0,[U(0,t);w],0,0)
+\]
+and
+\[
+ (\mathsf{AX}_{0,0,0};S^{10})(t,[a;w],d,h)
+       =(U(0,t),w,0,a).
+\]
+Thus Push and Pop introduce universal wrappers instead of preserving a
+formula code. In particular a derived implication stored this way no
+longer has implication residue zero when retrieved as a potential major
+premise. A sound replacement compiler must manage these wrappers, perhaps
+using uniform instantiation and distribution derivations, and must work
+from arbitrary carried stores. Propositional equivalence or the informal
+fresh-label fact $U(t,t)\leftrightarrow t$ is not an exact numerical stack
+identity and cannot substitute for that compiler.
+
+We ran a separate three-million-slot word/association search with the
+189-token word and the actual sum-test PA194G fixed rows. Its best
+optimistic projected count remained 194. The search and this incomplete
+compiler idea are research artifacts only; no new 193-state table or
+absolute consistency theorem is inferred from them.

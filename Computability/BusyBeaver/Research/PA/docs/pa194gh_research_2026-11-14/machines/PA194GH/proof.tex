@@ -1,0 +1,297 @@
+% Section fragment. Requires amsmath, amssymb, amsthm and hyperref.
+\section{PA194GH: explicit generalization and cached-head halting}
+\label{sec:gh}
+
+PA194GH combines an AX-supplied generalization binder with no-push modus
+ponens and a Shift instruction that tests only its cached formula.
+This combination is a different command interface from the earlier PA194G
+and PA194H interfaces. Its state count is still 194. The five literal
+changes from PA194G are used by the recurring Shift controller; this is not
+renaming, reflection, a different initial state, or a one-time padding change.
+The proof below establishes a common numerical-calculus interface. It does
+not claim that the repository's unfinished calibration of that calculus
+and physical machine to PA has become a completed Lean/iPRA theorem.
+
+\subsection{Exact command semantics}
+
+Use Cantor pairing $p(a,b)=(a+b)(a+b+1)/2+b$, total stack constructors
+$[a;w]=p(a,w)$, and total projections $\mathrm{hd},\mathrm{tl}$.
+Thus $[0;0]=0$ and both projections of zero are zero. Put
+$I(a,b)=4p(a,b)$ and $U(a,b)=4p(b,a)+2$. A store is $(t,w,d,h)$.
+The command semantics is
+\[
+ S(t,w,d,h)=\begin{cases}\mathsf{halt}&h=1,\\
+ (h,\mathrm{tl}(w),d,\mathrm{hd}(w))&h\ne1,
+ \end{cases}
+\]
+and, for $b=d+x$,
+\[
+ \mathsf{MP}_{x}(t,w,d,h)=\begin{cases}(b,w,b,0)&h=I(t,b),\\
+ (0,w,b,0)&h\ne I(t,b).
+ \end{cases}
+\]
+In particular, MP pushes no extra zero, and successful MP leaves its
+conclusion in both the visible top and the offset.
+
+For AX let $D=d+x$, $H=h+y$, $A=c$. It leaves the inherited guarded gate
+$K(H,D,A)$ as top, clears both caches, and pushes, in stack-top order,
+\[
+ q_1=\Gamma(A),\quad (q_2,\ldots,q_7)=(L_6,\ldots,L_1),\quad
+ q_8=\rho_8(D,A,H,d),\quad q_9=U(A,h),\quad t.
+\]
+Here $\Gamma(A)=I(A,U(A,A))$. The $L_i$, the guard and gate, and the
+dominated implicational head are exactly those emitted by PA194G; its
+exchanged distribution orientation is retained. The last universal head
+contains the \emph{incoming} $h$, not $H=h+y$. This distinction is required
+for soundness: $h$ is a theorem under the store invariant; $h+y$ need not be.
+The binder is the explicit operand $c$, independent of the incoming offset.
+Every $q_j$ and the gate differs from one: $q_1,\ldots,q_8,K$ have residue
+zero modulo four, and $q_9$ has residue two. A failed guard produces zero.
+
+\subsection{All-store identities and zero aliases}
+
+Words execute left to right; exponentiation of a word denotes repetition.
+Define
+\[
+ \mathsf{Push}=\mathsf{AX}_{0,0,0};S^9;\mathsf{MP}_0,
+ \quad \mathsf{Pop}=\mathsf{AX}_{0,0,0};S^{11},
+ \quad \mathsf{Discard}=\mathsf{MP}_0.
+\]
+The following are equalities of total numerical encodings, not arguments
+about a positive stack length:
+\begin{align*}
+ \mathsf{AX}_{c,x,y};S^9(t,w,d,h)&=(q_8,[t;w],0,U(c,h)),\\
+ \mathsf{AX}_{c,x,y};S^{10}(t,w,d,h)&=(U(c,h),w,0,t),\\
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+ \begin{cases}\mathsf{halt}&t=1,\\(t,w,0,a)&t\ne1.\end{cases}
+\end{align*}
+The first ten Shifts test only the cleared cache and the generated heads,
+not the saved arbitrary top. In Push, the last MP cannot match a
+residue-zero implication against the residue-two universal head. In
+Discard its proposed conclusion is zero, so success and failure have the
+same result. The eleventh Shift in Pop tests the saved old top and is its
+only possible halt. Empty-stack cases follow directly from $[0;0]=0$;
+for example Push of the all-zero store returns that same numeric store.
+Pop must never be described as total returning execution when $t=1$.
+
+Generalization has the shorter compiler
+\[
+ \mathsf{Gen}_i=\mathsf{Push};S;\mathsf{AX}_{i,0,0};S^{10}.
+\]
+For every $a,w,i$, including $a=1$ and $i=0$, it returns
+$(U(i,a),w,0,0)$ from $(a,w,0,0)$. After Push the single Shift tests zero
+and puts $a$ in the cache. AX consumes that cache before another Shift
+can inspect it. PA194H requires an additional offset-setting MP here;
+PA194GH does not.
+
+For $1\le j\le7$, the selector
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};S^{j+1};\mathsf{Pop}^{9-j}
+\]
+returns $(q_j,w,0,0)$ from every $(t,w,0,0)$. The gate selector is
+$\mathsf{Discard};\mathsf{AX}_{c,b,a};\mathsf{Pop}^{10}$.
+For $u\le a$, write $\mathsf{Offset}_u=\mathsf{MP}_u$; the selector
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf{AX}_{b,a-u,c};S^9;\mathsf{Pop}
+\]
+returns $\rho_8(a,b,c,u)$ with the original underlying stack and cleared
+caches. All selected formulas in these words have residue zero, so their
+Pops are safe. The saved zero is consumed last.
+
+\subsection{The MP compiler and its reserved zero}
+
+Put $\mathsf{MPSuffix}_b=S;S;\mathsf{MP}_b;\mathsf{Pop}$. Then
+\[
+ \mathsf{MPSuffix}_b(0,[a,I(a,b),0;w],0,0)=
+ \begin{cases}\mathsf{halt}&a=1\text{ or }b=1,\\
+ (b,w,0,0)&a\ne1\text{ and }b\ne1.
+ \end{cases}
+\]
+The second Shift detects $a=1$. Otherwise MP sees minor $a$ and cached
+major $I(a,b)$, succeeds, and leaves $(b,[0;w],b,0)$. The final Pop
+clears the offset and consumes the reserved zero, or detects $b=1$.
+Without this zero it would remove part of the arbitrary underlying stack.
+The case $a=b=w=0$ uses the literal identities $I(0,0)=0$ and $[0;0]=0$,
+and is included in the calculation.
+
+For a proof tree $\pi$ in the common numerical calculus define a word
+$W_\pi$ recursively. Use the displayed selectors for axiom instances and
+$W_{\pi_0};\mathsf{Gen}_i$ at a generalization node. At an MP node,
+where $\pi_0$ concludes $a$ and $\pi_1$ concludes $I(a,b)$, use
+\[
+ \mathsf{Discard};\mathsf{Push};
+ W_{\pi_1};\mathsf{Push};W_{\pi_0};\mathsf{Push};\mathsf{MPSuffix}_b.
+\]
+For all $t,w$, this either halts early or returns
+$(\operatorname{concl}(\pi),w,0,0)$ from $(t,w,0,0)$.
+This follows by proof-tree induction using the exact word identities.
+Each recursive word leaves its arbitrary old stack unchanged, so the
+reserved zero survives both premise computations.
+
+With $n$ proof-tree nodes, $|W_\pi|\le122n$: the longest axiom selector
+is the 122-command gate selector; generalization adds 23 commands; an
+MP node adds 49 commands in addition to its two subwords. Consequently,
+if $\pi$ proves one, the word
+\[
+ V_\pi=\mathsf{AX}_{0,0,0};W_\pi;\mathsf{Pop}
+\]
+halts from every incoming store and has length at most $122n+13$.
+Its first AX clears dirty caches, and the final Pop detects the proven
+one before consulting arbitrary old stack data. A final lone Shift would
+be wrong for this interface: $S(1,0,0,0)=(0,0,0,0)$.
+
+\subsection{Fair scheduling and a primitive-recursive witness}
+
+The carried-store scheduler is unchanged. For its command codes write
+\[
+ B_S(z)=p(0,z),\quad B_{\mathsf{MP}_x}(z)=p(1,p(x,z)),\quad
+ B_{\mathsf{AX}_{c,x,y}}(z)=p(c+2,p(y,p(x,z))).
+\]
+The continuation encoding is $E(\epsilon)=0$ and
+$E(c::w)=1+B_c(E(w))$. If $z=E(V_\pi)$ then the fresh-candidate codes
+\[
+ n_k=p(k+2,p(0,p(0,z)))
+\]
+are strictly increasing, cofinal, and execute
+$\mathsf{AX}_{k,0,0};V_\pi$. The prefix may leave any store because
+$V_\pi$ halts from every store. Given a current fresh counter $N$, choose
+$k=N$; then $n_k>N$. The current finite continuation is first completed,
+unless it halts. For a positive continuation $l$ the next residual is at
+most $l-1$, and a fresh candidate $j$ therefore has at most $j+1$ commands.
+For example
+\[
+ L+(n_k+2)^2+2(n_k+2)
+\]
+is a safe bound on remaining abstract scheduler command/boundary events
+through this chosen candidate, where $L$ is the current continuation.
+The bound is deliberately generous and primitive recursive. It proves
+existence of a finite halting witness without requiring reset stores or
+standardness of the natural-number model.
+
+Conversely annotate $t$, $h$, and the live canonical Cantor-stack entries
+with numerical-calculus derivations. The all-zero initial store has the
+fixed proof of zero (the all-zero dominated-head instance); it also
+supplies each virtual zero tail. AX appends proofs of its axiom heads and
+uses theorem-generalization on the incoming proof of $h$ to obtain
+$U(c,h)$. MP uses the annotated premises on success, and the fixed zero
+proof on failure. Shift moves annotations and halts only with an
+annotated derivation of one. Pairing aliases are handled by canonical
+expansion and the explicit zero proof, not by assuming every push creates
+a nonempty stack cell. Thus a finite scheduler halting trace produces a
+finite proof of one.
+
+Both directions are witness-producing. Encode proof trees with proper
+subtrees smaller than their root code, and use primitive-recursive
+course-of-values recursion for $W_\pi$. The soundness annotation is a
+primitive-recursive fold over a finite trace. Proof validity, store
+annotation validity, decoded list bounds, and bounded scheduler runs all
+have primitive-recursive characteristic functions. The inductions just
+used can therefore be expressed as quantifier-free induction with those
+functions in a PRA language. All branches test decidable numerical
+relations. For the all-store compilation lemma, do not induct on an
+unbounded universally quantified store assertion. Fix the proof code and
+initial $t,w$ as free parameters; compute the finite word, its full
+length-bounded execution with an absorbing halt flag, and the finite tree
+of recursive subword intervals. Every actual recursive call has a store
+appearing in that generated trace. Its entries are bounded by the
+primitive-recursively computed maximum of the trace encoding. At each
+subtree rank, use the bounded conjunction of the desired identities for
+these finitely many actual call records. Its characteristic function is
+primitive recursive, so rank induction is genuinely quantifier-free.
+The preceding all-store statement follows because the initially fixed
+$t,w$ were arbitrary; no unbounded universal statement was used as the
+induction formula. In particular, this new command-level proof has a constructive
+primitive-recursive formulation; a bare invocation of induction available
+only in PA is not being substituted for it.
+
+The source-to-tape step requires the explicit loop realizations of the
+arithmetic commands and their invariant. Its local tape components have
+positive affine durations in the arbitrary register values and header
+gap. Summing these durations along a primitive-recursively generated
+source trace gives a primitive-recursive physical time bound. The supplied
+literal-table checker establishes the relevant local identities and list
+induction certificates; formal internalization of their checker and the
+full inherited command implementation remains a separate proof-assistant
+obligation. Accordingly the unconditional new result at this level is the
+witness equivalence between the displayed abstract scheduler and the
+common numerical calculus, with an explicit checked physical realization
+as documented next.
+
+\subsection{Physical realization and exact scope}
+
+The AX grammar is PA194G's frozen 190-token grammar. Its 67 reader controls
+are combined with 134 fixed controls, then seven disjoint contextual pairs
+are folded: $134+67-7=194$. The no-push source subtree remains
+\texttt{node163=(node6,node54)}. The Shift subtree becomes
+\[
+ \texttt{node170=((node36,(node167,node145)),node57)},
+\]
+which is PA194H's clear-old-top, test-cached-head implementation.
+The five fixed row edits are
+\[
+\begin{array}{c|c|c}
+(q,b)&\hbox{PA194G action}&\hbox{PA194GH action}\\\hline
+(38,0)&(0,R,28)&(0,R,11)\\
+(38,1)&(1,R,20)&(1,R,122)\\
+(214,0)&(0,R,188)&(0,R,312)\\
+(214,1)&(1,R,312)&(1,R,20)\\
+(312,0)&(0,R,11)&(0,R,188).
+\end{array}
+\]
+The entire resolved source has 3,653 primitive sites and 4,754 outcomes,
+including both decrement branches. All 28 two-cell fold identities hold
+simultaneously. The constructor checks every outcome with arbitrary
+register symbols, and checks equality of the complete blank-start tape
+with the intended frame after exactly 57,922 transitions. The separate
+literal checker rederives the four unary-list sweep lemmas from the
+actual candidate rows and does not assume the builder's arithmetic-box
+oracle. These are universal symbolic certificates, not a sample run over
+small register values, and not a completed Lean proof.
+
+The correct endpoint to report is relative. Once the shared physical
+implementation/calculus bridges are internalized in the specified weak
+arithmetic, the witness transforms give halting equivalence of PA194GH
+and the primary calibrated calculus (and hence of their consistency
+negations in iPRA). If only the older PA calibration is assumed, the
+resulting absolute consistency theorem has that older PA scope.
+An unconditional machine-specific iPRA equivalence with
+$\operatorname{Con}(\mathrm{PA})$ must still discharge the repository's
+open physical and logical-calibration obligations. Changing five rows
+and completing the new command proof cannot by itself discharge them.
+
+\subsection{PA194GHS: a second physical implementation}
+
+PA194GHS implements the same GH commands with the symmetric comparison
+method inherited from PA194HS. It is not a second new logical calculus.
+The nine source registers are $(N,T,W,A,D,H,X,Y,L)$. The GH Shift path
+clears the old $T$, copies $H$ into $T$ and $X$, restores $X$ to $H$,
+increments $X$, and enters the destructive comparison with
+$(T,H,X)=(h,h,1)$. GHS omits that restore loop and increments $H$ instead,
+entering with $(T,H,X)=(h,1,h)$. Equality is symmetric, and the unequal
+branch clears both compared registers before the same Cantor-stack
+continuation. Hence both programs have exactly the GH Shift semantics.
+The no-push MP copy tail sends $(T,D,H,X)=(0,b,0,0)$ to $(b,b,0,0)$
+in $7b+2$ primitive steps; it is unchanged in this companion.
+
+The literal source changes are
+\[
+\begin{split}
+\texttt{node170}&=\texttt{((node36,(node167,node145)),node56)},\\
+\texttt{node171}&=\texttt{(node170,(inc5,continue3))}.
+\end{split}
+\]
+Before folding, the four row settings are
+$(214,1)\mapsto(1,R,30)$, $(310,1)\mapsto(1,R,330)$,
+$(330,0)\mapsto(0,R,63)$, and $(330,1)\mapsto(1,L,73)$.
+The additional contextual pair is $41\mapsto330$, with folded actions
+$0L31$ and $1L46$. This gives $135+67-8=194$ working states.
+The full final simultaneous table passes all 32 local fold cases.
+There are 3,650 source sites and 4,750 outcomes; the constructor checks
+all outcomes with arbitrary register symbols, and startup reaches the
+same whole-tape frame after 57,768 transitions. The full command proof
+above applies unchanged. Its independent literal-table verification is
+recorded separately from GH's, so the smaller source count is not itself
+used as a correctness argument.

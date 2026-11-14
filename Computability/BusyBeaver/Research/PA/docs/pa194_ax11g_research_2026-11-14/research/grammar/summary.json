@@ -1,0 +1,102 @@
+{
+  "status": "completed_negative_bounded_searches",
+  "machine_dense_sha256": "7e1c6442816e5df05e961f2057719252a1976c9a195a786978bf1e2d3c8e466d",
+  "fixed_controls": 134,
+  "target_reader_minus_fold_score": 59,
+  "target_total_controls": 193,
+  "runs": [
+    {
+      "prefix": "run",
+      "initial_endings": 4,
+      "seed": 202611142233,
+      "requested_seconds": 300,
+      "recorded_seconds": 300.006,
+      "iterations": 4638201,
+      "accepted_mutations": 248305,
+      "hits": 0,
+      "best_penalized_score": 60,
+      "final_seed_files": 30,
+      "parameter_permutation_mutations_enabled": false,
+      "template_file": "templates.txt",
+      "log": "recorded/run.log"
+    },
+    {
+      "prefix": "safe",
+      "initial_endings": 11,
+      "seed": 202611142288,
+      "requested_seconds": 300,
+      "recorded_seconds": 300.005,
+      "iterations": 5197642,
+      "accepted_mutations": 283588,
+      "hits": 0,
+      "best_penalized_score": 60,
+      "final_seed_files": 30,
+      "parameter_permutation_mutations_enabled": false,
+      "template_file": "safe_templates.txt",
+      "log": "recorded/safe.log"
+    }
+  ],
+  "pricing": {
+    "padding": {
+      "cases": 49,
+      "minimum_optimistic_controls": 194,
+      "cases_at_most_194": 3,
+      "price_method": "raw controls minus maximum disjoint opportunity matching; simultaneous feasibility is not established by this price alone"
+    },
+    "safe_terminal": {
+      "cases": 14,
+      "minimum_optimistic_controls": 194,
+      "cases_at_most_194": 11,
+      "price_method": "raw controls minus maximum disjoint opportunity matching; simultaneous feasibility is not established by this price alone"
+    }
+  },
+  "portable_preparation_and_pricing_replay": {
+    "status": "PASS",
+    "checks": {
+      "recorded/padding/prices.json": {
+        "byte_identical": true,
+        "sha256": "3a4b8787951c30b413dd5824d41e6676bf6cf2860e1069e6f5ba1b9fecef1d89"
+      },
+      "recorded/padding/seeds.json": {
+        "byte_identical": true,
+        "sha256": "221fd069f05643fa1f4627b950aba9e1708def90aa4761e4894458f802212d2d"
+      },
+      "recorded/safe_terminal/prices.json": {
+        "byte_identical": true,
+        "sha256": "335a1b93d9db730e38d748d713373b1333f54734770c0f77f897e882667b5d44"
+      },
+      "templates.txt": {
+        "byte_identical": true,
+        "sha256": "2d9c4016573c116b921aa22a10d3ed062d6240cc613f4aaa2934a5fcd37b31ef"
+      },
+      "safe_templates.txt": {
+        "byte_identical": true,
+        "sha256": "45259f1a419424bc783a65dfc5efaf3c1ac18fefc42b6badd4a2c6228f25c6b6"
+      },
+      "trees/AX11G.tree.json": {
+        "byte_identical": true,
+        "sha256": "51471d4465884ea7a0b691fa092d4d369ab476ef4397fb18cc5ba6861f9f6da6"
+      },
+      "trees/node55.tree.json": {
+        "byte_identical": true,
+        "sha256": "79cfc3ae8921ee7b461715ee6acc1712de3508b9f98d368b1a96835e8142ef5a"
+      },
+      "trees/node58.tree.json": {
+        "byte_identical": true,
+        "sha256": "1c57e8766b2ca7216d56887080fba2befefdd587d988676ed9ecaba74c419328"
+      },
+      "trees/node70.tree.json": {
+        "byte_identical": true,
+        "sha256": "d5914060498816beb1ae2358b96db857a7562f235e8226d135b914b8edfc1c8d"
+      }
+    }
+  },
+  "limitation": "Search scores, finite symbolic admission, and negative runs do not establish a global lower bound or validate a new machine.",
+  "input_sha256": {
+    "search.cpp": "41ad27291bc7241e239ce7b55bc9ba913ef2ee299c9a08a41c775309a047e653",
+    "screen.cpp": "45fd39723955a367bbcd1c3e4f33673320596636ce60d0bf7b4ed5dcaa5bffc5",
+    "leaf_attrs.txt": "384426ee2b82200287e5afe9582ddc92c978a3590031ad30cacb72b4430f10cf",
+    "templates.txt": "2d9c4016573c116b921aa22a10d3ed062d6240cc613f4aaa2934a5fcd37b31ef",
+    "safe_templates.txt": "45259f1a419424bc783a65dfc5efaf3c1ac18fefc42b6badd4a2c6228f25c6b6"
+  }
+}

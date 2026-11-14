@@ -1,0 +1,304 @@
+% Report fragment; needs amsmath, amssymb, amsthm, hyperref/xurl.
+\section{The literal PA194AX11G construction and its preservation theorem}
+
+The parent is PA194G from the pinned repository commit
+\nolinkurl{32d0d8b7d93a63ad4106c18cdb29b37927acdad2}; the composition
+uses its explicit binder and the eleven-entry AX protocol
+\cite{generalizer,ax11-parent}.
+The parent numeral calculus has constructors
+\[
+p(a,b)=\tfrac12(a+b)(a+b+1)+b,\quad I(a,b)=4p(a,b),\quad
+M(a,b)=4p(a,b)+1,
+\]
+\[
+U(a,B)=4p(B,a)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+Its axioms, including the Q-oriented universal-distribution head, and the
+ordinary PA calibration are retained with attribution in
+\path{machines/AX11G/references/parent_generalizer_proof.tex} and the accompanying
+calibration texts. The finite Q premise-exchange certificate is also included.
+These are dependencies; the present construction does not independently
+complete their model-uniform iPRA calibration.
+
+\subsection{One native row, with an observable recurring effect}
+
+Change exactly
+\[
+ (2066,1):(0,L,302)\quad\longmapsto\quad(1,R,19).
+\]
+The first action returns from AX. The second enters the existing stack-push
+macro and continues into the full MP operand reader. PA194G already has the
+no-push successful-MP branch. Thus this one change implements AX11G without
+adding controls. There remain 134 fixed controls, 67 raw axiom readers, and
+seven simultaneous folds: $134+67-7=194$.
+
+The dense table has working controls $0,\ldots,193$, initial control zero,
+and terminal halt label 194, with no outgoing halt rows. Its SHA-256 is
+\begin{quote}\small
+\nolinkurl{7e1c6442816e5df05e961f2057719252a1976c9a195a786978bf1e2d3c8e466d}.
+\end{quote}
+The native table starts in 74 and halts in 254. Its exact relabeling is
+included. Every working control is reachable in the pointed transition graph.
+The tape is two-way infinite, binary, blank zero, with head initially at zero;
+all actions write one bit and move one cell.
+
+This change affects recurring commands. Starting with any fixed old store,
+its AX stack gains the old gate as one more entry, and a fourth operand is
+consumed. That operand can set the arithmetic offset to any natural number.
+On the all-zero store and zero arguments, the old gate is zero, but the
+parent AX output stack $W$ is positive because it contains $U(0,0)=2$; hence the new stack
+$p(0,W)$ is strictly larger than $W$. The zero-pair alias therefore does not
+hide the new behavior. The change is also compatible with the G generalizer:
+its saved formula is $U(c,h)$, where $h$ is the original cache.
+
+\subsection{Exact source binding}
+
+The source has 3,672 primitive sites. The old AX return at ordinal 3553 is
+replaced by a nineteen-site push, with entry 3553 and normal exit 3572.
+That exit is the full MP field reader. Every other old source site remains,
+with ordinals above 3553 increased by eighteen. All 3,653 exterior resolved
+instructions, including their successor indices, agree under this relocation.
+No exterior edge enters the interior of the inserted push. The inserted
+block is an exact relocation of the old push at ordinal 50, including its
+internal successors and sole normal exit.
+
+The source checker first reconstructs the literal PA194G parent and compares
+its dense bytes with the pinned parent. It then checks the sole native edit,
+the complete source splice, the unchanged arithmetic-box rows, and every
+simultaneous fold context. Independently, two different source resolvers
+reconstruct the candidate graph from its path-coded source sites. These
+checks identify the command actually implemented; a resemblance between
+linear lists of primitive instructions would be insufficient.
+
+\subsection{Universal physical contracts and blank initialization}
+
+The construction pass checks all 4,779 branch-sensitive outcomes, over
+arbitrary natural register contents and arbitrary permitted tails and gaps.
+The independent physical pass derives its four list-sweep induction lemmas
+from the literal rows, without treating the arithmetic boxes as oracles.
+It checks the same 4,779 outcomes, yielding strictly positive durations
+whose minimum constant coefficient is three. The finite checker records
+1,083,079 symbolic operations and maximum 379 for one outcome. These are
+checker-work counts, not bounds on the unbounded natural register values.
+
+Exactly 58,154 literal transitions from the all-zero tape reach native
+control 84 with head at $-2$ and source entry 25. The logical register vector
+is $(2,0,0,0,0,0,0,0,0)$, with 26 spare unit blocks. The exact entire finite
+support, and hence the blank exterior, is compared with the encoded source
+frame. This is a finite startup theorem and supplies no direct evidence of
+actual infinite nonhalting.
+
+A finite source execution can therefore be expanded into a finite literal
+execution after startup. Positive duration also reflects finite halting:
+if a putative literal halt occurred at time $T$ while the source never
+halted, the first $T+1$ positive source segments would construct a literal
+run beyond that time. Determinism contradicts the absence of an outgoing
+transition from the first halt configuration. One need not assume that an
+arbitrary intermediate tape can be decoded as a source frame.
+
+\subsection{Precise logical conclusion}
+
+The independently audited command proof is in \path{machines/AX11G/command_proof.tex}.
+It supplies total Push and Pop words, all axiom selectors, the dominated
+implication selector, a protected-stack MP compiler, and
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf S;
+     \mathsf A_{i,0,0,0};\mathsf S^{11}.
+\]
+The offset-setting command required by ordinary AX11 is absent. All these
+identities include zero-stack aliases and early halts; the fourth AX field
+is accounted for in the scheduler encoding and the all-store soundness proof.
+
+Consequently the new source searches the same numerical-calculus
+refutability condition as the G parent. Composing this new preservation
+argument with the explicitly retained ordinary PA calibration gives the
+same ordinary mathematical calibration to PA refutability for the new table.
+The construction and symbolic checks do not themselves establish
+\[
+ \mathrm{iPRA}\vdash
+ \bigl(\neg\operatorname{Halt}_{\mathrm{blank}}(\mathrm{AX11G})
+          \leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).
+\]
+For that stronger endpoint, one must internalize the proof/code and
+physical/scheduler translations with the needed weak-arithmetic induction
+bounds, or discharge the repository's all-model $I\Sigma_1$ calibration
+predicate for this literal table. A separate report identifies those
+remaining premises. Conditional transport from a calibrated numerical
+calculus is legitimate; replacing those premises by the fact that the
+Python checkers returned PASS is not.
+
+% Independent mathematical audit of the AX11G composition.
+\section{Audit of the combined eleven-entry explicit-binder command}
+\label{sec:ax11g-audit}
+
+The proposed PA194AX11G construction combines two existing command ideas:
+the PA194G cached generalization $U(c,h)$ and the AX11 convention that saves
+the guarded gate and falls through to the full MP reader. The interaction
+requires an audit because AX now has a fourth input field, and all stack
+selectors move by one position. This section verifies the combined command
+algebra independently of a long blank-tape simulation.
+
+Write $[a;w]=p(a,w)$, with the first displayed item at the top of a nested
+stack. Let $D=d+x$, $H=h+y$, and let
+\[
+\begin{array}{c|l}
+j&q_j\\\hline
+0&g(H,D,c),\text{ with failed guard interpreted as zero}\\
+1&\Gamma(c)\\
+2&L_6^Q(D,c,H)\\
+3&L_5(D,H)\\
+4&L_4(D,c,H)\\
+5&L_3(D,c,H)\\
+6&L_2(D,c,H)\\
+7&L_1(D,H)\\
+8&\rho(D,c,H,d)\\
+9&U(c,h).
+\end{array}
+\]
+The last entry uses the \emph{incoming} cache $h$, not the offset-adjusted
+number $H=h+y$. All $q_0,\ldots,q_8$ are divisible by four, while
+$q_9\equiv2\pmod4$ and $q_9\ge2$.
+
+\subsection{Exact all-store command effect}
+
+The parent AX command leaves $q_0$ on top, pushes
+$[q_1,\ldots,q_9,t;w]$, and clears $d,h$. Appending its literal push macro
+therefore yields
+\[
+ (0,[q_0,q_1,\ldots,q_9,t;w],0,0).
+\]
+The fall-through MP routine reads a genuine new field $z$. It compares
+$I(0,z)$ with zero: equality holds exactly at $z=0$, but both branches
+have the same visible top zero and the same stack. Hence the exact effect
+for \emph{every} old store and every field value is
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =(0,[q_0,q_1,\ldots,q_9,t;w],z,0).
+ \tag{G11-A}
+\]
+Restricting a proof compiler to $z=0$ is valid. Restricting the soundness
+argument to $z=0$ would be invalid, since the scheduler enumerates all
+four-field command encodings.
+
+The other commands remain
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(v,w,v,0),&I(t,v)=h,\\
+              (0,w,v,0),&I(t,v)\ne h,
+ \end{cases}\qquad v=d+x,
+\]
+and
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&t+h\ne1.
+ \end{cases}
+\]
+The sum guard is exact: it does not halt when $t=h=1$.
+
+\subsection{Total stack words}
+
+Put $A_0=\mathsf A_{0,0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,\qquad
+ \mathsf{Pop}=A_0;\mathsf S^{12},\qquad
+ \mathsf{Discard}=\mathsf{MP}_0.
+\]
+Iteration of the Shift equation gives
+\begin{align*}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)
+       &=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)
+       &=(q_9,w,0,t).
+\end{align*}
+All these Shifts are nonhalting: sums of the relevant residue-zero entries
+cannot be one, and a sum containing $q_9\ge2$ cannot be one. Consequently
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=(t,w,0,a),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0).
+\end{align*}
+The last identity requires $d=0$; it is not asserted for arbitrary $d$.
+The proof compiler below maintains that premise at every Discard call.
+Push's MP comparison fails because implication and universal formulas have
+different residues. Pop is total even if $t=1$: its final tested sum
+contains $q_9$. The Cantor identities
+$p(0,0)=\operatorname{hd}(0)=\operatorname{tl}(0)=0$ are included, so an
+empty stack and a collapsed push of zero are covered.
+
+For $0\le j\le8$, from any $(t,w,0,0)$, the word
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,0};
+       \mathsf S^{j+2};\mathsf{Pop}^{9-j}
+\]
+returns $(q_j,w,0,0)$. It exposes the selected entry, then consumes the
+remaining generated tail and saved zero using total Pop operations. For an
+arbitrary dominated leaf with $v\le D$, use instead
+\[
+ \mathsf{Discard};\mathsf{MP}_v;
+ \mathsf A_{A,D-v,H,0};\mathsf S^{10};\mathsf{Pop},
+\]
+which returns $(\rho(D,A,H,v),w,0,0)$.
+
+\subsection{The direct generalizer and MP composition}
+
+The correct new generalizer is
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf S;
+                 \mathsf A_{i,0,0,0};\mathsf S^{11}.
+\]
+From $(a,w,0,0)$, the first two operations give $(0,w,0,a)$, the new AX
+stores $U(i,a)$ in position nine, and eleven Shifts return
+$(U(i,a),w,0,0)$. No offset-setting command is needed. All the operations
+are nonhalting even at $a=1$, because the intermediate tested formulas have
+the residue and size properties established above.
+
+For an MP derivation from $a$ and $I(a,b)$, reserve a zero before the two
+recursive calls. If neither call halts, the resulting store immediately
+before its final suffix is
+\[
+ (0,[a,I(a,b),0;w],0,0).
+\]
+Apply $\mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}$. The first Shift
+is safe. The second halts if $a=1$; otherwise it exposes
+$(a,[0;w],0,I(a,b))$. MP succeeds and gives $(b,[0;w],b,0)$; total Pop
+returns $(b,w,0,0)$. This covers $a=b=0$ and the zero-stack aliases.
+
+Induction on a finite numerical derivation therefore constructs a word
+$C(e)$ that, from every $(t,w,0,0)$, either halts or returns its conclusion
+on top while restoring $w$ and clearing the offset and cache. For a refutation,
+$A_0;C(e);\mathsf S$ halts from every incoming command store. The leading
+$A_0$ clears arbitrary $d,h$ without requiring the stack to be empty.
+
+\subsection{Four-field scheduling and soundness}
+
+With $r$ denoting the encoded continuation, the actual AX encoding is
+\[
+ \operatorname{enc}(\mathsf A_{c,x,y,z};r)
+       =p(c+2,p(y,p(x,p(z,r)))).
+\]
+The positive continuation of a nonempty word is one plus its command
+encoding; a fresh candidate omits that leading one. The unchanged
+three-field AX encoding cannot be reused: the MP reader would consume part
+of the supposed continuation as its fourth argument. Components of Cantor
+pairing do not exceed their containing code, so positive continuations
+strictly decrease. Prefixing a universally halting word by
+$\mathsf A_{k,0,0,0}$ gives a cofinal family of fresh candidate codes.
+Every prefix terminates and leaves a store to which the all-store compiler
+applies. Thus carrying the stack between failed trials causes no gap in
+the completeness argument.
+
+For soundness, annotate $t,h$ and every live canonical stack entry with a
+derivation of its formula in the same numerical calculus. The new AX adds
+only its axiom instances, the saved old top and the valid generalization
+$U(c,h)$; its new visible top is truth. The offset $z$ needs no theorem
+annotation. MP composes derivations on success and writes truth on failure.
+Shift transfers the annotations; if $t+h=1$, an annotated code equals one.
+No consistency assumption is used in this local preservation argument.
+
+These arguments show that the combined command system searches exactly
+the same refutability condition as PA194G, once both are connected to their
+literal source programs and physical tables. They justify the new command
+composition and a relative mathematical preservation theorem. They do not
+complete the separately identified baseline iPRA calibration or constitute
+a newly compiled Lean endpoint.

@@ -1,0 +1,54 @@
+INDEPENDENT CRITICAL REVIEW OF AX11G
+
+1. Executed the universal free-term command checker and independently
+   reconstructed source/CFG binding. Both pass. I checked the zero aliases,
+   unrestricted top values in Pop, offset clearing, successful and failed MP,
+   early contradiction at antecedent 1, and conclusion 1 followed by final Shift.
+   The fourth AX field is mandatory; the old three-field scheduler code would
+   read part of the continuation as the extra offset.
+
+2. The bounded-input compiler invariant is mathematically sound. At height k,
+   the allowed stores are bounded by R_(F-k); the lower-height induction
+   hypothesis has the larger bound. For a successor node with stack y <= R,
+   the two recursive MP stacks are p(0,y) and p(I(a,b),p(0,y)). With every
+   conclusion bounded by K, both are <= (K+R+3)^4. Bounded conjunction over
+   proof-table nodes and store inputs is a primitive-recursive Boolean
+   equation. This avoids induction on an unbounded all-store formula.
+   A leaf-height convention issue was reported and corrected: L0=0 and
+   Lk<=128(2^k-1) use leaves of height 1.
+
+3. The retained node map agrees exactly with the pinned PA194G node map;
+   the raw parent table also agrees byte for byte. The new source binding
+   identifies exactly one macro replacement: closing breakTo 1 becomes the
+   19-site Push. The new interval [3553,3572) exits at the full MP reader.
+   Every other primitive operation and successor survives under relocation.
+
+4. The new native exchange certificate removes a potential proof gap:
+   K and S are NOT assumptions of its checker. My independent checker uses
+   canonical term-DAG IDs and only restricted rho and MP. It passes 18,897
+   lines: 8,986 rho instances and 9,911 MP steps, with 29,932 term nodes.
+   Maximum term height 32; maximum side-condition component-path length 6.
+   For each path edge, x,y<=I(x,y)=4p(x,y). Composition proves u<=a.
+   This remains valid at I(0,0)=0; no injectivity assumption is used.
+   Independent checker and receipt are included in the package proof/ folder.
+
+5. The physical frame equivalence must use the independent literal-list
+   certificates, not just the constructor's arithmetic-box oracles. The
+   incoming-designs agent independently replayed all 4,779 AX11G physical
+   outcomes. The command source semantics still inherit the unchanged
+   arithmetic helper contracts; those dependencies should remain explicit.
+
+6. The relative iPRA argument is supported by primitive-recursive witness
+   transformations and quantifier-free prefix invariants. Positive physical
+   durations are necessary for extracting a source halt from a physical halt;
+   T+1 nonhalting source steps would otherwise place an unhalted physical
+   frame beyond a halt at time T. The soundness invariant must track finite
+   proof annotations, not arithmetic truth. Zero-stack collapse is handled
+   by the fixed truth proof and canonical annotation updates.
+
+7. The absolute iPRA calibration to Con(PA) is NOT established by this work.
+   The repository's internal PA-to-numerical-calculus compiler and complete
+   all-model calibration remain separate obligations. The deliverable must
+   lead with the achieved 194-state conditional fallback and state that no
+   sub-194 machine was found. Do not describe a standard-Nat Lean result or
+   an executable Python certificate as an already kernel-checked iPRA proof.

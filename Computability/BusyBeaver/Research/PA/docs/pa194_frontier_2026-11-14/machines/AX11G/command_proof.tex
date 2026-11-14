@@ -1,0 +1,175 @@
+% Independent mathematical audit of the AX11G composition.
+\section{Audit of the combined eleven-entry explicit-binder command}
+\label{sec:ax11g-audit}
+
+The proposed PA194AX11G construction combines two existing command ideas:
+the PA194G cached generalization $U(c,h)$ and the AX11 convention that saves
+the guarded gate and falls through to the full MP reader. The interaction
+requires an audit because AX now has a fourth input field, and all stack
+selectors move by one position. This section verifies the combined command
+algebra independently of a long blank-tape simulation.
+
+Write $[a;w]=p(a,w)$, with the first displayed item at the top of a nested
+stack. Let $D=d+x$, $H=h+y$, and let
+\[
+\begin{array}{c|l}
+j&q_j\\\hline
+0&g(H,D,c),\text{ with failed guard interpreted as zero}\\
+1&\Gamma(c)\\
+2&h_6^Q(D,c,H)\\
+3&h_5(D,H)\\
+4&h_4(D,c,H)\\
+5&h_3(D,c,H)\\
+6&h_2(D,c,H)\\
+7&h_1(D,H)\\
+8&\rho(D,c,H,d)\\
+9&U(c,h).
+\end{array}
+\]
+The last entry uses the \emph{incoming} cache $h$, not the offset-adjusted
+number $H=h+y$. All $q_0,\ldots,q_8$ are divisible by four, while
+$q_9\equiv2\pmod4$ and $q_9\ge2$.
+
+\subsection{Exact all-store command effect}
+
+The parent AX command leaves $q_0$ on top, pushes
+$[q_1,\ldots,q_9,t;w]$, and clears $d,h$. Appending its literal push macro
+therefore yields
+\[
+ (0,[q_0,q_1,\ldots,q_9,t;w],0,0).
+\]
+The fall-through MP routine reads a genuine new field $z$. It compares
+$I(0,z)$ with zero: equality holds exactly at $z=0$, but both branches
+have the same visible top zero and the same stack. Hence the exact effect
+for \emph{every} old store and every field value is
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =(0,[q_0,q_1,\ldots,q_9,t;w],z,0).
+ \tag{G11-A}
+\]
+Restricting a proof compiler to $z=0$ is valid. Restricting the soundness
+argument to $z=0$ would be invalid, since the scheduler enumerates all
+four-field command encodings.
+
+The other commands remain
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(v,w,v,0),&I(t,v)=h,\\
+              (0,w,v,0),&I(t,v)\ne h,
+ \end{cases}\qquad v=d+x,
+\]
+and
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&t+h\ne1.
+ \end{cases}
+\]
+The sum guard is exact: it does not halt when $t=h=1$.
+
+\subsection{Total stack words}
+
+Put $A_0=\mathsf A_{0,0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,\qquad
+ \mathsf{Pop}=A_0;\mathsf S^{12},\qquad
+ \mathsf{Discard}=\mathsf{MP}_0.
+\]
+Iteration of the Shift equation gives
+\begin{align*}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)
+       &=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)
+       &=(q_9,w,0,t).
+\end{align*}
+All these Shifts are nonhalting: sums of the relevant residue-zero entries
+cannot be one, and a sum containing $q_9\ge2$ cannot be one. Consequently
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=(t,w,0,a),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0).
+\end{align*}
+The last identity requires $d=0$; it is not asserted for arbitrary $d$.
+The proof compiler below maintains that premise at every Discard call.
+Push's MP comparison fails because implication and universal formulas have
+different residues. Pop is total even if $t=1$: its final tested sum
+contains $q_9$. The Cantor identities
+$p(0,0)=\operatorname{hd}(0)=\operatorname{tl}(0)=0$ are included, so an
+empty stack and a collapsed push of zero are covered.
+
+For $0\le j\le8$, from any $(t,w,0,0)$, the word
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,0};
+       \mathsf S^{j+2};\mathsf{Pop}^{9-j}
+\]
+returns $(q_j,w,0,0)$. It exposes the selected entry, then consumes the
+remaining generated tail and saved zero using total Pop operations. For an
+arbitrary dominated leaf with $v\le D$, use instead
+\[
+ \mathsf{Discard};\mathsf{MP}_v;
+ \mathsf A_{A,D-v,H,0};\mathsf S^{10};\mathsf{Pop},
+\]
+which returns $(\rho(D,A,H,v),w,0,0)$.
+
+\subsection{The direct generalizer and MP composition}
+
+The correct new generalizer is
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf S;
+                 \mathsf A_{i,0,0,0};\mathsf S^{11}.
+\]
+From $(a,w,0,0)$, the first two operations give $(0,w,0,a)$, the new AX
+stores $U(i,a)$ in position nine, and eleven Shifts return
+$(U(i,a),w,0,0)$. No offset-setting command is needed. All the operations
+are nonhalting even at $a=1$, because the intermediate tested formulas have
+the residue and size properties established above.
+
+For an MP derivation from $a$ and $I(a,b)$, reserve a zero before the two
+recursive calls. If neither call halts, the resulting store immediately
+before its final suffix is
+\[
+ (0,[a,I(a,b),0;w],0,0).
+\]
+Apply $\mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}$. The first Shift
+is safe. The second halts if $a=1$; otherwise it exposes
+$(a,[0;w],0,I(a,b))$. MP succeeds and gives $(b,[0;w],b,0)$; total Pop
+returns $(b,w,0,0)$. This covers $a=b=0$ and the zero-stack aliases.
+
+Induction on a finite numerical derivation therefore constructs a word
+$C(e)$ that, from every $(t,w,0,0)$, either halts or returns its conclusion
+on top while restoring $w$ and clearing the offset and cache. For a refutation,
+$A_0;C(e);\mathsf S$ halts from every incoming command store. The leading
+$A_0$ clears arbitrary $d,h$ without requiring the stack to be empty.
+
+\subsection{Four-field scheduling and soundness}
+
+With $r$ denoting the encoded continuation, the actual AX encoding is
+\[
+ \operatorname{enc}(\mathsf A_{c,x,y,z};r)
+       =p(c+2,p(y,p(x,p(z,r)))).
+\]
+The positive continuation of a nonempty word is one plus its command
+encoding; a fresh candidate omits that leading one. The unchanged
+three-field AX encoding cannot be reused: the MP reader would consume part
+of the supposed continuation as its fourth argument. Components of Cantor
+pairing do not exceed their containing code, so positive continuations
+strictly decrease. Prefixing a universally halting word by
+$\mathsf A_{k,0,0,0}$ gives a cofinal family of fresh candidate codes.
+Every prefix terminates and leaves a store to which the all-store compiler
+applies. Thus carrying the stack between failed trials causes no gap in
+the completeness argument.
+
+For soundness, annotate $t,h$ and every live canonical stack entry with a
+derivation of its formula in the same numerical calculus. The new AX adds
+only its axiom instances, the saved old top and the valid generalization
+$U(c,h)$; its new visible top is truth. The offset $z$ needs no theorem
+annotation. MP composes derivations on success and writes truth on failure.
+Shift transfers the annotations; if $t+h=1$, an annotated code equals one.
+No consistency assumption is used in this local preservation argument.
+
+These arguments show that the combined command system searches exactly
+the same refutability condition as PA194G, once both are connected to their
+literal source programs and physical tables. They justify the new command
+composition and a relative mathematical preservation theorem. They do not
+complete the separately identified baseline iPRA calibration or constitute
+a newly compiled Lean endpoint.

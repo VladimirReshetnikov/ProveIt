@@ -1,0 +1,296 @@
+% Source-pinned comparison supporting the current Foundation endpoint adapter.
+\section{The exact current Foundation endpoint and its historical interface}
+\label{sec:foundation-endpoint-comparison}
+
+This section distinguishes the current Foundation theory from the
+historical vendored theory used by the PA196 calibration files.  The
+distinction is necessary: their finite arithmetic axiom sets are not
+literally equal, and their named $\mathsf I\Sigma _1$ bases use different
+syntactic induction classes.  Their arithmetic syntax and ten-rule
+proof encodings have the same numerical constructor equations.
+
+\paragraph{Source pins and scope of the receipt.}
+The ProveIt snapshot is commit
+\texttt{1c9524d8bf2e0a27b9a16ff622359927f536e663}.
+Its root \texttt{lakefile.toml} uses the Foundation source directory
+\texttt{lib/FormalizedFormalLogic-Foundation}; the gitlink pins that
+submodule to Foundation commit
+\texttt{32e1a0956a8622fad067328ca1959729a7634428}.
+The historical sources are the files in
+\texttt{Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196/}
+\texttt{vendor/Foundation/} at the ProveIt commit above.
+The source manifests shipped beside this note record each fetched
+blob identifier.  The historical Foundation namespace is
+\texttt{FFL}; the current namespace is \texttt{LO}.  Most historical
+\texttt{FirstOrder/Arithmetic/Bootstrapping} modules became current
+\texttt{FirstOrder/Bootstrapping} modules.
+
+The executable \texttt{compare\_endpoint.py} first checks all 69 saved
+files against their pinned Git blob hashes and then compares 119 displayed
+constructor equations, recursive-equation statements, recognizer
+clauses, and finite axiom templates.  Its
+\texttt{comparison\_receipt.json} retains both source strings for
+each check.  All 119 checks agree after the explicitly recorded
+normalizations: whitespace, namespace rename, quantifier-notation
+rename, omission of a redundant local implicit binder in the
+\texttt{vecToNat} declaration, and removal of the true conjunct
+in \texttt{InductionR(True)}.  The changed arithmetic leaf is
+recorded separately.  This is a reproducible source comparison,
+not a new Lean build or an arithmetic proof checker.  The mathematical
+identifications justified by these equations are proved below.
+
+\subsection{Identical arithmetic syntax and proof encodings}
+
+Both sources use the square pairing
+\[
+ P(a,b)=\begin{cases}b^2+a,&a<b,\\a^2+a+b,&b\le a.\end{cases}
+\]
+This is the source's \texttt{Nat.pair}, not the Cantor pairing used
+by the numerical machine calculus.  Tuples are right associated:
+$\langle a,b,c\rangle=P(a,P(b,c))$.
+Vectors use $\mathrm{nil}=0$ and $a::v=P(a,v)+1$;
+\texttt{Matrix.vecToNat} is the right fold of this same constructor.
+Finite sequents use binary set coding: membership is a bit test,
+and inserting $i$ leaves the code unchanged if that bit is set,
+otherwise adds $2^i$.  The displayed definitions of
+\texttt{Bit}, \texttt{bitInsert}, and \texttt{bitRemove} agree.
+These statements are found respectively in
+\texttt{Arithmetic/IOpen/Basic}, \texttt{Arithmetic/HFS/Vec},
+\texttt{Vorspiel/Matrix}, and \texttt{Arithmetic/Exponential/Bit}.
+
+The arithmetic function and relation alphabets have the following
+identical arity/code pairs, as explicitly checked in both versions
+of \texttt{Bootstrapping/Syntax/Language.lean}:
+\[
+ \begin{array}{c|rrrrrr}
+ \text{symbol}&0&1&+&\times&=&<\\\hline
+ \text{arity}&0&0&2&2&2&2\\
+ \text{code}&0&1&0&1&0&1
+ \end{array}
+\]
+The tags, arities, and argument-vector order are identical:
+\[
+ \begin{array}{rcl}
+ \operatorname{Bvar}(i)&=&P(0,i)+1,\\
+ \operatorname{Fvar}(i)&=&P(1,i)+1,\\
+ \operatorname{Func}(k,f,v)&=&\langle2,k,f,v\rangle+1,\\
+ \operatorname{Rel}(k,r,v)&=&\langle0,k,r,v\rangle+1,\\
+ \operatorname{NRel}(k,r,v)&=&\langle1,k,r,v\rangle+1,\\
+ \top&=&P(2,0)+1=7,\qquad \bot=P(3,0)+1=13,\\
+ A\land B&=&\langle4,A,B\rangle+1,\\
+ A\lor B&=&\langle5,A,B\rangle+1,\\
+ \forall A&=&P(6,A)+1,\qquad\exists A=P(7,A)+1.
+ \end{array}
+\]
+Negation exchanges truth/false, positive/negative atoms,
+conjunction/disjunction, and universal/existential recursively;
+source implication is $\neg A\lor B$.  The current notation
+$\forall^0,\exists^0$ and the historical notation
+$\forall^1,\exists^1$ designate the same constructors
+\texttt{Semiformula.all}, \texttt{Semiformula.exs}; the superscript
+change does not shift a de Bruijn index.
+
+The receipt also compares every constructor equation for term
+substitution, free-variable shift, bound-variable shift, formula
+negation/shift/substitution, term bound-variable height, and formula
+bound-variable height.  In particular, $\operatorname{qVec}$
+prepends $\operatorname{Bvar}(0)$ to the bound-shifted replacement
+vector, and
+\[
+ \operatorname{Free}(A)=
+ \operatorname{Subst}([\operatorname{Fvar}(0)],
+                         \operatorname{Shift}(A)).
+\]
+The two versions have the same well-formed-term and well-formed-
+formula clauses.  For syntax validity, compute the bounded table
+of all child codes up to the input code.  For substitution and
+shift, generate the actual finite dependency queries
+$(r,\mathbf u)$, where $r$ is the source subterm or subformula
+code and $\mathbf u$ carries the entire replacement vector,
+arity, and fresh-variable parameters.  A quantifier child carries
+its lifted vector $\operatorname{qVec}(w)$; a source formula's
+atomic case invokes the already completed term operation.
+Same-operation edges strictly decrease the source code, even when
+the ancillary parameter or output codes increase.  Evaluate the
+finite dependency tree from its leaves.  The bounded conjunction
+of valid generated queries and equality of both returned results
+at all evaluated slots is a quantifier-free invariant.  It never
+quantifies over all replacement vectors inside the induction
+hypothesis.  Vector maps use the analogous finite list scan with
+the vector held in the query packet; finite-set maps use a bounded
+bit scan.  This gives primitive recursive trace constructors and
+weak-base correctness proofs with the initial parameters free.
+Thus the operations agree on all valid internal inputs in every
+weak-base model, not only on standard test examples.
+
+All proof codes are a right-associated tuple plus one.  The first
+field is the conclusion sequent $s$ and the next field is a tag:
+\begin{center}\small
+\begin{tabular}{c|l|p{0.59\linewidth}}
+Tag & Remaining fields & Local rule condition, in addition to valid child proofs\\\hline
+0 & $p$ & $p,\neg p\in s$.\\
+1 & $0$ & $\top\in s$.\\
+2 & $p,q,d_p,d_q$ & $p\land q\in s$; child sequents are $\{p\}\cup s$ and $\{q\}\cup s$.\\
+3 & $p,q,d$ & $p\lor q\in s$; child sequent is $\{p,q\}\cup s$.\\
+4 & $p,d$ & $\forall p\in s$; child sequent is $\{\operatorname{Free}(p)\}\cup\operatorname{setShift}(s)$.\\
+5 & $p,t,d$ & $\exists p\in s$, $t$ is a term; child sequent is $\{\operatorname{Subst}([t],p)\}\cup s$.\\
+6 & $d$ & Child sequent is a subset of $s$.\\
+7 & $d$ & $s$ is the free-variable shift of the child sequent.\\
+8 & $p,d_1,d_2$ & Child sequents are $\{p\}\cup s$ and $\{\neg p\}\cup s$.\\
+9 & $p$ & $p\in s$ and $p$ belongs to the chosen theory's arithmetic axiom predicate.
+\end{tabular}
+\end{center}
+Every row additionally requires that every member of $s$ is a
+well-formed formula.  The displayed \texttt{Derivation.Phi}
+definition, including all ten side conditions, is identical after
+whitespace normalization.  The receipt also compares
+$y\in\operatorname{setShift}(s)\leftrightarrow
+\exists x\in s\,(y=\operatorname{Shift}(x))$.
+Finally, both predicates are
+\[
+ \operatorname{Proof}_T(d,A)\quad\equiv\quad
+ \operatorname{Derivation}_T(d)\land
+ \operatorname{fstIdx}(d)=\{A\}.
+\]
+Consequently the only theory-dependent constructor is tag9.
+
+\subsection{The unrestricted induction recognizer agrees exactly}
+
+The current \texttt{InductionSchemeDelta1.lean} defines
+\[
+ \begin{split}
+ \operatorname{InductionUnivR}(p)\ \equiv\ 
+ \exists m,b\le p\;[\;&p=\operatorname{Alls}(b,m)
+ \land\operatorname{IsUFormula}(b)
+ \land\operatorname{Shift}(b)=b
+ \land\operatorname{bv}(b)=m\\
+ &\land\exists K\le\operatorname{Subst}(\operatorname{fvarVec}(m),b)
+   \;(\operatorname{IsSemiformula}_1(K)\land
+       \operatorname{Subst}(\operatorname{fvarVec}(m),b)
+          =\operatorname{indBodyVal}(K))].
+ \end{split}
+\]
+The historical \texttt{Incompleteness/Definability.lean} defines
+\texttt{InductionR(S)} by the same formula with the additional
+conjunct $S(K)$.  Taking $S(K)$ to be true removes exactly that
+conjunct.  No witness bound is enlarged or discarded: in particular
+the bound on $K$ is the computed opened-body code, not $p$.
+
+The auxiliary recurrences agree literally:
+\[
+ \operatorname{Alls}(b,0)=b,\quad
+ \operatorname{Alls}(b,m+1)=\forall\operatorname{Alls}(b,m),
+\]
+\[
+ \operatorname{fvarVec}(0)=0,\qquad
+ \operatorname{fvarVec}(m+1)=
+       \operatorname{concat}(\operatorname{fvarVec}(m),
+                              \operatorname{Fvar}(m)).
+\]
+Both induction-body functions are, with the literal right association,
+\[
+ \operatorname{indBodyVal}(K)=
+ K[0]\longrightarrow
+   \bigl((\forall(K\longrightarrow K[\#0+1]))
+                   \longrightarrow\forall K\bigr).
+\]
+There is a presentational difference in the two definitions of the
+singleton substitution vectors.  The current source writes the
+typed \texttt{SemitermVec.val} of the quoted zero and successor
+terms; the historical source writes the cast of
+\texttt{substCode} of those same fixed terms.  Its
+\texttt{substCode\_eq} gives the equality, and the common
+\texttt{vecToNat}/term-constructor equations identify the same
+fixed numeral in every arithmetic model.  Thus the presentational
+difference does not alter the function.  The witness triple
+$(m,b,K)$ is preserved by the current-to-historical interface.
+
+Both source theories define PA as their respective finite
+\texttt{PeanoMinus} plus all universally closed
+\texttt{succInd} formulas.  The current arithmetic PA axiom
+predicate is assembled by
+\texttt{Theory.\(\Delta_1\).add PeanoMinus.delta1
+InductionScheme.delta1\_univ}.  The historical presentation uses
+the same union with \texttt{InductionR(True)}.  The preceding
+equations identify the induction part in every weak-base model;
+the finite part still needs the following adapter.
+
+\subsection{The one changed finite axiom and the base-theory inclusion}
+
+The equality component consists of the same nine templates:
+reflexivity, symmetry, transitivity; function congruence for
+$0,1,+,\times$; and relation congruence for $=,<$.  The source
+definitions of all five template families are identical after
+the quantifier-notation rename.  Sixteen of the seventeen named
+\texttt{PeanoMinus} arithmetic formulas are identical.  The sole
+changed template is
+\begin{align*}
+ A_{\rm old}&=\forall x\forall y\,
+   (x<y\longrightarrow\exists z\,(z<y+1\land x+z=y)),\\
+ A_{\rm cur}&=\forall x\forall y\,
+   (x<y\longrightarrow\exists z\,(x+z=y)).
+\end{align*}
+The historical notation $\exists z<^+y$ expands to
+$\exists z\,(z<y+1\land\cdots)$; it does not mean $z<y$.
+Existential conjunction projection proves $A_{\rm old}\to A_{\rm cur}$
+by a fixed first-order derivation.  Thus a current PA proof can be
+compiled to the historical arithmetic presentation by replacing
+this one tag9 leaf by that fixed derivation; all other finite and
+induction leaves retain their formula codes.  Rebuilding each of
+the ten proof constructors with translated children is primitive
+recursive.  The bounded conjunction of the correctness statements
+for all processed child codes proves its correctness by
+quantifier-free induction in a definitional primitive-recursive
+extension of the weak base.
+
+For reuse of the historical all-model syntax lemmas, one also needs
+the reverse finite-base implication.  Current PA-minus proves it
+without any induction.  Given $x<y$ and $x+z=y$, its $0\le x$
+axiom means $0=x$ or $0<x$.  In the first case, commutativity and
+$x+0=x$ give $z=y$.  In the second case, order preservation under
+addition gives $z<y$.  Independently $0<1$, addition order
+preservation, commutativity, and $x+0=x$ give $y<y+1$.
+In either case $z<y+1$, using transitivity when necessary.
+Pair this inequality with $x+z=y$, introduce the existential, and
+close $x,y$.  This is a fixed finite derivation of $A_{\rm old}$
+from current PA-minus.  Equality congruence supplies the indicated
+rewrites.  Hence current PA-minus proves every historical
+PA-minus axiom, and conversely.
+
+The names $\mathsf I\Sigma _1$ nevertheless do not have literally
+the same definitions.  Historical \texttt{Schemata.lean} uses
+$\mathcal B[<].\operatorname{PrenexHierarchy}(\Sigma,1)$;
+the current file uses
+$\operatorname{Arithmetic.Hierarchy}(\Sigma,1)$.
+The required inclusion is explicit.  Historical
+\texttt{BoundingHierarchy.PrenexHierarchy.sigma\_succ\_iff}
+and \texttt{zero\_iff\_bounded} say that an old prenex
+$\Sigma_1$ formula is one existential quantifier over an old
+$\mathcal B[<].\operatorname{Closure}$ matrix.  That closure is
+generated by truth, falsehood, positive/negative atoms,
+conjunction, disjunction, and bounded universal/existential
+quantification with a \texttt{Positive} bound term.
+Since $\mathcal B[<]$ is the singleton less-than operator, each of
+these eight clauses is exactly a current
+$\operatorname{Hierarchy}(\Pi,0)$ constructor.  Structural
+induction maps the old matrix witness to a current level-zero
+witness, and the current \texttt{Hierarchy.sigma} constructor
+adds its outer existential.  The formula itself is unchanged.
+Therefore every old prenex-$\Sigma_1$ induction axiom belongs to
+the current induction class.  Together with the fixed finite-base
+derivation above, every current $\mathsf I\Sigma _1$ model is a
+model of the historical $\mathsf I\Sigma _1$ presentation.
+
+This proves the precise interface needed by the calibration:
+the current source predicate is handled by the literal ten-rule
+translator with one finite arithmetic leaf replacement, and the
+historical syntax lemmas apply over the current weak base by the
+stated inclusion.  It does not assert equality of the old and new
+PA proof predicates or of their defining formula texts.  The
+companion Foundation-to-ordinary-PAeq proof composes this interface
+with its explicit language/proof compiler to obtain the endpoint
+\[
+ \operatorname{Proof}_{\mathrm{PA}_{\rm current}}(d,13)
+ \ \Longrightarrow\
+ \operatorname{Proof}_{\mathrm{ordinaryPAeq}}(D_c(d),13).
+\]

@@ -1,0 +1,46 @@
+Optional unsuccessful decoder searches
+======================================
+
+These files record new heuristic searches on the AX11QH+4L and AX11H+4L
+fixed kernels. They are not necessary to verify either delivered table.
+The search does not establish a lower bound for arbitrary Turing machines.
+
+The input files contain 135 fixed controls and a typed binary emitter tree.
+Shared-subtree rotations preserve the ordered macro word. The scorer
+hash-conses equal readers, reuses the one-, two-, and right-associated
+three-increment helpers, and enumerates disjoint predecessor-bit folds.
+Simultaneous fold candidates must close their exact two-cell identities.
+The score is reader count minus compatible fold count, with penalties for
+source height and address-zero-run conditions. A score of 58 would project to
+193 controls; every projected candidate would still require independent
+source, startup, and literal-tape verification.
+
+Both completed rotation-only runs reached a best score of 59, hence 194 controls,
+with zero projected sub-194 hits. The exact observed counters are in
+SEARCH_RECEIPT.json. Mutation counters include revisits and are not counts
+of distinct machines. These searches have wall-clock limits, so rerunning
+them on different hardware need not reproduce the same counters.
+
+Build and run, with a C++17 compiler:
+
+  g++ -std=c++17 -O3 search.cpp -o search
+  ./search ax11qh_4L.txt leaf_attrs.txt qh_replay 300 263314
+  ./search ax11h_4L.txt leaf_attrs.txt h_replay 300 263316
+
+search_permuting.cpp additionally allows consistent variable-role
+permutations in the six ordinary quantified axiom heads. Its templates
+use the 190-token AX word with the same ordinary-head boundaries as the
+supplied family. Any promising result in that broader search would need
+its own command/calculus translation proof; it does not inherit literal
+source-graph equality merely from a favorable score.
+
+The C++ code is adapted from the pa1944l_research_2026-11-14 packet. The
+local changes disable role permutations in search.cpp and remove the
+balanced-four macro shortcut from screen_triple.cpp, because control 190
+in the searched fixed kernel realizes the 4L association. The rotation
+implementation and compatible-fold checker are otherwise inherited.
+
+An exploratory AX11S input that reused its occupied control 330 was
+discarded as an invalid composite. It is not a delivered construction,
+does not support any claimed result, and is omitted from the recorded
+valid search runs.

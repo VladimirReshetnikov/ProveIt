@@ -1,0 +1,48 @@
+The following are fresh experiments of this investigation. Their complete
+commands, inputs, logs and bounds are in \file{research/physical/}; the
+authoritative compact record is \file{research_summary.json} there.
+
+\begin{longtable}{@{}p{0.26\linewidth}p{0.36\linewidth}p{0.31\linewidth}@{}}
+\toprule Search & Finite scope & Observed result\\\midrule\endhead
+Paired neutral startup repair & 58,485 distinct-row pairs from a 346-edit pool, each with all 193 existing starts: 11,287,605 runs. & Zero complete canonical source frames. Cycle-aware replay leaves 492 bounded/unresolved runs.\\[3pt]
+Triple neutral startup repair & 6,440,096 distinct-row triples, initial native control 74. Of these, 4,225,362 retain the same certified startup ray; 2,214,734 are simulated. & Zero complete source frames. Among simulated runs, 2,134,087 rays, 79,581 exact cycles and 1,066 bounded cases.\\[3pt]
+Restore the original marker & Restore row 51/0; try all 772 actions at merged 88/0. Symbolic outcome limit 1,024 steps. & No completed source-refinement certificate; three source outcomes suffice as the recorded screening witnesses.\\[3pt]
+Coupled marker repairs & 595,984 action pairs each for rows 88/0+122/0 and rows 88/0+51/0. Three concrete command witnesses; 10,000 steps and head range $[-500,500]$. & First search has no survivor. The second retains only the already rejected runtime193.\\[3pt]
+Register-allocation quotient & All 40,320 physical register permutations fixing the initial nonzero slot 6. & Every ordinary action-preserving bisimulation quotient has 194 classes.\\[3pt]
+GH local contraction, radius 4 & All 18,721 pairs of controls; 8,658 source contexts; 23,938,176 provisional row trials and 146,940 complete pairs, 100-step detour limit. & No accepted contraction.\\[3pt]
+GH local contraction, radius 6 & All 18,721 control pairs; 30,519 contexts; 25,767,044 provisional row trials and 195,846 complete pairs, 200-step detour limit. & No accepted contraction.\\[3pt]
+GH neutral change, then contraction & Eight GH-specific first-stage rewrites; all 18,721 pairs each, radius 4 and 100 steps. & No hit under the inherited context envelope; screening scope only.\\[3pt]
+GH register-overlay analysis & Seven exact clear-loop summaries; 263,132 reachable zero/positive abstract states. & All 36 interference edges remain; nine registers simultaneously positive and syntactically live in the abstraction.\\
+\bottomrule\end{longtable}
+
+For the paired/triple bootstrap searches, the limits are 200,000 literal
+transitions, absolute head coordinate 20,000, and 20,000 one-cells. The
+cycle-aware pair replay partitions the 11,287,605 runs as
+\[
+11,159,792\text{ rays}+117,274\text{ halts}
+ +10,047\text{ exact cycles}+492\text{ bounded}.
+\]
+The original 346-edit pool includes 19 speculative arithmetic-box edits.
+Individual screening never implies that a pair or triple is a valid
+runtime implementation. The absence of a startup frame was checked even
+for these speculative combinations, making the startup search a broader
+filter, not a family of already proved machines.
+
+The liveness result is a concrete obstruction only to static coloring
+under the chosen conservative abstraction. Its first all-nine witness is
+source site 102, a decrement of W; the abstract witness has 3,070 states.
+It does not prove that this abstract path is concretely realizable or
+exclude semantic reconstruction, packed registers, or a different source
+algorithm. Likewise the local contraction searches require a bounded
+same-tape refinement within their stated windows; they are not exhaustive
+over all two-way transducers or representation changes.
+
+Separately, the GH emitter reassociation search used 3,000,000 stochastic
+slots (2,633,281 scored evaluations and 368,507 skipped slots, including
+the scoring of initial seeds). Its best projected total remained 194.
+The raw GH table has eight standard history-fold opportunity edges with
+maximum matching seven; the raw GHS table has nine with maximum matching
+eight. The copied fold sets therefore did not omit an immediately
+available eighth or ninth fold of that standard form. All these scores
+still require source and final simultaneous-fold verification before a
+candidate can be accepted.

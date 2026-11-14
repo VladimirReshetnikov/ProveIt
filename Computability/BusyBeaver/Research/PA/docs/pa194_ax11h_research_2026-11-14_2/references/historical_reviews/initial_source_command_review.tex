@@ -1,0 +1,117 @@
+% Independent audit appendix; not a claim that the missing instance is proved.
+\section{The source-to-command interface}
+\label{sec:source-command-audit}
+
+The literal physical certificate and the abstract command compiler have
+different endpoints.  The former simulates one resolved increment,
+decrement, jump, or halt instruction of the nine-register source.  The
+latter starts from the already specified arithmetic meanings of
+$\mathrm{AX}_{c,x,y,z}$, $\mathrm{MP}_x$, and $S$.  A complete connection
+between them needs the following intermediate lemma.
+
+Let $\operatorname{SrcStep}$ be the totalized step function of the exact
+3,671-instruction source.  For a live scheduler configuration
+$c=(n,\ell,t,w,d,h)$ define
+\[
+ J(c)=\bigl(25;(n,t,w,0,d,h,0,0,\ell)\bigr).
+\]
+Thus the auxiliary registers $A,X,Y$ are zero at the common fetch port.
+The required claim is that there is an explicitly specified primitive
+recursive $\theta$, positive on these configurations, such that
+\[
+ \mathrm{iPRA}\vdash
+ \operatorname{SrcStep}^{\theta(c)}(J(c))=J(R_{11H}(c)).
+ \tag{SC}
+\]
+Here either the abstract scheduler's halted configurations and $J$ must
+retain enough information to describe the exact terminal source registers,
+or both sides must explicitly collapse every halted configuration to a
+single absorbing halt code, as in the physical bridge below. Merely
+adding an absorbing flag while retaining unspecified terminal registers
+would not specify an exact endpoint. The initial
+configuration is $J(2,0,0,0,0,0)$.  The Q variant changes only the finite
+AX expression.  Once (SC) and its halt-flag agreement are supplied, the
+positive simulation theorem applies again, now between the command and
+primitive-source levels.
+
+\subsection{The inherited arithmetic is sufficient in principle}
+
+The necessary loop bounds are concrete, not speculative unbounded
+termination arguments.  For example, the inherited Cantor decoder uses
+\[
+ L(0,p)=1,\qquad L(m+1,p)=r(p)+L(m,\operatorname{advance}(p)),
+\]
+where $r(a,b)=5$ if $a>0$ and $r(0,b)=3b+8$.  Its two cases enumerate
+the Cantor pairs.  On input $w$, the loop takes at most
+$w(3w+8)+1$ steps; the final transfer takes $3\operatorname{tl}(w)+1$.
+These are the functions and bounds used in the inherited
+\path{M6/Source/Unpair.lean} and the retained constructor proof.
+The pairing phase has the exact cost
+\[
+ P(t,a)=4t+2+\sum_{j<a+t}(7j+5),
+\]
+and the fourfold multiplier has cost $6y+1$.  A copy followed by restoration
+has cost $7b+2$.  Clearing a register and the two comparison cleanup
+loops also have linear costs.  Their endpoint equations follow from
+quantifier-free counter invariants, with all unrelated registers carried
+as parameters.  No induction over PA formulas is involved.
+
+The inherited fetch lemma even supplies the bounds
+\[
+ 2+\operatorname{decodeCost}(\ell-1)\quad(\ell>0),\qquad
+ 7n+4+\operatorname{decodeCost}(n)\quad(\ell=0),
+\]
+before the finite dispatch.  It proves exactly the exceptional fresh
+candidate convention used in the new abstract proof.  Its cost functions
+are primitive recursive.
+
+Some inherited statements existentially quantify their duration, but the
+proofs construct it by these linear costs and primitive recursions.  For
+example, a simultaneous destructive comparison can use the recurrence
+\[
+ C(0,0)=2,\quad C(0,x+1)=3x+5,\quad
+ C(h+1,0)=2h+6,\quad C(h+1,x+1)=C(h,x)+3.
+\]
+Equivalently, this is a piecewise linear function obtained by splitting
+on $h=x$, $h<x$, and $h>x$.  Thus existential notation in the Lean
+statement is not a mathematical obstacle to a primitive recursive clock.
+The finite AX word composes these clocks at the successive stores.
+
+\subsection{What the present certificates still have to bind}
+
+The unchanged macro arithmetic is reusable after its actual source ports
+and complete outgoing control edges have been identified.  The old
+\path{PA196/Source/CommandTransfer.lean} proves such a statement for
+another source: it has a 201-token AX body, three AX fields, other literal
+addresses, and the old Shift/MP behavior.  It cannot instantiate (SC)
+unchanged.
+
+The new \path{check_commands.py} checks the 190-token symbolic AX
+expression, selected node shapes, four-field parser identities, and
+abstract command words.  It assigns arithmetic operations to macro names;
+in particular, its guarded-cleanup comment assumes the corresponding
+macro meaning.  Its successful execution alone therefore does not prove
+the source realization of those meanings.
+
+The remaining instance is precise and finite at its binding layer:
+record the entry, exit and internal control edges of each called macro
+in the new resolved source; attach its generic arithmetic endpoint and
+clock; compose them through fetch, dispatch and the command.  The changed
+cases requiring explicit treatment are the extra AX push followed by the
+MP field reader, the no-push successful MP tail, and the cached-only Shift
+path.  For the last case, clearing $T$, copying and restoring $H$, then
+incrementing $X$ reaches $(T,H,X)=(h,h,1)$.  The old destructive equality
+guard then halts exactly when $h=1$; otherwise it clears its operands and
+the unchanged stack decoder completes the specified Shift.  For AX,
+the additional MP field must consume $z$ and return $D=z$, including its
+$z=0$ equality branch.  All unused registers and the exact residual
+continuation must be included in the endpoint, not just the visible top.
+
+These observations supply a direct route to a written mathematical
+$\mathrm{iPRA}$ proof of (SC); they do not reveal a stronger-induction
+obstruction.  Nevertheless, until the new macro-port bindings and composed
+clock are supplied, the responsible statement is that the source-to-command
+instance is an outstanding proof obligation.  A primitive-instruction
+physical certificate and a free-algebra command certificate do not, by
+themselves, discharge it.  This obligation is distinct from, and much more
+local than, the still-open PA-refutation-to-numerical-calculus calibration.
