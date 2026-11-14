@@ -31,3 +31,7 @@ checked translation-validity and retained PA196 arithmetic-growth objects,
 plus audited project/Foundation prerequisites; printed dependencies omit
 `sorryAx`. The wrapper's syntax is checked, but its full prerequisite-prefix
 replay remains pending.
+
+An independent suffix replay rebuilt the term/vector translation-growth module
+against separately checked PAeq witness and qVec prerequisites. It passed
+without `sorryAx`; this was not a full prefix replay.
