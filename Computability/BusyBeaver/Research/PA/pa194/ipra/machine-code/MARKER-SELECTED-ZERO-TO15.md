@@ -26,3 +26,8 @@ The seven new modules passed an author suffix rebuild against previously
 checked prerequisite overlays, with `propext`, `Classical.choice`, and
 `Quot.sound` as their reported axioms and no `sorryAx`. The full nested
 checker `check-marker-selected-zero-to15.sh` is supplied but has not been run.
+
+An independent ordered suffix replay rebuilt all seven selected-zero modules
+against separately checked marker and controller objects and retained deeper
+prerequisite overlays. It passed without `sorryAx`; this was not a full nested
+replay.
