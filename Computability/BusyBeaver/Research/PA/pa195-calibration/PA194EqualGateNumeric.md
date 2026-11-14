@@ -30,3 +30,7 @@ disk I/O pressure, the present check is a focused suffix rebuild against
 retained prerequisite objects; the full nested rebuild is deferred.
 
 The author completed the focused suffix rebuild with no `sorryAx`.
+
+An independent suffix replay rebuilt the exact equal-label numerical gate
+module against separately checked closer, witness and source prerequisites.
+It passed without `sorryAx`; this was not a full nested replay.
