@@ -40,6 +40,28 @@ strict form of `haltDef T h` mapped into the language of iPRA
 (`ConPA.ISigma1Transfer.haltSentence`). `hb` is the PA witness certificate, as in
 [`../isigma1-transfer`](../isigma1-transfer/README.md).
 
+## `ConPAUnconditional.lean`
+
+Imports `PA196PACertificateComplete` from `../pa196-vs-u208/ipra` and instantiates the
+transfers with its `certificate`, so that only the machine statement is left as a hypothesis.
+
+```lean
+theorem machine_endpoint (T : Table) (h : ℕ) (hc : Calibrated T h) :
+    standardTheory ⊢ nativePAConsistency 🡘 ∼machineHaltSentence T h
+
+theorem ipra_of_models (halt : Semisentence language 1) (hopen : halt.Open)
+    (hbounded : Hierarchy 𝚺 0 halt)
+    (h : ∀ (M : Type) [Nonempty M] [Structure language M] [Structure.Eq language M]
+      [M↓[language] ⊧* PRA], ReductISigma1 M →
+        ((M↓[language] ⊧ ∃⁰ halt) ↔ (M↓[language] ⊧ mappedPARefutation))) :
+    standardTheory ⊢ nativePAConsistency 🡘 ∼native (∃⁰ halt)
+```
+
+`ipra_of_models` is for a halting matrix of the PRA language, such as the atomic matrices
+`haltMatrix` of `PA194ForwardGG` and `PA196ForwardGG`, for which `native (∃⁰ haltMatrix)` is
+the halting sentence of those endpoints. `classical_reductions` gives the two classical PRA
+reductions from the same hypothesis.
+
 ## What is not proved
 
 - `Calibrated T h` for any table. This is the whole machine-specific content: the machine
@@ -56,7 +78,22 @@ strict form of `haltDef T h` mapped into the language of iPRA
 bash Computability/BusyBeaver/Research/PA/isigma1-machine/check.sh
 ```
 
-It compiles `../isigma1-transfer/ConPAISigma1Transfer.lean` and the two files of this
-directory against the root Lake workspace, prints the axioms of `isigma1_iff` and `endpoint`
-(`propext`, `Classical.choice`, `Quot.sound`) and fails if `sorryAx` occurs. It was run on
-Windows under Git Bash (Lean 4.32.0).
+compiles `../isigma1-transfer/ConPAISigma1Transfer.lean`, `ConPAMachine.lean` and
+`ConPAMachineEndpoint.lean` against the root Lake workspace, prints the axioms of
+`isigma1_iff` and `endpoint` and fails if `sorryAx` occurs.
+
+```sh
+python3 Computability/BusyBeaver/Research/PA/isigma1-machine/check_unconditional.py
+```
+
+compiles `ConPAUnconditional.lean` with everything it imports outside the root Lake
+libraries: the upstream `M6.Zip` and `PA196.Literal`, the modules of `../pa196-vs-u208/ipra`
+that the certificate needs, and the files of the two `isigma1-*` directories, 99 modules in
+all, one `lean` process at a time. It prints the axioms of `certificate`, `machine_endpoint`
+and `ipra_of_models` and fails if `sorryAx` occurs in any log. With `--out DIR` it keeps the
+objects and skips modules already compiled there.
+
+Both were run on Windows (Lean 4.32.0) and all axiom reports are `propext`,
+`Classical.choice`, `Quot.sound`. The 99 modules were compiled once, in two passes into one
+directory; `check_unconditional.py` was then run on that directory and recompiled only
+`ConPAUnconditional`. A run from an empty directory was not made.

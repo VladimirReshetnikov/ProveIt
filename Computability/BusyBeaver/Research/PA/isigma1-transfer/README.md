@@ -95,8 +95,9 @@ natural numbers does not transfer.
 - `hb : BoundCertificate` is a hypothesis. It is the proposition
   `PRA ⊢ lMap embedding (paRefutation 🡒 ∃⁰ bnd paRefutation)`, which is word for word
   `PA196ReverseGG.BoundCertificate`. `PA196PACertificateComplete.certificate` in
-  `../pa196-vs-u208/ipra` proves it. It is left as a hypothesis so that this file imports no
-  machine; I have not compiled that certificate on this machine.
+  `../pa196-vs-u208/ipra` proves it. It is a hypothesis in this directory so that these files
+  import no machine. [`../isigma1-machine/ConPAUnconditional.lean`](../isigma1-machine/README.md)
+  supplies it.
 - `haltSentence δ` is the mapped arithmetic sentence, not a sentence built from a function
   symbol for a halting test such as `PA194Bounded.haltSentence`. Relating the two for a
   particular machine is a separate statement of candidate PRA.
