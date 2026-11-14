@@ -11,7 +11,10 @@ premises as `../pa194-target-history-extended`.
 
 The length is an **input supplied by the caller**. No theorem in this package
 proves that it equals the actual length of a particular encoded vector or
-constructs a well-formed vector of that length. It therefore does not by
+constructs a well-formed vector of that length. The separate
+[`pa194-target-history-length`](../pa194-target-history-length) constructs a
+finite PRA code for Foundation vector length and supplies that value to the
+guarded step in every covered model. It therefore does not by
 itself close the vector-representation, source-proof compiler, or
 machine/calculus calibration gaps, and does not establish a PA194/Con(PA)
 implication. Its line encoding remains independent of the upstream certificate
@@ -29,3 +32,7 @@ The final module was rebuilt against the freshly rebuilt extended-history
 suffix and previously checked deeper prerequisites. A full nested replay of
 this wrapper has not yet been completed. Its printed axiom dependencies
 contain no `sorryAx`.
+
+An independent suffix replay recompiled the guarded history module against the
+separately checked extended-history and target-step objects, reusing other
+prerequisite overlays. Its reported theorem axioms did not include `sorryAx`.

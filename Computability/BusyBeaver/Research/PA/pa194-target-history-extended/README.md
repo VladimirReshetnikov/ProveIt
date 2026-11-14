@@ -22,8 +22,9 @@ or a machine/calculus calibration.
 The current line-vector lookup is total and **does not check vector length**;
 a missing line can be read as a valid zero-coded line. The separate
 [`pa194-target-history-guarded`](../pa194-target-history-guarded) adds a
-caller-supplied length and rejects stages at or beyond it; correspondence
-between that input and the encoded vector's actual length remains open. The encoding here is a
+caller-supplied length and rejects stages at or beyond it. The subsequent
+[`pa194-target-history-length`](../pa194-target-history-length) computes
+Foundation's actual vector length and supplies it to the guarded step. The encoding here is a
 new independent checker encoding and has not been identified with the upstream
 certificate format. Neither the theorem nor the standard leaf bindings
 establishes the desired PA194/Con(PA) implication on their own.
