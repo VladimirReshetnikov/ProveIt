@@ -7,3 +7,4 @@ The `PA194QVecHistory` module constructs an internal sequence iterating Foundati
 The theorem does **not** yet identify the final entry with `subst (fvarVec n) p`. It also does not construct the Foundation induction-axiom recognizer's closure witnesses, establish arbitrary-formula PA induction or bounded comprehension, discharge the distinct-label gate, or prove an iPRA implication.
 
 The author replay ran `check-opening-shape.sh`, rebuilding the five local modules against the pinned Foundation overlay. The printed axioms contain only `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`.
+An independent complete replay also passed without `sorryAx`.

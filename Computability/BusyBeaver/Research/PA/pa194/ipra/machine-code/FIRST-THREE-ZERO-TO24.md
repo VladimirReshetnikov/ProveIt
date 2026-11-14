@@ -21,3 +21,6 @@ A fresh author suffix replay of the new module passed against retained
 previously checked overlays, with `propext`, `Classical.choice`, and
 `Quot.sound` and no `sorryAx`. The complete nested checker
 `check-first-three-zero-to24.sh` is provided but has not been run.
+An independent suffix replay rebuilt the new module against separately checked
+first-three and marker/controller objects and retained deeper overlays. It
+passed without `sorryAx`; this was not a full nested replay.
