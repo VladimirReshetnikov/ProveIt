@@ -1,0 +1,90 @@
+% Standalone report fragment: amsmath, amssymb, booktabs, hyperref required.
+\section{An optional symmetric-guard and zero-jump composition}
+\label{sec:csz}
+
+The companion PA194CSZ has 194 working states. It composes the supplied
+symmetric-guard PA194CS machine with the zero-register jump technique.
+The exact new native row is
+\[
+ (27,1):0L40\quad\longmapsto\quad(27,1):1R21.
+\]
+The complete source still has 3,646 sites. Its only instruction change,
+including all successor labels, is
+\[
+ 26:\operatorname{jump}34
+ \quad\longmapsto\quad
+ 26:\operatorname{dec}r_6\,[34,27].
+\]
+The first successor is the zero branch; a positive decrement lowers the
+register and takes the second successor. The new machine's dense table is
+\texttt{machine/pa194CSZ.tm}, with initial state zero, working states
+$0,\ldots,193$, and separate halt label 194. The tape is initially all zero,
+is two-way infinite, and has alphabet $\{0,1\}$; every row moves L or R.
+
+\subsection{A common finite invariant}
+For a concrete register vector $v\in\mathbb N^9$, let
+$\pi(v)=\sum_{r<9}2^r[v_r>0]$. Abstract states are pairs $(i,m)$ of a source
+site and a nine-bit positivity mask. A jump changes only the site.
+An increment of $r$ sets bit $r$. A decrement with bit $r$ clear takes its
+zero successor with the same mask. With bit $r$ set, it takes its positive
+successor with either the same mask or with bit $r$ cleared. Halt has no
+successors. The two possible positive-decrement masks overapproximate the
+possibilities $v_r>1$ and $v_r=1$.
+
+Induction on concrete steps proves that every concrete successor projects
+to one of these abstract successors. The builder computes the least finite
+closure from $(25,1)$, corresponding to the full logical seed
+$(2,0,0,0,0,0,0,0,0)$. For both the old and new source this closure is the
+same set $R$, with
+\[
+ |R|=263{,}180.
+\]
+The supplied text certificate encodes a byte array of length $3646\cdot512$,
+indexed by $512i+m$. Line $i$ stores the 512 mask-membership bits as a
+hexadecimal integer, and the replay checks every abstract edge. At site 26,
+\[
+ (26,m)\in R\quad\Longrightarrow\quad m\mathbin{\&}64=0.
+\]
+Moreover the old and new abstract successor lists agree at every element
+of $R$. This is checked directly, not inferred merely from the sizes of
+the two closures.
+
+Consequently $r_6=0$ whenever a concrete source run from the stated seed
+visits site 26. The old jump and the new decrement then have the identical
+successor, with every register unchanged. At every other site the source
+instructions coincide. Induction on the source-step count proves equality
+of the complete old and new source executions, including halting.
+
+The invariant has been recomputed after the symmetric-guard change.
+The older cached-controller zero-jump proof had a different closure and
+cannot by itself justify this composition. The finite source invariant,
+its soundness induction, and the resulting trace transformation are all
+formalizable in PA.
+
+\subsection{Binding the new literal table}
+The construction checker verifies 4,746 arbitrary-register source
+outcomes. These include both branches of the new decrement, although the
+positive branch is excluded from the actual logical run by the invariant.
+It uses 1,513,882 symbolic steps, with maximum 508 per outcome.
+An independent literal-tape checker, using no arithmetic-box oracle,
+rederives four generic list traversals from the exact table and verifies
+all 4,746 outcomes in 1,100,566 symbolic steps, with maximum 403. The
+smallest positive-duration constant is three. These symbolic counts
+measure finite proof-case work, not bounds on unbounded numerical runs.
+The quantified frames contain arbitrary natural register values, an
+affine gap, and an arbitrary finite nonempty spare list.
+
+Separate literal simulations verify that the new machine reaches the
+entire clean source frame at site 25 after exactly 58,014 blank-tape
+steps, including all markers, register blocks, spare blocks, head
+position and zero exterior. This differs from PA194CS's 57,768-step
+startup; no runtime improvement is claimed. The dense and native tables
+are checked by the explicit 195-element control bijection, including halt.
+
+The source equivalence above, the exact physical simulations and startup,
+and the explicitly inherited PA194CS ordinary consistency calibration
+therefore transfer its PA-provable nonhalting equivalence to PA194CSZ.
+This is an ordinary mathematical proof with executable certificates;
+it is not a new end-to-end Lean or Rocq theorem. The contribution is the
+verified composition and the newly computed source invariant, not a
+state-count improvement.

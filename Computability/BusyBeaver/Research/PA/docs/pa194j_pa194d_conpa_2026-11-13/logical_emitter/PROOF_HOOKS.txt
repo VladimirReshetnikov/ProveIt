@@ -1,0 +1,50 @@
+Proof boundaries and arithmetic transport
+=========================================
+
+This supplementary construction changes an emitted diagonal head, not only
+physical code. Its logical proof obligation is the calibration of the
+separate Gamma(D) emitter. The symbolic word certificate shows exactly
+three copyA -> copyD changes at macro-token indices 121,122,123, and binds
+the remaining word, guards and parameter reads. The accompanying report's
+logical section supplies the syntax and parameter-coverage argument.
+
+The machine implementation is bound to that new source in four stages:
+
+1. Expand the frozen grammar and resolve its full primitive source graph.
+   A second grammar uses the original accepted association with precisely
+   the same new word. Their complete instruction maps must be identical;
+   word equality alone is not used to justify structured-jump preservation.
+
+2. Relative to the Gamma(D) source with ordinary jumps, replace source26 by
+   dec X and source3553 by dec D. The exact old/new positivity closures are
+   computed from (site25,mask1). They are equal (263244 pairs), closed, and
+   have identical successors at every pair. The tested bit is absent at
+   each changed site. Concrete source configurations are therefore equal
+   after every step by induction. This is a PA-formalizable finite invariant.
+
+   Closure SHA-256:
+   57c58dcae511fe13a6c200e7cfe4f4322370aec72b4a2fe5ba39b906fe62dbf8
+
+3. Compile to a 203-state parent (134 fixed +69 readers), then apply nine
+   disjoint identifications. All incoming transitions establish the required
+   history bit, and all four context/read-bit cases per fold are replayed
+   against the complete final table. Each raw step has a positive finite
+   folded simulation (maximum five steps in exceptional local cases).
+   This is an all-tape quotient from the designated ordinary start control.
+
+4. Independently rederive the physical list-sweep lemmas from the actual
+   194-state table. Check every source branch with independent arbitrary
+   natural register values and arbitrary finite spare tail. Every simulated
+   source step has positive duration. Check complete blank initialization,
+   including all tape cells, before source iteration begins.
+
+A finite source halt yields a physical halt by concatenation. Conversely,
+if the physical machine first halts at time T, a source prefix of T+1
+nonhalting steps would produce a strictly longer nonhalting physical prefix,
+contradicting determinism. This establishes source/machine halting
+ equivalence by ordinary PA induction. Composing it with the separately
+proved Gamma(D) calculus calibration yields the requested PA statement.
+
+The executable certificates establish finite and symbolic mathematical
+facts. They are not an exported Lean/Rocq endpoint, and do not replace the
+logical calibration proof with a Python assertion.

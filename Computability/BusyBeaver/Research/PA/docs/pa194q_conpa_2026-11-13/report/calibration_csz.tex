@@ -1,0 +1,159 @@
+% Standalone report fragment; requires amsmath, amssymb, amsthm.
+\section{A second construction: symmetric Shift with a zero-register jump}
+\label{sec:csz}
+
+The optional second machine, PA194CSZ, combines the supplied symmetric-Shift
+controller PA194CS with the supplied zero-register realization of one source
+jump. It has 194 working controls and 388 transitions. The construction is
+not a new sub-194 result. Its contribution is the new composition, a complete
+common invariant certificate, and a fresh independent literal-tape audit.
+
+\subsection{Exact source and physical changes}
+
+Use the logical register order
+\[
+ (r_0,\ldots,r_8)=(N,T,W,A,D,H,X,Y,L).
+\]
+The supplied PA194CS source has 3,646 primitive sites. In its source tree,
+\texttt{node22} has the two leaves
+\texttt{dec 8} and \texttt{breakTo 1}. Replace the latter leaf by
+\texttt{dec 6}. The entire resolved source map changes at just site 26:
+\[
+ \begin{array}{c|c}
+ \text{PA194CS} & \text{PA194CSZ}\\\hline
+ 26:\operatorname{jump}34&
+ 26:\operatorname{dec}r_6\,[34,27].
+ \end{array}
+\]
+The first decrement successor is its zero branch. Every other opcode,
+register, and successor is identical. The new source still has 3,646 sites
+and now has 4,746 primitive branch outcomes, one more than its parent.
+
+The literal native tables differ in just one row:
+\[
+ (27,1):\quad 0L40\quad\longmapsto\quad1R21.
+\]
+Native start and halt are 74 and 254. The delivered dense numbering uses
+start 0, working states $0,\ldots,193$, and separate halt label 194.
+The head begins at cell zero on a two-way all-zero binary tape.
+
+\subsection{A finite common invariant proves source preservation}
+
+For a concrete register vector $r\in\mathbb N^9$, define its positivity mask
+\[
+ \mu(r)=\sum_{i=0}^{8}2^i[\,r_i>0\,]\in\{0,\ldots,511\}.
+\]
+The finite abstract transition system acts on pairs $(p,m)$ of a source
+site and a positivity mask. A jump retains the mask. Incrementing $r_i$
+sets bit $i$. A decrement with bit $i$ zero takes the zero successor and
+retains the mask; with bit $i$ one it takes the positive successor, with
+bit $i$ either retained or cleared. A halt has no successors. Every concrete
+step projects to one of these abstract steps. In the positive decrement
+case, the two abstract possibilities distinguish $r_i=1$ from $r_i>1$;
+no bounded-register assumption is involved.
+
+Starting with $(25,1)$, the two source graphs have the same abstract reachable
+closure $R$, containing exactly \textbf{263,180 pairs}. The delivered finite
+certificate checks all of the following:
+\begin{enumerate}
+\item $(25,1)\in R$;
+\item $R$ is closed under every abstract successor for both graphs;
+\item the two abstract successor sets agree at every element of $R$;
+\item the 32 masks occurring in $R$ at site 26 all have bit 6 zero.
+\end{enumerate}
+The first checker computes the two closures independently. The second checker
+reads the finite relation and verifies its seed, range, closure, common
+successors, and site-26 property without importing the builder.
+
+The concrete clean source seed is
+\[
+ (p,r)=(25,(2,0,0,0,0,0,0,0,0)),
+\]
+whose mask is 1. Induction on execution length and abstract-step soundness
+therefore prove $r_6=0$ whenever either reachable execution visits site 26.
+At that site, the new decrement consequently leaves the complete register
+vector unchanged and goes to site 34, exactly like the old jump. All other
+source instructions are equal. A second induction shows that the two
+concrete source executions have identical program counters and register
+vectors at every finite step, including the same halting outcome.
+
+This proof makes no consistency assumption and uses no empirical observation
+of a long blank run. The masks overapproximate unbounded register values.
+The relation is finite and explicit, and the projection and induction are
+primitive recursive arithmetic reasoning available in PA.
+
+\subsection{Physical realization and exact initialization}
+
+The fully unfolded table has 202 controls: 135 fixed controls and 67 AX
+readers. The seven original decoder folds and the symmetric-Shift fold
+$41\mapsto330$ are applied together, leaving
+\[
+                    135+67-8=194.
+\]
+All 32 two-cell local cases are verified against the final simultaneous
+quotient, with arbitrary unchanged exterior tape; the maximum detour has
+five physical transitions. Thus the new jump realization has not invalidated
+an earlier fold by changing a helper action.
+
+The original symbolic runtime verifies all 4,746 primitive outcomes for
+both the raw and folded tables. For the folded table it uses 1,513,882
+symbolic transitions, with at most 508 per outcome. The extra positive
+branch at site 26 is checked even though the invariant excludes it in the
+blank-start source execution.
+
+A separate literal-tape checker rederives four generic list-sweep lemmas
+from the actual transition rows and checks all source outcomes without the
+first checker's arithmetic-block oracle. Its complete replay uses 1,100,566
+symbolic transitions, at most 403 per outcome, with minimum positive-duration
+constant 3. It also resolves the source graph
+in two independent ways. The contracts quantify over nine arbitrary natural
+register values, header distance $48+n$ with $n\ge0$ (zero gap
+$48+n-|p|$ for address $p$, as in the principal physical-frame convention),
+and an arbitrary nonempty finite spare list. They are not tests over
+bounded numerical examples.
+
+The folded machine reaches the complete clean source frame after exactly
+\textbf{58,014} physical transitions. The independent bytearray simulator
+compares the entire tape, not merely the main registers or a window. The
+head is at $-2$ in native state 84, the source site is 25, the logical
+register vector is the seed above, and all 26 spare registers have value
+one. No earlier halt occurs. The fully unfolded table reaches its clean
+seed after 57,840 transitions. The old symmetric-Shift table reaches its
+seed after 57,768, so no speed improvement is claimed for this composition.
+
+Concatenating positive physical source-step simulations, and prepending
+initialization, proves that each literal table halts precisely when its
+source program halts. Conversely, a literal halt after $t$ transitions
+cannot coexist with $t+1$ nonhalting source steps: their positive simulations
+would deterministically reproduce more than $t$ nonhalting physical steps.
+Together with the common-source invariant, this gives the new transfer
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Halt}(\mathrm{PA194CSZ})
+ \longleftrightarrow
+ \operatorname{Halt}(\mathrm{PA194CS}).
+\]
+The inherited ordinary mathematical calibration of PA194CS then transfers
+its nonhalting/consistency biconditional to PA194CSZ. This does not claim a
+new end-to-end Lean or Rocq kernel theorem, or completion of the repository's
+conditional iPRA endpoint.
+
+\subsection{Identity and provenance}
+
+The authoritative dense-table SHA-256 is
+\begin{quote}\ttfamily\small
+62e93098caf7c09ff2938d07064f0dbbb47c71ec369892968258fff708592269.
+\end{quote}
+Its action graph is absent from the frozen current corpus of 620 literal
+byte forms, including all eight old 194-state graph classes. The comparison
+allows arbitrary control renaming, a changed designated start, global tape
+reflection, and simultaneous read/write symbol complementation. This finite
+novelty check is independent of the semantic preservation argument.
+
+Symmetric Shift and its additional fold come from
+\texttt{pa194\_new\_designs\_2026-11-13.zip}. The zero-register jump and
+positivity-mask method come from
+\texttt{pa194c\_conpa\_2026-11-13 (1).zip}. Their authorship and supplied
+licenses remain attached. The new construction proves their compatibility,
+checks the resulting literal machine, and supplies the independent audit
+that the earlier auxiliary zero-register seed did not include.

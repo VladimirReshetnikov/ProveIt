@@ -1,0 +1,82 @@
+Independent logical audit (13 November 2026, Pacific date)
+Repository: VladimirReshetnikov/ProveIt
+Revision: 17f92105e2bc4317feae6c219cb2143437b482ff
+
+1. Status distinction
+The root PA README says neither machine-specific direction is yet established
+in iPRA for PA194. It does not claim that no ordinary mathematical PA proof is
+available. PA194's report/calibration.tex and its reference/original_pa195_calibration.tex
+explicitly give a mathematical proof of the PA biconditional, while marking
+kernel_checked:false. Upstream PA196's paper and Lean endpoint provide the
+internal refutation-to-halting implication. The reverse internal implication
+must not be attributed to that endpoint.
+
+2. Diagonal clause audit
+For p(a,b)=(a+b)(a+b+1)/2+b, I=4p, M=4p+1,
+U(a,B)=4p(B,a)+2, E=4p+3, every label of formula code B is <B.
+The exceptional I(0,0)=0 is truth and has no labels. Hence
+Gamma(B): B -> U(B,B) is sound under the arithmetic decoding.
+The reverse-rewrite replacement chooses C=E(a,b)->(chi(b)->chi(a)),
+phi=not C, c=code(phi), and applies separation at (a,a,c).
+It removes E from the quantified consequent by propositional weakening,
+then applies negative-property specialization using membership-only vacuity.
+It generalizes the discharged implication at c and applies Gamma(phi).
+This avoids the circular use of equality vacuity found in a naive argument.
+The neighborhood-binder transport explicitly uses the retained commutation
+head and the equality witness; dropping either head would require a new proof.
+
+3. Reverse PA translation audit
+Interpret M(a,b) as Bit(x_a,x_b) and E as equality. PA proves Bit(s,z)->z<s,
+so code 1 has a fixed PA refutation. For each arithmetic formula theta,
+finite bit comprehension follows from one PA induction instance. Replacing
+theta in that finite derivation is a primitive-recursive syntactic operation;
+PA verifies proof checking, without asserting uniform truth/satisfaction.
+The a=b collision in separation is handled separately by the singleton
+matrix (z=x_b) and theta[z/x_b], instead of incorrectly holding x_a fixed.
+The code-zero implication alias needs a provable equivalence, not literal
+syntax identity. Bound-variable capture is handled by freshening/de Bruijn
+coding. These qualifications are all present in the supplied calibration.
+
+4. Source store audit
+Both the current top and cached head need proof annotations because the
+original Shift condition is t+h=1. A Cantor stack has canonical finite
+length; p(0,0)=0 is not a free list constructor. The supplied proof treats
+zero popping as truth and omits erased zero-on-zero stack cells. The
+scheduler carries its store, so soundness must be proved for every annotated
+store, not only from a reset store. The supplied calibration does this.
+
+5. Literal trace transfer in PA
+A complete symbolic source-step contract is sufficient only if it preserves
+the entire frame, has positive physical duration, excludes premature halt,
+and includes every decrement outcome and startup. The reverse halting
+direction follows without an unbounded inverse simulator: if the tape first
+halts after T steps, simulate T+1 nonhalting source steps. Their positive
+durations exceed T, contradicting deterministic literal execution. This
+bounded argument is formalizable in PA and works for nonstandard T.
+All-tape local quotient proofs can instead be composed directly when a
+candidate is a verified quotient/retiming of an existing calibrated table.
+
+6. Assessment
+No contradiction or specific mathematical error was found in the audited
+diagonal/source-calibration argument. This is not a new kernel verification
+and not a complete audit of the upstream PA-refutation compiler. A report
+using the existing source may explicitly inherit that compiler and supply
+its own exact finite machine-transport proof. It should state the latter
+theorem separately from the inherited calibration and distinguish executable
+certificates from proof-assistant theorems.
+
+7. Safe further source family
+Keep I=4p and M=4p+1 but exchange tags of U and E. Then false code 1 and MP
+are unchanged, components decrease and code freshness persists. Transport
+labels and formula codes by the same recursively defined tag permutation;
+this is essential because the property code doubles as separator label.
+The numerical dominance restriction can be handled by the already derived
+unrestricted implicational basis. The existing even-tag parity-recoding
+chapter proves the analogous, more general, encoding transport. A literal
+state reduction still needs source/emitter/layout/simulation checks.
+
+8. ConciseIPRA boundary
+An iPRA proof checker searches for Con(iPRA), not Con(PA). Its reduction
+principles can inspire derived-interface simplification; replacing the PA
+source by it is not justified. An independently established PA calibration
+would be required. No direct smaller PA source was established in this audit.

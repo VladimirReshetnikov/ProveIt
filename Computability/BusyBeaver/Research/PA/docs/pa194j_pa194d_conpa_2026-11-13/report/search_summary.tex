@@ -1,0 +1,37 @@
+The following new searches jointly mutate source associations and evaluate
+compatible finite-history folds. Closing-leaf searches additionally vary the
+final jump between ordinary return and candidate zero-register decrements.
+The score is the effective reader count plus scanner/address penalties;
+it is a filter, not a physical correctness certificate. A score below 60
+would be a candidate for fewer than 194 states with the 134-control fixed part.
+Every such candidate would still require the complete source and tape proofs.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Search & Mutations & Best score & Seconds\\
+\midrule
+CSZ & 11,263,380 & 60 & 900\\
+CZ & 9,991,239 & 60 & 900\\
+CSZ103A & 2,940,290 & 60 & 450\\
+CSZ103X & 3,442,575 & 60 & 450\\
+closing103A & 4,489,001 & 60 & 450\\
+negation\_search & 3,062,902 & 60 & 450\\
+h1D & 890,683 & 67 & 180\\
+h1D\_adaptive & 1,128,819 & 64 & 240\\
+separateD & 3,608,903 & 62 & 450\\
+separateD\_adaptive & 1,927,245 & 60 & 240\\
+separateH & 3,447,089 & 63 & 450\\
+separateH\_adaptive & 4,398,267 & 63 & 240\\
+warm\_D\_CSZ\_A & 9,288,577 & 60 & 480\\
+warm\_D\_CSZ\_X & 9,325,004 & 60 & 480\\
+\bottomrule
+\end{tabular}
+\end{center}
+Logs, frozen input pools, random seeds and C++ source are retained under
+\file{research/search/}. Wall-time stopping means mutation counts vary with
+the host. No run produced a score below 60. The adaptive separate-D run
+reached 69 readers and nine simultaneous folds; this candidate became
+PA194D only after the independent proofs reported in Section~\ref{sec:gammad}.
+Failed searches establish no lower bound and do not exhaust all machines,
+logical calculi, controller layouts, or source associations.

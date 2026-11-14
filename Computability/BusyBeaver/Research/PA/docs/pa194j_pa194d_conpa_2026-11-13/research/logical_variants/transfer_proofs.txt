@@ -1,0 +1,87 @@
+Three diagonal-schema transfer variants
+=======================================
+
+Notation and baseline.
+  I(A,B) is implication; N(A)=I(A,1); U(d,A) is universal quantification.
+  Gamma(B)=I(B,U(B,B)).  X(d,H)=Ex(d,U(d,H)).
+  Retain the six heads h1--h6, dominated propositional family, modus ponens,
+  and theorem generalization of the separate-diagonal calculus. For each
+  variant below, replace precisely one head, remove the separate Gamma push,
+  and retain the original guarded gate G=N(V -> Q). Thus nine entries are
+  pushed, just as in PA195. The altered head always has implication tag zero.
+
+1. h1D:  (Gamma(D) -> X(D,H)) -> H.
+
+The previously archived h1 transfer used Gamma(A), where A was an independent
+parameter. The new schema binds the diagonal index to the quantified label D.
+Positive implicational logic proves
+  ((G -> X) -> H) -> (X -> H),
+by K: X -> (G -> X) and composition. Therefore every old h1 is recovered
+before invoking explosion or negation rules. The original explosion proof from
+h1 now applies, followed by classical double-negation elimination. Specialize
+H=1 and D=B. The new head is N(Gamma(B) -> X(B,1)); classical logic projects
+Gamma(B). Conversely, old h1 and Gamma(D) prove the strengthened head.
+No guard or freshness condition is needed in either translation.
+
+2. h2D: (Gamma(D) -> U(D,U(A,H))) -> U(A,U(D,H)).
+
+The archived h2 transfer used Gamma(A). Positive weakening recovers every old
+commutation head, exactly as in case 1. h1, h5, h6 remain unchanged.
+For every label d, derive seriality s_d: N(U(d,1)). To do this, let E=E(0,d).
+The positive tautology 1 -> (E -> 1) is K. Generalize it at d and use h6:
+  U(d,1) -> U(d,N(E)).
+The equality witness h5(d,0)=N(U(d,N(E))) implies s_d by composition.
+This derivation needs neither Gamma nor equality vacuity, and does not even
+need explosion. Given s_D, generalization at A and h6 give
+  U(A,U(D,1)) -> U(A,1).
+Together with s_A this refutes U(A,U(D,1)). Specialize the new h2 to H=1,
+A=0, D=B. Its consequent is refutable, so it implies
+  N(Gamma(B) -> U(B,U(0,1))),
+and hence Gamma(B) by classical propositional reasoning. Conversely, the old
+commutation head and Gamma(D) yield the strengthened head. Uniform finite
+syntactic templates and proof-tree induction establish PA-verifiable proof
+translations in both directions.
+
+3. h6outerD:
+  (Gamma(D) -> U(D,A)) -> (U(D,I(A,H)) -> U(D,H)).
+
+The archived h6 transfer inserted Gamma(D) into the SECOND antecedent instead:
+  U(D,A) -> ((Gamma(D) -> U(D,I(A,H))) -> U(D,H)).
+Here positive K supplies Gamma(D) -> U(D,A) from U(D,A), so the old h6 is
+recovered BEFORE using distribution. h1 and h5 remain unchanged. Derive
+s_D=N(U(D,1)) exactly as in case 2, using the recovered h6.
+Set A=H=1 in the new head. The identity I(1,1) is a theorem; theorem
+generalization yields U(D,I(1,1)). Hence
+  (Gamma(D) -> U(D,1)) -> U(D,1).
+Compose with s_D, obtaining N(Gamma(D) -> U(D,1)), and project Gamma(D)
+classically. Since D is arbitrary, every diagonal instance is recovered.
+Conversely, the old h6 and Gamma(D) prove the new head.
+
+All these are whole numerical-calculus equivalences, not merely semantic
+soundness. They preserve PA refutations via primitive recursive proof
+translations. The command protocol remains the nine-entry protocol: the
+selector for the altered head retrieves the strengthened head, then applies
+its fixed projection when an old head is requested; the Gamma supplier
+selects the special instance identified above. The saved t, U(d,h), and rho8
+entries are identical. Each altered head is I(...,...), hence residue zero
+modulo four; the original safe-Shift selector proofs still apply. Use the
+nine-entry PA195 selectors, not the ten-entry PA194 selectors.
+
+Machine status.
+  new_transfer_words.py independently checks all six incoming parameters in a
+  free term algebra, proving the complete emitted stack and gate identities.
+  source_words.py supplies balanced binary grammars and complete ordinal
+  primitive source instruction lists for each variant. Each has 3700 sites,
+  4815 branch contracts, and maximum balanced path length 29. These files are
+  a source-level construction only. No reduced literal TM is claimed until
+  reader allocation, context folds, startup, and physical contracts are checked.
+
+Novelty scope.
+  Exact h5 Gamma fusion was already present in
+  pa195_followup_research/source_extensions/witness_bundle.tex, so it is not
+  counted as new. Archived h1A, h2A, and h6innerD transfer variants occur in
+  pa194_conpa_2026-11-13_2/mathematics/h1_transfer_proof.tex and
+  h2_h6_transfer_proof.tex. The three variants here differ in parameter binding
+  or in polarity location within h6; no matching formula was found in the
+  inspected PA/docs text/code corpus. This is a corpus comparison, not a claim
+  of worldwide mathematical novelty.

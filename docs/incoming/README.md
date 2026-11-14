@@ -14,7 +14,7 @@ a report at one of the destinations of section 2.
 
 ## Con(PA) machine research packets
 
-Forty-one archives that arrived between 28 October and 13 November 2026 are about
+Forty-four archives that arrived between 28 October and 13 November 2026 are about
 constructing a Turing machine whose non-halting is equivalent to `Con(PA)`. They are
 placed, as delivered and without a write, in
 [`Computability/BusyBeaver/Research/PA/docs`](../../Computability/BusyBeaver/Research/PA/docs/README.md),
@@ -22,7 +22,7 @@ one directory per archive. That README gives the layout, the wrapper directory o
 archive, and the members that are not placed: copies of the imported upstream snapshots,
 nested copies of sibling archives, and files matched by `.gitignore`.
 
-All forty-one archives are removed from this directory. Twenty-one of them were kept at
+All of them are removed from this directory. Twenty-one of them were kept at
 first, because scripts under `Computability/BusyBeaver/Research/PA` open them at this path
 and several check the digest of the archive file; they were removed on Vladimir's
 instruction of 13 November 2026. The placement README says how to restore an archive file
@@ -71,6 +71,9 @@ from the history.
 | `pa194c_conpa.zip` | 2026-11-13 | [pa194c_conpa](../../Computability/BusyBeaver/Research/PA/docs/pa194c_conpa/) |
 | `pa194c_conpa_2026-11-13 (1).zip` | 2026-11-13 | [pa194c_conpa_2026-11-13_1](../../Computability/BusyBeaver/Research/PA/docs/pa194c_conpa_2026-11-13_1/) |
 | `pa194c_conpa_2026-11-13.zip` | 2026-11-13 | [pa194c_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194c_conpa_2026-11-13/) |
+| `pa194_radix_family_2026-11-13.zip` | 2026-11-13 | [pa194_radix_family_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194_radix_family_2026-11-13/) |
+| `pa194j_pa194d_conpa_2026-11-13.zip` | 2026-11-13 | [pa194j_pa194d_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194j_pa194d_conpa_2026-11-13/) |
+| `pa194q_conpa_2026-11-13.zip` | 2026-11-13 | [pa194q_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194q_conpa_2026-11-13/) |
 
 ## Sub-exponential 3-SAT (ETH) reports
 

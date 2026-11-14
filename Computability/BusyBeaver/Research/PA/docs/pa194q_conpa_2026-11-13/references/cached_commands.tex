@@ -1,0 +1,317 @@
+% A report fragment; requires amsmath, amssymb, and booktabs.
+\section{Command and source audit for the two new composites}
+\label{sec:composite-command-audit}
+
+The two composites combine the supplied diagonal-vacuity axiom emitters
+with the supplied changes that make Shift test the cached head alone and
+make successful modus ponens return its result in that cache. These changes
+are compatible. The ten-entry emitter requires changed stack indices;
+the nine-entry command compiler cannot simply be copied verbatim.
+This section proves the required command identities uniformly, binds the
+changed primitive source tails, and states the limits of the audit.
+
+\subsection{Exact command interface and emitted stack}
+
+Let $p(a,b)=\binom{a+b+1}{2}+b$, let $[a;w]=p(a,w)$, and write
+$[a_1,\ldots,a_k;w]$ for iterated cons with $a_1$ at the top.
+The total Cantor inverse satisfies
+\[
+ \operatorname{hd}[a;w]=a,\qquad
+ \operatorname{tl}[a;w]=w,
+ \qquad \operatorname{hd}(0)=\operatorname{tl}(0)=0.
+\]
+In particular, $[0;0]=0$. No argument below assumes that a zero push
+increases a stored stack length, or that an empty stack can be distinguished
+from a stack of zero entries. The identities are numerical identities for
+the total projections, valid also at this alias.
+
+Use $I(a,b)=4p(a,b)$ and $U(a,B)=4p(B,a)+2$, and write a command store
+as $\langle t,w,d,h\rangle$. The two modified commands are
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}
+  \mathsf{halt},&h=1,\\
+  \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&h\ne1,
+ \end{cases}
+\]
+and, putting $y=d+x$,
+\[
+ \mathsf{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+  \langle0,w,0,y\rangle,&I(t,y)=h,\\
+  \langle0,w,y,0\rangle,&I(t,y)\ne h.
+ \end{cases}
+\]
+Only $S$ can halt. Neither branch of MP pushes a stack entry.
+
+Let $n$ be the \emph{total} number of entries AX pushes, including the
+saved top: $n=9$ for the diagonal composite and $n=10$ for the separate
+diagonal-head composite. For $D=d+x$, $H=h+y$, $A=c$, the effect is
+\[
+ \mathsf{AX}_{c,x,y}\langle t,w,d,h\rangle
+ =\langle K(H,D,c),[q_1,\ldots,q_{n-1},t;w],0,0\rangle.
+\]
+Writing $L_1,\ldots,L_6$ for the original six heads in their push order,
+the generated entries, listed from the stack top downward, are exactly
+\[
+\begin{array}{c|l}
+n& (q_1,\ldots,q_{n-1})\\ \hline
+9&(L_6,L_5,L_4,L_3,L_2,L_1,\rho_8(D,A,H,d),U(d,h))\\
+10&(\Gamma(A),L_6,L_5,L_4,L_3,L_2,L_1,
+                 \rho_8(D,A,H,d),U(d,h)).
+\end{array}
+\]
+Here $\Gamma(B)=I(B,U(B,B))$. In the first case $K$ is the guarded
+bundle $F_\Gamma=\neg(\Gamma(c)\to(V\to Q))$; in the second it is
+the guarded old gate $G=\neg(V\to Q)$. A failed numerical guard gives
+$K=0$, while the separately pushed $\Gamma(A)$ remains present in the
+second case. The emitter audit checks these exact free-algebra trees and
+the complete stack order, not a list of sampled formula codes.
+
+All $q_j$ except the last have residue zero modulo four; the last is
+$U(d,h)$ and has residue two. The gate, including a failed guard, has
+residue zero. Consequently none of these generated values is code one.
+This property is enough for all the termination claims below; it does not
+assume that a theorem of the underlying calculus is numerically nonzero.
+
+\subsection{Uniform stack-word theorem}
+
+Commands execute from left to right. For every incoming store, including
+one with $t=1$, the following are total, nonhalting command executions:
+\begin{align*}
+ \mathsf{AX}_{c,x,y};S^{n-1}:
+ \langle t,w,d,h\rangle
+ &\longmapsto
+ \langle\rho_8(d+x,c,h+y,d),[t;w],0,U(d,h)\rangle,\\
+ \mathsf{AX}_{c,x,y};S^n:
+ \langle t,w,d,h\rangle
+ &\longmapsto \langle U(d,h),w,0,t\rangle.
+\end{align*}
+Indeed, the first Shift tests the cleared cache zero; Shifts two through
+$n$ test $q_1$ through $q_{n-1}$. None tests the saved top $t$. This is
+a finite induction using the two Cantor projection identities, so it also
+covers $t=w=0$ and all other zero aliases.
+
+Define
+\begin{align*}
+ \mathsf{Push}_n&=\mathsf{AX}_{0,0,0};S^{n-1};\mathsf{MP}_0,\\
+ \mathsf{Pop}_n&=\mathsf{AX}_{0,0,0};S^{n+1},\\
+ \mathsf{Discard}_n&=\mathsf{MP}_1;\mathsf{AX}_{1,0,0};S^n;
+                    \mathsf{MP}_0.
+\end{align*}
+Their complete contracts are
+\begin{align*}
+ \mathsf{Push}_n\langle t,w,d,h\rangle
+   &=\langle0,[t;w],0,0\rangle,\\
+ \mathsf{Pop}_n\langle t,[a;w],d,h\rangle
+   &=\begin{cases}
+       \mathsf{halt},&t=1,\\
+       \langle t,w,0,a\rangle,&t\ne1,
+     \end{cases}\\
+ \mathsf{Discard}_n\langle t,w,0,0\rangle
+   &=\langle0,w,0,0\rangle.
+\end{align*}
+Push's last MP compares an implication, of residue zero, with $U(d,h)$,
+of residue two, and therefore takes its failure branch. Pop's last Shift
+tests precisely the saved top; this is the only possible halt in that
+word. For Discard, $I(t,1)>0$ makes the first MP fail, producing
+$\langle0,w,1,0\rangle$. The AX identity gives
+$\langle U(1,0),w,0,0\rangle$, and $I(U(1,0),0)>0$ makes the final
+MP fail. These arguments cover arbitrary $t$, including zero and one.
+
+Thus the concrete exponents are
+\[
+\begin{array}{c|ccc}
+ &\mathsf{Push}:S^{n-1}&\mathsf{Pop}:S^{n+1}
+ &\mathsf{Discard}:S^n\\ \hline
+\text{diagonal}&8&10&9\\
+\text{separate diagonal head}&9&11&10.
+\end{array}
+\]
+In particular, Pop is \emph{not} claimed total for arbitrary preserved
+top: it deliberately detects a derived contradiction.
+
+\subsection{Selectors and generalization}
+
+Let $\mathsf{Offset}_0$ be empty and let
+$\mathsf{Offset}_u=\mathsf{MP}_u$ for $u>0$. Then
+\[
+ \mathsf{Offset}_u\langle0,w,0,0\rangle=\langle0,w,u,0\rangle,
+\]
+since $I(0,u)>0$ when $u>0$. Define
+\[
+ \mathsf{Gen}_{i,n}=\mathsf{Push}_n;\mathsf{Offset}_i;S;
+                  \mathsf{AX}_{i,0,0};S^n.
+\]
+For every $a,w$, including $a=1$,
+\[
+ \mathsf{Gen}_{i,n}\langle a,w,0,0\rangle
+       =\langle U(i,a),w,0,0\rangle.
+\]
+The Shift before AX tests cache zero and retrieves $a$ into $h$; AX
+clears that cache before any subsequent Shift and constructs $U(i,a)$.
+The last identity from the preceding subsection then proves the result.
+
+For $1\le j\le n-3$, the ordinary head selector is
+\[
+ \mathsf{Discard}_n;\mathsf{AX}_{A,D,H};S^{j+1};
+                  \mathsf{Pop}_n^{\,n-1-j}.
+\]
+It returns $\langle q_j,w,0,0\rangle$ from
+$\langle t,w,0,0\rangle$ for arbitrary $t,w$. After the displayed
+Shifts, $t=q_j$, the cache contains $q_{j+1}$, and the stack is
+$[q_{j+2},\ldots,q_{n-1},0;w]$. There are exactly $n-1-j$ entries
+in that displayed stack segment. Each Pop preserves $q_j\ne1$, consumes
+one entry and clears the previous cache before its own Shift tests.
+The last consumed entry is the saved zero, giving cache zero.
+
+For $n=10$, the new diagonal head is $j=1$, so the concrete selector
+for $\Gamma(B)$ is
+\[
+ \mathsf{Discard}_{10};\mathsf{AX}_{B,0,0};S^2;
+                           \mathsf{Pop}_{10}^{8}.
+\]
+This is valid even for a failed gate guard and even for $B=0$.
+Each original head has index one larger than in the nine-entry layout.
+
+For $u\le a$, the restricted propositional head is selected by
+\[
+ \mathsf{Discard}_n;\mathsf{Offset}_u;
+ \mathsf{AX}_{b,a-u,c};S^{n-1};\mathsf{Pop}_n,
+\]
+which returns $\rho_8(a,b,c,u)$ with the original stack and zero caches.
+The gate selector is
+\[
+ \mathsf{Discard}_n;\mathsf{AX}_{c,b,a};\mathsf{Pop}_n^{n}.
+\]
+It returns $K(a,b,c)$ with the original stack and zero caches. Every Pop
+is safe because its preserved top is the gate, which has residue zero.
+These selectors are total even when their incoming top is one.
+
+\subsection{Modus ponens, early halting, and a uniform proof compiler}
+
+The MP suffix is independent of the AX stack length:
+\[
+ \mathsf{MPSuffix}_b=S;S;\mathsf{MP}_b;S.
+\]
+For every $a,b,w$,
+\[
+ \mathsf{MPSuffix}_b
+  \langle0,[a,I(a,b),0;w],0,0\rangle
+ =\begin{cases}
+   \mathsf{halt},&a=1\text{ or }b=1,\\
+   \langle b,w,0,0\rangle,&a\ne1\text{ and }b\ne1.
+  \end{cases}
+\]
+The first Shift retrieves $a$. The second either halts at $a=1$ or
+sets the top to $a$ and the cache to $I(a,b)$. MP succeeds and puts $b$
+in the cache. The last Shift either halts at $b=1$ or retrieves the dummy
+zero, leaving the underlying stack unchanged. If $a=b=w=0$, all three
+displayed entries alias the zero stack. The same projection calculation
+still applies and MP succeeds at $I(0,0)=0$. Omitting the dummy zero would
+consume the first underlying entry, so its presence is essential.
+
+For a finite proof tree $p$ in the appropriate numerical calculus, compile
+axioms by the selectors above and compile generalization by
+$W_{p_0};\mathsf{Gen}_{i,n}$. For an MP node with minor premise $a$ and
+major premise $I(a,b)$, use
+\[
+ W_p=\mathsf{Discard}_n;\mathsf{Push}_n;
+ W_{p_1};\mathsf{Push}_n;
+ W_{p_0};\mathsf{Push}_n;\mathsf{MPSuffix}_b.
+\]
+Induction on $p$ proves the exact invariant:
+for every $t,w$, starting from $\langle t,w,0,0\rangle$, the compiled
+word either halts or returns $\langle\operatorname{concl}(p),w,0,0\rangle$.
+The first two words in the MP case introduce the dummy zero; the two
+premise computations and their Pushes then establish the suffix's exact
+three-entry precondition. Early halting is preserved by command-word
+extension and causes no completeness failure.
+
+If $p$ proves code one, the word
+\[
+ \mathsf{AX}_{0,0,0};W_p;\mathsf{Pop}_n
+\]
+halts from \emph{every} incoming store. The first AX clears $d,h$;
+the compilation invariant tolerates its arbitrary resulting top and stack.
+If no earlier command halts, the final Pop detects the proven top one
+before inspecting the arbitrary underlying stack. This universal incoming
+store property is exactly what is needed for the inherited exhaustive
+command-word scheduler; earlier trials need not restore an empty store.
+
+\subsection{Soundness invariant and scope of the calibration}
+
+Maintain derivations in the chosen numerical calculus for $t$, $h$,
+and each finitely decoded stack entry. No derivability requirement is
+placed on the offset $d$. Code zero has the fixed derivation
+$\rho_8(0,0,0,0)=0$, because $I(0,0)=0$. Thus the infinite zero tail
+does not require infinitely much proof data: a single fixed zero proof
+supplies every requested padding entry.
+
+AX preserves this invariant: its saved top is already derived, its
+ordinary heads and guarded gate are axioms or zero, the separate
+$\Gamma(A)$ is an unconditional axiom, its propositional head satisfies
+$d\le d+x$, and $U(d,h)$ follows by theorem generalization from the old
+cache. A failed MP returns zero; a successful MP derives $d+x$ from the
+derived $t$ and $I(t,d+x)=h$. Shift only moves derived formulas, and a
+halting Shift exposes a derivation of one. Together with the compiler and
+the inherited scheduler, this proves command-program halting if and only
+if the selected numerical calculus has a refutation.
+
+The compiler, selectors, finite proof-store updates, and the two changed
+loop-trace constructors are primitive recursive. The correctness arguments
+use ordinary induction on finite proofs, lists, natural loop counters and
+traces. They therefore supply the changed-command part of a PA-internal
+calibration. This audit does not independently reprove the entire inherited
+PA-to-calculus and calculus-to-PA translation, nor claim a newly checked
+Lean or Rocq endpoint. Those logical translations and the internal coding
+of the literal tape simulation remain the inherited interfaces required
+for an end-to-end assertion about $\operatorname{Con}(\mathrm{PA})$.
+
+\subsection{Finite source binding and arbitrary-value loop proofs}
+
+An independent pair of CFG resolvers checks the complete source graphs.
+Let $N$ be the new program's number of primitive sites. Set
+$E=N-15$, $F=N-12$, $S_0=N-11$. Its first $E$ primitive instructions
+are identical to those of the corresponding old axiom layout, except for
+three exit retargetings: source site $48$ branches to the new Shift entry,
+the last AX site $N-96$ returns to $F$, and the last MP-prelude site
+$N-16$ returns to $F$. No AX macro or formula-emission instruction changes.
+The concrete entries are
+\[
+\begin{array}{lrrrr}
+\toprule
+ &N&\text{AX final}&\text{MP success }E&\text{Shift }S_0\\
+\midrule
+\text{diagonal composite}&3676&3580&3661&3665\\
+\text{separate composite}&3649&3553&3634&3638\\
+\bottomrule
+\end{array}
+\]
+The new MP tail is the three-instruction loop
+$\operatorname{dec}D;\operatorname{inc}H;\operatorname{jump}$ followed
+by return to fetch site $25$. From $(D,H)=(y,0)$ it reaches $(0,y)$
+in exactly $3y+1$ instructions and returns in one more. Failure returns
+directly with $(D,H)=(y,0)$. This proves the displayed MP contract for
+every natural $y$.
+
+The inherited command-boundary convention gives scratch $X=0$;
+the four stored values $t,w,d,h$ remain arbitrary. The new Shift first
+clears $T$ in $2t+1$ instructions, then transfers
+$H$ to $T$ and scratch $X$ in $4h+1$ instructions, then restores $H$
+from $X$ in $3h+1$ instructions. Thus it reaches $(T,H,X)=(h,h,0)$
+after exactly $2t+7h+3$ instructions. Its final two instructions set
+$X=1$ and enter the unchanged guard, which compares $H$ to one and
+otherwise calls the unchanged total Cantor decoder. The elementary loop
+invariants prove these effects for every natural command-store value
+under that boundary convention, not just for a bounded execution prefix.
+
+\paragraph{Executable audit.}
+The finite binding receipt is \texttt{composite\_binding.json}.
+The command algebra supplement checks 164 symbolic cases for $n=9$ and
+188 for $n=10$, with both opaque arbitrary tails and the exact zero-stack
+alias; an undecided equality is rejected. Separately, the independent
+whole-tape symbolic checker passes all 4,784 and 4,749 source outcomes and
+the exact 57,922-step blank startup. These checks support the displayed
+mathematical proofs and identify the literal implementations; they are
+not substitutes for an end-to-end kernel-checked arithmetic theorem.

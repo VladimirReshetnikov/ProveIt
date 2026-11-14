@@ -1,0 +1,217 @@
+Critical review of the inherited ordinary PA calibration
+========================================================
+
+Conclusion
+----------
+The supplied prose provides a credible ordinary mathematical argument for the
+PA-provable consistency biconditional, with explicit uniform syntactic proof
+transformations. I did not find a circular use of equality vacuity, a reflection
+principle, a false fresh-variable premise, or a scheduler-store reset assumption
+in the inspected argument. I checked the key dependency claims against the
+actual imported Lean source, rather than treating the prose's theorem heading
+as verification.
+
+This is a review of an ordinary mathematical proof and its specified interfaces.
+It is not a freshly elaborated Lean or Rocq proof of the entire biconditional,
+and the complete primitive-recursive proof transformers have not been newly
+implemented and kernel checked in this work. The repository's incomplete iPRA
+endpoint is a distinct stronger formalization goal; it does not itself reveal
+a gap in the PA-level argument. For a new physical variant preserving the exact
+3673-site source, the only new mathematical obligation is the physical transport;
+one need not invent or re-prove a different logical calculus.
+
+Files inspected
+---------------
+Within Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13:
+  report/calibration.tex
+  report/reference/original_pa195_calibration.tex
+  report/reference/diagonal_calculus.tex
+
+The expanded ten-entry version in the second PA194 packet:
+  docs/pa194_conpa_2026-11-13_2/mathematics/pa194_calibration.tex
+
+Within jamesyc-upstream/pa196/PA196:
+  Logic/Basic.lean, Deduction.lean, Connectives.lean, Reverse.lean,
+  Neighborhood.lean, and uses of equalityVacuity throughout Logic/
+  and Arithmetic/Certificates/;
+  Commands/Code.lean, Store.lean, Compiler.lean, and command-word identities.
+All refer to ProveIt commit 17f92105e2bc4317feae6c219cb2143437b482ff.
+
+1. Diagonal freshness is a genuine syntactic inequality
+-----------------------------------------------------
+For Cantor pairing p(a,b), every component is at most p(a,b). For every
+nonzero constructor code the factor four and its tag put each variable label
+and recursive formula child strictly below the full code. The exceptional
+I(0,0)=0 decodes as truth and has no variable. Hence x_B is absent from the
+formula of code B, including its bound labels. Gamma(B)=B -> U(B,B) is therefore
+a valid vacuity instance. Choosing c=code(not C) or z0=code(E(a,b)) yields a
+specific fresh label by elementary arithmetic; no unbounded fresh-name search
+or circular statement about semantic truth is used.
+
+The ordinary PA interpretation must rename the auxiliary bound variables in
+Bit, or use de Bruijn indices. The supplied proof says this explicitly, so
+freshness of source labels survives expansion of the arithmetic bit formula.
+
+2. Classical reasoning does not secretly assume explosion
+---------------------------------------------------------
+An initial concern is that code 1 is the membership atom M(0,0), rather than a
+primitive logical falsity symbol. Extracting conjuncts from encoded negations
+would not be legitimate from a pure implication basis alone. This concern is
+resolved by the actual retained heads: Logic/Deduction.lean explicitly derives
+Context.explosion and explosion from h1 and the dominated implication basis.
+Its doubleNegationElimination then uses this explosion derivation and Peirce.
+Consequently the classical gate-extraction and double-negation steps used by
+the new proof are supported by retained proof templates, independently of the
+removed equality-vacuity gate.
+
+3. Reverse rewriting does not assume the missing equality vacuity
+-----------------------------------------------------------------
+The crucial negative-property trick changes the old choice of separator.
+For the desired reverse implication C, choose phi=not C and c=code(phi).
+Pointed separation at (a,a,c) gives not Q. The second part of S, followed by
+propositional weakening using phi -> not chi(a), gives
+  S -> U(a, M(c,a) -> not chi(a)).
+Now specialize this membership-only negative consequent at b.
+
+The actual negativeSpecialization definition in Logic/Reverse.lean imports:
+  the mirrored witness exists x_a E(b,a);
+  direct membership rewriting under E(b,a);
+  membership vacuity of M(c,b) and chi(b), extended through implication/negation.
+It does not import equalityVacuity. The equality atom inside phi has already
+been removed from the quantified consequent before this specialization.
+The required freshness premises a != b,c and, for nondiagonal chi, a != d,
+are exactly the cases split in the prose.
+
+Under phi, the point condition supplies M(c,a); direct rewriting under E(a,b)
+supplies M(c,b). The specialized negative consequent contradicts chi(b).
+This gives phi -> (S -> not P). Generalizing this closed theorem at c and
+using the available Gamma(phi) gives phi -> Q, contradicting not Q. Double
+negation eliminates phi and gives C. The generalization is paid for by the
+specific available diagonal vacuity, not an unrestricted vacuity assumption
+on the desired equality-containing conclusion.
+
+For a=b, the reverse implication is propositional. When the fixed parameter
+label d=a, direct rewriting first reaches M(b,b), after which the already
+proved diagonal chi(t)=M(t,t) case reaches M(a,a). These steps cover the
+coincidence cases rather than silently assuming all labels distinct.
+
+4. Neighborhood-binder transport also uses membership-only formulas
+-------------------------------------------------------------------
+Gamma(E(a,b)) supplies vacuity for E(a,b) at z0=code(E(a,b)), enough to
+obtain the neighborhood implication at that one fresh binder. For an arbitrary
+z distinct from a,b and z0, both neighborhood matrices P(t) contain membership
+atoms only. The recovered bidirectional rewrites give
+  E(z,z0) -> (P(z0) -> P(z)).
+The mirrored equality witness, universal distribution and membership vacuity
+of P(z) at z0 specialize U(z0,P(z0)) to P(z). The antecedent U(z0,P(z0)) is
+vacuous at z by membership vacuity and quantifier commutation. Generalization
+then gives U(z0,P(z0)) -> U(z,P(z)). No primitive equality-vacuity instance at
+arbitrary z is assumed in this transport.
+
+I searched the imported logical and arithmetic certificate closures for
+uses of equalityVacuity. The substantive completeness uses are the old
+reverseChi supplier and primitiveToNeighborhood supplier, in their respective
+logical and arithmetic copies. These are exactly the interfaces replaced by
+the supplied diagonal proof. The equality witness itself is retained. This
+supports the claimed modular reuse of the original PA-refutation compiler.
+
+5. Finite comprehension is a proof supplier, not reflection
+-----------------------------------------------------------
+For any formula syntax theta(z,parameters), PA has a proof of finite bit
+comprehension by induction on n: represent the first n truth values by s<2^n,
+and either retain s or add 2^n according to excluded middle on theta(n).
+The induction formula contains theta as a syntactic substitution parameter.
+A primitive-recursive algorithm can output this one induction instance and
+the fixed logical/arithmetic proof pattern; PA verifies the output is a proof
+by the syntactic definition of its induction schema and proof checker.
+Nothing requires evaluating theta or asserting that all PA theorems are true.
+Full PA induction is used, which is precisely why one cannot simply replace
+PA by iPRA in this part of the argument.
+
+The pointed-separation supplier handles both label cases correctly. If a!=b,
+the bit-set predicate is
+  (Bit(x_a,z) or z=x_b) and T(c)[z/x_b]
+with bound x_a+x_b+1. This covers every bit of x_a and the distinguished
+point x_b. If a=b, the antecedent under the inner binder is Bit(z,z), not
+Bit(x_a,z) with x_a fixed. PA refutes Bit(z,z), and the singleton predicate
+  (z=x_b) and T(c)[z/x_b]
+with bound x_b+1 supplies the remaining conditions. The proof explicitly
+renames inner binders when inserting the witness depends on the original
+free x_b, avoiding capture.
+
+The proof also handles both numeric aliases: T(I(0,0)) is related by a fixed
+proof equivalence to truth implies truth, rather than claimed syntactically
+identical; T(1)=Bit(x_0,x_0) has a PA refutation even inside a binder for label
+zero. Thus neither alias produces an unproved special case in the syntactic
+proof-store invariant.
+
+6. The carried store and enumeration are accounted for
+-------------------------------------------------------
+The source scheduler does not reset the store between candidate words. The
+soundness proof annotates both visible formula codes t,h and every live
+canonical stack entry with a PA proof. It tracks arbitrary annotated stores,
+so AX generalization of old h is justified, successful MP constructs a proof
+of its consequent, failed MP returns truth, and Shift preserves annotations.
+For original Shift, t+h=1 implies t=1 or h=1, explaining why both visible
+proofs are required. The Cantor stack is not treated as a free list: p(0,0)=0,
+and the canonical stack ends at the first zero tail; pushing zero onto zero
+leaves the empty canonical annotation, while popping zero supplies truth.
+
+Completeness has a different universal operational property. The actual
+Commands/Compiler.lean theorem haltWord_universal begins a refutation word
+with AX(0,0,0), which clears the two caches even from an arbitrary dirty store.
+Its protected stack tail may remain arbitrary. The compiler either halts early
+or returns the derived formula while preserving that tail. This is stronger
+than compilation only from the clean initial store and exactly addresses the
+carried-store problem.
+
+For the separate-head calculus the old nine-entry selectors are not retained
+unchanged: the expanded PA194 calibration supplies ten-entry identities.
+I checked the shifts, pop/push/discard, selectors, generalization and MP suffix
+against the stated command updates. The residue facts used are adequate:
+implication codes are 0 mod 4, universal codes are 2 mod 4 and at least 2.
+Thus the safe shifts cannot accidentally satisfy the original t+h=1 test;
+explicit early halt in an MP suffix is allowed and useful. The ten-entry
+compiled refutation word still begins with AX and halts from every store.
+
+The supplied word code has explicit continuation pointers. Every positive
+pointer strictly decreases after a command, since its projections are bounded
+by l-1. Hence each candidate finishes in boundedly many commands or halts.
+Fresh candidates enumerate all integers from 2 upward; a refutation word
+beginning with AX has its candidate number at least 3. Induction through the
+preceding candidates reaches this word or an earlier halt. This is a finite
+arithmetic argument, not an assumed fairness property of an infinite run.
+
+7. The finite physical halt argument has the necessary positive lengths
+-----------------------------------------------------------------------
+Universal source-instruction contracts supply exact finite reachability to a
+next nonhalt frame, or to halt for the source halt instruction, with strictly
+positive physical duration. The arithmetic macros likewise terminate at exact
+command boundaries when the next command does not halt. Given Con(PA), the
+annotated store makes a halting command impossible. For any alleged physical
+halting time T, iterating T+1 positive command segments and their positive
+physical implementations produces a run longer than T. Determinism contradicts
+the alleged halt; fixed startup is checked separately. Exact reachability to
+a nonhalt endpoint already excludes a hidden premature halt inside a segment.
+No inverse decoding of arbitrary intermediate tapes, unbounded search for a
+future frame, or external HF-model truth assertion is required.
+
+The other direction compiles a PA refutation through the modified calculus,
+uses the universally halting command word and finite enumeration argument,
+and then concatenates the source/physical traces. All the arguments use
+primitive-recursive constructions and PA induction on coded finite objects.
+
+Reporting recommendation
+------------------------
+For the new unchanged-source physical variants, state the strongest clean new
+claim as an ordinary PA-formalizable halting-equivalence theorem with the
+pinned primary PA194 machine. State that the Con(PA) biconditional follows
+by composing with the supplied, explicitly retained ordinary mathematical
+calibration. Explain that no newly compiled end-to-end Lean/Rocq endpoint is
+being delivered. Do not describe a missing iPRA theorem as a missing PA-level
+mathematical argument, and do not describe Python certificate execution alone
+as the arithmetic calibration.
+
+The proof-transformer implementation and its kernel-checked uniform correctness
+remain worthwhile further work. They are a formalization boundary, not a
+counterexample or circularity found by this audit.

@@ -1,0 +1,162 @@
+{
+  "date_pacific": "2026-11-13",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "revision": "17f92105e2bc4317feae6c219cb2143437b482ff",
+  "objective": {
+    "verified_below_194": false,
+    "materially_different_194_state_designs": 2
+  },
+  "common_convention": {
+    "symbols": [
+      0,
+      1
+    ],
+    "tape": "two-way infinite",
+    "initial_tape": "allzero",
+    "initial_head": 0,
+    "dense_initial_state": 0,
+    "working_states": 194,
+    "dense_halt_label": 194,
+    "halt_in_working_count": false,
+    "moves": [
+      "L",
+      "R"
+    ]
+  },
+  "claim": "For each delivered principal literal table M, PA proves: not Halt(M,blank) if and only if Con(PA).",
+  "proof_level": "Ordinary mathematical proof formalizable in PA, with executable finite and symbolic certificates; inherited ordinary PA calibration; no new end-to-end kernel export.",
+  "new_lean_or_rocq_theorem": false,
+  "ipra_equivalence_claim": false,
+  "unconditional_nonhalting_claim": false,
+  "state_lower_bound_claim": false,
+  "machines": [
+    {
+      "name": "PA194J",
+      "directory": "construction",
+      "build": {
+        "name": "pa194j",
+        "working_states": 194,
+        "transitions": 388,
+        "source_sites": 3646,
+        "source_contracts": 4755,
+        "source_changes": [
+          3,
+          9,
+          26,
+          3526,
+          3532,
+          3544,
+          3550,
+          3553,
+          3627,
+          3633
+        ],
+        "positivity_pairs": 263180,
+        "native_sha256": "31abf450ba25066c8ac3aad6e7eedb59386b770bb4917f006800145ebb622218",
+        "dense_sha256": "7c498ced0eb0dffed77ae2f68f4d80c98edfd8f7763ec1be68aa8cd7ea80eacd",
+        "proof_scope": "Finite source invariant and exact construction; independent_verify.py verifies complete physical simulation and blank startup.",
+        "kernel_checked": false
+      },
+      "independent_verification": {
+        "status": "PASS",
+        "working_states": 194,
+        "transition_rows": 388,
+        "source_sites": 3646,
+        "source_contracts": 4755,
+        "independent_source_resolvers_agree": true,
+        "generated_instruction_map_matches": true,
+        "four_list_lemmas_rederived_from_table": true,
+        "arithmetic_box_oracles": false,
+        "symbolic_steps": 1103582,
+        "maximum_symbolic_steps": 403,
+        "minimum_duration_constant": 3,
+        "whole_blank_tape_equal": true,
+        "startup_steps": 60062,
+        "dense_conjugacy": true,
+        "native_sha256": "31abf450ba25066c8ac3aad6e7eedb59386b770bb4917f006800145ebb622218",
+        "dense_sha256": "7c498ced0eb0dffed77ae2f68f4d80c98edfd8f7763ec1be68aa8cd7ea80eacd",
+        "contracts_sha256": "6c49226552b828b9d0325f358df908dc83995b0e08e851b38900db3c08124b9e",
+        "kernel_checked": false,
+        "scope": "All natural primary values and both decrement outcomes; arbitrary natural gap and arbitrary nonempty finite spare list; full tape with zero exterior.",
+        "seconds": 237.525738
+      }
+    },
+    {
+      "name": "PA194D",
+      "directory": "logical_emitter",
+      "build": {
+        "name": "pa194d",
+        "fixed_states": 134,
+        "raw_readers": 69,
+        "simultaneous_folds": 9,
+        "working_states": 194,
+        "rows": 388,
+        "local_cases": 36,
+        "max_local_steps": 5,
+        "source_sites": 3649,
+        "source_contracts": 4751,
+        "native_sha256": "bc8ab6c58badd137535938c9810e39d19152c49dd2eb26ef4ea07dbcf3157231",
+        "dense_sha256": "4226b7702de554df4b52d10239b2bd7ad79ca90bd8faf2bd256552fe0c7fe81b",
+        "kernel_checked": false,
+        "proof_scope": "Finite construction, all-tape contextual quotient, source reassociation and zero-test invariant. The Gamma(D) logical calibration is a separate mathematical argument."
+      },
+      "independent_verification": {
+        "status": "PASS",
+        "working_states": 194,
+        "transition_rows": 388,
+        "source_sites": 3649,
+        "source_contracts": 4751,
+        "independent_source_resolvers_agree": true,
+        "generated_instruction_map_matches": true,
+        "four_list_lemmas_rederived_from_table": true,
+        "arithmetic_box_oracles": false,
+        "symbolic_steps": 1091154,
+        "maximum_symbolic_steps": 385,
+        "minimum_duration_constant": 3,
+        "whole_blank_tape_equal": true,
+        "startup_steps": 58168,
+        "dense_conjugacy": true,
+        "native_sha256": "bc8ab6c58badd137535938c9810e39d19152c49dd2eb26ef4ea07dbcf3157231",
+        "dense_sha256": "4226b7702de554df4b52d10239b2bd7ad79ca90bd8faf2bd256552fe0c7fe81b",
+        "contracts_sha256": "4ae899097d2996594ee24b318c75a1d8088d0418dd74cf75770171149f31c32b",
+        "kernel_checked": false,
+        "scope": "All natural primary values and both decrement outcomes; arbitrary natural gap and arbitrary nonempty finite spare list; full tape with zero exterior.",
+        "seconds": 71.031797
+      }
+    }
+  ],
+  "corpus": {
+    "packets": 41,
+    "filed_packets": 36,
+    "new_incoming_archives": 5,
+    "recognized_table_occurrences": 2685,
+    "byte_forms": 620,
+    "action_graph_classes": 446,
+    "old_194_occurrences": 95,
+    "old_194_byte_forms": 15,
+    "old_194_graph_classes": 8,
+    "rejected_194_graph_classes": 1,
+    "scope": "Numeric binary tables in .tm,.txt,.tsv,.csv, including recursively nested archives; not arbitrary tables encoded only in program source or JSON."
+  },
+  "search": {
+    "runs": 14,
+    "mutations": 69203974,
+    "minimum_candidate_score": 60,
+    "all_completed": true,
+    "score_below_60_found": false,
+    "negative_result_is_lower_bound": false
+  },
+  "files": {
+    "report_pdf": "report/pa194j_conpa.pdf",
+    "report_tex": "report/pa194j_conpa.tex",
+    "verify": "verify.py",
+    "ledger": "comparison/archive_ledger.csv"
+  },
+  "packaged_full_replay": {
+    "status": "PASS",
+    "seconds": 143.857,
+    "principal_machines": 2,
+    "physical_contracts": 9506
+  },
+  "report_pages": 27
+}

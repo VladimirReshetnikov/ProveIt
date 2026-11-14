@@ -1,0 +1,111 @@
+Independent review of PA194J
+===========================
+
+Reviewed input identity and finite invariant.
+
+The frozen parent instruction list is exactly the list in the supplied
+pa194_new_designs_2026-11-13 packet's PA194CS/machine directory. The parent
+and child native control domains are identical. They differ in exactly:
+
+  (27,1):   0 L 40  -> 1 R 21
+  (103,1):  0 L 302 -> 1 R 17
+  (2066,1): 0 L 302 -> 1 R 144
+
+The parent native SHA256 is
+00446d08d3c35909a11460a9e19507d53e8526ad822b94ce9a04c73951eb447b.
+The child's native SHA256 is
+31abf450ba25066c8ac3aad6e7eedb59386b770bb4917f006800145ebb622218.
+
+An independent deque/set implementation, importing no builder code, recomputed
+the abstract reachability relation from (pc,mask)=(25,1). It has 263180 pairs
+and SHA256
+9191fff6d156190b0eaa97f93dd5d10a23fbeac2d6505c0a269108e91c86f483.
+Every changed-site mask list agrees exactly with the supplied certificate.
+The ten changed sites are 3,9,26,3526,3532,3544,3550,3553,3627,3633.
+At each, the tested register is zero in every invariant mask. Old and new
+abstract successor sets agree on the entire invariant; it is closed under
+the new abstract transition relation. The replay is review_pa194j.py, with
+result pa194j_review_receipt.json.
+
+Concrete mathematical preservation theorem.
+
+For a register tuple r=(r0,...,r8), define
+  alpha(r)=sum(2^j : rj>0).
+The abstract semantics is a sound overapproximation of the concrete one:
+  an increment forces the selected bit to one;
+  a zero decrement follows the zero branch and preserves the mask;
+  a positive decrement follows the positive branch, with the selected bit
+  either zero or one afterward;
+  jumps preserve the mask.
+This elementary lemma holds for arbitrary natural register values, including
+nonstandard values in any model of PA. The relation R(pc,mask) is a fixed
+finite table. Its seed and closure are finite arithmetic facts checked by
+the certificate. PA proves by induction on source time that every concrete
+configuration reachable from (25,(2,0,...,0)) satisfies R(pc,alpha(r)).
+
+At an unchanged source instruction, the two programs have the same concrete
+step. At a changed instruction, R forces the tested register to zero; the
+new zero-decrement therefore follows precisely the old jump target and
+preserves the entire register tuple. Induction gives exact pointwise equality
+of the two concrete source runs, including whether and when the halt source
+site is reached. No soundness or consistency assumption is used. Thus PA
+proves source-halting equivalence from the designated seed.
+
+This is a reachable-source theorem. It does not claim equivalence from every
+arbitrary initial register tuple or on arbitrary physical tapes. The masks
+are an overapproximation of all future reachable source configurations, not
+a bounded concrete test. Exhaustive closure is what makes the invariant
+unbounded in source execution time.
+
+From source preservation to the PA consistency endpoint.
+
+The independent literal verifier establishes a positive complete-frame
+simulation for each of the 4755 source outcomes of the 3646-site new program,
+including the unreachable positive branches of the ten changed tests. It
+rederives four generic list traversals from literal rows and checks symbolic
+full tapes with arbitrary natural primary values, gap, and a nonempty spare
+list. Its normalizations are word identities; its accelerated self-loops and
+list traversals have ordinary induction proofs. The duration coefficients are
+nonnegative and their constant part positive. These are elementary PA-
+formalizable finite-trace facts, not an assumption of machine nonhalting.
+
+Given that completed physical certificate and its complete 60062-transition
+blank startup to source site 25 with primary seed (2,0,...,0), the child machine
+halts exactly when its new source halts. The reverse direction uses positive
+progress and determinism: if the source had not halted by T+1 source steps,
+the concatenated physical contracts would extend beyond any proposed physical
+halting time T. The nonempty spare-list condition is preserved by the contracts
+(increments append an entry; other outcomes retain the nonempty list).
+
+Combine:
+  blank Halt(PA194J)
+    iff Halt(new source, seed)
+    iff Halt(PA194CS source, seed)
+    iff a refutation in the calibrated numerical calculus exists
+    iff a PA refutation exists.
+The last two equivalences use the supplied PA194CS cached-command calibration:
+its symmetric Shift preserves the exact cached semantics, and its ten-entry
+proof compiler, all-store refutation word, proof annotations, and scheduler
+come from the separate-diagonal construction. The zero substitutions neither
+change those mathematical command interfaces on reachable runs nor require
+new selector indices. Negating yields
+  PA proves [not Halt(PA194J) iff Con(PA)].
+
+Evidence boundary and remaining check.
+
+No material gap was found in the finite invariant or its PA-internal transfer.
+The inherited calculus calibration remains an explicitly inherited ordinary
+mathematical theorem, not a new Lean/Rocq/iPRA kernel endpoint. The numerical
+state count and symbolic certificate must not be described as such a kernel
+proof. The reviewer separately executed all 60062 startup transitions with a set-based
+whole-tape simulator, confirming the exact site 25 frame, primary seed, 26 spare
+entries and all 66 one-cells (pa194j_startup_review.json). The independent
+4755-outcome symbolic job was still running at the time of this review; require
+its final PASS receipt before saying every physical contract was replayed.
+No second full symbolic replay was performed by this reviewer.
+
+The construction is operationally distinct through three actual transition
+changes and ten source instruction replacements justified by a global reachable
+invariant. It preserves every concrete register configuration in the source run,
+while changing physical traces. It does not reduce the state count below 194;
+any claim of a smaller machine needs a separate completed certificate.
