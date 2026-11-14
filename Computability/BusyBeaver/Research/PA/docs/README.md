@@ -12,8 +12,8 @@ The checked work of this project is described in the [parent README](../README.m
 
 ## Layout
 
-- Each archive has one directory, named after the archive. A trailing ` (2)` of an archive
-  name is written `_2`.
+- Each archive has one directory, named after the archive. A trailing ` (1)` or ` (2)` of an
+  archive name is written `_1` or `_2`.
 - Every archive wraps its files in a single top directory. That directory is removed, so
   the archive member `<wrapper>/<path>` is the file `<directory>/<path>` here. The table
   gives each wrapper.
@@ -32,9 +32,9 @@ reason and where the same bytes are. There are three reasons.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `upstream-copy` | 12,938 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
-| `sibling-archive` | 15 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
-| `ignored` | 903 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
+| `upstream-copy` | 13,019 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
+| `sibling-archive` | 17 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
+| `ignored` | 1,059 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
 
 Six nested archives have no delivered counterpart and are placed as files:
 `U209_ConPA_Joint_2026-10-29.zip` (in three packets), `U209_ConPA_2026-10-29.zip`,
@@ -45,8 +45,8 @@ another at length, so about a third of the placed bytes are repeats between pack
 
 ## Packets
 
-The 36 archives hold 25,017 members: 11,161 placed here (565 MB), 12,938 copies of the upstream
-snapshots, 15 nested copies of sibling archives and 903 ignored files. The columns P, U, S
+The 41 archives hold 26,555 members: 12,460 placed here (598 MB), 13,019 copies of the upstream
+snapshots, 17 nested copies of sibling archives and 1059 ignored files. The columns P, U, S
 and I give these four counts for each packet. Arrival is the date of the commit that added
 the archive to `docs/incoming`.
 
@@ -88,10 +88,15 @@ the archive to `docs/incoming`.
 | [`pa194_conpa_2026-11-13`](pa194_conpa_2026-11-13/) | 2026-11-13 | `pa194_conpa` | A 194-state machine. States the table `construction/tables/pa194.tm` and a proof of the equivalence in PA. | 137 | 10 | 0 | 11 |
 | [`pa194_conpa_2026-11-13_2`](pa194_conpa_2026-11-13_2/) | 2026-11-13 | `pa194_conpa` | PA194. States a 194-state machine `pa194/pa194.tm` and an article with a PA proof of the equivalence. | 246 | 44 | 0 | 51 |
 | [`pa195_diagonal_combined_2026-11-13`](pa195_diagonal_combined_2026-11-13/) | 2026-11-13 | `pa195_diagonal_combined` | PA195DC. States a different 195-state machine. | 133 | 26 | 0 | 16 |
+| [`pa194C_conpa_2026-11-13_2`](pa194C_conpa_2026-11-13_2/) | 2026-11-13 | `pa194C_conpa` | PA194C. States a materially different 194-state machine, an article with a PA proof of the equivalence, and nothing below 194. | 286 | 20 | 0 | 29 |
+| [`pa194_new_designs_2026-11-13`](pa194_new_designs_2026-11-13/) | 2026-11-13 | `pa194_cached_research` | Two new 194-state machines, PA194C and PA194CS. States that nothing below 194 was obtained. | 224 | 30 | 0 | 26 |
+| [`pa194c_conpa`](pa194c_conpa/) | 2026-11-13 | `pa194c_conpa` | PA194C, a cached-head 194-state machine. States that no machine below 194 was established. | 200 | 10 | 0 | 42 |
+| [`pa194c_conpa_2026-11-13_1`](pa194c_conpa_2026-11-13_1/) | 2026-11-13 | `pa194c_conpa` | PA194C. States a different 194-state machine and an article with a PA proof of the equivalence. | 200 | 11 | 0 | 29 |
+| [`pa194c_conpa_2026-11-13`](pa194c_conpa_2026-11-13/) | 2026-11-13 | `pa194c_conpa` | PA194C, a cached-head 194-state machine. States an article with a PA proof of the equivalence and nothing below 194. | 389 | 10 | 2 | 30 |
 
 ## Archives still in `docs/incoming`
 
-21 of the 36 archives stay in `docs/incoming` although their contents are placed here.
+21 of the 41 archives stay in `docs/incoming` although their contents are placed here.
 Scripts and READMEs of this project open them at that path, and several scripts check
 the digest of the archive file itself, so removing them would break those checks. They
 can be removed once those references read the files of this directory instead.
@@ -118,7 +123,7 @@ can be removed once those references read the files of this directory instead.
 - `pa_tm_research_2026-11-13 (2).zip`
 - `pa_tm_research_2026-11-13.zip`
 
-The other 15 archives are removed from `docs/incoming`. They remain in the history of
+The other 20 archives are removed from `docs/incoming`. They remain in the history of
 the repository at the commits that added them.
 
 ## Third-party material

@@ -1,0 +1,24 @@
+The eight annealing runs contain 49,284,000 completed logged proposal
+slots, with repeated proposals and repeated machines included. Only
+complete logged progress intervals are counted; interrupted unlogged tails
+are excluded. Their recorded best zero-penalty state count is 194.
+\begin{center}\small
+\begin{tabular}{@{}lr@{}}
+\toprule Search & Logged proposal slots\\\midrule
+Original controller, baseline A &10,383,000\\
+Original controller, baseline B &9,123,000\\
+Combined, ordinary AX folds &4,143,000\\
+Actual head parameters and head order &8,043,000\\
+Original controller, mixed folds &5,163,000\\
+Combined, mixed folds &5,403,000\\
+Combined plus zero-jump, mixed folds &4,503,000\\
+Combined plus zero-jump, extra exact-row closure &2,523,000\\
+\bottomrule
+\end{tabular}
+\end{center}
+The broader zero-jump/extra-closure plateau traversal was stopped after
+5,600 logged parent expansions and 1,163,952 new neighbors, with 1,688
+grammars still pending; that traversal was not exhausted. Complete code,
+inputs, seeds, finite replay arguments, logs, and input bindings are under
+\file{research/association/}. Proposal slots are not counts of fully verified
+machines. No lower bound is inferred from any of these negative results.

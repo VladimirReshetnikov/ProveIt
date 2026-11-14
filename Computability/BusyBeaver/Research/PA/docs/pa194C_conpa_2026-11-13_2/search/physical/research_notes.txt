@@ -1,0 +1,81 @@
+PHYSICAL REDUCTION SEARCH, PA194, 2026-11-14 UTC
+
+Primary table: the first pa194_conpa_2026-11-13.zip, whose dense SHA256 is
+4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f.
+A second194 table and the composed PA194C controller were also screened.
+
+No new <194-state physical quotient or transition-inlining reduction was
+found. These are bounded negative experiments, not minimality certificates.
+
+1. All-tape local-window analysis. Abstract execution begins in native74
+with all possible 9-bit windows. Each shift admits either new boundary bit.
+Thus the resulting contexts overapproximate all possible complete tapes
+started in74. Try every first transition to an existing control and replay
+up to100 steps within radius4, demanding the same control/head/complete
+window as the replaced transition. The original search excluded arithmetic
+boxes; our variant permits them except start74. None found for either194
+baseline or PA194C.
+
+2. Symbolic source contexts. Regenerated contexts for the FINAL primary194
+(rather than its195 parent): all4,780 macro branch contracts, all register
+values under their original oracle contracts, arbitrary affine header gap,
+and literal startup. At radius4 there were8,338 windows; at radius6 there
+were29,347. Merging, including the200-step radius6 variant, found none.
+
+3. Literal arithmetic-box contexts. literal_contexts.py uses the independent
+full-tape symbolic engine to inspect every macro contract; self-loop interiors
+are conservatively expanded. Eight controls used by generic list sweeps keep
+the unrestricted abstract contexts. The result comprises10,377 radius4
+windows, checked over all4,780 contracts, and includes exact startup.
+This remains an executable mathematical checker, not a proof-assistant kernel.
+
+4. Generalized joins. action_merge_future.cpp permits the replacement path
+to join any bounded future original configuration, rather than only the
+configuration after one old transition. It still demands exact local tape,
+head and control equality and excludes modified rows from new detours.
+No pair was found with source contexts or the literal contexts.
+
+5. Transition inlining. eliminate.cpp tries deleting one control by separately
+rewriting all incoming transitions, including their write bits and directions.
+Each new bounded path must join an old bounded future, avoid the removed
+control, and avoid other modified incoming transitions before joining.
+No deletion was found at radius4/100 with literal contexts or radius6/200
+with source contexts.
+
+6. Register allocation. On PA194C, changed all11 routing rows consistently
+with each permutation of the9 physical register blocks. Tested identity,
+all36 single transpositions and then seeded random permutations. The last
+logged completed iteration was1500; the process was intentionally stopped
+later, so no exact final count is asserted. No local quotient was found.
+
+7. Closed macro dictionary. The initial root closure search conflated named
+source nodes which share a physical label through context-dependent folds.
+A saved grammar consequently changed the primitive source word. Fixed the
+search by assigning distinct source token IDs and using a separate physical
+mapping only for the machine-score computation. Initial score is correctly
+60 effective reader states. validate_closure.py independently requires full
+primitive-word identity, all ordinal control-flow successors, agreement of
+two source CFG resolvers, a compatible simultaneous local fold certificate,
+complete startup tape equality, and all4,780 symbolic runtime contracts.
+The smoke seed reproduces the primary194 dense table byte for byte and
+passes all checks. Arbitrary candidate reassociation still requires full
+runtime checking because many fixed physical macros are context-sensitive.
+
+8. SAT synthesis of3-decoder/2-control gadgets. The model allowed both
+survivors' complete rows to change, redirected the removed decoder, and
+required exact reproduction of eachold transition on every3-cell tape
+with its universally justified incoming-history bit. The broad-target
+seven-step run completed at least120 queries, all timing out at300ms,
+and was interrupted. A five-step run with nearby targets completed164
+queries in180.414s, all timing out at1,000ms. No SAT model was obtained;
+no UNSAT result or lower-bound claim follows. Both sources and logs are
+retained as inconclusive experiments only.
+
+Corrected closed-macro search completed its900-second budget:11,020,325
+proposals,452,037 accepted,0 score-below60 hits, best effective reader
+score60. Including the134fixed controls, the best score is194states.
+Measured elapsed time was900.008seconds; seed202611141946. The dictionary
+has21distinct source-token IDs and27verified existing physical reader
+pairs. The faulty preliminary search was excluded from these statistics.
+Full log:root_work/search/closure_fixed.log. This completed heuristic search
+is not an exhaustive lower bound on machines or grammars.

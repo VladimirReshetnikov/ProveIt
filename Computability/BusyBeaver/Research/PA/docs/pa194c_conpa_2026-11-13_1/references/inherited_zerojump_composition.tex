@@ -1,0 +1,50 @@
+\section{The zero-jump composition}
+
+The newest zero-jump report replaces the forward jump at source site 26
+by a decrement of register 6, which is zero at that site on the reachable
+source run \cite{zerojump}. In native table labels its physical change is
+\[
+       (27,1)\mapsto(0,L,40)
+       \quad\hbox{replaced by}\quad
+       (27,1)\mapsto(1,R,21).
+\]
+It does not delete a state. Applied to each new graft, it again has no
+state-count saving, but it changes the available local routing and so is
+a useful additional search seed.
+
+\begin{lemma}[Zero-decrement replacement]
+Suppose an inductive source invariant says register $r$ is zero whenever
+control is at site $i$. Replacing an unconditional jump at $i$ by a
+decrement of $r$ with the same zero successor preserves the complete
+source execution from an invariant-satisfying seed, provided all other
+instructions are unchanged.
+\end{lemma}
+\begin{proof}
+At $i$, decrement takes its zero branch and changes no register.
+Consequently the old and new next configurations coincide. At other
+sites the instruction is identical. Induction on the source-step count
+gives equality of the executions and therefore equality of halting.
+\end{proof}
+
+The invariant used here tracks a nine-bit positivity mask $m$: bit $r$
+is set precisely when register $r$ is positive. Increment sets its bit;
+a zero decrement follows the zero branch without change; a positive
+decrement follows the positive branch with either a positive or zero
+remainder. This nondeterministic remainder is an overapproximation of
+all natural values, not an assumption that a positive register equals 1.
+
+The exact clean seed is source site 25 with mask 1, corresponding to
+register vector $(2,0,0,0,0,0,0,0,0)$. The two new finite closures contain
+265,964 and 263,244 site-mask pairs. Each contains the seed, is closed
+under every abstract successor, and has only masks with bit 6 clear at
+site 26. Concrete source induction therefore proves the required zero
+condition. Because both complete graphs are checked, this argument does
+not assume that an invariant computed before the AX change remains valid
+afterward.
+
+The changed decrement introduces a further abstract positive branch into
+the source specification, explaining the one-case increase in each
+uniform physical runtime check. That branch is checked physically too;
+the source invariant excludes it only in the equivalence with the
+original jump program.
+

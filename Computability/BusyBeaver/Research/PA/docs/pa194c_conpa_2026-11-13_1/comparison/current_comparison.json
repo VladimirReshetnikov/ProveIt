@@ -1,0 +1,863 @@
+{
+  "proof_scope": {
+    "repository_revision": "768c2be1a8e4d2fcf8aa3443c7b0f084d145734c",
+    "PA194_repo_primary_sha256": "4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f",
+    "formal_endpoint_status": "Current PA/README.md and pa194/ipra/README.md explicitly leave both machine-specific iPRA reductions as hypotheses. Neither an end-to-end Lean/Rocq biconditional nor an iPRA proof is supplied for PA194. Incoming manuscripts supply ordinary PA proof arguments with executable support. This audit replays physical certificates and verifies source/table identities; it does not newly formalize the arithmetic calibration."
+  },
+  "census_summary": {
+    "archives": 36,
+    "table_occurrences": 3486,
+    "distinct_bytes": 606,
+    "distinct_labeled": 596,
+    "distinct_rooted": 478,
+    "distinct_rooted_reflection": 478,
+    "counts_by_states": {
+      "6": 2,
+      "9": 1,
+      "194": 7,
+      "195": 82,
+      "196": 788,
+      "197": 47,
+      "198": 26,
+      "199": 24,
+      "200": 10,
+      "201": 5,
+      "202": 13,
+      "203": 7,
+      "206": 4,
+      "207": 117,
+      "208": 993,
+      "209": 240,
+      "210": 52,
+      "211": 100,
+      "212": 170,
+      "213": 327,
+      "214": 100,
+      "215": 65,
+      "217": 40,
+      "218": 78,
+      "219": 60,
+      "220": 22,
+      "221": 24,
+      "222": 82
+    },
+    "failures": []
+  },
+  "selected_designs": [
+    {
+      "name": "PA194-67",
+      "archive": "pa194_conpa_2026-11-13.zip",
+      "member": "pa194_conpa/construction/tables/pa194.tm",
+      "states": 194,
+      "raw_states": 201,
+      "readers": 67,
+      "folds": 7,
+      "source_sites": 3673,
+      "contracts": 4780,
+      "startup": 58154,
+      "sha256": "4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f",
+      "status": "Main ordinary-PA manuscript result; full physical replay PASS"
+    },
+    {
+      "name": "PA194-67-AD",
+      "archive": "pa194_conpa_2026-11-13.zip",
+      "member": "pa194_conpa/construction/tables/pa194_AD.tm",
+      "states": 194,
+      "raw_states": 201,
+      "readers": 67,
+      "folds": 7,
+      "source_sites": 3673,
+      "contracts": 4780,
+      "startup": 58122,
+      "sha256": "27613aa92da79ba2ec6e2e88e0ac909fda218e06495ecc0af27201eac0e26c8f",
+      "status": "Companion ordinary-PA manuscript result; full independent physical replay PASS"
+    },
+    {
+      "name": "PA194-68",
+      "archive": "pa194_conpa_2026-11-13 (2).zip",
+      "member": "pa194_conpa/pa194/pa194.tm",
+      "states": 194,
+      "raw_states": 202,
+      "readers": 68,
+      "folds": 8,
+      "source_sites": 3673,
+      "contracts": 4780,
+      "startup": 58154,
+      "sha256": "9087d70fc0e1878c38ceff928e6e7e0999c86b6efed00a5ec353821c00641c87",
+      "status": "Main ordinary-PA manuscript result; full physical replay PASS"
+    },
+    {
+      "name": "rejected194-scanner",
+      "archive": "pa195_followup_research.zip",
+      "member": "pa195_followup/evidence/rejected_candidate_194/near194_bad4_k17595.native.tm",
+      "states": 194,
+      "sha256": "c48d6711e9c733669fca64576a1ae5277dfcc40388656bfa766edd2346363075",
+      "status": "Explicitly rejected: scanner treats legal long-zero address as header; valid local folds do not establish source simulation"
+    },
+    {
+      "name": "Original PA195",
+      "archive": "pa195_conpa_2026-11-13.zip",
+      "member": "pa195_conpa/pa195/pa195.tm",
+      "states": 195,
+      "readers": 68,
+      "folds": 7,
+      "source_sites": 3700,
+      "startup": 58154,
+      "sha256": "5c6afd87f7c4f24d9ad8e9e302cc21df14b6f2e3715d03322a75463a431d8455",
+      "status": "Bundled-diagonal original controller; ordinary PA manuscript result"
+    },
+    {
+      "name": "PA195S",
+      "archive": "PA195_ConPA_research_2026-11-14.zip",
+      "member": "pa_consistency_research/machine_195S.tm",
+      "states": 195,
+      "readers": 67,
+      "folds": 6,
+      "source_sites": 3673,
+      "contracts": 4780,
+      "startup": 58154,
+      "sha256": "30246dfe308e4b406e3bbf461f511530d49112974f90972327cf950ba41f919f",
+      "status": "Separate190 original controller; ordinary PA manuscript result"
+    },
+    {
+      "name": "PA195C",
+      "archive": "PA195_ConPA_research_2026-11-14.zip",
+      "member": "pa_consistency_research/machine_195C.tm",
+      "states": 195,
+      "readers": 67,
+      "folds": 6,
+      "source_sites": 3649,
+      "contracts": 4749,
+      "startup": 57922,
+      "sha256": "72ccfe50005110eb302f34cbec4110521ca6971d7ef5bca8d959ff39f0661011",
+      "status": "Separate190 Combined controller; ordinary PA manuscript result"
+    },
+    {
+      "name": "PA195DC",
+      "archive": "pa195_diagonal_combined_2026-11-13.zip",
+      "member": "pa195_diagonal_combined/machine/machine.tm",
+      "states": 195,
+      "readers": 68,
+      "folds": 7,
+      "source_sites": 3676,
+      "contracts": 4784,
+      "startup": 57922,
+      "sha256": "e5cc1b2cb374fa4342070e95d8bdfd60c1bb845e7a52d44857bdee937bba7938",
+      "status": "Bundled-diagonal Combined controller; ordinary PA manuscript result"
+    },
+    {
+      "name": "M195S8",
+      "archive": "pa195_followup_research.zip",
+      "member": "pa195_followup/machine_195s8/pa195_scanner8.tm",
+      "states": 195,
+      "raw_states": 203,
+      "folds": 8,
+      "contracts": 4815,
+      "startup": 59164,
+      "sha256": "df6ec639713c4ae7bb3656e59c833dd55ca6336a46bea8327eca639341b34662",
+      "status": "Bundled-diagonal original controller with longer scanner; ordinary PA manuscript result"
+    },
+    {
+      "name": "Supplementary separate195",
+      "archive": "pa194_conpa_2026-11-13 (2).zip",
+      "member": "pa194_conpa/comparison/separate195/machine.tm",
+      "states": 195,
+      "readers": 67,
+      "folds": 6,
+      "source_sites": 3673,
+      "contracts": 4780,
+      "sha256": "f5300673492372f70b72fbbaec819593acf922981c257604fb3167ff23e55f2e",
+      "status": "Supplementary checked layout of same separate calculus; distinct graph from PA195S"
+    }
+  ],
+  "archives": [
+    {
+      "name": "Below_U208_Research_2026-10-29.zip",
+      "size": 12962358,
+      "sha256": "4294ed6794e3f404837a95bdbcc4190a151100bef3fbee7d71a78922fb4d847c",
+      "tables": 85,
+      "states": {
+        "208": 23,
+        "209": 11,
+        "210": 1,
+        "211": 6,
+        "212": 5,
+        "213": 12,
+        "214": 5,
+        "215": 4,
+        "217": 2,
+        "218": 4,
+        "219": 3,
+        "220": 1,
+        "221": 2,
+        "222": 6
+      },
+      "distinct_rooted_graphs": 46,
+      "documents": 158,
+      "contribution": "Full-frame windows, offset quotients and guarded pruning; source 3,909 -> 3,904; no accepted below-208 table.",
+      "primary_readme_locator": "Below_U208_Research_2026-10-29.zip!Below_U208_Research_2026-10-29/README.txt"
+    },
+    {
+      "name": "ConPA_below208_research_2026-10-29.zip",
+      "size": 20961072,
+      "sha256": "b17f204ed20dda7c5fcc8f8ae07c2dd23ca3c535d2d688f9db635393561859d5",
+      "tables": 171,
+      "states": {
+        "208": 29,
+        "209": 35,
+        "210": 3,
+        "211": 9,
+        "212": 13,
+        "213": 34,
+        "214": 10,
+        "215": 7,
+        "217": 4,
+        "218": 8,
+        "219": 6,
+        "220": 2,
+        "221": 2,
+        "222": 9
+      },
+      "distinct_rooted_graphs": 59,
+      "documents": 293,
+      "contribution": "Finite-model role-collapse objection, 279,936 fixed-association parameter cases, fold synthesis; no sub-208.",
+      "primary_readme_locator": "ConPA_below208_research_2026-10-29.zip!ConPA_U208_research_2026-10-29/README.txt"
+    },
+    {
+      "name": "PA195_ConPA_research_2026-11-14.zip",
+      "size": 4349423,
+      "sha256": "f61f38211027db46e6fae171ad9c439f0e5d6078b16db15e67f774085579c873",
+      "tables": 610,
+      "states": {
+        "6": 1,
+        "9": 1,
+        "195": 20,
+        "196": 171,
+        "197": 17,
+        "198": 12,
+        "199": 10,
+        "200": 4,
+        "201": 1,
+        "202": 1,
+        "203": 2,
+        "206": 2,
+        "207": 58,
+        "208": 204,
+        "209": 20,
+        "210": 19,
+        "211": 14,
+        "212": 16,
+        "213": 17,
+        "214": 5,
+        "215": 2,
+        "217": 2,
+        "218": 2,
+        "219": 3,
+        "220": 2,
+        "221": 2,
+        "222": 2
+      },
+      "distinct_rooted_graphs": 446,
+      "documents": 258,
+      "contribution": "Positive 195S and 195C: unchanged separate 190-token AX word, 67-6 readers; full source/runtime/startup certificates plus independent literal-tape audits.",
+      "primary_readme_locator": "PA195_ConPA_research_2026-11-14.zip!pa_consistency_research/README.txt"
+    },
+    {
+      "name": "PA_consistency_TM_research_2026-11-13.zip",
+      "size": 853451,
+      "sha256": "3388e4358561ab40783f1bd917942972c82bccebf7798b7083067042ff4206b5",
+      "tables": 63,
+      "states": {
+        "196": 32,
+        "197": 1,
+        "208": 29,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 38,
+      "documents": 11,
+      "contribution": "159-node five-zero source and 157-node combined representation; exact source CFG checks, no smaller physical allocation.",
+      "primary_readme_locator": "PA_consistency_TM_research_2026-11-13.zip!pa_tm_reduction_study/README.txt"
+    },
+    {
+      "name": "U208_ConPA_2026-10-29.zip",
+      "size": 12680643,
+      "sha256": "0662a968902f231ac2483bbd424f80b8f86e6fe1e04bbe97b6f25c634aa532f9",
+      "tables": 66,
+      "states": {
+        "208": 2,
+        "209": 13,
+        "210": 1,
+        "211": 6,
+        "212": 5,
+        "213": 12,
+        "214": 5,
+        "215": 4,
+        "217": 2,
+        "218": 4,
+        "219": 3,
+        "220": 1,
+        "221": 2,
+        "222": 6
+      },
+      "distinct_rooted_graphs": 44,
+      "documents": 158,
+      "contribution": "Particular native 172/211 history fold reduces a U209 parent to U208.",
+      "primary_readme_locator": "U208_ConPA_2026-10-29.zip!U208_ConPA_2026-10-29/README.txt"
+    },
+    {
+      "name": "U208_ConPA_Conditional_Context_2026-10-29.zip",
+      "size": 12261070,
+      "sha256": "6f23aaca025984a9a3561c7cf352cbde069096713269d8ace9b8c0e305f3b251",
+      "tables": 66,
+      "states": {
+        "208": 4,
+        "209": 11,
+        "210": 1,
+        "211": 6,
+        "212": 5,
+        "213": 12,
+        "214": 5,
+        "215": 4,
+        "217": 2,
+        "218": 4,
+        "219": 3,
+        "220": 1,
+        "221": 2,
+        "222": 6
+      },
+      "distinct_rooted_graphs": 46,
+      "documents": 148,
+      "contribution": "Conditional-entry proof; same two original U208 graph classes.",
+      "primary_readme_locator": "U208_ConPA_Conditional_Context_2026-10-29.zip!u208_conpa_2026-10-29/README.txt"
+    },
+    {
+      "name": "U208_ConPA_Entry_Context_2026-10-29.zip",
+      "size": 14793535,
+      "sha256": "00b0a699606a654bcc8b2079932ec3c6c7303b0adc019e548db2b12d62eb4868",
+      "tables": 70,
+      "states": {
+        "208": 4,
+        "209": 15,
+        "210": 1,
+        "211": 6,
+        "212": 5,
+        "213": 12,
+        "214": 5,
+        "215": 4,
+        "217": 2,
+        "218": 4,
+        "219": 3,
+        "220": 1,
+        "221": 2,
+        "222": 6
+      },
+      "distinct_rooted_graphs": 46,
+      "documents": 160,
+      "contribution": "Full entry-context proof; same two original classes.",
+      "primary_readme_locator": "U208_ConPA_Entry_Context_2026-10-29.zip!u208_conpa_entry_context_2026-10-29/README.txt"
+    },
+    {
+      "name": "U208_ConPA_History_2026-10-29.zip",
+      "size": 21608661,
+      "sha256": "2479f562ba30b68bcabcc9ab481cdcb20da2a74476bff132a99382a6669a88aa",
+      "tables": 181,
+      "states": {
+        "208": 6,
+        "209": 15,
+        "211": 6,
+        "212": 34,
+        "213": 57,
+        "214": 15,
+        "215": 8,
+        "217": 6,
+        "218": 12,
+        "219": 9,
+        "220": 3,
+        "221": 2,
+        "222": 8
+      },
+      "distinct_rooted_graphs": 57,
+      "documents": 345,
+      "contribution": "Finite-history proof with four exceptional blocks; same original saving.",
+      "primary_readme_locator": "U208_ConPA_History_2026-10-29.zip!U208_ConPA_History_2026-10-29/README.md"
+    },
+    {
+      "name": "conpa_tm_comparison_and_reduction_search.zip",
+      "size": 5282963,
+      "sha256": "46cd1a5f57f6c04f9a0379fa8dc042120bc6ae0329c370ca5d4a3d35907b5d48",
+      "tables": 143,
+      "states": {
+        "196": 69,
+        "208": 69,
+        "209": 5
+      },
+      "distinct_rooted_graphs": 105,
+      "documents": 25,
+      "contribution": "Experimental MP-result-in-H and MP-without-zero-push 196 variants; rejected Shift layouts halt at 43,563.",
+      "primary_readme_locator": "conpa_tm_comparison_and_reduction_search.zip!conpa_tm_comparison_and_reduction_search/README.txt"
+    },
+    {
+      "name": "conpa_tm_comparison_and_search.zip",
+      "size": 5134420,
+      "sha256": "50d879aef18251d80e275d62133e0f80ca656ebf4d816d7994c3185ccb216d96",
+      "tables": 19,
+      "states": {
+        "195": 2,
+        "196": 6,
+        "208": 9,
+        "209": 2
+      },
+      "distinct_rooted_graphs": 7,
+      "documents": 9,
+      "contribution": "A/D register-swap 196; rejected two-rotation 195 fails 93 contracts.",
+      "primary_readme_locator": "conpa_tm_comparison_and_search.zip!conpa_tm_study/README.md"
+    },
+    {
+      "name": "conpa_tm_study_2026-11-13.zip",
+      "size": 2217499,
+      "sha256": "8b9103b89f340f8c86583e05af66ae22e2b666d2cd826e702440c4b18323ac91",
+      "tables": 42,
+      "states": {
+        "196": 7,
+        "197": 1,
+        "198": 2,
+        "207": 1,
+        "208": 29,
+        "209": 2
+      },
+      "distinct_rooted_graphs": 32,
+      "documents": 15,
+      "contribution": "Combined 196 = H-only Shift + MP-result-in-H: 3,788 sites, 4,928 contracts, 57,922 startup; direct-negation 197 too.",
+      "primary_readme_locator": "conpa_tm_study_2026-11-13.zip!conpa_tm_study/README.txt"
+    },
+    {
+      "name": "pa194_conpa_2026-11-13 (2).zip",
+      "size": 2005882,
+      "sha256": "9584492f1153c170fe1ed9645ae7ef3020e37cd889a6c4fd8753cfe2db8f5dce",
+      "tables": 35,
+      "states": {
+        "194": 2,
+        "195": 4,
+        "196": 27,
+        "202": 2
+      },
+      "distinct_rooted_graphs": 30,
+      "documents": 29,
+      "contribution": "Independent 194 = 134+68-8 allocation of exactly the same separate190 source; 32 local cases and 4,780 raw/folded contracts replayed. Also a distinct supplementary 195 layout.",
+      "primary_readme_locator": "pa194_conpa_2026-11-13 (2).zip!pa194_conpa/README.txt"
+    },
+    {
+      "name": "pa194_conpa_2026-11-13.zip",
+      "size": 1118934,
+      "sha256": "fda113b720aaa1615c26994a9ca6ccb3b34d3928deee3755b306678a41e21935",
+      "tables": 25,
+      "states": {
+        "194": 4,
+        "195": 17,
+        "196": 1,
+        "201": 2,
+        "202": 1
+      },
+      "distinct_rooted_graphs": 16,
+      "documents": 21,
+      "contribution": "Primary 194 = 134+67-7, same separate190 source; additional A/D-register 194 companion. Full independent physical certificates replayed in this audit; ordinary PA proof supplied, no new complete Lean/Rocq endpoint.",
+      "primary_readme_locator": "pa194_conpa_2026-11-13.zip!pa194_conpa/README.md"
+    },
+    {
+      "name": "pa195_conpa_2026-11-13.zip",
+      "size": 1067385,
+      "sha256": "0001250c43a40920027403d748bcca36e4519a5a45e94dec98cafad4f3c8ff9f",
+      "tables": 29,
+      "states": {
+        "195": 2,
+        "196": 26,
+        "202": 1
+      },
+      "distinct_rooted_graphs": 27,
+      "documents": 10,
+      "contribution": "Positive original PA195: unchanged diagonal 191-token program, 68-7 reader allocation, detailed ordinary PA calibration.",
+      "primary_readme_locator": "pa195_conpa_2026-11-13.zip!pa195_conpa/README.txt"
+    },
+    {
+      "name": "pa195_diagonal_combined_2026-11-13.zip",
+      "size": 1025909,
+      "sha256": "d5b7c65007aaa99a93bb9a53099ad8a15497c14a0b7f706342a575f15ce2f6d0",
+      "tables": 11,
+      "states": {
+        "195": 8,
+        "196": 1,
+        "202": 2
+      },
+      "distinct_rooted_graphs": 7,
+      "documents": 22,
+      "contribution": "PA195DC combines bundled diagonal AX with Combined controller: 3,676 sites, 4,784 contracts, 57,922 startup; ordinary PA consistency argument. Two secondary 195 implementation witnesses are not primary endpoint claims.",
+      "primary_readme_locator": "pa195_diagonal_combined_2026-11-13.zip!pa195_diagonal_combined/README.txt"
+    },
+    {
+      "name": "pa195_followup_research.zip",
+      "size": 3128090,
+      "sha256": "27f5014a663ecc0a9bc84675bf6c216395d8e62c4d8313a966ae11193aca7e86",
+      "tables": 88,
+      "states": {
+        "194": 1,
+        "195": 16,
+        "196": 61,
+        "197": 3,
+        "202": 4,
+        "203": 3
+      },
+      "distinct_rooted_graphs": 40,
+      "documents": 39,
+      "contribution": "M195S8 uses eight-zero scanner and eight folds (203-8=195), with 4,815 raw/folded contracts and 59,164 startup. Rejected194 has valid local folds but an invalid scanner address.",
+      "primary_readme_locator": "pa195_followup_research.zip!pa195_followup/README.md"
+    },
+    {
+      "name": "pa196_research_2026-11-13.zip",
+      "size": 792732,
+      "sha256": "89e3b2dd25d88dd63eb94531bb7dec18518a5066b9e72afa67717b8d0587bd19",
+      "tables": 22,
+      "states": {
+        "196": 3,
+        "208": 18,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 4,
+      "documents": 3,
+      "contribution": "Exact 157-node representation of 3,812-site original program; loses contextual sharing, no physical reduction.",
+      "primary_readme_locator": "pa196_research_2026-11-13.zip!pa196_research/README.txt"
+    },
+    {
+      "name": "pa208_research_2026-10-29.zip",
+      "size": 76459038,
+      "sha256": "c041198d02709aabe480be7e11a0a96792bad8ffd738a78fc769ccfe26baed5c",
+      "tables": 831,
+      "states": {
+        "207": 55,
+        "208": 249,
+        "209": 76,
+        "210": 22,
+        "211": 41,
+        "212": 71,
+        "213": 127,
+        "214": 40,
+        "215": 26,
+        "217": 16,
+        "218": 32,
+        "219": 24,
+        "220": 9,
+        "221": 10,
+        "222": 33
+      },
+      "distinct_rooted_graphs": 315,
+      "documents": 967,
+      "contribution": "Eighteen further helper layouts; 27 designated U208 presentations give 20 graphs, not two.",
+      "primary_readme_locator": "pa208_research_2026-10-29.zip!pa208_research/README.txt"
+    },
+    {
+      "name": "pa_below196_research.zip",
+      "size": 963736,
+      "sha256": "1a48f3475f46111b0f2ee49d17d6551f3b7bdbaea1b83b44b76e15d846afb8c3",
+      "tables": 54,
+      "states": {
+        "195": 5,
+        "196": 19,
+        "208": 29,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 42,
+      "documents": 12,
+      "contribution": "Eight equivalent gates, membership/equality orientations, broad grammar searches; original 201-token best 196.",
+      "primary_readme_locator": "pa_below196_research.zip!pa_below196_research/README.txt"
+    },
+    {
+      "name": "pa_consistency_comparison_2026_11_13.zip",
+      "size": 751264,
+      "sha256": "70d86c2d251e8d91bc43901370b046d00389207ef96db0a242637bdd4ed1f59d",
+      "tables": 86,
+      "states": {
+        "196": 10,
+        "197": 4,
+        "198": 6,
+        "199": 12,
+        "200": 6,
+        "208": 47,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 54,
+      "documents": 9,
+      "contribution": "Modal-head/explosion split, twelve semantic compositions, joint gate; physical results 196--200.",
+      "primary_readme_locator": "pa_consistency_comparison_2026_11_13.zip!pa_consistency_comparison_2026_11_13/README.md"
+    },
+    {
+      "name": "pa_consistency_comparison_and_new196_2026-11-13.zip",
+      "size": 2513037,
+      "sha256": "6fcb1cf2878eda152beda0b17cc0242c003908fa8adf07c81a2bbf49870f1866",
+      "tables": 89,
+      "states": {
+        "6": 1,
+        "195": 2,
+        "196": 36,
+        "197": 1,
+        "208": 48,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 64,
+      "documents": 19,
+      "contribution": "Diagonal 196 (3,700 sites), Separate 196 (3,673), Scanner-best 196; principal logical/source parents of positive 195.",
+      "primary_readme_locator": "pa_consistency_comparison_and_new196_2026-11-13.zip!pa_consistency_research/README.txt"
+    },
+    {
+      "name": "pa_consistency_cross_archive.zip",
+      "size": 2070069,
+      "sha256": "a1d18f3d0d0939e050d269c82d30821546f36608e6ccfabc2a8380bd1cc196bf",
+      "tables": 190,
+      "states": {
+        "196": 184,
+        "197": 6
+      },
+      "distinct_rooted_graphs": 96,
+      "documents": 21,
+      "contribution": "Four new 196-state combinations: diagonal/separate AX + Combined controller, each optionally zero-jump; sites 3,676/3,649 and startups 57,922/58,168.",
+      "primary_readme_locator": "pa_consistency_cross_archive.zip!pa_consistency_cross_archive/README.txt"
+    },
+    {
+      "name": "pa_consistency_reduction.zip",
+      "size": 4715196,
+      "sha256": "93474c6dcfbd7d38d455394ba62c0742d969e6f39e4539900d2e659076cd4807",
+      "tables": 52,
+      "states": {
+        "195": 2,
+        "196": 16,
+        "203": 2,
+        "206": 2,
+        "208": 29,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 34,
+      "documents": 19,
+      "contribution": "Rebracketed 196, H-only 196, integrated gate 203/206; two failed 195 diagnostics.",
+      "primary_readme_locator": "pa_consistency_reduction.zip!pa_consistency_reduction/README.md"
+    },
+    {
+      "name": "pa_consistency_reduction_audit_2026-11-14.zip",
+      "size": 2269761,
+      "sha256": "a3619b03f76d9db02e937f2fd61a511fd8e976de64f6380b1c04f24e1f2b5fd2",
+      "tables": 19,
+      "states": {
+        "195": 1,
+        "196": 14,
+        "197": 4
+      },
+      "distinct_rooted_graphs": 9,
+      "documents": 14,
+      "contribution": "Four further experimental MP-H compositions, two 196-state and two 197-state; parameter/order/association/helper/scanner negative searches.",
+      "primary_readme_locator": "pa_consistency_reduction_audit_2026-11-14.zip!pa_consistency_reduction_audit/README.md"
+    },
+    {
+      "name": "pa_consistency_research.zip",
+      "size": 1811092,
+      "sha256": "46c140362a9ca3bb2fb37720bade85d89a95a18814696e4f3bfc95a9074f3622",
+      "tables": 15,
+      "states": {
+        "195": 1,
+        "196": 4,
+        "208": 9,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 6,
+      "documents": 9,
+      "contribution": "Two exact 158-node sources and repaired 196; nominal 195 needs added scanner state.",
+      "primary_readme_locator": "pa_consistency_research.zip!pa_consistency_research/README.txt"
+    },
+    {
+      "name": "pa_consistency_research_2026-10-29.zip",
+      "size": 6075032,
+      "sha256": "a2d333526d361e6e23bb2fa6d0abc9f044f6c8cb5a9195306526115f5d569841",
+      "tables": 84,
+      "states": {
+        "207": 1,
+        "208": 17,
+        "209": 10,
+        "210": 2,
+        "211": 3,
+        "212": 8,
+        "213": 22,
+        "214": 5,
+        "215": 3,
+        "217": 2,
+        "218": 4,
+        "219": 3,
+        "220": 1,
+        "222": 3
+      },
+      "distinct_rooted_graphs": 52,
+      "documents": 129,
+      "contribution": "Inductive 3,909 -> 3,904 specialization; no physical sub-208.",
+      "primary_readme_locator": "pa_consistency_research_2026-10-29.zip!pa_consistency_research_2026-10-29/README.txt"
+    },
+    {
+      "name": "pa_consistency_research_2026-11-13 (2).zip",
+      "size": 3538382,
+      "sha256": "19e71928b9c3fd128981bd11b92c18f247b103dde6ee58912bb945a5603fff8b",
+      "tables": 32,
+      "states": {
+        "196": 9,
+        "198": 2,
+        "208": 20,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 24,
+      "documents": 13,
+      "contribution": "Twelve-rotation 196, diagonal 198, successful-MP halting-source experiment; no sub-196.",
+      "primary_readme_locator": "pa_consistency_research_2026-11-13 (2).zip!pa_consistency_research_2026-11-13/README.md"
+    },
+    {
+      "name": "pa_consistency_research_2026-11-13.zip",
+      "size": 527333,
+      "sha256": "466c804d54495d3347252a98788af021aecc459b041fcc1733b3adf1ff1e943b",
+      "tables": 15,
+      "states": {
+        "196": 1,
+        "197": 1,
+        "199": 2,
+        "201": 1,
+        "208": 9,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 7,
+      "documents": 12,
+      "contribution": "Earlier diagonal-vacuity 199 and short-negation 197.",
+      "primary_readme_locator": "pa_consistency_research_2026-11-13.zip!pa_consistency_research/README.md"
+    },
+    {
+      "name": "pa_consistency_research_2026-11-14.zip",
+      "size": 3431074,
+      "sha256": "530d21ff3f5b1044d99ad167d384c70fc1bafc5fc30bd09b74782034b08dec86",
+      "tables": 34,
+      "states": {
+        "196": 30,
+        "197": 2,
+        "201": 1,
+        "202": 1
+      },
+      "distinct_rooted_graphs": 28,
+      "documents": 18,
+      "contribution": "NEG18: INC7; INC7; node64, 18-site encoded negation; complete source 3,441 and 197 states (134+68-5); independent macro and scratch-zero proofs.",
+      "primary_readme_locator": "pa_consistency_research_2026-11-14.zip!pa_consistency_research/README.md"
+    },
+    {
+      "name": "pa_tm_comparison_and_reductions.zip",
+      "size": 824115,
+      "sha256": "6b3ff041c3980dfd8af05d58f279e49f7d11e34a537dc4862c4793a87eb50c43",
+      "tables": 61,
+      "states": {
+        "196": 11,
+        "198": 2,
+        "208": 47,
+        "209": 1
+      },
+      "distinct_rooted_graphs": 46,
+      "documents": 20,
+      "contribution": "Two rotated 196 graphs; distributed-gate 198 with 3,773 source sites.",
+      "primary_readme_locator": "pa_tm_comparison_and_reductions.zip!pa_tm_research/README.txt"
+    },
+    {
+      "name": "pa_tm_extended_research_2026-11-13.zip",
+      "size": 900469,
+      "sha256": "960070a24cc17646d9e814e4f665b8e01337d363a4e345a036ea9dde8b82da76",
+      "tables": 23,
+      "states": {
+        "196": 12,
+        "208": 9,
+        "209": 2
+      },
+      "distinct_rooted_graphs": 8,
+      "documents": 10,
+      "contribution": "Four closing-decrement variants and stronger zero invariants; all change the same row, hence not stackable.",
+      "primary_readme_locator": "pa_tm_extended_research_2026-11-13.zip!pa_tm_extended_research_2026-11-13/README.md"
+    },
+    {
+      "name": "pa_tm_research_2026-11-13 (2).zip",
+      "size": 6334276,
+      "sha256": "d8aa6f0216db05290192c99eccbfb74ad03356a9f5a66f9683bfda6f42194f35",
+      "tables": 58,
+      "states": {
+        "195": 2,
+        "196": 27,
+        "202": 1,
+        "207": 1,
+        "208": 27
+      },
+      "distinct_rooted_graphs": 44,
+      "documents": 19,
+      "contribution": "Zerojump 196 (4,959 contracts, 58,402 startup); parity/disequality experiments; rejected 195 fails source 26.",
+      "primary_readme_locator": "pa_tm_research_2026-11-13 (2).zip!pa_tm_research_2026-11-13/README.md"
+    },
+    {
+      "name": "pa_tm_research_2026-11-13.zip",
+      "size": 4368854,
+      "sha256": "6e6c4840cae029357d9fa47fd204cd953ae5af885e69250048d2941660d6a83f",
+      "tables": 18,
+      "states": {
+        "196": 6,
+        "198": 1,
+        "208": 9,
+        "209": 2
+      },
+      "distinct_rooted_graphs": 6,
+      "documents": 9,
+      "contribution": "Shorter-path 196 and independent physical checking; detailed direct PA reverse-translation strategy.",
+      "primary_readme_locator": "pa_tm_research_2026-11-13.zip!pa_tm_research_2026-11-13/README.md"
+    },
+    {
+      "name": "pa_unary_power_cover.zip",
+      "size": 555471,
+      "sha256": "0fcb1117a5353766a3366bab04e56b4efbd0607833cdc73ffb34b67e6808b0ff",
+      "tables": 0,
+      "states": {},
+      "distinct_rooted_graphs": 0,
+      "documents": 12,
+      "contribution": "Unary weak-covering theory and PA proof translations; no new compiled small table.",
+      "primary_readme_locator": "pa_unary_power_cover.zip!pa_unary_power_cover/README.txt"
+    },
+    {
+      "name": "u208_comparison_research_2026-10-29.zip",
+      "size": 1025646,
+      "sha256": "3b95d334ac01e52d8fe963c8c07593e985ec3e95b5246f580ee8acc391dab6d9",
+      "tables": 15,
+      "states": {
+        "207": 1,
+        "208": 14
+      },
+      "distinct_rooted_graphs": 5,
+      "documents": 7,
+      "contribution": "Original two-class audit; weak/exact schemas; rejected 207.",
+      "primary_readme_locator": "u208_comparison_research_2026-10-29.zip!u208_comparison_research_2026-10-29/README.txt"
+    },
+    {
+      "name": "u208_research_2026-10-29.zip",
+      "size": 3962517,
+      "sha256": "33666892d7e729084edb5aa6e2b5e07d0117adbb63b0f46baff5bbbdf1da3d09",
+      "tables": 70,
+      "states": {
+        "208": 4,
+        "209": 10,
+        "210": 2,
+        "211": 3,
+        "212": 8,
+        "213": 22,
+        "214": 5,
+        "215": 3,
+        "217": 2,
+        "218": 4,
+        "219": 3,
+        "220": 1,
+        "222": 3
+      },
+      "distinct_rooted_graphs": 50,
+      "documents": 109,
+      "contribution": "Primary/alternative U208 and symbolic contracts; same initial history fold.",
+      "primary_readme_locator": "u208_research_2026-10-29.zip!u208_research_2026-10-29/README.txt"
+    }
+  ]
+}

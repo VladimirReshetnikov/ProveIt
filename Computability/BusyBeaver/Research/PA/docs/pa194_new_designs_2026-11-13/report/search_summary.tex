@@ -1,0 +1,119 @@
+No verified machine below 194 controls was found. The searches were frozen
+after the following recorded work. They are discovery attempts within
+specified transformation families, not lower-bound proofs.
+
+\subsection{Decoder allocation and contextual quotients}
+
+The main fitness jointly counts shared axiom readers and compatible
+history-sensitive folds, subject to the source scanner constraints. We
+seeded it from both existing 194-state associations, with either the
+original or cached controller. Variations included shared-subtree
+rotations, single-occurrence rotations, multiple rotations, bijections
+of the three parameter roles within universally instantiated axiom heads,
+and axiom-head ordering. No new logical transformation is needed for
+exact-word rotations. A successful parameter/order variant would also
+need a correctly rebound source and axiom-selection proof; a favorable
+fitness value would not suffice.
+
+Seven stochastic runs executed at least \textbf{24,295,755 mutation-proposal
+slots}. This is not a count of distinct trees or evaluated machines:
+proposals can repeat or be rejected before full scoring. Two runs completed
+their stopping conditions; five were stopped at the recorded checkpoint,
+and their lower counts are taken from the last complete logged cycle.
+All retained best scores were 60 effective readers, hence 194 total
+controls with the 134-control fixed part.
+
+A deterministic neighborhood traversal expanded 5,000 distinct roots
+and evaluated 1,052,340 neighboring rotations. It admitted grammars
+with scanner penalty zero and effective-reader score at most 60.
+There were 587 roots still queued at the cap, so this traversal was
+\emph{not} exhaustive. A separate fixed-shape screen examined all 720
+orders of six heads on each of the two baseline shapes, 1,440 templates
+in total, without improvement.
+
+We also closed three raw tables under the specified general local
+pair-contraction rule. It uses abstract reachable 11-cell windows
+(radius five), allows replacement first actions, and requires local
+rejoining within 150 transitions. The finite closure queues exhausted:
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule Parent & Initial controls & Distinct labeled tables & Best\\
+\midrule
+Primary raw table &201&192&194\\
+Second raw table &202&640&194\\
+Cached primary raw table &201&192&194\\
+\bottomrule
+\end{tabular}
+\end{center}
+The completeness here is only the closure under that exact bounded rule
+and those seeds. It says nothing about larger local windows, longer
+simulation segments, joint changes outside that rule or other sources.
+
+To avoid testing only the two archived endpoints, a further pipeline
+generated 1,000 grammar files, representing 606 distinct raw tables.
+Each was reduced to 194 controls with an explicit, simultaneously checked
+fold witness, then passed to the broader 11-cell/150-step action merger.
+None yielded another contraction. These sampled tables were search
+witnesses; no blanket claim of their complete blank-start consistency
+calibration is made.
+
+\subsection{Whole-controller screening}
+
+We separately collected symbolic local tape contexts from every source
+outcome and the exact startup of primary PA194 and PA194C. The first
+screens retained the arithmetic-box premises and considered the 171
+other controls, with radius five and local budgets of 150--200 steps.
+Neither supplied a contraction.
+
+The final PA194C screen removed that arithmetic-state exclusion. It
+replayed the independent literal-tape proof, collected contexts at all
+194 controls, included the interiors skipped by unary sweeps, included
+the generic arbitrary-context one-block proofs used for list sweeps,
+and included the full blank startup. It recorded 18,976 distinct local
+views. Both a direct redirection filter and a general common-first-action
+pair-merger filter, with radius five and 300-step local budgets, returned
+no candidate. The context collector deliberately overapproximates unknown
+lengths for screening. Any surviving edit would still have required a
+new complete physical certificate.
+
+The portable programs, seeds and frozen discovery logs are under
+\file{search/decoder/}; the controller collectors, local filters and
+receipts are under \file{search/controller/}. Their JSON summaries
+state exact scopes and interruption boundaries.
+
+\subsection{Further source-level work}
+
+One sound acceptance extension is to halt when the cached formula code
+has residue one modulo four. Such a code is a membership atom $M(a,b)$.
+A PA proof of its arithmetic translation yields a refutation by
+substituting zero for its free variables, since PA refutes
+$\operatorname{Bit}(0,0)$. Conversely, contradiction code one is included,
+so the old completeness route remains available. A short source guard
+can perform the residue test after the cache-copy loop. Its straightforward
+physical implementation introduced new reader controls while the old
+equality guard was heavily shared; no state reduction was obtained.
+
+A second idea preserves the cached Shift interface exactly: after
+clearing $T$ and transferring $H$ into both $T$ and $X$, the values are
+$(T,H,X)=(h,0,h)$. Set $H=1$ and use the symmetric equality test against
+$X$, avoiding restoration of $H$ and the old $X=1$ setup. This reduces
+the source from 3,649 to 3,646 sites. An attempted direct reassociation
+failed a universal runtime contract, but adding a reader and then applying
+the new $41\mapsto330$ contextual fold succeeded. This is the accepted
+PA194CS construction proved in Section~\ref{sec:symmetric194}.
+
+A final targeted search explored the symmetric implementation. From its
+195-state intermediate, the declared radius-five/300-step local rule
+reached three tables, including two 194-state endpoints, and exhausted
+the queue. Allowing arithmetic states as merge endpoints gave the same
+count. Starting instead from its fully unfolded 202-state table and
+allowing every working control except the start, the search explored
+576 tables, including four 194-state endpoints, and exhausted the queue.
+The original seven AX folds were rebound to that raw parent. No 193-state
+table was found. These separate records are under
+\file{search/symmetric_shift/}; the earlier frozen search counts are
+unchanged.
+
+The successful fallbacks are PA194C and PA194CS. The failed searches do
+not imply that their count is optimal, and none is used as a premise of
+their proofs.

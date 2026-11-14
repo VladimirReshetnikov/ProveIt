@@ -1,0 +1,57 @@
+\section{Changes represented by these two tables}
+The first table implements exactly the prior diagonal-vacuity emitter:
+\[
+ \Gamma(B)=I(B,U(B,B)),\qquad
+ F_\Gamma(a,b,c)=N\bigl(I(\Gamma(c),I(V(a,b,c),Q(a,b,c)))\bigr).
+\]
+All variable labels in the formula decoded from $B$ are strictly below $B$,
+so $\Gamma(B)$ is a sound diagonal-vacuity instance. The original numerical
+guard $c\ne a,b$ remains unchanged. The prior derivation of reverse
+membership rewriting and neighborhood equality applies to the new table
+without changing any emitted formula or stack position. Its improvement
+from $199$ to $196$ states is entirely in the layout and allocation.
+
+The second table removes the constructor forming the outer implication
+with antecedent $\Gamma(c)$. Consequently $\Gamma(c)$ remains as a new
+stack head and the final guarded top is the old gate
+\[
+ G(a,b,c)=N\bigl(I(V(a,b,c),Q(a,b,c))\bigr).
+\]
+It has ten pushed entries instead of nine. This is sound even when the
+numerical guard fails: the extra diagonal instance is unconditionally true.
+
+The two numerical calculi have primitive recursive proof translations
+preserving every conclusion. From $F_\Gamma$ the existing classical
+implicational calculus derives both $\Gamma(c)$ and $G(a,b,c)$. Every
+$\Gamma(B)$ is available by choosing $c=B$ and $a=b=B+1$, so the guard
+succeeds. Conversely, $\Gamma(c)$ together with $G(a,b,c)$ gives
+$F_\Gamma(a,b,c)$ by the fixed propositional conjunction template. These
+are fixed finite proof templates, with only numerical comparison and code
+construction needed to choose parameters. Their correctness is
+arithmetizable in PA. No substitution of arbitrary formulas into a
+freshness-restricted axiom is being assumed.
+
+The command compiler must use ten-item stack identities for the second
+table. In the notation of the prior report the corresponding words are
+\[
+\begin{aligned}
+ \mathrm{pop}&=\mathsf{AX}(0,0,0)\,\mathsf S^{11},\\
+ \mathrm{push}&=\mathsf{AX}(0,0,0)\,\mathsf S^{9}\,\mathsf{MP}(0),\\
+ \mathrm{discard}&=\mathsf{MP}(1)\,\mathsf{AX}(1,0,0)\,
+                   \mathsf S^{10}\,\mathsf{MP}(0).
+\end{aligned}
+\]
+The generalization identity uses $\mathsf S^{10}$ after the axiom call.
+Every old head is one stack position deeper, while the new diagonal head
+is first. These changes are bounded changes to the old proof-command
+compiler, not an assumption that its old stack indices still apply.
+Every newly tested head has implication residue $0$ and hence cannot be
+literal false code $1$.
+
+For each table the delivered grammar has $68$ reader nodes. Six explicit
+simultaneous folds yield $134+68-6=196$ working states. The verifier checks
+the complete final table, all primitive source/control bindings, the exact
+free-algebra formula trees, and the literal startup. The symbolic runtime
+checks quantify over an affine gap and the complete arbitrary register
+file through the unchanged upstream block interfaces. They are executable
+certificates, not newly exported Lean theorems.

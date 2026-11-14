@@ -1,0 +1,88 @@
+{
+  "status": "No accepted reduction below 194 working states",
+  "tables": {
+    "pa194": "e0a7397cf2134e8e7f58a8b1de2f7ff90b74ededd54c912f6ba5b7db48dabe54",
+    "pa194C": "b35d80b01ce9c2e95c8b29222881f40928247cdeffac322e4643f4f6694cd33c"
+  },
+  "searches": [
+    {
+      "family": "PA194C",
+      "contexts": "sound radius-6 blank-start finite-window closure",
+      "patterns": 265503,
+      "bound_per_side": 100,
+      "relations": 133942,
+      "context_trials": 180573,
+      "solutions": 0,
+      "log": "194C_convergence_k6.log"
+    },
+    {
+      "family": "PA194",
+      "contexts": "conservative universal source frames, arithmetic interiors, and exact startup",
+      "radius": 4,
+      "patterns": 12393,
+      "bound_per_side": 100,
+      "relations": 133942,
+      "context_trials": 155115,
+      "solutions": 0,
+      "log": "194_symbolic_convergence_k4.log"
+    },
+    {
+      "family": "PA194C",
+      "contexts": "conservative universal source frames, arithmetic interiors, and exact startup",
+      "radius": 4,
+      "patterns": 12282,
+      "bound_per_side": 100,
+      "relations": 133942,
+      "context_trials": 154840,
+      "solutions": 0,
+      "log": "194C_symbolic_convergence_k4.log"
+    },
+    {
+      "family": "PA194",
+      "contexts": "same universal radius-4 contexts",
+      "bound_per_side": 60,
+      "relations": 133942,
+      "first_action_trials": 108895928,
+      "solutions": 0,
+      "log": "194_marker_pair_symbolic_k4.log",
+      "changes": "jointly synthesized retained rows, optional predecessor-bit toggle and two-cell head displacement"
+    }
+  ],
+  "scanner_delete34": {
+    "edit": "remove34; (23,0)=(0,R,75)",
+    "failed_PA194_contracts": 113,
+    "total_PA194_contracts": 4780,
+    "failed_PA194C_contracts": 113,
+    "total_PA194C_contracts": 4749,
+    "meaning": "Fails the inherited universal primitive-instruction simulation contracts; not asserted to be a concrete blank-input halting counterexample."
+  },
+  "rotation": {
+    "source_CFG_equal": true,
+    "node170": [
+      "node28",
+      [
+        "node35",
+        "node169"
+      ]
+    ],
+    "node166_right": [
+      "leaf",
+      "continueTo",
+      4
+    ],
+    "site25_path_before": "100000",
+    "site25_path_after": "10000",
+    "site3660_new_path": "1011011",
+    "source_jump_target": 25,
+    "unretagged_jump_target": 34,
+    "single_row_actions_tested": 776,
+    "single_row_survivors": 0,
+    "concrete_two_row_trials": 1608648,
+    "concrete_suffix_repairs": 2006,
+    "nonbox_candidates_checked": 698,
+    "nonbox_universal_survivors": 0,
+    "box_edits_excluded_from_oracle_validation": 1308,
+    "physical_implementation_accepted": false
+  },
+  "scope": "All negative searches are bounded and family-specific. No lower bound, exhaustive TM search, or end-to-end proof-assistant theorem is asserted."
+}

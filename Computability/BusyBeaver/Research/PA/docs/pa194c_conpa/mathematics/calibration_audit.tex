@@ -1,0 +1,157 @@
+% Optional companion section; all ingredients below are inherited and audited.
+\section{The inherited PA calibration and its proof boundary}
+\label{sec:inherited-calibration-audit}
+
+The consistency calibration is not inferred from a long nonhalting run
+or from an external standard-model theorem. Its relevant content is two
+uniform syntactic proof transformations, one from PA refutations to
+refutations in the searched numerical calculus and one in the reverse
+direction. Their correctness is provable in PA. The imported PA196
+formal development exports the internal direction from literal
+nonhalting to PA consistency. The other direction for the later
+diagonal/separate-head machines is supplied by the ordinary syntactic
+argument in the PA194 packet, summarized here with its essential side
+conditions.
+
+\subsection{The diagonal replacement and the completeness interfaces}
+
+Numerical formulas use
+\[
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code zero is a special truth code, and code one is the contradiction
+$M(0,0)$. Every variable label in the formula decoded from $B$ is
+strictly below $B$, with code zero treated separately. Hence
+\[
+                       \Gamma(B)=B\to U(B,B)
+\]
+is a valid vacuity clause. The retained guarded gate supplies membership
+vacuity and pointed separation. It does not by itself supply unrestricted
+primitive equality vacuity.
+
+The replacement proof recovers precisely the equality interfaces used by
+the PA-refutation compiler. For reverse rewriting, first take $a\ne b$
+and let $\chi(t)$ be a membership atom with $t$ in either slot, or
+$M(t,t)$. When a second fixed label is present, first treat it as distinct
+from $a$. Define
+\[
+ C=E(a,b)\to(\chi(b)\to\chi(a)),\qquad
+ \varphi=\neg C,\qquad c=\ulcorner\varphi\urcorner.
+\]
+The strict code bounds ensure every required freshness guard. Pointed
+separation at $(a,a,c)$ gives $\neg Q$, with point condition
+$P=\varphi\to M(c,a)$ and separation matrix $S$. The second half of
+that matrix, weakened propositionally by
+$\varphi\to\neg\chi(a)$, gives
+\[
+ S\to U(a,M(c,a)\to\neg\chi(a)).
+\]
+The inherited negative-specialization lemma uses only the retained
+equality witness, direct membership rewriting, and membership-only
+vacuity. It therefore yields
+\[
+                   S\to(M(c,b)\to\neg\chi(b)).
+\]
+Under $\varphi$, the point condition and direct rewriting yield
+$M(c,b)$, whereas $\varphi$ also yields $\chi(b)$. Thus
+$\varphi\to(S\to\neg P)$ is derivable. Generalizing this theorem at
+$c$ and using $\Gamma(\varphi)$ pays for generalization under the
+assumption $\varphi$, producing $\varphi\to Q$. Together with
+$\neg Q$, classical reasoning gives $C$. The cases $a=b$ and a repeated
+fixed label use propositional reasoning and the already obtained
+diagonal membership case.
+
+For neighborhood equality, choose
+$z_0=\ulcorner E(a,b)\urcorner$. Then $z_0>a,b$, and
+$\Gamma(E(a,b))$ permits lifting the two-way membership rewrites to
+the neighborhood formula with binder $z_0$. To replace $z_0$ by any
+$z\ne a,b$, use the equality witness and membership-only vacuity to
+specialize the two membership matrices, then generalize at $z$.
+The antecedents of this binder transport contain only membership and
+are vacuous at the new label. This supplies neighborhood equality and
+its existential witness without assuming the removed primitive schema.
+
+The directly inspected PA196 source modules use primitive equality
+vacuity at the reverse-rewriting and neighborhood steps, with corresponding
+arithmetic certificate copies. Later modules use the derived neighborhood
+interface. The displayed replacements therefore address the required
+dependency. All chosen codes, numerical case splits, and concatenated
+proof templates are primitive recursive; their syntactic correctness
+is established by ordinary induction in PA.
+
+Separating $\Gamma(c)$ from the gate changes the stack push count from
+nine to ten. The cached protocol's explicitly adjusted proof-word
+compiler accounts for that change; a nine-entry selector is not silently
+reused. Thus a PA refutation yields a numerical refutation, then a
+command word that halts from every incoming store, and finally a halt
+of the exhaustive source scheduler.
+
+\subsection{A uniform reverse translation into PA}
+
+Interpret numerical membership by finite binary membership
+\[
+ \operatorname{Bit}(s,z)\equiv
+ \exists u,v\,[s=(2u+1)2^z+v\ \wedge\ v<2^z],
+\]
+primitive equality by arithmetic equality, and $U(a,B)$ by
+quantification of the arithmetic translation $T(B)$ at its corresponding
+source label. PA proves
+$\operatorname{Bit}(s,z)\to z<s$, so it proves
+$\neg\operatorname{Bit}(x_0,x_0)$, the negation of the translated false
+code. Auxiliary bound variables are chosen capture-avoidably; numerical
+source labels may coincide and may shadow one another.
+
+The one numerical constructor alias is $I(0,0)=0$. Its translation is
+handled by the fixed equivalence of truth with truth implying truth.
+Thus the uniform constructor statement is a PA proof of
+$T(I(A,B))\leftrightarrow(T(A)\to T(B))$, not an assertion that the
+syntax trees are identical in every case.
+
+For arbitrary arithmetic formula syntax $\theta(z,\vec u)$, a uniform
+proof-producing procedure supplies a PA proof of
+\[
+ \forall n\,\exists s<2^n\,\forall z<n\,
+      (\operatorname{Bit}(s,z)\leftrightarrow\theta(z,\vec u)).
+\]
+The proof is induction on $n$. At the next bit, use $s+2^n$ if
+$\theta(n,\vec u)$ and use $s$ otherwise. The formula is substituted
+into one fixed induction-proof pattern. PA verifies that each resulting
+line is an axiom instance or follows from its predecessors. The procedure
+never evaluates $\theta$; this is not an appeal to an arithmetic truth
+predicate or to a reflection principle.
+
+For a guarded gate at $(a,b,c)$, with $c\ne a,b$, put $\phi=T(c)$.
+When $a\ne b$, finite comprehension uses the matrix
+\[
+ (\operatorname{Bit}(x_a,z)\lor z=x_b)\wedge\phi[z/x_b]
+\]
+and a bound such as $x_a+x_b+1$. When the \emph{labels} satisfy $a=b$,
+the first antecedent under the gate's binder is
+$\operatorname{Bit}(z,z)$ and is false. The correct matrix in that case is
+\[
+                         (z=x_b)\wedge\phi[z/x_b].
+\]
+This separate case prevents an incorrect treatment of the bound
+occurrence of $x_a$ as a fixed parameter. Code freshness ensures that
+the witness label $c$ does not occur free in $\phi$. These witnesses give
+pointed separation. Membership vacuity, the diagonal clause, and all
+remaining logical heads have uniform first-order proof suppliers.
+
+Translate a numerical proof recursively by these suppliers, ordinary
+modus ponens, and generalization. At a proof of one, append the fixed
+PA proof that its translation is false. Equivalently, annotate the
+source command store with PA proofs of its top, cached head, and each
+canonical live stack entry. Empty-stack pops use the fixed truth proof;
+pushing zero onto zero retains the empty annotation. AX, MP, and Shift
+preserve this invariant, and a halting Shift yields a PA refutation.
+
+Every operation is a primitive-recursive transformation of syntax or
+finite lists, and PA proves its correctness uniformly in input codes.
+This uniformity is the step that makes the argument apply in all PA
+models, including their nonstandard coded proofs; merely displaying
+one proof for each standard input would not suffice. Combining the two
+translations and the positive source-to-tape simulation gives the
+ordinary PA-provable consistency equivalence asserted in the report.
+The new literal endpoint is not claimed to have a newly compiled
+proof-assistant kernel theorem.

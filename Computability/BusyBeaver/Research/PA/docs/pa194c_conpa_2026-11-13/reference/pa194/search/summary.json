@@ -1,0 +1,85 @@
+{
+  "purpose": "Discovery of PA194 by compatible contextual folding of a reassociated separated-head AX tree",
+  "result": {
+    "working_states": 194,
+    "fixed_states": 134,
+    "raw_reader_states": 67,
+    "folds": 7,
+    "first_found_iteration": 4454453,
+    "first_found_seconds": 229.826,
+    "parameter_permutations": "000000",
+    "source_word_unchanged": true,
+    "source_graph_unchanged": true,
+    "winning_grammar": "winning_grammar.json",
+    "verification": "../construction/evidence/pa194.verification.json"
+  },
+  "runs": [
+    {
+      "name": "separate",
+      "seed": 2026111401,
+      "planned_seconds": 600,
+      "source": "search_exact.cpp",
+      "input": "inputs/separate.txt",
+      "status": "completed_time_budget",
+      "iterations": 9122884,
+      "accepted": 1661180,
+      "hits": 200,
+      "best_effective_readers": 61,
+      "seconds": 600.001,
+      "improvements": []
+    },
+    {
+      "name": "diagonal",
+      "seed": 2026111402,
+      "planned_seconds": 600,
+      "source": "search_exact.cpp",
+      "input": "inputs/diagonal.txt",
+      "status": "completed_time_budget",
+      "iterations": 8446912,
+      "accepted": 1341514,
+      "hits": 200,
+      "best_effective_readers": 61,
+      "seconds": 600.003,
+      "improvements": []
+    },
+    {
+      "name": "cross",
+      "seed": 2026111403,
+      "planned_seconds": 600,
+      "source": "search_exact.cpp",
+      "input": "inputs/cross.txt",
+      "status": "stopped_after_194_validation",
+      "last_completed_cycle": 2167,
+      "last_recorded_iterations": 8668000,
+      "best_effective_readers": 61,
+      "last_recorded_seconds": 544.531,
+      "final_iteration_count_unknown": true,
+      "improvements": []
+    },
+    {
+      "name": "plateau",
+      "seed": 2026111404,
+      "planned_seconds": 400,
+      "source": "search_plateau.cpp",
+      "input": "inputs/separate.txt",
+      "status": "stopped_after_194_validation",
+      "last_completed_cycle": 1606,
+      "last_recorded_iterations": 6424000,
+      "best_effective_readers": 60,
+      "last_recorded_seconds": 329.167,
+      "final_iteration_count_unknown": true,
+      "improvements": [
+        {
+          "score": 60,
+          "effective_readers": 60,
+          "raw_readers": 67,
+          "folds": 7,
+          "penalty": 0,
+          "iteration": 4454453,
+          "seconds": 229.826
+        }
+      ]
+    }
+  ],
+  "negative_searches_are_not_lower_bounds": true
+}

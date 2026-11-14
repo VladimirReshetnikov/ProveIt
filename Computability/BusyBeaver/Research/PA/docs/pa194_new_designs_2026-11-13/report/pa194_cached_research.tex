@@ -1,0 +1,605 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,xurl,hyperref,enumitem,fancyhdr,needspace}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black,
+ pdftitle={PA194C and PA194CS: two different 194-state PA consistency machines},
+ pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\urlstyle{tt}
+\setlength{\emergencystretch}{3em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\setlist{itemsep=3pt,topsep=5pt}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Two 194-state PA consistency machines}
+\fancyhead[R]{\small 13 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newcommand{\file}[1]{\texttt{\nolinkurl{#1}}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\title{PA194C and PA194CS:\\two different 194-state\\PA consistency machines\\[0.4em]
+\large A complete corpus comparison, exact construction,\\and attempts to cross the 194-state frontier}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{13 November 2026, Pacific time}
+\begin{document}
+\maketitle
+\begin{abstract}
+We deliver two complete binary, single-tape, blank-start machines with
+\textbf{194 working states}, called PA194C and PA194CS. The requested
+strict reduction below 194 was not obtained. Both fallbacks are materially
+different from the three positive 194-state constructions in the supplied
+corpus. PA194C returns successful modus-ponens conclusions in a cache and
+tests that cache in Shift. PA194CS further removes a restoration loop by
+using symmetry of a destructive equality routine, and recovers its state
+cost with a new contextual fold. Their sources have 3,649 and 3,646 primitive
+instructions, compared with 3,673 in the supplied constructions. Both
+control graphs are new even after state renaming, change of designated
+start, tape reflection and symbol complementation, and are distinct from
+one another under those transformations.
+
+Both machines retain the 67-reader/seven-fold axiom decoder. PA194CS adds
+one controller reader and folds it with an existing decrement interface.
+Both verification implementations pass all 4,749 and 4,745 respective
+arbitrary-register instruction outcomes. The independent literal-tape
+checker rederives its list lemmas from the actual rows and checks complete
+blank initializations of 57,922 and 57,768 transitions. Ordinary finite-trace
+preservation connects both machines to the supplied 195C source. Composing
+this with the separate-head calculus's ordinary syntactic PA calibration
+gives $\PA\vdash(\neg H_M\leftrightarrow\Con(\PA))$ for each delivered machine.
+The logical calibration is an explicitly inherited mathematical dependency;
+no new end-to-end proof-assistant theorem is claimed.
+
+The comparison is pinned to ProveIt commit
+\texttt{768c2be1a8e4d2fcf8aa3443c7b0f084d145734c}.
+All 36 incoming archives were traversed, including nested packages, and
+direct PA tables were included. We distinguish supported manuscript
+constructions, conditional formal endpoints and rejected experiments.
+The archive includes both complete transition tables, deterministic builders,
+two verification implementations, source maps, evidence, search records,
+the corpus census and this report's LaTeX source.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Result, conventions and exact artifact}
+
+The first artifact is \file{construction/candidate/pa194C.tm}.
+Its working controls are $0,\ldots,193$, its start is $0$, and its only
+terminal control is $194$. The tape alphabet is $\{0,1\}$, the tape is
+two-way infinite and initially all zero, and the head initially scans
+cell zero. Each transition writes one bit and moves one cell left or
+right. There are 388 rows and no outgoing row for the terminal control.
+All 194 working controls are reachable in the pointed transition graph.
+This is graph reachability, not a claim that the blank computation visits
+every control.
+
+The dense file's SHA-256 is
+\begin{quote}\small
+\nolinkurl{d759313c03b515293fe06b12769fa1771d3829a2bad89febaa9b4391990f3a4b}.
+\end{quote}
+Its native presentation, with start 74 and halt 254, has SHA-256
+\begin{quote}\small
+\nolinkurl{b35d80b01ce9c2e95c8b29222881f40928247cdeffac322e4643f4f6694cd33c}.
+\end{quote}
+The supplied label list is a checked conjugacy of all 388 rows.
+Appendix~\ref{app:table} prints the complete dense table.
+The second artifact is \file{secondary/pa194CS/machine/pa194CS.tm},
+with the same state, start and halt conventions; its definition and hash
+are given in Section~\ref{sec:symmetric194}, and its complete table in
+Appendix~\ref{app:tablecs}.
+
+\subsection{What is new, and what is inherited}
+
+The first contribution is a new verified composition at the current state
+frontier. Neither the cached-head command convention nor the seven-fold
+decoder is claimed as a newly invented ingredient. Both were supplied,
+but they had not been combined into a 194-state machine in the pinned
+corpus. The existing 194-state machines use the original Shift/MP
+controller. PA194C changes six native transition rows, two source-tree
+definitions, the full source graph, and command-level traces. It retains
+the exact source of the supplied 195C machine while reducing that
+machine's physical allocation by one control.
+
+The second contribution is a further source-level simplification:
+PA194CS exploits the fact that the existing equality test clears both
+arguments on failure. It can exchange those arguments and omit an entire
+restoration loop. A new three-step contextual simulation identifies a
+controller reader with a decrement interface, retaining 194 controls.
+Its source has 3,646 sites and its blank startup takes 57,768 transitions.
+This is a new source change in addition to the first composition.
+
+For PA194C the count is
+\[
+ \underbrace{134}_{\text{fixed controller and arithmetic}}
+ +\underbrace{67}_{\text{raw axiom readers}}
+ -\underbrace{7}_{\text{compatible contextual folds}}=194.
+\]
+PA194C removes 24 primitive source sites relative to primary PA194,
+and has 31 fewer primitive branch outcomes. Its complete blank startup
+takes 57,922 transitions, versus 58,154 for primary PA194 and 58,122 for
+the existing A/D companion. The 232- and 200-transition differences are
+startup comparisons; no uniform speed improvement for all computations
+is asserted.
+
+Let $H_M$ denote the usual arithmetic sentence asserting a finite halting
+trace from the literal blank start of $M$. The proof is organized into
+two levels:
+\begin{enumerate}
+\item The new, machine-specific preservation result is
+      $\PA\vdash H_{194C}\leftrightarrow H_{195C}$.
+\item The supplied logical calibration of the unchanged numerical
+      calculus, together with its command compiler and scheduler, yields
+      $\PA\vdash(\neg H_{194C}\leftrightarrow\Con(\PA))$.
+\end{enumerate}
+The second statement uses inherited ordinary mathematical theorems.
+It does not acquire a kernel-checked status from the successful Python
+certificates. The current repository itself leaves its machine-specific
+iPRA consistency bridges open~\cite{pa-readme,pa194-endpoint}.
+
+\section{Comparison of the entire supplied corpus}
+\label{sec:comparison}
+
+\subsection{Snapshot and census scope}
+
+We inspected the requested PA tree, the incoming archives, the relevant
+ZFC constructions and ConciseIPRA at the pinned commit above.
+The 36 top-level ZIP files total 245,340,389 bytes. Recursive traversal
+finds 77 archive references representing 49 distinct ZIP payloads,
+maximum depth eight, and 26,258 file occurrences within the distinct
+payloads. The direct PA tree contributes 14 recognized complete tables.
+No archive-reading errors occurred.
+
+The literal census recognizes numeric five-column binary tables in
+\file{.tm}, \file{.txt}, \file{.tsv} and \file{.csv} members. It requires
+exactly two rows per working control, binary writes, L/R movement and
+one undefined terminal target. It does not recover arbitrary tables
+embedded only in source code, JSON or prose. The proposed frontier
+machines have literal tables within this scope. Two disconnected
+synthetic six- and nine-state controls are excluded from the graph
+classification, and a no-halt synthetic control is outside the table
+convention. They are not proposed consistency machines.
+
+\begin{center}
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Working states & Table occurrences & Byte forms & Action-graph classes\\
+\midrule
+194&7&7&4\\
+195&82&25&15\\
+196&788&163&99\\
+208&957&177&142\\
+209&126&20&13\\
+\midrule
+All recognized sizes&2,519&606&437\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are counts of artifacts, not counts of established consistency
+machines. They include ancestors, alternate encodings, diagnostics and
+explicitly rejected experiments. All definitions, member paths and
+hashes are in \file{comparison/census.json}.
+
+For each table with a spanning root, the graph canonicalizer minimizes
+the read-0-first breadth-first serialization over all spanning roots.
+It preserves read-bit labels, write bits, movement directions and the
+halt target, while forgetting control names and the designated start.
+The counts above do not quotient by reflection or complementation.
+Those additional transformations are tested separately for both new
+194-state tables.
+
+All 32 archives discussed by the supplied primary PA194 report are
+byte-identical in the current snapshot. Their inherited contribution
+ledger therefore remains applicable. We newly read the four additional
+packets and their evidence, and freshly traversed and canonicalized all
+36 archives. Appendix~\ref{app:ledger} gives an archive-by-archive
+account; the JSON and CSV ledgers retain exact hashes and the provenance
+of each narrative entry. This is not a new independent proof of every
+theorem asserted in those reports.
+
+\subsection{All existing 194-state constructions}
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Family & Allocation & Sites & Outcomes & Startup\\
+\midrule
+Primary PA194 & $134+67-7$ &3,673&4,780&58,154\\
+PA194\_AD & $134+67-7$ &3,673&4,780&58,122\\
+Eight-fold PA194 & $134+68-8$ &3,673&4,780&58,154\\
+\textbf{New PA194C} & $134+67-7$ &\textbf{3,649}&\textbf{4,749}&\textbf{57,922}\\
+\textbf{New PA194CS} & $135+67-8$ &\textbf{3,646}&\textbf{4,745}&\textbf{57,768}\\
+\bottomrule
+\end{tabular}
+\end{center}
+The first packet supplies primary PA194 and its A/D register-location
+companion~\cite{primary194}. The second packet supplies the eight-fold
+association~\cite{second194}. All three retain the same separate-head
+190-token axiom emitter and original command controller. Their action
+graphs are distinct. The two allocation patterns suggest concrete routes
+to 193: 67 readers with eight compatible folds, or 66 with seven.
+Neither route has been completed here.
+
+The fourth existing 194-state graph is explicitly rejected. It occurs
+in the PA195 follow-up and has eight locally compatible folds, but its
+seven-zero address run is incompatible with the old return scanner.
+The raw runtime first fails at source ordinal 1,003, zero branch of
+logical register 1, after 1,309 prior outcomes. One added scanner control
+repairs the construction to M195S8~\cite{followup195}. A correct local
+quotient is therefore insufficient without a correct interpreter frame.
+
+\subsection{The complete 195-state frontier}
+
+The 15 recognized 195-state graph classes split into six positive main
+or intermediate manuscript constructions, three auxiliary physical or
+search witnesses with limited endpoint claims, and six rejected
+diagnostics. The principal six are:
+\begin{center}\small
+\begin{tabular}{@{}p{0.25\linewidth}p{0.29\linewidth}rrr@{}}
+\toprule
+Family & Emitter/controller & Allocation & Sites & Outcomes\\
+\midrule
+Original PA195 & Bundled diagonal; original & $134+68-7$&3,700&4,815\\
+195S & Separate; original & $134+67-6$&3,673&4,780\\
+195C & Separate; cached head & $134+67-6$&3,649&4,749\\
+Second-packet intermediate & Separate; other association & $134+67-6$&3,673&4,780\\
+PA195DC & Bundled diagonal; cached head & $134+68-7$&3,676&4,784\\
+M195S8 & Bundled; longer scanner & $135+68-8$&3,700&4,815\\
+\bottomrule
+\end{tabular}
+\end{center}
+The cached-head machines start their clean source computation after
+57,922 literal transitions. Original PA195, 195S and the second-packet
+intermediate take 58,154; M195S8 takes 59,164.
+The original PA195 report supplies the central detailed ordinary PA
+calibration~\cite{original195}; later packets supply the changed source,
+calculus and physical preservation arguments~\cite{cached195,combined195,followup195}.
+
+The second PA194 packet contains a minor report-table inconsistency:
+one row labels its intermediate 195-state machine as a 3,700-site
+diagonal layout. Its actual source, README and receipt identify a
+3,673-site separate-head program with 4,780 outcomes. The table above
+follows those concrete artifacts.
+
+The three auxiliary 195-state classes are a sequential-quotient search
+endpoint, PA195R with a parameter permutation in the restricted
+propositional head, and PA195N with negative diagonal vacuity.
+The latter two have complete physical evidence in their packet but
+separate, limited arithmetic-endpoint claims. The six rejected classes
+include incorrect two-rotation and warm/extended physical quotients,
+an insufficient scanner, a short-scanner deletion and an invalid
+zero-jump/helper fold. Their failed refinements must not be counted as
+successful state reductions. The detailed failure counts and source
+locations are preserved in \file{comparison/comparison.md}.
+
+\subsection{How the larger designs relate}
+
+\begin{longtable}{@{}p{0.22\linewidth}rp{0.62\linewidth}@{}}
+\toprule Family & States & Structural distinction and relevance\\\midrule\endhead
+James Chang PA209 &209&Imported upstream ancestor with 3,948 source sites; distinct from the unary U209 parents.\\[0.4em]
+U209/U208 &209/208&Unary weak-covering theory, originally 3,909 sites. Several packets certify the same native 172/211 history fold, so their one-state savings cannot be added. The initial nine presentations form two graphs.\\[0.4em]
+Expanded U208 &208&Eighteen additional helper layouts bring 27 designated presentations to 20 graphs. The census's 142 classes also include exploratory and rejected tables.\\[0.4em]
+Published PA196 &196&3,812 sites, 4,959 outcomes and 58,154-step startup; transposed quantifier coding and revised axiom interface. The imported formal result supplies an internal implication from literal nonhalting to PA consistency.\\[0.4em]
+PA196 decoder relatives &196&Association, path, scanner and register-location changes. A smaller source DAG need not yield fewer physical controls.\\[0.4em]
+Closing-decrement variants &196&Four alternatives modify the same helper row. They are mutually alternative implementations, not four compatible savings.\\[0.4em]
+Combined196 &196&H-only Shift plus MP-to-cache: 3,788 sites and 4,928 outcomes. This controller is the source of the later 195C change.\\[0.4em]
+Diagonal/Separate196 &196&Diagonal vacuity in bundled or separate form gives 3,700 or 3,673 sites; these supply the logical parents of the 195/194 frontier.\\[0.4em]
+Cross-archive Combined196 &196&Combines those logical layouts with cached commands, giving 3,676 or 3,649 sites; zero-jump versions are additional implementations.\\[0.4em]
+Encoded-negation layouts &$\ge197$&An 18-site negation macro lowers one source to 3,441 sites but the retained physical implementation costs 197 controls.\\
+\bottomrule
+\end{longtable}
+The comparison therefore favors joint optimization of the numerical
+calculus, instruction-tree sharing, fixed controller, scanner bounds and
+simultaneous folds. Counting short source programs or individually valid
+folds alone misses essential costs.
+
+\input{proof_cached.tex}
+\input{proof_symmetric.tex}
+
+Appendix~\ref{app:guardreview} gives an independent expanded induction
+proof of the symmetric guard, its exact source-step costs and the
+global source binding. In particular, writing $k=h+x$, the complete
+shortened block saves zero source steps at $k=0$, four at $k=1$, and
+$2k+4$ at $k\ge2$. These are source-step identities, not a uniform
+literal-tape runtime comparison.
+
+\section{Why the symbolic physical checks are universal}
+\label{sec:universal}
+
+The independent checker represents complete tapes by finite sequences
+of fixed bits, constant-bit runs with affine lengths, arbitrary register
+blocks and an arbitrary finite spare list, with blank exterior on both
+sides. Its affine coordinates include the gap, nine independent register
+values, the first spare value and the remaining list width. A positive
+decrement represents the tested value as $v+1$; its zero branch sets that
+value to zero. Other values remain independent.
+
+Each elementary certificate rule has an ordinary arithmetic proof:
+\begin{enumerate}
+\item A literal transition is applied only when the scanned run has
+      a positive constant part, so the scanned bit is determined for
+      every assignment of its natural parameters.
+\item A same-control sweep through a constant-bit run is exactly
+      repeated application of one transition, proved by induction on
+      its length. Its time and displacement are recorded symbolically.
+\item A list sweep is justified by a generic one-block trace with an
+      arbitrary value and arbitrary exterior contexts, followed by
+      induction on the finite list. The four used one-block traces are
+      rederived from the delivered table; each has duration $v+2$.
+\item Normalization uses exact concatenation identities. For example,
+      if $B(v)=0\,1^{v+1}$ and $C(v)=1\,0\,1^v$, then
+      $C(v)1=1B(v)$. Its extension over a list and its reversal follow
+      by finite-list induction. Adjacent blank zero runs may be absorbed
+      into the infinite blank exterior.
+\end{enumerate}
+Induction on the checked certificate establishes equality with the
+intended complete target frame. Nonnegative affine coefficients certify
+all-natural length bounds. The positive constant part of the duration
+is checked separately; the minimum over the delivered source contracts
+is three. A nonhalting source outcome closes only at its exact target
+frame, and cannot pass through the terminal control on the way.
+
+These rules explain the universal quantification behind the 4,749 and
+4,745 checks. The recorded 1,096,302 and 1,100,204 symbolic steps are verifier work, not a
+bound on the physical runtime for arbitrary register values. The finite
+57,922- and 57,768-step blank runs serve a different purpose: they establish
+the exact initial frames, including every nonzero tape cell. They are not
+evidence obtained by extrapolating a long nonhalting prefix.
+
+\subsection{Verification results}
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule Check & PA194C & PA194CS\\
+\midrule
+Working states / transition rows &194 / 388&194 / 388\\
+Resolved source instructions &3,649&3,646\\
+Source graph identical to 195C &Yes&No: proved block change\\
+AX fold cases / additional controller cases &28 / 0&28 / 4\\
+Maximum local fold duration &5&5\\
+Construction checker source outcomes &4,749&4,745\\
+Construction checker symbolic steps &1,507,397&1,513,513\\
+Independent checker source outcomes &4,749&4,745\\
+Independent checker symbolic steps &1,096,302&1,100,204\\
+Independent maximum per outcome &403&403\\
+Minimum positive duration constant &3&3\\
+Generic list lemmas rederived &4&4\\
+Exact complete-tape blank startup &57,922&57,768\\
+Novel among existing 194 graphs &Yes&Yes\\
+New end-to-end proof-assistant endpoint &No&No\\
+\bottomrule
+\end{tabular}
+\end{center}
+The construction checker additionally checks the unchanged arithmetic-box
+rows. The independent checker imports neither the compiler nor an
+arithmetic-box oracle. Two independent control-flow resolvers agree on
+every successor. The recorded JSON evidence includes the exact hashes,
+startup support, source maps, all outcome durations and list-lemma traces.
+
+\section{Logical calibration and its exact dependency}
+
+The unchanged numerical calculus codes implication, membership,
+universal quantification and equality by
+\[
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3,
+\]
+where $p(a,b)=(a+b)(a+b+1)/2+b$. Code zero is truth, code one is
+$M(0,0)$, and $N(B)=I(B,1)$. The transposed quantifier arguments are
+part of the exact definition. The separate diagonal head is
+$\Gamma(B)=I(B,U(B,B))$.
+
+The supplied calibration uses the strict descent of formula components
+to show that variable label $B$ is absent from the formula coded by
+$B$. The exceptional truth case and $I(0,0)=0$ are treated separately.
+Thus diagonal vacuity has a primitive-recursive proof-producing
+translation into ordinary first-order arithmetic. The bundled and
+separate diagonal presentations are intertranslatable by fixed classical
+implicational derivations and suitable fresh parameters.
+
+For the direction from numerical refutations to PA refutations,
+membership is interpreted as finite binary membership. One convenient
+formula is
+\[
+ \operatorname{Bit}(s,z)\equiv
+ \exists u,v\,[s=(2u+1)2^z+v\ \wedge\ v<2^z].
+\]
+For each arithmetic formula $\theta$, PA proves finite binary
+comprehension by induction on the bound: retain the old bitset when the
+new instance of $\theta$ fails, and add $2^n$ when it holds. Substitution
+of a formula's syntax into that induction-proof template is a primitive
+recursive operation on proof codes. This is a syntactic construction,
+not an appeal to an arithmetic truth predicate. Pointed separation
+uses this comprehension with the proper variable-collision cases.
+PA proves $\neg\operatorname{Bit}(x,x)$ uniformly, since
+$\operatorname{Bit}(s,z)$ implies $z<s$. Thus a translated proof of code
+one, the atom $M(0,0)$ with variable label zero, yields a PA refutation.
+
+For the converse, the supplied proof recovers reverse membership
+rewriting and neighborhood equality using pointed separation and
+diagonal-code freshness, then substitutes these interfaces into the
+PA-refutation compiler. The relevant proofs and exact axiom heads are
+retained in \file{construction/logical_reference/}, including the
+original PA195 calibration, the supplied 195S/195C preservation and
+the primary PA194 calibration. They are cited inherited results rather
+than a fresh claim that the physical verifier proves a logical theorem.
+
+The command proof in Section~\ref{sec:pa194c} establishes both directions
+between the unchanged calculus and the new source controller. It handles
+the ten-entry AX interface, the zero-stack alias, early halts, and a
+refutation word that works from every incoming store. The latter is
+essential because the scheduler carries its store between trials.
+The physical proof then transports that source result to the exact
+literal binary machine. All proof-store annotations, finite trace
+concatenations and bounded source iterations are available in PA.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lXX@{}}
+\toprule Layer & Evidence used & Status here\\
+\midrule
+Literal tables and sources & Complete rows, two CFG resolvers, parent binding and symmetric-block proof & Fresh finite verification and ordinary proof\\
+Physical simulation & Arbitrary-register contracts, list inductions, exact startup & Fresh executable certificates and ordinary arithmetic proof\\
+Cached command calculus & Explicit selectors, proof compiler, all-store invariant & Ordinary proof, same supplied command convention\\
+PA logical calibration & Uniform syntactic refutation translations for the separate-head calculus & Inherited ordinary mathematical dependency\\
+End-to-end Lean/Rocq theorem & Would assemble all layers for this exact table & Not supplied by this work\\
+\bottomrule
+\end{tabularx}
+\end{center}
+There is no use of $\Con(\PA)$ as an extra axiom in the claimed PA
+biconditional. Actual nonhalting follows if PA is consistent. The
+conditional iPRA endpoints in the repository remain conditional, and
+external nonhalting in a proof assistant's metatheory must not be
+confused with an internal PA consistency implication.
+
+\section{Search for fewer than 194 controls}
+\label{sec:search}
+\input{search_summary.tex}
+
+\section{Ideas transferred from ZFC and ConciseIPRA}
+
+The most concrete ZFC connection is the cached-result return convention.
+The K217 cache-return composition explicitly moves a successful
+modus-ponens conclusion into the cache instead of pushing a dummy zero
+and copying to the current-formula register~\cite{zfc-cache}. Its source
+and decoder checks did not themselves save a physical control, and its
+modified full runtime had a separately stated proof boundary. The PA
+corpus later combines the corresponding convention with H-only Shift.
+PA194C carries that established PA controller into the smallest existing
+decoder allocation and supplies the complete changed physical checks.
+
+The wider ZFC search also illustrates why source simplification and
+machine minimization must be combined: register roles, marker history,
+scanner range and available helper states determine whether two
+apparently useful savings can coexist~\cite{zfc-readme}. We used this
+principle in the reader/fold searches and in verifying the controller
+composition in its final table.
+
+ConciseIPRA's small kernels derive substantial logical infrastructure
+from a small native interface, and its artifacts insist on complete
+checker costs and explicit interpretation boundaries~\cite{concise}.
+That suggests looking for derived axiom heads and alternative proof
+objects. It does not license replacing the PA proof search by an iPRA
+proof search: their consistency assertions are different objectives.
+Nor does a smaller Python checker automatically give a smaller binary
+one-tape machine. This construction retains the existing PA-calibrated
+calculus and uses those methodological lessons without attributing a
+new logical compression to ConciseIPRA.
+
+\section{Reproduction and package contents}
+
+All primary construction and verification commands use Python 3.10 or
+later and its standard library. Assertions must be enabled. From the
+archive root run:
+\begin{verbatim}
+python3 -B construction/build_cached.py
+python3 -B construction/verification/check_cached.py
+python3 -B comparison/verify_novelty.py \
+  construction/candidate/pa194C.tm \
+  --census comparison/census.json
+\end{verbatim}
+The first command regenerates the exact table and the construction
+receipt. The second writes new independent results under
+\file{construction/verification/results/}. It can take several minutes.
+The third checks the finite corpus novelty claim. Neither the stochastic
+discovery search nor a new repository download is necessary to rebuild
+and verify the machine.
+
+For the symmetric-guard companion, run:
+\begin{verbatim}
+python3 -B secondary/pa194CS/build.py
+python3 -B secondary/pa194CS/verification/check.py
+python3 -B comparison/verify_novelty.py \
+  secondary/pa194CS/machine/pa194CS.tm \
+  --census comparison/census.json
+\end{verbatim}
+The first two commands reconstruct the shorter source and exact fold,
+and independently verify every physical outcome and the complete seed.
+The additional novelty receipt also compares PA194CS with PA194C.
+
+To rerun the entire corpus census, supply a local checkout at the pinned
+commit with the PA and incoming paths available:
+\begin{verbatim}
+python3 comparison/census.py --repo /path/to/ProveIt \
+  --output /path/to/new-census
+\end{verbatim}
+The script refuses another commit. The recorded census already includes
+all paths and hashes. A separate selected-machine CSV preserves the
+earlier report's positive and experimental evidence classifications.
+
+The full LaTeX source is in \file{report/}. Rebuild with two runs of
+\file{pdflatex -interaction=nonstopmode -halt-on-error pa194_cached_research.tex}
+from that directory. The archive's \file{SHA256SUMS} binds the delivered
+files. Regenerated timing receipts may differ from recorded receipts;
+the transition table is deterministic and must have the published hash.
+
+\clearpage
+\appendix
+\section{Complete PA194C transition table}\label{app:table}
+Each action is the written bit, L/R motion and next control. The symbol
+$H$ is the separate terminal control 194. The initial control is zero.
+This appendix is generated directly from the delivered dense table.
+\input{transition_table.tex}
+
+\clearpage
+\section{Complete PA194CS transition table}\label{app:tablecs}
+The action convention, initial state zero and separate halt label 194
+are the same as in Appendix~\ref{app:table}. This table is generated
+directly from \file{secondary/pa194CS/machine/pa194CS.tm}.
+\input{transition_table_cs.tex}
+
+\clearpage
+\input{../comparison/symmetric_guard_review.tex}
+\label{app:guardreview}
+
+\clearpage
+\section{Every incoming archive}\label{app:ledger}
+These entries record supplied contributions and their evidence boundaries.
+The exact hashes, file counts, byte sizes and provenance are in the
+machine-readable ledger. A rejected or bounded-search entry is not a
+lower bound on the state count of a correct machine.
+{\small\input{../comparison/archive_ledger.tex}}
+
+\clearpage
+\begin{thebibliography}{99}
+\bibitem{pa-readme} ProveIt, PA consistency-machine overview, pinned commit
+\texttt{768c2be1a8e4d2fcf8aa3443c7b0f084d145734c}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/768c2be1a8e4d2fcf8aa3443c7b0f084d145734c/Computability/BusyBeaver/Research/PA/README.md}.
+\bibitem{pa194-endpoint} ProveIt, PA194 bounded halting and conditional consistency endpoint.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/768c2be1a8e4d2fcf8aa3443c7b0f084d145734c/Computability/BusyBeaver/Research/PA/pa194/ipra/README.md}.
+\bibitem{primary194} Supplied primary PA194 packet,
+\file{docs/incoming/pa194_conpa_2026-11-13.zip}, especially the construction,
+independent verifier and report. Its two tables have dense SHA-256 prefixes
+\texttt{4bfea62b17aa} and \texttt{27613aa92da7}.
+\bibitem{second194} Supplied second PA194 packet,
+\file{docs/incoming/pa194_conpa_2026-11-13 (2).zip}; eight-fold table
+with dense SHA-256 prefix \texttt{9087d70fc0e1}.
+\bibitem{original195} Supplied original PA195 packet,
+\file{docs/incoming/pa195_conpa_2026-11-13.zip}, especially the ordinary
+PA-calibration report and contextual fold proof.
+\bibitem{cached195} Supplied separate/cached PA195 packet,
+\file{docs/incoming/PA195_ConPA_research_2026-11-14.zip}; 195S and 195C
+construction, command audit and physical verification.
+\bibitem{combined195} Supplied diagonal/cached PA195 packet,
+\file{docs/incoming/pa195_diagonal_combined_2026-11-13.zip}.
+\bibitem{followup195} Supplied PA195 follow-up,
+\file{docs/incoming/pa195_followup_research.zip}; M195S8 and the rejected
+194-state scanner quotient.
+\bibitem{incoming} All archive references above are at the pinned incoming tree:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/768c2be1a8e4d2fcf8aa3443c7b0f084d145734c/docs/incoming}.
+\bibitem{zfc-cache} ProveIt, Cache-return composition on the 217-state source.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/768c2be1a8e4d2fcf8aa3443c7b0f084d145734c/Computability/BusyBeaver/Research/ZFC/candidate-k217/research/cache-return/README.md}.
+\bibitem{zfc-readme} ProveIt, Smaller machines for Con(ZFC), pinned overview.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/768c2be1a8e4d2fcf8aa3443c7b0f084d145734c/Computability/BusyBeaver/Research/ZFC/README.md}.
+\bibitem{concise} ProveIt, Concise presentations of intuitionistic primitive recursive arithmetic.
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/768c2be1a8e4d2fcf8aa3443c7b0f084d145734c/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md}.
+\end{thebibliography}
+\end{document}

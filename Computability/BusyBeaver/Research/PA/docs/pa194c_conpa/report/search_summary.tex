@@ -1,0 +1,78 @@
+Three additional grammar searches ran for 600 seconds each. The target
+was at most 59 effective AX readers with zero scanner penalty, which
+would give at most 193 working states with the fixed 134-control component.
+All runs began at the accepted 67-reader, seven-fold PA194 grammar.
+The best penalized cost remained 60 in every run; no target hit occurred.
+
+\begin{center}
+\begin{tabular}{@{}llrr@{}}
+\toprule
+Run & Controller and mutation & Proposals & Accepted moves\\
+\midrule
+A & Original; global DAG rotation &10,877,569&672,063\\
+B & Original; global and occurrence rotation &9,328,284&1,747,096\\
+C & Cached-head; global and occurrence rotation &9,521,809&1,673,285\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The three seeds were respectively 2026111405, 2026111406, and 2026111407.
+Counts include repeated proposals and do not count distinct machines.
+The runs keep the emitter word and parameter roles fixed. The source,
+exact numerical inputs, completed logs, and a receipt are supplied in
+\file{search/grammar/}. Wall-clock limits make proposal counts dependent
+on the computer. No scored grammar is accepted as a machine without the
+independent source and physical checks.
+
+The freshness review added two further searches from the newly supplied
+68-reader/eight-fold allocation, using the original and cached-head
+controllers and seeds 2026111408 and 2026111409. Both started at cost 60.
+Their 600-second budgets were interrupted before a final completion
+record. The last complete progress records contain 11,512,000 proposals
+at 571.320 seconds and 11,484,000 at 571.352 seconds, respectively.
+Neither recorded an improvement or target hit. These are partial-run
+counts, not claims that the budgets completed. The exact inputs, source
+and starting-frame audits, partial logs, and bounded local searches are
+retained in \file{search/grammar/fresh_frontier/}. The additional local
+checks used radius 4 with duration 120 and radius 8 with duration 200
+for both starting controllers; they returned no candidate.
+
+Whole-source quotient searches tried a further 460,386 candidate tables,
+executing 1,580,604 symbolic contracts before rejection or a resource bound.
+No candidate passed the preliminary source-frame check.
+
+\begin{center}
+\begin{tabular}{@{}llrr@{}}
+\toprule
+Machine & Replacement-action family & Candidate tables & Contracts\\
+\midrule
+PA194 & Direct two-row choice &57,460&245,263\\
+PA194C & Direct two-row choice &57,460&244,771\\
+PA194 & Additional valid local detours &171,009&541,573\\
+PA194C & Additional valid local detours &174,457&548,997\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The direct family merges pairs among 170 non-box, non-dispatcher controls
+and chooses each retained read-bit action from one of the two old states.
+Each source contract has a 1,024-symbolic-step limit. Counts include
+duplicate constructions. Although arithmetic controls are not merged,
+renaming a target can change a box's outward edge; any positive result
+would still require fresh list-lemma, physical, and blank-start checking.
+These trials yielded no positive preliminary result.
+
+Local window searches and incoming-edge elimination also yielded no
+candidate at radii 4, 6, and 8 with duration bounds 120, 160, and 200,
+respectively. The primary and cached-head tables were both covered, with
+an additional radius-8 check of PA194\_AD. A source-context radius-4
+screen was also performed. Detailed bounds and method limitations are
+recorded in \file{search/local/SEARCH_NOTES.md}.
+
+The obvious scanner shortcut, removing native state 34 and sending
+$(23,0)$ directly to $0\mathrm{L}75$, fails at source instruction 0.
+The source has 25 paths containing six consecutive zeros. Thus this
+shortcut cannot simply be combined with the existing source frame.
+None of these negative searches proves a lower bound or proves all
+attempted tables semantically incorrect: it reports failure to certify a
+reduction within specified transformation families and checking bounds.

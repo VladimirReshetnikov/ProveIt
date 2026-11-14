@@ -1,0 +1,98 @@
+{
+  "result": "No193state machine found by the specified bounded local-rewrite closure.",
+  "state_count_convention": "working states; halt254 excluded",
+  "context_radius": 5,
+  "window_cells": 11,
+  "local_step_bound": 300,
+  "closures": [
+    {
+      "initial_states": 195,
+      "expanded": 3,
+      "seen": 3,
+      "queue_remaining": 0,
+      "best": 194,
+      "elapsed": 0.10619816499820445,
+      "histogram": {
+        "195": 1,
+        "194": 2
+      },
+      "context_radius": 5,
+      "max_local_steps": 300,
+      "max_nodes": 10000,
+      "name": "symmetric_closed",
+      "arithmetic_controls_allowed_as_merge_endpoints": false
+    },
+    {
+      "initial_states": 195,
+      "expanded": 3,
+      "seen": 3,
+      "queue_remaining": 0,
+      "best": 194,
+      "elapsed": 0.09864368299895432,
+      "histogram": {
+        "195": 1,
+        "194": 2
+      },
+      "context_radius": 5,
+      "max_local_steps": 300,
+      "max_nodes": 10000,
+      "name": "symmetric_all_closed",
+      "arithmetic_controls_allowed_as_merge_endpoints": true
+    },
+    {
+      "initial_states": 202,
+      "expanded": 576,
+      "seen": 576,
+      "queue_remaining": 0,
+      "best": 194,
+      "elapsed": 21.4890424969999,
+      "histogram": {
+        "202": 1,
+        "201": 10,
+        "200": 43,
+        "199": 104,
+        "198": 155,
+        "197": 146,
+        "196": 85,
+        "195": 28,
+        "194": 4
+      },
+      "context_radius": 5,
+      "max_local_steps": 300,
+      "max_nodes": 10000,
+      "name": "symmetric202_all_closed",
+      "arithmetic_controls_allowed_as_merge_endpoints": true
+    }
+  ],
+  "input_identities": {
+    "parent195.native.tm": "774549a5f365b48087c2f1b2a57b0aa58af174b76e5e596d795155f44456ed3b",
+    "parent202.native.tm": "4b6312fb5ec525e726c68870107eccdd5228f4366c925f6570d18e4641a354ad"
+  },
+  "raw202_binding": {
+    "fixed_rows_equal_to_naive_symmetric195": true,
+    "raw_AX_readers": 67,
+    "fixed_controls": 135,
+    "original_seven_folds_reconstruct_parent195_exactly": true,
+    "all_original_local_fold_cases_checked": 28,
+    "maximum_original_fold_duration": 5
+  },
+  "first_fold": [
+    {
+      "remove": 41,
+      "keep": 330,
+      "actions": [
+        [
+          0,
+          -1,
+          31
+        ],
+        [
+          1,
+          -1,
+          46
+        ]
+      ]
+    }
+  ],
+  "interpretation": "Queue exhaustion covers only the declared finite sufficient local-rewrite rule, not all possible correct TM reductions."
+}

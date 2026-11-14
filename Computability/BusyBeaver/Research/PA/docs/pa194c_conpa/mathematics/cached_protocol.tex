@@ -1,0 +1,255 @@
+% Report-ready section. Requires amsmath, amsthm, and booktabs.
+% The main report should cite the pinned PA194 and PA195S/C archives.
+\section{The cached-head construction and its correctness}
+\label{sec:new-cached-proof}
+
+The new 194-state machine combines the supplied PA194 axiom decoder
+with the cached-head command protocol previously realized at 195 states.
+The logical calculus, the 190-token separate-head axiom emitter, the
+physical register layout, and the arithmetic engine are retained.
+The contribution is the verified composition at 194 states. In particular,
+we do not claim that the cached-head protocol itself is new.
+
+In native labels, the six controller changes are
+\[
+\begin{array}{c|c@{\qquad}c|c}
+(q,b)&\text{new action}&(q,b)&\text{new action}\\\hline
+(38,0)&0R11&(38,1)&1R122\\
+(164,1)&1R130&(214,0)&0R312\\
+(214,1)&1R20&(312,0)&0R188.
+\end{array}
+\]
+They are the exact six changes in the supplied 195C builder; they are not
+portable to an unrelated machine merely because it uses some of the same
+integer labels. The source replacements are the corresponding two
+non-axiom subtrees. Applying those changes to the supplied 195S grammar
+reconstructs the literal supplied 195C native table, whose SHA-256 begins
+\texttt{8f34d9e5cc2e64ecc49bbc8581dc29b2}. The complete hash is in the
+machine-readable provenance.
+
+\subsection{The exact command interface}
+
+Let $p(a,b)=(a+b)(a+b+1)/2+b$, write $[a;w]=p(a,w)$, and use total
+Cantor projections with $\operatorname{hd}(0)=\operatorname{tl}(0)=0$.
+Thus $[0;0]=0$; the proof never assumes that pushing zero increases a
+stored list length. Let
+\[
+ I(a,b)=4p(a,b),\qquad U(a,B)=4p(B,a)+2,
+ \qquad\Gamma(B)=I(B,U(B,B)).
+\]
+For a store $\langle t,w,d,h\rangle$, the cached-head Shift is
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}
+ \mathsf{halt},&h=1,\\
+ \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&h\ne1.
+ \end{cases}
+\]
+Putting $y=d+x$, its MP command is
+\[
+ \mathsf{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+ \langle0,w,0,y\rangle,&I(t,y)=h,\\
+ \langle0,w,y,0\rangle,&I(t,y)\ne h.
+ \end{cases}
+\]
+Neither MP branch pushes. The old 194-state protocol instead tests
+$t+h=1$ and returns a successful MP result in the top while pushing
+zero. The two source protocols therefore differ operationally. For
+example, Shift with $t=1,h=0$ halts in the old protocol and continues
+in the cached-head protocol. They implement the same refutation search
+by different proof-command compilers.
+
+The separate-head AX command pushes ten entries including the saved top,
+clears $d,h$, and leaves the guarded old gate as the new top. Its nine
+generated entries, from top downward, are
+\[
+ \Gamma(c),L_6,L_5,L_4,L_3,L_2,L_1,
+ \rho_8(d+x,c,h+y,d),U(d,h).
+\]
+The gate is zero when its numerical guard fails. Every generated entry
+other than the last has residue zero modulo four; the last has residue
+two. The gate also has residue zero. None is code one, whether or not the
+guard succeeds. This syntactic fact is sufficient for the termination
+assertions below.
+
+\subsection{A uniform compiler for the changed protocol}
+
+It is useful to state the stack identities for a general AX push count
+$n$, then specialize to $n=10$. Define
+\begin{align*}
+ \mathsf{Push}_n&=\mathsf{AX}_{0,0,0};S^{n-1};\mathsf{MP}_0,\\
+ \mathsf{Pop}_n&=\mathsf{AX}_{0,0,0};S^{n+1},\\
+ \mathsf{Discard}_n&=\mathsf{MP}_1;\mathsf{AX}_{1,0,0};S^n;\mathsf{MP}_0.
+\end{align*}
+The total pairing projection identities give
+\begin{align*}
+ \mathsf{Push}_n\langle t,w,d,h\rangle
+  &=\langle0,[t;w],0,0\rangle,\\
+ \mathsf{Pop}_n\langle t,[a;w],d,h\rangle
+  &=\begin{cases}
+    \mathsf{halt},&t=1,\\
+    \langle t,w,0,a\rangle,&t\ne1,
+    \end{cases}\\
+ \mathsf{Discard}_n\langle t,w,0,0\rangle
+  &=\langle0,w,0,0\rangle.
+\end{align*}
+For Push, the final MP comparison fails because an implication code
+cannot equal the generated universal code. Pop tests the preserved top
+only at its last Shift. For Discard, $I(t,1)>0$ forces the first MP to
+fail, and $I(U(1,0),0)>0$ forces the last to fail. These arguments also
+cover the zero-stack alias. Pop is deliberately not total when the
+preserved top is one.
+
+Let $\mathsf{Offset}_0$ be empty and
+$\mathsf{Offset}_i=\mathsf{MP}_i$ for $i>0$. Generalization is compiled by
+\[
+ \mathsf{Gen}_{i,n}=
+ \mathsf{Push}_n;\mathsf{Offset}_i;S;\mathsf{AX}_{i,0,0};S^n.
+\]
+It takes $\langle a,w,0,0\rangle$ to
+$\langle U(i,a),w,0,0\rangle$ for every $a,w$, including $a=1$.
+For an ordinary generated head in top-down position $j$, with
+$1\le j\le n-3$, use
+\[
+ \mathsf{Discard}_n;\mathsf{AX}_{A,D,H};S^{j+1};
+ \mathsf{Pop}_n^{n-1-j}.
+\]
+It returns that head with the original underlying stack and zero offset
+and cache. The separate diagonal head has $j=1$. The restricted
+propositional head with $u\le a$ is selected by
+\[
+ \mathsf{Discard}_n;\mathsf{Offset}_u;
+ \mathsf{AX}_{b,a-u,c};S^{n-1};\mathsf{Pop}_n,
+\]
+and the gate at $(a,b,c)$ by
+$\mathsf{Discard}_n;\mathsf{AX}_{c,b,a};\mathsf{Pop}_n^n$.
+All Pop uses in these selectors preserve a head different from one.
+
+The key changed MP suffix is
+\[
+ \mathsf{MPSuffix}_b=S;S;\mathsf{MP}_b;S.
+\]
+Starting from $\langle0,[a,I(a,b),0;w],0,0\rangle$, this word halts
+if $a=1$ or $b=1$; otherwise it returns
+$\langle b,w,0,0\rangle$. The dummy zero in its precondition is
+essential: the final Shift consumes it, so the arbitrary underlying
+stack is preserved. The same identity holds when all three entries
+alias the zero stack.
+
+For a proof tree $p$ whose last step is MP, with minor proof $p_0$ of
+$a$ and major proof $p_1$ of $I(a,b)$, define
+\[
+\begin{split}
+ W_p={}&\mathsf{Discard}_n;\mathsf{Push}_n;
+ W_{p_1};\mathsf{Push}_n;\\
+ &W_{p_0};\mathsf{Push}_n;\mathsf{MPSuffix}_b.
+\end{split}
+\]
+Axiom proofs use the selectors above, and generalization uses
+$W_{p_0};\mathsf{Gen}_{i,n}$. Induction on $p$ proves that from every
+$\langle t,w,0,0\rangle$, the word $W_p$ either halts or returns
+$\langle\operatorname{concl}(p),w,0,0\rangle$. An early halt is harmless
+for completeness. Therefore, if $p$ proves one,
+\[
+             \mathsf{AX}_{0,0,0};W_p;\mathsf{Pop}_{10}
+\]
+halts from every incoming store. The initial AX clears the offset and
+cache, and the final Pop tests the proved top before inspecting the
+arbitrary underlying stack. This universal incoming-store property is
+the correct hypothesis for the inherited exhaustive command scheduler;
+it does not assume that earlier trials restore an empty store.
+
+\subsection{Soundness and the changed primitive tails}
+
+Annotate the top, cache, and every canonical live stack entry with
+derivations in the numerical calculus. No derivation is required for
+the offset $d$. Code zero has a fixed derivation, such as the all-zero
+dominated propositional instance. AX preserves the annotation invariant
+by its axiom suppliers, generalization, and saved top. MP preserves it
+by modus ponens or by the fixed zero proof. Shift transfers existing
+proofs; a halting Shift exposes a derivation of code one. This proves
+soundness of the cached protocol independently of the original protocol.
+
+The changed source tails have uniform elementary loop proofs. With
+$N=3649$, the successful MP tail begins at $N-15=3634$ and transfers
+$(D,H)=(y,0)$ to $(0,y)$ by the loop
+``decrement $D$; increment $H$; return to the loop''. It exits after
+$3y+1$ instructions, then returns to fetch in one more instruction.
+Failure returns directly with $(D,H)=(y,0)$.
+The new Shift begins at $N-11=3638$. Under the inherited entry condition
+$X=0$, it clears $T$, copies $H$ into $T,X$, and restores $H$ from $X$.
+It reaches $(T,H,X)=(h,h,0)$ in $2t+7h+3$ instructions. Two more
+instructions set $X=1$ and enter the unchanged guard and Cantor decoder.
+Thus the primitive program realizes the stated cache-only test.
+
+The source uses the same AX emitter, numerical calculus, and scheduler
+as the supplied cached parent. The resolved source maps of the new
+decoder and that exact parent agree at all 3,649 primitive sites,
+including every successor. Their finite source traces therefore agree
+after identifying counters by instruction ordinal. This equality is a
+fixed finite fact and its trace consequence is provable in PA.
+
+\subsection{Why the physical decoder transports to the cached source}
+
+The raw allocation is 134 fixed controls plus 67 AX readers. The seven
+PA194 folds remain compatible, giving
+\[
+                         134+67-7=194.
+\]
+Their local detours inspect only the two relevant tape cells and use
+none of the six modified controller rows. The new controller also adds
+no incoming edge to an exceptional fold control. More directly, all
+28 history/read-bit cases are rechecked in the final simultaneous table,
+and all 23 incoming-context rows establish the required history bit.
+This is a quotient of the newly compiled cached raw machine; the proof
+does not pretend that the new source graph equals the old uncached one.
+
+Both symbolic implementations check all 4,749 source outcomes for
+arbitrary natural register values, both decrement branches, an arbitrary
+nonempty finite spare list, and the affine gap parameter. The independent
+implementation rederives its four generic list-operation lemmas from
+the actual rows and uses no arithmetic-box oracle. It records a minimum
+positive-duration constant of three. The whole blank tape reaches the
+exact clean source frame after 57,922 transitions in both implementations.
+
+\begin{theorem}[PA-internal preservation]
+Let $H_C$ and $H_{195C}$ be the finite blank-tape halting sentences of
+the new 194-state table and the supplied cached-head 195-state table.
+Then
+\[
+                 \mathrm{PA}\vdash H_C\leftrightarrow H_{195C}.
+\]
+\end{theorem}
+\begin{proof}
+Let $R$ be their common finite register program with the fixed clean
+seed. Each nonhalting source instruction has an exact positive-length
+physical simulation to the next frame, and a source halt reaches the
+terminal control. The certificate operations are literal rows, finite
+concatenations, constant-bit scans, and unary-list register operations.
+Their concrete witness traces are primitive recursively constructible;
+PA proves the scan and update lemmas by induction on finite lengths.
+Replaying the finite certificate list gives those statements uniformly
+in coded frames, rather than only for sampled standard inputs.
+
+A finite halting source trace produces a physical trace by prepending
+the verified startup and concatenating its segments. Conversely, suppose
+a physical run first halts after $T$ steps. If the first $T+1$ source
+instructions did not halt, their positive segments, together with
+startup, would give a physical run longer than $T$ ending in a nonhalt
+frame. Determinism contradicts the alleged first halt. Thus the bounded
+source iteration contains a halt. These finite recursions and the
+determinism comparison are provable in PA. Applying the argument to
+both tables and eliminating the common source-halting predicate proves
+the claim.
+\end{proof}
+
+Composing this preservation theorem with the inherited PA calibration
+of the separate-head calculus and the cached-command compiler gives
+\[
+ \boxed{\mathrm{PA}\vdash
+   \bigl(\neg H_C\leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).}
+\]
+The new result is an ordinary mathematical proof supported by executable
+machine-specific certificates. No newly compiled end-to-end Lean or Rocq
+theorem for this literal table is asserted.

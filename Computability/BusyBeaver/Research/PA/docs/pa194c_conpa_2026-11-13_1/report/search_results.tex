@@ -1,0 +1,97 @@
+\section{The search below 194 states}
+\label{sec:search}
+
+The search objective was a complete physical machine with at most 193
+working states. An optimistic reader count, a local fold in isolation,
+or a long nonhalting blank prefix was not an acceptance criterion.
+No below-194 result survived the required construction and proof checks.
+
+\subsection{Association, history folds, and the 194-state plateau}
+
+The two existing allocations suggest the numerical target of 59 effective
+AX readers: 66 raw readers with seven folds, 67 with eight, or 68 with
+nine, while retaining 134 fixed controls. We started independent searches
+from both PA194 trees, preserving the 190-token emitter word. Candidate
+scores used compatible history folds checked on the simultaneous quotient,
+with scanner legality included. Further runs substituted the Combined
+fixed rows, allowed mixed fixed-reader/AX-reader pairs, varied actual
+head-parameter and ordering choices, and applied an additional unconditional
+exact-row quotient after the contextual quotient.
+
+Two finite traversals closed their recorded score-194 queues under the
+stated single-occurrence and shared-subtree rotation moves: one used the
+original controller and ordinary folds, the other Combined and mixed
+folds. Each processed 11,472 parent grammars, evaluated 2,373,136 new
+neighbors, and retained 11,470 nonseed successors. Neither reached the
+20,000-entry queue cap. Both found neither a score below 194 nor a
+raw-reader count below 67. Deduplication uses a 64-bit association hash;
+queue closure is therefore a recorded computation, not a collision-free
+mathematical exhaustiveness certificate. In particular, it is not a
+global grammar or machine lower bound.
+
+\input{search_totals.tex}
+
+\subsection{Direct runtime searches}
+
+We also searched the two supplied principal 194 tables and PA194C directly.
+The local-action procedure considers replacing a transition by another
+first action followed by a bounded detour through existing controls. It
+then asks whether two non-box controls can share both replacement actions
+without one detour relying on the other removed control. Every claimed
+local match must restore the entire inspected tape window and the required
+head displacement and destination.
+
+Both conservative all-tape contexts and stronger contexts extracted from
+all symbolic source outcomes plus exact blank startup were tried. The
+radius-four runs use a nine-cell window and a 100-transition detour bound.
+The PA194C radius-six run uses a thirteen-cell window and a 160-transition
+bound. The extracted pattern counts were 8,338 for PA194-67, 8,873 for
+PA194-68, 8,240 for PA194C at radius four, and 29,107 for PA194C at radius
+six. No additional pair was emitted in these runs. The arithmetic-box
+controls were excluded as merged controls so that their established
+contracts remained applicable.
+
+A separate raw-table scan enlarged the pair domain to fixed and AX readers,
+using \emph{all} incoming rows to establish the previous bit. At the two
+baseline grammars, this revealed no mixed fixed/AX fold beyond the known
+AX-only opportunities. Later association searches applied the larger
+domain to changing trees. Failure within these templates does not rule out
+a different encoding, a larger simultaneous rewrite, or a stronger
+reachable-configuration invariant.
+
+\subsection{A specific rejected scanner shortcut}
+
+Removing native scanner control 34 and redirecting its incoming transitions
+to 75 would give 193 working controls. It shortens the header test by one
+zero. In PA194C, however, 113 of the 4,749 arbitrary-register source
+outcomes fail the existing generic simulation contract. For example,
+source site zero has address \file{000000}, and the clean entry site 25
+has address \file{1000000}; the shortened scanner cannot be justified by
+the old address invariant. The complete failed-site list is preserved.
+
+This rejects the shortcut under the proposed proof method. The failures
+are not advertised as a proof that every failing frame is reachable from
+blank or that the literal shortcut cannot have some other consistency
+interpretation. A separate two-million-transition blank screen did not
+halt, which supplies no missing correctness argument. The machine is
+therefore not accepted as the requested smaller construction.
+
+\subsection{Additional 194-state seed and remaining directions}
+
+The supplementary PA194CZ table composes PA194C with the previously studied
+zero-register jump at source site 26. It changes native row $(27,1)$ from
+$(0,L,40)$ to $(1,R,21)$ and replaces that source jump by a decrement of
+register six. A common inductive set of 263,244 site/positivity-mask pairs
+proves that register zero test always takes the required branch there.
+It has 4,750 physical branch contracts and a 58,168-step blank startup.
+This is another 194-state search seed, not the principal result or an
+additional state saving. It has the primary construction/invariant checks,
+not a separately completed new independent physical replay.
+
+The useful next changes would affect the joint source/decoder objective,
+or a fixed-runtime invariant strong enough to share an additional control.
+Deleting a logical head requires both soundness and a replacement
+refutation compiler. Deleting a freshness comparison is particularly
+unsafe because the guarded gate also contains membership vacuity, as
+explained in Section~\ref{sec:logical-basis}. None of the negative searches
+in this report establishes mathematical optimality of the current count.
