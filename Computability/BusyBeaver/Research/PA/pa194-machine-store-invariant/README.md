@@ -15,8 +15,10 @@ source-order stack of diagonal, head6–head1, guarded rho8, generalization and
 previous top; the rho8 inequality and oldBundle guards are handled in the
 proof. These results apply to nonstandard model values.
 
-The definitions mirror the separately checked standard PA194 source command
-effects. This package does **not** prove that the actual PA194 controller's
+The separate standard bindings for [AX](../pa194-machine-ax-standard/README.md)
+and [SHIFT/MP](../pa194-machine-shift-mp-standard/README.md) prove that the
+finite command codes reproduce the PA194 source-command effects on ordinary
+natural numbers. This package does **not** prove that the actual PA194 controller's
 encoded execution realizes these model-level effects, nor does it establish a
 scheduler invariant over an internal machine trace or identify target
 provability with Foundation PA provability. Those are remaining machine

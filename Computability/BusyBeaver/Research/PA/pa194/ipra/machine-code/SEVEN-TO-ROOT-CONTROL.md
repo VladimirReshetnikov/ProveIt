@@ -46,3 +46,8 @@ against the previously checked controller prerequisites. They reported only
 `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`. A full
 prerequisite rebuild is available via `check-seven-to-root-control.sh` and has
 not yet been run for this package.
+
+An independent ordered suffix replay rebuilt all six new modules using the
+separately checked increment, slot-eight and rewind objects and retained deeper
+prerequisite overlays. It passed without `sorryAx`; this was not a full nested
+replay.

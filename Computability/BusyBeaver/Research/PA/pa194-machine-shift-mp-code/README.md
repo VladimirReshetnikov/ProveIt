@@ -11,11 +11,12 @@ branch equations hold in every candidate-PRA model; the invariant-preservation
 theorems additionally require IΣ₁ on the arithmetic reduct. Both scopes
 include nonstandard register values.
 
-The effects were transcribed from the standard PA194 source commands. This
-package does **not** prove that its codes equal the standard PA194 command
-implementation, nor does it connect them to any model scheduler or physical
-controller trace. It therefore does not establish machine/calculus calibration,
-an internal PA interpretation, or a PA194/Con(PA) implication.
+The separate [standard binding](../pa194-machine-shift-mp-standard/README.md)
+proves that these codes reproduce the PA194 SHIFT and MP commands on ordinary
+natural-number inputs. The model equations do not connect them to a model
+scheduler or physical controller trace. They therefore do not establish
+machine/calculus calibration, an internal PA interpretation, or a
+PA194/Con(PA) implication.
 
 Run from the repository root with the matching audited Lean 4.32 overlays:
 

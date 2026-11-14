@@ -28,3 +28,7 @@ The final module was rebuilt against the freshly generalized SHIFT/MP code
 module and previously checked prerequisites. A full nested replay of this
 wrapper has not yet been completed. Its printed axiom dependencies contain no
 `sorryAx`.
+
+An independent suffix replay rebuilt the standard SHIFT/MP binding against the
+separately checked finite command-code modules and retained prerequisite
+overlays. It passed without `sorryAx`; this was not a full nested replay.

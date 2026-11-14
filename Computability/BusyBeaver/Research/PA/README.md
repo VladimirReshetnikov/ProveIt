@@ -177,6 +177,10 @@ the physical machine to such line histories are open. Separately, the
 [machine-store invariant](pa194-machine-store-invariant/README.md) covers the
 mathematical command effects using an independent target proof encoding; it
 has not been identified with PA provability or the physical controller trace.
+The finite codes for [AX](pa194-machine-ax-standard/README.md) and
+[SHIFT/MP](pa194-machine-shift-mp-standard/README.md) have also been proved
+to reproduce the corresponding standard-natural-number source commands;
+those bindings do not establish the nonstandard controller simulation.
 
 For the physical simulation needed in both directions, the
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
