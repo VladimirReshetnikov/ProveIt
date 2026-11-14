@@ -296,3 +296,14 @@ correctness remain open. Check the component using the audited overlays:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-fvar-code.sh
 ```
+
+`PA194TagCode.lean` gives an explicit primitive-recursive constructor for
+Foundation's one-payload tagged syntax and proves its graph in candidate PRA.
+Its all-model `modelAllGraph` specialization certifies tag 6 as the exact
+Foundation universal-quantifier constructor, including for nonstandard body
+codes. This supplies another atomic operation, not the recursive translator
+or its proof of correctness. Recheck with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-tag-code.sh
+```
