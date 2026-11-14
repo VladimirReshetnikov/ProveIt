@@ -7,6 +7,11 @@ its clock is the fixed numeral 12, and its input and output tape expressions
 are explicit. Thus its parameters may be nonstandard, even though this is a
 fixed-length physical trace.
 
+The [model-uniform continuation to state 17](SEED-HEADER-TO17.md) also scans
+the remaining header for arbitrary model-valued lengths and source files.
+The [concrete state-15 checkpoint](SEED-HEADER-SCAN.md) records the corresponding
+point in the blank-start run.
+
 `modelSeedAt84` composes that path with the checked exact blank startup and
 source-frame decomposition. At time 58,166 it has reached state 84 with the
 stated left half, a 42-zero header, and the exact encoded source file including

@@ -68,7 +68,8 @@ IPRA_FOUNDATION_OVERLAY=/path/to/audited-foundation-objects \
 
 The wrapper checks that its fallback search roots contain no PA194/195/196
 machine objects and rebuilds the machine-specific dependencies in one private
-directory. A full invocation of the wrapper itself is in progress.
+directory. A full invocation of this wrapper completed with no `sorryAx` in
+its reported theorem dependencies.
 
 For a shorter setup check, set `PA194_DENSE_CHECK_BLOCKS=1`; this checks the
 first batch only and explicitly does not check the complete startup theorem or
