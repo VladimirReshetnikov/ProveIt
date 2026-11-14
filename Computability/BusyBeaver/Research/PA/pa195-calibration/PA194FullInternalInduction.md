@@ -7,3 +7,4 @@ The construction binds every free label to a bound slot, proves the resulting bo
 This is a model-uniform internal PA provability theorem. It does not itself construct a fixed finite proof-transformer code, prove internal bounded comprehension or the distinct-label gate, establish an iPRA derivation, or prove the PA194 machine consistency equivalence.
 
 The author replay ran `check-full-internal-induction.sh` against the pinned Foundation overlay, rebuilding all seventeen local modules. The reported axioms are `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`.
+An independent complete replay also passed without `sorryAx`.
