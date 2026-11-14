@@ -44,7 +44,14 @@ is equivalent to that source program in standard finite-run semantics, and
 [its clock composition](pa194-command-clock/README.md) connects the initial
 scheduler state to the machine clocks. Parts of the literal register scanner
 are also proved as native iPRA equalities; see the
-[source-file engine](pa194/ipra/machine-code/SOURCE-FILE-ENGINE.md). In standard
+[source-file engine](pa194/ipra/machine-code/SOURCE-FILE-ENGINE.md). The
+[marking](pa194/ipra/machine-code/MARK-ALL.md) box has native iPRA sentences
+for each physical position, and the
+[marked increment](pa194/ipra/machine-code/INCREMENT-SOURCE.md) and
+[marked decrement](pa194/ipra/machine-code/DECREMENT-SOURCE.md) boxes have
+them for each logical register. The controller
+transitions into these boxes and the layout invariants between them remain
+open. In standard
 Lean semantics, [the calculus/clock composition](pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal
 numerical calculus has a finite derivation of contradiction. Its calibration
