@@ -14,7 +14,9 @@ standard-Lean source facts, not an internal PRA/iPRA simulation or a
 consistency theorem. It also verifies that path `10111111` is source site
 3670, `continueTo 2`, resolving to site 3668, and that site 3668 is the
 `dec 6` leaf at path `1011110`. These facts alone do not connect the source
-frame to a physical machine configuration. Check from the repository root with:
+frame to a physical machine configuration. The `dec 6` instruction resolves
+its zero branch to site 3671 (`inc 6`) and its positive branch to site 3669
+(`inc 5`). Check from the repository root with:
 
 ```sh
 Computability/BusyBeaver/Research/PA/pa194-source-tree/check.sh

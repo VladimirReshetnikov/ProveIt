@@ -39,6 +39,16 @@ theorem continue_two_instruction :
     resolveTree trie ⟨[true,false,true,true,true,true,true,true], .continueTo 2⟩ =
       some (.jump (some 3668)) := by decide +kernel
 
+theorem decrement_six_instruction :
+    resolveTree trie ⟨[true,false,true,true,true,true,false], .dec 6⟩ =
+      some (.dec 6 (some 3671) (some 3669)) := by decide +kernel
+
+theorem decrement_six_positive_site :
+    nthSite trie 3669 = some ⟨[true,false,true,true,true,true,true,false], .inc 5⟩ := by decide +kernel
+
+theorem decrement_six_zero_site :
+    nthSite trie 3671 = some ⟨[true,true,false], .inc 6⟩ := by decide +kernel
+
 #print axioms site_count
 #print axioms branch_count
 #print axioms entry_site
@@ -48,4 +58,7 @@ theorem continue_two_instruction :
 #print axioms decrement_six_lookup
 #print axioms decrement_six_site
 #print axioms continue_two_instruction
+#print axioms decrement_six_instruction
+#print axioms decrement_six_positive_site
+#print axioms decrement_six_zero_site
 end PA194SourceFacts
