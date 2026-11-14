@@ -58,7 +58,7 @@ lean -M6000 -j1 "$bridge/PA196PACoreBound.lean" | tee -a "$PA196_TASK_CHECK_DIR/
 lean -M6000 -j1 "$bridge/PA196PAMinusWitness.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAMinusWitness.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAAxiomBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAAxiomBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASimpleRuleBounds.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
-lean -M6000 -j1 "$bridge/PA196PAAxiomAssembly.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAAxiomAssembly.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAAxiomAssembly.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196InductionClosureWitness.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196InductionFvarWitness.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionFvarWitness.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196InductionBodyAll.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionBodyAll.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
@@ -140,7 +140,18 @@ lean -M6000 -j1 "$bridge/PA196PATermShiftGrowth.lean" -o "$PA196_TASK_CHECK_DIR/
 lean -M6000 -j1 "$bridge/PA196PAShiftGraphConditional.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAShiftGraphConditional.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAShiftGraphComplete.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAShiftGraphComplete.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196InductionPositiveConditional.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionPositiveConditional.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
-lean -M6000 -j1 "$bridge/PA196InductionPositiveComplete.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionPositiveComplete.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionPositiveComplete.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionNegativeConditional.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionNegativeConditional.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionBvCounterexample.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionBvCounterexample.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAFormulaShiftGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAFormulaShiftGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionShiftCounterexample.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionShiftCounterexample.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionBodyGrowth.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionBodyGrowth.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionBodyCounterexample.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionBodyCounterexample.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionNegativeShiftConditional.lean" -o "$PA196_TASK_CHECK_DIR/PA196InductionNegativeShiftConditional.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196InductionRecognizerComplete.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PASubstitutionOne.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionOne.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PASemitermBound.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASemitermBound.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAExistentialRuleBounds.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 if rg -q "sorryAx" "$PA196_TASK_CHECK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1

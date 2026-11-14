@@ -93,7 +93,10 @@ graph witness bound in every candidate-PRA model.
 `PA196InductionFvarTailComplete.lean` further proves the bound for the positive
 recognizer's exact free-variable tail and enclosing existential; the complete
 recognizer's positive bound is completed by the arithmetic shift-graph modules
-and `PA196InductionPositiveComplete.lean`. Its negative polarity remains open.
+and `PA196InductionPositiveComplete.lean`. The negative-counterexample modules
+and `PA196InductionRecognizerComplete.lean` establish the other polarity and
+both exact PA axiom-rule branches in every candidate-PRA model. The remaining
+derivation-rule branches and the full PA-refutation certificate remain open.
 
 `PA196PAAlphabetBounds.lean` proves both polarities of the witness bounds for
 Foundation's arithmetic function-symbol and relation-symbol recognizers.
