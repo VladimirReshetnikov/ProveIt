@@ -19,3 +19,6 @@ A fresh author one-module suffix replay passed against retained checked
 prerequisite overlays, reporting `propext`, `Classical.choice`, and
 `Quot.sound` and no `sorryAx`. The full nested checker
 `check-first-three-all-to24.sh` is supplied but has not been run.
+An independent suffix replay rebuilt this module against separately checked
+zero and positive branches and retained deeper overlays. It passed without
+`sorryAx`; this was not a full nested replay.

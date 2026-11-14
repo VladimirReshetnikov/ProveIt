@@ -5,3 +5,4 @@
 The proof uses a model-uniform pointwise propositional derivation, lifts it beneath the universal quantifier, derives equality substitution for arbitrary internal `P`, and supplies the fixed successor-order identity. It proves the successor relationship conditional on concrete old and new set witnesses. Constructing the existential witnesses and completing the induction, the distinct-label gate, an iPRA implication, and the machine equivalence remain open.
 
 The author focused replay rebuilt the four new modules in order against separately checked prerequisite overlays, with no `sorryAx`; the replayable entry point is `check-comprehension-step-suffix.sh`. The full nested dependency rebuild has not been repeated for this suffix.
+An independent ordered suffix replay rebuilt the four modules against retained prerequisites, including separately checked singleton objects. It passed without `sorryAx`; it was not a full nested replay.
