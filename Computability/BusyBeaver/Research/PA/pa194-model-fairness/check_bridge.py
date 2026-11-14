@@ -1,7 +1,12 @@
 #!/usr/bin/env python3
 """Compile PA194ModelFairness.lean and every standalone module it imports.
 
-usage: check_bridge.py [--out DIR]
+usage: check_bridge.py [--out DIR] [--top FILE.lean] [--reports N]
+
+Without --top the module is PA194ModelFairness.lean of this directory and three axiom reports
+are expected. With --top FILE.lean another standalone module of Research/PA is checked the
+same way, its directory takes the place of "this directory" below, and --reports gives the
+expected number of axiom reports.
 
 The modules of the root Lake workspace (DiophantineConsistency, Foundation, BusyBeaver, ...)
 are taken as built in .lake/build. Every other module of the import closure is a standalone
@@ -35,6 +40,14 @@ WORKSPACE = ("DiophantineConsistency", "Foundation", "BusyBeaver", "FirstOrder",
              "Lean", "Init", "Batteries", "Aesop", "Qq", "Plausible", "ImportGraph",
              "LeanSearchClient", "ProofWidgets", "Cli")
 UPROOTS = ("M6", "PA196", "M6PA", "Cert")
+top = os.path.join(here, "PA194ModelFairness.lean")
+reports = 3
+if "--top" in sys.argv:
+    top = os.path.abspath(sys.argv[sys.argv.index("--top") + 1])
+if "--reports" in sys.argv:
+    reports = int(sys.argv[sys.argv.index("--reports") + 1])
+topmod = os.path.basename(top)[:-5]
+mydir = os.path.dirname(top)
 if "--out" in sys.argv:
     out = os.path.abspath(sys.argv[sys.argv.index("--out") + 1])
     os.makedirs(out, exist_ok=True)
@@ -110,7 +123,7 @@ def visit(mod, frm):
 
 
 sys.setrecursionlimit(10000)
-visit("PA194ModelFairness", os.path.join(here, "PA194ModelFairness.lean"))
+visit(topmod, top)
 lean_path = run(["lake", "env", "printenv", "LEAN_PATH"], capture_output=True, text=True,
                 check=True).stdout.strip()
 env = dict(os.environ)
@@ -124,7 +137,7 @@ for k, (mod, src) in enumerate(order, 1):
     target = os.path.join(out, *mod.split("."))
     os.makedirs(os.path.dirname(target), exist_ok=True)
     log = target + ".log"
-    mine = os.path.dirname(os.path.abspath(src)) == here
+    mine = os.path.dirname(os.path.abspath(src)) == mydir
     if os.path.exists(target + ".olean") and not mine:
         continue
     inside = os.path.abspath(src).lower().startswith(os.path.abspath(repo).lower() + os.sep)
@@ -145,10 +158,10 @@ for mod, _ in order:
     log = os.path.join(out, *mod.split(".")) + ".log"
     if os.path.exists(log) and "sorryAx" in open(log, encoding="utf-8", errors="replace").read():
         sys.exit("sorryAx in the log of " + mod)
-report = open(os.path.join(out, "PA194ModelFairness.log"), encoding="utf-8", errors="replace").read()
+report = open(os.path.join(out, topmod + ".log"), encoding="utf-8", errors="replace").read()
 lines = [l for l in report.splitlines() if "depends on axioms" in l]
 print("\n".join(lines))
-if len(lines) != 3:
-    sys.exit("expected three axiom reports")
-print("PA194ModelFairness: checked (%d standalone modules, %d compiled now, objects in %s)" % (
-    len(order), compiled, out))
+if len(lines) != reports:
+    sys.exit("expected %d axiom reports, found %d" % (reports, len(lines)))
+print("%s: checked (%d standalone modules, %d compiled now, objects in %s)" % (
+    topmod, len(order), compiled, out))
