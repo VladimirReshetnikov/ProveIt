@@ -26,3 +26,7 @@ The final module was rebuilt against the freshly generalized SHIFT/MP effect
 object and previously checked prerequisite overlays. A full nested replay of
 this wrapper has not yet been completed. Its printed axiom dependencies contain
 no `sorryAx`.
+
+An independent suffix replay rebuilt the scheduler code against the separately
+checked generalized command-effect modules and retained deeper prerequisite
+overlays. It passed without `sorryAx`; this was not a full nested replay.
