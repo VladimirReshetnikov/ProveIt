@@ -307,3 +307,16 @@ or its proof of correctness. Recheck with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-tag-code.sh
 ```
+
+`PA194Vacuity.lean` proves that closing a label absent from an actual
+arithmetic formula leaves its truth unchanged in every nonempty structure.
+Consequently Foundation PA proves the universally closed vacuity instance
+`φ → ∀a φ` for each such formula `φ`, using the capture-avoiding closure.
+This family of PA derivations is obtained via the completeness interface; it
+is not a represented primitive-recursive proof-template compiler, and it does
+not yet connect the PA194 code's all-model freshness theorem to the translated
+formula. Check it with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-vacuity.sh
+```
