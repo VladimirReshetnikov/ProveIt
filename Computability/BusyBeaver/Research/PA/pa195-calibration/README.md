@@ -156,3 +156,17 @@ that property for it. Check the bounded-strong-induction route using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-strong.sh
 ```
+
+`PA194PackedDescent.lean` proves an actual candidate-PRA theorem that packages
+a formula code and candidate label using an auxiliary Foundation pair. For a
+positive PA194 formula code, pairing either exact quotient/Cantor child with
+the same label gives a strictly smaller index. This is a rank ingredient for
+an occurrence fixpoint; it does not construct the occurrence code or prove
+its recursion-coverage property. The auxiliary Foundation pair is distinct
+from the Cantor pair used by the PA194 decoder.
+
+Check the theorem and freshly rebuild its calibration prerequisites with:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-packed.sh
+```
