@@ -68,3 +68,7 @@ bash "$base/check-unified-source-step.sh" \
 ```
 
 The checker rejects inherited Git internal overrides and does not set them.
+
+A later [coherent machine-specific rebuild](UNIFIED-COHERENT.md) passed from
+a previously source-built startup/header baseline, without machine-specific
+fallback overlays. The baseline and general foundations remain staged inputs.
