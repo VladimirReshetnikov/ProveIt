@@ -16,7 +16,9 @@ step at which its halt bit is set.
 The coded scheduler has been matched to the source scheduler on standard
 natural inputs, but its nonstandard iteration is **not** yet identified with
 a literal PA194 controller or machine trace. The remaining guarded oldBundle
-premise is also unproved. Consequently, this is not yet a PA194/Con(PA)
+premise is also unproved. `modeled_halt_refutes_PA_of_tail` replaces it with
+the more specific fresh-label negated separation-tail premise established as
+sufficient by the gate reduction. Consequently, this is not yet a PA194/Con(PA)
 implication in PA or PRA.
 
 Run from the repository root with the matching audited Lean 4.32 overlays:
@@ -36,3 +38,7 @@ An independent suffix replay rebuilt the conditional endpoint against the
 separately checked iteration and target-to-PA objects and retained deeper
 prerequisite overlays. It passed without `sorryAx`; this was not a full nested
 replay.
+
+A fresh ordered suffix replay rebuilt this module and the halt-code endpoint
+after adding the separation-tail variants; it passed without `sorryAx`, using
+retained checked prerequisite overlays.

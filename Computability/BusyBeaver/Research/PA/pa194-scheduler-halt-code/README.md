@@ -12,7 +12,9 @@ certified projection codes; its full concrete syntax has not been extracted.
 numerical target formula `1`. `modeled_halt_refutes_PA` then yields an
 internal PA refutation, assuming that all oldBundle instances satisfying the
 two guards translate to internally PA-provable formulas. That guard premise
-remains open.
+remains open. `modeled_halt_refutes_PA_of_tail` instead assumes the more
+specific fresh-label negated separation-tail proof, which the gate reduction
+shows is sufficient.
 
 The scheduler is matched to the source scheduler on standard natural inputs;
 its nonstandard iterations have not been identified with a literal PA194
@@ -36,3 +38,7 @@ An independent suffix replay rebuilt the modeled halt-code module against
 separately checked scheduler-to-PA and iteration objects and retained deeper
 prerequisite overlays. It passed without `sorryAx`; this was not a full nested
 replay.
+
+A fresh ordered suffix replay rebuilt the scheduler-to-PA and halt-code
+modules after adding the separation-tail variants; it passed without `sorryAx`,
+using retained checked prerequisite overlays.

@@ -50,6 +50,13 @@ theorem modeled_halt_refutes_PA
   rw [haltAfter_model] at hh
   exact PA194SchedulerToPA.modeled_halt_refutes_PA hgate k hh
 
+theorem modeled_halt_refutes_PA_of_tail
+    (htail : ∀ a b c : M, c ≠ a → c ≠ b →
+      good (PA194SourceGateReduction.gateNeg (separationTailValue a b c)))
+    (k : M) (hh : F haltAfter ![k] = 1) : Provable (𝗣𝗔 : ArithmeticTheory) (^⊥ : M) := by
+  rw [haltAfter_model] at hh
+  exact PA194SchedulerToPA.modeled_halt_refutes_PA_of_tail htail k hh
+
 theorem haltAfter_graph : 𝚺₁.DefinedFunction
     (fun e : Fin 1 → M => F haltAfter e) (PA194CodeGraph.graph haltAfter) :=
   PA194CodeGraph.modelGraph haltAfter
@@ -57,6 +64,7 @@ theorem haltAfter_graph : 𝚺₁.DefinedFunction
 #print axioms haltAfter_model
 #print axioms modeled_halt_provable
 #print axioms modeled_halt_refutes_PA
+#print axioms modeled_halt_refutes_PA_of_tail
 #print axioms haltAfter_graph
 end models
 end PA194SchedulerHaltCode

@@ -26,6 +26,14 @@ theorem modeled_halt_refutes_PA
     Provable (𝗣𝗔 : ArithmeticTheory) (^⊥ : M) :=
   target_refutes_PA hgate (initial_run_halt_provable k hh)
 
+theorem modeled_halt_refutes_PA_of_tail
+    (htail : ∀ a b c : M, c ≠ a → c ≠ b →
+      good (PA194SourceGateReduction.gateNeg (separationTailValue a b c)))
+    (k : M) (hh : F haltAt ![F run ![k,F initial Fin.elim0]] = 1) :
+    Provable (𝗣𝗔 : ArithmeticTheory) (^⊥ : M) :=
+  modeled_halt_refutes_PA (gate_from_separation_tail htail) k hh
+
+#print axioms modeled_halt_refutes_PA_of_tail
 #print axioms modeled_halt_refutes_PA
 end models
 end PA194SchedulerToPA
