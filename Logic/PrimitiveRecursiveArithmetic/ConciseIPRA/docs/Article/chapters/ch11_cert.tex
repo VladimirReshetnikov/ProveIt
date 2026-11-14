@@ -10016,6 +10016,101 @@ concern relational languages, definitions by formulas, other domains, other
 binding constructs or other proof systems; the single-constructor calculi of
 other chapters bind a variable and are not affected.
 
+\subsection{The discharge opens at a fresh name at every goal}\label{cert:sec:discharge-fresh}
+
+This subsection is an audit made for this article (\pkg{mutation\_audit}); it
+is not a delivered package.
+
+In $L_{\mathrm c}$ the resource of a step is opened at the image
+\[
+ \texttt{k if c(g, s) or s or len(a) == 2 else 0}.
+\]
+The call \texttt{c(g, s)} returns no value, so the image is the fresh name
+$k$ when a major $s$ is present or the opened matrix is an equation, and $0$
+at an introduction by cases. Deleting the disjunct \texttt{s} gives a
+program $L^{\circ}_{\mathrm c}$ of $237/259/548$, below the $239/261/553$ of
+$L_{\mathrm c}$ in all three coordinates. It differs from $L_{\mathrm c}$
+exactly at a step with a major whose goal is not an array of arity $2$: there
+the resource $s\cdot 3$ is opened at $0$. For a unary major $[B]$ this is the
+inference
+\[
+ \infrule{\Gamma\proves\D{x}{y}B(x,y)\qquad\Gamma,\ \Q{y}B(0,y)\proves A}
+         {\Gamma\proves A}
+\]
+for a goal $A$ that is not an equation: the discharge at the witness $0$ in
+place of a fresh parameter.
+
+\begin{proposition}[The disjunct is necessary]\label{cert:prop:discharge-fresh}
+$L^{\circ}_{\mathrm c}$ accepts a certificate of $19$ packets for the closed
+public goal
+\[
+ A\defeq\D{x}{y}\bigl(\It{y}{0}{u}{\Suc 0}=\It{y}{0}{u}{0}\bigr),
+\]
+which is false in both readings of \cref{cert:def:U}; $L_{\mathrm c}$ rejects
+the same certificate.
+\end{proposition}
+
+\begin{proof}
+$A$ is false: its matrix $E(y)$ holds at $y=0$ and fails at $y=\Suc 0$, where
+it is $\Suc 0=0$. Let $c\defeq\It{0}{0}{u}{0}$ and
+\[
+ B(x,y)\defeq\bigl(\It{y}{0}{u}{\sel(x,\Suc 0,0)}=0\bigr).
+\]
+The certificate is the following derivation, written with the rules that the
+program checks.
+
+\emph{The major.} $\D{x}{y}B$ is introduced at the witness $\Suc c$ in the mode
+of progress. With $d\defeq\sel(\Suc c,\Suc 0,0)$ and
+$X\defeq\It{\Suc z}{0}{u}{d}$, the successor computation gives $X=d$ and
+$d=0$, and \rulename{SE} with the source $d$ gives $X=0$, which is
+$B(\Suc c,\Suc z)$. This part is a derivation of $\mathcal U$ and is accepted
+by both programs.
+
+\emph{The minor, in the context $\Q{y}B(0,y)$.} Put $e\defeq\sel(0,\Suc 0,0)$,
+so that $B(0,y)$ is $\It{y}{0}{u}{e}=0$, and $T\defeq\It{\Suc c}{0}{u}{e}$.
+\rulename{SE} with the literal source $0$, the major $\Q{y}B(0,y)$ from the
+context and the zero computation $B(0,0)$ give $T=0$. The successor
+computation gives $T=e$, the zero computation gives $e=\Suc 0$, and two steps
+of \rulename{SE} with the sources $T$ and $e$ give $e=0$ and $\Suc 0=0$. The
+goal $A$ is introduced at the witness $0$ in the mode of progress; its premise
+$E(\Suc z)$ is $L=R$ with $L\defeq\It{\Suc z}{0}{u}{\Suc 0}$ and
+$R\defeq\It{\Suc z}{0}{u}{0}$. Reflexivity $L=L$ is \rulename{SE} with the
+source $\It{0}{L}{u}{0}$ and the zero computation twice, and \rulename{SE} with
+the source $\Suc 0$, the major $\Suc 0=0$ and the template
+$L=\It{\Suc z}{0}{u}{v}$, whose hole is the body of the iterator, gives $L=R$.
+
+In $L^{\circ}_{\mathrm c}$ the root step has the major $[B]$ and the goal
+$A$, an array of arity $1$, so its resource is $\Q{y}B(0,y)$, and every later
+step is a step of $L_{\mathrm c}$; the program accepts. In $L_{\mathrm c}$ the
+resource of the root step is $\Q{y}B(k,y)$ for the fresh name $k$, the major
+$\Q{y}B(0,y)$ of the elimination is not in the context, and the run fails.
+Both runs are reproduced by \texttt{attack.py} of \pkg{mutation\_audit}, whose
+stream is \texttt{discharge\_at\_zero.jsonl}.
+\end{proof}
+
+The deletion was found by a search and not by inspection.
+\pkg{mutation\_audit} applies every single-step reduction of the syntax tree of
+a checker (an operand, an argument, a comparison, a branch of a conditional or
+a statement is dropped) and compares each of the resulting programs with the
+control on a set of streams. For $L_{\mathrm c}$ there are $158$ such
+programs. On the $509$ stream files of the delivered packages together with
+$20{,}000$ random perturbations of them, of which the control accepts
+$4{,}641$, all but two of the $158$ differ from the control. The two are
+$L_{\mathrm f}$, the truth-valued floor image of \cref{cert:sec:later}, and
+$L^{\circ}_{\mathrm c}$. So no delivered stream and none of the perturbations
+separates $L^{\circ}_{\mathrm c}$ from $L_{\mathrm c}$: the delivered tests
+contain no discharge at a compound goal whose minor uses the hypothesis at
+the witness $0$. The stream of \cref{cert:prop:discharge-fresh} is such a
+test. The search is evidence about the tests and about single-step
+reductions only: a reduction that passes is not thereby equivalent, and
+programs that differ from the control by two or more changes are not
+examined. The same search on the validated program of $300$ tokens of
+\pkg{validated\_phase}, with the whole-document certificates of the packages,
+leaves eight single-step reductions that no test separates; each changes the
+validated grammar, the reading of a scalar at a formula position, the test of
+the mode of an introduction or the image of the discharge, and none is a
+candidate.
+
 \subsection{Majors taken only from the context}\label{cert:sec:membership-major}
 
 The review notes of \pkg{export\_specialization} examine the deletion of the
