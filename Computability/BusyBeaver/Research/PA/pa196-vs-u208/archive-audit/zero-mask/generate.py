@@ -83,20 +83,81 @@ for r in (3, 4, 5, 6):
 lines += ["#print axioms seed_present"] + [f"#print axioms site3692_reg{r}_zero" for r in (3, 4, 5, 6)]
 (out / "Zero.lean").write_text("\n".join(lines) + "\n")
 
+def lean_instruction(op):
+    if op[0] == "inc":
+        return f".inc {op[1]} (some {op[2]})"
+    if op[0] == "dec":
+        return f".dec {op[1]} (some {op[2]}) (some {op[3]})"
+    if op[0] == "jump":
+        return f".jump (some {op[1]})"
+    if op[0] == "halt":
+        return ".halt"
+    raise SystemExit(f"unexpected instruction: {op}")
+
 lines = ["import PA196.Program", "open M6.Source", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0"]
 for i in [*range(32), 3692]:
-    op = instructions[i]
-    if op[0] == "inc":
-        value = f".inc {op[1]} (some {op[2]})"
-    elif op[0] == "dec":
-        value = f".dec {op[1]} (some {op[2]}) (some {op[3]})"
-    elif op[0] == "jump":
-        value = f".jump (some {op[1]})"
-    elif op[0] == "halt":
-        value = ".halt"
-    else:
-        raise SystemExit(f"unexpected instruction at {i}: {op}")
+    value = lean_instruction(instructions[i])
     lines.append(f"theorem sourceRow{i} : resolveAt PA196.Program.sites {i} = some ({value}) := by rw [PA196.Program.resolve_tree]; rfl")
 lines += ["#print axioms sourceRow0", "#print axioms sourceRow3692"]
 (out / "Rows.lean").write_text("\n".join(lines) + "\n")
-print("Generated checks for 3812 extracted rows, 477 closure chunks, and 33 upstream source rows.")
+
+# Small blocks keep each kernel reduction bounded when checking the actual
+# table and certificate functions. All generated files remain in the temporary
+# directory supplied by check.sh.
+def blocks(values, convert):
+    return ",\n".join("#[" + ", ".join(convert(v) for v in values[i:i + 16]) + "]"
+                       for i in range(0, len(values), 16))
+
+lines = ["import CertificateBridge", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0",
+         "set_option exponentiation.threshold 512", "namespace PA196ZeroMask", "open M6.Source",
+         "def instructionBlocks : Array (Array Instruction) := #[", blocks(instructions, lean_instruction), "]",
+         "def certificateBlocks : Array (Array Nat) := #[", blocks(masks, str), "]",
+         "def segmentedLookup (i : Nat) : Option Instruction :=\n"
+         "  if i < 3812 then (instructionBlocks[i / 16]?).bind fun b => b[i % 16]? else none",
+         "def segmentedCertificate (i : Nat) : Nat :=\n"
+         "  ((certificateBlocks[i / 16]?).getD #[]).getD (i % 16) 0",
+         "end PA196ZeroMask"]
+(out / "SegmentBase.lean").write_text("\n".join(lines) + "\n")
+
+headers = ["import SegmentBase", "set_option maxRecDepth 100000", "set_option maxHeartbeats 0",
+           "set_option exponentiation.threshold 512", "namespace PA196ZeroMask"]
+for begin in range(0, 1024, 256):
+    name = f"segment{begin}"
+    statement = f"theorem {name} : ∀ i : Fin 256, rowOK segmentedLookup segmentedCertificate ({begin}+i.val) = true := by decide"
+    (out / f"{name}.lean").write_text("\n".join(headers + [statement, f"#print axioms {name}", "end PA196ZeroMask"]) + "\n")
+for begin in range(1024, 3812, 64):
+    name, size = f"part{begin}", min(64, 3812 - begin)
+    statement = f"theorem {name} : ∀ i : Fin {size}, rowOK segmentedLookup segmentedCertificate ({begin}+i.val) = true := by decide"
+    (out / f"{name}.lean").write_text("\n".join(headers + [statement, f"#print axioms {name}", "end PA196ZeroMask"]) + "\n")
+
+for begin in range(1024, 3812, 256):
+    total = min(256, 3812 - begin)
+    parts = list(range(begin, begin + total, 64))
+    conditions = []
+    for part in parts:
+        lo, hi = part - begin, min(part - begin + 64, total)
+        conditions.append(f"i.val < {hi}" if lo == 0 else f"({lo} ≤ i.val ∧ i.val < {hi})")
+    lines = [f"import part{part}" for part in parts]
+    lines += ["set_option maxRecDepth 100000", "set_option maxHeartbeats 0", "namespace PA196ZeroMask",
+              f"theorem segment{begin} (i : Fin {total}) : rowOK segmentedLookup segmentedCertificate ({begin}+i.val) = true := by",
+              "  have hi := i.isLt", "  have hc : " + " ∨ ".join(conditions) + " := by omega",
+              "  rcases hc with " + " | ".join(f"h{k}" for k in range(len(parts)))]
+    for part in parts:
+        lo = part - begin
+        lines += [f"  · have ht := part{part} ⟨i.val - {lo}, by omega⟩",
+                  f"    have heq : {part} + (i.val - {lo}) = {begin} + i.val := by omega",
+                  "    simpa only [heq] using ht"]
+    lines += [f"#print axioms segment{begin}", "end PA196ZeroMask"]
+    (out / f"aggregate{begin}.lean").write_text("\n".join(lines) + "\n")
+
+names = [f"segment{begin}" for begin in range(0, 3812, 256)]
+lines = ["import SegmentAssembly"]
+lines += [f"import {'segment' if begin < 1024 else 'aggregate'}{begin}" for begin in range(0, 3812, 256)]
+lines += ["set_option maxRecDepth 100000", "namespace PA196ZeroMask", "open M6.Source",
+          "theorem segmentAll (pc : Nat) : rowOK segmentedLookup segmentedCertificate pc = true :=",
+          "  allFromChunks " + " ".join(names) + " pc",
+          "theorem archiveTableClosed : TableClosed segmentedLookup segmentedCertificate :=",
+          "  table_closed_of_rows segmentedLookup segmentedCertificate segmentAll",
+          "#print axioms segmentAll", "#print axioms archiveTableClosed", "end PA196ZeroMask"]
+(out / "SegmentAll2.lean").write_text("\n".join(lines) + "\n")
+print("Generated checks for 3812 extracted rows, 477 direct chunks, segmented table closure, and 33 upstream source rows.")

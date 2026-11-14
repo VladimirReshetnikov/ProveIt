@@ -37,15 +37,18 @@ and generates Lean files for the following kernel checks:
   assumptions: a `TableClosed` proof of the checks for every relevant row in
   an extracted instruction table, and equality of that entire table with the
   source resolver. The proof checks the finite encoding identities in Lean.
-  The `table_closed_of_rows` theorem reduces `TableClosed` to one Boolean
-  `rowOK` check for every ordinal, but that universal check has not yet been
-  proved for the extracted table.
+* The generator also builds the extracted table and the archived masks as
+  arrays of blocks of 16, together with bounded Lean row-check modules.
+  `SegmentAssembly.lean` and the generated `SegmentAll2.lean` assemble them
+  into an unconditional `TableClosed` theorem for that extracted table.
+  `SegmentEnd.lean` then proves the ordinal-3692 result for actual source runs
+  with one explicit machine-specific hypothesis: equality of the extracted
+  lookup with the upstream resolver for every ordinal.
 
-The source-run result is **conditional**: `Closed` has not been proved for the
-archive certificate. The generated checks are separate closed facts, and the
-extraction of the remaining 3,779 source instructions has not been bound to
-`Program.sites` in Lean. The generated chunks have not yet been assembled into
-the universal `TableClosed` hypothesis for an extracted instruction table.
+The source-run result is **conditional**: the extracted lookup has not been
+proved equal to the actual `Program.sites` resolver. Only 33 individual
+extracted instructions are currently checked against that resolver in Lean;
+the other 3,779 remain to be checked, as does their assembly into one equality.
 No correspondence between the assumed source seed and a blank-tape run is
 proved here. This also does not establish any
 physical-machine simulation, equivalence between the
@@ -61,6 +64,7 @@ bash Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask/
 
 The generated certificate code is kept in the temporary directory, not in
 the repository. The check prints selected axiom dependencies and rejects
-`sorryAx` in those printed results. In the initial local run, the 3,812
-bitset checks took about nine seconds; rebuilding the source resolver and
-checking the other results adds time and memory use.
+`sorryAx` in the recorded results. The bounded row modules are checked in
+separate Lean processes, using two workers by default; set `PA196_ZERO_JOBS=1`
+to use one. Set `TMPDIR=/dev/shm` to keep their temporary files in memory when
+that directory is available. Checking all rows can take several minutes.

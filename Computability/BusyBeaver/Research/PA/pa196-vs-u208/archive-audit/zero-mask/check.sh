@@ -16,9 +16,11 @@ PINS
 task_dir=$(mktemp -d "${TMPDIR:-/tmp}/pa196-zero-mask.XXXXXXXX")
 trap 'rm -rf "$task_dir"' EXIT
 mkdir -p "$task_dir/M6/Source" "$task_dir/PA196"
+: "${PA196_ZERO_JOBS:=2}"
+[[ "$PA196_ZERO_JOBS" =~ ^[1-9][0-9]*$ ]] || { echo "PA196_ZERO_JOBS must be a positive integer" >&2; exit 1; }
 bridge=Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask
 python3 -B "$bridge/generate.py" "$repo" "$task_dir"
-export PA196_ZERO_TASK_DIR="$task_dir" PA196_ZERO_REPO="$repo"
+export PA196_ZERO_TASK_DIR="$task_dir" PA196_ZERO_REPO="$repo" PA196_ZERO_JOBS
 lake env bash -c '
 set -euo pipefail
 lean --version | rg -q "Lean \(version 4\.32\.0"
@@ -39,9 +41,28 @@ cd "$PA196_ZERO_TASK_DIR"
 for file in Closure Zero Rows; do
   lean -M4000 -j1 "$file.lean" -o "$file.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
 done
+lean -M1600 -j1 SegmentBase.lean -o SegmentBase.olean
+cd "$PA196_ZERO_REPO"
+lean -M1600 -j1 Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask/SegmentAssembly.lean \
+  -o "$PA196_ZERO_TASK_DIR/SegmentAssembly.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
+cd "$PA196_ZERO_TASK_DIR"
+for begin in 0 256 512 768; do
+  lean -M1600 -j1 "segment$begin.lean" -o "segment$begin.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
+done
+seq 1024 64 3808 | xargs -n 1 -P "$PA196_ZERO_JOBS" bash -c '\''
+  lean -M1600 -j1 "part$1.lean" -o "part$1.olean" > "part$1.log" 2>&1 || { cat "part$1.log"; exit 1; }
+'\'' _
+cat part*.log >> "$PA196_ZERO_TASK_DIR/axioms.log"
+seq 1024 256 3584 | xargs -n 1 -P "$PA196_ZERO_JOBS" bash -c '\''
+  lean -M1600 -j1 "aggregate$1.lean" -o "aggregate$1.olean" > "aggregate$1.log" 2>&1 || { cat "aggregate$1.log"; exit 1; }
+'\'' _
+cat aggregate*.log >> "$PA196_ZERO_TASK_DIR/axioms.log"
+lean -M1600 -j1 SegmentAll2.lean -o SegmentAll2.olean | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
 cd "$PA196_ZERO_REPO"
 lean -M4000 -j1 Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask/Conclusion.lean \
   -o "$PA196_ZERO_TASK_DIR/Conclusion.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
+lean -M1600 -j1 Computability/BusyBeaver/Research/PA/pa196-vs-u208/archive-audit/zero-mask/SegmentEnd.lean \
+  -o "$PA196_ZERO_TASK_DIR/SegmentEnd.olean" | tee -a "$PA196_ZERO_TASK_DIR/axioms.log"
 if rg -q "sorryAx" "$PA196_ZERO_TASK_DIR/axioms.log"; then
   echo "Unexpected sorryAx in theorem dependencies" >&2
   exit 1
