@@ -9,8 +9,9 @@ lengths and run times.
 
 The returned tape halves at state 13 are even in both cases for the remaining
 selected-block length, allowing the physical transitions through states 14
-and 15. The final theorem records existential tape halves. A further return
-to state 24 and the source-frame and blank-tape connections remain open.
+and 15. The final theorem records existential tape halves. The later [all-selected theorem](FIRST-FOUR-ALL-TO24.md) returns this
+conditional path to state 24; the source-frame and blank-tape connections
+remain open.
 
 Lean compiled the module against previously checked prerequisite objects, with
 no `sorryAx` in the printed theorem axioms. The nested replay wrapper was

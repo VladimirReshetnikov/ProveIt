@@ -10,9 +10,9 @@ and times.
 `selectedZeroExact` and `selectedSuccExact` export exact state-13 tape
 formulas for the two cases of the remaining selected-block length. The module
 uses these formulas to apply the existing header controller through state 16.
-The final marker theorem records existential tape halves. Further work is
-needed to return the physical control to state 24 and to connect the run to
-the blank tape and the source-level machine.
+The final marker theorem records existential tape halves. The later [all-selected theorem](FIRST-FOUR-ALL-TO24.md) returns this
+conditional path to state 24. Its connection to the blank tape and the
+source-level machine remains open.
 
 Lean compiled this module against previously checked prerequisite objects;
 the printed theorem axioms do not include `sorryAx`. The nested replay
