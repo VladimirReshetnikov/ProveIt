@@ -40,3 +40,7 @@ The complete standalone script passed against the audited project and
 Foundation overlays, rebuilding the local syntax and compatibility chain and
 checking the upstream pins. The exported theorems' axiom audits contained no
 `sorryAx`.
+
+An independent complete standalone replay rebuilt the full term, formula,
+validity, shift and substitution-agreement chain from the pinned audited
+overlays. It passed without `sorryAx`.
