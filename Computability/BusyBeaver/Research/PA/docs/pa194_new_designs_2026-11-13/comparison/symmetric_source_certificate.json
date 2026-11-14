@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "old_source_sites": 3649,
+  "new_source_sites": 3646,
+  "old_instructions_sha256": "0afee1346c0931b3b91fea70571b01fd665a802ab9327409e4030f673412f5e3",
+  "new_instructions_sha256": "e2f74c0fad95734738788b98e76dc3e11748c0819ad7ef2b2998f81e0140da87",
+  "guard_source_sites": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "guard_registers": {
+    "H": 5,
+    "X": 6
+  },
+  "same_prefix_sites": 3644,
+  "only_external_entry_to_modified_block": [
+    48,
+    3638
+  ],
+  "guard_exit": "pc=10 and H=X=0 iff entry H=X; otherwise pc=11 and H=X=0",
+  "guard_other_registers": "unchanged",
+  "guard_durations_to_first_exit": {
+    "H=X=a": "3*a+2",
+    "H=a>X=b": "2*a+b+4",
+    "H=a<X=b": "3*b+2"
+  },
+  "shift_entry_scope": "arbitrary natural T=t,H=h,X=x; every other register arbitrary",
+  "common_prefix_exit": "T=h,H=0,X=k=h+x",
+  "old_guard_input": "(H,X)=(k,1)",
+  "new_guard_input": "(H,X)=(1,k)",
+  "shift_exit": "same pc in {10,11} and exactly the same full register vector",
+  "old_minus_new_source_steps": {
+    "k=0": 0,
+    "k=1": 4,
+    "k>=2": "2*k+4"
+  },
+  "proof_scope": "Finite syntactic binding of the explicit induction argument in symmetric_guard_review.tex; no general-purpose kernel claim."
+}

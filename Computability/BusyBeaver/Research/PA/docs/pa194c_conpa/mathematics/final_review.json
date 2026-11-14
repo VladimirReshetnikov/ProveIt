@@ -1,0 +1,66 @@
+{
+  "review_kind": "Ordinary mathematical proof review; no new proof-assistant kernel endpoint",
+  "reviewed_at_utc": "2026-11-14T03:55:54.423392+00:00",
+  "result": "No material mathematical gap identified in the reviewed PA-provability argument. This is a human-readable mathematical audit, not an automated theorem-prover verdict.",
+  "reviewed_files_sha256": {
+    "report/pa194c_conpa.tex": "b337c444c7067a140d282eec7d8f9d741b501c57d318cd91469c9ace2d81650d",
+    "mathematics/cached_protocol.tex": "3f4343b69b33094ff3b3d5187bc3547addf46805b2d1285aa441e45a75f3b473",
+    "mathematics/calibration_audit.tex": "da9cd0aeb40f081c0186f6b238a769ade78e0b2b692bb6ccd2bde02782fc8946",
+    "report/inherited/reference/diagonal_calculus.tex": "0aeeb3b01b72732beaf71a7b77a6ba9f3108ea54f4070543a313a5d09131037a",
+    "report/inherited/reference/separate_head_calculus.tex": "30b9592a4033b673a0019ad7ad96c56a84f34ec2d789d24577051529b74c603e"
+  },
+  "theorem_reviewed": "PA proves that the literal 194-state PA194C machine does not halt from blank tape if and only if Con(PA).",
+  "checks": [
+    {
+      "issue": "Cached MP, Shift, and stack compiler",
+      "result": "Checked the changed cache-only halt test, MP result in cache, ten-entry AX Push/Pop/Discard identities, generalization, head selectors, and MP suffix with its essential dummy zero. Early halt is allowed in the completeness induction; Pop is not falsely claimed total when the preserved top is one."
+    },
+    {
+      "issue": "Expanded exact head-selector formulas in the final report",
+      "result": "Rechecked q_j selection for 1<=j<=7: after Shift^(j+1), Pop^(9-j) discards exactly q_(j+2),...,q_9 and the saved zero, returning the preserved q_j with the original underlying stack and zero offset/cache. Checked the diagonal j=1 specialization, the dominated-head selector using Offset_u and AX_(b,a-u,c) for u<=a, and the gate selector AX_(c,b,a) followed by ten Pops. Each preserves a top different from one, including the zero gate on failed guard, so no selector halt was overlooked."
+    },
+    {
+      "issue": "Zero-code and stack alias",
+      "result": "Checked I(0,0)=0 separately from disjoint syntax, total Cantor projections at zero, canonical live-stack annotations, and zero pushes that do not increase the canonical stack length."
+    },
+    {
+      "issue": "Scheduler hypothesis",
+      "result": "Checked that the constructed refutation word halts from every incoming command store. Its initial AX clears offset and cache, and its final Pop tests the proved top before arbitrary underlying stack data. Thus scheduler trials need not restore an empty store."
+    },
+    {
+      "issue": "Binding to primitive source",
+      "result": "Checked the stated successful-MP loop and cached-Shift tail contracts, including the necessary Shift-entry condition X=0. The new source is compared with the exact supplied 195C resolved instruction graph, including successors, rather than merely its flattened macro word."
+    },
+    {
+      "issue": "Fresh names and diagonal vacuity",
+      "result": "Checked strict formula-code bounds, separate treatment of code zero, availability of every diagonal instance via a=b=B+1, and reverse-rewriting proof using the negative conclusion as separator property."
+    },
+    {
+      "issue": "Neighborhood equality binder transport",
+      "result": "Checked that equality-witness elimination requires vacuity of the membership conclusion P(z), not of the premise forall z0 P(z0). Universal distribution places the latter outside the quantified implication before existential elimination. Transport to z uses membership-only vacuity and the stipulated distinct labels."
+    },
+    {
+      "issue": "Uniform arithmetic proof suppliers",
+      "result": "Checked the finite binary comprehension proof pattern, arithmetic contradiction Bit(x0,x0), capture-avoiding translation, and separate a=b gate case. The supplier manipulates formula syntax uniformly; it does not evaluate arbitrary arithmetic formulas or invoke reflection."
+    },
+    {
+      "issue": "PA internal finite-trace transfer",
+      "result": "Checked the two finite directions. Source traces concatenate positive physical segments after exact startup. A physical halt at time T contradicts T+1 consecutive nonhalting source segments, by positive duration and determinism. This argument is finite and PA-arithmetizable; it does not infer an internal theorem from an external infinite run."
+    },
+    {
+      "issue": "Symbolic certificate scope",
+      "result": "Inspected the independent checker representation of nonnegative affine duration coefficients and strict positive constant, arbitrary register values, arbitrary nonempty spare list, and literal-row list lemmas. Full executable replay is a separate release verification performed by the main task."
+    },
+    {
+      "issue": "Proof boundary",
+      "result": "The ordinary PA claim still uses the explicit inherited numerical-calculus and scheduler proof arguments. The files do not assert a newly compiled end-to-end Lean or Rocq theorem, and do not close the repository’s open iPRA endpoints."
+    }
+  ],
+  "limitations": [
+    "The review does not certify a smaller-than-194 machine or a lower bound of 194.",
+    "The review is not a new machine-checked formalization of the syntactic proof suppliers or the complete PA-internal theorem.",
+    "Executable receipts establish the finite machine bindings and universal symbolic contracts under their stated proof rules; they are not alone a replacement for the mathematical calibration argument.",
+    "The source corpus and historical novelty comparison are scoped to the pinned supplied repository revision."
+  ],
+  "final_revision_note": "The final revision was rereviewed for its explicit selector families and parameter bindings. Corpus-freshness text, the larger-family input, page breaks, and externally included search totals do not change the reviewed mathematical construction or theorem."
+}

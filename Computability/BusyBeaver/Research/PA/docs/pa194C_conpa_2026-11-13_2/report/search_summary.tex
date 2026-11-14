@@ -1,0 +1,40 @@
+Three independent grammar runs each used a 900-second budget.  The
+following counts are proposals and accepted moves, not distinct grammars
+or fully certified machines.  A score of 60 effective readers gives
+$134+60=194$ controls; the sought score was at most 59.
+
+\begin{center}\small
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+Grammar search & Proposals & Accepted & Best score & Hits $<60$\\\midrule
+Occurrence rotations&8,830,776&508,531&60&0\\
+Opened copy macros&8,026,437&434,245&60&0\\
+Closed subblocks (corrected)&11,020,325&452,037&60&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The exact random seeds, elapsed times, inputs, and complete logs are in
+\file{search/summary.json} and \file{search/grammar/}.  Proposal counts are
+machine-speed dependent; the stored seeds and time budgets specify the
+replay.  The three completed runs made 27,877,538 proposals in total.
+
+The local physical experiments used radius-four windows with detours up
+to 100 transitions, and radius-six windows with detours up to 200.
+Source-contract contexts supplied 8,338 radius-four windows and 29,347
+radius-six windows.  The independently derived literal-tape contexts
+supplied 10,377 radius-four windows across all 4,780 primary-PA194
+contracts; eight generic list-sweep controls retained unrestricted
+contexts.  Pair merging, bounded future joins, and incoming-transition
+elimination returned no accepted candidate.  The PA194C register-layout
+search includes the identity, all 36 transpositions, and seeded random
+permutations; its last complete progress record is iteration 1,500.
+Its interrupted tail is not reported as an exact completed count.
+
+A separate SMT experiment attempted three-reader-to-two-reader gadgets.
+The restricted-target run completed 164 queries in 180.414 seconds;
+all 164 timed out, with zero satisfiable and zero unsatisfiable results.
+The broader-target run logged at least 120 completed queries, all
+timeouts, before interruption.  These solver runs are \emph{inconclusive},
+not exclusions.  Their sources and logs are retained with the local
+search receipts under \file{search/physical/}.

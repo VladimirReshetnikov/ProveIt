@@ -1,0 +1,18 @@
+ vector<int> flatten(int root)const{vector<int>w;function<void(int)>go=[&](int t){if(t<0){w.push_back(t);return;}auto n=ns[t];go(n.l);go(n.r);};go(root);return w;}
+ int reparse(vector<int>const&w,int root,uint64_t seed){
+  int n=w.size();vector<vector<double>>cost(n,vector<double>(n+1,1e20));vector<vector<int>>choice(n,vector<int>(n+1,-1)),reuse(n,vector<int>(n+1,-99999));
+  unordered_map<int,vector<std::pair<vector<int>,int>>> dict;
+  auto nodes=reachable(root);for(int t:nodes){auto seq=flatten(t);int len=seq.size();dict[len].push_back({move(seq),t});}
+  mt19937_64 rr(seed);vector<vector<Attr>>ats(n,vector<Attr>(n+1));for(int i=0;i<n;i++){cost[i][i+1]=0;reuse[i][i+1]=w[i];ats[i][i+1]=at(w[i]);}
+  auto combine=[](Attr a,Attr b,int l,int r){Attr v;v.h=1+max(a.h,b.h);v.l=a.l+1;v.m=max({a.l+1,a.m,b.m});v.mi=max({a.mi,b.mi,a.inc?1+a.l:0});v.inc=a.inc;v.len=a.len+b.len;v.bad=a.bad+b.bad+((l<0&&physical(l)==194)?1:0)+((r<0&&physical(r)==69)?1:0);return v;};
+  for(int len=2;len<=n;len++)for(int i=0;i+len<=n;i++){int j=i+len;auto it=dict.find(len);
+   if(it!=dict.end())for(auto &kv:it->second){if(equal(kv.first.begin(),kv.first.end(),w.begin()+i)){cost[i][j]=double(rr()%1000)*1e-8;reuse[i][j]=kv.second;ats[i][j]=at(kv.second);break;}}
+   for(int k=i+1;k<j;k++){if(cost[i][k]>=1e19||cost[k][j]>=1e19)continue;
+    int ll=k==i+1?w[i]:0,rrr=j==k+1?w[k]:0;auto a=combine(ats[i][k],ats[k][j],ll,rrr);
+    if(a.bad||a.h>38||a.m>6||a.mi>5)continue;
+    double v=cost[i][k]+cost[k][j]+1.0+double(rr()%1000)*1e-8;
+    if(v<cost[i][j]){cost[i][j]=v;reuse[i][j]=-99999;choice[i][j]=k;ats[i][j]=a;}
+   }
+  }
+  function<int(int,int)>go=[&](int i,int j){if(reuse[i][j]!=-99999)return reuse[i][j];int k=choice[i][j];if(k<0)throw runtime_error("no parse");return pair(go(i,k),go(k,j));};return go(0,n);
+ }

@@ -1,0 +1,131 @@
+\section{The exact numerical calculus retained by the construction}
+\label{sec:logical-basis}
+
+The physical optimization preserves a particular classical numerical
+calculus, rather than replacing PA by an arbitrary small checker.
+Its codes share the natural numbers with variable labels. Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad I(A,B)=4p(A,B),
+\]
+and define membership, universal quantification, and equality by
+\[
+ M(a,b)=4p(a,b)+1,\qquad
+ U(a,B)=4p(B,a)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+In formulas below, an arrow denotes the constructor $I$. Code zero is
+truth, and code one is the false code $M(0,0)$. Put
+$N(B)=I(B,1)$, $B\wedge C=N(I(B,N(C)))$, and
+$\exists x_a B=N(U(a,N(B)))$.
+The quantifier's arguments are transposed in its numerical encoding.
+The exception $I(0,0)=0$ is handled explicitly: zero is decoded as truth,
+and the proof translations use the fixed equivalence between truth and
+truth implying truth. No argument assumes that all constructor images
+are syntactically disjoint at zero.
+
+\subsection{Axiom heads and gate}
+
+The six logical heads, for every $A,D,H\in\mathbb N$ and in the notation
+used by the actual emitter, are
+\begin{align*}
+L_1&=(\exists x_D\,U(D,H))\to H,\\
+L_2&=U(D,U(A,H))\to U(A,U(D,H)),\\
+L_3&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+L_4&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+L_5&=\exists x_D E(H,D),\\
+L_6&=U(D,A)\to\bigl(U(D,A\to H)\to U(D,H)\bigr).
+\end{align*}
+The implicational head ranges over $D,A,H,d\in\mathbb N$ with $d\le D$:
+\[
+ \rho(D,A,H,d)=((H\to d)\to D)\to((D\to H)\to(A\to H)),
+ \qquad d\le D.
+\]
+The separate diagonal head, for every $B\in\mathbb N$, is
+\[
+                    \Gamma(B)=B\to U(B,B).
+\]
+For the guarded head, for every $a,b,c\in\mathbb N$, define
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to N(P(a,b,c))),\\
+ G(a,b,c)&=N(V(a,b,c)\to Q(a,b,c)),\\
+ K(a,b,c)&=\begin{cases}G(a,b,c),&c\ne a\text{ and }c\ne b,\\0,&\text{otherwise.}\end{cases}
+\end{align*}
+The calculus has these axiom instances, modus ponens, and generalization
+of theorems. The emitter additionally pushes a generalization of its old
+cached theorem, as specified in the next section; that entry is not a new
+axiom schema. The supplied development of the restricted implicational
+basis recovers the required classical propositional interfaces. Its
+proof-producing translations are part of the inherited calibration.
+
+\subsection{Freshness and the separation of the diagonal head}
+
+Every variable label occurring in a nonzero formula code $B$ is strictly
+less than $B$. Induction on decoding proves this from the strict component
+bounds of nonzero constructors; truth has no variables. Consequently
+$x_B$ is absent from the formula with code $B$, and $\Gamma(B)$ is an
+unconditional instance of vacuous generalization. It is safe without the
+two comparisons guarding $K$.
+
+The earlier bundled-diagonal gate was
+\[
+ F_\Gamma(a,b,c)=N\bigl(\Gamma(c)\to(V(a,b,c)\to Q(a,b,c))\bigr).
+\]
+These translations use the recovered classical calculus, including its
+derived ex-falso principle. To see the latter explicitly, put
+$E_B=\exists x_0 U(0,B)=N(U(0,N(U(0,B))))$. The recovered propositional
+K law gives $1\to E_B$, while $L_1$ at $D=0,H=B$ gives $E_B\to B$;
+implication composition therefore gives $1\to B$. With this principle,
+the classical templates derive both $\Gamma(c)$ and $G(a,b,c)$
+from the bundled formula and conversely. Every desired diagonal instance can be
+obtained from a guarded bundled instance with $a=b=c+1$. Thus the old
+bundled and current separate calculi have primitive-recursive proof
+translations preserving conclusions. At command level the separation
+adds a saved stack entry, which is why the correct ten-entry selectors
+must be proved instead of copied from the old nine-entry interface.
+
+The guards on $K$ cannot be removed merely because a separation subformula
+looks easier when labels coincide. The same gate asserts
+$V(a,b,c)$. For $c=a$, its antecedent can hold for a finite-set code while
+universal quantification over that set variable makes the consequent false;
+the case $c=b$ has the analogous problem in the element position. The
+present construction preserves both guards.
+
+\subsection{Logical bridge used in the theorem}
+
+The inherited logical calibration\cite{pa195,pa194,pa195c} identifies refutations of this precise calculus
+with PA refutations through syntactic transformations in both directions.
+On the PA-to-calculus side, diagonal vacuity recovers the equality and
+membership interfaces needed by the inherited PA-refutation compiler.
+On the reverse side, membership is interpreted as binary membership of a
+finite-set code, equality as arithmetic equality, and quantification as
+first-order arithmetic quantification. Finite comprehension is supplied by
+PA induction, with a uniform primitive-recursive procedure producing the
+proof instance for each input formula.
+
+For definiteness the binary-membership formula may be taken as
+\[
+ \operatorname{Bit}(s,z)\equiv
+ \exists u,v\,[s=(2u+1)2^z+v\ \wedge\ v<2^z].
+\]
+PA proves $\operatorname{Bit}(s,z)\to z<s$, hence the negation of the
+translation of $M(0,0)$. It also proves, for every arithmetic formula
+$\theta(z,\vec u)$,
+\[
+ \forall n\,\exists s<2^n\,\forall z<n\,
+ (\operatorname{Bit}(s,z)\leftrightarrow\theta(z,\vec u)).
+\]
+The proof extends the previous code by either zero or $2^n$ according to
+$\theta(n,\vec u)$. Instantiating this induction-proof pattern is a
+syntactic operation on formula codes, not a uniform truth predicate.
+When the two pointed-separation labels coincide, the inner binder changes
+both occurrences; the reference proof treats that case separately.
+
+The next section gives the complete changed-controller proof compiler and
+states how it composes with these logical translations. The detailed
+inherited diagonal and separation arguments are retained in
+\file{reference/logical_calibration/} and \file{references/}; their exact
+input identities are recorded. The new physical proof does not derive
+the logical calibration merely from observed nonhalting.

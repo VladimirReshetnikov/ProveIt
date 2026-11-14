@@ -1,0 +1,195 @@
+\section{Why the preserved source is calibrated to PA}
+\label{sec:calibration}
+
+This section makes the logical dependency explicit. The detailed supplied
+calibration is retained, with provenance, in \file{report/reference/}.
+We use its syntactic proof transformations, rather than inferring a PA theorem
+from external standard-model nonhalting.
+
+\subsection{The numerical formulas and separate diagonal head}
+
+For Cantor pairing
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+\]
+write
+\[
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code zero denotes truth, code one is the contradiction $M(0,0)$, and
+$N(B)=I(B,1)$ is negation. The quantifier arguments are transposed as shown.
+Conjunction and existential quantification have their usual classical
+implicational definitions.
+
+The retained diagonal clause and the guarded old gate are
+\begin{align*}
+ \Gamma(B)&=B\to U(B,B),\\
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to N(P(a,b,c))),\\
+ G(a,b,c)&=N(V(a,b,c)\to Q(a,b,c)).
+\end{align*}
+The separate-head AX command pushes $\Gamma(c)$ and leaves $G(a,b,c)$
+as its top when $c\ne a,b$; the guarded top is truth otherwise.
+The diagonal head is safe without this guard: every variable label in
+formula code $B$ is strictly below $B$, so $x_B$ is absent from its own
+formula. This follows by induction on the decoding, using strict component
+bounds for nonzero constructors and the separate truth-code case.
+
+The other six universally instantiated heads are the PA196 heads:
+\begin{align*}
+ &(\exists x_a\,U(a,C))\to C,\\
+ &U(a,U(b,C))\to U(b,U(a,C)),\\
+ &M(c,a)\to(E(c,b)\to M(b,a)),\\
+ &E(c,a)\to(M(b,c)\to M(b,a)),\\
+ &\exists x_a E(c,a),\\
+ &U(a,b)\to\bigl(U(a,b\to c)\to U(a,c)\bigr).
+\end{align*}
+There is also the unchanged dominated implicational head
+$((H\to d)\to D)\to((D\to H)\to(A\to H))$ with the inherited numerical
+dominance condition $d\le D$, plus modus ponens and generalization of theorems.
+The finite command emitter is checked over a free algebra, including the
+order of the pushed formulas and the guard.
+
+The bundled diagonal gate is
+\[
+ F_\Gamma(a,b,c)=N\bigl(\Gamma(c)\to(V(a,b,c)\to Q(a,b,c))\bigr).
+\]
+Classical implicational templates convert $F_\Gamma$ into both $\Gamma(c)$
+and $G(a,b,c)$, and conversely. Every $\Gamma(B)$ is obtainable from a
+bundled gate with $c=B$ and $a=b=B+1$. Thus the bundled and separate-head
+calculi have primitive-recursive proof translations preserving conclusions.
+The source-level separation changes the stack protocol, so the command
+compiler must account for ten pushed entries.
+
+\subsection{Completeness: PA refutations produce source halts}
+
+The supplied PA196 refutation compiler relies on two-way membership
+rewriting, the neighborhood-equality implication, and an equality witness.
+The diagonal calculus recovers these interfaces without assuming the
+removed equality-vacuity schema.
+
+For a reverse rewrite, put
+\[
+ C=E(a,b)\to(\chi(b)\to\chi(a)),\qquad
+ \varphi=N(C),\qquad c=\ulcorner\varphi\urcorner,
+\]
+where $\chi(t)$ is a membership atom with $t$ in either slot, or $M(t,t)$.
+First handle distinct labels, so the code bounds make the displayed
+separator label fresh. Pointed separation at $(a,a,c)$ supplies $N(Q)$.
+The second half of its separation matrix and the propositional consequence
+$\varphi\to N(\chi(a))$ give
+\[
+ S\to U(a,M(c,a)\to N(\chi(a))).
+\]
+The retained equality witness, direct membership rewriting and
+membership-only vacuity yield
+\[
+ S\to(M(c,b)\to N(\chi(b))).
+\]
+Under $\varphi$, the point condition $P$ supplies $M(c,a)$; direct rewriting
+supplies $M(c,b)$, whereas $\varphi$ also supplies $\chi(b)$. Discharging
+assumptions gives $\varphi\to(S\to N(P))$.
+Generalization at $c$ and the available diagonal clause
+$\Gamma(\varphi)$ yield $\varphi\to Q$, contradicting $N(Q)$.
+Double-negation elimination gives $C$. Coincident-label cases reduce to
+propositional reasoning and the already obtained diagonal membership case.
+
+For neighborhood equality, first choose the fresh binder
+$z_0=\ulcorner E(a,b)\urcorner$. The instance $\Gamma(E(a,b))$, universal
+distribution and the two-way membership rewrites give the neighborhood
+implication at $z_0$. The equality witness and membership-only vacuity
+transport the binder to each $z\ne a,b$. This also yields the neighborhood
+witness. These are the required replacement interfaces in the original
+compiler. Code construction, comparisons of labels and finite proof
+concatenation are primitive recursive, and PA checks their correctness.
+
+For the ten-entry separate-head command, the adjusted stack words include
+\[
+\begin{aligned}
+ \mathrm{pop}&=\mathsf{AX}(0,0,0)\,\mathsf S^{11},\\
+ \mathrm{push}&=\mathsf{AX}(0,0,0)\,\mathsf S^9\,\mathsf{MP}(0),\\
+ \mathrm{discard}&=\mathsf{MP}(1)\,\mathsf{AX}(1,0,0)\,
+                       \mathsf S^{10}\,\mathsf{MP}(0).
+\end{aligned}
+\]
+The generalization selector uses $\mathsf S^{10}$ after AX. The prior
+nine-entry selectors cannot be reused unchanged. The inherited exhaustive
+command-word scheduler, applied to this correctly adjusted compiler,
+therefore gives a PA-verifiable translation from each PA refutation into
+a finite halting source computation.
+
+\subsection{Soundness inside PA: source halts produce refutations}
+
+Interpret $M(a,b)$ by finite binary membership $\operatorname{Bit}(x_a,x_b)$,
+$E(a,b)$ by equality, and $U(a,B)$ by universal quantification of the
+translated formula. A convenient bit formula is
+\[
+ \operatorname{Bit}(s,z)\equiv
+ \exists u,v\,[s=(2u+1)2^z+v\ \wedge\ v<2^z].
+\]
+PA proves $\operatorname{Bit}(s,z)\to z<s$, so it proves the negation of
+the translation of code one. The exceptional constructor equality
+$I(0,0)=0$ is handled by a fixed proof of the equivalence of truth with
+truth implying truth; it is not treated as syntactic disjointness of
+constructors.
+
+For every arithmetic formula $\theta(z,\vec u)$, PA has a proof of finite
+binary comprehension
+\[
+ \forall n\,\exists s<2^n\,\forall z<n\,
+       (\operatorname{Bit}(s,z)\leftrightarrow\theta(z,\vec u)).
+\]
+The proof is induction on $n$. Retain the previous binary code if
+$\neg\theta(n,\vec u)$, and add $2^n$ if $\theta(n,\vec u)$. Substituting
+the syntax of $\theta$ into this fixed induction-proof pattern is a
+primitive-recursive proof-producing operation. PA verifies that it produces
+a proof. This statement concerns syntax and proof checking, not a uniform
+truth predicate for arithmetic.
+
+For pointed separation with distinct labels $a,b$, the relevant finite
+comprehension matrix is
+\[
+ (\operatorname{Bit}(x_a,z)\lor z=x_b)\wedge T(c)[z/x_b],
+\]
+with a suitable bound such as $x_a+x_b+1$. When $a=b$, the binder changes
+both occurrences of that label; the correct matrix is instead
+$(z=x_b)\wedge T(c)[z/x_b]$. The first antecedent inside the binder is
+then $\operatorname{Bit}(z,z)$, which PA refutes. This distinction prevents
+a false free-variable treatment of the collision case. Code freshness
+provides the required separator label. The diagonal head and the other
+logical heads have uniformly generated first-order proof templates.
+
+Annotate every visible theorem code, the cached head, and every live
+canonical stack entry with a PA proof of its translation. Both visible
+proofs matter because the original Shift halt test is $t+h=1$.
+Canonical expansion of the Cantor stack treats $p(0,0)=0$ explicitly:
+popping numerical zero gives the fixed truth proof; pushing a zero onto
+zero adds no live canonical cell. AX, MP and Shift preserve this annotation
+by primitive-recursive proof transformations. A source halt produces a
+PA proof of the translated contradiction and hence a PA refutation.
+The scheduler carries its store, so this invariant is stated for every
+annotated store, without assuming a reset between command words.
+
+This yields the two syntactic implications
+\[
+ \PA\vdash H_R\ \leftrightarrow\
+       \exists p\,\Prf_{\PA}(p,\ulcorner0=1\urcorner).
+\]
+No soundness or reflection principle for PA is used inside PA.
+
+\begin{theorem}[Consistency calibration of the principal table]
+\[
+ \boxed{\displaystyle
+ \PA\vdash\bigl(\neg H_{\MX}\leftrightarrow\Con(\PA)\bigr).}
+\]
+\end{theorem}
+\begin{proof}
+Compose the last displayed source calibration with
+Theorem~\ref{thm:transport}, then negate the existential PA-refutation
+predicate. The same finite-trace reasoning applies to the register-allocation companion,
+with its explicitly documented source-frame conjugacy.
+\end{proof}
+

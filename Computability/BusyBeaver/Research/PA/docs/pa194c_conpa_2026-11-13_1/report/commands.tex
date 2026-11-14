@@ -1,0 +1,305 @@
+\section{The changed command controller and its PA calibration}
+\label{sec:pa194c-calibration}
+
+The new machine retains the separate-diagonal 190-token axiom emitter and
+changes the controller that uses its output.  It combines two earlier
+controller transformations: Shift tests the cached head alone, and
+successful modus ponens puts its conclusion in that cache.  The two
+transformations must be composed: transplanting only one of their old
+proof-word compilers would give incorrect stack identities.
+
+There is a particularly strong source-level cross-check.  After resolving
+every structured jump, the complete 3,649-instruction program is identical
+to the supplied PA195C program.  The frozen prior instruction array has
+SHA-256
+\begin{quote}\small
+\nolinkurl{0afee1346c0931b3b91fea70571b01fd665a802ab9327409e4030f673412f5e3}.
+\end{quote}
+The new physical allocation therefore implements an already calibrated
+source program.  The proof below also describes that calibration, so that
+the change from the existing 3,673-instruction PA194 is explicit.
+
+\subsection{Stores, numerical aliases, and the two changed rules}
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,
+ \qquad [a;w]=p(a,w),\qquad I(a,b)=4p(a,b).
+\]
+Use iterated cons notation $[a_1,\ldots,a_k;w]$, with $a_1$ on top.
+The total projections satisfy
+$\operatorname{hd}[a;w]=a$, $\operatorname{tl}[a;w]=w$, and
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$.  In particular,
+$[0;0]=0$: this encoding does not distinguish an empty stack from a
+stack containing only zero entries.  All subsequent identities are
+identities of numbers with these total projections.
+
+A command store is $\langle t,w,d,h\rangle$, consisting of top formula,
+underlying stack, numerical offset, and cached formula.  The modified
+Shift is
+\[
+ S\langle t,w,d,h\rangle=
+ \begin{cases}
+  \mathsf{halt},&h=1,\\
+  \langle h,\operatorname{tl}(w),d,\operatorname{hd}(w)\rangle,&h\ne1.
+ \end{cases}                                                    \tag{C1}
+\]
+For $y=d+x$, the modified modus-ponens command is
+\[
+ \mathsf{MP}_x\langle t,w,d,h\rangle=
+ \begin{cases}
+  \langle0,w,0,y\rangle,&I(t,y)=h,\\
+  \langle0,w,y,0\rangle,&I(t,y)\ne h.
+ \end{cases}                                                    \tag{C2}
+\]
+Only Shift can halt.  The original PA194 controller tests $t+h=1$ at
+Shift and returns $\langle y,[0;w],y,0\rangle$ on successful MP.
+Thus the new controller has different command semantics, rather than
+only renamed physical controls.  For example, $I(0,2)=20$, and MP with
+operand two sends $\langle0,0,0,20\rangle$ to
+$\langle0,0,0,2\rangle$ in the new controller and to
+$\langle2,0,2,0\rangle$ in the original one.
+
+Write $U(a,B)=4p(B,a)+2$ and $\Gamma(B)=I(B,U(B,B))$.
+For $D=d+x$, $H=h+y$, and $A=c$, the unchanged AX command is
+\[
+ \mathsf{AX}_{c,x,y}\langle t,w,d,h\rangle
+  =\langle K(H,D,c),[q_1,\ldots,q_9,t;w],0,0\rangle,            \tag{C3}
+\]
+where, from stack top to bottom,
+\[
+ (q_1,\ldots,q_9)=
+ (\Gamma(A),L_6,L_5,L_4,L_3,L_2,L_1,
+   \rho(D,A,H,d),U(d,h)).
+\]
+Here $L_1,\ldots,L_6$ are exactly the six inherited logical heads, and
+\[
+ \rho(D,A,H,d)=((H\to d)\to D)\to((D\to H)\to(A\to H))
+\]
+denotes the corresponding numerical implication code, with $d\le D$.
+The top $K$ is the inherited separation/vacuity gate, replaced by zero
+when its numerical freshness guard fails.  The guard does not suppress
+the separately pushed diagonal instance.  Every $q_j$ except $q_9$,
+and also $K$, has residue zero modulo four; $q_9$ has residue two.
+Consequently none of these generated entries is the false code one.
+This is an arithmetic fact about constructors and requires no consistency
+assumption.  The complete 190-token emitter word, not just its head set,
+is unchanged from PA194.
+
+\subsection{Uniform stack identities for ten pushed entries}
+
+Commands in a word execute from left to right.  Iterating (C1) after (C3)
+gives, for every incoming store,
+\begin{align*}
+ \mathsf{AX}_{c,x,y};S^9:
+ \langle t,w,d,h\rangle
+  &\longmapsto
+   \langle\rho(d+x,c,h+y,d),[t;w],0,U(d,h)\rangle,\\
+ \mathsf{AX}_{c,x,y};S^{10}:
+ \langle t,w,d,h\rangle
+  &\longmapsto \langle U(d,h),w,0,t\rangle.
+\end{align*}
+The first Shift tests zero; the next nine test generated entries.
+None of these ten tests examines the saved top $t$.  These identities
+therefore hold even when $t=1$ and at every zero-stack alias.
+
+Define
+\begin{align*}
+ \mathsf{Push}&=\mathsf{AX}_{0,0,0};S^9;\mathsf{MP}_0,\\
+ \mathsf{Pop}&=\mathsf{AX}_{0,0,0};S^{11},\\
+ \mathsf{Discard}&=\mathsf{MP}_1;\mathsf{AX}_{1,0,0};S^{10};
+                    \mathsf{MP}_0.
+\end{align*}
+They satisfy
+\begin{align*}
+ \mathsf{Push}\langle t,w,d,h\rangle
+  &=\langle0,[t;w],0,0\rangle,\\
+ \mathsf{Pop}\langle t,[a;w],d,h\rangle
+  &=\begin{cases}
+    \mathsf{halt},&t=1,\\
+    \langle t,w,0,a\rangle,&t\ne1,
+   \end{cases}\\
+ \mathsf{Discard}\langle t,w,0,0\rangle
+  &=\langle0,w,0,0\rangle.
+\end{align*}
+For Push, its last comparison is between an implication code and the
+universal code $U(d,h)$, so MP fails with offset zero.  Pop's last Shift
+tests the saved top and, if safe, removes the required underlying entry.
+For Discard, $I(t,1)>0$ forces its first MP to fail; the AX identity
+then gives $\langle U(1,0),w,0,0\rangle$, and
+$I(U(1,0),0)>0$ forces its final MP to fail with offset zero.
+Pop's possible early halt is intentional and is included in the proof
+compiler, rather than excluded by an unproved noncontradiction invariant.
+
+Let $\mathsf{Offset}_0$ be empty and
+$\mathsf{Offset}_i=\mathsf{MP}_i$ for $i>0$.  It maps
+$\langle0,w,0,0\rangle$ to $\langle0,w,i,0\rangle$.
+The word
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;S;
+                         \mathsf{AX}_{i,0,0};S^{10}
+\]
+maps $\langle a,w,0,0\rangle$ to
+$\langle U(i,a),w,0,0\rangle$ for every $a,w$, including $a=1$.
+The Shift before AX tests cache zero and fetches $a$ into the cache;
+AX clears that cache before it could be tested.
+
+For $1\le j\le7$, the selector
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H};S^{j+1};\mathsf{Pop}^{9-j}
+\]
+returns $\langle q_j,w,0,0\rangle$ from
+$\langle t,w,0,0\rangle$.  This includes the diagonal head at $j=1$.
+Each Pop preserves a generated implication code and hence is safe.
+For $u\le a$, the restricted propositional selector is
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+       \mathsf{AX}_{b,a-u,c};S^9;\mathsf{Pop},
+\]
+and the gate selector is
+$\mathsf{Discard};\mathsf{AX}_{c,b,a};\mathsf{Pop}^{10}$.
+These return respectively $\rho(a,b,c,u)$ and $K(a,b,c)$,
+preserving the arbitrary underlying stack and clearing both caches.
+
+The new MP suffix is particularly short:
+\[
+ \mathsf{MPSuffix}_b=S;S;\mathsf{MP}_b;S.
+\]
+From $\langle0,[a,I(a,b),0;w],0,0\rangle$, it halts if
+$a=1$ or $b=1$, and otherwise returns $\langle b,w,0,0\rangle$.
+The first Shift fetches $a$; the second tests it and fetches the major
+premise; MP puts $b$ in the cache; the final Shift tests $b$ and consumes
+the reserved zero.  Without that zero, the suffix would consume an entry
+of the framed stack.  Total Cantor decoding proves the same identity
+when $a=b=w=0$.
+
+\subsection{Completeness and soundness at the command level}
+
+Let $\mathcal C$ be the numerical separate-diagonal calculus implemented
+by the unchanged emitter, with its inherited restricted propositional
+axioms, generalization of theorems, and modus ponens.
+For each finite proof tree $p$ of $\mathcal C$, construct a word $W_p$
+which, from every $\langle t,w,0,0\rangle$, either halts or returns
+$\langle\operatorname{concl}(p),w,0,0\rangle$.
+Use the displayed selectors at axiom leaves and
+$W_{p_0};\mathsf{Gen}_i$ at a generalization node.  At an MP node with
+minor premise $p_0$ proving $a$ and major premise $p_1$ proving $I(a,b)$,
+use
+\[
+ \mathsf{Discard};\mathsf{Push};W_{p_1};\mathsf{Push};
+                   W_{p_0};\mathsf{Push};\mathsf{MPSuffix}_b.
+\]
+The first two words reserve the zero required by the MP suffix.
+Induction on the proof tree proves the stated contract.  Every early
+halt is allowed, and any suffix appended to an already halting word
+preserves that halt.  If $p$ proves one, then
+\[
+ \mathsf{AX}_{0,0,0};W_p;\mathsf{Pop}
+\]
+halts from every incoming store, including stores with arbitrary caches:
+the prefix AX clears both caches, and the final Pop tests the conclusion
+if an earlier command has not already halted.  The inherited scheduler
+enumerates every finite command word.  The universal incoming-store
+property is essential because previous trials can leave a store behind.
+
+For the converse, annotate the top $t$, cached formula $h$, and every
+live canonical stack entry with a $\mathcal C$ proof.  No derivability
+condition is imposed on the numerical offset $d$.  For $w>0$ one has
+$\operatorname{tl}(w)<w$, so repeated tail projection reaches zero in
+at most $w$ steps and gives a primitive-recursive finite canonical stack.
+The fixed proof $\rho(0,0,0,0)=0$ supplies the implicit zero tail.
+Thus $[0;0]=0$ requires no infinite annotation.
+
+AX saves the annotated top, generalizes the old cached formula, and emits
+axioms; its dominance condition is $d\le d+x$.  MP failure returns
+the proved code zero, and MP success applies modus ponens to its two
+annotated premises.  Shift moves annotated entries, and a halting Shift
+exposes an annotated one.  Induction on the finite command trace proves
+that every source halt yields a $\mathcal C$ refutation.  The new command
+contracts, the selectors, the proof-tree compiler, and all annotation
+updates use primitive-recursive operations.  PA verifies their defining
+equations and the indicated finite inductions.
+
+\subsection{The inherited logical bridge to PA}
+
+The logical calibration is inherited from the separate-diagonal PA194 and
+PA195C analyses\cite{pa195,pa194,pa195c}; its full argument is retained with the reference material.
+Its two directions are syntactic proof transformations, not an appeal to
+external soundness of PA.  Here are the interfaces used by the present
+construction.
+
+For completeness, the diagonal schema
+$\Gamma(B)=B\to\forall x_B B$ replaces equality vacuity.  Every variable
+label in a formula of code $B$ is smaller than $B$.  To recover reverse
+membership rewriting, put
+$C=E(a,b)\to(\chi(b)\to\chi(a))$, take the separator property
+$\neg C$, and choose its own numerical code as the fresh separator label.
+Pointed separation, the retained direct membership rewrites, the equality
+witness, and membership-only vacuity imply the reverse rewrite; the
+instance $\Gamma(\neg C)$ discharges the separator without presupposing
+equality vacuity.  A diagonal instance for $E(a,b)$ gives the neighborhood
+equality interface at a fresh binder, and the witness and two-way
+membership rewrites transport that binder.  These are the interfaces
+needed by the inherited PA-refutation compiler.  All choices of fresh
+labels, formula constructions, case splits for coincident labels, and
+finite proof concatenations are primitive recursive and PA-verifiable.
+
+For soundness, interpret membership by binary membership of a finite-set
+code, equality by arithmetic equality, and quantification by ordinary
+first-order quantification.  PA proves finite binary comprehension for
+each arithmetic formula by induction on the finite bound.  Substitution
+of the formula syntax into that fixed induction-proof template gives a
+primitive-recursive proof-producing operation whose correctness PA
+verifies; this is not a uniform arithmetic truth predicate.  Pointed
+separation is an instance of finite comprehension, and diagonal vacuity
+uses the strict code bounds.  The label-collision case $a=b$ is handled
+separately, since the inner binder changes both occurrences of that label.
+Code one translates to binary self-membership, which PA refutes.  The
+constructor alias $I(0,0)=0$ is handled by the fixed proof equivalence of
+truth and truth implying truth.
+
+Consequently the inherited transformations give
+\[
+ \mathrm{PA}\vdash
+ \bigl(\exists p\,\operatorname{Prf}_{\mathcal C}(p,1)\bigr)
+ \ \longleftrightarrow\
+ \bigl(\exists q\,\operatorname{Prf}_{\mathrm{PA}}
+                         (q,\ulcorner0=1\urcorner)\bigr).
+\]
+Combining this with the command-level constructions gives the corresponding
+equivalence for halting of the exact 3,649-instruction source program.
+The physical verification then supplies every source-instruction simulation
+for arbitrary natural register values and arbitrary finite nonempty spare
+lists, together with the exact blank-tape startup.  Positive simulation
+durations allow finite traces to be composed in both directions.  All
+fixed local cases and the generic list-sweep lemmas are formalizable in PA.
+Therefore, for the delivered literal table,
+\[
+ \boxed{\displaystyle
+ \mathrm{PA}\vdash
+ \neg\operatorname{Halt}(\mathrm{PA194C},\mathrm{blank})
+ \ \longleftrightarrow\ \operatorname{Con}(\mathrm{PA}).}
+\]
+This is an ordinary mathematical proof of a PA-provability statement,
+supported by reproducible finite and symbolic certificates.  The package
+does not claim a newly elaborated end-to-end Lean or Rocq theorem.
+
+\subsection{What transfers from ZFC and concise iPRA research}
+
+The useful ZFC ideas are the substitution-free numerical calculus,
+small register-machine architecture, careful separation of source
+correctness from literal tape simulation, and explicit condensed-detachment
+certificates for the propositional basis.  The inspected
+\texttt{lukasiewicz\_basis.md} records K, S, Peirce, composition and
+ex-falso interfaces, while also distinguishing a named-formula completeness
+theorem from its numerical and machine bridges.  The same distinction
+governs the present proof obligations.
+
+The concise-iPRA work illustrates how a small family of proof rules can
+recover larger logical interfaces by derivation, rather than by encoding
+each as an independent primitive.  That is relevant to future emitter
+redesign, but its theorem is calibration to iPRA.  A compact iPRA proof
+checker does not by itself establish the required translations to and
+from PA refutations, nor a binary-machine state bound.  The present result
+therefore retains the PA-calibrated emitter and obtains a different
+194-state construction by combining its allocation with the changed controller.

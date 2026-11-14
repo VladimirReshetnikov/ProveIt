@@ -1,0 +1,100 @@
+{
+  "outcome": "No certified reduction below194 from these bounded searches.",
+  "native_inputs": {
+    "PA194": {
+      "sha256": "e0a7397cf2134e8e7f58a8b1de2f7ff90b74ededd54c912f6ba5b7db48dabe54"
+    },
+    "PA194C": {
+      "sha256": "b35d80b01ce9c2e95c8b29222881f40928247cdeffac322e4643f4f6694cd33c"
+    }
+  },
+  "local_search_settings": [
+    {
+      "radius": 4,
+      "max_steps": 120,
+      "contexts": "arbitrary-tape abstract closure"
+    },
+    {
+      "radius": 6,
+      "max_steps": 160,
+      "contexts": "arbitrary-tape abstract closure"
+    },
+    {
+      "radius": 8,
+      "max_steps": 200,
+      "contexts": "arbitrary-tape abstract closure"
+    },
+    {
+      "radius": 4,
+      "max_steps": 120,
+      "contexts": "symbolic source observations plus blank startup; other controls abstract"
+    }
+  ],
+  "local_families": [
+    "PA194",
+    "PA194C"
+  ],
+  "local_operators": [
+    "shared existing-state first-action detours",
+    "incoming-edge two-old-step state elimination"
+  ],
+  "local_successes": 0,
+  "eligible_incoming_elimination_states_per_family": 172,
+  "symbolic_source_context_window_counts": {
+    "S": 8338,
+    "C": 8240
+  },
+  "whole_contract_searches": {
+    "merge_contracts_S": {
+      "family": "S",
+      "candidate_tables": 57460,
+      "contracts_executed": 245263,
+      "symbolic_step_bound": 1024,
+      "successes": [],
+      "seconds": 59.53238021599827
+    },
+    "merge_contracts_C": {
+      "family": "C",
+      "candidate_tables": 57460,
+      "contracts_executed": 244771,
+      "symbolic_step_bound": 1024,
+      "successes": [],
+      "seconds": 84.42575403500086
+    },
+    "expanded_contracts_S": {
+      "family": "S",
+      "candidate_tables": 171009,
+      "contracts_executed": 541573,
+      "symbolic_step_bound": 1024,
+      "successes": [],
+      "seconds": 186.91613748900272
+    },
+    "expanded_contracts_C": {
+      "family": "C",
+      "candidate_tables": 174457,
+      "contracts_executed": 548997,
+      "symbolic_step_bound": 1024,
+      "successes": [],
+      "seconds": 160.10556054299377
+    }
+  },
+  "whole_contract_candidate_total": 460386,
+  "whole_contract_execution_total": 1580604,
+  "scope": "No positive candidate passed preliminary symbolic checking. Negative results are limited to specified transformations and bounds, not semantic impossibility or state-count lower bounds.",
+  "additional_local_inputs": [
+    {
+      "family": "PA194_AD",
+      "native_sha256": "2d65846b38081e6ca9b7572e784fcb362d8bd46fac0ea9cb2d35f791d4baa676",
+      "radius": 8,
+      "max_steps": 200,
+      "successful_local_merges": 0,
+      "successful_incoming_eliminations": 0
+    }
+  ],
+  "packaging": {
+    "sources_and_recorded_evidence": "search/local",
+    "cached_controller_default": "../../construction",
+    "unverified_composites_included": false,
+    "negative_result_scope": "No state-count lower bound or claim of semantic invalidity for all candidates."
+  }
+}

@@ -1,0 +1,228 @@
+PA194C: a 194-state separated-head PA consistency machine with the Combined controller
+====================================================================================
+
+1. Exact novelty and inherited material
+
+This construction composes two previously separate ingredients: the primary
+PA194 AX reader (67 raw reader states and seven contextual folds) and the
+Combined controller previously implemented at 195 states. The controller,
+the diagonal-vacuity calculus, and their mathematical correctness arguments
+are inherited. The new object is the literal 194-state composition and its
+fresh whole-source and whole-tape verification. It is not claimed that the
+Combined command protocol itself is newly discovered.
+
+The dense table output/pa194C.tm has start 0, nonhalting states 0,...,193,
+halt 194, binary alphabet, one two-way tape, blank initial tape, no stationary
+moves, and exactly 388 transition rows. Native start/halt labels are 74/254.
+The dense hash is d759313c03b515293fe06b12769fa1771d3829a2bad89febaa9b4391990f3a4b.
+The native hash is b35d80b01ce9c2e95c8b29222881f40928247cdeffac322e4643f4f6694cd33c.
+
+Relative to the primary PA194 native table, exactly six rows change:
+  38/0: 0R28 -> 0R11
+  38/1: 1R20 -> 1R122
+  164/1: 1R98 -> 1R130
+  214/0: 0R188 -> 0R312
+  214/1: 1R312 -> 1R20
+  312/0: 0R11 -> 0R188.
+
+The two literal source substitutions are
+  node163 = (node6,node147)
+  node170 = ((node36,(node167,node145)),node57).
+These remove 24 primitive source sites, from 3673 to 3649. All 190 AX
+macro tokens, their order, and their parameter assignments stay the same.
+The new program's entire resolved instruction map agrees exactly with the
+already calibrated 195C instruction map, not merely with its leaf word.
+The AX grammar and all seven folds are unchanged. Their 28 two-cell
+contracts are freshly checked against the final simultaneously folded
+194C table. The count is 134+67-7=194.
+
+The change is operationally material. Original Shift halts when t+h=1;
+new Shift halts exactly when h=1. At t=1,h=0, the original halts and the
+new command continues. Original successful MP puts its conclusion in t,
+retains the accumulated offset in d, and pushes a zero; new successful MP
+puts its conclusion in h, clears t and d, and does not push. Thus this is
+not a state renaming, a left/right mirror, or only a reassociation of the
+same register computation. The exact graph novelty is checked separately
+against the complete input corpus: all seven prior 194-state byte forms,
+representing four root-free action-graph classes, differ. The comparison
+also allows a different start, left/right reflection, bit complementation,
+and both symmetries together. The new root-free action-graph hash is
+b79f4d344740679b87dace02fe3f211565c2cd4513f346812570d90caa3d9a3f.
+
+2. Exact command semantics
+
+Use Cantor pairing p(a,b)=(a+b)(a+b+1)/2+b and [a;w]=p(a,w). Both
+projections are total, including hd(0)=tl(0)=0 and [0;0]=0. Set
+I(a,b)=4p(a,b), U(i,B)=4p(B,i)+2. A command store is (t,w,d,h).
+
+New Shift S:
+  if h=1: halt;
+  otherwise: (h,tl(w),d,hd(w)).
+New MP_x, with y=d+x:
+  if I(t,y)=h: (0,w,0,y);
+  otherwise: (0,w,y,0).
+
+The unchanged separated-head AX command pushes ten entries, including
+the saved top t. For D=d+x, H=h+y, A=c its result is
+  (G(H,D,c), [Gamma(A), L6,L5,L4,L3,L2,L1,rho8(D,A,H,d),U(d,h),t;w],0,0)
+where the guard on G is the old numerical c!=H,D guard. Gamma(A)=I(A,U(A,A))
+is pushed regardless of guard. The six L heads and rho8 are the exact
+ones of the preserved emitter. A failed G guard yields truth code 0.
+Every generated entry except U(d,h) has residue 0 modulo 4; U has residue 2.
+Thus no generated entry equals false code 1.
+
+3. Completeness of the changed proof-command protocol
+
+Write n=10. Commands execute left to right. Define
+  Push = AX(0,0,0); S^(n-1); MP_0,
+  Pop = AX(0,0,0); S^(n+1),
+  Discard = MP_1; AX(1,0,0); S^n; MP_0.
+For every natural-valued store and every stack tail,
+  Push(t,w,d,h) = (0,[t;w],0,0),
+  Pop(t,[a;w],d,h) = halt if t=1, otherwise (t,w,0,a),
+  Discard(t,w,0,0) = (0,w,0,0).
+These are exact Cantor-pair identities, including all zero aliases. The
+only possible Pop halt is the explicitly intended test of the saved top.
+
+Let Offset_0 be the empty word and Offset_i=MP_i for i>0. Then
+  Gen_i = Push; Offset_i; S; AX(i,0,0); S^10
+takes (a,w,0,0) to (U(i,a),w,0,0), even for a=1. The S before AX only tests
+the zero cache; AX then clears that cache before its own following Shifts.
+
+If q_j is the j-th generated head from the top, 1<=j<=7, the selector
+  Discard; AX(A,D,H); S^(j+1); Pop^(9-j)
+returns (q_j,w,0,0), preserving an arbitrary underlying w. In particular
+Gamma(B) has j=1 and selector Discard; AX(B,0,0); S^2; Pop^8.
+The old six heads occur at j=2,...,7. For u<=a, the selector
+  Discard; Offset_u; AX(b,a-u,c); S^9; Pop
+returns rho8(a,b,c,u). The gate selector
+  Discard; AX(c,b,a); Pop^10
+returns G(a,b,c). The residue observation ensures all necessary Pops are safe.
+
+The MP suffix S;S;MP_b;S on (0,[a,I(a,b),0;w],0,0) halts if a=1 or b=1,
+and otherwise yields (b,w,0,0). The dummy zero is essential: the last S
+consumes it, thereby preserving w. This also works when a=b=w=0.
+
+Compile a numerical derivation recursively. Use the selectors for axioms,
+W_p;Gen_i for generalization, and for an MP node with minor p0:a and major
+p1:I(a,b), use
+  Discard; Push; W_p1; Push; W_p0; Push; S;S;MP_b;S.
+Induction on the proof proves that, for every t,w, execution from
+(t,w,0,0) halts or yields (conclusion,w,0,0). Early halt is harmless.
+For a refutation p of code 1, AX(0,0,0);W_p;Pop therefore halts from EVERY
+incoming store. The initial AX clears both d and h, and the recursive
+invariant tolerates the arbitrary top/stack it creates. This uniformity
+is what allows reuse of the existing exhaustive scheduler whose store is
+not reset between attempted command words.
+
+All word constructors and correctness inductions are primitive recursive
+and formalizable in PA. command_audit/check_composite_commands.py freshly
+checks 188 symbolic cases for n=10, with opaque tails and the zero alias.
+These are a finite supplement to the displayed uniform proof, not its only basis.
+
+4. Soundness and the PA calibration
+
+Preserve proof annotations for t, h, and each live entry of the canonical
+Cantor stack. No theoremhood requirement is placed on d. Truth code 0 has
+the fixed derivation rho8(0,0,0,0)=0, including the alias I(0,0)=0. AX
+preserves theoremhood; the dominated propositional head is legitimate
+because d<=d+x, and U(d,h) follows by generalization of the old cache.
+Successful MP derives y from t and I(t,y)=h; unsuccessful MP returns truth.
+New Shift either moves proofs or halts with a proof of code 1 in h.
+The canonical-stack convention handles a zero push onto zero by retaining
+the empty live list, and a pop of zero by supplying the fixed truth proof.
+
+The already supplied diagonal-calculus calibration has a valid ordinary
+PA-provability argument. Its substantive soundness direction interprets
+M(a,b) as Bit(x_a,x_b), E(a,b) as equality, U as universal quantification.
+Code 1 becomes Bit(x0,x0), refutable in PA since Bit(s,z) implies z<s.
+For arbitrary arithmetic theta(z,params), PA proves finite binary
+comprehension by full induction on n:
+  forall n exists s<2^n forall z<n (Bit(s,z) iff theta(z,params)).
+The proof-producing construction inserts theta into a fixed induction
+template; correctness of generated syntax is primitive recursively
+verifiable in PA. This is NOT a uniform arithmetic truth predicate or
+reflection principle. It gives a uniform supplier for the pointed-
+separation gate. The collision a=b is treated separately: the antecedent
+inside the bound formula is Bit(z,z), so the right comprehension matrix
+is (z=x_b) and theta[z/x_b], not a matrix falsely holding x_a fixed.
+Formula labels are strictly below their formula codes, proved by induction
+on decoding (with code 0 handled separately), so Gamma(B) is sound.
+
+The opposite logical direction replaces the old equality-vacuity axiom
+in the PA196 refutation compiler by two explicit derivations. For reverse
+membership rewriting, let C be the entire target and choose separator
+c=code(not C), then use Gamma(not C), pointed separation, direct rewrites,
+and membership-only vacuity. For the neighborhood-equality interface,
+first quantify at code(E(a,b)), then transport the binder using the
+equality witness and the now bidirectional membership rewrites. These
+are precisely the two occurrences of equalityVacuity in the logical and
+arithmetic-certificate closure (Reverse and Neighborhood). The routines
+are finite syntax constructors with PA-verifiable correctness. Their
+detailed supplied proofs are retained in proof_sources/.
+
+Consequently PA proves source-calculus refutation iff PA refutation.
+The changed command compiler and annotation invariant prove in PA that
+the Combined source halts iff that source calculus is inconsistent.
+No consistency assumption is added to PA. One may prove its soundness
+direction by assuming Con(PA) temporarily and constructing arbitrarily
+long annotated command runs, then use classical contraposition.
+
+5. Physical simulation and arithmetic internalization
+
+The source graph is literally the full 3649-site 195C graph. The first
+3634 sites agree with the original PA194 graph, except retargeted exits
+48,3553,3633. The new MP-success tail starts at 3634, its fetch return is
+3637, and Shift begins at 3638. The exact 15-instruction final tail is in
+output/build_receipt.json. MP success transfers D=y,H=0 to D=0,H=y using
+the simple decrement/increment/jump loop, then returns to fetch. Shift
+first clears T, copies H into T and scratch X, restores H from X, and
+enters the old guard. Its preparation takes 2t+7h+3 source instructions,
+then two further instructions set X=1 and enter the unchanged guard.
+These loop contracts hold for arbitrary natural store values, with the
+unchanged clean-scratch boundary invariant.
+
+The ordinary symbolic executor freshly validates all 4749 guarded source
+outcomes against the final 194C table: 1507397 symbolic steps in total,
+maximum 506 per case. These are proof-case counts, not time limits on the
+unbounded physical execution. The independent checker uses a literal-tape
+symbolic engine, rederives its four generic list lemmas from the actual
+table, and covers arbitrary natural registers, affine gaps, and arbitrary
+finite nonempty spare lists. It passes all 4749 cases with 1096302 symbolic
+transitions, a maximum of 403 per case, and a minimum positive-duration
+constant of 3. The result is recorded in independent/receipt.json.
+
+Blank execution reaches the exact source-site-25 frame after 57922 tape
+steps: native state 84, head -2, logical registers (2,0,0,0,0,0,0,0,0),
+26 spares of value 1, and the complete prescribed tape. Both builders
+compare entire tape support, not just a state or selected tape window.
+
+Every nonhalt source instruction has a finite positive physical
+simulation ending in its exact next complete frame. The register/list
+lemmas are inductions on unary blocks and finite lists, so their uniform
+trace constructors and correctness are PA-provable. Candidate-specific
+trace certificates are finite closed arithmetic facts. A source halt
+therefore gives a physical halt by concatenation. Conversely, a physical
+first halt at time T is contradicted by T+1 nonhalting source steps and
+their positive simulations; determinism compares the two traces. This
+bounded iteration is primitive recursive and needs no unbounded search
+for a source-frame return.
+
+Composing gives the ordinary mathematical theorem
+  PA |- (not Halt(PA194C,blank) <-> Con(PA)).
+It has not been exported here as a freshly compiled end-to-end Lean or
+Rocq theorem. The repository's conditional iPRA endpoints must not be
+misreported as proving either missing machine-specific direction in iPRA.
+The user asks for PA-provability, which is the level of the argument above.
+
+6. What transfers from the other linked projects
+
+The ZFC constructions' applicable ideas are source/control-flow identity,
+contextual reader sharing, positive whole-frame simulation, and exact
+startup. Their numerical state labels cannot be transplanted blindly:
+the six controller edits above are bound to PA196's literal native
+conjugacy. ConciseIPRA illustrates replacing larger primitive schemas
+by smaller derivable interfaces. Directly searching iPRA proofs would
+change the consistency strength, because this PA calibration uses
+arbitrary-formula finite comprehension supplied by full PA induction.
+No assertion that Con(iPRA) can replace Con(PA) is warranted.

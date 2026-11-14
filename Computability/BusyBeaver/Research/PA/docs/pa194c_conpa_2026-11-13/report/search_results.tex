@@ -1,0 +1,60 @@
+The searches undertaken here include decoder reassociation, parameter and
+axiom-head permutations, bounded local macro substitutions and source/scanner
+changes. No search outcome is used as a correctness certificate for PA194C;
+its frozen construction has the separate checks already described.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}Xrrl@{}}
+\toprule
+Completed compiler search & Seconds & Proposals & Best result\\
+\midrule
+Fixed-word reassociation &600&9,385,957&60 effective readers\\
+Reassociation plus parameter permutations &480&8,955,769&60 effective readers\\
+Reassociation plus head-order permutations &300&2,615,187&60 effective readers\\
+Stricter scanner grammar &400&6,895,063&61 readers; penalty 4\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The first three retain 134 fixed controls, so a prospective 193-state result
+would need at most 59 effective readers (raw readers minus compatible folds).
+They retain the starting best of 60. The stricter-scanner run seeks 133 fixed
+controls plus 60 effective readers, but its best grammar still violates the
+shorter scanner's address constraints. Its score is therefore not a valid
+state count. Counts above are proposals, not distinct machines; time-limited
+replays can have different final counts on different hardware. Separate
+increment/decrement-identity experiments were interrupted with no improvement;
+their last recorded counters are retained without inventing final counts.
+
+A completed two-sided local-convergence search on PA194C used sound
+radius-six blank-start abstract reachability, giving 265,503 state/window
+contexts. It examined 133,942 ordered deletion/shift/marker relations and
+180,573 tested windows with bounds of 100 local transitions on each side.
+It found no smaller table in that family. An earlier all-state radius-four
+scan also found no pair, including arithmetic controls excluded from an older
+search. A sharper source-frame analysis produced 12,393 windows for PA194
+and 12,282 for PA194C; both radius-four, 100-step two-sided scans found no
+reduction. Joint synthesis of both retained action rows on the PA194 windows
+also failed within its 60-step bound. These are bounded negative results,
+not mathematical lower bounds.
+
+A proposed deletion of native scanner control 34 fails 113 universal source
+contracts on each of PA194 and PA194C, including outer source sites 0 and 25.
+Restricting only the AX addresses therefore does not repair it: the outer
+control paths must also satisfy the shorter scanner's assumptions. This is a
+specific obstruction to that direct 193-state proposal.
+
+One outer-tree rotation together with a \texttt{continueTo 3} to
+\texttt{continueTo 4} retag preserves all 3,673 old source instructions and
+shortens the recurring site-25 address from \texttt{100000} to
+\texttt{10000}. Physical implementation remains the obstruction. All 776
+one-row alternatives for the affected route failed. A concrete two-row scan
+examined 1,608,648 actions and found 2,006 suffix repairs; 1,308 modify
+arithmetic blocks and were excluded from validation that relies on unchanged
+arithmetic interfaces. All remaining 698 failed the universal source contracts.
+Those exclusions are unverified candidates, not proved impossibilities.
+
+The accompanying research directory records the completed search runs,
+parameters, sources and final receipts. Interrupted pre-recovery searches are
+not assigned invented terminal iteration counts. The accepted result in this
+report remains the fully verified 194-state cached-controller composition.

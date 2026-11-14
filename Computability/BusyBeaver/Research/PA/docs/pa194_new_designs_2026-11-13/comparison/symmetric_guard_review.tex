@@ -1,0 +1,132 @@
+% Independent review fragment; requires amsmath, amssymb, booktabs.
+% This file documents the theorem instantiated by check_symmetric_source.py.
+\section{Independent proof of the symmetric destructive guard}
+
+The symmetric-guard 194-state variant is materially different from the
+cached-controller 194-state machine: its primitive program has 3,646
+rather than 3,649 instructions. The following proof checks its precise
+source-level preservation. The physical refinement and additional state
+fold are separate obligations, checked in the construction package.
+
+A decrement instruction $\mathrm{dec}(r,z,p)$ jumps to $z$ when register
+$r$ is zero; otherwise it decrements $r$ and jumps to $p$. Logical
+registers $H,X$ have indices 5 and 6. The common source prefix is exactly
+\[
+\begin{array}{r|l@{\qquad}r|l}
+0&\mathrm{dec}(H,4,1)&1&\mathrm{dec}(X,3,2)\\
+2&\mathrm{jump}(0)&3&\mathrm{jump}(5)\\
+4&\mathrm{dec}(X,10,5)&5&\mathrm{dec}(H,7,6)\\
+6&\mathrm{jump}(5)&7&\mathrm{dec}(X,9,8)\\
+8&\mathrm{jump}(5)&9&\mathrm{jump}(11)\\
+10&\mathrm{halt}.&&
+\end{array}
+\]
+Let $G(a,b)$ count source instructions until the first entry to control
+10 or 11 from control zero and $(H,X)=(a,b)$. It does not count the halt
+instruction itself. Every other register is arbitrary.
+
+\paragraph{Guard lemma.}
+The computation terminates at control 10 exactly when $a=b$, and otherwise
+at control 11. In both cases $H=X=0$, and every other register is
+unchanged. Its exact duration is
+\[
+G(a,b)=
+\begin{cases}
+3a+2,&a=b,\\
+2a+b+4,&a>b,\\
+3b+2,&a<b.
+\end{cases}
+\tag{SG1}
+\]
+
+\paragraph{Proof.}
+If both registers are positive, instructions $0,1,2$ consume exactly
+one unit from each and return to control zero in three steps. Induction
+therefore reduces the pair to one with a zero component after
+$3\min(a,b)$ steps. If both are zero, the two zero branches at 0 and 4
+reach control 10.
+
+The cleanup loop at control 5 has a separate exact invariant. With
+$(H,X)=(u,v)$, each positive $H$ costs two steps ($5,6$) and reduces $H$
+by one. Once $H=0$, each positive $X$ costs three steps ($5,7,8$) and
+reduces $X$ by one. The final path $5,7,9$ exits at 11. Thus cleanup
+always clears both registers in $2u+3v+3$ steps. This statement follows
+by induction first on $u$ and then on $v$.
+
+If $a>b$, after the paired decrements the path $0,1,3$ takes three
+steps to cleanup with $(H,X)=(a-b-1,0)$. The total is
+\[
+3b+3+2(a-b-1)+3=2a+b+4.
+\]
+If $a<b$, the path $0,4$ takes two steps to cleanup with
+$(H,X)=(0,b-a-1)$. The total is
+\[
+3a+2+3(b-a-1)+3=3b+2.
+\]
+All inspected instructions mention only $H$ and $X$, proving the full
+register-frame statement. This establishes (SG1) for all natural inputs.
+In particular the outcome and complete exit register vector are invariant
+under exchanging the two guard inputs, although the duration can change.
+
+\paragraph{Application to the changed Shift tail.}
+Enter source control 3,638 with $(T,H,X)=(t,h,x)$ and arbitrary other
+registers. The common prefix clears $T$, then transfers each unit of $H$
+into both $T$ and $X$. It uses
+\[
+(2t+1)+(4h+1)=2t+4h+2
+\]
+steps and leaves $(T,H,X)=(h,0,k)$, where $k=h+x$.
+The old tail restores $X$ to $H$, sets $X=1$, and jumps to control zero;
+it uses $3k+3$ further steps and presents guard inputs $(k,1)$.
+The new tail merely increments $H$ and jumps to zero; it uses two steps
+and presents $(1,k)$. By the guard lemma, the two source computations
+have exactly the same exit control and full register vector. They both
+halt when $k=1$; otherwise they continue at source 11 with $H=X=0$.
+No assumption $x=0$ is needed for this preservation lemma. The normal
+cached-command interpretation uses the inherited $x=0$ command boundary,
+where $k=1$ is precisely the intended test $h=1$.
+
+The total old and new durations to first entry at 10 or 11 are
+\[
+D_{\rm old}=2t+4h+3k+5+G(k,1),\qquad
+D_{\rm new}=2t+4h+4+G(1,k).
+\]
+Consequently
+\[
+D_{\rm old}-D_{\rm new}=
+\begin{cases}
+0,&k=0,\\
+4,&k=1,\\
+2k+4,&k\ge2.
+\end{cases}
+\tag{SG2}
+\]
+Counting the final halt instruction would add one to both equal-case
+durations and leave (SG2) unchanged. This is a source-step comparison;
+it is not a claim of a uniform literal-tape speed improvement.
+
+\paragraph{Binding and global source preservation.}
+The complete old and new maps agree at all controls $0,\ldots,3643$.
+The old five-instruction tail at 3644--3648 is replaced by the two
+instructions $\mathrm{inc}(H,3645)$ and $\mathrm{jump}(0)$.
+The only entry from outside the Shift block 3638--3648 is the zero
+branch from source 48 to source 3638; no outside instruction enters the
+removed tail. These are exact finite properties checked by
+\texttt{check\_symmetric\_source.py}, including every successor.
+Thus equal configurations outside the changed block synchronize either
+by the identical next instruction or by the finite positive block
+simulation just proved. A block ending at 10 is followed by the same
+halt instruction. Induction on synchronized segments and the bounded
+trace argument therefore give halting equivalence of the two source
+programs from source 25, for every initial register vector. All loop
+inductions and finite trace constructions are available in PA.
+
+\paragraph{Review evidence.}
+The source checker accepts the exact literal maps and records their
+hashes in \texttt{symmetric\_source\_certificate.json}. An independent
+finite regression checks (SG1) on 4,225 guard pairs and (SG2), together
+with full output equality, on 2,197 triples $(t,h,x)$. Its receipt is
+\texttt{symmetric\_duration\_regression.json}. These finite checks catch
+binding or arithmetic transcription errors; the universal justification
+is the explicit induction above. No new proof-assistant elaboration is
+claimed by this review.

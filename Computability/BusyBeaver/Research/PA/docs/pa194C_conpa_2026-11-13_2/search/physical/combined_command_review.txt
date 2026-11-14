@@ -1,0 +1,52 @@
+INDEPENDENT REVIEW OF PA194C COMMAND TRANSPORT
+
+Reviewed the exact command definitions and identities in
+ theory_work/combined194/proof_notes.txt
+ theory_work/combined194/proof_sources/combined_commands.tex
+and the symbolic command supplementary checker. No new gap was found in
+the modified command protocol. This review does not independently establish
+all inherited PA196 logical translations or export a new kernel theorem.
+
+The critical points are as follows.
+
+1. AX pushes ten entries INCLUDING the saved old top. Therefore Push uses
+nine Shifts before the final failure-MP; Pop uses eleven; Discard uses ten.
+AX clears h, so the first ten Shifts only test generated entries, none of
+which has residue1 modulo4. Thus arbitrary saved top1 is not tested before
+the eleventh Shift.
+
+2. Push's MP has a residue0 implication compared with residue2 U(d,h), so
+it necessarily fails and clears the top/cache while preserving [t;w].
+Pop's last Shift tests exactly saved top t, and its numerical projection
+identity remains valid even when t or the underlying stack are zero.
+
+3. Gen_i first uses Push, then Offset_i, then a Shift that tests cachezero
+and only retrieves the premise into h. AX subsequently clears h before
+any further Shift. Thus a premise whose code is1 causes no unintended halt
+in generalization. The stated result U(i,a), same w, empty caches holds.
+
+4. The modus-ponens suffix starts with the three entries
+[a,I(a,b),0;w]. The dummyzero is essential: without it the last Shift would
+consume the first entry of w. With it, the suffix either halts at a=1/b=1
+or returns (b,w,0,0). This includes a=b=w=0 because the total Cantor
+projections satisfy hd(0)=tl(0)=0.
+
+5. The recursive compiler quantifies over every incoming t,w with d=h=0,
+and allows an earlier halt. The final prefix AX ensures those cache
+conditions from every incoming store. Therefore AX;W_refutation;Pop
+halts from every store, exactly the uniformity required by the inherited
+scheduler that carries its store between word trials.
+
+6. Soundness must annotate both t and h, plus all canonical live stack
+entries. Annotating only t would not justify the new h-only halt test.
+No theoremhood assumption on offset d is needed. Zero has a fixed
+axiom-derived proof, permitting canonical zero-stack aliasing. Successful
+MP derives d+x from the two annotated premises; failed MP returns zero;
+Shift only moves these proofs until h=1. This gives source refutation from
+a command halt without any PA reflection principle.
+
+7. Material novelty is operational, not merely graph-theoretic: Shift on
+(t,h)=(1,0) changes from halting to continuing, and successful MP changes
+which cache stores the result and its stack effect. The new194-state
+composition is eligible as a materially different194 design even though
+the controller was already present in a195-state ancestor.

@@ -1,0 +1,179 @@
+PA MACHINE COMPARISON AT 768c2be1a8e4d2fcf8aa3443c7b0f084d145734c
+================================================================
+
+Scope and reproducibility
+-------------------------
+The census inspects all36 top-level ZIP archives in docs/incoming, descends
+recursively into nested ZIPs, and reads all direct .tm files in the PA
+research subtree. Each distinct archive body is traversed once; repeated
+archive references are still recorded. Complete numeric binary five-column
+.tm and .txt tables are recognized when each working state has exactly two
+rows and there is exactly one target with no rows. Direct PA .txt files were
+also checked separately and contain no additional recognizable tables.
+Tables embedded only in arbitrary source languages or JSON are outside this
+recognizer; the report and README review supplements the literal census.
+
+Fresh results:36 top-level archives,49 distinct archive bodies,77 archive
+references,maximum nesting depth8,26258 member occurrences,2519 complete
+table occurrences,606 byte-distinct tables. Exact action-graph comparison
+ignoring the chosen start gives437 classes; two disconnected synthetic
+controls are excluded. This is deliberately NOT437 established consistency
+machines. Many entries are ancestor copies, failed experimental allocations,
+and negative controls. All rooted variants can differ even within one
+unrooted class. Our graph comparison ranges over every root, so a mismatch
+is sufficient to rule out mere rooted relabeling, while a match needs the
+actual start convention before claiming the machines are identical.
+
+census_current.py is adapted (with attribution) from the previous PA194
+packet's comparison/census.py, with current pin and full class export.
+Run:
+  python3 -B census_current.py --repo /path/to/ProveIt --output census
+The source repository must be at the pinned revision. No archive contents
+are executed during the census. Census and graph canonicalization make no
+claim about infinite blank-tape behavior or arithmetized consistency.
+
+Near the target
+---------------
+194 working states:7 byte files,4 graph classes. Three are positive written
+constructions and one is explicitly rejected.
+
+1. Primary PA194, dense SHA256
+   4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f
+   docs/incoming/pa194_conpa_2026-11-13.zip
+   pa194_conpa/construction/tables/pa194.tm
+   134 fixed+67 raw readers-7 compatible folds=194.
+   Separate190 emitter,3673 primitive sites,4780 branch contracts,
+   exact58154-step initialization. Native start74,halt254; dense start0,
+   halt194. All194 controls are graph-reachable. The local certificate has
+   28 cases, with positive lengths1,3,5.
+
+2. A/D register-layout variant PA194_AD, dense SHA256
+   27613aa92da79ba2ec6e2e88e0ac909fda218e06495ecc0af27201eac0e26c8f
+   Same archive,pa194_conpa/construction/tables/pa194_AD.tm.
+   Same logical source/controller, permuted physical A/D register locations.
+   Its action graph differs from the primary, but the logical algorithm does
+   not change.
+
+3. Second PA194, dense SHA256
+   9087d70fc0e1878c38ceff928e6e7e0999c86b6efed00a5ec353821c00641c87
+   docs/incoming/pa194_conpa_2026-11-13 (2).zip
+   pa194_conpa/pa194/pa194.tm
+   134 fixed+68 raw readers-8 compatible folds=194.
+   Same190 emitter,3673 primitive sites,4780 contracts,58154 startup.
+   Its32 local cases include a seven-step detour. This shows why raw reader
+   count alone is not the state objective: one extra reader enables two
+   extra compatible folds.
+
+4. Rejected194, native SHA256
+   c48d6711e9c733669fca64576a1ae5277dfcc40388656bfa766edd2346363075
+   docs/incoming/pa195_followup_research.zip
+   pa195_followup/evidence/rejected_candidate_194/near194_bad4_k17595.native.tm
+   The202-to194 local quotient is itself genuine, but its unfolded source
+   address contains seven consecutive zeros, which the old scanner treats
+   as a separator. First failed runtime contract:source ordinal1003,
+   zero branch of logical register1/physical register2. The repaired machine
+   adds one scanner state and is M195S8,not a194-state consistency candidate.
+
+195 working states:82 table occurrences,25 byte forms,15 graph classes.
+Original PA195 is191-token diagonal emitter,3700 sites,134+68-7.
+195S and195C are separate190 emitters with67 raw readers and6 folds; they
+use respectively original and Combined commands. M195S8 instead pays an
+extra scanner and has135+68-8 states. PA195DC combines the original diagonal
+emitter with the Combined controller,3676 sites. The second PA194 packet
+has another intermediate separate195 graph. Optional PA195R permutes two
+unrestricted rho8 head parameters; PA195N uses negative diagonal vacuity
+and has an additional written logical equivalence obligation. Six older195
+classes are rejected diagnostics. One additional195 class is a bounded
+local-quotient search output, not a separately audited main construction.
+The JSON/CSV tables retain all byte identities and member paths rather than
+silently calling each195 file a positive design.
+
+The new Combined194 comparison
+-----------------------------
+Candidate dense SHA256
+ d759313c03b515293fe06b12769fa1771d3829a2bad89febaa9b4391990f3a4b
+has a rooted transition graph different from every existing194 table, even
+when arbitrary choices of root, arbitrary state renaming, tape reflection,
+and simultaneous read/write bit complementation are allowed. This is a
+stronger test than the ordinary fixed-start graph comparison. It includes
+the prior A/D register-layout variant and the rejected194 control.
+Receipt:pa194C_novelty.json. Utility:compare_candidate.py.
+
+All four native194 tables in the old corpus have exactly the same original
+controller fingerprint on native rows(38,0),(38,1),(164,1),(214,0),(214,1),
+(312,0). None has the Combined fingerprint. The original controller tests
+t+h=1 for Shift and has the original MP-success stack effect. Combined tests
+h=1 and returns a successful MP consequent inH after clearingD. The source
+shrinks3673 to3649 primitives, with4749 branch contracts and57922-step
+startup. This changes the command algorithm, not merely reader association
+or state labels. Those command changes are inherited, with credit, from
+prior Combined196 and195C research; their new composition with a194-state
+reader implementation is the new construction. Graph novelty alone does
+not prove the consistency theorem; the command/compiler and physical
+certificates provide that separate obligation.
+
+Major earlier lineages
+----------------------
+U208 packages share the native172/211 history fold from a U209 ancestor.
+The initially advertised nine tables are two rooted graphs; the later helper
+packet expands the accepted family to20 graphs. James Chang's PA209 is a
+different ancestor despite its equal state count. The U208 saving cannot be
+subtracted again from PA196:PA196 already replaces the relevant AX decoder.
+
+PA196's original source has3812 primitives,201 AX macro tokens,4959 branch
+contracts,58154 startup. Later196 variants change axiom association/order,
+physical register placement,closing jumps,or command effects. Those are
+orthogonal dimensions only when their physical row constraints are
+compatible. Two rejected Shift196 tables halt from blank after43563 steps;
+their finite traces have separate Lean checks in the repository.
+
+Diagonal vacuity replaces a more costly gate by Gamma(A)=A->forall_A A,
+using the constructor field-descent fact to obtain freshness of the formula
+code as variable. This reduces201 to191 emitter items and3812 to3700 sites.
+Saving Gamma as a separate stack head removes one cons item, giving190
+items and3673 sites, but changes the AX interface from nine to ten entries.
+Consequently theorem-selection command words must be recompiled. Ten-entry
+selectors for original Shift/MP cannot be copied unchanged to the Combined
+controller; the appropriate existing195C compiler is the correct reference.
+
+Source instruction count is not physical state count. NEG18 saves232
+source instructions (3673->3441) but its best audited physical allocation is
+197, because useful shared tree shapes and contextual folds are lost.
+Similarly157-node and158-node representations do not establish195-state
+machines if a scanner or a decoder helper must be added back.
+
+Direct PA subtree
+-----------------
+There are14 direct literal .tm files, individually catalogued in
+ direct_pa_catalogue.json and direct_pa_catalogue.csv.
+They comprise imported PA196/PA209, duplicate native encodings, the alternate
+shorter-path196,and197/198 allocator,source-pruning,negation/MP and shortcut
+experiments. The198 root-frame experiment lacks correct blank initialization;
+the initial197 allocator candidate fails a symbolic runtime contract.
+Startup-preserving197 candidates and physical shortcuts have stronger
+finite evidence but do not improve state count.
+
+The numerous pa195-* proof directories are not additional machine designs.
+The quotient/all-tape/translation/ordinary/simulation/control/global/dense
+chain develops an ordinary Lean proof of the original202-to195 halting
+preservation. Register runtime,source ordinals,symbolic batches,direct
+coverage and source iteration develop different portions of source-to-table
+binding. The source-iteration theorem still carries a Coverage premise;
+the arithmetic endpoints carry separate machine-to-refutation reduction
+obligations. The complete iPRA equivalence is explicitly not claimed by
+the repository. This does not refute a written proof of PA-provability:
+PA is stronger, and ordinary mathematical proofs need not be formalized in
+Lean to be valid. One must distinguish missing formalization from an actual
+mathematical counterexample.
+
+Evidence and limitations
+------------------------
+The inventory is exhaustive for the stated numeric table recognizer and the
+36 top-level archives at the pin. Report-based descriptions are grounded in
+the primary manuscripts and READMEs, with member locators in the catalogue.
+Older reported symbolic counts are descriptive unless separately rerun in
+the main construction task. All437 action graphs were not independently
+proved consistent or simulated for arbitrary inputs. Complete infinite
+blank execution is not tested. Failed bounded searches are not state lower
+bounds. No claim of universal minimality or of a new full Lean/Rocq endpoint
+is implied by the census or the novelty certificate.
