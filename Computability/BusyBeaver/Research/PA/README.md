@@ -123,6 +123,8 @@ calibrations. They do not report completed Lean proofs of the iPRA equivalence.
 [`docs`](docs/README.md) holds the contents of the research packets that were delivered
 to `docs/incoming`, one directory per archive, filed as delivered. Its README lists the
 packets, the wrapper directory of each archive, and the members that are not placed.
+[`docs/MACHINES.md`](docs/MACHINES.md) lists the distinct machines among the tables of the
+packets; a table that repeats a kept machine, also with its states renamed, is removed.
 The archives themselves are no longer in `docs/incoming`. A script of this directory
 that opens `docs/incoming/<archive>.zip` needs that archive restored from the history of
 the repository, as `docs/README.md` describes, until it reads the placed files instead.
