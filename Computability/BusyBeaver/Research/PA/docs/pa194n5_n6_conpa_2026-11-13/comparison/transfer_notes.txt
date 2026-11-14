@@ -1,0 +1,61 @@
+TRANSFER FROM ZFC AND CONCISE iPRA
+================================
+
+All links and claims refer to ProveIt revision
+1e407ae841e4666f932777fad977ba784ebbcfd5.
+
+1. The successful-MP zero push can be removed if the proof-word compiler
+reserves the needed zero explicitly. The ZFC source is
+Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/
+zero-spare-transfer/report.tex, section "Removing the successful MP zero
+push". That no-push alternative had 216 states; the report's main
+zero-spare transfer machine had 215. Its Shift guard differs from PA's t+h=1. The PA194N proof therefore
+establishes the nine-selector, Push, Pop and all-store compilation identities
+for the PA guard. Our composition repeats that reasoning uniformly at
+constructor coefficients 5 and 6. A same-state command change is useful
+even when it does not by itself eliminate a working control.
+
+The idea is inherited. The older PA packet
+conpa_tm_comparison_and_reduction_search already proposed no-push MP at
+196 states, and PA194N brings it to the 194-state physical architecture.
+The new contribution here is the certified composition with the radix
+controller, not invention of the no-push rule.
+
+2. ZFC's K215 also benefits from a command-local field reader, command
+ordering, a partial selector and compatible marker folds. The source
+README explains that a complete source/decoder/initialization compilation
+determines the state count. Those savings are interface-dependent. They
+cannot be subtracted from a PA194 budget without a new reader and whole
+source simulation.
+
+3. ConciseIPRA searches complete proof checkers for theories bi-interpretable
+with full first-order intuitionistic primitive recursive arithmetic.
+Its native scalar core has iterator terms and formulas built from equality,
+Q and D. One-term transport, no-literal-zero transport sources, direct
+progress closure, and combined introduction rules are useful ideas for
+reducing certificate branching and dispatch complexity. In particular,
+Artifacts/one_sided_transport and Artifacts/source_dispatch recover an
+excluded literal-zero source using a different term provably equal to zero.
+Artifacts/evaluation_discharge combines evaluation and elimination through
+a total functional Rho operation. Those are interface-equivalence techniques,
+not direct state savings for the present PA source.
+
+These are reductions of a different calculus. Replacing the PA calculus
+by a checker for that core would produce an iPRA refutation search, not an
+established PA refutation search. To transfer such a design one must first
+supply a PA-strength calibration (and prove both directions), then compile
+its actual source and account for constructors, initialization and readers.
+A small number of proof rules or Python tokens is not a binary TM state
+count. This package does not claim that missing transfer.
+
+4. The concrete lesson for the next search is to optimize representation,
+command interface and compatible reader reuse together. For these new
+machines, adding one fixed controller makes eight folds compatible:
+135 + 67 - 8 = 194. A superficially shorter emitter can lose one of those
+folds. The tested diagonal/radix-six combination reached 195; creating the
+desired extra helper displaced an old fold.
+
+Sources:
+https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/ZFC/README.md
+https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/ZFC/candidate-k215/alternatives/zero-spare-transfer/report.tex
+https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md

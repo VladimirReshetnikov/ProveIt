@@ -1,0 +1,45 @@
+Two new grammar moves were explored beyond
+single local rotations. A global dynamic-programming reparser rebuilds the
+190-token AX word using distinct substrings and randomized repetition costs.
+A second reparser replaces a whole subtree using the currently shared
+subtree dictionary. Both preserve the macro word and use the inherited
+simultaneous-fold scorer and scanner penalties; any promising score would
+still need exact source and physical validation.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}lrrX@{}}\toprule
+Search & Proposal slots & Time cap & Observed result\\\midrule
+Global word reparse & 3,278 & 180 s & Best 60 effective AX controls; total 194.\\
+Dictionary subtree reparse & 1,113,967 & 180 s & Best total 194; 733,412 accepted slots.\\
+MILP-skeleton binarization & 1,220,188 & 60 s & Best penalized reader score 69; no accepted machine.\\\bottomrule
+\end{tabularx}
+\end{center}
+Proposal slots include repetitions, no-ops, and skipped candidates; they
+are not counts of distinct verified machines. CPU-time caps are dependent
+on the execution environment.
+
+A separate mixed-integer model considers the 226 repeated AX substrings
+and the whole word, minimizing the sum of right-hand-side lengths minus
+one, with inherited increment macros free. After 180 seconds HiGHS had
+feasible cost 67 and reported a dual bound 63, with a remaining gap.
+This is a finite grammar objective, not a physical state objective; the
+numerical solver output is not a formally checked lower-bound certificate.
+
+The new PA194N6 table also received fresh local-state screens. Collecting
+all 4,877 source outcomes, generic list proofs, unary-loop interiors, and
+the complete startup produced 19,318 symbolic local views. Their conservative
+radius-five expansions give 29,282 eleven-cell windows covering every one
+of the 194 controls. With a 300-step local bound, a common-action merger
+and a per-incoming-edge bypass each returned zero candidates. A separate
+uniform-history screen of the unfolded 202-control parent considered all
+129 eligible controls and found exactly the eight existing disjoint fold
+opportunities, with no ninth.
+
+The complete drivers, frozen inputs, receipts, and empty candidate lists
+are under \file{research/}. The new searches were completed; historical
+million-proposal counts are not being passed off as fresh work. These
+negative results leave open larger local windows, longer detours,
+simultaneous changes to several helper controls, new tape encodings,
+different logical interfaces, and other global redesigns. They give no
+lower bound for arbitrary PA-consistency machines. The accepted fallback
+does not depend on the success or reproducibility of a stochastic search.

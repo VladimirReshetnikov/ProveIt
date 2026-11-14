@@ -14,7 +14,7 @@ a report at one of the destinations of section 2.
 
 ## Con(PA) machine research packets
 
-Forty-seven archives that arrived between 28 October and 13 November 2026 are about
+Fifty-one archives that arrived between 28 October and 13 November 2026 are about
 constructing a Turing machine whose non-halting is equivalent to `Con(PA)`. They are
 placed, as delivered and without a write, in
 [`Computability/BusyBeaver/Research/PA/docs`](../../Computability/BusyBeaver/Research/PA/docs/README.md),
@@ -77,6 +77,10 @@ from the history.
 | `PA194R_research_2026-11-14.zip` | 2026-11-13 | [PA194R_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/PA194R_research_2026-11-14/) |
 | `pa194N_conpa_2026-11-13.zip` | 2026-11-13 | [pa194N_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194N_conpa_2026-11-13/) |
 | `pa194zr_conpa_2026-11-13.zip` | 2026-11-13 | [pa194zr_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194zr_conpa_2026-11-13/) |
+| `pa194hs_conpa_2026-11-13.zip` | 2026-11-13 | [pa194hs_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194hs_conpa_2026-11-13/) |
+| `pa194n5_n6_conpa_2026-11-13.zip` | 2026-11-13 | [pa194n5_n6_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194n5_n6_conpa_2026-11-13/) |
+| `pa194ns_conpa_2026-11-13.zip` | 2026-11-13 | [pa194ns_conpa_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194ns_conpa_2026-11-13/) |
+| `pa194n6_research_2026-11-13.zip` | 2026-11-13 | [pa194n6_research_2026-11-13](../../Computability/BusyBeaver/Research/PA/docs/pa194n6_research_2026-11-13/) |
 
 ## Sub-exponential 3-SAT (ETH) reports
 

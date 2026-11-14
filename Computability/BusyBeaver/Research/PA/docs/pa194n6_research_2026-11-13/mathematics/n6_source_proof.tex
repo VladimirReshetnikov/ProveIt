@@ -1,0 +1,75 @@
+% Adapted source-splice proof for the coefficient-six parent.
+\section{Exact source splice and its physical realization}
+
+At a successful MP comparison, the source has $T=H=X=Y=0$, $D=b$, and
+arbitrary stack $W=w$. The original subtree is
+\[
+ \texttt{node163}=(\texttt{node6},\texttt{node55}),\qquad
+ \texttt{node55}=(\texttt{node49},\texttt{node54}).
+\]
+The first child of node55 pushes the current zero; node54 copies $D$ to
+$T$ while preserving $D$. PA194N6 replaces node163 by
+$(\texttt{node6},\texttt{node54})$.
+The deleted source interval is $[3756,3775)$ in the original zero-based
+numbering. It contains 19 instructions and has exactly one exterior
+entry, the zero branch of instruction 3750. Every remaining instruction,
+including every successor, equals the old instruction under the explicit
+index relocation in \texttt{construction/build.py}, with that entry redirected
+to the retained copy loop. Both failed MP and every other command retain
+their source effects.
+
+The retained copy loop, in local labels, is
+\[
+\begin{array}{c|l}
+0&\mathrm{DEC}\ D\quad(0\mapsto4,\ >0\mapsto1)\\
+1&\mathrm{INC}\ T;\ \mathrm{goto}\ 2\\
+2&\mathrm{INC}\ X;\ \mathrm{goto}\ 3\\
+3&\mathrm{goto}\ 0\\
+4&\mathrm{DEC}\ X\quad(0\mapsto7,\ >0\mapsto5)\\
+5&\mathrm{INC}\ D;\ \mathrm{goto}\ 6\\
+6&\mathrm{goto}\ 4
+\end{array}
+\]
+Label seven is the exit. After $j\le b$ iterations of the first loop,
+$(T,D,X)=(j,b-j,j)$. After its final zero test and $j\le b$ iterations
+of the second, $(T,D,X)=(b,j,b-j)$. Hence the exit is
+$(T,D,X)=(b,b,0)$, with all other registers unchanged, in exactly
+$7b+2$ primitive source steps. These two elementary induction invariants
+prove the retained loop's contract over all naturals.
+
+The literal physical table is rebuilt from the pinned 202-control
+radix-six parent and its eight simultaneous folds; the grammar and
+resolved source are bound independently. The changed native transition enters the already existing reader
+for node54 directly. All 4,877 arbitrary-register primitive outcomes pass
+(the maximum symbolic-checker step count is 499); all 32 local fold
+contexts pass simultaneously; the 23 arithmetic-engine controls retain
+every original row. The complete blank-tape initialization reaches native
+control 84 at head $-2$, with the entire clean frame and 26 spare blocks,
+after exactly 58,320 literal transitions. The startup equality includes
+every nonzero tape cell.
+
+The generic register-block and unary-scan arguments are elementary
+inductions over coded finite lists and natural lengths. Their trace
+witnesses are primitive recursively constructible. The certificates instantiate those induction arguments at every
+primitive source case, giving PA-provable positive finite source simulation.
+The independent checker rederives four register-list lemmas from the
+literal rows and checks all 4,877 outcomes, using 1,115,525 symbolic
+operations; every certified duration has positive constant term, at least
+three. These counts concern certificate execution, not a uniform physical
+running time. Conversely, given a physical first halt at time $T$, iterate the totalized
+source step function for $T+1$ instructions. If this bounded iteration
+finds a source halt, reflection is established. Otherwise its positive
+nonhalting simulations, preceded by startup, produce a deterministic
+physical trace beyond that first halt, a contradiction. This proves
+reflection by a bounded construction.
+Combining source calibration and physical simulation yields the ordinary
+mathematical conclusion
+\[
+ \mathrm{PA}\vdash
+ \bigl(\neg\operatorname{Halt}(\mathrm{PA194N6})
+                 \leftrightarrow\operatorname{Con}(\mathrm{PA})\bigr).
+\]
+The finite and symbolic executables support this argument and bind it to
+the exact table. They do not replace the explicitly identified inherited
+logical proof transformations, and no newly compiled end-to-end trusted
+kernel endpoint is claimed.

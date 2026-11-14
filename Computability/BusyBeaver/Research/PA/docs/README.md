@@ -16,9 +16,9 @@ The checked work of this project is described in the [parent README](../README.m
 
 - Each archive has one directory, named after the archive. A trailing ` (1)` or ` (2)` of an
   archive name is written `_1` or `_2`.
-- Every archive wraps its files in a single top directory. That directory is removed, so
-  the archive member `<wrapper>/<path>` is the file `<directory>/<path>` here. The table
-  gives each wrapper.
+- Almost every archive wraps its files in a single top directory. That directory is
+  removed, so the archive member `<wrapper>/<path>` is the file `<directory>/<path>` here.
+  The table gives each wrapper, or `none` for an archive without one.
 - Files are stored byte for byte as delivered. The repository's line-ending normalization
   is switched off for this directory in the root `.gitattributes`, because checks elsewhere
   in the project compare digests of members.
@@ -34,10 +34,10 @@ reason and where the same bytes are. There are four reasons.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `upstream-copy` | 13,093 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
+| `upstream-copy` | 13,118 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
 | `sibling-archive` | 17 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
-| `ignored` | 1,162 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
-| `duplicate-machine` | 3,323 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
+| `ignored` | 1,186 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
+| `duplicate-machine` | 4,495 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
 
 Six nested archives have no delivered counterpart and are placed as files:
 `U209_ConPA_Joint_2026-10-29.zip` (in three packets), `U209_ConPA_2026-10-29.zip`,
@@ -50,8 +50,8 @@ does not run here as delivered.
 
 ## Packets
 
-The 47 archives hold 29,949 members: 12,354 placed here (650 MB), 13,093 copies of the upstream
-snapshots, 17 nested copies of sibling archives, 1,162 ignored files and 3,323 duplicate machine
+The 51 archives hold 31,544 members: 12,728 placed here (674 MB), 13,118 copies of the upstream
+snapshots, 17 nested copies of sibling archives, 1,186 ignored files and 4,495 duplicate machine
 tables. The columns P, U, S, I and M give these five counts for each packet. Arrival is
 the date of the commit that added the archive to `docs/incoming`.
 
@@ -104,10 +104,14 @@ the date of the commit that added the archive to `docs/incoming`.
 | [`PA194R_research_2026-11-14`](PA194R_research_2026-11-14/) | 2026-11-13 | `PA194R_research_2026-11-14` | PA194R. States a different 194-state machine with a new decoder layout and that no machine below 194 was verified. | 574 | 11 | 0 | 37 | 246 |
 | [`pa194N_conpa_2026-11-13`](pa194N_conpa_2026-11-13/) | 2026-11-13 | `pa194N_conpa_2026-11-13` | PA194N. States a new 194-state machine, an article with a PA proof of the equivalence, and nothing below 194. | 534 | 4 | 0 | 6 | 211 |
 | [`pa194zr_conpa_2026-11-13`](pa194zr_conpa_2026-11-13/) | 2026-11-13 | `pa194zr_conpa` | PA194ZR. States a new 194-state machine `machine/pa194zr.tm`, a PA proof of the equivalence, and nothing below 194. | 162 | 21 | 0 | 14 | 211 |
+| [`pa194hs_conpa_2026-11-13`](pa194hs_conpa_2026-11-13/) | 2026-11-13 | `pa194hs_conpa_2026-11-13` | PA194HS and PA194H. States two 194-state machines and that no machine below 194 was established. | 119 | 4 | 0 | 13 | 248 |
+| [`pa194n5_n6_conpa_2026-11-13`](pa194n5_n6_conpa_2026-11-13/) | 2026-11-13 | none | PA194N5 and PA194N6. States two distinct 194-state machines and claims no machine below 194. | 27 | 5 | 0 | 1 | 4 |
+| [`pa194ns_conpa_2026-11-13`](pa194ns_conpa_2026-11-13/) | 2026-11-13 | `pa194ns_conpa_2026-11-13` | PA194NS. States a different 194-state machine and that no machine below 194 was established. | 120 | 12 | 0 | 2 | 671 |
+| [`pa194n6_research_2026-11-13`](pa194n6_research_2026-11-13/) | 2026-11-13 | `pa194n6_research_2026-11-13` | PA194N6. States a different 194-state machine and that no machine below 194 was verified. | 108 | 4 | 0 | 8 | 249 |
 
 ## Archives still in `docs/incoming`
 
-None. All 47 archives are removed from `docs/incoming`. They remain in the history of
+None. All 51 archives are removed from `docs/incoming`. They remain in the history of
 the repository.
 
 Some scripts of the [parent directory](../README.md) open an archive at

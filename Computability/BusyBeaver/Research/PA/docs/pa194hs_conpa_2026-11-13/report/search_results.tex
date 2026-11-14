@@ -1,0 +1,50 @@
+The search tried a one-state quotient on both primary PA194 and the new
+PA194HS. In each case 23 arithmetic-block controls were protected and
+171 other controls were eligible. For each unordered unprotected pair,
+the surviving state's two rows were independently chosen from the
+corresponding rows of either original state. This gives
+$4\binom{171}{2}=58,140$ candidates. A further $171\cdot23=3,933$
+candidates identify an unprotected control with a protected one while
+retaining the protected rows. Incoming targets are redirected and other
+rows remain unchanged: \textbf{62,073 candidates per table, 124,146 total}.
+
+Each candidate is screened by the complete effects of affected source
+contracts, with a 1,024-symbolic-operation limit per attempted contract.
+The original contract's visited controls determine which contracts can
+change. A contract touching neither altered control follows an unchanged
+run. Thus this screen permits larger detours than a one-transition local
+simulation, but restricts the candidate rows to the stated choices.
+Neither input produced an accepted quotient. Two additional local-action
+screens on primary PA194 used 16,393 radius-five windows with a 300-step
+bound, and 29,347 radius-six windows with a 1,000-step bound, and produced
+no candidate. These window sets are search inputs, not a separately
+proved complete reachable-context theorem.
+
+The most instructive direct attempt deletes native control 34 and
+redirects control 23's zero row to 75. This shortens the return scanner
+from seven consecutive zeros to six and gives 193 controls. On HS,
+113 of 4,750 symbolic source contracts, involving 57 sites, fail to
+close within the stated bound. Both branches at site 0 fail, along with
+the scheduler entry and many AX entries. Temporary operation markers
+turn some clean-address trailing zero runs into internal zero runs, so
+counting runs in clean source addresses is insufficient.
+
+There is also an exact finite failure witness, independent of symbolic
+timeout. At source site 0, path \file{000000}, gap parameter zero, and
+ten zero-valued physical register/spare blocks, the original table's
+second return to native interpreter control 84 has head position zero
+(at transition 246). The shortened table's second return has head
+position eight (at transition 236). The original reaches the exact
+required successor frame at transition 486. The complete tapes and
+finite trace are retained in
+\file{search/evidence/scanner_concrete_counterexample.json}.
+This is a legal-frame simulation counterexample; it is not asserted to
+be a state on the unique blank run. The modified blank computation also
+fails to reach the intended clean seed in the tested million transitions,
+which is only a bounded observation.
+
+Finally, all 194 HS controls occur in the union of the checked source
+runs, protected arithmetic blocks and exact startup. There is no unused
+control to prune in that proof domain. The known entry value $H=1$ at the
+symmetric root does not remove the zero branch: source site 2 loops back
+after decrementing $H$, so the same guard is later entered with $H=0$.

@@ -1,0 +1,18 @@
+\begin{center}\small
+\begin{tabular}{@{}lrr@{}}\toprule
+Verified quantity & Construction executor & Independent executor\\\midrule
+Source instructions & 3,776 & 3,776\\
+Primitive outcomes & 4,877 & 4,877\\
+Symbolic operations & 1,531,094 & 1,115,525\\
+Maximum operations per outcome & 499 & 397\\
+Minimum positive duration constant & --- & 3\\
+List lemmas derived from literal rows & inherited boxes & 4\\
+Exact startup transitions & 58,320 & 58,320\\\bottomrule
+\end{tabular}
+\end{center}
+The operation counts describe certificate execution, not a uniform number
+of Turing-machine transitions for arbitrary register values. A third review
+separately replays all 32 fold traces and all 28 incoming-context rows,
+checks the source splice and label bijection, and simulates startup in
+lockstep with M6. It confirms that the edited row is never read during
+startup or inside a fold trace.

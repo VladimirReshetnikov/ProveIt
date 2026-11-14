@@ -1,0 +1,274 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype,amsmath,amssymb,amsthm,booktabs,longtable,array,xurl,hyperref}
+\usepackage[margin=0.9in]{geometry}
+\hypersetup{colorlinks=true,linkcolor=blue,urlcolor=blue,pdftitle={PA194N5 and PA194N6}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{3em}
+\newtheorem{theorem}{Theorem}
+\title{PA194N5 and PA194N6\\Two composed 194-state machines for PA consistency}
+\author{Research construction and verification packet}
+\date{13 November 2026 (Pacific time)}
+\begin{document}
+\maketitle
+\begin{abstract}
+Two exact 194-state binary single-tape machines combine a no-push
+modus-ponens controller with constructor coefficients five and six.
+Their complete instruction simulations, eight simultaneous state folds,
+and blank-tape initialization are checked by a self-contained executable.
+The mathematical consistency proof uses the archived proof-producing
+logical calibration and a uniform command compiler. No machine below
+194 states and no new end-to-end proof-assistant theorem is claimed.
+\end{abstract}
+\tableofcontents
+\bigskip
+\section{Result and proof scope}
+\begin{theorem}[Ordinary mathematical conclusion, with the dependencies stated below]
+For $k\in\{5,6\}$ and the exact delivered table $M_k=\mathrm{PA194N}k$,
+\[
+ \mathrm{PA}\vdash
+ \bigl(\neg\operatorname{Halt}_{\rm blank}(M_k)
+       \leftrightarrow \operatorname{Con}(\mathrm{PA})\bigr).
+\]
+\end{theorem}
+We construct two new deterministic single-tape, two-symbol Turing machines, PA194N5 and PA194N6. Each starts on an all-zero two-way infinite tape, has 194 working states, and has 388 transition rows. The designated halt state is excluded from that count. The requested improvement to at most 193 states was not obtained.
+
+The new machines combine two previously separate changes: the no-push successful-modus-ponens controller of PA194N, and the formula-constructor coefficients 5 and 6 of the radix family. The construction changes the command interface and the numerical formula encoding. It preserves the ordinary Cantor encoding of the proof stack and scheduler.
+
+The ordinary mathematical PA argument composes the archived proof-producing logical calibration with a uniform no-push command compiler and new exact source-to-tape certificates. It establishes PA |- [not Halt\_blank(PA194Nk) iff Con(PA)] for k=5,6 at the same mathematical proof level as the parents. The inherited PA-to-calculus translation is an explicit dependency. No new end-to-end Lean or Rocq theorem, and no iPRA theorem, is claimed.
+
+All comparisons are pinned to ProveIt commit 1e407ae841e4666f932777fad977ba784ebbcfd5. The repository's PA README distinguishes these ordinary arguments and finite certificates from unfinished machine-specific formal consistency reductions. This distinction remains in force here.
+
+\section{Comparison of the existing designs}
+The comparison covers 41 placed PA research packets and five current incoming archives: PA194R\_research\_2026-11-14.zip, pa194N\_conpa\_2026-11-13.zip, pa194\_radix\_family\_2026-11-13.zip, pa194j\_pa194d\_conpa\_2026-11-13.zip, and pa194q\_conpa\_2026-11-13.zip.
+
+The older development proceeds from unary-power and 208-state context folds through 196-state source/compiler variants, then PA195, the 195S/195C and M195S8 variants, PA195DC, and two distinct 194-state reader allocations. Larger machines are useful sources of logical and compiler transformations; their state totals cannot be added or subtracted across incompatible interfaces.
+
+Five cached-head PA194C deliveries share one principal dense table, with SHA-256 d759313c03b515293fe06b12769fa1771d3829a2bad89febaa9b4391990f3a4b. Counting packets as independent machines would exaggerate that frontier.
+
+A fresh audit of all .tm, .txt, .tsv and .csv members in the five incoming ZIPs examined 1,331 candidate files, including prose. The exact table recognizer found 171 complete 194-state occurrences, 51 byte representations and 28 action-graph classes. Sixteen classes are report-supported headline or companion designs, nine are supplementary/research tables, and three are explicitly rejected. These are classifications of the supplied evidence, not 28 independent consistency proofs.
+
+The audit allows arbitrary state renaming, every graph-spanning root, left/right reflection, and simultaneous read/write symbol complementation. It compares complete canonical arrays. PA194N5 and PA194N6 match none of the 28 old classes and do not match one another. This audit concerns recognized literal tables; tables existing solely as code or JSON are outside that recognizer.
+
+One cross-packet duplicate is important: the Q packet's PA194CSZ equals the R packet's PA194X byte for byte (dense SHA-256 62e93098caf7c09ff2938d07064f0dbbb47c71ec369892968258fff708592269). The report's frontier table groups them together.
+
+\small
+\begin{longtable}{@{}p{0.20\linewidth}rrrp{0.36\linewidth}@{}}
+\toprule
+Machine & Sites & Outcomes & Startup & Main change\\ \midrule
+\endhead
+PA194-67 & 3673 & 4780 & 58154 & Original seven-fold allocation \\
+PA194-AD & 3673 & 4780 & 58122 & Exchanges physical A/D positions \\
+PA194-68 & 3673 & 4780 & 58154 & Different decoder association \\
+PA194C & 3649 & 4749 & 57922 & Cached Shift and MP; five duplicate deliveries \\
+PA194CS & 3646 & 4745 & 57768 & Symmetric comparison and controller fold \\
+PA194N & 3654 & 4755 & 58154 & No-push successful MP \\
+M4R & 3673 & 4780 & 58320 & Reassociated radix-four multiplier \\
+M5 & 3734 & 4841 & 58320 & Formula coefficient five \\
+M6 & 3795 & 4902 & 58320 & Formula coefficient six \\
+PA194J & 3646 & 4755 & 60062 & Ten jumps replaced by known-zero decrements \\
+PA194D & 3649 & 4751 & 58168 & Diagonal head Gamma(D) \\
+PA194Q & 3649 & 4749 & 57922 & Exchanged distribution premises \\
+PA194CSZ = PA194X & 3646 & 4746 & 58014 & Symmetric controller and zero entry jump \\
+PA194R & 3646 & 4746 & 57768 & Reassociated decoder and zero final return \\
+PA194F & 3646 & 4746 & 57768 & Known-zero final X decrement \\
+PA194A & 3646 & 4746 & 57978 & Known-zero entry A decrement \\
+PA194N5 (new) & 3715 & 4816 & 58320 & No-push MP with radix five \\
+PA194N6 (new) & 3776 & 4877 & 58320 & No-push MP with radix six \\
+\bottomrule
+\end{longtable}
+\normalsize
+\section{Exact construction and state accounting}
+\[
+ \underbrace{135}_{\text{fixed controls}}+
+ \underbrace{67}_{\text{axiom readers}}-
+ \underbrace{8}_{\text{simultaneous folds}}=194.
+\]
+\[
+ \delta(164,1)=(1,R,98)\quad\longmapsto\quad
+ \delta_{\rm new}(164,1)=(1,R,114).
+\]
+The native parent files are pa194\_radix\_family/machines/5/machine.native.tm and the corresponding machines/6 file in the pinned radix ZIP. In each parent, replace exactly the row '164 1 1 R 98' by '164 1 1 R 114'. All other native transitions are retained. Native start is 74 and native halt is 254.
+
+Equivalently, rebuild from the primary unfolded 201-control table. Add shared control 330 with rows 0 -> (0,R,61) and 1 -> (1,R,99). Set control 190's zero row to (0,R,330). Its one row is (1,R,99) for N5 and (1,R,330) for N6. Apply the seven primary reader folds and the additional fold 41 -> 99, whose replacement rows are (0,L,30) and (1,L,2035). Apply the no-push row change above. The supplied verifier checks all eight folds simultaneously against the final table.
+
+The resulting budget is 135 fixed controls plus 67 axiom readers minus 8 compatible folds, giving 194. Every working state occurs in the transition graph reachable from the start label. This is graph reachability, not a claim that every state is visited on the single blank-tape run.
+
+Dense tables number states by breadth-first traversal from native 74, visiting the read-0 successor before read-1. Dense start is 0, working labels are 0 through 193, and halt is 194. Exact tables and native-to-dense label maps are included.
+
+\section{Numerical formulas and the uniform logical calibration}
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad [a;w]=p(a,w).
+\]
+\begin{align*}
+ I_k(A,B)&=kp(A,B),&M_k(a,b)&=kp(a,b)+1,\\
+ U_k(a,B)&=kp(B,a)+2,&E_k(a,b)&=kp(a,b)+3.
+\end{align*}
+\[
+ F_k(0)=0,\qquad
+ F_k(4p(a,b)+r)=kp(F_k(a),F_k(b))+r
+ \quad(4p(a,b)+r>0,\ 0\leq r<4).
+\]
+Let p(a,b)=(a+b)(a+b+1)/2+b. The stack is [a;w]=p(a,w), with total projections hd and tl. In particular [0;0]=0 and hd(0)=tl(0)=0; numerical stacks are not free lists.
+
+For each fixed k>=4 use I\_k(A,B)=k*p(A,B), M\_k(a,b)=k*p(a,b)+1, U\_k(a,B)=k*p(B,a)+2, and E\_k(a,b)=k*p(a,b)+3. Code 0 denotes truth and code 1 is M\_k(0,0), the distinguished contradiction. The transposed arguments of U\_k are intentional. Negation is N\_k(B)=I\_k(B,1); conjunction and existential quantification use their usual classical implicational definitions.
+
+The inherited separate-head calculus contains six logical heads, the numerically restricted implicational head rho, every diagonal head Gamma\_k(B)=I\_k(B,U\_k(B,B)), and the guarded separation gate G\_k(a,b,c) when c differs from a and b. Its inference rules are modus ponens and theorem generalization. The complete schemas and the archived calibration are retained in the reference TeX fragments.
+
+To transfer radix-four refutations, recursively recode both formula codes and variable labels. Set F\_k(0)=0; if n>0 and n=4*p(a,b)+r with 0<=r<4, put F\_k(n)=k*p(F\_k(a),F\_k(b))+r. The decoded components are smaller than n, so course-of-values primitive recursion defines F\_k, and PA verifies the recursion. An inverse on the image proves injectivity. This preserves constructor identities, variable binding, the diagonal axiom and the separation guard, and fixes code 1.
+
+Numerical order is not preserved: 40<44 but F\_5(40)=75>55=F\_5(44). Therefore a restricted rho axiom must not simply be recoded as another restricted axiom. The fixed rho8All derivation in M6/Logic/RestrictedImplication.lean removes that obstruction. Its side conditions use reflexivity and the bounds a,b<=I\_k(a,b). Replacing each restricted leaf by this finite unrestricted template gives a primitive-recursive proof translation.
+
+For soundness define a total syntactic translation to arithmetic: implication maps to implication; membership to Bit(x\_a,x\_b); U to universal quantification; equality to equality; unused residues 4,...,k-1 to closed truth. Every label in the translation of B is smaller than B, so the diagonal head is a vacuity instance. The alias I\_k(0,0)=0 is treated using a fixed proof that truth is equivalent to truth implying truth.
+
+PA proves finite binary comprehension for each arithmetic formula theta by induction on a finite bound. The separation gate uses that proof pattern, with a separate coincident-label case a=b. This is a syntactic proof supplier, not a truth predicate or a reflection principle. A translated derivation of code 1 gives a PA refutation. Together with the archived radix-four completeness translation and hereditary recoding, this gives PA-refutation iff C\_k-refutation.
+
+\section{No-push command semantics and completeness}
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+ (y,w,y,0),&I_k(t,y)=h,\\
+ (0,w,y,0),&I_k(t,y)\ne h,
+ \end{cases}\qquad y=d+x.
+\]
+\[
+ S(t,w,d,h)=
+ \begin{cases}
+ \mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1.
+ \end{cases}
+\]
+\[
+ \mathsf{AX}_{A,x,y}(t,w,d,h)
+ =(g,[q_1,\ldots,q_9,t;w],0,0).
+\]
+\begin{align*}
+ \mathsf{Push}&=A_0;S^9;\mathsf{MP}_0,&
+ \mathsf{Pop}&=A_0;S^{11},\\
+ \mathsf{Discard}&=\mathsf{MP}_0,&
+ \mathsf{Offset}_i&=\mathsf{MP}_i.
+\end{align*}
+\begin{align*}
+ C(\operatorname{MP}(p,q))={}&
+ \mathsf{Discard};\mathsf{Push};C(I_k(a,b));\mathsf{Push};\\
+ &C(a);\mathsf{Push};S;S;\mathsf{MP}_b;\mathsf{Pop}.
+\end{align*}
+A command store is (t,w,d,h): visible top, numerical stack, offset, and cached formula. Put y=d+x. The no-push MP\_x returns (y,w,y,0) when I\_k(t,y)=h, and (0,w,y,0) otherwise. Shift S halts exactly when t+h=1; otherwise it returns (h,tl(w),d,hd(w)).
+
+The axiom command AX\_\{A,x,y\} writes a guarded top g and pushes [q1,...,q9,t;w], then clears d and h. The first eight q entries and g are multiples of k; q9=U\_k(d,h) has residue 2 and is at least 2. The diagonal head is separate, so there are nine generated entries plus the saved old top.
+
+These arithmetic facts prove safe selector identities on arbitrary natural stores: AX;S\textasciicircum{}9 yields (q8,[t;w],0,U\_k(d,h)), and AX;S\textasciicircum{}10 yields (U\_k(d,h),w,0,t). Their Shift tests cannot equal 1. The same argument works for k=5 and k=6; it does not assume a nonempty stack.
+
+Write A0=AX\_\{0,0,0\}. Push=A0;S\textasciicircum{}9;MP\_0 sends (t,w,d,h) to (0,[t;w],0,0). Pop=A0;S\textasciicircum{}11 sends (t,[a;w],d,h) to (t,w,0,a). Discard=MP\_0 sends (t,w,0,h) to (0,w,0,0), since its two branches coincide when y=0. Offset\_i=MP\_i sends (0,w,0,0) to (0,w,i,0), including i=0.
+
+Axiom selectors use Discard;AX;S\textasciicircum{}(j+1);Pop\textasciicircum{}(9-j) for q\_j, 1<=j<=7. The dominated head uses Discard;Offset\_u;AX\_\{b,a-u,c\};S\textasciicircum{}9;Pop for u<=a. The gate uses Discard;AX;Pop\textasciicircum{}10. Generalization uses Push;Offset\_i;S;AX\_\{i,0,0\};S\textasciicircum{}10. Each word preserves the arbitrary framed stack and returns with d=h=0.
+
+For modus ponens from a and I\_k(a,b), use Discard;Push;C(I\_k(a,b));Push;C(a);Push;S;S;MP\_b;Pop. The first Push reserves a zero below the two premise computations. Before the two Shifts the store is (0,[a,I\_k(a,b),0;w],0,0). The second Shift may halt early if a=1; otherwise MP produces (b,[0;w],b,0), and the final total Pop produces (b,w,0,0). This is valid even when numerical zero pairs collapse.
+
+Induction on a derivation proves that C(p), from any (t,w,0,0), either halts or returns its conclusion with the same stack and d=h=0. For a refutation, append S. Prefix A0 to clear an arbitrary incoming d,h. Thus every refutation supplies a command word that halts from every carried store.
+
+The unchanged scheduler need not reset the store between trials. Prefixing the universally halting word by AX\_\{j,0,0\} produces a cofinal family of fresh candidate codes p(j+2,p(0,p(0,z))), where z is its positive continuation code. The counter starts at two; these candidates are eventually reached unless an earlier trial already halted. Positive continuation pointers strictly decrease. The encoding, proof-word compiler and terminating macro loops have primitive-recursive finite trace witnesses provable in PA.
+
+For the reverse implication annotate t,h and every live canonical stack entry by derivations, or by PA proofs of their arithmetic translations. AX, MP and Shift preserve these annotations. At a halt t+h=1, one of the two visible theorem codes is 1. Its annotation supplies a PA refutation. No annotation is required on the numerical offset.
+
+\section{Binding the proof to the literal tables}
+\[
+ \mathrm{PA}\vdash
+ \operatorname{Halt}_{\rm blank}(M_k)
+ \leftrightarrow
+ \exists p\,\operatorname{Prf}_{\mathrm{PA}}(p,\ulcorner0=1\urcorner).
+\]
+The generic Cons macro, from registers (T,W,X,Y)=(t,w,0,0), terminates at (I\_k(hd(w),t),tl(w),0,0) while preserving other registers. Ordinary stack pairing is unchanged. Only its multiplication loop changes: after i iterations, T=T0+k*i and Y=Y0-i. This proves termination in (k+2)*Y0+1 primitive steps for that loop.
+
+There are 61 Cons occurrences. Their multiplier bodies change from four increments to k increments. The 3,429 sites outside those bodies preserve all operations and successor edges under relocation. After this radix change, the no-push transformation deletes nineteen source instructions: [3695,3714) for N5 and [3756,3775) for N6. Their only exterior entries are respectively 3689 -> 3695 and 3750 -> 3756. Every remaining resolved instruction and successor is checked after relocation.
+
+The retained seven-instruction copy loop sends (T,D,X)=(0,b,0) to (b,b,0), with W unchanged. In the first loop its invariant is (j,b-j,j); in the second it is (b,j,b-j). The exact source cost is 7*b+2. The physical row change enters its existing reader directly.
+
+The supplied JavaScript verifier re-expands the original Lean source DAG, reconstructs both tables, checks all local folds, and symbolically runs every primitive source outcome with arbitrary register values and arbitrary remaining tape frame. Symbolic arithmetic-block summaries are inherited only for 23 controls, whose literal rows are checked unchanged. This is a universal symbolic simulation certificate; its checker step counts are not concrete machine times.
+
+PA194N5 has 3,715 source sites, 4,816 branch outcomes, maximum symbolic duration 499 and total symbolic-checker duration 1,506,840. PA194N6 has 3,776 sites, 4,877 outcomes, maximum 499 and total 1,531,094. All 32 simultaneous fold contexts pass, with maximum local duration 5.
+
+A separate literal blank-tape simulation reaches the complete canonical frame after 58,320 steps in both machines: native state 84, head -2, logical registers (2,0,0,0,0,0,0,0,0), and 26 spare blocks. Equality checks the complete finite set of one-cells, rather than a tape window.
+
+Each source primitive has a positive physical simulation. A source halt therefore yields a physical halt. Conversely, if the physical machine first halted at time T without a corresponding source halt, iterate the totalized source machine for T+1 primitives. Their positive simulations, following the checked startup, would produce a deterministic nonhalting physical trace beyond T, a contradiction. This bounded construction avoids assuming a source program's infinite execution as an oracle.
+
+Combining the two finite-trace reductions with the command compiler and logical proof translations gives, for k=5,6, PA |- Halt\_blank(PA194Nk) iff exists p Prf\_PA(p,0=1). Negating both sides gives the requested nonhalting/consistency equivalence.
+
+\section{Material difference and further research questions}
+Graph nonisomorphism alone is supplemented by a command-level distinction. On the legitimate theorem store (t,w,d,h)=(0,3,0,0), where 3=p(2,0) and code 2 is U\_k(0,0), MP\_0 succeeds. The old radix controller returns (0,9,0,0) because p(0,3)=9; the no-push controller returns (0,3,0,0). The altered stack interface is therefore substantive. The two new machines additionally construct different numerical codes, such as I\_5(1,1)=20 and I\_6(1,1)=24.
+
+The work reuses the ZFC line's reserved-zero/no-push idea through the PA194N command compiler. It does not replace PA by the weaker iPRA calculus. ConciseIPRA offers useful proof-checker organization and formalization infrastructure, but equiconsistency with iPRA alone would not establish the requested Con(PA) machine.
+
+Further question 1: can the already-paid triple-increment reader be shared with a suitably reassociated axiom decoder while preserving the eighth fold? A radix-aware search must count helper compatibility, not merely grammar nodes.
+
+Further question 2: can the diagonal-D or premise-exchanged axiom emitters be combined with the radix/no-push controller at an effective reader cost of 58 rather than 59? Initial experiments show that a desired new helper can displace an old compatible fold.
+
+Further question 3: can a certified, size-neutral local transition rewrite expose a ninth useful fold? Such a search should retain an all-context simulation certificate and recheck startup and the complete source interface.
+
+Further question 4: formalize the uniform k-constructor loop, hereditary formula/label recoding, unrestricted rho template, and reserved-zero compiler as reusable Lean lemmas. The current executable certificates do not discharge the missing weak-arithmetic proof endpoints.
+
+\section{Exact digests and reproduction}
+Run \texttt{node verify.mjs} from this package. It requires Node.js 18 or
+later, standard libraries only, and no network. The executable rebuilds
+the machines from the pinned source DAG and baseline table; it checks
+rather than trusting the saved verification receipt.
+
+The verifier's arithmetic summaries are the unchanged register-block
+lemmas used by the supplied PA196 symbolic runtime. The executable is
+not a proof assistant and does not itself check the logical calibration.
+
+The included file \texttt{audit.wl} reproduces the incoming-archive
+graph census using Wolfram Language with access to the pinned public
+archives. The CSV frontier records evidence classifications.
+
+The PDF companion was typeset directly during the execution-runtime
+outage; it was not produced by running a TeX engine. This source can be
+compiled with \texttt{pdflatex report.tex} (twice for the contents).
+The source and companion report state the same construction and proof.
+\subsection*{PA194N5}
+Native table: \nolinkurl{e5bbe8edd0c9b204b799fb5b8fa1c7c685ad48276de1e58bb71b8154f5f02216}.
+
+Dense table: \nolinkurl{b521b1086ad29abdaf213feac2a3d2c0eb1bba7524c36e7f627763aeb2377b09}.
+\subsection*{PA194N6}
+Native table: \nolinkurl{63b6f604ee34ee119eb92ce3125021257204142854dec416c6b955f0560b975a}.
+
+Dense table: \nolinkurl{36da42a81d605ccb8b5edae197c7cde311447bd95b9bf1ab771a3e726a41c6f4}.
+\section{Sources and inherited proof dependencies}
+All repository links are fixed at commit
+\nolinkurl{1e407ae841e4666f932777fad977ba784ebbcfd5}.
+\begin{enumerate}
+\item ProveIt PA directory status and packet placement index:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/PA}.
+\item Primary PA194 source, compiler, seven folds and calibration:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13}.
+\item No-push controller and all-store proof compiler:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/docs/incoming/pa194N_conpa_2026-11-13.zip}.
+\item Generic constructor proof and uniform radix calibration:
+\url{https://github.com/VladimirReshetnikov/ProveIt/blob/1e407ae841e4666f932777fad977ba784ebbcfd5/docs/incoming/pa194_radix_family_2026-11-13.zip}.
+\item Imported James Chang source and restricted-implication templates:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/1e407ae841e4666f932777fad977ba784ebbcfd5/Computability/BusyBeaver/Research/PA/jamesyc-upstream/pa196}.
+\end{enumerate}
+The reference TeX fragments retain the parent arguments for the
+separate-head calculus, the original PA195 calibration, the no-push
+compiler at radix four, and the uniform radix proof. They are provenance
+and proof dependencies, not new formal theorems generated by this packet.
+
+\appendix
+\section{Bounded reduction searches}
+The following searches did not produce a table below 194 states.
+They are finite experiments, not lower bounds.
+\begin{itemize}
+\item Primary decoder reassociation, including occurrence-specific rotations.
+\item Radix-aware reassociation recognizing the already paid triple-increment macro.
+\item All 348 certified neutral one-row rewrites found by the
+radius-four, 80-step local-action search, each followed by another fold scan.
+\item The combined premise-exchanged and diagonal-D emitter:
+174,651 rotation attempts; best observed $134+69-6=197$.
+\item Diagonal-D with the radix-six multiplier:
+about 78,282 rotation attempts; best observed $135+69-9=195$.
+Creating the desired $41\to99$ helper displaced another fold.
+\end{itemize}
+No global minimality statement follows from these results.
+\end{document}
