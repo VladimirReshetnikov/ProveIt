@@ -30,8 +30,9 @@ parent startup checkpoint source. Lean checks each connecting run using
 `check-first-instruction.sh` rebuilds these modules and the first-instruction
 sentence after the source-frame suffix check. It relies on and pins selected
 retained prerequisite objects, but does not independently rebuild or pin the
-entire transitive dependency closure. A full independent dependency audit
-remains separate from this suffix replay.
+entire transitive dependency closure. A separate [coherent replay](FIRST-INSTRUCTION-COHERENT.md)
+rebuilt the machine-specific dependencies together before checking the fixed
+trace and iPRA sentence, while retaining general foundational overlays.
 
 Neither this fixed concrete trace nor the earlier startup theorem proves an
 arbitrary model-length controller simulation or either direction of
