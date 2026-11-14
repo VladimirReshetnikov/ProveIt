@@ -68,9 +68,10 @@ an end-to-end Lean proof of that claim or an iPRA proof.
   transition-table, and configuration-step functions in the PRA language.
   Their model equations are ingredients for a weak-arithmetic proof, not the
   missing machine/refutation reductions.
-- [Diagonal calibration](pa195-calibration/README.md) proves immediate
-  formula-code descent in classical PRA, including nonstandard models.
-  Recursive freshness and the proof-producing translation remain open.
+- [Diagonal calibration](pa195-calibration/README.md) constructs an
+  occurrence code and proves decoder self-freshness in classical PRA,
+  including its behavior in nonstandard models. The component codes are
+  supplied existentially; the proof-producing PA translation remains open.
 
 ## Other machines and related work
 
