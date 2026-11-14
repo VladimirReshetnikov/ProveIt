@@ -26,6 +26,9 @@ not prove the source controller simulation for arbitrary model-length runs,
 blank-to-refutation equivalence, either iPRA consistency implication, or the
 desired biconditional.
 
+The [source-frame decomposition](STARTUP-SOURCE-FRAME.md) further identifies
+the endpoint's controller header, permuted seed registers, and spare blocks.
+
 From the repository root, the full check can be run with:
 
 ```sh

@@ -211,7 +211,9 @@ For the physical simulation needed in both directions, the
 [blank startup](pa194/ipra/machine-code/DENSE-STARTUP.md) reaches state 24
 with the encoded source seed tape after the fixed 58,154-step clock in every
 candidate PRA model; the corresponding closed equality is also proved in
-native iPRA. This is a finite startup result, not a model-length simulation. The
+native iPRA. Its [source-frame decomposition](pa194/ipra/machine-code/STARTUP-SOURCE-FRAME.md)
+identifies the permuted seed register file and all spare blocks. This is a
+finite startup result, not a model-length simulation. The
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
 checks a nonstandard-model path under explicit header, positivity and blank
 suffix hypotheses. A [combined marker return](pa194/ipra/machine-code/ALL-SELECTED-MARKER-TO24.md)
