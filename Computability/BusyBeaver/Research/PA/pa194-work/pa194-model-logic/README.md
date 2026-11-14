@@ -43,6 +43,7 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelPathPrepend` | Prefixing a choice to a model-length path follows that edge and then continues through the former choice stack. |
 | `PA194ModelPathPrependDepth` | Prefixing a choice adds the parent’s binder bit to the path’s binder count. |
 | `PA194ModelPathReachability`, `PA194ModelPathReachabilityDef` | Operational path reachability with binder depth is reflexive, extends by a parent edge, and is uniformly Σ₁ in root, target, and depth. |
+| `PA194ModelDirectEdge`, `PA194ModelSourceChain` | Independently coded chains of source-child edges give operational paths, including for model-valued chain lengths. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -172,10 +173,13 @@ internal Σ₁ induction. The binder count of the prefixed path equals the paren
 binder bit plus the count of the remaining path. Operational `PathWithDepth`
 records an endpoint and binder count, has a zero-step witness, and extends by a
 parent edge. A finite code packs the step count and choice stack into one witness;
-this gives uniform Σ₁ definability in root, target, and depth. This operational
-relation is not an independent syntactic descendant relation. No theorem yet
-proves coverage of every internal subformula or semantic correctness of the full
-translation.
+this gives uniform Σ₁ definability in root, target, and depth. A separate relation defines each direct edge from the source constructors, and
+a model-coded chain requires each adjacent node pair to satisfy this relation.
+Internal Σ₁ induction converts every such chain, including nonstandard-length
+chains, into an operational path with some binder depth; a valid source root
+gives a valid target. This does not identify the coded-chain relation with a
+separately defined Foundation subformula predicate, prove that the translator
+visits every such node, or establish semantic correctness of the translation.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -187,7 +191,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelPathReachabilityDef` as the top module. On 2026-11-14, the path and
+`PA194ModelSourceChain` as the top module. On 2026-11-14, the path and
 dispatcher modules were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
