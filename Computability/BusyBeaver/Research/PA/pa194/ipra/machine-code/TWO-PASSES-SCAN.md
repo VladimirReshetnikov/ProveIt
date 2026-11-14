@@ -9,6 +9,10 @@ halves, preserving every input register and the entire arbitrary suffix. The
 proof uses the previously established open-induction scan theorem, so the
 header length can be nonstandard.
 
+The [selected-zero continuation](TWO-PASSES-ZERO.md) continues through the
+register decision and rollback when logical register 8 is zero, preserving the
+other registers and arbitrary suffix.
+
 `check-two-passes-scan.sh` rebuilds these three modules together with the six
 two-pass modules. It accepts the same five overlay variables documented in
 `TWO-HEADER-PASSES.md`, additionally pins `PA194ScanInvariant.olean`, and
