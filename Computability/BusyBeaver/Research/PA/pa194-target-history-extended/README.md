@@ -37,3 +37,8 @@ An ordered suffix replay rebuilt the four leaf/guard modules and then the
 final module in one fresh overlay, reusing previously checked history and
 Foundation prerequisites. A full nested replay of this wrapper has not yet
 been completed. The printed axiom dependencies contain no `sorryAx`.
+
+An independent suffix replay recompiled the extended-history module against
+the author's freshly rebuilt leaf/guard objects and separately checked history
+objects, reusing the remaining prerequisite overlays. Its reported theorem
+axioms did not include `sorryAx`.
