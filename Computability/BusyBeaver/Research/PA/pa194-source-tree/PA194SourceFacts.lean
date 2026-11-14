@@ -23,8 +23,29 @@ theorem entry_site : nthSite trie 25 = some entry := by decide +kernel
 
 theorem entry_instruction : resolveTree trie entry = some (.dec 8 (some 27) (some 26)) := by decide +kernel
 
+theorem continue_two_lookup :
+    lookup trie [true,false,true,true,true,true,true,true] = some 3670 := by decide +kernel
+
+theorem continue_two_site :
+    nthSite trie 3670 = some ⟨[true,false,true,true,true,true,true,true], .continueTo 2⟩ := by decide +kernel
+
+theorem decrement_six_lookup :
+    lookup trie [true,false,true,true,true,true,false] = some 3668 := by decide +kernel
+
+theorem decrement_six_site :
+    nthSite trie 3668 = some ⟨[true,false,true,true,true,true,false], .dec 6⟩ := by decide +kernel
+
+theorem continue_two_instruction :
+    resolveTree trie ⟨[true,false,true,true,true,true,true,true], .continueTo 2⟩ =
+      some (.jump (some 3668)) := by decide +kernel
+
 #print axioms site_count
 #print axioms branch_count
 #print axioms entry_site
 #print axioms entry_instruction
+#print axioms continue_two_lookup
+#print axioms continue_two_site
+#print axioms decrement_six_lookup
+#print axioms decrement_six_site
+#print axioms continue_two_instruction
 end PA194SourceFacts

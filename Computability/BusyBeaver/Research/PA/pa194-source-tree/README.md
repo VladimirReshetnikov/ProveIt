@@ -11,7 +11,10 @@ small grammar-to-Lean translator is an explicit source-generation boundary.
 3,673 source sites, 4,780 branch outcomes, and the exact entry site 25
 (path `100000`, decrement register 8, successors 27 and 26). These are
 standard-Lean source facts, not an internal PRA/iPRA simulation or a
-consistency theorem. Check from the repository root with:
+consistency theorem. It also verifies that path `10111111` is source site
+3670, `continueTo 2`, resolving to site 3668, and that site 3668 is the
+`dec 6` leaf at path `1011110`. These facts alone do not connect the source
+frame to a physical machine configuration. Check from the repository root with:
 
 ```sh
 Computability/BusyBeaver/Research/PA/pa194-source-tree/check.sh
