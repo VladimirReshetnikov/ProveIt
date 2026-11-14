@@ -10,9 +10,10 @@ history is preserved by that append.
 
 The construction supplies an all-model proof witness, but this package does
 not yet provide a fixed finite candidate-PRA code for the proof transformation.
-Modus-ponens closure of `TargetProvable`, correspondence to the upstream
-certificate encoding, source-proof compilation, and machine/calculus
-calibration remain open. This theorem alone does not prove a PA194/Con(PA)
+The separate [`pa194-target-proof-mp`](../pa194-target-proof-mp) package
+proves modus-ponens closure. Correspondence to the upstream certificate
+encoding, source-proof compilation, and machine/calculus calibration remain
+open. This theorem alone does not prove a PA194/Con(PA)
 implication.
 
 Run from the repository root with the matching audited Lean 4.32 overlays:
