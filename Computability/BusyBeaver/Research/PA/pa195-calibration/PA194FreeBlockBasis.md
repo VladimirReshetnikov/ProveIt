@@ -7,3 +7,4 @@
 This identifies a single opening beneath a model-length quantifier block. It does not yet compose those vectors across the full opening history, identify the final code with `subst (fvarVec n) p`, construct induction-axiom closure bodies, prove comprehension, or establish an iPRA implication.
 
 The author replay ran `check-free-block-basis.sh` against the pinned Foundation overlay, rebuilding seven local modules. Printed axioms are `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`.
+An independent complete replay also passed without `sorryAx`.

@@ -26,3 +26,4 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 The complete standalone script passed against the audited project and
 Foundation overlays, rebuilding the local chain and checking the upstream
 pins. The exported theorems' axiom audits contained no `sorryAx`.
+An independent complete replay also passed without `sorryAx`.
