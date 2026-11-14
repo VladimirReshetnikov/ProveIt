@@ -500,3 +500,15 @@ Check with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-equality-code.sh
 ```
+
+`PA194StackCode.lean` constructs PR head, tail, indexed drop, and lookup codes
+for Foundation's pair-plus-one vectors. Given candidate-PRA certificates for
+the auxiliary pairing projections, the head/tail equations and drop iterator
+base and successor equations hold in every candidate-PRA model, including at
+nonstandard indices. Suitable projection codes exist, but are not serialized.
+This is a storage component only: the source-translator history invariant and
+its reverse-index relationship to decoder children remain open. Recheck with:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-stack-code.sh
+```
