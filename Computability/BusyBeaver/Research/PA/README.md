@@ -186,8 +186,11 @@ halt yields a target proof of code 1. The [target-to-PA bridge](pa194-target-sou
 turns that proof into an internal PA refutation assuming the still-open guarded
 gate seed. The [distinct-label endpoint](pa194-distinct-gate-endpoint/README.md)
 discharges the equal-label gate case and narrows the premise to the remaining
-distinct-label separation tails. Neither result supplies the physical-machine
-connection.
+distinct-label separation tails. The model-length
+[universal-opening endpoint](pa195-calibration/PA194OpeningEndpoint.md) is
+now identified even for nonstandard codes; the required closed induction
+axiom bodies and distinct-label comprehension remain open. Neither result
+supplies the physical-machine connection.
 
 For the physical simulation needed in both directions, the
 [restricted marker-to-increment trace](pa194/ipra/machine-code/MARKER-TO-INCREMENT.md)
@@ -210,8 +213,10 @@ source-axiom proofs. Its [represented version](pa194-paeq-transport-sentence/REA
 is proved in IΣ₁ with that antecedent. The
 [finite-axiom classifier](pa194-finite-axiom-classifier/README.md) reduces
 the non-induction part of the supplier to its standard finite cases. The
-translated axiom proofs, arbitrary induction-schema supplier, numerical
-proof compiler and machine connection remain open.
+[equality-reflexivity case](pa194-paeq-refl-source/README.md) now has an
+explicit translated target proof. The remaining finite axiom proofs, arbitrary
+induction-schema supplier, numerical proof compiler and machine connection
+remain open.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation

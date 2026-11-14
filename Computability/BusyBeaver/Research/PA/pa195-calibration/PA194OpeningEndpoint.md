@@ -9,3 +9,4 @@
 The construction of such closure bodies for every internal K remains open. This package does not establish arbitrary-formula PA induction, bounded comprehension, the distinct-label gate, an iPRA implication, or the machine consistency equivalence.
 
 The author replay ran `check-opening-endpoint.sh` against the pinned Foundation overlay, rebuilding twelve local modules. Printed axioms contain only `propext`, `Classical.choice`, and `Quot.sound`, with no `sorryAx`.
+An independent complete replay also passed without `sorryAx`.
