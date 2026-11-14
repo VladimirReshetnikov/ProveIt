@@ -33,5 +33,5 @@ TMPDIR=/dev/shm IPRA_LEAN_OVERLAY=/path/to/ipra/lib \
 An independent ordered suffix replay rebuilt the fourteen listed controller
 and state-16 modules in a fresh tmpfs output directory, using separately checked
 marker/decrement objects and preserved scratch and prerequisite overlays. The
-reported theorem axioms did not include `sorryAx`. The full nested replay is
-running separately.
+reported theorem axioms did not include `sorryAx`. The full author nested replay
+also passed with the audited overlays.

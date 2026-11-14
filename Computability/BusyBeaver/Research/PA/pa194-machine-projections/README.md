@@ -26,3 +26,7 @@ IPRA_LEAN_OVERLAY=/path/to/project/lib \
 The final module was rebuilt against previously checked prerequisite objects.
 A full nested replay of this wrapper has not yet been completed. Its printed
 axiom dependencies contain no `sorryAx`.
+
+An independent suffix replay also rebuilt the final module against the retained
+prerequisite overlays. Its printed theorem dependencies contain no `sorryAx`;
+this does not constitute a fresh nested replay of the prerequisites.

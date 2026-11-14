@@ -37,5 +37,5 @@ dependencies.
 
 An independent suffix replay rebuilt both new modules against separately
 checked marker-cycle and decrement objects and preserved prerequisites, with no
-`sorryAx` in the reported dependencies. The full nested replay is running
-separately.
+`sorryAx` in the reported dependencies. The full author nested replay also
+passed using the audited overlays.

@@ -51,4 +51,4 @@ modules and rejects `sorryAx` in reported theorem dependencies.
 An independent suffix replay rebuilt the two new modules in a fresh tmpfs
 overlay against separately checked state-42, marker-cycle, and preserved
 decrement prerequisites, with no `sorryAx` in their reported dependencies.
-The complete nested replay is running separately.
+The complete author nested replay also passed using the audited overlays.

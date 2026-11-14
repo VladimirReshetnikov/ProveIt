@@ -31,5 +31,5 @@ TMPDIR=/dev/shm IPRA_LEAN_OVERLAY=/path/to/ipra/lib \
 
 An independent suffix replay rebuilt the two new modules against separately
 checked marker and decrement objects, reusing preserved prerequisites. The
-reported theorem axioms did not include `sorryAx`; the full nested replay is
-running separately.
+reported theorem axioms did not include `sorryAx`; the full author nested
+replay also passed using the audited overlays.
