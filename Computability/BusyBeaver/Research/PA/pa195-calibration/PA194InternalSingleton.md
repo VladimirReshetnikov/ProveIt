@@ -27,3 +27,7 @@ matching audited `IPRA_LEAN_OVERLAY` and `IPRA_FOUNDATION_OVERLAY`. Because of
 disk I/O pressure, the present check was a focused single-module rebuild
 against retained prerequisite objects; it passed with no `sorryAx`. The full
 nested rebuild is deferred.
+
+An independent suffix replay rebuilt the singleton module against separately
+checked diagonal and earlier source objects, with retained deeper prerequisite
+overlays. It passed without `sorryAx`; this was not a full prerequisite replay.

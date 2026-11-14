@@ -28,3 +28,8 @@ The three modules passed an author suffix rebuild against previously checked
 prerequisite overlays, with `propext`, `Classical.choice`, and `Quot.sound`
 as their reported axioms and no `sorryAx`. The full nested checker
 `check-marker-zero-continue.sh` is supplied but has not been run.
+
+An independent ordered suffix replay rebuilt all three combined-marker modules
+against separately checked zero-first and positive-first continuation objects
+and retained deeper prerequisites. It passed without `sorryAx`; this was not
+a full nested replay.
