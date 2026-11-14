@@ -17,8 +17,10 @@ invariant. `targetProof_sound` instantiates that invariant for an arbitrary
 Σ₁ predicate, retaining its head1, MP, generalization, and leaf closure
 assumptions.
 
-Closure of `TargetProvable` itself under MP and generalization is still open;
-it requires combining proof histories and accounting for their line indices.
+The separate [`pa194-target-proof-generalize`](../pa194-target-proof-generalize)
+package proves model-uniform generalization closure. Closure under MP is
+still open; it requires combining proof histories and accounting for their
+line indices.
 This independent line encoding is not yet identified with the upstream
 certificate format, and source-proof compilation and machine/calculus
 calibration remain open. These results alone do not prove a PA194/Con(PA)
@@ -36,3 +38,7 @@ The final module was rebuilt against the freshly rebuilt actual-length module
 and the previously checked history suffix. A full nested replay of this
 wrapper has not yet been completed. Its printed axiom dependencies contain
 no `sorryAx`.
+
+An independent suffix replay recompiled this module against the separately
+checked vector-length and target-history objects, reusing the other prerequisite
+overlays. Its reported theorem axioms did not include `sorryAx`.
