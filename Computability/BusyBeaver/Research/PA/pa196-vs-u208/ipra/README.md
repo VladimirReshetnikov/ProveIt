@@ -122,8 +122,13 @@ majorant by one stage when the arithmetic reduct also models IΣ₁. The bound
 for the full substitution recursion stage remains open.
 `PA196PAQVecTraceInvariant.lean` proves by IΣ₁ induction that a coded qVec
 trace is bounded by a coded majorant trace at every model index, assuming the
-initial comparison and both trace-transition properties. Constructing those
-traces and relating them to the substitution stage remains open.
+initial comparison and both trace-transition properties. Constructing traces
+in that vector encoding and relating them to the substitution stage remains
+open.
+`PA196PAQVecSeqTrace.lean` constructs coded qVec and majorant sequences at
+every model-internal length in IΣ₁ models, and proves their result comparison
+at every model index. Identifying the majorant result with the candidate-PRA
+tower and relating qVec iteration to the substitution stage remain open.
 `PA196PASubstitutionClauses.lean` proves the ten positive constructor-clause
 witness bounds for arithmetic formula substitution, and
 `PA196PASubstitutionNegative.lean` proves six negative constructor clauses.
