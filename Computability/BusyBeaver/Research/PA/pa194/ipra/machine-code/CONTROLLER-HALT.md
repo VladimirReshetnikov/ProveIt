@@ -34,4 +34,4 @@ in the reported theorems.
 An independent suffix replay rebuilt the new controller modules in order in a
 fresh temporary overlay, reusing the preserved marker prerequisites. The
 printed dependencies had no `sorryAx`. The nested replay command above also rebuilds the
-prerequisite chain; its full run is in progress.
+prerequisite chain; the full author replay passed with the audited overlays.

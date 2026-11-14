@@ -159,6 +159,13 @@ separately reduce each iPRA implication to its corresponding all-model
 machine/refutation implication. Neither of those machine-specific premises is
 proved yet; the earlier standard-run source simulation does not supply them.
 
+For the compiler's internal syntax operations, fixed candidate-PRA codes now
+have all-model correctness proofs for [source formula shift](pa194-source-formula-shift-code-model/README.md)
+and [arithmetic formula closing](pa195-calibration/PA194FormulaAgreement.md).
+These cover nonstandard valid formulas in candidate PRA models with IΣ₁
+reducts. They are components of the compiler, not a translation of arbitrary
+PA proofs or a verification of source execution.
+
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
 `Calibrated T h` from which the iPRA equivalence follows. No table is shown to be calibrated.
