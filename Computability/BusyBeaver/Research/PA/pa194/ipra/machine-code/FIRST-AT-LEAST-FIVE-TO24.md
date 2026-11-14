@@ -26,3 +26,7 @@ The new module passed an author suffix rebuild against previously checked
 prerequisite overlays, with `propext`, `Classical.choice`, and `Quot.sound`
 as its reported axioms and no `sorryAx`. The full nested checker
 `check-first-at-least-five-to24.sh` is supplied but has not been run.
+
+An independent suffix replay rebuilt the combined theorem against separately
+checked first-five, first-six and larger-first-value branches. It passed
+without `sorryAx`; this was not a full nested replay.

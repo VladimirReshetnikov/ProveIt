@@ -24,3 +24,7 @@ The four modules passed ordered Lean suffix checks against the checked PAeq
 translation-validity module and retained project/Foundation prerequisites;
 printed dependencies omit `sorryAx`. The full standalone replay remains
 pending.
+
+An independent ordered suffix replay rebuilt all four shift, qVec and
+term-substitution compatibility modules against separately checked PAeq
+prerequisites. It passed without `sorryAx`; this was not a full nested replay.
