@@ -172,7 +172,11 @@ formula codes. The corresponding candidate-PRA witness bound remains open.
 `PA196PASubstitutionWitness.lean` derives the substitution-graph witness bound
 from two explicit remaining conditions: a classical PRA proof that the tower
 term dominates its arithmetic graph, and monotonicity of the term in the
-candidate-PRA model. Neither condition is established here.
+candidate-PRA model. `PA196PRAQVecTowerMonotone.lean` proves monotonicity in
+every candidate-PRA model, and `PA196PASubstitutionWitnessDomination.lean`
+therefore leaves only the classical PRA domination proof as a hypothesis.
+The TowerGraphStep and TowerCSeq modules establish preliminary properties of
+the arithmetic tower graph in candidate-PRA models; domination remains open.
 
 `PA196PRAAssembly.lean` composes the two conditional transfers with the
 intuitionistic endpoint. Its equivalence in standard iPRA has three explicit
