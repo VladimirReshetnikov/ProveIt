@@ -17,7 +17,8 @@ recursive `PA194TermShiftPR.termShiftCode`.
 
 The repository source file passes its ordered local dependency-overlay check.
 The printed theorems depend on `[propext, Classical.choice, Quot.sound]` and do
-not depend on `sorryAx`. The full nested standalone script remains untested.
+not depend on `sorryAx`. An independent full nested standalone replay also passed from a fresh tmpfs
+directory using the audited Foundation overlay.
 
 These are model-uniform term-level results. They do not identify the chosen
 candidate-PRA function symbol's interpretation with the algorithm on
