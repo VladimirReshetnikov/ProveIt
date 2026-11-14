@@ -12,8 +12,9 @@ and successor remaining-selected cases reach state 13 with an even right tape
 half. The next physical transition then reaches state 14. The proof witnesses appear in `PA194FirstFourPositiveTo13.lean`; the theorem
 statements retain existential tape halves.
 
-Lean compiled this module against previously checked prerequisite objects and
-reported no `sorryAx`. The nested replay wrapper was syntax checked but not
-run for this change. This does not establish blank-start reachability,
+Lean compiled this module against previously checked prerequisite objects.
+A full nested replay of `check-first-four-positive-to14.sh` also passed,
+rebuilding its machine-code chain against retained prerequisite overlays and
+reporting no `sorryAx`. This does not establish blank-start reachability,
 source-frame simulation, or either consistency implication for the literal
 machine.

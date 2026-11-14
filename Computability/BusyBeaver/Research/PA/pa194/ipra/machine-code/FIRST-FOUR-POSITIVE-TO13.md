@@ -14,8 +14,9 @@ The statements retain existential final tape halves; the proofs exhibit the
 corresponding witnesses, but their precise forms are not exported as theorem
 conclusions.
 
-The module was compiled against previously checked prerequisite objects; its
-reported axioms do not include `sorryAx`. The nested wrapper provides a fresh
-replay of its module chain but was not run for this change. This conditional
+The module was compiled against previously checked prerequisite objects and
+rebuilt in the full nested machine-code chain through
+`check-first-four-positive-to14.sh`. That run used retained prerequisite
+overlays and reported no `sorryAx`. This conditional
 path does not establish blank-tape reachability, a source-frame simulation, or
 either consistency implication for the literal 194-state machine.
