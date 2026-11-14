@@ -27,3 +27,7 @@ The four new modules passed an author suffix rebuild against previously
 checked prerequisite overlays, with `propext`, `Classical.choice`, and
 `Quot.sound` as their reported axioms and no `sorryAx`. The full nested
 checker `check-first-three-first-split.sh` is supplied but has not been run.
+
+An independent ordered suffix replay rebuilt all four first-three split modules
+against separately checked marker/controller objects and retained deeper
+overlays. It passed without `sorryAx`; this was not a full nested replay.
