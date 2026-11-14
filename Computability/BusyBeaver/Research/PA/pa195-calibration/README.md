@@ -398,3 +398,16 @@ open. Check with the audited overlays using:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-eq-atom.sh
 ```
+
+`PA194BVarCode.lean` supplies an explicit PR constructor for Foundation's
+bound-variable term encoding and a candidate-PRA proof of its graph. The
+separate `PA194QuadCode.lean` supplies a generic four-field tagged constructor
+and a candidate-PRA graph proof; its tag-2 specialization is checked against
+Foundation's `qqFuncDef` in every candidate-PRA model. These are components
+for compiling the fixed bounded bit formula, whose helper variables must
+remain bound; the formula compiler and substitution correctness remain open.
+Recheck both with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-bit-syntax-codes.sh
+```
