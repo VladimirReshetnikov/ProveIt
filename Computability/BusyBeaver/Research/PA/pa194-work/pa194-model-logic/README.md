@@ -33,6 +33,9 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelFormulaUniquenessF` | The same bounded/root uniqueness argument applies to a Σ₁-definable model function satisfying constructor equations on valid children. |
 | `PA194ModelFormulaSpecification` | An independent Foundation structural recursion satisfies those equations, and agrees with the packed history on valid formulas at budgets at least the formula code. |
 | `PA194ModelFormulaTranslation` | A finite candidate-PRA `Code 5` packages the root translation and agrees with the independent reference for all valid model formulas, including nonstandard codes. |
+| `PA194ModelFormulaFreshness`, `PA194ModelEnvironmentFreshness` | Binder labels and bounded entries of reconstructed bound stacks are below a reserved label under explicit allocation and initial-stack bounds. |
+| `PA194ModelSourceIndexBound`, `PA194ModelAtomicFreshness` | Source-atom variable indices are below the atom code, and the selected labels are fresh under explicit ceiling and environment bounds. |
+| `PA194ModelSourcePath` | A finite PRA code follows source-formula child paths for arbitrary model-length step counts; visited node codes are bounded by the root. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed
@@ -118,8 +121,31 @@ identifies the reference on standard typed formulas with the existing host
 neighborhood-equality translation also requires
 the reserved label to be fresh for the initial environments and all labels
 allocated under binders. The constructor equations and source-syntax validity
-do not establish that freshness invariant. PA proof transport and the physical
-machine correspondence remain open.
+do not by themselves establish that freshness invariant. `currentBinder_lt_reserved`
+proves a binder label is strictly below the reserve when the parent budget is
+positive, bounded by the ceiling, and `base + ceiling ≤ reserve`. Internal
+Σ₁ induction proves the same strict bound for entries at indices at most the
+ceiling in reconstructed bound stacks, assuming it for the initial stack and
+that the number of entered binders is at most the ceiling.
+
+For any internally valid arity-two source atom, every bound/free index in its
+two terms is strictly below the numeric atom code. If that code is at most the
+ceiling, both selected labels are below the reserve under the bound-stack
+invariant and a separate strict bound on free-stack entries. These statements
+do not establish the initial or free-stack bounds, propagate the atom-code bound
+through every node of a compound formula, or prove semantic preservation. PA
+proof transport and the physical machine correspondence remain open.
+
+`sourcePath` iterates a finite child-selection code using choices from an
+encoded stack. Boolean tags select one child, quantifier tags select the body,
+and atomic/truth/falsity or unrecognized tags stay at the current node.
+Internal Σ₁ induction proves every visited node is at most the root, even for
+nonstandard step counts. At a visited valid source atom, its variable indices
+are therefore below the root, and its labels are fresh under the explicit
+initial-bound/free-stack bounds, `base + root ≤ reserve`, and a separately
+supplied allocation depth `n ≤ root`. No theorem yet shows every internal
+syntactic subformula is reachable by a coded path or identifies `n` with the
+number of binders traversed.
 
 The entries of a context and the parameters of every theorem are arbitrary elements of `M`,
 so they cover nonstandard formula codes. What is standard is the shape of each derivation.
@@ -131,8 +157,8 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check.sh 
 ```
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with
-`PA194ModelFormulaTranslation` as the top module. On 2026-11-14, all fifteen
-modules in this directory were rebuilt against a retained combined overlay.
+`PA194ModelSourcePath` as the top module. On 2026-11-14, all twenty modules in
+this directory were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
 prerequisites; these were suffix checks, not empty-overlay replays.

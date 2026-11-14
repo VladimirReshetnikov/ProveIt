@@ -22,6 +22,9 @@ the exact tape relations and accept arbitrary model-valued tails. This is one
 header pass, not yet a complete source zero-branch instruction or either PA
 consistency reduction.
 
+The [two-pass continuation](TWO-HEADER-PASSES.md) composes this result with a
+second root pass and retains the complete source file and arbitrary suffix.
+
 `check-seed-header-pass.sh` rebuilds the source-frame and header modules,
 checks selected direct source/object hashes, and rejects `sorryAx`. It retains
 transitive prerequisite objects from the documented overlays, so this is a
