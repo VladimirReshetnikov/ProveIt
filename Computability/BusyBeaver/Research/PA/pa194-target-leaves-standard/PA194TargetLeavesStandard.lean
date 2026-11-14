@@ -187,6 +187,11 @@ noncomputable def diagonal_derivation (c : Nat) :
 #print axioms eval_head6
 #print axioms eval_rho8
 #print axioms eval_diagonal
+#print axioms head2_derivation
+#print axioms head3_derivation
+#print axioms head4_derivation
+#print axioms head5_derivation
+#print axioms head6_derivation
 #print axioms rho8_derivation
 #print axioms diagonal_derivation
 end PA194TargetLeavesStandard
