@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+: "${IPRA_FOUNDATION_OVERLAY:?Set IPRA_FOUNDATION_OVERLAY to the matching audited Lean 4.32 Foundation object directory}"
+: "${IPRA_LEAN_OVERLAY:?Set IPRA_LEAN_OVERLAY to the matching audited project object directory}"
+base=Computability/BusyBeaver/Research/PA
+root=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-target-leaves-standard.XXXXXXXX")
+trap 'rm -rf "$root"' EXIT
+mkdir -p "$root/leaves" "$root/final"
+export PA194_LEAVES_STANDARD_ROOT="$root/leaves"
+python3 - "$base/pa194-target-leaves/check.sh" "$root/leaves-prerequisites.sh" <<'PY'
+from pathlib import Path
+import sys
+s=Path(sys.argv[1]).read_text()
+old='root=$(mktemp -d "${TMPDIR:-/dev/shm}/pa194-target-leaves.XXXXXXXX")'
+trap='trap \'rm -rf "$root"\' EXIT'
+if s.count(old) != 1 or s.count(trap) != 1:
+    raise SystemExit('unexpected target leaves prerequisite wrapper')
+s=s.replace(old,'root=$PA194_LEAVES_STANDARD_ROOT',1).replace(trap,'',1)
+Path(sys.argv[2]).write_text(s)
+PY
+bash -n "$root/leaves-prerequisites.sh"
+bash "$root/leaves-prerequisites.sh"
+leaves="$root/leaves"
+parent="$leaves/parent"
+inversion="$parent/inversion"
+graph="$inversion/graph"
+fields="$graph/fields"
+choice="$fields/choice"
+preimage="$choice/parent"
+setroot="$preimage/parent"
+search="$setroot/search"
+source="$search/dependency"
+export LEAN_PATH="$root/final:$leaves/final:$parent/final:$inversion/final:$graph/final:$fields/final:$choice/final:$preimage/final:$setroot/final:$search/final:$source/final:$source/update:$source/source/final:$source/source/prereq/final:$source/source/prereq/model:$source/source/prereq/source:$parent/compiler:$IPRA_LEAN_OVERLAY:$IPRA_FOUNDATION_OVERLAY:$(lake env printenv LEAN_PATH)"
+lean -M6000 -j1 -o "$root/final/PA194TargetHead1Standard.olean" "$base/pa194-target-head1-standard/PA194TargetHead1Standard.lean"
+lean -M6000 -j1 -o "$root/final/PA194TargetLeavesStandard.olean" "$base/pa194-target-leaves-standard/PA194TargetLeavesStandard.lean" | tee "$root/final/axioms.log"
+if rg -q 'sorryAx' "$root/final/axioms.log"; then
+  echo 'Unexpected sorryAx in target leaf standard bindings' >&2
+  exit 1
+fi

@@ -10,9 +10,11 @@ model, including nonstandard inputs, using the triangular pairing code from
 These theorems specify formula *generation*. In particular, the module does
 not prove the `rho8` guard, a target proof-history checker, a connection to
 standard target derivations, or a machine/calculus equivalence. The names and
-formula shapes follow `reverse-cert-stack/CertificateStack.lean`; the exact
-standard-model equalities and the remaining rule and proof-history correctness
-are separate obligations.
+formula shapes follow `reverse-cert-stack/CertificateStack.lean`. The separate
+[`pa194-target-leaves-standard`](../pa194-target-leaves-standard) package
+proves the exact standard-model equalities and constructs the corresponding
+standard numerical-calculus derivations, with the `rho8` guard explicit.
+The remaining rule and proof-history correctness are separate obligations.
 
 Run from the repository root with the matching audited Lean 4.32 overlays:
 
