@@ -36,7 +36,10 @@ checked numerical witness and retained scheduler/gate prerequisite objects.
 `check-modeled-halt-suffix.sh` reproduces that suffix with ordered prerequisite
 objects. `check-modeled-halt.sh` additionally rebuilds the nested source and
 scheduler endpoint chain but still requires separately supplied general-witness
-prerequisite objects; a complete run of that wrapper remains in progress.
+prerequisite objects. An equivalent instrumented run of that nested rebuild
+passed, including the numerical gate and modeled-halt theorem, without
+`sorryAx`; its general-witness prerequisites were supplied from separately
+checked retained objects.
 
 `PA194ModeledHaltIPRA.consistency_implies_modeled_nonhalt` transfers that
 all-model result into the actual syntactic iPRA derivation
