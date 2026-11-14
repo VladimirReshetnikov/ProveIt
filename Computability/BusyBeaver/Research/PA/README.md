@@ -140,3 +140,7 @@ the repository, as `docs/README.md` describes, until it reads the placed files i
 consistency and the negation of the mapped sentence `∃ t, δ t`, given the PA witness
 certificate. It is independent of the machine and proves no machine equivalence. Its use is
 that a machine reduction may be proved in models of `𝗜𝚺₁` instead of models of candidate PRA.
+
+[`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
+table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
+`Calibrated T h` from which the iPRA equivalence follows. No table is shown to be calibrated.
