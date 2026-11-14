@@ -868,6 +868,10 @@ theories and their bridge", which now has a section on two alternative bases: fo
 iteration with tail induction (from `local_validation`) and the binder-free calculus `PF` of
 programs on environments with surjective pairing (from `composition`), each bi-interpretable
 with iPRA; the stack-clock checker, superseded on delivery, was deleted.
+The repository's own `Artifacts/mutation_audit/` searches the single-step reductions of a checker
+against the delivered streams; it found that one two-token reduction of the 239-token stream
+checker passes every delivered test and is unsound, with a 19-packet certificate of a false goal
+(chapter "Certificates and checkers", `cert:prop:discharge-fresh`).
 `checked_presentation`, `context_phase`, `crossed_uniqueness`,
 `frontier_review`, `inferred_major`, `orbit_closure`, `progress_independence`
 and `smaller_envelope` arrived on 2026-11-12 (commits `1c5ecfe518`,
