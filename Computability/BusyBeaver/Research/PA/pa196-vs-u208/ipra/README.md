@@ -143,6 +143,8 @@ actual substitution branch shapes, and the Phi and StageChild modules show
 that an actual successor-stage node is atomic or has a prior-stage child with
 that branch relation. A coded path extractor, bounds for both children of
 branching nodes, and the full substitution-stage bound remain open.
+`PA196PAQVecTowerAlgebra.lean` proves seed and index monotonicity and
+composition of the arithmetic iterator at model-internal indices.
 The StageCases and StageResults modules also record both previous-stage
 children and the parent-result equations for binary branches. StageSize proves
 that a node in a stage is smaller than that stage; this is a lower bound on the

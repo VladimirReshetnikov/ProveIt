@@ -92,6 +92,7 @@ lean -M6000 -j1 "$bridge/PA196PRAQVecTraceTotal.lean" -o "$PA196_TASK_CHECK_DIR/
 lean -M6000 -j1 "$bridge/PA196PAQVecTowerModel.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAQVecTowerModel.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecTraceInvariant.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecSeqTrace.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAQVecSeqTrace.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
+lean -M6000 -j1 "$bridge/PA196PAQVecTowerAlgebra.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecTowerConnect.lean" -o "$PA196_TASK_CHECK_DIR/PA196PAQVecTowerConnect.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PAQVecPathBound.lean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
 lean -M6000 -j1 "$bridge/PA196PASubstitutionPath.lean" -o "$PA196_TASK_CHECK_DIR/PA196PASubstitutionPath.olean" | tee -a "$PA196_TASK_CHECK_DIR/axioms.log"
