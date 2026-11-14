@@ -26,7 +26,8 @@ two instances whose abstraction is the matrix itself:
   at `y = S 0` is `aqE` at the term `S 0` (`BMKernel.congZero`).
 
 The introductions are needed only at the witness `0` with the assumption
-unused (`BMKernel.dI0`, which gives `QI` with the assumption unused).  For
+unused: `QI` for a literal equation with the assumption unused (`BMKernel.qI`), and
+the closure of the name for zero, which the last step takes as a hypothesis `hZ`.  For
 `AmPrf` the recovery of `QE` and of the kernel's introductions is the generic
 one of `AKernel`; for `Bm7Prf` it is that of `WKernel`.
 -/
@@ -109,8 +110,8 @@ end Tm
 
 /-- The rules used by the bootstrap of `BRep⁻` (`kern:lem:bmeq`,
 `kern:lem:bzero`): computation, `BRep⁻`, elimination by abstraction, `DE`,
-introduction at the witness `0` with the assumption unused, and the structural
-rules. -/
+`QI` at a literal equation with the assumption unused, and the structural
+rules.  The closure of the name for zero is a hypothesis of `congZero`. -/
 class BMKernel (P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop) : Prop where
   hyp : ∀ {n : ℕ} {Γ : List (NFm n)} {A : NFm n}, A ∈ Γ → P Γ A
   iterZero : ∀ {n : ℕ} {Γ : List (NFm n)} (a : Tm n) (h : Tm (n + 1)),
@@ -123,9 +124,8 @@ class BMKernel (P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop) : Prop where
     P Γ (NFm.rep t zero A) → P Γ A
   dE : ∀ {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 2)} {A : NFm n}, P Γ (.D B) →
     P (.Q B :: Γ.map NFm.shift) A.shift → P Γ A
-  dI0 : ∀ {n : ℕ} {Γ : List (NFm n)} (B : NFm (n + 2)),
-    P (Γ.map NFm.shift) ((B.subst (up (inst zero))).subst (repl (succ (Syn.var 0)))) →
-    P Γ (.D B)
+  qI : ∀ {n : ℕ} {Γ : List (NFm n)} (a b : Tm (n + 1)),
+    P (Γ.map NFm.shift) ((NFm.eq a b).subst (repl (succ (Syn.var 0)))) → P Γ (.Q (.eq a b))
   weaken : ∀ {n : ℕ} {Γ Δ : List (NFm n)} {A : NFm n}, P Γ A → Γ ⊆ Δ → P Δ A
   shift : ∀ {n : ℕ} {Γ : List (NFm n)} {A : NFm n}, P Γ A → P (Γ.map NFm.shift) A.shift
 
@@ -136,16 +136,6 @@ variable {P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop} [BMKernel @P] {Γ 
 theorem hyp0 {A : NFm n} : P (A :: Γ) A := hyp List.mem_cons_self
 
 theorem wk {A B : NFm n} (h : P Γ A) : P (B :: Γ) A := weaken h (List.subset_cons_self _ _)
-
-/-- `QI` with the assumption unused, by the introduction at the witness `0` of
-the closure with a dummy first variable. -/
-theorem qI (B : NFm (n + 1)) (h : P (Γ.map NFm.shift) (B.subst (repl (succ (Syn.var 0))))) :
-    P Γ (.Q B) := by
-  have hD : P Γ (.D (B.subst (up (fun i => Syn.var i.succ)))) := by
-    refine dI0 _ ?_
-    rw [NFm.subst_dummy_inst]
-    exact h
-  exact dE hD hyp0
 
 /-- (i) Joining at a source other than `0`. -/
 theorem jn {s t r : Tm n} (hs : s ≠ zero) (h₁ : P Γ (.eq s t)) (h₂ : P Γ (.eq s r)) :
@@ -172,7 +162,7 @@ theorem iterSelf (p : Tm n) : P Γ (.eq (iter p p (Syn.shift p)) p) := by
       = .eq (iter (Syn.var 0) (Syn.var 0) (Syn.shift (Syn.var 0))) (Syn.var 0) := by
     simp only [NFm.abs, NFm.rpl, Tm.rpl, if_neg hne, Tm.rpl_root]
   refine aqE p ?_ ?_
-  · rw [hab]; refine qI _ ?_
+  · rw [hab]; refine qI _ _ ?_
     simpa [Syn.subst_shift] using iterSucc (P := @P) (Γ := Γ.map NFm.shift) (Syn.var 0)
       (succ (Syn.var 0)) (Syn.shift (succ (Syn.var 0)))
   · rw [← NFm.abs_inst, hab]
@@ -226,13 +216,12 @@ def zname : NFm (n + 2) :=
   .eq (iter (Syn.var 0) zero (Syn.var (Fin.succ (Fin.succ 0)))) (iter (Syn.var 0) zero zero)
 
 /-- Congruence at a zero endpoint (`kern:lem:bzero`). -/
-theorem congZero (h : Tm (n + 1)) {t : Tm n} (e : P Γ (.eq zero t)) :
+theorem congZero (hZ : ∀ (n : ℕ) (Γ : List (NFm n)), P Γ (.D (zname (n := n))))
+    (h : Tm (n + 1)) {t : Tm n} (e : P Γ (.eq zero t)) :
     P Γ (.eq (Syn.subst (inst zero) h) (Syn.subst (inst t) h)) := by
   by_cases ht : t = zero
   · subst ht; exact eqRefl _
-  have hD : P Γ (.D (zname (n := n))) :=
-    dI0 _ (eqRefl (P := @P) (Γ := Γ.map NFm.shift) (iter (succ (Syn.var 0)) zero zero))
-  refine dE hD ?_
+  refine dE (hZ _ Γ) ?_
   -- over `Δ = Q_y E(b, y), Γ` with the eigenvariable `b = 0`
   have hQ : P (.Q zname :: Γ.map NFm.shift) (.Q zname) := hyp0
   have hE0 : P (.Q zname :: Γ.map NFm.shift) ((zname (n := n)).subst (inst zero)) := by
@@ -262,21 +251,45 @@ theorem congZero (h : Tm (n + 1)) {t : Tm n} (e : P Γ (.eq zero t)) :
   exact k
 
 /-- Congruence from `s = t` in every case. -/
-theorem cong (h : Tm (n + 1)) {s t : Tm n} (e : P Γ (.eq s t)) :
+theorem cong (hZ : ∀ (n : ℕ) (Γ : List (NFm n)), P Γ (.D (zname (n := n))))
+    (h : Tm (n + 1)) {s t : Tm n} (e : P Γ (.eq s t)) :
     P Γ (.eq (Syn.subst (inst s) h) (Syn.subst (inst t) h)) := by
   by_cases hs : s = zero
-  · subst hs; exact congZero h e
+  · subst hs; exact congZero hZ h e
   by_cases ht : t = zero
-  · subst ht; exact eqSymm (congZero h (eqSymm e))
+  · subst ht; exact eqSymm (congZero hZ h (eqSymm e))
   exact congNZ h hs ht e
 
 /-- Transport in an equation template. -/
-theorem trEq (a b : Tm (n + 1)) {s t : Tm n} (e : P Γ (.eq s t))
+theorem trEq (hZ : ∀ (n : ℕ) (Γ : List (NFm n)), P Γ (.D (zname (n := n))))
+    (a b : Tm (n + 1)) {s t : Tm n} (e : P Γ (.eq s t))
     (h : P Γ (.eq (Syn.subst (inst s) a) (Syn.subst (inst s) b))) :
     P Γ (.eq (Syn.subst (inst t) a) (Syn.subst (inst t) b)) :=
-  eqTrans (eqSymm (cong a e)) (eqTrans h (cong b e))
+  eqTrans (eqSymm (cong hZ a e)) (eqTrans h (cong hZ b e))
+
+/-- The premise of the introduction of the name for zero at the witness `0`. -/
+theorem znameStep : P (Γ.map NFm.shift)
+    (((zname (n := n)).subst (up (inst zero))).subst (repl (succ (Syn.var 0)))) :=
+  eqRefl (P := @P) (Γ := Γ.map NFm.shift) (iter (succ (Syn.var 0)) zero zero)
 
 end BMKernel
+
+/-- `QI` with the assumption unused, from an introduction at the witness `0`: introduce
+the closure with a dummy first variable and open it. -/
+theorem NFm.qI_of_dI0 {P : ∀ {n : ℕ}, List (NFm n) → NFm n → Prop}
+    (hyp : ∀ {n : ℕ} {Γ : List (NFm n)} {A : NFm n}, A ∈ Γ → P Γ A)
+    (dE : ∀ {n : ℕ} {Γ : List (NFm n)} {B : NFm (n + 2)} {A : NFm n}, P Γ (.D B) →
+      P (.Q B :: Γ.map NFm.shift) A.shift → P Γ A)
+    (dI0 : ∀ {n : ℕ} {Γ : List (NFm n)} (B : NFm (n + 2)),
+      P (Γ.map NFm.shift) ((B.subst (up (inst zero))).subst (repl (succ (Syn.var 0)))) →
+      P Γ (.D B))
+    {Γ : List (NFm n)} (B : NFm (n + 1))
+    (h : P (Γ.map NFm.shift) (B.subst (repl (succ (Syn.var 0))))) : P Γ (.Q B) := by
+  have hD : P Γ (.D (B.subst (up (fun i => Syn.var i.succ)))) := by
+    refine dI0 _ ?_
+    rw [NFm.subst_dummy_inst]
+    exact h
+  exact dE hD (hyp List.mem_cons_self)
 
 /-- `A₇` with backward replacement at sources other than the literal `0`. -/
 inductive AmPrf : {n : ℕ} → List (NFm n) → NFm n → Prop
@@ -381,11 +394,16 @@ end AmPrf
 instance : BMKernel @AmPrf :=
   ⟨fun h => .hyp h, fun a h => .iterZero a h, fun c a h => .iterSucc c a h,
     fun hs h₁ h₂ => .bRep hs h₁ h₂, fun t h₁ h₂ => .aqE t h₁ h₂, fun h₁ h₂ => .dE h₁ h₂,
-    fun B h => .dI B zero h.wk, fun h s => h.weaken s, fun h => h.shift⟩
+    fun a b h => NFm.qI_of_dI0 (P := @AmPrf) (fun h => .hyp h) (fun h₁ h₂ => .dE h₁ h₂)
+      (fun B h => .dI B zero h.wk) (.eq a b) h,
+    fun h s => h.weaken s, fun h => h.shift⟩
+
+theorem AmPrf.dZ (n : ℕ) (Γ : List (NFm n)) : AmPrf Γ (.D (BMKernel.zname (n := n))) :=
+  .dI _ zero (AmPrf.wk (BMKernel.znameStep (P := @AmPrf)))
 
 instance : AKernel @AmPrf :=
   ⟨fun h => .hyp h, fun a h => .iterZero a h, fun c a h => .iterSucc c a h,
-    fun a b => BMKernel.trEq a b, fun t h₁ h₂ => .aqE t h₁ h₂, fun h₁ h₂ => .dE h₁ h₂,
+    fun a b => BMKernel.trEq AmPrf.dZ a b, fun t h₁ h₂ => .aqE t h₁ h₂, fun h₁ h₂ => .dE h₁ h₂,
     fun B t h => .dI B t h, fun h s => h.weaken s, fun h => h.shift⟩
 
 /-- **Elimination by abstraction with backward replacement at nonzero
@@ -557,18 +575,25 @@ instance : BMKernel @BmPrf :=
   ⟨fun h => .hyp h, fun a h => .iterZero a h, fun c a h => .iterSucc c a h,
     fun hs h₁ h₂ => .bRep hs h₁ h₂, NFm.aqE_of_qE fun t h₁ h₂ => .qE t h₁ h₂,
     fun h₁ h₂ => .dE h₁ h₂,
-    fun B h => .dICase B zero (h.weaken (List.subset_cons_self _ _)),
+    fun a b h => .qIInd a b (h.weaken (List.subset_cons_self _ _)),
     fun h s => h.weaken s, fun h => h.ren Fin.succ (Fin.succ_injective _)⟩
+
+theorem BmPrf.dZ (n : ℕ) (Γ : List (NFm n)) : BmPrf Γ (.D (BMKernel.zname (n := n))) :=
+  .dICase _ zero (BmPrf.weaken (BMKernel.znameStep (P := @BmPrf)) (List.subset_cons_self _ _))
 
 instance : BMKernel @Bm7Prf :=
   ⟨fun h => .hyp h, fun a h => .iterZero a h, fun c a h => .iterSucc c a h,
     fun hs h₁ h₂ => .bRep hs h₁ h₂, NFm.aqE_of_qE fun t h₁ h₂ => .qE t h₁ h₂,
     fun h₁ h₂ => .dE h₁ h₂,
-    fun B h => .dI B zero (h.weaken (List.subset_cons_self _ _)),
+    fun a b h => NFm.qI_of_dI0 (P := @Bm7Prf) (fun h => .hyp h) (fun h₁ h₂ => .dE h₁ h₂)
+      (fun B h => .dI B zero (h.weaken (List.subset_cons_self _ _))) (.eq a b) h,
     fun h s => h.weaken s, fun h => h.ren Fin.succ (Fin.succ_injective _)⟩
 
+theorem Bm7Prf.dZ (n : ℕ) (Γ : List (NFm n)) : Bm7Prf Γ (.D (BMKernel.zname (n := n))) :=
+  .dI _ zero (Bm7Prf.weaken (BMKernel.znameStep (P := @Bm7Prf)) (List.subset_cons_self _ _))
+
 instance : WKernel @Bm7Prf :=
-  ⟨fun h => .hyp h, fun a h => .iterZero a h, fun a b => BMKernel.trEq a b,
+  ⟨fun h => .hyp h, fun a h => .iterZero a h, fun a b => BMKernel.trEq Bm7Prf.dZ a b,
     fun t h₁ h₂ => .qE t h₁ h₂, fun h₁ h₂ => .dE h₁ h₂, fun B t h => .dI B t h⟩
 
 /-- **`B⁻` and the kernel derive the same sequents** (`kern:thm:bminus`). -/
@@ -589,7 +614,7 @@ theorem bmprf_iff_nprf : BmPrf Γ A ↔ NPrf Γ A := by
     | hyp h => exact .hyp h
     | iterZero a h => exact .iterZero a h
     | iterSucc c a h => exact .iterSucc c a h
-    | trOne h _ _ ih₁ ih₂ => exact BMKernel.join (BMKernel.cong h ih₁) ih₂
+    | trOne h _ _ ih₁ ih₂ => exact BMKernel.join (BMKernel.cong BmPrf.dZ h ih₁) ih₂
     | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
     | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
     | dICase B t _ ih => exact .dICase B t ih
@@ -612,7 +637,7 @@ theorem bm7prf_iff_nprf : Bm7Prf Γ A ↔ NPrf Γ A := by
     | hyp h => exact .hyp h
     | iterZero a h => exact .iterZero a h
     | iterSucc c a h => exact .iterSucc c a h
-    | trOne h _ _ ih₁ ih₂ => exact BMKernel.join (BMKernel.cong h ih₁) ih₂
+    | trOne h _ _ ih₁ ih₂ => exact BMKernel.join (BMKernel.cong Bm7Prf.dZ h ih₁) ih₂
     | qE t _ _ ih₁ ih₂ => exact .qE t ih₁ ih₂
     | dE _ _ ih₁ ih₂ => exact .dE ih₁ ih₂
     | dICase B t _ ih => exact WKernel.dICase B t ih

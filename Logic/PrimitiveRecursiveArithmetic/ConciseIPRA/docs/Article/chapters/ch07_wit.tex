@@ -5475,6 +5475,66 @@ $z$ is not free.  The abstraction of $\Suc z$ is
 \Lean{NFm.rpl\_subst\_succ}, the reconstruction at a marker
 \Lean{NFm.recon\_mark}.
 
+\begin{theorem}[No template and no matrix]
+\label{wit:thm:matrix-free}
+Let $\mathsf{W}^{-}_{\mathrm{rr}}$ be $\mathsf{W}_{\mathrm{rr}}$ with
+\rulename{Tr} replaced by $\rulename{BRep}^{-}$ of \cref{kern:thm:bminus}; its
+seven rules are \rulename{Hyp}, \rulename{I0}, \rulename{IS},
+$\rulename{BRep}^{-}$, \rulename{AQE}, \rulename{DE} and
+$\rulename{DI}_{\mathrm r}$.  Then $\mathsf{W}^{-}_{\mathrm{rr}}$ and $\Nat$
+derive the same sequents.
+\end{theorem}
+
+\begin{proof}
+Soundness: $\rulename{BRep}^{-}$ is derivable in $\Nat$
+(\cref{kern:thm:brep}), and the other rules are those of
+$\mathsf{W}_{\mathrm{rr}}$ (\cref{wit:thm:recon-aqe}).  Weakening, injective
+renaming and cut hold by induction on derivations: renaming commutes with the
+replacement of $\rulename{BRep}^{-}$ and keeps the condition $s\not\equiv 0$,
+and it commutes with the abstractions of \rulename{AQE} and of
+$\rulename{DI}_{\mathrm r}$.
+
+Completeness.  By \cref{wit:thm:recon-aqe} it suffices to derive transport in
+equation templates, and for that the proofs of
+\cref{kern:lem:bmeq,kern:lem:bzero}, in the form with \rulename{AQE} of
+\cref{kern:thm:aqeminus}, use an introduction twice.  The first use is
+\rulename{QI} at a literal equation $E(y)$ with the assumption unused: from
+$\Gamma\proves E(\Suc z)$, the rule $\rulename{DI}_{\mathrm r}$ at the witness
+$0$, in the mode of progress, concludes $\D{x}{y}E(y)$, because the
+abstraction of $\Suc z$ in $E(\Suc z)$ is $E(y)$; \rulename{DE} and
+\rulename{Hyp} give $\Q{y}E(y)$.  This yields \cref{kern:lem:bmeq}, in
+particular reflexivity, symmetry and transitivity without restriction.  The
+second use is the closure of the name for zero,
+$\D{x}{y}E_{0}(x,y)$ with
+$E_{0}(x,y)\defeq\bigl(\It{y}{0}{v}{x}=\It{y}{0}{v}{0}\bigr)$.  Let $M$ be the
+oversized marker of $E_{0}$ with the seed $0$ (\cref{kern:lem:fmarker}), so
+that $M=0$ is an instance of \rulename{I0} and $M\not\equiv 0$.  Two instances
+of \rulename{IS} give $\It{\Suc z}{0}{v}{M}=M$ and $\It{\Suc z}{0}{v}{0}=0$,
+and transitivity gives $E_{0}(M,\Suc z)$.  The rule
+$\rulename{DI}_{\mathrm r}$ at the witness $M$, in the mode of cases,
+reconstructs $E_{0}$ from $E_{0}(M,\Suc z)$ by
+\cref{wit:lem:recon-syntax}(iii) and concludes $\D{x}{y}E_{0}(x,y)$; its
+assumption $E_{0}(M,0)$ is not used.  The rest of the proof of
+\cref{kern:lem:bzero} is unchanged, and \cref{kern:thm:bminus} gives
+congruence and transport in equation templates.
+\end{proof}
+
+In $\mathsf{W}^{-}_{\mathrm{rr}}$ no instance of a rule is given a term
+template or a formula matrix: the equality rule replaces every occurrence of
+its target, and the matrices of the elimination and of the introduction of a
+closure are computed by abstraction.  The data of an inference are its
+premises and at most one term, the abstracted term of \rulename{AQE} or the
+witness of $\rulename{DI}_{\mathrm r}$, together with the eigenvariable and
+the seed of the introduction.  The theorem is formalized in Lean
+(\Lean{NativeMatrixFree}, the calculus \Lean{MFPrf},
+\Lean{mfprf\_iff\_nprf}) as the composition of the two generic bootstraps:
+\Lean{BMKernel} asks for \rulename{QI} at literal equations with the
+assumption unused and takes the closure of the name for zero as a hypothesis,
+and \Lean{RKernel} recovers the rest.  No checker of
+$\mathsf{W}^{-}_{\mathrm{rr}}$ is written, and nothing is claimed about the
+size of one: the three reconstructions are traversals that a checker has to
+implement.
+
 % ---------------------------------------------------------------------
 \section{Checkers and sizes}
 \label{wit:sec:sizes}
