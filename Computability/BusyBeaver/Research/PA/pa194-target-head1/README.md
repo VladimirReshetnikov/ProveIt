@@ -21,19 +21,22 @@ Separately, `cantor_eq_machine` and `eval_fixedCantor` identify the triangular
 pairing and the witness code with the machine's exact pairing on standard
 naturals. `head1_exact_standard` constructs an actual
 `PA194DerivationCompiler.Derivation.h1` for the independently defined standard
-head-1 expression. The final equality between the **complete** fixed h1
-code's standard evaluation and that expression is not yet established; the
-candidate-model and standard Nat arithmetic instances must be reconciled.
-Consequently the all-model leaf certificate must not yet be treated as a
-verified port of the upstream target checker. Other target rules, full proof
-certificates and their soundness, the source-rule compiler, PA calibration,
+head-1 expression. The final equality between the complete fixed h1 code's
+standard evaluation and the native h1 formula, and the corresponding actual
+numerical h1
+derivation, are now proved in `../pa194-target-head1-standard`. That result is
+standard-Nat specific; it does not turn the model-level single-leaf relation
+into a verified port of the whole upstream target checker. Other target rules,
+full proof certificates and their soundness, the source-rule compiler, PA calibration,
 and the machine reductions are also open.
 
 The final module passed a fresh Lean 4.32 suffix build against the retained
 source-inversion, target-compiler, project and Foundation overlays. The printed
 theorem axiom dependencies are `[propext, Classical.choice, Quot.sound]`,
-without `sorryAx`. The full nested replay below is pending. The source-shift
-prerequisite has passed its own full replay; the other retained prerequisite
+without `sorryAx`. The final target module was also independently recompiled
+against separately checked inversion and source-search objects, with other
+prerequisite overlays reused. The full nested replay below is pending. The
+source-shift prerequisite has passed its own full replay; the other retained prerequisite
 objects must be rebuilt by the script for a complete replay.
 
 From the repository root, with matching audited project and Foundation objects:
