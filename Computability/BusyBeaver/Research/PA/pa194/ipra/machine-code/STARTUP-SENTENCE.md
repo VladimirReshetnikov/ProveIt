@@ -25,5 +25,7 @@ not establish `iPRA ⊢ Con(PA) ↔ ¬Halt(M₁₉₄)`.
 
 `modelSentence`, `classicalPRA`, and `nativeIPRA` were checked against the
 retained prerequisite and dense-certificate overlays, and none of their printed
-axiom dependencies includes `sorryAx`. A fresh full replay of this final
-sentence module has not been completed.
+axiom dependencies includes `sorryAx`. A full run of `check-dense-startup.sh`
+also regenerated and checked the literal startup certificate and rebuilt this
+module; that run used the retained prerequisite overlays described in
+[DENSE-STARTUP.md](DENSE-STARTUP.md).

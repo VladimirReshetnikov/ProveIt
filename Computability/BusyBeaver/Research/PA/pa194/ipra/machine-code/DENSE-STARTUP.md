@@ -11,10 +11,10 @@ The generator uses an untrusted Python simulation to propose 456 checkpoints.
 Lean checks the 455 blocks with the proved `PA196.FastRun.checked` evaluator,
 checks the final seed-tape equality, and composes the blocks. All 46 block
 modules and the final composition were checked; `startup_exact` reports
-`[propext]`. A separate portable replay also rebuilt all dense blocks and the
-composition from regenerated sources, but stopped at the following bridge
-step because its scratch source path needed an explicit Lean root. The
-corrected full wrapper, including the native sentence, is being replayed.
+`[propext]`. The corrected portable wrapper completed a separate full replay
+from regenerated sources, including the model bridge and native iPRA sentence,
+against the retained overlays described below. No reported theorem used
+`sorryAx`.
 
 `PA194ModelDenseStartup.modelDenseStartup` combines this finite literal run
 with the standard-numeral bridge to obtain the corresponding equation in
