@@ -512,3 +512,14 @@ its reverse-index relationship to decoder children remain open. Recheck with:
 ```sh
 Computability/BusyBeaver/Research/PA/pa195-calibration/check-stack-code.sh
 ```
+
+`PA194TagDecoder.lean` proves that candidate PRA supplies a PR code for the
+exact source tag `n % 4`; its model equation holds also for nonstandard
+codes. It also checks that each constructor `4*payload+tag`, for `tag<4`,
+dispatches to that tag. Source code zero still requires its separate truth
+alias check. The selected decoder code is existentially supplied and not yet
+serialized. Recheck with the audited overlays using:
+
+```sh
+Computability/BusyBeaver/Research/PA/pa195-calibration/check-tag-decoder.sh
+```
