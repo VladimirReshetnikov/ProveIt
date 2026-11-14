@@ -428,9 +428,9 @@ template into a binary PR code, mapping the two outer placeholders to source
 free labels while keeping locally bound indices. For every template, it proves
 in all candidate-PRA models that the generated code agrees with an explicitly
 defined numeric constructor specification. `bitTemplateCode` applies this
-construction to Foundation's exact bounded bit formula. The remaining crucial
-step is to prove that the numeric specification is the Foundation quote of
-capture-avoiding substitution; it is not yet a verified membership translator.
+construction to Foundation's exact bounded bit formula. The following results
+identify the numeric specification with Foundation substitution under IΣ₁;
+they do not yet give a verified complete membership translator in candidate PRA.
 
 `PA194BitTemplateSize.lean` provides a reproducible executable size probe. Its
 `#eval` reports 1,503,347 nodes, counting both `Code` and `Codes` constructors;
