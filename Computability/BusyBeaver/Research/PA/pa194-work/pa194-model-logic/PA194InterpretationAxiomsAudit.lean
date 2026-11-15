@@ -1,0 +1,2 @@
+import PA194GuardedInterpretationAxioms
+#print axioms PA194GuardedInterpretationAxioms.interpretation_axioms_of_five_and_induction
