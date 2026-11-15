@@ -1,0 +1,53 @@
+\section{Two new equivalent orientations of the first logical head}
+
+The searches also tested a change absent from the earlier joint
+premise-exchange search.  Write $\Box A=U(D,A)$ for one fixed binder,
+$\Diamond A=N(\Box N(A))$, and $N(A)=I(A,1)$.  The old head is
+\[
+ F_D(A)=(\Diamond\Box A)\to A.
+\]
+Consider the following two replacements:
+\[
+ B_D(A)=A\to\Box\Diamond A,
+ \qquad C_D(A)=N(A)\to\Box N(\Box A).
+\]
+Each replacement has exactly 17 emitter tokens, the same count as
+$F_D$.  They change the recurring logical emitter; they are not a
+permutation of Turing-machine state labels.
+
+The replacement by $C_D$ is already a pointwise propositional
+equivalence.  Indeed $F_D(A)$ is
+$N(X)\to A$ with $X=\Box N(\Box A)$, while $C_D(A)$ is
+$N(A)\to X$.  Classical contraposition and double-negation
+elimination derive either from the other.  The retained restricted
+implicational schema supplies these fixed templates.
+
+For the replacement by $B_D$, apply the preceding observation to
+$F_D(N(A))$.  Its $C$ form is
+$N(N(A))\to\Box N(\Box N(A))$, from which double-negation
+introduction derives $B_D(A)$.  Conversely $B_D(N(A))$ is
+$N(A)\to\Box N(\Box N(N(A)))$.
+The retained distribution head and theorem generalization lift the
+two directions of $N(N(A))\leftrightarrow A$ through $\Box$;
+contraposition lifts the resulting equivalence through $N$, and
+distribution lifts it through the outer $\Box$.
+This gives $C_D(A)$ and hence $F_D(A)$.
+
+Every transformation uses a fixed finite proof template, with only
+constructor application and proof-list concatenation depending on
+the parameters.  Replacing axiom leaves and retaining MP/Gen gives
+primitive-recursive proof translations in both directions.  Their
+correctness is verified by bounded Boolean induction on the proof
+list.  Thus these are valid alternative numerical calculi in the
+same weak metatheory, independently of whether either emitter can
+be compressed into a smaller literal table.
+
+The two timed searches use 96 semantic seeds apiece, crossing the
+new first head with equality orientation, h3/h4/h6 premise exchanges,
+three diagonal parameters and two existing source-tree shapes.
+Each unguarded head can permute its parameter registers during
+the search.  The retained search source also performs local and
+shared associativity changes.  These finite stochastic runs are
+documented separately in their actual logs; they establish no
+global lower bound.  No table from this experiment is promoted
+as a verified consistency machine merely from its reader score.

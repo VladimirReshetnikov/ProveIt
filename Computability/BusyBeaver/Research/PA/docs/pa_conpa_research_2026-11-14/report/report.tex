@@ -1,0 +1,482 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=20mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage{xcolor,microtype,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Two new 194-state PA consistency machines},pdfauthor={Research construction and audit},pdfsubject={Literal binary Turing machines, iPRA consistency equivalence, and reduction research}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4.5pt plus 1pt}
+\setlength{\emergencystretch}{2em}
+\setcounter{tocdepth}{2}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PA194AX11GH / PA194AX11GHS}
+\fancyhead[R]{\small Construction, proof, comparison}
+\fancyfoot[C]{\thepage}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\GH}{\texttt{PA194AX11GH}}
+\newcommand{\GHS}{\texttt{PA194AX11GHS}}
+\title{\LARGE\bfseries Two new 194-state PA consistency machines\\[5pt]
+\large A complete current comparison, explicit constructions,\\written iPRA proofs, and further searches below 194}
+\author{Research report and reproducible artifact bundle}
+\date{14 November 2026}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+No machine with fewer than 194 working states was obtained. This report
+delivers the requested fallback: two explicit new 194-state, two-symbol,
+one-tape Turing machines, \GH{} and \GHS{}, whose blank-tape nonhalting
+is equivalent in iPRA to the pinned native consistency sentence for PA.
+The proof is a written mathematical proof, with a named retained PA
+calibration dependency and freshly replayed finite implementation
+certificates; it is not a new completed Lean formalization.
+
+The new command interface combines an explicit-operand generalization
+binder, the eleven-entry/four-operand AX operation, no-push modus ponens,
+the exchanged universal head, and cache-only contradiction detection.
+Its generalization word uses 25 commands instead of 26. The companion
+implements the same interface with symmetric input preparation for
+the same destructive comparison routine.
+The tables have different transition graphs from every recognized
+historical 194-state graph, even under an enlarged set of structural
+symmetries.
+
+The comparison covers 82 filed deliveries and four incoming payloads at
+ProveIt revision \texttt{1e1a41f799} (full identifier in Section~\ref{sec:comparison}).
+It recognizes 908 complete 194-state table occurrences in 111 classes.
+New reduction work includes 1,214,781 bounded Runtime193 startup
+computations, 15,175,055,004 row-action trials in a neutral-edit/quotient
+screen, fresh direct quotients, and two grammar searches totaling
+8,308,353 iterations. None produced a sub-194 candidate. These finite
+search results are not lower bounds on arbitrary machines.
+\end{abstract}
+\vfill
+\textbf{Reading guide.} The exact outcome and machine convention appear
+first. The construction and mathematical proof precede the search record.
+The appendices print both complete transition matrices, all 111 historical
+table classes, and all 86 delivery descriptions. The accompanying archive
+contains source, independent checkers, certificates, search inputs and
+logs, and the unchanged inherited proof packet.
+\clearpage
+\tableofcontents
+\clearpage
+
+\section{Result and exact claim}
+\label{sec:result}
+
+The primary target remains open in this work: no validated machine with
+193 or fewer states was found. The concrete result is a new command
+interface and two literal implementations with exactly 194 working
+controls. Every state has both binary transitions. The halting control
+is separate and is not included in that count.
+
+For either delivered table $M$, the written result is
+\[
+ \ipra\vdash \Con(\PA)\ \longleftrightarrow\
+                    \neg\Halt_{\mathrm{blank}}(M).
+\]
+Here $\Con(\PA)$ is the same \path{nativePAConsistency} sentence used
+by the inherited Foundation/ProveIt endpoint, not a newly substituted
+presentation of a weaker theory. The proof first gives an explicit
+iPRA halting equivalence with the latest incoming packet's calibrated
+PA194QAX11H table. It then composes with that packet's written negative
+equivalence. Section~\ref{sec:inherited-audit} records the mathematical
+audit and the exact dependency; the complete dependency archive is
+retained. The absence of a completed Lean proof is stated separately
+from the written theorem.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrr}
+\toprule
+Quantity & \GH & \GHS\\
+\midrule
+Working states & 194 & 194\\
+Literal binary transition rows & 388 & 388\\
+Fixed controls before folds & 134 & 135\\
+AX reader controls before folds & 67 & 67\\
+Simultaneous contextual folds & 7 & 8\\
+Primitive source sites & 3,671 & 3,668\\
+Certified source outcomes & 4,778 & 4,774\\
+Complete blank initialization, steps & 57,922 & 57,768\\
+Independent symbolic transitions & 1,106,693 & 1,110,639\\
+\bottomrule
+\end{tabular}
+\caption{Exact delivered implementations. Source-outcome counts include
+both zero and positive branches of every decrement.}
+\label{tab:results}
+\end{table}
+
+\subsection{Machine convention}
+
+The tape is indexed by $\mathbb Z$ and initially contains zero everywhere.
+The head starts at position zero. In each file \path{machine.tm}, the
+initial control is 0, working controls are $0,\ldots,193$, and the unique
+terminal control is 194. A row
+\[
+                         q\quad b\quad w\quad D\quad q'
+\]
+means: in state $q$ reading $b$, write $w$, move one cell in direction
+$D\in\{L,R\}$, and enter $q'$. There are no stationary moves,
+additional symbols, additional tapes, or prewritten input. All 194
+working controls are graph-reachable from the declared start; this
+graph property is not an assertion that every control is visited by
+the particular blank run.
+
+The native labels, used in the construction and proofs, have start 74
+and terminal 254. \path{labels.json} gives the exact bijection to the
+dense table, including the terminal. The literal tables are printed
+in Appendix~\ref{app:literal-tables}; the authoritative byte files are
+also supplied. Their SHA-256 identities are
+\begin{center}\small
+\GH:\quad\nolinkurl{513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1}\\[4pt]
+\GHS:\quad\nolinkurl{7a4738a9eedd3f53674d67568b3197d38237d11d0fc08fa3d41251a8faf8052c}.
+\end{center}
+
+\subsection{What is new}
+
+The contribution is a verified composition of mechanisms already present
+in the supplied research, together with its explicit compiler, complete
+startup, literal physical realization, and current-corpus comparison.
+It does not claim invention of the Q, N, G, H, or AX11 ingredients.
+The first table adds a genuinely different command interface relative
+to each nearest predecessor. The second is a different physical
+implementation of that same interface; it is not a second logical
+consistency encoding.
+
+The fresh sub-194 work targets three actual bottlenecks: effective
+decoder size, sharing physical controls under valid source contexts,
+and the initialization failure of the existing 193-state runtime.
+All unsuccessful evidence is retained so that a later search need
+not mistake these particular attempts for unexplored possibilities.
+
+\input{../comparison/chapter.tex}
+
+\section{Construction of the new tables}
+\label{sec:construction}
+
+\input{../comparison/new_design_position.tex}
+
+\subsection{From the command change to a literal matrix}
+
+The constructor starts with the attributed GH or GHS fixed runtime,
+named source nodes, AX grammar, and simultaneous fold witness in the
+retained incoming GH packet. It replaces the AX's final outward jump
+with the existing push macro. The ensuing fallthrough is the full MP
+operand reader: the resulting command consumes four operands
+$(c,x,y,z)$ and leaves offset $z$. In particular, padding by $z=0$
+is a compiler convention, not permission to ignore the fourth field.
+The explicit-operand saved generalizer and cached Shift are preserved.
+
+Each grammar node is compiled to a binary reader. A reader branches
+on the next bit and enters the selected child; repeated subtrees share
+the same reader. Contextual folds then identify pairs whose incoming
+left-cell history distinguishes their cases. Every proposed fold is
+checked on the final simultaneous folded table for both predecessor
+history bits and both current bits. The local traces keep the complete
+modified two-cell neighborhood and have the required entry and exit
+head positions. This is followed by a new global source-contract replay,
+so compatible pairwise-looking folds are not assumed to compose.
+
+The state budgets are exactly
+\[
+        134+67-7=194,\qquad 135+67-8=194.
+\]
+The GHS fixed fold $41\mapsto330$ offsets its additional fixed
+control; seven more folds act in the AX decoder. All arithmetic-box
+rows are checked against the frozen parent. The builder's accelerated
+source checker is useful construction evidence, but the independent
+physical replay does not trust those boxes as arithmetic oracles.
+
+\subsection{Initialization is part of the construction}
+
+The blank run reaches native state 84 with head at $-2$, the source
+address of primitive site 25, and logical registers
+\[
+ (N,T,W,A,D,H,X,Y,L)=(2,0,0,0,0,0,0,0,0).
+\]
+The physical nine-register prefix is
+$(0,0,0,0,0,0,2,0,0)$, followed by 26 spare registers of value one.
+The instruction header has width 48. The exact whole finite-support
+tape equals this frame, including its blank left and right exteriors.
+The two startup lengths are given in Table~\ref{tab:results}.
+
+The GHS startup is 154 transitions shorter. This is a fact about these
+two initialization runs, not a claim of a uniform physical speedup on
+every later computation. Complete initialization matters: several
+historical 193-state proposals pass clean-source runtime checks and
+then run forever on an unrelated blank-tape ray before reaching any
+valid frame.
+
+\subsection{A small operational witness of the difference}
+
+With the numeric constructors defined in the next section, take
+$c=1$, $d=0$ and $h=0$. The saved generalization is now $U(1,0)=10$;
+the offset-binder predecessor saves $U(0,0)=2$. Thus the binder change
+is visible at the abstract command level.
+
+Independently, at top $t=1$ and cache $h=0$, a cache-only Shift does
+not halt. The compiler must place the contradiction in the tested
+cache. Its final Pop does so, whereas appending one plain Shift to
+the normalized visible result would not prove completeness.
+Both distinctions are reflected in the symbolic command certificates.
+
+\input{../proof/relative_ipra.tex}
+\input{../proof/audit.tex}
+
+\section{Fresh attempts to obtain fewer than 194 states}
+\label{sec:searches}
+
+The following are new runs performed for this report. They are
+distinguished from the historical experiments summarized in the
+comparison. The source code, frozen inputs, counters, receipts and
+completion logs are in \path{research/}. No search hit is being
+withheld as an unverified claimed improvement: none reached even
+the candidate-nomination stage described below.
+
+\subsection{Effective-reader grammar search}
+
+Both new constructions have an effective AX contribution of 60 states
+after compatible folds. With a fixed contribution of 134, score 59
+would supply a 193-state nomination. For GHS the fixed $41\mapsto330$
+fold is applied before computing this score.
+
+Two fresh stochastic searches changed subtree associations while
+preserving the complete AX token word. The inherited search engine
+scores simultaneous, disjoint, compatible history folds; parameter
+permutation mutations were disabled. Each run had a 300-second
+time budget and an explicit random seed.
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Family & Iterations & Accepted mutations & Best score\\
+\midrule
+AX11GH & 4,107,048 & 217,940 & 60\\
+AX11GHS & 4,201,305 & 224,084 & 60\\
+\bottomrule
+\end{tabular}
+\end{center}
+The seeds were 202611140371 and 202611140368, respectively. No score
+59 nomination appeared. The thirty saved grammars per run are retained
+search-pool entries, not thirty independent runs. Because the stopping
+rule is elapsed time, replay on another computer need not perform the
+same number of iterations. The observed counters are evidence of these
+recorded runs, and a stochastic failure is not an exhaustive result.
+
+\subsection{Fresh physical quotient searches}
+
+The source collectors independently regenerated every one of the 4,778
+GH and 4,774 GHS source outcomes, then collected valid local tape
+contexts. At each of radii four and six the quotient synthesizer
+considered all $\binom{194}{2}=18,721$ control pairs, searching both
+replacement rows for a possible shared control.
+
+\begin{center}\small
+\begin{tabular}{llrrrr}
+\toprule
+Family & Radius & Contexts & Row-action trials & Joint row pairs & Hits\\
+\midrule
+AX11GH & 4 & 8,789 & 23,887,996 & 139,688 & 0\\
+AX11GHS & 4 & 8,830 & 23,579,196 & 129,742 & 0\\
+AX11GH & 6 & 30,755 & 25,753,148 & 181,936 & 0\\
+AX11GHS & 6 & 30,860 & 25,589,484 & 174,778 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A second screen made one putatively neutral row rewrite first, then
+searched for a two-row quotient. It completed all 341 GH and 298 GHS
+variants without timeouts:
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Family & Variants & Control-pair tests & Row-action trials & Joint pairs\\
+\midrule
+AX11GH & 341 & 6,383,861 & 8,146,889,752 & 47,793,125\\
+AX11GHS & 298 & 5,578,858 & 7,028,165,252 & 38,791,359\\
+\midrule
+Total & 639 & 11,962,719 & 15,175,055,004 & 86,584,484\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+There were zero hits. The second stage deliberately reuses the original
+contexts after the first rewrite and is labeled heuristic candidate
+discovery. A hit would still require collecting fresh simultaneous
+contexts, proving every source contract, checking all fold interactions,
+and verifying the complete blank initialization. Neither the number of
+row trials nor the absence of hits establishes a general lower bound.
+
+\subsection{Repairing the existing Runtime193 blank start}
+
+The most direct pre-existing 193-state runtime can implement the
+clean-source interpreter while failing its own initialization. The
+new search extended the corrected pool of 327 individually neutral
+row rewrites to four and then five simultaneous edits. It starts in
+native control 74 and only branches on rows encountered by the
+current computation. This is not the entire set of all five-row
+perturbations of a binary TM.
+
+The success detector checks the complete finite-support tape, allows
+arbitrary values of all nine work registers, and recognizes any of
+source sites 25--44. Each ordinary run has a 200,000-transition cap.
+An exact repeated configuration terminates a run as a certified cycle;
+the comparison includes the state, head and whole finite tape and
+does not rely on hash equality. Certified outward rays are accelerated,
+and every downstream zero-reading row enters the mutation encounter
+set. Thus a ray shortcut does not silently omit an editable row.
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+Measure & Through four edits & Through five edits\\
+\midrule
+Unique computations & 116,382 & 1,214,781\\
+Literal transitions & 288,257,204 & 5,462,651,667\\
+Certified outward rays & 62,021 & 465,448\\
+Exact repeated configurations & 52,800 & 717,898\\
+Unresolved fuel cutoffs & 1,561 & 31,435\\
+Complete source-frame hits & 0 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The exact edit-depth counts are
+$1,34,640,9{,}013,106{,}694,1{,}098{,}399$ for depths zero through
+five. The through-five column includes the through-four cases; the
+two columns should not be added as independent coverage. The four-edit
+enumeration was checked before and after exact-cycle acceleration,
+and the lower-depth counts agree with the earlier pair/triple study.
+The 31,435 cutoffs remain unresolved. They are neither successful
+initializations nor certified nonhalting failures.
+
+\subsection{Other representation and logical routes}
+\input{../proof/alternative_routes.tex}
+
+The relevant source branches are the pinned ZFC research, Diophantine
+consistency, and ConciseIPRA trees\cite{zfc,diophantine,concise}.
+The decisive remaining engineering condition is a saving in the
+\emph{complete} blank-start machine. A shorter numerical expression,
+a smaller clean-frame runtime, or a proof search for a different
+theory does not by itself meet that condition.
+
+\section{Reproduction, evidence, and limits}
+\label{sec:reproduction}
+
+\subsection{Offline replay}
+
+The archive is self-contained for constructing and checking the new
+tables, replaying novelty against all stored representatives, and
+reading the complete inherited proof packet. Python 3.10 or later
+with its standard library is sufficient for the main replay.
+From the extracted directory run
+\begin{verbatim}
+python3 -B verify.py --output /absolute/path/to/new-replay-directory
+\end{verbatim}
+The full mode reconstructs both tables and compares ten core files
+byte for byte; replays the construction's symbolic contracts; checks
+the complete arithmetic-template and source-edge binding; rechecks
+the symbolic command words; independently rederives the physical
+list lemmas and all source-outcome certificates from literal rows;
+checks complete blank startup; audits affine duration and frame
+closure; replays exact structural novelty; and executes the retained
+baseline packet's finite quick checks. It writes individual logs and
+a structured summary. It does not run the expensive research searches.
+
+The completed portable full replay passed with Python 3.12.14 in
+174.7 seconds on the research runtime, invoked from a working directory
+outside the bundle. Both independent certificate streams reproduced
+the delivered bytes exactly, as did all twenty core construction files.
+The observed receipts and all ten command logs are retained in
+\path{evidence/portable_replay_summary.json} and
+\path{evidence/portable_replay_logs/}. Timings on other systems may differ.
+
+\path{verify.py --quick} explicitly skips the two full symbolic runtime
+replays. Its output records those omissions; quick mode is not described
+as equivalent to full mode. The separate inherited-baseline quick replay
+checks its finite bindings and proof constructors, not every line of
+its written arithmetic proof. The new machines themselves have full
+literal replay receipts. The supplied verification programs must be
+run with assertions enabled; do not use \path{-O} or
+\path{PYTHONOPTIMIZE}.
+
+The archive's top-level \path{SHA256SUMS} identifies every delivered
+file other than itself. Optional search replays require a C++17
+compiler and follow the instructions under \path{research/}. The
+recorded census can be regenerated with a local checkout containing
+all selected pinned source blobs; the smaller standalone novelty
+replay already includes every historical representative and needs
+no checkout or network.
+
+\subsection{Evidence boundaries}
+
+The mathematical result rests on explicit primitive recursive
+transformations and quantifier-free induction, with the full
+inherited PA calibration named and retained. The finite programs
+establish the bindings of those uniform arguments to concrete source
+and transition rows. They are ordinary executable mathematical
+evidence rather than a trusted proof-assistant kernel. This report
+neither supplies a new end-to-end Lean/Rocq build nor treats a finite
+simulation as a proof of nonhalting.
+
+The comparison is exhaustive for the specified recognized literal
+formats in the pinned source universe. It does not run arbitrary
+generators or extract machines printed only in prose. All 111
+recognized 194-state classes, including rejected and auxiliary
+ones, participate in the comparison. The 56 principal labels are
+attributed research classifications, not an assertion that 56
+independent iPRA calibrations have been verified here.
+
+The search evidence only describes the displayed bounded or heuristic
+spaces. There is no claim that 194 is optimal, that all plausible
+193-state architectures were searched, or that a fuel cutoff is an
+infinite run. The delivered result meets the 194-state fallback;
+the fewer-than-194 objective remains unsolved by this investigation.
+
+\begin{thebibliography}{9}
+\bibitem{pa}
+Vladimir Reshetnikov and ProveIt contributors,
+\emph{PA busy-beaver research}, pinned revision
+\nolinkurl{1e1a41f799d4658b829cdd0eabae3775a0c8c4a0},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/Computability/BusyBeaver/Research/PA}{repository source tree}.
+\bibitem{incoming}
+ProveIt incoming research packets, same revision,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/docs/incoming}{incoming source directory}.
+The current AX11H, AX11G and GH packets are retained byte for byte in
+\path{references/}; the exact archive hashes and member provenance
+are in \path{PROVENANCE.json}.
+\bibitem{baseline}
+\emph{PA194 AX11H research}, current incoming
+\path{pa194_ax11h_research_2026-11-14.zip}, especially
+\path{proof/consistency_equivalence.tex},
+\path{proof/physical_ipra_audit.tex},
+\path{proof/source_command_completion.tex},
+\path{proof/foundation_paeq_completion.tex}, and
+\path{proof/forward_calibration_completion.tex}.
+Exact archive identity is printed in Section~\ref{sec:new-relative-ipra}.
+\bibitem{zfc}
+ProveIt, \emph{ZFC busy-beaver research}, same revision,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/Computability/BusyBeaver/Research/ZFC}{source tree}.
+\bibitem{diophantine}
+ProveIt, \emph{DiophantineConsistency}, same revision,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/Computability/DiophantineConsistency}{source tree}.
+\bibitem{concise}
+ProveIt, \emph{ConciseIPRA}, same revision,
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{source tree}.
+\end{thebibliography}
+
+\clearpage
+\appendix
+\input{transition_tables.tex}
+\clearpage
+\input{../comparison/frontier_table.tex}
+\clearpage
+\input{../comparison/packet_table.tex}
+\end{document}

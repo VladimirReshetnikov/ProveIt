@@ -1,0 +1,96 @@
+{
+  "result": "Two new 194-state constructions; no accepted sub-194 construction found.",
+  "date": "2026-11-14",
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "baseline_commit": "1e1a41f799d4658b829cdd0eabae3775a0c8c4a0",
+  "late_snapshot_commit": "19b9ea945cc95fe25535d44d949904843f4a824a",
+  "machines": [
+    {
+      "name": "PA194AX11GH",
+      "states": 194,
+      "rows": 388,
+      "start": 0,
+      "halt": 194,
+      "blank": 0,
+      "head_start": 0,
+      "tape": "two-way infinite",
+      "dense_sha256": "513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1",
+      "native_sha256": "6a97ad509ba5f811e110659bbc36265a0da84015e5e53b883234a4d1a048a452",
+      "fixed_controls": 134,
+      "ax_readers": 67,
+      "folds": 7,
+      "source_sites": 3671,
+      "source_outcomes": 4778,
+      "startup_steps": 57922,
+      "literal_symbolic_steps": 1106693,
+      "contracts_sha256": "d18082c36cc942f946206c36eb3e031fd6923ef708dd3d7d1d6e8e2a126e6700",
+      "all_states_graph_reachable": true
+    },
+    {
+      "name": "PA194AX11GHS",
+      "states": 194,
+      "rows": 388,
+      "start": 0,
+      "halt": 194,
+      "blank": 0,
+      "head_start": 0,
+      "tape": "two-way infinite",
+      "dense_sha256": "7a4738a9eedd3f53674d67568b3197d38237d11d0fc08fa3d41251a8faf8052c",
+      "native_sha256": "817af50bf9f15393f0aa552c0ee34cd909ff31e0dcfb1b6447596eeb9fa320e1",
+      "fixed_controls": 135,
+      "ax_readers": 67,
+      "folds": 8,
+      "source_sites": 3668,
+      "source_outcomes": 4774,
+      "startup_steps": 57768,
+      "literal_symbolic_steps": 1110639,
+      "contracts_sha256": "4009d5ad0e26acf1942f744f9f0de12fa56c2f928d577ecc8e2a0f5479933e17",
+      "all_states_graph_reachable": true
+    }
+  ],
+  "comparison": {
+    "baseline_payloads": 10495,
+    "missing_payloads": 0,
+    "baseline_deliveries": 86,
+    "late_snapshot_deliveries": 87,
+    "baseline_and_late_194_graph_classes": 110,
+    "late_additional_graph_classes": 0,
+    "exact_broad_novelty": "Both candidates differ from each other and every recognized historical 194-state graph under arbitrary state naming, spanning root choice, reflection, global bit exchange, and ignored halt-entry write/move. Full tuples are compared.",
+    "ordinary_bisimulation_classes_per_candidate": 194,
+    "global_optimality_claim": false
+  },
+  "proof_scope": {
+    "new": "Written computer-assisted relative iPRA preservation with explicit source and tape clocks.",
+    "relative_theorems": [
+      "iPRA |- Halt_blank(PA194AX11GH) <-> Halt_blank(PA194QAX11H)",
+      "iPRA |- Halt_blank(PA194AX11GHS) <-> Halt_blank(PA194QAX11H)"
+    ],
+    "absolute_corollary": "iPRA |- Con(PA) <-> not Halt_blank(M)",
+    "absolute_dependency": "Updated incoming AX11H written numerical-calculus calibration; all ten original proof fragments and exact table retained.",
+    "calibrated_reference_dense_sha256": "19e215df20429fa6a35f0a99ba0dcfcb40893a6e4b9a4ae6e450b0225f110e50",
+    "consistency_sentence": "Pinned Foundation nativePAConsistency = not nativePARefutation",
+    "new_end_to_end_lean_or_rocq_verification": false,
+    "independent_full_rederivation_of_inherited_calibration": false,
+    "assumes_PA_is_consistent": false
+  },
+  "verification": {
+    "full_aggregate_status": "PASS",
+    "full_literal_replay": true,
+    "fresh_literal_bytes_equal_retained": true,
+    "constructor_runtime_replay": true,
+    "all_source_instruction_bindings": true,
+    "formal_symbolic_command_checks": true,
+    "positive_duration_and_padded_frame_closure": true,
+    "whole_blank_initialization": true,
+    "finite_checks_are_not_a_kernel_arithmetic_derivation": true,
+    "receipt": "verification/aggregate_full/summary.json"
+  },
+  "reduction_searches": {
+    "two_row_repair_specifications": 10441656,
+    "joint_grammar_permutation_proposals": 5492757,
+    "new_graph_context_windows": 30818,
+    "accepted_sub194_candidates": 0,
+    "known_runtime193_has_valid_blank_initializer": false,
+    "scope": "Finite targeted searches, not an exhaustive global search or a lower bound."
+  }
+}

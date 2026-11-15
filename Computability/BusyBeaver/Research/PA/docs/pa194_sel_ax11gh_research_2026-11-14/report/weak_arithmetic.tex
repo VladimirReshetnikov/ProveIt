@@ -1,0 +1,169 @@
+\section{The weak-arithmetic proof boundary}
+\label{sec:weak-audit}
+
+The target is an object-theory theorem
+\[
+ \mathsf{iPRA}\vdash\operatorname{Con}(\mathsf{PA})
+                  \leftrightarrow\neg H_M,
+\]
+where $H_M$ is the arithmetized blank-tape halting assertion for the
+\emph{literal} transition table.  Four mathematically different claims
+must therefore be kept separate:
+\begin{enumerate}
+\item equality of transition tables up to a stated renumbering;
+\item equivalence of standard finite runs of two concrete machines;
+\item a proof of their arithmetized halting equivalence in a weak theory;
+\item calibration of one of those halting predicates to PA refutation.
+\end{enumerate}
+An executable finite test may establish the first assertion or check a
+finite certificate used in a proof of the second or third.  Neither a long
+nonhalting run nor a theorem quantified only over the metatheoretic natural
+numbers supplies the fourth assertion.  A proof in PA also cannot simply
+be relabelled as a proof in iPRA.
+
+\paragraph{What the pinned repository supplies.}
+At revision \texttt{603c58ca3bd6bf3222fcfc4e308e6b079f65d573},
+\texttt{Computability/BusyBeaver/Research/PA/README.md} says explicitly~\cite{pa-status}
+that neither machine-specific direction is established in iPRA for the
+primary PA194.  It records considerable completed standard-run work and
+some model-uniform components.  In particular, source coverage,
+calculus/clock composition and the complete source scheduler over ordinary
+natural numbers are useful inputs, but they do not by themselves provide
+the arbitrary-model physical simulation or the internal compilation of
+arbitrary PA refutations.
+
+The generic transfer in
+\texttt{PA/isigma1-transfer/README.md} gives a precise sufficient target~\cite{transfer}:
+for a $\Sigma_1$ halting sentence $H$, an
+$\mathsf{I\Sigma_1}$ proof of
+\[
+ \operatorname{Ref}_{\mathsf{PA}}\leftrightarrow H
+\]
+and the specified refutation-bound certificate give the desired iPRA
+consistency equivalence.  The separate certificate is supplied by the
+PA196 endpoint development.  Thus an arbitrary-model proof in
+$\mathsf{I\Sigma_1}$ is sufficient; one need not reproduce the entire
+machine proof directly inside intuitionistic quantifier-free induction.
+It remains necessary to bind the halting sentence to the exact table and
+the blank initialization.
+
+\subsection{A precise preservation criterion}
+
+Extend a machine's transition function to make its halt configuration
+absorbing.  Let $h_M(t)$ be the decidable primitive-recursive predicate
+that $M$ has halted by time $t$.  Suppose primitive-recursive functions
+$u,v$ have been supplied, together with iPRA proofs of
+\[
+ \forall t\,[h_M(t)\to h_N(u(t))],\qquad
+ \forall t\,[h_N(t)\to h_M(v(t))].                 \tag{*}
+\]
+Then, by intuitionistic existential introduction and elimination,
+\[
+ \mathsf{iPRA}\vdash H_M\leftrightarrow H_N
+ \quad\text{and}\quad
+ \mathsf{iPRA}\vdash\neg H_M\leftrightarrow\neg H_N.
+\]
+No excluded middle, Markov principle, consistency assumption, or
+reflection principle is used in this last inference.  Consequently any
+established calibration of $M$ transfers immediately to $N$.
+
+The word ``proofs'' in (*) is essential.  Merely exhibiting programs that
+appear to implement $u,v$, or observing that all involved operations are
+primitive recursive, does not establish their correctness in iPRA.
+Correctness can instead follow from an explicit quantifier-free invariant
+whose preservation is proved by induction, or from the repository's
+$\mathsf{I\Sigma_1}$ all-model route.
+
+\subsection{How finite local blocks produce witness maps}
+
+For a local rewrite, encode each finite tape configuration by a natural
+number.  A sufficient certificate records a decidable frame invariant,
+a primitive-recursive relation between old and new checkpoint
+configurations, and the following facts.
+\begin{enumerate}
+\item The complete blank initialization reaches related checkpoints;
+      every earlier configuration is nonhalting.
+\item Each source or old-machine step is represented by a positive-length
+      new-machine block.  Its duration has an explicit primitive-recursive
+      bound (often an affine expression in register values).
+\item The entire final tape, head position and control state satisfy the
+      claimed checkpoint relation.  Equality of only the inspected window
+      is insufficient unless the untouched tail is quantified explicitly.
+\item No strict block interior reaches halt or a conflicting rewrite site.
+      If another rewrite site occurs internally, a joint simulation argument
+      must cover it.
+\item Halting checkpoints correspond in both directions.
+\end{enumerate}
+
+The forward clock is obtained by primitive recursion, summing block
+durations along the old run.  For the reverse direction, positivity is
+what prevents an infinite number of checkpoints from being compressed
+into a finite new-machine run.  Within a new-machine run of length $t$,
+there are at most $t$ completed positive-length blocks after the fixed
+startup.  Bounded search through the first $t+1$ checkpoint times locates
+the containing block.  The nonhalting-interior property forces any
+observed halt to a corresponding halting checkpoint.  With absorbing
+halting semantics, a bound of $t$ on the source step index is sufficient.
+All clocks and bounded searches here are primitive recursive.  The
+remaining proof obligations are the local identities and invariant
+induction, which must be shown for arbitrary encoded values, not just a
+finite sample of register inputs.
+
+This criterion is useful for independent validation because it separates
+three responsibilities: the finite table certificate, the generic
+arithmetic induction that consumes that certificate, and the inherited
+logical calibration.  A valid new reduction need not reprove PA's
+logical calibration, but it cannot make an open calibration unconditional.
+
+\subsection{Limits on tempting logical substitutions}
+
+The source calculus's head
+$\Diamond_a\Box_a B\to B$ is stronger in a different direction from
+$\Box_a B\to B$.  The first is a symmetry principle in normal modal
+logic; the second is reflexivity.  In particular, positive vacuity
+$P\to\Box_a P$ together with reflexivity and normal distribution does
+not entail negative vacuity
+$\neg P\to\Box_a\neg P$: a reflexive accessibility relation may move
+from a world where $P$ is false to one where it is true.
+
+The existing diagonal-calculus calibration uses the first head to extend
+membership-only vacuity through negation; that extension is used in
+reverse membership rewriting, which is then used in the neighborhood
+equality interface.  Recovering the first head from arbitrary equality
+substitution by citing those same interfaces would therefore be circular.
+This observation is a dependency obstruction for the existing proof, not
+a countermodel to every remaining axiom of the full separation calculus.
+A new separation-based derivation could still change the conclusion, but
+it must be provided explicitly before a shorter emitter is accepted.
+
+The coefficient-three collision is a separate obstruction.  With the
+unchanged tags $I(a,b)=3p(a,b)$ and $E(a,b)=3p(a,b)+3$, equality and
+implication collide.  The pinned
+\texttt{pa194\_ax11s\_study/proof/cofinite\_collision.tex} gives an
+unbounded family of refutations even after excluding finitely many
+equality-witness instances.  It does not rule out a typed or otherwise
+redesigned three-constructor calculus.
+
+\subsection{What can be reused from the related projects}
+
+The ZFC context-return packet supplies a clean model for a valid local
+rewrite argument: exact whole-tape blocks, positive lengths, a check that
+their interiors avoid modified rows, a complete blank initialization, and
+all-natural register contracts~\cite{zfc-context}. The K217 construction
+also uses a preceding written bit to distinguish two merged control
+entries~\cite{zfc}. Their logical calibration concerns ZFC
+and is not a PA calibration.
+
+The DiophantineConsistency work supplies the weak-arithmetic conservation
+and negative-translation machinery behind the generic transfer above~\cite{diophantine}.
+Its polynomial operation counts do not translate directly into binary-TM
+state counts; an evaluator and complete blank initialization still have to
+be compiled and counted.
+
+ConciseIPRA supplies examples of replacing logical primitives by derivable
+interfaces~\cite{concise}. A search for refutations of its unmodified calculus concerns
+iPRA consistency.  To use it for the present problem one would first need
+a precisely specified stronger theory calibrated to PA, for example an
+appropriate full-induction extension with a verified syntactic
+negative translation.  A smaller Python checker for iPRA alone cannot
+supply the requested consistency machine.

@@ -1,0 +1,84 @@
+RELATIVE iPRA HALTING TRANSFER FOR THE LOOP REASSOCIATIONS
+Review scope: primary PA194 and candidate_3, candidate_6, candidate_7, candidate_8, with identical resolved source instructions. This is a relative machine equivalence, independent of the unfinished PA-refutation calibration.
+
+Verdict
+-------
+The incoming PA1944L positive-segment method is mathematically adequate, provided its local tape identities are actually derived for each new literal table and its baseline. Exact equality of source instructions by itself does not prove a physical simulation. The required reverse direction does not need inverse decoding of arbitrary intermediate tapes, an unbounded source search, a proof of source termination, or a numerical upper bound on a possibly infinite run. It uses only a finite source prefix bounded by the supplied physical halting time.
+
+The primitive-recursive witness transformations can be made explicit. In this particular nine-register unary architecture, the recorded affine duration bounds also give a uniform quadratic overhead bound. This removes an avoidable vagueness in the general primitive-recursive statement.
+
+1. Exact source binding
+----------------------
+A separate check imports only the retained independent source-language resolvers, not the compiler. Each site's bit-address is resolved both by arithmetic on binary addresses and by interval containment. The two graphs agree, and their full instruction/target arrays equal the frozen primary source on every one of3673 entries. Candidate3/6/7 alter305 bit-addresses; candidate8 alters183; maximum address length36 in each. All arrays have SHA-256 b46b6f97d97b6ac75be9d7ade85bed76890058a43bd714cb816051a1b3393537 in their delivered pretty-JSON form. These are finite exact identities and pose no weak-arithmetic induction problem.
+
+2. Primitive-recursive concrete semantics
+----------------------------------------
+Use a canonical binary tape zipper (q,l,r), where low bit of r is the current cell and low bit of l its left neighbor. Write w and move right:
+  (l,r) -> (2l+w, floor(r/2)).
+Write w and move left:
+  (l,r) -> (floor(l/2), 4 floor(r/2)+2w+(l mod2)).
+The head coordinate need not be retained for halting because the machine is translation invariant; an integer coordinate can be added as a primitive-recursive field if desired. The halt state is absorbing in the totalized semantics. Table lookup, one step, and n-step iteration are primitive recursive. Their defining and composition equations are provable with quantifier-free induction in iPRA.
+
+The source state is augmented with its physical gap g, first spare a0 and remaining finite spare list A. The logical projection consists of the finite program counter and nine registers. Each implementation has its own frame function E and auxiliary update; their logical projection is the same source step. Both startups initialize the same logical state: source instruction25 and registers(2,0,...,0). The independent checker uses gap0 and26 spare values1, so a0=1 and width(A)=75.
+
+The frame predicate must include a valid source address, nonnegative gap, and nonempty spare list. It is decidable and primitive recursively coded. The first spare is represented separately, so an empty tail A is allowed. The output target of every verified primitive contract retains the first spare. Increment appends a spare1; the other primitives retain the spare list. Gap update is g'=g+delta+overflow, with delta in{0,1} and overflow in{0,1}. Thus the invariant is preserved by quantifier-free induction. One must not suppress these auxiliary fields when defining the deterministic simulation clock.
+
+3. Local symbolic soundness
+--------------------------
+The independently checked symbolic calculus needs only four kinds of lemma:
+* A literal transition is its defining equation.
+* A self-loop crossing an m-cell constant run is proved by induction on m; it has exact duration m and the recorded exterior contexts are preserved.
+* Finite word normalization identities are equations of coded words. Zero tails disappear under the canonical zipper representation. The key list identity C(A)1=1B(A), with B(v)=0 1^(v+1), C(v)=1 0 1^v, is proved by induction on the coded list length.
+* A one-block traversal, derived directly from literal table rows with arbitrary exterior contexts, extends to a finite list by induction on its length; exact duration is sum(v+2).
+All induction formulas can be equalities or Boolean combinations of equalities of primitive-recursive codes. No induction on an unbounded all-tape predicate is needed. Free codes for exterior finite words handle arbitrary relevant finite support. Every intermediate run length is an affine expression with coefficientwise nonnegative coefficients. For a positive decrement branch, the affected value is x+1, with x an arbitrary natural number; the zero case is separate.
+
+Each successful finite symbolic trace composes these lemmas into a local iPRA theorem. The independent checker rederives the four list traversals from the actual literal rows. Its proof of source cases must not be replaced by c.validate alone, because that construction-side checker imports arithmetic-box assumptions. Python execution is a finite certificate computation, not a proof-assistant kernel; the ordinary mathematical theorem rests on the stated soundness of its symbolic rules and the complete successful replay.
+
+4. A precise synchronization proof
+----------------------------------
+Let h(s) mean that the source program counter is at its explicit halt instruction, and choose any total primitive-recursive continuation S(s) after such a site. Before that site, S is the actual augmented source step. A ready-to-execute halt instruction still has an ordinary physical root frame E(s), whose control is nonhalting. Let k(s)>=1 be the exact normal-instruction duration, and let kH(s)>=1 be the exact halt-instruction duration. Extend these functions arbitrarily and totally on unused inputs. Let b be the finite startup duration.
+
+Define s_n=S^n(s_0), T(0)=b, T(n+1)=T(n)+k(s_n), and
+  B(n)= product over j<n of (1-h(s_j)).
+B(n) is a primitive-recursive Boolean. The quantifier-free induction invariant is
+  B(n)=1 -> [Inv(s_n) and run_M(T(n),blank)=E(s_n) and T(n)>=b+n].
+The two defining factors of B(n+1)=B(n)*(1-h(s_n)) provide exactly the predecessor invariant and the nonhalt-source premise needed for the next local contract. Iterated-step composition and the startup equality supply the physical equation. A physical root frame E(s_n) is nonhalting, even when h(s_n)=1 and the halt instruction is the next action to execute.
+
+Forward witness: given any n with h(s_n)=1, take m to be the least j<=n with h(s_j)=1. Bounded minimization is primitive recursive. Then B(m)=1 and the halt-site contract gives a physical halt at
+  F(n)=T(m)+kH(s_m).
+Mentioning this first occurrence avoids silently assuming that an arbitrary source-halting witness is the first one. Equivalently define the source witness predicate to require B(n)=1 from the outset.
+
+Reverse witness: suppose the physical machine is halted at time t. If B(t+1)=1, synchronization gives a nonhalting frame at T(t+1)>=b+t+1>t. Absorbing halting and the iterated-step composition equation imply it is halted there, contradiction. Thus B(t+1)=0. The bounded first-hit function G(t) finds j<t+1 with h(s_j)=1, so G(t)<=t. The arithmetic first-hit lemma is a quantifier-free induction on the finite prefix, not a use of Markov's principle or double-negation elimination for an unbounded existential. If a different convention lets E map a source-halted state to a physical halt, strengthen the guard to all indices j<=t+1; the safe bound G(t)<=t+1 works unchanged. State the convention explicitly to eliminate off-by-one ambiguity.
+
+The normal/halt contracts include every primitive source branch. A hidden physical halt within a purported normal segment cannot evade this proof: a correct equality to a nonhalting endpoint in absorbing semantics itself excludes such a halt. No separate inverse parser for physical tapes is required.
+
+5. Explicit bounds in the present architecture
+----------------------------------------------
+The primary and candidate6 independent receipts each have4780 outcomes, minimum duration constant3, and coefficientwise bound
+  k(s), kH(s) <= 534 +8g +4 sum_i r_i +2a0 +2 width(A).
+The coefficient check is a finite exact integer comparison of every one of the4780 vectors, bound to the contracts.json digest. Positive-decrement vectors use r_i-1, which only decreases this upper bound.
+
+From the initialized frame, after j normal source steps:
+  sum_i r_i <=2+j,
+  g <=2j,
+  a0=1,
+  width(A) <=75+3j.
+These bounds follow directly from the displayed primitive target frames. Each normal source instruction increments at most one logical register by1, increases the gap by at most2, and appends at most one spare1 (width3). Thus
+  k(s_j), kH(s_j) <=694+26j.
+Consequently n normal steps consume at most
+  b+sum_{j<n}(694+26j) = b+13n^2+681n.
+A first halt instruction at index n gives literal machine halt by
+  b+13(n+1)^2+681(n+1).
+Every inequality is a quantifier-free iPRA induction over explicit primitive-recursive functions. No growth bound on a PA proof or proof search is involved.
+
+For two independently verified implementations M_i,M_j, bounded reverse extraction from H_i(t) gives n<=t, and the shared logical projection gives the same halt-site index for M_j's independently augmented source. Therefore an explicit cross-machine witness bound is
+  H_i(t) -> H_j(b_j+13(t+1)^2+681(t+1)),
+where H is the absorbing halted-at-time predicate. The converse uses b_i. Candidate6 and the primary both have b=58154. If avoiding a chosen source-halt indexing convention, replace t+1 by t+2 for a uniformly safe bound. Other candidates may use the same formula only after their own complete affine-coefficient checks establish the same coefficient envelope; startup constants58320 alone do not establish it.
+
+An affine upper envelope is stronger than necessary for relative iPRA provability: total primitive-recursive exact clocks and a positive lower bound already suffice. The envelope makes the witness functions especially transparent.
+
+6. What this proves, and what it does not
+----------------------------------------
+Once the literal checks and symbolic soundness above are supplied, iPRA proves Halt(M_i)<->Halt(M_j). Intuitionistic logic then proves their negations equivalent. Their common relation to Con(PA) remains an independent arithmetic calibration. The relative theorem neither assumes nor proves that calibration, and it does not become an absolute Con(PA) theorem merely because every source instruction is identical.
+
+The strongest claim justified by this review is an ordinary computer-assisted mathematical relative theorem, after the named local certificates are available. It is not a newly kernel-compiled Lean endpoint. Existing all-model theorem stubs or partial standard-run proofs are not used to discharge any of these assumptions silently.

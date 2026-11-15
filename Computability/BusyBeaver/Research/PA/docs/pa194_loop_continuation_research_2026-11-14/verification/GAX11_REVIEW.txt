@@ -1,0 +1,19 @@
+PA194GAX11 command/proof review
+==============================
+Reviewed: logical_work/gax11/proof.tex, check_commands_new.py, evidence_full/verification.json and commands_receipt.json. The full physical checks were not rerun in this review; the recorded aggregate identifies build, command and independent physical stages as PASS for dense SHA-256 7e1c6442816e5df05e961f2057719252a1976c9a195a786978bf1e2d3c8e466d.
+
+No command-level mathematical error was found. Checks by direct algebra:
+
+* The added final push produces eleven stored entries. Its fallthrough starts MP with t=d=h=0. MP_z returns t=0 both for z=0 (successful comparison) and z>0 (failed comparison), clears the cache and sets d=z.
+* S^10 returns q8 with U(c,h_raw) cached and saved t on the stack; S^11 returns U(c,h_raw) with old t cached. All intermediate sums are protected by residues or by the universal code being at least2.
+* Pop=A0;S^12 is unconditional, including t=1, empty stack and zero-pair aliases. The last sum includes a universal code>=2. Push and Discard have their displayed all-store effects.
+* Selector q_j consumes exactly9-j remaining stored entries. The restricted-rho selector realizes its actual parameter u whenever u<=D, using x=D-u.
+* Gen_i correctly uses the raw cached a and explicit binder i; no offset command is needed. The a=1 and i=0 cases remain safe.
+* The MP suffix needs and correctly consumes the reserved zero. It halts early when the antecedent is1; otherwise it returns every consequent, including1, with cache0. Thus the final plain Shift detects a refutation. It never confuses1+1 with the sum guard1.
+* Canonical Cantor zero aliases do not invalidate any identity: a collapsed all-zero suffix is decoded by the total projections as repeated zero entries, yielding the same claimed integer store.
+
+The proof has an important explicit boundary. It gives the ordinary source/command relative argument, but says that expressing the transformations as primitive-recursive witnesses and checking weak-arithmetic correctness remains a task. It therefore must not be advertised as a completed iPRA relative theorem on the same footing as the separately justified source-identical LC transfer. Neither proof supplies the absolute PA-refutation calibration.
+
+Documentation cleanup: the scheduler scope emitted by check_commands_new.py refers to ax11_preservation.tex, which is absent; the correct new proof file is proof.tex. Clarifying that b_C(e(tail)) is the initial raw candidate seed, while1+b_C(e(tail)) is the positive continuation code, would remove a minor indexing ambiguity. A short reference to the calculus theorem0 is also helpful for empty-stack soundness; it is already part of the inherited numerical calculus.
+
+The staged report/quadratic_transfer.tex is byte-identical to the earlier reviewed LC note. The staged constructor renames fresh native330 to190 only after asserting190 is absent, preserves the dense table hash, and checks that LC differs from the primary in exactly(139,0),(139,1),(190,1). No change to the quadratic argument is required by this native-label presentation.

@@ -1,0 +1,195 @@
+\section{A simultaneous history selector with a direct iPRA transfer}
+\label{sec:history-selector-proof}
+
+Let $M$ be the pinned primary PA194 table in native numbering, with start
+74 and terminal label 254.  The new machine $N=\mathrm{PA194SEL}$ keeps
+the same 194 working labels and the same binary blank tape convention.
+Its modification uses the bit written by the preceding transition to
+remember which of two old controls has been entered.  The resulting
+proof compares literal Turing-machine runs directly; it does not pass
+through the numerical calculus or a proof-search scheduler.
+
+\subsection{The complete finite certificate}
+
+The following two pairs are used simultaneously:
+\[
+\begin{array}{c|c|c|c|c|c|c}
+\text{pair}&l&r&\delta(l,0)&\delta(r,0)&u&v\\\hline
+A&12&38&0R19&0R28&98&19\\
+B&127&124&0R14&0R62&8&59
+\end{array}
+\]
+For pair A, the two old read-one rows are both $1R20$; for pair B they
+are both $1R138$.  The helper rows satisfy
+\[
+ \delta(98,0)=0R19,\quad \delta(19,0)=0R28,\quad
+ \delta(8,0)=0R14,\quad \delta(59,0)=0R62.
+\]
+Every transition entering $l$ writes zero and moves right, and every
+transition entering $r$ writes one and moves right.  These statements
+are checked over the entire table.  Their complete predecessor lists are
+\[
+\begin{array}{c|l}
+12&(2002,0),(2010,0),(2025,0),(2031,0)\\
+38&(312,1)\\
+127&(110,0)\\
+124&(104,1).
+\end{array}
+\]
+Thus, whenever an old run started at 74 is in $l$, the cell immediately
+left of the head contains zero; when it is in $r$, that cell contains one.
+The assertion holds for every starting tape.  It does not assert that an
+arbitrary configuration initially placed in one of these four controls
+already satisfies the required history condition.
+
+Define $f(38)=12$, $f(124)=127$, and let $f$ fix every other label,
+including 74 and 254.  Redirect every ordinary target $q$ to $f(q)$.
+For each pair replace the merged control's read-zero row and the old
+right control's two rows by
+\[
+ \delta_N(l,0)=0Lr,\qquad
+ \delta_N(r,0)=0Ru,\qquad
+ \delta_N(r,1)=1Rv.
+\]
+The read-one row of $l$ retains its old action with its target mapped by
+$f$.  The former control $r$ is now a selector.  The old transitions
+entering $r$ instead enter $l$, so they do not accidentally execute the
+selector on an ordinary checkpoint entry.
+
+Exactly eight literal rows change.  The helpers
+$98,19,8,59$ are disjoint from the four modified control labels
+$12,38,127,124$, and their relevant read-zero rows are unchanged by either
+rewrite.  These facts are sufficient to check the two rewrites together;
+there is no assumption that independent edits automatically compose.
+
+\subsection{Whole-tape local simulation}
+
+At a checkpoint replace only the old state by $f(q)$, leaving the head
+and entire tape unchanged.  Each old step has the following exact new
+simulation.
+\begin{itemize}
+\item Outside the four paired controls, one new transition reproduces
+      the old write and move and reaches the mapped target.
+\item At either control of a pair on read one, the common row gives the
+      same one-step correspondence.
+\item On read zero, $l$ moves left into selector $r$, without changing
+      the zero just read.  The selector reads the history bit.  It writes
+      that same bit back and moves right into $u$ if the bit is zero or
+      $v$ if it is one.  The head is again over the original zero.
+      The helper's read-zero row then performs the appropriate old
+      transition.
+\end{itemize}
+The last case takes exactly three steps.  It accesses only the original
+cell and its immediate left neighbor; neither bit changes.  The final
+head is one cell to the right of the old head, and the final state is
+the mapped old destination.  Every cell outside that two-cell window is
+unaccessed.  The strict intermediate controls are a selector and a
+helper, all working controls, so no premature halt occurs.
+
+This gives eight nontrivial local cases, four for each pair.  Every case
+quantifies the whole uninspected exterior.  The finite checker derives
+the cases from the literal old and new tables and checks every remaining
+row against target redirection.
+
+\subsection{A quantifier-free arithmetical proof}
+
+For explicit arithmetization, represent a finite-support tape relative
+to its head by two natural numbers.  Let $L$ encode the cells strictly
+to the left, nearest first in binary, and let $R$ encode the current
+cell followed by the cells to the right, again nearest first.  A
+configuration is $(q,L,R)$; the current symbol is $R\bmod2$, and the
+history bit is $L\bmod2$.  If $R=2r+b$ and $L=2\ell+a$, a transition
+writing $w$ has tape effects
+\[
+ \begin{array}{ll}
+ \text{move right}:&(L,R)\mapsto(2L+w,r),\\
+ \text{move left}: &(L,R)\mapsto(\ell,4r+2w+a).
+ \end{array}
+\]
+These are primitive-recursive operations with elementary quantifier-free
+defining identities.  An absolute head coordinate can be retained as
+an additional integer code; each simulated block makes the same net
+move, so this does not change the argument.
+
+Make terminal label 254 absorbing in both arithmetic step functions.
+Write $c_n$ for the old configuration after $n$ steps, and let
+$F(q,L,R)=(f(q),L,R)$.  The entry invariant is the quantifier-free formula
+\[
+ J(q,L,R):\quad
+ (q=12\lor q=127\Rightarrow L\bmod2=0)\ \wedge\
+ (q=38\lor q=124\Rightarrow L\bmod2=1).
+\]
+The initial state 74 satisfies $J$.  Every transition into a paired
+control writes its specified bit and moves right, so the complete
+predecessor check proves that one old step preserves $J$, for arbitrary
+values of $L,R$.  Quantifier-free induction gives $J(c_n)$ for every $n$.
+
+Define the primitive-recursive clock
+\[
+ \tau(0)=0,\qquad
+ \tau(n+1)=\tau(n)+d(c_n),
+\]
+where $d(c)=3$ when $c$ is in one of the four paired controls and reads
+zero, and $d(c)=1$ otherwise.  The absorbing halt case has duration one.
+The local certificate and quantifier-free induction establish
+\[
+ \operatorname{run}_N(\tau(n))=F(c_n),\qquad
+ n\le\tau(n)\le3n.                                      \tag{1}
+\]
+The induction formula is an equality between explicitly
+primitive-recursive configuration codes, conjoined with $J(c_n)$ and the
+two clock inequalities.  It has no unbounded quantifier over tapes,
+stores, proofs, or future runs.
+
+Let $h_M(t)$ and $h_N(t)$ mean that the respective absorbing runs are in
+the halt state at time $t$.  From (1), if $h_M(t)$ then $N$ is halted at
+$\tau(t)\le3t$ and remains halted thereafter.  Thus iPRA proves
+\[
+ \forall t\,[h_M(t)\to h_N(3t)].                          \tag{2}
+\]
+
+For the converse, suppose $h_N(T)$.  Since the halt state is absorbing
+and $\tau(T)\ge T$, the new machine is also halted at $\tau(T)$.
+Equation (1) then says that $F(c_T)$ is halted.  The map $f$ sends no
+working state to 254, so $c_T$ itself is halted.  Hence
+\[
+ \forall T\,[h_N(T)\to h_M(T)].                          \tag{3}
+\]
+Halting persistence is itself a quantifier-free induction on the number
+of additional absorbing steps.  No phase reconstruction or search for
+the last checkpoint is needed.  Positivity of the block durations,
+which gives $\tau(T)\ge T$, supplies the essential bound.
+
+Equations (2)--(3) are explicit halting-witness translations.  Pure
+intuitionistic reasoning now gives the direct relative theorem
+\[
+ \boxed{\mathsf{iPRA}\vdash H_M\leftrightarrow H_N,\qquad
+        \mathsf{iPRA}\vdash\neg H_M\leftrightarrow\neg H_N.}
+\]
+This is a mathematical proof of the relative theorem; the accompanying
+Python checker checks its complete finite table premises and is not a
+new Lean kernel compilation.  No soundness principle, consistency
+assumption, reflection principle, or completed PA-calibration theorem is
+needed for the relative result.
+
+Consequently an established primary-machine theorem
+$\mathsf{iPRA}\vdash\operatorname{Con}(\mathsf{PA})
+\leftrightarrow\neg H_M$ transfers to $N$ by intuitionistic
+composition.  The current repository's missing absolute calibration
+does not disappear: it is inherited unchanged, rather than replaced by
+a new command-calculus correctness obligation.
+
+\subsection{Blank initialization as an independent concrete check}
+
+The old blank startup reaches its source frame after 58,154 transitions.
+During that prefix the old run takes a read-zero transition in pair A
+three times and in pair B twenty-four times.  Each such visit gains two
+steps and all others gain none, so the new startup length is exactly
+\[
+ 58154+2(3+24)=58208.
+\]
+Independent literal simulation confirms that both endpoints have state
+84, head coordinate $-2$, and the identical complete finite-support tape.
+This concrete check binds the reported startup to the actual files.
+The all-time equivalence follows from the local proof and induction
+above, not from extrapolating the startup computation.

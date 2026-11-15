@@ -1,0 +1,312 @@
+% Standalone section fragment, requiring amsmath, amssymb, amsthm, hyperref.
+\section{PA194AX11GH: four-field AX, explicit generalization, and cache-only halting}
+\label{sec:ax11gh}
+
+This construction combines the AX11G axiom operation with the cache-only
+Shift of the H family. It has 194 working states and 388 transitions on a
+two-way infinite binary tape, with a completely blank start. The dense
+start is zero and the halt label is 194, excluded from the count. Its
+dense SHA-256 is
+\begin{quote}\small\ttfamily
+513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1.
+\end{quote}
+This is a fallback construction; it is not a sub-194 result.
+The absolute calibration to PA consistency remains a separate obligation.
+
+\subsection{Exact source and physical construction}
+
+The immediate parent is the AX11G table from the pinned incoming packet.
+The emitted axiom word, its coefficient-four coding, its Q orientation of
+universal distribution, and all four AX operands are unchanged.
+Five native rows change:
+\[
+\begin{array}{c|c|c|c}
+q&\text{read}&\text{old write/move/target}&\text{new write/move/target}\\\hline
+38&0&0,R,28&0,R,11\\
+38&1&1,R,20&1,R,122\\
+214&0&0,R,188&0,R,312\\
+214&1&1,R,312&1,R,20\\
+312&0&0,R,11&0,R,188
+\end{array}
+\]
+The corresponding source edit is
+\[
+\texttt{node170}: (\texttt{node36},\texttt{node169})
+\quad\longmapsto\quad
+((\texttt{node36},(\texttt{node167},\texttt{node145})),\texttt{node57}).
+\]
+An independent resolver shows that this deletes exactly the instruction
+$\operatorname{inc}X$ at old source index 3661. The neighboring loop
+decrements the visible top $T$. Previously it accumulated $T$ in $X$;
+now it clears $T$ without adding it to $X$. The subsequent copy of the
+cached head $H$ into $T$ and $X$ is unchanged. Every other primitive
+instruction and successor agrees under the index relocation
+$j\mapsto j-\mathbf1_{j>3661}$.
+
+The raw machine has 134 fixed controls and 67 AX-reader controls.
+The inherited seven context folds have all 28 local cases rechecked on
+the final simultaneous table, giving $134+67-7=194$ controls.
+The source has 3671 sites and 4778 branch outcomes. Both construction
+and independent literal-tape certificates are supplied. The latter
+derives its four list-sweep lemmas from the rows themselves and does not
+call an arithmetic-block oracle.
+
+The native start is 74 and the native halt label is 254. A literal
+57,922-step run from the all-zero tape reaches dispatcher 84 at head
+coordinate $-2$, source site 25, logical registers $(2,0,\ldots,0)$,
+and 26 one-valued spare blocks. The logical-to-physical register map is
+$(6,2,0,4,3,7,8,5,1)$. The check compares the complete finite support of
+the tape, including both header markers, the source address, all nine
+register blocks, the spare tail, and the zero exterior.
+
+\subsection{Numerical calculus and the precise command equations}
+
+Let $p(a,b)=(a+b)(a+b+1)/2+b$ and write $[a;w]=p(a,w)$.
+Cantor projections are total: $\operatorname{hd}(0)=\operatorname{tl}(0)=0$
+and $[0;0]=0$. Put
+\[
+ I(a,b)=4p(a,b),\quad M(a,b)=4p(a,b)+1,\quad
+ U(i,a)=4p(a,i)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Code zero is truth, code one is the contradiction target, and
+$N(a)=I(a,1)$, $a\wedge b=N(I(a,N(b)))$,
+$\exists_i a=N(U(i,N(a)))$.
+
+The unchanged Q-oriented separate-diagonal calculus has truth, modus
+ponens, generalization, and the following seed families:
+\begin{align*}
+ h_1(D,H)&=I(\exists_D U(D,H),H),\\
+ h_2(D,A,H)&=I(U(D,U(A,H)),U(A,U(D,H))),\\
+ h_3(D,A,H)&=I(M(H,D),I(E(H,A),M(A,D))),\\
+ h_4(D,A,H)&=I(E(H,D),I(M(A,H),M(A,D))),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6^Q(D,A,H)&=I(U(D,I(A,H)),I(U(D,A),U(D,H))),\\
+ \rho(D,A,H,u)&=I(I(I(H,u),D),I(I(D,H),I(A,H))),\qquad u\le D,\\
+ \Gamma(A)&=I(A,U(A,A)).
+\end{align*}
+For the guarded seed, define
+\begin{align*}
+ P(a,b,c)&=I(c,M(c,b)),\\
+ V(a,b,c)&=I(M(a,b),U(c,M(a,b))),\\
+ S_0(a,b,c)&=U\bigl(b,I(M(a,b),P(a,b,c))\wedge I(M(c,b),c)\bigr),\\
+ Q_0(a,b,c)&=U(c,I(S_0(a,b,c),N(P(a,b,c)))),\\
+ g(a,b,c)&=\begin{cases}N(I(V(a,b,c),Q_0(a,b,c))),&c\ne a,b,\\
+ 0,&\text{otherwise.}\end{cases}
+\end{align*}
+The guarded seed rule supplies the nonzero displayed gate under its
+guard; the zero branch is covered by truth. The seed system has the
+same conclusion set as the primary distribution orientation by the
+finite implicational exchange template retained in the AX11G packet.
+No new arithmetic-calibration claim is required for this equality of
+the numerical calculi.
+
+A store is $(t,w,d,h)$, consisting of visible top, stack, offset and
+cached formula. For AX operands $(c,x,y,z)$ put $D=d+x$, $H=h+y$ and
+\[
+\begin{array}{c|l}
+q_0&g(H,D,c)\\q_1&\Gamma(c)\\q_2&h_6^Q(D,c,H)\\q_3&h_5(D,H)\\
+q_4&h_4(D,c,H)\\q_5&h_3(D,c,H)\\q_6&h_2(D,c,H)\\
+q_7&h_1(D,H)\\q_8&\rho(D,c,H,d)\\q_9&U(c,h).
+\end{array}
+\]
+All of $q_0,\ldots,q_8$ have residue zero modulo four. The last head
+$q_9$ has residue two and is at least two. It generalizes the incoming
+theorem cache $h$, not the arithmetic sum $H=h+y$.
+
+The command effects are
+\begin{align*}
+ \mathsf A_{c,x,y,z}(t,w,d,h)&=(0,[q_0,q_1,\ldots,q_9,t;w],z,0),\\
+ \mathsf M_x(t,w,d,h)&=
+ \begin{cases}(d+x,w,d+x,0),&I(t,d+x)=h,\\
+ (0,w,d+x,0),&I(t,d+x)\ne h,\end{cases}\\
+ \mathsf S(t,w,d,h)&=
+ \begin{cases}\mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&h\ne1.
+ \end{cases}
+\end{align*}
+The fourth operand $z$ is consumed by AX's fallthrough through the
+complete MP reader. After the guarded top is pushed, the visible top,
+offset and cache are zero. MP on operand $z$ returns visible zero both
+when $z=0$ and when $z>0$, and retains offset $z$. Thus the fourth field
+is part of the exact semantics; it cannot be erased from the decoder.
+
+\subsection{Universal stack identities, including early halts}
+
+Words run left to right. Let $A_0=\mathsf A_{0,0,0,0}$ and set
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf M_0,
+ \qquad \mathsf{Pop}=A_0;\mathsf S^{12},
+ \qquad \mathsf{Discard}=\mathsf M_0.
+\]
+For arbitrary natural entries,
+\begin{align*}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)&=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)&=(q_9,w,0,t),\\
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Pop}(t,w,d,h)&=
+ \begin{cases}\mathsf{halt},&t=1,\\
+ (t,\operatorname{tl}(w),0,\operatorname{hd}(w)),&t\ne1.
+ \end{cases}
+\end{align*}
+The first eleven Shifts test zero or generated heads, never one.
+The twelfth Shift tests the saved arbitrary top. This is the essential
+change from AX11G, whose sum-based Pop safely returned even when $t=1$.
+Push's final MP comparison fails because an implication has residue
+zero and $q_9$ has residue two. Discard produces the candidate conclusion
+zero on both MP branches. All these identities include the collapsed
+zero stack and its virtual zero entries.
+
+For $0\le j\le8$, the selector
+\[
+ \mathsf{Discard};\mathsf A_{c,D,H,0};\mathsf S^{j+2};
+ \mathsf{Pop}^{9-j}
+\]
+sends $(t,w,0,0)$ to $(q_j,w,0,0)$. Every selected head has residue zero,
+so its Pops are safe. The last Pop removes the saved zero and restores
+the arbitrary old stack. For a desired restricted seed with $u\le D$,
+replace the AX prefix by
+$\mathsf{Discard};\mathsf M_u;\mathsf A_{c,D-u,H,0}$ and use
+$\mathsf S^{10};\mathsf{Pop}$. The identity
+$\mathsf M_i(0,w,0,0)=(0,w,i,0)$ includes $i=0$.
+
+The shorter generalization word is
+\[
+ \boxed{\mathsf{Gen}_i=
+ \mathsf{Push};\mathsf S;\mathsf A_{i,0,0,0};\mathsf S^{11}.}
+\]
+It sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$ for every $a,w,i$.
+After Push and one Shift the store is $(0,w,0,a)$. That Shift tested
+the preceding zero cache. AX consumes $a$ before another Shift tests it,
+so even $a=1$ is covered. Its explicit operand $i$ becomes the binder.
+The offset-setting MP required by AX11H has disappeared.
+
+For modus ponens, from $(0,[a,I(a,b),0;w],0,0)$ the suffix
+\[
+ \mathsf S;\mathsf S;\mathsf M_b;\mathsf{Pop}
+\]
+halts exactly in the two cases $a=1$ or $b=1$, and otherwise returns
+$(b,w,0,0)$. The second Shift tests $a$. If it does not halt, successful
+MP leaves $(b,[0;w],b,0)$; Pop then tests $b$ and removes the reserved
+zero on its returning branch. The case $a=b=w=0$ follows from
+$I(0,0)=[0;0]=0$. No hidden nonempty-stack hypothesis is used.
+
+\subsection{Derivation compiler and its quantifier-free induction}
+
+Compile a checked numerical-calculus derivation $e$ into a command word
+$C(e)$. Truth uses Discard, a seed uses its selector, and a generalization
+appends $\mathsf{Gen}_i$ to its predecessor word. For an MP node with
+major proof $e_1$ of $I(a,b)$ and minor proof $e_0$ of $a$, use
+\[
+ \mathsf{Discard};\mathsf{Push};C(e_1);\mathsf{Push};
+ C(e_0);\mathsf{Push};\mathsf S;\mathsf S;\mathsf M_b;\mathsf{Pop}.
+\]
+For every incoming $(t,w,0,0)$, the compiled word either halts or
+returns $(\operatorname{concl}(e),w,0,0)$. The initial Discard and Push
+reserve zero; both recursive premise words preserve their full incoming
+stack, so the reserved zero survives until the last Pop.
+
+For clarity, the unbounded phrase ``for every store'' is not used as
+the induction formula in iPRA. Fix a finite proof-node table, a height
+bound $F$ (leaves have height one), and the desired inputs $t,w$. Let
+$K\ge1$ bound all conclusion codes in the table and define
+\[
+ R_0=\max(1,K,t,w),\qquad R_{j+1}=(K+R_j+3)^4.
+\]
+At stage $k\le F$, check every proof-table node of height at most $k$
+on every incoming top and stack at most $R_{F-k}$. The assertion is
+the bounded conjunction that its compiled word halts or has the stated
+return value. All bounds, compiled words and length-bounded executions
+are primitive recursive; the conjunction is a primitive-recursive
+Boolean equality and is therefore a quantifier-free induction formula.
+
+In a successor step, an MP node queried on stack $y\le R$ invokes
+its two predecessors on $[0;y]$ and $[I(a,b),0;y]$, with input top zero.
+The inequality $p(v,x)\le(v+x+1)^2$ and $I(a,b)\le K$ bound both
+stacks by $(K+R+3)^4$, exactly the previous stage's allowance.
+Generalization invokes its predecessor on the same input. Leaves use
+the local identities above. Earlier-height nodes remain covered because
+the input bounds decrease. At stage $F$, the required root instance
+includes the fixed $t,w$. Universal generalization in these originally
+free parameters yields the all-store compiler theorem.
+
+The constructors also have a primitive-recursive length bound. A seed
+selector has at most 121 commands, the generalizer has 25, and an MP
+node adds 53 beyond its predecessor words. Thus the deliberately coarse
+bound $L_k\le128(2^k-1)$ at height $k$ is valid. This is a word-length
+bound, not a claim that formula codes or physical runtimes are small.
+
+If $e$ concludes one, then
+\[
+ R_e=A_0;C(e);\mathsf{Pop}
+\]
+halts from every incoming store $(t,w,d,h)$. The first AX clears dirty
+offset and cache. The compiler either halts already or returns top one;
+the final Pop detects that one. A final plain Shift would be incorrect:
+$\mathsf S(1,w,0,0)=(0,\operatorname{tl}(w),0,\operatorname{hd}(w))$.
+
+\subsection{Fair enumeration, soundness and exact scope}
+
+For continuations define $e(\epsilon)=0$,
+$e(C::v)=1+b_C(e(v))$, with
+\begin{align*}
+ b_{\mathsf S}(r)&=p(0,r),\\
+ b_{\mathsf M_x}(r)&=p(1,p(x,r)),\\
+ b_{\mathsf A_{c,x,y,z}}(r)&=p(c+2,p(y,p(x,p(z,r)))).
+\end{align*}
+The first command of a fresh enumerated candidate omits the outer one.
+The AX read order is $y,x,z$ after its tag. Total Cantor projections
+recover this exact four-field code, including every zero-field alias.
+After any positive continuation, the residual is strictly smaller.
+Hence nonhalting candidate runs have a primitive-recursive command bound.
+
+Prefix $R_e$ by $\mathsf A_{k,0,0,0}$. The resulting fresh candidate
+codes
+\[
+ N_k=p(k+2,p(0,p(0,p(0,e(R_e)))))
+\]
+are unbounded in $k$. The prefix is total and leaves some store; the
+suffix halts from every store. The scheduler tries consecutive candidates
+from two while carrying its proof store, so a chosen $N_k\ge2$ supplies
+a primitive-recursive finite halting witness. This does not assume that
+the store resets between candidates.
+
+Conversely annotate the top, cache and each canonical stack entry with
+a derivation of its formula code. Zero's fixed proof covers virtual zero
+tails. AX appends seed proofs, the saved old top and a generalization of
+the incoming theorem cache; its extra MP field produces truth for every
+$z$. Successful MP composes proof annotations and failure produces truth.
+Shift moves annotations and can halt only when the cache has an annotated
+derivation of one. Canonical stack expansion and annotation checks have
+primitive-recursive bounds. Induction on a bounded run prefix is a
+quantifier-free Boolean invariant, not an arithmetic truth predicate.
+
+These two witness maps prove in iPRA that the \emph{stated command
+scheduler} halts exactly when the Q-oriented numerical calculus proves
+one. The exact source binding and positive symbolic tape contracts give
+the intended compiler from these commands to the literal table. To
+internalize the latter in iPRA, encode finite tape halves as naturals and
+use quantifier-free induction for the explicit unary sweeps and register
+list traversals. Positive local durations give the reverse witness map:
+if the physical run halts at time $T$, more than $T$ unhalted source
+steps would contradict determinism. Bounded search therefore extracts a
+source halt. The supplied checkers audit these local simulations; they
+are not proof-assistant kernels.
+
+The construction is thus a relative transfer within the current machine
+family. In particular, it supplies no new proof that the numerical
+calculus and PA have iPRA-provably equivalent refutability. The repository
+explicitly records that missing calibration and unfinished physical
+formalization. If the primary machine's requested iPRA consistency
+equivalence is established, and the stated physical simulation is
+internalized, the relative command and tape translations transport it to
+AX11GH. Neither an ordinary standard-model simulation
+nor a finite Python receipt alone discharges the absolute calibration.
+
+The source difference is substantive. AX11GH has the explicit-binder,
+four-operand axiom interface of AX11G, while its Pop and MP compiler have
+the early-halt behavior of AX11H. At $(1,w,0,0)$ its Shift does not halt;
+at $(1,w,0,1)$ it does. AX11G has the opposite behavior on those two
+stores. Relative to AX11H, the saved universal changes from $U(d,h)$
+to $U(c,h)$ and the generalizer loses one command. These are recurring
+command differences, not state renaming or a change of start state.

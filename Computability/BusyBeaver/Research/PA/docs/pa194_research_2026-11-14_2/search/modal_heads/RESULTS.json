@@ -1,0 +1,73 @@
+{
+  "status": "completed finite unsuccessful research search",
+  "claim": "No <=194-state machine was obtained. These searches do not establish a lower bound. Best reader scores above64 are optimistic matching scores, not simultaneous-fold certificates.",
+  "source_commit": "1e1a41f799d4658b829cdd0eabae3775a0c8c4a0",
+  "upstream_source": "docs/incoming/pa194_ax11h_research_2026-11-14.zip, research/joint_grammar/joint_ax11",
+  "compile": "g++ -std=c++17 -O3 -DNDEBUG search.cpp -o search",
+  "scope": "Modal-B and contraposed-C first-head replacements; 96 equality/premise/diagonal/shape seeds apiece. BG additionally changes saved-binder copyD to copyA in the B seeds and includes the prior best B grammar. Local/shared associativity and unguarded-head parameter permutations are mutated.",
+  "runs": [
+    {
+      "label": "B",
+      "semantic_seed_count": 96,
+      "random_seed": 202611140531,
+      "iterations": 2996090,
+      "accepted": 901856,
+      "qualifying_193_state_hits": 0,
+      "best_penalized_score": 65,
+      "best_optimistic_effective_reader_count": 65,
+      "optimistic_total_including_134_fixed_states": 199,
+      "wall_seconds": 600.032,
+      "replay": "./search B/seeds.txt leaf_attrs.txt B/replay 1000000000 202611140531 2996090"
+    },
+    {
+      "label": "C",
+      "semantic_seed_count": 96,
+      "random_seed": 202611140532,
+      "iterations": 2952436,
+      "accepted": 1043833,
+      "qualifying_193_state_hits": 0,
+      "best_penalized_score": 68,
+      "best_optimistic_effective_reader_count": 68,
+      "optimistic_total_including_134_fixed_states": 202,
+      "wall_seconds": 600.037,
+      "replay": "./search C/seeds.txt leaf_attrs.txt C/replay 1000000000 202611140532 2952436"
+    },
+    {
+      "label": "BG",
+      "semantic_seed_count": 97,
+      "random_seed": 202611140533,
+      "iterations": 717499,
+      "accepted": 244315,
+      "qualifying_193_state_hits": 0,
+      "best_penalized_score": 65,
+      "best_optimistic_effective_reader_count": 65,
+      "optimistic_total_including_134_fixed_states": 199,
+      "wall_seconds": 120.036,
+      "replay": "./search BG/seeds.txt leaf_attrs.txt BG/replay 1000000000 202611140533 717499"
+    }
+  ],
+  "total_iterations": 6666025,
+  "total_accepted": 2190004,
+  "sha256": {
+    "B/best.grammar.json": "abdc5c204bcd6a2beba236ccd15fbe69bda93f38427e88429eb5a7b285fb3d88",
+    "B/change.json": "5424a2eb0965e0f46e7ad0411a683ac0b79ce21f2ab31e07ef7efa8e423430ff",
+    "B/search.log": "f149ada830c46fd606eb446d98037ec90e5a83a564895ad44304f811ffecf75b",
+    "B/seed_metadata.json": "49526cd146b64ec545de5722b5497f3b2bf296b7d4e4ac782de328a6da5155e9",
+    "B/seeds.txt": "120e8170a6bc11d8156787a4c6341ab075e5e4be9f0e40b8510299dca5d28178",
+    "BG/best.grammar.json": "3429609545ecd23142f7768d8e542f25bc0419ee1593afe25b8e3480c8625666",
+    "BG/search.log": "1a4398cb3a0dd9ec9cdcace335150231d1831d9d46edcd02f751ed7efe8da29f",
+    "BG/seeds.txt": "e44ee4293348003c28dbca6bc8306122d9a788855d0020594b41f1c48f23f429",
+    "C/best.grammar.json": "d91b524a7ab62c5fa2b4521741d6f3c6393d60dc19ec405a1ed9dd207e804536",
+    "C/change.json": "587dcc25fb57e8b9ef86d90f2a56a2cf827457f93fd2b9fc462647e5819fa493",
+    "C/search.log": "3d3366f66eba84cdb3f751307c8c1b56588a14a12753f105baffb48cbf837da7",
+    "C/seed_metadata.json": "49526cd146b64ec545de5722b5497f3b2bf296b7d4e4ac782de328a6da5155e9",
+    "C/seeds.txt": "f37dc1c6fd8eac2fc62376252a7ca089eb74a9ac3c854690212edfaac6c5fecc",
+    "leaf_attrs.txt": "384426ee2b82200287e5afe9582ddc92c978a3590031ad30cacb72b4430f10cf",
+    "licenses/LICENSE.JamesChang": "66b58a09e7e68c8b9b1299be0dcb63f49be3a29066e2b94b7df6083fbf1a57c0",
+    "licenses/LICENSE.ProveIt": "460d4fb6f45fd89278ba881d4b70e8bd1b7df223ee907e758342c2f9989f789d",
+    "licenses/LICENSE.Wade": "c1dffee77db98625debe39b47538e1d2f3b7956cbc7bcd6ed9363701b2177cfa",
+    "modal_head_equivalence.tex": "dc6e58285d02a619b782d0ee523d986669954c94e3da74045e001efdc22a157e",
+    "screen.cpp": "45fd39723955a367bbcd1c3e4f33673320596636ce60d0bf7b4ed5dcaa5bffc5",
+    "search.cpp": "c3e91b761e45e340d73c1a4933d311ad32e51217ecc992df37cbc6dc3f12c99b"
+  }
+}

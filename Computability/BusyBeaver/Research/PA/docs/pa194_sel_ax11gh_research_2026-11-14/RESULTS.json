@@ -1,0 +1,105 @@
+{
+  "source_repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "source_commit": "603c58ca3bd6bf3222fcfc4e308e6b079f65d573",
+  "date": "2026-11-14",
+  "sub194_verified_result": false,
+  "new_194_designs": [
+    {
+      "name": "PA194SEL",
+      "working_states": 194,
+      "transition_rows": 388,
+      "table": "machines/SEL/machine/pa194sel.tm",
+      "sha256": "5121f0b417ea025af140804b59e50a9d2fc3c461612e98b2f0ac86742c76a75b",
+      "blank_startup_steps": 58208,
+      "proof_status": "Complete written direct relative iPRA proof of halting and nonhalting equivalence to pinned primary; finite table premises checked independently twice.",
+      "old_to_new_time_bound": "3*t",
+      "new_to_old_time_bound": "t",
+      "absolute_calibration": "Inherited primary iPRA calibration to Con(PA) remains open.",
+      "new_lean_kernel_build": false
+    },
+    {
+      "name": "PA194AX11GH",
+      "working_states": 194,
+      "transition_rows": 388,
+      "table": "machines/AX11GH/machine/machine.tm",
+      "sha256": "513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1",
+      "blank_startup_steps": 57922,
+      "proof_status": "Written all-store command compiler and iPRA command-scheduler equivalence to specified numerical calculus; all 4,778 construction and independent literal symbolic outcomes checked.",
+      "physical_internalization": "Remaining obligation for full literal-table iPRA transfer.",
+      "absolute_calibration": "Numerical-calculus/PA iPRA calibration inherited and open.",
+      "new_lean_kernel_build": false
+    }
+  ],
+  "machine_convention": {
+    "tapes": 1,
+    "alphabet": [
+      0,
+      1
+    ],
+    "blank_symbol": 0,
+    "tape": "two-way infinite",
+    "initial_head": 0,
+    "start": 0,
+    "working_labels": [
+      0,
+      193
+    ],
+    "separate_halt": 194,
+    "moves": [
+      "L",
+      "R"
+    ],
+    "uncounted_initializer": false
+  },
+  "comparison": {
+    "filed_packets": 82,
+    "current_incoming_deliveries": 5,
+    "deliveries": 87,
+    "tracked_tm_files": 695,
+    "incoming_tm_occurrences": 874,
+    "all_tm_occurrences": 1569,
+    "unique_tm_contents": 802,
+    "spanning_194_graph_classes": 110,
+    "strong_194_graph_classes": 110,
+    "new_tables_distinct_from_corpus_and_each_other": true,
+    "includes_research_and_rejected_tables": true
+  },
+  "reproduce": "python3 verify.py --full",
+  "report": "report/pa194_research_report.pdf",
+  "latex": "report/main.tex",
+  "no_global_lower_bound_claim": true,
+  "release_verification": {
+    "status": "PASS",
+    "mode": "full",
+    "checks_passed": 12,
+    "independent_literal_replay_performed": true,
+    "machine_artifacts_unchanged": true
+  },
+  "additional_searches": {
+    "shared_selector": {
+      "disjoint_pair_choices": 116,
+      "structural_configurations": 3712,
+      "row_proposals": 4109696,
+      "joint_combinations": 8016,
+      "survivors": 0
+    },
+    "positive_old_prefix": {
+      "pair_instances": 243373,
+      "row_proposals": 329139624,
+      "joint_combinations": 1792482,
+      "survivors": 0
+    },
+    "grammar": {
+      "proposals": 36325019,
+      "accepted_moves": 3914974,
+      "best_reader_objectives": [
+        60,
+        62,
+        62,
+        65
+      ],
+      "sub194_survivors": 0
+    },
+    "scope": "Only the finite synthesis models and bounded proposal prefixes documented in the report; no global lower bound."
+  }
+}

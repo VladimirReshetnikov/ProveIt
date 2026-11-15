@@ -1,0 +1,72 @@
+\subsection{Independent exact source proof for the new Shift}
+\label{sec:shift-independent}
+
+An independent inspection of the resolved primitive program isolates the
+changed Shift at source index 3660.  Write the nine logical registers as
+$(C,T,W,A,D,H,X,Y,V)$ and suppose a command starts with
+$T=t$, $W=p(a,b)$, $D=d$, $H=h$, and $A=X=Y=0$.
+The candidate reader registers $C,V$ are arbitrary and remain unchanged.
+The following statement concerns the resolved source program and uses no
+Turing-machine arithmetic-box oracle.
+
+The loop at 3660 clears $T$; each positive iteration consists of one
+decrement and one jump, and its final zero test gives $2t+1$ instructions.
+The loop at 3662 copies $H$ into both $T$ and $X$, consuming $H$;
+its cost is $4h+1$.  The loop at 3666 transfers $X$ back into $H$,
+at cost $3h+1$.  A final increment of $X$ and jump to index zero
+produce
+\[
+ T=h,\qquad H=h,\qquad X=1,
+\]
+after exactly $2t+7h+5$ primitive instructions.
+
+Indices zero through ten compare $H$ with $X$ and clear both on a
+mismatch.  For $h=1$ they enter the halt instruction at index ten after
+five further instructions.  For $h=0$ they reach index eleven after
+five; for $h\ge2$ they reach eleven after $2h+5$.  Consequently
+Shift enters halt exactly when $h=1$, after $2t+17$ source instructions.
+This count stops on entry to the halt instruction; counting execution of
+that instruction adds one.
+
+For $h\ne1$, the routine at index eleven unpairs $W$ into
+$X=a$ and $W=b$, with $Y=0$.  It then transfers $X$ into $H$ and
+returns to the scheduler at index 25.  Here is a direct loop-count proof.
+Put $k=a+b$ and $n=p(a,b)=k(k+1)/2+b$.  Each of the $n$ decrements
+of $W$ costs five instructions apart from the carry transfer.
+The successive carry transfers have lengths $1,2,\ldots,k$ and each
+transferred unit costs three extra instructions. The final zero test,
+the restoration of the residual $Y=b$ into $W$, and the transfer of
+$X=a$ into $H$ cost $3a+3b+3$.  Thus the complete routine costs
+\[
+ 5n+3\frac{k(k+1)}2+3k+3
+   =4(a+b)^2+7a+12b+3.
+\]
+Its correctness follows from the corresponding triangular-counter
+invariant: after a complete carry the pair of counters is $(X,Y)=(j,0)$,
+and each subsequent noncarry step decrements $X$ and increments $Y$.
+The endpoint $n=p(a,b)$ therefore leaves exactly $(a,b)$.
+
+Combining these counts gives the all-natural statement
+\[
+ \begin{array}{ll}
+ h=1:&\text{halt at index 10 after }2t+17\text{ instructions};\\[2pt]
+ h\ne1:&\text{return to index 25 after }
+ 2t+9h+4(a+b)^2+7a+12b+13\text{ instructions},
+ \end{array}
+\]
+with returning registers
+\[
+ (C,T,W,A,D,H,X,Y,V)=(C,h,b,0,d,a,0,0,V).
+\]
+All loops above decrease an explicitly displayed natural register; their
+invariants and cost identities are quantifier-free polynomial equalities
+and inequalities.  Primitive-recursive unpairing supplies $a,b$ for
+arbitrary $W$, including $W=0$ with $a=b=0$.  This is a direct
+quantifier-free-induction proof of the changed source command and its
+runtime bound.  It does not independently establish the physical-table
+simulation or the numerical-calculus calibration to PA.
+
+The accompanying independent checker reads the exact primitive
+instructions, pins each inspected block, and checks the formula on all
+$0\le t,h,a,b<8$ (4096 cases).  Those finite cases audit the arithmetic
+and indexing of the proof; they are not its induction argument.
