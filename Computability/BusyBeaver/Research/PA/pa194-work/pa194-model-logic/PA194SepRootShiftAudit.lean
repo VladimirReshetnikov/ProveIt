@@ -1,0 +1,2 @@
+import PA194ClosedSepTheory
+#print axioms PA194ModelLogic.sepRootPure_shift_fixed
