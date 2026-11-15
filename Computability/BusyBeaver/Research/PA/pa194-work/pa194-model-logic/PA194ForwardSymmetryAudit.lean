@@ -1,0 +1,12 @@
+import PA194ForwardSymmetryRoot
+#print axioms PA194InverseClosedTemplate.closedInverseSeparation_shift
+#print axioms PA194InverseSymmetryInputs.Inputs.shift
+#print axioms PA194InverseSymmetryInputs.Inputs.inverse
+#print axioms PA194InverseEqual.equalFromWitnesses
+#print axioms PA194InverseEqual.equalAt_shift
+#print axioms PA194InverseEqual.equalSwap
+#print axioms PA194ForwardSymmetry.proof
+#print axioms PA194ForwardSymmetry.contextDerivation
+#print axioms PA194ForwardSymmetry.sourceProof
+#print axioms PA194ForwardSymmetry.source_provable
+#print axioms PA194ForwardSymmetry.root_symmetry_provable

@@ -106,9 +106,11 @@ codes. There is a formal [classical IΣ₁ proof of `Con(ordinaryPAeq) → Con(P
 The [reflexivity](pa194-work/pa194-model-logic/FORWARD-REFL-ROOT.md),
 [zero-not-successor](pa194-work/pa194-model-logic/FORWARD-ZERO-SUCC.md), and
 [addition-by-zero](pa194-work/pa194-model-logic/FORWARD-ADD-ZERO.md), and
-[multiplication-by-zero](pa194-work/pa194-model-logic/FORWARD-MUL-ZERO.md)
-axiom suppliers prove the actual compiler translations of those fixed axioms
-in the source theory, under the stated root-code bounds. The other fixed
+[multiplication-by-zero](pa194-work/pa194-model-logic/FORWARD-MUL-ZERO.md),
+and [symmetry](pa194-work/pa194-model-logic/FORWARD-SYMMETRY.md) suppliers
+prove the root-packet translations of those fixed axioms in the source theory
+under the stated code bounds. Their correspondence with the identity packets
+of the newer guarded compiler remains open. The other fixed
 axioms, induction and rule suppliers are still open; so is the unconditional
 PAeq-to-source compiler. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
 supplies modeled PAeq proof existence for arbitrary internally valid arity-one
