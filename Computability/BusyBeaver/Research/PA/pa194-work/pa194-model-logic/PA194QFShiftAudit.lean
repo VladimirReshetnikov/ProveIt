@@ -1,0 +1,5 @@
+import PA194ModelQFShift
+
+#print axioms PA194ModelLogic.quantifierFree_shiftBridge
+#print axioms PA194ModelLogic.simRuleAllShift_quantifierFree
+#print axioms PA194ModelLogic.simRuleShift_quantifierFree
