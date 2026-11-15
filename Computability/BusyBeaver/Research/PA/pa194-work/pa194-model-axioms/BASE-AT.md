@@ -1,0 +1,7 @@
+# Internal application of the ordinal induction base
+
+`baseAtTyped` proves the corresponding generic typed first-order rule by specialization, conjunction introduction, and modus ponens. `baseAtProof` instantiates that rule with the actual ordinal domain and zero templates: for every internally valid arity-one property code p and model-valued free-variable index a, actual internal proofs of the ordinal base for p, domain(a), and zero(a) yield an actual internal proof of p(a). The property and variable index may be nonstandard. The rule applies to any internal Δ₁ source theory in a nonempty candidate-PRA model with induced arithmetic IΣ₁.
+
+`baseAt_provable` states the same rule directly for numeric source formulas and the model-internal `Provable` relation. The three input proof/provability assumptions are essential. These results implement the model-level analogue of standard `inductionBaseAt`, but do not yet provide a uniform graph for this proof constructor, prove the full induction sequent, or establish an iPRA theorem.
+
+Run `Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-axioms/check-base-at.sh "$REPO" FRESH_OUTPUT` to compile this source against the repository-replayed induction-base shift object and its prebuilt transitive overlays listed in the checker. Source and immediate dependency hashes and three axiom reports are checked. Passing output `/dev/shm/pa194-internal-induction-base-at-replay`; log `/tmp/pa194-internal-induction-base-at-replay.log`.
