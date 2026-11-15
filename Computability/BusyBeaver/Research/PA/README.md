@@ -70,6 +70,11 @@ translates refutations of the finite equality-plus-weak-adjunction theory
 combined with its classifier-defined parameter-closed separation theory into
 modeled scheduler halting in PRA + IΣ₁ models. The classifier-defined standard
 separation theory is [identified with the typed Foundation scheme](pa194-work/pa194-model-axioms/TYPED-THEORY.md).
+The source theory also admits [internal reopening of closed separation instances](pa194-work/pa194-model-axioms/REOPEN.md)
+for model-valued closure lengths under the stated PRA, IΣ₁, and theory-membership
+assumptions. The [addition](pa194-work/pa194-model-logic/PAEQ-ADDITION-CODE.md)
+and [multiplication](pa194-work/pa194-model-logic/PAEQ-MULTIPLICATION-CODE.md)
+code graphs establish syntax, not arithmetic semantics or a proof compiler.
 A proof-code interpretation of PA and the connection to the physical machine
 remain open. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal
