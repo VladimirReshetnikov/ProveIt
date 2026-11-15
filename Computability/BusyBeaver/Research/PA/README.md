@@ -63,7 +63,9 @@ the [site-38 zero branch](pa194/ipra/machine-code/SITE38-ZERO-PHYSICAL.md),
 and both [zero](pa194/ipra/machine-code/SITE45-ZERO-PHYSICAL.md) and
 [positive](pa194/ipra/machine-code/SITE45-POSITIVE-PHYSICAL.md) site-45 branches
 and [one positive 45→46→47→45 transfer iteration](pa194/ipra/machine-code/SITE45-TRANSFER-STEP.md)
-in PRA models; a complete reachable-state simulation remains open. Native iPRA
+in PRA models; the [site-45](pa194/ipra/machine-code/SITE45-POSITIVE-CLOCK-CODE.md) and
+[site-46](pa194/ipra/machine-code/SITE46-CLOCK-CODE.md) segment clocks have
+primitive-recursive codes. A complete reachable-state simulation remains open. Native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
 [decoder](pa194/ipra/machine-code/DECODER-NATIVE.md),
@@ -101,9 +103,10 @@ dispatchers have scope preservation under an explicit environment bound. A
 [conditional internal refutation compiler](pa194-work/pa194-model-logic/PAEQ-CONDITIONAL-REFUTATION.md)
 assumes the quantifier, shift, and theory-axiom suppliers. Its original
 root-packet invariant collapses distinct variables and does not supply the
-needed domain guards, as explained in the guarded compiler notes. The [guarded identity-packet compiler](pa194-work/pa194-guarded-compiler/README.md)
-retains those distinctions; it still requires the nonvariable existential
-rule, axiom suppliers and domain inhabitation. Its identity translation is
+needed domain guards, as explained in the guarded compiler notes. The [guarded calculus and compiler](pa194-work/pa194-guarded-compiler/README.md)
+retain those distinctions and use existential guard bounds. Their interpretation
+interface has no packet-length condition, but still requires nonvariable
+existential, axiom and domain-inhabitation suppliers. Identity translation is
 independent of packet length for valid internal formulas. The
 [ordinary PAeq theory now has a uniform classifier](pa194-work/pa194-model-logic/PAEQ-ORDINARY-CLASS.md),
 and the [arithmetic induction-axiom supplier](pa194-work/pa194-model-logic/PAEQ-INDUCTION-SUPPLIER.md)
@@ -118,8 +121,8 @@ The [reflexivity](pa194-work/pa194-model-logic/FORWARD-REFL-ROOT.md),
 and [symmetry](pa194-work/pa194-model-logic/FORWARD-SYMMETRY.md) suppliers
 prove the root-packet translations of those fixed axioms in the source theory
 under the stated code bounds. A [normalized identity-packet bridge](pa194-work/pa194-model-logic/IDENTITY-FIXED.md)
-now supplies these five fixed translations for the guarded route; the guarded
-endpoint still needs to be specialized to those packets. [Transitivity](pa194-work/pa194-model-logic/TRANSITIVITY-PACKET.md)
+now supplies these five fixed translations for the guarded route; they still
+need to be connected to the new calculus interpretation field. [Transitivity](pa194-work/pa194-model-logic/TRANSITIVITY-PACKET.md)
 is also supplied for every valid arity-zero packet. The [remaining source
 axiom reduction](pa194-work/pa194-model-logic/FORWARD-FIXED-SIX.md) assumes six
 fixed axioms and arbitrary induction instances. Other rule suppliers and the
