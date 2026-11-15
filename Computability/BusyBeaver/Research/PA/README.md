@@ -281,6 +281,8 @@ covers arbitrary first-register and selected-register values,
 under the explicit eight-block blank-tail layout. These are model-uniform
 conditional traces. A [seed-derived initial run](pa194/ipra/machine-code/SEED-FIRST-SITE38.md)
 reaches the first site-38 physical frame from blank tape in every PRA model.
+The [first decoder completion](pa194/ipra/machine-code/SEED-FIRST-DECODE-COMPLETE.md)
+continues the concrete run to site 42 with existential model-valued clocks.
 A complete source-frame correspondence and reachability invariant remain open.
 The other direction, `¬Halt(M₁₉₄) → Con(PA)`, also needs an internal
 translation of arbitrary PA refutations into the machine's numerical calculus.
