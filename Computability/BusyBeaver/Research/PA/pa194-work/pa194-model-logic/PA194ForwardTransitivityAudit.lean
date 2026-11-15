@@ -1,0 +1,8 @@
+import PA194ForwardTransitivityRoot
+#print axioms PA194TransitivitySyntax.target_eq
+#print axioms PA194TransitivitySyntax.equalTerm_rew
+#print axioms PA194ForwardTransitivity.proof
+#print axioms PA194ForwardTransitivity.contextDerivation
+#print axioms PA194ForwardTransitivity.sourceProof
+#print axioms PA194ForwardTransitivity.source_provable
+#print axioms PA194ForwardTransitivity.root_transitivity_provable
