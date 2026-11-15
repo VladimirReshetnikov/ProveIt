@@ -58,10 +58,12 @@ for each physical position, and the
 [marked increment](pa194/ipra/machine-code/INCREMENT-SOURCE.md) and
 [marked decrement](pa194/ipra/machine-code/DECREMENT-SOURCE.md) boxes have
 them for each logical register. The controller and physical-frame transitions have also been connected for selected
-source sites; a complete reachable-state simulation remains open. The
-[source decoder](pa194/ipra/machine-code/DECODER-NATIVE.md) has a native iPRA
-clocked equality, while the
-[fetch/decode/dispatch prefix](pa194/ipra/machine-code/SCHEDULER-BRANCHES.md)
+source sites; a complete reachable-state simulation remains open. Native iPRA
+clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
+[source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
+[decoder](pa194/ipra/machine-code/DECODER-NATIVE.md), and
+[tag dispatch](pa194/ipra/machine-code/DISPATCH-TAG-NATIVE.md). The complete
+[fetch/decode/dispatch prefix](pa194/ipra/machine-code/SCHEDULER-BRANCHES-OPEN.md)
 is proved model-theoretically under the documented hypotheses. The general
 [seeded freshness compiler rule](pa194-work/pa194-model-logic/GENERAL-FRESHNESS.md)
 has been verified in models of PRA plus IΣ₁; it is one field, not a complete
