@@ -1,0 +1,6 @@
+import PA194AtomicParameterSeparation
+import PA194OneParameterSeparation
+#print axioms PA194ModelLogic.simRuleSeparation_closedOnce
+#print axioms PA194ModelLogic.simRuleSeparation_closedOnce_ranked
+#print axioms PA194AtomicParameterSeparation.atomicParameter_opening
+#print axioms PA194AtomicParameterSeparation.atomicParameter_axiom
