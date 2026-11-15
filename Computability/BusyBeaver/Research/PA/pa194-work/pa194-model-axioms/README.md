@@ -17,7 +17,10 @@ adjunction, has a `Δ₁` presentation, and the axiom field of a simulation is d
 (`simRuleAdjunctiveAxiom`). The separation scheme is done instance by instance: for every
 internal formula `φ` of arity one, possibly nonstandard and with free variables, the fixed
 formula translation of the instance `sepRoot φ` is target-provable, and the axiom leaf
-follows (`simRuleSeparation`). No theory containing the instances is defined yet.
+follows (`simRuleSeparation`). No theory containing the instances is defined yet. The empty
+set and irreflexivity of membership are done as fixed sentences, and `fixedSetTheory` (the
+equality axioms, weak adjunction, the empty set, irreflexivity) has a `Δ₁` presentation and
+a discharged axiom field (`simRuleFixedSetAxiom`).
 `PA194ModelNeighborhoodWitness`, `PA194ModelWeakAdjunction` and `PA194ModelSeparation` are
 about the calculus only. No simulation is constructed, and nothing here yields a consistency
 implication.
@@ -33,6 +36,8 @@ implication.
 | `PA194ModelSeparation` | `separationAtName_target`: for a property value `P` of the model, labels `c ≠ a, b`, a reserved label `z ≠ b, c` and a label `q` above `a, b, c, z`, the calculus proves `∃c ∀b (b ∈ c ↔ (b ∈ a ∧ P))` when `P` is vacuous (`P → ∀x P` is target-provable) at `c`, at `q` and at the code `d` of `∀q (b ∈ a ∧ P)`. The gate is used at `d` (`rawSeparation_target`); as a formula `d` is equivalent to `b ∈ a ∧ P` because the quantifier is vacuous (`universalSelf_target`), and `d` is above every label in play. The output label is then renamed from `d` to `c` along observational equality (`separationRenameOutput_target`). This is the model-level port of `separationAtName` of `pa194-source-separation`, with the syntactic conditions "the label does not occur in the property" replaced by provable vacuity. |
 | `PA194ModelLowVacuity` | `lowVacuity_all_codes`: the fixed translation of an internal formula `p` of arity `n` (`IsSemiformula n p`, possibly nonstandard) is vacuous at a label `x` below the next binder label, when the first `n` entries of the bound stack and the entries of the free stack up to index `p` differ from `x`, and `x` is not the reserved label. `generalVacuity_all_codes` of `pa194-model-logic` covers labels above the allocation range; this is the complementary case, needed for the output label of separation, which is a binder allocated before the property. The proof is the same internal `𝚺₁` structural induction with the arity carried along (`allocatedBound_low`: after `k` binders the first `k` stack entries are allocated labels and the next `n` are the initial ones). |
 | `PA194ModelSeparationAxiom` | `sepRoot φ`, the code of `∀a ∃c ∀b ((b ∉ c ∨ (b ∈ a ∧ φ)) ∧ ((b ∉ a ∨ ¬φ) ∨ b ∈ c))` for an internal formula code `φ`, with Foundation's internal negation. `φ` is placed under the three binders unchanged: a formula of arity one mentions only the innermost bound variable, and its code does not depend on the binders around it, so no internal substitution is needed. `fixedFormulaTranslation_sepRoot`: the translation for arbitrary stacks. `fixedFormulaTranslation_separation_target`: it is target-provable when `IsSemiformula 1 φ`, the free stack does not contain `base+1` up to index `φ`, and the reserved label differs from `base+1` and `base+2`. The three vacuity hypotheses of `separationAtName_target` come from `lowVacuity_all_codes` and `generalVacuity_all_codes`, and the negated property from `translationDual_all_codes`. `simRuleSeparation`: the axiom leaf `(¬ tr e (sepRoot φ)) → 1`. |
+| `PA194ModelEmptyIrreflexive` | `irreflexivity_target`: `∀x ¬(x ∈ x)` for an arbitrary bound label; at the label `0` the membership `0 ∈ 0` is the code of falsum, and the bound label is moved to `x` by `transferBinder_target`. `emptySetAtName_target`: `∃c ∀b ¬(b ∈ c)` for `c ≠ b`, from `separationAtName_target` with the property falsum and auxiliary labels chosen above `b, c`. `sourceIrreflexivity`, `sourceEmptySet` with their model-valued quotes, their translations for arbitrary stacks, target-provability with no condition on the reserved label, and the axiom leaves `simRuleIrreflexivity`, `simRuleEmptySet`. |
+| `PA194ModelFixedSetTheory` | `fixedSetTheory`: the five equality axioms, `sourceWeakAdjunction`, `sourceEmptySet`, `sourceIrreflexivity` (`fixedSetTheory_eq`: it is `adjunctiveTheory` with the two new sentences), with the `Δ₁` presentation `fixedSetTheoryDelta` (a disjunction of eight equations), the internal axiom class in a model (`fixedSetTheory_class`), and the axiom field of a simulation under `base + p ≤ reserve` (`simRuleFixedSetAxiom`). |
 
 The weak-adjunction sentence has the shape of `M6.PA.RelationalSource.weakAdjunctionFormula`
 (`pa194-source-separation`), which is a formula over the free-variable type `ℕ`; that the two
@@ -60,10 +65,10 @@ agree under the embedding of sentences is not proved here.
   here.
 - `sepRoot φ` is not compared with `separationFormula` of `pa194-source-separation`, which
   lifts the property by a rewriting map instead of using its code unchanged.
-- The other fixed sentences that the standard development supplies in the calculus: the
-  empty set (`emptySupplier`, a direct use of the gate), irreflexivity of membership
-  (`irSupplier`) and intersection (`intersectionAxiomSupplier`, an instance of separation).
-  None of them is done at model level.
+- Intersection (`intersectionAxiomSupplier` of the standard development) is an instance of
+  separation with a parameter, so it waits for the item above. `sourceEmptySet` and
+  `sourceIrreflexivity` have the shapes of `emptyFormula` and `irFormula` of the standard
+  development; that they agree under the embedding of sentences is not proved here.
 - The other fields of a simulation for `adjunctiveTheory` are those of `pa194-model-logic`;
   the quantifier rules are not complete there.
 

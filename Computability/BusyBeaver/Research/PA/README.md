@@ -276,8 +276,9 @@ simulation is a hypothesis there, and `T` is not `𝗣𝗔`.
 [`pa194-model-axioms`](pa194-work/pa194-model-axioms/README.md) starts the model-level target
 proofs of the source axioms outside the equality theory: primitive equality entails
 observational equality at every other label without a vacuity premise, and the translation of
-the weak-adjunction sentence is target-provable, which gives its axiom leaf for a simulation
-and the axiom rule of a theory with the equality axioms and weak adjunction. The separation
+the weak-adjunction, empty-set and irreflexivity sentences is target-provable, which gives
+their axiom leaves for a simulation and the axiom rule of a theory with the equality axioms
+and these three sentences. The separation
 scheme is done instance by instance: the translation of the instance for an internal formula
 of arity one, possibly nonstandard and with free variables, is target-provable. A source
 theory containing the instances is open, because instances with parameters have to be
