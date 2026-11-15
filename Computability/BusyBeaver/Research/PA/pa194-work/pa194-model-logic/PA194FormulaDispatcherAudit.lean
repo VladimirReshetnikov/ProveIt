@@ -1,0 +1,18 @@
+import PA194FormulaScope
+#print axioms PA194TermDispatcher.atomicEquality_graph
+#print axioms PA194TermDispatcher.atomicEquality_defined
+#print axioms PA194TermDispatcher.atomicEquality_valid
+#print axioms PA194FormulaDispatcher.formulaChildParameters_graph
+#print axioms PA194FormulaDispatcher.formulaChildParameters_valid
+#print axioms PA194FormulaDispatcher.translateFormula_graph
+#print axioms PA194FormulaDispatcher.translateFormula_defined
+#print axioms PA194FormulaDispatcher.translate_rel
+#print axioms PA194FormulaDispatcher.translate_nrel
+#print axioms PA194FormulaDispatcher.translate_verum
+#print axioms PA194FormulaDispatcher.translate_falsum
+#print axioms PA194FormulaDispatcher.translate_and
+#print axioms PA194FormulaDispatcher.translate_or
+#print axioms PA194FormulaDispatcher.translate_all
+#print axioms PA194FormulaDispatcher.translate_exs
+#print axioms PA194FormulaDispatcher.FormulaScopeProperty_definable
+#print axioms PA194FormulaDispatcher.formula_scope_translate
