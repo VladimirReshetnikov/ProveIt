@@ -269,6 +269,10 @@ elements of the model, with the deduction theorem, cut, the structural rules and
 generalization. It is instantiated with the numerical calculus (`PA194ModelSequent`), and its
 module `ConPADerivation` reduces the compilation of an internal derivation to one requirement
 on the formula translation per inference rule. No translation is shown to meet them.
+`PA194ModelEndpoint` is the step after that compiler: given a simulation for a theory `T` of
+the relational source language, an internal refutation of `T` makes the modeled scheduler
+halt, so a model in which it never halts has no internal proof of `⊥` from `T`. The
+simulation is a hypothesis there, and `T` is not `𝗣𝗔`.
 
 [`isigma1-machine`](isigma1-machine/README.md) defines the run of an arbitrary transition
 table inside a model of `𝗜𝚺₁` and its `Σ₁` halting sentence, and states the one obligation
