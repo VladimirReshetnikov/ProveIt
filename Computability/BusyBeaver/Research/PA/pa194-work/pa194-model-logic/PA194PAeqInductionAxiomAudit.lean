@@ -1,0 +1,4 @@
+import PA194PAeqInductionAxiomProof
+#print axioms PA194PAeqBind.closedInductionProof_graph
+#print axioms PA194PAeqBind.closedInductionProof_defined
+#print axioms PA194PAeqBind.closedInductionProof_valid
