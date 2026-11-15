@@ -1,0 +1,12 @@
+import PA194ModelRelExtReference
+
+#print axioms PA194ModelLogic.fixedFormulaTranslation_relExt_target
+#print axioms PA194ModelLogic.relExt_reference_complete
+#print axioms PA194ModelLogic.relExtRoot_four_le
+#print axioms PA194ModelLogic.relExtRoot_budget_shape
+#print axioms PA194ModelLogic.relExt_four_stack
+#print axioms PA194ModelLogic.labelValue_add
+#print axioms PA194ModelLogic.boundValue_add
+#print axioms PA194ModelLogic.relExt_reference_core
+#print axioms PA194ModelLogic.relExt_reference_binders
+#print axioms PA194ModelLogic.relExtRoot_quote
