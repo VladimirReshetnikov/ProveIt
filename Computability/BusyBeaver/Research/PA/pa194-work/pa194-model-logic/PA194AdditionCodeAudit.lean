@@ -1,0 +1,6 @@
+import PA194AdditionCode
+#print axioms M6.PA.RelationalSource.PairGraph.addResult_rew
+#print axioms PA194SourceTemplates.additionCode_graph
+#print axioms PA194SourceTemplates.additionCode_defined
+#print axioms PA194SourceTemplates.additionCode_quote
+#print axioms PA194SourceTemplates.additionCode_valid
