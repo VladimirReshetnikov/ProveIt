@@ -65,9 +65,8 @@ clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/AC
 [decoder](pa194/ipra/machine-code/DECODER-NATIVE.md),
 [tag dispatch](pa194/ipra/machine-code/DISPATCH-TAG-NATIVE.md), and the
 [site-31 physical increment](pa194/ipra/machine-code/SITE31-NATIVE.md). A
-[native iPRA equality for the complete site-31 restore loop](pa194/ipra/machine-code/SITE31-RESTORE-ORBIT-NATIVE.md)
-also covers a model-valued number of physical iterations, up to the initial
-value of register 6; the following zero exit is a separate obligation. The complete
+[native iPRA equality for the site-31 restore loop and zero exit](pa194/ipra/machine-code/SITE31-RESTORE-EXIT-NATIVE.md)
+covers the model-length physical loop and its transition to site 34. The complete
 [fetch/decode/dispatch prefix](pa194/ipra/machine-code/SCHEDULER-BRANCHES-OPEN.md)
 is proved model-theoretically under the documented hypotheses. The general
 [compiler](pa194-work/pa194-model-logic/FULL-SEPARATION-THEORY.md)
