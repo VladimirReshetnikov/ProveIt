@@ -1,0 +1,11 @@
+import PA194PAeqParameterCompose
+import PA194SourceTernaryTemplate
+#print axioms PA194PAeqOrdinalValues.shiftParameters_graph
+#print axioms PA194PAeqOrdinalValues.shiftParameters_defined
+#print axioms PA194PAeqOrdinalValues.shiftParameters_valid
+#print axioms PA194PAeqOrdinalValues.shiftParameters_zero
+#print axioms PA194PAeqOrdinalValues.shiftParameters_child
+#print axioms PA194SourceTemplates.templateThree_graph
+#print axioms PA194SourceTemplates.templateThree_defined
+#print axioms PA194SourceTemplates.templateThree_valid
+#print axioms PA194SourceTemplates.templateThree_quote
