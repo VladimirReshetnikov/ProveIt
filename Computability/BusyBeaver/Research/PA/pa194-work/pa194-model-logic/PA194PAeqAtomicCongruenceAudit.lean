@@ -1,0 +1,3 @@
+import PA194PAeqAtomicCongruence
+#print axioms PA194PAeq.AtomicCongruence.transitivity_imp
+#print axioms PA194PAeq.AtomicCongruence.atomic_replace
