@@ -1,0 +1,7 @@
+import PA194InverseSymmetrySource
+#print axioms PA194InverseClosedTemplate.inverseSeparation_fvSup
+#print axioms PA194InverseClosedTemplate.inverseSeparation_closure
+#print axioms PA194InverseClosedTemplate.inverseClosedAt
+#print axioms PA194InverseSymmetryContext.inverseSymmetryDerivation
+#print axioms PA194InverseSource.closedInverseSeparationProof
+#print axioms PA194InverseSymmetrySource.inverseSymmetrySourceProof
