@@ -93,9 +93,10 @@ dispatchers have scope preservation under an explicit environment bound. A
 still assumes the quantifier, shift, and theory-axiom suppliers. The
 [ordinary PAeq theory now has a uniform classifier](pa194-work/pa194-model-logic/PAEQ-ORDINARY-CLASS.md),
 but its connection to arithmetic PA induction and the unconditional source
-compiler remain open. The [universal term replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-TERM-CONGRUENCE.md)
+compiler remain open. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
 supplies modeled PAeq proof existence for arbitrary internally valid arity-one
-terms, including nonstandard codes; arbitrary formula replacement is still open.
+formulas, including nonstandard codes and nested quantifiers. It does not yet
+supply the arithmetic induction translation or a fixed proof-code transformer.
 A proof-code interpretation of PA and the connection to the physical machine
 remain open. In standard Lean semantics, [the calculus/clock composition](pa194-work/pa194-calculus-clock/README.md)
 proves that either clock reaches 1 exactly when the displayed separate-diagonal

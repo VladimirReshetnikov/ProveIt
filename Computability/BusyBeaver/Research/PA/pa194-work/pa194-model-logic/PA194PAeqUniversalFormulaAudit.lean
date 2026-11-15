@@ -1,0 +1,5 @@
+import PA194PAeqUniversalFormulaCongruence
+#print axioms PA194PAeq.UniversalFormulaCongruence.typedEq_val
+#print axioms PA194PAeq.UniversalFormulaCongruence.replace_aux
+#print axioms PA194PAeq.UniversalFormulaCongruence.universal
+#print axioms PA194PAeq.UniversalFormulaCongruence.replace
