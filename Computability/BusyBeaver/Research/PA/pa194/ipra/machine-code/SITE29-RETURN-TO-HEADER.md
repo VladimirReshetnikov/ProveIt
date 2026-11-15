@@ -1,0 +1,7 @@
+# PA194 site-29 rewind to the fixed header
+
+`PA194Site29ReturnToHeader.site29ReturnToHeader` extends the site-29 run through the six-block rewind and continues across the two remaining physical register blocks and the padding block, returning to state 17 at a fixed left-header code. The theorem states the exact model-valued clock and both tape codes, preserving arbitrary register values, spare and entire numeric suffix. It requires the same `k+2` zero padding after path `100010110`; the established blank-to-site-29 execution has sufficient padding.
+
+`PA194Site29ReturnThree.returnThree` is a reusable three-block rewind with an arbitrary numeric file tail. Both results are finite all-model physical-run segments. They do not yet prove the controller's return to state 24, the increment of logical register 6, arbitrary-length source simulation, a native iPRA sentence, or either consistency implication.
+
+`check-site29-return-to-header.sh` recompiles the prior twelve source modules and these two sources in a fresh output, using arguments `REPO SITE27_BASELINE SITE28_STAGE FINISH_STAGE PROJECT_FOUNDATION PACKAGE_FOUNDATION SOURCE_DIR NEW_OUTPUT`. It pins source and selected direct-object hashes, checks all specified axiom reports for `sorryAx`, rejects overlapping machine objects and machine-specific fallback roots, and verifies input objects unchanged. Prior retained stage and general foundation objects require preceding replays or independent provenance.
