@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+set -euo pipefail
+if (($# != 2)); then echo 'usage: REPO NEW_OUTPUT' >&2; exit 2; fi
+repo=$(realpath "$1"); out=$(realpath -m "$2"); src=$(cd "$(dirname "$0")" && pwd)
+[[ ! -e "$out" ]] || { echo 'Output exists' >&2; exit 2; }
+check_inputs() {
+ printf '%s  %s\n' bcba548ae0e33d7fb786d2bef34cd4eec1bec43a07f0e24203b0f3d1becdb843 "$src/PA194CanonicalOpenOrdinal.lean" | sha256sum -c -
+ printf '%s  %s\n' 4b794e37aeeaab205e2475c128f32e430b8036b65ab374a14005788373be13e2 /dev/shm/pa194-reopen-iter-code-repo/PA194ReopenIterCode.olean | sha256sum -c -
+ printf '%s  %s\n' 7cd9aea47566e8707a33b555d0cf3fb16e8ac5be08218949cba281a122caa46e "$src/PA194LeastSeed.lean" | sha256sum -c -
+ printf '%s  %s\n' 4a37c0064b29b0a93755784c3bbf6864c0e31734784be6ad3e8d73f133c753ac "$src/PA194SeedTupleDelta.lean" | sha256sum -c -
+ printf '%s  %s\n' 202ad29f5f3ff1b177589d086cf1487112054062d14eaa2f9aac5fe284e4e34a "$src/PA194SeedProofDelta.lean" | sha256sum -c -
+ printf '%s  %s\n' eebd3aed0bcdc75bf9209eefe3885bfdd8e86f36c7790cc30948c5429d0ac724 /dev/shm/pa194-closed-ordinal-seed-relation-repo/PA194ClosedOrdinalSeedRelation.olean | sha256sum -c -
+ printf '%s  %s\n' 69f62d53a95715330d67a709ff3a96a1b605cf4a9f710e06534e618cd05cd345 /dev/shm/pa194-uniform-ordinal-full-source-repo/PA194UniformOrdinalFullSource.olean | sha256sum -c -
+ printf '%s  %s\n' 157c81c97d6790d2e0624bd3e9e79f5756e266b7c3a19f201587d9054e743712 /dev/shm/pa194-ordinal-closed-seeded-code-repo/PA194OrdinalClosedSeededCode.olean | sha256sum -c -
+ printf '%s  %s\n' d597091beed0df58fa47e54783b98835ac849b07d0c4bef136426b0057dd412a /dev/shm/pa194-close-iter-code-repo/PA194CloseIterCode.olean | sha256sum -c -
+ printf '%s  %s\n' ed6f12b5f6c28062187a66bd2180074e36fa7182bd1d28d0818e195a230b71b6 /dev/shm/pa194-ordinal-seeded-code-repo/PA194OrdinalSeededCode.olean | sha256sum -c -
+ printf '%s  %s\n' f9ca8fa9bdd1271d9e10e663e5d3a8d27c421f47b480744b2d33a0be36da69dc /dev/shm/pa194-separation-root-code-repo/PA194SeparationRootCode.olean | sha256sum -c -
+ printf '%s  %s\n' 79c98dbf3f7711b4a9d017966c402f9a95d396d252cb179ca5f7d2b191cd833c /dev/shm/pa194-context-quantifier-code-repo/PA194ContextAllCode.olean | sha256sum -c -
+ printf '%s  %s\n' \
+ 281ff83fc10dc9d00708ff9583c601dab47a7979b524714801ad141df285707d /dev/shm/pa194-trace-direct-syntax-repo/PA194TraceDirectSyntax.olean \
+ 7ca0550c55d982b6cdd4ee080d3622e3f060c96900ab042b4a7cb25212bea608 "$src/PA194CanonicalClosedOrdinal.lean" \
+ 4b794e37aeeaab205e2475c128f32e430b8036b65ab374a14005788373be13e2 /dev/shm/pa194-reopen-iter-code-repo/PA194ReopenIterCode.olean \
+ bfca0fae1fc2c310a8ceee68a87c65a883e27b8702c81ba4c40f7a6d19465f68 /dev/shm/pa194-reopen-one-code-repo/PA194ReopenOneCode.olean \
+ 74215847c2d64ed0e036e3597b478ad4f96d3778d8d43fd590d8ad38c90824ff /dev/shm/pa194-reopen-proof-repo/PA194ReopenProof.olean \
+ d62a00c43860b9751122f2c7168f2e7ab886219f5320bb4ac05eb2cfca79b9c1 /dev/shm/pa194-uniform-ordinal-proof-repo/PA194UniformOrdinalProof.olean \
+ 721557954fc53ceee488ff5c1bbc9d1a34012ef91b0cbfe51344445d38645e6b /dev/shm/pa194-ordinal-conclusion-uniform-repo/PA194InternalOrdinalFromBad.olean \
+ 0d4884ca59ac947a1f5212d52081cf0301a421c038b98f17221f159987b997cc /dev/shm/pa194-bad-ordinal-eliminate-uniform-repo/PA194BadOrdinalEliminate.olean \
+ c648ebdf9a395199b957ea65cfbeec12d6d5a3a084112948313c6b19ef2838e4 /dev/shm/pa194-bad-ordinal-eliminate-repo/PA194BadOrdinalEliminate.olean \
+ 56c912d0fc18f90ef97fccd7ec7094f4488548c507352104023928e9d8b3a316 /dev/shm/pa194-induction-packaging-repo/PA194InductionPackaging.olean \
+ a18b78064a8643821bcfcff6f4e6f7e5977c6fadb7ef49e9162aa396dcf3b7a5 /dev/shm/pa194-domain-successor-witness-repo/PA194DomainSuccessorWitness.olean \
+ cae530d013f8f5018f406033840a25965a99073376a02dcea4f59ee892fd7989 /dev/shm/pa194-successor-member-at-repo/PA194SuccessorMemberAt.olean \
+ 7ed29681c6b9684a599572f5595c8bc2d333ec388bbfba850b78f9e8a1beebea /dev/shm/pa194-bad-inside-eliminate-repo/PA194BadInsideEliminate.olean \
+ 20d9792d1695d8bfd5df770cf98c1d9602ecb0962c20b5dbf1a12bb285ea9c6b /dev/shm/pa194-least-bad-eliminate-repo/PA194LeastBadEliminate.olean \
+ 98a18bb9cbef6657d82cb87ac3ae4ed6005a38e9f4d6ef14242a45636884b7d7 /dev/shm/pa194-contextual-base-shift-repo/PA194ContextualBaseShift.olean \
+ 502efe46149688470f422e012fe191cb75b667ab878f8694118ccebffdbdc8f7 /dev/shm/pa194-least-member-projection-repo/PA194LeastMemberProjection.olean \
+ 71fc93d0c0053df92380eee365688ed4d6c74408365bc55e1cd669f83788078e /dev/shm/pa194-direct-bad-greatest-repo/PA194DirectBadGreatest.olean \
+ 60a43ac22cb01be1ce0af11ada4ea7f3a6c003187b7bc77269fea33b8f111a68 /dev/shm/pa194-least-witness-open-repo/PA194LeastWitnessOpen.olean \
+ 8289e0dffeff4ef48c99d07ac5e2cf540c83d740bd6e2c8968007ced317e9828 /dev/shm/pa194-trace-least-exists-repo/PA194TraceLeastExists.olean \
+ 51f0eb0d133ef8ec844cfdf364060d419bccbfa812bceffcb19d077cc3d88e33 /dev/shm/pa194-greatest-bad-eliminate-repo/PA194GreatestBadEliminate.olean \
+ 197dfd43e062afa38d887fe32b73bcbbab2411f9f7f3c963b78142fb9d5e0f5e /dev/shm/pa194-ordinal-bad-not-zero-repo/PA194OrdinalBadNotZeroCode.olean \
+ eb3f9ff1894227d17b5a9d03ebeeb5930d13775d490e089435e261968b18b0b7 /dev/shm/pa194-least-dummy-index-repo/PA194LeastDummyIndex.olean \
+ ad2a21f4cccdef0b6d121a53b10be1ff271c660fd08ad54c058c9cea45d1bc5c /dev/shm/pa194-domain-least-at-repo/PA194DomainLeastAt.olean \
+ 1bda255a714ea9f3c45591dbb4ec26170476c686d2836ea4755b5f6d564101fb /dev/shm/pa194-domain-least-closed-repo/PA194DomainLeastClosedModel.olean \
+ e84db1ddd611ce200d58e2a76d9abffa1e1b984de82d33332a798585b7076a75 /dev/shm/pa194-member-nonempty-repo/PA194MemberNonempty.olean \
+ 9f9afb2c85bdd75477759ced5d9134366ad9c9acf00d667b3797ffda3a874e64 /dev/shm/pa194-trace-subset-repo/PA194TraceSubset.olean \
+ b989862609710dad18447cb9147b0ecc56e4b3a5baf4d59d99c6d0115c32c608 /dev/shm/pa194-greatest-witness-open-repo/PA194GreatestWitnessOpen.olean \
+ 9fdbb6b74338b33e160fe89537af84a487ea3a93f703009709a1a028bb048618 /dev/shm/pa194-greatest-bad-contradiction-repo/PA194GreatestBadContradiction.olean \
+ 2811574e5c96b2ae68fa548a422c9465c3129ddd950f6e9022b24c92c55715fb /dev/shm/pa194-bad-trace-step-shift-repo/PA194BadTraceStepShift.olean \
+ 3a0bbad40878949b2738aeb6cb19e1a4d1458d402f5129d679de845e7139041d /dev/shm/pa194-fixed-instance-shift-repo/PA194FixedInstanceShift.olean \
+ eb3f9ff1894227d17b5a9d03ebeeb5930d13775d490e089435e261968b18b0b7 /dev/shm/pa194-least-dummy-index-repo/PA194LeastDummyIndex.olean \
+ 18ec94b853ff7f1bd6db2b422a28486a6609c36adeaab0a7dfcee1416c4fbe70 /dev/shm/pa194-trace-direct-shift-repo-v2/PA194TraceDirectShift.olean \
+ ca0a0224cf8fd61c958fa33c8d53d6b72d203edb14beafa587af385e1a5f25ec /dev/shm/pa194-greatest-bad-step-repo/PA194GreatestBadStep.olean \
+ e29d1e4594e4d6938240859fbb8d81ba38cd0ac43e98cad91b6c669055ea9617 /dev/shm/pa194-greatest-member-projection-repo/PA194GreatestMemberProjection.olean \
+ 8aee8706b129bd55e5de0432ec9dedf28976aede67e2ec8fb379b241e2f267f7 /dev/shm/pa194-least-bad-direct-trans-repo/PA194LeastBadDirectGoodTransitive.olean \
+ b160e900665e334211c576b8c076d81c6a0393be5d025edf8154922ad2db2434 /dev/shm/pa194-ordinal-step-application-code-repo/PA194OrdinalStepApplicationCode.olean \
+ 24f5487d2265bc0af9b63a6c1684d61cd796c4aeebf11a214dc2bf52fff6eec3 /dev/shm/pa194-least-bad-direct-good-repo/PA194LeastBadDirectMemberGood.olean \
+ 63110ad58e1f69209ef1d8932b0a2165b0834824b3254ea3ae937d609730b412 /dev/shm/pa194-trace-direct-member-repo/PA194TraceDirectMember.olean \
+ 0c809a85600a1fe9280bea0d596bc9a6ce1a99903fa291e62f50e498926b8f91 /dev/shm/pa194-trace-direct-at-repo/PA194TraceDirectAt.olean \
+ 03e477e4b4996500303b468758f755ef24fa6f1f41416f38ba608dd9e768d27e /dev/shm/pa194-greatest-successor-repo/PA194GreatestSuccessorAtCode.olean \
+ a85fbe811c71eedeba5153a55b27227915b06ffcf5b1fbba23a68745aa8b7655 /dev/shm/pa194-domain-greatest-repo/PA194DomainGreatestAtCode.olean \
+ 41e19a43b9d790073b142906b85cc7b6517e5b1b2078f1161f3c3ee51462a0ec /dev/shm/pa194-context-exs-witness-repo/PA194ContextExsWitnessCode.olean | sha256sum -c -
+}
+check_inputs
+mkdir -p "$out"
+cd "$repo"
+lake_path=$(lake env printenv LEAN_PATH)
+export LEAN_PATH="$out:/dev/shm/pa194-closed-ordinal-seed-relation-repo:/dev/shm/pa194-ordinal-closed-seeded-code-repo:/dev/shm/pa194-uniform-ordinal-full-source-repo:/dev/shm/pa194-ordinal-seeded-code-repo:/dev/shm/pa194-close-iter-code-repo:/dev/shm/pa194-close-one-code-repo:/dev/shm/pa194-separation-root-code-repo:/dev/shm/pa194-reopen-iter-code-repo:/dev/shm/pa194-reopen-one-code-repo:/dev/shm/pa194-reopen-proof-repo:/dev/shm/pa194-uniform-ordinal-proof-repo:/dev/shm/pa194-ordinal-conclusion-uniform-repo:/dev/shm/pa194-bad-ordinal-eliminate-uniform-repo:/dev/shm/pa194-bad-ordinal-eliminate-uniform-replay:/dev/shm/pa194-bad-inside-eliminate-uniform-repo:/dev/shm/pa194-least-bad-eliminate-uniform-repo:/dev/shm/pa194-greatest-bad-eliminate-uniform-repo:/dev/shm/pa194-bad-ordinal-eliminate-repo:/dev/shm/pa194-induction-packaging-repo:/dev/shm/pa194-domain-successor-witness-repo:/dev/shm/pa194-domain-successor-at-repo:/dev/shm/pa194-domain-successor-closed-repo:/dev/shm/pa194-successor-member-at-repo:/dev/shm/pa194-successor-member-closed-repo:/dev/shm/pa194-bad-inside-eliminate-repo:/dev/shm/pa194-standard-ordinal-proof-repo:/dev/shm/pa194-ordinal-closed-repo:/dev/shm/pa194-least-bad-eliminate-repo:/dev/shm/pa194-contextual-base-shift-repo:/dev/shm/pa194-least-member-projection-repo:/dev/shm/pa194-direct-bad-greatest-repo:/dev/shm/pa194-least-witness-open-repo:/dev/shm/pa194-trace-least-exists-repo:/dev/shm/pa194-greatest-bad-eliminate-repo:/dev/shm/pa194-trace-bad-not-zero-repo:/dev/shm/pa194-ordinal-bad-not-zero-repo:/dev/shm/pa194-bad-trace-greatest-repo:/dev/shm/pa194-trace-nonzero-from-domain-repo:/dev/shm/pa194-least-dummy-index-repo:/dev/shm/pa194-domain-least-at-repo:/dev/shm/pa194-domain-least-closed-repo:/dev/shm/pa194-member-nonempty-repo:/dev/shm/pa194-trace-subset-repo:/dev/shm/pa194-greatest-witness-open-repo:/dev/shm/pa194-greatest-bad-contradiction-repo:/dev/shm/pa194-bad-trace-step-shift-repo:/dev/shm/pa194-fixed-instance-shift-repo:/dev/shm/pa194-least-dummy-index-repo:/dev/shm/pa194-trace-direct-shift-repo-v2:/dev/shm/pa194-greatest-bad-step-repo:/dev/shm/pa194-greatest-member-projection-repo:/dev/shm/pa194-least-bad-direct-trans-repo:/dev/shm/pa194-ordinal-step-application-code-repo:/dev/shm/pa194-domain-transitive-repo:/dev/shm/pa194-least-bad-direct-good-repo:/dev/shm/pa194-ordinal-base-application-code-repo:/dev/shm/pa194-trace-direct-member-repo:/dev/shm/pa194-least-bad-member-good-repo:/dev/shm/pa194-least-excludes-instances-repo:/dev/shm/pa194-ordinal-bad-not-zero-repo:/dev/shm/pa194-trace-member-backward-repo:/dev/shm/pa194-trace-direct-at-repo:/dev/shm/pa194-trace-direct-syntax-repo:/dev/shm/pa194-greatest-successor-repo:/dev/shm/pa194-domain-greatest-repo:/dev/shm/pa194-least-excludes-at-repo:/dev/shm/pa194-domain-instances-repo:/dev/shm/pa194-member-domain-at-repo:/dev/shm/pa194-member-domain-closed-repo:/dev/shm/pa194-trace-member-forward-repo:/dev/shm/pa194-expanded-trace-at-repo:/dev/shm/pa194-separation-trace-open-repo:/dev/shm/pa194-context-projections-contradiction-repo:/dev/shm/pa194-context-triple-specialize-repo:/dev/shm/pa194-least-excludes-closed-repo:/dev/shm/pa194-full-sep-witness-branch-repo:/dev/shm/pa194-separation-witness-from-root-repo:/dev/shm/pa194-separation-trace-witness-repo:/dev/shm/pa194-separation-trace-shift-repo:/dev/shm/pa194-separation-trace-at-code-repo:/dev/shm/pa194-context-exs-witness-repo:/dev/shm/pa194-context-quantifier-code-repo:/dev/shm/pa194-ordinal-step-application-code-repo:/dev/shm/pa194-context-specialize-code-repo:/dev/shm/pa194-context-mp-code-repo:/dev/shm/pa194-context-conjunction-code-repo:/dev/shm/pa194-context-shift-code-repo:/dev/shm/pa194-internal-separation-shift-repo:/dev/shm/pa194-empty-source-proof-repo:/dev/shm/pa194-congruence-source-proof-repo:/dev/shm/pa194-standard-equality-suppliers-repo:/dev/shm/pa194-ordinal-suppliers-repo:/dev/shm/pa194-standard-ordinal-reduction-repo:/dev/shm/pa194-intersection-proof-repo:/dev/shm/pa194-full-sep-open-repo:/dev/shm/pa194-full-sep-theory-replay:/dev/shm/pa194-standard-no-free-replay:/dev/shm/pa194-closed-sep-classifier-replay:/dev/shm/pa194-fairness-full-source-replay:/dev/shm/pa194-generic-sim-replay:/dev/shm/pa194-adjunctive-sim-v2-replay:/dev/shm/pa194-shift-interface-replay:/dev/shm/pa194-unrestricted-existential-v2-replay:/dev/shm/pa194-qf-ranked-existential-audit:/dev/shm/pa194-general-shift-replay:/dev/shm/pa194-general-reverse-shift-replay:/dev/shm/pa194-general-freshness-audit:/dev/shm/pa194-observational-general-audit:/dev/shm/pa194-quoted-induction-repo:/dev/shm/pa194-reopen-proof-repo:/dev/shm/pa194-close-proof-repo:/dev/shm/pa194-uniform-fully-closed-repo:/dev/shm/pa194-uniform-closure-replay:/dev/shm/pa194-unclose-envelope-replay:/dev/shm/pa194-separation-trace-open-repo:/dev/shm/pa194-separation-trace-witness-repo:/dev/shm/pa194-separation-trace-shift-repo:/dev/shm/pa194-context-exs-witness-repo:/dev/shm/pa194-context-quantifier-code-repo:/dev/shm/pa194-separation-trace-at-code-repo:/dev/shm/pa194-induction-step-shift-repo:/dev/shm/pa194-uniform-sep-combined-repo:/dev/shm/pa194-separation-shift-code-repo:/dev/shm/pa194-internal-induction-at-context-repo:/dev/shm/pa194-context-specialize-code-repo:/dev/shm/pa194-context-mp-code-repo:/dev/shm/pa194-context-conjunction-code-repo:/dev/shm/pa194-context-shift-code-repo:/dev/shm/pa194-internal-separation-shift-repo:/dev/shm/pa194-internal-induction-base-at-repo:/dev/shm/pa194-induction-base-shift-repo:/dev/shm/pa194-ordinal-uniform-repo:/dev/shm/pa194-ordinal-fixed-repo:/dev/shm/pa194-ordinal-induction-code-repo:/dev/shm/pa194-ordinal-statement-repo:/dev/shm/pa194-typed-schema-repo:/dev/shm/pa194-fully-closed-repo:/dev/shm/pa194-fully-closed-replay:/dev/shm/pa194-model-separation-full-replay:/dev/shm/pa194-model-separation-seeded-replay:/dev/shm/pa194-model-closure-definability-replay:/dev/shm/pa194-model-closure-replay:/dev/shm/pa194-general-separation-repo:/dev/shm/pa194-ranked-open-separation-repo:/dev/shm/pa194-general-separation-replay:/dev/shm/pa194-ranked-open-separation-replay-v3:/dev/shm/pa194-unrestricted-all-replay:/dev/shm/pa194-adjunctive-admission-audit:/dev/shm/pa194-full-one-level-audit:/tmp/current14-standard-fresh-build-20261104/lib:/tmp/ipra-foundation-guarded-v2-cjHUaJun/package-lib:$lake_path"
+for name in PA194SeedProofDelta PA194SeedTupleDelta PA194LeastSeed PA194CanonicalClosedOrdinal PA194CanonicalOpenOrdinal; do
+ lean -j1 -M 4000 -R "$src" -o "$out/$name.olean" "$src/$name.lean" > "$out/$name.log" 2>&1
+ if rg -q "sorryAx|declaration uses 'sorry'" "$out/$name.log"; then cat "$out/$name.log"; exit 1; fi
+ cat "$out/$name.log"
+done
+[[ $(rg -c 'depends on axioms:' "$out/PA194SeedProofDelta.log") == 1 ]]
+[[ $(rg -c 'depends on axioms:' "$out/PA194SeedTupleDelta.log") == 1 ]]
+[[ $(rg -c 'depends on axioms:' "$out/PA194LeastSeed.log") == 3 ]]
+[[ $(rg -c 'depends on axioms:' "$out/PA194CanonicalClosedOrdinal.log") == 3 ]]
+[[ $(rg -c 'depends on axioms:' "$out/PA194CanonicalOpenOrdinal.log") == 3 ]]
+check_inputs
+echo 'PASS: deterministic fixed Σ₁ open and closed ordinal-induction proof constructors; dependencies prebuilt.'
