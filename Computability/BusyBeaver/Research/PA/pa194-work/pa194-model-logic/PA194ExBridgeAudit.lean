@@ -1,0 +1,14 @@
+import PA194ModelExBridge
+#print axioms PA194ModelLogic.targetAllSpecialize_of_vacuity
+#print axioms PA194ModelLogic.targetExistsIntro_of_vacuity
+#print axioms PA194ModelLogic.targetExsRule_of_intro
+#print axioms PA194ModelLogic.simRuleExs_of_intro
+#print axioms PA194ModelLogic.simRuleExs_of_equalVacuity
+#print axioms PA194ModelLogic.simRuleExs_verum
+#print axioms PA194ModelLogic.simRuleExs_falsum
+#print axioms PA194ModelLogic.substs1_positiveFvars
+#print axioms PA194ModelLogic.positiveFvars_bound_irrelevant
+#print axioms PA194ModelLogic.simRuleExs_positiveFvars
+#print axioms PA194ModelLogic.substs1_negativeFvars
+#print axioms PA194ModelLogic.negativeFvars_bound_irrelevant
+#print axioms PA194ModelLogic.simRuleExs_negativeFvars
