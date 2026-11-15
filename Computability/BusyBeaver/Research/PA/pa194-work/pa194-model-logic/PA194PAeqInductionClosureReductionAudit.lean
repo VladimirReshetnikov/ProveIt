@@ -1,0 +1,4 @@
+import PA194PAeqInductionClosureReduction
+#print axioms PA194PAeq.InductionReopen.close_provable
+#print axioms PA194PAeq.InductionReopen.close_iterated_provable
+#print axioms PA194PAeq.InductionReopen.induction_supplier_of_closure_reconstruction
