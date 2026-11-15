@@ -1,0 +1,9 @@
+import PA194PAeqOrdinalParameters
+#print axioms PA194PAeqOrdinalValues.shiftTerms_graph
+#print axioms PA194PAeqOrdinalValues.shiftTerms_valid
+#print axioms PA194PAeqOrdinalValues.childParameters_graph
+#print axioms PA194PAeqOrdinalValues.childParameters_valid
+#print axioms PA194PAeqOrdinalValues.childParameters_bound_nth
+#print axioms PA194PAeqOrdinalValues.childParameters_free_nth
+#print axioms PA194PAeqOrdinalValues.binaryParameters_graph
+#print axioms PA194PAeqOrdinalValues.binaryParameters_valid
