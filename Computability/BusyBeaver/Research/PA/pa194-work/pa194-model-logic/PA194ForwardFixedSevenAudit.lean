@@ -1,0 +1,5 @@
+import PA194ForwardFixedSeven
+#print axioms PA194ForwardReflProof.remainingFixedAfterSymmetry_length
+#print axioms PA194ForwardReflProof.remainingFixedAfterMulZero_split
+#print axioms PA194ForwardReflProof.fixed_typed_supplier_of_seven
+#print axioms PA194ForwardReflProof.root_theoryAxiom_of_seven_and_induction
