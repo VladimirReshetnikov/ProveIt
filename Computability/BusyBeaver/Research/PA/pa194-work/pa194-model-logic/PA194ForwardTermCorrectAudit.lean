@@ -1,0 +1,8 @@
+import PA194ForwardTermCorrect
+#print axioms PA194PAeqOrdinalValues.binaryValue_quote
+#print axioms PA194PAeqOrdinalValues.additionValue_quote
+#print axioms PA194PAeqOrdinalValues.multiplicationValue_quote
+#print axioms PA194ForwardTyped.aligned_child
+#print axioms PA194ForwardTyped.aligned_shift
+#print axioms PA194ForwardTyped.aligned_binary
+#print axioms PA194ForwardTyped.value_quote
