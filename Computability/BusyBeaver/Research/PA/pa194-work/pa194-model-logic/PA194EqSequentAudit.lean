@@ -1,0 +1,9 @@
+import PA194ModelStandardEqSequent
+#print axioms PA194ModelLogic.finiteEqAxiomCode_definable
+#print axioms PA194ModelLogic.finiteEqAxiomCode_standard
+#print axioms PA194ModelLogic.finiteEqAxiom_sseq
+#print axioms PA194ModelLogic.standardEqAxiom_sseq
+#print axioms PA194ModelLogic.standardEqAxiom_target
+#print axioms PA194ModelLogic.translatedAxiom_sseq
+#print axioms PA194ModelLogic.numericalTranslation
+#print axioms PA194ModelLogic.numericalQuant
