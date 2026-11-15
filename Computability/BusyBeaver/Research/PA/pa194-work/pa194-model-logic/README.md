@@ -55,6 +55,7 @@ sequents of nonstandard length, remain open. Nothing here yields a consistency i
 | `PA194ModelPathAtomSubstitution` and dependencies | [Target membership substitution](SUBSTITUTION.md) follows for suitably bounded equal-depth source paths with explicit environment bounds. |
 | `PA194RelExtTypedTranslation`, `PA194ModelBinaryRelationSubstitution` | [Foundation relation extensionality](REL-EXT.md) has an exact standard syntax translation and a matching model-uniform target proof shape. |
 | `PA194ModelEqRefl` | The [actual Foundation reflexivity axiom](EQ-REFL.md) has a target-provable internal translation. |
+| `PA194ModelEqSymm` | The [actual Foundation symmetry axiom](EQ-SYMM.md) has a target-provable internal translation. |
 
 These are fixed-size proof transformations parameterized by arbitrary elements of `M`,
 not an internal induction over source proof codes. The formulas have the same displayed

@@ -1,0 +1,7 @@
+import PA194ModelEqSymm
+#print axioms PA194ModelLogic.fixedFormulaTranslation_eqSymm_target
+#print axioms PA194ModelLogic.eqSymm_reference_complete
+#print axioms PA194ModelLogic.eqSymmRoot_budget_shape
+#print axioms PA194ModelLogic.eqSymmRoot_quote
+#print axioms PA194ModelLogic.eqSymmRoot_valid
+#print axioms PA194ModelLogic.eqSymmCore_valid
