@@ -1,0 +1,7 @@
+import PA194ModelSourceSubstGeneral
+#print axioms PA194ModelLogic.sourceSubstQVec_trace_entries
+#print axioms PA194ModelLogic.sourceSubstStack_aligned
+#print axioms PA194ModelLogic.sourceSubstTerm_allocated
+#print axioms PA194ModelLogic.sourceSubst_positiveAtom
+#print axioms PA194ModelLogic.sourceSubst_negativeAtom
+#print axioms PA194ModelLogic.sourceSubst_translation

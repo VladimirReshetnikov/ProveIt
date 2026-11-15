@@ -1,0 +1,3 @@
+import PA194ModelSourceSubstStack
+#print axioms PA194ModelLogic.sourceSubstQVec_trace_entries
+#print axioms PA194ModelLogic.sourceSubstStack_aligned

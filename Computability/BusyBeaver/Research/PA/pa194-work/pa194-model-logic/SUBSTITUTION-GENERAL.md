@@ -1,0 +1,9 @@
+# Arbitrary-depth source substitution translation
+
+`sourceSubst_translation` proves exact equality of the fixed numerical translation of `substs1 SourceL (^&witness) p` and the translation of p with the witness's free-environment label pushed onto its bound stack. It holds for every internally valid one-bound-variable p, arbitrary model-valued witness index, bound and free stacks, allocation base and reserve, including nonstandard syntax and nesting. No freshness, admission, or reserve side condition is used.
+
+The proof constructs a relational-source qVec history seeded by `[free witness]`; its entries are the inner bound variables followed by the free witness. It proves matching allocation stacks and label preservation at arbitrary depth, then positive/negative atom equality for equality and membership. A bounded-depth Σ₁ structural induction gives the formula equality under all Boolean and quantifier constructors. The source model satisfies PRA and IΣ₁. This is not itself the existential-introduction rule, complete compiler, PA identification, physical-machine link, native iPRA derivation, or machine/consistency equivalence.
+
+The single-output incremental source replay rebuilt five modules and an audit top against the separately source-replayed unrestricted-universal-opening and 328-module full-one-level baselines. All six principal axiom reports contain no `sorryAx`. Other workspace dependencies remain prebuilt.
+
+The independent same-output source replay passed against separately source-replayed unrestricted-universal-opening and full-one-level baselines. Other workspace dependencies remain prebuilt. Run `check-substitution-general.sh --out OUTPUT` for the repository source-closure audit and six axiom reports; `check_bridge.py` documents the retained workspace foundations.
