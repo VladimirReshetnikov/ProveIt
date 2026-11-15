@@ -1,0 +1,8 @@
+import PA194PAeqMulCongruenceLift
+#print axioms PA194PAeq.MulCongruenceInternal.source_mem
+#print axioms PA194PAeq.MulCongruenceInternal.source_quote
+#print axioms PA194PAeq.MulCongruenceInternal.atTermsCode_valid
+#print axioms PA194PAeq.MulCongruenceInternal.atTermsCode_defined
+#print axioms PA194PAeq.MulCongruenceInternal.body_subst
+#print axioms PA194PAeq.MulCongruenceInternal.liftCode_valid
+#print axioms PA194PAeq.MulCongruenceInternal.liftGraph_defined
