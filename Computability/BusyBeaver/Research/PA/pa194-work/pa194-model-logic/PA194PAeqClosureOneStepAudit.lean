@@ -1,0 +1,5 @@
+import PA194PAeqClosureOneStep
+#print axioms PA194PAeq.InductionReopen.closeOne_close
+#print axioms PA194PAeq.InductionReopen.closureReconstruction_of_oneStep
+#print axioms PA194PAeq.InductionReopen.oneStep_of_bindSubst
+#print axioms PA194PAeq.InductionReopen.induction_supplier_of_bindSubst
