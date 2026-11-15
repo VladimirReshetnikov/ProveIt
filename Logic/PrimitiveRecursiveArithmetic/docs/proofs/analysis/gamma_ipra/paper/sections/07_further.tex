@@ -1,0 +1,359 @@
+\section{A canonical log-gamma and both Binet formulas}
+\label{sec:binet}
+
+\subsection{The right-half-plane logarithm}
+
+For $z=x+iy$ with $x\ge a>0$, define
+\[
+ \operatorname{Log}z
+ =\tfrac12\log(x^2+y^2)
+    +i\int_0^{y/x}\frac{du}{1+u^2}.
+\]
+This is a primitive recursive name on each certified bounded rectangle.
+Finite differentiation gives its complex derivative $1/z$.
+For fixed $x>0$, differentiate
+$\exp(\operatorname{Log}(x+iy))/(x+iy)$ in the real variable $y$:
+the derivative is zero and its value at $y=0$ is one. The finite
+fundamental theorem therefore gives $\exp(\operatorname{Log}z)=z$.
+Positive scaling gives
+$\operatorname{Log}(cz)=\log c+\operatorname{Log}z$ for $c>0$.
+Define
+\[
+ \mathcal L_N(z)=\log(N!)+z\log N-
+                        \sum_{k=0}^N\operatorname{Log}(z+k).
+\]
+For $N\ge2R$, where $|z|\le R$, its tail is bounded by
+$(R^2+R)/N$: rewrite it as
+\[
+ -\operatorname{Log}z-\gamma_Nz
+ -\sum_{k=1}^N\bigl(\operatorname{Log}(1+z/k)-z/k\bigr)
+\]
+and apply (C2)--(C6). On $|w|\le1/2$ the equality
+$\operatorname{Log}(1+w)=w+L(w)$ is explicit: both have derivative
+$1/(1+w)$ and value zero at $w=0$, so integrate their difference
+along the segment $u\mapsto uw$. Denote the resulting effective limit by
+$\mathcal L(z)$. Finite exponentiation and differentiation show
+\begin{equation}
+ e^{\mathcal L(z)}=\Gamma(z),\qquad
+ \mathcal L'(z)=\psi(z),\qquad
+ \mathcal L(z+1)-\mathcal L(z)=\operatorname{Log}z.
+ \label{eq:canonical-loggamma}
+\end{equation}
+For the last equality the finite difference is
+$\operatorname{Log}z+\log N-\operatorname{Log}(z+N+1)$,
+whose last two terms tend explicitly to zero. On the positive axis
+$\mathcal L(x)=\log\Gamma(x)$. In general $\mathcal L(z)$ need not be
+the principal logarithm of the value $\Gamma(z)$; the normalization is
+part of the definition.
+
+\subsection{A positive kernel from reflection}
+
+The differentiated reflection formula at $1/2$ and (C33) give
+$3\zeta(2)=\pi^2/2$, hence $\zeta(2)=\pi^2/6$.
+Subtract the digamma series (C27) at $z$ and $-z$, and use its recurrence
+and reflection formula. Finite reindexing gives
+\[
+ \pi\cot(\pi z)=\frac1z-
+                     2z\sum_{n=1}^{\infty}\frac1{n^2-z^2}.
+\]
+All derivative and series tails have already been bounded. Substituting
+$z=it/(2\pi)$, with $t>0$, proves
+\begin{equation}
+ k(t):=\frac1t\left(\frac12-\frac1t+\frac1{e^t-1}\right)
+       =2\sum_{n=1}^{\infty}\frac1{t^2+4\pi^2n^2}.
+ \label{eq:binet-kernel}
+\end{equation}
+Use the series on the right to define $k(0)=1/12$ as well. It gives
+\begin{equation}
+ 0<k(t)\le\frac1{12},\qquad
+ \left|k(t)-2\sum_{n=1}^{N}\frac1{t^2+4\pi^2n^2}\right|
+ \le\frac1{2\pi^2N}\le\frac1{8N}\quad(t\ge0).
+ \label{eq:binet-kernel-tail}
+\end{equation}
+For strict positivity the first summand already supplies a rational
+lower bound on every bounded interval. Thus the apparent cancellation
+at $t=0$ is handled by a regular series rather than subtraction of
+singular expressions.
+
+Define
+\[
+ J(z)=\int_0^\infty e^{-zt}k(t)\dd t\qquad(\Rea z\ge a>0).
+\]
+The tail after $T$ is at most $e^{-aT}/(12a)$. On $[0,T]$ approximate
+the kernel by $N$ summands; its integral error is at most $T/(8N)$.
+The derivative of this finite integrand has a rational bound in terms
+of $a,R,T$, and therefore a prescribed rational mesh completes the
+algorithm. A sufficient coarse choice is a mesh Lipschitz bound
+$R+T+1$, since the differentiated kernel series is bounded there by
+$T$. Differentiation in $z$ adds powers of $t$; their tails are covered
+by the monomial estimates used for Euler's integral.
+
+Put $C=\tfrac12\log(2\pi)$ and
+\[
+ \mathcal R(z)=\mathcal L(z)-(z-\tfrac12)\operatorname{Log}z+z-C.
+\]
+Using \eqref{eq:binet-kernel} after multiplying by $t^2$, the finite
+geometric sum for $(e^t-1)^{-1}$, and
+$\int_0^\infty te^{-(z+n)t}\dd t=(z+n)^{-2}$, we get
+\begin{align*}
+ J''(z)
+ &=\frac1{2z^2}-\frac1z+\sum_{n=1}^{\infty}\frac1{(z+n)^2}\\
+ &=\psi'(z)-\frac1z-\frac1{2z^2}=\mathcal R''(z).
+\end{align*}
+The series tail is at most $1/(a+N)$, so the equality is justified
+before passing to the infinite notation.
+
+It remains to fix the possible affine difference; merely comparing
+second derivatives would be insufficient. Rectangle-sum comparison for
+$t\mapsto(w+t)^{-1}$ in the right half-plane gives
+\begin{equation}
+ |\psi(w)-\operatorname{Log}w|\le\frac1{\Rea w}.
+ \label{eq:complex-psi-bound}
+\end{equation}
+Indeed the sum of the absolute derivative errors over $[0,N]$ is at
+most $1/\Rea w-1/(\Rea w+N)$, the final endpoint contributes at most
+$1/(\Rea w+N)$, and
+$\log N-\operatorname{Log}(w+N)$ has an explicit vanishing bound.
+Consequently $|\mathcal R'(w)|\le3/(2\Rea w)$. Integrate vertically
+from $N+\Rea z$ to $N+z$ and use the proved real Stirling estimate:
+\[
+ |\mathcal R(N+z)|\le
+ \frac{1/12+(3/2)|\Ima z|}{N+\Rea z},\qquad
+ |J(N+z)|\le\frac1{12(N+\Rea z)}.
+\]
+The function $D=\mathcal R-J$ has zero second derivative, so finite
+fundamental-theorem integration on a horizontal segment yields
+\[
+ D(z)=2D(z+N)-D(z+2N).
+\]
+The displayed bounds make the right side arbitrarily small with a
+primitive recursive choice of $N$. Hence $D(z)=0$.
+
+\begin{theorem}[Binet's first formula]
+On every certified bounded region in $\Rea z>0$,
+\[
+ \boxed{\displaystyle
+ \mathcal L(z)=(z-\tfrac12)\operatorname{Log}z-z
+ +\tfrac12\log(2\pi)
+ +\int_0^\infty
+ \left(\frac12-\frac1t+\frac1{e^t-1}\right)
+                 \frac{e^{-zt}}t\dd t.}
+\]
+At zero the integrand is interpreted using the regular kernel
+\eqref{eq:binet-kernel}; all convergence estimates above are uniform
+on the certified region.
+\end{theorem}
+
+\subsection{Binet's second formula without a contour deformation}
+
+For real $t\ge0$ and $\Rea z>0$, specify the branch
+\[
+ \operatorname{atan}(t/z):=
+                 \int_0^t\frac{z}{z^2+u^2}\dd u.
+\]
+The denominator factors $z+iu$ and $z-iu$ are each apart from zero
+by $\Rea z$. The elementary Laplace integral for cosine gives
+\[
+ \int_0^\infty e^{-zs}\cos(ts)\dd s=\frac{z}{z^2+t^2}.
+\]
+It is verified by writing cosine as two exponentials and integrating
+their finite antiderivatives. The sine integral on the right of the
+next display has $t$-derivative equal to this cosine integral: on a
+finite interval this is finite differentiation, and its derivative
+tail is at most $e^{-aS}/a$. Comparing its value at $t=0$ with the
+defining arctangent integral proves
+\begin{equation}
+ \operatorname{atan}(t/z)=
+       \int_0^\infty e^{-zs}\frac{\sin(ts)}s\dd s,
+ \qquad |\operatorname{atan}(t/z)|\le t/a
+ \quad(\Rea z\ge a).
+ \label{eq:atan-laplace}
+\end{equation}
+At $s=0$ use $\sin(ts)/s=t\operatorname{sinc}(ts)$. The estimate
+$|\sin(ts)|\le ts$ for nonnegative real $s,t$ supplies both the
+integrable majorant and the derivative justification.
+
+Insert \eqref{eq:atan-laplace} into
+$2\int_0^\infty\operatorname{atan}(t/z)/(e^{2\pi t}-1)\dd t$.
+The resulting double integral has absolute majorant
+\[
+ \frac{2e^{-as}t}{e^{2\pi t}-1}.
+\]
+This is an explicit finite-sum argument: the $s>S$ tail is at most
+$4e^{-aS}/a$, and the $t>T\ge1$ tail is at most
+$4(T+1)e^{-T}/a$. The small strips $s<\eta$ and $t<\eta$
+contribute at most $4\eta$ and $\eta/(\pi a)$ respectively.
+These coarse bounds follow by splitting the remaining integral at $1$,
+using $e^{2\pi t}-1\ge2\pi t$ below $1$ and
+$(e^{2\pi t}-1)^{-1}\le2e^{-t}$ above it.
+On the remaining finite rectangle the order of summation is a finite
+rearrangement.
+
+Expand the geometric denominator in the inner $t$ integral. Its $n$th
+Laplace sine integral, after the regularized division by $s$, is
+\[
+ \int_0^\infty e^{-2\pi nt}\frac{\sin(st)}s\dd t
+              =\frac1{s^2+4\pi^2n^2}.
+\]
+The tail after $n=N$ is at most $1/(4\pi^2N)$, uniformly in real
+$s\ge0$, since $|\sin(st)/s|\le t$. Thus the inner sum is precisely
+$k(s)/2$, proving
+\begin{theorem}[Binet's second formula]
+With the preceding right-half-plane branches,
+\[
+ \boxed{\displaystyle
+ \mathcal L(z)=(z-\tfrac12)\operatorname{Log}z-z
+ +\tfrac12\log(2\pi)
+ +2\int_0^\infty
+       \frac{\operatorname{atan}(t/z)}{e^{2\pi t}-1}\dd t.}
+\]
+All exchanges have been reduced to finite rectangles with the stated
+tails. In particular no contour integral or branch continuation theorem
+is needed.
+\end{theorem}
+
+For real $x>0$, the positive-kernel formula immediately proves the
+additional consequence
+\[
+ (-1)^j R^{(j)}(x)=\int_0^\infty t^je^{-xt}k(t)\dd t>0
+ \qquad(j\in\N).
+\]
+A positive rational margin follows by restricting the integral to
+$[1,2]$ and using its first positive summand. This is complete
+monotonicity of the Stirling remainder with an explicit constructive
+meaning.
+
+\section{Log-gamma integrals, Mellin transforms, and applications}
+\label{sec:further}
+
+\subsection{Raabe's formula and the unit-interval integral}
+
+Let $J_s=\int_0^{\pi/2}\log(\sin t)\dd t$. These endpoint integrals
+have effective tails: by $2t/\pi\le\sin t\le t$, an omitted interval
+of length $\eta$ contributes at most
+$\eta(1+|\log\eta|+\log2)$ in absolute value. Reflection about
+$\pi/2$ gives the same bound for cosine. Substitution and the double
+angle identity therefore give, first on truncated intervals,
+\[
+ 2J_s=\int_0^{\pi/2}\log(\sin t\cos t)\dd t
+     =-\tfrac\pi2\log2+\tfrac12\int_0^\pi\log(\sin u)\dd u
+     =-\tfrac\pi2\log2+J_s.
+\]
+Hence $\int_0^1\log(\sin\pi t)\dd t=-\log2$.
+The endpoint behavior
+$\log\Gamma(t)=-\log t+\log\Gamma(1+t)$ is equally effective:
+for $0<t\le1/2$, (C37)--(C38) give
+$|\log\Gamma(1+t)|\le2$, so the omitted gamma-log integral is at
+most $\eta(3+|\log\eta|)$. With $\eta=2^{-h}$, the choice
+$h=4(p+10)$ makes each such tail less than $2^{-p}$.
+
+Take real logarithms in the reflection identity and integrate on
+$[\eta,1-\eta]$. Positivity licenses the logarithms; the preceding
+tails allow the endpoints to be restored. We obtain
+\begin{equation}
+ \boxed{\displaystyle
+ \int_0^1\log\Gamma(t)\dd t=\tfrac12\log(2\pi).}
+ \label{eq:unit-loggamma}
+\end{equation}
+For $x>0$ put $I(x)=\int_x^{x+1}\log\Gamma(t)\dd t$.
+The finite fundamental theorem and the recurrence give
+$I'(x)=\log\Gamma(x+1)-\log\Gamma(x)=\log x$.
+Thus $I(x)-x\log x+x$ is constant. Letting $x$ tend to zero with the
+explicit endpoint estimates just proved identifies the constant in
+\eqref{eq:unit-loggamma}. This proves Raabe's formula
+\begin{equation}
+ \boxed{\displaystyle
+ \int_x^{x+1}\log\Gamma(t)\dd t
+ =x\log x-x+\tfrac12\log(2\pi)\qquad(x>0).}
+ \label{eq:raabe}
+\end{equation}
+The recurrence also gives
+$\int_0^1\log\Gamma(1+t)\dd t=\tfrac12\log(2\pi)-1$.
+
+\subsection{The gamma--zeta Mellin identity}
+
+For $\Rea s\ge1+1/A$, define $\zeta(s)$ by its Dirichlet sums.
+Their absolute tail is at most $A N^{-1/A}$, by integrating
+$t^{-1-1/A}$ from $N$ onwards. In particular a cutoff
+$N\ge(2^{p+4}A)^A$ gives a primitive recursive name. The integral
+\[
+ \int_0^\infty\frac{t^{s-1}}{e^t-1}\dd t
+\]
+has small-endpoint bound $A\eta^{1/A}$, since $e^t-1\ge t$,
+and large-endpoint bound twice the gamma tail, since
+$(e^t-1)^{-1}\le2e^{-t}$ for $t\ge1$.
+For a finite $N$, integrate the exact finite geometric sum
+$\sum_{n=1}^N e^{-nt}$ against $t^{s-1}$ and use the positive real
+scaling substitution. The result is
+$\Gamma(s)\sum_{n=1}^N n^{-s}$. The omitted integral is absolutely
+bounded by
+\[
+ \Gamma(\Rea s)\sum_{n>N}n^{-\Rea s}
+ \le (A+2^{R+1}R!)A N^{-1/A},\quad |s|\le R.
+\]
+This last comparison is established first for a finite sum of the
+positive majorants and then by their stated geometric and integral
+tails; it is not an appeal to a measure-theoretic interchange theorem.
+It proves
+\begin{equation}
+ \boxed{\displaystyle
+ \Gamma(s)\zeta(s)=\int_0^\infty\frac{t^{s-1}}{e^t-1}\dd t,
+ \qquad\Rea s>1.}
+ \label{eq:gamma-zeta-mellin}
+\end{equation}
+For $s=2$ this includes
+$\int_0^\infty t/(e^t-1)\dd t=\pi^2/6$.
+The zeta functional equation is a separate theorem and is not being
+inferred from this half-plane identity.
+
+\subsection{Wallis, Gaussian moments, and factorial interpolation}
+
+At $z=1/2$ the sine product gives
+\[
+ \frac\pi2=\prod_{k=1}^{\infty}\frac{4k^2}{4k^2-1}.
+\]
+If $W_N$ is its finite product, then
+$0\le\pi/2-W_N\le2/N$. To see the rate, the remaining logarithm is
+at most $\sum_{k>N}2/(4k^2)\le1/(2N)$, and
+$e^u-1\le2u$ for $0\le u\le1$. Use $W_N<\pi/2<2$.
+
+The quadratic integral substitution and the half-integer values give,
+for $c>0$ and $n\in\N$,
+\[
+ \int_{-\infty}^{\infty}t^{2n}e^{-ct^2}\dd t
+   =\frac{(2n)!\sqrt\pi}{4^n n!c^{n+1/2}},\qquad
+ \int_{-\infty}^{\infty}t^{2n+1}e^{-ct^2}\dd t=0.
+\]
+The odd integral is absolutely convergent, and its two finite symmetric
+halves cancel exactly. In particular the Gaussian integral is
+$\sqrt{\pi/c}$. Likewise the positive function
+$p_x(t)=t^{x-1}e^{-t}/\Gamma(x)$ has integral one, and its finite
+integer moments are
+\[
+ \int_0^\infty t^n p_x(t)\dd t=(x)_n.
+\]
+Thus its mean and variance are $x$ and $x$, by the cases $n=1,2$.
+These statements are integral identities with the already proved
+cutoffs; no additional probability-theoretic foundation is assumed.
+
+Two equations mentioned in the reference article reduce to algebra.
+For $z>1/2$,
+$\Gamma(z-1/2)=\Gamma(z+1/2)$ holds exactly when $z=3/2$,
+by recurrence and positive cancellation. For positive $z$ with
+$z-1$ apart from the poles, the equality
+$\Gamma(z-1)=\Gamma(z+1)$ is equivalent to $z(z-1)=1$.
+Its unique positive solution is
+$\phi=(1+\sqrt5)/2$. In fact the equation itself forces
+$z-1=1/z>0$, and then positive square-root uniqueness solves
+$(2z-1)^2=5$; there is no real-order trichotomy step.
+
+Finally, normalization and recurrence alone do not characterize gamma.
+For a nonzero rational $c$,
+\[
+ F_c(z)=\Gamma(z)\exp(c\sin(2\pi z))
+\]
+satisfies the same recurrence and factorial values. It differs from
+gamma at $z=1/4$. Its analytic and arithmetic presentation follows from
+the functions already constructed. This supplies explicit alternative
+interpolations and explains why the convexity hypothesis in the
+Bohr--Mollerup theorem carries mathematical content.

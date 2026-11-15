@@ -1,7 +1,8 @@
 # Delivered iPRA proof packets
 
-This directory holds the research packets that were delivered to `docs/drafts` as archives
-on 14 and 15 November 2026. Each packet gives a human-readable proof of a classical theorem
+This directory holds the research packets that were delivered as archives on 14 and
+15 November 2026: 33 to `docs/drafts`, and 3 to
+`Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
 exact-arithmetic reference code and a Lean formalization plan or scaffold aimed at the iPRA
@@ -31,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 29 | The member matches the repository's `.gitignore`: 24 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 5 LaTeX `.log` files. It is available only from the delivered archive. |
+| `ignored` | 39 | The member matches the repository's `.gitignore`: 27 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
 | `sibling-packet` | 13 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 3 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`, byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). The reference column gives that file, relative to the repository root. |
@@ -44,7 +45,8 @@ directory. Its files are in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). Likewise, `
 `dependencies/` archive and `sources/` copies.
 
 To recover an omitted member, restore the archive from the commit that added it
-(the Arrival column):
+(the Arrival column). For `apery_ipra`, `faltings_ipra` and `gamma_ipra`, replace `docs/drafts` with
+`Logic/PrimitiveRecursiveArithmetic/docs/incoming`:
 
 ```bash
 git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
@@ -52,10 +54,10 @@ git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
 
 ## Packets
 
-The 33 archives hold 683 members: 637 placed here, 29 ignored, 13 in the bundled copy of
+The 36 archives hold 752 members: 696 placed here, 39 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 3 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
-of each packet. Arrival is the commit that added the archive to `docs/drafts`.
+of each packet. Arrival is the commit that added the archive to its drop directory.
 
 ### Algebra
 
@@ -77,6 +79,7 @@ of each packet. Arrival is the commit that added the archive to `docs/drafts`.
 | [`bohr_mollerup_ipra_2026-11-15`](analysis/bohr_mollerup_ipra_2026-11-15/) | `b2d7526ffc` 2026-11-15 | `bohr_mollerup_ipra` | A finitary constructive Bohr–Mollerup theorem, with a structured Lean scaffold and roadmap. | 13 | 0 |
 | [`calculus_ipra`](analysis/calculus_ipra/) | `6ad3d9f371` 2026-11-14 | `calculus_ipra` | Effective versions of both parts of the fundamental theorem of calculus and the finite-order Euler–Maclaurin formula. | 12 | 1 |
 | [`cauchy_residue_ipra`](analysis/cauchy_residue_ipra/) | `4ea4d4a14a` 2026-11-15 | `cauchy_residue_ipra` | Quantitative constructive versions of Cauchy's integral theorem and the residue theorem, stated as schemas. | 13 | 1 |
+| [`gamma_ipra`](analysis/gamma_ipra/) | `7e8e6aad97` 2026-11-15 | `gamma_ipra` | The Gamma function built from finite Euler products, with explicit error bounds: the Euler integral, functional, reflection, multiplication and beta identities, Bohr–Mollerup, Stirling and Binet formulas. It says its Lean file compiles but leaves the analytic contracts uninstantiated. | 24 | 1 |
 | [`stirling_ipra`](analysis/stirling_ipra/) | `38cafaa5be` 2026-11-14 | `stirling_ipra` | Stirling's formula, with finite rational estimates and an induction audit. | 10 | 1 |
 | [`taylor_cauchy_ipra`](analysis/taylor_cauchy_ipra/) | `daade03000` 2026-11-15 | `taylor_cauchy_ipra` | Taylor's theorem with integral and Peano remainders, and Cauchy's integral formula. | 13 | 1 |
 
@@ -100,9 +103,11 @@ of each packet. Arrival is the commit that added the archive to `docs/drafts`.
 
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
+| [`apery_ipra`](diophantine-number-theory/apery_ipra/) | `12ab5b00c1` 2026-11-15 | `apery_ipra` | Apéry's theorem: ζ(3) is irrational, with an explicit primitive-recursive separation from every rational p/q. Its Lean files are uncompiled. | 15 | 1 |
 | [`diophantine_geometry_ipra`](diophantine-number-theory/diophantine_geometry_ipra/) | `d72c8b2463` 2026-11-15 | `diophantine_geometry_ipra` | Selected rational Diophantine geometry: bounded-height enumeration, height inequalities for maps of P¹, rational preperiodic points, conic parametrization, and Fermat's square-area theorem by finite descent. It states that its Lean arithmetic core is compiled. | 38 | 1 |
 | [`diophantine_ipra_2026-11-15`](diophantine-number-theory/diophantine_ipra_2026-11-15/) | `b5a3ad0377` 2026-11-15 | `diophantine_ipra` | Størmer's theorem, a constructive Davenport–Schmidt theorem, and Roth cutoffs for quadratic irrationals. It says the general effective Roth cutoff is not proved and its Lean files are not compiled. | 23 | 1 |
 | [`dirichlet_kronecker_ipra`](diophantine-number-theory/dirichlet_kronecker_ipra/) | `db4b793b19` 2026-11-14 | `dirichlet_kronecker_ipra` | Logical obstructions to the unrestricted statements, with constructive scalar and simultaneous Dirichlet approximation and quantitative Kronecker theorems. | 23 | 1 |
+| [`faltings_ipra`](diophantine-number-theory/faltings_ipra/) | `12ab5b00c1` 2026-11-15 | `faltings_ipra` | Faltings' theorem: it says it does not prove the general theorem in iPRA. It analyses the missing height bound and proves special cases, among them the rational points of the Fermat quartic. It states that its three Lean modules compile. | 20 | 8 |
 | [`hurwitz_khinchin_ipra`](diophantine-number-theory/hurwitz_khinchin_ipra/) | `b5a3ad0377` 2026-11-15 | `hurwitz_khinchin_ipra` | Sharp constructive Hurwitz approximation and quantitative constructive Khinchin approximation. | 18 | 1 |
 | [`minkowski_ipra`](diophantine-number-theory/minkowski_ipra/) | `057b790401` 2026-11-14 | `minkowski_ipra` | Minkowski's convex-body theorem. | 37 | 1 |
 | [`pell_ipra_2026-11-15`](diophantine-number-theory/pell_ipra_2026-11-15/) | `b5a3ad0377` 2026-11-15 | `pell_ipra` | Pell equations for every nonsquare D ≥ 2, with an audit of their algorithms and induction invariants in iPRA. | 18 | 1 |

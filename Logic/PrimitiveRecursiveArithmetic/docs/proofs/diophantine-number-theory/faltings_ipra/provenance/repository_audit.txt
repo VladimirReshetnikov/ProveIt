@@ -1,0 +1,219 @@
+PROVEIT REPOSITORY AUDIT FOR THE FALTINGS/IPRA REQUEST
+===================================================
+
+Pinned revision: d72c8b24637e342816dc92d11bef337748683e51
+Root tree: a1b1627d8b6d90203d5fbac5739803ab137606b1
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Inspection date: 2026-11-15
+
+Scope and validation
+--------------------
+Inspected the complete ConciseIPRA README, eight source modules relevant
+to the foundation/translation boundary, the current docs/drafts directory
+index, and the contents of two relevant draft archives. Inspected the
+NumberTheory and Algebra filename trees and the omnific Diophantine
+geometry README for possible related results. An auxiliary repository
+code search for Faltings returned only bibliographic references to
+Faltings heights, with an older indexed revision. Do not represent that
+search as an exhaustive search of all current repository content.
+
+Every inspected standalone source was byte-verified against its Git blob
+SHA. The ZIPs were likewise byte-verified against their Git blob SHAs.
+The diophantine_geometry_ipra manifest had 38 checked files, zero
+mismatches; diophantine_ipra had 23 checked files, zero mismatches.
+The current ConciseIPRA sources were read, not rebuilt. Build logs within
+the geometry draft are historical evidence from that package, not new
+compiler results from this audit.
+
+Main conclusion
+---------------
+The inspected repository material supplies an appropriate deeply embedded
+iPRA foundation and useful elementary arithmetic developments, but does
+not supply the missing general Faltings/effective Mordell theorem.
+The most directly relevant Diophantine geometry draft explicitly excludes
+general Mordell-Weil, Roth, Siegel and Faltings from its claimed results.
+It separately says it is not asserting their unprovability in iPRA.
+
+The repository's bi-interpretation is a translation of proofs in two
+specified object theories. It is not a reflection principle from ambient
+Lean truth to derivability in iPRA. This distinction is explicit in the
+geometry draft as well as in the actual theorem signatures.
+
+Exact foundational interface
+-----------------------------
+Namespace: LeanProofs.ConciseIPRA.
+
+PR.lean defines:
+
+  inductive PR : Nat -> Type
+    | zero : PR 0
+    | succ : PR 1
+    | proj {k} (i : Fin k) : PR k
+    | comp {m k} (f : PR m) (gs : Fin m -> PR k) : PR k
+    | prec {k} (f : PR k) (g : PR (k + 2)) : PR (k + 1)
+
+The recursion argument comes first. PTm n is scoped first-order term
+syntax with variables Fin n and applications of these symbols.
+Fm PTm n is scoped first-order formula syntax.
+
+Deduction.lean defines Prf Ax Gamma phi as intuitionistic natural
+deduction with equality, in Prop. Its constructors are hyp, ax, botE,
+andI, andE1, andE2, orI1, orI2, orE, impI, impE, allI, allE, exI,
+exE, eqRefl and eqSubst (source subscripts are Unicode in several names).
+There is no excluded-middle or classical reductio constructor.
+
+PRAAx contains the defining equations for projection, composition and
+primitive recursion, successor separation and injectivity, and induction
+only when the displayed formula is certified Fm.QF. PRA.qfInd is the
+derived rule that packages a base derivation and a successor derivation
+under an induction hypothesis into a universally quantified conclusion.
+
+Relevant usable theorem names in PR.lean:
+  PRA.proj, PRA.comp, PRA.precZero, PRA.precSucc,
+  PRA.succNeZero, PRA.qfInd.
+
+BiInterpretation.lean defines:
+  biInterp : BiInterp TeqAx PRAAx
+  teq_iff_pra, pra_iff_teq
+  teq_roundTrip, pra_roundTrip
+  teq_theorem_iff, pra_theorem_iff, teq_consistent_iff.
+
+NativeBiInterpretation.lean defines:
+
+  NFm.toPRA (A : NFm n) : Fm PTm n
+  NFm.ofPRA (phi : Fm PTm n) : NFm n
+
+  native_iff_pra :
+    NPrf Gamma A <->
+    Prf PRAAx (Gamma.map NFm.toPRA) A.toPRA
+
+  pra_iff_native :
+    Prf PRAAx Gamma phi <->
+    NPrf (Gamma.map NFm.ofPRA) (NFm.ofPRA phi)
+
+It also proves native_roundTrip, pra_native_roundTrip and
+native_inconsistent_iff. The exact completed-object target for an
+arithmetic Faltings encoding is therefore:
+
+  phiFaltings : Fm PTm 0
+  proofFaltings : Prf PRAAx [] phiFaltings
+
+Only after constructing proofFaltings can the forward direction of
+pra_iff_native produce a native-core proof.
+
+The reflection named in TeqReflect.lean is quantifier-free syntactic
+reflection. chi assigns a characteristic term to a quantifier-free
+formula, and chi_zero_iff concerns equality in the Lindenbaum quotient
+Q Gamma, which was itself defined from provable equality. It does not
+claim that all formulas true in Nat are derivable. Reading Q.mk Gamma
+as ordinary numerical evaluation would be a serious error.
+
+NativeModels.lean proves NPrf.sound_std, native_consistent,
+pra_consistent and teq_consistent in ambient Lean by a model over Nat.
+These are metatheorems. They are not object-iPRA consistency proofs,
+and they are not witness-extraction theorems for arbitrary quantified
+proofs.
+
+No explicit sorry, added axiom declaration, Classical reference or
+native_decide was found in the eight inspected modules. This is a
+source-level observation about these files, not an axiom audit of
+their entire dependency closures.
+
+Relevant current draft: Diophantine geometry
+-------------------------------------------
+Repository path: docs/drafts/diophantine_geometry_ipra.zip
+Git blob: f8232014e315d9696f26a4ae544f751c2d448586
+Size: 546184 bytes
+Extracted directory: research/repo/draft/diophantine_geometry_ipra
+
+Its README and sections/01_foundations.tex explicitly exclude the
+general Faltings theorem. Useful fully written elementary developments
+include canonical projective rational codes, bounded-height enumeration,
+conic parametrizations, local obstruction certificates, an explicit
+square-area descent, and conditional finite generation from supplied
+descent data. None yields a general global height bound for curves of
+genus greater than one.
+
+Its lean/DiophantineCore.lean has 13 ordinary Lean theorems using Std:
+
+  anyLE_correct
+  findLE_sound
+  findLE_none_iff
+  noBooleanDescent
+  quadratic_expansion
+  second_identity
+  second_on_conic
+  circle_identity
+  circle_inverse_identity
+  elliptic_triangle_identity
+  elliptic_triangle_area
+  triangle_curve_certificate
+  triangle_on_curve
+
+The package records compilation with Lean 4.32.0, commit
+8c9756b28d64dab099da31a4c09229a9e6a2ef35. Its source SHA256 is
+1625de14ec3896ddc62b1150e45bf181bec5883195a8115826da6e39d30d0773.
+The stored axiom audit lists only propext and Quot.sound (one theorem
+uses only propext), with no Classical.choice or sorryAx. The package
+expressly states these are not Prf PRAAx proofs. In particular,
+anyLE_correct has an ambient induction motive containing an existential;
+its iPRA version must use the separate quantifier-free scan invariants.
+
+The current repository lean-toolchain and mathlib requirement are
+leanprover/lean4:v4.32.0 and mathlib v4.32.0.
+
+Second relevant draft
+----------------------
+Repository path: docs/drafts/diophantine_ipra_2026-11-15.zip
+Git blob: 721fc9d634f17e118f64b05157128f0aa8156f60
+Size: 482512 bytes
+Extracted directory: research/repo/draft/diophantine_ipra
+
+The Roth discussion distinguishes a solution cutoff from a cardinality
+bound and from a finite-obstruction statement. It gives the first-halting-
+time example showing that no general algorithm converts a cardinality
+bound for a decidable family into a cutoff. It correctly says that an
+effectivity obstacle does not establish unprovability. Its Lean files
+are specifications/partial finite lemmas, not a completed object-iPRA
+formalization. This supports a consistent proof-status vocabulary for
+the new Faltings report; it does not provide a Faltings theorem dependency.
+
+Useful genuine Faltings instance
+--------------------------------
+Repository path:
+  NumberTheory/DiophantineEquations/Lean/DiophantineEquations/FermatFour.lean
+Git blob: 1e54dc6db7b076b4d52902dc559def75a57587c2
+
+It imports Mathlib.NumberTheory.FLT.Four and proves the ambient theorems:
+
+  LeanProofs.fermat_four_no_positive_nat_solutions
+    {a b c : Nat} (ha : 0 < a) (hb : 0 < b) (hc : 0 < c) :
+    a ^ 4 + b ^ 4 != c ^ 4
+
+  LeanProofs.fermat_four_no_square_right_int_solutions
+    {a b c : Int} (ha : a != 0) (hb : b != 0) :
+    a ^ 4 + b ^ 4 != c ^ 2
+
+The square-area descent in the geometry draft has been independently
+reviewed and is mathematically sound. A new self-contained TeX section
+fermat_instance.tex develops all its needed arithmetic, then proves
+that X^4+Y^4=Z^4 has precisely four projective Q-points with canonical
+height 1. It includes explicit primitive recursive fuel and the
+quantifier-free descent invariant; it does not use the ambient Fermat
+Lean theorem as an object-theory axiom. Its geometric genus-three
+interpretation is explicitly separate.
+
+Primary geometric reference for that interpretation:
+  Stacks Project, Section 53.9, Lemma 53.9.3 (plane-curve genus formula)
+  https://stacks.math.columbia.edu/tag/0BYA
+
+No extrapolation of this special descent to arbitrary curves is made.
+
+Pinned citation URLs
+---------------------
+https://github.com/VladimirReshetnikov/ProveIt/blob/d72c8b24637e342816dc92d11bef337748683e51/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/README.md
+https://github.com/VladimirReshetnikov/ProveIt/blob/d72c8b24637e342816dc92d11bef337748683e51/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/PR.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/d72c8b24637e342816dc92d11bef337748683e51/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA/Lean/ConciseIPRA/NativeBiInterpretation.lean
+https://github.com/VladimirReshetnikov/ProveIt/blob/d72c8b24637e342816dc92d11bef337748683e51/docs/drafts/diophantine_geometry_ipra.zip
+https://github.com/VladimirReshetnikov/ProveIt/blob/d72c8b24637e342816dc92d11bef337748683e51/docs/drafts/diophantine_ipra_2026-11-15.zip
+https://github.com/VladimirReshetnikov/ProveIt/blob/d72c8b24637e342816dc92d11bef337748683e51/NumberTheory/DiophantineEquations/Lean/DiophantineEquations/FermatFour.lean

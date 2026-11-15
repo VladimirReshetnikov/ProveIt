@@ -149,7 +149,8 @@ Thirty-three archives committed to [`docs/drafts`](../drafts/) on 14 and 15 Nove
 give finitary proofs of classical theorems in intuitionistic primitive recursive arithmetic.
 They are placed, as delivered and without a write, in
 [`Logic/PrimitiveRecursiveArithmetic/docs/proofs`](../../Logic/PrimitiveRecursiveArithmetic/docs/proofs/README.md),
-one directory per archive, named after the archive with its wrapper directory removed.
+one directory per archive, named after the archive with its wrapper directory removed. The
+directories are grouped there by mathematical area.
 They were placed on Vladimir's instruction of 15 November 2026, which asked for no
 verification and no Lean compilation. Nothing was rerun or checked. That README lists each
 archive with its arrival commit. It also lists the members that are not placed:
@@ -159,6 +160,14 @@ archive with its arrival commit. It also lists the members that are not placed:
   of `ConciseIPRA` Lean sources, all bundled in `zeta_zeros_ipra_2026-11-15`.
 
 All 33 archives are removed from `docs/drafts`, and that directory's `.gitkeep` is kept.
+
+Two further archives, `apery_ipra.zip` and `faltings_ipra.zip`, were committed to
+`Logic/PrimitiveRecursiveArithmetic/docs/incoming` in `12ab5b00c1` on 15 November 2026.
+They were placed the same way, under `diophantine-number-theory/`. Their 9 members matched
+by `.gitignore` are not placed. Both archives are removed from that directory, and its
+`.gitkeep` is kept. A third archive there, `gamma_ipra.zip` (arrival `7e8e6aad97`), was
+placed the same way, under `analysis/`. Its one ignored `SHA256SUMS.txt` is not placed,
+and the archive is removed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

@@ -1,0 +1,330 @@
+% Mathematical proof material for the main gamma/iPRA article.
+% Dependencies: elementary exp and positive-real log with finite error bounds.
+% No global complex logarithm, analytic continuation theorem, or choice is used.
+
+\section{The reciprocal function from finite Euler products}
+\label{sec:reciprocal-products}
+
+All bounds in this section are uniform in a displayed integer disk radius
+$R\geq1$.  Bounds on complex absolute values can be implemented using rational
+squared absolute values; an upper bound in the rational norm
+$|\Re z|+|\Im z|$ is also sufficient.  Expressions involving nonrational
+arguments mean the corresponding fixed primitive recursive names with their
+given error certificates.  They do not introduce a quantifier over a universe
+of all primitive recursive functions.
+
+\subsection{Euler's constant with a modulus}
+Put $H_N=\sum_{k=1}^N1/k$ and $\gamma_N=H_N-\log N$ for $N\geq1$.
+The elementary integral or logarithmic-series inequalities give
+\[
+ 0\leq\log(1+1/k)-\frac1{k+1}
+ \leq\frac1k-\frac1{k+1}.
+\]
+Consequently, for $M\geq N$,
+\[
+ 0\leq\gamma_N-\gamma_M\leq\frac1N-\frac1M\leq\frac1N.
+ \tag{C1}
+\]
+Moreover $0\leq\gamma_N\leq1$, by comparing the finite harmonic sum with
+the integral of $1/t$ over $[1,N]$.  Thus (C1), together with a finite
+approximation of $\log N$, defines a regular name for $\gamma$, and
+\[
+ 0\leq\gamma_N-\gamma\leq N^{-1},\qquad 0\leq\gamma\leq1.
+ \tag{C2}
+\]
+For example $N=2^{p+2}$ and a logarithm evaluation within $2^{-p-2}$
+suffice for an approximation with error less than $2^{-p-1}$.
+Monotone convergence has not been invoked: (C1) is the Cauchy certificate.
+
+\subsection{A local logarithm that has no branch ambiguity}
+For $|w|\leq1/2$ let
+\[
+ L(w)=\sum_{j=2}^{\infty}\frac{(-1)^{j+1}w^j}{j}.
+\]
+The series has the explicit estimates
+\[
+ |L(w)|\leq\frac{|w|^2}{2(1-|w|)}\leq|w|^2,
+ \qquad
+ \left|L(w)-\sum_{j=2}^{d}\frac{(-1)^{j+1}w^j}{j}\right|
+ \leq\frac{|w|^{d+1}}{(d+1)(1-|w|)}.
+ \tag{C3}
+\]
+Here $w+L(w)$ is only the power-series logarithm near $1$.
+The identity
+\[
+ \exp\bigl(w+L(w)\bigr)=1+w
+ \tag{C4}
+\]
+follows directly by finite coefficient algebra.  Write
+$F(w)=\exp(w+L(w))=\sum_{n\geq0}f_nw^n$.
+The geometric derivative of $w+L(w)$ gives $(1+w)F'=F$ and $f_0=1$.
+Comparing finite coefficients yields $f_1=1$ and
+$(n+1)f_{n+1}=(1-n)f_n$ for $n\geq1$; hence every $f_n$ with
+$n\geq2$ is zero.  Differentiation and multiplication are verified first
+for finite polynomials; their geometric and exponential tails bound each
+discarded term.  This uses neither a global logarithm on $\mathbb C$
+nor an assertion about branches.
+
+\subsection{The entire reciprocal and quantitative Euler convergence}
+Define finite entire expressions
+\[
+ Q_N(z)=z\exp(-z\log N)\prod_{k=1}^N(1+z/k),\qquad
+ P_N(z)=z\exp(\gamma z)\prod_{k=1}^N(1+z/k)\exp(-z/k).
+ \tag{C5}
+\]
+Fix $|z|\leq R$ and set $K=2R$.  For $N\geq K$ the tail series
+\[
+ T_N(z)=\sum_{k=N+1}^{\infty}L(z/k)
+\]
+has the finite-tail certificate
+\[
+ |T_N(z)|\leq R^2\sum_{k>N}k^{-2}\leq\frac{R^2}{N}.
+ \tag{C6}
+\]
+The last inequality follows already for every finite sum by
+$k^{-2}\leq1/[k(k-1)]$, so that it is a telescoping rational inequality.
+Define
+\[
+ P(z)=z\prod_{k=1}^K(1+z/k)
+       \exp\bigl((\gamma-H_K)z+T_K(z)\bigr).
+ \tag{C7}
+\]
+The definitions with different sufficiently large $K$ agree, by (C4) and
+finite product cancellation.  In particular
+\[
+ P(z)=P_N(z)\exp(T_N(z)),\qquad
+ Q_N(z)=P_N(z)\exp\bigl(z(\gamma_N-\gamma)\bigr).
+ \tag{C8}
+\]
+The quotients suggested by this notation are never needed at a zero: (C8)
+is an equality obtained by multiplication, valid everywhere.
+
+For an entirely rational majorant put
+\[
+ M_R=R(1+R)^{2R}3^{2R^2+2R},\qquad B_R=R^2+R.
+ \tag{C9}
+\]
+Indeed, the absolute value of the polynomial in (C7) is at most
+$R(1+R)^{2R}$, while the exponent has real part at most
+\[
+ (1+H_{2R})R+R^2/(2R)
+ \leq (1+2R)R+R/2\leq2R^2+2R.
+\]
+Using $e\leq3$ proves $|P(z)|\leq M_R$, and the same estimate bounds
+$P_N(z)$ for $N\geq2R$.  By (C2), (C6), (C8), and
+$|e^u-e^v|\leq e^{|v|}e^{|u-v|}|u-v|$, or directly by the
+exponential power series, one obtains
+\[
+ |Q_N(z)-P(z)|\leq \frac{3M_RB_R}{N}
+ \quad\text{if }N\geq\max(2R,B_R).
+ \tag{C10}
+\]
+One convenient derivation writes both sides using (C7); the difference
+of their tail exponents has absolute value at most $B_R/N\leq1$.
+Therefore $N\geq3M_RB_R2^p$ gives an error at most $2^{-p}$.
+Evaluating the finitely many exponentials and logarithms with a further
+error allowance gives a rational algorithm, since all the displayed
+lengths and precision budgets are primitive recursive.
+
+Thus (C10) constructs $P$ on every disk.  Equations (C5)--(C8) also prove
+the reciprocal Weierstrass product
+\[
+ \boxed{\displaystyle
+ P(z)=z e^{\gamma z}\prod_{k=1}^{\infty}(1+z/k)e^{-z/k}.}
+ \tag{C11}
+\]
+The infinite product means precisely its explicitly controlled finite
+products.  It has not been inferred from an abstract product convergence
+theorem.
+
+\subsection{An explicit lower bound away from the poles}
+Suppose, in addition to $|z|\leq R$, that a rational $0<\delta\leq1$
+satisfies
+\[
+ |z+k|\geq\delta\quad(0\leq k\leq2R).
+ \tag{C12}
+\]
+Set
+\[
+ \lambda_{R,\delta}=
+ \frac{\delta^{2R+1}}{(2R)!\,3^{2R^2+2R}}.
+ \tag{C13}
+\]
+In (C7), the polynomial has absolute value at least
+$\delta^{2R+1}/(2R)!$.  The real part of its exponent is at least
+$-(2R^2+2R)$, so
+\[
+ |P(z)|\geq\lambda_{R,\delta}>0.
+ \tag{C14}
+\]
+The identical argument with $\gamma_N$ and the finite tail instead of
+$\gamma$ and $T_K$ gives $|Q_N(z)|\geq\lambda_{R,\delta}$ for
+$N\geq2R$.  This is a positive lower bound, not merely the negation of an
+equality.  It therefore licenses constructive inversion.
+
+On a disk supplied with (C12) define $\Gamma(z)=1/P(z)$.  Its definition
+agrees on overlaps.  Its Euler approximants are
+\[
+ \Gamma_N(z)=\frac{N!N^z}{z(z+1)\cdots(z+N)}=Q_N(z)^{-1}.
+\]
+For $N\geq\max(2R,B_R)$, (C10)--(C14) yield
+\[
+ \boxed{\displaystyle
+ |\Gamma_N(z)-\Gamma(z)|
+ \leq\frac{3M_RB_R}{\lambda_{R,\delta}^{\,2}N}.}
+ \tag{C15}
+\]
+Also $|\Gamma(z)|\leq1/\lambda_{R,\delta}$ and
+$|\Gamma(z)|\geq1/M_R$.  In particular gamma has no zeros, with a
+quantitative meaning on each supplied disk.  When $\Re z\geq a>0$,
+one may take $\delta=\min(a,1)$; hence (C15) identifies this construction
+with any independently proved Euler limit on the right half-plane,
+including the Euler integral construction.
+
+\subsection{Why ``entire'' is justified constructively}
+We give the missing local analytic information rather than applying a
+classical theorem about uniformly convergent holomorphic functions.
+For $K=2R$, finite rearrangement with the absolute bounds (C3) gives
+\[
+ T_K(z)=\sum_{m=2}^{\infty}
+ \frac{(-1)^{m+1}z^m}{m}
+ \left(\zeta(m)-H_K^{(m)}\right),\qquad
+ H_K^{(m)}=\sum_{k=1}^K k^{-m}.
+ \tag{C16}
+\]
+Here the positive integer zeta values are defined by their own rational
+partial sums, with
+\[
+ 0\leq\zeta(m)-\sum_{k=1}^N k^{-m}
+ \leq\frac{1}{(m-1)N^{m-1}}\quad(m\geq2).
+ \tag{C17}
+\]
+The integral comparison in (C17) can equally be replaced by its finite
+antiderivative inequality and rational telescoping estimates.
+In (C16) the tail after degree $d\geq1$ is at most
+\[
+ \frac{R^2}{K}\,2^{1-d}.
+ \tag{C18}
+\]
+For example, its $m$th term is bounded by
+$(R^2/K)2^{-(m-2)}/[m(m-1)]$, whose geometric tail proves (C18).
+
+Finite polynomial multiplication and the exponential power series now
+turn (C7) into a convergent power series on each disk.  This operation has
+a direct absolute majorant: if $\sum_j|a_j|t^j\leq A$, then the
+coefficient absolute sum of $\exp(\sum_j a_jz^j)$ at $t$ is at most
+$e^A$.  This is proved by finite Cauchy multiplication and the ordinary
+exponential tail estimate.  There is no appeal to an infinite formal
+manipulation without an error bound.
+
+For a useful global consequence, make the construction at radius $2R$
+and use $K=4R$.  Its coefficient absolute sum at $2R$ is bounded by
+$M_{2R}$.  Consequently, writing $P(z)=\sum_{j\geq1}c_jz^j$,
+\[
+ \left|P(z)-\sum_{j=1}^d c_jz^j\right|
+ \leq M_{2R}2^{-d-1}\quad(|z|\leq R).
+ \tag{C19}
+\]
+The coefficients do not depend on the auxiliary $K$: equality of each
+finite-degree coefficient follows by expanding (C4) and cancelling one
+factor at a time.  Coefficients are thus computable by finite recursive
+convolutions with the constants in (C2) and (C17).
+
+For completeness, a power series about $z_0$, whose coefficient absolute
+sum at radius $r$ is at most $A$, satisfies
+\[
+ |f(z_0+h)-f(z_0)-b_1h|\leq A|h|^2/r^2
+ \quad(|h|\leq r),
+\]
+when $b_1$ is its first coefficient about $z_0$.
+The series about any $z_0$ is obtained by the binomial formula, using a
+larger disk to bound all rearrangement tails.  The displayed remainder
+is the definition and a modulus of its complex derivative.  Repeated
+differentiation is handled with an extra disk margin.  This proves
+entireness in the concrete sense needed here.  For inversion, suppose
+$|P(z_0)|\geq d>0$ and the coefficient absolute sum about $z_0$ is at
+most $A$ at radius $r$.  Then $A\geq d>0$.  Choose a positive rational
+\[
+ \rho\leq\min\left(\frac r2,\frac{dr}{4A}\right).
+\]
+On $|h|\leq\rho$, the nonconstant coefficient tail gives
+$|P(z_0+h)-P(z_0)|\leq A\rho/r\leq d/4$.
+The geometric inverse therefore has ratio at most $1/4$ (and, in
+particular, at most $1/2$), which provides its convergence and remainder
+modulus.  This proves analyticity of $1/P$ on the smaller disk.  Thus
+meromorphic language below is supported by local power series and
+explicit division bounds.
+
+\section{Functional equation, zeros, poles, and conjugation}
+
+Finite cancellation, without division by $z$, gives
+\[
+ zQ_N(z+1)=\left(1+\frac{z+1}{N}\right)Q_N(z).
+\]
+The bounds (C10) give
+\[
+ P(z)=zP(z+1),\qquad P(1)=1,
+ \tag{C20}
+\]
+the latter also following from $Q_N(1)=(N+1)/N$.  Therefore, wherever
+the divisions are licensed,
+\[
+ \Gamma(z+1)=z\Gamma(z),\qquad\Gamma(1)=1,\qquad
+ \Gamma(n+1)=n!.
+ \tag{C21}
+\]
+The last assertion uses ordinary finite induction on $n$; its analytic
+content has already been reduced to (C20).
+
+Iteration of (C20) gives the entire identity
+\[
+ P(z)=\prod_{j=0}^{n}(z+j)\,P(z+n+1).
+ \tag{C22}
+\]
+At $z=-n$ this proves $P(-n)=0$, and differentiating the finite product
+proves
+\[
+ P'(-n)=(-1)^n n!.
+ \tag{C23}
+\]
+So all these zeros are simple.
+
+The converse zero assertion can also be made constructively; it does
+not require the invalid general rule that a zero product of arbitrary
+constructive reals has a zero factor.  Suppose $P(z)=0$ and $|z|\leq R$.
+Compute a rational complex $q$ with $|q-z|\leq1/16$.  Decide the finite
+list of rational tests $|q+j|^2<1/16$ for $0\leq j\leq2R$.
+If all fail, then $|z+j|\geq3/16$ for all $j$, contradicting (C14).
+Hence one test succeeds.  There is at most one such $j$, because two
+different integer centers have distance at least $1$.  For this $j$,
+$|z+j|<5/16$, while $|z+k|>11/16$ for every other integer $k$.
+Factor $(z+j)$ out of (C7).  The remaining factor has a positive lower
+bound by exactly the proof of (C14), using $11/16$ for its finitely many
+linear factors.  Hence $P(z)=0$ implies $z=-j$.  The bounded search for
+$j$ uses a decidable rational predicate and so is primitive recursive.
+
+Equation (C22) gives a local description of gamma at every pole:
+\[
+ \Gamma(-n+h)=
+ \frac{(-1)^n}{n!\,h}\,
+ \Gamma(1+h)\prod_{j=1}^n(1-h/j)^{-1}.
+ \tag{C24}
+\]
+All factors apart from $h^{-1}$ have convergent power series for
+$|h|<1$.  Their value at zero is $1$, proving a simple pole with residue
+\[
+ \operatorname{Res}_{z=-n}\Gamma(z)=\frac{(-1)^n}{n!}.
+ \tag{C25}
+\]
+No value is assigned to gamma at its poles.  A totalized implementation
+may choose a default value there, but the meromorphic assertions concern
+the punctured local formula (C24).
+
+All coefficients and constants in (C5) are real.  Conjugating finite
+expressions and using (C10), (C14) proves
+\[
+ P(\overline z)=\overline{P(z)},\qquad
+ \Gamma(\overline z)=\overline{\Gamma(z)}.
+ \tag{C26}
+\]
+

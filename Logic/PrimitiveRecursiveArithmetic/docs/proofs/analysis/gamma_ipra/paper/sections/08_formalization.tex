@@ -1,0 +1,326 @@
+\section{Executable arithmetic and a complete Lean formalization route}
+\label{sec:formalization}
+
+\subsection{What has actually been checked}
+
+The companion \code{lean/GammaIPRA.lean} was compiled with Lean
+4.32.0, using only \code{Std}. It contains exact rational complex
+arithmetic, finite elementary approximations, Euler products, numerical
+budget functions, representations of names, and analytic certificate
+interfaces. Fourteen named elementary arithmetic lemmas are proved.
+The saved \code{\#print axioms} audit reports no axiom dependencies for
+each of these fourteen lemmas. Two additional closed arithmetic examples
+are checked by kernel reduction. The file contains no admitted proofs
+or axiom declarations.
+
+\emph{This does not constitute a formal proof of gamma analysis.}
+The analytic certificate structures are uninstantiated obligations.
+In particular, the file does not yet prove that its elementary
+truncation lengths imply the corresponding analytic error bounds, and
+it does not yet produce \code{PRAAx} derivations of the displayed
+estimates. These two substantial remaining tasks are specified below.
+The human-readable proofs in the preceding sections are the mathematical
+argument; the Lean files are an executable foundation and a precise
+formalization outline.
+
+\subsection{The exact rational demonstration and its bracket theorem}
+
+The program \code{code/gamma\_brackets.py} evaluates gamma on positive
+rational arguments without floating point. We include the proof of its
+particular enclosure method so its certificates have a mathematical
+interpretation independent of a numerical gamma library.
+
+For a rational $0<r\le1$ set
+\[
+ A_n(r)=\frac{n!n^r}{r(r+1)\cdots(r+n)},\qquad
+ B_n(r)=\frac{(n-1)!n^r}{r(r+1)\cdots(r+n-1)}.
+\]
+Then
+\begin{equation}
+ A_n(r)\le\Gamma(r)\le B_n(r),\qquad
+ 0\le B_n(r)-A_n(r)\le1/n.
+ \label{eq:computational-strip-brackets}
+\end{equation}
+Here is a short complete proof, also explaining the bracket construction
+in the inspected Bohr--Mollerup draft~\cite{bmrepo}. For $0<r\le1$,
+the concavity inequality $t^r\le1+r(t-1)$ for $t>0$ follows by
+integrating the decreasing derivative $r t^{r-1}$ from $1$ to $t$.
+Equivalently for rational $r$ it can be cleared to positive integer
+power comparisons. Exact cancellation gives
+\[
+ \frac{A_{n+1}}{A_n}=
+ \frac{n+1}{n+1+r}(1+1/n)^r,
+ \qquad
+ \frac{B_{n+1}}{B_n}=
+ \frac{n}{n+r}(1+1/n)^r.
+\]
+Concavity at $t=1+1/n$ makes the second ratio at most one.
+Concavity at $t=n/(n+1)$, followed by positive reciprocation, gives
+\[
+ (1+1/n)^r\ge(1-r/(n+1))^{-1}\ge1+r/(n+1),
+\]
+so the first ratio is at least one. Since
+$B_n=(1+r/n)A_n$, the brackets are nested. Also
+$A_n\le B_n\le B_1=1/r$, and hence
+$B_n-A_n=(r/n)A_n\le1/n$. Their common effective limit is the
+Euler limit already identified with gamma, proving
+\eqref{eq:computational-strip-brackets}.
+
+For a positive rational $x$, integer division computes
+$x=r+m$ with $0<r\le1$ and $m\in\N$. This uses a floor only for
+a rational input, not for a named real. Put $S=(r)_m>0$. The recurrence
+gives $\Gamma(x)=S\Gamma(r)$. For target width $2^{-p}$ the program
+chooses
+\[
+ n=2^{p+2}\max(1,\ceil S).
+\]
+Write $r=u/v$ in lowest terms, and write $A_n=c_A n^r$,
+$B_n=c_B n^r$ with rational $c_A,c_B>0$. It computes a dyadic root
+enclosure of $n^r$ by bounded binary search for the integer $k$ such that
+\begin{equation}
+ k^v\le n^u2^{vL}<(k+1)^v.\label{eq:root-certificate}
+\end{equation}
+An initial upper endpoint is a power of two whose exponent is obtained
+by integer bit length; that many bisection iterations plus one suffice.
+Choose
+\[
+ L=p+3+\operatorname{bitlength}
+                    \bigl(\max(1,\ceil{Sc_B})\bigr).
+\]
+Then $Sc_B2^{-L}\le2^{-p-3}$, while $S/n\le2^{-p-2}$.
+The interval
+\[
+ \left[Sc_A\frac{k}{2^L},\quad
+       Sc_B\frac{k+1}{2^L}\right]
+\]
+contains $\Gamma(x)$ and has width less than $2^{-p}$.
+Every quantity in \eqref{eq:root-certificate} is an integer and is
+stored in the evidence file. The verification routine reconstructs the
+rational coefficients, checks the integer inequalities and interval
+width, and checks that the displayed decimal endpoints round outwards.
+It does not test the answer against a floating-point gamma oracle.
+
+The supplied run uses eight rational arguments and $p=8$; for example
+it gives the rigorous enclosures
+\[
+ \Gamma(1/2)\in[1.7718050888,1.7726837525],\qquad
+ \Gamma(3/2)\in[0.8859025444,0.8863418763].
+\]
+These finite certificates check implementation arithmetic. Their
+interpretation as gamma enclosures uses the bracket theorem above;
+samples are not proofs of universal analytic identities.
+
+\subsection{A fully specified rational-input gamma evaluator}
+
+For the complex construction there is also a direct, deliberately
+inefficient, closed primitive recursive evaluator. This makes the
+formalization target concrete even though the economical strip program
+is preferable for examples.
+
+Supply $R\ge1$, $D\in\N$, $\norm z_1\le R$, and the rational tests
+$|z+j|\ge1/(D+1)$ for $0\le j\le2R$. Set
+\[
+ M=M_R,\quad B=R^2+R,\quad
+ L=(D+1)^{2R+1}(2R)!3^{2R^2+2R};
+ \qquad\lambda=1/L.
+\]
+For requested precision $p$, choose
+\begin{align*}
+ N&=\max\{2R,B,3MBL^2 2^{p+6}\},\\
+ A&=R(1+R)^N,\qquad T=R(N+1)+1,\\
+ H&=A\bigl((R+1)3^{T+1}+1\bigr),\qquad
+ \ell=p+H+2L+12.
+\end{align*}
+Compute $q=\log N$ using the atanh sum with
+$N(\ell+2N+4)$ terms, so its error is at most $2^{-\ell}$.
+Compute $E=\exp(-zq)$ by the Taylor sum through degree
+$4T+\ell+6$. Form the rational complex number
+\[
+ U=z\prod_{j=1}^N(1+z/j)\,E,
+\]
+and return its rational inverse. Every loop length is now given by a
+closed primitive recursive expression.
+
+To verify the precision budget, the exact polynomial head has
+$1$-norm at most $A$. The propagated logarithm and exponential errors
+are at most $H2^{-\ell}\le2^{-p-12}/L^2$.
+The lower bound for $Q_N$ is $1/L$, so $U$ is apart from zero by at
+least $1/(2L)$. Inversion amplifies the $1$-norm error by at most
+$4L^2$. Formula (C15) gives the Euler tail at most $2^{-p-6}$ in
+complex modulus, hence at most $2^{-p-5}$ in the $1$-norm. The total
+error is less than $2^{-p-4}$. The spare margin gives the regular-name
+inequality and accommodates the fixed shifts in the equality convention.
+Changing $R,D$ to any larger valid domain certificate yields an equal
+name by comparing the two finite Euler approximants with the same
+finite-tail bound. No search for a modulus occurs.
+
+\subsection{Definitions needed by the full Lean development}
+
+The host-level interfaces in \code{GammaIPRA.lean} are convenience
+types for organizing the proof. They are not asserted to be internal
+sorts of \ipra. The following definitions fix the intended completion.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth}>{\raggedright\arraybackslash}p{0.70\textwidth}@{}}
+\toprule
+Object & Definition and required data\\\midrule\endhead
+Rational code & Signed integer numerator and positive natural denominator;
+every relation is cleared to integer multiplication and comparison.\\
+Complex rational & A pair of rational codes with the operations in
+\code{CQ}; squared modulus is $u^2+v^2$, and the $1$-norm is $|u|+|v|$.\\
+Fixed PR implementation & A repository \code{PR k} expression and its
+defining-equation proofs for the chosen routine. The associated function
+symbol is used directly; there is no universal evaluation symbol.\\
+Regular name & One fixed PR rational-output function, with the
+$2^{-p}+2^{-q}$ Cauchy certificate. \code{NameEq} is equality at every
+precision with the stated two-stage slack.\\
+Domain data & Integer radius $R$, positive rational margin, and finite
+pole-distance tests. For a named input, refine its approximation until
+the supplied margin is preserved at half its size.\\
+Gamma evaluator & The closed evaluator just specified, or its equivalent
+reciprocal-product name. Domain-independent equality is a theorem.\\
+Euler constant and zeta values & Harmonic-minus-log with (C2), and finite
+reciprocal-power sums with (C17).\\
+Analytic disk certificate & Coefficient names, a strictly larger rational
+disk, coefficient majorant, finite polynomial degree schedule, and
+coefficient-rounding and approximation bounds. This is
+\code{DiskAnalyticCertificate}.\\
+Derivative certificate & A quadratic remainder bound at rational inputs,
+with adjustable rational evaluation precision, as in
+\code{DerivativeRemainderCertificate}; higher orders iterate finite
+polynomial coefficient operations.\\
+Integral certificate & Explicit endpoint-tail functions, a compact mesh
+error bound, and the finite Riemann-sum program. The integral name is
+their specified diagonal evaluation.\\
+Derived functions & $\psi=\Gamma'/\Gamma$ with a denominator margin;
+polygamma by (C29); beta by (B1); log-gamma by
+\eqref{eq:canonical-loggamma}; incomplete gamma by its two truncated
+integrals; Bernoulli polynomials by finite antidifferentiation and zero
+mean. All have definitions before any theorem invokes them.\\
+\bottomrule
+\end{longtable}
+
+The analytic certificate in the Lean file uses a coefficient bound
+$|c_n|\le M r^{-n}$ on an outer radius $r$ larger than the working
+radius. This is enough to prove geometric convergence on the smaller
+disk. It must not be replaced by the assertion that some arbitrary
+sequence of polynomials approximates the function: that weaker
+assertion would not establish analyticity.
+
+\subsection{The proof dependency order and concrete remaining obligations}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.42\textwidth}>{\raggedright\arraybackslash}p{0.26\textwidth}@{}}
+\toprule
+Planned module & Lemmas to implement & Finite invariant / induction\\\midrule\endhead
+\code{RatCode} & Sign, fraction, gcd and division implementations;
+norm inequalities and error propagation. & Cleared integer identities;
+bounded remainder invariants.\\
+\code{Elementary} & Exponential and logarithm tails; positive roots;
+sine, cosine, arctangent and $\pi$. & Finite sum or product plus a
+geometric/factorial tail term.\\
+\code{Names} & Regularity, equivalence, arithmetic operations,
+margin-preserving inversion, local continuity extension. & Fix the
+output precision first; all stage comparisons are rational.\\
+\code{EulerProducts} & (C1)--(C15); instantiate the reciprocal and
+gamma names and \code{EulerErrorCertificate}. & Partial sums of
+$k^{-2}$ and telescoping product error.\\
+\code{AnalyticGamma} & (C16)--(C26); instantiate local analytic and
+derivative certificates; simple zeros and poles. & Finite coefficient
+convolution, binomial translation, geometric inversion.\\
+\code{EulerIntegral} & Mesh lemmas and
+\eqref{eq:integral-product-error}; derivative integrals and substitutions.
+& Compact telescoping sums, explicit small and large tail budgets.\\
+\code{FunctionalRelations} & Sine factorization, (T4), reflection,
+Gauss, duplication and beta formulas. & Polynomial division by known
+separated roots, finite denominator regrouping, beta recurrence.\\
+\code{DifferentialGamma} & (C27)--(C45), differentiated reflection and
+multiplication, rational-argument derivative values. & Finite power
+coefficients and rational reciprocal tails.\\
+\code{RealGamma} & Strong convexity, Bohr--Mollerup, Wendel/Gautschi,
+ratio estimates and all critical-point algorithms. & Secant inequalities
+and rational brackets, preserving endpoint signs.\\
+\code{Stirling} & Finite differences, normalization by duplication,
+Robbins, finite Euler--Maclaurin and signed remainder. & Finite
+telescoper; for each fixed order, rational Bernoulli polynomial
+identities and finite reverse-Chebyshev sums.\\
+\code{GammaIntegrals} & Binet, Raabe, Mellin, Gaussian and incomplete
+gamma consequences. & Finite rectangles and geometric kernels,
+with every tail allocated before exchange.\\
+\code{ObjectCertificates} & Reify the preceding finite statements as
+\code{Fm PTm}; produce \code{Prf PRAAx} derivations. & Use
+\code{PRA.qfInd} only on the encoded rational invariants.\\
+\bottomrule
+\end{longtable}
+
+The entries describe actual proof obligations. None is silently supplied
+by an axiom with a name such as ``gamma correctness.'' The earlier
+sections give the required finite identity, error bound, or polynomial
+argument for each entry. A proof in Mathlib's completed real or complex
+field could be added for exposition, but cannot replace
+\code{ObjectCertificates} when the target is provability in iPRA.
+
+\subsection{One explicit object-theory target}
+
+Let $\mathsf A_{R,D}(z,p)$ denote the rational evaluator above.
+An internal functional-equation target is the integer-coded formula
+\[
+ \begin{aligned}
+ &\forall R,D,z,p\;\mathrm{Domain}(R,D,z,z+1)\ \longrightarrow\\
+ &\quad\left\|
+ \mathsf A_{R+1,D}(z+1,p+R+6)
+ -z\,\mathsf A_{R+1,D}(z,p+R+6)
+ \right\|_1\le2^{-p}.
+ \end{aligned}
+\]
+Here $z$ abbreviates two rational codes; \code{Domain} is the finite
+list of squared-distance and denominator comparisons, expanded by a
+primitive recursive Boolean conjunction. The displayed inequality is
+also a Boolean comparison after clearing positive denominators. The
+proof starts from the exact finite relation
+\[
+ (z+N+1)\Gamma_N(z+1)=Nz\Gamma_N(z),
+\]
+proved by the finite rising-product identity, and bounds its residual
+using $|z+N+1|\ge N/2$ at $N\ge2(R+1)$. Substituting the explicitly
+chosen common index and the arithmetic evaluation errors proves the
+integer-coded formula by quantifier-free induction and equality rules.
+Comparing arbitrary two cutoff indices gives the Cauchy theorem; it
+does not require the theory to quantify over a limit object.
+
+Reflection, for example, has exactly the same form with
+$\sin(\pi z)\Gamma(z)\Gamma(1-z)-\pi$ on the left and the finite
+sine estimate (T4) in place of the recurrence residual. Clearing the
+identity before dividing is preferable in the formal code. The integral
+statements compare two explicitly defined rational algorithms with a
+$2^{-p}$ error, not a bare Lean \code{HasIntegral} assertion.
+
+Once an ordinary arithmetic sequent $h:\Gamma\vdash[\code{PRAAx}]\varphi$
+has been built, the inspected repository theorem gives its native
+translation directly:
+\[
+ \code{pra\_iff\_native.mp}\ h
+ :\ \code{NPrf}\bigl(\Gamma.\code{map}\ \code{NFm.ofPRA}\bigr)
+                    (\code{NFm.ofPRA}\ \varphi).
+\]
+This is where the existing ConciseIPRA result is reused. The bridge
+translates a supplied proof; it does not automatically prove new gamma
+estimates from their truth in the host natural numbers.
+
+\subsection{Induction and uniformity audit}
+
+The rational evaluator, the critical-point algorithms, finite coefficient
+operations, and all stated cutoff formulas are primitive recursive.
+Proofs of finite algebraic recursions use natural-number parameters
+internally. Assertions indexed by derivative or asymptotic order may
+always be read as \emph{a family of iPRA proofs, one for each fixed
+order}. The present outline does not silently strengthen this to
+induction over an unrestricted analytic predicate. A future uniform
+object theorem in the order parameter requires reifying the finite
+polynomial invariant, exactly as specified in the module table.
+
+No proof uses an unbounded search for a zero, excluded middle for an
+arbitrary real comparison, countable choice, an arbitrary Cauchy
+completeness axiom, or the floor of an arbitrary real. Unknown signs in
+root finding use the quantitative third branch of the bisection
+algorithm. Every complex division carries an explicit margin; all
+global assertions about gamma at its poles use the analytic reciprocal
+or a punctured Laurent expression.

@@ -1,0 +1,784 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{microtype,booktabs,tabularx,array,enumitem,xcolor,fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\hypersetup{pdftitle={Faltings' theorem and intuitionistic primitive recursive arithmetic},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\setlist{topsep=4pt,itemsep=3pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{4pt}
+\newcommand{\iPRA}{\mathsf{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Good}{\operatorname{Good}}
+\newcommand{\Pt}{\operatorname{Pt}}
+\newcommand{\HB}{\operatorname{HB}}
+\newcommand{\Comp}{\operatorname{Complete}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Faltings' theorem and intuitionistic PRA}
+\fancyhead[R]{\small Research and formalization audit}
+\fancyfoot[C]{\thepage}
+\begin{document}
+\begin{titlepage}
+\centering\vspace*{1.2cm}
+{\LARGE\bfseries Faltings' theorem and intuitionistic\\[5pt]
+primitive recursive arithmetic\par}
+\vspace{0.6cm}
+{\large A precise effectivity obstruction, constructive special cases,\\
+and a checked Lean foundation\par}
+\vspace{0.9cm}
+{\large Prepared for Vladimir Reshetnikov\par}
+\vspace{0.2cm}{November 15, 2026\par}
+\vspace{0.8cm}
+\begin{minipage}{0.91\textwidth}
+\textbf{Status.} This report does not prove general Faltings in $\iPRA$.
+It proves that a uniform $\iPRA$ proof of a positive finite-list or
+height-bound formulation would yield a primitive recursive version of
+effective Mordell, which the
+sources checked here do not establish. This is not an independence proof,
+and it does not rule out a weaker cardinality formulation.
+
+The positive results are complete human-readable proofs of the finite-search
+reductions, the four-point classification of the Fermat quartic, and
+nonexistence for a simple hyperelliptic family. Three standalone Lean modules
+verify the elementary search, logical, and arithmetic layers.
+The general height statement is explicitly defined and left unproved.
+No general finiteness axiom or proof placeholder is introduced.
+\end{minipage}
+\vfill
+\begin{minipage}{0.91\textwidth}\small
+\textbf{Repository snapshot.}
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/d72c8b24637e342816dc92d11bef337748683e51}
+{ProveIt, commit \texttt{d72c8b24637e342816dc92d11bef337748683e51}}.
+
+\textbf{Verification.} Lean 4.32.0, standard library only; exact integer
+and rational Python checks. Native Lean theorems are distinguished from
+derivations in the repository's embedded $\iPRA$ calculus.
+\end{minipage}
+\end{titlepage}
+
+\begin{abstract}
+The requested general proof cannot be supplied by the arguments established
+here. Arbitrary-matrix intuitionistic witnessing turns a uniform $\iPRA$
+proof of positive rational-point finiteness into a primitive recursive
+height bound. We make this implication precise for squarefree monic
+quintics, give all arithmetic predicates and an explicit enumeration, and
+prove the equivalence of finite-list and height witnesses. Cardinality
+bounds and double-negated finiteness are separated from this conclusion.
+As an unconditional substantial instance, explicit finite descent proves
+that the Fermat quartic has exactly four rational points. The accompanying
+Lean files compile without holes or custom axioms; the audited results
+have no dependence on \texttt{Classical.choice}. The report specifies
+the remaining object-theory work and the unresolved general mathematical
+step rather than placing that step inside an assumed lemma.
+\end{abstract}
+\setcounter{tocdepth}{1}
+\tableofcontents
+\newpage
+
+\section{The request and the actual research boundary}
+Faltings' theorem says that if $K$ is a number field and $C/K$ is a
+smooth, projective, geometrically integral curve with genus $g(C)\geq2$,
+then $C(K)$ is finite. A number field is a finite extension of $\Q$;
+the genus of a smooth projective curve is the dimension of its space of
+regular differentials. These geometric conditions are part of the theorem.
+
+Stoll's ICM 2026 account states that the known proofs are ineffective:
+they do not give a general algorithm to determine the finite rational-point
+set \cite{Stoll}. There are effective results under additional hypotheses.
+Garcia-Fritz and Pasten obtain height bounds when a curve has enough
+automorphisms relative to its Jacobian rank \cite{GFP}.
+Alp\"oge and Lawrence give a general machine whose termination follows
+from the Hodge, Tate, and Fontaine--Mazur conjectures \cite{AL}.
+Neither supplies the unconditional weak-arithmetic proof requested here.
+
+Recent explicit \emph{cardinality} bounds also matter. Yu, Yuan, and
+Zhou give numerical bounds on the number of points, including
+discriminant-dependent bounds for monic hyperelliptic equations
+\cite[Theorem 1.7]{YYZ}. Such bounds do not themselves supply heights
+or a stopping rule for enumerating the points.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.34\textwidth}X@{}}
+\toprule
+Claim & Status here\\ \midrule
+General positive Faltings in $\iPRA$ & Not proved; the exact missing target is displayed below.\\
+Unprovability or independence & Not claimed.\\
+Bounded search and list/height equivalence & Fully proved; elementary Lean versions compile.\\
+Positive $\iPRA$ proof gives a primitive recursive bound & A proved consequence of a cited external witnessing theorem.\\
+Fermat quartic over $\Q$ & Complete constructive human argument; embedded Lean derivation remains to be constructed.\\
+Empty even-degree hyperelliptic family & Complete sign argument; its arithmetic core is checked in Lean.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The original request admits more than one constructive reading.
+A cardinality-bound statement is weaker than a positive finite-list
+statement. The height-witness obstruction applies to the latter.
+This report neither proves nor refutes general $\iPRA$ provability of
+the former. Choosing a weaker formulation must be made explicit.
+
+\section{Object theory and finiteness specifications}
+\label{sec:setting}
+We use standard first-order intuitionistic primitive recursive arithmetic.
+Its language has $0$, successor, and symbols for specified primitive
+recursive functions. Zero, successor, and projections are initial.
+Composition and primitive recursion have their defining equations
+\[
+ h(\vec x)=f(g_1(\vec x),\ldots,g_m(\vec x)),\qquad
+ r(0,\vec x)=a(\vec x),\quad
+ r(n+1,\vec x)=b(n,r(n,\vec x),\vec x).
+\]
+There are successor injectivity and nonzero-successor axioms, intuitionistic
+first-order logic with equality, and induction only for quantifier-free
+formulas with parameters:
+\[
+ [\varphi(0,\vec a)\wedge
+ \forall n(\varphi(n,\vec a)\to\varphi(n+1,\vec a))]
+ \to\forall n\,\varphi(n,\vec a).                         \tag{I}
+\]
+This is the purpose of \texttt{PRAAx} and \texttt{PRA.qfInd} in the
+inspected repository \cite{Repo}.
+
+Finite loops, bounded search, integer arithmetic, gcd, and coded lists
+are primitive recursive. Bounded quantifiers over primitive recursive predicates
+are implemented by Boolean scans with proved invariants. They do not
+authorize unrestricted induction. A parameter can remain free during
+quantifier-free induction and be universally generalized afterwards.
+
+For a primitive recursive point predicate $\Pt(c,p)$ and an integer
+height $H$, define positive height finiteness by
+\[
+ \exists B\,\HB(c,B),\qquad
+ \HB(c,B):=\forall p\,(\Pt(c,p)\to H(p)\leq B),              \tag{H}
+\]
+and positive list finiteness by
+\[
+ \exists L\,\Comp(c,L),\qquad
+ \Comp(c,L):=\forall p\,(p\in L\leftrightarrow\Pt(c,p)).     \tag{L}
+\]
+Lists and membership are finitely coded. A cardinality bound instead says
+\[
+ \exists N\,\forall L\,
+ [\operatorname{Nodup}(L)\wedge\operatorname{AllPoint}(c,L)
+   \to |L|\leq N].                                      \tag{C}
+\]
+The predicates on $L$ are finite checks. The numeral $N$ need not reveal
+the coordinates or heights of any point. Section \ref{sec:logic} explains
+why (C) cannot generally be converted constructively into (H) or (L).
+
+Quantification over all infinite sequences is not first-order $\iPRA$.
+An assertion excluding injective infinite point sequences belongs either
+to an ambient higher-order setting or to a separately specified arithmetic
+schema. Neither is silently identified with (H).
+
+\section{An explicit genus-two arithmetic target}
+\label{sec:quintic}
+Write
+\[
+ f_{\mathbf a}(X)=X^5+a_4X^4+a_3X^3+a_2X^2+a_1X+a_0,
+ \quad \mathbf a\in\Z^5,\qquad
+ \Good(\mathbf a):\Longleftrightarrow
+ \operatorname{Res}(f_{\mathbf a},f'_{\mathbf a})\ne0.      \tag{1}
+\]
+The resultant is a fixed $9$ by $9$ Sylvester determinant: four shifted
+rows of $(1,a_4,a_3,a_2,a_1,a_0)$ and five shifted rows of
+$(5,4a_4,3a_3,2a_2,a_1)$, padded to length nine. It is an integer
+polynomial in the five coefficients. Hence $\Good$ is decidable
+and primitive recursive.
+
+This test is squarefreeness over $\Q$. The matrix represents
+$(U,V)\mapsto Uf+Vf'$ with $\deg U<4$, $\deg V<5$.
+If $f,f'$ are coprime, a kernel vector satisfies $f\mid V$, so the
+degree restriction gives $V=0$, then $U=0$.
+If they have a nonconstant gcd $h$, the vector $(f'/h,-f/h)$ is a
+nonzero kernel vector of the required degrees. Finite-dimensional
+determinant elimination proves the claim. Polynomial Euclidean division
+has decreasing degree, and rational operations in this fixed dimension
+admit finite arithmetic coding.
+
+\subsection{Canonical coordinates and the point predicate}
+Use reduced fractions
+\[
+ x=u/v,\quad y=r/s,\quad v,s>0,\quad
+ \gcd(|u|,v)=\gcd(|r|,s)=1.
+\]
+Define
+\[
+ F_{\mathbf a}(u,v)=u^5+a_4u^4v+a_3u^3v^2+
+                    a_2u^2v^3+a_1uv^4+a_0v^5.
+\]
+The predicate $\Pt(\mathbf a;u,v,r,s)$ consists of those positivity
+and gcd conditions and
+\[
+                 r^2v^5=s^2F_{\mathbf a}(u,v).            \tag{2}
+\]
+As $v,s$ are positive, clearing or restoring denominators proves that
+(2) is exactly $y^2=f_{\mathbf a}(x)$. Set
+\[
+                 H(u,v,r,s)=\max(|u|,v,|r|,s).           \tag{3}
+\]
+All tests are primitive recursive; no equality of arbitrary real or
+complex numbers is being decided.
+
+\subsection{The geometric interpretation}
+For $\Good(\mathbf a)$, glue the charts
+\[
+ y^2=f_{\mathbf a}(x),\qquad
+ z^2=t(1+a_4t+a_3t^2+a_2t^3+a_1t^4+a_0t^5)              \tag{4}
+\]
+by $t=1/x$, $z=y/x^3$ where $x\ne0$.
+On the first chart a singular point would satisfy $y=0$ and $f=f'=0$.
+On the second chart at $t=0$, the unique point is $(0,0)$ and the
+$t$ derivative of its defining equation is $-1$. Thus there is exactly
+one smooth rational point at infinity.
+The two monic quadratic charts give a finite morphism to $\mathbf P^1$,
+so the resulting curve is projective. Over an algebraic closure,
+$f_{\mathbf a}(x)$ has odd pole order five at infinity and cannot be
+a square in the rational function field. Hence its quadratic function
+field, and the smooth curve just constructed, are geometrically integral.
+
+The double cover of $\mathbf P^1$ is branched at five simple finite
+roots and at infinity, and has genus two. An explicit differential
+calculation gives the same answer. At infinity the orders of $x,y,dx$
+are $-2,-5,-3$. Anti-invariant regular differentials have the form
+$r(x)\,dx/y$. A finite pole of $r$ would remain a pole, even at a
+branch point where $dx/y$ is a unit differential; thus $r$ is a
+polynomial. The orders at infinity allow exactly degrees zero and one.
+The basis is $dx/y,x\,dx/y$. Every differential splits into invariant
+and anti-invariant parts by $(\eta\pm\iota^*\eta)/2$, where
+$\iota(x,y)=(x,-y)$. An invariant differential has the form $A(x)dx$.
+At a branch point, a base pole of differential order $-m$, $m\geq1$,
+pulls back with order $1-2m<0$; at an unbranched point its order is
+unchanged. Thus a regular invariant differential descends regularly
+to $\mathbf P^1$ and is zero.
+This proves that the space has dimension two.
+
+This is a semantic identification in ordinary algebraic geometry, not
+a claim that the supplied Lean files develop a theory of schemes or
+regular differentials. It agrees with the standard genus-two presentation
+in \cite{Stoll}. The arithmetic point problem is precisely (2), with
+one additional infinity code. In particular, projective nonemptiness
+is automatic in this family and is not the claimed computational obstacle.
+
+\subsection{The unproved positive statement}
+A positive uniform theorem already implies the following subcase:
+\[
+ \boxed{\ 
+ \forall\mathbf a\,
+ \bigl(\Good(\mathbf a)\to
+ \exists B\,\forall u,v,r,s\,
+ [\Pt(\mathbf a;u,v,r,s)\to H(u,v,r,s)\leq B]\bigr).
+ \ }                                                     \tag{F$_5$}
+ \label{eq:target}
+\]
+Signed variables abbreviate natural-number codes.
+In \texttt{Curves.lean} this proposition is defined as
+\texttt{QuinticHeightGoal}. It is not declared as a theorem or axiom.
+
+\section{Constructive enumeration and the equivalence of witnesses}
+\label{sec:enum}
+\begin{theorem}[Exact bounded enumeration]\label{thm:enum}
+For every $\mathbf a$ and $B\in\N$ a primitive recursive construction
+produces $E(\mathbf a,B)$ such that
+\[
+ p\in E(\mathbf a,B)\ \longleftrightarrow\
+                 \Pt(\mathbf a,p)\wedge H(p)\leq B.       \tag{5}
+\]
+Its correctness admits quantifier-free induction, without assuming
+squarefreeness.
+\end{theorem}
+\begin{proof}
+List all tuples $-B\leq u,r\leq B$, $1\leq v,s\leq B$ in a fixed
+lexicographic order and retain those passing (2) and the gcd tests.
+There are exactly
+\[
+                         M(B)=(2B+1)^2B^2                \tag{6}
+\]
+raw candidates, none repeated. At $B=0$ the box is empty.
+
+Let $E_j$ be the retained list after $j$ candidates. For a fixed tuple
+$p$, let $\operatorname{Seen}(p,j)$ be its Boolean membership in that
+prefix. The induction invariant is
+\[
+ \operatorname{Mem}(p,E_j)=
+       [\operatorname{Seen}(p,j)\mathbin{\&}\Pt(\mathbf a,p)].
+                                                               \tag{7}
+\]
+At zero both sides are false. If the next tuple differs from $p$,
+neither side changes; if it equals $p$, both sides become the point
+test. All cases are decidable and finite-list membership is a Boolean
+scan. Thus the invariant is quantifier-free, with $p$ a parameter.
+At $j=M(B)$, being seen means exactly membership in the component box.
+Under the point predicate's positive-denominator conditions, this is
+equivalent to the height condition (3). Generalize over $p$ after induction.
+\end{proof}
+
+\begin{theorem}[Positive lists and positive bounds]\label{thm:equiv}
+For each $\mathbf a$, intuitionistically,
+\[
+ \exists L\,\Comp(\mathbf a,L)
+             \quad\longleftrightarrow\quad
+ \exists B\,\HB(\mathbf a,B).                              \tag{8}
+\]
+The witness transformations are primitive recursive.
+\end{theorem}
+\begin{proof}
+Given $B$ and a proof of the global bound, take $L=E(\mathbf a,B)$.
+Equation (5) gives soundness; the bound and (5) give completeness.
+
+Conversely compute
+$B_L=\max(\{0\}\cup\{H(p):p\in L\})$.
+For a fixed $p$, the invariant
+$\operatorname{Mem}(p,L_j)\to H(p)\leq B_{L_j}$ is quantifier-free
+through the maximum scan. A new entry either is $p$, in which case the
+maximum is at least its height, or preserves its old bound.
+If $L$ is complete, every point occurs and is bounded by $B_L$.
+For the empty list, completeness proves absence, so $0$ is a bound.
+This proof never tries to decide an unbounded completeness assertion.
+\end{proof}
+
+\subsection{Numerical coding and an explicit finite-ball cap}
+Encode integers by $\zeta(z)=2z$ for $z\geq0$ and
+$\zeta(z)=-2z-1$ for $z<0$. Use the injective pairing
+\[
+                     \langle a,b\rangle=(a+b)^2+a.
+\]
+For $t=a+b$, its value lies between $t^2$ and $t^2+t<(t+1)^2$.
+Bounded square root therefore recovers $t$, followed by
+$a=n-t^2$, $b=t-a$. Codes with $n-t^2>t$ are malformed.
+This is a primitive recursive decoder with a decidable validity test.
+
+For the point code
+$p=\langle\langle\zeta(u),v\rangle,\langle\zeta(r),s\rangle\rangle$,
+height at most $B$ implies both inner pairs are at most
+$A(B)=9B^2+2B$, and hence
+\[
+                        p\leq4A(B)^2+A(B).               \tag{9}
+\]
+Thus the geometric height balls have an explicit primitive recursive
+code bound. It would not suffice to posit an arbitrary function named
+height and assume that its balls could be enumerated.
+
+Lists can use $\operatorname{nil}=0$ and
+$\operatorname{cons}(a,L)=1+\langle a,L\rangle$.
+A valid tail has smaller code, so fuel equal to the original code
+suffices for primitive recursive decoding, length, membership, and
+maximum. Malformed codes are totalized. These definitions complete the
+arithmetic encoding needed in the preceding theorems.
+In the numerical translation, malformed point codes make $\Pt$ false,
+and malformed coefficient-tuple codes fail $\Good$. A decoder's default
+zero value alone is never treated as a valid encoding. All integer
+coefficient tuples in the typed presentation still have valid codes.
+
+\section{A positive uniform proof would yield primitive recursive effective Mordell}
+\label{sec:witness}
+The residual matrix in \eqref{eq:target} is universally quantified.
+A witnessing result restricted to decidable existential matrices would
+not justify the next argument.
+
+\begin{theorem}[External arbitrary-matrix witnessing]\label{thm:external}
+If intuitionistic $\mathsf I\Sigma_1$ proves
+$\forall x\exists y\,A(x,y)$ for an arbitrary arithmetic formula $A$,
+there is a primitive recursive function $b$ such that
+$\forall x\,A(x,b(x))$ is provable in its extension by primitive
+recursive definitions. This stronger theory contains standard $\iPRA$.
+\end{theorem}
+This is Wehmeier's witnessing result, explicitly stated and reproved
+by Ferreira and Marques \cite[p.~14 of the author manuscript]{FM}.
+It is used as an external metatheorem, not as a Lean result of this
+package. Its primitive-recursive-language presentation still has
+$\Sigma_1$ induction; it is not identical to quantifier-free $\iPRA$.
+We equivalently use the witnessing theorem in that definitional expansion:
+the finitely many primitive recursive symbols in a given proof can be
+introduced or eliminated by their verified definitions.
+
+\begin{theorem}[Necessary computational consequence]\label{thm:necessary}
+A single uniform $\iPRA$ proof of \eqref{eq:target} would yield a
+primitive recursive $b:\Z^5\to\N$ satisfying, in the standard model,
+\[
+ \Good(\mathbf a)\to
+ \forall p\,(\Pt(\mathbf a,p)\to H(p)\leq b(\mathbf a)).     \tag{10}
+\]
+It would yield a primitive recursive complete rational-point enumeration
+for all squarefree monic quintics in this family.
+\end{theorem}
+\begin{proof}
+The resultant test is decidable in $\iPRA$.
+For fixed $\mathbf a$, if it succeeds, the hypothetical theorem gives
+a witness $B$ and its bound proof. If it fails, choose $B=0$ and prove
+the conditional bound from the contradictory goodness assumption.
+Thus $\iPRA$ proves
+\[
+ \forall\mathbf a\,\exists B\,
+                    [\Good(\mathbf a)\to\HB(\mathbf a,B)]. \tag{11}
+\]
+This is intuitionistic case analysis on a finite numerical test;
+there is no case split on unbounded rational-point existence.
+
+Code the five signed inputs by one natural number and include this
+derivation in the stronger theory of Theorem \ref{thm:external}.
+Apply its witnessing theorem to the arbitrary matrix
+$\Good(\mathbf a)\to\HB(\mathbf a,B)$. The resulting primitive
+recursive witness satisfies (10). Its correctness is obtained in that
+stronger theory; we do not claim that this metatheorem already constructs
+an $\iPRA$ proof of extracted correctness.
+
+Finally compute $E(\mathbf a,b(\mathbf a))$ and append the unique point
+at infinity. Theorems \ref{thm:enum} and \ref{thm:equiv} prove
+completeness. The bounded loops and composition are primitive recursive.
+\end{proof}
+
+This is a necessary consequence, not a contradiction or an independence
+result. A future effective proof is not excluded. It also distinguishes
+uniformity from separate statements about fixed curves. Existence of a
+maximum for each finite set does not give an algorithm for finding it,
+nor does it prove that $\iPRA$ establishes each proposed maximum's
+global correctness.
+
+\section{Why counting and double negation do not remove the missing step}
+\label{sec:logic}
+\subsection{A precise counterexample to a general shortcut}
+Let $R(e,t)$ say that deterministic machine $e$ on input $e$ first halts
+at time $t$. Bounded simulation and a finite prefix check make $R$
+primitive recursive. Each fiber has at most one member.
+
+There is no total computable function $b(e)$ bounding that member.
+Otherwise simulate $e(e)$ for $b(e)$ steps. A halt answers yes.
+If the machine ever halted later, its first time would violate the bound;
+thus failure to halt in that prefix answers no. This would decide diagonal
+halting. Its impossibility follows directly: given a purported decider
+$D$, construct $M(e)$ to loop when $D(e)$ says yes and halt when it
+says no; evaluating it at its own machine code contradicts either answer.
+
+So a decidable predicate may have the uniform cardinality bound one
+without a uniform computable complete list or numerical bound.
+These predicates are not asserted to be rational-point sets of curves.
+The example refutes a general conversion from counting to enumeration,
+not the possibility of an effective Mordell theorem.
+
+At a simpler finite level, the empty predicate and $\{B+1\}$ agree
+through any fixed cutoff $B$, both have cardinality at most one, and
+differ on existence. This exact statement is checked in \texttt{Logic.lean}.
+
+\subsection{A double-negated bound can exist without a positive witness}
+For any predicate $P$ with at most one member, put
+$\mathcal B(P)=\exists B\,\forall n(P(n)\to n\leq B)$.
+Then intuitionistically
+\[
+                      \neg\neg\mathcal B(P).             \tag{12}
+\]
+Assume $\neg\mathcal B(P)$. A member $k$ would itself bound every member
+by uniqueness, a contradiction. Hence $P$ is empty. But $0$ then bounds
+it, again contradicting the assumption. This proves (12) without choosing
+either a member or an emptiness proof.
+
+Classical PRA may split on the unbounded statement $\exists n\,P(n)$
+and prove the positive bound. For the halting fibers this gives a
+classical uniform $\forall\exists\forall$ theorem with no computable
+Skolem witness. Thus classical $\Pi^0_2$ conservation cannot be applied
+directly to the Faltings-shaped formula. Intuitionistic arbitrary-matrix
+witnessing is the essential ingredient above.
+
+Negative translation keeps translated hypotheses and conclusions.
+It does not both lower an arbitrary strong proof to $\iPRA$ and
+remove double negations around the bound. Similarly, a finite prefix
+search cannot certify the universal completeness statement
+$\HB(\mathbf a,B)$ merely by checking points below $B$.
+
+A proof-certificate checker is a valid alternative interface only after
+its soundness and the existence of accepted certificates have been
+proved. In the general case, that existence requirement retains the
+unsolved finiteness work. It cannot be used as a hidden assumption.
+
+\input{sections/fermat_instance.tex}
+
+\section{An empty hyperelliptic family}
+Fix $g\geq2$ and consider the smooth completion of
+\[
+                       y^2=-(x^{2g+2}+1).               \tag{13}
+\]
+With $x=u/v$, $y=r/s$, $v,s>0$, clearing denominators and writing
+$a=|u|$, $c=|r|$ gives
+\[
+ c^2v^{2g+2}+s^2a^{2g+2}+s^2v^{2g+2}=0.
+\]
+All summands are nonnegative and the last is positive, a contradiction.
+Power positivity is proved by quantifier-free induction on the exponent.
+The other chart, $t=1/x$, $z=y/x^{g+1}$, has
+$z^2=-(1+t^{2g+2})$. At infinity it would require $z^2=-1$,
+which is impossible by the same square argument.
+The complete rational-point list is therefore empty.
+
+For its ordinary geometric interpretation, $X^{2g+2}+1$ is squarefree:
+a common root with its derivative $(2g+2)X^{2g+1}$ would be zero,
+not a root of the original polynomial. The smooth double cover has
+$2g+2$ simple branch points and genus $g$.
+The arithmetic nonexistence proof needs no genus theorem.
+Both arithmetic contradictions are checked in \texttt{Curves.lean}
+with no kernel axiom dependencies.
+
+\section{Repository audit and the actual proof interface}
+The inspected snapshot is
+\texttt{d72c8b24637e342816dc92d11bef337748683e51}.
+The audit covered the ConciseIPRA README, selected core Lean modules,
+two relevant Diophantine drafts, and number-theory source. It was not an
+exhaustive content audit of the whole repository. Provenance is included.
+
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.35\textwidth}X@{}}
+\toprule
+Item & Contribution and boundary\\ \midrule
+\texttt{PR.lean} & PR syntax, defining equations, \texttt{PRAAx},
+and quantifier-free induction.\\
+\texttt{Deduction.lean} & Embedded first-order proof objects
+\texttt{Prf Ax}, distinct from ambient Lean propositions.\\
+\texttt{NativeBiInterpretation.lean} & Faithful translation of
+already constructed derivations.\\
+Diophantine-geometry draft & Explicit arithmetic and finite descent;
+general Faltings is explicitly outside its claims.\\
+\texttt{FermatFour.lean} & Ambient Mathlib-backed Fermat-four statements;
+no automatic embedded $\iPRA$ derivation.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The exact bridge has the form
+\[
+ (\Gamma\vdash[\mathtt{PRAAx}]\varphi)
+ \ \longleftrightarrow\
+ \mathtt{NPrf}(\Gamma.\mathtt{map}\,\mathtt{NFm.ofPRA})
+                    (\mathtt{NFm.ofPRA}\,\varphi).
+\]
+This is \texttt{pra\_iff\_native}. It requires a proof on its left.
+An ambient Lean theorem about native \texttt{Nat} is not that proof.
+Equiconsistency alone also transports no particular theorem.
+No unrestricted reflection from Lean truth to $\mathtt{Prf\ PRAAx}$
+is assumed.
+
+\section{Lean definitions, checked results, and a completion plan}
+\label{sec:lean}
+\subsection{Delivered definitions}
+The project uses Lean 4.32.0 and \texttt{Std}, without Mathlib.
+\begin{description}
+\item[\texttt{FiniteSearch.lean}]
+Defines complete lists, code bounds, positive finiteness, cardinality
+bounds, interval enumeration, and list maximum. It proves exact search
+membership and positive finiteness iff boundedness.
+\item[\texttt{Logic.lean}]
+Defines at-most-one, boundedness, finite-prefix agreement, the empty
+predicate, and a hidden singleton. It proves the double-negation and
+finite-prefix separation lemmas.
+\item[\texttt{Curves.lean}]
+Defines quintic coefficients, homogeneous evaluation, canonical coordinate
+tuples, points, component height, the Sylvester determinant, goodness,
+height boundedness, and the unproved uniform goal. It implements
+bounded enumeration and proves its exact specification and list/height
+equivalence for the concrete point predicate. It also checks the sign
+contradictions for (13).
+\end{description}
+
+The central concrete checked statement is
+\[
+ p\in\mathtt{boundedPoints}(f,B)
+ \leftrightarrow
+ \mathtt{AffinePoint}(f,p)\wedge\mathtt{height}(p)\leq B.
+\]
+The structure \texttt{UniformHeightData} requires an explicit bound
+function and its correctness proof. Its implication to the goal is
+conditional on receiving such data; no inhabitant is supplied.
+An arbitrary Lean function is not automatically primitive recursive.
+
+The determinant \emph{definition} is checked; a full semantic theorem
+linking it to a library of smooth projective curves is not included.
+The files do not develop schemes, differential sheaves, or
+Riemann--Hurwitz.
+
+\subsection{Verification and its precise limits}
+All three modules compile. The audit logs report:
+\begin{center}
+\begin{tabularx}{\textwidth}{@{}p{0.56\textwidth}X@{}}
+\toprule
+Principal results & Kernel dependencies\\ \midrule
+Generic enumeration and list/bound equivalence &
+\texttt{propext}; empty-list equivalence has none.\\
+Logical double-negation and prefix results & None.\\
+Concrete quintic box and list/bound equivalence &
+\texttt{propext}, \texttt{Quot.sound}.\\
+Conditional uniform-data implication and sign contradictions & None.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+There is no \texttt{Classical.choice}, \texttt{sorryAx}, or custom axiom
+in those audited results. The extensionality and quotient dependencies
+come through standard-library lemmas. This native kernel audit is not
+a proof that the development is already embedded in $\iPRA$.
+
+The Python program compares the cleared-denominator search with an
+independent rational-evaluation and exact-square-root search on four
+quintics at five bounds, including zero. All twenty comparisons pass.
+It also checks small discriminants and malformed codes.
+For $y^2=x^5-x+1$ at height at most $12$, it returns
+\[
+                  (-1,\pm1),\quad(0,\pm1),\quad(1,\pm1).
+\]
+The discriminant is $2869$. The output explicitly claims completeness
+only within that box, and does not assert that those are all points.
+
+\subsection{A complete route for the proved finitary arguments}
+The following order gives a concrete object-theory implementation plan.
+\begin{enumerate}
+\item Implement the integer, tuple, and list encodings above in the
+repository's PR constructors, with decoder equations and the cap (9).
+\item Build the point, goodness, divisibility, and comparison
+characteristic terms and prove their specifications.
+\item Construct the \texttt{PRA.qfInd} proof of the Boolean invariant (7),
+keeping the candidate point as a free parameter; generalize afterwards.
+\item Construct the maximum-scan proof and perform intuitionistic
+existential elimination and introduction to prove (8).
+\item For the Fermat quartic, implement the bounded gcd/root routines
+and the explicit descent map of Section \ref{sec:fermat-instance}.
+Use its displayed quantifier-free fuel invariant and finish the four-case
+classification.
+\item Apply \texttt{pra\_iff\_native} after the object-theory derivation
+exists. Verify the precise translated formula with every coding predicate.
+\end{enumerate}
+Every mathematical step for this fixed-curve plan is supplied in the
+human argument. The remaining work is substantial formalization;
+the archive does not contain the completed embedded quartic derivation.
+
+\subsection{The unresolved general endpoint}
+With the numerical characteristic terms fixed, the missing formula is
+\[
+ \Phi_5=\forall c\bigl(\mathtt{good}(c)=1\to
+ \exists B\,\forall p\,[
+ \mathtt{point}(c,p)=1\to
+ \mathtt{le}(\mathtt{height}(p),B)=1]\bigr).
+\]
+A full positive solution must construct
+$[]\vdash[\mathtt{PRAAx}]\Phi_5$. Producing the bound is the mathematical
+gap; neither filtering nor translating the proof calculus supplies it.
+
+The original theorem for arbitrary number fields needs further geometric
+definitions: a field presentation by an irreducible polynomial and a
+rational basis; homogeneous projective equations; smoothness and geometric
+integrality; and a genus definition with its verified connection to the
+presentation. Points may use the first nonzero projective coordinate as
+$1$, with other coordinates represented in the rational basis of $K$.
+Their reduced rational coefficient heights again have enumerable balls.
+
+This describes an arithmetization strategy, not an established primitive
+recursive checker for every geometric hypothesis. One may accept finite
+geometric certificates instead, but must then prove how they are obtained
+for every legitimate input. The monic-quintic family avoids that issue
+and already contains the unresolved positive bound question.
+
+\section{What remains mathematically open in this package}
+Naming Shafarevich finiteness, Parshin's construction, or alternative
+Diophantine-approximation and $p$-adic proof methods does not provide
+their constructive weak-arithmetic implementation. A valid positive
+proof must make its witnesses, termination bounds, and induction
+principles explicit wherever they are used to obtain finiteness.
+
+There are two separate next targets. The strong one is \eqref{eq:target}
+with primitive recursive bound production and an arithmetic correctness
+proof. The weak one is a uniform cardinality statement such as (C),
+possibly based on the recent discriminant bounds. It has a different
+constructive meaning. No $\iPRA$ derivation of the analytic and geometric
+estimates in those papers has been supplied here; explicit constants
+alone do not bound the proof-theoretic strength of their derivation.
+
+The finite reductions and special instances are complete at the stated
+human-proof level. The general theorem remains visibly unproved.
+This is a limitation of the present result, not an assertion of
+unprovability.
+
+\appendix
+\section{Reproducing the artifacts}
+The main source is \texttt{faltings\_ipra.tex}, with the local input
+\texttt{sections/fermat\_instance.tex}. On a standard TeX installation,
+compile using the command
+\begin{quote}\ttfamily latexmk -pdf faltings\_ipra.tex\end{quote}
+The included
+\texttt{tools/build\_pdf.py} also supports the installed source layout
+used here.
+
+Run \texttt{lake build} in \texttt{lean/} with Lean 4.32.0, or run Lean
+directly on each module. Run \texttt{python3 python/verify.py} for the
+twenty independent finite-search comparisons.
+The example command \texttt{python3 python/bounded\_points.py --bound 12}
+prints a bounded-search result with its scope.
+
+The verification directory records compiler versions, successful
+compilation, and kernel dependencies. Provenance records the inspected
+revision and source paths. The SHA-256 manifest covers delivered files.
+Toolchain binaries, external papers, and intermediate TeX products
+are omitted.
+
+\begin{thebibliography}{10}
+\bibitem{Stoll}
+Michael Stoll. \emph{Determining the Rational Points on a Curve of Genus 2
+and Mordell--Weil Rank 1}. Proceedings of the International Congress of
+Mathematicians 2026, Vol.~3, pp.~484--498.
+\url{https://doi.org/10.1137/25M1804650}.
+
+\bibitem{FM}
+Fernando Ferreira and Ant\'onio Marques.
+\emph{Extracting Algorithms from Intuitionistic Proofs}.
+Mathematical Logic Quarterly 44 (1998), 143--160.
+\url{https://doi.org/10.1002/malq.19980440202}.
+Author manuscript:
+\url{https://webpages.ciencias.ulisboa.pt/~fjferreira/extracting.pdf}.
+The theorem attributed to Wehmeier on printed p.~14 permits arbitrary
+matrices.
+
+\bibitem{YYZ}
+Jiawei Yu, Xinyi Yuan, and Shengxuan Zhou.
+\emph{Quantitativity on the Number of Rational Points in the Mordell
+Conjecture}. Preprint, version 1, February 2, 2026.
+\url{https://arxiv.org/abs/2602.01820}.
+In particular, Theorem 1.7 gives discriminant-dependent cardinality bounds.
+
+\bibitem{GFP}
+Natalia Garcia-Fritz and Hector Pasten.
+\emph{Effective Mordell for curves with enough automorphisms}.
+Preprint, version 2, April 27, 2025.
+\url{https://arxiv.org/abs/2503.10443}.
+
+\bibitem{AL}
+Levent Alp\"oge and Brian Lawrence.
+\emph{Conditional algorithmic Mordell}.
+Preprint, August 21, 2024.
+\url{https://arxiv.org/abs/2408.11653}.
+
+\bibitem{Stacks}
+The Stacks Project Authors.
+\emph{Plane curves}, Section 53.9, especially Lemma 53.9.3.
+\url{https://stacks.math.columbia.edu/tag/0BYA}.
+Used for the ordinary geometric interpretation of the quartic's genus.
+
+\bibitem{Repo}
+{\raggedright
+Vladimir Reshetnikov and contributors. \emph{ProveIt}.
+Snapshot
+\href{https://github.com/VladimirReshetnikov/ProveIt/commit/d72c8b24637e342816dc92d11bef337748683e51}
+{\texttt{d72c8b24637e342816dc92d11bef337748683e51}}.
+Relevant paths:\par
+\path{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA};\par
+\path{docs/drafts/diophantine_geometry_ipra.zip};\par
+\path{NumberTheory/DiophantineEquations/Lean/DiophantineEquations/FermatFour.lean}.
+\par}
+\end{thebibliography}
+\end{document}
+

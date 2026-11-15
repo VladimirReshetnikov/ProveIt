@@ -1,0 +1,473 @@
+\section{An unconditional genus-three instance: the Fermat quartic}
+\label{sec:fermat-instance}
+
+The general finiteness theorem remains unresolved in the requested setting.
+There is nevertheless a substantial fixed-curve instance for which the
+entire arithmetic argument can be given by primitive recursive operations
+and quantifier-free induction.  We prove
+\[
+ C:\ X^4+Y^4=Z^4,
+ \qquad
+ C(\mathbb Q)=
+ \{[1:0:1],[-1:0:1],[0:1:1],[0:-1:1]\}.
+ \tag{FQ}\label{eq:fq-points}
+\]
+This is a classification, with a height bound and an explicit complete list.
+It is stronger than merely ruling out arbitrarily long lists of distinct
+points.  The arithmetic proof does not invoke Faltings' theorem.
+
+The elementary descent below follows the mathematical route also recorded
+in the inspected \texttt{diophantine\_geometry\_ipra.zip} draft, but every
+ingredient needed here is proved.  The argument is a human-readable
+arithmetic proof; this section does not claim that its deeply embedded
+\texttt{Prf PRAAx} proof object has already been constructed.  The ordinary
+geometric identification of this particular curve as a smooth genus-three
+curve is separated at the end.
+
+\subsection{Finite arithmetic conventions}
+
+Signed integers are represented by a sign and a magnitude, with a unique
+code for zero.  A rational number is represented by a reduced pair
+$(u,v)$ with $u\in\mathbb Z$, $v\in\mathbb N$, $v>0$ and
+$\gcd(|u|,v)=1$.  A rational projective point is a nonzero rational triple
+modulo multiplication by a nonzero rational.  Its canonical code is an
+integer triple $(X,Y,Z)$ with
+\[
+ \gcd(|X|,|Y|,|Z|)=1
+ \quad\hbox{and first nonzero coordinate positive}.
+ \tag{F1}
+\]
+Here the three-variable gcd means the gcd of the first two magnitudes
+followed by the third.  Multiply the rational coordinates by the product
+of their positive denominators, divide the resulting integers by their
+positive gcd, and fix the sign.  This produces (F1) by a specified finite
+algorithm.  Homogeneity preserves the quartic equation through these
+operations.
+
+For completeness, this representative is unique.  Suppose two primitive
+integer triples differ by a rational factor $u/v$, with $v>0$ and
+$\gcd(|u|,v)=1$.  From $vP_i=uQ_i$, Euclid's divisibility lemma, proved
+below, implies that $v$ divides every $Q_i$.  Primitivity gives $v=1$.
+The same argument in the other direction gives $|u|=1$, and the sign
+convention gives $u=1$.  Every assertion here reduces to integer arithmetic
+on three entries.  Define the nonlogarithmic height of a canonical point by
+\[
+ H(X,Y,Z)=\max(|X|,|Y|,|Z|).
+\]
+
+The calculations use addition, multiplication, comparison, parity, bounded
+division, bounded gcd, and bounded square-root searches.  All are totalized
+on malformed inputs, for example by returning zero.  A division $a/b$ in a
+valid branch below is used only after $b>0$ and $b\mid a$ have been proved.
+It can be implemented by testing $q\leq a$ for $bq=a$.  An exact square
+root bounded by $N$ is obtained by testing the integers $r\leq N$ for
+$r^2=a$.  Thus no unbounded minimization is concealed in the notation.
+
+\subsection{The gcd and square-splitting lemmas}
+
+The zero branches needed for projective normalization are fixed explicitly:
+$\gcd(a,0)=a$, $\gcd(0,b)=b$, and $\gcd(0,0)=0$ for nonnegative
+inputs. When one input is positive and the other is zero, the Bezout
+coefficient pairs are respectively $(1,0)$ and $(0,1)$, and the
+common-divisor properties follow immediately. A nonzero triple therefore
+has a positive three-variable gcd even when two coordinates are zero.
+The remaining computation is the positive-input case proved next.
+
+\begin{lemma}[Bounded gcd and its certificates]\label{lem:fq-gcd}
+For positive integers $a,b$ one can compute $g>0$ and signed integers
+$u,v$ such that
+\[
+ g\mid a,\qquad g\mid b,\qquad ua+vb=g,
+\]
+and every common divisor of $a,b$ divides $g$.  These assertions have
+primitive recursive witnesses and proofs by quantifier-free induction.
+\end{lemma}
+
+\begin{proof}
+Start with $(a_0,b_0)=(\max(a,b),\min(a,b))$.  If $b_i>0$, perform bounded
+division $a_i=q_i b_i+r_i$, $0\leq r_i<b_i$, and set
+$(a_{i+1},b_{i+1})=(b_i,r_i)$.  If $b_i=0$, leave the pair fixed.
+Before it stops, the positive sum $a_i+b_i$ strictly decreases: indeed
+$b_i+r_i<a_i+b_i$.  Hence $a+b+1$ iterations suffice to reach a zero
+second entry.  The first entry is positive throughout the stopped state.
+
+Track both entries as signed linear combinations of the original inputs.
+At a division step, replace the coefficient pair for the first entry by
+that for the second, and replace the coefficient pair for the second by
+the old first pair minus $q_i$ times the old second pair.  These rules
+preserve the two displayed linear-combination equations.  If
+$M=\max(a,b)$, then $q_i\leq M$, and every tracked coefficient after $j$
+steps has magnitude at most $(M+1)^{j+1}$.  In particular, a finite storage
+bound is available, although primitive recursion does not need one for
+its definition.
+
+For any fixed divisor $d$, the equations
+$a_i=q_i b_i+r_i$ and $r_i=a_i-q_i b_i$ show that
+\[
+ (d\mid a_i\ \wedge\ d\mid b_i)
+ \ \longleftrightarrow\
+ (d\mid b_i\ \wedge\ d\mid r_i).
+\]
+At the stopped pair $(g,0)$ this proves both that every original common
+divisor divides $g$ and, on taking $d=g$, that $g$ divides both original
+inputs.  The coefficient invariant supplies $u,v$.
+
+All induction invariants used in this argument are quantifier-free once
+divisibility is replaced by its bounded characteristic function.  The
+divisor $d$ is a free numerical parameter during induction, not an
+unbounded quantifier in its induction formula.  Termination can use the
+quantifier-free invariant
+$b_i=0\ \vee\ (a_i+b_i+i\leq a+b)$ and the fixed fuel $a+b+1$.
+\end{proof}
+
+If $g=\gcd(a,b)$, the positive integers $a/g$ and $b/g$ are coprime:
+a common divisor $d$ would make $gd$ a common divisor of $a,b$, hence
+$gd\mid g$ and $d=1$.  This supplies the gcd normalization used below.
+
+\begin{lemma}[Coprime cancellation and square extraction]
+\label{lem:fq-squares}
+The following implications have primitive recursive witness operations.
+\begin{enumerate}
+\item If $\gcd(a,b)=1$ and $a\mid bc$, then $a\mid c$.
+\item If $d>0$ and $d^2\mid c^2$, then $d\mid c$.
+\item If $a,b,c>0$, $\gcd(a,b)=1$, and $ab=c^2$, then there are
+positive integers $r,s$ with $a=r^2$, $b=s^2$, and $c=rs$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+For (1), multiply a Bezout identity $ua+vb=1$ by $c$.
+Both terms on the right of $c=uac+vbc$ are divisible by $a$.
+We also need two consequences of Bezout identities.  Squaring
+$ua+vb=1$ and collecting terms gives
+\[
+ 1=a(u^2a+2uvb)+v^2b^2,
+\]
+so coprimality of $a,b$ implies coprimality of $a,b^2$.
+Multiplying a Bezout identity for $a,b$ by one for $a,c$ shows that
+coprimality of $a$ with each of $b,c$ implies coprimality of $a,bc$.
+
+For (2), the case $c=0$ is immediate.  Otherwise set
+$h=\gcd(c,d)$, $c=hr$, and $d=hs$.  The normalized pair $r,s$ is
+coprime.  Cancelling $h^2$ in the divisibility assumption gives
+$s^2\mid r^2$, hence $s\mid r^2$.  But $s$ is coprime to $r^2$ by
+the preceding Bezout calculation.  Applying (1), or its same Bezout
+identity, gives $s\mid1$, so $s=1$.  Therefore $d=h\mid c$.
+
+For (3), put $h=\gcd(a,c)$, $a=hu$ and $c=hv$.
+Then $u,v$ are positive and coprime, and cancellation in $ab=c^2$
+gives $ub=hv^2$.  Since $u$ is coprime to $v^2$, (1) implies
+$u\mid h$.  Write $h=ue$.  Substitution and cancellation now yield
+\[
+ a=eu^2,\qquad b=ev^2,\qquad c=euv.
+\]
+The positive integer $e$ divides both $a,b$, so $e=1$.  Taking
+$r=u$ and $s=v$ proves the result.  The construction uses only gcd
+and exact division.  In particular, it is a witness-producing proof,
+without an appeal to the existence of prime factorizations.
+\end{proof}
+
+The last lemma can be applied repeatedly to a product of any fixed number
+of pairwise coprime positive factors.  Each factor is coprime to the
+product of the others by the Bezout product calculation, so a square
+product of four such factors makes all four factors squares.  This is
+three uses of the lemma, not an unbounded search for square factors.
+
+\subsection{Normalization and primitive Pythagorean parameters}
+
+Call $(a,b,c,s)$ a square-area triangle if all four entries are positive
+integers and
+\[
+ a^2+b^2=c^2,\qquad ab=2s^2.
+ \tag{F2}\label{eq:fq-area}
+\]
+It is primitive if $\gcd(a,b)=1$.
+
+\begin{lemma}[Primitive normalization]\label{lem:fq-normalize}
+Every square-area triangle gives a primitive square-area triangle
+$(A,B,C,S)$ with $C\leq c$ by a primitive recursive construction.
+\end{lemma}
+
+\begin{proof}
+Put $g=\gcd(a,b)$, $A=a/g$, and $B=b/g$.  Then
+$g^2\mid c^2$ by the Pythagorean equation, so
+Lemma~\ref{lem:fq-squares}(2) gives $g\mid c$.  Set $C=c/g$.
+We have $A^2+B^2=C^2$ and $\gcd(A,B)=1$.
+The legs cannot both be even.  They cannot both be odd either, since
+squares modulo $4$ are $0$ or $1$, whereas the sum of two odd squares
+is $2$ modulo $4$.  Exactly one of $A,B$ is therefore even.
+Consequently $K=AB/2$ is an integer, and the second equation in
+\eqref{eq:fq-area} becomes $s^2=g^2K$.  The same square-divisibility
+lemma gives $g\mid s$.  Set $S=s/g$ and cancel $g^2$ in both equations.
+All output entries are positive, and $C=c/g\leq c$.
+\end{proof}
+
+\begin{lemma}[Explicit Pythagorean parameters]\label{lem:fq-pyth}
+If $A,B,C>0$, $A^2+B^2=C^2$, and $\gcd(A,B)=1$, exchange the legs
+if necessary to make $A$ even.  There are positive integers $m>n$ with
+\[
+ A=2mn,\qquad B=m^2-n^2,\qquad C=m^2+n^2,
+ \tag{F3}\label{eq:fq-pyth}
+\]
+such that $\gcd(m,n)=1$ and $m,n$ have opposite parity.
+The parameters are computable by searches bounded by $C$.
+\end{lemma}
+
+\begin{proof}
+The parity argument just given makes $B$ and $C$ odd.
+Also $B,C$ are coprime.  For if $d$ divides them both, then
+$d^2\mid C^2-B^2=A^2$, so $d\mid A$ by
+Lemma~\ref{lem:fq-squares}(2), and $d=1$.
+Since $A>0$, the equation gives $C>B>0$.  Thus
+\[
+ U=(C+B)/2,\qquad V=(C-B)/2
+\]
+are positive integers with $U>V$.  A common divisor of $U,V$
+divides $U+V=C$ and $U-V=B$, hence equals $1$.  Moreover
+\[
+ UV=(C^2-B^2)/4=(A/2)^2.
+\]
+Lemma~\ref{lem:fq-squares}(3) gives $U=m^2$, $V=n^2$, and
+$A/2=mn$.  These equations give \eqref{eq:fq-pyth} and $m>n$.
+A common divisor of $m,n$ would divide $U,V$, so they are coprime.
+Their squares sum to the odd number $C$, so their parities differ.
+Because $U,V\leq C$, their nonnegative square roots are at most $C$.
+They are unique: if $r<t$ are nonnegative, then
+$t^2-r^2=(t-r)(t+r)>0$.  A scan of $0,\ldots,C$ therefore returns
+the required roots and has a proved success condition.
+\end{proof}
+
+\subsection{A descending map, with a numerical stopping bound}
+
+\begin{lemma}[One explicit descent step]\label{lem:fq-step}
+A primitive square-area triangle $(A,B,C,S)$ gives another primitive
+square-area triangle $(A',B',C',S')$ with $0<C'<C$.
+The step is a total primitive recursive function after assigning zero
+output to invalid inputs.
+\end{lemma}
+
+\begin{proof}
+Use the ordering and parameters of Lemma~\ref{lem:fq-pyth}.
+Substituting \eqref{eq:fq-pyth} in $AB=2S^2$ and cancelling $2$
+gives
+\[
+ mn(m+n)(m-n)=S^2.
+ \tag{F4}
+\]
+All four factors are positive and pairwise coprime.
+For pairs involving $m$ or $n$, subtraction reduces a common divisor
+to a common divisor of $m,n$.  For the remaining pair, a common divisor
+of $m+n,m-n$ divides $2m,2n$, hence divides $2$ by a Bezout identity
+for $m,n$.  Both $m+n,m-n$ are odd, so that divisor is $1$.
+Square splitting supplies positive integers $r,s,t,u$ such that
+\[
+ m=r^2,\qquad n=s^2,\qquad m+n=t^2,\qquad m-n=u^2.
+ \tag{F5}\label{eq:fq-four-squares}
+\]
+The integers $t,u$ are odd, $t>u>0$, and they are coprime, since
+any common divisor would divide the coprime pair $m+n,m-n$.
+The integer $s$ is even.  Indeed, if $m$ were even and $n$ odd,
+then $m=r^2\equiv0\pmod4$ and $n=s^2\equiv1\pmod4$,
+making $m-n=u^2\equiv3\pmod4$, impossible.  Hence $n$ is even,
+and so its square root $s$ is even.
+
+Define
+\[
+ A'=(t+u)/2,\qquad B'=(t-u)/2,\qquad
+ C'=r,\qquad S'=s/2.
+ \tag{F6}\label{eq:fq-step}
+\]
+These are positive integers.  Direct expansion gives
+\[
+ (A')^2+(B')^2=(t^2+u^2)/2=m=r^2=(C')^2,
+\]
+and
+\[
+ A'B'=(t^2-u^2)/4=n/2=s^2/2=2(S')^2.
+\]
+A common divisor of $A',B'$ divides their sum $t$ and their
+difference $u$, so the new triangle is primitive.  Finally,
+\[
+ 0<C'=r\leq r^2=m<m^2+n^2=C.
+ \tag{F7}\label{eq:fq-decrease}
+\]
+The last inequality follows from $m\geq1$, $n\geq1$ and
+$m^2\geq m$.
+
+For a completely specified algorithm, first test primitivity and both
+equations.  On failure return $(0,0,0,0)$.  On success, exchange the
+legs to make the first even, find $m,n$ as the unique exact roots of
+$(C+B)/2,(C-B)/2$, and find $r,s,t,u$ as the exact roots in
+\eqref{eq:fq-four-squares}.  Return \eqref{eq:fq-step}.
+Every root search can use the input bound $C$: both $m,n\leq C$,
+and $m+n\leq m^2+n^2=C$; the other radicands are no larger.
+All denominators in the valid branch are the numeral $2$ and have
+just been proved to divide their numerators.  Exact-root failure can
+also be totalized by returning zero, and the proof shows that this
+failure branch is never taken on a valid input.
+\end{proof}
+
+\begin{theorem}[No square-area triangle in intuitionistic PRA]
+\label{thm:fq-no-area}
+There are no positive integers satisfying \eqref{eq:fq-area}.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:fq-normalize}, a supposed solution produces a
+primitive one, encoded by a state $q$.  Let $G(q)$ be the Boolean
+predicate of being such a primitive solution, let $D$ be the total
+step function from Lemma~\ref{lem:fq-step}, and let $\rho(q)$ be its
+hypotenuse coordinate.  Define
+\[
+ q_0=q,\qquad q_{i+1}=D(q_i)
+\]
+by primitive recursion.  Under the assumption $G(q)$, induction gives
+\[
+ G(q_i)\quad\wedge\quad \rho(q_i)+i\leq\rho(q).
+ \tag{F8}\label{eq:fq-invariant}
+\]
+The base is immediate.  For the step, Lemma~\ref{lem:fq-step} gives
+$G(q_{i+1})$ and
+$\rho(q_{i+1})+1\leq\rho(q_i)$; adding $i$ proves the inequality
+at $i+1$.  This is quantifier-free induction: $G$ and the comparison
+are fixed primitive recursive Boolean tests, and the state iteration
+is a fixed primitive recursive function.
+
+Now instantiate \eqref{eq:fq-invariant} at the specified numeral-valued
+term $i=\rho(q)$.  Its inequality forces $\rho(q_i)=0$, whereas
+$G(q_i)$ requires $\rho(q_i)>0$.  The contradiction discharges the
+assumption $G(q)$.  The argument uses exactly the initial hypotenuse
+as descent fuel and does not select a least counterexample or an
+infinite sequence.  Negation is proved by contradiction from the
+assumption being negated; no double-negation elimination is used.
+\end{proof}
+
+\subsection{From descent to the complete quartic list}
+
+\begin{lemma}[Fourth-power difference]\label{lem:fq-difference}
+There are no positive integers $x>y$ and $z$ with $x^4-y^4=z^2$.
+Consequently, $a^4+b^4=c^4$ has no solution in positive integers.
+\end{lemma}
+
+\begin{proof}
+A solution of $x^4-y^4=z^2$ would produce the positive integer
+triangle
+\[
+ a=2x^2y^2,\qquad b=x^4-y^4,\qquad c=x^4+y^4,
+ \qquad s=xyz.
+\]
+Expanding shows
+\[
+ (2x^2y^2)^2+(x^4-y^4)^2=(x^4+y^4)^2,
+ \qquad ab=2x^2y^2z^2=2s^2,
+\]
+contradicting Theorem~\ref{thm:fq-no-area}.
+If $a,b,c>0$ satisfy $a^4+b^4=c^4$, then $c>a$ and
+$c^4-a^4=(b^2)^2$, a forbidden fourth-power difference.
+\end{proof}
+
+\begin{theorem}[The exact rational points of the Fermat quartic]
+\label{thm:fq-complete}
+In canonical integer projective codes, intuitionistic PRA proves that
+every point of $X^4+Y^4=Z^4$ is one of
+\[
+ (1,0,1),\quad (1,0,-1),\quad (0,1,1),\quad (0,1,-1).
+ \tag{F9}\label{eq:fq-canonical}
+\]
+Each listed triple is a point, the triples are pairwise distinct, and
+every point has height $1$.  Therefore \eqref{eq:fq-points} holds.
+\end{theorem}
+
+\begin{proof}
+Take a nonzero canonical integer triple satisfying the equation.
+If $Z=0$, nonnegativity of fourth powers gives $X=Y=0$, a
+contradiction.  Thus $|Z|>0$.  Equality of integers is decidable.
+If both $X$ and $Y$ were nonzero, the positive integers
+$|X|,|Y|,|Z|$ would contradict Lemma~\ref{lem:fq-difference}.
+Case distinction on $X=0$ and $Y=0$ therefore leaves a zero
+coordinate among $X,Y$.
+
+If $Y=0$, the equation is $|X|^4=|Z|^4$.  Strict monotonicity of
+the fourth power on nonnegative integers gives $|X|=|Z|$.
+Primitivity forces this common positive value to be $1$.  The
+first-nonzero-positive convention gives $X=1$, and $Z=1$ or $Z=-1$.
+These are the first two triples of \eqref{eq:fq-canonical}.
+If $X=0$, the identical argument gives $Y=1$ and $Z=1$ or $Z=-1$,
+the last two triples.  They exhaust all cases.
+
+Substitution verifies the equation for each listed triple, and direct
+coordinate comparison proves their distinctness and their height $1$.
+The second canonical triple represents $[-1:0:1]$, and the fourth
+represents $[0:-1:1]$, by multiplication by $-1$.
+All uses of case distinction concern explicit integer comparisons;
+every induction above has a quantifier-free Boolean invariant.
+\end{proof}
+
+\subsection{The usual genus-three interpretation}
+
+This paragraph identifies the arithmetic equation with a curve in the
+ordinary statement of Faltings' theorem.  It is not an extra premise in
+the integer classification just proved.
+
+Over any characteristic-zero field, the three partial derivatives of
+$F=X^4+Y^4-Z^4$ are $4X^3,4Y^3,-4Z^3$.  They cannot vanish
+simultaneously at a projective point: their vanishing would force
+$X=Y=Z=0$.  The projective Jacobian criterion therefore makes the
+quartic smooth.  Absolute irreducibility can also be checked directly.
+Over any extension field $E$, dehomogenize to
+$f(X,Y)=Y^4+X^4-1$.  If $f=A B$ were a nontrivial factorization in
+$E[X,Y]$, the leading coefficients in $Y$ would multiply to $1$.
+After scaling, both factors would be monic in $Y$ and of positive
+$Y$-degree; a factor of $Y$-degree zero would be a unit.
+Reducing at $X=1$ gives $A(1,Y)B(1,Y)=Y^4$.  Both monic factors
+of positive degree must have zero constant term, since the only
+monic divisors of $Y^4$ are powers of $Y$.  Hence $(X-1)$ divides
+both $A(X,0)$ and $B(X,0)$, so $(X-1)^2$ divides $X^4-1$.
+This is impossible because
+\[
+ X^4-1=(X-1)(X^3+X^2+X+1),
+ \qquad 1+1+1+1=4\ne0.
+\]
+A homogeneous factor which becomes a unit after setting $Z=1$
+would be a power of $Z$ times a scalar, but $Z$ does not divide $F$.
+Thus the homogeneous quartic is geometrically integral as well.
+
+Its genus is $3$.  One can see the numerical calculation from the
+Hilbert polynomial: for $n\geq4$, multiplication by $F$ is injective
+on degree $n-4$ homogeneous polynomials, so the degree $n$ part of
+$E[X,Y,Z]/(F)$ has dimension
+\[
+ \binom{n+2}{2}-\binom{n-2}{2}=4n-2=4n+1-3.
+\]
+For a smooth geometrically integral projective plane curve, the genus
+is the number $g$ in this polynomial $dn+1-g$.  Equivalently, the
+plane-curve genus formula gives $(4-1)(4-2)/2=3$; the usual geometric
+theorem and its cohomological proof are recorded in the Stacks Project,
+Section~53.9, Lemma~53.9.3, at
+\url{https://stacks.math.columbia.edu/tag/0BYA}.
+Thus \eqref{eq:fq-points} is a genuine genus-greater-than-one instance,
+while its arithmetic proof requires none of this general geometry.
+
+\subsection{Concrete Lean completion targets for this instance}
+
+The proof gives a finite development with no missing finiteness theorem.
+Implement the signed-number and tuple codes, and each fixed arithmetic
+operation, as terms in the repository's \texttt{PR} syntax.  Prove
+the bounded Euclidean and exact-root invariants, then the three
+square lemmas, primitive normalization, the parameter equations,
+and the preservation and decrease theorems for the displayed map $D$.
+The required invariant for \texttt{PRA.qfInd} is exactly
+\eqref{eq:fq-invariant}.  The final classification is a universal
+formula whose matrix is a Boolean validity implication followed by
+the four explicit coordinate equalities in \eqref{eq:fq-canonical}.
+
+The desired final objects are an actual derivation
+\[
+ []\vdash[\mathtt{PRAAx}]\ \varphi_{\rm quartic}
+\]
+and its image under \texttt{pra\_iff\_native}.  The repository's
+ambient theorem \path{LeanProofs.fermat_four_no_positive_nat_solutions}
+is useful for comparison, but its existence does not construct that
+object-theory derivation.  Conversely, completing this specific
+arithmetic development would not complete the general Faltings
+formalization: the explicit descent map is special to this quartic.

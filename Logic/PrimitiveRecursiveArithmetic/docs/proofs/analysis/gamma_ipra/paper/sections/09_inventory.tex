@@ -1,0 +1,119 @@
+\section{Coverage ledger and the exact boundary of the result}
+\label{sec:coverage}
+
+The requested Wikipedia and MathWorld articles~\cite{wiki,mathworld}
+contain definitions, analytic identities, numerical tables, historical
+remarks, implementation discussions, and deep arithmetic assertions.
+The following ledger records \emph{62 result families developed here}.
+Some entries contain several related equations; the number is a coverage
+index, not a count of independent new theorems. The standard formulas
+were cross-checked against the corresponding NIST chapter~\cite{dlmf}.
+The contribution here is the finite constructive argument and its
+arithmetic interpretation, not novelty of the gamma identities.
+
+All entries have the fixed-name, finite-precision meaning explained in
+\cref{sec:foundations}. ``Complex'' includes explicit separation from
+every denominator's zero set. ``Positive'' includes a supplied positive
+rational lower bound. Individual derivative and asymptotic orders can
+be read as externally fixed, as explained in
+\cref{sec:formalization}. The human-readable proofs are present; the
+full Lean object-theory formalization remains the specified work.
+
+\small
+\begin{longtable}{@{}r >{\raggedright\arraybackslash}p{0.52\textwidth}>{\raggedright\arraybackslash}p{0.34\textwidth}@{}}
+\toprule
+ID & Result family & Proof / domain qualification\\\midrule\endhead
+1 & Euler's constant and its harmonic-log error bound & (C1)--(C2), error $1/N$.\\
+2 & Euler's limit for gamma & (C15), bounded pole-separated inputs.\\
+3 & Weierstrass product for $1/\Gamma$ & (C7)--(C11), every disk.\\
+4 & Entire analyticity of the reciprocal & (C16)--(C19), coefficient majorants.\\
+5 & Reciprocal zeros exactly $0,-1,-2,\ldots$, all simple & (C22)--(C23) and finite root location.\\
+6 & Gamma has no zeros & Positive lower bound $1/M_R$.\\
+7 & Meromorphic gamma; simple poles and residues $(-1)^n/n!$ & (C24)--(C25), punctured neighborhoods.\\
+8 & Functional equation and normalization & (C20)--(C21).\\
+9 & Integer factorial values & (C21), finite recurrence.\\
+10 & Complex conjugation and real values on the real domain & (C26).\\
+11 & Euler's integral and absolute convergence & \cref{sec:integrals}, explicit endpoint tails.\\
+12 & Positivity and computable upper and lower bounds & \eqref{eq:gamma-positive}--\eqref{eq:gamma-real-bound}.\\
+13 & $|\Gamma(\sigma+iy)|\le\Gamma(\sigma)$ & Integral triangle inequality, $\sigma>0$.\\
+14 & All derivatives as integrals with logarithmic factors & \cref{sec:integrals}, fixed derivative order.\\
+15 & Exponential, unit-interval, and quadratic integral forms & \eqref{eq:exponential-substitution}--\eqref{eq:quadratic-substitution}.\\
+16 & General positive scaling integral & \eqref{eq:general-scaling}, $c,r>0$.\\
+17 & Lower and upper incomplete gamma: sum, recurrence and integer formula & End of \cref{sec:integrals}.\\
+18 & Euler reflection and $\Gamma(z)\Gamma(-z)$ & (R1)--(R3), explicit sine margin.\\
+19 & Gauss multiplication & (M1)--(M5), arbitrary positive integer multiplier.\\
+20 & Legendre duplication & (M6), independent of Stirling.\\
+21 & Triplication & (M7).\\
+22 & Beta--gamma relation & (B1)--(B8), both real parts positive.\\
+23 & Beta symmetry and recurrence & (B2)--(B5).\\
+24 & Beta integral evaluations and trigonometric forms & (B9)--(B13), stated half-plane margins.\\
+25 & $\Gamma(1/2)=\sqrt\pi$ & (R4), positivity selects the root.\\
+26 & All positive and negative half-integer values & (V1).\\
+27 & Third, quarter, fifth, sixth and twelfth relations & (V2)--(V6), positive roots.\\
+28 & Product of all fractional arguments $r/m$ & (V7).\\
+29 & Rising factorial and generalized binomial identities & (V8)--(V9), polynomial cancellation at apparent poles.\\
+30 & Imaginary and half-shifted imaginary modulus formulas & (VM1)--(VM5), with a zero-safe version.\\
+31 & Digamma partial fractions and their error & (C27)--(C28).\\
+32 & All polygamma sums, recurrences, and sign patterns & (C29)--(C35).\\
+33 & Integer and half-integer derivative values & (C32)--(C34), $\Gamma'(1)=-\gamma$.\\
+34 & Differentiated reflection and multiplication & (D1)--(D3).\\
+35 & Digamma values at thirds, quarters and sixths & (D4).\\
+36 & Gamma derivatives by finite polynomial recursion & (C36).\\
+37 & Taylor expansion at one and local log-gamma series & (C37)--(C41), disk radius $<1$.\\
+38 & Entire reciprocal Maclaurin series and coefficient recurrence & (C19), (C42).\\
+39 & Laurent constant and quantitative remainder at every pole & (C43).\\
+40 & Expansions about every positive integer & (C44)--(C45), disk radius $<n$.\\
+41 & Vertical-line modulus infinite product & (C46), real part separated from poles.\\
+42 & Balanced finite-parameter infinite products & (C47)--(C48).\\
+43 & Strict log-convexity and strict convexity & \eqref{eq:strong-log-convexity}, quantitative gaps.\\
+44 & Effective Bohr--Mollerup uniqueness & \eqref{eq:bm-width-general}, fixed function presentations.\\
+45 & Wendel and Gautschi inequalities & \eqref{eq:wendel-constructive}--\eqref{eq:gautschi-constructive}.\\
+46 & Gamma-ratio asymptotics with a rate & \eqref{eq:general-gamma-ratio}, real shifts.\\
+47 & Unique positive minimum and a PR algorithm for its location & \cref{sec:gamma-critical-points}.\\
+48 & Sign alternation and one extremum between every two negative poles & \cref{sec:gamma-critical-points}.\\
+49 & Stirling leading term and explicit relative error & \eqref{eq:stirling-first-bound}--\eqref{eq:stirling-multiplicative-bound}, $x>0$.\\
+50 & Robbins factorial inequalities, and a real-variable strengthening & \eqref{eq:robbins-real}, $x\ge1$.\\
+51 & Every order of the log-Stirling expansion with sharp signed remainder & \eqref{eq:sharp-stirling-remainder}, fixed order, real $x>0$.\\
+52 & Every order of the digamma asymptotic expansion & \eqref{eq:sharp-digamma-remainder}, fixed order, real $x>0$.\\
+53 & Multiplicative Stirling coefficients and an error-producing algorithm & End of \cref{sec:all-order-stirling}.\\
+54 & Canonical analytic log-gamma on the right half-plane & \eqref{eq:canonical-loggamma}; branch specified.\\
+55 & Binet's first and second formulas & \cref{sec:binet}, complex $\Rea z>0$.\\
+56 & Complete monotonicity of the real Stirling remainder & Positive Laplace kernel in \cref{sec:binet}.\\
+57 & Raabe and the unit-interval log-gamma integrals & \eqref{eq:unit-loggamma}--\eqref{eq:raabe}.\\
+58 & Gamma--zeta Mellin identity & \eqref{eq:gamma-zeta-mellin}, $\Rea s>1$.\\
+59 & Wallis product and a rational convergence rate & \cref{sec:further}.\\
+60 & Gaussian moments and gamma-density normalization and moments & \cref{sec:further}.\\
+61 & The two gamma-crossing equations and the golden ratio solution & \cref{sec:further}, valid gamma domains.\\
+62 & Explicit alternative factorial interpolations satisfying recurrence & $\Gamma(z)e^{c\sin(2\pi z)}$; \cref{sec:further}.\\
+\bottomrule
+\end{longtable}
+\normalsize
+
+\subsection{Statements deliberately not claimed}
+
+The scope boundary is mathematical, not a claim that the omitted
+statements are impossible in iPRA. We do not provide proofs here of
+H\"older's differential-transcendence theorem; irrationality,
+transcendence, or algebraic-independence results for special gamma values;
+elliptic-integral singular-value evaluations; Kummer's Fourier series;
+the displayed continued fractions; the correctness and performance of
+particular Lanczos or Spouge implementations; or the zeta functional
+equation. The complex-sector form of the full Stirling expansion is
+also outside the proved scope: the sharp all-order remainder theorem
+here concerns the positive real axis. Binet's formulas do hold on the
+certified complex right half-plane as explicitly proved.
+
+Hankel contour representations are not included: proving them would
+require an additional finite contour development with branches and
+contour-error estimates. Historical statements, specific software
+implementations, and long decimal tables are not mathematical theorem
+targets of the present argument. The exact certificate run illustrates
+the evaluator rather than certifying the source articles' decimal
+tables or their quoted continued-fraction digits.
+
+Finally, the first-order claim is the explicit arithmetic theorem schema
+for certified primitive recursive presentations. It does not quantify
+internally over all classical complex numbers or all real functions.
+Nor does the archive claim a completed Lean derivation for all the
+listed analysis. These distinctions are part of the statement of the
+result, and preserve the constrained constructive setting requested.

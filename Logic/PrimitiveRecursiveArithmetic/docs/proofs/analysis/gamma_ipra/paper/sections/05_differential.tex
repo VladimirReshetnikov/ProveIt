@@ -1,0 +1,299 @@
+\section{Logarithmic derivatives and explicit series}
+
+For an input equipped with pole separation define
+$\psi(z)=\Gamma'(z)/\Gamma(z)$; this division is licensed by
+$|\Gamma(z)|\geq1/M_R$.  Differentiating the finite factorization (C7)
+and its explicitly convergent power series gives
+\[
+ \boxed{\displaystyle
+ \psi(z)=-\gamma-\frac1z+
+       \sum_{k=1}^{\infty}\frac{z}{k(k+z)}.}
+ \tag{C27}
+\]
+For $N\geq2R$ the tail after $N$ is at most $2R/N$.
+Indeed $|k+z|\geq k/2$, and therefore the $k$th term is at most
+$2R/k^2$.  This also explains why the separated form is useful: each
+finite head term has a certified denominator, and the tail has a
+uniform bound independent of the fine pole separation.
+
+An equivalent partial fraction series is
+\[
+ \psi(z)=-\gamma+
+ \sum_{k=0}^{\infty}\left(\frac1{k+1}-\frac1{k+z}\right).
+ \tag{C28}
+\]
+The difference of corresponding finite sums is an explicitly vanishing
+endpoint term.  For every integer $m\geq1$,
+\[
+ \boxed{\displaystyle
+ \psi^{(m)}(z)=(-1)^{m+1}m!
+               \sum_{k=0}^{\infty}(k+z)^{-m-1}.}
+ \tag{C29}
+\]
+If $N\geq2R$, the tail over $k>N$ has absolute value at most
+\[
+ \frac{(m-1)!2^{m+1}}{N^m}.
+ \tag{C30}
+\]
+These differentiations are not justified merely by convergence of
+(C27).  On a slightly larger pole-separated disk, differentiating
+$L(z/k)$ $r$ times gives, for $r\geq2$,
+\[
+ \frac{d^r}{dz^r}L(z/k)
+   =\frac{(-1)^{r-1}(r-1)!}{(k+z)^r},
+\]
+with tail bounded by
+$(r-1)!2^r/[(r-1)N^{r-1}]$.
+For $r=1$ its tail is at most $2R/N$.
+Finite Taylor remainders, bounded by one further derivative on that
+larger disk, prove the derivative assertions with explicit moduli.
+All lengths, factorials, and tail budgets remain primitive recursive
+uniformly in the requested derivative order.
+
+Differentiating the functional equation or reindexing finite sums gives
+\[
+ \psi(z+1)=\psi(z)+z^{-1},\qquad
+ \psi^{(m)}(z+1)=\psi^{(m)}(z)+(-1)^m m!z^{-m-1}.
+ \tag{C31}
+\]
+In particular, for $n\geq0$ and $m\geq1$,
+\[
+ \begin{aligned}
+ \psi(n+1)&=H_n-\gamma,\\
+ \psi^{(m)}(1)&=(-1)^{m+1}m!\zeta(m+1),\\
+ \psi^{(m)}(n+1)&=(-1)^{m+1}m!
+       \bigl(\zeta(m+1)-H_n^{(m+1)}\bigr).
+ \end{aligned}
+ \tag{C32}
+\]
+Separation of even and odd terms in (C29), a finite reindexing followed
+by (C30), yields
+\[
+ \psi^{(m)}(1/2)=(-1)^{m+1}m!(2^{m+1}-1)\zeta(m+1).
+ \tag{C33}
+\]
+Similarly the $N$th partial sum in (C28) at $z=1/2$ is
+$-\gamma+2H_N-2H_{2N}$.  By (C2),
+$H_{2N}-H_N-\log2=\gamma_{2N}-\gamma_N$ has absolute value at most
+$1/N$.  Hence
+\[
+ \psi(1/2)=-\gamma-2\log2.
+ \tag{C34}
+\]
+For positive real $x$ the series in (C29) has positive terms, giving
+the quantitative sign statement
+\[
+ (-1)^{m+1}\psi^{(m)}(x)\geq m!x^{-m-1}>0.
+ \tag{C35}
+\]
+In particular $\psi$ is strictly increasing and $\log\Gamma$ is
+strictly convex on the positive real axis.  On a rational interval
+$[a,b]$ the lower bound $1/b^2$ for $\psi'$ supplies a modulus for
+strict convexity; it is stronger than a purely qualitative assertion.
+
+Higher gamma derivatives can be computed without new analytic arguments:
+\[
+ \Gamma^{(n)}(z)=\Gamma(z)Y_n(z),\quad Y_0=1,\qquad
+ Y_{n+1}=\sum_{j=0}^n\binom nj Y_{n-j}\psi^{(j)}.
+ \tag{C36}
+\]
+This is the ordinary finite Leibniz rule applied to
+$\Gamma'=\Gamma\psi$, and is a primitive recursive polynomial
+recursion for every derivative order.
+
+\section{Taylor and Laurent expansions with remainders}
+
+For $|w|\leq r<1$, (C11), (C20), and finite geometric bounds prove
+\[
+ \Gamma(1+w)=\exp\!\left(
+ -\gamma w+\sum_{m=2}^{\infty}
+                    \frac{(-1)^m\zeta(m)}m w^m\right).
+ \tag{C37}
+\]
+The cancellation of the factor $w$ is cancellation of power-series
+coefficients (or of the corresponding finite polynomial factors),
+so this argument also applies at $w=0$ without deciding whether an
+arbitrary named complex number is zero.
+The exponent is the local branch of $\log\Gamma(1+w)$ whose value at
+$w=0$ is zero.  The wording is essential: no global principal logarithm
+identity is asserted.  Since $1\leq\zeta(m)\leq2$ for $m\geq2$,
+the tail after degree $d\geq1$ of this exponent is at most
+\[
+ \frac{2r^{d+1}}{(d+1)(1-r)}.
+ \tag{C38}
+\]
+The same argument, or (C27), gives
+\[
+ \psi(1+w)=-\gamma+
+       \sum_{m=1}^{\infty}(-1)^{m+1}\zeta(m+1)w^m,
+ \tag{C39}
+\]
+whose tail after degree $d$ is at most $2r^{d+1}/(1-r)$.
+To turn these into explicit primitive recursive degree bounds, choose
+an integer $q\geq2$ with $r\leq1-1/q$.  The finite binomial inequality
+gives $r^q\leq1/2$, so a degree of the form $q(p+c)$ reduces the
+geometric factor below $2^{-p-c}$.  The remaining prefactors are
+absorbed by an explicitly chosen integer $c$.
+
+Writing $\Gamma(1+w)=\sum_{n\geq0}g_nw^n$, finite coefficient
+multiplication gives
+\[
+ g_0=1,\qquad
+ ng_n=-\gamma g_{n-1}+
+         \sum_{m=2}^n(-1)^m\zeta(m)g_{n-m}.
+ \tag{C40}
+\]
+For example
+\[
+ g_1=-\gamma,\quad
+ g_2=\frac{\gamma^2+\zeta(2)}2,\quad
+ g_3=-\frac{\gamma^3+3\gamma\zeta(2)+2\zeta(3)}6.
+\]
+Thus $\Gamma'(1)=-\gamma$ and
+$\Gamma''(1)=\gamma^2+\zeta(2)$.
+If a direct Taylor-polynomial error is desired on $|w|\leq r<1$,
+choose a rational $r<s<1$.  The coefficient absolute sum at $s$ is at
+most
+\[
+ A_s=\exp\left(s+\frac{s^2}{1-s}\right),
+\]
+because $2/m\leq1$ for $m\geq2$.  Hence
+\[
+ \left|\Gamma(1+w)-\sum_{n=0}^d g_nw^n\right|
+ \leq A_s(r/s)^{d+1}.
+ \tag{C41}
+\]
+An integer power of $3$ can replace $A_s$ to make the majorant rational.
+
+Writing $P(z)=\sum_{n\geq1}c_nz^n$, one obtains
+\[
+ c_1=1,\quad c_2=\gamma,\qquad
+ (n-1)c_n=\gamma c_{n-1}+
+    \sum_{m=2}^{n-1}(-1)^{m+1}\zeta(m)c_{n-m}\quad(n\geq3).
+ \tag{C42}
+\]
+For example
+\[
+ c_3=\frac{\gamma^2-\zeta(2)}2,\qquad
+ c_4=\frac{\gamma^3-3\gamma\zeta(2)+2\zeta(3)}6.
+\]
+Although its derivation starts in $|z|<1$, this reciprocal Maclaurin
+series converges on every disk by (C19), with the same coefficients.
+
+There is also a concrete Laurent remainder at every pole.  For
+$0<|h|\leq1/4$, combine (C24) and (C37) to write
+\[
+ \Gamma(-n+h)=\frac{(-1)^n}{n!h}\exp\bigl(Ah+V(h)\bigr),
+ \quad A=H_n-\gamma,
+\]
+where
+\[
+ V(h)=\sum_{m=2}^{\infty}
+ \frac{(-1)^m\zeta(m)+H_n^{(m)}}m h^m,
+ \qquad |V(h)|\leq3|h|^2.
+\]
+Since $|A|\leq n+1$, the exponential remainder gives
+\[
+ \left|\Gamma(-n+h)-\frac{(-1)^n}{n!}
+       \left(\frac1h+H_n-\gamma\right)\right|
+ \leq\frac{C_n}{n!}|h|,
+ \quad C_n=3+3^{n+2}(n+2)^2.
+ \tag{C43}
+\]
+The generous integer constant avoids any issue of computing an
+exponential bound.  At $n=0$ this includes
+$\Gamma(h)=h^{-1}-\gamma+O(h)$ with the displayed effective meaning.
+
+\subsection{Taylor series at every positive integer}
+The same cancellation gives a wider family of branch-free exponential
+formulas.  For $n\geq1$ and $|w|<n$,
+\[
+ \Gamma(n+w)=(n-1)!\exp\!\left((H_{n-1}-\gamma)w+
+   \sum_{m=2}^{\infty}\frac{(-1)^m}{m}
+          \bigl(\zeta(m)-H_{n-1}^{(m)}\bigr)w^m\right).
+ \tag{C44}
+\]
+This follows either by cancelling the first $n-1$ factors of (C11),
+or by multiplying (C37) by $\prod_{j=1}^{n-1}(j+w)$ and comparing
+finite coefficients.  The former proof immediately supplies the full
+disk $|w|<n$, without an analytic continuation theorem.  Since
+\[
+ 0<\zeta(m)-H_{n-1}^{(m)}
+       \leq n^{-m}+\frac{n^{1-m}}{m-1}\leq(n+1)n^{-m},
+\]
+the exponent tail after degree $d\geq1$, on $|w|\leq r<n$, is at most
+\[
+ \frac{(n+1)(r/n)^{d+1}}{(d+1)(1-r/n)}.
+ \tag{C45}
+\]
+For $n=2$ this is the branch-free version of the commonly quoted
+log-gamma expansion involving $\zeta(m)-1$.  If it is rewritten as a
+formula for $\log\Gamma(1+w)$, the additional logarithm of $1+w$
+requires a compatible local branch; (C44) avoids that issue entirely.
+
+\section{Two further finite-product consequences}
+
+Let $x,y$ be real and supply pole separation for $x$.  Taking absolute
+values in the finite Euler quotient gives the exact finite identity
+\[
+ \left|\frac{\Gamma_N(x)}{\Gamma_N(x+iy)}\right|^2
+       =\prod_{k=0}^N\left(1+\frac{y^2}{(x+k)^2}\right).
+\]
+Here $|N^{iy}|=1$, an identity of the elementary exponential.
+The left side has a specified limit by (C15).  Alternatively, the
+logarithm of the right-hand tail is bounded by $4y^2/N$ as soon as
+$N\geq2|x|$, since $\log(1+t)\leq t$ for $t\geq0$.
+Thus
+\[
+ \boxed{\displaystyle
+ \left|\frac{\Gamma(x)}{\Gamma(x+iy)}\right|^2
+       =\prod_{k=0}^{\infty}\left(1+\frac{y^2}{(x+k)^2}\right).}
+ \tag{C46}
+\]
+In particular $|\Gamma(x+iy)|\leq|\Gamma(x)|$, and if a positive
+lower bound for $|y|$ is supplied, the inequality is strict with a
+quantitative margin already furnished by the $k=0$ factor.  No
+positivity assumption on $x$ is needed, only its separation from the
+nonpositive integers.
+
+More generally, let finite lists $a_1,\ldots,a_m$ and
+$b_1,\ldots,b_m$ satisfy $\sum_i a_i=\sum_i b_i$.  Supply pole
+separation for the $b_i$; the $a_i$ need no such condition.  Finite
+cancellation proves
+\[
+ \prod_{k=0}^{N}\prod_{i=1}^m\frac{a_i+k}{b_i+k}
+       =\prod_{i=1}^m\frac{Q_N(a_i)}{Q_N(b_i)}.
+\]
+Hence
+\[
+ \boxed{\displaystyle
+ \prod_{k=0}^{\infty}\prod_{i=1}^m\frac{a_i+k}{b_i+k}
+       =\prod_{i=1}^m P(a_i)\Gamma(b_i).}
+ \tag{C47}
+\]
+If the $a_i$ are also separated from the poles, the right side is
+$\prod_i\Gamma(b_i)/\Gamma(a_i)$.  Allowing $P(a_i)$ instead makes
+the zero cases meaningful as well.  Suppose all the parameters have
+absolute value at most $R$ and all $b_i$ have separation $\delta$.
+The proof of (C14) also bounds $|Q_N|$ by $M_R$.  The difference of
+one quotient in the last finite display and its limit is therefore
+at most $6M_R^2B_R/(\lambda_{R,\delta}^2N)$.
+The finite telescoping product identity yields the explicit total error
+\[
+ \frac{6mM_R^2B_R}{\lambda_{R,\delta}^2N}
+       \left(\frac{M_R}{\lambda_{R,\delta}}\right)^{m-1}
+ \quad(m\geq1).
+ \tag{C48}
+\]
+The empty-list case is the exact equality $1=1$.
+
+\paragraph{Reference alignment and formalization boundary.}
+The identities in this development agree with NIST DLMF
+\S5.2 (definitions and poles), \S5.7 (series), \S5.8 (products), and
+\S5.15 (polygamma functions).  The proof above supplies its own finite
+estimates.  Every infinite statement is read as its family of rational
+error inequalities.  A Lean theorem stated directly over Mathlib's
+$\mathbb C$ is a useful presentation theorem but is not, by itself,
+an iPRA proof.  The arithmetic layer must verify the finite products,
+tail bounds, coefficient recursions, and precision transformers, with
+quantifier-free induction on their displayed finite recursions.
