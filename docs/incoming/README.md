@@ -169,7 +169,10 @@ by `.gitignore` are not placed. Both archives are removed from that directory, a
 placed the same way, under `analysis/`. Its one ignored `SHA256SUMS.txt` is not placed,
 and the archive is removed. A fourth, `ipra_polynomial_formulas_abel_ruffini.zip`
 (arrival `6800f2d21a`), was placed the same way, under `algebra/`. Its one ignored
-`SHA256SUMS` is not placed, and the archive is removed.
+`SHA256SUMS` is not placed, and the archive is removed. A fifth, `mollweide_circle_ipra.zip`,
+was found untracked. It was committed unchanged as its arrival (`349481d51f`), and then
+placed the same way, under `geometry/`. Its one ignored `SHA256SUMS` is not placed, and the
+archive is removed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 
