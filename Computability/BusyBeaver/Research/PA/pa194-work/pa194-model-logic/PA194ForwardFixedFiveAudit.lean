@@ -1,0 +1,5 @@
+import PA194ForwardFixedFive
+#print axioms PA194ForwardReflProof.remainingFixedAfterSuccInjective_length
+#print axioms PA194ForwardReflProof.remainingFixedAfterTransitivity_split
+#print axioms PA194ForwardReflProof.fixed_typed_supplier_of_five
+#print axioms PA194ForwardReflProof.root_theoryAxiom_of_five_and_induction
