@@ -10,7 +10,7 @@ logic="$repo/Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic"
 guarded="$repo/Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler"
 lean -j1 -R "$logic" -M 7000 -o "$out/PA194ConditionalRefutation.olean" "$logic/PA194ConditionalRefutation.lean" > "$out/PA194ConditionalRefutation.log" 2>&1
 if rg -q "sorryAx|declaration uses 'sorry'" "$out/PA194ConditionalRefutation.log"; then exit 1; fi
-for pair in PA194GuardedCompile:5 PA194TranslateShift:4 PA194TranslateSubst:3 PA194TranslateExt:7 PA194GuardedCalculus:5 PA194TrCompile:2 PA194Leibniz:4; do
+for pair in PA194GuardedCompile:5 PA194TranslateShift:4 PA194TranslateSubst:3 PA194TranslateExt:7 PA194GuardedCalculus:5 PA194TrCompile:2 PA194Leibniz:4 PA194TermNames:4; do
   mod=${pair%:*}; expected=${pair#*:}
   lean -j1 -R "$guarded" -M 7000 -o "$out/$mod.olean" "$guarded/$mod.lean" > "$out/$mod.log" 2>&1
   if rg -q "sorryAx|declaration uses 'sorry'" "$out/$mod.log"; then exit 1; fi

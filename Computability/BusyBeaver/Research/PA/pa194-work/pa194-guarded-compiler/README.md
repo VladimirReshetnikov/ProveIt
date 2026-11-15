@@ -60,8 +60,8 @@ formula of arity zero and `trBody` of a formula under one binder, with no size c
 | `PA194TranslateExt` | `formula_ext`: two packets that agree on the bound environment and on the free entries below both lengths translate a formula below both lengths to the same code. `idParam` (identity packets from Foundation's `fvarVec`), `tr`, `trBody`, and the lemmas `tr_and`, `tr_or`, `tr_all`, `tr_exs`, `tr_neg`, `tr_shift`, `tr_substs1_fvar`, `tr_free`. |
 | `PA194GuardedCalculus` | `GDerivable` with weakening, the logical axiom, verum, conjunction, disjunction, cut, shift, `all_rel`, `ex_rel`, and `root` (a guarded refutation is a refutation when the domain is inhabited). |
 | `PA194TrCompile` | `Interpretation U T`: for every internal axiom `φ` of `U` a guarded proof of `tr φ`; for every formula `p` of arity one and term `t` that is not a free variable, a guarded derivation of `{¬tr(p[t]), tr(∃p)}`; and `Provable T (∃x Dom(x))`. `tr_compile`: the induction over an internal derivation, all ten rules. `refutation_of_interpretation`: a refutation in `U` gives `Provable T ⊥`. |
-
 | `PA194Leibniz` | `TermFacts T`: three facts about terms (below). `leibniz`: for every internal formula `p` of arity one, term `t` and free variable `c`, a guarded derivation of `{¬tr(&c = t), ¬tr(p[t]), tr(p[&c])}`. Opening a quantifier of `p` shifts the free variables of `t`, so the induction is over the coded triples `(p, t, c)` with the formula complexity as measure (`measured_bounded_sigma1_order_induction`); the quantifier cases use `free_subst_qVec` (opening the quantified variable of `q[#0, t]` gives `(free1 q)[shift t]`). `witness_of_termFacts`: the `witness` field of `Interpretation`, by eliminating `c` against `tr(∃x. x = t)`. `interpretation_of_termFacts` assembles `Interpretation` from `TermFacts`, the axioms and the inhabitation of the domain. |
+| `PA194TermNames` | Three formulas of the arithmetic language in which the naming variable is quantified: `nameAll s s'` (every `x` with `x = s` has `x = s'`), `uniq s` (two names of `s` are equal), `exName s` (some `x` has `x = s`). `NameFacts T`: seventeen guarded facts, each about one function layer with arbitrary internal terms as arguments (below). `uniq_all`, `exName_all`: by induction over the term. `nameSubst`: names transfer along a substitution `a[u] ↦ a[w]` once they transfer from `u` to `w`, by induction over `a`. `termFacts_of_nameFacts`: `TermFacts T`. Because the naming variable is bound inside the formulas, no step of these inductions opens a quantifier: each is a cut. |
 
 All statements are for an arbitrary model `V` of `𝗜𝚺₁`, arbitrary `Δ₁` theories `U` and `T`
 of the two languages, and internally valid codes that may be nonstandard.
@@ -72,18 +72,24 @@ of the two languages, and internally valid codes that may be nonstandard.
 model. None of its three fields is proved for these theories.
 
 - `witness`, the existential introduction at a function term, is reduced to `TermFacts T`
-  (`witness_of_termFacts`). The three fields of `TermFacts` are not proved:
-  - `atomPos`: `{¬tr(&c = t), ¬tr(a[t] = b[t]), tr(a[&c] = b[&c])}` for terms `a, b` of
-    arity one;
-  - `atomNeg`: `{¬tr(&c = t), ¬tr(a[&c] = b[&c]), tr(a[t] = b[t])}`;
-  - `totEq`: `{tr(∃x. x = t)}`.
+  (`witness_of_termFacts`) and that to `NameFacts T` (`termFacts_of_nameFacts`). The
+  seventeen fields of `NameFacts` are not proved. Each is a guarded derivation of the
+  translation of a formula that `ordinaryPAeq` proves, with `s, s', …` arbitrary internal
+  terms of arity zero:
+  - `nRefl`: `nameAll s s`;
+  - `atomTransfer`: `nameAll s₁ s₁' → nameAll s₂ s₂' → s₁ = s₂ → s₁' = s₂'`;
+  - `nameOfUniq`: `uniq t → &c = t → nameAll t &c`, and `nameOfEq`: `&c = t → nameAll &c t`;
+  - `nSucc`, `nAdd`, `nMul`: `nameAll` passes through one function symbol;
+  - `uVar`, `uZero`, `uSucc`, `uAdd`, `uMul`: `uniq` for a variable and for zero, and through
+    one function symbol;
+  - `eVar`, `eZero`, `eSucc`, `eAdd`, `eMul`: the same for `exName`.
 
-  They say that the translated equality is a congruence at arbitrary internal terms and that
-  every term has a value. The first two should follow, by an induction over the terms `a`
-  and `b`, from the translated equality axioms at arbitrary terms (reflexivity, symmetry,
-  transitivity, congruence for successor, addition and multiplication); that reduction is
-  not written. Those in turn need facts about order isomorphism and the three operations as
-  theorems of the source theory.
+  In each the translation of the arguments occurs only as a subformula that is not looked
+  into (the value formula of `s`), so the proofs are first-order arguments in the source
+  theory with those subformulas as parameters, from fixed facts about the ordinal domain:
+  order isomorphism is an equivalence there, zero exists and is unique up to isomorphism,
+  and successor, addition and multiplication are total and respect isomorphism. None of
+  these seventeen is written.
 - `axioms`: a guarded proof of the translation of each fixed axiom of `ordinaryPAeq` and of
   each closed induction instance. `pa194-model-logic` works on these under `rootParameters`.
   For a sentence that translation should equal `tr`, by `formula_ext` restricted to formulas
@@ -103,10 +109,10 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/chec
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with each module as the top
 module, passing its arguments on (for example `--out DIR` to reuse compiled objects). On
-2026-11-15 the seven modules were compiled directly with `lean`, in dependency order, against
+2026-11-15 the eight modules were compiled directly with `lean`, in dependency order, against
 objects of the standalone modules they import (the import closure of
 `PA194ConditionalRefutation` and `PA194OrderIsoRew`, compiled from the repository sources at
-`34c4c35edc`). The thirty axiom reports are `[propext, Classical.choice, Quot.sound]`.
+`34c4c35edc`). The thirty-four axiom reports are `[propext, Classical.choice, Quot.sound]`.
 The script itself has not been run.
 
 Two incremental replays against the repository sources were made for an earlier state of this
@@ -126,7 +132,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/chec
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-translate-ext.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
 
-`check-incremental.sh` now lists the current seven modules with their report counts, because
+`check-incremental.sh` now lists the current eight modules with their report counts, because
 `PA194GuardedEndpoint` no longer exists. In that form it has not been run. It writes
 `PA194TranslateExt` into its output directory, so `check-translate-ext.sh` is only needed to
 replay that module alone.
