@@ -1,0 +1,7 @@
+The fixed reflexivity case is now removed from the PAeq-to-source compiler's source-axiom obligations. `remainingFixedSentences` is the tail of the finite fixed-axiom list, and `remainingFixedSentences_length` checks that it has exactly eleven entries. `full_fixed_typed_supplier` derives singleton source proofs for all twelve fixed typed translations from singleton proofs for the remaining eleven, using the independently checked full-source reflexivity certificate. `root_theoryAxiom_of_eleven_and_induction` consequently obtains the compiler's complete theory-axiom sequent field at `rootParameters d`, assuming the eleven remaining fixed proofs and the arbitrary model-valued translated induction supplier. This holds in candidate PRA models with IΣ₁ arithmetic reduct. It does not prove those remaining assumptions, the all/exs/shift compiler rules, physical synchronization or the requested equivalence.
+
+The audit rebuilds ten current repository sequent/compiler/supplier modules, the new reduction and a three-report audit against the independently replayed actual root reflexivity proof and unified dispatcher, plus retained PAeq classifier, source, Foundation and workspace dependencies. It is not a clean workspace build. All three reports exclude `sorryAx`. From the repository root with a fresh output:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-forward-fixed-eleven.sh "$PWD" NEW_EMPTY_OUTPUT
+```

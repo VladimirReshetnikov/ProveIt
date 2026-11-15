@@ -1,0 +1,4 @@
+import PA194ForwardFixedRemaining
+#print axioms PA194ForwardReflProof.remainingFixedSentences_length
+#print axioms PA194ForwardReflProof.full_fixed_typed_supplier
+#print axioms PA194ForwardReflProof.root_theoryAxiom_of_eleven_and_induction
