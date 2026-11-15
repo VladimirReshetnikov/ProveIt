@@ -1,0 +1,7 @@
+# PA194 selected-register return after the extended seed carry
+
+`PA194Site29SelectedReturn.selectedReturn` follows a state-3 marked increment through the physical spare and fixed extended suffix `block(1, seedTail)`, back to state 7, and then rewinds the selected register. It gives every exact nested clock and resulting tape code. The marked register length, its prior left tape, and the physical spare are arbitrary model values; the extended suffix is the exact one produced by the preceding site-28 operation. No arbitrary suffix is assumed blank.
+
+`PA194Site29ReturnNext` also proves two reusable single-block return lemmas for arbitrary model-valued tape parameters. The composed theorem stops after the selected register; rewind through earlier registers and identification with the site-30 source frame remain open. It is an all-model finite run, not a native iPRA sentence, arbitrary-length simulation, or consistency implication.
+
+`check-site29-selected-return.sh` recompiles the retained four seed-tail sources and the three site-29 sources in a fresh output. Invoke with `REPO SITE27_BASELINE SITE28_STAGE CODE_STAGE ROUND_STAGE PROJECT_FOUNDATION PACKAGE_FOUNDATION SOURCE_DIR NEW_OUTPUT`. It pins sources and selected direct-object hashes, checks specified axiom reports for `sorryAx`, rejects overlapping machine objects and machine-specific fallback roots, and verifies input objects unchanged. Earlier retained stages and general foundation objects require their preceding replays or independent provenance.
