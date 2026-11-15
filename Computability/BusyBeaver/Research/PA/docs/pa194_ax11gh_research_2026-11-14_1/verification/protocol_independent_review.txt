@@ -1,0 +1,75 @@
+Focused independent review of the new AX11GH/GHS protocol proof
+Date: 2026-11-14
+Target: research_verifier/ax11gh_packet/proof/new_protocol.tex
+
+Result: no concrete mathematical error found in the reviewed new
+command/calculus argument. This is a written mathematical review, not a
+proof-assistant certificate. It does not repeat the independent literal
+machine replay or audit every lemma of the inherited PA calibration.
+
+Reviewed calculations
+
+1. AX followed by ten Shifts has top q8, stack [t;w], and cache U(c,h).
+   The eleventh Shift restores U(c,h) and places old top t in the cache.
+   The twelfth can halt exactly when old t is one. All preceding tested
+   heads have residue zero or two modulo four, so none is one.
+   Total Cantor projections make the calculations valid when [0;0]=0.
+
+2. Push is unconditional: its final MP comparison has an implication of
+   residue zero against U(0,h) of residue two. Pop is intentionally
+   partial as a returning identity: it halts for input top one. The
+   theorem and compiler retain this exception, including arbitrary
+   incoming dirty cache/offset values.
+
+3. The generalization word Push;Shift;AX(i,0,0,0);Shift^11 correctly
+   consumes the cache containing a before a later Shift could test it.
+   It returns U(i,a) even when a=1. The ordinary and dominated-rho
+   selectors restore the arbitrary underlying stack and normalize
+   offset/cache. The dominated selector uses the hypothesis u<=D.
+
+4. The MP compiler reserves a zero below the two premise results. Its
+   suffix halts if the minor premise a is one, or if the consequence b
+   is one; otherwise it returns (b,w,0,0). Removing the reserved zero
+   would incorrectly pop the caller's stack, but the delivered word
+   includes it. Prefixing the refutation compiler with AX normalizes
+   every incoming store, and final Pop detects top one.
+
+5. The R_j=(K+R_{j-1}+3)^4 bound covers the two actual recursive MP
+   premise stacks [0;y] and [I(a,b),0;y]. The shrinking-domain finite
+   conjunction covers every predecessor call. It is primitive recursive
+   and can be used as a quantifier-free induction equation; no induction
+   on an unbounded all-stores assertion is needed. For the stated word
+   length 121(2^F-1), truth/axiom leaves must have height one. This
+   convention was requested explicitly for the final version.
+
+6. The scheduler encoding consumes AX fields in y,x,z order after its
+   tag supplies c. Every positive continuation decreases by at least
+   one, including zero-field and zero-tail aliases. Fresh candidate j
+   drains within j+1 commands. The candidate N_e,0 is at least three,
+   contains an all-store halting suffix, and is reached from counter
+   two unless a prior halt occurs. The bound (N_e,0+2)^2 safely dominates
+   the total drain. The argument is finite and model-uniform.
+
+7. Reverse annotation uses proofs of top, cache, and canonical stack
+   entries, with virtual zero tails supplied by rho(0,0,0,0). AX, MP,
+   and Shift preserve the annotation or expose a proof of one. The
+   offset is correctly excluded from the theorem invariant.
+
+Calibration and frame interfaces
+
+The numerical calculus was compared formula-for-formula with the exact
+current incoming AX11H packet's C4^Q presentation. The final absolute
+theorem invokes that packet's written negative iPRA equivalence, rather
+than inferring a positive existential from a double negation. The current
+Foundation false-code adapter and the distinction between the later
+incoming full written claim and earlier filed relative proof are stated.
+This review checks the interface and composition; it does not replace a
+full audit of the inherited PA-to-numerical compiler or a Lean build.
+
+One notation clarification was requested in the physical-clock section:
+use an augmented source-frame step Fhat tracking the gap and spare list,
+and explicitly state its commuting projection to the ordinary register
+step F. The inherited physical audit already gives this construction.
+The physical clock must iterate Fhat, not silently hold the spare list
+constant. This is an explicit bookkeeping clarification, not a new
+unverified mathematical assumption.

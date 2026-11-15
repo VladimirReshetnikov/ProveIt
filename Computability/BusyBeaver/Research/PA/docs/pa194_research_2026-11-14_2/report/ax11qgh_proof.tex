@@ -1,0 +1,314 @@
+% New proof for the combined AX11/Q/G/H interface.  The inherited numerical
+% calibration and generic source/tape lemmas are identified explicitly below.
+% Requires amsmath, amssymb; this file is a section fragment, not a standalone preamble.
+\section{PA194AX11QGH: eleven entries, direct binder, and cached halting}
+\label{sec:ax11qgh}
+
+The new table combines three independently observable command changes:
+AX saves eleven entries and consumes a fourth operand; its saved
+generalization uses its explicit first operand as binder; and Shift
+tests only the cached formula.  Its sixth logical head has the existing
+Q orientation.  The abbreviation \textsf{AX11QGH} specifies all four
+features.  Earlier names such as \textsf{AX11G} already included Q; we
+make that inherited choice explicit rather than count it as a new idea.
+
+The table has 194 working states, start 0, halt 194, 388 rows, and a
+two-way binary blank tape.  Its SHA-256 is
+\begin{quote}\small\texttt{513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1}.
+\end{quote}
+The ordinary mathematical theorem below reuses the written weak-base
+calibration in the incoming \textsf{pa194\_ax11h\_research\_2026-11-14}
+packet at ProveIt commit
+\nolinkurl{1e1a41f799d4658b829cdd0eabae3775a0c8c4a0}.
+The new executable certificates establish the candidate-specific
+finite and symbolic identities.  They are not an end-to-end Lean theorem.
+
+\subsection{Numerical calculus and the complete store transformation}
+
+Let
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\quad [a;w]=p(a,w),
+\]
+and use total Cantor projections.  Thus
+$\operatorname{hd}[a;w]=a$, $\operatorname{tl}[a;w]=w$, and
+$[0;0]=\operatorname{hd}(0)=\operatorname{tl}(0)=0$.
+Put
+\[
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,\quad
+ U(a,B)=4p(B,a)+2,\quad E(a,b)=4p(a,b)+3.
+\]
+Write $A\to B=I(A,B)$, $N(A)=I(A,1)$,
+$A\wedge B=N(I(A,N(B)))$, and $\exists_a A=N(U(a,N(A)))$.
+Zero is truth, and one is the contradiction code.  The retained heads are
+\begin{align*}
+ h_1(D,H)&=(\exists_D U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6^Q(D,A,H)&=U(D,I(A,H))\to(U(D,A)\to U(D,H)),\\
+ \Gamma(A)&=A\to U(A,A),\\
+ \rho(D,A,H,u)&=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \qquad u\le D.
+\end{align*}
+For the guarded gate define
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)), & P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to N(P(a,b,c))),\\
+ g(a,b,c)&=\begin{cases}N(V(a,b,c)\to Q(a,b,c)),&c\ne a,b,\\
+ 0,&\text{otherwise.}\end{cases}
+\end{align*}
+These are the same axiom families and the same MP and theorem-generalization
+rules as the incoming QAX11H calculus $\mathcal C_4^Q$.
+The instance $\rho(0,0,0,0)=0$ is a fixed proof of truth.
+
+The command store is $(t,w,d,h)$: visible theorem, numerical stack,
+offset, and cached theorem.  For $D=d+x$ and $H=h+y$, AX has exactly
+the effect
+\begin{equation}
+ A_{c,x,y,z}(t,w,d,h)
+   =(0,[q_0,q_1,\ldots,q_9,t;w],z,0),
+ \tag{QGH-A}
+\end{equation}
+where
+\[
+\begin{array}{c|l@{\qquad}c|l}
+0&g(H,D,c)&1&\Gamma(c)\\
+2&h_6^Q(D,c,H)&3&h_5(D,H)\\
+4&h_4(D,c,H)&5&h_3(D,c,H)\\
+6&h_2(D,c,H)&7&h_1(D,H)\\
+8&\rho(D,c,H,d)&9&U(c,h).
+\end{array}
+\]
+In particular $q_9$ uses the incoming theorem $h$, not $h+y$;
+its binder is $c$, not $d$.  Both distinctions are necessary.
+The fourth operand is a genuine field: the added push leaves
+$t=d=h=0$ before the full MP parameter reader.  The subsequent comparison
+is $I(0,z)=0$.  If $z=0$ it succeeds and returns zero; if $z>0$
+it fails and returns zero.  Both branches leave offset $z$ and preserve
+the extended stack.  Thus (QGH-A) holds for arbitrary $z$.
+
+All $q_0,\ldots,q_8$ have residue zero modulo four and $q_9$ has
+residue two.  No generated entry is one.  The other commands are
+\[
+ S(t,w,d,h)=\begin{cases}\mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+ \end{cases}
+\]
+and, writing $b=d+x$,
+\[
+ \operatorname{MP}_x(t,w,d,h)=
+ \begin{cases}(b,w,b,0),&I(t,b)=h,\\(0,w,b,0),&I(t,b)\ne h.
+ \end{cases}
+\]
+MP has no dummy push.  Only Shift can halt.
+
+\subsection{Exact local words, including the zero aliases}
+
+Words execute left to right.  Set $A_0=A_{0,0,0,0}$ and
+\[
+ \operatorname{Push}=A_0S^{10}\operatorname{MP}_0,\quad
+ \operatorname{Pop}=A_0S^{12},\quad
+ \operatorname{Discard}=\operatorname{MP}_0.
+\]
+Direct projection calculations give
+\begin{align*}
+ A_{c,x,y,0}S^{10}(t,w,d,h)&=(q_8,[t;w],0,U(c,h)),\\
+ A_{c,x,y,0}S^{11}(t,w,d,h)&=(U(c,h),w,0,t),\\
+ \operatorname{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \operatorname{Pop}(t,[a;w],d,h)&=
+   \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,
+   \end{cases}\\
+ \operatorname{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \operatorname{MP}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+The first eleven Shifts after AX test zero and generated entries, never
+the saved top.  The twelfth tests that top.  Push's final comparison
+fails by the distinct implication/universal residues.  These arguments
+use the total numerical projections; there is no assumption that a
+numerical push increases a free-list length.
+
+For $0\le j\le8$, the word
+\[
+ \operatorname{Discard};A_{c,D,H,0};S^{j+2};
+                   \operatorname{Pop}^{9-j}
+\]
+returns $(q_j,w,0,0)$ from $(t,w,0,0)$, with the parameters displayed
+in the table.  The selected entry is not one, so its Pops are safe;
+the last removed entry is the saved zero.  To select a restricted
+$\rho(D,c,H,u)$ with $u\le D$, use
+\[
+ \operatorname{Discard};\operatorname{MP}_u;
+ A_{c,D\mathbin{\dot{-}}u,H,0};S^{10};\operatorname{Pop}.
+\]
+The inequality gives $u+(D\mathbin{\dot{-}}u)=D$.
+
+The new generalization word is
+\begin{equation}
+ \operatorname{Gen}_i=\operatorname{Push};S;
+                   A_{i,0,0,0};S^{11}.
+ \tag{QGH-Gen}
+\end{equation}
+It sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$ for every $a,w,i$.
+After Push and the first Shift, the store is $(0,w,0,a)$.
+AX consumes the cache as a theorem before another Shift can test it.
+Eleven Shifts then select $U(i,a)$ and the saved zero becomes the cache.
+The claim includes $a=1$ and $i=0$.  The incoming QAX11H compiler has
+an additional offset-setting command; (QGH-Gen) removes it because
+the binder now comes directly from AX's operand.
+
+The MP suffix
+\[
+ S;S;\operatorname{MP}_b;\operatorname{Pop}
+\]
+on $(0,[a,I(a,b),0;w],0,0)$ halts if $a=1$ or $b=1$, and otherwise
+returns $(b,w,0,0)$.  The second Shift tests $a$.  After a successful
+MP, Pop removes the reserved zero and tests $b$.  Omitting that
+reserved zero would consume an arbitrary part of the underlying stack.
+
+\subsection{Proof compilation in quantifier-free induction}
+
+Compile numerical derivations with the preceding selectors and
+generalization word.  At an MP node with minor proof $e_0$ of $a$
+and major proof $e_1$ of $I(a,b)$, use
+\[
+ \operatorname{Discard};\operatorname{Push};W_{e_1};
+ \operatorname{Push};W_{e_0};\operatorname{Push};
+ S;S;\operatorname{MP}_b;\operatorname{Pop}.
+\]
+Its first Discard and Push reserve a zero.  The exact invariant is:
+from every $(t,w,0,0)$, $W_e$ either halts or returns
+$(\operatorname{concl}e,w,0,0)$.  The local identities prove the
+axiom cases and each composition step.
+
+Here is an explicit induction-strength justification.  Encode a valid
+derivation as $N$ lines whose premises have earlier indices.  Form the
+compiled words $W_j$ by primitive recursion on $j$, storing earlier
+words.  Let $L$ be their maximum length and $K$ their maximum command
+code.  Totalize command execution with an absorbing halt flag and define
+\[
+ \Phi_K(s)=1+\max\left(s,
+       \max_{c\le K,\ u\le s}\operatorname{next}(c,u)\right).
+\]
+This is a monotone primitive-recursive majorant.  Fix an arbitrary
+normalized input code $s_0$ and let
+$B(j)=\Phi_K^{L(N-1-j)}(s_0)$ for $j<N$.
+For $i<j$, $\Phi_K^L(B(j))\le B(i)$.
+At stage $j$ retain the finite conjunction asserting the required
+execution equality for every earlier line $i<j$ and every normalized
+store code at most $B(i)$.  Its characteristic function is primitive
+recursive, so this is an allowed quantifier-free induction invariant.
+Every recursive premise call occurs after a prefix of at most $L$
+commands and falls below the earlier bound.  The local word identities
+therefore establish the successor step.  At $j=N-1$ the bound is
+$s_0$; universal generalization gives the all-store statement.
+This does not appeal to induction on an unbounded assertion about all
+stacks.
+
+If $e$ is a refutation, then $A_0;W_e;\operatorname{Pop}$ halts
+from every incoming store.  The first AX clears the two caches.
+If $W_e$ returns top one rather than halting earlier, Pop detects it.
+A final lone Shift is insufficient because it tests the zero cache.
+
+\subsection{Scheduler completeness and soundness}
+
+For a word let $e(\epsilon)=0$ and $e(c::w)=1+b_c(e(w))$, where
+\[
+ b_S(z)=p(0,z),\quad b_{\operatorname{MP}_x}(z)=p(1,p(x,z)),
+\]
+\[
+ b_{A_{c,x,y,u}}(z)=p(c+2,p(y,p(x,p(u,z)))).
+\]
+These are four-field AX codes.  Each decoder returns a nested component
+of its seed.  With scheduler state $(n,\ell,t,w,d,h)$, the seed is
+$n$ and the fresh counter becomes $n+1$ when $\ell=0$; otherwise
+the seed is $\ell-1$ and the counter is unchanged.  The initial
+state is $(2,0,0,0,0,0)$.
+Every positive continuation decreases.  A fresh candidate $n$ drains
+in at most $n+1$ commands unless it halts earlier.
+If $z=e(A_0;W_e;\operatorname{Pop})$, the fresh candidate
+\[
+ N_e=p(2,p(0,p(0,p(0,z))))\ge3
+\]
+executes an AX prefix followed by the all-store halting suffix.
+The bound $(N_e+2)^2$ suffices to reach and drain it from the initial
+candidate two.  The carried stack is never assumed to reset.
+Decoder inversion, decreasing continuation, and this bound have
+primitive-recursive Boolean formulations and quantifier-free proofs.
+
+Conversely maintain a finite numerical-calculus proof list annotating
+$t$, $h$, and every canonical stack entry.  Truth annotates virtual zero
+tails.  AX adds its fixed axiom instances, its saved top, and the theorem
+$U(c,h)$ obtained by generalizing the incoming proof of $h$.
+The restricted head has its valid bound $d\le d+x$; the failed gate
+uses truth.  The offset is not required to be a theorem.
+Successful MP combines the two annotated proofs; failure adds truth.
+Shift only moves annotations and exposes a proof of one when it halts.
+Canonical stack decoding is bounded by $w$ since $\operatorname{tl}w<w$
+for $w>0$.  All annotation operations and validity checks are primitive
+recursive, so quantifier-free induction on the trace proves soundness.
+Consequently iPRA proves that this abstract scheduler halts exactly
+when $\mathcal C_4^Q$ has a refutation.
+
+\subsection{The exact source and physical bridges}
+
+The frozen AX11G grammar has 67 reader nodes and already has the final
+gate push.  Change only the five H Shift rows and the source node
+\[
+ \texttt{node170}=\texttt{((node36,(node167,node145)),node57)}.
+\]
+The rows are $(38,0):0R11$, $(38,1):1R122$,
+$(214,0):0R312$, $(214,1):1R20$, and $(312,0):0R188$.
+The seven retained disjoint contextual folds give $134+67-7=194$.
+Every one of their 28 two-cell cases is checked on the final simultaneous
+table.  Their exterior tape is arbitrary.
+
+The builder also populates the accepted QAX11H source association with
+the one new macro substitution \texttt{copyD} to \texttt{copyA} at
+zero-based token 1.  Both complete resolved primitive source graphs
+agree: all 3,671 instructions and all successor indices coincide.
+The arithmetic macro itself is the same Copy template at another
+register; the generic Copy proof is uniform in that register.
+The free-algebra checker follows the entire 190-token emitter and verifies
+every saved formula, the gate, the guard suffix and the genuine fourth
+operand.  Thus the source-command proof changes only $q_9$ and its
+shorter generalization word; all source-loop clocks are the same
+primitive-recursive templates with the changed register value as input.
+
+The independent literal checker reconstructs four unary-list sweep
+lemmas from the actual rows and checks all 4,778 source outcomes for
+arbitrary nine natural-number registers, both decrement branches,
+arbitrary nonempty finite spare lists and arbitrary extra header gap.
+It checks the entire blank-start tape after 57,922 transitions.
+These are symbolic instruction contracts, not a long sampled run.
+The separate frame-closure audit checks all 4,777 nonhalting outcomes
+against the independently resolved source successor graph.  Every
+48-bit padded target address agrees, every overflow is zero, and every
+13-component affine head-motion vector is zero.  Every duration vector
+has nonnegative coefficients and constant at least three; the unique
+halt outcome has duration exactly three.  The maximum source path
+depth is 34.  Thus the local endpoint and positivity conditions used
+by the composition theorem are checked explicitly for this table.
+The generic physical bridge of the incoming AX11H proof applies to
+these identical frame conventions and newly replayed contracts:
+iterate the explicit source frame and sum its positive primitive-
+recursive durations.  A physical first halt at time $T$ is reflected
+by at most $T+1$ nonhalting source steps, since otherwise their positive
+segments continue beyond the first halt.  This is bounded induction,
+including nonstandard model times, rather than standard-run reasoning.
+
+The written AX11H/QAX11H packet supplies the separate
+Foundation-PA proof adapter, numerical-calculus calibration in
+$I\Sigma_1$, and the transfer to iPRA for the negative sentences.
+No axiom family is changed here, and the previous subsections supply
+both new execution bridges.  Composing them with that stated written
+calibration therefore proves
+\[
+ \mathrm{iPRA}\ \vdash\quad
+ \operatorname{Con}(\mathrm{PA})\ \longleftrightarrow\
+ \neg\operatorname{Halt}_{\mathrm{blank}}(\mathrm{PA194AX11QGH}).
+\]
+This is a written mathematical proof with inherited, identified
+calibration dependencies and new executable bindings.  The incomplete
+end-to-end Lean development is not claimed to have been completed.

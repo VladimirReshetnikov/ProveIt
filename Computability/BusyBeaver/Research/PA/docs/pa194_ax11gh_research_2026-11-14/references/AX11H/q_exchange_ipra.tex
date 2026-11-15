@@ -1,0 +1,99 @@
+\section{Premise exchange over the weak base}
+\label{sec:q-exchange-ipra}
+
+The two numerical calculi differ only in their sixth head.  Their
+interderivability can be established in iPRA without using the
+PA-refutation compiler.  This observation also prevents a completed
+forward calibration for the original head from leaving a separate gap
+for QAX11H.
+
+For the numerical implication $I(a,b)=4p(a,b)$, iPRA proves
+\[
+ a\le I(a,b),\qquad b\le I(a,b).
+\]
+The only exceptional zero pairing has $a=b=0$, where both inequalities
+still hold.  Consequently reflexivity and the two inference operations
+\[
+ u\le a\Longrightarrow u\le I(a,b),\qquad
+ u\le b\Longrightarrow u\le I(a,b)
+\]
+are valid primitive recursive bound certificates.
+
+The pinned file \file{M6/Logic/RestrictedImplication.lean} supplies a
+finite, acyclic family of proof constructors from the following interface:
+an implication constructor, MP, the restricted row
+\[
+ (((c\to u)\to a)\to((a\to c)\to(b\to c)))
+ \quad\text{with }u\le a,
+\]
+and exactly the three bound operations just displayed.  Its constructors
+derive $K$, Peirce, composition, exchange, and $S$.  They use fixed finite
+compositions of previously defined constructors; they perform no recursion
+on an arbitrary source formula and use neither a quantifier head nor an
+equality/vacuity axiom.  The adapter
+\file{PA196/Logic/ImplicationBasis.lean} identifies this restricted row
+with the numerical $\rho_8$ used here\cite{q-basis}.
+
+Interpret each of these constructors as a function producing a numerical
+derivation list.  A row appends one axiom with its displayed parameters;
+MP concatenates the two premise lists, shifts premise indices, and appends
+one MP line.  Index shifting and concatenation have quantifier-free
+correctness proofs by induction on the finite list length.  Every row's
+side condition follows from the three arithmetic bound operations.
+Therefore finite induction on this fixed family of definitions yields
+primitive recursive list constructors whose validity iPRA proves,
+uniformly in their numerical arguments.  This uses the displayed source
+recipes, rather than inferring weak-base correctness from a generic
+claim of PA-provability.
+
+In particular there is a primitive recursive numerical proof constructor
+$\operatorname{Exch}(a,b,c)$ with iPRA-provable conclusion
+\[
+ (a\to(b\to c))\to(b\to(a\to c)).                 \tag{Q-Ex}
+\]
+For additional finite evidence, the supplied original Q packet's
+parametric $K,S,\mathrm{MP}$ certificate was replayed: it has 61 lines,
+17 $K$ instances, 14 $S$ instances, and 30 MP steps, with no remaining
+assumptions.  These $K,S$ instances are discharged by the preceding
+restricted-row constructors.  The certificate is a symbolic formula
+identity and hence is valid also at numerical zero aliases; it does not
+treat numerical implication as an injective free constructor when
+checking a numerical proof.
+
+Let $P=U(D,A)$, $Q=U(D,I(A,H))$, and $R=U(D,H)$.
+In $\mathcal C_4^Q$, the sixth-head axiom is $Q\to(P\to R)$.
+Apply (Q-Ex) at $(Q,P,R)$ and MP to obtain the original sixth head
+$P\to(Q\to R)$.  Conversely, (Q-Ex) at $(P,Q,R)$ turns the original
+sixth head into the Q head.  Every other axiom and both inference rules
+are unchanged.
+
+Translate an arbitrary valid proof list by retaining unchanged axiom
+lines, replacing each sixth-head leaf with this fixed proof block, and
+maintaining a table from old line numbers to new conclusion indices.
+An old MP or generalization line becomes the same rule using its mapped
+premise indices.  This is primitive recursion on the input list length.
+The cumulative invariant says that the translated prefix is valid and
+that each recorded conclusion equals the corresponding old conclusion.
+It is a bounded Boolean check on the two finite lists and their index
+map, so its induction is quantifier-free.
+
+\begin{theorem}[Uniform Q translations]
+There are primitive recursive proof-list transformations $F_Q,G_Q$ such
+that iPRA proves
+\[
+ \operatorname{Prf}_{\mathcal C_4}(e,a)
+ \Longrightarrow\operatorname{Prf}_{\mathcal C_4^Q}(F_Q(e),a),
+\]
+\[
+ \operatorname{Prf}_{\mathcal C_4^Q}(e,a)
+ \Longrightarrow\operatorname{Prf}_{\mathcal C_4}(G_Q(e),a).
+\]
+\end{theorem}
+
+Both transformations preserve the conclusion literally.  In particular,
+the two refutation sentences are equivalent in iPRA.  The mathematical
+ingredients are inherited and attributed; this section records their
+weak-base justification and separates them from the harder PA calibration.
+Exact copies, blob identities, and the replayed finite exchange certificate
+are in \file{references/q_exchange/}.  No new proof-assistant build is
+claimed for this composition.

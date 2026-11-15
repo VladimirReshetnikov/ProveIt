@@ -1,0 +1,183 @@
+\section{PA194LC\_AX11H and the requested consistency equivalence}
+\label{sec:lc-ax11h}
+
+The final construction applies the same loop-continuation transformation
+to the revised AX11H packet's primary machine. Denote that parent by
+$M_H$ and the new machine by $\MLH$. The parent dense table is bound by
+\begin{quote}\small
+\path{c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a},
+\end{quote}
+and the new dense table by
+\begin{quote}\small
+\path{5f10f071e7118ff33aba822e05bae0331b4c78508656c3e945c31b0c6788f9c5}.
+\end{quote}
+The full new table is printed in Appendix~\ref{app:lc-ax11h-table} and
+provided in \path{additional/PA194LC_AX11H/machine.tm}.
+
+\subsection{Exact construction and completed checks}
+
+The parent uses the four-field AX11 command, an eleven-entry saved prefix,
+visible no-push MP, and the H halt test: Shift halts precisely when the
+cached theorem is code one. The loop transformation leaves that command
+protocol and its numerical calculus unchanged. All 3,671 resolved
+instructions, including every register operand and successor, are
+identical. The 61 recurring constructor loops change association and
+replace their depth-two continuation by a depth-three continuation;
+305 primitive addresses change.
+
+Both the raw and final folded native tables differ in exactly the three
+rows displayed in Section~\ref{sec:construction}: $(139,0)$ becomes
+$0R99$, $(139,1)$ becomes $1R190$, and $(190,1)$ becomes $1L73$.
+Here the parent of the patch is $M_H$, not the original primary $M_0$.
+All seven contextual folds remain valid, giving $134+67-7=194$ working
+controls and 388 transition rows. Initial and terminal controls are 0
+and 194 in the dense numbering. The complete blank startup takes 57,922
+transitions in both implementations.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Independent check & Parent AX11H & New LC\_AX11H\\
+\midrule
+Resolved source instructions & 3,671 & 3,671\\
+Universal branch outcomes & 4,778 & 4,778\\
+Symbolic operations & 1,101,836 & 1,101,043\\
+Maximum operations in one case & 403 & 403\\
+Minimum duration constant & 3 & 3\\
+List lemmas derived from literal rows & 4 & 4\\
+Whole-tape startup transitions & 57,922 & 57,922\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These are fresh full literal-row replays of both tables. The separate
+construction checker also passed all 4,778 outcomes, using 1,514,306
+symbolic operations, maximum 506. Both independent address resolvers
+agree; complete source identity, native/dense conjugacy, simultaneous
+fold cases, and full startup tape equality pass. The changed successful
+loop iteration costs exactly six additional physical transitions at each
+of its 61 occurrences. All five newly delivered LC graphs are pairwise
+distinct and match none of the 110 prior graphs in the latest audited
+snapshot. GAX11's separate duplicate is deliberately excluded.
+
+\subsection{An explicit relative iPRA theorem}
+
+Let $H_M(t)$ again mean halted by time $t$ in absorbing terminal semantics.
+The finite coefficient audit of all 4,778 contracts in each table gives
+the same envelope as in Section~\ref{sec:quadratic-transfer}:
+\[
+ 3\le k\le534+8g+4\sum_{i<9}r_i+2a_0+2\operatorname{width}(A).
+\]
+The actual maximum vector is
+$(534,8,4,4,4,4,4,4,2,4,4,2,2)$.
+The exact startup frames have $g=0$, logical registers $(2,0,\ldots,0)$,
+first spare $a_0=1$ and 25 further unit spares. Consequently the same
+primitive updates give the same bound $k(s_j)\le694+26j$.
+
+\begin{theorem}[Relative AX11H simulation]
+With
+\[
+ \boxed{\Theta(t)=57\,922+13(t+1)^2+681(t+1)
+                    =13t^2+707t+58\,616,}
+\]
+the following implications are provable in iPRA:
+\[
+ \forall t\,[H_{M_H}(t)\to H_{\MLH}(\Theta(t))],\qquad
+ \forall t\,[H_{\MLH}(t)\to H_{M_H}(\Theta(t))].
+\]
+In particular iPRA proves equivalence of the two blank nonhalting
+sentences.
+\end{theorem}
+
+\begin{proof}
+Use the canonical zipper, explicit augmented source iteration, common
+absorbing logical halt extension, Boolean prefix $B(n)$ and exact
+clock $T(n)$ from Section~\ref{sec:quadratic-transfer}, now instantiated
+with the 3,671-instruction AX11H source. Each local contract is proved by
+the same literal-transition, unary-run and finite-list rules. The
+independent checks establish all source targets and exact frame updates
+for these two specific tables, so the quantifier-free synchronization
+invariant applies with startup constant 57,922.
+
+A physical halt by $t$ gives, by the bounded first-hit argument, a
+common source halt-site index $n\le t$. In the other implementation,
+the first $n$ normal instructions and its final halt instruction take
+at most
+\[
+57\,922+\sum_{j=0}^{n}(694+26j)
+=57\,922+13(n+1)^2+681(n+1).
+\]
+Monotonicity and absorbing halting yield the displayed witness at
+$\Theta(t)$. All constructions and bounded Boolean invariants are
+primitive recursive. No unbounded witness search or Markov principle
+is used. The argument in both directions is identical after exchanging
+the tables. A self-contained expanded version is included in the new
+machine's standalone \path{proof.tex} and PDF.
+\end{proof}
+
+\subsection{Importing the revised absolute calibration}
+
+The original upstream archive at the final snapshot is preserved without
+modification as
+\path{reference/ax11h_calibration_603c58c.zip}; its SHA-256 is
+\begin{quote}\small
+\path{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.
+\end{quote}
+Its \path{proof/consistency_equivalence.tex} states and proves, using its
+separate completion papers and the pinned generic transfer results,
+\[
+ \ipra\vdash\neg\Halt(M_H)\leftrightarrow\Con(\pa).
+ \tag{AX11H calibration}
+\]
+Here $\Con(\pa)$ is precisely the packet's
+\texttt{nativePAConsistency}. This negates \texttt{nativePARefutation}
+for Foundation dependency
+\path{32e1a0956a8622fad067328ca1959729a7634428}.
+Foundation falsity code 13 and numerical-calculus contradiction code 1
+are connected by explicit proof translations; they are not identified.
+\cite{latest-ax11h}
+
+The imported argument supplies more than an assertion that a standard
+simulation can be internalized. Its Foundation adapter gives explicit
+proof opening/closing constructors, bounded induction-axiom witnesses,
+and the correction for the changed finite order axiom. Its term and
+formula compilers use acyclic primitive-recursive supplier strata and
+bounded demand trees, with Boolean correctness invariants for the
+actual requests, instead of full-PA induction over all environments.
+Its source-command paper binds the literal arithmetic templates and
+four-field parser, and its physical paper proves frame closure and
+the symbolic rules uniformly. The final paper composes the two
+all-model $I\Sigma_1$ directions with the existing one-way transfer
+endpoints. The packet does not implement the entire large PA proof
+compiler as executable code and does not supply a new end-to-end
+Lean or Rocq build.
+
+The focused review retained in \path{verification/ax11h_absolute_audit.txt}
+found no identified gap in those completion arguments. The upstream
+quick verifier passed all 1,186 manifest files, byte-identical
+reconstruction of both parent designs, source-command and physical-frame
+audits, fixed proof constructors, 119 current-Foundation coding
+comparisons, and the premise-exchange certificate. That quick mode
+explicitly does not verify the entire arithmetic derivation; the full
+literal physical replays for $M_H$ and $\MLH$ were performed separately
+as reported above.
+
+\begin{theorem}[The 194-state fallback, importing the AX11H theorem]
+Using the revised packet's written AX11H calibration as an imported
+mathematical theorem,
+\[
+ \boxed{\ipra\vdash\neg\Halt(\MLH)\leftrightarrow\Con(\pa).}
+\]
+\end{theorem}
+\begin{proof}
+The relative theorem gives
+$\neg\Halt(\MLH)\leftrightarrow\neg\Halt(M_H)$ in iPRA.
+Compose it intuitionistically with the imported AX11H calibration.
+\end{proof}
+
+This explicitly identifies the inherited mathematical dependency.
+The new contribution is the different literal machine and its exact,
+positive-duration iPRA transfer, with complete source and tape evidence.
+The corollary is a written proof using that supplied calibration, not
+a claim that the unfinished primary-machine Lean development has acquired
+a new kernel-checked endpoint.

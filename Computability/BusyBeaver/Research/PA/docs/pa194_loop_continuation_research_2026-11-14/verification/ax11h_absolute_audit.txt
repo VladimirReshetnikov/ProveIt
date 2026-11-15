@@ -1,0 +1,40 @@
+Audit of revised incoming AX11H absolute claim
+=============================================
+
+Object and status
+-----------------
+Reviewed the ZIP blob beecc52c6cbd6a420651c74e1427f842c31486da at repository commit 603c58ca3bd6bf3222fcfc4e308e6b079f65d573, path docs/incoming/pa194_ax11h_research_2026-11-14.zip. Its SHA256 is 93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075. The latest claims.json explicitly claims a complete written mathematical iPRA equivalence for PA194AX11H and PA194QAX11H, with no new end-to-end kernel build and no executable implementation of the complete PA proof compiler. That is substantively stronger than the old packet.
+
+Finding
+-------
+The new completion papers do supply explicit written primitive-recursive witness constructions and arguments covering arbitrary internal PA proof codes. They do not merely append an absolute theorem to an unchanged conditional argument. In the reviewed layers I found no definite remaining bridge silently promoted from a hypothesis to a theorem. This is an assessment of the written construction and its dependency architecture, not an independent formal verification of every cited finite derivation.
+
+The old references/final_dependency_review.md explicitly predates the new completion papers. Its warnings about old full-PA all-environment induction are useful audit targets, but they cannot be cited as the final status of this revised release. The authoritative repository README can still correctly report that end-to-end Lean formalization is open. It should not be used to deny the existence of this new written completion claim.
+
+Evidence
+--------
+1. forward_calibration_completion.tex (F1) fixes the exact ordinaryPAeq proof predicate and C4 list calculus. The finite-demand construction at lines199-237 generates a bounded binary tree of requests and evaluates it in reverse order. All same-stratum children have smaller rank; all other calls go to completed lower strata. Child validity and proof correctness are bounded Boolean invariants, avoiding induction on forall environments exists proof.
+
+2. The paper lists exact requested-label maps and coverage budgets. Arithmetic formula realization uses F11 and F12; induction supply uses F13-F15 and a bounded extractor for canonical induction witnesses; the outer arbitrary proof compiler uses the explicit rule table and F16. It identifies the old full-PA statements being replaced rather than citing them as weak-base results. The final F(d) is the composition of these explicit strata and fixed default outputs on invalid data.
+
+3. Old primitive equality-vacuity is not silently retained. F2-F3 provide replacement recipes for reverse membership and primitive-to-neighborhood equality. A text scan of the archived PA196/Logic files confirms the primitive equalityVacuity consumers named in the paper are Reverse.lean and Neighborhood.lean. Closed finite arithmetic leaves are referenced as actual standard native derivation objects, not arbitrary PA proof oracles. I inspected the four totality NativeProof definitions as a representative binding.
+
+4. source_command_completion.tex supplies primitive decrement/increment/jump templates, arithmetic counter invariants, exact clocks for Cantor unpairing/pairing/comparison, the complete 190-token AX free-algebra identity, changed MP fallthrough, cache-only halt, total four-field parser, and explicit scheduler simulation clock. It does not assume that a macro name has its desired arithmetic meaning. The 3671-instruction finite matching and representative clock tests remain implementation evidence; the all-input counter arguments are the written proofs.
+
+5. physical_ipra_audit.tex supplies a complete PR tape coding and proves the event calculus rules: literal steps, unary loops, normalization including C(X)1=1B(X), and the four arbitrary finite block-list traversals. The width slot is tied to the same spare list rather than treated independently. Frame closure uses all4778 outcomes, successor padding checks, exact57922 startup, and a PR cumulative clock. The reverse witness is t+1, using positive prehalt duration and absorbing halt. There is no appeal to sampled ordinary executions for arbitrary register values.
+
+6. The abstract compiler section uses bounded-input Boolean induction, with explicit B(j) bounds retaining all earlier premise-line contracts. Its all-store refutation word avoids a reset assumption. The scheduler uses a cofinal raw seed and explicit drain bounds. Finite annotation updates extract a numerical proof from every abstract halt.
+
+7. consistency_equivalence.tex gives an explicit composite forward witness: from a current Foundation refutation d, form e=F(A(d)); compile an all-store command suffix; encode a candidate N_e; use K(e)=(N_e+2)^2; and apply the source and physical clocks to obtain T_M(e)=57922+tau(B(K(e))). It states that these constructions hold for arbitrary internal proof codes in the specified I-Sigma-1 reducts.
+
+8. I read the actual archived ConPAISigma1Directions.lean endpoint types. ipra_nonhalt_implies_consistency requires an open bounded halt matrix and the all-model PA-refutation-to-halting implication; the reverse endpoint requires openness and the opposite all-model implication. The proposed h_M(t)=(chi_M(t)=1) is atomic/open/bounded. The paper's usage matches these hypotheses and distinguishes the classical model proof from the final intuitionistic negative conclusion.
+
+Limits of this audit
+-------------------
+No new Lean/Rocq kernel build was run. I did not implement the complete Foundation-to-numerical proof compiler or evaluate its enormous fixed native proof numeral codes. No finite receipt is being promoted to proof of that logical compiler. The current Foundation adapter's later subsections and term companion were assigned to a separate audit. The report should attribute the absolute theorem to the revised incoming packet and describe its written-versus-kernel-checked status accurately.
+
+Additional replay and parallel review
+------------------------------------
+The upstream verify_all.py --quick completed with status PASS. It verified all1186 release manifest files, byte-identical reconstruction of both dense machines, command checks and full source-command template binding, physical frame/endpoints and affine-duration audits, pinned saved-source identities, finite Foundation constructors,119current Foundation equation comparisons, and the fixed premise-exchange certificate. It checked stored full literal-certificate hashes. Quick mode explicitly did not rerun construction symbolic contracts or independent literal contracts, and explicitly did not verify the full arithmetic derivation or invoke a kernel. The exact receipt is quick_replay/summary.json.
+
+The root agent separately reported reviewing the current Foundation adapter and term-supplier completion and finding no definite flaw. In particular it found explicit bounded witness extraction, Open/Close proof constructors, the current changed finite-axiom adapter, and acyclic finite-demand PR strata. This supports treating the revised packet as an attributed written calibration theorem while preserving the explicit no-new-kernel-build distinction.

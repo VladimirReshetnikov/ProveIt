@@ -1,0 +1,152 @@
+\section{Comparison with the current PA corpus}
+\label{sec:comparison}
+
+Pinned ProveIt revision:
+\texttt{1e1a41f799d4658b829cdd0eabae3775a0c8c4a0}. The comparison covers all 82 filed
+research deliveries and all four current incoming archive payloads. The
+complete delivery and class ledgers are printed in the comparison appendices
+and supplied in CSV and JSON. The repository's filed catalogue and older
+packet censuses have different dates and scopes; their historical counts
+must not be substituted for the current comparison.\footnote{Pinned
+filed catalogue: \href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/Computability/BusyBeaver/Research/PA/docs/MACHINES.md}{PA research machine catalogue at the pinned revision}.}
+
+\subsection{What was counted}
+
+The fresh recognizers find 908 occurrences of complete 194-state matrices:
+597 in \texttt{.tm} files and 311 in supported JSON or other literal-text
+representations. They collapse to 111 table classes under arbitrary
+renaming of controls and forgetting the designated start. Of these, 110
+admit a spanning root and one is a disconnected diagnostic. The supported
+JSON representations include explicit row arrays, pairs of action triples,
+flat action arrays, numeric-state dictionaries, transition-key dictionaries,
+row records, and embedded complete textual tables. ZIPs are read recursively. The unified replay verifies 13,109 source files against their pinned Git blobs and reads 18 distinct ZIP payloads through 30 archive references.
+The recognizers do not execute arbitrary generators or recover tables
+printed only in mathematical prose.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Attributed evidence category & Classes\\
+\midrule
+Reported principal construction & 56\\
+Supplementary construction & 7\\
+Research auxiliary & 36\\
+Research seed & 4\\
+Rejected construction & 7\\
+Disconnected diagnostic & 1\\
+\midrule Total & 111\\\bottomrule
+\end{tabular}
+\end{center}
+
+These are evidence labels, not 56 independently reproved arithmetic
+calibrations. In particular, a total transition table, a successful finite
+startup, a symbolic runtime certificate, and a conditional arithmetic
+endpoint support different claims. The current PA README still identifies
+machine-specific weak-arithmetic obligations for its primary table. A
+newer incoming AX11H archive instead claims a completed written iPRA
+calibration for two existing tables. That mathematical claim is separate
+from both the older repository status and this structural inventory; the
+absence of a new Lean build neither proves nor disproves the written
+argument.\footnote{Formal project status:
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/Computability/BusyBeaver/Research/PA/README.md}{PA research README at the pinned revision}.
+New proof claim: the root README and proof directory of the current
+\texttt{docs/incoming/pa194\_ax11h\_research\_2026-11-14.zip}.}
+
+\subsection{The substantive design axes}
+
+The principal table has the state budget
+\[
+134\text{ fixed controls}+67\text{ AX readers}-7\text{ contextual folds}=194.
+\]
+Its source has 190 AX macro tokens and 3,673 resolved primitive sites. The
+alternative 68-reader/eight-fold table and the many 135-fixed-control
+variants illustrate why a shorter source program need not be a smaller
+literal machine: helper controls and lost compatible folds matter too.
+
+\begin{center}\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{p{0.16\linewidth}p{0.33\linewidth}p{0.41\linewidth}}
+\toprule Axis & Existing choices & Distinct obligation\\\midrule
+Numerical calculus & Coefficients 4, 5, 6; original or Q universal head;
+diagonal at $\Gamma(A)$ or $\Gamma(D)$ & Hereditary recoding, restricted
+propositional dominance, proof translation, and gate calibration\\
+MP result & Dummy push; N visible result without push; C cached result &
+All-store proof compiler and reserved-zero discipline\\
+Shift & Original sum test or H cache-only test; original or symmetric
+comparison & Correct contradiction detection and destructive comparison\\
+AX interface & Ten-entry original or eleven-entry/four-operand AX11;
+offset binder or explicit-operand G binder & Every selector length,
+fourth operand, generalization word, and zero alias\\
+Physical decoder & Grammar associations, history folds, B selector,
+four-increment helpers, zero-decrement returns & Literal trace identities,
+frame closure, and complete blank initialization\\
+Register layout & A/D, P5, TDY, H/X permutations & Persistent tape
+representation and source-frame transfer\\\bottomrule
+\end{tabular}\end{center}
+
+The Q axis exchanges the two curried premises of universal distribution.
+N removes the dummy push from successful modus ponens. C returns the
+consequent in the cache. H changes the halt guard from $t+h=1$ to $h=1$;
+therefore a visible contradiction with zero cache requires Pop rather
+than an immediate plain Shift. AX11 pushes the guarded gate and falls
+through the complete MP operand reader, which really consumes a fourth
+field. G binds the saved generalization by the explicit first AX operand
+$c$, replacing the offset $d$. Symmetric comparison is an implementation
+axis and is not the same change as the H guard.
+
+Existing AX11G combines AX11, G, Q, N and the original sum Shift. Existing
+GH and GHS combine G, Q, N and H with the ten-entry AX protocol. The two
+new constructions combine the explicit binder, four-operand eleven-entry
+AX protocol and cache-only halt guard, and provide two physical comparison
+implementations of that command interface. This is a new combination of
+credited mechanisms, rather than a claim to have invented each ingredient.
+
+\subsection{Identity traps and the four incoming archives}
+
+PA194C is repeated by five packets. PA194HS is the same graph as the
+cache-only machine called PA194NS in the lowercase filed packet, but the
+sum-guard PA194NS in \texttt{PA194NS\_research} is different. PA194QN and
+PA194NQ coincide; the two QNS deliveries coincide; CSZ and X coincide;
+N6, QH5, QN6 and AX11QH5 each occur in repeated principal deliveries.
+
+The four current incoming archives contribute five new principal graphs:
+AX11G, AX11QH4L, AX11QH4R, GH, and GHS. Their additional eleven research
+graphs also enter the novelty comparison. The current incoming AX11H
+archive contributes a new written-proof claim, not two new tables:
+AX11H is byte-identical to the filed AX11H, and its QAX11H is the filed
+AX11QH. Some older native tables were numbered from zero without making
+zero their intended start. Hence start metadata is preserved separately
+from the graph equivalence used for novelty.
+
+\subsection{Exact novelty of the two delivered tables}
+
+For each candidate and every spanning historical representative, the
+checker computes the complete lexicographically least transition tuple
+over every spanning root, both tape orientations, both global bit
+conventions, and with terminal write/move decorations ignored. It compares
+the complete tuples. The SHA-256 values merely identify the retained
+evidence and are not substituted for equality checking.
+
+Both new tables have zero historical matches and differ from each other.
+They each admit a spanning root, so the disconnected diagnostic cannot
+be isomorphic to either. The enlarged comparison allows arbitrary control
+renaming and alternate starts as structural symmetries; global bit exchange
+is deliberately stronger than a symmetry of the specified all-zero blank
+execution. Operational materiality is established by the changed command
+interface and repeated comparison implementation, rather than by the
+novelty test alone. The offline replay is
+\texttt{python3 comparison/check\_novelty.py}.
+
+\subsection{What the 193-state experiments establish}
+
+The stored coefficient-three shortcut is logically inconsistent with its
+unchanged supplied heads. The Runtime193 family can satisfy clean-source
+contracts and still fail blank initialization. Earlier reports certify
+10,036 starts of 52 physical runtime-experiment graphs as 106 finite halts
+and 9,930 outward rays, and another fixed-splice certificate covers all
+$9!$ physical register allocations. These are attributed restricted
+obstructions, not a lower bound of 194 for arbitrary consistency machines.
+The verified even-only candidate scheduler currently costs 195 states;
+the even-runtime194 graft is a rejected diagnostic. Fresh finite search
+results in this report are stated with their own scopes and are not
+inflated into universal impossibility claims.

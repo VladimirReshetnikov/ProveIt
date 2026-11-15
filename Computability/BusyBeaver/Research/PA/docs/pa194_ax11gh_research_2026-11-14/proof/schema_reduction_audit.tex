@@ -1,0 +1,79 @@
+\section{Additional source-calculus reduction audit}
+\label{sec:source-calculus-audit}
+The following investigations did not produce an accepted smaller machine.
+They separate proved local obstructions from unresolved completeness questions;
+none is a lower bound on Turing-machine state complexity.
+
+\paragraph{Deleting the membership-vacuity part of the gate.}
+With the report's notation, the guarded axiom is
+\[
+ G(a,b,c)=\neg\bigl(V(a,b,c)\to Q(a,b,c)\bigr),\qquad
+ V(a,b,c)=M(a,b)\to U(c,M(a,b)).
+\]
+Classically, $G$ supplies both $V$ and $\neg Q$.  Replacing it by
+$\neg Q$ removes a substantial constructor subexpression, but the inherited
+reverse-membership-rewrite and neighborhood-equality derivations explicitly
+use membership vacuity.  A proof that the weakened numerical calculus still
+simulates PA has not been obtained.  The separate diagonal axiom
+$B\to U(B,B)$ supplies vacuity only at the particular binder $B$; replacing
+it by arbitrary fresh-variable vacuity would assume the missing step.
+This observation rejects an unsupported preservation claim, not the weakened
+calculus itself.
+
+\paragraph{Moving freshness into parameter enumeration.}
+One can generate a gate parameter $c=u+a+b+1$ to make both inequalities
+$c\ne a,b$ automatic.  The current corpus already discusses this exact
+idea in
+\path{pa_tm_extended_research_2026-11-13/experiments/README.md}.
+The generated gate family then provides $V(a,b,c)$ only for large $c$.
+The inherited derivations also use vacuity at fresh labels smaller than
+one of the labels of the atom.  Recovering those instances remains a
+separate completeness obligation.  Merely showing that a particular
+separation witness code is large does not discharge all those uses.
+
+\paragraph{Caching the repeated membership atom.}
+In the gate emitter the subterm $M(a,b)$ occurs three times.  After the
+ordinary heads have been emitted, a tempting dataflow optimization is to
+compute $m=M(a,b)$ once, overwrite the register holding $a$ by $m$, and
+reuse that cache.  Keeping the old final numerical guard after this change
+would test $c\ne m,b$, which is not equivalent to $c\ne a,b$.
+For the coefficient-four code, take
+\[
+ (a,b,c)=(0,1,0),\qquad M(0,1)=4p(0,1)+1=9.
+\]
+The old guard fails because $c=a$, while the modified guard succeeds
+because $0\ne9$ and $0\ne1$.  Under the standard bit-membership
+interpretation, assign $x_0=2$ and $x_1=1$.  Then $M(0,1)$ is true,
+but $U(0,M(0,1))$ is false: the quantified value $x_0=0$ is a
+counterexample.  Hence $V(0,1,0)$ is false.  The enabled new gate implies
+that false $V$, independently of the value of $Q$.  Thus this particular
+cached implementation would emit an arithmetically unsound axiom.
+
+A sound cache optimization must preserve the original guard or compare
+transformed quantities on both sides.  For example, the injectivity of
+Cantor pairing gives
+\[
+ M(a,b)=M(c,b)\quad\Longleftrightarrow\quad a=c.
+\]
+That repairs the logical comparison, but computing and retaining the
+second code has a physical cost.  No state-saving realization of the
+repaired cache was established in this investigation.
+
+\paragraph{Restricted implicational bootstrap.}
+The source corpus contains a finite-matrix obstruction for the isolated
+basis obtained by fixing the fourth variable of the dominated
+$\rho_8$ schema to falsity; see
+\path{pa_tm_extended_research_2026-11-13/experiments/fixed_false_matrix.py}.
+It would be unjustified to reuse the original unrestricted-implication
+compiler after that change.  The recorded counterexample concerns the
+isolated basis plus explosion and modus ponens; it is not promoted here
+to a theorem that the full modified PA calculus is too weak.
+
+\paragraph{Prior search overlap.}
+The filed source searches already include ordinary-head permutation,
+curried-premise exchange, selected contrapositives, equality and membership
+orientation, several gate associations, diagonal-parameter choices, and
+mixed implementations of negation.  These mechanisms were treated as
+prior work.  The present audit supplies no new machine solely by renaming
+parameters, changing a cosmetic graph representation, or overlooking
+source-calibration obligations.

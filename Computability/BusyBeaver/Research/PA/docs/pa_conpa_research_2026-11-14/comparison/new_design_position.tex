@@ -1,0 +1,102 @@
+\subsection{What is materially different in AX11GH}
+\label{subsec:ax11gh-position}
+
+AX11GH combines three independently observable command choices:
+an explicit generalization binder, an eleven-entry/four-operand AX
+operation, and a cache-only Shift halt test. Write $(t,w,d,h)$ for
+visible top, stack, offset, and cache. None of its nearest
+historical interfaces has all three. AX11G has the first two but tests
+$t+h=1$; QAX11H has the last two but binds the saved generalization by
+the offset $d$; GH/GHS has the explicit binder and cache-only test but
+uses the ten-entry/three-operand AX operation.
+
+\begin{center}\small
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{p{0.27\linewidth}p{0.14\linewidth}p{0.12\linewidth}p{0.16\linewidth}p{0.19\linewidth}}
+\toprule
+Interface & AX prefix / operands & Saved binder & Shift halt test & Physical variant\\
+\midrule
+AX11G [A] & 11 / 4 & $c$ & $t+h=1$ & original\\
+AX11H [H] & 11 / 4 & $d$ & $h=1$ & original\\
+QAX11H [H] & 11 / 4 & $d$ & $h=1$ & original\\
+GH [G] & 10 / 3 & $c$ & $h=1$ & original\\
+GHS [G] & 10 / 3 & $c$ & $h=1$ & symmetric\\
+AX11QH4L/R [4] & 11 / 4 & $d$ & $h=1$ & four-increment decoder\\
+\midrule
+New AX11GH & 11 / 4 & $c$ & $h=1$ & original\\
+New AX11GHS & 11 / 4 & $c$ & $h=1$ & symmetric\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The saved slot is $U(c,h)$ or $U(d,h)$, with the \emph{incoming}
+cached theorem $h$ as body. The prefix count includes the saved old top
+and refers to the displayed Cantor-stack expression, including its zero
+aliases. The operand count includes the AX tag parameter $c$. All rows
+use coefficient-four constructors and no-push MP. All use the exchanged
+Q distribution head except AX11H, which uses the original head.
+
+The changes can be witnessed directly at command boundaries. From the
+store $(1,0,0,0)$, AX11G's Shift halts, whereas AX11GH's Shift
+returns $(0,0,0,0)$. From $(1,0,0,1)$ the first returns normally and
+the second halts. Thus the cache guard changes behavior in both
+directions; it is not an unused-row modification. Against QAX11H, take
+$c=1$ and $d=h=0$: the saved universal code becomes $U(1,0)=10$
+instead of $U(0,0)=2$. At the primitive-source level, the corresponding
+decrement and restoration increment change their selected register from
+$D$ to $A$ at addresses 95 and 100.
+
+Relative to GH/GHS, the guarded gate is pushed onto the stack and AX
+falls through the complete MP reader. It consumes a real fourth operand
+$z$ and returns offset $z$, rather than the older AX's cleared offset.
+Consequently the correct Push, Pop, selectors and generalization words
+have different lengths. In particular, the new Pop is
+$\mathsf{AX}_{0,0,0,0};\mathsf S^{12}$ and detects a visible contradiction;
+the final plain Shift used with the sum guard would be incorrect.
+AX11QH4L/R instead preserves QAX11H's complete source and changes its
+four-increment decoder. It therefore does not already implement the
+new explicit-binder source semantics.
+
+AX11GHS implements the same abstract commands as AX11GH. Its additional
+change reverses the physical equality-comparison preparation from
+$(h,1)$ to $(1,h)$, retaining the same live and halted register files.
+The contribution is a newly checked composition and two exact literal
+implementations of this recurring command interface; the explicit
+binder, AX11 protocol, Q exchange, and cached guard are credited to
+their existing sources. The common numerical calculus is unchanged.
+The zero-match full-tuple result in Section~\ref{sec:comparison} supplies
+the separate structural novelty check.
+
+\paragraph{Exact source references.}
+All historical references below are at repository revision
+\texttt{1e1a41f799\allowbreak d4658b829c\allowbreak dd0eabae37\allowbreak 75a0c8c4a0}.
+The archive member paths distinguish the currently incoming deliveries
+from older packets with the same basename.
+
+\begin{description}\raggedright
+\item[A]
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/docs/incoming/pa194_ax11g_research_2026-11-14.zip}{Current AX11G archive},
+member \nolinkurl{pa194_ax11g_research_2026-11-14/proof/ax11g.tex},
+sections on exact commands and total stack words.
+\item[H]
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/docs/incoming/pa194_ax11h_research_2026-11-14.zip}{Current AX11H/QAX11H archive},
+member \nolinkurl{pa194_ax11h_research_2026-11-14/proof/ax11h_preservation.tex},
+and its root README's exact two-table identification.
+\item[G]
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/docs/incoming/pa194gh_research_2026-11-14.zip}{Current GH/GHS archive},
+member \nolinkurl{pa194gh_research_2026-11-14/machines/PA194GH/proof.tex},
+and the root README's same-command symmetric implementation statement.
+\item[4]
+\href{https://github.com/VladimirReshetnikov/ProveIt/blob/1e1a41f799d4658b829cdd0eabae3775a0c8c4a0/docs/incoming/pa194_ax11qh4_research_2026-11-14.zip}{Current AX11QH4 archive},
+member \nolinkurl{pa194_ax11qh4_research_2026-11-14/README.txt},
+which identifies the unchanged 3,671-instruction source and the two
+four-increment implementations.
+\end{description}
+
+\begingroup\raggedright
+For the new interfaces, the exact definitions and source binding are
+in this release's \nolinkurl{proof/relative_ipra.tex}. The independent
+checkers are \nolinkurl{verification/check_commands.py} for free-term
+commands and \nolinkurl{verification/check_source_commands.py} for
+primitive templates.\par
+\endgroup

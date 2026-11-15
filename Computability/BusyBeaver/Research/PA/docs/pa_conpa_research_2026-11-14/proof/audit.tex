@@ -1,0 +1,63 @@
+\section{Audit of the inherited weak-arithmetic proof}
+\label{sec:inherited-audit}
+
+The inherited theorem used above comes from the latest incoming
+\path{pa194_ax11h_research_2026-11-14.zip}, identified by its exact
+hash in Section~\ref{sec:new-relative-ipra}.  Its written iPRA
+proof is stronger than the older placed packet with the same basename.
+The archive expressly states that it supplies no new end-to-end Lean
+or Rocq build.  Thus the incomplete proof-assistant status of the
+repository and the existence of a later written mathematical argument
+are compatible statements.
+
+The audit inspected the physical, source-command, command-preservation,
+premise-exchange, Foundation-adapter, term-leaf, forward-calibration and
+final-equivalence arguments.  No concrete mathematical gap was found in
+the inspected chain.  Three matters deserve explicit attention.
+
+First, the physical proof is a symbolic induction proof with a finite
+binding to each literal table.  Its configurations retain all evolving
+register, gap and spare-list data.  Its exact primitive recursive clocks
+and positive segment durations give both directions of halting
+transport.  Complete blank initialization, including blank exteriors,
+is verified separately.  A finite successful prefix alone would not
+give this result.
+
+Second, command-compiler correctness for arbitrary base stacks is proved
+by bounded Boolean induction using explicit input envelopes.  The
+forward PA compiler uses finite-demand query trees: child parameters
+are computable without returned proof values, same-stratum ranks
+strictly decrease, and lower-stratum calls follow a displayed order.
+The tree is constructed with a primitive recursive size bound and
+evaluated bottom-up.  This replaces earlier proofs that used induction
+over an unbounded family of environments.  The fixed logical and
+arithmetic leaves are cited as finite derivation recipes; validity is
+not inferred from the truth or consistency of PA.
+
+Third, the argument distinguishes current Foundation proof coding,
+historical ordinary PAeq, and the numerical calculus.  It treats the
+changed finite Foundation axiom and the metatheory-base comparison,
+not merely the object-theory axiom translation.  Endpoint identity at
+the corpus snapshot was checked explicitly: the two relevant endpoint
+files match the baseline manifests and the Foundation gitlink remains
+\path{32e1a0956a8622fad067328ca1959729a7634428}.  The structured
+receipt is \path{proof/endpoint_identity.json}.
+
+Finite checks were also rerun.  The source checks cover every literal
+instruction and edge, the complete symbolic AX effect, and the exact
+arithmetic templates.  The closure-constructor replay checks 308 closure
+chains, 140 canonical induction readbacks, 36 existential projections,
+four changed-leaf adapters and 8,828 distinct primitive proof nodes.
+These checks support the concrete bindings and the displayed uniform
+proofs; they are not a kernel verification of the complete arithmetic
+derivation.  In particular, this work has not expanded every enormous
+fixed numerical proof or implemented the complete PA compiler anew.
+
+The retained archive is therefore an ordinary mathematical proof
+dependency, with its exact sources and finite derivation recipes
+available for further review.  The new relative proof changes only
+the command implementation and the explicit generalization word, then
+transfers through the same calibrated calculus.  Its conclusion should
+be reported as a written iPRA equivalence with finite implementation
+certificates.  The separate Lean formalization remains incomplete.
+The longer audit and dependency map are in \path{proof/audit.md}.

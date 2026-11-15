@@ -1,0 +1,290 @@
+\section{Comparison of the supplied designs}
+\label{sec:corpus-comparison}
+
+The comparison is pinned to ProveIt commit
+\texttt{32d0d8b7d93a63ad4106c18cdb29b37927acdad2}.
+It covers the 77 filed research packets under the PA directory and the five
+ZIP deliveries incoming at that initial snapshot in \nolinkurl{docs/incoming}. The repository's
+primary documentation distinguishes experimental tables, written
+arithmetical arguments, executable certificates and completed formal
+theorems; the same distinctions are retained here. In particular, the
+state count of a table does not certify its consistency property.
+\cite{pa-readme,machines}
+
+\subsection{Census method and what the counts mean}
+
+The fresh census reads the pinned Git blobs, verifies their Git SHA-1
+identities and recursively inspects ZIP members. It recognizes complete
+numeric five-column transition tables and the documented explicit JSON
+formats: row arrays, paired actions, row records, transition dictionaries
+and embedded whole-table strings. It does not run arbitrary generators
+or reconstruct a table from prose, TeX or Lean definitions. This is an
+explicit, reproducible recognizer scope rather than a claim to have
+decided what every file could compute.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Freshly counted object & Count\\
+\midrule
+Tracked source inputs verified & 12\,551\\
+Direct and archive-member payloads inspected & 15\,172\\
+Recognized complete table occurrences & 3\,606\\
+Normalized labeled tables & 778\\
+Complete spanning one-halt graph classes & 658\\
+Such graph classes with 194 working states & 94\\
+Such graph classes with 193 working states & 53\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A counted graph has two left/right transitions per working control,
+exactly one external halt target, and some working root reaching its
+entire action graph. Six normalized nonspanning tables are retained
+separately; 50 incidental one-state JSON fragments are excluded. The
+archive traversal sees 19 distinct ZIP payloads through 31 references.
+No source-identity or parse errors were reported. Full receipts and
+recognizers accompany the report in \nolinkurl{comparison/}.
+
+The official filed-table index uses a different scope: its 662 classes
+include some nonspanning components and partial engines, whereas the
+present census includes explicit JSON and the initial incoming ZIPs. Its 89
+classes at 194 reachable states therefore cannot be added to the
+incoming reference collections. The fresh census finds five additional
+complete 194-state graphs in the initial incoming packets, giving 94.
+\cite{machines}
+
+Canonicalization removes working-control names. The independent novelty
+comparison also permits any spanning root, left/right reflection,
+global symbol exchange and arbitrary final-edge write/move decorations.
+It compares entire canonical tuples, not only their hashes. All 94
+supplied 194-state classes remain distinct under that larger equivalence.
+Symbol exchange makes the structural comparison more demanding; it is
+not used to claim preservation of a specified zero-blank start.
+Likewise, graph reachability is not coverage of the actual blank run.
+Some native HAZ files have dense labels but a designated start other
+than zero; start metadata remains separate from graph identity.
+
+Appendix~\ref{app:frontier194} identifies every one of the 94 graphs;
+Appendix~\ref{app:packet-ledger} identifies every delivery. Their attributed
+categories are 51 principal constructions, seven supplementary
+constructions, 25 research auxiliaries, four search seeds and seven
+rejected constructions. These are evidence categories, not 51 completed
+iPRA consistency theorems. Packet mechanisms and historical proof
+claims below are attributed to that ledger unless a fresh check is
+expressly identified.
+
+\subsection{The architecture and the principal sources of variation}
+
+The common construction has four interacting levels: the numerical
+proof calculus; the register program that enumerates command words and
+manages the store; the source tree and its binary readers; and the unary
+tape engine with blank initialization. Changes at different levels have
+different proof obligations. A shorter formula program need not produce
+a smaller physical table, and two advertised savings may consume the
+same decoder equality.
+
+\paragraph{Baseline and physical placement.}
+Primary PA194 has a separate diagonal emitter, a ten-entry AX stack
+prefix and the original sum-testing Shift guard. Its physical allocation
+is $134+67-7=194$: fixed controls, raw AX readers, then contextual folds.
+The alternate decoder has $134+68-8=194$. AD exchanges the physical A/D
+register positions. TDY cycles three positions, P5 moves five registers
+and seven router targets, and HX exchanges H/X. These preserve the
+abstract resolved source but change its physical realization. They
+require complete tape-frame and initialization checks, even when their
+logical proof compiler is unchanged.\cite{pa-readme}
+
+\paragraph{The store and the contradiction guard.}
+C caches the result of successful modus ponens and makes Shift test that
+cached head; CS uses a symmetric destructive comparison. N instead
+removes the dummy-zero push, leaving the consequent visible, and keeps
+the original sum guard. Its proof-word compiler needs a reserved zero.
+H combines that visible-result protocol with a cache-only guard; HS
+uses the symmetric version. SUMS and the uppercase NS design retain
+the original sum test and make its comparison symmetric. This distinction
+matters: the lowercase \nolinkurl{pa194ns} packet contains the HS graph,
+whereas uppercase NS denotes a different, sum-guard graph.
+
+\paragraph{Logical heads and formula arithmetic.}
+Q exchanges the two curried premises of the universal-distribution
+head. QN, QNS, QH and QHS combine this change with the corresponding
+store and guard. The logical transfer needs a primitive derivation of
+premise exchange. G changes the saved generalized head from $U(d,h)$ to
+$U(c,h)$, binding the old cached theorem with AX's explicit first
+operand; the generalization compiler changes accordingly. D emits
+$\Gamma(D)$ in place of $\Gamma(A)$; DHS combines that change with the
+no-push, symmetric cached controller, at $135+69-10=194$ controls.
+
+The coefficient-five and coefficient-six families---M5/M6, N5/N6,
+H5/H6, Q5/Q6, QN5/QN6 and QH5/QH6---change the arithmetic formula
+constructors throughout the source, including 61 constructor bodies in
+the supplied implementations. They require a logical recoding proof:
+unused residues, the zero-code alias and every emitted head must be
+accounted for. They are not register permutations or control renamings.
+
+\paragraph{Known-zero returns and source associations.}
+J, F, A, CSZ/X, ZR and HAZ replace selected unconditional jumps with
+decrements of registers known to be zero at those source locations.
+The proof is an inductive invariant of reachable source states. Its
+scope does not automatically include blank initialization, during
+which the physical controls run outside that source invariant.
+R/M4R and the saved source rotations change binary associations and
+instruction addresses while preserving a resolved source graph.
+Many saved rotations are search inputs rather than principal releases.
+PA1944L associates four increments as $((i,(i,i)),i)$, adding one helper
+and one fold to give $135+67-8=194$.
+
+\paragraph{The AX11 interface.}
+AX11 pushes its final guarded head and falls through into the full MP
+parameter reader. Its command consumes a fourth field $z$ and creates
+an eleven-entry prefix. The extra field is semantically real:
+completeness may choose $z=0$, but soundness must handle every $z$ and
+the Cantor zero-stack alias. AX11QH5, AX11Q6, AX11H, AX11QH and AX11S
+combine this changed interface with earlier arithmetic, logical and
+controller changes. Counting the extra push while overlooking its
+following MP operation would give the wrong command semantics.
+
+\paragraph{A genuinely different decoder protocol.}
+B is a physical rewrite with a different proof shape: it merges two
+history-sensitive reader roles and reuses the freed control as a
+dedicated selector. Its four changed rows support a short-step,
+all-tape transfer. This illustrates why failure of ordinary control
+quotients leaves room for contextual designs. The loop-continuation
+constructions in this report instead preserve all resolved source
+instructions and alter the placement of the continuation within a
+repeated source tree.
+
+\paragraph{Larger ancestors and alternative schedulers.}
+Original PA195 has a bundled 191-token diagonal emitter; PA195S uses
+the separate 190-token interface. PA195C, PA195DC and PA195S8 make
+further controller, diagonal or scanner changes. MP196 detects
+contradiction immediately after a successful MP instead of waiting for
+Shift. The even-candidate scheduler with H/X placement costs 195
+controls. These are relevant architectural alternatives, but the supplied
+tables do not meet the requested strict improvement below 194.
+
+\subsection{Duplicates and the five initial incoming packets}
+
+Different packet titles do not necessarily mean different designs.
+The principal PA194C table occurs in five deliveries. QN equals NQ;
+the two QNS deliveries agree; N6 is repeated; CSZ equals X. QH5 appears
+both separately and as an AX11 companion, while QN6 appears alone and
+beside QN5. The initial incoming AX11QH5 is byte-identical to its
+already filed counterpart: its dense table has SHA-256
+\nolinkurl{f7f52501055ff4fe47aab51acc6536adf3823afca4016a670c67b2c592ed4b02}.
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}l l X@{}}
+\toprule
+Packet & New graph & Distinguishing change\\
+\midrule
+P78 & PA1944L & Four-increment association; primary source retained.\\
+P79 & PA194AX11H & AX11 with the no-push cached-head controller.\\
+P80 & PA194AX11QH & AX11 with Q premise exchange and H guard.\\
+P81 & PA194AX11S & AX11 with symmetric original sum guard.\\
+P82 & PA194HX & Physical H/X exchange; AX11QH5 is a duplicate.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+All five original deliveries explicitly distinguish their preservation arguments
+from the unfinished absolute iPRA calibration. The table lists their
+new graphs, not all reference tables or experiments carried inside their
+ZIPs. The machine-readable census retains each occurrence and its
+source locator, so duplicate evidence remains auditable without
+inflating the count of designs. The later revised AX11H written proof
+is treated separately in Sections~\ref{sec:lc-ax11h} and~\ref{sec:late-snapshot}.
+
+\subsection{Why the existing 193-state objects do not settle the problem}
+
+The 53 complete spanning 193-state graphs are not 53 accepted
+consistency machines. The most direct arithmetic shortcut uses
+coefficient three without a sufficient change of calculus. It identifies
+two incompatible formula codes:
+\[
+ E_3(1,0)=I_3(0,1)=6.
+\]
+A supplied primitive certificate derives contradiction code 1 in
+73\,393 proof lines. That number counts proof lines, not physical TM
+steps. Later supplied obstructions cover all constant offsets and
+cofinite cases within specified coefficient-three families; they do
+not rule out every possible new formula encoding.
+
+Runtime193 fails for a different reason. It redirects reader 301 to 88
+and changes native rows
+\[
+ (88,0)\mapsto(0,L,51),\qquad
+ (51,0)\mapsto(0,R,122).
+\]
+Its initialized source contracts survive, but its inherited blank start
+escapes into an infinite outward zero ray. The supplied exact allocation
+obstruction covers all $9!=362\,880$ register permutations under the
+specified selector changes and fixed initial control; it is not a
+theorem about arbitrary bootstrap redesigns. Subsequent append-zero,
+transplantation, relay and scheduler variants remain rejected or lack a
+complete startup calibration.
+
+The newer even-runtime194 diagnostic is also rejected. Its supplied
+certificate reaches native state 35 at head position 15 after 93
+transitions, with ones only at $-3$ and 1, then follows the zero-loop
+rightward forever. The new scheduler is never reached. This is a
+194-state failed experiment, not an additional accepted design.
+
+Two finite negative results help delimit the next search. First, fresh
+partition refinement on all 94 graphs finds 194 singleton classes in
+the greatest unconditional action-preserving control congruence of
+each table. No ordinary one-step state quotient saves a control.
+Second, a supplied exact rational dual bounds the net saving by seven
+for fresh direct selectors and disjoint raw-action reader folds of the
+fixed 201-control primary parent. Overlapping folds, new equalities
+after aliasing, helper chains, longer detours and changed grammars lie
+outside that theorem. Neither result is a global 194-state lower
+bound. The wider search receipts in this report likewise describe
+bounded experiments, not an impossibility proof.
+
+\subsection{The arithmetic boundary and the related research programs}
+
+At the initial pinned revision, the authoritative PA README explicitly leaves
+both machine-specific directions of the absolute physical-table
+iPRA equivalence open. A standard finite-run theorem, a Python
+certificate and a conditional iPRA endpoint do not by themselves
+discharge that calibration. Written PA equivalences in historical
+packets also require a separate argument before their base theory can
+be lowered to iPRA.\cite{pa-readme}
+
+Substantial formal progress is already present. In all models with an
+$I\Sigma_1$ reduct, the modeled scheduler has fairness and a
+target-derivation correspondence. Guarded-gate and separation results
+give the modeled scheduler's soundness direction. Generic
+$I\Sigma_1$ transfer and the final intuitionistic bridge are available.
+At that initial revision, the formal primary-machine development still
+requires the uniform correspondence between physical
+tape execution and controller/source frames at internal times, and
+the compilation of arbitrary internal PA refutations into the numerical
+calculus. Fixed blank startup is checked; model-length simulation is a
+different obligation. No literal table's complete \texttt{Calibrated}
+premise is discharged in that development. The later written AX11H
+calibration is separate mathematical evidence, reviewed and imported in
+Section~\ref{sec:lc-ax11h}.\cite{pa-readme}
+
+The relative theorem for PA194LC is therefore useful on its own: it
+transfers halting between two literal tables with a concrete polynomial
+clock, without assuming either table's absolute calibration. Composing
+it with a future completed primary calibration would establish the
+requested Con(PA) equivalence. This report does not replace that
+missing premise with standard-model testing. The additional G/AX11
+composition has a further source-calculus transfer obligation and is
+labeled separately from the instruction-preserving loop family.
+
+The suggested adjacent projects are considered separately below, with their
+size metrics and arithmetic bases kept distinct.
+
+The fresh work supporting this comparison is the source-identity census,
+canonical-tuple novelty comparison and unconditional-congruence check.
+Historical startup durations, source-contract totals, proof-line counts
+and packet calibrations are attributed evidence unless separately
+replayed in a construction's verification section. This boundary keeps
+the comprehensive comparison reproducible without suggesting that all
+82 original theorem developments have been independently rebuilt.

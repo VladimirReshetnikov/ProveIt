@@ -1,0 +1,232 @@
+% New fragment: PA194GAX11. The historical PA194G text is reference_g_proof.tex.
+% Requires amsmath, amssymb and url (or xurl). This fragment asserts a relative result only.
+\section{The GAX11 composition: a changed command interface}
+
+The independently reproduced PA194GAX11 combines the AX-parameter generalizer
+of PA194G with the four-field fallthrough protocol of PA194AX11.
+These two ingredients are inherited. The final snapshot contains an
+identical table named PA194AX11G, so this composition is retained as a
+checked concurrent reproduction and is excluded from the five-new-graph
+claim. Its exact source binding and compiler analysis remain useful.
+The dense table has 194 working states, start state zero, and terminal
+label 194, which is excluded from the count. It starts on a blank binary
+two-way tape and uses only left and right moves. Its SHA-256 is
+\begin{quote}\small\texttt{7e1c6442816e5df05e961f2057719252a1976c9a195a786978bf1e2d3c8e466d}.\end{quote}
+
+The result below is a source/command relative halting argument. This
+reproduction does not complete its primitive-recursive witness
+internalization or import an absolute calibration. The revised AX11H
+written theorem is used separately for LC\_AX11H in the main report.
+The ordinary PA calibration in the historical references remains
+identified as an inherited mathematical claim.
+
+\subsection{Exact command semantics}
+
+Let $p(a,b)=(a+b)(a+b+1)/2+b$, write $[a;w]=p(a,w)$, and use
+$I(A,B)=4p(A,B)$ and $U(a,B)=4p(B,a)+2$.
+The store $(t,w,d,h)$ consists of the current theorem code, Cantor stack,
+numeric offset, and cached theorem code. The latter is the \emph{raw}
+incoming cache; it is not the offset-adjusted parameter $H$.
+
+Write $h_1,\ldots,h_5,\rho,\Gamma,g$ for the same numerical families as
+the primary separated-diagonal calculus. Use the exchanged sixth head
+\[
+ h_6^Q(D,c,H)=U(D,I(c,H))\to\bigl(U(D,c)\to U(D,H)\bigr).
+\]
+This is interderivable with the primary sixth head by the established
+implicational exchange template, without altering the first head used in
+the derivation of explosion. Set $D=d+x$, $H=h+y$, and
+\[
+\begin{array}{c|l}
+j&q_j\\\hline
+0&g(H,D,c)\\
+1&\Gamma(c)\\
+2&h_6^Q(D,c,H)\\
+3&h_5(D,H)\\
+4&h_4(D,c,H)\\
+5&h_3(D,c,H)\\
+6&h_2(D,c,H)\\
+7&h_1(D,H)\\
+8&\rho(D,c,H,d)\\
+9&U(c,h).
+\end{array}
+\]
+As in the primary calculus, $g$ is zero if either original numerical
+guard comparison fails. The new command effect is exactly
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =(0,[q_0,q_1,\ldots,q_9,t;w],z,0).                 \tag{GAX}
+\]
+Thus AX saves eleven entries and consumes four parameters. The final
+field $z$ is real: fallthrough enters the complete MP parameter reader.
+Its zero-input MP comparison returns zero whether $z=0$ or $z>0$,
+while setting the offset to $z$. The compiler chooses $z=0$, but the
+soundness argument covers every natural $z$.
+
+With $v=d+x$, the remaining commands are
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}(v,w,v,0),&I(t,v)=h,\\(0,w,v,0),&I(t,v)\ne h,
+ \end{cases}
+\]
+and
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}\mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1.
+ \end{cases}
+\]
+Truth code zero has a fixed calculus proof: the restricted head satisfies
+$\rho(0,0,0,0)=0$. This proof supplies virtual entries when the
+canonical Cantor stack is empty.
+
+All these equations use total Cantor projections, including
+$[0;0]=\operatorname{hd}(0)=\operatorname{tl}(0)=0$.
+
+\subsection{The command compiler, including its boundary cases}
+
+Let $A_0=\mathsf A_{0,0,0,0}$. Since $q_0,\ldots,q_8$ have residue
+zero modulo four and $q_9=U(c,h)\ge2$, direct iteration gives
+\begin{align*}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)
+      &=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)
+      &=(q_9,w,0,t).
+\end{align*}
+The displayed iterations are nonhalting for every natural store.
+Define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,\qquad
+ \mathsf{Pop}=A_0;\mathsf S^{12},\qquad
+ \mathsf{Discard}=\mathsf{MP}_0.
+\]
+They satisfy
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=(t,w,0,a),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0).
+\end{align*}
+Pop preserves even the visible contradiction code $t=1$: its final
+test includes a universal code at least two. No free-list assumption is
+used, so zero pushes and the empty stack are covered.
+
+From $(t,w,0,0)$, the selector of $q_j$, $0\le j\le8$, is
+\[
+ \mathsf{Discard};\mathsf A_{c,D,H,0};
+           \mathsf S^{j+2};\mathsf{Pop}^{9-j}.
+\]
+It returns $(q_j,w,0,0)$. For the restricted head with an actual
+parameter $u\le D$, use
+\[
+ \mathsf{Discard};\mathsf{MP}_u;
+ \mathsf A_{c,D-u,H,0};\mathsf S^{10};\mathsf{Pop}.
+\]
+The important new generalization word is
+\[
+ \boxed{\mathsf{Gen}_i=
+       \mathsf{Push};\mathsf S;\mathsf A_{i,0,0,0};\mathsf S^{11}.}
+\]
+It maps $(a,w,0,0)$ to $(U(i,a),w,0,0)$ for all $a,w,i$.
+No offset-setting command is needed because the binder is the explicit
+first AX parameter. The intermediate Shift sees zero in both visible
+positions, and the stored arbitrary theorem $a$ is used as the raw cache
+of AX. This includes $a=1$ and $i=0$.
+
+On a store $(0,[a,I(a,b),0;w],0,0)$ the suffix
+\[
+       \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}
+\]
+halts if $a=1$ and otherwise returns $(b,w,0,0)$.
+The reserved zero beneath the premises is necessary because successful
+MP does not push a dummy zero. The case $b=1$ returns the contradiction
+without losing it; a final plain Shift then halts. If $a=b=w=0$, the
+same calculation holds using total projections despite all zero aliases.
+
+Consequently, recursively compile a numerical proof $e$ into a word
+$W_e$. Use the selectors for its axiom leaves, append $\mathsf{Gen}_i$
+at a generalization node, and for an MP node with major proof $e_1$ of
+$I(a,b)$ and minor proof $e_0$ of $a$ use
+\[
+ \mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+ W_{e_0};\mathsf{Push};\mathsf S;\mathsf S;
+                       \mathsf{MP}_b;\mathsf{Pop}.
+\]
+Induction on the proof tree proves the precise invariant: from every
+$(t,w,0,0)$ the word either halts or returns
+$(\operatorname{concl}(e),w,0,0)$. In particular, when $e$ proves one,
+$A_0;W_e;\mathsf S$ halts from \emph{every} carried store.
+
+Conversely, annotate the current top, cached theorem, and canonical
+live stack entries with numerical-calculus derivations. Every head of
+(GAX) is a theorem; the new head $U(c,h)$ is obtained by generalizing
+the cached derivation. The extra MP field returns truth and has no
+theorem obligation on its numeric offset. MP and Shift preserve the
+annotations. If $t+h=1$, one annotated theorem is one, yielding a
+refutation. This argument never treats $t=h=1$ as a halting condition.
+
+\subsection{Scheduling and the relative arithmetic statement}
+
+Let $e(\epsilon)=0$, $e(C::w)=1+b_C(e(w))$, where
+\begin{align*}
+ b_{\mathsf S}(r)&=p(0,r),\\
+ b_{\mathsf{MP}_x}(r)&=p(1,p(x,r)),\\
+ b_{\mathsf A_{c,x,y,z}}(r)&=p(c+2,p(y,p(x,p(z,r)))).
+\end{align*}
+The initial raw scheduler candidate for a nonempty word $C::w$ is
+$b_C(e(w))$; the value $1+b_C(e(w))$ is its encoded nonempty
+continuation, which is decremented before command decoding. This
+distinguishes the root candidate from nested continuations.
+
+The extra field must be present; otherwise AX consumes part of the
+following command as $z$. Total inverse identities decode these words
+even when fields and tails are zero. Each positive continuation decreases
+strictly after a command. Prefixing any all-store halting suffix with
+$\mathsf A_{k,0,0,0}$ gives an unbounded family of candidate codes, so
+the unchanged increasing scheduler reaches a halting candidate unless
+it halts earlier. This uses the all-store property, not a reset between
+candidate words.
+
+At the source level these two transformations show halting equivalence
+with the numerical calculus, and hence with the PA194G source. They use
+finite proof recursion, arithmetic command calculations, and witnessed
+finite scheduling. Together with the source/tape simulations they yield
+a relative transfer of the blank nonhalting sentences. Expressing those
+finite transformations as primitive-recursive witness functions and
+checking their correctness is the weak-arithmetic formalization task;
+no end-to-end Lean theorem for this composition is supplied here.
+
+In particular, the logical implication from an independently established
+baseline iPRA calibration and an iPRA proof of this relative transfer to
+the corresponding iPRA calibration of GAX11 is immediate. The artifact
+does not silently replace either premise by a standard-Nat execution
+test. The stronger absolute statement
+$\mathrm{iPRA}\vdash\neg\mathrm{Halt}(\mathrm{GAX11})
+\leftrightarrow\mathrm{Con}(\mathrm{PA})$
+is therefore not recorded as a completed theorem of this release.
+
+\subsection{Literal source binding and executed evidence}
+
+Relative to the PA194G source, the sole new source splice replaces its
+AX return at ordinal 3553 by a nineteen-instruction push. Its normal exit
+enters the complete MP reader. All 3653 other instructions, including
+their resolved successors, agree under the relocation
+$i\mapsto i$ for $i\le3553$ and $i\mapsto i+18$ otherwise.
+No external source edge enters the inserted block's interior.
+Thus the new source has 3672 primitive sites.
+
+The table is compiled from 134 fixed controls and 67 AX readers, followed
+by seven simultaneous contextual folds. All 28 local fold cases pass in
+the final simultaneous table. The construction checker verifies all 4779
+source outcomes with arbitrary natural registers; its recorded workload
+is 1483363 symbolic operations with maximum 470 per outcome. A complete
+58154-step blank initialization reaches source site 25 with the usual
+logical register vector $(2,0,\ldots,0)$ and 26 unit spare blocks.
+These are implementation checks, not finite-run evidence for consistency.
+
+The independent literal-tape replay also completed successfully. It
+checked all 4,779 outcomes using 1,083,079 symbolic operations, with maximum
+379 per outcome and minimum positive duration constant 3. It derived
+four generic list lemmas from literal rows, compared two independently
+resolved source graphs, and independently checked the complete
+58,154-transition startup. Its table-bound receipt is retained under
+\path{additional/PA194GAX11/evidence_full/independent/PA194GAX11/}.

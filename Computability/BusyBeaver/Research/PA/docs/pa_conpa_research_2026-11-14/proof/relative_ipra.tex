@@ -1,0 +1,448 @@
+% A mathematical proof component. Requires amsmath, amssymb, amsthm,
+% booktabs and url (or hyperref). This file has no private macro dependency.
+\section{The iPRA proof for explicit-binder AX11GH and AX11GHS}
+\label{sec:new-relative-ipra}
+
+This section supplies the new proof obligation.  The common numerical
+calculus and its calibration to Peano arithmetic are inherited from the
+\emph{latest incoming} archive
+\path{pa194_ax11h_research_2026-11-14.zip}.  That archive contains a written
+weak-arithmetic proof for PA194QAX11H, including the physical and source
+bridges.  Its SHA-256 is
+\begin{center}\small
+\nolinkurl{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.
+\end{center}
+The older placed archive with the same basename is not the dependency.
+The present proof establishes an iPRA halting equivalence with the
+calibrated QAX11H table.  Consequently it uses the inherited PA compiler
+and the intuitionistic transfer theorem once, without introducing a new
+PA presentation or a new reflection principle.
+
+Throughout, halting means halting from the all-zero, two-way infinite
+binary tape with the declared start state and head position.  The halt
+control is separate from the 194 working controls.  All runs are extended
+by an absorbing halt configuration.  The consistency sentence is the
+inherited \path{nativePAConsistency}, the negation of the mapped native
+Foundation PA-refutation sentence.  The two endpoint files defining this
+binding are unchanged between the baseline's ProveIt revision
+\path{1c9524d8bf2e0a27b9a16ff622359927f536e663} and the corpus revision
+\path{1e1a41f799d4658b829cdd0eabae3775a0c8c4a0}.
+
+\subsection{The common calculus and the changed command}
+
+Put
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(a,b)=4p(a,b),\quad M(a,b)=I(a,b)+1,
+\]
+\[
+ U(a,B)=I(B,a)+2,\qquad E(a,b)=I(a,b)+3.
+\]
+The designated truth and contradiction codes are 0 and 1.  Write
+$a\to b=I(a,b)$, $\neg a=I(a,1)$,
+$a\wedge b=\neg I(a,\neg b)$, and
+$\exists_a B=\neg U(a,\neg B)$.  The numerical calculus
+$\mathcal C_4^Q$ has modus ponens, theorem generalization
+$B\mapsto U(i,B)$, and the following axiom families:
+\begin{align*}
+ h_1(D,H)&=(\exists_D U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6^Q(D,A,H)&=U(D,I(A,H))\to(U(D,A)\to U(D,H)),\\
+ \Gamma(B)&=I(B,U(B,B)),\\
+ \rho_8(D,A,H,u)&=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \quad u\le D.
+\end{align*}
+Its remaining guarded gate is
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to\neg P(a,b,c)),\\
+ G(a,b,c)&=\neg(V(a,b,c)\to Q(a,b,c)),\qquad c\ne a,b.
+\end{align*}
+The fixed instance $\rho_8(0,0,0,0)=0$ proves the zero code.
+
+Let $[a;w]=p(a,w)$; brackets denote nested Cantor pairs, not free lists.
+In particular $[0;0]=0$ and $\operatorname{hd}(0)=\operatorname{tl}(0)=0$.
+The store is $(t,w,d,h)$.  Both new machines implement the same commands.
+For $A=c$, $D=d+x$ and $H=h+y$, define
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+       =(0,[q_0,q_1,\ldots,q_9,t;w],z,0),                 \tag{G-A}
+\]
+where
+\[
+\begin{array}{c|l@{\qquad}c|l}
+ j&q_j&j&q_j\\\hline
+ 0&G(H,D,A)\text{ if }A\ne H,D;\text{ else }0
+     &1&\Gamma(A)\\
+ 2&h_6^Q(D,A,H)&3&h_5(D,H)\\
+ 4&h_4(D,A,H)&5&h_3(D,A,H)\\
+ 6&h_2(D,A,H)&7&h_1(D,H)\\
+ 8&\rho_8(D,A,H,d)&9&U(c,h).
+\end{array}
+\]
+The sole abstract difference from QAX11H is $q_9=U(c,h)$ in place
+of $U(d,h)$.  The binder comes from the explicit AX operand, while
+the body still comes from the incoming cache.  The fourth operand is
+real: the AX fallthrough consumes a full MP parameter and leaves offset
+$z$, even for $z>0$.
+
+The other commands are
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},&h=1,\\
+  (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+ \end{cases}                                             \tag{G-S}
+\]
+and, with $b=d+x$,
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+  (b,w,b,0),&I(t,b)=h,\\
+  (0,w,b,0),&I(t,b)\ne h.
+ \end{cases}                                             \tag{G-M}
+\]
+Only Shift halts.  Every generated $q_0,\ldots,q_8$ is divisible by
+four, and $q_9$ has residue two and is at least two.  Thus none is one.
+
+\subsection{Explicit compiler and its weak-base justification}
+
+Write $A_0=\mathsf A_{0,0,0,0}$ and execute words left to right.
+The total projection equations and the preceding residue facts give
+\begin{align*}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)
+    &=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)
+    &=(q_9,w,0,t).
+\end{align*}
+These words never test the saved $t$.  Define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,
+ \qquad \mathsf{Pop}=A_0;\mathsf S^{12},
+ \qquad \mathsf{Discard}=\mathsf{MP}_0.
+\]
+Then
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+   \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{MP}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+Push's final comparison fails because its operands have residues zero
+and two.  Pop's twelfth Shift sees exactly the saved top.  These statements
+include the zero-stack alias.
+
+For $0\le j\le8$, the word
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,0};
+                \mathsf S^{j+2};\mathsf{Pop}^{9-j}          \tag{G-Sel}
+\]
+sends $(t,w,0,0)$ to $(q_j,w,0,0)$.  The extra Pops preserve
+the noncontradictory selected head and remove the remaining generated
+heads followed by a saved zero.  For $u\le D$, the word
+\[
+ \mathsf{Discard};\mathsf{MP}_u;
+ \mathsf A_{A,D\mathbin{\dot-}u,H,0};
+                       \mathsf S^{10};\mathsf{Pop}          \tag{G-Rho}
+\]
+selects $\rho_8(D,A,H,u)$ with the same normalized output shape.
+
+The improved generalization word is
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf S;
+                       \mathsf A_{i,0,0,0};\mathsf S^{11}. \tag{G-Gen}
+\]
+Its significant boundaries, starting at $(a,w,0,0)$, are
+\[
+ (a,w,0,0)\longmapsto(0,[a;w],0,0)
+ \longmapsto(0,w,0,a)
+ \longmapsto\cdots\longmapsto(U(i,a),w,0,0).
+\]
+The middle Shift tests cache zero.  The following AX consumes $a$ and
+clears the cache before another Shift tests it.  Thus the identity holds
+also at $a=1$.  The old offset-setting command is unnecessary because
+the binder is now $i$ itself.
+
+For a proof tree $\pi$, let $W_\pi$ be its command word.  Axiom leaves
+use (G-Sel) or (G-Rho), and a generalization node appends (G-Gen).
+At an MP node with major proof $\pi_1$ of $I(a,b)$ and minor proof
+$\pi_0$ of $a$, put
+\[
+ W_\pi=\mathsf{Discard};\mathsf{Push};W_{\pi_1};
+ \mathsf{Push};W_{\pi_0};\mathsf{Push};
+           \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}.
+\]
+The initial Discard and Push reserve a zero below both premises.  Before
+the final suffix the store is $(0,[a,I(a,b),0;w],0,0)$ unless it
+has already halted.  Two Shifts either halt at $a=1$ or expose
+the premises; MP returns $b$; Pop removes the reserved zero, clears
+the offset and either halts at $b=1$ or returns $(b,w,0,0)$.
+Therefore the exact compiler invariant is
+\[
+ W_\pi(t,w,0,0)=\mathsf{halt}
+ \quad\text{or}\quad
+ W_\pi(t,w,0,0)=(\operatorname{concl}(\pi),w,0,0).       \tag{G-Cmp}
+\]
+If $\pi$ refutes the calculus, the word
+\[
+                 V_\pi=A_0;W_\pi;\mathsf{Pop}             \tag{G-Ref}
+\]
+halts from \emph{every} incoming store.  The first AX normalizes the
+offset and cache; the final Pop detects top one.  A final plain Shift
+would instead test zero and would not establish this assertion.
+
+The word lengths are $12$ for Push, $13$ for Pop, $25$ for Gen,
+$121-12j$ for (G-Sel), $26$ for (G-Rho), and $53$ of overhead at
+an MP node.  If $n$ is the number of nodes in the expanded derivation
+tree, induction gives $|W_\pi|\le121n$ and $|V_\pi|\le121n+14$.
+Here $n$ is \emph{not} the number of lines of an unexpanded proof DAG.
+
+The universally quantified base stack in (G-Cmp) must not be hidden
+inside an impermissible induction.  Use the baseline's explicit bounded
+argument.  For a valid $N$-line proof, with $N>0$, compile words bottom-up and let
+$L$ and $K$ be the largest word length and command code.  For an absorbing
+primitive recursive command transition $\operatorname{next}$, set
+\[
+ \Phi_K(s)=1+\max\left(s,
+             \max_{c\le K,\ u\le s}\operatorname{next}(c,u)\right),
+ \qquad B(j)=\Phi_K^{L(N-1-j)}(s_0).
+\]
+On malformed proof inputs the compiler returns a fixed default word;
+thus the compiler and its finite maxima are total primitive recursive
+functions.  For $0\le i<j<N$,
+$\Phi_K^L(B(j))\le B(i)$.  Induct on the bounded Boolean statement
+that every earlier word is correct on every normalized store at most
+its assigned bound, retaining all earlier lines rather than only the
+immediate predecessor.  A premise call inside word $j$ is reached after
+at most $L$ steps.  If execution has already halted, absorption proves
+the desired alternative.  Otherwise the preceding local contracts make
+the premise input normalized, and its code lies in the bound assigned to
+that earlier line.  The local word identities prove each extension.  This is
+quantifier-free induction on a primitive recursive characteristic
+function.  At the last line $B(N-1)=s_0$, so the arbitrary initial
+store is covered.  This proves (G-Cmp) and (G-Ref) in iPRA.
+
+\subsection{Scheduling and proof extraction}
+
+The scheduler starts at $(n,\ell,t,w,d,h)=(2,0,0,0,0,0)$.
+For $\ell=0$ it selects raw seed $n$ and increments $n$; otherwise
+it selects $\ell-1$ without incrementing $n$.  Unpair tag zero as
+Shift, tag one as MP with one field, and tag $c+2$ as AX with fields
+$y,x,z$ in that order.  Let $e(\epsilon)=0$ and
+$e(C::v)=1+b_C(e(v))$, where
+\[
+ b_{\mathsf S}(r)=p(0,r),\quad
+ b_{\mathsf{MP}_x}(r)=p(1,p(x,r)),\quad
+ b_{\mathsf A_{c,x,y,z}}(r)=p(c+2,p(y,p(x,p(z,r)))).
+\]
+The projections recover all fields including zeros.  Each positive
+continuation strictly decreases.  A fresh seed $m$ therefore drains in
+at most $m+1$ command invocations unless it halts earlier.
+
+For a calculus refutation $\pi$, candidate
+\[
+ N_\pi=p\bigl(2,p(0,p(0,p(0,e(V_\pi))))\bigr)\ge3
+\]
+executes one additional AX followed by the all-store halting word
+$V_\pi$.  The absorbing scheduler has halted within
+$K(\pi)=(N_\pi+2)^2$ commands.  This primitive recursive bound
+follows by summing the drain bounds for candidates $2,\ldots,N_\pi$:
+\[
+ \sum_{m=2}^{N_\pi}(m+1)
+       =\frac{N_\pi^2+3N_\pi-4}{2}<(N_\pi+2)^2.
+\]
+The first successful candidate may be earlier.  A bounded induction over
+candidate counters establishes arrival or an earlier halt, and the
+absorbing flag extends that halt to the displayed bound.  No step
+assumes that failed candidates reset the store.
+
+Conversely maintain a finite calculus-proof list with indices proving
+the top, cache and every canonical stack head.  Zero is supplied by its
+fixed proof, including virtual zero heads of a zero stack.  For $w>0$,
+$\operatorname{tl}(w)<w$, so stack decoding is bounded by $w$.
+AX's only changed annotation is the Gen step taking the cache proof
+of $h$ to a proof of $U(c,h)$.  The restricted head is valid because
+$d\le d+x$; the gate is either its guarded axiom or zero.  MP and
+Shift preserve the other annotations exactly as in the baseline.
+A halting Shift exposes a proof of cache one.  All updates and their
+validity checks are primitive recursive, and their cumulative invariant
+is a bounded Boolean predicate.  Quantifier-free induction thus gives
+\[
+ \mathrm{iPRA}\vdash
+ \operatorname{Halt}(R_G)\ \longleftrightarrow\
+              \exists\pi\,\operatorname{Prf}_{\mathcal C_4^Q}(\pi,1),
+                                                               \tag{G-Log}
+\]
+where $R_G$ is the specified abstract scheduler.
+
+\subsection{Binding the new literal sources and binary tables}
+
+The source registers are $(N,T,W,A,D,H,X,Y,L)$.  Relative to
+QAX11H, AX11GH changes only the source operand used in the initial
+saved generalizer: the decrement at source address 95 uses $A$
+instead of $D$, and the increment at address 100 restores $A$
+instead of $D$.  The inherited copy template is uniform in its
+selected register, so it gives $U(A,H)$ in the saved stack slot.
+Every other AX head, the four-field parser, MP and the cached guard
+retain their exact arithmetic equations.
+
+AX11GHS makes one additional source change.  At Shift entry, clear
+$T$, duplicate the incoming $H$ into $T,X$ while clearing $H$,
+increment $H$, and jump to the common comparison.  The operands
+are now $(H,X)=(1,h)$ rather than $(h,1)$; both are cleared by
+the comparison and equality occurs exactly at $h=1$.  Both variants
+have the same live output as (G-S) and the same retained halted file
+\[
+ \operatorname{Stop}(n,1,w,0,d,0,0,0,\ell).
+\]
+Erasing only the data of halted files gives the absorbing abstract halt
+of (G-S); this erasure commutes with the source step.  In particular,
+no assertion about preserved registers is obtained by silently discarding
+a live file.  The GHS preparation cost is
+\[
+ (2t+1)+(4h+1)+2=2t+4h+4,
+\]
+whereas AX11GH uses $(2t+1)+(7h+2)+2$.  The common comparison
+cost is
+\[
+ C(a,b)=\begin{cases}
+ 3a+2,&a=b,\\3b+2,&a<b,\\2a+b+4,&a>b.
+ \end{cases}
+\]
+Use $C(1,h)$ for GHS and $C(h,1)$ for GH.  The unequal branch
+then performs the same stack unpair and transfer; the equal branch
+performs the same halt instruction.
+
+The delivered source-command checker compares every literal instruction
+and outgoing edge with the arithmetic templates, reconstructs the CFG
+independently from the source tree, and evaluates the entire 190-token AX
+body in a free algebra.  It checks both gate branches, all scratch
+registers and the real fourth field.  The template equations and exact
+clocks are proved by the baseline's quantifier-free counter inductions;
+the two replacements just described instantiate the same copy,
+duplicate and comparison lemmas.  Therefore a source command segment
+has the claimed endpoint at its specified positive primitive recursive
+clock for every coded input, not only the tested examples.
+
+The physical layer uses the baseline's symbolic-stream proof: literal
+bit steps, unary-run induction, four list-scan lemmas, exact tape-frame
+closure and positive clocks.  Those proofs are parametric in the
+source, while the finite binding to each new table is replayed by the
+independent literal-table checker.  Its results are
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+ & AX11GH & AX11GHS\\
+\midrule
+Working controls / transition rows &194 / 388&194 / 388\\
+Primitive source sites &3671&3668\\
+Certified source outcomes &4778&4774\\
+Independent symbolic steps &1106693&1110639\\
+Whole blank-start initialization steps &57922&57768\\
+Smallest segment-duration constant &3&3\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every certificate ranges over nine arbitrary natural primary registers,
+an arbitrary nonempty finite spare-register list and an arbitrary
+nonnegative gap.  Full tape equality is checked at startup, including
+the blank exteriors.  The dense table hashes are
+\begin{center}\small
+AX11GH:\quad
+\nolinkurl{513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1}\\[3pt]
+AX11GHS:\quad
+\nolinkurl{7a4738a9eedd3f53674d67568b3197d38237d11d0fc08fa3d41251a8faf8052c}.
+\end{center}
+
+For completeness, the weak-base transport uses the following elementary
+principle.  Let $s_k$ be a primitive recursive absorbing source run and
+$F$ a primitive recursive frame map such that $F(s)$ is live exactly
+when $s$ is live; both halt flags are decidable.  Suppose every live
+source step, starting from target configuration $F(s_k)$, has a
+specified positive primitive recursive target duration $\delta(s_k)$
+and exact endpoint $F(s_{k+1})$, while halted sources have duration
+zero and canonical target halt as their frame.  Set
+\[
+ \tau(0)=0,\qquad \tau(k+1)=\tau(k)+\delta(s_k).
+\]
+Quantifier-free induction gives
+$\operatorname{Run}_{\rm target}(T_0+\tau(k))=F(s_k)$,
+where $T_0$ is the verified initialization length.  If $s_k$ is
+live, all its predecessors are live by absorption, so $\tau(k)\ge k$.
+Given a target halt at time $t$, split on the decidable halt flag of
+$s_{t+1}$.  Its live case would give a live certified frame at time
+$T_0+\tau(t+1)>t$, contradicting target absorption.  Its halted case
+provides the explicit source witness $t+1$.  This is a finite decidable
+case split, not double-negation elimination for an unbounded existential.
+No minimization, unbounded search or induction with an arbitrary
+universal parameter predicate is needed.
+
+Apply this principle first to source-command segments and then to the
+physical source-step segments, keeping all frame parameters in the
+recursively updated configuration.  The two startup constants must be
+kept distinct.  More explicitly, let $z_i$ be the abstract scheduler run,
+$\theta(z_i)$ its source-command duration, and
+$\Theta(k)=\sum_{i<k}\theta(z_i)$, with zero duration after halt.
+Let $\tau(j)$ be the physical cumulative clock of the extended source
+run, whose state includes the evolving gap and spare list.  A calculus
+refutation $\pi$ supplies the primitive recursive physical witness
+\[
+             T_0+\tau\bigl(\Theta(K(\pi))\bigr),\qquad
+ T_0=\begin{cases}57922&\text{for AX11GH},\\
+                  57768&\text{for AX11GHS}.
+       \end{cases}
+\]
+Conversely, two applications of the preceding positive-duration
+argument extract an abstract scheduler halt from any physical halt.
+Combined with (G-Log), it proves in iPRA, for each new
+literal table $M_G$,
+\[
+ \operatorname{Halt}_{\rm blank}(M_G)
+ \longleftrightarrow\operatorname{Halt}(R_G)
+ \longleftrightarrow
+       \exists\pi\,\operatorname{Prf}_{\mathcal C_4^Q}(\pi,1). \tag{G-TM}
+\]
+
+\subsection{Composition with the inherited PA calibration}
+
+Let $M_Q$ be the pinned QAX11H table in the retained baseline packet.
+Its command, source and physical proofs give
+\[
+ \mathrm{iPRA}\vdash
+ \operatorname{Halt}_{\rm blank}(M_Q)
+ \longleftrightarrow
+       \exists\pi\,\operatorname{Prf}_{\mathcal C_4^Q}(\pi,1).
+\]
+Equation (G-TM) therefore proves the positive halting equivalence of
+$M_G$ and $M_Q$ in iPRA.  Intuitionistic logic preserves equivalence
+under negation.  The baseline's
+\path{proof/consistency_equivalence.tex}, together with its cited
+Foundation adapter, finite-demand forward compiler, reverse soundness
+and conservation/negative-translation transfer, proves
+\[
+ \mathrm{iPRA}\vdash
+ \operatorname{Con}(\mathrm{PA})
+       \longleftrightarrow\neg\operatorname{Halt}_{\rm blank}(M_Q).
+\]
+Composition yields the claimed theorem for the actual new tables:
+\[
+ \boxed{\quad
+ \mathrm{iPRA}\vdash
+ \operatorname{Con}(\mathrm{PA})
+       \longleftrightarrow\neg\operatorname{Halt}_{\rm blank}(M_G),
+ \qquad M_G\in\{\mathrm{AX11GH},\mathrm{AX11GHS}\}.
+ \quad}                                                    \tag{G-Final}
+\]
+This uses no assumption that PA is consistent and no principle for
+extracting a positive existential from a double negation.  It is a
+written mathematical proof with explicit primitive recursive algorithms,
+local arithmetic invariants and finite implementation certificates.
+The full inherited PA calibration is a named, retained proof dependency.
+The Python checkers are finite binding audits; they are not a proof
+assistant kernel.  No new end-to-end Lean or Rocq verification is claimed.

@@ -1,0 +1,16 @@
+Final physical integration verification
+=======================================
+
+Result: all 7 full literal physical checks completed successfully, covering 33,456 source outcomes and 7,607,530 symbolic events. These are the two parents and all five new machines. The new AX11H construction checker and exact affine-duration checker also completed. No proof-assistant kernel or full arithmetic derivation was checked.
+
+The initial full root wrapper executed all five primary-family physical checks successfully, then stopped at a receipt-byte comparison. The only difference was the informational family name: the stored original-parent receipt said "baseline", whereas the temporary directory was named "primary" and the checker records its directory name. This was not a scientific contract failure. The original attempt log is retained as reproduce_full.log.
+
+The root wrapper was corrected to use the temporary directory reference/baseline. The five already completed physical checks were not repeated. Their fresh receipt dictionaries were recovered verbatim from the completed checker's log. All five fresh dense-table, native-table and contract SHA256 digests match the frozen files. Every semantic receipt field matches. The four new receipts are byte-identical; the parent receipt becomes byte-identical after only the explicitly recorded family-name normalization. The raw parent receipt and its separately normalized version are both retained. The temporary fresh contract files had been deleted by the wrapper's exception cleanup; they were not replaced with copied stored files and misrepresented as fresh outputs.
+
+The remaining full PA194LC_AX11H standalone wrapper was then executed. It rebuilt the new machine, independently replayed both AX11H literal tables, and checked the affine clocks and six-transition loop difference. For both tables, freshly generated contracts.json, list_lemmas.json and receipt.json are exactly byte-identical to the frozen evidence. The complete new output is under lc_ax11h/.
+
+This is a successful full component verification with a diagnosed and corrected integration metadata mismatch. It is not a claim that the complete seven-table root wrapper was rerun after the fix. Root's separate default/quick aggregation supplies the inexpensive final aggregate replay.
+
+Immutability: before/after SHA256 snapshots of machines/, reference/primary/ and additional/PA194LC_AX11H covered 142 files for each execution. Both executions left every checked file unchanged, with no added or deleted files.
+
+Receipts: final_integration_report.json, recovered_receipt_bindings.json, immutability.json, lc_ax11h_integration.json, lc_ax11h/verification.json and lc_ax11h/duration_receipt.json. Logs: reproduce_full.log and lc_ax11h_full.log.

@@ -1,0 +1,154 @@
+\subsection{Additional completed attempts to remove a state}
+\label{sec:additional-reductions}
+
+The following searches supplement the strict one-step contraction experiments.
+They found no accepted machine below 194 working controls. Their negative
+results apply only to the explicitly bounded synthesis families described
+here; none is a lower bound on PA-consistency machines.
+
+\subsubsection{Sharing one selector between two control pairs}
+
+The primary table has 16 pairs of controls with two useful properties:
+one control is always entered immediately after a right move that writes 0,
+the other is always entered after a right move that writes 1, and exactly
+one of their outgoing rows is common. There are 116 choices of two disjoint
+pairs. A proposed reduction replaces their four controls by two retained
+dispatch controls and one shared history selector, recycling one original
+label and deleting the other.
+
+The expanded synthesis tests both retained-label choices in each pair,
+either recycled selector label, and all four assignments of the bit written
+by the two dispatchers. In particular, the exceptional read symbols of the
+two pairs need not agree: the original scanned symbol can itself distinguish
+the two families. Each row of the shared selector may write either bit,
+move either way, and target any retained working control or halt. Returning
+to a patched control is permitted. Both rows are checked jointly after
+partial-row filtering, including cases that reach the other, initially
+unspecified selector row.
+
+The complete run uses a radius-four tape window and at most 120 physical
+steps per replacement fragment. Every bit assignment compatible with the
+forced predecessor witness is tested; the exterior tape is arbitrary and
+may not be read before the required endpoint is reached. There are
+3,712 structural configurations, 4,109,696 single-row proposals and 8,016
+joint row combinations. None survives. This includes the more restricted
+two-pair shared-selector attempt, but does not cover arbitrary changes to
+the tape representation or to other controls.
+
+\subsubsection{Allowing a positive old prefix rather than one old step}
+
+Requiring a replacement fragment to end exactly after one old step can be
+unnecessarily restrictive. The extended criterion allows it to meet the
+projection of any positive prefix of the old execution. Its parameters
+$U,V$ bound the consumed old and new steps respectively:
+\[
+  1\leq u\leq U,\qquad 1\leq v\leq V,
+  \qquad M^{u}(c)\sim N^{v}(\pi(c)).
+\]
+Here $\pi$ identifies the removed control with the retained control, and
+$\sim$ requires the same head, complete tape and projected control at a
+nonterminal endpoint. Terminal write and move decorations are irrelevant
+once both computations halt. The candidate may revisit its retained control;
+both replacement rows are synthesized jointly. Direct halt targets are
+included.
+
+The context set is a finite fixed point obtained from the blank initial
+window, admitting either bit whenever a move exposes a previously untracked
+boundary cell. This is an overapproximation of the actual blank execution.
+Both local traces remain inside the prescribed window until their matched
+endpoint, apart from the final head move. Equality on the window therefore
+gives equality on the unchanged arbitrary exterior tape.
+
+If such a certificate were accepted, its positive progress on both sides
+would compose into a bounded-stuttering correspondence along the blank
+executions. The finite window invariant and finite local checks would
+support elementary arithmetization, with linear rescaling of halting
+witness bounds. This observation motivates the search model; it is not a
+new proof-assistant theorem and does not make the synthesis model complete.
+
+The primary machine and the composite using providers $(98,19)$ and
+$(8,59)$ were tested at radius eight with $(U,V)=(32,160)$. All five new
+single-selector variants and all six two-selector combinations were also
+tested at radius six with $(U,V)=(16,120)$.
+
+\begin{center}\small
+\begin{tabular}{lrrr}
+\hline
+Input family & Control-pair instances & Row proposals & Joint combinations\\
+\hline
+Primary & 18,721 & 26,426,680 & 159,129\\
+Composite $(98;59)$ & 18,721 & 26,428,232 & 150,418\\
+Eleven selector variants & 205,931 & 276,284,712 & 1,482,935\\
+\hline
+Total & 243,373 & 329,139,624 & 1,792,482\\
+\hline
+\end{tabular}
+\end{center}
+
+Every row in this table has zero survivors. A smaller preliminary run on
+the primary table, at radius three with $(U,V)=(4,60)$, additionally tested
+18,721 pairs, 22,587,808 row proposals and 94,926 joint combinations, also
+without a survivor. These counts describe completed enumerations, rather
+than a timeout on an unfinished search.
+
+The new matching rule has a positive control. Two old controls make
+opposite two-step excursions---right then left, or left then right---and
+reach the same unchanged-tape checkpoint. The replay explicitly requires
+the contraction using two old steps and two new steps. Thus the positive
+test exercises the broadened acceptance rule, not merely an ordinary
+one-step duplicate-control elimination.
+
+\subsubsection{Grammar and axiom-emitter experiments}
+
+Four searches each completed a 600-second run. The baseline adds
+occurrence-specific reassociation to the earlier transformations of all
+occurrences of a shared subtree. The other three inputs exchange the
+antecedents in the third numbered seed, the fourth numbered seed, or both.
+These are instances of the purely implicational equivalence
+\[
+ (P\to(Q\to R))\quad\longleftrightarrow\quad(Q\to(P\to R)).
+\]
+They also allow independent bijective renaming of the three parameters in
+each of the six numbered seed blocks. The frozen input words, macro
+attributes, objective implementation and random seeds are included.
+
+\begin{center}\small
+\begin{tabular}{lrrr}
+\hline
+Search & Proposals & Accepted moves & Best reader objective\\
+\hline
+Original emitter & 8,853,178 & 1,011,575 & 60\\
+Third-seed exchange & 9,671,015 & 1,095,955 & 62\\
+Fourth-seed exchange & 9,346,446 & 1,180,479 & 62\\
+Both exchanges & 8,454,380 & 626,965 & 65\\
+\hline
+Total & 36,325,019 & 3,914,974 & ---\\
+\hline
+\end{tabular}
+\end{center}
+
+Adding the 134 fixed controls gives objectives 194, 196, 196 and 199.
+These are compiler search scores: no newly accepted consistency machine
+is claimed for the changed emitters, and their complete physical source
+contracts were not audited. The simultaneous-fold objective has exact
+local compatibility checks, whereas its scanner constraints remain a
+screening model. The baseline retained the known 194-state objective and
+did not improve it.
+
+A proposed contrapositive replacement of the first seed was discarded.
+Treating its distinguished falsity code as ordinary Boolean false would
+silently assume explosion, which the replacement can lose in the actual
+primitive implicational calculus. It is an already known rejected route
+and is not counted as an accepted logical transformation. Interrupted
+seeding experiments are likewise excluded from the completed counts above.
+
+\subsubsection{Portable evidence}
+
+The accompanying reduction-research folder contains source code, exact
+inputs, original license notices and machine-readable receipts, including
+\texttt{receipts/search\_results.json}. Its \texttt{replay.py} checks the
+finite enumeration counts and empty survivor lists; the default quick
+replay and the two-step positive control have passed. The optional grammar
+replay uses explicit iteration caps and the original random seeds to replay
+the recorded proposal prefixes without depending on the current computer's
+wall-clock speed. Timing is not an acceptance criterion.

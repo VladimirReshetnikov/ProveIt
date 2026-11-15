@@ -1,0 +1,102 @@
+Independent mathematical review of work/architecture/ax11gh/proof.tex
+Reviewed 14 November 2026, pinned repository 1e1a41f799d4658b829cdd0eabae3775a0c8c4a0.
+
+Conclusion: no mathematical error found in the new command calculus,
+compiler, scheduler bound, or the stated transport from the incoming
+QAX11H written calibration. This is a mathematical review; it does not
+claim a Lean build or re-audit of every inherited source dependency.
+
+Checked points:
+
+1. AX stores exactly q0,...,q9,t, with q9 = U(c,h). All first nine
+   entries are 0 modulo 4 and q9 is 2 modulo 4, so none equals the
+   contradiction code 1. The first eleven post-AX Shifts never test
+   the saved old top. Shift twelve does test that old top.
+
+2. Exact projection endpoints: after S^(j+2), selected top is qj,
+   cache is q(j+1), and the stack contains q(j+2),...,q9,oldtop,w.
+   Exactly 9-j Pops remove the remainder through the saved zero.
+   At j=8 this reduces to S^10 and one Pop. These identities remain
+   valid at [0;0]=0 because they use total Cantor projection equations.
+
+3. Push's final MP compares an implication (residue 0) against the
+   generated universal entry (residue 2), hence fails and clears both
+   top/cache without changing the intended pushed stack. Discard and
+   MP_u are valid even in the zero implication case: I(t,0)=0 iff t=0.
+   The restricted rho selector reconstructs D from u+(D dotminus u).
+
+4. Gen_i = Push;S;A_(i,0,0,0);S^11 has the stated output even when
+   the input top a equals 1: the first S places 1 in the cache, AX
+   consumes that cache before any next S can test it, and U(i,a) is
+   never 1. The binder c is passed directly in the new AX operand.
+
+5. The MP suffix S;S;MP_b;Pop acts on
+   (0,[a,I(a,b),0;w],0,0) exactly as claimed. The reserved zero is
+   necessary: after successful MP the stack is [0;w], and Pop removes
+   that cell and resets cache. Without it an arbitrary existing stack
+   cell would be consumed. a=1 halts at the second S; b=1 halts during
+   final Pop. These early halts are permitted by the compiler invariant.
+
+6. The all-store proof compiler's induction strength is justified by
+   the descending finite majorant, rather than by unbounded induction
+   over all stores. For i<j, N-1-i >= N-j, hence
+   Phi_K^L(B(j)) <= B(i). Every premise-word call begins after a prefix
+   of at most L commands, so its current code lies inside the earlier
+   line's bounded invariant. The proof predicate and bounded family of
+   execution equations have PR characteristic functions. Inputs with a
+   halted flag are absorbed; otherwise the word interfaces normalize
+   d=h=0 before the recursive call. The final bound B(N-1)=s0 supplies
+   the arbitrary fixed input, followed by universal generalization.
+
+7. An all-store refutation word must end with Pop, not merely S:
+   W_e may return top=1 with cache=0. AX_0 at the front normalizes the
+   two registers while allowing an arbitrary carried stack.
+
+8. The command code e(c::w)=1+b_c(e(w)) is aligned with residual
+   parsing at l-1. The raw fresh candidate
+   N_e=p(2,p(0,p(0,p(0,e(V_e))))) starts with AX_0 and then the suffix
+   V_e. N_e>=3, so the scheduler beginning with candidate 2 reaches it.
+   A candidate n has first residual at most n, and each positive
+   residual strictly decreases, hence drains in <=n+1 commands.
+   Summing those bounds for candidates 2 through N_e is below
+   (N_e+2)^2. Earlier halts only improve the required witness bound.
+
+9. Soundness annotations cover every canonical stack entry and the
+   virtual zero tail. AX's new U(c,h) is justified by theorem Gen
+   applied to the incoming cache proof; the offset is not asserted
+   provable. The restricted rho uses u=d <= d+x, including x=0.
+   The guarded-failure and MP-failure branches insert truth code 0.
+   tl(w)<w for w>0 makes stack annotation traversal bounded.
+
+10. For the new source binding, replacing CopyD by CopyA at token 1
+    preserves the seven-instruction copy template's register distinctness:
+    A,T,X are distinct just as D,T,X are. The copied source register
+    is restored. Because this occurs before reading the later fields,
+    q9 uses old h and binder c, as required. The complete instruction
+    and successor comparison, not only macro word equality, is needed
+    and is explicitly supplied by the construction.
+
+11. The physical bridge's reverse direction cannot be inferred merely
+    from arbitrarily long standard runs. The cited incoming physical
+    theorem instead has PR segment clocks, frame closure, and positive
+    duration before halt; T+1 nonhalting source segments would pass any
+    alleged physical first halt time T. The new proof invokes precisely
+    that uniform theorem with new literal certificates and fixed startup.
+
+12. The numerical axiom families are unchanged from C4^Q. The altered
+    q9 is an inference-rule output, not an extra axiom. Therefore the
+    inherited written Foundation-PA adapter, ordinary-PAeq-to-C4
+    compiler, Q exchange translation, and IΣ1-to-iPRA negative-sentence
+    transfer can be reused without changing their logical targets.
+    An ordinary PA calibration alone would not have sufficed, but the
+    incoming AX11H/QAX11H packet explicitly supplies the weak-base
+    construction being cited.
+
+Remaining scope qualification:
+The new paragraph-level proof is complete conditional on the identified
+incoming written calibration and template proofs, in the ordinary way a
+mathematical paper cites prior results. The inherited general compiler is
+not furnished as a newly kernel-checked executable proof translator, and
+none of the new C++/Python runs certifies the entire arithmetized theorem.
+The final report should preserve this distinction and avoid saying that
+the incomplete repository Lean formalization has been completed.

@@ -1,0 +1,322 @@
+{
+  "status": "PASS",
+  "mode": "full",
+  "source_commit": "603c58ca3bd6bf3222fcfc4e308e6b079f65d573",
+  "python_version": [
+    3,
+    12,
+    14
+  ],
+  "checks": [
+    {
+      "name": "SEL reconstruction",
+      "cwd": "machines/SEL",
+      "command": [
+        "python3",
+        "build.py"
+      ],
+      "return_code": 0,
+      "seconds": 0.035,
+      "stdout": "{\n  \"name\": \"PA194SEL\",\n  \"working_states\": 194,\n  \"rows\": 388,\n  \"start\": 0,\n  \"halt\": 194,\n  \"native_start\": 74,\n  \"native_halt\": 254,\n  \"pairs\": [\n    [\n      12,\n      38,\n      98,\n      19\n    ],\n    [\n      127,\n      124,\n      8,\n      59\n    ]\n  ],\n  \"changed_native_rows\": [\n    {\n      \"state\": 12,\n      \"read\": 0,\n      \"old\": [\n        0,\n        \"R\",\n        19\n      ],\n      \"new\": [\n        0,\n        \"L\",\n        38\n      ]\n    },\n    {\n      \"state\": 38,\n      \"read\": 0,\n      \"old\": [\n        0,\n        \"R\",\n        28\n      ],\n      \"new\": [\n        0,\n        \"R\",\n        98\n      ]\n    },\n    {\n      \"state\": 38,\n      \"read\": 1,\n      \"old\": [\n        1,\n        \"R\",\n        20\n      ],\n      \"new\": [\n        1,\n        \"R\",\n        19\n      ]\n    },\n    {\n      \"state\": 104,\n      \"read\": 1,\n      \"old\": [\n        1,\n        \"R\",\n        124\n      ],\n      \"new\": [\n        1,\n        \"R\",\n        127\n      ]\n    },\n    {\n      \"state\": 124,\n      \"read\": 0,\n      \"old\": [\n        0,\n        \"R\",\n        62\n      ],\n      \"new\": [\n        0,\n        \"R\",\n        8\n      ]\n    },\n    {\n      \"state\": 124,\n      \"read\": 1,\n      \"old\": [\n        1,\n        \"R\",\n        138\n      ],\n      \"new\": [\n        1,\n        \"R\",\n        59\n      ]\n    },\n    {\n      \"state\": 127,\n      \"read\": 0,\n      \"old\": [\n        0,\n        \"R\",\n        14\n      ],\n      \"new\": [\n        0,\n        \"L\",\n        124\n      ]\n    },\n    {\n      \"state\": 312,\n      \"read\": 1,\n      \"old\": [\n        1,\n        \"R\",\n        38\n      ],\n      \"new\": [\n        1,\n        \"R\",\n        12\n      ]\n    }\n  ],\n  \"dense_sha256\": \"5121f0b417ea025af140804b59e50a9d2fc3c461612e98b2f0ac86742c76a75b\",\n  \"native_sha256\": \"98b02254c280a54a763d278841bc33ab8d162f367247c01fa8d2d7cd28acbee1\",\n  \"local_time_factors\": [\n    1,\n    3\n  ],\n  \"proof_scope\": \"Direct relative finite-run preservation; absolute iPRA calibration of the primary remains separate\"\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "SEL finite simulation certificate",
+      "cwd": "machines/SEL",
+      "command": [
+        "python3",
+        "verification/check.py",
+        "--output",
+        "verification/replayed.json"
+      ],
+      "return_code": 0,
+      "seconds": 0.06,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"working_states\": 194,\n  \"transition_rows\": 388,\n  \"dense_sha256\": \"5121f0b417ea025af140804b59e50a9d2fc3c461612e98b2f0ac86742c76a75b\",\n  \"native_sha256\": \"98b02254c280a54a763d278841bc33ab8d162f367247c01fa8d2d7cd28acbee1\",\n  \"changed_native_rows\": 8,\n  \"ordinary_cases\": 380,\n  \"incoming_history_edges\": {\n    \"12\": [\n      [\n        2002,\n        0,\n        0,\n        1\n      ],\n      [\n        2010,\n        0,\n        0,\n        1\n      ],\n      [\n        2025,\n        0,\n        0,\n        1\n      ],\n      [\n        2031,\n        0,\n        0,\n        1\n      ]\n    ],\n    \"38\": [\n      [\n        312,\n        1,\n        1,\n        1\n      ]\n    ],\n    \"127\": [\n      [\n        110,\n        0,\n        0,\n        1\n      ]\n    ],\n    \"124\": [\n      [\n        104,\n        1,\n        1,\n        1\n      ]\n    ]\n  },\n  \"arbitrary_exterior_tape_untouched\": true,\n  \"all_working_states_graph_reachable\": true,\n  \"primary_startup_steps\": 58154,\n  \"new_startup_steps\": 58208,\n  \"complete_seed_tape_equal\": true,\n  \"primary_startup_exceptional_read0_counts\": {\n    \"12\": 0,\n    \"38\": 3,\n    \"124\": 15,\n    \"127\": 9\n  },\n  \"bounds\": {\n    \"old_halts_by_t_implies_new_halts_by\": \"3*t\",\n    \"new_halts_by_T_implies_old_halts_by\": \"T\"\n  },\n  \"kernel_checked\": false,\n  \"scope\": \"Finite certificate consumed by the explicit quantifier-free induction in the report; direct relative iPRA halting equivalence to the primary, with the absolute calibration kept separate\"\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "SEL independent reconstruction and whole startup",
+      "cwd": "machines/SEL",
+      "command": [
+        "python3",
+        "verification/independent_check.py",
+        "--old",
+        "inputs/primary.native.tm",
+        "--new",
+        "machine/pa194sel.native.tm",
+        "--output",
+        "verification/replayed_independent.json",
+        "--write-new",
+        "verification/independently_rebuilt.native.tm"
+      ],
+      "return_code": 0,
+      "seconds": 0.091,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"states\": 194,\n  \"rows\": 388,\n  \"simultaneous_rewrite\": true,\n  \"helpers_unchanged\": true,\n  \"checkpoint_map\": {\n    \"38\": 12,\n    \"124\": 127,\n    \"others\": \"identity\"\n  },\n  \"witness_bounds\": {\n    \"old_to_new\": \"3*t\",\n    \"new_to_old\": \"t\"\n  },\n  \"scope\": \"Complete finite premises for the all-tape theorem from start74; arbitrary initial merged/selector states are excluded unless their entry invariant is assumed.\",\n  \"absolute_calibration\": \"Inherited/open; no new PA-to-machine calibration is established.\",\n  \"old_sha256\": \"e0a7397cf2134e8e7f58a8b1de2f7ff90b74ededd54c912f6ba5b7db48dabe54\",\n  \"new_canonical_native_sha256\": \"98b02254c280a54a763d278841bc33ab8d162f367247c01fa8d2d7cd28acbee1\",\n  \"new_file_sha256\": \"98b02254c280a54a763d278841bc33ab8d162f367247c01fa8d2d7cd28acbee1\"\n}\n{\n  \"startup\": {\n    \"old_steps\": 58154,\n    \"new_steps\": 58208,\n    \"old_read_zero_visits_by_pair\": [\n      3,\n      24\n    ],\n    \"state\": 84,\n    \"head\": -2,\n    \"whole_tape_equality\": true\n  }\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "110-class exact graph census and two-candidate novelty",
+      "cwd": ".",
+      "command": [
+        "python3",
+        "comparison/census.py",
+        "verify",
+        "machines/SEL/machine/pa194sel.tm",
+        "machines/AX11GH/machine/machine.tm",
+        "--out",
+        "comparison",
+        "--receipt",
+        "verification/replayed_novelty.json"
+      ],
+      "return_code": 0,
+      "seconds": 0.743,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"historical_classes\": 110,\n  \"historical_strong_classes\": 110,\n  \"candidate_results\": [\n    {\n      \"candidate\": \"machines/SEL/machine/pa194sel.tm\",\n      \"sha256\": \"5121f0b417ea025af140804b59e50a9d2fc3c461612e98b2f0ac86742c76a75b\",\n      \"working_states\": 194,\n      \"canonical_class\": \"60883811c3bffa22ce522b602f752faaa47ff902d501b002eb4a26c3fc2af32e\",\n      \"strong_class\": \"073b5d1af84e46fae25e1ca53949c16ab38a290cdaa58efa69b35985ccf4eadd\",\n      \"new_under_state_renaming\": true,\n      \"new_under_all_symmetries\": true,\n      \"quotient_states\": 194\n    },\n    {\n      \"candidate\": \"machines/AX11GH/machine/machine.tm\",\n      \"sha256\": \"513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1\",\n      \"working_states\": 194,\n      \"canonical_class\": \"66ee40a6160237ef84943fa49c7c688c3ba386d94dd6e57029cad70ac7b96aab\",\n      \"strong_class\": \"094a8f8ed801865639ddd54b75c26823adfcc21e2a51ac49dbd2cb543d099038\",\n      \"new_under_state_renaming\": true,\n      \"new_under_all_symmetries\": true,\n      \"quotient_states\": 194\n    }\n  ],\n  \"proof_scope\": \"Exact complete-tuple graph comparison only\"\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "AX11GH reconstruction and 4778 construction contracts",
+      "cwd": "machines/AX11GH",
+      "command": [
+        "python3",
+        "build.py"
+      ],
+      "return_code": 0,
+      "seconds": 2.168,
+      "stdout": "{\n  \"family\": \"PA194AX11GH\",\n  \"working_states\": 194,\n  \"transitions\": 388,\n  \"native_start\": 74,\n  \"native_halt\": 254,\n  \"dense_start\": 0,\n  \"dense_halt\": 194,\n  \"fixed_controls\": 134,\n  \"raw_readers\": 67,\n  \"simultaneous_folds\": 7,\n  \"fixed_edits_from_AX11G\": [\n    [\n      38,\n      0,\n      [\n        0,\n        true,\n        28\n      ],\n      [\n        0,\n        true,\n        11\n      ]\n    ],\n    [\n      38,\n      1,\n      [\n        1,\n        true,\n        20\n      ],\n      [\n        1,\n        true,\n        122\n      ]\n    ],\n    [\n      214,\n      0,\n      [\n        0,\n        true,\n        188\n      ],\n      [\n        0,\n        true,\n        312\n      ]\n    ],\n    [\n      214,\n      1,\n      [\n        1,\n        true,\n        312\n      ],\n      [\n        1,\n        true,\n        20\n      ]\n    ],\n    [\n      312,\n      0,\n      [\n        0,\n        true,\n        11\n      ],\n      [\n        0,\n        true,\n        188\n      ]\n    ]\n  ],\n  \"source_sites\": 3671,\n  \"source_outcomes\": 4778,\n  \"local_fold_cases\": 28,\n  \"runtime\": {\n    \"ok\": true,\n    \"contracts\": 4778,\n    \"max_steps\": 479,\n    \"total_steps\": 1518827\n  },\n  \"startup\": {\n    \"steps\": 57922,\n    \"state\": 84,\n    \"head\": -2,\n    \"physical_file\": [\n      0,\n      0,\n      0,\n      0,\n      0,\n      0,\n      2,\n      0,\n      0,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1,\n      1\n    ],\n    \"complete_tape_equality\": true,\n    \"one_cells\": [\n      -3,\n      -2,\n      46,\n      48,\n      50,\n      52,\n      54,\n      56,\n      58,\n      60,\n      61,\n      62,\n      64,\n      66,\n      68,\n      69,\n      71,\n      72,\n      74,\n      75,\n      77,\n      78,\n      80,\n      81,\n      83,\n      84,\n      86,\n      87,\n      89,\n      90,\n      92,\n      93,\n      95,\n      96,\n      98,\n      99,\n      101,\n      102,\n      104,\n      105,\n      107,\n      108,\n      110,\n      111,\n      113,\n      114,\n      116,\n      117,\n      119,\n      120,\n      122,\n      123,\n      125,\n      126,\n      128,\n      129,\n      131,\n      132,\n      134,\n      135,\n      137,\n      138,\n      140,\n      141,\n      143,\n      144\n    ]\n  },\n  \"dense_sha256\": \"513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1\",\n  \"native_sha256\": \"6a97ad509ba5f811e110659bbc36265a0da84015e5e53b883234a4d1a048a452\",\n  \"arithmetic_box_rows_unchanged\": true,\n  \"kernel_checked\": false,\n  \"absolute_ipra_calibration_complete\": false\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "AX11GH source splice",
+      "cwd": "machines/AX11GH",
+      "command": [
+        "python3",
+        "check_source.py"
+      ],
+      "return_code": 0,
+      "seconds": 1.723,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"removed_site\": 3661,\n  \"removed_instruction\": [\n    \"inc\",\n    6,\n    3662\n  ],\n  \"retained_sites\": 3671,\n  \"all_retained_operations_and_successors_relocated\": true,\n  \"meaning\": \"The T-to-X transfer loop becomes a T-clear loop; the H-to-T/X copy is unchanged.\",\n  \"native_transition_edits\": [\n    [\n      38,\n      0,\n      [\n        0,\n        \"R\",\n        28\n      ],\n      [\n        0,\n        \"R\",\n        11\n      ]\n    ],\n    [\n      38,\n      1,\n      [\n        1,\n        \"R\",\n        20\n      ],\n      [\n        1,\n        \"R\",\n        122\n      ]\n    ],\n    [\n      214,\n      0,\n      [\n        0,\n        \"R\",\n        188\n      ],\n      [\n        0,\n        \"R\",\n        312\n      ]\n    ],\n    [\n      214,\n      1,\n      [\n        1,\n        \"R\",\n        312\n      ],\n      [\n        1,\n        \"R\",\n        20\n      ]\n    ],\n    [\n      312,\n      0,\n      [\n        0,\n        \"R\",\n        11\n      ],\n      [\n        0,\n        \"R\",\n        188\n      ]\n    ]\n  ],\n  \"dense_sha256\": \"513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1\"\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "AX11GH exact emitter and four-field codec",
+      "cwd": "machines/AX11GH",
+      "command": [
+        "python3",
+        "check_emitter.py"
+      ],
+      "return_code": 0,
+      "seconds": 0.045,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"family\": \"PA194AX11GH\",\n  \"emitter\": {\n    \"macro_tokens\": 190,\n    \"new_suffix\": [\n      \"copyGuard\",\n      \"compareGuard\",\n      \"push\"\n    ],\n    \"pushed_entries\": 11,\n    \"coefficient\": 4,\n    \"exchanged_sixth_head\": true,\n    \"whole_emitter_free_algebra_checked\": true,\n    \"both_guard_branches_pushed\": true,\n    \"source_MP_fallthrough_reads_extra_field\": true,\n    \"exact_command\": \"AX(c,x,y,z):(0,[G,Gamma,h6,h5,h4,h3,h2,h1,rho,U(c,h),t;w],z,0)\"\n  },\n  \"scheduler\": {\n    \"AX_arity\": 4,\n    \"field_order\": [\n      \"y\",\n      \"x\",\n      \"z\"\n    ],\n    \"padded_z\": 0,\n    \"AX_seed\": \"p(c+2,p(y,p(x,p(z,e(tail)))))\",\n    \"nonempty_continuation\": \"1+b(command,e(tail))\",\n    \"four_field_inverse_checked\": true,\n    \"zero_field_aliases_checked\": true,\n    \"old_three_field_continuation_detected_as_wrong\": true,\n    \"cofinal_prefix_seed\": \"p(k+2,p(0,p(0,p(0,e(halting_suffix)))))\",\n    \"scope\": \"Exact symbolic inverse identities; strict decrease and cofinality proved in ax11g.tex.\"\n  },\n  \"scope\": \"Only the unchanged emitter and codec are inherited. check_words.py verifies the different cache-only Shift protocol.\",\n  \"inputs\": {\n    \"grammar.tree.json\": \"3cfdf1198dcf71f729198cafe21e8cad16be87cee6d7549d7f54f8ea7e8f41e7\",\n    \"nodes.json\": \"f05cf647a40df5d74325e11af2c519bbd8ada8dff377d703a7bfe5f61685e88f\",\n    \"machine.tm\": \"513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1\"\n  }\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "AX11GH universal command-word cases",
+      "cwd": "machines/AX11GH",
+      "command": [
+        "python3",
+        "check_words.py",
+        "--output",
+        "machine/replayed_words.json"
+      ],
+      "return_code": 0,
+      "seconds": 0.034,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"checks\": [\n    \"AX arbitrary fourth operand\",\n    \"first ten Shifts\",\n    \"first eleven Shifts\",\n    \"Push arbitrary store\",\n    \"Push zero alias\",\n    \"Pop non-one case\",\n    \"Pop contradiction case\",\n    \"Pop empty alias\",\n    \"Discard\",\n    \"Offset all natural indices\",\n    \"selector 0\",\n    \"selector 1\",\n    \"selector 2\",\n    \"selector 3\",\n    \"selector 4\",\n    \"selector 5\",\n    \"selector 6\",\n    \"selector 7\",\n    \"selector 8\",\n    \"restricted rho with D=u+x\",\n    \"Generalization arbitrary formula\",\n    \"Generalization formula one\",\n    \"reserve zero\",\n    \"MP both non-one\",\n    \"MP antecedent one\",\n    \"MP consequent one\",\n    \"MP all zero aliases\",\n    \"terminal Pop\",\n    \"plain Shift is NOT terminal test\",\n    \"cached one halts even with top one\",\n    \"AX resets arbitrary d,h\"\n  ],\n  \"checked_identities\": 31,\n  \"shift_guard\": \"h=1\",\n  \"pop_cases\": [\n    \"t=1: halt\",\n    \"t!=1: (t,tail(w),0,head(w))\"\n  ],\n  \"mp_suffix_cases\": [\n    \"a=1: halt\",\n    \"a!=1,b=1: halt\",\n    \"a!=1,b!=1: (b,w,0,0)\"\n  ],\n  \"all_store_refuter\": \"AX(0,0,0,0); compile(refutation); Pop\",\n  \"calibration_scope\": \"Relative to the explicit C4 numerical calculus; no unconditional iPRA/PA consistency calibration is established by this script.\",\n  \"scheduler\": {\n    \"four_operands\": true,\n    \"order\": \"c in tag, then y,x,z\",\n    \"total_zero_projections\": true,\n    \"cofinal_raw_candidates\": \"p(k+2,p(0,p(0,p(0,e(refuter)))))\",\n    \"proof_obligation\": \"Components are bounded by their Cantor pair; e(nonempty)=1+raw supplies strict continuation decrease.\"\n  },\n  \"script_sha256\": \"bf86090530a1e6ad3c1e549216dcdad8f2d75e9b87474d33aed5127059c00110\"\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "AX11GH independent source Shift and exact costs",
+      "cwd": "machines/AX11GH",
+      "command": [
+        "python3",
+        "audit_shift.py",
+        "--output",
+        "machine/replayed_shift.json"
+      ],
+      "return_code": 0,
+      "seconds": 0.211,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"source_sha256\": \"c9772af403f6f4c5b4edbeb10613e1d5095c29df7744b33a05fb49e2fdfb8bb0\",\n  \"inspected_blocks\": [\n    [\n      0,\n      24\n    ],\n    [\n      3660,\n      3670\n    ]\n  ],\n  \"cases\": 4096,\n  \"exact_cost_checks\": 4096,\n  \"minimum_instructions\": 13,\n  \"maximum_instructions\": 1007,\n  \"halt_entry\": \"h=1, at pc10 after 2*t+17 instructions\",\n  \"return\": \"h!=1, at pc25 after 2*t+9*h+4*(a+b)^2+7*a+12*b+13 instructions\",\n  \"output\": \"(C,h,b,0,d,a,0,0,V), input W=p(a,b)\",\n  \"proof\": \"source_shift_audit.tex\",\n  \"scope\": \"Independent literal-source finite audit supporting an explicit all-natural loop proof; no absolute iPRA/PA calibration.\"\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Native restricted-rho/MP exchange certificate",
+      "cwd": "machines/AX11GH",
+      "command": [
+        "python3",
+        "exchange/check_native_exchange.py",
+        "--output",
+        "exchange/replayed.json"
+      ],
+      "return_code": 0,
+      "seconds": 0.112,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"claim\": \"(A -> (B -> C)) -> (B -> (A -> C))\",\n  \"term_nodes\": 29932,\n  \"proof_lines\": 18897,\n  \"restricted_rho_instances\": 8986,\n  \"MP_steps\": 9911,\n  \"maximum_component_path_length\": 6,\n  \"K_or_S_axioms\": 0,\n  \"all_numeric_dominance_guards_have_component_paths\": true,\n  \"scope\": \"Finite uniform native-calculus proof; arithmetic component bounds require only iPRA, no semantic PA consistency assumption.\",\n  \"certificate_sha256\": \"912a42b3d5fe8175e884baa7a799f927ae3e985ece88130f12d8e212d43b8b90\"\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "Independent native exchange certificate",
+      "cwd": "machines/AX11GH",
+      "command": [
+        "python3",
+        "exchange/check_exchange_independent.py",
+        "exchange/native_exchange.json",
+        "--output",
+        "exchange/replayed_independent.json"
+      ],
+      "return_code": 0,
+      "seconds": 0.155,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"certificate_sha256\": \"912a42b3d5fe8175e884baa7a799f927ae3e985ece88130f12d8e212d43b8b90\",\n  \"term_nodes\": 29932,\n  \"max_term_height\": 32,\n  \"proof_lines\": 18897,\n  \"rho_instances\": 8986,\n  \"MP_steps\": 9911,\n  \"maximum_component_path_length\": 6,\n  \"K_or_S_axioms\": 0,\n  \"independent_algorithm\": \"Hash-consed term IDs and flat earlier-premise replay.\",\n  \"arithmetic_argument\": \"For all natural x,y, each is <=4*Cantor(x,y); path composition gives u<=a, including I(0,0)=0.\"\n}\n",
+      "stderr": "",
+      "status": "PASS"
+    },
+    {
+      "name": "AX11GH independent literal-tape 4778-outcome replay",
+      "cwd": "machines/AX11GH",
+      "command": [
+        "python3",
+        "independent/check.py",
+        "machine",
+        "--output",
+        "replayed_literal"
+      ],
+      "return_code": 0,
+      "seconds": 85.027,
+      "stdout": "machine checked 1000\nmachine checked 2000\nmachine checked 3000\n{\"family\": \"PA194AX11GH\", \"status\": \"PASS\", \"states\": 194, \"rows\": 388, \"source_sites\": 3671, \"source_outcomes\": 4778, \"symbolic_steps\": 1106693, \"maximum_symbolic_steps\": 385, \"minimum_positive_duration_constant\": 3, \"list_lemmas_from_literal_table\": 4, \"box_oracles\": false, \"independent_source_resolvers_agree\": true, \"dense_native_conjugacy\": true, \"all_states_graph_reachable\": true, \"whole_blank_startup\": true, \"startup_steps\": 57922, \"dense_sha256\": \"513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1\", \"native_sha256\": \"6a97ad509ba5f811e110659bbc36265a0da84015e5e53b883234a4d1a048a452\", \"contracts_sha256\": \"d18082c36cc942f946206c36eb3e031fd6923ef708dd3d7d1d6e8e2a126e6700\", \"scope\": \"Nine arbitrary natural primary registers, both decrement branches, arbitrary nonempty finite spare list, arbitrary affine nonnegative gap, complete blank exteriors. Executable symbolic induction, not an end-to-end Lean or Rocq PA proof.\"}\n",
+      "stderr": "",
+      "status": "PASS"
+    }
+  ],
+  "scope": "Portable finite and symbolic certificates and exact graph novelty. No new absolute iPRA/PA consistency calibration or proof-assistant endpoint is asserted.",
+  "machine_artifacts_unchanged": true,
+  "rebuilt_machine_artifacts_equal": {
+    "machines/SEL/machine/pa194sel.tm": "5121f0b417ea025af140804b59e50a9d2fc3c461612e98b2f0ac86742c76a75b",
+    "machines/SEL/machine/pa194sel.native.tm": "98b02254c280a54a763d278841bc33ab8d162f367247c01fa8d2d7cd28acbee1",
+    "machines/SEL/machine/pa194sel.labels.json": "e9ff4746563f97efc655b1b3b5261d3fb87e5f62aeee3d2fc83cd8be6817d990",
+    "machines/AX11GH/machine/machine.tm": "513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1",
+    "machines/AX11GH/machine/machine.native.tm": "6a97ad509ba5f811e110659bbc36265a0da84015e5e53b883234a4d1a048a452",
+    "machines/AX11GH/machine/raw.native.tm": "b7ce421ac4adc3e39a6640435067778d5a2f7c39dc3d1a1c6d20bd2b0ee0c65e",
+    "machines/AX11GH/machine/labels.json": "dc01a4d066d7de7d24f1186ff1046e82c26b9b312084bbd3239245e1436a92ab",
+    "machines/AX11GH/machine/nodes.json": "f05cf647a40df5d74325e11af2c519bbd8ada8dff377d703a7bfe5f61685e88f",
+    "machines/AX11GH/machine/grammar.tree.json": "3cfdf1198dcf71f729198cafe21e8cad16be87cee6d7549d7f54f8ea7e8f41e7",
+    "machines/AX11GH/machine/folds.json": "aa699333e095d4527565ef1db4714cd035799f9d385230c4d2f790fa85e131aa",
+    "machines/AX11GH/machine/local_folds.json": "b81f4da53caae4ea95a2d881e493893e86331808805e0a57470b7ddf1ec29022",
+    "machines/AX11GH/machine/sites.json": "0a9eabd1674fd11257c4c91e1c2a773d6d3413ce6f686df9c8d058b183959c6e",
+    "machines/AX11GH/machine/instructions.json": "c9772af403f6f4c5b4edbeb10613e1d5095c29df7744b33a05fb49e2fdfb8bb0"
+  },
+  "results": {
+    "SEL": {
+      "working_states": 194,
+      "transition_rows": 388,
+      "ordinary_cases": 380,
+      "exceptional_cases": 8,
+      "startup_steps": 58208,
+      "independent_reconstruction_equal": true
+    },
+    "AX11GH": {
+      "working_states": 194,
+      "transition_rows": 388,
+      "source_sites": 3671,
+      "source_outcomes": 4778,
+      "local_fold_cases": 28,
+      "startup_steps": 57922,
+      "command_identities": 31,
+      "source_cost_audit_cases": 4096,
+      "construction_runtime": {
+        "ok": true,
+        "contracts": 4778,
+        "max_steps": 479,
+        "total_steps": 1518827
+      },
+      "independent_literal_receipt": {
+        "family": "PA194AX11GH",
+        "status": "PASS",
+        "states": 194,
+        "rows": 388,
+        "source_sites": 3671,
+        "source_outcomes": 4778,
+        "symbolic_steps": 1106693,
+        "maximum_symbolic_steps": 385,
+        "minimum_positive_duration_constant": 3,
+        "list_lemmas_from_literal_table": 4,
+        "box_oracles": false,
+        "independent_source_resolvers_agree": true,
+        "dense_native_conjugacy": true,
+        "all_states_graph_reachable": true,
+        "whole_blank_startup": true,
+        "startup_steps": 57922,
+        "dense_sha256": "513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1",
+        "native_sha256": "6a97ad509ba5f811e110659bbc36265a0da84015e5e53b883234a4d1a048a452",
+        "contracts_sha256": "d18082c36cc942f946206c36eb3e031fd6923ef708dd3d7d1d6e8e2a126e6700",
+        "scope": "Nine arbitrary natural primary registers, both decrement branches, arbitrary nonempty finite spare list, arbitrary affine nonnegative gap, complete blank exteriors. Executable symbolic induction, not an end-to-end Lean or Rocq PA proof."
+      }
+    },
+    "novelty": {
+      "status": "PASS",
+      "historical_classes": 110,
+      "historical_strong_classes": 110,
+      "candidate_results": [
+        {
+          "candidate": "machines/SEL/machine/pa194sel.tm",
+          "sha256": "5121f0b417ea025af140804b59e50a9d2fc3c461612e98b2f0ac86742c76a75b",
+          "working_states": 194,
+          "canonical_class": "60883811c3bffa22ce522b602f752faaa47ff902d501b002eb4a26c3fc2af32e",
+          "strong_class": "073b5d1af84e46fae25e1ca53949c16ab38a290cdaa58efa69b35985ccf4eadd",
+          "new_under_state_renaming": true,
+          "new_under_all_symmetries": true,
+          "quotient_states": 194
+        },
+        {
+          "candidate": "machines/AX11GH/machine/machine.tm",
+          "sha256": "513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1",
+          "working_states": 194,
+          "canonical_class": "66ee40a6160237ef84943fa49c7c688c3ba386d94dd6e57029cad70ac7b96aab",
+          "strong_class": "094a8f8ed801865639ddd54b75c26823adfcc21e2a51ac49dbd2cb543d099038",
+          "new_under_state_renaming": true,
+          "new_under_all_symmetries": true,
+          "quotient_states": 194
+        }
+      ],
+      "proof_scope": "Exact complete-tuple graph comparison only"
+    },
+    "exchange": {
+      "proof_lines": 18897,
+      "native_checker": {
+        "status": "PASS",
+        "claim": "(A -> (B -> C)) -> (B -> (A -> C))",
+        "term_nodes": 29932,
+        "proof_lines": 18897,
+        "restricted_rho_instances": 8986,
+        "MP_steps": 9911,
+        "maximum_component_path_length": 6,
+        "K_or_S_axioms": 0,
+        "all_numeric_dominance_guards_have_component_paths": true,
+        "scope": "Finite uniform native-calculus proof; arithmetic component bounds require only iPRA, no semantic PA consistency assumption.",
+        "certificate_sha256": "912a42b3d5fe8175e884baa7a799f927ae3e985ece88130f12d8e212d43b8b90"
+      },
+      "independent_checker": {
+        "status": "PASS",
+        "certificate_sha256": "912a42b3d5fe8175e884baa7a799f927ae3e985ece88130f12d8e212d43b8b90",
+        "term_nodes": 29932,
+        "max_term_height": 32,
+        "proof_lines": 18897,
+        "rho_instances": 8986,
+        "MP_steps": 9911,
+        "maximum_component_path_length": 6,
+        "K_or_S_axioms": 0,
+        "independent_algorithm": "Hash-consed term IDs and flat earlier-premise replay.",
+        "arithmetic_argument": "For all natural x,y, each is <=4*Cantor(x,y); path composition gives u<=a, including I(0,0)=0."
+      }
+    }
+  },
+  "independent_literal_replay_performed": true,
+  "checks_passed": 12,
+  "total_seconds": 90.439
+}

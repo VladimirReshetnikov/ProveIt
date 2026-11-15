@@ -1,0 +1,46 @@
+\subsection{Source-level reductions examined in this session}
+
+The six ordinary AX-head intervals are
+$[18,35)$, $[35,54)$, $[54,70)$, $[70,86)$, $[86,102)$ and $[102,121)$
+in the 190-token emitter. A direct free-constructor check shows that each
+maps an arbitrary visible top and stack $(t,w)$ to $(h_j,[t;w])$ while
+preserving the parameter registers $D,H,A$. Consequently their order can
+be changed with a corresponding finite update of selector indices.
+This provides an exact correctness condition for the parallel decoder
+search, independent of its scoring heuristic. Earlier packets had also
+searched head order and parameter permutations; this check does not claim
+that the general search direction is new.
+
+There are additional safe variants of the third and fourth heads. Each
+has the shape $P\to(Q\to R)$ and can be replaced by $Q\to(P\to R)$.
+The supplied restricted-rho/MP exchange certificate applies in both
+directions, without treating the designated contradiction atom as an
+extra logical constant. The two modified intervals each still have
+16 macro tokens. Exact alternative 190-token words for either or both
+exchanges were supplied to the decoder search. A changed formula word
+is not itself a smaller machine; a complete table, compatible fold proof,
+source contracts and blank startup remain necessary.
+
+A first-head shortcut was rejected before use. Write
+$X=U(D,N(U(D,H)))$ and let the old head be $I(N(X),H)$.
+The tempting replacement $I(N(H),X)$ is equivalent if the symbol used
+by $N$ is genuine falsity. The numerical calculus initially treats code
+one as a distinguished atom, however, and the old head is what supplies
+explosion. The earlier split-head packet had already exposed this exact
+obstruction. With material implication, every membership atom true,
+every equality atom false, and quantifiers interpreted as the identity,
+the proposed replacement and all retained heads are valid while
+$1\to3$ is false. Therefore the replacement alone is not a justified
+equivalent calculus. Its exploratory emitter file is marked rejected;
+no machine claim depends on it.
+
+Likewise replacing the modal-symmetry head
+$\exists_D\forall_D H\to H$ by the shorter
+$\forall_D H\to H$ is not licensed by the existing completeness proof.
+That proof uses symmetry to extend atomic membership vacuity through
+negation before recovering equality substitution. Appealing to the
+resulting substitution to justify the replacement would be circular.
+No new separation-based derivation closing that gap was found.
+
+These are limitations of the transformations examined, not a lower bound
+of 194 states for PA-consistency machines.
