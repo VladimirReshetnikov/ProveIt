@@ -1,0 +1,78 @@
+\section{Safe head exchange and an unsafe modal shortcut}
+\label{sec:head-exchange}
+
+\subsection{A uniform exchange translation}
+
+Write $I(A,B)=4\pi(A,B)$ for numerical implication. The retained
+dominated $\rho_8$ basis derives the pure implicational theorem
+\[
+ X(A,B,C)=I\bigl(I(A,I(B,C)),I(B,I(A,C))\bigr)
+\]
+uniformly in all numerical $A,B,C$. The source is
+\texttt{PA196/Logic/ImplicationBasis.lean}, whose
+\texttt{Dominated.exchange} is obtained from
+\texttt{M6.Logic.RestrictedImplication.exchange}. Its abstract rule
+interface contains only modus ponens, restricted $\rho_8$, reflexivity
+of the numerical domination relation, and its left/right implication
+bound constructors. It uses none of the first six nonpropositional heads.
+
+Consequently any selection of heads of the shape $I(A,I(B,C))$ may be
+replaced by $I(B,I(A,C))$. For a forward proof translation, replace an
+old head row by the new head, a derivation of $X(B,A,C)$, and one modus
+ponens step. For the reverse translation use the old head,
+$X(A,B,C)$, and one modus ponens step. Translate unchanged head rows
+literally and relocate antecedent indices on MP and generalization rows.
+A bounded scan through the original proof list constructs the translated
+list; correctness is quantifier-free induction on the scanned prefix.
+The translations preserve the last numerical formula exactly, including
+the designated contradiction code~1.
+
+This applies separately and jointly to membership congruence heads 3
+and~4 and distribution head~6. Since every formula code is preserved,
+the special alias $I(0,0)=0$ causes no difficulty. The argument neither
+uses a syntax recoding nor assumes disjoint formula constructors at zero.
+
+\subsection{Why the superficially equivalent dual of head 1 is unsafe}
+
+The old first head is the modal Brouwer schema
+\[
+ (\exists_D\forall_D H)\to H,
+\qquad N(A)=I(A,1),\qquad
+ \exists_D A=N(U(D,N(A))).
+\]
+Replacing it with $U(D,H)\to H$, or with its familiar modal dual
+\[
+ H\to U(D,N(U(D,N(H)))),
+\]
+does not preserve the old calculus by the usual textbook argument.
+That argument requires double-negation elimination relative to the
+designated numerical formula~1. In the original numerical calculus,
+explosion relative to~1 is itself derived using the old first head.
+This dependency is explicit in
+\texttt{PA196/Logic/Deduction.lean},
+\texttt{Context.explosion} and
+\texttt{doubleNegationElimination}.
+
+Here is a countervaluation to both proposed derivability transfers.
+Use the Boolean truth values, interpret $I$ by ordinary implication,
+interpret every $U(a,B)$ by the value of $B$, assign code~0 truth,
+assign $M(0,0)$ truth and every other membership atom falsity, and
+assign every equality atom falsity. This is well defined by recursion
+on formula codes; the zero alias is compatible with Boolean implication.
+Because code~1 is true, every $N(A)$ and every defined existential is
+true. All retained congruence and witness heads are true: congruence has
+a false equality antecedent, and the witness is a defined existential.
+Commutation, distribution and the diagonal head are true because $U$
+acts as the identity. Every gate is true because it is a numerical
+negation. The dominated propositional head is a pure implicational
+tautology. Modus ponens and theorem generalization preserve truth.
+Both proposed replacement heads are true under this valuation.
+
+However, for $H=M(1,0)$, the old first head has a true antecedent and
+false consequent. So does $1\to H$. Thus neither the old first head
+nor explosion is derivable from either replacement calculus.
+This is a precise obstruction to the proposed proof translation;
+it does not by itself settle the consistency strength of the altered
+calculus. Retaining the original first head while exchanging the
+antecedents of heads 3, 4 or 6 avoids this problem.
+

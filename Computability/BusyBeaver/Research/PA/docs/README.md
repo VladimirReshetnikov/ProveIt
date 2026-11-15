@@ -40,10 +40,10 @@ reason and where the same bytes are. There are four reasons.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `upstream-copy` | 14,133 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
-| `sibling-archive` | 24 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
-| `ignored` | 1,921 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
-| `duplicate-machine` | 14,571 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
+| `upstream-copy` | 14,136 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
+| `sibling-archive` | 30 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
+| `ignored` | 2,061 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
+| `duplicate-machine` | 17,066 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
 
 Six nested archives have no delivered counterpart and are placed as files:
 `U209_ConPA_Joint_2026-10-29.zip` (in three packets), `U209_ConPA_2026-10-29.zip`,
@@ -56,8 +56,8 @@ does not run here as delivered.
 
 ## Packets
 
-The 93 archives hold 52,570 members: 21,921 placed here (1296 MB), 14,133 copies of the upstream
-snapshots, 24 nested copies of sibling archives, 1,921 ignored files and 14,571 duplicate machine
+The 100 archives hold 57,559 members: 24,266 placed here (1501 MB), 14,136 copies of the upstream
+snapshots, 30 nested copies of sibling archives, 2,061 ignored files and 17,066 duplicate machine
 tables. The columns P, U, S, I and M give these five counts for each packet. Arrival is
 the date of the commit that added the archive to `docs/incoming`.
 
@@ -156,10 +156,17 @@ the date of the commit that added the archive to `docs/incoming`.
 | [`pa194_research_2026-11-14_2`](pa194_research_2026-11-14_2/) | 2026-11-14 | `pa194_research_2026-11-14` | PA194AX11QGH and PA194AX11HR. States two new 194-state tables, a written proof of the iPRA equivalence for each that uses the AX11H and QAX11H calibration, that this is not a completed Lean theorem, and nothing below 194. | 195 | 0 | 1 | 44 | 197 |
 | [`pa194_sel_ax11gh_research_2026-11-14`](pa194_sel_ax11gh_research_2026-11-14/) | 2026-11-14 | `pa194_research` | PA194SEL and PA194AX11GH. States two new 194-state machines, a written iPRA proof that PA194SEL halts exactly when the primary PA194 does, and nothing below 194. | 163 | 2 | 0 | 2 | 135 |
 | [`pa_conpa_research_2026-11-14`](pa_conpa_research_2026-11-14/) | 2026-11-14 | `pa_conpa_research_2026-11-14` | PA194AX11GH and PA194AX11GHS. States two new 194-state machines with a written proof of the iPRA equivalence that uses the AX11H calibration, that this is not a completed Lean or Rocq formalization, and nothing below 194. | 242 | 0 | 3 | 17 | 120 |
+| [`pa194_comparison_and_new_designs_2026-11-15`](pa194_comparison_and_new_designs_2026-11-15/) | 2026-11-14 | `pa194_sf_research` | PA194AX11H_SF and PA194LC_AX11H_SF. States two new 194-state machines, a relative iPRA proof and a written iPRA equivalence with Con(PA) that imports the AX11H calibration, and a comparison of 139 spanning 194-state graph classes. | 564 | 0 | 1 | 13 | 329 |
+| [`pa194_lcfast_tagged_research_2026-11-14`](pa194_lcfast_tagged_research_2026-11-14/) | 2026-11-14 | `pa194_lcfast_tagged_research_2026-11-14` | PA194LCAX11GHF and PA194LCAX11GHSF. States two new 194-state compositions with a relative iPRA proof, an alternative numerical calculus with tagged encodings, and nothing below 194. | 226 | 1 | 2 | 17 | 156 |
+| [`pa194_loop_return_2026-11-14`](pa194_loop_return_2026-11-14/) | 2026-11-14 | `pa194_loop_return_2026-11-14` | PA194LCG and PA194LCGS. States two new 194-state machines with shortened loop continuations, a written relative iPRA proof connecting each to its AX11GH or AX11GHS parent, and nothing below 194. | 203 | 0 | 0 | 7 | 245 |
+| [`pa194_gd_research_2026-11-14`](pa194_gd_research_2026-11-14/) | 2026-11-14 | `pa194_gd_research_2026-11-14` | PA194GD, PA194GDH and PA194GDHS. States a different source design with three 194-state realizations, a written proof of the iPRA equivalence for each, and nothing below 194. | 465 | 1 | 1 | 15 | 158 |
+| [`pa194_witness_research_2026-11-15`](pa194_witness_research_2026-11-15/) | 2026-11-14 | `pa194_witness_research_2026-11-15` | PA194H5X and PA194JH5X. States two new 194-state machines implementing new presentations of the fifth axiom family, a written proof of the iPRA equivalence with a retained calibration dependency, that this is not a completed Lean or Rocq theorem, and nothing below 194. | 401 | 0 | 1 | 61 | 356 |
+| [`pa194_ax11gdh_research_2026-11-15`](pa194_ax11gdh_research_2026-11-15/) | 2026-11-14 | `pa194_ax11gdh_research` | PA194AX11GDH, PA194AX11GDHS, PA194AX11GDHF and PA194AX11GDHR. States a new command design with four 194-state realizations, a written proof of the iPRA equivalence that depends on an imported calibration, and nothing below 194. | 301 | 0 | 0 | 11 | 533 |
+| [`pa194_marker_separation_2026-11-14`](pa194_marker_separation_2026-11-14/) | 2026-11-14 | `pa194_marker_separation_2026-11-14` | PA194LCGMS and PA194LCGSMS. States two new 194-state machines with separated markers, a written proof of the iPRA equivalence for each relative to its parent and an imported calibration, and nothing below 194. | 185 | 1 | 1 | 16 | 718 |
 
 ## Archives still in `docs/incoming`
 
-None. All 93 archives are removed from `docs/incoming`. They remain in the history of
+None. All 100 archives are removed from `docs/incoming`. They remain in the history of
 the repository.
 
 Some scripts of the [parent directory](../README.md) open an archive at

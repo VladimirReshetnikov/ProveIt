@@ -1,0 +1,49 @@
+The fresh finite-window search computes the least abstract closure of
+state/window pairs from the blank configuration, allowing either newly
+exposed boundary bit. Its soundness is a direct induction on time: every
+concrete successor is one of the admitted abstract successors. It then
+looks for a single transition whose endpoint equals an old path of at most
+31 transitions, without accessing beyond the radius-seven window and
+preserving every cell except the initial write cell.
+
+For AX11GHF, the closure has 912,456 abstract configurations and the search
+finds no additional shortcut. For the loop-reassociated AX11GHF it has
+915,400 configurations and finds the new $190/1$ three-to-one shortcut.
+After applying that shortcut, the closure has 913,352 configurations and
+no further shortcut in this family. All 194 controls remain nonempty in
+each abstract closure. These are exact finite closure results and a bounded
+shortcut search, not finite-run estimates.
+
+The familiar merger $301\to88$, with its matching scanner change, was
+also reexamined. Its arbitrary-register runtime identity does not repair
+its blank initializer. A fresh replay of the prior two-row-rewrite startup
+screen examined 58,485 pairs and all 193 starting controls: 11,287,605
+bounded startup simulations, with no complete intended frame. This
+corroborates an existing negative experiment; it is not claimed as a new
+search family or as an exclusion of all possible initializers. The screen
+used at most 200,000 transitions per run, absolute head position at most
+20,000 and finite-support size at most 20,000. Of the runs, 10,539 reached
+a bound and are not certified divergent. The candidate pool includes
+speculative arithmetic edits, so simultaneous runtime neutrality is not
+assumed. Exact inputs, the tested program and the original log are in
+\file{research/runtime193_startup/}.
+
+Two smaller screens targeted controls 83 and 190 after their read-one
+returns became equal. A radius-four marker-restoration search allowed
+18 transitions and excluded intermediate visits to those two controls.
+A radius-five search retained either control, fixed the common read-one
+row, and tested a replacement read-zero row for up to 40 transitions on
+the specified predecessor contexts. Neither screen found a survivor.
+Their complete assumptions and finite inputs are retained in the marker
+and third-predecessor scripts and receipts; they do not exclude more
+general changes of representation.
+
+A separate two-million-transition blank-prefix observation, with dense and
+native tables simulated in lockstep, did not yet encounter $190/1$ in
+either new machine. No actual blank-prefix use of the new shortcut is
+claimed from that observation. Its arbitrary-time validity follows from
+the incoming-symbol invariant, and its effect on complete parametric
+constructor iterations is certified by the source contracts. The bounded
+observation and its script are retained under \file{verification/}.
+
+\input{microcode_results.tex}

@@ -1,0 +1,509 @@
+% Original preservation proof for the GD family, 2026-11-14 (Pacific time).
+% Requires amsmath, amssymb, booktabs; no private macros are used.
+% Numerical-calculus and arithmetic-template definitions are attributed to
+% the pinned ProveIt PA194 packet and the updated AX11H calibration packet.
+\section{The GD family: independent diagonal and binder parameters}
+\label{sec:gd-preservation}
+
+The new source combines explicit-binder generalization with an
+accumulated-parameter diagonal axiom.  Its generalization entry is
+$U(c,h)$, while its diagonal entry is $\Gamma(d+x)$; the two parameters
+are independently programmable.  This section proves preservation for
+the sum-test source GD and the two cached-test sources GDH and GDHS.
+Their concrete tables and finite binding certificates are supplied
+separately.  The proof uses the same numerical calculus as the primary
+PA194 machine, so the updated AX11H written absolute calibration can be
+reused without changing its PA proof predicate.
+
+\subsection{The exact ten-entry, three-operand interface}
+
+Use the Cantor pairing function and numerical constructors
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,
+\]
+\[
+ U(i,A)=4p(A,i)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+Truth is zero and the refutation target is one.  Set
+$\neg A=I(A,1)$, $A\wedge B=\neg I(A,\neg B)$, and
+$\exists_i A=\neg U(i,\neg A)$.  The inherited calculus
+$\mathcal C_4$ consists of truth, numerical modus ponens, theorem
+generalization $A\mapsto U(i,A)$, and these schemes:
+\begin{align*}
+ h_1(D,H)&=I(\exists_D U(D,H),H),\\
+ h_2(D,c,H)&=I(U(D,U(c,H)),U(c,U(D,H))),\\
+ h_3(D,c,H)&=I(M(H,D),I(E(H,c),M(c,D))),\\
+ h_4(D,c,H)&=I(E(H,D),I(M(c,H),M(c,D))),\\
+ h_5(D,H)&=\exists_D E(H,D),\\
+ h_6(D,c,H)&=I(U(D,c),I(U(D,I(c,H)),U(D,H))),\\
+ \rho(D,c,H,u)&=I(I(I(H,u),D),I(I(D,H),I(c,H))),
+       \qquad u\le D,\\
+ \Gamma(B)&=I(B,U(B,B)).
+\end{align*}
+Here $h_6$ is the ordinary distribution head, not its exchanged-premise
+variant.  For the guarded scheme put
+\begin{align*}
+ P(a,b,c)&=I(c,M(c,b)),&
+ V(a,b,c)&=I(M(a,b),U(c,M(a,b))),\\
+ S(a,b,c)&=U\bigl(b,I(M(a,b),P(a,b,c))\wedge I(M(c,b),c)\bigr),\\
+ Q(a,b,c)&=U(c,I(S(a,b,c),\neg P(a,b,c))),\\
+ g(a,b,c)&=
+ \begin{cases}
+ \neg I(V(a,b,c),Q(a,b,c)),&c\ne a\text{ and }c\ne b,\\
+ 0,&\text{otherwise.}
+ \end{cases}
+\end{align*}
+All these are schemes on exact numerical codes.  In particular,
+$I(0,0)=0$ is an actual alias, not an omitted exceptional case.
+
+Write $[a;w]=p(a,w)$ and extend this notation by nesting to the right.
+The total projections satisfy
+$\operatorname{hd}(0)=\operatorname{tl}(0)=0$ and the usual projection
+equations, including $[0;0]=0$.  A store is $(t,w,d,h)$, comprising a
+visible top, protected numerical stack, offset, and cached formula.
+For the three operands $c,x,y$, set $D=d+x$ and $H=h+y$ and define
+\[
+\begin{array}{c|l}
+q_0&\Gamma(D)\\
+q_1&h_6(D,c,H)\\
+q_2&h_5(D,H)\\
+q_3&h_4(D,c,H)\\
+q_4&h_3(D,c,H)\\
+q_5&h_2(D,c,H)\\
+q_6&h_1(D,H)\\
+q_7&\rho(D,c,H,d)\\
+q_8&U(c,h).
+\end{array}
+\]
+The exact GD commands are
+\begin{align*}
+ \mathsf A_{c,x,y}(t,w,d,h)
+   &=(g(H,D,c),[q_0,q_1,\ldots,q_8,t;w],0,0),
+                                                        \tag{GD-A}\label{eq:gd-ax}\\
+ \mathsf M_x(t,w,d,h)
+   &=\begin{cases}
+       (d+x,w,d+x,0),&I(t,d+x)=h,\\
+       (0,w,d+x,0),&I(t,d+x)\ne h.
+     \end{cases}                                       \tag{GD-M}\label{eq:gd-mp}
+\end{align*}
+GD uses
+\[
+ \mathsf S_\Sigma(t,w,d,h)=
+ \begin{cases}
+ \mathsf{halt},&t+h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&t+h\ne1,
+ \end{cases}                                            \tag{GD-S}\label{eq:gd-sum}
+\]
+and GDH and GDHS both implement
+\[
+ \mathsf S_H(t,w,d,h)=
+ \begin{cases}
+ \mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}(w),d,\operatorname{hd}(w)),&h\ne1.
+ \end{cases}                                            \tag{GD-H}\label{eq:gd-cache}
+\]
+In the remainder, $\mathsf S$ means the chosen test consistently.
+
+There are exactly ten newly pushed entries in (GD-A): nine $q$ entries
+and the saved old top.  The guarded head remains visible.  The source
+retains its closing break and does not fall through the full MP reader.
+Consequently AX has exactly the three operands displayed above, its
+outgoing offset is zero, and its residual program is the continuation
+after the $y,x$ fields.  No fourth operand is consumed.  This distinction
+changes both the word encoding and every stack-word exponent from the
+eleven-entry AX11 families.
+
+\subsection{Binding the new emitter and the two tests}
+
+The changed emitter performs the same finite constructors and pushes as
+its parent.  The first saved universal uses the command parameter $c$
+instead of the incoming offset $d$.  Three later parameter copies use
+$D$ instead of $c$ to construct $I(D,U(D,D))$.  The other eight emitted
+heads, the guard comparisons, and the outgoing cleared scratch registers
+are unchanged.  Independent free-term execution checks the complete
+output tuple, rather than testing the formula only at sample integers.
+Its precondition and endpoint, in register order $(N,T,W,A,D,H,X,Y,L)$,
+are
+\[
+ (n,t,w,c,d,h,0,0,p(y,p(x,\ell)))
+ \longmapsto
+ (n,g(H,D,c),[q_0,\ldots,q_8,t;w],0,0,0,0,0,\ell).
+                                                        \tag{GD-End}\label{eq:gd-end}
+\]
+The original breaks remain literal breaks.  In particular this proof
+does not use a historical-zero invariant to replace a break by a
+conditional decrement.
+
+The independent \texttt{check\_source.py} generates every primitive
+instruction and outgoing edge from handwritten arithmetic templates;
+it imports neither the construction compiler nor a Turing-machine
+simulator.  Its arrays equal the delivered 3,654-site GD, 3,653-site
+GDH, and 3,650-site GDHS sources.  As a separate check it expands the
+named binary source tree and resolves all jumps by subtree intervals,
+obtaining those same arrays.  The respective template decompositions
+contain 942, 943, and 941 instances.  The common command ports are
+fetch 25, decode 34, AX 50, full MP 3554, MP comparison 3624,
+successful MP copy 3634, return 3641, and Shift 3642.
+The AX closing break at 3553 jumps to the shared return at 3641,
+which jumps to 25; its command clock includes both steps.
+
+The same checker executes AX in a free algebra with all input
+parameters symbolic.  It checks both guard comparisons, every
+intermediate scratch precondition, and all nine final registers in
+(GD-End).  For each source it also replays 882 local exact-duration
+examples and 324 composed Shift/MP examples, covering both comparison
+outcomes and both fresh and positive-continuation fetch cases.
+These examples check the arithmetic implementations; the uniform
+counter-induction proof is the reason the clock equations hold for
+arbitrary natural inputs.
+
+The H source clears $T$, copies and restores $H$ into $T$, and increments
+the initially zero $X$.  Its root comparison therefore sees
+$(T,H,X)=(h,h,1)$.  The HS source instead duplicates $H$ into $T,X$ and
+increments $H$, giving $(T,H,X)=(h,1,h)$.  The inherited destructive
+comparison theorem gives equality precisely at $h=1$ in both cases;
+on inequality it clears the compared registers and reaches the same
+stack-pop continuation.  Both sources therefore implement (GD-H) for
+every store, despite having different instruction arrays and clocks.
+
+For clarity, if $C(a,b)$ denotes the exact inherited comparison clock,
+the respective durations before the common stack-pop or halt suffix are
+\[
+ (2t+1)+(7h+2)+2+C(h,1),\qquad
+ (2t+1)+(4h+1)+2+C(1,h).
+\]
+Here clear, transfer, duplicate, and copy-and-restore cost
+$2r+1$, $3r+1$, $4r+1$, and $7r+2$ respectively.  For the sum test,
+the unchanged parent source transfers $T$ into $X$, duplicates $H$ into
+$T,X$, then transfers $X$ into $H$.  Thus it reaches
+$(T,H,X)=(h,t+h,0)$ before incrementing $X$ and jumping to the root.
+It compares the sum with one while retaining the old cache as the next
+top, and its corresponding prefix clock is
+\[
+          (3t+1)+(4h+1)+(3(t+h)+1)+2+C(t+h,1).
+\]
+These expressions are composed with the pairing, unpairing, and fetch
+clocks already proved in the inherited source-command template argument.
+That argument uses quantifier-free induction on completed loop rounds,
+with register equalities and partial-sum clocks as its invariant.  The
+new source changes only a finite composition of those templates.  Thus
+the same proof applies once the delivered instruction and edge arrays
+are checked against that composition.
+
+\subsection{Stack-word equations, including the zero alias}
+
+Every $q_0,\ldots,q_7$ and $g(H,D,c)$ is a multiple of four;
+$q_8=U(c,h)$ is congruent to two modulo four and is at least two.
+Direct iteration of the command equations gives, without a halt,
+\begin{align*}
+ \mathsf A_{c,x,y};\mathsf S^9(t,w,d,h)
+    &=(q_7,[t;w],0,q_8),\\
+ \mathsf A_{c,x,y};\mathsf S^{10}(t,w,d,h)
+    &=(q_8,w,0,t).
+\end{align*}
+All guards tested in these two calculations concern the safe heads and
+zero; neither calculation tests the saved old top alone.
+
+Put $A_0=\mathsf A_{0,0,0}$ and define
+\[
+ \mathsf{Push}=A_0;\mathsf S^9;\mathsf M_0,\qquad
+ \mathsf{Pop}=A_0;\mathsf S^{11},\qquad
+ \mathsf{Discard}=\mathsf M_0.
+\]
+For either Shift variant,
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf M_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+Push's last MP compares an implication code of residue zero with $q_8$
+of residue two, and therefore fails.  Discard has result zero whichever
+comparison branch is taken.  The last identity succeeds with result zero
+at $i=0$ and fails at $i>0$, since $I(0,i)>0$ then.
+
+The Pop laws differ between the two tests:
+\begin{align*}
+ \mathsf{Pop}_\Sigma(t,[a;w],d,h)&=(t,w,0,a),\\
+ \mathsf{Pop}_H(t,[a;w],d,h)&=
+   \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1.
+   \end{cases}                                         \tag{GD-Pop}\label{eq:gd-pop}
+\end{align*}
+The eleventh Shift sees top $q_8$ and cache $t$.  Its sum is at least two,
+so the sum test cannot halt.  The cache test halts exactly at $t=1$.
+These equations are equations for the numerical pairing and total
+projections.  They hold when one or several apparent stack cells are
+zero, including $[0;0]=0$; no free-list assumption is made.
+
+\subsection{Selecting every inherited axiom instance}
+
+For $0\le j\le7$, first take incoming offset and cache zero.  Apart
+from the fourth parameter of $\rho$, which is treated below, the word
+\[
+ \mathsf{Discard};\mathsf A_{c,D,H};
+             \mathsf S^{j+2};\mathsf{Pop}^{8-j}           \tag{GD-Sel}\label{eq:gd-sel}
+\]
+returns $(q_j,w,0,0)$ from every $(t,w,0,0)$.  The first Shifts put
+$q_j$ at the top.  Every Pop preserves that top and removes one remaining
+generated stack entry; the last such entry is the saved zero.
+Since $q_j\ne1$, no cached-test Pop halts.  For the guarded head use
+\[
+ \mathsf{Discard};\mathsf A_{c,D,H};\mathsf{Pop}^{10}.
+\]
+It returns $(g(H,D,c),w,0,0)$, again without a halt.  A failed guard
+returns truth, as in the parent machine.
+
+For the desired dominated instance $\rho(D,c,H,u)$ with $u\le D$, use
+\[
+ \mathsf{Discard};\mathsf M_u;
+ \mathsf A_{c,D-u,H};\mathsf S^9;\mathsf{Pop}.
+\]
+The actual accumulated parameter is $u+(D-u)=D$ and the incoming offset
+recorded by the fourth argument of $\rho$ is exactly $u$.
+
+The free diagonal parameter requires a deliberate adjustment.
+The new diagonal head is $\Gamma(D)$, so for an arbitrary prescribed
+$B$ its selector is
+\[
+ \mathsf{Discard};\mathsf A_{0,B,0};
+                        \mathsf S^2;\mathsf{Pop}^8.      \tag{GD-Diag}\label{eq:gd-diag}
+\]
+This sets $D=B$ directly.  Thus the source still emits every instance
+$\Gamma(B)$ of the same scheme; no diagonal axiom has been lost.
+The non-diagonal selectors set $c,D,H$ as before, independently.
+
+Explicit-binder generalization is implemented by
+\[
+ \mathsf{Gen}_i=
+       \mathsf{Push};\mathsf S;\mathsf A_{i,0,0};\mathsf S^{10}.
+                                                        \tag{GD-Gen}\label{eq:gd-gen}
+\]
+From $(a,w,0,0)$, Push and the next Shift give $(0,w,0,a)$.
+That Shift tests zero before moving $a$ into the cache.  AX saves $U(i,a)$
+and clears the visible cache; the final ten Shifts return
+$(U(i,a),w,0,0)$.  This computation is nonhalting even if $a=1$.
+The changed diagonal parameter does not affect it.
+
+\subsection{A compiler that tolerates early refutations}
+
+Suppose that a major premise proves $I(a,b)$ and a minor premise proves
+$a$.  On the store containing the two premises and a reserved zero,
+consider
+\[
+ \mathsf S;\mathsf S;\mathsf M_b;\mathsf{Pop}
+       \quad\hbox{from}\quad(0,[a,I(a,b),0;w],0,0).
+                                                        \tag{GD-MPs}\label{eq:gd-mps}
+\]
+The first Shift is safe.  The second halts if $a=1$ for either test.
+Otherwise it leaves $(a,[0;w],0,I(a,b))$ and MP succeeds, giving
+$(b,[0;w],b,0)$.  Sum-test Pop then returns $(b,w,0,0)$ unconditionally;
+cached-test Pop halts at $b=1$ and otherwise returns the same store.
+Consequently (GD-MPs) always either halts or returns $(b,w,0,0)$.
+An early halt is an allowed successful outcome of the refutation
+compiler, rather than a case excluded by assuming consistency.
+
+Represent numerical derivations by finite lists with earlier premise
+indices.  Use Discard for truth, the preceding selectors for axiom
+instances, and append $\mathsf{Gen}_i$ at a generalization line.  At a
+modus-ponens line with major derivation $e_1$ and minor derivation $e_0$
+define the finite word
+\[
+\begin{split}
+ W_e={}&\mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+ W_{e_0};\mathsf{Push};\mathsf S;\mathsf S;
+ \mathsf M_b;\mathsf{Pop}.
+\end{split}                                             \tag{GD-CmpDef}\label{eq:gd-cmpdef}
+\]
+The first two commands reserve the zero below the premises.  Recursive
+words preserve the protected stack when they return.  The local laws
+therefore establish
+\[
+ W_e(t,w,0,0)\ \text{halts or returns}\
+             (\operatorname{concl}(e),w,0,0)             \tag{GD-Cmp}\label{eq:gd-cmp}
+\]
+for every valid numerical derivation and every $t,w$.
+
+A common finishing word works for both tests:
+\[
+                    \mathsf{Finish}=\mathsf{Push};\mathsf S;\mathsf S.
+\]
+On $(1,w,0,0)$, Push returns $(0,[1;w],0,0)$, the first Shift gives
+$(0,w,0,1)$, and the next Shift halts.  Thus for every refutation $e$,
+\[
+                   V_e=A_0;W_e;\mathsf{Finish}            \tag{GD-Ref}\label{eq:gd-ref}
+\]
+halts from every incoming store.  The initial AX makes offset and cache
+zero; its otherwise arbitrary output and protected stack are permitted
+inputs to (GD-Cmp).
+
+\subsection{Why the compiler proof uses only allowed induction}
+
+An unbounded assertion about all stores is not used as an induction
+formula.  Fix a valid list of $N>0$ proof lines and compile its words
+$W_0,\ldots,W_{N-1}$ bottom-up by primitive recursion.  Let $L\ge1$
+bound their lengths and $K$ bound all their command codes.  Encode stores
+and an absorbing halt by natural numbers.  For the primitive recursive
+command step $\operatorname{next}$ define
+\[
+ \Phi_K(s)=1+\max\bigl(s,
+            \max_{c\le K,\ u\le s}\operatorname{next}(c,u)\bigr).
+\]
+This is monotone, and bounded maxima and iteration are primitive
+recursive.  Fix the desired normalized input code $s_0$ and put
+\[
+              B(j)=\Phi_K^{\,L(N-1-j)}(s_0)\qquad(j<N).
+\]
+An occurrence of a premise word inside $W_j$, started at input at most
+$B(j)$, receives an input at most $\Phi_K^L(B(j))$; all its preceding
+commands belong to $W_j$.  If its premise index is $i<j$, this is at most
+$B(i)$.
+
+At induction stage $j$, take the bounded conjunction of (GD-Cmp) for
+every earlier line $i<j$ and every normalized input code at most $B(i)$.
+Finite word execution, validity, normalization, and the halt flag are
+primitive recursive.  Hence the whole bounded conjunction is a single
+primitive recursive Boolean equation.  Its quantifier-free induction
+step follows from the preceding local word equations and the displayed
+input bound.  At the last line, $B(N-1)=s_0$.  Generalizing the arbitrary
+input after this induction yields (GD-Cmp), and hence (GD-Ref), in iPRA.
+All word construction and execution witnesses are explicit primitive
+recursive functions.  No least successful execution time is used.
+
+\subsection{Three-operand encoding and the carried-store scheduler}
+
+The correct word encoder for this source is
+\[
+ e(\epsilon)=0,\qquad e(a::v)=1+b_a(e(v)),
+\]
+\[
+ b_{\mathsf S}(r)=p(0,r),\qquad
+ b_{\mathsf M_x}(r)=p(1,p(x,r)),\qquad
+ b_{\mathsf A_{c,x,y}}(r)=p(c+2,p(y,p(x,r))).              \tag{GD-Enc}\label{eq:gd-enc}
+\]
+There is no fourth nested AX field.  The exact live scheduler state is
+$(n,\ell,t,w,d,h)$; its initial value is $(2,0,0,0,0,0)$.  If $\ell=0$
+the next raw seed is $n$ and the new fresh counter is $n+1$.  If $\ell>0$
+the next raw seed is $\ell-1$ and the fresh counter stays $n$.  After
+executing one decoded command, the residual after its fields is the new
+continuation.  The store is carried across all candidate boundaries.
+
+Every residual is a nested Cantor component of the raw seed and is at
+most that seed.  Thus a positive continuation strictly decreases, and a
+candidate of raw seed $n$ drains within $n+1$ command steps unless it
+halts.  These assertions follow by quantifier-free induction on bounded
+command iterations.
+
+Prefix $\mathsf A_{k,0,0}$ to the all-store halting suffix $V_e$.
+The raw seed of the resulting candidate is
+\[
+                  N_k=p(k+2,p(0,p(0,e(V_e)))).            \tag{GD-Seed}\label{eq:gd-seed}
+\]
+It is at least $k+2$ and at least three.  These seeds are cofinal in the
+fresh enumeration, and the arbitrary prefix output causes no difficulty
+because $V_e$ halts from every store.  From the clean start choose $k=0$;
+draining the candidates through $N_0$ takes at most $(N_0+2)^2$ abstract
+steps unless a halt has occurred earlier.  This is an explicit primitive
+recursive witness bound.  It never assumes that failed trials reset the
+store.  Therefore iPRA proves that a $\mathcal C_4$ refutation yields a
+finite scheduler halt.
+
+\subsection{Soundness and transfer of the absolute calibration}
+
+For soundness, annotate the visible top, cache, and every canonical
+numerical stack entry by indices in a finite valid $\mathcal C_4$
+derivation.  Truth supplies the initial annotations and all virtual
+zero entries.  For $w>0$, $\operatorname{tl}(w)<w$, so canonical stack
+annotation and its validity are bounded primitive recursive operations.
+
+AX appends valid proofs of its entries.  The new $\Gamma(D)$ is an
+instance of the unchanged diagonal scheme.  Its $U(c,h)$ follows by
+theorem generalization from the annotated cache.  The dominated instance
+has $d\le d+x$; the other heads are their displayed schemes, and a failed
+gate supplies truth.  The saved top was already proved.  Successful MP
+uses the proofs of $t$ and $I(t,d+x)$; failure supplies truth.  A
+nonhalting Shift merely moves annotated formulas.  A cached-test halt
+exposes the proof of $h=1$.  A sum-test halt has $t+h=1$, so either
+$t=1,h=0$ or $t=0,h=1$ by the decidable natural-number case analysis;
+one of the two annotations is therefore a refutation.
+
+The annotation update is primitive recursive and its validity checker
+is Boolean.  Quantifier-free induction on a finite command run extracts
+a numerical refutation from every scheduler halt.  Combined with the
+compiler, for each of the two abstract tests this proves
+\[
+ \mathrm{iPRA}\vdash\quad
+ \operatorname{Halt}(R_{GD})\ \longleftrightarrow\
+           \exists e\,\operatorname{Prf}_{\mathcal C_4}(e,1).
+                                                        \tag{GD-Calc}\label{eq:gd-calc}
+\]
+
+The source-command clocks are total primitive recursive functions.
+Composing their positive live-command segments gives a cumulative
+source clock.  The inherited physical proof supplies total primitive
+recursive macro clocks, including frame, gap, variable file width, and
+spare-file growth.  Instantiating it with the delivered decoder, folds,
+source instructions, and complete blank-start certificate gives the
+physical/source equivalence.  Halt is absorbing; its subsequent clock
+increments may be zero.  Conversely, a proposed first physical or
+source halt cannot occur within more positive nonhalting segments than
+its own time.  This is the same conditional cofinality argument used in
+the inherited physical audit, and does not assume positive durations
+after halt.
+
+Let $M$ be one of the concrete GD, GDH, or GDHS tables with those
+bindings checked.  Composition with (GD-Calc) gives
+\[
+ \mathrm{iPRA}\vdash\quad
+ \operatorname{Halt}_{\rm blank}(M)\ \longleftrightarrow\
+           \exists e\,\operatorname{Prf}_{\mathcal C_4}(e,1).
+                                                        \tag{GD-Phys}\label{eq:gd-phys}
+\]
+The numerical calculus in this formula is exactly the ordinary
+$\mathcal C_4$ calibrated by the updated AX11H packet.  In particular
+the new selector (GD-Diag) ranges over the same diagonal scheme, and no
+logical axiom or inference rule has been strengthened or weakened.
+
+The inherited absolute calibration uses its Foundation-to-ordinary-PA
+adapter, finite-demand logical compiler, model-uniform numerical
+soundness, and the pinned one-way negative-transfer endpoints.  It
+establishes the negative calibration
+\[
+ \mathrm{iPRA}\vdash\quad
+ \operatorname{Con}(\mathrm{PA})\ \longleftrightarrow\
+       \neg\exists e\,\operatorname{Prf}_{\mathcal C_4}(e,1).
+                                                        \tag{GD-Cal}\label{eq:gd-cal}
+\]
+Equivalently, (GD-Cal) follows by combining its written AX11H
+consistency/nonhalting theorem with that source's proved equivalence to
+the same numerical refutation predicate.  This use of the inherited
+calibration does not assert an intuitionistic equivalence between two
+positive existential PA and numerical proof predicates.  In particular
+it does not extract a positive witness from a double negation.
+
+Applying negation to the two implications of (GD-Phys), then using
+(GD-Cal), is constructive and gives the claimed preservation theorem:
+\[
+ \boxed{\quad\mathrm{iPRA}\vdash\quad
+   \operatorname{Con}(\mathrm{PA})\ \longleftrightarrow\
+                 \neg\operatorname{Halt}_{\rm blank}(M).\quad}
+\]
+No consistency assumption is used to prove this equivalence.  As with
+the inherited absolute calibration, this is a written mathematical
+proof whose finite table and source bindings have executable checks;
+it is not a completed end-to-end Lean kernel certification.
+
+\subsection{Why GD is a different source architecture}
+
+In the earlier explicit-binder G source the same command parameter
+supplied both $U(c,h)$ and $\Gamma(c)$.  GD retains the binder $c$ but
+uses the independent accumulated value $d+x$ in the diagonal entry.
+For example, from offset and cache zero, take $c=0,x=1,y=0$.
+Both sources save $U(0,0)=2$, while the older G source emits
+$\Gamma(0)=20$ and GD emits $\Gamma(1)=832$.
+These are different command outputs on the same input.  A uniform
+renaming that swapped $c$ and $D$ would also change the generalization
+entry to $U(D,h)$, which GD does not do.  Its independence of diagonal
+and binder parameters is therefore more than a global parameter rename.
+The three delivered tables additionally use distinct literal Shift
+implementations, with GDH and GDHS sharing an abstract test and GD
+having the different sum-test transition relation.

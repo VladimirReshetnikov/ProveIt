@@ -1,0 +1,195 @@
+% Report fragment. Requires booktabs, longtable, array, hyperref, amsmath, amssymb.
+\section{Comparison of the complete current PA design corpus}
+\label{sec:corpus-comparison}
+
+The comparison is pinned to ProveIt commit
+\nolinkurl{793c68737d94bffa4e32a75bce6cc8058d6d22f0}.
+It covers all 93 filed research packets and the four additional archives in
+\texttt{docs/incoming}: 97 deliveries in total.
+The filed-packet descriptions are attributed claims from their authors;
+the repository explicitly says their placement did not rerun or verify them.
+The archive ledger and graph catalog are independent kinds of evidence.
+\footnote{Pinned sources: \href{https://github.com/VladimirReshetnikov/ProveIt/blob/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/BusyBeaver/Research/PA/docs/README.md}{filed packet ledger}; \href{https://github.com/VladimirReshetnikov/ProveIt/blob/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/BusyBeaver/Research/PA/docs/MACHINES.md}{machine census and its equivalence convention}; \href{https://github.com/VladimirReshetnikov/ProveIt/blob/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/BusyBeaver/Research/PA/README.md}{PA project proof status}.}
+
+The supplied \texttt{packet\_ledger97.csv} and JSON counterpart preserve every
+delivery, its path, wrapper, reported result and pinned source URL.
+The 83 named principal or supplementary graph classes are separately listed
+in \texttt{named\_positive\_designs.csv}.  The full structural frontier,
+including rejected and auxiliary tables, is in
+\texttt{frontier194\_all521.csv}; every one of its 521 representatives is
+supplied for exact replay.  These counts concern the input corpus, before
+the machines introduced in this report.
+
+\subsection{Counts, equivalence conventions and evidence boundaries}
+
+The official filed catalog records 15,317 original table files, 1,084 distinct
+file payloads and 747 graph classes across all state counts.  Of its 194-control
+classes, 139 have a spanning root and one is a nonspanning diagnostic.
+All 139 spanning historical classes are represented again among the current
+incoming comparisons.  Parsing the four current archives adds 381 further
+194-control classes, giving 520 spanning classes and the one diagnostic.
+Most additions are auxiliary search inputs rather than proposed theorems.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Role of a current 194-control graph class & Count\\
+\midrule
+Reported principal construction & 76\\
+Reported supplementary construction & 7\\
+Historical research auxiliary & 47\\
+Current incoming research auxiliary & 372\\
+Rejected candidate & 14\\
+Research seed & 4\\
+Nonspanning diagnostic & 1\\
+\midrule
+Total & 521\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The table is deliberately a graph census.  It does not assert 521, or even
+83, independently verified consistency equivalences.  A named construction
+may be backed by an ordinary PA argument, a relative simulation, a written
+\(\mathrm{iPRA}\) argument, or only a narrower artifact claim; the per-packet
+ledger retains that distinction.  In particular, the early AX11H delivery
+explicitly declined an unconditional \(\mathrm{iPRA}\) theorem, whereas the
+second delivery with the same archive name supplies the revised written
+calibration used by later packets.  The two deliveries must not be
+conflated, and that written calibration is not a completed Lean endpoint.
+\footnote{Compare the pinned \href{https://github.com/VladimirReshetnikov/ProveIt/blob/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/BusyBeaver/Research/PA/docs/pa194_ax11h_research_2026-11-14/README.md}{first AX11H delivery} with the \href{https://github.com/VladimirReshetnikov/ProveIt/blob/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/BusyBeaver/Research/PA/docs/pa194_ax11h_research_2026-11-14_2/README.md}{revised AX11H delivery}.}
+
+The direct current-archive scan finds 1,278 \texttt{.tm} paths and 694
+byte-distinct payloads.  Recursing into nested archives gives 1,757 table
+occurrences and 880 distinct table payloads across six distinct ZIP payloads
+(nine ZIP references), of which 677 distinct payloads have 194 controls.
+The accompanying JSON audit examines 847 occurrences and 641 distinct JSON
+payloads.  Its explicit table recognizers accept array, dictionary and
+multiline forms, including Boolean direction encodings; no extra
+194-control class appears in the nested archives or recognized JSON tables.
+These are separate occurrence, byte and graph counts and must not be added
+together.  The scan does not claim to execute every possible abstract
+generator or recover tables specified only in prose.
+
+Graph classes disregard state labels and, for the corpus classification,
+the designated start.  For novelty of the new machines we use a stronger
+exact comparison: arbitrary state renaming and spanning root, reflection,
+global symbol exchange, and ignored write/move actions on terminal edges.
+The comparison uses exact rooted transition tuples, with hashes only to
+bind supplied files.  Global symbol exchange is a structural test here;
+it does not itself preserve the convention of a zero blank tape.
+The nonspanning diagnostic cannot match a new spanning table.
+
+\subsection{The 31 mechanism families}
+
+The following table collects all 31 identified families.  Its first 27 rows
+organize the filed and repeatedly reprinted designs; its last four rows
+cover the four current incoming packets.  Names separated by an equality
+sign are aliases or an exact graph duplication, not extra constructions.
+The primary pairs \((67/7)\) and \((68/8)\) denote AX readers and simultaneous
+folds: \(134+67-7=194=134+68-8\).
+
+There are three substantive levels.  Constructor and logical-head changes
+alter the numerical calculus and require proof transport.  MP, cache and
+AX11 changes alter the command interface and require a proof compiler valid
+for arbitrary carried stores.  Register placement, decoder, selector and
+shortcut changes preserve an established source or command semantics and
+require a complete physical simulation, including blank initialization.
+The last column names the relevant proof obligation; it is not a claim
+that every archived report discharged it in \(\mathrm{iPRA}\).
+
+\begingroup
+\footnotesize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.12}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.16\linewidth}>{\raggedright\arraybackslash}p{.24\linewidth}>{\raggedright\arraybackslash}p{.30\linewidth}>{\raggedright\arraybackslash}p{.24\linewidth}@{}}
+\toprule
+Family & Named designs & Recurring behavior & Proof obligation\\
+\midrule
+\endfirsthead
+\toprule
+Family & Named designs & Recurring behavior & Proof obligation\\
+\midrule
+\endhead
+\midrule
+\multicolumn{4}{r}{Continued on next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+1. Original source / allocation & Primary PA194 (67/7); PA194 (68/8) & Same original command protocol and separate diagonal calculus. & Complete source simulation and PA calibration. \\
+2. Constructor coefficient & M4R; M5; M6 & Coefficients four, five and six change numerical formula coding. & Hereditary proof recoding, including the zero alias. \\
+3. Cached MP & PA194C; PA194CS\allowbreak{} & Successful MP stores the consequent in cache and clears visible top; Shift tests cache. & Adjusted all-store command compiler. \\
+4. Visible no-push MP & PA194N\allowbreak{}; PA194N\allowbreak{}5; PA194N\allowbreak{}6 & Successful MP retains (b,w,b,0), omitting dummy-zero push; original sum guard. & Reserved-zero handling and arbitrary carried stores. \\
+5. Cache-only guard & PA194H\allowbreak{}; PA194H\allowbreak{}5; PA194H\allowbreak{}6; PA194H\allowbreak{}S = filed PA194N\allowbreak{}S & Visible no-push MP with Shift test h=1; HS uses symmetric comparison. & Final contradiction detection must use Pop. \\
+6. Symmetric sum guard & PA194N\allowbreak{}S (sum guard); PA194SUMS & Original sum condition t+h=1 with symmetric destructive comparison. & Source tail equivalence; NS and SUMS differ in MP push behavior. \\
+7. Q distribution & PA194Q\allowbreak{} & Exchange the curried premises of the universal-distribution head. & Restricted-rho derivation of premise exchange. \\
+8. Q with coefficient changes & PA194Q\allowbreak{}5; PA194Q\allowbreak{}6 & Q head plus coefficient five or six; original dummy-push MP. & Both premise exchange and radix recoding. \\
+9. Q with no-push MP & PA194Q\allowbreak{}N = PA194N\allowbreak{}Q; PA194Q\allowbreak{}N5; PA194Q\allowbreak{}N6 & Q head, visible no-push MP, original sum guard. & Composition of Q proof transport and no-push compiler. \\
+10. Q with cache-only guard & PA194Q\allowbreak{}H; PA194Q\allowbreak{}H5; PA194Q\allowbreak{}H6; PA194Q\allowbreak{}HS & Q head, no-push MP, cache-only Shift. & Cache-only Pop compiler and Q transport. \\
+11. Q with symmetric sum guard & PA194Q\allowbreak{}NS; PA194Q\allowbreak{}S & Q head with the original sum guard; QNS removes MP push, QS retains it. & Exact sum-guard block equivalence. \\
+12. Diagonal choice & PA194D; PA194DHS; Gamma(D) + CSZA & Use Gamma(D) instead of Gamma(A); accompanying controller variants. & New diagonal selector; supplement has narrower evidence. \\
+13. Known-zero source returns & PA194A; PA194F; PA194J; PA194ZR; PA194R; PA194CS\allowbreak{}Z = PA194X; PA194CZ; PA194H\allowbreak{}A; PA194H\allowbreak{}AZ; CSZA final-register 3; CSZA final-register 5; CSZA final-register 6 & Replace selected jumps or returns by decrements of registers proved zero. & A source invariant and separately verified blank startup are both needed. \\
+14. Physical register placement & PA194-AD; PA194F\_AD; PA194R\_AD; PA194TDY; PA194P5; PA194H\allowbreak{}X & Preserve logical commands while exchanging register positions and routers. & Register-frame conjugacy and complete initialization. \\
+15. Decoder topology & PA194B; PA1944L & Preserve the original source program. & All-tape or complete source-frame positive simulation. \\
+16. AX11 interface & PA194AX11\allowbreak{} & Push the guard and fall through the full MP operand reader: four operands, eleven entries. & All eleven selectors and the fourth operand must be compiled. \\
+17. AX11 with cache-only guard & PA194AX11\allowbreak{}H; PA194AX11\allowbreak{}QH & Four-operand AX11 with H guard, with original or Q distribution. & Final Pop compiler; latest incoming supplies expanded full iPRA claim. \\
+18. AX11 with changed coding & PA194AX11\allowbreak{}Q6; PA194AX11\allowbreak{}QH5 & AX11 and Q with coefficient six/sum guard or five/cache guard. & Four-field coding, radix transport, appropriate halt detector. \\
+19. AX11 with symmetric sum guard & PA194AX11\allowbreak{}S & Exactly the AX11 sum-guard command semantics. & Relative source/physical equivalence. \\
+20. Explicit generalization binder & PA194G; PA194AX11\allowbreak{}G & The first AX operand c controls U(c,h), instead of inherited offset d; ten- or eleven-entry AX. & Shorter generalization word with no offset-setting command. \\
+21. Explicit binder with H guard & PA194GH; PA194GHS & Explicit binder and ten-entry AX with cache-only Shift. & New all-store compiler; complete physical frame checks. \\
+22. AX11QH decoder alternatives & PA194AX11\allowbreak{}QH4L; PA194AX11\allowbreak{}QH4R & Exactly the existing four-operand AX11QH source. & Positive finite-time transfer to the parent. \\
+23. AX11 explicit binder and cache guard & PA194AX11\allowbreak{}GH = PA194AX11\allowbreak{}QGH; PA194AX11\allowbreak{}GHS & Four-field eleven-entry AX, direct binder c, visible no-push MP and cache-only Shift; GHS symmetric comparator. & Explicit all-store proof compiler, four-field scheduler and complete physical/source proof; absolute calibration inherited from revised AX11H manuscript. \\
+24. Exact physical acceleration & PA194AX11\allowbreak{}GHF; PA194AX11\allowbreak{}GHSF & Preserves GH/GHS commands; replaces two physical paths of length3 by one transition. & Three finite predecessor invariants, 12 local cases; primitive-recursive clock t$\leq$$\sigma$(t)$\leq$3t. \\
+25. Loop continuation reassociation & PA194LC\allowbreak{}; PA194LC\allowbreak{}\_A; PA194LC\allowbreak{}\_B; PA194LC\allowbreak{}\_C; PA194LC\allowbreak{}\_AX11H & Preserves resolved source program, changes implementation of recurring constructor loops. & Source identity, literal-frame contracts and positive polynomial clock; revised AX11H absolute calibration for LC\_AX11H. \\
+26. Simultaneous history selectors & PA194SEL; single/composite selector auxiliary classes & Merges decoder checkpoints and recycles former labels as selectors reading last written bit. & Full local-tape identities with 1/3-step expansion and primitive-recursive relative iPRA clock. \\
+27. Optimized nine-register placement & PA194AX11\allowbreak{}HR & Preserves AX11H source and arithmetic engines. & All 4,778 literal contracts and whole-tape initialization; relative internal physical simulation. \\
+28. Independent binder and diagonal with ten-entry AX & PA194GD; PA194GDH; PA194GDHS & Explicit generalization binder c plus diagonal Gamma(D), ordinary distribution; ten-entry AX; sum/H/HS detectors. & Relative primitive-recursive simulation/command proof plus explicitly inherited revised AX11H calibration; no completed Lean endpoint. \\
+29. Loop continuation with two accelerations & PA194LC\allowbreak{}AX11GHF; PA194LC\allowbreak{}AX11GHSF & Loop-continuation reassociation plus two guarded shortcuts; separate tagged-three calculus prototype reaches207 states, not 194. & Relative primitive-recursive simulation/command proof plus explicitly inherited revised AX11H calibration; no completed Lean endpoint. \\
+30. Loop continuation with third guarded return shortcut & PA194LC\allowbreak{}G; PA194LC\allowbreak{}GS & GH/GHS loop-continuation reassociation and three guarded shortcuts including native190/1. & Relative primitive-recursive simulation/command proof plus explicitly inherited revised AX11H calibration; no completed Lean endpoint. \\
+31. Compatible selector and acceleration composition & PA194AX11\allowbreak{}H\_SF; PA194LC\allowbreak{}\_AX11H\_SF & One selector pair127/124 and two guarded accelerations on AX11H/LC\_AX11H. & Relative primitive-recursive simulation/command proof plus explicitly inherited revised AX11H calibration; no completed Lean endpoint. \\
+\end{longtable}
+\endgroup
+
+The family grouping is a comparison of mechanisms, not a total ordering of
+proof strength.  For example, a cached-only Shift guard changes the final
+contradiction-extraction word; a symmetric implementation of the same guard
+requires a different low-level comparator proof but no new abstract
+calculus.  The explicit binder \(c\) and diagonal choice \(\Gamma(d+x)\)
+are independent axes.  The new AX11GDH and AX11GDHS constructions combine
+those axes with the eleven-entry, four-operand interface; their ordinary
+universal-distribution head is kept fixed.
+
+\subsection{The four current incoming additions}
+
+The nine current principal constructions extend the 74 older named
+principal/supplementary graph classes to 83.  All nine are reported with
+194 working states, and none of their packets reports an accepted smaller
+blank-start machine:
+\begin{itemize}
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/793c68737d94bffa4e32a75bce6cc8058d6d22f0/docs/incoming/pa194_gd_research_2026-11-14.zip}{GD, GDH and GDHS}. Independent binder and offset diagonal with ten-entry AX; sum, cache-only and symmetric cache-only detectors.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/793c68737d94bffa4e32a75bce6cc8058d6d22f0/docs/incoming/pa194_lcfast_tagged_research_2026-11-14.zip}{LCAX11GHF and LCAX11GHSF}. Loop-continuation reassociation combined with two guarded physical shortcuts. The separate tagged-three-calculus prototype has 207 states.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/793c68737d94bffa4e32a75bce6cc8058d6d22f0/docs/incoming/pa194_loop_return_2026-11-14.zip}{LCG and LCGS}. The preceding loop-continuation family with a third guarded return shortcut.
+\item \href{https://github.com/VladimirReshetnikov/ProveIt/blob/793c68737d94bffa4e32a75bce6cc8058d6d22f0/docs/incoming/pa194_comparison_and_new_designs_2026-11-15.zip}{AX11H\_SF and LC\_AX11H\_SF}. A compatible history-selector pair combined with the two previously established guarded accelerations.
+\end{itemize}
+The reports in these four archives compose relative simulations and command
+arguments with the specifically identified revised AX11H written
+calibration.  Their reuse of that calibration must remain visible; it
+cannot be replaced by a graph hash or a finite blank-tape run.
+
+\subsection{Rejected smaller machines and the remaining gap}
+
+The filed census contains 54 historical 193-state graph classes.  They
+include rejected candidates and runtime cores and do not constitute 54
+accepted blank-start machines.  The current incoming material reuses the
+known Runtime193 and AX11 Runtime193 cores.  The strongest supplied startup
+search already permits arbitrary values in all nine primary registers;
+simply relaxing a zero-proof-store requirement would repeat an existing
+search.  That search reports 767,923 overlapping runs and no complete
+admissible frame.  Its geometric, path and spare-list requirements are part
+of the acceptance condition, so reaching a familiar control state or an
+initial-looking prefix is insufficient.
+
+Consequently the input corpus supplies many mechanisms that can be
+combined, but no accepted sub-194 blank-start construction.  The new finite
+searches described elsewhere in this report probe additional combinations;
+their failure to find a smaller machine is not a lower bound.

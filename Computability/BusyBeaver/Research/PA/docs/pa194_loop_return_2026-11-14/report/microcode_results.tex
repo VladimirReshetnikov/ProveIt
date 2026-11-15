@@ -1,0 +1,120 @@
+\subsection{A stronger envelope for the arithmetic controls}
+\label{sec:literal-contexts}
+
+A new collector for the exact PA194LCG table refines the contexts inside
+the arithmetic engine. Earlier source-specific screens deliberately left
+these controls under the generic tape-window abstraction because their
+source checker treated arithmetic boxes as opaque operations. The new
+collector instead instruments the independent literal checker: the four
+finite-list sweep identities are first rederived from the transition rows,
+and the interiors of those sweeps and of affine unary scans are included.
+No arithmetic-box oracle is used.
+
+For radius six, the completed counts are as follows. The new envelope is
+a subset of the generic closure; all 194 working controls remain present.
+\begin{center}\small
+\begin{tabular}{lrr}
+\toprule
+Population & Generic closure & Literal envelope\\
+\midrule
+All working controls & 271,895 & 49,297\\
+The 23 arithmetic controls & 119,150 & 18,570\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Coverage argument.}
+The literal checker represents tapes by affine-length constant-symbol
+runs, blank exteriors, and arbitrary finite lists of blocks
+\[
+ B(v)=0\,1^{v+1},\qquad C(v)=1\,0\,1^v.
+\]
+For each requested prefix length, the collector enumerates every possible
+prefix of those streams. A nonconstant affine run with constant term $c$
+is conservatively allowed every length at least $c$. A finite list is
+expanded as empty or one block followed by another list; each block has
+length at least two, so a fixed-length prefix query terminates. Reversed
+streams are handled in the same way. Correlations between parameters on
+the two sides of the head are discarded, enlarging the envelope.
+
+If a self-loop scans a run of length $L$, an intermediate position has
+$u$ written symbols behind the head and $L-u$ unread symbols ahead,
+where $0\le u<L$. Every such radius-six window is included. For this
+observation, lengths above $13=2\cdot6+1$ may be represented by length 13:
+a window sees one endpoint or an interior stretch, and cannot distinguish
+a greater separation of the endpoints. Shorter admissible lengths are
+enumerated separately.
+
+For a position inside a list traversal, the collector replays the literal
+one-block identity with an arbitrary already-processed output-family
+prefix and an arbitrary remaining input-family suffix. Empty choices cover
+the first and last blocks. The one-block passage has duration $v+2$ and
+is checked with arbitrary surrounding streams. Consequently its literal
+and unary-interior windows cover every position of every finite list
+sweep, without bounding list length or entries. The inherited identity
+$C(A)1=1B(A)$ and its reversal justify the checker's list normalization.
+
+The completed derivation replays all \textbf{4,778 outcomes at 3,671 source
+sites}, using 1,105,118 symbolic steps, at most 385 per outcome. The
+whole 57,870-step blank initialization is included separately. The checked
+source-frame contracts compose these envelopes over standard finite runs;
+the complete initialization supplies their starting frame. This is an
+executable symbolic coverage argument with the stated stream invariants,
+not an additional kernel proof of the absolute arithmetic calibration.
+
+\paragraph{Implementation check.}
+Separately, 1,200 complete literal command executions used varied register
+values, header gaps and spare lists. Their 551,331 transitions encountered
+zero missing windows; the longest sample took 1,014 transitions. Each run
+continued to its expected complete successor frame, not merely to an
+occurrence of the dispatcher control. These finite examples check the
+collector's implementation; they do not replace the coverage argument.
+
+\subsection{Reduction searches using the stronger envelope}
+
+Three completed searches used the 49,297-window envelope:
+\begin{center}\small
+\begin{tabular}{p{0.34\linewidth}rccr}
+\toprule
+Template & Targets & Old bound & New bound & Hits\\
+\midrule
+Two-row quotient & 18,721 pairs & 1 & 100 & 0\\
+Two-sided stuttering quotient & 18,721 pairs & 12 & 128 & 0\\
+Incoming-edge deletion & 193 controls & 24 & 256 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+All bounds count literal transitions within the observed window. The
+quotient searches synthesize both rows of the retained control and allow
+repeated visits to it. They respectively made 26,213,260 and 26,387,880
+first-action trials, then checked 174,903 and 177,086 joint combinations.
+
+Incoming-edge deletion instead rewrites each incoming row independently,
+allowing either write bit, either direction, and any remaining working
+control or the actual halt label as its first successor. Each replacement
+must meet a positive old prefix with identical control, head position and
+entire window. Its detour may not execute a removed control or a rewritten
+row, so the separately chosen replacements cannot invalidate one another.
+All 193 non-start deletion targets were considered.
+
+A further targeted check of controls 83 and 190, using the generic
+radius-six closure, allowed 48 old steps and 512 replacement steps. It
+checked 1,552 first actions and 81 joint combinations, again without a
+candidate. These results exclude only the displayed finite templates.
+They are neither a general lower bound nor evidence for promoting the
+failed prepared-tape Runtime193 core to a blank-start machine.
+
+\paragraph{Artifacts and replay.}
+The envelope, detailed proof notes, three synthesizers, source hashes,
+sample checks and full search logs are in
+\file{research/literal_contexts/}. From the archive root, run
+\begin{verbatim}
+python3 research/literal_contexts/reproduce_context_research.py \
+  --output /tmp/lcg-context-replay
+\end{verbatim}
+The default regenerates the symbolic envelope and reruns the samples and
+three primary searches. The optional \file{--reuse-contexts} uses the
+hash-checked frozen envelope and records that omission. A separate
+integration replay with that option passed against the delivered machine
+and reference files, including fresh compilation of all three programs;
+its receipt is retained. Full envelope generation was completed separately.

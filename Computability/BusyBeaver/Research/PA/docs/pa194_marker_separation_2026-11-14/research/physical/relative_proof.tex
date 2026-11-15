@@ -1,0 +1,162 @@
+\section{Marker separation on the LCG and LCGS parents}
+\label{sec:marker-separation}
+
+This section supplies a table-level relative proof for two new compositions,
+\texttt{PA194LCGMS} and \texttt{PA194LCGSMS}.  Both have 194 working controls.
+The marker-separation idea is the existing \texttt{PA194B} construction in
+\texttt{PA194B\_PA194G\_research\_2026-11-14}; the new contribution here is its
+composition with the pinned \texttt{PA194LCG} and \texttt{PA194LCGS} parents,
+including their loop reassociation and guarded return shortcuts.  This is a
+new allocation of recurring physical operations, with a relative proof that
+is independent of the numerical-calculus and register-simulation proofs.
+It is not a claim that the marker-separation mechanism itself was invented
+in this investigation.
+
+\subsection{Exact transformation}
+Let $P$ be either pinned native parent.  Its initial and terminal controls
+are respectively 74 and 254.  Define
+\[
+ f(51)=400,\qquad f(301)=88,\qquad f(q)=q
+ \quad(q\notin\{51,301\}).
+\]
+Control 400 does not occur in either parent.  For every old row other than a
+row of control 301, initially copy the row with every control name replaced
+by $f$.  Then replace the row at $(88,0)$ and introduce the two rows at 51:
+\[
+ \begin{array}{c|cc}
+       &0&1\\\hline
+ 88&0\mathsf L51&1\mathsf R103\\
+ 51&0\mathsf R122&1\mathsf R51\\
+ 400&0\mathsf R16&1\mathsf R400.
+ \end{array}
+\]
+The last row is the renamed original marker scanner.  Thus all old entries
+into the marker scanner now enter 400; control 51 is reserved for decoder
+selection.  Exactly one old control, 301, is removed and exactly one fresh
+control, 400, is introduced.  The resulting machine $N$ has exactly 194
+working controls and 388 transition rows.  Breadth-first enumeration from
+74 visits every working control; the delivered dense conjugacy sends 74 to
+0 and 254 to the separate halt label 194.
+
+The following parent rows are common to both inputs:
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+301&0\mathsf R45&1\mathsf R103\\
+88&0\mathsf R122&1\mathsf R103\\
+122&0\mathsf L137&0\mathsf L1\\
+137&0\mathsf R30&1\mathsf R70\\
+30&0\mathsf R45&1\mathsf R46.
+\end{array}
+\]
+The only incoming parent edge to 301 is the zero row of 87, which writes
+zero and moves right.  The only incoming edge to 88 is the one row of 77,
+which writes one and moves right.  Since the initial control is neither,
+every reachable occurrence of 301 has a zero immediately left of the head;
+every reachable occurrence of 88 has a one there.  This is an exact
+transition-graph invariant, valid for arbitrary complete initial tapes.
+It requires no assertion about which source instructions can occur.
+
+\subsection{Four exhaustive local cases}
+Write the current head coordinate as 0 and the preceding coordinate as
+$-1$.  The head bit is $b$ and the preceding bit is $h$.  The complete tape
+outside these two cells is arbitrary and unchanged.  The local substitution
+has the following behavior:
+\[
+\begin{array}{ccccc}
+\text{old control}&h&b&\text{new duration}&\text{common exit}\\\hline
+301&0&0&5&(45,1)\\
+301&0&1&1&(103,1)\\
+88&1&0&3&(122,1)\\
+88&1&1&1&(103,1).
+\end{array}
+\]
+Both cells retain their original bits in all four cases.  The two nontrivial
+control/head traces are
+\[
+\begin{split}
+ (88,0)&\longrightarrow(51,-1)\longrightarrow(122,0)
+ \longrightarrow(137,-1)\longrightarrow(30,0)
+ \longrightarrow(45,1) \qquad(h,b)=(0,0),\\
+ (88,0)&\longrightarrow(51,-1)\longrightarrow(51,0)
+ \longrightarrow(122,1) \qquad(h,b)=(1,0).
+\end{split}
+\]
+Each displayed transition reads only one of the two known cells.  No value
+of any other cell can affect these computations.  When $b=1$, the common
+row $1\mathsf R103$ gives the exit in one step.  Every remaining old row is
+simulated in one step after applying $f$, including the marker scanner now
+named 400.  The executable checker verifies all unaffected rows and all
+four complete two-cell traces against the final simultaneously transformed
+table.  It also enumerates all incoming edges establishing the invariant.
+
+\subsection{Explicit clock bounds and intuitionistic transfer}
+Represent a finite-support two-way tape by the usual pair of natural-number
+binary words together with a head position, and totalize both machines by
+making the halt configuration absorbing.  The machine step and its bounded
+iteration are primitive recursive.  Apply $f$ to the control component of
+a configuration and leave its tape and head unchanged; call the resulting
+map $F$.
+
+For the old trajectory $C_P(t)$, define a primitive-recursive duration
+$\tau(t)\in\{1,3,5\}$: it is 5 at an old $(301,0)$ step, 3 at an old
+$(88,0)$ step, and 1 otherwise.  Put
+\[
+ \theta(0)=0,\qquad \theta(t+1)=\theta(t)+\tau(t).
+\]
+The incoming-history invariant and the four local traces prove by induction
+\[
+ C_N(\theta(t))=F(C_P(t)),\qquad t\leq\theta(t)\leq5t.
+\]
+At a halt, use the totalized one-step self-loop and $\tau=1$.
+The initial equality holds because $f(74)=74$ and both initial tapes are
+the same.  The induction predicates are equalities and inequalities between
+primitive-recursive functions.  The finite table case distinction and the
+incoming-history induction are equally elementary.  Consequently this
+argument is formalizable by quantifier-free induction in intuitionistic
+primitive recursive arithmetic, without excluded middle for arbitrary
+formulas, an unbounded search, a soundness assumption about PA, or an
+assumption of PA consistency.
+
+Let $H_P(t)$ and $H_N(t)$ mean that the corresponding totalized blank run
+has reached halt by time $t$.  Since $F$ maps no working control to halt,
+monotonicity of totalized halting gives the sharper, asymmetric estimates
+\[
+ \mathsf{iPRA}\vdash H_P(t)\to H_N(5t),\qquad
+ \mathsf{iPRA}\vdash H_N(t)\to H_P(t).
+\]
+For the second implication, $H_N(t)$ and $t\leq\theta(t)$ give
+$H_N(\theta(t))$, and the displayed configuration equality then gives
+$H_P(t)$.  No reverse unbounded simulation is being assumed.
+Writing $\mathrm{NH}(M):=\forall t\,\neg H_M(t)$, intuitionistic implication
+reasoning now yields
+\[
+ \mathsf{iPRA}\vdash\mathrm{NH}(P)\leftrightarrow\mathrm{NH}(N).
+\]
+Therefore any established ordinary or formalized iPRA consistency
+calibration for either parent transfers to its child.  This section proves
+the new relative obligation.  The absolute equivalence with
+$\mathrm{Con}(\mathsf{PA})$ still invokes the supplied written calibration
+of the LCG/LCGS parents and their AX11H dependency.  No end-to-end Lean
+kernel theorem for the new bytes is claimed here.
+
+\subsection{Complete blank initialization}
+The checker replays every step of each parent's pinned blank initialization,
+matching it after between one and five child steps.  At the endpoint it
+checks the entire finite set of one-cells, the head, the control, and the
+blank exterior against the canonical source frame.  The logical source
+entry is site 25; the head is at $-2$, the gap parameter is 48, and the
+physical register file is
+\[
+ (0,0,0,0,0,0,2,0,0)\mathbin{+\!+}(\underbrace{1,\ldots,1}_{26}).
+\]
+\[
+\begin{array}{lrr}
+\text{child}&\text{parent steps}&\text{child steps}\\\hline
+\texttt{PA194LCGMS}&57\,870&57\,970\\
+\texttt{PA194LCGSMS}&57\,712&57\,812.
+\end{array}
+\]
+These finite initialization replays are corroborating identities.  The
+all-time equivalence follows from the local simulation and its induction,
+not from extrapolation of either finite run.

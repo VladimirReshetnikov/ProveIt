@@ -1,0 +1,806 @@
+{
+  "description": "Reproducible textual equation audit of two pinned Foundation sources.\n\nThis is not a Lean proof checker.  It compares constructor equations,\nrecursive equation lemma statements, and finite axiom templates after the\nexplicit whitespace/namespace/quantifier-notation normalization below.\nThe accompanying mathematical note proves the interpretation step.",
+  "current_foundation_commit": "32e1a0956a8622fad067328ca1959729a7634428",
+  "historical_proveit_commit": "1c9524d8bf2e0a27b9a16ff622359927f536e663",
+  "normalization": [
+    "whitespace deletion",
+    "FFL namespace renamed LO",
+    "quantifier notation superscript1 renamed0",
+    "vecToNat comparison restricted to RHS because implicit n binder moved outside declaration",
+    "InductionR(True) removes the literal conjunct S K"
+  ],
+  "checks": [
+    {
+      "name": "qqBvar",
+      "equal": true,
+      "current": "def qqBvar (z : V) : V := ⟪0, z⟫ + 1",
+      "historical": "def qqBvar (z : V) : V := ⟪0, z⟫ + 1"
+    },
+    {
+      "name": "qqFvar",
+      "equal": true,
+      "current": "def qqFvar (x : V) : V := ⟪1, x⟫ + 1",
+      "historical": "def qqFvar (x : V) : V := ⟪1, x⟫ + 1"
+    },
+    {
+      "name": "qqFunc",
+      "equal": true,
+      "current": "def qqFunc (k f v : V) : V := ⟪2, k, f, v⟫ + 1",
+      "historical": "def qqFunc (k f v : V) : V := ⟪2, k, f, v⟫ + 1"
+    },
+    {
+      "name": "qqFuncN",
+      "equal": true,
+      "current": "def qqFuncN (k f v : ℕ) : ℕ := (Nat.pair 2 <| Nat.pair k <| Nat.pair f v) + 1",
+      "historical": "def qqFuncN (k f v : ℕ) : ℕ := (Nat.pair 2 <| Nat.pair k <| Nat.pair f v) + 1"
+    },
+    {
+      "name": "qqRel",
+      "equal": true,
+      "current": "def qqRel (k r v : V) : V := ⟪0, k, r, v⟫ + 1",
+      "historical": "def qqRel (k r v : V) : V := ⟪0, k, r, v⟫ + 1"
+    },
+    {
+      "name": "qqNRel",
+      "equal": true,
+      "current": "def qqNRel (k r v : V) : V := ⟪1, k, r, v⟫ + 1",
+      "historical": "def qqNRel (k r v : V) : V := ⟪1, k, r, v⟫ + 1"
+    },
+    {
+      "name": "qqVerum",
+      "equal": true,
+      "current": "def qqVerum : V := ⟪2, 0⟫ + 1",
+      "historical": "def qqVerum : V := ⟪2, 0⟫ + 1"
+    },
+    {
+      "name": "qqFalsum",
+      "equal": true,
+      "current": "def qqFalsum : V := ⟪3, 0⟫ + 1",
+      "historical": "def qqFalsum : V := ⟪3, 0⟫ + 1"
+    },
+    {
+      "name": "qqAnd",
+      "equal": true,
+      "current": "def qqAnd (p q : V) : V := ⟪4, p, q⟫ + 1",
+      "historical": "def qqAnd (p q : V) : V := ⟪4, p, q⟫ + 1"
+    },
+    {
+      "name": "qqOr",
+      "equal": true,
+      "current": "def qqOr (p q : V) : V := ⟪5, p, q⟫ + 1",
+      "historical": "def qqOr (p q : V) : V := ⟪5, p, q⟫ + 1"
+    },
+    {
+      "name": "qqAll",
+      "equal": true,
+      "current": "def qqAll (p : V) : V := ⟪6, p⟫ + 1",
+      "historical": "def qqAll (p : V) : V := ⟪6, p⟫ + 1"
+    },
+    {
+      "name": "qqExs",
+      "equal": true,
+      "current": "def qqExs (p : V) : V := ⟪7, p⟫ + 1",
+      "historical": "def qqExs (p : V) : V := ⟪7, p⟫ + 1"
+    },
+    {
+      "name": "termBV_bvar",
+      "equal": true,
+      "current": "lemma termBV_bvar (z : V) :\n    termBV L ^#z = z + 1 ",
+      "historical": "lemma termBV_bvar (z : V) :\n    termBV L ^#z = z + 1 "
+    },
+    {
+      "name": "termBV_fvar",
+      "equal": true,
+      "current": "lemma termBV_fvar (x : V) :\n    termBV L ^&x = 0 ",
+      "historical": "lemma termBV_fvar (x : V) :\n    termBV L ^&x = 0 "
+    },
+    {
+      "name": "termBV_func",
+      "equal": true,
+      "current": "lemma termBV_func {k f v : V} (hkf : L.IsFunc k f) (hv : IsUTermVec L k v) :\n    termBV L (^func k f v) = listMax (termBVVec L k v) ",
+      "historical": "lemma termBV_func {k f v : V} (hkf : L.IsFunc k f) (hv : IsUTermVec L k v) :\n    termBV L (^func k f v) = listMax (termBVVec L k v) "
+    },
+    {
+      "name": "bv_rel",
+      "equal": true,
+      "current": "lemma bv_rel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    bv L (^rel k R v) = listMax (termBVVec L k v) ",
+      "historical": "lemma bv_rel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    bv L (^rel k R v) = listMax (termBVVec L k v) "
+    },
+    {
+      "name": "bv_nrel",
+      "equal": true,
+      "current": "lemma bv_nrel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    bv L (^nrel k R v) = listMax (termBVVec L k v) ",
+      "historical": "lemma bv_nrel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    bv L (^nrel k R v) = listMax (termBVVec L k v) "
+    },
+    {
+      "name": "bv_verum",
+      "equal": true,
+      "current": "lemma bv_verum : bv L (^⊤ : V) = 0 ",
+      "historical": "lemma bv_verum : bv L (^⊤ : V) = 0 "
+    },
+    {
+      "name": "bv_falsum",
+      "equal": true,
+      "current": "lemma bv_falsum : bv L (^⊥ : V) = 0 ",
+      "historical": "lemma bv_falsum : bv L (^⊥ : V) = 0 "
+    },
+    {
+      "name": "bv_and",
+      "equal": true,
+      "current": "lemma bv_and {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    bv L (p ^⋏ q) = Max.max (bv L p) (bv L q) ",
+      "historical": "lemma bv_and {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    bv L (p ^⋏ q) = Max.max (bv L p) (bv L q) "
+    },
+    {
+      "name": "bv_or",
+      "equal": true,
+      "current": "lemma bv_or {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    bv L (p ^⋎ q) = Max.max (bv L p) (bv L q) ",
+      "historical": "lemma bv_or {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    bv L (p ^⋎ q) = Max.max (bv L p) (bv L q) "
+    },
+    {
+      "name": "bv_all",
+      "equal": true,
+      "current": "lemma bv_all {p : V} (hp : IsUFormula L p) : bv L (^∀ p) = bv L p - 1 ",
+      "historical": "lemma bv_all {p : V} (hp : IsUFormula L p) : bv L (^∀ p) = bv L p - 1 "
+    },
+    {
+      "name": "bv_ex",
+      "equal": true,
+      "current": "lemma bv_ex {p : V} (hp : IsUFormula L p) : bv L (^∃ p) = bv L p - 1 ",
+      "historical": "lemma bv_ex {p : V} (hp : IsUFormula L p) : bv L (^∃ p) = bv L p - 1 "
+    },
+    {
+      "name": "axL",
+      "equal": true,
+      "current": "def axL (s p : V) : V := ⟪s, 0, p⟫ + 1",
+      "historical": "def axL (s p : V) : V := ⟪s, 0, p⟫ + 1"
+    },
+    {
+      "name": "verumIntro",
+      "equal": true,
+      "current": "def verumIntro (s : V) : V := ⟪s, 1, 0⟫ + 1",
+      "historical": "def verumIntro (s : V) : V := ⟪s, 1, 0⟫ + 1"
+    },
+    {
+      "name": "andIntro",
+      "equal": true,
+      "current": "def andIntro (s p q dp dq : V) : V := ⟪s, 2, p, q, dp, dq⟫ + 1",
+      "historical": "def andIntro (s p q dp dq : V) : V := ⟪s, 2, p, q, dp, dq⟫ + 1"
+    },
+    {
+      "name": "orIntro",
+      "equal": true,
+      "current": "def orIntro (s p q d : V) : V := ⟪s, 3, p, q, d⟫ + 1",
+      "historical": "def orIntro (s p q d : V) : V := ⟪s, 3, p, q, d⟫ + 1"
+    },
+    {
+      "name": "allIntro",
+      "equal": true,
+      "current": "def allIntro (s p d : V) : V := ⟪s, 4, p, d⟫ + 1",
+      "historical": "def allIntro (s p d : V) : V := ⟪s, 4, p, d⟫ + 1"
+    },
+    {
+      "name": "exsIntro",
+      "equal": true,
+      "current": "def exsIntro (s p t d : V) : V := ⟪s, 5, p, t, d⟫ + 1",
+      "historical": "def exsIntro (s p t d : V) : V := ⟪s, 5, p, t, d⟫ + 1"
+    },
+    {
+      "name": "wkRule",
+      "equal": true,
+      "current": "def wkRule (s d : V) : V := ⟪s, 6, d⟫ + 1",
+      "historical": "def wkRule (s d : V) : V := ⟪s, 6, d⟫ + 1"
+    },
+    {
+      "name": "shiftRule",
+      "equal": true,
+      "current": "def shiftRule (s d : V) : V := ⟪s, 7, d⟫ + 1",
+      "historical": "def shiftRule (s d : V) : V := ⟪s, 7, d⟫ + 1"
+    },
+    {
+      "name": "cutRule",
+      "equal": true,
+      "current": "def cutRule (s p d₁ d₂ : V) : V := ⟪s, 8, p, d₁, d₂⟫ + 1",
+      "historical": "def cutRule (s p d₁ d₂ : V) : V := ⟪s, 8, p, d₁, d₂⟫ + 1"
+    },
+    {
+      "name": "axm",
+      "equal": true,
+      "current": "def axm (s p : V) : V := ⟪s, 9, p⟫ + 1",
+      "historical": "def axm (s p : V) : V := ⟪s, 9, p⟫ + 1"
+    },
+    {
+      "name": "Derivation.Phi",
+      "equal": true,
+      "current": "def Phi (C : Set V) (d : V) : Prop :=\n  IsFormulaSet L (fstIdx d) ∧\n  ( (∃ s p, d = axL s p ∧ p ∈ s ∧ neg L p ∈ s) ∨\n    (∃ s, d = verumIntro s ∧ ^⊤ ∈ s) ∨\n    (∃ s p q dp dq, d = andIntro s p q dp dq ∧ p ^⋏ q ∈ s ∧ (fstIdx dp = insert p s ∧ dp ∈ C) ∧ (fstIdx dq = insert q s ∧ dq ∈ C)) ∨\n    (∃ s p q dpq, d = orIntro s p q dpq ∧ p ^⋎ q ∈ s ∧ fstIdx dpq = insert p (insert q s) ∧ dpq ∈ C) ∨\n    (∃ s p dp, d = allIntro s p dp ∧ ^∀ p ∈ s ∧ fstIdx dp = insert (free L p) (setShift L s) ∧ dp ∈ C) ∨\n    (∃ s p t dp, d = exsIntro s p t dp ∧ ^∃ p ∈ s ∧ IsTerm L t ∧ fstIdx dp = insert (substs1 L t p) s ∧ dp ∈ C) ∨\n    (∃ s d', d = wkRule s d' ∧ fstIdx d' ⊆ s ∧ d' ∈ C) ∨\n    (∃ s d', d = shiftRule s d' ∧ s = setShift L (fstIdx d') ∧ d' ∈ C) ∨\n    (∃ s p d₁ d₂, d = cutRule s p d₁ d₂ ∧ (fstIdx d₁ = insert p s ∧ d₁ ∈ C) ∧ (fstIdx d₂ = insert (neg L p) s ∧ d₂ ∈ C)) ∨\n    (∃ s p, d = axm s p ∧ p ∈ s ∧ p ∈ T.Δ₁Class) )",
+      "historical": "def Phi (C : Set V) (d : V) : Prop :=\n  IsFormulaSet L (fstIdx d) ∧\n  ( (∃ s p, d = axL s p ∧ p ∈ s ∧ neg L p ∈ s) ∨\n    (∃ s, d = verumIntro s ∧ ^⊤ ∈ s) ∨\n    (∃ s p q dp dq, d = andIntro s p q dp dq ∧ p ^⋏ q ∈ s ∧\n      (fstIdx dp = insert p s ∧ dp ∈ C) ∧ (fstIdx dq = insert q s ∧ dq ∈ C)) ∨\n    (∃ s p q dpq, d = orIntro s p q dpq ∧ p ^⋎ q ∈ s ∧\n      fstIdx dpq = insert p (insert q s) ∧ dpq ∈ C) ∨\n    (∃ s p dp, d = allIntro s p dp ∧ ^∀ p ∈ s ∧\n      fstIdx dp = insert (free L p) (setShift L s) ∧ dp ∈ C) ∨\n    (∃ s p t dp, d = exsIntro s p t dp ∧ ^∃ p ∈ s ∧ IsTerm L t ∧\n      fstIdx dp = insert (substs1 L t p) s ∧ dp ∈ C) ∨\n    (∃ s d', d = wkRule s d' ∧ fstIdx d' ⊆ s ∧ d' ∈ C) ∨\n    (∃ s d', d = shiftRule s d' ∧ s = setShift L (fstIdx d') ∧ d' ∈ C) ∨\n    (∃ s p d₁ d₂, d = cutRule s p d₁ d₂ ∧\n      (fstIdx d₁ = insert p s ∧ d₁ ∈ C) ∧ (fstIdx d₂ = insert (neg L p) s ∧ d₂ ∈ C)) ∨\n    (∃ s p, d = axm s p ∧ p ∈ s ∧ p ∈ T.Δ₁Class) )"
+    },
+    {
+      "name": "Proof",
+      "equal": true,
+      "current": "def Proof (d φ : V) : Prop := DerivationOf T d {φ}",
+      "historical": "def Proof (d φ : V) : Prop := DerivationOf T d {φ}"
+    },
+    {
+      "name": "DerivationOf",
+      "equal": true,
+      "current": "def DerivationOf (d s : V) : Prop := fstIdx d = s ∧ Derivation T d",
+      "historical": "def DerivationOf (d s : V) : Prop := fstIdx d = s ∧ Derivation T d"
+    },
+    {
+      "name": "mem_setShift_iff",
+      "equal": true,
+      "current": "lemma mem_setShift_iff {s y : V} : y ∈ setShift L s ↔ ∃ x ∈ s, y = shift L x ",
+      "historical": "lemma mem_setShift_iff {s y : V} : y ∈ setShift L s ↔ ∃ x ∈ s, y = shift L x "
+    },
+    {
+      "name": "FormalizedTerm.Phi",
+      "equal": true,
+      "current": "def Phi (C : Set V) (t : V) : Prop :=\n  (∃ z, t = ^#z) ∨ (∃ x, t = ^&x) ∨ (∃ k f v : V, L.IsFunc k f ∧ k = len v ∧ (∀ i < k, v.[i] ∈ C) ∧ t = ^func k f v)",
+      "historical": "def Phi (C : Set V) (t : V) : Prop :=\n  (∃ z, t = ^#z) ∨ (∃ x, t = ^&x) ∨\n  (∃ k f v : V, L.IsFunc k f ∧ k = len v ∧ (∀ i < k, v.[i] ∈ C) ∧ t = ^func k f v)"
+    },
+    {
+      "name": "FormalizedFormula.Phi",
+      "equal": true,
+      "current": "def Phi (C : Set V) (p : V) : Prop :=\n  (∃ k R v, L.IsRel k R ∧ IsUTermVec L k v ∧ p = ^rel k R v) ∨\n  (∃ k R v, L.IsRel k R ∧ IsUTermVec L k v ∧ p = ^nrel k R v) ∨\n  (p = ^⊤) ∨\n  (p = ^⊥) ∨\n  (∃ p₁ p₂, p₁ ∈ C ∧ p₂ ∈ C ∧ p = p₁ ^⋏ p₂) ∨\n  (∃ p₁ p₂, p₁ ∈ C ∧ p₂ ∈ C ∧ p = p₁ ^⋎ p₂) ∨\n  (∃ p₁, p₁ ∈ C ∧ p = ^∀ p₁) ∨\n  (∃ p₁, p₁ ∈ C ∧ p = ^∃ p₁)",
+      "historical": "def Phi (C : Set V) (p : V) : Prop :=\n  (∃ k R v, L.IsRel k R ∧ IsUTermVec L k v ∧ p = ^rel k R v) ∨\n  (∃ k R v, L.IsRel k R ∧ IsUTermVec L k v ∧ p = ^nrel k R v) ∨\n  (p = ^⊤) ∨\n  (p = ^⊥) ∨\n  (∃ p₁ p₂, p₁ ∈ C ∧ p₂ ∈ C ∧ p = p₁ ^⋏ p₂) ∨\n  (∃ p₁ p₂, p₁ ∈ C ∧ p₂ ∈ C ∧ p = p₁ ^⋎ p₂) ∨\n  (∃ p₁, p₁ ∈ C ∧ p = ^∀ p₁) ∨\n  (∃ p₁, p₁ ∈ C ∧ p = ^∃ p₁)"
+    },
+    {
+      "name": "termSubst_bvar",
+      "equal": true,
+      "current": "lemma termSubst_bvar (z) :\n    termSubst L w ^#z = w.[z] ",
+      "historical": "lemma termSubst_bvar (z) :\n    termSubst L w ^#z = w.[z] "
+    },
+    {
+      "name": "termSubst_fvar",
+      "equal": true,
+      "current": "lemma termSubst_fvar (x) :\n    termSubst L w ^&x = ^&x ",
+      "historical": "lemma termSubst_fvar (x) :\n    termSubst L w ^&x = ^&x "
+    },
+    {
+      "name": "termSubst_func",
+      "equal": true,
+      "current": "lemma termSubst_func {k f v} (hkf : L.IsFunc k f) (hv : IsUTermVec L k v) :\n    termSubst L w (^func k f v) = ^func k f (termSubstVec L k w v) ",
+      "historical": "lemma termSubst_func {k f v} (hkf : L.IsFunc k f) (hv : IsUTermVec L k v) :\n    termSubst L w (^func k f v) = ^func k f (termSubstVec L k w v) "
+    },
+    {
+      "name": "termSubstVec_nil",
+      "equal": true,
+      "current": "lemma termSubstVec_nil (w : V) : termSubstVec L 0 w 0 = 0 ",
+      "historical": "lemma termSubstVec_nil (w : V) : termSubstVec L 0 w 0 = 0 "
+    },
+    {
+      "name": "termSubstVec_cons",
+      "equal": true,
+      "current": "lemma termSubstVec_cons {k t ts : V} (ht : IsUTerm L t) (hts : IsUTermVec L k ts) :\n    termSubstVec L (k + 1) w (t ∷ ts) = termSubst L w t ∷ termSubstVec L k w ts ",
+      "historical": "lemma termSubstVec_cons {k t ts : V} (ht : IsUTerm L t) (hts : IsUTermVec L k ts) :\n    termSubstVec L (k + 1) w (t ∷ ts) = termSubst L w t ∷ termSubstVec L k w ts "
+    },
+    {
+      "name": "termShift_bvar",
+      "equal": true,
+      "current": "lemma termShift_bvar (z : V) :\n    termShift L ^#z = ^#z ",
+      "historical": "lemma termShift_bvar (z : V) :\n    termShift L ^#z = ^#z "
+    },
+    {
+      "name": "termShift_fvar",
+      "equal": true,
+      "current": "lemma termShift_fvar (x : V) :\n    termShift L ^&x = ^&(x + 1) ",
+      "historical": "lemma termShift_fvar (x : V) :\n    termShift L ^&x = ^&(x + 1) "
+    },
+    {
+      "name": "termShift_func",
+      "equal": true,
+      "current": "lemma termShift_func {k f v : V} (hkf : L.IsFunc k f) (hv : IsUTermVec L k v) :\n    termShift L (^func k f v) = ^func k f (termShiftVec L k v) ",
+      "historical": "lemma termShift_func {k f v : V} (hkf : L.IsFunc k f) (hv : IsUTermVec L k v) :\n    termShift L (^func k f v) = ^func k f (termShiftVec L k v) "
+    },
+    {
+      "name": "termShiftVec_nil",
+      "equal": true,
+      "current": "lemma termShiftVec_nil : termShiftVec (V ",
+      "historical": "lemma termShiftVec_nil : termShiftVec (V "
+    },
+    {
+      "name": "termShiftVec_cons",
+      "equal": true,
+      "current": "lemma termShiftVec_cons {k t ts : V} (ht : IsUTerm L t) (hts : IsUTermVec L k ts) :\n    termShiftVec L (k + 1) (t ∷ ts) = termShift L t ∷ termShiftVec L k ts ",
+      "historical": "lemma termShiftVec_cons {k t ts : V} (ht : IsUTerm L t) (hts : IsUTermVec L k ts) :\n    termShiftVec L (k + 1) (t ∷ ts) = termShift L t ∷ termShiftVec L k ts "
+    },
+    {
+      "name": "termBShift_bvar",
+      "equal": true,
+      "current": "lemma termBShift_bvar (z : V) :\n    termBShift L ^#z = ^#(z + 1) ",
+      "historical": "lemma termBShift_bvar (z : V) :\n    termBShift L ^#z = ^#(z + 1) "
+    },
+    {
+      "name": "termBShift_fvar",
+      "equal": true,
+      "current": "lemma termBShift_fvar (x : V) :\n    termBShift L ^&x = ^&x ",
+      "historical": "lemma termBShift_fvar (x : V) :\n    termBShift L ^&x = ^&x "
+    },
+    {
+      "name": "termBShift_func",
+      "equal": true,
+      "current": "lemma termBShift_func {k f v : V} (hkf : L.IsFunc k f) (hv : IsUTermVec L k v) :\n    termBShift L (^func k f v) = ^func k f (termBShiftVec L k v) ",
+      "historical": "lemma termBShift_func {k f v : V} (hkf : L.IsFunc k f) (hv : IsUTermVec L k v) :\n    termBShift L (^func k f v) = ^func k f (termBShiftVec L k v) "
+    },
+    {
+      "name": "termBShiftVec_nil",
+      "equal": true,
+      "current": "lemma termBShiftVec_nil : termBShiftVec (V ",
+      "historical": "lemma termBShiftVec_nil : termBShiftVec (V "
+    },
+    {
+      "name": "termBShiftVec_cons",
+      "equal": true,
+      "current": "lemma termBShiftVec_cons {k t ts : V} (ht : IsUTerm L t) (hts : IsUTermVec L k ts) :\n    termBShiftVec L (k + 1) (t ∷ ts) = termBShift L t ∷ termBShiftVec L k ts ",
+      "historical": "lemma termBShiftVec_cons {k t ts : V} (ht : IsUTerm L t) (hts : IsUTermVec L k ts) :\n    termBShiftVec L (k + 1) (t ∷ ts) = termBShift L t ∷ termBShiftVec L k ts "
+    },
+    {
+      "name": "neg_rel",
+      "equal": true,
+      "current": "lemma neg_rel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    neg L (^rel k R v) = ^nrel k R v ",
+      "historical": "lemma neg_rel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    neg L (^rel k R v) = ^nrel k R v "
+    },
+    {
+      "name": "neg_nrel",
+      "equal": true,
+      "current": "lemma neg_nrel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    neg L (^nrel k R v) = ^rel k R v ",
+      "historical": "lemma neg_nrel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    neg L (^nrel k R v) = ^rel k R v "
+    },
+    {
+      "name": "neg_verum",
+      "equal": true,
+      "current": "lemma neg_verum :\n    neg L (^⊤ : V) = ^⊥ ",
+      "historical": "lemma neg_verum :\n    neg L (^⊤ : V) = ^⊥ "
+    },
+    {
+      "name": "neg_falsum",
+      "equal": true,
+      "current": "lemma neg_falsum :\n    neg L (^⊥ : V) = ^⊤ ",
+      "historical": "lemma neg_falsum :\n    neg L (^⊥ : V) = ^⊤ "
+    },
+    {
+      "name": "neg_and",
+      "equal": true,
+      "current": "lemma neg_and {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    neg L (p ^⋏ q) = neg L p ^⋎ neg L q ",
+      "historical": "lemma neg_and {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    neg L (p ^⋏ q) = neg L p ^⋎ neg L q "
+    },
+    {
+      "name": "neg_or",
+      "equal": true,
+      "current": "lemma neg_or {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    neg L (p ^⋎ q) = neg L p ^⋏ neg L q ",
+      "historical": "lemma neg_or {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    neg L (p ^⋎ q) = neg L p ^⋏ neg L q "
+    },
+    {
+      "name": "neg_all",
+      "equal": true,
+      "current": "lemma neg_all {p : V} (hp : IsUFormula L p) :\n    neg L (^∀ p) = ^∃ (neg L p) ",
+      "historical": "lemma neg_all {p : V} (hp : IsUFormula L p) :\n    neg L (^∀ p) = ^∃ (neg L p) "
+    },
+    {
+      "name": "neg_ex",
+      "equal": true,
+      "current": "lemma neg_ex {p : V} (hp : IsUFormula L p) :\n    neg L (^∃ p) = ^∀ (neg L p) ",
+      "historical": "lemma neg_ex {p : V} (hp : IsUFormula L p) :\n    neg L (^∃ p) = ^∀ (neg L p) "
+    },
+    {
+      "name": "shift_rel",
+      "equal": true,
+      "current": "lemma shift_rel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    shift L (^relk R v) = ^relk R (termShiftVec L k v) ",
+      "historical": "lemma shift_rel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    shift L (^relk R v) = ^relk R (termShiftVec L k v) "
+    },
+    {
+      "name": "shift_nrel",
+      "equal": true,
+      "current": "lemma shift_nrel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    shift L (^nrelk R v) = ^nrelk R (termShiftVec L k v) ",
+      "historical": "lemma shift_nrel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    shift L (^nrelk R v) = ^nrelk R (termShiftVec L k v) "
+    },
+    {
+      "name": "shift_verum",
+      "equal": true,
+      "current": "lemma shift_verum : shift L (^⊤ : V) = ^⊤ ",
+      "historical": "lemma shift_verum : shift L (^⊤ : V) = ^⊤ "
+    },
+    {
+      "name": "shift_falsum",
+      "equal": true,
+      "current": "lemma shift_falsum : shift L (^⊥ : V) = ^⊥ ",
+      "historical": "lemma shift_falsum : shift L (^⊥ : V) = ^⊥ "
+    },
+    {
+      "name": "shift_and",
+      "equal": true,
+      "current": "lemma shift_and {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    shift L (p ^⋏ q) = shift L p ^⋏ shift L q ",
+      "historical": "lemma shift_and {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    shift L (p ^⋏ q) = shift L p ^⋏ shift L q "
+    },
+    {
+      "name": "shift_or",
+      "equal": true,
+      "current": "lemma shift_or {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    shift L (p ^⋎ q) = shift L p ^⋎ shift L q ",
+      "historical": "lemma shift_or {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    shift L (p ^⋎ q) = shift L p ^⋎ shift L q "
+    },
+    {
+      "name": "shift_all",
+      "equal": true,
+      "current": "lemma shift_all {p : V} (hp : IsUFormula L p) :\n    shift L (^∀ p) = ^∀ (shift L p) ",
+      "historical": "lemma shift_all {p : V} (hp : IsUFormula L p) :\n    shift L (^∀ p) = ^∀ (shift L p) "
+    },
+    {
+      "name": "shift_exs",
+      "equal": true,
+      "current": "lemma shift_exs {p : V} (hp : IsUFormula L p) :\n    shift L (^∃ p) = ^∃ (shift L p) ",
+      "historical": "lemma shift_exs {p : V} (hp : IsUFormula L p) :\n    shift L (^∃ p) = ^∃ (shift L p) "
+    },
+    {
+      "name": "substs_rel",
+      "equal": true,
+      "current": "lemma substs_rel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    subst L w (^relk R v) = ^rel k R (termSubstVec L k w v) ",
+      "historical": "lemma substs_rel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    subst L w (^relk R v) = ^rel k R (termSubstVec L k w v) "
+    },
+    {
+      "name": "substs_nrel",
+      "equal": true,
+      "current": "lemma substs_nrel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    subst L w (^nrelk R v) = ^nrel k R (termSubstVec L k w v) ",
+      "historical": "lemma substs_nrel {k R v : V} (hR : L.IsRel k R) (hv : IsUTermVec L k v) :\n    subst L w (^nrelk R v) = ^nrel k R (termSubstVec L k w v) "
+    },
+    {
+      "name": "substs_verum",
+      "equal": true,
+      "current": "lemma substs_verum (w : V) : subst L w ^⊤ = ^⊤ ",
+      "historical": "lemma substs_verum (w : V) : subst L w ^⊤ = ^⊤ "
+    },
+    {
+      "name": "substs_falsum",
+      "equal": true,
+      "current": "lemma substs_falsum (w : V) : subst L w ^⊥ = ^⊥ ",
+      "historical": "lemma substs_falsum (w : V) : subst L w ^⊥ = ^⊥ "
+    },
+    {
+      "name": "substs_and",
+      "equal": true,
+      "current": "lemma substs_and {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    subst L w (p ^⋏ q) = subst L w p ^⋏ subst L w q ",
+      "historical": "lemma substs_and {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    subst L w (p ^⋏ q) = subst L w p ^⋏ subst L w q "
+    },
+    {
+      "name": "substs_or",
+      "equal": true,
+      "current": "lemma substs_or {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    subst L w (p ^⋎ q) = subst L w p ^⋎ subst L w q ",
+      "historical": "lemma substs_or {p q : V} (hp : IsUFormula L p) (hq : IsUFormula L q) :\n    subst L w (p ^⋎ q) = subst L w p ^⋎ subst L w q "
+    },
+    {
+      "name": "substs_all",
+      "equal": true,
+      "current": "lemma substs_all {p} (hp : IsUFormula L p) :\n    subst L w (^∀ p) = ^∀ (subst L (qVec L w) p) ",
+      "historical": "lemma substs_all {p} (hp : IsUFormula L p) :\n    subst L w (^∀ p) = ^∀ (subst L (qVec L w) p) "
+    },
+    {
+      "name": "substs_ex",
+      "equal": true,
+      "current": "lemma substs_ex {p} (hp : IsUFormula L p) :\n    subst L w (^∃ p) = ^∃ (subst L (qVec L w) p) ",
+      "historical": "lemma substs_ex {p} (hp : IsUFormula L p) :\n    subst L w (^∃ p) = ^∃ (subst L (qVec L w) p) "
+    },
+    {
+      "name": "qVec",
+      "equal": true,
+      "current": "def qVec (w : V) : V := ^#0 ∷ termBShiftVec L (len w) w",
+      "historical": "def qVec (w : V) : V := ^#0 ∷ termBShiftVec L (len w) w"
+    },
+    {
+      "name": "imp",
+      "equal": true,
+      "current": "def imp (p q : V) : V := neg L p ^⋎ q",
+      "historical": "def imp (p q : V) : V := neg L p ^⋎ q"
+    },
+    {
+      "name": "substs1",
+      "equal": true,
+      "current": "def substs1 (t u : V) : V := subst L ?[t] u",
+      "historical": "def substs1 (t u : V) : V := subst L ?[t] u"
+    },
+    {
+      "name": "free",
+      "equal": true,
+      "current": "def free (p : V) : V := substs1 L ^&0 (shift L p)",
+      "historical": "def free (p : V) : V := substs1 L ^&0 (shift L p)"
+    },
+    {
+      "name": "pair",
+      "equal": true,
+      "current": "def pair (a b : V) : V := if a < b then b * b + a else a * a + a + b",
+      "historical": "def pair (a b : V) : V := if a < b then b * b + a else a * a + a + b"
+    },
+    {
+      "name": "adjoin_def",
+      "equal": true,
+      "current": "lemma adjoin_def (x v : V) : x ∷ v = ⟪x, v⟫ + 1 ",
+      "historical": "lemma adjoin_def (x v : V) : x ∷ v = ⟪x, v⟫ + 1 "
+    },
+    {
+      "name": "vecToNat",
+      "equal": true,
+      "current": " foldr (fun x ih ↦ Nat.pair x ih + 1) 0 v",
+      "historical": " foldr (fun x ih ↦ Nat.pair x ih + 1) 0 v"
+    },
+    {
+      "name": "Bit",
+      "equal": true,
+      "current": "def Bit (i a : V) : Prop := LenBit (Exp.exp i) a",
+      "historical": "def Bit (i a : V) : Prop := LenBit (Exp.exp i) a"
+    },
+    {
+      "name": "bitInsert",
+      "equal": true,
+      "current": "def bitInsert (i a : V) : V := if i ∈ a then a else a + Exp.exp i",
+      "historical": "def bitInsert (i a : V) : V := if i ∈ a then a else a + Exp.exp i"
+    },
+    {
+      "name": "bitRemove",
+      "equal": true,
+      "current": "def bitRemove (i a : V) : V := if i ∈ a then a - Exp.exp i else a",
+      "historical": "def bitRemove (i a : V) : V := if i ∈ a then a - Exp.exp i else a"
+    },
+    {
+      "name": "arithmetic_symbol_func",
+      "equal": true,
+      "current": ".mkSigma “k f. (k = 0 ∧ f = 0) ∨ (k = 0 ∧ f = 1) ∨ (k = 2 ∧ f = 0) ∨ (k = 2 ∧ f = 1)”",
+      "historical": ".mkSigma “k f. (k = 0 ∧ f = 0) ∨ (k = 0 ∧ f = 1) ∨ (k = 2 ∧ f = 0) ∨ (k = 2 ∧ f = 1)”"
+    },
+    {
+      "name": "arithmetic_symbol_rel",
+      "equal": true,
+      "current": ".mkSigma “k r. (k = 2 ∧ r = 0) ∨ (k = 2 ∧ r = 1)”",
+      "historical": ".mkSigma “k r. (k = 2 ∧ r = 0) ∨ (k = 2 ∧ r = 1)”"
+    },
+    {
+      "name": "Eq.refl",
+      "equal": true,
+      "current": "abbrev Eq.refl : Sentence L := “∀ x, x = x”",
+      "historical": "abbrev Eq.refl : Sentence L := “∀ x, x = x”"
+    },
+    {
+      "name": "Eq.symm",
+      "equal": true,
+      "current": "abbrev Eq.symm : Sentence L := “∀ x y, x = y → y = x”",
+      "historical": "abbrev Eq.symm : Sentence L := “∀ x y, x = y → y = x”"
+    },
+    {
+      "name": "Eq.trans",
+      "equal": true,
+      "current": "abbrev Eq.trans : Sentence L := “∀ x y z, x = y → y = z → x = z”",
+      "historical": "abbrev Eq.trans : Sentence L := “∀ x y z, x = y → y = z → x = z”"
+    },
+    {
+      "name": "Eq.funcExt",
+      "equal": true,
+      "current": "abbrev Eq.funcExt {k} (f : L.Func k) : Sentence L :=\n  let σ : Semisentence L (k + k) :=\n    (Matrix.conj fun i : Fin k ↦ “#(i.addCast k) = #(i.addNat k)”) 🡒\n      op(=).operator ![Semiterm.func f (fun i ↦ #(i.addCast k)), Semiterm.func f (fun i ↦ #(i.addNat k))]\n  ∀⁰* σ",
+      "historical": "abbrev Eq.funcExt {k} (f : L.Func k) : Sentence L :=\n  let σ : Semisentence L (k + k) :=\n    (Matrix.conj fun i : Fin k ↦ “#(i.addCast k) = #(i.addNat k)”) 🡒\n      op(=).operator\n        ![Semiterm.func f (fun i ↦ #(i.addCast k)), Semiterm.func f (fun i ↦ #(i.addNat k))]\n  ∀¹* σ"
+    },
+    {
+      "name": "Eq.relExt",
+      "equal": true,
+      "current": "abbrev Eq.relExt {k} (r : L.Rel k) : Sentence L :=\n  let σ : Semisentence L (k + k) :=\n    (Matrix.conj fun i : Fin k ↦ “#(i.addCast k) = #(i.addNat k)”) 🡒\n      Semiformula.rel r (fun i ↦ #(i.addCast k)) 🡒 Semiformula.rel r (fun i ↦ #(i.addNat k))\n  ∀⁰* σ",
+      "historical": "abbrev Eq.relExt {k} (r : L.Rel k) : Sentence L :=\n  let σ : Semisentence L (k + k) :=\n    (Matrix.conj fun i : Fin k ↦ “#(i.addCast k) = #(i.addNat k)”) 🡒\n      Semiformula.rel r (fun i ↦ #(i.addCast k)) 🡒 Semiformula.rel r (fun i ↦ #(i.addNat k))\n  ∀¹* σ"
+    },
+    {
+      "name": "PAminus.addZero",
+      "equal": true,
+      "current": "“∀ x, x + 0 = x”",
+      "historical": "“∀ x, x + 0 = x”"
+    },
+    {
+      "name": "PAminus.addAssoc",
+      "equal": true,
+      "current": "“∀ x y z, (x + y) + z = x + (y + z)”",
+      "historical": "“∀ x y z, (x + y) + z = x + (y + z)”"
+    },
+    {
+      "name": "PAminus.addComm",
+      "equal": true,
+      "current": "“∀ x y, x + y = y + x”",
+      "historical": "“∀ x y, x + y = y + x”"
+    },
+    {
+      "name": "PAminus.zeroLe",
+      "equal": true,
+      "current": "“∀ x, 0 ≤ x”",
+      "historical": "“∀ x, 0 ≤ x”"
+    },
+    {
+      "name": "PAminus.zeroLtOne",
+      "equal": true,
+      "current": "“0 < 1”",
+      "historical": "“0 < 1”"
+    },
+    {
+      "name": "PAminus.oneLeOfZeroLt",
+      "equal": true,
+      "current": "“∀ x, 0 < x → 1 ≤ x”",
+      "historical": "“∀ x, 0 < x → 1 ≤ x”"
+    },
+    {
+      "name": "PAminus.addLtAdd",
+      "equal": true,
+      "current": "“∀ x y z, x < y → x + z < y + z”",
+      "historical": "“∀ x y z, x < y → x + z < y + z”"
+    },
+    {
+      "name": "PAminus.mulZero",
+      "equal": true,
+      "current": "“∀ x, x * 0 = 0”",
+      "historical": "“∀ x, x * 0 = 0”"
+    },
+    {
+      "name": "PAminus.mulOne",
+      "equal": true,
+      "current": "“∀ x, x * 1 = x”",
+      "historical": "“∀ x, x * 1 = x”"
+    },
+    {
+      "name": "PAminus.mulAssoc",
+      "equal": true,
+      "current": "“∀ x y z, (x * y) * z = x * (y * z)”",
+      "historical": "“∀ x y z, (x * y) * z = x * (y * z)”"
+    },
+    {
+      "name": "PAminus.mulComm",
+      "equal": true,
+      "current": "“∀ x y, x * y = y * x”",
+      "historical": "“∀ x y, x * y = y * x”"
+    },
+    {
+      "name": "PAminus.mulLtMul",
+      "equal": true,
+      "current": "“∀ x y z, x < y ∧ 0 < z → x * z < y * z”",
+      "historical": "“∀ x y z, x < y ∧ 0 < z → x * z < y * z”"
+    },
+    {
+      "name": "PAminus.distr",
+      "equal": true,
+      "current": "“∀ x y z, x * (y + z) = x * y + x * z”",
+      "historical": "“∀ x y z, x * (y + z) = x * y + x * z”"
+    },
+    {
+      "name": "PAminus.ltIrrefl",
+      "equal": true,
+      "current": "“∀ x, x ≮ x”",
+      "historical": "“∀ x, x ≮ x”"
+    },
+    {
+      "name": "PAminus.ltTrans",
+      "equal": true,
+      "current": "“∀ x y z, x < y ∧ y < z → x < z”",
+      "historical": "“∀ x y z, x < y ∧ y < z → x < z”"
+    },
+    {
+      "name": "PAminus.ltTri",
+      "equal": true,
+      "current": "“∀ x y, x < y ∨ x = y ∨ x > y”",
+      "historical": "“∀ x y, x < y ∨ x = y ∨ x > y”"
+    },
+    {
+      "name": "succInd",
+      "equal": true,
+      "current": "def succInd {ξ} (φ : Semiformula L ξ 1) : Formula L ξ := “!φ 0 → (∀ x, !φ x → !φ (x + 1)) → ∀ x, !φ x”",
+      "historical": "def succInd {ξ} (φ : Semiformula L ξ 1) : Formula L ξ :=\n  “!φ 0 → (∀ x, !φ x → !φ (x + 1)) → ∀ x, !φ x”"
+    },
+    {
+      "name": "InductionScheme",
+      "equal": true,
+      "current": "def InductionScheme (Γ : Semiformula L ℕ 1 → Prop) : Theory L :=\n  { ψ | ∃ φ : Semiformula L ℕ 1, Γ φ ∧ ψ = .univCl (succInd φ) }",
+      "historical": "def InductionScheme (Γ : Semiformula L ℕ 1 → Prop) : Theory L :=\n  { ψ | ∃ φ : Semiformula L ℕ 1, Γ φ ∧ ψ = .univCl (succInd φ) }"
+    },
+    {
+      "name": "Peano",
+      "equal": true,
+      "current": "abbrev Peano : ArithmeticTheory := 𝗣𝗔⁻ ∪ InductionScheme ℒₒᵣ Set.univ",
+      "historical": "abbrev Peano : ArithmeticTheory := 𝗣𝗔⁻ ∪ InductionScheme ℒₒᵣ Set.univ"
+    },
+    {
+      "name": "qqAlls_zero",
+      "equal": true,
+      "current": "lemma qqAlls_zero (p : V) : qqAlls p 0 = p ",
+      "historical": "lemma qqAlls_zero (p : V) : qqAlls p 0 = p "
+    },
+    {
+      "name": "qqAlls_succ",
+      "equal": true,
+      "current": "lemma qqAlls_succ (p k : V) : qqAlls p (k + 1) = ^∀ (qqAlls p k) ",
+      "historical": "lemma qqAlls_succ (p k : V) : qqAlls p (k + 1) = ^∀ (qqAlls p k) "
+    },
+    {
+      "name": "fvarVec_zero",
+      "equal": true,
+      "current": "lemma fvarVec_zero : fvarVec (0 : V) = 0 ",
+      "historical": "lemma fvarVec_zero : fvarVec (0 : V) = 0 "
+    },
+    {
+      "name": "fvarVec_succ",
+      "equal": true,
+      "current": "lemma fvarVec_succ (k : V) : fvarVec (k + 1) = concat (fvarVec k) (^&k) ",
+      "historical": "lemma fvarVec_succ (k : V) : fvarVec (k + 1) = concat (fvarVec k) (^&k) "
+    },
+    {
+      "name": "InductionUnivR = InductionR(True)",
+      "equal": true,
+      "current": "\n  ∃ m ≤ p, ∃ b ≤ p,\n    p = qqAlls b m ∧ IsUFormula ℒₒᵣ b ∧ shift ℒₒᵣ b = b ∧ bv ℒₒᵣ b = m\n    ∧ ∃ K ≤ subst ℒₒᵣ (fvarVec m) b,\n        IsSemiformula ℒₒᵣ 1 K ∧ subst ℒₒᵣ (fvarVec m) b = indBodyVal K",
+      "historical": "\n  ∃ m ≤ p, ∃ b ≤ p,\n    p = qqAlls b m ∧ IsUFormula ℒₒᵣ b ∧ shift ℒₒᵣ b = b ∧ bv ℒₒᵣ b = m\n    ∧ ∃ K ≤ subst ℒₒᵣ (fvarVec m) b,\n        IsSemiformula ℒₒᵣ 1 K ∧ subst ℒₒᵣ (fvarVec m) b = indBodyVal K"
+    }
+  ],
+  "shared_equation_checks": 119,
+  "pinned_blob_checks": 69,
+  "unequal_checks": [],
+  "finite_axiom_difference": {
+    "name": "PAminus.addEqOfLt",
+    "current": "“∀ x y, x < y → ∃ z, x + z = y”",
+    "historical": "“∀ x y, x < y → ∃ z <⁺ y, x + z = y”"
+  },
+  "source_sha256": {
+    "source/Foundation/Vorspiel/Matrix.lean": "b92ec8c1eac19c16d62e04de394751e1ff06ded1686d631602af4d096722cdf9",
+    "source/Foundation/FirstOrder/Arithmetic/Basic.lean": "b54745426857e211f5157f827b904c015023377cff969a4fe79456debaa3bd82",
+    "source/Foundation/FirstOrder/Arithmetic/Exponential.lean": "6f33f968c4f3798b7a92660b1fd07f86a432b911dbaaa3a38923aee419a3a7a5",
+    "source/Foundation/FirstOrder/Arithmetic/Induction.lean": "ec45e5158da364094bbb2f760e5453f65f3882ad5a046665999127519c7b0b36",
+    "source/Foundation/FirstOrder/Arithmetic/Schemata.lean": "5b1a1d84b71c3f943a0867c14d3b0c8c381062ec742d984fefdacf9f2209a6fd",
+    "source/Foundation/FirstOrder/Basic/Coding.lean": "eef1625a9637ac6a379dc644849786092d94c716116cd34ae3aac5eb0f31efeb",
+    "source/Foundation/FirstOrder/Basic/Eq.lean": "f1a53113cb76030f89a78579f822dcfab1e53dccb1b8ede7caf8287630ab63d6",
+    "source/Foundation/FirstOrder/Basic/Operator.lean": "4a627ada25218a73cb271400fbf45a08eaead0c8986710b9539b02346376e46f",
+    "source/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.lean": "4c87d00022da1dd0b75b3d73e184d04458835f362dcdda06e5529574ce2b99cf",
+    "source/Foundation/FirstOrder/Order/Le.lean": "252136b3fab6eb96bb38766ce6d9fb5dd01a89cc94fc5aab25920cbe8185a74e",
+    "source/Foundation/FirstOrder/Arithmetic/Basic/Hierarchy.lean": "c9ac3be94e6691675ae3d37ed2d9e6a03abc0cd22a970db321ee447ea3eb14bf",
+    "source/Foundation/FirstOrder/Arithmetic/Basic/Misc.lean": "ad0921b90fab047432696c8da1eb18b29e18259b33245afce297f83e662cbcb7",
+    "source/Foundation/FirstOrder/Arithmetic/Exponential/Bit.lean": "6e7aa1746e2545afb63a95b1220d40c6a84d0804e16f78158acf89b465ac0fc4",
+    "source/Foundation/FirstOrder/Arithmetic/Exponential/Log.lean": "523a27cb24dcfe344cab9ef1106f7ba884a0b612bfbcddffab247148e7c8120e",
+    "source/Foundation/FirstOrder/Arithmetic/Exponential/Pow2.lean": "47fc33e6294b24ac75ae542a1223cfab9599d8e2ba68602b21a0d13de5a09af1",
+    "source/Foundation/FirstOrder/Arithmetic/HFS/Basic.lean": "41583ef7c9ddef6e91dc283b52bb6df66624ea07da201a7c644e581f234e98ee",
+    "source/Foundation/FirstOrder/Arithmetic/HFS/Coding.lean": "aa53f540a27e5def060e80042446f3747726708c55dfdad63ecb82c46451095b",
+    "source/Foundation/FirstOrder/Arithmetic/HFS/Seq.lean": "b2f1f9fbd0c746aa1f531ba4a468bf07f24eab388b7fd4c924abe240429517a8",
+    "source/Foundation/FirstOrder/Arithmetic/HFS/Vec.lean": "1a9a72cda6de5ff03759c73012478e9713ddfb182fb2645484050a6e9b1815a3",
+    "source/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean": "4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b",
+    "source/Foundation/FirstOrder/Arithmetic/PeanoMinus/Basic.lean": "856a38ddda30c1505f6d991e6033ef7c41ebc82418b503ab711dfe173dc72303",
+    "source/Foundation/FirstOrder/Arithmetic/PeanoMinus/Functions.lean": "289c1c72c5a87a8dfbd1c4f4fcbead879570dbb47ab33f4612df05f3f91ee168",
+    "source/Foundation/FirstOrder/Arithmetic/Q/Basic.lean": "7d1d232d3bc0a8eeef9538ab7ec31a4927087a424334a0a4b1082f15a38eb456",
+    "source/Foundation/FirstOrder/Basic/Syntax/Formula.lean": "5cbd864cc34c4b18824757fb2112f9b21f6281b53f6ee434ff326214b2e2b341",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Language.lean": "c03cdaa2df65c46751a3bc7f044c4f950c04c446b4a379cbe2fa61d219a9fc9d",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Theory.lean": "f159be430de0f5c49357e1f8245e06f9e05845464a7c68e132c85c429698cebb",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Formula/Basic.lean": "a0a22af3fba7d04310c6332afab61f74298c6f363bfe0d6215299c46f9602f92",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Formula/Coding.lean": "0f436183033433b349c69620d459629ca16e224525e17ae992362aa8f93e5073",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Formula/Functions.lean": "6724379fcb7a0deb3c0ca3e0ce7787b57b56cd0d1c7a066d9fa1c6172d4db03f",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Formula/Iteration.lean": "304172d2a84ffa6073bc9acebae84be7c9f6da162f2b9ab45a2783bcdd766037",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Basic.lean": "72e3cf386967e3fed4366ee5aa59678a0333cd2f40c8dbb09bebbf8dd4fa80e3",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Coding.lean": "85eedc601aa9912320ccb92898b1c12fa3c51dffae81a44ce3666d5efd472998",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Term/Basic.lean": "bc7fb4ea095e9274028d477b62fd822152834484a2b45e3e614a354b2bd29988",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Term/Coding.lean": "79cee5b0071b1543c7bf615a72f335898c704ea8c466be2a291feaf61be3ae21",
+    "source/Foundation/FirstOrder/Bootstrapping/Syntax/Term/Functions.lean": "9a54f936809535c7374760650c8fd8f96c8218245a88f8f15d6240195407931b",
+    "source/Foundation/Vorspiel/Nat/Matrix.lean": "3aaffee7a9a267f81cefc3f65ab5b056f5d2b68ed96dcc84f09ca266f32f89f5",
+    "historical/Foundation/Vorspiel/Matrix.lean": "2503fec77192d7488ca9950c879b901f7db14bef02a077bf57f7c2fa66f13a8d",
+    "historical/Foundation/FirstOrder/Arithmetic/Exponential.lean": "61902296a18ed19c3fb9d3248f9dbb2124c2776763db9cb75f08dd3baef3ce8f",
+    "historical/Foundation/FirstOrder/Arithmetic/Schemata.lean": "ced23208ebcbfd10d1f825cd02a41dd23715e21785c2300ee1dfec3ff070f3bf",
+    "historical/Foundation/FirstOrder/Incompleteness/Definability.lean": "472dadb46ff9c33bbfb65d7a81fda5fed059fa7f67a76829f777e7a2ce5a0822",
+    "historical/Foundation/FirstOrder/LK/Eq.lean": "6259afe38f1a20dfec502a0437446fa3d477ce97f4a56bf2b47120d3c54d3e60",
+    "historical/Foundation/FirstOrder/Arithmetic/Basic/Hierarchy.lean": "e09246e134e9f6246b0098f0412b7e2209c3c42b9f68d17e52a5f42b5fced536",
+    "historical/Foundation/FirstOrder/Arithmetic/Basic/Misc.lean": "fecca9c2887f90d7f8b4092e81bdc968e4f5cfa2c7b342195dd076d5d2d70dbe",
+    "historical/Foundation/FirstOrder/Arithmetic/Exponential/Bit.lean": "2d40f871d4c370cc20fa8f7c4459ddb1153ae185a939fc266e1b5a11ab736852",
+    "historical/Foundation/FirstOrder/Arithmetic/HFS/Basic.lean": "04146067b0f3b78d0f42a59daef445006df6f10704426e1687eefc3bbf9373ee",
+    "historical/Foundation/FirstOrder/Arithmetic/HFS/Seq.lean": "82beadf9676c98beb1948725fd27213be1c44da4dcc6a85c1e24c4a1c068edcd",
+    "historical/Foundation/FirstOrder/Arithmetic/HFS/Vec.lean": "cd3fa39802e20703d25499cb6ae7993b02e7bc910aaae3b3ce7b37314864af1c",
+    "historical/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean": "d984cb8ac65bba359d04323627dc2088a5de781eb20daaa3b4d22c272ce839f8",
+    "historical/Foundation/FirstOrder/Arithmetic/PeanoMinus/Basic.lean": "d9024a446b4142723eb3d8ceac1958ab7e10456001026f275f29355800ed0f98",
+    "historical/Foundation/FirstOrder/Arithmetic/PeanoMinus/Functions.lean": "65eabe246143692f0734cdfe3b4721ed86ba0cd4d8329373425c3b3a7a063294",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Language.lean": "61ef43a899a12a1a9b7c97253fae9bfb28916e56ddf612f881c188382c354047",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Formula/Basic.lean": "26b4de1fd737293440e9c2a37de146125444b69fd606f0b7fe9f7d39f89bd38e",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Formula/Functions.lean": "dd8a5dbecda1d4dab5bdb8d9082e29ffad12c30f6cd10d657eeadee33a787f9a",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Formula/Hierarchy.lean": "8cd99b51f7a86c794e1522f175cbcb2feeac539db51385559eb6b749716aa582",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Formula/Iteration.lean": "bf589bbbb75a8f70b56ce5525e4d27003cc3d9396dbcfad595668b7e894a3991",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Formula/Typed.lean": "34ed906729bef20d4b1381cb1b377b34471717743b55964c01406b9ba22bbc99",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Proof/Basic.lean": "c554bb76e371df009fa2c24472e1192c05b14060cd95d28e66fdd43a12d6f1a5",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Proof/Coding.lean": "4bd798f024039e16961d5377dec329523c44281c06569411cb2280887d74971c",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Term/Basic.lean": "9e9017f7ba62ee9396aeada5f449e21fed2ddf572da33f44e921f80f01341e36",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Term/Functions.lean": "d8ba2b6579ccc5888015b2b8d0d81ec8e2e8cbb85ee4e38e60bdb06d56d97e18",
+    "historical/Foundation/FirstOrder/Arithmetic/Bootstrapping/Syntax/Term/Typed.lean": "0204366fb497ab2ffcffa646a64496c60a1648a1959d38e2c754c36b2b58050b",
+    "historical/Foundation/FirstOrder/Syntax/Classical/Bounding.lean": "9bcca69b449b0e5ae8992e70e2b04888706aef41c06500a0bb1ace8ef055a4b8",
+    "historical/Foundation/FirstOrder/Syntax/Classical/BoundingHierarchy.lean": "a83d38bbe89833b17900a32393d713a61203df682611ad41c2d3cf1b938f0b90",
+    "historical/Foundation/FirstOrder/Syntax/Classical/Coding.lean": "29fd7c3689e0a7d7f67489549b3220111b54dc986b06bc88e53a5770e9a2b888",
+    "historical/Foundation/FirstOrder/Syntax/Classical/Eq.lean": "a1db703cca888d95c68e7cd4cef67eb22a041e85a24ce386bbf00ae1dd244df5",
+    "historical/Foundation/FirstOrder/Syntax/Classical/Formula.lean": "3eda5100cd329607d9eeafbf3c8c254a14da5914be626072aa966394aeb4e867",
+    "historical/Foundation/FirstOrder/Syntax/Classical/Operator.lean": "f1b86f1576dff72c9cb3a61a31b6782647852a1af7a8a93ed848f5ca5daba160",
+    "historical/Foundation/Vorspiel/Nat/Matrix.lean": "47b0049b24e41eb5c09a3ea4389193e035adbb7e42ee86cda041bf675df9dddf"
+  }
+}

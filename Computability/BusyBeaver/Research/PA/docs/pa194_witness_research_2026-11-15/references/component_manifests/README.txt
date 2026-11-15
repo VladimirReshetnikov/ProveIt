@@ -1,0 +1,1 @@
+These recorded component manifests describe the original implementation-component layouts before integration. In that layout README.md is now README_implementation_H5X.md. Use the top-level SHA256SUMS to verify the complete distributed package. The comparison subpacket retains its own unchanged MANIFEST.json.

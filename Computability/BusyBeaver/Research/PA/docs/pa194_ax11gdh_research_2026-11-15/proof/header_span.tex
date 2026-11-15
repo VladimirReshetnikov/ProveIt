@@ -1,0 +1,74 @@
+% Report fragment; requires amsmath, booktabs.
+\section{A smaller certified frame for the inherited 193-state runtime}
+\label{sec:header-span-research}
+
+The rejected 193-state runtime is useful research material even though its
+blank initialization is unresolved. Its native transition table has SHA-256
+\nolinkurl{50f7be44afb63293365270a83111299247d12d140614e4b4c9a52786163acb53}.
+We kept every transition unchanged and reduced the minimum header distance
+in its arbitrary-register tape invariant from 48 to 38. The primary source
+has 3,673 instruction sites and maximum address length 36.
+
+The independent whole-tape symbolic replay succeeded at distance 38 for all
+4,780 source outcomes, including both decrement branches. It rederived the
+four list-traversal induction lemmas directly from the literal transition
+table and used no arithmetic-box oracles. The proof covers nine arbitrary
+natural primary-register values, an arbitrary nonempty spare list and an
+arbitrary nonnegative additional gap. The run used 1,078,534 symbolic
+events and all 386 literal transition rows; the minimum constant term in
+its positive duration bounds was three. Thus the previously required
+distance contains at least ten cells of removable slack for these local
+runtime contracts. This theorem supplies neither a blank startup nor a
+minimum possible header distance.
+
+At distance 37, the same engine proved 4,223 source outcomes and then
+stopped at the zero branch of source site 3248. A literal step needed to
+consume a zero-run atom whose symbolic length could be zero. This is a
+failure of that symbolic proof attempt, not a concrete incorrect runtime
+execution and not a lower bound. The exact error and the successful
+distance-38 receipt are supplied with the runnable checker and its inputs.
+
+We also widened the inherited adaptive blank-start search from source
+sites 25--44 to all 3,673 primary source-site paths, allowed arbitrary
+values in all nine primary registers, and lowered its frame-recognition
+distance threshold from 48 to 37. This was a bounded discovery experiment.
+It used the inherited pool of 327 individually screened neutral row edits;
+simultaneous preservation by edit combinations was not assumed. The search
+requested edit depth 16, beam width 256 and a 50,000-step bound per run,
+with all 193 initial controls, seed 1137193 and a 90-second wall budget.
+It completed six depths and part of the seventh.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Measured quantity & Result\\
+\midrule
+Distinct start/edit specifications simulated & 28,438\\
+Literal transitions & 989,809,484\\
+Recognized complete-frame hits & 0\\
+Literal halts & 5\\
+Recognized outward blank rays & 8,643\\
+Resource-bound stops & 19,790\\
+Visits to source-boundary control 84 & 611,157\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These configurations include the unedited 193-start baseline. Distinct
+edit specifications can give the same reachable transition system because
+an edited row may never be used. Resource-bound stops have no inferred
+eventual behavior. The inherited recognition prefilter requires at least
+13 one-cells; a frame with an all-zero source path, nine zero primary
+registers and one zero spare can have only 12, so such frames were excluded.
+The search is therefore not exhaustive even over all geometrically valid
+frames in the displayed source-site set. Any discovered hit would still
+require a new universal runtime proof and a valid semantic source seed.
+No edited table is promoted by this experiment.
+
+The portable \texttt{header\_span/} directory contains the adapted C++
+search, the Python symbolic checker, all exact inputs, the inherited
+independent engine, SHA-256 input manifest, symbolic receipts, complete
+search log and empty hit stream. The README records exact reproduction
+commands and the hardware-dependent wall-clock cutoff. None of these
+experiments establishes a blank-start consistency machine below 194
+states or a state-count lower bound.

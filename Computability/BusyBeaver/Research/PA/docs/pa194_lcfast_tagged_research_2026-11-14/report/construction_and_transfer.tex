@@ -1,0 +1,190 @@
+\section{Concrete source and table transformations}
+Let $i$ be the source instruction incrementing register 1. Change the
+constructor loop tail from
+\[
+ ((i,i),(i,i));\operatorname{continueTo}(2)
+ \quad\hbox{to}\quad
+ ((i,i),((i,i),\operatorname{continueTo}(3))).
+\]
+The continuation index changes with its syntactic depth. Both trees
+execute four increments and jump to the same enclosing decrement.
+In the named source DAG this changes \texttt{node62}. Remove the old
+four-increment alias to native control 190: that control now participates
+in continuation routing. The resolved instruction opcodes, register
+arguments, and successor ordinals remain byte-for-byte equal to the
+parent array. There are 3,671 instructions for GH and 3,668 for GHS;
+305 source addresses change in each case.
+
+Exactly the following five native transition rows change relative to
+each parent. A row gives write symbol, movement, and next control.
+\begin{center}
+\begin{tabular}{rrll}
+\toprule
+Control & Read & Parent & New \\
+\midrule
+26 & 1 & $1\ R\ 42$ & $1\ R\ 91$ \\
+101 & 0 & $0\ L\ 26$ & $0\ R\ 17$ \\
+139 & 0 & $0\ R\ 190$ & $0\ R\ 99$ \\
+139 & 1 & $0\ L\ 16$ & $1\ R\ 190$ \\
+190 & 1 & $1\ R\ 99$ & $1\ L\ 73$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+The first two rows shorten the two existing guarded decoder paths; the
+last three implement the displayed source reassociation. The literal
+checker verifies their combined effect on every source branch, so no
+assumption that independently correct optimizations commute is needed.
+The contextual folds are replayed simultaneously on the final table.
+The count is $134+67-7=194$ for GH and $135+67-8=194$ for GHS.
+Native start, source root, and halt controls are respectively 74, 84,
+and 254. The delivered dense tables have start 0 and halt 194.
+All 194 working states are graph-reachable from the dense start.
+
+The exact dense hashes are
+\begin{center}\small\ttfamily
+\begin{tabular}{l}
+PA194LCAX11GHF:\\
+01c1b37ac3bbc51b2dfef22b8e42a6b3713ed720350269f819d82793e3f01bce\\[3pt]
+PA194LCAX11GHSF:\\
+6d03507fcc85825f81f7db5d02b0cb60e48f87c53be3dd0e4a8888d4922517a9.
+\end{tabular}
+\end{center}
+
+\section{Literal certificates and their arithmetic meaning}
+The construction-side symbolic replay checks 4,778 GH branch outcomes
+and 4,774 GHS outcomes. The independent checker imports neither the
+constructor nor arithmetic-box oracles. It derives four generic list
+traversal lemmas from the actual rows, resolves the source control flow
+by two separate algorithms, and checks every branch for nine arbitrary
+natural registers, a nonnegative affine gap, any first spare, and any
+nonempty finite spare list. It compares the entire finite-support tape
+after blank startup, including blank exteriors.
+
+The independent replay for the new GH table performs 1,105,240 symbolic
+operations, and the GHS replay performs 1,109,186. These counts are
+checker operations, not physical TM transitions. The maximum per-case
+symbolic count is 385; every certified physical duration has constant
+term at least 3. Exact physical startup lengths are 57,870 and 57,712.
+The parent contracts retained from the supplied archive have startups
+57,922 and 57,768. Their provenance is explicitly distinguished in the
+coefficient receipt from the newly replayed contracts.
+
+For arithmetic formalization represent a finite-support tape by a
+zipper $(q,l,r)$, with the low bit of $r$ under the head and the low bit
+of $l$ immediately to its left. After writing $w$, right and left moves
+respectively send $(l,r)$ to
+\[
+ (2l+w,\lfloor r/2\rfloor),\qquad
+ (\lfloor l/2\rfloor,4\lfloor r/2\rfloor+2w+(l\bmod2)).
+\]
+Table lookup, finite word operations, and bounded iteration are primitive
+recursive. Absorb the halt control into a total transition function.
+The symbolic executor uses the literal transition equation, quantifier-free
+induction for homogeneous runs, and coded-list induction for the four
+list traversals. The normalization identity
+$C(A)1=1B(A)$, with $B(v)=0\,1^{v+1}$ and $C(v)=1\,0\,1^v$,
+follows by induction on coded-list length. Exterior-word codes remain
+free parameters. Canonical zipper equality replaces a quantified
+assertion over all tape coordinates.
+
+Every resulting local equation is a primitive-recursive frame equality.
+All intermediate affine run lengths are coefficientwise nonnegative;
+zero and successor decrement branches are checked separately. Finite
+composition of these equations proves the local contracts in \ipra.
+The executable checker is evidence for derivations using these sound
+rules; Python is not asserted to be a proof-assistant kernel.
+
+\section{An explicit relative theorem}
+For any of the four tables $M$, let $H_M(t)$ mean that the totalized blank
+run is halted after $t$ transitions. It is a decidable primitive-recursive
+predicate, expressing halting by time $t$.
+\begin{theorem}[Relative transfer]
+For either corresponding parent $P$ and child $N$, the local contracts
+and startups above yield
+\[
+ \ipra\vdash\forall t\,[H_P(t)\to H_N(\Theta(t))],\qquad
+ \ipra\vdash\forall t\,[H_N(t)\to H_P(\Theta(t))],
+\]
+where
+\[
+ \boxed{\Theta(t)=57\,922+13(t+1)^2+689(t+1)
+                   =13t^2+715t+58\,624.}
+\]
+Thus \ipra\ proves equivalence of the two halting sentences and, by
+intuitionistic logic, equivalence of the two nonhalting sentences.
+\end{theorem}
+\begin{proof}
+Augment a logical source configuration by its gap $g$, first spare $a_0$,
+and finite spare tail $A$. Its physical encoding $E(s)$ is a primitive-
+recursive function of these explicit arguments. The source counter
+selects one of the finitely many valid instruction addresses. Every
+source frame is physically nonhalting, even a frame whose next source
+instruction is halt.
+
+Let $h(s)$ mark the ready-to-execute source halt instruction. Let $S$ be
+the augmented source step, with an absorbing logical halt extension;
+let $s_n=S^n(s_0)$. For each nonhalting source state let $k(s)\ge1$ be the
+exact physical duration and let $k_H(s)\ge1$ be the halt-site duration.
+Extend these functions primitively recursively on unused inputs. With
+startup length $b$, define
+\[
+ T(0)=b,\quad T(n+1)=T(n)+k(s_n),\quad
+ B(n)=\prod_{j<n}(1-h(s_j)).
+\]
+The quantifier-free synchronization invariant is
+\[
+ B(n)=1\ \Longrightarrow\
+ \bigl(\operatorname{Inv}(s_n)\land
+ \operatorname{run}_M(T(n),\mathrm{blank})=E(s_n)
+ \land T(n)\ge b+n\bigr).
+\]
+The complete startup proves its base. The equation
+$B(n+1)=B(n)(1-h(s_n))$ supplies the nonhalt premise of the next local
+contract. Exact iteration composition and duration positivity prove the
+step. The frame target preserves its explicit auxiliary invariant.
+Normal segments cannot hide a halt: in absorbing semantics an exact
+endpoint equation at a nonhalting frame excludes an earlier halt.
+
+Given a source halt witness $h(s_n)=1$, bounded first-hit minimization
+returns its first index $m\le n$. Then $B(m)=1$, and the halt contract
+gives a physical halt at $T(m)+k_H(s_m)$. Conversely, if $H_M(t)$ and
+$B(t+1)=1$, synchronization produces a nonhalting root frame at time
+$T(t+1)\ge b+t+1>t$, contradicting absorbing halting. Therefore the finite
+Boolean prefix has a first hit $m\le t$. This is bounded minimization
+with quantifier-free correctness induction; no Markov principle or
+unbounded existential double-negation elimination is used.
+
+The two implementations have identical resolved logical source graphs
+and initial logical registers. Their auxiliary fields can differ, but
+quantifier-free induction gives the same logical projection at every
+source index. A source halt witness in either therefore transfers to
+the other.
+
+For a concrete uniform physical bound, the startup logical registers
+are $(2,0,\ldots,0)$, the gap is zero, the first spare is 1, and the tail
+consists of 25 ones. Its block width is 75. A finite coefficientwise
+comparison of all four sets of contracts, tied by hashes to their tables,
+gives
+\[
+ 3\le k(s),k_H(s)\le
+ 542+8g+4\sum_{i=0}^{8}r_i+2a_0+2\operatorname{width}(A).
+\]
+A successor-decrement vector uses the decremented register value, which
+can only reduce this upper bound. One source primitive increments at
+most one register by one. Its gap rises by at most two; an increment
+appends one spare value 1, and the other primitives retain the spare
+list. Therefore, after $j$ normal source steps,
+\[
+ \sum_i r_i\le2+j,\quad g\le2j,\quad a_0=1,
+ \quad\operatorname{width}(A)\le75+3j.
+\]
+All these are quantifier-free induction invariants. Substitution yields
+$k(s_j),k_H(s_j)\le702+26j$. Hence $n$ normal source steps take at most
+$b+13n^2+689n$. A first source halt at index $n$ takes at most
+$b+13(n+1)^2+689(n+1)$. Since all four startups satisfy $b\le57\,922$
+and extraction gave $n\le t$, the displayed $\Theta$ proves both
+implications. Existential introduction gives halting equivalence;
+contraposition of each implication, valid intuitionistically, gives
+nonhalting equivalence.
+\end{proof}
+

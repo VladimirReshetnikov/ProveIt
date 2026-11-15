@@ -1,0 +1,269 @@
+\section{Comparison with the complete pinned machine corpus}
+\label{sec:corpus-comparison}
+
+\subsection{Scope, snapshot, and what was checked}
+
+The comparison is pinned to ProveIt revision
+\texttt{8d31445d858761a8f6150c2e5012adae8895e932}.
+The relevant delivery collection has 87 filed packets under
+\texttt{Computability/BusyBeaver/Research/PA/docs} and six pending ZIPs
+under \texttt{docs/incoming}: 93 deliveries in total. A delivery is not
+a distinct machine. Several packets reproduce the same transition table,
+and some carry materially newer proofs for an unchanged table.
+
+Every one of the 718 tracked PA files ending in \texttt{.tm} was read and
+parsed. All six pending ZIPs were downloaded at the pinned revision; their
+Git blob identities were recomputed and matched the GitHub directory
+metadata. Their 3,058 top-level members include 1,439 literal machine tables
+with 488 distinct byte payloads. The top-level table census therefore
+contains 2,157 occurrences before any graph identification. The metadata
+ledger covers all 87 filed deliveries; its summaries are explicitly
+attributed to the supplied packet descriptions, rather than presented as
+93 independently reconstructed arithmetic proofs.
+
+The executable recognizer reads literal five-column transition tables. It
+does not execute arbitrary generators, parse prose as a table, or claim
+exhaustive recognition of tables encoded only in arbitrary JSON. Recursive
+inspection of the pending nested archives expands ten distinct ZIP payloads
+in all, deduplicating repeated ZIP bytes. This extension gives 2,826 literal
+table occurrences and 876 distinct byte payloads. Twenty-one small,
+partial, or experimental payloads fail the complete-one-terminal convention
+used by the structural classifier; none removes a 194-control table from
+the comparison below. The exact exclusions and all source locators are
+retained in the machine-readable census.
+
+The newly performed checks are byte-identity verification, literal parsing,
+exact structural classification, comparison of the named command interfaces,
+and reconciliation of proof versions. Execution and theorem-verification
+claims quoted from an older packet remain attributed to that packet unless
+the main report explicitly records a fresh replay. In particular, an
+inventory count is not a count of established consistency theorems.
+
+\subsection{Exact structural equivalence and the 139-class frontier}
+
+For a complete binary table and a prospective root, enumerate controls by
+the deterministic breadth-first traversal that examines read-0 before
+read-1. Record the complete transition tuple in that numbering. Discard
+roots that do not span all working controls, and take the least tuple over
+the remaining roots. The comparison additionally permits global tape
+reflection, global symbol exchange, and erasure of the final write/move
+decoration on entry to halt. Thus it is a deliberately stronger structural
+novelty screen than equality with the declared start. Global symbol exchange
+is \emph{not} asserted to preserve an all-zero blank input. Full tuples are
+compared; SHA-256 values are compact identifiers, not the definition of
+equivalence. Equal identifier hashes are checked for exact tuple equality.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Quantity & Count\\
+\midrule
+Tracked literal files with exactly 194 working controls & 111\\
+Spanning structural classes among those files & 110\\
+Additional pending principal construction classes & 11\\
+Additional pending auxiliary or rejected classes & 18\\
+Combined spanning 194-control structural classes & 139\\
+194-control occurrences after recursive ZIP inspection & 1,677\\
+Distinct 194-control byte payloads in that recursive census & 236\\
+Nonspanning 194-control byte payloads, recorded separately & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Fresh classification of the 111 current tracked 194-control files recovers
+exactly the 110 historical classes supplied by the recent comparison
+packets. All are present among the retained 139 representatives. Recursive
+ZIP inspection adds occurrences but no further class beyond those 139.
+The accompanying representative directory and exact comparison program
+make this statement independently reproducible.
+
+The inherited annotations divide the 110 historical classes into 56
+reported principal constructions, seven supplementary constructions,
+36 research auxiliaries, four research seeds, six rejected constructions,
+and one rejected diagnostic. These are attributed evidence categories;
+they are not endorsements of every claimed theorem. The 18 additional
+pending nonprincipal classes are selector experiments, rejected loop/scanner
+compositions, and an append-zero research input.
+
+\subsection{The designs vary along several independent axes}
+
+The names are easier to compare by mathematical mechanism than as a flat
+list. The following matrix separates changes to the numerical calculus,
+the command interface, and the physical implementation. It also identifies
+which part of a correctness proof must change.
+
+\begin{center}
+\small
+\begin{tabular}{p{0.18\linewidth}p{0.29\linewidth}p{0.41\linewidth}}
+\toprule
+Axis & Representative families & Mathematical effect and proof burden\\
+\midrule
+Formula arithmetic & coefficient-4, M5/M6, N5/N6, QH5/QH6 &
+Changes the arithmetic constructor coefficient and numerical formula codes;
+requires a logical recoding and a fresh binding of source arithmetic to the
+literal machine.\\
+\addlinespace
+Axiom emitter & primary, Q, D, G &
+Q exchanges the curried universal-distribution premises. D uses the offset
+in the separate diagonal head. G binds the saved generalization using the
+explicit AX operand rather than the stored offset. These change proof
+compilers or logical interfaces, not merely labels.\\
+\addlinespace
+AX protocol & ten-entry families; AX11 families &
+AX11 saves the final guarded head and falls through to the complete MP
+operand reader. AX has four operands and emits eleven stack entries. Any
+compiler that still encodes three AX fields is incorrect.\\
+\addlinespace
+Modus ponens & primary; cached C; no-push N &
+The result may be stored in the cache or left visible, and the dummy push
+may be present or absent. Stack preservation and reserved-zero compiler
+invariants depend on this choice.\\
+\addlinespace
+Shift detector & sum guard; cache-only H; symmetric S preparations &
+The sum guard tests the appropriate sum-one condition, whereas H tests
+cached code one. S changes primitive preparation for the same destructive
+comparison. These are not interchangeable compiler interfaces.\\
+\addlinespace
+Source and grammar & A/F/J/ZR known-zero returns; R/4L/4R associations &
+Known-zero source invariants authorize jump substitutions; parse-tree
+reassociations preserve resolved source instructions but change physical
+addresses, reader controls and available contextual folds.\\
+\addlinespace
+Physical layout & AD, TDY, P5, HX, HR &
+Permutes physical register blocks while retaining logical instructions.
+Requires a representation-sensitive source simulation and a full blank
+startup check, not only a comparison of source text.\\
+\addlinespace
+Recurring control & B, SEL, LC, F acceleration &
+History selectors, loop-continuation reassociation and exact local
+shortcuts alter recurring transitions. A direct local simulation can prove
+relative halting equivalence independently of the PA calibration.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Several apparent new names do not add a graph. Examples include
+\texttt{PA194QN}/\texttt{PA194NQ}, the cache-only
+\texttt{PA194HS}/filed \texttt{PA194NS}, the two QNS deliveries,
+and the five principal deliveries of PA194C. A distinct sum-guard machine
+also bears the name NS, so the name alone is insufficient to identify the
+interface. The fresh comparison is tied to table bytes and exact graphs,
+not to capitalization or archive filenames.
+
+\subsection{The six pending archives add eleven principal graphs}
+
+All machines in the next table have 194 working states and 388 rows. The
+startup numbers are the packet's reported transition counts to its complete
+source frame; they are not halting-time claims and, in this comparison
+section, are not described as newly rerun simulations. Full table hashes
+and source locators appear in the accompanying CSV/JSON ledger.
+
+\begin{center}
+\small
+\begin{tabular}{lrrp{0.47\linewidth}}
+\toprule
+Machine & Source sites & Startup & Distinct contribution\\
+\midrule
+AX11GH & 3,671 & 57,922 & Four-field AX11, explicit binder G, Q orientation,
+no-push MP and cache-only Shift.\\
+AX11GHS & 3,668 & 57,768 & The same commands with symmetric physical comparison.\\
+AX11GHF & 3,671 & 57,870 & Two exact three-parent-step shortcuts on GH.\\
+AX11GHSF & 3,668 & 57,712 & The same shortcuts on GHS.\\
+LC & 3,673 & 58,154 & Three-row loop continuation on the original primary source.\\
+LC\_A & 3,673 & 58,320 & First sibling loop association.\\
+LC\_B & 3,673 & 58,320 & Second sibling loop association.\\
+LC\_C & 3,673 & 58,320 & Third sibling loop association.\\
+LC\_AX11H & 3,671 & 57,922 & Loop continuation applied to AX11H.\\
+AX11HR & 3,671 & 48,320 & Different physical register allocation for AX11H.\\
+SEL & 3,673 & 58,208 & Two history-selector pairs; eight primary rows change.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+AX11GH is delivered as a principal construction in five pending archives;
+AX11GHS appears in three. Their dense SHA-256 values are respectively
+\begin{quote}\small
+\textsf{AX11GH}\\
+\texttt{513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1}\\[3pt]
+\textsf{AX11GHS}\\
+\texttt{7a4738a9eedd3f53674d67568b3197d38237d11d0fc08fa3d41251a8faf8052c}.
+\end{quote}
+The name AX11QGH is an alias of the same GH table. The loop packet also
+retains a construction called GAX11; its own final comparison correctly
+identifies it as an independent reproduction of the already filed AX11G,
+and excludes it from its five-new-machine claim.
+
+There are therefore seventeen principal delivery occurrences but only
+eleven new principal graphs in the six pending ZIPs. Repeating a prior
+GH/GHS construction, or presenting GAX11 as new, would fail the current
+novelty requirement even though it was new at an earlier snapshot.
+
+\subsection{Proof versions matter independently of machine identity}
+
+The pinned top-level PA README says that the end-to-end machine-specific
+iPRA endpoint is not established by the repository's completed Lean
+developments. This statement must be distinguished from the newer
+\emph{written mathematical} calibration retained inside several pending
+archives. The revised AX11H ZIP has SHA-256
+\texttt{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}
+and is preserved byte for byte in four of the current pending packets.
+It supplies ten proof TeX fragments addressing the physical internalization,
+source/command compiler, formula and term adapters, distribution exchange,
+and both consistency directions via the stated weak-arithmetic transfer.
+
+Later GH/GHS, fast, HR and LC\_AX11H manuscripts explicitly import this
+revised written theorem. The SEL packet has an older, more limited boundary:
+it proves a direct relative iPRA equivalence to the original primary, and
+does not itself claim the absolute calibration. Its copy of AX11GH also
+states a remaining physical-internalization obligation. These are different
+proof packages for the same graph, not contradictory numerical table
+identifications. A correct synthesis identifies the exact proof dependency
+it uses and separately reports that no new end-to-end Lean kernel theorem
+has been compiled.
+
+The cache-only interface has a concrete compiler consequence. With visible
+top $t=1$ and cache $h=0$, one Shift does not detect contradiction. The GH
+compiler must finish with its certified Pop word, or with the equivalent
+Push--Shift--Shift detection pattern, and must account for all four AX
+operands. This is a semantic issue, not a matter of cosmetic source notation.
+
+\subsection{Why existing 193-control files are not smaller solutions}
+
+The historical collection includes 53 classes at 193 controls. The files
+and their labels include rejected runtime splices and diagnostic source
+proposals; they are not 53 accepted consistency machines. A common
+193-control runtime fold merges controls that agree at initialized source
+frames but disagree on the exceptional blank-start read-zero history.
+Consequently, a source-frame simulation alone does not make that folded
+table a blank-input consistency machine.
+
+The recent AX11G packet reports an exhaustive all-start examination of
+52 such physical tables: 10,036 starts, with 106 finite halts and 9,930
+certified outward rays, all within 117 steps. The count excludes the
+separate coefficient-three logical proposal, whose prior rejection has a
+different reason. These are attributed prior results, not a newly performed
+replay in this comparison. Later packets also report bounded multirow
+startup repairs, grammar searches and contextual quotients. Their capped
+runs remain unresolved by those runs; the negative searches give no lower
+bound for arbitrary 193-state machines.
+
+The practical acceptance condition is therefore joint: exact recurring
+source behavior, a valid complete startup from the all-zero tape, and the
+identified arithmetic calibration must apply to the \emph{same} literal
+table. A low runtime state count, an apparently good prefix, or graph
+novelty alone is insufficient.
+
+\subsection{Reproducibility material}
+
+The compact evidence consists of the 139 representative tables; the
+87-packet, 110-historical-design and 11-pending-principal ledgers;
+the six archive byte/Git identities; and the complete literal census.
+The standalone \texttt{census\_tables.py} uses Python's standard library.
+It accepts directories, literal tables and ZIPs, recursively inspects ZIPs,
+and writes its complete tuples' class identifiers and representatives to a
+chosen output directory. To reproduce the reported scope exactly, a fresh
+run supplies the 718 tracked PA \texttt{.tm} files and the six pending
+archives as inputs; passing the whole PA directory would additionally
+expand its older filed ZIP archives. The program explicitly records nonspanning
+tables and recognizer exclusions rather than silently treating them as
+accepted candidates.

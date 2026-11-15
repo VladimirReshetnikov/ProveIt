@@ -1,0 +1,145 @@
+% A report fragment. Uses amsmath, amssymb, amsthm and hyperref.
+\section{The arithmetic base: the updated written calibration}
+\label{sec:reviewed-arithmetic-base}
+
+There are two different historical statements in the inspected material.
+The maintained PA README at commit
+\nolinkurl{793c68737d94bffa4e32a75bce6cc8058d6d22f0}
+records that the end-to-end machine-specific Lean proof in iPRA remains
+open. The older PA194 manuscript proves its calibration in PA.
+The updated incoming AX11H manuscript makes a newer, stronger claim:
+an ordinary written proof in iPRA for its exact AX11H and QAX11H tables.
+Its source snapshot is
+\nolinkurl{1c9524d8bf2e0a27b9a16ff622359927f536e663}; the updated archive
+was present at commit
+\nolinkurl{1e1a41f799d4658b829cdd0eabae3775a0c8c4a0}, with SHA-256
+\nolinkurl{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.
+Copies of its ten written proof files are preserved in the incoming GD
+packet under \texttt{references/AX11H\_written\_sources} and in the
+incoming SF packet under \texttt{references/ax11h\_written\_ipra}.
+These statements are compatible: a written mathematical proof and a
+completed proof-assistant derivation have different verification status.
+
+\subsection{What changes relative to the older PA proof}
+
+The weakness of the old inference is substantive. The upstream
+\texttt{ordinary\_derivation\_requested} and
+\texttt{fuel\_invariant} proofs use full-PA induction on statements
+quantifying over environments or proof-table bounds. Their old theorem
+statements cannot simply be weakened to $I\Sigma_1$.
+The updated manuscript instead constructs explicit proof lists in the
+numerical calculus. Each recursive request consists of a syntax rank and
+an environment packet. Its children are computed from that packet and
+the parent syntax before any child proof is returned. Same-family ranks
+strictly decrease. A complete binary request tree of depth $r+1$, with
+inactive placeholders, has at most $2^{r+2}-1$ slots. Computing it forwards
+and evaluating proof constructors backwards are primitive recursive.
+
+Correctness uses two finite Boolean invariants: generated children of
+valid requests satisfy their validity and coverage tests; evaluated valid
+slots contain proofs of their specified conclusions. The indices of
+every conjunction are bounded by the finite tree. With primitive recursive
+characteristic functions these invariants are quantifier free. In the
+arithmetic-language presentation they have $\Sigma_1$ witness-table forms.
+This is an appropriate way to replace the older unbounded induction.
+It would fail if a child rank depended on a returned child proof or if
+a higher proof supplier were called recursively without a decreasing rank;
+the manuscript explicitly orders the relevant supplier strata to avoid
+these cases.
+
+The inspected order is: syntactic operations and finite logical recipes;
+relational translation and relocation; relational LK and fixed templates;
+arithmetic term syntax, totality, coherence and uniqueness; vector and
+formula realization; the induction-axiom supplier; and finally the
+ordinary arithmetic proof compiler. A replacement term can be larger than
+its original variable code, but its uniqueness proof is a call to an
+already completed lower stratum. The Foundation adapter separately
+constructs opening and closing proof chains and extracts induction-schema
+witnesses by explicitly bounded search. Thus the claim does not identify
+the historical ordinary-PAeq proof predicate with the current Foundation
+predicate without a translation.
+
+The maintained $I\Sigma_1$-to-iPRA transfer then supplies the negative
+endpoint. Its relevant hypothesis is
+\[
+ I\Sigma_1\vdash\bigl(\operatorname{Ref}_{\rm PA}
+                  \leftrightarrow H_M\bigr),
+\]
+with $H_M$ a $\Sigma_1$ halting sentence and the pinned PA witness
+certificate. It yields
+\[
+ \mathsf{iPRA}\vdash
+   \bigl(\operatorname{Con}(\mathrm{PA})\leftrightarrow\neg H_M\bigr).
+\]
+This is a conservation and negative-translation argument, not an inference
+from a standard-model equivalence and not an application of Markov's
+principle.
+
+\subsection{A reusable exact-clock transfer lemma}
+
+The physical part admits a short independent argument worth making
+explicit. Represent halt by an absorbing code $\mathsf H$ in both
+machines. Let $F$ be a primitive recursive source step, $E$ an encoding,
+$D$ an exact duration, and $\operatorname{Run}$ the primitive recursive
+physical run. Assume that iPRA proves, on a primitive recursive invariant,
+\[
+ \operatorname{Run}(D(z),E(z))=E(F(z)),\qquad
+ D(z)\ge1\quad(z\ne\mathsf H),
+\]
+that $F$ preserves the invariant, and that $E(z)=\mathsf H$ exactly when
+$z=\mathsf H$. Set $D(\mathsf H)=0$. Suppose a fixed nonhalting startup
+reaches $E(z_0)$ at time $T_0$.
+Define
+\[
+ z_k=F^k(z_0),\qquad \tau_0=0,\qquad
+ \tau_{k+1}=\tau_k+D(z_k).
+\]
+Quantifier-free induction proves
+\[
+ \operatorname{Run}(T_0+\tau_k,c_{\rm blank})=E(z_k),
+ \qquad z_k\ne\mathsf H\Longrightarrow\tau_k\ge k.
+\]
+If the source has halted by $k$, the first equality gives a physical
+halting witness $T_0+\tau_k$. Conversely, if the physical machine has
+halted at $t$, take $k=t+1$. If $z_k\ne\mathsf H$, the boundary time
+$T_0+\tau_k$ lies after $t$, so absorption makes its physical state halt,
+contradicting the exact encoded nonhalting boundary. Decidability of
+equality with $\mathsf H$ gives $z_{t+1}=\mathsf H$ intuitionistically.
+Thus both directions have explicit primitive recursive witnesses.
+
+The same lemma composes a new implementation with the established source.
+A bounded blank simulation alone is insufficient; the indispensable
+hypotheses are complete boundary configurations, the arbitrary-input
+invariant, and positive durations. The updated AX11H physical audit
+supplies these through literal, unary-run and finite-list lemmas.
+Its list-width variable denotes the width of the same list occurring in
+the tape expression, avoiding an independent-width assumption.
+
+\subsection{Scope of this review}
+
+The finite-demand scheme, its main stratum dependencies, the Foundation
+opening/closing argument, and the exact-clock physical composition were
+reviewed. No specific contradiction, circular supplier dependency, or
+illicit weakening of induction was found in those inspected constructions.
+This review does not reconstruct every local syntactic equation or every
+large fixed proof leaf in the inherited development. The updated AX11H
+calibration is therefore an explicit inherited mathematical theorem;
+finite runtime receipts are not substitutes for that theorem, and no new
+end-to-end Lean or Rocq verification is claimed.
+
+\subsection{What the other requested projects contribute}
+
+The ZFC work supplies useful machine engineering: context-sensitive
+decoder folds, exact symbolic tape contracts, and generalized startup
+seeds. Its completed external Lean/Rocq K215 theorem has a separate
+internal-arithmetic status, and $\operatorname{Con}(\mathrm{ZFC})$
+cannot simply replace $\operatorname{Con}(\mathrm{PA})$ in this problem.
+The Diophantine development supplies weak-arithmetic model and
+conservation infrastructure. Its small variable counts do not imply a
+small binary-tape enumerator; a literal coefficient decoder, arithmetic
+engine, search and initialization must all be counted.
+ConciseIPRA supplies examples of deriving logic from a small native
+calculus, but its native theory is calibrated to iPRA, not automatically
+to PA. A smaller presentation of a weaker theory does not by itself solve
+the present consistency-machine problem.
+

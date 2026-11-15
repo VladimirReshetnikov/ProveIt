@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "family": "machine",
+  "source_sites": 3668,
+  "shift_implementation": "compare 1 to h",
+  "all_instruction_rows_and_outgoing_edges_matched": true,
+  "named_source_expansion_checked": true,
+  "independent_tree_CFG_checked": true,
+  "macro_tokens": 190,
+  "ports": {
+    "fetch": 25,
+    "decode": 34,
+    "AX": 50,
+    "MP": 3572,
+    "MP_compare": 3642,
+    "MP_success": 3652,
+    "return": 3659,
+    "Shift": 3660
+  },
+  "primitive_templates": 945,
+  "algebra": {
+    "status": "PASS",
+    "AX_entries": 11,
+    "AX_operands": 4,
+    "all_registers_checked": true,
+    "all_intermediate_scratch_preconditions_checked": true,
+    "residual_before_full_MP_reader": "pair(z,tail)",
+    "guard": "a != H and a != D",
+    "Q": false,
+    "explicit_binder": "a",
+    "diagonal": "Gamma(d+x)",
+    "outgoing_offset_after_MP_reader": "z",
+    "closing_break": false,
+    "full_MP_reader_branches": "I(0,z)=0 iff z=0; both leave top/cache zero and offset z"
+  },
+  "local_exact_duration_tests": 882,
+  "composed_shift_MP_duration_tests": 324,
+  "clock_definition": "Arithmetic and command_clock in source_binding.py",
+  "clock_proof": "proof/ax11gdh_preservation.tex and references/AX11H_written_sources/source_command_completion.tex; uniform QF-induction, not these tests",
+  "inputs": {
+    "instructions.json": "34125c378776ceeb082f8c5d351a405a9d8379b97758d568c660db1bd7361b81",
+    "sites.json": "c994d7161628c46fbf5b37e3433f00c4ec429aa88c238844b0be3c90beed90d9",
+    "nodes.json": "4580d5586b601ef28f01ed7e0d9debd349a160cec1b5fa6c673869a3e056eb6d",
+    "grammar.json": "3d6f20c131d8e74cfeb8a5610e04ba230f19a2b61a9b89c737c1f3d3ac8d830a"
+  }
+}

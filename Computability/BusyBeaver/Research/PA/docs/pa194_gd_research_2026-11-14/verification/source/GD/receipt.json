@@ -1,0 +1,45 @@
+{
+  "status": "PASS",
+  "family": "GD",
+  "source_sites": 3654,
+  "shift_implementation": "compare t+h to 1",
+  "all_instruction_rows_and_outgoing_edges_matched": true,
+  "named_source_expansion_checked": true,
+  "independent_tree_CFG_checked": true,
+  "macro_tokens": 190,
+  "ports": {
+    "fetch": 25,
+    "decode": 34,
+    "AX": 50,
+    "MP": 3554,
+    "MP_compare": 3624,
+    "MP_success": 3634,
+    "return": 3641,
+    "Shift": 3642
+  },
+  "primitive_templates": 942,
+  "algebra": {
+    "status": "PASS",
+    "AX_entries": 10,
+    "AX_operands": 3,
+    "all_registers_checked": true,
+    "all_intermediate_scratch_preconditions_checked": true,
+    "residual": "tail",
+    "guard": "a != H and a != D",
+    "Q": false,
+    "explicit_binder": "a",
+    "diagonal": "Gamma(d+x)",
+    "outgoing_offset": 0,
+    "closing_break": true
+  },
+  "local_exact_duration_tests": 882,
+  "composed_shift_MP_duration_tests": 324,
+  "clock_definition": "Arithmetic and command_clock in check_source.py",
+  "clock_proof": "gd194_preservation.tex and inherited source_command_completion.tex; uniform QF-induction, not these tests",
+  "inputs": {
+    "instructions.json": "c51e5db92377ec74b73e5e33eee04ee44366e625c7beb6225040f14d82c5f41d",
+    "sites.json": "39ba04e8aee5cef3475b0afa5d07407fb653d041681e79015007a52ebfb5c221",
+    "nodes.json": "8f00d44e306268e5479841053da6ab888cba0b1c93bbf0621a345fefcf706444",
+    "grammar.json": "b9e5eb8ff61064d362a8c6b13a7d37ba532d07571a87fb0045ba25118694d255"
+  }
+}

@@ -1,0 +1,489 @@
+% Mathematical proof component for AX11H and QAX11H.
+% Adapted with attribution from the delivered AX11 preservation argument and
+% PA194Q's exchange argument; the cached-only AX11 Pop/MP contracts and the
+% bounded-input induction below are the changes checked in this review.
+% Requires amsmath, amssymb, amsthm, booktabs.
+\section{Preservation for the eleven-entry cached-test composition}
+\label{sec:ax11h-preservation}
+
+This section composes the eleven-entry, four-parameter AX interface of
+the delivered PA194AX11 packet with the cached-only Shift test. An optional
+third component exchanges the two premises in the quantifier-distribution
+head. The command equations below are \emph{not} those of the full PA194Q
+machine: that machine also changes successful MP to return its result in
+the cache. Here successful MP returns its result in the visible top and
+does not push an extra stack entry.
+
+We call the two abstract command systems $R_{11H}$ and $R_{Q11H}$.
+The first searches the inherited separate-diagonal numerical calculus
+$\mathcal C_4$. The second searches its premise-exchanged version
+$\mathcal C_4^Q$. Any assertion about a delivered physical table also
+requires its separate exact source, runtime, and PA calibration proofs.
+The subsequent sections supply those interfaces and compose the full
+theorem in Section~\ref{sec:complete-equivalence}.
+
+\subsection{The two numerical calculi}
+
+Use Cantor pairing and the inherited coefficient-four constructors
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(A,B)=4p(A,B),\quad M(a,b)=4p(a,b)+1,
+\]
+\[
+ U(a,B)=4p(B,a)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+Write $A\to B$ for $I(A,B)$, $N(B)=I(B,1)$,
+$A\wedge B=N(I(A,N(B)))$, and
+$\exists_a B=N(U(a,N(B)))$. Zero is the numerical truth code;
+one is the designated contradiction. In particular $I(0,0)=0$.
+
+The unchanged ordinary heads are
+\begin{align*}
+ h_1(D,H)&=(\exists_D U(D,H))\to H,\\
+ h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+ h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+ h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+ h_5(D,H)&=\exists_D E(H,D).
+\end{align*}
+The two choices for the sixth head are
+\begin{align*}
+ h_6(D,A,H)&=U(D,A)\to(U(D,I(A,H))\to U(D,H)),\\
+ h_6^Q(D,A,H)&=U(D,I(A,H))\to(U(D,A)\to U(D,H)).
+\end{align*}
+All other axiom families are identical:
+\begin{align*}
+ \Gamma(B)&=I(B,U(B,B)),\\
+ \rho_8(D,A,H,u)&=((H\to u)\to D)\to((D\to H)\to(A\to H)),
+ \quad u\leq D,
+\end{align*}
+and the guarded gate
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to N(P(a,b,c))),\\
+ G(a,b,c)&=N(V(a,b,c)\to Q(a,b,c)),\qquad c\ne a,b.
+\end{align*}
+The gate emitter returns zero if its guard fails. Modus ponens and
+theorem generalization $B\mapsto U(i,B)$ are the two inference rules.
+The fixed leaf $\rho_8(0,0,0,0)=0$ supplies a proof of zero.
+
+The inherited restricted implicational basis derives premise exchange
+\[
+ (a\to(b\to c))\to(b\to(a\to c))
+\]
+without either choice of the sixth head. Consequently the two sixth-head
+families are interderivable uniformly in $D,A,H$. Replacing such axiom
+leaves and retaining MP and generalization gives the inherited
+primitive recursive proof translations between
+$\mathcal C_4$ and $\mathcal C_4^Q$, justified in iPRA in
+Section~\ref{sec:q-exchange-ipra}. This is exactly the logical exchange
+argument of the PA194Q packet; the present composition does not count it
+as a new mathematical idea. It also does not import that packet's cached
+MP command semantics.
+
+\subsection{The exact four-parameter AX effect}
+
+Let $[a;w]=p(a,w)$, with the first displayed entry at the stack top.
+Cantor projections are total:
+\[
+ \operatorname{hd}[a;w]=a,\quad
+ \operatorname{tl}[a;w]=w,\quad
+ \operatorname{hd}(0)=\operatorname{tl}(0)=0.
+\]
+Thus $[0;0]=0$ is an allowed numerical alias. None of the following
+calculations treats these stacks as free lists.
+
+The store is $(t,w,d,h)$. Set $D=d+x$, $H=h+y$, and $A=c$. The
+eleven-entry command has the effect
+\[
+ \mathsf A_{c,x,y,z}(t,w,d,h)
+   =(0,[q_0,q_1,\ldots,q_9,t;w],z,0),                  \tag{H-A}
+\]
+where
+\[
+\begin{array}{c|l}
+ j&q_j\\\hline
+ 0&G(H,D,A),\text{ or zero when the guard fails}\\
+ 1&\Gamma(A)\\
+ 2&h_6(D,A,H)\text{ or }h_6^Q(D,A,H)\\
+ 3&h_5(D,H)\\
+ 4&h_4(D,A,H)\\
+ 5&h_3(D,A,H)\\
+ 6&h_2(D,A,H)\\
+ 7&h_1(D,H)\\
+ 8&\rho_8(D,A,H,d)\\
+ 9&U(d,h).
+\end{array}
+\]
+The extra operand $z$ is real. The AX tail pushes its selected gate and
+falls into the existing full MP field reader; that reader consumes
+another continuation field. Immediately after the push the visible
+values are $t=d=h=0$. The ensuing MP compares $I(0,z)$ with zero.
+For $z=0$ it succeeds, and for $z>0$ it fails; both branches leave
+$t=h=0$, $d=z$, and the newly extended stack unchanged. Therefore (H-A)
+holds for every $z$, not merely for the $z=0$ calls used by the compiler.
+
+All $q_0,\ldots,q_8$ have residue zero modulo four.
+$q_9=U(d,h)$ has residue two and is at least two. In particular no
+generated entry is one. The exchange in $q_2$ preserves this fact and
+all stack positions.
+
+The other two commands are exactly
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}
+  \mathsf{halt},&h=1,\\
+  (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+ \end{cases}                                             \tag{H-S}
+\]
+and, for $b=d+x$,
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+  (b,w,b,0),&I(t,b)=h,\\
+  (0,w,b,0),&I(t,b)\ne h.
+ \end{cases}                                             \tag{H-M}
+\]
+Only $\mathsf S$ halts. In particular $t=1,h=0$ does not halt under
+this Shift, whereas $t=h=1$ does. These are the opposite outcomes of
+the AX11 sum guard in those two cases. A preservation proof must use
+(H-S), not silently reuse the old $t+h=1$ test.
+
+\subsection{Local word equations}
+
+Commands execute from left to right. Put $A_0=\mathsf A_{0,0,0,0}$.
+Successive applications of (H-S) and the projection equations give
+\begin{align*}
+ \mathsf A_{c,x,y,0};\mathsf S^{10}(t,w,d,h)
+    &=(q_8,[t;w],0,q_9),\\
+ \mathsf A_{c,x,y,0};\mathsf S^{11}(t,w,d,h)
+    &=(q_9,w,0,t).
+\end{align*}
+Both executions are total: their tests see the cleared cache zero and
+then $q_0,\ldots,q_9$, never the saved top. Define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,\qquad
+ \mathsf{Pop}=A_0;\mathsf S^{12},\qquad
+ \mathsf{Discard}=\mathsf{MP}_0,\qquad
+ \mathsf{Offset}_i=\mathsf{MP}_i.
+\]
+The exact contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)
+   &=\begin{cases}
+       \mathsf{halt},&t=1,\\
+       (t,w,0,a),&t\ne1,
+      \end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{Offset}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+
+Push's final comparison is between an implication code, residue zero,
+and the universal code $q_9$, residue two, so it fails. For Pop, the
+twelfth Shift sees the saved top in its cache and therefore halts
+\emph{exactly} when that top is one. This is the essential change from
+the original AX11 Pop, which was unconditional. Discard's two branches
+coincide when its proposed conclusion is zero. Offset at $i=0$ has
+coinciding zero outputs; at $i>0$, $I(0,i)>0$ forces its failure branch.
+These calculations include all zero aliases.
+
+For $0\le j\le8$, the selector
+\[
+ \mathsf{Discard};\mathsf A_{A,D,H,0};
+                   \mathsf S^{j+2};\mathsf{Pop}^{9-j}       \tag{H-Sel}
+\]
+sends every $(t,w,0,0)$ to $(q_j,w,0,0)$. After the Shifts, its
+top is $q_j$, its cache is $q_{j+1}$, and the remaining entries above
+the base are $q_{j+2},\ldots,q_9,0$. There are exactly $9-j$ such
+entries. Each Pop preserves the same $q_j\ne1$, removes one entry,
+and places that entry in the cache. The last removed entry is the
+saved zero, so the final cache is zero. In particular the gate
+selector uses $j=0$, the diagonal selector $j=1$, and the sixth-head
+selector $j=2$, regardless of the premise exchange.
+
+For the restricted leaf $\rho_8(D,A,H,u)$, $u\le D$, use
+\[
+ \mathsf{Discard};\mathsf{Offset}_u;
+ \mathsf A_{A,D\mathbin{\dot{-}}u,H,0};
+                      \mathsf S^{10};\mathsf{Pop}.          \tag{H-Rho}
+\]
+The old offset is $u$, the accumulated parameter is $D$, and the
+fourth operand zero clears the offset before the selector finishes.
+The preserved restricted head has residue zero, so its Pop is safe.
+
+Generalization is
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf{Offset}_i;\mathsf S;
+                 \mathsf A_{i,0,0,0};\mathsf S^{11}.         \tag{H-Gen}
+\]
+It sends $(a,w,0,0)$ to $(U(i,a),w,0,0)$ for every $a,w,i$,
+including $a=1$. Before the middle Shift the cache is zero; that
+Shift moves $a$ into the cache. The following AX consumes it as its
+generalization parameter and clears it before another Shift tests it.
+The eleven-Shift identity then returns $U(i,a)$ with zero cache.
+
+All local identities are assertions about primitive recursive command
+functions and follow in standard iPRA from their defining equations,
+Cantor projection equations, the displayed residue facts, and finite
+case splits on decidable numerical equalities. This statement concerns
+the abstract commands, not the literal machine's implementation of them.
+
+\subsection{Modus ponens and an all-store compiler}
+
+From $(0,[a,I(a,b),0;w],0,0)$ the suffix
+\[
+              \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}       \tag{H-MPs}
+\]
+halts when $a=1$ or $b=1$, and otherwise returns $(b,w,0,0)$.
+The first Shift retrieves $a$ into the cache. The second either
+halts at $a=1$ or makes $a$ the top and $I(a,b)$ the cache.
+MP succeeds and returns $(b,[0;w],b,0)$. Pop clears the offset,
+removes the reserved zero, and either halts at $b=1$ or returns
+$(b,w,0,0)$. The reserved zero is essential; without it an
+underlying stack entry would be consumed. The calculation remains
+valid at $a=b=w=0$ because it uses total projection identities.
+
+Compile numerical proofs into words. Axiom leaves use (H-Sel) or
+(H-Rho); a generalization appends (H-Gen). At an MP node with major
+proof $e_1$ of $I(a,b)$ and minor proof $e_0$ of $a$, set
+\[
+ W_e=\mathsf{Discard};\mathsf{Push};W_{e_1};\mathsf{Push};
+        W_{e_0};\mathsf{Push};\mathsf S;\mathsf S;
+                                  \mathsf{MP}_b;\mathsf{Pop}.
+\]
+The exact invariant is
+\[
+ W_e(t,w,0,0)=\mathsf{halt}
+ \quad\hbox{or}\quad
+ W_e(t,w,0,0)=(\operatorname{concl}(e),w,0,0).             \tag{H-Cmp}
+\]
+The first Discard and Push in the MP case reserve the zero. The
+major computation and its Push put the major premise over that
+zero; the minor computation and its Push put the minor premise
+over both. The suffix's displayed precondition follows exactly.
+An earlier halt satisfies the invariant and is preserved by
+every word extension.
+
+For a refutation $e$, the word
+\[
+                        A_0;W_e;\mathsf{Pop}               \tag{H-Ref}
+\]
+halts from every incoming store $(t,w,d,h)$. Its first AX normalizes
+$d=h=0$ and produces some top and finite stack; (H-Cmp) applies
+without any empty-store assumption. If the compiled proof has not
+already halted, it returns top one with zero cache; Pop then tests
+that saved one and halts. A terminal plain Shift would fail: it
+would see cache zero. Appending a Shift after Pop is harmless but
+unnecessary, since the refutation already halts within Pop.
+
+\subsection{A quantifier-free proof of the compiler invariant}
+
+Ordinary induction on a statement containing ``for every base
+stack'' is not automatically an allowed induction in iPRA. Here is
+an explicit bounded reformulation for this particular compiler.
+It proves (H-Cmp) in standard iPRA for the abstract command functions.
+
+Encode a proof as a finite sequence of $N>0$ lines; every MP or
+generalization premise is an earlier line. The primitive recursive
+proof checker tests those index inequalities, the numerical axiom
+families, and the required conclusion equalities. Compile $W_j$
+bottom-up for each line $j<N$. This is a primitive recursion on
+$j$: look up the previously stored words and concatenate the finite
+prefixes and suffixes displayed above. On malformed data use an
+arbitrary fixed word. No normalization or proof search occurs in
+this compilation.
+
+Let $L$ be the maximum length of these $N$ compiled words and $K$
+the maximum command code appearing in them. Both are primitive
+recursive functions of the proof code. Choose a total primitive
+recursive command step $\operatorname{next}(c,u)$ on coded stores,
+with an absorbing halt flag, and put
+\[
+ \Phi_K(s)=1+\max\left(s,
+    \max_{c\le K,\ u\le s}\operatorname{next}(c,u)\right).
+\]
+This is a primitive recursive, monotone upper bound for one command
+step. Its bounded maxima are computed by primitive recursion; there
+is no unbounded maximization. Every prefix of length at most $L$ of
+any $W_j$, started at a store code at most $s$, stays below
+$\Phi_K^L(s)$. Quantifier-free induction proves this elementary
+iteration bound.
+
+Fix an arbitrary normalized initial store code $s_0$ and define
+\[
+ B(j)=\Phi_K^{\,L(N-1-j)}(s_0),\qquad j<N.
+\]
+If $i<j$, then
+\[
+                  \Phi_K^L(B(j))\le B(i).                 \tag{H-Bnd}
+\]
+Prove successively for every $j<N$ that (H-Cmp) holds for every
+normalized input store of code at most $B(j)$. This bounded
+universal predicate has a primitive recursive characteristic
+function: evaluate the finite word, check whether the result is
+halted or the specified store, and take a bounded conjunction over
+all store codes up to $B(j)$. More explicitly, the induction invariant
+at stage $j$ is the bounded conjunction of these correctness tests for
+every $i<j$ and every normalized store of code at most $B(i)$.
+It retains every earlier premise, not only line $j-1$. The induction
+over this finite prefix is quantifier-free after standard Boolean
+coding.
+
+For an axiom line use the local selector identity. For
+generalization or MP, each premise word is called after a prefix
+of at most $L$ commands of the current word. Unless execution
+has already halted, its actual input is normalized by the preceding
+local contracts and has code at most $\Phi_K^L(B(j))$. By (H-Bnd)
+it lies within the induction hypothesis for its earlier premise
+line. The local equations now establish the conclusion. This
+completes the quantifier-free induction.
+
+At the last line $B(N-1)=s_0$, so the theorem applies to the
+arbitrary original store. Universal generalization yields
+(H-Cmp) for every proof and every normalized store; prefixing AX
+gives (H-Ref) for every store. The bounds are deliberately huge.
+They establish primitive recursiveness and allowed induction
+strength, not an efficient execution algorithm. This argument
+does not establish the unrelated PA-to-numerical-calculus compiler.
+
+\subsection{Four-field word encoding and exhaustive scheduling}
+
+Let $e(\epsilon)=0$ and $e(c::w)=1+b_c(e(w))$, with
+\begin{align*}
+ b_{\mathsf S}(z)&=p(0,z),\\
+ b_{\mathsf{MP}_x}(z)&=p(1,p(x,z)),\\
+ b_{\mathsf A_{c,x,y,u}}(z)&=p(c+2,p(y,p(x,p(u,z)))).       \tag{H-Enc}
+\end{align*}
+The field order is $y,x,u$ after the AX tag. Total projections
+give the inverse equations even at zero. Retaining a three-field
+AX encoder would make the new MP reader consume a piece of the
+following continuation; it is not an equivalent encoding.
+
+An exact live scheduler configuration is $(n,\ell,t,w,d,h)$.
+The clean initial configuration is $(2,0,0,0,0,0)$. Its next step
+selects a raw seed and updates the next-unused fresh counter by
+\[
+ (\text{seed},n')=
+ \begin{cases}
+ (n,n+1),&\ell=0,\\
+ (\ell-1,n),&\ell>0.
+ \end{cases}
+\]
+It decodes and executes one command, sets the new continuation to the
+residual after all that command's fields, and retains $n'$. Thus the
+fresh counter advances when a candidate is selected. The store is
+carried between candidates. A halted configuration is absorbing.
+
+The continuation produced by any of the
+three decoders is a nested Cantor component of its raw seed. Thus
+it is at most that seed, and for a positive continuation it
+strictly decreases: the successor continuation is at most
+$\ell-1$. The extra AX field preserves this elementary bound.
+
+Under this fetch equation, a fresh candidate $n$ has at most
+$n+1$ command invocations before it either halts or returns to
+the fresh-candidate boundary. Every abstract command is a total
+primitive recursive operation, with a halt flag. Hence a
+specified candidate $N\ge2$ is reached from the clean initial
+candidate two within a primitive recursive finite bound, unless
+the scheduler halts earlier. For the command-step convention just
+described, $(N+1)^2$ is a sufficient loose bound for draining the
+earlier candidates; a different administrative-step convention
+only adds its explicitly bounded overhead.
+
+Given the all-store halting suffix (H-Ref), prefix another AX
+command $\mathsf A_{k,0,0,0}$. Its fresh raw seed is
+\[
+ p\bigl(k+2,p(0,p(0,p(0,e(\text{suffix}))))\bigr).        \tag{H-Cof}
+\]
+These seeds are unbounded in $k$ and at least three. The prefix
+may alter the carried store; the suffix halts from every store.
+Since the displayed seed is at least $k+2$, taking $k$ to be the
+current next-unused counter is an explicit cofinal choice. It
+provides a finite halting witness. In
+particular, from the clean candidate-two start one may choose
+$k=0$. There is no assumption that failed trials reset the stack.
+
+The decoding identities, strict-decrease bound, and finite
+candidate bound are primitive-recursive arithmetic statements
+proved by quantifier-free induction. This yields an iPRA
+completeness theorem for the explicit abstract scheduler with
+these fetch equations and the commands (H-A),(H-S),(H-M).
+Identifying a literal source program with those equations is a
+separate binding obligation, just as identifying it with a
+physical binary machine is separate.
+
+\subsection{Soundness by finite proof annotations}
+
+Use the appropriate calculus $\mathcal C_4$ or $\mathcal C_4^Q$.
+Maintain a finite valid derivation list together with indices
+proving the current top $t$, cache $h$, and every canonical
+Cantor-stack head. The fixed zero proof supplies virtual zero
+entries when the numerical stack is zero. For $w>0$,
+$\operatorname{tl}(w)<w$, so canonical stack decoding can be
+bounded by $w$ iterations; the associated annotation invariant
+has a primitive recursive Boolean checker.
+
+AX appends proofs of its generated entries. Its saved top already
+has a proof; $q_9=U(d,h)$ follows by generalization from the cache;
+$q_8$ satisfies the actual guard $d\le d+x$; the other entries
+are its selected calculus axioms or the fixed zero in a failed
+gate case. The fallthrough MP puts zero in the two visible
+positions for every fourth operand. The offset $d$ carries no
+derivability requirement.
+
+Successful MP combines the proofs of $t$ and $I(t,b)=h$ to obtain
+$b$; failure returns the fixed zero proof. A nonhalting Shift
+moves the cache proof to the top and the first stack annotation
+to the cache, or uses the zero proof for an empty numerical stack.
+A halting Shift has $h=1$ and therefore exposes a finite
+refutation. The top need not be inspected for this soundness
+direction.
+
+Each annotation update is primitive recursive on the store and
+the finite derivation list. The local validity checks and the
+canonical zero-alias cases prove that its Boolean invariant is
+preserved. Quantifier-free induction on the number of abstract
+commands then extracts a calculus refutation from every finite
+scheduler halt. This is a syntactic proof extraction, not a
+truth interpretation of arbitrary formulas.
+
+Together with completeness, standard iPRA proves for the explicit
+abstract schedulers
+\[
+ \operatorname{Halt}(R_{11H})\leftrightarrow
+          \exists e\,\operatorname{Prf}_{\mathcal C_4}(e,1),
+\]
+\[
+ \operatorname{Halt}(R_{Q11H})\leftrightarrow
+          \exists e\,\operatorname{Prf}_{\mathcal C_4^Q}(e,1),
+\]
+with the primitive recursive encodings and exact abstract step
+equations just specified. These are written mathematical
+weak-arithmetic arguments; no new Lean or Rocq build is asserted.
+
+\subsection{Composition with the execution and PA proofs}
+
+The remaining sections supply the two execution interfaces used by this
+abstract proof. Section~\ref{sec:physical-ipra} proves the literal binary
+table's correspondence with its exact primitive-register source, including
+uniform rule soundness, frame closure, and complete initialization.
+Section~\ref{sec:source-command-complete} matches every primitive source
+instruction to explicit arithmetic templates and composes their exact
+primitive recursive clocks through fetch, dispatch, and command execution.
+The positive-segment transport theorem in
+Section~\ref{sec:ipra-transport} therefore identifies each literal machine's
+halting with refutability in its corresponding numerical calculus.
+
+Section~\ref{sec:consistency-nonhalting} combines those proofs with the
+pinned model-uniform numerical seed soundness and the one-way
+$\mathrm I\Sigma_1$ transfer. It proves
+$\mathrm{iPRA}\vdash\Con(\PA)\to\neg\Halt_{\rm blank}(M)$ for both
+new literal tables. The converse uses the explicit Foundation adapter
+and finite-demand logical compiler in
+Sections~\ref{sec:foundation-paeq-complete}--\ref{sec:forward-calibration-completion}.
+Section~\ref{sec:complete-equivalence} combines the two directions.
+The bounded command-word argument above is one component of that
+composition; the logical compiler has its own complete construction.

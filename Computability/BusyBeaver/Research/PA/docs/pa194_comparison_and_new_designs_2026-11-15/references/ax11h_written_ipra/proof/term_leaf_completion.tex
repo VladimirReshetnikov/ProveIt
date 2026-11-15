@@ -1,0 +1,725 @@
+% Mathematical completion of the term supplier strata.
+% Direct C4 derivation-list interpretation; no upstream verifyValue claim.
+% Pinned source identities are recorded in source_manifest.json.
+\section{Finite-demand completion of the term supplier strata}
+\label{sec:term-leaf-completion}
+
+This section addresses arbitrary arithmetic terms in the supported vector
+realization, guarded value-totality, and guarded value-coherence suppliers.
+It also supplies the repeated-environment domain leaf used to discharge
+the final domain guard.  The target proof objects here are explicit
+finite derivation lists in $\mathcal C_4$, interpreted with its primitive
+recursive proof predicate.  A statement below about a translated formula
+means derivability in that calculus.  It is not a claim about the
+upstream \file{verifyValue} proof-table implementation.
+
+The lower interfaces used are the explicit source-translation, requested
+label, logical proof-list, and fixed relational-template constructors
+listed at the end.  Once these lower interfaces have their stated
+primitive recursive implementations and quantifier-free correctness
+proofs, the present argument completes the term strata.  None of the
+term constructors calls back into arithmetic formula realization, PA
+proof transport, or the PA induction supplier.  The appearances of full
+PA induction in the inspected Lean files can therefore be replaced by
+the finite-demand constructions given here; that fact is established
+from their actual child calls, not from their theorem names.
+
+\subsection{Notation and the exact padding combinators}
+
+All source formula and term operations in this section are operations on
+their numerical codes.  Write $[A\Rightarrow B]$ for
+\file{imp language A B}, and $A\mathbin{\&}B$ for \file{qqAnd A B}.
+For requested labels $\lambda=(n,\ell,z)$ put
+\[
+ P_d(\lambda)=
+ (\operatorname{padEnvironment}(n,d),\ell,z+\ell+d).
+\]
+The actual combinators in
+\file{NumericPAeqValueCertificateComposition.lean} and
+\file{NumericPAeqValueCertificatePair.lean} use
+\begin{align*}
+ c(A,B,C)&=\max\bigl([A\Rightarrow B],
+               \max([B\Rightarrow C],[A\Rightarrow C])\bigr),\\
+ p(A,B,C)&=\max\bigl([A\Rightarrow B],
+               \max([A\Rightarrow C],[A\Rightarrow B\mathbin{\&}C])\bigr).
+\end{align*}
+A composition call with source antecedent $A$, intermediate formula $B$,
+and conclusion $C$ asks both children at $P_{c(A,B,C)}(\lambda)$.
+A pairing call with antecedent $A$ and conclusions $B,C$ asks both
+children at $P_{p(A,B,C)}(\lambda)$.  After the native logical
+composition it reads the requested source conclusion back at $\lambda$.
+We denote these two proof-building operations by
+\[
+ \operatorname{Comp}(A,B,C;f,g),\qquad
+ \operatorname{Pair}(A,B,C;f,g).
+ \tag{T1}
+\]
+This notation includes their displayed label changes.  Consequently a
+nested expression in these operations is also an exact specification of
+all child query labels.  No certificate value occurs in any padding
+argument.
+
+Let $T_\lambda(F)$ denote source translation and
+$\operatorname{Deriv}(e,T_\lambda(F))$ the direct $\mathcal C_4$
+proof-list checker.  The local correctness theorem for (T1) says that
+checked child proof lists at their displayed padded labels produce a
+checked parent proof list at the original labels.  Coverage of each
+child follows from its displayed code bound by the relevant maximum,
+its syntactic validity, and the padded-environment lemma.  This is the
+precise coverage obligation used below.
+
+\subsection{An explicit finite-demand construction}
+
+Here is the bounded form of recursion used in this section.  A query
+$q$ contains a source rank $r(q)$, a fixed tuple of environment codes,
+and requested labels.  Its child-query list is computed by primitive
+recursive functions of $q$, independently of all child certificate
+values.  Each same-family child has rank less than $r(q)$, and there
+are at most two such children.  A leaf or parent proof-list constructor
+is primitive recursive in the query and its supplied child lists.
+
+For a root of rank $r$, generate the binary demand tree to depth $r+1$,
+using inactive placeholders for nonexistent children.  It has at most
+$2^{r+2}-1$ slots.  Each slot's query is calculated from its ancestors;
+this is bounded primitive recursion.  Along an active path its rank
+decreases at every edge.  Quantifier-free induction proves that no
+active nonleaf remains at the depth bound.  Evaluate the resulting tree
+from its last slot towards its root.  This is again bounded primitive
+recursion, so it defines an actual primitive recursive proof-list
+function, not an unbounded search for witnesses.
+
+There are two quantifier-free correctness invariants.  The forward
+invariant is the bounded conjunction that every generated active child
+of a valid query satisfies its local validity and coverage tests.  The
+reverse invariant is the bounded conjunction that every already
+evaluated active slot whose input tests hold contains a checked proof
+of its specified conclusion.  Both conjunctions have primitive
+recursive Boolean characteristic functions.  The forward induction
+uses the syntax and padding facts.  The reverse induction uses the
+local proof-list constructor equation.  Thus the root correctness
+theorem is proved in $\mathsf{iPRA}$, with all root parameters free.
+
+This argument requires the actual finite child list and an actual local
+constructor.  The lists and constructors for the term suppliers are
+given below.  A lower supplier stratum already equipped with a total
+primitive recursive proof-list function is simply an ordinary function
+call in a higher local constructor.  Its input rank may be arbitrarily
+large.  This distinction is essential: the bound-variable vector leaf
+calls coherence on a replacement term that need not be smaller than
+the original bound-variable code.
+
+\subsection{Removing the choice in arithmetic value syntax}
+
+The upstream \file{NumericPAeqTerm.valueSyntax} is defined by
+classical choice from a finite witness-table relation.  Its inspected
+cells give the following explicit syntax computation.  Write
+$\operatorname{val}(p,t)$ for its primitive recursive replacement, and write
+$p=(b,f,z)$ using the actual three-entry parameter packet.  Put
+\[
+ C(p)=(\operatorname{shiftTerms}b,
+       \operatorname{shiftTerms}f,\operatorname{bvar}0),
+\]
+\[
+ B_i(p)=(\operatorname{shiftTerms}^2b,
+         \operatorname{shiftTerms}^2f,\operatorname{bvar}i).
+\]
+The defining cases are
+\begin{align*}
+ \operatorname{val}(p,\operatorname{bvar}i)&=\operatorname{variableValue}(z,b_i),\\
+ \operatorname{val}(p,\operatorname{fvar}i)&=\operatorname{variableValue}(z,f_i),\\
+ \operatorname{val}(p,0_{\rm term})&=\operatorname{zeroValue}(z),\\
+ \operatorname{val}(p,\operatorname{succ}u)&=
+   \operatorname{successorValue}(z,\operatorname{val}(C(p),u)),\\
+ \operatorname{val}(p,\operatorname{add}(u,v))&=
+   \operatorname{additionValue}(z,\operatorname{val}(B_1(p),u),\operatorname{val}(B_0(p),v)),\\
+ \operatorname{val}(p,\operatorname{mul}(u,v))&=
+   \operatorname{multiplicationValue}(z,\operatorname{val}(B_1(p),u),\operatorname{val}(B_0(p),v)).
+ \tag{T2}
+\end{align*}
+On an invalid source term return zero, as in the upstream definition.
+Here $0_{\rm term}$ abbreviates \file{qqFunc 0 0 0}, not a new
+assumption about its numerical code.  The exact nonleaf queries are
+$(C(p),u)$ and $(B_1(p),u),(B_0(p),v)$.  The source proves the strict
+code inequalities
+\[
+ u<\operatorname{succ}u,\qquad
+ u,v<\operatorname{add}(u,v),\operatorname{mul}(u,v).
+\]
+They follow directly from the tuple and term-constructor code
+inequalities, so they have quantifier-free arithmetic proofs.
+The construction above applied to (T2) is primitive recursive even
+though the parameter packet grows along a path: the growing packets
+are determined before any child output is known, and there is a
+primitive recursive finite bound on the number of demand slots.
+
+If an exact upstream table witness is wanted, store with each output
+the finite table obtained by union of the child tables and insertion of
+the parent record $(p,t,\operatorname{val}(p,t))$.  These are primitive recursive
+finite-set operations.  The cell equations in
+\file{NumericPAeqTermTableNodes.lean} and the empty, union, and insert
+equations in \file{NumericPAeqTermTables.lean} prove, by the same
+bounded Boolean reverse invariant, that this table is valid and
+contains the parent record.  This gives explicit witnesses rather than
+using choice.
+
+The table check here really is a Boolean finite check, despite the
+existential presentation of the upstream cell predicate.  Decode each
+parent term into its constructor.  In a nonleaf case search only the
+records $r<C$ whose membership bits are set, compare their parameter
+and term fields with the required child query, and obtain their output
+from the record's output field.  A binary cell uses two such bounded
+record searches.  This bounds every auxiliary output witness by a
+supplied finite table record; it introduces no unbounded existential
+test.  Validity is the bounded conjunction of these row checks.
+
+Uniqueness is also bounded.  For two given valid tables, take the
+bounded conjunction over pairs of their records with equal parameter
+and term fields, asserting equal outputs for source rank below the
+current rank.  The cell equations and injectivity and disjointness of
+the term constructors prove the next case; the child records belong
+to those same finite tables and have lower source rank.  All record
+indices are bounded by the supplied table codes.  Quantifier-free
+induction therefore proves uniqueness.  The function (T2) agrees with
+the upstream uniquely characterized value syntax wherever that model
+function is used.  This part needs neither PA induction nor an
+unbounded witness-selection principle.
+
+\subsection{The syntax validity and substitution joins}
+
+The supported environments supply three Boolean facts: every displayed
+target term is well formed at its stated arity; the source term is well
+formed at its source arity; and each free source variable index occurring
+in the term is below the free-environment length.  Each fact is checked
+by recursion on the finite term code or by bounded conjunction over a
+finite vector.  The source-child validity implications are literal
+constructor cases: a successor has one valid child, an addition or
+multiplication has two, a bound variable satisfies its bound, and a
+free variable satisfies its support bound.  The target value
+constructors increase the child target arity by one for successor and
+two for a binary operation.  The shifts in $C(p)$ and $B_i(p)$ have
+exactly those increases.  Substituting the well-formed child formulas
+in these fixed constructors proves value-syntax validity by the
+finite-demand Boolean invariant.
+
+For clarity, the nontrivial target-substitution join has its own exact
+query list.  Let $S_w(p)$ replace every target term in the parameter
+packet by its simultaneous substitution with $w$.  Let $q(w)$ be the
+usual lifted substitution vector under one new binder.  The join is
+\[
+ \operatorname{subst}_w(\operatorname{val}(p,t))=\operatorname{val}(S_w(p),t).                    \tag{T3}
+\]
+For a successor, its one child query has fields
+\[
+ (u,s,n+1,m+1,q(w),C(p));
+\]
+for a binary term, the two child queries have fields
+\[
+ (u,s,n+2,m+2,q(q(w)),B_1(p)),\quad
+ (v,s,n+2,m+2,q(q(w)),B_0(p)).
+\]
+The exact parameter equalities required to join the children are
+\[
+ S_{q(w)}(C(p))=C(S_w(p)),\qquad
+ S_{q(q(w))}(B_i(p))=B_i(S_w(p))\quad(i<2).                   \tag{T4}
+\]
+They follow entry by entry from simultaneous substitution of a shifted
+term and from the first two entries of a lifted substitution vector.
+These are the equations in
+\file{NumericPAeqTermTargetSubstParameters.lean}.  The leaf cases of
+(T3) are substitution into the fixed variable and zero formulas;
+the successor and binary cases use (T4) and substitution through their
+one or two binders.  Thus (T3), with its explicit child queries, is
+another instance of the bounded induction above.  The familiar
+substitution/shift identity used in (T4) itself follows by the same
+term-code recursion: it is immediate for a bound or free variable,
+and is componentwise through each function constructor.
+
+For arity-zero target environments, their shifts and substitutions are
+the environments themselves.  The special case $w=[x]$ of (T3) is
+therefore
+\[
+ \operatorname{substs1}_x(\operatorname{val}((b,f,\operatorname{bvar}0),t))
+       =\operatorname{val}((b,f,x),t).                                       \tag{T5}
+\]
+This is precisely the bound-instance equality needed by the vector
+bound-variable leaf.  Source substitution into an arithmetic term
+has the constructor equations
+\[
+ \operatorname{tsub}_w(\operatorname{bvar}i)=w_i,\quad
+ \operatorname{tsub}_w(\operatorname{fvar}i)=\operatorname{fvar}i,
+\]
+and commutes with zero, successor, addition, and multiplication.
+Its support and validity are proved by the same finite recursion,
+using the supplied support tests for the $w_i$.  Applying (T3)--(T5)
+to the already computed substituted term requires no bound comparing
+its code to the original term.  It is a call to the completed lower
+syntax stratum.
+
+Every value formula in (T2) begins with the explicit domain conjunct
+for its result variable.  Its remaining payload is obtained by the
+outer conjunction projection.  Thus the payload extractions in the
+successor and binary coherence templates are primitive recursive;
+they require neither a search for a formula nor a new existence
+theorem.  The successor and binary comparison-shape equalities follow
+by (T2), (T5), and the displayed source-substitution constructor
+equations.  These are the exact joins used by the files
+\file{NumericPAeqSupportedValueCoherenceShape.lean} and
+\file{NumericPAeqSupportedVectorRealizationShape.lean}.
+
+\subsection{Three finite guard projections}
+
+Domain guards, isomorphism guards, and realization guards all have the
+same left-associated syntax
+\[
+ G_0=\top,\qquad G_{k+1}=G_k\mathbin{\&}E_k.                  \tag{T6}
+\]
+Their entries are respectively $D(v_k)$,
+$\operatorname{Iso}(v_k,w_k)$, and
+\file{entry b f w a k}.  A projection query is
+$(k,i,\text{environments},\lambda)$ with $i<k$; the conclusion is the
+native implication $T_\lambda(G_k)\to T_\lambda(E_i)$.
+If $i=k-1$, use the fixed right-conjunction projection.
+Otherwise ask exactly the one child
+\[
+ (k-1,i,\text{same environments},\lambda)
+\]
+and compose its result after the fixed left-conjunction projection.
+There is no label change in this native implication construction.
+The rank is $k$, and the base $k=0$ has no valid query.  Translation
+of (T6) is the corresponding numerical conjunction by the source
+translation equation.  These two projection equations prove the
+constructor correctness directly.  A quantifier-free induction on
+$k$, or the bounded demand chain, supplies a primitive recursive
+projection function for all three guards.
+
+The input-domain and coherence-input projections merely prefix a
+fixed number of left/right conjunction projections to one of these
+guard projections, then apply the fixed conversion from native
+implication to translated source implication.  Vector-input entry
+projection uses the two composition calls present in
+\file{NumericPAeqSupportedVectorRealizationProjection.lean}, followed
+by the realization-guard projection.  These calls use (T1), so their
+requested labels are explicit as well.
+
+\subsection{Diagonal guard and repeated-environment leaves}
+
+Let $D_k$ be the domain guard of an environment $v$ and $J_k$ its
+diagonal isomorphism guard.  A diagonal query is
+$(k,v,\lambda)$ with goal $[D_k\Rightarrow J_k]$.  At $k=0$ it is
+the identity on $\top$.  For $k+1$, put
+$x=v_k$, $d=D(x)$, $j=\operatorname{Iso}(x,x)$, and
+$A=D_k\mathbin{\&}d$.  Its exact construction is
+\[
+ \operatorname{Pair}(A,J_k,j;
+   \operatorname{Comp}(A,D_k,J_k;\operatorname{proj}_L,
+                                    \operatorname{Diag}(k,v)),
+   \operatorname{Comp}(A,d,j;\operatorname{proj}_R,
+                                    \operatorname{IsoRefl}(x))).
+ \tag{T7}
+\]
+Consequently the only recursive diagonal query has labels
+\[
+ P_{c(A,D_k,J_k)}(P_{p(A,J_k,j)}(\lambda)),
+\]
+and count $k$.  The other branch is the fixed parameterized
+isomorphism-reflexivity template.  Child coverage is exactly the
+maximum-code coverage of (T1).  This closes
+\file{diagonal_guard_supply} by bounded induction on its actual
+count.  No term coherence theorem is needed for (T7).
+
+For the repeated environment $\operatorname{repeatVec}(x,k)$, its
+length is $k$ and every entry below that length is $x$.  These are
+the equations of the finite repetition recursion.  Hence its domain
+guard is $G_0=\top$, $G_{j+1}=G_j\mathbin{\&}D(x)$.
+Let $a=T_\lambda(D(x))$.  Define explicitly
+\[
+ E_0:\ a\to0,\qquad
+ E_{j+1}=\operatorname{nativePair}(E_j,\operatorname{Id}_a).
+ \tag{T8}
+\]
+The base proof weakens the fixed truth proof; the step pairs two
+implications with common antecedent $a$.  Induction on $j$ proves
+that $E_j$ derives $a\to T_\lambda(G_j)$.  Labels remain unchanged.
+The native/source implication conversion then gives exactly
+\file{NumericPAeqRepeatedEnvironment.domain_requested_certificate}.
+This is a primitive recursive function of $x,k,\lambda$ with
+quantifier-free correctness.  It does not appeal to a choice principle
+for the more general premise $\forall i<k\,\exists e_i$ of the
+upstream collection theorem: in this instance every $e_i$ is the
+explicit same identity proof.
+
+\subsection{Guarded value totality: complete query list}
+
+Abbreviate
+\[
+ A=D(s,b,f)=\operatorname{inputDomain}(s,b,f),\qquad
+ B_t=\operatorname{valueTotalityCode}(b,f,t).
+\]
+A totality query $(t;s,b,f;\lambda)$ asks for $[A\Rightarrow B_t]$.
+For a successor $t=\operatorname{succ}u$, the construction is
+\[
+ \operatorname{Comp}(A,B_u,B_t;
+          \operatorname{Tot}(u;s,b,f),\operatorname{SuccTot}(u;b,f)).
+ \tag{T9}
+\]
+Thus its sole recursive totality query has unchanged environments and
+labels $P_{c(A,B_u,B_t)}(\lambda)$.  For addition or multiplication
+$t=\operatorname{op}(u,v)$, put $B=B_u\mathbin{\&}B_v$.  The exact
+construction is
+\[
+ \operatorname{Comp}(A,B,B_t;
+    \operatorname{Pair}(A,B_u,B_v;
+                     \operatorname{Tot}(u),\operatorname{Tot}(v)),
+    \operatorname{BinTot}_{\operatorname{op}}(u,v;b,f)).          \tag{T10}
+\]
+Both recursive queries use the labels
+\[
+ P_{p(A,B_u,B_v)}(P_{c(A,B,B_t)}(\lambda)),
+\]
+and unchanged $s,b,f$.  Their source ranks are respectively $u,v<t$.
+
+The leaf and local constructors in (T9)--(T10) are explicit.  A bound
+or free variable first projects the appropriate $D(b_i)$ or $D(f_i)$
+from $A$, then composes the variable-totality template at that target
+term.  For zero, pad by
+$\max(B_0,[A\Rightarrow B_0])$, take the fixed inhabited-zero proof,
+weaken its conclusion by $A$, convert native implication back to source
+implication, and read back the labels.  The successor local constructor
+first duplicates the already present domain conjunct in the child
+existential value formula, then uses the fixed successor-totality
+template.  The binary local constructor duplicates the domain conjunct
+in each child existential, then uses the fixed addition-totality or
+multiplication-totality template.  The exact additional composition
+padding in both cases is (T1) with the displayed intermediate
+duplicate-domain formula; there are no further totality queries.
+
+The fixed constructors prove that the child existential output(s)
+imply the parent existential output.  This is all the local inductive
+step requires.  The source child support and environment-validity
+facts are the constructor facts proved above.  The finite-demand
+construction therefore produces the requested totality proof for
+every supported arithmetic term.
+
+\subsection{Guarded coherence and uniqueness}
+
+Put
+\[
+ A=\operatorname{coherenceInput}(s,b,c,f,g),\qquad
+ B_t=\operatorname{comparisonCode}(b,c,f,g,t).
+\]
+The coherence query $(t;s,b,c,f,g;\lambda)$ asks for
+$[A\Rightarrow B_t]$.  Its successor and binary constructions are
+exactly (T9)--(T10), replacing \file{Tot} by \file{Coh},
+\file{SuccTot} by successor comparison, and \file{BinTot} by
+addition or multiplication comparison.  Thus the same explicit label
+maps apply.  The environment tuple is unchanged, and each recursive
+term code strictly decreases.
+
+For a bound variable, project
+$\operatorname{Iso}(b_i,c_i)$ from $A$ and compose the variable
+coherence template.  For a free variable use
+$\operatorname{Iso}(f_i,g_i)$ instead; its index is below
+$\min(|f|,|g|)$ by the two support tests.  For zero use the fixed
+zero-comparison proof with padding and weakening as above.  For a
+successor or a binary operation extract the domain payloads of the
+child value predicates, apply the corresponding fixed coherence
+template, and use the exact syntax joins (T2)--(T5).
+
+These fixed requested templates themselves have no recursive arithmetic
+calls.  Variable coherence uses the closed isomorphism transport
+theorem; successor coherence uses closed successor-isomorphism
+compatibility; the two binary cases use closed addition and
+multiplication coherence.  They are instances of the lower
+singleton-requested-template constructor.
+
+Uniqueness is a separate, nonrecursive supplier.  For its query
+$(t;s,b,f;\lambda)$ set
+\[
+ D=\operatorname{inputDomain}(s,b,f),\quad
+ A=\operatorname{coherenceInput}(s,b,b,f,f),\quad
+ B=\operatorname{comparisonCode}(b,b,f,f,t).
+\]
+Its construction is
+\[
+ \operatorname{Comp}(D,A,B;
+              \operatorname{DiagonalInput}(s,b,f),
+              \operatorname{Coh}(t;s,b,b,f,f)).                \tag{T11}
+\]
+The coherence query uses $P_{c(D,A,B)}(\lambda)$.
+To specify the first child completely, let $J_b$ and $J_f$ be the
+diagonal isomorphism guards of $b$ and $f$, and $D_b,D_f$ their domain
+guards.  Define these requested-label proof providers using (T1):
+\[
+\begin{aligned}
+ L_b&=\operatorname{Comp}(D,D_b,J_b;\operatorname{proj}_L,
+                                      \operatorname{Diag}(|b|,b)),\\
+ L_f&=\operatorname{Comp}(D,D_f,J_f;\operatorname{proj}_R,
+                                      \operatorname{Diag}(|f|,f)),\\
+ K&=\operatorname{Pair}(D,J_b,J_f;L_b,L_f),\\
+ K'&=\operatorname{Pair}(D,D,J_b\mathbin{\&}J_f;
+                                      \operatorname{Id},K),\\
+ \operatorname{DiagonalInput}
+   &=\operatorname{Pair}(D,D,D\mathbin{\&}(J_b\mathbin{\&}J_f);
+                                      \operatorname{Id},K').
+\end{aligned}                                                   \tag{T12}
+\]
+Here $|b|=s$ by environment validity.  Expression (T12), together
+with (T1), specifies the full nested label maps to its two diagonal
+queries.  It is the actual three-pair/two-composition proof in
+\file{NumericPAeqSupportedValueUniquenessInput.lean}.
+Thus uniqueness has a primitive recursive proof constructor after
+coherence and the finite diagonal guards have been completed.
+
+\subsection{Vector realization: complete query list}
+
+For a vector query $(t;s,r,b,f,a,w;\lambda)$ put
+\[
+ A=\operatorname{vectorInput}(s,r,b,f,a,w),\qquad
+ B_t=\operatorname{vectorComparison}(b,f,a,w,t).
+\]
+Its goal is $[A\Rightarrow B_t]$.  The successor and binary
+constructors again have exactly the forms (T9)--(T10), now with
+recursive \file{Vec} children and the fixed successor or binary
+comparison template between the substituted and original value
+predicates.  The only same-family child queries replace $t$ by its
+immediate source child or children, retain all six environment fields,
+and use the same displayed composition/pair padding.  Their ranks
+strictly decrease.
+
+The free-variable leaf is
+\[
+ \operatorname{Comp}(A,D(r,b,f),B_{\operatorname{fvar}i};
+      \operatorname{VectorInputDomain},
+      \operatorname{Unique}(\operatorname{fvar}i;r,b,f)).        \tag{T13}
+\]
+The bound-variable leaf is more substantial.  Let
+\[
+ u=w_i,\quad x=a_i,\quad
+ E=\operatorname{entry}(b,f,w,a,i),\quad
+ C=\operatorname{comparisonCode}(b,b,f,f,u),\quad D=D(r,b,f).
+\]
+It is exactly the following composition of requested-label providers:
+\[
+\begin{aligned}
+ L&=\operatorname{Comp}(A,D,C;
+          \operatorname{VectorInputDomain},
+          \operatorname{Unique}(u;r,b,f)),\\
+ K&=\operatorname{Pair}(A,E,C;
+          \operatorname{VectorInputEntry}(i),L),\\
+ X&=\operatorname{SubstitutionVariable}
+       (\operatorname{valuePredicate}(b,f,u),x),\\
+ \operatorname{Vec}(\operatorname{bvar}i)
+   &=\operatorname{Comp}(A,E\mathbin{\&}C,B_{\operatorname{bvar}i};K,X).
+\end{aligned}                                                   \tag{T14}
+\]
+For example, its uniqueness query has the precise label tuple
+\[
+ P_{c(A,D,C)}\bigl(P_{p(A,E,C)}(
+     P_{c(A,E\mathbin{\&}C,B_{\operatorname{bvar}i})}(\lambda))\bigr).
+\]
+The query rank $u=w_i$ may exceed the original variable code.  It is
+a call to the already completed uniqueness stratum, not a recursive
+call to vector realization.  This resolves the apparent rank problem
+without silently assuming a false inequality.
+
+The entry equation required in the last branch of (T14) is exactly
+(T5): substituting $x$ into the value predicate of $u$ gives the
+entry formula $E$.  Together with the diagonal comparison code, this
+turns the fixed substitution-variable template into
+$[E\mathbin{\&}C\Rightarrow B_{\operatorname{bvar}i}]$.
+Its lower closed assumption is isomorphism right transport.  Thus
+(T14) does not assume the desired vector-realization theorem in a
+different notation.
+
+For the zero leaf, $B_0$ is the fixed zero comparison; pad by
+$\max(B_0,[A\Rightarrow B_0])$, take its fixed proof, weaken by
+$A$, and read back.  This is the same zero construction as in
+coherence.  All vector leaves have now been supplied, so the
+finite-demand construction on the original source term proves the
+requested vector-realization theorem.
+
+% Explicit auxiliary suppliers used by arithmetic formula and matrix closure.
+\subsection{Guard collection, binder input, and canonical input}
+\label{sec:term-guard-auxiliaries}
+
+The formula and induction-matrix constructions also need three auxiliary
+guard suppliers.  They do not follow merely from the arbitrary-term
+vector-realization theorem, so we give their algorithms explicitly.
+All translations in a native guard loop use one fixed parameter tuple
+$\lambda$; no recursive call changes that tuple.
+
+Let $G_0=\top$ and $G_{j+1}=G_j\mathbin\&E_j$ be any of the
+domain or realization guards.  Given an \emph{explicit} primitive
+recursive array $e_j$ of proofs of $A\to T_\lambda(E_j)$, define
+$c_0$ to be truth weakening and form $c_{j+1}$ by the fixed native
+implication-pairing recipe from $c_j,e_j$.  The bounded invariant is
+that $c_j$ is a checked proof of $A\to T_\lambda(G_j)$, conjoined
+with validity of the first $j$ entries.  Quantifier-free induction on
+$j$ proves the assertion.  This is the direct-list interpretation of
+\file{NumericPAeqValueDomainGuardCollection} and
+\file{NumericPAeqValueRealizationGuardCollection}; it does not
+extract an unspecified choice function from
+$\forall j<k\,\exists e_j$.
+
+For domain prepend, use antecedent
+$T_\lambda(G_k(b))\wedge T_\lambda(D(x))$ and collect $k+1$
+entries.  The zeroth proof is its right projection.  Entry $j+1$
+is its left projection followed by the already completed projection
+$G_k(b)\to D(b_j)$.  The list equations
+$(x::b)_0=x$ and $(x::b)_{j+1}=b_j$ prove the desired conclusion
+$G_{k+1}(x::b)$ exactly.  This construction is
+\file{NumericPAeqValueDomainGuardPrepend.guard_prepend_certificate}.
+Applying it to the bound guard and retaining the free guard gives
+the input-prepend supplier used by universal matrix closure.
+
+Write $D(x)=\operatorname{domainCode}(x)$ and
+$V_x=\operatorname{variableValue}(x,x)$.
+The requested self-variable proof is
+$T_\lambda([D(x)\Rightarrow V_x])$.
+Its fixed relational ND template proves
+$D(x)\to(D(x)\wedge\operatorname{Eq}(x,x))$ from the
+closed relational reflexivity sentence.  Thus it is precisely an
+instance of the lower singleton-requested-template constructor,
+with its sole lower nonlogical leaf supplied by the closed
+\file{reflexivityNativeProof}; it needs no term recursion.
+This is the exact boundary in
+\file{NumericPAeqValueSelfVariableCertificate.lean}.
+
+For binder input, let
+$G=\operatorname{vectorInput}(s,r,b,f,a,w)$ and
+\[
+ A=G\mathbin\&D(x),\qquad
+ B=\operatorname{vectorInput}
+       (s+1,r+1,x::b,f,x::a,\operatorname{qVec}(w)),
+ \quad S=[D(x)\Rightarrow V_x].
+\]
+The exact requested-label map in
+\file{NumericPAeqSupportedVectorBinderInputCertificate.lean} is
+\[
+ d=\max(S,[A\Rightarrow B]),\qquad
+ \lambda'=P_d(\lambda).
+ \tag{T15}
+\]
+The only non-native request is the self-variable proof at $\lambda'$.
+At this same tuple the new realization guard has entry zero $V_x$
+and entry $j+1$ equal to the old entry $j$.  These are
+\file{vector_qVec_entry_zero} and
+\file{vector_qVec_entry_succ}; the successor equation is
+the completed source-lift/value-syntax substitution identity, with
+the exact support conditions of the vector environment.
+Collect the zeroth entry using right projection and the self proof;
+collect each later entry using left projection and old-guard
+projection.  Prepend the domain guards of $b$ and $a$ by the
+preceding native loop, retain the two copies of the free-domain
+guard, and pair the resulting five factors in the literal
+\file{vectorInput} association.  Native/source implication
+normalization and padding readback give $T_\lambda([A\Rightarrow B])$.
+All entry indices are bounded by $s+1$ or $r+1$ and every proof
+value is computed explicitly.  When formula realization first
+shifts $b,f,a$, this same construction is applied to those shifted
+vectors; the support and validity tests are preserved by the
+already completed target-shift syntax equations.
+
+For canonical input, let $|B|=m$ and set
+\begin{align*}
+ G&=G_m(B),\qquad
+ S_i=[D(B_i)\Rightarrow\operatorname{variableValue}(B_i,B_i)],\\
+ J&=\operatorname{vectorInput}(m,0,0,B,B,\operatorname{fvarVec}(m)).
+\end{align*}
+Replace the source's collection-based existential bound by the
+explicit primitive recursion
+\[
+ d_0=0,\qquad d_{i+1}=\max(d_i,S_i),\qquad
+ d=d_m,\qquad \lambda'=P_d(\lambda).
+ \tag{T16}
+\]
+The bounded invariant $\bigwedge_{i<j}S_i\le d_j$ supplies every
+coverage check, including the empty case $m=0$.
+At $\lambda'$ request the self-variable proof for each $i<m$;
+compose it with the native projection $G\to D(B_i)$.
+The canonical realization entry is literally
+$\operatorname{variableValue}(B_i,B_i)$, because
+$\operatorname{fvarVec}(m)_i=\operatorname{fvar}(i)$ and the
+value-syntax free-variable equation selects $B_i$.
+Collect these $m$ explicit arrows with the first loop.
+The literal input shape is
+\[
+ T_{\lambda'}(J)=
+ (\top\wedge T_{\lambda'}G)\wedge
+   ((T_{\lambda'}G\wedge T_{\lambda'}G)\wedge
+       T_{\lambda'}G_{\rm realized}).
+\]
+Truth weakening, three identities on $G$, and the collected arrow
+therefore prove $G\to J$ by fixed conjunction operations.
+Native/source normalization and padding readback finish the
+requested proof.  This is the explicit realization of
+\file{NumericPAeqCanonicalVectorInputCertificate.lean} and its
+\file{self_codes_bounded} auxiliary.  It neither invokes an
+unbounded collection principle nor recurses through an arbitrary
+formula-realization supplier.
+
+Consequently these auxiliaries belong immediately after guard
+projection and the lower fixed self-variable template, before
+arithmetic formula realization and induction-matrix closure.
+Their only new closed leaf is ordinary relational reflexivity,
+already present among the six fixed ordinal leaves of the generic
+relational construction.  No edge returns to the arithmetic
+formula or proof strata.
+
+\subsection{Strata and exact lower interfaces}
+
+The construction uses the following acyclic order:
+\begin{enumerate}
+\item Primitive recursive syntax, source substitution, value syntax
+      (T2), and its validity/naturality joins (T3)--(T5).
+\item Direct $\mathcal C_4$ logical proof constructors, requested-label
+      padding/readback, and fixed relational-template instances.
+\item Domain, isomorphism, and realization guard projections; the
+      diagonal and repeated-domain constructions (T7)--(T8).
+\item Guarded totality and guarded coherence, each by its own
+      decreasing-source-code finite-demand recursion.
+\item Guarded uniqueness (T11)--(T12).
+\item Vector realization, with its decreasing original-source-code
+      recursion and lower uniqueness calls (T13)--(T14).
+\end{enumerate}
+No edge returns to a higher stratum.  In particular, the fact that a
+substituted or replacement term can be much larger than the original
+one does not invalidate the recursion: its syntax or coherence call
+belongs to a lower, already total primitive recursive stratum.
+
+For reproducibility, the precise parameterized lower interfaces are:
+\begin{itemize}
+\item Native implication composition, pairing, identity, conjunction
+      projections, truth weakening, and the two source/native
+      implication conversions; source composition/pairing and padded
+      readback use exactly (T1).
+\item Variable totality at an arbitrary valid target term, duplicate
+      domain for one existential payload, duplicate domain for two
+      payloads, successor totality, and addition/multiplication totality
+      at arbitrary valid payload formulas.
+\item Variable coherence at two arbitrary valid target terms,
+      zero comparison, successor coherence at two payload formulas,
+      and addition/multiplication coherence at four payload formulas.
+\item Substitution-variable coherence at one payload and one valid
+      target term, and isomorphism reflexivity at one valid target term.
+\item The fixed closed relational proof supplies for inhabited zero,
+      zero-isomorphism compatibility, isomorphism reflexivity/transport/right transport, successor
+      totality and compatibility, and addition/multiplication totality
+      and coherence, as used by the corresponding requested templates.
+\end{itemize}
+These are fixed formula templates with numerical term/formula holes,
+not arbitrary arithmetic-proof or PA-calibration oracles.  Their
+implementation and correctness are the responsibility of the lower
+generic relational stratum; this section identifies every such call
+and proves that no further term supplier remains behind it.
+
+The resulting primitive recursive functions satisfy, in
+$\mathsf{iPRA}$, the desired guarded totality, guarded coherence,
+uniqueness, and vector-realization implications for all inputs passing
+their explicit support, environment, and requested-coverage tests.
+The proof is uniform in those inputs.  It does not infer a weak-base
+theorem merely from the existence of a full-PA proof in the repository.
+Nor does it by itself complete any still-unproved lower relational
+interface or the higher PA-proof transport.  It closes the term
+supplier portion once the explicitly enumerated lower interfaces are
+provided.

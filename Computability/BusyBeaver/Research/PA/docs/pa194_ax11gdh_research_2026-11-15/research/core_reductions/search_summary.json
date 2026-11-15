@@ -1,0 +1,131 @@
+{
+  "snapshot": "793c68737d94bffa4e32a75bce6cc8058d6d22f0",
+  "outcome": "No qualifying sub-194 construction found by these restricted searches.",
+  "parent_primary_dense_sha256": "4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f",
+  "families": [
+    {
+      "name": "One free row in three register-interface controls",
+      "parent_working_states": 194,
+      "resulting_trial_states": 193,
+      "retained_controls": [
+        3,
+        16,
+        113
+      ],
+      "free_read_symbol": 0,
+      "other_row_fixed": true,
+      "eligible_removed_controls": 170,
+      "candidate_row_actions_per_pair": 776,
+      "tested_variants": 395760,
+      "symbolic_source_outcomes": 4780,
+      "symbolic_update_bound_per_suffix": 1024,
+      "accepted": 0,
+      "scope": "Delete one eligible non-box noninitial nondispatch control into one of3,16,113; redirect its destinations; enumerate every read0 write/direction/remaining-target action. Stop a candidate at its first failed finite symbolic suffix. Full source verification would be required for a survivor; none survived.",
+      "limitations": "Not an exhaustive TM search. A failed bounded symbolic replay is not necessarily a concrete divergence or unsatisfiability proof."
+    },
+    {
+      "name": "Inductive local-window shortcut closure",
+      "radius": 6,
+      "window_cells": 13,
+      "parent_trace_bound": 127,
+      "primary_abstract_contexts": 267827,
+      "available_nontrivial_shortcuts": 2,
+      "shortcuts": [
+        [
+          26,
+          1,
+          [
+            1,
+            "R",
+            91
+          ]
+        ],
+        [
+          101,
+          0,
+          [
+            0,
+            "R",
+            17
+          ]
+        ]
+      ],
+      "already_present_in_prior_research": true,
+      "after_both_shortcuts_abstract_contexts": 267187,
+      "additional_shortcuts_after_both": 0,
+      "single_state_deletions_supported": 0,
+      "scope": "Least local-window abstract closure from blank control74, with arbitrary introduced exterior bits. A replacement must match an old finite block inside the window, changing only the current cell and making one net head move. All replacements from one stage may be combined by the positive stuttering argument.",
+      "limitations": "Local abstraction and unchanged state representation restrict the search. This is not a lower bound."
+    },
+    {
+      "name": "Runtime193 bootstrap repair by neutral-row combinations",
+      "start": 74,
+      "initial_tape": "all zeros",
+      "row_proposals": 346,
+      "two_row_trials": 1099,
+      "three_row_trials": 19424,
+      "maximum_transitions_per_candidate": 200000,
+      "head_displacement_bound": 1500,
+      "candidate_seed_sites": [
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44
+      ],
+      "candidate_seed_scope": "Any canonical source frame at these sites, gap at least48, at least10 complete unary register blocks, arbitrary values, and blank exterior.",
+      "two_row_transition_count": 22908918,
+      "three_row_transition_count": 879569779,
+      "combined_candidate_transitions": 902478697,
+      "transition_count_excludes_guidance_runs": true,
+      "two_row_outcomes": {
+        "fuel_bound": 114,
+        "seed": 0,
+        "halt": 0,
+        "certified_outward_ray": 982,
+        "range_bound": 3,
+        "missing_row": 0
+      },
+      "three_row_outcomes": {
+        "fuel_bound": 4385,
+        "seed": 0,
+        "halt": 0,
+        "certified_outward_ray": 14866,
+        "range_bound": 173,
+        "missing_row": 0
+      },
+      "scope": "Distinct-row combinations of346 inherited source-context-neutral proposals. Guidance discards edits whose rows cannot be reached before the stated bounds. No candidate seed was found, so no combined mutation is presented as a valid source implementation.",
+      "limitations": "Fuel and range terminations are inconclusive. Other mutations, starts, seed sites, longer runs and changed encodings remain open."
+    },
+    {
+      "name": "Shortened return scanner counterexample",
+      "parent_blank_prefix_steps": 58154,
+      "source_site": 25,
+      "parent_steps_to_common_scanner_configuration": 223,
+      "shortened_steps_to_common_scanner_configuration": 221,
+      "common_state": 23,
+      "common_head": -1,
+      "parent_scanner_return_steps": 19,
+      "parent_return_head": -2,
+      "shortened_scanner_return_steps": 2,
+      "shortened_return_head": -1,
+      "result": "The proposed drop-in scanner does not preserve its required return coordinate on the actual first initialized source instruction.",
+      "limitations": "This rejects the scanner replacement contract, not every possible calibration of the altered table."
+    }
+  ]
+}

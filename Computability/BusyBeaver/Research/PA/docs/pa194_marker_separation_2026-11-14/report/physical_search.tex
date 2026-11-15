@@ -1,0 +1,101 @@
+\subsection{Additional bounded physical reduction searches}
+\label{sec:ms-search}
+
+No machine with fewer than 194 working controls was established in this
+investigation.  The two marker-separated compositions were retained as the
+constructive fallback.  The following additional searches record what was
+attempted from the new seed; they are not an exhaustive search of 193-state
+Turing machines and do not prove a lower bound.
+
+\subsubsection{A stronger source invariant}
+For $r\in\{3,4\}$, abstract each register by
+$\alpha_r(n)=\min(n,r-1)$.  Thus the two domains are respectively
+$\{0,1,{\geq}2\}$ and $\{0,1,2,{\geq}3\}$.
+The analysis tracks the product of all nine register abstractions jointly
+at every source site, from site 25 with logical registers
+$(2,0,0,0,0,0,0,0,0)$.  Increment at the top value retains the top value.
+Decrement at the top value has both $r-2$ and $r-1$ as positive successors;
+omitting either would be unsound.  Other arithmetic transfers are exact.
+The source graph is independently reconstructed by the arithmetic and
+interval resolvers, and agrees with the delivered 3\,671-site instruction
+list in all 4\,778 successor checks.
+
+The finite reachable sets were generated and then independently scanned
+to check closure of every abstract outgoing edge:
+\[
+\begin{array}{lrr}
+\text{LCG register domain}&\text{reachable site/mask pairs}&
+  \text{audited abstract edges}\\\hline
+\{0,1,{\geq}2\}&4\,237\,326&4\,756\,326\\
+\{0,1,2,{\geq}3\}&31\,371\,382&34\,250\,434.
+\end{array}
+\]
+For both analyses, source site 8 is unreachable and the decrement at site 7
+has only its zero outcome.  There are no forced-positive exact-one
+decrement sites.  Projecting the joint invariant onto individual registers
+provides sound marginal bounds at each source entry.  Single small values
+remain exact; a union of values is conservatively weakened to its least
+member plus an arbitrary natural parameter when necessary.
+
+These bounds were propagated through the literal symbolic machine
+interpreter, not merely tested at instruction boundaries.  Each guarded
+run checks 4\,776 source outcomes and 1\,097\,971 symbolic steps, including
+168\,140 accelerated unary sweeps and 2\,912 arbitrary finite-list sweeps.
+The exact 57\,870-step blank initialization is separately included.  The
+unbounded list-block identities are unchanged.  A six-cell window on each
+side of the head gives the following envelope sizes:
+\[
+\begin{array}{lrr}
+\text{source envelope}&\text{LCG windows}&\text{LCGMS windows}\\\hline
+\text{inherited literal source envelope}&49\,297&49\,375\\
+\{0,1,{\geq}2\}\text{ guards}&49\,117&49\,195\\
+\{0,1,2,{\geq}3\}\text{ guards}&49\,113&49\,191.
+\end{array}
+\]
+The MS envelope is obtained by transferring every parent window through
+the exact local simulation from Section~\ref{sec:marker-separation}.
+When an intermediate head shift exposes an unknown boundary square,
+both possible values are included.  All intermediate selector steps
+are retained.  No parent window was discarded as inconsistent with the
+incoming-history premise in any of these three transfers.
+
+\subsubsection{Exact finite screening domains and results}
+For every selected table and envelope, the pair screen considers all
+$\binom{194}{2}=18\,721$ pairs of controls and candidate common binary
+transition rows, retargeting old entries to the retained control.  It
+requires positive-progress equality with some old continuation of at most
+24 steps after at most 256 new steps, with both continuations remaining
+inside the available radius-six window.  It checks both row choices
+together after the preliminary single-row tests.  The separate deletion
+screen considers all 193 noninitial controls, replacing their incoming
+rows by bypass actions; its old and new continuation limits are 48 and
+512 steps.  The bypass checks stop before a different modified incoming
+row is used, so this is a deliberately restricted simultaneous-edit
+criterion.
+
+\begin{center}
+\begin{tabular}{llrrr}
+\text{table}&\text{envelope}&\text{row trials}&\text{joint choices}&\text{hits}\\\hline
+LCGMS&inherited&26\,379\,344&174\,059&0\\
+LCG&three-value guards&26\,387\,880&177\,086&0\\
+LCGMS&three-value guards&26\,379\,344&174\,059&0\\
+LCG&four-value guards&26\,387\,880&177\,086&0\\
+LCGMS&four-value guards&26\,379\,344&174\,059&0.
+\end{tabular}
+\end{center}
+Every row of this table also has zero successful deletion targets out of
+193.  These are 93\,605 pair examinations and 965 deletion-target
+examinations across the five distinct table/envelope combinations; they
+are not counts of distinct 193-state machines.  The persistence of the
+same action counts under tighter envelopes simply means that the removed
+windows did not change the surviving preliminary candidates in these
+particular screens.
+
+The delivered \path{research/physical/search/} directory contains the exact source inputs,
+the finite closure program, symbolic collectors, optimizer sources,
+window files, logs, hashes, and a portable reproduction script.
+\texttt{python3 research/physical/search/reproduce.py} reruns the finite closures and all
+five screens.  Adding \texttt{--regenerate} also regenerates the symbolic
+window envelopes.  These executable checks support the stated bounded
+search results; they are neither a new Lean theorem nor evidence that
+an unrestricted 193-state construction is impossible.

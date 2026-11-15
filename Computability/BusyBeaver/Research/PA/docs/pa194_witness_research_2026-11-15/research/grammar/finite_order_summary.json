@@ -1,0 +1,31 @@
+{
+  "status": "COMPLETE",
+  "source": "Frozen PA194JH5X grammar",
+  "candidate_binding": "../../machines/PA194JH5X/grammar.tree.json",
+  "scope": "Finite grammar nominations only, not source-certified alternatives or lower bounds.",
+  "screens": [
+    {
+      "program": "price_J_orders.cpp",
+      "template": "J_full_order.templates.txt",
+      "attributes": "leaf_attrs.txt",
+      "prefix": "J_order_prices",
+      "head_orders": 720,
+      "candidates": 720,
+      "best_score": 60,
+      "mutation": "Reassign token sequence of all six heads while keeping the complete binary-tree shape.",
+      "minimum_raw_effective_score": 60
+    },
+    {
+      "program": "price_J_chunk_orders.cpp",
+      "template": "J_full_order.templates.txt",
+      "attributes": "leaf_attrs.txt",
+      "prefix": "J_chunk_order_prices",
+      "head_orders": 720,
+      "binary_bracketings_per_order": 429,
+      "candidates": 308880,
+      "best_score": 71,
+      "mutation": "Preserve each extracted head subtree, prefix subtree, and suffix subtree; enumerate all 429 binary associations of the resulting eight chunks.",
+      "minimum_raw_effective_score": 67
+    }
+  ]
+}

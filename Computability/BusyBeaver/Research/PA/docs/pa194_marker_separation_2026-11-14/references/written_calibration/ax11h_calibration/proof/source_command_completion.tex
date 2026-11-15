@@ -1,0 +1,485 @@
+% Mathematical proof component.  This file is intended to be included in the
+% parent report after amsmath, amssymb, amsthm, longtable and booktabs are loaded.
+\section{Closing the exact source-to-command interface}
+\label{sec:source-command-complete}
+
+This section establishes the intermediate interface between the literal
+nine-register source and the abstract AX11H or QAX11H command scheduler.
+It does not assume arithmetic meanings for named source macros.  Instead,
+the supplied checker independently generates primitive-instruction templates,
+matches every instruction and outgoing edge of each new source, and checks
+the entire finite AX expression.  The proofs below establish the templates'
+arithmetic meanings and exact clocks uniformly in $\mathrm{iPRA}$.
+This is a written mathematical proof of weak-arithmetic provability, not
+a newly kernel-checked proof.  The independent issue of calibration to PA
+refutations is not used here and is not settled by this section.
+
+\subsection{Primitive semantics and the complete finite binding}
+
+A source configuration consists of a control $p$ and the nine natural
+registers
+\[
+ (N,T,W,A,D,H,X,Y,L)=(r_0,r_1,r_2,r_3,r_4,r_5,r_6,r_7,r_8).
+\]
+An instruction $\mathrm{inc}(r,p')$ increments $r$ and goes to $p'$.
+An instruction $\mathrm{dec}(r,p_0,p_+)$ goes to $p_0$ when $r=0$;
+otherwise it decrements $r$ and goes to $p_+$.  A jump changes only the
+control.  A halt instruction goes to $\operatorname{Stop}(\vec r)$,
+retaining every register.  Stopped configurations are fixed points.
+Use any fixed primitive recursive coding of finite tuples; these
+instructions define a total primitive recursive function
+$\operatorname{SrcStep}$.
+
+The independently generated templates match all 3,671 instructions of
+each source, including register arguments and both decrement destinations.
+The checker also re-expands the supplied named syntax and resolves its
+control tree independently by subtree intervals.  Its source-level ports
+are as follows; intervals are half open.
+\begin{center}
+\begin{tabular}{rl}
+\toprule
+Port or interval&Operation\\
+\midrule
+$[0,10)$&Destructive comparison of $H,X$; equality goes to 10, inequality to 11\\
+$10$&Halt, retaining all registers\\
+$[11,25)$&Unpair $W$, then transfer its first projection into $H$\\
+$[25,34)$&Fresh or positive-residual fetch prefix\\
+$[34,48)$&Unpair $L$, then transfer its first projection into $A$\\
+$48,49$&Two dispatch decrements of $A$\\
+$[50,3572)$&The 190-token AX body, including its final extra push\\
+$[3572,3639)$&Read the next field into $D$ and construct $I(T,D)$\\
+$[3639,3642)$&Transfer $T$ into $X$\\
+$[3642,3652)$&Compare $H,X$; equality goes to 3652, inequality to 3659\\
+$[3652,3659)$&Copy $D$ to $T$ and restore $D$\\
+$3659$&Jump to fetch port 25\\
+$[3660,3662)$&Clear $T$\\
+$[3662,3669)$&Copy $H$ to $T$ and restore $H$\\
+$3669,3670$&Increment $X$, then jump to root port 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+Dispatch at 48 sends zero directly to 3660.  Dispatch at 49 sends zero
+to 3572; its positive branch enters AX at 50.  Thus the three cases are
+the tags 0, 1, and $c+2$.
+
+For precision, the following are the nontrivial arithmetic templates.
+All indices in a template are relative to its entry; $e$ is its ordinary
+exit.  The letters $D_r(a,b)$, $I_r(a)$, and $J(a)$ denote a decrement,
+increment, and jump.  The comparison has two supplied exits $e_=,e_\ne$.
+These lists specify the primitive programs, rather than invoking a macro
+name as an arithmetic assumption.
+\begin{align*}
+\mathcal U_r={}&[
+ D_r(8,1), I_Y(2),D_X(4,3),J(7),D_Y(7,5),I_X(6),\\
+ &\hspace{12mm}J(4),J(0),D_Y(e,9),I_r(10),J(8)],\\
+\mathcal P={}&[
+ D_T(4,1),I_Y(2),I_X(3),J(0),D_X(e,5),I_Y(6),\\
+ &\hspace{12mm}D_X(9,7),I_T(8),J(6),J(0)],\\
+\mathcal C={}&[
+ D_H(4,1),D_X(3,2),J(0),J(5),D_X(e_=,5),\\
+ &\hspace{12mm}D_H(7,6),J(5),D_X(9,8),J(5),J(e_\ne)] .
+\end{align*}
+The ordinary exits of $\mathcal U_r$ and $\mathcal P$ are respectively
+11 and 10.  The remaining templates are clear
+$[D_r(e,1),J(0)]$, transfer
+$[D_r(e,1),I_s(2),J(0)]$, duplicate
+$[D_r(e,1),I_s(2),I_t(3),J(0)]$, and multiplication by four
+$[D_Y(e,1),I_T(2),I_T(3),I_T(4),I_T(5),J(0)]$.
+Their ordinary exits are their lengths.  Distinct register names are used
+in every instantiated transfer and duplicate.
+
+\subsection{Exact arithmetic clocks and their weak induction proofs}
+
+Write
+\[
+ \pi(a,b)=\operatorname{tri}(a+b)+b,\qquad
+ \operatorname{tri}(s)=\sum_{j<s}(j+1).
+\]
+Define $\operatorname{advance}(a,b)=(a-1,b+1)$ for $a>0$, and
+$\operatorname{advance}(0,b)=(b+1,0)$.  Define
+$\operatorname{decode}(w)=\operatorname{advance}^{w}(0,0)$.
+All these functions use primitive recursion.  Direct arithmetic gives
+$\pi(\operatorname{advance}(a,b))=\pi(a,b)+1$.  Quantifier-free
+induction therefore proves $\pi(\operatorname{decode}(w))=w$.
+The intervals $[\operatorname{tri}(s),\operatorname{tri}(s)+s]$ are
+disjoint and successive; within one such interval $b$ is unique.
+This proves injectivity of $\pi$ using quantifier-free arithmetic and
+decidable comparisons, and hence
+$\operatorname{decode}(\pi(a,b))=(a,b)$, including $(a,b)=(0,0)$.
+
+Put $R(a,b)=5$ for $a>0$ and $R(0,b)=3b+8$, and define
+\[
+ \Lambda(w)=1+\sum_{j<w}R(\operatorname{advance}^{j}(0,0)),\qquad
+ U(w)=\Lambda(w)+3\operatorname{tl}(w)+1,
+\]
+where $(\operatorname{hd}(w),\operatorname{tl}(w))=
+\operatorname{decode}(w)$.  With $r=w$ and $X=Y=0$, the template
+$\mathcal U_r$ terminates with
+\[
+ (r,X,Y)=(\operatorname{tl}(w),\operatorname{hd}(w),0)
+\]
+in exactly $U(w)$ primitive steps.  Indeed, each round at offset 0
+consumes one unit of $r$.  Its two branches advance $(X,Y)$ in exactly
+$R(X,Y)$ steps.  The last zero test costs one step, and the final transfer
+of $Y$ into $r$ costs $3\operatorname{tl}(w)+1$.
+The invariant after $j\le w$ rounds is
+\[
+ r=w-j,\quad(X,Y)=\operatorname{advance}^{j}(0,0),
+ \quad\text{elapsed}=\sum_{i<j}R(\operatorname{advance}^{i}(0,0)).
+\]
+All register equalities and the corresponding iterated-step equality are
+primitive recursive assertions.  The induction on $j$ is quantifier-free;
+the guard $j\le w$ can itself be expressed by a Boolean characteristic
+function.  This proof does not require an unbounded search for a decoder
+exit.  A useful bound is $\Lambda(w)\le w(3w+8)+1$.
+
+With $(T,X,Y)=(t,a,0)$, the pairing template $\mathcal P$ terminates
+with $(T,X,Y)=(0,0,\pi(a,t))$ in
+\[
+ P(t,a)=4t+2+\sum_{j<a+t}(7j+5)                       \tag{P}
+\]
+steps.  Its first transfer costs $4t+1$ and reaches
+$(T,X,Y)=(0,a+t,t)$.  Each subsequent round takes $X=s+1$ to $s$,
+adding $s+1$ to $Y$, in $7s+5$ steps: subtract one and increment $Y$;
+transfer the remaining $s$ units of $X$ to $T$; jump back; duplicate
+those $s$ units from $T$ into $X,Y$.  The final zero test adds one.
+Quantifier-free induction on the number of rounds proves the triangular
+sum and the exact step identity.  All unrelated registers are parameters
+and remain unchanged.
+
+The clear, transfer, and duplicate templates have respective costs
+$2r+1$, $3r+1$, and $4r+1$, with the indicated source register cleared.
+Transfer adds its old value to its destination; duplicate adds it to
+both destinations.  Induction on the original counter proves the exact
+endpoints.  A duplicate from $r$ into $T,X$, followed by transfer from
+$X$ back into $r$, copies $r$ additively into $T$ and restores $r$ in
+$7r+2$ steps when $X=0$.  The multiplication template sends
+$(T,Y)=(t,y)$ to $(t+4y,0)$ in $6y+1$ steps.  These proofs have linear
+quantifier-free counter invariants.
+
+The comparison template clears both $H,X$, preserves other registers,
+and selects $e_=$ exactly when the original values agree.  Its exact cost is
+\[
+ C(h,x)=
+ \begin{cases}
+  3h+2,&h=x,\\
+  3x+2,&h<x,\\
+  2h+x+4,&h>x.
+ \end{cases}                                           \tag{C}
+\]
+Each joint positive round subtracts one from both operands in three
+steps.  The two terminal cases either exit in two steps or use the
+displayed clear loops.  Equivalently,
+$C(0,0)=2$, $C(0,x+1)=3x+5$, $C(h+1,0)=2h+6$, and
+$C(h+1,x+1)=C(h,x)+3$.
+Induction on the number of joint rounds, bounded by $\min(h,x)$,
+establishes both the destination and clock.  In particular, equality
+and inequality are handled for all natural operands.
+
+Each of these proofs can be written as a quantifier-free equality for
+the iterated primitive step function, with the parameters fixed at the
+start of the induction.  When a remaining counter decreases, use the
+number of completed rounds as the induction variable.  Bounded Boolean
+conditions account for its range.  Thus no induction on an unbounded
+universal-input assertion is hidden in the argument.
+
+\subsection{Derived macros, all tied to primitive templates}
+
+The checker expands the following compositions into the preceding literal
+templates before comparing the source instruction array.  Their meanings
+are therefore consequences of those templates.  Scratch registers are
+$X=Y=0$ at ordinary macro boundaries.
+
+Push is transfer $T$ to $X$, transfer $W$ to $T$, pairing $\mathcal P$,
+and transfer $Y$ to $W$.  It sends $(T,W)=(t,w)$ to
+$(0,\pi(t,w))$, with exact cost
+\[
+ B(t,w)=3t+3w+P(w,t)+3\pi(t,w)+3.
+\]
+CopyD, CopyH, and CopyA are Push followed by the corresponding
+copy-and-restore template.  Thus they preserve the old visible top on the
+stack and place the chosen register in $T$.
+
+Cons is $\mathcal U_W$, then $\mathcal P$, then multiplication by four.
+It sends $(T,W)=(t,w)$ to
+\[
+ (I(\operatorname{hd}(w),t),\operatorname{tl}(w)),\qquad
+ I(a,b)=4\pi(a,b),
+\]
+in $U(w)+P(t,\operatorname{hd}(w))+6\pi(\operatorname{hd}(w),t)+1$
+steps.  ReadH is $\mathcal U_L$ followed by transfer $X$ to $H$; it
+adds $\operatorname{hd}(L)$ to $H$ and replaces $L$ by its tail.
+ReadDCons is $\mathcal U_L$, transfer $X$ to $D$, CopyD, then Cons.
+It therefore sends
+\[
+ (T,D,L)=(t,d,\pi(x,\ell))
+ \longmapsto (I(t,d+x),d+x,\ell),
+\]
+preserving the original $W$ and $H$.
+
+CopyGuard duplicates $A$ into $Y,X$, clearing $A$.
+CompareGuard is: compare $H,X$; clear $T$ on equality; transfer $Y$
+to $X$; transfer $D$ to $H$; compare $H,X$ again; clear $T$ on equality.
+Thus on entry $(T,D,H,X,Y,A)=(g,D,H,a,a,0)$ it returns
+\[
+ (T,D,H,X,Y,A)=
+ \begin{cases}(g,0,0,0,0,0),&a\ne H\text{ and }a\ne D,\\
+ (0,0,0,0,0,0),&\text{otherwise}.
+ \end{cases}
+\]
+The optional clear loops are charged exactly when their equality branch
+is taken.  The actual primitive comparison exits are checked, including
+the branch that skips each clear.  This supplies the previously assumed
+guarded-cleanup meaning.
+
+All costs compose by addition, evaluated at successive arithmetic stores.
+The class \texttt{Arithmetic} in the companion script is an explicit
+implementation of these endpoint and clock functions.  Its assertions
+record preconditions: the mathematical PR functions are the displayed
+arithmetic clauses, with arbitrary values permitted outside their claimed
+domains.  The source calls below satisfy every precondition.  No duration
+is obtained by waiting for an unspecified exit.
+
+\subsection{The complete AX arithmetic expression}
+
+Set $M(a,b)=I(a,b)+1$, $U(a,B)=I(B,a)+2$, $E(a,b)=I(a,b)+3$,
+$\neg B=I(B,1)$, $B\wedge C=\neg I(B,\neg C)$, and
+$\exists a\,B=\neg U(a,\neg B)$.  On AX entry put $D=d+x$ and
+$H=h+y$.  Define the six heads
+\begin{align*}
+ h_1&=I(\exists D\,U(D,H),H),\\
+ h_2&=I(U(D,U(a,H)),U(a,U(D,H))),\\
+ h_3&=I(M(H,D),I(E(H,a),M(a,D))),\\
+ h_4&=I(E(H,D),I(M(a,H),M(a,D))),\\
+ h_5&=\exists D\,E(H,D),\\
+ h_6&=I(U(D,a),I(U(D,I(a,H)),U(D,H))).
+\end{align*}
+For QAX11H only, replace $h_6$ by
+$I(U(D,I(a,H)),I(U(D,a),U(D,H)))$.
+Also put
+\[
+ \rho=I(I(I(H,d),D),I(I(D,H),I(a,H))),\qquad
+ \Gamma=I(a,U(a,a)).
+\]
+The gate expression is specified without any semantic assumption about
+the underlying calculus:
+\begin{align*}
+ p&=I(a,M(a,D)),&v&=I(M(H,D),U(a,M(H,D))),\\
+ s&=U(D,I(M(H,D),p)\wedge I(M(a,D),a)),\\
+ q&=U(a,I(s,\neg p)),&g&=\neg I(v,q).
+\end{align*}
+Write $G=g$ if $a\ne D,H$, and $G=0$ otherwise.
+
+For every input $n,t,w,a,d,h,x,y,z,\ell$, the complete body at
+port 50 starts with register file
+\[
+ (n,t,w,a,d,h,0,0,\pi(y,\pi(x,\pi(z,\ell))))
+\]
+and terminates at port 3572 with
+\[
+ \bigl(n,0,[G,\Gamma,h_6,h_5,h_4,h_3,h_2,h_1,
+          \rho,U(d,h),t;w],0,0,0,0,0,\pi(z,\ell)\bigr).       \tag{AX}
+\]
+Here $[b_0,\ldots,b_k;w]=\pi(b_0,\pi(b_1,\ldots\pi(b_k,w)\ldots))$.
+
+To verify this finite algebraic identity, apply the just-proved macro
+equations in the exact 190-token order emitted by the literal grammar.
+The companion's \texttt{symbolic\_AX} performs these substitutions with
+independent formal variables and compares all nine output registers with
+(AX).  In particular, it retains both equality tests symbolically as
+zero-on-equality operations, rather than selecting a favorable guard
+branch.  Its expected head expressions are the formulas above.
+Every primitive instruction underlying every token has independently
+matched its template, and every ordinary token has zero scratch at its
+entry and exit.  The only exception is CopyGuard immediately followed by
+CompareGuard, whose stated intermediate precondition is checked explicitly.
+Consequently the finite comparison establishes an identity by congruence
+of primitive recursive functions.  It is not a bounded numerical test of
+the AX arithmetic.
+
+Let $(F_j(\vec r),K_j(\vec r))$ be the endpoint and positive cost of
+token $j$ just proved.  Define $\vec r_0=\vec r$,
+$\vec r_{j+1}=F_j(\vec r_j)$, and
+$K_{\mathrm{AX}}(\vec r)=\sum_{j<190}K_j(\vec r_j)$.
+This fixed finite composition is an explicit PR clock for (AX).
+Its correctness follows by 190 applications of the iterated-step
+composition identity, itself proved by quantifier-free induction.
+
+\subsection{The changed MP and AX fallthrough}
+
+From port 3572 with file $(n,t,w,0,d,h,0,0,\pi(x,\ell))$,
+ReadDCons constructs $q=I(t,b)$ with $b=d+x$.
+The transfer at 3639 moves this $q$ from $T$ into $X$.
+The comparison at 3642 clears $H,X$.  Equality enters the seven-site
+copy-and-restore tail, which writes $b$ into the now-zero $T$ and preserves
+$D=b$.  Inequality skips that tail.  The final jump at 3659 returns to
+port 25.  The exact output is therefore
+\[
+ (n,\,\mathbf{if}\ q=h\ \mathbf{then}\ b\ \mathbf{else}\ 0,
+     \,w,0,b,0,0,0,\ell).                                  \tag{MP}
+\]
+There is no stack push in the success tail.  Its exact additional cost
+after ReadDCons is
+\[
+ (3q+1)+C(h,q)+\mathbf 1_{q=h}(7b+2)+1.
+\]
+The input to ReadDCons and hence its cost are fully specified, so this
+gives the PR function $K_{\mathrm{MP}}$ implemented by
+\texttt{Arithmetic.mp\_tail}.
+
+Applying this result to the output (AX) consumes the additional field
+$z$.  It has $t=d=h=0$, so $b=z$ and $q=I(0,z)$.
+The elementary identity $I(0,z)=0\leftrightarrow z=0$ follows directly
+from Cantor pairing.  If $z=0$, the successful copy writes zero; if $z>0$,
+comparison fails and $T$ is also zero.  Thus the complete AX command
+returns $(T,W,D,H)=(0,[G,\Gamma,h_6,\ldots,\rho,U(d,h),t;w],z,0)$
+with residual $\ell$, in exactly
+$K_{\mathrm{AX}}+K_{\mathrm{MP}}$ steps, the latter evaluated at the
+actual AX-body output.  This handles both zero and nonzero $z$.
+
+\subsection{The cached-only Shift and exact halted file}
+
+From port 3660, clear $T$, copy and restore $H$, increment $X$, and
+jump to root port 0.  The file now has $(T,H,X)=(h,h,1)$ and unchanged
+$N,W,D,L$; $A=Y=0$.  This preparation costs
+\[
+ (2t+1)+(7h+2)+2.
+\]
+The root comparison costs $C(h,1)$.  If $h=1$, it reaches port 10
+with $H=X=0$ and $T=1$, and the halt instruction costs one more step.
+The exact terminal configuration is
+\[
+ \operatorname{Stop}(n,1,w,0,d,0,0,0,\ell).                 \tag{SH}
+\]
+In particular, the preserved stack and registers are not silently erased.
+If $h\ne1$, the comparison goes to 11, unpairs $W$, and transfers its
+first projection into the now-zero $H$.  The exact live output at 25 is
+\[
+ (n,h,\operatorname{tl}(w),0,d,\operatorname{hd}(w),0,0,\ell).
+\]
+The extra cost in this branch is $U(w)+3\operatorname{hd}(w)+1$.
+These statements include $w=0$, $h=0$, arbitrary old $t$, and the case
+$t=h=1$.  The Shift halt test depends only on the old cache $h$.
+
+\subsection{Fetch, total parsing, and the composed clock}
+
+At port 25, let the live file be $(n,t,w,0,d,h,0,0,\ell)$.
+The nine-site fetch prefix has the exact effect
+\[
+ (n,\ell)\longmapsto(n',s),\qquad
+ (n',s)=
+ \begin{cases}(n+1,n),&\ell=0,\\(n,\ell-1),&\ell>0.
+ \end{cases}                                             \tag{F}
+\]
+In the fresh case the source first duplicates $n$ into $L,X$, clearing
+$N$, then increments $N$ while draining $X$.  Its cost is
+$1+(4n+1)+(3n+2)=7n+4$.  In the positive-residual case it decrements
+$L$ and jumps, costing two steps.  Thus the fresh counter increments
+\emph{when the candidate is selected}, not when its continuation finishes.
+
+The decoder at 34 and transfer to $A$ cost
+$U(s)+3\operatorname{hd}(s)+1$.  Write
+$(a,v)=\operatorname{decode}(s)$.  The two dispatch instructions
+give the following total parser:
+\[
+ \operatorname{parse}(s)=
+ \begin{cases}
+ (S,v),&a=0,\\
+ (\mathrm{MP}_x,v_1),&a=1,\\
+ (\mathrm{AX}_{a-2,x,y,z},v_3),&a\ge2.
+ \end{cases}                                             \tag{Parse}
+\]
+For MP use $(x,v_1)=\operatorname{decode}(v)$. For AX use the three
+successive field decodings
+\[
+ (y,v_1)=\operatorname{decode}(v),\qquad
+ (x,v_2)=\operatorname{decode}(v_1),\qquad
+ (z,v_3)=\operatorname{decode}(v_2).
+\]
+Dispatch costs one step for $S$ and two otherwise.  The MP and AX field
+decodings are charged in their respective command clocks, not twice.
+Every natural seed has exactly one of these interpretations.  No syntactic
+well-formedness assumption is imposed on a candidate.  Reconstructing each
+decoded seed by Cantor pairing supplies the input forms in (AX) and (MP).
+The identities hold when any or every field is zero.
+
+Define the exact one-step clock $\theta(n,\ell,t,w,d,h)$ by adding:
+the appropriate fetch-prefix cost in (F); the decoder/selector cost;
+the appropriate one- or two-step dispatch cost; and the command clock
+given above, evaluated at that actual selected register file.
+This is the explicit algorithm \texttt{command\_clock}.  Its only loops
+are bounded sums or iterations defining Cantor decoding and costs, and the
+fixed 190-token AX composition.  It is therefore primitive recursive.
+The preceding template equations prove that all scratch preconditions
+hold for every live six-tuple of natural numbers.  Every component costs
+a nonnegative number of steps, and fetch alone costs at least two, so
+$\theta\ge1$ uniformly.  The clock includes the Shift return through
+the root guard and every command's return to fetch.
+
+\subsection{The completed iPRA simulation and its consequence}
+
+Define the scheduler $R$ on live states $(n,\ell,t,w,d,h)$ by (F),
+(Parse), and the stated arithmetic command effects.  A halting Shift
+goes to the data-carrying terminal state
+$\operatorname{Done}(n',\ell',w,d)$, where $\ell'$ is its parsed
+residual.  Done states are fixed points.  This enriches the representation
+of an abstract halt without changing which computations halt.
+Define
+\begin{align*}
+ J(n,\ell,t,w,d,h)&=(25;(n,t,w,0,d,h,0,0,\ell)),\\
+ J(\operatorname{Done}(n,\ell,w,d))&=
+       \operatorname{Stop}(n,1,w,0,d,0,0,0,\ell).
+\end{align*}
+Set $\theta=1$ on Done states.  The halted source is absorbing and
+retains precisely the file in (SH).
+
+\begin{theorem}[Exact source-to-scheduler binding]
+For either of the two supplied literal source instruction arrays,
+$\mathrm{iPRA}$ proves, uniformly in every scheduler state $c$,
+\[
+ \theta(c)\ge1,\qquad
+ \operatorname{SrcStep}^{\theta(c)}(J(c))=J(R(c)),\qquad
+ h_{\mathrm{Src}}(J(c))=h_R(c).
+\]
+In particular, starting at $c_0=(2,0,0,0,0,0)$, it proves
+\[
+ \operatorname{Halt}(\operatorname{Src},J(c_0))
+ \ \longleftrightarrow\ \operatorname{Halt}(R,c_0).
+\]
+\end{theorem}
+\begin{proof}
+For live states, compose the exact fetch, dispatch, and command equations
+proved above.  Their cases cover all natural inputs; all intervening ports
+and complete register files agree.  For Done states the equation follows
+from source absorption and the chosen one-step clock.  The displayed
+halting flags agree by the two clauses defining $J$.
+
+For completeness, put $B(0)=0$ and
+$B(k+1)=B(k)+\theta(R^k(c_0))$.  Quantifier-free induction yields
+$B(k)\ge k$ and
+$\operatorname{SrcStep}^{B(k)}(J(c_0))=J(R^k(c_0))$.
+A scheduler halt therefore gives a source halt at the displayed PR time.
+Conversely, a source halt at time $u$ remains a halt at time $B(u)\ge u$,
+by source absorption.  The endpoint equality and halt-flag agreement show
+that $R^u(c_0)$ is halted.  Both implications are constructive and use no
+unbounded search or classical principle.
+\end{proof}
+
+This theorem supplies the previously separate primitive-source/command
+interface.  Combining it with a completed iPRA physical/source simulation
+and the abstract command-preservation theorem identifies literal-machine
+halting with numerical-calculus refutation.  It does not identify that
+calculus with PA without the separate logical proof translations.
+
+\subsection{Reproduction and scope of the finite receipts}
+
+The checker uses Python's standard library only.  Run it separately on
+\texttt{machines/PA194AX11H} and \texttt{machines/PA194QAX11H}, specifying
+an output directory.  Each receipt records the four exact input hashes,
+the complete instruction/edge match, independent tree resolution,
+190 macro tokens, and the free-algebra identity.  It also records 882
+representative exact local-duration checks and 324 composed Shift/MP
+checks per family.  Those numerical checks detect implementation mistakes
+in clocks; the uniform claims follow from the counter-induction proofs
+and finite source binding above.  No practical execution bound or
+sampling cutoff is asserted for the enormous full AX arithmetic.

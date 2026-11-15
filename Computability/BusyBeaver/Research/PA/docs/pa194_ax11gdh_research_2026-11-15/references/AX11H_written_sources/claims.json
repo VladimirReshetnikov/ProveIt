@@ -1,0 +1,86 @@
+{
+  "machines": [
+    "PA194AX11H",
+    "PA194QAX11H"
+  ],
+  "repository_commit": "1c9524d8bf2e0a27b9a16ff622359927f536e663",
+  "foundation_dependency_commit": "32e1a0956a8622fad067328ca1959729a7634428",
+  "working_states": 194,
+  "transition_rows_per_machine": 388,
+  "sub194_machine_obtained": false,
+  "consistency_predicate": "nativePAConsistency = negation of nativePARefutation in the pinned current endpoint",
+  "proof_status": "Complete written mathematical proof with explicit primitive recursive constructions and finite implementation certificates",
+  "new_end_to_end_kernel_build": false,
+  "claims": [
+    {
+      "connection": "literal blank TM ↔ exact primitive-register source",
+      "strength": "iPRA",
+      "proof": "proof/physical_ipra_audit.tex",
+      "finite_audit": "verification/physical_ipra_audit_receipt.json",
+      "status": "written proof completed",
+      "kernel_checked_in_this_release": false
+    },
+    {
+      "connection": "exact primitive-register source ↔ explicit abstract command scheduler",
+      "strength": "iPRA",
+      "proof": "proof/source_command_completion.tex",
+      "finite_audit": "machines/*/source_command/receipt.json",
+      "status": "written proof completed",
+      "kernel_checked_in_this_release": false
+    },
+    {
+      "connection": "abstract command scheduler ↔ numerical-calculus refutation",
+      "strength": "iPRA",
+      "proof": "proof/ax11h_preservation.tex",
+      "status": "written proof completed",
+      "kernel_checked_in_this_release": false
+    },
+    {
+      "connection": "C4 ↔ C4Q proof-list translation",
+      "strength": "iPRA",
+      "proof": "proof/q_exchange_ipra.tex",
+      "status": "written proof completed",
+      "kernel_checked_in_this_release": false
+    },
+    {
+      "connection": "numerical refutation → current PA refutation (soundness)",
+      "strength": "Model-uniform IΣ1",
+      "proof": "proof/consistency_implies_nonhalting.tex",
+      "status": "written proof completed",
+      "kernel_checked_in_this_release": false
+    },
+    {
+      "connection": "current Foundation PA refutation → ordinary PAeq refutation",
+      "strength": "Model-uniform IΣ1",
+      "proof": "proof/foundation_paeq_completion.tex",
+      "finite_audit": "research/foundation_calibration/closure_receipt.json",
+      "status": "written proof completed",
+      "kernel_checked_in_this_release": false
+    },
+    {
+      "connection": "ordinary PAeq refutation → C4 refutation (completeness)",
+      "strength": "Model-uniform IΣ1",
+      "proof": "proof/forward_calibration_completion.tex",
+      "companion_proof": "proof/term_leaf_completion.tex",
+      "status": "written proof completed",
+      "kernel_checked_in_this_release": false
+    },
+    {
+      "connection": "Con(PA) → literal blank TM nonhalting",
+      "strength": "iPRA",
+      "proof": "proof/consistency_implies_nonhalting.tex",
+      "status": "written proof completed",
+      "kernel_checked_in_this_release": false
+    },
+    {
+      "connection": "Con(PA) ↔ literal blank TM nonhalting",
+      "strength": "iPRA",
+      "proof": "proof/consistency_equivalence.tex",
+      "status": "written proof completed",
+      "kernel_checked_in_this_release": false
+    }
+  ],
+  "novelty_scope": "All recognized literal/explicit-JSON 194-state tables in the pinned PA and incoming corpus; broad cosmetic transformations; not global historical novelty.",
+  "negative_search_scope": "Precisely recorded finite grammar and local-context families; not a global lower bound.",
+  "executable_scope": "Finite machine and source bindings, fixed proof templates and input hashes; not a kernel check of the full arithmetic derivation or an executable implementation of the complete PA proof compiler."
+}

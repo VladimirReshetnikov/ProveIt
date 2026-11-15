@@ -1,0 +1,124 @@
+\label{sec:bounded-searches}
+
+The searches described here did not produce a validated machine with fewer
+than 194 states.  They are recorded to identify the attempted reductions and
+the remaining limitations.  They are not lower bounds on the size of a
+machine equivalent to PA consistency.  In particular, an unsuccessful search
+within a fixed interpreter, grammar representation, or local quotient model
+does not rule out a different implementation.
+
+\subsection{Grammar and parameter-routing searches}
+
+Eight timed runs explored reassociations, compatible sharing, and parameter
+or head rearrangements.  Their logs record a total of
+\textbf{37,916,566 mutation slots}, with 3,558,249 accepted mutations.
+A slot is an iteration of the mutation loop; it is not necessarily a distinct
+grammar or even a completed proposal, since some selected nodes admit no
+rotation.  The seven ordinary runs used 600-second limits, and the head-order
+run used 300 seconds.  Timing limits make a fresh run's final iteration count
+hardware dependent even with the same random seed.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Run & Mutation slots & Best screened score & Hits\\
+\midrule
+Selector + primary & 5,122,105 & 61 & 0\\
+Selector + GH & 4,999,508 & 60 & 0\\
+Selector + GHS & 5,181,425 & 60 & 0\\
+Top-only Shift & 5,124,073 & 60 & 0\\
+GD & 3,777,083 & 60 & 0\\
+GDH & 4,333,467 & 60 & 0\\
+GDHS & 4,714,664 & 60 & 0\\
+Head order & 4,664,241 & 60 & 0\\
+\midrule
+Total & 37,916,566 & & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The score counts the variable reader contribution after the searcher's
+compatible-sharing screen and its grammar penalties; it is not a complete
+semantic certificate or simply the raw number of AX readers.  The recorded
+effective fixed contribution is 134 except in the top-only run, where it is
+135.  A score at most 59 with no penalty was the hit threshold.  Thus the
+GD and selector runs sought a sub-194 candidate, while the auxiliary top-only
+run sought to bring its 195-state implementation down to 194.  No threshold
+hit was found.  The top-only semantic idea already occurs in the supplied
+research corpus; this run is not a claim of a novel 195-state design.
+
+The exact input templates, attribute tables, random seeds, resulting search
+logs, and aggregate counters are preserved under \texttt{research/grammar/}.
+The head-order implementation splits and rejoins the seven emitted head
+blocks while preserving each selected block's internal tree.  Candidates
+from these heuristic screens would still require source-graph, command,
+physical-runtime, and calibration checks before becoming a result.
+
+\subsection{Finite composition and continuation sweeps}
+
+The composition screen examined
+\[
+ 3\cdot2\cdot2\cdot3\cdot2\cdot2\cdot3=432
+\]
+combinations: three inherited grammar shapes; the original or explicit
+binder; ordinary or exchanged distribution; diagonal parameter $A$, $D$, or
+$H$; two final-AX exits; two decoder exits; and three Shift implementations.
+Its minimum optimistic raw-state-minus-matching count was 194, with no count
+below 194.  A portable replay reproduced all 60 qualifying rows of the
+original log exactly.  This screen intentionally included counterfactual
+zero-test substitutions without claiming their semantic side conditions.
+The three delivered machines instead use ordinary structural exits and
+receive the separate complete checks documented elsewhere in this report.
+
+The corrected continuation sweep considered ten compatible binary shapes
+of the four-increment loop in each of four parent implementations: primary,
+AX11H, AX11GH, and AX11GHS.  It retained all \textbf{40 candidates} only after
+checking equality of the entire resolved source instruction graph, including
+all branch and jump targets.  Fresh helper labels were allocated without
+overwriting any existing state; the bundled report is the corrected result.
+The optimistic counts were 194 for 23 candidates and 195 for 17 candidates.
+None was below 194.  These are local sharing scores, not assertions that every
+optimistic matching has been certified simultaneously or that all forty
+candidates are new machines.
+
+\subsection{Local physical two-row quotients}
+
+A separate search considered every unordered pair of the 194 nonhalting
+controls in each delivered table.  It synthesized both actions of the
+surviving control, permitting repeated visits to that control.  It required
+the proposed replacement to reproduce the old transition's complete local
+tape, head displacement, and successor within a radius-four window and at
+most 100 transitions.  The screened action targets were remaining
+nonhalting controls of the given table.
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Machine & Control pairs & Single-row trials & Joint action pairs\\
+\midrule
+PA194GD & 18,721 & 23,743,632 & 132,389\\
+PA194GDH & 18,721 & 23,681,100 & 134,508\\
+PA194GDHS & 18,721 & 23,368,440 & 124,468\\
+\midrule
+Total & 56,163 & 70,793,172 & 391,365\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+No quotient passed this screen.  Contexts were obtained from symbolic source
+instruction executions, including interiors of accelerated scans.  This
+context collection intentionally excludes startup and does not narrow the
+arithmetic-engine controls.  These choices and the fixed radius, return
+bound, action space, and one-control quotient shape restrict the conclusion
+to the stated search model.  They do not exclude larger windows, different
+control structures, simultaneous changes to other states, or a new machine
+architecture.
+
+\subsection{Replaying the research}
+
+\texttt{research/README.md} gives offline replay commands.  The composition
+and corrected loop sweeps use the bundled construction modules and inherited
+input snapshots.  The grammar and physical searches use Python entrypoints
+to compile the supplied C++17 sources and write fresh outputs to a chosen
+directory.  The research receipts remain distinct from the positive
+construction and proof certificates for PA194GD, PA194GDH, and PA194GDHS.

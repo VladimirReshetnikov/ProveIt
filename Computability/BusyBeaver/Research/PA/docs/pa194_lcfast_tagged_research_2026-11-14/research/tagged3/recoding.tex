@@ -1,0 +1,323 @@
+\section{A sound three-residue encoding by tagging one atom operand}
+\label{sec:tagged-three}
+
+The existing coefficient-three counterexamples concern constant-offset
+encodings of equality.  The following encoding leaves implication and
+universal quantification at coefficient three and places the atom tag in
+one Cantor operand instead.  It has an exact proof-theoretic equivalence
+with the original four-tag numerical calculus.  This is a mathematical
+construction; it is not by itself a claim of a smaller literal machine.
+
+Write $p(a,b)=(a+b)(a+b+1)/2+b$.  Denote the old constructors by
+\[
+ I_4(A,B)=4p(A,B),\quad M_4(a,b)=4p(a,b)+1,\quad
+ U_4(a,B)=4p(B,a)+2,\quad E_4(a,b)=4p(a,b)+3.
+\]
+The proposed constructors are
+\[
+\boxed{\begin{aligned}
+ I_3(A,B)&=3p(A,B),& U_3(a,B)&=3p(B,a)+2,\\
+ M_3(a,b)&=3p(a,2b)+1,& E_3(a,b)&=3p(a,2b+1)+1.
+\end{aligned}}
+\tag{T3}\label{eq:tagged-three-constructors}
+\]
+Keep numerical truth $0$, numerical contradiction $1$, the six ordinary
+head expressions, the separate diagonal head, the guarded gate, the
+restricted propositional head, MP, and theorem generalization, replacing
+only the four constructors by \eqref{eq:tagged-three-constructors}.
+Negation remains $N_i(A)=I_i(A,1)$.
+
+\subsection{Total decoding and the exceptional small codes}
+
+For a positive new code $n$, residue zero modulo three means implication,
+and residue two means universal quantification.  For residue one, unpair
+$(n-1)/3$ as $(a,s)$.  Even $s=2b$ gives $M_3(a,b)$; odd $s=2b+1$ gives
+$E_3(a,b)$.  The three residue classes and these two parity cases are
+exhaustive and disjoint.  Thus there are no unused or ambiguous codes.
+In particular, equality is not an implication as in the rejected
+constant-offset construction.
+
+As before, $I_i(0,0)=0$ is the sole zero alias.  Decode zero as truth.
+Also $M_i(0,0)=1$ in both encodings, so the designated contradiction is
+literally unchanged.  Atoms have no recursive formula children, but their
+numerical label arguments are still smaller than their code.  Every
+constructor argument of every nonzero constructor value is strictly
+smaller than that value; for universal quantification this includes both
+the body code and the binder label.  For example
+$b\le2b\le p(a,2b)<3p(a,2b)+1$ except at the separately immediate
+zero case.  The analogous inequalities for equality are stronger.
+These inequalities justify the recursions below in iPRA.
+
+There is a useful additional freshness fact.  Every label occurring
+anywhere in the formula decoded from $B$ is strictly below $B$, with code
+zero handled separately.  This follows by bounded structural induction
+from the same constructor inequalities.  Consequently the new diagonal
+clause $B\to U_3(B,B)$ is a valid fresh-label vacuity clause, just as in
+the old encoding.  This fact is compatible with the direct proof
+translation below but is not being used as a substitute for it.
+
+\subsection{Recode formula codes and variable labels by the same permutation}
+
+A recoding that fixes variable labels would disturb the diagonal and gate
+interfaces, because those interfaces use a formula code as a variable
+index.  Instead define a single function $f:\mathbb N\to\mathbb N$ that
+acts on both kinds of numerical arguments.  Put $f(0)=0$ and require
+\[
+\begin{aligned}
+ f(I_4(a,b))&=I_3(f(a),f(b)),&
+ f(M_4(a,b))&=M_3(f(a),f(b)),\\
+ f(U_4(a,b))&=U_3(f(a),f(b)),&
+ f(E_4(a,b))&=E_3(f(a),f(b)).
+\end{aligned}
+\tag{F}\label{eq:tagged-three-f}
+\]
+For nonzero input the old residue and Cantor projections choose exactly
+one clause.  Its arguments are smaller than the input.  The only
+remaining instance $I_4(0,0)=0$ satisfies the equation automatically.
+
+Define $g$ in the opposite direction using the new decoding just given,
+with $g(0)=0$, replacing the subscript 3 on the left of each equation in
+\eqref{eq:tagged-three-f} by 4 on the right.  These are total
+primitive-recursive functions.  For an explicit implementation of the
+course-of-values recursion, successively construct the finite value table
+through the input code; each new cell reads only earlier cells.  The
+magnitude of the newly computed values need not be bounded by the input.
+The table construction itself is a primitive recursion and supplies its
+own code and bound.
+
+Bounded strong induction, expressed as a Boolean conjunction over the
+prefix of the input range, proves
+\[
+ g(f(n))=n,\qquad f(g(n))=n.
+\tag{Inv}\label{eq:tagged-three-inverse}
+\]
+Indeed, the outer constructors decode uniquely; their argument equations
+reduce the assertion to its already proved smaller cases.  The equations
+are quantifier free in the language with the displayed PR functions, so
+this proof uses only iPRA.  Thus $f,g$ are mutually inverse permutations,
+and $f$ is injective.  Their first values are
+\[
+ (f(0),\ldots,f(8))=(0,1,2,7,3,4,5,13,6).
+\]
+In particular, both zero and one are fixed.  The permutations are
+\emph{not} monotone: $3<4$ but $f(3)=7>3=f(4)$.
+
+\subsection{Exact seed and guard correspondence}
+
+Each of the six ordinary seeds is a finite expression in $I,U,M,E$, the
+constant $1$, and its displayed parameters.  For clarity their signatures
+are $h_1(D,H)$, $h_2(D,A,H)$, $h_3(D,A,H)$, $h_4(D,A,H)$,
+$h_5(D,H)$, and $h_6(D,A,H)$.  All binder and atom labels in them are
+supplied parameters.  There is no distinguished variable label $3$ or
+other fixed nonzero label hidden in these seeds.  The source increments
+by 2 and 3 are old constructor tags, not variable-name constants.
+Explicitly, with $\exists_d X=N(U(d,N(X)))$, the target seeds are
+\[
+\begin{aligned}
+h_1(D,H)&=(\exists_D U(D,H))\to H,\\
+h_2(D,A,H)&=U(D,U(A,H))\to U(A,U(D,H)),\\
+h_3(D,A,H)&=M(H,D)\to(E(H,A)\to M(A,D)),\\
+h_4(D,A,H)&=E(H,D)\to(M(A,H)\to M(A,D)),\\
+h_5(D,H)&=\exists_D E(H,D),\\
+h_6(D,A,H)&=U(D,A)\to(U(D,A\to H)\to U(D,H)).
+\end{aligned}
+\]
+Here every arrow means $I_3$, and every constructor is exactly (T3).
+The Q variant exchanges the two antecedents of $h_6$.
+It follows by finite congruence from \eqref{eq:tagged-three-f} that
+\[
+ f(h_j^{(4)}(\vec a))=h_j^{(3)}(f(\vec a))
+\]
+for every one of the six seeds, including every zero-parameter case.
+The exchanged sixth head used by Q variants obeys the same equation.
+Negation, conjunction, and existential abbreviation commute with $f$
+because $f(1)=1$.
+
+The diagonal maps \emph{exactly}, despite its use of its own formula code
+as a binder:
+\[
+ f(I_4(c,U_4(c,c)))=I_3(f(c),U_3(f(c),f(c))).
+\]
+For the gate use its original definitions
+\[
+\begin{aligned}
+ V&=I(M(a,b),U(c,M(a,b))), &P&=I(c,M(c,b)),\\
+ S&=U(b,(M(a,b)\to P)\wedge(M(c,b)\to c)),&
+ Q&=U(c,S\to N(P)),\\
+ G(a,b,c)&=N(I(V,Q)).
+\end{aligned}
+\]
+Every occurrence of $c$, whether as a formula, atom label, or binder, is
+mapped to the same number $f(c)$.  Hence
+\[
+ f(G_4(a,b,c))=G_3(f(a),f(b),f(c)).
+\]
+The actual guard is preserved in both directions:
+\[
+ c\ne a,b\quad\longleftrightarrow\quad f(c)\ne f(a),f(b),
+\]
+by \eqref{eq:tagged-three-inverse}.  A failed gate is zero in both
+systems.  No stronger guard, restricted variable class, or unproved
+renaming rule is needed.
+
+\subsection{The numerical domination guard is handled by proof expansion}
+
+For either $I_i$ let
+\[
+ \rho_i(D,A,H,u)=
+ I_i(I_i(I_i(H,u),D),I_i(I_i(D,H),I_i(A,H))).
+\]
+The axiom row has the numerical guard $u\le D$.  It would be incorrect
+to assume that this guard is preserved by $f$ or $g$; the small example
+above already disproves that assumption.
+
+Instead use the finite generic restricted-implication derivation
+\path{M6.Logic.RestrictedImplication.rho8All}.
+Its \texttt{Rules} interface requires MP, the restricted row, reflexivity
+of the comparison, and propagation of a bound into either argument of
+implication.  For both $i=3,4$ the last requirements follow from
+\[
+ a,b\le p(a,b)\le I_i(a,b).
+\]
+The retained source explicitly derives $K$, Peirce, composition and
+exchange, and then the unrestricted $\rho_i(D,A,H,u)$ for arbitrary four
+parameters.  These are finite proof templates with only primitive
+constructor operations and bound proofs through implication children.
+Their expansion is a primitive-recursive function of the four parameters,
+with a fixed finite bound on its number of rows.  Their checking equations
+and the displayed arithmetic bounds are provable by quantifier-free
+induction.  There is no dependence here on four-residue parsing or on the
+monotonicity of the recoding.
+
+Thus an old guarded-rho leaf is translated to a target \emph{derivation}
+of its recoded unrestricted instance.  The reverse translation uses the
+same generic template for coefficient four.  This single expansion is the
+only place where the recoding is not simply one primitive axiom row to one
+primitive axiom row.  A copy of the cited generic source is retained as
+\texttt{\detokenize{reference/RestrictedImplication.lean}}; its SHA-256 is
+\begin{quote}\small\ttfamily
+00af59bb2f970f780b834b721cccd06c4ed5b5ee13fbfddb0deb0139b4c62581.
+\end{quote}
+
+The archive additionally contains a complete formal expansion,
+\texttt{rho\_generic\_template.json.gz}, and an independent checker that
+does not read the Lean source.  The expansion uses four unrestricted
+formal variables, 32,455 primitive guarded-rho rows and 35,813 MP rows,
+for 68,268 proof rows in total.  The checker verifies that every
+primitive guard is justified by syntactic subtree inclusion of the
+fourth parameter in the first.  Each such inclusion is interpreted as
+a numerical inequality by reflexivity and the two implication bounds.
+Every MP match is literal term equality, so all matches survive every
+valuation of the four variables.  Thus this is a fixed universal proof
+template, not a numerical sample.  Its compressed SHA-256 is
+\begin{quote}\small\ttfamily
+9fd2d5082a97dc051e4b56cb6e705f1d6f4f9bcabe82eff7fcbb954c6d285278.
+\end{quote}
+The separate concrete certificate checks the nonmonotone example
+$D=3,u=7$ at coefficient three with all primitive guards valid even
+though the final unrestricted instance fails its direct guard.
+
+\subsection{Primitive-recursive proof compilers in both directions}
+
+Encode derivations as finite lists whose MP and Gen premises refer only
+to earlier rows, with primitive-recursive row checking.  Define $F$ by a
+single scan of an old derivation.  Maintain a list of translated rows and
+an index map recording the translated last row of every processed source
+row.  Recode head parameters by $f$, replace a rho leaf by the fixed
+expansion just described, map an MP row to MP of its two recorded indices,
+and map a Gen row at binder $d$ to Gen at binder $f(d)$.  Use an arbitrary
+fixed default output on invalid input.  Appending lists, relocating indices,
+and all numerical parameter computations are PR; hence $F$ is PR.
+Define $G$ symmetrically with $g$.
+
+The induction invariant is a bounded Boolean check that all processed
+source rows have valid target proofs, their recorded indices are in range,
+and the formula at each recorded index is the recoding of the corresponding
+source formula.  The seed, guard, and rho cases are the preceding equations.
+The MP case follows from implication homomorphism, including
+$I_i(0,0)=0$.  The Gen case follows from universal homomorphism.  This
+quantifier-free prefix induction proves in iPRA
+\[
+\begin{aligned}
+ \operatorname{Prf}_{\mathcal C_4}(d,A)&\longrightarrow
+       \operatorname{Prf}_{\mathcal C_3^{\rm tag}}(F(d),f(A)),\\
+ \operatorname{Prf}_{\mathcal C_3^{\rm tag}}(e,B)&\longrightarrow
+       \operatorname{Prf}_{\mathcal C_4}(G(e),g(B)).
+\end{aligned}
+\]
+Because $f(1)=g(1)=1$, the conclusion is the exact refutation equivalence
+\[
+\boxed{\mathsf{iPRA}\vdash
+ (\exists d\,\operatorname{Prf}_{\mathcal C_4}(d,1))
+ \longleftrightarrow
+ (\exists e\,\operatorname{Prf}_{\mathcal C_3^{\rm tag}}(e,1)).}
+\]
+The same statement holds for the Q-oriented sixth head.  Composing with
+the pinned written calibration of $\mathcal C_4$ requires no new
+PA-to-relational or Foundation proof compiler.
+
+\subsection{What an implementation must actually change}
+
+With the stack constructor consuming its first operand from the stack and
+its second operand from visible register $T$, an implication uses the
+coefficient-three constructor unchanged.  For membership, double $T$
+\emph{before} pairing and add one after construction.  For equality,
+double $T$, add one \emph{before} pairing, construct with coefficient
+three, and add one afterwards.  Universal quantification remains the
+coefficient-three constructor followed by two increments in the old
+body/binder operand order.  The doubling macro must preserve the saved
+stack, every logical parameter register, and its stated scratch invariants.
+
+The abstract proof-search compiler must be checked with these exact
+constructor functions.  Its standard residue tests remain valid: all
+implications have residue zero and all universal codes residue two, so
+those emitted heads are never the contradiction 1.  Zero implication
+still forces both operands zero.  The dominated-rho selector still
+chooses $D=u+x$ in the \emph{new} numerical coding; the proof translation
+does not assert that $f(u+x)=f(u)+f(x)$.  The scheduler, command tags,
+Cantor stack coding, and initial candidate counter are separate data
+structures.  Their correctness follows from their own target command
+contracts and exhaustive scheduling, not from a claimed homomorphism
+of entire old and new register executions.
+
+The supplied \texttt{recoding.py} independently checks 10,000 inverse
+instances in each direction, 4,608 constructor identities, all six-head
+and Q-head identities on small parameters, guarded gate identities,
+diagonal identities, and unrestricted rho-expression identities.  These
+finite checks support the displayed universal proof and expose the
+nonmonotone guard example.  They do not replace the written induction
+argument or claim a newly built proof-assistant endpoint.  The state count
+of a compiled implementation must be determined separately from this
+proof-theoretic result.
+
+\subsection{A further variant with a shared first-operand transformation}
+
+A related encoding may be worth pricing separately:
+\[
+\begin{aligned}
+ I_2(A,B)&=2p(2A,B),& U_2(a,B)&=2p(2B+1,a),\\
+ M_2(a,b)&=2p(2a,b)+1,& E_2(a,b)&=2p(2a+1,b)+1.
+\end{aligned}
+\]
+Given $n$, unpair $\lfloor n/2\rfloor$ as $(c,b)$.  For even $n$,
+even $c=2a$ denotes $I_2(a,b)$ and odd $c=2a+1$ denotes $U_2(b,a)$.
+For odd $n$, those two cases denote $M_2(a,b)$ and $E_2(a,b)$.
+The four images are disjoint, cover all codes, preserve zero and one,
+and have the same strict-argument bounds.  The identical homomorphic
+recursion on both codes and labels consequently gives inverse PR
+permutations with the old encoding.  The rho expansion remains valid
+because $A,B\le I_2(A,B)$.
+
+This variant places a doubling operation on the first Cantor operand for
+\emph{every} constructor, with one additional increment for universal and
+equality.  That uniformity suggests a possible shared-pairing
+implementation, whereas the three-residue proposal doubles only atom
+operands.  No validated physical implementation of this variant is
+established here; the separate pricing prototype fails a source contract,
+and no state saving is asserted.  A command compiler
+would also replace old residue arguments by exact constructor-image
+separation: implication and universal codes are now both even, separated
+by the parity of their first decoded Cantor component.  The supplemental
+\texttt{tagged2\_check.py} checks the inverse and seed identities on finite
+samples.  It is an implementation aid for further research, not a
+completion of that source-engineering task.

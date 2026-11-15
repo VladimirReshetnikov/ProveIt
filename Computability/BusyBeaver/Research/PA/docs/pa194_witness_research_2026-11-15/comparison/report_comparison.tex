@@ -1,0 +1,333 @@
+\section{Comparison of the supplied designs}
+\label{sec:comparison}
+
+\subsection{Pinned scope and the meaning of the census}
+
+The comparison is pinned to ProveIt revision
+\path{8d31445d858761a8f6150c2e5012adae8895e932}.
+It includes the complete supplied directories
+\path{Computability/BusyBeaver/Research/PA} and \path{docs/incoming},
+including recursively encountered ZIP payloads. The repository's filed-packet
+ledger lists 87 deliveries; the six current incoming ZIP files give 93 delivery
+records. A delivery is not necessarily a distinct design: several packages
+repeat exactly the same table, and a single package may contain a principal
+machine, alternative implementations, raw parents, and rejected searches.
+
+All 27,459 files in the pinned PA/incoming manifest were independently checked
+against their Git blob identities, totaling 1,253,117,203 bytes, with no
+mismatch. The table recognizers inspected supported complete numeric
+\path{.tm}, \path{.txt}, \path{.tsv}, \path{.csv}, and explicit JSON
+representations. Recursive archive traversal found 24 distinct ZIP payloads
+through 39 references. Archives are scanned once per byte identity while all
+references are retained. The comparison does not execute arbitrary generators
+or reconstruct a prose-only matrix from a PDF.
+
+The resulting inventory contains 4,468 recognized matrix occurrences, 879
+normalized labeled matrices, and 721 spanning action-graph classes. Seven
+additional disconnected matrices are retained by literal identity. The latter
+are not classified by a hash of their largest reachable component. Small
+one-control and other diagnostic matrices are not proposed consistency
+machines. Likewise, raw parents and failed search layouts are not promoted to
+Con(PA) constructions merely because their rows are syntactically complete.
+
+\begin{center}
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+Working controls & Occurrences & Spanning classes & Disconnected identities\\
+\midrule
+1, 3, 4, 5, 6, 9 & 116 & 13 & 5\\
+193 & 274 & 54 & 0\\
+194 & 1,988 & 139 & 2\\
+195 & 139 & 28 & 0\\
+196 & 608 & 105 & 0\\
+197--206 & 349 & 100 & 0\\
+207 & 171 & 57 & 0\\
+208 & 426 & 142 & 0\\
+209 & 48 & 13 & 0\\
+210--222 & 349 & 70 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The complete per-size distribution and all-size class list are supplied as
+\path{current/all_size_distribution.csv} and
+\path{current/all_size_classes.csv}. The individual file/member locators are
+in \path{current/occurrences.json}; the 93-delivery ledger is
+\path{packet_ledger93.csv}. These allow the summary to be checked below the
+level of a machine's sometimes ambiguous name.
+
+For the 194-state frontier, all 139 spanning classes remain pairwise distinct
+after an enlarged exact comparison: arbitrary working-state relabeling, any
+spanning root, left/right reflection, global exchange of the two tape symbols,
+and erasure of the terminal write and move. Canonical tuples, not merely
+hashes, are compared. These are structural symmetries for comparison. In
+particular, global bit exchange changes the blank convention unless the
+specification is transformed with it; it is not silently used as a zero-blank
+halting equivalence.
+
+The annotated frontier separates the following attributed source claims:
+67 principal constructions, seven supplementary constructions, 47 research
+auxiliaries, four research seeds, and 14 rejected graphs. These labels do not
+mean that 67 machine-specific iPRA theorems were independently formalized.
+The complete table, including a class digest prefix, mechanism and attributed
+status for every spanning 194-state graph, is supplied separately in
+\path{current/frontier194_table.tex} and
+\path{current/comparison194_annotated.csv}.
+
+\subsection{The older architectures}
+
+The supplied material has more than one historical lineage. In particular,
+James Chang's PA209 is not the U209 machine merely written with different
+state names. The following table groups the main architectures; intermediate
+state sizes also contain unaccepted search matrices.
+
+\begin{longtable}{@{}p{.18\textwidth}p{.39\textwidth}p{.36\textwidth}@{}}
+\toprule
+Family & Main architectural feature & Reduction and proof boundary\\
+\midrule\endhead
+U222 through U208 &
+Numerical implication/quantifier calculus for unrestricted weak power covering
+and irreflexivity, interpreted through the unary theory U and PA. Four-tag
+Cantor coding, a compiled register program and proof enumeration. &
+Source reassociation and context-sensitive decoder folds. Joint U209 preserves
+3,909 primitives; the three-cell U208 reduction removes another helper.
+Written PA-formalizable simulations and retained calibration are not a new
+end-to-end proof-assistant certificate.\\[5pt]
+Imported PA209 &
+Earlier ordinary-PA numerical refutation search with its own standalone Lean
+project and literal arithmetic halting sentence. &
+Its documented internal result includes
+$\mathrm{PA}\vdash\mathrm{Nonhalt}\to\mathrm{Con(PA)}$.
+That implication alone does not establish the converse or either desired
+iPRA direction.\\[5pt]
+PA196 and rewrites &
+Restricted implication basis, six logical heads, gated separation and a
+register-machine source. The imported baseline has 3,812 primitive source
+instructions. &
+Gate distribution, diagonal factoring, controller changes, physical layouts
+and grammar reassociation. A smaller source tree can lose helper sharing and
+therefore fail to reduce the physical state count.\\[5pt]
+Original PA195 &
+Bundled diagonal emitter with 3,700 source operations. &
+$134+68-7=195$: seven simultaneous contextual folds of the 202-control parent.
+Written PA equivalence and substantial execution evidence; current Lean iPRA
+assembly remains conditional.\\[5pt]
+PA195S/C/DC and S8 &
+Separate versus bundled diagonal emission; Combined Shift/MP controller;
+scanner changes. &
+S uses $134+67-6$; DC uses $134+68-7$. C and DC also change the command
+semantics, source length and initialization time. These are not all one
+source-preserving relabeling.\\
+\bottomrule
+\end{longtable}
+
+The U208 report explicitly distinguishes three interfaces that should not be
+collapsed. The unary theory U restricts free matrix parameters; the actual
+U209/U208 numerical calculus implements unrestricted weak covering together
+with irreflexivity; and the unary report's positive dyadic theorem stream is
+another proposed interface, not the program compiled into the delivered U208
+matrix. The retained interpretations connect these presentations to PA.
+This distinction matters when borrowing an apparently shorter axiom stream:
+a mathematical calibration of the stream is not a literal implementation of
+it in the existing machine.
+
+The main source anchors are the PA-relative paths
+\path{docs/U208_ConPA_2026-10-29/report.tex},
+\path{jamesyc-upstream/README.md}, and the imported
+\path{pa196/docs/result.md} and \path{pa209/docs/result.md}.
+The PA195 state budgets and command distinctions are stated in the READMEs of
+\path{docs/pa195_conpa_2026-11-13},
+\path{docs/PA195_ConPA_research_2026-11-14}, and
+\path{docs/pa195_diagonal_combined_2026-11-13}.
+
+\subsection{Independent design axes at 194 states}
+
+The primary PA194 budget is $134+67-7=194$: fixed inherited controls, AX readers,
+and compatible folds. Other frontier machines use $134+68-8$, or adjust the
+fixed/reader split. Counting syntax nodes, reader candidates or isolated
+pairwise folds without checking their simultaneous physical realization is
+not a valid machine-state calculation.
+
+\begin{longtable}{@{}p{.20\textwidth}p{.25\textwidth}p{.48\textwidth}@{}}
+\toprule
+Axis & Representative names & What actually changes\\
+\midrule\endhead
+Numerical coding & radix 4, 5 and 6; N5/N6, Q5/Q6, H5/H6 &
+Constructor coefficients, residues and formula codes. The numerical calculus
+and exceptional small-code arguments need transport; the change is not just
+a faster implementation of identical numbers.\\[4pt]
+Logical emission & Q; separate or bundled diagonal; A/D diagonal &
+Premise order of the distribution head, placement of diagonal vacuity, or the
+chosen diagonal parameter. These alter emitted formulas or their stack
+locations and require fixed proof translations.\\[4pt]
+Command effects & N, C, H; Combined and reversed comparison &
+Removal of a dummy MP push, caching of a theorem head, or moving the halt test
+to the cached value. The contracts must hold above an arbitrary prior stack,
+not merely when the stack is empty.\\[4pt]
+AX interface & AX11 families &
+Four command fields and eleven resulting stack entries replace the earlier
+protocol. Generalization, axiom selection and stack ranks must be rebound to
+the new interface.\\[4pt]
+Generalization & G, GH/GHS, AX11G, AX11GH/GHS &
+The incoming theorem is generalized using the explicit first AX operand
+rather than the old offset. Completeness can avoid a preceding offset-setting
+command, but the command compiler changes.\\[4pt]
+Decoder/returns & 4L, AX11QH4L/R, LC; J/A/F/ZR returns &
+Reassociation or loop continuations change physical addresses and reusable
+histories; zero-register return variants change entry/exit behavior. Resolved
+source control flow and startup must still be checked.\\[4pt]
+History selectors & B and SEL &
+Finite incoming histories allow recurring decoder pairs to share helpers.
+The necessary contexts are stronger than transition-graph reachability.\\[4pt]
+Physical layout & AD, P5, TDY, HX, AX11HR &
+Register positions and routing targets change. A logical register permutation
+must be accompanied by a whole-tape representation and startup proof.\\[4pt]
+Local acceleration & AX11GHF and AX11GHSF &
+Two transitions shortcut three-step detours under proved incoming-bit
+invariants, preserving the entire tape and giving explicit relative clocks.\\
+\bottomrule
+\end{longtable}
+
+These axes explain why composing two good ideas does not automatically save
+another state. Both may depend on the same helper or incoming context; a new
+source association can remove a formerly available fold. Conversely,
+materially different command or logical designs can have the same total
+state budget. The present new independent-consequent witness belongs to the
+logical-emission axis: it changes a recurring axiom value rather than merely
+choosing a new register placement or state labeling.
+
+A direct unconditional control quotient was also checked on every current
+spanning 194-state matrix. Stable action-preserving partition refinement gives
+194 singleton blocks in all 139 cases. This excludes only that elementary
+same-tape quotient method. It does not exclude context-dependent folds,
+stuttering simulations, new source programs or different calculi.
+
+\subsection{The six current incoming deliveries}
+
+All six archive filenames below have the date suffix
+\path{_2026-11-14.zip}; the parenthesized duplicate is kept as a separate
+historical delivery. Repeated graphs are counted once in the class census.
+
+\begin{longtable}{@{}p{.34\textwidth}p{.59\textwidth}@{}}
+\toprule
+Archive stem in \path{docs/incoming} & Current content and comparison\\
+\midrule\endhead
+\path{pa194_ax11gh_research} &
+AX11GH and AX11GHS; the later revised calibration accompanies the logical and
+physical interfaces.\\[4pt]
+\path{pa194_ax11gh_research} with \path{(1)} &
+The same GH/GHS graphs and the new accelerated GHF/GHSF graphs. The changed
+native rows are $26/1$ and $101/0$; each shortcut represents three parent
+steps under its incoming invariant.\\[4pt]
+\path{pa_conpa_research} &
+Another delivery of GH/GHS with its comparison and verification material;
+not two additional graph classes merely because the wrapper differs.\\[4pt]
+\path{pa194_sel_ax11gh_research} &
+SEL, an eight-row history-selector change with a relative factor-three
+simulation, together with another copy of AX11GH.\\[4pt]
+\path{pa194_loop_continuation_research} &
+LC, LC\_A, LC\_B and LC\_C preserve the primary 3,673-instruction source;
+LC\_AX11H preserves the 3,671-instruction AX11H source. GAX11 is withdrawn as
+a novelty claim because it reproduces AX11G. A 193-state loop attempt and
+seven scanner compositions are explicitly rejected.\\[4pt]
+\path{pa194_research} &
+AX11QGH is the same table as AX11GH. AX11HR changes ten active router targets
+and physical register placement; its exact AX11H startup takes 48,320 steps
+rather than 57,922.\\
+\bottomrule
+\end{longtable}
+
+Relative to the preceding 110-class spanning-194 inventory, the current
+snapshot adds 29 classes and loses none. Eleven of the additions are reported
+principal constructions: GH, GHS, GHF, GHSF, the five LC variants, SEL and HR.
+The other additions are ten selector-search inputs, one append-zero search
+input and seven rejected scanner/continuation compositions. This is why the
+29-class increase should not be described as 29 newly proved consistency
+machines.
+
+The common GH table has SHA-256
+\path{513e9c8b28e0dd41e6003bb8d82c80ff3dac5fb3c5274cd2f709a3bba8c3e9e1}.
+The current exact graph comparison identifies its aliases even when the
+archive name or machine label changes. For LC\_AX11H, the written direct
+simulation supplies a two-way relative clock bounded by
+$13t^2+707t+58616$; the absolute arithmetic conclusion imports the revised
+AX11H calibration rather than following from finite source replay alone.
+
+\subsection{Proof strength and formalization status}
+
+Three statements must be kept separate: a literal finite-run refinement, a
+written proof formalizable in iPRA, and a completed proof-assistant theorem
+for the exact arithmetic sentence. The primary PA README at the pinned
+revision still records the machine-specific iPRA implications as open for
+primary PA194, original PA195 and PA196. Standard-natural-number source and
+clock simulations, native scanner equalities, modeled scheduler invariants,
+and generic transfer theorems are substantial components, but do not alone
+close the literal-machine endpoint.
+
+The current endpoint is not an unspecified abstract consistency assertion.
+In the supplementary source
+\path{Computability/DiophantineConsistency/Lean/DiophantineConsistency/IPRAPA196Consistency.lean},
+\path{paRefutation} is Foundation's actual PA provability predicate applied
+to falsity. Its language-mapped version is \path{mappedPARefutation}; the
+native intuitionistic reading is \path{nativePARefutation};
+\path{nativePAConsistency} is its negation. The all-model bridge
+\path{pa194/ipra/PA194RefutationBridge.lean} identifies the mapped sentence
+with the existence of an internal Foundation PA proof of falsity in models
+whose arithmetic reduct satisfies $I\Sigma_1$. It does not identify that proof
+with a machine execution. The assembly in
+\path{pa194/ipra/PA194PRAAssembly.lean} explicitly assumes both
+machine-specific classical PRA reductions.
+
+There is nevertheless a stronger \emph{written} calibration in the revised
+packet \path{docs/pa194_ax11h_research_2026-11-14_2/proof}.
+Its components address literal physical execution by positive primitive-
+recursive clocks, source-command completion, finite-demand proof compilation,
+term leaves, and the current Foundation-to-PAeq adapter. The adapter explicitly
+handles the changed finite arithmetic axiom and the current canonical
+induction closure convention; the Foundation falsity code is 13. Its intended
+endpoint is the same native PA consistency sentence, not a silently changed
+proof predicate.
+
+The revised report claims the full written iPRA equivalence for AX11H and
+QAX11H. The new GH/GHS, accelerated variants, LC\_AX11H and HR reports import
+that theorem. By contrast, the primary-source LC variants and SEL retain a
+relative theorem whose absolute primary calibration is separate. Thus it
+would be inaccurate either to call every report a completed Lean proof or to
+say that no written iPRA calibration is supplied anywhere in the corpus.
+The present construction must name its retained calibration and verify its
+new logical and physical interfaces; it cannot fill a missing theorem merely
+by running a long blank prefix.
+
+\subsection{Why the existing 193-state tables do not settle the problem}
+
+All 54 spanning 193-state classes are retained in the inventory rather than
+hidden because they are unsuccessful. They fall into substantially different
+failure mechanisms.
+
+The coefficient-three experiments change the formula coding enough that a
+concrete numerical refutation is obtained. Their small count therefore does
+not witness the desired consistency equivalence. The related all-offset
+obstruction is a theorem about its specified recoding family, not about every
+possible representation of PA proofs.
+
+The Runtime193 line has a useful clean-frame runtime but fails the specified
+blank initialization. Some tested entries halt prematurely or move outward
+without constructing the required register frame. The finite register-
+allocation and startup obstructions exclude those tested families; they do
+not prove that a new 193-state bootstrap is impossible.
+
+The newest rejected continuation has 3,734 source primitives, compared with
+3,673 in the primary. At a positive constructor-loop entry it repeats four
+increments of T, one increment of register 6, and the jump back to native
+124, without performing the required decrement. The local fold cases and a
+finite startup check therefore do not rescue its broken source contract.
+Its class prefix is \path{07e29492a0e0}. The seven related 194-state shortened-
+scanner/continuation compositions each fail 47 of 4,780 symbolic source
+outcomes, despite agreement of the resolved source graph.
+
+These examples guide the search without supplying a global lower bound.
+The reusable obligations are exact emitted formulas, all-store command
+contracts, simultaneous physical-fold validity, complete blank startup,
+primitive-recursive clocks in both directions, and an explicit link to the
+chosen PA proof predicate. The archive's negative experiments make clear
+which of these obligations an attractive state count can fail.

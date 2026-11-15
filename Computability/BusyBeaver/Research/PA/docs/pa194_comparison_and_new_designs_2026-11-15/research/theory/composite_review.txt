@@ -1,0 +1,17 @@
+INDEPENDENT REVIEW OF THE TWO SELECTOR/ACCELERATION COMPOSITES
+
+Reviewed composite_proof.tex and verify_composites.py before release. No mathematical gap was found in the inspected relative theorem.
+
+Selector: f(124)=127 and identity elsewhere identifies the parent control with its history-selected boundary. The complete predecessor lists establish the appropriate history bit before each exceptional parent step. The read-one action is common. On read zero, the three child steps preserve both inspected tape cells and reach exactly the mapped parent destination. The positive cumulative clock satisfies t<=tau(t)<=3t, including after halt. This proves H_M(t)->H_S(3t) and H_S(t)->H_M(t) in quantifier-free induction.
+
+Acceleration: the invariants are established for the intermediate S table, after the selector edit. Every transition into101 is a zero-writing right move from96, and every transition into11 writes zero. For26 entered from11, a read-one scanned cell excludes the previously written-zero neighbor on that side, forcing the other zero neighbor. For26 entered from101, the read symbol is zero, so the read-one shortcut is not triggered. These arguments establish the two local shortcut hypotheses for all S-reachable states, on every initial tape from74.
+
+Induction for the accelerated table: the inductive equality run_N(t)=run_S(sigma(t)) means the N boundary is an S-reachable configuration. Therefore S's all-time invariants justify the next shortcut. Exact three-to-one local identities give the next equality. This avoids requiring an additional independent reachability assertion for N. Both clocks increment by at least one, including after the semantically absorbing halt.
+
+Composition: H_S(t)->H_N(t) and H_N(t)->H_S(3t). Combining with the selector bounds gives a factor3 in each direction, not9. Halting persistence supplies the padded-time implications, and intuitionistic negation transfers the existential-halting equivalence. No consistency assumption or source-calculus calibration is used in this relative theorem.
+
+The finite checker checks all structural rows and local windows from the literal parent/intermediate/final tables and checks exact whole configurations throughout blank startup. The separate mathematical proof supplies the all-time quantifier-free induction. Parent hashes and native/dense conjugacy prevent accidental table substitution. Corpus novelty and the imported absolute calibration are distinct dependencies, not consequences of these local checks.
+
+Suggested clarification before the acceleration induction: At an N boundary, the inductive equality identifies the complete configuration with the S run at sigma(t); hence the S reachability invariants apply before the next shortcut. No separate invariant for arbitrary N configurations is being assumed.
+
+Review scope: focused written-proof and checker inspection. This is not a new Lean/Rocq kernel proof or an independent reconstruction of the imported absolute PA-calibration proof.

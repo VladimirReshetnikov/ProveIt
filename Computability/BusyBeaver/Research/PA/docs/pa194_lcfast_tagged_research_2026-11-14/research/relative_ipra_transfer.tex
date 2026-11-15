@@ -1,0 +1,252 @@
+\section{An explicit relative-transfer theorem in intuitionistic PRA}
+\label{sec:mathaudit-relative}
+
+A new transition table should first be connected to an identified old
+computation by a relative theorem.  The absolute PA-consistency calibration
+is a separate dependency.  This separation also permits a physical-machine
+optimization to be checked once and reused with any later improvement of
+the logical proof.
+
+\subsection{Total primitive-recursive semantics}
+
+For a binary table $M$, represent the finite-support tape at its head by
+natural numbers $(l,r)$, with the low bit of $r$ scanned and the low bit of
+$l$ immediately to the left.  If the transition writes $w$, its tape update
+is
+\[
+ (l,r)\longmapsto
+ \begin{cases}
+ (2l+w,\lfloor r/2\rfloor),&\text{right move},\\
+ (\lfloor l/2\rfloor,4\lfloor r/2\rfloor+2w+(l\bmod2)),&\text{left move}.
+ \end{cases}
+\]
+The finite table lookup and these arithmetic operations define a primitive
+recursive step.  Use an absorbing arithmetic halt code $H_M$; this convention
+adds no working state to the physical table.  Define
+$\operatorname{Run}_M(0,x)=x$ and
+$\operatorname{Run}_M(n+1,x)=\operatorname{Step}_M(
+\operatorname{Run}_M(n,x))$.
+Quantifier-free induction proves the iteration identity
+\[
+ \operatorname{Run}_M(u+v,x)
+ =\operatorname{Run}_M(v,\operatorname{Run}_M(u,x))
+\]
+and absorption after halt.  Every predicate below is a primitive-recursive
+Boolean test, so its displayed Boolean combinations can be expressed by
+quantifier-free formulas in the usual language of iPRA.
+
+Let $P$ be a total primitive-recursive source step, with an absorbing
+source halt code $H$, a fixed initial state $z_0$, and a decidable validity
+predicate.  Invalid codes receive arbitrary default behavior.  A valid
+source state can include a program counter, logical registers, and any
+auxiliary fields needed by its tape representation.  In particular a
+growing zero gap and an arbitrary finite spare list must be fields of
+this state; they cannot silently be held fixed during iteration.
+
+For each $M\in\{A,B\}$, suppose the following data and facts are given:
+
+\begin{enumerate}
+\item A total primitive-recursive complete-configuration encoding $E_M$
+with $E_M(H)=H_M$, and $E_M(z)\ne H_M$ for valid live $z$.
+\item A primitive-recursive duration $d_M$, with $d_M(H)=0$ and
+$d_M(z)\ge1$ for every valid live state.
+\item Validity of $z_0$, preservation of validity by $P$, and the exact
+local equation
+\[
+ \operatorname{Run}_M(d_M(z),E_M(z))=E_M(P(z))
+ \tag{L}\label{eq:mathaudit-local}
+\]
+for valid $z$.  The equation is proved in iPRA, with all components of $z$
+free.  A nonhalting endpoint in absorbing semantics also excludes a
+hidden earlier halt inside that segment.
+\item A finite, complete blank-initialization equality
+\[
+ \operatorname{Run}_M(b_M,\operatorname{blank}_M)=E_M(z_0).
+ \tag{I}\label{eq:mathaudit-init}
+\]
+The equality includes the whole finite tape support and hence both zero
+exteriors, as well as the head and control.
+\end{enumerate}
+
+Two implementations need not use identical auxiliary fields.  If they
+implement the same logical source step, take a common source state
+$(s,a_A,a_B)$ that carries both auxiliary states and updates each by its
+own specified primitive-recursive rule.  The two encodings then read
+their own components.  The logical projection must commute with the
+source step; equal-looking source words alone are insufficient when
+structured jump destinations can change under reassociation.
+
+\subsection{Synchronization and explicit witness maps}
+
+Define, by primitive recursion,
+\[
+ z_k=P^k(z_0),\qquad \tau_M(0)=0,\qquad
+ \tau_M(k+1)=\tau_M(k)+d_M(z_k).
+\]
+The state and the clock are computed simultaneously; the clock is not
+obtained by waiting for an unspecified stopping event.  From
+\eqref{eq:mathaudit-local} and \eqref{eq:mathaudit-init}, quantifier-free
+induction gives
+\[
+ \operatorname{Valid}(z_k),\qquad
+ \operatorname{Run}_M(b_M+\tau_M(k),\operatorname{blank}_M)=E_M(z_k).
+ \tag{S}\label{eq:mathaudit-sync}
+\]
+The induction formula is precisely the displayed Boolean validity test
+and configuration equality.  All initial parameters are fixed outside
+the induction.  If $z_k=H$, the successor equality remains valid because
+both halt codes are absorbing and $d_M(H)=0$.
+
+A second quantifier-free induction proves
+\[
+ z_k\ne H\quad\Longrightarrow\quad\tau_M(k)\ge k.
+ \tag{P}\label{eq:mathaudit-positive}
+\]
+Indeed, $z_{k+1}\ne H$ implies $z_k\ne H$ by absorption, and the new
+segment has duration at least one.  It follows immediately that a source
+halt at step $k$ gives a physical halt at the explicit time
+$b_M+\tau_M(k)$.
+
+For the converse, suppose $M$ is halted by physical time $t$.  If
+$z_{t+1}$ were live, \eqref{eq:mathaudit-positive} would give
+$b_M+\tau_M(t+1)>t$.  Absorption would make the left side of
+\eqref{eq:mathaudit-sync} a halted configuration, while its right side
+would be live.  This is a contradiction.  Equality with the fixed source
+halt code is decidable, so iPRA concludes $z_{t+1}=H$.  Thus the reverse
+witness is the particularly simple function $t\mapsto t+1$.
+No Markov principle, unbounded least-witness operation, or excluded middle
+for an arbitrary formula is involved.
+
+Writing $\mathcal H_M(t)$ for ``$M$ is halted by time $t$'', the two
+explicit relative witness maps are
+\[
+ F_{A\to B}(t)=b_B+\tau_B(t+1),\qquad
+ F_{B\to A}(t)=b_A+\tau_A(t+1).
+\]
+We have proved the following wholly relative theorem:
+\[
+\boxed{\begin{gathered}
+ \mathsf{iPRA}\vdash
+ \forall t\,[\mathcal H_A(t)\to\mathcal H_B(F_{A\to B}(t))],\\
+ \mathsf{iPRA}\vdash
+ \forall t\,[\mathcal H_B(t)\to\mathcal H_A(F_{B\to A}(t))].
+\end{gathered}}
+\]
+Existential introduction and elimination give equivalence of the positive
+halting sentences.  Intuitionistic reasoning then gives equivalence of
+their negations.  Nothing in this argument identifies the source program
+with a proof enumerator or assumes the consistency of PA.
+
+\subsection{Optional polynomial clocks and concrete checking obligations}
+
+If the exact finite contracts additionally prove a common affine bound
+\[
+ d_M(z_j)\le a_M+c_Mj
+\]
+on every live source step, then
+\[
+ \tau_M(k)\le a_Mk+c_M\frac{k(k-1)}2.
+\]
+The same inequality holds after source halt because subsequent durations
+are zero.  A simpler sufficient relative map is therefore
+\[
+ t\longmapsto b_M+a_M(t+1)+c_M\frac{t(t+1)}2.
+\]
+For example, the already supplied loop-continuation packet derives
+$a_M=694$, $c_M=26$, and $b_M=57922$ for its AX11H pair, yielding
+$13t^2+707t+58616$.  This example is not a bound for an arbitrary new
+mutation: the local coefficient vectors and frame updates must be
+recomputed for the actual new table.  Primitive-recursive exact clocks
+already suffice for the relative theorem; a polynomial estimate is an
+additional convenience.
+
+A successful finite executable replay supplies the machine-specific
+closed facts only after the checker rules have their uniform arithmetic
+interpretation.  The relevant rules in the reviewed AX11H physical proof
+are literal transitions, unary-run traversal, four finite-list
+traversals, and finite-word normalization.  Each is justified by explicit
+quantifier-free induction.  The current tape bit, previous-bit histories,
+complete frame, exact exit control, duration positivity, and unaffected
+outside tape must all be included in a new local contract.  The final
+simultaneously transformed table is the one to check: verifying each
+proposed merge in isolation does not handle dependencies among its
+helper controls.
+
+For a direct quotient rather than a register-source compilation, $P$ may
+be the old literal transition function.  Its validity predicate includes
+the entry-history invariant.  The encoding maps only the old control to
+the quotient control and retains the complete tape.  Finite local
+simulation cases then give \eqref{eq:mathaudit-local}; the same theorem
+applies without any separate theorem about the numerical calculus.
+
+\subsection{Composition with the precisely pinned written calibration}
+
+The reviewed dependency is the unchanged archive
+\texttt{\detokenize{reference/ax11h_written_calibration.zip}}, nested in
+\texttt{\detokenize{docs/incoming/pa194_research_2026-11-14.zip}}
+at repository revision
+\texttt{\detokenize{8d31445d858761a8f6150c2e5012adae8895e932}}.
+Its recomputed SHA-256 is
+\begin{quote}\small\ttfamily
+93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075.
+\end{quote}
+The file \texttt{\detokenize{proof/consistency_equivalence.tex}} states
+its final written theorem for AX11H and QAX11H:
+\[
+ \mathsf{iPRA}\vdash
+ \neg\operatorname{Halt}(A)\longleftrightarrow
+ \operatorname{nativePAConsistency}.
+ \tag{C}\label{eq:mathaudit-calibration}
+\]
+Here the PA predicate is the pinned current Foundation predicate, with
+Foundation commit
+\texttt{\detokenize{32e1a0956a8622fad067328ca1959729a7634428}}.
+Its raw falsity code is 13; numerical-calculus contradiction is code 1.
+The archive supplies a proof translation between these presentations,
+rather than identifying their codes.
+
+The dependency chain is explicit.  The files
+\texttt{\detokenize{proof/physical_ipra_audit.tex}} and
+\texttt{\detokenize{proof/source_command_completion.tex}}
+provide the two execution interfaces.
+\texttt{\detokenize{proof/ax11h_preservation.tex}}
+provides the all-store compiler and the actual four-field scheduler.
+\texttt{\detokenize{proof/foundation_paeq_completion.tex}},
+\texttt{\detokenize{proof/term_leaf_completion.tex}}, and
+\texttt{\detokenize{proof/forward_calibration_completion.tex}}
+provide the forward proof translation.
+\texttt{\detokenize{proof/consistency_implies_nonhalting.tex}}
+uses the model-uniform numerical soundness and the named one-way endpoint
+\texttt{\detokenize{ConPA.Directions.ipra_consistency_implies_nonhalt}}.
+The final converse uses
+\texttt{\detokenize{ConPA.Directions.ipra_nonhalt_implies_consistency}}.
+These last transfers apply to the same literal open halting matrix and
+mapped PA refutation predicate in models whose arithmetic reduct
+satisfies $I\Sigma_1$.
+
+The highest-risk induction issue receives substantive treatment in these
+papers.  Same-stratum recursive requests decrease a source rank; their
+child parameters are computed before their proof values.  The finite
+request tree is generated first and evaluated backwards, with bounded
+Boolean correctness tests.  This remains primitive recursive when
+parameter and proof sizes grow.  Term uniqueness is completed before
+higher vector-realization calls on possibly larger replacement terms.
+The Foundation adapter also supplies an explicit opening/closing
+constructor and handles the changed finite order axiom.  These arguments
+are materially stronger than merely asserting that standard finite-run
+Lean theorems internalize.
+
+If the new table $B$ satisfies the relative theorem with the indicated
+AX11H parent, then composition of that theorem with the imported written
+calibration \eqref{eq:mathaudit-calibration} gives
+\[
+ \mathsf{iPRA}\vdash
+ \neg\operatorname{Halt}(B)\longleftrightarrow
+ \operatorname{nativePAConsistency}.
+\]
+This corollary states exactly which mathematical dependency it imports.
+The focused review found no blocking defect in the described clock,
+finite-demand, and endpoint arguments.  It did not independently check
+every retained logical recipe or build an end-to-end Lean theorem.
+Accordingly the new table's relative theorem and the imported absolute
+calibration should retain their distinct verification descriptions.

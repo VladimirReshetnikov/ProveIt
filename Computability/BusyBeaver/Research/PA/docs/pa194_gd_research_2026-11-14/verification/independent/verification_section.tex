@@ -1,0 +1,59 @@
+\section{Fresh independent verification of the three GD tables}
+
+All three constructions passed a second literal-tape checker that imports
+neither the construction compiler nor an arithmetic-box oracle. The checker
+rederives four generic unary/list-sweep lemmas from each table and checks
+every primitive source branch. Its source-address graph is resolved by
+two independent procedures, whose complete instruction arrays agree.
+
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Table & Sites & Outcomes & Symbolic operations & Maximum & Startup\\
+\midrule
+PA194GD & 3,654 & 4,755 & 1,068,318 & 379 & 58,154\\
+PA194GDH & 3,653 & 4,754 & 1,091,812 & 385 & 57,922\\
+PA194GDHS & 3,650 & 4,750 & 1,095,734 & 385 & 57,768\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here ``Maximum'' means the largest symbolic proof-operation count for one
+source outcome. It is not a uniform bound on literal execution time for
+arbitrary register values. ``Startup'' is the number of literal binary
+transitions from the blank tape to the complete initial source frame.
+
+The symbolic domain contains nine arbitrary natural primary registers,
+both decrement branches, an arbitrary nonempty finite spare-register list,
+an arbitrary nonnegative extra header gap, and complete blank exteriors.
+These are universal symbolic contracts, not a finite range of sampled
+register values. A separate closure audit verifies that every required
+source branch occurs exactly once. Every coefficient of every thirteen-slot
+affine duration vector is nonnegative, and every duration has constant term
+at least three. All nonhalting outcomes have zero affine head motion. Each
+table has exactly one halting source outcome, of duration exactly three.
+Every one of its 388 literal rows occurs among the symbolic cases.
+
+A further startup implementation uses an unbounded integer-coordinate set
+of one-cells and independently compares the entire final tape support with
+the encoded source frame. It verifies the complete source address, physical
+register permutation, seed $(2,0,\ldots,0)$ and all 26 spare one-registers.
+The check is not a local-window comparison. The dense/native label maps,
+194 working controls, 388 rows and graph reachability are checked directly.
+
+Exact complete structural tuples show that the three tables are mutually
+distinct and differ from all 139 current spanning 194-control classes,
+even after arbitrary state renaming, any spanning root, tape reflection,
+symbol exchange and terminal-action erasure. Ordinary control bisimulation
+retains 194 classes for each table. This last fact excludes a direct
+context-free control quotient, but is not a lower bound against contextual
+reductions or redesigned machines.
+
+The verifiers operated on frozen copies, and a final SHA-256 audit confirms
+that all input payloads remain unchanged. The retained JSON receipts,
+complete symbolic contracts, four list-lemma traces, full startup supports,
+class comparisons and transcript are included. These are independently
+replayed implementation certificates. The source-command argument and
+PA/iPRA calibration remain the separate mathematical arguments identified
+in the report; no new end-to-end Lean or Rocq kernel theorem is inferred
+from the Python checks.

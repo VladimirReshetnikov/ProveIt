@@ -1,0 +1,223 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm,headheight=14pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{xcolor,xurl,enumitem,fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={PA194H5X and PA194JH5X: new witness-schema consistency machines},pdfauthor={OpenAI research assistant}}
+\definecolor{ink}{HTML}{173449}
+\definecolor{muted}{HTML}{526474}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Cnew}{\mathcal C_4^X}
+\newcommand{\Cold}{\mathcal C_4^Q}
+\newcommand{\machine}{\mathsf{PA194H5X}}
+\setlist{nosep,leftmargin=*}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\color{muted}PA194 witness machines / research}
+\fancyhead[R]{\small\color{muted}15 November 2026}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\title{\color{ink}\textbf{PA194H5X and PA194JH5X}\\[5pt]
+ Two witness-schema machines for the consistency of PA\\[7pt]
+ \large Corpus comparison, written iPRA proof, literal tables, and reduction research}
+\author{Research prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This investigation constructs two new deterministic, single-tape, two-symbol
+Turing machines with 194 working controls and a separate halt control.  Each
+machine's blank-input nonhalting is equivalent to $\Con(\PA)$ in intuitionistic
+primitive recursive arithmetic.  The written proof combines a new
+uniform axiom translation, newly checked source and physical bindings,
+and the explicitly retained revised AX11H mathematical calibration.
+No completed end-to-end Lean proof is claimed.
+
+The first machine replaces the fifth numerical axiom family
+$U(D,E(H,D)\to1)\to1$ by $U(D,E(H,D)\to1)\to A$, where $A$ is
+independent of $D,H$.  It uses the ordinary orientation of the sixth
+head, the explicit-binder generalizer, and the eleven-entry AX command.
+Its 189-token emitter has 3,677 primitive source sites; its literal budget
+is $134+69-9=194$.  Independent literal execution covers all 4,786 source
+outcomes, arbitrary primary registers and spare lists, and the complete
+57,922-transition blank initialization.  The table is different from all
+139 spanning 194-control graphs recognized in the pinned source corpus,
+even under an enlarged structural equivalence.  The second machine also
+replaces the first head $(X\to1)\to H$ by $(X\to H)\to H$, where
+$X=U(D,U(D,H)\to1)$.  Its shorter, 188-token emitter independently passes
+all 4,794 literal outcomes and the same complete blank initialization.
+Its table is new under the same comparison and distinct from the first.
+
+The comparison accounts for 87 filed packets and six incoming deliveries.
+No machine below 194 states is established here.  Further conservative
+axiom simplifications, unsuccessful reduction searches, precise finite
+search scopes, and reproducible evidence are included rather than
+interpreted as a lower bound.
+\end{abstract}
+
+\clearpage
+\tableofcontents
+\clearpage
+\section{Result, exact object, and proof status}
+\label{sec:result}
+
+The principal deliverables are the literal tables
+\path{machines/PA194H5X/machine.tm} and
+\path{machines/PA194JH5X/machine.tm}.  Each has controls $0,\ldots,193$,
+start control $0$, alphabet $\{0,1\}$, and halt control $194$.
+The tape is two-way infinite and initially all zero; the head initially
+scans coordinate zero.  Each of its 388 rows has the format
+\[
+ \texttt{state\quad read\quad write\quad L/R\quad next}.
+\]
+Every nonhalting control has exactly one row for each scanned symbol.
+Entering 194 halts after the specified write and movement.  State 194 is
+not counted among the working controls.  All 194 working controls are
+reachable in the transition graph; this is a graph statement, not a
+claim that each is reached on the actual blank run.
+
+The PA194H5X dense table's SHA-256 is
+\begin{center}\small
+\nolinkurl{caffdd9f10d87d0d050eff07ab8f6e8edd9ab443aa94c948f03ee5316e37b614}.
+\end{center}
+Both native tables use start 74, halt 254 and source-boundary control 84.
+PA194H5X's native SHA-256 is
+\begin{center}\small
+\nolinkurl{f45696ad9e78599bcc469d887c6295a4dc4afa00ff90458e230c9ee3ad3966d3}.
+\end{center}
+PA194JH5X's dense and native SHA-256 values are, respectively,
+\begin{center}\small
+\nolinkurl{70be32fe352ee0fb29581f1037948f429334cfc9c6bcaa813aba43c4efba0148}\\[2pt]
+\nolinkurl{957fef85080849e88bba4e82732065a350d382d489a032ddbc03756e8ef0c5e1}.
+\end{center}
+The supplied injective label maps prove exact dense/native conjugacy.
+Appendix~\ref{app:table} prints both complete dense tables; the machine
+files are the authoritative executable objects.
+
+\begin{theorem}[Main written theorem]
+For either of the two exact blank-start machines, denoted by $M$,
+\[
+ \boxed{\quad\ipra\ \vdash\
+  \neg\Halt_{\rm blank}(M)
+       \ \longleftrightarrow\ \Con(\PA).\quad}
+\]
+Here $\Con(\PA)$ is the native consistency sentence fixed by the retained
+Foundation/PA calibration, identified in Section~\ref{sec:calibration}.
+\end{theorem}
+
+The proof has four separable parts.  First, a new finite proof
+transformation identifies the numerical theorem set after the witness
+change.  Second, explicit command words identify refutations with halting
+of an all-store scheduler.  Third, exact arithmetic source templates and
+literal tape certificates identify that scheduler with the new binary
+table.  Fourth, the revised AX11H calibration identifies the inherited
+numerical calculus with the specified PA-refutation sentence.  The first
+three parts are bound to the new machine here; the fourth is retained
+with its exact archive and mathematical dependency record.
+
+This is a written mathematical proof with executable finite certificates.
+It is not a newly completed Lean or Rocq formalization, and the complete
+PA-to-numerical proof compiler has not been implemented anew in this
+investigation.  The current repository likewise leaves machine-specific
+Lean endpoints open.  Neither a finite simulation nor a receipt labelled
+PASS would by itself imply the displayed theorem.  The uniform induction
+arguments and the identified logical calibration are essential.
+
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Quantity & PA194H5X & PA194JH5X\\
+\midrule
+Working states / alphabet symbols & $194\;/\;2$ & $194\;/\;2$\\
+Fixed + raw readers $-$ compatible folds & $134+69-9$ & $134+69-9$\\
+AX macro tokens / primitive source sites & $189\;/\;3,677$ & $188\;/\;3,683$\\
+Primitive increment / decrement sites & $1,458\;/\;1,109$ & $1,460\;/\;1,111$\\
+Continue / break / halt sites & $1,034\;/\;75\;/\;1$ & $1,036\;/\;75\;/\;1$\\
+Literal source outcomes independently replayed & $4,786$ & $4,794$\\
+Independent symbolic execution events & $1,110,171$ & $1,097,281$\\
+Whole blank initialization transitions & $57,922$ & $57,922$\\
+Maximum source address length & $40$ & $34$\\
+Minimum affine segment-duration constant & $3$ & $3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+No valid construction with 193 or fewer working states was obtained.
+The two machines fulfill the requested same-size fallback through changed
+logical emitters and new literal graphs.  The new witness head is not a
+permutation of equality labels or a different association of the old
+formula.  Its independent consequent permits the coupled first-head
+change realized in PA194JH5X, and a further proved generalization supplies
+a concrete additional reduction target.
+
+\input{comparison.tex}
+\input{logical_change.tex}
+\input{implementation_proof.tex}
+\input{search_results.tex}
+\input{reproduction.tex}
+
+\begin{thebibliography}{9}
+\bibitem{pinned}
+V. Reshetnikov, \emph{ProveIt}, commit
+\path{8d31445d858761a8f6150c2e5012adae8895e932},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8d31445d858761a8f6150c2e5012adae8895e932/Computability/BusyBeaver/Research/PA}{PA research tree}
+and
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8d31445d858761a8f6150c2e5012adae8895e932/docs/incoming}{incoming deliveries}.
+The complete delivery ledger and recognized table inventory accompany this report.
+\bibitem{ax11h}
+\emph{Revised AX11H research packet}, filed at
+\path{PA/docs/pa194_ax11h_research_2026-11-14_2} in \cite{pinned}.
+Retained intact as \path{references/pa194_ax11h_research_2026-11-14.zip};
+SHA-256 \nolinkurl{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.
+The extracted mathematical papers are in \path{references/baseline_proof/}.
+\bibitem{gh}
+\emph{Explicit-binder AX11GH/AX11GHS research},
+\path{docs/incoming/pa_conpa_research_2026-11-14.zip} at \cite{pinned}.
+The retained relative proof and audit are
+\path{references/AX11GH_relative_ipra.tex} and
+\path{references/AX11GH_audit.md}.
+\bibitem{zfc}
+\emph{ZFC consistency-machine research},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8d31445d858761a8f6150c2e5012adae8895e932/Computability/BusyBeaver/Research/ZFC}{pinned ZFC source tree} in \cite{pinned}.
+\bibitem{dio}
+\emph{Diophantine consistency},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8d31445d858761a8f6150c2e5012adae8895e932/Computability/DiophantineConsistency}{pinned DiophantineConsistency source tree} in \cite{pinned}.
+\bibitem{concise}
+\emph{ConciseIPRA},
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8d31445d858761a8f6150c2e5012adae8895e932/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{pinned ConciseIPRA source tree} in \cite{pinned}.
+\end{thebibliography}
+
+\clearpage\appendix
+\section{All 139 recognized spanning 194-state graph classes}
+\label{app:classes}
+The following table compares every spanning 194-state class recognized
+in the pinned input corpus.  It does not include either newly constructed table.
+Status labels report the supplying packet's claim; they do not certify
+all principal constructions independently.  The complete identifiers,
+representative source locators, matrix hashes, occurrences and packet
+relationships are in \path{comparison/current/} and the 93-record ledger.
+The structural canonicalization deliberately forgets the declared start
+state; semantic machine claims always retain it.  Two disconnected
+194-control diagnostic identities are recorded separately in the census.
+\begingroup\footnotesize\raggedright
+\input{frontier194_table.tex}
+\endgroup
+
+\clearpage
+\section{Complete dense transition table}
+\label{app:table}
+Start in control 0 on the all-zero two-way infinite tape at position 0.
+Controls 0 through 193 are working controls; 194 is the separate halt.
+An entry $(w,d,q)$ means write $w$, move one cell in direction $d$, and
+enter control $q$.  Both rows for every working control appear below.
+\input{transition_table.tex}
+\end{document}
