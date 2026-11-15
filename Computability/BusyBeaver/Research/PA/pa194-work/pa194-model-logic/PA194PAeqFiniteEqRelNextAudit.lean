@@ -1,0 +1,8 @@
+import PA194PAeqFiniteRemainingNext2
+#print axioms PA194PAeq.EqRelExt.certificate
+#print axioms PA194PAeq.EqRelExt.theoryProof
+#print axioms PA194PAeq.EqRelExt.source_formula
+#print axioms PA194PAeq.EqRelExt.internal_eqRelExt_proof
+#print axioms PA194PAeq.InductionReopen.finite_cases_next2
+#print axioms PA194PAeq.InductionReopen.finite_supplier_of_remaining_next2
+#print axioms PA194PAeq.InductionReopen.pa_refutation_of_remaining_next2
