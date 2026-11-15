@@ -1,0 +1,7 @@
+import PA194OrdinaryStandardConsistency
+import PA194OrdinaryModelConsistency
+#print axioms PA194OrdinaryNativeConsistency.ordinary_q_map
+#print axioms PA194OrdinaryNativeConsistency.ordinary_q_norm
+#print axioms PA194OrdinaryNativeConsistency.ordinary_refutation_standard
+#print axioms PA194OrdinaryNativeConsistency.ordinary_q_standard
+#print axioms PA194OrdinaryNativeConsistency.ordinary_q_model
