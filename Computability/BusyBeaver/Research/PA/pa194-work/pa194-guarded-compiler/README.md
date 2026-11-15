@@ -130,3 +130,16 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/chec
 `PA194GuardedEndpoint` no longer exists. In that form it has not been run. It writes
 `PA194TranslateExt` into its output directory, so `check-translate-ext.sh` is only needed to
 replay that module alone.
+
+An incremental repository-source replay of the six modules through `PA194TrCompile`
+passed on 2026-11-15, with 26 expected axiom reports and no `sorryAx`. A separate
+incremental replay of `PA194Leibniz` against those objects passed with four axiom
+reports and no `sorryAx`. The dispatcher, source theory and other listed overlays
+were prebuilt; these checks do not rebuild the full transitive dependency closure.
+The first replay used the preceding six-module version of `check-incremental.sh`;
+the current seven-module script has not been run as a whole. To replay the later
+module alone against the same checked staged dependencies:
+
+```sh
+bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-leibniz.sh "$PWD" NEW_EMPTY_OUTPUT
+```

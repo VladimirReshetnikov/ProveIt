@@ -1,0 +1,4 @@
+import PA194SourceInhabited
+#print axioms PA194SourceInhabited.inhabitedProof
+#print axioms PA194SourceInhabited.inhabited_code
+#print axioms PA194SourceInhabited.inhabited_provable
