@@ -1,0 +1,13 @@
+import PA194TermDispatcherEquations
+#print axioms PA194PAeqOrdinalValues.binaryValue_graph
+#print axioms PA194PAeqOrdinalValues.binaryValue_valid
+#print axioms PA194TermDispatcher.translate_graph
+#print axioms PA194TermDispatcher.translate_bound
+#print axioms PA194TermDispatcher.translate_free
+#print axioms PA194TermDispatcher.translate_zero
+#print axioms PA194TermDispatcher.translate_succ
+#print axioms PA194TermDispatcher.translate_add
+#print axioms PA194TermDispatcher.translate_mul
+#print axioms PA194TermDispatcher.leftMarker_ne_verum
+#print axioms PA194TermDispatcher.ref_leftMarker
+#print axioms PA194TermDispatcher.ref_rightMarker
