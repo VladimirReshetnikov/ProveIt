@@ -1,0 +1,9 @@
+# PA194 site-29 controller to state 17
+
+`PA194Site29To17.site29To17` follows the literal state-24 site-29 input through the full first controller pass, the second pass's 18-step dispatch and two-register scan, six further physical-register scans, and the corresponding six-block rewind to state 17. It states the exact input, resulting left and right tape codes, and clock. The input requires a zero run of length `k+2` after source path `100010110`. All eleven model-valued logical-file arguments, including the preceding spare and the entire numeric suffix, are arbitrary. The checked blank-to-site-29 execution has sufficient padding.
+
+`PA194ScanSixRewindWithTail.scanAndRewind` generalizes the earlier six-block scan-and-rewind to any fixed external number of retained file blocks and an arbitrary numeric suffix; all register values are model-valued. `PA194Site29ScanRewind` specializes this to the site-29 segment. The final state 17 is an intermediate controller position; the site-29 increment of logical register 6 and source-frame return remain open.
+
+`check-site29-to17.sh` recompiles the nine earlier first-pass/partial-second-pass modules and these three modules in a fresh output against the pinned site-27 coherent baseline, retained site-28 carry stage, and retained site-28 finish-return stage. Its arguments are `REPO SITE27_BASELINE SITE28_STAGE FINISH_STAGE PROJECT_FOUNDATION PACKAGE_FOUNDATION SOURCE_DIR NEW_OUTPUT`. It pins the sources and selected direct objects, checks all requested axiom reports for `sorryAx`, rejects overlapping machine objects and machine-specific fallback roots, and verifies input objects unchanged. Retained stage and general foundation objects require their preceding replays or independent provenance.
+
+The result is an all-model finite physical-run segment, not a native iPRA sentence, arbitrary-length source simulation, or a consistency implication.
