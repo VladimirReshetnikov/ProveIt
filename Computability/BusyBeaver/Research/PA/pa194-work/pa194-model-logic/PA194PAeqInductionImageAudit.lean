@@ -1,0 +1,5 @@
+import PA194PAeqAllsTranslation
+#print axioms PA194PAeqBind.formulaCode_qqAlls
+#print axioms PA194PAeqBind.fvarVec_scoped
+#print axioms PA194PAeqBind.termVector_fvarVec
+#print axioms PA194PAeqBind.induction_image_shape
