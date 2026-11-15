@@ -1,0 +1,7 @@
+import PA194UncloseTrace
+#print axioms PA194BindSource.uncloseOnce_closeOne
+#print axioms PA194BindSource.sepRoot_contains_property
+#print axioms PA194BindSource.uncloseHistoryGraph_iff
+#print axioms PA194BindSource.uncloseHistory_entry_bound
+#print axioms PA194BindSource.uncloseMany_modelClose
+#print axioms PA194BindSource.fullyClosedSeparation_property_bound
