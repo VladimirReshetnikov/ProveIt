@@ -8,8 +8,9 @@ reduct satisfies `𝗜𝚺₁`, a refutation in the relational source theory fro
 derivation of the translated sequent, with four rule suppliers left as hypotheses
 (`RemainingRules`).
 
-This directory replaces the invariant of that induction and proves three of the suppliers
-for the new one.
+This directory replaces the invariant of that induction, proves the rules that are syntactic
+for the new invariant, and reduces the compiler to an interface with no packet and no size
+condition (`Interpretation`).
 
 ## Why the invariant has to change
 
@@ -33,59 +34,63 @@ derives the translated sequent".
 This is an argument on paper. No theorem here states that `RemainingRules` is refutable; that
 would need a model of the source theory in Lean.
 
-## The guarded invariant
+## The guarded calculus
 
-`Guarded T param n s`: the source theory derives `guards n ∪ translatedSequent param s`,
-where `guards n` is the coded set of the formulas `¬Dom(&i)` for `i < n`, and `n` is the code
-of the derivation. The packet is an *identity packet* (`IdentityPacket`): its free
-environment sends the free variable `i` to the source free variable `i`, so distinct
-variables stay distinct. `identityPacket_exists` gives one of every length.
+`GDerivable T Δ`: the source theory derives `Δ` together with the guards `¬Dom(&i)` below
+some bound. Because the bound is existential, guarded derivations combine by weakening. The
+quantifier rules are relativized to the domain: a universal introduction turns the guard of
+its eigenvariable into the domain hypothesis of the quantifier (`all_rel`), and an
+existential introduction with a free variable as witness takes the domain formula of the
+witness from the guards (`ex_rel`). At the root of a refutation the sequent is `{⊥}` and the
+guards are removed one at a time (`discharge_guards`): the guard of `&0` is generalized, cut
+against `∃x Dom(x)`, and the other guards move down by one index.
 
-At the root of a refutation the sequent is `{⊥}` and the guards are removed one at a time
-(`discharge_guards`): the guard of `&0` is generalized, cut against `∃x Dom(x)`, and the
-other guards move down by one index.
+The packet is an *identity packet*: its free environment sends the free variable `i` to the
+source free variable `i`, so distinct variables stay distinct. The translation under such a
+packet does not depend on its length (`formula_ext`), which gives the translation `tr` of a
+formula of arity zero and `trBody` of a formula under one binder, with no size condition.
 
 ## Modules
 
 | Module | Content |
 | --- | --- |
-| `PA194GuardedCompile` | `guard`, `guards` with their definability, shift and membership lemmas. `GuardedRules`: the universal, existential, shift and theory-axiom rules for the invariant `Guarded`. `guarded_compile`: the induction over an internal derivation, with the logical axiom, verum, conjunction, disjunction, weakening and cut cases proved from Foundation's `Derivable` rules. `discharge_guards` and `guarded_refutation`: a refutation in `U` gives `Provable T ⊥`, from `GuardedRules` and `Provable T (∃x Dom(x))`. |
-| `PA194TranslateShift` | `formula_shift`: for packets related by `EnvShiftRel` (every environment term shifted, the free environment re-indexed by one), the translation of `shift p` is the shift of the translation of `p`. Proved for every internally valid formula code by `𝚷₁` structural induction over terms (`term_shift`) and formulas, from shift lemmas for the fixed templates and the value constructors. `translateFormula_shift` is the instance for an identity packet, and `shiftRule_guarded` is the shift rule. |
-| `PA194TranslateSubst` | `formula_subst`: for a substitution of the arithmetic language whose entries are variables and packets related by `EnvSubstRel`, the translation of the substituted formula is a source substitution applied to the translation. `translateFormula_substs1_fvar`: instantiating the bound variable of a formula of arity one by a free variable. `translateFormula_free`: the translation of `free p` is `free` of the translation of `p` under one binder. `allRule_guarded`: the universal rule. |
-| `PA194GuardedEndpoint` | `exsRule_guarded_fvar`: the existential rule when the witness is a free variable. `OpenGuardedRules`: the existential rule for other witnesses and the theory axioms, the two rules still assumed. `theoryAxiom_guarded`: an axiom whose translation has a proof of its own gives the guarded leaf. `refutation_of_open_rules`: a refutation in `U` gives `Provable T ⊥` from `OpenGuardedRules` for every identity packet and `Provable T (∃x Dom(x))`. |
+| `PA194GuardedCompile` | `guard`, `guards` with their definability, shift and membership lemmas, and `discharge_guards`: from `Provable T (∃x Dom(x))` and a derivation of `guards n ∪ {⊥}`, a proof of `⊥`. |
+| `PA194TranslateShift` | `formula_shift`: for packets related by `EnvShiftRel` (every environment term shifted, the free environment re-indexed by one), the translation of `shift p` is the shift of the translation of `p`. Proved for every internally valid formula code by `𝚷₁` structural induction over terms (`term_shift`) and formulas, from shift lemmas for the fixed templates and the value constructors. `IdentityPacket`, `translateFormula_shift`. |
+| `PA194TranslateSubst` | `formula_subst`: for a substitution of the arithmetic language whose entries are variables and packets related by `EnvSubstRel`, the translation of the substituted formula is a source substitution applied to the translation. `translateFormula_substs1_fvar`: instantiating the bound variable of a formula of arity one by a free variable. `translateFormula_free`: the translation of `free p` is `free` of the translation of `p` under one binder. |
+| `PA194TranslateExt` | `formula_ext`: two packets that agree on the bound environment and on the free entries below both lengths translate a formula below both lengths to the same code. `idParam` (identity packets from Foundation's `fvarVec`), `tr`, `trBody`, and the lemmas `tr_and`, `tr_or`, `tr_all`, `tr_exs`, `tr_neg`, `tr_shift`, `tr_substs1_fvar`, `tr_free`. |
+| `PA194GuardedCalculus` | `GDerivable` with weakening, the logical axiom, verum, conjunction, disjunction, cut, shift, `all_rel`, `ex_rel`, and `root` (a guarded refutation is a refutation when the domain is inhabited). |
+| `PA194TrCompile` | `Interpretation U T`: for every internal axiom `φ` of `U` a guarded proof of `tr φ`; for every formula `p` of arity one and term `t` that is not a free variable, a guarded derivation of `{¬tr(p[t]), tr(∃p)}`; and `Provable T (∃x Dom(x))`. `tr_compile`: the induction over an internal derivation, all ten rules. `refutation_of_interpretation`: a refutation in `U` gives `Provable T ⊥`. |
 
 All statements are for an arbitrary model `V` of `𝗜𝚺₁`, arbitrary `Δ₁` theories `U` and `T`
 of the two languages, and internally valid codes that may be nonstandard.
 
 ## What is open
 
-- The existential rule for a witness that is a function term. The translation of
-  `φ[t]` is not a substitution instance of the translation of `φ`: the value formula of `t`
-  replaces a variable lookup. The rule needs, as theorems of the source theory for
-  nonstandard `φ` and `t`: a value of `t` exists when its free variables are in the domain,
-  values are unique up to order isomorphism, and translated formulas respect order
-  isomorphism. These in turn need the corresponding facts for zero, successor, addition and
-  multiplication as fixed theorems of the source theory.
-  One difficulty is already visible. A substitution lemma "`(φ[t])*` is equivalent to the
-  translation of `φ` at a value of `t`" has the witness `t` as a parameter of the model, and
-  an induction over `φ` that opens a quantifier by a fresh free variable (the pattern of
-  `PA194PAeqUniversalFormulaCongruence.replace_aux`) shifts the free variables of `t`. The
-  induction hypothesis is then needed at `shift t`, so a fixed `𝚺₁` predicate in `φ` does not
-  suffice. Two ways out are not tried yet: carry the finite family `t, shift t, …` under a
-  bounded quantifier, or prove the lemma only for the one-step terms `0`, `S #0`, `#1 + #0`,
-  `#1 · #0`, which have no free variable, and reach a general witness by an induction over
-  `t` with the formula ranging over substitution instances below a bound.
-- The theory axioms: a proof in the source theory of the translation of each fixed axiom of
-  `ordinaryPAeq` and of each closed induction instance, under an identity packet.
-  `pa194-model-logic` works on these under `rootParameters`; for a sentence the two
-  translations should agree, but that is not proved here (it needs a lemma that the
-  translation reads the free environment only at free variables of the formula).
-- `Provable T (∃x Dom(x))` for the actual source theory. The standard development has a
-  derivation of it from the empty-set formula
-  (`emptyFoundationDerivation` of [`pa194-foundation-ordinal`](../pa194-foundation-ordinal/README.md));
-  it is not yet transported to models here.
-- `OrdinaryCompiler` itself is therefore not proved, and nothing here yields a consistency
-  implication.
+`OrdinaryCompiler` follows from `Interpretation ordinaryPAeq adjunctiveFullSepTheory` in every
+model. None of its three fields is proved for these theories.
+
+- `witness`, the existential introduction at a function term. The translation of `φ[t]` is
+  not a substitution instance of the translation of `φ`: the value formula of `t` replaces a
+  variable lookup. The plan is a translated Leibniz lemma: a guarded derivation of
+  `{¬tr(&c = t), ¬tr(p[t]), tr(p[&c])}`, by induction over the formula, and then the
+  elimination of `c` against `tr(∃x. x = t)`. Opening a quantifier shifts the free variables
+  of `t`, so the induction is over triples `(p, t, c)` with the formula complexity as measure
+  (`measured_bounded_sigma1_order_induction`) instead of a structural induction in `p` with
+  `t` fixed. Its atomic cases and `tr(∃x. x = t)` are facts about terms: the translated
+  equality is reflexive, symmetric and transitive at arbitrary internal terms and is a
+  congruence for successor, addition and multiplication, and every term has a value. These
+  need the corresponding facts about order isomorphism and the three operations as theorems
+  of the source theory. None of this is written.
+- `axioms`: a guarded proof of the translation of each fixed axiom of `ordinaryPAeq` and of
+  each closed induction instance. `pa194-model-logic` works on these under `rootParameters`.
+  For a sentence that translation should equal `tr`, by `formula_ext` restricted to formulas
+  without free variables; that lemma is not written.
+- `inhabited` for the actual source theory. The standard development has a derivation of it
+  from the empty-set formula (`emptyFoundationDerivation` of
+  [`pa194-foundation-ordinal`](../pa194-foundation-ordinal/README.md)); it is not yet
+  transported to models here.
+
+Nothing here yields a consistency implication.
 
 ## Checking
 
@@ -95,29 +100,30 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/chec
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with each module as the top
 module, passing its arguments on (for example `--out DIR` to reuse compiled objects). On
-2026-11-15 the four modules were compiled directly with `lean`, in dependency order, against
+2026-11-15 the six modules were compiled directly with `lean`, in dependency order, against
 objects of the standalone modules they import (the import closure of
 `PA194ConditionalRefutation` and `PA194OrderIsoRew`, compiled from the repository sources at
-`34c4c35edc`). The twenty axiom reports are `[propext, Classical.choice, Quot.sound]`. The
-script itself has not been run.
+`34c4c35edc`). The twenty-six axiom reports are `[propext, Classical.choice, Quot.sound]`.
+The script itself has not been run.
 
-An incremental repository-source replay of all four modules also passed after the
-shared PairGraph syntax change. It rebuilt `PA194ConditionalRefutation` and the
-four guarded modules, reported all twenty expected axiom audits, and found no
-`sorryAx`. The dispatcher, sequent, Foundation and other listed overlays were
-prebuilt, so this is not a clean transitive build. From the repository root:
+Two incremental replays against the repository sources were made for an earlier state of this
+directory, before `PA194GuardedCalculus` and `PA194TrCompile` existed and while the compiler
+had a fixed guard bound (modules `PA194GuardedCompile`, `PA194TranslateShift`,
+`PA194TranslateSubst`, `PA194GuardedEndpoint`, and then `PA194TranslateExt`).
+
+- The first, after the shared PairGraph syntax change, rebuilt `PA194ConditionalRefutation`
+  and those four modules, reported the twenty axiom audits they had then, and found no
+  `sorryAx`. The dispatcher, sequent, Foundation and other listed overlays were prebuilt, so
+  it was not a clean transitive build.
+- The second rebuilt `PA194TranslateExt` against the result of the first; its seven axiom
+  reports passed with no `sorryAx`, with transitive dependencies prebuilt.
 
 ```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-incremental.sh "$PWD" NEW_EMPTY_OUTPUT
-```
-
-`PA194TranslateExt` additionally proves that the translation with identity
-packets is independent of packet length for well-formed internal terms and
-formulas. This does not establish independence of arbitrary environments or
-supply the remaining guarded rules. Its seven axiom reports passed a fresh
-incremental replay against the previously rebuilt guarded compiler, with no
-`sorryAx`; transitive dependencies were prebuilt:
-
-```sh
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-translate-ext.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
+
+`check-incremental.sh` now lists the current six modules with their report counts, because
+`PA194GuardedEndpoint` no longer exists. In that form it has not been run. It writes
+`PA194TranslateExt` into its output directory, so `check-translate-ext.sh` is only needed to
+replay that module alone.

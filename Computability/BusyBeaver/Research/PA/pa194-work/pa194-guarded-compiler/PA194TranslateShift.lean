@@ -10,8 +10,7 @@ set_option linter.unusedSimpArgs false
 For a packet whose free environment sends the free variable `i` to the source free variable
 `i`, the translation of a shifted arithmetic formula is the shift of its translation. The
 statement is proved for every internally valid formula code, by structural induction over
-terms and formulas with the packets as parameters. It gives the shift rule of the guarded
-compiler.
+terms and formulas with the packets as parameters.
 -/
 namespace PA194GuardedCompiler
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
@@ -515,7 +514,7 @@ theorem formula_shift {p : V} (hp : IsUFormula PA194PAeq.language p) : FormulaSh
       ih (s+1) (n+1) (formulaChildParameters P) (formulaChildParameters Q) hsc hchP hchQ
         (hrel.formulaChild hP hQ) hl hl']
 
-/-! ### The identity packet and the shift rule -/
+/-! ### The identity packet -/
 
 /-- A packet valid at arities zero whose free environment sends `i` to the free variable `i`. -/
 def IdentityPacket (param : V) : Prop :=
@@ -549,40 +548,9 @@ theorem translateFormula_shift {param p : V} (h : IdentityPacket param)
     translateFormula param (shift PA194PAeq.language p) = shift SourceL (translateFormula param p) :=
   formula_shift hp.isUFormula 0 0 param param hp h.1 h.1 h.envShiftRel hlen hlen'
 
-variable (U : Theory PA194PAeq.language) [U.Δ₁] (T : Theory SourceL) [T.Δ₁]
-
-/-- The shift rule of the guarded compiler, for an identity packet. -/
-theorem shiftRule_guarded {param : V} (hid : IdentityPacket param) (s d : V)
-    (hs : IsFormulaSet PA194PAeq.language s) (heq : s = setShift PA194PAeq.language (fstIdx d))
-    (hd : Derivation U d) (hsize : shiftRule s d < len (nth param 1))
-    (h : Guarded T param d (fstIdx d)) : Guarded T param (shiftRule s d) s := by
-  have hlen : ∀ q ∈ s, q < len (nth param 1) :=
-    seqMembers_bounded (lt_trans (seq_lt_shiftRule s d) hsize)
-  have hdlen : d < len (nth param 1) := lt_trans (d_lt_shiftRule s d) hsize
-  have hlen0 : ∀ q ∈ fstIdx d, q < len (nth param 1) := fun q hq =>
-    lt_trans (lt_of_lt_of_le (lt_of_mem hq) (fstIdx_le_self d)) hdlen
-  have hvalid := translatedSequent_valid hid.1 hs hlen
-  have h0 : Derivable T (guards d ∪ translatedSequent param (fstIdx d)) := h
-  have h' := Derivable.shift h0
-  show Derivable T (guards (shiftRule s d) ∪ translatedSequent param s)
-  refine Derivable.wk (IsFormulaSet.union.mpr ⟨guards_valid _,hvalid⟩) ?_ h'
-  intro x hx
-  rw [mem_setShift_union] at hx
-  rcases mem_cup_iff.mp hx with hx | hx
-  · exact mem_cup_iff.mpr (Or.inl (guards_mono (lt_iff_succ_le.mp (d_lt_shiftRule s d))
-      (setShift_guards_subset d hx)))
-  · obtain ⟨y,hy,rfl⟩ := mem_setShift_iff.mp hx
-    obtain ⟨p,hp,rfl⟩ := translatedSequent_mem.mp hy
-    have hmem : shift PA194PAeq.language p ∈ s := by
-      rw [heq]
-      exact shift_mem_setShift hp
-    refine mem_cup_iff.mpr (Or.inr (translatedSequent_mem.mpr ⟨shift PA194PAeq.language p,hmem,?_⟩))
-    exact (translateFormula_shift hid (hd.isFormulaSet p hp) (hlen0 p hp) (hlen _ hmem)).symm
-
 #print axioms term_shift
 #print axioms formula_shift
 #print axioms identityPacket_exists
 #print axioms translateFormula_shift
-#print axioms shiftRule_guarded
 end generic
 end PA194GuardedCompiler

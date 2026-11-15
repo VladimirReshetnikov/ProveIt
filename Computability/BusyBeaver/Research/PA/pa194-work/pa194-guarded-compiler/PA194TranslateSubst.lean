@@ -8,8 +8,7 @@ set_option linter.unusedSimpArgs false
 
 A substitution of the arithmetic language whose entries are variables corresponds to a
 substitution of the source language applied to the translation, when the packets are related
-accordingly. With the shift lemma this gives the translation of `free p`, and from it the
-universal rule of the guarded compiler.
+accordingly. With the shift lemma this gives the translation of `free p`.
 -/
 namespace PA194GuardedCompiler
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
@@ -629,97 +628,8 @@ theorem translateFormula_free {param p : V} (h : IdentityPacket param)
     substs1 SourceL (^&(0 : V)) (shift SourceL (translateFormula (formulaChildParameters param) p))
   rw [hB, hA]
 
-/-! ### The universal rule -/
-
-variable (U : Theory PA194PAeq.language) [U.Δ₁] (T : Theory SourceL) [T.Δ₁]
-
-/-- The universal rule of the guarded compiler, for an identity packet. -/
-theorem allRule_guarded {param : V} (hid : IdentityPacket param) (s p d : V)
-    (hs : IsFormulaSet PA194PAeq.language s) (hmem : ^∀ p ∈ s)
-    (hd : DerivationOf U d (insert (free PA194PAeq.language p) (setShift PA194PAeq.language s)))
-    (hsize : allIntro s p d < len (nth param 1))
-    (h : Guarded T param d (fstIdx d)) : Guarded T param (allIntro s p d) s := by
-  have hlen : ∀ q ∈ s, q < len (nth param 1) :=
-    seqMembers_bounded (lt_trans (seq_lt_allIntro s p d) hsize)
-  have hdlen : d < len (nth param 1) := lt_trans (s_lt_allIntro s p d) hsize
-  have hlen0 : ∀ q ∈ fstIdx d, q < len (nth param 1) := fun q hq =>
-    lt_trans (lt_of_lt_of_le (lt_of_mem hq) (fstIdx_le_self d)) hdlen
-  have hvalid := translatedSequent_valid hid.1 hs hlen
-  have hall : IsSemiformula PA194PAeq.language 0 (^∀ p) := hs _ hmem
-  have hp : IsSemiformula PA194PAeq.language 1 p := by simpa using (IsSemiformula.all).mp hall
-  have hplen : p < len (nth param 1) := lt_trans (lt_qqAll p) (hlen _ hmem)
-  have hfmem : free PA194PAeq.language p ∈ fstIdx d := by rw [hd.1]; simp
-  have hsmem : ^∀ (shift PA194PAeq.language p) ∈ fstIdx d := by
-    rw [hd.1, ← shift_all hp.isUFormula]
-    exact mem_bitInsert_iff.mpr (Or.inr (shift_mem_setShift hmem))
-  have hslen : shift PA194PAeq.language p < len (nth param 1) :=
-    lt_trans (lt_qqAll _) (hlen0 _ hsmem)
-  have hflen : free PA194PAeq.language p < len (nth param 1) := hlen0 _ hfmem
-  have hchild : ParametersValid 1 1 (formulaChildParameters param) := by
-    simpa using formulaChildParameters_valid hid.1
-  have hC : IsSemiformula SourceL 1 (translateFormula (formulaChildParameters param) p) :=
-    formula_scope_translate hp.isUFormula 1 1 (formulaChildParameters param) hp hchild
-      (by rw [hid.child_free_len]; exact hplen)
-  have hfree := translateFormula_free hid hp hplen hslen hflen
-  have hbody : IsSemiformula SourceL 1
-      (guardBody ^⋎ translateFormula (formulaChildParameters param) p) :=
-    IsSemiformula.or.mpr ⟨guardBody_valid,hC⟩
-  have hfreebody : free SourceL (guardBody ^⋎ translateFormula (formulaChildParameters param) p) =
-      guard 0 ^⋎ free SourceL (translateFormula (formulaChildParameters param) p) := by
-    have hw : IsSemitermVec SourceL 1 0 (?[^&(0 : V)] : V) := by simp
-    show subst SourceL (?[^&(0 : V)] : V) (shift SourceL
-        (guardBody ^⋎ translateFormula (formulaChildParameters param) p)) =
-      guard 0 ^⋎ subst SourceL (?[^&(0 : V)] : V)
-        (shift SourceL (translateFormula (formulaChildParameters param) p))
-    rw [shift_or guardBody_valid.isUFormula hC.isUFormula,
-      substs_or guardBody_valid.shift.isUFormula hC.shift.isUFormula]
-    congr 1
-    exact free_guardBody
-  have htall : translateFormula param (^∀ p) =
-      ^∀ (guardBody ^⋎ translateFormula (formulaChildParameters param) p) :=
-    translate_all param p hp.isUFormula
-  have h0 : Derivable T (guards d ∪ translatedSequent param (fstIdx d)) := h
-  show Derivable T (guards (allIntro s p d) ∪ translatedSequent param s)
-  have hΓ : IsFormulaSet SourceL (guards (allIntro s p d) ∪ translatedSequent param s) :=
-    IsFormulaSet.union.mpr ⟨guards_valid _,hvalid⟩
-  refine Derivable.all_m (p := guardBody ^⋎ translateFormula (formulaChildParameters param) p) ?_ ?_
-  · rw [← htall]
-    exact mem_cup_iff.mpr (Or.inr (translatedSequent_mem.mpr ⟨_,hmem,rfl⟩))
-  · rw [hfreebody]
-    have hfC : IsFormula SourceL (free SourceL (translateFormula (formulaChildParameters param) p)) :=
-      hC.free
-    refine Derivable.or_m (p := guard 0)
-      (q := free SourceL (translateFormula (formulaChildParameters param) p))
-      (mem_bitInsert_iff.mpr (Or.inl rfl)) ?_
-    refine Derivable.wk (IsFormulaSet.insert_iff.mpr ⟨guard_valid 0,IsFormulaSet.insert_iff.mpr
-      ⟨hfC,IsFormulaSet.insert_iff.mpr ⟨IsSemiformula.or.mpr ⟨guard_valid 0,hfC⟩,hΓ.setShift⟩⟩⟩) ?_ h0
-    intro x hx
-    rw [hd.1, translatedSequent_insert] at hx
-    rcases mem_cup_iff.mp hx with hx | hx
-    · have hx' := guards_succ_subset (allIntro s p d)
-        (guards_mono (le_trans (le_of_lt (s_lt_allIntro s p d)) (by simp)) hx)
-      rcases mem_bitInsert_iff.mp hx' with hx' | hx'
-      · exact mem_bitInsert_iff.mpr (Or.inl hx')
-      · refine mem_bitInsert_iff.mpr (Or.inr (mem_bitInsert_iff.mpr (Or.inr
-          (mem_bitInsert_iff.mpr (Or.inr ?_)))))
-        rw [mem_setShift_union]
-        exact mem_cup_iff.mpr (Or.inl hx')
-    · rcases mem_bitInsert_iff.mp hx with hx | hx
-      · refine mem_bitInsert_iff.mpr (Or.inr (mem_bitInsert_iff.mpr (Or.inl ?_)))
-        rw [hx, hfree]
-      · obtain ⟨q,hq,rfl⟩ := translatedSequent_mem.mp hx
-        obtain ⟨q0,hq0,rfl⟩ := mem_setShift_iff.mp hq
-        refine mem_bitInsert_iff.mpr (Or.inr (mem_bitInsert_iff.mpr (Or.inr
-          (mem_bitInsert_iff.mpr (Or.inr ?_)))))
-        rw [mem_setShift_union]
-        refine mem_cup_iff.mpr (Or.inr (mem_setShift_iff.mpr
-          ⟨translateFormula param q0,translatedSequent_mem.mpr ⟨q0,hq0,rfl⟩,?_⟩))
-        exact translateFormula_shift hid (hs q0 hq0) (hlen q0 hq0)
-          (hlen0 _ (by rw [hd.1]; exact mem_bitInsert_iff.mpr (Or.inr (shift_mem_setShift hq0))))
-
 #print axioms term_subst
 #print axioms formula_subst
 #print axioms translateFormula_free
-#print axioms allRule_guarded
 end generic
 end PA194GuardedCompiler
