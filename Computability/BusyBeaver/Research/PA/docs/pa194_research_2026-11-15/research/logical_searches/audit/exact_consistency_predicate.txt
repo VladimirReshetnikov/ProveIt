@@ -1,0 +1,21 @@
+Exact consistency sentence used by the inherited calibration
+
+ProveIt namespace: DiophantineConsistency.IPRAPA196Consistency.
+Definitions:
+  paRefutation := provabilityPred (PA : ArithmeticTheory) (bottom : ArithmeticSentence)
+  mappedPARefutation := Semiformula.lMap embedding paRefutation
+  nativePARefutation := native mappedPARefutation
+  nativePAConsistency := not nativePARefutation
+
+Con(PA) in the main report means nativePAConsistency. This is distinct from the separately defined translatedPAConsistency, the Goedel-Gentzen image of the mapped classical consistency sentence. The primitive PA source language is 0,1,+,times,=,<, with the current pinned Foundation Peano axioms and full induction. The false formula code is 13 in the relevant Foundation singleton-sequent proof predicate; it is not the numerical calculus's contradiction code 1.
+
+Precise source references within the revised AX11H manuscript:
+  proof/foundation_paeq_completion.tex, named theorem "Exact current Foundation endpoint": current I-Sigma-1 proves Proof_PA_c(d,13)->Proof_ordinaryPAeq(D_c(d),13) for a total primitive recursive function D_c, with all-model internal-code correctness. Its immediately following paragraphs identify Eval(mappedPARefutation) with exists d Proof_PA_c(d,13) via PA195RefutationBridge.mapped_refutation_iff.
+  proof/consistency_equivalence.tex, named theorem "The two 194-state consistency machines": iPRA proves Con(PA) iff not Halt_blank(M) for AX11H and QAX11H.
+  incoming witness packet report/logical_change.tex: named theorems "Witness-consequent equivalence" and the following positive-first-head transport.
+  incoming witness packet report/implementation_proof.tex, final section "The identified PA calibration and the final theorem": composes the retained written calibration, logical transports, command compiler and physical binding to PA194H5X and PA194JH5X.
+
+Current Lean definition copy at the pinned snapshot:
+  PA/docs/pa194_ax11h_research_2026-11-14_2/research/foundation_calibration/current_endpoint/native_endpoint/IPRAPA196Consistency.lean
+
+That definition file expressly supplies only conditional assembly of machine implications; the ordinary written theorem is in the later manuscript. These statuses must not be conflated.

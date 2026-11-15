@@ -1,0 +1,74 @@
+\subsection{New source-grammar searches}
+
+After constructing the symmetric witnesses, two further stochastic searches
+reassociated their macro trees while preserving the flattened macro word.
+Both shared-subtree and single-occurrence rotations were used; axiom order
+and parameter positions were held fixed.  The controller fold $41\mapsto330$
+was preapplied, leaving 134 fixed controls.  A local-context screen sought
+an effective reader count of at most 59, which would price a candidate at
+193 states before full source and startup verification.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Family & Trials & Accepted moves & Best reader count & Sub-194 hits\\
+\midrule
+H5XS &2,605,136&291,617&60&0\\
+JH5XS &3,174,977&269,108&60&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each run had a 300-second wall-time budget, with seeds 15110201 and
+15110202, respectively.  The 5,780,113 trials are not distinct grammars.
+Heuristic penalties constrain tree height and decoder paths, so this is
+not exhaustive even over reassociations.  The candidate screen is also
+not a replacement for the full literal-tape proof.  The exact C++ source,
+frozen input templates, retained grammars and unabridged logs are in
+\file{research/grammar/}; no lower state price was obtained.
+
+\subsection{Startup repairs of the 193-state core}
+
+A separate search varied physical arithmetic and startup controllers of
+the known 193-state runtime core.  A finite register-file screen produced
+3,093 row alternatives.  Filtering their affected abstract source
+contracts left 28.  This screening is candidate generation: the physical
+tests use finite registers, and the abstract source checker has an
+arithmetic-box interface.  A passing edit would still require universal
+literal-tape contracts and blank initialization.
+
+\begin{center}\small
+\begin{tabular}{p{0.40\linewidth}rrrr}
+\toprule
+Search & Runs & Halts & Rays & Limits\\
+\midrule
+28 single edits, all 193 starts &5,404&57&5,347&0\\
+15,120 edit combinations, all starts &2,918,160&24,060&2,882,220&11,880\\
+H5XS direct core deletion, all starts &193&2&191&0\\
+JH5XS direct core deletion, all starts &193&2&191&0\\
+\bottomrule
+\end{tabular}
+\end{center}
+No complete startup frame was found.  The combination screen allows at
+most one replacement per affected row; it does not assert that all
+combinations preserve the runtime contracts simultaneously.
+
+A broader paired-controller screen tested 12,167 distinct edit pairs from
+native start 74.  Each pair changes at least one of 16:0, 24:0, 35:0 or
+45:0, on the failing startup route.  It found 8,891 rays, 2,818 certified
+outward drift patterns, 105 exact cycles and 353 bounded limits, again
+with no complete frame.  The frame search admits arbitrary values in the
+first nine registers and source sites 25 through 44; it checks the entire
+finite tape support and at least ten complete register blocks.
+
+The paired screen deliberately admits header length at least 38, a
+superset of the intended sound seeds.  For this primary grammar, the
+abstract source checker fails at header 38 (site 3247) and 39 (site 3248);
+headers 40 and 48 pass all 4,780 abstract outcomes.  Thus the negative
+header-38 screen is not a claim of universal source correctness at 38.
+
+Each broad run has a ceiling of 200,000 transitions and additional
+head/support caps.  The 12,233 capped runs across the two broad screens
+are unresolved.  Rays, outward drifts and exact cycles have explicit
+finite certificates; a timeout alone is not a nonhalting certificate.
+The complete sources, fixed inputs, exact stopping criteria, receipts and
+replay commands are in \file{research/startup/RESEARCH_NOTE.md}.

@@ -1,0 +1,265 @@
+% Include after amsmath, amssymb and amsthm; theorem environment assumed.
+\section{Two symmetric witness-family machines}
+\label{sec:symmetric-witness}
+
+The two new tables are denoted $M_{\mathrm{H5XS}}$ and
+$M_{\mathrm{JH5XS}}$.  Their direct predecessors are the independent-
+consequent witness machines PA194H5X and PA194JH5X in the incoming packet
+\texttt{pa194\_witness\_research\_2026-11-15.zip} at the pinned revision.
+The new construction changes the cache-test implementation, preserves
+each predecessor's numerical calculus and command semantics, and uses an
+additional context fold to pay for the added controller state.  This is
+a composition of attributed mechanisms, not a claim that either the
+witness calculus or the symmetric test is independently new.
+
+Both machines have 194 working states, a separate terminal label 194,
+start state 0, alphabet $\{0,1\}$, and one two-way infinite tape which is
+initially all zero.  The head initially lies at coordinate zero.  Every
+transition writes a bit and moves one square left or right.  Every
+working state is reachable in the transition graph; this statement does
+not assert reachability on the actual blank execution.
+
+The dense-file SHA-256 digests are
+\begin{quote}\small\ttfamily
+H5XS: \path{e4941ef9961b7184f18d01162889a45742be97da271ca9692a17c833628d8640}
+
+JH5XS: \path{a10f76ac7bf8d3d473a3eaad82756353ae9ba7118225a12de52f10c80c625474}
+\end{quote}
+
+\subsection{The retained calculus and command interface}
+
+Let $I(A,B)=4\pi(A,B)$ for Cantor pairing $\pi$, and use
+$U(d,B)=I(B,d)+2$, $E(a,b)=I(a,b)+3$, and contradiction code 1.
+Both witness machines replace the original equality-witness head by
+\[
+  U(D,I(E(H,D),1))\longrightarrow A,
+\]
+where $A$ is independent of $D,H$.  Setting $A=1$ recovers the original
+head; conversely the original head and explosion derive every such new
+head.  The J machine additionally uses the positive-join first head
+\[
+  (X\longrightarrow H)\longrightarrow H,
+  \qquad X=U(D,I(U(D,H),1)).
+\]
+The witness packet supplies the coupled proof translations, including the
+explosion bootstrap needed before replacing the first head.  The new
+symmetric machines retain these exact axiom emitters, their ordinary
+sixth-head premise order, their separate diagonal and guarded gate, and
+their dominated propositional head.
+
+The AX command has eleven entries, an explicit generalization binder,
+and a real fourth field.  MP succeeds visibly without a dummy push.
+Shift halts exactly when its incoming cache $h$ is one.  Neither the
+fourth AX field nor the incoming carried store is discarded in the proof.
+The new free-algebra checks compare the entire AX result, including all
+nine registers, both numerical guards, the scratch preconditions and
+the residual fourth-field encoding.  The emitters have 189 macro tokens
+for H5XS and 188 for JH5XS, exactly as in their respective predecessors.
+
+\subsection{Removing a register-restoration loop}
+
+Write the nine registers as $(N,T,W,A,D,H,X,Y,L)$.  A clean command frame has $A=X=Y=0$;
+$N,T,W,D,H,L$ are arbitrary natural numbers.  At a clean Shift
+entry, let $T=t$ and $H=h$.  The asymmetric predecessor performs
+the following primitive-register operations before entering its common
+comparison routine:
+\[
+ \operatorname{Clear}(T);\quad
+ \operatorname{Duplicate}(H,T,X);\quad
+ \operatorname{Transfer}(X,H);\quad X{+}{+}.
+\]
+Immediately before comparison, $(T,H,X)=(h,h,1)$.
+The new version performs
+\[
+ \operatorname{Clear}(T);\quad
+ \operatorname{Duplicate}(H,T,X);\quad H{+}{+},
+\]
+giving $(T,H,X)=(h,1,h)$.  The comparison routine destructively clears
+both compared registers, taking its equality exit precisely when they
+were equal.  Thus both versions halt exactly at $h=1$.  On their
+inequality exits they have the same full register file and execute the
+same stack-pop suffix.  Their halted files also agree because $h=1$
+forces the same precomparison triple.
+
+This is a total identity for every clean incoming store, including zero
+stack aliases.  It is not a simplification justified only on a sampled
+run.  The source graph loses precisely the three instructions of
+$\operatorname{Transfer}(X,H)$.  H5XS has 3,674 primitive sites and
+JH5XS 3,680; their two-branch outcome counts are 4,782 and 4,790.
+
+The exact cost of the comparison routine on $(H,X)=(u,v)$ is
+\[
+ C(u,v)=\begin{cases}
+ 3u+2,&u=v,\\
+ 3v+2,&u<v,\\
+ 2u+v+4,&u>v.
+ \end{cases}
+\]
+Transfer costs $3h+1$ primitive steps, including its terminating test.
+Consequently the saving in primitive source steps for one Shift is
+\[
+ (3h+1)+C(h,1)-C(1,h)
+ =\begin{cases}0,&h=0,\\4,&h=1,\\2h+4,&h\ge2.\end{cases}
+\]
+This is a source-operation saving.  No assertion of the same uniform
+saving in physical tape transitions is made: the two physical decoders
+and their context folds have different local clocks.
+
+\subsection{Literal construction and simultaneous folding}
+
+In native labels the new pre-fold controller edits are
+\[
+\begin{array}{c|cc}
+ &0&1\\\hline
+214&\text{unchanged}&1R30\\
+310&\text{unchanged}&1R330\\
+330&0R63&1L73.
+\end{array}
+\]
+The two named source-node replacements are
+\[
+\begin{split}
+\mathrm{node170}&=((\mathrm{node36},(\mathrm{node167},
+                   \mathrm{node145})),\mathrm{node56}),\\
+\mathrm{node171}&=(\mathrm{node170},
+                  (\operatorname{inc}5,\operatorname{continueTo}3)).
+\end{split}
+\]
+They are checked against the completely expanded source tree and against
+an independent interval-based control-flow resolver.  The full source
+instruction array also equals the independently assembled arithmetic
+templates, including every zero, positive and jump successor.
+
+Retain the predecessor's nine reader folds and add the controller fold
+$41\mapsto330$ with surviving actions
+\[
+ \delta(330,0)=0L31,\qquad \delta(330,1)=1L46.
+\]
+All incoming edges to the deleted state 41 write zero and move right;
+all incoming edges to 330 in the raw table write one and move right.
+Thus the bit immediately to the left records which raw control was
+entered.  For each of the two historical incoming bits and two current
+bits, the final simultaneous table is executed until it reaches exactly
+the target state, tape and head of the raw transition.  The same check
+is performed for all nine reader pairs.  There are forty local cases,
+and the surviving actions are checked in the final table, not in an
+unfolded table with other folds temporarily ignored.
+
+The resulting price is
+\[
+ 135\text{ fixed controls}+69\text{ reader controls}
+       -10\text{ folds}=194.
+\]
+The added raw controller and added fold cancel each other.  The supplied
+dense/native label bijection is checked on all 388 rows, with native
+start 74 and native halt 254.
+
+The complete blank startup of each new table lasts exactly 57,768
+transitions.  It reaches native state 84 with head $-2$, the address of
+source site 25, logical registers $(2,0,\ldots,0)$, a nonempty spare file
+of twenty-six ones, and the specified clean header.  The verifier
+compares the whole finite tape support, including blank exterior; it
+does not compare only a fixed window.  This supplies the actual blank
+initialization and avoids the known failure of the 193-state runtime
+splice.
+
+The independent frame audits give the following convenient common bound
+for every nonhalting primitive source step:
+\[
+ 3\le k(s)\le
+ 542+8g+4\sum_{i=0}^{8}r_i+2a_0+2\operatorname{width}(A),
+\]
+where $g$ is the header gap, $r_i$ the nine physical primary values,
+and $a_0,A$ the first spare and remaining spare list.  The positive
+decrement case uses a parameter $r_i-1\le r_i$.  This upper bound is
+obtained coefficientwise from the thirteen-slot affine certificates;
+it is independent of a search fuel.  The single halt-site contract has
+duration exactly three.  The audits check 4,781 and 4,789 nonhalting
+boundaries, respectively, and every one has zero net head displacement
+and the exact padded successor address.
+
+\subsection{Relative iPRA theorem}
+
+Let $P$ be either asymmetric witness predecessor and $P^S$ its new
+symmetric partner.  A clean command frame contains a full coded
+register file, residual candidate, fresh counter, source address,
+header gap, finite nonempty spare list and tape offset.
+
+\begin{theorem}[Uniform relative preservation]
+For each of the two literal blank-start pairs,
+\[
+ \mathsf{iPRA}\vdash
+    \operatorname{Halt}_{\mathrm{blank}}(P^S)
+       \longleftrightarrow
+    \operatorname{Halt}_{\mathrm{blank}}(P).
+\]
+Both directions have primitive-recursive transformations of halting
+witnesses.  This is an ordinary mathematical proof; no new proof-kernel
+endpoint is asserted.
+\end{theorem}
+
+\begin{proof}
+The clear, duplicate, transfer and compare identities follow by
+quantifier-free counter induction on their explicit primitive-register
+programs.  The calculation above therefore proves equality of the
+complete abstract Shift effects over iPRA.  AX and MP have identical
+templates and emitters in each pair.  Candidate selection, field parsing,
+fresh-counter update and the scheduler's carried store are identical.
+Thus both primitive source programs implement the same totalized
+abstract command scheduler at every clean command boundary.
+
+The source-to-command clocks are explicit primitive-recursive sums of
+the positive durations of the arithmetic templates.  Induction on the
+number of commands in the equation between the coded source state at
+the cumulative clock and its abstract command state gives the forward
+simulation.  Conversely, if the source halted at time $t$ without the
+first $t+1$ abstract states containing a halt, positive segment lengths
+would place a nonhalting clean source frame after time $t$.  This
+contradicts absorbing halting.  Bounded search through the finite prefix
+extracts the corresponding command-halt witness.  All these invariant
+and finite-prefix tests are primitive recursive; no unbounded universal
+induction formula or Markov principle is needed.
+
+At the physical layer, interpret each literal symbolic certificate rule
+in finite binary-word or zipper coding.  A literal row is a defining
+equation.  A uniform run sweep is induction on its run length; the
+four arbitrary-list traversals are induction over a coded finite list
+using their one-block identities.  Concatenation and complete-frame
+equalities are primitive-recursive equations.  The finite certificate
+composition therefore gives iPRA-correct positive local source-step
+contracts.  Their finite enumeration covers each source site and both
+decrement branches.  The frame-closure audit checks the exact successor
+address and nonnegative duration coefficients, with a strictly positive
+constant, for every outcome.  The full finite startup supplies the base
+frame.  The same positive-clock argument relates the literal machine
+to its primitive source in both directions, with a bounded backward
+witness extraction.  Compose these two physical/source equivalences
+with equality of the abstract command scheduler.
+
+For the child physical clock one can equivalently define, before source
+halting, $T(0)=57768$ and
+$T(n+1)=T(n)+k(S^n(s_0))$, including the evolving gap and spare file
+in $s$.  Give it arbitrary total primitive-recursive values after a
+halt.  The parent clock uses its independently checked startup constant
+$57922$ instead; the clocks need not agree numerically.  Then $T(n)\ge57768+3n$ on every nonhalting prefix.  The displayed
+upper bound and the primitive-recursive source-state iteration also
+give a primitive-recursive upper clock by summing their right-hand
+sides.  Neither proof direction assumes a constant gap, a constant
+spare file, or that a physical halting time occurs at a source boundary.
+\end{proof}
+
+The witness packet supplies its written relative translations to the
+revised AX11H/QAX11H calculus and retains the complete revised written
+calibration archive.  Composing the theorem with that attributed
+absolute calibration yields
+\[
+ \mathsf{iPRA}\vdash
+ \operatorname{Con}(\mathsf{PA})
+   \longleftrightarrow\neg\operatorname{Halt}_{\mathrm{blank}}(P^S).
+\]
+The consistency predicate is the retained current-Foundation
+\texttt{nativePAConsistency}, not a replacement consistency sentence.
+The newly performed finite checks certify the concrete machines and
+relative simulation data.  The PA-to-calculus proof compiler is an
+inherited written mathematical construction; its full transitive Lean
+formalization has not been completed or rebuilt here.

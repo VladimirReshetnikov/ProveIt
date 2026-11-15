@@ -1,0 +1,215 @@
+\section{Additional logical and command-protocol investigations}
+\subsection{Safe contraposition variants of the emitter}
+The first quantifier head, which also participates in the explosion
+bootstrap, was retained. For each of the third, fourth, and sixth heads,
+write its ordinary curried form as $A\to(B\to C)$ and consider the six
+classically equivalent presentations
+\[
+\begin{array}{lll}
+A\to(B\to C),&B\to(A\to C),&\neg C\to(A\to\neg B),\\
+A\to(\neg C\to\neg B),&\neg C\to(B\to\neg A),&B\to(\neg C\to\neg A).
+\end{array}
+\]
+The two positive presentations had already been searched in the corpus.
+The new search used every combination containing at least one of the
+four negative presentations, with two inherited grammar shapes:
+$2(6^3-2^3)=416$ initial trees.  Local and shared reassociations were
+scored using the inherited fold scorer, with unchanged
+AX11H controls. The scorer checks simultaneous compatibility when the
+optimistic reader score is at most 64. Parameter permutations were disabled because the new
+word lengths change the old fixed offset intervals. A 300-second run
+made 4,294,014 proposals and reached optimistic reader score 65. With the
+134 fixed controls this is an unverified 199-state price, before any
+additional compatibility or physical-simulation obstruction. No sub-194
+machine resulted. This is a finite search record, not a global lower
+bound, and its best score was not promoted to a verified physical table.
+
+These transformations use fixed classical propositional proof templates
+after the retained calculus has supplied its ordinary implicational and
+explosion rules. The latter has a direct bootstrap using only the
+retained first head and the restricted propositional basis: under the
+assumption $1$, $K$ gives
+$U(0,N(U(0,A)))\to1$, which is $\exists_0 U(0,A)$;
+the first head then gives $A$. Deduction supplies $1\to A$, and Peirce
+supplies the remaining classical templates. Thus this argument does
+not presuppose a changed third, fourth, or sixth head. They do not replace the first head by the weaker modal
+reflexivity schema $\forall_x H\to H$. The latter does not by itself
+supply the symmetry content of $(\exists_x\forall_xH)\to H$.
+
+\subsection{Modus ponens that stores its result}
+Let a command store be $(t,w,d,h)$, with Cantor stack coding
+$[a;w]=p(a,w)$ and $p(0,0)=0$. For an MP operand $x$, put $b=d+x$.
+The ordinary comparison is $I(t,b)=h$. When it fails, retain the usual
+output $(0,w,b,0)$. Three alternative successful outputs are
+\[
+\begin{array}{c|c|l}
+\text{protocol}&\text{successful output}&\text{successful source tail}\\\hline
+\mathrm{DD}&(b,[b,0;w],b,0)&\mathrm{copyD};\mathrm{copyD}\\
+\mathrm{HD}&(b,[0,0;w],b,0)&\mathrm{copyH};\mathrm{copyD}\\
+\mathrm{DH}&(0,[b,0;w],b,0)&\mathrm{copyD};\mathrm{copyH}.
+\end{array}
+\]
+Here each preserving copy first pushes the old visible top. At successful
+comparison entry, $t=h=0$ and $d=b$, so the displayed equations follow
+for arbitrary $b,w$, including their zero aliases. DD supplies a reusable
+copy of the new theorem; DH puts its result only on the theorem stack.
+They change recurring computation and the proof-command protocol, not
+only state names.
+
+There is a simple universal compiler for these protocols with the old
+ten-entry AX and sum-based Shift. The inherited words
+\[
+ \mathrm{Push}=\mathsf A_{0,0,0};\mathsf S^9;\mathsf{MP}_0,
+ \qquad
+ \mathrm{Pop}=\mathsf A_{0,0,0};\mathsf S^{11}
+\]
+still obey
+\[
+\mathrm{Push}(t,w,d,h)=(0,[t;w],0,0),\qquad
+\mathrm{Pop}(t,[a;w],d,h)=(t,w,0,a).
+\]
+Push's final comparison is forced to fail: its proposed implication
+has residue zero and its cached universal head has residue two.
+Consequently its behavior is unaffected by the new successful branch.
+Pop is safe even for $t=1$: the final tested sum contains a universal
+code at least two. In particular these are identities on arbitrary
+natural-number stacks, not merely on nonempty free lists.
+
+Define
+\[
+ \mathrm{Erase}=\mathrm{Push};\mathrm{Pop};\mathrm{Push};\mathrm{Pop}.
+\]
+Successive stores are
+\[
+(t,w,d,h)\mapsto(0,[t;w],0,0)\mapsto(0,w,0,t)
+ \mapsto(0,[0;w],0,0)\mapsto(0,w,0,0).
+\]
+For numerical offset $u$, use the empty word when $u=0$, and
+$\mathsf{MP}_u$ when $u>0$. From $(0,w,0,0)$ the latter comparison
+fails since $I(0,u)>0$, and its output is $(0,w,u,0)$.
+For DD or HD, follow a successful MP by two Pops: the two newly
+pushed entries are removed and the output is $(b,w,0,0)$.
+For DH use Pop followed by Shift: this either yields $(b,w,0,0)$ or
+halts when $b=1$. The existing axiom selectors and generalization
+compiler can be adjusted using these identities; all additional stack
+entries are supported by theorem proofs whenever the successful MP is.
+The script \texttt{mp\_tail\_words.py} checks these free-term identities,
+the reserved-zero MP suffix, zero aliases, and the cases $b=0$, $b=1$
+and $b\ne1$. It additionally checks all ten axiom selectors,
+theorem-only generalization, and the dominated-$\rho_8$ selector.
+It does not by itself establish any physical simulation.
+
+A particularly direct stack-only tail is
+$\mathrm{copyDWithoutPush};\mathrm{push}$, giving
+$(0,[b;w],b,0)$. A fully reconstructed 195-state table for this variant
+passed all 4,780 construction symbolic contracts and reached its exact
+complete blank initialization frame in 58,154 steps. It introduces
+native reader 330, whose rows are $0\mapsto0R114$ and
+$1\mapsto1R19$, and changes the successful comparison edge $(164,1)$
+to that reader. The seven inherited AX folds remain valid. No immediate
+opposite-history fold eliminates the added reader.
+The term checker calls this protocol SP. Its proof compiler starts MP
+with the reserved-zero stack, so the successful output is
+$(0,[b,0;w],b,0)$; Pop followed by Shift yields $(b,w,0,0)$ or halts
+when $b=1$. That suffix must not be claimed to normalize arbitrary
+carried stacks without the reserved zero.
+
+For DD, HD and DH, a second search installs the respective new tail
+reader as a shared two-macro pattern in the AX grammar as well. Its
+price is 135 fixed controls, so effective AX score 59 is required merely
+to reach 194. Search scores, literal-table validation, and final proof
+status must remain separate; a lower grammar score alone is not a new
+consistency machine.
+
+Each family used 49 seeds made from primary and Q grammar shapes,
+positive antecedent exchanges in the third, fourth and sixth heads,
+and the three already calibrated diagonal choices for $\Gamma$.
+The 180-second shared-reassociation runs examined the following numbers
+of proposals:
+\begin{center}
+\begin{tabular}{crrr}
+Protocol & Proposals & Accepted proposals & Best AX score\\\hline
+DD & 1,150,813 & 361,831 & 60\\
+HD & 1,244,403 & 377,848 & 60\\
+DH & 1,067,950 & 328,391 & 60
+\end{tabular}
+\end{center}
+For each protocol, a second deterministic screen selected ten final
+grammar shapes and tried all $6^6=46,656$ independent permutations of
+the three parameters in the six ordinary heads. Thus each protocol
+received 466,560 further scored cases, for 1,399,680 total. Every best
+score remained 60; no score 59 occurred. These scores use the inherited
+compatible local-fold scorer with the extra tail pattern available as
+a shared macro. They are scoped negative results for those seeds,
+shapes and transformations, not a lower bound for all grammars,
+all fold mechanisms, or all machines. No 194-state physical table for
+these changed successful-MP protocols is claimed.
+
+\subsection{A fixed-label separation idea remains unproved}
+A possible larger logical change is to restrict the separation gate's
+set and element labels to 0 and 1, and use the property code
+$U(A,A)\geq2$. The diagonal freshness theorem makes this property
+classically equivalent to $A$ and makes the numerical guard automatic.
+However, an argument invoking arbitrary first-order variable transport
+at this point is circular: the existing diagonal calculus uses its full
+gate to obtain reverse membership rewriting and the equality/binder
+transport interfaces. No completeness proof for the restricted gate
+was obtained, so this idea is not used to claim a smaller machine.
+
+\subsection{What transfers from the three additional research directions}
+The following comparisons refer to the pinned repository source, rather
+than to an assumption that its current main branch is unchanged.
+
+The ZFC research is directly useful at the compiler and logical-interface
+levels. Its history-sensitive reader sharing, closed source rotations,
+register allocation, command-local operand reading, and exact complete
+startup checks are applicable techniques. Its dominated-$\rho_8$ and
+alternative propositional bases also help separate a merely shorter
+axiom expression from a fully calibrated calculus. Several of those
+ideas are already ancestors of the PA packets and cannot be counted as
+new savings. In particular, the ZFC \texttt{k218-hf-efq} report proves a
+closed-theorem double-negation elimination rule for one proposed weaker
+core but explicitly leaves its full consistency calibration open. That
+rule is not a proved formula-level double-negation axiom or an
+unrestricted deduction theorem. The report's logical gap is a reason
+not to delete a PA axiom head solely on the strength of that bootstrap.
+The ZFC README's 215-state exact-table endpoint and its separate internal
+PA status also concern a different consistency target; changing that
+target does not establish the requested equivalence with
+$\operatorname{Con}(\mathrm{PA})$.
+
+The DiophantineConsistency project supplies another possible search
+architecture: enumerate integer or natural tuples and halt at a zero
+of one fixed polynomial. Its reported iPRA proof-existence endpoints
+are valuable examples of how to internalize a consistency reduction,
+including the domain and exact expression binding. Its maintained
+target is the repository's ZFC refutation predicate. A PA replacement
+would first require the corresponding PA polynomial and its own
+primitive-recursive reductions in both directions. More fundamentally,
+the reported counts are polynomial variables, arithmetic-circuit
+operations and degrees, rather than binary TM states including data
+generation. For example, the described compact44 tuple contains the
+coefficient $\beta=2^{590069}-1$. A small number of algebraic operations
+does not by itself provide a small blank-tape constructor for the literal
+coefficient tuple and a small evaluator. No such sub-194-state PA
+realization was constructed in this investigation; no impossibility
+claim about the architecture is made.
+
+The ConciseIPRA project measures complete Python proof checkers by
+normalized source tokens, AST nodes, and UTF-8 bytes. Its native scalar
+core has zero, successor and an iterator, equality, and two closure
+operators. Its restrictions of equality transport, single introduction
+rules, deterministic witnesses, and source-directed dispatch are useful
+ideas for reducing a proof checker's case analysis. However, its stated
+calibration is a presentation of iPRA. Replacing the PA refutation search
+requires a separate consistency calibration to PA, in addition to the
+existing presentation theorem. Substitution, fresh-variable management,
+iterator syntax and proof hypotheses must also be implemented and
+charged when passing from a concise Python checker to a literal
+one-tape binary table. Neither the Python size metric nor the small
+axiom inventory supplies that cost automatically. We therefore did not
+claim a PA state saving from those counts.
+
+These three directions inform the search and its proof discipline.
+They do not supply an uncharged oracle, an omitted constant initializer,
+or a replacement consistency target in the delivered PA machine.

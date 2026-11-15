@@ -1,0 +1,415 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.88in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{enumitem,fancyhdr,fvextra}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,breaklinks=true]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Three new 194-state machines for Con(PA)},pdfauthor={Research report prepared for Vladimir Reshetnikov}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Nat}{\mathbb N}
+\newcommand{\Cfour}{\mathcal C_4}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\machine}[1]{\textsf{#1}}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\setlist{itemsep=3pt,topsep=5pt,parsep=0pt}
+\setlength{\emergencystretch}{3em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PA consistency machines: the GD family}
+\fancyhead[R]{\small 14 November 2026}
+\fancyfoot[C]{\thepage}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{1.1in}
+{\color{MidnightBlue}\Large Computability and weak arithmetic\par}
+\vspace{0.35in}
+{\Huge\bfseries Three new 194-state machines\par}
+\vspace{0.14in}
+{\LARGE for the consistency of Peano arithmetic\par}
+\vspace{0.4in}
+{\large Comparison of 93 research deliveries, explicit constructions,\par
+written $\ipra$ calibration, and further state-reduction searches\par}
+\vspace{0.65in}
+\noindent\textbf{Prepared for Vladimir Reshetnikov}\par
+\vspace{0.12in}
+14 November 2026, Pacific time\par
+\vfill
+\noindent\textbf{Result.} Three new complete, binary, single-tape,
+blank-start machines with 194 working states. A machine with fewer than
+194 states was not established. The new machines satisfy the desired
+consistency equivalence by the written proof and inherited calibration
+specified in this report. No new end-to-end Lean theorem is claimed.\par
+\vspace{0.25in}
+\noindent\textbf{Pinned repository revision}\par
+\small\texttt{8d31445d858761a8f6150c2e5012adae8895e932}\par
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\pagenumbering{roman}
+
+\begin{abstract}
+We compare the current PA consistency-machine collection in ProveIt,
+including its six pending incoming archives, and construct three further
+194-working-state machines, \machine{PA194GD}, \machine{PA194GDH}, and
+\machine{PA194GDHS}. Their source programs combine an explicit-binder
+universal-formula emitter with a diagonal axiom emitted from a different
+parameter. In particular, the simultaneous outputs use $U(A,h)$ and
+$D\mathbin{\to}U(D,D)$; this changes the command interface and cannot be
+obtained by one global renaming of parameters. The compiler uses 69 AX
+reader controls and nine compatible reader identifications. The symmetric
+cached-detector variant has one additional fixed control and one additional
+identification. All three final tables have 388 transitions and start on
+the entirely blank binary tape.
+
+The supplied evidence separates four layers: exact table construction,
+universal symbolic execution from literal transition rows, command and
+numerical-calculus correctness, and the inherited written $\ipra$
+calibration to $\Con(\PA)$. A complete census contains 139 pre-existing
+spanning structural classes at 194 states, including diagnostic and rejected
+experiments; the three new tables belong to none of them, even under broad
+structural symmetries. Further grammar, source, and local quotient searches
+are reported with their finite scope. They do not establish a sub-194
+machine or a lower bound. The accompanying archive contains every final
+transition table, source description, proof source, independent certificate,
+reproduction program, and the exact inherited calibration archive.
+\end{abstract}
+
+\tableofcontents
+\clearpage
+\pagenumbering{arabic}
+
+\section{Result and mathematical scope}
+\label{sec:result}
+The requested strict state reduction was not achieved. The fallback result
+is a new three-machine family with the same 194-state count and a different
+axiom-emitter interface. The table convention is the one used by the
+repository: a two-way infinite tape over $\{0,1\}$, initially all zero, the
+head at cell zero, start control zero, working controls $0,\ldots,193$, and
+a separate terminal label 194. Every working control has both transition
+rows, and each transition writes a bit and moves exactly one cell. The
+halt label has no rows and is not counted as a working state.
+
+\begin{theorem}[Written consistency calibration]
+For each $M$ in
+$\{\machine{PA194GD},\machine{PA194GDH},\machine{PA194GDHS}\}$,
+\[
+  \ipra\ \vdash\ \Con(\PA)\ \longleftrightarrow\ \neg\Halt(M,\text{blank}).
+\]
+Here $\Con(\PA)$ uses the PA proof coding of the pinned repository
+calibration. The argument consists of the new source and physical
+constructions in this report, composed with the supplied written AX11H
+numerical-consistency calibration.
+\end{theorem}
+
+This is an ordinary written mathematical result with explicitly identified
+inherited dependencies. It is not a claim that the complete equivalence has
+been checked by a proof-assistant kernel in this work. The independent
+Python checks certify their specified finite or symbolic obligations;
+they do not, by running, prove the logical calibration.
+
+\input{result_metrics.tex}
+
+\subsection{Why the result is a new design}
+The old diagonal emitter uses a parameter $A$ in the diagonal theorem
+$A\to U(A,A)$. Existing explicit-binder designs also use $A$ as the binder
+of the universal formula $U(A,h)$ emitted from the old cache. Our new
+combination emits $U(A,h)$ and $D\to U(D,D)$, where $D=d+x$ is the
+independently supplied post-offset parameter. The binder and the diagonal
+argument can therefore be chosen independently within one command.
+A global substitution on parameter names preserves whether two output
+positions use the same parameter, so it cannot turn the old dependence into
+this new one.
+
+The unrestricted diagonal schema is unchanged as a set of available axioms:
+its argument can still be any natural code. Its placement in the command,
+and the joint relation between outputs of a single command, have changed.
+The distinction matters for both program construction and proof compilation.
+The GD family also retains the ordinary sixth head, restores the ordinary
+AX return, and uses the no-push successful MP operation. It does not merely
+rename machine states, reflect the tape, exchange tape symbols, or decorate
+the terminal transition differently.
+
+This is a new combination and allocation within the established compiler
+architecture. The underlying Cantor coding, numerical calculus,
+register engine, and several individual transformations are inherited and
+credited. We make no claim to have invented a new theory of arithmetic.
+
+\subsection{How to read the evidence}
+There are two potentially confusing status distinctions.
+First, the main repository README describes open machine-specific formal
+Lean endpoints, while a newer incoming AX11H packet supplies a substantially
+stronger \emph{written} $\ipra$ argument. Both can be true. The latter
+packet is included verbatim with its SHA-256 identity and was separately
+reviewed here; the review did not rebuild all of its transitive Lean
+sources. Second, a halting equivalence proved for ordinary standard runs
+alone would not establish an internal $\ipra$ equivalence. The argument
+here identifies primitive-recursive trace and proof transformations and the
+appropriate quantifier-free or model-uniform induction at the required
+layers. The inherited negative transfer is kept distinct from a positive
+existential equivalence; no Markov principle is inserted.
+
+\input{comparison.tex}
+
+\input{gd_calibration.tex}
+
+\section{Literal construction and universal physical correctness}
+\label{sec:physical}
+\subsection{A reproducible construction from pinned inputs}
+The executable constructor begins with exact copies of the primary grammar,
+the separate-diagonal grammar, the primary unfolded native transition table,
+and the upstream structured source definitions. Both Git blob identities
+and SHA-256 values of these inputs are checked before construction. The new
+190-token AX word differs from the primary word in exactly four positions,
+numbered from zero: positions 1, 121, 122, and 123. Position 1 makes the
+universal binder explicit. The last three changes select the parameter
+used by the diagonal axiom. No arithmetic-box transition is changed.
+
+The source grammar is expanded to primitive increment, decrement,
+counted-break, counted-continue, and halt instructions. Crucially, every
+jump is resolved to its destination instruction ordinal. The builder
+checks equality with an independently associated reference word's complete
+instruction array. Equality of token words alone would not suffice,
+because rearranging a structured tree can change counted returns.
+
+The standard source interface has nine logical registers in the physical
+order specified in the output labels, plus an arbitrary nonempty finite
+spare list. Source site 25 is the post-startup entry, with logical vector
+$(2,0,0,0,0,0,0,0,0)$ and 26 spare entries equal to one. The tape frame
+contains its complete instruction address, a zero gap, delimiter bits,
+and the unary register blocks, with zero exterior. These values describe
+the seed, not a restriction that all later register values be small.
+
+\subsection{Nine reader identifications, checked simultaneously}
+The ordinary GD and GDH parents have 203 controls:
+134 fixed controls and 69 AX readers. Nine reader pairs are identified,
+giving $134+69-9=194$. GDHS has 135 fixed controls, 69 AX readers, the same
+nine reader identifications, and the additional fixed pair $41\sim331$:
+$135+69-10=194$.
+
+\input{fold_table.tex}
+
+The construction uses the immediately preceding tape symbol to remember
+which of two original reader controls was entered. Each predecessor of the
+first control writes zero and moves right; each predecessor of the second
+writes one and moves right. At the merged control, a short detour reads
+that preserved bit and reconstructs the original transition. This fact is
+checked in the \emph{final simultaneously folded table}. Checking folds
+only against the unmodified parent would miss interference between them.
+
+For each identified pair there are four cases: two remembered predecessor
+bits and two currently read bits. The certificate enumerates all cases and
+all incoming predecessor rows. GD and GDH each have 36 local cases and 30
+incoming rows; GDHS has 40 cases and 33 incoming rows. The local durations
+are 1, 3, or 5 literal transitions. The longer cases are relevant: a blanket
+three-step bound would be false for these new folds.
+
+For example, one GD case replacing old control 2004 on current bit zero
+begins in retained control 2039 with remembered zero. The final table
+follows
+\[
+ (2039,0)\to(2015,-1)\to(2026,0)\to(2061,-1)
+ \to(2062,0)\to(166,1).
+\]
+Here the second coordinate is head displacement from the initial cell.
+Throughout the detour only the two displayed cells are inspected, and
+both have their prescribed final bits. Thus this five-step trace is valid
+for arbitrary tape contents outside those cells, not just for a simulated
+blank prefix.
+
+Write $H_X(t)$ for the halt flag after $t$ literal steps of $X$, with
+halt made absorbing.
+
+\begin{lemma}[Relative fold simulation in $\ipra$]
+Let $R$ be one of the 203- or 204-control parents and $M$ its folded table.
+With absorbing halting clocks and the corresponding start configurations,
+$\ipra$ proves
+\[
+ H_R(t)\ \Longrightarrow\ H_M(5t),\qquad
+ H_M(t)\ \Longrightarrow\ H_R(t).
+\]
+In particular, $\ipra$ proves their existential halting equivalence.
+\end{lemma}
+\begin{proof}
+Maintain the parent control, its image under the finite identification map,
+and equality of the complete tapes and heads at macro boundaries. The
+incoming-row conditions give the remembered symbol whenever a folded
+control is reached. Each parent transition has a positive expansion of
+length at most five, with its exact endpoint certified by the four local
+cases; intermediate controls do not halt. All other transitions expand to
+one step. Primitive recursion constructs the cumulative clock and the
+expanded trace, with $t\leq\tau(t)\leq5t$ before halt. Conversely, bounded
+search within a candidate prefix locates its last macro boundary; a halt
+cannot occur strictly inside a microtrace, so its compressed parent prefix
+has length at most the candidate length. Induction uses decidable finite
+control and tape-equality predicates. These are primitive-recursive
+predicates and quantifier-free induction invariants in the definitional
+language of $\ipra$. No inference about nonstandard time is obtained merely
+by extrapolating standard runs.
+\end{proof}
+
+\subsection{Independent verification of every source outcome}
+The independent verifier uses the literal transition rows and its own
+source resolver. It does not import the construction compiler or call
+arithmetic-box oracles. It first derives four generic list-sweep lemmas
+from the supplied rows. It then symbolically executes every source
+instruction outcome with arbitrary natural register values, arbitrary
+finite nonempty spare list, and arbitrary admissible gap parameter. A
+decrement contributes two outcomes, one for zero and one for positive
+input. Each successful result establishes exact equality of the whole
+successor frame, including its changed gap and spare suffix.
+
+The arithmetic interpretation of a symbolic tape atom, the width variable,
+zero-exterior normalization, and primitive-recursive sweep clocks is the
+one developed in the included AX11H physical audit. The new checks
+instantiate that method with the new source arrays and literal tables.
+There is no fixed upper bound on register values in these contracts.
+The independent decoder and array checks also prevent an accidental
+change of a counted return from being concealed by a matching emitter word.
+
+\input{verification_metrics.tex}
+
+An independent startup simulator uses an unbounded-coordinate set of
+one-cells. The first complete canonical source frame occurs after 58,154,
+57,922, and 57,768 transitions respectively. Equality includes every one-cell
+and the all-zero exterior. All 194 controls are reachable in the finite
+control graph from the designated start. This graph fact must not be
+confused with a claim that all controls are visited by a consistent blank
+computation. The closed startup equalities are finite primitive-recursive
+computations; they do not replace the universal runtime argument.
+
+\section{Further attempts to reduce the count}
+\label{sec:search}
+\input{search_results.tex}
+\input{theory_transfer.tex}
+
+\section{Formalization status and the remaining Lean work}
+\label{sec:formal-status}
+The complete mathematical dependence is
+\[
+\begin{gathered}
+ \text{literal machine}\ \longleftrightarrow\
+ \text{structured source scheduler}\ \longleftrightarrow\
+ \text{finite $\Cfour$ refutation},\\
+ \neg(\text{finite $\Cfour$ refutation})\
+ \longleftrightarrow\ \Con(\PA).
+\end{gathered}
+\]
+The first line has explicit primitive-recursive clocks and witness
+compilers. The second line uses the pinned written negative calibration
+and its one-way transfer results. The separation is deliberate: a
+negative equivalence does not, intuitionistically, automatically imply
+an equivalence between the positive existential refutation statements.
+
+The most direct Lean implementation can retain the repository's existing
+arithmetic table and source infrastructure. A concrete port should proceed
+as follows.
+\begin{enumerate}
+\item Import each literal table with its fixed hash, its dense/native
+      conjugacy, and its 194-control enumeration.
+\item Encode the 36 or 40 simultaneous two-cell fold cases and the full
+      incoming-row condition. Prove the above bounded clock simulation in
+      the repository's arithmetic machine semantics.
+\item Bind the new source tree, all resolved destinations, four list
+      sweeps, and complete startup frame. Port the symbolic certificates to
+      kernel-checkable statements with explicit primitive-recursive
+      durations.
+\item Prove the exact three-field, ten-entry AX interface and both MP
+      branches. Instantiate the appropriate ordinary or cached Shift
+      compiler, including every zero-pair alias and any early halt.
+\item Reuse the finite proof-list annotations for source soundness and the
+      bounded all-store compiler for completeness. The diagonal selector
+      must supply $x=a$ when asking for the instance $\Gamma(a)$.
+\item Compose with the pinned numerical-consistency negative calibration,
+      porting its currently written weak-arithmetic and Foundation adapter
+      components as necessary. Check the literal final theorem rather than
+      only a conditional endpoint.
+\end{enumerate}
+The archive supplies the finite data and written proof obligations for this
+port. The end-to-end Lean formalization remains to be completed; the written
+arguments and executable certificates are separate from kernel verification.
+
+\section{Reproduction, provenance, and artifact map}
+\label{sec:reproduction}
+All primary construction and certificate replay programs use Python 3.10 or
+newer and its standard library. Assertions must remain enabled. C++17 is
+needed only for optional discovery searches, whose outputs are not needed
+to reconstruct the successful machines. The complete executable command
+list is in the archive's \code{README.md}; it distinguishes inexpensive
+identity/structural checks from the longer universal replays. A separate
+output directory can be used for replays so that frozen receipts remain
+unchanged.
+
+The input revision, individual source paths, Git blob identities, file
+hashes, and imported licenses are retained. The underlying compiler and
+numerical calculus are credited to their supplied authors and earlier
+research packets. The original AX11H calibration archive is preserved as
+\code{references/AX11H\_written\_calibration.zip}; its SHA-256 is
+\begin{center}\small\ttfamily
+93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075
+\end{center}
+The ten reviewed TeX components are also available as ordinary text files,
+with the inherited README and provenance. The independent review explains
+which displayed mathematical arguments were checked and which cited
+finite proof recipes and Lean closures were not rebuilt.
+
+The main directories are \code{machines/} for literal tables and source
+arrays, \code{construction/} and \code{inputs/} for deterministic building,
+\code{verification/} for independent certificates,
+\code{comparison/} for the complete census and 139 reference classes,
+\code{research/} for finite negative searches, and \code{report/} for this
+PDF, its complete LaTeX source, and generated appendices. Hashes in
+\code{SHA256SUMS} cover the delivered files other than that manifest.
+
+\begingroup\footnotesize
+\begin{thebibliography}{9}
+\raggedright
+\setlength{\itemsep}{4pt}
+\setlength{\parsep}{0pt}
+\bibitem{snapshot} V. Reshetnikov et al., \emph{ProveIt}, revision
+\texttt{8d31445d858761a8f6150c2e5012adae8895e932}.
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/8d31445d858761a8f6150c2e5012adae8895e932}{Pinned source snapshot on GitHub}.
+\bibitem{pa} \emph{PA consistency machines}, repository status and collected
+research, \code{Computability/BusyBeaver/Research/PA} at \cite{snapshot}.
+\bibitem{primary} \emph{A 194-state Turing machine calibrated to Con(PA)},
+\code{PA/docs/pa194\_conpa\_2026-11-13}, including compiler, symbolic
+physical execution, and independent verifier.
+\bibitem{ax11h} \emph{PA194AX11H written $\ipra$ calibration}, revised archive
+identified above, carried in the newest incoming reports at \cite{snapshot}.
+The archived proof and its finite source dependencies are inherited here.
+\bibitem{incoming} Six incoming research archives at \cite{snapshot}; exact
+filenames, hashes, nested locators, and principal designs are recorded in
+\code{comparison/archive\_provenance.json} and the comparison ledgers.
+\bibitem{other-programs} The ZFC consistency-machine,
+DiophantineConsistency, and ConciseIPRA directories at \cite{snapshot};
+relevant transfer ideas and limits are discussed in the comparison and
+research sections.
+\end{thebibliography}
+\endgroup
+
+\clearpage
+\appendix
+\section{Complete transition tables}
+\label{app:tables}
+Each entry $(w,D,n)$ writes $w$, moves in direction $D\in\{L,R\}$, and
+enters $n$. The two halves of each long table are independent groups of
+states. There are exactly 194 working controls and 388 rows per machine.
+Start at control zero on the entirely zero tape; halt on entering label
+194. Machine-readable five-column text and the exact label maps are
+included in the archive.
+\input{transition_tables.tex}
+\end{document}

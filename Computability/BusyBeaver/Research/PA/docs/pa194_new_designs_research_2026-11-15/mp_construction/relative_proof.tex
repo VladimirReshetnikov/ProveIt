@@ -1,0 +1,148 @@
+\subsection{A direct relative iPRA theorem for the MP reassociation}
+
+Let $A$ be the exact revised AX11H parent and $B$ the new MP-reassociated
+194-state machine. The parent's native table has SHA-256
+\begin{center}\small\ttfamily
+6022711dcc0a025eb4b7a5a8f690d6b52f45f3d963a0868afef10962ccc49bd3.
+\end{center}
+Its blank startup takes $d_A=57\,922$ transitions; $B$ takes
+$d_B=58\,066$. These prefixes reach the same logical seed and are checked
+against the complete tape, including the zero exterior.
+
+\paragraph{The common extended source.}
+The resolved arrays are byte-identical: 3,671 ordinal instructions with
+SHA-256
+\begin{center}\small\ttfamily
+43a4ba0d62f95fe766d5369940b0aa8b7a4da04824feb8836905e289640f59f7.
+\end{center}
+The source addresses change at 87 sites, but the opcode, register and
+guarded successor ordinal do not change. Extend the shared source state to
+$z=(i,R_0,\ldots,R_8,n,Q)$, where $n$ is the extra header gap and $Q$ is
+the nonempty spare list. An increment appends a unit spare to $Q$; a
+positive decrement increases $n$ by one. Other nonhalting instructions
+preserve this bookkeeping. The initial state is ordinal 25,
+$R=(2,0,\ldots,0)$, $n=0$, $Q=[1]^{26}$. Write $F$ for this
+primitive-recursive extended step and $z_k=F^k(z_0)$; the source halt code
+$\mathsf H$ is absorbing.
+
+For $C\in\{A,B\}$ let $E_C(z)$ be its complete source frame, using its
+own address encoding and the common register permutation. Its head is
+at $-2$. In each of the 4,777 nonhalting outcomes, for both machines, the
+computed successor prefix padded to width 48 equals the actual target
+address padded to width 48. Every overflow flag is zero. The independent
+source-closure check therefore justifies the stated common bookkeeping
+and fixed head position. This is an additional premise beyond abstract
+control-flow identity.
+
+\paragraph{Exact positive clocks.}
+The retained parent contracts and the fresh direct 194-state replay each
+cover all 4,778 outcomes. Their exact durations are affine expressions in
+13 slots: constant, $n$, nine logical register parameters, first spare,
+and remaining spare-list width. In a positive decrement case its tested
+parameter is $R_i-1$; the zero case sets that register to zero. Case
+selection and evaluation of a fixed coefficient vector are primitive
+recursive. Denote the duration by $D_C(z)$.
+
+Use the arithmetization which maps every physical configuration entering
+the terminal control to one absorbing code $\mathsf H$; before terminal
+entry it retains the complete tape and head. This preserves bounded
+halting and adds no machine control. Put $E_C(\mathsf H)=\mathsf H$ and
+$D_C(\mathsf H)=1$.
+
+The new replay uses exactly the reference symbolic runtime from the
+calibration archive, SHA-256
+\begin{center}\small\ttfamily
+61b9c66272e8fd149829177cc384013814aea3c6b3b6b6f48e462d3913ea2022.
+\end{center}
+Its finite transcripts expand into literal step identities, unary-run
+inductions and the separately checked one-block identities iterated over
+an arbitrary finite spare list. The identified physical iPRA audit proves
+the uniform mathematical soundness of these rules using quantifier-free
+induction on the corresponding primitive-recursive encodings. Together
+with the new literal rows, frame closure and exact startup they establish
+\[
+ \operatorname{Run}_C(D_C(z),E_C(z))=E_C(F(z)),\qquad
+ 1\le D_C(z),\qquad
+ \operatorname{Run}_C(d_C,c_{\rm blank})=E_C(z_0).
+ \tag{MP-local}
+\]
+Before source halt every duration constant is at least three. The
+executable replay checks the new finite instances; uniform rule soundness
+is an identified mathematical dependency, not a consequence inferred from
+a Python success message alone.
+
+Define the clocks by primitive recursion:
+\[
+ \begin{array}{lll}
+ a(0)=57\,922,&a(k+1)=a(k)+D_A(z_k),\\
+ b(0)=58\,066,&b(k+1)=b(k)+D_B(z_k).
+ \end{array}
+\]
+Quantifier-free induction proves source-frame validity together with
+\[
+ \operatorname{Run}_A(a(k),c_{\rm blank})=E_A(z_k),\qquad
+ \operatorname{Run}_B(b(k),c_{\rm blank})=E_B(z_k),\qquad
+ k\le a(k),\quad k\le b(k).
+ \tag{MP-sync}
+\]
+The validity tests, complete encodings, source steps, duration evaluations
+and clocks are primitive-recursive functions or characteristic functions.
+The successor step is (MP-local), the elementary iteration identity and
+positive duration. After halt both encoded runs absorb while both clocks
+increase by one.
+
+Let $H_C(t)$ mean terminality after $t$ steps from the blank initial
+configuration, with the absorbing convention. If $H_A(t)$, then
+$a(t)\ge t$ and absorption make the first run in (MP-sync) terminal.
+Its frame is terminal exactly when $z_t=\mathsf H$. The second run gives
+$H_B(b(t))$. Interchanging the machines gives
+\[
+ \boxed{H_A(t)\longrightarrow H_B(b(t)),\qquad
+ H_B(t)\longrightarrow H_A(a(t)).}
+ \tag{MP-transfer}
+\]
+These are explicit primitive-recursive positive witness transformations.
+There is no unbounded least-boundary search, Markov principle, or induction
+on an unboundedly quantified formula.
+
+\paragraph{A closed quadratic bound.}
+After $k$ source steps before halt the common bookkeeping gives
+\[
+ n_k\le k,\qquad \sum_{i=0}^8R_i(k)\le2+k,\qquad
+ Q_k=[1]^{26+u_k},\quad0\le u_k\le k.
+\]
+The first spare is1; the remaining width is at most $75+3k$, since a
+unit block has width three. Both4,778-entry duration arrays have the
+componentwise maximum
+\[
+ (534,8,4,4,4,4,4,4,2,4,4,2,2).
+\]
+The finite coefficient audit therefore gives, including the absorbing
+convention,
+\[
+ D_C(z_k)\le694+18k,\qquad
+ a(k)\le57\,922+9k^2+685k,\quad
+ b(k)\le58\,066+9k^2+685k.
+\]
+These inequalities follow by quantifier-free induction and fixed
+coefficient comparison. Absorption consequently permits the single bound
+\[
+ \boxed{\Theta(t)=58\,066+9t^2+685t}
+\]
+in place of either right-hand witness in (MP-transfer).
+
+Existential introduction and intuitionistic logic yield
+\[
+ \mathsf{iPRA}\vdash\operatorname{Halt}(A)\leftrightarrow\operatorname{Halt}(B),
+ \qquad
+ \mathsf{iPRA}\vdash\neg\operatorname{Halt}(A)\leftrightarrow\neg\operatorname{Halt}(B).
+\]
+The absolute $\operatorname{Con}(\mathsf{PA})$ corollary imports the
+written calibration of the exact parent above, in archive SHA-256
+\begin{center}\small\ttfamily
+93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075.
+\end{center}
+This is an ordinary mathematical relative proof with an explicit inherited
+uniform-runtime dependency. It is not a claim of a new completed Lean
+endpoint or an independent reconstruction of the parent's entire
+arithmetic calibration.

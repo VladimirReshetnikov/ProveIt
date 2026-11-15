@@ -1,0 +1,403 @@
+% Include after amsmath, amssymb, amsthm, booktabs, and xurl.
+% Ordinary written arithmetic proof; not a new Lean development.
+\section{A relative iPRA proof for the reassociated operand reader}
+\label{sec:orh-relative}
+
+Write $M_0$ for the revised packet's literal PA194AX11H machine and
+$M_1$ for PA194ORH.  Both have 194 working controls, two symbols,
+left/right moves, a separate halt control, and a blank initial tape.
+The following argument proves their blank-tape halting equivalence in
+intuitionistic primitive recursive arithmetic.  Composing it with the
+revised AX11H written calibration yields the same consistency endpoint
+for $M_1$.  This section supplies an ordinary written proof with exact
+finite certificates; it does not assert a new end-to-end Lean theorem.
+
+The dense table identities, in the order $M_0,M_1$, are
+\begin{center}\footnotesize
+\begin{tabular}{l}
+\path{c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a}\\
+\path{c16bef7a1587e31adaae747d5bad26721f30bb5c6c33dd4b798be95f5141f1d4}.
+\end{tabular}
+\end{center}
+The native tables start at control 74, use 84 as the source boundary,
+and halt at 254.  Their supplied injective label maps identify these
+with dense start 0 and halt 194.  The label maps are conjugacies of
+every literal transition, so quantifier-free induction on time transfers
+the statements below to the dense tables.
+
+\subsection{The changed reader and its second entry}
+
+In the source tree put
+\[
+ A=\texttt{node32},\quad B=\texttt{node53},\quad
+ C=\texttt{node55},\quad D=\texttt{node65}.
+\]
+The sole named-tree reassociation is
+\[
+ \texttt{node75}=((A,(B,C)),D)
+       \quad\longmapsto\quad (A,(B,(C,D))).
+ \tag{OR1}
+\]
+Both trees have the same left-to-right leaf order.  Their exact
+operand-reader codes and exit controls are:
+\begin{center}
+\begin{tabular}{cccc}
+\toprule
+Operand & Old word & New word & Native exit\\
+\midrule
+$A$ & 00 & 0   & 104\\
+$B$ & 010& 10  & 107\\
+$C$ & 011& 110 & 98\\
+$D$ & 1  & 111 & 90\\
+\bottomrule
+\end{tabular}
+\end{center}
+These are complete prefix codes.  Starting at control 213, each row
+preserves its scanned bit and moves right.  The new rows are
+\[
+\begin{array}{c|cc}
+q&\text{on }0&\text{on }1\\\hline
+213&0R104&1R185\\
+185&0R107&1R333\\
+333&0R98&1R90.
+\end{array}
+\tag{OR2}
+\]
+Control 333 also supplies the shared $(C,D)$ reader.  The old reader
+used controls 213, 92, 185, with respective rows
+$(0R92,1R90)$, $(0R104,1R185)$, and $(0R107,1R98)$.
+
+There is an additional entry into the old control 213 from the history
+selector.  It must be preserved separately.  The new rows are
+\[
+ \delta_1(69,0)=0L92,\qquad
+ \delta_1(92,0)=0R111,\qquad
+ \delta_1(92,1)=1R90.
+ \tag{OR3}
+\]
+The unchanged row at $(111,0)$ is $0R104$.
+Suppose control 69 scans a zero at coordinate $h$, and let $b$ be
+the bit at $h-1$.  For $b=0$ the old and new control paths are
+\[
+ 69\longrightarrow213\longrightarrow92\longrightarrow104,
+ \qquad
+ 69\longrightarrow92\longrightarrow111\longrightarrow104.
+\]
+Both take three steps, preserve the two zero cells, and finish with
+the head at $h+1$.  For $b=1$ the respective paths are
+$69\to213\to90$ and $69\to92\to90$; both take two steps and
+finish at $h$, preserving both cells.  Neither computation reads
+outside these two cells, so this is a uniform identity for arbitrary
+surrounding tapes.  The row $(69,1)$ is unchanged.  Thus (OR3)
+preserves the second entry while (OR2) implements the new operand code.
+
+The exact resolved primitive instruction arrays are byte-identical:
+3,671 sites and 4,778 outcomes, with both outcomes of every decrement
+included.  Both arithmetic and interval-based source resolvers produce
+that same array.  There are 134 changed source addresses.  This finite
+graph equality, rather than an assumption that arbitrary tree
+reassociations preserve jump depths, identifies the common source
+program used below.  Both initial site-25 addresses are 1000000.
+
+\subsection{One source run, two complete tape encodings}
+
+Use a source state
+\[
+ z=(i,R_0,\ldots,R_8,n,Q),\qquad Q=[s]X\ne[],
+\]
+or a distinguished absorbing halted state $H$.  The site $i$ ranges
+over the common finite instruction array; $n$ is the nonnegative
+header slack, and $Q$ is a nonempty finite list of natural numbers.
+Define $F$ by the common instruction array, with the following
+bookkeeping.  An increment appends the value 1 to $Q$.  A positive
+decrement increases $n$ by one.  Other live instructions leave $n,Q$
+unchanged.  A halt instruction yields $H$, and $F(H)=H$.
+All instructions and list operations have primitive recursive codes.
+
+For $j=0,1$, let $p_j(i)$ be the corresponding finite source-address
+lookup.  Put
+\[
+ \pi=(6,2,0,4,3,7,8,5,1),\qquad V_{\pi(a)}=R_a,
+ \qquad B(v)=0\,1^{v+1}.
+\]
+The complete boundary encoding $E_j(z)$ has control 84, head at
+$-2$, outward left stream $1$ followed by infinite zeros, and right
+stream
+\[
+ p_j(i)\;0^{48+n-|p_j(i)|}\;1\;
+ B(V_0)\cdots B(V_8)B(s)B(X)\;0^\infty.
+ \tag{OR4}
+\]
+All addresses have length at most 37.  Consequently (OR4) is defined
+for every valid source state, including zero registers and empty
+tail $X$.  Set $E_j(H)=H$.
+
+Finite binary tape halves can be encoded by natural numbers $L,R$,
+with the scanned bit the low bit of $R$.  Writing $w$ and moving
+right sends them to $(2L+w,\lfloor R/2\rfloor)$; moving left sends
+them to
+\[
+ (\lfloor L/2\rfloor,
+  (L\bmod2)+2w+4\lfloor R/2\rfloor).
+\]
+After reaching the halt control, replace the tape configuration by
+$H$ and keep it fixed.  This arithmetic convention preserves the
+literal machine's halt predicate, by induction on time.  Write
+$\operatorname{Run}_j(t,c)$ for the primitive recursive iterate.
+The semigroup equation
+\[
+ \operatorname{Run}_j(u+v,c)
+  =\operatorname{Run}_j(v,\operatorname{Run}_j(u,c))
+ \tag{OR5}
+\]
+and absorption of $H$ have quantifier-free induction proofs.
+
+\subsection{Uniform local contracts and their exact durations}
+
+Each outcome certificate records a 13-entry nonnegative coefficient
+vector.  Its valuation is
+\[
+ (1,n,x_0,\ldots,x_8,s,W(X)),\qquad
+ W(X)=\sum_{v\in X}(v+2).
+ \tag{OR6}
+\]
+For a positive decrement of $R_a$, set $x_a=R_a-1$ and use
+$R_a=x_a+1$; the other slots equal their logical registers.
+All other outcome valuations use their stated zero test or register
+values.  Crucially, the final slot is the width of the very same
+list $X$ in (OR4), not an independent free parameter.
+Select the exact duration $D_j(z)$ by the source site and decidable
+decrement branch, and the corresponding scalar product (OR6).
+Set $D_j(H)=0$.
+
+The full independent literal replays accept all 4,778 outcomes for
+each table.  For $M_1$ they contain 1,102,204 symbolic events, with
+at most 403 events in any one outcome.  They use literal transitions,
+unary self-loops, normalization by finite-word identities, and four
+literal block traversals.  No arithmetic-box oracle is used.
+
+Here is why those certificates give uniform arithmetic theorems.
+A unary self-loop crossing a run of length $a$ is verified by
+quantifier-free induction on the processed length.  Each block
+traversal takes exactly $v+2$ steps on $B(v)$ or its specified
+intermediate block; induction on a fixed list's prefix proves a
+whole-list duration $W(X)$ with both exterior contexts untouched.
+The normalization identities
+\[
+ C(X)1=1B(X),\qquad
+ 1\operatorname{rev}(C(X))=\operatorname{rev}(B(X))1,
+ \quad C(v)=10\,1^v,
+\]
+have the same prefix-induction proof.  Literal events are direct
+substitutions in the tape-step equations.  Induction on a successful
+event trace, using (OR5), therefore proves its exact complete-tape
+endpoint at its recorded affine duration.  The invariant is a
+bounded Boolean check and an equality of PR configuration functions.
+It contains no unbounded quantifier over environments.
+
+The four block entries and rows are unchanged, and were rederived
+from both tables.  Every other changed row is checked as a literal
+transition.  Hence the event-calculus soundness proof in the revised
+AX11H packet applies to the new successful traces as well.
+All 4,777 nonhalting endpoints have zero head displacement and
+zero address overflow.  Independently checking their computed
+addresses against the common source graph gives
+\[
+ p_{\rm computed}0^{48-|p_{\rm computed}|}
+   =p_j(i')0^{48-|p_j(i')|}.
+ \tag{OR7}
+\]
+Appending the same extra slack zeros proves closure of (OR4).
+The single halt outcome has exact duration 3.  These finite checks
+and the event-calculus induction establish in iPRA, for every valid
+source state,
+\[
+ \operatorname{Run}_j(D_j(z),E_j(z))=E_j(F(z)),\qquad
+ z\ne H\ \Longrightarrow\ D_j(z)\ge3.
+ \tag{OR8}
+\]
+The source validity predicate is preserved.  At $H$, (OR8) is the
+identity $\operatorname{Run}_j(0,H)=H$; no positive duration is
+asserted for the halted state.
+
+\subsection{Explicit primitive recursive clocks and a polynomial bound}
+
+The common initial source state is
+\[
+ z_*=(25,2,0,\ldots,0,0,[1]^{26}).
+\]
+Independent literal startup runs establish the complete tape
+equalities
+\[
+ \operatorname{Run}_j(T_j,\mathrm{blank})=E_j(z_*),
+ \qquad T_0=57922,\quad T_1=57942.
+ \tag{OR9}
+\]
+The head remains inside the checked finite array throughout each
+run, all exterior cells are untouched zeros, and the entire final
+array equals (OR4).  Thus (OR9) is a closed finite arithmetic fact,
+not a comparison of a few selected tape cells.
+
+Define by primitive recursion
+\[
+ z_k=F^k(z_*),\qquad
+ \tau_j(0)=0,\qquad
+ \tau_j(k+1)=\tau_j(k)+D_j(z_k).
+ \tag{OR10}
+\]
+Quantifier-free induction, with source validity included in the
+invariant, proves
+\[
+ \operatorname{Run}_j(T_j+\tau_j(k),\mathrm{blank})=E_j(z_k).
+ \tag{OR11}
+\]
+This equation remains exact after halt: both source and target are
+absorbing and subsequent durations are zero.
+
+For both tables the componentwise maximum of the affine duration
+vectors is exactly
+\[
+ (534,8,4,4,4,4,4,4,2,4,4,2,2).
+ \tag{OR12}
+\]
+Consequently each live source state's duration satisfies
+\[
+ 3\le D_j(z)\le534+8n+4\sum_{a=0}^8R_a+2W(Q).
+ \tag{OR13}
+\]
+For the two spare slots, $s+W(X)\le W(Q)=s+2+W(X)$;
+for a positive decrement its variable slot is at most $R_a$.
+These justify (OR13) directly from the recorded coefficients.
+
+Along the particular run from $z_*$, another quantifier-free
+induction gives, while live,
+\[
+ n_k\le k,\qquad \sum_aR_{a,k}\le2+k,
+ \qquad W(Q_k)\le78+3k.
+ \tag{OR14}
+\]
+Indeed, one source instruction increments at most one register;
+only a positive decrement increases slack, by one; and an increment
+appends one block $B(1)$ of width three.  Initially the register
+sum is two and the 26 spare blocks have total width 78.
+Assigning zero to these auxiliary selectors at $H$ extends the
+bounds across canonical halt.  Hence
+\[
+ 0\le D_j(z_k)\le698+18k,\qquad
+ \tau_j(k)\le698k+18\sum_{r<k}r=9k^2+689k.
+ \tag{OR15}
+\]
+All of these are PR arithmetic identities or inequalities with
+quantifier-free induction invariants.  Define the explicit
+polynomial clocks
+\[
+ P_0(k)=57922+9k^2+689k,\qquad
+ P_1(k)=57942+9k^2+689k.
+ \tag{OR16}
+\]
+The exact clocks are $T_j+\tau_j(k)$; $P_j$ are sufficient
+uniform upper bounds at which absorption preserves any halt
+already reached.
+
+\subsection{Halting reflection without positive stopped durations}
+
+From (OR8), source absorption, and quantifier-free induction,
+\[
+ z_k\ne H\quad\Longrightarrow\quad\tau_j(k)\ge3k.
+ \tag{OR17}
+\]
+For the successor case, $z_{k+1}\ne H$ implies $z_k\ne H$,
+so the next duration adds at least three.  No global cofinality
+of $\tau_j$ after halt is claimed or needed.
+
+Suppose $M_j$ has halted by physical time $t$.  Put $k=t+1$.
+If $z_k\ne H$, then (OR17) implies
+$T_j+\tau_j(k)>t$.  Target absorption makes the left side of
+(OR11) halted, but its right side is a live frame at control 84.
+This is a contradiction.  Equality of the source state with its
+halt code is decidable, so intuitionistic logic gives $z_{t+1}=H$.
+Conversely, $z_k=H$ gives physical halt at $T_j+\tau_j(k)$
+by (OR11), and therefore by $P_j(k)$ by (OR15) and absorption.
+
+Write $h_j(t)$ for the atomic PR assertion that $M_j$ is halted
+by time $t$ from blank tape.  We have proved the pointwise witness
+transports
+\begin{align*}
+ \mathrm{iPRA}&\vdash h_0(t)\ \longrightarrow\ h_1(P_1(t+1)),\\
+ \mathrm{iPRA}&\vdash h_1(t)\ \longrightarrow\ h_0(P_0(t+1)).
+ \tag{OR18}
+\end{align*}
+These are explicit PR functions in both directions.  Their proof
+uses neither an unbounded least-time search nor Markov's principle.
+
+\paragraph{Relative theorem.}
+For the exact two literal tables identified above,
+\[
+ \mathrm{iPRA}\ \vdash\
+ \operatorname{Halt}_{\rm blank}(M_0)
+   \longleftrightarrow\operatorname{Halt}_{\rm blank}(M_1),
+ \tag{OR19}
+\]
+and also
+\[
+ \mathrm{iPRA}\ \vdash\
+ \neg\operatorname{Halt}_{\rm blank}(M_0)
+   \longleftrightarrow\neg\operatorname{Halt}_{\rm blank}(M_1).
+ \tag{OR20}
+\]
+\begin{proof}
+Existential introduction and elimination applied to (OR18) give
+(OR19).  To derive, for example, nonhalting of $M_1$ from nonhalting
+of $M_0$, assume a halting witness for $M_1$, transport it by the
+second implication of (OR18), and contradict nonhalting of $M_0$.
+The opposite implication is the same use of the first transport.
+This is intuitionistic reasoning.  The equivalent notation
+$\forall t\,\neg h_j(t)$ uses the intuitionistically valid
+equivalence $\neg\exists t\,h_j(t)\leftrightarrow\forall t\,\neg h_j(t)$.
+\end{proof}
+
+\subsection{The absolute consistency corollary and its provenance}
+
+The exact revised AX11H calibration is retained as
+\path{reference/calibration_AX11H.zip}, of SHA256
+\begin{center}\footnotesize
+\path{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.
+\end{center}
+Its written result for $M_0$ is
+\[
+ \mathrm{iPRA}\vdash
+ \operatorname{Con}(\mathrm{PA})
+   \longleftrightarrow\neg\operatorname{Halt}_{\rm blank}(M_0).
+ \tag{OR21}
+\]
+Here $\operatorname{Con}(\mathrm{PA})$ is the particular mapped native
+Foundation PA consistency sentence used in that calibration, whose
+current Foundation endpoint is bound explicitly in its proof.
+The packet supplies the source-command theorem, direct numerical
+proof-list compilation, the current Foundation-to-ordinary-PAeq
+adapter, and the model-uniform weak-arithmetic transfer.  The review
+\path{comparison/calibration_review.txt} describes the inspected
+proof strengths and the unfinished Lean composition.
+
+\paragraph{Absolute corollary.}
+Using that written AX11H theorem, the present construction proves
+\[
+ \boxed{\quad\mathrm{iPRA}\vdash
+ \neg\operatorname{Halt}_{\rm blank}(\mathrm{PA194ORH})
+   \longleftrightarrow\operatorname{Con}(\mathrm{PA}).\quad}
+ \tag{OR22}
+\]
+\begin{proof}
+Compose (OR20) with (OR21), in the indicated direction of each
+implication.  The composition is intuitionistic and introduces no
+new principle of arithmetic or consistency assumption.
+\end{proof}
+
+The finite inspector \path{relative_ORH_check.py} verifies the
+common source array, the two history-selector cases, both prefix
+readers, every padded source endpoint, the complete contract index,
+the affine maxima (OR12), and the constants in (OR16).  Its receipt
+is \path{relative_ORH_inspection.json}.  The literal replay supplies
+the successful traces and complete startup binding; the arithmetic
+induction arguments above give their uniform meaning.  These are
+separate, complementary parts of the proof.

@@ -1,0 +1,931 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,booktabs,longtable,array,multirow,xcolor,seqsplit,calc}
+\usepackage[a4paper,margin=19mm,top=20mm,bottom=20mm]{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,pdftitle={Two new 194-state machines for Con(PA)},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\hash}[1]{{\ttfamily\footnotesize\seqsplit{#1}}}
+\newcommand{\pandocbounded}[1]{#1}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}
+\DeclareUnicodeCharacter{00B2}{\ensuremath{^2}}
+\DeclareUnicodeCharacter{0393}{\ensuremath{\Gamma}}
+\DeclareUnicodeCharacter{0398}{\ensuremath{\Theta}}
+\DeclareUnicodeCharacter{03B8}{\ensuremath{\theta}}
+\DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+\DeclareUnicodeCharacter{2200}{\ensuremath{\forall}}
+\DeclareUnicodeCharacter{2203}{\ensuremath{\exists}}
+\DeclareUnicodeCharacter{2208}{\ensuremath{\in}}
+\DeclareUnicodeCharacter{00D7}{\ensuremath{\times}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small PA194: comparison and two new constructions}
+\fancyhead[R]{\small 15 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{\LARGE Two new 194-state machines for $\operatorname{Con}(\mathsf{PA})$\\[7pt]\large Comparison, explicit constructions, iPRA simulations, and unsuccessful reductions}
+\author{Research report and reproducibility package}
+\date{15 November 2026\\[3pt]\small ProveIt snapshot \texttt{793c68737d94bffa4e32a75bce6cc8058d6d22f0}}
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\section{Results and precise claim}\label{results-and-precise-claim}
+
+This research did not produce a justified machine with fewer than 194 working states. It produced two new 194-state binary single-tape machines, \textbf{PA194-LCSF3} and \textbf{PA194-MP}, together with complete transition tables, explicit relative proofs in intuitionistic primitive recursive arithmetic, and executable checks of the new finite premises. Both tables are structurally distinct from the recognized prior 194-state frontier and from each other.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Construction
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Structural change
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Direct written relative theorem
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+PA194-LCSF3 & One new guarded three-to-one return on the selector-bearing LC parent; 61 recurring source continuations & Parent halting by t implies child halting by t; child halting by t implies parent halting by 3t \\
+PA194-MP & Reassociation of the four-block MP decoder; four native rows and 87 source addresses change & Both directions admit the common witness bound Theta(t)=58066+9t\^{}2+685t \\
+\end{longtable}
+
+The exact revised AX11H written consistency calibration, and the intermediate LC/SF transfers where needed, yield the desired corollaries
+
+\[
+\mathsf{iPRA}\vdash\operatorname{NH}(M_{\rm LCSF3})\leftrightarrow\operatorname{Con}(\mathsf{PA}),
+\qquad
+\mathsf{iPRA}\vdash\operatorname{NH}(M_{\rm MP})\leftrightarrow\operatorname{Con}(\mathsf{PA}).
+\]
+
+The new contribution is the relative machine construction and its explicit positive simulation. The arithmetic proof-search calibration is imported from the identified existing manuscripts. This package does not claim a new end-to-end Lean kernel theorem, and does not assume that PA is consistent.
+
+\subsection{Formal conventions}\label{formal-conventions}
+
+A working control has two transitions, one for each symbol in \{0,1\}; each transition writes one symbol, moves exactly one cell left or right, and enters a possibly identical control. The tape is indexed by the integers and is initially all zero; the head starts at zero. There are 194 working controls, plus a separate halting control. Dense tables use start 0 and halt 194. Native tables use start 74 and halt 254: native control 194 is an ordinary working control. All transitions into halt count as the step that reaches halt. For arithmetic purposes the run is totalized by making terminal configurations absorbing.
+
+Write H\_M(t) for terminality at time t, and NH(M) for the statement that no finite time is terminal. The selected Con(PA) is the consistency sentence for the primitive-recursive PA proof predicate fixed by the imported calibration. Its usual forms not-exists-proof and forall-proof-not are intuitionistically equivalent. Similarly, proving both positive halting-witness maps suffices to derive both halting equivalence and nonhalting equivalence by intuitionistic logic.
+
+Finite-support tapes have a primitive-recursive binary-zipper encoding; finite configurations, step functions, instruction arrays, frame encoders, and all clocks below are primitive recursive. Assertions used for induction are equalities or primitive-recursive characteristic predicates. The written induction arguments therefore use quantifier-free induction available in iPRA. The unbounded conclusions are mathematical consequences of these arguments, not extrapolations from finite simulations.
+
+\subsection{Attribution and scope of novelty}\label{attribution-and-scope-of-novelty}
+
+The third guarded return used by LCSF3 was already present on the GH/GHS loop-return parents. LCSF3 establishes a new compatible composition on LC\_AX11H with its history selector. MP preserves the entire resolved instruction array but changes the physical address layout and decoder. Neither construction is just a renaming of controls, a reflection of the tape, or a change to unused terminal-entry decorations. The corpus and novelty conventions are specified below.
+
+\section{Source snapshot and comparison scope}\label{source-snapshot-and-comparison-scope}
+
+Repository: VladimirReshetnikov/ProveIt. Commit: \hash{793c68737d94bffa4e32a75bce6cc8058d6d22f0}.
+
+Primary sources: \href{https://github.com/VladimirReshetnikov/ProveIt/tree/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/BusyBeaver/Research/PA}{PA research}, \href{https://github.com/VladimirReshetnikov/ProveIt/tree/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/BusyBeaver/Research/PA/docs}{filed machine catalogue}, and \href{https://github.com/VladimirReshetnikov/ProveIt/tree/793c68737d94bffa4e32a75bce6cc8058d6d22f0/docs/incoming}{the four incoming archives}.
+
+\begin{longtable}[]{@{}lr@{}}
+\toprule\noalign{}
+Item & Count \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Filed packets, accounted for through the pinned catalogue & 93 \\
+Current incoming archives, freshly parsed recursively & 4 \\
+Delivery records & 97 \\
+Distinct named principal or supplementary 194-state designs & 83 \\
+Mechanism families & 31 \\
+Recognized complete spanning 194-state graph classes & 520 \\
+Named classes within that frontier & 83 \\
+Research auxiliary classes & 419 \\
+Rejected classes & 14 \\
+Research seeds & 4 \\
+\end{longtable}
+
+The incoming scan recognized 1,757 table occurrences, 875 normalized labeled tables, and 723 single-terminal graph classes. The filed catalogue contains 747 classes; the union has 1,137 catalogue keys. All 139 historically catalogued spanning 194-state classes were recovered. The other 126 explicit-table-capable inputs outside PA/docs - 14 TM, 97 JSON and 15 TXT files - were checked against their Git blob identities. Their ten graph classes have 196-209 controls and add no 193- or 194-state class.
+
+Recognition covers complete numeric five-column tables and documented explicit JSON encodings, including nested ZIPs. Arbitrary generators, prose-only encodings, and opaque binaries were outside that rule. These 520 objects are not 520 independently reverified consistency constructions.
+
+\section{Main architectural comparison}\label{main-architectural-comparison}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Design choice
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Typical families
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Distinguishing behavior and proof obligation
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Original source and allocation & Primary PA194, older 68/8 allocation & Same numerical calculus; source simulation and blank initialization remain essential. \\
+Constructor coefficient & M5, M6, N5/N6, H5/H6 and Q relatives & Changes numerical formula coding; requires hereditary proof translation, including the zero alias. \\
+Cached modus ponens & C, CS, CSZ/X, CZ, HA & Stores the result in the cache and changes visible-stack behavior; requires an all-store command compiler. \\
+Visible no-push modus ponens & N and relatives & Omits the dummy zero push while preserving the visible consequent; reserved-zero and carried-store invariants matter. \\
+Contradiction test & H/HS, NS, SUMS and Q/AX relatives & Cache-only or symmetric sum tests need the correct final Pop and exact comparison behavior. \\
+Distribution premise order & Q and combined families & Exchanges curried premises; requires a restricted-rho derivation and source transport. \\
+Diagonal argument & D, DHS, GD/GDH/GDHS & Changes Gamma(A) to Gamma(D), with D sometimes independently adjusted by d+x. \\
+AX interface & AX11 and combined families & Eleven entries and a fourth operand change command interpretation and stack compilation. \\
+Generalization binder & G, GH/GHS, AX11G/GH/GHS, GD & Uses the explicit field c in U(c,h), rather than an inherited offset. \\
+Known-zero returns & A, J, F, R, HAZ, ZR, CSZA & Replaces source returns with zero decrements; requires an invariant and a separately verified startup. \\
+Register placement & AD, HX, AX11HR, related variants & Changes physical routing while preserving source register meaning. \\
+Decoder association & 4L, QHL/QHR, LC and relatives & Preserves resolved instructions but changes tape addresses; whole-frame simulations are necessary. \\
+History selectors & B, SEL, SF combinations & A predecessor bit distinguishes merged roles; local tape restoration and positive clocks must be proved. \\
+Physical accelerations & GHF/GHSF, LC-fast, LCG/LCGS, SF & Shortens guarded paths without changing the source; invariants and exact time-transfer proofs are required. \\
+\end{longtable}
+
+The four incoming archives already contribute nine named tables: PA194AX11H\_SF, PA194LC\_AX11H\_SF; PA194GD, PA194GDH, PA194GDHS; PA194LCAX11GHF, PA194LCAX11GHSF; PA194LCG, PA194LCGS. Those combinations were treated as prior work. QN=NQ, CSZ=X, and AX11GH=AX11QGH are aliases. NS is used for two different guard conventions and cannot be identified by name alone.
+
+\section{PA194-LCSF3}\label{pa194-lcsf3}
+
+Canonical name: PA194LCAX11HSF3. It has 194 working states, 388 transitions, alphabet \{0,1\}, one two-way infinite tape initially all zero, head initially at cell zero, dense start 0 and separate halt 194. Native start is 74 and halt is 254; native 194 is a working state.
+
+Exact parent: PA194LC\_AX11H\_SF from the incoming comparison archive. Only one native row changes:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Row & Parent & Child \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+190 reading 1 & 1 L 73 & 0 L 42 \\
+\end{longtable}
+
+In dense numbering this is 116/1: 1 L 37 → 0 L 48. All other rows are identical.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Literal artifact
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SHA-256
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+New dense table & \hash{2e5684567cd6e6e59fd99b5b093071533bcef6a01012dd2c6e41d52c645d2768} \\
+New native table & \hash{b741261b92a17256dfcbc9c6d3ee38d4fb27a3eee9be180a54ca63dca1c13cfe} \\
+Exact parent dense table & \hash{e9c6864d7fb452dff86a38e561f39a2dac0ddb873369fdfa3c1e7a88edcac7bf} \\
+Exact parent native table & \hash{23c40299b43056202f3f9bbe562e52f35b23dc25c13e0cb5e4f556444d86d0a5} \\
+\end{longtable}
+
+\subsection{Forced history bit and exact local identity}\label{forced-history-bit-and-exact-local-identity}
+
+The only transition into native 190 is 139/1 = 1 R 190. Since the start is 74, induction on run length proves that every reachable configuration at 190 has a 1 immediately to the left of the head. The new row creates no new predecessor of 190.
+
+The parent rows 190/1 = 1 L 73, 73/1 = 1 R 83, and 83/1 = 0 L 42 consequently execute a three-step block with the same complete tape, head, and control endpoint as the child's one-step 0 L 42. Both intermediate controls are nonterminal. For the binary zipper tape coding, with the low bit of L immediately left of the head and the low bit of R under the head, the identity is:
+
+\[
+(190,2\ell+1,2r+1)\longmapsto(73,\ell,4r+3)\longmapsto(83,2\ell+1,2r+1)\longmapsto(42,\ell,4r+1).
+\]
+
+The child performs the direct first-to-last step. The displayed equations hold for arbitrary natural l and r. Eight finite window instances independently check all free bits of the inspected local context, but the mathematical identity does not depend on a bounded exterior.
+
+This edit is specific to the LC parent. In PA194AX11H\_SF, 190/1 is 1 R 99 and its predecessor marker differs; the shortcut cannot simply be transplanted there.
+
+\subsection{Direct iPRA transfer for LCSF3}\label{direct-ipra-transfer-for-lcsf3}
+
+Use absorbing totalized runs and let H\_M(t) mean that the parent is terminal at time t. Define sigma(0)=0. At child step t, increase sigma by three if the child is at native 190 reading 1, and by one otherwise. This is primitive recursion. Quantifier-free induction, using the predecessor invariant and the local identity, proves:
+
+\[
+\operatorname{Run}_N(t)=\operatorname{Run}_M(\sigma(t)),\qquad t\leq\sigma(t)\leq3t.
+\]
+
+Absorbing terminality then gives the explicit positive bounds:
+
+\[
+\mathsf{iPRA}\vdash H_M(t)\to H_N(t),\qquad
+\mathsf{iPRA}\vdash H_N(t)\to H_M(3t).
+\]
+
+Existential introduction and intuitionistic logic yield both halting and nonhalting equivalence. No PA-consistency assumption, Markov principle, or unbounded minimization is used in this relative proof.
+
+The absolute Con(PA) corollary follows through the identified chain revised AX11H → LC\_AX11H → LC\_AX11H\_SF → PA194-LCSF3. The exact revised calibration archive has SHA-256 \hash{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}. This imports its written arithmetic calibration and the two intermediate physical transfers; it is not a new completed Lean proof.
+
+\subsection{Recurring use and initialization of LCSF3}\label{recurring-use-and-initialization-of-lcsf3}
+
+The changed row belongs to 61 recurring constructor-loop continuations. Exact source execution from site 25 with registers (2,0,0,0,0,0,0,0,0) reaches the first affected continuation after 32,686 source steps: site 630, instruction continueTo 3, address 10010100101001100111111, registers (4,4,9,0,0,0,0,6,0). The preceding four instructions increment the second register from zero to four.
+
+For every admitted physical frame at that source site, the decoder reaches 190 reading 1 after 24 steps, at relative head position 22, having read only fixed address positions 0-22. Thus this event is independent of the evolved header gap, registers, and spare list. Equivalent fixed-address certificates cover all 61 sites. A canonical frame with the reachable register values, gap zero and 26 unit spares takes 66 parent steps and 64 child steps, with the same complete endpoint. Transfer to the physical blank computation uses the inherited source-frame theorem; the full enormous physical prefix was not scalar-replayed.
+
+Complete blank initialization was independently executed for parent and child: both reach native 84, head -2, and the exact entire seed frame after 57,918 steps. The shortcut is not used during startup. All 194 controls are graph-reachable; graph reachability is not asserted to be blank-run reachability.
+
+\section{PA194-MP}\label{pa194-mp}
+
+Canonical name: PA194AX11HMP. It has the same 194-working-state, 388-row, binary single-tape blank-start convention. Dense start and halt are 0 and 194; native start and halt are 74 and 254.
+
+At the MP source block, let A=node75, B=node37, C=node6, D=node54. Keep the outer source tree fixed and replace ((A,B),(C,D)) by (A,(B,(C,D))). All 3,671 resolved instructions - including opcodes, tested registers and guarded successor ordinals - remain byte-identical. Exactly 87 source addresses change, at ordinals 3572-3658. The literal native edit is:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Row & Revised AX11H & PA194-MP \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+100/0 & 0 R 174 & 0 R 213 \\
+100/1 & 1 R 164 & 1 R 174 \\
+174/0 & 0 R 213 & 0 R 28 \\
+174/1 & 1 R 28 & 1 R 164 \\
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Literal artifact
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SHA-256
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+New dense table & \hash{b634f75f4969a68513c5460a2e6bf8fd9bb0a72ab1f3dd03ec88b348ce2c6272} \\
+New native table & \hash{e8e22523ae12c9b3ee1fe33a0b1697602584f58bfdf55b88b7a7f3c6e7ea9dfd} \\
+Exact revised AX11H native parent & \hash{6022711dcc0a025eb4b7a5a8f690d6b52f45f3d963a0868afef10962ccc49bd3} \\
+Shared resolved source array & \hash{43a4ba0d62f95fe766d5369940b0aa8b7a4da04824feb8836905e289640f59f7} \\
+\end{longtable}
+
+\subsection{Physical checks for MP}\label{physical-checks-for-mp}
+
+The raw allocation has 134 fixed controls and 67 readers. All seven baseline folds pass their simultaneous local tape checks, so 134+67-7=194. The final folded table directly passed all 4,778 arbitrary-register symbolic outcomes, with four independently rederived arbitrary-list traversal lemmas. The replay used 1,101,511 symbolic operations, at most 403 per outcome; these are symbolic-rule counts, not bounds on literal unary computations. Every nonabsorbing duration has constant term at least three.
+
+The exact entire blank initialization takes 58,066 TM steps and reaches native 84, head -2, site 25, address 1000000, logical registers (2,0,0,0,0,0,0,0,0), header distance 48, and 26 unit spares. The exact calibrated parent's startup is 57,922, so the new startup is 144 steps longer.
+
+The runtime rule engine is byte-identical to the one in the identified parent physical audit: symbolic\_runtime.py, SHA-256 \hash{61b9c66272e8fd149829177cc384013814aea3c6b3b6b6f48e462d3913ea2022}. Executable checks discharge the new finite instances; the uniform unary/list rule soundness remains the identified written mathematical dependency.
+
+\subsection{Common extended source for the MP proof}\label{common-extended-source-for-the-mp-proof}
+
+Extend the common source state to \(z=(i,R_0,\ldots,R_8,n,Q)\), with n the extra header gap and Q the nonempty spare list. Increment appends a unit spare to Q; positive decrement increments n; other nonhalting source instructions leave this bookkeeping unchanged. Start at site 25, \(R=(2,0,\ldots,0)\), \(n=0\), \(Q=[1]^{26}\). Executing the halt instruction sends the tuple to an absorbing code H. Let F be this primitive-recursive step and \(z_k=F^k(z_0)\).
+
+For each machine C, \(E_C(z)\) is its complete frame using C's own address encoding, with head -2. Independent string-carry and suffix-cut checks cover all 4,777 nonhalting outcomes for each machine: every address overflow is zero, and the computed successor padded to width 48 equals the resolved successor address padded to width 48. Thus the two machines share this extended source, not merely the opcode list.
+
+The 4,778 contracts for each machine supply exact affine durations in thirteen slots: constant, gap, nine logical register parameters, first spare, and remaining spare-list width. In a positive decrement case the tested parameter is R\_i-1; the zero case fixes it to zero. Case selection and evaluation are primitive recursive. Write \(D_C(z)\) for the exact duration.
+
+\subsection{Primitive-recursive clocks and cofinality}\label{primitive-recursive-clocks-and-cofinality}
+
+For arithmetization, collapse every physical configuration already in the halt control to the single absorbing code H. Retain the complete tape and head before halt. This preserves the literal halting predicate and adds no TM control. Set \(E_C(H)=H\) and \(D_C(H)=1\).
+
+The uniform physical-rule proofs, literal contract instances, frame closure and exact startup give:
+
+\[
+\operatorname{Run}_C(D_C(z),E_C(z))=E_C(F(z)),\qquad 1\leq D_C(z).
+\]
+
+Define \(a(0)=57{,}922\), \(b(0)=58{,}066\) and \(a(k+1)=a(k)+D_A(z_k)\), \(b(k+1)=b(k)+D_B(z_k)\). Quantifier-free induction proves source validity and:
+
+\[
+\operatorname{Run}_A(a(k),c_{\rm blank})=E_A(z_k),\qquad
+\operatorname{Run}_B(b(k),c_{\rm blank})=E_B(z_k),\qquad
+k\leq a(k),\quad k\leq b(k).
+\]
+
+Every component is a primitive-recursive function or characteristic function. If \(H_A(t)\), absorption and \(a(t)\ge t\) make \(E_A(z_t)\) terminal, hence \(z_t=H\) and \(H_B(b(t))\). Interchanging the machines gives the reverse implication. No least-boundary search is needed.
+
+\subsection{Explicit quadratic witness bound}\label{explicit-quadratic-witness-bound}
+
+Before halt, quantifier-free induction on the extended source gives \(n_k\le k\), \(\sum_i R_i(k)\le 2+k\), and \(Q_k=[1]^{26+u_k}\) with \(0\le u_k\le k\). The first spare is one and the remaining spare-list width is at most 75+3k. Both complete duration arrays have componentwise envelope (534,8,4,4,4,4,4,4,2,4,4,2,2). Hence:
+
+\[
+D_C(z_k)\leq 694+18k,\qquad
+a(k)\leq57922+9k^2+685k,\qquad
+b(k)\leq58066+9k^2+685k.
+\]
+
+The absorbing convention also satisfies the one-step bound after halt. With \(\Theta(t)=58{,}066+9t^2+685t\), absorption gives:
+
+\[
+\mathsf{iPRA}\vdash H_A(t)\to H_B(\Theta(t)),\qquad
+\mathsf{iPRA}\vdash H_B(t)\to H_A(\Theta(t)).
+\]
+
+Existential introduction and intuitionistic logic yield halting and nonhalting equivalence. Composing with the exact revised AX11H written calibration gives the requested Con(PA) equivalence. The new proof does not assume PA's consistency and does not complete its Lean formalization.
+
+\section{Novelty and ordinary quotients}\label{novelty-and-ordinary-quotients}
+
+For each new table, exact explicit-bijection comparison makes 403,520 rooted comparisons against the 520 prior spanning 194-state classes. There were no matches. The comparison allows all corpus roots, state renaming, reflection, global symbol exchange and erased terminal-entry write/move decorations. Symbol exchange is an extra structural screen and does not itself preserve zero-blank semantics.
+
+A further 776 comparisons establish that the two new tables are distinct from each other under the same conventions. All 520 prior tables and both new tables retain 194 classes under greatest immediate-action congruence with the terminal distinguished. This rules out that ordinary quotient for those tables, not contextual folds or other 193-state designs.
+
+\section{Searches below 194 states}\label{searches-below-194-states}
+
+Search results other than the explicitly identified fresh replays are retained records of the completed pre-reset research, including the proposal counts. The computation environment lost the temporary search trees before packaging. The package distinguishes those retained records from freshly rerun checks. Both new constructions, the corpus, novelty checks, and the rejected 193-state cycle certificate were reconstructed from pinned inputs and rerun; no missing raw search log is represented as present. This limitation affects reproducibility of unsuccessful heuristic enumeration, not the exact positive tables or their written simulation arguments.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Search
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Scope and proposals
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Outcome
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Arithmetic-inclusive local synthesis & 12,287 pair/displacement instances; 13,995,160 single-row proposals; 80,173 joint proposals & No survivor in the implemented radius-four, 160-step model. \\
+Whole-instruction row-choice mergers & 17,424 proposals & 11,812 observation-bound exits, 1,577 early halts, 4,029 exact cycles; six concrete survivors all failed the symbolic checker. \\
+Dual first logical head & 1,936,168 proposals from 96 semantic seeds & Best optimistic reader score 68; independent logical obstruction to the proposed identity translation. \\
+K/S/Peirce basis & 1,054,836 proposals from 576 seeds & Best optimistic reader score 70; no favorable state-count result. \\
+Two constrained scanner-five searches & 7,031,436 proposals & No feasible unpenalized reader score at most 60 and no accepted 193-state machine. \\
+\end{longtable}
+
+The local synthesis includes the 23 arithmetic controls and dispatcher 84. Its 11,604 supplied windows cover all 388 rows, combining prior non-arithmetic envelopes with 398 symbolic outcomes at the first 301 source sites, four generic list lemmas and unary-scan interiors. The search separately incorporates contexts from a 100,000-step blank prefix. It permits head displacements -2,0,+2 and synthesizes both retained rows. Conservative windows can include unreachable combinations.
+
+The whole-instruction screen uses a 5,000-transition concrete observation bound followed by a symbolic proof-search bound. A bound exit or symbolic-checker failure is not a nonhalting or inequivalence proof. The logical/scanner searches total 10,022,440 proposals. None of these finite results proves a global lower bound.
+
+\subsection{Exact rejected 193-state graph}\label{exact-rejected-193-state-graph}
+
+Identifying native 16 with 38 and retaining the two old 16 rows initially passed small zero-register examples. It fails the positive decrement at primary-source site 3661, path 101100, with T=1 and the other logical registers zero: the complete input configuration repeats after 52 steps. From blank tape it enters a complete-configuration 52-step cycle after 28,217 transitions. The independent replay compares state, head, every one-valued cell and the zero exterior.
+
+This graph was absent from the 54 previously catalogued 193-state classes. It is a new rejected diagnostic, not an accepted consistency machine. Its native SHA-256 is \hash{cb53ad33e8812dc2ebfb6a1a1b452962eeba0cf6b851d398d403a192ea0e6b80}.
+
+\subsection{Logical obstruction and the successful MP isolation}\label{logical-obstruction-and-the-successful-mp-isolation}
+
+The tempting replacement of (exists x\_d U(d,H))→H by H→U(d,exists x\_d H) cannot assume code 1 is a primitive falsity constant. Interpret material implication normally, code 0 and M(0,0)=1 as true, every other membership and equality atom as false, and every universal constructor U(d,A) as true. Then N(A)=A→1 is always true. The unchanged numerical heads, diagonal, dominated rho, guarded gate, MP and generalization preserve truth, as does the proposed dual head. But the old first head at H=M(1,1)=17 is false, as is 1→17. This disproves the asserted identity-on-formulas theorem translation; it does not establish inequiconsistency or exclude a separate refutation compiler.
+
+Replacing dominated rho by K, S and Peirce has a sound fixed-proof rationale. It enlarges the AX emitter from 190 to 202 macro tokens and from 11 to 13 entries. The bounded decoder pricing did not offset that cost.
+
+For the scanner route, root and MP reassociations preserve the resolved source graph. The proposed root-only allocation nonetheless fails at source site 11 with registers (0,0,0,0,0,0,0,0,1), gap 0 and spare list {[}1{]}: it halts after 17,392 transitions without reaching the required nonterminal frame. Gap 1 gives 17,648. The root-plus-MP allocation fails too. MP alone passes and yields the second accepted 194-state design. Native scanner state 34 also occurs 469 times in the accepted AX11H startup, so a runtime shortening would require a new startup proof.
+
+The final extra predecessor-bit fold census found no additional fold for MP alone or seven exploratory LC/SF/return-shortcut crossproducts.
+
+\subsection{Source invariants}\label{source-invariants}
+
+Three abstract interpretations were checked on the different 3,673-instruction primary source, from site 25 and registers (2,0,\ldots,0): intervals with cap four, difference bounds with cap four, and exact rational affine hulls. Their input SHA-256 is \hash{6c3127cd0da15fda49ed99cea199a009b9bc1e1707100846df9a2df02a22d507}.
+
+Intervals and difference bounds exclude sites 8,3635,3636 and force only zero branches at 7 and 3634; 1,105 other decrement tests retain both outcomes. Affine hulls retain 3,671 sites, exclude 3635 and 3636, and force only branch 3634 to zero. Each script checks the final postfixed invariant over every transition. These are source invariants, not physical-machine simulations, and no state removal follows automatically.
+
+A freshly reconstructed interval invariant and a separate certificate verifier reproduce the same three excluded sites and two forced zero branches, checking all 4,774 abstract successor edges. This reconstructed algorithm widens increasing upper bounds to infinity; its soundness comes from the independently checked postfixedness condition. The old difference-bound and affine-hull results remain identified previous-run records.
+
+\section{Connections to the other projects}\label{connections-to-the-other-projects}
+
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/BusyBeaver/Research/ZFC/candidate-k220}{ZFC candidate K220} repairs a non-pure decoder edge before the same four-block reassociation pattern and a predecessor-bit fold. \href{https://github.com/VladimirReshetnikov/ProveIt/tree/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/BusyBeaver/Research/ZFC/candidate-k215}{K215} gives exact 69/213 and 164/201 marker selectors, a local 81 repair, and command-local field reading. These are concrete transferable techniques; they also show why source identity alone is insufficient.
+
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Computability/DiophantineConsistency}{DiophantineConsistency}, particularly IPRA\_AXIOMATIZATION.md, separates native intuitionistic proof existence, translated consistency sentences and the selected refutation predicate. This supports the use of explicit positive witness maps here. A short equation does not itself supply a counted binary evaluator, tuple enumerator or blank startup.
+
+\href{https://github.com/VladimirReshetnikov/ProveIt/tree/793c68737d94bffa4e32a75bce6cc8058d6d22f0/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}{ConciseIPRA} supplies concise Eq/Q/D syntax and a native\_inconsistent\_iff theorem for iPRA. Its unchanged core targets consistency of iPRA; a PA-search replacement still needs its own PA calibration and counted compiler.
+
+\section{Exact source archive identities}\label{exact-source-archive-identities}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Incoming archive
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Git blob
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+pa194\_comparison\_and\_new\_designs\_2026-11-15.zip & cccacef93822114242f28df0c75a347f4e2fdd42 \\
+pa194\_gd\_research\_2026-11-14.zip & cf727bb42b0945aacbfe3cb0e847abe71864809d \\
+pa194\_lcfast\_tagged\_research\_2026-11-14.zip & 4f869ab3d2e0373fcd229d182ebeade913d7b4dd \\
+pa194\_loop\_return\_2026-11-14.zip & fdad64ce2edc7d429356cb0e72d707cc717a9c04 \\
+\end{longtable}
+
+The comparison archive's SHA-256 is \hash{8c41209a75eb550d820eec49f31b321dfb65ac0634b7c5d1869a3a8ee06f63a5}. The LCSF3 parent member is pa194\_sf\_research/composites/machines/PA194LC\_AX11H\_SF/machine.tm. Its native companion is in the same directory. The nested revised AX11H calibration archive is identified by SHA-256 \hash{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}. The exact MP parent is its machine whose native hash is \hash{6022711dcc0a025eb4b7a5a8f690d6b52f45f3d963a0868afef10962ccc49bd3}.
+
+The source program, arithmetic interpreter, AX11H emitter, LC reassociation, SF selector and earlier atomic shortcuts remain attributed prior work. James Chang, Andrew James Wade and ProveIt notices were retained in the prepared components.
+
+\section{Reproducing and auditing the result}\label{reproducing-and-auditing-the-result}
+
+The ZIP contains the complete LaTeX manuscript, this compiled PDF, both dense and native transition tables, numbering maps, builders, independent checkers, the exact reference calibration archive, the comparison ledgers and literal representatives, and the retained reduction evidence. Python checkers use the standard library and must run with assertions enabled. Their reports identify whether a physical replay was executed or an existing certificate was reused.
+
+The main checks are:
+
+\begin{verbatim}
+python3 -B construction/reproduce.py --output lcsf3_replay
+python3 -B mp_construction/reproduce.py --output mp_replay
+python3 -B comparison/verify_corpus.py
+python3 -B comparison/novelty_check.py 
+    construction/candidate/machine.tm 
+    mp_construction/candidate/machine.tm --output novelty_replay.json
+python3 -B comparison/check_new_pair.py 
+    mp_construction/candidate/machine.tm 
+    construction/candidate/machine.tm --output pair_replay.json
+python3 -B research/reductions/replay_cycles.py
+python3 -B research/root_research/verify_intervals.py
+python3 -B verify_package.py
+python3 compile_report.py
+\end{verbatim}
+
+Commands wrapped across display lines are single shell commands. The MP default performs the complete symbolic runtime replay; its quick mode, if selected, explicitly omits that expensive stage. SHA256SUMS binds the package files. The top-level integrity checker also independently extracts both literal transition tables from the LaTeX appendices and compares them to the machine files.
+
+The finite verifiers certify the stated table identities, local cases, source-frame instances and initialization. The generic induction and uniform unary/list-rule arguments remain written mathematics. Completing the existing Lean development would make that distinction disappear, but it is not silently assumed here.
+
+\subsection{What remains open}\label{what-remains-open}
+
+No lower bound of 194 states has been proved. The exhaustive claims in this report are restricted to their explicitly finite proposal models. Contextual folds with a different invariant, a substantially different arithmetic interpreter, or a cheaper proof-search calculus may still yield 193 states or fewer. A useful future attempt must account for the whole blank startup, all unbounded register and spare-list cases, and an internal positive halting-witness translation, as well as the final state count.
+
+The two delivered 194-state constructions satisfy the fallback objective. The first changes a recurring guarded physical return; the second changes the MP address tree while preserving the source computation. Their different proof mechanisms provide separate starting points for further compression.
+
+\section{Repository additions checked before delivery}\label{repository-additions-checked-before-delivery}
+
+The repository advanced during this work. A final bounded update checks the \href{https://github.com/VladimirReshetnikov/ProveIt/tree/99f17206a77a04d36a9bb7dd04ce2e5d0360cf7d/docs/incoming}{delivery snapshot}, commit \texttt{99f17206a77a04d36a9bb7dd04ce2e5d0360cf7d}. The entire PA/docs tree is unchanged, so the 93 filed packets are the same. Three additional incoming archives bring the delivery count to \textbf{100}. Their eight named 194-state classes bring the named roster to \textbf{91} and the recognized spanning 194-state frontier to \textbf{528}. The preceding 83-design, 31-family, 97-delivery ledgers deliberately retain their original snapshot; the delta is recorded under \texttt{comparison/latest\_head/} and compared here.
+
+The final PA directory has 98 changed or added blobs outside PA/docs: 60 Lean, 18 Markdown, 19 shell and one Python file. None changes an explicit TM, JSON, TXT, CSV, TSV or ZIP input covered by the recognition rule. The evolving Lean proof development was not re-audited by this delivery check; no new kernel-completion claim follows from the current-head scan.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Additional archive
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+New named machines
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Distinguishing mechanism
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+AX11GDH research & PA194AX11GDH, PA194AX11GDHS, PA194AX11GDHF, PA194AX11GDHR & Eleven-entry, four-operand AX combined with independent diagonal and binder fields; symmetric, accelerated and helper variants \\
+Marker-separation research & PA194LCGMS, PA194LCGSMS & Merge a decoder pair while splitting the marker scanner, then compose with loop-return acceleration \\
+Witness research & PA194H5X, PA194JH5X & Strengthen the witness head; optionally replace another logical head after obtaining an independent explosion proof \\
+\end{longtable}
+
+All three archives explicitly report no justified sub-194 blank-start consistency machine. Their positive calibration claims remain attributed to their written source proofs. The new machines in this report are independently compared against every new 194-state class: \textbf{6,208 further explicit rooted comparisons per machine}, with no matches. Combined with the baseline screen, this is \textbf{409,728 comparisons per machine against 528 classes}. The independent 776-comparison distinction between the two new machines is unchanged.
+
+The additional archives were recursively scanned with both the numeric-text and explicit-JSON recognizers. They add the same eight 194-state graph classes; JSON adds no further 194-state class beyond the literal-table scan. A new 193-state research class is an explicitly rejected/runtime-only candidate in the witness archive, not an accepted consistency construction. The 55 prior 193-state research classes are therefore not a catalogue of 55 successful consistency machines. The complete current union adds 15 class keys to the original 1,137, giving 1,152; the extra-archives-only scan is a different subset and must not be added as if it were disjoint.
+
+\subsection{AX11GDH and marker separation}\label{ax11gdh-and-marker-separation}
+
+AX11GDH combines the independent diagonal operand \(D=d+x\), explicit binder \(U(c,h)\) using the raw cache, ordinary distribution, eleven protected AX entries, a genuine fourth operand, visible no-push MP and cache-only halting. Its H, HS, F and R realizations remain at 194 controls. The F variant uses the earlier two guarded shortcuts; R repairs unsafe sharing with a dedicated helper. The nominal budgets are \(134+69-9=194\) and \(135+69-10=194\), so the changed command interface itself supplies no saving.
+
+Marker separation merges native 301 into 88 but separates marker scanner 51 into a fresh control 400. Removing one control and adding one leaves 194. Its four predecessor-bit cases have positive lengths 5,1,3,1. The written relative clocks give parent-to-child bound \(5t\) and reverse bound \(t\). Fresh compatibility checks apply the same rule to both MP and LCSF3: 384 ordinary-row identities and all four local cases pass, but both compositions still have 194 graph-reachable controls and 194 ordinary action-congruence classes. This is a compatible state-neutral variation, not an immediate route to 193.
+
+\subsection{The stronger witness head repairs the coupled logical route}\label{the-stronger-witness-head-repairs-the-coupled-logical-route}
+
+H5X replaces the head \(W(D,H)\to1\) by \(W(D,H)\to A\), with independent \(A\). JH5X also replaces \((X\to1)\to H\) by \((X\to H)\to H\). Their supplied logical certificates were freshly replayed. An explosion derivation from H5X, the diagonal and distribution uses 16 lines and does not use the old first head or Peirce. Thus the earlier standalone-dual countermodel cannot be used to reject the coupled dual-plus-H5X theory: that model falsifies H5X. The archive supplies fixed finite proof translations for the sound coupled basis.
+
+There is a useful relation between its dual presentation and the one investigated earlier. Write \(N(P)=P\to1\), \(U_d(P)=U(d,P)\), and
+
+\[
+D(P):\quad NP\to U_d(N(U_d(P))),\qquad
+R(P):\quad P\to U_d(N(U_d(NP))).
+\]
+
+These schemes are mutually derivable without explosion. Instantiate \(D\) at \(NP\) and use the implicational theorem \(P\to NNP\) to obtain \(R(P)\). Conversely, instantiate \(R\) at \(NP\). Generalize \(P\to NNP\) and use distribution to obtain \(U_d(P)\to U_d(NNP)\). Contraposition, followed by generalization and outer distribution, gives
+
+\[
+U_d(N(U_d(NNP)))\to U_d(N(U_d(P))).
+\]
+
+Composing with \(R(NP)\) gives \(D(P)\). This is a fixed proof translation, so the H5X repair applies to both presentations; the earlier isolated logical obstruction remains restricted to its original theory.
+
+The upstream coupled search records 6,694,768 mutations and effective reader price 66, an optimistic total of 200 with 134 fixed controls. No physical frontier hit is reported. A fresh two-tree check reproduced its best fixed shape as 78 readers minus 12 optimistic folds, then substituted the five-leaf \(R+\)H5X emitter without changing the binary shape or other heads. This gave 81 readers minus 10 optimistic folds, price 71 and nominal total 205. These are grammar objectives, not verified 200- or 205-state machines or lower bounds. The focused check found no immediate saving; it does not exclude a better association or a different coupled emitter.
+
+This latest-head update changes the comparison and the assessment of the coupled logical route. It changes neither of the two delivered transition tables nor their already verified positive simulations.
+\clearpage\appendix
+\section{Base-snapshot mechanism comparison: 31 families}
+The family assignments compare mathematical commands, recurring physical behavior, and required proof transport. They are not an assertion that every historical packet has been independently kernel verified. Exact class identities, aliases, packet membership, and claims are in the accompanying CSV and JSON ledgers.
+\par\medskip\begin{samepage}\noindent\textbf{1. Original source / allocation}\par\nobreak
+\textbf{Designs.} Primary PA194\allowbreak{} (67/7);\allowbreak{} PA194\allowbreak{} (68/8)
+
+\textbf{Behavior.} Same original command protocol and separate diagonal calculus. \textbf{Physical realization.} 67 readers minus seven folds, or 68 minus eight. \textbf{Proof obligation.} Complete source simulation and PA calibration.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{2. Constructor coefficient}\par\nobreak
+\textbf{Designs.} M4R;\allowbreak{} M5;\allowbreak{} M6
+
+\textbf{Behavior.} Coefficients four, five and six change numerical formula coding. \textbf{Physical realization.} Reassociated constructor decoder; equal total count. \textbf{Proof obligation.} Hereditary proof recoding, including the zero alias.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{3. Cached MP}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}C;\allowbreak{} PA194\allowbreak{}CS
+
+\textbf{Behavior.} Successful MP stores the consequent in cache and clears visible top; Shift tests cache. \textbf{Physical realization.} CS reverses destructive comparison operands to remove restoration. \textbf{Proof obligation.} Adjusted all-store command compiler.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{4. Visible no-push MP}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}N;\allowbreak{} PA194\allowbreak{}N5;\allowbreak{} PA194\allowbreak{}N6
+
+\textbf{Behavior.} Successful MP retains (b,\allowbreak{}w,\allowbreak{}b,\allowbreak{}0), omitting dummy-zero push; original sum guard. \textbf{Physical realization.} Coefficient variants retain 194 controls. \textbf{Proof obligation.} Reserved-zero handling and arbitrary carried stores.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{5. Cache-only guard}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}H;\allowbreak{} PA194\allowbreak{}H5;\allowbreak{} PA194\allowbreak{}H6;\allowbreak{} PA194\allowbreak{}HS = filed PA194\allowbreak{}NS
+
+\textbf{Behavior.} Visible no-push MP with Shift test h=1; HS uses symmetric comparison. \textbf{Physical realization.} Four/five/six constructor variants and comparator sharing. \textbf{Proof obligation.} Final contradiction detection must use Pop.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{6. Symmetric sum guard}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}NS (sum guard);\allowbreak{} PA194\allowbreak{}SUMS
+
+\textbf{Behavior.} Original sum condition t+h=1 with symmetric destructive comparison. \textbf{Physical realization.} Removes a source restoration loop without changing the guard. \textbf{Proof obligation.} Source tail equivalence; NS and SUMS differ in MP push behavior.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{7. Q distribution}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}Q
+
+\textbf{Behavior.} Exchange the curried premises of the universal-distribution head. \textbf{Physical realization.} Recompiled 190-token emitter with cached controller. \textbf{Proof obligation.} Restricted-rho derivation of premise exchange.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{8. Q with coefficient changes}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}Q5;\allowbreak{} PA194\allowbreak{}Q6
+
+\textbf{Behavior.} Q head plus coefficient five or six; original dummy-push MP. \textbf{Physical realization.} Different emitted numerical formulas at the same count. \textbf{Proof obligation.} Both premise exchange and radix recoding.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{9. Q with no-push MP}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}QN = PA194\allowbreak{}NQ;\allowbreak{} PA194\allowbreak{}QN5;\allowbreak{} PA194\allowbreak{}QN6
+
+\textbf{Behavior.} Q head, visible no-push MP, original sum guard. \textbf{Physical realization.} Four/five/six coefficient realizations. \textbf{Proof obligation.} Composition of Q proof transport and no-push compiler.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{10. Q with cache-only guard}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}QH;\allowbreak{} PA194\allowbreak{}QH5;\allowbreak{} PA194\allowbreak{}QH6;\allowbreak{} PA194\allowbreak{}QHS
+
+\textbf{Behavior.} Q head, no-push MP, cache-only Shift. \textbf{Physical realization.} Coefficient variants; QHS uses symmetric comparison. \textbf{Proof obligation.} Cache-only Pop compiler and Q transport.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{11. Q with symmetric sum guard}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}QNS;\allowbreak{} PA194\allowbreak{}QS
+
+\textbf{Behavior.} Q head with the original sum guard; QNS removes MP push, QS retains it. \textbf{Physical realization.} Shared symmetric comparator. \textbf{Proof obligation.} Exact sum-guard block equivalence.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{12. Diagonal choice}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}D;\allowbreak{} PA194\allowbreak{}DHS;\allowbreak{} Gamma(D) + CSZA
+
+\textbf{Behavior.} Use Gamma(D) instead of Gamma(A); accompanying controller variants. \textbf{Physical realization.} 69-reader/nine-fold or ten-fold allocations. \textbf{Proof obligation.} New diagonal selector; supplement has narrower evidence.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{13. Known-zero source returns}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}A;\allowbreak{} PA194\allowbreak{}F;\allowbreak{} PA194\allowbreak{}J;\allowbreak{} PA194\allowbreak{}ZR;\allowbreak{} PA194\allowbreak{}R;\allowbreak{} PA194\allowbreak{}CSZ = PA194\allowbreak{}X;\allowbreak{} PA194\allowbreak{}CZ;\allowbreak{} PA194\allowbreak{}HA;\allowbreak{} PA194\allowbreak{}HAZ;\allowbreak{} CSZA final-register 3;\allowbreak{} CSZA final-register 5;\allowbreak{} CSZA final-register 6
+
+\textbf{Behavior.} Replace selected jumps or returns by decrements of registers proved zero. \textbf{Physical realization.} Changes recurring routing and, in R, decoder association. \textbf{Proof obligation.} A source invariant and separately verified blank startup are both needed.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{14. Physical register placement}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}-AD;\allowbreak{} PA194\allowbreak{}F\_AD;\allowbreak{} PA194\allowbreak{}R\_AD;\allowbreak{} PA194\allowbreak{}TDY;\allowbreak{} PA194\allowbreak{}P5;\allowbreak{} PA194\allowbreak{}HX
+
+\textbf{Behavior.} Preserve logical commands while exchanging register positions and routers. \textbf{Physical realization.} Two-, three- and five-register arrangements. \textbf{Proof obligation.} Register-frame conjugacy and complete initialization.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{15. Decoder topology}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}B;\allowbreak{} PA194\allowbreak{}4L
+
+\textbf{Behavior.} Preserve the original source program. \textbf{Physical realization.} Dedicated history selector; four-increment reassociation plus helper/fold. \textbf{Proof obligation.} All-tape or complete source-frame positive simulation.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{16. AX11 interface}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}AX11\allowbreak{}
+
+\textbf{Behavior.} Push the guard and fall through the full MP operand reader: four operands, eleven entries. \textbf{Physical realization.} Reuses existing Push and reader machinery. \textbf{Proof obligation.} All eleven selectors and the fourth operand must be compiled.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{17. AX11 with cache-only guard}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}AX11\allowbreak{}H;\allowbreak{} PA194\allowbreak{}AX11\allowbreak{}QH
+
+\textbf{Behavior.} Four-operand AX11 with H guard, with original or Q distribution. \textbf{Physical realization.} One source increment removed; same 194-state budget. \textbf{Proof obligation.} Final Pop compiler; latest incoming supplies expanded full iPRA claim.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{18. AX11 with changed coding}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}AX11\allowbreak{}Q6;\allowbreak{} PA194\allowbreak{}AX11\allowbreak{}QH5
+
+\textbf{Behavior.} AX11 and Q with coefficient six/sum guard or five/cache guard. \textbf{Physical realization.} 135 fixed plus 67 readers minus eight folds. \textbf{Proof obligation.} Four-field coding, radix transport, appropriate halt detector.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{19. AX11 with symmetric sum guard}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}AX11\allowbreak{}S
+
+\textbf{Behavior.} Exactly the AX11 sum-guard command semantics. \textbf{Physical realization.} Symmetric source tail; three fewer source instructions. \textbf{Proof obligation.} Relative source/physical equivalence.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{20. Explicit generalization binder}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}G;\allowbreak{} PA194\allowbreak{}AX11\allowbreak{}G
+
+\textbf{Behavior.} The first AX operand c controls U(c,\allowbreak{}h), instead of inherited offset d; ten- or eleven-entry AX. \textbf{Physical realization.} Q emitter and no-push MP; original sum guard. \textbf{Proof obligation.} Shorter generalization word with no offset-setting command.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{21. Explicit binder with H guard}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}GH;\allowbreak{} PA194\allowbreak{}GHS
+
+\textbf{Behavior.} Explicit binder and ten-entry AX with cache-only Shift. \textbf{Physical realization.} Ordinary versus symmetric comparator. \textbf{Proof obligation.} New all-store compiler; complete physical frame checks.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{22. AX11QH decoder alternatives}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}AX11\allowbreak{}QH4L;\allowbreak{} PA194\allowbreak{}AX11\allowbreak{}QH4R
+
+\textbf{Behavior.} Exactly the existing four-operand AX11QH source. \textbf{Physical realization.} Two four-increment reassociations with different relative time bounds. \textbf{Proof obligation.} Positive finite-time transfer to the parent.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{23. AX11 explicit binder and cache guard}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}AX11\allowbreak{}GH = PA194\allowbreak{}AX11\allowbreak{}QGH;\allowbreak{} PA194\allowbreak{}AX11\allowbreak{}GHS
+
+\textbf{Behavior.} Four-field eleven-entry AX, direct binder c, visible no-push MP and cache-only Shift; GHS symmetric comparator. \textbf{Physical realization.} 134 fixed +67 readers -7 folds; symmetric135+67-8. \textbf{Proof obligation.} Explicit all-store proof compiler, four-field scheduler and complete physical/source proof; absolute calibration inherited from revised AX11H manuscript.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{24. Exact physical acceleration}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}AX11\allowbreak{}GHF;\allowbreak{} PA194\allowbreak{}AX11\allowbreak{}GHSF
+
+\textbf{Behavior.} Preserves GH/GHS commands; replaces two physical paths of length3 by one transition. \textbf{Physical realization.} Native26/1→1R91;101/0→0R17. \textbf{Proof obligation.} Three finite predecessor invariants,\allowbreak{}12 local cases; primitive-recursive clock t≤σ(t)≤3t.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{25. Loop continuation reassociation}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}LC;\allowbreak{} PA194\allowbreak{}LC\_A;\allowbreak{} PA194\allowbreak{}LC\_B;\allowbreak{} PA194\allowbreak{}LC\_C;\allowbreak{} PA194\allowbreak{}LC\_AX11\allowbreak{}H
+
+\textbf{Behavior.} Preserves resolved source program, changes implementation of recurring constructor loops. \textbf{Physical realization.} Three primary rows in LC; four sibling associations. \textbf{Proof obligation.} Source identity, literal-frame contracts and positive polynomial clock; revised AX11H absolute calibration for LC\_AX11H.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{26. Simultaneous history selectors}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}SEL;\allowbreak{} single/composite selector auxiliary classes
+
+\textbf{Behavior.} Merges decoder checkpoints and recycles former labels as selectors reading last written bit. \textbf{Physical realization.} Eight changed rows for two simultaneous selector pairs. \textbf{Proof obligation.} Full local-tape identities with1/3-step expansion and primitive-recursive relative iPRA clock.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{27. Optimized nine-register placement}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}AX11\allowbreak{}HR
+
+\textbf{Behavior.} Preserves AX11H source and arithmetic engines. \textbf{Physical realization.} Physical tuple[6,\allowbreak{}2,\allowbreak{}0,\allowbreak{}4,\allowbreak{}3,\allowbreak{}7,\allowbreak{}8,\allowbreak{}5,\allowbreak{}1]→[6,\allowbreak{}1,\allowbreak{}5,\allowbreak{}7,\allowbreak{}4,\allowbreak{}8,\allowbreak{}2,\allowbreak{}0,\allowbreak{}3]; ten changed active routers; startup48320. \textbf{Proof obligation.} All4778 literal contracts and whole-tape initialization; relative internal physical simulation.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{28. Selector plus acceleration}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}AX11\allowbreak{}H\_SF;\allowbreak{} PA194\allowbreak{}LC\_AX11\allowbreak{}H\_SF
+
+\textbf{Behavior.} Preserves exact AX11H/LC\_AX11H source protocol; combines compatible history selector and physical speedups. \textbf{Physical realization.} Selector plus two exact three-to-one shortcuts. \textbf{Proof obligation.} Check shortcut invariants on selector intermediate; direct bounded halting transfer with 3t; inherited AX11H calibration.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{29. Loop continuation plus two shortcuts}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}LCAX11\allowbreak{}GHF;\allowbreak{} PA194\allowbreak{}LCAX11\allowbreak{}GHSF
+
+\textbf{Behavior.} Preserves GH/GHS resolved source graphs while changing 61 constructor-loop occurrences and 305 primitive addresses. \textbf{Physical realization.} Loop reassociation and two physical accelerations. \textbf{Proof obligation.} Complete source-frame contracts and inter-frame clock; Theta(t)=13t\textasciicircum{}2+715t+58624; inherited GH/GHS and AX11H calibration.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{30. Loop return acceleration}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}LCG;\allowbreak{} PA194\allowbreak{}LCGS
+
+\textbf{Behavior.} Same GH/GHS source and loop reassociation; adds exact return at native190/1. \textbf{Physical realization.} Third guarded three-step path replaced by one step. \textbf{Proof obligation.} Unique predecessor invariant and full configuration endpoint; Theta(t)=13t\textasciicircum{}2+1173t+61160; inherited calibration.
+\end{samepage}
+
+\par\medskip\begin{samepage}\noindent\textbf{31. Independent binder and diagonal operands}\par\nobreak
+\textbf{Designs.} PA194\allowbreak{}GD;\allowbreak{} PA194\allowbreak{}GDH;\allowbreak{} PA194\allowbreak{}GDHS
+
+\textbf{Behavior.} Ten-entry AX uses explicit binder c in U(c,\allowbreak{}h), independent D=d+x in Gamma(D), original distribution premise order and no-push MP. \textbf{Physical realization.} 134+69-9 or 135+69-10 controls with alternative halt detectors. \textbf{Proof obligation.} Independent all-store command compilers, diagonal selector, complete physical frames/startup and inherited revised AX11H calibration.
+\end{samepage}
+
+\clearpage\section{Base-snapshot roster: all 83 named designs}
+The role and evidence qualifications in the CSV are authoritative. Supplementary designs with narrower certificates are included as reported designs; research auxiliary and rejected classes are counted separately. Names inherited from earlier packets can have current-source fields that identify a nested archival occurrence rather than a current top-level incoming filename.
+\small\begin{longtable}{p{0.28\linewidth}p{0.66\linewidth}}\toprule Design & Distinguishing mechanism \\\midrule\endhead
+CSZA final-register 3 & Known-zero final-return sibling with construction/startup evidence. \\
+CSZA final-register 5 & Known-zero final-return sibling; not included among independently replayed main D/J machines. \\
+CSZA final-register 6 & Known-zero final-return sibling with construction/startup evidence. \\
+Gamma(D) + CSZA & Gamma(D) emitter with a known-zero cached symmetric controller; only supplementary evidence claimed. \\
+M4R & Radix-family reassociation with the original coefficient-four resolved source. \\
+M5 & Formula-constructor coefficient five, with explicit logical recoding and physical simulation. \\
+M6 & Formula-constructor coefficient six, with translated numerical calculus and fresh physical source binding. \\
+PA194\allowbreak{} (68/8) & Same separate-diagonal numerical calculus and original sum guard, alternate 68-reader/eight-fold association. \\
+PA194\allowbreak{}-AD & Primary 67/7 decoder with A/D physical register placement; source unchanged. \\
+PA194\allowbreak{}4L & Four-increment reassociation ((i,\allowbreak{}(i,\allowbreak{}i)),\allowbreak{}i), extra helper and extra fold, exact primary source;135+67-8. \\
+PA194\allowbreak{}A & Entry jump becomes a decrement of a source-proved zero register; distinct complete initialization. \\
+PA194\allowbreak{}AX11\allowbreak{} & AX pushes its final guard and enters the full MP field reader; extra operand z is consumed; eleven stack entries, no-push MP, original sum Shift. \\
+PA194\allowbreak{}AX11\allowbreak{}G & Explicit AX-operand generalization binder+AX11 four-operand/eleven-entry operation,\allowbreak{}Q,\allowbreak{}N,\allowbreak{}sum Shift;written relative iPRA preservation. \\
+PA194\allowbreak{}AX11\allowbreak{}GH = PA194\allowbreak{}AX11\allowbreak{}QGH & Eleven-entry four-field AX, explicit binder, Q distribution, cache-only Shift, no-push MP. \\
+PA194\allowbreak{}AX11\allowbreak{}GHF & Two exact three-to-one physical accelerations of the AX11GH or AX11GHS protocol. \\
+PA194\allowbreak{}AX11\allowbreak{}GHS & AX11GH interface with symmetric physical Shift comparison. \\
+PA194\allowbreak{}AX11\allowbreak{}GHSF & Two exact three-to-one physical accelerations of the AX11GH or AX11GHS protocol. \\
+PA194\allowbreak{}AX11\allowbreak{}H & AX11 four-operand/eleven-entry interface plus H cache-only Shift;134+67-7. Incoming same-table proof upgrade claims full written iPRA calibration. \\
+PA194\allowbreak{}AX11\allowbreak{}HR & Optimized nine-register physical placement of AX11H; ten active routers change. \\
+PA194\allowbreak{}AX11\allowbreak{}H\_SF & Selector plus two guarded physical shortcuts on exact AX11H; 57918-step startup. \\
+PA194\allowbreak{}AX11\allowbreak{}Q6 & AX11+Q+coefficient6+N with original sum Shift;135+67-8. \\
+PA194\allowbreak{}AX11\allowbreak{}QH = PA194\allowbreak{}QAX11\allowbreak{}H & AX11+Q+H at coefficient4; incoming QAX11H is same table with upgraded full written iPRA proof claim. \\
+PA194\allowbreak{}AX11\allowbreak{}QH4L & AX11QH source with four-increment left reassociation/helper/fold;relative step bound factor2. \\
+PA194\allowbreak{}AX11\allowbreak{}QH4R & AX11QH source with four-increment right reassociation/helper/fold;relative step bound factor2. \\
+PA194\allowbreak{}AX11\allowbreak{}QH5 & AX11+Q+coefficient5+H; no-push MP and cache-only Shift; duplicated in later combined research packet. \\
+PA194\allowbreak{}AX11\allowbreak{}S & AX11 with symmetric implementation of original sum-based Shift;written relative source iPRA preservation. \\
+PA194\allowbreak{}B & Dedicated history selector joins physical readers 88 and 301; exact all-tape local transfer;22 self-loops. \\
+PA194\allowbreak{}C & Cached-result MP and cached-head-only Shift; duplicated as the principal table by five packets. \\
+PA194\allowbreak{}CS & Cached-result MP and cached-head-only Shift; symmetric destructive comparison removes a transfer loop. \\
+PA194\allowbreak{}CSZ = PA194\allowbreak{}X & Cached symmetric controller with known-zero entry decrement; two names identify the same table. \\
+PA194\allowbreak{}CZ & Cached controller plus known-zero source jump; a secondary same-size composition. \\
+PA194\allowbreak{}D & Separate diagonal head Gamma(A) changes to Gamma(D); revised selectors and 69-reader/nine-fold realization. \\
+PA194\allowbreak{}DHS & Gamma(D) emitter, no-push MP and cached-only symmetric Shift; 135 + 69 - 10 controls. \\
+PA194\allowbreak{}F & Cached symmetric AX final jump becomes a decrement of X, proved zero by a four-site cut. \\
+PA194\allowbreak{}F\_AD & A/D register placement composed with known-zero final emitter return; supplied physical/source checks. \\
+PA194\allowbreak{}G & AX saved generalization binds the explicit first operand c rather than offset d; Q distribution, no-push MP, sum Shift. \\
+PA194\allowbreak{}GD & Explicit binder U(c,\allowbreak{}h), diagonal Gamma(D), no-push MP, sum guard; 58154-step startup. \\
+PA194\allowbreak{}GDH & Same independent binder/diagonal source with cache-only guard; 57922-step startup. \\
+PA194\allowbreak{}GDHS & Same GDH source with symmetric physical comparison; 57768-step startup. \\
+PA194\allowbreak{}GH & G explicit-binder generalization plus H cache-only Shift,\allowbreak{}Q,\allowbreak{}N;3653 source sites,\allowbreak{}134+67-7. \\
+PA194\allowbreak{}GHS & Same command interface as GH with symmetric destructive cache-only comparator;3650 source sites,\allowbreak{}135+67-8. \\
+PA194\allowbreak{}H & No-push visible-top MP and cached-head-only Shift before symmetric-guard simplification. \\
+PA194\allowbreak{}H5 & Coefficient five with visible no-push MP and cache-only Shift; original quantifier head. \\
+PA194\allowbreak{}H6 & Coefficient-six formula arithmetic, no-push MP, and cached-only Shift. \\
+PA194\allowbreak{}HA & Cached-result MP, original sum Shift, and A/D physical-register placement. \\
+PA194\allowbreak{}HAZ & HA plus final AX decrement of a register proved zero by a four-site invariant. \\
+PA194\allowbreak{}HS = filed PA194\allowbreak{}NS & No-push visible-top MP combined with cached-head-only symmetric Shift; revised reserved-zero proof compiler. \\
+PA194\allowbreak{}HX & Exchange physical H/X register blocks, preserving complete primary source;startup56134. \\
+PA194\allowbreak{}J & Ten jumps become known-zero decrements under a finite source invariant; three native rows change. \\
+PA194\allowbreak{}LC & Recurring loop continuation reassociation preserving the primary source program. \\
+PA194\allowbreak{}LCAX11\allowbreak{}GHF & Loop continuation reassociation plus two exact physical shortcuts on AX11GH. \\
+PA194\allowbreak{}LCAX11\allowbreak{}GHSF & Loop continuation reassociation plus two exact physical shortcuts on AX11GHS. \\
+PA194\allowbreak{}LCG & GH loop-continuation source with third guarded return shortcut at native 190/1. \\
+PA194\allowbreak{}LCGS & GHS loop-continuation source with third guarded return shortcut at native 190/1. \\
+PA194\allowbreak{}LC\_A & Recurring loop continuation reassociation preserving the primary source program. \\
+PA194\allowbreak{}LC\_AX11\allowbreak{}H & Recurring loop continuation reassociation preserving the AX11H source program. \\
+PA194\allowbreak{}LC\_AX11\allowbreak{}H\_SF & Same compatible selector/shortcut composition on LC\_AX11H; 57918-step startup. \\
+PA194\allowbreak{}LC\_B & Recurring loop continuation reassociation preserving the primary source program. \\
+PA194\allowbreak{}LC\_C & Recurring loop continuation reassociation preserving the primary source program. \\
+PA194\allowbreak{}N & Successful MP omits dummy-zero push, returns visible consequent (b,\allowbreak{}w,\allowbreak{}b,\allowbreak{}0), and retains sum guard. \\
+PA194\allowbreak{}N5 & Coefficient-five formula arithmetic plus no-push MP. \\
+PA194\allowbreak{}N6 & Coefficient-six formula arithmetic plus no-push MP; two packets deliver the same table. \\
+PA194\allowbreak{}NS (sum guard) & Original sum-testing Shift with symmetric comparison and no-push visible-result MP; distinct from cache-only NS=HS. \\
+PA194\allowbreak{}P5 & Move five physical registers and seven router targets;unchanged primary source;startup56158. \\
+PA194\allowbreak{}Q & Exchanges the curried premises in universal distribution, with cached controller; 79 primitive source instructions change. \\
+PA194\allowbreak{}Q5 & Q emitter plus coefficient-five arithmetic and original dummy-push MP / sum Shift. \\
+PA194\allowbreak{}Q6 & Q emitter plus coefficient-six arithmetic and original dummy-push MP / sum Shift. \\
+PA194\allowbreak{}QH & Q premise exchange with no-push visible-result MP and cache-only Shift. \\
+PA194\allowbreak{}QH5 & Coefficient five, premise-exchanged Q emitter, visible no-push MP, cache-only Shift. Two incoming archives repeat this table. \\
+PA194\allowbreak{}QH6 & Q emitter, coefficient-six arithmetic, no-push MP, and cached-only Shift. \\
+PA194\allowbreak{}QHS & Q emitter, visible no-push MP, symmetric cache-only Shift; coefficient four. \\
+PA194\allowbreak{}QN = PA194\allowbreak{}NQ & Premise-exchanged Q emitter plus no-push N controller and original sum Shift; two deliveries are byte-identical. \\
+PA194\allowbreak{}QN5 & Q emitter, visible no-push MP, original sum Shift, coefficient five. \\
+PA194\allowbreak{}QN6 & Q emitter, visible no-push MP, original sum Shift, coefficient six. Two incoming archives repeat this table. \\
+PA194\allowbreak{}QNS & Q emitter, no-push MP and symmetric original sum Shift; two deliveries are byte-identical. \\
+PA194\allowbreak{}QS & Q emitter, original dummy-push MP and symmetric original sum Shift. \\
+PA194\allowbreak{}R & F zero-closing source with reassociated 67-reader grammar; 1111 source addresses change. \\
+PA194\allowbreak{}R\_AD & A/D placement composed with reassociated decoder and known-zero final emitter return; supplied physical/source checks. \\
+PA194\allowbreak{}SEL & Two simultaneous history selectors with direct1/3-step relative proof. \\
+PA194\allowbreak{}SUMS & Original sum-testing Shift with symmetric comparison, preserving primary PA194 command semantics. \\
+PA194\allowbreak{}TDY & Cycle physical T,\allowbreak{}D,\allowbreak{}Y registers;four native row edits, unchanged primary source;startup57594. \\
+PA194\allowbreak{}ZR & Eight comparator returns and AX exit use zero-decrement return; independent 129-site invariant. \\
+Primary PA194\allowbreak{} (67/7) & Separate diagonal emitter, original sum-guard controller; 134 fixed + 67 readers - 7 folds. \\
+\bottomrule\end{longtable}\normalsize
+\clearpage\section{Complete PA194-LCSF3 transition table}
+Dense controls 0--193, start 0, halt 194. Each entry $wDq$ means write $w$, move $D$, enter $q$. The tape and head conventions are those of Section 1. Every row is copied mechanically from the delivered literal machine file and independently checked by the package verifier.
+% BEGIN_LCSF3_TABLE
+\begin{center}\fontsize{8.2}{9.0}\selectfont\renewcommand{\arraystretch}{0.96}\setlength{\tabcolsep}{7pt}\begin{tabular}{rcc@{\hspace{14pt}}rcc@{\hspace{14pt}}rcc}\toprule
+$q$ & Read 0 & Read 1 & $q$ & Read 0 & Read 1 & $q$ & Read 0 & Read 1 \\\midrule
+0 & \texttt{1R1} & \texttt{1R2} & 65 & \texttt{0R88} & \texttt{1R30} & 130 & \texttt{0R134} & \texttt{1R135} \\
+1 & \texttt{1R3} & \texttt{1R1} & 66 & \texttt{0R89} & \texttt{1R66} & 131 & \texttt{0R136} & \texttt{1R137} \\
+2 & \texttt{0R0} & \texttt{1R2} & 67 & \texttt{0L90} & \texttt{1L33} & 132 & \texttt{0R138} & \texttt{1R139} \\
+3 & \texttt{0R4} & \texttt{0R1} & 68 & \texttt{0L81} & \texttt{0R2} & 133 & \texttt{0R140} & \texttt{1R141} \\
+4 & \texttt{1R5} & \texttt{1L6} & 69 & \texttt{0R91} & \texttt{1R69} & 134 & \texttt{0R98} & \texttt{1R35} \\
+5 & \texttt{1L7} & \texttt{1L8} & 70 & \texttt{0R72} & \texttt{1R92} & 135 & \texttt{0R142} & \texttt{1R115} \\
+6 & \texttt{0L7} & \texttt{1L6} & 71 & \texttt{0R46} & \texttt{1R93} & 136 & \texttt{0R143} & \texttt{1R144} \\
+7 & \texttt{0L9} & \texttt{1L6} & 72 & \texttt{0R42} & \texttt{0L13} & 137 & \texttt{0R145} & \texttt{1R146} \\
+8 & \texttt{0L10} & \texttt{0L11} & 73 & \texttt{0R94} & \texttt{1R37} & 138 & \texttt{0R134} & \texttt{1R147} \\
+9 & \texttt{1R12} & \texttt{0L9} & 74 & \texttt{0L95} & \texttt{1R96} & 139 & \texttt{0R88} & \texttt{1R148} \\
+10 & \texttt{0L9} & \texttt{0L10} & 75 & \texttt{0R42} & \texttt{1R97} & 140 & \texttt{0R149} & \texttt{1L131} \\
+11 & \texttt{1L8} & \texttt{1L11} & 76 & \texttt{0R98} & \texttt{1R99} & 141 & \texttt{0R150} & \texttt{1R151} \\
+12 & \texttt{0R12} & \texttt{0R13} & 77 & \texttt{0R100} & \texttt{1L101} & 142 & \texttt{0R76} & \texttt{1R41} \\
+13 & \texttt{0L14} & \texttt{0R13} & 78 & \texttt{0R30} & \texttt{1R77} & 143 & \texttt{0R28} & \texttt{1R152} \\
+14 & \texttt{1L15} & \texttt{0L15} & 79 & \texttt{0R93} & \texttt{1R102} & 144 & \texttt{0L153} & \texttt{1L154} \\
+15 & \texttt{0L15} & \texttt{1L16} & 80 & \texttt{0R30} & \texttt{1R103} & 145 & \texttt{0L129} & \texttt{1R155} \\
+16 & \texttt{0L17} & \texttt{1L16} & 81 & \texttt{1R81} & \texttt{1L15} & 146 & \texttt{0R156} & \texttt{1R157} \\
+17 & \texttt{0L18} & \texttt{1L16} & 82 & \texttt{0R104} & \texttt{1R82} & 147 & \texttt{0R149} & \texttt{1R158} \\
+18 & \texttt{0L19} & \texttt{1L16} & 83 & \texttt{0R94} & \texttt{0L7} & 148 & \texttt{0R159} & \texttt{1R88} \\
+19 & \texttt{0L20} & \texttt{1L16} & 84 & \texttt{0R74} & \texttt{1R105} & 149 & \texttt{0R98} & \texttt{1R160} \\
+20 & \texttt{0L21} & \texttt{1L16} & 85 & \texttt{0R42} & \texttt{1R106} & 150 & \texttt{0R161} & \texttt{1R162} \\
+21 & \texttt{0L22} & \texttt{1L16} & 86 & \texttt{0R107} & \texttt{1R90} & 151 & \texttt{0R163} & \texttt{1R98} \\
+22 & \texttt{0L23} & \texttt{1L16} & 87 & \texttt{0R108} & \texttt{0L72} & 152 & \texttt{0R164} & \texttt{1R165} \\
+23 & \texttt{0R23} & \texttt{1R24} & 88 & \texttt{0R68} & \texttt{0R66} & 153 & \texttt{0R166} & \texttt{1R157} \\
+24 & \texttt{0R25} & \texttt{1R26} & 89 & \texttt{0R109} & \texttt{1R89} & 154 & \texttt{0R167} & \texttt{1R156} \\
+25 & \texttt{0R27} & \texttt{1R28} & 90 & \texttt{0R49} & \texttt{1R101} & 155 & \texttt{0R135} & \texttt{1R130} \\
+26 & \texttt{0R29} & \texttt{1R30} & 91 & \texttt{0R110} & \texttt{1R91} & 156 & \texttt{0R147} & \texttt{1R41} \\
+27 & \texttt{0R31} & \texttt{1R194} & 92 & \texttt{0R30} & \texttt{1R48} & 157 & \texttt{0R134} & \texttt{1R168} \\
+28 & \texttt{0L32} & \texttt{1R33} & 93 & \texttt{0R47} & \texttt{1R60} & 158 & \texttt{0R41} & \texttt{1L169} \\
+29 & \texttt{0R34} & \texttt{1R35} & 94 & \texttt{0L63} & \texttt{0R89} & 159 & \texttt{0L170} & \texttt{1R171} \\
+30 & \texttt{0L36} & \texttt{1L37} & 95 & \texttt{0R105} & \texttt{1R78} & 160 & \texttt{0R107} & \texttt{1R85} \\
+31 & \texttt{0R38} & \texttt{1R39} & 96 & \texttt{0R94} & \texttt{1L111} & 161 & \texttt{0R172} & \texttt{1R170} \\
+32 & \texttt{0R40} & \texttt{1R41} & 97 & \texttt{0R102} & \texttt{0L14} & 162 & \texttt{0R173} & \texttt{1R174} \\
+33 & \texttt{0R42} & \texttt{1R43} & 98 & \texttt{0R36} & \texttt{1R112} & 163 & \texttt{0R175} & \texttt{1R176} \\
+34 & \texttt{0R44} & \texttt{1R45} & 99 & \texttt{0R111} & \texttt{1R75} & 164 & \texttt{0R177} & \texttt{1R178} \\
+35 & \texttt{0R46} & \texttt{1R33} & 100 & \texttt{0L63} & \texttt{0R109} & 165 & \texttt{0L179} & \texttt{1L180} \\
+36 & \texttt{0R47} & \texttt{1R48} & 101 & \texttt{0L62} & \texttt{1R113} & 166 & \texttt{0R149} & \texttt{1R140} \\
+37 & \texttt{0R49} & \texttt{1R50} & 102 & \texttt{0L90} & \texttt{1R114} & 167 & \texttt{0R165} & \texttt{1R181} \\
+38 & \texttt{0R51} & \texttt{1R42} & 103 & \texttt{0R115} & \texttt{1R116} & 168 & \texttt{0L130} & \texttt{1R88} \\
+39 & \texttt{0R52} & \texttt{1R53} & 104 & \texttt{0R69} & \texttt{1R104} & 169 & \texttt{0R182} & \texttt{1R135} \\
+40 & \texttt{0R54} & \texttt{1R55} & 105 & \texttt{0R117} & \texttt{1R67} & 170 & \texttt{0R183} & \texttt{1R145} \\
+41 & \texttt{0R56} & \texttt{1R57} & 106 & \texttt{0R118} & \texttt{0L14} & 171 & \texttt{0R158} & \texttt{1R130} \\
+42 & \texttt{0R58} & \texttt{0R59} & 107 & \texttt{0R119} & \texttt{1L71} & 172 & \texttt{0R139} & \texttt{1R165} \\
+43 & \texttt{0R60} & \texttt{0L14} & 108 & \texttt{0R120} & \texttt{1R121} & 173 & \texttt{0R158} & \texttt{1R184} \\
+44 & \texttt{0R61} & \texttt{1R62} & 109 & \texttt{0R14} & \texttt{1R109} & 174 & \texttt{0R185} & \texttt{1R107} \\
+45 & \texttt{0R63} & \texttt{1R52} & 110 & \texttt{0R66} & \texttt{1R110} & 175 & \texttt{0R31} & \texttt{1R52} \\
+46 & \texttt{0R64} & \texttt{1R65} & 111 & \texttt{0R122} & \texttt{1L35} & 176 & \texttt{0R186} & \texttt{1R175} \\
+47 & \texttt{0R58} & \texttt{0R66} & 112 & \texttt{0R123} & \texttt{1R124} & 177 & \texttt{0R134} & \texttt{1R142} \\
+48 & \texttt{0R67} & \texttt{0L14} & 113 & \texttt{0R88} & \texttt{0L14} & 178 & \texttt{0R32} & \texttt{1R187} \\
+49 & \texttt{0R68} & \texttt{0R69} & 114 & \texttt{0R90} & \texttt{1L96} & 179 & \texttt{0R144} & \texttt{1R188} \\
+50 & \texttt{0R70} & \texttt{0L48} & 115 & \texttt{0R88} & \texttt{1R88} & 180 & \texttt{0R189} & \texttt{1R190} \\
+51 & \texttt{0R64} & \texttt{1R53} & 116 & \texttt{0R115} & \texttt{0L48} & 181 & \texttt{0R41} & \texttt{1R191} \\
+52 & \texttt{0L71} & \texttt{0L15} & 117 & \texttt{0L63} & \texttt{0R104} & 182 & \texttt{0R168} & \texttt{1R41} \\
+53 & \texttt{0R72} & \texttt{0L10} & 118 & \texttt{0R68} & \texttt{0R91} & 183 & \texttt{0R192} & \texttt{1R88} \\
+54 & \texttt{0R73} & \texttt{1R74} & 119 & \texttt{0R58} & \texttt{0R91} & 184 & \texttt{0R153} & \texttt{1R146} \\
+55 & \texttt{0R75} & \texttt{1R76} & 120 & \texttt{0R119} & \texttt{1R125} & 185 & \texttt{0R165} & \texttt{1R180} \\
+56 & \texttt{0R77} & \texttt{1R78} & 121 & \texttt{0R126} & \texttt{1R127} & 186 & \texttt{0R92} & \texttt{1R111} \\
+57 & \texttt{0R79} & \texttt{1R80} & 122 & \texttt{0R58} & \texttt{0R110} & 187 & \texttt{0R193} & \texttt{1R159} \\
+58 & \texttt{0L81} & \texttt{0R1} & 123 & \texttt{0R100} & \texttt{1R113} & 188 & \texttt{0R169} & \texttt{1R154} \\
+59 & \texttt{0R82} & \texttt{1R59} & 124 & \texttt{0R79} & \texttt{1R78} & 189 & \texttt{0R158} & \texttt{1R192} \\
+60 & \texttt{0L73} & \texttt{1L46} & 125 & \texttt{0R128} & \texttt{1R129} & 190 & \texttt{0R179} & \texttt{1R182} \\
+61 & \texttt{0R83} & \texttt{1R84} & 126 & \texttt{0R32} & \texttt{1R36} & 191 & \texttt{0R182} & \texttt{1R41} \\
+62 & \texttt{0R54} & \texttt{1R85} & 127 & \texttt{0R31} & \texttt{1R99} & 192 & \texttt{0R149} & \texttt{1R168} \\
+63 & \texttt{0L86} & \texttt{1R87} & 128 & \texttt{0R130} & \texttt{1R131} & 193 & \texttt{0R76} & \texttt{1R144} \\
+64 & \texttt{0R58} & \texttt{0R82} & 129 & \texttt{0R132} & \texttt{1R133} &  &  &  \\
+\bottomrule\end{tabular}\end{center}
+% END_LCSF3_TABLE
+\clearpage\section{Complete PA194-MP transition table}
+Dense controls 0--193, start 0, halt 194. Each entry $wDq$ means write $w$, move $D$, enter $q$. The tape and head conventions are those of Section 1. Every row is copied mechanically from the delivered literal machine file and independently checked by the package verifier.
+% BEGIN_MP_TABLE
+\begin{center}\fontsize{8.2}{9.0}\selectfont\renewcommand{\arraystretch}{0.96}\setlength{\tabcolsep}{7pt}\begin{tabular}{rcc@{\hspace{14pt}}rcc@{\hspace{14pt}}rcc}\toprule
+$q$ & Read 0 & Read 1 & $q$ & Read 0 & Read 1 & $q$ & Read 0 & Read 1 \\\midrule
+0 & \texttt{1R1} & \texttt{1R2} & 65 & \texttt{0R88} & \texttt{1R30} & 130 & \texttt{0R134} & \texttt{1R135} \\
+1 & \texttt{1R3} & \texttt{1R1} & 66 & \texttt{0R89} & \texttt{1R66} & 131 & \texttt{0R136} & \texttt{1R137} \\
+2 & \texttt{0R0} & \texttt{1R2} & 67 & \texttt{0L90} & \texttt{1L33} & 132 & \texttt{0R138} & \texttt{1R139} \\
+3 & \texttt{0R4} & \texttt{0R1} & 68 & \texttt{0L81} & \texttt{0R2} & 133 & \texttt{0R140} & \texttt{1R141} \\
+4 & \texttt{1R5} & \texttt{1L6} & 69 & \texttt{0R91} & \texttt{1R69} & 134 & \texttt{0R97} & \texttt{1R35} \\
+5 & \texttt{1L7} & \texttt{1L8} & 70 & \texttt{0R72} & \texttt{1R92} & 135 & \texttt{0R142} & \texttt{1R124} \\
+6 & \texttt{0L7} & \texttt{1L6} & 71 & \texttt{0R46} & \texttt{1R93} & 136 & \texttt{0R143} & \texttt{1R144} \\
+7 & \texttt{0L9} & \texttt{1L6} & 72 & \texttt{0R42} & \texttt{0L13} & 137 & \texttt{0R145} & \texttt{1R146} \\
+8 & \texttt{0L10} & \texttt{0L11} & 73 & \texttt{0R94} & \texttt{1R37} & 138 & \texttt{0R134} & \texttt{1R147} \\
+9 & \texttt{1R12} & \texttt{0L9} & 74 & \texttt{0R30} & \texttt{1R95} & 139 & \texttt{0R88} & \texttt{1R148} \\
+10 & \texttt{0L9} & \texttt{0L10} & 75 & \texttt{0R42} & \texttt{1R96} & 140 & \texttt{0R149} & \texttt{1L131} \\
+11 & \texttt{1L8} & \texttt{1L11} & 76 & \texttt{0R97} & \texttt{1R98} & 141 & \texttt{0R150} & \texttt{1R151} \\
+12 & \texttt{0R12} & \texttt{0R13} & 77 & \texttt{0R99} & \texttt{1L100} & 142 & \texttt{0R76} & \texttt{1R41} \\
+13 & \texttt{0L14} & \texttt{0R13} & 78 & \texttt{0R30} & \texttt{1R77} & 143 & \texttt{0R28} & \texttt{1R152} \\
+14 & \texttt{1L15} & \texttt{0L15} & 79 & \texttt{0R93} & \texttt{1R101} & 144 & \texttt{0L153} & \texttt{1L154} \\
+15 & \texttt{0L15} & \texttt{1L16} & 80 & \texttt{0R30} & \texttt{1R102} & 145 & \texttt{0L128} & \texttt{1R155} \\
+16 & \texttt{0L17} & \texttt{1L16} & 81 & \texttt{1R81} & \texttt{1L15} & 146 & \texttt{0R156} & \texttt{1R157} \\
+17 & \texttt{0L18} & \texttt{1L16} & 82 & \texttt{0R103} & \texttt{1R82} & 147 & \texttt{0R149} & \texttt{1R158} \\
+18 & \texttt{0L19} & \texttt{1L16} & 83 & \texttt{0R94} & \texttt{0L7} & 148 & \texttt{0R159} & \texttt{1R88} \\
+19 & \texttt{0L20} & \texttt{1L16} & 84 & \texttt{0R104} & \texttt{1R105} & 149 & \texttt{0R97} & \texttt{1R160} \\
+20 & \texttt{0L21} & \texttt{1L16} & 85 & \texttt{0R42} & \texttt{1R106} & 150 & \texttt{0R161} & \texttt{1R162} \\
+21 & \texttt{0L22} & \texttt{1L16} & 86 & \texttt{0R107} & \texttt{1R48} & 151 & \texttt{0R163} & \texttt{1R97} \\
+22 & \texttt{0L23} & \texttt{1L16} & 87 & \texttt{0R108} & \texttt{0L72} & 152 & \texttt{0R164} & \texttt{1R165} \\
+23 & \texttt{0R23} & \texttt{1R24} & 88 & \texttt{0R68} & \texttt{0R66} & 153 & \texttt{0R166} & \texttt{1R157} \\
+24 & \texttt{0R25} & \texttt{1R26} & 89 & \texttt{0R109} & \texttt{1R89} & 154 & \texttt{0R167} & \texttt{1R156} \\
+25 & \texttt{0R27} & \texttt{1R28} & 90 & \texttt{0R49} & \texttt{1R100} & 155 & \texttt{0R135} & \texttt{1R130} \\
+26 & \texttt{0R29} & \texttt{1R30} & 91 & \texttt{0R110} & \texttt{1R91} & 156 & \texttt{0R147} & \texttt{1R41} \\
+27 & \texttt{0R31} & \texttt{1R194} & 92 & \texttt{0R30} & \texttt{1R48} & 157 & \texttt{0R134} & \texttt{1R168} \\
+28 & \texttt{0L32} & \texttt{1R33} & 93 & \texttt{0R47} & \texttt{1R60} & 158 & \texttt{0R41} & \texttt{1L169} \\
+29 & \texttt{0R34} & \texttt{1R35} & 94 & \texttt{0L63} & \texttt{0R89} & 159 & \texttt{0L170} & \texttt{1R171} \\
+30 & \texttt{0L36} & \texttt{1L37} & 95 & \texttt{0R94} & \texttt{1L111} & 160 & \texttt{0R107} & \texttt{1R85} \\
+31 & \texttt{0R38} & \texttt{1R39} & 96 & \texttt{0R101} & \texttt{0L14} & 161 & \texttt{0R172} & \texttt{1R170} \\
+32 & \texttt{0R40} & \texttt{1R41} & 97 & \texttt{0R36} & \texttt{1R112} & 162 & \texttt{0R173} & \texttt{1R174} \\
+33 & \texttt{0R42} & \texttt{1R43} & 98 & \texttt{0R111} & \texttt{1R75} & 163 & \texttt{0R175} & \texttt{1R176} \\
+34 & \texttt{0R44} & \texttt{1R45} & 99 & \texttt{0L63} & \texttt{0R109} & 164 & \texttt{0R177} & \texttt{1R178} \\
+35 & \texttt{0R46} & \texttt{1R33} & 100 & \texttt{0L62} & \texttt{1R113} & 165 & \texttt{0L179} & \texttt{1L180} \\
+36 & \texttt{0R47} & \texttt{1R48} & 101 & \texttt{0L90} & \texttt{1R114} & 166 & \texttt{0R149} & \texttt{1R140} \\
+37 & \texttt{0R49} & \texttt{1R50} & 102 & \texttt{0R115} & \texttt{0L14} & 167 & \texttt{0R165} & \texttt{1R181} \\
+38 & \texttt{0R51} & \texttt{1R42} & 103 & \texttt{0R69} & \texttt{1R103} & 168 & \texttt{0L130} & \texttt{1R88} \\
+39 & \texttt{0R52} & \texttt{1R53} & 104 & \texttt{0R116} & \texttt{1R95} & 169 & \texttt{0R182} & \texttt{1R135} \\
+40 & \texttt{0R54} & \texttt{1R55} & 105 & \texttt{0R116} & \texttt{1R67} & 170 & \texttt{0R183} & \texttt{1R145} \\
+41 & \texttt{0R56} & \texttt{1R57} & 106 & \texttt{0R117} & \texttt{0L14} & 171 & \texttt{0R158} & \texttt{1R130} \\
+42 & \texttt{0R58} & \texttt{0R59} & 107 & \texttt{0R118} & \texttt{1L71} & 172 & \texttt{0R139} & \texttt{1R165} \\
+43 & \texttt{0R60} & \texttt{0L14} & 108 & \texttt{0R119} & \texttt{1R120} & 173 & \texttt{0R158} & \texttt{1R184} \\
+44 & \texttt{0R61} & \texttt{1R62} & 109 & \texttt{0R14} & \texttt{1R109} & 174 & \texttt{0R185} & \texttt{1R107} \\
+45 & \texttt{0R63} & \texttt{1R52} & 110 & \texttt{0R66} & \texttt{1R110} & 175 & \texttt{0R31} & \texttt{1R52} \\
+46 & \texttt{0R64} & \texttt{1R65} & 111 & \texttt{0R121} & \texttt{1L35} & 176 & \texttt{0R186} & \texttt{1R175} \\
+47 & \texttt{0R58} & \texttt{0R66} & 112 & \texttt{0R122} & \texttt{1R123} & 177 & \texttt{0R134} & \texttt{1R142} \\
+48 & \texttt{0R67} & \texttt{0L14} & 113 & \texttt{0R88} & \texttt{0L14} & 178 & \texttt{0R32} & \texttt{1R187} \\
+49 & \texttt{0R68} & \texttt{0R69} & 114 & \texttt{0R90} & \texttt{1L95} & 179 & \texttt{0R144} & \texttt{1R188} \\
+50 & \texttt{0R70} & \texttt{0L48} & 115 & \texttt{0R124} & \texttt{1R124} & 180 & \texttt{0R189} & \texttt{1R190} \\
+51 & \texttt{0R64} & \texttt{1R53} & 116 & \texttt{0L63} & \texttt{0R103} & 181 & \texttt{0R41} & \texttt{1R191} \\
+52 & \texttt{0L71} & \texttt{0L15} & 117 & \texttt{0R68} & \texttt{0R91} & 182 & \texttt{0R168} & \texttt{1R41} \\
+53 & \texttt{0R72} & \texttt{0L10} & 118 & \texttt{0R58} & \texttt{0R91} & 183 & \texttt{0R192} & \texttt{1R88} \\
+54 & \texttt{0R73} & \texttt{1R74} & 119 & \texttt{0L86} & \texttt{1R125} & 184 & \texttt{0R153} & \texttt{1R146} \\
+55 & \texttt{0R75} & \texttt{1R76} & 120 & \texttt{0R32} & \texttt{1R126} & 185 & \texttt{0R165} & \texttt{1R180} \\
+56 & \texttt{0R77} & \texttt{1R78} & 121 & \texttt{0R58} & \texttt{0R110} & 186 & \texttt{0R92} & \texttt{1R111} \\
+57 & \texttt{0R79} & \texttt{1R80} & 122 & \texttt{0R99} & \texttt{1R113} & 187 & \texttt{0R193} & \texttt{1R159} \\
+58 & \texttt{0L81} & \texttt{0R1} & 123 & \texttt{0R79} & \texttt{1R78} & 188 & \texttt{0R169} & \texttt{1R154} \\
+59 & \texttt{0R82} & \texttt{1R59} & 124 & \texttt{0R88} & \texttt{1R88} & 189 & \texttt{0R158} & \texttt{1R192} \\
+60 & \texttt{0L73} & \texttt{1L46} & 125 & \texttt{0R127} & \texttt{1R128} & 190 & \texttt{0R179} & \texttt{1R182} \\
+61 & \texttt{0R83} & \texttt{1R84} & 126 & \texttt{0R36} & \texttt{1R129} & 191 & \texttt{0R182} & \texttt{1R41} \\
+62 & \texttt{0R54} & \texttt{1R85} & 127 & \texttt{0R130} & \texttt{1R131} & 192 & \texttt{0R149} & \texttt{1R168} \\
+63 & \texttt{0L86} & \texttt{1R87} & 128 & \texttt{0R132} & \texttt{1R133} & 193 & \texttt{0R76} & \texttt{1R144} \\
+64 & \texttt{0R58} & \texttt{0R82} & 129 & \texttt{0R31} & \texttt{1R98} &  &  &  \\
+\bottomrule\end{tabular}\end{center}
+% END_MP_TABLE
+\end{document}

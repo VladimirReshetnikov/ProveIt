@@ -1,0 +1,188 @@
+\section{A directly verified selector--acceleration composition}
+\label{sec:selector-fast-composite}
+
+Two further 194-state tables are obtained without altering their parents'
+source command protocols. The parents are the exact incoming AX11H and
+LC\_AX11H tables, respectively. Write $M$ for either parent. First apply a
+single history selector to controls $127,124$, producing $S$; then apply the
+two incoming three-step accelerations to $S$, producing $N$. The result is
+called PA194AX11H\_SF or PA194LC\_AX11H\_SF. The components are attributed
+prior work; the new contribution here is their checked interaction on these
+specific parents and the resulting graph-distinct literal constructions.
+
+\paragraph{Why a checked interaction is necessary.}
+The primary PA194 selector packet changes two pairs, $(12,38)$ and
+$(127,124)$. The first pair cannot be copied into AX11H: its common read-one
+row premise fails. In AX11H, $12/1=1R20$, whereas $38/1=1R122$.
+The present construction uses only the second pair and verifies every
+structural hypothesis directly from both literal parent tables.
+
+\subsection{Complete changed rows}
+
+All labels in the following table are native labels, with start 74 and
+halt 254. The dense tables have start 0, working labels $0,\ldots,193$, and
+halt 194. Each parent-to-child comparison changes exactly six rows:
+\[
+\begin{array}{c|c|c}
+\text{row}&\text{parent}&\text{new}\\ \hline
+104/1&1R124&1R127\\
+127/0&0R14&0L124\\
+124/0&0R62&0R8\\
+124/1&1R138&1R59\\
+26/1&1R42&1R91\\
+101/0&0L26&0R17
+\end{array}
+\]
+There are no other changed rows. Every one of these six rows is used during
+the new blank initialization. Both resulting transition graphs have all
+194 working controls reachable from their initial control.
+
+\subsection{Selector correspondence}
+
+Define $f(124)=127$ and let $f$ fix all other labels. In the parent,
+\[
+ \delta(127,0)=0R14,\quad \delta(124,0)=0R62,\qquad
+ \delta(127,1)=\delta(124,1)=1R138.
+\]
+The helper identities are $\delta(8,0)=0R14$ and
+$\delta(59,0)=0R62$. The complete table inspection shows that every
+transition into 127 writes zero and moves right, and every transition into
+124 writes one and moves right. The respective predecessor rows are
+$110/0$ and $104/1$. Thus a run beginning in control 74 satisfies
+\[
+ (q=127\Rightarrow T(h-1)=0)\ \land\
+ (q=124\Rightarrow T(h-1)=1).
+\]
+This is an entry-history invariant valid on every initial tape.
+
+At ordinary checkpoints map $(q,h,T)$ to $(f(q),h,T)$. Outside the two
+paired controls the child reproduces one parent step, with the target
+mapped by $f$. The common read-one row likewise takes one step. On read
+zero, the merged control moves left into selector 124; the selector reads
+and preserves the old history bit, returns right to the original zero
+through helper 8 or 59, and the helper performs the appropriate parent
+transition. The block takes exactly three child steps. Only cells $h-1,h$
+are inspected; their final contents agree with the parent, as does the
+whole uninspected exterior. The four local cases and every ordinary row
+are checked separately in the independent verifier.
+
+Let $c_t=\operatorname{run}_M(t)$ with absorbing halt semantics and let
+$F(q,h,T)=(f(q),h,T)$. Define
+\[
+ \tau(0)=0,\qquad \tau(t+1)=\tau(t)+
+ \begin{cases}3,&c_t\text{ is in }124\text{ or }127\text{ and reads }0,\\
+ 1,&\text{otherwise}.\end{cases}
+\]
+Quantifier-free induction gives
+\[
+ \operatorname{run}_S(\tau(t))=F(c_t),\qquad
+ t\leq\tau(t)\leq3t.
+\]
+Because $f$ maps no working state to halt, absorbing halting by a bounded
+clock obeys
+\[
+ H_M(t)\Longrightarrow H_S(3t),\qquad
+ H_S(t)\Longrightarrow H_M(t).                 \tag{SF1}
+\]
+The second implication follows by evaluating the displayed clock identity
+at $t$: $S$ remains halted at time $\tau(t)\geq t$.
+
+\subsection{Acceleration after the selector}
+
+For the intermediate table $S$, the complete finite predecessor checks
+still give
+\[
+ \operatorname{pred}(101)=\{96/0\mapsto0R101\},\qquad
+ \operatorname{pred}(26)=\{11/0\mapsto0L26,\;101/0\mapsto0L26\},
+\]
+and every transition into 11 writes zero. Hence every $S$-run from 74 has
+\[
+\begin{split}
+ q=101&\Rightarrow T(h-1)=0,\\
+ q=11&\Rightarrow (T(h-1)=0\lor T(h+1)=0),\\
+ q=26\land T(h)=1&\Rightarrow T(h+1)=T(h+2)=0.
+\end{split}
+\]
+The proof is induction on one transition. For the last implication the
+incoming transition writes the first zero; entry from 101 forces the new
+read bit to zero, and entry from 11, when the new read bit is one, forces
+the second zero. The selector does not invalidate these complete incoming
+row conditions.
+
+The two shortcuts are exact whole-tape identities:
+\[
+ 26,1\;:\quad 1R42,\ 0R13,\ 0L91
+       \quad\rightsquigarrow\quad 1R91,
+\]
+\[
+ 101,0\;:\quad 0L26,\ 0R194,\ 0R17
+       \quad\rightsquigarrow\quad 0R17.
+\]
+Here native 194 is a working control, not the native halt label 254.
+All intermediate controls are nonterminal. The independent verifier checks
+all twelve admissible five-cell windows and verifies that no uninspected
+cell is touched.
+
+If $d_t=\operatorname{run}_N(t)$, define $\sigma(0)=0$ and increment
+$\sigma$ by three precisely when $d_t$ executes one of the two shortcut
+rows, otherwise by one. At the induction step, the induction hypothesis identifies the new boundary
+with an actually reachable $S$-configuration. Hence the guards just proved
+for $S$ apply to that boundary; they are not assumed separately for $N$.
+Quantifier-free induction proves
+\[
+ \operatorname{run}_N(t)=\operatorname{run}_S(\sigma(t)),\qquad
+ t\leq\sigma(t)\leq3t.
+\]
+Consequently
+\[
+ H_S(t)\Longrightarrow H_N(t),\qquad
+ H_N(t)\Longrightarrow H_S(3t).                \tag{SF2}
+\]
+Combining (SF1) and (SF2) yields the particularly simple bounds
+\[
+ \boxed{H_M(t)\Longrightarrow H_N(3t),\qquad
+        H_N(t)\Longrightarrow H_M(3t).}
+\]
+The factor is three in each direction, not nine: the selector and
+acceleration slow the two simulations in opposite directions.
+
+\subsection{Arithmetic scope}
+
+Relative-to-head binary tape codes $(L,R)$ make every configuration
+operation primitive recursive. A right move writing $w$ sends
+$(L,2r+b)$ to $(2L+w,r)$; a left move, with $L=2\ell+a$, sends it to
+$(\ell,4r+2w+a)$. The displayed entry invariants, run equalities, clock
+bounds and halting persistence are quantifier-free predicates on explicitly
+primitive-recursive functions. They therefore use only quantifier-free
+induction. Pure intuitionistic logic now proves
+\[
+ \mathsf{iPRA}\vdash H_M\leftrightarrow H_N,
+ \qquad
+ \mathsf{iPRA}\vdash\neg H_M\leftrightarrow\neg H_N.
+\]
+This is a direct mathematical relative proof; it does not assume any source
+calculus theorem or the consistency of PA. An absolute Con(PA) result is
+obtained by composing it with the separately identified calibration of the
+exact parent. No new end-to-end Lean kernel theorem is claimed.
+
+\subsection{Exact initialization and novelty}
+
+Both parent initializations take 57,922 steps to native control 84, head
+$-2$, and the same complete seed frame. The selector branch is encountered
+24 times, so the intermediate startup has $57,922+2\cdot24=57,970$ steps.
+The two accelerations are used 20 and 6 times, giving
+\[
+ 57,970-2(20+6)=57,918
+\]
+steps for each final machine. The independent program checks complete tape
+support equality after every simulation block throughout these prefixes.
+This concrete binding check is separate from the all-time induction proof.
+
+The graph comparator compares full canonical tuples against all 139
+spanning 194-state classes in the current pinned corpus and the additional
+nonspanning diagnostic, allowing every spanning root, control renaming,
+reflection, global symbol exchange and ignored halt-edge actions. Global
+symbol exchange is an extra structural screen, not a zero-blank semantic
+transformation. The two new graphs are mutually distinct and match none
+of those prior tables. This establishes corpus-relative graph novelty;
+it is not a claim of worldwide priority or of a 194-state lower bound.

@@ -1,0 +1,214 @@
+% Include with amsmath, amssymb, booktabs and xurl available.
+\section{A relative proof for the secondary PA194OR}
+\label{sec:secondary-or-relative}
+
+Let $P$ be the supplied primary PA194 and let $O$ be the secondary
+PA194OR delivered here.  This section proves the relative statement
+\[
+ \mathsf{iPRA}\vdash
+ \operatorname{Halt}(P)\ \longleftrightarrow\ \operatorname{Halt}(O),
+ \tag{S1}
+\]
+with explicit primitive recursive witness bounds.  The consistency
+calibration for $P$ is inherited from the supplied primary construction;
+it is not reproved here.  Thus, using that inherited theorem,
+$\mathsf{iPRA}\vdash\operatorname{Nonhalt}(O)\leftrightarrow
+\operatorname{Con}(\mathsf{PA})$.  The new contribution in this section
+is (S1).  This is an ordinary mathematical proof using finite symbolic
+certificates, not a newly completed Lean or other kernel-checked proof.
+
+\paragraph{Literal binding and source identity.}
+Both machines have 194 working states and 388 complete binary rows,
+start from a blank tape, and use native start 74 and halt 254.  The
+native-to-dense label maps are transition conjugacies.  The dense
+SHA-256 values, in the order $P,O$, are
+\begin{center}\footnotesize
+\begin{tabular}{l}
+\path{4bfea62b17aad7d8c8c5e682fe8942e0a86b93e4351f8e675e32705bdaae007f}\\
+\path{379e12957eafc5ecb1ec04868067fe931af913e7bc46e69a36b6067d83c4c79f}.
+\end{tabular}
+\end{center}
+The two complete resolved instruction arrays agree at all 3,673
+sites.  Independent arithmetic and interval source resolvers agree
+with those arrays.  Reassociation of the two 67-leaf occurrences of
+\texttt{node75} changes 134 addresses but preserves every operation
+and every resolved successor.  Every address has length at most 36.
+The initial site is 25, with address \texttt{100000} in both machines.
+
+The 4,780 parent outcome certificates are copied from the pinned
+\path{pa194_loop_continuation_research_2026-11-14/reference/primary/independent}
+packet.  Its receipt binds the displayed parent table and the
+contracts digest
+\begin{center}\footnotesize
+\path{7beca7187afadf4813d014af8cf49271a539534453b24fab44b51d80a308ab43}.
+\end{center}
+The independent new literal replay accepts all 4,780 outcomes, with
+contracts digest
+\begin{center}\footnotesize
+\path{9a5e6f24e145b5c3d6a8286e10c2192cecddafcc8b83240624227de5eb7f365f}.
+\end{center}
+The portable \path{research/engine/relative_OR_check.py} checks these
+bindings, the full source graphs, every duration coefficient, and the
+address and head closure facts below.  The copied parent certificates
+retain their supplied provenance; the new certificates were replayed
+independently from the new literal table.
+
+\paragraph{The selector identity and its exact duration.}
+Put $A=\texttt{node32}$, $B=\texttt{node53}$,
+$C=\texttt{node55}$, and $D=\texttt{node65}$.  The operand code changes
+from $((A,(B,C)),D)$ to $(A,(B,(C,D)))$.  Native control 2004 already
+provides the shared $(C,D)$ reader.  The old control 213 was also used
+by a backward selector, and the following repair preserves that use.
+Suppose control 69 scans a zero at position $h$, with history bit $b$
+at $h-1$.  The earliest shared endpoints are
+\begin{center}\small
+\begin{tabular}{clllc}
+\toprule
+$b$ & Parent path & New path & Endpoint & Steps\\
+\midrule
+0 & $69\to213\to92\to104$ & $69\to92\to111\to104$
+  & $(104,h+1)$ & 3\\
+1 & $69\to213\to90$ & $69\to92\to90$
+  & $(90,h)$ & 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both computations preserve the two cells and inspect no exterior
+cell.  For $b=1$, appending the common row $\delta(90,0)=0R105$ gives
+the three-step endpoint $(105,h+1)$ recorded in the structural audit.
+Thus the two-step and three-step descriptions of this case are
+consistent.  The row on $(69,1)$ is unchanged.  This local identity
+is supplementary to the complete source-contract verification; it
+does not replace that verification.
+
+\paragraph{Complete frames and local theorems.}
+Use a source state
+\[
+ z=(i,R_0,\ldots,R_8,g,Q),\qquad Q=[s]X\ne[],
+\]
+or
+a distinguished absorbing state $\dagger$.  The common source step
+$F$ is given by the resolved instruction array.  An increment appends
+one spare value 1; a positive decrement increases $g$ by one; all
+other live instructions preserve these auxiliary fields.  Executing
+the halt instruction produces $\dagger$, and
+$F(\dagger)=\dagger$.  All 4,779 nonhalt outcome certificates have
+zero address overflow and zero net head displacement, so these
+bookkeeping updates close the boundary encoding exactly.
+
+For $J\in\{P,O\}$ let $p_J(i)$ be its address lookup, and let
+$\pi=(6,2,0,4,3,7,8,5,1)$, with $V_{\pi(a)}=R_a$.  Write
+$B(v)=0\,1^{v+1}$ and $W(X)=\sum_{v\in X}(v+2)$.  The frame $E_J(z)$
+has control 84, head at $-2$, leftward stream $1\,0^\infty$, and
+rightward stream
+\[
+ p_J(i)\,0^{48+g-|p_J(i)|}\,1\,
+ B(V_0)\cdots B(V_8)B(s)B(X)\,0^\infty.
+ \tag{S2}
+\]
+Set $E_J(\dagger)=\dagger$.  Canonical finite binary tape halves,
+state and list codes make $F,E_J$ and the literal iterate
+$\operatorname{Run}_J$ primitive recursive.  Totalize physical halting
+by replacing a configuration in the halt state with the absorbing
+code $\dagger$; this preserves the ordinary halting predicate.
+
+Each recorded duration is the scalar product of a nonnegative
+13-entry vector with
+\[
+ (1,g,x_0,\ldots,x_8,s,W(X)).
+\]
+For a positive decrement of $R_a$,
+the parameter is $x_a=R_a-1$, with $R_a=x_a+1$; other register slots
+use the indicated register values.  Select this duration by the
+finite site and decidable branch and call it $D_J(z)$; set
+$D_J(\dagger)=0$.
+
+Each literal transition is a defining arithmetic equation.  A unary
+self-loop on a run of length $m$ has duration $m$, by quantifier-free
+induction on the processed prefix.  The four generic one-block
+traversals are derived from literal table rows with arbitrary exterior
+contexts; prefix induction extends them to a finite list with duration
+$W(X)$.  Finite word normalization uses the corresponding equations
+of coded words.  These are exactly the rules used by the complete
+independent replays, which import no arithmetic-box oracle.  Their
+successful finite traces therefore give uniform local iPRA theorems
+by composition of the step equations:
+\[
+ \operatorname{Run}_J(D_J(z),E_J(z))=E_J(F(z)),\qquad
+ z\ne\dagger\ \Longrightarrow\ D_J(z)\ge3.
+ \tag{S3}
+\]
+Validity of the source state is preserved.  The single halt outcome
+has duration 3.  All induction invariants here are equalities and
+decidable predicates of primitive recursive codes, with the arbitrary
+register and exterior-word codes as free parameters.  No induction
+over an unbounded environment predicate is required.
+
+\paragraph{Explicit clocks.}
+The common initial state is
+$z_*=(25,2,0,\ldots,0,0,[1]^{26})$.  Complete blank-tape startup
+checks give $b_P=58154$ and $b_O=58170$, with
+\[
+ \operatorname{Run}_J(b_J,\mathrm{blank})=E_J(z_*).
+ \tag{S4}
+\]
+These are equalities of the full finite-support tape and head, with
+zero exterior, not comparisons of selected cells.  Put $z_n=F^n(z_*)$
+and define primitive recursive clocks
+\[
+ C_J(0)=b_J,\qquad C_J(n+1)=C_J(n)+D_J(z_n).
+\]
+Quantifier-free induction using (S3), (S4), and the semigroup equation
+for iterates proves
+\[
+ \operatorname{Run}_J(C_J(n),\mathrm{blank})=E_J(z_n).
+ \tag{S5}
+\]
+
+For both complete certificate sets the exact coordinatewise maximum is
+\[
+ (534,8,4,4,4,4,4,4,2,4,4,2,2).
+\]
+In particular, uniformly before source halting,
+\[
+ D_J(z)\le534+8g+4\sum_{a<9}R_a+2s+2W(X).
+\]
+After $n$ live source steps,
+$\sum R_a\le2+n$, $g\le2n$, $s=1$, and $W(X)\le75+3n$.
+The gap bound is deliberately conservative: the zero-overflow
+certificates actually give $g\le n$.  Thus
+\[
+ D_J(z_n)\le694+26n,\qquad
+ C_J(n)\le U_J(n):=b_J+13n^2+681n.
+ \tag{S6}
+\]
+After source halting $D_J=0$, so the clock upper bound remains true.
+These elementary growth bounds and their finite sums are themselves
+quantifier-free induction arguments; they bound physical overhead per
+source step and make no bound on PA proof search or its termination.
+
+\paragraph{Constructive witness transfer.}
+Let $H_J(t)$ mean that the totalized literal run is halted at time $t$.
+If $H_J(t)$ and $z_{t+1}\ne\dagger$, absorption of the source halt
+implies that the preceding $t+1$ source steps are all live.  Hence
+$C_J(t+1)\ge b_J+3(t+1)>t$.  Equation (S5) would give a nonhalting
+frame at that later physical time, contradicting physical absorption.
+Since equality to $\dagger$ is decidable, this proves
+$H_J(t)\Rightarrow z_{t+1}=\dagger$ intuitionistically.  Applying
+(S5) to the other machine, then (S6) and absorption, gives the explicit
+witness implications
+\begin{align*}
+ H_P(t)&\ \Longrightarrow\
+ H_O\bigl(58170+13(t+1)^2+681(t+1)\bigr),\\
+ H_O(t)&\ \Longrightarrow\
+ H_P\bigl(58154+13(t+1)^2+681(t+1)\bigr).
+ \tag{S7}
+\end{align*}
+Every function displayed in (S7) is primitive recursive.  Existential
+introduction proves (S1), and intuitionistic logic also gives
+equivalence of the nonhalting predicates.  The argument uses neither
+Markov's principle nor an unbounded search for a source configuration.
+Composing this relative equivalence with the inherited primary
+consistency theorem yields the stated conditional calibration for
+PA194OR, independently of the separate AX11H-based route used for
+the main PA194ORH design.

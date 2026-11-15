@@ -1,0 +1,87 @@
+LATEST-HEAD SEMANTIC SUPPLEMENT
+==============================
+
+The main comparison is pinned to commit
+793c68737d94bffa4e32a75bce6cc8058d6d22f0. A final live-head check found three
+additional incoming archives at commit
+99f17206a77a04d36a9bb7dd04ce2e5d0360cf7d. This note concerns the marker
+separation archive and a logical consequence of the witness archive. The
+positive MP and LCSF3 releases remain unchanged.
+
+MARKER SEPARATION
+
+The exact archive SHA-256 is
+606a802ecd17b47a193548c1f3b582bda90a93a3b06177ae31f2db39d5b93b44.
+latest_marker_review.json binds each inspected member by its SHA-256.
+
+The archive explicitly reports no justified machine with fewer than 194
+working states. Its two positive constructions, PA194LCGMS and PA194LCGSMS,
+compose the known PA194B idea with the LCG and LCGS parents. Old decoder 301
+is merged into 88, but old marker scanner 51 must be separated into fresh
+control 400; control 51 then serves the new selector. This removes one
+working control and adds one. Its state count is therefore unchanged.
+
+The new relative proof is a table-level proof over arbitrary exterior tape,
+using predecessor-bit invariants and four traces of lengths 5,1,3,1. The
+unchanged rows simulate in one step. Quantifier-free induction gives a
+primitive-recursive clock t<=theta(t)<=5t, hence H_P(t)->H_N(5t) and
+H_N(t)->H_P(t). No concrete defect was found in this new relative argument.
+Its absolute PA calibration remains an explicitly inherited dependency.
+
+The mechanism is compatible with MP and LCSF3. The fresh, independent check
+in review_marker_composition.py verifies all 384 ordinary row identities,
+the exact incoming edges and all four complete local traces for each
+composition. Each resulting table has 194 reachable working controls and
+194 exact deterministic-action congruence classes. Thus composition gives
+no immediate state saving. These are compatibility checks, not additional
+advertised constructions with new full source/startup certificates.
+
+Replay from the final archive root:
+  python architecture/review_marker_composition.py \
+      --mp mp_construction/candidate/machine.native.tm \
+      --lcsf3 construction/candidate/machine.native.tm \
+      --output /tmp/marker_composition_review.json
+
+The marker archive's further bounded source/physical searches also report
+no successful state saving. They were inspected, not rerun here, and do not
+prove an unrestricted lower bound.
+
+COUPLING DUAL-B WITH H5X CHANGES THE LOGICAL ASSESSMENT
+
+The witness archive introduces an h5X head W(d,H)->A, where the old head's
+conclusion was code1. Its 16-step proof of explosion uses h5X, diagonal,
+distribution, pure implication and generalization, without old B. Therefore
+our standalone dual-B countermodel must NOT be applied to this coupled
+calculus: it does not validate h5X. This is a concrete new promising logical
+ingredient even though it supplies no verified state saving by itself.
+
+Let N(P)=(P->1), write U_d(P) for the coded universal, and define the two
+dual schema presentations:
+  D(P) : N(P) -> U_d(N(U_d(P))),
+  R(P) : P -> U_d(N(U_d(N(P)))).
+The archive's coupled construction uses D; our earlier experiment used R.
+They are interderivable without explosion or double-negation elimination.
+
+For D=>R, pure implication proves P->NN(P). The D instance at N(P) gives
+NN(P)->U_d(N(U_d(N(P)))); compose these two implications.
+
+For R=>D, the R instance at N(P) gives
+N(P)->U_d(N(U_d(NN(P)))). Generalize P->NN(P) and use h6 distribution to
+obtain U_d(P)->U_d(NN(P)). Pure contraposition gives
+N(U_d(NN(P)))->N(U_d(P)). Generalize once more and apply h6 to obtain
+U_d(N(U_d(NN(P))))->U_d(N(U_d(P))). Compose with the first implication.
+
+These are fixed finite proof recipes in K/S plus h6/generalization. The
+restricted-rho implementation of K/S and primitive-recursive substitution
+therefore supply bounded proof translations. Together with the witness
+archive's independently checked h5X explosion proof and coupled dual-B
+translations, this removes the specific old-B/explosion circularity for the
+coupled family. It does not invalidate the standalone countermodel.
+
+The existing sound D+h5X grammar search in the witness archive reports
+6,694,768 mutations and a best effective reader price 66, or optimistic total
+200 with 134 fixed controls; it reports no frontier hit. This is an archived
+compiler-search objective, not a completed 200-state consistency machine.
+The syntactically different R+h5X emitter could still have a different price,
+but neither derivability alone nor our old standalone R price 68 supplies
+a verified sub-194 physical construction.

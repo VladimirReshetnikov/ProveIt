@@ -1,0 +1,62 @@
+The source snapshot contains 93 filed research packets under PA/docs and
+seven incoming ZIP deliveries. The census reads all 760 tracked \file{.tm}
+files anywhere in the PA tree, plus 4,746 recursively nested incoming ZIP
+members. Thus it covers \textbf{5,506 table occurrences}, representing
+1,347 distinct byte payloads. All parse as complete binary transition
+tables. Source Git-blob identities are retained in
+\file{comparison/source_blob_binding.json}~\cite{pa,incoming}.
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule Quantity&Count\\\midrule
+Exact whole-graph classes, all sizes&1,154\\
+194-state classes with a spanning root&528\\
+Disconnected 194-state diagnostic classes&2\\
+193-state classes with a spanning root&55\\
+Distinct named design classes&91\\
+Mechanism families&32\\\bottomrule
+\end{tabular}
+\end{center}
+Here ``spanning'' means that some control reaches every working control in
+the directed graph. It says nothing about whether the blank computation
+actually visits every control. These census classes allow arbitrary working-state
+renaming and root choice, while preserving read bits, move directions and
+halt-entry actions. The novelty test below additionally permits reflection,
+bit exchange and erased halt-entry actions. These numbers count explicit
+graphs, including experiments; they do not count established consistency
+theorems.
+
+The previous 747-key repository catalog is completely recovered. Its
+all-roots key only remembers a maximal reachable component when no root
+spans the graph. Auditing all 23 nonspanning groups found one group that
+collapses two different 194-state diagnostics, each with a largest
+reachable component of three controls. Exact whole-graph matching separates
+them. The corrected total is therefore 1,154, rather than 1,153 inherited
+keys; the corrected 194-state total is 530, rather than 529.
+
+A supplementary scan inspected 12,520 JSON payload occurrences, deduplicating
+ZIP payloads, and recognized 365 explicit complete 193/194-state table
+occurrences. Their 198 normalized tables contributed no new graph key
+beyond the \file{.tm} census. The recognizer's scope and records are supplied
+in \file{comparison/json_supplement/}. Code generators are not treated as
+an enumerable set of every machine they could ever produce; the comparison
+concerns their supplied constructions, explicit outputs and named designs.
+
+The 91-row named ledger extends the attributed marker-separation roster
+with the four AX11GDH realizations, two separated-marker realizations, and
+the H5X/JH5X pair. Aliases are bound to actual tables. A fresh independent
+literal simulator also checked all 17 principal or companion machines in
+the seven incoming ZIPs: each has 194 graph-reachable controls, 388 rows,
+and the complete reported blank-start seed tape. That finite check
+validates initialization, not the absolute consistency theorem.
+
+Finally, a fresh independent scalar screen tested all 55 recognized
+193-state graphs from all 193 possible blank starts: 10,615 runs.
+It found 112 finite halts, 10,499 outward blank self-loop rays, and four
+runs reaching a 100,000-transition cap. A ray is certified by an actual
+configuration with zero under the head, a zero-read self-loop, and no
+one-cell anywhere ahead in the direction of motion. The infinite
+continuation then has a direct induction proof. The four capped runs are
+left unresolved by this screen; their two source mechanisms have separate
+recorded semantic or compilation failures. Neither the caps nor the rays
+establish a lower bound for arbitrary PA-consistency machines.

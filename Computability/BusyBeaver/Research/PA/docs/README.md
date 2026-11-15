@@ -40,10 +40,10 @@ reason and where the same bytes are. There are four reasons.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `upstream-copy` | 14,136 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
-| `sibling-archive` | 30 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
-| `ignored` | 2,061 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
-| `duplicate-machine` | 17,066 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
+| `upstream-copy` | 14,145 | The member is byte-identical to a file of the imported snapshots under [`jamesyc-upstream`](../jamesyc-upstream/README.md). The reference column gives that file. Licence and notice files are placed even when they are copies. |
+| `sibling-archive` | 36 | The member is a nested archive that is byte-identical to another delivered archive. The reference column gives the directory of that archive here. |
+| `ignored` | 2,171 | The member matches the repository's `.gitignore` (`*.log` and `SHA256SUMS` files). It is available only from the delivered archive. |
+| `duplicate-machine` | 20,837 | The member is a machine table (`.tm`) and its machine is kept in another file, either with the same bytes or with its states renamed. The reference column gives the kept file and says which. See [`MACHINES.md`](MACHINES.md). |
 
 Six nested archives have no delivered counterpart and are placed as files:
 `U209_ConPA_Joint_2026-10-29.zip` (in three packets), `U209_ConPA_2026-10-29.zip`,
@@ -56,8 +56,8 @@ does not run here as delivered.
 
 ## Packets
 
-The 100 archives hold 57,559 members: 24,266 placed here (1501 MB), 14,136 copies of the upstream
-snapshots, 30 nested copies of sibling archives, 2,061 ignored files and 17,066 duplicate machine
+The 106 archives hold 62,948 members: 25,759 placed here (1603 MB), 14,145 copies of the upstream
+snapshots, 36 nested copies of sibling archives, 2,171 ignored files and 20,837 duplicate machine
 tables. The columns P, U, S, I and M give these five counts for each packet. Arrival is
 the date of the commit that added the archive to `docs/incoming`.
 
@@ -163,10 +163,16 @@ the date of the commit that added the archive to `docs/incoming`.
 | [`pa194_witness_research_2026-11-15`](pa194_witness_research_2026-11-15/) | 2026-11-14 | `pa194_witness_research_2026-11-15` | PA194H5X and PA194JH5X. States two new 194-state machines implementing new presentations of the fifth axiom family, a written proof of the iPRA equivalence with a retained calibration dependency, that this is not a completed Lean or Rocq theorem, and nothing below 194. | 401 | 0 | 1 | 61 | 356 |
 | [`pa194_ax11gdh_research_2026-11-15`](pa194_ax11gdh_research_2026-11-15/) | 2026-11-14 | `pa194_ax11gdh_research` | PA194AX11GDH, PA194AX11GDHS, PA194AX11GDHF and PA194AX11GDHR. States a new command design with four 194-state realizations, a written proof of the iPRA equivalence that depends on an imported calibration, and nothing below 194. | 301 | 0 | 0 | 11 | 533 |
 | [`pa194_marker_separation_2026-11-14`](pa194_marker_separation_2026-11-14/) | 2026-11-14 | `pa194_marker_separation_2026-11-14` | PA194LCGMS and PA194LCGSMS. States two new 194-state machines with separated markers, a written proof of the iPRA equivalence for each relative to its parent and an imported calibration, and nothing below 194. | 185 | 1 | 1 | 16 | 718 |
+| [`PA194ORH_research_2026-11-15`](PA194ORH_research_2026-11-15/) | 2026-11-14 | `PA194ORH_research` | PA194ORH and PA194OR. States a new 194-state design that reassociates operands, a written relative iPRA proof against the AX11H parent that is not a completed Lean proof, a rejected 193-state version, and nothing below 194. | 290 | 0 | 1 | 13 | 592 |
+| [`pa194_ax11hc4_c32_research_2026-11-15`](pa194_ax11hc4_c32_research_2026-11-15/) | 2026-11-14 | `pa194_ax11hc4_c32_research_2026-11-15` | PA194AX11HC4 and PA194C32. States a new 194-state construction with a four-cycle of physical register positions and a companion construction for the original PA194 source, a written iPRA equivalence that imports the AX11H written calibration, rejected 193-state cores, and nothing below 194. | 132 | 0 | 0 | 14 | 537 |
+| [`pa194_new_designs_research_2026-11-15`](pa194_new_designs_research_2026-11-15/) | 2026-11-14 | `pa194_new_designs_research` | PA194LCAX11HSF3 and PA194AX11HMP. States two new 194-state machines, written relative iPRA arguments that rely on the AX11H written calibration, that no finite search in it shows a 193-state machine impossible, and nothing below 194. | 453 | 8 | 1 | 9 | 769 |
+| [`pa194_research_2026-11-14_1`](pa194_research_2026-11-14_1/) | 2026-11-14 | `pa194_research_2026-11-14` | PA194GD_SF, PA194GDH_SF and PA194GDHS_SF. States three new 194-state machines with a written iPRA proof of halting equivalence to their GD parents, a comparison over 85 named designs, and nothing below 194. | 197 | 1 | 2 | 38 | 541 |
+| [`pa194_research_2026-11-15`](pa194_research_2026-11-15/) | 2026-11-14 | `pa194_research_2026-11-15` | PA194H5X_MF and PA194JH5X_MF. States two new 194-state compositions with a written iPRA proof of halting equivalence to their H5X and JH5X parents, that this is not a completed Lean or Rocq theorem, and nothing below 194. | 215 | 0 | 1 | 22 | 797 |
+| [`pa194_symmetric_witness_research_2026-11-14`](pa194_symmetric_witness_research_2026-11-14/) | 2026-11-14 | `pa194_symmetric_witness_research_2026-11-14` | PA194H5XS and PA194JH5XS. States two new 194-state machines without the cache-restoration loop of Shift, a written relative iPRA proof against the H5X and JH5X parents that is not a Lean or Rocq theorem, and nothing below 194. | 206 | 0 | 1 | 14 | 535 |
 
 ## Archives still in `docs/incoming`
 
-None. All 100 archives are removed from `docs/incoming`. They remain in the history of
+None. All 106 archives are removed from `docs/incoming`. They remain in the history of
 the repository.
 
 Some scripts of the [parent directory](../README.md) open an archive at

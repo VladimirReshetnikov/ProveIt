@@ -1,0 +1,174 @@
+PA194C32: exact representation change and proof scope
+===================================================
+
+Source snapshot: ProveIt commit
+2ca99e3d23a5397aae4c786f4da7dfe1cca87f85.
+
+1. Literal specification
+
+The machine is a deterministic, binary, one-tape machine on a two-way infinite
+tape, initially all zero, with head at coordinate zero. Its dense start is 0,
+working controls are 0 through 193, and terminal halt label is 194. Every
+transition writes a bit and moves one cell left or right. There are 388 rows.
+The native numbering starts at 74 and halts at 254. The supplied labels.json
+is an exact dense/native conjugacy, computed by breadth-first traversal with
+the zero edge visited before the one edge.
+
+Native SHA256:
+7a83339f95624c0d9b3935f081f226b17461dac6c4660e03a400ce04be8e0a9e
+Dense SHA256:
+3af42ea9d430e5df22b69e6fc540e3530f87263372580c7c554bae37ba524ac8
+
+2. Physical allocation
+
+The logical register order is (N,T,W,A,D,H,X,Y,Z), where Z is called L in
+the inherited source. A logical-to-physical map gives each register's
+zero-based position in the unary register file.
+
+Primary PA194: (6,2,0,4,3,7,8,5,1).
+PA194C32:      (6,4,0,3,2,8,7,5,1).
+
+Thus the old physical file (W,Z,T,D,A,Y,N,H,X) becomes
+(W,Z,D,A,T,Y,N,X,H). T, A and D undergo a three-cycle, while H and X are
+exchanged. This changes the representation of arbitrary runtime values and
+their access distances, while preserving the logical source program.
+
+Native edits (read-pair: old action -> new action):
+  17,1: 0 R 32 -> 0 R 48
+  21,1: 0 R 60 -> 0 R 55
+  41,1: 0 R 25 -> 0 R 32
+  45,1: 0 R 55 -> 0 R 60
+  61,1: 0 R 25 -> 0 R 32
+ 144,1: 0 R 48 -> 0 R 25
+ 161,1: 0 R 32 -> 0 R 48
+
+All other native rows are unchanged. In particular, every row in the
+inherited arithmetic BOXSTATES set is unchanged. The physical selectors
+are SK=(51,36,25,48,32,33,22,55,60). Each changed dispatch is exactly the
+replacement SK[old_physical(r)] by SK[new_physical(r)]. No register engine
+row is replaced and no unreachable or terminal-row edit is used to create
+apparent novelty.
+
+3. Frame relation and local correctness
+
+For a source path p, header-distance parameter n>=0, nine logical natural
+values v, and a finite nonempty spare list L, form the canonical tape frame
+with native control 84 and head h. Its finite represented segment is
+
+  1 p 0^(48+n-|p|) 1 B(u_0) ... B(u_8) B(L_0) ... B(L_last),
+  B(v)=0 1^(v+1),
+
+with a blank exterior. The first 1 lies at h-1; path p starts at h; the
+right marker is at h+48+n. Under allocation phi, u_phi(r)=v_r. Relate a
+primary frame to a C32 frame by using the same source path, header parameter,
+logical values and spare list, with their respective allocations.
+
+The engine contracts for selecting, incrementing, and decrementing a
+physical register are unchanged because their literal rows are unchanged.
+Their hypotheses allow all natural values, including zero, and arbitrary
+nonempty spare tails. The seven selector edits therefore select the same
+logical register in the related new frame. The remaining decoder and
+control rows are unchanged, so the logical opcode, branch test, and source
+successor are preserved.
+
+This argument is replayed for every source site, with separate zero and
+positive cases for each decrement: 3,673 sites and 4,780 outcomes. Both the
+unmodified imported Python symbolic engine and a separately implemented
+JavaScript engine pass all outcomes. Each records 1,479,348 symbolic
+iterations and maximum 497 per outcome. The source instructions regenerated
+from the compact tree match the entire pinned instruction array; its Git
+blob is 1d34c7dccea16fcc6ef2590c2d85d070fe5fdce5. The compact tree has 181
+entries and expands to exactly the original 3,673 path/opcode/operand triples.
+
+These are symbolic universal contracts using the inherited arithmetic-block
+lemmas. Iteration counts belong to the symbolic proof check; they are not
+upper bounds on literal running time with arbitrarily large registers.
+A second literal checker was subsequently reconstructed and completed. It
+derives four arbitrary-list lemmas from the actual candidate rows and passes
+all 4,780 outcomes without any arithmetic-box oracle. Its 1,081,623 symbolic
+events have maximum 392 per outcome, and every affine physical duration has
+nonnegative coefficients and constant at least 3. The complete duration
+vectors and literal list-lemma derivations are in receipts/literal/. The
+mathematical soundness audit of this exact interpreter is retained with the
+AX11HC4 proof references. The lightweight two-language checks and the richer
+literal check have deliberately different symbolic iteration counts.
+
+4. Exact blank initialization
+
+Both machines reach the same complete physical seed, because the only
+nonzero initial logical register N remains in physical slot 6. For the
+primary machine this takes 58,154 literal transitions. For C32 it takes
+56,250. The endpoint is native control 84, head -2, source site 25 with path
+100000, header distance 48, physical values (0,0,0,0,0,0,2,0,0), and 26
+one-valued spare registers. The entire support is checked, with all other
+cells zero; there are 66 one-cells. All head positions lie in [-11,144].
+
+Three independently represented runs agree: the original Python sparse
+set run, a fresh JavaScript sparse set run, and a JavaScript byte-array run.
+After recovery, the delivered standalone Python reconstruction also passes
+its sparse and byte-array runs. The latter do not rely on a timeout or on
+observing a tape prefix; they compare the complete final tape.
+
+The seven changed rows are all visited before the seed. In the edit order
+above, their visit counts are (4,47,10,25,2,2,1). Their first occurrences,
+numbering the initial configuration as time zero, are
+(9997,937,10312,74,10980,48243,42403).
+The 1,904-step startup reduction is not a claim of uniformly faster proof
+search on all logical register values.
+
+5. Halting-equivalence argument and arithmetic status
+
+The exact seeds represent the same source configuration. The universal local
+contracts map every subsequent source instruction to a terminating, positive-
+length physical segment in each machine, with related successor frames. By
+induction on finite source histories, either machine realizes every such
+history. Conversely, determinism and the no-premature-halt clauses of the
+contracts identify every physical run from a boundary with the prescribed
+segment. A physical halt therefore occurs exactly when the common source
+program executes its halt instruction. This proves the tape-level relative
+halting equivalence under the inherited arithmetic-block lemmas.
+
+For a weak-arithmetic formalization, define each local segment clock by the
+explicit primitive-recursive loop-length calculations for the unchanged
+blocks and the finite controller traces. Compose these clocks by primitive
+recursion over a coded source history. Positive segment lengths ensure that
+at most t source instructions are needed to analyze a physical prefix of
+length t. This gives primitive-recursive witness transformations for finite
+halting runs. Proving the defining equations and inverse-boundary lemmas in
+iPRA is the precise internalization obligation; a standard-model simulation
+alone must not be mislabeled a completed native-iPRA proof.
+
+The primary repository README states that its machine-specific iPRA
+consistency reductions remain open. Consequently C32's relative implementation
+result does not by itself fill that logical calibration gap. Any claimed
+Con(PA) equivalence inherits the exact strength and proof status of the
+chosen parent calibration. This package exports no new Lean kernel theorem
+and does not claim a sub-194 construction.
+
+6. Reproduction
+
+From this directory:
+  python3 reconstruct.py --output rebuilt
+  python3 verify_source.py
+  node verify_source.cjs
+
+The first command is offline and embeds the pinned baseline. The source
+checkers use the compact source tree and the delivered literal candidate.
+They verify the canonical source-instruction hash independently. Python
+assertion optimizations must remain disabled for the imported engine.
+
+7. Attribution and source locators
+
+The machine, source calculus, primary tree and arithmetic engine are inherited
+from the ProveIt PA194 packet and its James Chang PA196 ancestry. The new work
+is the exact C32 physical allocation, selector reconstruction, exact startup,
+two-language contract replay, source-tree compression, and comparison.
+
+Pinned primary packet:
+https://github.com/VladimirReshetnikov/ProveIt/tree/2ca99e3d23a5397aae4c786f4da7dfe1cca87f85/Computability/BusyBeaver/Research/PA/docs/pa194_conpa_2026-11-13
+Status:
+https://github.com/VladimirReshetnikov/ProveIt/blob/2ca99e3d23a5397aae4c786f4da7dfe1cca87f85/Computability/BusyBeaver/Research/PA/README.md
+Earlier physical-cycle method:
+https://github.com/VladimirReshetnikov/ProveIt/tree/2ca99e3d23a5397aae4c786f4da7dfe1cca87f85/Computability/BusyBeaver/Research/PA/docs/pa194_tdy_2026-11-14
+The imported code remains under the retained licenses. No claim is made to
+have invented physical allocation as a general method.

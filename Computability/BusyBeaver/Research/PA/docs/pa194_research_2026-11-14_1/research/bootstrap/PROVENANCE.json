@@ -1,0 +1,72 @@
+{
+  "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+  "commit": "e6a84f8dd2702f5f8c7db3ca53a8cbacb1d89f4f",
+  "input_identity_check": "All three Git-backed inputs have the same Git blob identities as the inherited pair experiment and were independently compared byte-for-byte with this pinned commit.",
+  "inputs": {
+    "runtime193.native.tm": {
+      "path": "Computability/BusyBeaver/Research/PA/docs/pa_sub194_research_2026-11-13/runtime193/runtime193.native.tm",
+      "git_blob": "231d1e6fdcc44d7f222f5def8bf7cd9855311556",
+      "sha256": "50f7be44afb63293365270a83111299247d12d140614e4b4c9a52786163acb53"
+    },
+    "candidate_rewrites.jsonl": {
+      "path": "Computability/BusyBeaver/Research/PA/docs/pa_sub194_research_2026-11-13/research/reduction/recorded/runtime193_corrected_neutral_k4.jsonl",
+      "git_blob": "b850797257877f579538cc3bec53daff6de31fa7",
+      "sha256": "6940cb970496fa08769c89cf6a92417d78b206b51127bac5b758db31d8a7c422"
+    },
+    "startup_any_frame_templates.tsv": {
+      "path": "Computability/BusyBeaver/Research/PA/docs/pa_sub194_research_2026-11-13/research/reduction/inputs/startup_any_frame_templates.tsv",
+      "git_blob": "0183ddca5bb9b18c087f9523a00ad3debaf02403",
+      "sha256": "9f04bf6d991c11d50a0e74aa812f3ebe79a21bb2801bbe0f30428bc42ae7d564"
+    }
+  },
+  "derived_input": {
+    "edits.tsv": {
+      "description": "Ordered JSONL records converted to id,state,read,new_write,new_direction,new_target. IDs begin at zero; 346 edits affect 92 distinct transition rows.",
+      "sha256": "344f410fedaae58c6e6d6b16084b655478bc231f48164c1153cf474b1a6a44a8"
+    }
+  },
+  "program": {
+    "path": "adaptive_startup.cpp",
+    "sha256": "fe106006b08e10fb199679e6ee99c5fdfa7ff1a37cff6de38e90c746e5281cf3",
+    "description": "New adaptive bounded search from fixed native start 74: choose a final action when an editable transition row is first encountered, exploring each allowed change and the keep-original branch, with a budget on distinct modified rows.",
+    "attribution": "The candidate table, proposed rewrite alphabet, source-frame templates, full-support frame convention, and outward-ray idea are inherited from the attributed ProveIt PA194 research packets. The adaptive branching, future-edit-aware ray guard, and hash-triggered exact cycle replay are implemented in the new source.",
+    "reference_path": "Computability/BusyBeaver/Research/PA/docs/pa_sub194_research_2026-11-13/research/reduction/search_startup.cpp",
+    "reference_git_blob": "d7173faad0098f22410523dbcac71dff319dcf83",
+    "reference_sha256": "921bdccd32587a757c701576a59b743e8d8f4bf80029d23ff8dde713b7c9ece4",
+    "relationship_to_prior_work": "Extends the inherited fixed simultaneous-pair experiment to adaptive choices of up to K distinct rows, while fixing start 74. It does not assume the proposed rewrites are jointly runtime-neutral."
+  },
+  "scope": {
+    "start_state": 74,
+    "maximum_blank_steps": 200000,
+    "nonmatching_head_absolute_cutoff": 20000,
+    "nonmatching_nonzero_support_cutoff": 20000,
+    "source_site_templates": [
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44
+    ],
+    "frame_register_values": "Arbitrary nine primary values and at least one spare block; full finite support checked.",
+    "frame_check_precedes_cutoffs": true,
+    "no_global_lower_bound": true,
+    "no_absolute_consistency_claim": true
+  },
+  "inherited_record": "inherited_pair_provenance.json describes the earlier pair experiment, not the new adaptive program.",
+  "license_location": "../../licenses"
+}

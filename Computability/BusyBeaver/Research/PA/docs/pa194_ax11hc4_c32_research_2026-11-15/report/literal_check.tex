@@ -1,0 +1,23 @@
+\subsection{Independent literal replay with physical clocks}
+
+A stronger replay uses the exact independent interpreter from the revised AX11H packet whose rule soundness is proved in its written iPRA audit. It resolves the source graph in two ways, rederives all four generic list-traversal lemmas from each candidate's actual transition rows, and then executes every symbolic outcome without an arithmetic-box oracle. Each outcome records an explicit affine physical duration, with nonnegative coefficients and strictly positive constant term. The minimum constant is three in both machines.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{lrr}
+\toprule
+Literal replay&AX11HC4&C32\\
+\midrule
+Source outcomes&4,778&4,780\\
+Symbolic events&1,095,048&1,081,623\\
+Maximum events per outcome&403&392\\
+Derived arbitrary-list lemmas&4&4\\
+Minimum affine duration constant&3&3\\
+Arithmetic-box oracle&None&None\\
+Complete blank seed equality&Pass&Pass\\
+\bottomrule
+\end{tabular}
+\caption{The stronger literal check was completed for both accepted machines. The event counts differ from the lightweight source executor because the interpreters use different symbolic operations.}
+\end{table}
+
+The complete local clock arrays and list-lemma certificates are included. Their positivity and exact endpoint statements instantiate the physical obligations in the following weak-arithmetic transfer proof. These executable certificates and the supplied mathematical soundness audit are still distinct from a new end-to-end proof-assistant build.

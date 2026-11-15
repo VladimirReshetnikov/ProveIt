@@ -1,0 +1,38 @@
+\subsection{Explicit polynomial witness clock}
+The source bookkeeping supplies, at source step $j$, a total primary-register
+value at most $2+j$, excess header gap at most $j$, first spare value 1, and
+remaining spare-list width at most $75+3 j$. The gap estimate uses the separately
+checked fact that every nonhalting source successor has address-overflow flag 0;
+without that fact the displayed estimate would not follow merely from the
+decrement semantics. Initially there are 26 unit spare blocks. An increment
+appends at most one such block, while a positive decrement contributes at most
+one to the excess gap.
+
+Write a source-outcome duration vector as
+$(c_0,c_1,c_2,\ldots,c_{10},c_{11},c_{12})$ and put
+$m=\max_{2\leq i\leq 10}c_i$. All coefficients are nonnegative, so the associated
+physical duration is at most
+\[
+ \bigl(c_0+2 m+c_{11}+75 c_{12}\bigr)
+ +\bigl(c_1+m+3 c_{12}\bigr)j.
+\]
+The finite coefficient audit gives maxima 694 and 18 for these two expressions.
+Consequently the cumulative MP clock through $n$ source steps satisfies
+\[
+ b(n)\leq 58066+\sum_{j<n}(694+18 j)
+       =58066+685 n+9 n^2=: \Theta(n).
+\]
+The parent starts after 57922 physical steps and satisfies the same coefficient
+envelope, hence its clock is bounded by the same $\Theta$. Source halt is
+extended by a dummy absorbing segment of duration 1; every ordinary segment has
+positive duration. Both clocks are therefore at least the source-step index.
+
+With the separately established exact startup and uniform source-frame
+simulation, define the two clocks by primitive recursion along the common
+extended source trajectory. If either physical machine has halted by time $t$,
+then it is halted at its clock value for source index $t$. The corresponding
+source state is therefore the absorbing halt state, and the other machine is
+halted by its own clock value, at most $\Theta(t)$. These primitive recursive
+witness translations supply the relative arithmetic halting equivalence.
+They do not discharge the separate proof-calculus calibration to
+$\operatorname{Con}(\mathrm{PA})$.

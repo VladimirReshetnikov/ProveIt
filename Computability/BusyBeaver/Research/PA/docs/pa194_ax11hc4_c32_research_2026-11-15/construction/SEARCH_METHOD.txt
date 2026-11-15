@@ -1,0 +1,80 @@
+Completed sub-194 local contraction searches
+===========================================
+
+The final reproducible search is local_contract.cpp. It was run on the
+primary PA194 and the new PA194AX11HC4, using radius6 and at most32 old
+and32 new literal transitions in each local comparison. All18,721 unordered
+pairs of194 working controls are considered, including pairs that change
+the initial control. No accepted193-state contraction was found.
+
+Results:
+  Primary PA194:267,827 abstract reachable windows;18,721 pairs;
+                264 valid one-branch proposals;0 compatible two-branch merges.
+  PA194AX11HC4:267,311 abstract reachable windows;18,721 pairs;
+               263 valid one-branch proposals;0 compatible two-branch merges.
+
+A one-branch proposal is not a valid machine: both read-symbol actions of
+the retained control must simultaneously satisfy all their contracts.
+
+Sound abstract reachability
+---------------------------
+
+An abstract state is(q,u), where u is the13-bit window centered at the head.
+Initially q is native74 and u is all zero. A step writes the actual table
+bit, shifts the window in the actual move direction, and admits both possible
+values of the newly exposed outside bit. Taking the least finite fixed point
+therefore overapproximates every actual blank-run window. A simple induction
+on the literal run length proves this inclusion. The abstraction does not
+assume that the table fails to halt, and includes windows unreachable in a
+concrete run. The latter can prevent a real contraction from being discovered.
+
+Local search family
+-------------------
+
+For each pair a,b, delete a, redirect every old target a to b, and retain b.
+Enumerate all776 possible(write,move,target) actions for each read symbol at
+b: two writes, two moves, and194 remaining targets including halt. For each
+abstract old window at a or b with that read bit, enumerate the old execution
+prefix up to32 transitions while the scanned cells remain inside the known
+window. Compare it with the proposed new execution, up to32 transitions.
+Require a positive-length match with identical entire represented tape,
+identical head displacement, and old control renamed by a->b. A comparison
+may match immediately upon leaving the window because neither run has then
+inspected the unknown exterior cell. Otherwise leaving the window is rejected.
+
+To test the two retained rows independently, reject any new trace that
+returns to b before obtaining a match. Thus the matching path cannot depend
+on the other proposed read action. If both choices pass, their combination
+has a local simulation on every abstract window. Equality preserves the
+unrepresented exterior because no read or write there was used. Positive
+progress and finite local clocks compose the matches over an entire run.
+
+This is a specific search family: whole local tape equality, bounded detours,
+one pair of merged controls, and no intermediate return to the retained
+control. It does not exhaust tape recodings, shifted representations,
+multi-control substitutions, different source programs, or all193-state
+tables. The negative result is not a lower bound of194.
+
+Reproduction
+------------
+
+From this directory with a C++17 compiler:
+  g++ -O3 -std=c++17 local_contract.cpp -o /tmp/pa_local_contract
+  /tmp/pa_local_contract pa194.native.tm 6 32 32
+  /tmp/pa_local_contract ax11hc4/machine/pa194_ax11hc4.native.tm 6 32 32
+
+The saved complete logs are receipts/contraction_primary_r6.log and
+ax11hc4/receipts/contraction_r6.log. Construction and validation of the
+accepted194-state machines do not require rerunning this optional search.
+
+Earlier exploratory work
+------------------------
+
+Before the execution environment restarted, completed searches also used
+radius3 with one old step/16 new steps and radius4 with6 old/16 new steps.
+They found no merge. A radius5 search found422 neutral single-row rewrites;
+at least300 subsequent contraction screens completed without a hit. A
+30-layout contraction screen was incomplete. Those intermediate logs were
+lost with the transient environment, so they are not presented as completed
+replayable certificates here. The final two all-pair searches above were
+recreated from source and fully rerun after recovery.

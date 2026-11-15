@@ -1,0 +1,313 @@
+Independent review of the revised AX11H written calibration
+=========================================================
+
+Review date: 15 November 2026.
+Repository snapshot: 43d9041f5571936c45c583f7f9d7f6eed9e0fd84.
+Reviewed packet P:
+  Computability/BusyBeaver/Research/PA/docs/pa194_ax11h_research_2026-11-14_2/
+All paths beginning P/ below are relative to that exact directory. All ten
+P/proof/*.tex files were read, not only the packet's claims or summaries.
+
+Verdict
+-------
+
+I found no concrete fatal flaw in the finite-demand repair, the explicit
+Foundation adapter, or the physical/source clock argument. The central repairs
+are substantive: they replace impermissible all-environment inductions and
+unspecified witness suppliers by actual finite algorithms and appropriate
+bounded invariants. The manuscript supplies an ordinary written argument for
+the two literal machines' iPRA consistency equivalence. It is inaccurate to
+describe this revised packet as supplying only a conditional simulation or no
+written PA calibration.
+
+This is not a certification of a new end-to-end Lean theorem. The review did
+not rebuild Lean and did not independently rederive every one of the hundreds
+of cited source recipes. The largest remaining verification boundary is the
+interpretation and composition of those finite recipes as direct C4 proof
+lists, especially the enormous fixed relational seeds. The manuscript states
+this boundary explicitly. Failure to evaluate their huge numeral codes is not
+by itself a mathematical gap: a supplied finite derivation object can be used
+as fixed data. It is a reason to distinguish a written proof from a completed
+machine-checked implementation.
+
+1. Exact proof strengths and the final transfer
+---------------------------------------------
+
+The proof does not obtain an iPRA theorem simply by relabelling a PA theorem.
+Its layers have different stated strengths:
+
+* P/proof/physical_ipra_audit.tex and source_command_completion.tex prove
+  arithmetic simulation identities by quantifier-free induction, in usual
+  iPRA with symbols for primitive recursive functions.
+* P/proof/ax11h_preservation.tex proves command-word compilation, exhaustive
+  scheduling, and finite proof-annotation soundness in iPRA.
+* P/proof/forward_calibration_completion.tex, statement (F1), is explicitly
+  an I-Sigma-1 proof of OrdinaryPAeqProof(d,false) -> C4Proof(F(d),1), with F
+  primitive recursive. The Foundation adapter is likewise stated in the
+  current I-Sigma-1 theory, not asserted without qualification in iPRA.
+* P/proof/consistency_implies_nonhalting.tex uses a Sigma-1 invariant of
+  internal PA proof witnesses in arbitrary candidate-PRA models whose
+  arithmetic reduct satisfies I-Sigma-1. It correctly does not call the
+  predicate Good(a) = Prov_PA(Tr(a)) quantifier free.
+* P/proof/consistency_equivalence.tex applies the existing one-way transfer
+  theorems to the atomic matrix chi_M(t)=1. Its internal halting/refutation
+  implications are model-uniform, not merely statements about standard N.
+
+I inspected the retained references/reverse_soundness/isigma1-machine/
+ConPAISigma1Directions.lean and ConPAUnconditional.lean. The former really has
+the two advertised endpoint theorems. The nonhalt-to-consistency direction
+requires both openness and boundedness of the halt matrix; the chosen atomic
+matrix satisfies both. The latter discharges the fixed PA witness-bound
+certificate through PA196PACertificateComplete.certificate. The negative
+translation proof yields the negative endpoint and does not use Markov's
+principle to remove a double negation from an existential halting claim.
+
+Consequently, a new literal table still needs its own uniform execution
+binding. The existing endpoint cannot certify a table merely because its
+ordinary finite tests resemble those of AX11H.
+
+2. Why the finite-demand construction is an allowed repair
+--------------------------------------------------------
+
+The precise argument is P/proof/forward_calibration_completion.tex,
+"Finite demand instead of induction over all environments", with its actual
+child maps in (F4), (F9)-(F16), and P/proof/term_leaf_completion.tex (T1)-(T16).
+
+A fixed request has a rank r and a finite parameter packet. Generate the full
+binary tree of depth r+1, including inactive slots, by a bounded forward loop.
+There are at most 2^(r+2)-1 slots. For each active slot, child queries are
+computed from syntax and input parameters before child proof values exist.
+Same-stratum ranks strictly decrease. A reverse bounded loop constructs proof
+lists from previously evaluated children and already completed lower strata.
+
+This is primitive recursive even when label reserves, shifted syntax, or proof
+codes grow rapidly: both loop lengths are primitive recursive in the original
+input, and the fixed local operations are primitive recursive. No uniform
+small bound on proof size, no unrestricted minimization, and no inference from
+"for all i<k there exists e_i" to a chosen PR function are necessary. One may
+use the constructed output table itself in the checking invariant. Bounded
+conjunctions of the concrete validity/correctness tests have PR characteristic
+functions, so forward and reverse correctness use quantifier-free induction.
+
+I checked these potentially problematic cases in detail:
+
+* Allocator relocation has two recursive calls on the quantified body, at
+  different allocator parameters. These are exactly the calls in the pinned
+  PA196/Arithmetic/Transport/FoundationRelationalSequentAllocator.lean,
+  allocator_source_step. Its original formula_allocator_certificates theorem
+  explicitly uses full PA induction; the manuscript uses the local step
+  recipes instead. The common allocator max(lo,other)+1 preserves coverage
+  because each body code is strictly smaller than its quantified parent.
+* Term vector realization (T14) invokes uniqueness on a replacement term
+  w_i which can be larger than the variable being realized. The manuscript
+  does not assert the false inequality w_i < variableCode. Uniqueness is
+  completed before vector realization, so this is a lower-stratum call.
+* Formula realization (F11)-(F12) recurses only on original formula children.
+  Large substituted terms are handled by the completed term algorithms.
+  The quantified child carries the explicitly shifted and extended vectors.
+* Universal induction-matrix closure (F15) retains the whole canonical
+  witness packet (m,p,K), uses the invariant s+k=m, and decreases k. Its
+  zero case therefore supplies only the recorded induction matrix, not an
+  arbitrary matrix of the same arity. This prevents a hidden general-purpose
+  matrix oracle at the base case.
+* The outer PAeq compiler's universal map (F16) is fixed by formula syntax
+  and labels, not by a certificate that a recursive call later returns.
+* Guard collection and canonical input in the term manuscript explicitly
+  supply an array of entry proofs and an iterated maximum of required code
+  bounds. The repeated-environment supplier uses identical explicit identity
+  proofs. Neither uses unrestricted choice to collect arbitrary existentials.
+
+These checks justify the key induction mechanism. A future implementation
+should preserve this request/output separation: if a new child query were
+chosen from the size or contents of a returned same-stratum proof, the
+present bounded-tree proof would no longer apply automatically.
+
+3. The diagonal/equality interface is a genuine issue, and is addressed
+---------------------------------------------------------------------
+
+The delivered calculus uses Gamma(B)=I(B,U(B,B)) and the old guarded gate,
+whereas the cited PA196 library uses a bundled primitive equality-vacuity
+axiom. The manuscript does not claim a translation of arbitrary proofs using
+that obsolete axiom. Its (F2)-(F3) replaces the exact interfaces required by
+the relational construction.
+
+For reverse membership, c is the code of the complete negated conclusion
+phi, not an arbitrary fresh name. Constructor inequalities imply c>a,b and
+the required fixed membership label. Under phi, classical propositional
+constructors expose the equality, the positive membership premise, and the
+negative target. Pointed separation and direct membership rewriting give a
+contradiction; Gamma(phi) provides precisely the vacuity needed to generalize
+the remaining assumption at c. This does not silently generalize an equality
+assumption at an arbitrary label. Coincident labels are handled separately.
+
+I independently searched the actual 60-file PA196/Logic tree. The only
+downstream consumers of primitive equalityVacuity are Reverse.reverseChi and
+Neighborhood.primitiveToNeighborhood, as claimed. I read those definitions
+and the primitive Basic.lean calculus. The replacement is therefore at a
+meaningful dependency boundary. Membership-only neighborhood vacuity is a
+derived property of the defined relation and is a different interface.
+
+The fixed relational seeds were spot-checked in
+PA196/Arithmetic/Transport/RelationalClosedCertificateSeeds.lean and
+PAInterpretedFixedCertificateSeeds.lean. They supply actual Derivation
+objects at explicitly constructed standard reserves. They are not simply
+postulates that PA proves an appropriate sentence. I found no sorry, admit,
+or new axiom in the scanned logical core and these seed modules. This scan
+does not replace a dependency build or exhaustive examination of all imports.
+
+4. Foundation adapter: the traps checked
+---------------------------------------
+
+P/proof/foundation_paeq_completion.tex is substantially more specific than
+an appeal to the informal equivalence of presentations of PA.
+
+Its "Two explicit proof constructors" gives OpenOne using shift, weakening,
+excluded middle, existential introduction, and cut, and CloseOne using the
+literal universal rule. I checked their sequent/binder shapes. The opening
+and closing loops fix the original matrix and witness packet as parameters;
+their induction predicates are Delta-1/Sigma-1 checks of actual constructed
+proofs. They do not require induction over all matrices or environments.
+
+The induction recognizer searches m,b <= c but searches the property K up to
+the computed opened-body code. It does not incorrectly bound K by c. The
+canonical induction closure may use fewer parameters than the original
+accepted closure. The proof uses the actual support m_0 and then the explicit
+opening/closing constructors, rather than assuming that every padded closure
+is itself recognized as a primitive induction axiom.
+
+I also inspected the retained FoundationPAeqCodeEqualityFormula.lean,
+replace_aux. The binder case shifts/opens its body before invoking the
+induction hypothesis; a raw-code-decreasing recursion would be unsafe here.
+The adapter's separate PR construction ranks these queries by connective and
+quantifier count, which renaming preserves and taking a body decreases.
+
+The current Foundation comparison does not assert identical axiom predicates.
+It identifies 25 common finite leaves and explicitly adapts addEqOfLt from
+the historical bounded existential to the current unbounded existential.
+The six-node existential projection is correct. The reverse finite-base
+derivation supplies z<y+1 from x+z=y using zeroLe, addition monotonicity,
+and y<y+1; it uses no induction. This matters because historical I-Sigma-1
+syntax lemmas require the old arithmetic base, not just old PA leaf proofs.
+
+The hierarchy comparison explicitly embeds historical bounded/prenex
+Sigma-1 syntax into the current Arithmetic.Hierarchy. The current recognizer
+is compared at the internal-code level. The native endpoint is then the
+actual mapped Foundation PA refutation predicate, via the retained
+PA195RefutationBridge.mapped_refutation_iff. Raw Foundation false is code 13;
+the numerical calculus's contradiction code 1 is reached by translation,
+not identified with 13.
+
+5. Positive clocks, halted data, and the exact physical frame
+-----------------------------------------------------------
+
+The generic P/proof/ipra_simulation_theorem.tex is sound under its stated
+closure, endpoint, halt-flag, and positive-duration hypotheses. A physical
+halt at t is reflected using a synchronized boundary at time >= t and
+absorption, so no least-boundary search or Markov principle is required.
+
+One must distinguish the two clock conventions actually used:
+
+* The source-to-scheduler theorem sets theta=1 on data-retaining Done states.
+  Its cumulative clock B(k)>=k therefore satisfies the generic positive-clock
+  hypotheses literally.
+* The physical theorem sets D(H)=0 after canonicalized halt. Thus that D
+  does not satisfy global positivity. The physical manuscript supplies its
+  own correct argument: if z_k is not halted, tau(k)>=3k; if physical halt
+  occurs at t, assume z_(t+1) is not halted and compare the later boundary.
+  Decidability of the halt flag yields z_(t+1)=H. This conditional progress
+  argument is the appropriate justification; applying the generic globally
+  positive theorem directly to D(H)=0 would be a mistake.
+
+The physical proof also binds slot 12 to the width W(X) of the same spare
+list X occurring on the tape. Treating it as an unrelated independent
+natural would invalidate list events. Its word identities C(X)1=1B(X) and
+their reversals have actual prefix inductions. The four list traversals
+derive from literal rows, including the zero-length-list case. Complete tape
+halves, both zero exteriors, zero head displacement at nonhalting boundaries,
+and padded address equality are accounted for.
+
+The source-command manuscript retains the exact halted register file. The
+physical manuscript canonically forgets it only after halt. The erasure
+commutes with the step functions and preserves the halt bit, so these are
+compatible representations rather than a mismatch in the endpoint equation.
+
+6. Independent finite replays performed
+--------------------------------------
+
+The retained archive in the current GD incoming package has SHA256
+  93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075.
+The exact archive is retained as reference/calibration_AX11H.zip. All ten
+proof/*.tex files are byte-identical to the current P/proof files. The six
+specific current upstream Lean files inspected above also match the frozen
+forward-calibration sources. The archive supplies generated tables omitted
+from the materialized Git packet, so replay used that exact archive.
+
+Fresh results in comparison/:
+
+* calibration_source_integrity_rerun.json: PASS for 698 pinned source
+  instances and 202 frozen Foundation artifacts. This is byte identity,
+  explicitly not a Lean build.
+* foundation_closure_rerun.json: PASS for 308 closure chains, 140 canonical
+  induction readbacks, 36 existential projections, 4 changed-leaf adapters,
+  and 8,828 primitive AST proof nodes. It includes zero/surplus parameters
+  and nested binders. The old finite leaf is an input to this diagnostic;
+  its separately cited fixed proof is not evaluated by this test.
+* source_command_rerun/{PA194AX11H,PA194QAX11H}/receipt.json: PASS for all
+  3,671 primitive instructions and outgoing edges in each source, the
+  independent source-tree resolver, all 190 AX macro tokens, the free-algebra
+  identity, all scratch preconditions, 882 local duration examples and
+  324 composed Shift/MP duration examples per machine.
+* physical_calibration_rerun.json: PASS for all 4,778 contracts and 4,777
+  nonhalting frame endpoints per machine, zero overflow, minimum duration
+  constant 3, and the four generic block derivations.
+* literal_calibration_rerun/{PA194AX11H,PA194QAX11H}/receipt.json: complete
+  literal replay PASS; respectively 1,101,836 and 1,130,254 symbolic events,
+  exact 57,922-step startup with complete tape equality, and dense/native
+  conjugacy. The dense SHA256 identities are respectively
+  c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a and
+  19e215df20429fa6a35f0a99ba0dcfcb40893a6e4b9a4ae6e450b0225f110e50.
+
+The finite receipts support the fixed bindings. Universal validity still
+uses the written induction proofs; the distinction is maintained throughout
+this review.
+
+7. Relevant cross-source lessons
+--------------------------------
+
+ZFC/arithmetic_control_fetch254.md uses the same fresh-candidate clock
+7*NP+4 and the positive-residual clock 2, with scratch restoration and the
+fresh counter advanced at selection. It stresses fixing the initial whole
+register file during bounded internal iteration, rather than inferring an
+all-input runtime from external finite execution. That is exactly the useful
+method in source_command_completion.tex. ZFC/internal_code_tuple_order.md
+also distinguishes internal well-order/code induction from external
+well-foundedness of a nonstandard model. Neither source supplies an automatic
+state-count improvement or a PA endpoint for an unrelated binary table.
+
+DiophantineConsistency/Lean/DiophantineConsistency/PRAPiOneImplication.lean
+normalizes implications between open-matrix Pi-1 sentences to the appropriate
+open existential form, the transfer mechanism used here. Its theorem is
+about exact formula codes and models, not standard truth alone. The same
+project's PRA_PROVABILITY_PLAN.md emphasizes witness bounds for the actual
+refutation predicate. A small polynomial or a compact ZFC consistency
+equation does not itself provide a smaller two-symbol PA machine: the theory
+endpoint, numerical evaluator, enumeration, and tape implementation still
+have to be supplied and counted.
+
+ConciseIPRA/README.md measures complete Python proof checkers by tokens, AST
+nodes, and bytes. Its rule fusion and shared-context ideas are relevant
+engineering inspiration, but its target is a presentation bi-interpretable
+with iPRA. Searching for a contradiction in that target does not establish
+Con(PA). A replacement PA checker needs its own PA calibration; reductions
+that move computation into normalization also need a uniform weak-base
+account of that normalization. Small rule counts or source byte counts are
+not binary-TM state counts.
+
+Recommended use of this review
+------------------------------
+
+It is reasonable to inherit the revised AX11H written calibration, with its
+exact pin and stated formalization boundary, when presenting a new machine
+whose uniform execution relation to this source has actually been proved.
+Do not describe the inherited theorem as newly Lean-checked, and do not
+replace the necessary model-uniform bridge with a finite test receipt.

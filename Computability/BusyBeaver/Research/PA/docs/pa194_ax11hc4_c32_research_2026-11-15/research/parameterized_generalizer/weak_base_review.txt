@@ -1,0 +1,52 @@
+WRITTEN WEAK-BASE CALIBRATION REVIEW (NOT A KERNEL CHECK)
+
+Reviewed source: ProveIt commit
+2ca99e3d23a5397aae4c786f4da7dfe1cca87f85,
+Computability/BusyBeaver/Research/PA/docs/
+pa194_ax11h_research_2026-11-14_2/proof/
+forward_calibration_completion.tex.
+
+The file gives a substantive mathematical construction, not merely a
+statement that ordinary PA proves the desired interpretation. It aims
+to construct a primitive-recursive ordinary-PAeq-to-C4 refutation map
+with correctness already in I Sigma_1, so that the negative consistency
+endpoint can subsequently be transferred to iPRA using the cited
+weak-base theorem.
+
+Its important device is a finite-demand request/response tree. A node's
+child requests are computed from syntax before any returned child
+proofs are available. Within each stratum, recursive ranks strictly
+decrease. Calls to completed lower strata may have larger arguments.
+The construction first fills the finite query tree, then evaluates
+proof-producing responses in reverse order. Correctness is expressed
+by bounded Boolean invariants about this finite table, avoiding an
+induction hypothesis of the form 'for every environment there exists a
+proof'. As an algorithmic and weak-arithmetic method, this is sound.
+
+I checked the displayed coverage budgets F4--F7 and their relocation
+argument: m=max(l,l')+1 and a child budget q <= p-1 imply the stated
+m+q <= z bound. The file explicitly protects the prefix of each extended
+environment and takes freshness above all used variables.
+
+I also read the arbitrary-property separation construction, requested
+label maps F9--F12, the arithmetic formula/term interfaces, the induction
+supplier F13--F15, and the outer proof compiler F16. The stratification
+is explicit: formula realization may call already completed term
+realization, and arbitrary induction is supplied by the seven stated
+ordinal-induction premises rather than by an unexplained base case for
+arbitrary closed matrices. Recursive children of the outer proof
+compiler are smaller proof codes.
+
+Several older, stronger-PA calibration theorems are cited as sources of
+finite constructor recipes. The text explicitly instructs the reader
+to implement those recipes directly, rather than importing their
+stronger-theory correctness conclusions. That distinction is material
+to the weak-base claim and is addressed in the written proof.
+
+I found no concrete contradiction, rank failure, or coverage-budget
+error in these parts. This review does not independently evaluate all
+large native proof objects or verify every join between the many
+templates. The correct status is an inherited written calibration with
+unfinished kernel formalization, not an absence of an iPRA argument.
+The additional source experiment separately proves its command
+interface change by an exact offset-addition identity.

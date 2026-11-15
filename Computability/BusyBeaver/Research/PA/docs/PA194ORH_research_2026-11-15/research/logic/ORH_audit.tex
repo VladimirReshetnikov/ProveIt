@@ -1,0 +1,120 @@
+\section{Independent audit of the operand-reader reassociation}
+\label{sec:orh-independent}
+This audit concerns the literal table called \texttt{PA194ORH}. Its dense
+transition table has SHA-256
+\begin{quote}\small\ttfamily
+c16bef7a1587e31adaae747d5bad26721f30bb5c6c33dd4b798be95f5141f1d4.
+\end{quote}
+The parent is the pinned \texttt{PA194AX11H} table. Native state numbers
+are used below; they are names, rather than a count of working states.
+The new dense table has 194 working states and 388 binary transition rows.
+
+\subsection{The hidden selector is preserved exactly}
+The apparent closed operand routine at state 213 has a second use:
+the transition from state 69 on zero moves left into it. Consequently
+an arbitrary reassociation of the closed routine cannot be substituted
+there without also preserving this history-sensitive entry.
+
+Let the head initially be at an arbitrary position $p$, the state be 69,
+and the scanned symbol be zero. Write $h\in\{0,1\}$ for the symbol at
+$p-1$. Every transition in the following traces preserves the scanned
+symbol. States and head positions are shown after each transition.
+For $h=0$ the old trace is
+\[
+ (69,p)\longrightarrow(213,p-1)\longrightarrow(92,p)
+ \longrightarrow(104,p+1),
+\]
+whereas the new trace is
+\[
+ (69,p)\longrightarrow(92,p-1)\longrightarrow(111,p)
+ \longrightarrow(104,p+1).
+\]
+For $h=1$ the old and new traces are respectively
+\[
+ (69,p)\longrightarrow(213,p-1)\longrightarrow(90,p),
+ \qquad
+ (69,p)\longrightarrow(92,p-1)\longrightarrow(90,p).
+\]
+In the zero-history case the last transition is legitimate because the
+initially scanned cell at $p$ is still zero. Both cases therefore give
+exact equality of exit state, head position, and entire tape, for every
+initial tape satisfying the single entry condition. The equality does
+not depend on a finite register bound or on a blank-tape simulation.
+State 111 is an existing reader, and its zero transition is unchanged.
+
+\subsection{The closed operand dispatch is recoded}
+The source routine changes from
+\[
+ ((\mathrm{node32},(\mathrm{node53},\mathrm{node55})),
+   \mathrm{node65})
+ \quad\hbox{to}\quad
+ (\mathrm{node32},(\mathrm{node53},
+   (\mathrm{node55},\mathrm{node65}))).
+\]
+Starting at state 213, the old and new preserved-symbol branch words
+reach the same macro entry states as follows.
+\begin{center}
+\begin{tabular}{ccll}
+Old word & New word & Exit state & Source component\\\hline
+00 & 0 & 104 & \texttt{node32}\\
+010 & 10 & 107 & \texttt{node53}\\
+011 & 110 & 98 & \texttt{node55}\\
+1 & 111 & 90 & \texttt{node65}
+\end{tabular}
+\end{center}
+The new reader 333 implements the last two branches and is shared with
+the AX grammar's existing \texttt{node55};\texttt{node65} pattern.
+The finite trace check establishes these four dispatch identities.
+Since branch depths can affect register-program jumps, preservation of
+the leaf order alone would not suffice. An independent source decoder
+also compared the fully resolved instruction lists, as described next.
+
+\subsection{Independent source and unchanged register boxes}
+The checker \texttt{ORH\_audit.py} imports neither the construction
+compiler nor its symbolic executor. It expands the old and new source
+trees and resolves jumps by lexicographic leaf intervals: leaving a
+source subtree goes to the first leaf after its interval; continuing
+at an ancestor goes to the first leaf in its interval. Decrement's zero
+branch uses the former operation at the prescribed zero ancestor.
+This independent calculation finds 3,671 sites in each source, with
+identical resolved instructions and jump destinations. Exactly 134
+source addresses change, and the maximum new address length is 37.
+It also compares its output to the construction's stored sites and
+instructions.
+
+Below native state number 1300, the only controls with changed rows,
+including the new control, are
+\[
+ \{69,92,185,213,333\}.
+\]
+The accelerated register-box interface uses the 23 controls
+\[
+\begin{split}
+\{&0,1,2,3,16,22,25,32,33,36,40,48,51,54,55,60,\\
+  &64,66,74,94,97,113,198\}.
+\end{split}
+\]
+All 46 rows at these controls are literally identical in the parent and
+new tables. Other changed controls are AX readers numbered at least
+2000 and likewise lie outside that interface. Thus the change does not
+silently change a primitive register-box contract used by the inherited
+symbolic simulation.
+
+\subsection{Scope of the conclusion}
+The independent receipt is \texttt{ORH\_audit.json}. It certifies the
+finite selector traces, the four dispatch cases, the unchanged box rows,
+and equality of the complete resolved source programs. Separately, the
+construction receipt reports all 4,778 symbolic source contracts and the
+entire blank initialization frame; those computations are not rerun by
+this independent checker. The reported maximum 506 belongs to the
+symbolic executor, which accelerates tape runs and invokes register-box
+contracts. It is not a uniform 506-step bound on concrete Turing-machine
+execution for arbitrary natural registers.
+
+The appropriate correctness transfer identifies source instruction
+ordinals and translates their physical program addresses. It is not an
+assertion that old and new complete machines take equal numbers of
+physical steps. Once the inherited source-level calibration and the
+new physical contracts are used, this gives the same refutation search
+as the parent. A finite Python audit is not itself a new Lean proof of
+the absolute iPRA calibration.

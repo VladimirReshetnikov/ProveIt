@@ -1,0 +1,116 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,booktabs,longtable,array,multirow,xcolor,seqsplit,calc}
+\usepackage[a4paper,margin=19mm,top=20mm,bottom=20mm]{geometry}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{etoolbox}
+\hypersetup{colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!50!black,pdftitle={Two new 194-state machines for Con(PA)},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt}
+\setlength{\emergencystretch}{2em}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.15}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\hash}[1]{{\ttfamily\footnotesize\seqsplit{#1}}}
+\newcommand{\pandocbounded}[1]{#1}
+\DeclareUnicodeCharacter{2192}{\ensuremath{\to}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}
+\DeclareUnicodeCharacter{00B2}{\ensuremath{^2}}
+\DeclareUnicodeCharacter{0393}{\ensuremath{\Gamma}}
+\DeclareUnicodeCharacter{0398}{\ensuremath{\Theta}}
+\DeclareUnicodeCharacter{03B8}{\ensuremath{\theta}}
+\DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+\DeclareUnicodeCharacter{2200}{\ensuremath{\forall}}
+\DeclareUnicodeCharacter{2203}{\ensuremath{\exists}}
+\DeclareUnicodeCharacter{2208}{\ensuremath{\in}}
+\DeclareUnicodeCharacter{00D7}{\ensuremath{\times}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small PA194: comparison and two new constructions}
+\fancyhead[R]{\small 15 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\title{PA194-LCSF3: relative iPRA proof}\author{Research construction}\date{15 November 2026}
+\begin{document}
+\maketitle
+\section{PA194-LCSF3}\label{pa194-lcsf3}
+
+Canonical name: PA194LCAX11HSF3. It has 194 working states, 388 transitions, alphabet \{0,1\}, one two-way infinite tape initially all zero, head initially at cell zero, dense start 0 and separate halt 194. Native start is 74 and halt is 254; native 194 is a working state.
+
+Exact parent: PA194LC\_AX11H\_SF from the incoming comparison archive. Only one native row changes:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Row & Parent & Child \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+190 reading 1 & 1 L 73 & 0 L 42 \\
+\end{longtable}
+
+In dense numbering this is 116/1: 1 L 37 → 0 L 48. All other rows are identical.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Literal artifact
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SHA-256
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+New dense table & \hash{2e5684567cd6e6e59fd99b5b093071533bcef6a01012dd2c6e41d52c645d2768} \\
+New native table & \hash{b741261b92a17256dfcbc9c6d3ee38d4fb27a3eee9be180a54ca63dca1c13cfe} \\
+Exact parent dense table & \hash{e9c6864d7fb452dff86a38e561f39a2dac0ddb873369fdfa3c1e7a88edcac7bf} \\
+Exact parent native table & \hash{23c40299b43056202f3f9bbe562e52f35b23dc25c13e0cb5e4f556444d86d0a5} \\
+\end{longtable}
+
+\subsection{Forced history bit and exact local identity}\label{forced-history-bit-and-exact-local-identity}
+
+The only transition into native 190 is 139/1 = 1 R 190. Since the start is 74, induction on run length proves that every reachable configuration at 190 has a 1 immediately to the left of the head. The new row creates no new predecessor of 190.
+
+The parent rows 190/1 = 1 L 73, 73/1 = 1 R 83, and 83/1 = 0 L 42 consequently execute a three-step block with the same complete tape, head, and control endpoint as the child's one-step 0 L 42. Both intermediate controls are nonterminal. For the binary zipper tape coding, with the low bit of L immediately left of the head and the low bit of R under the head, the identity is:
+
+\[
+(190,2\ell+1,2r+1)\longmapsto(73,\ell,4r+3)\longmapsto(83,2\ell+1,2r+1)\longmapsto(42,\ell,4r+1).
+\]
+
+The child performs the direct first-to-last step. The displayed equations hold for arbitrary natural l and r. Eight finite window instances independently check all free bits of the inspected local context, but the mathematical identity does not depend on a bounded exterior.
+
+This edit is specific to the LC parent. In PA194AX11H\_SF, 190/1 is 1 R 99 and its predecessor marker differs; the shortcut cannot simply be transplanted there.
+
+\subsection{Direct iPRA transfer for LCSF3}\label{direct-ipra-transfer-for-lcsf3}
+
+Use absorbing totalized runs and let H\_M(t) mean that the parent is terminal at time t. Define sigma(0)=0. At child step t, increase sigma by three if the child is at native 190 reading 1, and by one otherwise. This is primitive recursion. Quantifier-free induction, using the predecessor invariant and the local identity, proves:
+
+\[
+\operatorname{Run}_N(t)=\operatorname{Run}_M(\sigma(t)),\qquad t\leq\sigma(t)\leq3t.
+\]
+
+Absorbing terminality then gives the explicit positive bounds:
+
+\[
+\mathsf{iPRA}\vdash H_M(t)\to H_N(t),\qquad
+\mathsf{iPRA}\vdash H_N(t)\to H_M(3t).
+\]
+
+Existential introduction and intuitionistic logic yield both halting and nonhalting equivalence. No PA-consistency assumption, Markov principle, or unbounded minimization is used in this relative proof.
+
+The absolute Con(PA) corollary follows through the identified chain revised AX11H → LC\_AX11H → LC\_AX11H\_SF → PA194-LCSF3. The exact revised calibration archive has SHA-256 \hash{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}. This imports its written arithmetic calibration and the two intermediate physical transfers; it is not a new completed Lean proof.
+
+\subsection{Recurring use and initialization of LCSF3}\label{recurring-use-and-initialization-of-lcsf3}
+
+The changed row belongs to 61 recurring constructor-loop continuations. Exact source execution from site 25 with registers (2,0,0,0,0,0,0,0,0) reaches the first affected continuation after 32,686 source steps: site 630, instruction continueTo 3, address 10010100101001100111111, registers (4,4,9,0,0,0,0,6,0). The preceding four instructions increment the second register from zero to four.
+
+For every admitted physical frame at that source site, the decoder reaches 190 reading 1 after 24 steps, at relative head position 22, having read only fixed address positions 0-22. Thus this event is independent of the evolved header gap, registers, and spare list. Equivalent fixed-address certificates cover all 61 sites. A canonical frame with the reachable register values, gap zero and 26 unit spares takes 66 parent steps and 64 child steps, with the same complete endpoint. Transfer to the physical blank computation uses the inherited source-frame theorem; the full enormous physical prefix was not scalar-replayed.
+
+Complete blank initialization was independently executed for parent and child: both reach native 84, head -2, and the exact entire seed frame after 57,918 steps. The shortcut is not used during startup. All 194 controls are graph-reachable; graph reachability is not asserted to be blank-run reachability.
+\end{document}

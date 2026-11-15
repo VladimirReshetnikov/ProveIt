@@ -1,0 +1,703 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=23mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm,booktabs,longtable,array}
+\usepackage{microtype,xcolor,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,urlcolor=blue!45!black,citecolor=blue!45!black]{hyperref}
+\usepackage{fancyhdr}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\file}[1]{\nolinkurl{#1}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PA194ORH: construction and comparison}
+\fancyhead[R]{\small 15 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\hypersetup{pdftitle={PA194ORH: a new 194-state PA-consistency machine},pdfauthor={Research prepared for Vladimir Reshetnikov}}
+\begin{document}
+\begin{titlepage}
+\vspace*{12mm}
+{\Large\sffamily COMPUTABILITY / RESEARCH REPORT\par}
+\vspace{9mm}
+{\huge\bfseries PA194ORH\par}
+\vspace{4mm}
+{\LARGE A new 194-state machine through operand reassociation and an explicit history selector\par}
+\vspace{10mm}
+{\large Comparison of the ProveIt PA research corpus and incoming designs\par}
+\vspace{4mm}
+15 November 2026\par
+\vspace{8mm}
+\begin{abstract}
+No valid machine with fewer than 194 working states was obtained. This
+report supplies the requested alternative: a new complete binary Turing
+machine, PA194ORH, with 194 working states, together with a written
+$\ipra$ proof of its nonhalting equivalence to the calibrated PA194AX11H
+machine. Composing with the reviewed, revised AX11H written calibration
+gives $\ipra\vdash\Con(\PA)\leftrightarrow\neg\Halt_{\rm blank}(\mathrm{PA194ORH})$.
+The result is a mathematical proof and executable certificate package;
+it is not a new completed Lean proof.
+
+The change reassociates a closed operand routine, recodes 134 source
+addresses, and separates a hidden history-selector use of its entry
+control. A tempting 193-state version fails exactly because it omits that
+separation. Independent literal-table replay checks all 4,778 source
+outcomes for arbitrary registers and a symbolic finite spare list, and
+reproduces the complete 57,942-step blank initialization. An explicit
+polynomial clock translates halting witnesses in both directions.
+
+The comparison covers 97 research packets at a pinned repository commit,
+including all four incoming archives: 83 named principal or supplementary
+designs in 29 mechanism families. A fresh explicit-table census finds
+520 spanning 194-state graph classes. PA194ORH is distinct from every
+one under a broad structural equivalence. This census includes experiments
+and rejected candidates; its graph classes are not 520 proved consistency
+machines. The archive includes the full transition table, construction,
+proofs, independent verification, comparison ledgers, and failed reduction
+experiments with their actual scope.
+\end{abstract}
+\vfill
+\noindent\textbf{Pinned source}\par
+\small\url{https://github.com/VladimirReshetnikov/ProveIt/tree/43d9041f5571936c45c583f7f9d7f6eed9e0fd84}\par
+\medskip
+\noindent\textbf{Machine identity (SHA-256)}\par
+\small\nolinkurl{c16bef7a1587e31adaae747d5bad26721f30bb5c6c33dd4b798be95f5141f1d4}\par
+\end{titlepage}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Result, conventions, and the exact claim}
+
+The principal deliverable is \file{machines/PA194ORH/machine.tm}.
+Its five-column rows are $(q,b,w,d,q')$: in control $q$, reading bit $b$,
+write $w$, move one cell in direction $d\in\{L,R\}$, and enter $q'$.
+The tape is two-way infinite, with alphabet $\{0,1\}$ and initial symbol
+zero everywhere. The initial control is 0 and the initial head position
+is 0. Working controls are exactly $0,\ldots,193$; control 194 is the
+separate halt label and has no outgoing row. Thus the machine has 194
+working states and 388 transitions. Its underlying directed graph spans
+all 194 working controls from the initial control. This graph statement
+does not assert that every control occurs on the blank computation.
+
+The native-label table is conjugate to the dense table by
+\file{labels.json}. Native initial, source-boundary, and halt controls
+are 74, 84, and 254, respectively. All transition-level arguments below
+use these native labels; Appendix~\ref{app:table} prints the complete
+dense table.
+
+The parent is the exact PA194AX11H table from the revised second AX11H
+packet, with dense SHA-256
+\begin{center}\small
+\nolinkurl{c5dfe1026d077d3e062eca11edb789597bfbbced4f6040f8828ae5d467b1167a}.
+\end{center}
+The relative theorem established here concerns those exact two tables.
+The absolute PA conclusion uses the revised parent's written calibration,
+whose frozen archive is included with SHA-256
+\begin{center}\small
+\nolinkurl{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.
+\end{center}
+This archive is the one imported by several later supplied designs, not
+an unspecified claim about a machine sharing the AX11H name.
+
+\begin{theorem}[Main result, with its proof dependency made explicit]
+Let $M$ be the delivered PA194ORH table and $P$ the exact parent just
+identified. There are primitive recursive translations of halting witnesses,
+whose correctness is provable in $\ipra$, establishing
+\[
+ \ipra\vdash\Halt_{\rm blank}(M)\leftrightarrow\Halt_{\rm blank}(P).
+\]
+Together with the revised AX11H written theorem, this yields
+\[
+ \boxed{\ipra\vdash\Con(\PA)\leftrightarrow
+                     \neg\Halt_{\rm blank}(M).}
+\]
+Here $\Con(\PA)$ is the current Foundation PA-refutation predicate
+used by the pinned ProveIt consistency endpoint, with the explicit
+proof-presentation adapters of the inherited calibration.
+\end{theorem}
+
+The relative part is proved below from the exact source graph and literal
+machine contracts, including a positive-clock argument. The absolute
+part is a composition with the reviewed parent theorem. No consistency
+assumption about PA is needed to prove this equivalence. No new
+kernel-checked end-to-end Lean endpoint is claimed. The repository's
+ongoing formalization and the written mathematical theorem are separate
+statuses, and neither finite replay nor graph distinctness settles the
+full arithmetic calibration by itself.
+
+The archive also supplies PA194OR, the operand reassociation applied to
+the original 3,673-site PA194 source and its original command protocol.
+It has 194 states, passes 4,780 independent physical outcomes, and
+initializes in 58,170 steps. Its separate relative theorem and polynomial
+witness clocks appear in Section~\ref{sec:secondary-or-relative}.
+PA194ORH is the main absolute-calibration result of this report because
+its exact AX11H written dependency was independently reviewed here.
+
+\section{Comparison scope and findings}
+\label{sec:comparison}
+
+\subsection{What was included}
+The snapshot is ProveIt commit
+\nolinkurl{43d9041f5571936c45c583f7f9d7f6eed9e0fd84}.
+The PA research tree contains 93 filed delivery packets, and
+\file{docs/incoming} contains four additional archives. The filed README's
+statement that no archives remain incoming is stale at this pin; the
+actual four archives were included. The ledger in
+\file{comparison/packet_ledger97.csv} records every packet, while the
+named-design and mechanism ledgers separate presentations from table
+identities. The ZFC, DiophantineConsistency, and ConciseIPRA trees were
+also inspected for transferable mathematical and implementation ideas.
+
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Fresh audit quantity & Count\\
+\midrule
+Filed packets / incoming archives & 93 / 4\\
+Named principal and supplementary constructions & 83\\
+Mechanism families & 29\\
+Eligible payload encounters & 18,345\\
+Distinct nested ZIP payloads / encounters & 20 / 35\\
+Complete recognized explicit table occurrences, all sizes & 4,075\\
+Normalized labeled tables, all sizes & 1,314\\
+194-state occurrences / normalized labeled tables & 1,983 / 672\\
+194-state spanning graph classes / nonspanning diagnostics & 520 / 2\\
+193-state occurrences / spanning graph classes & 166 / 54\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These counts have different meanings. In particular the 520-class set
+contains physical-patch combinations, exploratory grammar candidates,
+and diagnostics, as well as named consistency constructions. Its members
+must not all be described as proved $\Con(\PA)$ machines. All 139 spanning
+194-state classes in the earlier filed catalogue were recovered. The
+381 additions comprise nine new named incoming constructions, two
+selector intermediates, 365 uncertified physical-patch combinations,
+and five uncertified closed-macro reassociations.
+
+The automatic census accepts complete numeric five-column binary tables
+and documented explicit JSON schemas, recursively opening recognized
+ZIP archives. It does not execute arbitrary generators or parse
+TeX-only tables, JSONL, or opaque encodings. The packet-level review
+and named-design ledger cover the named proposals outside that automatic
+format boundary. Twenty-one rejected table inputs are incomplete
+fragments with 2--139 controls; 122 JSON inputs are one-state fragments.
+No 194-state input was lost in those rejection categories.
+
+\subsection{Substantive comparison axes}
+All principal small PA constructions in this corpus descend from the
+same numerical-refutation search architecture. Their useful differences
+are organized as follows.
+
+\begin{longtable}{p{.20\textwidth}p{.72\textwidth}}
+\toprule
+Axis & Mathematical or physical effect\\
+\midrule\endhead
+Numerical coding & Coefficients four, five, and six alter constructor
+cost and emitted words. Exchanging the two curried premises in the
+universal-distribution head gives the Q variants. Diagonal and binder
+choices distinguish $\Gamma(A)$ from $\Gamma(D)$ and an explicit AX
+operand from the carried numerical offset.\\
+Command protocol & Successful MP may push a dummy zero, leave its result
+visibly without a push, or put its result in the cache. AX11 emits eleven
+stored entries and consumes a fourth operand through an existing MP
+reader. These changes require a matching command compiler.\\
+Contradiction detection & A sum test $t+h=1$ differs from the cached-only
+test $h=1$ on arbitrary carried stores. A contradiction in visible $t$
+with $h=0$ needs a proved exposing word in the cached-only system.\\
+Source algorithms & Symmetric destructive comparisons and known-zero
+decrement substitutions can remove restoration or jump work. Their
+proof obligations concern arbitrary stores or explicit reachability
+invariants.\\
+Physical layout & Grammar reassociation, register permutations, history
+selectors, and loop-continuation reassociation change recurring traces
+while sometimes preserving every resolved primitive instruction.\\
+Physical timing & Incoming-edge invariants can replace particular
+three-step paths by a single transition without reducing the working
+control count. A valid time map must cover all relevant entry contexts.\\
+\bottomrule
+\end{longtable}
+
+The newest four archives add the following nine named literal designs.
+Their naming is retained as source metadata, not used as a substitute
+for checking their tables.
+\begin{center}\small
+\begin{tabular}{p{.37\textwidth}p{.55\textwidth}}
+\toprule
+Incoming archive family & Principal names\\
+\midrule
+GD & PA194GD, PA194GDH, PA194GDHS\\
+LC fast/tagged & PA194LCAX11GHF, PA194LCAX11GHSF\\
+Loop return & PA194LCG, PA194LCGS\\
+Comparison and new designs (15 November) & PA194AX11H\_SF,
+PA194LC\_AX11H\_SF\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Several apparent extra designs disappear under exact comparison.
+PA194QN and PA194NQ are aliases; multiple PA194C submissions repeat
+tables; PA194QAX11H is the earlier PA194AX11QH. The revised AX11H packet
+keeps the earlier AX11H table and expands its mathematical calibration.
+The name PA194NS is historically ambiguous: a symmetric sum-guard use
+and a packet duplicating the cached-only HS table both occur. Every
+conclusion in this report is therefore bound to bytes or graph identity,
+not a name alone.
+
+\subsection{What the corpus does not establish}
+The 54 classes with 193 controls do not supply an accepted reduction.
+The widely studied $301\mapsto88$ runtime splice preserves a fragment
+of the computation but breaks blank initialization; later packets give
+explicit outward-ray counterexamples, including an exhaustive test of
+the specified selector-only family over all $9!$ register permutations.
+A proof that a candidate simply runs away forever supplies no calibrated
+PA-refutation search. Such exclusions are local to the stated families.
+Neither the existing literature in the repository nor the new searches
+here establishes a general lower bound of 194 states.
+
+\section{Inherited architecture and calibration}
+
+\subsection{The common search program}
+The source has nine primary natural-number registers,
+\[
+ (N,T,W,A,D,H,X,Y,L)=(r_0,\ldots,r_8),
+\]
+represented in physical order $(6,2,0,4,3,7,8,5,1)$, together with a
+finite spare register list and an affine tape-gap parameter. A structured
+binary source tree controls increment, conditional decrement, forward
+break, backward continuation, and halt instructions. Source-tree paths
+are also physical control addresses, so reassociation is not a purely
+syntactic operation on the Turing machine.
+
+At a higher level the scheduler enumerates encoded finite command words
+and runs them on a carried store. A numerical calculus supplies the
+axioms and the MP/generalization operations needed to search for a PA
+refutation. The carried store is not automatically reset between every
+candidate. Consequently completeness uses an all-store compiler and
+cofinal encodings of successful command words; a compiler proved only
+from an empty stack is insufficient.
+
+For orientation, the inherited coefficient-four numerical constructors
+are
+\[
+ p(a,b)=\frac{(a+b)(a+b+1)}2+b,\qquad
+ I(A,B)=4p(A,B),\qquad M(a,b)=4p(a,b)+1,
+\]
+\[
+ U(a,B)=4p(B,a)+2,\qquad E(a,b)=4p(a,b)+3.
+\]
+Zero is the numerical truth code and one the contradiction code.
+The first quantifier head is $(\exists_D U(D,H))\to H$; replacing it by
+the superficially shorter $U(D,H)\to H$ loses logical content used in
+the bootstrap. The gate, diagonal head, restricted implicational
+basis, and all numerical guards are inherited without modification by
+PA194ORH. The complete definitions and their proof transformations are
+in the included AX11H calibration archive.
+
+AX11H uses four AX operands, eleven emitted stack entries, no-push
+visible MP, and cached-only Shift. These exact choices matter: a
+separate all-store Pop/exposing word is used to turn a visible numerical
+contradiction into the cached contradiction detected by Shift. The
+zero-alias identity $p(0,0)=0$ is respected throughout; the encoded
+stack cannot be treated as a free datatype in arguments about arbitrary
+natural inputs.
+
+\subsection{Why this parent was selected}
+The revised AX11H packet provides the strongest directly reusable
+written calibration encountered: literal-table to source simulation,
+source to command simulation, an all-store command compiler, numerical
+proof transformations, an adapter for the current Foundation PA
+presentation, and the weak-arithmetic consistency transfer. Its ten
+mathematical proof files match the frozen archive included here
+byte-for-byte. The parent was chosen on the basis of that exact package,
+not because the repository currently has a completed machine-specific
+Lean theorem.
+
+The independent review checked the following potentially delicate parts.
+First, physical clocks are zero after canonical source halt; positivity
+must only be asserted before halt. Second, the forward numerical
+compiler replaces illicit induction on arbitrary PA formulas by finite
+demand trees with decreasing request ranks and primitive recursive
+construction order. Third, the Foundation adapter distinguishes the
+current PA proof coding, finite axioms, and induction recognizer from
+the historical ordinary-PAeq intermediate presentation. Finally, the
+negative/open-matrix transfer is applied to the actual atomic halting
+predicate; it does not assert an intuitionistic positive existential
+from its double negation.
+
+The finite replays verified 698 pinned source instances and 202
+Foundation artifact identities, 8,828 primitive Foundation AST nodes,
+both 3,671-instruction source graphs, both 4,778-outcome physical
+interfaces, and both complete 57,922-step parent startups. No concrete
+fatal flaw was found in the written calibration. This is a review of a
+mathematical proof with supporting finite checks. It does not materialize
+every enormous relational proof list or supply a new kernel verification
+of the complete absolute endpoint. The detailed audit is included as
+\file{comparison/calibration_review.txt}.
+
+\section{The new operand-reader construction}
+\label{sec:construction}
+
+\subsection{Reassociate a closed routine}
+Let the four closed subroutines be
+\[
+ A=\texttt{node32},\quad B=\texttt{node53},\quad
+ C=\texttt{node55},\quad D=\texttt{node65}.
+\]
+They unpair the residual operand, transfer the recovered value,
+perform the preserving copy, and execute the coefficient-four
+constructor, respectively. The old \texttt{node75} tree is
+\[
+       ((A,(B,C)),D),
+\]
+whereas the new tree is
+\[
+       (A,(B,(C,D))).
+\]
+The order of primitive source operations is unchanged. More strongly,
+resolving every decrement target, break, and continuation yields exactly
+the same 3,671 primitive instructions, including all target indices.
+There are 134 changed physical source addresses; the maximum address
+length remains 37. The address changes are recorded in the source
+artifacts and independently recomputed from the trees.
+
+\begin{center}
+\begin{tabular}{ccll}
+\toprule
+Routine & Native entry & Parent address suffix & New address suffix\\
+\midrule
+$A$ &104&\texttt{00}&\texttt{0}\\
+$B$ &107&\texttt{010}&\texttt{10}\\
+$C$ &98&\texttt{011}&\texttt{110}\\
+$D$ &90&\texttt{1}&\texttt{111}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The last pair $(C,D)$ is already present in the axiom grammar. Giving
+that pair fixed native label 333 shares its two rows between the closed
+operand routine and the axiom emitter. This is an actual reader change:
+the binary dispatch codewords, native transitions, and recurring physical
+execution differ from the parent.
+
+\subsection{Repair the hidden history entry}
+The first attempt removed a reader and had 193 working controls. It
+preserved the entire resolved source graph and passed the seven local
+fold certificates, but it failed 30 source outcomes. The reason is
+structural: control 213, the apparent entry of the closed routine,
+is also entered from $(69,0)$ as a history selector. A compiler which
+only rewrites declared macro entry edges misses this second use.
+
+The repair gives that history use its own entry at 92. The relevant
+fixed engine rows, before the axiom-reader relabeling and quotient,
+are as follows. Rows of 111 are unchanged.
+\begin{center}
+\begin{tabular}{rll}
+\toprule
+Native control & Reading 0 & Reading 1\\
+\midrule
+69 & $0L92$ & inherited\\
+92 & $0R111$ & $1R90$\\
+213 & $0R104$ & $1R185$\\
+185 & $0R107$ & $1R333$\\
+333 & $0R98$ & $1R90$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Here is the complete local argument, including its entry condition.
+Suppose 69 reads zero at position $p$, and let $b$ be the bit at $p-1$.
+For $b=0$, the old trace is
+\[
+  (69,p)\longrightarrow(213,p-1)\longrightarrow(92,p)
+                \longrightarrow(104,p+1),
+\]
+and the new trace is
+\[
+  (69,p)\longrightarrow(92,p-1)\longrightarrow(111,p)
+                \longrightarrow(104,p+1).
+\]
+Both preserve the two zero cells; the last transition uses the unchanged
+row $(111,0)\mapsto0R104$. For $b=1$, both traces take two steps to
+$(90,p)$ and preserve both cells. No other tape cell is read or written.
+This is an unconditional finite local identity under the stated
+triggering edge, not an inference from a finite sample of the blank run.
+All changed controls lie outside the register-box state set, and all
+46 register-box rows are unchanged.
+
+The repair costs the state saved by the naive construction. The actual
+count is
+\[
+  \underbrace{135}_{\text{fixed controls}}+
+  \underbrace{66}_{\text{axiom readers}}-
+  \underbrace{7}_{\text{simultaneous reader folds}}=194.
+\]
+The parent's corresponding decomposition is $134+67-7=194$. The raw
+new table has 201 working controls. Each of the seven folds identifies
+a pair whose incoming edge records a distinguishing history bit. The
+checker verifies all four history/current-bit cases for every pair on
+the final simultaneously folded table, for a total of 28 local cases.
+It also checks the exact incoming-edge conditions. No fold is justified
+only on a previously unfolded or independently modified table.
+
+\subsection{Initialization and novelty}
+The new dense table has the SHA-256 printed on the title page. Starting
+from the completely blank tape it reaches the exact clean frame at
+native control 84, head position $-2$, after 57,942 transitions. The
+source address is \texttt{1000000}, corresponding to source site 25,
+with logical registers $(2,0,\ldots,0)$ and 26 spare ones. Whole finite
+tape support is compared, not only a decoded register window. The
+parent reaches the same logical frame after 57,922 transitions.
+
+The novelty check compares complete canonical transition tuples against
+all 520 spanning 194-state corpus classes. It permits arbitrary state
+renaming, every spanning root, tape reflection, global symbol exchange,
+and changes to the write/move component of an edge entering the halt
+label. The new graph matches none. This is stronger than a dense-file
+hash mismatch. The intentionally broad comparison is a structural test:
+symbol exchange or root changes need not preserve the blank-zero
+computation. We do not use this novelty equivalence to infer semantic
+correctness.
+
+\section{Executable evidence and what it proves}
+
+Two independently organized physical checks are supplied. The
+construction checker performs 4,778 symbolic contracts and uses the
+inherited register-box interfaces. Its 1,516,115 symbolic events have a
+maximum of 506 per outcome. The independent checker imports no
+construction compiler; it reads the literal transition rows, re-proves
+four finite-list lemmas from those rows, and resolves the source
+control graph in two separate ways. It validates all 4,778 outcomes
+with 1,102,204 symbolic events and maximum 403. It also checks the
+dense/native conjugacy and the complete blank startup.
+
+These event counts are \emph{not} uniform bounds on ordinary TM time.
+Symbolic runs and list recursions summarize arbitrarily long unary
+register blocks. Their certificates contain affine ordinary-step
+durations, and it is those durations, together with the event-calculus
+induction proof, that support the uniform arithmetic simulation.
+
+The independent outcomes range over nine arbitrary natural registers,
+both branches of every decrement, an arbitrary nonempty finite spare
+list, and the affine gap parameter. They close the complete tape frame,
+not just the visible register values. There are 4,777 nonhalting frame
+endpoints and one halt outcome. Every nonterminal source step has
+ordinary duration at least 3. The following section states the exact
+arithmetic bridge and its finite-data checks.
+
+\input{proof/relative_ORH.tex}
+
+\section{Composition with the written PA calibration}
+
+The preceding relative theorem gives primitive recursive finite-witness
+maps in both directions between the exact new and parent machines.
+Intuitionistic contraposition therefore gives
+\[
+ \ipra\vdash\neg\Halt_{\rm blank}(M)
+                \leftrightarrow\neg\Halt_{\rm blank}(P).
+\]
+Compose this with the revised AX11H mathematical theorem from
+\file{proof/consistency_equivalence.tex} in
+\file{reference/calibration_AX11H.zip}. This proves the boxed main
+statement without changing the PA predicate or silently identifying
+different proof encodings.
+
+For clarity, the inherited calibration chain has five distinct pieces:
+the actual binary machine simulates the primitive register source;
+that source implements the abstract scheduler and commands; an all-store
+compiler turns numerical derivations of contradiction into cofinally
+encoded halting words; current Foundation PA proofs are transformed
+through the specified ordinary-PAeq presentation into numerical proofs;
+and the pinned open-matrix/negative transfer obtains the two $\ipra$
+consistency implications. The soundness direction also tracks proof
+support for stored numerical formulas. The parent packet explicitly
+provides primitive recursive clocks for the candidate drain, the
+source-command expansion, and the physical implementation.
+
+The present construction leaves the parent's resolved primitive
+instruction graph unchanged. Consequently none of its logical rules,
+AX guards, scheduler semantics, all-store command words, proof
+presentation adapters, or consistency-transfer hypotheses are weakened.
+The added work is the exact source-frame recoding and the physical
+clock relation, which are proved and checked here. This is the reason
+the parent's substantial calibration can be reused rather than merely
+postulated for an unrelated machine.
+
+\input{research/engine/relative_OR.tex}
+
+\section{Attempts to reach fewer than 194 states}
+\label{sec:search}
+
+The negative search results below are bounded computational experiments
+or explicit counterexamples in specified transformation families. None
+is a lower bound over all binary Turing machines.
+
+\begin{longtable}{p{.28\textwidth}p{.63\textwidth}}
+\toprule
+Investigation & Scope and observed result\\
+\midrule\endhead
+Commuting adjacent increments & Independent increment swaps at three
+source locations, combined with 25 closed-routine rotations: 182 unique
+tables, minimum nominal count 195.\\
+Small return re-encoding & 17,399 shapes for routines of at most ten
+leaves; 55 distinct source-preserving admissible encodings, including
+14 nominal 194 layouts and no 193 layout.\\
+Larger source-preserving beam & 1,277 priced candidates with re-encoded
+returns; two nominal 193 layouts. Both fail physical contracts through
+the hidden 213 history entry. The repaired new design is the present
+194-state machine.\\
+Single-row repair of the false 193 & All 772 replacement actions for
+the selected $(69,0)$ edge fail the 30 affected source outcomes. This
+exhausts that one-row family only.\\
+Reader folding on the repaired engine & 1,780,509 stochastic proposals;
+best effective axiom-reader count 59. With 135 fixed controls, 58 would
+have been needed for 193.\\
+Expanded copy-routine sharing & 2,484,415 proposals with CopyD, CopyH,
+and CopyA expanded into push plus preserving copy, and the existing
+subpairs shared in the scorer. Best effective reader count 59; no hit
+at 58.\\
+Shorter rewind scanner plus root rotation & 61,847 association variants,
+40 nominal candidates of at most 194 states, including five nominal
+193s. All fail universal contracts. A concrete internal run of nine
+zeros is mistaken for address padding. An additional 100,634-tree
+screen with the required incoming bit and zero-run restriction found
+no admissible tree in that restricted family.\\
+\bottomrule
+\end{longtable}
+
+The source-preserving counts in this table are pre-validation prices
+unless explicitly described as accepted. The archive marks the failed
+193-state operand candidate \file{REJECTED193_operand}; its transition
+table is retained to make the failure reproducible, not as an alternative
+consistency machine. The distinction matters because a plausible
+structured-program identity does not establish that every physical
+entry of a shared control obeys that interface.
+
+Two additional logical directions were investigated: alternative
+presentations of the ordinary axiom heads and MP commands that store
+their result on the theorem stack. They provide a materially different
+prospective command design, but their verified or priced layouts remain
+at least 195 states in the searches conducted. The following supplement
+gives the exact store identities, zero-alias cases, and measured search
+limits. It also explains what the user-suggested neighboring projects
+contribute and which obligations they do not discharge.
+
+\input{research/logic/research_notes.tex}
+
+\section{Reproduction and artifact map}
+
+The archive is self-contained for reconstruction and verification of the
+new machine. Python checks use the standard library. The optional
+grammar searches require a C++17 compiler. Building this PDF requires
+a conventional LaTeX installation with the packages named in
+\file{report/main.tex}. Run commands from the archive root:
+\par\noindent\begin{minipage}{\textwidth}
+\begin{verbatim}
+python3 -B verify_all.py
+python3 -B construction/build.py --output rebuilt/PA194ORH
+python3 -B verification/check.py rebuilt/PA194ORH
+pdflatex -interaction=nonstopmode -halt-on-error \
+  -output-directory report report/main.tex
+\end{verbatim}
+\end{minipage}\par
+Run LaTeX twice to resolve references. \file{verify_all.py} rebuilds in
+an isolated temporary directory, compares the fixed machine bytes and
+source artifacts, replays the independent universal certificates, checks
+the relative clock data and novelty, and reports its exact scope. It
+does not invoke Lean or claim to prove the absolute PA theorem in a
+kernel. \file{SHA256SUMS} binds the delivered files.
+
+\begin{longtable}{p{.34\textwidth}p{.57\textwidth}}
+\toprule
+Artifact & Purpose\\
+\midrule\endhead
+\file{machines/PA194ORH/} & Complete dense/native/raw tables, source
+tree, grammar, resolved instructions, labels, folds, startup and
+independent contracts.\\
+\file{construction/} & Portable deterministic reconstruction, exact
+parent inputs, attributed compiler and symbolic utilities.\\
+\file{verification/} & Literal-row checker and independent source
+resolvers; no construction-compiler imports.\\
+\file{proof/} & Relative $\ipra$ proof, polynomial witness clocks,
+finite-data inspector and its receipt.\\
+\file{comparison/} & 97-packet, 83-name and 29-family ledgers, fresh
+census, graph representatives, exact novelty check and calibration audit.\\
+\file{reference/} & Exact revised AX11H written-calibration archive,
+parent verification inputs, and provenance.\\
+\file{research/} & Finite search receipts, replayable grammar-search
+inputs, new command-protocol algebra, and explicitly rejected candidates.\\
+\file{licenses/} & Retained ProveIt and upstream code licenses.\\
+\bottomrule
+\end{longtable}
+
+\clearpage
+\appendix
+\section{Mechanism-family comparison}
+The 29-family table below is a compact index. The CSV/JSON ledgers
+retain all 83 named constructions, exact packet paths, attributed
+mechanisms, and graph identities; they are the detailed comparison
+artifact. Named designs and experimental graph classes are kept
+distinct throughout.
+\input{comparison/family_comparison29.tex}
+
+\clearpage
+\section{Complete PA194ORH transition table}
+\label{app:table}
+An entry $wDq'$ means write $w$, move $D$, and enter $q'$.
+The halt label is 194. Each displayed state has both read cases; the
+two three-column groups are independent. The machine-readable file is
+authoritative and has the title-page hash. This printed table is
+generated directly from that file by \file{report/generate_tables.py}.
+\input{report/transition_table.tex}
+
+\clearpage
+\section{Sources and attribution}
+The principal original contribution here is the repaired operand
+reassociation with its explicit history selector, its exact relative
+arithmetic proof and clocks, the current corpus reconciliation, and
+the newly recorded searches. The numerical calculus, parent machine,
+compiler/runtime infrastructure, and absolute PA calibration are
+attributed inherited work. Imported files retain their licenses and
+provenance; the frozen reference archive preserves the original proof
+manuscripts.
+
+\begin{thebibliography}{9}
+\bibitem{corpus} Vladimir Reshetnikov and contributors, \emph{ProveIt:
+PA Busy Beaver research and incoming archives}, pinned commit
+\nolinkurl{43d9041f5571936c45c583f7f9d7f6eed9e0fd84}.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/43d9041f5571936c45c583f7f9d7f6eed9e0fd84/Computability/BusyBeaver/Research/PA}.
+\bibitem{ax11h} \emph{Revised PA194AX11H research packet},
+\file{pa194_ax11h_research_2026-11-14_2}; exact frozen archive and
+provenance are included under \file{reference/}. Its ten written
+proof components supply the inherited absolute calibration.
+\bibitem{incoming} \emph{ProveIt incoming research archives},
+same pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/43d9041f5571936c45c583f7f9d7f6eed9e0fd84/docs/incoming}.
+\bibitem{zfc} \emph{ZFC research}, especially
+\file{arithmetic_control_fetch254.md} and
+\file{internal_code_tuple_order.md}, same pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/43d9041f5571936c45c583f7f9d7f6eed9e0fd84/Computability/BusyBeaver/Research/ZFC}.
+\bibitem{diophantine} \emph{DiophantineConsistency}, especially
+\file{PRAPiOneImplication.lean} and \file{PRA_PROVABILITY_PLAN.md},
+same pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/43d9041f5571936c45c583f7f9d7f6eed9e0fd84/Computability/DiophantineConsistency}.
+\bibitem{concise} \emph{ConciseIPRA}, same pinned commit.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/43d9041f5571936c45c583f7f9d7f6eed9e0fd84/Logic/PrimitiveRecursiveArithmetic/ConciseIPRA}.
+\end{thebibliography}
+\end{document}

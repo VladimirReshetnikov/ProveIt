@@ -1,0 +1,48 @@
+\subsection{Composition of the stronger witness and relocated diagonal}
+Let $I(a,b)=4p(a,b)$, $U(d,a)=I(a,d)+2$, and
+$\Gamma(a)=I(a,U(a,a))$. Retain the PA194H5X command interface, including
+its four AX fields, eleven-entry stack, explicit-binder generalization,
+no-push visible-result modus ponens, and cache-only Shift.
+Replace only the diagonal entry $q_1=\Gamma(A)$ by
+$q_1=\Gamma(D)$, where $D=d+x$ and $A=c$ are the accumulated AX parameters.
+Retain the stronger witness entry
+\[
+q_3=I(U(D,I(E(H,D),1)),A).
+\]
+The old and new commands generate exactly the same numerical axiom families.
+In particular the retained stronger witness schema has three independently
+selectable parameters; diagonal relocation does not identify its consequent
+parameter with its binder. The exact change to the emitted word consists of
+three occurrences of CopyA replaced by CopyD within the diagonal subword.
+
+Every generated $q_j$, $0\leq j\leq8$, is still an implication code divisible
+by four; the generalization entry $q_9=U(c,h)$ has residue two. The exact
+Push, Pop, offset, generalization, and MP word contracts of the H5X interface
+therefore remain unchanged. They use the positions and these residue facts,
+not the internal formula tree of $q_1$.
+
+For soundness, annotate the incoming store with numerical derivations as in
+the inherited all-store invariant. The changed entry is the primitive
+diagonal axiom at the legitimate arbitrary numeral $D$, so its annotation
+is a one-row proof. No assumption that the old offset is zero is needed.
+All remaining annotations and the cache-only halt argument are unchanged.
+
+For completeness, the normalized proof compiler enters each axiom selector
+with offset and cache zero. To select a diagonal instance $\Gamma(B)$, use
+AX fields $(c,x,y,z)=(0,B,0,0)$ and select rank one. Then $D=B$ and the
+selected formula is literally $\Gamma(B)$. To select any other primitive
+axiom, retain its previous parameter choice: changing an unselected diagonal
+entry does not change that choice or the selector's proof. The selectors
+are total even on dirty incoming top and stack, because all discarded
+newly generated entries differ from one. Thus the same primitive recursive
+proof-to-command compiler, with only this diagonal parameter substitution,
+produces an all-store halting word from every numerical refutation.
+
+The two command systems consequently halt exactly when the same numerical
+calculus derives code one. Their forward and reverse witness transformations
+use primitive recursion and the inherited bounded-store induction; the
+change introduces no new induction principle. Once an exact literal table
+and source simulation are supplied, this establishes its relative iPRA
+halting equivalence to the calibrated H5X system. This statement concerns
+the logical construction; a favorable grammar fitness alone is not a
+literal-machine theorem or a state-count claim.
