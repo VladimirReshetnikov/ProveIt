@@ -1,0 +1,21 @@
+import PA194PAeqOrdinaryTheoryClass
+#print axioms PA194PAeqBind.unbindTerm_defined
+#print axioms PA194PAeqBind.unbindTerm_bind
+#print axioms PA194PAeqBind.unbindFormula_defined
+#print axioms PA194PAeqBind.unbindFormula_bind
+#print axioms PA194PAeqBind.close_count_le_code
+#print axioms PA194PAeqBind.uncloseMany_close
+#print axioms PA194PAeqBind.uncloseHistory_graph
+#print axioms PA194PAeqBind.uncloseHistory_entry_bound
+#print axioms PA194PAeqBind.inductionBody_contains_property
+#print axioms PA194PAeqBind.closedInduction_property_bound
+#print axioms PA194PAeqBind.inductionUniform_defined
+#print axioms PA194PAeqBind.inductionUniform_provablyProper
+#print axioms PA194PAeqBind.inductionPure_iff
+#print axioms PA194PAeqBind.standard_quote_shift_fixed_semisentence_iff
+#print axioms PA194PAeqBind.inductionTheoryDelta
+#print axioms PA194PAeqBind.inductionTheory_mem_iff_typed
+#print axioms PA194PAeqBind.ordinaryPAeq_eq_union
+#print axioms PA194PAeqBind.ordinaryPAeq_delta
+#print axioms PA194PAeqBind.inductionTheory_class
+#print axioms PA194PAeqBind.ordinaryPAeq_class
