@@ -1,0 +1,5 @@
+import PA194ModelQFTail
+
+#print axioms PA194ModelLogic.quantifierFree_substitution_translation
+#print axioms PA194ModelLogic.quantifierFree_boundTail
+#print axioms PA194ModelLogic.simRuleExs_quantifierFreeRankedFull
