@@ -1,0 +1,131 @@
+\section{The Abel--Ruffini contradiction}
+\label{sec:abel-proof}
+
+We now combine the three ingredients:
+
+\begin{enumerate}
+\item a polynomial split by a radical tower has solvable Galois group
+  (Corollary~\ref{cor:split-rad-solvable});
+\item the generic quintic has Galois group $S_5$
+  (Theorem~\ref{thm:generic-galois-S5});
+\item $S_5$ is not solvable
+  (Theorem~\ref{thm:S5-not-solvable}).
+\end{enumerate}
+
+\subsection{No radical tower splits the generic quintic}
+
+\begin{theorem}[Generic quintic obstruction]
+\label{thm:generic-quintic-obstruction}
+Let $K,L,P$ be as in Section~\ref{sec:generic-quintic}.  No radical tower over
+$K$ contains all five roots $x_1,\ldots,x_5$ of $P$.
+\end{theorem}
+
+\begin{proof}
+Suppose a radical tower contained all roots.  Since $L=K(x_1,\ldots,x_5)$,
+the tower would contain the splitting field $L$.  By
+Corollary~\ref{cor:split-rad-solvable}, $\Gal(L/K)$ would be solvable.  By
+Theorem~\ref{thm:generic-galois-S5}, this group is isomorphic to $S_5$, which
+is not solvable by Theorem~\ref{thm:S5-not-solvable}.  Contradiction.
+\end{proof}
+
+The proof is intuitionistically valid.  The assumption of a radical tower is
+used to construct an explicit finite solvability certificate; the $S_5$
+calculation refutes that certificate.  No double-negation elimination is used.
+
+\subsection{From a universal formula to a radical tower}
+
+Suppose there were a universal formula by radicals for monic quintics
+\[
+ T^5+a_1T^4+a_2T^3+a_3T^2+a_4T+a_5.
+\]
+The formula may contain finitely many branches, field operations, and radical
+instructions.  Specialize its coefficient inputs to
+\[
+ a_1=-e_1,
+ \quad a_2=e_2,
+ \quad a_3=-e_3,
+ \quad a_4=e_4,
+ \quad a_5=-e_5
+\]
+in the field $K$.  Follow the branch guards, and adjoin the finitely many
+radical witnesses in program order.  The resulting run is a radical tower.
+Completeness of the formula supplies all five roots and therefore a complete
+factorization of $P$.  This contradicts
+Theorem~\ref{thm:generic-quintic-obstruction}.
+
+This specialization argument covers formulas with exceptional cases.  A
+formula that is truly universal must have a valid branch for the generic
+coefficient tuple.  It also covers formulas whose output roots are unordered,
+whose branches repeat roots, or whose radicals have several possible values:
+any successful run still generates a radical tower containing a complete root
+list.
+
+\begin{theorem}[Abel--Ruffini in degree five]
+There is no universal complete formula, built from rational constants, field
+operations, finite equality case distinctions, and extraction of finitely
+many radicals, that solves every degree-five equation over characteristic-zero
+fields.
+\end{theorem}
+
+\subsection{Every degree greater than five}
+
+For $n\ge5$, put
+\[
+ P_n(T)=T^{n-5}P(T).
+\]
+This is monic of exact degree $n$.  Its root multiset contains
+$x_1,\ldots,x_5$ together with $n-5$ zero roots.  If a radical tower split
+$P_n$, it would contain all $x_i$ and hence split $P$, contradicting
+Theorem~\ref{thm:generic-quintic-obstruction}.
+
+\begin{corollary}[Abel--Ruffini in every degree at least five]
+For each $n\ge5$, no universal complete radical formula exists for all
+polynomials of degree $n$.
+\end{corollary}
+
+The padding argument deliberately proves a statement about complete solution.
+The padded polynomial has the easy root zero; producing that one root does not
+solve the equation.
+
+\subsection{Why the coefficient field is legitimate}
+
+A reader may ask whether a formula intended for complex coefficients must be
+tested over the rational-function field $K$.  There are two equivalent
+answers.
+
+\paragraph{Formal-expression answer.}
+A universal radical formula is an identity in the coefficient indeterminates.
+Its operations are algebraic and therefore make sense over every
+characteristic-zero field where its denominators are nonzero and its guarded
+branches are followed.  The generic field is precisely the universal test
+object for such identities.
+
+\paragraph{Specialization answer.}
+If one insists on complex coefficients, embed a finitely generated
+specialization of the generic data into a sufficiently large characteristic-
+zero field and preserve the finitely many nonzero denominators.  A successful
+universal formula would then yield the same radical-tower consequence.  An
+alternative route, already present in ProveIt, uses explicit rational
+polynomials with nonsolvable Galois group.  Section~\ref{sec:explicit-quintic}
+records one elementary certificate route.
+
+\subsection{Strong and weak formulations}
+
+The following implications are useful when comparing formal statements.
+
+\[
+\begin{array}{c}
+\text{a fixed coefficient formula returns all roots}\\[0.2em]
+\Downarrow\\[-0.1em]
+\text{each input polynomial has a complete radical expression}\\[0.2em]
+\Downarrow\\[-0.1em]
+\text{the generic quintic has a complete radical factorization}\\[0.2em]
+\Downarrow\\[-0.1em]
+\Gal(P/K)\text{ is solvable}.
+\end{array}
+\]
+
+The proof refutes the bottom statement.  Therefore it refutes every stronger
+notion above it, including nonuniform per-root expressions when they are
+required for all five roots.  This is why the argument is insensitive to the
+surface syntax chosen for ``formula by radicals.''

@@ -1,7 +1,7 @@
 # Delivered iPRA proof packets
 
 This directory holds the research packets that were delivered as archives on 14 and
-15 November 2026: 33 to `docs/drafts`, and 3 to
+15 November 2026: 33 to `docs/drafts`, and 4 to
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`. Each packet gives a human-readable proof of a classical theorem
 of analysis, number theory or geometry. Each proof is in a finitary, quantitative form meant
 for intuitionistic primitive recursive arithmetic (iPRA). Most packets also include
@@ -32,7 +32,7 @@ reason. Its directory column gives `<area>/<directory>`.
 
 | Reason | Members | Where the bytes are |
 |---|---:|---|
-| `ignored` | 39 | The member matches the repository's `.gitignore`: 27 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
+| `ignored` | 40 | The member matches the repository's `.gitignore`: 28 `SHA256SUMS` / `SHA256SUMS.txt` checksum manifests and 12 `.log` files from LaTeX and Lean builds. It is available only from the delivered archive. |
 | `sibling-packet` | 13 | `puiseux_ipra` bundles `dependencies/FTA_iPRA/`, a byte-identical copy of the packet filed in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). The reference column gives the placed file, except for the copy of `SHA256SUMS`, which is ignored in both. |
 | `sibling-archive` | 1 | `zeta_zeros_ipra_2026-11-15` bundles `dependencies/zeta_functional_equation_ipra.zip`, a byte-identical copy of the delivered archive filed in [`analytic-number-theory/zeta_functional_equation_ipra`](analytic-number-theory/zeta_functional_equation_ipra/). |
 | `repository-copy` | 3 | `zeta_zeros_ipra_2026-11-15` bundles `sources/Deduction.lean`, `sources/NativeBiInterpretation.lean` and `sources/PR.lean`, byte-identical to the files of the same names in [`ConciseIPRA/Lean/ConciseIPRA`](../../ConciseIPRA/Lean/ConciseIPRA/). The reference column gives that file, relative to the repository root. |
@@ -45,7 +45,8 @@ directory. Its files are in [`algebra/FTA_iPRA`](algebra/FTA_iPRA/). Likewise, `
 `dependencies/` archive and `sources/` copies.
 
 To recover an omitted member, restore the archive from the commit that added it
-(the Arrival column). For `apery_ipra`, `faltings_ipra` and `gamma_ipra`, replace `docs/drafts` with
+(the Arrival column). For `apery_ipra`, `faltings_ipra`, `gamma_ipra` and
+`ipra_polynomial_formulas_abel_ruffini`, replace `docs/drafts` with
 `Logic/PrimitiveRecursiveArithmetic/docs/incoming`:
 
 ```bash
@@ -54,7 +55,7 @@ git show <arrival>:docs/drafts/<archive>.zip > <scratch>/<archive>.zip
 
 ## Packets
 
-The 36 archives hold 752 members: 696 placed here, 39 ignored, 13 in the bundled copy of
+The 37 archives hold 780 members: 723 placed here, 40 ignored, 13 in the bundled copy of
 a sibling packet, 1 nested copy of a sibling archive and 3 copies of repository files.
 In each area's table, P is the number of placed files and O the number of omitted members
 of each packet. Arrival is the commit that added the archive to its drop directory.
@@ -66,6 +67,7 @@ of each packet. Arrival is the commit that added the archive to its drop directo
 | Directory | Arrival | Wrapper in the archive | What the packet states | P | O |
 |---|---|---|---|---:|---:|
 | [`FTA_iPRA`](algebra/FTA_iPRA/) | `ea3f6066cf` 2026-11-14 | `FTA_iPRA` | An arithmetized constructive fundamental theorem of algebra, with a Lean formalization blueprint and exact rational reference programs. | 12 | 1 |
+| [`ipra_polynomial_formulas_abel_ruffini`](algebra/ipra_polynomial_formulas_abel_ruffini/) | `6800f2d21a` 2026-11-15 | `ipra_polynomial_formulas_abel_ruffini` | Radical formulae for polynomials through degree four, and the Abel–Ruffini theorem for the generic quintic, with an iPRA arithmetization plan. Its Lean file is a blueprint whose `opaque` declarations are not yet defined. | 27 | 1 |
 | [`puiseux_ipra`](algebra/puiseux_ipra/) | `8c135f6f2a` 2026-11-15 | `puiseux_ipra` | Puiseux expansions for exactly presented algebraic coefficients, with explicit convergence radii and tail bounds. It bundles the FTA packet as a dependency. | 17 | 14 |
 | [`three_impossibilities_ipra`](algebra/three_impossibilities_ipra/) | `a28886c88e` 2026-11-15 | `three_impossibilities_ipra` | The impossibility of doubling the cube, trisecting 60° and squaring the circle by straightedge and compass. It is stated as a proof architecture. | 12 | 1 |
 

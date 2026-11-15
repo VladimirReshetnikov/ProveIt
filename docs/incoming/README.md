@@ -167,7 +167,9 @@ They were placed the same way, under `diophantine-number-theory/`. Their 9 membe
 by `.gitignore` are not placed. Both archives are removed from that directory, and its
 `.gitkeep` is kept. A third archive there, `gamma_ipra.zip` (arrival `7e8e6aad97`), was
 placed the same way, under `analysis/`. Its one ignored `SHA256SUMS.txt` is not placed,
-and the archive is removed.
+and the archive is removed. A fourth, `ipra_polynomial_formulas_abel_ruffini.zip`
+(arrival `6800f2d21a`), was placed the same way, under `algebra/`. Its one ignored
+`SHA256SUMS` is not placed, and the archive is removed.
 
 ## Sub-exponential 3-SAT (ETH) reports
 

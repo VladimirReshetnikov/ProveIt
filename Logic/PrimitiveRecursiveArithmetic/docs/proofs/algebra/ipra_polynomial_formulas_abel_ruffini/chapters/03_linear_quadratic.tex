@@ -1,0 +1,106 @@
+\section{Linear and quadratic equations}
+
+\subsection{The linear equation}
+
+Let
+\[
+ f(X)=aX+b,
+ \qquad a\ne0.
+\]
+Define
+\[
+ r=-\frac{b}{a}.
+\]
+Then
+\[
+ f(r)=a\left(-\frac ba\right)+b=0,
+ \qquad
+ f(X)=a(X-r).
+\]
+The factorization proves both correctness and uniqueness.  The only division
+uses the explicit hypothesis $a\ne0$.  As a coded computation, field inversion
+is supplied with a proof that $a$ is nonzero; normalization verifies the two
+equalities above.
+
+\subsection{The quadratic formula}
+\label{sec:quadratic}
+
+Let
+\[
+ f(X)=aX^2+bX+c,
+ \qquad a\ne0,
+\]
+and let $s$ be a supplied square-root witness for the discriminant:
+\[
+ s^2=b^2-4ac.
+ \tag{Q1}\label{eq:quad-disc}
+\]
+Because the characteristic is zero, $2a\ne0$.  Define
+\[
+ r_+=\frac{-b+s}{2a},
+ \qquad
+ r_-=\frac{-b-s}{2a}.
+ \tag{Q2}\label{eq:quad-roots}
+\]
+
+\begin{theorem}[Exact quadratic factorization]
+\label{thm:quadratic-factorization}
+Under $a\ne0$ and~\eqref{eq:quad-disc},
+\[
+ aX^2+bX+c=a(X-r_+)(X-r_-).
+ \tag{Q3}\label{eq:quad-factor}
+\]
+Consequently $r_+$ and $r_-$ are roots, and in a coded field with decidable
+equality every root equals one of them.
+\end{theorem}
+
+\begin{proof}
+The two elementary symmetric functions of the displayed values are
+\[
+ r_++r_-=
+ \frac{-2b}{2a}=-\frac ba.
+\]
+and
+\[
+ r_+r_-=
+ \frac{(-b+s)(-b-s)}{4a^2}
+ =\frac{b^2-s^2}{4a^2}
+ =\frac{b^2-(b^2-4ac)}{4a^2}
+ =\frac ca.
+\]
+Therefore
+\[
+ a(X-r_+)(X-r_-)
+ =aX^2-a(r_++r_-)X+a r_+r_-
+ =aX^2+bX+c.
+\]
+This is a polynomial identity derived only from~\eqref{eq:quad-disc}.
+If $f(x)=0$, then
+$a(x-r_+)(x-r_-)=0$.  Since $a\ne0$, one has
+$(x-r_+)(x-r_-)=0$.  In the coded field, equality with zero is decidable:
+if $x-r_+=0$ we have $x=r_+$; otherwise its inverse exists and multiplication
+by that inverse gives $x-r_-=0$.  Thus $x=r_-$.
+\end{proof}
+
+The proof remains valid when $s=0$; then the two list entries coincide and the
+factorization records the double root.  No separate discriminant case is
+needed.
+
+\subsection{Primitive-recursive certificate}
+
+The quadratic certificate has the following fixed shape.
+
+\begin{enumerate}
+\item Parse codes for $a,b,c,s$.
+\item Check the nonzero certificate for $a$.
+\item Normalize the two sides of $s^2=b^2-4ac$.
+\item Construct syntax trees for $r_+$ and $r_-$.
+\item Clear the denominator $(2a)^2$ in~\eqref{eq:quad-factor}.
+\item Normalize the resulting integer-coefficient polynomial expression and
+  reduce once by the relation~\eqref{eq:quad-disc}.
+\end{enumerate}
+
+Every step is primitive recursive.  The accompanying Python verifier performs
+exactly this calculation and obtains remainder zero.  In Lean, ProveIt's
+\code{quadratic_formula_factorization} theorem already provides the semantic
+field-generic result, and \code{quadratic_eq_zero_iff} gives exhaustiveness.

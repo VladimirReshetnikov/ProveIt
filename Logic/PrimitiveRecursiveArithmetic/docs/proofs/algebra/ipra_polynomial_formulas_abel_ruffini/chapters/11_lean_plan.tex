@@ -1,0 +1,237 @@
+\section{Lean formalization plan}
+\label{sec:lean-plan}
+
+\subsection{Formalization status}
+
+There are two distinct layers.
+
+\begin{enumerate}
+\item The \emph{semantic algebra layer} is already kernel-checked in the
+  inspected ProveIt tree.  It contains the field-generic factorization
+  theorems for degrees at most four, the typed radical-expression language,
+  the semantic radical closure, explicit rational Abel--Ruffini examples, and
+  the generic fixed-field construction.
+\item The \emph{iPRA arithmetization layer} specified in
+  Sections~\ref{sec:ipra-framework} and~\ref{sec:internalization} is not yet a
+  completed Lean development.  The present archive gives its definitions,
+  theorem interfaces, proof decomposition, and an exact finite checker, but
+  it does not claim an end-to-end kernel-checked theorem of type
+  \code{PRAAx derives AbelRuffini}.
+\end{enumerate}
+
+This distinction matters.  Importing a classical field-theory theorem into
+Lean proves the mathematics, but it does not by itself prove that a derivation
+exists in the weak object theory iPRA.  The missing bridge must internalize the
+finite codes and the correctness proofs of their primitive-recursive
+checkers.
+
+\subsection{Existing files to reuse}
+
+The following imports should remain the semantic reference implementation.
+
+\begin{longtable}{p{0.34\textwidth}p{0.58\textwidth}}
+\toprule
+Existing module & Reused theorem families\\
+\midrule
+\endhead
+\code{PolynomialFormulas.Basic} &
+\code{linear_eq_zero_iff}, \code{quadratic_formula_factorization},
+\code{quadratic_eq_zero_iff}.\\
+\code{PolynomialFormulas.Cubic} &
+\code{depress_monic_cubic}, \code{cardano_depressed},
+\code{cardano_factorization}, \code{cubic_factorization},
+\code{cubic_eq_zero_iff}.\\
+\code{PolynomialFormulas.Quartic} &
+\code{depress_monic_quartic}, \code{ferrari_factorization},
+\code{solveDepressedQuartic_factorization},
+\code{quartic_factorization}, \code{quartic_eq_zero_iff}.\\
+\code{PolynomialFormulas.AbelRuffini} &
+\code{RadicalExpression},
+\code{nonempty_iff_mem_solvableByRad}, and the explicit rational quintic
+obstruction.\\
+\code{PolynomialFormulas.GenericAbelRuffini} &
+The rational-function-field model, root orbit, splitting-field construction,
+Galois equivalence with a symmetric group, and rootwise obstruction.\\
+\code{ConciseIPRA.NativeBiInterpretation} &
+\code{native_iff_pra}, \code{pra_iff_native}, and the two round-trip
+translation theorems.\\
+\bottomrule
+\end{longtable}
+
+The file \code{PolynomialFormulas.Audit} already asks Lean to print the axioms
+of the main semantic theorems.  The new development should add a separate
+audit for the iPRA endpoints and fail continuous integration if any endpoint
+contains \code{sorryAx} or an unintended axiom.
+
+\subsection{Proposed module tree}
+
+A practical directory is
+\[
+ \code{Logic/PrimitiveRecursiveArithmetic/Applications/AbelRuffini/}.
+\]
+The following modules give a dependency order with no cycles.
+
+\begin{description}[style=nextline]
+\item[\code{Codes.lean}]
+Pairing, bounded lists, zig-zag integers, rationals, exponent vectors, sparse
+polynomials, rational functions, permutations, finite tables, and generic
+proof-tree codes.  Each operation is accompanied by a \code{Primrec} theorem.
+
+\item[\code{SparsePolynomial.lean}]
+Canonical sorting and coefficient collection, evaluation semantics, and the
+fundamental theorem
+\[
+ \operatorname{eval}(\operatorname{pnorm}(p),\rho)
+ =\operatorname{eval}(p,\rho).
+\]
+Prove the list-loop invariants first in ordinary Lean; then reflect them into
+\code{PRAAx} using the existing primitive-recursion infrastructure.
+
+\item[\code{RationalFunction.lean}]
+Nonzero-denominator records, cross-multiplication equality, variable renaming,
+and substitution.  This module proves the exact identities for the five
+symmetric generators and the generic product polynomial.
+
+\item[\code{LowDegreeCertificates.lean}]
+Codes for the quadratic, Cardano, biquadratic, and Ferrari witness packages;
+root-list constructors; and Boolean factorization checkers.  The semantic
+correctness lemmas can be connected to the existing factorization theorems,
+while the object-theory results use only the sparse-normalizer equations.
+
+\item[\code{FinitePermutationGroups.lean}]
+Bounded enumeration of \code{Equiv.Perm (Fin d)}, table construction,
+commutators, subgroup closure, derived series, and
+\code{solvableB}.  Include compact certificates for
+$[S_5,S_5]=A_5$ and $[A_5,A_5]=A_5$ rather than relying only on a large
+\code{native_decide} computation.
+
+\item[\code{RadicalTowerCertificate.lean}]
+The proof-carrying finite-extension and radical-layer records, local checker,
+normal-layer compiler, exact-sequence certificates, and the theorem that every
+accepted tower produces an accepted solvable-series certificate.
+
+\item[\code{GenericQuinticCertificate.lean}]
+Codes for $e_1,\ldots,e_5$ and $P$; permutation renaming; the map from a
+permutation to an automorphism table; the inverse map reading the images of
+$x_i$; and the checked isomorphism with \code{S5Code}.
+
+\item[\code{AbelRuffiniPRA.lean}]
+Definitions of \code{RadSplit}, \code{UniversalRadicalFormula}, and the
+generic specialization compiler.  Combine the tower-solvability theorem,
+generic Galois certificate, and $S_5$ computation into the ordinary iPRA
+derivations.
+
+\item[\code{AbelRuffiniNative.lean}]
+Translate the ordinary formulas to the selected native calculus and discharge
+them with \code{native_iff_pra}.  This file should contain no algebra.
+
+\item[\code{Audit.lean}]
+\texttt{\#check} and \texttt{\#print axioms} for every public endpoint, plus closed
+examples for the degree-two, degree-three, degree-four, and $S_5$ checkers.
+\end{description}
+
+\subsection{Suggested Lean interfaces}
+
+The exact first-order syntax names should follow ConciseIPRA, but the public
+mathematical interfaces should look like the following.  These declarations
+are schematic: the archive's \code{Lean/IPRAAbelRuffiniBlueprint.lean} records
+the module boundaries without pretending that the missing proofs have already
+been checked.
+
+\begin{lstlisting}[style=lean,language={},caption={Certificate-level endpoints}]
+structure LowDegreeWitness (n : Fin 5) where
+  coeffs : List QCode
+  data   : ExprCode
+  proof  : ProofCode
+
+def lowCheck (n : Fin 5) : LowDegreeWitness n -> Bool
+def lowRoots (n : Fin 5) : LowDegreeWitness n -> List ExprCode
+
+theorem lowCheck_sound {n} {w : LowDegreeWitness n} :
+    lowCheck n w = true -> factorCheck w.coeffs (lowRoots n w) = true
+
+def towerCheck : TowerCode -> Bool
+def solvableB : GroupCode -> Bool
+
+theorem towerCheck_implies_solvable {t} :
+    towerCheck t = true -> solvableB (splittingGroup t) = true
+
+theorem genericQuintic_galCode :
+    genericQuinticGroup = S5Code
+
+theorem S5_not_solvableB : solvableB S5Code = false
+
+theorem no_generic_radical_split :
+    forall t, RadicalSplit genericQuintic t -> False
+\end{lstlisting}
+
+The object-theory endpoint then has the shape
+
+\begin{lstlisting}[style=lean,language={},caption={Object-theory endpoints, schematic}]
+theorem pra_lowDegree_factorization (n : Fin 5) :
+  [] |-PRA- lowDegreeSentence n
+
+theorem pra_abelRuffini_degree_five :
+  [] |-PRA- not (existsCode (UniversalRadicalFormula 5))
+
+theorem pra_abelRuffini_degree_ge_five :
+  [] |-PRA- forallNat fun n =>
+    5 <= n -> not (existsCode (UniversalRadicalFormula n))
+
+theorem native_abelRuffini_degree_ge_five :
+  NPrf [] (NFm.ofPRA abelRuffiniSentence)
+\end{lstlisting}
+
+Here \code{|-PRA-} abbreviates ProveIt's actual notation
+\(\Gamma \vdash[\mathrm{PRAAx}] A\).  The final proof is a one-line use of
+\code{native_iff_pra} after the ordinary derivation exists.
+
+\subsection{How to internalize a primitive-recursive checker}
+
+For each checker, use the same four-stage pattern.
+
+\begin{enumerate}
+\item Define a total Lean function on natural-number codes.  Malformed input
+  returns \code{false} or a fixed error code.
+\item Prove the function primitive recursive compositionally.  Do not mark it
+  recursive by an opaque kernel shortcut.
+\item State its loop invariant as an equality between primitive-recursive
+  functions.  Prove that invariant in \code{PRAAx} by quantifier-free
+  induction, using the equations for primitive recursion already available in
+  ConciseIPRA.
+\item Derive the externally readable semantic theorem from the accepted
+  certificate.  The semantic theorem may use structures and fields; the
+  object-theory theorem mentions only the code and checker equations.
+\end{enumerate}
+
+For fixed identities such as the Cardano and Ferrari factorizations, an even
+smaller route is available: generate a closed proof trace of sparse-ring
+normalization and verify that trace with a primitive-recursive step checker.
+The iPRA proof then establishes soundness of the generic step checker once and
+applies it to a concrete numeral coding the trace.
+
+\subsection{Milestones and completion criterion}
+
+A clear path to completion is:
+
+\begin{enumerate}
+\item \textbf{Low-degree milestone.}  Kernel-check
+  \code{pra_lowDegree_factorization} for $n=1,2,3,4$.  This validates the
+  coding and normalization layer before any Galois theory is internalized.
+\item \textbf{Finite-group milestone.}  Kernel-check
+  \code{S5_not_solvableB} with no native oracle in the public proof term.
+\item \textbf{Generic-action milestone.}  Kernel-check the mutually inverse
+  maps between the $120$ renamings and the automorphism certificate.
+\item \textbf{Radical-tower milestone.}  Kernel-check the compiler from an
+  accepted radical tower to a solvable-series certificate.
+\item \textbf{Ordinary iPRA endpoint.}  Kernel-check the degree-five
+  contradiction and the padding theorem in \code{PRAAx}.
+\item \textbf{Native endpoint.}  Transfer through
+  \code{native_iff_pra}, run \texttt{\#print axioms}, and place the result under
+  the repository's existing no-placeholder audit.
+\end{enumerate}
+
+The formalization is complete only when the last two endpoints print no
+\code{sorryAx}, no extra arithmetic axiom, and no unrecorded computation
+oracle.  The Python/SymPy script in this archive is useful regression evidence
+but is not part of that trust claim.

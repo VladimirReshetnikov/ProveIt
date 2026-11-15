@@ -1,0 +1,280 @@
+\section{Internalizing the proof in intuitionistic PRA}
+\label{sec:internalization}
+
+This section turns the preceding mathematics into a precise arithmetization
+plan.  The goal is not merely to say that the proof is ``finitary.''  We
+identify the primitive-recursive functions, the certificate relations, the
+induction measures, and the final iPRA sentences.
+
+\subsection{The base syntax}
+
+Fix natural-number codes for the following datatypes.
+
+\begin{align*}
+ \code{ZCode} & &&\text{signed integers},\\
+ \code{QCode} & &&\text{rational numbers},\\
+ \code{MonomCode}(v) & &&\text{monomials in $v$ variables},\\
+ \code{PolyCode}(v) & &&\text{normalized sparse polynomials},\\
+ \code{RatFunCode}(v) & &&\text{fractions of polynomial codes},\\
+ \code{PermCode}(d) & &&\text{permutations of $d$ symbols},\\
+ \code{GroupCode} & &&\text{finite group tables},\\
+ \code{ExprCode} & &&\text{field and radical expressions},\\
+ \code{ProofCode} & &&\text{finite derivations},\\
+ \code{TowerCode} & &&\text{radical-tower certificates}.
+\end{align*}
+
+The constructor tags, list projections, and all recursors are primitive
+recursive.  Parsing is total: malformed codes are interpreted as a fixed
+error object, so every checker is a total natural-number function.
+
+\subsection{Polynomial and rational-function normalization}
+
+Define the following primitive-recursive functions.
+
+\begin{align*}
+ \operatorname{pnorm}&:\code{PolyCode}(v)\to\code{PolyCode}(v),\\
+ \operatorname{padd},\operatorname{pmul},\operatorname{pneg}
+  &:\code{PolyCode}(v)^2\to\code{PolyCode}(v),\\
+ \operatorname{psubst}&:\code{PolyCode}(v)\times
+   \code{PolyCode}(w)^v\to\code{PolyCode}(w),\\
+ \operatorname{rfeq}&:\code{RatFunCode}(v)^2\to\{0,1\}.
+\end{align*}
+
+The sparse normalizer sorts monomials by a primitive-recursive lexicographic
+rank, combines adjacent equal exponent vectors, and deletes zero coefficients.
+Correctness is proved by quantifier-free induction on the source list.  For
+fractions $(P,Q)$ and $(R,S)$,
+\[
+ \operatorname{rfeq}((P,Q),(R,S))=1
+ \quad\Longleftrightarrow\quad
+ \operatorname{pnorm}(PS-RQ)=0,
+\]
+subject to checked nonzero denominators.  This gives decidable equality in the
+generic rational-function field $L$.
+
+The elementary symmetric functions $e_1,\ldots,e_5$ and the product
+$\prod_i(T-x_i)$ are fixed sparse codes.  A one-time normalization certificate
+proves equation~\eqref{eq:generic-coefficients}.
+
+\subsection{Low-degree formula checkers}
+
+For each degree $n\le4$, define a total function
+\[
+ \operatorname{lowCheck}_n(a,w)\in\{0,1\},
+\]
+where $a$ is a coefficient tuple and $w$ contains the nonzero and radical
+witnesses.  It checks:
+
+\begin{itemize}
+\item the leading coefficient is nonzero;
+\item every radical power equation;
+\item every denominator side condition;
+\item the coefficient-by-coefficient factorization identity.
+\end{itemize}
+
+The root-list constructor
+\[
+ \operatorname{lowRoots}_n(a,w)
+\]
+is primitive recursive.  The core iPRA theorems are equations of the form
+\[
+ \operatorname{lowCheck}_n(a,w)=1
+ \to
+ \operatorname{factorCheck}
+   \bigl(a,\operatorname{lowRoots}_n(a,w)\bigr)=1.
+ \tag{I1}\label{eq:ipra-low}
+\]
+For $n=2$ the proof is a single normalized identity.  For $n=3$ it uses the
+three relations in Section~\ref{sec:cubic}.  For $n=4$ it composes the Ferrari
+and quadratic identities.  No induction is needed beyond correctness of the
+normalizer.
+
+A separate primitive-recursive branch constructor implements the compatible
+radical choices:
+
+\begin{itemize}
+\item in the cubic, use the supplied coefficient guard $p=0$ or $p\ne0$;
+  the $p=0$ branch adjoins two cube roots and deduces $uv=0$ from
+  $(uv)^3=0$;
+\item in the quartic, use the supplied coefficient guard $q=0$ or $q\ne0$;
+  the first branch is biquadratic and the second proves the Ferrari radical
+  $s$ nonzero before division;
+\item carry the selected equality or nonzero derivation into the denominator
+  checker.
+\end{itemize}
+
+Because the guards are values of \code{rfeq}, these are intuitionistically
+legitimate case distinctions.
+
+\subsection{Finite permutation groups}
+
+Define
+\[
+ \operatorname{allPerm}(d)
+\]
+by bounded enumeration of the $d^d$ lists of length $d$ and filtering by the
+bijection predicate.  This is inefficient but primitive recursive.  For
+$d=5$ the output has length $120$.  Define composition, inverse, sign,
+commutator, subgroup closure, and derived subgroup by bounded folds.
+
+Let \code{S5} and \code{A5} be the resulting fixed codes.  The following are
+closed equations between numerals and primitive-recursive terms:
+\begin{align}
+ |\code{S5}|&=120,\\
+ |\code{A5}|&=60,\\
+ \operatorname{derived}(\code{S5})&=\code{A5},\\
+ \operatorname{derived}(\code{A5})&=\code{A5}.
+ \tag{I2}\label{eq:ipra-s5}
+\end{align}
+They can be proved either by evaluation of the full tables or by the much
+smaller explicit commutator certificates of Section~\ref{sec:s5-nonsolvable}.
+The latter route is preferable for proof size: verify two products, normality
+of a generated subgroup, conjugacy of $3$-cycles, and the generation of $A_5$
+by $3$-cycles.
+
+Define the Boolean predicate
+\[
+ \operatorname{solvableB}(G)=1
+\]
+by iterating the derived-subgroup function $|G|$ times and testing whether the
+identity subgroup has been reached.  Equation~\eqref{eq:ipra-s5} proves
+\[
+ \operatorname{solvableB}(\code{S5})=0.
+ \tag{I3}\label{eq:S5-bool-false}
+\]
+
+\subsection{Coding radical-tower solvability certificates}
+
+A tower certificate contains:
+
+\begin{enumerate}
+\item a finite list of exponents and radical power relations;
+\item the finite lists of conjugate radicands used in each normal-closure
+  stage;
+\item root-of-unity data;
+\item a finite automorphism table for each normal stage;
+\item restriction maps and exactness witnesses;
+\item embeddings of each abelian kernel in a product of cyclic groups;
+\item a final restriction map onto the claimed splitting-field group.
+\end{enumerate}
+
+The local checker \code{towerCheck} verifies every polynomial relation and
+every finite table equation.  The function
+\[
+ \operatorname{seriesOfTower}(t)
+\]
+reads the exact sequences and concatenates the derived-series certificates of
+the abelian kernels and quotients.  Its correctness theorem has the form
+\[
+ \operatorname{towerCheck}(t)=1
+ \to
+ \operatorname{solvableSeriesCheck}
+    (\operatorname{seriesOfTower}(t))=1.
+ \tag{I4}\label{eq:tower-to-series}
+\]
+The proof uses quantifier-free induction on the tower length; the invariant is
+an equation saying that the certificate generated for the prefix passes its
+checker.  No semantic induction over arbitrary fields occurs inside iPRA.
+
+The extension-of-embeddings steps are also proof-carrying.  A certificate lists
+the image chosen for each new generator among a bounded finite root list.  The
+checker verifies its defining polynomial and every relation to earlier
+generators.  Thus no unbounded search or choice operation is trusted.
+
+\subsection{Coding the generic splitting field action}
+
+The arithmetized generic proof needs only rational-function syntax and the
+fixed set of $120$ permutations.
+
+For each permutation code $\pi$, define
+\[
+ \operatorname{rename}_\pi:\code{RatFunCode}(5)\to\code{RatFunCode}(5)
+\]
+by renaming exponent-vector coordinates.  The fixed polynomial codes for
+$e_j$ satisfy
+\[
+ \operatorname{rfeq}(\operatorname{rename}_\pi(e_j),e_j)=1
+\]
+for all $\pi$ and $j$, by a bounded check.  Hence every permutation fixes the
+coefficient presentation.
+
+Conversely, an automorphism certificate of the splitting presentation lists
+the images of $x_1,\ldots,x_5$.  The factorization code for $P$ and the field
+cancellation rules prove that each image is one of the five variable codes.
+Distinctness is checked by normalizing $x_i-x_j$.  A bounded injection test
+therefore recovers a unique permutation.  The two transformations are inverse
+by five rational-function equalities.
+
+The resulting theorem is an isomorphism certificate
+\[
+ \operatorname{galCode}(P)=\code{S5}.
+ \tag{I5}\label{eq:gal-code-s5}
+\]
+No fixed-field quantification is required in this coding.
+
+\subsection{The arithmetized contradiction}
+
+Let \code{generic5} be the fixed code of $P$, and let
+\code{RadSplit(generic5,t)} be the formula asserting that $t$ is a checked
+radical splitting certificate.  The radical-tower compiler and
+\eqref{eq:tower-to-series} give
+\[
+ \operatorname{RadSplit}(\code{generic5},t)
+ \to
+ \operatorname{solvableB}(\operatorname{galCode}(P))=1.
+\]
+Using~\eqref{eq:gal-code-s5}, this implies
+$\operatorname{solvableB}(\code{S5})=1$, contradicting
+\eqref{eq:S5-bool-false}.  Therefore iPRA proves
+\[
+ \forall t\;\neg\operatorname{RadSplit}(\code{generic5},t).
+ \tag{I6}\label{eq:ipra-no-radsplit}
+\]
+
+A primitive-recursive specialization compiler \code{compileGeneric} maps a
+purported universal degree-five formula code $c$ and a successful run witness
+$w$ to a radical splitting certificate for \code{generic5}.  Hence
+\[
+ \forall c\;\bigl(
+   \operatorname{UniversalRadicalFormula}(5,c)
+   \to\bot\bigr).
+ \tag{I7}\label{eq:ipra-abel5}
+\]
+Padding is a primitive-recursive polynomial operation, so iPRA proves
+\[
+ \forall n\;\bigl(5\le n\to
+   \forall c\;\neg\operatorname{UniversalRadicalFormula}(n,c)\bigr).
+ \tag{I8}\label{eq:ipra-abel-all}
+\]
+
+\subsection{Transfer to the concise native calculus}
+
+The final formulas~\eqref{eq:ipra-low}, \eqref{eq:ipra-abel5}, and
+\eqref{eq:ipra-abel-all} are ordinary iPRA sentences.  The ProveIt file
+\code{NativeBiInterpretation.lean}
+defines translations between ordinary iPRA formulas and native formulas and
+proves \code{native_iff_pra}; the round trips
+are provably the identity up to the established equivalence.  Therefore a
+Lean proof of the ordinary iPRA derivation immediately yields a derivation in
+the selected concise calculus.  No new foundational argument about the tiny
+presentation is required.
+
+\subsection{No hidden use of stronger arithmetic}
+
+The proof uses large finite bounds, but proof-theoretic strength is not the
+same as computational efficiency.  Factorial, bounded exponentiation, sparse
+normalization, finite Gaussian elimination, and finite subgroup closure are
+all primitive recursive.  Their correctness proofs use induction on explicit
+counters with decidable invariants.  The proof does not require:
+
+\begin{itemize}
+\item induction for arbitrary formulas;
+\item unbounded minimization;
+\item transfinite induction;
+\item compactness, Zorn's lemma, or a global algebraic closure;
+\item excluded middle for arbitrary field-theoretic propositions.
+\end{itemize}
+
+The use of splitting fields and normal closures in the human proof is shorthand
+for finite witness records.  In the arithmetized proof, the witnesses are
+present in the certificate and every property used later is locally checked.

@@ -1,0 +1,217 @@
+\section{Cardano's cubic formula}
+\label{sec:cubic}
+
+\subsection{Depressing the cubic}
+
+Let
+\[
+ f(X)=aX^3+bX^2+cX+d,
+ \qquad a\ne0.
+\]
+Put
+\[
+ A=\frac ba,\qquad B=\frac ca,\qquad C=\frac da,
+\]
+so that $f(X)=a(X^3+AX^2+BX+C)$.  Make the translation
+\[
+ X=Y-\frac A3.
+\]
+Direct expansion gives
+\[
+ X^3+AX^2+BX+C=Y^3+pY+q,
+ \tag{C1}\label{eq:cubic-depress}
+\]
+where
+\[
+ p=B-\frac{A^2}{3}
+   =\frac{3ac-b^2}{3a^2},
+ \qquad
+ q=\frac{2A^3}{27}-\frac{AB}{3}+C
+   =\frac{2b^3-9abc+27a^2d}{27a^3}.
+ \tag{C2}\label{eq:cubic-pq}
+\]
+The denominators are nonzero in characteristic zero.  It remains to factor the
+depressed cubic
+\[
+ g(Y)=Y^3+pY+q.
+\]
+
+\subsection{The compatible radical equations}
+
+Choose $u,v$ satisfying
+\[
+ u^3+v^3=-q,
+ \qquad
+ uv=-\frac p3.
+ \tag{C3}\label{eq:cardano-compatible}
+\]
+Then
+\[
+ (u+v)^3+p(u+v)+q
+ =u^3+v^3+3uv(u+v)+p(u+v)+q=0.
+\]
+Thus $u+v$ is a root.  The product equation in
+\eqref{eq:cardano-compatible} is essential.  Independent choices of cube-root
+branches do not in general satisfy it.
+
+Let $\omega$ be a primitive cube-root witness in the algebraic form
+\[
+ \omega^2+\omega+1=0.
+ \tag{C4}\label{eq:omega}
+\]
+Then $\omega^3=1$ and $1+\omega+\omega^2=0$.  In characteristic zero,
+$\omega\ne1$.  Such a witness itself uses only a square radical: if
+$\tau^2=-3$, then $\omega=(-1+\tau)/2$ satisfies~\eqref{eq:omega}.
+
+Define
+\[
+ r_0=u+v,
+ \quad
+ r_1=\omega u+\omega^2v,
+ \quad
+ r_2=\omega^2u+\omega v.
+ \tag{C5}\label{eq:cardano-roots-depressed}
+\]
+
+\begin{theorem}[Cardano factorization]
+\label{thm:cardano-factorization}
+From~\eqref{eq:cardano-compatible} and~\eqref{eq:omega} one can derive
+\[
+ Y^3+pY+q=(Y-r_0)(Y-r_1)(Y-r_2).
+ \tag{C6}\label{eq:cardano-factorization}
+\]
+Consequently the roots of the original cubic are
+\[
+ x_k=r_k-\frac A3,
+ \qquad k=0,1,2.
+ \tag{C7}\label{eq:cardano-original-roots}
+\]
+\end{theorem}
+
+\begin{proof}
+The sum of the three displayed values is
+\[
+ r_0+r_1+r_2
+ =(1+\omega+\omega^2)u+(1+\omega+\omega^2)v=0.
+\]
+A direct expansion, reduced by $\omega^2+\omega+1=0$, gives
+\[
+ r_0r_1+r_0r_2+r_1r_2=-3uv=p.
+\]
+Similarly,
+\[
+ r_0r_1r_2=u^3+v^3=-q.
+\]
+The monic polynomial with these three roots is therefore
+\[
+ Y^3-(r_0+r_1+r_2)Y^2
+ +(r_0r_1+r_0r_2+r_1r_2)Y-r_0r_1r_2
+ =Y^3+pY+q.
+\]
+Combining this identity with~\eqref{eq:cubic-depress} proves the claim.
+\end{proof}
+
+The factorization, rather than three independent substitution calculations,
+is the preferred certificate.  It proves all roots simultaneously and retains
+multiplicity when two or three values coincide.
+
+\subsection{Constructing a compatible pair without a hidden pole}
+
+The usual displayed formula introduces
+\[
+ \Delta=\left(\frac q2\right)^2+\left(\frac p3\right)^3
+ \tag{C8}\label{eq:cardano-delta}
+\]
+and a square-root witness $s^2=\Delta$.  Put
+\[
+ R=-\frac q2+s,
+ \qquad
+ S=-\frac q2-s.
+ \tag{C9}\label{eq:RS}
+\]
+Then
+\[
+ R+S=-q,
+ \qquad
+ RS=\frac{q^2}{4}-s^2=-\left(\frac p3\right)^3.
+ \tag{C10}\label{eq:RS-relations}
+\]
+A textbook often says ``take $u^3=R$ and $v^3=S$'' without controlling the
+branches.  The following finite construction is correct in every case.
+
+\paragraph{Case $p\ne0$.}
+Equation~\eqref{eq:RS-relations} implies $R\ne0$ and $S\ne0$.  Adjoin a cube
+root $u$ with $u^3=R$ and define
+\[
+ v=-\frac{p}{3u}.
+ \tag{C11}\label{eq:v-defined}
+\]
+The denominator is nonzero.  Then $uv=-p/3$, and
+\[
+ v^3=\frac{(-p/3)^3}{u^3}
+ =\frac{-(p/3)^3}{R}=S
+\]
+by $RS=-(p/3)^3$.  Hence $u^3+v^3=R+S=-q$.
+
+\paragraph{Case $p=0$.}
+Now $RS=0$.  Adjoin cube-root witnesses independently,
+\[
+ u^3=R,\qquad v^3=S.
+\]
+Then
+\[
+ (uv)^3=u^3v^3=RS=0.
+\]
+A field has no nonzero nilpotents, so $uv=0=-p/3$; also
+$u^3+v^3=R+S=-q$.  No decision whether $R$ or $S$ vanishes is needed.
+
+Thus the construction uses one square radical, at most two cube radicals, and
+the square radical used to construct $\omega$.  The $p\ne0$ branch needs only
+one independently chosen cube root because the other is defined by division;
+the $p=0$ branch uses two cube-root witnesses but contains no division by a
+possibly zero quantity.
+
+\subsection{The familiar displayed formula}
+
+With a compatible choice of cube roots, the three roots may be written
+\[
+ x_k=-\frac{b}{3a}
+ +\omega^k\sqrt[3]{-\frac q2+\sqrt\Delta}
+ +\omega^{-k}\sqrt[3]{-\frac q2-\sqrt\Delta},
+ \qquad k=0,1,2,
+ \tag{C12}\label{eq:classical-cardano}
+\]
+where the two cube radicals are constrained so that their product is $-p/3$.
+Equation~\eqref{eq:v-defined} is a branch-safe implementation of that
+constraint when $p\ne0$; the $p=0$ branch above removes the apparent pole.
+
+\subsection{Constructive exhaustiveness}
+
+If $g(y)=0$, equation~\eqref{eq:cardano-factorization} gives
+\[
+ (y-r_0)(y-r_1)(y-r_2)=0.
+\]
+In a coded field, test $y-r_0=0$.  If false, cancel its explicit inverse and
+test $y-r_1=0$; if that is false, cancellation gives $y-r_2=0$.  This is a
+finite decision tree, not an application of excluded middle to an arbitrary
+proposition.  The same argument after translation proves that every root of
+$f$ occurs in~\eqref{eq:cardano-original-roots}.
+
+\subsection{Primitive-recursive verification}
+
+The certificate checker expands the right-hand side of
+\eqref{eq:cardano-factorization} and reduces it by the three relations
+\[
+ \omega^2+\omega+1=0,
+ \qquad
+ 3uv+p=0,
+ \qquad
+ u^3+v^3+q=0.
+\]
+Because the degrees and number of variables are fixed, even a naive sparse
+normalizer is primitive recursive.  The supplied verification script computes
+a Groebner normal form only as an independent convenience check; the formal
+iPRA proof needs merely a fixed sequence of ring rewrites, exactly as the
+existing Lean theorem \code{cardano_factorization} does.  ProveIt's
+\code{cubic_eq_zero_iff} already packages the semantic soundness and
+exhaustiveness statement over a characteristic-zero field.
