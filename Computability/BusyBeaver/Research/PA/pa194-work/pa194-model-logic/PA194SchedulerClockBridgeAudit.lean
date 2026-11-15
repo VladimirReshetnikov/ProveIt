@@ -1,0 +1,3 @@
+import PA194SchedulerClockBridge
+#print axioms PA194FullSepIPRA.schedulerToPhysical_of_packedClock
+#print axioms PA194FullSepIPRA.physical_nonhalt_consistency_of_packedClock
