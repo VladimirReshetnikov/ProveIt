@@ -1,0 +1,9 @@
+# Site-28 state-7 rewind to the site-29 header
+
+`PA194Site28FinishReturn.finishReturn` starts at state 7 with the exact left half produced after the seven-block site-28 carry and an arbitrary odd right-tape base. It rewinds the seven physical blocks, the selected incremented block, the preceding block, and the header runs, then follows the controller back to state 24. The result has the actual source-program path 29 and an explicit file expression in terms of `returnCode 7`; every model-valued register and the right-tape base are arbitrary. The theorem displays each nested stepper clock.
+
+`PA194Site28ReturnSelected.returnSelected` factors the three selected/header rewind scans with an arbitrary model right-tape base. `PA194Site28ReturnHeader.headerTo24` handles the state-7 controller, and `PA194Path29Header.path29` checks the actual nine-bit path `100010110`. `PA194Site28HeaderTo29.headerTo29` identifies the controller's numeric result with that path and a zero run of length `k+1`. `marked_eq` identifies the saved left half with the generic coded carry representation; `initialMarkOdd` proves the necessary parity condition.
+
+`check-site28-finish-return.sh` rebuilds the five modules against the retained site-27 baseline and four documented site-28 stages. It pins direct imported objects and sources, verifies all inputs unchanged during compilation, rejects overlapping machine objects and machine-specific fallback roots, and checks target axiom reports for `sorryAx`. Invoke with `REPO SITE27_BASELINE SITE28_STAGE CODE_STAGE ROUND_STAGE SEED_STAGE PROJECT_FOUNDATION PACKAGE_FOUNDATION SOURCE_DIR NEW_OUTPUT`. Prior stages and general foundations must independently be reproduced or trusted.
+
+This is a physical control-return theorem. The displayed `returnCode` output is not yet identified with the complete updated source-file encoding, and this stage alone is not a native iPRA proof or either consistency implication.
