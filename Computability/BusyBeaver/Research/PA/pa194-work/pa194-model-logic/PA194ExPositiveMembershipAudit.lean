@@ -1,0 +1,17 @@
+import PA194ModelExMembership
+#print axioms PA194ModelLogic.targetExistsMembershipLeft
+#print axioms PA194ModelLogic.targetExistsMembershipRight
+#print axioms PA194ModelLogic.targetExistsMembershipDiagonal
+#print axioms PA194ModelLogic.substs1_membershipBoundLeft
+#print axioms PA194ModelLogic.substs1_membershipBoundRight
+#print axioms PA194ModelLogic.substs1_membershipBoundDiagonal
+#print axioms PA194ModelLogic.fixedTranslation_membershipBoundLeft
+#print axioms PA194ModelLogic.fixedTranslation_membershipBoundRight
+#print axioms PA194ModelLogic.fixedTranslation_membershipBoundDiagonal
+#print axioms PA194ModelLogic.fixedTranslation_membershipFree
+#print axioms PA194ModelLogic.sourceClosedTerm_is_fvar
+#print axioms PA194ModelLogic.sourceSemitermOne_cases
+#print axioms PA194ModelLogic.simRuleExs_membershipBoundLeft_term
+#print axioms PA194ModelLogic.simRuleExs_membershipBoundRight_term
+#print axioms PA194ModelLogic.simRuleExs_membershipBoundDiagonal_term
+#print axioms PA194ModelLogic.simRuleExs_positiveMembershipAtom
