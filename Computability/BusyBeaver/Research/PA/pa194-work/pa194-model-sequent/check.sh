@@ -19,10 +19,10 @@ set -euo pipefail
 lean --version | grep -q "Lean (version 4\.32\.0"
 export LEAN_PATH="$CONPA_EXTRA${LEAN_PATH:-}"
 d=Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-sequent
-for m in ConPASequent ConPASetSequent; do
+for m in ConPASequent ConPASetSequent ConPADerivation; do
   lean -M6000 -j1 $d/$m.lean -o "$CONPA_OUT/$m.olean" | tee -a "$CONPA_OUT/axioms.log"
 done
 '
 if grep -q "sorryAx\|declaration uses" "$out/axioms.log"; then echo "sorry found" >&2; exit 1; fi
-grep -c "depends on axioms" "$out/axioms.log" | grep -qx 11
+grep -c "depends on axioms" "$out/axioms.log" | grep -qx 14
 echo "pa194-model-sequent: checked"
