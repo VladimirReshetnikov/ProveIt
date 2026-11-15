@@ -1,0 +1,12 @@
+import PA194ModelFreshInduction
+#print axioms PA194ModelLogic.generalVacuity_positiveAtom
+#print axioms PA194ModelLogic.generalVacuity_negativeAtom
+#print axioms PA194ModelLogic.generalVacuity_and
+#print axioms PA194ModelLogic.generalVacuity_or
+#print axioms PA194ModelLogic.generalVacuity_all
+#print axioms PA194ModelLogic.generalVacuity_ex
+#print axioms PA194ModelLogic.depthGeneralVac_definable
+#print axioms PA194ModelLogic.depthEnvironment_enter
+#print axioms PA194ModelLogic.atomGeneralVacuity_bounded
+#print axioms PA194ModelLogic.generalVacuity_all_codes
+#print axioms PA194ModelLogic.negatedTranslation_vacuity_all_codes
