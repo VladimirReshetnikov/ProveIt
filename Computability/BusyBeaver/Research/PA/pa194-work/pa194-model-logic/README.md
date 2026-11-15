@@ -250,3 +250,6 @@ a reserve bound; the remaining compiler rules and admissibility remain open.
 The [sequent truth and weakening lemmas](SEQUENT-TRUTH.md) handle two source
 rules for model-valued finite sets; the general initial axiom and remaining
 rules still require additional translation facts.
+
+The [propositional compiler rules](SIM-PROPOSITIONAL.md) discharge the actual
+conjunction and disjunction Sim conclusions; other rules remain open.
