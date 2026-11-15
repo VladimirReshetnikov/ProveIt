@@ -1,0 +1,3 @@
+import PA194PAeqSupplierSentence
+#print axioms PA194PAeq.InductionReopen.isigma1_proves_axiom_supplier
+#print axioms PA194PAeq.InductionReopen.isigma1_proves_refutation_transport
