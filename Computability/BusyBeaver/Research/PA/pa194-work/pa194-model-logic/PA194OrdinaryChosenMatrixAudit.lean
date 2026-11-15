@@ -1,0 +1,7 @@
+import PA194OrdinaryNativeStandard
+#print axioms PA194OrdinaryNativeConsistency.ordinaryMatrix_open
+#print axioms PA194OrdinaryNativeConsistency.ordinaryMatrix_calibration
+#print axioms PA194OrdinaryNativeConsistency.ordinary_implies_PA_native
+#print axioms PA194OrdinaryNativeConsistency.ordinaryMatrix_standard
+#print axioms PA194OrdinaryNativeConsistency.eval_native
+#print axioms PA194OrdinaryNativeConsistency.nativeOrdinaryConsistency_standard
