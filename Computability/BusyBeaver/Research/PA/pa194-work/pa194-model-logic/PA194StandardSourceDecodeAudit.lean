@@ -1,0 +1,6 @@
+import PA194ModelStandardSourceDecode
+import PA194ModelQFTail
+#print axioms PA194ModelLogic.standard_sourceTerm_quote_surjective
+#print axioms PA194ModelLogic.standard_sourceRel_quote_surjective
+#print axioms PA194ModelLogic.standard_sourceNRel_quote_surjective
+#print axioms PA194ModelLogic.standard_sourceFormula_quote_surjective
