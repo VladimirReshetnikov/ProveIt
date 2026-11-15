@@ -234,3 +234,7 @@ dispatcher modules were rebuilt against a retained combined overlay.
 Their printed axiom reports were free of `sorryAx`. The
 overlay contains previously checked Foundation, project and standalone
 prerequisites; these were suffix checks, not empty-overlay replays.
+
+The [numerical target sequent instance](SEQUENT-INSTANCE.md) connects the actual
+fixed formula translation to nonstandard finite source sets; source proof-rule
+simulation and derivation induction remain open.
