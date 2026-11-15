@@ -11,3 +11,11 @@
 These are atomic field fragments plus local Boolean steps; they do not prove either universal field for arbitrary source formulas, nested quantifier renaming, full admissibility, a complete Sim, or a consistency implication. The retained-overlay checker rebuilds current upstream sequent/derivation sources and audits thirteen reports; it is not an empty-overlay build.
 
 Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-universal-atom.sh --out DIR` with matching retained prerequisites.
+
+This delta builds on the separately replayed free-variable/atomic-universal modules without changing their sources. `simRuleAll_wellScopedPositiveAtom` and `_wellScopedNegativeAtom` derive relation and term-scope premises from exactly `IsFormulaSet s` and membership of the quantified atom, then prove the concrete universal-rule target conclusion for that atomic body. `freshBridge_and` and `_or` lift the target eigenlabel-vacuity property through Boolean source constructors assuming both child properties; truth and falsum cases hold unconditionally.
+
+`simPushFree_stackBound` shows that every free-stack label at index below a model-valued B remains below the incremented base when a fresh eigenvariable is pushed, including nonstandard indices. `simPushFree_reserveSlack` shows the explicit reserve slack decreases by one. `simPopFree_push` proves that a defined model-valued pop reverses this push for every packed environment. Conditional on the separately stated exact shift-translation bridge, `simRuleShift_of_bridge` proves the concrete shift-rule target implication for environments in the image of push; both valid source atom polarities are unconditional instances of that bridge.
+
+These results neither prove quantified alpha-renaming, the full universal/shift fields, boundedness of all environments, a common Π₁ admissibility relation, a complete Sim, nor either consistency implication. The retained-overlay same-output checker recompiles current upstream sequent/derivation and local dependencies and audits twelve reports; it is not an empty-overlay build.
+
+Run `bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-model-logic/check-universal-extensions.sh --out DIR` with matching retained prerequisites.

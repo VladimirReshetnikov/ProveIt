@@ -1,0 +1,15 @@
+import PA194ModelFreshBoolean
+import PA194ModelFreeScoped
+import PA194ModelPushInvariants
+#print axioms PA194ModelLogic.freshBridge_and
+#print axioms PA194ModelLogic.freshBridge_or
+#print axioms PA194ModelLogic.freshBridge_verum
+#print axioms PA194ModelLogic.freshBridge_falsum
+#print axioms PA194ModelLogic.simRuleAll_wellScopedPositiveAtom
+#print axioms PA194ModelLogic.simRuleAll_wellScopedNegativeAtom
+#print axioms PA194ModelLogic.simPushFree_stackBound
+#print axioms PA194ModelLogic.simPushFree_reserveSlack
+#print axioms PA194ModelLogic.simPopFree_push
+#print axioms PA194ModelLogic.simRuleShift_of_bridge
+#print axioms PA194ModelLogic.simRuleShift_positiveAtom
+#print axioms PA194ModelLogic.simRuleShift_negativeAtom
