@@ -62,6 +62,7 @@ formula of arity zero and `trBody` of a formula under one binder, with no size c
 | `PA194TrCompile` | `Interpretation U T`: for every internal axiom `φ` of `U` a guarded proof of `tr φ`; for every formula `p` of arity one and term `t` that is not a free variable, a guarded derivation of `{¬tr(p[t]), tr(∃p)}`; and `Provable T (∃x Dom(x))`. `tr_compile`: the induction over an internal derivation, all ten rules. `refutation_of_interpretation`: a refutation in `U` gives `Provable T ⊥`. |
 | `PA194Leibniz` | `TermFacts T`: three facts about terms (below). `leibniz`: for every internal formula `p` of arity one, term `t` and free variable `c`, a guarded derivation of `{¬tr(&c = t), ¬tr(p[t]), tr(p[&c])}`. Opening a quantifier of `p` shifts the free variables of `t`, so the induction is over the coded triples `(p, t, c)` with the formula complexity as measure (`measured_bounded_sigma1_order_induction`); the quantifier cases use `free_subst_qVec` (opening the quantified variable of `q[#0, t]` gives `(free1 q)[shift t]`). `witness_of_termFacts`: the `witness` field of `Interpretation`, by eliminating `c` against `tr(∃x. x = t)`. `interpretation_of_termFacts` assembles `Interpretation` from `TermFacts`, the axioms and the inhabitation of the domain. |
 | `PA194TermNames` | Three formulas of the arithmetic language in which the naming variable is quantified: `nameAll s s'` (every `x` with `x = s` has `x = s'`), `uniq s` (two names of `s` are equal), `exName s` (some `x` has `x = s`). `NameFacts T`: seventeen guarded facts, each about one function layer with arbitrary internal terms as arguments (below). `uniq_all`, `exName_all`: by induction over the term. `nameSubst`: names transfer along a substitution `a[u] ↦ a[w]` once they transfer from `u` to `w`, by induction over `a`. `termFacts_of_nameFacts`: `TermFacts T`. Because the naming variable is bound inside the formulas, no step of these inductions opens a quantifier: each is a cut. |
+| `PA194ValueBody` | `valBody s`: the source formula of arity one saying that its bound variable is a value of the term `s` of arity zero. `translate_lift`: under a packet whose free environment is the identity, the translation of such a term is its value formula at the result term of the packet. `tr_peq`: `tr(s = s')` is `∃v∃w (valBody s at v ∧ valBody s' at w ∧ orderIso(v, w))`. `valBody_fvar`, `valBody_zero`, `valBody_succ`, `valBody_add`, `valBody_mul`, `valBody_shift`. These identities between codes prepare the proofs of `NameFacts`, in which the value formulas of the arguments are parameters; no field of `NameFacts` is proved. |
 
 All statements are for an arbitrary model `V` of `𝗜𝚺₁`, arbitrary `Δ₁` theories `U` and `T`
 of the two languages, and internally valid codes that may be nonstandard.
@@ -109,10 +110,10 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/chec
 
 runs [`check_bridge.py`](../pa194-model-fairness/check_bridge.py) with each module as the top
 module, passing its arguments on (for example `--out DIR` to reuse compiled objects). On
-2026-11-15 the eight modules were compiled directly with `lean`, in dependency order, against
+2026-11-15 the nine modules were compiled directly with `lean`, in dependency order, against
 objects of the standalone modules they import (the import closure of
 `PA194ConditionalRefutation` and `PA194OrderIsoRew`, compiled from the repository sources at
-`34c4c35edc`). The thirty-four axiom reports are `[propext, Classical.choice, Quot.sound]`.
+`34c4c35edc`). The forty axiom reports are `[propext, Classical.choice, Quot.sound]`.
 The script itself has not been run.
 
 Two incremental replays against the repository sources were made for an earlier state of this
@@ -132,7 +133,7 @@ bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/chec
 bash Computability/BusyBeaver/Research/PA/pa194-work/pa194-guarded-compiler/check-translate-ext.sh "$PWD" NEW_EMPTY_OUTPUT
 ```
 
-`check-incremental.sh` now lists the current eight modules with their report counts, because
+`check-incremental.sh` now lists the current nine modules with their report counts, because
 `PA194GuardedEndpoint` no longer exists. In that form it has not been run. It writes
 `PA194TranslateExt` into its output directory, so `check-translate-ext.sh` is only needed to
 replay that module alone.
