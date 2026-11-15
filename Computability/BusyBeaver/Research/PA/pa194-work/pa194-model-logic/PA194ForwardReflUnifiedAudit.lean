@@ -1,0 +1,8 @@
+import PA194ForwardReflContext
+#print axioms PA194TermDispatcher.atomicEquality_graph
+#print axioms PA194TermDispatcher.atomicEquality_valid
+#print axioms PA194ForwardTyped.formula
+#print axioms PA194ForwardReflProof.equalityAt
+#print axioms PA194ForwardReflProof.proof
+#print axioms PA194ForwardReflProof.contextProof
+#print axioms PA194ForwardReflProof.contextDerivation

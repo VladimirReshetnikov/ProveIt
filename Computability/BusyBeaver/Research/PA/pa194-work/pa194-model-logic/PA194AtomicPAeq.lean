@@ -1,43 +1,10 @@
 import PA194TermScope
+import PA194FoundationOrderIso
 set_option autoImplicit false
 set_option maxHeartbeats 5000000
 set_option linter.unusedSectionVars false
 set_option linter.unusedSimpArgs false
-namespace M6.PA.RelationalSource.PairGraph
-open LO LO.FirstOrder ND
-open Ordinal (Term Formula)
-def entryWitness {n : Nat} (a b p : Term n) : Formula n :=
-  ∃⁰ ∃⁰ (mem (Rew.bShift (Rew.bShift a)) (.bvar 1) ⋏
-    (mem (Rew.bShift (Rew.bShift b)) (.bvar 0) ⋏
-      kuratowski (Rew.bShift (Rew.bShift p)) (.bvar 1) (.bvar 0)))
-def graphEntries {n : Nat} (g a b : Term n) : Formula n :=
-  ∀⁰ sourceImply (mem (Rew.bShift g) (.bvar 0))
-    (entryWitness (Rew.bShift a) (Rew.bShift b) (.bvar 0))
-def graphTyped {n : Nat} (g a b : Term n) : Formula n :=
-  ∀⁰ ∀⁰ sourceImply (edge (Rew.bShift (Rew.bShift g)) (.bvar 1) (.bvar 0))
-    (mem (Rew.bShift (Rew.bShift a)) (.bvar 1) ⋏ mem (Rew.bShift (Rew.bShift b)) (.bvar 0))
-def graphLeftTotal {n : Nat} (g a : Term n) : Formula n :=
-  ∀⁰ sourceImply (mem (Rew.bShift a) (.bvar 0))
-    (∃⁰ edge (Rew.bShift (Rew.bShift g)) (.bvar 1) (.bvar 0))
-def graphRightTotal {n : Nat} (g b : Term n) : Formula n :=
-  ∀⁰ sourceImply (mem (Rew.bShift b) (.bvar 0))
-    (∃⁰ edge (Rew.bShift (Rew.bShift g)) (.bvar 0) (.bvar 1))
-def graphInjective {n : Nat} (g : Term n) : Formula n :=
-  ∀⁰ ∀⁰ ∀⁰ sourceImply
-    (edge (Rew.bShift (Rew.bShift (Rew.bShift g))) (.bvar 2) (.bvar 0) ⋏
-      edge (Rew.bShift (Rew.bShift (Rew.bShift g))) (.bvar 1) (.bvar 0))
-    (eq (.bvar 2) (.bvar 1))
-def graphOrder {n : Nat} (g : Term n) : Formula n :=
-  ∀⁰ ∀⁰ ∀⁰ ∀⁰ sourceImply
-    (edge (Rew.bShift (Rew.bShift (Rew.bShift (Rew.bShift g)))) (.bvar 3) (.bvar 1) ⋏
-      edge (Rew.bShift (Rew.bShift (Rew.bShift (Rew.bShift g)))) (.bvar 2) (.bvar 0))
-    (sourceIff (mem (.bvar 3) (.bvar 2)) (mem (.bvar 1) (.bvar 0)))
-def orderBijection {n : Nat} (g a b : Term n) : Formula n :=
-  graphEntries g a b ⋏ (graphTyped g a b ⋏ (graphLeftTotal g a ⋏
-    (graphRightTotal g b ⋏ (graphFunctional g ⋏ (graphInjective g ⋏ graphOrder g)))))
-def orderIso {n : Nat} (a b : Term n) : Formula n :=
-  ∃⁰ orderBijection (.bvar 0) (Rew.bShift a) (Rew.bShift b)
-end M6.PA.RelationalSource.PairGraph
+
 
 namespace PA194TermDispatcher
 open LO LO.FirstOrder LO.FirstOrder.Arithmetic LO.FirstOrder.Arithmetic.Bootstrapping
