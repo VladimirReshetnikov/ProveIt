@@ -1,0 +1,5 @@
+import PA194ModelBelowFreshInduction
+#print axioms PA194ModelLogic.allocatedBound_avoids_below
+#print axioms PA194ModelLogic.generalVacuity_below_all_codes
+#print axioms PA194ModelLogic.shiftedBase_vacuity
+#print axioms PA194ModelLogic.simRuleAllFresh_of_baseShift
