@@ -1,0 +1,1634 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,tabularx}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{calc,angles,quotes,arrows.meta}
+\usepackage{listings}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=MidnightBlue,
+  urlcolor=BrickRed,
+  citecolor=MidnightBlue,
+  pdftitle={Mollweide, tangent and power-of-a-point theorems in intuitionistic primitive recursive arithmetic},
+  pdfauthor={Prepared for Vladimir Reshetnikov}
+}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Constructive triangle and circle identities in iPRA}
+\fancyhead[R]{\small 15 November 2026}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{3em}
+\setlist{itemsep=3pt,topsep=5pt}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+  frame=single,rulecolor=\color{black!20},showstringspaces=false}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{construction}[theorem]{Construction}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{status}[theorem]{Formalization status}
+
+\newcommand{\ipra}{\mathsf{iPRA}}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\PR}{\mathrm{PR}}
+\newcommand{\Pow}{\operatorname{Pow}}
+\newcommand{\Reg}{\operatorname{Reg}}
+\newcommand{\Apart}{\operatorname{Apart}}
+\newcommand{\norm}[1]{\left\lVert #1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\ip}[2]{\left\langle #1,#2\right\rangle}
+\newcommand{\detm}[2]{\det\!\left(#1,#2\right)}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\half}{\tfrac12}
+\newcommand{\sq}[1]{#1^{2}}
+\newcommand{\cA}{c_A}
+\newcommand{\sA}{s_A}
+\newcommand{\cB}{c_B}
+\newcommand{\sB}{s_B}
+\newcommand{\cC}{c_C}
+\newcommand{\sC}{s_C}
+\newcommand{\cD}{c_D}
+\newcommand{\sD}{s_D}
+
+\title{\textbf{Mollweide's formula, the tangent laws,\\
+and power of a point in intuitionistic PRA}\\[6pt]
+\large Fully constructive algebraic proofs, exact polynomial certificates,\\
+and a Lean completion blueprint}
+\author{Prepared for Vladimir Reshetnikov}
+\date{15 November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove seven classical results in a form suitable for intuitionistic
+primitive recursive arithmetic: the two Mollweide formulas, the law of
+tangents, the law of cotangents, the tangent--secant theorem, the intersecting
+chords theorem, the intersecting secants theorem, and their common power-of-a-
+point theorem.  The ordinary quotient formulas are not taken as primitive.
+Their constructive content is first isolated as denominator-free polynomial
+equalities.  Division is introduced only after a positive or apartness witness
+has been supplied.
+
+The triangle part uses no analytic theory of radians.  If
+\(x=s-a\), \(y=s-b\), and \(z=s-c\), positive square-root witnesses define the
+half-angle pairs directly.  Four elementary product equations prove
+\(A/2+B/2+C/2=\pi/2\) algebraically; two product-to-sum identities then give
+both Mollweide equations and the tangent law.  The inradius is the explicitly
+constructed number \(r=K/s\), and the cotangent law reduces to
+\(r\cos(A/2)=(s-a)\sin(A/2)\).
+
+The circle part has a single polynomial core.  For a line
+\(P+tV\), its power is a quadratic
+\(p+2ht+qt^2\).  If two apart parameters \(u,w\) are roots, then
+\((w-u)(p-quw)=0\), so constructive cancellation gives \(p=quw\).  All three
+classical segment-product theorems are sign/order corollaries.  Tangency is the
+orthogonality specialization.
+
+We state precisely what these claims mean inside first-order \(\ipra\): a
+uniform finite theorem for natural-number codes, and a schema for every fixed
+tuple of primitive-recursive regular-name programs.  A 30-item exact SymPy
+check accompanies the paper, but is explicitly separated from formal proof.
+The supplied Lean files contain source-level ambient ring certificates, exact
+embedded-theory targets for ProveIt's \texttt{ConciseIPRA}, and a module-by-
+module route to complete internal formalization.  Lean was unavailable in the
+delivery environment, so no Lean compilation is claimed.
+\end{abstract}
+
+\section*{Results at a glance}
+For a nondegenerate triangle with sides \(a,b,c\), opposite angles
+\(A,B,C\), semiperimeter \(s\), and inradius \(r\), we derive
+\begin{align*}
+ \frac{a+b}{c}
+   &=\frac{\cos\frac{A-B}{2}}{\sin\frac C2},
+&\frac{a-b}{c}
+   &=\frac{\sin\frac{A-B}{2}}{\cos\frac C2},\\
+ \frac{a-b}{a+b}
+   &=\frac{\tan\frac{A-B}{2}}{\tan\frac{A+B}{2}},
+&\frac{\cot\frac A2}{s-a}
+   &=\frac{\cot\frac B2}{s-b}
+    =\frac{\cot\frac C2}{s-c}=\frac1r,\\
+ r^2&=\frac{(s-a)(s-b)(s-c)}s.
+\end{align*}
+For a circle with center \(O\) and squared radius \(\rho\),
+\[
+  \Pow(P)=\norm{P-O}^2-\rho
+\]
+is independent of the chosen secant.  It yields the three familiar forms
+\[
+ |PT|^2=|PA|\,|PB|,\qquad
+ |PA|\,|PD|=|PB|\,|PC|,\qquad
+ |AS|\,|SC|=|BS|\,|SD|.
+\]
+The report proves stronger signed and denominator-free statements first.
+
+\newpage
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\newpage
+
+\section{The constructive claim and its exact scope}
+\label{sec:scope}
+
+\subsection{Why the usual textbook wording is not yet an iPRA sentence}
+
+First-order \(\ipra\) has variables over natural numbers.  It does not have a
+primitive sort containing every real number, every angle, every line, or every
+circle.  Nor does it quantify over arbitrary functions \(\N\to\N\).  Thus the
+sentence ``for every real triangle'' must be replaced by an arithmetical
+statement about numerical codes and fixed primitive-recursive programs.
+
+There are two levels in this report.
+
+\begin{enumerate}
+\item \textbf{Uniform finite level.}  Integers, positive-denominator rationals,
+finite tuples, sparse polynomials, and finite certificates are coded by natural
+numbers.  Every construction is primitive recursive, and every displayed
+polynomial equality becomes a decidable equality of coded integers after
+clearing positive denominators.
+\item \textbf{Regular-name level.}  A particular represented scalar is supplied
+by a fixed primitive-recursive program producing rational approximations with a
+fixed modulus.  The theorem is a first-order schema: for each fixed tuple of
+such programs, \(\ipra\) proves the corresponding universally quantified
+formula over their ordinary numerical parameters and requested precision.
+\end{enumerate}
+
+This is not a weakening invented for the present problem.  It is the standard
+way to express constructive real computation in a first-order arithmetic.  It
+also matches the organization of ProveIt's existing triangle-formulas packet
+and its \texttt{ConciseIPRA} development.
+
+\subsection{The arithmetic theory}
+
+We use intuitionistic first-order logic with equality, defining equations for
+primitive-recursive functions, separation and injectivity of successor, and
+induction for quantifier-free formulas with numerical parameters.  Pairing,
+finite sequences, bounded search, signed integers, and rational arithmetic are
+definitional extensions by fixed primitive-recursive functions.
+
+The current \texttt{ConciseIPRA} repository presents a much smaller native
+calculus and proves it equivalent to ordinary \(\ipra\).  For readability, the
+human proof is written in ordinary iPRA language.  The final Lean step is to
+construct proofs in the repository's \texttt{PRAAx} presentation and transport
+them through the existing \texttt{pra\_iff\_native} theorem.  Transport does
+not replace the missing proof construction; it is only the last stage.
+
+\subsection{Coded rationals and legitimate finite case distinctions}
+
+A signed integer can be coded, for example, by
+\[
+  z\longmapsto
+  \begin{cases}
+    2z,&z\ge0,\\
+    -2z-1,&z<0.
+  \end{cases}
+\]
+A rational is a pair \((n,d)\) with signed numerator \(n\) and actual positive
+denominator \(d+1\).  Reduction to lowest terms is unnecessary.  Equality and
+order are decided by cross multiplication, because both denominators are
+positive.  All loops used below are bounded by an explicitly computed natural
+number.  A proof by cases on a rational comparison is therefore a proof by
+cases on a primitive-recursive Boolean, not excluded middle for an arbitrary
+formula.
+
+\subsection{Regular names}
+
+\begin{definition}[Regular dyadic name]
+A regular name is a fixed primitive-recursive function \(u:\N\to\Q\) satisfying
+\[
+  |u(n+1)-u(n)|\le 2^{-n}
+\]
+for all \(n\).  Two names are extensionally equal when, for every \(k\), their
+sufficiently accurate approximations differ by at most \(2^{-k}\).  Any of the
+usual equivalent fast-Cauchy conventions can be used; only the constants in the
+precision schedules change.
+\end{definition}
+
+Addition, subtraction, multiplication on bounded inputs, dot products,
+determinants, and fixed polynomials have primitive-recursive realizers with
+explicit moduli.  Bounds are stored in the input certificate.  No appeal to an
+abstract completeness theorem is needed.
+
+\subsection{Apartness, positivity, and division}
+
+The constructive replacement for ``nonzero'' is positive information.
+
+\begin{definition}[Apartness witness]
+A represented scalar \(u\) is apart from zero when the data include a natural
+number \(d\) and a proof that \(|u|\ge2^{-d}\).  It is positive when the data
+include \(u\ge2^{-d}\).
+\end{definition}
+
+An apartness witness yields a primitive-recursive reciprocal algorithm and a
+modulus for that algorithm.  We never infer such a witness from the negative
+statement \(\neg(u=0)\).  Every cancellation in this paper names the supplied
+apart factor.  This is the main logical difference between the constructive
+proof and a casual field calculation.
+
+\subsection{Positive square roots by bounded search}
+
+The only analytic-looking operation needed for the triangle identities is the
+positive square root.  It has a finitary realization.  For
+\(q=p/r\ge0\), \(r\ge1\), and precision \(k\), let \(S=2^k\), choose a simple
+bound \(J=(p+1)S\), and scan for the largest \(j\le J\) satisfying
+\[
+  rj^2\le pS^2.
+\]
+Set \(\rho_k(q)=j/S\).  The bounded scan is primitive recursive and satisfies
+\[
+ \rho_k(q)^2\le q<\bigl(\rho_k(q)+2^{-k}\bigr)^2.
+ \tag{1.1}\label{eq:root-bracket}
+\]
+The proof maintains the quantifier-free invariant that \(j\) is the last
+successful index.  Applied with an explicit precision schedule to a regular
+nonnegative name, this constructs a regular positive-root name.
+
+We use the following constructive uniqueness fact repeatedly.
+
+\begin{lemma}[Positive-root uniqueness]
+\label{lem:positive-root}
+In an ordered field, if \(u,v\ge0\) and \(u^2=v^2\), then \(u=v\).  In the
+coded-name interpretation, the same statement is proved with approximation
+bounds; no trichotomy for arbitrary reals is required.
+\end{lemma}
+
+\begin{proof}
+The factorization \((u-v)(u+v)=0\) is polynomial.  If \(u+v\) is apart from
+zero, cancel it.  If no such witness is available, the square equality and
+nonnegativity give the quantitative estimate
+\(|u-v|^2\le |u^2-v^2|\), after the usual rational interval refinement.  At
+precision \(k\), refine both names until their square intervals have width
+small enough to force \(|u-v|<2^{-k}\).  This is a bounded procedure.  In all
+applications below the quantities are in fact positive, so the simpler
+apartness cancellation branch applies.
+\end{proof}
+
+\subsection{The proof discipline}
+
+Every result below is organized into three layers.
+
+\begin{enumerate}
+\item A \emph{polynomial core}, valid over a commutative ring and checked by
+normalization.
+\item An \emph{ordered constructive corollary}, where signs and supplied
+apartness witnesses justify square-root uniqueness, cancellation, and division.
+\item An \emph{iPRA realization}, where all objects are codes or fixed
+primitive-recursive names and every loop uses quantifier-free induction.
+\end{enumerate}
+
+This separation makes the logical strength visible.  In particular, the
+quotient form is never silently substituted for the polynomial theorem.
+
+\section{Finite analytic geometry without analytic angles}
+\label{sec:geometry}
+
+\subsection{Vectors, length squares, and oriented area}
+
+For a scalar ring, write a point as \(P=(p_x,p_y)\), and define
+\[
+ \ip{U}{V}=u_xv_x+u_yv_y,
+ \qquad
+ \detm{U}{V}=u_xv_y-u_yv_x,
+ \qquad
+ \norm U^2=\ip U U.
+\]
+All three are fixed polynomials.  The identities
+\begin{align}
+ \norm{U-V}^2&=\norm U^2+\norm V^2-2\ip U V,
+ \tag{2.1}\label{eq:cos-poly}\\
+ \norm U^2\norm V^2&=\ip U V^2+\detm U V^2
+ \tag{2.2}\label{eq:gram}
+\end{align}
+are obtained by expansion.  In a coded rational plane they are decidable
+integer equalities after denominator clearing.
+
+For a positively oriented triangle \(ABC\), put
+\[
+ U=B-A,
+ V=C-A,
+ \qquad 2K=\detm U V>0.
+\]
+The side lengths opposite \(A,B,C\) are \(a,b,c\), so
+\[
+ a^2=\norm{V-U}^2,
+ b^2=\norm V^2,
+ c^2=\norm U^2.
+\]
+The determinant apartness witness is the constructive nondegeneracy datum.
+Reversing orientation replaces \(2K\) by its positive absolute-value name.
+
+\subsection{Geometric sine and cosine as unit-ray coordinates}
+
+The angle at \(A\) needs no radian measure.  Its geometric cosine and sine are
+specified by
+\[
+  \cos A=\frac{\ip U V}{bc},
+  \qquad
+  \sin A=\frac{2K}{bc}.
+\]
+The Gram identity proves \(\cos^2A+\sin^2A=1\).  The denominators are positive
+because the triangle certificate contains positive side witnesses.  This pair
+is enough for every formula in the report.
+
+A half-angle is represented similarly by a positive pair
+\((c_A,s_A)\), not by a real number \(A/2\).  We write the familiar notation
+only as a readable abbreviation:
+\[
+  c_A=\cos(A/2),
+ s_A=\sin(A/2).
+\]
+The defining equations are
+\begin{equation}
+\begin{gathered}
+ c_A^2+s_A^2=1,\qquad
+ c_A^2-s_A^2=\cos A,\qquad
+ 2s_Ac_A=\sin A,\\
+ c_A>0,\qquad s_A>0.
+\end{gathered}
+\tag{2.3}\label{eq:half-angle-characterization}
+\end{equation}
+Positive-root uniqueness makes this representation unambiguous.
+
+\section{A constructive half-angle certificate for a triangle}
+\label{sec:halfangle}
+
+\subsection{Semiperimeter excesses}
+
+Let \(a,b,c>0\) be the sides of a nondegenerate triangle and
+\(s=(a+b+c)/2\).  Constructively, strict triangle inequalities are represented
+by positive witnesses
+\[
+ x=s-a,
+ y=s-b,
+ z=s-c.
+ \tag{3.1}\label{eq:xyz}
+\]
+Equivalently,
+\[
+ a=y+z,
+ b=z+x,
+ c=x+y,
+ s=x+y+z.
+ \tag{3.2}\label{eq:sides-xyz}
+\]
+These are exact linear identities.  For a rational-coordinate triangle, the
+witnesses can be generated uniformly from coordinate bounds and a determinant
+apartness witness.  Indeed Heron's polynomial identity below gives
+\(K^2=sxyz\).  Compute a positive rational bound \(B\) with
+\(s,x,y,z\le B\).  If \(K\ge\delta>0\), then
+\[
+ \delta^2\le K^2=sxyz\le B^3x,
+ \qquad\text{so}\qquad
+ x\ge \frac{\delta^2}{B^3},
+\]
+with cyclic companions.  This argument uses only multiplication and rational
+order; it does not divide by \(y\) or \(z\) before their positivity has
+been established.  Thus noncollinearity supplies quantitative strictness
+rather than only a negated equality.
+
+\subsection{Heron's identity in the needed form}
+
+The coordinate identities \eqref{eq:cos-poly}--\eqref{eq:gram} give
+\[
+ 16K^2=2a^2b^2+2b^2c^2+2c^2a^2-a^4-b^4-c^4.
+ \tag{3.3}\label{eq:heron-symmetric}
+\]
+A ring expansion gives
+\[
+ (a+b+c)(-a+b+c)(a-b+c)(a+b-c)
+ =2a^2b^2+2b^2c^2+2c^2a^2-a^4-b^4-c^4.
+ \tag{3.4}\label{eq:heron-factor}
+\]
+Substituting \eqref{eq:xyz} into the four factors yields
+\[
+ 16K^2=(2s)(2x)(2y)(2z),
+ \qquad\text{hence}\qquad
+ K^2=sxyz.
+ \tag{3.5}\label{eq:heron-xyz}
+\]
+Everything through \eqref{eq:heron-xyz} is a polynomial certificate.  No
+square root has been extracted.
+
+\subsection{Definition of the half-angle components}
+
+Define the six positive components by their squares:
+\begin{align}
+ s_A^2&=\frac{yz}{bc}, & c_A^2&=\frac{sx}{bc},
+ \tag{3.6a}\label{eq:halfA}\\
+ s_B^2&=\frac{zx}{ca}, & c_B^2&=\frac{sy}{ca},
+ \tag{3.6b}\label{eq:halfB}\\
+ s_C^2&=\frac{xy}{ab}, & c_C^2&=\frac{sz}{ab}.
+ \tag{3.6c}\label{eq:halfC}
+\end{align}
+The positive square-root construction of Section~\ref{sec:scope} produces
+regular names for them.  The denominators are positive.
+
+\begin{lemma}[Unit equations]
+\label{lem:unit-equations}
+Each pair is a positive unit pair:
+\[
+ s_A^2+c_A^2=s_B^2+c_B^2=s_C^2+c_C^2=1.
+\]
+\end{lemma}
+
+\begin{proof}
+For the first pair, clear the positive denominator \(bc\).  The required
+numerator identity is
+\[
+ yz+sx=(z+x)(x+y)=bc,
+\]
+which follows by expansion using \(s=x+y+z\).  The other two are cyclic.
+\end{proof}
+
+\begin{lemma}[The pairs are geometric half-angles]
+\label{lem:geometric-halfangles}
+The pair \((c_A,s_A)\) satisfies \eqref{eq:half-angle-characterization} for the
+geometric angle at \(A\), and cyclically.
+\end{lemma}
+
+\begin{proof}
+First, by \eqref{eq:heron-xyz} and \eqref{eq:halfA},
+\[
+ (bc\,s_Ac_A)^2
+ =b^2c^2\frac{yz}{bc}\frac{sx}{bc}
+ =sxyz=K^2.
+\]
+Both sides are positive, so Lemma~\ref{lem:positive-root} gives
+\[
+ bc\,s_Ac_A=K,
+ \qquad 2s_Ac_A=\frac{2K}{bc}=\sin A.
+ \tag{3.7}\label{eq:half-sine}
+\]
+Next,
+\[
+ c_A^2-s_A^2=\frac{sx-yz}{bc}.
+\]
+A direct expansion gives
+\[
+ b^2+c^2-a^2=2(sx-yz),
+\]
+so the cosine-law polynomial \eqref{eq:cos-poly} gives
+\[
+ c_A^2-s_A^2=\frac{b^2+c^2-a^2}{2bc}=\cos A.
+\]
+Together with the unit equation and positivity, this is precisely the positive
+half-angle characterization.  The proofs for \(B,C\) are cyclic.
+\end{proof}
+
+\subsection{Four positive product equations}
+
+The key step is to establish the complementary relation among the three
+half-angles without invoking an analytic angle-addition theorem.
+
+\begin{lemma}[Positive product equations]
+\label{lem:four-products}
+The following equalities hold:
+\begin{align}
+ c\,s_Ac_B&=y c_C,
+ &c\,c_As_B&=x c_C,
+ \tag{3.8a}\label{eq:products-cos}\\
+ c\,c_Ac_B&=s s_C,
+ &c\,s_As_B&=z s_C.
+ \tag{3.8b}\label{eq:products-sin}
+\end{align}
+\end{lemma}
+
+\begin{proof}
+All quantities in \eqref{eq:products-cos}--\eqref{eq:products-sin} are
+positive.  It is therefore enough to compare squares.
+For the first equation, use \eqref{eq:halfA}, \eqref{eq:halfB}, and
+\eqref{eq:halfC}:
+\[
+ c^2s_A^2c_B^2
+ =c^2\frac{yz}{bc}\frac{sy}{ca}
+ =\frac{s y^2 z}{ab}
+ =y^2c_C^2.
+\]
+Positive-root uniqueness gives \(c s_Ac_B=y c_C\).  Similarly,
+\[
+ c^2c_A^2s_B^2=x^2c_C^2,
+\quad
+ c^2c_A^2c_B^2=s^2s_C^2,
+\quad
+ c^2s_A^2s_B^2=z^2s_C^2.
+\]
+Applying positive-root uniqueness to each proves the four equations.
+\end{proof}
+
+\begin{theorem}[Algebraic complement formula]
+\label{thm:complement}
+The half-angle pairs satisfy
+\begin{align}
+ c_C&=s_Ac_B+c_As_B,
+ \tag{3.9a}\label{eq:comp-cos}\\
+ s_C&=c_Ac_B-s_As_B.
+ \tag{3.9b}\label{eq:comp-sin}
+\end{align}
+Thus, in the conventional notation,
+\((A+B)/2=\pi/2-C/2\) at the level of sine/cosine coordinates.
+\end{theorem}
+
+\begin{proof}
+Add the two equations in \eqref{eq:products-cos}:
+\[
+ c(s_Ac_B+c_As_B)=(x+y)c_C=cc_C.
+\]
+The positive side \(c\) is apart from zero, so cancellation gives
+\eqref{eq:comp-cos}.  Subtract the two equations in
+\eqref{eq:products-sin}:
+\[
+ c(c_Ac_B-s_As_B)=(s-z)s_C=cs_C,
+\]
+because \(s-z=c\).  Cancel \(c\) to obtain \eqref{eq:comp-sin}.
+\end{proof}
+
+\subsection{A common sine-law scale}
+
+The proof of Lemma~\ref{lem:geometric-halfangles} and its cyclic companions
+show
+\[
+ bc\,s_Ac_A=ca\,s_Bc_B=ab\,s_Cc_C=K.
+ \tag{3.10}\label{eq:area-products}
+\]
+Let \(d>0\) be the constructively defined circumdiameter scale, specified
+without division by
+\[
+ 2Kd=abc.
+ \tag{3.11}\label{eq:d-scale}
+\]
+Since \(K\) is apart from zero, its reciprocal name exists.  Multiplying
+\eqref{eq:area-products} by the appropriate factor gives
+\begin{align}
+ a&=2d s_Ac_A,
+ &b&=2d s_Bc_B,
+ &c&=2d s_Cc_C.
+ \tag{3.12}\label{eq:side-halfangle}
+\end{align}
+This is the extended sine law expressed in half-angle coordinates.  It is the
+only scale relation needed for Mollweide's formulas.
+
+\section{Mollweide's two formulas}
+\label{sec:mollweide}
+
+Define the signed half-difference pair
+\begin{align}
+ s_D&=s_Ac_B-c_As_B,
+ \tag{4.1a}\label{eq:sD}\\
+ c_D&=c_Ac_B+s_As_B.
+ \tag{4.1b}\label{eq:cD}
+\end{align}
+In conventional notation, \(D=(A-B)/2\), so \(s_D=\sin D\) and
+\(c_D=\cos D\).  This is not an appeal to an analytic trigonometric library:
+\eqref{eq:sD}--\eqref{eq:cD} are the definitions of the pair.  Ring expansion
+and the unit equations show \(s_D^2+c_D^2=1\).  Moreover \(c_D>0\), because it
+is a sum of positive products.
+
+The following two ring identities are the entire algebraic engine:
+\begin{align}
+ (s_Ac_B+c_As_B)(c_Ac_B+s_As_B)
+ &=s_Ac_A+s_Bc_B,
+ \tag{4.2}\label{eq:prod-sum}\\
+ (c_Ac_B-s_As_B)(s_Ac_B-c_As_B)
+ &=s_Ac_A-s_Bc_B.
+ \tag{4.3}\label{eq:prod-diff}
+\end{align}
+For example, expanding the left side of \eqref{eq:prod-sum} and grouping gives
+\[
+ s_Ac_A(c_B^2+s_B^2)+s_Bc_B(s_A^2+c_A^2),
+\]
+which is the right side.  Equation \eqref{eq:prod-diff} is identical with the
+middle signs changed.
+
+\begin{theorem}[Denominator-free Mollweide formulas]
+\label{thm:mollweide-cross}
+For every certified nondegenerate triangle,
+\begin{align}
+ (a+b)s_C&=c c_D,
+ \tag{4.4}\label{eq:moll-sum-cross}\\
+ (a-b)c_C&=c s_D.
+ \tag{4.5}\label{eq:moll-diff-cross}
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Using \eqref{eq:side-halfangle}, \eqref{eq:prod-sum}, and
+\eqref{eq:comp-cos},
+\begin{align*}
+ a+b
+ &=2d(s_Ac_A+s_Bc_B)\\
+ &=2d(s_Ac_B+c_As_B)(c_Ac_B+s_As_B)\\
+ &=2d c_Cc_D.
+\end{align*}
+Multiplying by \(s_C\), and using \(c=2d s_Cc_C\), gives
+\((a+b)s_C=cc_D\).
+
+Similarly, by \eqref{eq:prod-diff} and \eqref{eq:comp-sin},
+\begin{align*}
+ a-b
+ &=2d(s_Ac_A-s_Bc_B)\\
+ &=2d(c_Ac_B-s_As_B)(s_Ac_B-c_As_B)\\
+ &=2d s_Cs_D.
+\end{align*}
+Multiplying by \(c_C\) and again using \(c=2d s_Cc_C\) gives
+\((a-b)c_C=cs_D\).  No division has occurred.
+\end{proof}
+
+\begin{corollary}[Mollweide's formulas]
+\label{cor:mollweide}
+With the explicit positive denominator witnesses supplied by the triangle
+certificate,
+\[
+ \frac{a+b}{c}=\frac{c_D}{s_C}
+ =\frac{\cos\frac{A-B}{2}}{\sin\frac C2},
+ \qquad
+ \frac{a-b}{c}=\frac{s_D}{c_C}
+ =\frac{\sin\frac{A-B}{2}}{\cos\frac C2}.
+ \tag{4.6}\label{eq:mollweide-quotient}
+\]
+\end{corollary}
+
+\begin{proof}
+The quantities \(c,s_C,c_C\) are positive and hence apart from zero.  Divide
+\eqref{eq:moll-sum-cross} by \(cs_C\), and divide
+\eqref{eq:moll-diff-cross} by \(cc_C\).  Constructively, each division is the
+application of the reciprocal program attached to the recorded apartness
+witness.
+\end{proof}
+
+\begin{remark}
+The denominator-free theorem remains meaningful at boundary configurations
+where a quotient notation would fail.  The quoted textbook theorem is the
+nondegenerate positive corollary, not the primitive statement.
+\end{remark}
+
+\section{The law of tangents}
+\label{sec:tangents}
+
+The law of tangents is usually obtained by dividing the two Mollweide
+formulas.  We retain the cross-multiplied statement as the primary theorem.
+
+\begin{theorem}[Denominator-free law of tangents]
+\label{thm:tangent-cross}
+With \(s_D,c_D\) as in \eqref{eq:sD}--\eqref{eq:cD},
+\[
+ (a-b)c_Dc_C=(a+b)s_Ds_C.
+ \tag{5.1}\label{eq:tangent-cross}
+\]
+\end{theorem}
+
+\begin{proof}
+Multiply \eqref{eq:moll-diff-cross} by \(c_D\) and
+\eqref{eq:moll-sum-cross} by \(s_D\).  Both right sides become
+\(cs_Dc_D\), so the left sides are equal.  This is a ring derivation from the
+two Mollweide certificates.
+\end{proof}
+
+\begin{corollary}[Law of tangents]
+\label{cor:tangent-law}
+For a nondegenerate triangle,
+\[
+ \frac{a-b}{a+b}
+ =\frac{\tan\frac{A-B}{2}}{\tan\frac{A+B}{2}}.
+ \tag{5.2}\label{eq:tangent-law}
+\]
+\end{corollary}
+
+\begin{proof}
+The complement equations \eqref{eq:comp-cos}--\eqref{eq:comp-sin} say that
+\[
+ \tan\frac{A+B}{2}=\frac{c_C}{s_C}.
+\]
+The half-difference definition gives
+\(\tan((A-B)/2)=s_D/c_D\).  Therefore the right side of
+\eqref{eq:tangent-law} is
+\[
+ \frac{s_D/c_D}{c_C/s_C}=\frac{s_Ds_C}{c_Dc_C}.
+\]
+The denominator factors \(a+b,c_D,c_C\) are positive.  Dividing
+\eqref{eq:tangent-cross} by their product yields the result.  Notice that
+\(s_D\) may be negative; no positivity of the numerator is needed.
+\end{proof}
+
+\section{The incenter and the law of cotangents}
+\label{sec:cotangents}
+
+\subsection{Constructing the incenter}
+
+Let \(A,B,C\) be a positively oriented coordinate triangle and let
+\(a,b,c\) be the opposite side lengths.  Define
+\[
+ I=\frac{aA+bB+cC}{a+b+c},
+ \qquad
+ r=\frac Ks,
+ \tag{6.1}\label{eq:incenter}
+\]
+or, denominator-free,
+\[
+ (a+b+c)I=aA+bB+cC,
+ \qquad rs=K.
+ \tag{6.2}\label{eq:incenter-cross}
+\]
+The denominator \(a+b+c=2s\) is positive.
+
+\begin{lemma}[Equal signed distances]
+\label{lem:incenter-distance}
+The point \(I\) has perpendicular distance \(r\) from each side line.  Hence it
+is the incenter and \(r\) is the inradius.
+\end{lemma}
+
+\begin{proof}
+Consider the side \(BC\).  Its length is \(a\).  Determinant linearity and
+\eqref{eq:incenter-cross} give
+\begin{align*}
+ (a+b+c)\detm{C-B}{I-B}
+ &=\detm{C-B}{a(A-B)+c(C-B)}\\
+ &=a\detm{C-B}{A-B}\\
+ &=2aK,
+\end{align*}
+with the sign chosen by the orientation.  Divide by the positive
+\((a+b+c)a=2sa\): the signed distance is \(K/s=r\).  The computations for
+\(CA\) and \(AB\) are cyclic.  All divisions are by stored positive side and
+perimeter witnesses.  Equivalently, the same conclusion can be recorded with
+all denominators cleared.
+\end{proof}
+
+\subsection{The basic cotangent equation}
+
+\begin{lemma}[Half-angle/inradius equation]
+\label{lem:cot-basic}
+With \(x=s-a\), \(y=s-b\), \(z=s-c\),
+\[
+ r c_A=x s_A,
+ \qquad
+ r c_B=y s_B,
+ \qquad
+ r c_C=z s_C.
+ \tag{6.3}\label{eq:cot-basic}
+\]
+\end{lemma}
+
+\begin{proof}
+We prove the first equation by comparing positive squares.  From
+\(r=K/s\), \eqref{eq:heron-xyz}, and \eqref{eq:halfA},
+\begin{align*}
+ r^2c_A^2
+ &=\frac{K^2}{s^2}\frac{sx}{bc}
+ =\frac{sxyz}{s^2}\frac{sx}{bc}
+ =x^2\frac{yz}{bc}
+ =x^2s_A^2.
+\end{align*}
+Both \(rc_A\) and \(xs_A\) are positive, so positive-root uniqueness gives
+\(rc_A=xs_A\).  The other two equations are cyclic.
+\end{proof}
+
+The same equation has the familiar right-triangle interpretation.  Drop a
+perpendicular from the incenter to either side adjacent to \(A\).  Its length
+is \(r\), while the tangent segment from \(A\) has length \(x=s-a\).  The
+angle at \(A\) is bisected, so the right triangle gives
+\(\tan(A/2)=r/x\).  Lemma~\ref{lem:cot-basic} is the denominator-free algebraic
+form of exactly that statement, and therefore avoids depending on the tangent-
+length construction.
+
+\begin{theorem}[Law of cotangents]
+\label{thm:cotangent-law}
+For a certified nondegenerate triangle,
+\[
+ \frac{\cot(A/2)}{s-a}
+ =\frac{\cot(B/2)}{s-b}
+ =\frac{\cot(C/2)}{s-c}
+ =\frac1r.
+ \tag{6.4}\label{eq:cotangent-law}
+\]
+\end{theorem}
+
+\begin{proof}
+From the first equation of \eqref{eq:cot-basic},
+\[
+ r c_A=x s_A.
+\]
+Every factor \(r,x,s_A\) is positive and apart from zero.  Divide by
+\(rxs_A\):
+\[
+ \frac{c_A/s_A}{x}=\frac1r.
+\]
+Since \(x=s-a\) and \(c_A/s_A=\cot(A/2)\), this is the first equality in
+\eqref{eq:cotangent-law}.  The cyclic equations give the other two.
+\end{proof}
+
+\begin{corollary}[Inradius formula]
+\label{cor:inradius}
+\[
+ r^2=\frac{(s-a)(s-b)(s-c)}s.
+ \tag{6.5}\label{eq:inradius-formula}
+\]
+\end{corollary}
+
+\begin{proof}
+The denominator-free equations are \(rs=K\) and \(K^2=sxyz\).  Squaring the
+first gives \(r^2s^2=K^2=sxyz\).  The semiperimeter \(s\) is positive, so
+cancel it:
+\[
+ r^2s=xyz.
+\]
+Substitute \(x=s-a\), \(y=s-b\), \(z=s-c\), and divide by the positive \(s\).
+\end{proof}
+
+\begin{remark}[An independent polynomial certificate]
+The accompanying checker also verifies a division-free certificate deriving
+\((r^2s-xyz)s_As_Bs_C=0\) from the three equations
+\(rc_A=xs_A\), \(rc_B=ys_B\), \(rc_C=zs_C\), the equation
+\(s=x+y+z\), and the expanded relation
+\(\cos((A+B+C)/2)=0\).  This redundant route is useful for formalization
+because it tests the half-angle algebra independently of Heron's shortcut.
+\end{remark}
+
+\section{Power of a point: one polynomial theorem}
+\label{sec:power}
+
+\subsection{Circle and line charts}
+
+A circle is represented by a center \(O=(o_x,o_y)\) and a nonnegative squared
+radius \(\rho\).  No square root is needed.  Define
+\[
+ \Pow(P)=\norm{P-O}^2-\rho.
+ \tag{7.1}\label{eq:power-def}
+\]
+A line through \(P\) is represented by a direction vector \(V\) with
+\(q=\norm V^2>0\):
+\[
+ L(t)=P+tV.
+ \tag{7.2}\label{eq:line-chart}
+\]
+The direction apartness witness rules out the zero vector.  Parameter
+products become actual directed-length products after multiplication by
+\(q\), since the directed physical coordinate is \(t\sqrt q\).
+
+Put
+\[
+ p=\Pow(P),
+ \qquad
+ h=\ip{P-O}{V},
+ \qquad
+ q=\norm V^2.
+ \tag{7.3}\label{eq:phq}
+\]
+
+\begin{lemma}[Line-power expansion]
+\label{lem:line-power}
+For every scalar parameter \(t\),
+\[
+ \Pow(L(t))=p+2ht+qt^2.
+ \tag{7.4}\label{eq:line-power}
+\]
+\end{lemma}
+
+\begin{proof}
+Expand
+\[
+ \norm{(P-O)+tV}^2
+ =\norm{P-O}^2+2t\ip{P-O}{V}+t^2\norm V^2
+\]
+after subtracting \(\rho\).  This is a fixed polynomial identity over every
+commutative ring.
+\end{proof}
+
+\subsection{Two distinct intersections}
+
+Suppose the line meets the circle at the parameters \(u,w\):
+\[
+ f(u)=p+2hu+qu^2=0,
+ \qquad
+ f(w)=p+2hw+qw^2=0.
+ \tag{7.5}\label{eq:two-roots}
+\]
+The constructive hypothesis that the intersections are distinct is an
+apartness witness for \(w-u\).
+
+\begin{lemma}[Secant factor identity]
+\label{lem:secant-factor}
+\[
+ w f(u)-u f(w)=(w-u)(p-quw).
+ \tag{7.6}\label{eq:secant-factor}
+\]
+\end{lemma}
+
+\begin{proof}
+Expand the left side.  The terms \(2huw\) cancel, leaving
+\[
+ wp-up+q(wu^2-uw^2)
+ =(w-u)p-quw(w-u).
+\]
+Factor \(w-u\).  The calculation is valid over a commutative ring.
+\end{proof}
+
+\begin{theorem}[Signed power-of-a-point theorem]
+\label{thm:signed-power}
+If \(u,w\) are apart roots of the line-circle equation, then
+\[
+ \Pow(P)=q u w.
+ \tag{7.7}\label{eq:signed-power}
+\]
+Consequently the product of the two directed physical distances from \(P\) to
+the intersections is independent of the chosen line and equals
+\(\Pow(P)\).
+\end{theorem}
+
+\begin{proof}
+Substitute \eqref{eq:two-roots} into \eqref{eq:secant-factor}:
+\[
+ 0=(w-u)(p-quw).
+\]
+The supplied root-separation witness says \(w-u\) is apart from zero.  Cancel
+that factor to obtain \(p=quw\).  Since a directed physical coordinate along
+\(V\) is \(t\sqrt q\), the product of the two directed distances is
+\(u\sqrt q\,w\sqrt q=quw=p\).  No choice of a unit direction is required.
+\end{proof}
+
+\begin{remark}[Why the asymmetric combination is useful]
+The more familiar Vieta argument says that the product of the roots of
+\(qt^2+2ht+p\) is \(p/q\).  Formula \eqref{eq:secant-factor} is better in
+\(\ipra\): it avoids dividing by \(q\), and it reveals the exact factor
+\(w-u\) whose apartness licenses cancellation.
+\end{remark}
+
+\subsection{Tangency}
+
+Let \(T\) be a point on the circle and let \(V\) be a tangent direction:
+\[
+ \norm{T-O}^2=\rho,
+ \qquad
+ \ip{T-O}{V}=0.
+ \tag{7.8}\label{eq:tangent-data}
+\]
+Write \(P=T-tV\), so the tangent segment from \(P\) to \(T\) has squared
+length \(qt^2\).
+
+\begin{lemma}[Tangent power]
+\label{lem:tangent-power}
+Under \eqref{eq:tangent-data},
+\[
+ \Pow(P)=qt^2=\norm{P-T}^2.
+ \tag{7.9}\label{eq:tangent-power}
+\]
+\end{lemma}
+
+\begin{proof}
+Expand:
+\begin{align*}
+ \Pow(T-tV)
+ &=\norm{(T-O)-tV}^2-\rho\\
+ &=\bigl(\norm{T-O}^2-\rho\bigr)
+   -2t\ip{T-O}{V}+t^2\norm V^2\\
+ &=qt^2.
+\end{align*}
+This is again a polynomial identity followed by substitution of the circle and
+orthogonality equations.
+\end{proof}
+
+There is also a constructive uniqueness statement.  Along the tangent line,
+at parameter displacement \(\lambda-t\) from \(T\), the circle residual is
+\[
+ \Pow\bigl(T+(\lambda-t)V\bigr)=q(\lambda-t)^2.
+ \tag{7.10}\label{eq:tangent-residual}
+\]
+Because \(q>0\), the residual vanishes only when \(\lambda=t\).  Thus the
+algebraic tangent condition really produces a single intersection, with no
+classical discriminant argument.
+
+\section{The three classical segment-product theorems}
+\label{sec:specializations}
+
+The ordinary theorems use unsigned lengths.  Their constructive proofs are
+short once the signed theorem is available, but the signs must be stated.
+
+\subsection{Intersecting secants}
+
+Let an external point \(P\) lie on two secant lines.  Orient each line from
+\(P\) toward its circle intersections.  Let the first line meet the circle at
+parameters \(0<u<w\), and the second at \(0<v<z\).  Then
+\[
+ |PA|=u\sqrt q,
+ |PD|=w\sqrt q,
+\]
+for the first chart, and similarly on the second.  The signed power theorem
+gives
+\[
+ |PA|\,|PD|=q uw=\Pow(P)=q'vz=|PB|\,|PC|.
+\]
+
+\begin{theorem}[Intersecting secants theorem]
+\label{thm:secants}
+For two secants \(AD\) and \(BC\) meeting outside a circle at \(P\),
+\[
+ |PA|\,|PD|=|PB|\,|PC|.
+ \tag{8.1}\label{eq:secants}
+\]
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:signed-power} to each line.  The order certificate that
+both roots on each oriented line are positive converts the signed product into
+the ordinary product of lengths.  Both products equal the same
+\(\Pow(P)>0\).
+\end{proof}
+
+\subsection{Intersecting chords}
+
+Let \(S\) lie inside the circle.  On a line through \(S\), choose the direction
+so that the two intersection parameters are \(-u<0<w\), with \(u,w>0\).
+Then
+\[
+ \Pow(S)=q(-u)w=-q uw<0,
+\]
+while the unsigned product of the two chord pieces is
+\[
+ |AS|\,|SC|=(u\sqrt q)(w\sqrt q)=quw=-\Pow(S).
+\]
+The same is true on every other chord through \(S\).
+
+\begin{theorem}[Intersecting chords theorem]
+\label{thm:chords}
+For chords \(AC\) and \(BD\) meeting inside a circle at \(S\),
+\[
+ |AS|\,|SC|=|BS|\,|SD|.
+ \tag{8.2}\label{eq:chords}
+\]
+\end{theorem}
+
+\begin{proof}
+Apply the signed power theorem to both chord lines.  Their signed products are
+\(\Pow(S)\).  The order certificate for an interior point says the two
+parameters on each line have opposite signs.  Negating each signed product
+therefore gives the corresponding product of positive segment lengths.  Both
+are \(-\Pow(S)\).
+\end{proof}
+
+\subsection{Tangent--secant theorem}
+
+Let \(P\) be outside the circle, \(PT\) a tangent, and a secant from \(P\)
+meet the circle at \(A,B\), ordered away from \(P\).  Lemma
+\ref{lem:tangent-power} and Theorem~\ref{thm:signed-power} give
+\[
+ |PT|^2=\Pow(P)=|PA|\,|PB|.
+\]
+
+\begin{theorem}[Tangent--secant theorem]
+\label{thm:tangent-secant}
+\[
+ |PT|^2=|PA|\,|PB|.
+ \tag{8.3}\label{eq:tangent-secant}
+\]
+\end{theorem}
+
+\begin{proof}
+The tangent branch identifies the left side with \(\Pow(P)\).  The external
+secant branch identifies the right side with the same power.  The only
+cancellations are those already justified in Theorem~\ref{thm:signed-power};
+the tangent proof itself uses no cancellation.
+\end{proof}
+
+\subsection{The unified power-of-a-point theorem}
+
+\begin{theorem}[Power of a point]
+\label{thm:power-final}
+For a circle \((O,\rho)\) and a certified point \(P\), the number
+\[
+ \Pow(P)=\norm{P-O}^2-\rho
+\]
+has the following constructive meanings.
+\begin{enumerate}
+\item For any line through \(P\) with two apart circle intersections, it is
+  the product of the two directed distances.
+\item For an external point and any secant, it is the positive product of the
+  two ordinary secant lengths.
+\item For an interior point and any chord through the point, its negative is
+  the product of the two chord-piece lengths.
+\item For an external tangent segment, it is the squared tangent length.
+\end{enumerate}
+All these values are line-independent because they equal the same polynomial
+\(\norm{P-O}^2-\rho\).
+\end{theorem}
+
+\begin{proof}
+Part 1 is Theorem~\ref{thm:signed-power}.  Parts 2 and 3 are its order/sign
+corollaries.  Part 4 is Lemma~\ref{lem:tangent-power}.  The statement of
+line-independence is literal equality with the definition \eqref{eq:power-def},
+not a separate compactness or continuity argument.
+\end{proof}
+
+\section{Exact first-order formulations in iPRA}
+\label{sec:ipra}
+
+\subsection{Finite certificate records}
+
+A finite triangle certificate contains natural-number codes for:
+\begin{itemize}
+\item rational bounds and precision data;
+\item side names \(a,b,c\), excess names \(x,y,z\), area name \(K\), and scale
+  name \(d\);
+\item the six positive half-angle component names;
+\item equations \eqref{eq:sides-xyz}, \eqref{eq:heron-xyz},
+  \eqref{eq:halfA}--\eqref{eq:halfC}, and \eqref{eq:d-scale};
+\item explicit lower bounds for every factor later inverted or cancelled.
+\end{itemize}
+A finite circle certificate contains codes for \(O,\rho,P,V\), root parameters,
+point-on-circle equations, order/sign data, and root-separation witnesses.
+Tangency additionally stores the orthogonality equation.
+
+The checker never asks whether an arbitrary represented real is zero.  It only
+verifies supplied rational inequalities and polynomial equations to requested
+precision.
+
+\subsection{A primitive-recursive polynomial checker}
+
+Represent a monomial by an integer coefficient and a fixed-length exponent
+vector.  Represent a sparse polynomial by a finite list of monomials.  The
+following operations are primitive recursive:
+\begin{enumerate}
+\item lexicographic comparison of exponent vectors;
+\item insertion into a sorted list;
+\item merging equal exponent vectors and deleting zero coefficients;
+\item addition, negation, multiplication, and fixed natural powers;
+\item evaluation at coded integers or rationals after denominator clearing.
+\end{enumerate}
+
+The normalizer's soundness is proved by quantifier-free induction on list
+length and on the bounded multiplication loops.  Each identity in this report
+is then a closed coefficient-list calculation.  The universal theorem says
+that whenever the input residuals vanish, the target residual vanishes.  For
+identities presented by explicit ideal certificates, the checker verifies
+\[
+ T=Q_1H_1+\cdots+Q_mH_m
+\]
+by normalization.  No Gr\"obner-basis algorithm is needed inside \(\ipra\);
+SymPy was used only to discover and independently audit some certificates.
+
+\subsection{The exact finite theorem schema}
+
+For each fixed certificate family, there is a primitive-recursive checker
+\(C(\bar n)\) whose output is zero exactly when all input equations and the
+claimed output equation are satisfied.  The internal theorem has the shape
+\[
+ \ipra\vdash\forall\bar n\,\bigl(C_{\mathrm{hyp}}(\bar n)=0
+ \to C_{\mathrm{concl}}(\bar n)=0\bigr).
+ \tag{9.1}\label{eq:finite-schema}
+\]
+All induction used in proving \eqref{eq:finite-schema} is on quantifier-free
+checker invariants.  Universal closure is applied after the checker proof.
+
+The main denominator-free outputs are:
+\begin{align*}
+ &(a+b)s_C-cc_D=0,\\
+ &(a-b)c_C-cs_D=0,\\
+ &(a-b)c_Dc_C-(a+b)s_Ds_C=0,\\
+ &rc_A-xs_A=rc_B-ys_B=rc_C-zs_C=0,\\
+ &\Pow(P+tV)-\bigl(p+2ht+qt^2\bigr)=0,\\
+ &w f(u)-u f(w)-(w-u)(p-quw)=0,\\
+ &\Pow(T-tV)-qt^2=0
+ \quad\text{under the circle and orthogonality residuals.}
+\end{align*}
+The quotient statements are separate corollaries whose hypotheses include the
+relevant apartness codes.
+
+\subsection{Regular-name lifting}
+
+Fix, externally, a finite tuple of primitive-recursive programs for all input
+names.  Their code is not quantified over inside \(\ipra\); the programs are
+compiled into the language as fixed function symbols or fixed \(\PR\) terms.
+The arithmetic theorem then quantifies only over ordinary parameters and
+precision.
+
+For every requested output precision \(k\), compute a larger input precision
+\(N(k,B,d)\) from the stored magnitude bound \(B\) and apartness exponent
+\(d\).  Evaluate all input names at \(N\), run the rational polynomial
+construction, and use the polynomial certificate plus the error-propagation
+bound to show the output error is at most \(2^{-k}\).  The schedule is
+primitive recursive because the degree and number of operations are fixed.
+
+This gives a first-order theorem such as
+\[
+ \forall\bar u\,\forall k\,
+ \bigl(\operatorname{TriangleCert}(\bar u)
+ \to \operatorname{Close}_k((a+b)s_C,cc_D)\bigr),
+ \tag{9.2}\label{eq:name-schema}
+\]
+and similarly for every other identity.  Here \(\operatorname{Close}_k\) is a
+coded rational inequality, not equality in a hidden second-order real sort.
+
+\subsection{Quantifier-free induction audit}
+
+The required induction instances are finite and explicit.
+
+\begin{longtable}{p{0.26\textwidth}p{0.65\textwidth}}
+\toprule
+Component & Quantifier-free invariant \\
+\midrule
+\endhead
+Pair/sequence coding & Projection equations and index bounds for a bounded
+scan. \\
+Rational arithmetic & Positive denominator and cross-product equations. \\
+Square-root mesh & Last successful index, its square below the target, and the
+next mesh point above it. \\
+Polynomial insertion & Sorted exponent list, coefficient sum preservation,
+and absence of duplicate adjacent monomials. \\
+Polynomial multiplication & Partial convolution equals the product of the
+processed prefixes. \\
+Regular-name operations & Integer inequalities bounding the numerator error at
+each fixed precision. \\
+Reciprocal & A rational interval excludes zero by the supplied apartness bound
+and shrinks under bounded refinement. \\
+Triangle construction & Finite conjunction of the certificate residuals and
+stored positivity bounds. \\
+Line-circle construction & The quadratic residual at each supplied parameter,
+plus its root-separation inequality. \\
+\bottomrule
+\end{longtable}
+
+No induction predicate quantifies over all later approximations.  A fixed
+precision is a numerical parameter, and the invariant is a decidable relation
+on finite codes.
+
+\section{Lean formalization architecture}
+\label{sec:lean}
+
+\subsection{What is supplied}
+
+The archive contains three Lean source files and a detailed completion plan.
+
+\begin{description}
+\item[\code{AlgebraicCore.lean}] Ambient Mathlib ring identities for the
+half-angle algebra, both Mollweide crosses, the tangent cross, an explicit
+inradius certificate, the line-power expansion, the secant factorization, and
+the tangent residual.
+\item[\code{ConstructiveCorollaries.lean}] Ambient ordered-field lemmas showing
+exactly which nonzero assumptions are needed for quotient statements and
+cancellation.
+\item[\code{ObjectTargets.lean}] The exact shape of the deeply embedded
+\texttt{PRAAx} targets and the final transport through
+\texttt{pra\_iff\_native}.
+\item[\code{IPRAFormalizationPlan.md}] A module-by-module route from natural-
+number codes through a primitive-recursive polynomial normalizer, regular
+names, triangle/circle certificates, object-language proofs, and native export.
+\end{description}
+
+The first two files deliberately separate ambient algebra from internal
+arithmetic.  A successful \texttt{ring} tactic invocation is evidence for a
+polynomial identity, but it is not itself a derivation in \(\ipra\).
+
+\subsection{Core ambient definitions}
+
+A minimal Mathlib-oriented layer needs only scalar coordinates:
+\begin{lstlisting}[language={}]
+def normSq (x y : R) : R := x^2 + y^2
+def dot (x y u v : R) : R := x*u + y*v
+
+def halfDiffSin (sA cA sB cB : R) : R := sA*cB - cA*sB
+def halfDiffCos (sA cA sB cB : R) : R := cA*cB + sA*sB
+\end{lstlisting}
+The polynomial theorems are stated over \code{[CommRing R]}.  Quotient and
+cancellation corollaries are stated over \code{[LinearOrderedField R]} with
+explicit hypotheses such as \code{c != 0}, \code{sC != 0}, and
+\code{w != u}.  This is a useful audit: every field operation in the textbook
+form is paired with its constructive premise.
+
+\subsection{Embedded target shape}
+
+The supplied \code{ObjectTargets.lean} follows the API pattern already used in
+ProveIt's triangle packet:
+\begin{lstlisting}[language={}]
+def checkerFormula {arity : Nat} (checkCode : PR arity) : Fm PTm arity :=
+  .eq (.app checkCode PTm.var) PTm.zero
+
+def closeAll : (arity : Nat) -> Fm PTm arity -> Fm PTm 0
+  | 0, phi => phi
+  | arity + 1, phi => closeAll arity (.all phi)
+
+def InternalTarget {arity : Nat} (checkCode : PR arity) : Prop :=
+  Prf PRAAx [] (closeAll arity (checkerFormula checkCode))
+\end{lstlisting}
+The completion obligation is to build the actual \code{PR} syntax trees for
+the checkers and construct proofs of these targets.  After that,
+\begin{lstlisting}[language={}]
+(pra_iff_native (Gamma := []) (phi := phi)).mp h
+\end{lstlisting}
+transports the theorem to the native concise calculus.
+
+\subsection{Clear path to completion}
+
+A complete formalization can proceed in the following order.
+
+\begin{enumerate}
+\item Reuse the existing signed-integer, rational, pairing, and primitive-
+recursive infrastructure from \texttt{ConciseIPRA} and the delivered triangle
+packet.
+\item Implement sparse polynomial syntax and a normalizer as concrete
+\code{PR} terms.  Prove soundness in \code{PRAAx} by quantifier-free induction.
+\item Compile the fixed identities in \code{AlgebraicCore.lean} into explicit
+coefficient-list certificates.  The supplied Python report gives a regression
+oracle, not the formal proof.
+\item Reuse or complete the bounded positive-square-root implementation from
+the triangle packet, and implement reciprocal from apartness.
+\item Define \code{TriangleCert}; prove the four positive product equations
+and then the Mollweide, tangent, and cotangent targets.
+\item Define \code{CircleCert} and \code{LineChart}; prove the quadratic
+expansion, factor identity, signed product theorem, tangent theorem, and the
+three sign/order specializations.
+\item Lift finite rational statements to fixed regular-name programs using
+explicit precision schedules.
+\item Construct the closed \code{Prf PRAAx} terms and transport them to
+\code{NPrf}.
+\end{enumerate}
+
+No step requires a new logical principle.  The remaining work is substantial
+proof engineering, but each obligation is finite and named.
+
+\begin{status}
+Neither \code{lean} nor \code{lake} was installed in the delivery environment.
+The Lean sources were therefore not compiled.  They contain no
+\code{sorry}, but syntax/type correctness has not been mechanically confirmed.
+No completed internal \code{Prf PRAAx} proof object is claimed.
+\end{status}
+
+\section{Executed exact checks and worked examples}
+\label{sec:verification}
+
+\subsection{Symbolic audit}
+
+The script \code{verification/check\_identities.py} performs 30 exact checks.
+It uses SymPy polynomial expansion, rational cancellation, and, for two
+Mollweide consequences, ideal reduction.  All numerical examples use Python's
+\code{fractions.Fraction}; no floating-point arithmetic occurs.  The captured
+result is
+\begin{quote}
+\code{ALL CERTIFICATES PASS (30 checks)}.
+\end{quote}
+The checks include:
+\begin{itemize}
+\item the semiperimeter substitution and all three half-angle unit numerators;
+\item the four positive-product square identities;
+\item the three area/half-angle products;
+\item both Mollweide crosses and the tangent cross;
+\item the cotangent right-triangle equations and an independent inradius
+certificate;
+\item the line-power expansion, secant factor identity, tangent decomposition,
+and tangent uniqueness residual;
+\item exact rational examples of tangent--secant and intersecting chords.
+\end{itemize}
+
+These computations are a development audit.  They are not substituted for the
+human proof or for the proposed \(\ipra\) proof objects.
+
+\subsection{Rational tangent--secant example}
+
+Take the circle \(x^2+y^2=25\) and the external point \(P=(13,0)\).  The point
+\[
+ T=\left(\frac{25}{13},\frac{60}{13}\right)
+\]
+lies on the circle.  The radius \(OT\) is perpendicular to \(PT\), and exact
+fraction arithmetic gives
+\[
+ |PT|^2=144=\Pow(P)=13^2-25.
+\]
+A rational secant through
+\[
+ A=(3,4),
+ \qquad
+ B=\left(\frac{17}{29},\frac{144}{29}\right)
+\]
+has chart direction \(V=A-P=(-10,4)\), so \(q=116\).  Its two root parameters
+are \(1\) and \(36/29\), whence
+\[
+ q\cdot1\cdot\frac{36}{29}=116\cdot\frac{36}{29}=144.
+\]
+Thus the tangent square and the secant product agree exactly.
+
+\subsection{Rational intersecting-chords example}
+
+On the same circle let \(S=(1,0)\).  One chord is the diameter along the
+\(x\)-axis, with pieces \(6\) and \(4\), product \(24\).  A second line passes
+through
+\[
+ C_1=(3,4),
+ \qquad
+ C_2=\left(-\frac75,-\frac{24}{5}\right).
+\]
+For the chart direction \(V=C_1-S=(2,4)\), \(q=20\), and the root-parameter
+product is \(-6/5\).  Hence
+\[
+ \Pow(S)=20\left(-\frac65\right)=-24.
+\]
+The unsigned product of the two pieces is \(-\Pow(S)=24\), equal to the
+diameter-chord product.
+
+\section{Logical audit and limitations}
+\label{sec:audit}
+
+\subsection{Principles not used}
+
+The proofs do not use:
+\begin{itemize}
+\item excluded middle for arbitrary formulas;
+\item choice or countable choice;
+\item a completed real-number object quantified over as a second-order domain;
+\item an unrestricted total evaluator for arbitrary primitive-recursive program
+codes;
+\item compactness, completeness of the reals, or an analytic theory of radians;
+\item division by a merely nonzero quantity without a positive apartness
+witness;
+\item cancellation of the two-root factor without a root-separation witness.
+\end{itemize}
+
+\subsection{What is assumed as constructive input}
+
+A nondegenerate triangle carries quantitative strictness: positive side,
+area, and semiperimeter-excess witnesses.  A secant with two distinct
+intersections carries root-separation data.  An external/interior
+specialization carries the finite order signs that identify the signed product
+with the corresponding unsigned product.  These are not additional classical
+axioms; they are the positive data hidden by ordinary textbook phrases such as
+``nondegenerate'', ``distinct'', ``outside'', and ``inside''.
+
+\subsection{What remains formalization work}
+
+The human mathematical argument is complete for the stated coded/certified
+constructive formulations.  The exact symbolic audit was executed.  The PDF
+was compiled from the supplied source.  The deeply embedded Lean proof in
+\texttt{ConciseIPRA} remains to be implemented: concrete \code{PR} checker
+codes, their \code{PRAAx} soundness derivations, regular-name lifting, and the
+final native transport.  The archive labels this boundary in every Lean file.
+
+\section{Further research questions}
+
+\begin{enumerate}
+\item Can the triangle half-angle certificate be reduced to fewer positive-root
+names by using only \((s_A,c_A)\), \((s_B,c_B)\), and deriving the third pair
+with a certified normalization step?
+\item What is the smallest standalone \texttt{ConciseIPRA} proof checker for
+the fixed polynomial certificates in this packet?
+\item Can the signed power theorem be generalized in the same checker to
+quadratic forms and spheres in arbitrary fixed dimension without increasing the
+logical layer?
+\item Can root separation for a rational line-circle intersection be generated
+uniformly from a nonzero discriminant witness, yielding an especially compact
+secant certificate?
+\item Is there a proof-friendly projective formulation in which the secant,
+chord, and tangent cases become one homogeneous determinant identity while
+retaining transparent constructive sign corollaries?
+\end{enumerate}
+
+\appendix
+
+\section{Certificate inventory}
+\label{app:certificates}
+
+The executed audit records the following checks.  Names match
+\code{verification/results.json}.
+
+\begin{longtable}{r p{0.74\textwidth}}
+\toprule
+No. & Certificate \\
+\midrule
+\endhead
+1--3 & \code{semiperimeter\_x}, \code{semiperimeter\_y},
+\code{semiperimeter\_z}. \\
+4--6 & The three half-angle unit numerators. \\
+7--10 & The four squared positive-product identities of
+Lemma~\ref{lem:four-products}. \\
+11--13 & The three area/half-angle product identities
+\(bc s_Ac_A=K\) and cyclic companions, checked after squaring. \\
+14--15 & The two denominator-free Mollweide identities. \\
+16--17 & Derivation and direct ideal check of the tangent cross. \\
+18--20 & The three cotangent right-triangle cross identities. \\
+21 & A full explicit polynomial certificate for the inradius formula. \\
+22 & The line-power expansion. \\
+23 & The secant factor identity. \\
+24 & Tangent power decomposition. \\
+25 & Tangent-line uniqueness residual. \\
+26--28 & Algebraic cores of intersecting secants, intersecting chords, and
+tangent--secant. \\
+29--30 & Exact rational tangent--secant and chord examples. \\
+\bottomrule
+\end{longtable}
+
+\section{A compact theorem interface for formalization}
+\label{app:interface}
+
+A Lean or proof-checker implementation can expose the following interface.
+
+\begin{description}
+\item[\code{TriangleCert}] Fields \(a,b,c,s,x,y,z,K,d\), six half-angle
+components, magnitude bounds, positivity witnesses, and all defining residuals.
+\item[\code{mollweideSumCross}] Returns
+\((a+b)s_C=cc_D\).
+\item[\code{mollweideDiffCross}] Returns
+\((a-b)c_C=cs_D\).
+\item[\code{tangentCross}] Returns
+\((a-b)c_Dc_C=(a+b)s_Ds_C\).
+\item[\code{cotangentCrossA/B/C}] Returns
+\(rc_A=xs_A\) and cyclic companions.
+\item[\code{Circle}] Fields \(O_x,O_y,\rho\).
+\item[\code{LineChart}] Fields \(P_x,P_y,V_x,V_y\), with
+\(V_x^2+V_y^2\) apart from zero.
+\item[\code{powerLine}] Returns \(f(t)=p+2ht+qt^2\).
+\item[\code{signedSecantProduct}] Given two root residuals and separation,
+returns \(p=quw\).
+\item[\code{tangentPower}] Given point-on-circle and orthogonality residuals,
+returns \(p=qt^2\).
+\item[\code{unsignedSpecializations}] Uses order certificates to return the
+three textbook segment-product equations.
+\end{description}
+
+The interface places all partiality in certificate construction.  Once a
+certificate is present, every theorem is total and proof checking is finite.
+
+\begin{thebibliography}{99}
+
+\bibitem{mollweide-wiki}
+Wikipedia contributors,
+\emph{Mollweide's formula}, standard statement and relation to the tangent law,
+accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Mollweide's_formula}
+
+\bibitem{tangent-wiki}
+Wikipedia contributors,
+\emph{Law of tangents}, standard statement,
+accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Law_of_tangents}
+
+\bibitem{cotangent-wiki}
+Wikipedia contributors,
+\emph{Law of cotangents}, standard statement and inradius formula,
+accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Law_of_cotangents}
+
+\bibitem{tangent-secant-wiki}
+Wikipedia contributors,
+\emph{Tangent--secant theorem}, standard segment-product statement,
+accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Tangent--secant_theorem}
+
+\bibitem{chords-wiki}
+Wikipedia contributors,
+\emph{Intersecting chords theorem}, standard statement,
+accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Intersecting_chords_theorem}
+
+\bibitem{secants-wiki}
+Wikipedia contributors,
+\emph{Intersecting secants theorem}, standard statement,
+accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Intersecting_secants_theorem}
+
+\bibitem{power-wiki}
+Wikipedia contributors,
+\emph{Power of a point}, definition and common theorem,
+accessed 15 November 2026.
+\url{https://en.wikipedia.org/wiki/Power_of_a_point}
+
+\bibitem{proveit}
+V. Reshetnikov,
+\emph{ProveIt}, commit
+\code{948fe06760595e3bce468b67d25032bbbf7f376d}, 15 November 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}
+
+\bibitem{concise-ipra}
+V. Reshetnikov,
+\emph{Concise presentations of intuitionistic primitive recursive arithmetic},
+\code{Logic/PrimitiveRecursiveArithmetic/ConciseIPRA} in \cite{proveit}.
+
+\bibitem{triangle-packet}
+V. Reshetnikov,
+\emph{Heron, sine, and cosine laws in intuitionistic PRA},
+\code{Logic/PrimitiveRecursiveArithmetic/docs/proofs/triangle\_formulas\_ipra}
+in \cite{proveit}.
+
+\bibitem{geometry-packet}
+V. Reshetnikov,
+\emph{Eight classical geometry theorems in iPRA},
+\code{Logic/PrimitiveRecursiveArithmetic/docs/proofs/eight\_geometry\_theorems\_ipra}
+in \cite{proveit}.
+
+\end{thebibliography}
+
+\end{document}
