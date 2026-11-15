@@ -1,0 +1,8 @@
+import PA194OrdinalConclusionQuote
+import PA194OrdinalBaseQuote
+#print axioms PA194InternalOrdinalConclusion.inductionConclusionGraph_defined
+#print axioms PA194InternalOrdinalConclusion.inductionConclusionCode_scoped
+#print axioms PA194OrdinalConclusionQuote.inductionConclusionCode_quote
+#print axioms PA194InternalOrdinalBase.inductionBaseGraph_defined
+#print axioms PA194InternalOrdinalBase.inductionBaseCode_scoped
+#print axioms PA194OrdinalBaseQuote.inductionBaseCode_quote
