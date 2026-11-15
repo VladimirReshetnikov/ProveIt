@@ -1,0 +1,8 @@
+import PA194ModelQFConverse
+#print axioms PA194ModelLogic.internalQuantifierFree_leaf
+#print axioms PA194ModelLogic.internalQuantifierFree_and_iff
+#print axioms PA194ModelLogic.internalQuantifierFree_or_iff
+#print axioms PA194ModelLogic.internalQuantifierFree_not_all
+#print axioms PA194ModelLogic.internalQuantifierFree_not_ex
+#print axioms PA194ModelLogic.quantifierFree_baseShift
+#print axioms PA194ModelLogic.simRuleAllFresh_quantifierFreeSeed
