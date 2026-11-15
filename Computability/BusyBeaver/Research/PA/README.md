@@ -100,7 +100,11 @@ establishes modeled PAeq proof existence for every internal arithmetic induction
 axiom, including nonstandard codes. The [finite arithmetic supplier and PA-refutation transport](pa194-work/pa194-model-logic/PAEQ-FINITE-SUPPLIER.md)
 are also proved in every arithmetic IΣ₁ model, including for nonstandard proof
 codes. There is a formal [classical IΣ₁ proof of `Con(ordinaryPAeq) → Con(PA)`](pa194-work/pa194-model-logic/PAEQ-CANONICAL-CONSISTENCY.md).
-The unconditional PAeq-to-source compiler remains open. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
+The [reflexivity axiom supplier](pa194-work/pa194-model-logic/FORWARD-REFL-ROOT.md)
+now proves the actual compiler translation of that fixed axiom in the source
+theory, under the stated root-code bound. The remaining fixed axioms, induction
+and rule suppliers are still open; so is the unconditional PAeq-to-source
+compiler. The [universal formula replacement theorem](pa194-work/pa194-model-logic/PAEQ-UNIVERSAL-FORMULA-CONGRUENCE.md)
 supplies modeled PAeq proof existence for arbitrary internally valid arity-one
 formulas, including nonstandard codes and nested quantifiers. These existence
 results do not supply fixed proof-code transformers.

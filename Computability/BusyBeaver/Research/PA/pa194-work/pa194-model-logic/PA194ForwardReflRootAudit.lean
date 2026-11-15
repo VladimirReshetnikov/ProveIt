@@ -1,0 +1,6 @@
+import PA194ForwardReflRoot
+#print axioms PA194ForwardTyped.formula_quote
+#print axioms PA194ForwardTyped.rootParameters_aligned
+#print axioms PA194ForwardTyped.root_translate_quote
+#print axioms PA194ForwardReflProof.typed_reflexivity_closed
+#print axioms PA194ForwardReflProof.root_reflexivity_provable
