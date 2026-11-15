@@ -1,0 +1,12 @@
+import PA194ModelExistentialGeneral
+import PA194ModelQFTail
+#print axioms PA194ModelLogic.sourceSubstQVec_trace_entries
+#print axioms PA194ModelLogic.sourceSubstStack_aligned
+#print axioms PA194ModelLogic.sourceSubstTerm_allocated
+#print axioms PA194ModelLogic.sourceSubst_positiveAtom
+#print axioms PA194ModelLogic.sourceSubst_negativeAtom
+#print axioms PA194ModelLogic.sourceSubst_translation
+#print axioms PA194ModelLogic.targetExists_general_freeWitness
+#print axioms PA194ModelLogic.exsIntro_generalBaseSlack
+#print axioms PA194ModelLogic.simRuleExs_generalSeed
+#print axioms PA194ModelLogic.simRuleExs_quantifierFreeRankedFull
