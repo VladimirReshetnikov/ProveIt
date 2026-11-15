@@ -65,7 +65,9 @@ and both [zero](pa194/ipra/machine-code/SITE45-ZERO-PHYSICAL.md) and
 and [one positive 45→46→47→45 transfer iteration](pa194/ipra/machine-code/SITE45-TRANSFER-STEP.md)
 in PRA models; the [site-45](pa194/ipra/machine-code/SITE45-POSITIVE-CLOCK-CODE.md) and
 [site-46](pa194/ipra/machine-code/SITE46-CLOCK-CODE.md) segment clocks have
-primitive-recursive codes. A complete reachable-state simulation remains open. Native iPRA
+primitive-recursive codes. The [site-45 transfer orbit](pa194/ipra/machine-code/SITE45-NATIVE-ORBIT.md)
+now has a native iPRA sentence covering all positive iterations. Its zero exit
+and a complete reachable-state simulation remain open. Other native iPRA
 clocked equalities cover the [physical positive loop](pa194/ipra/machine-code/ACTUAL-PHYSICAL-NATIVE.md),
 [source fetch](pa194/ipra/machine-code/UNIFIED-FETCH-NATIVE.md),
 [decoder](pa194/ipra/machine-code/DECODER-NATIVE.md),
