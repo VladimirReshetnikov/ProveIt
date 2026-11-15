@@ -1,0 +1,13 @@
+import PA194AdjunctiveFullSep
+#print axioms PA194BindSource.pureWitnessEnvelope_defined
+#print axioms PA194BindSource.pureFullyClosed_property_bound
+#print axioms PA194BindSource.fullSepUniform_defined
+#print axioms PA194BindSource.fullSepUniform_provablyProper
+#print axioms PA194BindSource.fullSepTheoryDelta
+#print axioms PA194BindSource.fullSepTheory_class
+#print axioms PA194BindSource.fullSepTheory_axiom_seed
+#print axioms PA194BindSource.adjunctiveFullSepTheoryDelta
+#print axioms PA194BindSource.adjunctiveFullSepTheory_class
+#print axioms PA194BindSource.adjunctiveFullSep_refutation_target
+#print axioms PA194BindSource.adjunctiveFullSep_provable_halts
+#print axioms PA194BindSource.adjunctiveFullSep_consistent_of_nonhalting
