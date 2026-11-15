@@ -1,0 +1,138 @@
+{
+  "title": "Three new 194-state PA consistency machines",
+  "snapshot": {
+    "repository": "https://github.com/VladimirReshetnikov/ProveIt",
+    "commit": "8d31445d858761a8f6150c2e5012adae8895e932"
+  },
+  "smaller_than_194_established": false,
+  "new_194_designs": 3,
+  "claim": "iPRA proves Con(PA) iff not Halt_blank(M) for each delivered M, by the written construction and identified inherited AX11H calibration.",
+  "proof_status": {
+    "ordinary_written_mathematical_argument": true,
+    "complete_new_end_to_end_Lean_formalization": false,
+    "inherited_calibration_archive": "references/AX11H_written_calibration.zip",
+    "inherited_calibration_sha256": "93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075",
+    "inherited_review_scope": "Ten TeX components reviewed; no concrete error found. Not every cited finite proof recipe or transitive Lean dependency was rebuilt.",
+    "positive_equivalence": "Halt_blank(M) iff exists e Prf_C4(e,1)",
+    "negative_transfer": "Con(PA) iff not exists e Prf_C4(e,1)"
+  },
+  "machines": [
+    {
+      "name": "PA194GD",
+      "directory": "machines/GD",
+      "states": 194,
+      "transitions": 388,
+      "start": 0,
+      "halt": 194,
+      "blank_symbol": 0,
+      "head_start": 0,
+      "tape": "two-way infinite",
+      "sha256": "1362fe8f264656e5b6d3e88666c0c88a34883c4d3cc5e9f2b4da9f9f6e8e595e",
+      "AX_operands": 3,
+      "AX_pushed_entries": 10,
+      "binder": "c",
+      "diagonal_argument": "d+x",
+      "detector": "t+h=1",
+      "source_sites": 3654,
+      "source_outcomes": 4755,
+      "initialization_steps": 58154,
+      "independent_symbolic_operations": 1068318,
+      "maximum_symbolic_operations_per_outcome": 379,
+      "fold_duration_values": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "name": "PA194GDH",
+      "directory": "machines/GDH",
+      "states": 194,
+      "transitions": 388,
+      "start": 0,
+      "halt": 194,
+      "blank_symbol": 0,
+      "head_start": 0,
+      "tape": "two-way infinite",
+      "sha256": "e11b587cdb7d620adc9ce086467931f2d9db453f56231c5829e9f8c71c04eed1",
+      "AX_operands": 3,
+      "AX_pushed_entries": 10,
+      "binder": "c",
+      "diagonal_argument": "d+x",
+      "detector": "h=1",
+      "source_sites": 3653,
+      "source_outcomes": 4754,
+      "initialization_steps": 57922,
+      "independent_symbolic_operations": 1091812,
+      "maximum_symbolic_operations_per_outcome": 385,
+      "fold_duration_values": [
+        1,
+        3,
+        5
+      ]
+    },
+    {
+      "name": "PA194GDHS",
+      "directory": "machines/GDHS",
+      "states": 194,
+      "transitions": 388,
+      "start": 0,
+      "halt": 194,
+      "blank_symbol": 0,
+      "head_start": 0,
+      "tape": "two-way infinite",
+      "sha256": "7b69655c9115d226f23be4cd70303650f894a97d195c53139f72e1c937cdda58",
+      "AX_operands": 3,
+      "AX_pushed_entries": 10,
+      "binder": "c",
+      "diagonal_argument": "d+x",
+      "detector": "h=1",
+      "source_sites": 3650,
+      "source_outcomes": 4750,
+      "initialization_steps": 57768,
+      "independent_symbolic_operations": 1095734,
+      "maximum_symbolic_operations_per_outcome": 385,
+      "fold_duration_values": [
+        1,
+        3,
+        5
+      ]
+    }
+  ],
+  "comparison": {
+    "filed_deliveries": 87,
+    "incoming_deliveries": 6,
+    "tracked_PA_literal_tm_files": 718,
+    "prior_spanning_194_structural_classes": 139,
+    "new_tables_match_prior_class": false,
+    "new_tables_match_each_other": false,
+    "equivalence_screen": [
+      "arbitrary state renaming",
+      "any spanning root",
+      "tape reflection",
+      "symbol exchange",
+      "terminal write/move erasure"
+    ],
+    "scope": "Literal five-column .tm tables in the pinned tracked PA tree and recursively inspected six pending archives; semantic ledger is not an independent reconstruction of 93 arithmetic proofs."
+  },
+  "searches": {
+    "grammar_runs": 8,
+    "grammar_mutation_slots": 37916566,
+    "physical_control_pairs": 56163,
+    "physical_row_action_trials": 70793172,
+    "physical_joint_row_pairs": 391365,
+    "composition_combinations": 432,
+    "corrected_loop_candidates": 40,
+    "successful_sub194_candidates": 0,
+    "lower_bound_claimed": false
+  },
+  "reproduction": {
+    "construction": "python3 verify.py --output verification/reproduced.json",
+    "independent_checks": "verification/independent/README.md",
+    "searches": "research/README.md",
+    "report": "report/report.pdf",
+    "report_source": "report/report.tex"
+  },
+  "report_pages": 28,
+  "source_design_families": 1
+}

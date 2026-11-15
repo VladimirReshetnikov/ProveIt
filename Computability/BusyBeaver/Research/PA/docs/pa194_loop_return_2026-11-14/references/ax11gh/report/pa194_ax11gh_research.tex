@@ -1,0 +1,78 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[margin=24mm]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,longtable,array}
+\usepackage{xurl}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue,citecolor=blue]{hyperref}
+\usepackage{microtype}
+\renewcommand{\labelitemi}{$\bullet$}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newcommand{\ipra}{\mathrm{iPRA}}
+\newcommand{\PA}{\mathrm{PA}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newcommand{\hd}{\operatorname{hd}}
+\newcommand{\tl}{\operatorname{tl}}
+\newcommand{\Ax}{\mathsf{AX}}
+\newcommand{\MP}{\mathsf{MP}}
+\newcommand{\Shift}{\mathsf{S}}
+\newcommand{\Push}{\mathsf{Push}}
+\newcommand{\Pop}{\mathsf{Pop}}
+\newcommand{\Discard}{\mathsf{Discard}}
+\newcommand{\Gen}{\mathsf{Gen}}
+\newcommand{\Stop}{\mathsf{halt}}
+\newcommand{\file}[1]{\texttt{\path{#1}}}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small PA consistency machines}
+\fancyhead[R]{\small New AX11GH / AX11GHS designs}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\hypersetup{pdftitle={Two new 194-state PA consistency designs and exact physical accelerations},pdfauthor={Research contribution for ProveIt},pdfsubject={Full comparison, literal Turing machines, written iPRA proof and reproducible searches}}
+\setcounter{tocdepth}{1}
+\microtypesetup{expansion=false}
+
+\title{Two new 194-state PA consistency designs\\[4pt]
+\large Exact physical accelerations, complete corpus comparison,\\
+and written weak-arithmetic preservation proofs}
+\author{Research contribution for the ProveIt project}
+\date{14 November 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+No valid sub-194 machine was obtained. Two new 194-state binary,
+single-tape, blank-start designs combine an explicit generalization
+binder, a four-operand eleven-entry axiom command, no-push modus
+ponens, and a cache-only halt test. Both admit two exact guarded
+three-to-one transition shortcuts. All four transition graphs are
+distinct from the 110 complete 194-state graph classes found across
+86 source deliveries at the pinned repository revision. This report
+provides the complete new command/proof argument, literal source
+and physical certificates, a uniform iPRA acceleration proof,
+and the exact dependency on the latest incoming written PA calibration.
+It does not claim a newly completed end-to-end Lean proof.
+The unsuccessful reduction searches and their limits are preserved
+alongside all tables, code, comparison data, and attributed proof sources.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\input{overview.tex}
+\clearpage
+\input{protocol_body.tex}
+\clearpage
+\input{acceleration_body.tex}
+\clearpage
+\appendix
+\input{transition_tables.tex}
+\input{named_ledger.tex}
+\input{packet_ledger.tex}
+\clearpage
+\input{bibliography.tex}
+\end{document}

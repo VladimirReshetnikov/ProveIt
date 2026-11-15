@@ -1,0 +1,95 @@
+{
+  "status": "PASS",
+  "machine": "PA194LCG",
+  "native_sha256": "bdbfb392b408dd729899f07ad38de92b86f5d76bbdb87e7a12e5f1137f3d8047",
+  "envelope_regenerated": false,
+  "literal_windows": 49297,
+  "sample_check": {
+    "samples": 1200,
+    "literal_steps": 551331,
+    "maximum_steps": 1014,
+    "missing_windows": 0,
+    "seed": 20261114,
+    "radius": 6,
+    "table_sha256": "bdbfb392b408dd729899f07ad38de92b86f5d76bbdb87e7a12e5f1137f3d8047",
+    "scope": "Implementation regression only; universal coverage is by symbolic affine/list trace envelopes."
+  },
+  "searches": [
+    {
+      "program": "joint_return_merge",
+      "hits": 0
+    },
+    {
+      "program": "stutter_merge_contexts",
+      "hits": 0
+    },
+    {
+      "program": "edge_delete_contexts",
+      "hits": 0
+    }
+  ],
+  "commands": [
+    [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "-B",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/literal_context_research/check_context_samples.py",
+      "/dev/shm/pa_82b7f4d9aabb/deliverable/pa194_loop_return_2026-11-14/machines/PA194LCG",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/literal_contexts.tsv",
+      "--radius",
+      "6",
+      "--samples",
+      "1200"
+    ],
+    [
+      "g++",
+      "-O3",
+      "-std=c++17",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/literal_context_research/joint_return_merge.cpp",
+      "-o",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/joint_return_merge"
+    ],
+    [
+      "g++",
+      "-O3",
+      "-std=c++17",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/literal_context_research/stutter_merge_contexts.cpp",
+      "-o",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/stutter_merge_contexts"
+    ],
+    [
+      "g++",
+      "-O3",
+      "-std=c++17",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/literal_context_research/edge_delete_contexts.cpp",
+      "-o",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/edge_delete_contexts"
+    ],
+    [
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/joint_return_merge",
+      "/dev/shm/pa_82b7f4d9aabb/deliverable/pa194_loop_return_2026-11-14/machines/PA194LCG/machine.native.tm",
+      "6",
+      "100",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/literal_contexts.tsv"
+    ],
+    [
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/stutter_merge_contexts",
+      "/dev/shm/pa_82b7f4d9aabb/deliverable/pa194_loop_return_2026-11-14/machines/PA194LCG/machine.native.tm",
+      "6",
+      "12",
+      "128",
+      "74",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/literal_contexts.tsv"
+    ],
+    [
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/edge_delete_contexts",
+      "/dev/shm/pa_82b7f4d9aabb/deliverable/pa194_loop_return_2026-11-14/machines/PA194LCG/machine.native.tm",
+      "6",
+      "256",
+      "74",
+      "24",
+      "/dev/shm/pa_82b7f4d9aabb/microcode_work/integration_replay/literal_contexts.tsv"
+    ]
+  ],
+  "elapsed_seconds": 16.203452348709106,
+  "scope": "Finite optimization templates only; no global state lower bound or absolute iPRA calibration."
+}

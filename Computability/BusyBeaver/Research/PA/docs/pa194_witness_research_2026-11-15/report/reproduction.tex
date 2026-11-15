@@ -1,0 +1,80 @@
+\section{Reproduction and artifact map}
+\label{sec:reproduction}
+
+The ZIP contains both complete machine tables, their native parents and
+label maps, frozen grammars and fold plans, complete source graphs,
+independent literal contracts, finite logical derivations, this report's
+LaTeX source and PDF, and the exact inherited calibration archive.
+It does not require a network connection to reconstruct and check either
+new machine.  The full 1.25 GB upstream PA/incoming corpus is not duplicated;
+its pinned manifest, comparison results, locators and compact representative
+matrices are retained.  Rebuilding the entire upstream inventory requires
+the pinned source checkout, whereas checking novelty against its frozen
+139-class frontier is entirely local.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{.28\textwidth}X@{}}
+\toprule
+Directory or file & Contents\\\midrule
+\path{machines/}&PA194H5X and PA194JH5X tables, dense/native labels, grammar, nodes, instruction arrays, folds, full independent contracts and receipts.\\
+\path{construction/}&Deterministic builders and all frozen inputs and attributed dependencies. No optimization search is needed for reconstruction.\\
+\path{verification/}&Independent literal and frame-closure checkers, premise exchange, complete arithmetic source and command-word checks.\\
+\path{logic/}&New schematic Hilbert generators, independent replay and certificates; no truth-table axiom oracle.\\
+\path{comparison/}&93-delivery ledger, complete class/occurrence inventories, all 139 frontier annotations, exact novelty checks, endpoint audit and reproducible census code.\\
+\path{research/grammar/}&Logical/source search programs, inputs, seeds, grammar frontiers and completion/checkpoint records.\\
+\path{research/runtime/}&Fresh context collector, finite physical searches, positive controls, frozen windows, receipts and portable replay.\\
+\path{references/}&Intact revised AX11H archive, extracted proof papers, and retained explicit-binder proof/audit.\\
+\path{report/}&This PDF, all component LaTeX files, complete transition tables and build instructions.\\
+\path{verify.py}&Portable orchestration of the new-machine and finite-logic checks, with fresh output directories.\\
+\path{SHA256SUMS}&Exact integrity hashes for the final packaged files.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+From the extracted ZIP root, run
+\begin{verbatim}
+python3 -B verify.py --rebuild --work /tmp/pa194-witness-replay
+\end{verbatim}
+Python 3.10 or later and its standard library suffice for this main
+verification.  Run without \texttt{-O} or \texttt{PYTHONOPTIMIZE}; some
+retained verifiers intentionally use assertions.  The driver verifies
+literal hashes, rebuilds both frozen machines, compares core artifacts,
+replays complete source and command bindings, regenerates every independent
+literal outcome, checks frame closure, and replays the logical templates
+and structural novelty comparison.  It records machine-readable results
+and per-command logs in the specified work directory.
+
+The source and command checkers are structurally independent of the
+constructor and literal simulator.  The independent tape checker uses
+the table rows and independently resolved source addresses.  Independence
+here describes these executable code paths and verification methods;
+it is not a claim of independent proof-assistant kernels.
+
+The comparison packet has its own lightweight integrity and canonical
+tuple replay:
+\begin{verbatim}
+python3 -B comparison/verify_packet.py
+\end{verbatim}
+The optional physical-search replay uses Python and a C++17 compiler:
+\begin{verbatim}
+python3 -B research/runtime/replay.py --work /tmp/pa194-physical
+\end{verbatim}
+Its \texttt{--extended} option repeats the larger finite searches;
+\texttt{--regenerate-contexts} repeats the universal window collector.
+These searches are unnecessary to establish the positive 194-state
+results.  Their purpose is reproducibility of the unsuccessful reduction
+work and its precise scope.
+
+For the report, run \texttt{python3 build\_report.py} inside
+\path{report/}.  On a configured TeX installation,
+\texttt{latexmk -pdf report.tex} also works.  The supplied PDF was compiled from these sources and
+rendered for visual inspection.  The complete machine tables are
+generated directly from the frozen text tables, not retyped by hand.
+
+The files separate three different kinds of evidence.  Concrete finite
+facts include control counts, table hashes, full startup runs and the
+topology of finite proof templates.  Uniform mathematical arguments
+justify the symbolic tape rules, PR clocks, source templates and proof
+translations for all coded inputs.  The absolute PA calibration is a
+preserved written dependency.  The accompanying JSON explicitly records
+that no end-to-end Lean or Rocq theorem has been compiled here.

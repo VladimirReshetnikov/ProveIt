@@ -1,0 +1,152 @@
+% A self-contained section fragment for the main report; no private macros.
+\section{A bootstrap-safe history-recovery companion}
+\label{sec:history-recovery}
+
+The supplementary machine \texttt{PA194AX11GDHR} retains the numerical
+calculus and source program of \texttt{PA194AX11GDH}, but replaces one
+reader control by an explicit history helper. It has 194 working states,
+388 transitions, binary alphabet, native start 74 and native halt 254.
+Its dense table has start 0 and halt 194. The complete native and dense
+tables, label bijection, local certificates and standalone reconstruction
+are supplied in the accompanying \texttt{companions/R} directory.
+
+This companion gives a precise repair of the known 193-state runtime
+fold without changing the register marker. It is not a sub-194 result.
+Its purpose is to make the physical distinction between a valid runtime
+fold and a valid blank-start construction explicit.
+
+\subsection{Construction}
+
+Write a transition as $(q,b)\mapsto(w,D,t)$. Introduce the fresh native
+control $h=3000$, delete native control 301, and redirect all destinations
+301 to 88. Replace and add just the following rows:
+\[
+ (88,0)\mapsto(0,L,h),\qquad
+ (h,0)\mapsto(0,R,122),\qquad
+ (h,1)\mapsto(1,R,h).
+\]
+All other rows are unchanged apart from the destination renaming.
+In particular, the register-marker row remains
+$(51,0)\mapsto(0,R,16)$. The number of controls is
+$194-1+1=194$.
+
+The construction uses the following parent rows:
+\[
+\begin{array}{c|cc}
+q & b=0 & b=1\\ \hline
+88 &(0,R,122)&(1,R,103)\\
+301&(0,R,45)&(1,R,103)\\
+122&(0,L,137)&(0,L,1)\\
+137&(0,R,30)&(1,R,70)\\
+30 &(0,R,45)&(1,R,46).
+\end{array}
+\]
+Every parent transition into 88 writes 1 and moves right; every parent
+transition into 301 writes 0 and moves right. Neither is the initial
+control. Consequently, in every parent run starting in control 74, the
+cell immediately left of the head is 1 on entry to 88 and 0 on entry to
+301. This follows by inspection of the immediately preceding transition.
+It is valid for arbitrary complete tapes and does not use a register-value
+or source-program invariant.
+
+\subsection{Four exact local simulations}
+
+Let $f(301)=88$ and $f(q)=q$ otherwise. At a parent boundary, compare the
+parent configuration $(q,x,T)$ with child configuration $(f(q),x,T)$.
+For states other than 88 and 301, a single transition commutes with $f$.
+For either exceptional state, the read-1 row also commutes in one step.
+For the two read-0 cases the child recovers the lost distinction from the
+left cell. The following traces show state and head displacement; no
+cell outside positions $-1$ and $0$ is read.
+\[
+\begin{array}{c|c|l}
+\text{parent state}&\text{left bit}&\text{child trace for current bit }0\\\hline
+88&1&(88,0)\to(h,-1)\to(h,0)\to(122,1)\\
+301&0&(88,0)\to(h,-1)\to(122,0)\to(137,-1)\to(30,0)\to(45,1).
+\end{array}
+\]
+Every visited cell keeps its original value. The endpoint agrees with the
+corresponding single parent transition on the entire tape. Thus the four
+old-state/current-bit cases have child durations $3,1,5,1$ respectively.
+All intermediate controls are working controls, so no hidden halt occurs
+inside a simulation block. The executable certificate checks these four
+cases, all incoming guard rows, and every unchanged transition.
+
+\subsection{A relative theorem proved in iPRA}
+
+Let $H_P(t)$ and $H_R(t)$ denote that the parent and repaired machine,
+respectively, have halted by clock $t$. Extend each clock after halting by
+an absorbing configuration; this is a clock convention, not an additional
+working control. Then
+\[
+ \mathsf{iPRA}\vdash
+ \bigl(H_P(t)\to H_R(5t)\bigr)
+ \quad\wedge\quad
+ \bigl(H_R(t)\to H_P(t)\bigr).
+\]
+Here is an explicit weak-arithmetic proof. Code finite-support tapes and
+configurations by natural numbers, and use their primitive-recursive
+transition functions. Define a primitive-recursive duration $k(C)$: it is
+3 at parent state 88 reading 0, 5 at parent state 301 reading 0, and 1
+otherwise, including an absorbing halt. Define the accumulated clock by
+\[
+ \tau(0)=0,\qquad \tau(n+1)=\tau(n)+k(C_n),
+\]
+where $C_n$ is the parent configuration at clock $n$.
+The finite incoming-row inspection proves the two guards by
+quantifier-free induction on $n$. The four local equalities and the
+commuting unchanged rows then prove, by another quantifier-free induction,
+\[
+ R_{\tau(n)}=f(C_n),\qquad n\leq\tau(n)\leq5n.
+\]
+The map $f$ changes only the finite control and never maps a working
+control to halt. A parent halt at $n$ therefore gives a child halt by
+$5n$. Conversely, if the child has halted by $n$, it has halted at
+$\tau(n)\geq n$ under the absorbing-clock convention; the displayed
+configuration equality forces $C_n$ itself to be halted.
+
+All tests, configuration maps, clocks and finite-case checks in this
+argument are primitive recursive. Their induction predicates are
+quantifier-free after adjoining their defining primitive-recursive
+functions. No classical case distinction or unbounded choice is required.
+Existentially quantifying the clock gives the relative halting equivalence
+in iPRA, and intuitionistic propositional logic gives the relative
+nonhalting equivalence. The parent's written PA-consistency calibration
+therefore transfers to this companion without a new arithmetic-calculus
+compiler. This is a written iPRA proof with executable finite certificates;
+no new compiled Lean endpoint is claimed.
+
+\subsection{Initialization and novelty}
+
+The new machine reaches exactly the parent's clean source tape after
+58,022 transitions, compared with 57,922 parent transitions. Its
+initialization uses the 3-step branch 22 times and the 5-step branch
+14 times, giving the exact clock identity
+\[
+ 58022=57922+2\cdot22+4\cdot14.
+\]
+The standalone checker synchronizes the two complete tapes after every
+parent transition throughout this prefix. The guard and local simulation
+proof above, rather than this finite prefix, establishes the unbounded
+relative equivalence.
+
+An independent literal-table replay also passes all 4,778 source outcomes
+over 3,671 sites, with nine arbitrary primary registers, both decrement
+branches, an arbitrary nonempty spare list and affine padding. It rederives
+four generic list lemmas, uses no arithmetic-box oracle, resolves the source
+graph independently in two ways, and checks the complete startup tape.
+This supplements the direct relative proof above.
+
+The strong graph comparison finds no match with any of the 521 recognized
+194-state reference classes (520 have a spanning root). It also finds no
+match with the new plain and accelerated companions. The comparison allows
+arbitrary control renaming, any spanning initial root, global reflection,
+global symbol exchange, and ignored terminal-edge write/move actions.
+Symbol exchange is used here as a structural novelty screen; it is not
+asserted to preserve a zero-blank computation.
+
+The separate helper costs exactly the state that the unsafe marker-sharing
+construction had saved. A subsequent reduction must share this helper
+without changing its blank-start behavior, combine it with another valid
+fold, or remove a control elsewhere. The present construction proves none
+of those further savings.

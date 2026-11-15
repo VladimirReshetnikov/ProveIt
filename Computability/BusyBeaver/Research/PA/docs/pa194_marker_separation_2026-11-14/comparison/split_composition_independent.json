@@ -1,0 +1,502 @@
+{
+  "status": "PASS",
+  "scope": "Independent finite-premise audit for LCG/LCGS split-marker compositions.\n\nReads only literal tables and label arrays, not the construction's Python code.\nThe accompanying proof establishes the uniform arithmetic induction from these\nfinite premises. Startup replay is a separate exact whole-tape check.\n",
+  "results": [
+    {
+      "name": "PA194LCGMS",
+      "parent": "PA194LCG",
+      "parent_sha256": "bdbfb392b408dd729899f07ad38de92b86f5d76bbdb87e7a12e5f1137f3d8047",
+      "native_sha256": "0e2e85983329b04bb42c16609788e624825c84a7005fec7d53683d81b1084a8e",
+      "dense_sha256": "a168e6264a3963dec96a5f6f5dffd75d9f45cc4ed4cb31c80f3d2e8f23bcc312",
+      "working_states": 194,
+      "rows": 388,
+      "all_states_graph_reachable": true,
+      "dense_native_conjugacy": "PASS",
+      "complete_changed_row_premises": "PASS",
+      "incoming_history_rows": {
+        "301": [
+          [
+            87,
+            0,
+            0,
+            "R"
+          ]
+        ],
+        "88": [
+          [
+            77,
+            1,
+            1,
+            "R"
+          ]
+        ]
+      },
+      "two_cell_cases": [
+        {
+          "parent_state": 301,
+          "left_history_bit": 0,
+          "scanned_bit": 0,
+          "duration": 5,
+          "trace": [
+            [
+              88,
+              0,
+              0,
+              0,
+              "L",
+              51
+            ],
+            [
+              51,
+              -1,
+              0,
+              0,
+              "R",
+              122
+            ],
+            [
+              122,
+              0,
+              0,
+              0,
+              "L",
+              137
+            ],
+            [
+              137,
+              -1,
+              0,
+              0,
+              "R",
+              30
+            ],
+            [
+              30,
+              0,
+              0,
+              0,
+              "R",
+              45
+            ]
+          ],
+          "endpoint_state": 45,
+          "endpoint_relative_head": 1
+        },
+        {
+          "parent_state": 301,
+          "left_history_bit": 0,
+          "scanned_bit": 1,
+          "duration": 1,
+          "trace": [
+            [
+              88,
+              0,
+              1,
+              1,
+              "R",
+              103
+            ]
+          ],
+          "endpoint_state": 103,
+          "endpoint_relative_head": 1
+        },
+        {
+          "parent_state": 88,
+          "left_history_bit": 1,
+          "scanned_bit": 0,
+          "duration": 3,
+          "trace": [
+            [
+              88,
+              0,
+              0,
+              0,
+              "L",
+              51
+            ],
+            [
+              51,
+              -1,
+              1,
+              1,
+              "R",
+              51
+            ],
+            [
+              51,
+              0,
+              0,
+              0,
+              "R",
+              122
+            ]
+          ],
+          "endpoint_state": 122,
+          "endpoint_relative_head": 1
+        },
+        {
+          "parent_state": 88,
+          "left_history_bit": 1,
+          "scanned_bit": 1,
+          "duration": 1,
+          "trace": [
+            [
+              88,
+              0,
+              1,
+              1,
+              "R",
+              103
+            ]
+          ],
+          "endpoint_state": 103,
+          "endpoint_relative_head": 1
+        }
+      ],
+      "startup": {
+        "parent_steps": 57870,
+        "child_steps": 57970,
+        "state": 84,
+        "head": -2,
+        "ones": [
+          -3,
+          -2,
+          46,
+          48,
+          50,
+          52,
+          54,
+          56,
+          58,
+          60,
+          61,
+          62,
+          64,
+          66,
+          68,
+          69,
+          71,
+          72,
+          74,
+          75,
+          77,
+          78,
+          80,
+          81,
+          83,
+          84,
+          86,
+          87,
+          89,
+          90,
+          92,
+          93,
+          95,
+          96,
+          98,
+          99,
+          101,
+          102,
+          104,
+          105,
+          107,
+          108,
+          110,
+          111,
+          113,
+          114,
+          116,
+          117,
+          119,
+          120,
+          122,
+          123,
+          125,
+          126,
+          128,
+          129,
+          131,
+          132,
+          134,
+          135,
+          137,
+          138,
+          140,
+          141,
+          143,
+          144
+        ],
+        "whole_tape_equal": true
+      },
+      "prefix_materiality": {
+        "parent_steps": 67870,
+        "child_steps": 67974,
+        "special_rows_total": {
+          "51,0": 158,
+          "51,1": 469,
+          "88,0": 22,
+          "88,1": 16,
+          "301,0": 15,
+          "301,1": 8
+        },
+        "special_rows_after_clean_seed": {
+          "51,0": 16,
+          "51,1": 16,
+          "88,0": 0,
+          "88,1": 0,
+          "301,0": 1,
+          "301,1": 0
+        }
+      },
+      "arithmetic_conclusion_from_finite_premises": "With totalized halting, iPRA proves H_parent(t) -> H_child(5t) and H_child(t) -> H_parent(t). See standalone proof; this checker itself is not a proof-assistant kernel."
+    },
+    {
+      "name": "PA194LCGSMS",
+      "parent": "PA194LCGS",
+      "parent_sha256": "137359a2ee40b81c994903589b68f34c4d47cb97f8600c86016094f637a4f25a",
+      "native_sha256": "c9566da1308a7e658df08e9f90664777b44708aff93f8f1c29f8932eb3322285",
+      "dense_sha256": "cdaa8211a08619263a0dc3cd5a6a3a62a02f506b360d738d20b25975246badf6",
+      "working_states": 194,
+      "rows": 388,
+      "all_states_graph_reachable": true,
+      "dense_native_conjugacy": "PASS",
+      "complete_changed_row_premises": "PASS",
+      "incoming_history_rows": {
+        "301": [
+          [
+            87,
+            0,
+            0,
+            "R"
+          ]
+        ],
+        "88": [
+          [
+            77,
+            1,
+            1,
+            "R"
+          ]
+        ]
+      },
+      "two_cell_cases": [
+        {
+          "parent_state": 301,
+          "left_history_bit": 0,
+          "scanned_bit": 0,
+          "duration": 5,
+          "trace": [
+            [
+              88,
+              0,
+              0,
+              0,
+              "L",
+              51
+            ],
+            [
+              51,
+              -1,
+              0,
+              0,
+              "R",
+              122
+            ],
+            [
+              122,
+              0,
+              0,
+              0,
+              "L",
+              137
+            ],
+            [
+              137,
+              -1,
+              0,
+              0,
+              "R",
+              30
+            ],
+            [
+              30,
+              0,
+              0,
+              0,
+              "R",
+              45
+            ]
+          ],
+          "endpoint_state": 45,
+          "endpoint_relative_head": 1
+        },
+        {
+          "parent_state": 301,
+          "left_history_bit": 0,
+          "scanned_bit": 1,
+          "duration": 1,
+          "trace": [
+            [
+              88,
+              0,
+              1,
+              1,
+              "R",
+              103
+            ]
+          ],
+          "endpoint_state": 103,
+          "endpoint_relative_head": 1
+        },
+        {
+          "parent_state": 88,
+          "left_history_bit": 1,
+          "scanned_bit": 0,
+          "duration": 3,
+          "trace": [
+            [
+              88,
+              0,
+              0,
+              0,
+              "L",
+              51
+            ],
+            [
+              51,
+              -1,
+              1,
+              1,
+              "R",
+              51
+            ],
+            [
+              51,
+              0,
+              0,
+              0,
+              "R",
+              122
+            ]
+          ],
+          "endpoint_state": 122,
+          "endpoint_relative_head": 1
+        },
+        {
+          "parent_state": 88,
+          "left_history_bit": 1,
+          "scanned_bit": 1,
+          "duration": 1,
+          "trace": [
+            [
+              88,
+              0,
+              1,
+              1,
+              "R",
+              103
+            ]
+          ],
+          "endpoint_state": 103,
+          "endpoint_relative_head": 1
+        }
+      ],
+      "startup": {
+        "parent_steps": 57712,
+        "child_steps": 57812,
+        "state": 84,
+        "head": -2,
+        "ones": [
+          -3,
+          -2,
+          46,
+          48,
+          50,
+          52,
+          54,
+          56,
+          58,
+          60,
+          61,
+          62,
+          64,
+          66,
+          68,
+          69,
+          71,
+          72,
+          74,
+          75,
+          77,
+          78,
+          80,
+          81,
+          83,
+          84,
+          86,
+          87,
+          89,
+          90,
+          92,
+          93,
+          95,
+          96,
+          98,
+          99,
+          101,
+          102,
+          104,
+          105,
+          107,
+          108,
+          110,
+          111,
+          113,
+          114,
+          116,
+          117,
+          119,
+          120,
+          122,
+          123,
+          125,
+          126,
+          128,
+          129,
+          131,
+          132,
+          134,
+          135,
+          137,
+          138,
+          140,
+          141,
+          143,
+          144
+        ],
+        "whole_tape_equal": true
+      },
+      "prefix_materiality": {
+        "parent_steps": 67712,
+        "child_steps": 67816,
+        "special_rows_total": {
+          "51,0": 157,
+          "51,1": 469,
+          "88,0": 22,
+          "88,1": 16,
+          "301,0": 15,
+          "301,1": 12
+        },
+        "special_rows_after_clean_seed": {
+          "51,0": 16,
+          "51,1": 16,
+          "88,0": 0,
+          "88,1": 0,
+          "301,0": 1,
+          "301,1": 0
+        }
+      },
+      "arithmetic_conclusion_from_finite_premises": "With totalized halting, iPRA proves H_parent(t) -> H_child(5t) and H_child(t) -> H_parent(t). See standalone proof; this checker itself is not a proof-assistant kernel."
+    }
+  ]
+}

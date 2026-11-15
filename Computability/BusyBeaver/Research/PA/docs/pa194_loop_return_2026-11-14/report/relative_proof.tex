@@ -1,0 +1,257 @@
+\section{The new continuation shortcut and a direct iPRA theorem}
+\label{sec:shortcut}
+Let $L$ be either new loop-reassociated parent, before the three shortcuts.
+Let $F$ be its accelerated version, the delivered machine. All labels in
+this section are native labels. Write configurations as $(q,h,T)$ and put
+$T_j=T(h+j)$. The following finite invariant suffices:
+\begin{align*}
+q=101&\Longrightarrow T_{-1}=0,\\
+q=11&\Longrightarrow (T_{-1}=0\lor T_1=0),\\
+q=26\ \land\ T_0=1&\Longrightarrow T_1=T_2=0,\\
+q=190&\Longrightarrow T_{-1}=1.
+\end{align*}
+The initial control is 74, so these implications initially hold for every
+complete tape. The table checker verifies that the only predecessor of
+101 is $96/0\mapsto0R101$, every transition into 11 writes zero, the only
+predecessors of 26 are $11/0\mapsto0L26$ and $101/0\mapsto0L26$, and the
+only predecessor of 190 is $139/1\mapsto1R190$.
+
+\begin{lemma}[Incoming-symbol invariant]
+Every run of $L$ beginning in control 74 satisfies the four implications.
+\end{lemma}
+\begin{proof}
+The first, second and fourth assertions follow directly from the cell just
+written by an incoming transition. For the third, entering 26 writes zero
+immediately to the new head's right. An entry from 101 scans zero at the
+new head, by the first assertion, so its read-one case cannot occur. An
+entry from 11 that scans one makes the old left neighbor one. The second
+assertion then forces the old right neighbor to be zero: this is the new
+cell at offset two. Induction on the number of transitions completes the
+proof. The assertion is a Boolean combination of finitely many tape-bit
+functions and hence is quantifier free in the primitive-recursive language.
+\end{proof}
+
+The two older shortcuts from the incoming acceleration packet are
+\begin{align*}
+(26,h,T)&\xrightarrow{1R42}(42,h+1,T)
+ \xrightarrow{0R13}(13,h+2,T)\xrightarrow{0L91}(91,h+1,T),\\
+(101,h,T)&\xrightarrow{0L26}(26,h-1,T)
+ \xrightarrow{0R194}(194,h,T)\xrightarrow{0R17}(17,h+1,T).
+\end{align*}
+The guards are respectively $T_0=1,T_1=T_2=0$ and $T_{-1}=T_0=0$.
+They give the replacements $26/1\mapsto1R91$ and
+$101/0\mapsto0R17$.
+
+\textbf{The additional shortcut found here} uses $T_{-1}=T_0=1$:
+\[
+(190,h,T)\xrightarrow{1L73}(73,h-1,T)
+ \xrightarrow{1R83}(83,h,T)\xrightarrow{0L42}(42,h-1,T[h:=0]).
+\]
+It is exactly the single transition $190/1\mapsto0L42$. This change does
+not follow from state renaming: it erases a bit that the previous first
+transition preserved, and removes two physical transitions on every
+applicable visit. The entire exterior tape is untouched. No intermediate
+control displayed here is the halt control 254. Native control 194 in the
+second identity is a working control, not the terminal label used by dense
+numbering.
+
+The finite checker verifies all structural premises and all twenty
+length-five tape contexts satisfying the three guards: four for 26,
+eight for 101, and eight for 190. Each local equality compares the full
+five-cell tape, the head, and the control; the proof above explains why
+arbitrary exterior cells are irrelevant. The invariant, rather than a
+finite run sample, licenses their use at arbitrary times.
+
+\begin{theorem}[Exact expanded clock]
+Totalize each step function by making the halting configuration absorbing.
+For a common initial configuration with control 74 there is a primitive-
+recursive clock $\sigma$ satisfying
+\[
+C^F_t=C^L_{\sigma(t)},\qquad t\le\sigma(t)\le3t.
+\]
+In particular, with $H_M(t)$ meaning halted by time $t$, iPRA proves
+\[
+H_L(t)\longrightarrow H_F(t),\qquad
+H_F(t)\longrightarrow H_L(3t).
+\]
+\end{theorem}
+\begin{proof}
+Let $k(C)=3$ at the three changed source/symbol pairs and $k(C)=1$
+elsewhere, including the absorbing halt. Define
+$\sigma(0)=0$ and $\sigma(t+1)=\sigma(t)+k(C^F_t)$.
+Induct on $t$ using the preceding invariant and exact local identities.
+Each new step equals the specified positive number of old steps; the old
+invariant remains true at the next matching configuration. The clock bounds
+follow from $1\le k\le3$. All functions are primitive recursive and the
+induction predicates are quantifier free.
+
+If $L$ has halted by $t$, its state at $\sigma(t)\ge t$ is still halted,
+so $F$ is halted at $t$. If $F$ is halted at $t$, then $L$ is halted at
+$\sigma(t)\le3t$ and hence at $3t$. This argument uses absorbing semantics
+only in the arithmetic representation; it adds no working state to the
+literal machine. It applies to arbitrary finite-support initial tapes,
+not only to the blank initialization used for the consistency machines.
+\end{proof}
+
+\section{Complete physical verification and the relative source theorem}
+\label{sec:relative}
+The loop reassociation changes addresses, so the two literal machines are
+compared through their common resolved primitive program. This section
+spells out the weak-arithmetic argument that connects the checked finite
+contracts to the all-time theorem. It does not infer nonhalting from a
+bounded simulation.
+
+\subsection{Arithmetic representation and the checker rules}
+A tape zipper is a pair $(l,r)$ of natural numbers. The low bit of $r$ is
+at the head and the low bit of $l$ is immediately to its left. Writing $w$
+and moving right gives
+\[
+(l,r)\longmapsto(2l+w,\lfloor r/2\rfloor);
+\]
+writing $w$ and moving left gives
+\[
+(l,r)\longmapsto
+ (\lfloor l/2\rfloor,\ 4\lfloor r/2\rfloor+2w+(l\bmod2)).
+\]
+These formulae encode equality of the complete finite-support tape,
+relative to the head, including its two blank exteriors. An additional
+signed head counter retains absolute coordinates; the checked motion at
+each nonhalting source boundary is zero. Table lookup, finite-word and list
+codes, the absorbing step, and fixed-time iteration are primitive recursive.
+
+A source frame records a source site, nine logical registers, a header gap
+$g\ge0$, the first spare value $a_0$, and a finite spare tail $A$. Its tape
+encoding $E_M(s)$ is a primitive-recursive function. The logical register
+permutation in both delivered tables is
+\[
+(6,2,0,4,3,7,8,5,1).
+\]
+The retained independent verifier derives four list traversals directly
+from the literal transition rows, without importing the compiler or using
+an arithmetic-box oracle. Write
+\[
+B(v)=0\,1^{v+1},\qquad C(v)=1\,0\,1^v.
+\]
+The word identity $C(A)1=1B(A)$ follows by induction on the coded list
+length. Its single-block identity and each self-loop crossing a run are
+proved by quantifier-free counter induction. A list traversal has exact
+duration $\operatorname{width}(A)=\sum_{v\in A}(v+2)$.
+The checker composes these generic lemmas with literal transitions and
+normalizes finite words. Nonnegative affine coefficients ensure that no
+symbolic run of negative length is introduced. Its rules are mathematical
+proof rules with the preceding primitive-recursive interpretation; the
+Python implementation is not described as a proof-assistant kernel.
+
+Every decrement has both its zero and successor branches. The source
+contracts cover arbitrary natural registers, arbitrary first spare value,
+arbitrary finite spare tail, and arbitrary nonnegative gap. The first spare
+is present, so the complete spare file is nonempty. Address arithmetic and
+interval-based tree resolution independently agree with the delivered
+instruction graph. Every nonhalt result is checked to be the correct
+padded target frame. Exact durations have thirteen slots: a constant, the
+gap, nine register values, the first spare value, and the tail width.
+
+The two starts are checked from an entirely blank tape, comparing the whole
+finite set of one-cells. The source frame is at native state 84, head $-2$,
+source site 25, and logical register vector $(2,0,\ldots,0)$.
+Initially $g=0$, $a_0=1$, and $A$ consists of twenty-five ones; hence
+$\operatorname{width}(A)=75$. The times are 57,870 and 57,712 for the two
+new tables. The specified parents take 57,922 and 57,768 respectively.
+Every transition through each new startup is also synchronized exactly
+against its unaccelerated loop parent using the expanded clock above.
+
+\subsection{Why source frames cover arbitrary physical halting times}
+For one implementation let $s_j$ be the primitive-recursive iteration of
+its augmented source step. Its logical projection is the common source
+program. Let $h(s)$ mean that the source is ready to execute its halt
+instruction; such a frame still has nonhalting physical control 84.
+Let $k(s)\ge1$ be the exact normal-instruction duration, and $k_H(s)\ge1$
+the halt-instruction duration, extended totally on irrelevant inputs.
+With startup time $b$, define
+\[
+T(0)=b,\quad T(j+1)=T(j)+k(s_j),\qquad
+P(j)=\prod_{i<j}(1-h(s_i)).
+\]
+The invariant is
+\[
+P(j)=1\ \Longrightarrow\
+\bigl(\operatorname{Inv}(s_j)\land
+ \operatorname{run}_M(T(j),\mathrm{blank})=E_M(s_j)
+ \land T(j)\ge b+j\bigr).
+\tag{*}
+\]
+All predicates here are Boolean combinations of primitive-recursive
+functions. Quantifier-free induction proves (*) from the startup and the
+complete source contracts. The factorization
+$P(j+1)=P(j)(1-h(s_j))$ supplies the nonhalt premise needed for the next
+contract. No quantification over all environments is hidden inside the
+induction hypothesis.
+
+If the logical source is ready to halt at index $n$, bounded first-hit
+search finds the least such $m\le n$. Then $P(m)=1$, and the halt contract
+provides a physical halt at $T(m)+k_H(s_m)$. Conversely suppose the physical
+machine is halted by time $t$. If $P(t+1)=1$, (*) gives a nonhalting frame
+at $T(t+1)\ge b+t+1>t$, contradicting absorption. Thus the finite Boolean
+product $P(t+1)$ is zero. A bounded first-hit function returns a source
+halt index $m\le t$. Its existence follows by quantifier-free induction
+on a finite Boolean list. There is no use of Markov's principle or of
+unbounded double-negation elimination. A hidden halt within a proposed
+normal segment is excluded by its exact nonhalting endpoint under
+absorbing semantics.
+
+\subsection{An explicit polynomial witness bound}
+The supplied coefficient audit checks, for every applicable contract of
+the two new machines and their frozen parents, the conservative envelope
+\[
+3\le k(s),k_H(s)\le
+1000+8g+4\sum_{i=0}^{8}r_i+2a_0+2\operatorname{width}(A).
+\tag{D}
+\]
+The constant 1000 is deliberately larger than the measured maximum
+coefficient. A positive-decrement branch uses $r_i-1$ in its variable
+slot; replacing it by the actual input $r_i$ only increases the bound.
+
+Each normal primitive increments at most one logical register by one.
+The explicit frame updates give $g'=g+\delta+o$ with
+$\delta,o\in\{0,1\}$. An increment appends one spare value 1; the other
+primitives retain the spare list. After $j$ normal primitives, induction gives
+\[
+\sum_i r_i\le2+j,\qquad g\le2j,\qquad
+ a_0=1,\qquad\operatorname{width}(A)\le75+3j.
+\]
+Substitution into (D) yields $k(s_j),k_H(s_j)\le1160+26j$.
+Therefore $n$ normal primitives and their following halt instruction take
+at most
+\[
+b+13(n+1)^2+1147(n+1).
+\]
+All four startup times are below 60,000. Define
+\[
+\boxed{\Theta(t)=60000+13(t+1)^2+1147(t+1)
+                  =13t^2+1173t+61160.}
+\]
+
+\begin{theorem}[New relative iPRA result]
+For each pairing
+\[
+(\mathrm{PA194LCG},\mathrm{PA194AX11GH}),\qquad
+(\mathrm{PA194LCGS},\mathrm{PA194AX11GHS}),
+\]
+write the two machines as $N$ and $M$. Then iPRA proves
+\[
+\forall t\,(H_M(t)\to H_N(\Theta(t))),\qquad
+\forall t\,(H_N(t)\to H_M(\Theta(t))).
+\]
+Consequently iPRA proves both their halting equivalence and their
+nonhalting equivalence.
+\end{theorem}
+\begin{proof}
+The source-array equality identifies the logical source iteration of
+each pair. From a physical halting witness $t$ in either implementation,
+the bounded extraction above gives a common logical halt index $n\le t$.
+The other implementation halts within its displayed polynomial bound,
+and hence by $\Theta(t)$. The construction and each induction are
+primitive recursive and quantifier free. Existential introduction gives
+the positive halting equivalence; ordinary intuitionistic reasoning gives
+the negative equivalence. No premise about PA consistency occurs here.
+\end{proof}

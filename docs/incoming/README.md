@@ -14,7 +14,7 @@ a report at one of the destinations of section 2.
 
 ## Con(PA) machine research packets
 
-Ninety-three archives that arrived between 28 October and 13 November 2026 are about
+One hundred archives that arrived between 28 October and 14 November 2026 are about
 constructing a Turing machine whose non-halting is equivalent to `Con(PA)`. They are
 placed, as delivered and without a write, in
 [`Computability/BusyBeaver/Research/PA/docs`](../../Computability/BusyBeaver/Research/PA/docs/README.md),
@@ -123,6 +123,13 @@ from the history.
 | `pa194_research_2026-11-14.zip` (second archive of this name) | 2026-11-14 | [pa194_research_2026-11-14_2](../../Computability/BusyBeaver/Research/PA/docs/pa194_research_2026-11-14_2/) |
 | `pa194_sel_ax11gh_research_2026-11-14.zip` | 2026-11-14 | [pa194_sel_ax11gh_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194_sel_ax11gh_research_2026-11-14/) |
 | `pa_conpa_research_2026-11-14.zip` | 2026-11-14 | [pa_conpa_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa_conpa_research_2026-11-14/) |
+| `pa194_comparison_and_new_designs_2026-11-15.zip` | 2026-11-14 | [pa194_comparison_and_new_designs_2026-11-15](../../Computability/BusyBeaver/Research/PA/docs/pa194_comparison_and_new_designs_2026-11-15/) |
+| `pa194_lcfast_tagged_research_2026-11-14.zip` | 2026-11-14 | [pa194_lcfast_tagged_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194_lcfast_tagged_research_2026-11-14/) |
+| `pa194_loop_return_2026-11-14.zip` | 2026-11-14 | [pa194_loop_return_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194_loop_return_2026-11-14/) |
+| `pa194_gd_research_2026-11-14.zip` | 2026-11-14 | [pa194_gd_research_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194_gd_research_2026-11-14/) |
+| `pa194_witness_research_2026-11-15.zip` | 2026-11-14 | [pa194_witness_research_2026-11-15](../../Computability/BusyBeaver/Research/PA/docs/pa194_witness_research_2026-11-15/) |
+| `pa194_ax11gdh_research_2026-11-15.zip` | 2026-11-14 | [pa194_ax11gdh_research_2026-11-15](../../Computability/BusyBeaver/Research/PA/docs/pa194_ax11gdh_research_2026-11-15/) |
+| `pa194_marker_separation_2026-11-14.zip` | 2026-11-14 | [pa194_marker_separation_2026-11-14](../../Computability/BusyBeaver/Research/PA/docs/pa194_marker_separation_2026-11-14/) |
 
 ## Sub-exponential 3-SAT (ETH) reports
 

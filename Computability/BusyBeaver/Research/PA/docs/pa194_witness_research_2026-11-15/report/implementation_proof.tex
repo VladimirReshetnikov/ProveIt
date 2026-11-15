@@ -1,0 +1,440 @@
+\section{From the new axioms to the literal machines}
+\label{sec:implementation}
+
+This section binds the logical changes to actual source programs and
+binary tables.  PA194H5X retains $O$ as its first head.  PA194JH5X uses
+$J$ instead, together with the same $h_5^X$.  Write $F$ for the chosen
+first head.  Both machines use the \emph{ordinary} sixth head
+\[
+ h_6(D,A,H)=U(D,A)\to\bigl(U(D,A\to H)\to U(D,H)\bigr).
+ \tag{6}
+\]
+The finite K/S premise-exchange theorem translates (6) and $h_6^Q$ in
+both directions.  An inherited 61-line certificate is replayed in
+\path{verification/exchange_certificate.py}; newly generated independent
+161-line certificates also check both orientations.  These are
+nonminimal proof sizes, not state counts.  Thus the witness and join
+arguments, which were conveniently written with $h_6^Q$, apply to the
+actual ordinary-head emitters without adding another emitted axiom.
+
+\subsection{Exact arithmetic command semantics}
+
+For completeness the unchanged guarded gate is
+\begin{align*}
+ V(a,b,c)&=M(a,b)\to U(c,M(a,b)),\\
+ P(a,b,c)&=c\to M(c,b),\\
+ S(a,b,c)&=U\bigl(b,(M(a,b)\to P(a,b,c))\wedge(M(c,b)\to c)\bigr),\\
+ Q(a,b,c)&=U(c,S(a,b,c)\to\neg P(a,b,c)),\\
+ G(a,b,c)&=\neg(V(a,b,c)\to Q(a,b,c)),\qquad c\ne a,b,
+\end{align*}
+where $B\wedge C=\neg(B\to\neg C)$ and $\neg B=B\to1$.
+These are equations between numerical constructors.  The false guard
+branch emits the theorem code zero, not an unguarded $G$ instance.
+
+Let $[a;w]=p(a,w)$, with nested brackets for several entries.  These are
+Cantor pairs, not freely generated lists: $[0;0]=0$ and both projections
+of zero are zero.  The command store is $(t,w,d,h)$, comprising visible
+top, stack, offset, and cache.  Put $A=c$, $D=d+x$, $H=h+y$ and define
+\[
+ \mathsf{AX}_{c,x,y,z}(t,w,d,h)
+       =(0,[q_0,q_1,\ldots,q_9,t;w],z,0),                 \tag{AX}
+\]
+with the exact order
+\begin{center}
+\begin{tabular}{@{}clcl@{}}
+\toprule
+$j$&$q_j$&$j$&$q_j$\\\midrule
+0&$G(H,D,A)$ if $A\ne H,D$, else $0$&1&$\Gamma(A)$\\
+2&$h_6(D,A,H)$&3&$h_5^X(D,A,H)$\\
+4&$h_4(D,A,H)$&5&$h_3(D,A,H)$\\
+6&$h_2(D,A,H)$&7&$F(D,H)$\\
+8&$\rho_8(D,A,H,d)$&9&$U(c,h)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The restriction on $\rho_8$ is respected because $d\le d+x$.
+The final saved generalizer uses the \emph{incoming} cache $h$ and the
+explicit operand $c$.  The fourth field $z$ is consumed by the full MP
+fallthrough; it is not a dummy field in the literal program.
+
+The other two commands are
+\[
+ \mathsf S(t,w,d,h)=
+ \begin{cases}
+ \mathsf{halt},&h=1,\\
+ (h,\operatorname{tl}w,d,\operatorname{hd}w),&h\ne1,
+ \end{cases}                                             \tag{S}
+\]
+and, for $b=d+x$,
+\[
+ \mathsf{MP}_x(t,w,d,h)=
+ \begin{cases}
+ (b,w,b,0),&I(t,b)=h,\\
+ (0,w,b,0),&I(t,b)\ne h.
+ \end{cases}                                             \tag{MP}
+\]
+Only Shift halts.  Every $q_0,\ldots,q_8$ has residue zero modulo four;
+$q_9$ has residue two and is at least two.  None equals one.  This remains
+true after replacing $O$ by $J$; the outer constructor is still $I$.
+
+\subsection{All-store proof-word compilation}
+
+Execute command words from left to right and set $A_0=\mathsf{AX}_{0,0,0,0}$.
+The total pair-projection equations give
+\begin{align*}
+ \mathsf{AX}_{c,x,y,0};\mathsf S^{10}(t,w,d,h)&=(q_8,[t;w],0,q_9),\\
+ \mathsf{AX}_{c,x,y,0};\mathsf S^{11}(t,w,d,h)&=(q_9,w,0,t).
+\end{align*}
+Neither word tests the saved $t$.  Define
+\[
+ \mathsf{Push}=A_0;\mathsf S^{10};\mathsf{MP}_0,\qquad
+ \mathsf{Pop}=A_0;\mathsf S^{12},\qquad
+ \mathsf{Discard}=\mathsf{MP}_0.
+\]
+Their exact contracts are
+\begin{align*}
+ \mathsf{Push}(t,w,d,h)&=(0,[t;w],0,0),\\
+ \mathsf{Pop}(t,[a;w],d,h)&=
+   \begin{cases}\mathsf{halt},&t=1,\\(t,w,0,a),&t\ne1,\end{cases}\\
+ \mathsf{Discard}(t,w,0,h)&=(0,w,0,0),\\
+ \mathsf{MP}_i(0,w,0,0)&=(0,w,i,0).
+\end{align*}
+Push's comparison fails by residues.  Pop's twelfth Shift tests the saved
+visible top.  All equations include the zero-stack alias.
+
+For $0\le j\le8$, the head selector
+\[
+ \mathsf{Discard};\mathsf{AX}_{A,D,H,0};
+              \mathsf S^{j+2};\mathsf{Pop}^{9-j}           \tag{Sel}
+\]
+sends $(t,w,0,0)$ to $(q_j,w,0,0)$.  In particular, the parameters of
+$h_5^X$ and $J$ are available independently.  For an arbitrary dominated
+instance $u\le D$, use
+\[
+ \mathsf{Discard};\mathsf{MP}_u;
+ \mathsf{AX}_{A,D\mathbin{\dot-}u,H,0};
+              \mathsf S^{10};\mathsf{Pop}.                \tag{Rho}
+\]
+The generalization word is
+\[
+ \mathsf{Gen}_i=\mathsf{Push};\mathsf S;
+                   \mathsf{AX}_{i,0,0,0};\mathsf S^{11}.  \tag{Gen}
+\]
+Starting at $(a,w,0,0)$, Push and Shift give $(0,w,0,a)$; the following
+AX consumes the cache before another Shift tests it.  The final state is
+$(U(i,a),w,0,0)$, including when $a=1$.
+
+At a modus-ponens proof node with major premise $I(a,b)$ and minor premise
+$a$, compile
+\[
+ \mathsf{Discard};\mathsf{Push};W_{\rm major};
+ \mathsf{Push};W_{\rm minor};\mathsf{Push};
+ \mathsf S;\mathsf S;\mathsf{MP}_b;\mathsf{Pop}.          \tag{CmpMP}
+\]
+The initial pair reserves a zero below both premises.  Unless a premise
+word already halts, the last suffix starts at
+$(0,[a,I(a,b),0;w],0,0)$.  It either detects an earlier contradiction or
+returns $(b,w,0,0)$.  The final Pop clears the offset and removes the
+reserved zero.  Thus, for a proof $\pi$, the exact compiler invariant is
+\[
+ W_\pi(t,w,0,0)=\mathsf{halt}\quad\text{or}\quad
+ W_\pi(t,w,0,0)=(\operatorname{concl}\pi,w,0,0).          \tag{Cmp}
+\]
+For a refutation, the word
+\[
+             V_\pi=A_0;W_\pi;\mathsf{Pop}               \tag{Ref}
+\]
+halts from \emph{every} store.  The initial AX normalizes offset and
+cache.  The final Pop detects a visible contradiction; a plain Shift
+would instead test the zero cache and would be incorrect.
+
+Push, Pop and Gen have lengths 12, 13 and 25.  Selector $j$ has length
+$121-12j$, and the dominated selector has length 26.  An MP node has
+53 commands of overhead.  If $n$ is the number of nodes of the expanded
+proof tree, then $|W_\pi|\le121n$ and $|V_\pi|\le121n+14$.
+This is not a linear bound in the number of lines of an unexpanded DAG.
+
+\paragraph{Why the compiler proof belongs to iPRA.}
+An induction whose assertion is correctness for every unbounded store
+would be insufficient justification.  Instead use the retained bounded
+input argument from \cite{ax11h,gh}.  Given a valid $N$-line proof, compile
+all earlier words and compute the largest length $L$ and command code $K$.
+For the absorbing PR command transition $\operatorname{next}$ put
+\[
+ \Phi_K(s)=1+\max\left(s,\max_{c\le K,\ u\le s}
+                                  \operatorname{next}(c,u)\right),
+ \qquad B(j)=\Phi_K^{L(N-1-j)}(s_0).
+\]
+For $i<j<N$, $\Phi_K^L(B(j))\le B(i)$.  Induct on the Boolean statement
+checking every earlier line on every normalized input within its assigned
+bound.  Every premise invocation inside word $j$ is reached within $L$
+steps; its input lies in the earlier line's bound, and the local word
+contracts make it normalized.  Halt is absorbing.  The invariant is a
+bounded conjunction and therefore a PR Boolean test, so quantifier-free
+induction applies.  At the final line $B(N-1)=s_0$.  Since $s_0$ was an
+arbitrary free parameter, (Cmp) and (Ref) hold uniformly.  Malformed
+proofs are assigned a fixed default word, keeping the compiler total.
+
+\subsection{Scheduling and extraction in both directions}
+
+The scheduler starts at $(n,\ell,t,w,d,h)=(2,0,0,0,0,0)$.
+When $\ell=0$ it chooses raw seed $n$ and increments $n$; otherwise it
+chooses $\ell-1$ without incrementing $n$.  After unpairing a seed, tag
+0 means Shift, tag 1 means MP with one parameter, and tag $c+2$ means
+AX with fields $y,x,z$, in that order.  For a command word let
+$e(\epsilon)=0$ and $e(C::v)=1+b_C(e(v))$, with
+\[
+\begin{split}
+ b_{\mathsf S}(r)&=p(0,r),\\
+ b_{\mathsf{MP}_x}(r)&=p(1,p(x,r)),\\
+ b_{\mathsf{AX}_{c,x,y,z}}(r)&=p(c+2,p(y,p(x,p(z,r)))).
+\end{split}
+\]
+All fields, including zero fields, are recovered by total projections.
+Every positive continuation decreases strictly.  A fresh raw seed $m$
+therefore drains in at most $m+1$ command calls unless it halts sooner.
+
+For a refutation $\pi$, the raw seed
+\[
+ N_\pi=p\bigl(2,p(0,p(0,p(0,e(V_\pi))))\bigr)\ge3
+\]
+executes an extra AX followed by the all-store halting word.  It is
+reached, or an earlier halt occurs, within the PR command bound
+$K(\pi)=(N_\pi+2)^2$, because
+\[
+ \sum_{m=2}^{N_\pi}(m+1)
+       =\frac{N_\pi^2+3N_\pi-4}{2}<(N_\pi+2)^2.
+\]
+This uses a bounded counter induction.  Failed candidates need not reset
+the store; all-store completeness is precisely what removes that premise.
+
+In the converse direction, maintain a finite checked derivation list
+whose indices justify $t,h$ and every canonical stack head.  The fixed
+instance $\rho_8(0,0,0,0)=0$ supplies the zero theorem, including virtual
+zero heads of a zero stack.  For a positive stack code, its tail is
+smaller, so its decoding is bounded.  AX appends axiom instances and the
+generalization of the cache; its guard and dominated side condition are
+verified by primitive recursive comparisons.  MP and Shift preserve the
+annotations.  A halting Shift exposes a proof of one.  Induction on a
+bounded Boolean proof-prefix checker gives, for each new calculus
+$\mathcal C$ and corresponding scheduler $R$,
+\[
+ \ipra\vdash\quad
+ \Halt(R)\ \longleftrightarrow\
+                \exists\pi\,\operatorname{Prf}_{\mathcal C}(\pi,1).
+ \tag{Log}
+\]
+The logical translations of the preceding section convert these
+refutations to and from $\Cold$ with the same final numerical conclusion.
+
+\subsection{Complete primitive-source binding}
+
+The logical source registers are $(N,T,W,A,D,H,X,Y,L)$.  The instruction
+set comprises increment, zero/positive decrement, resolved jumps, and
+halt.  Its initial scheduler boundary is site 25 with register file
+$(2,0,\ldots,0)$.  The relevant command ports are:
+\begin{center}
+\begin{tabular}{@{}lrr@{}}
+\toprule
+Port or count & PA194H5X & PA194JH5X\\\midrule
+Fetch / decode / AX & $25/34/50$ & $25/34/50$\\
+MP / compare / success & $3578/3648/3658$ & $3584/3654/3664$\\
+Return / Shift & $3665/3666$ & $3671/3672$\\
+Arithmetic template instances & 950 & 953\\
+Primitive sites / branch outcomes & $3677/4786$ & $3683/4794$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The independent checker \path{verification/source/check_source_commands.py}
+matches every operation, register argument, zero edge and positive edge
+to its arithmetic template.  It independently resolves the named binary
+source tree and confirms that the resulting CFG is the supplied instruction
+array.  It evaluates the \emph{entire} AX macro word in a term algebra,
+including scratch-register conditions, both guarded cleanup branches and
+the residual pair $p(z,\mathrm{tail})$.  The complete output is (AX), with
+all other scratch registers zero; no conclusion is inferred merely from
+the changed local token interval.
+
+The uniform arithmetic templates and their clocks are proved by the
+quantifier-free counter inductions in the retained
+\path{source_command_completion.tex}.  They cover clearing, transfer,
+restored copy, duplicate, bounded comparison, Cantor constructor and
+destructor, fetch and dispatch.  The changed source uses the same
+templates at newly computed ports.  Composition therefore gives a PR
+command clock $\theta(c)\ge1$ and an exact endpoint equation
+\[
+ \operatorname{SrcRun}(\theta(c),J(c))=J(R(c)),
+ \qquad h_{\rm Src}(J(c))=h_R(c).
+ \tag{Src}
+\]
+Here $J$ retains the actual live register file; the data-carrying halted
+source file is also kept until the absorbing halt representation is chosen.
+The checker's 882 numerical local-duration examples and 324 composed
+Shift/MP examples supplement this uniform proof.  They are not a finite
+cutoff substituted for the universal arithmetic statement.
+
+A shorter macro word has not reduced the primitive instruction count.
+Replacing a constant-building suffix by a restored parameter copy saves
+one macro token but adds six primitive sites in each step of this family:
+3,671 in the GH parent, 3,677 in H5X, and 3,683 in JH5X.  Shared reader
+cost and compatible folds, rather than either of these two source-size
+metrics alone, determine the final 194-state budget.
+
+\subsection{Literal tape contracts and the weak-base transport}
+
+Both machines use the logical-to-physical register-slot map
+$[6,2,0,4,3,7,8,5,1]$.  The complete 57,922-transition blank run reaches
+native control 84, head $-2$, the initial logical register file, and
+26 spare blocks of value one.  The certificate checks the complete
+nonzero support and both blank exteriors, not only a local tape window.
+
+The independent literal checker imports no construction compiler and
+uses no unproved arithmetic-box oracle.  Its symbolic tape atoms are
+unary runs, arbitrary finite lists of blocks, and blank or opaque
+exteriors.  Every ordinary step reads the actual transition table.
+Unary sweeps are justified by induction on their run length.  Four
+generic list traversals are reconstructed directly from literal rows,
+then proved by induction on the prefix length of an arbitrary coded list.
+The implementation of these arithmetic rules and their full proofs are
+retained in \path{references/baseline_proof/physical_ipra_audit.tex}.
+
+Each source outcome has nine arbitrary primary-register parameters, an
+arbitrary nonempty finite spare-register list, and an arbitrary
+nonnegative gap.  Duration and displacement are affine expressions.
+The coefficient slot for spare-list width means the width of the
+\emph{same} list occurring on the tape; it is not an unrelated variable.
+Normalization merges equal runs and removes exterior zero padding only
+when that is equality of the complete zero-extended tape.  The separate
+closure audit verifies every target source address, complete tape shape,
+zero net boundary movement, and positive duration.  The one halting
+outcome is distinguished explicitly.  These checks support the
+model-uniform interpretation of the finite certificates.
+
+For clarity, the general arithmetic transport argument is recorded here.
+The physical source state is the \emph{extended} source state: program
+counter, nine primary registers, the evolving gap, and the entire spare
+list.  The boundary origin can also be carried, or fixed because every
+live certified segment has zero net motion.  This bookkeeping projects
+to the primitive register run in (Src) and preserves its halt flag.
+It is included in $s_k$, $F$, $\delta$ and $\tau$ below; a bare register
+file would not determine the whole tape or its segment duration.
+
+Use the absorbing PR run $s_k$ of these extended states, its exact frame
+map $F$, and the specified positive PR target duration $\delta(s)$ on
+live states.  In the arithmetic target representation, all physically
+halted configurations are mapped to one absorbing code $H$ after the
+literal halt has occurred.  This changes neither the physical table nor
+its halting predicate, and $F$ maps an extended source halt to $H$.
+It is harmless to set duration zero after halt.  Define
+\[
+ \tau(0)=0,\qquad \tau(k+1)=\tau(k)+\delta(s_k).
+\]
+Quantifier-free induction gives
+\[
+ \operatorname{Run}_{M}(T_0+\tau(k))=F(s_k),
+ \qquad h_M(F(s_k))=h_{\rm Src}(s_k).
+ \tag{Tape}
+\]
+If $s_k$ is live, all its predecessors are live by absorption, hence
+$\tau(k)\ge k$.  Given a physical halt by time $t$, decide the halt
+flag of $s_{t+1}$.  If live, (Tape) would give a live target frame after
+time $t$, contradicting target absorption.  If halted, $t+1$ is already
+an explicit source witness.  This is a decidable finite case split, not
+double-negation elimination for an unbounded existential.
+
+Apply the same argument to (Src) and then to (Tape).  If
+$\Theta(k)=\sum_{i<k}\theta(R^i(c_0))$, a refutation $\pi$ supplies
+the explicit PR physical halting witness
+\[
+             57922+\tau\bigl(\Theta(K(\pi))\bigr).
+\]
+Conversely, two positive-clock transports and the annotation extractor
+turn any literal halting witness into a numerical refutation.  No
+assumption of PA consistency enters either construction.  Consequently,
+for each delivered machine $M$,
+\[
+ \ipra\vdash\quad
+ \Halt_{\rm blank}(M)
+ \longleftrightarrow\Halt(R_M)
+ \longleftrightarrow\exists\pi\,\operatorname{Prf}_{\mathcal C_M}(\pi,1)
+ \longleftrightarrow\exists\pi\,\operatorname{Prf}_{\Cold}(\pi,1).
+ \tag{New}
+\]
+
+\section{The identified PA calibration and the final theorem}
+\label{sec:calibration}
+
+The absolute calibration is the \emph{revised} AX11H packet
+\cite{ax11h}, whose intact retained archive has SHA-256
+\begin{center}\small
+\nolinkurl{93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075}.
+\end{center}
+This is the packet filed under the suffixed directory
+\path{pa194_ax11h_research_2026-11-14_2}; the older same-name delivery
+has a materially weaker written proof and is not substituted for it.
+
+The designated consistency sentence is
+\path{DiophantineConsistency.IPRAPA196Consistency.nativePAConsistency}
+from \path{IPRAPA196Consistency.lean}.  It is the negation of the native
+reading of the mapped Foundation PA-refutation predicate, whose source
+predicate is PA-provability of bottom.  It is not an unexplained
+identification of Foundation proof codes with Cantor-coded proof lists.
+The current pinned repository's Foundation gitlink remains
+\path{32e1a0956a8622fad067328ca1959729a7634428}.  The endpoint file's
+Git blob remains \path{ff5926a5cf1cd350403c84329e42775b13a1eb19};
+the PA195 refutation bridge's SHA-256 is
+\nolinkurl{fd043d3493d4386a70e38f39f4b172b357d714ddb7da07ba276a5892b1c5d655}.
+The current endpoint audit is included in the comparison packet.
+
+The inherited proof dependencies are explicit:
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}p{.33\textwidth}X@{}}
+\toprule
+Retained paper & Obligation supplied\\\midrule
+\path{physical_ipra_audit.tex}&Arithmetic semantics of literal runs, symbolic lists, source-frame closure and variable clocks.\\
+\path{source_command_completion.tex}&Uniform arithmetic templates, complete source/command bridge and exact clocks.\\
+\path{ax11h_preservation.tex}&Original AX11 command calculus, all-store compiler and bounded-input induction.\\
+\path{q_exchange_ipra.tex}&Uniform ordinary/exchanged sixth-head proof translations.\\
+\path{foundation_paeq_completion.tex}&Current Foundation syntax/proof adapter, changed arithmetic leaf and canonical induction closure.\\
+\path{term_leaf_completion.tex}&Finite-demand term and substitution suppliers; finite logical certificate leaves.\\
+\path{forward_calibration_completion.tex}&Current PA-proof translation into the numerical calculus with model-uniform finite-demand correctness.\\
+\path{consistency_implies_nonhalting.tex}&Reverse numerical-to-PA direction and the specified weak-base transfer.\\
+\path{consistency_equivalence.tex}&Composition into the full written iPRA consistency equivalence.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The finite-demand construction matters: an informal assertion of
+correctness for every environment does not authorize quantifier-free
+induction.  The inherited papers construct explicit finite query trees
+with decreasing source rank, PR child parameters independent of returned
+proof values, and PR node bounds.  Bottom-up correctness is checked on a
+finite table.  They also distinguish the current Foundation PA
+presentation, historical ordinary PAeq, and the numerical calculus, and
+adapt the differing finite axiom and induction closure rather than
+assuming their codes coincide.  Those substantial mathematical
+arguments remain dependencies of this result; no Python receipt is
+presented as a replacement for them.
+
+Let $M_Q$ be the calibrated QAX11H table in that archive.  Its written
+theorems give
+\begin{align*}
+ \ipra&\vdash\Halt_{\rm blank}(M_Q)
+      \longleftrightarrow\exists\pi\,\operatorname{Prf}_{\Cold}(\pi,1),\\
+ \ipra&\vdash\neg\Halt_{\rm blank}(M_Q)
+      \longleftrightarrow\Con(\PA).
+\end{align*}
+Equation (New) proves positive halting equivalence of each delivered
+machine with $M_Q$.  Intuitionistic logic preserves equivalence under
+negation.  Thus
+\[
+ \boxed{\ipra\vdash\
+ \neg\Halt_{\rm blank}(M)\longleftrightarrow\Con(\PA),
+ \quad M\in\{\mathsf{PA194H5X},\mathsf{PA194JH5X}\}.}
+\]
+This proof does not assert PA's consistency, extract a positive
+existential from a double negation, or appeal to standard-model soundness
+in place of an internal proof.  Its uncompleted formalization obligation
+is a kernel-checked development of the stated mathematical chain, with
+these exact table and source constants.

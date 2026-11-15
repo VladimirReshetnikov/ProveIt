@@ -1,0 +1,161 @@
+\section{Exact physical acceleration of both new designs}
+\label{sec:acceleration}
+\subsection{The two changes}
+Native controls and symbols are used throughout. The initial control is 74,
+the halt label is 254, and the tape alphabet is $\{0,1\}$ with blank 0.
+Let $M$ be either PA194AX11GH or PA194AX11GHS. Define $M^{\mathrm F}$ by
+changing exactly the following two transitions and retaining every other row:
+\begin{center}
+\begin{tabular}{ccccc}
+\toprule
+Control & Read & Original action & Accelerated action & Old steps / new steps\\
+\midrule
+26 & 1 & $1R42$ & $1R91$ & $3/1$\\
+101 & 0 & $0L26$ & $0R17$ & $3/1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $wDq$ means write $w$, move in direction $D$, and enter control $q$.
+Both resulting tables still have 194 working controls and 388 transitions.
+The dense versions start at 0 and halt at label 194; the accompanying label
+arrays give the exact conjugacy with native numbering.
+
+\subsection{A finite structural invariant}
+Write a configuration as $(q,h,T)$, where $T(i)$ is the symbol at position $i$.
+Consider the following three implications:
+\begin{align*}
+I_{101}:\quad &q=101\ \Longrightarrow\ T(h-1)=0,\\
+I_{11}:\quad &q=11\ \Longrightarrow\bigl(T(h-1)=0\ \lor\ T(h+1)=0\bigr),\\
+I_{26}:\quad &q=26\ \land\ T(h)=1\ \Longrightarrow\ T(h+1)=T(h+2)=0.
+\end{align*}
+Let $I$ be their conjunction. The finite row checker establishes:
+\begin{enumerate}
+\item The sole transition into 101 is $96/0\mapsto0R101$.
+\item Every transition into 11 writes 0. Their source pairs are
+$(14,0),(39,0),(56,0),(312,0)$; the first three move left and the last moves right.
+\item The only transitions into 26 are $11/0\mapsto0L26$ and
+$101/0\mapsto0L26$.
+\end{enumerate}
+The start control 74 is different from 11, 26 and 101.
+
+\begin{lemma}
+Every parent run beginning in control 74 satisfies $I$ at every time,
+on every tape and at every initial head position.
+\end{lemma}
+\begin{proof}
+The invariant is initially vacuous. A step into 101 has just written 0 to
+the cell immediately left of the new head, proving $I_{101}$. A step into 11
+has written 0 to one of its two neighboring cells, proving $I_{11}$.
+
+For a step into 26, both possible incoming transitions move left after
+writing 0, so the new cell immediately to the right is 0. If the predecessor
+control is 101, $I_{101}$ makes the newly scanned symbol 0, and the antecedent
+of $I_{26}$ is false. If the predecessor is 11 and the new scanned symbol is 1,
+$I_{11}$ forces the old right neighbor to be 0. This is the new cell two
+positions to the right. Thus $I_{26}$ holds. No other step enters the three
+relevant controls, completing the induction.
+\end{proof}
+
+This argument does not invoke source-program correctness, a register-file
+layout, a sampled execution, or an arithmetic-box contract.
+
+\subsection{Exact local identities}
+At control 26 reading 1, $I_{26}$ supplies the next two symbols $00$.
+The original sequence is
+\[
+ (26,h,T)\ \xrightarrow{1R42}\ (42,h+1,T)
+ \ \xrightarrow{0R13}\ (13,h+2,T)
+ \ \xrightarrow{0L91}\ (91,h+1,T).
+\]
+All writes preserve the scanned symbols. This is exactly the configuration
+reached in one accelerated step $1R91$.
+
+At control 101 reading 0, $I_{101}$ supplies a 0 immediately to the left.
+The original sequence is
+\[
+ (101,h,T)\ \xrightarrow{0L26}\ (26,h-1,T)
+ \ \xrightarrow{0R194}\ (194,h,T)
+ \ \xrightarrow{0R17}\ (17,h+1,T),
+\]
+again exactly the endpoint of the new single step $0R17$.
+None of the displayed intermediate controls is the halt control.
+The checker independently enumerates the four length-five windows for the
+first guard and the eight length-five windows for the second, checking full
+tape equality, head equality and control equality in all twelve cases.
+
+\subsection{Uniform simulation and weak arithmetic}
+For arithmetic coding, extend both step functions by making the halting
+configuration absorbing. This convention is used only in the arithmetized
+iteration; it does not add a working control to the machine.
+Let $C_t^{\mathrm F}$ be the accelerated configuration after $t$ steps and set
+\[
+ \kappa(C)=\begin{cases}
+ 3,&(q,T(h))\in\{(26,1),(101,0)\},\\
+ 1,&\text{otherwise}.
+ \end{cases}
+\]
+Define the primitive-recursive expanded clock by
+\[
+ \sigma(0)=0,\qquad
+ \sigma(t+1)=\sigma(t)+\kappa(C_t^{\mathrm F}).
+\]
+
+\begin{theorem}
+For a common initial configuration with control 74,
+\[
+ C_t^{\mathrm F}=C_{\sigma(t)},\qquad
+ t\leq\sigma(t)\leq3t.
+\]
+For the primitive-recursive, absorbing-clock halting predicates $H_M$ and
+$H_{M^{\mathrm F}}$, iPRA proves
+\[
+ \forall t\,\bigl(H_M(t)\ \longrightarrow\ H_{M^{\mathrm F}}(t)\bigr)
+ \quad\text{and}\quad
+ \forall t\,\bigl(H_{M^{\mathrm F}}(t)\ \longrightarrow\ H_M(3t)\bigr).
+\]
+Consequently iPRA proves the relative blank-start halting equivalence and
+the corresponding nonhalting equivalence.
+\end{theorem}
+\begin{proof}
+Induct on $t$. A configuration satisfying $I$ has its accelerated successor
+equal to the parent successor after either one or three steps, by the exact
+identities above. The parent invariant is preserved throughout those steps.
+The clock equation and its bounds follow by quantifier-free induction.
+
+If the parent has halted by $t$, then its absorbing state at $\sigma(t)\geq t$
+is also halted, so the accelerated configuration at $t$ is halted. Conversely,
+if the accelerated configuration at $t$ is halted, so is the parent at
+$\sigma(t)\leq3t$ and hence at $3t$. Both implications are constructive.
+The configuration functions, the finite invariant, the case selector
+$\kappa$, and $\sigma$ are primitive recursive on the usual finite-support
+tape codes. Their displayed induction predicates are quantifier-free.
+Thus the same proof is available in iPRA, in particular for the blank tape.
+No soundness or consistency principle for PA is used.
+\end{proof}
+
+When either machine halts, its least halting times obey
+$\tau_{M^{\mathrm F}}\leq\tau_M\leq3\tau_{M^{\mathrm F}}$.
+The result also gives
+\[
+ \operatorname{Con}(\mathrm{PA})\leftrightarrow\neg\operatorname{Halt}(M)
+ \quad\Longrightarrow\quad
+ \operatorname{Con}(\mathrm{PA})\leftrightarrow\neg\operatorname{Halt}(M^{\mathrm F})
+\]
+as an implication provable in iPRA. Its application requires the separate
+parent calibration argument. That argument's mathematical and formalization
+status is assessed in the enclosing report; it is not part of the shortcut proof.
+
+\subsection{Reproduction and evidence scope}
+Run \texttt{python3 acceleration/build\_fast.py --full} from the enclosing
+AX11GH/GHS packet. The script checks every structural hypothesis above,
+the twelve local identities, complete source contracts, dense/native
+conjugacy, and whole blank initialization. During initialization it checks
+the exact expanded-clock identity at every accelerated transition and
+compares the entire finite tape support. A separate literal checker derives
+the list-sweep lemmas from the rows and repeats all source outcomes without
+importing the construction compiler or arithmetic-box oracle.
+
+All exact counts, file hashes and shortcut-use counts are recorded in the
+per-machine JSON receipts. The transition tables and receipts are the
+machine-specific evidence; the invariant and simulation theorem above
+explain why the acceleration preserves the parent's consistency statement.

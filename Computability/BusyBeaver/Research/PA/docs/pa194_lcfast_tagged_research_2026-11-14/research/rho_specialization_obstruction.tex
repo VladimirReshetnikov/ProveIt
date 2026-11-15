@@ -1,0 +1,37 @@
+\section{A finite obstruction to collapsing the fourth implicational parameter}
+
+Write the unrestricted Lukasiewicz form as
+\[
+ R(p,q,r,u)=((p\to u)\to q)\to((q\to p)\to(r\to p)).
+\]
+The PA emitter retains the restricted family $u\le q$ on numerical codes.
+A tempting simplification is to set $u=q$ throughout, eliminating the
+independent fourth parameter. This family alone, even with modus ponens
+and schematic substitution, is incomplete.
+
+To prove this, take the set $\{0,1,2\}$, designate only $2$, and interpret
+implication by the following matrix (antecedents index rows):
+\[
+\begin{array}{c|ccc}
+\to&0&1&2\\\hline
+0&1&1&2\\
+1&1&2&2\\
+2&1&1&2
+\end{array}
+\]
+Every instance of
+\[
+ ((p\to q)\to q)\to((q\to p)\to(r\to p))
+\]
+has value $2$, as direct evaluation of the $27$ triples shows.
+Modus ponens preserves designation: when its first premise has value $2$,
+row $2$ has designated output only in column $2$. But $p\to p$ has
+value $1$ at $p=0$. Hence identity is not derivable from this specialized
+basis.
+
+The supplied finite checker constructs this matrix by exhaustive search
+and then evaluates all its cases. It is a mathematical obstruction to the
+specialized implicational basis, not a claim that all the additional
+quantifier and set-theoretic axioms of the complete numerical calculus
+cannot restore the missing logic. Such a restoration would require a new
+proof before using the specialization in a consistency machine.

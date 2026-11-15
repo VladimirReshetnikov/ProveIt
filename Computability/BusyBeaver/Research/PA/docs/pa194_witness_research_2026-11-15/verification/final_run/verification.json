@@ -1,0 +1,169 @@
+{
+  "status": "PASS",
+  "pinned_repository": "8d31445d858761a8f6150c2e5012adae8895e932",
+  "baseline_archive_sha256": "93ee082ef035b2d32e71d6af5239b25b4bea1773f03bea4d2c39810a7fe15075",
+  "reconstruction_requested": true,
+  "machine_receipts": [
+    {
+      "family": "PA194H5X",
+      "status": "PASS",
+      "states": 194,
+      "rows": 388,
+      "source_sites": 3677,
+      "source_outcomes": 4786,
+      "symbolic_steps": 1110171,
+      "maximum_symbolic_steps": 409,
+      "minimum_positive_duration_constant": 3,
+      "list_lemmas_from_literal_table": 4,
+      "box_oracles": false,
+      "independent_source_resolvers_agree": true,
+      "dense_native_conjugacy": true,
+      "all_states_graph_reachable": true,
+      "whole_blank_startup": true,
+      "startup_steps": 57922,
+      "dense_sha256": "caffdd9f10d87d0d050eff07ab8f6e8edd9ab443aa94c948f03ee5316e37b614",
+      "native_sha256": "f45696ad9e78599bcc469d887c6295a4dc4afa00ff90458e230c9ee3ad3966d3",
+      "contracts_sha256": "ec5df06c81d7d69f80a621a32c6e4d5166b92bfc2471165200d431e51dc56c12",
+      "scope": "Nine arbitrary natural primary registers, both decrement branches, arbitrary nonempty finite spare list, arbitrary affine nonnegative gap, complete blank exteriors. Executable symbolic induction, not an end-to-end Lean or Rocq PA proof."
+    },
+    {
+      "family": "PA194JH5X",
+      "status": "PASS",
+      "states": 194,
+      "rows": 388,
+      "source_sites": 3683,
+      "source_outcomes": 4794,
+      "symbolic_steps": 1097281,
+      "maximum_symbolic_steps": 388,
+      "minimum_positive_duration_constant": 3,
+      "list_lemmas_from_literal_table": 4,
+      "box_oracles": false,
+      "independent_source_resolvers_agree": true,
+      "dense_native_conjugacy": true,
+      "all_states_graph_reachable": true,
+      "whole_blank_startup": true,
+      "startup_steps": 57922,
+      "dense_sha256": "70be32fe352ee0fb29581f1037948f429334cfc9c6bcaa813aba43c4efba0148",
+      "native_sha256": "957fef85080849e88bba4e82732065a350d382d489a032ddbc03756e8ef0c5e1",
+      "contracts_sha256": "f70a4c7f923701082bd2a943ba12da97738c21e4b29edf73b06d1e76d8131a35",
+      "scope": "Nine arbitrary natural primary registers, both decrement branches, arbitrary nonempty finite spare list, arbitrary affine nonnegative gap, complete blank exteriors. Executable symbolic induction, not an end-to-end Lean or Rocq PA proof."
+    }
+  ],
+  "checks": [
+    {
+      "check": "PA194H5X_rebuild",
+      "script": "construction/build_PA194H5X.py",
+      "returncode": 0,
+      "seconds": 2.14,
+      "log": "logs/PA194H5X_rebuild.log"
+    },
+    {
+      "check": "PA194H5X_source",
+      "script": "verification/source/check_source_commands.py",
+      "returncode": 0,
+      "seconds": 0.115,
+      "log": "logs/PA194H5X_source.log"
+    },
+    {
+      "check": "PA194H5X_commands",
+      "script": "verification/source/check_commands.py",
+      "returncode": 0,
+      "seconds": 0.041,
+      "log": "logs/PA194H5X_commands.log"
+    },
+    {
+      "check": "PA194H5X_literal",
+      "script": "verification/check_literal.py",
+      "returncode": 0,
+      "seconds": 73.04,
+      "log": "logs/PA194H5X_literal.log"
+    },
+    {
+      "check": "PA194H5X_closure",
+      "script": "verification/physical_ipra_audit.py",
+      "returncode": 0,
+      "seconds": 0.277,
+      "log": "logs/PA194H5X_closure.log"
+    },
+    {
+      "check": "PA194JH5X_rebuild",
+      "script": "construction/build_PA194JH5X.py",
+      "returncode": 0,
+      "seconds": 1.948,
+      "log": "logs/PA194JH5X_rebuild.log"
+    },
+    {
+      "check": "PA194JH5X_source",
+      "script": "verification/source/check_source_commands.py",
+      "returncode": 0,
+      "seconds": 0.082,
+      "log": "logs/PA194JH5X_source.log"
+    },
+    {
+      "check": "PA194JH5X_commands",
+      "script": "verification/source/check_commands.py",
+      "returncode": 0,
+      "seconds": 0.031,
+      "log": "logs/PA194JH5X_commands.log"
+    },
+    {
+      "check": "PA194JH5X_literal",
+      "script": "verification/check_literal_JH5X.py",
+      "returncode": 0,
+      "seconds": 70.764,
+      "log": "logs/PA194JH5X_literal.log"
+    },
+    {
+      "check": "PA194JH5X_closure",
+      "script": "verification/physical_ipra_audit_JH5X.py",
+      "returncode": 0,
+      "seconds": 0.234,
+      "log": "logs/PA194JH5X_closure.log"
+    },
+    {
+      "check": "witness_logical_templates",
+      "script": "logic/verify_logic.py",
+      "returncode": 0,
+      "seconds": 0.035,
+      "log": "logs/witness_logical_templates.log"
+    },
+    {
+      "check": "join_logical_templates",
+      "script": "logic/verify_j.py",
+      "returncode": 0,
+      "seconds": 0.027,
+      "log": "logs/join_logical_templates.log"
+    },
+    {
+      "check": "generalized_join_templates",
+      "script": "logic/verify_ja.py",
+      "returncode": 0,
+      "seconds": 0.028,
+      "log": "logs/generalized_join_templates.log"
+    },
+    {
+      "check": "retained_premise_exchange",
+      "script": "verification/exchange_certificate.py",
+      "returncode": 0,
+      "seconds": 0.038,
+      "log": "logs/retained_premise_exchange.log"
+    },
+    {
+      "check": "structural_novelty",
+      "script": "comparison/check_novelty.py",
+      "returncode": 0,
+      "seconds": 0.253,
+      "log": "logs/structural_novelty.log"
+    },
+    {
+      "check": "comparison_packet",
+      "script": "comparison/verify_packet.py",
+      "returncode": 0,
+      "seconds": 11.867,
+      "log": "logs/comparison_packet.log"
+    }
+  ],
+  "kernel_checked": false,
+  "scope": "Finite reconstruction, universal schematic contract replay and proof-template checking. The written iPRA interpretation and retained PA calibration are separate mathematical arguments.",
+  "record_note": "Recorded complete fresh-work-directory run; log locations made relative for distribution. The final all-file integrity manifest was sealed afterward."
+}

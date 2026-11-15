@@ -1,0 +1,103 @@
+\section{A two-shortcut accelerated realization}
+\label{sec:acceleration}
+
+The table \texttt{PA194AX11GDHF} applies the two guarded shortcuts from
+the incoming AX11GH/GHS acceleration work to the new AX11GDH parent.
+The technique is inherited; its application to this new command design
+and the resulting table are new within the inspected corpus.
+No source instruction or arithmetic command changes. The native edits are
+\[
+\begin{array}{c|c|c}
+\text{row}&\text{parent}&\text{accelerated}\\\hline
+(26,1)&(1,R,42)&(1,R,91)\\
+(101,0)&(0,L,26)&(0,R,17).
+\end{array}
+\]
+Both tables have 194 working states and 388 transitions.
+
+\subsection{An invariant on arbitrary complete tapes}
+
+Let $T(x)$ be the bit at position $x$, with head position $x$.
+In every run beginning in native state 74, on any initial complete tape,
+the following local assertions hold whenever their state conditions hold:
+\begin{align*}
+q=101&\ \Longrightarrow\ T(x-1)=0,\\
+q=11&\ \Longrightarrow\ T(x-1)=0\ \text{or}\ T(x+1)=0,\\
+q=26\ \text{and}\ T(x)=1
+ &\ \Longrightarrow\ T(x+1)=T(x+2)=0.
+\end{align*}
+These assertions are initially vacuous. The only incoming row to 101 is
+$(96,0)\mapsto(0,R,101)$. The incoming rows to 11 are
+$(14,0),(39,0),(56,0)$, each writing zero and moving left, and
+$(38,0)$, writing zero and moving right. Thus the appropriate neighbor
+of the new head is zero. In the parent, the only incoming rows to 26 are
+$(11,0)$ and $(101,0)$, both writing zero and moving left.
+The latter can only leave 26 scanning zero, by the first assertion.
+In the former, if the new scanned bit is one, the second assertion at
+the old head forces the other neighbor to be zero. This gives the last
+assertion. In the accelerated table, the incoming row from 101 is removed;
+the same argument still applies. Inspection of these finite row lists
+and quantifier-free induction on the run prove the invariant in iPRA.
+
+\subsection{Exact three-step identities}
+
+At state 26 reading one, the next two cells to the right are zero. The
+parent takes
+\[
+ (26,x)\longrightarrow(42,x+1)\longrightarrow(13,x+2)
+                  \longrightarrow(91,x+1),
+\]
+with no tape change. The child takes the same whole-tape endpoint in one
+step. At state 101 reading zero, the cell immediately left is zero, so
+the parent takes
+\[
+ (101,x)\longrightarrow(26,x-1)\longrightarrow(194,x)
+                   \longrightarrow(17,x+1),
+\]
+again with no tape change. Native state 194 here is a working control;
+the native halt is 254. The child takes the same endpoint in one step.
+All intermediate controls are nonhalting.
+
+The standalone \texttt{build\_fast.py} checks the exact parent-table hash,
+all incoming rows, the six path transitions and all twelve possible
+length-five windows satisfying the respective guards. The arbitrary
+exterior is untouched. Other rows are copied literally. These finite
+identities together with the invariant give a uniform proof, rather than
+an inference from the blank prefix.
+
+\subsection{A positive clock inside iPRA}
+
+Write $P_s$ and $F_t$ for the parent and faster configurations, extending
+halt by an absorbing configuration. Define $k(C)=3$ on either changed
+guarded row and $k(C)=1$ otherwise, including halt. Put
+\[
+ \sigma(0)=0,\qquad
+ \sigma(t+1)=\sigma(t)+k(F_t).
+\]
+Every function here is primitive recursive. Quantifier-free induction
+using the exact identities proves
+\[
+ F_t=P_{\sigma(t)},\qquad t\le\sigma(t)\le3t.
+\]
+If $H_P(t)$ means that the parent has halted by clock $t$, and $H_F(t)$
+has the analogous meaning, absorption therefore gives
+\[
+ \mathsf{iPRA}\vdash
+ \bigl(H_P(t)\to H_F(t)\bigr)\ \wedge\
+ \bigl(H_F(t)\to H_P(3t)\bigr).
+\]
+For the first implication, $\sigma(t)\ge t$ ensures that $P_{\sigma(t)}$
+is already halted. For the second, the endpoint at $\sigma(t)\le3t$
+is a halting witness. Existentially quantifying the clock gives relative
+halting equivalence; intuitionistic propositional reasoning gives relative
+nonhalting equivalence. This transfers the parent's stated arithmetic
+calibration without any new PA proof compiler.
+
+The complete blank startup reaches the same source frame in 57,870
+steps, compared with 57,922. It uses the first shortcut twenty times and
+the second six times, accounting for exactly 52 saved steps. The builder
+compares complete configurations after every accelerated step and the
+corresponding one or three parent steps throughout that prefix.
+The separate independent physical replay also proves all 4,778
+arbitrary-register source outcomes directly from this accelerated table.
+
