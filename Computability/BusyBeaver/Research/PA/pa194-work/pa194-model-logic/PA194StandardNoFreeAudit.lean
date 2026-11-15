@@ -1,0 +1,6 @@
+import PA194ModelStandardNoFree
+import PA194ModelQFTail
+#print axioms PA194ModelLogic.syntactic_shift_fixed_noFree
+#print axioms PA194ModelLogic.syntactic_noFree_shift_fixed
+#print axioms PA194ModelLogic.standard_quote_shift_fixed_iff
+#print axioms PA194ModelLogic.standard_quote_shift_fixed_semisentence_iff
