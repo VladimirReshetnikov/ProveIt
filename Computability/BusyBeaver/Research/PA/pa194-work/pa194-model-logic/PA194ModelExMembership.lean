@@ -283,6 +283,18 @@ theorem simRuleExs_positiveMembershipAtom (e s a b t d : M)
     · exact simRuleExs_membershipBoundRight_term e s i t d hs hm ht ha
     · exact simRuleExs_positiveFvars e s (1 : M) i j t d hs hm ht relExt_relation_one ha
 
+/-- The same result directly over an arbitrary internally valid vector code. -/
+theorem simRuleExs_positiveMembershipCode (e s v t d : M)
+    (hs : IsFormulaSet SourceL s) (hm : (^∃ (^rel (2 : M) (1 : M) v)) ∈ s)
+    (ht : IsTerm SourceL t) (ha : RankedAdmission e d) :
+    numericalQuant.Pr (numericalQuant.imp
+      (numericalQuant.imp (numericalTranslation.tr e (substs1 SourceL t (^rel (2 : M) (1 : M) v))) 1)
+      (numericalQuant.imp (numericalTranslation.tr e (^∃ (^rel (2 : M) (1 : M) v))) 1)) := by
+  have hf := (hs _ hm).isUFormula
+  have hv := (IsUFormula.rel.mp (IsUFormula.ex.mp hf)).2
+  obtain ⟨a,b,_,_,rfl⟩ := IsUTermVec.two_iff.mp hv
+  exact simRuleExs_positiveMembershipAtom e s a b t d hs hm ht ha
+
 #print axioms targetExistsMembershipLeft
 #print axioms targetExistsMembershipRight
 #print axioms substs1_membershipBoundLeft
@@ -302,5 +314,6 @@ theorem simRuleExs_positiveMembershipAtom (e s a b t d : M)
 #print axioms simRuleExs_membershipBoundDiagonal_term
 #print axioms sourceSemitermOne_cases
 #print axioms simRuleExs_positiveMembershipAtom
+#print axioms simRuleExs_positiveMembershipCode
 end models
 end PA194ModelLogic

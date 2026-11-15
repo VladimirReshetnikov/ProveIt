@@ -1,0 +1,5 @@
+import PA194ModelExAdmission
+#print axioms PA194ModelLogic.simRuleExs_positiveMembershipCode
+#print axioms PA194ModelLogic.simRuleExs_negativeMembershipCode
+#print axioms PA194ModelLogic.simRuleExs_positiveMembershipSeed
+#print axioms PA194ModelLogic.simRuleExs_negativeMembershipSeed
